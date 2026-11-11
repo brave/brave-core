@@ -32,6 +32,7 @@
 #include "brave/components/playlist/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "components/tabs/public/tab_interface.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
@@ -127,7 +128,8 @@ void PlaylistService::AddMediaFilesFromContentsToPlaylist(
   VLOG(2) << __func__
           << " download media from WebContents to playlist: " << playlist_id;
 
-  auto* tab_helper = PlaylistTabHelper::FromWebContents(contents);
+  auto* tab_helper = PlaylistTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(contents));
   CHECK(tab_helper);
   const auto& found_items = tab_helper->found_items();
   if (found_items.empty()) {
@@ -523,7 +525,8 @@ void PlaylistService::FindMediaFilesFromActiveTab() {
     return;
   }
 
-  auto* tab_helper = PlaylistTabHelper::FromWebContents(web_contents);
+  auto* tab_helper = PlaylistTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   CHECK(tab_helper);
 
   const auto url = web_contents->GetLastCommittedURL();

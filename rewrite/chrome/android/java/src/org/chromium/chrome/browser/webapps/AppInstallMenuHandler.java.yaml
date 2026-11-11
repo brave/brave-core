@@ -20,3 +20,11 @@ substitutions:
         '\1(currentTab.getUrl() != null &&
         UrlConstants.CHROME_SCHEME.equals(currentTab.getUrl().getScheme())) ||
         \3'
+
+  - description:
+      'Skip the Install/Create shortcut bottom sheet and add to Home screen
+      directly.'
+    add_before_line:
+      line: 'boolean webAppInstalled ='
+      code: |2-
+                if (BraveAppInstallMenuHandlerUtils.shouldAddToHomescreenOnly()) return doAddToHomescreen(activity, windowAndroid, modalDialogManager, currentTab, AppMenuVerbiage.APP_MENU_OPTION_ADD_TO_HOMESCREEN);

@@ -7,6 +7,8 @@ package org.chromium.chrome.browser.youtube_script_injector;
 
 import android.app.Activity;
 import android.app.PictureInPictureParams;
+import android.content.Context;
+import android.os.Build;
 
 import org.jni_zero.CalledByNative;
 import org.jni_zero.JNINamespace;
@@ -26,6 +28,16 @@ import org.chromium.ui.base.WindowAndroid;
 @NullMarked
 public class BraveYouTubeScriptInjectorNativeHelper {
     private static final String TAG = "YouTubeNativeHelper";
+
+    /**
+     * Whether the device and user allow entering Picture-in-Picture. Upstream's {@link
+     * PictureInPicture#isEnabled} no longer checks the Android version, but entering Picture-in-
+     * Picture on Android Q can crash the framework (b/143784148).
+     */
+    public static boolean isPictureInPictureEnabled(Context context) {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
+                && PictureInPicture.isEnabled(context);
+    }
 
     public static void setFullscreen(WebContents webContents) {
         BraveYouTubeScriptInjectorNativeHelperJni.get().setFullscreen(webContents);
@@ -52,7 +64,7 @@ public class BraveYouTubeScriptInjectorNativeHelper {
             // Mirror the toolbar icon's gate: skip when Picture-in-Picture is unavailable on
             // this device. Covers SDK < R (the framework crash documented as b/143784148), the
             // FEATURE_PICTURE_IN_PICTURE package check, and the AppOps user toggle.
-            if (!PictureInPicture.isEnabled(activity)) {
+            if (!isPictureInPictureEnabled(activity)) {
                 return;
             }
             if (activity instanceof final BraveActivity braveActivity) {

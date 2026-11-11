@@ -6,12 +6,15 @@
 #include "brave/browser/ui/tabs/test/shared_pinned_tab_service_browsertest.h"
 
 #include <AppKit/AppKit.h>
+#include <Carbon/Carbon.h>
 
+#include "base/test/run_until.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/toasts/toast_features.h"
 #import "chrome/browser/ui/views/frame/browser_native_widget_mac.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/test/base/interactive_test_utils.h"
 
 IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
                        CloseTabShortCutShouldBeDisabled) {
@@ -26,8 +29,16 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
 
   auto* browser_view =
       static_cast<BrowserView*>(BrowserWindow::FromBrowser(browser));
+
+  // Make the window key so the "Close Tab" menu item is validated against it.
+  ASSERT_TRUE(ui_test_utils::ShowAndFocusNativeWindow(
+      browser_view->GetWidget()->GetNativeWindow()));
+
   auto* ns_window =
       browser_view->GetWidget()->GetNativeWindow().GetNativeNSWindow();
+  // Activation is async on Mac; otherwise Cmd+W can still reach browser().
+  ASSERT_TRUE(base::test::RunUntil([&] { return [ns_window isKeyWindow]; }));
+  const int original_browser_tab_count = browser->tab_strip_model()->count();
 
   // When Command + w is pressed
   NSEvent* event = [NSEvent keyEventWithType:NSEventTypeKeyDown
@@ -39,11 +50,16 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
                                   characters:@"w"
                  charactersIgnoringModifiers:@"w"
                                    isARepeat:NO
-                                     keyCode:0];
-  [[NSApplication sharedApplication] sendEvent:event];
+                                     keyCode:kVK_ANSI_W];
+  // Dispatch to the window directly instead of via -[NSApplication sendEvent:].
+  // The latter falls through to the main menu when the window isn't key at that
+  // instant, which runs Close Tab without `is_before_first_responder` and so
+  // bypasses the guard under test.
+  EXPECT_TRUE([ns_window performKeyEquivalent:event]);
 
   // Then the tab should not be closed.
   EXPECT_EQ(browser->tab_strip_model()->count(), 2);
+  EXPECT_EQ(browser->tab_strip_model()->count(), original_browser_tab_count);
 
   // When other ways to close the tab are tried
   chrome::ExecuteCommand(browser, IDC_CLOSE_TAB);

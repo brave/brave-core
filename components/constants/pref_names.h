@@ -17,14 +17,6 @@ inline constexpr char kManagedBraveShieldsEnabledForUrls[] =
     "brave.managed_shields_enabled";
 inline constexpr char kManagedDefaultBraveFingerprintingV2[] =
     "brave.profile.managed_default_content_settings.brave_fingerprinting_v2";
-inline constexpr char kAdsBlocked[] = "brave.stats.ads_blocked";
-// We no longer update this pref, but we keep it around for now because it's
-// added to kAdsBlocked when being displayed.
-inline constexpr char kTrackersBlocked[] = "brave.stats.trackers_blocked";
-inline constexpr char kJavascriptBlocked[] = "brave.stats.javascript_blocked";
-inline constexpr char kHttpsUpgradesStat[] = "brave.stats.https_upgrades";
-inline constexpr char kFingerprintingBlocked[] =
-    "brave.stats.fingerprinting_blocked";
 inline constexpr char kLastCheckYMD[] = "brave.stats.last_check_ymd";
 inline constexpr char kLastCheckWOY[] = "brave.stats.last_check_woy";
 inline constexpr char kLastCheckMonth[] = "brave.stats.last_check_month";
@@ -95,6 +87,7 @@ inline constexpr char kBraveSearchVisitCount[] =
 inline constexpr char kBraveGCMChannelStatus[] = "brave.gcm.channel_status";
 inline constexpr char kImportDialogExtensions[] = "import_dialog_extensions";
 inline constexpr char kImportDialogPayments[] = "import_dialog_payments";
+// Deprecated: migrated into the upstream prefs::kCtrlTabMru.
 inline constexpr char kMRUCyclingEnabled[] = "brave.mru_cycling_enabled";
 inline constexpr char kTabsSearchShow[] = "brave.tabs_search_show";
 inline constexpr char kTabMuteIndicatorNotClickable[] =
@@ -117,12 +110,14 @@ inline constexpr char kBackgroundVideoPlaybackEnabled[] =
     "brave.background_video_playback";
 inline constexpr char kSafetynetCheckFailed[] = "safetynetcheck.failed";
 inline constexpr char kSafetynetStatus[] = "safetynet.status";
+// Google Ads click id from the Play Store install referrer.
+inline constexpr char kReferralAndroidGbraid[] =
+    "brave.referral.android_gbraid";
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
 inline constexpr char kEnableWindowClosingConfirm[] =
     "brave.enable_window_closing_confirm";
-inline constexpr char kEnableClosingLastTab[] = "brave.enable_closing_last_tab";
 inline constexpr char kShowFullscreenReminder[] =
     "brave.show_fullscreen_reminder";
 #endif

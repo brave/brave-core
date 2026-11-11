@@ -14,10 +14,20 @@ directory.
 ## Development Tasks
 
 When asked to explore a task, read only the docs that you need from docs/ using
-the list at @../docs/README.md
+the list at docs/README.md
 
 When working directly on code, consult with only relevant best practices listed
-at @../docs/best_practices.md
+at docs/best_practices.md
+
+## Design System (Leo / Nala)
+
+For any UI or visual work (WebUI, desktop views, Android, iOS), use Leo/Nala as
+the design reference and quality bar:
+
+- Read `node_modules/@brave/leo/AGENTS.md` (the pinned Leo version) for tokens,
+  components, icons, and Storybook references.
+- Check the result against docs/best-practices/nala.md before finishing or
+  reviewing.
 
 ## Destructive Operations
 

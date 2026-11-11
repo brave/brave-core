@@ -171,7 +171,7 @@ struct VerifyRecoveryPhraseView: View {
 #if DEBUG
 struct VerifyRecoveryPhraseView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
+    NavigationStack {
       VerifyRecoveryPhraseView(
         keyringStore: .previewStore,
         recoveryWords: [

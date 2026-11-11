@@ -80,7 +80,7 @@ def get_org_members():
             file=sys.stderr,
         )
         sys.exit(1)
-    return set(cache_file.read_text().strip().splitlines())
+    return set(cache_file.read_text(encoding='utf-8').strip().splitlines())
 
 
 def get_trusted_reviewers():
@@ -99,11 +99,9 @@ def is_trusted(username, org_members, trusted_reviewers):
 def gh_api(endpoint):
     """Call GitHub API via gh CLI."""
     cmd = ["gh", "api", endpoint, "--paginate"]
-    result = subprocess.run(cmd,
-                            capture_output=True,
-                            text=True,
-                            timeout=30,
-                            check=False)
+    result = subprocess.run(
+        cmd, capture_output=True, text=True, timeout=30, check=False
+    )
     if result.returncode != 0:
         return None
     try:
@@ -128,8 +126,9 @@ def extract_image_urls(markdown_text):
         urls.append({"alt": alt, "url": url.strip()})
 
     # HTML img tags: <img src="url"> or <img src='url'>
-    for match in re.finditer(r'<img\s[^>]*src=["\']([^"\']+)["\']',
-                             markdown_text, re.IGNORECASE):
+    for match in re.finditer(
+        r'<img\s[^>]*src=["\']([^"\']+)["\']', markdown_text, re.IGNORECASE
+    ):
         url = match.group(1)
         # Avoid duplicates if same URL was in markdown syntax
         if not any(u["url"] == url for u in urls):
@@ -142,6 +141,7 @@ def is_allowed_url(url):
     """Check if URL is from an allowed host."""
     try:
         from urllib.parse import urlparse
+
         parsed = urlparse(url)
         return parsed.hostname in ALLOWED_HOSTS and parsed.scheme == "https"
     except Exception:
@@ -151,6 +151,7 @@ def is_allowed_url(url):
 def guess_extension(url, content_type=None):
     """Guess file extension from URL or content type."""
     from urllib.parse import urlparse
+
     path = urlparse(url).path.lower()
 
     for ext in IMAGE_EXTENSIONS:
@@ -180,11 +181,13 @@ def download_image(url, dest_path):
         if not url.startswith("https://"):  # nosemgrep
             return False, "rejected non-https URL scheme"
 
-        req = urllib.request.Request(url,
-                                     headers={
-                                         "User-Agent": "brave-core-review/1.0",
-                                         "Accept": "image/*",
-                                     })
+        req = urllib.request.Request(
+            url,
+            headers={
+                "User-Agent": "brave-core-review/1.0",
+                "Accept": "image/*",
+            },
+        )
         with urllib.request.urlopen(req, timeout=15) as response:
             # After following redirects, verify the final URL is
             # still on an allowed host.
@@ -195,8 +198,10 @@ def download_image(url, dest_path):
             content_type = response.headers.get("Content-Type", "")
 
             # Check content type is an image
-            if not any(t in content_type.lower()
-                       for t in ["image/", "application/octet-stream"]):
+            if not any(
+                t in content_type.lower()
+                for t in ["image/", "application/octet-stream"]
+            ):
                 return False, f"not an image: {content_type}"
 
             # Read with size limit
@@ -223,7 +228,8 @@ def download_image(url, dest_path):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Extract and download PR images")
+        description="Extract and download PR images"
+    )
     parser.add_argument("pr_number", type=int, help="PR number")
     parser.add_argument("--repo", default=PR_REPO, help="Repository")
     args = parser.parse_args()
@@ -248,15 +254,15 @@ def main():
     pr_data = gh_api(f"repos/{args.repo}/pulls/{args.pr_number}")
     if not pr_data:
         print(
-            json.dumps({
-                "images": [],
-                "skipped": [],
-                "summary": {
-                    "downloaded": 0,
-                    "skipped": 0
-                },
-                "error": "Failed to fetch PR data"
-            }))
+            json.dumps(
+                {
+                    "images": [],
+                    "skipped": [],
+                    "summary": {"downloaded": 0, "skipped": 0},
+                    "error": "Failed to fetch PR data",
+                }
+            )
+        )
         sys.exit(0)
 
     pr_author = pr_data.get("user", {}).get("login", "")
@@ -268,30 +274,32 @@ def main():
     if author_trusted and pr_body:
         for img in extract_image_urls(pr_body):
             if is_allowed_url(img["url"]):
-                images.append({
-                    **img, "source": "pr_body",
-                    "author": pr_author
-                })
+                images.append({**img, "source": "pr_body", "author": pr_author})
             else:
-                skipped.append({
-                    "url": img["url"],
-                    "reason": "disallowed host",
-                    "source": "pr_body"
-                })
+                skipped.append(
+                    {
+                        "url": img["url"],
+                        "reason": "disallowed host",
+                        "source": "pr_body",
+                    }
+                )
     elif pr_body and not author_trusted:
         for img in extract_image_urls(pr_body):
-            skipped.append({
-                "url": img["url"],
-                "reason": "external author (PR body)",
-                "source": f"pr_body_by_{pr_author}"
-            })
+            skipped.append(
+                {
+                    "url": img["url"],
+                    "reason": "external author (PR body)",
+                    "source": f"pr_body_by_{pr_author}",
+                }
+            )
 
     # Only fetch comments if PR body contained images (most PRs have none,
     # so this skips 3 API calls in the common case)
     if images or skipped:
         # 2. Review comments (inline code comments)
         review_comments = gh_api(
-            f"repos/{args.repo}/pulls/{args.pr_number}/comments")
+            f"repos/{args.repo}/pulls/{args.pr_number}/comments"
+        )
         if review_comments:
             for comment in review_comments:
                 user = comment.get("user", {}).get("login", "")
@@ -299,27 +307,35 @@ def main():
                 if is_trusted(user, org_members, trusted_reviewers) and body:
                     for img in extract_image_urls(body):
                         if is_allowed_url(img["url"]):
-                            images.append({
-                                **img, "source": f"review_comment_by_{user}",
-                                "author": user
-                            })
+                            images.append(
+                                {
+                                    **img,
+                                    "source": f"review_comment_by_{user}",
+                                    "author": user,
+                                }
+                            )
                         else:
-                            skipped.append({
-                                "url": img["url"],
-                                "reason": "disallowed host",
-                                "source": f"review_comment_by_{user}"
-                            })
+                            skipped.append(
+                                {
+                                    "url": img["url"],
+                                    "reason": "disallowed host",
+                                    "source": f"review_comment_by_{user}",
+                                }
+                            )
                 elif body:
                     for img in extract_image_urls(body):
-                        skipped.append({
-                            "url": img["url"],
-                            "reason": "external user",
-                            "source": f"review_comment_by_{user}"
-                        })
+                        skipped.append(
+                            {
+                                "url": img["url"],
+                                "reason": "external user",
+                                "source": f"review_comment_by_{user}",
+                            }
+                        )
 
         # 3. Issue comments (PR discussion)
         issue_comments = gh_api(
-            f"repos/{args.repo}/issues/{args.pr_number}/comments")
+            f"repos/{args.repo}/issues/{args.pr_number}/comments"
+        )
         if issue_comments:
             for comment in issue_comments:
                 user = comment.get("user", {}).get("login", "")
@@ -328,24 +344,30 @@ def main():
                     for img in extract_image_urls(body):
                         if is_allowed_url(img["url"]):
                             src = f"discussion_comment_by_{user}"
-                            images.append({
-                                **img,
-                                "source": src,
-                                "author": user,
-                            })
+                            images.append(
+                                {
+                                    **img,
+                                    "source": src,
+                                    "author": user,
+                                }
+                            )
                         else:
-                            skipped.append({
-                                "url": img["url"],
-                                "reason": "disallowed host",
-                                "source": f"discussion_comment_by_{user}"
-                            })
+                            skipped.append(
+                                {
+                                    "url": img["url"],
+                                    "reason": "disallowed host",
+                                    "source": f"discussion_comment_by_{user}",
+                                }
+                            )
                 elif body:
                     for img in extract_image_urls(body):
-                        skipped.append({
-                            "url": img["url"],
-                            "reason": "external user",
-                            "source": f"discussion_comment_by_{user}"
-                        })
+                        skipped.append(
+                            {
+                                "url": img["url"],
+                                "reason": "external user",
+                                "source": f"discussion_comment_by_{user}",
+                            }
+                        )
 
         # 4. Review body text (the body of each review submission)
         reviews = gh_api(f"repos/{args.repo}/pulls/{args.pr_number}/reviews")
@@ -356,16 +378,21 @@ def main():
                 if is_trusted(user, org_members, trusted_reviewers) and body:
                     for img in extract_image_urls(body):
                         if is_allowed_url(img["url"]):
-                            images.append({
-                                **img, "source": f"review_by_{user}",
-                                "author": user
-                            })
+                            images.append(
+                                {
+                                    **img,
+                                    "source": f"review_by_{user}",
+                                    "author": user,
+                                }
+                            )
                         else:
-                            skipped.append({
-                                "url": img["url"],
-                                "reason": "disallowed host",
-                                "source": f"review_by_{user}"
-                            })
+                            skipped.append(
+                                {
+                                    "url": img["url"],
+                                    "reason": "disallowed host",
+                                    "source": f"review_by_{user}",
+                                }
+                            )
 
     # --- Deduplicate by URL ---
     seen_urls = set()
@@ -379,11 +406,13 @@ def main():
     # --- Cap at MAX_IMAGES ---
     if len(images) > MAX_IMAGES:
         for img in images[MAX_IMAGES:]:
-            skipped.append({
-                "url": img["url"],
-                "reason": f"exceeded max ({MAX_IMAGES})",
-                "source": img["source"]
-            })
+            skipped.append(
+                {
+                    "url": img["url"],
+                    "reason": f"exceeded max ({MAX_IMAGES})",
+                    "source": img["source"],
+                }
+            )
         images = images[:MAX_IMAGES]
 
     # --- Download ---
@@ -396,19 +425,23 @@ def main():
         success, result = download_image(img["url"], dest)
         if success:
             # result may have corrected the extension
-            downloaded.append({
-                "path": str(Path(result).relative_to(get_repo_dir())),
-                "abs_path": result,
-                "source": img["source"],
-                "alt": img["alt"],
-                "url": img["url"],
-            })
+            downloaded.append(
+                {
+                    "path": str(Path(result).relative_to(get_repo_dir())),
+                    "abs_path": result,
+                    "source": img["source"],
+                    "alt": img["alt"],
+                    "url": img["url"],
+                }
+            )
         else:
-            skipped.append({
-                "url": img["url"],
-                "reason": f"download failed: {result}",
-                "source": img["source"]
-            })
+            skipped.append(
+                {
+                    "url": img["url"],
+                    "reason": f"download failed: {result}",
+                    "source": img["source"],
+                }
+            )
 
     output = {
         "images": downloaded,

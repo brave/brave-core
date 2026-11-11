@@ -21,8 +21,11 @@ namespace ai_chat {
 // Executes via the renderer's PageContentExtractor mojo interface.
 class ContentTool : public Tool {
  public:
+  // |requires_permission| false skips the per-use permission challenge, for
+  // first-party pages whose tools can't affect anything outside the page.
   ContentTool(const blink::mojom::ScriptTool& script_tool,
-              content::WeakDocumentPtr rfh);
+              content::WeakDocumentPtr rfh,
+              bool requires_permission = true);
   ~ContentTool() override;
 
   ContentTool(const ContentTool&) = delete;
@@ -38,7 +41,9 @@ class ContentTool : public Tool {
   std::variant<bool, mojom::PermissionChallengePtr>
   RequiresUserInteractionBeforeHandling(
       const mojom::ToolUseEvent& tool_use) const override;
-  void UserPermissionGranted(const std::string& tool_use_id) override;
+  void UserPermissionGranted(
+      const std::string& tool_use_id,
+      const mojom::PermissionChallenge& challenge) override;
   void SetUserPermissionStrategy(mojom::ToolPermission permission) override;
   std::optional<std::string> GetPermissionChallengeDescription(
       const mojom::ToolUseEvent& tool_use) const override;
@@ -47,8 +52,10 @@ class ContentTool : public Tool {
                UseToolCallback callback) override;
 
  private:
-  // Granted for this tool use loop only, by answering a permission challenge.
-  bool user_permission_granted_ = false;
+  const bool requires_permission_;
+  // The tool use the user allowed once by answering a permission challenge.
+  // Other uses of this tool, even with the same arguments, are asked again.
+  std::optional<std::string> granted_tool_use_id_;
   // When the permission is set to kNeverAllow the content tool will be
   // discarded so we don't need to handle it here.
   mojom::ToolPermission user_permission_strategy_ = mojom::ToolPermission::kAsk;

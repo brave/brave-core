@@ -74,6 +74,36 @@ class BraveTabStripCollection : public TabStripCollection {
       const TabCollection::TypeEnumSet retain_collection_types,
       base::PassKey<BraveTabStripCollectionDelegate> pass_key);
 
+  // Moves |collection| to the |index| of |new_parent| and notifies observers.
+  void MoveCollectionAndNotify(TabCollection* collection,
+                               TabCollection* new_parent,
+                               size_t index);
+
+  // Notification APIs for the delegate. The delegate manipulates the
+  // collection hierarchy directly, so it should use these to notify observers
+  // of the changes, as TabStripCollection does for its own operations. See
+  // TabCollection::NotifyOnChild*() for the meaning of the arguments.
+  void NotifyOnChildrenAdded(
+      TabCollection& collection,
+      const TabCollection::NodeHandles& handles,
+      const TabCollection::Position& insertion_position,
+      TabCollection* stop_notification_root,
+      bool insert_from_detached,
+      base::PassKey<BraveTabStripCollectionDelegate> pass_key);
+  void NotifyOnChildrenRemoved(
+      TabCollection& collection,
+      const TabCollection::Position& position,
+      const TabCollection::NodeHandles& handles,
+      TabCollection* stop_notification_root,
+      base::PassKey<BraveTabStripCollectionDelegate> pass_key);
+  void NotifyOnChildMoved(
+      TabCollection& collection,
+      const TabCollection::NodeHandle& handle,
+      const TabCollection::Position& src_position,
+      const TabCollection::Position& dst_position,
+      TabCollection* stop_notification_root,
+      base::PassKey<BraveTabStripCollectionDelegate> pass_key);
+
   // TabStripCollection:
   void AddTabRecursive(ScopedTab tab,
                        size_t index,

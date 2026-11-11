@@ -29,7 +29,6 @@ import org.chromium.brave_wallet.mojom.ZecTxData;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.crypto_wallet.presenters.SolanaInstructionPresenter;
-import org.chromium.mojo_base.mojom.TimeDelta;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -56,7 +55,6 @@ public class ParsedTransaction extends ParsedTransactionFees {
     public double marketPrice;
     private String mHash = "";
     private String mNonce = "";
-    @Nullable private TimeDelta mCreatedTime;
     private int mStatus; // mojo loses enum type info in struct
     private int mType; // mojo loses enum type info in struct
     private String mSender = "";
@@ -197,7 +195,6 @@ public class ParsedTransaction extends ParsedTransactionFees {
         parsedTransaction.mType = txInfo.txType;
         parsedTransaction.mNonce = nonce;
         parsedTransaction.mToken = token;
-        parsedTransaction.mCreatedTime = txInfo.createdTime;
         parsedTransaction.mStatus = txInfo.txStatus;
         parsedTransaction.mSender = sender;
         parsedTransaction.isSolanaDappTransaction =
@@ -466,11 +463,6 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
     public String getNonce() {
         return this.mNonce;
-    }
-
-    @Nullable
-    public TimeDelta getCreatedTime() {
-        return this.mCreatedTime;
     }
 
     public int getStatus() {

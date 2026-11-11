@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings_shared/people_page/sync_browser_proxy.ts b/chrome/browser/resources/settings_shared/people_page/sync_browser_proxy.ts
-index 7a279936118c6efeb64dc7fb676c2d6000017145..4d47e17578e513dbbfa01a59cc77fccfe3b95460 100644
+index 3ee5452fda12af661b3447bdc1e0e0a09dab0d39..32807dd9203c503d37260affaa6a952e8e72c864 100644
 --- a/chrome/browser/resources/settings_shared/people_page/sync_browser_proxy.ts
 +++ b/chrome/browser/resources/settings_shared/people_page/sync_browser_proxy.ts
-@@ -151,6 +151,9 @@ export interface SyncPrefs {
+@@ -155,6 +155,9 @@ export interface SyncPrefs {
    wifiConfigurationsManaged: boolean;
    wifiConfigurationsRegistered: boolean;
    wifiConfigurationsSynced: boolean;
@@ -12,7 +12,7 @@ index 7a279936118c6efeb64dc7fb676c2d6000017145..4d47e17578e513dbbfa01a59cc77fccf
    explicitPassphraseTime?: string;
  }
  
-@@ -174,6 +177,7 @@ export const syncPrefsIndividualDataTypes: string[] = [
+@@ -178,6 +181,7 @@ export const syncPrefsIndividualDataTypes: string[] = [
    'themesSynced',
    'typedUrlsSynced',
    'wifiConfigurationsSynced',
@@ -20,7 +20,7 @@ index 7a279936118c6efeb64dc7fb676c2d6000017145..4d47e17578e513dbbfa01a59cc77fccf
  ];
  
  // Always keep in sync with `UserSelectableType` (C++).
-@@ -192,7 +196,8 @@ export enum UserSelectableType {
+@@ -196,7 +200,8 @@ export enum UserSelectableType {
    SAVED_TAB_GROUPS = 10,
    PAYMENTS = 11,
    PRODUCT_COMPARISON = 12,

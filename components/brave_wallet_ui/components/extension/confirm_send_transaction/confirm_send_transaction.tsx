@@ -4,13 +4,14 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Alert from '@brave/nala/react/alert'
+import Icon from '@brave/nala/react/icon'
 
 // Constants
 import { BraveWallet } from '../../../constants/types'
 
 // Queries
 import {
-  useGetActiveOriginQuery,
   useGetDefaultFiatCurrencyQuery, //
 } from '../../../common/slices/api.slice'
 
@@ -19,7 +20,9 @@ import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 import {
   getTransactionMemo,
+  getSetApprovalForAllOperator,
   isPolkadotAssetTransaction,
+  isSetApprovalForAllTransaction,
 } from '../../../utils/tx-utils'
 
 // Hooks
@@ -59,6 +62,9 @@ import {
 import {
   OriginInfoCard, //
 } from '../origin_info_card/origin_info_card'
+import {
+  ApprovalForAllWarning, //
+} from '../approval_for_all_warning/approval_for_all_warning'
 
 // Styled Components
 import {
@@ -66,6 +72,7 @@ import {
   InfoBox,
   Card,
   Title,
+  AlertWrapper,
 } from './confirm_send_transaction.style'
 import { Column, Row, VerticalDivider } from '../../shared/style'
 import {
@@ -81,6 +88,8 @@ export function ConfirmSendTransaction() {
   const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] =
     React.useState<boolean>(false)
   const [showTransactionDetails, setShowTransactionDetails] =
+    React.useState<boolean>(false)
+  const [showApprovalForAllWarning, setShowApprovalForAllWarning] =
     React.useState<boolean>(false)
 
   // Hooks
@@ -113,9 +122,6 @@ export function ConfirmSendTransaction() {
 
   // Queries
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
-  const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
-    useGetActiveOriginQuery()
-  const originInfo = selectedPendingTransaction?.originInfo ?? activeOrigin
 
   // Memos
   const totalAmount = React.useMemo(() => {
@@ -160,11 +166,31 @@ export function ConfirmSendTransaction() {
     gasFee,
   ])
 
-  const isBraveWalletOrigin = React.useMemo(() => {
-    return originInfo.originSpec === 'chrome://wallet'
-  }, [originInfo])
-
   const memoText = getTransactionMemo(selectedPendingTransaction)
+
+  const isApprovalForAllTx =
+    !!selectedPendingTransaction
+    && isSetApprovalForAllTransaction(selectedPendingTransaction)
+
+  // The operator (spender) being granted approval over the NFT collection.
+  // effectiveRecipient is the NFT contract, so the "to" row has to use this.
+  const approvalForAllOperator = selectedPendingTransaction
+    ? getSetApprovalForAllOperator(selectedPendingTransaction)
+    : ''
+
+  // Methods
+  const onConfirmOrMaybeShowWarning = React.useCallback(() => {
+    if (isApprovalForAllTx) {
+      setShowApprovalForAllWarning(true)
+      return
+    }
+    onConfirm()
+  }, [isApprovalForAllTx, onConfirm])
+
+  const onConfirmAndCloseWarning = React.useCallback(() => {
+    setShowApprovalForAllWarning(false)
+    onConfirm()
+  }, [onConfirm])
 
   if (!selectedPendingTransaction || !transactionDetails) {
     return <LoadingPanel />
@@ -204,7 +230,7 @@ export function ConfirmSendTransaction() {
             padding='0px 16px'
             gap='8px'
           >
-            {isBraveWalletOrigin ? (
+            {!selectedPendingTransaction.dappOriginInfo ? (
               <>
                 <CreateAccountIcon
                   size='extra-huge'
@@ -216,53 +242,81 @@ export function ConfirmSendTransaction() {
               </>
             ) : (
               <OriginInfoCard
-                origin={originInfo}
+                origin={selectedPendingTransaction.dappOriginInfo}
                 orientation='vertical'
                 noBackground={true}
               />
             )}
             <InfoBox width='100%'>
+              {/* Approval for all warning */}
+              {isApprovalForAllTx && (
+                <AlertWrapper width='100%'>
+                  <Alert type='error'>
+                    <Icon
+                      slot='icon'
+                      name='warning-circle-filled'
+                    />
+                    <span slot='title'>
+                      {getLocale(S.BRAVE_WALLET_APPROVAL_FOR_ALL_WARNING_TITLE)}
+                    </span>
+                    {getLocale(
+                      S.BRAVE_WALLET_APPROVAL_FOR_ALL_WARNING_DESCRIPTION,
+                    )}
+                  </Alert>
+                </AlertWrapper>
+              )}
+
               {/* Swap details */}
               <Card
                 width='100%'
                 padding='16px'
+                noTopRadius={isApprovalForAllTx}
               >
                 {/* Send token and amount */}
-                <ConfirmationTokenInfo
-                  token={transactionDetails.token}
-                  label={
-                    isShieldingFunds
-                      ? 'shield'
-                      : isUnshieldingFunds
-                        ? 'unshield'
-                        : isMigratingFunds
-                          ? 'migrate'
-                          : 'send'
-                  }
-                  valueExact={transactionDetails.valueExact}
-                  fiatValue={transactionDetails.fiatValue}
-                  network={transactionsNetwork}
-                  account={fromAccount}
-                  receiveAddress={fromAddress}
-                />
+                {!isApprovalForAllTx && (
+                  <ConfirmationTokenInfo
+                    token={transactionDetails.token}
+                    label={
+                      isShieldingFunds
+                        ? 'shield'
+                        : isUnshieldingFunds
+                          ? 'unshield'
+                          : isMigratingFunds
+                            ? 'migrate'
+                            : 'send'
+                    }
+                    valueExact={transactionDetails.valueExact}
+                    fiatValue={transactionDetails.fiatValue}
+                    network={transactionsNetwork}
+                    account={fromAccount}
+                    receiveAddress={fromAddress}
+                  />
+                )}
 
                 {/* Divider */}
-                <Row
-                  justifyContent='space-between'
-                  padding='16px 0px'
-                >
-                  <VerticalDivider />
-                </Row>
+                {!isApprovalForAllTx && (
+                  <Row
+                    justifyContent='space-between'
+                    padding='16px 0px'
+                  >
+                    <VerticalDivider />
+                  </Row>
+                )}
 
-                {/* Recipient info */}
+                {/* Recipient info. For setApprovalForAll, recipient is the
+                    NFT contract; show the operator who receives access. */}
                 <ConfirmationTokenInfo
                   label='to'
-                  receiveAddress={transactionDetails.recipient}
+                  receiveAddress={
+                    isApprovalForAllTx
+                      ? approvalForAllOperator
+                      : transactionDetails.recipient
+                  }
                   isAssociatedTokenAccountCreation={
                     isAssociatedTokenAccountCreation
                   }
                   network={transactionsNetwork}
-                  account={toAccount}
+                  account={isApprovalForAllTx ? undefined : toAccount}
                 />
               </Card>
 
@@ -370,7 +424,7 @@ export function ConfirmSendTransaction() {
 
         {/* Confirm and reject buttons */}
         <ConfirmRejectButtons
-          onConfirm={onConfirm}
+          onConfirm={onConfirmOrMaybeShowWarning}
           onReject={onReject}
           isConfirmButtonDisabled={isConfirmButtonDisabled}
           isAccountSyncing={isAccountSyncing}
@@ -416,6 +470,15 @@ export function ConfirmSendTransaction() {
         isOpen={showEditNetworkFee}
         onCancel={() => setShowEditNetworkFee(false)}
       />
+
+      {/* Approval for all warning */}
+      {isApprovalForAllTx && showApprovalForAllWarning && (
+        <ApprovalForAllWarning
+          onConfirm={onConfirmAndCloseWarning}
+          onReject={onReject}
+          address={approvalForAllOperator}
+        />
+      )}
     </>
   )
 }

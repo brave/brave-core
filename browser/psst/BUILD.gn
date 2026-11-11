@@ -41,9 +41,11 @@ static_library("psst") {
     "//chrome/browser/ui/tabs",
     "//chrome/browser/ui/webui",
     "//components/content_settings/core/browser",
+    "//components/crx_file",
     "//components/infobars/core",
     "//components/permissions",
     "//components/prefs",
+    "//components/tabs:public",
     "//components/variations/service",
     "//content/public/browser",
     "//content/public/common",
@@ -63,6 +65,7 @@ source_set("unit_tests") {
     "//brave/components/psst/core/browser",
     "//brave/components/psst/core/common",
     "//chrome/test:test_support",
+    "//chrome/test/base:chrome_render_view_host_test_harness",
     "//components/content_settings/core/browser",
     "//components/metrics",
     "//components/metrics:test_support",
@@ -86,6 +89,7 @@ source_set("browser_tests") {
 
   deps = [
     "//base",
+    "//brave/browser/ui",
     "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/webui/psst",
     "//brave/components/brave_shields/content/browser",
@@ -93,6 +97,7 @@ source_set("browser_tests") {
     "//brave/components/psst/buildflags",
     "//brave/components/psst/core/browser",
     "//brave/components/psst/core/common",
+    "//chrome/browser/ui/views/frame:browser_view_header",
     "//chrome/browser/ui/views/infobars",
     "//chrome/test:test_support",
     "//components/component_updater:test_support",
@@ -108,7 +113,8 @@ source_set("browser_tests") {
   } else {
     deps += [
       "//brave/app:command_ids",
-      "//chrome/browser/ui",
+      "//brave/browser/ui:brave_browser_window_header",
+      "//chrome/browser/ui:browser_actions",
       "//chrome/browser/ui/views/page_action:page_action_test_support",
       "//chrome/test:test_support_ui",
       "//ui/actions",

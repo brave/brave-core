@@ -4,20 +4,21 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 
 import { formatString } from '$web-common/formatString'
 import { Link } from '../common/link'
 import { getString } from '../../lib/strings'
 import {
   BraveBackground,
-  SponsoredImageBackground,
+  NewTabTakeoverBackground,
 } from '../../state/background_store'
 import {
   useCurrentBackground,
   useBackgroundActions,
 } from '../../context/background_context'
 import { useNewTabState } from '../../context/new_tab_context'
+import { NewTabTakeoverDisclosure } from './new_tab_takeover_disclosure'
 
 import { style } from './background_caption.style'
 
@@ -29,7 +30,14 @@ export function BackgroundCaption() {
       case 'brave':
         return <BraveBackgroundCredits background={currentBackground} />
       case 'sponsored-image':
-        return <SponsoredBackgroundLogo background={currentBackground} />
+        return (
+          <>
+            <NewTabTakeoverBackgroundLogo background={currentBackground} />
+            <NewTabTakeoverDisclosure background={currentBackground} />
+          </>
+        )
+      case 'sponsored-rich-media':
+        return <NewTabTakeoverDisclosure background={currentBackground} />
       default:
         return null
     }
@@ -59,11 +67,13 @@ function BraveBackgroundCredits(props: BraveBackgroundCreditsProps) {
   )
 }
 
-interface SponsoredBackgroundLogoProps {
-  background: SponsoredImageBackground
+interface NewTabTakeoverBackgroundLogoProps {
+  background: NewTabTakeoverBackground
 }
 
-function SponsoredBackgroundLogo(props: SponsoredBackgroundLogoProps) {
+function NewTabTakeoverBackgroundLogo(
+  props: NewTabTakeoverBackgroundLogoProps,
+) {
   const actions = useBackgroundActions()
   const centerNttCtaButtonFeatureEnabled = useNewTabState(
     (s) => s.centerNttCtaButtonFeatureEnabled,
@@ -80,7 +90,7 @@ function SponsoredBackgroundLogo(props: SponsoredBackgroundLogoProps) {
           ? 'sponsored-logo centered-ntt-cta-button'
           : 'sponsored-logo'
       }
-      onClick={() => actions.notifySponsoredImageLogoClicked()}
+      onClick={() => actions.notifyNewTabTakeoverLogoClicked()}
       onContextMenu={(e) => e.preventDefault()}
     >
       <Icon name='launch' />

@@ -3,18 +3,14 @@
 <translationbundle lang="mr">
 <translation id="1751249301761991853">वैयक्तिक</translation>
 <translation id="3333887201479867589">ब्रेव्ह बक्षिसे</translation>
-<translation id="7561196759112975576">नेहमी</translation>
-<translation id="7961015016161918242">कधीही नाही</translation>
 <translation id="8507663778530179003">सर्व बुकमार्केस बटण दाखवा</translation>
 <translation id="9018648632047670921">सर्व बुकमार्क बटन दर्शवा</translation>
 <translation id="7630214457764713113">लिंक कॉपी करा</translation>
 <translation id="7973394300052703468">नवीन &amp;गुप्त विंडो</translation>
 <translation id="4615489450165434530">बिघडलेली साइट नोंदवा</translation>
 <translation id="8097438084542431276">लिंक कॉपी करा</translation>
-<translation id="4678672101289648246">फक्त नवीन टॅब पृष्ठावर</translation>
 <translation id="6516243500644829484">नवीन &amp;गुप्त विंडो</translation>
 <translation id="1209739344687072997">बिघडलेल्या साइटची माहिती द्या</translation>
-<translation id="8294286161128352783">फक्त नवीन टॅब पृष्ठावर</translation>
 <translation id="6406506848690869874">Sync</translation>
 <translation id="1544192797660353713">वॉलेट</translation>
 <translation id="2361906291514218784">Leo AI</translation>
@@ -112,12 +108,17 @@
 <translation id="3114478090884951591">दिसणारे क्षेत्र</translation>
 <translation id="2026367923222947564">संपूर्ण पेज</translation>
 <translation id="4218885227032158909">निवडलेले क्षेत्र</translation>
+<translation id="2586386106930448447">स्क्रीनशॉट पूर्वावलोकन</translation>
+<translation id="7514365320538308">डाउनलोड करा</translation>
+<translation id="2743387203779672305">क्लिपबोर्डवर कॉपी करा</translation>
 <translation id="4928988318462976765">वेब विस्तार स्टोअर</translation>
 <translation id="9181207987584064303">वेब विस्तार स्टोअर मध्‍ये पहा</translation>
 <translation id="3161744659507801211">चेतावणी: Brave एक्सटेंशन तुमच्या ब्राउझिंग इतिहासाची नोंद घेऊ शकत नाहीत.</translation>
 <translation id="2162109630536601963">जर हा विस्तार नेटवर्क अनुरोध करतो, तो Tor किंवा खाजगी मोड वापरणार नाही.</translation>
 <translation id="2725327089319971976">खाजगी मोड आणि Tor मोडमध्ये हा विस्तार निष्क्रिय करण्यासाठी हा पर्याय निवडू नका.</translation>
 <translation id="438106944087726695">Braveने होस्ट केलेली</translation>
+<translation id="2265651566599167057">Socket द्वारे malware म्हणून चिन्हांकित केले.</translation>
+<translation id="2607395470596637070">Brave मधील Socket तुमचे संरक्षण कसे करते याबद्दल अधिक जाणून घ्या</translation>
 <translation id="3371343170427636147">Brave ब्राउझर Nightly ॲप्स</translation>
 <translation id="4097979995947147464">Brave ब्राउझर बीटा ॲप्स</translation>
 <translation id="8303432794159193481">Brave ब्राउझर डेवलपर ॲप्स</translation>
@@ -192,7 +193,9 @@
 <translation id="5977931179408079967">स्थिती</translation>
 <translation id="3790384768741064842">उजवीकडे हलवा</translation>
 <translation id="7444424316576061724">डावीकडे हलवा</translation>
+<translation id="7561196759112975576">नेहमी</translation>
 <translation id="7060352228894039151">माऊस ओव्हर वर</translation>
+<translation id="7961015016161918242">कधीही नाही</translation>
 <translation id="8981254605840444865">सेटिंग्ज दाखवा</translation>
 <translation id="59174027418879706">सक्षम केलेले</translation>
 <translation id="4176463684765177261">अक्षम</translation>
@@ -213,11 +216,12 @@
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 डोमेन</translation>
 <translation id="1458638489455808030">Wayback Machine</translation>
-<translation id="8039999492770627305">क्षमस्व, ती पृष्ठ सापडली नाही.</translation>
-<translation id="208311458690012764">संचयित आवृत्ती लोड करण्यात अक्षम</translation>
-<translation id="4515057635283480525">Wayback Machine वर उपलब्ध असल्यास संचयित आवृत्ती तपासण्याची इच्छा आहे का?</translation>
-<translation id="8252977752585110703">Wayback Machine ला या साइटची संचयित आवृत्ती सापडली नाही.</translation>
-<translation id="8748778103033196270">संचयित आवृत्ती तपासा</translation>
+<translation id="8039999492770627305">पृष्ठ गहाळ आहे</translation>
+<translation id="208311458690012764">कोणतीही संग्रहित आवृत्ती उपलब्ध नाही</translation>
+<translation id="4515057635283480525">इंटरनेट अर्काइव्ह अनेक वेब पृष्ठांच्या मागील आवृत्त्या जतन करते. तुम्हाला हे पृष्ठ अर्काइव्हमध्ये शोधायचे आहे का?</translation>
+<translation id="8252977752585110703">क्षमस्व, आम्ही इंटरनेट अर्काइव्ह तपासले आणि त्यात या पृष्ठाची संग्रहित आवृत्ती नाही.</translation>
+<translation id="8748778103033196270">अर्काइव्हमध्ये पहा</translation>
+<translation id="7369915833843501413">अर्काइव्हमध्ये पहात आहे</translation>
 <translation id="191143826155037518">Brave तुम्हाला <ph name="BEGIN_LINK_MPL"/>Mozilla सार्वजनिक परवाना 2.0<ph name="END_LINK_MPL"/> (MPL) अंतर्गत उपलब्ध करून दिला जातो आणि यामध्ये <ph name="BEGIN_LINK_OSS"/>ओपन सोर्स सॉफ्टवेअर<ph name="END_LINK_OSS"/> विविध परवान्यांअंतर्गत समाविष्ट आहे.
         तुम्ही [ही प्रत तयार करण्यासाठी वापरलेला विशिष्ट <ph name="BEGIN_LINK_SOURCE_CODE"/>स्रोत कोड<ph name="END_LINK_SOURCE_CODE"/> <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>स्वतःसाठी डाउनलोड आणि तयार कसा करायचा याबद्दलच्या सूचना<ph name="END_LINK_BUILD_INSTRUCTIONS"/> वाचू शकता.</translation>
 <translation id="4474155171896946103">सर्व टॅब बुकमार्क करा...</translation>
@@ -364,10 +368,11 @@
 <translation id="6847541693235449912">जा</translation>
 <translation id="2079545284768500474">पहिल्यासारखे करा</translation>
 <translation id="1533980864758658574">नवीन विंडो तयार केली गेली <ph name="TOPIC"/> साठी</translation>
+<translation id="530437350080973527">त्या विषयाशी जुळणारे कोणतेही टॅब नाहीत. ते वेगळ्या पद्धतीने वर्णन करून पहा.</translation>
 <translation id="7985042437720138349">ही सुविधा तुमच्या उघड्या टॅब्सची माहिती Leo कडे, Brave च्या AI-संचालित ब्राउझर सहाय्यकाकडे पाठवते.</translation>
 <translation id="6165508094623778733">अधिक जाणून घ्या</translation>
 <translation id="7557539689487606886">प्रीमियम घ्या</translation>
-<translation id="1035309871698658326">उघडल्यावर, हे आपोआप सर्व नॉन-प्रायव्हेट टॅब्सची शीर्षके आणि उत्पत्ती Leo कडे वर्गीकृत करण्यासाठी पाठवेल.</translation>
+<translation id="7103144720752576727">उघडल्यावर, हे आपोआप सर्व गैर-खाजगी टॅबची शीर्षके आणि origin वर्गीकरण करण्यासाठी Leo कडे पाठवेल. जर आपण पृष्ठ सामग्री पाठवणे देखील चालू केले, तर प्रत्येक टॅबच्या मजकुराचे छोटे उतारेही पाठवले जातात.</translation>
 <translation id="3435896845095436175">सक्षम करा</translation>
 <translation id="9031526219709160683">Brave तुम्हाला या साइटची गोपनीयता सेटिंग्ज अनुकूल करण्यात मदत करू शकते. तुम्हाला Brave च्या सूचना पुनरावलोकन करायच्या आहेत?</translation>
 <translation id="5739953050957336013">सूचना पुनरावलोकन करा</translation>
@@ -382,8 +387,6 @@
 <translation id="8570228839666486945">डिव्‍हाइसवर AI</translation>
 <translation id="7447041379556102185">डिव्हाइसवरील स्पीच रेकग्निशन</translation>
 <translation id="3456536577668402695">तुमचे शोध आणि पृष्ठ सामग्री या डिव्हाइसवर प्रक्रिया केल्या जातात. काहीही Brave ला पाठवले जात नाही किंवा मानवी पुनरावलोकनकर्त्यांद्वारे पाहिले जात नाही.</translation>
-<translation id="4751537843966994505">सिमेंटिक इतिहास शोध</translation>
-<translation id="6175973371938222040">तुम्ही भेट देत असलेली पेजेस स्थानिकरित्या इंडेक्स करा जेणेकरून तुम्ही तुमचा इतिहास अर्थानुसार शोधू शकाल. सर्व प्रोसेसिंग या डिव्हाइसवरच राहते.</translation>
 <translation id="9156965752763025780">तुम्ही पुढल्या वेळी Brave रीलाँच कराल तोपर्यंत तुमचे बदल प्रभावी होतील.</translation>
 <translation id="7179921470347911571">आता पुन्हा लाँच करा</translation>
 <translation id="1426410128494586442">होय</translation>
@@ -421,6 +424,24 @@
 <translation id="4328541188421002379">तुमच्या कंटेनरला वर्क किंवा पर्सनल सारखे नाव द्या</translation>
 <translation id="4976989127264491396">त्रुटी: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">कंटेनर सापडला नाही</translation>
+<translation id="5831840958001766835">आयटम पुन्हा क्रमवारी लावा. हलवण्यासाठी बाण की वापरा.</translation>
+<translation id="6055154402239241620">ट्रॅफिक कंट्रोल</translation>
+<translation id="8134521925475508805">विशिष्ट साइट्स एका विशिष्ट संदर्भात आपोआप उघडण्यासाठी कॉन्फिगर करा, ज्यामुळे तुमच्या ब्राउझिंग सत्रांमध्ये विभागणी तयार होते. <ph name="BEGIN_LINK"/>अधिक जाणून घ्या<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">ट्रॅफिक कंट्रोल सक्षम करा</translation>
+<translation id="1358255827354528344">नवीन नियम जोडा</translation>
+<translation id="7183128985801806752">नवीन ट्रॅफिक कंट्रोल नियम</translation>
+<translation id="2474694032500407328">ट्रॅफिक कंट्रोल नियम संपादित करा</translation>
+<translation id="5543417389274097206">नियम तयार करा</translation>
+<translation id="6532106788206463496">बदल साठवा</translation>
+<translation id="1172800769374812685">नियम हटवा</translation>
+<translation id="2389682807835777591">तुम्हाला नियम <ph name="RULE_LABEL"/> हटवायचे आहे का ते निश्चित आहे का?</translation>
+<translation id="4853129331778360252">व्यवस्थापित करण्यासाठी आणि नेहमी विशिष्ट ब्राउझिंग संदर्भात उघडण्यासाठी URLs एंटर करा.</translation>
+<translation id="1173480005453148926">व्यवस्थापित करण्यासाठी URLs</translation>
+<translation id="6217532416180299470">ट्रॅफिक कंट्रोलसह व्यवस्थापित करण्यासाठी URLs एंटर करा</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> साइट आणि तिच्या सबडोमेनशी जुळते; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> अचूक साइटशी जुळते; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> सर्व साइट्सशी जुळते; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> ही टिप्पणी आहे.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (आणि आणखी <ph name="COUNT"/> URLs)</translation>
+<translation id="3700798663085748181">नियम सक्षम करा</translation>
+<translation id="2967480878853054068">अवैध URL फिल्टर</translation>
 <translation id="2263346047290834619">ट्री टॅब्स वापरा</translation>
 <translation id="5860254591544742609">टायटल बार दाखवा</translation>
 <translation id="4691131445504068802">किमान केल्यावर पूर्णपणे लपवा</translation>
@@ -456,10 +477,6 @@
 <translation id="7310387888625228830">Leo AI सहाय्यक</translation>
 <translation id="5222974844674487962">Brave News बटण दाखवा</translation>
 <translation id="2085436423511121572">Leo AI बटन दाखवा</translation>
-<translation id="6156323911414505561">बुकमार्क बार दर्शवा</translation>
-<translation id="4054323497808446566">सर्व पृष्ठांवर बुकमार्क बार दिसतो</translation>
-<translation id="8693858092251192712">नवीन टॅब पृष्ठ वगळता सर्व पृष्ठांवर बुकमार्क बार लपवलेला आहे</translation>
-<translation id="7158817046543187970">सर्व पृष्ठांवर बुकमार्क बार लपलेला आहे</translation>
 <translation id="3416468988018290825">संपूर्ण URL नेहमी दाखवा</translation>
 <translation id="5529693968082667490">टॅब शोध बटण दाखवा</translation>
 <translation id="1013121820689882118">स्पीडरीडर</translation>
@@ -528,7 +545,6 @@
 <translation id="6745592621698551453">आता अपडेट करा</translation>
 <translation id="5334844597069022743">स्रोत पाहा</translation>
 <translation id="4720556299488643018">अनसबस्क्राइब</translation>
-<translation id="6532106788206463496">बदल साठवा</translation>
 <translation id="4516904298421534459">फिल्टर लिस्ट्स</translation>
 <translation id="4435215931544457255">अधिक लोकप्रिय समुदाय सूची. खूप जास्त फिल्टर्स चालू केल्यास ब्राउझिंग गती कमी होईल.</translation>
 <translation id="802154636333426148">डाउनलोड अयशस्वी झाले</translation>
@@ -592,6 +608,8 @@
 <translation id="5825943197137337319">फक्त डीफॉल्ट सार्वजनिक इंटरफेस</translation>
 <translation id="1689062823386843231">नॉन-प्रॉक्सिड UDP बंद करा</translation>
 <translation id="3540231253392253941">गुगल सेवांचा वापर पुश मेसेजिंगसाठी</translation>
+<translation id="2224032129673914306">सिमेंटिक इतिहास शोध</translation>
+<translation id="6045998903985162478">तुम्ही भेट देता त्या पृष्ठांची अनुक्रमणिका तयार करा जेणेकरून तुम्ही ती इतिहास, उघड्या टॅब आणि Leo मध्ये सहज शोधू शकता.</translation>
 <translation id="5813105074916486721">स्थानिक इतिहास धारणा</translation>
 <translation id="5671611745062206644">Brave तुमचा ब्राउझिंग इतिहास स्थानिकरित्या किती काळ संग्रहित करते</translation>
 <translation id="7184510058087008090">1 दिवस</translation>
@@ -611,6 +629,8 @@
 <translation id="509873765238158442">Microsoft रीकॉल ब्लॉक करा</translation>
 <translation id="4763421121695677716">कोणत्याही चालू Brave टॅब्सचे आपोआप स्क्रीनशॉट घेणाऱ्या Microsoft Windows कंप्युटर्स वरील रीकॉल फीचर ब्लॉक करा.</translation>
 <translation id="1968895725257436430">डेटा संकलन</translation>
+<translation id="5668852698659986622">प्रायोजित ॲड्स सक्षम करा</translation>
+<translation id="431194936581466649">प्रायोजित ॲड्ससह स्वतंत्र, वापरकर्ता-प्रथम वेब तयार करण्याच्या Brave च्या ध्येयाला समर्थन देण्यास मदत करा. तुमची ओळख न पटवता आम्ही ॲडच्या कामगिरीचे मोजमाप खासगीरित्या करतो.</translation>
 <translation id="1700052872056357670">बाहेर पडल्यानंतर सर्व डेटा क्लियर करा</translation>
 <translation id="216468847346280584">Brave ॲड्स डेटा क्लियर करा...</translation>
 <translation id="96212973142796240">Brave ॲड्स डेटा साफ केला</translation>
@@ -705,7 +725,7 @@
 <translation id="4432071071853308688">हा कोड रिक्त आहे</translation>
 <translation id="955848693465029904">आंतरकृष्ण सिंक सेटअप त्रुटी</translation>
 <translation id="7456398316301207582">आंतरकृष्ण खाते हटविणे त्रुटी</translation>
-<translation id="859506441384380749">हा कोड Brave च्या जुन्या आवृत्तीद्वारे तयार केला गेला आहे, कृपया तुमचे दुसरे डिव्हाइस अपग्रेड करा</translation>
+<translation id="4002014583969312635">असे दिसते की हा कोड जुन्या आवृत्तीच्या Brave वर चालणाऱ्या डिव्हाइसवर तयार करण्यात आला होता. कृपया तुमच्या दुसऱ्या डिव्हाइसवर Brave च्या नवीनतम आवृत्तीवर अपडेट करा आणि नंतर नवीन सिंक कोड तयार करा.</translation>
 <translation id="3132642509209154999">हा कोड कालबाह्य झाला आहे. कृपया तुमच्या दुसर्‍या डिव्हाइसवर नवीन तयार करा आणि पुन्हा प्रयत्न करा.</translation>
 <translation id="2859229680945501779">हा कोड अमान्य आहे. कृपया डिव्हाइसवरील वेळ आणि टाइमझोन योग्यरीत्या सेट केले आहेत याची खात्री करा.</translation>
 <translation id="2339730291919608488">सिंक चेन सोडा</translation>
@@ -853,6 +873,7 @@
 <translation id="2618193846561624884">आपण विद्यमान नेटवर्क अद्यतनित करू इच्छिता?</translation>
 <translation id="1643029991199044105">Ctrl-Tab सह सर्वात अलीकडे वापरलेल्या टॅबमधून सायकल करा</translation>
 <translation id="2775956301559569472">404 पृष्ठावर Wayback Machine सूचना दर्शवा</translation>
+<translation id="8485716275262929774">404 पृष्ठांवर Wayback Machine मधून जतन केलेल्या आवृत्त्या आपोआप लोड करा</translation>
 <translation id="3095201688102519917">अनेक टॅबसह विंडो बंद करण्यापूर्वी मला चेतावणी द्या</translation>
 <translation id="7120553802660696133">शेवटचा टॅब बंद करताना विंडो बंद करा</translation>
 <translation id="3394171693948989253">Esc दाबून बाहेर पडण्यासाठी फुल स्क्रीनची आठवण करून द्या</translation>
@@ -862,6 +883,8 @@
 <translation id="1529674267267221673">वेबसाईटवर उजवीकडे क्लिक केल्यावर Leo संदर्भ मेनूमध्ये दिसेल. यामुळे वर्तमान वेब पृष्ठाचा संदर्भ Leo ला पाठवला जाईल.</translation>
 <translation id="5226020406479918122">टॅब फोकस मोड</translation>
 <translation id="3705539672403311123">टॅब शोध पृष्ठामध्ये टॅब्सचे आयोजन सक्षम करा. उघडल्यावर, हे आपोआप सर्व नॉन-प्रायव्हेट टॅबची शीर्षके आणि उत्पत्ती Leo कडे वर्गीकृत करण्यासाठी पाठवेल. <ph name="BEGIN_LINK"/>अधिक जाणून घ्या<ph name="END_LINK"/></translation>
+<translation id="2002238795517052616">टॅब फोकससाठी पृष्ठ सामग्री पाठवा</translation>
+<translation id="2276823422122514441">प्रत्येक टॅबच्या मजकूराचे लहान उतारे देखील पाठवा, जेणेकरून टॅब पृष्ठाच्या शीर्षकाऐवजी पृष्ठ कशाबद्दल आहे यानुसार गटबद्ध केले जातात. उतारे Leo कडे जातात, किंवा तुम्ही टॅब फोकससाठी तुमचा स्वतःचा मॉडेल निवडला असल्यास त्याकडे जातात. यासाठी <ph name="BEGIN_LINK"/><ph name="SEMANTIC_HISTORY_SEARCH"/><ph name="END_LINK"/> आवश्यक आहे, जे तुमच्या डिव्हाइसवर उतारे तयार करते.</translation>
 <translation id="9049433973274198706">टॅब फोकससाठीचे डीफॉल्ट मॉडेल</translation>
 <translation id="2161546758719933059">Tab Focus Mode मध्ये तुमचे टॅब्स व्यवस्थित करण्यासाठी वापरलेले मॉडेल. <ph name="BEGIN_LINK"/>अधिक जाणून घ्या<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">संवादात सूचित केलेले प्रॉम्प्ट दाखवा</translation>
@@ -943,9 +966,6 @@
 <translation id="1838374766361614909">शोध साफ करा</translation>
 <translation id="5126255551970171328">स्मृतीसाठी शोध करा</translation>
 <translation id="7402116145895962069">तुमचे Ollama लोकल मॉडेल्स सिंक करा</translation>
-<translation id="5985516785067818307">सर्वेक्षण पॅनेलिस्ट</translation>
-<translation id="8347743943525229984">Brave सर्वेक्षणांना अनुमती द्या</translation>
-<translation id="3204080538332044581">यामुळे Braveला नव्या टॅबच्या पानावर गोपनीय सर्वेक्षणांच्या लिंक्स दाखवता येतात. सर्वेक्षणांमधून आम्हाला जास्त चांगली वैशिष्ट्ये उभारण्यास आणि ब्राऊझर वर आधारित जाहिरात मोहिमांचा प्रभावीपणा मोजण्यास मदत होते. <ph name="BEGIN_LINK"/>अधिक जाणून घ्या<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">प्लेलिस्ट चालू करा</translation>
 <translation id="7903608716704052878">ऑफलाइन पाहण्यासाठी स्वयंचलितपणे फाईल जोडावी.</translation>
 <translation id="384666453982355633">ही सेटिंग स्वयंचलित माध्यम फाइल्स कैश करेल ज्यामुळे तुम्हाला इंटरनेट कनेक्शनशिवाय त्या प्ले करता येतील</translation>
@@ -990,4 +1010,12 @@
 <translation id="154702742922788359">उघडा मोड</translation>
 <translation id="2249111429176737533">टॅब केलेल्या विंडोत उघडा</translation>
 <translation id="7022756207310403729">ब्राउझरमध्ये उघडा</translation>
+<translation id="1916785651473363467">कस्टम profile इमेज</translation>
+<translation id="5336092064678832560">कस्टम इमेज अपलोड करा</translation>
+<translation id="1062407476771304334">पुनर्स्थित करा</translation>
+<translation id="1428299461403073820">कस्टम profile इमेज बदला</translation>
+<translation id="7994453838803296517">कस्टम profile इमेज पूर्वावलोकन, निवडलेले</translation>
+<translation id="6578040791557152233">कस्टम profile इमेज अपलोड करा</translation>
+<translation id="9222124079546967592">कस्टम profile इमेज काढा</translation>
+<translation id="6058660912941570282">Brave ही फाईल वापरू शकत नाही. दुसरी इमेज निवडा आणि पुन्हा प्रयत्न करा.</translation>
 </translationbundle>

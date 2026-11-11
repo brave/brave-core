@@ -2,7 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import * as leo from '@brave/leo/tokens/css/variables'
+import * as leo from '@brave/nala/tokens/css/variables'
 import styled from 'styled-components'
 
 // Shared Styles
@@ -89,4 +89,17 @@ export const InputColumn = styled.div`
   flex-direction: column;
   width: 250px;
   margin-bottom: 28px;
+`
+
+export const WarningModalContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${leo.spacing.xl};
+  padding: ${leo.spacing.xl};
+`
+
+export const WarningModalButtons = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: ${leo.spacing.m};
 `

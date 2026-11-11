@@ -9,16 +9,25 @@
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
+#include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
 #include "content/public/browser/render_frame_host.h"
-#include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
+
+// Enters fullscreen and Picture-in-Picture for YouTube videos. Owned by
+// BraveTabFeatures.
 class YouTubeScriptInjectorTabHelper
-    : public content::WebContentsObserver,
-      public content::WebContentsUserData<YouTubeScriptInjectorTabHelper> {
+    : public tabs::ContentsObservingTabFeature {
  public:
-  explicit YouTubeScriptInjectorTabHelper(content::WebContents* contents);
+  DECLARE_USER_DATA(YouTubeScriptInjectorTabHelper);
+
+  static YouTubeScriptInjectorTabHelper* From(tabs::TabInterface* tab);
+
+  explicit YouTubeScriptInjectorTabHelper(tabs::TabInterface& tab);
   YouTubeScriptInjectorTabHelper(const YouTubeScriptInjectorTabHelper&) =
       delete;
   YouTubeScriptInjectorTabHelper& operator=(
@@ -45,8 +54,6 @@ class YouTubeScriptInjectorTabHelper
   void MediaEffectivelyFullscreenChanged(bool is_fullscreen) override;
   void MediaPictureInPictureChanged(bool is_picture_in_picture) override;
 
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
-
  private:
   // Callback for when the fullscreen script completes.
   void OnFullscreenScriptComplete(base::Value value);
@@ -60,6 +67,9 @@ class YouTubeScriptInjectorTabHelper
   // The remote used to send the fullscreen script to the renderer.
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
       script_injector_remote_;
+
+  ui::ScopedUnownedUserData<YouTubeScriptInjectorTabHelper>
+      scoped_unowned_user_data_;
 
   base::WeakPtrFactory<YouTubeScriptInjectorTabHelper> weak_factory_{this};
 };

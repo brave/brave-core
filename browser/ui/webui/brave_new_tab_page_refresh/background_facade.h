@@ -55,8 +55,8 @@ class BackgroundFacade {
 
   // The `callback` runs synchronously for Wallpaper backgrounds or when an
   // error occurs.
-  void GetSponsoredImageBackground(
-      base::OnceCallback<void(mojom::SponsoredImageBackgroundPtr)> callback);
+  void GetNewTabTakeoverBackground(
+      base::OnceCallback<void(mojom::NewTabTakeoverBackgroundPtr)> callback);
 
   void SelectBackground(mojom::SelectedBackgroundPtr background);
 
@@ -66,15 +66,15 @@ class BackgroundFacade {
   void RemoveCustomBackground(const std::string& background_url,
                               base::OnceClosure callback);
 
-  void NotifySponsoredImageLogoClicked(
+  void NotifyNewTabTakeoverLogoClicked(
       const std::string& wallpaper_id,
       const std::string& creative_instance_id,
       const std::string& destination_url,
       brave_ads::mojom::NewTabPageAdMetricType metric_type);
 
  private:
-  void OnGetSponsoredImageBackground(
-      base::OnceCallback<void(mojom::SponsoredImageBackgroundPtr)> callback,
+  void OnGetNewTabTakeoverBackground(
+      base::OnceCallback<void(mojom::NewTabTakeoverBackgroundPtr)> callback,
       std::optional<base::DictValue> data);
 
   void OnCustomBackgroundsSaved(base::OnceClosure callback,

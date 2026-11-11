@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_MAC_KEYSTONE_GLUE_H_
 #define BRAVE_BROWSER_MAC_KEYSTONE_GLUE_H_
 
+#include <optional>
 #include <string>
 
 #if defined(__OBJC__)
@@ -190,6 +191,16 @@ bool KeystoneEnabled();
 
 // The version of the application currently installed on disk.
 std::u16string CurrentlyInstalledVersion();
+
+// Returns true while Sparkle is the updater. Sparkle replaces the whole app
+// bundle when it installs an update on quit, so a SmartRestart relaunch can
+// start the old version while its Versions folder is being removed.
+// SmartRestartPolicy blocks both SmartRestart triggers while this is true.
+bool BraveIsSparkleTheUpdater();
+
+// Makes BraveIsSparkleTheUpdater() return `sparkle_is_updater` in tests;
+// std::nullopt restores the real check.
+void SetSparkleIsUpdaterForTesting(std::optional<bool> sparkle_is_updater);
 
 }  // namespace keystone_glue
 

@@ -7,6 +7,7 @@
 
 #include <cstddef>
 #include <optional>
+#include <utility>
 #include <vector>
 
 #include "base/containers/map_util.h"
@@ -119,6 +120,14 @@ void TreeTabModel::AddTreeTabNode(tabs::TreeTabNode& node) {
     descendant_ids_by_collapsed_ancestor_[*closest].insert(node.id());
   }
 
+  // Collect all ancestor IDs for children-changed notification.
+  std::vector<tree_tab::TreeTabNodeId> ancestor_ids;
+  for (auto parent_id = node.GetParentTreeNodeId(); parent_id;) {
+    ancestor_ids.push_back(*parent_id);
+    const tabs::TreeTabNode* parent = GetNode(*parent_id);
+    parent_id = parent ? parent->GetParentTreeNodeId() : std::nullopt;
+  }
+
   auto notification = [](base::WeakPtr<TreeTabModel> model,
                          const tree_tab::TreeTabNodeId& id) {
     if (!model) {
@@ -137,6 +146,26 @@ void TreeTabModel::AddTreeTabNode(tabs::TreeTabNode& node) {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(std::move(notification), GetWeakPtr(), node.id()));
+
+  // Notify ancestors that their children have changed.
+  if (!ancestor_ids.empty()) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE,
+        base::BindOnce(
+            [](base::WeakPtr<TreeTabModel> model,
+               std::vector<tree_tab::TreeTabNodeId> ancestor_ids) {
+              if (!model) {
+                return;
+              }
+              for (const auto& ancestor_id : ancestor_ids) {
+                if (model->GetNode(ancestor_id)) {
+                  model->tree_tab_node_children_changed_callback_list_.Notify(
+                      ancestor_id);
+                }
+              }
+            },
+            GetWeakPtr(), std::move(ancestor_ids)));
+  }
 }
 
 void TreeTabModel::OnTreeTabNodeMoved(const tree_tab::TreeTabNodeId& id) {
@@ -198,8 +227,16 @@ const tree_tab::TreeTabNodeId* TreeTabModel::GetClosestCollapsedAncestor(
 }
 
 void TreeTabModel::RemoveTreeTabNode(const tree_tab::TreeTabNodeId& id) {
-  if (!GetNode(id)) {
+  const tabs::TreeTabNode* node = GetNode(id);
+  if (!node) {
     return;
+  }
+
+  std::vector<tree_tab::TreeTabNodeId> ancestor_ids;
+  for (auto parent_id = node->GetParentTreeNodeId(); parent_id;) {
+    ancestor_ids.push_back(*parent_id);
+    const tabs::TreeTabNode* parent = GetNode(*parent_id);
+    parent_id = parent ? parent->GetParentTreeNodeId() : std::nullopt;
   }
 
   // Update closest collapsed ancestor cache before removing.
@@ -251,6 +288,28 @@ void TreeTabModel::RemoveTreeTabNode(const tree_tab::TreeTabNodeId& id) {
   will_remove_tree_tab_node_callback_list_.Notify(id);
 
   tree_tab_nodes_.erase(id);
+
+  // The collection updates ancestor heights after removing the child. Notify
+  // observers once that structure change has finished.
+  if (ancestor_ids.empty()) {
+    return;
+  }
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          [](base::WeakPtr<TreeTabModel> model,
+             std::vector<tree_tab::TreeTabNodeId> ancestor_ids) {
+            if (!model) {
+              return;
+            }
+            for (const auto& ancestor_id : ancestor_ids) {
+              if (model->GetNode(ancestor_id)) {
+                model->tree_tab_node_children_changed_callback_list_.Notify(
+                    ancestor_id);
+              }
+            }
+          },
+          GetWeakPtr(), std::move(ancestor_ids)));
 }
 
 base::WeakPtr<TreeTabModel> TreeTabModel::GetWeakPtr() {
@@ -271,4 +330,10 @@ TreeTabModel::RegisterWillRemoveTreeTabNodeCallback(
 base::CallbackListSubscription TreeTabModel::RegisterMovedTreeTabNodeCallback(
     base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> callback) {
   return moved_tree_tab_node_callback_list_.Add(std::move(callback));
+}
+
+base::CallbackListSubscription
+TreeTabModel::RegisterTreeTabNodeChildrenChangedCallback(
+    base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> callback) {
+  return tree_tab_node_children_changed_callback_list_.Add(std::move(callback));
 }

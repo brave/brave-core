@@ -1,0 +1,29 @@
+diff --git a/components/browser_ui/widget/android/java/res/drawable/search_box_icon_background_selector.xml b/components/browser_ui/widget/android/java/res/drawable/search_box_icon_background_selector.xml
+index 0c53a1564c04c2cafc56438638a86453808c8adf..af7d3b1d21762b6111239c2f503147917902defd 100644
+--- a/components/browser_ui/widget/android/java/res/drawable/search_box_icon_background_selector.xml
++++ b/components/browser_ui/widget/android/java/res/drawable/search_box_icon_background_selector.xml
+@@ -10,13 +10,13 @@ found in the LICENSE file.
+   <item>
+     <selector>
+       <item android:state_pressed="true">
+-        <shape android:shape="rectangle">
++        <shape android:shape="oval">
+           <solid android:color="@color/color_on_surface_with_alpha_12" />
+           <corners android:radius="@dimen/search_box_button_background_corner_radius" />
+         </shape>
+       </item>
+       <item android:state_hovered="true">
+-        <shape android:shape="rectangle">
++        <shape android:shape="oval">
+           <solid android:color="@color/color_on_surface_with_alpha_8" />
+           <corners android:radius="@dimen/search_box_button_background_corner_radius" />
+         </shape>
+@@ -29,7 +29,7 @@ found in the LICENSE file.
+   <item>
+     <selector>
+       <item android:state_focused="true">
+-        <shape android:shape="rectangle">
++        <shape android:shape="oval">
+           <solid android:color="@android:color/transparent" />
+           <corners android:radius="@dimen/search_box_button_background_corner_radius" />
+           <stroke

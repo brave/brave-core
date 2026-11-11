@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/toolbar/pinned_action_toolbar_button.h b/chrome/browser/ui/views/toolbar/pinned_action_toolbar_button.h
+index 1e36dc7c9834a123abb5131a95f4a5491eb809dd..be9429582e4e05967621621468804283c692dc50 100644
+--- a/chrome/browser/ui/views/toolbar/pinned_action_toolbar_button.h
++++ b/chrome/browser/ui/views/toolbar/pinned_action_toolbar_button.h
+@@ -94,6 +94,8 @@ class PinnedActionToolbarButton : public ToolbarButton {
+     return status_indicator_;
+   }
+ 
++  bool ShouldShowMenu() override;
++
+  private:
+   void OnAnchorCountChanged(size_t anchor_count);
+   void UpdateFlexPriority();

@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_block_header.h"
 
-#include "brave/components/brave_wallet/browser/internal/polkadot_extrinsic.rs.h"
+#include "brave/components/brave_wallet/browser/internal/polkadot_extrinsic_rs.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 
 namespace brave_wallet {

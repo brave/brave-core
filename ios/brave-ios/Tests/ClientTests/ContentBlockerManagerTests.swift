@@ -208,6 +208,19 @@ class ContentBlockerManagerTests: XCTestCase {
       version: newVersionDate
     )
     XCTAssertFalse(missingModesAggressive3.isEmpty)
+
+    // Membership change whose joined version sorts lower than the existing version
+    let newMembersVersion = "1.0.23149,1.0.71"
+    let missingModesStandard4 = await contentBlockerManager.missingModes(
+      for: blocklistTypeStandard,
+      version: newMembersVersion
+    )
+    XCTAssertFalse(missingModesStandard4.isEmpty)
+    let missingModesAggressive4 = await contentBlockerManager.missingModes(
+      for: blocklistTypeStandardAggressive,
+      version: newMembersVersion
+    )
+    XCTAssertFalse(missingModesAggressive4.isEmpty)
   }
 
   @MainActor func testMissingModesFilterListComponent() async throws {

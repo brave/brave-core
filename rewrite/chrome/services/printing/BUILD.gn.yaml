@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add the Brave printing service sources.
+    add_literal_to_list:
+      target: lib
+      list_name: sources
+      literal: brave_services_printing_sources
+      import: //brave/services/printing/sources.gni
+
+  - description: Add the Brave printing service deps.
+    add_literal_to_list:
+      target: lib
+      list_name: deps
+      literal: brave_services_printing_deps
+      import: //brave/services/printing/sources.gni

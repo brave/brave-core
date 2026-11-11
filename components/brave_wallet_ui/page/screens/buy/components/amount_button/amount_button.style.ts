@@ -5,15 +5,15 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
-import Icon from '@brave/leo/react/icon'
-import { color, font } from '@brave/leo/tokens/css/variables'
+import Icon from '@brave/nala/react/icon'
+import { color, font } from '@brave/nala/tokens/css/variables'
 
 // Shared Styles
 import { Column, Text } from '../../../../../components/shared/style'
 import { AmountInput as Input } from '../../../composer_ui/shared_composer.style'
 import {
   layoutPanelWidth, //
-} from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const Wrapper = styled(Column)`
   align-items: flex-end;

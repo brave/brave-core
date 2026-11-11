@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_APP_V2_AGENT_BROWSER_IDENTITY_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_APP_V2_AGENT_BROWSER_IDENTITY_H_
 
+#include <cstdint>
 #include <string>
 
 #include "base/auto_reset.h"
@@ -13,6 +14,15 @@
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/process/process_handle.h"
+#include "build/build_config.h"
+
+#if BUILDFLAG(IS_WIN)
+#include "base/process/process.h"
+#elif BUILDFLAG(IS_MAC)
+#include <mach/message.h>
+#elif BUILDFLAG(IS_LINUX)
+#include "base/files/scoped_file.h"
+#endif
 
 namespace named_mojo_ipc_server {
 struct ConnectionInfo;
@@ -74,22 +84,44 @@ class BrowserIdentity : public base::RefCounted<BrowserIdentity> {
   // result. |callback| is never invoked synchronously, and always runs on the
   // sequence that called Verify(), which must therefore have a current default
   // task runner. Safe to call more than once, and on any number of identities
-  // concurrently. Only meaningful on a capture taken at accept time: a capture
-  // taken while a message is dispatching may carry no platform data beyond the
-  // pid, since the ConnectionInfo the server keeps as receiver context has had
-  // its endpoint consumed by the invitation.
+  // concurrently. Dispatch-time captures carry full platform data too, since
+  // the server keeps the connection's ConnectionInfo; they are compared against
+  // the accept-time one rather than verified.
   virtual void Verify(VerificationResponseCallback callback) const;
 
  protected:
   friend class base::RefCounted<BrowserIdentity>;
 
+  // PlatformData is what pins one process instance, beyond its pid.
+  struct PlatformData {
+#if BUILDFLAG(IS_WIN)
+    // Held open so the pid cannot be reused while this identity is alive.
+    // Braced since Process's default constructor is explicit.
+    base::Process process{};
+    // Raw FILETIME creation time (100 ns intervals since 1601-01-01 UTC).
+    uint64_t creation_time = 0;
+#elif BUILDFLAG(IS_MAC)
+    // Carries pid and pidversion; also the race-free handle for code-signing
+    // checks during verification.
+    audit_token_t audit_token = {};
+#elif BUILDFLAG(IS_LINUX)
+    // Refers to the original process even if its pid number is later reused.
+    base::ScopedFD pidfd;
+    // Clock ticks since boot. Fixed for the life of the process and independent
+    // of the wall clock.
+    uint64_t start_time_ticks = 0;
+#else
+#error "BrowserIdentity is not supported on this platform"
+#endif
+  };
+
   // Captures a BrowserIdentity for the peer described by |info|, with
-  // platform-specific data, or returns null if the peer cannot be pinned or is
-  // not running as this user.
+  // platform-specific data, or returns null if the peer cannot be pinned, is
+  // not running as this user, or is running in a different Windows session.
   static scoped_refptr<BrowserIdentity> Capture(
       const named_mojo_ipc_server::ConnectionInfo& info);
 
-  explicit BrowserIdentity(base::ProcessId pid);
+  BrowserIdentity(base::ProcessId pid, PlatformData platform_data);
   virtual ~BrowserIdentity();
 
   // Returns a closure carrying copies of the platform data the blocking
@@ -97,6 +129,7 @@ class BrowserIdentity : public base::RefCounted<BrowserIdentity> {
   VerificationRequestCallback BindVerificationRequest() const;
 
   const base::ProcessId pid_;
+  const PlatformData platform_data_;
 };
 
 using BrowserIdentityCaptureCallback =

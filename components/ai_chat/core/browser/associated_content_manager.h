@@ -7,14 +7,18 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_CONTENT_MANAGER_H_
 
 #include <cstddef>
+#include <cstdint>
 #include <functional>
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
+#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
@@ -99,6 +103,13 @@ class AssociatedContentManager : public ToolProvider,
                          std::string_view tool_name,
                          mojom::ToolPermission permission);
 
+  // Records |permission| for the content tool the model calls
+  // |model_tool_name|, under the page-registered name the dialog reads by.
+  // No-op unless a content tool of that name is in the current generation
+  // loop, so answering any other tool's challenge records nothing.
+  void SetToolPermissionForModelToolName(std::string_view model_tool_name,
+                                         mojom::ToolPermission permission);
+
   // Clears all content from the conversation.
   void ClearContent();
 
@@ -106,14 +117,47 @@ class AssociatedContentManager : public ToolProvider,
   // |turn|. Note: |turn| must have a non-empty |uuid| field.
   void AssociateUnsentContentWithTurn(const mojom::ConversationTurnPtr& turn);
 
+  // Associates the content with |content_uuid| with the turn with |turn_uuid|,
+  // e.g. content a tool added during an assistant turn. Returns false (and does
+  // nothing) if there's no such content, or it's already associated with a
+  // turn.
+  bool AssociateContentWithTurn(std::string_view content_uuid,
+                                std::string_view turn_uuid);
+
+  // Removes all content associated with any of |turn_uuids|, e.g. because
+  // those turns are being removed from the conversation.
+  void RemoveContentAssociatedWithTurns(
+      const base::flat_set<std::string>& turn_uuids);
+
   // Checks if the content has changed from what is stored in the cache.
   void HasContentUpdated(base::OnceCallback<void(bool)> callback);
 
   // Gets the content for this conversation.
   void GetContent(base::OnceClosure callback);
 
-  void GetScreenshots(
-      mojom::ConversationHandler::GetScreenshotsCallback callback);
+  // Uuids of the pages with no text, which need screenshots to be seen.
+  std::vector<std::string> GetContentUuidsRequiringScreenshots() const;
+
+  // Gets screenshots of the content with |content_uuids|, with the uuid of the
+  // content each set is of. Content that gives no screenshots is left out.
+  using ContentScreenshots =
+      std::vector<std::pair<std::string, std::vector<mojom::UploadedFilePtr>>>;
+  using GetScreenshotsOfContentCallback =
+      base::OnceCallback<void(ContentScreenshots)>;
+  void GetScreenshotsOfContent(const std::vector<std::string>& content_uuids,
+                               GetScreenshotsOfContentCallback callback);
+
+  // The uuid of the entry the content with |content_uuid| was first sent with,
+  // if it was sent.
+  std::optional<std::string> GetContentTurnUuid(
+      std::string_view content_uuid) const;
+  // Whether automatic screenshots of the content with |content_uuid| were
+  // added to the entry it was first sent with.
+  bool HasAutoScreenshots(std::string_view content_uuid) const;
+  // Records that automatic screenshots of the content with |content_uuid| were
+  // added to the entry it was first sent with. Does nothing if the content
+  // isn't sent with an entry yet.
+  void SetHasAutoScreenshots(std::string_view content_uuid);
   void GetStagedEntriesFromContent(GetStagedEntriesCallback callback);
 
   std::vector<mojom::AssociatedContentPtr> GetAssociatedContent() const;
@@ -138,6 +182,17 @@ class AssociatedContentManager : public ToolProvider,
   // The number of content delegates.
   size_t GetContentDelegateCount() const;
 
+  // Runs |callback| once the tools of the content with |content_uuid| are in
+  // the current generation loop, with the number added. Content's tools are
+  // added as soon as they're attached, so content added after the loop started
+  // (e.g. by a tool) can be used without waiting for the next loop. Runs
+  // straight away if the content is already attached (with the number of its
+  // origin's tools in the loop), and with 0 if there's no such content, or it's
+  // removed first. Always posted, and not run if this is destroyed.
+  using ContentToolsAddedCallback = base::OnceCallback<void(size_t)>;
+  void RunWhenContentToolsAdded(std::string_view content_uuid,
+                                ContentToolsAddedCallback callback);
+
   // ToolProvider:
   void UpdateToolsForNewGenerationLoop(base::OnceClosure on_updated) override;
   std::vector<base::WeakPtr<Tool>> GetTools() override;
@@ -150,7 +205,7 @@ class AssociatedContentManager : public ToolProvider,
   void OnContentToolsChanged(AssociatedContentDelegate* delegate) override;
 
   std::vector<AssociatedContentDelegate*> GetContentDelegatesForTesting() {
-    return content_delegates_;
+    return {content_delegates_.begin(), content_delegates_.end()};
   }
 
  private:
@@ -190,14 +245,45 @@ class AssociatedContentManager : public ToolProvider,
   // that attaching the site again starts from the kAsk default.
   void MaybeResetToolPermissionsForOrigin(const url::Origin& origin);
 
-  // Takes ownership of the tools |origin| exposes for the loop that's
-  // starting, dropping the ones the user has blocked.
-  void AddToolsForGenerationLoop(const url::Origin& origin,
+  // Invoked with the result of GetContentTools() for |delegate| having been
+  // attached during generation loop |generation_loop_id|.
+  void OnAttachedContentToolsFetched(
+      base::WeakPtr<AssociatedContentDelegate> delegate,
+      uint64_t generation_loop_id,
+      std::vector<std::unique_ptr<Tool>> tools);
+
+  // Takes ownership of the tools the content with |content_uuid| (and
+  // |origin|) exposes for the current loop, dropping the ones the user has
+  // blocked, then runs its RunWhenContentToolsAdded() callbacks.
+  void AddToolsForGenerationLoop(const std::string& content_uuid,
+                                 const url::Origin& origin,
                                  std::vector<std::unique_ptr<Tool>> tools);
+
+  // Posts the RunWhenContentToolsAdded() callbacks for |content_uuid| with
+  // |tool_count|. Run with 0 when the content is removed or archived.
+  void RunContentToolsAddedCallbacks(const std::string& content_uuid,
+                                     size_t tool_count);
+
+  // The number of tools from |origin| in the current generation loop.
+  size_t GetLoopToolCount(const url::Origin& origin) const;
 
   raw_ptr<ConversationHandler> conversation_;
 
-  std::vector<std::unique_ptr<Tool>> tools_;
+  // A generation loop's tool, with the origin which exposed it, so a later
+  // choice about it can be recorded against the key GetToolInfos() reads by.
+  struct GenerationLoopTool {
+    std::unique_ptr<Tool> tool;
+    url::Origin origin;
+  };
+  std::vector<GenerationLoopTool> tools_;
+
+  // Incremented as each generation loop starts, so tools fetched for an
+  // earlier one aren't added to it.
+  uint64_t generation_loop_id_ = 0;
+
+  // uuid -> RunWhenContentToolsAdded() callbacks waiting on its tools.
+  base::flat_map<std::string, std::vector<ContentToolsAddedCallback>>
+      content_tools_added_callbacks_;
 
   // Content tools only (i.e. those a page exposes): origin -> tool name ->
   // choice, for anything moved off the kAsk default.
@@ -209,8 +295,15 @@ class AssociatedContentManager : public ToolProvider,
                  base::flat_map<std::string, mojom::ToolPermission>>
       content_tool_permissions_;
 
-  std::vector<AssociatedContentDelegate*> content_delegates_;
-  base::flat_map<std::string, std::string> content_uuid_to_conversation_turns_;
+  std::vector<raw_ptr<AssociatedContentDelegate>> content_delegates_;
+
+  // The entry each content was first sent with, by content uuid.
+  struct ContentTurn {
+    std::string turn_uuid;
+    // Whether automatic screenshots of the content were added to the entry.
+    bool has_auto_screenshots = false;
+  };
+  base::flat_map<std::string, ContentTurn> content_uuid_to_conversation_turns_;
 
   // uuids whose tools attachment the user explicitly set.
   base::flat_set<std::string> tools_attachment_overridden_;

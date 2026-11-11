@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("user_data_importer") {
+  sources = [
+    "bookmark_importer.h",
+    "bookmark_importer.mm",
+    "bookmark_importer_impl.h",
+    "bookmark_importer_impl.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/ios/browser/api/profile",
+    "//components/bookmarks/browser",
+    "//components/strings:components_strings_grit",
+    "//components/user_data_importer/ios",
+    "//components/user_data_importer/utility:bookmarks",
+    "//ios/chrome/browser/bookmarks/model",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ui/base",
+  ]
+  frameworks = [ "Foundation.framework" ]
+}

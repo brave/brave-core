@@ -108,15 +108,18 @@ NewTabPageInitializer::~NewTabPageInitializer() = default;
 void NewTabPageInitializer::Initialize() {
   source_ = content::WebUIDataSource::CreateAndAdd(GetProfile(),
                                                    chrome::kChromeUINewTabHost);
+  web_ui_->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_TAB_TITLE));
+  AddBackgroundColorToSource(source_, web_ui_->GetWebContents());
 
-  if (brave::ShouldNewTabShowBlankpage(GetProfile())) {
+  if (GetProfile()->IsOffTheRecord() ||
+      brave::ShouldNewTabShowBlankpage(GetProfile())) {
     source_->SetDefaultResource(IDR_BRAVE_BLANK_NEW_TAB_HTML);
-  } else {
-    webui::SetupWebUIDataSource(source_, kBraveNewTabPageRefreshGenerated,
-                                IDR_BRAVE_NEW_TAB_PAGE_HTML);
+    return;
   }
 
-  AddBackgroundColorToSource(source_, web_ui_->GetWebContents());
+  webui::SetupWebUIDataSource(source_, kBraveNewTabPageRefreshGenerated,
+                              IDR_BRAVE_NEW_TAB_PAGE_HTML);
+
   AddCSPOverrides();
   AddLoadTimeValues();
   AddStrings();
@@ -128,7 +131,6 @@ void NewTabPageInitializer::Initialize() {
   AddSanitizedImageDataSource();
 
   web_ui_->AddRequestableScheme(content::kChromeUIUntrustedScheme);
-  web_ui_->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_TAB_TITLE));
 
   content::URLDataSource::Add(GetProfile(),
                               std::make_unique<ThemeSource>(GetProfile()));
@@ -177,7 +179,7 @@ void NewTabPageInitializer::AddCSPOverrides() {
 
   source_->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      base::StrCat({"frame-src ", kNTPNewTabTakeoverRichMediaUrl, ";"}));
+      base::StrCat({"frame-src ", kNTPDynamicNewTabTakeoverUrl, ";"}));
 
   // Brave News uses a dedicated Trusted Types policy to parse imported OPML
   // subscription files (see brave_news .../customize/opml.ts). Append it to the
@@ -195,8 +197,7 @@ void NewTabPageInitializer::AddLoadTimeValues() {
       "customBackgroundFeatureEnabled",
       !prefs->IsManagedPreference(prefs::kNtpCustomBackgroundDict));
 
-  source_->AddString("sponsoredRichMediaBaseUrl",
-                     kNTPNewTabTakeoverRichMediaUrl);
+  source_->AddString("sponsoredRichMediaBaseUrl", kNTPDynamicNewTabTakeoverUrl);
 
   source_->AddBoolean(
       "ntpSearchFeatureEnabled",
@@ -273,6 +274,10 @@ void NewTabPageInitializer::AddLoadTimeValues() {
   source_->AddBoolean(
       "isWorkspaceToolsEnabled",
       base::FeatureList::IsEnabled(ai_chat::features::kAIChatWorkspaceTools));
+  source_->AddBoolean(
+      "isWorkspaceNativeDirectoriesEnabled",
+      base::FeatureList::IsEnabled(ai_chat::features::kAIChatWorkspaceTools) &&
+          ai_chat::features::kWorkspaceNativeDirectories.Get());
 #endif
 
   source_->AddBoolean("aiChatInputEnabled", ai_chat_input_enabled);

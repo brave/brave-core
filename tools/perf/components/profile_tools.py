@@ -15,10 +15,10 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass, asdict
 
-import components.cloud_storage as cloud_storage
-import components.git_tools as git_tools
-import components.perf_test_runner as perf_test_runner
-import components.perf_config as perf_config
+from components import cloud_storage
+from components import git_tools
+from components import perf_test_runner
+from components import perf_config
 
 from components.path_util import GetBravePerfProfileDir
 from components.perf_profile import GetProfilePath
@@ -28,14 +28,20 @@ from components.common_options import CommonOptions, PerfMode
 from lib.util import make_zip, scoped_cwd
 
 _CACHE_DIRECTORIES = [
-    os.path.join('Default', 'Cache'),
-    os.path.join('Default', 'Code Cache'),
-    os.path.join('Default', 'GPUCache'), 'cache', 'GrShaderCache',
-    'GraphiteDawnCache', 'ShaderCache', 'component_crx_cache'
+  os.path.join('Default', 'Cache'),
+  os.path.join('Default', 'Code Cache'),
+  os.path.join('Default', 'GPUCache'),
+  'cache',
+  'GrShaderCache',
+  'GraphiteDawnCache',
+  'ShaderCache',
+  'component_crx_cache',
 ]
 
-_PR_SEE_DETAILS_LINK = ('https://github.com/brave/brave-core/blob/master/' +
-                        'tools/perf/updating_test_profiles.md')
+_PR_SEE_DETAILS_LINK = (
+  'https://github.com/brave/brave-core/blob/master/'
+  + 'tools/perf/updating_test_profiles.md'
+)
 _PR_BODY = f"""Automated perf profile update via CI
 Pre-approval checklist:
 - Wait all expected profiles are update (currently 6 profiles).
@@ -60,8 +66,8 @@ def _GetComponentInfo(path: str) -> Optional[Tuple[str, str]]:
   if not os.path.isdir(path):
     return None
 
-  for f in Path(path).glob('**/manifest.json'):
-    with open(f, 'r') as f:
+  for manifest_path in Path(path).glob('**/manifest.json'):
+    with open(manifest_path, 'r', encoding='utf-8') as f:
       manifest_json = json.load(f)
       if 'name' in manifest_json and 'version' in manifest_json:
         return manifest_json['name'], manifest_json['version']
@@ -82,8 +88,9 @@ def _EraseVariationsFromLocalState(local_state_path: str):
 
 def PreRebaseCleanup(cfg: RunnerConfig, options: CommonOptions):
   assert cfg.version is not None
-  profile_dir = GetProfilePath(cfg.profile, options.working_directory,
-                               cfg.version)
+  profile_dir = GetProfilePath(
+    cfg.profile, options.working_directory, cfg.version
+  )
 
   # Remove all components to re download them
   for f in os.listdir(profile_dir):
@@ -121,11 +128,14 @@ def _FixupPreferences(profile_dir: str):
   with open(preferences_path, 'w', encoding='utf8') as f:
     json.dump(preferences, f)
 
-def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions,
-                              extra_dirs_to_add: List[str]) -> str:
+
+def MakeUpdatedProfileArchive(
+  cfg: RunnerConfig, options: CommonOptions, extra_dirs_to_add: List[str]
+) -> str:
   assert cfg.version is not None
-  profile_dir = GetProfilePath(cfg.profile, options.working_directory,
-                               cfg.version)
+  profile_dir = GetProfilePath(
+    cfg.profile, options.working_directory, cfg.version
+  )
 
   # Secure Preferences can't be used on another machine.
   secure_prefs_path = os.path.join(profile_dir, 'Default', 'Secure Preferences')
@@ -144,10 +154,12 @@ def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions,
   zip_filename = cfg.profile + '.zip'
   sizes_filename = cfg.profile + '.zip.sizes'
 
-  profile_zip = os.path.join(options.working_directory, 'artifacts',
-                             zip_filename)
-  profile_zip_sizes = os.path.join(options.working_directory, 'artifacts',
-                                   sizes_filename)
+  profile_zip = os.path.join(
+    options.working_directory, 'artifacts', zip_filename
+  )
+  profile_zip_sizes = os.path.join(
+    options.working_directory, 'artifacts', sizes_filename
+  )
 
   for extra_dir in extra_dirs_to_add:
     target_dir = os.path.join(profile_dir, os.path.basename(extra_dir))
@@ -156,10 +168,9 @@ def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions,
 
   logging.info('Packing profile %s to %s', profile_dir, profile_zip)
   # strict_timestamps=False because Chromium makes files with empty timestamps.
-  with zipfile.ZipFile(profile_zip,
-                       "w",
-                       zipfile.ZIP_DEFLATED,
-                       strict_timestamps=False) as zip_file:
+  with zipfile.ZipFile(
+    profile_zip, "w", zipfile.ZIP_DEFLATED, strict_timestamps=False
+  ) as zip_file:
     with scoped_cwd(profile_dir):
       for root, _, filenames in os.walk('.'):
         for f in filenames:
@@ -171,12 +182,15 @@ def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions,
 
   if options.upload:
     new_profile_sha1_path = cloud_storage.UploadFileToCloudStorage(
-        cloud_storage.CloudFolder.TEST_PROFILES, profile_zip)
-    files: Dict[str, str] = dict()
-    files[new_profile_sha1_path] = os.path.join(GetBravePerfProfileDir(),
-                                                zip_filename + '.sha1')
-    files[profile_zip_sizes] = os.path.join(GetBravePerfProfileDir(),
-                                            sizes_filename)
+      cloud_storage.CloudFolder.TEST_PROFILES, profile_zip
+    )
+    files: Dict[str, str] = {}
+    files[new_profile_sha1_path] = os.path.join(
+      GetBravePerfProfileDir(), zip_filename + '.sha1'
+    )
+    files[profile_zip_sizes] = os.path.join(
+      GetBravePerfProfileDir(), sizes_filename
+    )
     version_str = cfg.version.to_string()
     commit_message = f'Update perf profile {cfg.profile} using {version_str}'
     branch = options.upload_branch or f'update-perf-profiles-{version_str}'
@@ -186,14 +200,15 @@ def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions,
       logging.info('The PR exists, skip making it')
     else:
       logging.info('Making a github PR from branch %s', branch)
-      git_tools.MakeGithubPR(branch=branch,
-                             target='master',
-                             title=f'Roll perf profiles update ({branch})',
-                             body=_PR_BODY,
-                             reviewers=[git_tools.GH_BRAVE_PERF_TEAM],
-                             extra_args=['--label', 'CI/skip'])
+      git_tools.MakeGithubPR(
+        branch=branch,
+        target='master',
+        title=f'Roll perf profiles update ({branch})',
+        body=_PR_BODY,
+        reviewers=[git_tools.GH_BRAVE_PERF_TEAM],
+        extra_args=['--label', 'CI/skip'],
+      )
   return profile_dir
-
 
 
 def _sizeKB(size: int) -> int:
@@ -223,24 +238,22 @@ class GroupStat:
 
   def toJSON(self) -> Dict:
     return {
-        'items': [asdict(item) for item in sorted(self.items)],
-        'group_size': self.size()
+      'items': [asdict(item) for item in sorted(self.items)],
+      'group_size': self.size(),
     }
 
 
 class ProfileStats:
-
   def __init__(self):
     self.total_size: int = 0
     self.groups: Dict[str, GroupStat] = {}
 
   def toJSON(self) -> Dict:
     return {
-        'total_size': self.total_size,
-        'groups': {
-            key: group.toJSON()
-            for key, group in sorted(self.groups.items())
-        }
+      'total_size': self.total_size,
+      'groups': {
+        key: group.toJSON() for key, group in sorted(self.groups.items())
+      },
     }
 
   def toText(self) -> str:
@@ -256,8 +269,9 @@ class ProfileStats:
     return result
 
 
-def _GetComponentGroup(name: str, path: str,
-                       skip_chromium_components) -> Optional[str]:
+def _GetComponentGroup(
+  name: str, path: str, skip_chromium_components
+) -> Optional[str]:
   if 'Ad Block' in name or 'Adblock' in name:
     return 'Adblock'
   if 'Ads' in name:
@@ -271,8 +285,9 @@ def _GetComponentGroup(name: str, path: str,
   return None if skip_chromium_components else 'chromium'
 
 
-def GetProfileStats(profile_dir: str,
-                    skip_chromium_components=False) -> ProfileStats:
+def GetProfileStats(
+  profile_dir: str, skip_chromium_components=False
+) -> ProfileStats:
   result = ProfileStats()
 
   with scoped_cwd(profile_dir):
@@ -296,15 +311,18 @@ def GetProfileStats(profile_dir: str,
           size = file.stat().st_size
           if size > 1000 * 1000:
             item = StatItem(path=str(file), size=size)
-            result.groups.setdefault('large_files',
-                                     GroupStat()).items.append(item)
+            result.groups.setdefault('large_files', GroupStat()).items.append(
+              item
+            )
 
   return result
 
 
-def RunUpdateProfile(brave_config: perf_config.PerfConfig,
-                     chromium_config: perf_config.PerfConfig,
-                     options: CommonOptions) -> bool:
+def RunUpdateProfile(
+  brave_config: perf_config.PerfConfig,
+  chromium_config: perf_config.PerfConfig,
+  options: CommonOptions,
+) -> bool:
   brave_profile = _RunUpdateProfileForConfig(brave_config, options, [])
   if not brave_profile:
     return False
@@ -315,16 +333,19 @@ def RunUpdateProfile(brave_config: perf_config.PerfConfig,
   if os.path.isdir(safe_browsing):
     extra_dirs_to_add.append(safe_browsing)
 
-  if not _RunUpdateProfileForConfig(chromium_config, options,
-                                    extra_dirs_to_add):
+  if not _RunUpdateProfileForConfig(
+    chromium_config, options, extra_dirs_to_add
+  ):
     return False
 
   return True
 
 
-def _RunUpdateProfileForConfig(config: perf_config.PerfConfig,
-                               options: CommonOptions,
-                               extra_dirs_to_add: List[str]) -> Optional[str]:
+def _RunUpdateProfileForConfig(
+  config: perf_config.PerfConfig,
+  options: CommonOptions,
+  extra_dirs_to_add: List[str],
+) -> Optional[str]:
   if len(config.runners) != 1:
     raise RuntimeError('Only one configuration should be specified.')
   options.do_report = False
@@ -333,37 +354,40 @@ def _RunUpdateProfileForConfig(config: perf_config.PerfConfig,
 
   # Remove --disable-component-update to get all the components
   runner.extra_browser_args = [
-      arg for arg in runner.extra_browser_args
-      if arg != '--disable-component-update'
+    arg
+    for arg in runner.extra_browser_args
+    if arg != '--disable-component-update'
   ]
 
   def make_benchmark_config(delay: int):
-    return perf_config.BenchmarkConfig({
-        'name':
-        'brave_utils.online',
-        'pageset-repeat':
-        1,
+    return perf_config.BenchmarkConfig(
+      {
+        'name': 'brave_utils.online',
+        'pageset-repeat': 1,
         'stories': ['UpdateProfile'],
         'stories_exclude': [],
         'extra-benchmark-args': [f'--delay={delay}'],
-    })
+      }
+    )
 
   config.benchmarks = [
-      # 15 minutes to update everything
-      make_benchmark_config(15 * 60),
-
-      # two short runs to drop old files
-      make_benchmark_config(30),
-      make_benchmark_config(30),
+    # 15 minutes to update everything
+    make_benchmark_config(15 * 60),
+    # two short runs to drop old files
+    make_benchmark_config(30),
+    make_benchmark_config(30),
   ]
 
   configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
-      options.targets, runner)
+    options.targets, runner
+  )
   assert len(configurations) == 1
   PreRebaseCleanup(configurations[0], options)
-  if not perf_test_runner.RunConfigurations(configurations, config.benchmarks,
-                                            options):
+  if not perf_test_runner.RunConfigurations(
+    configurations, config.benchmarks, options
+  ):
     return None
 
-  return MakeUpdatedProfileArchive(configurations[0], options,
-                                   extra_dirs_to_add)
+  return MakeUpdatedProfileArchive(
+    configurations[0], options, extra_dirs_to_add
+  )

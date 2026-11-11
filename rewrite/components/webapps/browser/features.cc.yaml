@@ -14,5 +14,5 @@ substitutions:
         'BASE_FEATURE\(kWebAppsEnableMLModelForPromotion,\s*#if
         BUILDFLAG\(IS_ANDROID\)\s*base::FEATURE_ENABLED_BY_DEFAULT\);\s*#else\s*base::FEATURE_DISABLED_BY_DEFAULT\);\s*#endif[^\S\n]*(?://[^\n]*)?'
       replace: |-
-        BASE_FEATURE(kWebAppsEnableMLModelForPromotion,
-                     base::FEATURE_DISABLED_BY_DEFAULT);
+        BASE_OVERRIDDEN_FEATURE(kWebAppsEnableMLModelForPromotion,
+                                base::FEATURE_DISABLED_BY_DEFAULT);

@@ -4,7 +4,7 @@
 
   <!-- Consent prompt -->
   <message name="IDS_WALLET_WALLETABLE_PASS_CONSENT_DIALOG_TITLE" desc="Title text of the consent dialog.">
-    Save info to Brave Wallet from pages you view
+    Save info to Google Wallet from pages you view
   </message>
 
   <message name="IDS_WALLET_WALLETABLE_PASS_CONSENT_DIALOG_NO_THANKS_BUTTON" desc="Text displayed on the decline/cancel button of the consent dialog.">
@@ -16,7 +16,7 @@
   </message>
 
   <message name="IDS_WALLET_WALLETABLE_PASS_CONSENT_DIALOG_LEARN_MORE" desc="Text for the 'Learn more' link in the consent dialog.">
-    saving info to Brave Wallet in settings
+    saving info to Google Wallet in settings
   </message>
 
   <message name="IDS_WALLET_WALLETABLE_PASS_CONSENT_DIALOG_SUBTITLE_DESCRIPTION" desc="Subtitle text of the consent dialog.">
@@ -24,7 +24,7 @@
   </message>
 
   <message name="IDS_WALLET_WALLETABLE_PASS_CONSENT_DIALOG_SUBTITLE_ACTION" desc="Subtitle text of the consent dialog.">
-    To offer suggestions and improve this feature, the URL and full page content of the site you visit are shared with Brave. Learn more about <ph name="IDS_WALLET_WALLETABLE_PASS_CONSENT_DIALOG_LEARN_MORE">$1<ex>saving info to Brave Wallet in settings</ex></ph>.
+    To offer suggestions and improve this feature, the URL and full page content of the site you visit are shared with Brave. Learn more about <ph name="IDS_WALLET_WALLETABLE_PASS_CONSENT_DIALOG_LEARN_MORE">$1<ex>saving info to Google Wallet in settings</ex></ph>.
   </message>
 
   <!-- Save prompt -->
@@ -44,12 +44,12 @@
     Save boarding pass to Wallet
   </message>
 
-  <message name="IDS_WALLET_WALLETABLE_PASS_GOOGLE_WALLET_TITLE" desc="The name of the Brave Wallet product.">
-    Brave Wallet
+  <message name="IDS_WALLET_WALLETABLE_PASS_GOOGLE_WALLET_TITLE" desc="The name of the Google Wallet product.">
+    Google Wallet
   </message>
 
   <message name="IDS_WALLET_WALLETABLE_PASS_SAVE_DIALOG_SUBTITLE" desc="Subtitle text of the save dialog.">
-    Save your info to get updates from any of your devices. Your info is saved to <ph name="IDS_WALLET_WALLETABLE_PASS_GOOGLE_WALLET_TITLE">$1<ex>Brave Wallet</ex></ph> for <ph name="ACCOUNT">$2<ex>alexpark@gmail.com</ex></ph>.
+    Save your info to get updates from any of your devices. Your info is saved to <ph name="IDS_WALLET_WALLETABLE_PASS_GOOGLE_WALLET_TITLE">$1<ex>Google Wallet</ex></ph> for <ph name="ACCOUNT">$2<ex>alexpark@gmail.com</ex></ph>.
   </message>
 
   <message name="IDS_WALLET_WALLETABLE_PASS_SAVE_DIALOG_NO_THANKS_BUTTON" desc="Text displayed on the decline/cancel button of the save dialog.">

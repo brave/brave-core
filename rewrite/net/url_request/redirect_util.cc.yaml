@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Cap the referrer after upstream updates the redirect request.
+
+      Brave caps referrers at the network layer when the
+      X-Brave-Cap-Referrer header is removed on redirect.
+    after_function_impl:
+      function_name: RedirectUtil::UpdateHttpRequest
+      code: |-
+        MaybeCapReferrer(removed_headers, redirect_info);

@@ -35,7 +35,7 @@ import tempfile
 from pathlib import Path
 from typing import Callable
 
-import google.protobuf  # pinned in .vpython3
+import google.protobuf  # pinned in vpython.toml
 import google.protobuf.message
 from google.protobuf import descriptor_pb2
 
@@ -72,8 +72,10 @@ def _file_checksum(path: str | Path) -> str:
     csum.update(b'\0')
     # mmap hands the whole file to the hash as one buffer; it also raises on an
     # empty file, which we never expect to checksum (a proto has content).
-    with path.open('rb') as ins, \
-            mmap.mmap(ins.fileno(), 0, access=mmap.ACCESS_READ) as data:
+    with (
+        path.open('rb') as ins,
+        mmap.mmap(ins.fileno(), 0, access=mmap.ACCESS_READ) as data,
+    ):
         csum.update(data)
     return csum.hexdigest()
 
@@ -93,6 +95,7 @@ def _write_text(path: Path, text: str) -> None:
 @dataclass(frozen=True, order=True)
 class _ProtoInfo:
     """Holds information about a proto file found in the repo."""
+
     # Native-slash-delimited path to the source file.
     src_abspath: str = field(compare=False)
 
@@ -107,8 +110,9 @@ class _ProtoInfo:
     blobhash: str = field(compare=False)
 
     @classmethod
-    def create(cls, scan_relpath: str, dest_namespace: str,
-               relpath: str) -> _ProtoInfo:
+    def create(
+        cls, scan_relpath: str, dest_namespace: str, relpath: str
+    ) -> _ProtoInfo:
         """Creates a _ProtoInfo.
 
         This converts `relpath` into a global relpath for the output PB folder,
@@ -123,13 +127,16 @@ class _ProtoInfo:
             to where we found the proto, e.g. 'recipes/subdir/something.proto'.
         """
         assert '\\' not in scan_relpath, (
-            'scan_relpath must be fwd-slash-delimited: %r' % scan_relpath)
+            'scan_relpath must be fwd-slash-delimited: %r' % scan_relpath
+        )
         assert '\\' not in dest_namespace, (
-            'dest_namespace must be fwd-slash-delimited: %r' % dest_namespace)
+            'dest_namespace must be fwd-slash-delimited: %r' % dest_namespace
+        )
         assert '\\' not in relpath, (
-            'relpath must be fwd-slash-delimited: %r' % relpath)
+            'relpath must be fwd-slash-delimited: %r' % relpath
+        )
 
-        subpath = relpath[len(scan_relpath):]
+        subpath = relpath[len(scan_relpath) :]
         dest_relpath = dest_namespace + subpath
         src_abspath = os.path.normpath(os.path.join(RECIPES_ROOT, relpath))
         blobhash = _file_checksum(src_abspath)
@@ -151,7 +158,8 @@ def _gather_proto_info() -> list[_ProtoInfo]:
     ret = []
     for scan_relpath, dest_namespace in scan_path:
         for base, dirs, fnames in os.walk(
-                os.path.join(RECIPES_ROOT, scan_relpath)):
+            os.path.join(RECIPES_ROOT, scan_relpath)
+        ):
             base = str(base)
 
             # Skip all '.expected' directories.
@@ -167,8 +175,8 @@ def _gather_proto_info() -> list[_ProtoInfo]:
                 relpath = posixpath.join(relbase, fname)
                 if os.path.splitext(relpath)[1] == '.proto':
                     ret.append(
-                        _ProtoInfo.create(scan_relpath, dest_namespace,
-                                          relpath))
+                        _ProtoInfo.create(scan_relpath, dest_namespace, relpath)
+                    )
 
     return sorted(ret)
 
@@ -217,10 +225,12 @@ def _gather_protos() -> tuple[str, list[tuple[str, str]]]:
 
     if dups:
         raise BadProtoDefinitions(
-            'Multiple .proto files map to the same destination:\n' +
-            '\n'.join('  %r from %s' %
-                      (relpath, ', '.join(rel_to_projs[relpath]))
-                      for relpath in sorted(dups)))
+            'Multiple .proto files map to the same destination:\n'
+            + '\n'.join(
+                '  %r from %s' % (relpath, ', '.join(rel_to_projs[relpath]))
+                for relpath in sorted(dups)
+            )
+        )
 
     return csum.hexdigest(), proto_files
 
@@ -271,7 +281,8 @@ def _check_package(modulebody: str, relpath_base: str) -> str | None:
         assert isinstance(assignment.value, ast.Call)
         assert isinstance(assignment.value.args[0], ast.Constant)
         desc = descriptor_pb2.FileDescriptorProto.FromString(
-            assignment.value.args[0].value)
+            assignment.value.args[0].value
+        )
         pkg = desc.package
         break
     else:
@@ -279,8 +290,12 @@ def _check_package(modulebody: str, relpath_base: str) -> str | None:
 
     relpath_toks = relpath_base.split(os.path.sep)
 
-    is_module_test = lambda toks: (toks[0] == 'recipe_modules' and len(toks) >
-                                   3 and toks[3] in ('examples', 'tests'))
+    def is_module_test(toks):
+        return (
+            toks[0] == 'recipe_modules'
+            and len(toks) > 3
+            and toks[3] in ('examples', 'tests')
+        )
 
     err = None
     toplevel_namespace = relpath_toks[0]
@@ -312,7 +327,8 @@ def _check_package(modulebody: str, relpath_base: str) -> str | None:
 # `google.protobuf` namespace, and rewrite them.
 _REWRITE_IMPORT_RE = re.compile(
     r'^from (?!google\.protobuf|typing)(\S*) import (\S*)_pb2 as (.*)$',
-    re.MULTILINE)
+    re.MULTILINE,
+)
 
 
 def _rewrite_and_rename(root: str, base_proto_path: str) -> str | None:
@@ -327,7 +343,7 @@ def _rewrite_and_rename(root: str, base_proto_path: str) -> str | None:
     assert base_proto_path.endswith('_pb2.py'), base_proto_path
 
     base_pb2 = Path(base_proto_path)
-    target = Path(base_proto_path[:-len('_pb2.py')] + '.py')
+    target = Path(base_proto_path[: -len('_pb2.py')] + '.py')
     content = base_pb2.read_bytes().decode('utf-8')
 
     # First, process the _pb2.py file: check its package name and rewrite its
@@ -335,18 +351,20 @@ def _rewrite_and_rename(root: str, base_proto_path: str) -> str | None:
     expected_package = os.path.splitext(os.path.relpath(target, root))[0]
     err = _check_package(content, expected_package)
 
-    _write_text(target,
-                _REWRITE_IMPORT_RE.sub(r'from PB.\1 import \2 as \3', content))
+    _write_text(
+        target, _REWRITE_IMPORT_RE.sub(r'from PB.\1 import \2 as \3', content)
+    )
     base_pb2.unlink()
 
     # Next, process the .pyi file.
     base_pyi = Path(base_proto_path + 'i')
-    pyi_target = Path(base_proto_path[:-len('_pb2.py')] + '.pyi')
+    pyi_target = Path(base_proto_path[: -len('_pb2.py')] + '.pyi')
     if base_pyi.exists():
         content = base_pyi.read_bytes().decode('utf-8')
         _write_text(
             pyi_target,
-            _REWRITE_IMPORT_RE.sub(r'from PB.\1 import \2 as \3', content))
+            _REWRITE_IMPORT_RE.sub(r'from PB.\1 import \2 as \3', content),
+        )
         base_pyi.unlink()
 
     return err
@@ -362,7 +380,8 @@ def _try_rename(src: str, dest: str) -> None:
 
 
 def _rel_to_abs_replacer(
-    proto_files: list[tuple[str, str]], ) -> Callable[[str], str]:
+    proto_files: list[tuple[str, str]],
+) -> Callable[[str], str]:
     """Returns a function which will replace directories relative to the
     destination `PB` directory (at the beginning of a line) with their original
     source absolute paths.
@@ -385,18 +404,26 @@ def _rel_to_abs_replacer(
             rel_to_abs[dest_dirname] = src_base
 
     # Sort all relative paths by length from longest to shortest
-    finder = re.compile('^(%s)' % ('|'.join(
-        re.escape(rel)
-        for rel in sorted(rel_to_abs, key=len, reverse=True)), ))
+    finder = re.compile(
+        '^(%s)'
+        % (
+            '|'.join(
+                re.escape(rel)
+                for rel in sorted(rel_to_abs, key=len, reverse=True)
+            ),
+        )
+    )
 
     # For every match of some relpath, look up the original source path in
     # rel_to_abs and substitute that.
     return lambda to_replace: finder.sub(
-        lambda match: rel_to_abs[match.group(0)], to_replace)
+        lambda match: rel_to_abs[match.group(0)], to_replace
+    )
 
 
-def _collect_protos(argfile_fd: int, proto_files: list[tuple[str, str]],
-                    dest: str) -> None:
+def _collect_protos(
+    argfile_fd: int, proto_files: list[tuple[str, str]], dest: str
+) -> None:
     """Copies all proto_files into dest.
 
     Writes the list of files to `argfile_fd` which will be passed to protoc.
@@ -417,8 +444,13 @@ def _collect_protos(argfile_fd: int, proto_files: list[tuple[str, str]],
         os.close(argfile_fd)  # for windows
 
 
-def _compile_protos(proto_files: list[tuple[str, str]], proto_tree: str,
-                    protoc: str, argfile: str, dest: str) -> None:
+def _compile_protos(
+    proto_files: list[tuple[str, str]],
+    proto_tree: str,
+    protoc: str,
+    argfile: str,
+    dest: str,
+) -> None:
     """Runs protoc over the collected protos, renames them and rewrites their
     imports to make them import from `PB`.
 
@@ -431,12 +463,13 @@ def _compile_protos(proto_files: list[tuple[str, str]], proto_tree: str,
         every .proto file in proto_tree on its own line.
       * dest: Path to the destination where the compiled protos should go.
     """
-    protoc_proc = subprocess.Popen(
+    with subprocess.Popen(
         [protoc, '--python_out', dest, '--pyi_out', dest, '@' + argfile],
         cwd=proto_tree,
         stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT)
-    output, _ = protoc_proc.communicate()
+        stderr=subprocess.STDOUT,
+    ) as protoc_proc:
+        output, _ = protoc_proc.communicate()
     try:
         os.remove(argfile)
     except OSError:
@@ -461,16 +494,18 @@ def _compile_protos(proto_files: list[tuple[str, str]], proto_tree: str,
                 rewrite_errors.append(err)
 
     if rewrite_errors:
-        print('Error while rewriting generated protos. Output:\n',
-              file=sys.stderr)
+        print(
+            'Error while rewriting generated protos. Output:\n', file=sys.stderr
+        )
         replacer = _rel_to_abs_replacer(proto_files)
         for error in rewrite_errors:
             print(replacer(error), file=sys.stderr)
         sys.exit(1)
 
 
-def _install_protos(proto_package_path: str, dgst: str,
-                    proto_files: list[tuple[str, str]]) -> None:
+def _install_protos(
+    proto_package_path: str, dgst: str, proto_files: list[tuple[str, str]]
+) -> None:
     """Installs protos to `{proto_package_path}/PB`.
 
     Args:
@@ -488,17 +523,25 @@ def _install_protos(proto_package_path: str, dgst: str,
       * Ensures that `{proto_package_path}/protoc` contains the correct
         `protoc` compiler from CIPD.
     """
-    cipd_proc = subprocess.Popen([
-        'cipd' + _BAT, 'ensure', '-root',
-        os.path.join(proto_package_path, 'protoc'), '-ensure-file', '-'
-    ],
-                                 stdin=subprocess.PIPE)
     protoc_version = PROTOC_VERSION.split(b'.', 1)[1]
-    cipd_proc.communicate(b'infra/3pp/tools/protoc/${platform} version:3@' +
-                          protoc_version)
+    with subprocess.Popen(
+        [
+            'cipd' + _BAT,
+            'ensure',
+            '-root',
+            os.path.join(proto_package_path, 'protoc'),
+            '-ensure-file',
+            '-',
+        ],
+        stdin=subprocess.PIPE,
+    ) as cipd_proc:
+        cipd_proc.communicate(
+            b'infra/3pp/tools/protoc/${platform} version:3@' + protoc_version
+        )
     if cipd_proc.returncode != 0:
-        raise ValueError('failed to install protoc: retcode %d' %
-                         cipd_proc.returncode)
+        raise ValueError(
+            'failed to install protoc: retcode %d' % cipd_proc.returncode
+        )
 
     # This tmp folder is where all the temporary garbage goes. Future recipe
     # engine invocations will attempt to clean this up as long as PB is
@@ -549,15 +592,30 @@ def _build_lock(deps_dir: str):
     CIPD root and on the PB compile/rename, corrupting the cache. An exclusive
     lock lets one process build while the rest wait and then reuse the result.
 
-    Uses `fcntl` (POSIX); on platforms without it (Windows) this is a no-op --
-    the parallel-build scenario is a POSIX CI concern.
+    Uses `fcntl.flock` on POSIX and `msvcrt.locking` on Windows.
     """
-    try:
+    with open(
+        os.path.join(deps_dir, '.build.lock'), 'w', encoding='utf-8'
+    ) as lock_file:
+        if sys.platform == 'win32':
+            import msvcrt  # pylint: disable=import-outside-toplevel
+
+            # LK_LOCK gives up after about 10 seconds, so keep waiting.
+            while True:
+                try:
+                    msvcrt.locking(lock_file.fileno(), msvcrt.LK_LOCK, 1)
+                    break
+                except OSError:
+                    continue
+            try:
+                yield
+            finally:
+                lock_file.seek(0)
+                msvcrt.locking(lock_file.fileno(), msvcrt.LK_UNLCK, 1)
+            return
+
         import fcntl  # pylint: disable=import-outside-toplevel
-    except ImportError:
-        yield
-        return
-    with open(os.path.join(deps_dir, '.build.lock'), 'w') as lock_file:
+
         fcntl.flock(lock_file, fcntl.LOCK_EX)
         try:
             yield
@@ -589,7 +647,8 @@ def ensure_compiled() -> str:
         if not _check_digest(proto_package, dgst):
             try:
                 _install_protos(proto_package, dgst, proto_files)
-            except Exception:  # pylint: disable=broad-except
+            except (Exception, SystemExit):  # pylint: disable=broad-except
+                # `_compile_protos` reports failure with sys.exit().
                 # If some other recipe engine compiled at the same time as us,
                 # it may have broken our compilation (e.g. if the other engine
                 # cleared tmp out from under us). Double-check the digest to see
@@ -611,11 +670,13 @@ def append_to_syspath(proto_package: str) -> None:
     """
     for path in sys.path:
         assert os.path.basename(proto_package) != os.path.basename(path), (
-            f'{proto_package!r} basename already on sys.path: {path!r}')
+            f'{proto_package!r} basename already on sys.path: {path!r}'
+        )
     sys.path.append(proto_package)
 
 
 def is_message_class(obj: object) -> bool:
     """Returns True if |obj| is a subclass of google.protobuf.message.Message."""
-    return (inspect.isclass(obj)
-            and issubclass(obj, google.protobuf.message.Message))
+    return inspect.isclass(obj) and issubclass(
+        obj, google.protobuf.message.Message
+    )

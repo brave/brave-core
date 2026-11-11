@@ -7,12 +7,13 @@ package org.chromium.chrome.browser.tabbed_mode;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
@@ -30,11 +31,11 @@ import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
 import org.chromium.brave_vpn.mojom.BraveVpnConstants;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsPolicy;
-import org.chromium.chrome.browser.RecentlyClosedEntriesManager;
 import org.chromium.chrome.browser.app.appmenu.AppMenuIconRowFooter;
 import org.chromium.chrome.browser.app.appmenu.AppMenuItemUtils;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
@@ -53,6 +54,7 @@ import org.chromium.chrome.browser.multiwindow.MultiWindowUtils;
 import org.chromium.chrome.browser.open_in_app.OpenInAppMenuItemProvider;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.readaloud.ReadAloudController;
+import org.chromium.chrome.browser.recent_tabs.RecentlyClosedEntriesManager;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -67,12 +69,12 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuItemProperties;
 import org.chromium.chrome.browser.ui.bottombar.BottomBarConfigUtils;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.side_ui.SideUiStateProvider;
+import org.chromium.chrome.browser.util.BrowserUiUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnPolicy;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.components.browser_ui.accessibility.PageZoomManager;
-import org.chromium.components.dom_distiller.core.DomDistillerFeatures;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.webapps.WebappsUtils;
@@ -247,8 +249,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             PageZoomManager pageZoomManager,
             OneshotSupplier<HubManager> hubManagerSupplier,
             @Nullable OpenInAppMenuItemProvider openInAppMenuItemProvider,
-            Supplier<RecentlyClosedEntriesManager> recentlyClosedEntriesManagerSupplier,
-            Supplier<SideUiStateProvider> sideUiStateProviderSupplier,
+            Supplier<@Nullable RecentlyClosedEntriesManager> recentlyClosedEntriesManagerSupplier,
+            Supplier<@Nullable SideUiStateProvider> sideUiStateProviderSupplier,
             NonNullObservableSupplier<Boolean> xrSpaceModeObservableSupplier,
             BooleanSupplier canActivateTabLayoutToggleMenu) {
         super(
@@ -499,6 +501,36 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     }
 
     @Override
+    protected MVCListAdapter.ListItem buildAddToHomescreenListItem(
+            Tab currentTab, boolean showIcon) {
+        MVCListAdapter.ListItem item = super.buildAddToHomescreenListItem(currentTab, showIcon);
+        if (!isMergeInstallPwaAndCreateShortcutEnabled()) return item;
+
+        // Keep the disabled styling upstream applies while a WebAPK install is pending.
+        CharSequence oldTitle = item.model.get(AppMenuItemProperties.TITLE);
+        SpannableString title =
+                new SpannableString(mContext.getString(R.string.brave_menu_add_to_home_screen));
+        if (oldTitle instanceof Spanned spanned) {
+            for (Object span : spanned.getSpans(0, spanned.length(), Object.class)) {
+                title.setSpan(span, 0, title.length(), spanned.getSpanFlags(span));
+            }
+        }
+        item.model.set(AppMenuItemProperties.TITLE, title);
+
+        if (showIcon) {
+            item.model.set(
+                    AppMenuItemProperties.ICON,
+                    AppCompatResources.getDrawable(mBraveContext, R.drawable.ic_smartphone_home));
+        }
+        return item;
+    }
+
+    private static boolean isMergeInstallPwaAndCreateShortcutEnabled() {
+        return ChromeFeatureList.isEnabled(
+                BraveFeatureList.BRAVE_ANDROID_MERGE_INSTALL_PWA_AND_CREATE_SHORTCUT);
+    }
+
+    @Override
     public boolean shouldShowNewWindow() {
         return BraveMultiWindowUtils.shouldEnableMultiWindows() && super.shouldShowNewWindow();
     }
@@ -507,6 +539,17 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     protected boolean shouldShowMoveToOtherWindow() {
         return BraveMultiWindowUtils.shouldEnableMultiWindows()
                 && super.shouldShowMoveToOtherWindow();
+    }
+
+    @Override
+    protected boolean shouldShowPageInfoItem() {
+        if (!super.shouldShowPageInfoItem()) {
+            return false;
+        }
+
+        // Show the page info item only when the address bar has no
+        // page info button.
+        return BrowserUiUtils.isPageInfoMovedToAppMenu(mContext);
     }
 
     /**
@@ -633,21 +676,22 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         }
 
         // Manage windows
+        if (BraveMultiWindowUtils.isWindowManagerAvailable()) {
+            // Remove the windows count placeholder.
+            String manageWindows =
+                    mContext.getString(R.string.menu_manage_all_windows, 0)
+                            .replaceAll("\\s*\\(\\d+\\)$", "");
 
-        // Remove the windows count placeholder.
-        String manageWindows =
-                mContext.getString(R.string.menu_manage_all_windows, 0)
-                        .replaceAll("\\s*\\(\\d+\\)$", "");
-
-        modelList.add(
-                new MVCListAdapter.ListItem(
-                        AppMenuHandler.AppMenuItemType.STANDARD,
-                        AppMenuItemUtils.buildBaseModelForTextItem(
-                                        mAppMenuItemTheme,
-                                        R.id.manage_all_windows_menu_id,
-                                        isMenuIconAtStart())
-                                .with(AppMenuItemProperties.TITLE, manageWindows)
-                                .build()));
+            modelList.add(
+                    new MVCListAdapter.ListItem(
+                            AppMenuHandler.AppMenuItemType.STANDARD,
+                            AppMenuItemUtils.buildBaseModelForTextItem(
+                                            mAppMenuItemTheme,
+                                            R.id.manage_all_windows_menu_id,
+                                            isMenuIconAtStart())
+                                    .with(AppMenuItemProperties.TITLE, manageWindows)
+                                    .build()));
+        }
 
         // Open History
         modelList.add(
@@ -860,18 +904,16 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                 isMenuIconAtStart())));
 
         // Reader mode
-        if (DomDistillerFeatures.sReaderModeDistillInApp.isEnabled()) {
-            modelList.add(
-                    new MVCListAdapter.ListItem(
-                            AppMenuHandler.AppMenuItemType.STANDARD,
-                            AppMenuItemUtils.buildModelForStandardMenuItem(
-                                    mContext,
-                                    mAppMenuItemTheme,
-                                    R.id.reader_mode_menu_id,
-                                    R.string.show_reading_mode_text,
-                                    0,
-                                    isMenuIconAtStart())));
-        }
+        modelList.add(
+                new MVCListAdapter.ListItem(
+                        AppMenuHandler.AppMenuItemType.STANDARD,
+                        AppMenuItemUtils.buildModelForStandardMenuItem(
+                                mContext,
+                                mAppMenuItemTheme,
+                                R.id.reader_mode_menu_id,
+                                R.string.show_reading_mode_text,
+                                0,
+                                isMenuIconAtStart())));
 
         // Open with…
         modelList.add(
@@ -885,22 +927,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                 0,
                                 isMenuIconAtStart())));
 
-        // Universal Install / Open Web APK
+        // Universal Install
         if (WebappsUtils.isAddToHomeIntentSupported()) {
-            // This is the 'webapp is already installed' case, so we offer to open the webapp.
-            String appName = mContext.getString(R.string.webapp);
-            modelList.add(
-                    new MVCListAdapter.ListItem(
-                            AppMenuItemType.STANDARD,
-                            AppMenuItemUtils.buildBaseModelForTextItem(
-                                            mAppMenuItemTheme,
-                                            R.id.open_webapk_id,
-                                            isMenuIconAtStart())
-                                    .with(
-                                            AppMenuItemProperties.TITLE,
-                                            mContext.getString(R.string.menu_open_webapk, appName))
-                                    .build()));
-
             modelList.add(
                     new MVCListAdapter.ListItem(
                             AppMenuItemType.STANDARD,
@@ -908,7 +936,9 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                     mContext,
                                     mAppMenuItemTheme,
                                     R.id.universal_install,
-                                    R.string.menu_install_create_shortcut,
+                                    isMergeInstallPwaAndCreateShortcutEnabled()
+                                            ? R.string.brave_menu_add_to_home_screen
+                                            : R.string.menu_install_create_shortcut,
                                     0,
                                     isMenuIconAtStart())));
         }
@@ -1015,6 +1045,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         if (!mIsTablet) {
             maybeRemoveMenuItems(modelList, R.id.share_menu_id);
         }
+        putShareIconIntoIconRow(modelList);
 
         // Shred
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED)) {
@@ -1061,6 +1092,40 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         // if policy disables them
         modelList.add(buildCustomMenuItem());
         modelList.add(buildExitItem());
+    }
+
+    /**
+     * Puts Brave's share icon into the app menu icon row.
+     *
+     * <p>The row renders five icons at most. Forward is the navigation icon Brave keeps, as back is
+     * already served by the system back gesture.
+     */
+    private void putShareIconIntoIconRow(MVCListAdapter.ModelList modelList) {
+        for (int i = 0; i < modelList.size(); ++i) {
+            Integer itemId = modelList.get(i).model.get(AppMenuItemProperties.MENU_ITEM_ID);
+            if (itemId == null || itemId != R.id.icon_row_menu_id) continue;
+
+            MVCListAdapter.ModelList icons =
+                    modelList.get(i).model.get(AppMenuItemProperties.ADDITIONAL_ICONS);
+            maybeRemoveMenuItems(icons, R.id.back_menu_id);
+
+            PropertyModel shareIcon =
+                    AppMenuItemUtils.buildModelForIcon(
+                            mContext,
+                            R.id.share_menu_id,
+                            R.string.share,
+                            R.string.share,
+                            R.drawable.ic_share_white_24dp);
+            Tab currentTab = mActivityTabProvider.get();
+            shareIcon.set(
+                    AppMenuItemProperties.ENABLED,
+                    currentTab != null && !UrlUtilities.isNtpUrl(currentTab.getUrl().getSpec()));
+            // Keep reload last, as upstream does.
+            icons.add(icons.size() - 1, new MVCListAdapter.ListItem(0, shareIcon));
+            return;
+        }
+
+        assert !shouldShowIconRow() : "No icon row found in the app menu.";
     }
 
     private void maybeRemoveMenuItems(MVCListAdapter.ModelList modelList, int... itemIds) {
@@ -1284,22 +1349,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         BraveVpnPrefUtils.getRegionIsoCode(),
                         regionName));
         return new MVCListAdapter.ListItem(AppMenuItemType.TITLE_BUTTON, model);
-    }
-
-    @Override
-    protected PropertyModel buildPageInfoModel(@Nullable Tab currentTab) {
-        // Instead of the info button, we show the share button in Brave.
-        PropertyModel shareButton =
-                AppMenuItemUtils.buildModelForIcon(
-                        mContext,
-                        R.id.info_menu_id,
-                        R.string.share,
-                        R.string.share,
-                        R.drawable.ic_share_white_24dp);
-        shareButton.set(
-                AppMenuItemProperties.ENABLED,
-                (currentTab != null && !UrlUtilities.isNtpUrl(currentTab.getUrl().getSpec())));
-        return shareButton;
     }
 
     /**

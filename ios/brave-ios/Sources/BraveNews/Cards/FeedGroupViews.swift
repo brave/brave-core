@@ -56,7 +56,7 @@ public class FeedGroupView: UIView {
         $0.isUserInteractionEnabled = false
       }
     }
-    buttons = feedViews.map(FeedSpringButton.init)
+    buttons = feedViews.map { FeedSpringButton(itemView: $0) }
 
     super.init(frame: .zero)
 

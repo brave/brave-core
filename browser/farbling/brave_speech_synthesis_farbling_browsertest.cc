@@ -18,7 +18,6 @@
 #include "brave/components/webcompat/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/render_frame_host.h"
@@ -31,7 +30,29 @@ using brave_shields::ControlType;
 
 namespace {
 constexpr char kEmbeddedTestServerDirectory[] = "speech";
-constexpr char kTitleScript[] = "document.title";
+
+// voices-farbling.html sets document.title asynchronously (on the
+// 'voiceschanged' event, or a fallback timeout), so reading document.title
+// right after navigation can race the page's own script and observe the initial
+// "failed" placeholder. Wait for it to change instead of reading it directly.
+constexpr char kTitleScript[] = R"(
+  (function() {
+    function currentTitle() { return document.title; }
+    if (currentTitle() !== 'failed') {
+      return currentTitle();
+    }
+    return new Promise(function(resolve) {
+      const observer = new MutationObserver(function() {
+        if (currentTitle() !== 'failed') {
+          observer.disconnect();
+          resolve(currentTitle());
+        }
+      });
+      observer.observe(document.querySelector('title'),
+          {childList: true, characterData: true, subtree: true});
+    });
+  })()
+)";
 
 // The voices list is returned as a comma-separated "name (voiceURI)" string.
 // Its ordering is not stable across navigations: on macOS the platform

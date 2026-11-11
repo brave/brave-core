@@ -1,16 +1,16 @@
 diff --git a/third_party/blink/renderer/modules/peerconnection/BUILD.gn b/third_party/blink/renderer/modules/peerconnection/BUILD.gn
-index 626cedd0595705251dc1668557d5e5391ccc859b..0f2f300e8a11fc63becacf6bc75a4e845c2ab45f 100644
+index 261d8764225ebe5718182d3e24f9cee95a0fed0a..44263cb60ecb3ca442d6d75535d063577bf20af6 100644
 --- a/third_party/blink/renderer/modules/peerconnection/BUILD.gn
 +++ b/third_party/blink/renderer/modules/peerconnection/BUILD.gn
 @@ -2,6 +2,7 @@
  # Use of this source code is governed by a BSD-style license that can be
  # found in the LICENSE file.
  
-+import("//brave/components/ai_chat/sources.gni")  # Brave
++import("//brave/components/ai_chat/sources.gni")
  import("//third_party/blink/renderer/modules/modules.gni")
  
  blink_modules_sources("peerconnection") {
-@@ -189,6 +190,7 @@ blink_modules_sources("peerconnection") {
+@@ -194,6 +195,7 @@ blink_modules_sources("peerconnection") {
      "//third_party/blink/renderer/modules/permissions",
      "//third_party/blink/renderer/modules/webrtc",
    ]

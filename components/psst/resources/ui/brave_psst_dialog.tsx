@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
-import { setIconBasePath } from '@brave/leo/react/icon'
+import { setIconBasePath } from '@brave/nala/react/icon'
 import { createPsstDialogApi } from './api/psst_dialog_api'
 import * as Mojom from 'gen/brave/components/psst/core/common/psst_ui_common.mojom.m.js'
 

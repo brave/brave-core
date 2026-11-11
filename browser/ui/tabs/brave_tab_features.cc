@@ -6,20 +6,86 @@
 #include "brave/browser/ui/tabs/public/brave_tab_features.h"
 
 #include <memory>
-#include <utility>
 
 #include "base/check.h"
-#include "base/memory/ptr_util.h"
-#include "base/no_destructor.h"
+#include "base/feature_list.h"
+#include "base/functional/bind.h"
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
+#include "brave/browser/brave_tab_helpers.h"
+#include "brave/browser/image_metadata_stripper/file_upload_controller.h"
+#include "brave/browser/misc_metrics/captcha_metrics.h"
+#include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
+#include "brave/browser/onboarding/onboarding_tab_helper.h"
+#include "brave/browser/serp_metrics/serp_metrics_tab_helper.h"
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
+#include "brave/browser/ui/sidebar/sidebar_tab_helper.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/image_metadata_stripper/common/features.h"
+#include "brave/components/misc_metrics/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/components/request_otr/common/buildflags/buildflags.h"
+#include "brave/components/web_discovery/buildflags/buildflags.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/page_action/action_ids.h"
 #include "chrome/browser/ui/page_action/page_action_controller.h"
 #include "chrome/browser/ui/side_panel/side_panel_registry.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
+#include "chrome/browser/ui/thumbnails/thumbnail_tab_helper.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/tabs/public/tab_interface.h"
+#include "third_party/widevine/cdm/buildflags.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/creatives/search_result_ad/creative_search_result_ad_tab_helper.h"
+#include "brave/browser/brave_ads/tabs/ads_tab_helper.h"
+#endif
+
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+#include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/components/playlist/content/browser/playlist_tab_helper.h"
+#include "brave/components/playlist/core/browser/utils.h"
+#include "components/user_prefs/user_prefs.h"
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+#include "brave/browser/widevine/brave_drm_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
+#include "brave/browser/web_discovery/web_discovery_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+#include "brave/browser/request_otr/request_otr_tab_helper.h"
+#include "brave/components/request_otr/common/features.h"
+#endif
+
+#if BUILDFLAG(IS_WIN)
+#include "brave/browser/new_tab/background_color_tab_helper.h"
+#include "brave/browser/ui/brave_ui_features.h"
+#endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/container_tab_tracker.h"
@@ -28,9 +94,11 @@
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_tab_helper_factory.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/tab_data_web_contents_observer.h"
 #include "brave/browser/ai_chat/web_mcp_injection/web_mcp_injector.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
@@ -45,18 +113,44 @@
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
 #include "brave/components/speedreader/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/ui/views/page_action/onion_location_page_action_controller.h"
+#include "brave/components/tor/onion_location_tab_helper.h"
+#include "brave/components/tor/tor_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/browser/ui/views/page_action/brave_news_page_action_controller.h"
 #endif
 
 namespace tabs {
+
+namespace {
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+// Returns nullptr when Playlist is disallowed or unavailable for the profile.
+std::unique_ptr<playlist::PlaylistTabHelper> MaybeCreatePlaylistTabHelper(
+    tabs::TabInterface& tab) {
+  content::BrowserContext* const context =
+      tab.GetContents()->GetBrowserContext();
+  if (!playlist::IsPlaylistAllowed(user_prefs::UserPrefs::Get(context))) {
+    return nullptr;
+  }
+  auto* const playlist_service =
+      playlist::PlaylistServiceFactory::GetForBrowserContext(context);
+  if (!playlist_service) {
+    return nullptr;
+  }
+  return playlist::PlaylistTabHelper::Create(tab, playlist_service);
+}
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
+
+}  // namespace
 
 // static
 BraveTabFeatures* BraveTabFeatures::FromTabFeatures(TabFeatures* tab_features) {
@@ -66,21 +160,49 @@ BraveTabFeatures* BraveTabFeatures::FromTabFeatures(TabFeatures* tab_features) {
 BraveTabFeatures::BraveTabFeatures() = default;
 BraveTabFeatures::~BraveTabFeatures() = default;
 
+void BraveTabFeatures::OnWillDiscardContents(
+    TabInterface* tab,
+    content::WebContents* old_contents,
+    content::WebContents* new_contents) {
+  brave::AttachTabHelpers(new_contents);
+}
+
 void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   TabFeatures::Init(tab, profile);
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  // Created first, as other features may look it up through the tab.
+  ai_chat_tab_helper_ = ai_chat::MaybeCreateAIChatTabHelper(tab);
+#endif
+
+  brave::AttachTabHelpers(tab.GetContents());
+  // Upstream's discard path does not run `AttachTabHelpers` on the replacement
+  // contents, so Brave's helpers are re-attached to it on discard.
+  will_discard_contents_subscription_ =
+      tab.RegisterWillDiscardContents(base::BindRepeating(
+          &BraveTabFeatures::OnWillDiscardContents, base::Unretained(this)));
 
   // Expect upstream's Init to create the registry.
   auto* side_panel_registry = SidePanelRegistry::From(&tab);
   CHECK(side_panel_registry);
   brave::RegisterContextualSidePanel(side_panel_registry, tab.GetContents());
 
+  // `thumbnail_tab_helper_` is not instantiated because we disable
+  // `kTabHoverCardImages`, however we do want `thumbnail_tab_helper_` to be
+  // a valid instance, so we can switch hover modes via settings.
+  if (!thumbnail_tab_helper_) {
+    thumbnail_tab_helper_ =
+        GetUserDataFactory().CreateInstance<ThumbnailTabHelper>(
+            tab, tab, tab.GetContents());
+  }
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::IsAllowedForContext(profile)) {
     tab_data_observer_ = std::make_unique<ai_chat::TabDataWebContentsObserver>(
-        tab.GetHandle().raw_value(), tab.GetContents());
+        tab.GetHandle().raw_value(), tab);
     // Injects Brave-provided WebMCP tools into matching pages; see
     // WebMcpInjector. Null when WebMCP is disabled or has no rules.
-    web_mcp_injector_ = ai_chat::WebMcpInjector::MaybeCreate(tab.GetContents());
+    web_mcp_injector_ = ai_chat::WebMcpInjector::MaybeCreate(tab);
   }
 #endif
 
@@ -97,18 +219,16 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
     auto* psst_settings_service =
         PsstSettingsServiceFactory::GetForProfile(profile);
     auto* variations_service = g_browser_process->variations_service();
-    psst_web_contents_observer_ =
-        psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
-            tab, profile,
-            std::make_unique<psst::PsstUiDelegateImpl>(
-                psst_settings_service,
-                PsstReporterServiceFactory::GetForProfile(profile),
-                profile->GetPrefs(),
-                std::make_unique<psst::PsstUiDesktopPresenter>(
-                    tab.GetContents()->GetWeakPtr(),
-                    psst_action_controller_->AsWeakPtr())),
-            psst_settings_service, variations_service,
-            ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+    psst_web_contents_observer_ = psst::PsstTabWebContentsObserver::MaybeCreate(
+        tab, profile,
+        std::make_unique<psst::PsstUiDelegateImpl>(
+            psst_settings_service,
+            PsstReporterServiceFactory::GetForProfile(profile),
+            profile->GetPrefs(),
+            std::make_unique<psst::PsstUiDesktopPresenter>(
+                tab, psst_action_controller_->AsWeakPtr())),
+        psst_settings_service, variations_service,
+        ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 #endif
 
@@ -129,6 +249,8 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
+  // Created before the page action controller, which observes it.
+  speedreader_tab_helper_ = speedreader::SpeedreaderTabHelper::MaybeCreate(tab);
   if (base::FeatureList::IsEnabled(
           speedreader::features::kSpeedreaderFeature) &&
       page_action_controller()->ActionExists(kActionShowSpeedreader)) {
@@ -140,13 +262,14 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  wayback_machine_tab_helper_ = BraveWaybackMachineTabHelper::MaybeCreate(tab);
   if (page_action_controller()->ActionExists(kActionShowWaybackMachine)) {
     wayback_machine_page_action_controller_ =
         std::make_unique<page_actions::WaybackMachinePageActionController>(
             tab, *page_action_controller());
     wayback_machine_page_action_controller_->Init();
   }
-#endif
+#endif  // BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (page_action_controller()->ActionExists(kActionShowPlaylistPageAction)) {
@@ -158,6 +281,9 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
+  tor_tab_helper_ = tor::TorTabHelper::MaybeCreate(tab);
+  onion_location_tab_helper_ =
+      std::make_unique<tor::OnionLocationTabHelper>(tab);
   if (page_action_controller()->ActionExists(kActionShowOnionLocation)) {
     onion_location_page_action_controller_ =
         std::make_unique<page_actions::OnionLocationPageActionController>(
@@ -167,12 +293,88 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  // Created before the page action controller, which observes it.
+  brave_news_tab_helper_ = BraveNewsTabHelper::MaybeCreate(tab);
   if (!profile->IsOffTheRecord() &&
       page_action_controller()->ActionExists(kActionShowBraveNews)) {
     brave_news_page_action_controller_ =
         std::make_unique<page_actions::BraveNewsPageActionController>(
             tab, *page_action_controller());
     brave_news_page_action_controller_->Init();
+  }
+#endif
+
+  if (base::FeatureList::IsEnabled(
+          image_metadata_stripper::features::kStripImageMetadataV1)) {
+    stripper_upload_controller_ =
+        image_metadata_stripper::FileUploadController::MaybeCreate(tab);
+  }
+
+  if (base::FeatureList::IsEnabled(
+          misc_metrics::features::kCaptchaMetricsCollection)) {
+    cloudflare_js_detection_tab_helper_ = misc_metrics::CaptchaMetrics::
+        CloudflareJsDetectionTabHelper::MaybeCreate(tab);
+  }
+
+  page_metrics_tab_helper_ =
+      std::make_unique<misc_metrics::PageMetricsTabHelper>(tab);
+
+  sidebar_tab_helper_ = sidebar::SidebarTabHelper::MaybeCreate(tab);
+  onboarding_tab_helper_ = OnboardingTabHelper::MaybeCreate(tab);
+  serp_metrics_tab_helper_ =
+      serp_metrics::SerpMetricsTabHelper::MaybeCreate(tab);
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  ads_tab_helper_ = std::make_unique<brave_ads::AdsTabHelper>(tab);
+  creative_search_result_ad_tab_helper_ =
+      brave_ads::CreativeSearchResultAdTabHelper::MaybeCreate(tab);
+#endif
+
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
+  web_discovery_tab_helper_ =
+      web_discovery::WebDiscoveryTabHelper::MaybeCreate(tab, *profile);
+#endif
+
+  brave_shields_tab_helper_ =
+      std::make_unique<brave_shields::BraveShieldsTabHelper>(tab);
+  perf_predictor_tab_helper_ =
+      std::make_unique<brave_perf_predictor::PerfPredictorTabHelper>(tab);
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  // Created before the page action controller, which observes it.
+  playlist_tab_helper_ = MaybeCreatePlaylistTabHelper(tab);
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  rewards_tab_helper_ = std::make_unique<brave_rewards::RewardsTabHelper>(tab);
+#endif
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  drm_tab_helper_ = std::make_unique<BraveDrmTabHelper>(tab);
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  brave_wallet_tab_helper_ =
+      std::make_unique<brave_wallet::BraveWalletTabHelper>(tab);
+#endif
+
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+  geolocation_permission_tab_helper_ =
+      std::make_unique<BraveGeolocationPermissionTabHelper>(tab);
+#endif
+
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+  if (!profile->IsOffTheRecord() &&
+      base::FeatureList::IsEnabled(
+          request_otr::features::kBraveRequestOTRTab)) {
+    request_otr_tab_helper_ = std::make_unique<RequestOTRTabHelper>(tab);
+  }
+#endif
+
+#if BUILDFLAG(IS_WIN)
+  if (base::FeatureList::IsEnabled(features::kBraveWorkaroundNewWindowFlash)) {
+    background_color_tab_helper_ =
+        std::make_unique<BackgroundColorTabHelper>(tab);
   }
 #endif
 }

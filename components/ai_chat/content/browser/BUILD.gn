@@ -40,7 +40,10 @@ static_library("browser") {
     ]
   }
 
-  public_deps = [ "//mojo/public/cpp/bindings" ]
+  public_deps = [
+    "//mojo/public/cpp/bindings",
+    "//ui/base/unowned_user_data",
+  ]
 
   deps = [
     "//base",
@@ -68,6 +71,7 @@ static_library("browser") {
     "//components/permissions",
     "//components/prefs",
     "//components/strings:components_strings_grit",
+    "//components/tabs:public",
     "//components/user_prefs",
     "//content/public/browser",
     "//net",
@@ -93,6 +97,7 @@ static_library("browser") {
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "ai_chat_tab_helper_unittest.cc",
     "ai_page_content_fetcher_unittest.cc",
     "associated_url_content_unittest.cc",
     "associated_web_contents_content_unittest.cc",
@@ -116,6 +121,8 @@ source_set("unit_tests") {
     "//components/optimization_guide/content/browser",
     "//components/optimization_guide/proto:optimization_guide_proto",
     "//components/pdf/common:constants",
+    "//components/tabs:public",
+    "//components/tabs:test_support",
     "//content/public/browser",
     "//content/test:test_support",
     "//net:test_support",

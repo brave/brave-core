@@ -1,0 +1,13 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Drop the extended locales Brave does not ship
+
+      Subtracted before `inputs` is derived from the list.
+    add_before_line:
+      line: inputs = process_file_template(
+      code: '  _locales -= brave_extended_locales_exclusions'

@@ -9,5 +9,7 @@
 inline constexpr char kBraveWaybackMachineEnabled[] =
     "brave.wayback_machine_enabled";
 
+inline constexpr char kBraveWaybackMachineAutoCheckEnabled[] =
+    "brave.wayback_machine_auto_check_enabled";
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_PREF_NAMES_H_

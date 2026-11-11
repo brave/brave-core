@@ -31,8 +31,8 @@ void BraveBrowserNativeWidgetMac::GetWindowFrameTitlebarHeight(
     bool* override_titlebar_height,
     float* titlebar_height) {
   if (BrowserView* browser_view = browser_view_.get()) {
-    Browser* browser = browser_view->browser();
-    if (auto* vtc = VerticalTabController::FromBrowser(browser);
+    BrowserWindowInterface* browser = browser_view->browser();
+    if (auto* vtc = VerticalTabController::From(browser);
         vtc->ShouldShowBraveVerticalTabs()) {
       if (!vtc->ShouldShowWindowTitleForVerticalTabs()) {
         // In this case, titlebar height should be the same as toolbar height.
@@ -73,8 +73,8 @@ void BraveBrowserNativeWidgetMac::ValidateUserInterfaceItem(
 
   // Update toggle state for tab mute menu bar entry.
   if (BrowserView* browser_view = browser_view_.get()) {
-    Browser* browser = browser_view->browser();
-    TabStripModel* model = browser->tab_strip_model();
+    BrowserWindowInterface* browser = browser_view->browser();
+    TabStripModel* model = browser->GetTabStripModel();
     result->set_toggle_state = true;
     result->new_toggle_state = !model->empty() &&
                                model->GetActiveWebContents() &&
@@ -92,7 +92,7 @@ bool BraveBrowserNativeWidgetMac::ExecuteCommand(
     // in distinguishing the 'file -> close tab' (false, as toolbar was in
     // focus) command from 'ctrl + w' (true, as tab was in focus) command.
     if (BrowserView* browser_view = browser_view_.get()) {
-      Browser* browser = browser_view->browser();
+      BrowserWindowInterface* browser = browser_view->browser();
       if (browser->GetProfile()->GetPrefs()->GetBoolean(
               brave_tabs::kSharedPinnedTab) &&
           command == IDC_CLOSE_TAB && is_before_first_responder &&

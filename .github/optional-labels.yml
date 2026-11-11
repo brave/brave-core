@@ -27,8 +27,8 @@ CI/run-perf-smoke-tests:
 CI/run-upstream-tests:
   - changed-files:
     - any-glob-to-any-file:
+      - base/compile_overridden_features.inc
       - browser/about_flags.cc
-      - chromium_src/**/*features.cc
       - test/filters/*.filter
 
 CI/storybook-url:

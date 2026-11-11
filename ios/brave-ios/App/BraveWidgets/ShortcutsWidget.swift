@@ -126,79 +126,12 @@ private struct ShortcutLink<Content: View>: View {
 }
 
 extension WidgetShortcut {
-  var displayString: String {
-    switch self {
-    case .unknown:
-      assertionFailure()
-      return ""
-    case .newTab:
-      return Strings.Widgets.shortcutsNewTabButton
-    case .newPrivateTab:
-      return Strings.Widgets.shortcutsPrivateTabButton
-    // Reusing localized strings for few items here.
-    case .bookmarks:
-      return Strings.Widgets.bookmarksMenuItem
-    case .history:
-      return Strings.Widgets.historyMenuItem
-    case .downloads:
-      return Strings.Widgets.downloadsMenuItem
-    case .playlist:
-      // We usually use `Brave Playlist` to describe this feature.
-      // Here we try to be more concise and use 'Playlist' word only.
-      return Strings.Widgets.shortcutsPlaylistButton
-    case .search:
-      return Strings.Widgets.searchShortcutTitle
-    case .wallet:
-      return Strings.Widgets.walletShortcutTitle
-    case .scanQRCode:
-      return Strings.Widgets.QRCode
-    case .braveNews:
-      return Strings.Widgets.braveNews
-    case .braveLeo:
-      return Strings.Widgets.braveLeo
-    case .askBrave:
-      return Strings.Widgets.askBrave
-    case .braveLeoVoiceInput:
-      return Strings.Widgets.braveLeoVoiceInput
-    @unknown default:
-      assertionFailure()
-      return ""
-    }
-  }
-
   var image: Image {
-    switch self {
-    case .unknown:
-      assertionFailure()
-      return Image(systemName: "xmark.octagon")
-    case .newTab:
-      return Image(braveSystemName: "leo.browser.mobile-tab-new")
-    case .newPrivateTab:
-      return Image(braveSystemName: "leo.product.private-window")
-    case .bookmarks:
-      return Image(braveSystemName: "leo.product.bookmarks")
-    case .history:
-      return Image(braveSystemName: "leo.history")
-    case .downloads:
-      return Image(braveSystemName: "leo.download")
-    case .playlist:
-      return Image(braveSystemName: "leo.product.playlist")
-    case .search:
-      return Image(braveSystemName: "leo.search")
-    case .wallet:
-      return Image(braveSystemName: "leo.product.brave-wallet")
-    case .scanQRCode:
-      return Image(braveSystemName: "leo.qr.code")
-    case .braveNews:
-      return Image(braveSystemName: "leo.product.brave-news")
-    case .braveLeo, .askBrave:
-      return Image(braveSystemName: "leo.product.brave-leo")
-    case .braveLeoVoiceInput:
-      return Image(braveSystemName: "leo.leo.voice-input")
-    @unknown default:
+    guard let braveSystemImageName else {
       assertionFailure()
       return Image(systemName: "xmark.octagon")
     }
+    return Image(braveSystemName: braveSystemImageName)
   }
 }
 

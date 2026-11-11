@@ -9,6 +9,7 @@ domain Page
       ethereum
       solana
       cardano
+      polkadot
 
   # Generates a Page Graph report for the page.
   experimental command generatePageGraph
@@ -32,6 +33,7 @@ domain Network
       string rawLine
       integer sourceIndex
       integer lineNumber
+      optional string sourceTitle
 
   experimental type AdblockInfo extends object
     properties

@@ -9,8 +9,62 @@ substitutions:
 
       Brave stores these in a map keyed by host so a chrome-untrusted://
       frame can have a WebUI of its own (see the web_state_impl_realized_web_state.h
-      override). The host is what lets the MojoFacade each one owns find its
+      plaster). The host is what lets the MojoFacade each one owns find its
       frame instead of every facade falling back to the main frame.
     regex:
       re_pattern: 'std::make_unique<WebUIIOSImpl>\(owner_\)'
       replace: 'std::make_unique<WebUIIOSImpl>(owner_, url.GetHost())'
+  - description: |
+      Create a WebUI per host
+
+      Don't recreate the WebUI for a host that has one. At the moment this is a
+      required limitation, as there isn't the info to associate a WebUI with a
+      specific frame like desktop and Android do.
+    regex:
+      re_pattern: |-
+        (void WebStateImpl::RealizedWebState::CreateWebUI\(const GURL& url\) \{\n).*?(\n\}\n)
+      re_flags: [DOTALL]
+      replace: |-
+        \1  const std::string_view host = url.host();
+          if (web_uis_.contains(host)) {
+            return;
+          }
+          std::unique_ptr<WebUIIOS> web_ui = CreateWebUIIOS(url);
+          if (web_ui) {
+            web_uis_.insert({std::string(host), std::move(web_ui)});
+          }\2
+  - description: |
+      Clear every WebUI
+
+      They are kept in `web_uis_` instead of `web_ui_`.
+    regex:
+      re_pattern: 'web_ui_\.reset\(\);'
+      replace: 'web_uis_.clear();'
+  - description: |
+      Report whether any WebUI exists
+
+      They are kept in `web_uis_` instead of `web_ui_`.
+    regex:
+      re_pattern: 'return !!web_ui_;'
+      replace: 'return !web_uis_.empty();'
+  - description: |
+      Send WebUI messages to the WebUI of the source host
+
+      Each frame has a WebUI of its own, so the message goes to the one for the
+      host it came from.
+    regex:
+      re_pattern:
+        'web_ui_->ProcessWebUIIOSMessage\(source_url, message, args\);'
+      replace: |-
+        auto web_ui = web_uis_.find(source_url.host());
+          if (web_ui != web_uis_.end()) {
+            web_ui->second->ProcessWebUIIOSMessage(source_url, message, args);
+          }
+  - description: |
+      Clear the WebUIs on a failed or non-WebUI navigation
+
+      Upstream only checks `web_ui_`, which Brave doesn't use, so the WebUIs were
+      never cleared.
+    regex:
+      re_pattern: 'if \(web_ui_ && \('
+      replace: 'if (HasWebUI() && ('

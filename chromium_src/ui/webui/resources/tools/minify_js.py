@@ -17,6 +17,7 @@ def parse_args(self, original_method, argv):
 
     in_folder = os.path.normpath(os.path.join(os.getcwd(), args.in_folder))
     for file in get_webui_overridden_but_referenced_files(
-            in_folder, args.in_files):
+        in_folder, args.in_files
+    ):
         args.in_files.append(file)
     return args

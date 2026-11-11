@@ -51,6 +51,7 @@ import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
+import org.chromium.chrome.browser.ui.bottombar.BottomBarConfigUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnPolicy;
 import org.chromium.chrome.browser.vpn.settings.VpnCalloutPreference;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
@@ -96,10 +97,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     @VisibleForTesting static final String PREF_BRAVE_NEWS_V2 = "brave_news_v2";
     private static final String PREF_BRAVE_PLAYLIST = "brave_playlist";
     private static final String PREF_SYNC = "brave_sync_layout";
-    private static final String PREF_PASSWORDS = "passwords";
     private static final String PREF_NOTIFICATIONS = "notifications";
-    private static final String PREF_PAYMENT_METHODS = "autofill_payment_methods";
-    private static final String PREF_ADDRESSES = "autofill_addresses";
     private static final String PREF_TABS = "tabs";
     private static final String PREF_MEDIA = "media";
     private static final String PREF_APPEARANCE = "brave_appearance";
@@ -145,7 +143,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         // Forward the custom menu item keys from main settings to appearance preference screen.
         CustomizeBraveMenu.propagateMenuItemExtras(findPreference(PREF_APPEARANCE), getArguments());
 
-        mAccountController = BraveAccountSectionController.maybeCreate(this, getProfile());
+        mAccountController = BraveAccountSectionController.maybeCreate(this);
 
         overrideChromiumPreferences();
         initRateBrave();
@@ -202,11 +200,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         super.onDestroy();
 
         removeFeaturePolicyServiceObserver();
-
-        if (mAccountController != null) {
-            mAccountController.destroy();
-            mAccountController = null;
-        }
     }
 
     private void showNotificationRationale() {
@@ -331,12 +324,11 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         }
 
         int braveAccountSectionOrder = firstSectionOrder;
-        for (String key : BraveAccountSectionController.ALL_PREFERENCE_KEYS) {
-            if (mAccountController != null) {
-                setPreferenceOrder(key, ++braveAccountSectionOrder);
-            } else {
-                removePreferenceIfPresent(key);
-            }
+        if (mAccountController != null) {
+            setPreferenceOrder(
+                    BraveAccountSectionController.PREF_BRAVE_ACCOUNT, ++braveAccountSectionOrder);
+        } else {
+            removePreferenceIfPresent(BraveAccountSectionController.PREF_BRAVE_ACCOUNT);
         }
 
         int featuresSectionOrder = braveAccountSectionOrder;
@@ -420,11 +412,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         setPreferenceOrder(PREF_BRAVE_LANGUAGES, ++displaySectionOrder);
 
         int passwordsAndAutofillSectionOrder = displaySectionOrder;
-        setPreferenceOrder(MainSettings.PREF_AUTOFILL_SECTION, ++passwordsAndAutofillSectionOrder);
-        setPreferenceOrder(PREF_PASSWORDS, ++passwordsAndAutofillSectionOrder);
-        setPreferenceOrder(MainSettings.PREF_AUTOFILL_OPTIONS, ++passwordsAndAutofillSectionOrder);
-        setPreferenceOrder(PREF_PAYMENT_METHODS, ++passwordsAndAutofillSectionOrder);
-        setPreferenceOrder(PREF_ADDRESSES, ++passwordsAndAutofillSectionOrder);
+        setPreferenceOrder(
+                MainSettings.PREF_AUTOFILL_AND_PASSWORDS, ++passwordsAndAutofillSectionOrder);
 
         int supportSectionOrder = passwordsAndAutofillSectionOrder;
         setPreferenceOrder(PREF_SUPPORT_SECTION, ++supportSectionOrder);
@@ -444,10 +433,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         }
         setPreferenceOrder(PREF_ABOUT_CHROME, ++aboutSectionOrder);
 
-        // We don't have home button on address bar at the moment.
-        if (!DeviceFormFactor.isTablet()
-                && !BottomToolbarConfiguration.isBraveBottomControlsEnabled()
-                && BottomToolbarConfiguration.isToolbarTopAnchored()) {
+        if (!shouldShowHomepagePreference()) {
             removePreferenceIfPresent(MainSettings.PREF_HOMEPAGE);
         }
 
@@ -458,6 +444,17 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         removePreferenceIfPresent(MainSettings.PREF_APPEARANCE);
 
         resortPreferenceScreenChildren();
+    }
+
+    /** Whether any toolbar carries a home button, which the homepage setting applies to. */
+    @VisibleForTesting
+    static boolean shouldShowHomepagePreference() {
+        // We don't have home button on address bar at the moment. The bottom bar always carries
+        // one, either itself or in the top toolbar.
+        return DeviceFormFactor.isTablet()
+                || BottomToolbarConfiguration.isBraveBottomControlsEnabled()
+                || BottomBarConfigUtils.isBottomBarEnabled(ContextUtils.getApplicationContext())
+                || BottomToolbarConfiguration.isToolbarBottomAnchored();
     }
 
     // PreferenceGroup (with orderingFromXml=false) only re-sorts its children list when
@@ -495,16 +492,13 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     }
 
     private void updatePreferenceIcons() {
-        updatePreferenceIcon(PREF_PASSWORDS, R.drawable.ic_key);
         updatePreferenceIcon(PREF_CONTENT_SETTINGS, R.drawable.ic_tune);
-        updatePreferenceIcon(PREF_PAYMENT_METHODS, R.drawable.ic_credit_card);
         updatePreferenceIcon(PREF_DOWNLOADS, R.drawable.ic_download);
         updatePreferenceIcon(PREF_LANGUAGES, R.drawable.ic_product_translate);
         updatePreferenceIcon(PREF_BRAVE_LANGUAGES, R.drawable.ic_product_translate);
         updatePreferenceIcon(PREF_ABOUT_CHROME, R.drawable.ic_info_outline);
         updatePreferenceIcon(PREF_ACCESSIBILITY, R.drawable.ic_accessibility);
         updatePreferenceIcon(PREF_PRIVACY, R.drawable.ic_bar_chart_search);
-        updatePreferenceIcon(PREF_ADDRESSES, R.drawable.ic_location_on);
         updatePreferenceIcon(PREF_NOTIFICATIONS, R.drawable.ic_notification);
         updatePreferenceIcon(MainSettings.PREF_DEVELOPER, R.drawable.ic_code);
         updatePreferenceIcon(MainSettings.PREF_HOMEPAGE, R.drawable.ic_browser_home);
@@ -516,7 +510,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                 BottomToolbarConfiguration.isToolbarTopAnchored()
                         ? R.drawable.ic_browser_mobile_tabs_top
                         : R.drawable.ic_browser_mobile_tabs_bottom);
-        updatePreferenceIcon(MainSettings.PREF_AUTOFILL_OPTIONS, R.drawable.ic_autofill);
+        updatePreferenceIcon(MainSettings.PREF_AUTOFILL_AND_PASSWORDS, R.drawable.ic_autofill);
         updatePreferenceIcon(PREF_TOOLBAR_SHORTCUT, R.drawable.ic_browser_customizable_shortcut);
     }
 
@@ -785,7 +779,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             Profile profile,
             String key,
             Bundle extras,
-            ModalDialogManager modalDialogManager) {
+            ModalDialogManager modalDialogManager,
+            boolean shownInTab) {
         if (PREF_HOME_SCREEN_WIDGET.equals(key)) {
             // The Home screen widget entry has no sub-screen to open; it triggers a system
             // "pin widget" request. Keep the search state as is, like the other external-activity
@@ -793,7 +788,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             BraveSearchWidgetUtils.requestPinAppWidget();
             return false;
         }
-        return MainSettings.openSearchResult(context, profile, key, extras, modalDialogManager);
+        return MainSettings.openSearchResult(
+                context, profile, key, extras, modalDialogManager, shownInTab);
     }
 
     // Wraps MainSettings.SEARCH_INDEX_DATA_PROVIDER and additionally removes upstream preferences
@@ -802,7 +798,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             new SettingsRoutes(
                     MainSettings.class.getName(),
                     MainSettings.PREF_AUTOFILL_AND_PASSWORDS,
-                    MainSettings.PREF_AUTOFILL_OPTIONS,
                     AutofillAndPasswordsFragment.class.getName(),
                     AutofillAndPasswordsFragment.PREF_AUTOFILL_SETTINGS,
                     AutofillAndPasswordsFragment.EXTRA_REFERRER,
@@ -856,9 +851,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_ADDRESS_BAR));
                     // Account section is only shown when Brave Account is enabled.
                     if (!BraveAccountFeatures.isBraveAccountEnabled()) {
-                        for (String key : BraveAccountSectionController.ALL_PREFERENCE_KEYS) {
-                            indexData.removeEntry(getUniqueId(key));
-                        }
+                        indexData.removeEntry(
+                                getUniqueId(BraveAccountSectionController.PREF_BRAVE_ACCOUNT));
                     }
                     // Brave leaf switches/actions in main settings have no sub-screen to
                     // navigate to from search results, so exclude them from the index.

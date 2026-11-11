@@ -18,11 +18,11 @@
 #include "brave/browser/ui/views/infobars/custom_styled_label.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
 #include "brave/components/permissions/permission_widevine_utils.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
@@ -34,6 +34,7 @@
 #include "components/permissions/permission_request.h"
 #include "components/permissions/request_type.h"
 #include "components/strings/grit/components_strings.h"
+#include "components/tabs/public/tab_interface.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -51,7 +52,6 @@
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/style/typography.h"
 #include "ui/views/widget/widget.h"
-#include "ui/views/window/dialog_client_view.h"
 #include "ui/views/window/dialog_delegate.h"
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -73,38 +73,60 @@ constexpr char kGeolocationPermissionLearnMoreURL[] =
     "https://www.brave.com/";
 #endif
 
-#if BUILDFLAG(ENABLE_WIDEVINE)
+// Shared by the requests that have no content setting to remember a "Block" in,
+// and so offer a checkbox to stop being asked instead.
 class DontAskAgainCheckbox : public views::Checkbox {
   METADATA_HEADER(DontAskAgainCheckbox, views::Checkbox)
  public:
-  explicit DontAskAgainCheckbox(WidevinePermissionRequest* request);
+  explicit DontAskAgainCheckbox(permissions::PermissionRequest* request);
   DontAskAgainCheckbox(const DontAskAgainCheckbox&) = delete;
   DontAskAgainCheckbox& operator=(const DontAskAgainCheckbox&) = delete;
 
  private:
   void ButtonPressed();
 
-  raw_ptr<WidevinePermissionRequest, DanglingUntriaged> request_ = nullptr;
+  raw_ptr<permissions::PermissionRequest, DanglingUntriaged> request_ = nullptr;
 };
 
 BEGIN_METADATA(DontAskAgainCheckbox)
 END_METADATA
 
-DontAskAgainCheckbox::DontAskAgainCheckbox(WidevinePermissionRequest* request)
-    : views::Checkbox(
-          l10n_util::GetStringUTF16(IDS_WIDEVINE_DONT_ASK_AGAIN_CHECKBOX),
-          base::BindRepeating(&DontAskAgainCheckbox::ButtonPressed,
-                              base::Unretained(this))),
+DontAskAgainCheckbox::DontAskAgainCheckbox(
+    permissions::PermissionRequest* request)
+    : views::Checkbox(l10n_util::GetStringUTF16(
+                          IDS_PERMISSIONS_BUBBLE_DONT_ASK_AGAIN_CHECKBOX),
+                      base::BindRepeating(&DontAskAgainCheckbox::ButtonPressed,
+                                          base::Unretained(this))),
       request_(request) {}
 
 void DontAskAgainCheckbox::ButtonPressed() {
   request_->set_dont_ask_again(GetChecked());
 }
 
-void AddAdditionalWidevineViewControlsIfNeeded(
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+bool IsOnDeviceSpeechModelRequest(
+    const std::vector<std::unique_ptr<permissions::PermissionRequest>>&
+        requests) {
+  // The request is never grouped with another.
+  return requests.size() == 1 &&
+         requests[0]->request_type() ==
+             permissions::RequestType::kBraveOnDeviceSpeechModel;
+}
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
+void AddAdditionalPermissionViewControlsIfNeeded(
     views::BubbleDialogDelegateView* dialog_delegate_view,
     const std::vector<std::unique_ptr<permissions::PermissionRequest>>&
         requests) {
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  if (IsOnDeviceSpeechModelRequest(requests)) {
+    dialog_delegate_view->AddChildView(
+        std::make_unique<DontAskAgainCheckbox>(requests[0].get()));
+    return;
+  }
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
   if (!HasWidevinePermissionRequest(requests)) {
     return;
   }
@@ -126,8 +148,10 @@ void AddAdditionalWidevineViewControlsIfNeeded(
   dialog_delegate_view->AddChildView(text);
   dialog_delegate_view->AddChildView(
       new DontAskAgainCheckbox(widevine_request));
+#endif  // BUILDFLAG(ENABLE_WIDEVINE)
 }
 
+#if BUILDFLAG(ENABLE_WIDEVINE)
 void AddWidevineFootnoteView(
     views::BubbleDialogDelegateView* dialog_delegate_view,
     BrowserWindowInterface* browser) {
@@ -144,12 +168,7 @@ void AddWidevineFootnoteView(
       views::CreateStyledLabelForDialogFootnote(browser, footnote, replacements,
                                                 urls));
 }
-#else
-void AddAdditionalWidevineViewControlsIfNeeded(
-    views::BubbleDialogDelegateView* dialog_delegate_view,
-    const std::vector<raw_ptr<permissions::PermissionRequest,
-                              VectorExperimental>>& requests) {}
-#endif
+#endif  // BUILDFLAG(ENABLE_WIDEVINE)
 
 // Custom combobox, shows permission lifetime options and applies selected value
 // to all permissions currently visible in the bubble.
@@ -158,10 +177,8 @@ class PermissionLifetimeCombobox : public views::Combobox,
   METADATA_HEADER(PermissionLifetimeCombobox, views::Combobox)
  public:
   explicit PermissionLifetimeCombobox(
-      views::BubbleDialogDelegateView& dialog_delegate_view,
       permissions::PermissionPrompt::Delegate& delegate)
-      : dialog_delegate_view_(dialog_delegate_view),
-        delegate_(delegate),
+      : delegate_(delegate),
         lifetime_options_(permissions::CreatePermissionLifetimeOptions()) {
     SetCallback(base::BindRepeating(&PermissionLifetimeCombobox::OnItemSelected,
                                     base::Unretained(this)));
@@ -186,14 +203,8 @@ class PermissionLifetimeCombobox : public views::Combobox,
   void OnItemSelected() {
     SetRequestsLifetime(lifetime_options_, GetSelectedIndex().value(),
                         &*delegate_);
-    // Workaround an upstream issue when a ComboBox close prevents any
-    // interaction with the Permission bubble for 500ms.
-    if (auto* dialog = dialog_delegate_view_->GetDialogClientView()) {
-      dialog->IgnoreNextWindowStationaryStateChanged();
-    }
   }
 
-  const raw_ref<views::BubbleDialogDelegateView> dialog_delegate_view_;
   const raw_ref<permissions::PermissionPrompt::Delegate, DanglingUntriaged>
       delegate_;
   std::vector<permissions::PermissionLifetimeOption> lifetime_options_;
@@ -325,8 +336,8 @@ void AddGeolocationDescriptionIfNeeded(
   bool enable_high_accuracy = false;
   if (auto* web_contents = delegate->GetAssociatedWebContents()) {
     if (auto* geolocation_tab_helper =
-            BraveGeolocationPermissionTabHelper::FromWebContents(
-                web_contents)) {
+            BraveGeolocationPermissionTabHelper::From(
+                tabs::TabInterface::MaybeGetFromContents(web_contents))) {
       enable_high_accuracy = geolocation_tab_helper->enable_high_accuracy();
     }
   }
@@ -377,9 +388,8 @@ views::View* AddPermissionLifetimeComboboxIfNeeded(
 
   // Add the combobox.
   DCHECK(delegate);
-  auto* combobox =
-      container->AddChildView(std::make_unique<PermissionLifetimeCombobox>(
-          *dialog_delegate_view, *delegate));
+  auto* combobox = container->AddChildView(
+      std::make_unique<PermissionLifetimeCombobox>(*delegate));
   static_cast<views::BoxLayout*>(container->GetLayoutManager())
       ->SetFlexForView(combobox, 1);
 
@@ -399,6 +409,14 @@ void AddFootnoteViewIfNeeded(
     return;
   }
 #endif
+
+  // The footnote is about site permissions and their lifetime, and this
+  // request has neither.
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  if (IsOnDeviceSpeechModelRequest(requests)) {
+    return;
+  }
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
   if (!base::FeatureList::IsEnabled(
           permissions::features::kPermissionLifetime)) {

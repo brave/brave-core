@@ -3,76 +3,56 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import {
-  html,
-  RegisterPolymerComponentBehaviors,
-  RegisterPolymerTemplateModifications
-} from 'chrome://resources/brave/polymer_overriding.js'
+import { injectStyle } from '//resources/brave/lit_overriding.js'
+import { html } from 'chrome://resources/brave/polymer_overriding.js'
+import { css } from '//resources/lit/v3_0/lit.rollup.js'
+import type { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js'
 
 import { loadTimeData } from '../i18n_setup.js'
 
 import { SettingsCookiesPageElement } from '../privacy_page/cookies_page.js'
 
-RegisterPolymerTemplateModifications({
-  'settings-cookies-page': (templateContent) => {
-    const generalControls = templateContent.getElementById('generalControls')
-    if (!generalControls) {
-      console.error(
-        '[Brave Settings Overrides] Could not find generalControls id ' +
-        'on cookies page.')
-    } else {
-      generalControls.setAttribute('hidden', 'true')
+injectStyle(
+  SettingsCookiesPageElement,
+  css`
+    #generalControls,
+    #additionalProtections,
+    #siteDataTrigger,
+    #doNotTrack {
+      display: none;
     }
-    const additionalProtections = templateContent.
-      getElementById('additionalProtections')
-    if (!additionalProtections) {
-      console.error(
-        '[Brave Settings Overrides] Could not find additionalProtections ' +
-        'id on cookies page.')
-    } else {
-      additionalProtections.setAttribute('hidden', 'true')
-    }
-    const siteDataTrigger = templateContent.getElementById('siteDataTrigger')
-    if (!siteDataTrigger) {
-      console.error(
-        '[Brave Settings Overrides] Could not find siteDataTrigger id ' +
-        'on cookies page')
-    } else {
-      siteDataTrigger.setAttribute('hidden', 'true')
-    }
-    const doNotTrackToggle = templateContent.getElementById('doNotTrack')
-    if (!doNotTrackToggle) {
-      console.error(
-        '[Brave Settings Overrides] Could not find toggle id on cookies page')
-    } else {
-      doNotTrackToggle.setAttribute('hidden', 'true')
-    }
-  }
-})
+  `,
+)
 
-const BraveSettingsCookiePageBehavior = {
-  ready: function (this: SettingsCookiesPageElement) {
-    const siteList = this.shadowRoot!.getElementById('allow3pcExceptionsList')
-    if (!siteList) {
-      throw new Error(
-        '[Brave Settings Overrides] Could not find allow3pcExceptionsList'
-      )
-    }
-    const listHeader = siteList.shadowRoot!.getElementById('listHeader')
-    if (!listHeader) {
-      throw new Error(
-        '[Brave Settings Overrides] Could not find allow3pcExceptionsList'
-      )
-    }
-    const wrapper = document.createElement('div')
-    listHeader.parentNode!.insertBefore(wrapper, listHeader)
-    wrapper.appendChild(listHeader)
-    wrapper.appendChild(
-      html`<b>${loadTimeData.getString('cookieControlledByShieldsHeader')}</b>`
-    )
-  }
+// `firstUpdated` is `protected` on ReactiveElement, so reach it through an
+// untyped view of the prototype to patch it from outside the class hierarchy.
+const proto = SettingsCookiesPageElement.prototype as unknown as {
+  firstUpdated?: (changedProperties: PropertyValues) => void
 }
 
-RegisterPolymerComponentBehaviors({
-  'settings-cookies-page': [BraveSettingsCookiePageBehavior]
-})
+const originalFirstUpdated = proto.firstUpdated
+proto.firstUpdated = function (
+  this: SettingsCookiesPageElement,
+  changedProperties: PropertyValues,
+) {
+  originalFirstUpdated?.call(this, changedProperties)
+
+  const siteList = this.shadowRoot.getElementById('allow3pcExceptionsList')
+  if (!siteList) {
+    throw new Error(
+      '[Brave Settings Overrides] Could not find allow3pcExceptionsList'
+    )
+  }
+  const listHeader = siteList.shadowRoot!.getElementById('listHeader')
+  if (!listHeader) {
+    throw new Error(
+      '[Brave Settings Overrides] Could not find listHeader'
+    )
+  }
+  const wrapper = document.createElement('div')
+  listHeader.parentNode!.insertBefore(wrapper, listHeader)
+  wrapper.appendChild(listHeader)
+  wrapper.appendChild(
+    html`<b>${loadTimeData.getString('cookieControlledByShieldsHeader')}</b>`
+  )
+}

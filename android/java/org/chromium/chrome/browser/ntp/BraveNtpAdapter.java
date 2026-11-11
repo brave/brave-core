@@ -170,16 +170,24 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             mStatsHeight = NTPImageUtil.getViewHeight(statsViewHolder.itemView) + margin;
 
         } else if (holder instanceof TopSitesViewHolder) {
-            LinearLayout.LayoutParams layoutParams =
-                    new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT);
-            int margin = dpToPx(mActivity, CARD_MARGIN_DP);
-            layoutParams.setMargins(margin, margin, margin, 0);
+            if (!mIsTopSitesEnabled) {
+                mMvTilesContainerLayout.setVisibility(View.GONE);
+                mMvTilesContainerLayout.setLayoutParams(
+                        new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0));
+                mTopSitesHeight = 0;
+            } else {
+                LinearLayout.LayoutParams layoutParams =
+                        new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT);
+                int margin = dpToPx(mActivity, CARD_MARGIN_DP);
+                layoutParams.setMargins(margin, margin, margin, 0);
 
-            mMvTilesContainerLayout.setLayoutParams(layoutParams);
-            mMvTilesContainerLayout.setBackgroundResource(R.drawable.rounded_dark_bg_alpha);
-            mTopSitesHeight = NTPImageUtil.getViewHeight(holder.itemView) + margin;
+                mMvTilesContainerLayout.setVisibility(View.VISIBLE);
+                mMvTilesContainerLayout.setLayoutParams(layoutParams);
+                mMvTilesContainerLayout.setBackgroundResource(R.drawable.rounded_dark_bg_alpha);
+                mTopSitesHeight = NTPImageUtil.getViewHeight(holder.itemView) + margin;
+            }
 
         } else if (holder instanceof NewContentViewHolder) {
             NewContentViewHolder newContentViewHolder = (NewContentViewHolder) holder;
@@ -404,48 +412,53 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-        if (viewType == TYPE_STATS) {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.brave_stats_layout, parent, false);
-            return new StatsViewHolder(view);
 
-        } else if (viewType == TYPE_TOP_SITES) {
-            // mMvTilesContainerLayout may have been placed in the NTP layout tree by
-            // initializeSiteSectionView (via ViewStub inflation). Detach it first so
-            // RecyclerView can adopt it as an item view without an "already has a parent" error.
-            ViewGroup existingParent = (ViewGroup) mMvTilesContainerLayout.getParent();
-            if (existingParent != null) existingParent.removeView(mMvTilesContainerLayout);
-            return new TopSitesViewHolder(mMvTilesContainerLayout);
-
-        } else if (viewType == TYPE_NEW_CONTENT) {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.brave_news_load_new_content, parent, false);
-            return new NewContentViewHolder(view);
-
-        } else if (viewType == TYPE_IMAGE_CREDIT) {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.ntp_image_credit, parent, false);
-            return new ImageCreditViewHolder(view);
-
-        } else if (viewType == TYPE_NEWS_OPTIN) {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.optin_layout, parent, false);
-            return new NewsOptinViewHolder(view);
-
-        } else if (viewType == TYPE_NEWS_LOADING) {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.news_loading, parent, false);
-            return new NewsLoadingViewHolder(view);
-
-        } else if (viewType == TYPE_NEWS_NO_CONTENT_SOURCES) {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.brave_news_no_sources, parent, false);
-            return new NoSourcesViewHolder(view);
-
-        } else {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.brave_news_row, parent, false);
-            return new NewsViewHolder(view);
+        switch (viewType) {
+            case TYPE_STATS:
+                view =
+                        LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.brave_stats_layout, parent, false);
+                return new StatsViewHolder(view);
+            case TYPE_TOP_SITES:
+                {
+                    // mMvTilesContainerLayout may have been placed in the NTP layout tree by
+                    // initializeSiteSectionView (via ViewStub inflation). Detach it first so
+                    // RecyclerView can adopt it as an item view without an "already has a parent"
+                    // error.
+                    ViewGroup existingParent = (ViewGroup) mMvTilesContainerLayout.getParent();
+                    if (existingParent != null) existingParent.removeView(mMvTilesContainerLayout);
+                    return new TopSitesViewHolder(mMvTilesContainerLayout);
+                }
+            case TYPE_NEW_CONTENT:
+                view =
+                        LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.brave_news_load_new_content, parent, false);
+                return new NewContentViewHolder(view);
+            case TYPE_IMAGE_CREDIT:
+                view =
+                        LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.ntp_image_credit, parent, false);
+                return new ImageCreditViewHolder(view);
+            case TYPE_NEWS_OPTIN:
+                view =
+                        LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.optin_layout, parent, false);
+                return new NewsOptinViewHolder(view);
+            case TYPE_NEWS_LOADING:
+                view =
+                        LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.news_loading, parent, false);
+                return new NewsLoadingViewHolder(view);
+            case TYPE_NEWS_NO_CONTENT_SOURCES:
+                view =
+                        LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.brave_news_no_sources, parent, false);
+                return new NoSourcesViewHolder(view);
+            default:
+                view =
+                        LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.brave_news_row, parent, false);
+                return new NewsViewHolder(view);
         }
     }
 
@@ -488,7 +501,12 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public int getTopSitesCount() {
-        return mIsTopSitesEnabled ? 1 : 0;
+        // The Top Sites row wraps a reused singleton view (mMvTilesContainerLayout), not a
+        // fresh view RecyclerView creates/destroys. Removing/re-inserting it (notifyItemRemoved
+        // + notifyItemInserted) corrupts RecyclerView's predictive-layout bookkeeping if both
+        // ops land in the same deferred layout pass. Keep it a permanent slot; toggling only
+        // changes its bound content/visibility, never its presence in the adapter.
+        return 1;
     }
 
     public int getTopItemsCount() {
@@ -498,15 +516,9 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void setTopSitesEnabled(boolean isTopSitesEnabled) {
         if (mIsTopSitesEnabled != isTopSitesEnabled) {
             mIsTopSitesEnabled = isTopSitesEnabled;
-            if (mIsTopSitesEnabled) {
-                notifyItemInserted(getStatsCount());
-            } else {
-                notifyItemRemoved(getStatsCount());
-            }
-            // Rebind items shifted by the insert/remove above so they're positioned correctly.
-            notifyItemRangeChanged(
-                    getStatsCount(),
-                    getStatsCount() + getTopSitesCount() + getNewContentCount() + ONE_ITEM_SPACE);
+            // The row's position never changes (see getTopSitesCount()), so a rebind is all
+            // that's needed - no insert/remove, and nothing after it shifts.
+            notifyItemChanged(getStatsCount());
         }
     }
 

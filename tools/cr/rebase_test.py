@@ -20,16 +20,24 @@ This file is organised in three layers:
   dispatch via subprocess, exactly as in production -- nothing is mocked out.
 """
 
+from contextlib import redirect_stderr
+import contextlib
+import io
+import json
 import os
 import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
 import brockit
+import conflict_resolution
 import rebase
-from test.fake_chromium_repo import FakeChromiumRepo
+import repository
+from test.fake_chromium_repo import DEFAULT_BRANCH, FakeChromiumRepo
+from test.fake_terminal import ConsoleCapture
 
 
 class EntryLineParseTest(unittest.TestCase):
@@ -46,7 +54,8 @@ class EntryLineParseTest(unittest.TestCase):
     def test_parse_fixup_dash_c_multi_word_command(self):
         """`fixup -C <hash>` keeps both tokens as the command."""
         entry_line = rebase.EntryLine.parse(
-            'fixup -C 2c334294014 # amend! [cr149] Permit cross-host\n')
+            'fixup -C 2c334294014 # amend! [cr149] Permit cross-host\n'
+        )
         self.assertEqual(entry_line.command, 'fixup -C')
         self.assertEqual(entry_line.hash, '2c334294014')
         self.assertEqual(entry_line.message, '[cr149] Permit cross-host')
@@ -55,7 +64,8 @@ class EntryLineParseTest(unittest.TestCase):
     def test_parse_reassign_subcommand(self):
         """`reassign!<hash>!` is captured as two subcommand tokens."""
         entry_line = rebase.EntryLine.parse(
-            'pick zzz # reassign!c080270dd7e! [cr149] Fix bookmark bar.\n')
+            'pick zzz # reassign!c080270dd7e! [cr149] Fix bookmark bar.\n'
+        )
         self.assertEqual(entry_line.subcommand, ['reassign', 'c080270dd7e'])
         self.assertEqual(entry_line.message, '[cr149] Fix bookmark bar.')
 
@@ -68,19 +78,22 @@ class EntryLineParseTest(unittest.TestCase):
         `rewrite_plan` to orphan-drop the reassign."""
         entry_line = rebase.EntryLine.parse(
             'pick 04d3a656bb1 # reassign!859ab9caa74! [cr150][ios] Add '
-            '//brave/ios/browser/svg to visibility for //third_party/expat\n')
+            '//brave/ios/browser/svg to visibility for //third_party/expat\n'
+        )
         self.assertEqual(entry_line.subcommand, ['reassign', '859ab9caa74'])
         self.assertEqual(
             entry_line.message,
             '[cr150][ios] Add //brave/ios/browser/svg to visibility for '
-            '//third_party/expat')
+            '//third_party/expat',
+        )
         self.assertEqual(entry_line.reassign_target_hash, '859ab9caa74')
 
     def test_parse_trailing_empty_note(self):
         """A trailing ` # empty` marker is split into `note` and stripped
         out of the comment portion."""
         entry_line = rebase.EntryLine.parse(
-            'pick zzz # reassign!bbb! [cr148] Feature B # empty\n')
+            'pick zzz # reassign!bbb! [cr148] Feature B # empty\n'
+        )
         self.assertEqual(entry_line.note, 'empty')
         self.assertEqual(entry_line.message, '[cr148] Feature B')
         self.assertEqual(entry_line.subcommand, ['reassign', 'bbb'])
@@ -147,7 +160,8 @@ class EntryLineParseTest(unittest.TestCase):
         EntryType = rebase.EntryType
 
         pinned = rebase.EntryLine.parse(
-            'pick aaa # Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n')
+            'pick aaa # Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
+        )
         self.assertIs(pinned.entry_type, EntryType.PINNED)
         self.assertTrue(pinned.is_pinned)
         self.assertFalse(pinned.is_recyclable)
@@ -156,12 +170,14 @@ class EntryLineParseTest(unittest.TestCase):
 
         recyclable = rebase.EntryLine.parse(
             'pick bbb # Update patches from Chromium 1.0.0.0 to '
-            'Chromium 1.0.0.1.\n')
+            'Chromium 1.0.0.1.\n'
+        )
         self.assertIs(recyclable.entry_type, EntryType.RECYCLABLE)
         self.assertTrue(recyclable.is_recyclable)
 
         reassign = rebase.EntryLine.parse(
-            'pick zzz # reassign!bbb! [cr148] Feature B\n')
+            'pick zzz # reassign!bbb! [cr148] Feature B\n'
+        )
         self.assertIs(reassign.entry_type, EntryType.REASSIGNMENT)
         self.assertTrue(reassign.is_reassignment)
 
@@ -177,11 +193,13 @@ class EntryLineParseTest(unittest.TestCase):
         hash, and raises `NotImplementedError` for non-reassignment
         commits."""
         full = rebase.EntryLine.parse(
-            'pick zzz # reassign!c080270dd7e! [cr149] Fix bookmark bar.\n')
+            'pick zzz # reassign!c080270dd7e! [cr149] Fix bookmark bar.\n'
+        )
         self.assertEqual(full.reassign_target_hash, 'c080270dd7e')
 
         no_hash = rebase.EntryLine.parse(
-            'pick zzz # reassign! [cr149] Some subject.\n')
+            'pick zzz # reassign! [cr149] Some subject.\n'
+        )
         self.assertTrue(no_hash.is_reassignment)
         self.assertIsNone(no_hash.reassign_target_hash)
 
@@ -196,14 +214,14 @@ class EntryLineParseTest(unittest.TestCase):
         EntryType = rebase.EntryType
 
         drop = rebase.EntryLine.parse(
-            'pick zzz # drop!bbb! [cr148] Feature B\n')
+            'pick zzz # drop!bbb! [cr148] Feature B\n'
+        )
         self.assertIs(drop.entry_type, EntryType.DROP)
         self.assertTrue(drop.is_drop)
         self.assertFalse(drop.is_reassignment)
         self.assertEqual(drop.drop_target_hash, 'bbb')
 
-        no_hash = rebase.EntryLine.parse(
-            'pick zzz # drop! [cr148] Feature B\n')
+        no_hash = rebase.EntryLine.parse('pick zzz # drop! [cr148] Feature B\n')
         self.assertTrue(no_hash.is_drop)
         self.assertIsNone(no_hash.drop_target_hash)
 
@@ -219,7 +237,8 @@ class EntryLineParseTest(unittest.TestCase):
         subject does the work -- no special-case handling needed."""
         entry_line = rebase.EntryLine.parse(
             'fixup -C bbb # amend! Update from Chromium 1.0.0.0 to '
-            'Chromium 1.0.0.1\n')
+            'Chromium 1.0.0.1\n'
+        )
         self.assertIs(entry_line.entry_type, rebase.EntryType.PINNED)
         self.assertTrue(entry_line.is_pinned)
         self.assertEqual(entry_line.pinned_group, 'version')
@@ -235,19 +254,21 @@ class PatternMatchTest(unittest.TestCase):
     def test_strip_cr_tag_removes_chained_tags(self):
         """`[cr149][ios] ` collapses into nothing."""
         self.assertEqual(rebase._strip_cr_tag('[cr149][ios] Foo'), 'Foo')
-        self.assertEqual(rebase._strip_cr_tag('[cr149][ios][extra] Foo'),
-                         'Foo')
+        self.assertEqual(rebase._strip_cr_tag('[cr149][ios][extra] Foo'), 'Foo')
 
     def test_strip_cr_tag_leaves_unrelated_tag(self):
         """`[unrelated] ` is not a cr-tag; left in place."""
-        self.assertEqual(rebase._strip_cr_tag('[unrelated] Foo'),
-                         '[unrelated] Foo')
+        self.assertEqual(
+            rebase._strip_cr_tag('[unrelated] Foo'), '[unrelated] Foo'
+        )
 
     def test_strip_cr_tag_noop_on_untagged(self):
         self.assertEqual(
-            rebase._strip_cr_tag('Update from Chromium 1.0.0.0 to '
-                                 'Chromium 1.0.0.1'),
-            'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1')
+            rebase._strip_cr_tag(
+                'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1'
+            ),
+            'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1',
+        )
 
     def test_strip_autosquash_prefixes_handles_stacks(self):
         """`fixup! ` / `amend! ` / `squash! ` prefixes can stack when a
@@ -256,24 +277,31 @@ class PatternMatchTest(unittest.TestCase):
         self.assertEqual(
             rebase._strip_autosquash_prefixes(
                 'fixup! Conflict-resolved patches from Chromium 1.0.0.0 '
-                'to Chromium 1.0.0.1.'),
+                'to Chromium 1.0.0.1.'
+            ),
             'Conflict-resolved patches from Chromium 1.0.0.0 to '
-            'Chromium 1.0.0.1.')
+            'Chromium 1.0.0.1.',
+        )
         self.assertEqual(
             rebase._strip_autosquash_prefixes(
                 'fixup! fixup! fixup! Conflict-resolved patches from '
-                'Chromium 1.0.0.0 to Chromium 1.0.0.1.'),
+                'Chromium 1.0.0.0 to Chromium 1.0.0.1.'
+            ),
             'Conflict-resolved patches from Chromium 1.0.0.0 to '
-            'Chromium 1.0.0.1.')
+            'Chromium 1.0.0.1.',
+        )
         # Mixed prefixes also strip cleanly.
         self.assertEqual(
             rebase._strip_autosquash_prefixes(
-                'amend! fixup! squash! [cr149] IWYU fixes.'),
-            '[cr149] IWYU fixes.')
+                'amend! fixup! squash! [cr149] IWYU fixes.'
+            ),
+            '[cr149] IWYU fixes.',
+        )
         # Untagged subjects pass through unchanged.
         self.assertEqual(
             rebase._strip_autosquash_prefixes('Just a plain subject'),
-            'Just a plain subject')
+            'Just a plain subject',
+        )
 
     def test_pinned_match_survives_stacked_autosquash_prefixes(self):
         """A pinned subject buried under stacked `fixup!` prefixes still
@@ -281,86 +309,119 @@ class PatternMatchTest(unittest.TestCase):
         self.assertEqual(
             rebase.get_pinned_group_for_subject(
                 'fixup! fixup! Conflict-resolved patches from Chromium '
-                '1.0.0.0 to Chromium 1.0.0.1.'), 'conflict')
+                '1.0.0.0 to Chromium 1.0.0.1.'
+            ),
+            'conflict',
+        )
         self.assertEqual(
             rebase.get_pinned_group_for_subject('fixup! [cr149] IWYU fixes.'),
-            'iwyu')
+            'iwyu',
+        )
         # Stripping is composable with `[crNNN]` -- the autosquash
         # strip happens first, then `[crNNN]`.
         self.assertEqual(
             rebase.get_pinned_group_for_subject(
-                'amend! [cr149] `gnrt` run for Chromium 149.0.7827.5'), 'gnrt')
+                'amend! [cr149] `gnrt` run for Chromium 149.0.7827.5'
+            ),
+            'gnrt',
+        )
 
     def test_pinned_patterns_match_canonical_subjects(self):
         """Every pinned pattern matches its canonical subject form, both
         tagged and untagged where applicable."""
         cases = [
             ('version', 'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1'),
-            ('plaster_reruns',
-             'Apply-fixed 🩹 patches from Chromium 1.0.0.0 to '
-             'Chromium 1.0.0.1.'),
-            ('conflict', 'Conflict-resolved patches from Chromium 1.0.0.0 to '
-             'Chromium 1.0.0.1.'),
+            (
+                'plaster_reruns',
+                'Apply-fixed 🩹 patches from Chromium 1.0.0.0 to '
+                'Chromium 1.0.0.1.',
+            ),
+            (
+                'conflict',
+                'Conflict-resolved patches from Chromium 1.0.0.0 to '
+                'Chromium 1.0.0.1.',
+            ),
             ('gnrt', '[cr149] `gnrt` run for Chromium 149.0.7827.5'),
             ('iwyu', '[cr149] IWYU fixes.'),
             ('resource_ids', '[cr149] Bump resource_ids'),
             ('lit_mangler', '[cr149] Update Lit mangler snapshot'),
+            ('codehealth_tracker', '[cr149] Version CodeHealth tracker'),
+            ('lift_updates', '[cr149] Version lift updates.'),
             ('disable_tests', '[cr149] Disable failing upstream tests'),
             ('disable_tests', '[cr149] Filter upstream tests as needed'),
-            ('dead_upstream_tests',
-             '[cr149] Remove dead upstream tests from filters'),
+            (
+                'dead_upstream_tests',
+                '[cr149] Remove dead upstream tests from filters',
+            ),
         ]
         for expected_id, subject in cases:
             with self.subTest(subject=subject):
-                self.assertEqual(rebase.get_pinned_group_for_subject(subject),
-                                 expected_id)
+                self.assertEqual(
+                    rebase.get_pinned_group_for_subject(subject), expected_id
+                )
 
     def test_pinned_iwyu_untagged_form_also_matches(self):
         """The `[cr*]`-tagged patterns must also match without the tag."""
-        self.assertEqual(rebase.get_pinned_group_for_subject('IWYU fixes.'),
-                         'iwyu')
+        self.assertEqual(
+            rebase.get_pinned_group_for_subject('IWYU fixes.'), 'iwyu'
+        )
         self.assertEqual(
             rebase.get_pinned_group_for_subject('Bump resource_ids'),
-            'resource_ids')
+            'resource_ids',
+        )
 
     def test_pinned_rejects_near_misses(self):
         """Near-miss subjects should not match any pinned pattern."""
         self.assertIsNone(
             rebase.get_pinned_group_for_subject(
                 'Update from Chromium 1.0.0.0 to '
-                'Chromium 1.0.0.1 (revert pending)'))
+                'Chromium 1.0.0.1 (revert pending)'
+            )
+        )
         self.assertIsNone(
-            rebase.get_pinned_group_for_subject('[cr149] Feature work'))
+            rebase.get_pinned_group_for_subject('[cr149] Feature work')
+        )
         self.assertIsNone(
-            rebase.get_pinned_group_for_subject('Update from Chromium abc to '
-                                                'Chromium def'))
+            rebase.get_pinned_group_for_subject(
+                'Update from Chromium abc to Chromium def'
+            )
+        )
 
     def test_pinned_rejects_non_four_segment_versions(self):
         """Chromium versions must be exactly four dot-separated numeric
         segments. Three-segment or five-segment shapes are rejected."""
         self.assertIsNone(
             rebase.get_pinned_group_for_subject(
-                'Update from Chromium 1.0.0 to '
-                'Chromium 1.0.1'))
+                'Update from Chromium 1.0.0 to Chromium 1.0.1'
+            )
+        )
         self.assertIsNone(
             rebase.get_pinned_group_for_subject(
-                'Update from Chromium 1.0.0.0.0 to '
-                'Chromium 1.0.0.0.1'))
+                'Update from Chromium 1.0.0.0.0 to Chromium 1.0.0.0.1'
+            )
+        )
         self.assertIsNone(
             rebase.get_pinned_group_for_subject(
-                '`gnrt` run for Chromium 149.0.7827'))
+                '`gnrt` run for Chromium 149.0.7827'
+            )
+        )
 
     def test_recyclable_matches_canonical(self):
         self.assertTrue(
-            rebase.is_recyclable('Update patches from Chromium 1.0.0.0 '
-                                 'to Chromium 1.0.0.1.'))
+            rebase.is_recyclable(
+                'Update patches from Chromium 1.0.0.0 to Chromium 1.0.0.1.'
+            )
+        )
         self.assertTrue(
-            rebase.is_recyclable('Updated strings for Chromium 1.0.0.1.'))
+            rebase.is_recyclable('Updated strings for Chromium 1.0.0.1.')
+        )
 
     def test_recyclable_rejects_near_misses(self):
         self.assertFalse(
-            rebase.is_recyclable('Update from Chromium 1.0.0.0 to '
-                                 'Chromium 1.0.0.1'))
+            rebase.is_recyclable(
+                'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1'
+            )
+        )
         self.assertFalse(rebase.is_recyclable('[cr149] Feature work'))
 
 
@@ -371,9 +432,10 @@ class RewritePlanTest(unittest.TestCase):
     """
 
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        self._tmp_root = Path(tmp.name)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        tmp = stack.enter_context(tempfile.TemporaryDirectory())
+        self._tmp_root = Path(tmp)
 
     def _todo(self, content: str) -> Path:
         path = self._tmp_root / 'git-rebase-todo'
@@ -391,7 +453,8 @@ class RewritePlanTest(unittest.TestCase):
             'pick bbb # [cr148] Feature A\n'
             'pick ccc # Update patches from Chromium 1.0.0.0 to '
             'Chromium 1.0.0.1.\n'
-            'pick zzz # reassign!bbb! [cr148] Feature A\n')
+            'pick zzz # reassign!bbb! [cr148] Feature A\n'
+        )
 
         rebase.rewrite_plan(todo_file=path)
 
@@ -401,17 +464,17 @@ class RewritePlanTest(unittest.TestCase):
             'pick bbb # [cr148] Feature A\n'
             'pick ccc # Update patches from Chromium 1.0.0.0 to '
             'Chromium 1.0.0.1.\n'
-            'pick zzz # reassign!bbb! [cr148] Feature A\n')
+            'pick zzz # reassign!bbb! [cr148] Feature A\n',
+        )
 
     def test_identity_drops_comments_and_blanks_when_parsing(self):
         """When any flag forces a parse pass (here `discard_recyclable`),
         comments and blank lines are filtered out. With no flags set
         `rewrite` is a no-op (covered by
         `test_identity_transform_keeps_everything_in_order`)."""
-        path = self._todo('# Rebase plan generated by git\n'
-                          '\n'
-                          'pick aaa # [cr148] Feature A\n'
-                          '\n')
+        path = self._todo(
+            '# Rebase plan generated by git\n\npick aaa # [cr148] Feature A\n\n'
+        )
 
         rebase.rewrite_plan(todo_file=path, discard_recyclable=True)
 
@@ -428,7 +491,8 @@ class RewritePlanTest(unittest.TestCase):
             'pick ccc # Update patches from Chromium 1.0.0.0 to '
             'Chromium 1.0.0.1.\n'
             'pick ddd # Updated strings for Chromium 1.0.0.1.\n'
-            'pick zzz # reassign!bbb! [cr148] Feature A\n')
+            'pick zzz # reassign!bbb! [cr148] Feature A\n'
+        )
 
         rebase.rewrite_plan(todo_file=path, discard_recyclable=True)
 
@@ -436,7 +500,8 @@ class RewritePlanTest(unittest.TestCase):
             path.read_text(),
             'pick aaa # Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
             'pick bbb # [cr148] Feature A\n'
-            'pick zzz # reassign!bbb! [cr148] Feature A\n')
+            'pick zzz # reassign!bbb! [cr148] Feature A\n',
+        )
 
     # ----- pinned_squashed=True, discard_recyclable=False -------------------
 
@@ -444,7 +509,8 @@ class RewritePlanTest(unittest.TestCase):
         path = self._todo(
             'pick aaa # Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
             'pick bbb # Update from Chromium 1.0.0.1 to Chromium 1.0.0.2\n'
-            'pick ccc # Update from Chromium 1.0.0.2 to Chromium 1.0.0.3\n')
+            'pick ccc # Update from Chromium 1.0.0.2 to Chromium 1.0.0.3\n'
+        )
 
         rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
 
@@ -452,7 +518,8 @@ class RewritePlanTest(unittest.TestCase):
             path.read_text(),
             'pick aaa # Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
             'squash bbb # Update from Chromium 1.0.0.1 to Chromium 1.0.0.2\n'
-            'squash ccc # Update from Chromium 1.0.0.2 to Chromium 1.0.0.3\n')
+            'squash ccc # Update from Chromium 1.0.0.2 to Chromium 1.0.0.3\n',
+        )
 
     def test_squashed_reorders_pinned_groups_by_priority(self):
         """Pinned groups emit in the priority order:
@@ -470,7 +537,8 @@ class RewritePlanTest(unittest.TestCase):
             'to Chromium 1.0.0.1.\n'
             'pick ggg # Apply-fixed 🩹 patches from Chromium 1.0.0.0 '
             'to Chromium 1.0.0.1.\n'
-            'pick hhh # Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n')
+            'pick hhh # Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
+        )
 
         rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
 
@@ -486,7 +554,8 @@ class RewritePlanTest(unittest.TestCase):
             'pick ccc # [cr148] Bump resource_ids\n'
             'pick bbb # [cr148] Update Lit mangler snapshot\n'
             'pick aaa # [cr148] Disable failing upstream tests\n'
-            'pick zzz # [cr148] Remove dead upstream tests from filters\n')
+            'pick zzz # [cr148] Remove dead upstream tests from filters\n',
+        )
 
     def test_squashed_keeps_recyclable_lines_in_place(self):
         """Recyclable lines are NOT grouped or moved with pinned commits.
@@ -496,7 +565,8 @@ class RewritePlanTest(unittest.TestCase):
             'pick bbb # Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
             'pick ccc # Update patches from Chromium 1.0.0.0 to '
             'Chromium 1.0.0.1.\n'
-            'pick ddd # [cr148] Feature B\n')
+            'pick ddd # [cr148] Feature B\n'
+        )
 
         rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
 
@@ -508,7 +578,8 @@ class RewritePlanTest(unittest.TestCase):
             'pick aaa # [cr148] Feature A\n'
             'pick ccc # Update patches from Chromium 1.0.0.0 to '
             'Chromium 1.0.0.1.\n'
-            'pick ddd # [cr148] Feature B\n')
+            'pick ddd # [cr148] Feature B\n',
+        )
 
     def test_squashed_groups_fixup_of_pinned_with_target(self):
         """A `fixup -C` whose `amend!` subject matches a pinned pattern is
@@ -517,19 +588,61 @@ class RewritePlanTest(unittest.TestCase):
             'pick aaa # Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
             'fixup -C bbb # amend! Update from Chromium 1.0.0.0 to '
             'Chromium 1.0.0.1\n'
-            'pick ccc # [cr148] Feature A\n')
+            'pick ccc # [cr148] Feature A\n'
+        )
 
         rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
 
-        # The fixup line is in the version group as `squash`; its original
-        # `fixup -C` command is replaced by `squash` (it is no longer the
-        # first commit in the group).
+        # The amend line joins the version group but keeps `fixup -C`, so
+        # its message still replaces the target's.
         self.assertEqual(
             path.read_text(),
             'pick aaa # Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
-            'squash bbb # amend! Update from Chromium 1.0.0.0 to '
+            'fixup -C bbb # amend! Update from Chromium 1.0.0.0 to '
             'Chromium 1.0.0.1\n'
-            'pick ccc # [cr148] Feature A\n')
+            'pick ccc # [cr148] Feature A\n',
+        )
+
+    def test_squashed_keeps_attached_autosquash_commands(self):
+        """Attached `fixup`, `fixup -C` and `squash` markers keep git's
+        command inside a pinned group; only the plain pinned commits after
+        the first are forced to `squash`. Rewriting a plain `fixup` to
+        `squash` would make git keep the fixup's body (e.g. a trailer) as
+        part of the squashed message."""
+        path = self._todo(
+            'pick aaa # Apply-fixed 🩹 patches from Chromium 1.0.0.0 to '
+            'Chromium 1.0.0.1.\n'
+            'fixup bbb # fixup! Apply-fixed 🩹 patches from Chromium 1.0.0.0 '
+            'to Chromium 1.0.0.1.\n'
+            'pick ccc # [cr148] Feature A\n'
+            'pick ddd # Apply-fixed 🩹 patches from Chromium 1.0.0.1 to '
+            'Chromium 1.0.0.2.\n'
+            'fixup -C eee # amend! Apply-fixed 🩹 patches from Chromium '
+            '1.0.0.1 to Chromium 1.0.0.2.\n'
+            'squash fff # squash! Apply-fixed 🩹 patches from Chromium '
+            '1.0.0.1 to Chromium 1.0.0.2.\n'
+            'fixup -C ggg # amend! Apply-fixed 🩹 patches from Chromium '
+            '1.0.0.1 to Chromium 1.0.0.2. # empty\n'
+        )
+
+        rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
+
+        self.assertEqual(
+            path.read_text(),
+            'pick aaa # Apply-fixed 🩹 patches from Chromium 1.0.0.0 to '
+            'Chromium 1.0.0.1.\n'
+            'fixup bbb # fixup! Apply-fixed 🩹 patches from Chromium 1.0.0.0 '
+            'to Chromium 1.0.0.1.\n'
+            'squash ddd # Apply-fixed 🩹 patches from Chromium 1.0.0.1 to '
+            'Chromium 1.0.0.2.\n'
+            'fixup -C eee # amend! Apply-fixed 🩹 patches from Chromium '
+            '1.0.0.1 to Chromium 1.0.0.2.\n'
+            'squash fff # squash! Apply-fixed 🩹 patches from Chromium '
+            '1.0.0.1 to Chromium 1.0.0.2.\n'
+            'fixup -C ggg # amend! Apply-fixed 🩹 patches from Chromium '
+            '1.0.0.1 to Chromium 1.0.0.2. # empty\n'
+            'pick ccc # [cr148] Feature A\n',
+        )
 
     def test_squashed_groups_squash_autosquash_of_pinned(self):
         """A `squash <hash> # squash! <pinned-subject>` line -- distinct
@@ -540,7 +653,8 @@ class RewritePlanTest(unittest.TestCase):
             'pick aaa # [cr148] `gnrt` run for Chromium 1.0.0.1\n'
             'squash bbb # squash! [cr148] `gnrt` run for Chromium 1.0.0.1\n'
             'pick ccc # [cr148] Feature A\n'
-            'pick ddd # squash! [cr148] `gnrt` run for Chromium 1.0.0.1\n')
+            'pick ddd # squash! [cr148] `gnrt` run for Chromium 1.0.0.1\n'
+        )
 
         rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
 
@@ -553,21 +667,26 @@ class RewritePlanTest(unittest.TestCase):
             'pick aaa # [cr148] `gnrt` run for Chromium 1.0.0.1\n'
             'squash bbb # squash! [cr148] `gnrt` run for Chromium 1.0.0.1\n'
             'squash ddd # squash! [cr148] `gnrt` run for Chromium 1.0.0.1\n'
-            'pick ccc # [cr148] Feature A\n')
+            'pick ccc # [cr148] Feature A\n',
+        )
 
     def test_squashed_reassign_matched_by_hash(self):
         """Reassign with hash `bbb` finds the `pick bbb` line and inserts
         itself directly above it; target becomes `squash`."""
-        path = self._todo('pick aaa # [cr148] Feature A\n'
-                          'pick bbb # [cr148] Feature B\n'
-                          'pick zzz # reassign!bbb! [cr148] Feature B\n')
+        path = self._todo(
+            'pick aaa # [cr148] Feature A\n'
+            'pick bbb # [cr148] Feature B\n'
+            'pick zzz # reassign!bbb! [cr148] Feature B\n'
+        )
 
         rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
 
         self.assertEqual(
-            path.read_text(), 'pick aaa # [cr148] Feature A\n'
+            path.read_text(),
+            'pick aaa # [cr148] Feature A\n'
             'pick zzz # reassign!bbb! [cr148] Feature B\n'
-            'squash bbb # [cr148] Feature B\n')
+            'squash bbb # [cr148] Feature B\n',
+        )
 
     def test_squashed_reassign_target_hash_starts_with_digit(self):
         """Real-world regression: a `reassign!<hash>!` where the hash
@@ -583,7 +702,8 @@ class RewritePlanTest(unittest.TestCase):
             'pick 04d3a656bb1 # reassign!859ab9caa74! [cr150][ios] Add '
             '//brave/ios/browser/svg to visibility for '
             '//third_party/expat # empty\n'
-            'pick 9c160e03412 # [cr150] wip-reassing-bug\n')
+            'pick 9c160e03412 # [cr150] wip-reassing-bug\n'
+        )
 
         rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
 
@@ -595,30 +715,37 @@ class RewritePlanTest(unittest.TestCase):
             '//third_party/expat # empty\n'
             'squash 859ab9caa74 # [cr150][ios] Add //brave/ios/browser/svg '
             'to visibility for //third_party/expat\n'
-            'pick 9c160e03412 # [cr150] wip-reassing-bug\n')
+            'pick 9c160e03412 # [cr150] wip-reassing-bug\n',
+        )
 
     def test_squashed_reassign_falls_back_to_message_match(self):
         """Non-matching hash, matching message: the hash lookup misses,
         so the reassign falls back to matching by commit subject."""
-        path = self._todo('pick aaa # [cr148] Feature A\n'
-                          'pick bbb # [cr148] Feature B\n'
-                          'pick zzz # reassign!xxx! [cr148] Feature B\n')
+        path = self._todo(
+            'pick aaa # [cr148] Feature A\n'
+            'pick bbb # [cr148] Feature B\n'
+            'pick zzz # reassign!xxx! [cr148] Feature B\n'
+        )
 
         rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
 
         self.assertEqual(
-            path.read_text(), 'pick aaa # [cr148] Feature A\n'
+            path.read_text(),
+            'pick aaa # [cr148] Feature A\n'
             'pick zzz # reassign!xxx! [cr148] Feature B\n'
-            'squash bbb # [cr148] Feature B\n')
+            'squash bbb # [cr148] Feature B\n',
+        )
 
     def test_squashed_reassign_hash_match_wins_over_message_match(self):
         """Matching hash, non-matching message: hash lookup has priority.
         Even though the reassign's message also matches *another* commit
         in the plan, the hash-matching commit is the one that gets
         squashed."""
-        path = self._todo('pick aaa # Some completely different subject\n'
-                          'pick bbb # [cr148] Feature B\n'
-                          'pick zzz # reassign!aaa! [cr148] Feature B\n')
+        path = self._todo(
+            'pick aaa # Some completely different subject\n'
+            'pick bbb # [cr148] Feature B\n'
+            'pick zzz # reassign!aaa! [cr148] Feature B\n'
+        )
 
         rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
 
@@ -626,32 +753,39 @@ class RewritePlanTest(unittest.TestCase):
         # (whose subject matches the reassign's message) is left
         # untouched because hash-match took priority.
         self.assertEqual(
-            path.read_text(), 'pick zzz # reassign!aaa! [cr148] Feature B\n'
+            path.read_text(),
+            'pick zzz # reassign!aaa! [cr148] Feature B\n'
             'squash aaa # Some completely different subject\n'
-            'pick bbb # [cr148] Feature B\n')
+            'pick bbb # [cr148] Feature B\n',
+        )
 
     def test_squashed_reassign_without_hash_uses_message_match_only(self):
         """No-hash-in-subcommand (`reassign! <subject>` with a single
         `!`): the hash lookup is skipped entirely and the reassign is
         placed via message-based matching."""
-        path = self._todo('pick aaa # [cr148] Feature A\n'
-                          'pick bbb # [cr148] Feature B\n'
-                          'pick zzz # reassign! [cr148] Feature B\n')
+        path = self._todo(
+            'pick aaa # [cr148] Feature A\n'
+            'pick bbb # [cr148] Feature B\n'
+            'pick zzz # reassign! [cr148] Feature B\n'
+        )
 
         # Sanity check: the parser sees only one subcommand token, so
         # `reassign_target_hash` is None and the hash-lookup branch in
         # `add_reassign_before_target` is skipped.
         reassign = rebase.EntryLine.parse(
-            'pick zzz # reassign! [cr148] Feature B')
+            'pick zzz # reassign! [cr148] Feature B'
+        )
         self.assertEqual(reassign.subcommand, ['reassign'])
         self.assertIsNone(reassign.reassign_target_hash)
 
         rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
 
         self.assertEqual(
-            path.read_text(), 'pick aaa # [cr148] Feature A\n'
+            path.read_text(),
+            'pick aaa # [cr148] Feature A\n'
             'pick zzz # reassign! [cr148] Feature B\n'
-            'squash bbb # [cr148] Feature B\n')
+            'squash bbb # [cr148] Feature B\n',
+        )
 
     def test_squashed_reassign_to_pinned_target_is_dropped(self):
         """Reassignment of a pinned commit is not supported. The reassign
@@ -661,21 +795,24 @@ class RewritePlanTest(unittest.TestCase):
             'pick aaa # [cr148] Feature A\n'
             'pick bbb # Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
             'pick zzz # reassign!bbb! Update from Chromium 1.0.0.0 to '
-            'Chromium 1.0.0.1\n')
+            'Chromium 1.0.0.1\n'
+        )
 
         rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
 
         self.assertEqual(
             path.read_text(),
             'pick bbb # Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
-            'pick aaa # [cr148] Feature A\n')
+            'pick aaa # [cr148] Feature A\n',
+        )
 
     def test_squashed_orphan_reassign_dropped(self):
         """A reassign whose hash and subject both miss is silently
         dropped."""
         path = self._todo(
             'pick aaa # [cr148] Feature A\n'
-            'pick zzz # reassign!xxx! [cr148] Completely unrelated subject\n')
+            'pick zzz # reassign!xxx! [cr148] Completely unrelated subject\n'
+        )
 
         rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
 
@@ -687,34 +824,97 @@ class RewritePlanTest(unittest.TestCase):
         path = self._todo(
             'pick aaa # [cr148] Feature A\n'
             'pick bbb # [cr148] Feature B\n'
-            'pick zzz # reassign!xxx! [cr148] Feature B # empty\n')
+            'pick zzz # reassign!xxx! [cr148] Feature B # empty\n'
+        )
 
         rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
 
         self.assertEqual(
-            path.read_text(), 'pick aaa # [cr148] Feature A\n'
+            path.read_text(),
+            'pick aaa # [cr148] Feature A\n'
             'pick zzz # reassign!xxx! [cr148] Feature B # empty\n'
-            'squash bbb # [cr148] Feature B\n')
+            'squash bbb # [cr148] Feature B\n',
+        )
 
     # ----- pinned_squashed=True, drop! markers ------------------------------
 
     def test_squashed_drop_removes_target_and_marker(self):
         """A `drop!<hash>!` removes both its target (matched by hash) and
         itself from the plan."""
-        path = self._todo('pick aaa # [cr148] Feature A\n'
-                          'pick bbb # [cr148] Feature B\n'
-                          'pick zzz # drop!bbb! [cr148] Feature B\n')
+        path = self._todo(
+            'pick aaa # [cr148] Feature A\n'
+            'pick bbb # [cr148] Feature B\n'
+            'pick zzz # drop!bbb! [cr148] Feature B\n'
+        )
 
         rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
 
         self.assertEqual(path.read_text(), 'pick aaa # [cr148] Feature A\n')
 
+    def test_squashed_drop_of_a_pinned_commit(self):
+        """A `drop!` of a commit in a pinned group removes it from the group,
+        rather than being discarded as orphaned, which would keep the target
+        and lose a `drop --revert`'s revert."""
+        path = self._todo(
+            'pick aaa # [cr158] Feature A\n'
+            'pick ccc # [cr158] Version CodeHealth tracker\n'
+            'pick ddd # [cr158] Version CodeHealth tracker\n'
+            'pick zzz # drop!ddd! [cr158] Version CodeHealth tracker\n'
+        )
+
+        rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
+
+        self.assertEqual(
+            path.read_text(),
+            'pick ccc # [cr158] Version CodeHealth tracker\n'
+            'pick aaa # [cr158] Feature A\n',
+        )
+
+    def test_squashed_drop_of_a_pinned_group_first_commit(self):
+        """Dropping a group's first commit makes the next one its `pick`."""
+        path = self._todo(
+            'pick ccc # [cr158] Version CodeHealth tracker\n'
+            'pick ddd # [cr158] Version CodeHealth tracker\n'
+            'pick zzz # drop!ccc! [cr158] Version CodeHealth tracker\n'
+        )
+
+        rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
+
+        self.assertEqual(
+            path.read_text(), 'pick ddd # [cr158] Version CodeHealth tracker\n'
+        )
+
+    def test_squashed_drop_removes_the_target_fixups(self):
+        """The `fixup`/`fixup -C`/`squash` lines git attached to the target go
+        with it, rather than squashing into the commit before it."""
+        path = self._todo(
+            'pick aaa # [cr148] Feature A\n'
+            'pick bbb # [cr148] Feature B\n'
+            'fixup ccc # fixup! [cr148] Feature B\n'
+            'fixup -C ddd # amend! [cr148] Feature B\n'
+            'squash eee # squash! [cr148] Feature B\n'
+            'pick fff # [cr148] Feature F\n'
+            'fixup ggg # fixup! [cr148] Feature F\n'
+            'pick zzz # drop!bbb! [cr148] Feature B\n'
+        )
+
+        rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
+
+        self.assertEqual(
+            path.read_text(),
+            'pick aaa # [cr148] Feature A\n'
+            'pick fff # [cr148] Feature F\n'
+            'fixup ggg # fixup! [cr148] Feature F\n',
+        )
+
     def test_squashed_drop_falls_back_to_message_match(self):
         """A non-matching hash falls back to dropping the commit whose
         subject matches the drop's message."""
-        path = self._todo('pick aaa # [cr148] Feature A\n'
-                          'pick bbb # [cr148] Feature B\n'
-                          'pick zzz # drop!xxx! [cr148] Feature B\n')
+        path = self._todo(
+            'pick aaa # [cr148] Feature A\n'
+            'pick bbb # [cr148] Feature B\n'
+            'pick zzz # drop!xxx! [cr148] Feature B\n'
+        )
 
         rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
 
@@ -725,7 +925,8 @@ class RewritePlanTest(unittest.TestCase):
         (its marker line is removed), leaving the rest of the plan alone."""
         path = self._todo(
             'pick aaa # [cr148] Feature A\n'
-            'pick zzz # drop!xxx! [cr148] Completely unrelated subject\n')
+            'pick zzz # drop!xxx! [cr148] Completely unrelated subject\n'
+        )
 
         rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
 
@@ -734,9 +935,11 @@ class RewritePlanTest(unittest.TestCase):
     def test_squashed_drop_with_empty_suffix(self):
         """The ` # empty` suffix on a drop is stripped before the
         message-based lookup, just like reassign."""
-        path = self._todo('pick aaa # [cr148] Feature A\n'
-                          'pick bbb # [cr148] Feature B\n'
-                          'pick zzz # drop!xxx! [cr148] Feature B # empty\n')
+        path = self._todo(
+            'pick aaa # [cr148] Feature A\n'
+            'pick bbb # [cr148] Feature B\n'
+            'pick zzz # drop!xxx! [cr148] Feature B # empty\n'
+        )
 
         rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
 
@@ -746,16 +949,20 @@ class RewritePlanTest(unittest.TestCase):
         """Like reassign, drop markers are only acted on under
         `pinned_squashed`. With only `discard_recyclable`, the marker and its
         target are left in place."""
-        path = self._todo('pick aaa # [cr148] Feature A\n'
-                          'pick bbb # [cr148] Feature B\n'
-                          'pick zzz # drop!bbb! [cr148] Feature B\n')
+        path = self._todo(
+            'pick aaa # [cr148] Feature A\n'
+            'pick bbb # [cr148] Feature B\n'
+            'pick zzz # drop!bbb! [cr148] Feature B\n'
+        )
 
         rebase.rewrite_plan(todo_file=path, discard_recyclable=True)
 
         self.assertEqual(
-            path.read_text(), 'pick aaa # [cr148] Feature A\n'
+            path.read_text(),
+            'pick aaa # [cr148] Feature A\n'
             'pick bbb # [cr148] Feature B\n'
-            'pick zzz # drop!bbb! [cr148] Feature B\n')
+            'pick zzz # drop!bbb! [cr148] Feature B\n',
+        )
 
     # ----- pinned_squashed=True, discard_recyclable=True --------------------
 
@@ -765,30 +972,32 @@ class RewritePlanTest(unittest.TestCase):
             'pick bbb # Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
             'pick ccc # Update patches from Chromium 1.0.0.0 to '
             'Chromium 1.0.0.1.\n'
-            'pick ddd # [cr148] Feature B\n')
+            'pick ddd # [cr148] Feature B\n'
+        )
 
-        rebase.rewrite_plan(todo_file=path,
-                            pinned_squashed=True,
-                            discard_recyclable=True)
+        rebase.rewrite_plan(
+            todo_file=path, pinned_squashed=True, discard_recyclable=True
+        )
 
         self.assertEqual(
             path.read_text(),
             'pick bbb # Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
             'pick aaa # [cr148] Feature A\n'
-            'pick ddd # [cr148] Feature B\n')
+            'pick ddd # [cr148] Feature B\n',
+        )
 
-    def test_combined_reassign_orphaned_when_target_is_dropped_recyclable(
-            self):
+    def test_combined_reassign_orphaned_when_target_is_dropped_recyclable(self):
         """A reassign targeting a recyclable that gets dropped becomes
         orphaned in phase B."""
         path = self._todo(
             'pick aaa # [cr148] Feature A\n'
             'pick ccc # Updated strings for Chromium 1.0.0.1.\n'
-            'pick zzz # reassign!ccc! Updated strings for Chromium 1.0.0.1.\n')
+            'pick zzz # reassign!ccc! Updated strings for Chromium 1.0.0.1.\n'
+        )
 
-        rebase.rewrite_plan(todo_file=path,
-                            pinned_squashed=True,
-                            discard_recyclable=True)
+        rebase.rewrite_plan(
+            todo_file=path, pinned_squashed=True, discard_recyclable=True
+        )
 
         self.assertEqual(path.read_text(), 'pick aaa # [cr148] Feature A\n')
 
@@ -799,8 +1008,10 @@ class RewritePlanTest(unittest.TestCase):
         only when `rewrite` actually parses the file (i.e. at least one
         flag is set). The brockit dispatch catches this and punts to the
         editor with the failure reason prepended as a `#`-comment."""
-        path = self._todo('pick aaa # [cr148] Feature A\n'
-                          'totally malformed line without hash or hash\n')
+        path = self._todo(
+            'pick aaa # [cr148] Feature A\n'
+            'totally malformed line without hash or hash\n'
+        )
 
         with self.assertRaises(rebase.EditorRecoverableFailure):
             rebase.rewrite_plan(todo_file=path, discard_recyclable=True)
@@ -816,9 +1027,10 @@ class MessageWriterTest(unittest.TestCase):
     """
 
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        self._tmp_root = Path(tmp.name)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        tmp = stack.enter_context(tempfile.TemporaryDirectory())
+        self._tmp_root = Path(tmp)
 
     def _file(self, content: str) -> Path:
         path = self._tmp_root / 'COMMIT_EDITMSG'
@@ -833,71 +1045,94 @@ class MessageWriterTest(unittest.TestCase):
         """Block 1 is a version-bump subject; block 2 is the next bump.
         Parse accepts (pinned first block); `rewrite_with_last_message`
         writes the trailing block's message back to the file."""
-        path = self._file('# This is the 1st commit message:\n'
-                          '\n'
-                          'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
-                          '\n'
-                          '# This is the commit message #2:\n'
-                          '\n'
-                          'Update from Chromium 1.0.0.1 to Chromium 1.0.0.2\n')
+        path = self._file(
+            '# This is the 1st commit message:\n'
+            '\n'
+            'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
+            '\n'
+            '# This is the commit message #2:\n'
+            '\n'
+            'Update from Chromium 1.0.0.1 to Chromium 1.0.0.2\n'
+        )
 
         writer = rebase.MessageWriter.parse(path)
 
-        self.assertEqual(self._messages(writer), [
-            'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1',
-            'Update from Chromium 1.0.0.1 to Chromium 1.0.0.2',
-        ])
+        self.assertEqual(
+            self._messages(writer),
+            [
+                'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1',
+                'Update from Chromium 1.0.0.1 to Chromium 1.0.0.2',
+            ],
+        )
 
         writer.rewrite_with_last_message()
-        self.assertEqual(path.read_text(),
-                         'Update from Chromium 1.0.0.1 to Chromium 1.0.0.2\n')
+        self.assertEqual(
+            path.read_text(),
+            'Update from Chromium 1.0.0.1 to Chromium 1.0.0.2\n',
+        )
 
     def test_reassignment_squash_writes_target_message(self):
         """A `reassign!` first content line in block 1 is accepted by
         parse. The reassign block stays in `blocks`, but it's block 2
         (carrying the original commit's subject and body) that gets
         written back -- because it's the last block."""
-        path = self._file('# This is the 1st commit message:\n'
-                          '\n'
-                          'reassign!bbb! [cr148] Feature B\n'
-                          '\n'
-                          '# This is the commit message #2:\n'
-                          '\n'
-                          '[cr148] Feature B\n'
-                          '\n'
-                          'Original body line.\n')
+        path = self._file(
+            '# This is the 1st commit message:\n'
+            '\n'
+            'reassign!bbb! [cr148] Feature B\n'
+            '\n'
+            '# This is the commit message #2:\n'
+            '\n'
+            '[cr148] Feature B\n'
+            '\n'
+            'Original body line.\n'
+        )
 
         writer = rebase.MessageWriter.parse(path)
 
-        self.assertEqual(self._messages(writer), [
-            'reassign!bbb! [cr148] Feature B',
-            '[cr148] Feature B\n\nOriginal body line.',
-        ])
+        self.assertEqual(
+            self._messages(writer),
+            [
+                'reassign!bbb! [cr148] Feature B',
+                '[cr148] Feature B\n\nOriginal body line.',
+            ],
+        )
 
         writer.rewrite_with_last_message()
-        self.assertEqual(path.read_text(),
-                         '[cr148] Feature B\n\nOriginal body line.\n')
+        self.assertEqual(
+            path.read_text(), '[cr148] Feature B\n\nOriginal body line.\n'
+        )
 
     def test_unclassifiable_first_block_raises(self):
         """Block 1 whose first content line is neither `reassign!` nor a
         pinned pattern raises `EditorRecoverableFailure`. The exception
         message names the offending content line so the caller can
         surface it to the user."""
-        path = self._file('# This is the 1st commit message:\n'
-                          '\n'
-                          '[cr148] Some regular feature commit\n')
+        path = self._file(
+            '# This is the 1st commit message:\n'
+            '\n'
+            '[cr148] Some regular feature commit\n'
+        )
 
         with self.assertRaises(rebase.EditorRecoverableFailure) as ctx:
             rebase.MessageWriter.parse(path)
-        self.assertIn('[cr148] Some regular feature commit',
-                      str(ctx.exception))
+        self.assertIn('[cr148] Some regular feature commit', str(ctx.exception))
 
-    def test_parse_failure_wrapped_in_cannot_classify(self):
-        """An empty file (no blocks parse out) also raises
-        `EditorRecoverableFailure`."""
-        path = self._file('')
-        with self.assertRaises(rebase.EditorRecoverableFailure):
-            rebase.MessageWriter.parse(path)
+    def test_message_that_is_not_a_squash_is_left_alone(self):
+        """The message of a commit `git rebase --continue` makes after a
+        conflict has no blocks to choose from, so there is nothing to
+        rewrite."""
+        path = self._file(
+            '[cr148] Some regular feature commit\n'
+            '\n'
+            '# Conflicts:\n'
+            '#\tdata.txt\n'
+            '\n'
+            '# Please enter the commit message for your changes. Lines '
+            'starting\n'
+        )
+
+        self.assertIsNone(rebase.MessageWriter.parse(path))
 
     def test_squash_marker_merges_into_previous_block(self):
         """A block whose autosquash note is `# squash! ...` is merged
@@ -912,16 +1147,20 @@ class MessageWriterTest(unittest.TestCase):
             '\n'
             '# squash! Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
             '\n'
-            'Some extra detail\n')
+            'Some extra detail\n'
+        )
 
         writer = rebase.MessageWriter.parse(path)
 
         # Single merged block: block 1's content with the squash content
         # appended on a new line.
-        self.assertEqual(self._messages(writer), [
-            'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
-            'Some extra detail',
-        ])
+        self.assertEqual(
+            self._messages(writer),
+            [
+                'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
+                'Some extra detail',
+            ],
+        )
 
     def test_will_be_skipped_block_contributes_nothing(self):
         """The skipped-block header is treated as a pure delimiter; its
@@ -937,14 +1176,18 @@ class MessageWriterTest(unittest.TestCase):
             '\n'
             '# This is the commit message #3:\n'
             '\n'
-            'Update from Chromium 1.0.0.1 to Chromium 1.0.0.2\n')
+            'Update from Chromium 1.0.0.1 to Chromium 1.0.0.2\n'
+        )
 
         writer = rebase.MessageWriter.parse(path)
 
-        self.assertEqual(self._messages(writer), [
-            'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1',
-            'Update from Chromium 1.0.0.1 to Chromium 1.0.0.2',
-        ])
+        self.assertEqual(
+            self._messages(writer),
+            [
+                'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1',
+                'Update from Chromium 1.0.0.1 to Chromium 1.0.0.2',
+            ],
+        )
 
     def test_bare_fixup_block_is_skipped(self):
         """When the user has stacked `fixup!` commits on top of an
@@ -973,16 +1216,84 @@ class MessageWriterTest(unittest.TestCase):
             '# This is the commit message #4:\n'
             '\n'
             'Conflict-resolved patches from Chromium 1.0.0.2 to '
-            'Chromium 1.0.0.3.\n')
+            'Chromium 1.0.0.3.\n'
+        )
 
         writer = rebase.MessageWriter.parse(path)
 
-        self.assertEqual(self._messages(writer), [
-            'Conflict-resolved patches from Chromium 1.0.0.0 to '
-            'Chromium 1.0.0.1.',
-            'Conflict-resolved patches from Chromium 1.0.0.2 to '
-            'Chromium 1.0.0.3.',
-        ])
+        self.assertEqual(
+            self._messages(writer),
+            [
+                'Conflict-resolved patches from Chromium 1.0.0.0 to '
+                'Chromium 1.0.0.1.',
+                'Conflict-resolved patches from Chromium 1.0.0.2 to '
+                'Chromium 1.0.0.3.',
+            ],
+        )
+
+    def test_fixup_block_with_body_is_skipped(self):
+        """A `fixup!` commit with a body (e.g. a `Co-Authored-By` trailer)
+        that ends up in a squash block must not contribute its body -- git
+        discards a fixup's message -- and must never become the trailing
+        message."""
+        path = self._file(
+            '# This is a combination of 2 commits.\n'
+            '# This is the 1st commit message:\n'
+            '\n'
+            'Apply-fixed 🩹 patches from Chromium 1.0.0.0 to '
+            'Chromium 1.0.0.1.\n'
+            '\n'
+            '# This is the commit message #2:\n'
+            '\n'
+            '# fixup! Apply-fixed 🩹 patches from Chromium 1.0.0.0 to '
+            'Chromium 1.0.0.1.\n'
+            '\n'
+            'Co-Authored-By: Someone <someone@example.com>\n'
+        )
+
+        writer = rebase.MessageWriter.parse(path)
+
+        self.assertEqual(
+            self._messages(writer),
+            [
+                'Apply-fixed 🩹 patches from Chromium 1.0.0.0 to '
+                'Chromium 1.0.0.1.'
+            ],
+        )
+        writer.rewrite_with_last_message()
+        self.assertEqual(
+            path.read_text(),
+            'Apply-fixed 🩹 patches from Chromium 1.0.0.0 to '
+            'Chromium 1.0.0.1.\n',
+        )
+
+    def test_amend_block_becomes_trailing_message(self):
+        """An `amend!` (also produced by `--fixup=reword:`) block carries
+        the replacement message, so it is kept and wins as the last
+        block."""
+        path = self._file(
+            '# This is the 1st commit message:\n'
+            '\n'
+            'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
+            '\n'
+            '# This is the commit message #2:\n'
+            '\n'
+            '# amend! Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
+            '\n'
+            'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
+            '\n'
+            'Reworded body.\n'
+        )
+
+        writer = rebase.MessageWriter.parse(path)
+        writer.rewrite_with_last_message()
+
+        self.assertEqual(
+            path.read_text(),
+            'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
+            '\n'
+            'Reworded body.\n',
+        )
 
     def test_git_footer_terminates_parsing(self):
         """Anything after `# Please enter the commit message ...` is
@@ -998,12 +1309,15 @@ class MessageWriterTest(unittest.TestCase):
             '# with \'#\' will be ignored, and an empty message aborts the '
             'commit.\n'
             '#\n'
-            '# interactive rebase in progress; onto 5e0f42a4157\n')
+            '# interactive rebase in progress; onto 5e0f42a4157\n'
+        )
 
         writer = rebase.MessageWriter.parse(path)
 
-        self.assertEqual(self._messages(writer),
-                         ['Update from Chromium 1.0.0.0 to Chromium 1.0.0.1'])
+        self.assertEqual(
+            self._messages(writer),
+            ['Update from Chromium 1.0.0.0 to Chromium 1.0.0.1'],
+        )
 
     def test_hand_off_to_editor_invokes_supplied_editor(self):
         """The caller-supplied `editor` is what gets spawned, via
@@ -1027,14 +1341,16 @@ class MessageWriterTest(unittest.TestCase):
         with patch.object(rebase.terminal, 'run') as mock_run:
             rebase.hand_off_to_editor(path, reason='', editor='code --wait')
         mock_run.assert_called_once_with(
-            ['code', '--wait', str(path)], interactive=True)
+            ['code', '--wait', str(path)], interactive=True
+        )
 
         with patch.object(rebase.terminal, 'run') as mock_run:
             rebase.hand_off_to_editor(
-                path, reason='', editor='my_editor --feature="with space"')
+                path, reason='', editor='my_editor --feature="with space"'
+            )
         mock_run.assert_called_once_with(
-            ['my_editor', '--feature=with space',
-             str(path)], interactive=True)
+            ['my_editor', '--feature=with space', str(path)], interactive=True
+        )
 
     def test_hand_off_to_editor_prepends_reason_as_comment(self):
         """When `reason` is supplied, every line is prepended to the
@@ -1046,7 +1362,8 @@ class MessageWriterTest(unittest.TestCase):
             rebase.hand_off_to_editor(
                 path,
                 reason='Cannot classify commit\nFix it manually',
-                editor='vim')
+                editor='vim',
+            )
 
         self.assertEqual(
             path.read_text(),
@@ -1056,7 +1373,8 @@ class MessageWriterTest(unittest.TestCase):
             '# Cannot classify commit\n'
             '# Fix it manually\n'
             'original line 1\n'
-            'original line 2\n')
+            'original line 2\n',
+        )
 
     def test_hand_off_to_editor_no_reason_leaves_file_alone(self):
         """With an empty `reason`, the file content is untouched -- only
@@ -1072,8 +1390,10 @@ class MessageWriterTest(unittest.TestCase):
         """If the resolved env var holds a brockit `--internal-rebase-*`
         dispatch, `get_git_editor` is being called too late and would
         loop on itself; raise `NotImplementedError` instead."""
-        overridden = ('/path/to/vpython3 /path/to/brockit.py '
-                      '--internal-rebase-plan-squash-pinned')
+        overridden = (
+            '/path/to/vpython3 /path/to/brockit.py '
+            '--internal-rebase-plan-squash-pinned'
+        )
         with patch.dict(os.environ, {'GIT_EDITOR': overridden}, clear=False):
             with self.assertRaises(NotImplementedError):
                 rebase.get_git_editor()
@@ -1083,9 +1403,10 @@ class RebaseRecommitHelperTest(unittest.TestCase):
     """Tests for the `brockit.Rebase.recommit_in_rebase_plan` transformer."""
 
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        self._tmp_root = Path(tmp.name)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        tmp = stack.enter_context(tempfile.TemporaryDirectory())
+        self._tmp_root = Path(tmp)
 
     def _todo(self, content: str) -> Path:
         """Writes `content` to a fresh todo file and returns its path."""
@@ -1095,16 +1416,14 @@ class RebaseRecommitHelperTest(unittest.TestCase):
 
     def test_recommit_flips_only_first_pick(self):
         """The first occurrence of `pick` becomes `edit`; later `pick`s stay."""
-        path = self._todo('pick aaa # one\n'
-                          'pick bbb # two\n'
-                          'pick ccc # three\n')
+        path = self._todo('pick aaa # one\npick bbb # two\npick ccc # three\n')
 
         brockit.Rebase.recommit_in_rebase_plan(path)
 
         self.assertEqual(
-            path.read_text(), 'edit aaa # one\n'
-            'pick bbb # two\n'
-            'pick ccc # three\n')
+            path.read_text(),
+            'edit aaa # one\npick bbb # two\npick ccc # three\n',
+        )
 
     def test_recommit_no_pick_leaves_file_unchanged(self):
         """A todo file with no `pick` lines is untouched."""
@@ -1132,11 +1451,13 @@ class RebaseExecuteTest(unittest.TestCase):
         v100 = self.repo.update_brave_version('1.0.0.0')
         v101 = self.repo.update_brave_version('1.0.0.1')
         self.repo._run_git_command(['checkout', '-b', 'feature-branch'], brave)
-        self.repo.write_and_stage_file('feature.txt', 'feature content\n',
-                                       brave)
+        self.repo.write_and_stage_file(
+            'feature.txt', 'feature content\n', brave
+        )
         feature = self.repo.commit('Add brave-only feature.txt', brave)
         self.repo._run_git_command(
-            ['push', '--set-upstream', 'origin', 'feature-branch'], brave)
+            ['push', '--set-upstream', 'origin', 'feature-branch'], brave
+        )
         self.repo._run_git_command(['checkout', 'master'], brave)
         v102 = self.repo.update_brave_version('1.0.0.2')
         self.repo._run_git_command(['checkout', 'feature-branch'], brave)
@@ -1144,16 +1465,19 @@ class RebaseExecuteTest(unittest.TestCase):
 
     def _git_log_subjects(self, ref: str = 'HEAD') -> list:
         out = self.repo._run_git_command(
-            ['log', '--reverse', '--format=%s', ref], self.repo.brave)
+            ['log', '--reverse', '--format=%s', ref], self.repo.brave
+        )
         return out.splitlines() if out else []
 
     def _commit_with_file(self, message: str) -> str:
         """Adds a small unique file and commits it -- a real change so
         `--empty=drop` doesn't strip it."""
         self._commit_counter += 1
-        self.repo.write_and_stage_file(f'gen-{self._commit_counter}.txt',
-                                       f'content {self._commit_counter}\n',
-                                       self.repo.brave)
+        self.repo.write_and_stage_file(
+            f'gen-{self._commit_counter}.txt',
+            f'content {self._commit_counter}\n',
+            self.repo.brave,
+        )
         return self.repo.commit(message, self.repo.brave)
 
     def test_no_flags_is_a_passthrough_rebase(self):
@@ -1161,61 +1485,78 @@ class RebaseExecuteTest(unittest.TestCase):
         target."""
         scenario = self._seed_bump_branch()
 
-        brockit.Rebase().execute(from_ref=scenario['v101'],
-                                 to_ref=scenario['v102'],
-                                 recommit=False,
-                                 discard_regen_changes=False,
-                                 squash_minor_bumps=False)
+        brockit.Rebase().execute(
+            from_ref=scenario['v101'],
+            to_ref=scenario['v102'],
+            recommit=False,
+            discard_regen_changes=False,
+            squash_minor_bumps=False,
+        )
 
-        self.assertEqual(self._git_log_subjects()[-1],
-                         'Add brave-only feature.txt')
-        parent = self.repo._run_git_command(['rev-parse', 'HEAD^'],
-                                            self.repo.brave)
+        self.assertEqual(
+            self._git_log_subjects()[-1], 'Add brave-only feature.txt'
+        )
+        parent = self.repo._run_git_command(
+            ['rev-parse', 'HEAD^'], self.repo.brave
+        )
         self.assertEqual(parent, scenario['v102'])
 
     def test_discard_regen_changes_drops_recyclable(self):
         scenario = self._seed_bump_branch()
         self._commit_with_file(
-            'Update patches from Chromium 1.0.0.1 to Chromium 1.0.0.2.')
+            'Update patches from Chromium 1.0.0.1 to Chromium 1.0.0.2.'
+        )
         self._commit_with_file('Updated strings for Chromium 1.0.0.2.')
         self._commit_with_file('[cr148] Another brave-only feature.')
 
-        brockit.Rebase().execute(from_ref=scenario['v101'],
-                                 to_ref=scenario['v102'],
-                                 recommit=False,
-                                 discard_regen_changes=True,
-                                 squash_minor_bumps=False)
+        brockit.Rebase().execute(
+            from_ref=scenario['v101'],
+            to_ref=scenario['v102'],
+            recommit=False,
+            discard_regen_changes=True,
+            squash_minor_bumps=False,
+        )
 
         subjects = self._git_log_subjects(scenario['v102'] + '..HEAD')
-        self.assertEqual(subjects, [
-            'Add brave-only feature.txt',
-            '[cr148] Another brave-only feature.',
-        ])
+        self.assertEqual(
+            subjects,
+            [
+                'Add brave-only feature.txt',
+                '[cr148] Another brave-only feature.',
+            ],
+        )
 
     def test_squash_minor_bumps_collapses_pinned(self):
         """Squash groups version bumps at the top and keeps the trailing
         message. Regular commits stay below in arrival order."""
         scenario = self._seed_bump_branch()
         self._commit_with_file(
-            'Update from Chromium 1.0.0.2 to Chromium 1.0.0.3')
+            'Update from Chromium 1.0.0.2 to Chromium 1.0.0.3'
+        )
         self._commit_with_file('[cr148] Some unrelated feature commit')
         self._commit_with_file(
-            'Update from Chromium 1.0.0.3 to Chromium 1.0.0.4')
+            'Update from Chromium 1.0.0.3 to Chromium 1.0.0.4'
+        )
 
-        brockit.Rebase().execute(from_ref=scenario['v101'],
-                                 to_ref=scenario['v102'],
-                                 recommit=False,
-                                 discard_regen_changes=False,
-                                 squash_minor_bumps=True)
+        brockit.Rebase().execute(
+            from_ref=scenario['v101'],
+            to_ref=scenario['v102'],
+            recommit=False,
+            discard_regen_changes=False,
+            squash_minor_bumps=True,
+        )
 
         subjects = self._git_log_subjects(scenario['v102'] + '..HEAD')
         # Version bumps fold into the trailing message; the original
         # feature commit and the unrelated feature stay in arrival order.
-        self.assertEqual(subjects, [
-            'Update from Chromium 1.0.0.3 to Chromium 1.0.0.4',
-            'Add brave-only feature.txt',
-            '[cr148] Some unrelated feature commit',
-        ])
+        self.assertEqual(
+            subjects,
+            [
+                'Update from Chromium 1.0.0.3 to Chromium 1.0.0.4',
+                'Add brave-only feature.txt',
+                '[cr148] Some unrelated feature commit',
+            ],
+        )
 
     def _commit_fixup(self, target: str = 'HEAD') -> str:
         """Stages a unique gen-N.txt and commits it with `git commit
@@ -1225,13 +1566,17 @@ class RebaseExecuteTest(unittest.TestCase):
         previous fixup as target) yields a `fixup! fixup! <subject>`
         subject -- the marker-only blocks that broke `MsgBlock.parse`."""
         self._commit_counter += 1
-        self.repo.write_and_stage_file(f'gen-{self._commit_counter}.txt',
-                                       f'fixup {self._commit_counter}\n',
-                                       self.repo.brave)
-        self.repo._run_git_command(['commit', f'--fixup={target}'],
-                                   self.repo.brave)
-        return self.repo._run_git_command(['rev-parse', 'HEAD'],
-                                          self.repo.brave)
+        self.repo.write_and_stage_file(
+            f'gen-{self._commit_counter}.txt',
+            f'fixup {self._commit_counter}\n',
+            self.repo.brave,
+        )
+        self.repo._run_git_command(
+            ['commit', f'--fixup={target}'], self.repo.brave
+        )
+        return self.repo._run_git_command(
+            ['rev-parse', 'HEAD'], self.repo.brave
+        )
 
     def test_squash_minor_bumps_with_stacked_fixup_commits(self):
         """Regression: `git commit --fixup=<conflict-resolved commit>` (and
@@ -1246,47 +1591,163 @@ class RebaseExecuteTest(unittest.TestCase):
         scenario = self._seed_bump_branch()
         first_pinned = self._commit_with_file(
             'Conflict-resolved patches from Chromium 1.0.0.1 to '
-            'Chromium 1.0.0.2.')
+            'Chromium 1.0.0.2.'
+        )
         inner_fixup = self._commit_fixup(target=first_pinned)
         self._commit_fixup(target=inner_fixup)
         self._commit_with_file(
             'Conflict-resolved patches from Chromium 1.0.0.2 to '
-            'Chromium 1.0.0.3.')
+            'Chromium 1.0.0.3.'
+        )
 
-        brockit.Rebase().execute(from_ref=scenario['v101'],
-                                 to_ref=scenario['v102'],
-                                 recommit=False,
-                                 discard_regen_changes=False,
-                                 squash_minor_bumps=True)
+        brockit.Rebase().execute(
+            from_ref=scenario['v101'],
+            to_ref=scenario['v102'],
+            recommit=False,
+            discard_regen_changes=False,
+            squash_minor_bumps=True,
+        )
 
         subjects = self._git_log_subjects(scenario['v102'] + '..HEAD')
-        self.assertEqual(subjects, [
-            'Conflict-resolved patches from Chromium 1.0.0.2 to '
-            'Chromium 1.0.0.3.',
-            'Add brave-only feature.txt',
-        ])
+        self.assertEqual(
+            subjects,
+            [
+                'Conflict-resolved patches from Chromium 1.0.0.2 to '
+                'Chromium 1.0.0.3.',
+                'Add brave-only feature.txt',
+            ],
+        )
+
+    def _seed_two_apply_fixed(self) -> dict:
+        """Seeds the bump branch plus two `Apply-fixed` pinned commits that
+        `squash_minor_bumps` collapses into one."""
+        scenario = self._seed_bump_branch()
+        scenario['first'] = self._commit_with_file(
+            'Apply-fixed 🩹 patches from Chromium 1.0.0.1 to Chromium 1.0.0.2.'
+        )
+        scenario['last'] = self._commit_with_file(
+            'Apply-fixed 🩹 patches from Chromium 1.0.0.2 to Chromium 1.0.0.3.'
+        )
+        return scenario
+
+    def _subject_of(self, ref: str) -> str:
+        return self.repo._run_git_command(
+            ['log', '-1', '--format=%s', ref], self.repo.brave
+        )
+
+    def _squash_and_get_pinned_message(self, scenario: dict) -> str:
+        """Runs `squash_minor_bumps` and returns the full message of the
+        squashed pinned commit, which lands right on top of `v102`."""
+        brockit.Rebase().execute(
+            from_ref=scenario['v101'],
+            to_ref=scenario['v102'],
+            recommit=False,
+            discard_regen_changes=False,
+            squash_minor_bumps=True,
+        )
+        first_rebased = self.repo._run_git_command(
+            ['rev-list', '--reverse', scenario['v102'] + '..HEAD'],
+            self.repo.brave,
+        ).splitlines()[0]
+        return self.repo._run_git_command(
+            ['log', '-1', '--format=%B', first_rebased], self.repo.brave
+        )
+
+    def test_squash_minor_bumps_ignores_fixup_body(self):
+        """Regression: `git commit --fixup=<pinned> -m <trailer>` gives the
+        fixup a body. That body must be discarded like git does for any
+        fixup, not become the squashed pinned commit's message."""
+        scenario = self._seed_two_apply_fixed()
+        self._commit_counter += 1
+        self.repo.write_and_stage_file(
+            f'gen-{self._commit_counter}.txt', 'fixup\n', self.repo.brave
+        )
+        self.repo._run_git_command(
+            [
+                'commit',
+                f'--fixup={scenario["last"]}',
+                '-m',
+                'Co-Authored-By: Someone <someone@example.com>',
+            ],
+            self.repo.brave,
+        )
+
+        self.assertEqual(
+            self._squash_and_get_pinned_message(scenario),
+            'Apply-fixed 🩹 patches from Chromium 1.0.0.2 to Chromium 1.0.0.3.',
+        )
+
+    def test_squash_minor_bumps_applies_amend_message(self):
+        """`git commit --fixup=amend:<pinned>` replaces the target's message,
+        and that replacement survives the pinned squash."""
+        scenario = self._seed_two_apply_fixed()
+        self._commit_counter += 1
+        self.repo.write_and_stage_file(
+            f'gen-{self._commit_counter}.txt', 'amend\n', self.repo.brave
+        )
+        # Same message `--fixup=amend:` produces, without needing an editor.
+        self.repo.commit(
+            f'amend! {self._subject_of(scenario["last"])}\n\n'
+            'Apply-fixed 🩹 patches from Chromium 1.0.0.2 to Chromium 1.0.0.3.'
+            '\n\nAmended body.',
+            self.repo.brave,
+        )
+
+        self.assertEqual(
+            self._squash_and_get_pinned_message(scenario),
+            'Apply-fixed 🩹 patches from Chromium 1.0.0.2 to Chromium 1.0.0.3.'
+            '\n\nAmended body.',
+        )
+
+    def test_squash_minor_bumps_applies_reword_message(self):
+        """`git commit --fixup=reword:<pinned>` is an empty `amend!` commit;
+        its message also replaces the target's through the pinned squash."""
+        scenario = self._seed_two_apply_fixed()
+        self.repo._run_git_command(
+            [
+                'commit',
+                '--allow-empty',
+                '-m',
+                f'amend! {self._subject_of(scenario["last"])}\n\n'
+                'Apply-fixed 🩹 patches from Chromium 1.0.0.2 to Chromium '
+                '1.0.0.3.\n\nReworded body.',
+            ],
+            self.repo.brave,
+        )
+
+        self.assertEqual(
+            self._squash_and_get_pinned_message(scenario),
+            'Apply-fixed 🩹 patches from Chromium 1.0.0.2 to Chromium 1.0.0.3.'
+            '\n\nReworded body.',
+        )
 
     def test_recommit_amends_first_commit(self):
         """`--recommit` flips the first `pick` to `edit`, then amends and
         continues -- the rebased commit gets a fresh hash but keeps its
         subject."""
         scenario = self._seed_bump_branch()
-        before = self.repo._run_git_command(['rev-parse', 'HEAD'],
-                                            self.repo.brave)
+        before = self.repo._run_git_command(
+            ['rev-parse', 'HEAD'], self.repo.brave
+        )
 
-        brockit.Rebase().execute(from_ref=scenario['v101'],
-                                 to_ref=scenario['v102'],
-                                 recommit=True,
-                                 discard_regen_changes=False,
-                                 squash_minor_bumps=False)
+        brockit.Rebase().execute(
+            from_ref=scenario['v101'],
+            to_ref=scenario['v102'],
+            recommit=True,
+            discard_regen_changes=False,
+            squash_minor_bumps=False,
+        )
 
-        after = self.repo._run_git_command(['rev-parse', 'HEAD'],
-                                           self.repo.brave)
+        after = self.repo._run_git_command(
+            ['rev-parse', 'HEAD'], self.repo.brave
+        )
         self.assertNotEqual(after, before)
-        self.assertEqual(self._git_log_subjects()[-1],
-                         'Add brave-only feature.txt')
-        parent = self.repo._run_git_command(['rev-parse', 'HEAD^'],
-                                            self.repo.brave)
+        self.assertEqual(
+            self._git_log_subjects()[-1], 'Add brave-only feature.txt'
+        )
+        parent = self.repo._run_git_command(
+            ['rev-parse', 'HEAD^'], self.repo.brave
+        )
         self.assertEqual(parent, scenario['v102'])
 
     def test_resolves_to_ref_upstream_label(self):
@@ -1294,17 +1755,21 @@ class RebaseExecuteTest(unittest.TestCase):
         local and origin agree, the rebase is a no-op and the branch HEAD
         remains the feature commit."""
         scenario = self._seed_bump_branch()
-        head_before = self.repo._run_git_command(['rev-parse', 'HEAD'],
-                                                 self.repo.brave)
+        head_before = self.repo._run_git_command(
+            ['rev-parse', 'HEAD'], self.repo.brave
+        )
 
-        brockit.Rebase().execute(from_ref=scenario['v101'],
-                                 to_ref=None,
-                                 recommit=False,
-                                 discard_regen_changes=False,
-                                 squash_minor_bumps=False)
+        brockit.Rebase().execute(
+            from_ref=scenario['v101'],
+            to_ref=None,
+            recommit=False,
+            discard_regen_changes=False,
+            squash_minor_bumps=False,
+        )
 
-        head_after = self.repo._run_git_command(['rev-parse', 'HEAD'],
-                                                self.repo.brave)
+        head_after = self.repo._run_git_command(
+            ['rev-parse', 'HEAD'], self.repo.brave
+        )
         self.assertEqual(head_after, head_before)
 
     def test_invalid_from_ref_raises(self):
@@ -1312,11 +1777,13 @@ class RebaseExecuteTest(unittest.TestCase):
         self._seed_bump_branch()
 
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Rebase().execute(from_ref='not-a-real-ref-name',
-                                     to_ref='HEAD',
-                                     recommit=False,
-                                     discard_regen_changes=False,
-                                     squash_minor_bumps=False)
+            brockit.Rebase().execute(
+                from_ref='not-a-real-ref-name',
+                to_ref='HEAD',
+                recommit=False,
+                discard_regen_changes=False,
+                squash_minor_bumps=False,
+            )
 
     def test_rebase_in_progress_raises(self):
         """An in-progress rebase is rejected before starting a new one."""
@@ -1326,26 +1793,33 @@ class RebaseExecuteTest(unittest.TestCase):
         self._commit_with_file('Second feature change')
         # Start an interactive rebase that stops on an `edit` command.
         env = {
-            **os.environ, 'GIT_SEQUENCE_EDITOR': "sed -i.bak '1s/^pick/edit/'"
+            **os.environ,
+            'GIT_SEQUENCE_EDITOR': "sed -i.bak '1s/^pick/edit/'",
         }
-        subprocess.run(['git', 'rebase', '-i', 'HEAD~2'],
-                       cwd=brave,
-                       env=env,
-                       capture_output=True,
-                       text=True,
-                       check=True)
+        subprocess.run(
+            ['git', 'rebase', '-i', 'HEAD~2'],
+            cwd=brave,
+            env=env,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
         try:
             with self.assertRaises(brockit.InvalidInputException):
-                brockit.Rebase().execute(from_ref=scenario['v101'],
-                                         to_ref=scenario['v102'],
-                                         recommit=False,
-                                         discard_regen_changes=False,
-                                         squash_minor_bumps=False)
+                brockit.Rebase().execute(
+                    from_ref=scenario['v101'],
+                    to_ref=scenario['v102'],
+                    recommit=False,
+                    discard_regen_changes=False,
+                    squash_minor_bumps=False,
+                )
         finally:
-            subprocess.run(['git', 'rebase', '--abort'],
-                           cwd=brave,
-                           capture_output=True,
-                           check=False)
+            subprocess.run(
+                ['git', 'rebase', '--abort'],
+                cwd=brave,
+                capture_output=True,
+                check=False,
+            )
 
     def test_warns_when_rebase_base_differs_from_merge_base(self):
         """Warns when the rebase base doesn't match `merge`'s merge-base.
@@ -1357,11 +1831,13 @@ class RebaseExecuteTest(unittest.TestCase):
 
         ctx, _ = self._intercept_rebase()
         with ctx, patch.object(brockit.logging, 'warning') as warn:
-            brockit.Rebase().execute(from_ref=scenario['v100'],
-                                     to_ref=scenario['v102'],
-                                     recommit=False,
-                                     discard_regen_changes=False,
-                                     squash_minor_bumps=False)
+            brockit.Rebase().execute(
+                from_ref=scenario['v100'],
+                to_ref=scenario['v102'],
+                recommit=False,
+                discard_regen_changes=False,
+                squash_minor_bumps=False,
+            )
 
         warn.assert_called_once()
         self.assertIn('merge-base', warn.call_args[0][0])
@@ -1375,11 +1851,13 @@ class RebaseExecuteTest(unittest.TestCase):
 
         ctx, _ = self._intercept_rebase()
         with ctx, patch.object(brockit.logging, 'warning') as warn:
-            brockit.Rebase().execute(from_ref=scenario['v101'],
-                                     to_ref=scenario['v102'],
-                                     recommit=False,
-                                     discard_regen_changes=False,
-                                     squash_minor_bumps=False)
+            brockit.Rebase().execute(
+                from_ref=scenario['v101'],
+                to_ref=scenario['v102'],
+                recommit=False,
+                discard_regen_changes=False,
+                squash_minor_bumps=False,
+            )
 
         warn.assert_not_called()
 
@@ -1392,11 +1870,13 @@ class RebaseExecuteTest(unittest.TestCase):
         self.repo.commit('Add x', brave)
 
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Rebase().execute(from_ref='HEAD~1',
-                                     to_ref=None,
-                                     recommit=False,
-                                     discard_regen_changes=False,
-                                     squash_minor_bumps=False)
+            brockit.Rebase().execute(
+                from_ref='HEAD~1',
+                to_ref=None,
+                recommit=False,
+                discard_regen_changes=False,
+                squash_minor_bumps=False,
+            )
 
     # The two defaulting tests below intercept the `git rebase` invocation so
     # the rebase itself doesn't execute -- they verify only the *decision* of
@@ -1438,18 +1918,21 @@ class RebaseExecuteTest(unittest.TestCase):
 
         ctx, rebase_calls = self._intercept_rebase()
         with ctx:
-            brockit.Rebase().execute(from_ref=None,
-                                     to_ref=scenario['v102'],
-                                     recommit=False,
-                                     discard_regen_changes=False,
-                                     squash_minor_bumps=False)
+            brockit.Rebase().execute(
+                from_ref=None,
+                to_ref=scenario['v102'],
+                recommit=False,
+                discard_regen_changes=False,
+                squash_minor_bumps=False,
+            )
 
         self.assertEqual(len(rebase_calls), 1)
         to_ref, from_ref, branch = self._parse_rebase_cmd(rebase_calls[0])
         # `_solve_brave_ref` returns a relative form like `<hash>~1`; resolve
         # it back to a full hash for comparison.
-        resolved = self.repo._run_git_command(['rev-parse', from_ref],
-                                              self.repo.brave)
+        resolved = self.repo._run_git_command(
+            ['rev-parse', from_ref], self.repo.brave
+        )
         self.assertEqual(to_ref, scenario['v102'])
         self.assertEqual(resolved, scenario['v100'])
         self.assertEqual(branch, 'feature-branch')
@@ -1468,7 +1951,8 @@ class RebaseExecuteTest(unittest.TestCase):
         self.repo.write_and_stage_file('feature.txt', 'feature\n', brave)
         self.repo.commit('Add brave-only feature.txt', brave)
         self.repo._run_git_command(
-            ['push', '--set-upstream', 'origin', 'feature-major'], brave)
+            ['push', '--set-upstream', 'origin', 'feature-major'], brave
+        )
 
         # Master advances to a new major.
         self.repo._run_git_command(['checkout', 'master'], brave)
@@ -1478,15 +1962,18 @@ class RebaseExecuteTest(unittest.TestCase):
         # @previous-major walks v200 -> v100 (different major, break), and
         # returns v200~1, which resolves to the v100 commit.
         expected_resolved = self.repo._run_git_command(
-            ['rev-parse', f'{v200}~1'], brave)
+            ['rev-parse', f'{v200}~1'], brave
+        )
 
         ctx, rebase_calls = self._intercept_rebase()
         with ctx:
-            brockit.Rebase().execute(from_ref=None,
-                                     to_ref=v300,
-                                     recommit=False,
-                                     discard_regen_changes=False,
-                                     squash_minor_bumps=False)
+            brockit.Rebase().execute(
+                from_ref=None,
+                to_ref=v300,
+                recommit=False,
+                discard_regen_changes=False,
+                squash_minor_bumps=False,
+            )
 
         self.assertEqual(len(rebase_calls), 1)
         to_ref, from_ref, branch = self._parse_rebase_cmd(rebase_calls[0])
@@ -1496,31 +1983,506 @@ class RebaseExecuteTest(unittest.TestCase):
         self.assertEqual(branch, 'feature-major')
 
     def test_rebase_failure_raises_invalid_input(self):
-        """A genuine git rebase failure (merge conflict on a tracked file) is
+        """A rebase git refuses to start (here, over unstaged changes) is
         translated into `InvalidInputException`."""
-        brave = self.repo.brave
-        # Common ancestor: data.txt with content "A\n"
-        self.repo.write_and_stage_file('data.txt', 'A\n', brave)
-        base = self.repo.commit('Add data.txt', brave)
-
-        # Branch B: modifies data.txt to "B\n"
-        self.repo._run_git_command(['checkout', '-b', 'branch-b'], brave)
-        (brave / 'data.txt').write_text('B\n')
-        self.repo._run_git_command(['add', 'data.txt'], brave)
-        target = self.repo.commit('Set data.txt to B', brave)
-
-        # Branch A (current): modifies data.txt to "C\n"
-        self.repo._run_git_command(['checkout', '-b', 'branch-a', base], brave)
-        (brave / 'data.txt').write_text('C\n')
-        self.repo._run_git_command(['add', 'data.txt'], brave)
-        self.repo.commit('Set data.txt to C', brave)
+        scenario = self._seed_bump_branch()
+        (self.repo.brave / 'feature.txt').write_text('unstaged\n')
 
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Rebase().execute(from_ref=base,
-                                     to_ref=target,
-                                     recommit=False,
-                                     discard_regen_changes=False,
-                                     squash_minor_bumps=False)
+            brockit.Rebase().execute(
+                from_ref=scenario['v101'],
+                to_ref=scenario['v102'],
+                recommit=False,
+                discard_regen_changes=False,
+                squash_minor_bumps=False,
+            )
+        self.assertFalse(repository.brave.is_rebase_in_progress())
+
+
+# A raw patch, which a rule takes from the commit when the base only moved
+# its context, and a file no rule knows about.
+RAW_PATCH = 'patches/chrome-browser-bar.cc.patch'
+DATA = 'data.txt'
+
+
+def _raw_patch(context: str) -> str:
+    """A raw patch whose only context line is `context`."""
+    return (
+        'diff --git a/chrome/browser/bar.cc b/chrome/browser/bar.cc\n'
+        '--- a/chrome/browser/bar.cc\n'
+        '+++ b/chrome/browser/bar.cc\n'
+        '@@ -1,2 +1,2 @@\n'
+        '-  ChromeThing thing;\n'
+        '+  BraveThing thing;\n'
+        f' {context}\n'
+    )
+
+
+class RebaseStopTest(unittest.TestCase):
+    """End-to-end tests for the stops of `Rebase.execute()`.
+
+    A rebase resolves the conflicts that have a fixed answer as it goes, stops
+    on any other, and `--continue` carries on from the stop with the handling
+    the rebase started with. Each scenario rebases a `feature` branch onto the
+    default branch, which changed the same files after `feature` forked.
+    """
+
+    def setUp(self):
+        self.repo = FakeChromiumRepo()
+        self.repo.setup()
+        self.addCleanup(self.repo.cleanup)
+        self.console = ConsoleCapture().install()
+        self.addCleanup(self.console.uninstall)
+        # Files left for the user are opened in VS Code, when running in it.
+        patcher = patch.object(brockit, 'VsCodeIpcConnection')
+        self.vscode = patcher.start()
+        self.addCleanup(patcher.stop)
+        # Git opens the user's editor for the commit it makes after a stop,
+        # unless brockit composes the message. `true` saves it as proposed.
+        self.use_editor('true')
+
+    def use_editor(self, editor: str) -> None:
+        """Makes `editor` the user's editor."""
+        patcher = patch.dict(os.environ, {'GIT_EDITOR': editor})
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def git(self, *args: str) -> str:
+        return self.repo._run_git_command(list(args), self.repo.brave)
+
+    def commit(self, subject: str, files: dict[str, str]) -> str:
+        for path, contents in files.items():
+            self.repo.write_and_stage_file(path, contents, self.repo.brave)
+        return self.repo.commit(subject, self.repo.brave)
+
+    def build(
+        self,
+        *,
+        ancestor: dict[str, str],
+        base: dict[str, str],
+        commits: list[tuple[str, dict[str, str]]],
+    ) -> str:
+        """Builds `feature` with `commits`, and moves the default branch on.
+
+        Both start from `ancestor`, and the default branch then changes `base`.
+        Returns the commit they fork from.
+        """
+        fork = self.commit('Add the files', ancestor)
+        self.git('checkout', '--quiet', '-b', 'feature')
+        for subject, files in commits:
+            self.commit(subject, files)
+        self.git('checkout', '--quiet', DEFAULT_BRANCH)
+        self.commit('Change the files upstream', base)
+        self.git('checkout', '--quiet', 'feature')
+        return fork
+
+    def rebase(self, fork: str, *, squash_minor_bumps: bool = False) -> None:
+        brockit.Rebase().execute(
+            from_ref=fork,
+            to_ref=DEFAULT_BRANCH,
+            squash_minor_bumps=squash_minor_bumps,
+        )
+
+    def stop_on_data(self, *, squash_minor_bumps: bool = False) -> str:
+        """Stops a rebase on a commit conflicting on `DATA` and `RAW_PATCH`.
+
+        Only the patch has a fixed answer. Returns the commit's subject.
+        """
+        subject = 'Change the data'
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n', RAW_PATCH: _raw_patch('// ancestor')},
+            base={DATA: 'base\n', RAW_PATCH: _raw_patch('// base')},
+            commits=[
+                (
+                    subject,
+                    {DATA: 'commit\n', RAW_PATCH: _raw_patch('// commit')},
+                )
+            ],
+        )
+        with self.assertRaises(brockit.ActionNeededException):
+            self.rebase(fork, squash_minor_bumps=squash_minor_bumps)
+        return subject
+
+    def resolve_data(self) -> None:
+        """Resolves the `DATA` conflict, as the user would."""
+        self.repo.write_and_stage_file(DATA, 'resolved\n', self.repo.brave)
+
+    def conflicted(self) -> list[str]:
+        return self.git('diff', '--name-only', '--diff-filter=U').splitlines()
+
+    def committed(self, path: str) -> str:
+        return self.repo._run_git_command(
+            ['show', f'HEAD:{path}'], self.repo.brave, strip=False
+        )
+
+    def subjects(self) -> list[str]:
+        return self.git(
+            'log', '--reverse', '--format=%s', f'{DEFAULT_BRANCH}..HEAD'
+        ).splitlines()
+
+    def changed(self, commit: str) -> list[str]:
+        return self.git('show', '--format=', '--name-only', commit).splitlines()
+
+    # The base's own commit also changes `other`, so that none of the
+    # branch's commits is patch-identical to it, which git would leave out of
+    # the plan: they only come out empty.
+
+    def test_a_pinned_group_whose_pick_is_on_the_base_stays_its_own(self):
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={'tool': 'x\n', 'other': 'o\n'},
+            commits=[
+                ('Version CodeHealth tracker', {'tracker': 't\n'}),
+                ('Version lift updates', {'tool': 'x\n'}),
+                ('Version lift updates', {'tool': 'x\ny\n'}),
+            ],
+        )
+
+        self.rebase(fork, squash_minor_bumps=True)
+
+        self.assertEqual(
+            ['Version CodeHealth tracker', 'Version lift updates'],
+            self.subjects(),
+        )
+        self.assertEqual(['tool'], self.changed('HEAD'))
+        self.assertEqual(['tracker'], self.changed('HEAD~1'))
+        self.assertEqual('x\ny\n', self.committed('tool'))
+
+    def test_a_pinned_group_that_cancels_out_is_dropped(self):
+        fork = self.build(
+            ancestor={'snap': 'a\n'},
+            base={'other': 'o\n'},
+            commits=[
+                ('Version CodeHealth tracker', {'tracker': 't\n'}),
+                ('Update Lit mangler snapshot', {'snap': 'b\n'}),
+                ('Update Lit mangler snapshot', {'snap': 'a\n'}),
+            ],
+        )
+
+        self.rebase(fork, squash_minor_bumps=True)
+
+        self.assertEqual(['Version CodeHealth tracker'], self.subjects())
+
+    def test_a_fixup_of_a_commit_that_came_out_empty_keeps_its_change(self):
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={'tool': 'x\n', 'other': 'o\n'},
+            commits=[
+                ('Add the tool', {'tool': 'x\n'}),
+                ('fixup! Add the tool', {'tool': 'x\ny\n'}),
+            ],
+        )
+
+        self.rebase(fork)
+
+        # On its own, rather than amending the base's commit.
+        self.assertEqual(['fixup! Add the tool'], self.subjects())
+        self.assertEqual('x\ny\n', self.committed('tool'))
+        self.assertEqual(
+            'Change the files upstream',
+            self.git('log', '-1', '--format=%s', DEFAULT_BRANCH),
+        )
+
+    def test_a_commit_that_came_out_empty_is_dropped(self):
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={'tool': 'x\n', 'other': 'o\n'},
+            commits=[
+                ('Add the tool', {'tool': 'x\n'}),
+                ('Add a feature', {'feature': 'f\n'}),
+            ],
+        )
+
+        self.rebase(fork)
+
+        self.assertEqual(['Add a feature'], self.subjects())
+
+    def test_resolves_the_conflicts_with_a_fixed_answer(self):
+        fork = self.build(
+            ancestor={RAW_PATCH: _raw_patch('// ancestor')},
+            base={RAW_PATCH: _raw_patch('// base')},
+            commits=[
+                ('Regenerate the patch', {RAW_PATCH: _raw_patch('// commit')})
+            ],
+        )
+
+        self.rebase(fork)
+
+        self.assertFalse(repository.brave.is_rebase_in_progress())
+        self.assertEqual(self.subjects(), ['Regenerate the patch'])
+        self.assertEqual(self.committed(RAW_PATCH), _raw_patch('// commit'))
+        self.assertIn(
+            f'{conflict_resolution.Rule.CONTEXT_ONLY_PATCH.value}:\n'
+            f'    ✔ {RAW_PATCH}',
+            self.console.text,
+        )
+
+    def test_stops_on_a_conflict_without_a_fixed_answer(self):
+        subject = self.stop_on_data()
+
+        self.assertTrue(repository.brave.is_rebase_in_progress())
+        # The patch is resolved and staged, and the data is left.
+        self.assertEqual(self.conflicted(), [DATA])
+        self.assertIn(f'    ✔ {RAW_PATCH}', self.console.text)
+        self.assertRegex(
+            self.console.text,
+            rf'Resolve the conflicts left in [0-9a-f]{{12}} \({subject}\) '
+            rf'\(action needed\):\n    ✘ {DATA}',
+        )
+        self.vscode.return_value.open_file.assert_called_once_with(
+            [repository.brave.root / DATA]
+        )
+
+    def test_continue_finishes_once_the_user_resolved_the_rest(self):
+        subject = self.stop_on_data()
+        self.resolve_data()
+        mark = self.console.mark()
+
+        brockit.Rebase().execute(is_continuation=True)
+
+        self.assertFalse(repository.brave.is_rebase_in_progress())
+        self.assertEqual(self.subjects(), [subject])
+        self.assertEqual(self.committed(DATA), 'resolved\n')
+        # The patch resolved before the stop is reported with the rest.
+        self.assertIn(
+            f'{conflict_resolution.Rule.CONTEXT_ONLY_PATCH.value}:\n'
+            f'    ✔ {RAW_PATCH}',
+            self.console.since(mark),
+        )
+
+    def test_continue_keeps_the_message_of_a_resolved_commit(self):
+        """With `--squash-minor-bumps`, brockit handles the commit messages of
+        the rebase: a commit that is not a squash keeps its own, without the
+        user's editor opening (an editor that fails would stop the rebase)."""
+        self.use_editor('false')
+        subject = self.stop_on_data(squash_minor_bumps=True)
+        self.resolve_data()
+
+        brockit.Rebase().execute(is_continuation=True)
+
+        self.assertEqual(self.git('log', '-1', '--format=%B'), subject)
+
+    def test_continue_composes_the_message_of_a_squash(self):
+        """A pinned group that stopped on its squash still gets the message
+        brockit composes for it, once continued."""
+        self.use_editor('false')
+        first = (
+            'Conflict-resolved patches from Chromium 1.0.0.0 to '
+            'Chromium 1.0.0.1.'
+        )
+        last = (
+            'Conflict-resolved patches from Chromium 1.0.0.1 to '
+            'Chromium 1.0.0.2.'
+        )
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={DATA: 'base\n'},
+            commits=[
+                (first, {'pinned.txt': 'pinned\n'}),
+                (last, {DATA: 'commit\n'}),
+            ],
+        )
+        with self.assertRaises(brockit.ActionNeededException):
+            self.rebase(fork, squash_minor_bumps=True)
+        self.resolve_data()
+
+        brockit.Rebase().execute(is_continuation=True)
+
+        self.assertEqual(self.git('log', '-1', '--format=%B'), last)
+        self.assertEqual(self.committed('pinned.txt'), 'pinned\n')
+
+    def test_skip_drops_the_commit_and_carries_on(self):
+        """Skipping goes on with brockit's own handling of the rebase: the
+        squash after the skipped commit gets the message brockit composes for
+        it, without the user's editor opening."""
+        self.use_editor('false')
+        version = 'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1.'
+        first = (
+            'Conflict-resolved patches from Chromium 1.0.0.0 to '
+            'Chromium 1.0.0.1.'
+        )
+        last = (
+            'Conflict-resolved patches from Chromium 1.0.0.1 to '
+            'Chromium 1.0.0.2.'
+        )
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={DATA: 'base\n'},
+            commits=[
+                (version, {DATA: 'commit\n'}),
+                (first, {'first.txt': 'first\n'}),
+                (last, {'last.txt': 'last\n'}),
+            ],
+        )
+        with self.assertRaises(brockit.ActionNeededException):
+            self.rebase(fork, squash_minor_bumps=True)
+
+        brockit.Rebase().execute(skip=True)
+
+        self.assertFalse(repository.brave.is_rebase_in_progress())
+        self.assertEqual(self.subjects(), [last])
+        self.assertEqual(self.committed(DATA), 'base\n')
+        self.assertEqual(self.committed('first.txt'), 'first\n')
+
+    def test_continue_stops_again_without_conflicts(self):
+        """Git refuses to continue over unstaged changes, which is a stop no
+        rule resolves, so it is reported rather than retried."""
+        self.stop_on_data()
+        self.resolve_data()
+        (self.repo.brave / 'README.md').write_text('unstaged\n')
+
+        with self.assertRaises(brockit.InvalidInputException):
+            brockit.Rebase().execute(is_continuation=True)
+
+        self.assertTrue(repository.brave.is_rebase_in_progress())
+
+    def test_continue_without_a_rebase_raises(self):
+        for resumption in ({'is_continuation': True}, {'skip': True}):
+            with (
+                self.subTest(**resumption),
+                self.assertRaises(brockit.InvalidInputException),
+            ):
+                brockit.Rebase().execute(**resumption)
+
+    def test_continue_a_rebase_brockit_did_not_start_raises(self):
+        self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={DATA: 'base\n'},
+            commits=[('Change the data', {DATA: 'commit\n'})],
+        )
+        with self.assertRaises(subprocess.CalledProcessError):
+            self.git('rebase', DEFAULT_BRANCH)
+
+        with self.assertRaises(brockit.InvalidInputException):
+            brockit.Rebase().execute(is_continuation=True)
+
+    def test_reports_paths_as_they_are_written(self):
+        """A path that reads as console markup is still printed verbatim."""
+        path = 'data[bold].txt'
+        fork = self.build(
+            ancestor={path: 'ancestor\n'},
+            base={path: 'base\n'},
+            commits=[('Change the data', {path: 'commit\n'})],
+        )
+
+        with self.assertRaises(brockit.ActionNeededException):
+            self.rebase(fork)
+
+        self.assertIn(f'    ✘ {path}', self.console.text)
+
+    def test_a_stop_a_rule_failed_on_can_still_be_continued(self):
+        """The state is saved even when resolving a stop fails, which on the
+        first stop is before anything else saved it."""
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={DATA: 'base\n'},
+            commits=[('Change the data', {DATA: 'commit\n'})],
+        )
+        with (
+            patch.object(
+                conflict_resolution.ConflictedStep,
+                'resolve',
+                side_effect=RuntimeError('a rule failed'),
+            ),
+            self.assertRaises(RuntimeError),
+        ):
+            self.rebase(fork)
+        self.resolve_data()
+
+        brockit.Rebase().execute(is_continuation=True)
+
+        self.assertFalse(repository.brave.is_rebase_in_progress())
+        self.assertEqual(self.committed(DATA), 'resolved\n')
+
+    def test_state_lasts_as_long_as_the_rebase(self):
+        self.stop_on_data(squash_minor_bumps=True)
+
+        state = brockit.RebaseState.load()
+
+        self.assertTrue(state.squash_minor_bumps)
+        self.assertEqual(
+            state.resolutions,
+            [
+                conflict_resolution.Resolution(
+                    path=RAW_PATCH,
+                    rule=conflict_resolution.Rule.CONTEXT_ONLY_PATCH,
+                )
+            ],
+        )
+        self.git('rebase', '--abort')
+        with self.assertRaises(brockit.InvalidInputException):
+            brockit.RebaseState.load()
+
+    def test_state_drops_the_rules_it_does_not_know(self):
+        """Each stop is continued by the brockit it has checked out, which may
+        not know every rule of the one that saved the state."""
+        self.stop_on_data()
+        file = brockit.RebaseState._path()
+        data = json.loads(file.read_bytes().decode('utf-8'))
+        data['resolutions'].append({'path': 'other.patch', 'rule': 'RETIRED'})
+        file.write_text(json.dumps(data), encoding='utf-8', newline='')
+
+        self.assertEqual(
+            brockit.RebaseState.load().resolutions,
+            [
+                conflict_resolution.Resolution(
+                    path=RAW_PATCH,
+                    rule=conflict_resolution.Rule.CONTEXT_ONLY_PATCH,
+                )
+            ],
+        )
+
+    def test_unreadable_state_raises(self):
+        self.stop_on_data()
+        for contents in ('{not json', '{}', '{"squash_minor_bumps": true}'):
+            with self.subTest(contents=contents):
+                brockit.RebaseState._path().write_text(
+                    contents, encoding='utf-8', newline=''
+                )
+
+                with self.assertRaises(brockit.InvalidInputException):
+                    brockit.RebaseState.load()
+
+
+class RebaseCommandLineTest(unittest.TestCase):
+    """`brockit rebase --continue` and `--skip` from the command line."""
+
+    @staticmethod
+    def _usage_error(*args: str) -> str:
+        """Runs `brockit rebase` with `args`, returning its usage error."""
+        stderr = io.StringIO()
+        with (
+            patch.object(sys, 'argv', ['brockit.py', 'rebase', *args]),
+            redirect_stderr(stderr),
+        ):
+            try:
+                brockit.main()
+            except SystemExit as e:
+                if e.code == 2:
+                    return stderr.getvalue()
+        raise AssertionError(f'No usage error for {args}.')
+
+    def test_resumptions_reject_the_switches_of_a_new_rebase(self):
+        for resumption in ('--continue', '--skip'):
+            for switch in (
+                '--from-ref=HEAD',
+                '--to-ref=HEAD',
+                '--recommit',
+                '--discard-regen-changes',
+                '--squash-minor-bumps',
+            ):
+                with self.subTest(resumption=resumption, switch=switch):
+                    name = switch.partition('=')[0]
+                    self.assertIn(
+                        f'Switch {name} not supported with {resumption}.',
+                        self._usage_error(resumption, switch),
+                    )
+
+    def test_continue_and_skip_are_exclusive(self):
+        self.assertIn(
+            'not allowed with argument',
+            self._usage_error('--continue', '--skip'),
+        )
 
 
 if __name__ == '__main__':

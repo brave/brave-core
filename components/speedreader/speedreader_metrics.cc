@@ -9,7 +9,6 @@
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/speedreader/speedreader_pref_names.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
-#include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"

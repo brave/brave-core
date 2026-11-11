@@ -5,12 +5,10 @@
 
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_shard_tree.h"
 
-#include <algorithm>
 #include <memory>
 #include <string>
 #include <utility>
 
-#include "base/memory/ptr_util.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/cxx_orchard_shard_tree_delegate.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle_impl.h"

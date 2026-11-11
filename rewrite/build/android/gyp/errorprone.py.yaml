@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Disable the some errorprone checks.
+
+      UnnecessaryParentheses:
+      Java plasters short-circuit a method with `if ((true))`, mirroring the
+      C++ plaster idiom, and this check rejects the doubled parentheses.
+
+      AlreadyChecked:
+      Java plasters can put conditional exit from the method, but if the
+      original code has the same check further, it would cause the
+      `AlreadyChecked` errorprone message.
+      Example: EnhancedTargetDevicePickerView.updateManageDevicesVisibility.
+    regex:
+      re_pattern: '(\nERRORPRONE_WARNINGS_TO_DISABLE = \[)'
+      replace: |-
+        \1
+            'AlreadyChecked',
+            'UnnecessaryParentheses',

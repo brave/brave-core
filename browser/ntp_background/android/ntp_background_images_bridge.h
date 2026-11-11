@@ -28,7 +28,7 @@ class DictValue;
 
 namespace ntp_background_images {
 struct NTPBackgroundImagesData;
-struct NTPSponsoredImagesData;
+struct NTPSponsoredContentData;
 class ViewCounterService;
 }  // namespace ntp_background_images
 
@@ -52,7 +52,7 @@ class NTPBackgroundImagesBridge
   void GetCurrentWallpaper(JNIEnv* env,
                            const base::android::JavaRef<jobject>& obj,
                            const base::android::JavaRef<jobject>& callback,
-                           bool allow_sponsored_image);
+                           bool allow_sponsored_content);
 
   base::android::ScopedJavaLocalRef<jobject> GetJavaObject();
 
@@ -62,12 +62,12 @@ class NTPBackgroundImagesBridge
       std::optional<base::DictValue> data);
   void OnBackgroundImagesDataDidUpdate(
       ntp_background_images::NTPBackgroundImagesData* data) override;
-  void OnSponsoredImagesDataDidUpdate(
-      ntp_background_images::NTPSponsoredImagesData* data) override;
+  void DeprecatedOnSponsoredContentDidUpdate(
+      ntp_background_images::NTPSponsoredContentData* data) override;
 
   base::android::ScopedJavaLocalRef<jobject> CreateWallpaper(
       const base::DictValue& data);
-  base::android::ScopedJavaLocalRef<jobject> CreateBrandedWallpaper(
+  base::android::ScopedJavaLocalRef<jobject> CreateNewTabTakeoverWallpaper(
       const base::DictValue& data);
 
   raw_ptr<Profile> profile_ = nullptr;

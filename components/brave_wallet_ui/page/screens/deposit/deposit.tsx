@@ -6,8 +6,8 @@
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { Redirect, Route, Switch, useHistory, useParams } from 'react-router'
-import SegmentedControlItem from '@brave/leo/react/segmentedControlItem'
-import Button from '@brave/leo/react/button'
+import SegmentedControlItem from '@brave/nala/react/segmentedControlItem'
+import Button from '@brave/nala/react/button'
 
 // Selectors
 import {
@@ -25,6 +25,7 @@ import { makeNetworkAsset } from '../../../options/asset-options'
 import {
   dedupeAssetsByIdKey,
   getAssetIdKey,
+  isLegacyShieldedToken,
   sortNativeAndAndBatAssetsToTop,
   tokenNameToNftCollectionName,
 } from '../../../utils/asset-utils'
@@ -99,25 +100,25 @@ import SearchBar from '../../../components/shared/search-bar/index'
 import SelectAccountItem from '../../../components/shared/select-account-item/index'
 import SelectAccount from '../../../components/shared/select-account/index'
 import { BuyAssetOptionItem } from '../../../components/shared/buy-option/buy-asset-option'
-import { CopiedToClipboardConfirmation } from '../../../components/desktop/copied-to-clipboard-confirmation/copied-to-clipboard-confirmation'
+import { CopiedToClipboardConfirmation } from './components/copied_to_clipboard_confirmation/copied_to_clipboard_confirmation'
 import { CreateAccountTab } from '../composer_ui/create_account/create_account'
 import { SelectHeader } from './components/select_header/select_header'
 import {
   NetworkFilterSelector, //
-} from '../../../components/desktop/network-filter-selector'
+} from '$wallet/page/components/network_filter_selector/network_filter_selector'
 import {
   WalletPageWrapper, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import {
   PageTitleHeader, //
-} from '../../../components/desktop/card-headers/page-title-header'
+} from '$wallet/page/components/card_headers/page_title_header'
 import { Skeleton } from '../../../components/shared/loading-skeleton/styles'
 import {
   PanelActionHeader, //
-} from '../../../components/desktop/card-headers/panel-action-header'
+} from '$wallet/page/components/card_headers/panel_action_header'
 import {
   DefaultPanelHeader, //
-} from '../../../components/desktop/card-headers/default-panel-header'
+} from '$wallet/page/components/card_headers/default_panel_header'
 
 const zcashAddressOptions: zcashAddressOptionType[] = [
   {
@@ -255,7 +256,9 @@ function AssetSelection() {
     )
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
   const selectedAsset = combinedTokensList.find(
-    (token) => getAssetIdKey(token) === selectedDepositAssetId,
+    (token) =>
+      getAssetIdKey(token) === selectedDepositAssetId
+      && !isLegacyShieldedToken(token),
   )
 
   const { data: visibleNetworks = [] } = useGetVisibleNetworksQuery()
@@ -355,7 +358,7 @@ function AssetSelection() {
         testnetAssetsList,
         nftCollectionAssets,
       ),
-    )
+    ).filter((token) => !isLegacyShieldedToken(token))
   }, [
     mainnetNetworkAssetsList,
     tokensList,
@@ -534,7 +537,9 @@ function DepositAccount() {
   const { accounts } = useAccountsQuery()
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
   const selectedAsset = combinedTokensList.find(
-    (token) => getAssetIdKey(token) === selectedDepositAssetId,
+    (token) =>
+      getAssetIdKey(token) === selectedDepositAssetId
+      && !isLegacyShieldedToken(token),
   )
   const { data: selectedAssetNetwork } = useGetNetworkQuery(
     selectedAsset ?? skipToken,

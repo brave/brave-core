@@ -10,6 +10,7 @@ import Data
 import Foundation
 import Onboarding
 import Preferences
+import os.log
 
 @MainActor class FilterListStorage: ObservableObject {
   static let shared = FilterListStorage(persistChanges: true)
@@ -174,8 +175,9 @@ import Preferences
 
   /// - Warning: Do not call this before we load core data
   public func isEnabled(for componentId: String) -> Bool {
-    return filterLists.first(where: { $0.entry.componentId == componentId })?.isEnabled
-      ?? allFilterListSettings.first(where: { $0.componentId == componentId })?.isEnabled
+    return filterLists.first(where: { $0.entry.componentId == componentId })?.isEnabledOrDefault
+      ?? allFilterListSettings.first(where: { $0.componentId == componentId })?
+      .isEnabledOrDefault
       ?? pendingDefaults[componentId]
       ?? false
   }
@@ -192,7 +194,7 @@ import Preferences
           // Ensure the service is fetching the files
           self.adBlockService?.enableFilterList(
             forUUID: filterList.entry.uuid,
-            isEnabled: filterList.isEnabled
+            isEnabled: filterList.isEnabledOrDefault
           )
         }
       }
@@ -219,7 +221,7 @@ import Preferences
   /// - Warning: Do not call this before we load core data
   private func upsertSetting(
     uuid: String,
-    isEnabled: Bool,
+    isEnabled: Bool?,
     isHidden: Bool,
     componentId: String,
     allowCreation: Bool,
@@ -255,7 +257,7 @@ import Preferences
   private func updateSetting(
     uuid: String,
     componentId: String,
-    isEnabled: Bool,
+    isEnabled: Bool?,
     isHidden: Bool,
     order: Int,
     isAlwaysAggressive: Bool,
@@ -291,7 +293,7 @@ import Preferences
   private func create(
     uuid: String,
     componentId: String,
-    isEnabled: Bool,
+    isEnabled: Bool?,
     isHidden: Bool,
     order: Int,
     isAlwaysAggressive: Bool,
@@ -332,11 +334,11 @@ extension FilterListStorage {
   @MainActor var enabledSources: [GroupedAdBlockEngine.Source] {
     return filterLists.isEmpty
       ? allFilterListSettings
-        .filter(\.isEnabled)
+        .filter(\.isEnabledOrDefault)
         .sorted(by: { $0.order?.intValue ?? 0 <= $1.order?.intValue ?? 0 })
         .compactMap(\.engineSource)
       : filterLists
-        .filter(\.isEnabled)
+        .filter(\.isEnabledOrDefault)
         .map(\.engineSource)
   }
 

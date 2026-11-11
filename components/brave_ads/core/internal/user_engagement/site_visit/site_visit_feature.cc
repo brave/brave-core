@@ -7,6 +7,6 @@
 
 namespace brave_ads {
 
-BASE_FEATURE(kSiteVisitFeature, "SiteVisit", base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kSiteVisitFeature, base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace brave_ads

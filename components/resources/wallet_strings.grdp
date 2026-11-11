@@ -83,8 +83,6 @@
   <message name="IDS_BRAVE_WALLET_SWAP" desc="Swap tab button" formatter_data="webui=Wallet">Swap</message>
   <message name="IDS_BRAVE_WALLET_BRIDGE" desc="Bridge tab button" formatter_data="webui=Wallet">Bridge</message>
   <message name="IDS_BRAVE_WALLET_RESET" desc="Reset button text" formatter_data="webui=Wallet">Reset</message>
-  <message name="IDS_BRAVE_WALLET_SELL" desc="Sell button text" formatter_data="webui=Wallet">Sell</message>
-  <message name="IDS_BRAVE_WALLET_NOT_ENOUGH_BALANCE" desc="Sell modal not enough of token balance to sell error" formatter_data="webui=Wallet">You don’t have enough <ph name="TOKEN_SYMBOL"><ex>BAT</ex>$1</ph> in this account.</message>
   <message name="IDS_BRAVE_WALLET_CHOOSE_ASSET_TO_SEND" desc="Send asset modal title" formatter_data="webui=Wallet">Choose asset to send</message>
   <message name="IDS_BRAVE_WALLET_CHOOSE_ASSET_TO_SWAP" desc="Swap asset modal title" formatter_data="webui=Wallet">Choose asset to swap</message>
   <message name="IDS_BRAVE_WALLET_ENTER_RECIPIENT_ADDRESS" desc="Send tab Enter recipient address" formatter_data="webui=Wallet">Enter recipient address</message>
@@ -191,7 +189,7 @@
   <message name="IDS_BRAVE_WALLET_WELCOME_NEW_WALLET_DESCRIPTION" desc="Onboarding welcome screen, new wallet action description" formatter_data="webui=Wallet">Get started with Brave Wallet in minutes.</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_IMPORT_WALLET_TITLE" desc="Onboarding welcome screen, import wallet action title" formatter_data="webui=Wallet">Already have a wallet?</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_WATCH_ONLY_TITLE" desc="Onboarding welcome screen, create watch only wallet" formatter_data="webui=Wallet">I need a watch-only wallet</message>
-  <message name="IDS_BRAVE_WALLET_WELCOME_COPYRIGHT" desc="Onboarding welcome screen copyright" formatter_data="webui=Wallet">©2025 Brave Software Inc. Brave and the Brave logo are registered trademarks of Brave Software, Inc. Other product names and logos may be trademarks of their respective companies. All rights reserved.</message>
+  <message name="IDS_BRAVE_WALLET_WELCOME_COPYRIGHT" desc="Onboarding welcome screen copyright" formatter_data="webui=Wallet">©2026 Brave Software Inc. Brave and the Brave logo are registered trademarks of Brave Software, Inc. Other product names and logos may be trademarks of their respective companies. All rights reserved.</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_DIVIDER_TEXT" desc="Wallet onboarding welcome divider text" formatter_data="webui=Wallet">or</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_IMPORT_WALLET_DESCRIPTION" desc="Onboarding welcome screen, import wallet action description" formatter_data="webui=Wallet">Already have a wallet?</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_TITLE" desc="Backup screen title" formatter_data="webui=Wallet">Back up your crypto wallet</message>
@@ -238,6 +236,12 @@
   <message name="IDS_BRAVE_WALLET_RESTORE_TITE" desc="Restore Wallet screen title" formatter_data="webui=Wallet">Restore primary crypto accounts</message>
   <message name="IDS_BRAVE_WALLET_RESTORE_DESCRIPTION" desc="Restore Wallet screen description" formatter_data="webui=Wallet">Enter your recovery phrase to restore your Brave wallet crypto account.</message>
   <message name="IDS_BRAVE_WALLET_RESTORE_ERROR" desc="Restore Wallet screen recovery error" formatter_data="webui=Wallet">The recovery phrase entered is invalid.</message>
+  <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_MISMATCH_ERROR" desc="Wallet password recovery phrase mismatch error" formatter_data="webui=Wallet">This recovery phrase doesn't match your wallet. Check the phrase and try again.</message>
+  <message name="IDS_BRAVE_WALLET_RECOVERY_IMPORTED_ACCOUNTS_WARNING_TITLE" desc="Wallet password recovery imported accounts warning title" formatter_data="webui=Wallet">Remove imported accounts?</message>
+  <message name="IDS_BRAVE_WALLET_RECOVERY_IMPORTED_ACCOUNTS_WARNING_DESCRIPTION" desc="Wallet password recovery imported accounts warning description" formatter_data="webui=Wallet">Imported accounts are not backed up by your recovery phrase. They will be removed from Brave Wallet, and you may permanently lose access to their funds unless you have backed up their private keys.</message>
+  <message name="IDS_BRAVE_WALLET_RECOVERY_IMPORTED_ACCOUNTS_WARNING_CONFIRM" desc="Wallet password recovery imported accounts warning confirm button" formatter_data="webui=Wallet">Remove accounts</message>
+  <message name="IDS_BRAVE_WALLET_RECOVERY_IMPORTED_ACCOUNTS_CONFIRMATION" desc="Wallet password recovery imported accounts confirmation input label" formatter_data="webui=Wallet">Type "<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>" to confirm.</message>
+  <message name="IDS_BRAVE_WALLET_RECOVERY_IMPORTED_ACCOUNTS_CONFIRMATION_PHRASE" desc="The phrase users should type to confirm imported account removal" translateable="false" formatter_data="webui=Wallet">Yes</message>
   <message name="IDS_BRAVE_WALLET_RESTORE_PLACEHOLDER" desc="Restore Wallet screen input placeholder" formatter_data="webui=Wallet">Paste recovery phrase from clipboard</message>
   <message name="IDS_BRAVE_WALLET_RESTORE_SHOW_PHRASE" desc="Restore Wallet screen show recovery phrase button" formatter_data="webui=Wallet">Show recovery phrase</message>
   <message name="IDS_BRAVE_WALLET_RESTORE_LEGACY_CHECK_BOX" desc="Restore Wallet screen import legacy checkbox" formatter_data="webui=Wallet">Import from legacy Brave crypto wallets?</message>
@@ -346,7 +350,8 @@
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_EXPORT" desc="Account list item Export button" formatter_data="webui=Wallet">Export</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_DEPOSIT" desc="Account list item Deposit button" formatter_data="webui=Wallet">Deposit</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_HIDE" desc="Account list item Hide button" formatter_data="webui=Wallet">Hide account</message>
-  <message name="IDS_BRAVE_WALLET_ACCOUNTS_RESTORE" desc="Account list item Restore button" formatter_data="webui=Wallet">Restore</message>
+  <message name="IDS_BRAVE_WALLET_UNHIDE_ACCOUNT" desc="Menu item and dialog title for showing a previously hidden wallet account" formatter_data="webui=Wallet">Unhide account</message>
+  <message name="IDS_BRAVE_WALLET_UNHIDE" desc="Button in the unhide accounts dialog that shows the selected accounts" formatter_data="webui=Wallet">Unhide</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_REMOVE" desc="Account list item Remove button" formatter_data="webui=Wallet">Remove</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS" desc="Account settings label" formatter_data="webui=Wallet">Account settings</message>
   <message name="IDS_BRAVE_WALLET_LAST_UPDATED_AGO" desc="Tooltip showing how long ago prices were last updated, e.g. Last updated 5m ago" formatter_data="webui=Wallet">Last updated <ph name="TIME_AGO"><ex>5m</ex>$1</ph> ago</message>
@@ -388,13 +393,6 @@
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_HIDE_DETAILS" desc="Sign panel EIP-712 message hide details" formatter_data="webui=Wallet">Hide details</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_DOMAIN" desc="Sign panel EIP-712 message domain" formatter_data="webui=Wallet">Domain</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_BUTTON" desc="Sign panel sign button" formatter_data="webui=Wallet">Sign</message>
-  <message name="IDS_BRAVE_WALLET_PUBLIC_ENCRYPTION_KEY" desc="Public encryption key title" formatter_data="webui=Wallet">Public encryption key</message>
-  <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_TITLE" desc="Provide Encryption Key Panel Title" formatter_data="webui=Wallet">A DApp is requesting your public encryption key</message>
-  <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_DESCRIPTION" desc="Provide Encryption Key Panel Details" formatter_data="webui=Wallet"><ph name="URL">$1</ph> is requesting your wallet's public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.</message>
-  <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_BUTTON" desc="Provide Encryption Key Panel Provide Button" formatter_data="webui=Wallet">Provide</message>
-  <message name="IDS_BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_TITLE" desc="Read Encrypted Message Panel Title" formatter_data="webui=Wallet">This DApp would like to read this message to complete your request</message>
-  <message name="IDS_BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_DECRYPT_BUTTON" desc="Read Encrypted Message Panel Decrypt Button" formatter_data="webui=Wallet">Decrypt message</message>
-  <message name="IDS_BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_BUTTON" desc="Read Encrypted Message Panel Allow Button" formatter_data="webui=Wallet">Allow</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_TITLE" desc="Allow spend panel Title" formatter_data="webui=Wallet">Allow this app to spend your <ph name="TOKEN_SYMBOL"><ex>ETH</ex>$1</ph>?</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_DESCRIPTION" desc="Allow spend panel description" formatter_data="webui=Wallet">By granting this permission, you are allowing this app to withdraw your <ph name="VALUE"><ex>ETH</ex>$1</ph> and automate transactions for you.</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_BOX_TITLE" desc="Allow spend panel edit permissions button" formatter_data="webui=Wallet">Edit permissions</message>
@@ -626,6 +624,12 @@
   <message name="IDS_BRAVE_WALLET_NEXT_TRANSACTION" desc="Next transaction button text" formatter_data="webui=Wallet">Next transaction</message>
   <message name="IDS_BRAVE_WALLET_PREVIOUS_TRANSACTION" desc="Previous transaction button text" formatter_data="webui=Wallet">Previous transaction</message>
   <message name="IDS_BRAVE_WALLET_REJECT_TRANSACTIONS" desc="Reject transactions button text" formatter_data="webui=Wallet">Reject <ph name="QUEUE_LENGTH">$1<ex>4</ex></ph>  transactions</message>
+  <message name="IDS_BRAVE_WALLET_APPROVAL_FOR_ALL_WARNING_TITLE" desc="Approval for all warning title" formatter_data="webui=Wallet">Set approval for all</message>
+  <message name="IDS_BRAVE_WALLET_APPROVAL_FOR_ALL_WARNING_DESCRIPTION" desc="Approval for all warning description" formatter_data="webui=Wallet">This lets the spender below transfer every NFT you own in this collection. This includes any NFTs you receive later.</message>
+  <message name="IDS_BRAVE_WALLET_WARNING" desc="Warning label" formatter_data="webui=Wallet">Warning</message>
+  <message name="IDS_BRAVE_WALLET_APPROVAL_FOR_ALL_FINAL_WARNING_TITLE" desc="Approval for all final warning title" formatter_data="webui=Wallet">Give this site access to all your NFTs?</message>
+  <message name="IDS_BRAVE_WALLET_APPROVAL_FOR_ALL_FINAL_WARNING_DESCRIPTION" desc="Approval for all final warning description" formatter_data="webui=Wallet">You're about to let <ph name="ADDRESS">$1<ex>0xfdafdsfa</ex></ph> transfer every NFT in this wallet, including any you receive later.</message>
+  <message name="IDS_BRAVE_WALLET_CONFIRM_ANYWAY" desc="Confirm anyway button text" formatter_data="webui=Wallet">Confirm anyway</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_BLOCKCHAIN" desc="NFT detail screen blockchain category" formatter_data="webui=Wallet">Blockchain</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_STANDARD" desc="NFT detail screen token standard category" formatter_data="webui=Wallet">Token standard</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_ID" desc="NFT detail screen token id category" formatter_data="webui=Wallet">Token ID</message>
@@ -665,7 +669,6 @@
   <message name="IDS_BRAVE_WALLET_MARKET_DATA_BUY_DEPOSIT_COLUMN" desc="Market data table buy/deposit column name" formatter_data="webui=Wallet">Buy/Deposit</message>
   <message name="IDS_BRAVE_WALLET_MARKET_DATA_NO_ASSETS_FOUND" desc="Text displayed when market data table rows are empty" formatter_data="webui=Wallet">No assets matching search or filter found</message>
   <message name="IDS_BRAVE_WALLET_NOT_VALID_FIL_ADDRESS" desc="Send input not valid FIL address error" formatter_data="webui=Wallet">Not a valid FIL address</message>
-  <message name="IDS_BRAVE_WALLET_SELL_WITH_PROVIDER" desc="Sell with Provider option label" formatter_data="webui=Wallet">Sell with <ph name="OFFRAMP_PROVIDER">$1<ex>Ramp</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_TRANSACTIONS_PARTNER" desc="Transactions partner modal title" formatter_data="webui=Wallet">Transactions partner</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_PARTNER_CONSENT" desc="Meld consent description" formatter_data="webui=Wallet">Brave Wallet uses Meld.io to help aggregate and surface various crypto providers for your region. We will share information with Meld.io to complete the transaction, including your wallet address and country code. For more information please read Meld’s terms of use.</message>
   <message name="IDS_BRAVE_WALLET_MELD_TERMS_OF_USE" desc="Meld terms of use checkbox label" formatter_data="webui=Wallet">I have read and agree to the <ph name="LINK_BEFORE">$1</ph>Meld's Terms of use<ph name="LINK_AFTER">/$1</ph></message>
@@ -673,7 +676,7 @@
   <message name="IDS_BRAVE_WALLET_EXCHANGE_RATE_WITH_FEES" desc="Buy exchange rate with fees label" formatter_data="webui=Wallet">Exchange rate with fees</message>
   <message name="IDS_BRAVE_WALLET_FEES" desc="Buy fees label" formatter_data="webui=Wallet">Fees</message>
   <message name="IDS_BRAVE_WALLET_PRICE_CURRENCY" desc="Buy price and currency label" formatter_data="webui=Wallet">Price <ph name="CURRENCY">$1<ex>USD</ex></ph></message>
-  <message name="IDS_BRAVE_WALLET_BUY_WITH_PROVIDER" desc="Buy with provider label" formatter_data="webui=Wallet">Buy with <ph name="PROVIDER">$1<ex>Ramp</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_BUY_WITH_PROVIDER" desc="Buy with provider label" formatter_data="webui=Wallet">Buy with <ph name="PROVIDER">$1<ex>MoonPay</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_ASSETS" desc="Buy asset label" formatter_data="webui=Wallet">Asset</message>
   <message name="IDS_BRAVE_WALLET_SELECTED" desc="Buy selected label" formatter_data="webui=Wallet">Selected</message>
   <message name="IDS_BRAVE_WALLET_NO_AVAILABLE_CURRENCIES" desc="Buy no available currencies for search value" formatter_data="webui=Wallet">No available currencies</message>
@@ -681,7 +684,7 @@
   <message name="IDS_BRAVE_WALLET_BUY_ASSET" desc="Buy asset title label" formatter_data="webui=Wallet">Buy <ph name="ASSET">$1<ex>BAT</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_NO_PROVIDER_FOUND" desc="No provider found for buy asset title" formatter_data="webui=Wallet">No providers found for <ph name="ASSET">$1<ex>BAT</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_TRY_SEARCHING_FOR_DIFFERENT_ASSET" desc="Hint for no provider found for buy asset" formatter_data="webui=Wallet">Try searching for a different asset.</message>
-  <message name="IDS_BRAVE_WALLET_NO_RESULTS_FOUND" desc="No search results for provider title" formatter_data="webui=Wallet">No results found for <ph name="PROVIDER">$1<ex>Ramp</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_NO_RESULTS_FOUND" desc="No search results for provider title" formatter_data="webui=Wallet">No results found for <ph name="PROVIDER">$1<ex>MoonPay</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_TRY_DIFFERENT_KEYWORDS" desc="Hint for no search result for provider" formatter_data="webui=Wallet">Try using a different keyword or check your spelling.</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_TO_BUY_TITLE" desc="Create account modal title" formatter_data="webui=Wallet">Do you want to create a <ph name="ACCOUNT_TYPE">$1<ex>Zcash</ex></ph> account?</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_TO_BUY_DESCRIPTION" desc="Create account modal description" formatter_data="webui=Wallet">In order to receive <ph name="TOKEN_SYMBOL">$1<ex>ZEC</ex></ph> you will need a <ph name="ACCOUNT_TYPE">$2<ex>Zcash</ex></ph> account.</message>
@@ -1014,7 +1017,7 @@
   <message name="IDS_BRAVE_WALLET_ORDINAL_TWENTY_SECOND" desc="Twenty-second" formatter_data="webui=Wallet">Twenty-second</message>
   <message name="IDS_BRAVE_WALLET_ORDINAL_TWENTY_THIRD" desc="Twenty-third" formatter_data="webui=Wallet">Twenty-third</message>
   <message name="IDS_BRAVE_WALLET_ORDINAL_TWENTY_FOURTH" desc="Twenty-fourth" formatter_data="webui=Wallet">Twenty-fourth</message>
-  <message name="IDS_BRAVE_WALLET_NON_ASCII_CHARACTERS_IN_MESSAGE_WARNING" desc="Warning to alert user that a message contains non-ASCII characters " formatter_data="webui=Wallet">Non-ASCII characters detected!</message>
+  <message name="IDS_BRAVE_WALLET_SIGN_MESSAGE_UNEXPECTED_CHARACTERS_WARNING" desc="Warning title when a wallet sign message contains null bytes, newlines, other non-printable characters, or non-ASCII characters" formatter_data="webui=Wallet">Unexpected characters detected</message>
   <message name="IDS_BRAVE_WALLET_VIEW_ENCODED_MESSAGE" desc="Button text to toggle to encoded message view" formatter_data="webui=Wallet">View original message</message>
   <message name="IDS_BRAVE_WALLET_VIEW_DECODED_MESSAGE" desc="Button text to toggle to decoded message view" formatter_data="webui=Wallet">View message in ASCII encoding</message>
   <message name="IDS_BRAVE_WALLET_INFORMATION" desc="Information label shown in coin market detail view" formatter_data="webui=Wallet">Information</message>
@@ -1289,4 +1292,38 @@
   <message name="IDS_BRAVE_WALLET_GO_TO_PORTFOLIO" desc="Go to portfolio button text" formatter_data="webui=Wallet">Go to Portfolio</message>
   <message name="IDS_BRAVE_WALLET_ADD_TOKEN" desc="Add token button text" formatter_data="webui=Wallet">Add token</message>
   <message name="IDS_BRAVE_WALLET_UTILITY_PROCESS_WALLET_UTILS_NAME" desc="The display name (in the system task manager, etc) of the service process used for running wallet utils">Brave Wallet Utility Service</message>
+  <message name="IDS_BRAVE_WALLET_CRYPTO" desc="Title for the crypto card in the wallet card hub" formatter_data="webui=Wallet">Crypto</message>
+  <message name="IDS_BRAVE_WALLET_GET_YOUR_CARD" desc="Title on the wallet card hub card prompting the user to get a Brave card" formatter_data="webui=Wallet">Get your card</message>
+  <message name="IDS_BRAVE_WALLET_GET_YOUR_CARD_DESCRIPTION" desc="Description on the wallet card hub card explaining identity verification is required to use the Brave card" formatter_data="webui=Wallet">Verify your identity to see card numbers and start spending.</message>
+  <message name="IDS_BRAVE_WALLET_TAP_TO_VERIFY" desc="Action label on the wallet card hub card to start identity verification" formatter_data="webui=Wallet">Tap to verify</message>
+  <message name="IDS_BRAVE_WALLET_ENABLE_REWARDS" desc="Action label on the wallet card hub rewards card to enable Brave Rewards" formatter_data="webui=Wallet">Enable Rewards</message>
+  <message name="IDS_BRAVE_WALLET_HIDE_BALANCES" desc="Action label on the wallet card hub menu to hide balances" formatter_data="webui=Wallet">Hide balances</message>
+  <message name="IDS_BRAVE_WALLET_SHOW_BALANCES" desc="Action label on the wallet card hub menu to show balances" formatter_data="webui=Wallet">Show balances</message>
+  <message name="IDS_BRAVE_WALLET_BRAVE_REWARDS_CARD" desc="Label for the Brave Rewards card in the wallet card hub" formatter_data="webui=Wallet">Brave Rewards Card</message>
+  <message name="IDS_BRAVE_WALLET_APPEARANCE" desc="Section label for appearance settings in the wallet card hub settings screen" formatter_data="webui=Wallet">Appearance</message>
+  <message name="IDS_BRAVE_WALLET_SECURITY" desc="Section label for security settings in the wallet card hub settings screen" formatter_data="webui=Wallet">Security</message>
+  <message name="IDS_BRAVE_WALLET_REQUIRE_UNLOCK_NEXT_TIME" desc="Description under the lock wallet button in the wallet card hub settings screen" formatter_data="webui=Wallet">Require unlock next time</message>
+  <message name="IDS_BRAVE_WALLET_HIDE_CARD_FROM_HOME" desc="Title of the confirmation dialog for hiding a wallet card hub card from home" formatter_data="webui=Wallet">Hide <ph name="CARD_NAME">$1<ex>Crypto</ex></ph> from home?</message>
+  <message name="IDS_BRAVE_WALLET_HIDE_CARD_FROM_HOME_DESCRIPTION" desc="Description of the confirmation dialog for hiding a wallet card hub card from home" formatter_data="webui=Wallet">Your <ph name="CARD_NAME">$1<ex>Crypto</ex></ph> balance is unchanged. This only hides the card from home. You can show it again anytime in Settings, under Wallet.</message>
+  <message name="IDS_BRAVE_WALLET_ADD_FUNDS" desc="Action label on the wallet card hub details screen to add funds" formatter_data="webui=Wallet">Add funds</message>
+  <message name="IDS_BRAVE_WALLET_NEW_CARD" desc="Action label on the wallet card hub details screen to create a new card" formatter_data="webui=Wallet">New card</message>
+  <message name="IDS_BRAVE_WALLET_EARNINGS" desc="Title for the earnings row on the wallet card hub details screen. $1 and /$1 wrap the date in a secondary style. $2 is the month and year." formatter_data="webui=Wallet">Earnings <ph name="DATE_BEGIN">$1</ph>(<ph name="DATE">$2<ex>September 2026</ex></ph>)<ph name="DATE_END">/$1</ph></message>
+  <message name="IDS_BRAVE_WALLET_INTEREST_PLUS_CASHBACK" desc="Subtitle for the earnings row showing interest and BAT cashback on the wallet card hub details screen" formatter_data="webui=Wallet">Interest + <ph name="AMOUNT">$1<ex>0.000</ex></ph> BAT cashback</message>
+  <message name="IDS_BRAVE_WALLET_SPENDING" desc="Title for the spending row on the wallet card hub details screen" formatter_data="webui=Wallet">Spending</message>
+  <message name="IDS_BRAVE_WALLET_THIS_MONTH" desc="Subtitle for the spending row on the wallet card hub details screen" formatter_data="webui=Wallet">This month</message>
+  <message name="IDS_BRAVE_WALLET_GET_PHYSICAL_CARD" desc="Title for the get physical card row on the wallet card hub details screen" formatter_data="webui=Wallet">Get physical card</message>
+  <message name="IDS_BRAVE_WALLET_USE_IN_STORES_AND_ATMS" desc="Subtitle for the get physical card row on the wallet card hub details screen" formatter_data="webui=Wallet">Use in stores and ATMs</message>
+  <message name="IDS_BRAVE_WALLET_VERIFY_CARD" desc="Title of the wallet card hub screen that starts Brave Rewards Card identity verification" formatter_data="webui=Wallet">Verify card</message>
+  <message name="IDS_BRAVE_WALLET_VERIFY_CARD_DESCRIPTION" desc="Intro on the wallet card hub verify card screen explaining that identity confirmation is required before the card can be used" formatter_data="webui=Wallet">Before you can see card numbers or spend with your Brave Rewards Card, Brave needs to confirm it's you. This takes about 2 minutes.</message>
+  <message name="IDS_BRAVE_WALLET_VERIFY_CARD_REQUIRED_TITLE" desc="Title of the identity-check row on the wallet card hub verify card screen" formatter_data="webui=Wallet">Required to issue the card</message>
+  <message name="IDS_BRAVE_WALLET_VERIFY_CARD_REQUIRED_DESCRIPTION" desc="Description of the identity-check row on the wallet card hub verify card screen" formatter_data="webui=Wallet">Same identity check as any debit card—so only you can spend from your Brave Rewards balance.</message>
+  <message name="IDS_BRAVE_WALLET_VERIFY_CARD_PHOTO_ID_TITLE" desc="Title of the photo ID row on the wallet card hub verify card screen" formatter_data="webui=Wallet">Photo ID and a selfie</message>
+  <message name="IDS_BRAVE_WALLET_VERIFY_CARD_PHOTO_ID_DESCRIPTION" desc="Description of the photo ID row on the wallet card hub verify card screen" formatter_data="webui=Wallet">Enter a few details, photograph your passport or license, and take a selfie.</message>
+  <message name="IDS_BRAVE_WALLET_VERIFY_CARD_NEW_TAB_TITLE" desc="Title of the new tab row on the wallet card hub verify card screen" formatter_data="webui=Wallet">Continues in a new tab</message>
+  <message name="IDS_BRAVE_WALLET_VERIFY_CARD_NEW_TAB_DESCRIPTION" desc="Description of the new tab row on the wallet card hub verify card screen" formatter_data="webui=Wallet">Finish there, then reopen Brave Wallet. Approved verification unlocks card numbers on this card.</message>
+  <message name="IDS_BRAVE_WALLET_ONBOARDING_WELCOME_TITLE" desc="Onboarding welcome screen title" formatter_data="webui=Wallet">Your browser. Your wallet. Your money.</message>
+  <message name="IDS_BRAVE_WALLET_ONBOARDING_WELCOME_DESCRIPTION" desc="Onboarding welcome screen description" formatter_data="webui=Wallet">Brave Wallet keeps your cards, crypto, and Rewards together. Your Brave Rewards Card works anywhere Mastercard is accepted. A self-custody wallet supports Ethereum, EVM chains, Solana, Filecoin, Bitcoin and more.</message>
+  <message name="IDS_BRAVE_WALLET_ONBOARDING_WELCOME_NEW_ACCOUNT_TITLE" desc="Title of the create-a-new-wallet action on the onboarding welcome screen" formatter_data="webui=Wallet">Get started with a new account</message>
+  <message name="IDS_BRAVE_WALLET_ONBOARDING_WELCOME_NEW_ACCOUNT_DESCRIPTION" desc="Description of the create-a-new-wallet action on the onboarding welcome screen" formatter_data="webui=Wallet">Set up Brave Wallet in minutes.</message>
+  <message name="IDS_BRAVE_WALLET_ONBOARDING_WELCOME_IMPORT_WALLET_DESCRIPTION" desc="Description of the import-an-existing-wallet action on the onboarding welcome screen" formatter_data="webui=Wallet">Import a recovery phrase from any wallet.</message>
 </grit-part>

@@ -15,16 +15,16 @@
 // Remove the drag threshold when it's a vertical tab strip (we do this by
 // multiplying by 0; if it's not a vertical tab strip, we multiply by 1 so
 // nothing changes)
-#define GetStandardWidth(...)                                           \
-  GetStandardWidth(__VA_ARGS__) * ([&] {                                \
-    auto* vertical_tab_controller = VerticalTabController::FromBrowser( \
-        BrowserView::GetBrowserViewForNativeWindow(                     \
-            attached_context_->GetWidget()->GetNativeWindow())          \
-            ->browser());                                               \
-    return vertical_tab_controller &&                                   \
-           vertical_tab_controller->ShouldShowBraveVerticalTabs();      \
-  }()                                                                   \
-                                       ? 0                              \
+#define GetStandardWidth(...)                                      \
+  GetStandardWidth(__VA_ARGS__) * ([&] {                           \
+    auto* vertical_tab_controller = VerticalTabController::From(   \
+        BrowserView::GetBrowserViewForNativeWindow(                \
+            attached_context_->GetWidget()->GetNativeWindow())     \
+            ->browser());                                          \
+    return vertical_tab_controller &&                              \
+           vertical_tab_controller->ShouldShowBraveVerticalTabs(); \
+  }()                                                              \
+                                       ? 0                         \
                                        : 1)
 
 #include <chrome/browser/ui/views/tabs/dragging/dragging_tabs_session.cc>

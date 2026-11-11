@@ -52,8 +52,8 @@ bool StripsPrivacySensitiveData(const ProtocolSerializer& serializer) {
 
   const auto request = MakeProtocolRequest(
       false, "{15160585-8ADE-4D3C-839B-1281A6035D1F}", "prod_id", "1.0",
-      "channel", "OS", "cacheable", std::nullopt, {{"extra", "params"}}, {},
-      std::move(apps));
+      "channel", "OS", "form_factor", "cacheable", std::nullopt,
+      {{"extra", "params"}}, {}, std::move(apps));
 
   const auto request_str = serializer.Serialize(request);
   static constexpr char regex[] =
@@ -75,7 +75,8 @@ bool StripsPrivacySensitiveData(const ProtocolSerializer& serializer) {
       R"("dlpref":"cacheable","extra":"params",)"
       R"("hw":{},)"
       R"("ismachine":false,)"
-      R"("os":{"arch":"[_,-.\w]+","platform":"OS",)"
+      R"("os":{"arch":"[_,-.\w]+","deviceformfactor":"form_factor",)"
+      R"("platform":"OS",)"
       R"(("sp":"[\s\w]+",)?"version":"[+-.\w]+"},"prodchannel":"channel",)"
       R"("prodversion":"1.0","protocol":"4.0","requestid":"{[-\w]{36}}",)"
       R"("sessionid":"{[-\w]{36}}","updaterchannel":"channel",)"

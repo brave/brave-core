@@ -8,18 +8,15 @@
 #include <memory>
 #include <utility>
 
-#include "base/location.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/run_loop.h"
-#include "base/task/sequenced_task_runner.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_account/brave_account_state_prefs.h"
-#include "brave/components/brave_account/endpoint_client/json_test_endpoint_bodies.h"
-#include "brave/components/brave_account/endpoint_client/request_types.h"
-#include "brave/components/brave_account/endpoint_client/response.h"
-#include "brave/components/brave_account/endpoint_client/test_support.h"
 #include "brave/components/brave_account/prefs.h"
+#include "brave/components/endpoint_client/json_test_endpoint_bodies.h"
+#include "brave/components/endpoint_client/request_types.h"
+#include "brave/components/endpoint_client/response.h"
+#include "brave/components/endpoint_client/test_support.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/os_crypt/async/common/encryptor.h"
 #include "components/prefs/testing_pref_service.h"
@@ -35,7 +32,7 @@ namespace brave_account {
 namespace {
 
 struct TestEndpoint {
-  using Request = endpoint_client::POST<endpoint_client::JSONRequestBody>;
+  using Request = endpoint_client::Post<endpoint_client::JSONRequestBody>;
   using Response = endpoint_client::Response<endpoint_client::JSONSuccessBody,
                                              endpoint_client::JSONErrorBody>;
   static GURL URL() { return GURL("https://example.com/api/query"); }
@@ -96,10 +93,6 @@ TEST_F(FlowBaseTest, FlowOwnedRequest_DestructionCancelsPendingRequest) {
   flow_->SendFlowOwnedRequest<TestEndpoint>(TestEndpoint::Request(),
                                             future.GetCallback());
   flow_.reset();
-  base::RunLoop run_loop;
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, run_loop.QuitClosure());
-  run_loop.Run();
   EXPECT_FALSE(future.IsReady());
 }
 

@@ -31,6 +31,7 @@ static_library("browser") {
     "//brave/components/webcompat_reporter/common",
     "//brave/components/webcompat_reporter/common:mojom",
     "//components/component_updater",
+    "//components/crx_file",
     "//components/keyed_service/core",
     "//components/prefs",
     "//net",

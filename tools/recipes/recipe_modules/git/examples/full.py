@@ -6,40 +6,97 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import git
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['git', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    git: git.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    pass
+
+
+def RunSteps(api: DEPS):
+    # A plain git command, named `git <subcommand>` by default; `-c` options
+    # go before the subcommand, and anything else reaches the `step` module.
+    api.git('status', cwd='/b/checkout')
+    api.git(
+        'fetch',
+        'origin',
+        name='fetch with options',
+        git_config_options={'protocol.version': '2', 'core.fsync': 'none'},
+    )
+
     api.git.disable_auto_gc('/b/checkout')
-    api.git.disable_auto_gc('/b/cache/some-mirror',
-                            step_name='disable mirror auto-gc')
+    api.git.disable_auto_gc(
+        '/b/cache/some-mirror', step_name='disable mirror auto-gc'
+    )
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'disables every auto-gc knob',
-        api.post_process(post_process.StepCommandContains,
-                         'disable auto-gc: gc.auto=0',
-                         ['config', 'gc.auto', '0']),
-        api.post_process(post_process.StepCommandContains,
-                         'disable auto-gc: gc.autodetach=0',
-                         ['config', 'gc.autodetach', '0']),
-        api.post_process(post_process.StepCommandContains,
-                         'disable auto-gc: gc.autopacklimit=0',
-                         ['config', 'gc.autopacklimit', '0']),
-        api.post_process(post_process.StepCommandContains,
-                         'disable auto-gc: maintenance.gc.enabled=false',
-                         ['config', 'maintenance.gc.enabled', 'false']),
+        api.post_process(
+            post_process.StepCommandContains, 'git status', ['git', 'status']
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'fetch with options',
+            [
+                'git',
+                '-c',
+                'core.fsync=none',
+                '-c',
+                'protocol.version=2',
+                'fetch',
+                'origin',
+            ],
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'disable auto-gc: gc.auto=0',
+            ['config', 'gc.auto', '0'],
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'disable auto-gc: gc.autodetach=0',
+            ['config', 'gc.autodetach', '0'],
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'disable auto-gc: gc.autopacklimit=0',
+            ['config', 'gc.autopacklimit', '0'],
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'disable auto-gc: maintenance.gc.enabled=false',
+            ['config', 'maintenance.gc.enabled', 'false'],
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'disable auto-gc: maintenance.auto=false',
+            ['config', 'maintenance.auto', 'false'],
+        ),
         # Every step runs with `cwd` set to the repo, not `--git-dir`, so the
         # same call works against a working tree or a bare mirror alike.
-        api.post_process(post_process.StepCommandDoesNotContain,
-                         'disable auto-gc: gc.auto=0', ['--git-dir']),
+        api.post_process(
+            post_process.StepCommandDoesNotContain,
+            'disable auto-gc: gc.auto=0',
+            ['--git-dir'],
+        ),
         # A custom step_name prefix keeps repeat calls (e.g. before/after
         # another step) distinguishable in the step list.
         api.post_process(
             post_process.MustRun,
-            'disable mirror auto-gc: maintenance.gc.enabled=false'),
+            'disable mirror auto-gc: maintenance.gc.enabled=false',
+        ),
         api.post_process(post_process.StatusSuccess),
     )

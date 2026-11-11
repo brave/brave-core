@@ -15,9 +15,13 @@ from enum import Enum
 
 from components.field_trials import FieldTrialsMode
 from components.common_options import CommonOptions
-from components.perf_test_utils import (DownloadArchiveAndUnpack, DownloadFile,
-                                        GetProcessOutput, ToBravePlatformName,
-                                        ToChromiumPlatformName)
+from components.perf_test_utils import (
+  DownloadArchiveAndUnpack,
+  DownloadFile,
+  GetProcessOutput,
+  ToBravePlatformName,
+  ToChromiumPlatformName,
+)
 from components.version import CHROME_VERSION_RE_PATTERN, BraveVersion
 
 
@@ -29,7 +33,8 @@ class BraveChannel(Enum):
 
 
 def BraveChannelToVariationsChannel(
-    brave_channel: BraveChannel) -> Optional[str]:
+  brave_channel: BraveChannel,
+) -> Optional[str]:
   if brave_channel == BraveChannel.NIGHTLY:
     return 'canary'
   if brave_channel == BraveChannel.DEV:
@@ -42,30 +47,36 @@ def BraveChannelToVariationsChannel(
 
 
 def _GetBraveDownloadUrl(tag: str, filename: str) -> str:
-  return ('https://github.com/brave/brave-browser/releases/download/' +
-          f'{tag}/{filename}')
+  return (
+    'https://github.com/brave/brave-browser/releases/download/'
+    + f'{tag}/{filename}'
+  )
 
 
 def _GetChromiumDownloadUrl(version: str, filename: str) -> str:
-  return ('https://build-artifacts.brave.com/chromium-builds/' +
-          f'{version}/{filename}')
+  return (
+    'https://build-artifacts.brave.com/chromium-builds/'
+    + f'{version}/{filename}'
+  )
 
 
 def _GetChromeForTestingDownloadUrl(version: str, chrome_platform: str) -> str:
-  return ('https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/' +
-          f'{str(version)}/{chrome_platform}/chrome-{chrome_platform}.zip')
+  return (
+    'https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/'
+    + f'{str(version)}/{chrome_platform}/chrome-{chrome_platform}.zip'
+  )
 
 
-def _DownloadWinInstallerAndExtract(out_dir: str, url: str,
-                                    expected_install_path: str,
-                                    binary_name: str) -> str:
+def _DownloadWinInstallerAndExtract(
+  out_dir: str, url: str, expected_install_path: str, binary_name: str
+) -> str:
   if not os.path.exists(out_dir):
     os.makedirs(out_dir)
   installer_filename = os.path.join(out_dir, os.pardir, 'temp_installer.exe')
   DownloadFile(url, installer_filename)
   GetProcessOutput(
-      [installer_filename, '--chrome-sxs', '--do-not-launch-chrome'], None,
-      True)
+    [installer_filename, '--chrome-sxs', '--do-not-launch-chrome'], None, True
+  )
 
   # Sometimes the binary is launched despite passing --do-not-launch-chrome.
   # Force kill it by taskkill.exe
@@ -79,16 +90,18 @@ def _DownloadWinInstallerAndExtract(out_dir: str, url: str,
   copy_tree(expected_install_path, out_dir)
   for file in os.listdir(expected_install_path):
     if re.match(CHROME_VERSION_RE_PATTERN, file):
-      assert (full_version is None)
+      assert full_version is None
       full_version = file
-  assert (full_version is not None)
+  assert full_version is not None
   logging.info('Detected version %s', full_version)
-  setup_filename = os.path.join(expected_install_path, full_version,
-                                'Installer', 'setup.exe')
+  setup_filename = os.path.join(
+    expected_install_path, full_version, 'Installer', 'setup.exe'
+  )
   logging.info('Run uninstall')
 
   GetProcessOutput(
-      [setup_filename, '--uninstall', '--force-uninstall', '--chrome-sxs'])
+    [setup_filename, '--uninstall', '--force-uninstall', '--chrome-sxs']
+  )
   shutil.rmtree(expected_install_path, True)
 
   return os.path.join(out_dir, binary_name)
@@ -107,9 +120,15 @@ class BrowserType:
   _extra_benchmark_args: List[str] = []
   _report_as_reference = False
 
-  def __init__(self, win_name: str, mac_name: str, channel: Optional[str],
-               extra_browser_args: List[str], extra_benchmark_args: List[str],
-               report_as_reference: bool):
+  def __init__(
+    self,
+    win_name: str,
+    mac_name: str,
+    channel: Optional[str],
+    extra_browser_args: List[str],
+    extra_benchmark_args: List[str],
+    report_as_reference: bool,
+  ):
     self._win_name = win_name
     self._mac_name = mac_name
     self._channel = channel
@@ -155,8 +174,13 @@ class BrowserType:
     """
     return None
 
-  def DownloadBrowserBinary(self, url: Optional[str], version: BraveVersion,
-                            out_dir: str, common_options: CommonOptions) -> str:
+  def DownloadBrowserBinary(
+    self,
+    url: Optional[str],
+    version: BraveVersion,
+    out_dir: str,
+    common_options: CommonOptions,
+  ) -> str:
     raise NotImplementedError()
 
   def GetBinaryPath(self, target_os: str) -> str:
@@ -174,10 +198,10 @@ class BrowserType:
 
 
 class BraveBrowserTypeImpl(BrowserType):
-
   def __init__(self, brave_channel: BraveChannel):
-    super().__init__('brave', 'Brave Browser', brave_channel.value, [], [],
-                     False)
+    super().__init__(
+      'brave', 'Brave Browser', brave_channel.value, [], [], False
+    )
     self._brave_channel = brave_channel
 
   @property
@@ -191,25 +215,39 @@ class BraveBrowserTypeImpl(BrowserType):
     app_name = 'Brave-Browser'
     if self.channel is not None:
       app_name += '-' + self.channel
-    return os.path.join(os.path.expanduser('~'), 'AppData', 'Local',
-                        'BraveSoftware', app_name, 'Application')
+    return os.path.join(
+      os.path.expanduser('~'),
+      'AppData',
+      'Local',
+      'BraveSoftware',
+      app_name,
+      'Application',
+    )
 
-  def DownloadBrowserBinary(self, url: Optional[str], version: BraveVersion,
-                            out_dir: str, common_options: CommonOptions) -> str:
+  def DownloadBrowserBinary(
+    self,
+    url: Optional[str],
+    version: BraveVersion,
+    out_dir: str,
+    common_options: CommonOptions,
+  ) -> str:
     if url is None and not version.is_tag:
       raise RuntimeError(
-          f'Set the download url for revision {version.to_string()}')
+        f'Set the download url for revision {version.to_string()}'
+      )
     tag = version.last_tag
     target_os = common_options.target_os
     version_parts = tuple(map(int, tag[1:].split('.')))
-    if (target_os == 'windows' and version_parts[0] == 1
-        and version_parts[1] < 35):
+    if (
+      target_os == 'windows' and version_parts[0] == 1 and version_parts[1] < 35
+    ):
       if url is None:
         url = _GetBraveDownloadUrl(
-            tag, f'BraveBrowserStandaloneSilent{self.channel}Setup.exe')
-      return _DownloadWinInstallerAndExtract(out_dir, url,
-                                             self._GetWinInstallPath(),
-                                             'brave.exe')
+          tag, f'BraveBrowserStandaloneSilent{self.channel}Setup.exe'
+        )
+      return _DownloadWinInstallerAndExtract(
+        out_dir, url, self._GetWinInstallPath(), 'brave.exe'
+      )
     if target_os == 'android':
       if url is None:
         url = _GetBraveDownloadUrl(tag, 'Bravearm64Universal.apk')
@@ -228,13 +266,18 @@ class BraveBrowserTypeImpl(BrowserType):
   def GetDefaultFieldTrials(self) -> FieldTrialsMode:
     return FieldTrialsMode.GRIFFIN
 
-class ChromiumBrowserTypeImpl(BrowserType):
 
+class ChromiumBrowserTypeImpl(BrowserType):
   def __init__(self):
     super().__init__('chrome', 'Chromium', None, [], [], True)
 
-  def DownloadBrowserBinary(self, url: Optional[str], version: BraveVersion,
-                            out_dir: str, common_options: CommonOptions) -> str:
+  def DownloadBrowserBinary(
+    self,
+    url: Optional[str],
+    version: BraveVersion,
+    out_dir: str,
+    common_options: CommonOptions,
+  ) -> str:
     target_os = common_options.target_os
     chromium_version_str = version.chromium_version.to_string()
 
@@ -256,12 +299,16 @@ class ChromiumBrowserTypeImpl(BrowserType):
 
 
 class ChromeBrowserTypeImpl(BrowserType):
-
   def __init__(self, channel: str):
     super().__init__('chrome', 'Google Chrome', channel, [], [], True)
 
-  def DownloadBrowserBinary(self, url: Optional[str], version: BraveVersion,
-                            out_dir: str, common_options: CommonOptions) -> str:
+  def DownloadBrowserBinary(
+    self,
+    url: Optional[str],
+    version: BraveVersion,
+    out_dir: str,
+    common_options: CommonOptions,
+  ) -> str:
     raise NotImplementedError()
 
 
@@ -270,33 +317,51 @@ class ChromeOfficialBrowserTypeImpl(ChromeBrowserTypeImpl):
     app_name = 'Chrome'
     if self.channel is not None:
       app_name += ' ' + self.channel
-    return os.path.join(os.path.expanduser('~'), 'AppData', 'Local', 'Google',
-                        app_name, 'Application')
+    return os.path.join(
+      os.path.expanduser('~'),
+      'AppData',
+      'Local',
+      'Google',
+      app_name,
+      'Application',
+    )
 
-  def DownloadBrowserBinary(self, url: Optional[str], version: BraveVersion,
-                            out_dir: str, common_options: CommonOptions) -> str:
+  def DownloadBrowserBinary(
+    self,
+    url: Optional[str],
+    version: BraveVersion,
+    out_dir: str,
+    common_options: CommonOptions,
+  ) -> str:
     if common_options.target_os == 'windows':
       if url is None:
         raise RuntimeError('Specify the binary url explicitly')
-      return _DownloadWinInstallerAndExtract(out_dir, url,
-                                             self._GetWinInstallPath(),
-                                             'chrome.exe')
+      return _DownloadWinInstallerAndExtract(
+        out_dir, url, self._GetWinInstallPath(), 'chrome.exe'
+      )
     raise NotImplementedError('OS is not supported')
 
 
 class ChromeTestingBrowserTypeImpl(ChromeBrowserTypeImpl):
   def GetBinaryPath(self, target_os: str) -> str:
     chrome_platform = ToChromiumPlatformName(target_os)
-    return os.path.join(f'chrome-{chrome_platform}',
-                        super().GetBinaryPath(target_os))
+    return os.path.join(
+      f'chrome-{chrome_platform}', super().GetBinaryPath(target_os)
+    )
 
-  def DownloadBrowserBinary(self, url: Optional[str], version: BraveVersion,
-                            out_dir: str, common_options: CommonOptions) -> str:
+  def DownloadBrowserBinary(
+    self,
+    url: Optional[str],
+    version: BraveVersion,
+    out_dir: str,
+    common_options: CommonOptions,
+  ) -> str:
     chrome_platform = ToChromiumPlatformName(common_options.target_os)
     chromium_version_str = version.chromium_version.to_string()
     if url is None:
-      url = _GetChromeForTestingDownloadUrl(chromium_version_str,
-                                            chrome_platform)
+      url = _GetChromeForTestingDownloadUrl(
+        chromium_version_str, chrome_platform
+      )
 
     DownloadArchiveAndUnpack(out_dir, url)
     _FixUpUnpackedBrowser(out_dir)

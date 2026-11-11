@@ -10,11 +10,12 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
-#include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
 #include "chrome/browser/file_select_helper.h"
 #include "chrome/browser/picture_in_picture/picture_in_picture_occlusion_observer.h"
@@ -29,6 +30,7 @@
 #include "content/public/browser/web_contents.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/views/controls/webview/webview.h"
 #include "ui/views/widget/widget.h"
 #include "url/gurl.h"
 
@@ -117,6 +119,7 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
  public:
   WalletWebUIBubbleManager(views::View* anchor_view,
                            BrowserWindowInterface* browser,
+                           content::WebContents* web_contents,
                            const GURL& webui_url,
                            int task_manager_string_id,
                            bool force_load_on_create)
@@ -125,6 +128,7 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
                                task_manager_string_id,
                                force_load_on_create),
         browser_(browser),
+        web_contents_(web_contents),
         anchor_view_(anchor_view) {}
 
   bool ShowBubble() {
@@ -170,7 +174,11 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
     }
     WalletPanelUI* wallet_panel =
         webui->GetController()->template GetAs<WalletPanelUI>();
-    if (!wallet_panel || !browser_) {
+    if (!wallet_panel) {
+      return bubble_view_;
+    }
+    wallet_panel->SetTabWebContents(web_contents_);
+    if (!browser_) {
       return bubble_view_;
     }
     // Redirect popups opened from the panel to open as separate popup windows.
@@ -199,6 +207,7 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
 
  private:
   const raw_ptr<BrowserWindowInterface> browser_;
+  const raw_ptr<content::WebContents> web_contents_;
   const raw_ptr<views::View> anchor_view_;
   base::WeakPtr<WebUIBubbleDialogView> bubble_view_ = nullptr;
   base::WeakPtrFactory<WalletWebUIBubbleManager> weak_factory_{this};
@@ -226,8 +235,9 @@ WalletBubbleManagerDelegateImpl::WalletBubbleManagerDelegateImpl(
 
   views::View* anchor_view;
   if (browser->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
-    anchor_view = BraveBrowserView::GetBrowserViewForBrowser(browser)
-                      ->GetWalletButtonAnchorView();
+    // Normal windows always have a wallet button in their toolbar, even when
+    // it is hidden.
+    anchor_view = CHECK_DEREF(WalletButton::From(browser)).GetAsAnchorView();
   } else {
     anchor_view =
         BrowserView::GetBrowserViewForBrowser(browser)->top_container();
@@ -235,7 +245,8 @@ WalletBubbleManagerDelegateImpl::WalletBubbleManagerDelegateImpl(
 
   DCHECK(anchor_view);
   webui_bubble_manager_ = std::make_unique<WalletWebUIBubbleManager>(
-      anchor_view, browser, webui_url, IDS_ACCNAME_BRAVE_WALLET_BUTTON,
+      anchor_view, browser, web_contents_, webui_url,
+      IDS_ACCNAME_BRAVE_WALLET_BUTTON,
       /*force_load_on_create=*/false);
 }
 

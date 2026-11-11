@@ -6,7 +6,6 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_REQUEST_MANAGER_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_REQUEST_MANAGER_H_
 
-class WidevinePermissionAndroidTest;
 class SplitViewBrowserTest;
 
 #define set_view_factory_for_testing                                           \
@@ -20,7 +19,6 @@ class SplitViewBrowserTest;
   void UpdateTabIsHiddenWithTabActivationState();                              \
   bool ShouldBeGrouppedInRequests(PermissionRequest* a) const;                 \
   bool IsCurrentRequestBraveWalletInitiated() const;                           \
-  friend class ::WidevinePermissionAndroidTest;                                \
   friend class ::SplitViewBrowserTest;                                         \
   bool tab_is_active_for_testing() const {                                     \
     return tab_is_active_;                                                     \

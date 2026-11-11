@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -23,9 +24,8 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -38,8 +38,10 @@
 #include "extensions/common/constants.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/color/color_provider.h"
 #include "ui/color/color_provider_manager.h"
 #include "ui/gfx/canvas.h"
+#include "ui/gfx/color_palette.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/image/image_skia.h"
@@ -57,9 +59,6 @@ namespace {
 using brave_rewards::RewardsNotificationService;
 using brave_rewards::RewardsServiceFactory;
 using brave_rewards::RewardsTabHelper;
-
-constexpr SkColor kIconColor = SK_ColorBLACK;
-constexpr SkColor kBadgeVerifiedBG = SkColorSetRGB(0x42, 0x3E, 0xEE);
 
 class ButtonHighlightPathGenerator : public views::HighlightPathGenerator {
  public:
@@ -92,9 +91,10 @@ class RewardsBadgeImageSource : public brave::BraveIconWithBadgeImageSource {
                           GetColorProviderCallback get_color_provider_callback)
       : BraveIconWithBadgeImageSource(
             size,
-            std::move(get_color_provider_callback),
+            get_color_provider_callback,
             GetLayoutConstant(LayoutConstant::kLocationBarTrailingIconSize),
-            kBraveActionLeftMarginExtra) {}
+            kBraveActionLeftMarginExtra),
+        get_color_provider_callback_(get_color_provider_callback) {}
 
   void UseVerifiedIcon(bool verified_icon) {
     verified_icon_ = verified_icon;
@@ -118,16 +118,20 @@ class RewardsBadgeImageSource : public brave::BraveIconWithBadgeImageSource {
     outsets.set_bottom(2);
     image_rect.Outset(outsets);
 
+    const ui::ColorProvider* color_provider =
+        get_color_provider_callback_.Run();
     gfx::RectF check_rect(image_rect);
     check_rect.Inset(3);
     cc::PaintFlags check_flags;
     check_flags.setStyle(cc::PaintFlags::kFill_Style);
-    check_flags.setColor(SK_ColorWHITE);
+    check_flags.setColor(
+        color_provider->GetColor(nala::kColorSchemesOnPrimary));
     check_flags.setAntiAlias(true);
     canvas->DrawRoundRect(check_rect, 2, check_flags);
 
-    auto image = gfx::CreateVectorIcon(kLeoVerificationFilledIcon,
-                                       image_rect.width(), kBadgeVerifiedBG);
+    auto image = gfx::CreateVectorIcon(
+        kLeoVerificationFilledIcon, image_rect.width(),
+        color_provider->GetColor(nala::kColorIconInteractive));
 
     cc::PaintFlags image_flags;
     image_flags.setStyle(cc::PaintFlags::kFill_Style);
@@ -135,6 +139,7 @@ class RewardsBadgeImageSource : public brave::BraveIconWithBadgeImageSource {
     canvas->DrawImageInt(image, image_rect.x(), image_rect.y(), image_flags);
   }
 
+  GetColorProviderCallback get_color_provider_callback_;
   bool verified_icon_ = false;
 };
 
@@ -224,12 +229,13 @@ BraveRewardsActionView::BraveRewardsActionView(
   }
 
   panel_coordinator_ =
-      browser_window_interface_->GetFeatures().rewards_panel_coordinator();
+      brave_rewards::RewardsPanelCoordinator::From(browser_window_interface_);
   if (panel_coordinator_) {
     panel_observation_.Observe(panel_coordinator_);
   }
 
-  UpdateTabHelper(GetActiveWebContents());
+  UpdateTabHelper(
+      nullptr, browser_window_interface_->GetTabStripModel()->GetActiveTab());
 }
 
 BraveRewardsActionView::~BraveRewardsActionView() = default;
@@ -240,15 +246,20 @@ void BraveRewardsActionView::Update() {
   auto weak_contents = web_contents ? web_contents->GetWeakPtr()
                                     : base::WeakPtr<content::WebContents>();
 
+  auto get_color_provider =
+      base::BindRepeating(GetColorProviderForWebContents, weak_contents);
+  const ui::ColorProvider* color_provider = get_color_provider.Run();
   auto image_source = std::make_unique<RewardsBadgeImageSource>(
-      preferred_size,
-      base::BindRepeating(GetColorProviderForWebContents, weak_contents));
+      preferred_size, get_color_provider);
   image_source->SetIcon(gfx::Image(GetRewardsIcon()));
 
   auto [text, background_color] = GetBadgeTextAndBackground();
+  // White text on the fixed badge colors in every theme.
   image_source->SetBadge(std::make_unique<IconWithBadgeImageSource::Badge>(
-      text, brave::kBadgeTextColor, background_color));
-  image_source->UseVerifiedIcon(background_color == kBadgeVerifiedBG);
+      text, color_provider->GetColor(nala::kColorPrimitiveNeutral100),
+      background_color.ResolveToSkColor(color_provider)));
+  image_source->UseVerifiedIcon(background_color ==
+                                ui::ColorId(nala::kColorIconInteractive));
 
   SetImageModel(views::Button::STATE_NORMAL,
                 ui::ImageModel::FromImageSkia(
@@ -265,8 +276,8 @@ gfx::Rect BraveRewardsActionView::GetAnchorBoundsInScreen() const {
   if (!GetVisible()) {
     // If the button is currently hidden, then anchor the bubble to the
     // location bar instead.
-    auto* browser_view = BrowserView::GetBrowserViewForBrowser(
-        browser_window_interface_->GetBrowserForMigrationOnly());
+    auto* browser_view =
+        BrowserView::GetBrowserViewForBrowser(browser_window_interface_);
     DCHECK(browser_view);
     return browser_view->GetLocationBarView()->GetAnchorBoundsInScreen();
   }
@@ -305,7 +316,7 @@ void BraveRewardsActionView::OnTabStripModelChanged(
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
   if (selection.active_tab_changed()) {
-    UpdateTabHelper(selection.new_contents);
+    UpdateTabHelper(selection.old_tab, selection.new_tab);
   }
 }
 
@@ -417,7 +428,7 @@ gfx::ImageSkia BraveRewardsActionView::GetRewardsIcon() {
   auto* color_provider = GetColorProvider();
   SkColor color = color_provider
                       ? color_provider->GetColor(kColorToolbarButtonIcon)
-                      : kIconColor;
+                      : gfx::kPlaceholderColor;
 
   if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
     return gfx::CreateVectorIcon(kLeoProductBatOutlineIcon, icon_size, color);
@@ -428,7 +439,7 @@ gfx::ImageSkia BraveRewardsActionView::GetRewardsIcon() {
   return gfx::CreateVectorIcon(kBatIcon, icon_size, color);
 }
 
-std::pair<std::string, SkColor>
+std::pair<std::string, ui::ColorVariant>
 BraveRewardsActionView::GetBadgeTextAndBackground() {
   // Display the number of current notifications, if non-zero.
   size_t notifications = GetRewardsNotificationCount();
@@ -441,7 +452,7 @@ BraveRewardsActionView::GetBadgeTextAndBackground() {
 
   // Display a verified checkmark for verified publishers.
   if (std::get<bool>(publisher_registered_)) {
-    return {"", kBadgeVerifiedBG};
+    return {"", ui::ColorId(nala::kColorIconInteractive)};
   }
 
   return {"", brave::kBadgeNotificationBG};
@@ -501,22 +512,20 @@ void BraveRewardsActionView::IsPublisherRegisteredCallback(
   }
 }
 
-void BraveRewardsActionView::UpdateTabHelper(
-    content::WebContents* web_contents) {
-  tab_helper_ = nullptr;
-  if (tab_helper_observation_.IsObserving()) {
-    tab_helper_observation_.Reset();
+void BraveRewardsActionView::UpdateTabHelper(tabs::TabInterface* old_tab,
+                                             tabs::TabInterface* new_tab) {
+  // A closed tab's helper is destroyed before the tab strip reports it.
+  if (auto* old_helper = old_tab ? RewardsTabHelper::From(old_tab) : nullptr) {
+    old_helper->RemoveObserver(this);
   }
 
-  if (web_contents) {
-    if (auto* helper = RewardsTabHelper::FromWebContents(web_contents)) {
-      tab_helper_ = helper;
-      tab_helper_observation_.Observe(helper);
-    }
+  std::string publisher_id;
+  if (new_tab) {
+    auto& new_helper = CHECK_DEREF(RewardsTabHelper::From(new_tab));
+    new_helper.AddObserver(this);
+    publisher_id = new_helper.GetPublisherIdForTab();
   }
-
-  OnPublisherForTabUpdated(tab_helper_ ? tab_helper_->GetPublisherIdForTab()
-                                       : "");
+  OnPublisherForTabUpdated(publisher_id);
 }
 
 BEGIN_METADATA(BraveRewardsActionView)

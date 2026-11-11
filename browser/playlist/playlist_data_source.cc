@@ -24,8 +24,10 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/notreached.h"
 #include "base/strings/escape.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/playlist/content/browser/mime_util.h"
 #include "brave/components/playlist/content/browser/playlist_service.h"
 #include "components/favicon_base/favicon_url_parser.h"
@@ -42,7 +44,7 @@ namespace {
   CHECK(!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI)) \
       << "This must be called on a background thread."
 
-constexpr base::ByteSize kMediaChunkSize = base::MiBU(1);  // 1MB
+constexpr base::ByteSize kMediaChunkSize = base::MiB(1);  // 1MB
 
 class RefCountedMemMap : public base::RefCountedMemory {
  public:
@@ -50,7 +52,7 @@ class RefCountedMemMap : public base::RefCountedMemory {
     base::File file = base::File(
         path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
     if (!file.IsValid() ||
-        file.GetLength() > static_cast<int64_t>(base::MiBU(100).InBytes())) {
+        file.GetLength() > static_cast<int64_t>(base::MiB(100).InBytes())) {
       // In order to avoid OOM crash, limits the file size to 100MB.
       return;
     }
@@ -310,6 +312,16 @@ bool PlaylistDataSource::SupportsRangeRequests(const GURL& url) const {
   }
 
   return DataRequest(url).type == DataRequest::Type::kMedia;
+}
+
+std::string PlaylistDataSource::GetAccessControlAllowOriginForOrigin(
+    const std::string& origin) {
+  // The Playlist pages are cross-origin to this chrome-untrusted:// source.
+  const std::string origin_url = base::StrCat({origin, "/"});
+  if (origin_url == kPlaylistURL || origin_url == kPlaylistPlayerURL) {
+    return origin;
+  }
+  return FaviconSource::GetAccessControlAllowOriginForOrigin(origin);
 }
 
 }  // namespace playlist

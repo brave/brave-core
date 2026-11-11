@@ -21,7 +21,6 @@
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "brave/components/brave_user_agent/browser/brave_user_agent_exceptions.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -30,6 +29,7 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_handle.h"
@@ -139,22 +139,27 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
         BraveShieldsWebContentsObserver::FromWebContents(web_contents);
     if (observer && !observer->IsBlockedSubresource(subresource)) {
       observer->AddBlockedSubresource(subresource);
-      PrefService* prefs =
+      PrefService* pref_service =
           Profile::FromBrowserContext(web_contents->GetBrowserContext())
               ->GetOriginalProfile()
               ->GetPrefs();
 
       if (block_type == kAds) {
-        prefs->SetUint64(kAdsBlocked, prefs->GetUint64(kAdsBlocked) + 1);
+        pref_service->SetUint64(
+            prefs::kAdsBlocked,
+            pref_service->GetUint64(prefs::kAdsBlocked) + 1);
       } else if (block_type == kHTTPUpgradableResources) {
-        prefs->SetUint64(kHttpsUpgradesStat,
-                         prefs->GetUint64(kHttpsUpgradesStat) + 1);
+        pref_service->SetUint64(
+            prefs::kHttpsUpgradesStat,
+            pref_service->GetUint64(prefs::kHttpsUpgradesStat) + 1);
       } else if (block_type == kJavaScript) {
-        prefs->SetUint64(kJavascriptBlocked,
-                         prefs->GetUint64(kJavascriptBlocked) + 1);
+        pref_service->SetUint64(
+            prefs::kJavascriptBlocked,
+            pref_service->GetUint64(prefs::kJavascriptBlocked) + 1);
       } else if (block_type == kFingerprintingV2) {
-        prefs->SetUint64(kFingerprintingBlocked,
-                         prefs->GetUint64(kFingerprintingBlocked) + 1);
+        pref_service->SetUint64(
+            prefs::kFingerprintingBlocked,
+            pref_service->GetUint64(prefs::kFingerprintingBlocked) + 1);
       }
     }
   }
@@ -173,8 +178,8 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEventForWebContents(
   if (!web_contents) {
     return;
   }
-  auto* shields_data_ctrlr =
-      brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
+  auto* shields_data_ctrlr = brave_shields::BraveShieldsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   // |shields_data_ctrlr| can be null if the |web_contents| is generated in
   // component layer - We don't attach any tab helpers in this case.
   if (!shields_data_ctrlr) {
@@ -190,8 +195,8 @@ void BraveShieldsWebContentsObserver::DispatchAllowedOnceEventForWebContents(
   if (!web_contents) {
     return;
   }
-  auto* shields_data_ctrlr =
-      brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
+  auto* shields_data_ctrlr = brave_shields::BraveShieldsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   // |shields_data_ctrlr| can be null if the |web_contents| is generated in
   // component layer - We don't attach any tab helpers in this case.
   if (!shields_data_ctrlr) {
@@ -207,8 +212,8 @@ void BraveShieldsWebContentsObserver::
   if (!web_contents) {
     return;
   }
-  auto* shields_data_ctrlr =
-      brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
+  auto* shields_data_ctrlr = brave_shields::BraveShieldsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   // |shields_data_ctrlr| can be null if the |web_contents| is generated in
   // component layer - We don't attach any tab helpers in this case.
   if (!shields_data_ctrlr) {
@@ -258,11 +263,11 @@ void BraveShieldsWebContentsObserver::OnJavaScriptBlocked(
 // static
 void BraveShieldsWebContentsObserver::RegisterProfilePrefs(
     PrefRegistrySimple* registry) {
-  registry->RegisterUint64Pref(kAdsBlocked, 0);
-  registry->RegisterUint64Pref(kTrackersBlocked, 0);
-  registry->RegisterUint64Pref(kJavascriptBlocked, 0);
-  registry->RegisterUint64Pref(kHttpsUpgradesStat, 0);
-  registry->RegisterUint64Pref(kFingerprintingBlocked, 0);
+  registry->RegisterUint64Pref(prefs::kAdsBlocked, 0);
+  registry->RegisterUint64Pref(prefs::kTrackersBlocked, 0);
+  registry->RegisterUint64Pref(prefs::kJavascriptBlocked, 0);
+  registry->RegisterUint64Pref(prefs::kHttpsUpgradesStat, 0);
+  registry->RegisterUint64Pref(prefs::kFingerprintingBlocked, 0);
 }
 
 void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
@@ -321,17 +326,12 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
   DCHECK(navigation_handle);
   RenderFrameHost* rfh = navigation_handle->GetRenderFrameHost();
 
-  // Relying on url::Origin::Create correctly extracts the embedded origin for
-  // blob: URLs (e.g. blob:https://example.com/uuid to https://example.com) and
-  // works for all other schemes as well. Origin is more secure than working
-  // with last committed URLs.
-  const GURL primary_url =
+  const GURL& primary_url =
       navigation_handle->GetParentFrameOrOuterDocument()
           ? navigation_handle->GetParentFrameOrOuterDocument()
                 ->GetOutermostMainFrame()
-                ->GetLastCommittedOrigin()
-                .GetURL()
-          : url::Origin::Create(navigation_handle->GetURL()).GetURL();
+                ->GetLastCommittedURL()
+          : navigation_handle->GetURL();
 
   HostContentSettingsMap* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(rfh->GetBrowserContext());

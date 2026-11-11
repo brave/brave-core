@@ -89,6 +89,8 @@ const skippedManglers = [
   'chromium_src/chrome/browser/resources/settings/a11y_page/a11y_page.html.ts.lit_mangler.ts',
   'chromium_src/chrome/browser/resources/settings/a11y_page/a11y_page_index.html.ts.lit_mangler.ts',
   'chromium_src/chrome/browser/resources/settings/appearance_page/appearance_page.html.ts.lit_mangler.ts',
+  'chromium_src/chrome/browser/resources/settings/autofill_page/autofill_page_index.html.ts.lit_mangler.ts',
+  'chromium_src/chrome/browser/resources/settings/autofill_page/payments/payments_page.html.ts.lit_mangler.ts',
   'chromium_src/chrome/browser/resources/settings/on_startup_page/on_startup_page.html.ts.lit_mangler.ts',
   'chromium_src/chrome/browser/resources/settings/system_page/system_page.html.ts.lit_mangler.ts',
 ]
@@ -111,10 +113,15 @@ describe('mangled files should have up to date snapshots', () => {
       const mangledText = fs
         .readFileSync(mangledPath, 'utf8')
         .replaceAll('\r\n', '\n')
-      const originalText = fs
+      const original = fs
         .readFileSync(originalPath, 'utf8')
         .replaceAll('\r\n', '\n')
-        .substring(header.length)
+      // Raw .html templates -- mangled before html_to_wrapper turns them into
+      // .html.ts -- have no header to strip.
+      const hasHeader = original.startsWith('//') || original.startsWith('/*')
+      const originalText = hasHeader
+        ? original.substring(header.length)
+        : original
       const linesDiff = diff.createTwoFilesPatch(
         originalPath.replaceAll(path.sep, '/'),
         path.relative(outputPath, mangledPath).replaceAll(path.sep, '/'),

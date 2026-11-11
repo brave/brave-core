@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveUI
 import DesignSystem
 import Shared
@@ -51,7 +52,12 @@ class SearchURLBarInputView: UIView {
     $0.accessibilityLabel = Strings.quickActionScanQRCode
     $0.setImage(UIImage(braveSystemNamed: "leo.qr.code", compatibleWith: nil), for: .normal)
     $0.tintColor = UIColor(braveSystemName: .iconDefault)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+    $0.configuration?.contentInsets = NSDirectionalEdgeInsets(
+      top: 0,
+      leading: 5,
+      bottom: 0,
+      trailing: 5
+    )
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
     $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
     $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -65,7 +71,12 @@ class SearchURLBarInputView: UIView {
     $0.accessibilityLabel = Strings.tabToolbarVoiceSearchButtonAccessibilityLabel
     $0.setImage(UIImage(braveSystemNamed: "leo.microphone", compatibleWith: nil), for: .normal)
     $0.tintColor = UIColor(braveSystemName: .iconDefault)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+    $0.configuration?.contentInsets = NSDirectionalEdgeInsets(
+      top: 0,
+      leading: 5,
+      bottom: 0,
+      trailing: 5
+    )
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
     $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
     $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -80,7 +91,12 @@ class SearchURLBarInputView: UIView {
     $0.setImage(UIImage(braveSystemNamed: "leo.clipboard", compatibleWith: nil), for: .normal)
     $0.tintColor = UIColor(braveSystemName: .iconDefault)
     $0.isHidden = !UIPasteboard.general.hasStrings && !UIPasteboard.general.hasURLs
-    $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+    $0.configuration?.contentInsets = NSDirectionalEdgeInsets(
+      top: 0,
+      leading: 5,
+      bottom: 0,
+      trailing: 5
+    )
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
     $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
     $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -95,7 +111,7 @@ class SearchURLBarInputView: UIView {
     $0.insetsLayoutMarginsFromSafeArea = false
   }
 
-  private lazy var cancelButton = InsetButton().then {
+  private lazy var cancelButton = UIButton().then {
     $0.setTitle(Strings.cancelButtonTitle, for: .normal)
     $0.setTitleColor(UIColor(braveSystemName: .textSecondary), for: .normal)
     $0.accessibilityIdentifier = "searchURLBarInputView-cancel"
@@ -111,10 +127,19 @@ class SearchURLBarInputView: UIView {
     $0.alignment = .center
   }
 
-  init(privateBrowsingManager: PrivateBrowsingManager, speechRecognizer: SpeechRecognizer) {
+  init(
+    privateBrowsingManager: PrivateBrowsingManager,
+    speechRecognizer: SpeechRecognizer,
+    autocompleteClassifier: (any AutocompleteClassifier)?,
+    urlSanitizerService: (any URLSanitizerService)?
+  ) {
     self.privateBrowsingManager = privateBrowsingManager
     self.speechRecognizer = speechRecognizer
-    self.textField = AutocompleteTextField(privateBrowsingManager: privateBrowsingManager)
+    self.textField = AutocompleteTextField(
+      privateBrowsingManager: privateBrowsingManager,
+      autocompleteClassifier: autocompleteClassifier,
+      urlSanitizerService: urlSanitizerService
+    )
 
     super.init(frame: .zero)
 
@@ -193,6 +218,11 @@ class SearchURLBarInputView: UIView {
 
     updateColors()
     updateLocationBarRightView(showToolbarActions: true)
+    updateForTraitCollection()
+
+    registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+      self.updateForTraitCollection()
+    }
   }
 
   @available(*, unavailable)
@@ -200,10 +230,27 @@ class SearchURLBarInputView: UIView {
     fatalError()
   }
 
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    let clampedTraitCollection = traitCollection.clampingSizeCategory(maximum: .accessibilityLarge)
-    textField.font = .preferredFont(forTextStyle: .body, compatibleWith: clampedTraitCollection)
+  private func updateForTraitCollection() {
+    let clampedTraitCollection = self.traitCollection.clampingSizeCategory(
+      maximum: .accessibilityLarge
+    )
+    textField.font = .preferredFont(
+      forTextStyle: .body,
+      compatibleWith: clampedTraitCollection
+    )
+    let toolbarTraitCollection = UITraitCollection(
+      preferredContentSizeCategory: traitCollection.toolbarButtonContentSizeCategory
+    )
+    let pointSize = UIFont.preferredFont(
+      forTextStyle: .footnote,
+      compatibleWith: toolbarTraitCollection
+    ).pointSize
+    qrCodeButton.configuration?.preferredSymbolConfigurationForImage =
+      .init(pointSize: pointSize, weight: .regular, scale: .large)
+    voiceSearchButton.configuration?.preferredSymbolConfigurationForImage =
+      .init(pointSize: pointSize, weight: .regular, scale: .large)
+    pasteAndGoButton.configuration?.preferredSymbolConfigurationForImage =
+      .init(pointSize: pointSize, weight: .regular, scale: .large)
   }
 
   private func makePlaceholder(colors: some BrowserColors) -> NSAttributedString {

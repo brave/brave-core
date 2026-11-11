@@ -8,6 +8,7 @@ import { render, screen, waitFor, act } from '@testing-library/react'
 import { ManagePageConnected } from '../email_aliases'
 import {
   Alias,
+  AliasesAccountUpdate,
   AliasesUpdate,
   EmailAliasesServiceInterface,
   EmailAliasesServiceObserverInterface,
@@ -26,6 +27,12 @@ class MockEmailAliasesService extends EmailAliasesServiceInterface {
 
   notifyObserverAliasesUpdated(aliases: Alias[]) {
     this.observer?.onAliasesUpdated({ aliases } as AliasesUpdate)
+  }
+
+  notifyObserverAliasesAccountUpdated(maxAliasesCount: number) {
+    this.observer?.onAliasesAccountUpdated({
+      maxAliasesCount,
+    } as AliasesAccountUpdate)
   }
 
   notifyObserverAliasesLoadError(message: string) {
@@ -81,6 +88,15 @@ const updateAliases = async (
 ) => {
   await act(() => {
     service.notifyObserverAliasesUpdated(aliases)
+  })
+}
+
+const updateAliasLimit = async (
+  service: MockEmailAliasesService,
+  maxAliasesCount: number,
+) => {
+  await act(() => {
+    service.notifyObserverAliasesAccountUpdated(maxAliasesCount)
   })
 }
 
@@ -269,6 +285,25 @@ describe('ManagePageConnected', () => {
       expect(screen.queryByText('alias1@brave.com')).not.toBeInTheDocument()
       expect(screen.queryByText('alias2@brave.com')).not.toBeInTheDocument()
       expect(screen.queryByText('alias3@brave.com')).not.toBeInTheDocument()
+    })
+  })
+
+  it('updates the create limit via account observer', async () => {
+    const service = await setupTest()
+    await updateAliases(service)
+
+    const createButton = screen.getByText(
+      S.SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_LABEL,
+    )
+
+    await updateAliasLimit(service, mockAliases.length)
+    await waitFor(() => {
+      expect(createButton).toHaveAttribute('isdisabled', 'true')
+    })
+
+    await updateAliasLimit(service, mockAliases.length + 1)
+    await waitFor(() => {
+      expect(createButton).toHaveAttribute('isdisabled', 'false')
     })
   })
 })

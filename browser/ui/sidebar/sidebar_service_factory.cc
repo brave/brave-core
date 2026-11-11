@@ -78,8 +78,9 @@ SidebarServiceFactory::GetBuiltInItemTypesForProfile(Profile* profile) const {
       continue;
     }
 
-    // Private(or tor) profile.
-    if (profile->IsIncognitoProfile()) {
+    // Private(or tor, or enterprise isolated) profile.
+    if (profile->IsIncognitoProfile() ||
+        profile->IsEnterpriseIsolatedModeProfile()) {
       if (!IsDisabledItemForPrivate(type)) {
         types.push_back(type);
       }

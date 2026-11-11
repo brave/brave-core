@@ -1,0 +1,46 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Expose TemplateUrlSourceType to Brave's search engine adapters.
+
+      BraveBaseSearchEngineAdapter and BraveSearchEngineAdapterDummySuper
+      declare their own getSearchEngineSourceType() and annotate its return
+      value with this @IntDef, so the nested type has to be reachable from
+      outside SearchEngineAdapter. It was public until 28301c19d6c32 demoted it
+      along with the move to SearchEngineSettingsDataProvider. Retention is
+      SOURCE, so the visibility changes nothing in the compiled output.
+    regex:
+      re_pattern: |-
+        private (@interface TemplateUrlSourceType \{)
+      replace: |-
+        public \1
+
+  - description: |-
+      Expose MAX_RECENT_ENGINE_NUM to Brave's search engine adapters.
+
+      BraveBaseSearchEngineAdapter reimplements upstream's recent-engine
+      filtering and has to apply the same cap, so it reads the constant instead
+      of duplicating the literal. It was public until 28301c19d6c32 demoted it
+      along with the move to SearchEngineSettingsDataProvider.
+    regex:
+      re_pattern: |-
+        private (static final int MAX_RECENT_ENGINE_NUM)
+      replace: |-
+        public \1
+
+  - description: |-
+      Expose sortAndFilterUnnecessaryTemplateUrl to quick search engines.
+
+      QuickSearchEnginesUtil orders its engine list the same way the search
+      engine settings page does, and it lives in a different package. It was
+      public until 28301c19d6c32 demoted it to package-private along with the
+      move to SearchEngineSettingsDataProvider.
+    regex:
+      re_pattern: |-
+        (static void sortAndFilterUnnecessaryTemplateUrl\()
+      replace: |-
+        public \1

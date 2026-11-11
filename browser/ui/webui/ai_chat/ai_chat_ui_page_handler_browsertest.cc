@@ -36,6 +36,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #endif
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
@@ -404,6 +405,11 @@ class FakeConversationUI : public mojom::ConversationUI {
       std::vector<mojom::AssociatedContentPtr> associated_content) override {}
   void OnContentToolsChanged(const std::string& content_uuid,
                              std::vector<mojom::ToolInfoPtr> tools) override {}
+  void OnVisionModelSwitchChanged(
+      const std::optional<std::string>& model_key) override {}
+  void OnContentAgentChanged(bool is_content_agent_chosen,
+                             const std::vector<mojom::ConversationCapability>&
+                                 capabilities_enabled) override {}
   void OnConversationDeleted() override {}
 };
 
@@ -504,7 +510,7 @@ IN_PROC_BROWSER_TEST_F(AIChatGlobalSidePanelPageHandlerBrowserTest,
   // URL and skip observation — the subsequent navigation then goes unnoticed.
   GURL url2 = https_server_.GetURL("b.test", "/simple.html");
   ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url2, WindowOpenDisposition::NEW_BACKGROUND_TAB,
+      browser(), url2, WindowOpenDisposition::kNewBackgroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_EQ(tab_strip->count(), 2);
   // Explicitly wait for the background tab to finish loading.
@@ -577,7 +583,7 @@ IN_PROC_BROWSER_TEST_F(AIChatGlobalSidePanelPageHandlerBrowserTest,
   // as in TabSwitchNotifiesFrontend.
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL("chrome://version"),
-      WindowOpenDisposition::NEW_BACKGROUND_TAB,
+      WindowOpenDisposition::kNewBackgroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_EQ(tab_strip->count(), 2);
   content::WaitForLoadStop(tab_strip->GetWebContentsAt(1));
@@ -644,7 +650,8 @@ IN_PROC_BROWSER_TEST_F(AIChatGlobalSidePanelPageHandlerBrowserTest,
       &fake_conversation_ui);
   mojo::Remote<mojom::ConversationHandler> conversation;
   handler->NewConversation(conversation.BindNewPipeAndPassReceiver(),
-                           conversation_ui_receiver.BindNewPipeAndPassRemote());
+                           conversation_ui_receiver.BindNewPipeAndPassRemote(),
+                           /*workspace_url=*/std::nullopt);
 
   // The new conversation should not be associated with any content.
   base::test::TestFuture<std::vector<mojom::AssociatedContentPtr>>
@@ -708,7 +715,8 @@ IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerTabPanelBrowserTest,
   OpenNewTab();
   auto* tab_contents = web_contents();
   ASSERT_TRUE(tab_contents);
-  auto* tab_helper = AIChatTabHelper::FromWebContents(tab_contents);
+  auto* tab_helper = AIChatTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(tab_contents));
   ASSERT_TRUE(tab_helper);
 
   // Mimic the context menu flow: get or create a conversation tied to the
@@ -783,7 +791,8 @@ IN_PROC_BROWSER_TEST_F(
   OpenNewTab();
   auto* tab_contents = web_contents();
   ASSERT_TRUE(tab_contents);
-  auto* tab_helper = AIChatTabHelper::FromWebContents(tab_contents);
+  auto* tab_helper = AIChatTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(tab_contents));
   ASSERT_TRUE(tab_helper);
 
   // Pre-create a conversation tied to the tab. With the flag disabled,

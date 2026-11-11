@@ -20,7 +20,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_test_util.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
@@ -418,7 +418,7 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, MAYBE_TwoProfiles) {
       profile_manager->GenerateNextProfileDirectoryPath();
   Profile& second_profile =
       profiles::testing::CreateProfileSync(profile_manager, profile_path);
-  Browser* second_browser = CreateBrowser(&second_profile);
+  BrowserWindowInterface* second_browser = CreateBrowser(&second_profile);
 
   auto* second_web_contents =
       second_browser->tab_strip_model()->GetActiveWebContents();

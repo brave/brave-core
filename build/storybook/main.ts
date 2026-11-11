@@ -41,7 +41,7 @@ const config: StorybookConfig = {
   addons: ['@storybook/addon-knobs', '@storybook/addon-essentials'],
   framework: '@storybook/react-webpack5',
   staticDirs: [
-    { from: '../../node_modules/@brave/leo/icons', to: 'icons/' },
+    { from: '../../node_modules/@brave/nala/icons', to: 'icons/' },
     {
       from: '../../components/playlist/content/browser/resources/stories/assets',
       to: 'playlist/',

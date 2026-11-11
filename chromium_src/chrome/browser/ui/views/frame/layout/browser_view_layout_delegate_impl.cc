@@ -9,32 +9,64 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
+#include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
+
+namespace {
+
+// On Mac, entering or exiting fullscreen animates, and during the animation the
+// frame view and the browser view can disagree. When exiting, the browser view
+// isn't yet inset by the window title bar shown with vertical tabs, but
+// `BrowserView::Layout()` already lays out its children. Skip that layout and
+// wait for the one the frame view triggers once it has moved the browser view.
+// https://github.com/brave/brave-browser/issues/53470
+bool ShouldWaitForFrameToPlaceBrowserView(
+    const BrowserViewLayoutDelegateImpl& delegate,
+    const BrowserFrameView* frame_view,
+    const BrowserView& browser_view,
+    bool use_browser_bounds) {
+#if BUILDFLAG(IS_MAC)
+  if (!use_browser_bounds || !frame_view) {
+    return false;
+  }
+  const auto params = frame_view->GetBrowserLayoutParams();
+  return !params.IsEmpty() && delegate.ShouldShowVerticalTabs() &&
+         delegate.ShouldShowWindowTitleForVerticalTabs() &&
+         !delegate.IsFullscreen() &&
+         !params.visual_client_area.Contains(browser_view.bounds());
+#else
+  return false;
+#endif  // BUILDFLAG(IS_MAC)
+}
+
+}  // namespace
 
 #include <chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.cc>
 
 bool BrowserViewLayoutDelegateImpl::ShouldShowVerticalTabs() const {
   return browser_view().browser() &&
-         VerticalTabController::FromBrowser(browser_view().browser())
+         VerticalTabController::From(browser_view().browser())
              ->ShouldShowBraveVerticalTabs();
 }
 
 bool BrowserViewLayoutDelegateImpl::ShouldShowWindowTitleForVerticalTabs()
     const {
   return browser_view().browser() &&
-         VerticalTabController::FromBrowser(browser_view().browser())
+         VerticalTabController::From(browser_view().browser())
              ->ShouldShowWindowTitleForVerticalTabs();
 }
 
 bool BrowserViewLayoutDelegateImpl::IsVerticalTabOnRight() const {
   return browser_view().browser() &&
-         VerticalTabController::FromBrowser(browser_view().browser())
+         VerticalTabController::From(browser_view().browser())
              ->IsVerticalTabOnRight();
 }
 
@@ -66,7 +98,7 @@ bool BrowserViewLayoutDelegateImpl::IsContentTypeSidePanelVisible() const {
   // SidePanelCoordinator (which implements SidePanelUI) is created in
   // BWF::InitPostWindowConstruction, so it may be null during the early layout
   // pass that happens while the widget is being initialized.
-  auto* side_panel_ui = browser_view().browser()->GetFeatures().side_panel_ui();
+  auto* side_panel_ui = SidePanelUI::From(browser_view().browser());
   if (!side_panel_ui) {
     return false;
   }
@@ -78,8 +110,8 @@ bool BrowserViewLayoutDelegateImpl::IsFullscreenForBrowser() const {
   if (!browser_view().browser()) {
     return false;
   }
-  const ExclusiveAccessManager* exclusive_access_manager =
-      browser_view().browser()->GetFeatures().exclusive_access_manager();
+  auto* const exclusive_access_manager = ExclusiveAccessManager::From(
+      const_cast<BrowserWindowInterface*>(browser_view().browser()));
   if (!exclusive_access_manager) {
     return false;
   }
@@ -93,8 +125,8 @@ bool BrowserViewLayoutDelegateImpl::IsFullscreenForTab() const {
   if (!browser_view().browser()) {
     return false;
   }
-  const ExclusiveAccessManager* exclusive_access_manager =
-      browser_view().browser()->GetFeatures().exclusive_access_manager();
+  auto* const exclusive_access_manager = ExclusiveAccessManager::From(
+      const_cast<BrowserWindowInterface*>(browser_view().browser()));
   if (!exclusive_access_manager) {
     return false;
   }

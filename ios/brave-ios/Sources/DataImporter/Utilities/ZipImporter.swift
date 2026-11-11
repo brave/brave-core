@@ -14,7 +14,7 @@ class ZipImporter {
     case invalidFileSystemURL
   }
 
-  static func unzip(path: URL) async throws -> URL {
+  @concurrent static func unzip(path: URL) async throws -> URL {
     // The zip file's name - The name of the extracted folder
     let fileName = path.deletingPathExtension().lastPathComponent
 

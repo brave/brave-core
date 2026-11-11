@@ -34,7 +34,7 @@ class AdsService;
 }  // namespace brave_ads
 
 namespace ntp_background_images {
-class NTPSponsoredRichMediaAdEventHandler;
+class NTPDynamicNewTabTakeoverAdEventHandler;
 class ViewCounterService;
 }  // namespace ntp_background_images
 
@@ -101,8 +101,8 @@ class BraveNewTabUI : public ui::MojoWebUIController,
       mojo::PendingReceiver<brave_new_tab_page::mojom::NewTabMetrics>
           pending_new_tab_metrics,
       mojo::PendingReceiver<
-          ntp_background_images::mojom::SponsoredRichMediaAdEventHandler>
-          pending_rich_media_ad_event_handler) override;
+          ntp_background_images::mojom::SponsoredContentAdEventHandler>
+          pending_sponsored_content_ad_event_handler) override;
 
   // Must outlive `realbox_handler_`.
   std::unique_ptr<contextual_search::ContextualSearchSessionHandle>
@@ -114,8 +114,8 @@ class BraveNewTabUI : public ui::MojoWebUIController,
       searchbox_page_factory_receiver_{this};
   mojo::Receiver<brave_new_tab_page::mojom::PageHandlerFactory>
       page_factory_receiver_;
-  std::unique_ptr<ntp_background_images::NTPSponsoredRichMediaAdEventHandler>
-      rich_media_ad_event_handler_;
+  std::unique_ptr<ntp_background_images::NTPDynamicNewTabTakeoverAdEventHandler>
+      sponsored_content_ad_event_handler_;
   raw_ptr<regional_capabilities::RegionalCapabilitiesService>
       regional_capabilities_ = nullptr;
 

@@ -9,6 +9,7 @@ assert(enable_tor)
 
 static_library("tor") {
   visibility = [
+    ":tor_unittests",
     "//brave/test:*",
     "//chrome/utility:*",
   ]
@@ -24,5 +25,21 @@ static_library("tor") {
     "//brave/components/child_process_monitor",
     "//brave/components/tor:constants",
     "//mojo/public/cpp/bindings",
+  ]
+}
+
+source_set("tor_unittests") {
+  testonly = true
+
+  sources = [ "tor_launcher_impl_unittest.cc" ]
+
+  deps = [
+    ":tor",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/tor:constants",
+    "//components/component_updater:component_updater_paths",
+    "//mojo/public/cpp/bindings",
+    "//testing/gtest",
   ]
 }

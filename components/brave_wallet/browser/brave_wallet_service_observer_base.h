@@ -15,13 +15,10 @@ namespace brave_wallet {
 
 class BraveWalletServiceObserverBase
     : public mojom::BraveWalletServiceObserver {
-  void OnActiveOriginChanged(mojom::OriginInfoPtr origin_info) override {}
   void OnDefaultEthereumWalletChanged(mojom::DefaultWallet wallet) override {}
   void OnDefaultSolanaWalletChanged(mojom::DefaultWallet wallet) override {}
   void OnDefaultCardanoWalletChanged(mojom::DefaultWallet wallet) override {}
   void OnDefaultBaseCurrencyChanged(const std::string& currency) override {}
-  void OnDefaultBaseCryptocurrencyChanged(
-      const std::string& cryptocurrency) override {}
   void OnNetworkListChanged() override {}
   void OnDiscoverAssetsStarted() override {}
   void OnDiscoverAssetsCompleted(

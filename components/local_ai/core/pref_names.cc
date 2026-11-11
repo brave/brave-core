@@ -11,10 +11,13 @@ namespace local_ai::prefs {
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kBraveHistoryEmbeddingsEnabled, false);
+  registry->RegisterBooleanPref(kAskEnableOnDeviceSpeechModel, true);
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kBraveLocalAIEnabled, true);
+  registry->RegisterBooleanPref(kOnDeviceSpeechEnglishModelEnabled, false);
+  registry->RegisterBooleanPref(kOnDeviceSpeechMultilingualModelEnabled, false);
 }
 
 }  // namespace local_ai::prefs

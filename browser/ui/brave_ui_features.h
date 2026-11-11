@@ -13,11 +13,14 @@ namespace features {
 
 BASE_DECLARE_FEATURE(kBraveNtpSearchWidget);
 BASE_DECLARE_FEATURE(kBraveFilledBookmarkFolderIcon);
+BASE_DECLARE_FEATURE(kBraveToolbarsSmallIcons);
 #if BUILDFLAG(IS_WIN)
 BASE_DECLARE_FEATURE(kBraveWorkaroundNewWindowFlash);
 #endif  // BUILDFLAG(IS_WIN)
 
 BASE_DECLARE_FEATURE(kForcePopupToBeOpenedAsTab);
+
+BASE_DECLARE_FEATURE(kBraveRecap);
 
 }  // namespace features
 

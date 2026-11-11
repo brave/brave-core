@@ -1,0 +1,11 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add the Brave sync protocol sources.
+    add_literal_to_variable:
+      variable: sync_protocol_sources
+      literal: brave_sync_protocol_sources
+      import: //brave/components/sync/protocol/protocol_sources.gni

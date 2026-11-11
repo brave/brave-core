@@ -7,6 +7,9 @@
 
 namespace brave_ads {
 
+// The registered name is explicit because it is targeted by the live
+// "UserActivityStudy" Griffin experiment. This can switch to the 2-param
+// `BASE_FEATURE` form once that experiment has ended.
 BASE_FEATURE(kUserActivityFeature,
              "UserActivity",
              base::FEATURE_ENABLED_BY_DEFAULT);

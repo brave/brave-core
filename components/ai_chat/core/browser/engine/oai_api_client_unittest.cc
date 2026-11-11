@@ -5,11 +5,9 @@
 
 #include "brave/components/ai_chat/core/browser/engine/oai_api_client.h"
 
-#include <list>
 #include <optional>
 #include <string>
 #include <string_view>
-#include <type_traits>
 #include <vector>
 
 #include "base/containers/flat_map.h"
@@ -23,8 +21,6 @@
 #include "base/test/values_test_util.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"

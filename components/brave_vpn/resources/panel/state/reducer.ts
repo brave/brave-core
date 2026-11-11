@@ -15,6 +15,7 @@ type RootState = {
   expired: boolean
   outOfCredentials: boolean
   smartProxyRoutingEnabled: boolean
+  isReconnectingToAgent: boolean
   connectionStatus: ConnectionState
   regions: Region[]
   currentRegion: Region
@@ -29,6 +30,7 @@ const defaultState: RootState = {
   expired: false,
   outOfCredentials: false,
   smartProxyRoutingEnabled: false,
+  isReconnectingToAgent: false,
   connectionStatus: ConnectionState.DISCONNECTED,
   regions: [],
   currentRegion: new Region(),
@@ -86,11 +88,26 @@ reducer.on(Actions.toggleRegionSelector, (state, payload): RootState => {
   }
 })
 
+reducer.on(Actions.reconnectToAgent, (state): RootState => {
+  return {
+    ...state,
+    isReconnectingToAgent: true
+  }
+})
+
+reducer.on(Actions.agentFailure, (state): RootState => {
+  return {
+    ...state,
+    isReconnectingToAgent: false
+  }
+})
+
 reducer.on(Actions.connectionStateChanged, (state, payload): RootState => {
   return {
     ...state,
     hasError: payload.connectionStatus === ConnectionState.CONNECTED ? false : state.hasError,
-    connectionStatus: payload.connectionStatus
+    connectionStatus: payload.connectionStatus,
+    isReconnectingToAgent: false
   }
 })
 

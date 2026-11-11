@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css/variables'
-import LeoIcon from '@brave/leo/react/icon'
+import * as leo from '@brave/nala/tokens/css/variables'
+import LeoIcon from '@brave/nala/react/icon'
 
 // Shared Styles
 import {
@@ -15,7 +15,7 @@ import {
 } from '$wallet/components/shared/style'
 import {
   layoutPanelWidth, //
-} from '$wallet/components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const visibleAssetItemHeight = 58
 

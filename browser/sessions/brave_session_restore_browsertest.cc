@@ -24,7 +24,6 @@
 #include "chrome/browser/sessions/session_service_factory.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
 #include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
@@ -36,7 +35,9 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/saved_tab_groups/public/tab_group_sync_service.h"
+#include "components/sessions/core/command_storage_read_status.h"
 #include "components/sessions/core/serialized_navigation_entry.h"
+#include "components/sessions/core/session_service_commands.h"
 #include "components/sessions/core/session_types.h"
 #include "components/sessions/core/tab_restore_service.h"
 #include "components/sessions/core/tab_restore_types.h"
@@ -50,13 +51,11 @@
 #include "services/network/public/cpp/network_switches.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
-#include "third_party/blink/public/common/page_state/page_state.h"
-#include "third_party/blink/public/common/page_state/page_state_serialization.h"
 
 using BraveSessionRestoreBrowserTest = InProcessBrowserTest;
 
 IN_PROC_BROWSER_TEST_F(BraveSessionRestoreBrowserTest,
-                       SerializationClearNonEmptyPageState) {
+                       SerializationClearPageStateForNewTab) {
   auto* tab_model = browser()->tab_strip_model();
   auto* web_contents = tab_model->GetActiveWebContents();
   SessionService* const session_service =
@@ -80,7 +79,9 @@ IN_PROC_BROWSER_TEST_F(BraveSessionRestoreBrowserTest,
   base::RunLoop loop;
   session_service->GetLastSession(base::BindLambdaForTesting(
       [&](std::vector<std::unique_ptr<sessions::SessionWindow>> windows,
-          SessionID ignored_active_window, bool error_reading) {
+          SessionID ignored_active_window,
+          sessions::CommandStorageReadStatus status,
+          sessions::SessionReplayResult replay_result) {
         EXPECT_EQ(windows.size(), 1u);
         EXPECT_EQ(windows[0]->tabs.size(), 1u);
         EXPECT_EQ(windows[0]->tabs[0]->navigations.size(), 2u);
@@ -88,11 +89,10 @@ IN_PROC_BROWSER_TEST_F(BraveSessionRestoreBrowserTest,
         EXPECT_EQ(serialized_navigation.virtual_url(),
                   GURL("chrome://newtab/"));
 
-        // Check encoded data is not empty but clean state only with url info.
-        EXPECT_EQ(blink::PageState::CreateFromURL(GURL("chrome://newtab/"))
-                      .ToEncodedData(),
-                  serialized_navigation.encoded_page_state());
-        EXPECT_FALSE(serialized_navigation.encoded_page_state().empty());
+        // Check encoded data is empty. On restore, the virtual_url is
+        // re-resolved (e.g. to any current extension NTP override), so no
+        // page state should be persisted here.
+        EXPECT_TRUE(serialized_navigation.encoded_page_state().empty());
         loop.Quit();
       }));
   loop.Run();
@@ -123,7 +123,9 @@ IN_PROC_BROWSER_TEST_F(BraveSessionRestoreBrowserTest,
   base::RunLoop loop;
   session_service->GetLastSession(base::BindLambdaForTesting(
       [&](std::vector<std::unique_ptr<sessions::SessionWindow>> windows,
-          SessionID ignored_active_window, bool error_reading) {
+          SessionID ignored_active_window,
+          sessions::CommandStorageReadStatus status,
+          sessions::SessionReplayResult replay_result) {
         EXPECT_EQ(windows.size(), 1u);
         EXPECT_EQ(windows[0]->tabs.size(), 1u);
         EXPECT_EQ(windows[0]->tabs[0]->navigations.size(), 2u);
@@ -309,8 +311,10 @@ class BraveTreeTabSessionRestoreBrowserTest : public InProcessBrowserTest {
     base::RunLoop loop;
     session_service()->GetLastSession(base::BindLambdaForTesting(
         [&](std::vector<std::unique_ptr<sessions::SessionWindow>> windows,
-            SessionID /*active_window*/, bool error_reading) {
-          ASSERT_FALSE(error_reading);
+            SessionID /*active_window*/,
+            sessions::CommandStorageReadStatus status,
+            sessions::SessionReplayResult /*replay_result*/) {
+          ASSERT_FALSE(sessions::IsCommandStorageReadError(status));
           std::move(predicate).Run(std::move(windows));
           loop.Quit();
         }));

@@ -14,15 +14,19 @@ source_set("ads_internals") {
   deps = [
     "//brave/browser:browser_process",
     "//brave/browser/brave_ads",
+    "//brave/browser/ui/webui:brave_webui_source",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/browser/resources:generated_resources",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_rewards/core",
     "//brave/components/ntp_background_images/browser",
-    "//chrome/browser:browser_public_dependencies",
+    "//brave/components/resources:static_resources",
+    "//chrome/browser:browser_process",
     "//chrome/browser/new_tab_page/prefs",
     "//chrome/browser/profiles:profile",
+    "//components/crx_file",
     "//components/variations/service",
+    "//crypto",
   ]
 
   if (enable_brave_rewards) {
@@ -45,6 +49,7 @@ source_set("ads_internals") {
     "//base",
     "//brave/components/brave_ads/core/public:headers",
     "//brave/components/brave_rewards/core/buildflags",
+    "//brave/components/constants",
     "//brave/components/services/bat_ads/public/interfaces",
     "//components/prefs",
     "//content/public/browser",

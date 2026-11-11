@@ -71,12 +71,6 @@ class SyncPairWordsViewController: SyncViewController {
     fatalError()
   }
 
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-
-    containerView.layer.shadowColor = UIColor(braveSystemName: .dividerStrong).cgColor
-  }
-
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -98,6 +92,10 @@ class SyncPairWordsViewController: SyncViewController {
     )
 
     edgesForExtendedLayout = UIRectEdge()
+
+    registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _) in
+      self.containerView.layer.shadowColor = UIColor(braveSystemName: .dividerStrong).cgColor
+    }
   }
 
   override func viewWillAppear(_ animated: Bool) {

@@ -54,8 +54,9 @@ from update import CLANG_REVISION  # type: ignore  # noqa: E402
 # pylint: enable=wrong-import-position
 
 # The repo to clone from for the build.
-IWYU_GIT_URL = ('https://github.com/include-what-you-use/'
-                'include-what-you-use.git')
+IWYU_GIT_URL = (
+    'https://github.com/include-what-you-use/include-what-you-use.git'
+)
 
 # Pinned IWYU revision.  IWYU master tracks LLVM main; we pin to a specific
 # commit that compiles against the Clang revision Chromium has currently
@@ -127,14 +128,19 @@ class IwyuBuilder:
     def _checkout_llvm(self):
         """Clone or update LLVM at the pinned Chromium Clang revision."""
         self.llvm_dir.parent.mkdir(parents=True, exist_ok=True)
-        CheckoutGitRepo('LLVM monorepo', LLVM_GIT_URL, CLANG_REVISION,
-                        str(self.llvm_dir))
+        CheckoutGitRepo(
+            'LLVM monorepo', LLVM_GIT_URL, CLANG_REVISION, str(self.llvm_dir)
+        )
 
     def _checkout_iwyu(self):
         """Clone or update IWYU at the pinned revision."""
         self.iwyu_dir.parent.mkdir(parents=True, exist_ok=True)
-        CheckoutGitRepo('include-what-you-use', IWYU_GIT_URL, IWYU_REVISION,
-                        str(self.iwyu_dir))
+        CheckoutGitRepo(
+            'include-what-you-use',
+            IWYU_GIT_URL,
+            IWYU_REVISION,
+            str(self.iwyu_dir),
+        )
 
     def _configure(self):
         """Configure the LLVM build with IWYU added as an external project.
@@ -200,10 +206,11 @@ class IwyuBuilder:
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Build include-what-you-use against Chromium-pinned LLVM.')
-    parser.add_argument('--verbose',
-                        action='store_true',
-                        help='Enable verbose (debug) logging.')
+        description='Build include-what-you-use against Chromium-pinned LLVM.'
+    )
+    parser.add_argument(
+        '--verbose', action='store_true', help='Enable verbose (debug) logging.'
+    )
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)

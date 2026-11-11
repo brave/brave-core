@@ -5,8 +5,6 @@
 
 #include "brave/components/sync/service/brave_sync_stopped_reporter.h"
 
-#include <utility>
-
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace syncer {

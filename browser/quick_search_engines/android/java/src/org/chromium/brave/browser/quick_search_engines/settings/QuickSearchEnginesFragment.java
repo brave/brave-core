@@ -7,12 +7,8 @@ package org.chromium.brave.browser.quick_search_engines.settings;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,6 +25,10 @@ import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.brave.browser.quick_search_engines.ItemTouchHelperCallback;
 import org.chromium.brave.browser.quick_search_engines.R;
 import org.chromium.brave.browser.quick_search_engines.utils.QuickSearchEnginesUtil;
+import org.chromium.build.annotations.Initializer;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
 import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
@@ -37,32 +37,33 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@NullMarked
 public class QuickSearchEnginesFragment extends ChromeBaseSettingsFragment
-        implements QuickSearchEnginesCallback, ItemTouchHelperCallback.OnStartDragListener {
+        implements QuickSearchEnginesCallback {
     private RecyclerView mRecyclerView;
-    private QuickSearchEnginesAdapter mQuickSearchEnginesAdapter;
-    private ItemTouchHelper mItemTouchHelper;
-
-    private MenuItem mCloseItem;
-    private MenuItem mSaveItem;
 
     private final SettableMonotonicObservableSupplier<String> mPageTitle =
             ObservableSuppliers.createMonotonic();
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPageTitle.set(getString(R.string.quick_search_engines));
     }
 
+    // This screen uses a custom layout (R.layout.fragment_quick_search) instead of the preference
+    // framework, so there is no PreferenceScreen to build here.
     @Override
-    public void onCreatePreferences(Bundle bundle, String s) {
-        setHasOptionsMenu(true);
+    public void onCreatePreferences(@Nullable Bundle bundle, @Nullable String rootKey) {
+        /* Not used. */
     }
 
+    @Initializer
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_quick_search, container, false);
 
         LinearLayout quickSearchOptionsLayout = view.findViewById(R.id.quick_search_options_layout);
@@ -75,68 +76,42 @@ public class QuickSearchEnginesFragment extends ChromeBaseSettingsFragment
         MaterialSwitch quickSearchFeatureSwitch =
                 quickSearchFeatureLayout.findViewById(R.id.search_engine_switch);
         quickSearchFeatureLayout.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        boolean isChecked = quickSearchFeatureSwitch.isChecked();
-                        quickSearchFeatureSwitch.setChecked(!isChecked);
-                    }
+                v -> {
+                    boolean isChecked = quickSearchFeatureSwitch.isChecked();
+                    quickSearchFeatureSwitch.setChecked(!isChecked);
                 });
         quickSearchFeatureLayout.findViewById(R.id.search_engine_logo).setVisibility(View.GONE);
         quickSearchFeatureSwitch.setChecked(QuickSearchEnginesUtil.getQuickSearchEnginesFeature());
         quickSearchFeatureSwitch.setOnCheckedChangeListener(
-                new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        quickSearchOptionsLayout.setVisibility(
-                                isChecked ? View.VISIBLE : View.GONE);
-                        QuickSearchEnginesUtil.setQuickSearchEnginesFeature(isChecked);
-                    }
+                (buttonView, isChecked) -> {
+                    quickSearchOptionsLayout.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+                    QuickSearchEnginesUtil.setQuickSearchEnginesFeature(isChecked);
                 });
 
         quickSearchOptionsLayout.setVisibility(
                 QuickSearchEnginesUtil.getQuickSearchEnginesFeature() ? View.VISIBLE : View.GONE);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.quick_search_settings_recyclerview);
+        mRecyclerView = view.findViewById(R.id.quick_search_settings_recyclerview);
         LinearLayoutManager linearLayoutManager =
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        setHasOptionsMenu(true);
         return view;
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.quick_search_engines_menu, menu);
-        mCloseItem = menu.findItem(R.id.close_menu_id);
-        mSaveItem = menu.findItem(R.id.action_save);
-    }
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        final Profile profile = getProfile();
+        TemplateUrlServiceFactory.getForProfile(profile)
+                .runWhenLoaded(
+                        () -> {
+                            if (isRemoving() || isDetached()) return;
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_save) {
-            if (mQuickSearchEnginesAdapter != null
-                    && mQuickSearchEnginesAdapter.getQuickSearchEngines() != null
-                    && mQuickSearchEnginesAdapter.getQuickSearchEngines().size() > 0) {
-                Map<String, QuickSearchEnginesModel> searchEnginesMap =
-                        new LinkedHashMap<String, QuickSearchEnginesModel>();
-                for (QuickSearchEnginesModel quickSearchEnginesModel :
-                        mQuickSearchEnginesAdapter.getQuickSearchEngines()) {
-                    searchEnginesMap.put(
-                            quickSearchEnginesModel.getKeyword(), quickSearchEnginesModel);
-                }
-                QuickSearchEnginesUtil.saveSearchEnginesIntoPref(searchEnginesMap);
-                mQuickSearchEnginesAdapter.setEditMode(false);
-                editModeUiVisibility();
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        refreshData();
+                            List<QuickSearchEnginesModel> quickSearchEngines =
+                                    QuickSearchEnginesUtil.getQuickSearchEnginesForSettings(
+                                            profile);
+                            setRecyclerViewData(quickSearchEngines);
+                        });
     }
 
     @Override
@@ -149,26 +124,11 @@ public class QuickSearchEnginesFragment extends ChromeBaseSettingsFragment
         return AnimationType.PROPERTY;
     }
 
-    private void refreshData() {
-        Runnable onQuickSearchEnginesReady =
-                () -> {
-                    if (isRemoving() || isDetached()) return;
-
-                    List<QuickSearchEnginesModel> quickSearchEngines =
-                            QuickSearchEnginesUtil.getQuickSearchEnginesForSettings(getProfile());
-                    setRecyclerViewData(quickSearchEngines);
-                };
-        TemplateUrlServiceFactory.getForProfile(getProfile())
-                .runWhenLoaded(onQuickSearchEnginesReady);
-    }
-
     private void setRecyclerViewData(List<QuickSearchEnginesModel> searchEngines) {
-        mQuickSearchEnginesAdapter =
-                new QuickSearchEnginesAdapter(getActivity(), searchEngines, this, this);
-        mRecyclerView.setAdapter(mQuickSearchEnginesAdapter);
-        ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(mQuickSearchEnginesAdapter);
-        mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+        QuickSearchEnginesAdapter adapter = new QuickSearchEnginesAdapter(searchEngines, this);
+        mRecyclerView.setAdapter(adapter);
+        new ItemTouchHelper(new ItemTouchHelperCallback(adapter))
+                .attachToRecyclerView(mRecyclerView);
     }
 
     // QuickSearchCallback
@@ -184,26 +144,14 @@ public class QuickSearchEnginesFragment extends ChromeBaseSettingsFragment
         QuickSearchEnginesUtil.saveSearchEnginesIntoPref(searchEnginesMap);
     }
 
+    // Persist the new order as soon as the dragged engine is dropped.
     @Override
-    public void onSearchEngineLongClick() {
-        editModeUiVisibility();
-    }
-
-    @Override
-    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-        mItemTouchHelper.startDrag(viewHolder);
-    }
-
-    private void editModeUiVisibility() {
-        if (mQuickSearchEnginesAdapter != null) {
-            boolean isEditMode = mQuickSearchEnginesAdapter.isEditMode();
-            if (mCloseItem != null) {
-                mCloseItem.setVisible(!isEditMode);
-            }
-            if (mSaveItem != null) {
-                mSaveItem.setVisible(isEditMode);
-            }
+    public void onSearchEnginesReordered(List<QuickSearchEnginesModel> quickSearchEngines) {
+        Map<String, QuickSearchEnginesModel> searchEnginesMap = new LinkedHashMap<>();
+        for (QuickSearchEnginesModel quickSearchEnginesModel : quickSearchEngines) {
+            searchEnginesMap.put(quickSearchEnginesModel.getKeyword(), quickSearchEnginesModel);
         }
+        QuickSearchEnginesUtil.saveSearchEnginesIntoPref(searchEnginesMap);
     }
 
     @Override

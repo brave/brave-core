@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { html, nothing } from 'chrome://resources/lit/v3_0/lit.rollup.js'
+import { html, nothing, repeat } from 'chrome://resources/lit/v3_0/lit.rollup.js'
 import { SettingsBraveContentContainersElement } from './containers.js'
 import { ContainersStrings } from '../brave_generated_resources_webui_strings.js'
 import { Icon } from '../containers.mojom-webui.js'
@@ -43,14 +43,41 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
               icon="container-on"
               label="$i18n{SETTINGS_CONTAINERS_ALWAYS_USE_MINI_ICON_LABEL}"
             ></settings-toggle-button>
+            <div class="cr-row continuation">
+              <div
+                class="flex cr-padded-text"
+                aria-hidden="true"
+              >
+                $i18n{SETTINGS_CONTAINERS_NEW_TAB_TARGET_LABEL}
+              </div>
+              <settings-dropdown-menu
+                id="newTabTargetDropdown"
+                label="$i18n{SETTINGS_CONTAINERS_NEW_TAB_TARGET_LABEL}"
+                .value="${this.newTabTargetDropdownValue_()}"
+                .menuOptions="${this.newTabTargetMenuOptions_()}"
+                @settings-control-change="${this
+                  .onNewTabTargetSettingsControlChange_}"
+              ></settings-dropdown-menu>
+            </div>
             ${this.containersList_?.length
               ? html`
                   <div class="cr-row continuation">
-                    <div class="list">
-                      ${this.containersList_.map(
+                    <div
+                      class="list"
+                      @dragenter="${this.onListDragenter_}"
+                      @dragover="${this.onListDragover_}"
+                      @drop="${this.onListDrop_}"
+                    >
+                      ${repeat(
+                        this.dragReorderedItems_(this.containersList_),
+                        (item) => item.id,
                         (item) => html`
-                          <div class="container">
+                          <div
+                            class="container ${this.dragRowClass_(item.id)}"
+                            data-drag-id="${item.id}"
+                          >
                             <div class="icon-and-label">
+                              ${this.dragHandleTemplate_(item.id)}
                               <settings-brave-content-containers-icon
                                 icon="${item.icon}"
                                 background-color="${skColorToHexColor(

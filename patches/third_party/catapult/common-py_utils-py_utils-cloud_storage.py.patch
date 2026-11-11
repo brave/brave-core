@@ -1,8 +1,8 @@
 diff --git a/common/py_utils/py_utils/cloud_storage.py b/common/py_utils/py_utils/cloud_storage.py
-index ee4fdfa19d47abf048cf081bbd3720c1ab4fe3bd..0af2c74b3298abd07efdbd1a23aa35c0d75cd316 100644
+index 807550c6e9270e8ec20351c43c1d757bb53defa3..0e78ccbaf62e700444e2b941d6633e0fc133e0ba 100644
 --- a/common/py_utils/py_utils/cloud_storage.py
 +++ b/common/py_utils/py_utils/cloud_storage.py
-@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
+@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
  
  
  PUBLIC_BUCKET = 'chromium-telemetry'
@@ -11,7 +11,7 @@ index ee4fdfa19d47abf048cf081bbd3720c1ab4fe3bd..0af2c74b3298abd07efdbd1a23aa35c0
  INTERNAL_BUCKET = 'chrome-telemetry'
  TELEMETRY_OUTPUT = 'chrome-telemetry-output'
  
-@@ -643,3 +643,4 @@ def CalculateHash(file_path):
+@@ -732,3 +732,4 @@ def CalculateHash(file_path):
  def ReadHash(hash_path):
    with open(hash_path, 'rb') as f:
      return f.read(1024).rstrip().decode('utf-8')

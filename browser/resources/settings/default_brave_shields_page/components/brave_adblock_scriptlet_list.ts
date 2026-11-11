@@ -6,7 +6,7 @@
 import 'chrome://resources/cr_elements/cr_button/cr_button.js'
 import 'chrome://resources/cr_elements/icons.html.js'
 
-import { PrefsMixin } from '/shared/settings/prefs/prefs_mixin.js'
+import { PrefServiceObserverMixin } from '/shared/settings/prefs2/pref_service_observer_mixin.js'
 import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js'
 import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
@@ -24,7 +24,7 @@ import {
 
 import './brave_adblock_scriptlet_editor.js'
 
-const AdblockScriptletListBase = PrefsMixin(
+const AdblockScriptletListBase = PrefServiceObserverMixin(
   I18nMixin(BaseMixin(PolymerElement))
 )
 
@@ -43,15 +43,23 @@ class AdblockScriptletList extends AdblockScriptletListBase {
         type: Array
       },
       editingScriptlet_: Scriptlet,
-      isEditing_: Boolean
+      isEditing_: Boolean,
+      developerModePref_: Object
     }
   }
 
   declare customScriptletsList_: Scriptlet[]
   declare editingScriptlet_: Scriptlet | null
   declare isEditing_: boolean
+  declare developerModePref_: chrome.settingsPrivate.PrefObject<boolean>
 
   browserProxy_ = BraveAdblockBrowserProxyImpl.getInstance()
+
+  override connectedCallback() {
+    super.connectedCallback()
+
+    this.mirrorPref('brave.ad_block.developer_mode', 'developerModePref_')
+  }
 
   override ready() {
     super.ready()

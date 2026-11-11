@@ -20,20 +20,20 @@ import runtest as m
 
 
 def _options(**overrides) -> m.Options:
-    defaults = dict(
-        build_dir=Path('out/Component'),
-        test_type='brave_unit_tests',
-        builder_name=None,
-        run_python_script=False,
-        xvfb=True,
-        parse_gtest_output=False,
-        enable_asan=False,
-        enable_lsan=False,
-        enable_msan=False,
-        enable_tsan=False,
-        strip_path_prefix='build/src/out/Release/../../',
-        test_launcher_summary_output=None,
-    )
+    defaults = {
+        'build_dir': Path('out/Component'),
+        'test_type': 'brave_unit_tests',
+        'builder_name': None,
+        'run_python_script': False,
+        'xvfb': True,
+        'parse_gtest_output': False,
+        'enable_asan': False,
+        'enable_lsan': False,
+        'enable_msan': False,
+        'enable_tsan': False,
+        'strip_path_prefix': 'build/src/out/Release/../../',
+        'test_launcher_summary_output': None,
+    }
     defaults.update(overrides)
     return m.Options(**defaults)
 
@@ -70,7 +70,6 @@ class _FakeParser:
 
 
 class ConfigureSanitizerToolsTest(unittest.TestCase):
-
     def test_no_sanitizer_is_empty(self):
         setup = m.configure_sanitizer_tools(_options())
         self.assertEqual(setup.env, {})
@@ -98,13 +97,13 @@ class ConfigureSanitizerToolsTest(unittest.TestCase):
 
     def test_asan_with_lsan_enables_leak_detection(self):
         setup = m.configure_sanitizer_tools(
-            _options(enable_asan=True, enable_lsan=True))
+            _options(enable_asan=True, enable_lsan=True)
+        )
         self.assertIn('detect_leaks=1', setup.env['ASAN_OPTIONS'])
         self.assertIn('--no-sandbox', setup.extra_args)
 
 
 class ReportOutcomeTest(unittest.TestCase):
-
     def _report(self, exit_code, parser):
         buffer = io.StringIO()
         with contextlib.redirect_stdout(buffer):

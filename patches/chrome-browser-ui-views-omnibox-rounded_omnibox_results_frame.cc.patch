@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc b/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc
+index 199b252f46501d07ff17018f87d215a88b88b2aa..844503353db873fdb9b99ee4bf287b0d1bc7bd06 100644
+--- a/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc
++++ b/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc
+@@ -236,7 +236,7 @@ RoundedOmniboxResultsFrame::RoundedOmniboxResultsFrame(
+     bool forward_mouse_events)
+     : contents_(contents), forward_mouse_events_(forward_mouse_events) {
+   const int corner_radius = views::LayoutProvider::Get()->GetCornerRadiusMetric(
+-      ChromeShapeContextTokens::kOmniboxExpandedRadius);
++      views::Emphasis::kHigh);
+   auto* webui_content = GetOmniboxPopupWebUIBaseContent();
+   // When the page paints the popup's shadow, this frame must not paint a
+   // background, rounded corners or a shadow: the renderer draws all of them,
+@@ -364,7 +364,7 @@ void RoundedOmniboxResultsFrame::SetCutoutVisibility(bool visible) {
+ 
+ void RoundedOmniboxResultsFrame::SetElevation(int elevation) {
+   const int corner_radius = views::LayoutProvider::Get()->GetCornerRadiusMetric(
+-      ChromeShapeContextTokens::kOmniboxExpandedRadius);
++      views::Emphasis::kHigh);
+   auto border = std::make_unique<views::BubbleBorder>(
+       views::BubbleBorder::Arrow::NONE,
+       elevation == 0 ? views::BubbleBorder::Shadow::NO_SHADOW

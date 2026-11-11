@@ -40,6 +40,11 @@ injectStyle(ExtensionsSidebarElement, css`
   #moreExtensions cr-icon {
     display: none !important;
   }
+
+  /* Hide the dev-mode "AI coding agents" docs promo. */
+  .cr-nav-menu-item:has(#promo-message-text) {
+    display: none !important;
+  }
 `)
 
 export * from './sidebar-chromium.js'

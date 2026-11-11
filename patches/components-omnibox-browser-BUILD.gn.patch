@@ -1,30 +1,52 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index a73b46aa23e3e184999567789d202d4e5a674ec2..cb23d404335d3b79ff9d56481054c92766efb611 100644
+index f7aaba4a989da2663c8ef1692e5ad7fbb9ff3f3c..683075294c3d5c59b1ca6147143ce71723eed5e3 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
-@@ -525,6 +525,9 @@ static_library("browser") {
-     ]
-     deps += [ "//content/public/common" ]
-   }
+@@ -376,6 +376,7 @@ static_library("browser") {
+     "zero_suggest_verbatim_match_provider.cc",
+     "zero_suggest_verbatim_match_provider.h",
+   ]
 +  sources += brave_components_omnibox_browser_sources
+ 
+   public_deps = [
+     ":aim_eligibility_service_features",
+@@ -403,6 +404,7 @@ static_library("browser") {
+     "//third_party/tflite_support:tflite_support_proto",
+     "//url",
+   ]
 +  public_deps += brave_components_omnibox_browser_public_deps
+ 
+   deps = [
+     "//build:android_buildflags",
+@@ -450,6 +452,7 @@ static_library("browser") {
+     "//ui/base",
+     "//ui/gfx",
+   ]
 +  deps += brave_components_omnibox_browser_deps
- }
  
- source_set("pref_names") {
-@@ -1121,6 +1124,7 @@ fuzzer_test("search_suggestion_parser_fuzzer") {
- }
- 
- mojom("mojo_bindings") {
+   if (is_android) {
+     deps += [ "//components/location/android:settings" ]
+@@ -1151,6 +1154,7 @@ mojom("mojo_bindings") {
+       ":suggest_template_info_mojo_bindings",
+     ]
+   }
 +  generate_legacy_js_bindings = true
-   sources = [ "omnibox.mojom" ]
-   webui_module_path = "chrome://resources/mojo/components/omnibox/browser"
- 
-@@ -1142,6 +1146,7 @@ mojom("mojo_bindings") {
+ }
  
  if (!is_ios) {
-   mojom("fusebox_action_mojo_bindings") {
-+  generate_legacy_js_bindings = true
-     sources = [ "fusebox_action.mojom" ]
-     webui_module_path = "chrome://resources/mojo/components/omnibox/browser"
-     public_deps = [ "//components/omnibox/composebox:mojo_bindings" ]
+@@ -1171,6 +1175,7 @@ if (!is_ios) {
+         traits_deps = [ "//third_party/omnibox_proto" ]
+       },
+     ]
++    generate_legacy_js_bindings = true
+   }
+ 
+   mojom("suggest_template_info_mojo_bindings") {
+@@ -1181,6 +1186,7 @@ if (!is_ios) {
+       "//mojo/public/mojom/base",
+       "//url/mojom:url_mojom_gurl",
+     ]
++    generate_legacy_js_bindings = true
+   }
+ 
+   source_set("suggest_template_info_mojo_utils") {

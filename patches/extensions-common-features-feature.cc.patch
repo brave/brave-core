@@ -1,0 +1,13 @@
+diff --git a/extensions/common/features/feature.cc b/extensions/common/features/feature.cc
+index d506fb6d19cfd541098a6e3f5172fd6eaf1fcf91..ea743359d483e15a1a8464a3da33b59ffba9189b 100644
+--- a/extensions/common/features/feature.cc
++++ b/extensions/common/features/feature.cc
+@@ -27,7 +27,7 @@ Feature::Platform Feature::GetCurrentPlatform() {
+   return MACOSX_PLATFORM;
+ #elif BUILDFLAG(IS_WIN)
+   return WIN_PLATFORM;
+-#elif BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#elif BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+   return DESKTOP_ANDROID_PLATFORM;
+ #else
+   return UNSPECIFIED_PLATFORM;

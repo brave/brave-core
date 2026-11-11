@@ -20,14 +20,11 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_account/brave_account_encryption.h"
 #include "brave/components/brave_account/brave_account_state_prefs.h"
-#include "brave/components/brave_account/endpoint_client/client.h"
-#include "brave/components/brave_account/endpoint_client/request_handle.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/state_internal.h"
-
-namespace network {
-class SharedURLLoaderFactory;
-}  // namespace network
+#include "brave/components/endpoint_client/client.h"
+#include "brave/components/endpoint_client/request_handle.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace os_crypt_async {
 class Encryptor;
@@ -46,12 +43,11 @@ namespace brave_account {
 // state is destroyed -> its flows are destroyed -> their pending requests are
 // cancelled.
 //
-// Cancelling does not un-queue an already-posted response task, so every
-// callback that task would run must be bound through a `WeakPtr` to be
-// dropped. `SendFlowOwnedRequest()` binds the slot-erase through
-// `weak_factory_` here; the user callback it is given must be bound through
-// the derived flow's own `weak_factory_`. Each class needs its own factory,
-// since `base::WeakPtr` cannot downcast to bind a `&Derived::On...` method.
+// Cancelling is synchronous, so a cancelled request's callback never runs.
+// `SendFlowOwnedRequest()` binds the slot-erase through `weak_factory_` here,
+// since a response handler's pref write can destroy this flow before the
+// `.Then()` continuation runs. Each class needs its own factory, since
+// `base::WeakPtr` cannot downcast to bind a `&Derived::On...` method.
 //
 // Rules for flow implementers:
 //
@@ -142,7 +138,7 @@ class FlowBase {
       base::OnceCallback<void(Response)> callback) {
     return endpoint_client::Client<Endpoint>::template Send<
         endpoint_client::RequestCancelability::kCancelable>(
-        url_loader_factory_, std::move(request), std::move(callback));
+        *url_loader_factory_, std::move(request), std::move(callback));
   }
 
   // Flow-owned: the handle is parked in `in_flight_` and cancelled by
@@ -162,7 +158,7 @@ class FlowBase {
   template <typename Endpoint, typename Request>
   void SendUnownedRequest(Request request) {
     endpoint_client::Client<Endpoint>::Send(
-        url_loader_factory_, std::move(request),
+        *url_loader_factory_, std::move(request),
         base::BindOnce([](typename Endpoint::Response) {}));
   }
 

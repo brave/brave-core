@@ -77,7 +77,7 @@ extension BrowserViewController {
       return
     }
 
-    if topToolbar.locationView.readerModeState == .active {
+    if currentTab.readerMode?.state == .active {
       hideReaderModeBar(animated: false)
     }
 

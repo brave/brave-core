@@ -5,6 +5,12 @@
 
 import("//brave/build/config.gni")
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
+import("//brave/components/web_discovery/buildflags/buildflags.gni")
+import("//third_party/widevine/cdm/widevine.gni")
 
 assert(is_android)
 
@@ -22,11 +28,13 @@ source_set("android_browser_process") {
   deps = [
     "//base",
     "//brave/brave_domains/android:jni_headers",
+    "//brave/browser:browser_process",
     "//brave/browser/android/browsing_data",
     "//brave/browser/android/preferences",
     "//brave/browser/android/safe_browsing",
     "//brave/browser/brave_origin/android:jni_headers",
     "//brave/browser/brave_shields",
+    "//brave/browser/image_metadata_stripper",
     "//brave/browser/skus/android:jni_headers",
     "//brave/build/android:jni_headers",
     "//brave/components/brave_ads/buildflags",
@@ -38,9 +46,9 @@ source_set("android_browser_process") {
     "//brave/components/brave_sync:prefs",
     "//brave/components/brave_sync:sync_service_impl_helper",
     "//brave/components/brave_sync:time_limited_codes",
+    "//brave/components/image_metadata_stripper/common",
     "//chrome/android:jni_headers",
     "//chrome/browser:browser_process",
-    "//chrome/browser:browser_public_dependencies",
     "//chrome/browser:flags",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/lifetime",
@@ -70,6 +78,16 @@ source_set("tabs_public") {
   public = [ "brave_tab_features.h" ]
 
   public_deps = [ "//chrome/browser/android:tabs_public" ]
+
+  deps = [
+    "//brave/components/brave_ads/buildflags",
+    "//brave/components/brave_news/common/buildflags",
+    "//brave/components/brave_rewards/core/buildflags",
+    "//brave/components/brave_wallet/common/buildflags",
+    "//brave/components/playlist/core/common/buildflags",
+    "//brave/components/web_discovery/buildflags",
+    "//third_party/widevine/cdm:buildflags",
+  ]
 }
 
 source_set("tabs_impl") {
@@ -79,8 +97,60 @@ source_set("tabs_impl") {
   deps = [
     ":tabs_public",
     "//base",
+    "//brave/browser:tab_helpers_header",
     "//brave/browser/ai_chat",
+    "//brave/browser/android/youtube_script_injector",
+    "//brave/browser/image_metadata_stripper",
+    "//brave/browser/misc_metrics:misc_metrics_impl",
+    "//brave/browser/serp_metrics",
+    "//brave/components/ai_chat/content/browser",
+    "//brave/components/brave_ads/buildflags",
+    "//brave/components/brave_news/common/buildflags",
+    "//brave/components/brave_perf_predictor/browser",
+    "//brave/components/brave_rewards/core/buildflags",
+    "//brave/components/brave_wallet/common/buildflags",
+    "//brave/components/image_metadata_stripper/common",
+    "//brave/components/misc_metrics",
+    "//brave/components/playlist/core/common/buildflags",
+    "//brave/components/web_discovery/buildflags",
     "//chrome/browser/profiles:profile",
     "//content/public/browser",
+    "//third_party/widevine/cdm:buildflags",
   ]
+
+  if (enable_web_discovery) {
+    deps += [ "//brave/browser/web_discovery" ]
+  }
+
+  if (enable_brave_ads) {
+    deps += [
+      "//brave/browser/brave_ads/creatives/search_result_ad",
+      "//brave/browser/brave_ads/tabs",
+    ]
+  }
+
+  if (enable_brave_rewards) {
+    deps += [ "//brave/browser/brave_rewards:tab_helper" ]
+  }
+
+  if (enable_widevine) {
+    deps += [ "//brave/browser/widevine" ]
+  }
+
+  if (enable_brave_news) {
+    deps += [ "//brave/browser/brave_news:tab_helper" ]
+  }
+
+  if (enable_brave_wallet) {
+    deps += [ "//brave/browser/brave_wallet:tab_helper" ]
+  }
+
+  if (enable_playlist) {
+    deps += [
+      "//brave/browser/playlist",
+      "//brave/components/playlist/content/browser",
+      "//brave/components/playlist/core/browser",
+      "//components/user_prefs",
+    ]
+  }
 }

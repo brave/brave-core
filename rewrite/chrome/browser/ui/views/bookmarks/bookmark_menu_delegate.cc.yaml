@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Increase the maximum menu width for Brave from 400 to 500
+
+      Chromium limits the width to 400 which causes the menu items to be cut off
+      when displayed in German. Upstream doesn't specify a reason for this size
+      only saying that "IE and FF restrict the max width of a menu". However,
+      MenuDelegate sets the limit to 800 and no other submenu seems to override
+      that value. Update: users indicated that the menu was too wide now, so
+      reduced it to 500, which is enough to fit the German l10n.
+    regex:
+      pattern: const int kMaxMenuWidth = 400;
+      replace: const int kMaxMenuWidth = 500;

@@ -12,7 +12,6 @@
 #include "components/signin/public/base/signin_prefs.h"
 #include "components/signin/public/identity_manager/identity_manager.h"
 #include "components/sync/base/custom_passphrase_bootstrap_token.h"
-#include "components/sync/base/features.h"
 #include "components/sync/service/glue/sync_transport_data_prefs.h"
 #include "components/sync/service/sync_service_crypto.h"
 #include "components/sync/service/sync_user_settings_impl.h"

@@ -18,7 +18,6 @@
 #include "base/logging.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
-#include "base/unguessable_token.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/ai_chat/core/common/utils.h"
@@ -29,6 +28,7 @@
 #include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/struct_ptr.h"
+#include "third_party/blink/public/common/tokens/tokens.h"
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_element.h"
@@ -167,7 +167,7 @@ void PageContentExtractor::ExtractPageContent(
           std::move(script_callback), blink::BackForwardCacheAware::kAllow,
           blink::mojom::WantResultOption::kWantResult,
           blink::mojom::PromiseResultOption::kAwait,
-          /*is_injected_extension_script=*/false);
+          /*script_injector_id=*/blink::WebString());
       return;
     } else if (kVideoTrackHosts.contains(host)) {
       VLOG(1) << "Video track transcript type";
@@ -191,7 +191,7 @@ void PageContentExtractor::ExtractPageContent(
           std::move(script_callback), blink::BackForwardCacheAware::kAllow,
           blink::mojom::WantResultOption::kWantResult,
           blink::mojom::PromiseResultOption::kAwait,
-          /*is_injected_extension_script=*/false);
+          /*script_injector_id=*/blink::WebString());
       return;
     }
   }
@@ -206,8 +206,7 @@ void PageContentExtractor::ExtractPageContent(
 void PageContentExtractor::BindReceiver(
     mojo::PendingReceiver<mojom::PageContentExtractor> receiver) {
   VLOG(1) << "AIChat PageContentExtractor handler bound.";
-  receiver_.reset();
-  receiver_.Bind(std::move(receiver));
+  receivers_.Add(this, std::move(receiver));
 }
 
 void PageContentExtractor::OnDistillResult(
@@ -357,7 +356,7 @@ void PageContentExtractor::ExecuteContentTool(
   auto wrapped = mojo::WrapCallbackWithDefaultInvokeIfNotRun(
       std::move(callback), std::optional<std::string>(std::nullopt));
   document.ExecuteScriptTool(
-      base::UnguessableToken::Create(), blink::WebString::FromUtf8(name),
+      blink::ToolInvocationToken(), blink::WebString::FromUtf8(name),
       blink::WebString::FromUtf8(input_json),
       base::BindOnce(
           [](mojom::PageContentExtractor::ExecuteContentToolCallback cb,

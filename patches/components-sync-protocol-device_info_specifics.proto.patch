@@ -1,5 +1,5 @@
 diff --git a/components/sync/protocol/device_info_specifics.proto b/components/sync/protocol/device_info_specifics.proto
-index 55fdfc503209a831a65e11f8aad50ad11342bb1d..4e276495f69a067a4e036bf9ec3db6dadb34d92a 100644
+index a4eaa8a56e7aa8ef46c33093bd4d1220ccf5b40a..0e02f0fd050555df23b25927757b76859f74c020 100644
 --- a/components/sync/protocol/device_info_specifics.proto
 +++ b/components/sync/protocol/device_info_specifics.proto
 @@ -17,6 +17,7 @@ option optimize_for = LITE_RUNTIME;

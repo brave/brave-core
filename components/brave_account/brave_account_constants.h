@@ -8,8 +8,9 @@
 
 namespace brave_account {
 
-inline constexpr char kInitiatingServiceNameQueryParam[] =
-    "initiating-service-name";
+// Path the Brave Account WebUI serves the Settings rows at. Only used on
+// Android/iOS, where Settings is native.
+inline constexpr char kSettingsPath[] = "settings";
 
 }  // namespace brave_account
 

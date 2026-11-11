@@ -19,6 +19,10 @@ import {
 
 const exec = promisify(child_process.execFile)
 
+// Turns an absolute path into the source-absolute label GN reports.
+const toGnPath = (absolutePath) =>
+  '//' + path.relative(config.srcDir, absolutePath).replaceAll(path.sep, '/')
+
 const getTestTargets = (outDir, filters = ['//*']) => {
   const { env } = config.defaultOptions
   return exec(
@@ -163,9 +167,7 @@ async function getAffectedTests(args = {}) {
         (filter) => ({ test, filter }),
       ),
     )
-    .filter(({ filter }) =>
-      modified.has('//brave/' + path.relative(config.srcDir, filter)),
-    )
+    .filter(({ filter }) => modified.has(toGnPath(filter)))
     .map(({ test }) => test)
 
   return [...new Set([...affectedTests, ...testAffectedDueModifiedFilterFiles])]

@@ -154,6 +154,21 @@ TEST_F(ContainersServiceTest, CreateAndPersistTemporaryContainer) {
                   container->background_color);
 }
 
+TEST_F(ContainersServiceTest, CreateAndPersistTemporaryContainer_WithName) {
+  auto container = service_->CreateAndPersistTemporaryContainer("Shared name");
+  auto other = service_->CreateAndPersistTemporaryContainer("Shared name");
+  ASSERT_TRUE(container);
+  ASSERT_TRUE(other);
+  EXPECT_TRUE(IsTemporaryContainerId(container->id));
+  EXPECT_EQ(container->name, "Shared name");
+
+  // A name shared with an existing container still creates a new one.
+  EXPECT_NE(container->id, other->id);
+  auto persisted = GetLocallyUsedContainerFromPrefs(prefs_, container->id);
+  ASSERT_TRUE(persisted);
+  EXPECT_EQ(persisted->name, "Shared name");
+}
+
 TEST_F(ContainersServiceTest, GetOrCreateTemporaryContainerByName) {
   // A synced container with the same name must not be returned: the caller
   // asked for a temporary container.
@@ -198,6 +213,45 @@ TEST_F(ContainersServiceTest,
   service_->RemoveObserver(&observer);
 }
 
+TEST_F(ContainersServiceTest, GetNewTabTarget_ReadsPref) {
+  SetNewTabTargetToPrefs(mojom::NewTabTarget::NewContainerId("container-id"),
+                         prefs_);
+  auto target = service_->GetNewTabTarget();
+  ASSERT_TRUE(target);
+  ASSERT_TRUE(target->is_container_id());
+  EXPECT_EQ(target->get_container_id(), "container-id");
+}
+
+TEST_F(ContainersServiceTest,
+       NewTabTarget_ClearedWhenContainerLeavesSyncedList) {
+  std::vector<mojom::ContainerPtr> synced;
+  synced.push_back(MakeContainer("container-id", "Work"));
+  SetContainersToPrefs(synced, prefs_);
+  SetNewTabTargetToPrefs(mojom::NewTabTarget::NewContainerId("container-id"),
+                         prefs_);
+
+  // Unrelated list changes keep the choice.
+  synced.push_back(MakeContainer("other-id", "Other"));
+  SetContainersToPrefs(synced, prefs_);
+  auto target = service_->GetNewTabTarget();
+  ASSERT_TRUE(target);
+  ASSERT_TRUE(target->is_container_id());
+  EXPECT_EQ(target->get_container_id(), "container-id");
+
+  // Removing the chosen container clears it.
+  SetContainersToPrefs({}, prefs_);
+  EXPECT_FALSE(service_->GetNewTabTarget());
+}
+
+TEST_F(ContainersServiceTest, NewTabTarget_TemporaryChoiceSurvivesListChanges) {
+  SetNewTabTargetToPrefs(mojom::NewTabTarget::NewTemporaryContainer(true),
+                         prefs_);
+  SetContainersToPrefs({}, prefs_);
+  auto target = service_->GetNewTabTarget();
+  ASSERT_TRUE(target);
+  EXPECT_TRUE(target->is_temporary_container());
+}
+
 TEST_F(ContainersServiceTest, MarkContainerUsed_PersistsSnapshot) {
   auto container = MakeContainer("used-id", "Local");
   std::vector<mojom::ContainerPtr> synced;
@@ -226,6 +280,42 @@ TEST_F(ContainersServiceTest, GetUsedContainerIds) {
   service_->MarkContainerUsed("used-id");
 
   EXPECT_THAT(service_->GetUsedContainerIds(), testing::ElementsAre("used-id"));
+}
+
+TEST_F(ContainersServiceTest, IsContainerConfined) {
+  auto container = service_->CreateAndPersistTemporaryContainer();
+  auto other = service_->CreateAndPersistTemporaryContainer();
+  EXPECT_FALSE(service_->IsContainerConfined(container->id));
+
+  service_->SetContainerConfined(container->id);
+
+  EXPECT_TRUE(service_->IsContainerConfined(container->id));
+  EXPECT_FALSE(service_->IsContainerConfined(other->id));
+}
+
+TEST_F(ContainersServiceTest, ConfinementEndsWhenStorageIsDeleted) {
+  auto container = service_->CreateAndPersistTemporaryContainer();
+  service_->SetContainerConfined(container->id);
+
+  delegate_->SetReferencedContainersIds({});
+  service_->ScheduleOrphanedContainersCleanupForTesting();
+
+  ASSERT_THAT(delegate_->delete_requests(),
+              testing::ElementsAre(container->id));
+  EXPECT_FALSE(service_->IsContainerConfined(container->id));
+}
+
+TEST_F(ContainersServiceTest, ConfinementOutlivesFailedStorageDeletion) {
+  auto container = service_->CreateAndPersistTemporaryContainer();
+  service_->SetContainerConfined(container->id);
+
+  delegate_->SetReferencedContainersIds({});
+  delegate_->set_delete_result(false);
+  service_->ScheduleOrphanedContainersCleanupForTesting();
+
+  ASSERT_THAT(delegate_->delete_requests(),
+              testing::ElementsAre(container->id));
+  EXPECT_TRUE(service_->IsContainerConfined(container->id));
 }
 
 TEST_F(ContainersServiceTest, GetUsedContainerIds_EmptyWhileDiscovering) {

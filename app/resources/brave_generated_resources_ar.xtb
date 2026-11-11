@@ -3,18 +3,14 @@
 <translationbundle lang="ar">
 <translation id="1751249301761991853">شخصي</translation>
 <translation id="3333887201479867589">مكافآت Brave</translation>
-<translation id="7561196759112975576">دائماً</translation>
-<translation id="7961015016161918242">مطلقًا</translation>
 <translation id="8507663778530179003">عرض زر كل الإشارات المرجعية</translation>
 <translation id="9018648632047670921">عرض زر كل الإشارات المرجعية</translation>
 <translation id="7630214457764713113">نسخ الرابط الكامل</translation>
 <translation id="7973394300052703468">نافذة خاصة &amp; جديدة</translation>
 <translation id="4615489450165434530">الإبلاغ عن موقع إلكتروني معطل</translation>
 <translation id="8097438084542431276">نسخ الرابط النظيف</translation>
-<translation id="4678672101289648246">فقط على صفحة علامة التبويب الجديدة</translation>
 <translation id="6516243500644829484">نافذة &amp; جديدة للتصفح المتخفي</translation>
 <translation id="1209739344687072997">الإبلاغ عن موقع إلكتروني معطل</translation>
-<translation id="8294286161128352783">فقط على صفحة علامة التبويب الجديدة</translation>
 <translation id="6406506848690869874">مزامنة</translation>
 <translation id="1544192797660353713">المحفظة</translation>
 <translation id="2361906291514218784">Leo الذكاء الاصطناعي</translation>
@@ -112,12 +108,17 @@
 <translation id="3114478090884951591">المنطقة المرئية</translation>
 <translation id="2026367923222947564">الصفحة الكاملة</translation>
 <translation id="4218885227032158909">المنطقة المحددة</translation>
+<translation id="2586386106930448447">معاينة لقطة الشاشة</translation>
+<translation id="7514365320538308">تنزيل</translation>
+<translation id="2743387203779672305">نسخ إلى الحافظة</translation>
 <translation id="4928988318462976765">متجر إضافات الويب</translation>
 <translation id="9181207987584064303">عرض في متجر إضافات الويب</translation>
 <translation id="3161744659507801211">تحذير: لا يستطيع Brave منع الامتدادات من تسجيل محفوظات الاستعراض الخاصة بك.</translation>
 <translation id="2162109630536601963">إذا قدم هذا الامتداد طلبات الشبكة، فلن يستخدموا تور أو الوضع الخاص.</translation>
 <translation id="2725327089319971976">لتعطيل هذا الامتداد في الوضع الخاص ووضع تور، قم بإلغاء تحديد هذا الخيار.</translation>
 <translation id="438106944087726695">مُستضاف من طرف Brave</translation>
+<translation id="2265651566599167057">تم وضع علامة عليه كبرنامج ضار بواسطة Socket.</translation>
+<translation id="2607395470596637070">تعرّف على المزيد حول كيفية حماية Socket لك في Brave</translation>
 <translation id="3371343170427636147">تطبيقات متصفح Brave الليلية</translation>
 <translation id="4097979995947147464">تطبيقات متصفح Brave التجريبية</translation>
 <translation id="8303432794159193481">تطبيقات تطوير متصفح Brave</translation>
@@ -192,7 +193,9 @@
 <translation id="5977931179408079967">موضع</translation>
 <translation id="3790384768741064842">نقل إلى اليمين</translation>
 <translation id="7444424316576061724">نقل إلى اليسار</translation>
+<translation id="7561196759112975576">دائماً</translation>
 <translation id="7060352228894039151">عند تحريك الفأرة</translation>
+<translation id="7961015016161918242">مطلقًا</translation>
 <translation id="8981254605840444865">إعدادات العرض</translation>
 <translation id="59174027418879706">تم التمكين</translation>
 <translation id="4176463684765177261">غير مفعّل</translation>
@@ -213,11 +216,12 @@
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">نطاقات Web3</translation>
 <translation id="1458638489455808030">آلة الاسترجاع</translation>
-<translation id="8039999492770627305">عذراً، هذه الصفحة مفقودة.</translation>
-<translation id="208311458690012764">تعذر تحميل النسخة المحفوظة</translation>
-<translation id="4515057635283480525">هل تريد التحقق مما إذا كان هناك إصدار محفوظ متاح على "واي باك مشين"؟</translation>
-<translation id="8252977752585110703">لم يتمكن Wayback Machine من العثور على نسخة محفوظة من هذا الموقع.</translation>
-<translation id="8748778103033196270">تحقق من النسخة المحفوظة</translation>
+<translation id="8039999492770627305">الصفحة مفقودة</translation>
+<translation id="208311458690012764">لا تتوفر نسخة مؤرشفة</translation>
+<translation id="4515057635283480525">يحفظ أرشيف الإنترنت الإصدارات السابقة للعديد من صفحات الويب. هل تريد البحث عن هذه الصفحة في الأرشيف؟</translation>
+<translation id="8252977752585110703">عذرًا، لقد تحققنا من أرشيف الإنترنت ولا يحتوي على نسخة مؤرشفة من هذه الصفحة.</translation>
+<translation id="8748778103033196270">البحث في الأرشيف</translation>
+<translation id="7369915833843501413">جارٍ البحث في الأرشيف</translation>
 <translation id="191143826155037518">يتم توفير Brave لك بموجب <ph name="BEGIN_LINK_MPL"/>ترخيص Mozilla العام 2.0<ph name="END_LINK_MPL"/> (MPL) ويشمل <ph name="BEGIN_LINK_OSS"/>برمجيات مفتوحة المصدر<ph name="END_LINK_OSS"/> بموجب مختلف التراخيص الأخرى.
         يمكنك قراءة <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>التعليمات حول كيفية تنزيل وبناء<ph name="END_LINK_BUILD_INSTRUCTIONS"/> <ph name="BEGIN_LINK_SOURCE_CODE"/> التعليمات البرمجية الأصلية المحددة المستخدمة لإنشاء هذه النسخة<ph name="END_LINK_SOURCE_CODE"/> لنفسك.</translation>
 <translation id="4474155171896946103">وضع إشارات على كل علامات التبويب...</translation>
@@ -365,10 +369,11 @@
 <translation id="6847541693235449912">ذهاب</translation>
 <translation id="2079545284768500474">تراجع</translation>
 <translation id="1533980864758658574">تم إنشاء نافذة جديدة لـ <ph name="TOPIC"/></translation>
+<translation id="530437350080973527">لا توجد علامات تبويب تطابق هذا الموضوع. حاول وصفه بطريقة مختلفة.</translation>
 <translation id="7985042437720138349">ترسل هذه الميزة بيانات حول علامات التبويب المفتوحة إلى Leo، مساعد المتصفح المدعوم بالذكاء الاصطناعي من Brave.</translation>
 <translation id="6165508094623778733">اعرف المزيد</translation>
 <translation id="7557539689487606886">الاشتراك الحصري (Premium)</translation>
-<translation id="1035309871698658326">عند استخدامها، سيؤدي ذلك تلقائيًا إلى إرسال عناوين وأصل جميع علامات التبويب غير الخاصة إلى Leo لتصنيفها.</translation>
+<translation id="7103144720752576727">عند فتحها، سيتم إرسال عناوين وأصل جميع علامات التبويب غير الخاصة تلقائيًا إلى Leo لتصنيفها. إذا قمت أيضًا بتفعيل إرسال محتوى الصفحة، فسيتم إرسال مقتطفات قصيرة من نص كل علامة تبويب أيضًا.</translation>
 <translation id="3435896845095436175">تمكين</translation>
 <translation id="9031526219709160683">يمكن لـ Brave مساعدتك في تحسين إعدادات الخصوصية لهذا الموقع. هل تريد مراجعة اقتراحات Brave؟</translation>
 <translation id="5739953050957336013">اقتراحات البحث</translation>
@@ -383,8 +388,6 @@
 <translation id="8570228839666486945">الذكاء الاصطناعي المحلي</translation>
 <translation id="7447041379556102185">التعرّف على الكلام على الجهاز</translation>
 <translation id="3456536577668402695">تتم معالجة عمليات البحث ومحتويات الصفحة على هذا الجهاز. لا يتم إرسال أي شيء إلى Brave ولا يراه المراجعون البشريون.</translation>
-<translation id="4751537843966994505">البحث الدلالي في السجل</translation>
-<translation id="6175973371938222040">فهرسة الصفحات التي تزورها محليًا حتى تتمكن من البحث في سجلك حسب المعنى. تبقى جميع المعالجة على هذا الجهاز.</translation>
 <translation id="9156965752763025780">‏ستسري التغييرات في المرة التالية التي تعيد فيها تشغيل Brave.</translation>
 <translation id="7179921470347911571">أعد التشغيل الآن</translation>
 <translation id="1426410128494586442">نعم</translation>
@@ -422,6 +425,24 @@
 <translation id="4328541188421002379">اعط حاويتك اسمًا مثل "العمل" أو "شخصي"</translation>
 <translation id="4976989127264491396">خطأ: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">تعذر العثور على الحاوية</translation>
+<translation id="5831840958001766835">إعادة ترتيب العنصر. استخدم مفاتيح الأسهم للتحريك.</translation>
+<translation id="6055154402239241620">التحكم في حركة المرور</translation>
+<translation id="8134521925475508805">قم بتكوين مواقع محددة لفتحها تلقائيًا في سياق معين، مما يؤدي إلى الفصل بين جلسات التصفح الخاصة بك. <ph name="BEGIN_LINK"/>معرفة المزيد<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">تمكين التحكم في حركة المرور</translation>
+<translation id="1358255827354528344">إضافة قاعدة جديدة</translation>
+<translation id="7183128985801806752">قاعدة تحكم في حركة المرور جديدة</translation>
+<translation id="2474694032500407328">تحرير قاعدة التحكم في حركة المرور</translation>
+<translation id="5543417389274097206">إنشاء قاعدة</translation>
+<translation id="6532106788206463496">حفظ التغييرات</translation>
+<translation id="1172800769374812685">حذف القاعدة</translation>
+<translation id="2389682807835777591">هل أنت متأكد أنك تريد حذف القاعدة <ph name="RULE_LABEL"/>؟</translation>
+<translation id="4853129331778360252">أدخل عناوين URL لإدارتها وفتحها دائمًا في سياق تصفح محدد.</translation>
+<translation id="1173480005453148926">عناوين URL المراد إدارتها</translation>
+<translation id="6217532416180299470">أدخل عناوين URL لإدارتها باستخدام التحكم في حركة المرور</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> يطابق الموقع ونطاقاته الفرعية؛ <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> يطابق الموقع بالضبط؛ <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> يطابق جميع المواقع؛ <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> هو تعليق.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (و<ph name="COUNT"/> عناوين URL أخرى)</translation>
+<translation id="3700798663085748181">تمكين القاعدة</translation>
+<translation id="2967480878853054068">مرشح عنوان URL غير صالح</translation>
 <translation id="2263346047290834619">استخدام علامة تبويب ثلاثية</translation>
 <translation id="5860254591544742609">عرض شريط العناوين</translation>
 <translation id="4691131445504068802">الإخفاء التام عند التصغير</translation>
@@ -457,10 +478,6 @@
 <translation id="7310387888625228830">مساعد Leo الذي يعمل بالذكاء الاصطناعي</translation>
 <translation id="5222974844674487962">عرض زر Brave News</translation>
 <translation id="2085436423511121572">إظهار زر Leo AI</translation>
-<translation id="6156323911414505561">عرض شريط الإشارات</translation>
-<translation id="4054323497808446566">شريط الإشارات مرئي في جميع الصفحات</translation>
-<translation id="8693858092251192712">شريط الإشارات مخفي في كل الصفحات باستثناء صفحة علامة التبويب الجديدة</translation>
-<translation id="7158817046543187970">شريط الإشارات مخفي في كل الصفحات</translation>
 <translation id="3416468988018290825">أظهِر عناوين URLs كاملة دائمًا</translation>
 <translation id="5529693968082667490">إظهار زر بحث علامة التبويب</translation>
 <translation id="1013121820689882118">قارئ السرعة</translation>
@@ -529,7 +546,6 @@
 <translation id="6745592621698551453">التحديث الآن</translation>
 <translation id="5334844597069022743">عرض المصدر</translation>
 <translation id="4720556299488643018">إلغاء الاشتراك</translation>
-<translation id="6532106788206463496">حفظ التغييرات</translation>
 <translation id="4516904298421534459">ترشيح القوائم</translation>
 <translation id="4435215931544457255">قوائم المجتمع الشهيرة الإضافية. لاحظ أن تمكين عدد كبير للغاية من عوامل التصفية سيؤدي إلى تقليل سرعات التصفح.</translation>
 <translation id="802154636333426148">تعذّر التنزيل</translation>
@@ -593,6 +609,8 @@
 <translation id="5825943197137337319">الواجهة العامة الافتراضية فقط</translation>
 <translation id="1689062823386843231">تعطيل UDP التي ليس لها وكيل</translation>
 <translation id="3540231253392253941">استخدم خدمات Google لإرسال الرسائل</translation>
+<translation id="2224032129673914306">البحث الدلالي في السجل</translation>
+<translation id="6045998903985162478">فهرسة الصفحات التي تزورها حتى تتمكن من العثور عليها بسهولة في السجل والعلامات المفتوحة و Leo.</translation>
 <translation id="5813105074916486721">الاحتفاظ بالسجل المحلي</translation>
 <translation id="5671611745062206644">المدة التي يخزن فيها Brave سجل التصفح محليًا</translation>
 <translation id="7184510058087008090">يوم واحد</translation>
@@ -612,6 +630,8 @@
 <translation id="509873765238158442">حظر Microsoft Recall</translation>
 <translation id="4763421121695677716">منع ميزة Recall على حواسيب Microsoft Windows من التقاط لقطات شاشة تلقائيًا لأي علامات تبويب Brave مفتوحة.</translation>
 <translation id="1968895725257436430">جمع البيانات</translation>
+<translation id="5668852698659986622">تمكين الإعلانات المدعومة</translation>
+<translation id="431194936581466649">ساعد في دعم مهمة Brave لبناء ويب مستقل يضع المستخدم أولاً من خلال الإعلانات المدعومة. نقيس أداء الإعلانات بشكل خاص، دون التعرف على هويتك.</translation>
 <translation id="1700052872056357670">حذف البيانات عند الخروج</translation>
 <translation id="216468847346280584">مسح بيانات إعلانات Brave Ads</translation>
 <translation id="96212973142796240">تم مسح بيانات إعلانات Brave</translation>
@@ -706,7 +726,7 @@
 <translation id="4432071071853308688">هذا الرمز فارغ</translation>
 <translation id="955848693465029904">خطأ في المزامنة الداخلية</translation>
 <translation id="7456398316301207582">خطأ في حذف الحساب الداخلي</translation>
-<translation id="859506441384380749">تم إنشاء هذا الرمز بواسطة إصدار لا يتلقى تحديثات من Brave، يرجى ترقية جهازك الآخر أولاً</translation>
+<translation id="4002014583969312635">يبدو أنه تم إنشاء هذا الرمز على جهاز يعمل بإصدار أقدم من Brave. يرجى التحديث إلى أحدث إصدار من Brave على جهازك الآخر، ثم إنشاء رمز مزامنة جديد.</translation>
 <translation id="3132642509209154999">لقد انتهت صلاحية هذا الرمز. يرجى  إنشاء رمز جديد على جهازك الآخر والمحاولة مرة أخرى.</translation>
 <translation id="2859229680945501779">هذا الرمز غير صالح. يُرجى التحقق من ضبط الوقت والمنطقة الزمنية بشكل صحيح على جهازك.</translation>
 <translation id="2339730291919608488">مغادرة سلسلة المزامنة</translation>
@@ -855,6 +875,7 @@
 <translation id="2618193846561624884">هل تريد تحديث الشبكة الموجودة؟</translation>
 <translation id="1643029991199044105">تنقل عبر آخر علامات التبويب المستخدمة باستخدام Ctrl-Tab</translation>
 <translation id="2775956301559569472">عرض تنبيه "واي باك مشين" الفوري على صفحات 404</translation>
+<translation id="8485716275262929774">تحميل النسخ المحفوظة تلقائيًا من Wayback Machine في صفحات 404</translation>
 <translation id="3095201688102519917">تحذيري قبل إغلاق النافذة بعلامات تبويب متعددة</translation>
 <translation id="7120553802660696133">أغلق النافذة عند إغلاق آخر علامة تبويب</translation>
 <translation id="3394171693948989253">إظهار تذكير ملء الشاشة للضغط على Esc عند الخروج</translation>
@@ -864,6 +885,8 @@
 <translation id="1529674267267221673">سيظهر مساعد Leo في قائمة السياقات عندما تنقر بزر الماوس الأيمن على موقع الويب. وسيؤدي ذلك إلى إرسال السياق من صفحة الويب الحالية إلى مساعد Leo.</translation>
 <translation id="5226020406479918122">وضع تركيز علامات التبويب</translation>
 <translation id="3705539672403311123">تمكين تنظيم علامات التبويب في صفحة البحث عن علامات التبويب. عند استخدام هذه الميزة، سيؤدي ذلك تلقائيًا إلى إرسال عناوين وأصول جميع علامات التبويب غير الخاصة إلى Leo لتصنيفها. <ph name="BEGIN_LINK"/>تعرف على المزيد<ph name="END_LINK"/></translation>
+<translation id="2002238795517052616">إرسال محتوى الصفحة لتركيز العلامات</translation>
+<translation id="2276823422122514441">أرسل أيضًا مقتطفات قصيرة من نص كل علامة تبويب، بحيث يتم تجميع العلامات حسب موضوع الصفحة بدلاً من عنوانها. تذهب المقتطفات إلى Leo، أو إلى النموذج الخاص بك إذا اخترت واحدًا لتركيز العلامات. يتطلب ذلك <ph name="BEGIN_LINK"/><ph name="SEMANTIC_HISTORY_SEARCH"/><ph name="END_LINK"/>، الذي يبني المقتطفات على جهازك.</translation>
 <translation id="9049433973274198706">النموذج التلقائي للمحادثات الجديدة</translation>
 <translation id="2161546758719933059">النموذج المستخدم لتنظيم علامات التبويب الخاصة بك في وضع تركيز علامات التبويب. <ph name="BEGIN_LINK"/>معرفة المزيد<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">إظهار المطالبات المقترحة في المحادثة</translation>
@@ -946,9 +969,6 @@ Leo AI في المستقبل وستقوم أيضًا بمحو سجل الدرد�
 <translation id="1838374766361614909">مسح البحث</translation>
 <translation id="5126255551970171328">البحث عن ذكرى</translation>
 <translation id="7402116145895962069">مزامنة نماذج Ollama المحلية الخاصة بك</translation>
-<translation id="5985516785067818307">مشارك في استطلاع الرأي</translation>
-<translation id="8347743943525229984">السماح لاستطلاعات الرأي لـ Brave</translation>
-<translation id="3204080538332044581">السماح لـ Brave بإظهار الروابط لاستطلاعات الرأي الخاصة في صفحة علامة التبويب الجديدة. تساعدنا استطلاعات الرأي على إنشاء ميزات أفضل وقياس فعالية الحملات الإعلانية المستندة إلى المتصفح. <ph name="BEGIN_LINK"/>معرفة المزيد<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">تمكين قائمة التشغيل</translation>
 <translation id="7903608716704052878">إضافة الملفات تلقائيًا للعرض من دون الاتصال بالإنترنت</translation>
 <translation id="384666453982355633">سيقوم هذا الخيار تلقائيًا بتخزين ملفات الوسائط مؤقتًا حتى تتمكن من تشغيلها من دون اتصال بالإنترنت</translation>
@@ -993,4 +1013,12 @@ Leo AI في المستقبل وستقوم أيضًا بمحو سجل الدرد�
 <translation id="154702742922788359">وضع الفتح</translation>
 <translation id="2249111429176737533">افتح كنافذة ذات علامات تبويب</translation>
 <translation id="7022756207310403729">افتح في المتصفح</translation>
+<translation id="1916785651473363467">صورة الملف الشخصي المخصصة</translation>
+<translation id="5336092064678832560">تحميل صورة مخصصة</translation>
+<translation id="1062407476771304334">استبدال</translation>
+<translation id="1428299461403073820">استبدال صورة الملف الشخصي المخصصة</translation>
+<translation id="7994453838803296517">معاينة صورة الملف الشخصي المخصصة، محددة</translation>
+<translation id="6578040791557152233">تحميل صورة ملف شخصي مخصصة</translation>
+<translation id="9222124079546967592">إزالة صورة الملف الشخصي المخصصة</translation>
+<translation id="6058660912941570282">‏لا يمكن لـ Brave استخدام هذا الملف. اختر صورة أخرى وحاول مرة أخرى.</translation>
 </translationbundle>

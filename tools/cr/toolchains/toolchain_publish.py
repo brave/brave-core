@@ -31,7 +31,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from cherry_picks import _check_call  # pylint: disable=wrong-import-position
 from upload import (  # pylint: disable=wrong-import-position
-    S3Uploader, summarise)
+    S3Uploader,
+    summarise,
+)
 
 # Read timeout for a single HTTP fetch: a published index, or an "already
 # published?" probe.
@@ -43,7 +45,8 @@ INDEX_LICENSE_HEADER_TEMPLATE = (
     '# This Source Code Form is subject to the terms of the Mozilla Public\n'
     '# License, v. 2.0. If a copy of the MPL was not distributed with this '
     'file,\n'
-    '# You can obtain one at https://mozilla.org/MPL/2.0/.\n')
+    '# You can obtain one at https://mozilla.org/MPL/2.0/.\n'
+)
 
 
 def brave_core_commit() -> str:
@@ -53,11 +56,13 @@ def brave_core_commit() -> str:
     identifies the exact version that produced the archive -- recorded in
     the index for provenance.
     """
-    return _check_call('git',
-                       'rev-parse',
-                       'HEAD',
-                       cwd=Path(__file__).resolve().parent,
-                       capture_output=True).stdout.strip()
+    return _check_call(
+        'git',
+        'rev-parse',
+        'HEAD',
+        cwd=Path(__file__).resolve().parent,
+        capture_output=True,
+    ).stdout.strip()
 
 
 def remote_url_exists(url: str, timeout: int = DEFAULT_TIMEOUT_SECS) -> bool:
@@ -77,9 +82,11 @@ def remote_url_exists(url: str, timeout: int = DEFAULT_TIMEOUT_SECS) -> bool:
         raise
 
 
-def fetch_index(index_url: str,
-                description: str = 'toolchain',
-                timeout: int = DEFAULT_TIMEOUT_SECS) -> dict:
+def fetch_index(
+    index_url: str,
+    description: str = 'toolchain',
+    timeout: int = DEFAULT_TIMEOUT_SECS,
+) -> dict:
     """Download and parse a published toolchain sibling YAML index.
 
     *description* customises the log/error messages (e.g. `'hermetic Windows
@@ -94,7 +101,8 @@ def fetch_index(index_url: str,
             return yaml.safe_load(response)
     except urllib.error.URLError as e:
         raise RuntimeError(
-            f'Failed to fetch {description} index {index_url}: {e}') from e
+            f'Failed to fetch {description} index {index_url}: {e}'
+        ) from e
 
 
 def write_index_file(index_path: Path, index: dict) -> None:
@@ -105,14 +113,15 @@ def write_index_file(index_path: Path, index: dict) -> None:
     (insertion) key order. After writing, the file is read back and echoed to
     the console.
     """
-    index_yaml = yaml.safe_dump(index,
-                                sort_keys=False,
-                                default_flow_style=False)
+    index_yaml = yaml.safe_dump(
+        index, sort_keys=False, default_flow_style=False
+    )
     license_header = INDEX_LICENSE_HEADER_TEMPLATE.format(
-        year=time.gmtime().tm_year)
-    index_path.write_text(f'{license_header}\n{index_yaml}',
-                          encoding='utf-8',
-                          newline='')
+        year=time.gmtime().tm_year
+    )
+    index_path.write_text(
+        f'{license_header}\n{index_yaml}', encoding='utf-8', newline=''
+    )
     logging.info('Wrote toolchain index %s:', index_path)
     print(index_path.read_bytes().decode('utf-8'))
 

@@ -1,67 +1,89 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e24f0a9b1e 100644
+index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfcaff81e26 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-@@ -297,6 +297,7 @@
+@@ -185,6 +185,14 @@
+       default: "enabled_or_overridden",
+     },
+ 
++    // Brave: the base::Feature has a default state Brave overrides at
++    // compile time, so it is reported as overridden and its state is
++    // always copied into the flag.
++    brave_base_feature_overridden: {
++      default: false,
++      value_type: "bool",
++    },
++
+     // browser_process_read_access indicates the runtime feature state should be
+     // readable in the browserprocess via RuntimeFeatureStateReadContext.
+     // TODO(crbug.com/1377000): this feature does not support origin trial
+@@ -319,6 +327,8 @@
      {
        // Interest Group JS API/runtimeflag.
        name: "AdInterestGroupAPI",
-+      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
-       status: "stable",
++      brave_base_feature_overridden: true,
++      base_feature_status: "disabled",
        origin_trial_feature_name: "AdInterestGroupAPI",
        implied_by: ["Fledge", "Parakeet"],
-@@ -407,6 +408,7 @@
+       public: true,
+@@ -457,6 +467,8 @@
      },
      {
        name: "AIPromptAPI",
-+      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
++      brave_base_feature_overridden: true,
++      base_feature_status: "disabled",
        public: true,
        status: {
          "Win": "stable",
-@@ -434,6 +436,7 @@
+@@ -484,6 +496,8 @@
      },
      {
        name: "AIPromptAPIMultimodalInput",
-+      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
++      brave_base_feature_overridden: true,
++      base_feature_status: "disabled",
        status: {
          "Win": "stable",
          "Mac": "stable",
-@@ -488,7 +491,7 @@
+@@ -538,7 +552,8 @@
        origin_trial_feature_name: "AIProofreaderAPI",
        origin_trial_os: ["win", "mac", "linux", "chromeos"],
        origin_trial_allows_third_party: true,
 -      base_feature_status: "enabled",
-+      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
++      brave_base_feature_overridden: true,
++      base_feature_status: "disabled",
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -503,7 +506,7 @@
+@@ -553,7 +568,8 @@
        origin_trial_feature_name: "AIRewriterAPI",
        origin_trial_os: ["win", "mac", "linux", "chromeos"],
        origin_trial_allows_third_party: true,
 -      base_feature_status: "enabled",
-+      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
++      brave_base_feature_overridden: true,
++      base_feature_status: "disabled",
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -512,6 +515,7 @@
+@@ -562,6 +578,8 @@
      },
      {
        name: "AISummarizationAPI",
-+      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
++      brave_base_feature_overridden: true,
++      base_feature_status: "disabled",
        status: {
          "Win": "stable",
          "Mac": "stable",
-@@ -539,7 +543,7 @@
+@@ -596,7 +614,8 @@
        origin_trial_feature_name: "AIWriterAPI",
        origin_trial_os: ["win", "mac", "linux", "chromeos"],
        origin_trial_allows_third_party: true,
 -      base_feature_status: "enabled",
-+      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
++      brave_base_feature_overridden: true,
++      base_feature_status: "disabled",
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -1292,7 +1296,7 @@
+@@ -1423,7 +1442,7 @@
        // objects that live on the compositor thread.
        // [1] https://drafts.csswg.org/css-animations-2/#timeline-triggers
        name: "CompositorTimelineTrigger",
@@ -70,25 +92,36 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
      },
      {
        name: "CompressionDictionaryTransport",
-@@ -1375,6 +1379,7 @@
+@@ -1501,6 +1520,8 @@
        // https://github.com/WICG/controlled-frame/blob/main/README.md for more
        // info.
        name: "ControlledFrame",
-+      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
++      brave_base_feature_overridden: true,
++      base_feature_status: "disabled",
        public: true,
        status: "stable",
      },
-@@ -2847,7 +2852,8 @@
+@@ -2947,6 +2968,8 @@
+     },
+     {
+       name: "ExtensionScriptTagging",
++      brave_base_feature_overridden: true,
++      base_feature_status: "disabled",
+       public: true,
+       status: "stable",
+       base_feature: "ExtensionScriptTagging",
+@@ -3068,7 +3091,9 @@
      },
      {
        name: "FencedFrames",
 -      base_feature: "none",
-+      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
++      brave_base_feature_overridden: true,
++      base_feature_status: "disabled",
 +      base_feature: "FencedFramesRuntime",
        // This helps enable and expose the <fencedframe> element, but note that
        // blink::features::kFencedFrames must be enabled as well, as we require
        // the support of the browser process to fully enable the feature.
-@@ -2948,6 +2954,7 @@
+@@ -3157,6 +3182,7 @@
      {
        // In-development features for the File System Access API.
        name: "FileSystemAccessAPIExperimental",
@@ -96,7 +129,7 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        status: "experimental",
      },
      {
-@@ -2962,6 +2969,7 @@
+@@ -3171,6 +3197,7 @@
      {
        // Non-OPFS File System Access API.
        name: "FileSystemAccessLocal",
@@ -104,24 +137,26 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        status: {"default": "stable"},
      },
      {
-@@ -3085,6 +3093,7 @@
+@@ -3298,6 +3325,8 @@
      },
      {
        name: "Fledge",
-+      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
-       status: "stable",
++      brave_base_feature_overridden: true,
++      base_feature_status: "disabled",
        public: true,
      },
-@@ -3796,7 +3805,7 @@
-         "Android": "test",
+     {
+@@ -4096,7 +4125,8 @@
+         "Android": "stable",
          "default": "",
        },
 -      base_feature_status: "enabled",
-+      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
++      brave_base_feature_overridden: true,
++      base_feature_status: "disabled",
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -4154,6 +4163,7 @@
+@@ -4487,6 +4517,7 @@
      // "experimental" is the support on other platforms.
      {
        name: "MiddleClickAutoscroll",
@@ -129,48 +164,62 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        status: "test",
      },
      // Killswitch for crbug.com/40062462 fix.
-@@ -4625,6 +4635,7 @@
+@@ -5014,6 +5045,8 @@
      {
        // PARAKEET ad serving runtime flag/JS API.
        name: "Parakeet",
-+      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
++      brave_base_feature_overridden: true,
++      base_feature_status: "disabled",
        origin_trial_feature_name: "Parakeet",
      },
      {
-@@ -4797,6 +4808,7 @@
+@@ -5234,6 +5267,8 @@
        //
        // It also has some feature params defined throughout the codebase.
        name: "Prerender2",
-+      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
++      brave_base_feature_overridden: true,
++      base_feature_status: "disabled",
        status: "stable",
      },
      {
-@@ -5028,6 +5040,7 @@
+@@ -5441,6 +5476,8 @@
      // but we still keep this flag for future phase tests.
      {
        name: "ReduceUserAgentMinorVersion",
-+      base_feature_status: "enabled",  // feature state is enforced via plaster rewrite.
++      brave_base_feature_overridden: true,
++      base_feature_status: "enabled",
        status: "stable",
      },
      {
-@@ -6445,7 +6458,7 @@
+@@ -7004,7 +7041,8 @@
          "ChromeOS": "stable",
          "default": "",
        },
 -      base_feature_status: "enabled",
-+      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
++      brave_base_feature_overridden: true,
++      base_feature_status: "disabled",
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -6620,6 +6633,7 @@
+@@ -7181,6 +7219,8 @@
      },
      {
        name: "UserMediaElement",
-+      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
++      brave_base_feature_overridden: true,
++      base_feature_status: "disabled",
        status: "stable",
        public: true,
      },
-@@ -7425,5 +7439,10 @@
+@@ -8053,7 +8093,7 @@
+       // with its responseXML document.
+       // https://crbug.com/466303347
+       name: "XMLRustForNonXslt",
+-      status: "stable",
++      status: "experimental", // Brave: revert when crbug.com/578167868 is fixed.
+     },
+     {
+       name: "XMLSerializerConsistentDefaultNsDeclMatching",
+@@ -8085,5 +8125,10 @@
        // crbug.com/435623334.
        name: "XSLTSpecialTrial",
      },

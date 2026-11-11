@@ -1,0 +1,30 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Use the Chromium translations for the branded strings.
+    regex:
+      pattern:
+        '[
+        "components_${branding_path_product}_strings_{{source_name_part}}.xtb" ]'
+      replace: '[ "components_chromium_strings_{{source_name_part}}.xtb" ]'
+
+  - description: |-
+      Drop the extended locales Brave does not ship
+
+      Right after the list is declared, before anything derives from it.
+    regex:
+      re_pattern:
+        '(\n( *)_xtb_locales = all_chrome_locales - extended_locales -
+        \[[^\]]*\]\n)'
+      replace: |
+        \1\2_xtb_locales -= brave_extended_locales_exclusions
+
+  - description: Build the Brave locale settings strings with Chromium's.
+    insert_into_list:
+      target: components_locale_settings
+      list_name: deps
+      values:
+        - //brave/components/resources:strings

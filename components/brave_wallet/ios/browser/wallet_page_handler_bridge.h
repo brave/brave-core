@@ -33,6 +33,8 @@ NS_SWIFT_NAME(WalletPageHandler)
 - (void)openWalletHome;
 /// Handle when the user wants to scan a QR code
 - (void)scanAddressQRCode:(void (^)(NSString* address))completion;
+/// Handle external link the user taps from wallet webui
+- (void)openTab:(NSURL*)url;
 
 @end
 

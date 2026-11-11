@@ -32,13 +32,15 @@ GIT_METADATA_OVERRIDES = {
 }
 
 
-def _check_call(*command,
-                cwd=None,
-                env=None,
-                check=True,
-                capture_output=False,
-                timeout=None,
-                input=None):  # pylint: disable=redefined-builtin
+def _check_call(
+    *command,
+    cwd=None,
+    env=None,
+    check=True,
+    capture_output=False,
+    timeout=None,
+    input=None,
+):  # pylint: disable=redefined-builtin
     """Run *command* as a subprocess, logging the invocation.
 
     Shared subprocess helper for every script in this directory that shells
@@ -91,21 +93,25 @@ def _check_call(*command,
         if resolved != command[0]:
             command = [resolved] + list(command[1:])
 
-    return subprocess.run(command,
-                          cwd=cwd,
-                          env=env,
-                          check=check,
-                          capture_output=capture_output,
-                          timeout=timeout,
-                          input=input,
-                          text=True,
-                          errors='replace')
+    return subprocess.run(
+        command,
+        cwd=cwd,
+        env=env,
+        check=check,
+        capture_output=capture_output,
+        timeout=timeout,
+        input=input,
+        text=True,
+        errors='replace',
+    )
 
 
 @contextlib.contextmanager
-def cherry_picks(repo_dir: str | Path,
-                 commits: list[str],
-                 metadata_overrides: dict[str, str] | None = None):
+def cherry_picks(
+    repo_dir: str | Path,
+    commits: list[str],
+    metadata_overrides: dict[str, str] | None = None,
+):
     """Context manager: apply upstream cherry-picks for the build's duration.
 
     Ensures every commit's changes are present in *repo_dir* while the build
@@ -141,25 +147,32 @@ def cherry_picks(repo_dir: str | Path,
         check: bool = True,
         capture_output: bool = False,
         env: dict | None = None,
-        input: str | None = None  # pylint: disable=redefined-builtin
+        input: str | None = None,  # pylint: disable=redefined-builtin
     ) -> subprocess.CompletedProcess:
         """Run `git -C <repo_dir> <args...>` via `_check_call`."""
-        return _check_call('git',
-                           '-C',
-                           str(repo_dir),
-                           *args,
-                           check=check,
-                           capture_output=capture_output,
-                           input=input,
-                           env=env)
+        return _check_call(
+            'git',
+            '-C',
+            str(repo_dir),
+            *args,
+            check=check,
+            capture_output=capture_output,
+            input=input,
+            env=env,
+        )
 
     to_apply = []
     for commit in commits:
-        object_present = _run_git('cat-file',
-                                  '-e',
-                                  f'{commit}^{{commit}}',
-                                  check=False,
-                                  capture_output=True).returncode == 0
+        object_present = (
+            _run_git(
+                'cat-file',
+                '-e',
+                f'{commit}^{{commit}}',
+                check=False,
+                capture_output=True,
+            ).returncode
+            == 0
+        )
         if not object_present:
             logging.info('Fetching cherry-pick %s.', commit)
             _run_git('fetch', 'origin', commit)
@@ -169,12 +182,17 @@ def cherry_picks(repo_dir: str | Path,
         # present by attempting to reverse-apply the patch.
         # If it applies cleanly in reverse, the change is already present.
         patch = _run_git('show', commit, capture_output=True).stdout
-        already_applied = _run_git('apply',
-                                   '--reverse',
-                                   '--check',
-                                   check=False,
-                                   capture_output=True,
-                                   input=patch).returncode == 0
+        already_applied = (
+            _run_git(
+                'apply',
+                '--reverse',
+                '--check',
+                check=False,
+                capture_output=True,
+                input=patch,
+            ).returncode
+            == 0
+        )
         if already_applied:
             logging.info('Cherry-pick %s already present; skipping.', commit)
         else:
@@ -184,20 +202,21 @@ def cherry_picks(repo_dir: str | Path,
         yield
         return
 
-    original_head = _run_git('rev-parse', 'HEAD',
-                             capture_output=True).stdout.strip()
+    original_head = _run_git(
+        'rev-parse', 'HEAD', capture_output=True
+    ).stdout.strip()
     logging.info('Cherry-picking %s.', ', '.join(to_apply))
-    _run_git('cherry-pick',
-             '--keep-redundant-commits',
-             '--no-gpg-sign',
-             *to_apply,
-             env={
-                 **os.environ,
-                 **metadata_overrides
-             })
+    _run_git(
+        'cherry-pick',
+        '--keep-redundant-commits',
+        '--no-gpg-sign',
+        *to_apply,
+        env={**os.environ, **metadata_overrides},
+    )
     try:
         yield
     finally:
-        logging.info('Restoring checkout to %s after cherry-picks.',
-                     original_head)
+        logging.info(
+            'Restoring checkout to %s after cherry-picks.', original_head
+        )
         _run_git('reset', '--hard', original_head)

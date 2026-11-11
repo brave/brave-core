@@ -15,7 +15,6 @@
 #include "base/barrier_callback.h"
 #include "base/base64.h"
 #include "base/check.h"
-#include "base/check_is_test.h"
 #include "base/containers/extend.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_set.h"
@@ -57,7 +56,6 @@
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/utils.h"
-#include "brave/components/json/json_helper.h"
 #include "brave/net/base/url_util.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
@@ -74,12 +72,12 @@ namespace brave_wallet {
 
 struct PendingAddChainRequest {
   mojom::AddChainRequestPtr request;
-  url::Origin origin;
+  url::Origin dapp_origin;
 };
 
 struct PendingSwitchChainRequest {
   mojom::SwitchChainRequestPtr switch_chain_request;
-  url::Origin origin;
+  url::Origin dapp_origin;
   base::Value switch_chain_id;
   mojom::EthereumProvider::RequestCallback switch_chain_callback;
 };
@@ -361,10 +359,6 @@ JsonRpcService::JsonRpcService(
       network_manager_(network_manager),
       prefs_(prefs),
       local_state_prefs_(local_state_prefs) {
-  if (!local_state_prefs_) {
-    CHECK_IS_TEST();
-  }
-
   api_request_helper_ens_offchain_ = std::make_unique<APIRequestHelper>(
       GetENSOffchainNetworkTrafficAnnotationTag(), url_loader_factory);
 
@@ -450,7 +444,7 @@ void JsonRpcService::FirePendingRequestCompleted(const std::string& chain_id,
 bool JsonRpcService::HasAddChainRequestFromOrigin(
     const url::Origin& origin) const {
   return std::ranges::any_of(add_chain_pending_requests_, [origin](auto& req) {
-    return req.second.origin == origin;
+    return req.second.dapp_origin == origin;
   });
 }
 
@@ -458,7 +452,7 @@ bool JsonRpcService::HasSwitchChainRequestFromOrigin(
     const url::Origin& origin) const {
   return std::ranges::any_of(
       pending_switch_chain_requests_,
-      [origin](auto& req) { return req.second.origin == origin; });
+      [origin](auto& req) { return req.second.dapp_origin == origin; });
 }
 
 void JsonRpcService::GetPendingAddChainRequests(
@@ -546,20 +540,21 @@ void JsonRpcService::OnEthChainIdValidated(
 
 std::string JsonRpcService::AddEthereumChainForOrigin(
     mojom::NetworkInfoPtr chain,
-    const url::Origin& origin) {
+    const url::Origin& dapp_origin) {
   auto chain_id = chain->chain_id;
   if (network_manager_->KnownChainExists(chain_id, mojom::CoinType::ETH) ||
       network_manager_->CustomChainExists(chain_id, mojom::CoinType::ETH)) {
     return l10n_util::GetStringUTF8(IDS_SETTINGS_WALLET_NETWORKS_EXISTS);
   }
-  if (origin.opaque() || add_chain_pending_requests_.contains(chain_id) ||
-      HasAddChainRequestFromOrigin(origin)) {
+  if (!IsValidDappOrigin(dapp_origin) ||
+      add_chain_pending_requests_.contains(chain_id) ||
+      HasAddChainRequestFromOrigin(dapp_origin)) {
     return l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR);
   }
 
-  add_chain_pending_requests_[chain_id].origin = origin;
-  add_chain_pending_requests_[chain_id].request =
-      mojom::AddChainRequest::New(MakeOriginInfo(origin), std::move(chain));
+  add_chain_pending_requests_[chain_id].dapp_origin = dapp_origin;
+  add_chain_pending_requests_[chain_id].request = mojom::AddChainRequest::New(
+      MakeDappOriginInfo(dapp_origin), std::move(chain));
   return "";
 }
 
@@ -745,10 +740,6 @@ void JsonRpcService::GetAllNetworks(GetAllNetworksCallback callback) {
 
     if (SwapService::IsChainIdSupportedBySwap(network->chain_id)) {
       result->swap_chain_ids.emplace_back(network->chain_id);
-    }
-
-    if (kOffRampChains.contains(network->chain_id)) {
-      result->off_ramp_chain_ids.emplace_back(network->chain_id);
     }
   }
 
@@ -2396,16 +2387,21 @@ void JsonRpcService::NotifySwitchChainRequestProcessed(
   auto pending_request = std::move(pending_switch_chain_requests_[request_id]);
   pending_switch_chain_requests_.erase(request_id);
 
-  if (approved) {
-    // We already check chain id validity in
-    // JsonRpcService::AddSwitchEthereumChainRequest so this should always
-    // be successful unless chain id differs or we add more check other than
-    // chain id
-    CHECK(SetNetwork(pending_request.switch_chain_request->chain_id,
-                     mojom::CoinType::ETH, pending_request.origin));
-  }
   auto callback = std::move(pending_request.switch_chain_callback);
   base::Value id = std::move(pending_request.switch_chain_id);
+
+  if (approved) {
+    if (!SetNetwork(pending_request.switch_chain_request->chain_id,
+                    mojom::CoinType::ETH, pending_request.dapp_origin)) {
+      std::move(callback).Run(mojom::EthereumProviderResponse::New(
+          std::move(id),
+          GetProviderErrorDictionary(
+              mojom::ProviderError::kUserRejectedRequest,
+              l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST)),
+          true, "", false));
+      return;
+    }
+  }
 
   bool reject = false;
   if (approved) {
@@ -2424,7 +2420,7 @@ void JsonRpcService::NotifySwitchChainRequestProcessed(
 
 bool JsonRpcService::AddSwitchEthereumChainRequest(
     const std::string& chain_id,
-    const url::Origin& origin,
+    const url::Origin& dapp_origin,
     mojom::EthereumProvider::RequestCallback callback,
     base::Value id) {
   bool reject = false;
@@ -2440,7 +2436,7 @@ bool JsonRpcService::AddSwitchEthereumChainRequest(
   }
 
   // Already on the chain
-  if (GetChainIdSync(mojom::CoinType::ETH, origin) == chain_id) {
+  if (GetChainIdSync(mojom::CoinType::ETH, dapp_origin) == chain_id) {
     reject = false;
     std::move(callback).Run(mojom::EthereumProviderResponse::New(
         std::move(id), base::Value(), reject, "", false));
@@ -2448,7 +2444,7 @@ bool JsonRpcService::AddSwitchEthereumChainRequest(
   }
 
   // There can be only 1 request per origin
-  if (HasSwitchChainRequestFromOrigin(origin)) {
+  if (HasSwitchChainRequestFromOrigin(dapp_origin)) {
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
@@ -2461,8 +2457,8 @@ bool JsonRpcService::AddSwitchEthereumChainRequest(
   auto request_id = GenerateRandomHexString();
   auto& pending_request = pending_switch_chain_requests_[request_id];
   pending_request.switch_chain_request = mojom::SwitchChainRequest::New(
-      request_id, MakeOriginInfo(origin), chain_id);
-  pending_request.origin = origin;
+      request_id, MakeDappOriginInfo(dapp_origin), chain_id);
+  pending_request.dapp_origin = dapp_origin;
   pending_request.switch_chain_callback = std::move(callback);
   pending_request.switch_chain_id = std::move(id);
 

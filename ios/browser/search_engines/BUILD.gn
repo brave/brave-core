@@ -3,6 +3,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+source_set("features") {
+  sources = [
+    "features.h",
+    "features.mm",
+  ]
+  deps = [ "//base" ]
+}
+
 source_set("search_engines") {
   sources = [
     "template_url_bridge.h",
@@ -25,6 +33,7 @@ source_set("search_engines") {
     "//ios/chrome/browser/search_engines/model",
     "//ios/chrome/browser/shared/model/profile",
     "//net",
+    "//url",
   ]
   frameworks = [ "Foundation.framework" ]
 }

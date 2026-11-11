@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import BraveCore
+@preconcurrency import BraveCore
 import Foundation
 import Shared
 
@@ -243,7 +243,12 @@ extension BraveCertificateUtils {
   }
 
   /// Verifies ServerTrust using Brave-Core which verifies only SSL Pinning Status
-  public static func verifyTrust(_ trust: SecTrust, host: String, port: Int) async -> Int {
+  // @concurrent: certificate verification is synchronous
+  @concurrent public static func verifyTrust(
+    _ trust: SecTrust,
+    host: String,
+    port: Int
+  ) async -> Int {
     return Int(BraveCertificateUtility.verifyTrust(trust, host: host, port: port))
   }
 }

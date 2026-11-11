@@ -1,0 +1,29 @@
+diff --git a/chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_expand_on_hover_lock.h b/chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_expand_on_hover_lock.h
+index e1fbff0cdf2e21b5c450252241b0ec0022702916..8d9e8db8644aaec65ca8fb5e810136bcd19c6708 100644
+--- a/chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_expand_on_hover_lock.h
++++ b/chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_expand_on_hover_lock.h
+@@ -8,13 +8,13 @@
+ #include "base/memory/raw_ptr.h"
+ #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
+ 
+-class VerticalTabStripRegionView;
++class VerticalTabStripRegionView_ChromiumImpl;
+ 
+ // The type of lock to create for the vertical tab strip.
+ class VerticalTabStripExpandOnHoverLock : public ExpandOnHoverLock {
+  public:
+   explicit VerticalTabStripExpandOnHoverLock(
+-      VerticalTabStripRegionView* region_view,
++      VerticalTabStripRegionView_ChromiumImpl* region_view,
+       ExpandOnHoverLockType lock_type);
+   VerticalTabStripExpandOnHoverLock(const VerticalTabStripExpandOnHoverLock&) =
+       delete;
+@@ -29,7 +29,7 @@ class VerticalTabStripExpandOnHoverLock : public ExpandOnHoverLock {
+ 
+  private:
+   ExpandOnHoverLockType lock_type_;
+-  raw_ptr<VerticalTabStripRegionView> region_view_;
++  raw_ptr<VerticalTabStripRegionView_ChromiumImpl> region_view_;
+ };
+ 
+ #endif  // CHROME_BROWSER_UI_VIEWS_TABS_VERTICAL_VERTICAL_TAB_STRIP_EXPAND_ON_HOVER_LOCK_H_

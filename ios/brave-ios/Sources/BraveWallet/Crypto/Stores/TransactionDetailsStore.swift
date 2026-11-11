@@ -36,7 +36,6 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let txService: BraveWalletTxService
   private let solanaTxManagerProxy: BraveWalletSolanaTxManagerProxy
-  private let ipfsApi: IpfsAPI
   private let assetManager: WalletUserAssetManagerType
   /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
   /// This could occur with a dapp creating a transaction.
@@ -61,7 +60,6 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
     blockchainRegistry: BraveWalletBlockchainRegistry,
     txService: BraveWalletTxService,
     solanaTxManagerProxy: BraveWalletSolanaTxManagerProxy,
-    ipfsApi: IpfsAPI,
     userAssetManager: WalletUserAssetManagerType
   ) {
     self.transaction = transaction
@@ -73,7 +71,6 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
     self.blockchainRegistry = blockchainRegistry
     self.txService = txService
     self.solanaTxManagerProxy = solanaTxManagerProxy
-    self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
 
     setupObservers()
@@ -224,10 +221,7 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
       guard let nftToken,
         nftMetadataCache[nftToken.id] == nil
       else { return }
-      self.nftMetadataCache[nftToken.id] = await rpcService.fetchNFTMetadata(
-        for: nftToken,
-        ipfsApi: ipfsApi
-      )
+      self.nftMetadataCache[nftToken.id] = await rpcService.fetchNFTMetadata(for: nftToken)
       guard
         let parsedTransaction = transaction.parsedTransaction(
           allNetworks: allNetworks,

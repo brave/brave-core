@@ -210,7 +210,7 @@
     "includes": [53980],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/components/brave_account/resources/resources.grd": {
-    "META": {"sizes": {"includes": [50]}},
+    "META": {"sizes": {"includes": [70]}},
     "includes": [54000],
   },
   "brave/ios/web/test/test_resources.grd": {
@@ -253,6 +253,25 @@
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-on_device_speech_recognition_worker/on_device_speech_recognition_worker.grd": {
     "META": {"sizes": {"includes": [5]}},
     "includes": [54165],
+  },
+  "brave/browser/resources/tab_strip/tab_strip_resources.grd": {
+    "structures": [54170],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-snap_host/snap_host.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [54180],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-snaps_container/snaps_container.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [54190],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/brave_recap/brave_recap_static_resources.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [54200],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_recap/brave_recap.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [54210],
   },
   # WARNING: The IDs range is 2^16-1. Check
   # out/<BUILD_TYPE>/gen/brave/resources/brave_resource_ids for how much the

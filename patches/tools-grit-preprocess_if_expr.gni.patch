@@ -1,11 +1,20 @@
 diff --git a/tools/grit/preprocess_if_expr.gni b/tools/grit/preprocess_if_expr.gni
-index e3eb9942d9959a9942cb1ad79e5df526fd2c933d..6e678c2bd3009a0afee6affcfe331a4d49830828 100644
+index e3eb9942d9959a9942cb1ad79e5df526fd2c933d..b395953d0ce004894cd83ed9f6a5f65a08d7d0e3 100644
 --- a/tools/grit/preprocess_if_expr.gni
 +++ b/tools/grit/preprocess_if_expr.gni
-@@ -71,5 +71,6 @@ template("preprocess_if_expr") {
-         invoker.enable_removal_comments) {
-       args += [ "--enable_removal_comments" ]
-     }
-+    import("//brave/tools/chromium_src/lit_mangler/sources.gni") inputs += brave_lit_mangler_preprocess_if_expr_inputs
-   }
- }
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/tools/chromium_src/lit_mangler/sources.gni")
+ import("//build/config/python.gni")
+ import("//tools/grit/grit_args.gni")
+ 
+@@ -17,6 +18,7 @@ template("preprocess_if_expr") {
+                            ])
+ 
+     inputs = []
++    inputs += brave_lit_mangler_preprocess_if_expr_inputs
+     outputs = []
+ 
+     in_folder = "."

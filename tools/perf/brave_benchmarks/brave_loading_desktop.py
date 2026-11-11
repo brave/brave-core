@@ -7,7 +7,7 @@
 
 # Used as part of chromium src/tools/perf/benchmarks/
 # Uses the the same code conventions (including pylint).
-# pylint: disable=import-error, no-self-use
+# pylint: disable=import-error
 # pylint: disable=no-name-in-module, too-few-public-methods
 # pytype: disable=import-error
 
@@ -28,7 +28,8 @@ from telemetry.web_perf import timeline_based_measurement
 
 with SysPath(os.path.join(GetChromiumSrcDir(), 'brave', 'tools', 'perf')):
   from brave_page_sets.brave_loading_desktop_pages import (
-      BraveLoadingDesktopStorySet)
+    BraveLoadingDesktopStorySet,
+  )
 
 
 def CreateCoreTBMOptions(metric_list):
@@ -40,11 +41,14 @@ def CreateCoreTBMOptions(metric_list):
   return tbm_options
 
 
-@benchmark.Info(emails=['matuchin@brave.com', 'iefremov@brave.com'],
-                component='Blink>Loader',
-                documentation_url='https://bit.ly/loading-benchmarks')
+@benchmark.Info(
+  emails=['matuchin@brave.com', 'iefremov@brave.com'],
+  component='Blink>Loader',
+  documentation_url='https://bit.ly/loading-benchmarks',
+)
 class LoadingDesktopBrave(perf_benchmark.PerfBenchmark):
-  """ A benchmark measuring loading performance of desktop sites. """
+  """A benchmark measuring loading performance of desktop sites."""
+
   SUPPORTED_PLATFORM_TAGS = [platforms.DESKTOP]
   SUPPORTED_PLATFORMS = [story.expectations.ALL_DESKTOP]
 
@@ -64,11 +68,14 @@ class LoadingDesktopBrave(perf_benchmark.PerfBenchmark):
     return 'loading.desktop.brave'
 
 
-@benchmark.Info(emails=['matuchin@brave.com', 'iefremov@brave.com'],
-                component='Blink>Loader',
-                documentation_url='https://bit.ly/loading-benchmarks')
+@benchmark.Info(
+  emails=['matuchin@brave.com', 'iefremov@brave.com'],
+  component='Blink>Loader',
+  documentation_url='https://bit.ly/loading-benchmarks',
+)
 class LoadingDesktopBraveStartup(perf_benchmark.PerfBenchmark):
-  """ A benchmark measuring loading startup performance of desktop sites. """
+  """A benchmark measuring loading startup performance of desktop sites."""
+
   SUPPORTED_PLATFORM_TAGS = [platforms.DESKTOP]
   SUPPORTED_PLATFORMS = [story.expectations.ALL_DESKTOP]
 

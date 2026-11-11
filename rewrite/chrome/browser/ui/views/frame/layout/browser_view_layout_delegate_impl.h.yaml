@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Declare Brave overrides in BrowserViewLayoutDelegateImpl
+
+      Implements the methods added to BrowserViewLayoutDelegate for
+      BraveBrowserViewLayout (see the matching rewrite for
+      browser_view_layout_delegate.h).
+    add_to_public:
+      class_name: BrowserViewLayoutDelegateImpl
+      code: |-
+        bool ShouldShowVerticalTabs() const override;
+        bool ShouldShowWindowTitleForVerticalTabs() const override;
+        bool IsVerticalTabOnRight() const override;
+        bool ShouldUseBraveWebViewRoundedCornersForContents() const override;
+        int GetRoundedCornersWebViewMargin() const override;
+        bool IsBookmarkBarOnByPref() const override;
+        bool IsContentTypeSidePanelVisible() const override;
+        bool IsFullscreenForBrowser() const override;
+        bool IsFullscreenForTab() const override;
+        void UpdateContentsCornerRadii(
+            const gfx::RoundedCornersF& corner_radii) override;
+        bool IsFullscreen() const override;

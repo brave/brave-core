@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_util.h"
 
-#include <optional>
 #include <string_view>
 #include <utility>
 
@@ -20,7 +19,7 @@
 #include "brave/components/brave_ads/core/internal/segments/segment_types.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 

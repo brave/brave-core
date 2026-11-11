@@ -15,7 +15,7 @@
 #include "components/search_engines/template_url_service_observer.h"
 #include "ui/views/view_observer.h"
 
-class Browser;
+class BrowserWindowInterface;
 class OmniboxViewViews;
 class PrefService;
 class PromotionButtonView;
@@ -36,7 +36,7 @@ class PromotionButtonController : public views::ViewObserver,
 
   PromotionButtonController(PromotionButtonView* button,
                             OmniboxViewViews* omnibox_view,
-                            Browser* browser);
+                            BrowserWindowInterface* browser);
   ~PromotionButtonController() override;
 
   // Check with current input and autocomplete match.
@@ -72,7 +72,7 @@ class PromotionButtonController : public views::ViewObserver,
   raw_ptr<OmniboxViewViews> omnibox_view_ = nullptr;
   raw_ptr<TemplateURLService> template_url_service_ = nullptr;
   raw_ref<PrefService> prefs_;
-  raw_ref<Browser> browser_;
+  raw_ref<BrowserWindowInterface> browser_;
   base::ScopedMultiSourceObservation<views::View, views::ViewObserver>
       view_observation_{this};
   base::ScopedObservation<TemplateURLService, TemplateURLServiceObserver>

@@ -8,12 +8,8 @@
 #include <tuple>
 #include <utility>
 
-#include "base/no_destructor.h"
-#include "gin/arguments.h"
 #include "gin/function_template.h"
-#include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/modules/service_worker/web_service_worker_context_proxy.h"
-#include "third_party/blink/public/web/web_script_source.h"
 
 namespace brave_search {
 

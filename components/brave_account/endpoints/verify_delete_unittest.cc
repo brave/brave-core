@@ -16,16 +16,6 @@
 
 namespace brave_account::endpoints {
 
-bool operator==(const VerifyDelete::Response::SuccessBody&,
-                const VerifyDelete::Response::SuccessBody&) {
-  return true;
-}
-
-bool operator==(const VerifyDelete::Response::ErrorBody&,
-                const VerifyDelete::Response::ErrorBody&) {
-  return true;
-}
-
 namespace {
 
 using VerifyDeleteTestCase = EndpointTestCase<VerifyDelete>;

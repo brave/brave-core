@@ -1,0 +1,33 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+requires-python = '>=3.11,<3.12'
+dependencies = [
+  'protobuf==6.32.1',
+
+  # Used by the simulation test runner (engine.py test run|train) to enforce
+  # 100% coverage of recipe and recipe_module source.
+  'coverage==7.3.1',
+
+  # Used by resource scripts that parse YAML, e.g.
+  # chromium_checkout/resources/win_toolchain_hash.py.
+  'pyyaml==6.0.1',
+
+  # Declarative attribute classes, used by `engine_types` for `ResourceCost`.
+  'attrs==23.1.0',
+
+  # Reports the host's logical core count and physical memory.
+  'psutil==5.8.0+chromium.3',
+
+  # The concurrency substrate behind the `futures` module.
+  'gevent==23.9.1',
+  'greenlet==3.0.1',
+  'zope-event==5.0',
+  'zope-interface==6.0',
+  # This is only required on the windows version of gevent.
+  "cffi==1.15.1; sys_platform == 'win32' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
+  # This is only required for cffi.
+  "pycparser==2.21; sys_platform == 'win32' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
+]

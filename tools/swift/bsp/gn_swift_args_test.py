@@ -34,9 +34,11 @@ def _fail(message):
 def check_targets_found(targets, out_dir):
     """Every output directory with Swift code should yield some targets."""
     if not targets:
-        return _fail(f'no Swift targets found in {out_dir}. Either the ninja '
-                     f'files are missing (run `gn gen`) or the `swift` build '
-                     f'edge format changed.')
+        return _fail(
+            f'no Swift targets found in {out_dir}. Either the ninja '
+            f'files are missing (run `gn gen`) or the `swift` build '
+            f'edge format changed.'
+        )
     print(f'ok: found {len(targets)} Swift target(s)')
     return True
 
@@ -51,8 +53,10 @@ def check_arguments_extractable(targets, source_root):
             failures.append(f'{target.label}: {error}')
             continue
         if not any(argument.endswith('.swift') for argument in arguments):
-            failures.append(f'{target.label}: no .swift files in arguments, '
-                            f'the SwiftFileList response file may have moved')
+            failures.append(
+                f'{target.label}: no .swift files in arguments, '
+                f'the SwiftFileList response file may have moved'
+            )
     if failures:
         for failure in failures:
             print(f'FAIL: {failure}')
@@ -69,32 +73,39 @@ def check_typechecks(target, source_root):
     path, a dropped interop flag) fail here.
     """
     arguments = gn_swift_args.compiler_arguments(target, source_root)
-    process = subprocess.run(['xcrun', 'swiftc', '-typecheck'] + arguments,
-                             cwd=target.out_dir,
-                             capture_output=True,
-                             text=True,
-                             check=False)
+    process = subprocess.run(
+        ['xcrun', 'swiftc', '-typecheck'] + arguments,
+        cwd=target.out_dir,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
     if process.returncode:
-        return _fail(f'{target.label} does not typecheck with the extracted '
-                     f'arguments:\n{process.stderr[-2000:]}')
+        return _fail(
+            f'{target.label} does not typecheck with the extracted '
+            f'arguments:\n{process.stderr[-2000:]}'
+        )
     print(f'ok: {target.label} typechecks')
     return True
 
 
 def main(argv):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--source-root',
-                        default=os.path.abspath(
-                            os.path.join(os.path.dirname(__file__), '..', '..',
-                                         '..', '..')),
-                        help='path to the Chromium src directory')
-    parser.add_argument('--out-dir',
-                        required=True,
-                        help='GN output directory, e.g. out/ios_sim')
-    parser.add_argument('--typecheck-all',
-                        action='store_true',
-                        help='typecheck every target instead of Brave ones '
-                        'only (slow)')
+    parser.add_argument(
+        '--source-root',
+        default=os.path.abspath(
+            os.path.join(os.path.dirname(__file__), '..', '..', '..', '..')
+        ),
+        help='path to the Chromium src directory',
+    )
+    parser.add_argument(
+        '--out-dir', required=True, help='GN output directory, e.g. out/ios_sim'
+    )
+    parser.add_argument(
+        '--typecheck-all',
+        action='store_true',
+        help='typecheck every target instead of Brave ones only (slow)',
+    )
     args = parser.parse_args(argv)
 
     source_root = os.path.abspath(args.source_root)
@@ -109,7 +120,8 @@ def main(argv):
     # Typechecking is the slow part, so by default only Brave's own targets are
     # checked; upstream ones may not have been built in this output directory.
     to_typecheck = [
-        target for target in targets
+        target
+        for target in targets
         if args.typecheck_all or target.label.startswith('//brave')
     ]
     if not to_typecheck:

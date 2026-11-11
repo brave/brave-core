@@ -1,0 +1,11 @@
+include_rules = [
+  "+google/protobuf",
+  "+services/network/public/cpp",
+  "+services/network/public/mojom",
+]
+
+specific_include_rules = {
+  "test_support\.h|.*_unittest\.cc": [
+    "+services/network/test",
+  ],
+}

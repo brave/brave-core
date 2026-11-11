@@ -5,39 +5,33 @@
 
 substitutions:
   - description: |
-      Pull in the variable list shared between Brave and the upstream
-      `source_set("extensions")` target.
+      Append the Brave public headers to `source_set("extensions")`.
 
-      Anchored on the license header, so always on top.
-    regex:
-      re_pattern: '(# found in the LICENSE file\.\n\n)'
-      replace: |
-        \1import("//brave/common/extensions/sources.gni")
+      The import brings in the variable lists this and the entries below
+      read, all shared between Brave and the upstream target.
+    add_literal_to_list:
+      target: extensions
+      list_name: public
+      literal: brave_chrome_common_extensions_public
+      import: //brave/common/extensions/sources.gni
 
-  - description: |
-      Append Brave public headers to `source_set("extensions")`.
-    regex:
-      re_pattern: '(source_set\("extensions"\).*?\bpublic\s*=\s*\[.*?\])'
-      re_flags: [DOTALL]
-      replace: '\1\n  public += brave_chrome_common_extensions_public'
+  - description: Append the Brave sources to `source_set("extensions")`.
+    add_literal_to_list:
+      target: extensions
+      list_name: sources
+      literal: brave_chrome_common_extensions_sources
+      import: //brave/common/extensions/sources.gni
 
-  - description: |
-      Append Brave sources to `source_set("extensions")`.
-    regex:
-      re_pattern: '(source_set\("extensions"\).*?\bsources\s*=\s*\[.*?\])'
-      re_flags: [DOTALL]
-      replace: '\1\n  sources += brave_chrome_common_extensions_sources'
+  - description: Append the Brave public_deps to `source_set("extensions")`.
+    add_literal_to_list:
+      target: extensions
+      list_name: public_deps
+      literal: brave_chrome_common_extensions_public_deps
+      import: //brave/common/extensions/sources.gni
 
-  - description: |
-      Append Brave public_deps to `source_set("extensions")`.
-    regex:
-      re_pattern: '(source_set\("extensions"\).*?\bpublic_deps\s*=\s*\[.*?\])'
-      re_flags: [DOTALL]
-      replace: '\1\n  public_deps += brave_chrome_common_extensions_public_deps'
-
-  - description: |
-      Append Brave deps to `source_set("extensions")`.
-    regex:
-      re_pattern: '(source_set\("extensions"\).*?\bdeps\s*=\s*\[.*?\])'
-      re_flags: [DOTALL]
-      replace: '\1\n  deps += brave_chrome_common_extensions_deps'
+  - description: Append the Brave deps to `source_set("extensions")`.
+    add_literal_to_list:
+      target: extensions
+      list_name: deps
+      literal: brave_chrome_common_extensions_deps
+      import: //brave/common/extensions/sources.gni

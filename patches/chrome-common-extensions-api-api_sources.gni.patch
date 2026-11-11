@@ -1,0 +1,13 @@
+diff --git a/chrome/common/extensions/api/api_sources.gni b/chrome/common/extensions/api/api_sources.gni
+index d4d6caaa4cf8c1d140a141c65e75e5943ac6464c..3499c23acd181c11d2e2be9d19695308457e7e47 100644
+--- a/chrome/common/extensions/api/api_sources.gni
++++ b/chrome/common/extensions/api/api_sources.gni
+@@ -48,7 +48,7 @@ schema_sources_ = [
+   "windows.json",
+ ]
+ 
+-if (enable_service_discovery) {
++if (enable_service_discovery && (!is_android || is_desktop_android)) {
+   schema_sources_ += [ "mdns.idl" ]
+ }
+ 

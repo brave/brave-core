@@ -23,9 +23,9 @@ namespace brave_new_tab_page_refresh {
 
 namespace {
 
-// Converts the sponsored image data returned as a Dict by `ViewCounterService`
+// Converts the New Tab Takeover data returned as a Dict by `ViewCounterService`
 // into a mojo struct for use by the NTP.
-mojom::SponsoredImageBackgroundPtr ReadSponsoredImageData(
+mojom::NewTabTakeoverBackgroundPtr ReadNewTabTakeoverData(
     const base::DictValue& data) {
   using ntp_background_images::kAltKey;
   using ntp_background_images::kCampaignIdKey;
@@ -44,7 +44,7 @@ mojom::SponsoredImageBackgroundPtr ReadSponsoredImageData(
     return nullptr;
   }
 
-  auto background = mojom::SponsoredImageBackground::New();
+  auto background = mojom::NewTabTakeoverBackground::New();
 
   if (auto* type = data.FindString(kWallpaperTypeKey)) {
     background->wallpaper_type = *type;
@@ -67,7 +67,7 @@ mojom::SponsoredImageBackgroundPtr ReadSponsoredImageData(
   }
 
   if (auto* logo_dict = data.FindDict(kLogoKey)) {
-    auto logo = mojom::SponsoredImageLogo::New();
+    auto logo = mojom::NewTabTakeoverLogo::New();
     if (auto* alt = logo_dict->FindString(kAltKey)) {
       logo->alt = *alt;
     }
@@ -182,20 +182,20 @@ mojom::SelectedBackgroundPtr BackgroundFacade::GetSelectedBackground() {
   return background;
 }
 
-void BackgroundFacade::GetSponsoredImageBackground(
-    base::OnceCallback<void(mojom::SponsoredImageBackgroundPtr)> callback) {
+void BackgroundFacade::GetNewTabTakeoverBackground(
+    base::OnceCallback<void(mojom::NewTabTakeoverBackgroundPtr)> callback) {
   if (!view_counter_service_) {
     std::move(callback).Run(nullptr);
     return;
   }
 
   view_counter_service_->GetCurrentWallpaperForDisplay(
-      base::BindOnce(&BackgroundFacade::OnGetSponsoredImageBackground,
+      base::BindOnce(&BackgroundFacade::OnGetNewTabTakeoverBackground,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void BackgroundFacade::OnGetSponsoredImageBackground(
-    base::OnceCallback<void(mojom::SponsoredImageBackgroundPtr)> callback,
+void BackgroundFacade::OnGetNewTabTakeoverBackground(
+    base::OnceCallback<void(mojom::NewTabTakeoverBackgroundPtr)> callback,
     std::optional<base::DictValue> data) {
   if (!data) {
     return std::move(callback).Run(nullptr);
@@ -203,14 +203,14 @@ void BackgroundFacade::OnGetSponsoredImageBackground(
 
   view_counter_service_->RegisterPageView();
 
-  auto sponsored_image = ReadSponsoredImageData(*data);
-  if (sponsored_image) {
+  auto new_tab_takeover = ReadNewTabTakeoverData(*data);
+  if (new_tab_takeover) {
     view_counter_service_->RecordViewedAdEvent(
-        sponsored_image->wallpaper_id, sponsored_image->creative_instance_id,
-        sponsored_image->metric_type);
+        new_tab_takeover->wallpaper_id, new_tab_takeover->creative_instance_id,
+        new_tab_takeover->metric_type);
   }
 
-  std::move(callback).Run(std::move(sponsored_image));
+  std::move(callback).Run(std::move(new_tab_takeover));
 }
 
 void BackgroundFacade::SelectBackground(
@@ -280,7 +280,7 @@ void BackgroundFacade::RemoveCustomBackground(const std::string& background_url,
                                 file_path));
 }
 
-void BackgroundFacade::NotifySponsoredImageLogoClicked(
+void BackgroundFacade::NotifyNewTabTakeoverLogoClicked(
     const std::string& wallpaper_id,
     const std::string& creative_instance_id,
     const std::string& destination_url,

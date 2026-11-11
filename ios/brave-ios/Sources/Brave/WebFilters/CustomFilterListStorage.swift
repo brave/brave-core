@@ -119,6 +119,19 @@ struct CustomScriptlet: Identifiable, Hashable {
     self.filterListsURLs = []
   }
 
+  /// Whether or not the custom filter list with the given id is enabled.
+  ///
+  /// Setting this saves the change to the filter list's setting. Lists that no longer exist report
+  /// `false` and ignore writes.
+  subscript(isEnabled id: FilterListCustomURL.ID) -> Bool {
+    get { filterListsURLs.first(where: { $0.id == id })?.setting.isEnabled ?? false }
+    set {
+      guard let item = filterListsURLs.first(where: { $0.id == id }) else { return }
+      item.setting.isEnabled = newValue
+      CustomFilterListSetting.save(inMemory: !persistChanges)
+    }
+  }
+
   func loadCachedFilterLists() async {
     let settings = CustomFilterListSetting.loadAllSettings(fromMemory: !persistChanges)
 
@@ -220,7 +233,7 @@ struct CustomScriptlet: Identifiable, Hashable {
   public func loadCustomRules() async throws -> String? {
     guard let url = try savedCustomRulesFileURL() else { return nil }
     return try await Task.detached {
-      try String(contentsOf: url)
+      try String(contentsOf: url, encoding: .utf8)
     }.value
   }
 

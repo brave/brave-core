@@ -17,7 +17,7 @@
 PrivateWindowSearchEngineProviderServiceAndroid::
     PrivateWindowSearchEngineProviderServiceAndroid(Profile* otr_profile)
     : otr_profile_(otr_profile) {
-  DCHECK(otr_profile_->IsIncognitoProfile());
+  DCHECK(otr_profile_->IsPrimaryOTRProfileWithRegularParent());
   observation_.Observe(TemplateURLServiceFactory::GetForProfile(otr_profile_));
 }
 

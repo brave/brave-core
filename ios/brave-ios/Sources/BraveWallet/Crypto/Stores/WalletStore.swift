@@ -71,10 +71,8 @@ public class WalletStore {
     txService: BraveWalletTxService,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
-    ipfsApi: IpfsAPI,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
     zcashWalletService: BraveWalletZCashWalletService,
-    meldIntegrationService: BraveWalletMeldIntegrationService,
     cardanoWalletService: BraveWalletCardanoWalletService
   ) {
     self.keyringStore = .init(
@@ -91,10 +89,8 @@ public class WalletStore {
       txService: txService,
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
-      ipfsApi: ipfsApi,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
-      meldIntegrationService: meldIntegrationService,
       cardanoWalletService: cardanoWalletService
     )
   }
@@ -118,10 +114,8 @@ public class WalletStore {
     txService: BraveWalletTxService,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
-    ipfsApi: IpfsAPI,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
     zcashWalletService: BraveWalletZCashWalletService,
-    meldIntegrationService: BraveWalletMeldIntegrationService,
     cardanoWalletService: BraveWalletCardanoWalletService
   ) {
     self.cancellable = self.keyringStore.$isWalletCreated
@@ -143,10 +137,8 @@ public class WalletStore {
             txService: txService,
             ethTxManagerProxy: ethTxManagerProxy,
             solTxManagerProxy: solTxManagerProxy,
-            ipfsApi: ipfsApi,
             bitcoinWalletService: bitcoinWalletService,
             zcashWalletService: zcashWalletService,
-            meldIntegrationService: meldIntegrationService,
             cardanoWalletService: cardanoWalletService,
             origin: self.origin
           )

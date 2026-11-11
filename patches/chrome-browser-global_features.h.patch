@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/global_features.h b/chrome/browser/global_features.h
+index 6fdfa2869523cdf2218bcdb6f7fd0365878b15f7..e6de3611cb2d07e7debc214b2b14c5bd0b14c9ef 100644
+--- a/chrome/browser/global_features.h
++++ b/chrome/browser/global_features.h
+@@ -270,7 +270,12 @@ class GlobalFeatures {
+ #endif
+ #endif
+ 
++  BraveGlobalFeatures* brave_global_features() {
++    return brave_global_features_.get();
++  }
++
+  protected:
++  std::unique_ptr<BraveGlobalFeatures> brave_global_features_;
+   GlobalFeatures();
+ 
+   // Override these methods to stub out individual feature controllers for

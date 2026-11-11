@@ -5,10 +5,10 @@
 
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
+import '../brave_account_compact_row.js';
 import '../controls/settings_toggle_button.js';
 import '../settings_page/settings_subpage.js';
 import '../settings_page/settings_section.js';
-import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js';
 import {EmailAliasesStrings} from '../brave_components_webui_strings.js'
 import {getTemplate} from './email_aliases_page.html.js';
 
@@ -25,7 +25,7 @@ interface SettingsEmailAliasesPageElement {
   }
 }
 
-class SettingsEmailAliasesPageElement extends PrefsMixin(PolymerElement) {
+class SettingsEmailAliasesPageElement extends PolymerElement {
   static get is() {
     return 'settings-email-aliases-page';
   }
@@ -61,7 +61,7 @@ class SettingsEmailAliasesPageElement extends PrefsMixin(PolymerElement) {
   override ready() {
     super.ready();
 
-    customElements.whenDefined('settings-brave-account-row').then(() => {
+    customElements.whenDefined('brave-account-compact-row').then(() => {
       const bundlePath = '/email_aliases.bundle.js'
       import(bundlePath).then(({mount}) => {
         mount(this.$.signInRoot, this.$.manageSection, {

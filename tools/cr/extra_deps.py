@@ -30,9 +30,12 @@ def _load_extra_deps() -> dict:
     """
     source = EXTRA_DEPS_FILE.read_text(encoding='utf-8')
     for node in ast.parse(source).body:
-        if (isinstance(node, ast.Assign) and len(node.targets) == 1
-                and isinstance(node.targets[0], ast.Name)
-                and node.targets[0].id == 'extra_deps'):
+        if (
+            isinstance(node, ast.Assign)
+            and len(node.targets) == 1
+            and isinstance(node.targets[0], ast.Name)
+            and node.targets[0].id == 'extra_deps'
+        ):
             return ast.literal_eval(node.value)
     raise ValueError(f'No extra_deps assignment found in {EXTRA_DEPS_FILE}')
 
@@ -75,6 +78,7 @@ def check_extra_deps_installed(root: Path, path: str) -> bool:
     if len(objects) != 1:
         raise ValueError(
             f'{path}: check_extra_deps_installed supports single-object '
-            f'entries only, but this one has {len(objects)}')
+            f'entries only, but this one has {len(objects)}'
+        )
     obj = objects[0]
     return is_deployed(root / path, obj['object_name'], obj['sha256sum'])

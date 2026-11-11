@@ -87,8 +87,10 @@ inline constexpr mojom::KeyringId kAllKeyrings[] = {
     mojom::KeyringId::kBitcoinHardwareTestnet,
     mojom::KeyringId::kCardanoMainnet,
     mojom::KeyringId::kCardanoTestnet,
-    // TODO(https://github.com/brave/brave-browser/issues/49225): Polkadot
-    // Keyring Testing
+    mojom::KeyringId::kPolkadotMainnet,
+    mojom::KeyringId::kPolkadotTestnet,
+    mojom::KeyringId::kPolkadotImport,
+    mojom::KeyringId::kPolkadotImportTestnet,
 };
 
 // Change calling test's hardcoded value only after it has adequate testing for
@@ -141,6 +143,8 @@ void PrintTo(const BtcHardwareTransactionSignInputDataPtr& input_data,
              ::std::ostream* os);
 void PrintTo(const CardanoAddressPtr& address, ::std::ostream* os);
 void PrintTo(const CardanoBalancePtr& balance, ::std::ostream* os);
+void PrintTo(const PolkadotInjectedAccountPtr& account, ::std::ostream* os);
+void PrintTo(const PolkadotProviderErrorBundlePtr& error, ::std::ostream* os);
 
 }  // namespace mojom
 

@@ -9,11 +9,11 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
-#include "base/functional/callback_forward.h"
-#include "base/gtest_prod_util.h"
+#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -36,7 +36,7 @@ class ScrollView;
 class TextRecognitionDialogView : public views::DialogDelegateView {
   METADATA_HEADER(TextRecognitionDialogView, views::DialogDelegateView)
  public:
-  explicit TextRecognitionDialogView(const SkBitmap& image);
+  TextRecognitionDialogView(const SkBitmap& image, bool is_off_the_record);
   TextRecognitionDialogView(const TextRecognitionDialogView&) = delete;
   TextRecognitionDialogView& operator=(const TextRecognitionDialogView&) =
       delete;
@@ -47,9 +47,17 @@ class TextRecognitionDialogView : public views::DialogDelegateView {
   void StartExtractingText(const std::string& language_code = {});
   void set_image(const SkBitmap& image) { image_ = image; }
 
- private:
-  FRIEND_TEST_ALL_PREFIXES(TextRecognitionBrowserTest, TextRecognitionTest);
+  void SetOnGetTextCallbackForTesting(
+      base::OnceCallback<void(const std::pair<bool, std::vector<std::string>>&)>
+          callback) {
+    on_get_text_callback_for_test_ = std::move(callback);
+  }
 
+  // Returns the recognized text currently displayed, or empty if the result
+  // isn't shown yet.
+  std::u16string_view GetDisplayedTextForTesting() const;
+
+ private:
   // views::DialogDelegateView overrides:
   void AddedToWidget() override;
 
@@ -70,6 +78,9 @@ class TextRecognitionDialogView : public views::DialogDelegateView {
   raw_ptr<views::ScrollView> scroll_view_ = nullptr;
   raw_ptr<views::View> header_container_ = nullptr;
   SkBitmap image_;
+  // Text recognized in a private/Tor window must not reach the OS clipboard
+  // history or cloud clipboard sync.
+  const bool is_off_the_record_;
   std::optional<std::vector<std::string>> result_;
 
   SEQUENCE_CHECKER(sequence_checker_);

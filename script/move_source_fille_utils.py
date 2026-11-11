@@ -9,17 +9,18 @@ import os
 
 BRAVE_DIR_NAME = 'brave'
 
+
 def _is_in_brave_dir():
-  return BRAVE_DIR_NAME == os.path.basename(os.getcwd())
+    return BRAVE_DIR_NAME == os.path.basename(os.getcwd())
 
 
 def to_src_relative_path(*args):
-  if _is_in_brave_dir():
-    return tuple(os.path.join(BRAVE_DIR_NAME, d) for d in args)
-  return args
+    if _is_in_brave_dir():
+        return tuple(os.path.join(BRAVE_DIR_NAME, d) for d in args)
+    return args
 
 
 def to_cwd_relative_path(*args):
-  if _is_in_brave_dir():
-    return tuple(os.path.relpath(d, BRAVE_DIR_NAME) for d in args)
-  return args
+    if _is_in_brave_dir():
+        return tuple(os.path.relpath(d, BRAVE_DIR_NAME) for d in args)
+    return args

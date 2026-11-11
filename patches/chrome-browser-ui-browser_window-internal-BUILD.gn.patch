@@ -1,12 +1,20 @@
 diff --git a/chrome/browser/ui/browser_window/internal/BUILD.gn b/chrome/browser/ui/browser_window/internal/BUILD.gn
-index 03bffe23f1fa5f2937f092facb2254fc222985b1..656240f688065cd3b53ce7c769722b00b0be895f 100644
+index 0ddb4fcbb7e63dc53878241046727f96fc0a814d..cd4bd141cf96e95b5cc05aa5d0289fe050f15d12 100644
 --- a/chrome/browser/ui/browser_window/internal/BUILD.gn
 +++ b/chrome/browser/ui/browser_window/internal/BUILD.gn
-@@ -201,6 +201,7 @@ source_set("internal") {
-       "//chrome/browser/ui:browser_select_file_dialog_controller",
-     ]
-   }
-+  import("//brave/browser/ui/browser_window/internal/sources.gni") deps += brave_browser_window_internal_deps
- }
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
- source_set("unit_tests") {
++import("//brave/browser/ui/browser_window/internal/sources.gni")
+ import("//build/config/chrome_build.gni")
+ import("//chrome/common/features.gni")
+ 
+@@ -24,6 +25,7 @@ source_set("internal") {
+     "//ui/base",
+     "//ui/base/unowned_user_data",
+   ]
++  deps += brave_browser_window_internal_deps
+ 
+   if (is_android) {
+     # On Android, this target shouldn't be used by anything outside this

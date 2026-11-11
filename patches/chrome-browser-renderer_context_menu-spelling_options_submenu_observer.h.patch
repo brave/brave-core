@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h b/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
-index 02768e271878570bc81f2baca4e2e99f4ad69ca3..9ca44c8bf57ad51fc7d427ed2b987f7202d92134 100644
+index d868c39fa0d094ed9a38501d3d30eb00e8aaec95..9cf5f3cc5c36dded61bbf8047865bfc783358c8c 100644
 --- a/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
 +++ b/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
 @@ -42,6 +42,7 @@ class SpellingOptionsSubMenuObserver : public RenderViewContextMenuObserver {

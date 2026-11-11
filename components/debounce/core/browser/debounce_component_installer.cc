@@ -5,14 +5,11 @@
 
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 
-#include <memory>
 #include <utility>
 
-#include "base/base_paths.h"
 #include "base/command_line.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
-#include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/task/thread_pool.h"
 #include "base/types/expected.h"

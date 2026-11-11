@@ -14,6 +14,7 @@
 
 #include "base/callback_list.h"
 #include "base/containers/circular_deque.h"
+#include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -60,16 +61,14 @@ class SwapService;
 class MeldIntegrationService;
 class SimulationService;
 class BraveWalletIpfsService;
+class SnapService;
 template <typename Request, typename Callback>
 struct PendingRequest;
-struct PendingDecryptRequest;
-struct PendingGetEncryptPublicKeyRequest;
 
 class BraveWalletService : public KeyedService,
                            public mojom::BraveWalletService,
                            public KeyringServiceObserverBase,
                            public TxServiceObserverBase,
-                           public BraveWalletServiceDelegate::Observer,
                            public content_settings::Observer {
  public:
   using APIRequestHelper = api_request_helper::APIRequestHelper;
@@ -157,9 +156,6 @@ class BraveWalletService : public KeyedService,
 
   void GetDefaultBaseCurrency(GetDefaultBaseCurrencyCallback callback) override;
   void SetDefaultBaseCurrency(const std::string& currency) override;
-  void GetDefaultBaseCryptocurrency(
-      GetDefaultBaseCryptocurrencyCallback callback) override;
-  void SetDefaultBaseCryptocurrency(const std::string& cryptocurrency) override;
   void EnsureSelectedAccountForChain(
       mojom::CoinType coin,
       const std::string& chain_id,
@@ -168,34 +164,43 @@ class BraveWalletService : public KeyedService,
       mojom::CoinType coin,
       const std::string& chain_id);
   void GetNetworkForSelectedAccountOnActiveOrigin(
+      const std::string& active_origin_spec,
       GetNetworkForSelectedAccountOnActiveOriginCallback callback) override;
-  mojom::NetworkInfoPtr GetNetworkForSelectedAccountOnActiveOriginSync();
+  mojom::NetworkInfoPtr GetNetworkForSelectedAccountOnActiveOriginSync(
+      const url::Origin& origin);
   void SetNetworkForSelectedAccountOnActiveOrigin(
+      const std::string& active_origin_spec,
       const std::string& chain_id,
       SetNetworkForSelectedAccountOnActiveOriginCallback callback) override;
   void GetNetworkForAccountOnActiveOrigin(
+      const std::string& active_origin_spec,
       mojom::AccountIdPtr account,
       GetNetworkForAccountOnActiveOriginCallback callback) override;
   void SetNetworkForAccountOnActiveOrigin(
+      const std::string& active_origin_spec,
       mojom::AccountIdPtr account,
       const std::string& chain_id,
       SetNetworkForAccountOnActiveOriginCallback callback) override;
-  mojom::NetworkInfoPtr GetNetworkForAccountOnOriginSync(
+  mojom::NetworkInfoPtr GetNetworkForAccountOnActiveOriginSync(
       const url::Origin& origin,
       const mojom::AccountIdPtr& account);
-  bool SetNetworkForAccountOnOriginSync(url::Origin& origin,
-                                        const mojom::AccountIdPtr& account,
-                                        const std::string& chain_id);
+  bool SetNetworkForAccountOnActiveOriginSync(
+      const url::Origin& origin,
+      const mojom::AccountIdPtr& account,
+      const std::string& chain_id);
   std::pair<bool, std::vector<mojom::AccountIdPtr>> HasPermissionSync(
       const url::Origin& origin,
       const std::vector<mojom::AccountIdPtr>& accounts);
   bool HasPermissionSync(const url::Origin& origin,
                          const mojom::AccountIdPtr& account);
-  void HasPermission(std::vector<mojom::AccountIdPtr> accounts,
+  void HasPermission(const std::string& active_origin_spec,
+                     std::vector<mojom::AccountIdPtr> accounts,
                      HasPermissionCallback callback) override;
-  void ResetPermission(mojom::AccountIdPtr account_id,
+  void ResetPermission(const std::string& active_origin_spec,
+                       mojom::AccountIdPtr account_id,
                        ResetPermissionCallback callback) override;
-  void IsPermissionDenied(mojom::CoinType coin,
+  void IsPermissionDenied(const std::string& active_origin_spec,
+                          mojom::CoinType coin,
                           IsPermissionDeniedCallback callback) override;
   void GetWebSitesWithPermission(
       mojom::CoinType coin,
@@ -203,8 +208,6 @@ class BraveWalletService : public KeyedService,
   void ResetWebSitePermission(mojom::CoinType coin,
                               const std::string& formed_website,
                               ResetWebSitePermissionCallback callback) override;
-  void GetActiveOrigin(GetActiveOriginCallback callback) override;
-  mojom::OriginInfoPtr GetActiveOriginSync();
   void GetPendingSignMessageRequests(
       GetPendingSignMessageRequestsCallback callback) override;
   std::vector<mojom::SignMessageRequestPtr> GetPendingSignMessageRequestsSync();
@@ -238,17 +241,9 @@ class BraveWalletService : public KeyedService,
   void NotifySignMessageErrorProcessed(const std::string& error_id) override;
   void GetPendingAddSuggestTokenRequests(
       GetPendingAddSuggestTokenRequestsCallback callback) override;
-  void GetPendingGetEncryptionPublicKeyRequests(
-      GetPendingGetEncryptionPublicKeyRequestsCallback callback) override;
-  void GetPendingDecryptRequests(
-      GetPendingDecryptRequestsCallback callback) override;
   void NotifyAddSuggestTokenRequestsProcessed(
       bool approved,
       const std::vector<std::string>& contract_addresses) override;
-  void NotifyGetPublicKeyRequestProcessed(const std::string& request_id,
-                                          bool approved) override;
-  void NotifyDecryptRequestProcessed(const std::string& request_id,
-                                     bool approved) override;
 
   void IsBase58EncodedSolanaPubkey(
       const std::string& key,
@@ -295,9 +290,6 @@ class BraveWalletService : public KeyedService,
 
   void WriteToClipboard(const std::string& text, bool is_sensitive) override;
 
-  // BraveWalletServiceDelegate::Observer:
-  void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
-
   // content_settings::Observer:
   void OnContentSettingChanged(
       const ContentSettingsPattern& primary_pattern,
@@ -326,16 +318,8 @@ class BraveWalletService : public KeyedService,
   void AddSignMessageError(mojom::SignMessageErrorPtr error);
   void AddSuggestTokenRequest(mojom::AddSuggestTokenRequestPtr request,
                               mojom::EthereumProvider::RequestCallback callback,
-                              base::Value id);
-  void AddGetPublicKeyRequest(const mojom::AccountIdPtr& account_id,
-                              const url::Origin& origin,
-                              mojom::EthereumProvider::RequestCallback callback,
-                              base::Value id);
-  void AddDecryptRequest(const mojom::AccountIdPtr& account_id,
-                         const url::Origin& origin,
-                         std::string unsafe_message,
-                         mojom::EthereumProvider::RequestCallback callback,
-                         base::Value id);
+                              base::Value id,
+                              base::OnceClosure on_added);
   void AddSignSolTransactionsRequest(
       mojom::SignSolTransactionsRequestPtr request,
       SignSolTransactionsRequestCallback callback);
@@ -396,6 +380,10 @@ class BraveWalletService : public KeyedService,
   ZCashWalletService* GetZcashWalletService();
   // Might return nullptr.
   CardanoWalletService* GetCardanoWalletService();
+#if BUILDFLAG(ENABLE_SNAP)
+  // Might return nullptr.
+  SnapService* snap_service() { return snap_service_.get(); }
+#endif
 
  protected:
   // For tests
@@ -408,11 +396,6 @@ class BraveWalletService : public KeyedService,
 
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, AddSuggestToken);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, ImportFromMetaMask);
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, Reset);
-
-  bool HasPendingDecryptRequestForOrigin(const url::Origin& origin) const;
-  bool HasPendingGetEncryptionPublicKeyRequestForOrigin(
-      const url::Origin& origin) const;
 
   bool HasPermissionForPendingRequest(const url::Origin& origin,
                                       const mojom::AccountIdPtr& account_id);
@@ -438,7 +421,6 @@ class BraveWalletService : public KeyedService,
   void OnDefaultCardanoWalletChanged();
 
   void OnDefaultBaseCurrencyChanged();
-  void OnDefaultBaseCryptocurrencyChanged();
   void OnNetworkListChanged();
   void OnBraveWalletNftDiscoveryEnabled();
 
@@ -474,11 +456,27 @@ class BraveWalletService : public KeyedService,
   bool SetUserAssetVisible(mojom::BlockchainTokenPtr token, bool visible);
   bool SetAssetSpamStatus(mojom::BlockchainTokenPtr token, bool is_spam);
   void OnNetworkChanged();
+  void QueueSuggestTokenRequest(
+      mojom::AddSuggestTokenRequestPtr request,
+      mojom::EthereumProvider::RequestCallback callback,
+      base::Value id,
+      base::OnceClosure on_added);
+  void OnGetSuggestedTokenDecimals(mojom::AddSuggestTokenRequestPtr request,
+                                   base::OnceClosure on_added,
+                                   const std::string& decimals,
+                                   mojom::ProviderError error,
+                                   const std::string& error_message);
+  void OnGetSuggestedTokenSymbol(mojom::AddSuggestTokenRequestPtr request,
+                                 base::OnceClosure on_added,
+                                 const std::string& symbol,
+                                 mojom::ProviderError error,
+                                 const std::string& error_message);
+  void RejectSuggestedTokenRequest(const std::string& contract_address,
+                                   mojom::ProviderError error,
+                                   const std::string& error_message);
   void CancelAllSuggestedTokenCallbacks();
   void CancelAllSignMessageCallbacks();
   void CancelAllSignSolTransactionsCallbacks();
-  void CancelAllGetEncryptionPublicKeyCallbacks();
-  void CancelAllDecryptCallbacks();
   void OnGetNftsForCompressedMigration(
       std::vector<mojom::BlockchainTokenPtr> nfts);
 
@@ -515,9 +513,6 @@ class BraveWalletService : public KeyedService,
   base::flat_map<std::string, base::Value> add_suggest_token_ids_;
   base::flat_map<std::string, mojom::AddSuggestTokenRequestPtr>
       add_suggest_token_requests_;
-  base::flat_map<std::string, PendingGetEncryptPublicKeyRequest>
-      pending_get_encryption_public_key_requests_;
-  base::flat_map<std::string, PendingDecryptRequest> pending_decrypt_requests_;
   mojo::RemoteSet<mojom::BraveWalletServiceObserver> observers_;
   mojo::RemoteSet<mojom::BraveWalletServiceTokenObserver> token_observers_;
   raw_ptr<PrefService> profile_prefs_ = nullptr;
@@ -539,6 +534,9 @@ class BraveWalletService : public KeyedService,
   std::unique_ptr<MeldIntegrationService> meld_integration_service_;
   std::unique_ptr<SimulationService> simulation_service_;
   std::unique_ptr<BraveWalletIpfsService> ipfs_service_;
+#if BUILDFLAG(ENABLE_SNAP)
+  std::unique_ptr<SnapService> snap_service_;
+#endif
   mojo::ReceiverSet<mojom::BraveWalletService> receivers_;
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_observer_receiver_{this};

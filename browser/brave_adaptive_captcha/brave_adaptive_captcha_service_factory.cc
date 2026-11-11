@@ -23,8 +23,6 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -51,7 +49,7 @@ class CaptchaDelegate
     if (!browser) {
       return false;
     }
-    auto* coordinator = browser->GetFeatures().rewards_panel_coordinator();
+    auto* coordinator = brave_rewards::RewardsPanelCoordinator::From(browser);
     if (!coordinator) {
       return false;
     }

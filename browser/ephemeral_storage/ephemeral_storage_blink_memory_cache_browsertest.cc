@@ -5,7 +5,6 @@
 
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/test/browser_test.h"
@@ -28,7 +27,7 @@ class EphemeralStorageBlinkMemoryCacheBrowserTestBase
  public:
   EphemeralStorageBlinkMemoryCacheBrowserTestBase() = default;
 
-  void NavigateAndWaitForImgLoad(Browser* browser,
+  void NavigateAndWaitForImgLoad(BrowserWindowInterface* browser,
                                  const GURL& url,
                                  const GURL& img_url) {
     constexpr char kLoadImgAsync[] = R"(
@@ -44,7 +43,7 @@ class EphemeralStorageBlinkMemoryCacheBrowserTestBase
     )";
 
     auto* rfh = ui_test_utils::NavigateToURLWithDisposition(
-        browser, url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+        browser, url, WindowOpenDisposition::kNewForegroundTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     EXPECT_TRUE(
         content::ExecJs(content::ChildFrameAt(rfh, 0),
@@ -70,7 +69,8 @@ class EphemeralStorageBlinkMemoryCacheSplitBrowserTest
 IN_PROC_BROWSER_TEST_P(EphemeralStorageBlinkMemoryCacheSplitBrowserTest,
                        BlinkMemoryCacheIsPartitioned) {
   const auto& test_case = GetParam();
-  for (Browser* browser_instance : {browser(), CreateIncognitoBrowser()}) {
+  for (BrowserWindowInterface* browser_instance :
+       {browser(), CreateIncognitoBrowser()}) {
     const GURL image_url =
         https_server_.GetURL(test_case.image_host, "/logo.png?cache");
 
@@ -125,7 +125,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBlinkMemoryCacheReuseBrowserTest,
   // MemoryCache. Make sure the keying is done properly for this case.
   const BlinkMemoryCachePartitionTestCase test_case{
       "b.com", {"a.com", "sub.a.com"}, 1};
-  for (Browser* browser_instance : {browser(), CreateIncognitoBrowser()}) {
+  for (BrowserWindowInterface* browser_instance :
+       {browser(), CreateIncognitoBrowser()}) {
     const GURL image_url =
         https_server_.GetURL(test_case.image_host, "/logo.png?cache");
 

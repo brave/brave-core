@@ -26,7 +26,6 @@
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/pref_names.h"
@@ -119,10 +118,10 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
 // https://github.com/brave/brave-browser/issues/1452
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        MultiplePrivateWindowTest) {
-  Browser* private_window_1 = CreateIncognitoBrowser();
+  BrowserWindowInterface* private_window_1 = CreateIncognitoBrowser();
   CloseBrowserSynchronously(private_window_1);
 
-  Browser* private_window_2 = CreateIncognitoBrowser();
+  BrowserWindowInterface* private_window_2 = CreateIncognitoBrowser();
   CloseBrowserSynchronously(private_window_2);
 }
 
@@ -208,7 +207,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
             incognito_service->GetDefaultSearchProvider()->prepopulate_id());
 
 #if BUILDFLAG(ENABLE_TOR)
-  Browser* tor_browser =
+  BrowserWindowInterface* tor_browser =
       TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
   Profile* tor_profile = tor_browser->GetProfile();
   EXPECT_TRUE(tor_profile->IsTor());
@@ -403,7 +402,7 @@ std::unique_ptr<TemplateURLData> TestExtensionSearchEngine(Profile* profile) {
           regional_capabilities::RegionalCapabilitiesServiceFactory::
               GetForProfile(profile)
                   ->GetRegionalPrepopulatedEngines(),
-          kTestExtensionPrepopulatedId);
+          /*regional_variants=*/{}, kTestExtensionPrepopulatedId);
   CHECK(prepopulated);
   // Values below do not exist in extension manifest and are taken from
   // prepopulated engine with prepopulated_id set in extension manifest.

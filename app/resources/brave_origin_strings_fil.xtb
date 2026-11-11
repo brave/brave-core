@@ -9,7 +9,9 @@
 
 Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago sa mga kagustuhan.</translation>
 <translation id="7577672138294294152">In-off ng iyong magulang ang "Mga pahintulot para sa mga site, app, at extension" para sa Brave</translation>
+<translation id="446816247111620025">Kailangan ng Brave ng access sa iyong lokal na network para makatuklas at makagamit ng mga kalapit na device</translation>
 <translation id="4408482856437790071">Para maghanap ng partikular na feature o extension ng Brave, i-type ang shortcut nito sa address bar, kasunod ang iyong napiling keyboard key</translation>
+<translation id="3257316091303113323">Ipakita ang paghahanap gamit ang Brave sa system tray at i-on ang keyboard shortcut</translation>
 <translation id="5918095577778020936">Gustong i-export ng Brave ang iyong mga password. I-type ang iyong password sa Windows para payagan ito.</translation>
 <translation id="112640046208448578">Tukuyin ang mga bagay o lugar at kopyahin o isalin ang text. Kapag ginamit mo ang Paghahanap ng Larawan, magpapadala ng screenshot ng page sa server. <ph name="LEARN_MORE"/></translation>
 <translation id="5468853758063275923">Brave ang iyong default na browser</translation>
@@ -20,6 +22,7 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="8541922081612557424">Tungkol sa Brave</translation>
 <translation id="987734326276404793">Makatanggap ng mga alerto sa pagsubaybay sa presyo gamit ang Brave sa iyong telepono</translation>
 <translation id="1203500561924088507">Salamat sa pag-install. Dapat mong i-restart ang iyong browser bago gamitin ang <ph name="BUNDLE_NAME"/>.</translation>
+<translation id="1213674046343558619">May nakabinbing <ph name="IMPORTANT_UPDATE"/>. Para mapanatiling ligtas ang iyong pag-browse, mag-a-update ang Brave sa susunod na hindi ka aktibo sa loob ng <ph name="IDLE_DURATION"/>.</translation>
 <translation id="1232234696885483911">Kapag binuksan mo ang Paghahanap ng Larawan, awtomatikong ipapadala sa server ang pamagat ng page, URL, at content, kabilang ang mga PDF. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">Habang naka-sign in ka, magagamit mo ang iyong mga password at higit pa mula sa Brave sync chain mo sa Brave. Para baguhin ito, pumunta sa “Iyong account sa Brave.”</translation>
 <translation id="583633806828413086">Ipakita ang Gemini sa Brave sa menu bar ng Mac</translation>
@@ -37,13 +40,12 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="1330562121671411446">I-detect ang wika</translation>
 <translation id="108284536240904209">I-delete din ang data mula sa Brave (<ph name="URL"/>)</translation>
 <translation id="1345251407431278948">Na-pin na! Maa-access mo ulit ang Paghahanap ng Larawan mula sa bagong button sa toolbar</translation>
-<translation id="1356661055722410047">Bago! Puwede kang magsalin ng text at mga larawan sa iyong screen</translation>
 <translation id="1383876407941801731">Hanapin</translation>
 <translation id="3535301204632475895">Gamitin ang Brave app para patuloy na mag-browse nang on the go</translation>
-<translation id="7009295044271335553">&amp;Pamahalaan ang Mga Profile sa Brave</translation>
 <translation id="141901961143729572">I-share ang iyong mga naiisip</translation>
 <translation id="3880714039086599943">Para i-share ang iyong window, payagan ang pag-record ng screen para sa Brave sa System Settings.</translation>
 <translation id="1586284627848250203">Humingi ng tulong para sa Brave na Pang-test</translation>
+<translation id="6741861636851880121">Para makuha ang iyong naka-save na impormasyon at higit pa mula sa <ph name="DEVICE"/>, mag-sign in sa Brave</translation>
 <translation id="1497802159252041924">Error sa pag-install: <ph name="INSTALL_ERROR"/></translation>
 <translation id="1518627427551567882">Pinoprotektahan ang page na ito</translation>
 <translation id="5147525139567260139">Magbahagi ng tab ng Brave</translation>
@@ -67,6 +69,7 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="5994491947936308173">I-click ang <ph name="BEGIN_BOLD"/>Oo<ph name="END_BOLD"/> sa notification ng Windows para i-pin ang Brave sa iyong taskbar para sa mabilis na pag-access.</translation>
 <translation id="5875673934455379806">Muling i-install ang Brave</translation>
 <translation id="4529028207655448215">Sinusubukan ng Brave na <ph name="AUTHENTICATION_PURPOSE"/></translation>
+<translation id="6387107728249269341">Naka-sign in na si <ph name="EXISTING_USER"/>. Para panatilihing hiwalay ang iyong pag-browse, mag-sign in sa Brave sa sarili mong profile bilang <ph name="USER_EMAIL_ADDRESS"/>. Makukuha mo rin ang iyong mga extension at higit pa mula sa <ph name="DEVICE"/>.</translation>
 <translation id="7362761326208547489">Sa susunod na buksan mo ang Brave sa iyong <ph name="DEVICE_TYPE"/>, makakakita ka ng prompt na gamitin ang Brave Password Manager.</translation>
 <translation id="1838374766361614909">I-clear ang paghahanap</translation>
 <translation id="3541642064306182066">Para ma-delete ang data mula sa pag-browse sa device lang na ito, habang pinapanatili ito sa iyong Brave sync chain, <ph name="BEGIN_LINK"/>mag-sign out sa Brave<ph name="END_LINK"/>.</translation>
@@ -102,6 +105,7 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="2126108037660393668">Hindi na-verify ang na-download na file.</translation>
 <translation id="2135919691573380097">Iulat ang site na ito</translation>
 <translation id="2137162749895930932">Isara ang isalin ang screen</translation>
+<translation id="2147218225094845757">Itago ang panel sa gilid</translation>
 <translation id="5789330946301045610">Na-block ng Brave ang pag-download na ito dahil hindi gumagamit ng secure na koneksyon ang site at posibleng na-tamper ang file</translation>
 <translation id="2170098639895543546">Pumili ng kahit ano sa page</translation>
 <translation id="142389341645668510">I-customize ang Brave</translation>
@@ -145,12 +149,12 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="2575822587468774919">Pumili ng kahit anong bagay na hahanapin gamit ang Paghahanap ng Larawan</translation>
 <translation id="3830890663494219270">Para makuha ang iyong mga password at higit pa sa lahat ng device mo, mag-sign in sa Brave</translation>
 <translation id="6908148552215338695">I-scan ang QR code gamit ang iyong telepono para i-download ang Brave at mag-sign in sa Brave sync chain mo.</translation>
+<translation id="7985444384142764643">para maghanap gamit ang Brave.</translation>
 <translation id="6252796827759111076">Ipagpatuloy ang paggamit ng Brave</translation>
 <translation id="259935314519650377">Hindi na-cache ang na-download na installer. Error: <ph name="UNPACK_CACHING_ERROR_CODE"/>.</translation>
 <translation id="2620436844016719705">System</translation>
 <translation id="7931230852267968641">Makikita at mapapamahalaan ng iyong organisasyon ang data mula sa pag-browse, gaya ng mga bookmark, history, at mga password mo. Hindi nito makikita ang data mula sa pag-browse sa ibang profile sa Brave</translation>
 <translation id="2257221826278123061">I-verify na ikaw ito para magamit at ma-save ang data sa Brave sa iyong account, <ph name="ACCOUNT_EMAIL"/></translation>
-<translation id="7048234400304379082">Para umalis o bumalik sa Gemini sa Brave, gamitin ang keyboard shortcut.</translation>
 <translation id="5655607968417451974">Simulan ang Brave</translation>
 <translation id="7387051847644272380">May naganap na error sa operating system sa panahon ng pag-install. Mangyaring i-download muli ang Brave.</translation>
 <translation id="2648689842065142443">Kung magpapahiram ka ng device, puwedeng mag-browse nang hiwalay ang mga kaibigan at kapamilya, at puwede nilang i-set up ang Brave sa paraang gusto nila</translation>
@@ -185,15 +189,18 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="7611046016537686219">{count,plural, =1{Kailangang i-verify ng Brave na ikaw ito bago ma-save ang ilang data sa iyong Brave sync chain at magamit ito sa lahat ng device mo. Kung magsa-sign out ka ngayon, made-delete ang data na ito (1 item).}one{Kailangang i-verify ng Brave na ikaw ito bago ma-save ang ilang data sa iyong Brave sync chain at magamit ito sa lahat ng device mo. Kung magsa-sign out ka ngayon, made-delete ang data na ito ({count} item).}other{Kailangang i-verify ng Brave na ikaw ito bago ma-save ang ilang data sa iyong Brave sync chain at magamit ito sa lahat ng device mo. Kung magsa-sign out ka ngayon, made-delete ang data na ito ({count} na item).}}</translation>
 <translation id="4202995875619419215">Buksan ang <ph name="URL"/> sa bagong tab sa Brave.</translation>
 <translation id="1266825212217391702">Sine-save sa iyong Brave sync chain ang mga inobasyon sa AI tulad ng mga skill at hiwalay na pinapamahalaan ang mga ito sa pag-sync ng Brave</translation>
+<translation id="5459594001857520297">Para makuha ang iyong mga extension at higit pa sa lahat ng device mo, mag-sign in sa Brave</translation>
 <translation id="8880183781256147665">Idinaragdag sa Brave...</translation>
 <translation id="3038232873781883849">Naghihintay sa pag-install...</translation>
 <translation id="3045032126857188731">Isinaling wika: <ph name="LANGUAGE"/></translation>
 <translation id="3047590466164881923">Isara ang dialog ng feedback</translation>
+<translation id="72283640173840794">Naka-sign in na si <ph name="EXISTING_USER"/>. Para panatilihing hiwalay ang iyong pag-browse, mag-sign in sa Brave sa sarili mong profile bilang <ph name="USER_EMAIL_ADDRESS"/>. Makukuha mo rin ang iyong listahan ng babasahin at higit pa mula sa <ph name="DEVICE"/>.</translation>
 <translation id="4503085212612536713">Iba pang profile sa Brave</translation>
 <translation id="2041039306630146369">Ang mga extension ay mga add-on na nagbibigay-daan sa iyong i-customize ang Brave. Mula sa pananatiling organisado, hanggang sa pagpapasimple ng mga pang-araw-araw na gawain, tutulungan ka ng mga extension na gawing sarili mo ang Brave.</translation>
 <translation id="7918740962659365265">Tumulong na gawing mas mahusay ang Brave sa pamamagitan ng pagpapadala ng mga ulat ng pag-crash at <ph name="UMA_LINK"/> sa Brave</translation>
 <translation id="6828757829023033545">Gamitin ang Brave app para dalhin ang kaligtasan ng Brave nang on the go</translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{1 USB device ang ina-access ng isa o higit pang extension ng Brave}=1{1 USB device ang ina-access ng isa o higit pang extension ng Brave}one{# USB device ang ina-access ng isa o higit pang extension ng Brave}other{# na USB device ang ina-access ng isa o higit pang extension ng Brave}}</translation>
+<translation id="3924086216508892728">Para makuha ang iyong listahan ng babasahin at higit pa mula sa <ph name="DEVICE"/>, mag-sign in sa Brave</translation>
 <translation id="3700405816184340252">History sa Brave</translation>
 <translation id="7365690458036015383">Nabigong i-uncompress ng installer ang archive. Mangyaring i-download muli ang Brave.</translation>
 <translation id="310459126943037700">Hindi natapos ang (mga) gawain.</translation>
@@ -214,9 +221,11 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
 <translation id="8414435293910785169">Dalhin ang mga paborito mong Brave AI tool nang on the go gamit ang Brave sa iOS.</translation>
+<translation id="7474458067542595245">Para makuha ang iyong mga extension at higit pa mula sa <ph name="DEVICE"/>, mag-sign in sa Brave</translation>
 <translation id="3286538390144397061">I-restart Ngayon</translation>
 <translation id="2339258256897053758">Nawawala ang mga Brave API key. Madi-disable ang ilang pagpapagana ng Brave.</translation>
 <translation id="8926637909431618259">Patuloy na magpatakbo ng background na apps kapag nakasara ang Brave</translation>
+<translation id="8245661393996028021">Mag-a-update ang Brave kapag wala ka</translation>
 <translation id="518125528057094977">Bibigyan ka ng babala ng Brave bago nito i-load ang anumang site na gumagamit ng hindi secure na koneksyon</translation>
 <translation id="8652321858775514885">Masa-sign out ka sa karamihan ng mga site kapag isinara mo ang lahat ng window ng Brave, maliban sa iyong Brave sync chain kung naka-sign in ka sa Brave. Para payagan ang mga site na matandaan ka, <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">kanang sulok sa itaas ng lugar para sa paghahanap: kanan <ph name="RIGHT"/>%, itaas <ph name="TOP"/>%</translation>
@@ -225,6 +234,9 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="2645435784669275700">ChromeOS</translation>
 <translation id="2297290224191497273">Lumipat sa kasalukuyang profile sa Brave?</translation>
 <translation id="3412460710772753638">Sa Password Manager sa device na ito</translation>
+<translation id="172368702860945706">Gustong mag-update ng Brave</translation>
+<translation id="5079573433701109938">Para makuha ang iyong mga bookmark at higit pa mula sa <ph name="DEVICE"/>, mag-sign in sa Brave</translation>
+<translation id="3438772217992559640">Hanapin ang Tab na Ito gamit ang Paghahanap ng Larawan</translation>
 <translation id="2491221873705777076">I-extend ang Pinahusay na Ligtas na Pag-browse gamit ang Brave sa iyong telepono</translation>
 <translation id="7304389940068374923">Ginagawang iyo ang Brave...</translation>
 <translation id="5853262807109651878">Magde-delete ito ng <ph name="ITEMS_COUNT"/> (na) item sa device na ito. Upang makuha ang iyong data sa ibang pagkakataon, mag-sign in sa Brave bilang <ph name="USER_EMAIL"/>.</translation>
@@ -254,15 +266,15 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 
           **Magmungkahi ng Mga Tanong:** Bumuo ng naka-bullet na listahan ng 3-5 nagpapaisip na tanong na puwedeng magamit ng isang user para mas maintindihan ang screenshot. Ang mga tanong na ito ay dapat may kasamang kahit isang partikular na tanong na tungkol sa visual na object, o sa disenyo o placement nito.</translation>
 <translation id="6899774208752247219"><ph name="PAGE_TITLE"/> - Brave Origin</translation>
-<translation id="1118754729376002185">Kailangan ng Brave ng pahintulot sa lokal na network para sa site na ito</translation>
+<translation id="2715414892112164725">Para makuha ang iyong mga bookmark at higit pa sa lahat ng device mo, mag-sign in sa Brave</translation>
 <translation id="3885770153807205175">Picker ng wika</translation>
 <translation id="6315734375101223238">I-customize at kontrolin ang Brave. May kailangan kang pagtuunan ng pansin - mag-click para sa mga detalye.</translation>
 <translation id="7130675370997202556">I-click ang iyong pangalan upang buksan ang Brave at simulan ang pagba-browse.</translation>
 <translation id="3892148308691398805">Kopyahin ang text</translation>
 <translation id="4920958997042285125">Naka-sign in na si <ph name="EXISTING_USER"/> sa profile sa Brave na ito. Para panatilihing hiwalay ang iyong pag-browse, puwedeng gumawa ang Brave ng sarili mong profile para sa iyo.</translation>
-<translation id="8744239658215739511">I-c&amp;ustomize ang Iyong Brave</translation>
 <translation id="3941890832296813527">Error sa pag-install: Invalid o hindi sinusuportahan ang filename ng installer.</translation>
 <translation id="8090497651549769448">Sinusubukan ng Brave na kopyahin ang mga password. I-type ang iyong password sa Windows para payagan ito.</translation>
+<translation id="794644331787250140">Para makuha ang iyong naka-save na impormasyon at higit pa sa lahat ng device mo, mag-sign in sa Brave</translation>
 <translation id="4256965182800026277">Aalisin sa device na ito ang mga password, paraan ng pagbabayad, at address na na-save mo sa iyong Brave sync chain. Para magamit ulit ang mga ito sa Brave, mag-sign in ulit.</translation>
 <translation id="395904275706073188">Hindi mababasa ang mga pinoprotektahang page. Sumubok ng ibang page.</translation>
 <translation id="4194619960643453552">Alamin kung paano ka pinapanatiling ligtas ng Brave</translation>
@@ -285,6 +297,7 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="6596295505984504022">I-c&amp;ustomize ang iyong Brave</translation>
 <translation id="4148957013307229264">Ini-install...</translation>
 <translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - Pag-sign in sa Network - Brave Origin</translation>
+<translation id="305023898453185745">Naka-sign in na si <ph name="EXISTING_USER"/>. Para panatilihing hiwalay ang iyong pag-browse, mag-sign in sa Brave sa sarili mong profile bilang <ph name="USER_EMAIL_ADDRESS"/>. Makukuha mo rin ang iyong listahan ng babasahin at higit pa sa lahat ng device mo.</translation>
 <translation id="2871190378186459992">Tumuklas ng mahuhusay na app, laro, extension at tema para sa Brave.</translation>
 <translation id="462105622535258178">Para makuha ang extension na ito at higit pa sa lahat ng iyong computer, mag-sign in sa Brave</translation>
 <translation id="6670140629169983459">Para manatiling mas ligtas online sa pamamagitan ng mga pinili ng iyong magulang, lumipat sa profile mo sa Brave kung saan naka-sign in ka na bilang <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -328,6 +341,8 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="4970880042055371251">Bersyon ng ChromeOS</translation>
 <translation id="2182657378556811785">Halos napapanahon na! Muling ilunsad ang Brave upang tapusin ang pag-a-update.</translation>
 <translation id="6311668361877328515">Pinapabilis ang mga site gamit ang V8 na engine ng Brave pero ginagawang bahagyang hindi gaanong resistant sa mga attack ang Brave</translation>
+<translation id="7960968658810899127">Buksan ang Paghahanap gamit ang Brave</translation>
+<translation id="4600669659668950128">Profile sa Brave</translation>
 <translation id="7402642357351265733">Kung magbabahagi ka rin ng mga ulat ng paggamit sa Brave, isasama sa mga ulat na iyon ang mga URL na binibisita mo</translation>
 <translation id="4673710618874938871">Naka-sign in bilang <ph name="USER_NAME"/>, membership. Buksan ang menu ng account</translation>
 <translation id="8142245354207161805">Mukhang ginagamit ang profile ng iba pang proseso ng Brave (<ph name="PROCESS_ID"/>) sa iba pang computer (<ph name="HOST_NAME"/>).  Ni-lock ng Brave ang profile upang hindi ito ma-corrupt.  Kung nakakatiyak ka na walang ibang mga proseso ang gumagamit sa profile na ito, maaari mong i-unlock ang profile at ilunsad muli ang Brave.</translation>
@@ -346,6 +361,7 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="711601904575862069">Ilunsad Ulit para Ma-update ang Brave</translation>
 <translation id="4918086044614829423">Tanggapin</translation>
 <translation id="4918844574251943176">Nakopya na ang larawan</translation>
+<translation id="1762888370864318972">Para makuha ang iyong listahan ng babasahin at higit pa sa lahat ng device mo, mag-sign in sa Brave</translation>
 <translation id="8797356639448065696">Nasa background mode ang Brave.</translation>
 <translation id="1895567721497166950">I-click para isara ang dialog ng pag-sign in sa Brave</translation>
 <translation id="2692971232706994729">Gamit ang mga profile sa Brave, magagawa mong paghiwalayin ang lahat ng iyong bagay-bagay sa Brave. Gumawa ng mga profile para sa mga kaibigan at kapamilya, o gumawa ng magkahiwalay na profile para sa trabaho at kasiyahan.</translation>
@@ -356,6 +372,7 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="4877750182157975795">I-access ang lahat ng iyong paborito sa Brave gamit ang Brave sa <ph name="DEVICE_TYPE"/> mo</translation>
 <translation id="1204184037023366446">Kailangan ng Brave ng pahintulot para i-track ang iyong mga kamay</translation>
 <translation id="5406591571925937375">Hindi mo ito binisita kamakailan. Inalis ng Brave ang <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, <ph name="PERMISSION_3"/>.</translation>
+<translation id="3576895950897485019">Mag-sign In sa Brave</translation>
 <translation id="5174969993834422967">Kadalasan mong bina-block ang mga notification. Para hayaan ang site na itong abisuhan ka, i-click ang icon ng notification sa kanang sulok ng iyong bar ng lokasyon.</translation>
 <translation id="5174983315706567306">Hindi sapat ang disk space.</translation>
 <translation id="8157129267754368853">Nagre-require ang Brave account ng pag-authenticate ulit</translation>
@@ -365,8 +382,10 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="1069969567644851798">Buksan ang link sa Inco&amp;gnito window ng Brave</translation>
 <translation id="7690383309583926074">I-download ang Brave app para mag-save ng mga password on the go</translation>
 <translation id="8586264863973514035">Para ilapat ang iyong mga pagbabago, muling ilunsad ang Brave</translation>
+<translation id="8127050479140582768">Para maipadala ang tab na ito sa ibang device, mag-sign in sa Brave sa parehong device</translation>
 <translation id="5286907366254680517">Na-detect</translation>
 <translation id="7264453786974905915">Kunin ang Brave app</translation>
+<translation id="7230006500876504868">Maghanap gamit ang Brave</translation>
 <translation id="6944930779012811739">Brave Updater Internal Service</translation>
 <translation id="6214255602211289863">Gamitin ang mga ito kasama ng iba pang feature ng Gemini sa Brave</translation>
 <translation id="5346389065299425353">Palalimin ang iyong paghahanap sa pamamagitan ng pagdaragdag ng maraming tab, file, at tool</translation>
@@ -377,8 +396,10 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="7708394612738038097">Nagsa-sign in ka gamit ang isang pinamamahalaang account at nagbibigay sa administrator nito ng kontrol sa iyong profile sa Brave. Permanenteng mauugnay ang iyong data sa Brave, gaya ng iyong apps, mga bookmark, kasaysayan, password, at iba pang mga setting sa <ph name="USER_NAME"/>. Matatanggal mo ang data na ito sa Brave sync chains Dashboard, ngunit hindi mo maiuugnay ang data na ito sa isa pang account. <ph name="LEARN_MORE"/></translation>
 <translation id="5368118228313795342">Dagdag na code: <ph name="EXTRA_CODE"/>.</translation>
 <translation id="2487133103111559902">Para makuha ang pag-personalize, isama ang Brave sa Aktibidad sa Web at App</translation>
+<translation id="3311284381627742014">Buksan ang paghahanap gamit ang Brave</translation>
 <translation id="5154625106151193600">Alamin kung bakit bina-block ng Brave ang ilang file</translation>
 <translation id="1786715389543715322">Ina-update ang Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="3267146219387305979">Naka-sign in na si <ph name="EXISTING_USER"/>. Para panatilihing hiwalay ang iyong pag-browse, mag-sign in sa Brave sa sarili mong profile bilang <ph name="USER_EMAIL_ADDRESS"/>. Makukuha mo rin ang iyong mga extension at higit pa sa lahat ng device mo.</translation>
 <translation id="7021823858304886493">Pagayan ang pag-sign in sa Brave</translation>
 <translation id="5267531627648004734">Alisin mula sa Brave</translation>
 <translation id="4620757336635063467">Pinapahina ang performance pero ginagawang mas matatag ang Brave laban sa mga attack</translation>
@@ -423,9 +444,9 @@ Kung hindi gumagana ang page na ito gaya ng inaasahan, subukang payagan ang pag-
 <translation id="8054200348483755053">Napag-alaman ng Brave na naglalaman ng malware ang mga item na ito:</translation>
 <translation id="3955583201925082436">Regular na nagsusuri ang Brave para tiyaking may mga pinakaligtas na setting ang iyong browser. Ipapaalam namin sa iyo kung may anumang nangangailangan ng iyong pagsusuri.</translation>
 <translation id="5895138241574237353">I-restart</translation>
+<translation id="5095041423280144434">Gemini Enterprise sa Brave</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - Pag-sign in sa Network</translation>
 <translation id="5924017743176219022">Kumokonekta sa Internet...</translation>
-<translation id="1275716786566134844">Ihanda natin ang iyong Brave</translation>
 <translation id="5941711191222866238">I-minimize</translation>
 <translation id="5768962901674164501">Para makuha ang bookmark na ito at higit pa sa lahat ng iyong device, mag-sign in sa Brave</translation>
 <translation id="5101892358689285100">I-personalize ang Brave</translation>
@@ -433,6 +454,7 @@ Kung hindi gumagana ang page na ito gaya ng inaasahan, subukang payagan ang pag-
 <translation id="5977420883993828287">Na-pin na! Gamitin ulit ang Mga Gawaing Batay sa Konteksto mula sa toolbar</translation>
 <translation id="4357808717322635817">{COUNT,plural, =1{Awtomatikong isinasara ng iyong organisasyon ang Brave kapag hindi ito nagamit nang 1 minuto.}one{Awtomatikong isinasara ng iyong organisasyon ang Brave kapag hindi ito nagamit nang # minuto.}other{Awtomatikong isinasara ng iyong organisasyon ang Brave kapag hindi ito nagamit nang # na minuto.}}</translation>
 <translation id="3598551856834560515">I-update ang Brave upang simulan ang pag-sync</translation>
+<translation id="5990360079535151574">Mula sa button na "Mga Gawaing Batay sa Konteksto" sa toolbar, mabubuksan mo ulit ang Mga Gawaing Batay sa Konteksto para makapagtanong habang nagba-browse ka</translation>
 <translation id="6003112304606738118">Nagda-download... <ph name="HOURS"/> (na) oras na lang ang natitira</translation>
 <translation id="6009821354356307391">Mag-follow up</translation>
 <translation id="6040143037577758943">Isara</translation>
@@ -454,6 +476,7 @@ Kung hindi gumagana ang page na ito gaya ng inaasahan, subukang payagan ang pag-
 <translation id="6685697979743742605">Posibleng mapanganib ang file na ito<ph name="LINE_BREAK"/>Puwedeng suriin ng Brave ang download na ito para sa iyo kung ibibigay mo ang password. Ipapadala sa Ligtas na Pag-browse sa Brave ang impormasyon tungkol sa file, pero mananatili sa iyong device ang content ng file at ang password.</translation>
 <translation id="6182736845697986886">Hindi na-install dahil sa isang internal na error sa server ng update.</translation>
 <translation id="4368341489795135329">Tiyaking naka-sign in ka sa Brave sa iyong <ph name="TARGET_DEVICE_NAME"/> at pagkatapos ay subukang ipadala ulit.</translation>
+<translation id="3044046743226566469">Maghanap at magtanong mula sa kahit saan, kahit na naka-minimize ang Brave. Pinapayagan ang Brave na tumakbo sa background.</translation>
 <translation id="8320964054148936490">May mas bagong bersyon ng Brave na ang computer na ito. Kung hindi gumagana ang software, mangyaring i-uninstall ang Brave at subukan ulit.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Muli nang ilulunsad ang Brave ngayon}=1{Muli nang ilulunsad ang Brave sa loob ng 1 segundo}one{Muli nang ilulunsad ang Brave sa loob ng # segundo}other{Muli nang ilulunsad ang Brave sa loob ng # na segundo}}</translation>
 <translation id="5980269616827212166">Kailangan ng Brave ng pahintulot sa access sa storage para makapag-download ng mga file</translation>
@@ -495,6 +518,7 @@ Kung hindi gumagana ang page na ito gaya ng inaasahan, subukang payagan ang pag-
 <translation id="7185585387858242335">Magbubukas ang mga shortcut sa Brave</translation>
 <translation id="3617744907966785605">Isinasara ng iyong organisasyon ang Brave kapag hindi ito ginagamit sa loob ng <ph name="TIMEOUT_DURATION"/>. Na-delete ang data mula sa pag-browse. Posibleng kasama rito ang history, autofill, at mga download.</translation>
 <translation id="8646609321956191980">Ang bawat profile ay may sariling impormasyon sa Brave tulad ng mga bookmark, history, mga password, at iba pa</translation>
+<translation id="6556755379298048869">Maghanap gamit ang keyboard shortcut.</translation>
 <translation id="6756656512757374876">Matuto pa tungkol sa kung <ph name="BEGIN_LINK"/>paano pinapanatiling pribado ng Brave ang iyong data<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">Ia-apply ang mga pagbabago sa setting na ito kapag nag-restart ang Brave.</translation>
 <translation id="3396870972301571614">Pamahalaan ang iyong mga extension sa pamamagitan ng pag-click sa Mga Extension sa pangunahing menu ng Brave.</translation>
@@ -529,6 +553,7 @@ Maaaring hindi available ang ilang tampok. Mangyaring tumukoy ng ibang direktory
 <translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Pindutin ang tab para magpatuloy</translation>
 <translation id="6862030660799253820">Hanapin ang larawang ito gamit ang Paghahanap ng Larawan</translation>
+<translation id="6869568587896659271">Madaling pag-access sa mga website sa ibaba ng address bar</translation>
 <translation id="3028928628792374067">Napag-alaman ng Brave na naglalaman ng malware ang "<ph name="EXTENSION_NAME"/>"</translation>
 <translation id="6877155553248388166">kanang sulok sa ibaba ng lugar para sa paghahanap: kanan <ph name="RIGHT"/>%, ibaba <ph name="BOTTOM"/>%</translation>
 <translation id="6896758677409633944">Copy</translation>
@@ -571,16 +596,19 @@ Hindi mase-save ang mga bagong bookmark sa iyong account hangga't hindi ka nagde
 <translation id="5755581833598928580">Gamitin ang Brave sa tuwing magki-click ka ng mga link sa mga mensahe, dokumento, at iba pang app</translation>
 <translation id="7216228761061470870">Kapag ginamit mo ang Paghahanap ng Larawan sa desktop, ipapadala sa server ang pamagat ng page, URL, at content, kasama ang mga PDF.</translation>
 <translation id="5516268345616100622">Task Manager - Brave</translation>
+<translation id="4366259698872849085">Magtanong tungkol sa content sa labas ng Brave, tulad ng iba pang app o file</translation>
 <translation id="2416155625082200759">Naka-sign in na si <ph name="EXISTING_USER"/>. Para panatilihing hiwalay ang iyong pag-browse, mag-sign in sa Brave sa sarili mong profile bilang <ph name="USER_EMAIL_ADDRESS"/>. Makukuha mo rin ang iyong naka-save na impormasyon at higit pa sa lahat ng device mo.</translation>
 <translation id="1871621397473741084">Magsimulang mag-browse kaagad: Puwede na ngayong ilunsad ang Brave kapag nagsimula na ang Windows.</translation>
 <translation id="7274695763216404502">Na-pin na! Gamitin ulit ang Paghahanap ng Larawan mula sa toolbar</translation>
 <translation id="7288567540154601580">Mga tab at extension</translation>
 <translation id="5468053269968670855">{NUM_EXTENSIONS,plural, =1{Inirerekomenda ng Brave na alisin mo ito}one{Inirerekomenda ng Brave na alisin mo ang mga ito}other{Inirerekomenda ng Brave na alisin mo ang mga ito}}</translation>
 <translation id="4600669988724328687">Para i-share ang audio ng system, buksan ang Mga Setting ng System at payagan ang 'Pag-record Lang ng Audio ng System' para sa Brave. Pagkatapos, kakailanganin mong i-restart ang Brave.</translation>
+<translation id="7299899569525778554">Maghanap mula sa desktop</translation>
 <translation id="1864557848095568223">Ina-update ang Brave</translation>
 <translation id="3403365884036456766">Sira o di-wasto ang file ng iyong mga kagustuhan.
 
 Hindi mabawi ng Brave ang iyong mga setting.</translation>
+<translation id="7324051657739063017">Mabubuksan mo ulit ang Mga Gawaing Batay sa Konteksto para makapagtanong habang nagba-browse ka</translation>
 <translation id="3511996232906761537">Makikita dito ang iyong web, mga bookmark at iba pang mga bagay-bagay sa Brave.</translation>
 <translation id="1754899895078387289">Ang taong may passphrase mo lang ang makakapagbasa ng iyong naka-encrypt na data. Hindi ipinapadala sa o hindi sino-store ng Brave ang passphrase. Kung makakalimutan mo ang iyong passphrase o gusto mong baguhin ang setting na ito, kakailanganin mong <ph name="BEGIN_LINK"/>i-delete ang data sa Brave sa iyong account<ph name="END_LINK"/>.</translation>
 <translation id="5380963249588143069">Na-configure ng iyong system administrator ang Brave para buksan ang <ph name="ALTERNATIVE_BROWSER_NAME"/> para ma-access ang <ph name="TARGET_URL_HOSTNAME"/>.</translation>
@@ -588,6 +616,7 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="6085660187823915017">Para makatanggap ng mga update sa Brave sa hinaharap, kakailanganin mo ng macOS 13 o mas bago. Gumagamit ng macOS 12 ang computer na ito.</translation>
 <translation id="2865744782251083875">Hindi mo ito binisita kamakailan. Inalis ng Brave ang <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>.</translation>
 <translation id="3871306442916198768">Ipakita ang Gemini sa Brave sa system tray</translation>
+<translation id="7401687852903179959">Hanapin ang Video na Ito gamit ang Paghahanap ng Larawan</translation>
 <translation id="4104934885375476361">Brave na ang iyong default browser</translation>
 <translation id="7951152294775418909">Magpatuloy kung saan ka huminto: Nire-restore ng Brave ang iyong mga tab sa tuwing magre-restart ka. Para i-off ito, pumunta sa</translation>
 <translation id="3191314862567596053">Mag-import ng Mga Password sa Brave</translation>
@@ -628,6 +657,7 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="8607348724092473027"><ph name="PAGE_TITLE"/> - Brave Origin Canary</translation>
 <translation id="2684504034454188774">Gawing mas mahirap para sa mga taong may access sa iyong internet traffic na makita kung aling mga site ang binibisita mo. Gumagamit ang Brave ng secure na koneksyon para hanapin ang IP address ng isang site sa DNS (Domain Name System).</translation>
 <translation id="7810005234485217901">Puwede mong i-pin ang Paghahanap ng Larawan para madali itong ma-access</translation>
+<translation id="4191642852677143100">Piliin kung ano ang ise-share sa Brave</translation>
 <translation id="1652855885539187849">Mayroon nang profile sa Brave na gumagamit ng account na ito sa device na ito</translation>
 <translation id="7845233973568007926">Salamat sa pag-install. Dapat mong i-restart ang iyong computer bago gamitin ang <ph name="BUNDLE_NAME"/>.</translation>
 <translation id="7397737266068428588">Binago ang iyong search engine mula sa labas ng Brave. Para protektahan ka, ni-reset ito ng Brave sa orihinal na default nito. <ph name="LEARN_MORE_LINK"/></translation>
@@ -665,6 +695,7 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="9067428552314418522">Mapanganib ang file na ito, kaya na-block ito ng Brave.</translation>
 <translation id="8177472873527554730">Hindi makita ang content sa page</translation>
 <translation id="6219250889396046657">Ilagay ang iyong passphrase para magamit at ma-save ang data sa Brave sa account mong <ph name="USER_EMAIL"/></translation>
+<translation id="820759916613250543">Hanapin ang Larawang Ito gamit ang Paghahanap ng Larawan</translation>
 <translation id="8221491193165283816">Kadalasan mong bina-block ang mga notification. Para hayaan ang site na itong abisuhan ka, mag-click dito.</translation>
 <translation id="8377926237617998195">Para magamit ang iyong camera, bigyan ng access ang Brave sa <ph name="BEGIN_LINK"/>mga setting ng system<ph name="END_LINK"/></translation>
 <translation id="1755067029031059271">Hindi ma-verify ng Brave kung saan galing ang extension na ito, at posibleng hindi ito ligtas. Alisin ito sa Brave para hindi na nito makita at mabago ang iyong data sa mga site na binibisita mo, kabilang ang personal na impormasyon.</translation>
@@ -710,11 +741,12 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="856656450041460113">Maghanap sa listahan ng wika</translation>
 <translation id="839677568225616901">Maraming organisasyon ang namamahala sa Brave</translation>
 <translation id="8121009781989288430">Copyright © <ph name="YEAR"/> Ang Mga May-akda ng Brave. Nakalaan ang lahat ng karapatan.</translation>
-<translation id="8601359445272098721">Bago! Puwede kang magsalin ng text at mga larawan sa iyong screen sa pamamagitan ng pagpili sa button na "isalin ang screen"</translation>
 <translation id="3052349005266761501">Inilulunsad ang Brave...</translation>
 <translation id="8624541899164515475">Mga setting, magbubukas sa bagong tab.</translation>
 <translation id="5128665650717824082">Hindi puwedeng gawing default na browser mo ang Brave na Pang-test.</translation>
+<translation id="3053208669360972929">Maghanap gamit ang Brave mula sa kahit saan</translation>
 <translation id="2433912322225810055">Kinokontrol din nito kung anong pahina ang ipinapakita kapag sinimulan mo ang Brave o naghanap mula sa Omnibox.</translation>
+<translation id="8789425457808164956">Para maipadala ang tab na ito sa ibang device, mag-sign in sa Brave doon</translation>
 <translation id="4100716194836114130">Ito ang iyong Brave</translation>
 <translation id="8712637175834984815">Nakuha ko</translation>
 <translation id="1419543648228375718">Mag-sign in sa Brave?</translation>
@@ -743,15 +775,20 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
             • I-delete ang cookies at iba pang pansamantalang data ng site
             <ph name="LINE_BREAKS"/>
             Hindi maaapektuhan ang mga bookmark, history, at naka-save na password.</translation>
+<translation id="6034174407583692244">Ipakita ang mga shortcut sa site ng Brave</translation>
 <translation id="7731184591599776500">Logo ng Brave Enterprise</translation>
 <translation id="2001474182910589370">Dalhin ang kaligtasan ng Brave nang on the go gamit ang Brave app sa iyong <ph name="DEVICE_TYPE"/></translation>
 <translation id="6500340165622970282">Hindi masimulan ang Brave dahil nagkaproblema noong binubuksan ang iyong profile. Subukang i-restart ang Brave.</translation>
+<translation id="8079450595783684960">para maghanap gamit ang Brave o mag-customize sa <ph name="BEGIN_LINK"/>Mga Setting<ph name="END_LINK"/></translation>
 <translation id="3424657754843264466">Pamahalaan ang mga profile sa Brave</translation>
+<translation id="1454821212628854849">Gamitin ang iyong keyboard para mag-navigate sa pagitan ng Gemini sa Brave at ng nakabukas mong tab.</translation>
 <translation id="9018218886431812662">Tapos na ang pag-install</translation>
 <translation id="82609232232243542">Mag-sign in sa Brave</translation>
+<translation id="7428750281620987416">Ipakita ang paghahanap gamit ang Brave sa menu bar ng Mac at i-on ang keyboard shortcut</translation>
 <translation id="7055223246119657449">Na-block ng Brave ang pag-download na ito dahil naglalaman ang naka-archive na file ng iba pang file na posibleng nagtatago ng malware</translation>
 <translation id="8341362078156319636">Panatilihing ganap na naka-sync ang iyong mga password, mga bookmark, at history sa lahat ng device. Madaling ma-access ang mga feature na alam at gusto mo sa pamamagitan ng pag-update ng iyong default browser sa Brave. Ipi-pin ang Brave sa taskbar mo para sa mabilis na pag-access.</translation>
 <translation id="8965179855019347124">Gamitin ang pinakamahuhusay na AI tool ng Brave gamit ang Brave app sa iyong telepono</translation>
+<translation id="7591043002129819267">Para makuha ang iyong mga password at higit pa mula sa <ph name="DEVICE"/>, mag-sign in sa Brave</translation>
 <translation id="9049928023195059068">Mag-sign in sa Brave kapag nag-sign in ka sa iba pang serbisyo ng Brave</translation>
 <translation id="4561046754724442504">Awtomatikong isinara ang Brave</translation>
 <translation id="5173820533850252773">Luma na ang Brave</translation>

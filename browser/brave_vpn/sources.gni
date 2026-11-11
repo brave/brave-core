@@ -9,10 +9,8 @@ brave_browser_brave_vpn_sources = []
 brave_browser_brave_vpn_deps = []
 
 if (enable_brave_vpn) {
-  brave_browser_brave_vpn_sources += [
-    "//brave/browser/brave_vpn/brave_vpn_service_factory.cc",
-    "//brave/browser/brave_vpn/brave_vpn_service_factory.h",
-  ]
+  brave_browser_brave_vpn_sources +=
+      [ "//brave/browser/brave_vpn/brave_vpn_service_factory.cc" ]
   brave_browser_brave_vpn_deps += [
     "//base",
     "//brave/browser/brave_vpn",
@@ -57,6 +55,8 @@ if (enable_brave_vpn_v1) {
       "//brave/browser/brave_vpn/win:wireguard_utils",
       "//brave/browser/brave_vpn/win/brave_vpn_helper:common",
       "//brave/components/brave_vpn/common/win",
+      "//chrome/browser/ui:browser_window_header",
+      "//chrome/browser/ui:simple_message_box_headers",
       "//chrome/common:constants",
       "//components/prefs",
       "//net",

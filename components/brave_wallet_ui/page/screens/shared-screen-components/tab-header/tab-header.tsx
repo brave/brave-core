@@ -17,7 +17,7 @@ import { Row } from '../../send/shared.styles'
 // Components
 import {
   WalletSettingsMenu, //
-} from '../../../../components/desktop/wallet-menus/wallet_settings_menu'
+} from '$wallet/page/components/wallet_menus/wallet_settings_menu'
 
 export interface Props {
   hideHeaderMenu?: boolean

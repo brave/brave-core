@@ -22,7 +22,6 @@ export interface FilterList {
   desc: string
   support_url: string
   component_id: string
-  base64_public_key: string
   enabled: boolean
 }
 

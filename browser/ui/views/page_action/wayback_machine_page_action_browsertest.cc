@@ -3,46 +3,69 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include <vector>
+
+#include "base/functional/bind.h"
+#include "base/strings/strcat.h"
+#include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/views/page_action/wayback_machine_bubble_view.h"
 #include "brave/browser/ui/views/page_action/wayback_machine_page_action_controller.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
 #include "brave/components/brave_wayback_machine/features.h"
 #include "brave/components/brave_wayback_machine/pref_names.h"
+#include "brave/components/brave_wayback_machine/url_constants.h"
 #include "brave/components/brave_wayback_machine/wayback_state.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/resource_coordinator/lifecycle_unit_state.mojom.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_external.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_source.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
-#include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
-#include "chrome/browser/ui/views/page_action/test_support/page_action_test_support.h"
+#include "chrome/browser/ui/views/page_action/page_action_view.h"
+#include "chrome/browser/ui/views/page_action/test_support/page_action_test_accessor.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/test_navigation_observer.h"
+#include "content/public/test/url_loader_interceptor.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event.h"
 #include "ui/events/event_constants.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/views/controls/button/md_text_button.h"
+#include "ui/views/controls/throbber.h"
 #include "ui/views/test/button_test_api.h"
 #include "ui/views/test/widget_test.h"
 #include "ui/views/view_utils.h"
 #include "ui/views/widget/widget.h"
+#include "ui/views/window/dialog_client_view.h"
 #include "url/gurl.h"
 
 namespace page_actions {
 
+namespace {
+
+constexpr char kSnapshotURL[] =
+    "https://web.archive.org/web/20240226123456/https://example.com/";
+
+}  // namespace
+
 class WaybackMachinePageActionBrowserTest : public InProcessBrowserTest {
  protected:
   BraveWaybackMachineTabHelper* GetTabHelper() {
-    return BraveWaybackMachineTabHelper::FromWebContents(
-        browser()->tab_strip_model()->GetActiveWebContents());
+    return BraveWaybackMachineTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(
+            browser()->tab_strip_model()->GetActiveWebContents()));
   }
 
   WaybackMachinePageActionController* GetController() {
@@ -61,12 +84,8 @@ class WaybackMachinePageActionBrowserTest : public InProcessBrowserTest {
     return controller ? controller->GetBubbleViewForTesting() : nullptr;
   }
 
-  IconLabelBubbleView* GetIcon() {
-    auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-    auto* button_provider = browser_view->toolbar_button_provider();
-    return GetIconLabelBubbleViewForTesting(
-        button_provider->GetPageActionViewInterface(kActionShowWaybackMachine),
-        kActionShowWaybackMachine);
+  PageActionTestAccessor GetIcon() {
+    return PageActionTestAccessor(browser(), kActionShowWaybackMachine);
   }
 
   void ClickButton(views::Button* button) {
@@ -79,19 +98,105 @@ class WaybackMachinePageActionBrowserTest : public InProcessBrowserTest {
   void SetWaybackState(WaybackState state) {
     GetTabHelper()->SetWaybackStateForTesting(state);
   }
+
+  WaybackMachineBubbleView* ClickIconAndGetBubble() {
+    GetIcon().Click();
+    return GetBubbleView();
+  }
+
+  views::Throbber* FindThrobber(views::View* view) {
+    if (auto* throbber = views::AsViewClass<views::Throbber>(view)) {
+      return throbber;
+    }
+    for (views::View* child : view->children()) {
+      if (auto* throbber = FindThrobber(child)) {
+        return throbber;
+      }
+    }
+    return nullptr;
+  }
+
+  void ExpectLoading(WaybackMachineBubbleView* bubble, bool loading) {
+    views::Throbber* throbber = FindThrobber(bubble);
+    ASSERT_NE(throbber, nullptr);
+    EXPECT_EQ(throbber->IsDrawn(), loading);
+  }
+
+  void ExpectAskToCheckUI(WaybackMachineBubbleView* bubble) {
+    EXPECT_EQ(bubble->GetWindowTitle(),
+              l10n_util::GetStringUTF16(
+                  IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_SORRY_HEADER_TEXT));
+    ASSERT_NE(bubble->GetOkButton(), nullptr);
+    EXPECT_TRUE(bubble->GetOkButton()->GetEnabled());
+    EXPECT_NE(bubble->GetCancelButton(), nullptr);
+    ASSERT_NE(bubble->GetExtraView(), nullptr);
+    EXPECT_TRUE(bubble->GetExtraView()->GetVisible());
+    ExpectLoading(bubble, false);
+  }
+
+  void ExpectFetchingUI(WaybackMachineBubbleView* bubble) {
+    EXPECT_EQ(bubble->GetWindowTitle(),
+              l10n_util::GetStringUTF16(
+                  IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_SORRY_HEADER_TEXT));
+    EXPECT_EQ(bubble->GetOkButton(), nullptr);
+    EXPECT_EQ(bubble->GetCancelButton(), nullptr);
+    ASSERT_NE(bubble->GetExtraView(), nullptr);
+    EXPECT_FALSE(bubble->GetExtraView()->GetVisible());
+    ExpectLoading(bubble, true);
+  }
+
+  void ExpectNotAvailableUI(WaybackMachineBubbleView* bubble) {
+    EXPECT_EQ(bubble->GetWindowTitle(),
+              l10n_util::GetStringUTF16(
+                  IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CANT_FIND_HEADER_TEXT));
+    EXPECT_EQ(bubble->GetOkButton(), nullptr);
+    EXPECT_EQ(bubble->GetCancelButton(), nullptr);
+    ASSERT_NE(bubble->GetExtraView(), nullptr);
+    EXPECT_FALSE(bubble->GetExtraView()->GetVisible());
+    ExpectLoading(bubble, false);
+  }
 };
 
 IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest, BubbleLaunchTest) {
-  auto* icon = GetIcon();
-  EXPECT_FALSE(icon->GetVisible());
+  auto icon = GetIcon();
+  EXPECT_FALSE(icon.GetVisible());
 
   SetWaybackState(WaybackState::kNeedToCheck);
-  EXPECT_TRUE(icon->GetVisible());
+  EXPECT_TRUE(icon.GetVisible());
   EXPECT_EQ(GetBubbleView(), nullptr);
 
   // Check bubble is launched.
-  ClickButton(icon);
+  icon.Click();
   EXPECT_NE(GetBubbleView(), nullptr);
+}
+
+// Discarding a tab replaces its contents, which the tab helper follows and
+// starts over for, along with the page action.
+IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest,
+                       FollowsDiscardedContents) {
+  SetWaybackState(WaybackState::kNeedToCheck);
+  ASSERT_TRUE(GetIcon().GetVisible());
+  BraveWaybackMachineTabHelper* const tab_helper = GetTabHelper();
+  ASSERT_TRUE(tab_helper);
+
+  TabStripModel* const tab_strip_model = browser()->tab_strip_model();
+  content::WebContents* const discarded_contents =
+      tab_strip_model->GetActiveWebContents();
+  ASSERT_TRUE(AddTabAtIndex(1, GURL("about:blank"), ui::PAGE_TRANSITION_TYPED));
+  auto* const lifecycle_unit =
+      resource_coordinator::TabLifecycleUnitSource::GetTabLifecycleUnitExternal(
+          discarded_contents);
+  ASSERT_TRUE(lifecycle_unit);
+  ASSERT_TRUE(
+      lifecycle_unit->DiscardTab(::mojom::LifecycleUnitDiscardReason::URGENT));
+
+  tab_strip_model->ActivateTabAt(0);
+  EXPECT_EQ(GetTabHelper(), tab_helper);
+  EXPECT_EQ(tab_helper->wayback_state(), WaybackState::kInitial);
+  EXPECT_FALSE(GetIcon().GetVisible());
+
+  SetWaybackState(WaybackState::kNeedToCheck);
+  EXPECT_TRUE(GetIcon().GetVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest,
@@ -99,13 +204,13 @@ IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest,
   auto* prefs = browser()->GetProfile()->GetPrefs();
   EXPECT_TRUE(prefs->GetBoolean(kBraveWaybackMachineEnabled));
 
-  auto* icon = GetIcon();
-  EXPECT_FALSE(icon->GetVisible());
+  auto icon = GetIcon();
+  EXPECT_FALSE(icon.GetVisible());
 
   SetWaybackState(WaybackState::kNeedToCheck);
-  EXPECT_TRUE(icon->GetVisible());
+  EXPECT_TRUE(icon.GetVisible());
 
-  ClickButton(icon);
+  icon.Click();
 
   WaybackMachineBubbleView* bubble = GetBubbleView();
   ASSERT_NE(bubble, nullptr);
@@ -123,6 +228,162 @@ IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest,
 
   EXPECT_EQ(GetBubbleView(), nullptr);
   EXPECT_FALSE(prefs->GetBoolean(kBraveWaybackMachineEnabled));
+}
+
+IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest, UpdatesWhileOpen) {
+  SetWaybackState(WaybackState::kNeedToCheck);
+  WaybackMachineBubbleView* bubble = ClickIconAndGetBubble();
+  ASSERT_NE(bubble, nullptr);
+  views::Widget* widget = bubble->GetWidget();
+  ASSERT_NE(widget, nullptr);
+  {
+    SCOPED_TRACE("kNeedToCheck");
+    ExpectAskToCheckUI(bubble);
+  }
+
+  SetWaybackState(WaybackState::kFetching);
+  ASSERT_EQ(GetBubbleView(), bubble);
+  {
+    SCOPED_TRACE("kFetching");
+    ExpectFetchingUI(bubble);
+  }
+
+  SetWaybackState(WaybackState::kNotAvailable);
+  ASSERT_EQ(GetBubbleView(), bubble);
+  {
+    SCOPED_TRACE("kNotAvailable");
+    ExpectNotAvailableUI(bubble);
+  }
+
+  views::test::WidgetDestroyedWaiter waiter(widget);
+  SetWaybackState(WaybackState::kInitial);
+  waiter.Wait();
+  EXPECT_EQ(GetBubbleView(), nullptr);
+}
+
+IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest,
+                       OpensInNotAvailableState) {
+  SetWaybackState(WaybackState::kNotAvailable);
+  WaybackMachineBubbleView* bubble = ClickIconAndGetBubble();
+  ASSERT_NE(bubble, nullptr);
+  ExpectNotAvailableUI(bubble);
+}
+
+IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest, ClosesWhenLoaded) {
+  SetWaybackState(WaybackState::kFetching);
+  WaybackMachineBubbleView* bubble = ClickIconAndGetBubble();
+  ASSERT_NE(bubble, nullptr);
+  views::Widget* widget = bubble->GetWidget();
+  ASSERT_NE(widget, nullptr);
+
+  views::test::WidgetDestroyedWaiter waiter(widget);
+  SetWaybackState(WaybackState::kLoaded);
+  waiter.Wait();
+  EXPECT_EQ(GetBubbleView(), nullptr);
+  EXPECT_FALSE(GetIcon().GetVisible());
+}
+
+IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest,
+                       CommandOnlyShowsBubbleWhenActionable) {
+  SetWaybackState(WaybackState::kInitial);
+  chrome::ExecuteCommand(browser(), IDC_SHOW_WAYBACK_MACHINE_BUBBLE);
+  EXPECT_EQ(GetBubbleView(), nullptr);
+
+  SetWaybackState(WaybackState::kLoaded);
+  chrome::ExecuteCommand(browser(), IDC_SHOW_WAYBACK_MACHINE_BUBBLE);
+  EXPECT_EQ(GetBubbleView(), nullptr);
+
+  SetWaybackState(WaybackState::kNeedToCheck);
+  chrome::ExecuteCommand(browser(), IDC_SHOW_WAYBACK_MACHINE_BUBBLE);
+  EXPECT_NE(GetBubbleView(), nullptr);
+}
+
+IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest,
+                       CheckKeepsBubbleOpen) {
+  content::URLLoaderInterceptor interceptor(base::BindRepeating(
+      [](content::URLLoaderInterceptor::RequestParams* params) {
+        if (params->url_request.url.host() != GURL(kWaybackQueryURL).host()) {
+          return false;
+        }
+        content::URLLoaderInterceptor::WriteResponse(
+            "HTTP/1.1 200 OK\nContent-Type: application/json\n\n", "{}",
+            params->client.get());
+        return true;
+      }));
+
+  SetWaybackState(WaybackState::kNeedToCheck);
+  WaybackMachineBubbleView* bubble = ClickIconAndGetBubble();
+  ASSERT_NE(bubble, nullptr);
+  views::Widget* widget = bubble->GetWidget();
+  ASSERT_NE(widget, nullptr);
+
+  bubble->GetDialogClientView()->ResetViewShownTimeStampForTesting();
+  ASSERT_NE(bubble->GetOkButton(), nullptr);
+  ClickButton(bubble->GetOkButton());
+
+  ASSERT_EQ(GetBubbleView(), bubble);
+  ASSERT_FALSE(widget->IsClosed());
+  {
+    SCOPED_TRACE("kFetching");
+    ExpectFetchingUI(bubble);
+  }
+
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return GetTabHelper()->wayback_state() == WaybackState::kNotAvailable;
+  }));
+  ASSERT_EQ(GetBubbleView(), bubble);
+  ASSERT_FALSE(widget->IsClosed());
+  {
+    SCOPED_TRACE("kNotAvailable");
+    ExpectNotAvailableUI(bubble);
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest,
+                       CheckNavigatesToSnapshot) {
+  content::URLLoaderInterceptor interceptor(base::BindRepeating(
+      [](content::URLLoaderInterceptor::RequestParams* params) {
+        const GURL& url = params->url_request.url;
+        if (url.host() == GURL(kWaybackQueryURL).host()) {
+          content::URLLoaderInterceptor::WriteResponse(
+              "HTTP/1.1 200 OK\nContent-Type: application/json\n\n",
+              base::StrCat({R"({"archived_snapshots":{"closest":{"url":")",
+                            kSnapshotURL, R"("}}})"}),
+              params->client.get());
+          return true;
+        }
+        if (url == GURL(kSnapshotURL)) {
+          content::URLLoaderInterceptor::WriteResponse(
+              "HTTP/1.1 200 OK\nContent-Type: text/html\n\n",
+              "<html>Snapshot</html>", params->client.get());
+          return true;
+        }
+        return false;
+      }));
+
+  std::vector<WaybackState> states;
+  auto subscription = GetTabHelper()->RegisterWaybackStateChangedCallback(
+      base::BindLambdaForTesting(
+          [&](WaybackState state) { states.push_back(state); }));
+
+  SetWaybackState(WaybackState::kNeedToCheck);
+  WaybackMachineBubbleView* bubble = ClickIconAndGetBubble();
+  ASSERT_NE(bubble, nullptr);
+  bubble->GetDialogClientView()->ResetViewShownTimeStampForTesting();
+  ASSERT_NE(bubble->GetOkButton(), nullptr);
+
+  content::TestNavigationObserver observer{GURL(kSnapshotURL)};
+  observer.WatchExistingWebContents();
+  ClickButton(bubble->GetOkButton());
+  observer.Wait();
+
+  EXPECT_EQ(states, (std::vector<WaybackState>{
+                        WaybackState::kNeedToCheck, WaybackState::kFetching,
+                        WaybackState::kFound, WaybackState::kLoaded}));
+  EXPECT_EQ(GetTabHelper()->wayback_state(), WaybackState::kLoaded);
+  ASSERT_TRUE(GetTabHelper()->snapshot_info());
+  EXPECT_EQ(GetTabHelper()->snapshot_info()->url, GURL(kSnapshotURL));
+  EXPECT_TRUE(base::test::RunUntil([&] { return !GetBubbleView(); }));
 }
 
 class WaybackMachineAutoShowBubbleBrowserTest
@@ -183,7 +444,8 @@ IN_PROC_BROWSER_TEST_F(WaybackMachineAutoShowBubbleBrowserTest,
   ASSERT_TRUE(AddTabAtIndex(1, GURL("about:blank"), ui::PAGE_TRANSITION_TYPED));
   ASSERT_EQ(1, browser()->tab_strip_model()->active_index());
 
-  BraveWaybackMachineTabHelper::FromWebContents(first_tab)
+  BraveWaybackMachineTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(first_tab))
       ->SetWaybackStateForTesting(WaybackState::kNeedToCheck);
   EXPECT_EQ(GetBubbleView(), nullptr);
 

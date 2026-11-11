@@ -4,14 +4,14 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import {DropdownMenuOptionList} from '../controls/settings_dropdown_menu.js';
-import {PrefsMixin, PrefsMixinInterface} from '/shared/settings/prefs/prefs_mixin.js';
+import {PrefServiceObserverMixin, PrefServiceObserverMixinInterface} from '/shared/settings/prefs2/pref_service_observer_mixin.js';
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import {BraveWeb3DomainsBrowserProxyImpl} from './brave_web3_domains_browser_proxy.js'
 import {getTemplate} from './brave_web3_domains_page.html.js'
 
-const SettingBraveWeb3DomainsPageElementBase = PrefsMixin(PolymerElement) as {
-  new (): PolymerElement & PrefsMixinInterface
+const SettingBraveWeb3DomainsPageElementBase = PrefServiceObserverMixin(PolymerElement) as {
+  new (): PolymerElement & PrefServiceObserverMixinInterface
 }
 
 export class SettingBraveWeb3DomainsPageElement
@@ -28,10 +28,7 @@ export class SettingBraveWeb3DomainsPageElement
     return {
       resolveMethod_: Array,
       ensOffchainResolveMethod_: Array,
-      showEnsOffchainLookupRow_: {
-        type: Boolean,
-        computed: 'computeShowEnsOffchainLookupRow_(prefs.*)',
-      },
+      showEnsOffchainLookupRow_: Boolean,
     }
   }
 
@@ -39,6 +36,14 @@ export class SettingBraveWeb3DomainsPageElement
   declare resolveMethod_: DropdownMenuOptionList
   declare ensOffchainResolveMethod_: DropdownMenuOptionList
   declare showEnsOffchainLookupRow_: boolean
+
+  override connectedCallback() {
+    super.connectedCallback()
+
+    this.addPrefObserver<number>('brave.ens.resolve_method', pref => {
+      this.showEnsOffchainLookupRow_ = pref.value === 3
+    })
+  }
 
   override ready() {
     super.ready()
@@ -49,10 +54,6 @@ export class SettingBraveWeb3DomainsPageElement
     this.browserProxy_.getEnsOffchainResolveMethodList().then(list => {
       this.ensOffchainResolveMethod_ = list
     })
-  }
-
-  computeShowEnsOffchainLookupRow_() {
-    return !!this.prefs && this.getPref('brave.ens.resolve_method').value === 3
   }
 }
 

@@ -5,18 +5,21 @@
 
 #include "brave/components/brave_wallet/browser/meld_integration_response_parser.h"
 
-#include <algorithm>
 #include <cstddef>
-#include <memory>
+#include <optional>
 #include <string>
-#include <utility>
+#include <tuple>
+#include <vector>
 
+#include "base/containers/flat_map.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/features.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::test::ParseJson;
+using testing::ElementsAreArray;
 
 namespace brave_wallet {
 
@@ -34,39 +37,22 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_ServiceProvider) {
     },
     "websiteUrl": "http://www.banxa.com",
     "logos": {
-      "dark": "https://images-serviceprovider.meld.io/BANXA/logo_dark.png",
-      "light": "https://images-serviceprovider.meld.io/BANXA/logo_light.png",
       "darkShort": "https://images-serviceprovider.meld.io/BANXA/short_logo_dark.png",
       "lightShort": "https://images-serviceprovider.meld.io/BANXA/short_logo_light.png"
     }
   }])");
 
   auto service_providers = ParseServiceProviders(ParseJson(json));
-  EXPECT_TRUE(service_providers);
-  EXPECT_EQ(
-      std::ranges::count_if(
-          *service_providers,
-          [](const auto& item) {
-            return item->name == "Banxa" && item->service_provider == "BANXA" &&
-                   item->status == "LIVE" &&
-                   item->web_site_url == "http://www.banxa.com" &&
-                   item->categories[0] == "CRYPTO_ONRAMP" &&
-                   item->category_statuses.at("CRYPTO_ONRAMP") == "LIVE" &&
-                   item->logo_images &&
-                   item->logo_images->dark_url ==
-                       "https://images-serviceprovider.meld.io/BANXA/"
-                       "logo_dark.png" &&
-                   item->logo_images->dark_short_url ==
-                       "https://images-serviceprovider.meld.io/BANXA/"
-                       "short_logo_dark.png" &&
-                   item->logo_images->light_url ==
-                       "https://images-serviceprovider.meld.io/BANXA/"
-                       "logo_light.png" &&
-                   item->logo_images->light_short_url ==
-                       "https://images-serviceprovider.meld.io/BANXA/"
-                       "short_logo_light.png";
-          }),
-      1);
+  ASSERT_TRUE(service_providers);
+
+  std::vector<mojom::MeldServiceProviderPtr> expected;
+  expected.push_back(mojom::MeldServiceProvider::New(
+      "Banxa", "BANXA", "LIVE", "http://www.banxa.com",
+      std::vector<std::string>{"CRYPTO_ONRAMP"},
+      base::flat_map<std::string, std::string>{{"CRYPTO_ONRAMP", "LIVE"}},
+      "https://images-serviceprovider.meld.io/BANXA/short_logo_dark.png",
+      "https://images-serviceprovider.meld.io/BANXA/short_logo_light.png"));
+  EXPECT_EQ(*service_providers, expected);
   std::string json_null_logos(R"([
   {
     "serviceProvider": "BANXA",
@@ -79,19 +65,15 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_ServiceProvider) {
     "websiteUrl": "http://www.banxa.com"
   }])");
   service_providers = ParseServiceProviders(ParseJson(json_null_logos));
-  EXPECT_TRUE(service_providers);
-  EXPECT_EQ(
-      std::ranges::count_if(
-          *service_providers,
-          [](const auto& item) {
-            return item->name == "Banxa" && item->service_provider == "BANXA" &&
-                   item->status == "LIVE" &&
-                   item->web_site_url == "http://www.banxa.com" &&
-                   item->categories.empty() &&
-                   item->category_statuses.at("CRYPTO_ONRAMP") == "LIVE" &&
-                   !item->logo_images;
-          }),
-      1);
+  ASSERT_TRUE(service_providers);
+
+  std::vector<mojom::MeldServiceProviderPtr> expected_null_logos;
+  expected_null_logos.push_back(mojom::MeldServiceProvider::New(
+      "Banxa", "BANXA", "LIVE", "http://www.banxa.com",
+      std::vector<std::string>{},
+      base::flat_map<std::string, std::string>{{"CRYPTO_ONRAMP", "LIVE"}},
+      std::nullopt, std::nullopt));
+  EXPECT_EQ(*service_providers, expected_null_logos);
 
   EXPECT_FALSE(ParseServiceProviders(ParseJson(R"([
   {
@@ -174,6 +156,16 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_MeldErrorResponse) {
   errors = ParseMeldErrorResponse(ParseJson(json_only_msg));
   EXPECT_TRUE(errors);
   EXPECT_EQ(errors->size(), static_cast<size_t>(1));
+
+  // Malformed success responses are not Meld errors.
+  EXPECT_FALSE(ParseMeldErrorResponse(
+      ParseJson(R"([{"countryCode": "AL", "name": "Albania"}])")));
+  EXPECT_FALSE(ParseMeldErrorResponse(
+      ParseJson(R"({"countries": [{"name": "Albania"}]})")));
+  EXPECT_FALSE(ParseMeldErrorResponse(
+      ParseJson(R"({"currencies": [{"name": "Afghani"}]})")));
+  EXPECT_FALSE(ParseMeldErrorResponse(
+      ParseJson(R"({"method": "ACH", "type": "BANK_TRANSFER"})")));
 }
 
 TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
@@ -196,28 +188,14 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
       "serviceProvider": "TRANSAK"}]})");
 
   auto quotes_result = ParseCryptoQuotes(ParseJson(json));
-  EXPECT_TRUE(quotes_result.has_value());
-  EXPECT_EQ(std::ranges::count_if(
-                quotes_result.value(),
-                [](const auto& item) {
-                  return item->transaction_type == "CRYPTO_PURCHASE" &&
-                         item->source_amount == "50" &&
-                         item->source_amount_without_fee == "43.97" &&
-                         item->fiat_amount_without_fees == "43.97" &&
-                         item->destination_amount_without_fees == "11.01" &&
-                         item->source_currency_code == "USD" &&
-                         item->country_code == "US" &&
-                         item->total_fee == "6.03" &&
-                         item->network_fee == "3.53" &&
-                         item->transaction_fee == "2" &&
-                         item->destination_amount == "0.00066413" &&
-                         item->destination_currency_code == "BTC" &&
-                         item->exchange_rate == "75286" &&
-                         item->payment_method == "APPLE_PAY" &&
-                         item->customer_score == "20" &&
-                         item->service_provider == "TRANSAK";
-                }),
-            1);
+  ASSERT_TRUE(quotes_result.has_value());
+
+  std::vector<mojom::MeldCryptoQuotePtr> expected;
+  expected.push_back(mojom::MeldCryptoQuote::New(
+      "CRYPTO_PURCHASE", "75286", "2", "USD", "50", "43.97", "43.97", "6.03",
+      "3.53", "APPLE_PAY", "BTC", "0.00066413", "11.01", "20", "TRANSAK",
+      "US"));
+  EXPECT_EQ(quotes_result.value(), expected);
 
   std::string json_null_quotes(R"({
   "error": "No Valid Quote Combinations Found For Provided Quote Request."})");
@@ -239,10 +217,10 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
 TEST(MeldIntegrationResponseParserUnitTest, Parse_PaymentMethods) {
   std::string json(R"([
   {
-    "paymentMethod": "ACH",
+    "method": "ACH",
     "name": "ACH",
-    "paymentType": "BANK_TRANSFER",
-    "logos": {
+    "type": "BANK_TRANSFER",
+    "logo": {
       "dark": "https://images-paymentMethod.meld.io/ACH/logo_dark.png",
       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
     }
@@ -250,55 +228,39 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_PaymentMethods) {
   ])");
 
   auto payment_methods = ParsePaymentMethods(ParseJson(json));
-  EXPECT_TRUE(payment_methods);
-  EXPECT_EQ(std::ranges::count_if(
-                *payment_methods,
-                [](const auto& item) {
-                  return item->payment_method == "ACH" && item->name == "ACH" &&
-                         item->payment_type == "BANK_TRANSFER" &&
-                         item->logo_images &&
-                         !item->logo_images->dark_short_url &&
-                         !item->logo_images->light_short_url &&
-                         *(item->logo_images->dark_url) ==
-                             "https://images-paymentMethod.meld.io/ACH/"
-                             "logo_dark.png" &&
-                         *(item->logo_images->light_url) ==
-                             "https://images-paymentMethod.meld.io/ACH/"
-                             "logo_light.png";
-                }),
-            1);
+  ASSERT_TRUE(payment_methods);
+
+  std::vector<mojom::MeldPaymentMethodPtr> expected;
+  expected.push_back(mojom::MeldPaymentMethod::New(
+      "ACH", "ACH", "BANK_TRANSFER",
+      "https://images-paymentMethod.meld.io/ACH/logo_dark.png",
+      "https://images-paymentMethod.meld.io/ACH/logo_light.png"));
+  EXPECT_EQ(*payment_methods, expected);
   std::string json_null_dark_logo(R"([
   {
-    "paymentMethod": "ACH",
+    "method": "ACH",
     "name": "ACH",
-    "paymentType": "BANK_TRANSFER",
-    "logos": {
+    "type": "BANK_TRANSFER",
+    "logo": {
       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
     }
   }
   ])");
   payment_methods = ParsePaymentMethods(ParseJson(json_null_dark_logo));
-  EXPECT_TRUE(payment_methods);
-  EXPECT_EQ(std::ranges::count_if(
-                *payment_methods,
-                [](const auto& item) {
-                  return item->payment_method == "ACH" && item->name == "ACH" &&
-                         item->payment_type == "BANK_TRANSFER" &&
-                         item->logo_images &&
-                         !item->logo_images->dark_short_url &&
-                         !item->logo_images->light_short_url &&
-                         !item->logo_images->dark_url &&
-                         *(item->logo_images->light_url) ==
-                             "https://images-paymentMethod.meld.io/ACH/"
-                             "logo_light.png";
-                }),
-            1);
+  ASSERT_TRUE(payment_methods);
 
+  std::vector<mojom::MeldPaymentMethodPtr> expected_null_dark_logo;
+  expected_null_dark_logo.push_back(mojom::MeldPaymentMethod::New(
+      "ACH", "ACH", "BANK_TRANSFER", std::nullopt,
+      "https://images-paymentMethod.meld.io/ACH/logo_light.png"));
+  EXPECT_EQ(*payment_methods, expected_null_dark_logo);
+
+  // `method` is a required field.
   EXPECT_FALSE(ParsePaymentMethods(ParseJson(R"([
   {
     "name": "ACH",
-    "paymentType": "BANK_TRANSFER",
-    "logos": {
+    "type": "BANK_TRANSFER",
+    "logo": {
       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
     }
   }
@@ -311,30 +273,37 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_PaymentMethods) {
 }
 
 TEST(MeldIntegrationResponseParserUnitTest, Parse_FiatCurrencies) {
-  std::string json(R"([
-  {
-    "currencyCode": "AFN",
-    "name": "Afghani",
-    "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
-  }])");
+  std::string json(R"({
+  "currencies": [
+    {
+      "currencyCode": "AFN",
+      "name": "Afghani",
+      "symbol": "https://images-currency.meld.io/fiat/AFN/symbol.png"
+    }
+  ]})");
 
   auto fiat_currencies = ParseFiatCurrencies(ParseJson(json));
-  EXPECT_TRUE(fiat_currencies);
-  EXPECT_EQ(std::ranges::count_if(
-                *fiat_currencies,
-                [](const auto& item) {
-                  return item->currency_code == "AFN" &&
-                         item->name == "Afghani" &&
-                         item->symbol_image_url ==
-                             "https://images-currency.meld.io/fiat/"
-                             "AFN/symbol.png";
-                }),
-            1);
+  ASSERT_TRUE(fiat_currencies);
 
-  EXPECT_FALSE(ParsePaymentMethods(ParseJson(R"([
+  std::vector<mojom::MeldFiatCurrencyPtr> expected;
+  expected.push_back(mojom::MeldFiatCurrency::New(
+      "AFN", "Afghani", "https://images-currency.meld.io/fiat/AFN/symbol.png"));
+  EXPECT_EQ(*fiat_currencies, expected);
+
+  // `currencyCode` is a required field.
+  EXPECT_FALSE(ParseFiatCurrencies(ParseJson(R"({
+  "currencies": [
+    {
+      "name": "Afghani",
+      "symbol": "https://images-currency.meld.io/fiat/AFN/symbol.png"
+    }
+  ]})")));
+
+  // A bare list is not a valid response anymore.
+  EXPECT_FALSE(ParseFiatCurrencies(ParseJson(R"([
   {
-    "name": "Afghani",
-    "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
+    "currencyCode": "AFN",
+    "name": "Afghani"
   }])")));
 
   EXPECT_FALSE(ParseFiatCurrencies(base::Value()));
@@ -344,41 +313,52 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_FiatCurrencies) {
 }
 
 TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies) {
-  std::string json(R"([
-  {
-    "currencyCode": "USDT_KCC",
-    "name": "#REF!",
-    "chainCode": "KCC",
-    "chainName": "KuCoin Community Chain",
-    "chainId": "56",
-    "contractAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
-    "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
-  }])");
+  std::string json(R"({
+  "currencies": [
+    {
+      "currencyCode": "USDT_BSC",
+      "name": "#REF!",
+      "chainCode": "BSC",
+      "chainId": "56",
+      "contract": "0xe41d2489571d322189246dafa5ebde1f4699f498",
+      "symbol": "https://images-currency.meld.io/crypto/USDT_BSC/symbol.png"
+    }
+  ]})");
   auto crypto_currencies = ParseCryptoCurrencies(ParseJson(json));
-  EXPECT_TRUE(crypto_currencies);
-  EXPECT_EQ(std::ranges::count_if(
-                *crypto_currencies,
-                [](const auto& item) {
-                  return item->currency_code == "USDT_KCC" &&
-                         item->name == "#REF!" && item->chain_code == "KCC" &&
-                         item->chain_name == "KuCoin Community Chain" &&
-                         item->chain_id == "0x38" &&
-                         item->contract_address ==
-                             "0xe41d2489571d322189246dafa5ebde1f4699f498" &&
-                         item->symbol_image_url ==
-                             "https://images-currency.meld.io/crypto/"
-                             "USDT_KCC/symbol.png";
-                }),
-            1);
+  ASSERT_TRUE(crypto_currencies);
 
-  EXPECT_FALSE(ParsePaymentMethods(ParseJson(R"([
+  std::vector<mojom::MeldCryptoCurrencyPtr> expected;
+  expected.push_back(mojom::MeldCryptoCurrency::New(
+      mojom::CoinType::ETH, mojom::kBnbSmartChainMainnetChainId, "USDT",
+      "USDT_BSC", "#REF!", "BSC", "0xe41d2489571d322189246dafa5ebde1f4699f498",
+      "https://images-currency.meld.io/crypto/USDT_BSC/symbol.png"));
+  EXPECT_EQ(*crypto_currencies, expected);
+
+  // A missing required field fails the whole response.
+  EXPECT_FALSE(ParseCryptoCurrencies(ParseJson(R"({
+  "currencies": [
+    {"currencyCode": "USDT", "name": "Tether", "symbol": ""}
+  ]})")));
+
+  // `currencyCode` is a required field.
+  EXPECT_FALSE(ParseCryptoCurrencies(ParseJson(R"({
+  "currencies": [
+    {
+      "name": "#REF!",
+      "chainCode": "KCC",
+      "chainId": "56",
+      "contract": "0xe41d2489571d322189246dafa5ebde1f4699f498",
+      "symbol": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
+    }
+  ]})")));
+
+  // A bare list is not a valid response anymore.
+  EXPECT_FALSE(ParseCryptoCurrencies(ParseJson(R"([
   {
+    "currencyCode": "USDT_BSC",
     "name": "#REF!",
-    "chainCode": "KCC",
-    "chainName": "KuCoin Community Chain",
-    "chainId": "56",
-    "contractAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
-    "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
+    "chainCode": "BSC",
+    "symbol": ""
   }])")));
 
   EXPECT_FALSE(ParseCryptoCurrencies(base::Value()));
@@ -387,53 +367,124 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies) {
   EXPECT_FALSE(ParseCryptoCurrencies(ParseJson(json)));
 }
 
-TEST(MeldIntegrationResponseParserUnitTest, Parse_Countries) {
-  std::string json(R"([
+TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies_Chains) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(features::kBraveWalletPolkadotFeature);
+
+  // Networks are resolved by chainCode. Meld's chainId must match for EVM
+  // chains and is ignored for others. Unsupported chain codes are dropped.
+  std::string json = R"({"currencies": [
+  {"currencyCode": "BTC", "chainCode": "BTC"},
+  {"currencyCode": "FIL", "chainCode": "FIL"},
+  {"currencyCode": "ZEC", "chainCode": "ZEC"},
+  {"currencyCode": "SOL", "chainCode": "SOLANA", "chainId": "101"},
+  {"currencyCode": "ADA", "chainCode": "ADA"},
+  {"currencyCode": "DOT", "chainCode": "DOT"},
+  {"currencyCode": "USDT_DOT", "chainCode": "DOT"},
+  {"currencyCode": "ETH", "chainCode": "ETH", "chainId": "1"},
+  {"currencyCode": "USDC_BASE", "chainCode": "BASE", "chainId": "8453"},
+  {"currencyCode": "AURORA", "chainCode": "AURORA", "chainId": "1313161554"},
+  {"currencyCode": "POL", "chainCode": "POLYGON"},
+  {"currencyCode": "USDT_ARB", "chainCode": "ARBITRUM", "chainId": "1"},
+  {"currencyCode": "USDT_OP", "chainCode": "OPTIMISM", "chainId": "abc"},
+  {"currencyCode": "USDT_KCC", "chainCode": "KCC", "chainId": "321"}
+  ]})";
+  auto json_value = ParseJson(json);
+  for (auto& item : *json_value.GetDict().FindList("currencies")) {
+    // Required fields not under test.
+    auto& dict = item.GetDict();
+    dict.Set("name", "");
+    dict.Set("symbol", "");
+  }
+  auto crypto_currencies = ParseCryptoCurrencies(json_value);
+  ASSERT_TRUE(crypto_currencies);
+  using ChainTuple = std::tuple<std::string, mojom::CoinType, std::string>;
+  std::vector<ChainTuple> chains;
+  for (const auto& item : *crypto_currencies) {
+    chains.emplace_back(item->currency_code, item->coin, item->chain_id);
+  }
+  EXPECT_THAT(
+      chains,
+      ElementsAreArray<ChainTuple>({
+          {"BTC", mojom::CoinType::BTC, mojom::kBitcoinMainnet},
+          {"FIL", mojom::CoinType::FIL, mojom::kFilecoinMainnet},
+          {"ZEC", mojom::CoinType::ZEC, mojom::kZCashMainnet},
+          {"SOL", mojom::CoinType::SOL, mojom::kSolanaMainnet},
+          {"ADA", mojom::CoinType::ADA, mojom::kCardanoMainnet},
+          {"DOT", mojom::CoinType::DOT, mojom::kPolkadotMainnetAssetHub},
+          {"USDT_DOT", mojom::CoinType::DOT, mojom::kPolkadotMainnetAssetHub},
+          {"ETH", mojom::CoinType::ETH, mojom::kMainnetChainId},
+          {"USDC_BASE", mojom::CoinType::ETH, mojom::kBaseMainnetChainId},
+          {"AURORA", mojom::CoinType::ETH, mojom::kAuroraMainnetChainId},
+          {"POL", mojom::CoinType::ETH, mojom::kPolygonMainnetChainId},
+      }));
+}
+
+TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies_Polkadot) {
+  constexpr char kJson[] = R"({
+  "currencies": [
+    {
+      "currencyCode": "DOT",
+      "name": "Polkadot",
+      "chainCode": "DOT",
+      "chainId": "0",
+      "symbol": "https://images-currency.meld.io/crypto/DOT/symbol.png"
+    }
+  ]})";
+
   {
-    "countryCode": "AF",
-    "name": "Afghanistan",
-    "flagImageUrl": "https://images-country.meld.io/AF/flag.svg",
-    "regions": [
-      {
-        "regionCode": "CA-AB",
-        "name": "Alberta"
-      },
-      {
-        "regionCode": "CA-BC",
-        "name": "British Columbia"
-      }
-    ]
-  }])");
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndEnableFeature(features::kBraveWalletPolkadotFeature);
+
+    auto crypto_currencies = ParseCryptoCurrencies(ParseJson(kJson));
+    ASSERT_TRUE(crypto_currencies);
+    ASSERT_EQ(crypto_currencies->size(), 1u);
+    EXPECT_EQ(crypto_currencies->at(0)->currency_code, "DOT");
+    EXPECT_EQ(crypto_currencies->at(0)->coin, mojom::CoinType::DOT);
+    EXPECT_EQ(crypto_currencies->at(0)->chain_id,
+              mojom::kPolkadotMainnetAssetHub);
+  }
+
+  {
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndDisableFeature(features::kBraveWalletPolkadotFeature);
+
+    auto crypto_currencies = ParseCryptoCurrencies(ParseJson(kJson));
+    ASSERT_TRUE(crypto_currencies);
+    EXPECT_TRUE(crypto_currencies->empty());
+  }
+}
+
+TEST(MeldIntegrationResponseParserUnitTest, Parse_Countries) {
+  std::string json(R"({
+  "countries": [
+    {
+      "countryCode": "AF",
+      "name": "Afghanistan"
+    }
+  ]})");
   auto countries = ParseCountries(ParseJson(json));
-  EXPECT_TRUE(countries);
-  EXPECT_EQ(std::ranges::count_if(
-                *countries,
-                [](const auto& item) {
-                  return item->country_code == "AF" &&
-                         item->name == "Afghanistan" &&
-                         item->flag_image_url ==
-                             "https://images-country.meld.io/AF/flag.svg" &&
-                         (*item->regions)[0]->region_code == "CA-AB" &&
-                         (*item->regions)[0]->name == "Alberta" &&
-                         (*item->regions)[1]->region_code == "CA-BC" &&
-                         (*item->regions)[1]->name == "British Columbia";
-                }),
-            1);
+  ASSERT_TRUE(countries);
+
+  std::vector<mojom::MeldCountryPtr> expected;
+  expected.push_back(mojom::MeldCountry::New("AF", "Afghanistan"));
+  EXPECT_EQ(*countries, expected);
+
+  // `countryCode` is a required field.
+  EXPECT_FALSE(ParseCountries(ParseJson(R"({
+  "countries": [
+    {
+      "name": "Afghanistan"
+    }
+  ]})")));
+
+  // A bare list is not a valid response anymore.
   EXPECT_FALSE(ParseCountries(ParseJson(R"([
   {
-    "name": "Afghanistan",
-    "flagImageUrl": "https://images-country.meld.io/AF/flag.svg",
-    "regions": [
-      {
-        "regionCode": "CA-AB",
-        "name": "Alberta"
-      },
-      {
-        "regionCode": "CA-BC",
-        "name": "British Columbia"
-      }
-    ]
+    "countryCode": "AF",
+    "name": "Afghanistan"
   }])")));
+
   EXPECT_FALSE(ParseCountries(base::Value()));
 
   json = (R"({})");

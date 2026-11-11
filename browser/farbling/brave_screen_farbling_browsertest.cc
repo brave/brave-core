@@ -133,9 +133,10 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
 
   content::RenderFrameHost* IFrame() const { return ChildFrameAt(Parent(), 0); }
 
-  Browser* OpenPopup(const std::string& script, bool from_iframe) const {
+  BrowserWindowInterface* OpenPopup(const std::string& script,
+                                    bool from_iframe) const {
     content::ExecuteScriptAsync(from_iframe ? Parent() : IFrame(), script);
-    Browser* popup = ui_test_utils::WaitForBrowserToOpen();
+    BrowserWindowInterface* popup = ui_test_utils::WaitForBrowserToOpen();
     EXPECT_NE(popup, browser());
     auto* popup_contents = popup->tab_strip_model()->GetActiveWebContents();
     EXPECT_TRUE(WaitForRenderFrameReady(popup_contents->GetPrimaryMainFrame()));
@@ -160,17 +161,22 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
   }
 
   void FarbleScreenSize(const GURL& url, bool content_scheme) {
+    if (!content_scheme) {
+      // Nothing is checked on these pages beyond the navigation, so repeating
+      // it per window size and fingerprinting setting only adds time. Loading
+      // devtools:// is slow enough to hit the test launcher timeout under x64
+      // emulation.
+      ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+      return;
+    }
     for (const auto& test_bounds : kTestWindowBounds) {
       SetBounds(test_bounds);
       for (bool allow_fingerprinting : {false, true}) {
         SetFingerprintingSetting(allow_fingerprinting);
         ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
         for (bool test_iframe : {false, true}) {
-          if (!content_scheme) {
-            continue;
-          }
           content::RenderFrameHost* host = test_iframe ? Parent() : IFrame();
-          if (!allow_fingerprinting && !IsFlagDisabled() && content_scheme) {
+          if (!allow_fingerprinting && !IsFlagDisabled()) {
             EXPECT_GE(8, EvalJs(host, "window.outerWidth - parent.innerWidth"));
             EXPECT_GE(8,
                       EvalJs(host, "window.outerHeight - parent.innerHeight"));
@@ -293,7 +299,8 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
             "`);";
         content::RenderFrameHost* host =
             test_mode == TestMode::kIframe ? Parent() : IFrame();
-        Browser* popup = OpenPopup(script, test_mode == TestMode::kIframe);
+        BrowserWindowInterface* popup =
+            OpenPopup(script, test_mode == TestMode::kIframe);
         auto* popup_contents = popup->tab_strip_model()->GetActiveWebContents();
         content::WaitForLoadStop(popup_contents);
         gfx::Rect child_bounds = BrowserWindow::FromBrowser(popup)->GetBounds();

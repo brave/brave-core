@@ -12,8 +12,15 @@ import override_utils
 
 def _GetSrcDir():
     return os.path.abspath(
-        os.path.join(os.path.dirname(__file__), os.pardir, os.pardir, os.pardir,
-                     os.pardir, os.pardir))
+        os.path.join(
+            os.path.dirname(__file__),
+            os.pardir,
+            os.pardir,
+            os.pardir,
+            os.pardir,
+            os.pardir,
+        )
+    )
 
 
 def _GetBravePerfDir(*dirs):
@@ -34,8 +41,9 @@ def _GetDiscoverClassesExtras(rel_start_dir, rel_top_level):
 
 
 @override_utils.override_function(globals())
-def DiscoverClasses(original_function, start_dir, top_level_dir, *args,
-                    **kwargs):
+def DiscoverClasses(
+    original_function, start_dir, top_level_dir, *args, **kwargs
+):
     original = original_function(start_dir, top_level_dir, *args, **kwargs)
     rel_top_level_dir = os.path.relpath(top_level_dir, _GetSrcDir())
     rel_start_dir = os.path.relpath(start_dir, top_level_dir)
@@ -47,8 +55,9 @@ def DiscoverClasses(original_function, start_dir, top_level_dir, *args,
 
     top_level_dir = os.path.join(_GetSrcDir(), brave_rel_top_level)
     rel_start_dir = os.path.join(top_level_dir, brave_rel_start)
-    brave_classes = original_function(rel_start_dir, top_level_dir, *args,
-                                      **kwargs)
+    brave_classes = original_function(
+        rel_start_dir, top_level_dir, *args, **kwargs
+    )
 
     brave_classes.update(original)
     return brave_classes

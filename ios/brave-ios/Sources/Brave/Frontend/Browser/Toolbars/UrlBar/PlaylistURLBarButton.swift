@@ -180,15 +180,14 @@ class PlaylistURLBarButton: UIButton {
     imageView?.adjustsImageSizeForAccessibilityContentSizeCategory = true
 
     updateForTraitCollection()
+
+    registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+      self.updateForTraitCollection()
+    }
   }
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    updateForTraitCollection()
   }
 
   private func updateForTraitCollection() {

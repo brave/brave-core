@@ -7,8 +7,6 @@
 
 namespace brave_ads {
 
-BASE_FEATURE(kPermissionRulesFeature,
-             "PermissionRules",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kPermissionRulesFeature, base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace brave_ads

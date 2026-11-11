@@ -3,8 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import type { SerializableTimeDelta, TimeDelta } from '../constants/types'
-
 const monthMap = [
   'Jan',
   'Feb',
@@ -69,17 +67,6 @@ export function formatDateAsRelative(
   }
 
   return `${monthMap[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`
-}
-
-/**
- * Converts a SerializableTimeDelta to a JS time.
- * @param {SerializableTimeDelta} timeDelta
- * @return {!Date}
- */
-export function serializedTimeDeltaToJSDate(
-  timeDelta: SerializableTimeDelta | TimeDelta,
-): Date {
-  return new Date(Number(timeDelta.microseconds) / 1000)
 }
 
 export const formatTimelineDate = (date: Date, locale = 'default') => {

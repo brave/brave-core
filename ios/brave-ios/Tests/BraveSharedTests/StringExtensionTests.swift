@@ -88,4 +88,38 @@ class StringExtensionTests: XCTestCase {
     result = str.truncatingMiddle(maxLength: 3)
     XCTAssertEqual(result, "a…e")
   }
+
+  // Standard replace
+  func testReplaceOccurances() throws {
+    let tmpl = """
+      Value one: %VALUE_ONE%
+      Value two: %VALUE_TWO%
+      """
+    let substituions = [
+      "%VALUE_ONE%": "One",
+      "%VALUE_TWO%": "Two",
+    ]
+    let expected = """
+      Value one: One
+      Value two: Two
+      """
+    XCTAssertEqual(try XCTUnwrap(tmpl.replacingOccurances(substituions)), expected)
+  }
+
+  // Ensure that a template value earlier in the replacement chain cannot affect one later in it
+  func testReplaceOccurancesWithTemplateInValue() throws {
+    let tmpl = """
+      Value one: %A%
+      Value two: %B%
+      """
+    let substituions = [
+      "%A%": "One %B%",
+      "%B%": "Two",
+    ]
+    let expected = """
+      Value one: One %B%
+      Value two: Two
+      """
+    XCTAssertEqual(try XCTUnwrap(tmpl.replacingOccurances(substituions)), expected)
+  }
 }

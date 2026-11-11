@@ -10,6 +10,8 @@ constexpr char kHistogramPrerenderPredictionStatusDefaultSearchEngine[] =
     "Prerender.Experimental.PredictionStatus.DefaultSearchEngine";
 constexpr char kHistogramPrerenderPredictionStatusDirectUrlInput[] =
     "Prerender.Experimental.PredictionStatus.DirectUrlInput";
+constexpr char kHistogramSearchPrewarmOutcome[] =
+    "PageLoad.Clients.GoogleSearch.PrewarmOutcome";
 }  // namespace internal
 
 PrerenderManager::~PrerenderManager() = default;
@@ -21,6 +23,15 @@ bool PrerenderManager::MaybeStartPrewarmSearchResult() {
 void PrerenderManager::StopPrewarmSearchResultForTesting() {}
 
 void PrerenderManager::SetPrewarmUrlForTesting(const GURL& url) {}
+
+content::PrerenderHandle::Observer*
+PrerenderManager::GetPrewarmObserverForTesting() {
+  return nullptr;
+}
+
+bool PrerenderManager::HasSearchPrewarmTaskForTesting() const {
+  return false;
+}
 
 base::WeakPtr<content::PrerenderHandle>
 PrerenderManager::StartPrerenderDirectUrlInput(

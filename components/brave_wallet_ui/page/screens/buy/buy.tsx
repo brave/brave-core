@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 import useMediaQuery from '$web-common/useMediaQuery'
 
 // Types
@@ -15,7 +15,6 @@ import { useBuy } from './hooks/use_buy'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-import { getAssetSymbol } from '../../../utils/meld_utils'
 import { isComponentInStorybook } from '../../../utils/string-utils'
 
 // Selectors
@@ -25,16 +24,16 @@ import { UISelectors } from '../../../common/selectors'
 // Components
 import {
   WalletPageWrapper, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import {
   PageTitleHeader, //
-} from '../../../components/desktop/card-headers/page-title-header'
+} from '$wallet/page/components/card_headers/page_title_header'
 import {
   PanelActionHeader, //
-} from '../../../components/desktop/card-headers/panel-action-header'
+} from '$wallet/page/components/card_headers/panel_action_header'
 import {
   DefaultPanelHeader, //
-} from '../../../components/desktop/card-headers/default-panel-header'
+} from '$wallet/page/components/card_headers/default_panel_header'
 import {
   SelectAssetButton, //
 } from './components/select_asset_button/select_asset_button'
@@ -127,7 +126,7 @@ export const Buy = () => {
   const isStorybook = isComponentInStorybook()
   const pageTitle = getLocale(S.BRAVE_WALLET_BUY_ASSET).replace(
     '$1',
-    getAssetSymbol(selectedMeldAsset),
+    selectedMeldAsset.symbol,
   )
   const isFetchingFirstTimeQuotes = isFetchingQuotes && quotes?.length === 0
 
@@ -239,8 +238,8 @@ export const Buy = () => {
                   <div slot='value'>{selectedPaymentMethod.name}</div>
                   {paymentMethods?.map((paymentMethod) => {
                     const logoUrl = isDarkMode
-                      ? paymentMethod.logoImages?.darkUrl
-                      : paymentMethod.logoImages?.lightUrl
+                      ? paymentMethod.darkUrl
+                      : paymentMethod.lightUrl
                     return (
                       <leo-option
                         key={paymentMethod.paymentMethod}
@@ -295,7 +294,7 @@ export const Buy = () => {
                     >
                       {getLocale(S.BRAVE_WALLET_NO_PROVIDER_FOUND).replace(
                         '$1',
-                        getAssetSymbol(selectedMeldAsset),
+                        selectedMeldAsset.symbol,
                       )}
                     </Text>
                     <Text

@@ -6,10 +6,11 @@
 package org.chromium.chrome.browser.settings;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import androidx.test.filters.SmallTest;
 
 import org.junit.After;
 import org.junit.Before;
@@ -31,17 +32,21 @@ import org.chromium.chrome.browser.search_engines.settings.BraveSearchEngineAdap
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 
+import java.util.Arrays;
+
 /** Tests for {@link BraveSearchEngineUtils}. */
 @RunWith(BaseRobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
 public class BraveSearchEngineUtilsTest {
 
     private static final String GOOGLE_SEARCH_ENGINE = "Google";
+    private static final String BRAVE_KEYWORD = ":br";
 
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Mock private Profile mProfile;
     @Mock private TemplateUrlService mTemplateUrlService;
     @Mock private TemplateUrl mDefaultTemplateUrl;
+    @Mock private TemplateUrl mBraveTemplateUrl;
 
     @Before
     public void setUp() {
@@ -52,12 +57,27 @@ public class BraveSearchEngineUtilsTest {
                 .removeKey(BraveSearchEngineAdapter.PRIVATE_DSE_SHORTNAME);
         ChromeSharedPreferences.getInstance()
                 .removeKey(BravePreferenceKeys.SEARCH_CHOICE_SCREEN_INSTALL);
+        ChromeSharedPreferences.getInstance()
+                .removeKey(BravePreferenceKeys.DEFAULT_SEARCH_ENGINE_CHANGED);
 
         // Set up mock TemplateUrlService
         TemplateUrlServiceFactory.setInstanceForTesting(mTemplateUrlService);
         doReturn(true).when(mTemplateUrlService).isLoaded();
         doReturn(mDefaultTemplateUrl).when(mTemplateUrlService).getDefaultSearchEngineTemplateUrl();
         when(mDefaultTemplateUrl.getShortName()).thenReturn(GOOGLE_SEARCH_ENGINE);
+
+        when(mBraveTemplateUrl.getShortName()).thenReturn(OnboardingPrefManager.BRAVE);
+        when(mBraveTemplateUrl.getKeyword()).thenReturn(BRAVE_KEYWORD);
+        doReturn(Arrays.asList(mDefaultTemplateUrl, mBraveTemplateUrl))
+                .when(mTemplateUrlService)
+                .getTemplateUrls();
+        doAnswer(
+                        invocation -> {
+                            ((Runnable) invocation.getArgument(0)).run();
+                            return null;
+                        })
+                .when(mTemplateUrlService)
+                .runWhenLoaded(org.mockito.ArgumentMatchers.any(Runnable.class));
     }
 
     @After
@@ -69,10 +89,11 @@ public class BraveSearchEngineUtilsTest {
                 .removeKey(BraveSearchEngineAdapter.PRIVATE_DSE_SHORTNAME);
         ChromeSharedPreferences.getInstance()
                 .removeKey(BravePreferenceKeys.SEARCH_CHOICE_SCREEN_INSTALL);
+        ChromeSharedPreferences.getInstance()
+                .removeKey(BravePreferenceKeys.DEFAULT_SEARCH_ENGINE_CHANGED);
     }
 
     @Test
-    @SmallTest
     public void testDefaultSearchEngineIsGoogleWithoutSearchChoiceFlag() {
         // When SEARCH_CHOICE_SCREEN_INSTALL flag is not set (default behavior)
         // the default search engine should be whatever the system default is (Google in this mock)
@@ -89,7 +110,6 @@ public class BraveSearchEngineUtilsTest {
     }
 
     @Test
-    @SmallTest
     public void testDefaultSearchEngineIsBraveWithSearchChoiceFlag() {
         // When SEARCH_CHOICE_SCREEN_INSTALL flag is set to true
         // the default search engine should be Brave Search
@@ -109,7 +129,6 @@ public class BraveSearchEngineUtilsTest {
     }
 
     @Test
-    @SmallTest
     public void testDSEPrefsNotOverwrittenOnSubsequentCalls() {
         // First initialization without the flag
         BraveSearchEngineUtils.initializeDSEPrefsForTesting(mProfile);
@@ -130,5 +149,63 @@ public class BraveSearchEngineUtilsTest {
                 GOOGLE_SEARCH_ENGINE,
                 ChromeSharedPreferences.getInstance()
                         .readString(BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, ""));
+    }
+
+    @Test
+    public void testInitializeOnProfileAddedSkipsWhenAlreadyInitialized() {
+        ChromeSharedPreferences.getInstance()
+                .writeString(BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, GOOGLE_SEARCH_ENGINE);
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.SEARCH_CHOICE_SCREEN_INSTALL, true);
+
+        BraveSearchEngineUtils.initializeOnProfileAdded(mProfile);
+
+        // The DSE was already reconciled once, so the stored engine must be left alone.
+        assertEquals(
+                GOOGLE_SEARCH_ENGINE,
+                ChromeSharedPreferences.getInstance()
+                        .readString(BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, ""));
+        verify(mTemplateUrlService, never()).setSearchEngine(BRAVE_KEYWORD);
+    }
+
+    @Test
+    public void testInitializeOnProfileAddedIgnoresOffTheRecordProfile() {
+        when(mProfile.isOffTheRecord()).thenReturn(true);
+
+        BraveSearchEngineUtils.initializeOnProfileAdded(mProfile);
+
+        assertEquals(
+                "",
+                ChromeSharedPreferences.getInstance()
+                        .readString(BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, ""));
+    }
+
+    @Test
+    public void testApplySearchChoiceScreenDefaultKeepsUserSelection() {
+        // The referrer fetch is retried on later launches, by which point the user may have
+        // chosen an engine. That selection must win over the Search Choice Screen.
+        BraveSearchEngineUtils.initializeDSEPrefsForTesting(mProfile);
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.DEFAULT_SEARCH_ENGINE_CHANGED, true);
+
+        BraveSearchEngineUtils.applySearchChoiceScreenDefault(mProfile);
+
+        assertEquals(
+                GOOGLE_SEARCH_ENGINE,
+                ChromeSharedPreferences.getInstance()
+                        .readString(BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, ""));
+        verify(mTemplateUrlService, never()).setSearchEngine(BRAVE_KEYWORD);
+    }
+
+    @Test
+    public void testNullProfileIsIgnored() {
+        BraveSearchEngineUtils.initializeOnProfileAdded(null);
+        BraveSearchEngineUtils.applySearchChoiceScreenDefault(null);
+
+        assertEquals(
+                "",
+                ChromeSharedPreferences.getInstance()
+                        .readString(BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, ""));
+        verify(mTemplateUrlService, never()).setSearchEngine(BRAVE_KEYWORD);
     }
 }

@@ -1,0 +1,17 @@
+diff --git a/content/browser/websockets/websocket_connector_impl.cc b/content/browser/websockets/websocket_connector_impl.cc
+index eaf7d1eb13d3d5893d0dc6cfc190edec0250aba2..59927b02b87b9e7bd64940c0ce5ecb2d4cc2c6d6 100644
+--- a/content/browser/websockets/websocket_connector_impl.cc
++++ b/content/browser/websockets/websocket_connector_impl.cc
+@@ -144,9 +144,10 @@ void WebSocketConnectorImpl::Connect(
+       network_restrictions_id_, target_address_space, target_network);
+ 
+   if (GetContentClient()->browser()->WillInterceptWebSocket(frame)) {
+-    GetContentClient()->browser()->CreateWebSocket(
++    GetContentClient()->browser()->CreateWebSocketWithFrameId(
+         frame, std::move(factory), url, isolation_info_.site_for_cookies(),
+-        user_agent, std::move(handshake_client), std::move(options));
++        user_agent, std::move(handshake_client), std::move(options),
++        frame_id_.child_id.value(), origin_);
+     return;
+   }
+ 

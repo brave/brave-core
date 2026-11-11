@@ -1,0 +1,29 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Map the Brave WebUI resources for the TypeScript compiler
+
+      Added before `args` reads the mappings.
+    add_before_line:
+      line: args += [ "--path_mappings" ] + path_mappings
+      code: |2-
+            import("//brave/tools/typescript/sources.gni")
+            foreach(mapping, brave_path_mappings) {
+              path_mappings +=
+                  [ mapping[0] + rebase_path(mapping[1], target_gen_dir) ]
+            }
+
+  - description: Pass the TypeScript arguments through a response file.
+    append_to_target:
+      target: target_name
+      code: |-
+        response_file_contents = args
+        args = []
+        args = [
+          "--rsp",
+          "{{response_file_name}}",
+        ]

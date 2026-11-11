@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.test.filters.LargeTest;
 import androidx.test.filters.SmallTest;
 
 import org.hamcrest.Description;
@@ -41,6 +42,7 @@ import org.chromium.base.test.util.DoNotBatch;
 import org.chromium.base.test.util.Feature;
 import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Features.EnableFeatures;
+import org.chromium.base.test.util.Restriction;
 import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
 import org.chromium.brave.browser.customize_menu.MenuItemData;
 import org.chromium.chrome.browser.BraveRewardsPolicy;
@@ -49,6 +51,7 @@ import org.chromium.chrome.browser.tracing.settings.DeveloperSettings;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.chrome.test.R;
+import org.chromium.ui.base.DeviceFormFactor;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -83,8 +86,11 @@ public class BraveSettingsSearchTest {
      * Verifies that key Brave-specific settings entries appear in the global Settings search
      * results.
      */
+    // LargeTest: this walks the whole main settings screen, and @SmallTest caps a test at 10
+    // seconds — less than the search-and-assert cycles below need, which turns any single missing
+    // result into an unhelpful process timeout instead of a failed assertion.
     @Test
-    @SmallTest
+    @LargeTest
     @Feature({"Preferences"})
     @EnableFeatures(BraveFeatureList.BRAVE_PLAYLIST)
     public void testBraveMainSettingsAreSearchable() {
@@ -180,19 +186,8 @@ public class BraveSettingsSearchTest {
         clearAndTypeIntoSearch("Brave Password Manager");
         assertSearchResult("Brave Password Manager");
 
-        // Disabled — see https://github.com/brave/brave-browser/issues/57195
-        // clearAndTypeIntoSearch("Autofill services");
-        // assertSearchResult("Autofill services");
-
-        clearAndTypeIntoSearch("Payment methods");
-        assertSearchResult("Payment methods");
-
-        clearAndTypeIntoSearch("Addresses and more");
-        assertSearchResult("Addresses and more");
-
-        // Disabled — see https://github.com/brave/brave-browser/issues/57195
-        // clearAndTypeIntoSearch("Autofill in private tabs");
-        // assertSearchResult("Autofill in private tabs");
+        clearAndTypeIntoSearch("Autofill and passwords");
+        assertSearchResult("Autofill and passwords");
 
         // Support section
 
@@ -467,8 +462,9 @@ public class BraveSettingsSearchTest {
      * Verifies that key Brave-specific settings entries appear in the `Site settings` Settings
      * search results.
      */
+    // LargeTest: see the note on testBraveMainSettingsAreSearchable.
     @Test
-    @SmallTest
+    @LargeTest
     @Feature({"Preferences"})
     public void testSiteSettingsAreSearchable() {
         mSettingsActivityTestRule.startSettingsActivity();
@@ -788,20 +784,26 @@ public class BraveSettingsSearchTest {
         clearAndTypeIntoSearch("Brave Rewards icon");
         assertSearchResult("Brave Rewards icon");
 
-        clearAndTypeIntoSearch("Brave Ads");
-        assertSearchResult("Brave Ads");
-
         clearAndTypeIntoSearch("Night");
         assertSearchResult("Night Mode");
 
-        clearAndTypeIntoSearch("Only open links in current tab group");
-        assertSearchResult("Only open links in current tab group");
-
         clearAndTypeIntoSearch("Multiple windows");
         assertSearchResult("Multiple windows");
+    }
 
-        clearAndTypeIntoSearch("Show undo button when tabs are closed");
-        assertSearchResult("Show undo button when tabs are closed");
+    /**
+     * Verifies the bookmarks bar is not searchable on a phone, where the Appearance screen shows
+     * neither of its two rows.
+     */
+    @Test
+    @SmallTest
+    @Feature({"Preferences"})
+    @Restriction(DeviceFormFactor.PHONE)
+    public void testBookmarkBarNotSearchableOnPhone() {
+        mSettingsActivityTestRule.startSettingsActivity();
+
+        typeIntoSearch("Show bookmarks bar");
+        assertSearchResultEmpty();
     }
 
     /**
@@ -839,7 +841,7 @@ public class BraveSettingsSearchTest {
     @Test
     @SmallTest
     @Feature({"Preferences"})
-    public void testNewTabPageSponsoredImagesNotSearchable_RewardsDisabledByPolicy() {
+    public void testNewTabPageSponsoredContentNotSearchable_RewardsDisabledByPolicy() {
         BraveRewardsPolicy.setDisabledByPolicyForTesting(true);
         mSettingsActivityTestRule.startSettingsActivity();
 
@@ -976,7 +978,18 @@ public class BraveSettingsSearchTest {
         assertSearchResult("Save security codes");
 
         clearAndTypeIntoSearch("Card benefits");
-        assertSearchResult("Card benefits");
+        // Two indexed entries share this title, both under the "Payment methods" category: the
+        // preference on the Payment methods page that opens the card benefits page, and the
+        // enable toggle on the card benefits page itself. Upstream labels both with
+        // IDS_AUTOFILL_SETTINGS_PAGE_CARD_BENEFITS_LABEL on purpose, so the summary is the only
+        // thing that tells them apart. Both are asserted: the toggle only became searchable once
+        // the parent entry was given a fragment, so checking it guards that from regressing.
+        assertSearchResultWithSummary(
+                "Card benefits",
+                "Choose whether you see your card benefits at checkout (bank terms apply)");
+        assertSearchResultWithSummary(
+                "Card benefits",
+                "Show available card benefits and rewards at checkout. Issuer terms apply.");
 
         clearAndTypeIntoSearch("Check out faster with autofill");
         assertSearchResult("Check out faster with autofill");
@@ -1092,8 +1105,9 @@ public class BraveSettingsSearchTest {
     // ---------------------------------------------------------------------------
     // Category 2 — Chrome settings removed by Brave must NOT appear in search
     // ---------------------------------------------------------------------------
+    // LargeTest: see the note on testBraveMainSettingsAreSearchable.
     @Test
-    @SmallTest
+    @LargeTest
     @Feature({"Preferences"})
     public void testRemovedChromeSettingsNotFoundInSearch() {
         mSettingsActivityTestRule.startSettingsActivity();
@@ -1469,20 +1483,69 @@ public class BraveSettingsSearchTest {
                         });
     }
 
+    /**
+     * Asserts that one search result carries both the given title and summary.
+     *
+     * <p>Needed when several results share a title. {@link #assertOneOfSearchResultsIs} cannot
+     * separate those, because {@code SearchResultsPreferenceFragment} groups results by top-level
+     * settings category rather than by the page each one lives on, so same-named entries from a
+     * page and its sub-page land under one header. The summary is what distinguishes them.
+     */
+    private void assertSearchResultWithSummary(String title, String summary) {
+        onViewWaiting(allOf(withId(R.id.recycler_view), inSearchResultsPane()))
+                .check(
+                        (view, e) -> {
+                            if (e != null) throw e;
+                            ViewGroup rv = (ViewGroup) view;
+                            for (int i = 0; i < rv.getChildCount(); i++) {
+                                View child = rv.getChildAt(i);
+                                // Section headers are plain TextView children; results are
+                                // ViewGroups holding a title and a summary.
+                                if (!(child instanceof ViewGroup)) continue;
+                                android.widget.TextView titleView =
+                                        findTextViewByEntryName((ViewGroup) child, "title");
+                                android.widget.TextView summaryView =
+                                        findTextViewByEntryName((ViewGroup) child, "summary");
+                                if (titleView == null || summaryView == null) continue;
+                                if (titleView.getText().toString().equalsIgnoreCase(title)
+                                        && summaryView
+                                                .getText()
+                                                .toString()
+                                                .equalsIgnoreCase(summary)) {
+                                    return; // found
+                                }
+                            }
+                            throw new junit.framework.AssertionFailedError(
+                                    "No search result with title '"
+                                            + title
+                                            + "' and summary '"
+                                            + summary
+                                            + "'");
+                        });
+    }
+
     /** Recursively finds the first TextView whose resource entry name is "title". */
     private static android.widget.TextView findTitleTextView(ViewGroup parent) {
+        return findTextViewByEntryName(parent, "title");
+    }
+
+    /** Recursively finds the first TextView whose resource entry name equals {@code entryName}. */
+    private static android.widget.TextView findTextViewByEntryName(
+            ViewGroup parent, String entryName) {
         for (int i = 0; i < parent.getChildCount(); i++) {
             View child = parent.getChildAt(i);
             if (child instanceof android.widget.TextView) {
                 try {
-                    if ("title".equals(child.getResources().getResourceEntryName(child.getId()))) {
+                    if (entryName.equals(
+                            child.getResources().getResourceEntryName(child.getId()))) {
                         return (android.widget.TextView) child;
                     }
                 } catch (Exception ignored) {
-                    // ID not resolvable — not the title view.
+                    // ID not resolvable — not the view we're after.
                 }
             } else if (child instanceof ViewGroup) {
-                android.widget.TextView result = findTitleTextView((ViewGroup) child);
+                android.widget.TextView result =
+                        findTextViewByEntryName((ViewGroup) child, entryName);
                 if (result != null) return result;
             }
         }

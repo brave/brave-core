@@ -27,8 +27,9 @@ def find_policy_yaml_files(policy_dir):
     """Find all YAML policy definition files."""
     yaml_files = []
     if not os.path.isdir(policy_dir):
-        print(f"Error: Policy directory not found: {policy_dir}",
-              file=sys.stderr)
+        print(
+            f"Error: Policy directory not found: {policy_dir}", file=sys.stderr
+        )
         return yaml_files
 
     for filename in os.listdir(policy_dir):
@@ -71,9 +72,11 @@ def generate_java_constant_name(policy_name):
             if acronym_len > 1:
                 # We have an acronym
                 # Check if the last uppercase letter starts the next word
-                if (acronym_end < len(policy_name)
-                        and policy_name[acronym_end - 1].isupper()
-                        and policy_name[acronym_end].islower()):
+                if (
+                    acronym_end < len(policy_name)
+                    and policy_name[acronym_end - 1].isupper()
+                    and policy_name[acronym_end].islower()
+                ):
                     # The last uppercase is part of next word (e.g., "AIChat")
                     acronym_end -= 1
                     acronym_len -= 1
@@ -97,8 +100,7 @@ def generate_java_constant_name(policy_name):
 
 def generate_java_content(policy_names):
     """Generate Java file content with policy constants."""
-    java_content = (
-        """/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+    java_content = """/* Copyright (c) 2025 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -116,13 +118,15 @@ public final class BravePolicyConstants {
         // Prevent instantiation
     }
 
-""")
+"""
 
     # Generate constants for each policy
     for policy_name in sorted(policy_names):
         constant_name = generate_java_constant_name(policy_name)
-        java_content += (f'    public static final String {constant_name} = '
-                         f'"{policy_name}";\n')
+        java_content += (
+            f'    public static final String {constant_name} = '
+            f'"{policy_name}";\n'
+        )
 
     java_content += "}\n"
     return java_content
@@ -139,19 +143,24 @@ def generate_srcjar(policy_names, output_srcjar):
     with zipfile.ZipFile(output_srcjar, 'w', zipfile.ZIP_DEFLATED) as zf:
         zf.writestr(java_path, java_content.encode('utf-8'))
 
-    print(f"Generated {len(policy_names)} policy constants in srcjar "
-          f"{output_srcjar}")
+    print(
+        f"Generated {len(policy_names)} policy constants in srcjar "
+        f"{output_srcjar}"
+    )
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Generate Java constants from Brave policy YAML files')
-    parser.add_argument('--policy-dir',
-                        required=True,
-                        help='Directory containing policy YAML files')
-    parser.add_argument('--output-srcjar',
-                        required=True,
-                        help='Output srcjar file path')
+        description='Generate Java constants from Brave policy YAML files'
+    )
+    parser.add_argument(
+        '--policy-dir',
+        required=True,
+        help='Directory containing policy YAML files',
+    )
+    parser.add_argument(
+        '--output-srcjar', required=True, help='Output srcjar file path'
+    )
 
     args = parser.parse_args()
 
@@ -159,8 +168,10 @@ def main():
     yaml_files = find_policy_yaml_files(args.policy_dir)
 
     if not yaml_files:
-        print(f"Warning: No YAML policy files found in {args.policy_dir}",
-              file=sys.stderr)
+        print(
+            f"Warning: No YAML policy files found in {args.policy_dir}",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     # Extract policy names from filenames

@@ -5,7 +5,6 @@
 
 #include "brave/components/tor/brave_tor_client_updater.h"
 
-#include <memory>
 #include <string>
 #include <utility>
 
@@ -15,12 +14,12 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
-#include "base/task/task_runner.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/tor/constants.h"
 #include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_switches.h"
 #include "build/build_config.h"
+#include "components/crx_file/id_util.h"
 #include "components/prefs/pref_service.h"
 #include "third_party/re2/src/re2/re2.h"
 
@@ -96,8 +95,8 @@ void BraveTorClientUpdater::Register() {
     return;
   }
 
-  BraveComponent::Register(kTorClientComponentName, kTorClientComponentId,
-                           kTorClientComponentBase64PublicKey);
+  BraveComponent::Register(kTorClientComponentName,
+                           kTorClientComponentPublicKeySHA256);
   registered_ = true;
 }
 
@@ -110,7 +109,8 @@ void BraveTorClientUpdater::Unregister() {
 void BraveTorClientUpdater::Cleanup() {
   DCHECK(!user_data_dir_.empty());
   base::FilePath tor_component_dir =
-      user_data_dir_.AppendASCII(kTorClientComponentId);
+      user_data_dir_.AppendASCII(crx_file::id_util::GenerateIdFromHash(
+          kTorClientComponentPublicKeySHA256));
   task_runner_->PostTask(
       FROM_HERE, base::GetDeletePathRecursivelyCallback(tor_component_dir));
   task_runner_->PostTask(

@@ -64,11 +64,14 @@ import java.util.Locale;
  * menu. The customization settings are persisted in shared preferences and applied whenever the
  * menu is displayed.
  *
- * <p><strong>Note:</strong> Two menu items cannot be hidden and will always remain visible:
+ * <p><strong>Note:</strong> Three menu items cannot be hidden and will always remain visible:
  *
  * <ul>
  *   <li>The "Customize menu" item itself ({@link #BRAVE_CUSTOMIZE_ITEM_ID})
  *   <li>The main "Settings" item ({@code R.id.preferences_id})
+ *   <li>The "Site controls" item ({@code R.id.info_menu_id}), which upstream moved out of the
+ *       address bar into the app menu, making it the only way to reach a site's permissions and
+ *       connection details
  * </ul>
  *
  * <p>These items are essential for menu navigation and configuration access.
@@ -149,7 +152,6 @@ public class CustomizeBraveMenu {
         MENU_ICON_MAP.put(R.id.readaloud_menu_id, R.drawable.ic_play_circle);
         MENU_ICON_MAP.put(R.id.reader_mode_menu_id, R.drawable.ic_mobile_friendly_24dp);
         MENU_ICON_MAP.put(R.id.open_with_id, R.drawable.ic_open_in_new);
-        MENU_ICON_MAP.put(R.id.open_webapk_id, R.drawable.ic_open_webapk);
         MENU_ICON_MAP.put(R.id.universal_install, R.drawable.ic_add_to_home_screen);
         MENU_ICON_MAP.put(R.id.auto_dark_web_contents_id, R.drawable.ic_brightness_medium_24dp);
         MENU_ICON_MAP.put(R.id.paint_preview_show_id, R.drawable.ic_photo_camera);
@@ -173,8 +175,11 @@ public class CustomizeBraveMenu {
         for (Iterator<MVCListAdapter.ListItem> it = modelList.iterator(); it.hasNext(); ) {
             MVCListAdapter.ListItem item = it.next();
             final int menuItemId = item.model.get(AppMenuItemProperties.MENU_ITEM_ID);
-            // Skip current item if it matches the customize menu id or settings menu id.
-            if (BRAVE_CUSTOMIZE_ITEM_ID == menuItemId || R.id.preferences_id == menuItemId) {
+            // Skip current item if it matches the customize menu id, the settings menu id or the
+            // site controls menu id.
+            if (BRAVE_CUSTOMIZE_ITEM_ID == menuItemId
+                    || R.id.preferences_id == menuItemId
+                    || R.id.info_menu_id == menuItemId) {
                 continue;
             }
             if (!isVisible(resources, menuItemId)) {
@@ -382,6 +387,11 @@ public class CustomizeBraveMenu {
      */
     @DrawableRes
     public static int getDrawableResFromMenuItemId(@IdRes final int menuItemId) {
+        if (menuItemId == R.id.universal_install
+                && ChromeFeatureList.isEnabled(
+                        BraveFeatureList.BRAVE_ANDROID_MERGE_INSTALL_PWA_AND_CREATE_SHORTCUT)) {
+            return R.drawable.ic_smartphone_home;
+        }
         final int drawableRes = MENU_ICON_MAP.get(menuItemId, 0);
 
         assert drawableRes != 0 : "Unexpected value for menu item ID: " + menuItemId;

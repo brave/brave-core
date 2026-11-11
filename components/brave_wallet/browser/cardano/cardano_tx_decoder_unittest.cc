@@ -12,7 +12,6 @@
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction_serializer.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -82,8 +81,11 @@ std::vector<uint8_t> CreateInvalidCborData() {
 TEST(CardanoTxDecoderTest, EncodeTransaction_ValidTransaction) {
   auto tx = GetSignedReferenceTransaction();
 
-  EXPECT_EQ(base::HexEncodeLower(
-                *CardanoTxDecoder::EncodeTransaction(*tx.ToSerializableTx())),
+  auto serializable = tx.ToSerializableTx();
+  ASSERT_TRUE(serializable);
+  auto encoded = CardanoTxDecoder::EncodeTransaction(*serializable);
+  ASSERT_TRUE(encoded);
+  EXPECT_EQ(base::HexEncodeLower(*encoded),
             "84a400d9010281825820a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732c"
             "c6240add8c71edb9250001828258390144e5e8699ab31de351be61dfeb7c220eff"
             "61d29d9c88ca9d1599b36deb20324c1f3c7c6a216e551523ff7ef4e784f3fde360"
@@ -100,14 +102,19 @@ TEST(CardanoTxDecoderTest, EncodeTransaction_FailsOnDuplicateInputs) {
   // Duplicate input with the same outpoint. Encoding should fail.
   tx.AddInput(tx.inputs()[0]);
 
-  EXPECT_FALSE(CardanoTxDecoder::EncodeTransaction(*tx.ToSerializableTx()));
+  auto serializable = tx.ToSerializableTx();
+  ASSERT_TRUE(serializable);
+  EXPECT_FALSE(CardanoTxDecoder::EncodeTransaction(*serializable));
 
   // Give that new inputs a different outpoint index. Encoding should succeed.
   // (Tx is still invalid as amounts don't match).
   tx.inputs_[1].utxo_outpoint.index = 10;
 
-  EXPECT_EQ(base::HexEncodeLower(
-                *CardanoTxDecoder::EncodeTransaction(*tx.ToSerializableTx())),
+  serializable = tx.ToSerializableTx();
+  ASSERT_TRUE(serializable);
+  auto encoded = CardanoTxDecoder::EncodeTransaction(*serializable);
+  ASSERT_TRUE(encoded);
+  EXPECT_EQ(base::HexEncodeLower(*encoded),
             "84a400d9010282825820a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732c"
             "c6240add8c71edb92500825820a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5"
             "eb732cc6240add8c71edb9250a01828258390144e5e8699ab31de351be61dfeb7c"
@@ -120,19 +127,49 @@ TEST(CardanoTxDecoderTest, EncodeTransaction_FailsOnDuplicateInputs) {
             "9bca439b62e232731fb5290c495601cf40b358f915ade8bcff1eb7b802f5f6");
 }
 
+TEST(CardanoTxDecoderTest, EncodeDecodeTransaction_TtlRoundTrip) {
+  auto serializable_tx = GetSignedReferenceTransaction().ToSerializableTx();
+  ASSERT_TRUE(serializable_tx);
+
+  auto round_trip_ttl =
+      [&](std::optional<uint64_t> ttl) -> std::optional<uint64_t> {
+    if (ttl) {
+      serializable_tx->tx_body.ttl = *ttl;
+    } else {
+      serializable_tx->tx_body.ttl.reset();
+    }
+    auto encoded = CardanoTxDecoder::EncodeTransaction(*serializable_tx);
+    if (!encoded) {
+      ADD_FAILURE() << "EncodeTransaction failed";
+      return std::nullopt;
+    }
+    auto decoded = CardanoTxDecoder::DecodeTransaction(*encoded);
+    if (!decoded) {
+      ADD_FAILURE() << "DecodeTransaction failed";
+      return std::nullopt;
+    }
+    return decoded->tx.tx_body.ttl;
+  };
+
+  EXPECT_EQ(round_trip_ttl(149770436u), 149770436u);
+  EXPECT_EQ(round_trip_ttl(0u), 0u);
+  EXPECT_EQ(round_trip_ttl(std::nullopt), std::nullopt);
+}
+
 TEST(CardanoTxDecoderTest, DecodeTransaction_ValidTransaction) {
   auto tx = GetSignedReferenceTransaction();
   auto tx_bytes = CardanoTransactionSerializer().SerializeTransaction(tx);
+  ASSERT_TRUE(tx_bytes);
 
   auto decode_result = CardanoTxDecoder::DecodeTransaction(*tx_bytes);
-  EXPECT_TRUE(decode_result.has_value());
+  ASSERT_TRUE(decode_result.has_value());
 
   const auto& restored_tx = decode_result.value().tx;
 
   // Validate raw bytes
   EXPECT_EQ(decode_result->raw_tx_bytes, tx_bytes);
 
-  EXPECT_EQ(restored_tx.tx_body.inputs.size(), tx.inputs().size());
+  ASSERT_EQ(restored_tx.tx_body.inputs.size(), tx.inputs().size());
   for (size_t i = 0; i < tx.inputs().size(); i++) {
     EXPECT_EQ(restored_tx.tx_body.inputs[i].tx_hash,
               tx.inputs()[i].utxo_outpoint.txid);
@@ -140,7 +177,7 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_ValidTransaction) {
               tx.inputs()[i].utxo_outpoint.index);
   }
 
-  EXPECT_EQ(restored_tx.tx_body.outputs.size(), tx.outputs().size());
+  ASSERT_EQ(restored_tx.tx_body.outputs.size(), tx.outputs().size());
   for (size_t i = 0; i < tx.outputs().size(); i++) {
     EXPECT_EQ(restored_tx.tx_body.outputs[i].address_bytes,
               tx.outputs()[i].address.ToCborBytes());
@@ -155,7 +192,9 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_MaxSizeLimit) {
     auto input = tx.inputs()[0];
     input.utxo_outpoint.index = i + 100;
     tx.AddInput(input);
-    auto tx_bytes = *CardanoTransactionSerializer().SerializeTransaction(tx);
+    auto serialized = CardanoTransactionSerializer().SerializeTransaction(tx);
+    ASSERT_TRUE(serialized);
+    auto& tx_bytes = *serialized;
     if (tx_bytes.size() > 16 * 1024) {
       break;
     }
@@ -163,7 +202,9 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_MaxSizeLimit) {
     EXPECT_TRUE(decode_result.has_value());
   }
 
-  auto tx_bytes = *CardanoTransactionSerializer().SerializeTransaction(tx);
+  auto serialized = CardanoTransactionSerializer().SerializeTransaction(tx);
+  ASSERT_TRUE(serialized);
+  auto& tx_bytes = *serialized;
   EXPECT_GT(tx_bytes.size(), 16u * 1024u);
   auto decode_result = CardanoTxDecoder::DecodeTransaction(tx_bytes);
   EXPECT_FALSE(decode_result.has_value());
@@ -174,7 +215,7 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_ValidTransactionWithTag) {
   ASSERT_TRUE(base::HexStringToBytes(kTaggedTx, &tx_bytes));
 
   auto decode_result = CardanoTxDecoder::DecodeTransaction(tx_bytes);
-  EXPECT_TRUE(decode_result.has_value());
+  ASSERT_TRUE(decode_result.has_value());
 
   const auto& restored_tx = decode_result->tx;
 
@@ -189,13 +230,13 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_ValidTransactionWithTag) {
             "36F0FD1A0AC624A81B000000214A25425C021A00029309031A0A06305F");
 
   // Validate inputs
-  EXPECT_EQ(restored_tx.tx_body.inputs.size(), 1u);
+  ASSERT_EQ(restored_tx.tx_body.inputs.size(), 1u);
   EXPECT_EQ(base::HexEncode(restored_tx.tx_body.inputs[0].tx_hash),
             "73263792876C2BACFBDF46EC13ADEAFD59830954AA84B36A428636F075FFE0B1");
   EXPECT_EQ(restored_tx.tx_body.inputs[0].index, 1u);
 
   // Validate outputs
-  EXPECT_EQ(restored_tx.tx_body.outputs.size(), 2u);
+  ASSERT_EQ(restored_tx.tx_body.outputs.size(), 2u);
   EXPECT_EQ(CardanoAddress::FromCborBytes(
                 restored_tx.tx_body.outputs[0].address_bytes)
                 ->ToString(),
@@ -494,12 +535,12 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_ValidMinimalTransaction) {
   // clang-format on
 
   auto decode_result = CardanoTxDecoder::DecodeTransaction(valid_minimal_cbor);
-  EXPECT_TRUE(decode_result.has_value());
+  ASSERT_TRUE(decode_result.has_value());
 
   const auto& restored_tx = decode_result->tx;
 
-  EXPECT_EQ(restored_tx.tx_body.inputs.size(), 1u);
-  EXPECT_EQ(restored_tx.tx_body.outputs.size(), 1u);
+  ASSERT_EQ(restored_tx.tx_body.inputs.size(), 1u);
+  ASSERT_EQ(restored_tx.tx_body.outputs.size(), 1u);
 
   EXPECT_EQ(restored_tx.tx_body.inputs[0].index, 0u);
 
@@ -512,7 +553,9 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_ValidMinimalTransaction) {
   std::vector<uint8_t> expected_address(28, 0);
   EXPECT_EQ(restored_tx.tx_body.outputs[0].address_bytes, expected_address);
 
+  EXPECT_FALSE(restored_tx.tx_body.ttl.has_value());
   EXPECT_TRUE(restored_tx.tx_body.withdrawals.empty());
+  EXPECT_FALSE(restored_tx.tx_body.script_data_hash.has_value());
   EXPECT_TRUE(restored_tx.tx_body.mint.empty());
   EXPECT_TRUE(restored_tx.tx_body.collateral.empty());
   EXPECT_FALSE(restored_tx.tx_body.collateral_return.has_value());
@@ -899,7 +942,138 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_WithCollateral) {
   EXPECT_EQ(body.collateral_return->address_bytes, expected_return_addr);
 
   ASSERT_TRUE(body.total_collateral.has_value());
-  EXPECT_EQ(static_cast<uint64_t>(*body.total_collateral), 2000000u);
+  EXPECT_EQ(*body.total_collateral, 2000000u);
+}
+
+TEST(CardanoTxDecoderTest, DecodeTransaction_WithTtlAndScriptDataHash) {
+  // Body with ttl (3) and script data hash (11).
+  // clang-format off
+  std::vector<uint8_t> cbor = {
+      0x82,        // [transaction_body, witness_set]
+      0xa5,        // body map with 5 entries
+      0x00,        // Key 0: inputs
+      0x81,
+      0x82, 0x58, 0x20,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00,
+      0x01,        // Key 1: outputs
+      0x81,
+      0x82, 0x58, 0x1c,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,
+      0x1a, 0x00, 0x98, 0x96, 0x80,
+      0x02,        // Key 2: fee
+      0x1a, 0x00, 0x00, 0x27, 0x10,
+      0x03,        // Key 3: ttl
+      0x1a, 0x08, 0xed, 0x50, 0xc4,  // 149770436
+      0x0b,        // Key 11: script data hash
+      0x58, 0x20,
+      0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc,
+      0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc,
+      0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc,
+      0xa0,        // Empty witness set
+  };
+  // clang-format on
+
+  auto decode_result = CardanoTxDecoder::DecodeTransaction(cbor);
+  ASSERT_TRUE(decode_result.has_value());
+
+  const auto& body = decode_result->tx.tx_body;
+  ASSERT_TRUE(body.ttl.has_value());
+  EXPECT_EQ(*body.ttl, 149770436u);
+
+  std::array<uint8_t, 32> expected_script_data_hash;
+  expected_script_data_hash.fill(0xcc);
+  EXPECT_EQ(body.script_data_hash, expected_script_data_hash);
+
+  EXPECT_FALSE(body.collateral_return.has_value());
+  EXPECT_FALSE(body.total_collateral.has_value());
+}
+
+TEST(CardanoTxDecoderTest, DecodeTransaction_ZeroValuedOptionalFieldsPresent) {
+  // Optional fields that are present with zero values must decode as present,
+  // not as absent.
+  // clang-format off
+  std::vector<uint8_t> cbor = {
+      0x82,        // [transaction_body, witness_set]
+      0xa6,        // body map with 6 entries
+      0x00,        // Key 0: inputs
+      0x81,
+      0x82, 0x58, 0x20,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00,
+      0x01,        // Key 1: outputs
+      0x81,
+      0x82, 0x58, 0x1c,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,
+      0x1a, 0x00, 0x98, 0x96, 0x80,
+      0x02,        // Key 2: fee
+      0x1a, 0x00, 0x00, 0x27, 0x10,
+      0x03,        // Key 3: ttl
+      0x00,        // 0
+      0x0b,        // Key 11: script data hash
+      0x58, 0x20,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x11,        // Key 17: total collateral
+      0x00,        // 0
+      0xa0,        // Empty witness set
+  };
+  // clang-format on
+
+  auto decode_result = CardanoTxDecoder::DecodeTransaction(cbor);
+  ASSERT_TRUE(decode_result.has_value());
+
+  const auto& body = decode_result->tx.tx_body;
+  ASSERT_TRUE(body.ttl.has_value());
+  EXPECT_EQ(*body.ttl, 0u);
+
+  ASSERT_TRUE(body.script_data_hash.has_value());
+  EXPECT_EQ(*body.script_data_hash, (std::array<uint8_t, 32>{}));
+
+  ASSERT_TRUE(body.total_collateral.has_value());
+  EXPECT_EQ(*body.total_collateral, 0u);
+}
+
+TEST(CardanoTxDecoderTest, DecodeTransaction_ScriptDataHashWrongSizeRejected) {
+  // clang-format off
+  std::vector<uint8_t> cbor = {
+      0x82,        // [transaction_body, witness_set]
+      0xa4,        // body map with 4 entries
+      0x00,        // Key 0: inputs
+      0x81,
+      0x82, 0x58, 0x20,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00,
+      0x01,        // Key 1: outputs
+      0x81,
+      0x82, 0x58, 0x1c,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,
+      0x1a, 0x00, 0x98, 0x96, 0x80,
+      0x02,        // Key 2: fee
+      0x1a, 0x00, 0x00, 0x27, 0x10,
+      0x0b,        // Key 11: script data hash, 31 bytes instead of 32
+      0x58, 0x1f,
+      0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc,
+      0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc,
+      0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc,
+      0xa0,        // Empty witness set
+  };
+  // clang-format on
+
+  EXPECT_FALSE(CardanoTxDecoder::DecodeTransaction(cbor));
 }
 
 TEST(CardanoTxDecoderTest,
@@ -945,12 +1119,12 @@ TEST(CardanoTxDecoderTest,
   // clang-format on
 
   auto decode_result = CardanoTxDecoder::DecodeTransaction(valid_multi_cbor);
-  EXPECT_TRUE(decode_result.has_value());
+  ASSERT_TRUE(decode_result.has_value());
 
   const auto& restored_tx = decode_result->tx;
 
-  EXPECT_EQ(restored_tx.tx_body.inputs.size(), 2u);
-  EXPECT_EQ(restored_tx.tx_body.outputs.size(), 2u);
+  ASSERT_EQ(restored_tx.tx_body.inputs.size(), 2u);
+  ASSERT_EQ(restored_tx.tx_body.outputs.size(), 2u);
 
   EXPECT_EQ(restored_tx.tx_body.inputs[0].index, 0u);
   EXPECT_EQ(restored_tx.tx_body.inputs[1].index, 1u);
@@ -1005,10 +1179,12 @@ TEST(CardanoTxDecoderTest, EncodeDecodeCoinValue) {
 
   for (auto test : test_cases) {
     SCOPED_TRACE(test.expected_hex);
-    auto serialized = *CardanoTxDecoder::EncodeCoinValue(test.coin_value);
-    EXPECT_EQ(base::HexEncodeLower(serialized), test.expected_hex);
-    EXPECT_EQ(test.coin_value,
-              CardanoTxDecoder::DecodeCoinValue(serialized).value());
+    auto serialized = CardanoTxDecoder::EncodeCoinValue(test.coin_value);
+    ASSERT_TRUE(serialized);
+    EXPECT_EQ(base::HexEncodeLower(*serialized), test.expected_hex);
+    auto decoded = CardanoTxDecoder::DecodeCoinValue(*serialized);
+    ASSERT_TRUE(decoded);
+    EXPECT_EQ(test.coin_value, *decoded);
   }
 }
 
@@ -1017,22 +1193,25 @@ TEST(CardanoTxDecoderTest, EncodeTransactionOutput) {
       CardanoAddress::FromString(kMockCardanoAddress1)->ToCborBytes(),
       cardano_rpc::CoinValue(1000000u, {}));
 
-  EXPECT_EQ(base::HexEncodeLower(
-                CardanoTxDecoder::EncodeTransactionOutput(output).value()),
+  auto encoded = CardanoTxDecoder::EncodeTransactionOutput(output);
+  ASSERT_TRUE(encoded);
+  EXPECT_EQ(base::HexEncodeLower(*encoded),
             "8258390144e5e8699ab31de351be61dfeb7c220eff61d29d9c88ca9d1599b36deb"
             "20324c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bace785391a000f4240");
 
   output.coin_value.tokens.emplace(GetMockTokenId("foo"), 1000000u);
+  encoded = CardanoTxDecoder::EncodeTransactionOutput(output);
+  ASSERT_TRUE(encoded);
   EXPECT_EQ(
-      base::HexEncodeLower(
-          CardanoTxDecoder::EncodeTransactionOutput(output).value()),
+      base::HexEncodeLower(*encoded),
       "8258390144e5e8699ab31de351be61dfeb7c220eff61d29d9c88ca9d1599b36deb20324c"
       "1f3c7c6a216e551523ff7ef4e784f3fde3606a5bace78539821a000f4240a1581c666666"
       "66666666666666666666666666666666666666666666666666a143666f6f1a000f4240");
 
   output.coin_value.tokens.emplace(GetMockTokenId("bar"), 123u);
-  EXPECT_EQ(base::HexEncodeLower(
-                CardanoTxDecoder::EncodeTransactionOutput(output).value()),
+  encoded = CardanoTxDecoder::EncodeTransactionOutput(output);
+  ASSERT_TRUE(encoded);
+  EXPECT_EQ(base::HexEncodeLower(*encoded),
             "8258390144e5e8699ab31de351be61dfeb7c220eff61d29d9c88ca9d1599b36deb"
             "20324c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bace78539821a000f4240"
             "a2581c62626262626262626262626262626262626262626262626262626262a143"
@@ -1040,8 +1219,9 @@ TEST(CardanoTxDecoderTest, EncodeTransactionOutput) {
             "6666a143666f6f1a000f4240");
 
   output.coin_value.tokens.emplace(GetMockTokenId("baz"), UINT64_MAX);
-  EXPECT_EQ(base::HexEncodeLower(
-                CardanoTxDecoder::EncodeTransactionOutput(output).value()),
+  encoded = CardanoTxDecoder::EncodeTransactionOutput(output);
+  ASSERT_TRUE(encoded);
+  EXPECT_EQ(base::HexEncodeLower(*encoded),
             "8258390144e5e8699ab31de351be61dfeb7c220eff61d29d9c88ca9d1599b36deb"
             "20324c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bace78539821a000f4240"
             "a2581c62626262626262626262626262626262626262626262626262626262a243"
@@ -1057,15 +1237,19 @@ TEST(CardanoTxDecoderTest, EncodeUtxo) {
       CardanoAddress::FromString(kMockCardanoAddress1)->ToCborBytes(),
       cardano_rpc::CoinValue(1000000u, {}));
 
+  auto encoded = CardanoTxDecoder::EncodeUtxo(input, output);
+  ASSERT_TRUE(encoded);
   EXPECT_EQ(
-      base::HexEncodeLower(CardanoTxDecoder::EncodeUtxo(input, output).value()),
+      base::HexEncodeLower(*encoded),
       "828258207e2aeed860faf61b0513e9807be633a90e3260480ebc46b53ea99c497195fc29"
       "078258390144e5e8699ab31de351be61dfeb7c220eff61d29d9c88ca9d1599b36deb2032"
       "4c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bace785391a000f4240");
 
   output.coin_value.tokens.emplace(GetMockTokenId("foo"), 1000000u);
+  encoded = CardanoTxDecoder::EncodeUtxo(input, output);
+  ASSERT_TRUE(encoded);
   EXPECT_EQ(
-      base::HexEncodeLower(CardanoTxDecoder::EncodeUtxo(input, output).value()),
+      base::HexEncodeLower(*encoded),
       "828258207e2aeed860faf61b0513e9807be633a90e3260480ebc46b53ea99c497195fc29"
       "078258390144e5e8699ab31de351be61dfeb7c220eff61d29d9c88ca9d1599b36deb2032"
       "4c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bace78539821a000f4240a1581c6666"
@@ -1073,8 +1257,10 @@ TEST(CardanoTxDecoderTest, EncodeUtxo) {
       "0");
 
   output.coin_value.tokens.emplace(GetMockTokenId("bar"), 123u);
+  encoded = CardanoTxDecoder::EncodeUtxo(input, output);
+  ASSERT_TRUE(encoded);
   EXPECT_EQ(
-      base::HexEncodeLower(CardanoTxDecoder::EncodeUtxo(input, output).value()),
+      base::HexEncodeLower(*encoded),
       "828258207e2aeed860faf61b0513e9807be633a90e3260480ebc46b53ea99c497195fc29"
       "078258390144e5e8699ab31de351be61dfeb7c220eff61d29d9c88ca9d1599b36deb2032"
       "4c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bace78539821a000f4240a2581c6262"
@@ -1083,8 +1269,10 @@ TEST(CardanoTxDecoderTest, EncodeUtxo) {
       "40");
 
   output.coin_value.tokens.emplace(GetMockTokenId("baz"), UINT64_MAX);
+  encoded = CardanoTxDecoder::EncodeUtxo(input, output);
+  ASSERT_TRUE(encoded);
   EXPECT_EQ(
-      base::HexEncodeLower(CardanoTxDecoder::EncodeUtxo(input, output).value()),
+      base::HexEncodeLower(*encoded),
       "828258207e2aeed860faf61b0513e9807be633a90e3260480ebc46b53ea99c497195fc29"
       "078258390144e5e8699ab31de351be61dfeb7c220eff61d29d9c88ca9d1599b36deb2032"
       "4c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bace78539821a000f4240a2581c6262"
@@ -1096,16 +1284,18 @@ TEST(CardanoTxDecoderTest, EncodeUtxo) {
 TEST(CardanoTxDecoderTest, EncodeWitness) {
   CardanoTxDecoder::SerializableTxWitness witness;
 
-  EXPECT_EQ(
-      base::HexEncodeLower(CardanoTxDecoder::EncodeWitness(witness).value()),
-      "a0");
+  auto encoded = CardanoTxDecoder::EncodeWitness(witness);
+  ASSERT_TRUE(encoded);
+  EXPECT_EQ(base::HexEncodeLower(*encoded), "a0");
 
   witness.vkey_witness_set.emplace_back(
       test::HexToArray<64>(kMockCardanoSignature),
       test::HexToArray<32>(kMockCardanoPubkey));
 
+  encoded = CardanoTxDecoder::EncodeWitness(witness);
+  ASSERT_TRUE(encoded);
   EXPECT_EQ(
-      base::HexEncodeLower(CardanoTxDecoder::EncodeWitness(witness).value()),
+      base::HexEncodeLower(*encoded),
       "a100d9010281825820e68ca46554098776f19f1433da96a108ea8bdda693fb1bea748f89"
       "adbfa7c2af58404dd83381fdc64b6123f193e23c983a99c979a1af44b1bda5ea15d06cf7"
       "364161b7b3609bca439b62e232731fb5290c495601cf40b358f915ade8bcff1eb7b802");
@@ -1114,8 +1304,10 @@ TEST(CardanoTxDecoderTest, EncodeWitness) {
   witness.vkey_witness_set.back().public_key.fill(1);
   witness.vkey_witness_set.back().signature_bytes.fill(2);
 
+  encoded = CardanoTxDecoder::EncodeWitness(witness);
+  ASSERT_TRUE(encoded);
   EXPECT_EQ(
-      base::HexEncodeLower(CardanoTxDecoder::EncodeWitness(witness).value()),
+      base::HexEncodeLower(*encoded),
       "a100d9010282825820010101010101010101010101010101010101010101010101010101"
       "010101010158400202020202020202020202020202020202020202020202020202020202"
       "020202020202020202020202020202020202020202020202020202020202020202020282"

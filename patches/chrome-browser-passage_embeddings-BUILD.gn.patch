@@ -1,12 +1,21 @@
 diff --git a/chrome/browser/passage_embeddings/BUILD.gn b/chrome/browser/passage_embeddings/BUILD.gn
-index 621a9dcfa08099e0fc7742e7be08cdf296b5bfed..b521c0f8ca233405ca05b4e1a8a61edfb6943c1d 100644
+index 621a9dcfa08099e0fc7742e7be08cdf296b5bfed..237d7c3a2075a7af689de209fba92d99eadf561d 100644
 --- a/chrome/browser/passage_embeddings/BUILD.gn
 +++ b/chrome/browser/passage_embeddings/BUILD.gn
-@@ -27,6 +27,7 @@ source_set("passage_embeddings") {
+@@ -2,6 +2,8 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/chromium_src/chrome/browser/passage_embeddings/sources.gni")
++
+ source_set("passage_embeddings") {
+   sources = [
+     "chrome_passage_embeddings_service_controller.cc",
+@@ -27,6 +29,7 @@ source_set("passage_embeddings") {
      "//content/public/browser",
      "//services/passage_embeddings/public/mojom",
    ]
-+  import("//brave/chromium_src/chrome/browser/passage_embeddings/sources.gni") deps += brave_chromium_src_chrome_browser_passage_embeddings_deps
++  deps += brave_chromium_src_chrome_browser_passage_embeddings_deps
    if (is_chromeos) {
      deps += [ "//chromeos/constants" ]
    }

@@ -8,6 +8,7 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/shared/prefs/pref_names.h"
 #include "components/metrics/metrics_pref_names.h"
+#include "ios/chrome/browser/shared/model/prefs/pref_names.h"
 
 NSString* const kMediaBackgroundingEnabled =
     base::SysUTF8ToNSString(prefs::kMediaBackgroundingEnabled);
@@ -20,3 +21,8 @@ NSString* const kBlockAllCookiesEnabled =
 // consent in `BraveCoreMain` rather than introducing a separate pref.
 NSString* const kMetricsReportingEnabled =
     base::SysUTF8ToNSString(metrics::prefs::kMetricsReportingEnabled);
+
+// Upstream's HTTPS-Only Mode pref, which drives
+// `HttpsOnlyModeUpgradeTabHelper`.
+NSString* const kHttpsOnlyModeEnabled =
+    base::SysUTF8ToNSString(prefs::kHttpsOnlyModeEnabled);

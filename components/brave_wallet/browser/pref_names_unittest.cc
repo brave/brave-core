@@ -7,7 +7,6 @@
 
 #include <vector>
 
-#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"

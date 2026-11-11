@@ -5,20 +5,22 @@
 
 #include "brave/components/brave_ads/browser/component_updater/resource_component_registrar.h"
 
-#include <stddef.h>
-
+#include <cstddef>
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <utility>
 
+#include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_registrar_delegate.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "crypto/sha2.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -41,7 +43,8 @@ class FakeComponentUpdaterDelegate
   FakeComponentUpdaterDelegate() = default;
 
   void Register(const std::string& /*component_name*/,
-                const std::string& /*component_base64_public_key*/,
+                base::span<const uint8_t, crypto::kSHA256Length>
+                /*component_public_key_sha256*/,
                 base::OnceClosure registered_callback,
                 brave_component_updater::BraveComponent::ReadyCallback
                     ready_callback) override {

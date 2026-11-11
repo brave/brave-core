@@ -1,0 +1,46 @@
+// Copyright 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import CoreData
+import Data
+import Foundation
+import Shared
+import UIKit
+
+/// CoreData's diffable method relies on managed object ID only.
+/// This does not work in our case since the object may be the same but with changed title or order.
+/// This struct stores managed object ID as well as properties that we observer whether they have changed.
+/// Note: `order` property does not have to be stored, favorite's frc handles order updates, it returns items in correct order.
+struct TopSitesTileDiffable: Hashable {
+  let id: TopSiteTile.ID
+  let title: String?
+  let url: String?
+
+  init(_ tile: TopSiteTile) {
+    self.id = tile.id
+    self.title = tile.title
+    self.url = tile.url.absoluteString
+  }
+
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+  }
+}
+
+enum TopSitesDataWrapper: Hashable {
+  case topSites(TopSitesTileDiffable)
+
+  // Recent searches are static, we do not need any wrapper class for them.
+  case recentSearch(NSManagedObjectID)
+
+  case recentSearchOptIn
+}
+
+/// TopSites VC sections
+enum TopSitesSection: Int, CaseIterable {
+  case topSites
+  case recentSearches
+  case recentSearchesOptIn
+}

@@ -93,6 +93,8 @@ export function getToolLabel(toolName: string, toolInput: any) {
       return getLocale(S.CHAT_UI_TOOL_LABEL_CODE_EXECUTION)
     case Mojom.SEMANTIC_HISTORY_SEARCH_TOOL_NAME:
       return getSemanticHistorySearchToolNameLabel(toolInput)
+    case Mojom.ATTACH_WORKSPACE_TOOL_NAME:
+      return getLocale(S.CHAT_UI_TOOL_LABEL_ATTACH_WORKSPACE)
     // <if expr="enable_ai_chat_tab_management_tool">
     case Mojom.TAB_MANAGEMENT_TOOL_NAME:
       return getLocale(S.CHAT_UI_TOOL_LABEL_TAB_MANAGEMENT)

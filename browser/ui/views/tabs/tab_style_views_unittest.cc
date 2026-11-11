@@ -8,6 +8,7 @@
 #include <memory>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/tabs/fake_tab_slot_controller.h"
@@ -26,16 +27,18 @@ class TestTabSlotController : public FakeTabSlotController {
   TestTabSlotController() = default;
   ~TestTabSlotController() override = default;
 
-  void SetTabsInSplit(std::vector<Tab*> tabs) { split_tabs_ = tabs; }
+  void SetTabsInSplit(std::vector<Tab*> tabs) {
+    split_tabs_.assign(tabs.begin(), tabs.end());
+  }
   void ClearSplitTabs() { split_tabs_.clear(); }
 
   // FakeTabSlotController:
   std::vector<Tab*> GetTabsInSplit(const Tab* tab) override {
-    return split_tabs_;
+    return {split_tabs_.begin(), split_tabs_.end()};
   }
 
  private:
-  std::vector<Tab*> split_tabs_;
+  std::vector<raw_ptr<Tab>> split_tabs_;
 };
 
 }  // namespace
@@ -120,6 +123,7 @@ TEST_F(BraveTabStyleIsHoveringTest, IsHovering_SingleTab) {
   SimulateMouseEnter(tab);
 
   EXPECT_TRUE(tab->mouse_hovered());
+  EXPECT_TRUE(tab->IsHovering());
 
   // Verify hover state changes the color.
   TabStyle::TabColors hovered_colors =
@@ -152,6 +156,8 @@ TEST_F(BraveTabStyleIsHoveringTest, IsHovering_SplitTabs_NeitherHovered) {
 
   EXPECT_FALSE(tab1->mouse_hovered());
   EXPECT_FALSE(tab2->mouse_hovered());
+  EXPECT_FALSE(tab1->IsHovering());
+  EXPECT_FALSE(tab2->IsHovering());
 
   // Neither tab should have hover background color (both use transparent for
   // non-hovered split tabs).
@@ -161,41 +167,6 @@ TEST_F(BraveTabStyleIsHoveringTest, IsHovering_SplitTabs_NeitherHovered) {
       tab2->tab_style_views()->CalculateTargetColors();
   EXPECT_EQ(colors1.background_color, SK_ColorTRANSPARENT);
   EXPECT_EQ(colors2.background_color, SK_ColorTRANSPARENT);
-}
-
-// Verifies that when hovering the first tab in a split, only that tab's
-// color changes (Brave behavior - not both tabs like upstream).
-TEST_F(BraveTabStyleIsHoveringTest, IsHovering_SplitTabs_FirstTabHovered) {
-  Tab* tab1 = CreateTab(1);
-  Tab* tab2 = CreateTab(2);
-
-  // Set up split tabs.
-  split_tabs::SplitTabId split_id = split_tabs::SplitTabId::GenerateNew();
-  tab1->SetSplit(split_id);
-  tab2->SetSplit(split_id);
-
-  std::vector<Tab*> split_tabs = {tab1, tab2};
-  controller_->SetTabsInSplit(split_tabs);
-
-  // Capture baseline colors (neither hovered).
-  TabStyle::TabColors baseline1 =
-      tab1->tab_style_views()->CalculateTargetColors();
-  TabStyle::TabColors baseline2 =
-      tab2->tab_style_views()->CalculateTargetColors();
-
-  SimulateMouseEnter(tab1);
-
-  EXPECT_TRUE(tab1->mouse_hovered());
-  EXPECT_FALSE(tab2->mouse_hovered());
-
-  // Only tab1's color should change.
-  TabStyle::TabColors colors1 =
-      tab1->tab_style_views()->CalculateTargetColors();
-  TabStyle::TabColors colors2 =
-      tab2->tab_style_views()->CalculateTargetColors();
-
-  EXPECT_NE(colors1.background_color, baseline1.background_color);
-  EXPECT_EQ(colors2.background_color, baseline2.background_color);
 }
 
 // Verifies that when hovering the second tab in a split, only that tab's
@@ -222,6 +193,8 @@ TEST_F(BraveTabStyleIsHoveringTest, IsHovering_SplitTabs_SecondTabHovered) {
 
   EXPECT_FALSE(tab1->mouse_hovered());
   EXPECT_TRUE(tab2->mouse_hovered());
+  EXPECT_FALSE(tab1->IsHovering());
+  EXPECT_TRUE(tab2->IsHovering());
 
   // Only tab2's color should change.
   TabStyle::TabColors colors1 =

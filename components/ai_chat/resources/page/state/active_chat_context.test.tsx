@@ -19,6 +19,7 @@ import {
   defaultConversationState,
 } from '../api/mock_interfaces'
 import createConversationAPI from '../api/conversation_api'
+import * as Mojom from '../../common/mojom'
 
 // Replace the real BindConversation helpers with jest mocks so we can:
 // - assert which routing decision the provider made (bind by uuid vs new vs
@@ -56,6 +57,7 @@ interface RenderOptions {
   selectedConversationId: string | undefined
   isGlobalPanel: boolean
   updateSelectedConversationId?: jest.Mock
+  conversations?: Array<Pick<Mojom.Conversation, 'uuid' | 'hasContent'>>
 }
 
 const renderProvider = async (opts: RenderOptions) => {
@@ -72,7 +74,15 @@ const renderProvider = async (opts: RenderOptions) => {
   }
 
   const tree = (selectedConversationId: string | undefined) => (
-    <MockContext aiChatOverrides={{ isGlobalPanel: opts.isGlobalPanel }}>
+    <MockContext
+      aiChatOverrides={{ isGlobalPanel: opts.isGlobalPanel }}
+      service={{
+        getConversations: () =>
+          Promise.resolve({
+            conversations: (opts.conversations ?? []) as Mojom.Conversation[],
+          }),
+      }}
+    >
       <ActiveChatProvider
         selectedConversationId={selectedConversationId}
         updateSelectedConversationId={updateSelectedConversationId}
@@ -118,9 +128,10 @@ beforeEach(() => {
   let nextRelated = 0
   mockedBind.newConversation.mockReset()
   mockedBind.bindConversation.mockReset()
-  mockedBind.newConversation.mockImplementation(() =>
-    makeBindings(`new-${nextNew++}`),
-  )
+  mockedBind.newConversation.mockImplementation(() => ({
+    ...makeBindings(`new-${nextNew++}`),
+    isNew: true,
+  }))
   mockedBind.bindConversation.mockImplementation((_aiChat, id) =>
     makeBindings(id ?? `related-${nextRelated++}`),
   )
@@ -344,5 +355,63 @@ describe('ActiveChatProvider routing — sidebar (non-global panel) mode', () =>
     expect(() => detailsRef.current!.openMainConversation()).toThrow(
       'No main conversation!',
     )
+  })
+})
+
+describe('ActiveChatProvider createNewConversationWithWorkspace', () => {
+  const workspaceUrl = {
+    url: 'workspace://1b4e28ba-2fa1-41d2-883f-0016d3cca427',
+  }
+
+  it('binds a new conversation with the workspace, which navigating to "/" keeps', async () => {
+    const { detailsRef, setSelectedConversationId } = await renderProvider({
+      isGlobalPanel: false,
+      selectedConversationId: 'standalone-uuid',
+    })
+
+    act(() => {
+      detailsRef.current!.createNewConversationWithWorkspace(workspaceUrl)
+    })
+    expect(window.location.pathname).toBe('/')
+    await setSelectedConversationId(undefined)
+
+    expect(mockedBind.newConversation).toHaveBeenCalledTimes(1)
+    expect(mockedBind.newConversation).toHaveBeenCalledWith(
+      expect.anything(),
+      workspaceUrl,
+    )
+  })
+
+  it('stays on /tab, binding a new tab-related conversation with the workspace', async () => {
+    const { detailsRef } = await renderProvider({
+      isGlobalPanel: false,
+      selectedConversationId: tabAssociatedChatId,
+    })
+    window.history.replaceState(null, '', '/tab')
+
+    act(() => {
+      detailsRef.current!.createNewConversationWithWorkspace(workspaceUrl)
+    })
+
+    expect(window.location.pathname).toBe('/tab')
+    expect(mockedBind.newConversation).toHaveBeenCalledTimes(1)
+    expect(mockedBind.newConversation).toHaveBeenCalledWith(
+      expect.anything(),
+      workspaceUrl,
+    )
+  })
+
+  it('navigating to "/" replaces a new conversation once it has started', async () => {
+    const { setSelectedConversationId } = await renderProvider({
+      isGlobalPanel: false,
+      selectedConversationId: undefined,
+      conversations: [{ uuid: 'new-0', hasContent: true }],
+    })
+    expect(mockedBind.newConversation).toHaveBeenCalledTimes(1)
+
+    await setSelectedConversationId('new-0')
+    await setSelectedConversationId(undefined)
+
+    expect(mockedBind.newConversation).toHaveBeenCalledTimes(2)
   })
 })

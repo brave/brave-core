@@ -29,7 +29,6 @@
 #include "third_party/abseil-cpp/absl/base/macros.h"
 #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
-#include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "v8/include/cppgc/allocation.h"
@@ -303,8 +302,8 @@ void JSEthereumProvider::MetaMask::WillReleaseScriptContext(
 
 gin::ObjectTemplateBuilder
 JSEthereumProvider::MetaMask::GetObjectTemplateBuilder(v8::Isolate* isolate) {
-  return gin::Wrappable<MetaMask>::GetObjectTemplateBuilder(isolate).SetMethod(
-      kIsUnlocked, &JSEthereumProvider::MetaMask::IsUnlocked);
+  return gin::Wrappable<MetaMask>::GetObjectTemplateBuilder(isolate)
+      .SetMethod<&JSEthereumProvider::MetaMask::IsUnlocked>(kIsUnlocked);
 }
 
 const gin::WrapperInfo* JSEthereumProvider::MetaMask::wrapper_info() const {
@@ -401,17 +400,17 @@ gin::ObjectTemplateBuilder JSEthereumProvider::GetObjectTemplateBuilder(
   // Note: When adding a new method, you would need to update the list in
   // kEthereumProxyHandlerScript too otherwise the function call would fail.
   return gin::Wrappable<JSEthereumProvider>::GetObjectTemplateBuilder(isolate)
-      .SetProperty(kIsBraveWallet, &JSEthereumProvider::GetIsBraveWallet)
-      .SetProperty(kIsMetaMask, &JSEthereumProvider::GetIsMetaMask)
-      .SetProperty(kMetaMask, &JSEthereumProvider::GetMetaMask)
-      .SetProperty("chainId", &JSEthereumProvider::GetChainId)
-      .SetProperty("networkVersion", &JSEthereumProvider::GetNetworkVersion)
-      .SetProperty("selectedAddress", &JSEthereumProvider::GetSelectedAddress)
-      .SetMethod("request", &JSEthereumProvider::Request)
-      .SetMethod("isConnected", &JSEthereumProvider::IsConnected)
-      .SetMethod("enable", &JSEthereumProvider::Enable)
-      .SetMethod("sendAsync", &JSEthereumProvider::SendAsync)
-      .SetMethod("send", &JSEthereumProvider::SendMethod);
+      .SetProperty<&JSEthereumProvider::GetIsBraveWallet>(kIsBraveWallet)
+      .SetProperty<&JSEthereumProvider::GetIsMetaMask>(kIsMetaMask)
+      .SetProperty<&JSEthereumProvider::GetMetaMask>(kMetaMask)
+      .SetProperty<&JSEthereumProvider::GetChainId>("chainId")
+      .SetProperty<&JSEthereumProvider::GetNetworkVersion>("networkVersion")
+      .SetProperty<&JSEthereumProvider::GetSelectedAddress>("selectedAddress")
+      .SetMethod<&JSEthereumProvider::Request>("request")
+      .SetMethod<&JSEthereumProvider::IsConnected>("isConnected")
+      .SetMethod<&JSEthereumProvider::Enable>("enable")
+      .SetMethod<&JSEthereumProvider::SendAsync>("sendAsync")
+      .SetMethod<&JSEthereumProvider::SendMethod>("send");
 }
 
 const gin::WrapperInfo* JSEthereumProvider::wrapper_info() const {

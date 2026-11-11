@@ -17,7 +17,7 @@ class DictValue;
 namespace ntp_background_images {
 
 struct NTPBackgroundImagesData;
-struct NTPSponsoredImagesData;
+struct NTPSponsoredContentData;
 
 class NTPBackgroundImagesServiceWaiter
     : public NTPBackgroundImagesService::Observer {
@@ -33,14 +33,15 @@ class NTPBackgroundImagesServiceWaiter
   ~NTPBackgroundImagesServiceWaiter() override;
 
   void WaitForOnBackgroundImagesDataDidUpdate();
-  void WaitForOnSponsoredImagesDataDidUpdate();
+  void WaitForDeprecatedOnSponsoredContentDidUpdate();
   void WaitForOnSponsoredContentDidUpdate();
   void WaitForOnSponsoredSitesDataDidUpdate();
 
  private:
   // NTPBackgroundImagesService::Observer:
   void OnBackgroundImagesDataDidUpdate(NTPBackgroundImagesData* data) override;
-  void OnSponsoredImagesDataDidUpdate(NTPSponsoredImagesData* data) override;
+  void DeprecatedOnSponsoredContentDidUpdate(
+      NTPSponsoredContentData* data) override;
   void OnSponsoredContentDidUpdate(const base::DictValue& dict) override;
   void OnSponsoredSitesDataDidUpdate() override;
 
@@ -49,7 +50,7 @@ class NTPBackgroundImagesServiceWaiter
       observation_{this};
 
   base::RunLoop on_background_images_did_update_run_loop_;
-  base::RunLoop on_sponsored_images_data_did_update_run_loop_;
+  base::RunLoop deprecated_on_sponsored_content_did_update_run_loop_;
   base::RunLoop on_sponsored_content_did_update_run_loop_;
   base::RunLoop on_sponsored_sites_data_did_update_run_loop_;
 };

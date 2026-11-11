@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_feature.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 

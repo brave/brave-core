@@ -33,7 +33,7 @@ export function useProvideUntrustedConversationContext(
   // Use API hooks for state
   const state = api.useState().data
   const serviceState = api.useServiceState().data
-  const conversationHistory = api.useGetConversationHistoryData()
+  const conversationHistory = api.useGetConversationHistoryData(null)
 
   const associatedContent = api.useAssociatedContentData()
   const contentTaskTabId = api.useCurrentContentTaskStarted().data?.[0]
@@ -165,6 +165,11 @@ export function useProvideUntrustedConversationContext(
      * @deprecated Use `api.actions.conversationHandler` instead
      */
     conversationHandler: api.conversationHandler,
+
+    /**
+     * @deprecated Use `api.actions.userActions` instead
+     */
+    userActions: api.userActions,
 
     /**
      * @deprecated Use `api.actions.uiHandler` instead

@@ -1,12 +1,21 @@
 diff --git a/chrome/browser/ui/views/bookmarks/bookmark_context_menu.cc b/chrome/browser/ui/views/bookmarks/bookmark_context_menu.cc
-index 0300c271aac772a553428be8cacc0eb8dc7fd07f..7caf6b6af3976145ed6e5376934fe7e2bdfb2297 100644
+index a4fb9c53f1dbb416c9977223b8009f1e80ec0dcf..3f0dd84507765fce3a25144ce091e2c7c4748daf 100644
 --- a/chrome/browser/ui/views/bookmarks/bookmark_context_menu.cc
 +++ b/chrome/browser/ui/views/bookmarks/bookmark_context_menu.cc
+@@ -51,7 +51,7 @@ BookmarkContextMenu::BookmarkContextMenu(
+         selection,
+     bool close_on_remove,
+     bool can_paste)
+-    : controller_(new BookmarkContextMenuController(
++    : controller_(new BraveBookmarkContextMenuController(
+           parent_widget ? parent_widget->GetNativeWindow()
+                         : gfx::NativeWindow(),
+           this,
 @@ -72,6 +72,7 @@ BookmarkContextMenu::BookmarkContextMenu(
    for (size_t i = 0; i < menu_model->GetItemCount(); ++i) {
      views::MenuModelAdapter::AppendMenuItemFromModel(
          menu_model, i, menu_, menu_model->GetCommandIdAt(i));
-+    BRAVE_BOOKMARK_CONTEXT_MENU
++MaybeAppendContainerSubmenu(i, menu_model, menu_);
      if (menu_model->GetCommandIdAt(i) == IDC_BOOKMARK_BAR_SUBMENU) {
        submodel = menu_model->GetSubmenuModelAt(i);
      }

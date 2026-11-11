@@ -1,12 +1,20 @@
 diff --git a/content/public/browser/BUILD.gn b/content/public/browser/BUILD.gn
-index 746dd6b3e6194fb3db4747ead25b60259b3d742a..48fec3c310261338d5c88d3e19ba9db8c8812b6a 100644
+index debe2d1117372aeade5ed113c85d11ae9e9ea391..2cfb1f69fdab3c080468d923b2018414c54105b1 100644
 --- a/content/public/browser/BUILD.gn
 +++ b/content/public/browser/BUILD.gn
-@@ -777,6 +777,7 @@ source_set("browser_sources") {
-   if (use_clang_profiling_inside_sandbox) {
-     sources += [ "profiling_utils.h" ]
-   }
-+  import("//brave/content/public/browser/sources.gni") sources += brave_content_public_browser_sources
- }
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD - style license that can be
+ # found in the LICENSE file.
  
- if (is_android) {
++import("//brave/content/public/browser/sources.gni")
+ import("//build/config/ui.gni")
+ import("//content/common/features.gni")
+ import("//content/public/common/features.gni")
+@@ -554,6 +555,7 @@ source_set("browser_sources") {
+     "webui_config_map.h",
+     "zoom_level_delegate.h",
+   ]
++  sources += brave_content_public_browser_sources
+   configs += [
+     "//build/config:precompiled_headers",
+     "//content:content_implementation",

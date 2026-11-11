@@ -13,11 +13,11 @@
 #include "base/functional/callback_forward.h"
 #include "third_party/blink/public/mojom/choosers/file_chooser.mojom-forward.h"
 
-namespace brave {
+namespace content {
+class WebContents;
+}  // namespace content
 
-// Prefix passed to CreateUniqueTempDir for stripped upload copies.
-inline constexpr base::FilePath::CharType kUploadStripTempDirPrefix[] =
-    FILE_PATH_LITERAL("brave_upload_strip");
+namespace brave {
 
 // A method which is called when the browser is about to hand over the selected
 // files via `NotifyListenerAndEnd`. This method is responsible for stripping
@@ -29,12 +29,11 @@ inline constexpr base::FilePath::CharType kUploadStripTempDirPrefix[] =
 // `NotifyListenerAndEnd` asynchronously via |notify| callback to join back with
 // the regular execution.
 //
-// The method does not strip metadata from the original file. It copies each
-// strippable JPEG into a unique subdirectory of one temporary parent directory
-// (so the original basename is preserved) and that copy is what gets uploaded.
-// Only the parent directory is added to |temporary_files|;
-// `MaybeDeleteImageMetadataStripperTemporaryDir` recursively deletes it
-// after the upload completes.
+// The method does not strip metadata from the original file. The tab's
+// `image_metadata_stripper::FileUploadController` copies each strippable JPEG
+// (keeping the original basename) and that copy is what gets uploaded. The
+// controller deletes the copies when the tab closes or is discarded. Returns
+// false when |web_contents| has no controller.
 //
 // |already_processed| helps to avoid looping between `NotifyListenerAndEnd`
 // and `MaybeStripImageMetadataForUpload` by letting `NotifyListenerAndEnd` know
@@ -45,17 +44,11 @@ inline constexpr base::FilePath::CharType kUploadStripTempDirPrefix[] =
 // |notify| callback. For false, regular execution would follow as the |list|
 // ownership would still be with the caller.
 bool MaybeStripImageMetadataForUpload(
+    content::WebContents* web_contents,
     bool& already_processed,
-    std::vector<base::FilePath>& temporary_files,
     std::vector<blink::mojom::FileChooserFileInfoPtr>& list,
     base::OnceCallback<void(std::vector<blink::mojom::FileChooserFileInfoPtr>)>
         notify);
-
-// Recursively deletes the upload-strip temp directory (basename contains
-// `kUploadStripTempDirPrefix`) which holds the stripped copies. No-ops if
-// |paths| has no matching directory.
-void MaybeDeleteImageMetadataStripperTemporaryDir(
-    std::vector<base::FilePath>& paths);
 
 // Test-only: The caller owns |callback| and must keep
 // it alive until it fires; pass nullptr to clear it.

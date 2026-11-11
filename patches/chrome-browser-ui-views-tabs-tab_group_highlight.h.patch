@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_group_highlight.h b/chrome/browser/ui/views/tabs/tab_group_highlight.h
-index 912459910569ba8311f69864c46e089ee5aa92ee..65e53e45b208a10fae53b45e077c1fec579f7977 100644
+index b973394a2f28779ef8c7fe4a4ca7c094291aa98b..a7c42323ea934f399a3a79fc13a0d9e55c5a6096 100644
 --- a/chrome/browser/ui/views/tabs/tab_group_highlight.h
 +++ b/chrome/browser/ui/views/tabs/tab_group_highlight.h
 @@ -32,8 +32,9 @@ class TabGroupHighlight : public views::View {

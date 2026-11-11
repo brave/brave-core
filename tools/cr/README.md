@@ -4,7 +4,7 @@ Python tooling maintained by the Chromium Rebase team to support upgrading
 `brave-core` to new Chromium versions and to manage the patches and shadow files
 that live on top of upstream.
 
-All scripts here are intended to run via `vpython3`; the `.vpython3` spec in
+All scripts here are intended to run via `vpython3`; the `vpython.toml` spec in
 this directory pulls in `rich`, `requests`, and the other wheels they need. Most
 scripts accept `--verbose` to switch logging to `DEBUG`.
 
@@ -27,6 +27,13 @@ These are the user-facing scripts in this directory:
   `oldest..newest` git commit range.
 - `prune_test_filters.py` — Detects and (optionally) removes obsolete entries
   from the current platform's test-filter files.
+- `autolift/autolift.py` — Helpers for the autonomous lift in
+  [autolift/SKILL.md](autolift/SKILL.md): build log summaries, culprit lookup,
+  culprit hash verification, the autofix run's CI report and fixup push, and
+  channel bumps: a minor bump's branch and pull request for each release channel
+  on its milestone.
+- `ci/cli.py` — Lists a pull request's checks, reports what failed behind them
+  on Jenkins and TeamCity, and reruns a check's build.
 
 ## Library modules
 
@@ -38,6 +45,8 @@ Shared abstractions used by the entry points and tests:
   utilities.
 - `vpython_utils.py` — Provides `vpython3` path.
 - `patchfile.py` — Patch file abstraction handling patches that failed to apply.
+- `conflict_resolution.py` — The fixed answers `brockit rebase` gives to the
+  conflicts it stops on.
 - `git_status.py` — Parser for `git status --porcelain` output.
 - `versioning.py` — Chromium version number parsing.
 - `vscode.py` — IPC for opening files in VS Code in the integrated terminal.
@@ -108,6 +117,13 @@ Shared abstractions used by the entry points and tests:
   ...). See [`alias/README.md`](alias/README.md).
 - `bootstrap/` — An experiment to boostrap some of our python utils in the
   user's PATH.
+- `ci/` — Everything that talks to CI, for any tool to reuse: `github.py` (a
+  pull request's checks), `jenkins.py` (triggering and watching pipelines,
+  reading a run's failed stages and tests, rerunning it), `teamcity.py` (a build
+  chain's failed builds, through the `teamcity` CLI and its login, and reruns),
+  and `failures.py`, the failure model they share. Jenkins reads
+  `~/.jenkins.json`; the `teamcity` CLI reads its own login, or `TEAMCITY_URL`
+  and `TEAMCITY_TOKEN`.
 - `test/` — Shared test fixtures:
   - `fake_chromium_repo.py` — `FakeChromiumRepo`, a real git checkout shaped
     like `src/` with brave inside it, plus an emulation of the `pnpm run` build

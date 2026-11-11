@@ -10,8 +10,6 @@ import static org.junit.Assert.assertTrue;
 
 import android.graphics.Color;
 
-import androidx.test.filters.SmallTest;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +28,6 @@ public class BraveVpnParentActivityTest {
     }
 
     @Test
-    @SmallTest
     public void testShouldBringToTop_TrueForProfileActivity() {
         BraveVpnProfileActivity activity =
                 Robolectric.buildActivity(BraveVpnProfileActivity.class).create().get();
@@ -40,7 +37,6 @@ public class BraveVpnParentActivityTest {
     }
 
     @Test
-    @SmallTest
     public void testShouldBringToTop_FalseForCountrySelection() {
         VpnServerSelectionActivity activity =
                 Robolectric.buildActivity(VpnServerSelectionActivity.class).create().get();
@@ -50,7 +46,6 @@ public class BraveVpnParentActivityTest {
     }
 
     @Test
-    @SmallTest
     public void testShouldBringToTop_FalseForCitySelection() {
         VpnServerActivity activity =
                 Robolectric.buildActivity(VpnServerActivity.class).create().get();

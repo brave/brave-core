@@ -25,6 +25,7 @@
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -59,14 +60,20 @@
 #include "brave/components/brave_talk/pref_names.h"
 #endif
 
+using brave_shields::prefs::kAdsBlocked;
+using brave_shields::prefs::kFingerprintingBlocked;
+using brave_shields::prefs::kHttpsUpgradesStat;
+using brave_shields::prefs::kJavascriptBlocked;
+using brave_shields::prefs::kTrackersBlocked;
 using ntp_background_images::ViewCounterServiceFactory;
-using ntp_background_images::prefs::kBrandedWallpaperNotificationDismissed;
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
+using ntp_background_images::prefs::kNewTabTakeoverNotificationDismissed;
 
 namespace {
 
 bool IsPrivateNewTab(Profile* profile) {
-  return profile->IsIncognitoProfile() || profile->IsGuestSession();
+  return profile->IsIncognitoProfile() || profile->IsGuestSession() ||
+         profile->IsEnterpriseIsolatedModeProfile();
 }
 
 base::DictValue GetStatsDictionary(PrefService* prefs) {
@@ -109,7 +116,7 @@ base::DictValue GetPreferencesDictionary(PrefService* prefs) {
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
   pref_data.Set("showRewards", prefs->GetBoolean(kNewTabPageShowRewards));
   pref_data.Set("isBrandedWallpaperNotificationDismissed",
-                prefs->GetBoolean(kBrandedWallpaperNotificationDismissed));
+                prefs->GetBoolean(kNewTabTakeoverNotificationDismissed));
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
   pref_data.Set("isBraveNewsOptedIn",
                 prefs->GetBoolean(brave_news::prefs::kBraveNewsOptedIn));
@@ -249,7 +256,7 @@ void BraveNewTabMessageHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "recordClickedAdEvent",
       base::BindRepeating(
-          &BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked,
+          &BraveNewTabMessageHandler::HandleNewTabTakeoverLogoClicked,
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "getWallpaperData",
@@ -347,7 +354,7 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      kBrandedWallpaperNotificationDismissed,
+      kNewTabTakeoverNotificationDismissed,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
@@ -471,7 +478,7 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
   } else if (settings_key_input == "showRewards") {
     settings_key = kNewTabPageShowRewards;
   } else if (settings_key_input == "isBrandedWallpaperNotificationDismissed") {
-    settings_key = kBrandedWallpaperNotificationDismissed;
+    settings_key = kNewTabTakeoverNotificationDismissed;
   } else if (settings_key_input == "hideAllWidgets") {
     settings_key = kNewTabPageHideAllWidgets;
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
@@ -511,7 +518,7 @@ void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(
   }
 }
 
-void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
+void BraveNewTabMessageHandler::HandleNewTabTakeoverLogoClicked(
     const base::ListValue& args) {
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   AllowJavascript();
@@ -629,8 +636,8 @@ void BraveNewTabMessageHandler::HandleGetWallpaperDataCallback(
       MaybeDisplayAndIncrementCounter(web_ui()->GetWebContents(),
                                       profile_->GetPrefs());
 
-  constexpr char kBrandedWallpaperKey[] = "brandedWallpaper";
-  wallpaper.Set(kBrandedWallpaperKey, std::move(*data));
+  constexpr char kNewTabTakeoverWallpaperKey[] = "brandedWallpaper";
+  wallpaper.Set(kNewTabTakeoverWallpaperKey, std::move(*data));
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   ResolveJavascriptCallback(callback_id, wallpaper);

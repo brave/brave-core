@@ -7,8 +7,6 @@
 
 namespace brave_ads {
 
-BASE_FEATURE(kConversionsFeature,
-             "Conversions",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kConversionsFeature, base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace brave_ads

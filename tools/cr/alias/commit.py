@@ -22,6 +22,12 @@ Usage
     --tagged    Comma-separated tags            → $tags
     --issue     Comma-separated issue numbers   → $issue
     --culprit   Comma-separated commit hashes   → $culprit
+    --force-commit-hook
+                Runs the hook where it would bail out → $force_commit_hook
+
+  The hook leaves the message alone during a rebase or cherry-pick, and for
+  `fixup!`/`amend!` commits. Where that would drop what was asked for, the
+  commit is refused unless `--force-commit-hook` is given.
 
   All other arguments are forwarded verbatim to git commit.
 """
@@ -37,8 +43,12 @@ from dataclasses import dataclass
 from typing import ClassVar, NoReturn
 
 import _boot  # noqa: F401
-from alias.base import (HOOK_DEST, WINDOWS_SHIM, UserValidationError,
-                        check_hooks_path)
+from alias.base import (
+    HOOK_DEST,
+    WINDOWS_SHIM,
+    UserValidationError,
+    check_hooks_path,
+)
 
 
 def _check_hook_ready() -> None:
@@ -60,7 +70,68 @@ def _check_hook_ready() -> None:
     if not ready:
         raise UserValidationError(
             'git_cr: commit-msg hook is not installed or not executable.\n'
-            'Run:    git cr install-hook')
+            'Run:    git cr install-hook'
+        )
+
+
+@dataclass(frozen=True)
+class _HookBailout:
+    """Where the commit-msg hook leaves the message alone, and so would drop
+    what the commit asks of it."""
+
+    # The git state files of an operation the hook leaves alone.
+    _OPERATIONS: ClassVar[dict[str, str]] = {
+        'rebase-merge': 'a rebase is in progress',
+        'rebase-apply': 'a rebase is in progress',
+        'CHERRY_PICK_HEAD': 'a cherry-pick is in progress',
+    }
+    _SQUASH_MARKERS: ClassVar[tuple[str, ...]] = ('fixup!', 'amend!')
+
+    reason: str
+
+    @staticmethod
+    def find(git_args: list[str], asks_hook: bool) -> _HookBailout | None:
+        """The bail-out this commit would hit, or None.
+
+        `asks_hook` is whether the commit passes tags, issues or culprits,
+        which a `fixup!`/`amend!` commit would drop; ordinary fixups are left
+        alone, since skipping them is what the hook is for.
+        """
+        for state, reason in _HookBailout._OPERATIONS.items():
+            path = subprocess.run(
+                ['git', 'rev-parse', '--git-path', state],
+                capture_output=True,
+                text=True,
+                check=False,
+            ).stdout.strip()
+            if path and os.path.exists(path):
+                return _HookBailout(reason)
+        if asks_hook and _HookBailout._is_squash_marker(git_args):
+            return _HookBailout('the commit is a fixup!/amend! commit')
+        return None
+
+    @staticmethod
+    def _is_squash_marker(git_args: list[str]) -> bool:
+        parser = _LenientArgumentParser(add_help=False)
+        parser.add_argument('--fixup')
+        parser.add_argument('--squash')
+        parser.add_argument('-m', '--message', action='append', default=[])
+        try:
+            parsed, _ = parser.parse_known_args(git_args)
+        except ValueError:
+            return False
+        if parsed.fixup or parsed.squash:
+            return True
+        return bool(parsed.message) and parsed.message[0].startswith(
+            _HookBailout._SQUASH_MARKERS
+        )
+
+    def error(self) -> UserValidationError:
+        return UserValidationError(
+            f'git_cr: {self.reason}, so the commit-msg hook would leave the '
+            'message alone.\n'
+            'Pass --force-commit-hook to run it anyway.'
+        )
 
 
 def _run_commit(
@@ -68,18 +139,30 @@ def _run_commit(
     issue: str | None,
     culprit: str | None,
     git_args: list[str],
+    force_hook: bool = False,
 ) -> int:
     """Execute git commit with hook environment variables injected."""
     _check_hook_ready()
+    if (
+        not force_hook
+        and '--no-verify' not in git_args
+        and '-n' not in git_args
+    ):
+        asks_hook = bool(tagged or issue or culprit)
+        if bailout := _HookBailout.find(git_args, asks_hook):
+            raise bailout.error()
     env = os.environ.copy()
+    if force_hook:
+        env['force_commit_hook'] = '1'
     if tagged:
         env['tags'] = tagged
     if issue:
         env['issue'] = issue
     if culprit:
         env['culprit'] = culprit
-    return subprocess.run(['git', 'commit'] + git_args, check=False,
-                          env=env).returncode
+    return subprocess.run(
+        ['git', 'commit'] + git_args, check=False, env=env
+    ).returncode
 
 
 class _LenientArgumentParser(argparse.ArgumentParser):
@@ -153,11 +236,13 @@ class _MarkChangeShortcut:
         if other_args:
             raise UserValidationError(
                 f'git_cr: --fixup={verb}:<ref> cannot be combined with '
-                f'other arguments; remove: {" ".join(other_args)}')
+                f'other arguments; remove: {" ".join(other_args)}'
+            )
         if not target:
             raise UserValidationError(
                 f'git_cr: --fixup={verb}: requires a commit reference, '
-                f'e.g. --fixup={verb}:HEAD~2')
+                f'e.g. --fixup={verb}:HEAD~2'
+            )
         return _MarkChangeShortcut(verb, target)
 
     def run(self) -> int:
@@ -169,11 +254,15 @@ class _MarkChangeShortcut:
         # Imported lazily: brockit is a heavy module, so we only import it when
         # needed.
         import brockit
+
         task = getattr(brockit, _MarkChangeShortcut._TASKS[self.verb])
         try:
             task().run(change=self.target)
-        except (brockit.InvalidInputException, brockit.BadOutcomeException,
-                brockit.ActionNeededException):
+        except (
+            brockit.InvalidInputException,
+            brockit.BadOutcomeException,
+            brockit.ActionNeededException,
+        ):
             # Handling brockit exceptions as failures to create the marker
             # commit.
             return 1
@@ -207,5 +296,17 @@ def cmd_commit(args: list[str]) -> int:
         metavar='HASH[,HASH...]',
         help='Chromium commit hashes injected as $culprit',
     )
+    parser.add_argument(
+        '--force-commit-hook',
+        action='store_true',
+        help='Run the commit-msg hook where it would leave the message alone: '
+        'during a rebase or cherry-pick, and for fixup!/amend! commits',
+    )
     parsed, extra = parser.parse_known_args(args)
-    return _run_commit(parsed.tagged, parsed.issue, parsed.culprit, extra)
+    return _run_commit(
+        parsed.tagged,
+        parsed.issue,
+        parsed.culprit,
+        extra,
+        force_hook=parsed.force_commit_hook,
+    )

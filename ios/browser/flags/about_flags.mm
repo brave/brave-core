@@ -19,7 +19,10 @@
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
+#include "brave/ios/browser/most_visited_sites/features.h"
 #include "brave/ios/browser/playlist/features.h"
+#include "brave/ios/browser/search_engines/features.h"
+#include "brave/ios/browser/toolbar/features.h"
 #include "brave/ios/browser/ui/quick_view/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "build/build_config.h"
@@ -144,15 +147,6 @@ const flags_ui::FeatureEntry::FeatureVariation
           FEATURE_VALUE_TYPE(brave_shields::features::kBraveShredCacheData),   \
       },                                                                       \
       {                                                                        \
-          "brave-shields-content-settings",                                    \
-          "Brave Shields use Content Settings",                                \
-          "Brave Shields will use content settings for persisting Shields "    \
-          "preferences",                                                       \
-          flags_ui::kOsIos,                                                    \
-          FEATURE_VALUE_TYPE(                                                  \
-              brave_shields::features::kBraveShieldsContentSettingsIOS),       \
-      },                                                                       \
-      {                                                                        \
           "brave-show-updated-shields-panel",                                  \
           "Show updated shields panel",                                        \
           "Shows an updated design for the Brave Shields panel.",              \
@@ -174,6 +168,14 @@ const flags_ui::FeatureEntry::FeatureVariation
           "If the feature flag is on, we show the Block all Cookies toggle",   \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(brave_shields::features::kBlockAllCookiesToggle), \
+      },                                                                       \
+      {                                                                        \
+          "block-element-feature",                                             \
+          "Enable Block Element feature",                                      \
+          "Allows to block selected HTML element on the page",                 \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveShieldsElementPicker),            \
       },                                                                       \
       {                                                                        \
           "ios-debug-adblock",                                                 \
@@ -293,6 +295,14 @@ const flags_ui::FeatureEntry::FeatureVariation
       FEATURE_VALUE_TYPE(playlist::features::kPlaylist), \
   })
 
+#define TOPSITES_FEATURE_ENTRIES                                \
+  EXPAND_FEATURE_ENTRIES({                                      \
+      "topsites",                                               \
+      "Enable Top Sites",                                       \
+      "Enables Top Sites Feature",                              \
+      flags_ui::kOsIos,                                         \
+      FEATURE_VALUE_TYPE(topsites::features::kTopsitesEnabled), \
+  })
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
 
@@ -402,6 +412,20 @@ const flags_ui::FeatureEntry::FeatureVariation
           FEATURE_VALUE_TYPE(brave::features::kQuickViewEnabled),              \
       },                                                                       \
       {                                                                        \
+          "brave-browser-toolbar-refactor",                                    \
+          "Enable browser toolbar refactor",                                   \
+          "Enables the refactored browser toolbar hierarchy",                  \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave::features::kBrowserToolbarRefactorEnabled), \
+      },                                                                       \
+      {                                                                        \
+          "brave-use-chromium-search-engines",                                 \
+          "Use Chromium search engines",                                       \
+          "Manage search engines using Chromium's TemplateURLService",         \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave::features::kUseChromiumSearchEngines),      \
+      },                                                                       \
+      {                                                                        \
           "brave-origin",                                                      \
           "Enable Brave Origin",                                               \
           "Enables Brave Origin features and settings.",                       \
@@ -415,4 +439,5 @@ const flags_ui::FeatureEntry::FeatureVariation
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_WALLET_FEATURE_ENTRIES                                                 \
   BRAVE_PLAYLIST_FEATURE_ENTRIES                                               \
+  TOPSITES_FEATURE_ENTRIES                                                     \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.

@@ -8,14 +8,10 @@
 #include "base/check.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/api/asset_ratio.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/common/brave_wallet_types.h"
-#include "brave/components/brave_wallet/common/eth_address.h"
-#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_wallet {
 
@@ -166,10 +162,9 @@ bool ParseAssetPriceHistory(const base::Value& json_value,
     }
     double price = price_value.GetDouble();
 
-    base::Time date = base::Time::FromMillisecondsSinceUnixEpoch(date_dbl);
     auto asset_time_price = mojom::AssetTimePrice::New();
     asset_time_price->date =
-        base::Milliseconds(date.InMillisecondsSinceUnixEpoch());
+        base::Time::FromMillisecondsSinceUnixEpoch(date_dbl);
     asset_time_price->price = base::NumberToString(price);
     values->push_back(std::move(asset_time_price));
   }

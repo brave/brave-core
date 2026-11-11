@@ -57,6 +57,7 @@ source_set("unit_tests") {
     "//brave/components/decentralized_dns/core",
     "//brave/components/tor/buildflags",
     "//chrome/test:test_support",
+    "//chrome/test/base:testing_browser_process",
     "//components/prefs",
     "//net",
     "//net:test_support",

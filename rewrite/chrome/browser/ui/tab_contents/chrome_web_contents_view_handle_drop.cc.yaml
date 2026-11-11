@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Strip tracking metadata from images dropped onto a page.
+
+      HandleOnPerformingDrop owns the completion callback that hands the dropped
+      paths back to the view, which is the last browser-side hook before
+      DragTargetDrop grants the renderer access to them. Wrapping the callback
+      rather than preempting the body leaves the enterprise content analysis.
+      The wrapper strips metadata from the images before running the original
+      callback, and returns the callback unchanged when the feature is off.
+
+      As with the upload flow, the dropped files themselves are never modified.
+      Each strippable jpeg is copied into a unique subdirectory of one temporary
+      parent directory (so the original basename is preserved) and
+      DropData::filenames is pointed at the copy. The page holds those copies for
+      as long as it holds the File, so the parent directory is owned by the tab's
+      DropStripTempDirs and deleted once that tab is discarded or destroyed.
+    preempt_function_impl:
+      function_name: HandleOnPerformingDrop
+      code: |-
+        callback = brave::MaybeStripImageMetadataForDrop(web_contents,
+                                                         std::move(callback));

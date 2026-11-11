@@ -51,9 +51,9 @@ def _make_tar(members: list, compression: str = 'gz'):
     return buf.getvalue()
 
 
-def _tar_member(name: str,
-                member_type: bytes,
-                linkname: str = '') -> tarfile.TarInfo:
+def _tar_member(
+    name: str, member_type: bytes, linkname: str = ''
+) -> tarfile.TarInfo:
     """A non-regular member (symlink, hardlink, device) for `_make_tar`."""
     info = tarfile.TarInfo(name)
     info.type = member_type
@@ -103,85 +103,25 @@ def _make_zip_with_unix_modes(members: list[tuple[str, bytes, int]]):
     return buf.getvalue()
 
 
-@contextlib.contextmanager
-def _simulate_pre_pep706_python():
-    """Make the runtime look like a `tarfile` without the PEP 706 filters.
-
-    Drops the `data_filter` sentinel the installer probes for and makes
-    `extractall` reject the `filter` kwarg, mimicking Python 3.12 predecessors
-    (and pre-backport 3.8-3.11) so a regression to an unconditional `filter=`
-    call would fail here.
-    """
-    saved = {
-        name: getattr(tarfile, name)
-        for name in ('data_filter', ) if hasattr(tarfile, name)
-    }
-    real_extractall = tarfile.TarFile.extractall
-
-    def _reject_filter(tar_self, *args, **kwargs):
-        if 'filter' in kwargs:
-            raise TypeError(
-                "extractall() got an unexpected keyword argument 'filter'")
-        return real_extractall(tar_self, *args, **kwargs)
-
-    for name in saved:
-        delattr(tarfile, name)
-    with mock.patch.object(tarfile.TarFile, 'extractall', _reject_filter):
-        try:
-            yield
-        finally:
-            for name, value in saved.items():
-                setattr(tarfile, name, value)
-
-
-@contextlib.contextmanager
-def _simulate_pre_gh107845_data_filter():
-    """Make `filter='data'` behave the way Python 3.10.12's does.
-
-    That first PEP 706 backport resolves a symlink's target against the
-    destination root instead of against the directory holding the link, so an
-    ordinary `bin/corepack -> ../lib/node_modules/...` is rejected as escaping
-    the destination. Upstream fixed it in 3.10.13 (gh-107845), but the bare
-    `python3` our Linux builders run is older than that, so extraction must not
-    depend on the filter being correct.
-    """
-
-    # Both of these exist only on a runtime that has PEP 706 -- exactly what
-    # the tests using this helper skip on -- so they are reached by name: our
-    # linter runs against a `tarfile` that predates the filters and would
-    # otherwise report them as missing members.
-    link_error = getattr(tarfile, 'LinkOutsideDestinationError')
-    named_filters = getattr(tarfile, '_NAMED_FILTERS')
-
-    def _buggy_data_filter(member, dest_path):
-        if (member.issym()
-                or member.islnk()) and not os.path.isabs(member.linkname):
-            dest_path = os.path.realpath(dest_path)
-            target = os.path.realpath(os.path.join(dest_path, member.linkname))
-            if os.path.commonpath([target, dest_path]) != dest_path:
-                raise link_error(member, target)
-        return member
-
-    with mock.patch.dict(named_filters, {'data': _buggy_data_filter}):
-        yield
-
-
 class TarballInstallerTest(unittest.TestCase):
     """Tests for `TarballInstaller` fetch/extract/sidecar mechanics."""
 
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        self.root = Path(tmp.name).resolve()
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        tmp = stack.enter_context(tempfile.TemporaryDirectory())
+        self.root = Path(tmp).resolve()
         self.dest = self.root / 'dest'
 
-    def _installer(self,
-                   data: bytes,
-                   *,
-                   object_name: str = 'pkg.tar.gz',
-                   sha256sum: str | None = None,
-                   size_bytes: int | None = None,
-                   owns_dest: bool = True) -> m.TarballInstaller:
+    def _installer(
+        self,
+        data: bytes,
+        *,
+        object_name: str = 'pkg.tar.gz',
+        sha256sum: str | None = None,
+        size_bytes: int | None = None,
+        owns_dest: bool = True,
+    ) -> m.TarballInstaller:
         """A `TarballInstaller` for `data`, defaulting to its true size/sha256."""
         return m.TarballInstaller(
             dest_dir=self.dest,
@@ -189,7 +129,8 @@ class TarballInstallerTest(unittest.TestCase):
             object_name=object_name,
             sha256sum=_sha256(data) if sha256sum is None else sha256sum,
             size_bytes=len(data) if size_bytes is None else size_bytes,
-            owns_dest=owns_dest)
+            owns_dest=owns_dest,
+        )
 
     def _download(self, data: bytes):
         """An injected fetch that writes `data` into the output file."""
@@ -207,24 +148,16 @@ class TarballInstallerTest(unittest.TestCase):
         self.assertEqual((self.dest / 'README.md').read_bytes(), b'hi')
         self.assertTrue(installer.is_installed())
 
-    def test_install_extracts_tarball_without_pep706_filter(self):
-        """Extraction still works on a Python that lacks the `filter='data'`
-        guard (this script runs under whatever bare `python3` is on $PATH)."""
-        data = _make_tar([('bin/node', b'node'), ('README.md', b'hi')])
-        installer = self._installer(data)
-        with _simulate_pre_pep706_python():
-            self.assertTrue(installer.install(self._download(data)))
-        self.assertEqual((self.dest / 'bin/node').read_bytes(), b'node')
-        self.assertEqual((self.dest / 'README.md').read_bytes(), b'hi')
-        self.assertTrue(installer.is_installed())
-
     # The shape every Node tarball has: `bin/corepack` is a symlink into the
     # sibling `lib/` tree, so its target climbs out of `bin/` while staying
     # inside the destination.
     _NODE_LIKE_MEMBERS = [
         ('lib/node_modules/corepack/dist/corepack.js', b'corepack'),
-        _tar_member('bin/corepack', tarfile.SYMTYPE,
-                    '../lib/node_modules/corepack/dist/corepack.js'),
+        _tar_member(
+            'bin/corepack',
+            tarfile.SYMTYPE,
+            '../lib/node_modules/corepack/dist/corepack.js',
+        ),
     ]
 
     @unittest.skipUnless(_CAN_SYMLINK, 'this machine cannot create symlinks')
@@ -235,19 +168,6 @@ class TarballInstallerTest(unittest.TestCase):
         link = self.dest / 'bin' / 'corepack'
         self.assertTrue(link.is_symlink())
         self.assertEqual(link.read_bytes(), b'corepack')
-
-    @unittest.skipUnless(_CAN_SYMLINK, 'this machine cannot create symlinks')
-    @unittest.skipIf(not hasattr(tarfile, 'data_filter'),
-                     'runtime has no PEP 706 filters to mis-behave')
-    def test_install_does_not_depend_on_the_data_filter(self):
-        """Extraction works even where `filter='data'` wrongly rejects a
-        relative symlink -- the failure our Linux builders hit, since they run
-        `launcher.py` (and so this installer) under a bare Python 3.10.12."""
-        data = _make_tar(self._NODE_LIKE_MEMBERS)
-        installer = self._installer(data)
-        with _simulate_pre_gh107845_data_filter():
-            self.assertTrue(installer.install(self._download(data)))
-        self.assertTrue((self.dest / 'bin' / 'corepack').is_symlink())
 
     def test_install_rejects_member_outside_the_destination(self):
         data = _make_tar([('../escape', b'x')])
@@ -282,35 +202,38 @@ class TarballInstallerTest(unittest.TestCase):
 
     def test_install_rejects_symlink_target_with_a_windows_separator(self):
         data = _make_tar(
-            [_tar_member('bin/evil', tarfile.SYMTYPE, '..\\..\\evil')])
+            [_tar_member('bin/evil', tarfile.SYMTYPE, '..\\..\\evil')]
+        )
         installer = self._installer(data)
         with self.assertRaisesRegex(ValueError, 'backslash'):
             installer.install(self._download(data))
 
     def test_install_rejects_symlink_pointing_outside(self):
         data = _make_tar(
-            [_tar_member('bin/evil', tarfile.SYMTYPE, '../../../etc/passwd')])
+            [_tar_member('bin/evil', tarfile.SYMTYPE, '../../../etc/passwd')]
+        )
         installer = self._installer(data)
         with self.assertRaisesRegex(ValueError, 'outside'):
             installer.install(self._download(data))
 
     def test_install_rejects_absolute_symlink_target(self):
         data = _make_tar(
-            [_tar_member('bin/evil', tarfile.SYMTYPE, '/etc/passwd')])
+            [_tar_member('bin/evil', tarfile.SYMTYPE, '/etc/passwd')]
+        )
         installer = self._installer(data)
         with self.assertRaisesRegex(ValueError, 'absolute path'):
             installer.install(self._download(data))
 
     def test_install_rejects_hardlink_pointing_outside(self):
         data = _make_tar(
-            [_tar_member('bin/evil', tarfile.LNKTYPE, '../../etc/passwd')])
+            [_tar_member('bin/evil', tarfile.LNKTYPE, '../../etc/passwd')]
+        )
         installer = self._installer(data)
         with self.assertRaisesRegex(ValueError, 'outside'):
             installer.install(self._download(data))
 
     def test_install_rejects_device_member(self):
-        # Extraction is fully-trusted, so a device or FIFO member would
-        # otherwise be created verbatim.
+        # Refused by the lexical vetting itself, not only the `data` filter.
         data = _make_tar([_tar_member('dev/null', tarfile.CHRTYPE)])
         installer = self._installer(data)
         with self.assertRaisesRegex(ValueError, 'device/FIFO'):
@@ -337,10 +260,12 @@ class TarballInstallerTest(unittest.TestCase):
         # link target as text -- exactly what BraveUpdater-*.zip needs kept
         # (mode-0755 executables plus a `ksadmin` symlink) for the updater
         # bundle to still run after extraction.
-        data = _make_zip_with_unix_modes([
-            ('bin/tool', b'#!/bin/sh\n', 0o100755),
-            ('bin/link', b'tool', 0o120777),
-        ])
+        data = _make_zip_with_unix_modes(
+            [
+                ('bin/tool', b'#!/bin/sh\n', 0o100755),
+                ('bin/link', b'tool', 0o120777),
+            ]
+        )
         installer = self._installer(data, object_name='pkg.zip')
         self.assertTrue(installer.install(self._download(data)))
         tool = self.dest / 'bin/tool'
@@ -374,7 +299,8 @@ class TarballInstallerTest(unittest.TestCase):
 
     def test_is_installed_is_false_without_sidecar(self):
         self.assertFalse(
-            self._installer(_make_tar([('f', b'x')])).is_installed())
+            self._installer(_make_tar([('f', b'x')])).is_installed()
+        )
 
     def test_owned_dest_is_wiped_before_extract(self):
         self.dest.mkdir()
@@ -453,7 +379,6 @@ class ProgressTest(unittest.TestCase):
         final `Done` line -- guards the built-in path the fakes bypass."""
 
         class _FakeResponse:
-
             def __init__(self, data):
                 self._buf = io.BytesIO(data)
                 self.headers = {'Content-Length': str(len(data))}
@@ -469,12 +394,14 @@ class ProgressTest(unittest.TestCase):
 
         data = b'payload' * 5000
         out = io.BytesIO()
-        inst = m.TarballInstaller(dest_dir=Path('/x'),
-                                  url='https://example.com/pkg',
-                                  object_name='pkg.tar.gz',
-                                  sha256sum='a',
-                                  size_bytes=len(data),
-                                  owns_dest=True)
+        inst = m.TarballInstaller(
+            dest_dir=Path('/x'),
+            url='https://example.com/pkg',
+            object_name='pkg.tar.gz',
+            sha256sum='a',
+            size_bytes=len(data),
+            owns_dest=True,
+        )
         err = io.StringIO()
         with mock.patch.object(m, 'urlopen', return_value=_FakeResponse(data)):
             with contextlib.redirect_stderr(err):
@@ -483,18 +410,21 @@ class ProgressTest(unittest.TestCase):
         self.assertTrue(err.getvalue().endswith('Done\n'))
 
     def test_emit_progress_renders_live_line(self):
-        inst = m.TarballInstaller(dest_dir=Path('/x'),
-                                  url='u',
-                                  object_name='node.tar.gz',
-                                  sha256sum='a',
-                                  size_bytes=0,
-                                  owns_dest=True)
+        inst = m.TarballInstaller(
+            dest_dir=Path('/x'),
+            url='u',
+            object_name='node.tar.gz',
+            sha256sum='a',
+            size_bytes=0,
+            owns_dest=True,
+        )
         err = io.StringIO()
         with contextlib.redirect_stderr(err):
             inst._emit_progress(26_700_000, 26_700_000, done_flag=True)
         # Carriage-return prefixed, `[done/total] pct% Done`, matching gsutil.
-        self.assertEqual(err.getvalue(),
-                         '\rnode.tar.gz [25.5 MiB/25.5 MiB] 100% Done\n')
+        self.assertEqual(
+            err.getvalue(), '\rnode.tar.gz [25.5 MiB/25.5 MiB] 100% Done\n'
+        )
 
 
 class ForDepTest(unittest.TestCase):
@@ -505,12 +435,18 @@ class ForDepTest(unittest.TestCase):
 
     def test_builds_single_object_installer(self):
         inst = m.TarballInstaller.for_dep(
-            Path('/ws'), 'src/p',
-            self._spec([{
-                'object_name': 'x.tar.gz',
-                'sha256sum': 'abc',
-                'size_bytes': 123
-            }]))
+            Path('/ws'),
+            'src/p',
+            self._spec(
+                [
+                    {
+                        'object_name': 'x.tar.gz',
+                        'sha256sum': 'abc',
+                        'size_bytes': 123,
+                    }
+                ]
+            ),
+        )
         self.assertEqual(inst.dest_dir, Path('/ws/src/p'))
         self.assertEqual(inst.url, 'https://example.com/x.tar.gz')
         self.assertEqual(inst.object_name, 'x.tar.gz')
@@ -520,28 +456,28 @@ class ForDepTest(unittest.TestCase):
 
     def test_overlay_object_does_not_own_dest(self):
         inst = m.TarballInstaller.for_dep(
-            Path('/ws'), 'src/p',
-            self._spec([{
-                'object_name': 'x.tar.gz',
-                'sha256sum': 'abc',
-                'size_bytes': 123,
-                'overlayed_on': 'base.tar.xz'
-            }]))
+            Path('/ws'),
+            'src/p',
+            self._spec(
+                [
+                    {
+                        'object_name': 'x.tar.gz',
+                        'sha256sum': 'abc',
+                        'size_bytes': 123,
+                        'overlayed_on': 'base.tar.xz',
+                    }
+                ]
+            ),
+        )
         self.assertFalse(inst.owns_dest)
 
     def test_multi_object_entry_raises(self):
-        spec = self._spec([
-            {
-                'object_name': 'a.tar.gz',
-                'sha256sum': '1',
-                'size_bytes': 1
-            },
-            {
-                'object_name': 'b.tar.gz',
-                'sha256sum': '2',
-                'size_bytes': 2
-            },
-        ])
+        spec = self._spec(
+            [
+                {'object_name': 'a.tar.gz', 'sha256sum': '1', 'size_bytes': 1},
+                {'object_name': 'b.tar.gz', 'sha256sum': '2', 'size_bytes': 2},
+            ]
+        )
         with self.assertRaisesRegex(ValueError, 'single-object'):
             m.TarballInstaller.for_dep(Path('/ws'), 'src/p', spec)
 
@@ -550,12 +486,15 @@ class ForObjectTest(unittest.TestCase):
     """Tests for the `TarballInstaller.for_object` caller-supplied factory."""
 
     def test_builds_installer_from_a_caller_object(self):
-        inst = m.TarballInstaller.for_object(Path('/dest'),
-                                             'https://example.com/', {
-                                                 'object_name': 'x.tar.gz',
-                                                 'sha256sum': 'abc',
-                                                 'size_bytes': 123,
-                                             })
+        inst = m.TarballInstaller.for_object(
+            Path('/dest'),
+            'https://example.com/',
+            {
+                'object_name': 'x.tar.gz',
+                'sha256sum': 'abc',
+                'size_bytes': 123,
+            },
+        )
         self.assertEqual(inst.dest_dir, Path('/dest'))
         self.assertEqual(inst.url, 'https://example.com/x.tar.gz')
         self.assertEqual(inst.object_name, 'x.tar.gz')
@@ -565,12 +504,15 @@ class ForObjectTest(unittest.TestCase):
 
     def test_overlay_object_does_not_own_dest(self):
         inst = m.TarballInstaller.for_object(
-            Path('/dest'), 'https://example.com/', {
+            Path('/dest'),
+            'https://example.com/',
+            {
                 'object_name': 'x.tar.gz',
                 'sha256sum': 'abc',
                 'size_bytes': 123,
                 'overlayed_on': 'base.tar.xz',
-            })
+            },
+        )
         self.assertFalse(inst.owns_dest)
 
 
@@ -579,17 +521,18 @@ class MainTest(unittest.TestCase):
 
     def test_installs_the_requested_single_object_dep(self):
         dep = 'src/brave/third_party/node/node-linux-x64'
-        with mock.patch.object(m.TarballInstaller,
-                               'install',
-                               autospec=True,
-                               return_value=True) as install:
+        with mock.patch.object(
+            m.TarballInstaller, 'install', autospec=True, return_value=True
+        ) as install:
             self.assertEqual(m.main([dep]), 0)
         install.assert_called_once()
         installer = install.call_args.args[0]
         self.assertEqual(installer.dest_dir, m._WORKSPACE_ROOT / dep)
         # Read from the table, so bumping the pinned node does not fail here.
-        self.assertEqual(installer.object_name,
-                         m.EXTRA_DEPS[dep]['objects'][0]['object_name'])
+        self.assertEqual(
+            installer.object_name,
+            m.EXTRA_DEPS[dep]['objects'][0]['object_name'],
+        )
 
     def test_rejects_unknown_dep(self):
         with contextlib.redirect_stderr(io.StringIO()):

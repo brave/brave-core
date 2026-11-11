@@ -4,10 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
-import Checkbox from '@brave/leo/react/checkbox'
-import Icon from '@brave/leo/react/icon'
-import RadioButton from '@brave/leo/react/radioButton'
+import Button from '@brave/nala/react/button'
+import Checkbox from '@brave/nala/react/checkbox'
+import Icon from '@brave/nala/react/icon'
+import RadioButton from '@brave/nala/react/radioButton'
 
 import { useAppState, useAppActions } from '../../lib/app_context'
 import { formatString } from '$web-common/formatString'

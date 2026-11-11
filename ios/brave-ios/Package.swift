@@ -63,7 +63,7 @@ var package = Package(
     .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI", from: "2.2.0"),
     .package(url: "https://github.com/nmdias/FeedKit", from: "9.1.2"),
     .package(url: "https://github.com/apple/swift-collections", from: "1.0.0"),
-    .package(url: "https://github.com/siteline/SwiftUI-Introspect", from: "0.1.3"),
+    .package(url: "https://github.com/siteline/SwiftUI-Introspect", from: "26.0.2"),
     .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
     .package(url: "https://github.com/devxoul/Then", from: "2.7.0"),
     .package(name: "Swift-BigInt", path: "../third_party/swift-bigint"),
@@ -142,10 +142,6 @@ var package = Package(
         .copy("Assets/Fonts/FiraSans-Regular.ttf"),
         .copy("Assets/Fonts/FiraSans-SemiBold.ttf"),
         .copy("Assets/Fonts/FiraSans-UltraLight.ttf"),
-        .copy("Assets/Fonts/NewYorkMedium-Bold.otf"),
-        .copy("Assets/Fonts/NewYorkMedium-BoldItalic.otf"),
-        .copy("Assets/Fonts/NewYorkMedium-Regular.otf"),
-        .copy("Assets/Fonts/NewYorkMedium-RegularItalic.otf"),
         .copy("Assets/InterstitialPages/Pages/BlockedDomain.html"),
         .copy("Assets/InterstitialPages/Pages/HTTPBlocked.html"),
         .copy("Assets/InterstitialPages/Pages/Web3Domain.html"),
@@ -160,7 +156,7 @@ var package = Package(
         .copy("Frontend/Reader/Reader.html"),
         .copy("Frontend/Reader/ReaderViewLoading.html"),
         .copy("Frontend/Browser/NewTabPage/Backgrounds/Assets/NTP_Images/corwin-prescott-3.jpg"),
-        .copy("Frontend/Browser/Favorites/Data/top_sites_by_region.json"),
+        .copy("Frontend/Browser/TopSites/Data/top_sites_by_region.json"),
         .copy(
           "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/BraveSearchResultAdScript.js"
         ),
@@ -217,9 +213,6 @@ var package = Package(
         .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/DeAmpScript.js"),
         .copy(
           "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/FaviconScript.js"
-        ),
-        .copy(
-          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/ResourceDownloaderScript.js"
         ),
         .copy(
           "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/SiteStateListenerScript.js"
@@ -286,7 +279,7 @@ var package = Package(
         "DesignSystem",
         "SDWebImage",
         "SnapKit",
-        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+        .product(name: "SwiftUIIntrospect", package: "SwiftUI-Introspect"),
         "Then",
         "Static",
         "Preferences",
@@ -299,7 +292,16 @@ var package = Package(
     .target(
       name: "BraveShields",
       dependencies: [
-        "Strings", "Preferences", "BraveCore", "BraveUI", "Web", "Data", "Shared", "BraveShared",
+        "BraveCore",
+        "BraveShared",
+        "BraveUI",
+        "Data",
+        "DesignSystem",
+        "Favicon",
+        "Preferences",
+        "Shared",
+        "Strings",
+        "Web",
       ],
       plugins: ["LoggerPlugin"]
     ),
@@ -337,7 +339,7 @@ var package = Package(
         "Growth",
         "Strings",
         .product(name: "Collections", package: "swift-collections"),
-        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+        .product(name: "SwiftUIIntrospect", package: "SwiftUI-Introspect"),
       ],
       plugins: ["LoggerPlugin"]
     ),
@@ -361,7 +363,7 @@ var package = Package(
         .product(name: "BigNumber", package: "Swift-BigInt"),
         .product(name: "Algorithms", package: "swift-algorithms"),
         .product(name: "Collections", package: "swift-collections"),
-        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+        .product(name: "SwiftUIIntrospect", package: "SwiftUI-Introspect"),
       ],
       plugins: ["LoggerPlugin"]
     ),
@@ -373,10 +375,11 @@ var package = Package(
     ),
     .target(
       name: "BraveWidgetsModels",
-      dependencies: ["FaviconModels"],
+      dependencies: ["BraveStrings", "FaviconModels"],
       sources: [
         "BraveWidgets.intentdefinition", "LockScreenFavoriteIntentHandler.swift",
         "FavoritesWidgetData.swift", "DisabledShortcutsWidgetData.swift",
+        "OpenControlWidgetShortcutIntent.swift", "WidgetShortcut+Appearance.swift",
       ],
       plugins: ["IntentBuilderPlugin", "LoggerPlugin"]
     ),
@@ -416,7 +419,7 @@ var package = Package(
         "Strings",
         "Then",
         .product(name: "Collections", package: "swift-collections"),
-        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+        .product(name: "SwiftUIIntrospect", package: "SwiftUI-Introspect"),
         .product(name: "Lottie", package: "lottie-spm"),
       ],
       resources: [
@@ -449,7 +452,7 @@ var package = Package(
         "DesignSystem",
         "Preferences",
         .product(name: "Collections", package: "swift-collections"),
-        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+        .product(name: "SwiftUIIntrospect", package: "SwiftUI-Introspect"),
       ],
       plugins: ["LoggerPlugin"]
     ),
@@ -613,7 +616,7 @@ var package = Package(
         "Strings",
         "BraveCore",
         "BraveStore",
-        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+        .product(name: "SwiftUIIntrospect", package: "SwiftUI-Introspect"),
       ]
     ),
   ],
@@ -633,9 +636,9 @@ let isStripAbsolutePathsFromDebugSymbolsEnabled = {
   }
 }()
 
-if isStripAbsolutePathsFromDebugSymbolsEnabled {
-  for target in package.targets where target.type == .regular || target.type == .test {
-    var settings = target.swiftSettings ?? []
+for target in package.targets where target.type == .regular || target.type == .test {
+  var settings = target.swiftSettings ?? []
+  if isStripAbsolutePathsFromDebugSymbolsEnabled {
     settings.append(
       .unsafeFlags(
         [
@@ -644,6 +647,98 @@ if isStripAbsolutePathsFromDebugSymbolsEnabled {
         .when(configuration: .debug)
       )
     )
-    target.swiftSettings = settings
   }
+  // Approchable Concurrency feature flags
+  settings.append(contentsOf: [
+    .enableUpcomingFeature("DisableOutwardActorInference"),
+    .enableUpcomingFeature("GlobalActorIsolatedTypesUsability"),
+    .enableUpcomingFeature("InferIsolatedConformances"),
+    .enableUpcomingFeature("InferSendableFromCaptures"),
+    .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+  ])
+  // We cannot use `treatAllWarnings` to enable warnings-as-errors here because it turns warnings
+  // that we cannot opt-out of (such as third-party dependency Obj-C header warnings in
+  // GuardianConnect–into errors) so the alternative is to explicitly treat Swift specific
+  // diagnostic groups as errors instead.
+  //
+  // The source of truth for these groups are in Swift, found here:
+  // https://github.com/swiftlang/swift/blob/swift-6.4.2-RELEASE/include/swift/AST/DiagnosticGroups.def
+  //
+  // - Update this link and list with major Swift releases
+  // - Diagnostic groups marked as `DefaultIgnoreWarnings` are not included in this list.
+  // - Ignore linked groups (`GROUP_LINK`), instead opting into each individual diagnostic group.
+  // - Keep this list alpha-sorted.
+  let diagnosticGroups: Set<String> = [
+    "ActorIsolatedCall",
+    "ActorIsolatedMutatingAsync",
+    "AddPreconcurrencyImport",
+    "AlwaysAvailableDomain",
+    "AvailabilityUnrecognizedName",
+    "ClangDeclarationImport",
+    "CompilationCaching",
+    "ConformanceIsolation",
+    "ConversionFromIsolatedAnyToSynchronous",
+    "DeprecatedDeclaration",
+    "DynamicCallable",
+    "ErrorInFutureSwiftVersion",
+    "ExclusivityViolation",
+    "ExistentialAny",
+    "ExistentialMemberAccess",
+    "ForeignReferenceType",
+    "ImplementationOnlyDeprecated",
+    "ImplicitStrongCapture",
+    "InconsistentImportAccess",
+    "IsolatedConformances",
+    "MemberImportVisibility",
+    "MissingModuleOnKnownPaths",
+    "ModuleNotTestable",
+    "ModuleSelfImport",
+    "ModuleVersionMissing",
+    "MultipleInheritance",
+    "MutableGlobalVariable",
+    "NominalTypes",
+    "NonisolatedNonsendingByDefault",
+    "NonSendableExitingActor",
+    "NonSendableInAsyncConformanceOrOverride",
+    "NonSendableObjCInterop",
+    "NonSendableSuperclass",
+    "NoUsage",
+    "NoUseUnstructuredThrowingTask",
+    "OldSuppressedAssociatedTypes",
+    "OpaqueTypeInference",
+    "OptionObsoletedByModuleSelectors",
+    "OSLog",
+    "PackageModuleLoadedFromSDK",
+    "PropertyWrappers",
+    "ProtocolTypeNonConformance",
+    "ResultBuilderMethods",
+    "SendableClosureCaptures",
+    "SendableMetatypes",
+    "SendingClosureRisksDataRace",
+    "SendingRisksDataRace",
+    "SPIImportIgnored",
+    "StrictMemorySafety",
+    "StringInterpolationConformance",
+    "TemporaryPointers",
+    "TrailingClosureMatching",
+    "UnavailableSendableConformance",
+    "UnknownWarningGroup",
+    "UnsupportedScopedImport",
+    "UnusedImportAccess",
+    "UselessAvailabilityCheck",
+    "UselessConditionalStatement",
+    "WeakMutability",
+  ]
+  // Diagnostics to opt-out of errors from the list above
+  let excludedDiagnostics: Set<String> = [
+    // Deprecation warnings are common when new SDKs release and shouldn't block a build before
+    // being fixed.
+    "DeprecatedDeclaration"
+  ]
+  settings.append(
+    contentsOf: diagnosticGroups.subtracting(excludedDiagnostics).map({
+      .treatWarning($0, as: .error)
+    })
+  )
+  target.swiftSettings = settings
 }

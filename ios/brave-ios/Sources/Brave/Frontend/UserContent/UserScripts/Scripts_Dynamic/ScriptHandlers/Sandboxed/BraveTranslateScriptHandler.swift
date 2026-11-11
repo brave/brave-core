@@ -274,8 +274,10 @@ class BraveTranslateScriptLanguageDetectionHandler: NSObject, TabContentScript {
       }
 
       Task { [weak translateHelper] in
-        try await translateHelper?.finishSetup()
-        replyHandler(nil, nil)
+        do {
+          try await translateHelper?.finishSetup()
+          replyHandler(nil, nil)
+        } catch {}
       }
     } catch {
       Logger.module.error("Brave Translate Language Detection Error: \(error)")

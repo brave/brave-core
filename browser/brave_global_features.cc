@@ -7,7 +7,6 @@
 
 #include <memory>
 
-#include "chrome/browser/global_features.h"
 #include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -27,12 +26,3 @@ BraveGlobalFeatures::BraveGlobalFeatures() {
 }
 
 BraveGlobalFeatures::~BraveGlobalFeatures() = default;
-
-BraveGlobalFeatures* BraveGlobalFeatures::FromGlobalFeatures(
-    GlobalFeatures* global_features) {
-  return static_cast<BraveGlobalFeatures*>(global_features);
-}
-
-GlobalFeatures* CreateBraveGlobalFeatures() {
-  return new BraveGlobalFeatures();
-}

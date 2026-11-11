@@ -15,14 +15,12 @@ import {
   WalletState,
   WalletInitializedPayload,
 } from '../../constants/types'
-import {
-  DefaultBaseCryptocurrencyChanged,
-  DefaultBaseCurrencyChanged,
-} from '../constants/action_types'
+import { DefaultBaseCurrencyChanged } from '../constants/action_types'
 
 const defaultState: WalletState = {
   hasInitialized: false,
   allowedNewWalletAccountTypeNetworkIds: [],
+  isFilecoinLedgerEnabled: false,
   isBitcoinEnabled: false,
   isBitcoinImportEnabled: false,
   isBitcoinLedgerEnabled: false,
@@ -39,6 +37,8 @@ const defaultState: WalletState = {
   isCardanoEnabled: false,
   isCardanoDappSupportEnabled: false,
   isPolkadotEnabled: false,
+  isPolkadotDappSupportEnabled: false,
+  isCardStackUiEnabled: false,
 }
 
 // async actions
@@ -56,10 +56,6 @@ export const WalletAsyncActions = {
   defaultBaseCurrencyChanged: createAction<DefaultBaseCurrencyChanged>(
     'defaultBaseCurrencyChanged',
   ), // refreshWalletInfo
-  defaultBaseCryptocurrencyChanged:
-    createAction<DefaultBaseCryptocurrencyChanged>(
-      'defaultBaseCryptocurrencyChanged',
-    ),
   refreshNetworksAndTokens: createAction('refreshNetworksAndTokens'),
   refreshBalancesAndPriceHistory: createAction(
     'refreshBalancesAndPriceHistory',
@@ -79,6 +75,8 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
       ) {
         state.hasInitialized = true
         state.isWalletCreated = payload.walletInfo.isWalletCreated
+        state.isFilecoinLedgerEnabled =
+          payload.walletInfo.isFilecoinLedgerEnabled
         state.isBitcoinEnabled = payload.walletInfo.isBitcoinEnabled
         state.isBitcoinImportEnabled = payload.walletInfo.isBitcoinImportEnabled
         state.isBitcoinLedgerEnabled = payload.walletInfo.isBitcoinLedgerEnabled
@@ -93,6 +91,9 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isCardanoDappSupportEnabled =
           payload.walletInfo.isCardanoDappSupportEnabled
         state.isPolkadotEnabled = payload.walletInfo.isPolkadotEnabled
+        state.isPolkadotDappSupportEnabled =
+          payload.walletInfo.isPolkadotDappSupportEnabled
+        state.isCardStackUiEnabled = payload.walletInfo.isCardStackUiEnabled
       },
 
       setAssetAutoDiscoveryCompleted(

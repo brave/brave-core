@@ -26,7 +26,6 @@ import PrivateCDN
 import RuntimeWarnings
 import SDWebImage
 @_spi(AppLaunch) import Shared
-import StoreKit
 import UserAgent
 import UserNotifications
 import os
@@ -126,7 +125,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // IAPs can trigger on the app as soon as it launches,
     // for example when a previous transaction was not finished and is in pending state.
-    SKPaymentQueue.default().add(BraveVPN.iapObserver)
+    // Initializing the observer starts listening for transaction updates and purchase intents.
+    _ = BraveVPN.iapObserver
     // Editing Product Promotion List
     Task { @MainActor in
       await BraveVPN.updateStorePromotionOrder()
@@ -240,11 +240,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       }
     }
 
-    if Preferences.NewTabPage.topsitesMode.value == nil {
-      Preferences.NewTabPage.topsitesMode.value =
-        Favorite.hasFavorites ? TopsitesMode.favourite : TopsitesMode.mostVisited
-    }
-
     if isFirstLaunch {
       let currentDate = Date()
       Preferences.DAU.installationDate.value = currentDate
@@ -356,7 +351,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   func applicationWillTerminate(_ application: UIApplication) {
-    SKPaymentQueue.default().remove(BraveVPN.iapObserver)
 
     // Clean up BraveCore
     AppState.shared.braveCore.profileController?.syncAPI.removeAllObservers()
@@ -475,17 +469,17 @@ extension AppDelegate {
     // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
     // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
 
-    sceneSessions.forEach { session in
-      if let windowIdString = BrowserState.getWindowId(from: session),
-        let windowId = UUID(uuidString: windowIdString)
-      {
-        SessionWindow.delete(windowId: windowId)
+    let windowIds = sceneSessions.compactMap { session -> UUID? in
+      if let windowIdString = BrowserState.getWindowId(from: session) {
+        return UUID(uuidString: windowIdString)
       } else if let userActivity = session.scene?.userActivity,
-        let windowIdString = BrowserState.getNewWindowInfo(from: userActivity).windowId,
-        let windowId = UUID(uuidString: windowIdString)
+        let windowIdString = BrowserState.getNewWindowInfo(from: userActivity).windowId
       {
-        SessionWindow.delete(windowId: windowId)
+        return UUID(uuidString: windowIdString)
       }
+      return nil
     }
+    BrowserState.forgetDataForDiscardedWindows(windowIds)
+    windowIds.forEach { SessionWindow.delete(windowId: $0) }
   }
 }

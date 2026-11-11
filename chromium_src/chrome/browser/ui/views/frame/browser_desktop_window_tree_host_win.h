@@ -6,21 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_DESKTOP_WINDOW_TREE_HOST_WIN_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_DESKTOP_WINDOW_TREE_HOST_WIN_H_
 
-class BrowserDesktopWindowTreeHostWin;
-using BrowserDesktopWindowTreeHostWin_BraveImpl =
-    BrowserDesktopWindowTreeHostWin;
-
-#define BrowserDesktopWindowTreeHostWin \
-  BrowserDesktopWindowTreeHostWin_ChromiumImpl
-
-#define UpdateWorkspace() \
-  UpdateWorkspace();      \
-  friend BrowserDesktopWindowTreeHostWin_BraveImpl
-
 #include <chrome/browser/ui/views/frame/browser_desktop_window_tree_host_win.h>  // IWYU pragma: export
-
-#undef BrowserDesktopWindowTreeHostWin
-#undef UpdateWorkspace
 
 class BrowserDesktopWindowTreeHostWin
     : public BrowserDesktopWindowTreeHostWin_ChromiumImpl {

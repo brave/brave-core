@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/views/frame/multi_contents_resize_area.cc b/chrome/browser/ui/views/frame/multi_contents_resize_area.cc
+index 37a68df743470656997d8fc707ffa5b9055e2a1d..adb48860facc0ecc3ea124b163ceece37896beca 100644
+--- a/chrome/browser/ui/views/frame/multi_contents_resize_area.cc
++++ b/chrome/browser/ui/views/frame/multi_contents_resize_area.cc
+@@ -103,7 +103,7 @@ void MultiContentsResizeArea::OnGestureEvent(ui::GestureEvent* event) {
+   // swap the contents views.
+   if (!is_resizing() && event->type() == ui::EventType::kGestureTap &&
+       event->details().tap_count() == 2) {
+-    multi_contents_view_->OnSwap();
++    multi_contents_view_->ResetResizeArea();
+   }
+   ResizeArea::OnGestureEvent(event);
+ }
+@@ -113,7 +113,7 @@ void MultiContentsResizeArea::OnMouseReleased(const ui::MouseEvent& event) {
+   // event, swap the contents views.
+   if (!is_resizing() && event.IsOnlyLeftMouseButton() &&
+       event.GetClickCount() == 2) {
+-    multi_contents_view_->OnSwap();
++    multi_contents_view_->ResetResizeArea();
+   }
+   ResizeArea::OnMouseReleased(event);
+ }

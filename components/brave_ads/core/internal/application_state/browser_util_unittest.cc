@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAdsBrowserUtil*
+// pnpm test brave_unit_tests --filter=BraveAdsBrowserUtil*
 
 namespace brave_ads {
 

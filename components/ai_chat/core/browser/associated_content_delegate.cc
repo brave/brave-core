@@ -9,6 +9,7 @@
 
 #include "base/logging.h"
 #include "base/uuid.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom-shared.h"
 
 namespace ai_chat {
 
@@ -18,8 +19,8 @@ PageContent& PageContent::operator=(const PageContent&) = default;
 PageContent& PageContent::operator=(PageContent&&) = default;
 
 PageContent::PageContent() = default;
-PageContent::PageContent(std::string content, bool is_video)
-    : content(std::move(content)), is_video(is_video) {}
+PageContent::PageContent(std::string content, mojom::ContentType content_type)
+    : content(std::move(content)), content_type(content_type) {}
 
 AssociatedContentDelegate::AssociatedContentDelegate()
     : uuid_(base::Uuid::GenerateRandomV4().AsLowercaseString()) {}
@@ -58,6 +59,10 @@ void AssociatedContentDelegate::GetStagedEntriesFromContent(
 
 bool AssociatedContentDelegate::HasOpenAIChatPermission() const {
   return false;
+}
+
+url::Origin AssociatedContentDelegate::GetOrigin() const {
+  return url::Origin::Create(url());
 }
 
 void AssociatedContentDelegate::GetScreenshots(

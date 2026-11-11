@@ -8,11 +8,14 @@
 
 #include <v8/src/builtins/builtins.h>  // IWYU pragma: export
 
+#ifndef V8_METAGEN_GENERATION_PASS
 #include "brave/components/brave_page_graph/common/buildflags.h"
+#endif  // !V8_METAGEN_GENERATION_PASS
 
 namespace v8 {
 namespace internal {
 
+#ifndef V8_METAGEN_GENERATION_PASS
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH_WEBAPI_PROBES)
 class BuiltinArguments;
 
@@ -21,6 +24,7 @@ void ReportBuiltinCallAndResponse(Isolate* isolate,
                                   const BuiltinArguments& builtin_args,
                                   const Tagged<Object>& builtin_result);
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH_WEBAPI_PROBES)
+#endif  // !V8_METAGEN_GENERATION_PASS
 
 }  // namespace internal
 }  // namespace v8

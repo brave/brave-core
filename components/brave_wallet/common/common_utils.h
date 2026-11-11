@@ -17,17 +17,19 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 
 namespace brave_wallet {
 
+bool IsFilecoinLedgerEnabled();
 bool IsBitcoinEnabled();
 bool IsBitcoinImportEnabled();
 bool IsBitcoinLedgerEnabled();
 bool IsZCashEnabled();
 bool IsPolkadotEnabled();
-bool IsPolkadotAssetDiscoveryEnabled();
+bool IsPolkadotDAppSupportEnabled();
 bool IsCardanoEnabled();
 bool IsCardanoDAppSupportEnabled();
 bool IsZCashShieldedTransactionsEnabled();
@@ -36,8 +38,9 @@ bool IsAnkrBalancesEnabled();
 bool IsTransactionSimulationsEnabled();
 bool IsAccountHidingEnabled();
 bool IsWalletDebugEnabled();
-bool IsMojoForHardwareWalletEnabled();
-bool IsSnapsFeatureEnabled();
+bool IsMojoForLedgerEnabled();
+bool IsSnapFeatureEnabled();
+bool IsCardStackUiEnabled();
 
 bool IsEthereumKeyring(mojom::KeyringId keyring_id);
 bool IsEthereumAccount(const mojom::AccountIdPtr& account_id);
@@ -82,6 +85,7 @@ std::string GetNetworkForCardanoAccount(const mojom::AccountIdPtr& account_id);
 
 bool IsPolkadotKeyring(mojom::KeyringId keyring_id);
 bool IsPolkadotImportKeyring(mojom::KeyringId keyring_id);
+bool IsPolkadotAccount(const mojom::AccountIdPtr& account_id);
 std::vector<mojom::KeyringId> GetPolkadotKeyrings();
 bool IsPolkadotRelayNetwork(std::string_view network_id);
 
@@ -119,6 +123,9 @@ mojom::AccountIdPtr MakeIndexBasedAccountId(mojom::CoinType coin,
                                             uint32_t account_index);
 
 bool IsHTTPSOrLocalhostURL(const std::string& url);
+
+// True for non-opaque http/https origins.
+bool IsValidDappOrigin(const url::Origin& origin);
 
 template <typename T>
 std::vector<T> CloneVector(const std::vector<T>& v) {

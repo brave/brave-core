@@ -6,6 +6,7 @@
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
 
 #include <cmath>
+#include <optional>
 
 #include "base/command_line.h"
 #include "base/logging.h"
@@ -198,24 +199,28 @@ GURL BraveStatsUpdaterParams::GetUpdateURL(
         update_url, "braveSearch",
         base::NumberToString(
             serp_metrics_aggregator->GetSearchCountForYesterday(
-                serp_metrics::SerpMetricType::kBrave)));
+                serp_metrics::SerpMetricType::kBrave,
+                /*last_reported_at=*/std::nullopt)));
 
     update_url = net::AppendQueryParameter(
         update_url, "googleSearch",
         base::NumberToString(
             serp_metrics_aggregator->GetSearchCountForYesterday(
-                serp_metrics::SerpMetricType::kGoogle)));
+                serp_metrics::SerpMetricType::kGoogle,
+                /*last_reported_at=*/std::nullopt)));
 
     update_url = net::AppendQueryParameter(
         update_url, "otherSearch",
         base::NumberToString(
             serp_metrics_aggregator->GetSearchCountForYesterday(
-                serp_metrics::SerpMetricType::kOther)));
+                serp_metrics::SerpMetricType::kOther,
+                /*last_reported_at=*/std::nullopt)));
 
     update_url = net::AppendQueryParameter(
         update_url, "staleSearch",
         base::NumberToString(
-            serp_metrics_aggregator->GetSearchCountForStalePeriod()));
+            serp_metrics_aggregator->GetSearchCountForStalePeriod(
+                /*last_reported_at=*/std::nullopt)));
   }
 
   return update_url;

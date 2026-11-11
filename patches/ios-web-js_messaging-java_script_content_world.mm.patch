@@ -1,0 +1,14 @@
+diff --git a/ios/web/js_messaging/java_script_content_world.mm b/ios/web/js_messaging/java_script_content_world.mm
+index 8ee8cb896b3ce8dd0973753e8d37e325f82df978..6ba8c3902b628f4d9d6b183d8a5992e4fc465275 100644
+--- a/ios/web/js_messaging/java_script_content_world.mm
++++ b/ios/web/js_messaging/java_script_content_world.mm
+@@ -318,6 +318,9 @@ void JavaScriptContentWorld::AddFeature(const JavaScriptFeature* feature) {
+                               weak_factory_.GetWeakPtr(),
+                               feature->AsWeakPtr()));
+     }
++    if (feature->GetFeatureRepliesToPrompts()) {
++      prompt_replying_features_[optional_handler_name.value()] = feature;
++    }
+     script_message_handlers_[feature] = std::move(script_message_handler);
+   }
+ }

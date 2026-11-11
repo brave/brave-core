@@ -17,14 +17,17 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/ui/browser.h"
+#include "brave/ui/color/nala/nala_color_id.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
+#include "chrome/browser/ui/views/interaction/browser_elements_views.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -35,6 +38,7 @@
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/menus/simple_menu_model.h"
 #include "ui/views/controls/highlight_path_generator.h"
+#include "ui/views/view_class_properties.h"
 
 namespace {
 
@@ -118,6 +122,15 @@ const ui::ColorProvider* GetColorProviderForView(
 
 }  // namespace
 
+DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(WalletButton, kWalletButtonElementId);
+
+// static
+WalletButton* WalletButton::From(BrowserWindowInterface* browser) {
+  auto* elements = BrowserElementsViews::From(browser);
+  return elements ? elements->GetViewAs<WalletButton>(kWalletButtonElementId)
+                  : nullptr;
+}
+
 WalletButton::WalletButton(View* backup_anchor_view, Profile* profile)
     : ToolbarButton(
           base::BindRepeating(&WalletButton::OnWalletPressed,
@@ -129,6 +142,7 @@ WalletButton::WalletButton(View* backup_anchor_view, Profile* profile)
       prefs_(profile->GetPrefs()),
       backup_anchor_view_(backup_anchor_view) {
   SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_WALLET));
+  SetProperty(views::kElementIdentifierKey, kWalletButtonElementId);
 
   // The MenuButtonController makes sure the panel closes when clicked if the
   // panel is already open.
@@ -172,9 +186,8 @@ void WalletButton::OnNotificationUpdate(bool show_suggest_badge,
   UpdateImageAndText();
 }
 
-void WalletButton::InkDropRippleAnimationEnded(views::InkDropState state) {
-  const bool activated = state == views::InkDropState::ACTIVATED;
-  UpdateImageAndText(activated);
+void WalletButton::UpdateIcon() {
+  UpdateImageAndText();
 }
 
 void WalletButton::OnThemeChanged() {
@@ -193,7 +206,7 @@ std::string WalletButton::GetBadgeText() {
   return "";
 }
 
-void WalletButton::UpdateImageAndText(bool activated) {
+void WalletButton::UpdateImageAndText() {
   views::HighlightPathGenerator::Install(
       this, std::make_unique<BraveWalletButtonHighlightPathGenerator>(
                 (counter_ > 0)));
@@ -204,8 +217,8 @@ void WalletButton::UpdateImageAndText(bool activated) {
   }
 
   ui::ColorId color_id =
-      activated ? static_cast<ui::ColorId>(kColorToolbarButtonActivated)
-                : static_cast<ui::ColorId>(kColorToolbarButtonIcon);
+      IsActivated() ? static_cast<ui::ColorId>(kColorToolbarButtonActivated)
+                    : static_cast<ui::ColorId>(kColorToolbarButtonIcon);
 
   if (counter_ == 0) {
     SetImageModel(views::Button::STATE_NORMAL,
@@ -237,8 +250,10 @@ void WalletButton::UpdateImageAndText(bool activated) {
   image_source->SetIcon(gfx::Image(icon));
 
   auto text = GetBadgeText();
+  // White text on the fixed badge colors in every theme.
   image_source->SetBadge(std::make_unique<IconWithBadgeImageSource::Badge>(
-      text, brave::kBadgeTextColor, brave::kBadgeNotificationBG));
+      text, color_provider->GetColor(nala::kColorPrimitiveNeutral100),
+      brave::kBadgeNotificationBG));
   gfx::ImageSkia badge_image(std::move(image_source), preferred_size);
 
   SetImageModel(views::Button::STATE_NORMAL,
@@ -250,35 +265,38 @@ void WalletButton::UpdateImageAndText(bool activated) {
 }
 
 void WalletButton::ShowWalletBubble() {
-  brave_wallet::BraveWalletTabHelper::FromWebContents(GetActiveWebContents())
+  brave_wallet::BraveWalletTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()))
       ->ShowBubble();
 }
 
 void WalletButton::ShowApproveWalletBubble() {
-  brave_wallet::BraveWalletTabHelper::FromWebContents(GetActiveWebContents())
+  brave_wallet::BraveWalletTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()))
       ->ShowApproveWalletBubble();
 }
 
 void WalletButton::CloseWalletBubble() {
-  brave_wallet::BraveWalletTabHelper::FromWebContents(GetActiveWebContents())
+  brave_wallet::BraveWalletTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()))
       ->CloseBubble();
 }
 
 bool WalletButton::IsShowingBubble() {
-  return brave_wallet::BraveWalletTabHelper::FromWebContents(
-             GetActiveWebContents())
+  return brave_wallet::BraveWalletTabHelper::From(
+             tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()))
       ->IsShowingBubble();
 }
 
 bool WalletButton::IsBubbleClosedForTesting() {
-  return brave_wallet::BraveWalletTabHelper::FromWebContents(
-             GetActiveWebContents())
+  return brave_wallet::BraveWalletTabHelper::From(
+             tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()))
       ->IsBubbleClosedForTesting();  // IN-TEST
 }
 
 views::Widget* WalletButton::GetBubbleWidgetForTesting() {
-  return brave_wallet::BraveWalletTabHelper::FromWebContents(
-             GetActiveWebContents())
+  return brave_wallet::BraveWalletTabHelper::From(
+             tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()))
       ->GetBubbleWidgetForTesting();  // IN-TEST
 }
 

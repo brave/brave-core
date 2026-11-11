@@ -39,6 +39,8 @@ class QuickViewController: UIViewController {
     estimatedTransitionDistance: 110
   )
   private var toolbarVisibilityCancellable: AnyCancellable?
+  /// The in-flight task preparing the share sheet, if any
+  private var shareTask: Task<Void, Never>?
   private let onOpenInNewTab: ((URLRequest, Bool) -> Void)?
   private let onOpenInNewWindow: ((URL, Bool) -> Void)?
   private let onAttachTab: ((any TabState) -> Void)?
@@ -160,9 +162,11 @@ class QuickViewController: UIViewController {
       self?.showReaderModeBar()
     }
     tab.historyTabHelper = .init(tab: tab, historyAPI: historyAPI)
+    tab.shareableDocumentHelper = .init(tab: tab)
     tab.addPolicyDecider(self)
     tab.createWebView()
     tab.delegate = self
+    tab.downloadDelegate = self
     tab.webViewProxy?.scrollView?.layer.masksToBounds = true
     tab.isVisible = true
     self.currentTab = tab
@@ -205,21 +209,40 @@ class QuickViewController: UIViewController {
         currentTab.reload()
       case .openTab:
         self?.dismiss(animated: true) {
-          guard let self, let currentTab = self.currentTab else { return }
-          currentTab.removeObserver(self.toolbarViewModel)
-          currentTab.removeObserver(self)
-          currentTab.historyTabHelper = nil
-          self.onAttachTab?(currentTab)
+          self?.promoteCurrentTabToBrowserTab()
         }
       case .share:
-        guard let self, let visibleURL = self.currentTab?.visibleURL
-        else { return }
+        self?.openShareSheet()
+      case .sslStatus:
+        self?.presentSSLStatusView()
+      case .playlist, .translate:
+        break
+      }
+    }
+    toolbarViewModel.onTappedCollapsedBarTopArea = { [weak self] in
+      guard let self else { return }
+      if self.isKeyboardVisible {
+        self.view.endEditing(true)
+      } else {
+        self.toolbarVisibilityViewModel.toolbarState = .expanded
+      }
+    }
+  }
+
+  private func openShareSheet() {
+    guard let tab = currentTab, let visibleURL = tab.visibleURL else { return }
+
+    // Cancel any previous request that has not yet presented its share sheet
+    shareTask?.cancel()
+    shareTask = Task { [weak self, weak tab] in
+      guard let self, let tab else { return }
+      @MainActor func share(url: URL, document: ShareableDocument? = nil) {
         let anchorView = self.toolbarHostingController.rootView.shareBackgroundView.uiView
         self.presentShareActivity(
-          url: visibleURL,
-          tab: currentTab,
-          syncAPI: syncAPI,
-          sendTabAPI: sendTabAPI,
+          url: url,
+          tab: url.isFileURL ? nil : tab,
+          syncAPI: self.syncAPI,
+          sendTabAPI: self.sendTabAPI,
           feedDataSource: nil,
           isBraveNewsAvailable: false,
           source: .init(
@@ -233,21 +256,34 @@ class QuickViewController: UIViewController {
             },
             onShowSubmitReport: { [weak self] url in
               self?.showSubmitReportView(for: url)
+            },
+            onCleanUp: {
+              // Retain the document until the share sheet is dismissed which deletes the file
+              _ = document
             }
           )
         )
-      case .sslStatus:
-        self?.presentSSLStatusView()
-      case .playlist, .translate:
-        break
       }
-    }
-    toolbarViewModel.onTappedCollapsedBarTopArea = { [weak self] in
-      guard let self else { return }
-      if self.isKeyboardVisible {
-        self.view.endEditing(true)
-      } else {
-        self.toolbarVisibilityViewModel.toolbarState = .expanded
+
+      guard let document = tab.shareableDocumentHelper?.document else {
+        share(url: visibleURL)
+        return
+      }
+      // The user may have navigated or dismissed while the document was downloading
+      @MainActor func isStillCurrent() -> Bool {
+        !Task.isCancelled && self.viewIfLoaded?.window != nil && self.currentTab === tab
+          && tab.shareableDocumentHelper?.document === document
+      }
+      do {
+        let fileURL = try await document.fileURL()
+        guard isStillCurrent() else { return }
+        share(url: fileURL, document: document)
+      } catch is CancellationError {
+        return
+      } catch {
+        guard isStillCurrent() else { return }
+        // Fallback to sharing the web URL if the document could not be downloaded
+        share(url: visibleURL)
       }
     }
   }
@@ -314,48 +350,92 @@ class QuickViewController: UIViewController {
       return
     }
 
-    weak var weakPopover: PopoverController?
-    let popover = PopoverController(
-      contentController: PopoverNavigationController(
-        rootViewController: ShieldsPanelViewController(
-          url: url,
-          tab: tab,
-          domain: Domain.getOrCreate(forUrl: url, persistent: !tab.isPrivate),
-          isAdvancedControlsEnabled: false
-        ) { [weak self] action in
-          guard let self else { return }
-          switch action {
-          case .navigate(let target, _):
-            switch target {
-            case .reportBrokenSite:
-              weakPopover?.dismiss(animated: true) {
-                self.showSubmitReportView(for: url)
-              }
-            case .shareStats:
-              weakPopover?.dismiss(animated: true) {
-                let activityController =
-                  ShieldsActivityItemSourceProvider.shared.setupGlobalShieldsActivityController(
-                    isPrivateBrowsing: tab.isPrivate
-                  )
-                self.present(activityController, animated: true, completion: nil)
-              }
-            case .globalShields:  // not available in quickview mode
-              break
-            }
-          case .changedShieldSettings:
-            self.changedShieldSettings()
-          case .shredSiteData:  // not available in quickview mode
-            break
+    weak var weakShieldsPanelVC: UIViewController?
+    let shieldsPanelActionHandler: (ShieldsPanelAction) -> Void = { [weak self] action in
+      guard let self else { return }
+      switch action {
+      case .navigate(let target, _):
+        switch target {
+        case .reportBrokenSite:
+          weakShieldsPanelVC?.dismiss(animated: true) {
+            self.showSubmitReportView(for: url)
           }
+        case .shareStats:
+          weakShieldsPanelVC?.dismiss(animated: true) {
+            let activityController =
+              ShieldsActivityItemSourceProvider.shared.setupGlobalShieldsActivityController(
+                isPrivateBrowsing: tab.isPrivate
+              )
+            self.present(activityController, animated: true, completion: nil)
+          }
+        case .globalShields:  // not available in quickview mode
+          break
         }
-      ),
-      contentSizeBehavior: .preferredContentSize
-    )
-    weakPopover = popover
-    popover.present(
-      from: toolbarHostingController.rootView.shieldBackgroundView.uiView,
-      on: self
-    )
+      case .changedShieldSettings:
+        self.changedShieldSettings()
+      case .shredSiteData:  // not available in quickview mode
+        break
+      case .openURLInNewTab(let url):
+        self.openNewTab(with: URLRequest(url: url), inPrivateMode: currentTab?.isPrivate ?? false)
+      }
+    }
+    if FeatureList.kShowUpdatedShieldsPanel.enabled {
+      let shieldsPanelViewController = ShieldsPanelViewController(
+        url: url,
+        viewModel: ShieldsPanelViewModel(
+          tab: tab,
+          stats: tab.contentBlocker?.$stats.eraseToAnyPublisher()
+            ?? Just(.init()).eraseToAnyPublisher(),
+          blockedRequests: tab.contentBlocker?.$blockedRequests.map(Array.init)
+            .eraseToAnyPublisher() ?? Just([]).eraseToAnyPublisher(),
+          isAdvancedControlsEnabled: false,
+          isShredEnabled: false
+        ),
+        action: shieldsPanelActionHandler
+      )
+      weakShieldsPanelVC = shieldsPanelViewController
+      if UIDevice.current.userInterfaceIdiom == .pad {
+        shieldsPanelViewController.modalPresentationStyle = .popover
+      } else {
+        // A sheet stacked on top of this one only nests behind it at the `.large` detent, otherwise
+        // UIKit slides this one out of view for the duration of the presentation.
+        expandToLargeDetentForStackedSheet()
+      }
+      shieldsPanelViewController.popoverPresentationController?.sourceView =
+        toolbarHostingController.rootView.shieldBackgroundView.uiView
+      shieldsPanelViewController.popoverPresentationController?.sourceRect =
+        toolbarHostingController.rootView.shieldBackgroundView.uiView.bounds
+      shieldsPanelViewController.popoverPresentationController?.popoverLayoutMargins = .init(
+        equalInset: 4
+      )
+      shieldsPanelViewController.popoverPresentationController?.permittedArrowDirections = [
+        .up, .down,
+      ]
+      self.present(shieldsPanelViewController, animated: true)
+    } else {
+      let popover = PopoverController(
+        contentController: PopoverNavigationController(
+          rootViewController: LegacyShieldsPanelViewController(
+            url: url,
+            tab: tab,
+            callback: shieldsPanelActionHandler
+          )
+        ),
+        contentSizeBehavior: .preferredContentSize
+      )
+      weakShieldsPanelVC = popover
+      popover.present(from: toolbarHostingController.rootView.shieldBackgroundView.uiView, on: self)
+    }
+  }
+
+  /// Moves this sheet to the `.large` detent so a sheet presented on top of it nests behind it
+  /// rather than pushing it out of view.
+  private func expandToLargeDetentForStackedSheet() {
+    guard let sheet = sheetPresentationController, sheet.selectedDetentIdentifier != .large
+    else { return }
+    sheet.animateChanges {
+      sheet.selectedDetentIdentifier = .large
+    }
   }
 
   private func presentSSLStatusView() {
@@ -423,17 +503,22 @@ class QuickViewController: UIViewController {
     var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
     components?.fragment = nil
     components?.queryItems = nil
-    guard let cleanedURL = components?.url else { return }
+    guard let cleanedURL = components?.url,
+      let webcompatReporter = WebcompatReporter.ServiceFactory.get(
+        profile: currentTab.profile
+      )
+    else { return }
 
     let viewController = UIHostingController(
       rootView: SubmitReportView(
         url: cleanedURL,
-        isPrivateBrowsing: profile.isOffTheRecord,
+        webcompatReporter: webcompatReporter,
         tab: currentTab
       )
     )
 
     viewController.modalPresentationStyle = .popover
+    viewController.preferredContentSize = CGSize(width: 400, height: 600)
 
     if let popover = viewController.popoverPresentationController {
       popover.sourceView = toolbarHostingController.rootView.shieldBackgroundView.uiView
@@ -443,8 +528,10 @@ class QuickViewController: UIViewController {
       sheet.largestUndimmedDetentIdentifier = .medium
       sheet.prefersEdgeAttachedInCompactHeight = true
       sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
-      sheet.detents = [.medium(), .large()]
       sheet.prefersGrabberVisible = true
+    }
+    if UIDevice.current.userInterfaceIdiom != .pad {
+      expandToLargeDetentForStackedSheet()
     }
     present(viewController, animated: true)
   }
@@ -570,6 +657,14 @@ class QuickViewController: UIViewController {
       NSLayoutConstraint.activate(keyboardGuideHiddenConstraints)
     }
   }
+
+  private func promoteCurrentTabToBrowserTab() {
+    guard let currentTab else { return }
+    currentTab.removeObserver(toolbarViewModel)
+    currentTab.removeObserver(self)
+    currentTab.historyTabHelper = nil
+    onAttachTab?(currentTab)
+  }
 }
 
 // MARK: - TabDelegate
@@ -590,7 +685,7 @@ extension QuickViewController: TabDelegate {
     }
     return nil
   }
-
+  @MainActor
   func tab(
     _ tab: some TabState,
     contextMenuConfigurationForLinkURL linkURL: URL?
@@ -680,17 +775,18 @@ extension QuickViewController: TabDelegate {
         copyAction.accessibilityLabel = "linkContextMenu.copyLink"
         actions.append(copyAction)
 
-        let copyCleanLinkAction = UIAction(
-          title: Strings.copyCleanLink,
-          image: UIImage(braveSystemNamed: "leo.copy.clean"),
-          handler: UIAction.deferredActionHandler { _ in
-            let service = URLSanitizerServiceFactory.get(privateMode: currentTab.isPrivate)
-            let cleanedURL = service?.sanitize(url: url) ?? url
-            UIPasteboard.general.url = cleanedURL
-          }
-        )
-        copyCleanLinkAction.accessibilityLabel = "linkContextMenu.copyCleanLink"
-        actions.append(copyCleanLinkAction)
+        if let service = URLSanitizerServiceFactory.get(profile: currentTab.profile) {
+          let copyCleanLinkAction = UIAction(
+            title: Strings.copyCleanLink,
+            image: UIImage(braveSystemNamed: "leo.copy.clean"),
+            handler: UIAction.deferredActionHandler { _ in
+              let cleanedURL = service.sanitize(url: url) ?? url
+              UIPasteboard.general.url = cleanedURL
+            }
+          )
+          copyCleanLinkAction.accessibilityLabel = "linkContextMenu.copyCleanLink"
+          actions.append(copyCleanLinkAction)
+        }
 
         let shareAction = UIAction(
           title: Strings.shareLinkActionTitle,
@@ -795,6 +891,23 @@ extension QuickViewController: TabObserver {
       hideReaderModeBar()
     }
     toolbarVisibilityViewModel.toolbarState = .expanded
+  }
+
+  func tab(_ tab: some TabState, didFailNavigationWithError error: any Error) {
+    let error = error as NSError
+    // Only a real network-level failure qualifies. A navigation that one of our policy
+    // deciders cancelled in order to load an interstitial (blocked domain, strict-mode
+    // HTTPS upgrade) also lands here, reported as a cancellation/interrupted load.
+    guard error.domain == NSURLErrorDomain, error.code != NSURLErrorCancelled,
+      let failedURL = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL
+    else { return }
+    Task { [weak self, weak tab] in
+      guard let self, let tab else { return }
+      guard tab.httpsUpgradeHelper?.pendingUpgrade == nil, !tab.isLoading,
+        InternalURL(tab.visibleURL ?? failedURL) == nil
+      else { return }
+      self.handleUnsupportedRequest(URLRequest(url: failedURL), tab.isPrivate)
+    }
   }
 
   func tabDidUpdateURL(_ tab: some TabState) {
@@ -956,6 +1069,7 @@ extension QuickViewController: KeyboardHelperDelegate {
 }
 
 extension QuickViewController: TabPolicyDecider {
+  @MainActor
   func tab(
     _ tab: some TabState,
     shouldAllowRequest request: URLRequest,
@@ -974,5 +1088,19 @@ extension QuickViewController: TabPolicyDecider {
     dismiss(animated: true) {
       self.onOpenInNewTab?(request, isPrivate)
     }
+  }
+}
+
+extension QuickViewController: TabDownloadDelegate {
+  func tab(_ tab: some Web.TabState, didCreateDownload download: Web.Download) {
+    dismiss(animated: true) { [weak self] in
+      self?.promoteCurrentTabToBrowserTab()
+      tab.downloadDelegate?.tab(tab, didCreateDownload: download)
+    }
+  }
+
+  func tab(_ tab: some Web.TabState, didFinishDownload download: Web.Download, error: (any Error)?)
+  {
+    // no-op. download will be redirect to a regular tab
   }
 }

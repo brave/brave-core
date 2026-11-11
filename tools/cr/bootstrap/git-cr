@@ -9,4 +9,6 @@
 #
 # Named `git-cr` so that git resolves `git cr` to this shim via $PATH, making
 # the `git cr` subcommand work without registering a per-repository alias.
-exec python3 "$(dirname "$0")/launcher.py" git-cr "$@"
+dir="$(dirname "$0")"
+python="$(python3 "$dir/runner.py")" || exit
+exec "$python" "$dir/launcher.py" git-cr "$@"

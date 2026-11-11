@@ -95,29 +95,28 @@ struct OPMLImporterViewModifier: ViewModifier {
     return .init(title: outline.text, url: url)
   }
 
-  nonisolated private func importOPML(from url: URL) async {
+  private func importOPML(from url: URL) async {
     guard url.isFileURL,
-      let data = await AsyncFileManager.default.contents(atPath: url.path(percentEncoded: false))
+      url.startAccessingSecurityScopedResource()
     else {
       isPresented = false
       importError = .noFeedsFound
       return
     }
-    let opml = OPMLParser.parse(data: data)
-    await MainActor.run {
-      guard let opml = opml else {
-        isPresented = false
-        importError = .invalidData
-        return
-      }
-      let locations = opml.outlines.compactMap(self.rssLocationFromOPMLOutline)
-      if locations.isEmpty {
-        isPresented = false
-        importError = .noFeedsFound
-        return
-      }
-      opmlParsedResult = .init(url: url, locations: locations)
+    let data = await AsyncFileManager.default.contents(atPath: url.path(percentEncoded: false))
+    url.stopAccessingSecurityScopedResource()
+    guard let data, let opml = await OPMLParser.parse(data: data) else {
+      isPresented = false
+      importError = .invalidData
+      return
     }
+    let locations = opml.outlines.compactMap(self.rssLocationFromOPMLOutline)
+    if locations.isEmpty {
+      isPresented = false
+      importError = .noFeedsFound
+      return
+    }
+    opmlParsedResult = .init(url: url, locations: locations)
   }
 }
 

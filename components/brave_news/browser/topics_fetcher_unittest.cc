@@ -228,8 +228,8 @@ TEST_F(BraveNewsTopicsFetcherTest, TopicsAreJoinedAndParsedCorrectly) {
 #if BUILDFLAG(IS_MAC)
   // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
   // unexpected test timeout failures are resolved.
-  if (base::mac::MacOSMajorVersion() == 26) {
-    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  if (base::mac::MacOSMajorVersion() >= 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe and later.";
   }
 #endif
   url_loader_factory().AddResponse(kTopicsUrl, kTopicsResponse, net::HTTP_OK);
@@ -287,8 +287,8 @@ TEST_F(BraveNewsTopicsFetcherTest, NoResponseNoTopics) {
 #if BUILDFLAG(IS_MAC)
   // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
   // unexpected test timeout failures are resolved.
-  if (base::mac::MacOSMajorVersion() == 26) {
-    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  if (base::mac::MacOSMajorVersion() >= 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe and later.";
   }
 #endif
   url_loader_factory().AddResponse(kTopicsUrl, "",
@@ -302,8 +302,8 @@ TEST_F(BraveNewsTopicsFetcherTest, NoTopicsResponseButArticlesNoTopics) {
 #if BUILDFLAG(IS_MAC)
   // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
   // unexpected test timeout failures are resolved.
-  if (base::mac::MacOSMajorVersion() == 26) {
-    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  if (base::mac::MacOSMajorVersion() >= 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe and later.";
   }
 #endif
   url_loader_factory().AddResponse(kTopicsUrl, "",
@@ -317,8 +317,8 @@ TEST_F(BraveNewsTopicsFetcherTest, NoArticlesResponseButTopicsNoTopics) {
 #if BUILDFLAG(IS_MAC)
   // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
   // unexpected test timeout failures are resolved.
-  if (base::mac::MacOSMajorVersion() == 26) {
-    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  if (base::mac::MacOSMajorVersion() >= 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe and later.";
   }
 #endif
   url_loader_factory().AddResponse(kTopicsUrl, kTopicsResponse, net::HTTP_OK);
@@ -331,8 +331,8 @@ TEST_F(BraveNewsTopicsFetcherTest, TopicsWithInvalidArticles) {
 #if BUILDFLAG(IS_MAC)
   // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
   // unexpected test timeout failures are resolved.
-  if (base::mac::MacOSMajorVersion() == 26) {
-    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  if (base::mac::MacOSMajorVersion() >= 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe and later.";
   }
 #endif
   url_loader_factory().AddResponse(kTopicsUrl, kTopicsResponse, net::HTTP_OK);

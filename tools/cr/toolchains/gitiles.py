@@ -2,8 +2,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Fetch raw file contents from Chromium's gitiles (googlesource) mirror.
-"""
+"""Fetch raw file contents from Chromium's gitiles (googlesource) mirror."""
 
 from __future__ import annotations
 
@@ -18,7 +17,8 @@ import urllib.request
 # blob with no surrounding HTML or headers.
 CHROMIUM_SRC_FILE_URL_TEMPLATE = (
     'https://chromium.googlesource.com/chromium/src/+/refs/tags/{tag}/{path}'
-    '?format=TEXT')
+    '?format=TEXT'
+)
 
 # Per-request timeout for gitiles fetches.
 HTTP_FETCH_TIMEOUT_SECS = 30
@@ -42,20 +42,26 @@ def fetch_raw(url: str) -> str:
             final attempt.
     """
     for attempt in range(1, GITILES_FETCH_MAX_ATTEMPTS + 1):
-        logging.info('Fetching %s (attempt %d/%d)', url, attempt,
-                     GITILES_FETCH_MAX_ATTEMPTS)
+        logging.info(
+            'Fetching %s (attempt %d/%d)',
+            url,
+            attempt,
+            GITILES_FETCH_MAX_ATTEMPTS,
+        )
         is_last_attempt = attempt == GITILES_FETCH_MAX_ATTEMPTS
         encoded: bytes | None = None
         try:
             with urllib.request.urlopen(
-                    url, timeout=HTTP_FETCH_TIMEOUT_SECS) as response:
+                url, timeout=HTTP_FETCH_TIMEOUT_SECS
+            ) as response:
                 encoded = response.read()
             return base64.b64decode(encoded).decode('utf-8')
         except urllib.error.HTTPError as e:
             # `HTTPError.read()` returns the response body. Let's log it.
             body = e.read().decode('utf-8', errors='replace')
-            logging.error('HTTP %s on %s; response body:\n%s', e.code, url,
-                          body)
+            logging.error(
+                'HTTP %s on %s; response body:\n%s', e.code, url, body
+            )
             if is_last_attempt:
                 raise
         except (urllib.error.URLError, TimeoutError) as e:
@@ -67,8 +73,9 @@ def fetch_raw(url: str) -> str:
         except ValueError as e:
             # Let's log the raw response whenever there are decoding issues.
             preview = (encoded or b'').decode('utf-8', errors='replace')
-            logging.error('Decode failed for %s: %s; raw response:\n%s', url,
-                          e, preview)
+            logging.error(
+                'Decode failed for %s: %s; raw response:\n%s', url, e, preview
+            )
             if is_last_attempt:
                 raise
         time.sleep(GITILES_FETCH_RETRY_DELAY_SECS)

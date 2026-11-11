@@ -6,4 +6,6 @@
 #
 # Dispatches to tools/cr/plaster.py for the brave-core checkout the current
 # directory is in. See launcher.py for the resolution logic.
-exec python3 "$(dirname "$0")/launcher.py" plaster "$@"
+dir="$(dirname "$0")"
+python="$(python3 "$dir/runner.py")" || exit
+exec "$python" "$dir/launcher.py" plaster "$@"

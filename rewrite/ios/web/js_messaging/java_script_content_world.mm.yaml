@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Record the features replying to prompts in `AddFeature`.
+
+      They are recorded where the feature's script message handler is set up,
+      as only features with a handler name can reply to prompts.
+    regex:
+      re_pattern: '(JavaScriptContentWorld::AddFeature\(.*?)(\n([^\S\n]*)script_message_handlers_\[feature\])'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+        \3if (feature->GetFeatureRepliesToPrompts()) {
+        \3  prompt_replying_features_[optional_handler_name.value()] = feature;
+        \3}\2

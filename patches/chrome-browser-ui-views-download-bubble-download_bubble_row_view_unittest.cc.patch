@@ -1,0 +1,25 @@
+diff --git a/chrome/browser/ui/views/download/bubble/download_bubble_row_view_unittest.cc b/chrome/browser/ui/views/download/bubble/download_bubble_row_view_unittest.cc
+index 9b191dfdc8a1c3229dbb11b344c1aa29361dcba1..ba1e368131ac26601043bc53fbe4e3a6b3113f10 100644
+--- a/chrome/browser/ui/views/download/bubble/download_bubble_row_view_unittest.cc
++++ b/chrome/browser/ui/views/download/bubble/download_bubble_row_view_unittest.cc
+@@ -74,6 +74,9 @@ class DownloadBubbleRowViewTest : public ChromeViewsTestBase {
+       delete;
+ 
+   void SetUp() override {
++    ON_CALL(download_item_, GetFullPath())
++        .WillByDefault(
++            ReturnRefOfCopy(base::FilePath(FILE_PATH_LITERAL("foo/bar.cc"))));
+     ChromeViewsTestBase::SetUp();
+     ASSERT_TRUE(testing_profile_manager_.SetUp());
+     profile_ = testing_profile_manager_.CreateTestingProfile("testing_profile");
+@@ -191,7 +194,9 @@ TEST_F(DownloadBubbleRowViewTest, OnlyEnabledQuickActionsVisible) {
+         &(features::IsRoundedIconsEnabled() ? vector_icons::kFolderFilledIcon
+                                             : vector_icons::kFolderOldIcon)}});
+   download_item()->NotifyObserversDownloadUpdated();
+-  ASSERT_EQ(row_view()->info().quick_actions().size(), 2u);
++  ASSERT_EQ(row_view()->info().quick_actions().size(), 3u);
++  ASSERT_EQ(row_view()->info().quick_actions().back().command,
++            DownloadCommands::DELETE_LOCAL_FILE);
+ 
+   // Should not be available because they are not present in the ui_info.
+   EXPECT_FALSE(row_view()->IsQuickActionButtonVisibleForTesting(

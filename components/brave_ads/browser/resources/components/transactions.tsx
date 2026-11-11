@@ -8,6 +8,7 @@ import * as React from 'react'
 import { useAppState, useAppActions } from '../lib/app_context'
 import { Transaction } from '../lib/app_store'
 import { renderCopyableText } from '../lib/copyable_text'
+import { isWalletConnected } from '../lib/diagnostics'
 import { formatUnixEpochToLocalTime, uniqueTableRows } from '../lib/format_time'
 import { useCopyToClipboard } from './copy_toast'
 import { computeDateRange, DateRangeFilter } from './date_range_filter'
@@ -169,6 +170,9 @@ function TransactionsTable(
 export function Transactions() {
   const actions = useAppActions()
   const transactions = useAppState((state) => state.transactions)
+  const rewardsDiagnosticEntries =
+    useAppState((state) => state.rewardsDiagnosticEntries)
+  const walletConnected = isWalletConnected(rewardsDiagnosticEntries)
   const dateRangeFilter =
     useAppState((state) => state.transactionsDateRangeFilter)
   const { preset, fromDate, toDate } = dateRangeFilter
@@ -221,8 +225,12 @@ export function Transactions() {
             <span className='diagnostic-muted'>({filtered.length})</span>
           </>
         }
-        description='Transactions recorded for served ads; reconciled for
-          BAT once redeemed.'
+        description={
+          walletConnected
+            ? 'Transactions recorded for viewed ad impressions; reconciled ' +
+              'for BAT once redeemed.'
+            : 'Transactions recorded for viewed ad impressions.'
+        }
         onRefresh={actions.loadAdsInternals}
       >
         <DateRangeFilter

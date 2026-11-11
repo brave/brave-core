@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useHistory, useLocation } from 'react-router'
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 
 // Selectors
 import {
@@ -92,14 +92,14 @@ import {
 } from '../../composer_ui/select_token_modal/select_token_modal'
 import {
   WalletPageWrapper, //
-} from '../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import { FromAsset } from '../../composer_ui/from_asset/from_asset'
 import {
   DefaultPanelHeader, //
-} from '../../../../components/desktop/card-headers/default-panel-header'
+} from '$wallet/page/components/card_headers/default_panel_header'
 import {
   PanelActionHeader, //
-} from '../../../../components/desktop/card-headers/panel-action-header'
+} from '$wallet/page/components/card_headers/panel_action_header'
 import {
   OrdinalsWarningMessage, //
 } from '../components/ordinals-warning-message/ordinals-warning-message'
@@ -107,7 +107,7 @@ import {
   SelectAddressButton, //
 } from '../../composer_ui/select_address_button/select_address_button'
 import { AddMemo } from '../components/add_memo/add_memo'
-import { ZCashMigrationBanner } from '../../../../components/desktop/banners/zcash_migration_banner/zcash_migration_banner'
+import { ZCashMigrationBanner } from '$wallet/page/components/banners/zcash_migration_banner/zcash_migration_banner'
 
 type SendAmountValidationErrorType =
   | 'fromAmountDecimalsOverflow'

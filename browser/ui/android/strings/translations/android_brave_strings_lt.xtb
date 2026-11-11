@@ -112,7 +112,7 @@
 <translation id="6920492760024499150">Geriausios šiandienos istorijos privačiame sraute – tik jums.</translation>
 <translation id="3803728444598576153">Įjunkite „Brave“ naujienas ir nepraleiskite nė vienos istorijos</translation>
 <translation id="7627131190984957214">„Brave“ naujienas remia reklama – rodomos privačios ir anoniminės reklamos, pritaikytos jūsų įrenginiui.</translation>
-<translation id="7897050360583141319">Sekite mėgstamus naujienų šaltinius viename sraute. Tiesiog atidarykite skirtuką „Brave“ naršyklėje, slinkite žemyn ir… viskas!\n„Brave“ naujienų funkcija palaikoma skelbimų. Jums rodomos privačios anoniminės reklamos.</translation>
+<translation id="7897050360583141319">Sekite mėgstamus naujienų šaltinius viename sraute. Tiesiog atidarykite skirtuką „Brave“ naršyklėje, slinkite žemyn ir… viskas!</translation>
 <translation id="1765217911817124376">Įjungti „Brave“ naujienas</translation>
 <translation id="8981973962043893066">Ieškoti svetainių, temų arba RSS srauto</translation>
 <translation id="3225021799163709119">Populiaru</translation>
@@ -190,9 +190,9 @@
 <translation id="5987838417172370108">Padėkite tobulinti „Brave“ produktų stabilumą, automatiškai siųsdami diagnostikos ataskaitas, kai „Brave“ naršyklė užstringa.</translation>
 <translation id="7977176350719484850">Numatomi sutaupyti\nduomenys</translation>
 <translation id="9008534313521214777">Numatomas sutaupytas\nlaikas</translation>
-<translation id="8347743943525229984">Leisti „Brave“ apklausas</translation>
-<translation id="6022939994702081659">Leidžia „Brave“ rodyti nuorodas į konfidencialias apklausas naujos kortelės puslapyje. Apklausos padeda mums sukurti geresnes funkcijas ir įvertinti naršyklės reklamos kampanijų efektyvumą.</translation>
-<translation id="7746496306508543965">Sužinokite daugiau apie „Brave“ apklausas</translation>
+<translation id="5668852698659986622">Įjungti remiamus skelbimus</translation>
+<translation id="431194936581466649">Padėkite palaikyti „Brave“ misiją kurti nepriklausomą, į naudotoją orientuotą žiniatinklį su remiamais skelbimais. Skelbimų efektyvumą matuojame privačiai, jūsų neidentifikuodami.</translation>
+<translation id="1939813747486101115">Sužinokite daugiau apie remiamas reklamas</translation>
 <translation id="410351446219883937">Automatinis paleidimas</translation>
 <translation id="7445411102860286510">Leisti svetainėms automatiškai leisti nutildytus vaizdo įrašus (rekomenduojama)</translation>
 <translation id="7837721118676387834">Leisti automatiškai paleisti nutildytus vaizdo įrašus konkrečioje svetainėje</translation>
@@ -250,7 +250,6 @@
 <translation id="6213254277250932867">Turiu 12 žodžių atkūrimo frazę</translation>
 <translation id="4225265925807365011">Turiu 24 žodžių atkūrimo frazę</translation>
 <translation id="3570367516044491911">Nustatyti kaip numatytąją naršyklę</translation>
-<translation id="6800338374677644736">Nustatyti kaip numatytąją naršyklę</translation>
 <translation id="1545749641540134597">Nuskaityti QR kodą</translation>
 <translation id="5317781812114905957">Instrukcijos</translation>
 <translation id="8515319483805157233">Jei norite ieškoti pagal QR kodą, nustatykite QR kodą rėmelio centre.</translation>
@@ -282,7 +281,6 @@
 <translation id="5582839680698949063">Pagrindinis meniu</translation>
 <translation id="7002271985859760052">Puslapio veiksmai</translation>
 <translation id="7104487676473617844">Toliau nurodyti elementai bus rodomi meniu tik tuo atveju, jei juos palaiko šiuo metu atidarytas tinklalapis.</translation>
-<translation id="4159764849281393303">Žiniatinklio programa</translation>
 <translation id="8038539967102225446">„Brave Ads“ jau čia!</translation>
 <translation id="222883304157347087">(šis įrenginys)</translation>
 <translation id="4157741509680155021">SINCHRONIZAVIMO GRANDINĖS ĮRENGINIAI</translation>
@@ -291,7 +289,7 @@
 <translation id="2569646144216067185">Žodžių skaičius: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Klaidingas sinchronizavimo kodas</translation>
 <translation id="8284063834901328650">Klaidingas sinchronizavimo QR kodas</translation>
-<translation id="859506441384380749">Šį kodą sugeneravo pasenusi „Brave“ versija, pirmiausia naujovinkite kitą savo įrenginį</translation>
+<translation id="4002014583969312635">Panašu, kad šis kodas buvo sukurtas įrenginyje, kuriame veikia senesnė „Brave“ versija. Atnaujinkite „Brave“ į naujausią versiją kitame įrenginyje ir sukurkite naują sinchronizavimo kodą.</translation>
 <translation id="3132642509209154999">Kodo galiojimas baigėsi. Sugeneruokite naują kitame įrenginyje ir bandykite dar kartą.</translation>
 <translation id="2859229680945501779">Šis kodas negalioja. Patikrinkite, ar jūsų įrenginyje teisingai nustatytas laikas ir laiko juosta.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -337,8 +335,6 @@
 <translation id="8185825081026121627">Gaukite „Basic Attention Token“ už privatumo nepažeidžiančių reklamų peržiūrą per „Brave Rewards“.</translation>
 <translation id="5321518976657560663">Nustatymo iš naujo klaida</translation>
 <translation id="4114170343590425996">Iš naujo nustatant „Brave Rewards“ įvyko klaida. Iš naujo paleiskite „Brave“ ir bandykite dar kartą.</translation>
-<translation id="6417420737057016607">„Brave“ reklamos</translation>
-<translation id="5611966874859284786">Rodyti reklamos pranešimus, kai „Brave“ nenaudojama</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Iš naujo nustatykite „Brave Rewards“ atlygio duomenis…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Išvalykite „Brave Ads“ reklamų duomenis…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Žymės pridėjimas</translation>
@@ -401,6 +397,13 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="8793108040181436796">Valdikliai</translation>
 <translation id="8643377320501056697">Rodyti populiarias svetaines</translation>
 <translation id="7275773481201277457">Rodyti „Brave“ statistiką</translation>
+<translation id="8516804522688861636">Rodyti dažnai lankomas svetaines</translation>
+<translation id="4546260624932151782">Rodyti mėgstamiausius</translation>
+<translation id="5313967007315987356">Pridėti svetainę</translation>
+<translation id="1773147648972887693">Rodyti dažnai lankomas</translation>
+<translation id="7134741506051403308">Slėpti valdiklį</translation>
+<translation id="1247759249260562308">Redaguoti mėgstamiausią</translation>
+<translation id="6387214885349500492">Prisegti šį mėgstamiausią</translation>
 <translation id="7462178177755090262">Paleidimo ekranas</translation>
 <translation id="5365434987337264071">Paskutinė atidaryta kortelė</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -727,6 +730,8 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="1634828734222219955">Iš viso</translation>
 <translation id="7995708795274219641">Suma + dujos</translation>
 <translation id="2186011161688824046">Suma + mokestis</translation>
+<translation id="1118876217803190221">Nepakankamas likutis</translation>
+<translation id="275990379543116961">Nepakanka lėšų dujoms</translation>
 <translation id="1950052789869821983">Operacija</translation>
 <translation id="2304783958703511257">Išplėstiniai nustatymai</translation>
 <translation id="4220062530885628403">Operacijos numeris</translation>
@@ -976,6 +981,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="6365389672683343144">„Brave VPN“ prenumerata gali apsaugoti iki 5 įrenginių, naudojančių „Android“ ir „iOS“, taip pat kompiuterius. Tiesiog susiekite „Google Play“ ir „Brave“ paskyras.</translation>
 <translation id="6610899852831463073">Negalima įjungti saugaus naršymo</translation>
 <translation id="7954263306665462056">Saugus naršymas jūsų įrenginyje išjungtas. Norėdami jį įjungti įsitikinkite, kad įdiegtos ir atnaujintos „Google Play Services“.</translation>
+<translation id="6417420737057016607">„Brave“ reklamos</translation>
 <translation id="7748944510530490017">Pagrindiniai tinklai</translation>
 <translation id="2781668117338732220">Papildomi tinklai</translation>
 <translation id="282560918037172384">Bandomieji tinklai</translation>
@@ -1002,6 +1008,13 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="7530313002494358590">Norint įjungti arba išjungti Brave funkciją, reikia iš naujo paleisti naršyklę, kad pakeitimai įsigaliotų. Kai Brave Origin baigs atnaujinimą, palieskite <ph name="BEGIN_BOLD"/>Paleisti iš naujo dabar<ph name="END_BOLD"/>.</translation>
 <translation id="1028940738207645746">Ar tikrai norite nustatyti visas nuostatas iš naujo į numatytas?</translation>
 <translation id="5939518447894949180">Nustatyti iš naujo</translation>
+<translation id="3222790865318305905">Pasiektas aktyvinimų limitas</translation>
+<translation id="3787857711016546034">Siekiant užkirsti kelią sukčiavimui, Origin aktyvinimai yra apriboti pagal dažnį. Tačiau visada galite paprašyti daugiau aktyvinimų, kad galėtumėte naudoti savo Origin licenciją daugiau įrenginių. Tiesiog spustelėkite parinktį „Prašyti daugiau aktyvinimų“ arba <ph name="CONTACT_SUPPORT"/> pagalbos.</translation>
+<translation id="6760819753412779585">susisiekti su pagalbos skyriumi</translation>
+<translation id="571697836019670200">Prašyti daugiau aktyvinimų</translation>
+<translation id="9019545131475425538">Apdorojama…</translation>
+<translation id="7242700630179071243">Paruošta aktyvinti</translation>
+<translation id="5463918917265356202">Brave Origin dabar aktyvus šiame įrenginyje. Kad pradėtumėte naudoti šią funkciją, turite iš naujo paleisti naršyklę. Ar norite paleisti iš naujo dabar?</translation>
 <translation id="8554205386170195281">Nusipirkti</translation>
 <translation id="8613144770663526433">Prisijunkite naudodami „Brave“ piniginę</translation>
 <translation id="3696514931437952995">Jungiatės prie <ph name="ORIGIN"/>. „Brave“ piniginė pasidalins jūsų piniginės adresu su<ph name="ORIGIN"/>.</translation>

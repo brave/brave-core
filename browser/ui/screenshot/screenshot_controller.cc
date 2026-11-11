@@ -23,7 +23,9 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/download/download_prefs.h"
 #include "chrome/browser/image_editor/screenshot_flow.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "components/viz/common/frame_sinks/copy_output_result.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/render_widget_host_view.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
@@ -132,19 +134,24 @@ base::FilePath BuildDefaultPath(const base::FilePath& download_dir) {
 
 }  // namespace
 
+DEFINE_USER_DATA(ScreenshotController);
+
 ScreenshotController::ScreenshotController(
+    ui::UnownedUserDataHost& host,
     content::BrowserContext* profile,
     NativeWindowGetter parent_window_getter,
     PreviewDialogShower preview_dialog_shower)
     : parent_window_getter_(std::move(parent_window_getter)),
       preview_dialog_shower_(std::move(preview_dialog_shower)),
-      profile_(profile) {
+      profile_(profile),
+      scoped_unowned_user_data_(host, *this) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(preview_dialog_shower_);
 }
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
 ScreenshotController::ScreenshotController(
+    ui::UnownedUserDataHost& host,
     content::BrowserContext* profile,
     NativeWindowGetter parent_window_getter,
     PreviewDialogShower preview_dialog_shower,
@@ -152,7 +159,8 @@ ScreenshotController::ScreenshotController(
     : parent_window_getter_(std::move(parent_window_getter)),
       preview_dialog_shower_(std::move(preview_dialog_shower)),
       print_preview_extractor_(std::move(print_preview_extractor)),
-      profile_(profile) {
+      profile_(profile),
+      scoped_unowned_user_data_(host, *this) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   CHECK(preview_dialog_shower_);
@@ -165,6 +173,12 @@ ScreenshotController::~ScreenshotController() {
   if (select_dialog_) {
     select_dialog_->ListenerDestroyed();
   }
+}
+
+// static
+ScreenshotController* ScreenshotController::From(
+    BrowserWindowInterface* browser) {
+  return Get(browser->GetUnownedUserDataHost());
 }
 
 base::expected<void, ScreenshotController::Error>
@@ -359,6 +373,9 @@ void ScreenshotController::CopyToClipboard(std::vector<uint8_t> png) {
   SkBitmap bitmap = gfx::PNGCodec::Decode(png);
   ui::ScopedClipboardWriter clipboard_writer(ui::ClipboardBuffer::kCopyPaste);
   clipboard_writer.WriteImage(bitmap);
+  if (profile_->IsOffTheRecord()) {
+    clipboard_writer.MarkAsOffTheRecord();
+  }
   ResultCallback cb = std::move(pending_callback_);
   Reset();
   if (cb) {

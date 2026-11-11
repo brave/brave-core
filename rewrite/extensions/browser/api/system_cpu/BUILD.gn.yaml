@@ -1,0 +1,13 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Use the Linux CPU info provider on Android with the core.
+    regex:
+      pattern:
+        'if (is_linux || is_chromeos || enable_desktop_android_extensions) {'
+      replace:
+        'if (is_linux || is_chromeos || (is_android && enable_extensions_core))
+        {'

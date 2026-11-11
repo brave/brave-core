@@ -9,7 +9,7 @@ import * as React from 'react'
 import { getLocale } from '../../../../../../common/locale'
 
 // Components
-import Checkbox from '@brave/leo/react/checkbox'
+import Checkbox from '@brave/nala/react/checkbox'
 
 // Shared Styles
 import { Column, Text } from '../../shared.styles'

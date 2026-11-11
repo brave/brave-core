@@ -16,7 +16,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.test.core.app.ApplicationProvider;
-import androidx.test.filters.SmallTest;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,11 +36,11 @@ import org.chromium.components.browser_ui.settings.SettingsNavigation.SettingsFr
 /** Tests for {@link BraveSettingsLauncherImpl}. */
 @RunWith(BaseRobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
-// Settings fragments are EmbeddableSettingsPages, so SettingsIntentUtil reads these flags while
-// building the intent. Pin them so these tests don't depend on the field trial state. With
+// Settings fragments are EmbeddableSettingsPages, so SettingsIntentUtil reads this flag while
+// building the intent. Pin it so these tests don't depend on the field trial state. With
 // SettingsInTab the intent targets ChromeLauncherActivity with a chrome://settings URL instead of
 // the settings activity, which is a separate code path from the substitution tested here.
-@DisableFeatures({ChromeFeatureList.SETTINGS_SINGLE_ACTIVITY, ChromeFeatureList.SETTINGS_IN_TAB})
+@DisableFeatures(ChromeFeatureList.SETTINGS_IN_TAB)
 public class BraveSettingsLauncherImplTest {
     private Application mContext;
     private BraveSettingsLauncherImpl mSettingsNavigation;
@@ -62,7 +61,6 @@ public class BraveSettingsLauncherImplTest {
      * and no "Clear Brave Ads data" entry.
      */
     @Test
-    @SmallTest
     public void testStartSettingsWithEnumSubstitutesFragment() {
         mSettingsNavigation.startSettings(mContext, SettingsFragment.CLEAR_BROWSING_DATA);
 
@@ -72,7 +70,6 @@ public class BraveSettingsLauncherImplTest {
     }
 
     @Test
-    @SmallTest
     public void testCreateSettingsIntentWithEnumSubstitutesFragment() {
         Intent intent =
                 mSettingsNavigation.createSettingsIntent(
@@ -82,7 +79,6 @@ public class BraveSettingsLauncherImplTest {
     }
 
     @Test
-    @SmallTest
     public void testStartSettingsWithFragmentClassSubstitutesFragment() {
         mSettingsNavigation.startSettings(
                 mContext, ClearBrowsingDataFragment.class, /* fragmentArgs= */ null);
@@ -98,7 +94,6 @@ public class BraveSettingsLauncherImplTest {
      * to bypass the substitution.
      */
     @Test
-    @SmallTest
     public void testStartSettingsPreservesArgsAndBackStack() {
         Bundle fragmentArgs = ClearBrowsingDataFragment.createFragmentArgs("referrer");
 
@@ -116,7 +111,6 @@ public class BraveSettingsLauncherImplTest {
     }
 
     @Test
-    @SmallTest
     public void testOtherFragmentsAreStillSubstituted() {
         assertEquals(
                 BraveDownloadSettings.class.getName(),
@@ -131,7 +125,6 @@ public class BraveSettingsLauncherImplTest {
     }
 
     @Test
-    @SmallTest
     public void testMainSettingsStillOpensBraveSettingsActivity() {
         Intent intent =
                 mSettingsNavigation.createSettingsIntent(

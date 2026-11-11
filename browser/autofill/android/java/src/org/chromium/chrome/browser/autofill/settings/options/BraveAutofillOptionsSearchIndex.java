@@ -21,7 +21,6 @@ public final class BraveAutofillOptionsSearchIndex {
             Context context, SettingsIndexData indexData, SettingsRoutes routes) {
         updateAutofillPrivateWindowEntry(context, indexData);
         updateMainAutofillAndPasswordsEntry(indexData, routes);
-        updateLegacyAutofillOptionsEntry(context, indexData, routes);
         updateHomeOfTransactionsAutofillOptionsEntry(indexData, routes);
         addAutofillOptionsChildParentLinks(indexData, routes);
     }
@@ -29,7 +28,6 @@ public final class BraveAutofillOptionsSearchIndex {
     public static final class SettingsRoutes {
         private final String mMainSettingsFragmentName;
         private final String mMainAutofillAndPasswordsKey;
-        private final String mLegacyAutofillOptionsKey;
         private final String mHomeOfTransactionsFragmentName;
         private final String mHomeOfTransactionsAutofillSettingsKey;
         private final String mHomeOfTransactionsReferrerExtra;
@@ -38,14 +36,12 @@ public final class BraveAutofillOptionsSearchIndex {
         public SettingsRoutes(
                 String mainSettingsFragmentName,
                 String mainAutofillAndPasswordsKey,
-                String legacyAutofillOptionsKey,
                 String homeOfTransactionsFragmentName,
                 String homeOfTransactionsAutofillSettingsKey,
                 String homeOfTransactionsReferrerExtra,
                 int homeOfTransactionsSettingsMenuReferrer) {
             mMainSettingsFragmentName = mainSettingsFragmentName;
             mMainAutofillAndPasswordsKey = mainAutofillAndPasswordsKey;
-            mLegacyAutofillOptionsKey = legacyAutofillOptionsKey;
             mHomeOfTransactionsFragmentName = homeOfTransactionsFragmentName;
             mHomeOfTransactionsAutofillSettingsKey = homeOfTransactionsAutofillSettingsKey;
             mHomeOfTransactionsReferrerExtra = homeOfTransactionsReferrerExtra;
@@ -53,8 +49,10 @@ public final class BraveAutofillOptionsSearchIndex {
         }
     }
 
-    private static Bundle createAutofillOptionsSettingsArgs() {
-        return AutofillOptionsFragment.createRequiredArgs(AutofillOptionsReferrer.SETTINGS);
+    // All entries updated here are reached through Settings search, so they carry the same referrer
+    // upstream uses for its own search index entries.
+    private static Bundle createAutofillOptionsSearchArgs() {
+        return AutofillOptionsFragment.createRequiredArgs(AutofillOptionsReferrer.SETTINGS_SEARCH);
     }
 
     private static Bundle createHomeOfTransactionsArgs(SettingsRoutes routes) {
@@ -77,7 +75,7 @@ public final class BraveAutofillOptionsSearchIndex {
                     BraveAutofillOptionsFragmentBase.PREF_AUTOFILL_PRIVATE_WINDOW,
                     R.string.prefs_autofill_private_window_title,
                     R.string.prefs_autofill_private_window_summary,
-                    createAutofillOptionsSettingsArgs());
+                    createAutofillOptionsSearchArgs());
             return;
         }
 
@@ -87,7 +85,7 @@ public final class BraveAutofillOptionsSearchIndex {
                         .setTitle(context.getString(R.string.prefs_autofill_private_window_title))
                         .setSummary(
                                 context.getString(R.string.prefs_autofill_private_window_summary))
-                        .setArguments(createAutofillOptionsSettingsArgs())
+                        .setArguments(createAutofillOptionsSearchArgs())
                         .build());
     }
 
@@ -108,24 +106,6 @@ public final class BraveAutofillOptionsSearchIndex {
                         .build());
     }
 
-    private static void updateLegacyAutofillOptionsEntry(
-            Context context, SettingsIndexData indexData, SettingsRoutes routes) {
-        SettingsIndexData.Entry legacyAutofillOptionsEntry =
-                indexData.getEntryForKey(
-                        routes.mMainSettingsFragmentName, routes.mLegacyAutofillOptionsKey);
-        if (legacyAutofillOptionsEntry == null) {
-            return;
-        }
-
-        indexData.updateEntry(
-                legacyAutofillOptionsEntry.id,
-                new SettingsIndexData.Entry.Builder(legacyAutofillOptionsEntry)
-                        .setTitle(AutofillOptionsMediator.getFragmentTitle(context))
-                        .setFragment(AutofillOptionsFragment.class.getName())
-                        .setArguments(createAutofillOptionsSettingsArgs())
-                        .build());
-    }
-
     private static void updateHomeOfTransactionsAutofillOptionsEntry(
             SettingsIndexData indexData, SettingsRoutes routes) {
         SettingsIndexData.Entry homeOfTransactionsAutofillOptionsEntry =
@@ -140,7 +120,7 @@ public final class BraveAutofillOptionsSearchIndex {
                 homeOfTransactionsAutofillOptionsEntry.id,
                 new SettingsIndexData.Entry.Builder(homeOfTransactionsAutofillOptionsEntry)
                         .setFragment(AutofillOptionsFragment.class.getName())
-                        .setArguments(createAutofillOptionsSettingsArgs())
+                        .setArguments(createAutofillOptionsSearchArgs())
                         .build());
     }
 

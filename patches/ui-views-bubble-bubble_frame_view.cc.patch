@@ -1,0 +1,14 @@
+diff --git a/ui/views/bubble/bubble_frame_view.cc b/ui/views/bubble/bubble_frame_view.cc
+index 21637c9103c0a0e0964283952f7f91b87276803f..d0a03eb9ade295e744925d013c5069fc1ea6c562 100644
+--- a/ui/views/bubble/bubble_frame_view.cc
++++ b/ui/views/bubble/bubble_frame_view.cc
+@@ -1220,7 +1220,8 @@ int BubbleFrameView::GetFrameWidthForClientWidth(int client_width) const {
+       GetWidget()->widget_delegate()->AsDialogDelegate();
+   bool snapping =
+       dialog_delegate && dialog_delegate->buttons() !=
+-                             static_cast<int>(ui::mojom::DialogButton::kNone);
++                             static_cast<int>(ui::mojom::DialogButton::kNone) &&
++                             !dialog_delegate->should_ignore_snapping();
+   return snapping ? LayoutProvider::Get()->GetSnappedDialogWidth(frame_width)
+                   : frame_width;
+ }

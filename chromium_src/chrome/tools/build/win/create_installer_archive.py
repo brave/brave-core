@@ -18,19 +18,49 @@ from sign_binaries import sign_binaries
 
 
 @override_utils.override_function(globals())
-def CopyAllFilesToStagingDir(original_function, config, distribution,
-                             staging_dir, build_dir, enable_hidpi,
-                             include_snapshotblob, include_dxc, component_build,
-                             component_ffmpeg_build, verbose):
-    original_function(config, distribution, staging_dir, build_dir,
-                      enable_hidpi, include_snapshotblob, include_dxc,
-                      component_build, component_ffmpeg_build, verbose)
+def CopyAllFilesToStagingDir(
+    original_function,
+    config,
+    distribution,
+    staging_dir,
+    build_dir,
+    enable_hidpi,
+    include_snapshotblob,
+    include_dxc,
+    component_build,
+    component_ffmpeg_build,
+    verbose,
+):
+    original_function(
+        config,
+        distribution,
+        staging_dir,
+        build_dir,
+        enable_hidpi,
+        include_snapshotblob,
+        include_dxc,
+        component_build,
+        component_ffmpeg_build,
+        verbose,
+    )
     brave_extension_locales_src_dir_path = os.path.realpath(
-        os.path.join(get_src_dir(), 'brave', 'components', 'brave_extension',
-                     'extension', 'brave_extension', '_locales'))
-    CopyExtensionLocalization('brave_extension',
-                              brave_extension_locales_src_dir_path, config,
-                              staging_dir, g_archive_inputs)
+        os.path.join(
+            get_src_dir(),
+            'brave',
+            'components',
+            'brave_extension',
+            'extension',
+            'brave_extension',
+            '_locales',
+        )
+    )
+    CopyExtensionLocalization(
+        'brave_extension',
+        brave_extension_locales_src_dir_path,
+        config,
+        staging_dir,
+        g_archive_inputs,
+    )
 
 
 @override_utils.override_function(globals())
@@ -47,19 +77,22 @@ def GetPrevVersion(_, build_dir, _temp_dir, last_chrome_installer, output_name):
     if not last_chrome_installer:
         return ''
     lzma_exec = GetLZMAExec(build_dir)
-    prev_archive_file = os.path.join(last_chrome_installer,
-                                     output_name + ARCHIVE_SUFFIX)
+    prev_archive_file = os.path.join(
+        last_chrome_installer, output_name + ARCHIVE_SUFFIX
+    )
     chrome_dll_glob = os.path.join(CHROME_DIR, '*', 'chrome.dll')
     cmd = [lzma_exec, 'l', '-slt', prev_archive_file, chrome_dll_glob]
     try:
-        output = subprocess.check_output(cmd,
-                                         stderr=subprocess.STDOUT,
-                                         text=True)
+        output = subprocess.check_output(
+            cmd, stderr=subprocess.STDOUT, text=True
+        )
     except subprocess.CalledProcessError as e:
         # pylint: disable=raise-missing-from
-        raise Exception("Error while running cmd: %s\n"
-                        "Exit code: %s\n"
-                        "Command output:\n%s" % (e.cmd, e.returncode, e.output))
+        raise Exception(
+            "Error while running cmd: %s\n"
+            "Exit code: %s\n"
+            "Command output:\n%s" % (e.cmd, e.returncode, e.output)
+        )
     prefix, suffix = chrome_dll_glob.split('*')
     pattern = re.escape(prefix) + r'(\d+\.\d+\.\d+\.\d+)' + re.escape(suffix)
     match = re.search(pattern, output)
@@ -68,16 +101,22 @@ def GetPrevVersion(_, build_dir, _temp_dir, last_chrome_installer, output_name):
 
 
 @override_utils.override_function(globals())
-def CreateArchiveFiles(original_function, options, staging_dir, current_version,
-                       prev_version):
+def CreateArchiveFiles(
+    original_function, options, staging_dir, current_version, prev_version
+):
     # At least as of this writing, `current_version` and `prev_version` are
     # actually two-tuple build numbers y.z, not four-tuple version numbers
     # w.x.y.z.
     current_version_full = BuildVersion()
-    SignAndCopyPreSignedBinaries(options.skip_signing, options.output_dir,
-                                 staging_dir, current_version_full)
-    return original_function(options, staging_dir, current_version,
-                             prev_version)
+    SignAndCopyPreSignedBinaries(
+        options.skip_signing,
+        options.output_dir,
+        staging_dir,
+        current_version_full,
+    )
+    return original_function(
+        options, staging_dir, current_version, prev_version
+    )
 
 
 @override_utils.override_function(globals())
@@ -92,8 +131,9 @@ def PrepareSetupExec(original_function, options, current_version, prev_version):
         options.build_dir = build_dir_before
 
 
-def CopyExtensionLocalization(extension_name, locales_src_dir_path, config,
-                              staging_dir, g_archive_inputs):
+def CopyExtensionLocalization(
+    extension_name, locales_src_dir_path, config, staging_dir, g_archive_inputs
+):
     """Copies extension localization files from locales_src_dir_path to
     \\<out_gen_dir>\\chrome\\installer\\mini_installer\\mini_installer
     \\temp_installer_archive\\Chrome-bin\\<version>\\resources\\extension_name
@@ -101,8 +141,12 @@ def CopyExtensionLocalization(extension_name, locales_src_dir_path, config,
     """
     locales_dest_path = staging_dir
     locales_dest_path = os.path.join(
-        locales_dest_path, config.get('GENERAL', 'brave_resources.pak'),
-        'resources', extension_name, '_locales')
+        locales_dest_path,
+        config.get('GENERAL', 'brave_resources.pak'),
+        'resources',
+        extension_name,
+        '_locales',
+    )
     locales_dest_path = os.path.realpath(locales_dest_path)
     shutil.rmtree(locales_dest_path, ignore_errors=True)
     shutil.copytree(locales_src_dir_path, locales_dest_path)
@@ -110,20 +154,24 @@ def CopyExtensionLocalization(extension_name, locales_src_dir_path, config,
     # Transifex uses the latter. To integrate with Transifex, our code renames
     # "nb" to "no". But we still need to present "nb" to Chromium. The following
     # code achieves this:
-    os.rename(os.path.join(locales_dest_path, 'no'),
-              os.path.join(locales_dest_path, 'nb'))
+    os.rename(
+        os.path.join(locales_dest_path, 'no'),
+        os.path.join(locales_dest_path, 'nb'),
+    )
     # Files are copied, but we need to inform g_archive_inputs about that
     for root, _, files in os.walk(locales_dest_path):
         for name in files:
             rel_dir = os.path.relpath(root, locales_dest_path)
             rel_file = os.path.join(rel_dir, name)
-            candidate = os.path.join('.', 'resources', extension_name,
-                                     '_locales', rel_file)
+            candidate = os.path.join(
+                '.', 'resources', extension_name, '_locales', rel_file
+            )
             g_archive_inputs.append(candidate)
 
 
-def SignAndCopyPreSignedBinaries(skip_signing, output_dir, staging_dir,
-                                 current_version):
+def SignAndCopyPreSignedBinaries(
+    skip_signing, output_dir, staging_dir, current_version
+):
     if not skip_signing:
         sign_binaries(staging_dir)
         # Copy pre-signed files into the staging directory. This is important

@@ -51,7 +51,6 @@ import { makeSerializableTransaction } from '../../../utils/model-serialization-
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 import { TX_CACHE_TAGS } from '../../../utils/query-cache-utils'
 import { sortTransactionByDate } from '../../../utils/tx-utils'
-import { getIsBraveWalletOrigin } from '../../../utils/string-utils'
 import {
   signLedgerEthereumTransaction,
   signLedgerFilecoinTransaction,
@@ -1677,8 +1676,7 @@ export const transactionEndpoints = ({
         const { ui } = api.getState() as { ui: { isMobile: boolean } }
         // Desktop-only: wallet-origin txs confirm in-page. Mobile (Android /
         // iOS) still opens the native approve panel for all origins.
-        const isWalletOrigin =
-          !!arg.originInfo && getIsBraveWalletOrigin(arg.originInfo)
+        const isWalletOrigin = !arg.dappOriginInfo
         if (pageHandler && (ui.isMobile || !isWalletOrigin)) {
           pageHandler.showApprovePanelUI()
         }

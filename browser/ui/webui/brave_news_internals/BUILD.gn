@@ -14,9 +14,12 @@ source_set("brave_news_internals") {
   ]
 
   deps = [
+    "//brave/browser/ui/webui:brave_webui_source",
     "//brave/components/brave_news/browser",
     "//brave/components/brave_news/browser/resources:generated_resources",
     "//brave/components/brave_news/common:mojom",
-    "//chrome/browser:browser_public_dependencies",
+    "//brave/components/resources:static_resources",
   ]
+
+  public_deps = [ "//content/public/browser" ]
 }

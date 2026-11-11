@@ -24,6 +24,15 @@ inline constexpr char kVerticalTabExpandDelaySwitch[] =
 inline constexpr char kVerticalTabCollapseDelaySwitch[] =
     "vertical-tab-collapse-delay";
 
+// Testing-only switch for the Brave -> upstream vertical tabs migration.
+// "force-upstream" routes to Chromium's native vertical tabs; "reset" clears
+// any forced override and reverts to whatever the pref would otherwise be
+// (i.e. Brave's own vertical tabs, since the upstream pref defaults false).
+inline constexpr char kVerticalTabMigrationSwitch[] = "vertical-tab-migration";
+inline constexpr char kVerticalTabMigrationForceUpstreamValue[] =
+    "force-upstream";
+inline constexpr char kVerticalTabMigrationResetValue[] = "reset";
+
 }  // namespace tabs::switches
 
 #endif  // BRAVE_BROWSER_UI_TABS_PUBLIC_SWITCHES_H_

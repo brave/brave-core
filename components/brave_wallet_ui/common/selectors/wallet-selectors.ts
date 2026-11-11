@@ -13,6 +13,8 @@ const selectWalletState = (state: State) => state.wallet
 
 // safe selectors (primitive return types only)
 export const hasInitialized = ({ wallet }: State) => wallet.hasInitialized
+export const isFilecoinLedgerEnabled = ({ wallet }: State) =>
+  wallet.isFilecoinLedgerEnabled
 export const isBitcoinEnabled = ({ wallet }: State) => wallet.isBitcoinEnabled
 export const isBitcoinImportEnabled = ({ wallet }: State) =>
   wallet.isBitcoinImportEnabled
@@ -36,6 +38,10 @@ export const isZCashShieldedTransactionsEnabled = ({ wallet }: State) =>
 export const isZCashIronwoodEnabled = ({ wallet }: State) =>
   wallet.isZCashIronwoodEnabled
 export const isPolkadotEnabled = ({ wallet }: State) => wallet.isPolkadotEnabled
+export const isPolkadotDappSupportEnabled = ({ wallet }: State) =>
+  wallet.isPolkadotDappSupportEnabled
+export const isCardStackUiEnabled = ({ wallet }: State) =>
+  wallet.isCardStackUiEnabled
 
 // memoized selectors (safe for objects and arrays)
 export const allowedNewWalletAccountTypeNetworkIds = createSelector(

@@ -16,6 +16,7 @@ source_set("browser_tests") {
     "font_browsertest.cc",
     "navigator_connection_attribute_browsertest.cc",
     "subresource_web_bundles_browsertest.cc",
+    "translation_web_apis_browsertest.cc",
   ]
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
@@ -24,7 +25,6 @@ source_set("browser_tests") {
     "//base/test:test_support",
     "//brave/common",
     "//chrome/browser/profiles:profile",
-    "//chrome/browser/ui",
     "//chrome/common",
     "//chrome/test:test_support_ui",
     "//components/embedder_support",

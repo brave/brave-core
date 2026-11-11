@@ -5,10 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 
-#include <algorithm>
-#include <limits>
 #include <optional>
-#include <tuple>
 #include <utility>
 
 #include "base/base64.h"
@@ -19,7 +16,6 @@
 #include "brave/components/brave_wallet/browser/solana_instruction_data_decoder.h"
 #include "brave/components/brave_wallet/browser/solana_message_address_table_lookup.h"
 #include "brave/components/brave_wallet/browser/solana_message_header.h"
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/solana_address.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 

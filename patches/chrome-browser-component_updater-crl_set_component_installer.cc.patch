@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/component_updater/crl_set_component_installer.cc b/chrome/browser/component_updater/crl_set_component_installer.cc
-index 0835c0ac9182aac930c3e5a03d3f5577828f4d75..2b19d535eed6b300f19b6a060f60480af8bd1c96 100644
+index fc314e8bd28541d94182c7f70a17dc24d7d89143..11bd17d8e5e136f3b43f01339de219d9bdee063a 100644
 --- a/chrome/browser/component_updater/crl_set_component_installer.cc
 +++ b/chrome/browser/component_updater/crl_set_component_installer.cc
-@@ -154,7 +154,8 @@ update_client::InstallerAttributes CRLSetPolicy::GetInstallerAttributes()
+@@ -155,7 +155,8 @@ update_client::InstallerAttributes CRLSetPolicy::GetInstallerAttributes()
  void RegisterCRLSetComponent(ComponentUpdateService* cus) {
    auto installer = base::MakeRefCounted<ComponentInstaller>(
        std::make_unique<CRLSetPolicy>());

@@ -8,6 +8,18 @@
   <message name="IDS_CONTEXTUAL_TASKS_CUSTOMIZE_CHROME_LABEL" desc="The label shown in the Customize Brave settings menu to pin Contextual Tasks to the toolbar.">
     Brave Search AI Mode
   </message>
+  <message name="IDS_CONTEXTUAL_TASKS_CUSTOMIZE_CHROME_LABEL_SIDE_PANEL" desc="The label shown in the Customize Brave settings menu to pin Contextual Tasks to the toolbar.">
+    Brave Search side panel
+  </message>
+  <message name="IDS_CONTEXTUAL_TASKS_CUSTOMIZE_CHROME_LABEL_IN_SIDE_PANEL" desc="The label shown in the Customize Brave settings menu to pin Contextual Tasks to the toolbar.">
+    Brave Search in side panel
+  </message>
+  <message name="IDS_CONTEXTUAL_TASKS_CUSTOMIZE_CHROME_LABEL_IN_CHROME" desc="The label shown in the Customize Brave settings menu to pin Contextual Tasks to the toolbar.">
+    Brave Search in Brave
+  </message>
+  <message name="IDS_CONTEXTUAL_TASKS_CUSTOMIZE_CHROME_LABEL_PANEL" desc="The label shown in the Customize Brave settings menu to pin Contextual Tasks to the toolbar.">
+    Brave Search panel
+  </message>
   <message name="IDS_CONTEXTUAL_TASKS_ENTRY_POINT_TOOLTIP" desc="The tooltip text used for contextual task entry points.">
     Browse with AI
   </message>
@@ -100,5 +112,11 @@
   </message>
   <message name="IDS_CONTEXTUAL_TASKS_CHAT_HIDDEN_DESCRIPTION" desc="Subtitle description of the message shown when the contextual tasks panel is hidden due to window resizing.">
     Resize window to continue chatting
+  </message>
+  <message name="IDS_CONTEXTUAL_TASKS_LENS_REGION_CHIP_LABEL" desc="Accessible label for the Lens region selection thumbnail chip.">
+    Selected region
+  </message>
+  <message name="IDS_CONTEXTUAL_TASKS_LENS_REGION_CHIP_DISMISS_LABEL" desc="Accessible tooltip and label for the close button on the Lens region selection chip.">
+    Remove selected region
   </message>
 </grit-part>

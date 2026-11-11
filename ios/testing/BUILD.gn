@@ -29,6 +29,7 @@ test("ios_brave_unit_tests") {
     # Unit tests
     ":legacy_unit_tests",
     ":mojom_objc_generator_unit_tests",
+    "//brave/ios/browser/api/ads:unit_tests",
     "//brave/ios/browser/brave_ads:unit_tests",
     "//brave/ios/browser/brave_shields:unit_tests",
     "//brave/ios/browser/brave_shields/cosmetic_filtering:unit_tests",
@@ -60,6 +61,7 @@ source_set("legacy_unit_tests") {
     "//brave/ios/browser/api/net",
     "//net",
     "//net/http:generate_transport_security_state",
+    "//net/http:generate_transport_security_state_pins",
     "//testing/gtest",
   ]
 
@@ -76,6 +78,10 @@ source_set("mojom_objc_generator_unit_tests") {
 
   deps = [
     ":mojom_objc_generator_test_mojom_objc",
+    "//base",
+    "//base/test:test_support",
+    "//ios/web/public/test",
+    "//mojo/public/cpp/bindings",
     "//testing/gtest",
   ]
 }

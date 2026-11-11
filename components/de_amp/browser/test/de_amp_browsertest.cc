@@ -7,16 +7,16 @@
 #include <memory>
 #include <string>
 
-#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
+#include "base/strings/strcat.h"
+#include "base/test/bind.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/keep_alive/profile_keep_alive_types.h"
 #include "chrome/browser/profiles/keep_alive/scoped_profile_keep_alive.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/common/pref_names.h"
@@ -28,6 +28,7 @@
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/reload_type.h"
+#include "content/public/common/url_constants.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -222,15 +223,15 @@ class DeAmpBrowserTest : public InProcessBrowserTest {
     EXPECT_EQ(web_contents()->GetLastCommittedURL(), landing_url);
   }
 
-  void GoBack(Browser* browser) {
+  void GoBack(BrowserWindowInterface* browser) {
     content::TestNavigationObserver observer(web_contents());
-    chrome::GoBack(browser, WindowOpenDisposition::CURRENT_TAB);
+    chrome::GoBack(browser, WindowOpenDisposition::kCurrentTab);
     observer.Wait();
   }
 
-  void GoForward(Browser* browser) {
+  void GoForward(BrowserWindowInterface* browser) {
     content::TestNavigationObserver observer(web_contents());
-    chrome::GoForward(browser, WindowOpenDisposition::CURRENT_TAB);
+    chrome::GoForward(browser, WindowOpenDisposition::kCurrentTab);
     observer.Wait();
   }
 
@@ -323,7 +324,7 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, ContentDispositionAttachment) {
       browser()->GetProfile()->GetDownloadManager(), 1,
       content::DownloadTestObserver::ON_DANGEROUS_DOWNLOAD_ACCEPT);
   ui_test_utils::NavigateToURLWithDisposition(
-      browser(), amp_url, WindowOpenDisposition::CURRENT_TAB,
+      browser(), amp_url, WindowOpenDisposition::kCurrentTab,
       ui_test_utils::BROWSER_TEST_NO_WAIT);
   download_observer.WaitForFinished();
   EXPECT_EQ(1u, download_observer.NumDownloadsSeenInState(
@@ -332,6 +333,36 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, ContentDispositionAttachment) {
   // De-AMP must NOT have redirected to the canonical URL.
   EXPECT_NE(web_contents()->GetLastCommittedURL(), canonical_url);
   EXPECT_EQ(web_contents()->GetLastCommittedURL(), simple);
+}
+
+// De-AMP must not turn a view-source: navigation into a rendered canonical
+// page, otherwise an untrusted AMP page could move the user out of view-source.
+IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, ViewSourceNotDeAmped) {
+  TogglePref(true);
+  SetRequestHandler(kTestAmpPage, Amp(kTestCanonicalPage));
+  SetRequestHandler(kTestCanonicalPage, Canonical());
+
+  int canonical_requests = 0;
+  https_server_->RegisterRequestMonitor(base::BindLambdaForTesting(
+      [&](const net::test_server::HttpRequest& request) {
+        if (request.relative_url == kTestCanonicalPage) {
+          ++canonical_requests;
+        }
+      }));
+  StartServer();
+
+  const GURL amp_url = https_server_->GetURL(kTestHost, kTestAmpPage);
+  const GURL view_source_url(
+      base::StrCat({content::kViewSourceScheme, ":", amp_url.spec()}));
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), view_source_url));
+  EXPECT_TRUE(content::WaitForLoadStop(web_contents()));
+
+  auto* entry = web_contents()->GetController().GetLastCommittedEntry();
+  ASSERT_TRUE(entry);
+  EXPECT_TRUE(entry->IsViewSourceMode());
+  EXPECT_EQ(entry->GetVirtualURL(), view_source_url);
+  EXPECT_EQ(0, canonical_requests);
 }
 
 IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, CanonicalLinkOutsideChunkWithinMax) {

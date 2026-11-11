@@ -53,7 +53,7 @@ def _path_to_uri(path):
 
 def _uri_to_path(uri):
     if uri.startswith('file://'):
-        uri = uri[len('file://'):]
+        uri = uri[len('file://') :]
     return os.path.normpath(urllib.parse.unquote(uri))
 
 
@@ -75,7 +75,10 @@ class TargetIndex:
         prefix = self.workspace_root + os.sep
         return any(
             os.path.realpath(os.path.join(self.out_dir, source)).startswith(
-                prefix) for source in target.sources)
+                prefix
+            )
+            for source in target.sources
+        )
 
     def _build_ninja_path(self):
         return os.path.join(self.out_dir, 'build.ninja')
@@ -105,25 +108,28 @@ class TargetIndex:
                 self._targets_by_source.setdefault(path, []).append(target)
         self._arguments_by_uri = {}
         self._build_ninja_mtime = mtime
-        in_workspace = sum(1 for target in targets
-                           if self._in_workspace(target))
-        _log(f'found {len(targets)} Swift target(s) in {self.out_dir}, '
-             f'{in_workspace} under {self.workspace_root}')
+        in_workspace = sum(
+            1 for target in targets if self._in_workspace(target)
+        )
+        _log(
+            f'found {len(targets)} Swift target(s) in {self.out_dir}, '
+            f'{in_workspace} under {self.workspace_root}'
+        )
 
     def targets(self, workspace_only=False):
         """Returns known targets, optionally only those in the workspace."""
         with self._lock:
             self._refresh_locked()
             return [
-                target for target in self._targets_by_uri.values()
+                target
+                for target in self._targets_by_uri.values()
                 if not workspace_only or self._in_workspace(target)
             ]
 
     def targets_for_source(self, path):
         with self._lock:
             self._refresh_locked()
-            return list(self._targets_by_source.get(os.path.realpath(path),
-                                                    []))
+            return list(self._targets_by_source.get(os.path.realpath(path), []))
 
     def compiler_arguments(self, target_uri):
         """Returns cached swiftc arguments for a target, or None."""
@@ -139,7 +145,8 @@ class TargetIndex:
             if target is None:
                 return None
             arguments = gn_swift_args.compiler_arguments(
-                target, self.source_root)
+                target, self.source_root
+            )
             self._arguments_by_uri[target_uri] = arguments
             return arguments
 
@@ -184,25 +191,24 @@ class BuildServer:
         sys.stdout.buffer.flush()
 
     def _respond(self, request_id, result):
-        self._write_message({
-            'jsonrpc': '2.0',
-            'id': request_id,
-            'result': result
-        })
+        self._write_message(
+            {'jsonrpc': '2.0', 'id': request_id, 'result': result}
+        )
 
     def _respond_error(self, request_id, code, message):
-        self._write_message({
-            'jsonrpc': '2.0',
-            'id': request_id,
-            'error': {
-                'code': code,
-                'message': message
+        self._write_message(
+            {
+                'jsonrpc': '2.0',
+                'id': request_id,
+                'error': {'code': code, 'message': message},
             }
-        })
+        )
 
     def run(self):
-        _log(f'started, source root {self.source_root}, '
-             f'output directory {self.out_dir}')
+        _log(
+            f'started, source root {self.source_root}, '
+            f'output directory {self.out_dir}'
+        )
         while not self._shutdown:
             try:
                 message = self._read_message()
@@ -222,8 +228,9 @@ class BuildServer:
                 # Unknown notifications are ignored; unknown requests get a
                 # "method not found" so sourcekit-lsp can probe capabilities.
                 if request_id is not None:
-                    self._respond_error(request_id, -32601,
-                                        f'unhandled method: {method}')
+                    self._respond_error(
+                        request_id, -32601, f'unhandled method: {method}'
+                    )
                 else:
                     _debug(f'ignoring notification {method}')
                 continue
@@ -233,8 +240,9 @@ class BuildServer:
             except Exception:  # pylint: disable=broad-except
                 _log(f'{method} failed:\n{traceback.format_exc()}')
                 if request_id is not None:
-                    self._respond_error(request_id, -32603,
-                                        f'{method} failed, see server log')
+                    self._respond_error(
+                        request_id, -32603, f'{method} failed, see server log'
+                    )
                 continue
 
             if request_id is not None:
@@ -249,10 +257,8 @@ class BuildServer:
             'build/exit': self.on_build_exit,
             'workspace/buildTargets': self.on_workspace_build_targets,
             'buildTarget/sources': self.on_build_target_sources,
-            'textDocument/sourceKitOptions': self.
-            on_text_document_sourcekit_options,
-            'workspace/waitForBuildSystemUpdates': self.
-            on_workspace_wait_for_build_system_updates,
+            'textDocument/sourceKitOptions': self.on_text_document_sourcekit_options,
+            'workspace/waitForBuildSystemUpdates': self.on_workspace_wait_for_build_system_updates,
         }
 
     # -- Lifecycle ----------------------------------------------------------
@@ -265,9 +271,7 @@ class BuildServer:
             'version': SERVER_VERSION,
             'bspVersion': BSP_VERSION,
             'rootUri': _path_to_uri(self.source_root),
-            'capabilities': {
-                'languageIds': ['swift']
-            },
+            'capabilities': {'languageIds': ['swift']},
             'dataKind': 'sourceKit',
             'data': {
                 'sourceKitOptionsProvider': True,
@@ -298,27 +302,26 @@ class BuildServer:
         # open and filling their module caches. Files in those targets still get
         # full settings when opened, see on_text_document_sourcekit_options.
         for target in self.index.targets(workspace_only=True):
-            targets.append({
-                'id': {
-                    'uri': target.uri
-                },
-                'displayName': target.label,
-                'baseDirectory': _path_to_uri(
-                    os.path.join(self.source_root,
-                                 target.label[2:].split(':')[0])),
-                'tags': ['library'],
-                'languageIds': ['swift'],
-                'dependencies': [],
-                'capabilities': {},
-            })
+            targets.append(
+                {
+                    'id': {'uri': target.uri},
+                    'displayName': target.label,
+                    'baseDirectory': _path_to_uri(
+                        os.path.join(
+                            self.source_root, target.label[2:].split(':')[0]
+                        )
+                    ),
+                    'tags': ['library'],
+                    'languageIds': ['swift'],
+                    'dependencies': [],
+                    'capabilities': {},
+                }
+            )
         return {'targets': targets}
 
     def on_build_target_sources(self, params):
         items = []
-        targets_by_uri = {
-            target.uri: target
-            for target in self.index.targets()
-        }
+        targets_by_uri = {target.uri: target for target in self.index.targets()}
         for identifier in params.get('targets', []):
             uri = identifier.get('uri')
             target = targets_by_uri.get(uri)
@@ -327,16 +330,18 @@ class BuildServer:
             sources = []
             for source in target.sources:
                 path = os.path.realpath(os.path.join(self.out_dir, source))
-                sources.append({
-                    'uri': _path_to_uri(path),
-                    'kind': 1,
-                    'generated': not path.startswith(self.source_root + os.sep)
-                    or '/gen/' in path,
-                    'dataKind': 'sourceKit',
-                    'data': {
-                        'language': 'swift'
-                    },
-                })
+                sources.append(
+                    {
+                        'uri': _path_to_uri(path),
+                        'kind': 1,
+                        'generated': not path.startswith(
+                            self.source_root + os.sep
+                        )
+                        or '/gen/' in path,
+                        'dataKind': 'sourceKit',
+                        'data': {'language': 'swift'},
+                    }
+                )
             items.append({'target': {'uri': uri}, 'sources': sources})
         return {'items': items}
 
@@ -370,9 +375,10 @@ class BuildServer:
         # it still typechecks with its module's arguments.
         resolved = os.path.realpath(path)
         if not any(
-                argument.endswith('.swift')
-                and os.path.realpath(argument) == resolved
-                for argument in arguments):
+            argument.endswith('.swift')
+            and os.path.realpath(argument) == resolved
+            for argument in arguments
+        ):
             arguments = arguments + [path]
 
         return {
@@ -383,27 +389,33 @@ class BuildServer:
 
 def main(argv):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--source-root',
-                        default=os.path.join(os.path.dirname(__file__), '..',
-                                             '..', '..', '..'),
-                        help='path to the Chromium src directory')
-    parser.add_argument('--out-dir',
-                        default='out/ios_current_link',
-                        help='GN output directory, relative to --source-root')
+    parser.add_argument(
+        '--source-root',
+        default=os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'),
+        help='path to the Chromium src directory',
+    )
+    parser.add_argument(
+        '--out-dir',
+        default='out/ios_current_link',
+        help='GN output directory, relative to --source-root',
+    )
     parser.add_argument(
         '--workspace-root',
         default=None,
         help='only advertise targets with sources under this '
         'directory (default: the `brave` directory inside '
         '--source-root). Pass --source-root to advertise every '
-        'Swift target in the build.')
+        'Swift target in the build.',
+    )
     args = parser.parse_args(argv)
 
     source_root = os.path.realpath(args.source_root)
     out_dir = os.path.realpath(os.path.join(source_root, args.out_dir))
-    workspace_root = os.path.realpath(
-        args.workspace_root) if args.workspace_root else os.path.join(
-            source_root, 'brave')
+    workspace_root = (
+        os.path.realpath(args.workspace_root)
+        if args.workspace_root
+        else os.path.join(source_root, 'brave')
+    )
     BuildServer(source_root, out_dir, workspace_root).run()
     return 0
 

@@ -351,14 +351,6 @@ extension String? {
   }
 }
 
-// Binding<FormValidationError?> presentation helper
-extension CustomModelForm.FormValidationError? {
-  fileprivate var isPresented: Bool {
-    get { self != nil }
-    set { if !newValue { self = nil } }
-  }
-}
-
 private struct CustomModelFormInputLabeledContentStyle: LabeledContentStyle {
   func makeBody(configuration: Configuration) -> some View {
     VStack(alignment: .leading) {
@@ -393,12 +385,19 @@ private class MockAIChatSettingsHelper: AIChatSettingsHelper {
 
   var customModels: [AiChat.Model] = []
 
-  func addCustomModel(_ model: AiChat.Model) async -> AiChat.OperationResult {
-    mockResult(for: model)
+  func addCustomModel(
+    _ model: AiChat.Model,
+    completionHandler handler: @escaping (AiChat.OperationResult) -> Void
+  ) {
+    handler(mockResult(for: model))
   }
 
-  func updateCustomModel(at index: Int, model: AiChat.Model) async -> AiChat.OperationResult {
-    mockResult(for: model)
+  func updateCustomModel(
+    at index: Int,
+    model: AiChat.Model,
+    completionHandler handler: @escaping (AiChat.OperationResult) -> Void
+  ) {
+    handler(mockResult(for: model))
   }
 
   func mockResult(for model: AiChat.Model) -> AiChat.OperationResult {
@@ -438,7 +437,7 @@ extension AiChat.Model {
       supportsTools: false,
       audioSupport: false,
       videoSupport: false,
-      supportedCapabilities: [NSNumber(value: AiChat.ConversationCapability.chat.rawValue)],
+      supportedCapabilities: [],
       isSuggestedModel: false,
       isNearModel: false,
       supportsPrivateInference: false

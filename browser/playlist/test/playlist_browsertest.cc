@@ -14,8 +14,8 @@
 #include "base/test/mock_callback.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/playlist/playlist_add_bubble_view.h"
@@ -25,30 +25,37 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/playlist/content/browser/media_detector_component_manager.h"
 #include "brave/components/playlist/content/browser/playlist_constants.h"
+#include "brave/components/playlist/content/browser/playlist_media_handler.h"
 #include "brave/components/playlist/content/browser/playlist_service.h"
 #include "brave/components/playlist/content/browser/playlist_tab_helper.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #include "brave/components/playlist/core/common/pref_names.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/resource_coordinator/lifecycle_unit_state.mojom.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_external.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_source.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
-#include "chrome/browser/ui/views/page_action/test_support/page_action_test_support.h"
+#include "chrome/browser/ui/views/page_action/page_action_view.h"
+#include "chrome/browser/ui/views/page_action/test_support/page_action_test_accessor.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 #include "testing/gmock/include/gmock/gmock.h"
+#include "ui/base/page_transition_types.h"
+#include "ui/views/controls/scroll_view.h"
 #include "ui/views/view_utils.h"
 
 namespace playlist {
@@ -67,12 +74,9 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  views::View* GetPlaylistIcon() {
-    auto* provider = BrowserView::GetBrowserViewForBrowser(browser())
-                         ->toolbar_button_provider();
-    return page_actions::GetIconLabelBubbleViewForTesting(
-        provider->GetPageActionViewInterface(kActionShowPlaylistPageAction),
-        kActionShowPlaylistPageAction);
+  page_actions::PageActionTestAccessor GetPlaylistIcon() {
+    return page_actions::PageActionTestAccessor(browser(),
+                                                kActionShowPlaylistPageAction);
   }
 
   PlaylistBubbleView* GetBubble() {
@@ -111,10 +115,9 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
   }
 
   void ActivatePlaylistSidePanel() {
-    auto* sidebar_controller = browser()->GetFeatures().sidebar_controller();
-    ASSERT_TRUE(sidebar_controller);
-    sidebar_controller->ActivatePanelItem(
-        sidebar::SidebarItem::BuiltInItemType::kPlaylist);
+    auto* side_panel_ui = SidePanelUI::From(browser());
+    ASSERT_TRUE(side_panel_ui);
+    side_panel_ui->Show(SidePanelEntryId::kPlaylist);
   }
 
   content::WebContents* GetPlaylistWebContents() {
@@ -122,8 +125,7 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
 
     // Wrap routine with lambda as ASSERT_FOO has return type internally.
     ([&]() {
-      auto* coordinator =
-          browser()->GetFeatures().playlist_side_panel_coordinator();
+      auto* coordinator = PlaylistSidePanelCoordinator::From(browser());
       ASSERT_TRUE(coordinator);
 
       auto* contents_wrapper = coordinator->contents_wrapper();
@@ -188,7 +190,7 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
 
 // Check toggling playlist panel while playing doesn't make crash.
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PanelToggleTestWhilePlaying) {
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
 
   // Open playlist panel.
   panel_ui->Show(SidePanelEntryId::kPlaylist);
@@ -197,8 +199,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PanelToggleTestWhilePlaying) {
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return panel_ui->IsSidePanelShowing(); }));
 
-  auto* coordinator =
-      browser()->GetFeatures().playlist_side_panel_coordinator();
+  auto* coordinator = PlaylistSidePanelCoordinator::From(browser());
   ASSERT_TRUE(coordinator);
   coordinator->is_audible_for_testing_ = true;
 
@@ -223,6 +224,20 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PanelToggleTestWhilePlaying) {
   EXPECT_FALSE(coordinator->contents_wrapper_);
 }
 
+IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, ShowPlaylistBubbleCommand) {
+  ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(),
+                                     GetURL("/playlist/site_with_video.html")));
+
+  auto playlist_icon = GetPlaylistIcon();
+  WaitUntil(
+      base::BindLambdaForTesting([&]() { return playlist_icon.GetVisible(); }));
+
+  chrome::BrowserCommandController::From(browser())->ExecuteCommand(
+      IDC_SHOW_PLAYLIST_BUBBLE);
+  WaitUntil(base::BindLambdaForTesting([&]() { return !!GetBubble(); }));
+  EXPECT_TRUE(views::IsViewClass<PlaylistAddBubbleView>(GetBubble()));
+}
+
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {
   ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(),
                                      GetURL("/playlist/site_with_video.html")));
@@ -230,16 +245,15 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {
   BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* location_bar_view = views::AsViewClass<BraveLocationBarView>(
       browser_view->GetLocationBarView());
-  auto* playlist_icon = GetPlaylistIcon();
-  ASSERT_TRUE(playlist_icon);
+  auto playlist_icon = GetPlaylistIcon();
   // Checks if the page action icon shows up on a site with videos.
-  WaitUntil(base::BindLambdaForTesting(
-      [&]() { return playlist_icon->GetVisible(); }));
+  WaitUntil(
+      base::BindLambdaForTesting([&]() { return playlist_icon.GetVisible(); }));
 
   // The test page is simple video url. So we expect it to be found without
   // necessity of extracting media from background web contents.
-  auto* tab_helper =
-      playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
+  auto* tab_helper = playlist::PlaylistTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
   ASSERT_EQ(tab_helper->found_items().size(), 1u);
   ASSERT_FALSE(tab_helper->found_items()[0]->is_blob_from_media_source);
 
@@ -306,6 +320,29 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, DISABLED_ApiFunctions) {
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, DISABLED_CreateAndRemovePlaylist) {
   // TODO(sko) Test the actual UI, once the spec and the implementation for it
   // are done https://github.com/brave/brave-browser/issues/25829.
+}
+
+// Discarding a tab replaces its contents, which the tab helper follows and
+// detects the media of.
+IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, FollowsDiscardedContents) {
+  TabStripModel* const tab_strip_model = browser()->tab_strip_model();
+  tabs::TabInterface* const tab = tab_strip_model->GetActiveTab();
+  auto* const tab_helper = playlist::PlaylistTabHelper::From(tab);
+  ASSERT_TRUE(tab_helper);
+
+  ASSERT_TRUE(AddTabAtIndex(1, GURL("about:blank"), ui::PAGE_TRANSITION_TYPED));
+  auto* const lifecycle_unit =
+      resource_coordinator::TabLifecycleUnitSource::GetTabLifecycleUnitExternal(
+          tab->GetContents());
+  ASSERT_TRUE(lifecycle_unit);
+  ASSERT_TRUE(
+      lifecycle_unit->DiscardTab(::mojom::LifecycleUnitDiscardReason::URGENT));
+
+  EXPECT_EQ(playlist::PlaylistTabHelper::From(tab), tab_helper);
+  EXPECT_EQ(&tab_helper->GetWebContents(), tab->GetContents());
+  EXPECT_TRUE(tab_helper->found_items().empty());
+  EXPECT_TRUE(
+      playlist::PlaylistMediaHandler::FromWebContents(tab->GetContents()));
 }
 
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, RemoveAndRestoreLocalData) {
@@ -398,17 +435,16 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, UIHiddenWhenDisabled) {
   timer.Start(FROM_HERE, base::Milliseconds(500), run_loop.QuitClosure());
   run_loop.Run();
 
-  auto* playlist_icon = GetPlaylistIcon();
-  ASSERT_TRUE(playlist_icon);
-  EXPECT_FALSE(playlist_icon->GetVisible());
+  auto playlist_icon = GetPlaylistIcon();
+  EXPECT_FALSE(playlist_icon.GetVisible());
 
   EXPECT_EQ(playlist_iter, visible_items.end())
       << "Playlist item should not be visible when disabled";
 }
 
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlaylistTabHelper) {
-  auto* playlist_tab_helper =
-      playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
+  auto* playlist_tab_helper = playlist::PlaylistTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
   EXPECT_TRUE(playlist_tab_helper);
   EXPECT_TRUE(playlist_tab_helper->found_items().empty());
 
@@ -502,15 +538,15 @@ IN_PROC_BROWSER_TEST_F(
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* location_bar_view = views::AsViewClass<BraveLocationBarView>(
       browser_view->GetLocationBarView());
-  auto* playlist_icon = GetPlaylistIcon();
-  auto* playlist_tab_helper =
-      playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
+  auto playlist_icon = GetPlaylistIcon();
+  auto* playlist_tab_helper = playlist::PlaylistTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
 
-  EXPECT_FALSE(playlist_icon->GetVisible());
+  EXPECT_FALSE(playlist_icon.GetVisible());
   const GURL url = https_server()->GetURL("www.youtube.com", "/watch?v=12345");
   ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(), url));
   WaitUntil(
-      base::BindLambdaForTesting([&] { return playlist_icon->GetVisible(); }));
+      base::BindLambdaForTesting([&] { return playlist_icon.GetVisible(); }));
 
   EXPECT_EQ(playlist_tab_helper->found_items().size(), 1u);
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);
@@ -550,15 +586,15 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* location_bar_view = views::AsViewClass<BraveLocationBarView>(
       browser_view->GetLocationBarView());
-  auto* playlist_icon = GetPlaylistIcon();
-  auto* playlist_tab_helper =
-      playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
+  auto playlist_icon = GetPlaylistIcon();
+  auto* playlist_tab_helper = playlist::PlaylistTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
 
-  EXPECT_FALSE(playlist_icon->GetVisible());
+  EXPECT_FALSE(playlist_icon.GetVisible());
   const GURL url = https_server()->GetURL("www.youtube.com", "/watch?v=12345");
   ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(), url));
   WaitUntil(
-      base::BindLambdaForTesting([&] { return playlist_icon->GetVisible(); }));
+      base::BindLambdaForTesting([&] { return playlist_icon.GetVisible(); }));
 
   EXPECT_EQ(playlist_tab_helper->found_items().size(), 1u);
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);
@@ -603,15 +639,15 @@ IN_PROC_BROWSER_TEST_F(
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* location_bar_view = views::AsViewClass<BraveLocationBarView>(
       browser_view->GetLocationBarView());
-  auto* playlist_icon = GetPlaylistIcon();
-  auto* playlist_tab_helper =
-      playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
+  auto playlist_icon = GetPlaylistIcon();
+  auto* playlist_tab_helper = playlist::PlaylistTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
 
-  EXPECT_FALSE(playlist_icon->GetVisible());
+  EXPECT_FALSE(playlist_icon.GetVisible());
   const GURL url = https_server()->GetURL("www.ted.com", "/v12345");
   ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(), url));
   WaitUntil(
-      base::BindLambdaForTesting([&] { return playlist_icon->GetVisible(); }));
+      base::BindLambdaForTesting([&] { return playlist_icon.GetVisible(); }));
 
   EXPECT_EQ(playlist_tab_helper->found_items().size(), 1u);
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);
@@ -654,8 +690,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
   const GURL url = https_server()->GetURL("www.youtube.com", "/watch?v=12345");
   ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(), url));
 
-  auto* playlist_tab_helper =
-      playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
+  auto* playlist_tab_helper = playlist::PlaylistTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
   WaitUntil(base::BindLambdaForTesting(
       [&] { return playlist_tab_helper->found_items().size() == 1; }));
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);
@@ -710,8 +746,8 @@ IN_PROC_BROWSER_TEST_F(
   const GURL url = https_server()->GetURL("www.youtube.com", "/watch?v=12345");
   ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(), url));
 
-  auto* playlist_tab_helper =
-      playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
+  auto* playlist_tab_helper = playlist::PlaylistTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
   WaitUntil(base::BindLambdaForTesting(
       [&] { return playlist_tab_helper->found_items().size() == 1; }));
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);

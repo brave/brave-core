@@ -1,14 +1,24 @@
 diff --git a/extensions/common/extension_features.cc b/extensions/common/extension_features.cc
-index 30be474beb28b72a54db8b0c65206eb0d66184c8..466f12d53d10b96396622244be88b10187dbdb28 100644
+index 17ddf39f3604e15fe2fab42ae7656643ab64da20..74a67bed2ab5773c0a424d343dbf88dad88fb837 100644
 --- a/extensions/common/extension_features.cc
 +++ b/extensions/common/extension_features.cc
-@@ -32,7 +32,8 @@ BASE_FEATURE(kApiOdfsConfigPrivate, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -31,7 +31,7 @@ BASE_FEATURE(kApiOdfsConfigPrivate, base::FEATURE_ENABLED_BY_DEFAULT);
  
  BASE_FEATURE(kApiContextualTasksPrivate, base::FEATURE_DISABLED_BY_DEFAULT);
  
 -BASE_FEATURE(kApiGlicPrivate, base::FEATURE_ENABLED_BY_DEFAULT);
-+// kApiGlicPrivate feature state is enforced via plaster rewrite.
-+BASE_FEATURE(kApiGlicPrivate, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kApiGlicPrivate, base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE(kApiEnterpriseReportingPrivateOnDataMaskingRulesTriggered,
               base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -92,8 +92,8 @@ BASE_FEATURE(kWebRequestSecurityInfo, base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kWebRequestPerContextEventDispatch,
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+-BASE_FEATURE(kApiDesktopAndroidNativeMessaging,
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kApiDesktopAndroidNativeMessaging,
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kApiDesktopAndroidNativeMessagingBypassExtensionAllowlist,
+              base::FEATURE_DISABLED_BY_DEFAULT);

@@ -11,7 +11,6 @@ assert(enable_brave_ads)
 
 static_library("browser") {
   sources = [
-    "component_updater/component_info.h",
     "component_updater/component_util.cc",
     "component_updater/component_util.h",
     "component_updater/resource_component.cc",
@@ -21,6 +20,11 @@ static_library("browser") {
     "component_updater/resource_component_registrar.h",
     "component_updater/resource_component_registrar_delegate.h",
     "component_updater/resource_info.h",
+    "notification/notification_timeout_timers.cc",
+    "notification/notification_timeout_timers.h",
+    "reminder/reminder_info.h",
+    "reminder/reminder_manager.cc",
+    "reminder/reminder_manager.h",
     "reminder/reminder_util.cc",
     "reminder/reminder_util.h",
   ]
@@ -39,9 +43,11 @@ static_library("browser") {
     "//brave/components/p3a_utils",
     "//brave/components/time_period_storage",
     "//components/content_settings/core/browser",
+    "//components/crx_file",
     "//components/pref_registry",
     "//components/prefs",
     "//components/sessions",
+    "//crypto",
     "//third_party/blink/public/common",
     "//ui/base/idle",
     "//url",
@@ -140,6 +146,8 @@ source_set("unit_tests") {
     "ads_service_impl_unittest.cc",
     "application_state/application_state_monitor_unittest.cc",
     "component_updater/resource_component_registrar_unittest.cc",
+    "notification/notification_timeout_timers_unittest.cc",
+    "reminder/reminder_manager_unittest.cc",
     "test/fake_component_updater_delegate.cc",
     "test/fake_component_updater_delegate.h",
     "test/mock_resource_component.cc",
@@ -153,6 +161,7 @@ source_set("unit_tests") {
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/browser/application_state:test_support",
     "//brave/components/brave_ads/core",
+    "//brave/components/brave_ads/core/browser/service:test_support",
     "//brave/components/brave_ads/core/public:headers",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_policy:policy_initialization_waiter",
@@ -166,6 +175,8 @@ source_set("unit_tests") {
     "//components/prefs:test_support",
     "//components/variations",
     "//content/test:test_support",
+    "//crypto",
+    "//net:test_support",
     "//testing/gtest",
     "//ui/base/idle",
   ]

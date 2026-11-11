@@ -7,7 +7,6 @@
 
 #include "base/check_deref.h"
 #include "brave/components/constants/url_constants.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 
@@ -25,14 +24,14 @@ BraveBrowserContentSettingBubbleModelDelegate::
 void
 BraveBrowserContentSettingBubbleModelDelegate::ShowWidevineLearnMorePage() {
   GURL learn_more_url = GURL(kWidevineTOS);
-  chrome::AddSelectedTabWithURL(browser_->GetBrowserForMigrationOnly(),
-                                learn_more_url, ui::PAGE_TRANSITION_LINK);
+  chrome::AddSelectedTabWithURL(&*browser_, learn_more_url,
+                                ui::PAGE_TRANSITION_LINK);
 }
 
 void BraveBrowserContentSettingBubbleModelDelegate::ShowLearnMorePage(
     ContentSettingsType type) {
   // TODO(yrliou): Use specific support pages for each content setting type
   GURL learn_more_url(kBraveCommunitySupportUrl);
-  chrome::AddSelectedTabWithURL(browser_->GetBrowserForMigrationOnly(),
-                                learn_more_url, ui::PAGE_TRANSITION_LINK);
+  chrome::AddSelectedTabWithURL(&*browser_, learn_more_url,
+                                ui::PAGE_TRANSITION_LINK);
 }

@@ -4,8 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import ButtonMenu from '@brave/leo/react/buttonMenu'
-import Icon from '@brave/leo/react/icon'
+import ButtonMenu from '@brave/nala/react/buttonMenu'
+import Icon from '@brave/nala/react/icon'
 
 import { TabOpenerContext } from '../../shared/components/new_tab_link'
 import { EventHubContext } from '../lib/event_hub'
@@ -14,6 +14,7 @@ import { useBreakpoint } from '../lib/breakpoint'
 import { RouterContext, useRoute } from '../lib/router'
 import * as urls from '../../shared/lib/rewards_urls'
 import * as routes from '../lib/app_routes'
+import { getActiveSectionRoute, ScrollPosition } from '../lib/scroll_spy'
 
 import { style } from './app_frame.style'
 
@@ -43,6 +44,89 @@ function scrollRouteContentIntoView(
   })
 }
 
+// Scrolling that follows a navigation tap must not move the highlight back.
+const programmaticScrollMs = 1000
+let programmaticScrollEndsAt = 0
+
+// Keeps the current navigation item in sync with the section being scrolled
+// into view.
+function useScrollSpy() {
+  const router = React.useContext(RouterContext)
+
+  React.useEffect(() => {
+    let frame = 0
+    let timer = 0
+
+    function update() {
+      frame = 0
+      const remaining = programmaticScrollEndsAt - performance.now()
+      if (remaining > 0) {
+        // Nothing may scroll again once the window ends, so check then.
+        clearTimeout(timer)
+        timer = window.setTimeout(onScroll, remaining)
+        return
+      }
+
+      const elems = Array.from(
+        document.querySelectorAll<HTMLElement>('[data-app-route]'),
+      )
+      const container = elems[0]?.offsetParent
+      if (!(container instanceof HTMLElement)) {
+        return
+      }
+
+      const sections = elems.map((elem) => ({
+        route: elem.dataset.appRoute ?? '',
+        top:
+          elem.getBoundingClientRect().top
+          - container.getBoundingClientRect().top,
+      }))
+      // Only follow the scroll while a section's own route is selected, so
+      // that other routes (e.g. a modal) are left alone.
+      if (!sections.some((section) => section.route === router.getRoute())) {
+        return
+      }
+
+      let scrollPosition: ScrollPosition = 'none'
+      if (container.scrollHeight > container.clientHeight + 1) {
+        scrollPosition = 'middle'
+        if (container.scrollTop <= 1) {
+          scrollPosition = 'start'
+        } else if (
+          container.scrollTop + container.clientHeight
+          >= container.scrollHeight - 2
+        ) {
+          scrollPosition = 'end'
+        }
+      }
+      const route = getActiveSectionRoute(
+        sections,
+        container.clientHeight,
+        scrollPosition,
+      )
+      if (route && route !== router.getRoute()) {
+        // Keep the query and hash: the Explore view finds a deep-linked card
+        // through the hash.
+        router.replaceRoute(route + location.search + location.hash)
+      }
+    }
+
+    function onScroll() {
+      if (!frame) {
+        frame = requestAnimationFrame(update)
+      }
+    }
+
+    // Scroll events do not bubble, so listen during the capture phase.
+    document.addEventListener('scroll', onScroll, true)
+    return () => {
+      document.removeEventListener('scroll', onScroll, true)
+      cancelAnimationFrame(frame)
+      clearTimeout(timer)
+    }
+  }, [router])
+}
+
 function NavList() {
   const { getString } = useAppActions()
   const current = getCurrentNavRoute(useRoute())
@@ -52,6 +136,7 @@ function NavList() {
     event.preventDefault()
     const route = event.currentTarget.getAttribute('href')
     if (route) {
+      programmaticScrollEndsAt = performance.now() + programmaticScrollMs
       router.setRoute(route)
       scrollRouteContentIntoView(route, 'smooth')
     }
@@ -218,6 +303,8 @@ function PageFrame(props: Props) {
 export function AppFrame(props: Props) {
   const viewType = useBreakpoint()
   const route = useRoute()
+
+  useScrollSpy()
 
   React.useEffect(() => {
     scrollRouteContentIntoView(route, 'instant')

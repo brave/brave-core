@@ -1,0 +1,15 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream content_unittests tests with a flake rate >= 1.0% on
+## linux-ubsan bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+
+# 1.2% flake rate over 30 days per LUCI Analysis (414 passed, 0 failed, 5 flaky).
+-FilePathWatcherWithChangeInfoTest.ModifiedFileInDirectory/0
+
+# 1.7% flake rate over 30 days per LUCI Analysis (412 passed, 0 failed, 7 flaky).
+-FilePathWatcherWithChangeInfoTest.ModifiedFileInDirectory/1
+
+# 1.9% flake rate over 30 days per LUCI Analysis (411 passed, 0 failed, 8 flaky).
+-FilePathWatcherWithChangeInfoTest.ModifiedFileInDirectory/2

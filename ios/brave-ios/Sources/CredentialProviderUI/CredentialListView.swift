@@ -84,7 +84,7 @@ public struct CredentialListView: View {
   }
 
   public var body: some View {
-    NavigationView {
+    NavigationStack {
       List {
         if let origin = model.originHost {
           Section {
@@ -130,18 +130,11 @@ public struct CredentialListView: View {
             .foregroundStyle(Color(braveSystemName: .textTertiary))
         }
       }
-      .background {
-        NavigationLink(
-          isActive: Binding(
-            get: { credentialDetails != nil },
-            set: { if !$0 { credentialDetails = nil } }
-          )
-        ) {
-          if let credentialDetails {
-            CredentialDetailView(model: model, credential: credentialDetails)
-          }
-        } label: {
-          EmptyView()
+      .navigationDestination(
+        isPresented: $credentialDetails.isPresented
+      ) {
+        if let credentialDetails {
+          CredentialDetailView(model: model, credential: credentialDetails)
         }
       }
       .navigationTitle(Strings.CredentialProvider.credentialListTitle)
@@ -162,7 +155,6 @@ public struct CredentialListView: View {
         }
       }
     }
-    .navigationViewStyle(.stack)
     .tint(Color(braveSystemName: .textInteractive))
     .overlay {
       if !model.isAuthenticated {
@@ -223,6 +215,8 @@ extension CredentialListModel {
     var rpId: String!
     var privateKey: Data!
     var encrypted: Data!
+    var securityDomainEncrypted: Data!
+    var deviceAuthKeyVersion: Int32 = 0
     var creationTime: Int64 = 0
     var lastUsedTime: Int64 = 0
     var hidden: Bool = false

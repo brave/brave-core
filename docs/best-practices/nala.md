@@ -1,5 +1,9 @@
 # Nala / Leo Design System Best Practices
 
+For tokens, components, icons, and Storybook references, see the Nala / Leo
+[AGENTS.md](https://github.com/brave/leo/blob/main/AGENTS.md) (also available
+locally at `node_modules/@brave/nala/AGENTS.md`).
+
 <a id="NA-001"></a> <a id="NA-003"></a> <a id="NA-004"></a>
 
 ## ❌ Don't Add Custom Icons — Use Leo/Nala Icons
@@ -94,7 +98,7 @@ inconsistency across themes and platforms.
 
 ## ❌ Don't Use HTML Elements or Custom Components When Leo Provides Them
 
-**In WebUI React code, use Leo components from `@brave/leo/react/*` instead of
+**In WebUI React code, use Leo components from `@brave/nala/react/*` instead of
 native HTML elements or custom re-implementations.** Leo components are
 design-system-approved, theme-aware, and accessible. Using raw HTML or
 hand-rolling equivalents produces visual inconsistency, bypasses Brave's design
@@ -107,15 +111,15 @@ tokens, and requires manual accessibility work.
 
 ### Use Leo instead of native HTML elements
 
-| Instead of…               | Use…                                              |
-| ------------------------- | ------------------------------------------------- |
-| `<select>`                | `Dropdown` from `@brave/leo/react/dropdown`       |
-| `<button>`                | `Button` from `@brave/leo/react/button`           |
-| `<input type="text">`     | `Input` from `@brave/leo/react/input`             |
-| `<input type="checkbox">` | `Checkbox` from `@brave/leo/react/checkbox`       |
-| `<input type="radio">`    | `RadioButton` from `@brave/leo/react/radioButton` |
-| Toggle/switch UI          | `Toggle` from `@brave/leo/react/toggle`           |
-| `<dialog>` / modal        | `Dialog` from `@brave/leo/react/dialog`           |
+| Instead of…               | Use…                                               |
+| ------------------------- | -------------------------------------------------- |
+| `<select>`                | `Dropdown` from `@brave/nala/react/dropdown`       |
+| `<button>`                | `Button` from `@brave/nala/react/button`           |
+| `<input type="text">`     | `Input` from `@brave/nala/react/input`             |
+| `<input type="checkbox">` | `Checkbox` from `@brave/nala/react/checkbox`       |
+| `<input type="radio">`    | `RadioButton` from `@brave/nala/react/radioButton` |
+| Toggle/switch UI          | `Toggle` from `@brave/nala/react/toggle`           |
+| `<dialog>` / modal        | `Dialog` from `@brave/nala/react/dialog`           |
 
 ```tsx
 // ❌ WRONG - native HTML select
@@ -128,7 +132,7 @@ tokens, and requires manual accessibility work.
 </select>
 
 // ✅ CORRECT - Leo Dropdown
-import Dropdown from '@brave/leo/react/dropdown'
+import Dropdown from '@brave/nala/react/dropdown'
 ;<Dropdown
   value={value}
   onChange={(e) => setValue(e.detail.value)}
@@ -148,7 +152,7 @@ import Dropdown from '@brave/leo/react/dropdown'
 </button>
 
 // ✅ CORRECT - Leo Button
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 ;<Button
   onClick={handleClick}
   isDisabled={isLoading}
@@ -166,7 +170,7 @@ import Button from '@brave/leo/react/button'
 />
 
 // ✅ CORRECT - Leo Input
-import Input from '@brave/leo/react/input'
+import Input from '@brave/nala/react/input'
 ;<Input
   value={value}
   onInput={(e) => setValue(e.detail.value)}
@@ -181,16 +185,16 @@ Before creating a custom React component, check whether Leo already provides it.
 Custom re-implementations add maintenance burden and are often less accessible
 than the Leo originals.
 
-| Don't build a custom…                | Use…                                                                                                                           |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
-| Button with a dropdown menu          | `ButtonMenu` from `@brave/leo/react/buttonMenu`                                                                                |
-| Tooltip / hover popover              | `Tooltip` from `@brave/leo/react/tooltip`                                                                                      |
-| Segmented control / tab switcher     | `SegmentedControl` + `SegmentedControlItem` from `@brave/leo/react/segmentedControl` / `@brave/leo/react/segmentedControlItem` |
-| Loading spinner / activity indicator | `ProgressRing` from `@brave/leo/react/progressRing`                                                                            |
-| Dropdown/context menu                | `Menu` from `@brave/leo/react/menu`                                                                                            |
-| Modal / overlay dialog               | `Dialog` from `@brave/leo/react/dialog`                                                                                        |
-| Toast / notification banner          | `Alert` from `@brave/leo/react/alert`                                                                                          |
-| Collapsible / accordion              | `Collapse` from `@brave/leo/react/collapse`                                                                                    |
+| Don't build a custom…                | Use…                                                                                                                             |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| Button with a dropdown menu          | `ButtonMenu` from `@brave/nala/react/buttonMenu`                                                                                 |
+| Tooltip / hover popover              | `Tooltip` from `@brave/nala/react/tooltip`                                                                                       |
+| Segmented control / tab switcher     | `SegmentedControl` + `SegmentedControlItem` from `@brave/nala/react/segmentedControl` / `@brave/nala/react/segmentedControlItem` |
+| Loading spinner / activity indicator | `ProgressRing` from `@brave/nala/react/progressRing`                                                                             |
+| Dropdown/context menu                | `Menu` from `@brave/nala/react/menu`                                                                                             |
+| Modal / overlay dialog               | `Dialog` from `@brave/nala/react/dialog`                                                                                         |
+| Toast / notification banner          | `Alert` from `@brave/nala/react/alert`                                                                                           |
+| Collapsible / accordion              | `Collapse` from `@brave/nala/react/collapse`                                                                                     |
 
 ```tsx
 // ❌ WRONG - hand-rolled loading spinner
@@ -204,7 +208,7 @@ function Spinner() {
 }
 
 // ✅ CORRECT - Leo ProgressRing
-import ProgressRing from '@brave/leo/react/progressRing'
+import ProgressRing from '@brave/nala/react/progressRing'
 ;<ProgressRing />
 ```
 
@@ -224,7 +228,7 @@ function MyTooltip({ text, children }) {
 }
 
 // ✅ CORRECT - Leo Tooltip
-import Tooltip from '@brave/leo/react/tooltip'
+import Tooltip from '@brave/nala/react/tooltip'
 ;<Tooltip text='Helpful hint'>
   <Button>Hover me</Button>
 </Tooltip>
@@ -249,8 +253,8 @@ function MySegmentedControl({ options, value, onChange }) {
 }
 
 // ✅ CORRECT - Leo SegmentedControl
-import SegmentedControl from '@brave/leo/react/segmentedControl'
-import SegmentedControlItem from '@brave/leo/react/segmentedControlItem'
+import SegmentedControl from '@brave/nala/react/segmentedControl'
+import SegmentedControlItem from '@brave/nala/react/segmentedControlItem'
 ;<SegmentedControl
   value={value}
   onChange={(e) => onChange(e.detail.value)}

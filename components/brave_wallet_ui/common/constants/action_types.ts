@@ -63,10 +63,6 @@ export type DefaultBaseCurrencyChanged = {
   currency: string
 }
 
-export type DefaultBaseCryptocurrencyChanged = {
-  cryptocurrency: string
-}
-
 export type SetTransactionProviderErrorType = {
   transactionId: string
   providerError: TransactionProviderError

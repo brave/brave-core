@@ -173,7 +173,7 @@ template <template <typename> class T>
 bool BraveProxyingURLLoaderFactory<
     T>::InProgressRequest::IsBypassRedirectChecksAuthorized() const {
   if (!factory_->navigation_id_) {
-    return false;
+    return factory_->bypass_redirect_checks_;
   }
   auto* rfh = content::RenderFrameHost::FromFrameToken(render_frame_token_);
   return rfh &&
@@ -268,6 +268,34 @@ template <template <typename> class T>
 void BraveProxyingURLLoaderFactory<T>::InProgressRequest::FollowRedirect(
     network::HttpRequestHeadersUpdateParams headers_update_params,
     const std::optional<GURL>& new_url) {
+  // Only follow a redirect this class actually forwarded to the client. A
+  // compromised renderer could send an unexpected "FollowRedirect()", which
+  // would otherwise swap `request_.url` for the new URL. See
+  // crbug.com/497494634.
+  //
+  // NOTE: RejectFollowRedirect() deletes `this`, so every call site below must
+  // return immediately without touching any member state.
+  if (!deferred_redirect_url_) {
+    RejectFollowRedirect("Unexpected FollowRedirect");
+    return;
+  }
+
+  // `new_url` lets throttles adjust the redirect destination, but per the
+  // network::mojom::URLLoader contract it must be same-origin, same-scheme and
+  // credential-free. Kept in sync with CorsURLLoader::FollowRedirect().
+  if (new_url && (!new_url->is_valid() ||
+                  new_url->scheme() != deferred_redirect_url_->scheme() ||
+                  !url::IsSameOriginWith(*new_url, *deferred_redirect_url_))) {
+    RejectFollowRedirect("Unexpected new_url in FollowRedirect");
+    return;
+  }
+  if (new_url && (new_url->has_username() || new_url->has_password())) {
+    RejectFollowRedirect("new_url with credentials in FollowRedirect");
+    return;
+  }
+
+  deferred_redirect_url_.reset();
+
   if (new_url) {
     request_.url = new_url.value();
   }
@@ -291,6 +319,29 @@ void BraveProxyingURLLoaderFactory<T>::InProgressRequest::FollowRedirect(
   }
 
   RestartInternal();
+}
+
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::InProgressRequest::RejectFollowRedirect(
+    std::string_view reason,
+    net::Error error_code) {
+  // This proxy is also used for navigations, service worker script loads and
+  // browser-initiated prefetches, whose client lives in the browser process.
+  // Reporting a bad message there would take down the browser for what would be
+  // a Brave-side bug, so only fail the request in that case. This matches
+  // WebRequestProxyingURLLoaderFactory::InProgressRequest::
+  // RejectFollowRedirect().
+  using URLLoaderFactoryType =
+      content::ContentBrowserClient::URLLoaderFactoryType;
+  const URLLoaderFactoryType type = factory_->url_loader_factory_type_;
+  if (type != URLLoaderFactoryType::kNavigation &&
+      type != URLLoaderFactoryType::kServiceWorkerScript &&
+      type != URLLoaderFactoryType::kPrefetch) {
+    proxied_loader_receiver_.ReportBadMessage(reason);
+  }
+
+  // Deletes |this|.
+  OnRequestError(network::URLLoaderCompletionStatus(error_code));
 }
 
 template <template <typename> class T>
@@ -663,6 +714,7 @@ void BraveProxyingURLLoaderFactory<T>::InProgressRequest::
   } else {
     ctx_->set_redirect_source(request_.url);
   }
+  deferred_redirect_url_ = redirect_info.new_url;
   target_client_->OnReceiveRedirect(redirect_info,
                                     std::move(current_response_head_));
   request_.UpdateOnRedirect(redirect_info);
@@ -777,7 +829,8 @@ BraveProxyingURLLoaderFactory<T>::~BraveProxyingURLLoaderFactory() = default;
 
 // static
 template <template <typename> class T>
-void BraveProxyingURLLoaderFactory<T>::MaybeProxyRequest(
+BraveProxyingURLLoaderFactory<T>*
+BraveProxyingURLLoaderFactory<T>::MaybeProxyRequest(
     content::BrowserContext* browser_context,
     content::RenderFrameHost* render_frame_host,
     network::URLLoaderFactoryBuilder& factory_builder,
@@ -787,7 +840,7 @@ void BraveProxyingURLLoaderFactory<T>::MaybeProxyRequest(
     std::optional<int64_t> navigation_id,
     scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  ResourceContextData<T>::StartProxying(
+  return ResourceContextData<T>::StartProxying(
       browser_context,
       render_frame_host ? render_frame_host->GetGlobalFrameToken()
                         : content::GlobalRenderFrameHostToken(),

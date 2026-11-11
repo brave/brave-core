@@ -9,18 +9,12 @@
 #include <utility>
 #include <vector>
 
-#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
-#include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/swap_responses.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/brave_wallet/common/string_utils.h"
-#include "brave/components/json/json_helper.h"
 #include "url/gurl.h"
 
 namespace brave_wallet {

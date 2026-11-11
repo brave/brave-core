@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 
-import { color, font, gradient } from '@brave/leo/tokens/css/variables'
+import { color, font, gradient } from '@brave/nala/tokens/css/variables'
 
 export const Content = styled.div.attrs<{ 'data-theme'?: string }>({ 'data-theme': 'dark' })`
   color: ${color.white};

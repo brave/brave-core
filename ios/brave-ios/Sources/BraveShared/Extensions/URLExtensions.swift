@@ -315,11 +315,7 @@ extension URL {
       // Data is not stored for other schemes (`data`, `brave` / `chrome`, etc)
       return nil
     }
-    // Use `domainURL` to align with `Domain.getOrCreateInternal` storage
-    if FeatureList.kBraveShieldsContentSettings.enabled {
-      return self
-    }
-    return domainURL
+    return self
   }
 
   // Returns true if a string is a valid URL, with the specified optional scheme,

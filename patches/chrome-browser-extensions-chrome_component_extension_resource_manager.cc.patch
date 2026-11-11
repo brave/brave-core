@@ -1,22 +1,38 @@
 diff --git a/chrome/browser/extensions/chrome_component_extension_resource_manager.cc b/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
-index 927665628da0ff02681003235028e766af6e3480..9622fa7082f47ab07c810bcdea75f28fc65bcf05 100644
+index ca2eda5cde71446a3defec1a9aea2c52ecec7890..807076b54d92a2d3bd67e5abdb0071a36ceed88b 100644
 --- a/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
 +++ b/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
-@@ -91,6 +91,7 @@ class ChromeComponentExtensionResourceManager::Data {
+@@ -108,6 +108,8 @@ class ChromeComponentExtensionResourceManager::Data {
  };
  
  ChromeComponentExtensionResourceManager::Data::Data() {
 +  [&]() -> void {
++#if !BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_DESKTOP_ANDROID)
    static const webui::ResourcePath kExtraComponentExtensionResources[] = {
  #if BUILDFLAG(IS_CHROMEOS)
      {"web_store/webstore_icon_128.png", IDR_WEBSTORE_APP_ICON_128},
-@@ -179,6 +180,9 @@ ChromeComponentExtensionResourceManager::Data::Data() {
+@@ -122,9 +124,12 @@ ChromeComponentExtensionResourceManager::Data::Data() {
+     {"chrome_app/chrome_app_icon_192.png", IDR_CHROME_APP_ICON_192},
+ #endif  // BUILDFLAG(IS_CHROMEOS)
+   };
++#endif  // !BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_DESKTOP_ANDROID)
+ 
+   AddComponentResourceEntries(kComponentExtensionResources);
++#if !BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_DESKTOP_ANDROID)
+   AddComponentResourceEntries(kExtraComponentExtensionResources);
++#endif
+   if (base::FeatureList::IsEnabled(
+           omnibox::kAimEligibilityComponentExtension)) {
+     AddComponentResourceEntries(kAimEligibilityExtensionResources);
+@@ -202,6 +207,11 @@ ChromeComponentExtensionResourceManager::Data::Data() {
          std::move(pdf_viewer_replacements);
    }
  #endif
 +  }();
++  #if BUILDFLAG(ENABLE_EXTENSIONS)
 +  AddComponentResourceEntries(kBraveExtension);
 +  AddComponentResourceEntries(kBraveExtensionGenerated);
++  #endif
  }
  
  void ChromeComponentExtensionResourceManager::Data::AddComponentResourceEntries(

@@ -30,6 +30,7 @@
 #include "chrome/browser/actor/actor_task.h"
 #include "chrome/browser/actor/actor_task_metadata.h"
 #include "chrome/browser/actor/tab_observation_strategy.h"
+#include "chrome/browser/actor/ui/actor_ui_state_manager.h"
 #include "chrome/browser/glic/actor/glic_actor_policy_checker.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -43,6 +44,16 @@
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/page_transition_types.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/containers/containers_service_factory.h"
+#include "brave/components/containers/content/browser/storage_partition_utils.h"
+#include "brave/components/containers/core/browser/containers_service.h"
+#include "brave/components/containers/core/mojom/containers.mojom.h"
+#include "components/grit/brave_components_strings.h"
+#include "content/public/browser/storage_partition_config.h"
+#include "ui/base/l10n/l10n_util.h"
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE));
 
@@ -59,12 +70,22 @@ constexpr auto kActorStatesToNotify =
         actor::ActorTask::State::kWaitingOnUser,
     });
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+// A blank page for a task tab in a container. Not about:blank, which isn't
+// assigned a site, so its tab would not be placed in the container's storage
+// partition.
+constexpr char kContainerTaskTabInitialUrl[] = "data:text/html,";
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
 }  // namespace
 
 ContentAgentToolProvider::ContentAgentToolProvider(
     Profile* profile,
-    actor::ActorKeyedService* actor_service)
-    : actor_service_(actor_service), profile_(profile) {
+    actor::ActorKeyedService* actor_service,
+    actor::ui::ActorUiStateManagerInterface& ui_state_manager)
+    : actor_service_(actor_service),
+      profile_(profile),
+      ui_state_manager_(ui_state_manager) {
   // This class should only exist if the feature is enabled
   CHECK(ai_chat::features::IsAIChatAgentProfileEnabled());
   // This class should only exist with a valid actor service
@@ -80,10 +101,11 @@ ContentAgentToolProvider::ContentAgentToolProvider(
   // not have access to any tabs previously acted on in the same conversation,
   // we should create a new task inside
   // `ToolProvider::UpdateToolsForNewGenerationLoop`.
-  task_id_ = actor_service_->CreateTask(
+  task_id_ = actor_service_->CreateTaskWithOptions(
       actor::TaskSourceInfo(actor::TaskSourceInfo::Client::kExperimentalActor,
                             /*id=*/std::nullopt),
-      AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker());
+      AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker(),
+      /*options=*/nullptr, /*delegate=*/nullptr, &*ui_state_manager_);
 
   actor_task_state_changed_subscription_ =
       actor_service_->AddTaskStateChangedCallback(base::BindRepeating(
@@ -96,7 +118,13 @@ ContentAgentToolProvider::ContentAgentToolProvider(
 ContentAgentToolProvider::~ContentAgentToolProvider() {
   // When this tool provider and its owned uses (e.g. conversation)are closed,
   // we should hand back state of the tab to regular uses of the browser.
-  StopAllTasks();
+  // Don't use StopAllTasks(): it creates a replacement task that would be
+  // orphaned (nobody left to stop it) and hold a dangling reference to the
+  // current UI state manager once this provider is gone.
+  if (!task_id_.is_null()) {
+    actor_service_->StopTask(task_id_,
+                             actor::ActorTask::StoppedReason::kTaskComplete);
+  }
 }
 
 std::vector<base::WeakPtr<Tool>> ContentAgentToolProvider::GetTools() {
@@ -137,10 +165,11 @@ void ContentAgentToolProvider::ResumeAllTasks() {
 void ContentAgentToolProvider::StopAllTasks() {
   if (!task_id_.is_null()) {
     actor::TaskId stopping_task_id = std::move(task_id_);
-    task_id_ = actor_service_->CreateTask(
+    task_id_ = actor_service_->CreateTaskWithOptions(
         actor::TaskSourceInfo(actor::TaskSourceInfo::Client::kExperimentalActor,
                               /*id=*/std::nullopt),
-        AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker());
+        AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker(),
+        /*options=*/nullptr, /*delegate=*/nullptr, &*ui_state_manager_);
     actor_service_->StopTask(stopping_task_id,
                              actor::ActorTask::StoppedReason::kTaskComplete);
   }
@@ -168,7 +197,17 @@ void ContentAgentToolProvider::GetOrCreateTabHandleForTask(
     // of acting on existing tabs.
     NavigateParams params(profile_, GURL(url::kAboutBlankURL),
                           ui::PAGE_TRANSITION_FROM_API);
-    params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+    params.disposition = WindowOpenDisposition::kNewForegroundTab;
+#if BUILDFLAG(ENABLE_CONTAINERS)
+    // Navigations from this tab, and tabs it opens, inherit the container.
+    if (const std::string& container_id = GetOrCreateContainerId();
+        !container_id.empty()) {
+      params.url = GURL(kContainerTaskTabInitialUrl);
+      params.storage_partition_config = content::StoragePartitionConfig::Create(
+          profile_, containers::kContainersStoragePartitionDomain, container_id,
+          profile_->IsOffTheRecord());
+    }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
     Navigate(&params);
     content::WebContents* new_contents = params.navigated_or_inserted_contents;
 
@@ -241,6 +280,25 @@ void ContentAgentToolProvider::CreateTools() {
   tools_.push_back(std::make_unique<TypeTool>(this));
   tools_.push_back(std::make_unique<WaitTool>(this));
 }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+const std::string& ContentAgentToolProvider::GetOrCreateContainerId() {
+  // The AI browsing profile is itself the agent's isolation, so only a main
+  // profile's tabs need a container.
+  if (container_id_.empty() && !profile_->IsAIChatAgent()) {
+    // Null when the Containers feature is disabled.
+    if (auto* containers_service =
+            ContainersServiceFactory::GetForProfile(profile_)) {
+      container_id_ =
+          containers_service
+              ->CreateAndPersistTemporaryContainer(l10n_util::GetStringUTF8(
+                  IDS_CHAT_UI_CONTENT_AGENT_CONTAINER_NAME))
+              ->id;
+    }
+  }
+  return container_id_;
+}
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 void ContentAgentToolProvider::OnActionsFinished(
     Tool::UseToolCallback callback,

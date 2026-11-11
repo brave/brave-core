@@ -40,9 +40,6 @@
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "Version de l’application";
 
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "Opérateur mobile";
-
 /* Text to tell user to not modify support info below email's body. */
 "vpn.contactFormDoNotEditText" = "Brave ne vous suit pas à la trace et ne sait pas comment vous utilisez l’application. Nous ne savons donc pas comment vous avez configuré votre VPN. Donnez-nous des informations au sujet du problème que vous rencontrez et nous ferons de notre mieux pour le résoudre dans les meilleurs délais.";
 
@@ -134,7 +131,7 @@
 "vpn.installTitle" = "Installer le VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "Commencer l’essai gratuit de 7 jours";
+"vpn.learnMore" = "Commencer l’essai gratuit de 7 jours";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Renouvelé chaque mois";
@@ -158,7 +155,7 @@
 "vpn.paywallYearlyPriceDividend" = "an";
 
 /* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "Expirée";
+"vpn.planExpired" = "Expiré";
 
 /* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "Veuillez sélectionner votre protocole de transport préféré. Une fois le protocole sélectionné, vos identifiants VPN seront effacés et nous vous reconnecterons dès qu’une connexion VPN est établie.";
@@ -194,7 +191,7 @@
 "vpn.renewAnnually" = "Renouvellement annuel";
 
 /* Monthly tier explaination. Subscription will be renewed monthly. */
-"vpn.renewMonthly" = "Renouvelé chaque mois";
+"vpn.renewMonthly" = "Renouvellement mensuel";
 
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "Impossible de réinitialiser la configuration du VPN. Veuillez réessayer ou contacter l’équipe d’assistance pour obtenir de l’aide si le problème persiste.";
@@ -227,7 +224,7 @@
 "vpn.serverTitle" = "%ld serveur";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Protégez toutes vos applications avec le VPN Brave et jusqu’à 10 appareils avec un seul abonnement.";
+"vpn.settingHeaderBody" = "Diffusez votre contenu à votre façon. Protégez chaque application sur 10 appareils avec 1 abonnement.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Contacter l’assistance technique";

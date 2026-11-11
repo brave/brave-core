@@ -7,15 +7,12 @@ package org.chromium.chrome.browser.crypto_wallet.observers;
 
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletServiceObserver;
-import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.mojo.system.MojoException;
 
 import java.lang.ref.WeakReference;
 
 public class BraveWalletServiceObserverImpl implements BraveWalletServiceObserver {
     public interface BraveWalletServiceObserverImplDelegate {
-        default void onActiveOriginChanged(OriginInfo originInfo) {}
-
         default void onDefaultEthereumWalletChanged(int wallet) {}
 
         default void onDefaultSolanaWalletChanged(int wallet) {}
@@ -23,8 +20,6 @@ public class BraveWalletServiceObserverImpl implements BraveWalletServiceObserve
         default void onDefaultCardanoWalletChanged(int wallet) {}
 
         default void onDefaultBaseCurrencyChanged(String currency) {}
-
-        default void onDefaultBaseCryptocurrencyChanged(String cryptocurrency) {}
 
         default void onNetworkListChanged() {}
 
@@ -39,11 +34,6 @@ public class BraveWalletServiceObserverImpl implements BraveWalletServiceObserve
 
     public BraveWalletServiceObserverImpl(BraveWalletServiceObserverImplDelegate delegate) {
         mDelegate = new WeakReference<>(delegate);
-    }
-
-    @Override
-    public void onActiveOriginChanged(OriginInfo originInfo) {
-        if (isActive()) getRef().onActiveOriginChanged(originInfo);
     }
 
     @Override
@@ -64,11 +54,6 @@ public class BraveWalletServiceObserverImpl implements BraveWalletServiceObserve
     @Override
     public void onDefaultBaseCurrencyChanged(String currency) {
         if (isActive()) getRef().onDefaultBaseCurrencyChanged(currency);
-    }
-
-    @Override
-    public void onDefaultBaseCryptocurrencyChanged(String cryptocurrency) {
-        if (isActive()) getRef().onDefaultBaseCryptocurrencyChanged(cryptocurrency);
     }
 
     @Override

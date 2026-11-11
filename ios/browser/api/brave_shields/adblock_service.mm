@@ -134,8 +134,11 @@ void AdBlockResourceObserver::OnResourcesLoaded(
         std::make_unique<brave_shields::AdBlockComponentServiceManager>(
             GetApplicationContext()->GetLocalState(),
             _filtersProviderManager.get(),
-            GetApplicationContext()->GetApplicationLocaleStorage()->Get(), _cus,
-            _catalogProvider.get(), _adblockListP3A.get());
+            std::string(GetApplicationContext()
+                            ->GetApplicationLocaleStorage()
+                            ->GetTag()
+                            .tag_string()),
+            _cus, _catalogProvider.get(), _adblockListP3A.get());
     _resourceProvider =
         std::make_unique<brave_shields::AdBlockDefaultResourceProvider>(_cus);
   }
@@ -168,7 +171,7 @@ void AdBlockResourceObserver::OnResourcesLoaded(
   NSMutableArray* lists = [[NSMutableArray alloc] init];
 
   for (const auto& entry : catalog) {
-    if (entry.SupportsCurrentPlatform()) {
+    if (entry.SupportsCurrentPlatform() && entry.public_key_sha256) {
       [lists addObject:[[AdblockFilterListCatalogEntry alloc]
                            initWithFilterListCatalogEntry:
                                brave_shields::FilterListCatalogEntry(entry)]];

@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/command_line.h"
 #include "base/notimplemented.h"
 #include "base/notreached.h"
 #include "brave/components/skus/browser/pref_names.h"

@@ -19,6 +19,7 @@
 #include "chrome/browser/browser_process.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/search_engine_utils.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
@@ -41,33 +42,41 @@ bool ShouldRecordSearchEngine(SearchEngineType search_engine_type,
 
 }  // namespace
 
+DEFINE_USER_DATA(SerpMetricsTabHelper);
+
 SerpMetricsTabHelper::~SerpMetricsTabHelper() = default;
 
 // static
-void SerpMetricsTabHelper::MaybeCreateForWebContents(
-    content::WebContents* web_contents) {
-  CHECK(web_contents);
-  CHECK(base::FeatureList::IsEnabled(serp_metrics::kSerpMetricsFeature));
+SerpMetricsTabHelper* SerpMetricsTabHelper::From(tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
+}
+
+// static
+std::unique_ptr<SerpMetricsTabHelper> SerpMetricsTabHelper::MaybeCreate(
+    tabs::TabInterface& tab) {
+  if (!base::FeatureList::IsEnabled(serp_metrics::kSerpMetricsFeature)) {
+    return nullptr;
+  }
 
   SerpMetricsService* serp_metrics_service =
-      SerpMetricsServiceFactory::GetFor(web_contents->GetBrowserContext());
+      SerpMetricsServiceFactory::GetFor(tab.GetContents()->GetBrowserContext());
   if (!serp_metrics_service) {
     // `SerpMetricsService` is null for off-the-record profiles and may be null
     // in tests.
-    return;
+    return nullptr;
   }
 
   SerpMetrics* serp_metrics = serp_metrics_service->Get();
-  CreateForWebContents(web_contents, CHECK_DEREF(serp_metrics));
+  return std::make_unique<SerpMetricsTabHelper>(tab, CHECK_DEREF(serp_metrics));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-SerpMetricsTabHelper::SerpMetricsTabHelper(content::WebContents* web_contents,
+SerpMetricsTabHelper::SerpMetricsTabHelper(tabs::TabInterface& tab,
                                            SerpMetrics& serp_metrics)
-    : content::WebContentsObserver(web_contents),
-      content::WebContentsUserData<SerpMetricsTabHelper>(*web_contents),
-      serp_metrics_(serp_metrics) {}
+    : tabs::ContentsObservingTabFeature(tab),
+      serp_metrics_(serp_metrics),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {}
 
 bool SerpMetricsTabHelper::IsSameSerpAsLastRecorded(const GURL& url) const {
   return last_recorded_serp_url_ &&
@@ -136,7 +145,5 @@ void SerpMetricsTabHelper::DidFinishNavigation(
 
   MaybeClassifyAndRecordSearchEngineForUrl(url);
 }
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(SerpMetricsTabHelper);
 
 }  // namespace serp_metrics

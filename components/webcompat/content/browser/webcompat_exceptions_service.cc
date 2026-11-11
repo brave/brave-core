@@ -5,8 +5,6 @@
 
 #include "brave/components/webcompat/content/browser/webcompat_exceptions_service.h"
 
-#include <memory>
-#include <set>
 #include <string>
 #include <utility>
 #include <vector>
@@ -16,12 +14,10 @@
 #include "base/files/file_path.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
-#include "base/strings/string_split.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
 #include "components/content_settings/core/common/content_settings.h"
-#include "components/content_settings/core/common/content_settings_types.h"
 
 #define WEBCOMPAT_EXCEPTIONS_JSON_FILE "webcompat-exceptions.json"
 #define WEBCOMPAT_EXCEPTIONS_JSON_FILE_VERSION "1"

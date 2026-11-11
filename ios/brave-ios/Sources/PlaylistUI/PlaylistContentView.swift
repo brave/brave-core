@@ -4,6 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AVFoundation
+import BraveUI
+import CoreData
 import Data
 import Foundation
 import Playlist
@@ -96,31 +98,10 @@ struct PlaylistContentView: View {
       if let selectedFolder = selectedFolder {
         PlaylistSidebarListHeader(
           folders: Array(folders),
-          selectedFolder: Binding(
-            get: {
-              selectedFolder
-            },
-            set: {
-              playerModel.selectedFolderID = $0.id
-            }
-          ),
+          selectedFolder: selectedFolder,
+          selectedFolderID: $playerModel.selectedFolderID,
           selectedItemID: selectedItemID,
-          isPlaying: Binding(
-            get: {
-              playerModel.isPlaying
-            },
-            set: { newValue in
-              if newValue {
-                if selectedItemID == nil {
-                  playerModel.selectedItemID = playerModel.itemQueue.first
-                } else {
-                  playerModel.play()
-                }
-              } else {
-                playerModel.pause()
-              }
-            }
-          ),
+          isPlaying: $playerModel.isPlayingCheckingSelectedItem,
           isNewPlaylistAlertPresented: $isNewPlaylistAlertPresented,
           isEditModePresented: $isEditModePresented
         )
@@ -215,7 +196,7 @@ struct PlaylistContentView: View {
       // .disabled(newPlaylistName.isEmpty)
     }
     .alert(
-      isPresented: playerModel.isErrorAlertPresented,
+      isPresented: $playerModel.error.isPresented,
       error: playerModel.error,
       actions: { error in
         Button {
@@ -263,6 +244,23 @@ struct PlaylistContentView: View {
       if !newValue.map(\.id).contains(selectedFolderID) {
         // Reset the selected folder if the user deletes the folder they had selected
         playerModel.selectedFolderID = PlaylistFolder.savedFolderUUID
+      }
+    }
+  }
+}
+
+extension PlayerModel {
+  /// Whether or not media is playing, for controls that can start playback without a selected item.
+  ///
+  /// Setting this to `true` without a selected item selects the first item in the item queue,
+  /// otherwise this behaves like ``isPlaying``.
+  @MainActor fileprivate var isPlayingCheckingSelectedItem: Bool {
+    get { isPlaying }
+    set {
+      if newValue, selectedItemID == nil {
+        selectedItemID = itemQueue.first
+      } else {
+        isPlaying = newValue
       }
     }
   }

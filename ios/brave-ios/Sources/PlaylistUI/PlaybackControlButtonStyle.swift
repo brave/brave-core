@@ -96,29 +96,26 @@ struct PlaybackControlButtonStyle: ButtonStyle {
       }
       .scaleEffect(isPressed ? scale : 1.0)
       .opacity(isPressed ? 0.95 : 1.0)
-      .onChange(
-        of: configuration.isPressed,
-        perform: { value in
-          // Makes it so the "pressed" state shows more of its animation if you tap and immediately
-          // lift your finger
-          if value {
-            isPressed = value
-            pressDownTime = .now
-            delayedTouchUpTask?.cancel()
-          } else {
-            if let pressDownTime, case let delta = Date.now.timeIntervalSince(pressDownTime),
-              delta < 0.1
-            {
-              delayedTouchUpTask = Task { @MainActor in
-                try await Task.sleep(nanoseconds: NSEC_PER_MSEC * UInt64((0.1 - delta) * 1000))
-                isPressed = value
-              }
-            } else {
+      .onChange(of: configuration.isPressed) { _, value in
+        // Makes it so the "pressed" state shows more of its animation if you tap and immediately
+        // lift your finger
+        if value {
+          isPressed = value
+          pressDownTime = .now
+          delayedTouchUpTask?.cancel()
+        } else {
+          if let pressDownTime, case let delta = Date.now.timeIntervalSince(pressDownTime),
+            delta < 0.1
+          {
+            delayedTouchUpTask = Task { @MainActor in
+              try await Task.sleep(nanoseconds: NSEC_PER_MSEC * UInt64((0.1 - delta) * 1000))
               isPressed = value
             }
+          } else {
+            isPressed = value
           }
         }
-      )
+      }
       .animation(.spring(response: 0.3, dampingFraction: 0.8), value: isPressed)
       .opacity(isEnabled ? 1 : 0.5)
       .animation(.linear(duration: 0.1), value: isEnabled)

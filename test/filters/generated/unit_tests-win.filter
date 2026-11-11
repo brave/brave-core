@@ -1,0 +1,231 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream unit_tests tests with a flake rate >= 1.0% on
+## windows bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+
+# 3.0% flake rate over 30 days per LUCI Analysis (32653 passed, 0 failed, 996 flaky).
+-AccessCodeCastSinkServiceFactoryTest.PrefEnabledReturnsValidService
+
+# 6.7% flake rate over 30 days per LUCI Analysis (31397 passed, 1 failed, 2251 flaky).
+-AccessCodeCastSinkServiceTest.TestChangeNetworkWithRouteActive
+
+# 5.6% flake rate over 30 days per LUCI Analysis (31779 passed, 1 failed, 1877 flaky).
+-AccessCodeCastSinkServiceTest.TestChangeNetworkWithRouteActiveExpiration
+
+# 5.8% flake rate over 30 days per LUCI Analysis (31714 passed, 1 failed, 1940 flaky).
+-AccessCodeCastSinkServiceTest.TestChangeNetworksExpiration
+
+# 5.7% flake rate over 30 days per LUCI Analysis (31740 passed, 1 failed, 1914 flaky).
+-AccessCodeCastSinkServiceTest.TestChangeNetworksNoExpiration
+
+# 1.2% flake rate over 30 days per LUCI Analysis (33239 passed, 30 failed, 386 flaky).
+-AccountsPolicyManagerTest.ClearProfileWhenSigninAndSignoutNotAllowed
+
+# 21.5% flake rate over 30 days per LUCI Analysis (26428 passed, 0 failed, 7223 flaky).
+-All/AnnouncementNotificationServiceVersionTest.VersionTest/0
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-All/BookmarkEditorViewTest.EditorFullyShown/0
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-All/BookmarkEditorViewTest.EditorFullyShown/1
+
+# 84.0% flake rate over 30 days per LUCI Analysis (5384 passed, 0 failed, 28270 flaky).
+-All/DiceWebSigninInterceptHandlerChromeSigninInterceptionTest.CheckStrings/2
+
+# 83.1% flake rate over 30 days per LUCI Analysis (5685 passed, 0 failed, 27973 flaky).
+-All/DiceWebSigninInterceptHandlerChromeSigninInterceptionTest.ChromeSigninSubtitleWithAccountPreviewData/2
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyWarnedThenBypass/0
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyWarnedThenBypass/1
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-All/TabStripTest.ChangingLayoutTypeResizesTabs/0
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-All/TabStripTest.ChangingLayoutTypeResizesTabs/1
+
+# 6.7% flake rate over 30 days per LUCI Analysis (30647 passed, 0 failed, 2201 flaky).
+-CastMediaNotificationItemTest.MediaPositionUpdate
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-ChromeBrowsingDataRemoverDelegateTest.DomainReliability_Beacons_WithFilter
+
+# 2.5% flake rate over 30 days per LUCI Analysis (32822 passed, 0 failed, 828 flaky).
+-ChromeBrowsingDataRemoverDelegateTest.RemoveLensOverlayWebUIStorage
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-ChromeBrowsingDataRemoverDelegateTest.RemoveSafeBrowsingCookieForever
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-ChromeBrowsingDataRemoverDelegateWithPasswordsTest.RemovePasswordStatisticsByOrigin
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-ClientSideDetectionHostTest.NavigationCancelsShouldClassifyUrl
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-ComponentLoaderTest.AddOrReplace
+
+# 1.3% flake rate over 30 days per LUCI Analysis (33232 passed, 0 failed, 430 flaky).
+-CountingPolicyTest.RemoveActions
+
+# 1.1% flake rate over 30 days per LUCI Analysis (33286 passed, 15 failed, 356 flaky).
+-DialServiceImplTest.TestMultipleNetworkInterfaces
+
+# 97.6% flake rate over 30 days per LUCI Analysis (10 passed, 0 failed, 406 flaky).
+-ExtensionScriptAndCaptureVisibleTest.UserHostRestrictions_HasHostPermission
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-ExtensionUpdaterTest.TestGalleryRequestsWithOrganicBrand
+
+# 20.0% flake rate over 30 days per LUCI Analysis (8 passed, 2 failed, 0 flaky).
+-GlicUnifiedActivityManagerTest.ActorTaskStateTransitions
+
+# 21.5% flake rate over 30 days per LUCI Analysis (26419 passed, 0 failed, 7240 flaky).
+-IsolatedWebAppPolicyManagerOnDemandUpdatePreloadedTest.ComponentUpdateQueuedButNoUpdate
+
+# 37.6% flake rate over 30 days per LUCI Analysis (21003 passed, 0 failed, 12656 flaky).
+-IsolatedWebAppPolicyManagerTest.AppInstalled
+
+# 1.9% flake rate over 30 days per LUCI Analysis (33012 passed, 0 failed, 644 flaky).
+-IsolatedWebAppPolicyManagerTest.AppInstalledAtPinnedVersion
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-KnownUnexpectedBehavior/FendCoreParamTest.Test/MixedFractionUnitSubtraction
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-KnownUnexpectedBehavior/FendCoreParamTest.Test/MorePrecision
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-KnownUnexpectedBehavior/FendCoreParamTest.Test/NegativeRoundingAboveHalf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-KnownUnexpectedBehavior/FendCoreParamTest.Test/NegativeRoundingHalfEven
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-KnownUnexpectedBehavior/FendCoreParamTest.Test/NegativeRoundingHalfOdd
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-KnownUnexpectedBehavior/FendCoreParamTest.Test/PositiveRoundingAboveHalf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-KnownUnexpectedBehavior/FendCoreParamTest.Test/PositiveRoundingHalfEven
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-KnownUnexpectedBehavior/FendCoreParamTest.Test/PositiveRoundingHalfOdd
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-MayFail/FendCoreParamTest.Test/PercentSymbol
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-MayFail/FendCoreParamTest.Test/UnitConversion
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-MetadataDatabaseTestWithIndexesOnDisk/MetadataDatabaseTest.UpdateTrackerTest/0
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-MetadataDatabaseTestWithIndexesOnDisk/MetadataDatabaseTest.UpdateTrackerTest/1
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-NeedOrNoNeedKey/RecordHandlerImplTest.UploadsGapRecordOnServerFailure/0
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-NeedOrNoNeedKey/RecordHandlerImplTest.UploadsGapRecordOnServerFailure/1
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-NeedOrNoNeedKey/RecordHandlerImplTest.UploadsGapRecordOnServerFailure/2
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-NeedOrNoNeedKey/RecordHandlerImplTest.UploadsGapRecordOnServerFailure/3
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-NoStatePrefetchTest.LinkManagerAbandonInactivePrerender
+
+# 27.6% flake rate over 30 days per LUCI Analysis (19190 passed, 1 failed, 7328 flaky).
+-OmniboxEverywhereBackgroundModeManagerTest.LaunchOnStartupRegistrationWithStartupLaunchManager
+
+# 2.1% flake rate over 30 days per LUCI Analysis (7012 passed, 148 failed, 0 flaky).
+-OmniboxEverywhereHandlerTest.DismissShortcutSetupWithHotkeyAdvancesToReminder
+
+# 1.9% flake rate over 30 days per LUCI Analysis (31343 passed, 4 failed, 619 flaky).
+-OmniboxEverywhereUIManagerTest.DeactivationWithinGracePeriodReactivatesWidget
+
+# 1.1% flake rate over 30 days per LUCI Analysis (8136 passed, 2 failed, 86 flaky).
+-OmniboxEverywhereUIManagerTest.PersistentDeactivationBypassedDuringFileChooser
+
+# 1.3% flake rate over 30 days per LUCI Analysis (8117 passed, 2 failed, 105 flaky).
+-OmniboxEverywhereUIManagerTest.PersistentDeactivationWithinGracePeriodReactivatesWidget
+
+# 7.7% flake rate over 30 days per LUCI Analysis (31076 passed, 0 failed, 2579 flaky).
+-PasswordCheckDelegateTest.GetInsecureCredentialsDedupesLeakedAndCompromised
+
+# 7.3% flake rate over 30 days per LUCI Analysis (31222 passed, 1 failed, 2441 flaky).
+-PasswordCheckDelegateTest.GetInsecureCredentialsHandlesTimes
+
+# 1.6% flake rate over 30 days per LUCI Analysis (33105 passed, 8 failed, 541 flaky).
+-PasswordStatusCheckServiceBaseTest.CheckTimeUpdatedAfterRunScheduledInTheFuture
+
+# 1.7% flake rate over 30 days per LUCI Analysis (33075 passed, 5 failed, 584 flaky).
+-PasswordStatusCheckServiceBaseTest.PasswordCheckNoPasswords
+
+# 95.8% flake rate over 30 days per LUCI Analysis (1 passed, 22 failed, 1 flaky).
+-PasswordStatusCheckServiceBaseTest.PasswordCheckSignedOutWithPasswords
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-PasswordStatusCheckServiceBaseTest.PasswordCheck_Error
+
+# 1.7% flake rate over 30 days per LUCI Analysis (33093 passed, 14 failed, 553 flaky).
+-PasswordStatusCheckServiceBaseTest.PrefInitialized
+
+# 1.7% flake rate over 30 days per LUCI Analysis (33069 passed, 2 failed, 583 flaky).
+-PasswordStatusCheckServiceBaseTest.ScheduledCheckRunsRepeatedly
+
+# 7.8% flake rate over 30 days per LUCI Analysis (31018 passed, 0 failed, 2641 flaky).
+-PerformanceManagerMetricsProviderDesktopTest.TestCpuThrottlingMetricRecordedWhereAvailable
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-PinInfoBarControllerTest.DontShowIfShownMaxTimes
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-PreinstalledWebAppUtilsTest.OfflineManifestValid
+
+# 15.0% flake rate over 30 days per LUCI Analysis (28609 passed, 1 failed, 5052 flaky).
+-ProfileKeyedServiceFactoryUnittest.PredefinedProfileSelectionsFactoryTest
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-ReloadButtonMetricsTest.LogFirstPaintMetrics
+
+# 3.8% flake rate over 30 days per LUCI Analysis (32397 passed, 0 failed, 1263 flaky).
+-RevokedPermissionsServiceBackfillTest.LastVisitedBackfill_NothingToBackfill
+
+# 3.3% flake rate over 30 days per LUCI Analysis (32543 passed, 0 failed, 1119 flaky).
+-RevokedPermissionsServiceBackfillTest.LastVisitedBackfill_RevokedAsUsual
+
+# 3.3% flake rate over 30 days per LUCI Analysis (32530 passed, 0 failed, 1127 flaky).
+-RevokedPermissionsServiceBackfillTest.LastVisitedBackfill_SuccessfullCompletion
+
+# 15.3% flake rate over 30 days per LUCI Analysis (28503 passed, 0 failed, 5159 flaky).
+-SiteSettingsHelperChooserExceptionTest.GetChooserExceptionListFromProfile
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-StartupTabProviderTest.GetCommandLineTabsFileUrl
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-TPMMetricsProviderTest.GetMetricsFullName
+
+# 44.2% flake rate over 30 days per LUCI Analysis (18785 passed, 9 failed, 14863 flaky).
+-ThemeServiceTest.PolicyThemeColorSet
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
+-TpmIdentifierTest.TpmTest
+
+# 1.7% flake rate over 30 days per LUCI Analysis (12173 passed, 31 failed, 185 flaky).
+-TranslateBubbleViewTest.SearchNoResultsMessage
+
+# 10.9% flake rate over 30 days per LUCI Analysis (29983 passed, 196 failed, 3477 flaky).
+-VideoOverlayWindowViewsTest.TitleAndScrimHideAfterTimer

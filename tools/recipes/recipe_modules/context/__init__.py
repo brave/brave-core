@@ -4,4 +4,13 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """`context` module: scoped ambient step settings (cwd + environment)."""
 
-DEPS = []
+from dataclasses import dataclass
+
+from recipe_api import RecipeScriptApi
+
+from .api import ContextApi as API
+
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    pass

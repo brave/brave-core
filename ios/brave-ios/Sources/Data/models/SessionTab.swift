@@ -125,6 +125,12 @@ extension SessionTab {
     return all(where: predicate, sortDescriptors: sortDescriptors) ?? []
   }
 
+  /// Returns the URLs of the persisted tabs belonging to the given windows
+  public static func allURLs(isPrivate: Bool, inWindows windowIds: [UUID]) -> [URL] {
+    return all(where: predicate(isPrivate: isPrivate, inWindows: windowIds))?.compactMap { $0.url }
+      ?? []
+  }
+
   public static func delete(tabId: UUID) {
     DataController.perform { context in
       guard let sessionTab = SessionTab.from(tabId: tabId, in: context) else {
@@ -142,6 +148,27 @@ extension SessionTab {
   public static func deleteAll(tabIds: [UUID]) {
     let predicate = NSPredicate(format: "\(#keyPath(SessionTab.tabId)) IN %@", tabIds)
     deleteAll(predicate: predicate, context: .new(inMemory: false))
+  }
+
+  /// Deletes the persisted tabs belonging to the given windows whose URL matches `shouldDelete`
+  public static func deleteAll(
+    isPrivate: Bool,
+    inWindows windowIds: [UUID],
+    where shouldDelete: (URL) -> Bool
+  ) {
+    let tabIdKeyPath = #keyPath(SessionTab.tabId)
+    let urlKeyPath = #keyPath(SessionTab.url)
+    let request = NSFetchRequest<NSDictionary>(entityName: "SessionTab")
+    request.resultType = .dictionaryResultType
+    request.propertiesToFetch = [tabIdKeyPath, urlKeyPath]
+    request.predicate = predicate(isPrivate: isPrivate, inWindows: windowIds)
+    let results = (try? DataController.viewContext.fetch(request)) ?? []
+    let tabIds = results.compactMap { result -> UUID? in
+      guard let url = result[urlKeyPath] as? URL, shouldDelete(url) else { return nil }
+      return result[tabIdKeyPath] as? UUID
+    }
+    guard !tabIds.isEmpty else { return }
+    deleteAll(tabIds: tabIds)
   }
 
   public static func deleteAll(olderThan timeInterval: TimeInterval) {
@@ -304,6 +331,16 @@ extension SessionTab {
 // MARK: - Private
 
 extension SessionTab {
+  /// Matches the tabs with a URL belonging to the given windows
+  private static func predicate(isPrivate: Bool, inWindows windowIds: [UUID]) -> NSPredicate {
+    NSPredicate(
+      format:
+        "\(#keyPath(SessionTab.isPrivate)) == %@ AND \(#keyPath(SessionTab.url)) != nil AND \(#keyPath(SessionTab.sessionWindow)).windowId IN %@",
+      NSNumber(value: isPrivate),
+      windowIds
+    )
+  }
+
   private static func from(tabId: UUID, in context: NSManagedObjectContext) -> SessionTab? {
     let predicate = NSPredicate(
       format: "\(#keyPath(SessionTab.tabId)) == %@",

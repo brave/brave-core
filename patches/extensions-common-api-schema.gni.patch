@@ -1,0 +1,13 @@
+diff --git a/extensions/common/api/schema.gni b/extensions/common/api/schema.gni
+index 2e2d9a1ff496538b548642a071519fe322fa45b5..db86120097460d629bc1fccd192135e22219a33c 100644
+--- a/extensions/common/api/schema.gni
++++ b/extensions/common/api/schema.gni
+@@ -127,7 +127,7 @@ if (enable_extensions) {
+ # the C++ types for certain APIs, since they are used from outside the
+ # extensions layer. These should be removed as we add support for the full
+ # API by moving these entries to the `extensions_api_schema_files_` above.
+-if (enable_desktop_android_extensions) {
++if (is_android && enable_extensions_core) {
+   extensions_types_only_schema_files_ += [
+     "clipboard.webidl",
+     "scripts_internal.webidl",

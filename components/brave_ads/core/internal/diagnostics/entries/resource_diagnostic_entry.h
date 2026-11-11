@@ -10,21 +10,23 @@
 #include <string>
 
 #include "base/functional/callback.h"
+#include "brave/components/brave_ads/core/internal/common/resources/resource_load_state_types.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/diagnostic_entry_interface.h"
 
 namespace brave_ads {
 
 // Reports whether a targeting resource (text classification, purchase
 // intent, anti targeting) is currently loaded. Every resource has the same
-// `IsLoaded()`/`GetManifestVersion()` shape, so one parameterized entry backs
-// all of them rather than a class per resource.
+// `GetLoadState`/`GetManifestVersion` shape, so one parameterized entry
+// backs all of them rather than a class per resource.
 class ResourceDiagnosticEntry final : public DiagnosticEntryInterface {
  public:
-  ResourceDiagnosticEntry(DiagnosticEntryType type,
-                          std::string name,
-                          base::RepeatingCallback<bool()> is_loaded,
-                          base::RepeatingCallback<std::optional<std::string>()>
-                              get_manifest_version);
+  ResourceDiagnosticEntry(
+      DiagnosticEntryType type,
+      std::string name,
+      base::RepeatingCallback<ResourceLoadStateType()> get_resource_state,
+      base::RepeatingCallback<std::optional<std::string>()>
+          get_manifest_version);
 
   ResourceDiagnosticEntry(const ResourceDiagnosticEntry&) = delete;
   ResourceDiagnosticEntry& operator=(const ResourceDiagnosticEntry&) = delete;
@@ -39,7 +41,7 @@ class ResourceDiagnosticEntry final : public DiagnosticEntryInterface {
  private:
   const DiagnosticEntryType type_;
   const std::string name_;
-  const base::RepeatingCallback<bool()> is_loaded_;
+  const base::RepeatingCallback<ResourceLoadStateType()> get_resource_state_;
   const base::RepeatingCallback<std::optional<std::string>()>
       get_manifest_version_;
 };

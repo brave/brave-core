@@ -8,7 +8,6 @@
 #include <string>
 
 #include "base/test/values_test_util.h"
-#include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"

@@ -10,20 +10,29 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/timer/timer.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
+class BrowserWindowInterface;
 class WebUIContentsWrapper;
 
 // Manages caching of Brave Shields WebUI contents to improve performance when
 // repeatedly opening the Shields panel within the Page Info bubble.
 class BraveShieldsUIContentsCache {
  public:
-  BraveShieldsUIContentsCache();
+  DECLARE_USER_DATA(BraveShieldsUIContentsCache);
+
+  // `host` is the UnownedUserDataHost of the browser window this cache
+  // belongs to.
+  explicit BraveShieldsUIContentsCache(ui::UnownedUserDataHost& host);
 
   BraveShieldsUIContentsCache(const BraveShieldsUIContentsCache&) = delete;
   BraveShieldsUIContentsCache& operator=(const BraveShieldsUIContentsCache&) =
       delete;
 
   ~BraveShieldsUIContentsCache();
+
+  // Returns the instance owned by `browser`, or nullptr.
+  static BraveShieldsUIContentsCache* From(BrowserWindowInterface* browser);
 
   // Retrieves and releases ownership of the cached Shields WebUI contents.
   // Returns nullptr if no cached contents are available.
@@ -40,6 +49,8 @@ class BraveShieldsUIContentsCache {
  private:
   std::unique_ptr<WebUIContentsWrapper> contents_wrapper_;
   std::unique_ptr<base::RetainingOneShotTimer> cache_timer_;
+  ui::ScopedUnownedUserData<BraveShieldsUIContentsCache>
+      scoped_unowned_user_data_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_PAGE_INFO_BRAVE_SHIELDS_UI_CONTENTS_CACHE_H_

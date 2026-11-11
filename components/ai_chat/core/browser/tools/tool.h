@@ -96,13 +96,17 @@ class Tool {
 
   // Called after user grants permission when a tool requires a
   // PermissionChallenge. Tools can override to perform any setup needed
-  // before UseTool is called.
-  virtual void UserPermissionGranted(const std::string& tool_use_id);
+  // before UseTool is called. `challenge` is the one the user answered, which
+  // may have been raised by the server's alignment check rather than this tool,
+  // so a tool can tell what the user was shown.
+  virtual void UserPermissionGranted(
+      const std::string& tool_use_id,
+      const mojom::PermissionChallenge& challenge);
 
   // A decision the user has already made about this tool, so that
   // RequiresUserInteractionBeforeHandling() can skip the challenge it would
   // otherwise raise. kNeverAllow tools are withheld from the model by whoever
-  // provides them, so implementors only need to handle kAsk and kAlwaysAllow.
+  // provides them, so implementors only need to handle kAsk and kAllowSession.
   virtual void SetUserPermissionStrategy(mojom::ToolPermission permission);
 
   // Returns a human-readable, markdown-formatted description of what this
@@ -116,6 +120,15 @@ class Tool {
   // Returns nullopt if this tool has nothing more descriptive to add than
   // the default fallback (the raw tool name).
   virtual std::optional<std::string> GetPermissionChallengeDescription(
+      const mojom::ToolUseEvent& tool_use) const;
+
+  // Returns markdown-formatted implications of allowing this tool use, shown
+  // instead of the UI's default for this tool. Like
+  // GetPermissionChallengeDescription(), this has no side effects and also
+  // decorates a PermissionChallenge created elsewhere, so the user is shown
+  // the same implications whichever challenge they answer. Returns nullopt
+  // to keep the UI's default.
+  virtual std::optional<std::string> GetPermissionChallengeImplications(
       const mojom::ToolUseEvent& tool_use) const;
 
   // Whether this tool supports the given conversation. Can be used to filter

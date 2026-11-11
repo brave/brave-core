@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 

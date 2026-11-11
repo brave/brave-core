@@ -59,7 +59,10 @@ source_set("brave_origin") {
 
   if (is_android) {
     sources += [ "android/brave_origin_service_factory_android.cc" ]
-    deps += [ "//brave/browser/brave_origin/android:jni_headers" ]
+    deps += [
+      "//brave/browser/brave_origin/android:jni_headers",
+      "//services/network/public/cpp",
+    ]
   }
 
   if (enable_ai_chat) {
@@ -135,6 +138,7 @@ source_set("unit_tests") {
     "//brave/components/p3a",
     "//chrome/browser/profiles",
     "//chrome/test:test_support",
+    "//chrome/test/base:testing_browser_process",
     "//components/policy:generated",
     "//components/policy/core/common:test_support",
     "//content/test:test_support",

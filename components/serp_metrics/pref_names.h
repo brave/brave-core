@@ -19,6 +19,13 @@ inline constexpr std::string_view kDeprecatedSerpMetricsTimePeriodStorage =
 inline constexpr std::string_view kLastReportedAt =
     "brave.serp_metrics.last_reported_at";
 
+// Updated by `SerpMetricsP3A` whenever a P3A SERP metric is cycled (i.e. its
+// value has been sent). Each metric has its own last-reported time stored as a
+// dict entry keyed by the histogram name. Used as the stale-window cutoff for
+// the `SERPStale` P3A metric.
+inline constexpr std::string_view kP3ALastReportedAtDict =
+    "brave.serp_metrics.p3a_last_reported_at";
+
 }  // namespace serp_metrics::prefs
 
 #endif  // BRAVE_COMPONENTS_SERP_METRICS_PREF_NAMES_H_

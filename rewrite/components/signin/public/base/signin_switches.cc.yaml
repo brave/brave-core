@@ -22,9 +22,19 @@ substitutions:
       value: base::FEATURE_DISABLED_BY_DEFAULT
 
   - description: |-
-      Ship kReadIsSubjectToUniversalOptOutCapability disabled, because Chromium
-      seems to be trying to determine if a user is eligible for GPC? As best as
-      I can tell, it’s very sparse right now.
+      Ship kProfileDiscOnAllPages disabled.
+
+      The Android toolbar would otherwise show a Google sign-in button
+      instead of the profile disc.
     set_feature_flag_default_state:
-      feature_name: kReadIsSubjectToUniversalOptOutCapability
+      feature_name: kProfileDiscOnAllPages
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: |-
+      Ship kSigninLevelUpButton disabled.
+
+      The Android toolbar would otherwise show a Google sign-in button
+      instead of the profile disc.
+    set_feature_flag_default_state:
+      feature_name: kSigninLevelUpButton
       value: base::FEATURE_DISABLED_BY_DEFAULT

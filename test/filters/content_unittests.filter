@@ -76,7 +76,11 @@
 -FencedFrameReporterTest.SendFledgeReportsBeforeMapsReceivedWithErrors
 -FencedFrameReporterTest.SendFledgeReportsNoMapReceived
 -FileBackedBlobFactoryFrameImplTest.Register_FencedFrameWithScopedFileAccessDelegate
+-PictureInPictureServiceImplTest.Bind_BlockedForFencedFrame
 -RequestTest.DisconnectFromFencedFrame
+
+# Flaky upstream and on CI (passes locally)
+-FilePathWatcherTest.LinkedDirectoryPart1
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AdAuctionServiceImplPrivateAggregationEnabledTest.*

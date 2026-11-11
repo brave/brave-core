@@ -17,7 +17,7 @@
 #include "base/sequence_checker.h"
 #include "base/strings/string_view_util.h"
 #include "brave/components/brave_rewards/core/engine/hash_prefix_iterator.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 
 namespace brave_rewards::internal {
 
@@ -182,7 +182,7 @@ bool HashPrefixStore::ContainsPrefix(const std::string& value) {
     return false;
   }
 
-  std::string hash = crypto::SHA256HashString(value);
+  std::string hash(base::as_string_view(crypto::hash::Sha256(value)));
   hash.resize(prefix_size_);
 
   size_t prefix_count = prefixes_.length() / prefix_size_;

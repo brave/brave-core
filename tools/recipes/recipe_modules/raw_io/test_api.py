@@ -20,18 +20,19 @@ recipe, not from the test.
 
 from __future__ import annotations
 
-from recipe_test_api import (RecipeTestApi, StepTestData,
-                             placeholder_step_data)
+from recipe_test_api import RecipeTestApi, StepTestData, placeholder_step_data
 
 
 class RawIOTestApi(RecipeTestApi):
     """Seed the simulated data of a `raw_io` output placeholder."""
 
     @placeholder_step_data
-    def output(self,
-               data: bytes | str | None,
-               retcode: int | None = None,
-               name: str | None = None):
+    def output(
+        self,
+        data: bytes | str | None,
+        retcode: int | None = None,
+        name: str | None = None,
+    ):
         """Seed an `api.raw_io.output()` placeholder with *data* (bytes)."""
         if isinstance(data, str):
             data = data.encode('utf-8')
@@ -40,10 +41,12 @@ class RawIOTestApi(RecipeTestApi):
         return data, retcode, name
 
     @placeholder_step_data
-    def output_text(self,
-                    data: str | bytes | None,
-                    retcode: int | None = None,
-                    name: str | None = None):
+    def output_text(
+        self,
+        data: str | bytes | None,
+        retcode: int | None = None,
+        name: str | None = None,
+    ):
         """Seed an `api.raw_io.output_text()` placeholder with *data* (text)."""
         if isinstance(data, bytes):
             data = data.decode('utf-8')
@@ -51,34 +54,38 @@ class RawIOTestApi(RecipeTestApi):
             raise ValueError(f'expected text, got {type(data)}: {data!r}')
         return data, retcode, name
 
-    def stream_output(self,
-                      data: bytes | str | None,
-                      stream: str = 'stdout',
-                      retcode: int | None = None,
-                      name: str | None = None) -> StepTestData:
+    def stream_output(
+        self,
+        data: bytes | str | None,
+        stream: str = 'stdout',
+        retcode: int | None = None,
+        name: str | None = None,
+    ) -> StepTestData:
         """Seed *data* as the step's `stdout` (or `stderr`), as bytes."""
-        return self._stream_output(self.output(data,
-                                               retcode=retcode,
-                                               name=name),
-                                   stream=stream,
-                                   retcode=retcode)
+        return self._stream_output(
+            self.output(data, retcode=retcode, name=name),
+            stream=stream,
+            retcode=retcode,
+        )
 
-    def stream_output_text(self,
-                           data: str | bytes | None,
-                           stream: str = 'stdout',
-                           retcode: int | None = None,
-                           name: str | None = None) -> StepTestData:
+    def stream_output_text(
+        self,
+        data: str | bytes | None,
+        stream: str = 'stdout',
+        retcode: int | None = None,
+        name: str | None = None,
+    ) -> StepTestData:
         """Seed *data* as the step's `stdout` (or `stderr`), as text."""
-        return self._stream_output(self.output_text(data,
-                                                    retcode=retcode,
-                                                    name=name),
-                                   stream=stream,
-                                   retcode=retcode)
+        return self._stream_output(
+            self.output_text(data, retcode=retcode, name=name),
+            stream=stream,
+            retcode=retcode,
+        )
 
     @staticmethod
-    def _stream_output(placeholder_data: StepTestData,
-                       stream: str,
-                       retcode: int | None = None) -> StepTestData:
+    def _stream_output(
+        placeholder_data: StepTestData, stream: str, retcode: int | None = None
+    ) -> StepTestData:
         assert stream in ('stdout', 'stderr')
         fragment = StepTestData()
         setattr(fragment, stream, placeholder_data.unwrap_placeholder())
@@ -87,10 +94,12 @@ class RawIOTestApi(RecipeTestApi):
         return fragment
 
     @placeholder_step_data
-    def output_dir(self,
-                   files: dict[str, bytes],
-                   retcode: int | None = None,
-                   name: str | None = None):
+    def output_dir(
+        self,
+        files: dict[str, bytes],
+        retcode: int | None = None,
+        name: str | None = None,
+    ):
         """Seed the files an `api.raw_io.output_dir()` placeholder finds.
 
         *files* maps a path relative to the directory to that file's bytes. Use
@@ -109,14 +118,15 @@ class RawIOTestApi(RecipeTestApi):
             if not isinstance(key, str):
                 raise ValueError(f'expected a path, got {type(key)}: {key!r}')
             if not isinstance(value, bytes):
-                raise ValueError(f'expected bytes for {key!r}, got '
-                                 f'{type(value)}: {value!r}')
+                raise ValueError(
+                    f'expected bytes for {key!r}, got {type(value)}: {value!r}'
+                )
         return files, retcode, name
 
     @placeholder_step_data('output')
-    def backing_file_missing(self,
-                             retcode: int | None = None,
-                             name: str | None = None):
+    def backing_file_missing(
+        self, retcode: int | None = None, name: str | None = None
+    ):
         """Seed an output placeholder as if the step never wrote its file.
 
         Only meaningful for a placeholder created with `leak_to`; without it the

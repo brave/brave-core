@@ -24,6 +24,27 @@ SolanaTxMeta::SolanaTxMeta(const mojom::AccountIdPtr& from,
   set_from(std::move(from));
 }
 
+SolanaTxMeta::SolanaTxMeta(const mojom::AccountIdPtr& from,
+                           std::unique_ptr<SolanaTransaction> tx,
+                           const std::string& chain_id,
+                           mojom::SwapInfoPtr swap_info,
+                           std::optional<url::Origin> dapp_origin)
+    : TxMeta(from, chain_id, std::move(swap_info), std::move(dapp_origin)),
+      tx_(std::move(tx)) {
+  DCHECK_EQ(from->coin, mojom::CoinType::SOL);
+}
+
+std::unique_ptr<SolanaTxMeta> SolanaTxMeta::MakeUnapproved(
+    const mojom::AccountIdPtr& from,
+    std::unique_ptr<SolanaTransaction> tx,
+    const std::string& chain_id,
+    mojom::SwapInfoPtr swap_info,
+    std::optional<url::Origin> dapp_origin) {
+  return std::make_unique<SolanaTxMeta>(from, std::move(tx), chain_id,
+                                        std::move(swap_info),
+                                        std::move(dapp_origin));
+}
+
 SolanaTxMeta::~SolanaTxMeta() = default;
 
 bool SolanaTxMeta::operator==(const SolanaTxMeta& meta) const {
@@ -43,11 +64,8 @@ mojom::TransactionInfoPtr SolanaTxMeta::ToTransactionInfo() const {
       id_, from_.Clone(), tx_hash_,
       mojom::TxDataUnion::NewSolanaTxData(tx_->ToSolanaTxData()), status_,
       tx_->tx_type(), std::vector<std::string>() /* tx_params */,
-      std::vector<std::string>() /* tx_args */,
-      base::Milliseconds(created_time_.InMillisecondsSinceUnixEpoch()),
-      base::Milliseconds(submitted_time_.InMillisecondsSinceUnixEpoch()),
-      base::Milliseconds(confirmed_time_.InMillisecondsSinceUnixEpoch()),
-      origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, chain_id_,
+      std::vector<std::string>() /* tx_args */, created_time_, submitted_time_,
+      confirmed_time_, MakeDappOriginInfo(dapp_origin_), chain_id_,
       std::nullopt, IsRetriable(), swap_info_.Clone(), nullptr);
 }
 

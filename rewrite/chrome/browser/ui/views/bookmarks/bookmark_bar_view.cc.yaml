@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Inject LayoutBookmarkBarInstructionsView call in the middle of
+      BookmarkBarView::Layout
+
+       In order to reuse local variable like max_x and y and inject to the
+       correct line, use 'add_before_line'
+    add_before_line:
+      line: 'const bool show_bookmarks_overflow ='
+      code: |-
+        LayoutBookmarkBarInstructionsView(this, bookmark_service_->bookmark_model(),
+                                         browser(), button_height, x, max_x, y);

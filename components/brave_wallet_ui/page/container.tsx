@@ -15,12 +15,13 @@ import {
 // redux
 import { useAppDispatch } from '../common/hooks/use-redux'
 
-import ProgressRing from '@brave/leo/react/progressRing'
+import ProgressRing from '@brave/nala/react/progressRing'
 
 // utils
 import { getWalletLocationTitle } from '../utils/string-utils'
 import {
   getInitialSessionRoute,
+  getWalletLocationPathname,
   isPersistableSessionRoute,
 } from '../utils/routes-utils'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
@@ -51,13 +52,13 @@ import { FullScreenWrapper, AlertCenter } from './screens/page-screen.styles'
 import { UnlockWallet } from './screens/unlock_wallet/unlock_wallet'
 import {
   WalletPageLayout, //
-} from '../components/desktop/wallet-page-layout/index'
+} from './components/wallet_page_layout/wallet_page_layout'
 import { OnboardingRoutes } from './screens/onboarding/onboarding.routes'
 import { DevBitcoin } from './screens/dev-bitcoin/dev-bitcoin'
 import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
 import {
   WalletPageWrapper, //
-} from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from './components/wallet_page_wrapper/wallet_page_wrapper'
 import {
   ProtectedRoute, //
 } from '../components/shared/protected-routing/protected-route'
@@ -68,6 +69,7 @@ import {
 } from '../components/desktop/popup-modals/partners_consent_modal/partners_consent_modal'
 import { Connections } from '../components/extension/connections/connections'
 import { PageNotFound } from './screens/page_not_found/page_not_found'
+import { CardHub } from '../card_hub/card_hub'
 import {
   DesktopTransactionConfirmation, //
 } from './components/desktop_transaction_confirmation/desktop_transaction_confirmation'
@@ -89,6 +91,9 @@ export const Container = () => {
     WalletSelectors.isBitcoinEnabled,
   )
   const isZCashEnabled = useSafeWalletSelector(WalletSelectors.isZCashEnabled)
+  const isCardStackUiEnabled = useSafeWalletSelector(
+    WalletSelectors.isCardStackUiEnabled,
+  )
 
   // page selectors (safe)
   const mnemonic = useSafePageSelector(PageSelectors.mnemonic)
@@ -116,11 +121,26 @@ export const Container = () => {
 
   // computed
   const walletNotYetCreated = !isWalletCreated || setupStillInProgress
+  const canShowCardHub =
+    isPanel && isCardStackUiEnabled && !isWalletLocked && !walletNotYetCreated
+  // A saved /cards route redirects to itself when the hub is hidden, which
+  // leaves the panel blank. Fall through to the portfolio instead.
+  const sessionRedirect =
+    sessionRoute
+    && getWalletLocationPathname(sessionRoute) === WalletRoutes.Cards
+    && !canShowCardHub
+      ? undefined
+      : sessionRoute
   const defaultRedirect = walletNotYetCreated
     ? WalletRoutes.OnboardingWelcome
     : isWalletLocked
       ? WalletRoutes.Unlock
-      : sessionRoute || WalletRoutes.PortfolioAssets
+      : sessionRedirect || WalletRoutes.PortfolioAssets
+
+  const isSendSwapOrBridgePage =
+    pathname.includes(WalletRoutes.Send)
+    || pathname.includes(WalletRoutes.Swap)
+    || pathname.includes(WalletRoutes.Bridge)
 
   // Methods
   const handleAcceptPartnerConsent = () => {
@@ -257,11 +277,24 @@ export const Container = () => {
             redirect if opened from the full wallet page. */}
         <ProtectedRoute
           path={WalletRoutes.Connections}
-          requirement={!isWalletLocked && !walletNotYetCreated && isPanel}
+          requirement={
+            !isWalletLocked && !walletNotYetCreated && isPanel && !isSidePanel
+          }
           redirectRoute={defaultRedirect}
           exact={true}
         >
           <Connections />
+        </ProtectedRoute>
+
+        {/* Card hub is the panel home when the flag is on. Redirect the full
+            wallet page, and send a locked wallet to unlock. */}
+        <ProtectedRoute
+          path={WalletRoutes.Cards}
+          exact={true}
+          requirement={canShowCardHub}
+          redirectRoute={defaultRedirect}
+        >
+          <CardHub />
         </ProtectedRoute>
 
         <ProtectedRoute
@@ -308,11 +341,21 @@ export const Container = () => {
         </Route>
 
         {/* Insures that we redirect to the default route if the user
-            manually navigates to the root url. */}
+            manually navigates to the root url. Reopening the panel restores
+            the saved session. With no saved session, the card hub is the
+            panel home when the flag is on. */}
         <Route
           path={WalletRoutes.Root}
           exact={true}
-          render={() => <Redirect to={defaultRedirect} />}
+          render={() => (
+            <Redirect
+              to={
+                canShowCardHub && !sessionRoute
+                  ? WalletRoutes.Cards
+                  : defaultRedirect
+              }
+            />
+          )}
         />
 
         {/* Insures that we redirect to the default route if the user
@@ -339,7 +382,9 @@ export const Container = () => {
         onClose={handleDeclinePartnerConsent}
         onContinue={handleAcceptPartnerConsent}
       />
-      {!isWalletLocked && !isMobile && <DesktopTransactionConfirmation />}
+      {!isWalletLocked && !isMobile && isSendSwapOrBridgePage && (
+        <DesktopTransactionConfirmation />
+      )}
     </>
   )
 }

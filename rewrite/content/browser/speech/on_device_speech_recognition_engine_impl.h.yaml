@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# `class CONTENT_EXPORT OnDeviceSpeechRecognitionEngine` cannot be parsed by
+# tree-sitter with the export macro in place, so blank it out for AST matching.
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: 'Let the Brave subclass reach private members.'
+    add_friend:
+      class_name: OnDeviceSpeechRecognitionEngine
+      friend_type: class BraveOnDeviceSpeechRecognitionEngine

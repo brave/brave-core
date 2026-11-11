@@ -12,12 +12,15 @@
 #include "base/time/time.h"
 #include "brave/browser/ui/brave_tooltips/bounds_util.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "build/build_config.h"
 #include "ui/accessibility/ax_enums.mojom.h"
 #include "ui/accessibility/ax_node_data.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/color/color_provider.h"
 #include "ui/compositor/layer.h"
+#include "ui/decoration/shadow.h"
 #include "ui/display/screen.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/color_palette.h"
@@ -28,7 +31,6 @@
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/geometry/vector2d.h"
 #include "ui/gfx/skia_paint_util.h"
-#include "ui/native_theme/native_theme.h"
 #include "ui/views/accessibility/view_accessibility.h"
 #include "ui/views/border.h"
 #include "ui/views/layout/box_layout.h"
@@ -45,9 +47,6 @@ constexpr gfx::Size kTooltipSize(434 + 15, 104 + 15);
 constexpr int kShadowElevation = 5;
 
 constexpr int kBorderThickness = 6;
-
-constexpr SkColor kLightModeBackgroundColor = SkColorSetRGB(0xFF, 0xFF, 0xFF);
-constexpr SkColor kDarkModeBackgroundColor = SkColorSetRGB(0x3B, 0x3E, 0x4F);
 
 constexpr SkColor kBorderColor = SkColorSetRGB(0xF7, 0x3A, 0x1C);
 
@@ -175,9 +174,8 @@ void BraveTooltipPopup::OnPaintBackground(gfx::Canvas* canvas) {
   gfx::Rect bounds(GetWidget()->GetLayer()->bounds());
   bounds.Inset(-GetShadowMargin());
 
-  const bool should_use_dark_colors =
-      GetNativeTheme()->preferred_color_scheme() ==
-      ui::NativeTheme::PreferredColorScheme::kDark;
+  const ui::ColorProvider* color_provider = GetColorProvider();
+  CHECK(color_provider);
 
   // Draw border
   canvas->FillRect(gfx::Rect(0, 0, kBorderThickness, bounds.bottom()),
@@ -186,15 +184,15 @@ void BraveTooltipPopup::OnPaintBackground(gfx::Canvas* canvas) {
   // Draw drop shadow
   cc::PaintFlags shadow_flags;
   shadow_flags.setAntiAlias(true);
-  const gfx::ShadowDetails& shadow_details = GetShadowDetails();
-  shadow_flags.setLooper(gfx::CreateShadowDrawLooper(shadow_details.values));
+  const ui::decoration::ShadowDetails& shadow_details = GetShadowDetails();
+  shadow_flags.setLooper(gfx::CreateShadowDrawLooper(shadow_details.spec));
   canvas->DrawRoundRect(bounds, kCornerRadius, shadow_flags);
 
   // Draw background
   cc::PaintFlags background_flags;
   background_flags.setAntiAlias(true);
-  background_flags.setColor(should_use_dark_colors ? kDarkModeBackgroundColor
-                                                   : kLightModeBackgroundColor);
+  background_flags.setColor(
+      color_provider->GetColor(nala::kColorContainerBackground));
   canvas->DrawRect(bounds, background_flags);
 }
 
@@ -300,15 +298,16 @@ void BraveTooltipPopup::RecomputeAlignment() {
   GetWidget()->SetBounds(bounds);
 }
 
-const gfx::ShadowDetails& BraveTooltipPopup::GetShadowDetails() const {
-  return gfx::ShadowDetails::Get(kShadowElevation,
-                                 gfx::RoundedCornersF(kCornerRadius));
+const ui::decoration::ShadowDetails& BraveTooltipPopup::GetShadowDetails()
+    const {
+  return ui::decoration::ShadowDetails::Get(
+      gfx::RoundedCornersF(kCornerRadius),
+      ui::decoration::Shadow::MakeShadowValues(kShadowElevation));
 }
 
 gfx::Insets BraveTooltipPopup::GetShadowMargin() const {
-  const gfx::ShadowDetails& shadow_details = GetShadowDetails();
-  gfx::Insets shadow_margin =
-      gfx::ShadowValue::GetMargin(shadow_details.values);
+  const ui::decoration::ShadowDetails& shadow_details = GetShadowDetails();
+  gfx::Insets shadow_margin = gfx::ShadowValue::GetMargin(shadow_details.spec);
   shadow_margin.set_left(-kBorderThickness);
   shadow_margin.set_top(0);
   return shadow_margin;

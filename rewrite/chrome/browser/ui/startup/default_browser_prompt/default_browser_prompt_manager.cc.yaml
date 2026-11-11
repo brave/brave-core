@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Don't display the default browser prompt menu item.
+
+      Keeping show_app_menu_item_ false is enough for ShouldShowAppMenuItem
+      to always report false too, so the item never shows.
+    preempt_function_impl:
+      function_name: DefaultBrowserPromptManager::SetAppMenuItemVisibility
+      code: |-
+        if (show) {
+          show_app_menu_item_ = false;
+          return;
+        }

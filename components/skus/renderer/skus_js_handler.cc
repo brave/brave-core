@@ -11,22 +11,15 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
-#include "base/no_destructor.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/v8_value_converter.h"
-#include "gin/arguments.h"
-#include "gin/function_template.h"
 #include "gin/object_template_builder.h"
-#include "third_party/blink/public/mojom/devtools/console_message.mojom.h"
 #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/platform/web_string.h"
-#include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_console_message.h"
 #include "third_party/blink/public/web/web_local_frame.h"
-#include "third_party/blink/public/web/web_script_source.h"
 #include "v8/include/cppgc/allocation.h"
 #include "v8/include/v8-cppgc.h"
 
@@ -319,12 +312,12 @@ void SkusJSHandler::OnCredentialSummary(
 gin::ObjectTemplateBuilder SkusJSHandler::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
   return gin::Wrappable<SkusJSHandler>::GetObjectTemplateBuilder(isolate)
-      .SetMethod("refresh_order", &SkusJSHandler::RefreshOrder)
-      .SetMethod("fetch_order_credentials",
-                 &SkusJSHandler::FetchOrderCredentials)
-      .SetMethod("prepare_credentials_presentation",
-                 &SkusJSHandler::PrepareCredentialsPresentation)
-      .SetMethod("credential_summary", &SkusJSHandler::CredentialSummary);
+      .SetMethod<&SkusJSHandler::RefreshOrder>("refresh_order")
+      .SetMethod<&SkusJSHandler::FetchOrderCredentials>(
+          "fetch_order_credentials")
+      .SetMethod<&SkusJSHandler::PrepareCredentialsPresentation>(
+          "prepare_credentials_presentation")
+      .SetMethod<&SkusJSHandler::CredentialSummary>("credential_summary");
 }
 
 const gin::WrapperInfo* SkusJSHandler::wrapper_info() const {

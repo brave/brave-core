@@ -49,6 +49,18 @@ export function mojoTimeToJSDate(mojoTime: mojo.Time): Date {
 }
 
 /**
+ * Converts a JS time to a mojo time. Inverse of mojoTimeToJSDate().
+ */
+export function jsDateToMojoTime(date: Date): mojo.Time {
+  const epochDeltaInMs = Date.UTC(1970, 0, 1) - Date.UTC(1601, 0, 1)
+  // Convert to BigInt before scaling to microseconds: the result exceeds
+  // Number.MAX_SAFE_INTEGER.
+  return {
+    internalValue: BigInt(date.getTime() + epochDeltaInMs) * BigInt(1000),
+  }
+}
+
+/**
  * Converts a mojo time to a JS time.
  * @param {!mojoBase.mojom.TimeDelta} mojoTime
  * @return {!Date}

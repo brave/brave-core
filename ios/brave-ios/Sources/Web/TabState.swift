@@ -144,9 +144,6 @@ public protocol TabState: AnyObject {
   var serverTrust: SecTrust? { get }
   /// The current cached favicon for the realized tab
   var faviconStatus: FaviconStatus? { get }
-  /// The current URL loaded on the page, regardless of the navigation status or spoofing
-  @available(iOS, deprecated, message: "Use `visibleURL` or `lastCommittedURL` instead")
-  var url: URL? { get }
   /// Gets the URL currently being displayed in the URL bar, if there is one.
   ///
   /// This URL might be a pending navigation that hasn't committed yet, so it is not guaranteed to
@@ -171,15 +168,6 @@ public protocol TabState: AnyObject {
   var canGoForward: Bool { get }
   /// The current back forward list
   var backForwardList: (any BackForwardListProxy)? { get }
-  /// The current redirect chain for the navigation.
-  ///
-  /// If no redirects occur during the navigation, this only contains the original request URL
-  @available(
-    iOS,
-    deprecated,
-    message: "Assemble a redirect chain in a tab helper using TabObserver instead"
-  )
-  var redirectChain: [URL] { get }
   /// The original request for the current page
   ///
   /// Remove when CWVBackFowardListItem exposes original request URL
@@ -217,6 +205,15 @@ public protocol TabState: AnyObject {
   func takeSnapshot(rect: CGRect, handler: @escaping (UIImage?) -> Void)
   /// Creates a full page PDF of the web contents
   func createFullPagePDF() async throws -> Data?
+  /// Downloads the last committed page to `fileURL` using the web view's network session.
+  ///
+  /// Throws `CancellationError` if the calling task is cancelled.
+  func downloadCurrentPage(to fileURL: URL) async throws
+  /// A filename suitable for saving the last committed page to disk.
+  ///
+  /// Uses `contentDisposition` if provided, otherwise the last committed URL, with an extension
+  /// derived from the page's MIME type when missing or unreliable (e.g. blob URLs).
+  func suggestedFilenameForCurrentPage(contentDisposition: String?) -> String
   /// Whether or not find in page is currently visible
   var isFindNavigatorVisible: Bool { get }
   /// Presents the find in page interaction using the provided text as an initial search query

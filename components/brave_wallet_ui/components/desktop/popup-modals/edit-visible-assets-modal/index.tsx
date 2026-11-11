@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { useLocation } from 'react-router-dom'
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 
 // types
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
@@ -28,7 +28,7 @@ import {
   SegmentedControl, //
 } from '../../../shared/segmented_control/segmented_control'
 import { SearchBar } from '../../../shared/search-bar'
-import { NetworkFilterSelector } from '../../network-filter-selector'
+import { NetworkFilterSelector } from '$wallet/page/components/network_filter_selector/network_filter_selector'
 
 // Styled Components
 import {

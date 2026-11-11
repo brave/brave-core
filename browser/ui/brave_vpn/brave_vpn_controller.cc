@@ -9,13 +9,24 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "url/gurl.h"
 
+DEFINE_USER_DATA(BraveVPNController);
+
 BraveVPNController::BraveVPNController(BrowserView* browser_view)
-    : browser_view_(browser_view) {}
+    : browser_view_(browser_view),
+      scoped_unowned_user_data_(
+          browser_view->browser()->GetUnownedUserDataHost(),
+          *this) {}
 
 BraveVPNController::~BraveVPNController() = default;
+
+// static
+BraveVPNController* BraveVPNController::From(BrowserWindowInterface* browser) {
+  return Get(browser->GetUnownedUserDataHost());
+}
 
 void BraveVPNController::ShowBraveVPNBubble(bool show_select) {
   GetBraveBrowserView()->ShowBraveVPNBubble(show_select);

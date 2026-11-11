@@ -16,10 +16,15 @@ import {
   searchNftCollectionsAndGetTotalNftsFound,
   getTokenCollectionName,
   dedupeAssetsByIdKey,
+  findTokenByChainAndContractAddress,
   getAssetIdKey,
   isTokenWatchOnly,
   getDoesCoinSupportSwap,
   getDoesCoinSupportBridge,
+  getDoesTokenSupportSwap,
+  getDoesTokenSupportBridge,
+  getDoesTokenSupportDeposit,
+  isLegacyShieldedToken,
 } from './asset-utils'
 import { getAccountBalancesKey } from './balance-utils'
 
@@ -30,6 +35,7 @@ import {
   mockBasicAttentionToken,
   mockMoonCatNFT,
   mockErc721Token,
+  mockZecToken,
 } from '../stories/mock-data/mock-asset-options'
 import { mockAccounts } from '../stories/mock-data/mock-wallet-accounts'
 
@@ -221,6 +227,64 @@ describe('getDoesCoinSupportBridge', () => {
   })
 })
 
+const mockOrchardZecToken = {
+  ...mockZecToken,
+  zcashTokenType: BraveWallet.ZCashTokenType.kOrchard,
+}
+
+const mockIronwoodZecToken = {
+  ...mockZecToken,
+  zcashTokenType: BraveWallet.ZCashTokenType.kIronwood,
+}
+
+describe('isLegacyShieldedToken', () => {
+  it('returns true for Orchard (legacy shielded) ZEC', () => {
+    expect(isLegacyShieldedToken(mockOrchardZecToken)).toBe(true)
+  })
+
+  it('returns false for Ironwood, transparent ZEC, and other coins', () => {
+    expect(isLegacyShieldedToken(mockIronwoodZecToken)).toBe(false)
+    expect(isLegacyShieldedToken(mockZecToken)).toBe(false)
+    expect(isLegacyShieldedToken(mockEthToken)).toBe(false)
+  })
+})
+
+describe('getDoesTokenSupportSwap', () => {
+  it('returns false for Orchard (legacy shielded) ZEC', () => {
+    expect(getDoesTokenSupportSwap(mockOrchardZecToken)).toBe(false)
+  })
+
+  it('follows coin-level swap support for other tokens', () => {
+    expect(getDoesTokenSupportSwap(mockEthToken)).toBe(true)
+    expect(getDoesTokenSupportSwap(mockZecToken)).toBe(false)
+    expect(getDoesTokenSupportSwap(mockIronwoodZecToken)).toBe(false)
+  })
+})
+
+describe('getDoesTokenSupportBridge', () => {
+  it('returns false for Orchard (legacy shielded) ZEC', () => {
+    expect(getDoesTokenSupportBridge(mockOrchardZecToken)).toBe(false)
+  })
+
+  it('follows coin-level bridge support for other tokens', () => {
+    expect(getDoesTokenSupportBridge(mockEthToken)).toBe(true)
+    expect(getDoesTokenSupportBridge(mockZecToken)).toBe(true)
+    expect(getDoesTokenSupportBridge(mockIronwoodZecToken)).toBe(true)
+  })
+})
+
+describe('getDoesTokenSupportDeposit', () => {
+  it('returns false for Orchard (legacy shielded) ZEC', () => {
+    expect(getDoesTokenSupportDeposit(mockOrchardZecToken)).toBe(false)
+  })
+
+  it('returns true for Ironwood, transparent ZEC, and other coins', () => {
+    expect(getDoesTokenSupportDeposit(mockIronwoodZecToken)).toBe(true)
+    expect(getDoesTokenSupportDeposit(mockZecToken)).toBe(true)
+    expect(getDoesTokenSupportDeposit(mockEthToken)).toBe(true)
+  })
+})
+
 describe('dedupeAssetsByIdKey', () => {
   it('returns an empty array when given no assets', () => {
     expect(dedupeAssetsByIdKey([])).toEqual([])
@@ -253,5 +317,34 @@ describe('dedupeAssetsByIdKey', () => {
     const assets = [nftTokenOne, nftTokenTwo, ethToken, batToken]
 
     expect(dedupeAssetsByIdKey(assets)).toEqual(assets)
+  })
+})
+
+describe('findTokenByChainAndContractAddress', () => {
+  const mainnetUsdcAddress = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
+  const mainnetUsdc = {
+    contractAddress: mainnetUsdcAddress,
+    chainId: BraveWallet.MAINNET_CHAIN_ID,
+    coin: BraveWallet.CoinType.ETH,
+    decimals: 6,
+  }
+  // Same contract address watched on another chain, listed first the way user
+  // assets precede registry tokens.
+  const baseShadowUsdc = {
+    contractAddress: mainnetUsdcAddress.toLowerCase(),
+    chainId: BraveWallet.BASE_MAINNET_CHAIN_ID,
+    coin: BraveWallet.CoinType.ETH,
+    decimals: 18,
+  }
+
+  it('matches the token on the requested chain', () => {
+    expect(
+      findTokenByChainAndContractAddress(
+        mainnetUsdcAddress,
+        BraveWallet.MAINNET_CHAIN_ID,
+        BraveWallet.CoinType.ETH,
+        [baseShadowUsdc, mainnetUsdc],
+      ),
+    ).toBe(mainnetUsdc)
   })
 })

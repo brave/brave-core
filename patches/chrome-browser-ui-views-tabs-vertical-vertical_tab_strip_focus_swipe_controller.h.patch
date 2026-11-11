@@ -1,0 +1,31 @@
+diff --git a/chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_focus_swipe_controller.h b/chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_focus_swipe_controller.h
+index 4a91fb53f8f72a6fb67123d684efef812e87469d..ffc8a96c9da0266fe464d8e196da15c12635e677 100644
+--- a/chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_focus_swipe_controller.h
++++ b/chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_focus_swipe_controller.h
+@@ -10,7 +10,7 @@
+ #include "build/build_config.h"
+ #include "ui/events/event_handler.h"
+ 
+-class VerticalTabStripRegionView;
++class VerticalTabStripRegionView_ChromiumImpl;
+ 
+ // Handles two-finger swipe gestures across the vertical tab strip to cycle
+ // between the normal (unfocused) tab strip and focused tab groups.
+@@ -23,7 +23,7 @@ class VerticalTabStripFocusSwipeController : public ui::EventHandler {
+       base::Milliseconds(300);
+ 
+   explicit VerticalTabStripFocusSwipeController(
+-      VerticalTabStripRegionView* region_view);
++      VerticalTabStripRegionView_ChromiumImpl* region_view);
+   VerticalTabStripFocusSwipeController(
+       const VerticalTabStripFocusSwipeController&) = delete;
+   VerticalTabStripFocusSwipeController& operator=(
+@@ -52,7 +52,7 @@ class VerticalTabStripFocusSwipeController : public ui::EventHandler {
+   void ResetGesture();
+   void RotateTabGroupFocus(bool forward);
+ 
+-  const raw_ptr<VerticalTabStripRegionView> region_view_;
++  const raw_ptr<VerticalTabStripRegionView_ChromiumImpl> region_view_;
+ 
+   GestureState gesture_state_ = GestureState::kNone;
+   float cumulative_x_ = 0.0f;

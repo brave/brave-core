@@ -350,6 +350,7 @@ extension LivePlaylistWebLoader: TabObserver {
 }
 
 extension LivePlaylistWebLoader: TabPolicyDecider {
+  @MainActor
   func tab(
     _ tab: some TabState,
     shouldAllowRequest request: URLRequest,

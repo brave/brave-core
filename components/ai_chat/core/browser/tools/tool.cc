@@ -8,7 +8,6 @@
 #include <algorithm>
 
 #include "brave/components/ai_chat/core/browser/constants.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 
 namespace ai_chat {
@@ -59,7 +58,8 @@ Tool::RequiresUserInteractionBeforeHandling(
   return false;
 }
 
-void Tool::UserPermissionGranted(const std::string& tool_use_id) {
+void Tool::UserPermissionGranted(const std::string& tool_use_id,
+                                 const mojom::PermissionChallenge& challenge) {
   // Default: no-op. Tools can override if they need to track permission state.
 }
 
@@ -69,6 +69,11 @@ void Tool::SetUserPermissionStrategy(mojom::ToolPermission permission) {
 }
 
 std::optional<std::string> Tool::GetPermissionChallengeDescription(
+    const mojom::ToolUseEvent& tool_use) const {
+  return std::nullopt;
+}
+
+std::optional<std::string> Tool::GetPermissionChallengeImplications(
     const mojom::ToolUseEvent& tool_use) const {
   return std::nullopt;
 }

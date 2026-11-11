@@ -15,6 +15,7 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/commander/command_source.h"
+#include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/browser/ui/window_metadata/window_metadata_controller.h"
 #include "chrome/test/base/browser_with_test_window_test.h"
 #include "chrome/test/base/test_browser_window.h"
@@ -28,13 +29,22 @@ class CommanderEntityMatchTest : public BrowserWithTestWindowTest {
  public:
   void SetUp() override {
     BrowserWithTestWindowTest::SetUp();
+    BrowserWindowCreateParams params(profile(), true);
+    browser_ = CreateBrowserWithTestWindowForParams(std::move(params));
     ui_test_utils::DeprecatedFakeActivateBrowser(browser());
   }
+
+  void TearDown() override {
+    browser_.reset();
+    BrowserWithTestWindowTest::TearDown();
+  }
+
+  BrowserWindowInterface* browser() { return browser_.get(); }
 
   // Creates and returns a browser with `title` as its user title.
   // If `profile` is provided, it is used, otherwise uses the profile of this
   // test's browser.
-  std::unique_ptr<Browser> CreateAndActivateBrowser(
+  std::unique_ptr<BrowserWindowInterface> CreateAndActivateBrowser(
       const std::string& title,
       Profile* browser_profile = nullptr) {
     BrowserWindowCreateParams params(
@@ -44,6 +54,9 @@ class CommanderEntityMatchTest : public BrowserWithTestWindowTest {
     ui_test_utils::DeprecatedFakeActivateBrowser(browser.get());
     return browser;
   }
+
+ private:
+  std::unique_ptr<BrowserWindowInterface> browser_;
 };
 
 TEST_F(CommanderEntityMatchTest, WindowExcludesCurrentBrowser) {

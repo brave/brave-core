@@ -8,7 +8,9 @@
 #include <memory>
 #include <utility>
 
+#include "base/functional/bind.h"
 #include "base/memory/ptr_util.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents_delegate.h"
@@ -48,6 +50,20 @@ struct OnionLocation final : public base::SupportsUserData::Data {
 
 namespace tor {
 
+DEFINE_USER_DATA(OnionLocationTabHelper);
+
+// static
+OnionLocationTabHelper* OnionLocationTabHelper::From(tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
+}
+
+OnionLocationTabHelper::OnionLocationTabHelper(tabs::TabInterface& tab)
+    : content::WebContentsObserver(tab.GetContents()),
+      will_discard_contents_subscription_(tab.RegisterWillDiscardContents(
+          base::BindRepeating(&OnionLocationTabHelper::OnDiscardContents,
+                              base::Unretained(this)))),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {}
+
 OnionLocationTabHelper::~OnionLocationTabHelper() = default;
 
 // static
@@ -55,7 +71,8 @@ void OnionLocationTabHelper::SetOnionLocationByThrottle(
     content::WebContents* web_contents,
     const GURL& onion_location,
     const std::optional<url::Origin>& initiator_origin) {
-  auto* tab_helper = OnionLocationTabHelper::FromWebContents(web_contents);
+  auto* tab_helper = OnionLocationTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   if (!tab_helper) {
     return;
   }
@@ -63,13 +80,6 @@ void OnionLocationTabHelper::SetOnionLocationByThrottle(
   tab_helper->throttle_reported_initiator_origin_ =
       onion_location.is_empty() ? std::nullopt : initiator_origin;
 }
-
-OnionLocationTabHelper::OnionLocationTabHelper(
-    content::WebContents* web_contents)
-    : content::WebContentsUserData<OnionLocationTabHelper>(*web_contents),
-      content::WebContentsObserver(web_contents) {}
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(OnionLocationTabHelper);
 
 void OnionLocationTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
@@ -98,6 +108,18 @@ void OnionLocationTabHelper::DidFinishNavigation(
     delegate->NavigationStateChanged(
         web_contents(), content::InvalidateTypes::INVALIDATE_TYPE_URL);
   }
+}
+
+void OnionLocationTabHelper::OnDiscardContents(
+    tabs::TabInterface* tab,
+    content::WebContents* old_contents,
+    content::WebContents* new_contents) {
+  // The Onion-Location belongs to the old contents' page.
+  throttle_reported_onion_location_ = GURL();
+  throttle_reported_initiator_origin_.reset();
+  onion_location_ = GURL();
+  initiator_origin_.reset();
+  Observe(new_contents);
 }
 
 void OnionLocationTabHelper::SetOnionLocationForTesting(

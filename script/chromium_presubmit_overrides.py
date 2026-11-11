@@ -7,9 +7,14 @@
 # functions from a global scope to change them. This allows us to alter root
 # Chromium presubmit checks without introducing too much conflict.
 
+import collections
+import concurrent.futures
+import functools
 import inspect
 import os
 import re
+import sys
+import time
 import traceback
 
 import brave_chromium_utils
@@ -24,10 +29,15 @@ CANNED_CHECKS_KEY = 'canned'
 def load_presubmit_config():
     with brave_chromium_utils.sys_path('//third_party/pyjson5/src'):
         import json5
+
         return json5.load(
             open(
                 brave_chromium_utils.wspath(
-                    '//brave/chromium_presubmit_config.json5')))
+                    '//brave/chromium_presubmit_config.json5'
+                ),
+                encoding='utf-8',
+            )
+        )
 
 
 config = load_presubmit_config()
@@ -51,8 +61,10 @@ def override_check(scope, name=None, should_exist=True):
             original_check = getattr(scope, check_name, None)
 
         if not callable(original_check):
-            message = (f'{check_name} check to override not found. '
-                       'Please update presubmit overrides.')
+            message = (
+                f'{check_name} check to override not found. '
+                'Please update presubmit overrides.'
+            )
             if should_exist:
                 traceback.print_stack()
                 raise RuntimeError(f'ERROR: {message}')
@@ -81,25 +93,127 @@ def override_canned_checks(canned_checks):
     def GetPylint(original_check, input_api, output_api, **kwargs):
 
         def _FetchAllFiles(_, input_api, files_to_check, files_to_skip):
-            src_filter = lambda f: input_api.FilterSourceFile(
-                f, files_to_check=files_to_check, files_to_skip=files_to_skip)
+
+            def src_filter(f):
+                return input_api.FilterSourceFile(
+                    f,
+                    files_to_check=files_to_check,
+                    files_to_skip=files_to_skip,
+                )
+
             return [
                 f.AbsoluteLocalPath()
                 for f in input_api.AffectedSourceFiles(src_filter)
             ]
 
-        with override_utils.override_scope_function(input_api.canned_checks,
-                                                    _FetchAllFiles):
+        with override_utils.override_scope_function(
+            input_api.canned_checks, _FetchAllFiles
+        ):
             return original_check(input_api, output_api, **kwargs)
+
+
+_STILL_RUNNING_RE = re.compile(r'Still running (\w+) after (\d+s)\.\.\.\n')
+
+
+# Adds the number of finished commands, e.g. "(5/8)", to the "Still running
+# <check> after Ns..." messages depot_tools prints for `check_name`.
+class _StillRunningWithProgress:
+    def __init__(self, stream, check_name, get_progress):
+        self._stream = stream
+        self._check_name = check_name
+        self._get_progress = get_progress
+
+    def write(self, text):
+        match = _STILL_RUNNING_RE.fullmatch(text)
+        if match and match.group(1) == self._check_name:
+            progress = self._get_progress()
+            if progress:
+                text = (
+                    f'Still running {self._check_name} ({progress}) '
+                    f'after {match.group(2)}...\n'
+                )
+        return self._stream.write(text)
+
+    def __getattr__(self, name):
+        return getattr(self._stream, name)
+
+
+# Like `input_api.RunTests()`, but runs the commands right away instead of
+# deferring them to the end of the presubmit, so depot_tools reports progress
+# for `check_name`. With `show_progress` and several groups of commands, the
+# message gets "<finished groups>/<groups>", and each slow group is reported
+# once its last command is done. `groups` maps a command's name to its group's
+# label, e.g. the test file its shards belong to. By default every command is
+# a group of its own.
+def run_tests_with_progress(
+    input_api, check_name, tests, show_progress=True, groups=None
+):
+    results = []
+    tests = list(tests)
+    if not tests:
+        return results
+    for test in tests:
+        if not test.kwargs.get('cwd'):
+            test.kwargs['cwd'] = input_api.PresubmitLocalPath()
+
+    groups = groups or {}
+    group_of = {test.name: groups.get(test.name, test.name) for test in tests}
+    pending_in_group = collections.Counter(group_of.values())
+    group_sizes = dict(pending_in_group)
+    group_durations = collections.defaultdict(float)
+    finished_groups = 0
+    several = len(group_sizes) > 1 and show_progress
+
+    def run(test):
+        start = time.monotonic()
+        result = input_api.thread_pool.CallCommand(test)
+        return test, result, time.monotonic() - start
+
+    original_stdout = sys.stdout
+    sys.stdout = _StillRunningWithProgress(
+        original_stdout,
+        check_name,
+        lambda: f'{finished_groups}/{len(group_sizes)}' if several else None,
+    )
+    try:
+        with concurrent.futures.ThreadPoolExecutor(
+            max_workers=min(len(tests), os.cpu_count() or 1)
+        ) as executor:
+            futures = [executor.submit(run, test) for test in tests]
+            for future in concurrent.futures.as_completed(futures):
+                test, result, duration = future.result()
+                group = group_of[test.name]
+                group_durations[group] = max(group_durations[group], duration)
+                pending_in_group[group] -= 1
+                if not pending_in_group[group]:
+                    finished_groups += 1
+                    if several and group_durations[group] > 10:
+                        shards = group_sizes[group]
+                        suffix = f' ({shards} shards)' if shards > 1 else ''
+                        print(
+                            f'  {group_durations[group]:.1f}s to run '
+                            f'{group}{suffix}.',
+                            flush=True,
+                        )
+                if isinstance(result, (list, tuple)):
+                    results.extend(result)
+                elif result:
+                    results.append(result)
+    finally:
+        sys.stdout = original_stdout
+    return results
 
 
 # Overrides canned checks and installs per-check file filter.
 def modify_input_api(input_api):
+    input_api.RunTestsWithProgress = functools.partial(
+        run_tests_with_progress, input_api
+    )
     input_api.PRESUBMIT_FIX = os.environ.get('PRESUBMIT_FIX') == '1'
-    input_api.PRESUBMIT_ALL_BRAVE = os.environ.get(
-        'PRESUBMIT_ALL_BRAVE') == '1'
+    input_api.PRESUBMIT_ALL_BRAVE = os.environ.get('PRESUBMIT_ALL_BRAVE') == '1'
     input_api.DEFAULT_FILES_TO_CHECK += (
-        *config['additional_default_files_to_check'], )
+        *config['additional_default_files_to_check'],
+    )
     override_canned_checks(input_api.canned_checks)
     setup_per_check_file_filter(input_api)
     setup_read_file_override(input_api)
@@ -108,21 +222,24 @@ def modify_input_api(input_api):
 # Disables checks or forces presubmit errors for checks listed in the config.
 def apply_generic_check_overrides(scope, config_key, should_exist):
     for disabled_check in config['disabled_checks'][config_key]:
-        override_check(scope, name=disabled_check,
-                       should_exist=should_exist)(noop_check)
+        override_check(scope, name=disabled_check, should_exist=should_exist)(
+            noop_check
+        )
 
-    def force_presubmit_error_wrapper(original_check, input_api, output_api,
-                                      *args, **kwargs):
-        with override_utils.override_scope_variable(output_api,
-                                                    'PresubmitPromptWarning',
-                                                    output_api.PresubmitError):
+    def force_presubmit_error_wrapper(
+        original_check, input_api, output_api, *args, **kwargs
+    ):
+        with override_utils.override_scope_variable(
+            output_api, 'PresubmitPromptWarning', output_api.PresubmitError
+        ):
             return original_check(input_api, output_api, *args, **kwargs)
 
     for force_error_check in config['checks_to_force_presubmit_errors'][
-            config_key]:
+        config_key
+    ]:
         override_check(
-            scope, name=force_error_check,
-            should_exist=should_exist)(force_presubmit_error_wrapper)
+            scope, name=force_error_check, should_exist=should_exist
+        )(force_presubmit_error_wrapper)
 
 
 # Wraps input_api.change.AffectedFiles method to manually filter files available
@@ -152,7 +269,8 @@ def setup_per_check_file_filter(input_api):
     @override_utils.override_method(input_api.change)
     def AffectedFiles(_self, original_method, *args, **kwargs):
         files_to_skip = get_files_to_skip(
-            get_check_names(inspect.currentframe().f_back))
+            get_check_names(inspect.currentframe().f_back)
+        )
         affected_files = input_api.change._affected_files
         if files_to_skip:
 
@@ -165,9 +283,9 @@ def setup_per_check_file_filter(input_api):
 
             affected_files = [*filter(file_filter, affected_files)]
 
-        with override_utils.override_scope_variable(input_api.change,
-                                                    '_affected_files',
-                                                    affected_files):
+        with override_utils.override_scope_variable(
+            input_api.change, '_affected_files', affected_files
+        ):
             return original_method(*args, **kwargs)
 
     if input_api.no_diffs:
@@ -199,10 +317,14 @@ def setup_read_file_override(input_api):
                 file_item = file_item.AbsoluteLocalPath()
 
             from pathlib import Path
+
             repo_root = Path(_self.change.RepositoryRoot())
 
-            if (repo_root.name == "brave" and repo_root.parent.name == "src"
-                    and file_item.startswith(str(repo_root.parent))):
+            if (
+                repo_root.name == "brave"
+                and repo_root.parent.name == "src"
+                and file_item.startswith(str(repo_root.parent))
+            ):
                 return True
 
             return False
@@ -213,8 +335,7 @@ def setup_read_file_override(input_api):
             # We want to pass over the exception of reading
             # reading anything outside the repository from InputApi.ReadFile.
             # So just re-throw as is any other exception
-            if (str(io_error)
-                    != 'Access outside the repository root is denied.'):
+            if str(io_error) != 'Access outside the repository root is denied.':
                 raise
 
             # We are here because of the original input_api.ReadFile
@@ -223,6 +344,7 @@ def setup_read_file_override(input_api):
             # But in fact we are ok to read from brave-browser/src
             if is_affected_file_inside_chromium_repo(_self, file_item):
                 import gclient_utils
+
                 return gclient_utils.FileRead(file_item, 'r')
 
             # Give up, we are even outside brave-browser/src
@@ -233,10 +355,10 @@ def setup_read_file_override(input_api):
 def inline_presubmit(filename, _globals, _locals):
 
     class State:
-
         def __init__(self, filename):
             self.presubmit_dir = os.path.dirname(
-                brave_chromium_utils.wspath(filename))
+                brave_chromium_utils.wspath(filename)
+            )
             self.orig_cwd = os.getcwd()
             self.orig_presubmit_dir = ''
 
@@ -255,12 +377,23 @@ def inline_presubmit(filename, _globals, _locals):
         state.PreRunChecks(input_api)
         return []
 
+    existing_checks = {
+        name: value
+        for name, value in _globals.items()
+        if name.startswith('Check')
+    }
     func_suffix = re.sub(r'[^\w]', '_', filename)
     pre_check_name = f'Check_Pre_{func_suffix}'
     assert pre_check_name not in _globals
     _globals[pre_check_name] = PreRunChecks
 
     brave_chromium_utils.inline_file(filename, _globals, _locals)
+    for name, existing_check in existing_checks.items():
+        if _globals.get(name) is not existing_check:
+            raise RuntimeError(
+                f'Existing presubmit check {name} was replaced by '
+                f'inline_presubmit from {filename}'
+            )
     apply_generic_check_overrides(_globals, filename, True)
 
     def PostRunChecks(input_api, _output_api):

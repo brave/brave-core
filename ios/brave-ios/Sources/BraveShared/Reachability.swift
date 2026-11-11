@@ -89,8 +89,9 @@ public class Reachability {
 
       let type = ReachabilityType(path: path)
 
+      guard let self else { return }
       Task { @MainActor in
-        self?.status = Status(
+        self.status = Status(
           connectionType: type,
           isLowDataMode: path.isConstrained,
           isExpensive: path.isExpensive

@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_account/flows/register.h"
-
 #include <optional>
 #include <string>
 
@@ -44,8 +42,7 @@ struct RegisterStep1TestCase {
                   base::test::TaskEnvironment& task_environment,
                   mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    authentication->RegisterStep1(mojom::Service::kAccounts, test_case.email,
-                                  test_case.blinded_message,
+    authentication->RegisterStep1(test_case.email, test_case.blinded_message,
                                   std::move(callback));
   }
 

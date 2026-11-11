@@ -559,10 +559,7 @@ struct NetworkDetailsView: View {
       if showRadioButton {
         NetworkRadioButton(
           checked: item.isSelected,
-          isDisabled: Binding(
-            get: { item.input.wrappedValue.isEmpty || model.mode.isViewMode },
-            set: { _, _ in }
-          ),
+          isDisabled: item.input.wrappedValue.isEmpty || model.mode.isViewMode,
           onTapped: {
             for index in model.rpcUrls.indices where model.rpcUrls[index].id != item.id {
               model.rpcUrls[index].isSelected = !item.isSelected.wrappedValue
@@ -737,7 +734,7 @@ struct NetworkDetailsView: View {
 
 struct NetworkRadioButton: View {
   @Binding var checked: Bool
-  @Binding var isDisabled: Bool
+  var isDisabled: Bool
   var onTapped: () -> Void
 
   var body: some View {
@@ -760,7 +757,7 @@ struct NetworkRadioButton: View {
 #if DEBUG
 struct NetworkDetailsView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
+    NavigationStack {
       NetworkDetailsView(
         networkStore: .previewStore,
         model: .init()

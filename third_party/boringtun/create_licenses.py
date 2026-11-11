@@ -56,8 +56,7 @@ try:
 except ModuleNotFoundError:
     import tomli as tomllib  # type: ignore
 
-LICENSE_NAME_PREFIXES = ('LICENSE', 'LICENCE', 'COPYING', 'NOTICE',
-                         'UNLICENSE')
+LICENSE_NAME_PREFIXES = ('LICENSE', 'LICENCE', 'COPYING', 'NOTICE', 'UNLICENSE')
 
 # Path under src/ that License File: entries are rooted at. Chromium's
 # license tool resolves `License File:` relative to the README.chromium's
@@ -115,7 +114,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-COMBINED_HEADER = GENERATED_MARKER + """
+COMBINED_HEADER = (
+    GENERATED_MARKER
+    + """
 
 This crate is licensed under the SPDX expression:
     {spdx}
@@ -127,11 +128,15 @@ Chromium license-attribution tooling a single file to point at.
 Section markers below indicate which original file each block came from.
 
 """
+)
 
 # Fields whose drift from the computed value is noise (reviewer-owned)
 # and should be preserved across regeneration.
 PRESERVED_FIELDS = {
-    'Description', 'Local Modifications', 'Security Critical', 'Shipped'
+    'Description',
+    'Local Modifications',
+    'Security Critical',
+    'Shipped',
 }
 
 # Fields that MUST match between existing and computed; drift here means
@@ -188,9 +193,13 @@ def find_license_files(crate_dir: Path) -> list[Path]:
     'LICENSE' isn't double-counted as upstream-shipped.
     """
     return sorted(
-        entry for entry in crate_dir.iterdir()
-        if entry.is_file() and is_license_file(entry.name) and entry.name
-        not in LEGACY_GENERATED_NAMES and not is_generated_combined(entry))
+        entry
+        for entry in crate_dir.iterdir()
+        if entry.is_file()
+        and is_license_file(entry.name)
+        and entry.name not in LEGACY_GENERATED_NAMES
+        and not is_generated_combined(entry)
+    )
 
 
 def combined_output_name(crate_dir: Path) -> str:
@@ -208,11 +217,13 @@ def combined_output_name(crate_dir: Path) -> str:
     return COMBINED_FILENAME
 
 
-def make_combined_license(crate_dir: Path,
-                          files: list[Path],
-                          spdx: str,
-                          output_name: str = COMBINED_FILENAME,
-                          dry_run: bool = False) -> Path:
+def make_combined_license(
+    crate_dir: Path,
+    files: list[Path],
+    spdx: str,
+    output_name: str = COMBINED_FILENAME,
+    dry_run: bool = False,
+) -> Path:
     """
     Concatenate `files` with separator markers into `output_name` under
     crate_dir.
@@ -253,8 +264,11 @@ def tokenize_spdx(expr: str) -> list[str]:
             continue
         # Identifier. Consume any following 'WITH <id>' as part of it.
         ident = tok
-        while (i + 2 < len(raw) and raw[i + 1] == 'WITH'
-               and raw[i + 2] not in ('(', ')', 'OR', 'AND')):
+        while (
+            i + 2 < len(raw)
+            and raw[i + 1] == 'WITH'
+            and raw[i + 2] not in ('(', ')', 'OR', 'AND')
+        ):
             ident = f'{ident} WITH {raw[i + 2]}'
             i += 2
         tokens.append(ident)
@@ -324,7 +338,7 @@ def parse_spdx_expr(tokens: list[str]) -> dict:
 
     tree = parse_or()
     if pos[0] != len(tokens):
-        raise ValueError(f'trailing tokens: {tokens[pos[0]:]}')
+        raise ValueError(f'trailing tokens: {tokens[pos[0] :]}')
     return tree
 
 
@@ -447,8 +461,14 @@ def format_readme(fields: dict, sections: dict) -> str:
     """Format fields + sections back into a README.chromium string."""
     # Preserve a canonical field order for readability.
     order = [
-        'Name', 'Short Name', 'URL', 'Version', 'License', 'License File',
-        'Security Critical', 'Shipped'
+        'Name',
+        'Short Name',
+        'URL',
+        'Version',
+        'License',
+        'License File',
+        'Security Critical',
+        'Shipped',
     ]
     lines = []
     for key in order:
@@ -471,13 +491,13 @@ def strip_email(s: str) -> str:
     start = s.find('<')
     end = s.find('>', start + 1) if start != -1 else -1
     if start != -1 and end != -1:
-        return (s[:start] + s[end + 1:]).strip()
+        return (s[:start] + s[end + 1 :]).strip()
     return s.strip()
 
 
-def synthesize_mit_license(crate_dir: Path,
-                           pkg: dict,
-                           dry_run: bool = False) -> Path:
+def synthesize_mit_license(
+    crate_dir: Path, pkg: dict, dry_run: bool = False
+) -> Path:
     """Generate a LICENSE file for this crate from MIT_TEMPLATE.
 
     Uses the crate's `authors` field as the copyright holder. This is a
@@ -504,15 +524,16 @@ def synthesize_mit_license(crate_dir: Path,
         holder = str(authors) or 'the crate authors'
 
     from datetime import datetime
+
     year = datetime.now().year
 
-    out.write_text(MIT_TEMPLATE.format(year=year, holder=holder),
-                   encoding='utf-8')
+    out.write_text(
+        MIT_TEMPLATE.format(year=year, holder=holder), encoding='utf-8'
+    )
     return out
 
 
-def pick_license_file_for_id(spdx_id: str,
-                             files: list[Path]) -> Optional[Path]:
+def pick_license_file_for_id(spdx_id: str, files: list[Path]) -> Optional[Path]:
     """Return the license file whose name best matches a single SPDX id."""
     upper_id = spdx_id.upper()
     # Direct keyword matches, most specific first.
@@ -535,8 +556,8 @@ def pick_license_file_for_id(spdx_id: str,
 
 
 def compute_readme(
-        crate_dir: Path,
-        dry_run: bool = False) -> tuple[dict, dict, bool, list[str]]:
+    crate_dir: Path, dry_run: bool = False
+) -> tuple[dict, dict, bool, list[str]]:
     """Compute fresh README fields + sections for one crate.
 
     Returns (fields, sections, had_problem, warnings).
@@ -607,7 +628,8 @@ def compute_readme(
                         matched,
                         license_expr,
                         output_name=combined_output_name(crate_dir),
-                        dry_run=dry_run)
+                        dry_run=dry_run,
+                    )
                     license_file_entry = combined.name
             elif files:
                 # Some id didn't match by name, but files are present.
@@ -621,20 +643,26 @@ def compute_readme(
                         files,
                         license_expr,
                         output_name=combined_output_name(crate_dir),
-                        dry_run=dry_run)
+                        dry_run=dry_run,
+                    )
                     license_file_entry = combined.name
-            elif unmatched_ids == ids and len(
-                    ids) == 1 and 'MIT' in ids[0].upper():
+            elif (
+                unmatched_ids == ids
+                and len(ids) == 1
+                and 'MIT' in ids[0].upper()
+            ):
                 # No files at all, and the (single) declared license is
                 # MIT. Synthesize from template.
                 synth = synthesize_mit_license(crate_dir, pkg, dry_run=dry_run)
                 license_file_entry = synth.name
                 warnings.append(
                     f'{crate_dir.name}: declared {ids[0]} but shipped no '
-                    f'license file -- synthesized {synth.name} from template')
+                    f'license file -- synthesized {synth.name} from template'
+                )
             else:
                 license_file_entry = (
-                    f'ToDo(no license files present for {license_expr})')
+                    f'ToDo(no license files present for {license_expr})'
+                )
                 problem = True
 
     fields = {
@@ -653,17 +681,23 @@ def compute_readme(
     sections = {
         'Description': (
             f'Transitive dependency of BoringTun, vendored under\n'
-            f'brave/third_party/boringtun/vendor/{crate_dir.name}.'),
+            f'brave/third_party/boringtun/vendor/{crate_dir.name}.'
+        ),
         'Local Modifications': (
             'None. Source vendored via `cargo vendor` from crates.io at '
-            'the version\npinned by brave/third_party/boringtun/Cargo.lock.'),
+            'the version\npinned by brave/third_party/boringtun/Cargo.lock.'
+        ),
     }
     return (fields, sections, problem, warnings)
 
 
-def merge_with_existing(existing_fields: dict, existing_sections: dict,
-                        computed_fields: dict, computed_sections: dict,
-                        crate_name: str) -> tuple[dict, dict, list[str]]:
+def merge_with_existing(
+    existing_fields: dict,
+    existing_sections: dict,
+    computed_fields: dict,
+    computed_sections: dict,
+    crate_name: str,
+) -> tuple[dict, dict, list[str]]:
     """Merge computed values into an existing README.
 
     Rules:
@@ -681,8 +715,7 @@ def merge_with_existing(existing_fields: dict, existing_sections: dict,
         old = existing_fields.get(key)
         new = computed_fields.get(key)
         if old is not None and new is not None and old != new:
-            drifts.append(f'  {crate_name}: {key!r} changed '
-                          f'{old!r} -> {new!r}')
+            drifts.append(f'  {crate_name}: {key!r} changed {old!r} -> {new!r}')
 
     for key in AUTO_UPDATE_FIELDS:
         if key in computed_fields:
@@ -709,11 +742,13 @@ def main():
         '--vendor',
         type=Path,
         default=(Path(__file__).resolve().parent / 'vendor'),
-        help='Path to vendor/. Defaults to "vendor/" relative to this script.')
+        help='Path to vendor/. Defaults to "vendor/" relative to this script.',
+    )
     ap.add_argument(
         '--dry-run',
         action='store_true',
-        help='Print what would be written without modifying anything.')
+        help='Print what would be written without modifying anything.',
+    )
     args = ap.parse_args()
 
     if not args.vendor.is_dir():
@@ -730,8 +765,9 @@ def main():
             skipped.append(crate_dir.name)
             continue
 
-        computed_fields, computed_sections, had_problem, crate_warnings = \
+        computed_fields, computed_sections, had_problem, crate_warnings = (
             compute_readme(crate_dir, dry_run=args.dry_run)
+        )
         warnings.extend(crate_warnings)
         if not computed_fields:
             problems.append(crate_dir.name)
@@ -741,8 +777,12 @@ def main():
         if readme_path.is_file():
             existing_fields, existing_sections = parse_readme(readme_path)
             final_fields, final_sections, crate_drifts = merge_with_existing(
-                existing_fields, existing_sections, computed_fields,
-                computed_sections, crate_dir.name)
+                existing_fields,
+                existing_sections,
+                computed_fields,
+                computed_sections,
+                crate_dir.name,
+            )
             drifts.extend(crate_drifts)
         else:
             final_fields = computed_fields
@@ -761,15 +801,20 @@ def main():
             problems.append(crate_dir.name)
 
     if args.dry_run:
-        total = sum(1 for p in args.vendor.iterdir()
-                    if p.is_dir() and p.name not in SKIP_CRATES)
+        total = sum(
+            1
+            for p in args.vendor.iterdir()
+            if p.is_dir() and p.name not in SKIP_CRATES
+        )
         print(f'\n(dry-run) would process {total} crates', file=sys.stderr)
     else:
         print(f'Wrote {written} README.chromium files', file=sys.stderr)
 
     if skipped:
-        print(f'Skipped {len(skipped)} crate(s): {", ".join(skipped)}',
-              file=sys.stderr)
+        print(
+            f'Skipped {len(skipped)} crate(s): {", ".join(skipped)}',
+            file=sys.stderr,
+        )
 
     if warnings:
         print(f'\n{len(warnings)} warning(s):', file=sys.stderr)
@@ -777,8 +822,10 @@ def main():
             print(f'  {w}', file=sys.stderr)
 
     if drifts:
-        print(f'\n{len(drifts)} drift(s) vs existing README.chromium:',
-              file=sys.stderr)
+        print(
+            f'\n{len(drifts)} drift(s) vs existing README.chromium:',
+            file=sys.stderr,
+        )
         for d in drifts:
             print(d, file=sys.stderr)
         print(
@@ -786,13 +833,15 @@ def main():
             'the Cargo.toml / license files currently say. Review each one '
             '-- most likely the crate upstream changed license, URL, or '
             'name, and attribution needs a human eye.',
-            file=sys.stderr)
+            file=sys.stderr,
+        )
 
     if problems:
         print(
             f'\n{len(problems)} crates need human review '
             f'(ToDo markers in README.chromium):',
-            file=sys.stderr)
+            file=sys.stderr,
+        )
         for name in problems:
             print(f'  - {name}', file=sys.stderr)
 

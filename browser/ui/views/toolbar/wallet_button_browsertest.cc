@@ -7,12 +7,12 @@
 
 #include "base/test/run_until.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "chrome/browser/picture_in_picture/picture_in_picture_occlusion_tracker.h"
 #include "chrome/browser/picture_in_picture/picture_in_picture_window_manager.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/test/test_browser_dialog.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "ui/views/test/button_test_api.h"
@@ -29,13 +29,7 @@ namespace brave_wallet {
 
 class WalletButtonButtonBrowserTest : public InProcessBrowserTest {
  public:
-  BrowserView* browser_view() {
-    return BrowserView::GetBrowserViewForBrowser(browser());
-  }
-
-  WalletButton* wallet_button() {
-    return BraveBrowserView::From(browser_view())->GetWalletButton();
-  }
+  WalletButton* wallet_button() { return WalletButton::From(browser()); }
 };
 
 // Regression test: SetBraveButtonFlexBehavior previously used the two-argument
@@ -82,9 +76,11 @@ IN_PROC_BROWSER_TEST_F(WalletButtonButtonBrowserTest,
 
   auto* widget = wallet_button()->GetBubbleWidgetForTesting();
   ASSERT_TRUE(widget);
-  auto* web_contents = brave_wallet::BraveWalletTabHelper::FromWebContents(
-                           browser()->tab_strip_model()->GetActiveWebContents())
-                           ->GetBubbleWebContentsForTesting();
+  auto* web_contents =
+      brave_wallet::BraveWalletTabHelper::From(
+          tabs::TabInterface::MaybeGetFromContents(
+              browser()->tab_strip_model()->GetActiveWebContents()))
+          ->GetBubbleWebContentsForTesting();
   ASSERT_TRUE(web_contents);
 
   EXPECT_FALSE(web_contents->ShouldIgnoreInputEventsForTesting());
@@ -106,10 +102,17 @@ IN_PROC_BROWSER_TEST_F(WalletButtonButtonBrowserTest,
 
 class WalletButtonBrowserUITest : public DialogBrowserTest {
  public:
+  WalletButtonBrowserUITest() {
+    // The wallet panel is a fixed 390x650 WebUI bubble below the toolbar. It
+    // autosizes after being shown and can end past the work area of a short
+    // display, so the bounds check depends on the host and on timing
+    // (https://crbug.com/41419544).
+    set_should_verify_dialog_bounds(false);
+  }
+
   // DialogBrowserTest:
   void ShowUi(const std::string& name) override {
-    auto* wallet_button = BraveBrowserView::GetBrowserViewForBrowser(browser())
-                              ->GetWalletButton();
+    auto* wallet_button = WalletButton::From(browser());
     views::test::ButtonTestApi(wallet_button).NotifyClick(GetDummyEvent());
   }
 };

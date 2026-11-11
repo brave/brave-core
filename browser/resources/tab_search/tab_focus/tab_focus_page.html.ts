@@ -7,7 +7,7 @@ import { html } from '//resources/lit/v3_0/lit.rollup.js'
 import type { TabFocusPageElement } from './tab_focus_page.js'
 
 export function getHtml(this: TabFocusPageElement) {
-  return this.showFRE_
+  return html`${this.showFRE_
     ? html`
         <div class="enable-tab-focus-wrapper">
           <div class="title-row">
@@ -74,7 +74,7 @@ export function getHtml(this: TabFocusPageElement) {
                 type="text"
                 value=${this.topic}
                 @input=${this.onTopicInputChanged_}
-                ?disabled=${this.errorMessage !== ''}
+                ?disabled="${this.errorMessage !== ''}"
               >
               </leo-input>
               <leo-button
@@ -82,7 +82,7 @@ export function getHtml(this: TabFocusPageElement) {
                 size="medium"
                 fab
                 @click=${this.onFocusTabsClick_}
-                ?isDisabled=${this.errorMessage !== ''}
+                ?isDisabled="${this.errorMessage !== ''}"
               >
                 ${this.getSubmitButtonLabel_()}
               </leo-button>
@@ -125,7 +125,7 @@ export function getHtml(this: TabFocusPageElement) {
                     ${this.getSuggestedTopicsSubtitle_()}
                   </div>
                   ${this.isLoadingTopics
-                    ? [1, 2, 3, 4, 5].map(
+                    ? html`${[1, 2, 3, 4, 5].map(
                         (key) => html`
                           <leo-button
                             key=${key}
@@ -144,17 +144,16 @@ export function getHtml(this: TabFocusPageElement) {
                             </div>
                           </leo-button>
                         `,
-                      )
-                    : this.topics_.map(
+                      )}`
+                    : html`${this.topics_.map(
                         (entry, index) => html`
                           <leo-button
                             id="${this.getTopicId_(index)}"
                             data-testid="${this.getTopicId_(index)}"
-                            data-index="${index}"
                             class="topics-button"
                             size="small"
                             kind="outline"
-                            @click=${this.onTopicClick_}
+                            @click=${() => this.onTopicClick_(index)}
                           >
                             <div class="topic-description">
                               <div class="emoji-wrapper">
@@ -164,7 +163,7 @@ export function getHtml(this: TabFocusPageElement) {
                             </div>
                           </leo-button>
                         `,
-                      )}
+                      )}`}
                 </div>
               `
             : html`
@@ -213,5 +212,5 @@ export function getHtml(this: TabFocusPageElement) {
               `
             : ''}
         </div>
-        <!--_html_template_end_-->`
+        <!--_html_template_end_-->`}`
 }

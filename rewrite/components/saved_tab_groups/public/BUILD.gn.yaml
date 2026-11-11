@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Expose the saved tab groups proto to dependants
+
+      `gn edit` moves the label out of `deps` as it adds it here.
+    insert_into_list:
+      target: public
+      list_name: public_deps
+      values:
+        - //components/saved_tab_groups/proto

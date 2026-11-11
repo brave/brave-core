@@ -6,6 +6,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/buildflags.h"
+#include "chrome/common/url_constants.h"
 #include "chrome/grit/generated_resources.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "extensions/browser/extension_util.h"
@@ -25,6 +26,13 @@ void BraveAddExtensionsResources(content::WebUIDataSource* source,
   source->AddLocalizedString("privateAndTorInfoWarning",
                              IDS_EXTENSIONS_BRAVE_PRIVATE_AND_TOR_WARNING);
   source->AddLocalizedString("braveHosted", IDS_EXTENSIONS_BRAVE_HOSTED);
+  source->AddLocalizedString("braveBlocklistedMalwareSocket",
+                             IDS_BRAVE_EXTENSIONS_BLOCKLISTED_MALWARE);
+  source->AddLocalizedString(
+      "braveBlocklistedMalwareSocketLearnMore",
+      IDS_BRAVE_EXTENSIONS_BLOCKLISTED_MALWARE_LEARN_MORE);
+  source->AddString("braveBlocklistedMalwareSocketLearnMoreUrl",
+                    chrome::kSafeBrowsingHelpCenterURL);
 
   const std::string mv2_extensions =
       base::JoinString(extensions_mv2::kPreconfiguredManifestV2Extensions, ",");

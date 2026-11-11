@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_IMPL_H_
 
 #include <cstdint>
-#include <map>
 #include <memory>
 #include <optional>
 #include <string>
@@ -31,6 +30,8 @@
 #include "brave/components/brave_ads/browser/application_state/shutdown_monitor.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
+#include "brave/components/brave_ads/browser/notification/notification_timeout_timers.h"
+#include "brave/components/brave_ads/browser/reminder/reminder_manager.h"
 #include "brave/components/brave_ads/core/browser/network/http_client.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_callback.h"
@@ -71,7 +72,6 @@ class HostContentSettingsMap;
 class PrefService;
 
 namespace base {
-class OneShotTimer;
 class SequencedTaskRunner;
 }  // namespace base
 
@@ -132,6 +132,10 @@ class AdsServiceImpl : public AdsService,
 
   ~AdsServiceImpl() override;
 
+  // Runs the migration step for this service, registers the pref change
+  // registrars, and evaluates ads-eligibility to start the `bat_ads` service.
+  void Init();
+
   // AdsService:
   base::WeakPtr<AdsService> GetWeakPtr() override;
   bool IsIneligibleToStart() const override;
@@ -183,8 +187,6 @@ class AdsServiceImpl : public AdsService,
   void ClearAdsServiceDataAndMaybeRestartCallback(ResultCallback callback,
                                                   bool success);
 
-  void OnExternalWalletConnectedCallback(bool success);
-
   void SetSysInfo();
   void SetBuildChannel();
   void SetCommandLineSwitches();
@@ -205,6 +207,8 @@ class AdsServiceImpl : public AdsService,
   void InitializeNotificationAdsPrefChangeRegistrar();
   void InitializeSponsoredAdsPrefChangeRegistrar();
   void OnAdsPrefChanged(const std::string& path);
+  bool ShouldClearAdsData(const std::string& path) const;
+  void MaybeClearAdsData(const std::string& path);
   void OnVariationsCountryPrefChanged();
   void NotifyPrefChanged(const std::string& path) const;
 
@@ -227,6 +231,7 @@ class AdsServiceImpl : public AdsService,
   bool StopNotificationAdTimeOutTimer(const std::string& placement_id);
   void NotificationAdTimedOut(const std::string& placement_id);
   void CloseAllNotificationAds();
+  void MaybeCloseAllNotificationAds();
   void RegisterOrUnregisterLanguageResourceComponent();
 
   // TODO(https://github.com/brave/brave-browser/issues/26193) Decouple open
@@ -451,8 +456,7 @@ class AdsServiceImpl : public AdsService,
   ui::IdleState last_idle_state_ = ui::IdleState::IDLE_STATE_ACTIVE;
   base::TimeDelta last_idle_time_;
 
-  std::map<std::string, std::unique_ptr<base::OneShotTimer>>
-      notification_ad_timers_;
+  NotificationTimeoutTimers notification_timeout_timers_;
 
   std::optional<std::string> retry_opening_new_tab_for_ad_with_placement_id_;
 
@@ -502,6 +506,8 @@ class AdsServiceImpl : public AdsService,
 
   std::unique_ptr<ShutdownMonitor> shutdown_monitor_;
   base::CallbackListSubscription app_terminating_subscription_;
+
+  ReminderManager reminder_manager_;
 
   // Reset eagerly in Shutdown() so the observer is detached from
   // PolicyService before the destructor runs.

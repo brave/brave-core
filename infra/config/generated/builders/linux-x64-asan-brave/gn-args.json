@@ -5,7 +5,6 @@
     "brave_channel": "nightly",
     "brave_google_api_key": "dummy",
     "dcheck_always_on": false,
-    "devtools_skip_typecheck": false,
     "disable_fieldtrial_testing_config": true,
     "enable_cdm_host_verification": false,
     "enable_full_stack_frames_for_profiling": true,

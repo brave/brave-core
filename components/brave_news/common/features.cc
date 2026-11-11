@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_news/common/features.h"
 
-#include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
 #include "build/buildflag.h"
 
@@ -25,6 +24,8 @@ BASE_FEATURE(kBraveNewsFeedUpdate,
              base::FEATURE_ENABLED_BY_DEFAULT
 #endif
 );
+
+BASE_FEATURE(kBraveNewsNewUserOptIn, base::FEATURE_DISABLED_BY_DEFAULT);
 const base::FeatureParam<int> kBraveNewsMinBlockCards{&kBraveNewsFeedUpdate,
                                                       "min-block-cards", 1};
 

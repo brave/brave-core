@@ -3,7 +3,7 @@
 > [!IMPORTANT]
 > The brave_ads schema does not declare `FOREIGN KEY` constraints, so referential integrity between tables is not enforced by SQLite. `mock_database.py` maintains cross-table consistency for UUID columns (e.g. `campaign_id`, `creative_instance_id`) itself, via an entity pool that dependent tables draw from.
 
-To mock a database with test data, create a corresponding SQLite database file by launching the development build of the browser. Then, copy this file from the default profile in `Default/ads_service` to this directory and execute `mock_database.py`. For example:
+To mock a database with test data, create a corresponding SQLite database file by launching the development build of the browser with a fresh profile (e.g. `--user-data-dir` pointing at a new, empty directory) at the code revision for that schema version; reusing an existing profile migrates its database to the latest schema instead of creating one at the version you want. Then, copy this file from the profile's `Default/ads_service` directory to this directory and execute `mock_database.py`. For example:
 
     python3 mock_database.py database_schema_1.sqlite
 

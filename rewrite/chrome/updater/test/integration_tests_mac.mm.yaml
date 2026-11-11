@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Look for "actives" files where the updater looks for them.
+
+      Upstream's test helper composes the directory from the company short
+      name. The updater uses the keystone name. Both give "GoogleSoftwareUpdate"
+      for Google, but "BraveSoftwareSoftwareUpdate" vs. "BraveSoftwareUpdate"
+      for us. This made IntegrationTest.ReportsActive and
+      IntegrationTest.CRURegistrationReportsActive fail on macOS.
+    regex:
+      pattern: 'COMPANY_SHORTNAME_STRING "SoftwareUpdate"'
+      replace: 'KEYSTONE_NAME'

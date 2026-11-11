@@ -9,6 +9,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/containers/flat_set.h"
 #include "base/feature_list.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/renderer/rss_link_reader.h"
@@ -78,8 +79,10 @@
 #endif
 
 namespace {
-void MaybeRemoveWidevineSupport(media::GetSupportedKeySystemsCB cb,
-                                media::KeySystemInfos key_systems) {
+void MaybeRemoveWidevineSupport(
+    media::GetSupportedKeySystemsCB cb,
+    media::KeySystemInfos key_systems,
+    base::flat_set<std::string> pending_key_systems) {
 #if BUILDFLAG(ENABLE_WIDEVINE)
   auto dynamic_params = BraveRenderThreadObserver::GetDynamicParams();
   if (!dynamic_params.widevine_enabled) {
@@ -91,7 +94,7 @@ void MaybeRemoveWidevineSupport(media::GetSupportedKeySystemsCB cb,
     key_systems.erase(to_remove.begin(), to_remove.end());
   }
 #endif
-  cb.Run(std::move(key_systems));
+  cb.Run(std::move(key_systems), std::move(pending_key_systems));
 }
 
 class Web3MetricsDelegate
@@ -143,7 +146,10 @@ void BraveContentRendererClient::
 
   // These features don't have dedicated WebRuntimeFeatures wrappers.
   blink::WebRuntimeFeatures::EnableFeatureFromString("AdTagging", false);
-  blink::WebRuntimeFeatures::EnableFeatureFromString("AIClassifierAPI", false);
+  blink::WebRuntimeFeatures::EnableFeatureFromString("AIDecisionModelAPI",
+                                                     false);
+  blink::WebRuntimeFeatures::EnableFeatureFromString(
+      "AIDecisionModelAPIForWorkers", false);
   blink::WebRuntimeFeatures::EnableFeatureFromString(
       "ApproximateGeolocationPermissionAccuracyMode", true);
   blink::WebRuntimeFeatures::EnableFeatureFromString("DigitalGoods", false);
@@ -154,9 +160,12 @@ void BraveContentRendererClient::
         "FileSystemAccessAPIExperimental", false);
   }
   blink::WebRuntimeFeatures::EnableFeatureFromString("FledgeMultiBid", false);
+  blink::WebRuntimeFeatures::EnableFeatureFromString("LanguageDetectionAPI",
+                                                     false);
   blink::WebRuntimeFeatures::EnableFeatureFromString("PrivateStateTokens",
                                                      false);
   blink::WebRuntimeFeatures::EnableFeatureFromString("ProfilerAPI", false);
+  blink::WebRuntimeFeatures::EnableFeatureFromString("TranslationAPI", false);
 
 #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
   if (base::FeatureList::IsEnabled(

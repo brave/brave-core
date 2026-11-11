@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/feature_list.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/model/purchase_intent_model.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 

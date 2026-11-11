@@ -9,6 +9,7 @@
 #include <optional>
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/toolbars_small_icons.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "components/prefs/pref_service.h"
@@ -26,15 +27,22 @@ std::optional<gfx::Insets> GetBraveLayoutInsets(LayoutInset inset) {
   switch (inset) {
     case LOCATION_BAR_PAGE_INFO_ICON_PADDING:
       return gfx::Insets::VH(compact ? 4 : 6, 6);
-    case LOCATION_BAR_PAGE_ACTION_ICON_PADDING:
-      // Trailing icons are 20px. Compact location_height is 26, so vertical
-      // padding must be 3 (20 + 2*3 = 26). Normal location_height is 28
-      // (20 + 2*4 = 28).
-      return gfx::Insets::VH(compact ? 3 : 4, 4);
+    case LOCATION_BAR_PAGE_ACTION_ICON_PADDING: {
+      // Pad the trailing icon to a 28 wide chip. Compact location_height is
+      // 26 and normal is 28 (20 + 2*3 = 26, 20 + 2*4 = 28; with small icons
+      // 18 + 2*4 = 26, 18 + 2*5 = 28).
+      const int icon_size =
+          GetLayoutConstant(LayoutConstant::kLocationBarTrailingIconSize);
+      return gfx::Insets::VH(((compact ? 26 : 28) - icon_size) / 2,
+                             (28 - icon_size) / 2);
+    }
     case TOOLBAR_BUTTON:
-      // Use 4 inset - (TOOLBAR_BUTTON_HEIGHT(28) - icon size(20)) / 2
-      // icon size - ToolbarButton::kDefaultIconSize
-      return gfx::Insets(touch_ui ? 12 : 4);
+      // Keeps the button at kToolbarButtonHeight: non-touch (28 - 20) / 2 = 4
+      // (5 with small icons), touch (48 - 24) / 2 = 12.
+      return gfx::Insets(
+          (GetLayoutConstant(LayoutConstant::kToolbarButtonHeight) -
+           GetLayoutConstant(LayoutConstant::kToolbarButtonIconSize)) /
+          2);
     case TOOLBAR_INTERIOR_MARGIN:
       if (touch_ui) {
         return gfx::Insets();
@@ -94,6 +102,18 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
       // See also SidebarButtonView::kSidebarButtonSize
       return touch ? 48 : 28;
     }
+    case LayoutConstant::kToolbarButtonIconSize:
+      // See also SidebarButtonView::GetDefaultIconSize()
+      if (!touch && brave::IsToolbarsSmallIconsEnabled()) {
+        return brave::kToolbarsSmallIconSize;
+      }
+      break;
+    case LayoutConstant::kLocationBarTrailingIconSize:
+    case LayoutConstant::kVerticalTabStripButtonIconSize:
+      if (brave::IsToolbarsSmallIconsEnabled()) {
+        return brave::kToolbarsSmallIconSize;
+      }
+      break;
     case LayoutConstant::kToolbarCornerRadius:
       return 8;
 

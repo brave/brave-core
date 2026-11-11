@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_rewards/core/engine/parameters/rewards_parameters_provider.h"
 
-#include <memory>
-#include <optional>
 #include <string>
 #include <utility>
 

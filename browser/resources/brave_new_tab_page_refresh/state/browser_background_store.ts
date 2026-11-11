@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { loadTimeData } from '$web-common/loadTimeData'
-import { SponsoredRichMediaAdEventHandler } from 'gen/brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.m.js'
+import { SponsoredContentAdEventHandler } from 'gen/brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.m.js'
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { debounce } from '$web-common/debounce'
 import { preloadedBackgrounds } from './background_images/preloaded'
@@ -14,8 +14,8 @@ export function createBackgroundStore() {
   const store = defaultBackgroundStore()
   const newTabProxy = NewTabPageProxy.getInstance()
   const { handler } = newTabProxy
-  const sponsoredRichMediaAdEventHandler =
-    SponsoredRichMediaAdEventHandler.getRemote()
+  const sponsoredContentAdEventHandler =
+    SponsoredContentAdEventHandler.getRemote()
 
   store.update({
     braveBackgrounds: preloadedBackgrounds,
@@ -34,9 +34,9 @@ export function createBackgroundStore() {
     store.update({ backgroundsEnabled: enabled })
   }
 
-  async function updateSponsoredImagesEnabled() {
-    const { enabled } = await handler.getSponsoredImagesEnabled()
-    store.update({ sponsoredImagesEnabled: enabled })
+  async function updateNewTabTakeoversEnabled() {
+    const { enabled } = await handler.getNewTabTakeoversEnabled()
+    store.update({ newTabTakeoversEnabled: enabled })
   }
 
   async function updateBraveBackgrounds() {
@@ -58,25 +58,41 @@ export function createBackgroundStore() {
     store.update({ customBackgrounds: backgrounds })
   }
 
-  async function updateSponsoredImageBackground() {
-    const { background } = await handler.getSponsoredImageBackground()
-    store.update({ sponsoredImageBackground: background ?? null })
+  async function updateNewTabTakeoverBackground() {
+    const { background } = await handler.getNewTabTakeoverBackground()
+    store.update({ newTabTakeoverBackground: background ?? null })
+  }
+
+  function disableNewTabTakeoverDisclosureAutoDisplay() {
+    const { newTabTakeoverBackground } = store.getState()
+    if (newTabTakeoverBackground) {
+      store.update({
+        newTabTakeoverBackground: {
+          ...newTabTakeoverBackground,
+          shouldAutoDisplayNewTabTakeoverDisclosure: false,
+        },
+      })
+    }
   }
 
   newTabProxy.addListeners({
     onBackgroundsUpdated: debounce(async () => {
-      await Promise.all([updateCustomBackgrounds(), updateSelectedBackground()])
+      await Promise.all([
+        updateNewTabTakeoversEnabled(),
+        updateCustomBackgrounds(),
+        updateSelectedBackground(),
+      ])
     }, 10),
   })
 
   async function loadData() {
     await Promise.all([
       updateBackgroundsEnabled(),
-      updateSponsoredImagesEnabled(),
+      updateNewTabTakeoversEnabled(),
       updateBraveBackgrounds(),
       updateCustomBackgrounds(),
       updateSelectedBackground(),
-      updateSponsoredImageBackground(),
+      updateNewTabTakeoverBackground(),
     ])
 
     store.update({ initialized: true })
@@ -90,9 +106,9 @@ export function createBackgroundStore() {
       handler.setBackgroundsEnabled(enabled)
     },
 
-    setSponsoredImagesEnabled(enabled) {
-      store.update({ sponsoredImagesEnabled: enabled })
-      handler.setSponsoredImagesEnabled(enabled)
+    setNewTabTakeoversEnabled(enabled) {
+      store.update({ newTabTakeoversEnabled: enabled })
+      handler.setNewTabTakeoversEnabled(enabled)
     },
 
     selectBackground(type, value) {
@@ -112,34 +128,44 @@ export function createBackgroundStore() {
       await handler.removeCustomBackground(background)
     },
 
-    notifySponsoredImageLoadError() {
-      console.error('Sponsored image failed to load')
-      store.update({ sponsoredImageBackground: null })
+    notifyNewTabTakeoverLoadError() {
+      console.error('New Tab Takeover failed to load')
+      store.update({ newTabTakeoverBackground: null })
     },
 
-    notifySponsoredImageLogoClicked() {
-      const { sponsoredImageBackground } = store.getState()
-      if (sponsoredImageBackground && sponsoredImageBackground.logo) {
-        handler.notifySponsoredImageLogoClicked(
-          sponsoredImageBackground.wallpaperId,
-          sponsoredImageBackground.creativeInstanceId,
-          sponsoredImageBackground.logo.destinationUrl,
-          sponsoredImageBackground.metricType,
+    notifyNewTabTakeoverLogoClicked() {
+      const { newTabTakeoverBackground } = store.getState()
+      if (newTabTakeoverBackground && newTabTakeoverBackground.logo) {
+        handler.notifyNewTabTakeoverLogoClicked(
+          newTabTakeoverBackground.wallpaperId,
+          newTabTakeoverBackground.creativeInstanceId,
+          newTabTakeoverBackground.logo.destinationUrl,
+          newTabTakeoverBackground.metricType,
         )
       }
     },
 
-    notifySponsoredRichMediaEvent(type) {
-      const { sponsoredImageBackground } = store.getState()
-      if (!sponsoredImageBackground) {
+    notifyNewTabTakeoverRichMediaEvent(type) {
+      const { newTabTakeoverBackground } = store.getState()
+      if (!newTabTakeoverBackground) {
         return
       }
-      sponsoredRichMediaAdEventHandler.maybeReportRichMediaAdEvent(
-        sponsoredImageBackground.wallpaperId,
-        sponsoredImageBackground.creativeInstanceId,
-        sponsoredImageBackground.metricType,
+      sponsoredContentAdEventHandler.maybeReportSponsoredContentAdEvent(
+        newTabTakeoverBackground.wallpaperId,
+        newTabTakeoverBackground.creativeInstanceId,
+        newTabTakeoverBackground.metricType,
         type,
       )
+    },
+
+    notifyNewTabTakeoverDisclosureLearnMoreClicked() {
+      handler.notifyNewTabTakeoverDisclosureLearnMoreClicked()
+      disableNewTabTakeoverDisclosureAutoDisplay()
+    },
+
+    notifyNewTabTakeoverDisclosureAutoDisplayed() {
+      handler.notifyNewTabTakeoverDisclosureTooltipAutoDisplayed()
+      disableNewTabTakeoverDisclosureAutoDisplay()
     },
   }
 

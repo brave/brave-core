@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.h b/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.h
+index b9bbfcd52712650f053be4c7a6332d5dce395707..ae5d79a7ad64d45e9ce6e263d94eebe73e1b6881 100644
+--- a/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.h
++++ b/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.h
+@@ -77,7 +77,15 @@ class RecentTabsSubMenuModel : public ui::SimpleMenuModel,
+ 
+   void RegisterLogMenuMetricsCallback(LogMenuMetricsCallback callback);
+ 
++ protected:
++  std::unique_ptr<sessions::SessionTab> stub_tab_;
++  void MaybeAppendOverflowStubTab(
++      std::vector<const sessions::SessionTab*>& tabs_in_session,
++      size_t max_tabs_to_show,
++      ui::SimpleMenuModel* device_menu_model);
++
+  private:
++  friend class BraveRecentTabsSubMenuModel;
+   // The various command types this menu supports.
+   enum CommandType {
+     Tab,          // Includes local and remote tabs.

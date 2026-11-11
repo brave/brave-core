@@ -15,7 +15,10 @@ import {
 import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
 
 // Types
-import { BraveWallet } from '../../../../../constants/types'
+import {
+  BraveWallet,
+  PolkadotMainnetKeyringIds,
+} from '../../../../../constants/types'
 
 // Components
 import {
@@ -27,21 +30,29 @@ import { Text, Row, Column, ScrollableColumn } from '../../../../shared/style'
 
 interface Props {
   coin: BraveWallet.CoinType
+  originSpec: string
   onChangeAccount: (account: BraveWallet.AccountInfo) => void
 }
 
 export const DAppConnectionAccounts = (props: Props) => {
-  const { coin, onChangeAccount } = props
+  const { coin, originSpec, onChangeAccount } = props
 
   // Queries
   const { accounts } = useAccountsQuery()
   const { data: connectedAccountsIds = [] } =
-    useGetActiveOriginConnectedAccountIdsQuery()
+    useGetActiveOriginConnectedAccountIdsQuery(originSpec)
 
   // Memos
   const accountByCoinType = React.useMemo(() => {
-    // Allow only first account for ADA
-    return accounts.filter((account) => account.accountId.coin === coin)
+    return accounts.filter((account) => {
+      if (account.accountId.coin !== coin) {
+        return false
+      }
+      if (coin === BraveWallet.CoinType.DOT) {
+        return PolkadotMainnetKeyringIds.includes(account.accountId.keyringId)
+      }
+      return true
+    })
   }, [accounts, coin])
 
   const connectedAccounts = React.useMemo(() => {

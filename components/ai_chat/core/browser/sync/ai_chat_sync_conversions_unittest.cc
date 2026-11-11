@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/containers/flat_map.h"
@@ -21,6 +22,7 @@
 #include "brave/components/sync/protocol/ai_chat_specifics.pb.h"
 #include "components/sync/protocol/entity_data.h"
 #include "components/sync/protocol/entity_specifics.pb.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -31,6 +33,53 @@ namespace {
 // repetitive, so gzip is guaranteed to shrink it.
 std::string CompressibleString() {
   return std::string(2 * kSyncCompressionThresholdBytes, 'a');
+}
+
+// Sets one of every AIChatCompressibleString the size-budget policy is allowed
+// to omit to a distinct marker, and returns those markers so a test can assert
+// on the whole set at once instead of field by field.
+std::vector<std::string> PopulateOmittableStrings(
+    sync_pb::AIChatConversationSpecifics_Entry* entry) {
+  auto* content = entry->add_associated_content();
+  content->set_uuid("ac-1");
+  content->mutable_last_contents()->set_raw("associated content text");
+
+  auto* file = entry->add_uploaded_files();
+  file->set_filename("doc.pdf");
+  file->mutable_extracted_text()->set_raw("file extracted text");
+
+  entry->add_events()->mutable_inline_search()->mutable_results_json()->set_raw(
+      "inline search results");
+
+  auto* web_sources = entry->add_events()->mutable_web_sources();
+  web_sources->add_sources()->mutable_page_content()->set_raw(
+      "event page content");
+  web_sources->add_rich_results()->set_raw("event rich result");
+
+  auto* tool_use = entry->add_events()->mutable_tool_use();
+  tool_use->mutable_arguments_json()->set_raw("tool arguments");
+  tool_use->add_artifacts()->mutable_content_json()->set_raw(
+      "artifact content");
+  tool_use->add_output()->mutable_text_content_block()->mutable_text()->set_raw(
+      "tool output text");
+  auto* nested = tool_use->add_output()->mutable_web_sources_content_block();
+  nested->add_sources()->mutable_page_content()->set_raw(
+      "tool output page content");
+  nested->add_rich_results()->set_raw("tool output rich result");
+
+  entry->add_events()->mutable_completion()->set_raw("completion");
+
+  return {"associated content text",
+          "file extracted text",
+          "inline search results",
+          "event page content",
+          "event rich result",
+          "tool arguments",
+          "artifact content",
+          "tool output text",
+          "tool output page content",
+          "tool output rich result",
+          "completion"};
 }
 
 }  // namespace
@@ -323,6 +372,46 @@ TEST(AIChatSyncConversionsTest, EntryToSpecificsFiltersAssociatedContent) {
   EXPECT_EQ(proto_content.title(), "Mine");
   EXPECT_EQ(proto_content.url(), "https://example.com/mine");
   EXPECT_EQ(proto_content.content_used_percentage(), 50);
+}
+
+TEST(AIChatSyncConversionsTest, EntryToSpecificsFiltersWorkspaceContent) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-1";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->created_time = base::Time::Now();
+
+  // One PageContent and one Workspace content, both tied to this entry.
+  // Only the PageContent should be synced.
+  std::vector<mojom::AssociatedContentPtr> content;
+
+  auto page = mojom::AssociatedContent::New();
+  page->uuid = "content-page";
+  page->title = "Page";
+  page->url = GURL("https://example.com/page");
+  page->content_type = mojom::ContentType::PageContent;
+  page->content_used_percentage = 50;
+  page->conversation_turn_uuid = "entry-1";
+  content.push_back(std::move(page));
+
+  auto workspace = mojom::AssociatedContent::New();
+  workspace->uuid = "content-workspace";
+  workspace->title = "Workspace";
+  workspace->url = GURL("workspace://6a0b4a8e-4f3c-4b7e-9d33-0f2d6a1c9b11");
+  workspace->content_type = mojom::ContentType::Workspace;
+  workspace->content_used_percentage = 100;
+  workspace->conversation_turn_uuid = "entry-1";
+  content.push_back(std::move(workspace));
+
+  sync_pb::AIChatConversationSpecifics specifics =
+      EntryToSpecifics("conv-1", *entry, content);
+
+  ASSERT_TRUE(specifics.has_entry());
+  // Only PageContent should be synced, Workspace should be filtered out.
+  ASSERT_EQ(specifics.entry().associated_content_size(), 1);
+  const auto& proto_content = specifics.entry().associated_content(0);
+  EXPECT_EQ(proto_content.uuid(), "content-page");
+  EXPECT_EQ(proto_content.title(), "Page");
 }
 
 TEST(AIChatSyncConversionsTest, EntryToSpecificsCompletionEventCompressed) {
@@ -1099,6 +1188,49 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripAssociatedContentText) {
             (base::flat_map<std::string, std::string>{{"ac-1", content_text}}));
 }
 
+// Workspace content is device-local and must be rejected when arriving from
+// sync (e.g., a malicious or misconfigured peer).
+TEST(AIChatSyncConversionsTest, SpecificsToEntryRejectsWorkspaceContent) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-ws";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+
+  auto ac = mojom::AssociatedContent::New();
+  ac->uuid = "content-ws";
+  ac->title = "Workspace";
+  ac->url = GURL("workspace://6a0b4a8e-4f3c-4b7e-9d33-0f2d6a1c9b11");
+  ac->content_type = mojom::ContentType::PageContent;
+  ac->content_used_percentage = 100;
+  ac->conversation_turn_uuid = "entry-ws";
+  std::vector<mojom::AssociatedContentPtr> all_content;
+  all_content.push_back(std::move(ac));
+
+  // The outgoing path never writes Workspace content, so build an otherwise
+  // valid entry and then mark its content as Workspace on the wire, as a peer
+  // could.
+  auto specifics = EntryToSpecifics("conv-1", *entry, all_content);
+  ASSERT_EQ(specifics.entry().associated_content_size(), 1);
+  {
+    // Control: the unmodified entry decodes, so the rejection below is due to
+    // the content type alone.
+    std::vector<mojom::AssociatedContentPtr> control_content;
+    ASSERT_TRUE(SpecificsToEntry(specifics, control_content));
+    ASSERT_EQ(control_content.size(), 1u);
+  }
+  specifics.mutable_entry()->mutable_associated_content(0)->set_content_type(
+      std::to_underlying(mojom::ContentType::Workspace));
+
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  auto rebuilt = SpecificsToEntry(specifics, rebuilt_content);
+
+  // Like any associated content that fails to decode, Workspace content
+  // rejects the whole entry, so nothing from it reaches this device.
+  EXPECT_FALSE(rebuilt);
+  EXPECT_TRUE(rebuilt_content.empty());
+}
+
 TEST(AIChatSyncConversionsTest, EntryRoundTripSkillAndNearVerification) {
   auto entry = mojom::ConversationTurn::New();
   entry->uuid = "entry-skill";
@@ -1129,6 +1261,166 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripWithoutSkillOrNear) {
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
   EXPECT_FALSE(rebuilt->skill);
   EXPECT_FALSE(rebuilt->near_verification_status);
+}
+
+TEST(AIChatSyncConversionsTest, FitEntryNoOpBelowBudget) {
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.set_uuid("e1");
+  entry.set_conversation_uuid("c1");
+  entry.set_entry_text("short");
+
+  ASSERT_LE(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+  EXPECT_TRUE(FitEntryWithinSyncBudget(&entry));
+  // Nothing should have been touched.
+  EXPECT_EQ(entry.entry_text(), "short");
+}
+
+TEST(AIChatSyncConversionsTest, ForEachOmittableStringVisitsEveryCategory) {
+  // Pins the field set the size-budget policy can reach, which is also the set
+  // the receiver has to be able to restore.
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  const std::vector<std::string> expected = PopulateOmittableStrings(&entry);
+
+  std::vector<std::string> visited;
+  ForEachOmittableString(&entry,
+                         [&visited](sync_pb::AIChatCompressibleString& value) {
+                           visited.push_back(value.raw());
+                         });
+  EXPECT_THAT(visited, testing::UnorderedElementsAreArray(expected));
+}
+
+TEST(AIChatSyncConversionsTest, FitEntryOmitsFileBytesFirst) {
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.set_uuid("e1");
+  entry.set_conversation_uuid("c1");
+  // Make a single uploaded file that on its own exceeds the budget.
+  auto* file = entry.add_uploaded_files();
+  file->set_filename("big.bin");
+  file->set_filesize(kSyncMaxRecordBytes + 1024);
+  const std::string file_bytes(kSyncMaxRecordBytes + 1024, '\x01');
+  file->set_data(file_bytes);
+
+  // Add an AC with a small last_contents so we can verify it is NOT omitted
+  // when the file alone is enough to bring us under budget.
+  auto* ac = entry.add_associated_content();
+  ac->set_uuid("ac-1");
+  WriteCompressibleString("small page text", ac->mutable_last_contents());
+
+  ASSERT_GT(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+  EXPECT_TRUE(FitEntryWithinSyncBudget(&entry));
+  EXPECT_FALSE(entry.uploaded_files(0).has_data());
+  // The omitted bytes leave behind a hash of the original content.
+  EXPECT_EQ(entry.uploaded_files(0).omitted_data_hash(),
+            base::PersistentHash(file_bytes));
+  // The AC's last_contents must still be intact.
+  EXPECT_FALSE(
+      entry.associated_content(0).last_contents().has_omitted_content_hash());
+  EXPECT_LE(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+}
+
+TEST(AIChatSyncConversionsTest, FitEntryOmitsLargestFileAndStopsWhenItFits) {
+  // Three attachments where dropping the big one alone is enough. The small
+  // two must survive, and they must keep their original order on the wire.
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.set_uuid("e1");
+  entry.set_conversation_uuid("c1");
+
+  auto* small = entry.add_uploaded_files();
+  small->set_filename("small.bin");
+  small->set_data(std::string(8 * 1024, '\x01'));
+
+  auto* big = entry.add_uploaded_files();
+  big->set_filename("big.bin");
+  big->set_data(std::string(kSyncMaxRecordBytes + 1024, '\x02'));
+
+  auto* medium = entry.add_uploaded_files();
+  medium->set_filename("medium.bin");
+  medium->set_data(std::string(16 * 1024, '\x03'));
+
+  ASSERT_GT(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+  EXPECT_TRUE(FitEntryWithinSyncBudget(&entry));
+
+  // Only the largest went, even though it is not first in the list.
+  EXPECT_TRUE(entry.uploaded_files(1).has_omitted_data_hash());
+  EXPECT_FALSE(entry.uploaded_files(0).has_omitted_data_hash());
+  EXPECT_FALSE(entry.uploaded_files(2).has_omitted_data_hash());
+  // Sorting is only about which bytes to drop; the wire order is untouched.
+  EXPECT_EQ(entry.uploaded_files(0).filename(), "small.bin");
+  EXPECT_EQ(entry.uploaded_files(1).filename(), "big.bin");
+  EXPECT_EQ(entry.uploaded_files(2).filename(), "medium.bin");
+  EXPECT_LE(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+}
+
+TEST(AIChatSyncConversionsTest, FitEntryKeepsExplicitlyEmptyStrings) {
+  // An empty raw string is a value, not an omission: replacing it with a
+  // content hash would tell the receiver to restore from local instead.
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.set_uuid("e1");
+  entry.set_conversation_uuid("c1");
+  entry.add_events()->mutable_completion()->set_raw("");
+  entry.set_selected_text(std::string(kSyncMaxRecordBytes + 1024, 'Z'));
+
+  ASSERT_GT(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+  EXPECT_FALSE(FitEntryWithinSyncBudget(&entry));
+  EXPECT_TRUE(entry.events(0).completion().has_raw());
+  EXPECT_FALSE(entry.events(0).completion().has_omitted_content_hash());
+}
+
+TEST(AIChatSyncConversionsTest, FitEntryOmitsLowerPriorityFieldsFirst) {
+  // Needs more than one category to go: dropping the file bytes alone leaves
+  // the entry over budget, so the associated content text — the first of the
+  // compressible-string categories — has to go too. The completion is the last
+  // category, so it must survive. Assign raw values rather than going through
+  // WriteCompressibleString so the on-the-wire sizes are deterministic.
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.set_uuid("e1");
+  entry.set_conversation_uuid("c1");
+
+  auto* file = entry.add_uploaded_files();
+  file->set_data(std::string(50 * 1024, '\x02'));
+
+  auto* ac = entry.add_associated_content();
+  ac->set_uuid("ac-1");
+  ac->mutable_last_contents()->set_raw(std::string(400 * 1024, 'A'));
+
+  entry.add_events()->mutable_completion()->set_raw(
+      std::string(100 * 1024, 'B'));
+
+  ASSERT_GT(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+  EXPECT_TRUE(FitEntryWithinSyncBudget(&entry));
+  EXPECT_TRUE(entry.uploaded_files(0).has_omitted_data_hash());
+  EXPECT_TRUE(
+      entry.associated_content(0).last_contents().has_omitted_content_hash());
+  EXPECT_FALSE(entry.events(0).completion().has_omitted_content_hash());
+  EXPECT_LE(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+}
+
+TEST(AIChatSyncConversionsTest, FitEntryRefusesEntryOversizedByPlainField) {
+  // selected_text is a plain proto string, so no amount of omission can shrink
+  // this entry. The policy must still drop everything it is able to drop
+  // before giving up, and must report the failure so the caller can refuse to
+  // commit.
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.set_uuid("pathological");
+  entry.set_conversation_uuid("c1");
+  PopulateOmittableStrings(&entry);
+  entry.mutable_uploaded_files(0)->set_data("file bytes");
+  entry.set_selected_text(std::string(kSyncMaxRecordBytes + 1024, 'Z'));
+
+  ASSERT_GT(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+  EXPECT_FALSE(FitEntryWithinSyncBudget(&entry));
+
+  EXPECT_TRUE(entry.uploaded_files(0).has_omitted_data_hash());
+  // A field that survived still holds its marker, so collecting the stragglers
+  // names them in the failure output.
+  std::vector<std::string> not_omitted;
+  ForEachOmittableString(
+      &entry, [&not_omitted](sync_pb::AIChatCompressibleString& value) {
+        if (!value.has_omitted_content_hash()) {
+          not_omitted.push_back(value.raw());
+        }
+      });
+  EXPECT_THAT(not_omitted, testing::IsEmpty());
 }
 
 }  // namespace ai_chat

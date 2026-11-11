@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import Flex from '$web-common/Flex';
 import { getLocale } from '$web-common/locale';
-import Icon from '@brave/leo/react/icon';
-import { color, font, gradient, icon, radius, spacing } from '@brave/leo/tokens/css/variables';
+import Icon from '@brave/nala/react/icon';
+import { color, font, gradient, icon, radius, spacing } from '@brave/nala/tokens/css/variables';
 import { AutocompleteMatch } from 'chrome://resources/mojo/components/omnibox/browser/searchbox.mojom-webui.js';
 import * as React from 'react';
 import styled from 'styled-components';
@@ -103,21 +103,21 @@ function Image({ match, isAskLeo }: { match: AutocompleteMatch, isAskLeo: boolea
   // We have three separate cases here:
   // 1. A chromium generic search result icon:
   //    We display the icon as a mask-image, so we can change the color
-  // 2. An `imageUrl` with the chrome:// scheme, which we can load on the NTP:
+  // 2. A `suggestTemplate` image URL with the chrome:// scheme, which we can load on the NTP:
   //    We display the image as a background, as its safe on the NTP
   // 3. A web resource, which we need to load from the WebUI via the unpadded
   //    url machinery.
-  const isGeneric = !match.imageUrl
-  return isGeneric
+  const imageUrl = match.suggestTemplate.image?.url
+  return !imageUrl
     ? <SearchIcon url={match.iconUrl} />
-    : match.imageUrl.startsWith('chrome')
-      ? <FavIcon url={match.imageUrl} />
-      : <MaybeImage src={match.imageUrl} />
+    : imageUrl.startsWith('chrome')
+      ? <FavIcon url={imageUrl} />
+      : <MaybeImage src={imageUrl} />
 }
 
 export default function SearchResult({ match, selected, onClick }: Props) {
-  const contents = match.swapContentsAndDescription ? match.description : match.contents
-  const description = match.swapContentsAndDescription ? match.contents : match.description
+  const contents = match.suggestTemplate.primaryText.text
+  const description = match.suggestTemplate.secondaryText?.text
   const isAskLeo = description === getLocale('searchAskLeo')
 
   const result = <Container href={match.destinationUrl} aria-selected={selected} onClick={e => {
@@ -125,7 +125,7 @@ export default function SearchResult({ match, selected, onClick }: Props) {
     onClick(e)
   }}>
     <IconContainer>
-      <Image key={match.imageUrl ?? match.iconUrl} match={match} isAskLeo={isAskLeo} />
+      <Image key={match.suggestTemplate.image?.url ?? match.iconUrl} match={match} isAskLeo={isAskLeo} />
     </IconContainer>
     <Flex direction='column'>
       <Content>{contents}</Content>

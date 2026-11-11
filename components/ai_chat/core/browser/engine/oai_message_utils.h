@@ -68,7 +68,7 @@ std::vector<mojom::ContentBlockPtr> BuildOAIPageContentBlocks(
 std::optional<std::vector<OAIMessage>>
 BuildOAIGenerateConversationTitleMessages(
     const PageContentsMap& page_contents,
-    const EngineConsumer::ConversationHistory& conversation_history,
+    const EngineConsumer::ConversationHistoryView& conversation_history,
     uint32_t remaining_length,
     base::FunctionRef<void(std::string&)> sanitize_input);
 
@@ -83,9 +83,14 @@ std::vector<OAIMessage> BuildOAIDedupeTopicsMessages(
 // Given a list of tabs, split them into chunks and build messages for each
 // chunk. Topic is non-empty for getting focus tabs (filter tabs based on a
 // topic), otherwise it's empty for getting suggested topics.
+//
+// `sanitize_passages` neutralizes the tabs wrapper in page text. Set it when
+// the caller builds the prompt itself, since nothing downstream will; leave it
+// unset when the server builds the prompt and sanitizes the tab data there.
 std::vector<std::vector<OAIMessage>> BuildChunkedTabFocusMessages(
     const std::vector<Tab>& tabs,
-    const std::string& topic = "");
+    const std::string& topic = "",
+    bool sanitize_passages = false);
 
 }  // namespace ai_chat
 

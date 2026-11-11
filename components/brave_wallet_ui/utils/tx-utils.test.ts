@@ -62,6 +62,8 @@ import {
   getTransactionTransferredValue,
   getTransactionTypeName,
   isCancelTransaction,
+  getSetApprovalForAllOperator,
+  isSetApprovalForAllTransaction,
   parseSwapInfo,
 } from './tx-utils'
 
@@ -97,10 +99,10 @@ const mockCardanoSendTokenTransaction: SerializableTransactionInfo = {
   txType: BraveWallet.TransactionType.CardanoSendToken,
   txParams: [],
   txArgs: [],
-  createdTime: { microseconds: 0 },
-  submittedTime: { microseconds: 0 },
-  confirmedTime: { microseconds: 0 },
-  originInfo: undefined,
+  createdTime: { msec: 0 },
+  submittedTime: { msec: 0 },
+  confirmedTime: { msec: 0 },
+  dappOriginInfo: undefined,
   effectiveRecipient: '',
   isRetriable: false,
   swapInfo: undefined,
@@ -185,10 +187,10 @@ const makePolkadotTransaction = ({
   txType: BraveWallet.TransactionType.Other,
   txParams: [],
   txArgs: [],
-  createdTime: { microseconds: 0 },
-  submittedTime: { microseconds: 0 },
-  confirmedTime: { microseconds: 0 },
-  originInfo: undefined,
+  createdTime: { msec: 0 },
+  submittedTime: { msec: 0 },
+  confirmedTime: { msec: 0 },
+  dappOriginInfo: undefined,
   effectiveRecipient: '',
   isRetriable: false,
   swapInfo: undefined,
@@ -324,7 +326,6 @@ describe('parseSwapInfo', () => {
       },
       ids: [sourceNetworkId, destinationNetworkId],
       hiddenIds: [],
-      offRampChainIds: [],
       ankrChainIds: [],
       swapChainIds: [],
     }
@@ -377,6 +378,47 @@ describe('parseSwapInfo', () => {
       '0x1234567890123456789012345678901234567890',
     )
     expect(provider).toBe(BraveWallet.SwapProvider.kZeroEx)
+  })
+
+  it('should ignore a same-address token from another chain', () => {
+    const networksRegistry = createMockNetworksRegistry()
+    const baseBat = {
+      ...mockBasicAttentionToken,
+      chainId: BraveWallet.BASE_MAINNET_CHAIN_ID,
+      decimals: 6,
+      symbol: 'NOTBAT',
+    }
+    const baseBtc = {
+      ...mockBitcoinErc20Token,
+      chainId: BraveWallet.BASE_MAINNET_CHAIN_ID,
+      decimals: 18,
+      symbol: 'NOTBTC',
+    }
+    const { sourceToken, destinationToken } = parseSwapInfo({
+      tokensList: [
+        baseBat,
+        baseBtc,
+        mockBasicAttentionToken,
+        mockBitcoinErc20Token,
+      ],
+      swapInfo: {
+        sourceCoin: mockBasicAttentionToken.coin,
+        sourceChainId: mockBasicAttentionToken.chainId,
+        sourceTokenAddress: mockBasicAttentionToken.contractAddress,
+        sourceAmount: '1000000000000000000',
+        destinationCoin: mockBitcoinErc20Token.coin,
+        destinationChainId: mockBitcoinErc20Token.chainId,
+        destinationTokenAddress: mockBitcoinErc20Token.contractAddress,
+        destinationAmount: '2000000000000000000',
+        destinationAmountMin: '1900000000000000000',
+        recipient: '0x1234567890123456789012345678901234567890',
+        provider: BraveWallet.SwapProvider.kZeroEx,
+      },
+      networksRegistry,
+    })
+
+    expect(sourceToken).toBe(mockBasicAttentionToken)
+    expect(destinationToken).toBe(mockBitcoinErc20Token)
   })
 
   it('should handle undefined swapInfo', () => {
@@ -1095,6 +1137,31 @@ describe('findTransactionToken', () => {
       ).toBe('BAT')
     })
 
+    it('should ignore a same-address token from another chain', () => {
+      const baseShadow = {
+        ...mockBasicAttentionToken,
+        chainId: BraveWallet.BASE_MAINNET_CHAIN_ID,
+        decimals: 6,
+        symbol: 'NOTBAT',
+      }
+      const token = findTransactionToken(
+        createMockTransactionInfo({
+          chainId: BraveWallet.MAINNET_CHAIN_ID,
+          coinType: BraveWallet.CoinType.ETH,
+          fromAccount: mockEthAccount,
+          sendApproveOrSellAmount: '1000',
+          sendApproveOrSellAssetContractAddress:
+            mockBasicAttentionToken.contractAddress,
+          toAddress: mockAccount.address,
+          isERC20Send: true,
+        }),
+        [baseShadow, mockBasicAttentionToken],
+      )
+
+      expect(token).toBe(mockBasicAttentionToken)
+      expect(token?.decimals).toBe(18)
+    })
+
     it('should detect sent ERC721 tokens', () => {
       expect(
         findTransactionToken(
@@ -1161,6 +1228,24 @@ describe('Cardano send token transfer formatting', () => {
     })
     expect(wei.format()).toBe('1000000')
     expect(normalized.format(6)).toBe('1')
+  })
+
+  it('getTransactionTransferredValue returns empty normalized for an unknown ERC20 token', () => {
+    // An unlisted token has no verifiable decimals; assuming 18 lets a dApp
+    // understate an approve/transfer amount by orders of magnitude.
+    const { normalized, wei } = getTransactionTransferredValue({
+      tx: {
+        ...mockTransactionInfo,
+        txType: BraveWallet.TransactionType.ERC20Approve,
+        txArgs: [mockEthAccount.address, '1000000000000'],
+      },
+      token: undefined,
+      sourceToken: undefined,
+      txAccount: mockEthAccount,
+      txNetwork: mockNetwork,
+    })
+    expect(wei.format()).toBe('1000000000000')
+    expect(normalized.format()).toBe('')
   })
 
   it('getTransactionFormattedSendCurrencyTotal uses the token symbol', () => {
@@ -1244,6 +1329,27 @@ describe('Polkadot send transfer formatting', () => {
   it('findTransactionToken resolves the native asset for a native send', () => {
     expect(
       findTransactionToken(mockPolkadotSendTransaction, [
+        mockPolkadotAssetToken,
+        mockPolkadotNativeToken,
+      ]),
+    ).toBe(mockPolkadotNativeToken)
+  })
+
+  it('findTransactionToken treats a null assetId as a native send', () => {
+    // Optional Mojo fields are `null` when unset (not `undefined`).
+    const tx = {
+      ...mockPolkadotSendTransaction,
+      txDataUnion: {
+        ...mockPolkadotSendTransaction.txDataUnion,
+        polkadotTxData: {
+          ...mockPolkadotSendTransaction.txDataUnion.polkadotTxData,
+          assetId: null,
+        },
+      },
+    } as unknown as SerializableTransactionInfo
+
+    expect(
+      findTransactionToken(tx, [
         mockPolkadotAssetToken,
         mockPolkadotNativeToken,
       ]),
@@ -1824,6 +1930,40 @@ describe('isCancelTransaction', () => {
       id: 'submitted-tx',
     }
     expect(isCancelTransaction(cancelTx, [submittedTx])).toBe(true)
+  })
+})
+
+describe('isSetApprovalForAllTransaction', () => {
+  const mockOperatorAddress = '0x1234567890123456789012345678901234567890'
+
+  const makeSetApprovalForAllTx = (operator: string, approved: boolean) => ({
+    ...mockEthSendTransaction,
+    txType: BraveWallet.TransactionType.ERC721SetApprovalForAll,
+    txArgs: [operator, approved ? '0x1' : '0x0'],
+  })
+
+  test('should return true for setApprovalForAll with approved=true', () => {
+    const tx = makeSetApprovalForAllTx(mockOperatorAddress, true)
+    expect(isSetApprovalForAllTransaction(tx)).toBe(true)
+  })
+
+  test('should return false for setApprovalForAll with approved=false', () => {
+    const tx = makeSetApprovalForAllTx(mockOperatorAddress, false)
+    expect(isSetApprovalForAllTransaction(tx)).toBe(false)
+  })
+
+  test('should return false for other transaction types', () => {
+    const tx = {
+      ...mockEthSendTransaction,
+      txType: BraveWallet.TransactionType.Other,
+      txArgs: [],
+    }
+    expect(isSetApprovalForAllTransaction(tx)).toBe(false)
+  })
+
+  test('should expose the operator address as the granted spender', () => {
+    const tx = makeSetApprovalForAllTx(mockOperatorAddress, true)
+    expect(getSetApprovalForAllOperator(tx)).toBe(mockOperatorAddress)
   })
 })
 

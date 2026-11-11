@@ -13,7 +13,6 @@
 #include "brave/browser/ai_chat/tools/target_test_util.h"
 #include "chrome/browser/actor/actor_proto_conversion.h"
 #include "chrome/browser/actor/tools/click_tool_request.h"
-#include "chrome/browser/actor/tools/history_tool_request.h"
 #include "chrome/browser/actor/tools/page_tool_request.h"
 #include "components/optimization_guide/proto/features/actions_data.pb.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -36,23 +35,18 @@ class HistoryToolTest : public ContentAgentToolBaseTest {
 
   void VerifySuccess(const std::string& input_json,
                      const std::string& expected_direction) {
-    auto [action, tool_request] =
-        RunWithExpectedSuccess(FROM_HERE, input_json, "History");
-    auto* history_request =
-        static_cast<actor::HistoryToolRequest*>(tool_request.get());
+    const bool is_back = expected_direction == "back";
+    auto [action, tool_request] = RunWithExpectedSuccess(
+        FROM_HERE, input_json, is_back ? "HistoryBack" : "HistoryForward");
 
-    if (expected_direction == "back") {
+    if (is_back) {
       EXPECT_TRUE(action.has_back());
       const auto& back_action = action.back();
       EXPECT_EQ(back_action.tab_id(), test_tab_handle_.raw_value());
-      EXPECT_EQ(history_request->direction_,
-                actor::HistoryToolRequest::Direction::kBack);
     } else {
       EXPECT_TRUE(action.has_forward());
       const auto& forward_action = action.forward();
       EXPECT_EQ(forward_action.tab_id(), test_tab_handle_.raw_value());
-      EXPECT_EQ(history_request->direction_,
-                actor::HistoryToolRequest::Direction::kForward);
     }
   }
 };

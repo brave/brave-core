@@ -25,6 +25,7 @@ class BraveVPNButton;
 #endif
 
 class BraveBookmarkButton;
+class BrowserWindowInterface;
 class ScreenshotButton;
 class SidePanelButton;
 class TabStripComboButton;
@@ -37,7 +38,8 @@ class BraveToolbarView : public ToolbarView,
  public:
   class LayoutGuard;
 
-  explicit BraveToolbarView(Browser* browser, BrowserView* browser_view);
+  explicit BraveToolbarView(BrowserWindowInterface* browser,
+                            BrowserView* browser_view);
   ~BraveToolbarView() override;
 
   BraveBookmarkButton* bookmark_button() const { return bookmark_; }
@@ -66,7 +68,6 @@ class BraveToolbarView : public ToolbarView,
   void Init() override;
   void Layout(PassKey) override;
   void Update(content::WebContents* tab) override;
-  void OnThemeChanged() override;
   void OnEditBookmarksEnabledChanged();
   void OnLocationBarIsWideChanged();
   void OnShowBookmarksButtonChanged();
@@ -78,7 +79,6 @@ class BraveToolbarView : public ToolbarView,
   FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, ToolbarCornerRadiusTest);
   FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, ToolbarDividerNotShownTest);
 
-  void LoadImages() override;
   void ResetLocationBarBounds();
   void ResetBookmarkButtonBounds();
   void UpdateBookmarkVisibility();

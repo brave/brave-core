@@ -3,9 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import '@testing-library/jest-dom'
 import * as React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
+
+// Constants
+import { BraveWallet } from '../../../constants/types'
 
 // Utils
 import {
@@ -31,6 +35,32 @@ import {
 import {
   mockUniswapOriginInfo, //
 } from '../../../stories/mock-data/mock-origin-info'
+
+// Mock leo confirm/reject buttons so clicks invoke handlers in jsdom
+jest.mock('../confirm_reject_buttons/confirm_reject_buttons', () => ({
+  ConfirmRejectButtons: ({
+    onConfirm,
+    onReject,
+  }: {
+    onConfirm: () => void
+    onReject: () => void
+  }) => (
+    <div>
+      <button
+        type='button'
+        onClick={onReject}
+      >
+        {S.BRAVE_WALLET_ALLOW_SPEND_REJECT_BUTTON}
+      </button>
+      <button
+        type='button'
+        onClick={onConfirm}
+      >
+        {S.BRAVE_WALLET_ALLOW_SPEND_CONFIRM_BUTTON}
+      </button>
+    </div>
+  ),
+}))
 
 // Helper function to render the component with any transaction
 const renderWithTransaction = (transaction: any) => {
@@ -106,7 +136,7 @@ describe('ConfirmSendTransactionInternal', () => {
 
 const mockDAppSendTransaction = {
   ...mockETHNativeTokenSendTransaction,
-  originInfo: mockUniswapOriginInfo,
+  dappOriginInfo: mockUniswapOriginInfo,
 }
 
 describe('ConfirmSendTransactionDApp', () => {
@@ -122,5 +152,75 @@ describe('ConfirmSendTransactionDApp', () => {
     expect(screen.queryByTestId('origin-info-card')).toBeInTheDocument()
     expect(screen.getByText('https://app.')).toBeInTheDocument()
     expect(screen.getAllByText('uniswap.org').length).toBeGreaterThan(0)
+  })
+})
+
+const mockNftContractAddress = '0xabcdefabcdefabcdefabcdefabcdefabcdefabcd'
+const mockOperatorAddress = mockEthAccount.accountId.address
+
+const mockSetApprovalForAllTransaction = {
+  ...mockETHNativeTokenSendTransaction,
+  id: 'set-approval-for-all-tx',
+  dappOriginInfo: mockUniswapOriginInfo,
+  txType: BraveWallet.TransactionType.ERC721SetApprovalForAll,
+  txArgs: [mockOperatorAddress, '0x1'],
+  txParams: ['address', 'bool'],
+  effectiveRecipient: mockNftContractAddress,
+  txDataUnion: {
+    ethTxData1559: {
+      baseData: {
+        chainId: '0x1',
+        nonce: '',
+        gasPrice: '0x5f5e100',
+        gasLimit: '0x5208',
+        to: mockNftContractAddress,
+        value: '0x0',
+        data: [],
+        signOnly: false,
+        signedTransaction: undefined,
+      },
+      maxPriorityFeePerGas: '',
+      maxFeePerGas: '',
+    },
+  },
+}
+
+describe('ConfirmSendTransactionSetApprovalForAll', () => {
+  const renderComponent = () =>
+    renderWithTransaction(mockSetApprovalForAllTransaction)
+
+  it('should show approval for all warning and hide send details', async () => {
+    renderComponent()
+
+    await waitForLoadingToComplete()
+
+    expect(
+      screen.getByText(S.BRAVE_WALLET_APPROVAL_FOR_ALL_WARNING_TITLE),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText(S.BRAVE_WALLET_APPROVAL_FOR_ALL_WARNING_DESCRIPTION),
+    ).toBeInTheDocument()
+    expect(screen.queryByText(S.BRAVE_WALLET_SEND)).not.toBeInTheDocument()
+    expect(screen.queryByText('12.5 ETH')).not.toBeInTheDocument()
+    expect(screen.getByText(S.BRAVE_WALLET_SWAP_TO)).toBeInTheDocument()
+    // The spender, not the NFT contract (effectiveRecipient).
+    expect(screen.getByText('0xf812***37Db')).toBeInTheDocument()
+    expect(screen.queryByText('0xabcd***abcd')).not.toBeInTheDocument()
+  })
+
+  it('should show final warning before confirming', async () => {
+    renderComponent()
+
+    await waitForLoadingToComplete()
+
+    fireEvent.click(screen.getByText(S.BRAVE_WALLET_ALLOW_SPEND_CONFIRM_BUTTON))
+
+    expect(
+      screen.getByText(S.BRAVE_WALLET_APPROVAL_FOR_ALL_FINAL_WARNING_TITLE),
+    ).toBeInTheDocument()
+    expect(screen.getByText(S.BRAVE_WALLET_CONFIRM_ANYWAY)).toBeInTheDocument()
+    expect(
+      screen.getByText(S.BRAVE_WALLET_TRANSACTION_CANCEL),
+    ).toBeInTheDocument()
   })
 })

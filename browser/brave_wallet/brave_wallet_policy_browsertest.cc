@@ -19,9 +19,7 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -98,7 +96,7 @@ IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, IsBraveWalletDisabled) {
     auto* incognito_profile = CreateIncognitoBrowser(profile)->GetProfile();
     ui_test_utils::BrowserCreatedObserver browser_creation_observer;
     profiles::SwitchToGuestProfile();
-    Browser* guest_browser = browser_creation_observer.Wait();
+    BrowserWindowInterface* guest_browser = browser_creation_observer.Wait();
     DCHECK(guest_browser);
     auto* guest_profile = guest_browser->GetProfile();
     ASSERT_TRUE(guest_profile->IsGuestSession());
@@ -106,7 +104,7 @@ IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, IsBraveWalletDisabled) {
 #if BUILDFLAG(ENABLE_TOR)
     ui_test_utils::BrowserCreatedObserver tor_browser_creation_observer;
     brave::NewOffTheRecordWindowTor(browser());
-    Browser* tor_browser = tor_browser_creation_observer.Wait();
+    BrowserWindowInterface* tor_browser = tor_browser_creation_observer.Wait();
     DCHECK(tor_browser);
     auto* tor_profile = tor_browser->GetProfile();
     ASSERT_TRUE(tor_profile->IsTor());
@@ -167,7 +165,7 @@ IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, WalletPageAccess) {
 // disabled by policy.
 IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, WalletInSidebar) {
   sidebar::SidebarController* controller =
-      browser()->GetFeatures().sidebar_controller();
+      sidebar::SidebarController::From(browser());
   sidebar::SidebarModel* model = controller->model();
 
   const auto items = model->GetAllSidebarItems();

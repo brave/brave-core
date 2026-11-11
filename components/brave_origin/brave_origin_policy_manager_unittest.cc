@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 
-#include "base/memory/raw_ptr.h"
 #include "base/strings/strcat.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
@@ -139,6 +138,18 @@ TEST_F(BraveOriginPolicyManagerTest, Init_SetsInitializedState) {
                 &pref_service_);
 
   EXPECT_TRUE(manager->IsInitialized());
+}
+
+TEST_F(BraveOriginPolicyManagerTest, SetPurchased_FalseKeepsPersistedPurchase) {
+  InitializeManager();
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+
+  manager->SetPurchased(true);
+  EXPECT_TRUE(pref_service_.GetBoolean(kOriginPurchaseValidated));
+
+  manager->SetPurchased(false);
+  EXPECT_TRUE(pref_service_.GetBoolean(kOriginPurchaseValidated));
+  EXPECT_TRUE(manager->IsPurchased());
 }
 
 TEST_F(BraveOriginPolicyManagerTest, Init_NotifiesObservers) {

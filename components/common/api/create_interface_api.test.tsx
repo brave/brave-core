@@ -335,6 +335,70 @@ describe('createInterfaceApi', () => {
     expect(hookResult.result.current).toEqual([{ id: '1' }, { id: '2' }])
   })
 
+  it('support null keys', async () => {
+    const api = createInterfaceApi({
+      actions: {},
+      endpoints: {
+        getData: {
+          query: (id: string | null) => {
+            console.log(id)
+            return Promise.resolve({ id: id ?? 'default' })
+          },
+        },
+      },
+    })
+    expect(api.useGetData).not.toBeUndefined()
+
+    // Fetch
+    expect(await api.getData.fetch(null)).toEqual({ id: 'default' })
+    expect(await api.getData.fetch('one')).toEqual({ id: 'one' })
+
+    // Current
+    expect(api.getData.current(null)).toEqual({ id: 'default' })
+    expect(api.getData.current('one')).toEqual({ id: 'one' })
+
+    // Update
+    api.getData.update(null, { id: 'default-updated' })
+    expect(api.getData.current(null)).toEqual({ id: 'default-updated' })
+    expect(api.getData.current('one')).toEqual({ id: 'one' })
+    api.getData.update('one', { id: 'one-updated' })
+    expect(api.getData.current('one')).toEqual({ id: 'one-updated' })
+    expect(api.getData.current(null)).toEqual({ id: 'default-updated' })
+
+    // hooks
+    function useTestQuery() {
+      const nullQuery = api.getData.useQuery(null)
+      const dataQuery = api.getData.useQuery('one')
+      return {
+        nullData: nullQuery.data,
+        data: dataQuery.data,
+      }
+    }
+
+    let hookResult = await act(async () => renderHook(useTestQuery))
+    expect(hookResult.result.current).toEqual({
+      nullData: { id: 'default-updated' },
+      data: { id: 'one-updated' },
+    })
+
+    // Invalidate
+    api.getData.invalidate(null)
+    await act(() => Promise.resolve())
+    await act(() => hookResult.rerender())
+    expect(hookResult.result.current).toEqual({
+      nullData: { id: 'default' },
+      data: { id: 'one-updated' },
+    })
+
+    api.getData.invalidate('one')
+    await act(() => Promise.resolve())
+    await act(() => hookResult.rerender())
+    expect(hookResult.result.current).toEqual({
+      nullData: { id: 'default' },
+      data: { id: 'one' },
+    })
+  })
+
   it('can create mutations', async () => {
     const mutationFn = jest.fn((isThing: boolean) => {
       return Promise.resolve({ isThing })

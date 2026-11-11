@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |-
+      Let a clipboard context sanitize URLs written via `WriteText`.
+
+      Brave sanitizes copied URLs through the embedder, which needs the
+      document's frame, and `ClipboardHostImpl` only reaches its frame through
+      `Context`. Contexts without a frame don't sanitize.
+    add_to_public:
+      class_name: Context
+      code: |-
+        virtual std::optional<GURL> SanitizeURL(const GURL& url);

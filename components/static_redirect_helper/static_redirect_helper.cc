@@ -5,9 +5,6 @@
 
 #include "brave/components/static_redirect_helper/static_redirect_helper.h"
 
-#include <algorithm>
-#include <memory>
-#include <string>
 #include <string_view>
 
 #include "base/no_destructor.h"
@@ -112,7 +109,7 @@ void StaticRedirectHelper(const GURL& request_url, GURL* new_url) {
   }
 
   if (favicon_pattern->MatchesURL(request_url)) {
-    replacements.SetHostStr("favicons.proxy.brave.com");
+    replacements.SetHostStr(kBraveFaviconsProxy);
     *new_url = request_url.ReplaceComponents(replacements);
     return;
   }

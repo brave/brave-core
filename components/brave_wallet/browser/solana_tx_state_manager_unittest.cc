@@ -88,7 +88,7 @@ TEST_F(SolanaTxStateManagerUnitTest, SolanaTxMetaAndValue) {
   meta.set_tx_hash(
       "5VERv8NMvzbJMEkV8xnrLkEaWRtSz9CosKDYjCJjBRnbJLgp8uirBgmQpjKhoR4tjF3ZpRzr"
       "FmBV6UjKdiSZkQUW");
-  meta.set_origin(url::Origin::Create(GURL("https://test.brave.com/")));
+  meta.set_dapp_origin(url::Origin::Create(GURL("https://test.brave.com/")));
   meta.set_chain_id(mojom::kSolanaMainnet);
 
   base::DictValue meta_value = meta.ToValue();

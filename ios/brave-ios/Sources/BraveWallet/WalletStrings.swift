@@ -47,13 +47,6 @@ extension Strings {
       value: "Accounts",
       comment: "The title of the accounts page in the Crypto tab"
     )
-    public static let selectedAccountAccessibilityLabel = NSLocalizedString(
-      "wallet.selectedAccount",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Selected Account",
-      comment: "The accessibility label for the selected account picker"
-    )
     public static let hideDetailsButtonTitle = NSLocalizedString(
       "wallet.hideDetailsButtonTitle",
       tableName: "BraveWallet",
@@ -545,14 +538,6 @@ extension Strings {
       value:
         "Your recovery phrase is the key to access your wallet in case you forget your password or lose your device.\n\nKeep it in a secure place that is not accessible to others and avoid sharing it with anyone.",
       comment: "The subtitle of the backup recovery phrase screen"
-    )
-    public static let backupRecoveryPhraseBackButtonTitle = NSLocalizedString(
-      "wallet.backupRecoveryPhraseBackButtonTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Recovery Phrase",
-      comment:
-        "The title that will be displayed when long-pressing the back button in the navigation bar. As in the a list of words to recovery your account on another device/wallet"
     )
     public static let backupSkipButtonTitle = NSLocalizedString(
       "wallet.backupSkipButtonTitle",
@@ -2261,79 +2246,6 @@ extension Strings {
       comment:
         "The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently blocking all the accesses to the solana provider APIs."
     )
-    public static let getEncryptionPublicKeyRequestTitle = NSLocalizedString(
-      "wallet.getEncryptionPublicKeyRequestTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Public Encryption Key Request",
-      comment:
-        "A title of the view shown over a dapps website that requests the users public encryption key."
-    )
-    public static let getEncryptionPublicKeyRequestSubtitle = NSLocalizedString(
-      "wallet.getEncryptionPublicKeyRequestSubtitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "A DApp is requesting your public encryption key",
-      comment:
-        "A subtitle of the view shown over a dapps website that requests the users public encryption key."
-    )
-    public static let getEncryptionPublicKeyRequestMessage = NSLocalizedString(
-      "wallet.getEncryptionPublicKeyRequestMessage",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value:
-        "is requesting your wallet's public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.",
-      comment:
-        "The text shown beside the URL origin of a get public encryption key request from a dapp site. Ex 'https://brave.com is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.'"
-    )
-    public static let getEncryptionPublicKeyRequestApprove = NSLocalizedString(
-      "wallet.getEncryptionPublicKeyRequestApprove",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Provide",
-      comment:
-        "The title of the button to approve a encryption public key request from a dapps website."
-    )
-    public static let decryptRequestTitle = NSLocalizedString(
-      "wallet.decryptRequestTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Decrypt Request",
-      comment:
-        "A title of the view shown over a dapps website that requests the user decrypt a message."
-    )
-    public static let decryptRequestSubtitle = NSLocalizedString(
-      "wallet.decryptRequestSubtitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "This DApp would like to read this message to complete your request",
-      comment:
-        "A subtitle of the view shown over a dapps website that requests the user decrypt a message."
-    )
-    public static let decryptRequestApprove = NSLocalizedString(
-      "wallet.decryptRequestApprove",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Allow",
-      comment: "The title of the button to approve a decrypt request from a dapps website."
-    )
-    public static let decryptRequestReveal = NSLocalizedString(
-      "wallet.decryptRequestReveal",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Reveal",
-      comment:
-        "The title of the button to show the message of a decrypt request from a dapps website."
-    )
-    public static let decryptMessageScreenshotDetectedMessage = NSLocalizedString(
-      "wallet.decryptMessageScreenshotDetectedMessage",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value:
-        "Warning: A screenshot of your message may get backed up to a cloud file service, and be readable by any application with photos access. Brave recommends that you not save this screenshot, and delete it as soon as possible.",
-      comment:
-        "The message displayed when the user takes a screenshot of their dapp decrypt request."
-    )
     public static let coinTypeEthereum = NSLocalizedString(
       "wallet.coinTypeEthereum",
       tableName: "BraveWallet",
@@ -2909,21 +2821,13 @@ extension Strings {
       comment:
         "The title on top of a separater, and the transaction details will be displayed below the separater."
     )
-    public static let signMessageRequestUnknownUnicodeWarning = NSLocalizedString(
-      "wallet.signMessageRequestUnknownUnicodeWarning",
+    public static let signMessageUnexpectedCharactersWarning = NSLocalizedString(
+      "wallet.signMessageUnexpectedCharactersWarning",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Non-ASCII characters detected!",
+      value: "Unexpected characters detected",
       comment:
-        "A warning message to tell users that the sign request message contains non-ascii characters."
-    )
-    public static let signMessageConsecutiveNewlineWarning = NSLocalizedString(
-      "wallet.signMessageConsecutiveNewlineWarning",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Consecutive newline characters detected!",
-      comment:
-        "A warning message to tell users that the sign request message contains consecutive new-line characters."
+        "A warning message to tell users that the sign request message contains null bytes, newlines, or non-ascii characters."
     )
     public static let signMessageShowUnknownUnicode = NSLocalizedString(
       "wallet.signMessageShowUnknownUnicode",

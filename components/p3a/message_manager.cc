@@ -6,7 +6,6 @@
 #include "brave/components/p3a/message_manager.h"
 
 #include <optional>
-#include <ranges>
 #include <string_view>
 
 #include "base/check.h"
@@ -17,15 +16,12 @@
 #include "base/strings/strcat.h"
 #include "brave/components/p3a/constellation_helper.h"
 #include "brave/components/p3a/constellation_log_store.h"
-#include "brave/components/p3a/features.h"
 #include "brave/components/p3a/metric_log_type.h"
-#include "brave/components/p3a/metric_names.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/p3a/rotation_scheduler.h"
 #include "brave/components/p3a/scheduler.h"
 #include "brave/components/p3a/uploader.h"
-#include "components/metrics/log_store.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"

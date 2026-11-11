@@ -16,20 +16,27 @@
 #include "base/scoped_observation.h"
 #include "brave/browser/brave_rewards/creator_detection_script_injector.h"
 #include "brave/components/brave_rewards/content/rewards_service_observer.h"
-#include "build/build_config.h"
+#include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
 #include "components/sessions/core/session_id.h"
-#include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_user_data.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
+
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
 
 namespace brave_rewards {
 class RewardsService;
 
 // A tab helper responsible for detecting and storing the Rewards Creator ID
-// corresponding to a given tab.
-class RewardsTabHelper : public content::WebContentsUserData<RewardsTabHelper>,
-                         public content::WebContentsObserver,
+// corresponding to a given tab. Owned by BraveTabFeatures.
+class RewardsTabHelper : public tabs::ContentsObservingTabFeature,
                          public RewardsServiceObserver {
  public:
+  DECLARE_USER_DATA(RewardsTabHelper);
+
+  static RewardsTabHelper* From(tabs::TabInterface* tab);
+
+  explicit RewardsTabHelper(tabs::TabInterface& tab);
   RewardsTabHelper(const RewardsTabHelper&) = delete;
   RewardsTabHelper& operator=(const RewardsTabHelper&) = delete;
   ~RewardsTabHelper() override;
@@ -54,13 +61,14 @@ class RewardsTabHelper : public content::WebContentsUserData<RewardsTabHelper>,
   void SetPublisherIdForTab(const std::string& publisher_id);
 
  private:
-  friend class content::WebContentsUserData<RewardsTabHelper>;
-
-  explicit RewardsTabHelper(content::WebContents* web_contents);
-
   // content::WebContentsObserver:
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
+
+  // tabs::ContentsObservingTabFeature:
+  void OnDiscardContents(tabs::TabInterface* tab,
+                         content::WebContents* old_contents,
+                         content::WebContents* new_contents) override;
 
   // RewardsServiceObserver:
   void OnRewardsInitialized(RewardsService* rewards_service) override;
@@ -77,9 +85,10 @@ class RewardsTabHelper : public content::WebContentsUserData<RewardsTabHelper>,
   raw_ptr<RewardsService> rewards_service_ = nullptr;
   base::ObserverList<Observer> observer_list_;
   std::string publisher_id_;
-  CreatorDetectionScriptInjector creator_detection_;
+  std::unique_ptr<CreatorDetectionScriptInjector> creator_detection_ =
+      std::make_unique<CreatorDetectionScriptInjector>();
 
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
+  ui::ScopedUnownedUserData<RewardsTabHelper> scoped_unowned_user_data_;
 };
 
 }  // namespace brave_rewards

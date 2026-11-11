@@ -5,8 +5,6 @@
 
 #include "chrome/browser/ui/views/extensions/extensions_menu_entry_view.h"
 
-#define kBrowserToolsChromeRefreshOldIcon kLeoMoreVerticalIcon
+#include "brave/components/vector_icons/vector_icons.h"
 
 #include <chrome/browser/ui/views/extensions/extensions_menu_entry_view.cc>
-
-#undef kBrowserToolsChromeRefreshOldIcon

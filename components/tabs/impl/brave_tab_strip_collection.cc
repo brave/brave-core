@@ -159,6 +159,59 @@ void BraveTabStripCollection::MoveTabsRecursiveForDelegate(
                                         retain_collection_types);
 }
 
+void BraveTabStripCollection::MoveCollectionAndNotify(TabCollection* collection,
+                                                      TabCollection* new_parent,
+                                                      size_t index) {
+  TabCollection* old_parent = collection->GetParentCollection();
+  const TabCollection::Position src_position = {
+      old_parent->GetHandle(),
+      old_parent->GetIndexOfCollection(collection).value()};
+  const TabCollection::Position dst_position = {new_parent->GetHandle(), index};
+  const TabCollection::NodeHandles handles = {collection->GetHandle()};
+
+  new_parent->AddCollection(old_parent->MaybeRemoveCollection(collection),
+                            index);
+
+  old_parent->NotifyOnChildrenRemoved(GetPassKey(), src_position, handles,
+                                      /*stop_notification_root=*/nullptr);
+  new_parent->NotifyOnChildrenAdded(
+      GetPassKey(), handles, dst_position, /*stop_notification_root=*/nullptr,
+      /*insert_from_detached=*/collection->TabCountRecursive() > 0);
+}
+
+void BraveTabStripCollection::NotifyOnChildrenAdded(
+    TabCollection& collection,
+    const TabCollection::NodeHandles& handles,
+    const TabCollection::Position& insertion_position,
+    TabCollection* stop_notification_root,
+    bool insert_from_detached,
+    base::PassKey<BraveTabStripCollectionDelegate> pass_key) {
+  collection.NotifyOnChildrenAdded(GetPassKey(), handles, insertion_position,
+                                   stop_notification_root,
+                                   insert_from_detached);
+}
+
+void BraveTabStripCollection::NotifyOnChildrenRemoved(
+    TabCollection& collection,
+    const TabCollection::Position& position,
+    const TabCollection::NodeHandles& handles,
+    TabCollection* stop_notification_root,
+    base::PassKey<BraveTabStripCollectionDelegate> pass_key) {
+  collection.NotifyOnChildrenRemoved(GetPassKey(), position, handles,
+                                     stop_notification_root);
+}
+
+void BraveTabStripCollection::NotifyOnChildMoved(
+    TabCollection& collection,
+    const TabCollection::NodeHandle& handle,
+    const TabCollection::Position& src_position,
+    const TabCollection::Position& dst_position,
+    TabCollection* stop_notification_root,
+    base::PassKey<BraveTabStripCollectionDelegate> pass_key) {
+  collection.NotifyOnChildMoved(GetPassKey(), handle, src_position,
+                                dst_position, stop_notification_root);
+}
+
 void BraveTabStripCollection::Unsplit(split_tabs::SplitTabId split_id) {
   if (delegate_ && delegate_->ShouldHandleTabManipulation() &&
       delegate_->Unsplit(split_id)) {

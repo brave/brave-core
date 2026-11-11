@@ -33,11 +33,10 @@ void LoggedOutState::CancelVerification(mojom::VerificationIntentPtr intent) {
   cancel_verification_(std::move(intent));
 }
 
-void LoggedOutState::LoginStep1(mojom::Service initiating_service,
-                                const std::string& email,
+void LoggedOutState::LoginStep1(const std::string& email,
                                 const std::string& serialized_ke1,
                                 LoginStep1Callback callback) {
-  login_.Step1(initiating_service, email, serialized_ke1, std::move(callback));
+  login_.Step1(email, serialized_ke1, std::move(callback));
 }
 
 void LoggedOutState::LoginStep2(const std::string& encrypted_login_token,
@@ -46,12 +45,10 @@ void LoggedOutState::LoginStep2(const std::string& encrypted_login_token,
   login_.Step2(encrypted_login_token, client_mac, std::move(callback));
 }
 
-void LoggedOutState::RegisterStep1(mojom::Service initiating_service,
-                                   const std::string& email,
+void LoggedOutState::RegisterStep1(const std::string& email,
                                    const std::string& blinded_message,
                                    RegisterStep1Callback callback) {
-  register_.Step1(initiating_service, email, blinded_message,
-                  std::move(callback));
+  register_.Step1(email, blinded_message, std::move(callback));
 }
 
 void LoggedOutState::RegisterStep2(

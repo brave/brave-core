@@ -3,13 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
-import Alert from '@brave/leo/react/alert'
+import Alert from '@brave/nala/react/alert'
 
 // Shared Styles
 import { Column, Row } from '../../../components/shared/style'
 import {
   layoutPanelWidth, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const ControlsWrapper = styled(Column)`
   padding: 0px 32px;

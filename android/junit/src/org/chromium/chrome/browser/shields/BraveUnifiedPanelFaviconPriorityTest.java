@@ -8,12 +8,13 @@ package org.chromium.chrome.browser.shields;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.fragment.app.FragmentActivity;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -40,13 +41,13 @@ import java.util.List;
 public class BraveUnifiedPanelFaviconPriorityTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
-    private Activity mActivity;
+    private FragmentActivity mActivity;
     private BraveUnifiedPanelHandler mHandler;
     private LinearLayout mBlockedItemsContainer;
 
     @Before
     public void setUp() throws Exception {
-        mActivity = Robolectric.buildActivity(Activity.class).create().get();
+        mActivity = Robolectric.buildActivity(FragmentActivity.class).create().get();
         mHandler = new BraveUnifiedPanelHandler(mActivity);
 
         mBlockedItemsContainer = new LinearLayout(mActivity);

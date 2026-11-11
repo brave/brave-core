@@ -6,17 +6,19 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TEST_INTERNAL_LOCAL_STATE_PREF_STORAGE_TEST_UTIL_INTERNAL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TEST_INTERNAL_LOCAL_STATE_PREF_STORAGE_TEST_UTIL_INTERNAL_H_
 
-#include <string>
+class TestingPrefServiceSimple;
 
 namespace brave_ads::test {
 
-struct PrefValueInfo;
+// `TestBase` calls this once per test to point pref-related test utilities at
+// the real `PrefService` backing the current test's simulated local state.
+void SetLocalStatePrefServiceForTesting(TestingPrefServiceSimple& prefs);
 
-bool FindLocalStatePref(const std::string& path);
+// `TestBase` calls this from `TearDown` so the pointer above does not dangle
+// after the `PrefService` it refers to is destroyed.
+void ResetLocalStatePrefServiceForTesting();
 
-PrefValueInfo& LocalStatePref(const std::string& path);
-
-bool HasLocalStatePref(const std::string& path);
+TestingPrefServiceSimple& GetLocalStatePrefServiceForTesting();
 
 }  // namespace brave_ads::test
 

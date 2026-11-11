@@ -25,6 +25,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
 #include "base/numerics/byte_conversions.h"
 #include "base/strings/string_number_conversions.h"
@@ -698,7 +699,7 @@ class JsonRpcEndpointHandler {
     }
 
     auto hex_to = EthAddress::From0xHex(*to_param).value();
-    for (auto* handler : eth_call_handlers_) {
+    for (EthCallHandler* handler : eth_call_handlers_) {
       if (!handler->CallSupported(hex_to, *call_data)) {
         continue;
       }
@@ -712,7 +713,7 @@ class JsonRpcEndpointHandler {
   }
 
   std::optional<std::string> HandleSolRpcCall(const base::DictValue& dict) {
-    for (auto* handler : sol_rpc_call_handlers_) {
+    for (SolRpcCallHandler* handler : sol_rpc_call_handlers_) {
       if (!handler->CallSupported(dict)) {
         continue;
       }
@@ -727,8 +728,8 @@ class JsonRpcEndpointHandler {
 
  private:
   GURL endpoint_;
-  std::vector<EthCallHandler*> eth_call_handlers_;
-  std::vector<SolRpcCallHandler*> sol_rpc_call_handlers_;
+  std::vector<raw_ptr<EthCallHandler>> eth_call_handlers_;
+  std::vector<raw_ptr<SolRpcCallHandler>> sol_rpc_call_handlers_;
 };
 
 constexpr char kJsonRpcResponseTemplate[] = R"({
@@ -1904,6 +1905,12 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
     expected_chain_ids.push_back(mojom::kCardanoMainnet);
     expected_chain_ids.push_back(mojom::kCardanoTestnet);
   }
+  if (IsPolkadotEnabled()) {
+    base::Extend(expected_chain_ids,
+                 {mojom::kPolkadotMainnet, mojom::kPolkadotMainnetAssetHub,
+                  mojom::kPolkadotTestnet, mojom::kPolkadotTestnetAssetHub,
+                  mojom::kPolkadotPaseoAssetHub});
+  }
   EXPECT_THAT(all_chain_ids, ElementsAreArray(expected_chain_ids));
 
   EXPECT_THAT(all_networks->custom_chain_ids,
@@ -1921,6 +1928,11 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
   };
   if (IsCardanoEnabled()) {
     expected_hidden_chain_ids.push_back(mojom::kCardanoTestnet);
+  }
+  if (IsPolkadotEnabled()) {
+    base::Extend(expected_hidden_chain_ids,
+                 {mojom::kPolkadotTestnet, mojom::kPolkadotTestnetAssetHub,
+                  mojom::kPolkadotPaseoAssetHub});
   }
   EXPECT_THAT(all_networks->hidden_chain_ids,
               ElementsAreArray(expected_hidden_chain_ids));
@@ -1952,31 +1964,23 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
   }
   EXPECT_THAT(all_networks->swap_chain_ids,
               ElementsAreArray(expected_swap_chain_ids));
-
-  EXPECT_THAT(all_networks->off_ramp_chain_ids,
-              ElementsAreArray({
-                  mojom::kMainnetChainId,
-                  mojom::kPolygonMainnetChainId,
-                  mojom::kBnbSmartChainMainnetChainId,
-                  mojom::kOptimismMainnetChainId,
-                  mojom::kAvalancheMainnetChainId,
-                  mojom::kSolanaMainnet,
-                  mojom::kBitcoinMainnet,
-              }));
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetHiddenNetworks) {
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeature(
-      features::kBraveWalletCardanoFeature);
+  scoped_feature_list.InitWithFeatures({features::kBraveWalletCardanoFeature,
+                                        features::kBraveWalletPolkadotFeature},
+                                       {});
 
   TestFuture<mojom::AllNetworksPtr> all_networks_future;
   TestFuture<bool> bool_future;
 
   const std::vector<std::string_view> k_other_hidden = {
-      mojom::kSolanaDevnet,   mojom::kSolanaTestnet, mojom::kFilecoinTestnet,
-      mojom::kBitcoinTestnet, mojom::kZCashTestnet,  mojom::kCardanoTestnet,
-  };
+      mojom::kSolanaDevnet,         mojom::kSolanaTestnet,
+      mojom::kFilecoinTestnet,      mojom::kBitcoinTestnet,
+      mojom::kZCashTestnet,         mojom::kCardanoTestnet,
+      mojom::kPolkadotTestnet,      mojom::kPolkadotTestnetAssetHub,
+      mojom::kPolkadotPaseoAssetHub};
   auto expected_hidden =
       [&k_other_hidden](std::vector<std::string_view> eth_hidden) {
         base::Extend(eth_hidden, k_other_hidden);
@@ -3202,13 +3206,15 @@ class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
   }
 
  protected:
-  std::unique_ptr<JsonRpcEndpointHandler> eth_mainnet_endpoint_handler_;
-  std::unique_ptr<JsonRpcEndpointHandler> polygon_endpoint_handler_;
-  std::unique_ptr<JsonRpcEndpointHandler> base_endpoint_handler_;
-
   std::unique_ptr<UDGetManyCallHandler> eth_mainnet_getmany_call_handler_;
   std::unique_ptr<UDGetManyCallHandler> polygon_getmany_call_handler_;
   std::unique_ptr<UDGetManyCallHandler> base_getmany_call_handler_;
+
+  // Declared after the call handlers they point into so they are destroyed
+  // first.
+  std::unique_ptr<JsonRpcEndpointHandler> eth_mainnet_endpoint_handler_;
+  std::unique_ptr<JsonRpcEndpointHandler> polygon_endpoint_handler_;
+  std::unique_ptr<JsonRpcEndpointHandler> base_endpoint_handler_;
 
   void HandleRequest(const network::ResourceRequest& request) {
     url_loader_factory_.ClearResponses();

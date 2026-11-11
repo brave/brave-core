@@ -174,16 +174,17 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
 
   mojom::CoinType GetCoinType() const override;
 
-  void AddUnapprovedTransactionInternal(mojom::TxDataPtr tx_data,
-                                        const mojom::AccountIdPtr& from,
-                                        const url::Origin& origin,
-                                        bool sign_only,
-                                        mojom::SwapInfoPtr swap_info,
-                                        AddUnapprovedEvmTransactionCallback);
+  void AddUnapprovedTransactionInternal(
+      mojom::TxDataPtr tx_data,
+      const mojom::AccountIdPtr& from,
+      const std::optional<url::Origin>& dapp_origin,
+      bool sign_only,
+      mojom::SwapInfoPtr swap_info,
+      AddUnapprovedEvmTransactionCallback);
   void AddUnapproved1559TransactionInternal(
       mojom::TxData1559Ptr tx_data,
       const mojom::AccountIdPtr& from,
-      const url::Origin& origin,
+      const std::optional<url::Origin>& dapp_origin,
       bool sign_only,
       mojom::SwapInfoPtr swap_info,
       AddUnapprovedEvmTransactionCallback);
@@ -210,7 +211,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
                             mojom::ProviderError error,
                             const std::string& error_message);
   void OnGetGasPrice(const mojom::AccountIdPtr& from,
-                     const url::Origin& origin,
+                     const std::optional<url::Origin>& dapp_origin,
                      const std::string& to,
                      const std::string& value,
                      const std::string& data,
@@ -224,7 +225,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
                      const std::string& error_message);
   void ContinueAddUnapprovedTransaction(
       const mojom::AccountIdPtr& from,
-      const std::optional<url::Origin>& origin,
+      const std::optional<url::Origin>& dapp_origin,
       std::unique_ptr<EthTransaction> tx,
       AddUnapprovedEvmTransactionCallback callback,
       bool sign_only,
@@ -243,7 +244,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       const std::string& error_message);
   void OnGetGasOracleForUnapprovedTransaction(
       const mojom::AccountIdPtr& from,
-      const url::Origin& origin,
+      const std::optional<url::Origin>& dapp_origin,
       const std::string& to,
       const std::string& value,
       const std::string& data,

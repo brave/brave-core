@@ -21,12 +21,14 @@ import subprocess
 import sys
 import threading
 
-sys.path.append(os.path.join(os.path.dirname(__file__),
-                             os.pardir, os.pardir, os.pardir,
-                             "build"))
+sys.path.append(
+    os.path.join(
+        os.path.dirname(__file__), os.pardir, os.pardir, os.pardir, "build"
+    )
+)
 import gn_helpers
 
-CONCURRENT_TASKS=4
+CONCURRENT_TASKS = 4
 
 
 def GetCommandOutput(command):
@@ -37,8 +39,8 @@ def GetCommandOutput(command):
 
     From chromium_utils.
     """
-    proc = subprocess.Popen(command, stdout=subprocess.PIPE)
-    output = proc.communicate()[0]
+    with subprocess.Popen(command, stdout=subprocess.PIPE) as proc:
+        output = proc.communicate()[0]
     return output.decode('utf-8')
 
 
@@ -61,8 +63,9 @@ def GetDSYMBundle(options, binary_path):
     search_dirs = [options.build_dir, options.libchromiumcontent_dir]
     if filename.endswith(('.dylib', '.framework', '.app')):
         for directory in search_dirs:
-            dsym_path = os.path.join(directory,
-                                     os.path.splitext(filename)[0]) + '.dSYM'
+            dsym_path = (
+                os.path.join(directory, os.path.splitext(filename)[0]) + '.dSYM'
+            )
             if os.path.exists(dsym_path):
                 return dsym_path
             dsym_path = os.path.join(directory, filename) + '.dSYM'
@@ -94,8 +97,9 @@ def Resolve(path, exe_path, loader_path, rpaths):
     path = path.replace('@executable_path', exe_path)
     if path.find('@rpath') != -1:
         for rpath in rpaths:
-            new_path = Resolve(path.replace('@rpath', rpath), exe_path,
-                               loader_path, [])
+            new_path = Resolve(
+                path.replace('@rpath', rpath), exe_path, loader_path, []
+            )
             if os.access(new_path, os.F_OK):
                 return new_path
         return ''
@@ -125,7 +129,7 @@ def GetSharedLibraryDependenciesMac(binary, exe_path):
     rpaths = []
     for idx, line in enumerate(otool):
         if line.find('cmd LC_RPATH') != -1:
-            m = re.match(r' *path (.*) \(offset .*\)$', otool[idx+2])
+            m = re.match(r' *path (.*) \(offset .*\)$', otool[idx + 2])
             rpaths.append(m.group(1))
 
     otool = GetCommandOutput(['otool', '-L', binary]).splitlines()
@@ -165,7 +169,8 @@ def mkdir_p(path):
     except OSError as e:
         if e.errno == errno.EEXIST and os.path.isdir(path):
             pass
-        else: raise
+        else:
+            raise
 
 
 def GenerateSymbols(options, binaries):
@@ -193,16 +198,22 @@ def GenerateSymbols(options, binaries):
                     raise Exception(f'Cannot find dump_syms: {dump_syms_bin}')
 
                 syms = GetCommandOutput([dump_syms_bin, '-d', '-m', binary])
-                module_line = re.match("MODULE [^ ]+ [^ ]+ ([0-9A-F]+) (.*)\n",
-                                       syms)
-                output_path = os.path.join(options.symbols_dir,
-                                           module_line.group(2),
-                                           module_line.group(1))
+                module_line = re.match(
+                    "MODULE [^ ]+ [^ ]+ ([0-9A-F]+) (.*)\n", syms
+                )
+                output_path = os.path.join(
+                    options.symbols_dir,
+                    module_line.group(2),
+                    module_line.group(1),
+                )
                 mkdir_p(output_path)
                 symbol_file = "%s.sym" % module_line.group(2)
-                f = open(os.path.join(output_path, symbol_file), 'w')
-                f.write(syms)
-                f.close()
+                with open(
+                    os.path.join(output_path, symbol_file),
+                    'w',
+                    encoding='utf-8',
+                ) as f:
+                    f.write(syms)
             except Exception as inst:
                 with print_lock:
                     print(f'Symbol failure {binary} {type(inst)} {inst}')
@@ -222,39 +233,56 @@ def GenerateSymbols(options, binaries):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--build-dir', required=True,
-                        help='The build output directory.')
-    parser.add_argument('--symbols-dir', required=True,
-                        help='The directory where to write the symbols file.')
+    parser.add_argument(
+        '--build-dir', required=True, help='The build output directory.'
+    )
+    parser.add_argument(
+        '--symbols-dir',
+        required=True,
+        help='The directory where to write the symbols file.',
+    )
     parser.add_argument(
         '--libchromiumcontent-dir',
         required=True,
-        help='The directory where libchromiumcontent is downloaded.')
-    parser.add_argument('--binary', required=True,
-                        help='The path of the binary to generate symbols for.')
-    parser.add_argument('--dump-syms-bin',
-                        required=True,
-                        help='The path of dump_syms binary (host toolchain)')
+        help='The directory where libchromiumcontent is downloaded.',
+    )
+    parser.add_argument(
+        '--binary',
+        required=True,
+        help='The path of the binary to generate symbols for.',
+    )
+    parser.add_argument(
+        '--dump-syms-bin',
+        required=True,
+        help='The path of dump_syms binary (host toolchain)',
+    )
     parser.add_argument(
         '--clear',
         default=False,
         action='store_true',
-        help='Clear the symbols directory before writing new symbols.')
-    parser.add_argument('-j',
-                        '--jobs',
-                        default=CONCURRENT_TASKS,
-                        action='store',
-                        type=int,
-                        help='Number of parallel tasks to run.')
-    parser.add_argument('-v', '--verbose', action='store_true',
-                        help='Print verbose status output.')
+        help='Clear the symbols directory before writing new symbols.',
+    )
+    parser.add_argument(
+        '-j',
+        '--jobs',
+        default=CONCURRENT_TASKS,
+        action='store',
+        type=int,
+        help='Number of parallel tasks to run.',
+    )
+    parser.add_argument(
+        '-v',
+        '--verbose',
+        action='store_true',
+        help='Print verbose status output.',
+    )
 
     options = parser.parse_args()
 
     if options.clear:
         try:
             shutil.rmtree(options.symbols_dir)
-        except: # pylint: disable=bare-except
+        except:  # pylint: disable=bare-except
             pass
 
     parser = gn_helpers.GNValueParser(options.binary)

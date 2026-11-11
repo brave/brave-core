@@ -10,7 +10,7 @@
     {{param.name|under_to_lower_camel}}
 {%-  if not loop.last -%},{{" "}}{%- endif -%}
 {%-  endfor %}
-{%-  if method.response_parameters -%}
+{%-  if method.response_parameters is not none -%}
 {%-  if method.parameters -%},{{" "}}{%- endif -%}
 completion
 {%-  endif -%}

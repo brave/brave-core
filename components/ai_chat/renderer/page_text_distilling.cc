@@ -16,8 +16,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/compiler_specific.h"
-#include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
@@ -218,7 +216,7 @@ void DistillPageText(
         blink::BackForwardCacheAware::kAllow,
         blink::mojom::WantResultOption::kWantResult,
         blink::mojom::PromiseResultOption::kAwait,
-        /*is_injected_extension_script=*/false);
+        /*script_injector_id=*/blink::WebString());
     return;
   }
 
@@ -257,7 +255,7 @@ void DistillPageTextViaSiteScript(
       blink::BackForwardCacheAware::kAllow,
       blink::mojom::WantResultOption::kWantResult,
       blink::mojom::PromiseResultOption::kDoNotWait,
-      /*is_injected_extension_script=*/false);
+      /*script_injector_id=*/blink::WebString());
 }
 
 std::optional<std::pair<std::string, bool>> LoadSiteScriptForHost(

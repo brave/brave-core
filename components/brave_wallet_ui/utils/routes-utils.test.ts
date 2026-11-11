@@ -84,16 +84,29 @@ describe('makePortfolioNftCollectionRoute', () => {
 })
 
 describe('isPersistableSessionRoute', () => {
-  it('persists Connections only when opened from a panel', () => {
+  it('persists Connections only when opened from a popup panel', () => {
     expect(
       isPersistableSessionRoute(WalletRoutes.Connections, true, false),
     ).toBe(true)
     expect(
       isPersistableSessionRoute(WalletRoutes.Connections, true, true),
-    ).toBe(true)
+    ).toBe(false)
     expect(
       isPersistableSessionRoute(WalletRoutes.Connections, false, false),
     ).toBe(false)
+  })
+
+  it('persists the card hub for the panel and side panel only', () => {
+    expect(isPersistableSessionRoute(WalletRoutes.Cards, true, false)).toBe(
+      true,
+    )
+    expect(isPersistableSessionRoute(WalletRoutes.Cards, true, true)).toBe(true)
+    expect(isPersistableSessionRoute(WalletRoutes.Cards, false, false)).toBe(
+      false,
+    )
+    expect(isPersistableSessionRoute(WalletRoutes.Accounts, true, false)).toBe(
+      true,
+    )
   })
 })
 

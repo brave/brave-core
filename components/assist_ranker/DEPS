@@ -1,5 +1,0 @@
-include_rules = [
-  "+components/assist_ranker",
-  "+services/network/public",
-  "+services/network/test",
-]

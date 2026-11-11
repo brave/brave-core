@@ -1,17 +1,22 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index a1b1d35cd9e75744ab145bf5677b0234674d91bf..b7747e2fc98c2f6f01e0c9269d16686296c653d3 100644
+index 2eee4b992490386e93c4f34772468102b775e927..a8beabbccc9117e0d6e95fb3c118fcc7d8bfea86 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-@@ -180,7 +180,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -209,10 +209,10 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
      private boolean mShouldUpdatePrefs;
  
      /** Maps {@link UserSelectableType} to the corresponding preference. */
 -    private Map<Integer, ChromeSwitchPreference> mSyncTypeSwitchPreferencesMap = new HashMap<>();
 +    protected Map<Integer, ChromeSwitchPreference> mSyncTypeSwitchPreferencesMap = new HashMap<>();
  
-     private Preference mGoogleActivityControls;
-     private Preference mSyncEncryption;
-@@ -269,6 +269,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+-    private Preference mGoogleActivityControls;
+-    private Preference mSyncEncryption;
++    protected Preference mGoogleActivityControls;
++    protected Preference mSyncEncryption;
+     private @Nullable SignoutButtonPreference mSignOutPreference;
+ 
+     private final SettableMonotonicObservableSupplier<String> mPageTitle =
+@@ -321,6 +321,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
  
      @Override
      public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -19,12 +24,30 @@ index a1b1d35cd9e75744ab145bf5677b0234674d91bf..b7747e2fc98c2f6f01e0c9269d166862
          if (mSyncService.isUsingExplicitPassphrase()
                  && preference
                          .getKey()
-@@ -467,7 +468,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -402,6 +403,9 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+         CentralAccountCardPreference centralAccountCardPreference =
+                 findPreference(PREF_CENTRAL_ACCOUNT_CARD_PREFERENCE);
+         IdentityManager identityManager = getIdentityManager(profile);
++        if (identityManager.getPrimaryAccountInfo() == null) {
++            return;
++        }
+         centralAccountCardPreference.initialize(
+                 assumeNonNull(identityManager.getPrimaryAccountInfo()),
+                 ProfileDataCache.createWithDefaultImageSizeAndNoBadge(
+@@ -594,7 +598,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
       * this state.
       */
      private void updateSyncPreferences() {
 -        @Nullable AccountInfo primaryAccount = getIdentityManager().getPrimaryAccountInfo();
-+        @Nullable AccountInfo primaryAccount = new AccountInfo.Builder("", new org.chromium.google_apis.gaia.GaiaId("")).build();
++        @Nullable AccountInfo primaryAccount = new AccountInfo.Builder("", new org.chromium.google_apis.gaia.GaiaId("none")).build();
          // May happen if account is removed from the device while this screen is shown.
          if (primaryAccount == null) {
              finishCurrentSettings();
+@@ -1030,6 +1034,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+ 
+     /** Whether there is no primary account, leaving this page with nothing to describe. */
+     private boolean isSignedOut() {
++        if (true) return false;  // Brave Sync never has a Chromium primary account.
+         return !getIdentityManager().hasPrimaryAccount();
+     }
+ 

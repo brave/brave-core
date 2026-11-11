@@ -401,8 +401,7 @@ extension BraveWalletJsonRpcService {
 
   /// Returns a nullable NFT metadata
   @MainActor func fetchNFTMetadata(
-    for token: BraveWallet.BlockchainToken,
-    ipfsApi: IpfsAPI
+    for token: BraveWallet.BlockchainToken
   ) async -> BraveWallet.NftMetadata? {
     let nftIdentifier: BraveWallet.NftIdentifier =
       .init(
@@ -413,13 +412,12 @@ extension BraveWalletJsonRpcService {
     let result = await self.nftMetadatas(
       nftIdentifiers: [nftIdentifier]
     ).0.first
-    return result?.httpfyIpfsUrl(ipfsApi: ipfsApi)
+    return result?.httpfyIpfsUrl()
   }
 
   /// Returns a map of Token.id with its `BraveWallet.NftMetadata`
   @MainActor func fetchNFTMetadata(
-    tokens: [BraveWallet.BlockchainToken],
-    ipfsApi: IpfsAPI
+    tokens: [BraveWallet.BlockchainToken]
   ) async -> [String: BraveWallet.NftMetadata] {
     var tokenCoinMap = [BraveWallet.CoinType: [BraveWallet.BlockchainToken]]()
     for coin in WalletConstants.supportedCoinTypes() {
@@ -451,7 +449,7 @@ extension BraveWalletJsonRpcService {
           var result = [String: BraveWallet.NftMetadata]()
           for (index, token) in tokensPerCoin.enumerated() {
             if let metadata = metadatas[safe: index] {
-              result[token.id] = metadata.httpfyIpfsUrl(ipfsApi: ipfsApi)
+              result[token.id] = metadata.httpfyIpfsUrl()
             }
           }
           return result

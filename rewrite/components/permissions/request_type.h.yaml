@@ -17,9 +17,11 @@ substitutions:
           kWidevine,
           kBraveEthereum,
           kBraveSolana,
+          kBraveOnDeviceSpeechModel,
           kBraveOpenAIChat,
           kBraveGoogleSignInPermission,
           kBraveCardano,
+          kBravePolkadot,
           kBraveMinValue = kWidevine,
-          kBraveMaxValue = kBraveCardano,
-          kMaxValue = kBraveCardano
+          kBraveMaxValue = kBravePolkadot,
+          kMaxValue = kBravePolkadot

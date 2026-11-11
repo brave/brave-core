@@ -9,8 +9,9 @@ network callbacks, notification handlers, animation completions, and stored
 closures. Use `[unowned self]` only when the closure's lifetime is guaranteed to
 be shorter than `self`.
 
-**Exception:** Fire-and-forget `Task {}` blocks that are **not** stored as a
-property do not need `[weak self]` because they don't create a retain cycle.
+**Exception: NEVER require `[weak self]` under this retain-cycle rule for
+fire-and-forget `Task {}` blocks that are not stored as a property.** They don't
+create a retain cycle.
 
 ```swift
 // ❌ WRONG - strong self capture in stored closure
@@ -246,8 +247,8 @@ explicitly specify.** This prevents accidental use of incorrect defaults.
 **Use `let` for properties that are assigned once and never mutated.** The
 compiler enforces immutability, preventing accidental reassignment.
 
-**Exception:** Swift structs control mutability at the usage site via
-`let`/`var`, so `var` properties in structs are acceptable:
+**Exception: NEVER flag `var` properties in Swift structs under this rule.**
+Structs control mutability at the usage site via `let`/`var`:
 
 ```swift
 struct Item {
@@ -1233,6 +1234,77 @@ struct ContentView: View {
     Color.black
       .onAppear {
         value = initialValue
+      }
+  }
+}
+```
+
+---
+
+<a id="IOS-083"></a>
+
+## ❌ Avoid manual/computed SwiftUI Bindings
+
+**Avoid using the `Binding(get:set:)` closure-based initializer to perform
+side-effects or transform state.** This can cause unneccessary SwiftUI hierarchy
+rebuilds due to the SwiftUI runtime being unable to determine if the graph has
+changed.
+
+```swift
+// ❌ WRONG - Using Binding(get:set) for transformation
+struct ContentView: View {
+  @State private var value: Int?
+  var body: some View {
+    Color.black
+      .sheet(isPresented: Binding(
+        get: { value != nil },
+        set: { if !$0 { value = nil } }
+      )) { ... }
+  }
+}
+
+// ✅ CORRECT - Use a helper on the type or containing model, use subscripts for
+// transfomration that rely on additional arguments
+extension Int? {
+  fileprivate var isPresented: Bool {
+    get { self != nil }
+    set { if !newValue { self = nil } }
+  }
+}
+
+struct ContentView: View {
+  @State private var value: Int?
+
+  var body: some View {
+    Color.black
+      .sheet(isPresented: $value.isPresented) { ... }
+  }
+}
+
+// ❌ WRONG - Using Binding(get:set) for side-effects
+struct ContentView: View {
+  @State private var isEnabled: Bool = false
+  var body: some View {
+    Toggle("Setting", isOn: Binding(
+      get: { isEnabled },
+      set: { newValue in
+        isEnabled = newValue
+        performSomeWork()
+      }
+    ))
+  }
+}
+
+// ✅ CORRECT - Use onChange or shift state into a Observable model and do work
+// in the value's didSet
+struct ContentView: View {
+  @State private var isEnabled: Bool = false
+  var body: some View {
+    Toggle("Setting", isOn: $isEnabled)
+      .onChange(of: isEnabled) { _, newValue in
+        if newValue {
+          performSomeWork()
+        }
       }
   }
 }

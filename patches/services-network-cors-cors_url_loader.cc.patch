@@ -1,12 +1,12 @@
 diff --git a/services/network/cors/cors_url_loader.cc b/services/network/cors/cors_url_loader.cc
-index 7d31e958bf69cd67141954bff5b80d361b99f062..1f5d7638c083cb9ed5af6827f52fd7be474faa47 100644
+index 2e3b7bbc1c9819fbbaa62ba1630dabf077223a42..a2fb9f54e510cffc41fe2b3a6b7b09faf72cf4bd 100644
 --- a/services/network/cors/cors_url_loader.cc
 +++ b/services/network/cors/cors_url_loader.cc
-@@ -988,6 +988,7 @@ void CorsURLLoader::StartRequest() {
-         cors::ShouldAllowUnsafeHeaders(
-             *origin_access_list_, request_.request_initiator, request_.url);
+@@ -1214,6 +1214,7 @@ bool CorsURLLoader::ShouldIncludeOriginHeader() const {
  
-+    BRAVE_CORS_URL_LOADER_START_REQUEST
-     if (!has_custom_origin_header_with_bypass) {
-       if (tainted_) {
-         request_.headers.SetHeader(net::HttpRequestHeaders::kOrigin,
+ void CorsURLLoader::MaybeSetOriginHeader(
+     network::HttpRequestHeadersUpdateParams* headers_update_params) {
++  tainted_ |= ShouldTaintOnionOrigin(request_);
+   if (!ShouldIncludeOriginHeader()) {
+     return;
+   }

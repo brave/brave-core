@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/frame/multi_contents_resize_area.h b/chrome/browser/ui/views/frame/multi_contents_resize_area.h
+index 460c40a7c5033c97ace6c442d347d7ebab13a82f..331c147b8fdb744f115240946011e16dff7202ae 100644
+--- a/chrome/browser/ui/views/frame/multi_contents_resize_area.h
++++ b/chrome/browser/ui/views/frame/multi_contents_resize_area.h
+@@ -50,7 +50,7 @@ class MultiContentsResizeArea : public views::ResizeArea {
+   METADATA_HEADER(MultiContentsResizeArea, ResizeArea)
+ 
+  public:
+-  static constexpr int kHandleResizeAxisPadding = 6;
++  static constexpr int kHandleResizeAxisPadding = 0;
+   static constexpr int kHandleResizeAxisSize = 4;
+ 
+   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kMultiContentsResizeAreaElementId);

@@ -9,11 +9,6 @@ substitutions:
       feature_name: kCommerceAllowOnDemandBookmarkUpdates
       value: base::FEATURE_DISABLED_BY_DEFAULT
 
-  - description: 'Ship kCommerceDeveloper disabled.'
-    set_feature_flag_default_state:
-      feature_name: kCommerceDeveloper
-      value: base::FEATURE_DISABLED_BY_DEFAULT
-
   - description: 'Ship kCommerceMerchantViewer disabled.'
     set_feature_flag_default_state:
       feature_name: kCommerceMerchantViewer

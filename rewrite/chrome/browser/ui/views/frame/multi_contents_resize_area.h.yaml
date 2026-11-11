@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Zero out `kHandleResizeAxisPadding`.
+
+      Brave sizes the split divider to match `kRoundedCornersContentsViewMargin`.
+      `OnLayoutUpdated()` recomputes the resize area's preferred size from this
+      constant on every layout change, so setting the preferred size from the
+      Brave subclass is lost when a split flips between stacked and
+      side-by-side.
+    regex:
+      pattern: 'kHandleResizeAxisPadding = 6;'
+      replace: 'kHandleResizeAxisPadding = 0;'

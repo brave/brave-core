@@ -14,6 +14,15 @@ substitutions:
       feature_name: kIPHAutofillAccountNameEmailSuggestionFeature
       value: base::FEATURE_DISABLED_BY_DEFAULT
 
+  - description: |-
+      Ship kIPHBookmarkBarSimplifiedFeature disabled.
+
+      Brave ships the NTP bookmark bar simplification without its upstream
+      onboarding IPH.
+    set_feature_flag_default_state:
+      feature_name: kIPHBookmarkBarSimplifiedFeature
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
   - description: 'Ship kIPHDiscardRingFeature disabled.'
     set_feature_flag_default_state:
       feature_name: kIPHDiscardRingFeature
@@ -47,6 +56,11 @@ substitutions:
   - description: 'Ship kIPHSideBySideTabSwitchFeature disabled.'
     set_feature_flag_default_state:
       feature_name: kIPHSideBySideTabSwitchFeature
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kIPHSplitViewHorizontalIndirectAccessFeature disabled.'
+    set_feature_flag_default_state:
+      feature_name: kIPHSplitViewHorizontalIndirectAccessFeature
       value: base::FEATURE_DISABLED_BY_DEFAULT
 
   - description: 'Ship kIPHTabGroupsSaveV2IntroFeature disabled.'

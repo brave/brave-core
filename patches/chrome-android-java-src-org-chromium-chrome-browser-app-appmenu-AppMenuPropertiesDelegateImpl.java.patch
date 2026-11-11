@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java b/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java
-index 280a9df1d256a24f7285ec01c290d1eb1207bcc3..9bd99a4115ee1c4a9fcfb959804ddee2c76136f6 100644
+index d89183245dc5310939645325a5833e21527684b6..d1f335528030a8adfd556d9f64b4c33747b23e2a 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java
-@@ -41,6 +41,7 @@ import org.chromium.build.annotations.NullMarked;
+@@ -40,6 +40,7 @@ import org.chromium.build.annotations.NullMarked;
  import org.chromium.build.annotations.Nullable;
  import org.chromium.build.annotations.RequiresNonNull;
  import org.chromium.chrome.R;
@@ -10,7 +10,7 @@ index 280a9df1d256a24f7285ec01c290d1eb1207bcc3..9bd99a4115ee1c4a9fcfb959804ddee2
  import org.chromium.chrome.browser.ActivityTabProvider;
  import org.chromium.chrome.browser.accessibility.PageZoomMenuItemViewBinder;
  import org.chromium.chrome.browser.bookmarks.BookmarkModel;
-@@ -147,7 +148,7 @@ public abstract class AppMenuPropertiesDelegateImpl implements AppMenuProperties
+@@ -153,7 +154,7 @@ public abstract class AppMenuPropertiesDelegateImpl implements AppMenuProperties
      protected @Nullable Runnable mReadAloudAppMenuResetter;
      private boolean mHasReadAloudInserted;
      protected final @Nullable OpenInAppMenuItemProvider mOpenInAppMenuItemProvider;
@@ -19,7 +19,7 @@ index 280a9df1d256a24f7285ec01c290d1eb1207bcc3..9bd99a4115ee1c4a9fcfb959804ddee2
  
      @VisibleForTesting
      @IntDef({
-@@ -453,7 +454,7 @@ public abstract class AppMenuPropertiesDelegateImpl implements AppMenuProperties
+@@ -459,7 +460,7 @@ public abstract class AppMenuPropertiesDelegateImpl implements AppMenuProperties
          //                is not persisted when adding to the homescreen.
          // * If creating shortcuts it not supported by the current home screen.
          return WebappsUtils.isAddToHomeIntentSupported()

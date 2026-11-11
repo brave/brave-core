@@ -79,4 +79,34 @@ extension BraveWalletBraveWalletService {
       }
     )
   }
+
+  @MainActor func pendingSignSolTransactionsRequests(
+    allAccounts: [BraveWallet.AccountInfo]
+  ) async -> [SignTransactionRequestItem] {
+    let requests = await pendingSignSolTransactionsRequests()
+    return requests.compactMap { request in
+      allAccounts.first(where: { $0.accountId == request.fromAccountId })
+        .map { SignTransactionRequestItem(request: .solana(request), account: $0) }
+    }
+  }
+
+  @MainActor func pendingSignCardanoTransactionRequests(
+    allAccounts: [BraveWallet.AccountInfo]
+  ) async -> [SignTransactionRequestItem] {
+    let requests = await pendingSignCardanoTransactionRequests()
+    return requests.compactMap { request in
+      allAccounts.first(where: { $0.accountId == request.accountId })
+        .map { SignTransactionRequestItem(request: .cardano(request), account: $0) }
+    }
+  }
+
+  @MainActor func pendingSignMessageRequests(
+    allAccounts: [BraveWallet.AccountInfo]
+  ) async -> [SignMessageRequestItem] {
+    let requests = await pendingSignMessageRequests()
+    return requests.compactMap { request in
+      allAccounts.first(where: { $0.accountId == request.accountId })
+        .map { SignMessageRequestItem(request: request, account: $0) }
+    }
+  }
 }

@@ -5,19 +5,47 @@
 
 assert(!is_android)
 
+if (is_win || is_mac || is_linux) {
+  source_set("geolocation") {
+    sources = [ "brave_geolocation_permission_tab_helper.h" ]
+    public_deps = [
+      "//brave/components/brave_geolocation_permission/common:brave_geolocation_permission",
+      "//chrome/browser/ui/tabs:tabs_public",
+      "//content/public/browser",
+      "//ui/base/unowned_user_data",
+    ]
+  }
+
+  source_set("impl") {
+    visibility = [ "//brave/browser:core" ]
+
+    sources = [ "brave_geolocation_permission_tab_helper.cc" ]
+
+    deps = [
+      ":geolocation",
+      "//components/tabs:public",
+      "//content/public/browser",
+    ]
+  }
+}
+
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [ "brave_geolocation_browsertest.cc" ]
   deps = [
+    ":geolocation",
     "//base",
+    "//brave/browser/ui",
     "//brave/components/constants",
     "//chrome/browser",
     "//chrome/browser/ssl:cert_verifier_test_support",
-    "//chrome/browser/ui",
+    "//chrome/browser/ui:browser_commands",
     "//chrome/common:constants",
     "//chrome/test:test_support_ui",
+    "//components/permissions",
+    "//components/tabs:public",
     "//content/test:test_support",
     "//net:test_support",
     "//url",

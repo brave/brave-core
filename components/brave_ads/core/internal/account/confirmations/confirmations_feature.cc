@@ -7,8 +7,6 @@
 
 namespace brave_ads {
 
-BASE_FEATURE(kConfirmationsFeature,
-             "Confirmations",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kConfirmationsFeature, base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace brave_ads

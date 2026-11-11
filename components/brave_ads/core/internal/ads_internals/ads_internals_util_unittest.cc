@@ -11,7 +11,6 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/test/confirmation_queue_item_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/test/reward_confirmation_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/test/confirmation_tokens_test_util.h"
@@ -24,7 +23,7 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/test/creative_set_conversion_test_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/test/campaign_conversion_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/test/creative_new_tab_page_ad_test_util.h"
@@ -34,23 +33,23 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAdsAdsInternalsUtil*
+// pnpm test brave_unit_tests --filter=BraveAdsAdsInternalsUtil*
 
 namespace brave_ads {
 
 class BraveAdsAdsInternalsUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsAdsInternalsUtilTest,
-       BuildAdsInternalsContainsCreativeSetConversionJsonKeys) {
+       BuildAdsInternalsContainsCampaignConversionJsonKeys) {
   // Arrange
-  test::BuildAndSaveCreativeSetConversion(
-      /*creative_set_id=*/"creative-set-id",
+  test::BuildAndSaveCampaignConversion(
+      /*campaign_id=*/"campaign-id",
       /*url_pattern=*/"https://www.brave.com/*",
       /*observation_window=*/base::Days(7));
 
   AdInfo ad =
       test::BuildAd(mojom::AdType::kNotificationAd, /*use_random_uuids=*/false);
-  ad.creative_set_id = "creative-set-id";
+  ad.campaign_id = "campaign-id";
   test::RecordAdEvent(ad, mojom::ConfirmationType::kViewedImpression);
 
   // Act
@@ -61,7 +60,7 @@ TEST_F(BraveAdsAdsInternalsUtilTest,
   // Assert
   ASSERT_TRUE(internals);
   const base::ListValue* const conversions =
-      internals->FindList("creativeSetConversions");
+      internals->FindList("campaignConversions");
   ASSERT_TRUE(conversions);
   ASSERT_EQ(1u, conversions->size());
   const base::DictValue* const conversion = (*conversions)[0].GetIfDict();

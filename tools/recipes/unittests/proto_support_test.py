@@ -37,17 +37,20 @@ def _fake_pb2_body(package: str) -> str:
     exactly that shape from a FileDescriptorProto.
     """
     fdp = descriptor_pb2.FileDescriptorProto(package=package)
-    return f'DESCRIPTOR = _pool.AddSerializedFile({fdp.SerializeToString()!r})\n'
+    return (
+        f'DESCRIPTOR = _pool.AddSerializedFile({fdp.SerializeToString()!r})\n'
+    )
 
 
 class IsMessageClassTest(unittest.TestCase):
-
     def test_message_class(self):
         # A real compiled message class (compile + put PB on sys.path once).
         engine._ensure_protos()
         # pylint: disable=import-outside-toplevel,import-error
         from PB.recipes.brave.toolchains.rust.package_rust import (
-            InputProperties)
+            InputProperties,
+        )
+
         self.assertTrue(proto_support.is_message_class(InputProperties))
 
     def test_non_message(self):
@@ -71,8 +74,9 @@ class CheckPackageTest(unittest.TestCase):
         self.assertIn('bad package', err)
 
     def test_module_example_matches_full_path(self):
-        relpath_base = os.path.join('recipe_modules', 'brave', 'mod',
-                                    'examples', 'full')
+        relpath_base = os.path.join(
+            'recipe_modules', 'brave', 'mod', 'examples', 'full'
+        )
         body = _fake_pb2_body('recipe_modules.brave.mod.examples.full')
         self.assertIsNone(proto_support._check_package(body, relpath_base))
 
@@ -93,11 +97,14 @@ class GatherProtoInfoTest(unittest.TestCase):
         }
         self.assertEqual(
             by_relpath.get('recipes/toolchains/rust/package_rust.proto'),
-            'recipes/brave/toolchains/rust/package_rust.proto')
+            'recipes/brave/toolchains/rust/package_rust.proto',
+        )
         self.assertEqual(
             by_relpath.get(
-                'recipe_modules/chromium_checkout/examples/full.proto'),
-            'recipe_modules/brave/chromium_checkout/examples/full.proto')
+                'recipe_modules/chromium_checkout/examples/full.proto'
+            ),
+            'recipe_modules/brave/chromium_checkout/examples/full.proto',
+        )
 
 
 class FileChecksumTest(unittest.TestCase):
@@ -108,8 +115,10 @@ class FileChecksumTest(unittest.TestCase):
             path = Path(tmp) / 'blob'
             path.write_bytes(b'hello')
             # `git hash-object` of the bytes "hello".
-            self.assertEqual(proto_support._file_checksum(path),
-                             'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0')
+            self.assertEqual(
+                proto_support._file_checksum(path),
+                'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0',
+            )
 
     def test_raises_on_empty_file(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -130,14 +139,18 @@ class RecompileTest(unittest.TestCase):
             root = Path(tmp)
             (root / 'recipes').mkdir()
             proto = root / 'recipes' / 'x.proto'
-            proto.write_text('syntax = "proto3";\n'
-                             'package recipes.brave.x;\n'
-                             'message M { string a = 1; }\n')
+            proto.write_text(
+                'syntax = "proto3";\n'
+                'package recipes.brave.x;\n'
+                'message M { string a = 1; }\n'
+            )
             with mock.patch.object(proto_support, 'RECIPES_ROOT', root):
                 dgst_before, _ = proto_support._gather_protos()
-                proto.write_text('syntax = "proto3";\n'
-                                 'package recipes.brave.x;\n'
-                                 'message M { string a = 1; string b = 2; }\n')
+                proto.write_text(
+                    'syntax = "proto3";\n'
+                    'package recipes.brave.x;\n'
+                    'message M { string a = 1; string b = 2; }\n'
+                )
                 dgst_after, _ = proto_support._gather_protos()
         self.assertNotEqual(dgst_before, dgst_after)
 
@@ -155,21 +168,24 @@ class CompileErrorTest(unittest.TestCase):
             dest_relpath = 'recipes/brave/norp.proto'
             src = os.path.join(proto_tree, dest_relpath)
             os.makedirs(os.path.dirname(src))
-            with open(src, 'w') as proto:
+            with open(src, 'w', encoding='utf-8') as proto:
                 proto.write('syntax = "proto3"; norp')
 
             argfile = os.path.join(tmp, 'argfile')
-            with open(argfile, 'w') as f:
+            with open(argfile, 'w', encoding='utf-8') as f:
                 f.write(dest_relpath + '\n')
 
             out = os.path.join(tmp, 'out')
             os.makedirs(out)
 
             stderr = io.StringIO()
-            with self.assertRaises(SystemExit), \
-                    contextlib.redirect_stderr(stderr):
-                proto_support._compile_protos([(src, dest_relpath)],
-                                              proto_tree, protoc, argfile, out)
+            with (
+                self.assertRaises(SystemExit),
+                contextlib.redirect_stderr(stderr),
+            ):
+                proto_support._compile_protos(
+                    [(src, dest_relpath)], proto_tree, protoc, argfile, out
+                )
 
             message = stderr.getvalue()
             self.assertIn('Error while compiling protobufs', message)

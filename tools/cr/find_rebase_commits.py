@@ -45,9 +45,9 @@ def run_git_log(start_ref, max_count=None):
     cmd.append(start_ref)
 
     try:
-        output = subprocess.check_output(cmd,
-                                         encoding="utf-8",
-                                         errors="replace")
+        output = subprocess.check_output(
+            cmd, encoding="utf-8", errors="replace"
+        )
     except subprocess.CalledProcessError as e:
         print("Error running git log:", e, file=sys.stderr)
         sys.exit(1)
@@ -95,27 +95,29 @@ def find_commit_range(commits, cr_id):
     if last_match_index is None:
         return []
 
-    return commits[:last_match_index + 1]
+    return commits[: last_match_index + 1]
 
 
 def truncate(text, max_len=TRUNCATE_SUBJECT_LEN):
     # Truncate commit subjects for verbose output
     if len(text) <= max_len:
         return text
-    return text[:max_len - 3] + "..."
+    return text[: max_len - 3] + "..."
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Find commit range by rebase number.")
-    parser.add_argument("--start",
-                        help="Starting commit (default: HEAD)",
-                        default="HEAD")
+        description="Find commit range by rebase number."
+    )
     parser.add_argument(
-        "--tag", help="Rebase number (e.g., cr123). Auto-detect if omitted.")
-    parser.add_argument("--verbose",
-                        action="store_true",
-                        help="Show commit details")
+        "--start", help="Starting commit (default: HEAD)", default="HEAD"
+    )
+    parser.add_argument(
+        "--tag", help="Rebase number (e.g., cr123). Auto-detect if omitted."
+    )
+    parser.add_argument(
+        "--verbose", action="store_true", help="Show commit details"
+    )
     args = parser.parse_args()
 
     auto_detected = False
@@ -127,7 +129,8 @@ def main():
         if cr_id is None:
             print(
                 f"No rebase number found in first {MAX_LOOKAHEAD_NO_CR} commits.",
-                file=sys.stderr)
+                file=sys.stderr,
+            )
             sys.exit(1)
         auto_detected = True
     else:

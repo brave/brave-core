@@ -6,11 +6,13 @@
 #include "brave/browser/ui/views/toolbar/brave_browser_app_menu_button.h"
 
 #include "base/check_deref.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/page_info/features.h"
+#include "brave/browser/ui/toolbars_small_icons.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/toolbar/app_menu_icon_controller.h"
@@ -24,9 +26,12 @@
 
 namespace {
 
-constexpr int kBrandedIconSize = 24;
 constexpr int kBrandedBorderThickness = 1;
 constexpr int kBrandedLabelExtraSpacing = 3;
+
+int GetBrandedIconSize() {
+  return brave::GetToolbarsIconSize().value_or(24);
+}
 
 bool ShowBrandedIcon() {
   return page_info::features::IsShowBraveShieldsInPageInfoEnabled();
@@ -95,15 +100,32 @@ void BraveBrowserAppMenuButton::UpdateLayoutInsets() {
   // Same Insets for W/O Label.
   SetLayoutInsets(::GetLayoutInsets(TOOLBAR_BUTTON));
   if (ShowBrandedIcon()) {
-    // The branded app menu icon is larger than a standard icon. Use insets
-    // delta to compensate for the difference.
-    SetLayoutInsetDelta(gfx::Insets::TLBR(-1, 2, -1, 4));
+    if (brave::IsToolbarsSmallIconsEnabled()) {
+      // The branded icon has no built-in padding, so add extra horizontal
+      // space (left 1, right 3) beyond the standard toolbar button insets.
+      SetLayoutInsetDelta(gfx::Insets::TLBR(0, 1, 0, 3));
+    } else {
+      // The branded app menu icon is larger than a standard icon. Use insets
+      // delta to compensate for the difference.
+      SetLayoutInsetDelta(gfx::Insets::TLBR(-1, 2, -1, 4));
+    }
   }
 }
 
 void BraveBrowserAppMenuButton::UpdateIcon() {
   if (!ShowBrandedIcon()) {
-    BrowserAppMenuButton::UpdateIcon();
+    // Match other toolbar buttons while the app menu is open, unless a
+    // severity color is showing. The branded logo is never tinted.
+    const bool use_activated_color =
+        IsActivated() && !GetColorForSeverity().has_value();
+    for (auto state : kButtonStates) {
+      const SkColor color =
+          use_activated_color && state != views::Button::STATE_DISABLED
+              ? GetColorProvider()->GetColor(kColorToolbarButtonActivated)
+              : GetForegroundColor(state);
+      SetImageModel(state, ui::ImageModel::FromVectorIcon(
+                               kLeoBrowserMenuIcon, color, GetIconSize()));
+    }
     return;
   }
 
@@ -113,7 +135,7 @@ void BraveBrowserAppMenuButton::UpdateIcon() {
   for (auto state : kButtonStates) {
     SetImageModel(
         state, ui::ImageModel::FromVectorIcon(icon, GetForegroundColor(state),
-                                              kBrandedIconSize));
+                                              GetBrandedIconSize()));
   }
 }
 

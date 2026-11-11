@@ -58,7 +58,8 @@ void MaybeShowCommands(AutocompleteResult* result,
 
   // At this point all commands are moved to the top, and everything else is
   // discarded.
-  result->RemoveAllMatchesNotOfType(AutocompleteProvider::TYPE_BRAVE_COMMANDER);
+  result->RemoveAllMatchesNotOfType(
+      AutocompleteProvider::Type::kBraveCommander);
 #endif
 }
 

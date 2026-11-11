@@ -10,8 +10,8 @@ import {
   SettingsRow,
   SettingsText
 } from '../../../components/default'
-import Toggle from '@brave/leo/react/toggle'
-import Dropdown from '@brave/leo/react/dropdown'
+import Toggle from '@brave/nala/react/toggle'
+import Dropdown from '@brave/nala/react/dropdown'
 
 // Utils
 import { getLocale } from '../../../../common/locale'

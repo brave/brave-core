@@ -170,6 +170,19 @@
   {
     "cmd": [
       "git",
+      "config",
+      "maintenance.auto",
+      "false"
+    ],
+    "cwd": "[WORKSPACE]/b/src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "disable auto-gc: maintenance.auto=false"
+  },
+  {
+    "cmd": [
+      "git",
       "checkout",
       "--force",
       "refs/tags/151.0.7917.1",
@@ -227,22 +240,20 @@
   {
     "cmd": [
       "git",
-      "-C",
-      "[WORKSPACE]/b/src/brave",
       "sparse-checkout",
       "list"
     ],
+    "cwd": "[WORKSPACE]/b/src/brave",
     "name": "sparse-checkout list"
   },
   {
     "cmd": [
       "git",
-      "-C",
-      "[WORKSPACE]/b/src/brave",
       "sparse-checkout",
       "add",
-      "tools/cr/toolchains"
+      "tools/cr"
     ],
+    "cwd": "[WORKSPACE]/b/src/brave",
     "name": "sparse-checkout add"
   },
   {

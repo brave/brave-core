@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/extensions/api/chrome_extensions_api_client_android.cc b/chrome/browser/extensions/api/chrome_extensions_api_client_android.cc
+index 6df055df9399cecc52341422e0d469a2f1a14f6d..be323af70ab15acaa3649b596cfec2d3b9b912ee 100644
+--- a/chrome/browser/extensions/api/chrome_extensions_api_client_android.cc
++++ b/chrome/browser/extensions/api/chrome_extensions_api_client_android.cc
+@@ -15,7 +15,7 @@
+ // The stubs are implemented here instead of falling back to ExtensionsAPIClient
+ // to allow NOTIMPLEMENTED() logging and a place to put TODOs with bug IDs.
+ 
+-static_assert(BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS));
++static_assert(BUILDFLAG(ENABLE_EXTENSIONS_CORE));
+ 
+ namespace extensions {
+ 

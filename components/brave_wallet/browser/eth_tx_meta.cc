@@ -13,9 +13,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
-#include "brave/components/brave_wallet/browser/eip2930_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_data_parser.h"
-#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
 namespace brave_wallet {
@@ -27,6 +25,27 @@ EthTxMeta::EthTxMeta(const mojom::AccountIdPtr& from,
   DCHECK_EQ(from->coin, mojom::CoinType::ETH);
   set_from(from.Clone());
   set_chain_id(Uint256ValueToHex(tx_->chain_id()));
+}
+
+EthTxMeta::EthTxMeta(const mojom::AccountIdPtr& from,
+                     std::unique_ptr<EthTransaction> tx,
+                     const std::string& chain_id,
+                     mojom::SwapInfoPtr swap_info,
+                     std::optional<url::Origin> dapp_origin)
+    : TxMeta(from, chain_id, std::move(swap_info), std::move(dapp_origin)),
+      tx_(std::move(tx)) {
+  DCHECK_EQ(from->coin, mojom::CoinType::ETH);
+}
+
+std::unique_ptr<EthTxMeta> EthTxMeta::MakeUnapproved(
+    const mojom::AccountIdPtr& from,
+    std::unique_ptr<EthTransaction> tx,
+    const std::string& chain_id,
+    mojom::SwapInfoPtr swap_info,
+    std::optional<url::Origin> dapp_origin) {
+  return std::make_unique<EthTxMeta>(from, std::move(tx), chain_id,
+                                     std::move(swap_info),
+                                     std::move(dapp_origin));
 }
 
 EthTxMeta::~EthTxMeta() = default;
@@ -70,6 +89,16 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
     mojom::SwapInfoPtr swap_info_from_data;
     std::tie(tx_type, tx_params, tx_args, swap_info_from_data) =
         std::move(*tx_info);
+
+    // If the user's transaction is a non-payable type and the associated send
+    // amount is non-zero, we must treat it like a general unclassified
+    // transaction whose recipient is the explicit `to` with `value`.
+    if (tx_->value() != 0 && IsNonPayableTokenTransactionType(tx_type)) {
+      tx_type = mojom::TransactionType::Other;
+      tx_params.clear();
+      tx_args.clear();
+    }
+
     final_recipient = GetFinalRecipient(chain_id_, tx_->GetToChecksumAddress(),
                                         tx_type, tx_args);
 
@@ -112,11 +141,8 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
               Uint256ValueToHex(tx_->gas_limit()), tx_->GetToChecksumAddress(),
               Uint256ValueToHex(tx_->value()), tx_->data()),
           max_priority_fee_per_gas, max_fee_per_gas)),
-      status_, tx_type, tx_params, tx_args,
-      base::Milliseconds(created_time_.InMillisecondsSinceUnixEpoch()),
-      base::Milliseconds(submitted_time_.InMillisecondsSinceUnixEpoch()),
-      base::Milliseconds(confirmed_time_.InMillisecondsSinceUnixEpoch()),
-      origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, chain_id_,
+      status_, tx_type, tx_params, tx_args, created_time_, submitted_time_,
+      confirmed_time_, MakeDappOriginInfo(dapp_origin_), chain_id_,
       final_recipient, IsRetriable(), std::move(swap_info), nullptr);
 }
 

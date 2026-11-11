@@ -8,7 +8,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
-#include "base/scoped_observation.h"
 #include "ui/compositor/layer_delegate.h"
 #include "ui/compositor/layer_owner.h"
 #include "ui/gfx/geometry/insets.h"
@@ -36,9 +35,7 @@
 //     ViewShadow shadow_{this, gfx::RoundedCornersF(kCornerRadius), kShadow};
 //   };
 //
-class ViewShadow : public ui::LayerDelegate,
-                   public ui::LayerOwner::Observer,
-                   public views::ViewObserver {
+class ViewShadow : public ui::LayerDelegate, public views::ViewObserver {
  public:
   struct ShadowParameters {
     int offset_x;
@@ -73,9 +70,6 @@ class ViewShadow : public ui::LayerDelegate,
   void OnViewLayerBoundsSet(views::View* view) override;
   void OnViewIsDeleting(views::View* view) override;
 
-  // ui::LayerOwner::Observer,
-  void OnLayerRecreated(ui::Layer* old_layer) override;
-
   // LayerDelegate:
   void OnPaintLayer(const ui::PaintContext& context) override;
   void OnDeviceScaleFactorChanged(float old_device_scale_factor,
@@ -89,9 +83,6 @@ class ViewShadow : public ui::LayerDelegate,
   gfx::RoundedCornersF corner_radii_;
   raw_ref<const gfx::ShadowValues> shadow_values_;
   gfx::Insets insets_;
-
-  base::ScopedObservation<ui::LayerOwner, ui::LayerOwner::Observer>
-      layer_owner_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_VIEW_SHADOW_H_

@@ -1,81 +1,101 @@
 diff --git a/components/search/ntp_features.cc b/components/search/ntp_features.cc
-index 25de20c479a9253a2bb098c344ea02d7b5473b85..7acc65daf193a966427175bffdd23f8e2dbfe188 100644
+index 18cbb7e915563199a1fef195f2377d2a6489c8b6..e701c5587385b210b4c7f4af077a7fc0aa14096e 100644
 --- a/components/search/ntp_features.cc
 +++ b/components/search/ntp_features.cc
-@@ -24,17 +24,14 @@ BASE_FEATURE(kConfirmSuggestionRemovals,
+@@ -18,17 +18,13 @@ namespace ntp_features {
  
  // If enabled, shows an extension card within the Customize Chrome Side
  // Panel for access to the Chrome Web Store extensions.
-+// kCustomizeChromeSidePanelExtensionsCard feature state is enforced via plaster rewrite.
- BASE_FEATURE(kCustomizeChromeSidePanelExtensionsCard,
+-BASE_FEATURE(kCustomizeChromeSidePanelExtensionsCard,
++BASE_OVERRIDDEN_FEATURE(kCustomizeChromeSidePanelExtensionsCard,
               base::FEATURE_DISABLED_BY_DEFAULT);
  
  // If enabled, shows wallpaper search within the Customize Chrome Side Panel.
  // This is a kill switch. Keep indefinitely.
- BASE_FEATURE(kCustomizeChromeWallpaperSearch,
+-BASE_FEATURE(kCustomizeChromeWallpaperSearch,
 -#if BUILDFLAG(IS_ANDROID)
-              base::FEATURE_DISABLED_BY_DEFAULT);
+-             base::FEATURE_DISABLED_BY_DEFAULT);
 -#else
 -             base::FEATURE_ENABLED_BY_DEFAULT);
 -#endif
++BASE_OVERRIDDEN_FEATURE(kCustomizeChromeWallpaperSearch,
++                        base::FEATURE_DISABLED_BY_DEFAULT);
  
  // If enabled, shows entry point on Customize Chrome Side Panel's Appearance
  // page for Wallpaper Search.";
-@@ -75,28 +72,22 @@ BASE_FEATURE(kRealboxCr23Theming,
+@@ -73,28 +69,20 @@ BASE_FEATURE(kRealboxVirtualFocusNavigation, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // If enabled, alpha NTP backgrounds will show in Customize Chrome.
  // This is a development switch. Keep indefinitely.
-+// kNtpAlphaBackgroundCollections feature state is enforced via plaster rewrite.
- BASE_FEATURE(kNtpAlphaBackgroundCollections, base::FEATURE_DISABLED_BY_DEFAULT);
+-BASE_FEATURE(kNtpAlphaBackgroundCollections, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kNtpAlphaBackgroundCollections, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // If enabled, NTP background image links will be checked for HTTP status
  // errors."
-+// kNtpBackgroundImageErrorDetection feature state is enforced via plaster rewrite.
- BASE_FEATURE(kNtpBackgroundImageErrorDetection,
+-BASE_FEATURE(kNtpBackgroundImageErrorDetection,
++BASE_OVERRIDDEN_FEATURE(kNtpBackgroundImageErrorDetection,
               base::FEATURE_DISABLED_BY_DEFAULT);
  
  // If enabled, calendar module will be shown.
- BASE_FEATURE(kNtpCalendarModule,
+-BASE_FEATURE(kNtpCalendarModule,
 -#if BUILDFLAG(IS_ANDROID)
-              base::FEATURE_DISABLED_BY_DEFAULT);
+-             base::FEATURE_DISABLED_BY_DEFAULT);
 -#else
 -             base::FEATURE_ENABLED_BY_DEFAULT);
 -#endif
++BASE_OVERRIDDEN_FEATURE(kNtpCalendarModule,
++                        base::FEATURE_DISABLED_BY_DEFAULT);
  
  // If enabled, chrome cart module will be shown.
- BASE_FEATURE(kNtpChromeCartModule,
+-BASE_FEATURE(kNtpChromeCartModule,
 -#if BUILDFLAG(IS_ANDROID)
-              base::FEATURE_DISABLED_BY_DEFAULT);
+-             base::FEATURE_DISABLED_BY_DEFAULT);
 -#else
 -             base::FEATURE_ENABLED_BY_DEFAULT);
 -#endif
++BASE_OVERRIDDEN_FEATURE(kNtpChromeCartModule,
++                        base::FEATURE_DISABLED_BY_DEFAULT);
  
- // If enabled, customization of Chrome will be promoted on the NTP.
- BASE_FEATURE(kNtpCustomizeChromeAutoOpen, base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -119,17 +110,14 @@ BASE_FEATURE(kNtpDummyModules, base::FEATURE_DISABLED_BY_DEFAULT);
+ // If enabled, loads the experimental NTP component extension, which overrides
+ // chrome://newtab.
+@@ -122,19 +110,15 @@ BASE_FEATURE(kNtpDummyModules, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
  // If enabled, Google Drive module will be shown.
  // This is a kill switch. Keep indefinitely.
- BASE_FEATURE(kNtpDriveModule,
+-BASE_FEATURE(kNtpDriveModule,
 -#if BUILDFLAG(IS_ANDROID)
-              base::FEATURE_DISABLED_BY_DEFAULT);
+-             base::FEATURE_DISABLED_BY_DEFAULT);
 -#else
 -             base::FEATURE_ENABLED_BY_DEFAULT);
 -#endif
++BASE_OVERRIDDEN_FEATURE(kNtpDriveModule,
++                        base::FEATURE_DISABLED_BY_DEFAULT);
  
  // If enabled, the NTP Drive module does not require sync.
  BASE_FEATURE(kNtpDriveModuleHistorySyncRequirement,
               base::FEATURE_ENABLED_BY_DEFAULT);
  
  // If enabled, the NTP Drive Module will link to the Drive page.
-+// kNtpDriveModuleLink feature state is enforced via plaster rewrite.
- BASE_FEATURE(kNtpDriveModuleLink, base::FEATURE_DISABLED_BY_DEFAULT);
+-BASE_FEATURE(kNtpDriveModuleLink, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kNtpDriveModuleLink, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // If enabled, segmentation data will be collected to decide whether or not to
-@@ -162,6 +150,7 @@ BASE_FEATURE(kNtpModulesOrder, base::FEATURE_DISABLED_BY_DEFAULT);
+ // show the Drive module.
+@@ -162,7 +146,7 @@ BASE_FEATURE(kNtpModulesOrder, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Dummy feature to set param "NtpModulesMaxColumnCountParam".
  // This is used for an emergency Finch param. Keep indefinitely.
-+// kNtpModulesMaxColumnCount feature state is enforced via plaster rewrite.
- BASE_FEATURE(kNtpModulesMaxColumnCount, base::FEATURE_DISABLED_BY_DEFAULT);
+-BASE_FEATURE(kNtpModulesMaxColumnCount, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kNtpModulesMaxColumnCount, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Dummy feature to set param "NtpModulesLoadedWithOtherModulesMaxInstanceCount"
+ // This is used for an emergency Finch param. Keep indefinitely.
+@@ -330,7 +314,7 @@ BASE_FEATURE(kNtpShortcutsRedesign, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // If enabled, the bookmark bar may be auto-removed on the NTP and new
+ // visibility settings are added.
+-BASE_FEATURE(kNtpSimplificationBookmarkBar, base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kNtpSimplificationBookmarkBar, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ // If enabled, the bookmark bar time interval and number of times it's shown on
+ // the NTP before auto-hiding is decreased for testing.

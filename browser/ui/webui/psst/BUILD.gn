@@ -22,11 +22,13 @@ static_library("psst") {
   ]
 
   deps = [
+    "//brave/browser/ui",
     "//brave/browser/ui/tabs:tabs_public",
+    "//brave/browser/ui/webui:brave_webui_source",
     "//brave/components/psst/resources:psst_dialog_generated_resources_grit",
     "//brave/components/psst/resources:static_resources_grit",
     "//brave/components/resources:strings_grit",
-    "//chrome/browser/ui",
+    "//chrome/browser/ui:browser_window_header",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/tabs",
     "//chrome/browser/ui/webui",
@@ -35,5 +37,20 @@ static_library("psst") {
     "//components/constrained_window",
     "//components/web_modal",
     "//ui/web_dialogs",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "brave_psst_dialog_ui_browsertest.cc" ]
+
+  deps = [
+    "//brave/components/psst/core/common",
+    "//chrome/test:test_support",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//url",
   ]
 }

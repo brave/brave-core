@@ -9,12 +9,10 @@ import Strings
 
 /// Houses a CWVWebView to handle loading WebUI pages in a limited scope
 class ChromeWebUIController: UIViewController, BraveWebViewUIDelegate {
-  private let configuration: CWVWebViewConfiguration
+  private let configuration: BraveWebViewConfiguration
 
-  init(braveCore: BraveProfileController, isPrivateBrowsing: Bool) {
-    configuration =
-      isPrivateBrowsing
-      ? braveCore.nonPersistentWebViewConfiguration : braveCore.defaultWebViewConfiguration
+  init(profile: any Profile) {
+    configuration = BraveWebViewConfiguration(profile: profile)
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -47,7 +45,7 @@ class ChromeWebUIController: UIViewController, BraveWebViewUIDelegate {
   func webView(
     _ webView: CWVWebView,
     runJavaScriptAlertPanelWithMessage message: String,
-    pageURL url: URL,
+    pageURL url: URL?,
     completionHandler: @escaping () -> Void
   ) {
     let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
@@ -66,7 +64,7 @@ class ChromeWebUIController: UIViewController, BraveWebViewUIDelegate {
   func webView(
     _ webView: CWVWebView,
     runJavaScriptConfirmPanelWithMessage message: String,
-    pageURL url: URL,
+    pageURL url: URL?,
     completionHandler: @escaping (Bool) -> Void
   ) {
     let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
@@ -95,7 +93,7 @@ class ChromeWebUIController: UIViewController, BraveWebViewUIDelegate {
     _ webView: CWVWebView,
     runJavaScriptTextInputPanelWithPrompt prompt: String,
     defaultText: String,
-    pageURL url: URL,
+    pageURL url: URL?,
     completionHandler: @escaping (String?) -> Void
   ) {
     let alertController = UIAlertController(title: nil, message: prompt, preferredStyle: .alert)

@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Include Brave's keyed service factories header.
+    add_after_line:
+      line:
+        '#import "ios/chrome/browser/profile/model/keyed_service_factories.h"'
+      code: |-
+        #import "brave/ios/browser/profile/model/brave_keyed_service_factories.h"
+
+  - description: |-
+      Build Brave's profile keyed service factories.
+
+      Brave's factories must be instantiated alongside the upstream ones so
+      they are registered as dependencies before any profile is created.
+    after_function_impl:
+      function_name: EnsureProfileKeyedServiceFactoriesBuilt
+      code: |-
+        brave::EnsureProfileKeyedServiceFactoriesBuilt();

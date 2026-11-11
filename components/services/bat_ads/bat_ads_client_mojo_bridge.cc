@@ -167,9 +167,9 @@ void BatAdsClientMojoBridge::Remove(const std::string& name,
 void BatAdsClientMojoBridge::LoadResourceComponent(
     const std::string& id,
     int version,
-    brave_ads::LoadFileCallback callback) {
+    brave_ads::LoadResourceComponentCallback callback) {
   if (!bat_ads_client_associated_remote_.is_bound()) {
-    std::move(callback).Run(base::File());
+    std::move(callback).Run(base::File(), /*exists=*/true);
     return;
   }
 

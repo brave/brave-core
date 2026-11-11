@@ -1,0 +1,12 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/media/ui/ChromeMediaNotificationManager.java b/chrome/android/java/src/org/chromium/chrome/browser/media/ui/ChromeMediaNotificationManager.java
+index e8508e2d658dfd7e0729198a9c4621c764188481..008e9d67f0bfcb90f33097f7886ae2c9ab640543 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/media/ui/ChromeMediaNotificationManager.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/media/ui/ChromeMediaNotificationManager.java
+@@ -22,6 +22,6 @@ public class ChromeMediaNotificationManager {
+         MediaNotificationManager.setMultipleMediaNotificationsEnabled(
+                 ChromeFeatureList.isEnabled(ChromeFeatureList.ALLOW_MULTIPLE_MEDIA_NOTIFICATIONS));
+         MediaNotificationManager.show(
+-                notificationInfo, ChromeMediaNotificationControllerDelegate::new);
++                notificationInfo, BraveMediaNotificationControllerDelegate::new);
+     }
+ }

@@ -22,7 +22,6 @@ if (!is_android) {
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/constants",
     "//chrome/browser:browser_process",
-    "//chrome/browser/ui",
     "//chrome/browser/ui/color:color_headers",
     "//chrome/common",
     "//components/pref_registry",

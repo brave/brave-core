@@ -1,0 +1,15 @@
+diff --git a/extensions/browser/extensions_browser_client.h b/extensions/browser/extensions_browser_client.h
+index 59c522279caf40bdd3334e9362d723b62d3fca9c..67b491679164737747dccb01d4d97726df7ff235 100644
+--- a/extensions/browser/extensions_browser_client.h
++++ b/extensions/browser/extensions_browser_client.h
+@@ -740,6 +740,10 @@ class ExtensionsBrowserClient {
+   // extension API resource manager and dispatcher services.
+   virtual bool IsLazyChromeOSResourceKeyedServiceInstantiationEnabled() const;
+ 
++  // Returns true if the embedder's own blocklist considers
++  // `extension_id` to be malware. Consulted alongside Safe Browsing.
++  virtual bool IsMalwareBlocklisted(const ExtensionId& extension_id) const;
++
+  protected:
+   std::unique_ptr<ExtensionAssetsManager> assets_manager_;
+ 

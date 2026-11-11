@@ -37,6 +37,9 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
     registry->RegisterBooleanPref(kBraveAIChatTabOrganizationEnabled, true);
     registry->RegisterStringPref(kBraveAIChatTabOrganizationModelKey,
                                  kChatAutomaticModelKey);
+    // Off by default: this uploads page content, so it needs its own opt-in.
+    registry->RegisterBooleanPref(kBraveAIChatTabOrganizationSendPageContent,
+                                  false);
     registry->RegisterBooleanPref(kBraveAIChatUserCustomizationEnabled, true);
     registry->RegisterBooleanPref(kBraveAIChatUserMemoryEnabled, true);
     registry->RegisterDictionaryPref(kBraveAIChatUserCustomizations);
@@ -61,6 +64,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   // Added 11/2023
   registry->RegisterDictionaryPref(kBraveChatPremiumCredentialCache);
   registry->RegisterBooleanPref(kNtpInputDayZeroEnabled, false);
+  registry->RegisterStringPref(kNtpInputSourceSuffix, "");
 }
 
 }  // namespace ai_chat::prefs

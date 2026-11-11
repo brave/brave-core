@@ -58,6 +58,7 @@ ToAdblockFilterRuleInfo(const adblock::FilterRuleInfo* info) {
   result.raw_line = std::string(info->raw_line);
   result.source_index = info->source_index;
   result.line_number = info->line_number;
+  result.source_title = std::string(info->list_title);
 
   return result;
 }

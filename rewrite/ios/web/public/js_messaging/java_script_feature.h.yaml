@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Declare `GetFeatureRepliesToPrompts`.
+
+      Lets features reply to `window.prompt()` communications, which Brave
+      uses for synchronous messages from JavaScript.
+    add_to_public:
+      class_name: JavaScriptFeature
+      code: |-
+        // Returns whether the feature replies to `window.prompt()`
+        // communications. Defaults to false. Features returning true must
+        // implement `ScriptMessageReceivedWithReply` and call its completion
+        // handler synchronously.
+        virtual bool GetFeatureRepliesToPrompts() const;
+
+  - description: 'Let PromptFacade call ScriptMessageReceivedWithReply.'
+    add_friend:
+      class_name: JavaScriptFeature
+      friend_type: class PromptFacade

@@ -6,6 +6,7 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_NODE_EDGE_NODE_INSERT_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_NODE_EDGE_NODE_INSERT_H_
 
+#include "base/memory/raw_ptr.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/node/edge_node.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
@@ -39,8 +40,8 @@ class EdgeNodeInsert final : public EdgeNode {
   bool IsEdgeNodeInsert() const override;
 
  private:
-  NodeHTMLElement* parent_node_;
-  NodeHTML* prior_sibling_node_;
+  raw_ptr<NodeHTMLElement, UnprotectedInRelease> parent_node_;
+  raw_ptr<NodeHTML, UnprotectedInRelease> prior_sibling_node_;
 };
 
 }  // namespace brave_page_graph

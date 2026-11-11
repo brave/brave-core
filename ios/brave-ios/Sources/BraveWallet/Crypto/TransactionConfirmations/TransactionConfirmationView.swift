@@ -114,47 +114,38 @@ struct TransactionConfirmationView: View {
         await confirmationStore.prepare()
       }
     }
-    .background(
-      NavigationLink(
-        isActive: $isShowingGas,
-        destination: {
-          Group {
-            if let gasEstimation = confirmationStore.eip1559GasEstimation {
-              EditPriorityFeeView(
-                transaction: confirmationStore.activeParsedTransaction.transaction,
-                gasEstimation: gasEstimation,
-                confirmationStore: confirmationStore
-              )
-            } else {
-              EditGasFeeView(
-                transaction: confirmationStore.activeParsedTransaction.transaction,
-                confirmationStore: confirmationStore
-              )
-            }
+    .navigationDestination(
+      isPresented: $isShowingGas,
+      destination: {
+        Group {
+          if let gasEstimation = confirmationStore.eip1559GasEstimation {
+            EditPriorityFeeView(
+              transaction: confirmationStore.activeParsedTransaction.transaction,
+              gasEstimation: gasEstimation,
+              confirmationStore: confirmationStore
+            )
+          } else {
+            EditGasFeeView(
+              transaction: confirmationStore.activeParsedTransaction.transaction,
+              confirmationStore: confirmationStore
+            )
           }
-        },
-        label: { EmptyView() }
-      )
+        }
+      }
     )
-    .background(
-      NavigationLink(
-        isActive: $isShowingAdvancedSettings,
-        destination: {
-          EditNonceView(
-            confirmationStore: confirmationStore,
-            transaction: confirmationStore.activeParsedTransaction.transaction
-          )
-        },
-        label: { EmptyView() }
-      )
+    .navigationDestination(
+      isPresented: $isShowingAdvancedSettings,
+      destination: {
+        EditNonceView(
+          confirmationStore: confirmationStore,
+          transaction: confirmationStore.activeParsedTransaction.transaction
+        )
+      }
     )
     .background(
       Color.clear
         .sheet(
-          isPresented: Binding(
-            get: { confirmationStore.activeTxStatusStore != nil },
-            set: { if !$0 { confirmationStore.closeTxStatusStore() } }
-          )
+          isPresented: $confirmationStore.isShowingTxStatus
         ) {
           if let txStatusStore = confirmationStore.activeTxStatusStore {
             TransactionStatusView(

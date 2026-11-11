@@ -35,6 +35,8 @@ substitutions:
                 @"https://talk.brave.com",
                 @"https://talk.bravesoftware.com",
                 @"https://talk.brave.software",
+                @"https://dev2.talk.brave.software",
+                @"https://dev3.talk.brave.software",
               ];
             case web::OriginFilter::kBraveAccount:
               return @[

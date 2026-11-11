@@ -96,6 +96,7 @@ public class SearchEngines {
 
     await loadCustomEngines()
     orderedEngines = await getOrderedEngines()
+    migrateQuickSearchIfNeeded(engines: orderedEngines)
     loading.continuation.yield()
 
     recordSearchEngineP3A()
@@ -376,7 +377,7 @@ public class SearchEngines {
 
   fileprivate var customEngines: [OpenSearchEngine] = []
 
-  private func loadCustomEngines() async {
+  @concurrent private func loadCustomEngines() async {
     do {
       let data = try Data(contentsOf: URL(fileURLWithPath: customEngineFilePath()))
       let unarchiver = try NSKeyedUnarchiver(forReadingFrom: data)
@@ -393,7 +394,7 @@ public class SearchEngines {
     }
   }
 
-  fileprivate func saveCustomEngines() async throws {
+  @concurrent fileprivate func saveCustomEngines() async throws {
     do {
       let data = try NSKeyedArchiver.archivedData(
         withRootObject: customEngines,
@@ -430,7 +431,7 @@ public class SearchEngines {
 
   /// Get all bundled (not custom) search engines, with the default search engine first,
   /// but the others in no particular order.
-  class func getUnorderedBundledEngines(
+  @concurrent class func getUnorderedBundledEngines(
     for selectedEngines: [String] = [],
     isOnboarding: Bool,
     locale: Locale
@@ -591,5 +592,28 @@ public class SearchEngines {
       }
     }()
     UmaHistogramEnumeration("Brave.Search.SwitchEngine", sample: answer)
+  }
+
+  func migrateQuickSearchIfNeeded(engines: [OpenSearchEngine]) {
+    guard Preferences.Search.quickSearchOrder.value == nil,
+      !engines.isEmpty
+    else { return }
+
+    var idsByShortName: [String: QuickSearchItemID] = [:]
+    for engine in engines {
+      guard idsByShortName[engine.shortName] == nil else {
+        Logger.module.warning("Duplicate search engine shortName during quick search migration")
+        continue
+      }
+      idsByShortName[engine.shortName] = QuickSearchItemID(engine: engine)
+    }
+
+    let legacyOrder = Preferences.Search.orderedEngines.value ?? engines.map(\.shortName)
+    Preferences.Search.quickSearchOrder.value =
+      legacyOrder.compactMap { idsByShortName[$0]?.rawValue }
+
+    Preferences.Search.quickSearchDisabled.value =
+      (Preferences.Search.disabledEngines.value ?? [])
+      .compactMap { idsByShortName[$0]?.rawValue }
   }
 }

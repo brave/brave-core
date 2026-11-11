@@ -1,20 +1,67 @@
 diff --git a/BUILD.gn b/BUILD.gn
-index 0c48f1e9b2765968e6f121aa06b2266ec267a854..efda58ca18cce5adccbe0a1ae838817ed027f8bc 100644
+index d0531ca88958cabd830c45dd8ee4248c7d3ffbac..ad14f7fc9b7936ae8986188baa65eb0cd117498b 100644
 --- a/BUILD.gn
 +++ b/BUILD.gn
-@@ -937,6 +937,7 @@ config("internal_config_base") {
+@@ -4,6 +4,8 @@
+ 
+ # LINT.IfChange
+ 
++import("//tools/v8_context_snapshot/v8_context_snapshot.gni")
++import("//brave/v8/sources.gni")
+ import("//build/config/android/config.gni")
+ import("//build/config/arm.gni")
+ import("//build/config/c++/c++.gni")
+@@ -1000,6 +1002,9 @@ config("internal_config_base") {
      "$target_gen_dir",
      "$target_gen_dir/include",
    ]
-+  _include_dirs = include_dirs include_dirs = [] include_dirs = [ "//brave/chromium_src/v8" ] + _include_dirs
++  _include_dirs = include_dirs
++  include_dirs = []
++  include_dirs = [ "//brave/chromium_src/v8" ] + _include_dirs
  }
  
  config("internal_config") {
-@@ -3639,6 +3640,7 @@ v8_header_set("v8_headers") {
-     ":v8_tracing",
-     ":v8_version",
-   ]
-+  import("//brave/v8/sources.gni") sources += brave_v8_headers_sources public_deps += brave_v8_headers_public_deps
- }
+@@ -2566,6 +2571,7 @@ if (v8_use_metagen) {
+     # define must re-run the driver even though the action command is
+     # unchanged.
+     deps = [ ":v8_dump_build_config" ]
++    deps += brave_v8_headers_public_deps
  
- if (v8_generate_external_defines_header) {
+     if (v8_generate_external_defines_header) {
+       # v8config.h includes the generated v8-gn.h in this configuration.
+@@ -4075,6 +4081,7 @@ v8_header_set("v8_headers") {
+     "include/v8-weak-callback-info.h",
+     "include/v8.h",
+   ]
++  sources += brave_v8_headers_sources
+ 
+   sources += [
+     # The following headers cannot be platform-specific. The include validation
+@@ -4085,6 +4092,7 @@ v8_header_set("v8_headers") {
+   ]
+ 
+   public_deps = [ ":v8_config_headers" ]
++  public_deps += brave_v8_headers_public_deps
+ 
+   deps = [
+     ":cppgc_headers",
+@@ -8963,6 +8971,9 @@ if (is_component_build) {
+       ":v8_libplatform",
+       "src/inspector:inspector_headers",
+     ]
++    if (!use_v8_context_snapshot || include_both_v8_snapshots) {
++      public_deps += [ ":v8_snapshot" ]
++    }
+ 
+     configs = [ ":internal_config" ]
+     v8_add_configs += [ "//build/config/compiler:thinlto_optimize_max" ]
+@@ -9044,6 +9055,9 @@ if (is_component_build) {
+       ":v8_libplatform",
+       "src/inspector:inspector_headers",
+     ]
++    if (!use_v8_context_snapshot || include_both_v8_snapshots) {
++      public_deps += [ ":v8_snapshot" ]
++    }
+ 
+     public_configs = [ ":external_config" ]
+   }

@@ -7,6 +7,7 @@
 
 #include "base/functional/callback_helpers.h"
 #include "chrome/browser/download/download_commands.h"
+#include "chrome/browser/profiles/profile.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 
 #define DownloadItemModel DownloadItemModel_Chromium
@@ -54,6 +55,10 @@ void DownloadItemModel::CopyDownloadLinkToClipboard() {
   // This call must be reached only when the URL is valid.
   CHECK(url.is_valid());
   ui::ScopedClipboardWriter clipboard_writer(ui::ClipboardBuffer::kCopyPaste);
+  if (profile()->IsOffTheRecord()) {
+    // Keep it out of the OS clipboard history and cloud clipboard sync.
+    clipboard_writer.MarkAsOffTheRecord();
+  }
   clipboard_writer.WriteText(base::UTF8ToUTF16(url.spec()));
 }
 

@@ -4,9 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
-import Label from '@brave/leo/react/label'
-import Tooltip from '@brave/leo/react/tooltip'
+import Button from '@brave/nala/react/button'
+import Label from '@brave/nala/react/label'
+import Tooltip from '@brave/nala/react/tooltip'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Mutations
@@ -216,17 +216,15 @@ export const SignInWithEthereum = (props: Props) => {
           </HeaderText>
         </Row>
 
-        {data.originInfo && (
-          <Row
-            justifyContent='flex-start'
-            padding='0px 10px 24px 10px'
-          >
-            <OriginInfoCard
-              origin={data.originInfo}
-              noBackground={true}
-            />
-          </Row>
-        )}
+        <Row
+          justifyContent='flex-start'
+          padding='0px 10px 24px 10px'
+        >
+          <OriginInfoCard
+            origin={data.dappOriginInfo}
+            noBackground={true}
+          />
+        </Row>
 
         <Column
           fullWidth={true}
@@ -267,7 +265,7 @@ export const SignInWithEthereum = (props: Props) => {
             <MessageText textColor='primary'>
               {getLocale(
                 S.BRAVE_WALLET_SIGN_IN_WITH_BRAVE_WALLET_MESSAGE,
-              ).replaceAll('$1', data.originInfo.eTldPlusOne)}
+              ).replaceAll('$1', data.dappOriginInfo.eTldPlusOne)}
             </MessageText>
             {hasMessageAndResource && (
               <Column

@@ -14,6 +14,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/containers/flat_set.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/views/playlist/thumbnail_provider.h"
 #include "brave/components/playlist/content/browser/playlist_constants.h"
 #include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
@@ -148,7 +149,7 @@ class SelectableListView : public views::BoxLayoutView {
     }
 
     for (const auto& id : ids) {
-      auto* view = child_views_.at(id);
+      SelectableView* view = child_views_.at(id);
       selected_views_.insert({id, view});
       view->SetSelected(true);
     }
@@ -198,8 +199,8 @@ class SelectableListView : public views::BoxLayoutView {
   base::RepeatingCallback<void()> on_selection_changed_;
 
   base::flat_map<std::string /*id*/, DataType> data_;
-  base::flat_map<std::string /*id*/, SelectableView*> child_views_;
-  base::flat_map<std::string /*id*/, SelectableView*> selected_views_;
+  base::flat_map<std::string /*id*/, raw_ptr<SelectableView>> child_views_;
+  base::flat_map<std::string /*id*/, raw_ptr<SelectableView>> selected_views_;
 };
 
 using SelectableItemsView =

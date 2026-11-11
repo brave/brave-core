@@ -23,4 +23,8 @@ void BraveVPNServiceDelegateWin::ShowBraveVpnStatusTrayIcon() {
   wireguard::ShowBraveVpnStatusTrayIcon();
 }
 
+void BraveVPNServiceDelegateWin::SetAllowLanTraffic(bool allow) {
+  ::brave_vpn::SetAllowLanTraffic(allow);
+}
+
 }  // namespace brave_vpn

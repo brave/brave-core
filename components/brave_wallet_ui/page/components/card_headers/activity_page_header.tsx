@@ -1,0 +1,46 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+
+// Utils
+import { getLocale } from '$web-common/locale'
+
+// Styled Components
+import { SearchBarWrapper } from './activity_page_header.style'
+import { HeaderTitle } from './shared_card_headers.style'
+import { Row } from '$wallet/components/shared/style'
+import SearchBar from '$wallet/components/shared/search-bar'
+
+export interface Props {
+  searchValue: string
+  onSearchValueChange?: React.ChangeEventHandler<HTMLInputElement> | undefined
+}
+
+export const ActivityPageHeader = (props: Props) => {
+  const { searchValue, onSearchValueChange } = props
+
+  return (
+    <Row
+      padding='24px 0px'
+      justifyContent='space-between'
+    >
+      <HeaderTitle
+        textColor='primary'
+        variant='heading.h1'
+      >
+        {getLocale(S.BRAVE_WALLET_ACTIVITY)}
+      </HeaderTitle>
+      <SearchBarWrapper alignItems='flex-start'>
+        <SearchBar
+          placeholder={getLocale(S.BRAVE_WALLET_SEARCH_TEXT)}
+          action={onSearchValueChange}
+          value={searchValue}
+          isV2={true}
+        />
+      </SearchBarWrapper>
+    </Row>
+  )
+}

@@ -4,10 +4,9 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
-import Introspect
 import SwiftUI
 
-extension BraveStoreKitPurchase: Identifiable {
+extension BraveStoreKitPurchase: @retroactive Identifiable {
   public var id: String {
     return transactionId
   }

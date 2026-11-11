@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.omnibox;
 
 import static org.chromium.build.NullUtil.assertNonNull;
 
-import android.graphics.Bitmap;
 import android.view.ActionMode;
 import android.view.View;
 import android.view.View.OnLongClickListener;
@@ -23,6 +22,7 @@ import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsV
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.omnibox.LocationBarMediator.OmniboxUma;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
+import org.chromium.chrome.browser.omnibox.styles.OmniboxResourceProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
 import org.chromium.chrome.browser.omnibox.suggestions.action.OmniboxActionDelegateImpl;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
@@ -41,7 +41,6 @@ import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.function.BooleanSupplier;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 @NullMarked
@@ -52,13 +51,6 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
      * LocationBarCoordinator#mLocationBarMediator} protected via asm.
      */
     private @Nullable LocationBarMediator mLocationBarMediator;
-
-    /**
-     * {@link LocationBarCoordinator#mUrlBar} is private so we add a private `mUrlBar` here so this
-     * code compiles and then remove it and make {@link LocationBarCoordinator#mUrlBar} protected
-     * via asm.
-     */
-    private @Nullable View mUrlBar;
 
     private @Nullable View mQRButton;
 
@@ -97,7 +89,7 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             @Nullable BrowserControlsStateProvider browserControlsStateProvider,
             boolean isToolbarPositionCustomizationEnabled,
             @Nullable PageZoomManager pageZoomManager,
-            Function<Tab, @Nullable Bitmap> tabFaviconFunction,
+            OmniboxResourceProvider resourceProvider,
             SnackbarManager snackbarManager,
             View bottomContainerView,
             @Nullable OmniboxChipManager omniboxChipManager,
@@ -140,16 +132,12 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 browserControlsStateProvider,
                 isToolbarPositionCustomizationEnabled,
                 pageZoomManager,
-                tabFaviconFunction,
+                resourceProvider,
                 snackbarManager,
                 bottomContainerView,
                 omniboxChipManager,
                 scrimHandler,
                 userEducationHelper);
-
-        if (mUrlBar != null) {
-            ((UrlBar) mUrlBar).setSelectAllOnFocus(true);
-        }
 
         assertNonNull(mLocationBarMediator);
         if (mLocationBarMediator instanceof BraveLocationBarMediator) {

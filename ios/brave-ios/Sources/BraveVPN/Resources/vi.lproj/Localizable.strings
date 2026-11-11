@@ -40,9 +40,6 @@
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "Phiên bản ứng dụng";
 
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "Nhà mạng di động";
-
 /* Text to tell user to not modify support info below email's body. */
 "vpn.contactFormDoNotEditText" = "Brave không theo dõi bạn hoặc không biết cách bạn sử dụng ứng dụng của chúng tôi, vì vậy chúng tôi không biết bạn đã thiết lập VPN như thế nào. Vui lòng chia sẻ thông tin về sự cố bạn đang gặp phải và chúng tôi sẽ cố gắng hết sức để giải quyết ngay khi có thể.";
 
@@ -134,7 +131,7 @@
 "vpn.installTitle" = "Cài đặt VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "Bắt đầu dùng thử 7 ngày";
+"vpn.learnMore" = "Bắt đầu dùng thử miễn phí 7 ngày";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Gia hạn mỗi tháng";
@@ -227,7 +224,7 @@
 "vpn.serverTitle" = "%ld máy chủ";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Bảo vệ mọi ứng dụng với Brave VPN. Bảo vệ tối đa 10 thiết bị với một gói đăng ký.";
+"vpn.settingHeaderBody" = "Phát nội dung của bạn, theo cách của bạn. Bảo vệ mọi ứng dụng trên 10 thiết bị với 1 gói đăng ký.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Liên hệ hỗ trợ kỹ thuật";

@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 
 import { Link } from '../common/link'
 import {
@@ -30,7 +30,7 @@ export function BackgroundClickRegion() {
     <div data-css-scope={style.scope}>
       <Link
         url={url}
-        onClick={actions.notifySponsoredImageLogoClicked}
+        onClick={actions.notifyNewTabTakeoverLogoClicked}
         onContextMenu={(e) => e.preventDefault()}
       >
         <Icon name='launch' />

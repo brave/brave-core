@@ -39,7 +39,7 @@ struct SourceSuggestionsContainerView: View {
   var body: some View {
     SourceSuggestionsView(
       suggestions: suggestionsForFollowedSources,
-      isFollowing: { dataSource.isFollowingSourceBinding(source: $0) }
+      isFollowing: { $dataSource[isFollowing: $0] }
     )
   }
 }

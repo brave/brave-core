@@ -60,7 +60,7 @@ final class GroupedAdBlockEngineTests: XCTestCase {
   @MainActor func testEngineMemoryManagment() throws {
     AdblockEngine.setDomainResolver()
     var engine: AdblockEngine? = AdblockEngine()
-    weak var weakEngine: AdblockEngine? = engine
+    weak let weakEngine: AdblockEngine? = engine
     let localFileURL = Bundle.module.url(
       forResource: "iodkpdagapdfkphljnddpjlldadblomo",
       withExtension: "txt"

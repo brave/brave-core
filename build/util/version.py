@@ -23,10 +23,12 @@ from pathlib import Path
 
 # Matches a full chrome/VERSION file, capturing each component. Any unexpected
 # content (e.g. a newly added key) is rejected so format changes are caught.
-_VERSION_FILE_RE = re.compile(r'MAJOR=(?P<MAJOR>\d+)\n'
-                              r'MINOR=(?P<MINOR>\d+)\n'
-                              r'BUILD=(?P<BUILD>\d+)\n'
-                              r'PATCH=(?P<PATCH>\d+)\n')
+_VERSION_FILE_RE = re.compile(
+    r'MAJOR=(?P<MAJOR>\d+)\n'
+    r'MINOR=(?P<MINOR>\d+)\n'
+    r'BUILD=(?P<BUILD>\d+)\n'
+    r'PATCH=(?P<PATCH>\d+)\n'
+)
 
 # Matches a 'major.minor.build' Brave version, capturing the three parts.
 _BRAVE_VERSION_RE = re.compile(r'(\d+)\.(\d+)\.(\d+)')
@@ -131,8 +133,9 @@ class Versioner:
     @property
     def _sidecar(self) -> Path:
         """Path to the unpatched upstream chrome/VERSION.chromium sidecar."""
-        return self._version_file.with_name(f'{self._version_file.name}'
-                                            '.chromium')
+        return self._version_file.with_name(
+            f'{self._version_file.name}.chromium'
+        )
 
     def _git_head_contents(self) -> str:
         """Returns the version file's contents as committed at git HEAD.
@@ -144,16 +147,22 @@ class Versioner:
         version_file = self._version_file.resolve()
 
         # The repo-relative pathspec git expects (always forward slashes).
-        toplevel = subprocess.check_output([
-            'git', '-C',
-            str(version_file.parent), 'rev-parse', '--show-toplevel'
-        ],
-                                           encoding='utf-8').strip()
+        toplevel = subprocess.check_output(
+            [
+                'git',
+                '-C',
+                str(version_file.parent),
+                'rev-parse',
+                '--show-toplevel',
+            ],
+            encoding='utf-8',
+        ).strip()
         pathspec = version_file.relative_to(toplevel).as_posix()
 
         return subprocess.check_output(
             ['git', '-C', toplevel, 'show', f'HEAD:{pathspec}'],
-            encoding='utf-8')
+            encoding='utf-8',
+        )
 
     def gen(self) -> None:
         """Generates //brave/build/version.gni from the version files.
@@ -166,20 +175,20 @@ class Versioner:
         upstream = _read_version_from_file(self._sidecar)
         values = {
             'year': datetime.date.today().year,
-
             # Brave version lives in the patched MINOR/BUILD/PATCH on disk.
             'brave_version_major': patched['MINOR'],
             'brave_version_minor': patched['BUILD'],
             'brave_version_build': patched['PATCH'],
-            'brave_version': (f"{patched['MINOR']}.{patched['BUILD']}."
-                              f"{patched['PATCH']}"),
-
+            'brave_version': (
+                f"{patched['MINOR']}.{patched['BUILD']}.{patched['PATCH']}"
+            ),
             # The upstream Chromium milestone and full version come from the
             # .chromium sidecar.
             'chromium_version_major': upstream['MAJOR'],
             'chrome_version_string': (
                 f"{upstream['MAJOR']}.{upstream['MINOR']}."
-                f"{upstream['BUILD']}.{upstream['PATCH']}"),
+                f"{upstream['BUILD']}.{upstream['PATCH']}"
+            ),
         }
         _write_if_changed(_VERSION_GNI, _VERSION_GNI_TEMPLATE % values)
 
@@ -201,7 +210,8 @@ class Versioner:
         if not match:
             raise ValueError(
                 "expected a 'major.minor.build' Brave version, got "
-                f'{brave_version!r}')
+                f'{brave_version!r}'
+            )
 
         # MAJOR (the Chromium milestone) comes from the unpatched git HEAD copy;
         # MINOR/BUILD/PATCH hold the Brave major/minor/build.
@@ -246,25 +256,27 @@ def main() -> int:
 
     # Shared version-file argument for all subcommands.
     version_file_parser = argparse.ArgumentParser(add_help=False)
-    version_file_parser.add_argument('version_file',
-                                     type=Path,
-                                     help='Path to the chrome/VERSION file.')
+    version_file_parser.add_argument(
+        'version_file', type=Path, help='Path to the chrome/VERSION file.'
+    )
 
     gen_parser = subparsers.add_parser(
         'gen',
         parents=[version_file_parser],
-        help='Generate //brave/build/version.gni from chrome/VERSION.')
+        help='Generate //brave/build/version.gni from chrome/VERSION.',
+    )
     gen_parser.set_defaults(func=Versioner.gen_command)
 
     update_parser = subparsers.add_parser(
         'update',
         parents=[version_file_parser],
-        help="Write the Brave version into chrome/VERSION's MINOR/BUILD/PATCH."
+        help="Write the Brave version into chrome/VERSION's MINOR/BUILD/PATCH.",
     )
     update_parser.add_argument(
         '--brave-version',
         required=True,
-        help="The Brave version to write, as 'major.minor.build'.")
+        help="The Brave version to write, as 'major.minor.build'.",
+    )
     update_parser.set_defaults(func=Versioner.update_command)
 
     options = parser.parse_args()

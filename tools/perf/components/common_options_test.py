@@ -17,33 +17,48 @@ def _parse_cmd_args(args) -> CommonOptions:
 
 
 _CI_ARGS = [
-    '--ci-mode', '--working-directory', 'fake-dir', '--target_os', 'mac',
-    '--machine-id', 'mac-mini1-sf', '--target_arch', 'arm64'
+  '--ci-mode',
+  '--working-directory',
+  'fake-dir',
+  '--target_os',
+  'mac',
+  '--machine-id',
+  'mac-mini1-sf',
+  '--target_arch',
+  'arm64',
 ]
 
 
 class TestCommonOptions(unittest.TestCase):
-
   def test_ci(self):
     args = ['auto', 'v1.87.1', *_CI_ARGS]
     options = _parse_cmd_args(args)
     self.assertEqual(options.mode, PerfMode.RUN)
     config = load_config(options)
-    self.assertEqual(config['configurations'][0]['profile'],
-                     'brave-typical-mac')
+    self.assertEqual(
+      config['configurations'][0]['profile'], 'brave-typical-mac'
+    )
 
   def test_ci_chromium(self):
     args = ['auto', 'v1.87.1', '--chromium', *_CI_ARGS]
     options = _parse_cmd_args(args)
     self.assertEqual(options.mode, PerfMode.RUN)
     config = load_config(options)
-    self.assertEqual(config['configurations'][0]['profile'],
-                     'chrome-typical-mac')
+    self.assertEqual(
+      config['configurations'][0]['profile'], 'chrome-typical-mac'
+    )
 
   def test_update_profile(self):
     args = [
-        'auto', 'v1.87.1', '--mode', 'update-profile', '--upload', 'true',
-        '--upload-branch', 'fake-branch', *_CI_ARGS
+      'auto',
+      'v1.87.1',
+      '--mode',
+      'update-profile',
+      '--upload',
+      'true',
+      '--upload-branch',
+      'fake-branch',
+      *_CI_ARGS,
     ]
     options = _parse_cmd_args(args)
     self.assertEqual(options.mode, PerfMode.UPDATE_PROFILE)
@@ -52,7 +67,8 @@ class TestCommonOptions(unittest.TestCase):
     self.assertEqual(options.upload, True)
 
     self.assertTrue(
-        options.config.endswith('brave-mac-arm64-mac-mini1-sf.json5'))
+      options.config.endswith('brave-mac-arm64-mac-mini1-sf.json5')
+    )
     self.assertTrue(load_config(options))
 
   def test_smoke(self):

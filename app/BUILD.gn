@@ -14,6 +14,7 @@ import("//brave/components/traffic_control/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
 import("//build/config/features.gni")
 import("//build/config/locales.gni")
+import("//extensions/buildflags/buildflags.gni")
 import("//pdf/features.gni")
 
 action("generate_command_metadata") {
@@ -80,8 +81,20 @@ brave_grit("brave_generated_resources_grit") {
     "brave_generated_resources.pak",
   ]
 
+  if (translate_genders) {
+    grit_flags = [ "--translate-genders" ]
+  }
+
+  # grit clones every data_package <output> node per gender, including the
+  # lang-less "brave_generated_resources.pak" above.
+  foreach(gender_suffix, gender_suffixes - [ "" ]) {
+    outputs += [ "brave_generated_resources${gender_suffix}.pak" ]
+  }
+
   foreach(locale, all_chrome_locales) {
-    outputs += [ "brave_generated_resources_$locale.pak" ]
+    foreach(gender_suffix, gender_suffixes) {
+      outputs += [ "brave_generated_resources_${locale}${gender_suffix}.pak" ]
+    }
   }
 }
 
@@ -104,7 +117,7 @@ source_set("browser_tests") {
       "//chrome/browser",
       "//chrome/browser/desktop_to_mobile_promos:utils",
       "//chrome/browser/domain_reliability",
-      "//chrome/browser/ui",
+      "//chrome/browser/ui:browser_window_header",
       "//chrome/common:non_code_constants",
       "//chrome/test",
       "//chrome/test:test_support",
@@ -137,21 +150,23 @@ source_set("unit_tests") {
     "//chrome/browser:browser_features",
     "//chrome/browser/devtools",
     "//chrome/browser/enterprise",
+    "//chrome/browser/glic/public:features",
     "//chrome/browser/media/webrtc",
     "//chrome/browser/policy:policy_util",
     "//chrome/browser/preloading",
-    "//chrome/browser/ui",
+    "//chrome/browser/ttc/core",
     "//chrome/browser/ui:ui_features",
     "//chrome/browser/ui/omnibox",
     "//components/attribution_reporting:features",
     "//components/autofill/core/common",
-    "//components/browser_actuator/internal:features",
+    "//components/browser_actuator/internal/transport:features",
     "//components/browser_actuator/public:feature_list",
     "//components/browsing_data/core",
     "//components/commerce/core:feature_list",
     "//components/compose/core/browser:features",
     "//components/content_settings/core/common:features",
     "//components/contextual_tasks/public:feature_list",
+    "//components/critical_actions/core/browser",
     "//components/device_signals/core/common:features",
     "//components/embedder_support",
     "//components/enterprise/connectors/core",
@@ -179,7 +194,6 @@ source_set("unit_tests") {
     "//components/performance_manager",
     "//components/permissions",
     "//components/personal_context/core:features",
-    "//components/plus_addresses/core/common:features",
     "//components/privacy_sandbox",
     "//components/private_ai:features",
     "//components/private_insights",
@@ -188,11 +202,13 @@ source_set("unit_tests") {
     "//components/segmentation_platform/public",
     "//components/shared_highlighting/core/common",
     "//components/signin/public/base:signin_buildflags",
+    "//components/site_token_provider",
     "//components/skills:features",
     "//components/subresource_filter/core/common",
     "//components/sync/base:features",
     "//components/user_education/common",
     "//components/webapps/browser",
+    "//extensions/buildflags",
     "//gpu/config",
     "//pdf:buildflags",
     "//services/device/public/cpp:device_features",
@@ -213,19 +229,22 @@ source_set("unit_tests") {
       ":command_ids",
       "//brave/components/commands/common",
       "//chrome/app:command_ids",
+      "//chrome/browser/child_module",
+      "//chrome/browser/default_browser",
       "//chrome/browser/sharing_hub",
       "//chrome/browser/ui:accelerator_table",
-      "//chrome/browser/ui/tabs:features",
       "//chrome/browser/ui/toasts",
       "//chrome/browser/ui/views/desktop_capture",
       "//chrome/common:chrome_features",
       "//components/translate/core/common",
-      "//extensions/common",
       "//ui/accessibility:ax_base",
     ]
   }
   if (is_win) {
     deps += [ "//chrome/browser/startup" ]
+  }
+  if (enable_extensions_core) {
+    deps += [ "//extensions/common" ]
   }
   if (enable_brave_vpn_v2_apps) {
     deps += [ "//brave/components/brave_vpn/app/v2/shared" ]

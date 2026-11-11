@@ -28,11 +28,17 @@
 /* The title of the screen which asks user to enable privacy preserving analytics. */
 "focusOnboarding.p3aScreenTitle" = "Κοινοποίησε **απολύτως ιδιωτικές &ανώνυμες** πληροφορίες προϊόντος.";
 
-/* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
-"focusOnboarding.p3aToggleDescription" = "Μπορείς να εξαιρεθείς ανά πάσα στιγμή από τις Ρυθμίσεις στην ενότητα **Ασπίδες και Απόρρητο**. [Μάθε περισσότερα](#p3a-learn-more) σχετικά με τα Στατιστικά στοιχεία προϊόντος διατήρησης του απορρήτου.";
+/* The description shown below the toggle for enabling privacy preserving analytics. */
+"focusOnboarding.p3aToggleDescription" = "Κοινοποιήστε εντελώς ιδιωτικές και ανώνυμες πληροφορίες προϊόντος σχετικά με ποιες λειτουργίες χρησιμοποιούνται από τους χρήστες του Brave.";
 
-/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "private & anonymous" snippet should be bold in all languages */
-"focusOnboarding.p3aToggleTitle" = "Κοινοποιήστε **ιδιωτικές & ανώνυμες** πληροφορίες προϊόντος.";
+/* The title of the toggle that allows the user to enable/disable the privacy preserving analytics. */
+"focusOnboarding.p3aToggleTitle" = "Ιδιωτικές πληροφορίες προϊόντος";
+
+/* The description shown below the toggle for enabling crash reporting. */
+"focusOnboarding.sendCrashReportsToggleDescription" = "Στείλτε ανώνυμες διαγνωστικές αναφορές, σε περίπτωση σφάλματος ή παγώματος.";
+
+/* The title of the toggle that allows the user to enable/disable crash reporting. */
+"focusOnboarding.sendCrashReportsToggleTitle" = "Αποστολή αναφορών σφάλματος";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Ξεκινήστε την περιήγηση";

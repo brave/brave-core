@@ -4,25 +4,24 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { AliasItem } from './email_aliases_item'
-import { color, spacing, radius } from '@brave/leo/tokens/css/variables'
+import { color, spacing, radius } from '@brave/nala/tokens/css/variables'
 import {
   DeleteAliasModal,
   EditMode,
   EmailAliasModal,
 } from './email_aliases_modal'
-import { getLocale } from '$web-common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 import Col from './styles/Col'
 import Description from './styles/Description'
-import Dialog from '@brave/leo/react/dialog'
+import Dialog from '@brave/nala/react/dialog'
 import Row from './styles/Row'
 import styled from 'styled-components'
 import {
   Alias,
   EmailAliasesMetricsRemote,
   EmailAliasesServiceInterface,
-  MAX_ALIASES,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
 const Container = styled.div`
@@ -56,12 +55,14 @@ export type EditState = {
   alias?: Alias
 }
 
-export const ListIntroduction = () => (
+export const ListIntroduction = ({ aliasLimit }: { aliasLimit: number }) => (
   <AliasListIntro>
     <Col>
       <h4>{getLocale(S.SETTINGS_EMAIL_ALIASES_LIST_TITLE)}</h4>
       <Description>
-        {getLocale(S.SETTINGS_EMAIL_ALIASES_CREATE_DESCRIPTION)}
+        {formatLocale(S.SETTINGS_EMAIL_ALIASES_CREATE_DESCRIPTION, {
+          $1: aliasLimit,
+        })}
       </Description>
     </Col>
   </AliasListIntro>
@@ -72,16 +73,18 @@ export const AliasList = ({
   authEmail,
   emailAliasesService,
   metrics,
+  aliasLimit,
 }: {
   emailAliasesService: EmailAliasesServiceInterface
   aliases: Alias[]
   authEmail: string
   metrics?: EmailAliasesMetricsRemote
+  aliasLimit: number
 }) => {
   const [editState, setEditState] = React.useState<EditState>({ mode: 'None' })
   return (
     <Container>
-      <ListIntroduction />
+      <ListIntroduction aliasLimit={aliasLimit} />
       <Aliases>
         {aliases.map((alias) => (
           <AliasItem
@@ -95,7 +98,7 @@ export const AliasList = ({
       </Aliases>
       <CreateButton
         id='create-new-item-button'
-        isDisabled={aliases.length >= MAX_ALIASES}
+        isDisabled={aliases.length >= aliasLimit}
         kind='filled'
         name='create-alias'
         title={getLocale(S.SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_TITLE)}
@@ -124,6 +127,7 @@ export const AliasList = ({
             editAlias={editState.alias}
             mainEmail={authEmail}
             aliases={aliases}
+            aliasLimit={aliasLimit}
             emailAliasesService={emailAliasesService}
           />
         )}

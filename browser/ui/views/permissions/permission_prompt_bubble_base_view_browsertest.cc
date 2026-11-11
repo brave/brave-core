@@ -8,7 +8,6 @@
 #include "base/functional/callback_helpers.h"
 #include "base/test/run_until.h"
 #include "build/build_config.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/chrome_widget_sublevel.h"
 #include "chrome/browser/ui/views/permissions/permission_prompt_style.h"

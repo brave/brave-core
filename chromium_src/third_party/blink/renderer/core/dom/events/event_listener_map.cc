@@ -16,7 +16,7 @@ namespace blink {
 bool EventListenerMap::AddListenerToVector(
     EventListenerVector* vector,
     EventListener* listener,
-    const AddEventListenerOptionsResolved* options,
+    const AddEventListenerOptionsResolved& options,
     RegisteredEventListener** registered_listener) {
   const bool result = ::blink::AddListenerToVector(vector, listener, options,
                                                    registered_listener);

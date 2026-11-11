@@ -5,7 +5,9 @@
 
 #include <cmath>
 
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/darker_theme/features.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/color/chrome_color_mixers.h"
@@ -31,6 +33,24 @@ class BraveColorMixersTest : public testing::Test {
   void AddUiAndChromeColorMixers() {
     ui::AddColorMixers(&color_provider_, color_provider_key_);
     AddColorMixers();
+  }
+
+  void SetDarkerScheme() {
+    color_provider_key_.color_mode = ui::ColorProviderKey::ColorMode::kDark;
+    color_provider_key_.scheme_variant =
+        ui::ColorProviderKey::SchemeVariant::kDarker;
+  }
+
+  // TabStyle::GetTabForegroundColor() reads the hover IDs for hovered inactive
+  // tabs; Brave doesn't change the text colour on hover.
+  void ExpectHoveredInactiveTabForegroundUnchanged() {
+    EXPECT_EQ(
+        color_provider().GetColor(kColorTabForegroundInactiveHoverFrameActive),
+        color_provider().GetColor(kColorTabForegroundInactiveFrameActive));
+    EXPECT_EQ(
+        color_provider().GetColor(
+            kColorTabForegroundInactiveHoverFrameInactive),
+        color_provider().GetColor(kColorTabForegroundInactiveFrameInactive));
   }
 
   void SetAccentUserColor(SkColor color) {
@@ -91,4 +111,17 @@ TEST_F(BraveColorMixersTest, ChromaticUserColorTintsTabColorsTest) {
       color_provider().GetColor(kColorTabBackgroundInactiveHoverFrameActive),
       color_provider().GetColor(
           nala::kColorDesktopbrowserTabbarHoverTabHorizontal));
+}
+
+TEST_F(BraveColorMixersTest, HoveredInactiveTabForegroundTest) {
+  AddUiAndChromeColorMixers();
+  ExpectHoveredInactiveTabForegroundUnchanged();
+}
+
+TEST_F(BraveColorMixersTest, HoveredInactiveTabForegroundDarkerThemeTest) {
+  base::test::ScopedFeatureList feature_list(
+      darker_theme::features::kBraveDarkerTheme);
+  SetDarkerScheme();
+  AddUiAndChromeColorMixers();
+  ExpectHoveredInactiveTabForegroundUnchanged();
 }

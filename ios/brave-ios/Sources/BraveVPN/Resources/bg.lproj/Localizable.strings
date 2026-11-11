@@ -40,9 +40,6 @@
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "Версия на приложението";
 
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "Мобилен оператор";
-
 /* Text to tell user to not modify support info below email's body. */
 "vpn.contactFormDoNotEditText" = "Brave не те следи и не знае как използваш приложението ни, така че не знаем как си настроил VPN. Моля, сподели информация за проблема, който си срещнал, и ще направим всичко възможно, за да го разрешим възможно най-скоро.";
 
@@ -158,7 +155,7 @@
 "vpn.paywallYearlyPriceDividend" = "година";
 
 /* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "Изтекло";
+"vpn.planExpired" = "Изтекъл";
 
 /* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "Моля, избери предпочитания си транспортен протокол. След като превключиш, съществуващите ти данни за VPN ще се изчистят и ще се свържеш отново, ако има установена VPN връзка.";
@@ -227,7 +224,7 @@
 "vpn.serverTitle" = "%ld сървър";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Защити всяко приложение с Brave VPN. Защити до 10 устройства с един план.";
+"vpn.settingHeaderBody" = "Стриймвайте съдържанието си по свой начин. Защитете всяко приложение на 10 устройства с 1 абонамент.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Свързване с техническата поддръжка";

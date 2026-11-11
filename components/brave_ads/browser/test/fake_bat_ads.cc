@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/browser/test/fake_bat_ads.h"
 
 #include <optional>
-#include <ostream>
 #include <utility>
 
 #include "base/time/time.h"
@@ -103,6 +102,7 @@ void FakeBatAds::TriggerNotificationAdEvent(
     const std::string& /*placement_id*/,
     brave_ads::mojom::NotificationAdEventType /*mojom_ad_event_type*/,
     TriggerNotificationAdEventCallback callback) {
+  ++trigger_notification_ad_event_count_;
   std::move(callback).Run(/*success=*/false);
 }
 

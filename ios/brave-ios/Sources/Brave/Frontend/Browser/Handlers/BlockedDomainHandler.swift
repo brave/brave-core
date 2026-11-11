@@ -9,11 +9,13 @@ import Foundation
 import Shared
 import WebKit
 
+@MainActor
 public class BlockedDomainHandler: InternalSchemeResponse {
   public static let path = InternalURL.Path.blocked.rawValue
 
   public init() {}
 
+  @MainActor
   public func response(forRequest request: URLRequest) async -> (URLResponse, Data)? {
     guard let url = request.url, let internalURL = InternalURL(url),
       let originalURL = internalURL.extractedUrlParam

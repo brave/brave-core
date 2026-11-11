@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { useHistory } from 'react-router'
 
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 
 // Constants
 import { WalletRoutes } from '../../../constants/types'
@@ -17,7 +17,7 @@ import { getLocale } from '../../../../common/locale'
 // Components
 import {
   WalletPageWrapper, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 
 // Styled Components
 import {

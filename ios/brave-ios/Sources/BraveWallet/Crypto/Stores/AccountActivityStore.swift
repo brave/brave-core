@@ -161,7 +161,6 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
   private let txService: BraveWalletTxService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
-  private let ipfsApi: IpfsAPI
   private let bitcoinWalletService: BraveWalletBitcoinWalletService
   private let zcashWalletService: BraveWalletZCashWalletService
   private let assetManager: WalletUserAssetManagerType
@@ -194,7 +193,6 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     txService: BraveWalletTxService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
-    ipfsApi: IpfsAPI,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
     zcashWalletService: BraveWalletZCashWalletService,
     userAssetManager: WalletUserAssetManagerType
@@ -208,7 +206,6 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     self.txService = txService
     self.blockchainRegistry = blockchainRegistry
     self.solTxManagerProxy = solTxManagerProxy
-    self.ipfsApi = ipfsApi
     self.bitcoinWalletService = bitcoinWalletService
     self.zcashWalletService = zcashWalletService
     self.assetManager = userAssetManager
@@ -429,10 +426,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       )
 
       // fetch NFTs metadata
-      let allNFTMetadata = await rpcService.fetchNFTMetadata(
-        tokens: userNFTs.map(\.token),
-        ipfsApi: ipfsApi
-      )
+      let allNFTMetadata = await rpcService.fetchNFTMetadata(tokens: userNFTs.map(\.token))
       nftMetadataCache.merge(with: allNFTMetadata)
       // update assets, NFTs, transactions after balance & price & metadata fetch
       guard !Task.isCancelled else { return }
@@ -617,7 +611,6 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       blockchainRegistry: blockchainRegistry,
       txService: txService,
       solanaTxManagerProxy: solTxManagerProxy,
-      ipfsApi: ipfsApi,
       userAssetManager: assetManager
     )
     self.transactionDetailsStore = transactionDetailsStore

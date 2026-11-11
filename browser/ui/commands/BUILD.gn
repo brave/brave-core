@@ -24,6 +24,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//brave/app:generate_command_metadata",
+    "//brave/browser/ui",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_news/common/buildflags",
     "//brave/components/brave_rewards/core",
@@ -38,9 +39,9 @@ source_set("unit_tests") {
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/tor/buildflags",
     "//chrome/app:command_ids",
-    "//chrome/browser/ui",
     "//chrome/browser/ui:accelerator_table",
     "//chrome/test:test_support",
+    "//chrome/test/base:testing_browser_process",
     "//components/sync_preferences:test_support",
     "//content/test:test_support",
     "//testing/gtest",

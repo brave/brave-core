@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/tabs/test/tab_manager_observer_mock.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 

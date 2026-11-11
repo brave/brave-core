@@ -10,8 +10,8 @@ import { getLocale } from '$web-common/locale'
 import { ConnectionState } from '../../api/panel_browser_api'
 import { useSelector, useDispatch } from '../../state/hooks'
 import * as Actions from '../../state/actions'
-import ToggleButton from '@brave/leo/react/toggle'
-import { color } from '@brave/leo/tokens/css/variables'
+import ToggleButton from '@brave/nala/react/toggle'
+import { color } from '@brave/nala/tokens/css/variables'
 
 function useIsOnSelector() {
   // We derive isOn from connectionStatus to be synchronized
@@ -46,6 +46,10 @@ const getStatusText = (status: ConnectionState) => {
 
   if (status === ConnectionState.CONNECT_FAILED) {
     return getLocale(S.BRAVE_VPN_CONNECTION_FAILED)
+  }
+
+  if (status === ConnectionState.CONNECT_NO_AGENT) {
+    return getLocale(S.BRAVE_VPN_CONNECTION_UNAVAILABLE)
   }
 
   return null

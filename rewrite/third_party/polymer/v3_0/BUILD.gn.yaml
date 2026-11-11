@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Build the ChromeOS-only Polymer elements on every desktop platform
+
+      Brave uses them outside ChromeOS too.
+    count: 3
+    regex:
+      pattern: if (is_chromeos) {
+      replace: if (!is_android) {
+
+  - description: Let the Brave WebUI targets use Polymer.
+    add_literal_to_list:
+      target: library
+      list_name: visibility
+      literal: brave_polymer_library_visibility
+      import: //brave/third_party/polymer/v3_0/sources.gni

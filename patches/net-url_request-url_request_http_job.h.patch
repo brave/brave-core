@@ -1,0 +1,13 @@
+diff --git a/net/url_request/url_request_http_job.h b/net/url_request/url_request_http_job.h
+index 69f9ec45c5dad11c0c39341b627da55c882ae9cf..0ef60b63dd19806b0061fc28104d705c2a08aa22 100644
+--- a/net/url_request/url_request_http_job.h
++++ b/net/url_request/url_request_http_job.h
+@@ -97,6 +97,8 @@ class NET_EXPORT_PRIVATE URLRequestHttpJob : public URLRequestJob {
+   RequestPriority priority() const { return priority_; }
+ 
+  private:
++  CookieOptions CreateCookieOptions(
++      CookieOptions::SameSiteCookieContext same_site_context) const;
+   // For CookieRequestScheme histogram enum.
+   FRIEND_TEST_ALL_PREFIXES(URLRequestHttpJobTest,
+                            CookieSchemeRequestSchemeHistogram);

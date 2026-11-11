@@ -15,14 +15,11 @@ struct SaferSignMessageRequestContainerView: View {
   let requestIndex: Int
   let requestCount: Int
 
-  let namedFromAddress: String
   let receiverAddress: String
   let namedReceiverAddress: String
   let cowSwapOrder: BraveWallet.CowSwapOrder
   let ethSwapDetails: EthSwapDetails?
 
-  /// A map between request id and a boolean value indicates this request message needs pilcrow formating.
-  @Binding var needPilcrowFormatted: [Int32: Bool]
   /// A map between request id and a boolean value indicates this request message is displayed as
   /// its original content.
   @Binding var showOrignalMessage: [Int32: Bool]
@@ -51,7 +48,6 @@ struct SaferSignMessageRequestContainerView: View {
         if isShowingDetails {
           SignMessageRequestContentView(
             request: request,
-            needPilcrowFormatted: $needPilcrowFormatted,
             showOrignalMessage: $showOrignalMessage
           )
           // match spacing from comparison in `SaferSignTransactionView`
@@ -59,8 +55,7 @@ struct SaferSignMessageRequestContainerView: View {
         } else {
           SaferSignTransactionView(
             network: network,
-            fromAddress: account.address,
-            namedFromAddress: namedFromAddress,
+            fromAccountInfo: account,
             receiverAddress: receiverAddress,
             namedReceiverAddress: namedReceiverAddress,
             fromToken: ethSwapDetails?.fromToken,
@@ -128,30 +123,24 @@ struct SaferSignMessageRequestContainerView: View {
   private var originAndFavicon: some View {
     VStack {
       Group {
-        if request.originInfo.isBraveWalletOrigin {
-          Image(uiImage: UIImage(sharedNamed: "brave.logo")!)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-        } else {
-          if let url = URL(string: request.originInfo.originSpec) {
-            FaviconReader(url: url) { image in
-              if let image = image {
-                Image(uiImage: image)
-                  .resizable()
-                  .scaledToFit()
-              } else {
-                Circle()
-                  .stroke(Color(braveSystemName: .dividerStrong), lineWidth: pixelLength)
-              }
+        if let url = URL(string: request.dappOriginInfo.originSpec) {
+          FaviconReader(url: url) { image in
+            if let image = image {
+              Image(uiImage: image)
+                .resizable()
+                .scaledToFit()
+            } else {
+              Circle()
+                .stroke(Color(braveSystemName: .dividerStrong), lineWidth: pixelLength)
             }
-            .background(Color(braveSystemName: .neutral20))
-            .clipShape(RoundedRectangle(cornerRadius: 4))
           }
+          .background(Color(braveSystemName: .neutral20))
+          .clipShape(RoundedRectangle(cornerRadius: 4))
         }
       }
       .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
 
-      Text(originInfo: request.originInfo)
+      Text(dappOriginInfo: request.dappOriginInfo)
         .foregroundColor(Color(braveSystemName: .textPrimary))
         .font(.subheadline)
         .multilineTextAlignment(.center)

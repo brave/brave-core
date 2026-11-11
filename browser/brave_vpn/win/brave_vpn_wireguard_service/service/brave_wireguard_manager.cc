@@ -21,6 +21,16 @@ HRESULT BraveWireguardManager::EnableVpn(const BSTR public_key,
                                          const BSTR address,
                                          const BSTR endpoint,
                                          DWORD* last_error) {
+  return EnableVpn2(public_key, private_key, address, endpoint,
+                    /*allow_lan_traffic=*/TRUE, last_error);
+}
+
+HRESULT BraveWireguardManager::EnableVpn2(const BSTR public_key,
+                                          const BSTR private_key,
+                                          const BSTR address,
+                                          const BSTR endpoint,
+                                          BOOL allow_lan_traffic,
+                                          DWORD* last_error) {
   // if all params are empty, reconnect using last known good config.
   // browser/brave_vpn/win/brave_vpn_wireguard_service/service/wireguard_tunnel_service.cc
   bool reconnect_using_last_config = public_key && wcslen(public_key) == 0 &&
@@ -28,7 +38,18 @@ HRESULT BraveWireguardManager::EnableVpn(const BSTR public_key,
                                      address && wcslen(address) == 0 &&
                                      endpoint && wcslen(endpoint) == 0;
   if (reconnect_using_last_config) {
-    if (!brave_vpn::wireguard::LaunchWireguardService(L"")) {
+    // The caller has no server details to rebuild a config from, but the
+    // persisted one may predate the current allow-LAN setting, so refresh its
+    // AllowedIPs. Passing the result back through rewrites the file, keeping it
+    // as the last known good config. An empty config reuses the file as is.
+    auto refreshed_config =
+        brave_vpn::wireguard::GetLastUsedConfigIfLanTrafficChanged(
+            allow_lan_traffic);
+    std::wstring encoded_config =
+        refreshed_config.has_value()
+            ? base::UTF8ToWide(base::Base64Encode(refreshed_config.value()))
+            : L"";
+    if (!brave_vpn::wireguard::LaunchWireguardService(encoded_config)) {
       *last_error = ::GetLastError();
       return E_FAIL;
     } else {
@@ -81,7 +102,7 @@ HRESULT BraveWireguardManager::EnableVpn(const BSTR public_key,
 
   auto config = brave_vpn::wireguard::CreateWireguardConfig(
       validated_private_key.value(), validated_public_key.value(),
-      validated_endpoint.value(), validated_address.value());
+      validated_endpoint.value(), validated_address.value(), allow_lan_traffic);
   if (!config.has_value()) {
     VLOG(1) << __func__ << " : failed to get correct credentials";
     return E_INVALIDARG;

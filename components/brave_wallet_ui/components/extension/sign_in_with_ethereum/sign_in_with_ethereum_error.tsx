@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
@@ -106,13 +106,10 @@ export const SignInWithEthereumError = () => {
             <WarningIcon />
           </WarningIconWrapper>
           <OriginErrorTitle textColor='primary'>
-            {errorData?.originInfo.eTldPlusOne ?? ''}
+            {errorData?.dappOriginInfo.eTldPlusOne ?? ''}
           </OriginErrorTitle>
           <OriginErrorText textColor='error'>
-            <CreateSiteOrigin
-              originSpec={errorData?.originInfo.originSpec ?? ''}
-              eTldPlusOne={errorData?.originInfo.eTldPlusOne ?? ''}
-            />
+            <CreateSiteOrigin originInfo={errorData?.dappOriginInfo} />
           </OriginErrorText>
         </Column>
 

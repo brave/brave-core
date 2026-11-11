@@ -18,4 +18,10 @@
 
     <!-- Match this value with the upstream for Accessibility -->
     <dimen name="omnibox_search_engine_logo_composed_size">24dp</dimen>
+
+    <!-- The app menu sizes itself to its items, but measures them detached, so the tablet zoom
+         row's icon (a relative compound drawable) is left out and that row never widens the menu.
+         Internal pages have no other item long enough to widen it, which clips the zoom title.
+         Keep upstream's former menu_width_lff as the tablet minimum. -->
+    <dimen name="menu_width_min">266dp</dimen>
 </resources>

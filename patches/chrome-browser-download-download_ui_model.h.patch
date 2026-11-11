@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/download/download_ui_model.h b/chrome/browser/download/download_ui_model.h
-index a0b2eef645615796e7b4dd373b06762687f001b9..109353aedf339025d831bb45b7dc1df4bc313072 100644
+index 329662b4db07a5727ba6faed063b9fcf019c850d..168b7400cbf86a4f8e0a249ce83230dccb2f73d9 100644
 --- a/chrome/browser/download/download_ui_model.h
 +++ b/chrome/browser/download/download_ui_model.h
-@@ -517,6 +517,9 @@ class DownloadUIModel {
+@@ -529,6 +529,9 @@ class DownloadUIModel {
    virtual bool IsExtensionDownload() const;
  
   protected:

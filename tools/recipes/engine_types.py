@@ -33,6 +33,7 @@ class ResourceCost:
 
     See `api.step.ResourceCost` for full documentation.
     """
+
     cpu: int = attr.ib(default=500)
     memory: int = attr.ib(default=50)
     disk: int = attr.ib(default=0)
@@ -63,7 +64,7 @@ class ResourceCost:
     def __str__(self) -> str:
         bits = []
         if self.cpu > 0:
-            cores = ('%0.2f' % (self.cpu / 1000.)).rstrip('0').rstrip('.')
+            cores = ('%0.2f' % (self.cpu / 1000.0)).rstrip('0').rstrip('.')
             bits.append(f'cpu=[{cores} cores]')
         if self.memory > 0:
             bits.append(f'memory=[{self.memory} MiB]')
@@ -75,28 +76,32 @@ class ResourceCost:
 
     def fits(self, cpu: int, memory: int, disk: int, net: int) -> bool:
         """Whether this cost fits within the given constraints."""
-        return (self.cpu <= cpu and self.memory <= memory and self.disk <= disk
-                and self.net <= net)
+        return (
+            self.cpu <= cpu
+            and self.memory <= memory
+            and self.disk <= disk
+            and self.net <= net
+        )
 
 
 class PerGreenletState(local):
     """Subclass to get an object whose state is tied to the current greenlet.
 
-        from engine_types import PerGreenletState
+    from engine_types import PerGreenletState
 
-        class MyState(PerGreenletState):
-            cool_stuff = True
-            neat_thing = ''
+    class MyState(PerGreenletState):
+        cool_stuff = True
+        neat_thing = ''
 
-            def _get_setter_on_spawn(self):
-                # Called on greenlet spawn; return a closure propagating values
-                # from the spawning greenlet to the new one.
-                old_cool_stuff = self.cool_stuff
+        def _get_setter_on_spawn(self):
+            # Called on greenlet spawn; return a closure propagating values
+            # from the spawning greenlet to the new one.
+            old_cool_stuff = self.cool_stuff
 
-                def _inner():
-                    self.cool_stuff = old_cool_stuff
+            def _inner():
+                self.cool_stuff = old_cool_stuff
 
-                return _inner
+            return _inner
     """
 
     def __new__(cls, *args: Any, **kwargs: Any) -> PerGreenletState:

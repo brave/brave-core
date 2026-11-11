@@ -22,7 +22,7 @@ FakeBrowserIdentity::FakeBrowserIdentity(
     base::ProcessId pid,
     FakeVerificationResultProvider result_provider,
     bool is_same_process)
-    : BrowserIdentity(pid),
+    : BrowserIdentity(pid, PlatformData{}),
       verification_result_(std::move(result_provider)),
       is_same_process_(is_same_process) {}
 

@@ -11,7 +11,6 @@
 #include "brave/components/brave_wallet/browser/cardano/cardano_test_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_tx_decoder.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
-#include "brave/components/brave_wallet/common/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {

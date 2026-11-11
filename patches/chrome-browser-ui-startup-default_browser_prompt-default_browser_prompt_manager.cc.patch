@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/ui/startup/default_browser_prompt/default_browser_prompt_manager.cc b/chrome/browser/ui/startup/default_browser_prompt/default_browser_prompt_manager.cc
+index 7f906d9ace7f2aecc6d057d2bf61207a888b1a08..c5d7856502a18c739516f05cc7268004de41b790 100644
+--- a/chrome/browser/ui/startup/default_browser_prompt/default_browser_prompt_manager.cc
++++ b/chrome/browser/ui/startup/default_browser_prompt/default_browser_prompt_manager.cc
+@@ -218,6 +218,10 @@ void DefaultBrowserPromptManager::CloseAllPrompts(CloseReason close_reason) {
+ }
+ 
+ void DefaultBrowserPromptManager::SetAppMenuItemVisibility(bool show) {
++  if (show) {
++    show_app_menu_item_ = false;
++    return;
++  }
+   show_app_menu_item_ = show;
+ #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_CHROMEOS)
+   if (auto* collection = GlobalBrowserCollection::GetInstance()) {

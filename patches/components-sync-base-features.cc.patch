@@ -1,21 +1,21 @@
 diff --git a/components/sync/base/features.cc b/components/sync/base/features.cc
-index 245205cee06b8409560fbe42f8400296a302a985..14872de28c9cff1260fcdf249776ae1f79a594b7 100644
+index 47806c5968e2dd722301d37617189c95d718196a..833270df396854b38c68f9c24ff8bbb53f7ba52d 100644
 --- a/components/sync/base/features.cc
 +++ b/components/sync/base/features.cc
-@@ -89,6 +89,7 @@ BASE_FEATURE(kReplaceSyncPromosWithSigninPromosNewSignin,
+@@ -68,6 +68,7 @@ BASE_FEATURE(kReplaceSyncPromosWithSignInPromos,
  );
  
  bool IsReplaceSyncPromosWithSignInPromosEnabled() {
 +  if ((true)) return false;
-   return base::FeatureList::IsEnabled(kReplaceSyncPromosWithSignInPromos) ||
-          base::FeatureList::IsEnabled(
-              kReplaceSyncPromosWithSigninPromosNewSignin);
-@@ -118,7 +119,7 @@ DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAccountSettings);
+ #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
+   return true;
+ #else
+@@ -99,7 +100,7 @@ DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAccountSettings);
  DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAutofillValuable);
  #endif
  
 -DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAutofillValuableMetadata);
-+BASE_FEATURE(kSyncAutofillValuableMetadata, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kSyncAutofillValuableMetadata, base::FEATURE_DISABLED_BY_DEFAULT);
  
  DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncWalletFlightReservations);
  

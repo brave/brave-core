@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/resources/signin/profile_customization/profile_customization_app.html.ts b/chrome/browser/resources/signin/profile_customization/profile_customization_app.html.ts
+index 5b0ea40262444b47c8e3c3c8fb2ca94c06a0f131..81fd5957a8c688e678562e1d7b109de314ca13f5 100644
+--- a/chrome/browser/resources/signin/profile_customization/profile_customization_app.html.ts
++++ b/chrome/browser/resources/signin/profile_customization/profile_customization_app.html.ts
+@@ -2,7 +2,7 @@
+ // Use of this source code is governed by a BSD-style license that can be
+ // found in the LICENSE file.
+ 
+-import {html} from '//resources/lit/v3_0/lit.rollup.js';
++import {html, nothing} from '//resources/lit/v3_0/lit.rollup.js';
+ 
+ import type {ProfileCustomizationAppElement} from './profile_customization_app.js';
+ 

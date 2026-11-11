@@ -27,7 +27,7 @@ class SplitTabsToolbarButton : public SplitTabsToolbarButton_ChromiumImpl {
   METADATA_HEADER(SplitTabsToolbarButton, SplitTabsToolbarButton_ChromiumImpl)
 
  public:
-  explicit SplitTabsToolbarButton(Browser* browser);
+  explicit SplitTabsToolbarButton(BrowserWindowInterface* browser);
   ~SplitTabsToolbarButton() override;
 };
 

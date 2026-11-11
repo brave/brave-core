@@ -8,6 +8,7 @@ include_rules = [
   "+components/paint_preview",
   "+components/pdf",
   "+components/permissions",
+  "+components/tabs/public",
   "+components/user_prefs",
   "+components/favicon/content",
   "+components/favicon/core/test",

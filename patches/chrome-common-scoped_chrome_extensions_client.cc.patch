@@ -1,0 +1,13 @@
+diff --git a/chrome/common/scoped_chrome_extensions_client.cc b/chrome/common/scoped_chrome_extensions_client.cc
+index 0c056abf9e88b7221abae524e840f200369dbe63..ac8030876f19551cab1d92ddf5fb6d2a2186ae69 100644
+--- a/chrome/common/scoped_chrome_extensions_client.cc
++++ b/chrome/common/scoped_chrome_extensions_client.cc
+@@ -61,7 +61,7 @@ CombineAllAvailabilityCheckMaps() {
+ }  // namespace
+ 
+ ScopedChromeExtensionsClient::ScopedChromeExtensionsClient()
+-    : client_(std::make_unique<ChromeExtensionsClient>()) {
++    : client_(std::make_unique<BraveExtensionsClient>()) {
+   client_->SetFeatureDelegatedAvailabilityCheckMap(
+       CombineAllAvailabilityCheckMaps());
+ #if BUILDFLAG(ENABLE_PLATFORM_APPS)

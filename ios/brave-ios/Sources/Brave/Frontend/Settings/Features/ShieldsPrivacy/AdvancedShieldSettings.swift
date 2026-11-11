@@ -87,9 +87,7 @@ import os
   @Published var adBlockAndTrackingPreventionLevel: ShieldLevel {
     didSet {
       guard oldValue != adBlockAndTrackingPreventionLevel else { return }
-      if shouldWriteToContentSettings {
-        braveShieldsSettings?.defaultAdBlockMode = adBlockAndTrackingPreventionLevel.adBlockMode
-      }
+      braveShieldsSettings?.defaultAdBlockMode = adBlockAndTrackingPreventionLevel.adBlockMode
       // Also assign to existing pref until deprecated so reverse migration is not required
       Preferences.Shields.blockAdsAndTrackingLevel = adBlockAndTrackingPreventionLevel
     }
@@ -97,9 +95,7 @@ import os
   @Published var isBlockScriptsEnabled: Bool {
     didSet {
       guard oldValue != isBlockScriptsEnabled else { return }
-      if shouldWriteToContentSettings {
-        braveShieldsSettings?.isBlockScriptsEnabledByDefault = isBlockScriptsEnabled
-      }
+      braveShieldsSettings?.isBlockScriptsEnabledByDefault = isBlockScriptsEnabled
       // Also assign to existing pref until deprecated so reverse migration is not required
       Preferences.Shields.blockScripts.value = isBlockScriptsEnabled
     }
@@ -107,10 +103,8 @@ import os
   @Published var isBlockFingerprintingEnabled: Bool {
     didSet {
       guard oldValue != isBlockFingerprintingEnabled else { return }
-      if shouldWriteToContentSettings {
-        braveShieldsSettings?.defaultFingerprintMode =
-          isBlockFingerprintingEnabled ? .standardMode : .allowMode
-      }
+      braveShieldsSettings?.defaultFingerprintMode =
+        isBlockFingerprintingEnabled ? .standardMode : .allowMode
       // Also assign to existing pref until deprecated so reverse migration is not required
       Preferences.Shields.fingerprintingProtection.value = isBlockFingerprintingEnabled
     }
@@ -118,17 +112,32 @@ import os
   @Published var httpsUpgradeLevel: HTTPSUpgradeLevel {
     didSet {
       Preferences.Shields.httpsUpgradeLevel = httpsUpgradeLevel
-      HttpsUpgradeServiceFactory.get(privateMode: false)?.clearAllowlist(
+      httpsUpgradeService?.clearAllowlist(
         fromStart: Date.distantPast,
         end: Date.distantFuture
       )
+      clearHttpsUpgradeAllowlist()
+    }
+  }
+  @Published var isHttpsOnlyModeEnabled: Bool {
+    didSet {
+      prefs.set(isHttpsOnlyModeEnabled, forPath: kHttpsOnlyModeEnabled)
+      clearHttpsUpgradeAllowlist()
+    }
+  }
+  /// Whether or not HTTPS upgrades are enabled at any level.
+  ///
+  /// Enabling restores the level that was set prior to disabling, or `standard` if there is none.
+  var isHTTPSUpgradeEnabled: Bool {
+    get { httpsUpgradeLevel.isEnabled }
+    set {
+      httpsUpgradeLevel =
+        newValue ? (Preferences.Shields.httpsUpgradePriorEnabledLevel ?? .standard) : .disabled
     }
   }
   @Published var shredLevel: SiteShredLevel {
     didSet {
-      if shouldWriteToContentSettings {
-        braveShieldsSettings?.defaultAutoShredMode = shredLevel.autoShredMode
-      }
+      braveShieldsSettings?.defaultAutoShredMode = shredLevel.autoShredMode
       Preferences.Shields.shredLevel = shredLevel
     }
   }
@@ -149,9 +158,9 @@ import os
     }
   }
 
-  @Published var isSurveyPanelistEnabled: Bool = false {
+  @Published var isSponsoredAdsEnabled: Bool {
     didSet {
-      rewards?.ads.isSurveyPanelistEnabled = isSurveyPanelistEnabled
+      prefs.set(isSponsoredAdsEnabled, forPath: kBraveAdsSponsoredEnabledPrefName)
     }
   }
 
@@ -163,28 +172,19 @@ import os
     BraveRewardsAPI.isSupported(prefs)
   }
 
-  /// If we should write Shields setting changes to content settings.
-  private var shouldWriteToContentSettings: Bool {
-    // If Shields content settings feature flag is enabled, we should always
-    // write. However if Shields content settings is disabled, but we've
-    // already performed the migration to content settings, we should write so
-    // no data is lost when they re-enable the flag. This could happen if we
-    // roll out the feature flag using percentages as there is no guarantee
-    // that a user in the first study at say 25%, would be included in the
-    // follow-up studies.
-    return FeatureList.kBraveShieldsContentSettings.enabled
-      || Preferences.Shields.Migration.shieldsCoreDataToContentSettingsCompleted.value
-  }
-
   typealias ClearDataCallback = @MainActor (Bool, Bool) -> Void
   @Published var clearableSettings: [ClearableSetting]
 
   private var subscriptions: [AnyCancellable] = []
+  private let profile: any Profile
   private let prefs: any PrefService
   private let p3aUtilities: BraveP3AUtils
   private let localState: any PrefService
   private let debounceService: (any DebounceService)?
   private let braveShieldsSettings: (any BraveShieldsSettings)?
+  private let httpsUpgradeService: HttpsUpgradeService?
+  private let serpMetrics: (any SerpMetrics)?
+  private let historyAPI: BraveHistoryAPI
   private let rewards: BraveRewards?
   private let clearDataCallback: ClearDataCallback
   private let braveStats: BraveStats
@@ -192,12 +192,15 @@ import os
   let tabManager: TabManager
 
   init(
-    profile: LegacyBrowserProfile,
+    profile: any Profile,
     tabManager: TabManager,
     feedDataSource: FeedDataSource,
     debounceService: (any DebounceService)?,
     braveShieldsSettings: (any BraveShieldsSettings)?,
-    braveCore: BraveProfileController,
+    httpsUpgradeService: HttpsUpgradeService?,
+    historyAPI: BraveHistoryAPI,
+    serpMetrics: (any SerpMetrics)?,
+    prefs: any PrefService,
     p3aUtils: BraveP3AUtils,
     localState: any PrefService,
     rewards: BraveRewards?,
@@ -205,10 +208,14 @@ import os
     webcompatReporterHandler: WebcompatReporterWebcompatReporterHandler?,
     clearDataCallback: @escaping ClearDataCallback
   ) {
+    self.profile = profile
     self.p3aUtilities = p3aUtils
     self.localState = localState
     self.debounceService = debounceService
     self.braveShieldsSettings = braveShieldsSettings
+    self.httpsUpgradeService = httpsUpgradeService
+    self.historyAPI = historyAPI
+    self.serpMetrics = serpMetrics
     self.tabManager = tabManager
     self.isP3AEnabled = p3aUtilities.isP3AEnabled
     self.isCrashReportingEnabled = localState.boolean(forPath: kMetricsReportingEnabled)
@@ -216,28 +223,24 @@ import os
     self.rewards = rewards
     self.clearDataCallback = clearDataCallback
     self.braveStats = braveStats
-    self.prefs = braveCore.profile.prefs
-    if FeatureList.kBraveShieldsContentSettings.enabled {
-      self.adBlockAndTrackingPreventionLevel =
-        braveShieldsSettings?.defaultAdBlockMode.shieldLevel ?? .standard
-      self.isBlockScriptsEnabled = braveShieldsSettings?.isBlockScriptsEnabledByDefault ?? false
-      self.isBlockFingerprintingEnabled =
-        (braveShieldsSettings?.defaultFingerprintMode ?? .standardMode) == .standardMode
-      self.shredLevel = braveShieldsSettings?.defaultAutoShredMode.siteShredLevel ?? .never
-    } else {
-      self.adBlockAndTrackingPreventionLevel = Preferences.Shields.blockAdsAndTrackingLevel
-      self.isBlockScriptsEnabled = Preferences.Shields.blockScripts.value
-      self.isBlockFingerprintingEnabled = Preferences.Shields.fingerprintingProtection.value
-      self.shredLevel = Preferences.Shields.shredLevel
-    }
+    self.prefs = prefs
+    self.adBlockAndTrackingPreventionLevel =
+      braveShieldsSettings?.defaultAdBlockMode.shieldLevel ?? .standard
+    self.isBlockScriptsEnabled = braveShieldsSettings?.isBlockScriptsEnabledByDefault ?? false
+    self.isBlockFingerprintingEnabled =
+      (braveShieldsSettings?.defaultFingerprintMode ?? .standardMode) == .standardMode
+    self.shredLevel = braveShieldsSettings?.defaultAutoShredMode.siteShredLevel ?? .never
     self.httpsUpgradeLevel = Preferences.Shields.httpsUpgradeLevel
+    self.isHttpsOnlyModeEnabled = prefs.boolean(forPath: kHttpsOnlyModeEnabled)
     self.isDeAmpEnabled = prefs.boolean(forPath: kDeAmpEnabled)
     self.isGPCEnabled = prefs.boolean(forPath: kGlobalPrivacyControlEnabled)
     self.isBlockAllCookiesEnabled = prefs.boolean(forPath: kBlockAllCookiesEnabled)
     self.isDebounceEnabled = debounceService?.isEnabled ?? false
     self.shredHistoryItems = Preferences.Shields.shredHistoryItems.value
     self.webcompatReporterHandler = webcompatReporterHandler
-    self.isSurveyPanelistEnabled = rewards?.ads.isSurveyPanelistEnabled ?? false
+    self.isSponsoredAdsEnabled = prefs.boolean(
+      forPath: kBraveAdsSponsoredEnabledPrefName
+    )
 
     blockMobileAnnoyances = FilterListStorage.shared.isEnabled(
       for: AdblockFilterListCatalogEntry.mobileAnnoyancesComponentID
@@ -247,9 +250,9 @@ import os
       ClearableSetting(
         id: .history,
         clearable: HistoryClearable(
-          historyAPI: braveCore.historyAPI,
-          httpsUpgradeService: HttpsUpgradeServiceFactory.get(privateMode: false),
-          serpMetrics: SerpMetricsServiceFactory.get(profile: braveCore.profile)
+          historyAPI: historyAPI,
+          httpsUpgradeService: httpsUpgradeService,
+          serpMetrics: serpMetrics
         ),
         isEnabled: true
       ),
@@ -261,12 +264,12 @@ import os
       ),
       ClearableSetting(
         id: .passwords,
-        clearable: PasswordsClearable(profile: profile),
+        clearable: PasswordsClearable(),
         isEnabled: true
       ),
       ClearableSetting(id: .downloads, clearable: DownloadsClearable(), isEnabled: true),
     ]
-    if braveCore.profile.prefs.isBraveNewsAvailable {
+    if prefs.isBraveNewsAvailable {
       clearableSettings.append(
         ClearableSetting(
           id: .braveNews,
@@ -276,7 +279,7 @@ import os
       )
     }
 
-    if braveCore.profile.prefs.isPlaylistAvailable {
+    if prefs.isPlaylistAvailable {
       clearableSettings.append(
         ClearableSetting(id: .playlistCache, clearable: PlayListCacheClearable(), isEnabled: false)
       )
@@ -299,7 +302,7 @@ import os
       ClearableSetting(id: .recentSearches, clearable: RecentSearchClearable(), isEnabled: true),
       ClearableSetting(
         id: .siteAndShieldsSettings,
-        clearable: SiteAndShieldsSettingsClearable(profile: braveCore.profile),
+        clearable: SiteAndShieldsSettingsClearable(profile: profile),
         isEnabled: false
       ),
     ])
@@ -318,6 +321,13 @@ import os
     Task { @MainActor in
       self.isSaveContactInfoEnabled = await webcompatReporterHandler?.browserParams().1 ?? false
     }
+  }
+
+  private func clearHttpsUpgradeAllowlist() {
+    httpsUpgradeService?.clearAllowlist(
+      fromStart: Date.distantPast,
+      end: Date.distantFuture
+    )
   }
 
   func clearPrivateData(_ clearables: [Clearable]) async {
@@ -412,8 +422,8 @@ import os
         for filterList in filterLists {
           switch filterList.entry.componentId {
           case AdblockFilterListCatalogEntry.mobileAnnoyancesComponentID:
-            if filterList.isEnabled != self.blockMobileAnnoyances {
-              self.blockMobileAnnoyances = filterList.isEnabled
+            if filterList.isEnabledOrDefault != self.blockMobileAnnoyances {
+              self.blockMobileAnnoyances = filterList.isEnabledOrDefault
             }
           default:
             continue

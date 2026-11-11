@@ -7,6 +7,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import argparse
+import fnmatch
 import os
 import shutil
 import sys
@@ -34,21 +35,31 @@ def copy_other_arch(src_path, dest_path):
     # any two independent builds (even of the same architecture).
     # TODO(https://github.com/brave/brave-browser/issues/57254): Make .pak file
     # builds reproducible and remove the *.pak ignore pattern below.
-    shutil.copytree(src_path,
-                    dest_path,
-                    symlinks=True,
-                    ignore=shutil.ignore_patterns('Sparkle.framework',
-                                                  '*.pak'))
+    # webui_code_cache.<arch>.pak is the exception: each architecture has its
+    # own, and the universalizer keeps files only one half has.
+    ignore_by_pattern = shutil.ignore_patterns('Sparkle.framework', '*.pak')
+
+    def ignore(directory, names):
+        return {
+            name
+            for name in ignore_by_pattern(directory, names)
+            if not fnmatch.fnmatch(name, 'webui_code_cache.*.pak')
+        }
+
+    shutil.copytree(src_path, dest_path, symlinks=True, ignore=ignore)
 
 
 def main(args):
     parser = argparse.ArgumentParser(
         description='Copy the other arch macos binary into root_out_dir for '
-        'universalize')
-    parser.add_argument('src_path',
-                        help='The other architecture build output app path.')
+        'universalize'
+    )
     parser.add_argument(
-        'dest_path', help='The location to copy the app to in root_out_dir.')
+        'src_path', help='The other architecture build output app path.'
+    )
+    parser.add_argument(
+        'dest_path', help='The location to copy the app to in root_out_dir.'
+    )
     parsed = parser.parse_args(args)
 
     copy_other_arch(parsed.src_path, parsed.dest_path)

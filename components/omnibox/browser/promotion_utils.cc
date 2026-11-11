@@ -5,13 +5,10 @@
 
 #include "brave/components/omnibox/browser/promotion_utils.h"
 
-#include <algorithm>
-
 #include "base/check.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_search_conversion/types.h"
 #include "brave/components/brave_search_conversion/utils.h"
-#include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/autocomplete_result.h"
 
@@ -32,9 +29,10 @@ void SortBraveSearchPromotionMatch(AutocompleteResult* result) {
   // If first match is not from search query with default provider,
   // it means there are better matches from other providers.
   // In this case, remove the promotion match from |result|.
-  // NOTE: SEARCH_WHAT_YOU_TYPED : The input is a search query (with the
+  // NOTE: kSearchWhatYouTyped : The input is a search query (with the
   // default engine).
-  if (result->begin()->type != AutocompleteMatchType::SEARCH_WHAT_YOU_TYPED) {
+  if (result->begin()->type !=
+      omnibox::AutocompleteMatchType::kSearchWhatYouTyped) {
     result->EraseMatchesWhere(IsBraveSearchPromotionMatch);
     return;
   }

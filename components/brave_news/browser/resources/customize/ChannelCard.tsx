@@ -6,7 +6,7 @@
 import Flex from '$web-common/Flex'
 import * as React from 'react'
 import styled from 'styled-components'
-import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css/variables'
+import { color, effect, font, radius, spacing } from '@brave/nala/tokens/css/variables'
 import { useChannelSubscribed } from '../shared/Context'
 import { channelIcons } from '../shared/Icons'
 import FollowButton from '../shared/FollowButton'

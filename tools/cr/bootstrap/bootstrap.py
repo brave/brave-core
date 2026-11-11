@@ -67,8 +67,13 @@ def remove_block(text: str) -> str:
     Returns `text` unchanged when no block is present.
     """
     pattern = re.compile(
-        r'\n*' + re.escape(BEGIN_MARKER) + r'.*?' + re.escape(END_MARKER) +
-        r'[^\n]*', re.DOTALL)
+        r'\n*'
+        + re.escape(BEGIN_MARKER)
+        + r'.*?'
+        + re.escape(END_MARKER)
+        + r'[^\n]*',
+        re.DOTALL,
+    )
     return pattern.sub('', text)
 
 
@@ -79,9 +84,11 @@ def apply_block(text: str, bootstrap_dir: Path) -> str:
     `~/.bashrc` / `~/.zshrc`. Idempotent: any existing block is stripped first,
     so repeated installs do not accumulate duplicates.
     """
-    block = (f'{BEGIN_MARKER}\n'
-             f'export PATH="{bootstrap_dir.as_posix()}:$PATH"\n'
-             f'{END_MARKER}')
+    block = (
+        f'{BEGIN_MARKER}\n'
+        f'export PATH="{bootstrap_dir.as_posix()}:$PATH"\n'
+        f'{END_MARKER}'
+    )
     base = remove_block(text)
     if not base:
         return block + '\n'
@@ -100,9 +107,11 @@ def fish_drop_in(bootstrap_dir: Path) -> str:
     """
     path = bootstrap_dir.as_posix()
     line = f'set -gx PATH "{path}" (string match --invert -- "{path}" $PATH)'
-    return ('# Managed by brave bootstrap — do not edit.\n'
-            '# Remove with: bootstrap.py uninstall\n'
-            f'{line}\n')
+    return (
+        '# Managed by brave bootstrap — do not edit.\n'
+        '# Remove with: bootstrap.py uninstall\n'
+        f'{line}\n'
+    )
 
 
 def _norm_win(entry: str | Path) -> str:
@@ -124,7 +133,8 @@ def add_windows_entry(current: str, bootstrap_dir: Path) -> str:
 def remove_windows_entry(current: str, bootstrap_dir: Path) -> str:
     """Returns `current` (a `;`-joined PATH) with `bootstrap_dir` removed."""
     entries = [
-        e for e in current.split(';')
+        e
+        for e in current.split(';')
         if e and _norm_win(e) != _norm_win(bootstrap_dir)
     ]
     return ';'.join(entries)
@@ -220,17 +230,22 @@ def _erase_fish_user_path(bootstrap_dir: Path) -> bool:
         present = subprocess.run(
             [fish, '-c', f'contains -- "{target}" $fish_user_paths'],
             check=False,
-            capture_output=True)
+            capture_output=True,
+        )
         if present.returncode != 0:
             return False
         # Rewrite the universal variable without `target`. Version-independent
         # (avoids `fish_add_path --erase`, which is missing on older fish).
-        subprocess.run([
-            fish, '-c', f'set -U fish_user_paths '
-            f'(string match --invert -- "{target}" $fish_user_paths)'
-        ],
-                       check=False,
-                       capture_output=True)
+        subprocess.run(
+            [
+                fish,
+                '-c',
+                f'set -U fish_user_paths '
+                f'(string match --invert -- "{target}" $fish_user_paths)',
+            ],
+            check=False,
+            capture_output=True,
+        )
     except OSError:
         return False
     print(f'Removed from fish_user_paths: {target}')
@@ -274,8 +289,13 @@ def _update_windows_path(transform: Callable[[str], str]) -> int:
     # Deferred: `winreg`/`ctypes` are Windows-only and importing them at module
     # scope would break this script on POSIX.
     import winreg  # pylint: disable=import-outside-toplevel
-    with winreg.OpenKey(winreg.HKEY_CURRENT_USER, 'Environment', 0,
-                        winreg.KEY_READ | winreg.KEY_WRITE) as key:
+
+    with winreg.OpenKey(
+        winreg.HKEY_CURRENT_USER,
+        'Environment',
+        0,
+        winreg.KEY_READ | winreg.KEY_WRITE,
+    ) as key:
         try:
             current, value_type = winreg.QueryValueEx(key, 'Path')
         except FileNotFoundError:
@@ -290,13 +310,19 @@ def _update_windows_path(transform: Callable[[str], str]) -> int:
     # newly-spawned shells see the updated PATH. Best-effort.
     try:
         import ctypes  # pylint: disable=import-outside-toplevel
+
         HWND_BROADCAST = 0xFFFF
         WM_SETTINGCHANGE = 0x001A
         SMTO_ABORTIFHUNG = 0x0002
-        ctypes.windll.user32.SendMessageTimeoutW(HWND_BROADCAST,
-                                                 WM_SETTINGCHANGE, 0,
-                                                 'Environment',
-                                                 SMTO_ABORTIFHUNG, 5000, None)
+        ctypes.windll.user32.SendMessageTimeoutW(
+            HWND_BROADCAST,
+            WM_SETTINGCHANGE,
+            0,
+            'Environment',
+            SMTO_ABORTIFHUNG,
+            5000,
+            None,
+        )
     except Exception:  # pylint: disable=broad-except
         pass
 
@@ -307,7 +333,8 @@ def _update_windows_path(transform: Callable[[str], str]) -> int:
 
 def _install_windows() -> int:
     return _update_windows_path(
-        lambda cur: add_windows_entry(cur, BOOTSTRAP_DIR))
+        lambda cur: add_windows_entry(cur, BOOTSTRAP_DIR)
+    )
 
 
 def _uninstall_windows() -> int:
@@ -333,7 +360,8 @@ def _resolve_shells(selection: str | None) -> list[str]:
 def main() -> int:
     """Dispatch the install/uninstall subcommand for the host platform."""
     parser = argparse.ArgumentParser(
-        description='Install/uninstall the brave tool shims on $PATH.')
+        description='Install/uninstall the brave tool shims on $PATH.'
+    )
     sub = parser.add_subparsers(dest='command', required=True)
 
     install = sub.add_parser('install', help='Add the shims to $PATH.')
@@ -341,11 +369,13 @@ def main() -> int:
         '--shell',
         choices=[*SHELLS, 'all'],
         default=None,
-        help='POSIX shell(s) to configure (default: current $SHELL).')
+        help='POSIX shell(s) to configure (default: current $SHELL).',
+    )
     install.add_argument(
         '--force',
         action='store_true',
-        help='Install even if a bootstrap shim is already on $PATH.')
+        help='Install even if a bootstrap shim is already on $PATH.',
+    )
     sub.add_parser('uninstall', help='Remove the shims from $PATH.')
 
     args = parser.parse_args()
@@ -357,7 +387,8 @@ def main() -> int:
             sys.stderr.write(
                 'A bootstrap shim is already installed and on $PATH:\n'
                 f'  {existing}\n'
-                'Run "uninstall" first, or pass --force to install anyway.\n')
+                'Run "uninstall" first, or pass --force to install anyway.\n'
+            )
             return 1
         if is_windows:
             return _install_windows()

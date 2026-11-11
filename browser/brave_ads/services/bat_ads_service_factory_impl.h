@@ -6,11 +6,15 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_SERVICES_BAT_ADS_SERVICE_FACTORY_IMPL_H_
 #define BRAVE_BROWSER_BRAVE_ADS_SERVICES_BAT_ADS_SERVICE_FACTORY_IMPL_H_
 
+#include "base/memory/scoped_refptr.h"
+#include "base/task/single_thread_task_runner.h"
 #include "brave/components/brave_ads/browser/bat_ads_service_factory.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 namespace brave_ads {
+
+class BatAdsServiceLaunch;
 
 class BatAdsServiceFactoryImpl final : public BatAdsServiceFactory {
  public:
@@ -22,7 +26,21 @@ class BatAdsServiceFactoryImpl final : public BatAdsServiceFactory {
   ~BatAdsServiceFactoryImpl() override;
 
   // BatAdsServiceFactory:
-  mojo::Remote<bat_ads::mojom::BatAdsService> Launch() const override;
+  mojo::Remote<bat_ads::mojom::BatAdsService> Launch() override;
+  void Invalidate() override;
+
+ private:
+  // The dedicated thread every launch's bind runs on, shared across `Launch`
+  // calls so a superseding `Invalidate` cancels by posting to the same
+  // `SingleThreadTaskRunner` the new launch's bind is posted to. That shared
+  // sequence is what guarantees the old cancel cannot interleave with the
+  // new bind, so only one self-owned `BatAdsServiceImpl` is ever live.
+  scoped_refptr<base::SingleThreadTaskRunner> launch_task_runner_;
+
+  // The in-flight `Launch`, if any. Ref-counted instead of owned solely by
+  // `this`, since it must remain valid even if `this` is destroyed while its
+  // bind is still pending on `launch_task_runner_`.
+  scoped_refptr<BatAdsServiceLaunch> launch_;
 };
 
 }  // namespace brave_ads

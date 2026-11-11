@@ -13,7 +13,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "tweetnacl.h"  // NOLINT
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::crypto {
 

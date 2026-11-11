@@ -13,6 +13,7 @@
 #include "brave/browser/ui/webui/email_aliases/email_aliases_promo_ui.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/email_aliases/constants.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
@@ -188,17 +189,28 @@ class EmailAliasesPromoDialogDelegate
 
 }  // namespace
 
+DEFINE_USER_DATA(EmailAliasesController);
+
 EmailAliasesController::EmailAliasesController(
     BrowserView* browser_view,
     EmailAliasesService* email_aliases_service)
     : browser_view_(browser_view),
-      email_aliases_service_(email_aliases_service) {
+      email_aliases_service_(email_aliases_service),
+      scoped_unowned_user_data_(
+          browser_view->browser()->GetUnownedUserDataHost(),
+          *this) {
   CHECK(browser_view_);
   CHECK(email_aliases_service_.get());
 }
 
 EmailAliasesController::~EmailAliasesController() {
   CloseBubble();
+}
+
+// static
+EmailAliasesController* EmailAliasesController::From(
+    BrowserWindowInterface* browser) {
+  return Get(browser->GetUnownedUserDataHost());
 }
 
 bool EmailAliasesController::IsAvailableFor(

@@ -10,6 +10,7 @@ import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//build/config/features.gni")
 
 source_set("page_action") {
   # TODO(https://github.com/brave/brave-browser/issues/52829)
@@ -50,6 +51,7 @@ source_set("page_action") {
     deps += [
       "//brave/app:brave_generated_resources_grit_grit",
       "//brave/app:command_ids",
+      "//brave/app/vector_icons",
       "//brave/components/psst/core/common",
       "//brave/components/vector_icons",
       "//chrome/browser/ui/color:mixers",
@@ -86,10 +88,15 @@ source_set("page_action") {
       "//brave/app:brave_generated_resources_grit_grit",
       "//brave/browser/tor",
       "//brave/components/tor",
+      "//brave/components/tor:pref_names",
       "//brave/components/vector_icons",
+      "//brave/ui/color:nala_color_id",
+      "//chrome/browser:browser_process",
       "//chrome/browser/profiles",
       "//chrome/browser/ui/actions",
       "//chrome/browser/ui/color:mixers",
+      "//components/policy/core/common:common_constants",
+      "//components/prefs",
       "//content/public/browser",
       "//ui/base",
       "//ui/color",
@@ -135,10 +142,11 @@ source_set("impl") {
     deps += [
       "//brave/components/brave_wayback_machine",
       "//brave/components/vector_icons",
-      "//chrome/browser/ui",
+      "//chrome/browser/ui:browser_actions",
       "//chrome/browser/ui/actions",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/color:mixers",
+      "//chrome/browser/ui/views/frame:browser_view_header",
       "//chrome/browser/ui/views/frame:toolbar_button_provider",
       "//components/tabs:public",
       "//components/user_prefs",
@@ -232,6 +240,12 @@ source_set("unit_tests") {
       "//ui/base",
       "//ui/menus",
     ]
+
+    # For `dbus_thread_linux::Shutdown()` in psst_action_controller_unittest.cc.
+    deps += [ "//build/config/linux/dbus:buildflags" ]
+    if (is_linux && use_dbus) {
+      deps += [ "//components/dbus" ]
+    }
   }
 
   if (enable_brave_wayback_machine) {
@@ -253,6 +267,7 @@ source_set("unit_tests") {
     deps += [
       # PlaylistPageActionController itself lives in //brave/browser/ui; see
       # the comment on that dep in browser/ui/tabs/BUILD.gn.
+      "//brave/browser/playlist",
       "//brave/browser/ui",
       "//brave/components/playlist/content/browser",
       "//brave/components/playlist/core/common",
@@ -272,9 +287,12 @@ source_set("unit_tests") {
     sources += [ "onion_location_page_action_controller_unittest.cc" ]
     deps += [
       ":page_action",
+      "//brave/browser/tor",
       "//brave/components/tor",
       "//chrome/browser/ui/page_action",
       "//chrome/browser/ui/page_action:test_support",
+      "//components/policy/core/common:common_constants",
+      "//components/sync_preferences:test_support",
       "//components/tabs:test_support",
       "//content/test:test_support",
       "//ui/actions",
@@ -288,6 +306,7 @@ source_set("unit_tests") {
     deps += [
       "//brave/browser/brave_news",
       "//brave/browser/brave_news:impl",
+      "//brave/browser/brave_news:tab_helper",
       "//brave/browser/ui",
       "//brave/components/brave_news/common",
       "//brave/components/brave_news/common:mojom",

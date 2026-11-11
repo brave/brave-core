@@ -68,7 +68,7 @@ extension BrowserViewController: DownloadQueueDelegate {
       return
     }
 
-    DispatchQueue.main.async {
+    DispatchQueue.main.async { [self] in
       downloadToast.dismiss(false)
 
       if error == nil {
@@ -76,10 +76,10 @@ extension BrowserViewController: DownloadQueueDelegate {
           labelText: download.filename,
           image: UIImage(named: "check", in: .module, compatibleWith: nil)?.template,
           buttonText: Strings.downloadsButtonTitle,
-          completion: { buttonPressed in
+          completion: { [weak self] buttonPressed in
             guard buttonPressed else { return }
 
-            UIApplication.shared.openBraveDownloadsFolder { [weak self] success in
+            UIApplication.shared.openBraveDownloadsFolder { success in
               if !success {
                 self?.displayOpenDownloadsError()
               }

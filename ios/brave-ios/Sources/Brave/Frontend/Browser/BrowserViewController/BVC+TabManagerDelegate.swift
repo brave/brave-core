@@ -22,6 +22,7 @@ extension BrowserViewController: TabManagerDelegate {
   func attachTabHelpers(to tab: some TabState) {
     tab.browserData = .init(tab: tab, tabGeneratorAPI: profileController.tabGeneratorAPI)
     tab.pullToRefresh = .init(tab: tab)
+    tab.renderProcessCrash = .init(tab: tab)
     if tab.profile.prefs.isPlaylistAvailable {
       tab.playlist = .init(tab: tab, delegate: self)
     }
@@ -39,6 +40,7 @@ extension BrowserViewController: TabManagerDelegate {
     tab.faviconTabHelper = .init(tab: tab)
     tab.userActivityHelper = .init(tab: tab)
     tab.print = .init(tab: tab, baseViewController: self)
+    tab.shareableDocumentHelper = .init(tab: tab)
     tab.externalAppURLHelper = .init(tab: tab, browserViewController: self)
     tab.forcePaste = .init(tab: tab)
     tab.aiChatWebUIHelper = .init(
@@ -47,7 +49,7 @@ extension BrowserViewController: TabManagerDelegate {
       braveTalkJavascript: braveTalkJitsiCoordinator,
       profileController: profileController
     )
-    tab.aiChatWebUIHelper?.attachPrivacySensitiveTabHelpers = { [unowned self] detachedTab, _ in
+    tab.aiChatWebUIHelper?.attachPrivacySensitiveTabHelpers = { detachedTab, _ in
       detachedTab.detachedPrivacyHelper = .init(
         tab: detachedTab
       )
@@ -87,6 +89,14 @@ extension BrowserViewController: TabManagerDelegate {
       },
       scanAddressQRCodeHandler: { [weak self] completion in
         self?.scanAddressQRCode(completion: completion)
+      },
+      openTabHandler: { [weak self] url in
+        guard let self else { return }
+        self.tabManager.addTabAndSelect(
+          URLRequest(url: url),
+          afterTab: self.tabManager.selectedTab,
+          isPrivate: false  // wallet webui only in regular tab
+        )
       }
     )
     let braveShieldsHelper: BraveShieldsTabHelper = .init(
@@ -103,7 +113,9 @@ extension BrowserViewController: TabManagerDelegate {
     // https request via `tab.httpsUpgradeHelper?.pendingUpgrade` and only opens QuickView once
     // `tabDidFinishNavigation` confirms it actually landed on the upgraded (or
     // gracefully-rolled-back) page rather than a failure/interstitial.
-    if FeatureList.kBraveHttpsByDefault.enabled {
+    if !FeatureList.kTransitionToUpstreamHttpsUpgrades.enabled,
+      FeatureList.kBraveHttpsByDefault.enabled
+    {
       tab.httpsUpgradeHelper = .init(
         tab: tab,
         httpsUpgradeExceptionsService: braveCore.httpsUpgradeExceptionsService
@@ -117,7 +129,7 @@ extension BrowserViewController: TabManagerDelegate {
     tab.readerMode = .init(tab: tab, readerModeCache: ReaderModeScriptHandler.cache(for: tab))
     tab.readerMode?.onStateChanged = { [weak self, weak tab] in
       guard let self, let tab, self.tabManager.selectedTab === tab else { return }
-      self.topToolbar.updateReaderModeState(tab.readerMode?.state ?? .unavailable)
+      self.toolbarState.readerModeState = tab.readerMode?.state ?? .unavailable
     }
     tab.readerMode?.onReaderModeDisplayed = { [weak self, weak tab] in
       guard let self, let tab else { return }
@@ -229,6 +241,8 @@ extension BrowserViewController: TabManagerDelegate {
       self.present(quickViewController, animated: true)
     }
     tab.blockedDomainTabHelper = .init(tab: tab)
+
+    tab.historyTabHelper = .init(tab: tab, historyAPI: profileController.historyAPI)
   }
 
   func tabManager(
@@ -250,7 +264,6 @@ extension BrowserViewController: TabManagerDelegate {
       previous.view.removeFromSuperview()
     }
 
-    toolbar?.setSearchButtonState(url: selected?.visibleURL)
     if let tab = selected {
       if let scrollView = tab.webViewProxy?.scrollView {
         // For tabs being opened by the DOM via window.open a web view may not be created yet and
@@ -269,19 +282,6 @@ extension BrowserViewController: TabManagerDelegate {
         })
       updateURLBar()
       recordScreenTimeUsage(for: tab)
-
-      if let url = tab.visibleURL, !url.isNewTabURL, !InternalURL.isValid(url: url) {
-        let previousEstimatedProgress = previous?.estimatedProgress ?? 1.0
-        let selectedEstimatedProgress = tab.estimatedProgress
-
-        // Progress should be updated only if there's a difference between tabs.
-        // Otherwise we do nothing, so switching between fully loaded tabs won't show the animation.
-        if previousEstimatedProgress != selectedEstimatedProgress {
-          topToolbar.updateProgressBar(Float(selectedEstimatedProgress))
-        }
-      } else {
-        topToolbar.hideProgressBar()
-      }
 
       previous?.shownPromptAlert?.dismiss(animated: false)
       readerModeCache = ReaderModeScriptHandler.cache(for: tab)
@@ -311,7 +311,6 @@ extension BrowserViewController: TabManagerDelegate {
       tab.view.accessibilityElementsHidden = false
     }
 
-    updateToolbarUsingTabManager(tabManager)
     updateStatusBarOverlayColor()
 
     removeAllBars()
@@ -324,20 +323,12 @@ extension BrowserViewController: TabManagerDelegate {
     clearPageZoomDialog()
     updateTabsBarVisibility()
 
-    if let tab = selected {
-      topToolbar.locationView.loading = tab.isLoading
-      updateBackForwardActionStatus(for: tab)
-      navigationToolbar.updateForwardStatus(tab.canGoForward)
-    }
-
     let shouldShowPlaylistURLBarButton =
       selected?.visibleURL?.isPlaylistSupportedSiteURL == true
       && selected?.playlist?.isPlaylistBlocked(selected?.visibleURL) == false
 
     if !shouldShowPlaylistURLBarButton {
-      let readerModeState = selected?.readerMode?.state
-      if let readerModeState {
-        topToolbar.updateReaderModeState(readerModeState)
+      if let readerModeState = selected?.readerMode?.state {
         if readerModeState == .active {
           showReaderModeBar(animated: false)
         } else {
@@ -350,8 +341,6 @@ extension BrowserViewController: TabManagerDelegate {
         state: selected?.playlistItemState ?? .none,
         item: selected?.playlistItem
       )
-    } else {
-      topToolbar.updateReaderModeState(.unavailable)
     }
 
     if FeatureList.kBraveTranslateEnabled.enabled, let selectedTab = selected,
@@ -364,7 +353,7 @@ extension BrowserViewController: TabManagerDelegate {
         item: selectedTab.playlistItem
       )
     } else {
-      topToolbar.updateTranslateButtonState(.unavailable)
+      toolbarState.translationState = .unavailable
     }
 
     updateScreenTimeUrl(tabManager.selectedTab?.visibleURL)
@@ -396,10 +385,6 @@ extension BrowserViewController: TabManagerDelegate {
   }
 
   func tabManager(_ tabManager: TabManager, didAddTab tab: some TabState) {
-    // If we are restoring tabs then we update the count once at the end
-    if !tabManager.isRestoring {
-      updateToolbarUsingTabManager(tabManager)
-    }
     tab.addObserver(self)
     tab.delegate = self
     tab.downloadDelegate = self
@@ -411,9 +396,7 @@ extension BrowserViewController: TabManagerDelegate {
 
     SnackBarTabHelper.from(tab: tab)?.delegate = self
 
-    tab.wallet?.walletKeyringService = BraveWallet.KeyringServiceFactory.get(
-      privateMode: tab.isPrivate
-    )
+    tab.wallet?.walletKeyringService = BraveWallet.KeyringServiceFactory.get(profile: tab.profile)
     updateTabsBarVisibility()
   }
 
@@ -422,7 +405,6 @@ extension BrowserViewController: TabManagerDelegate {
   }
 
   func tabManager(_ tabManager: TabManager, didRemoveTab tab: some TabState) {
-    updateToolbarUsingTabManager(tabManager)
     // tabDelegate is a weak ref (and the tab's webView may not be destroyed yet)
     // so we don't expcitly unset it.
     dismissSearchInput()
@@ -431,12 +413,7 @@ extension BrowserViewController: TabManagerDelegate {
     tab.removePolicyDecider(self)
   }
 
-  func tabManagerDidAddTabs(_ tabManager: TabManager) {
-    updateToolbarUsingTabManager(tabManager)
-  }
-
   func tabManagerDidRestoreTabs(_ tabManager: TabManager) {
-    updateToolbarUsingTabManager(tabManager)
   }
 
   func show(
@@ -491,342 +468,5 @@ extension BrowserViewController: TabManagerDelegate {
       return
     }
     show(toast: toast, afterWaiting: ButtonToastUX.toastDelay)
-  }
-
-  func updateToolbarUsingTabManager(_ tabManager: TabManager) {
-    // Update Tab Count on Tab-Tray Button
-    let count = tabManager.tabsForCurrentMode.count
-    toolbar?.updateTabCount(count)
-    topToolbar.updateTabCount(count)
-
-    // Update Actions for Tab-Tray Button
-    var newTabMenuChildren: [UIAction] = []
-    var addTabMenuChildren: [UIAction] = []
-
-    if !privateBrowsingManager.isPrivateBrowsing {
-      let openNewPrivateTab = UIAction(
-        title: Strings.Hotkey.newPrivateTabTitle,
-        image: UIImage(braveSystemNamed: "leo.product.private-window"),
-        handler: UIAction.deferredActionHandler { [unowned self] _ in
-          if Preferences.Privacy.privateBrowsingLock.value {
-            self.askForLocalAuthentication { [weak self] success, error in
-              if success {
-                self?.openBlankNewTab(
-                  attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
-                  isPrivate: true
-                )
-              }
-            }
-          } else {
-            self.openBlankNewTab(
-              attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
-              isPrivate: true
-            )
-          }
-        }
-      )
-
-      if (UIDevice.current.userInterfaceIdiom == .pad && tabsBar.view.isHidden == true)
-        || (UIDevice.current.userInterfaceIdiom == .phone && toolbar == nil)
-      {
-        newTabMenuChildren.append(openNewPrivateTab)
-      }
-
-      addTabMenuChildren.append(openNewPrivateTab)
-    }
-
-    let openNewTab = UIAction(
-      title: privateBrowsingManager.isPrivateBrowsing
-        ? Strings.Hotkey.newPrivateTabTitle : Strings.Hotkey.newTabTitle,
-      image: privateBrowsingManager.isPrivateBrowsing
-        ? UIImage(braveSystemNamed: "leo.product.private-window")
-        : UIImage(braveSystemNamed: "leo.browser.mobile-tab-new"),
-      handler: UIAction.deferredActionHandler { [unowned self] _ in
-        self.openBlankNewTab(
-          attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
-          isPrivate: privateBrowsingManager.isPrivateBrowsing
-        )
-      }
-    )
-
-    if (UIDevice.current.userInterfaceIdiom == .pad && tabsBar.view.isHidden)
-      || (UIDevice.current.userInterfaceIdiom == .phone && toolbar == nil)
-    {
-      newTabMenuChildren.append(openNewTab)
-    }
-    addTabMenuChildren.append(openNewTab)
-
-    var bookmarkMenuChildren: [UIAction] = []
-
-    let containsWebPage = tabManager.selectedTab?.containsWebPage == true
-    let containsBookmarkablePage = tabManager.openedWebsitesCount > 1
-
-    // Show bookmark actions if current page is a webpage
-    if containsWebPage {
-      let bookmarkActiveTab = UIAction(
-        title: Strings.addToMenuItem,
-        image: UIImage(braveSystemNamed: "leo.browser.bookmark-add"),
-        handler: UIAction.deferredActionHandler { [unowned self] _ in
-          self.openAddBookmark()
-        }
-      )
-      bookmarkMenuChildren.append(bookmarkActiveTab)
-
-      // To show bookmark all there should be more than 1 bookmarkable tab
-      if containsBookmarkablePage {
-        let bookmarkAllTabs = UIAction(
-          title: String.localizedStringWithFormat(
-            Strings.bookmarkAllTabsTitle,
-            tabManager.openedWebsitesCount
-          ),
-          image: UIImage(braveSystemNamed: "leo.browser.bookmark-add"),
-          handler: UIAction.deferredActionHandler { [unowned self] _ in
-            let mode = BookmarkEditMode.addFolderUsingTabs(
-              title: Strings.savedTabsFolderTitle,
-              tabList: tabManager.tabsForCurrentMode
-            )
-            let addBookMarkController = AddEditBookmarkTableViewController(
-              bookmarkManager: bookmarkManager,
-              mode: mode,
-              isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
-            )
-
-            presentSettingsNavigation(with: addBookMarkController, cancelEnabled: true)
-          }
-        )
-        bookmarkMenuChildren.append(bookmarkAllTabs)
-      }
-    }
-
-    var duplicateTabMenuChildren: [UIAction] = []
-
-    if containsWebPage, let selectedTab = tabManager.selectedTab, let url = selectedTab.fetchedURL {
-      let duplicateActiveTab = UIAction(
-        title: Strings.duplicateActiveTab,
-        image: UIImage(braveSystemNamed: "leo.browser.mobile-tabs"),
-        handler: UIAction.deferredActionHandler { [weak selectedTab] _ in
-          guard let selectedTab = selectedTab else { return }
-
-          tabManager.addTabAndSelect(
-            URLRequest(url: url),
-            afterTab: selectedTab,
-            isPrivate: selectedTab.isPrivate
-          )
-        }
-      )
-
-      duplicateTabMenuChildren.append(duplicateActiveTab)
-    }
-
-    var recentlyClosedMenuChildren: [UIAction] = []
-
-    // Recently Closed Actions are only in normal mode
-    if !privateBrowsingManager.isPrivateBrowsing {
-      let viewRecentlyClosedTabs = UIAction(
-        title: Strings.RecentlyClosed.viewRecentlyClosedTab,
-        image: UIImage(braveSystemNamed: "leo.browser.mobile-recent-tabs"),
-        handler: UIAction.deferredActionHandler { [weak self] _ in
-          guard let self = self else { return }
-
-          if privateBrowsingManager.isPrivateBrowsing {
-            return
-          }
-
-          var recentlyClosedTabsView = RecentlyClosedTabsView(tabManager: tabManager)
-          recentlyClosedTabsView.onRecentlyClosedSelected = { [weak self] recentlyClosed in
-            self?.tabManager.addAndSelectRecentlyClosed(recentlyClosed)
-
-            // After opening the Recently Closed in a new tab delete it from list
-            RecentlyClosed.remove(with: recentlyClosed.url)
-          }
-
-          recentlyClosedTabsView.onClearAllRecentlyClosed = { [weak self] in
-            // After clearing tabs need to remove button actions from the tab bar controls
-            guard let self = self else { return }
-
-            DispatchQueue.main.async {
-              self.updateToolbarUsingTabManager(tabManager)
-            }
-          }
-
-          self.present(UIHostingController(rootView: recentlyClosedTabsView), animated: true)
-        }
-      )
-      // Fetch last item in Recently Closed
-      if let recentlyClosedTab = RecentlyClosed.first() {
-        recentlyClosedMenuChildren.append(viewRecentlyClosedTabs)
-        let reopenLastClosedTab = UIAction(
-          title: Strings.RecentlyClosed.recentlyClosedReOpenLastActionTitle,
-          image: UIImage(braveSystemNamed: "leo.browser.mobile-tab-ntp"),
-          handler: UIAction.deferredActionHandler { [weak self] _ in
-            guard let self = self else { return }
-
-            if privateBrowsingManager.isPrivateBrowsing {
-              return
-            }
-
-            self.tabManager.addAndSelectRecentlyClosed(recentlyClosedTab)
-            RecentlyClosed.remove(with: recentlyClosedTab.url)
-          }
-        )
-
-        recentlyClosedMenuChildren.append(reopenLastClosedTab)
-      }
-    }
-
-    var closeTabMenuChildren: [UIAction] = []
-
-    let closeActiveTab = UIAction(
-      title: String(format: Strings.Hotkey.closeTabTitle),
-      image: UIImage(braveSystemNamed: "leo.close"),
-      attributes: .destructive,
-      handler: UIAction.deferredActionHandler { [unowned self] _ in
-        if let tab = tabManager.selectedTab {
-          if topToolbar.locationView.readerModeState == .active {
-            hideReaderModeBar(animated: false)
-          }
-
-          // Add the tab information to recently closed before removing
-          tabManager.addTabToRecentlyClosed(tab)
-          tabManager.removeTab(tab)
-        }
-      }
-    )
-
-    closeTabMenuChildren.append(closeActiveTab)
-
-    var closeAllTabMenuChildren: [UIAction] = []
-
-    if FeatureList.kBraveShredFeature.enabled,
-      let url = tabManager.selectedTab?.visibleURL,
-      url.isShredAvailable
-    {
-      let shredDataAction = UIAction(
-        title: Strings.Shields.shredSiteData,
-        image: UIImage(braveSystemNamed: "leo.shred.data"),
-        attributes: .destructive,
-        handler: UIAction.deferredActionHandler { [weak self] _ in
-          guard let tab = self?.tabManager.selectedTab, let url = tab.visibleURL else { return }
-          let alert = UIAlertController.shredDataAlert(url: url) { _ in
-            self?.shredData(for: url, in: tab)
-          }
-
-          self?.present(alert, animated: true)
-        }
-      )
-      closeAllTabMenuChildren.append(shredDataAction)
-    }
-
-    if tabManager.tabsForCurrentMode.count > 1 {
-      func showCloseTabWarning(isActiveTabIncluded: Bool, _ completion: @escaping () -> Void) {
-        let alert = UIAlertController(
-          title: nil,
-          message: isActiveTabIncluded
-            ? Strings.closeAllTabsPrompt : Strings.closeAllOtherTabsPrompt,
-          preferredStyle: .actionSheet
-        )
-        let cancelAction = UIAlertAction(title: Strings.CancelString, style: .cancel)
-        let closedTabsTitle =
-          isActiveTabIncluded
-          ? String(format: Strings.closeAllTabsTitle, tabManager.tabsForCurrentMode.count)
-          : Strings.closeAllOtherTabsTitle
-        let closeAllAction = UIAlertAction(title: closedTabsTitle, style: .destructive) { _ in
-          completion()
-        }
-        alert.addAction(closeAllAction)
-        alert.addAction(cancelAction)
-
-        if let popoverPresentation = alert.popoverPresentationController {
-          let tabsButton = toolbar?.tabsButton ?? topToolbar.tabsButton
-          popoverPresentation.sourceView = tabsButton
-          popoverPresentation.sourceRect =
-            .init(x: tabsButton.frame.width / 2, y: tabsButton.frame.height, width: 1, height: 1)
-        }
-
-        present(alert, animated: true)
-      }
-
-      let closeAllOtherTabs = UIAction(
-        title: Strings.closeAllOtherTabsTitle,
-        image: UIImage(braveSystemNamed: "leo.close"),
-        attributes: .destructive,
-        handler: UIAction.deferredActionHandler { [weak self] _ in
-          guard let self = self else { return }
-
-          showCloseTabWarning(isActiveTabIncluded: false) {
-            if !self.privateBrowsingManager.isPrivateBrowsing {
-              // Add the tab information to recently closed before removing
-              self.tabManager.addAllTabsToRecentlyClosed(isActiveTabIncluded: false)
-            }
-
-            self.tabManager.removeAllForCurrentMode(isActiveTabIncluded: false)
-          }
-        }
-      )
-
-      let closeAllTabs = UIAction(
-        title: String(format: Strings.closeAllTabsTitle, tabManager.tabsForCurrentMode.count),
-        image: UIImage(braveSystemNamed: "leo.close"),
-        attributes: .destructive,
-        handler: UIAction.deferredActionHandler { [weak self] _ in
-          guard let self = self else { return }
-
-          showCloseTabWarning(isActiveTabIncluded: true) {
-            if !self.privateBrowsingManager.isPrivateBrowsing {
-              // Add the tab information to recently closed before removing
-              self.tabManager.addAllTabsToRecentlyClosed(isActiveTabIncluded: true)
-            }
-
-            self.tabManager.removeAllForCurrentMode()
-          }
-        }
-      )
-
-      closeAllTabMenuChildren.append(closeAllOtherTabs)
-      closeAllTabMenuChildren.append(closeAllTabs)
-    }
-
-    let newTabMenu = UIMenu(title: "", options: .displayInline, children: newTabMenuChildren)
-    let addTabMenu = UIMenu(title: "", options: .displayInline, children: addTabMenuChildren)
-    let bookmarkMenu = UIMenu(title: "", options: .displayInline, children: bookmarkMenuChildren)
-    let duplicateTabMenu = UIMenu(
-      title: "",
-      options: .displayInline,
-      children: duplicateTabMenuChildren
-    )
-    let recentlyClosedMenu = UIMenu(
-      title: "",
-      options: .displayInline,
-      children: recentlyClosedMenuChildren
-    )
-    let closeAllTabMenu = UIMenu(
-      title: "",
-      options: .displayInline,
-      children: closeAllTabMenuChildren
-    )
-    let closeTabMenu = UIMenu(title: "", options: .displayInline, children: closeTabMenuChildren)
-
-    let tabButtonMenuActionList = [
-      closeTabMenu, closeAllTabMenu, recentlyClosedMenu, duplicateTabMenu, bookmarkMenu, newTabMenu,
-    ]
-    let addTabMenuActionList = [addTabMenu]
-
-    toolbar?.tabsButton.menu = UIMenu(title: "", identifier: nil, children: tabButtonMenuActionList)
-    toolbar?.searchButton.menu = UIMenu(title: "", identifier: nil, children: addTabMenuActionList)
-
-    topToolbar.tabsButton.menu = UIMenu(
-      title: "",
-      identifier: nil,
-      children: tabButtonMenuActionList
-    )
-    toolbar?.searchButton.menu = UIMenu(title: "", identifier: nil, children: addTabMenuActionList)
-
-    // Update Actions for Add-Tab Button
-    topToolbar.addTabButton.menu = UIMenu(
-      title: "",
-      identifier: nil,
-      children: addTabMenuActionList
-    )
-    toolbar?.addTabButton.menu = UIMenu(title: "", identifier: nil, children: addTabMenuActionList)
   }
 }

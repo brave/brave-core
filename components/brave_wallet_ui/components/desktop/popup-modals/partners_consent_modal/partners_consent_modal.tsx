@@ -4,14 +4,17 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Checkbox from '@brave/leo/react/checkbox'
-import Button from '@brave/leo/react/button'
+import Checkbox from '@brave/nala/react/checkbox'
+import Button from '@brave/nala/react/button'
 
 // Utils
 import { getLocale, formatLocale } from '$web-common/locale'
 
 // Assets
 import PageTermsGraphic from './assets/page_terms_graphic.svg'
+
+// Proxy
+import getWalletPageApiProxy from '../../../../page/wallet_page_api_proxy'
 
 // Styled Components
 import {
@@ -42,8 +45,10 @@ const onClickTermsOfUse = () => {
     )
     return
   }
-  // Tabs.create is desktop specific. Using window.open for android.
-  window.open(MELD_TERMS_OF_USE_URL, '_blank', 'noopener noreferrer')
+  // Tabs.create is desktop specific.
+  getWalletPageApiProxy().pageHandler.openTab({
+    url: MELD_TERMS_OF_USE_URL,
+  })
 }
 
 const meldTermsOfUse = formatLocale(S.BRAVE_WALLET_MELD_TERMS_OF_USE, {

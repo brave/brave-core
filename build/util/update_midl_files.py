@@ -27,11 +27,14 @@ def update_midl_files():
             src_dir = entry.path
             src_dir_name = entry.name
             dst_dir = wspath(
-                f"//third_party/win_build_output/midl/{src_dir_name}")
-            shutil.copytree(src_dir,
-                            dst_dir,
-                            dirs_exist_ok=True,
-                            copy_function=copy_only_if_modified)
+                f"//third_party/win_build_output/midl/{src_dir_name}"
+            )
+            shutil.copytree(
+                src_dir,
+                dst_dir,
+                dirs_exist_ok=True,
+                copy_function=copy_only_if_modified,
+            )
 
 
 def copy_only_if_modified(src, dst):

@@ -10,7 +10,7 @@ import SwiftUI
 
 struct AddSuggestedTokenView: View {
   var token: BraveWallet.BlockchainToken
-  var originInfo: BraveWallet.OriginInfo
+  var dappOriginInfo: BraveWallet.DappOriginInfo
   var cryptoStore: CryptoStore
   var onDismiss: () -> Void
 
@@ -28,7 +28,7 @@ struct AddSuggestedTokenView: View {
           Text(Strings.Wallet.addSuggestedTokenSubtitle)
             .font(.headline)
             .foregroundColor(Color(braveSystemName: .textPrimary))
-          Text(originInfo: originInfo)
+          Text(dappOriginInfo: dappOriginInfo)
             .font(.footnote)
             .foregroundColor(Color(braveSystemName: .textPrimary))
         }
@@ -147,7 +147,7 @@ struct AddSuggestedTokenView_Previews: PreviewProvider {
   static var previews: some View {
     AddSuggestedTokenView(
       token: .previewToken,
-      originInfo: .init(
+      dappOriginInfo: .init(
         originSpec: "https://app.uniswap.org",
         eTldPlusOne: "uniswap.org"
       ),

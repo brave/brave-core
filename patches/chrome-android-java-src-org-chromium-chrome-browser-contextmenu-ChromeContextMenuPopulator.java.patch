@@ -1,21 +1,21 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-index 340688865cedf4bce2775f608c6deab189156b96..74118917e268a07bad2951d6fec718ec4a3e8a66 100644
+index 0a9639c6bc1359b5d9708197dcfd21f6ef391961..e9e7de3f5ced4aaee6377ee5dfac226e706840d9 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-@@ -275,6 +275,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
-             Action.TRANSLATE,
+@@ -277,6 +277,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              Action.CREATE_QR_CODE,
              Action.ASK_GEMINI,
+             Action.ASK_GEMINI_IMAGE,
 +            Action.COPY_CLEAN_LINK,
          })
          @Retention(RetentionPolicy.SOURCE)
          public @interface Action {
-@@ -338,7 +339,8 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
-             int TRANSLATE = 57;
+@@ -341,7 +342,8 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              int CREATE_QR_CODE = 58;
              int ASK_GEMINI = 59;
--            int NUM_ENTRIES = 60;
-+            int COPY_CLEAN_LINK = 60;
+             int ASK_GEMINI_IMAGE = 60;
+-            int NUM_ENTRIES = 61;
++            int COPY_CLEAN_LINK = 61;
 +            int NUM_ENTRIES = COPY_CLEAN_LINK + 1;
          }
  

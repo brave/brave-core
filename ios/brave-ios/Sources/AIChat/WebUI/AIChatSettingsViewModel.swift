@@ -15,8 +15,8 @@ import StoreKit
 @Observable
 public class AIChatSettingsViewModel: AIChatSettingsHelperDelegate {
   let helper: any AIChatSettingsHelper
+  let storeSDK: BraveStoreSDK
 
-  private let storeSDK: BraveStoreSDK
   private let skusService: (any SkusSkusService)?
   private let calendar: Calendar
   @ObservationIgnored private var cancellable: AnyCancellable?

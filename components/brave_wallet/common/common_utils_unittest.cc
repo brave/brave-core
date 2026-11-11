@@ -13,6 +13,7 @@
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/origin.h"
 
 using testing::ElementsAreArray;
 
@@ -541,7 +542,7 @@ TEST(CommonUtils, GetEnabledKeyrings) {
     EXPECT_EQ(last_pos, keyrings.size());
   }
 
-  static_assert(AllKeyringsTested<14>());
+  static_assert(AllKeyringsTested<18>());
 }
 
 TEST(CommonUtils, GetPolkadotKeyrings) {
@@ -642,7 +643,7 @@ TEST(CommonUtils, GetSupportedKeyringsForKnownNetwork) {
 
   static_assert(AllCoinsTested<7>());
 
-  static_assert(AllKeyringsTested<14>());
+  static_assert(AllKeyringsTested<18>());
 }
 
 TEST(CommonUtils, MakeAccountId) {
@@ -730,7 +731,7 @@ TEST(CommonUtils, MakeAccountId) {
                                     mojom::AccountKind::kDerived, "0xabc"));
   static_assert(AllCoinsTested<7>());
 
-  static_assert(AllKeyringsTested<14>());
+  static_assert(AllKeyringsTested<18>());
 }
 
 TEST(CommonUtils, MakeIndexBasedAccountId) {
@@ -800,7 +801,7 @@ TEST(CommonUtils, MakeIndexBasedAccountId_BTC) {
                                       mojom::AccountKind::kHardware, 123));
   static_assert(AllCoinsTested<7>());
 
-  static_assert(AllKeyringsTested<14>());
+  static_assert(AllKeyringsTested<18>());
 }
 
 TEST(CommonUtils, MakeIndexBasedAccountId_ZEC) {
@@ -878,6 +879,23 @@ TEST(CommonUtils, CoinSupportsDapps) {
       EXPECT_FALSE(CoinSupportsDapps(coin));
     }
   }
+
+  {
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitWithFeaturesAndParameters(
+        {{features::kBraveWalletPolkadotFeature,
+          {{"polkadot_dapp_support", "true"}}}},
+        {});
+
+    for (auto coin : kAllCoins) {
+      if (coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL ||
+          coin == mojom::CoinType::ADA || coin == mojom::CoinType::DOT) {
+        EXPECT_TRUE(CoinSupportsDapps(coin));
+      } else {
+        EXPECT_FALSE(CoinSupportsDapps(coin));
+      }
+    }
+  }
 }
 
 TEST(CommonUtils, IsDeprecatedAddressBasedCoin) {
@@ -941,21 +959,49 @@ TEST(CommonUtils, GetNetworkForBitcoinAccount) {
                 mojom::AccountKind::kDerived, 123)));
 }
 
-TEST(CommonUtils, IsSnapsFeatureEnabled) {
-#if BUILDFLAG(ENABLE_SNAPS)
+TEST(CommonUtils, IsSnapFeatureEnabled) {
+#if BUILDFLAG(ENABLE_SNAP)
   {
     base::test::ScopedFeatureList enabled;
-    enabled.InitAndEnableFeature(features::kBraveWalletSnapsFeature);
-    EXPECT_TRUE(IsSnapsFeatureEnabled());
+    enabled.InitAndEnableFeature(features::kBraveWalletSnapFeature);
+    EXPECT_TRUE(IsSnapFeatureEnabled());
   }
   {
     base::test::ScopedFeatureList disabled;
-    disabled.InitAndDisableFeature(features::kBraveWalletSnapsFeature);
-    EXPECT_FALSE(IsSnapsFeatureEnabled());
+    disabled.InitAndDisableFeature(features::kBraveWalletSnapFeature);
+    EXPECT_FALSE(IsSnapFeatureEnabled());
   }
 #else
-  EXPECT_FALSE(IsSnapsFeatureEnabled());
+  EXPECT_FALSE(IsSnapFeatureEnabled());
 #endif
+}
+
+TEST(CommonUtils, IsValidDappOrigin) {
+  EXPECT_TRUE(IsValidDappOrigin(
+      url::Origin::CreateFromNormalizedTuple("https", "a.com", 443)));
+  EXPECT_TRUE(IsValidDappOrigin(
+      url::Origin::CreateFromNormalizedTuple("https", "a.com", 8443)));
+  EXPECT_TRUE(IsValidDappOrigin(
+      url::Origin::CreateFromNormalizedTuple("http", "a.com", 80)));
+  EXPECT_TRUE(IsValidDappOrigin(
+      url::Origin::CreateFromNormalizedTuple("http", "localhost", 80)));
+
+  // Opaque origins, including the one a sandboxed frame without
+  // allow-same-origin gets.
+  EXPECT_FALSE(IsValidDappOrigin(url::Origin()));
+  EXPECT_FALSE(IsValidDappOrigin(
+      url::Origin::CreateFromNormalizedTuple("https", "a.com", 443)
+          .DeriveNewOpaqueOrigin()));
+
+  // Non-HTTP(S) schemes.
+  EXPECT_FALSE(IsValidDappOrigin(
+      url::Origin::CreateFromNormalizedTuple("wss", "a.com", 443)));
+  EXPECT_FALSE(IsValidDappOrigin(
+      url::Origin::CreateFromNormalizedTuple("chrome", "wallet", 0)));
+  EXPECT_FALSE(IsValidDappOrigin(
+      url::Origin::CreateFromNormalizedTuple("chrome-extension", "abc", 0)));
+  EXPECT_FALSE(
+      IsValidDappOrigin(url::Origin::CreateFromNormalizedTuple("file", "", 0)));
 }
 
 }  // namespace brave_wallet

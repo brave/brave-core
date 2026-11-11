@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Rename RenderViewContextMenu to allow a Brave subclass replacement
+
+      Brave customizations for RenderViewContextMenu are done primarily through
+      subclassing which assumes the name of the original Chromium class.
+    rename_class:
+      class_name: RenderViewContextMenu
+      rename: RenderViewContextMenu_Chromium
+
+  - description:
+      Allow the Brave subclass to access private state of the base class.
+    add_friend:
+      class_name: RenderViewContextMenu_Chromium
+      friend_type: class ::RenderViewContextMenu
+
+  - description:
+      Allow subclass override of AppendReadAnythingItem by making virtual.
+    make_virtual:
+      class_name: RenderViewContextMenu_Chromium
+      method_name: AppendReadAnythingItem
+
+  - description:
+      Allow subclass override of AppendDeveloperItems by making virtual.
+    make_virtual:
+      class_name: RenderViewContextMenu_Chromium
+      method_name: AppendDeveloperItems

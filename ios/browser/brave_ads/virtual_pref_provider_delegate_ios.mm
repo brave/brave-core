@@ -6,6 +6,7 @@
 #include "brave/ios/browser/brave_ads/virtual_pref_provider_delegate_ios.h"
 
 #include "base/strings/utf_string_conversions.h"
+#include "base/types/to_address.h"
 #include "base/version_info/channel.h"
 #include "components/search_engines/template_url_data.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
@@ -28,7 +29,8 @@ std::string_view VirtualPrefProviderDelegateIOS::GetChannel() const {
 
 std::string VirtualPrefProviderDelegateIOS::GetDefaultSearchEngineName() const {
   auto* prepopulate_data_resolver =
-      ios::TemplateURLPrepopulateDataResolverFactory::GetForProfile(&*profile_);
+      ios::TemplateURLPrepopulateDataResolverFactory::GetForProfile(
+          base::to_address(profile_));
   const auto template_url_data = prepopulate_data_resolver->GetFallbackSearch();
   const std::u16string& default_search_engine_name =
       template_url_data ? template_url_data->short_name() : u"";

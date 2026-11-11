@@ -164,8 +164,8 @@ base::ThreadPool::PostTaskAndReplyWithResult(
 
 **When a class owns a `base::RepeatingTimer` or `base::OneShotTimer`, prefer
 `base::Unretained(this)`.** The timer is destroyed with the class, so it can
-only fire while `this` is valid. Using `WeakPtr` adds unnecessary overhead but
-is not functionally wrong — it's a style preference, not a correctness issue.
+only fire while `this` is valid. Using `WeakPtr` adds unnecessary overhead, but
+**NEVER report it as a correctness bug.** This is a style preference.
 
 ```cpp
 // ⚠️ AVOID - unnecessary overhead (but not a bug)
@@ -180,7 +180,7 @@ timer_.Start(FROM_HERE, delay,
 **Key distinction:** This is the opposite of the "never use Unretained with
 thread pool" rule. The difference is ownership: you own the timer, so it cannot
 outlive you. If a developer prefers `WeakPtr` for defensive coding, that's a
-valid choice — do not insist on changing it.
+valid choice — **NEVER insist on changing it.**
 
 ---
 
@@ -208,10 +208,9 @@ remote_.set_disconnect_handler(
     base::BindOnce(&MyClass::OnDisconnect, weak_factory_.GetWeakPtr()));
 ```
 
-**Do NOT flag `base::Unretained(this)` in Mojo disconnect/error handlers as
-unsafe.** This is a well-established safe pattern in Chromium. Only flag it if
-the binding crosses thread boundaries or if `this` does not own the Mojo
-endpoint.
+**NEVER flag `base::Unretained(this)` in Mojo disconnect/error handlers as
+unsafe unless the binding crosses thread boundaries or `this` does not own the
+Mojo endpoint.** This is a well-established safe pattern in Chromium.
 
 ---
 
@@ -484,7 +483,8 @@ std::vector<content::WebContents*> tabs_to_close_;
 
 // ✅ CORRECT - integer IDs, safe from pointer reuse
 std::vector<tabs::TabHandle> tabs_to_close_;
-// Use TabInterface::GetFromWebContents to map WC to Handle
+// Map a WebContents to its handle with
+// TabInterface::GetFromContents(web_contents)->GetHandle()
 ```
 
 ---
@@ -498,10 +498,10 @@ processes, consider restricting to an allowlist or enum** rather than accepting
 arbitrary URLs. An unrestricted URL parameter means the renderer can send
 requests to any endpoint.
 
-**When NOT to flag:** If the implementation already validates or filters the URL
-downstream, do not request documentation comments about it. Before flagging,
-check whether similar patterns in surrounding code or elsewhere in the codebase
-have such comments — if they don't, your suggestion would introduce
+**NEVER request documentation comments about URL validation if the
+implementation already validates or filters the URL downstream.** Before
+flagging, check whether similar patterns in surrounding code or elsewhere in the
+codebase have such comments — if they don't, your suggestion would introduce
 inconsistency and unnecessary verbosity.
 
 ---
@@ -720,8 +720,8 @@ after construction. Default to `const raw_ref<T>`.
 
 ```cpp
 // raw_ptr<T> - replaces T* fields (can be null or reassigned)
-class TabFeatures {
-  raw_ptr<content::WebContents> web_contents_;
+class FooBubbleController {
+  raw_ptr<views::Widget> widget_;
 };
 
 // const raw_ref<T> - replaces T& fields (mandatory, cannot be null or reseated)
@@ -769,10 +769,10 @@ dereference directly) without an extra assertion.
 - (Very rare) cases where `raw_ptr<T>` causes runtime errors — add a comment and
   consult `base/memory/raw_ptr.md`
 
-Types not flagged by the Clang plugin — raw `T*` is fine, no annotation
-required: function pointers, ObjC pointers, `const char*`/`const wchar_t*`
-pointing to string literals (if they may point to heap-allocated objects, use
-`raw_ptr<const char>` for UaF safety).
+**NEVER require `raw_ptr<T>` or an exclusion annotation for these types exempt
+from the Clang plugin:** function pointers, ObjC pointers,
+`const char*`/`const wchar_t*` pointing to string literals. If they may point to
+heap-allocated objects, use `raw_ptr<const char>` for UaF safety.
 
 Blink renderer code using Oilpan, and any other code whose objects are allocated
 outside PartitionAlloc (V8 heap, Java heap, etc.), cannot use `raw_ptr<T>` or
@@ -862,9 +862,9 @@ base::BindOnce(&Validate, base::span(kMagic));
 **`base::Unretained(this)` is safe whenever the bound callback is owned by
 `this` — directly or through a member that is destroyed with `this` — so the
 callback cannot run after `this` is gone.** This is the common, correct pattern;
-the only genuinely problematic case is a callback that can outlive `this`. Flag
-(and replace with a `WeakPtr`) only that case — not the member-owned callbacks
-below.
+the only genuinely problematic case is a callback that can outlive `this`.
+**NEVER flag the member-owned callbacks below or request a `WeakPtr` replacement
+when they cannot outlive `this`.**
 
 Safe — the callback's owner is a member destroyed with `this`:
 
@@ -899,3 +899,99 @@ another sequence (see [CSM-010](#CSM-010)), stored in a longer-lived object, or
 handed to an API whose lifetime is independent of `this`. A linter that flags
 every `base::Unretained(this)` produces mostly false positives, since
 member-owned callbacks are the dominant, correct usage.
+
+---
+
+<a id="CSM-039"></a>
+
+## ✅ Let Pointer Types in Signatures Express Ownership
+
+**The pointer type in a parameter or return type is the ownership contract.**
+Follow the
+[Chromium smart pointer guidelines](https://www.chromium.org/developers/smart-pointer-guidelines/)
+so callers don't have to read the implementation to learn who frees what.
+
+**Parameters:**
+
+| Declare              | Meaning                                                                               |
+| -------------------- | ------------------------------------------------------------------------------------- |
+| `T*` / `T&`          | No ownership change; caller keeps `t` alive for the call                              |
+| `std::unique_ptr<T>` | The function takes ownership                                                          |
+| `scoped_refptr<T>`   | The function may take a ref; the caller chooses `std::move(t)` or keeping its own ref |
+
+**A smart pointer is not the default way to move a value.** When the type is
+moveable, take it by value — `void Consume(T value)`, called as
+`Consume(std::move(t))` — and reach for `std::unique_ptr<T>` only when the type
+is not moveable, which is typically the case for polymorphic types held by base
+pointer. Much of the `std::unique_ptr<T>` in existing code is historical: before
+move semantics it was the only way to hand an object around, and before
+`std::optional<T>` it doubled as the way to express "maybe a value".
+
+**Return values:**
+
+| Return                                             | Meaning                                                                     |
+| -------------------------------------------------- | --------------------------------------------------------------------------- |
+| `T*`                                               | If and only if the caller does _not_ take ownership                         |
+| `std::unique_ptr<T>` / `scoped_refptr<T>` by value | The implementation is handing off ownership                                 |
+| `const scoped_refptr<T>&`                          | The implementation retains ownership; the caller isn't forced to take a ref |
+
+The same caveat applies to returns: for a moveable type, return a plain `T` by
+value rather than wrapping it in a smart pointer to hand it back.
+
+**A function must never take ownership of a parameter passed as `T*`.** That is
+the single most common violation, and it's invisible at the call site.
+
+```cpp
+// ❌ WRONG - silently deletes a pointer the caller still owns
+void SetDelegate(Delegate* delegate);  // impl does: delegate_.reset(delegate);
+
+// ✅ CORRECT - ownership transfer is visible at every call site
+void SetDelegate(std::unique_ptr<Delegate> delegate);
+
+// ✅ CORRECT - borrowing only
+void UseDelegate(Delegate* delegate);
+```
+
+Callers must `std::move()` a non-temporary `std::unique_ptr<T>` into such a
+parameter (see [CSA-010](coding-standards-apis.md#CSA-010),
+[CSA-047](coding-standards-apis.md#CSA-047)). Do **not** `std::move()` a
+temporary or a local on the way out of a function: `return std::move(foo);`
+suppresses copy elision, so it produces a move the compiler would otherwise have
+elided entirely. Write `return foo;`. For passing smart pointers by const
+reference, see [CSM-031](#CSM-031); for class fields, use
+`const raw_ref<T>`/`raw_ptr<T>` ([CSM-036](#CSM-036)).
+
+---
+
+<a id="CSM-040"></a>
+
+## ✅ Use Platform Scoper Types for Platform Handles
+
+**Don't manage OS handles and Core Foundation objects by hand, rather use the
+platform-specific scopers**, which release on destruction like any other smart
+pointer.
+
+| Platform                          | Type                              |
+| --------------------------------- | --------------------------------- |
+| Windows `HANDLE`                  | `base::win::ScopedHandle`         |
+| Core Foundation types (macOS/iOS) | `base::apple::ScopedCFTypeRef<T>` |
+
+```cpp
+// ❌ WRONG - leaks on every early return
+HANDLE file = ::CreateFile(...);
+if (!IsValid(file)) {
+  return false;
+}
+::CloseHandle(file);
+
+// ✅ CORRECT
+base::win::ScopedHandle file(::CreateFile(...));
+if (!file.IsValid()) {
+  return false;
+}
+```
+
+Note that the Core Foundation scoper lives in `base::apple::` — the old
+`base::mac::ScopedCFTypeRef` spelling (still referenced by the upstream smart
+pointer guidelines) no longer exists. See
+[Chromium smart pointer guidelines](https://www.chromium.org/developers/smart-pointer-guidelines/).

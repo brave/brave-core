@@ -9,7 +9,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "build/build_config.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "url/gurl.h"
 
 namespace content {
@@ -20,7 +20,7 @@ namespace brave_rewards::test_util {
 
 class RewardsBrowserTestContextHelper {
  public:
-  explicit RewardsBrowserTestContextHelper(Browser* browser);
+  explicit RewardsBrowserTestContextHelper(BrowserWindowInterface* browser);
   ~RewardsBrowserTestContextHelper();
 
   base::WeakPtr<content::WebContents> OpenRewardsPopup();
@@ -40,7 +40,8 @@ class RewardsBrowserTestContextHelper {
  private:
   void OpenPopup();
 
-  raw_ptr<Browser, DanglingUntriaged> browser_ = nullptr;  // NOT OWNED
+  raw_ptr<BrowserWindowInterface, DanglingUntriaged> browser_ =
+      nullptr;  // NOT OWNED
   base::WeakPtr<content::WebContents> popup_contents_;
 };
 

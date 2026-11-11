@@ -1,13 +1,23 @@
 diff --git a/chrome/browser/ui/tabs/tab_model.cc b/chrome/browser/ui/tabs/tab_model.cc
-index 414b4418a6d14ae1c607e809dac5b4ec015f8ffc..3c52c4852f9768a2515c03a6d482e28527a5bebf 100644
+index 29bb29ba98527a89cb3cde08e0b8223edb610fc4..8346dc6fc44a82d375ea46f6cf3f82ff1a7d0468 100644
 --- a/chrome/browser/ui/tabs/tab_model.cc
 +++ b/chrome/browser/ui/tabs/tab_model.cc
 @@ -57,7 +57,7 @@ TabModel::TabModel(std::unique_ptr<content::WebContents> contents,
-   // TODO(https://crbug.com/362038317): Tab-helpers should be created in exactly
-   // one place, which is here.
-   TabHelpers::AttachTabHelpers(contents_);
+   tabs::TabLookupFromWebContents::CreateForWebContents(contents_, this);
+ 
+   CreateSessionServiceTabHelper(contents_);
 -  tab_features_ = std::make_unique<TabFeatures>();
 +  tab_features_ = std::make_unique<BraveTabFeatures>();
    const SessionID session_id = sessions::SessionTabHelper::IdForTab(contents_);
    CHECK(session_id.is_valid());
    SetSessionId(session_id.id());
+@@ -402,6 +402,9 @@ void TabModel::UpdateProperties() {
+         break;
+       case TabCollection::Type::TABSTRIP:
+       case TabCollection::Type::UNPINNED:
++#if BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
++      case TabCollection::Type::TREE_NODE:
++#endif  // BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
+         break;
+     }
+     ancestor = ancestor->GetParentCollection();

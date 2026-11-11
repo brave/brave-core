@@ -4,9 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
-import Tooltip from '@brave/leo/react/tooltip'
-import Button from '@brave/leo/react/button'
+import Icon from '@brave/nala/react/icon'
+import Tooltip from '@brave/nala/react/tooltip'
+import Button from '@brave/nala/react/button'
 import { formatLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import { getModelIcon } from '../../../common/constants'

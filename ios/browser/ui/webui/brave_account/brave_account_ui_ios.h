@@ -24,7 +24,8 @@ class BraveAccountUIIOS
     : public BraveAccountUIBase<BraveWebUIIOSDataSource,
                                 brave_account::BraveAccountServiceFactoryIOS>,
       public web::WebUIIOSController,
-      public brave_account::mojom::DialogController {
+      public brave_account::mojom::DialogController,
+      public brave_account::mojom::DialogOpener {
  public:
   BraveAccountUIIOS(web::WebUIIOS* web_ui, const GURL& url);
 
@@ -35,10 +36,17 @@ class BraveAccountUIIOS
 
   // brave_account::mojom::DialogController:
   void CloseDialog() override;
+  void GetDialogMode(GetDialogModeCallback callback) override;
+
+  // brave_account::mojom::DialogOpener:
+  void OpenDialog(brave_account::mojom::DialogMode dialog_mode) override;
 
   void BindInterface(
       mojo::PendingReceiver<brave_account::mojom::DialogController>
           pending_receiver);
+
+  void BindInterface(mojo::PendingReceiver<brave_account::mojom::DialogOpener>
+                         pending_receiver);
 
   template <typename Interface>
   void AddInterface();
@@ -46,7 +54,10 @@ class BraveAccountUIIOS
   template <typename Interface>
   void RemoveInterface();
 
-  mojo::Receiver<brave_account::mojom::DialogController> receiver_{this};
+  mojo::Receiver<brave_account::mojom::DialogController>
+      dialog_controller_receiver_{this};
+  mojo::Receiver<brave_account::mojom::DialogOpener> dialog_opener_receiver_{
+      this};
 };
 
 #endif  // BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_IOS_H_

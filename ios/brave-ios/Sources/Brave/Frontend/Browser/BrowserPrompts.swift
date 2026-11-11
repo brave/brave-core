@@ -92,6 +92,7 @@ protocol JSAlertInfo {
 }
 
 struct MessageAlert: JSAlertInfo {
+  let title: String?
   let message: String
   let origin: URLOrigin
   let completionHandler: () -> Void
@@ -99,7 +100,7 @@ struct MessageAlert: JSAlertInfo {
 
   func alertController() -> JSPromptAlertController {
     let alertController = JSPromptAlertController(
-      title: origin.serialized,
+      title: title,
       message: message,
       info: self,
       showCancel: false
@@ -119,6 +120,7 @@ struct MessageAlert: JSAlertInfo {
 }
 
 struct ConfirmPanelAlert: JSAlertInfo {
+  let title: String?
   let message: String
   let origin: URLOrigin
   let completionHandler: (Bool) -> Void
@@ -127,7 +129,7 @@ struct ConfirmPanelAlert: JSAlertInfo {
   func alertController() -> JSPromptAlertController {
     // Show JavaScript confirm dialogs.
     let alertController = JSPromptAlertController(
-      title: origin.serialized,
+      title: title,
       message: message,
       info: self
     )
@@ -146,6 +148,7 @@ struct ConfirmPanelAlert: JSAlertInfo {
 }
 
 struct TextInputAlert: JSAlertInfo {
+  let title: String?
   let message: String
   let origin: URLOrigin
   let completionHandler: (String?) -> Void
@@ -154,7 +157,7 @@ struct TextInputAlert: JSAlertInfo {
 
   func alertController() -> JSPromptAlertController {
     let alertController = JSPromptAlertController(
-      title: origin.serialized,
+      title: title,
       message: message,
       info: self
     )

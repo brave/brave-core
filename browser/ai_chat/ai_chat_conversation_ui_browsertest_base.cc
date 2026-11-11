@@ -20,7 +20,7 @@
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -62,7 +62,7 @@ void AIChatConversationUIBrowserTestBase::TearDownOnMainThread() {
 
 void AIChatConversationUIBrowserTestBase::NavigateToConversationUI(
     const std::string& conversation_uuid,
-    Browser* target_browser) {
+    BrowserWindowInterface* target_browser) {
   if (!target_browser) {
     target_browser = browser();
   }
@@ -71,7 +71,7 @@ void AIChatConversationUIBrowserTestBase::NavigateToConversationUI(
   conversation_rfh_ = nullptr;
   GURL url(base::StrCat({"chrome://leo-ai/", conversation_uuid}));
   conversation_rfh_ = ui_test_utils::NavigateToURLWithDisposition(
-      target_browser, url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      target_browser, url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   // Wait for child frame to exist
   VerifyElementState("conversation-entries-iframe");
@@ -174,7 +174,16 @@ bool AIChatConversationUIBrowserTestBase::VerifyElementState(
 
   auto result = content::EvalJs(
       frame,
-      content::JsReplace(kWaitForAIChatRenderScript, test_id, !expect_exist));
+      content::JsReplace(kWaitForAIChatRenderScript, test_id, !expect_exist),
+      eval_js_options_);
+  // Surface a script failure (e.g. the frame's document was replaced while the
+  // promise was still pending) as a test failure: `ExtractBool` would `CHECK`
+  // and take the browser test process down, losing the error along with the
+  // rest of the test's output.
+  if (!result.is_ok()) {
+    ADD_FAILURE() << result.ExtractError();
+    return false;
+  }
   return result.ExtractBool();
 }
 
@@ -252,8 +261,28 @@ bool AIChatConversationUIBrowserTestBase::VerifyElementText(
   )";
 
   auto result = content::EvalJs(
-      frame, content::JsReplace(kWaitForTextScript, test_id, expected_text));
-  return result.ExtractBool();
+      frame, content::JsReplace(kWaitForTextScript, test_id, expected_text),
+      eval_js_options_);
+  if (!result.is_ok()) {
+    ADD_FAILURE() << result.ExtractError();
+    return false;
+  }
+  if (!result.ExtractBool()) {
+    // Report what the element actually said; a bare `false` here gives whoever
+    // hits it nothing to go on.
+    auto actual = content::EvalJs(
+        frame,
+        content::JsReplace("(document.querySelector(`[data-testid=$1]`)"
+                           "?.textContent ?? '<no such element>').trim()",
+                           test_id),
+        eval_js_options_);
+    ADD_FAILURE() << "'" << test_id << "' text is '"
+                  << (actual.is_ok() ? actual.ExtractString()
+                                     : actual.ExtractError())
+                  << "', expected '" << expected_text << "'";
+    return false;
+  }
+  return true;
 }
 
 bool AIChatConversationUIBrowserTestBase::ClickElement(
@@ -273,7 +302,8 @@ bool AIChatConversationUIBrowserTestBase::ClickElement(
     })()
   )";
   return content::EvalJs(frame,
-                         content::JsReplace(kClickElementScript, test_id))
+                         content::JsReplace(kClickElementScript, test_id),
+                         eval_js_options_)
       .ExtractBool();
 }
 
@@ -298,7 +328,8 @@ bool AIChatConversationUIBrowserTestBase::HoverElement(
     })()
   )";
   return content::EvalJs(frame,
-                         content::JsReplace(kHoverElementScript, test_id))
+                         content::JsReplace(kHoverElementScript, test_id),
+                         eval_js_options_)
       .ExtractBool();
 }
 

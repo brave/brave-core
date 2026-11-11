@@ -104,8 +104,9 @@ class TeamcityReporterIntegrationTest(unittest.TestCase):
 
         self._assert_teamcity_reporter_output(args, expected_lines)
 
-    def _assert_teamcity_reporter_output(self, test_args,
-                                         expected_teamcity_lines):
+    def _assert_teamcity_reporter_output(
+        self, test_args, expected_teamcity_lines
+    ):
         self.assertTrue(
             os.path.exists(self.test_binary),
             f'Missing test runner executable {self.test_binary}',
@@ -126,8 +127,9 @@ class TeamcityReporterIntegrationTest(unittest.TestCase):
         output_teamcity_lines = [
             line for line in output_lines if line.startswith('##teamcity')
         ]
-        diff = self._generate_diff(expected_teamcity_lines,
-                                   output_teamcity_lines)
+        diff = self._generate_diff(
+            expected_teamcity_lines, output_teamcity_lines
+        )
 
         if diff:
             message_lines = [
@@ -139,14 +141,14 @@ class TeamcityReporterIntegrationTest(unittest.TestCase):
                 'Full test output:',
                 *output_lines,
             ]
-            self.fail('\n'.join(message_lines).replace('##teamcity',
-                                                       '%%teamcity'))
+            self.fail(
+                '\n'.join(message_lines).replace('##teamcity', '%%teamcity')
+            )
 
     @staticmethod
     def _generate_diff(expected_teamcity_lines, output_teamcity_lines):
 
         class PrefixString(str):
-
             def __eq__(self, other):
                 # Make sure we are comparing against another string
                 if isinstance(other, str):
@@ -172,7 +174,8 @@ class TeamcityReporterIntegrationTest(unittest.TestCase):
                 fromfile='expected',
                 tofile='actual',
                 lineterm='',
-            ))
+            )
+        )
 
 
 if __name__ == '__main__':

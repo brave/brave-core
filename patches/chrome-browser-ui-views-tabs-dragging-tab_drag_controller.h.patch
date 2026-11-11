@@ -1,17 +1,17 @@
 diff --git a/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h b/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h
-index f9e4a0728c0976c65fee27f53d8debeadcb4320d..43c067514b651aa9328fed09c090bf370273ab74 100644
+index a962420a7f1f66c553b01a7b2555b36110577b67..a6921b4c8ad5cc96e18a52d8dde2fbc214f5aa9c 100644
 --- a/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h
 +++ b/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h
-@@ -135,7 +135,7 @@ class TabDragController : public views::WidgetObserver,
+@@ -132,7 +132,7 @@ class TabDragController : public views::WidgetObserver,
    // call, and Liveness::ALIVE if `this` still exists.
    // Note: `dragging_views` must be ordered by their position in the source
    // tabstrip (both visually and in the model).
 -  [[nodiscard]] Liveness Init(TabDragContext* source_context,
 +  [[nodiscard]] virtual Liveness Init(TabDragContext* source_context,
-                               TabSlotView* source_view,
-                               const std::vector<TabSlotView*>& dragging_views,
+                               views::View* source_view,
+                               const std::vector<views::View*>& dragging_views,
                                const gfx::Point& offset_from_source_view,
-@@ -228,6 +228,7 @@ class TabDragController : public views::WidgetObserver,
+@@ -232,6 +232,7 @@ class TabDragController : public views::WidgetObserver,
    const TabDragContext* GetAttachedContext() const override;
  
   private:
@@ -19,7 +19,7 @@ index f9e4a0728c0976c65fee27f53d8debeadcb4320d..43c067514b651aa9328fed09c090bf37
    friend class TabDragControllerTest;
  
    class SourceTabStripEmptinessTracker;
-@@ -423,7 +424,7 @@ class TabDragController : public views::WidgetObserver,
+@@ -427,7 +428,7 @@ class TabDragController : public views::WidgetObserver,
    // See Detach/Attach for parameter documentation. Transfers ownership of
    // `this` from `attached_context_` (which must own `this`) to
    // `target_context`.
@@ -27,8 +27,8 @@ index f9e4a0728c0976c65fee27f53d8debeadcb4320d..43c067514b651aa9328fed09c090bf37
 +  virtual void DetachAndAttachToNewContext(ReleaseCapture release_capture,
                                     TabDragContext* target_context);
  
-   // Detaches the tabs being dragged, creates a new Browser to contain them and
-@@ -552,7 +553,7 @@ class TabDragController : public views::WidgetObserver,
+   // Hides browsers whose tab strips emptied mid-drag and whose close was
+@@ -563,7 +564,7 @@ class TabDragController : public views::WidgetObserver,
  
    // Initializes `dragging_tabs_session_`, and performs a first MoveAttached
    // within `attached_context_`.

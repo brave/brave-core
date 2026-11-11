@@ -5,15 +5,11 @@
 
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 
-#include <memory>
 #include <optional>
-#include <utility>
 #include <vector>
 
 #include "base/test/values_test_util.h"
-#include "components/grit/brave_components_strings.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "ui/base/l10n/l10n_util.h"
 
 using base::test::ParseJson;
 
@@ -217,7 +213,8 @@ TEST(EthResponseParserUnitTest, ParseEthGetLogs) {
       }
     ]
   })");
-  EXPECT_TRUE(ParseEthGetLogs(ParseJson(json), &logs));
+  ASSERT_TRUE(ParseEthGetLogs(ParseJson(json), &logs));
+  ASSERT_EQ(logs.size(), 1u);
   EXPECT_EQ(logs[0].address, "0x6b175474e89094c44da98b954eedeac495271d0f");
   EXPECT_EQ(
       logs[0].block_hash,
@@ -668,15 +665,17 @@ TEST(EthResponseParserUnitTest, DecodeGetERC20TokenBalancesEthCallResponse) {
       "000000000000000000000000000000004000000000000000000000000000000000000000"
       "000000000000000000000000200000000000000000000000000000000000000000000000"
       "000000000000000000");
-  EXPECT_TRUE(result.has_value());
-  EXPECT_EQ(result.value().size(), 3u);
+  ASSERT_TRUE(result.has_value());
+  ASSERT_EQ(result->size(), 3u);
 
+  ASSERT_TRUE((*result)[0].has_value());
   EXPECT_EQ(
-      result.value()[0].value(),
+      (*result)[0].value(),
       "0x000000000000000000000000000000000000000000000006e83695ab1f893c00");
-  EXPECT_FALSE(result.value()[1].has_value());
+  EXPECT_FALSE((*result)[1].has_value());
+  ASSERT_TRUE((*result)[2].has_value());
   EXPECT_EQ(
-      result.value()[2].value(),
+      (*result)[2].value(),
       "0x0000000000000000000000000000000000000000000000000000000000000000");
 }
 

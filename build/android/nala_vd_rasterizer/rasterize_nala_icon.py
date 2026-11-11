@@ -29,25 +29,31 @@ DENSITY_SCALES = {
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--rasterizer',
-                        required=True,
-                        help='Path to the NalaVdRasterizer wrapper script.')
-    parser.add_argument('--input',
-                        required=True,
-                        help='Nala VectorDrawable xml.')
+    parser.add_argument(
+        '--rasterizer',
+        required=True,
+        help='Path to the NalaVdRasterizer wrapper script.',
+    )
+    parser.add_argument(
+        '--input', required=True, help='Nala VectorDrawable xml.'
+    )
     parser.add_argument(
         '--output-dir',
         required=True,
-        help='Resource res/ dir to write drawable-<bucket>/ into.')
-    parser.add_argument('--dest-name',
-                        required=True,
-                        help='Output drawable name, without extension.')
+        help='Resource res/ dir to write drawable-<bucket>/ into.',
+    )
+    parser.add_argument(
+        '--dest-name',
+        required=True,
+        help='Output drawable name, without extension.',
+    )
     parser.add_argument(
         '--density',
         action='append',
         required=True,
         metavar='BUCKET',
-        help='Density bucket, e.g. "xhdpi" or "ldrtl-xhdpi". Repeatable.')
+        help='Density bucket, e.g. "xhdpi" or "ldrtl-xhdpi". Repeatable.',
+    )
     options = parser.parse_args()
 
     cmd = [options.rasterizer, options.input]
@@ -61,7 +67,9 @@ def main():
         out_dir = os.path.join(options.output_dir, 'drawable-' + bucket)
         os.makedirs(out_dir, exist_ok=True)
         cmd += [
-            os.path.join(out_dir, options.dest_name + '.png'), scale, mirror
+            os.path.join(out_dir, options.dest_name + '.png'),
+            scale,
+            mirror,
         ]
 
     return subprocess.run(cmd, check=False).returncode

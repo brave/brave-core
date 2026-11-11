@@ -33,12 +33,10 @@ source_set("brave_account") {
   if (!is_android) {
     deps += [
       "//chrome/browser/ui/webui",
-      "//net",
-      "//ui/compositor",
-      "//ui/gfx/geometry",
-      "//ui/views",
       "//ui/web_dialogs",
-      "//url",
     ]
+  } else {
+    # Only the Android WebUI serves the rows, so only it can open the dialog.
+    deps += [ "//brave/browser/ui/brave_account" ]
   }
 }

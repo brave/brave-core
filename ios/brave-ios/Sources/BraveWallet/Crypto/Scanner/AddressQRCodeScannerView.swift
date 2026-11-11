@@ -25,7 +25,7 @@ public struct AddressQRCodeScannerView: View {
   }
 
   public var body: some View {
-    NavigationView {
+    NavigationStack {
       #if targetEnvironment(simulator)
       ZStack {
         Color.black.ignoresSafeArea()

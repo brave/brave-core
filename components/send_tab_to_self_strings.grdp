@@ -1,28 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
-  <!-- Different device types using in Sharing. -->
-  <message name="IDS_SHARING_DEVICE_TYPE_COMPUTER" desc="The label for a device of type computer.">
-    Computer
-  </message>
-  <message name="IDS_SHARING_DEVICE_TYPE_DEVICE" desc="The label for a generic device.">
-    Device
-  </message>
-  <message name="IDS_SHARING_DEVICE_TYPE_PHONE" desc="The label for a device of type phone.">
-    Phone
-  </message>
-  <message name="IDS_SHARING_DEVICE_TYPE_TABLET" desc="The label for a device of type tablet.">
-    Tablet
-  </message>
-  <message name="IDS_SHARING_DEVICE_TYPE_DESKTOP" desc="The label for a device of type desktop computer.">
-    Desktop
-  </message>
-  <message name="IDS_SHARING_DEVICE_TYPE_LAPTOP" desc="The label for a device of type laptop computer.">
-    Laptop
-  </message>
-  <message name="IDS_SEND_TAB_PUSH_NOTIFICATION_TITLE_DEAULT_DEVICE_NAME" desc="Title of the iOS send tab to self push notification when the target device has a default name.">
-    Tab sent from your <ph name="DEVICE_NAME">$1<ex>Macbook Pro</ex></ph>
-  </message>
   <message name="IDS_SEND_TAB_PUSH_NOTIFICATION_TITLE_USER_GIVEN_DEVICE_NAME" desc="Title of the iOS send tab to self push notification when the target device has a user-given name.">
     Tab sent from <ph name="DEVICE_NAME">$1<ex>Jane's iPhone</ex></ph>
   </message>
@@ -54,7 +32,7 @@
     Send to your device
   </message>
   <message name="IDS_SEND_TAB_TO_SELF_POST_SEND_SUCCESS_TOAST" desc="Text for a toast indicating that the tab was successfully sent to another device.">
-    Sent to Brave on your <ph name="DEVICE_NAME">$1<ex>iPhone</ex></ph>.
+    Sent to Brave on your <ph name="DEVICE_NAME">$1<ex>iPhone</ex></ph>
   </message>
   <message name="IDS_SEND_TAB_TO_SELF_POST_SEND_SUCCESS_TOAST_ANDROID" desc="Text for a toast indicating that the tab was successfully sent to another device." formatter_data="android_java">
     Sent to Brave on your <ph name="DEVICE_NAME">%1$s<ex>iPhone</ex></ph> • <ph name="USER_EMAIL">%2$s<ex>elisa.g.beckett@gmail.com</ex></ph>
@@ -77,7 +55,7 @@
   <message name="IDS_SEND_TAB_TO_SELF_DEVICE_SHORTCUT_LONG_LABEL" desc="Long label for a dynamic shortcut representing another device belonging to the user." formatter_data="android_java">
     <ph name="USER_GIVEN_NAME">%1$s<ex>Elisa</ex></ph> • <ph name="DEVICE_NAME">%2$s<ex>Pixel 9</ex></ph>
   </message>
-  <message name="IDS_SEND_TAB_TO_SELF_OMNIBOX_IPH_TEXT" desc="Text shown in an In-Product Help bubble educating the user to touch and hold the address bar to send the current tab to another device.">
+  <message name="IDS_SEND_TAB_TO_SELF_OMNIBOX_IPH_TEXT" desc="Text shown in an In-Product Help bubble educating the user to touch and hold the address bar to send the current tab to another device." formatter_data="android_java">
     To quickly send this page to another device, touch &amp; hold the address bar
   </message>
 </grit-part>

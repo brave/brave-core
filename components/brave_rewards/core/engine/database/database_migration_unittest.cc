@@ -9,10 +9,8 @@
 #include <vector>
 
 #include "base/files/file_util.h"
-#include "base/run_loop.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/engine/database/database_util.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/engine/test/rewards_engine_test.h"

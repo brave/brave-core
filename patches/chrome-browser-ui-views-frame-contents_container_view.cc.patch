@@ -1,0 +1,18 @@
+diff --git a/chrome/browser/ui/views/frame/contents_container_view.cc b/chrome/browser/ui/views/frame/contents_container_view.cc
+index 413b2f626db33f5c834d0e184786626bdea0e8b2..7f821593480911274a8d1a635a158abd23cdb128 100644
+--- a/chrome/browser/ui/views/frame/contents_container_view.cc
++++ b/chrome/browser/ui/views/frame/contents_container_view.cc
+@@ -156,11 +156,11 @@ ContentsContainerView::ContentsContainerView(BrowserView* browser_view)
+             .Build());
+   }
+ 
+-  mini_toolbar_ = AddChildView(std::make_unique<MultiContentsViewMiniToolbar>(
++  mini_toolbar_ = AddChildView(CreateBraveMiniToolbar(
+       browser_view, contents_view_));
+ 
+   container_outline_ =
+-      AddChildView(std::make_unique<ContentsContainerOutline>(mini_toolbar_));
++      AddChildView(CreateBraveContainerOutline(mini_toolbar_));
+ 
+   capture_contents_border_view_ =
+       AddChildView(std::make_unique<ContentsCaptureBorderView>(mini_toolbar_));

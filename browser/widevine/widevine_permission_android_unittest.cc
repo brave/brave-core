@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/memory/raw_ptr.h"
-#include "brave/browser/brave_drm_tab_helper.h"
+#include "brave/browser/widevine/brave_drm_tab_helper.h"
 #include "brave/browser/widevine/widevine_permission_request.h"
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/components/constants/pref_names.h"
@@ -15,11 +15,13 @@
 #include "chrome/test/base/testing_profile_manager.h"
 #include "components/permissions/permission_prompt.h"
 #include "components/permissions/permission_request_manager.h"
-#include "components/permissions/permission_request_queue.h"
+#include "components/permissions/request_type.h"
+#include "components/permissions/test/mock_permission_prompt_factory.h"
 #include "components/prefs/pref_registry.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/tabs/public/mock_tab_interface.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/mock_navigation_handle.h"
 #include "content/public/test/test_renderer_host.h"
@@ -38,8 +40,8 @@ class WidevinePermissionAndroidTest : public ChromeRenderViewHostTestHarness {
     return permission_request_manager_;
   }
 
-  permissions::PermissionRequestQueue* GetPendingRequestQueue() {
-    return &(permission_request_manager_->pending_permission_requests_);
+  permissions::MockPermissionPromptFactory* prompt_factory() {
+    return prompt_factory_.get();
   }
 
   void SanityCheck() {
@@ -72,17 +74,25 @@ class WidevinePermissionAndroidTest : public ChromeRenderViewHostTestHarness {
     web_contents_ = content::WebContents::Create(
         content::WebContents::CreateParams(profile_));
 
-    BraveDrmTabHelper::CreateForWebContents(web_contents_.get());
-    tab_helper_ = BraveDrmTabHelper::FromWebContents(web_contents_.get());
+    ON_CALL(tab_, GetContents())
+        .WillByDefault(testing::Return(web_contents_.get()));
+    tab_helper_ = std::make_unique<BraveDrmTabHelper>(tab_);
     permissions::PermissionRequestManager::CreateForWebContents(
         web_contents_.get());
     permission_request_manager_ =
         permissions::PermissionRequestManager::FromWebContents(
             web_contents_.get());
+    // Without it, Android's dialog dismisses itself as there is no window.
+    prompt_factory_ =
+        std::make_unique<permissions::MockPermissionPromptFactory>(
+            permission_request_manager_);
     base::RunLoop().RunUntilIdle();
   }
 
   void TearDown() override {
+    prompt_factory_.reset();
+    permission_request_manager_ = nullptr;
+    tab_helper_.reset();
     web_contents_.reset();
     profile_manager_.reset();
     ChromeRenderViewHostTestHarness::TearDown();
@@ -93,29 +103,31 @@ class WidevinePermissionAndroidTest : public ChromeRenderViewHostTestHarness {
   }
   Profile* profile() { return profile_; }
   content::WebContents* web_contents() const { return web_contents_.get(); }
-  BraveDrmTabHelper* brave_drm_tab_helper() const { return tab_helper_; }
+  BraveDrmTabHelper* brave_drm_tab_helper() const { return tab_helper_.get(); }
 
  private:
   std::unique_ptr<TestingProfileManager> profile_manager_;
   raw_ptr<TestingProfile> profile_ = nullptr;
   std::unique_ptr<content::WebContents> web_contents_;
-  raw_ptr<BraveDrmTabHelper> tab_helper_ = nullptr;
+  tabs::MockTabInterface tab_;
+  std::unique_ptr<BraveDrmTabHelper> tab_helper_;
   raw_ptr<permissions::PermissionRequestManager> permission_request_manager_ =
       nullptr;
+  std::unique_ptr<permissions::MockPermissionPromptFactory> prompt_factory_;
 };
 
 TEST_F(WidevinePermissionAndroidTest, BraveDrmTabHelperTest) {
   SanityCheck();
 
-  permissions::PermissionRequestManager* manager = permission_request_manager();
   EXPECT_FALSE(brave_drm_tab_helper()->ShouldShowWidevineOptIn());
 
   SimulateWidevineKeySystemAccessRequest();
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(brave_drm_tab_helper()->ShouldShowWidevineOptIn());
 
-  EXPECT_TRUE(manager->has_pending_requests());
-  EXPECT_EQ(GetPendingRequestQueue()->size(), size_t(1));
+  EXPECT_EQ(prompt_factory()->show_count(), 1);
+  EXPECT_TRUE(
+      prompt_factory()->RequestTypeSeen(permissions::RequestType::kWidevine));
 
   // After navigation
   SimulateNavigation();
@@ -154,10 +166,8 @@ TEST_F(WidevinePermissionAndroidTest, WidevinePermissionRequestTest) {
   SimulateWidevineKeySystemAccessRequest();
   base::RunLoop().RunUntilIdle();
 
-  EXPECT_TRUE(manager->has_pending_requests() &&
-              GetPendingRequestQueue()->size() == 1);
-  GetPendingRequestQueue()->Pop()->PermissionGranted(
-      /*prompt_options=*/std::monostate(), /*is_one_time=*/false);
+  ASSERT_TRUE(prompt_factory()->is_visible());
+  manager->Accept(/*prompt_options=*/std::monostate());
   EXPECT_TRUE(local_state()->GetBoolean(kWidevineEnabled));
 
   // Deny
@@ -166,9 +176,8 @@ TEST_F(WidevinePermissionAndroidTest, WidevinePermissionRequestTest) {
   SimulateWidevineKeySystemAccessRequest();
   base::RunLoop().RunUntilIdle();
 
-  EXPECT_TRUE(manager->has_pending_requests() &&
-              GetPendingRequestQueue()->size() == 1);
-  GetPendingRequestQueue()->Pop()->PermissionDenied();
+  ASSERT_TRUE(prompt_factory()->is_visible());
+  manager->Deny(/*prompt_options=*/std::monostate());
   EXPECT_FALSE(local_state()->GetBoolean(kWidevineEnabled));
 
   // Cancel
@@ -176,9 +185,8 @@ TEST_F(WidevinePermissionAndroidTest, WidevinePermissionRequestTest) {
   SimulateWidevineKeySystemAccessRequest();
   base::RunLoop().RunUntilIdle();
 
-  EXPECT_TRUE(manager->has_pending_requests() &&
-              GetPendingRequestQueue()->size() == 1);
-  GetPendingRequestQueue()->Pop()->Cancelled();
+  ASSERT_TRUE(prompt_factory()->is_visible());
+  manager->Dismiss(/*prompt_options=*/std::monostate());
   EXPECT_FALSE(local_state()->GetBoolean(kWidevineEnabled));
 }
 

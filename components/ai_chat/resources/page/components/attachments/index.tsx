@@ -5,10 +5,10 @@
 
 import * as React from 'react'
 import styles from './style.module.scss'
-import Button from '@brave/leo/react/button'
-import Checkbox from '@brave/leo/react/checkbox'
-import Icon from '@brave/leo/react/icon'
-import Input from '@brave/leo/react/input'
+import Button from '@brave/nala/react/button'
+import Checkbox from '@brave/nala/react/checkbox'
+import Icon from '@brave/nala/react/icon'
+import Input from '@brave/nala/react/input'
 import Flex from '$web-common/Flex'
 import { useAIChat } from '../../state/ai_chat_context'
 import {

@@ -11,9 +11,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--output', help='Path to output archive.')
     parser.add_argument('--input', help='Path to input archive.')
-    parser.add_argument('--target_dir',
-                        help='If provided, the paths in the archive will be '
-                        'relative to this directory', default='.')
+    parser.add_argument(
+        '--target_dir',
+        help='If provided, the paths in the archive will be '
+        'relative to this directory',
+        default='.',
+    )
     args = parser.parse_args()
 
     temp_dir = tempdir('brave_archive')

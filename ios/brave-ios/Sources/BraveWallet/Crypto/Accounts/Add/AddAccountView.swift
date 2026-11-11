@@ -216,17 +216,7 @@ struct AddAccountView: View {
         )
       ) {
         ForEach(WalletConstants.supportedCoinTypes().elements) { coin in
-          NavigationLink(
-            tag: coin,
-            selection: $selectedCoin
-          ) {
-            addAccountView
-              .onDisappear {
-                name = ""
-                originPassword = ""
-                privateKey = ""
-              }
-          } label: {
+          NavigationLink(value: coin) {
             HStack(spacing: 10) {
               Image(coin.iconName, bundle: .module)
                 .resizable()
@@ -252,6 +242,18 @@ struct AddAccountView: View {
     .listStyle(.insetGrouped)
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.addAccountTitle)
+    .navigationDestination(for: BraveWallet.CoinType.self) { coin in
+      addAccountView
+        .onAppear {
+          selectedCoin = coin
+        }
+        .onDisappear {
+          selectedCoin = nil
+          name = ""
+          originPassword = ""
+          privateKey = ""
+        }
+    }
   }
 
   var body: some View {
@@ -284,7 +286,7 @@ struct AddAccountView: View {
         self.isLoadingFile = true
         DispatchQueue.global(qos: .userInitiated).async {
           do {
-            let data = try String(contentsOf: fileURL)
+            let data = try String(contentsOf: fileURL, encoding: .utf8)
             DispatchQueue.main.async {
               self.privateKey = data
               self.isLoadingFile = false
@@ -368,6 +370,7 @@ struct AddAccountView: View {
       }
       Group {
         TextEditor(text: $privateKey)
+          .keyboardType(.asciiCapable)
           .autocapitalization(.none)
           .font(.system(.body, design: .monospaced))
           .frame(height: privateKeyFieldHeight)
@@ -385,9 +388,6 @@ struct AddAccountView: View {
             .accessibilityHidden(true),
             alignment: .top
           )
-          .introspectTextView { textView in
-            textView.smartQuotesType = .no
-          }
           .accessibilityValue(
             privateKey.isEmpty ? Strings.Wallet.importAccountPlaceholder : privateKey
           )
@@ -433,7 +433,7 @@ struct AddAccountView: View {
 #if DEBUG
 struct AddAccountView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
+    NavigationStack {
       AddAccountView(
         keyringStore: .previewStore,
         networkStore: .previewStore

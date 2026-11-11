@@ -9,6 +9,11 @@ substitutions:
       class_name: SystemMenuModelBuilder
       method_name: BuildSystemMenuForBrowserWindow
 
+  - description: 'Make ~SystemMenuModelBuilder() virtual'
+    make_virtual:
+      class_name: SystemMenuModelBuilder
+      method_name: ~SystemMenuModelBuilder
+
   - description: 'Friend BraveSystemMenuModelBuilder'
     add_friend:
       class_name: SystemMenuModelBuilder

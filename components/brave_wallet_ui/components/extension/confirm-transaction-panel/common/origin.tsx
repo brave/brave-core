@@ -47,10 +47,7 @@ export function Origin(props: Props) {
         textColor='secondary'
         variant='xSmall.regular'
       >
-        <SiteOrigin
-          originSpec={originInfo.originSpec}
-          eTldPlusOne={originInfo.eTldPlusOne}
-        />
+        <SiteOrigin originInfo={originInfo} />
       </URLText>
     </>
   )

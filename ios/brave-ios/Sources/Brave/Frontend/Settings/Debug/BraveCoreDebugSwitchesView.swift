@@ -246,32 +246,9 @@ struct BraveCoreDebugSwitchesView: View {
       self.coreSwitch = coreSwitch
     }
 
-    private var binding: Binding<Bool> {
-      .init(
-        get: {
-          activeSwitches.value.contains(coreSwitch.rawValue)
-            && (coreSwitch.isValueless
-              || !switchValues.value[coreSwitch.rawValue, default: ""].isEmpty)
-        },
-        set: { isOn in
-          if !coreSwitch.isValueless && switchValues.value[coreSwitch.rawValue, default: ""].isEmpty
-          {
-            return
-          }
-          var switches = Set(activeSwitches.value)
-          if isOn {
-            switches.insert(coreSwitch.rawValue)
-          } else {
-            switches.remove(coreSwitch.rawValue)
-          }
-          activeSwitches.value = Array(switches)
-        }
-      )
-    }
-
     var body: some View {
       HStack(spacing: 16) {
-        Toggle(coreSwitch.displayString, isOn: binding)
+        Toggle(coreSwitch.displayString, isOn: $activeSwitches[isActive: coreSwitch])
           .tint(Color(braveSystemName: .primitivePrimary40))
           .labelsHidden()
         VStack(alignment: .leading) {
@@ -287,7 +264,7 @@ struct BraveCoreDebugSwitchesView: View {
               Text("\(Image(systemName: "equal.square.fill")) \(value)")
                 .font(.caption)
                 .foregroundColor(
-                  binding.wrappedValue
+                  activeSwitches[isActive: coreSwitch]
                     ? Color(braveSystemName: .textInteractive)
                     : .secondary
                 )
@@ -479,3 +456,32 @@ struct BraveCoreDebugSwitchesView_Previews: PreviewProvider {
   }
 }
 #endif
+
+extension Preferences.Option<[String]> {
+  /// Whether or not `coreSwitch` is active.
+  ///
+  /// Switches that require a value are only considered active once a value has been set in
+  /// ``Preferences/BraveCore/switchValues``, and cannot be activated until then.
+  fileprivate subscript(isActive coreSwitch: BraveCoreSwitchKey) -> Bool {
+    get {
+      value.contains(coreSwitch.rawValue)
+        && (coreSwitch.isValueless || hasValue(for: coreSwitch))
+    }
+    set {
+      if !coreSwitch.isValueless && !hasValue(for: coreSwitch) {
+        return
+      }
+      var switches = Set(value)
+      if newValue {
+        switches.insert(coreSwitch.rawValue)
+      } else {
+        switches.remove(coreSwitch.rawValue)
+      }
+      value = Array(switches)
+    }
+  }
+
+  private func hasValue(for coreSwitch: BraveCoreSwitchKey) -> Bool {
+    !Preferences.BraveCore.switchValues.value[coreSwitch.rawValue, default: ""].isEmpty
+  }
+}

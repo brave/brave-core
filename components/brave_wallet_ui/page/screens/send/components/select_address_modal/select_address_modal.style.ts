@@ -4,9 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import Icon from '@brave/leo/react/icon'
-import * as leo from '@brave/leo/tokens/css/variables'
-import Input from '@brave/leo/react/input'
+import Icon from '@brave/nala/react/icon'
+import * as leo from '@brave/nala/tokens/css/variables'
+import Input from '@brave/nala/react/input'
 
 // Assets
 import { LoaderIcon } from 'brave-ui/components/icons'
@@ -20,7 +20,7 @@ import {
 } from '../../../../../components/shared/style'
 import {
   layoutSmallWidth, //
-} from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const AccountSection = styled(Row)`
   border-bottom: 1px solid ${leo.color.divider.subtle};

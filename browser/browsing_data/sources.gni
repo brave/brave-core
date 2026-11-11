@@ -28,6 +28,7 @@ brave_browser_browsing_data_deps = [
   "//components/browsing_data/core",
   "//components/content_settings/core/browser",
   "//components/content_settings/core/common",
+  "//components/keyed_service/core",
   "//components/prefs",
   "//content/public/browser",
 ]

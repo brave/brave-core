@@ -54,6 +54,8 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textfield.TextInputEditText;
@@ -158,10 +160,30 @@ public class BraveUnifiedPanelHandler {
             Collections.synchronizedMap(new HashMap<>());
 
     private @Nullable Context mContext;
+    private @Nullable LifecycleOwner mLifecycleOwner;
+    private final DefaultLifecycleObserver mLifecycleObserver =
+            new DefaultLifecycleObserver() {
+                @Override
+                public void onPause(LifecycleOwner owner) {
+                    // Closes the panel when the app is backgrounded so it can't be reached via
+                    // the Android recent-apps screen or Brave's private/regular tab switcher
+                    // while the app isn't in the foreground.
+                    hide();
+                }
+            };
     private @Nullable PopupWindow mPopupWindow;
     private @Nullable View mPopupView;
     private @Nullable View mAnchorView;
     private @Nullable View mHardwareButtonMenuAnchor;
+    private @Nullable View mDecorView;
+    private final View.OnLayoutChangeListener mDecorViewLayoutChangeListener =
+            (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+                boolean widthChanged = (right - left) != (oldRight - oldLeft);
+                boolean heightChanged = (bottom - top) != (oldBottom - oldTop);
+                if (widthChanged || heightChanged) {
+                    hide(); // hide Shields panel if screen rotated to avoid bad positioning.
+                }
+            };
     private @Nullable GURL mUrl;
     private View mMainPanelContainer;
     private View mHttpsPanelContainer;
@@ -240,7 +262,9 @@ public class BraveUnifiedPanelHandler {
                         : null;
 
         if (mContext != null) {
-            mHardwareButtonMenuAnchor = ((Activity) mContext).findViewById(R.id.menu_anchor_stub);
+            Activity activity = (Activity) mContext;
+            mHardwareButtonMenuAnchor = activity.findViewById(R.id.menu_anchor_stub);
+            attachLifecycleObserver(activity);
         }
     }
 
@@ -258,10 +282,26 @@ public class BraveUnifiedPanelHandler {
         if (mHardwareButtonMenuAnchor == null && mContext == null) {
             mContext = BraveActivity.getCustomTabActivity();
             if (mContext != null) {
-                mHardwareButtonMenuAnchor =
-                        ((Activity) mContext).findViewById(R.id.menu_anchor_stub);
+                Activity activity = (Activity) mContext;
+                mHardwareButtonMenuAnchor = activity.findViewById(R.id.menu_anchor_stub);
+                attachLifecycleObserver(activity);
             }
         }
+    }
+
+    /**
+     * Registers {@link #mLifecycleObserver} on {@code activity} so the panel is hidden when the
+     * host Activity backgrounds. Every Activity that reaches this code (BraveActivity,
+     * CustomTabActivity, ...) is required to be a LifecycleOwner, since that's what lets this class
+     * close the panel before it can be reached via the recent-apps or tab switcher after
+     * backgrounding. This throws rather than degrading silently if that's ever not the case, so a
+     * future regression here fails loudly instead of quietly reopening that exposure. {@link
+     * BraveUnifiedPanelHandlerLifecycleTest} asserts the invariant directly on the concrete
+     * production Activity classes.
+     */
+    private void attachLifecycleObserver(Activity activity) {
+        mLifecycleOwner = (LifecycleOwner) activity;
+        mLifecycleOwner.getLifecycle().addObserver(mLifecycleObserver);
     }
 
     /**
@@ -416,14 +456,20 @@ public class BraveUnifiedPanelHandler {
 
         try {
             int[] anchorLocation = new int[2];
-            mAnchorView.getLocationOnScreen(anchorLocation);
+            mAnchorView.getLocationInWindow(anchorLocation);
+            int decorViewHeight = ((Activity) mContext).getWindow().getDecorView().getHeight();
+            int overlapPx = (int) (PANEL_OVERLAP_OFFSET_DP * density);
+
             if (BottomToolbarConfiguration.isToolbarBottomAnchored()) {
                 // Mirror the top-toolbar rule: end the panel 7 dp above the toolbar top so
                 // its bottom edge lands in the browser-chrome space adjacent to the URL bar,
                 // which a web page cannot render into.
-                int screenHeight = mContext.getResources().getDisplayMetrics().heightPixels;
                 int anchorTop = anchorLocation[1];
-                int yOffset = screenHeight - anchorTop - (int) (PANEL_OVERLAP_OFFSET_DP * density);
+                int yOffset = decorViewHeight - anchorTop - overlapPx;
+                int panelBottom = anchorTop + overlapPx;
+
+                ((MaxHeightFrameLayout) mPopupView)
+                        .setMaxHeightPx(panelBottom - marginPx);
 
                 popupWindow.showAtLocation(
                         mAnchorView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, yOffset);
@@ -433,17 +479,21 @@ public class BraveUnifiedPanelHandler {
                 // the URL bar is a spoofing deterrent: a web page cannot render into that
                 // gap. On phones the panel width is screenWidth - 2 * marginPx; on tablets
                 // it is capped at POPUP_MAX_WIDTH_DP, right-aligned under the Shields icon.
-                int yOffset =
-                        anchorLocation[1]
-                                + mAnchorView.getHeight()
-                                - (int) (PANEL_OVERLAP_OFFSET_DP * density);
+                int panelTop = anchorLocation[1] + mAnchorView.getHeight() - overlapPx;
+
+                ((MaxHeightFrameLayout) mPopupView)
+                        .setMaxHeightPx(decorViewHeight - panelTop - marginPx);
+
                 popupWindow.showAtLocation(
-                        mAnchorView, Gravity.TOP | Gravity.END, marginPx, yOffset);
+                        mAnchorView, Gravity.TOP | Gravity.END, marginPx, panelTop);
             }
         } catch (Exception e) {
             Log.e(TAG, "Failed to show popup window", e);
             return null;
         }
+
+        mDecorView = ((Activity) mContext).getWindow().getDecorView();
+        mDecorView.addOnLayoutChangeListener(mDecorViewLayoutChangeListener);
 
         return popupWindow;
     }
@@ -532,8 +582,18 @@ public class BraveUnifiedPanelHandler {
         if (mAdvancedOptionsContent == null) return;
 
         View httpsUpgradeItem = mAdvancedOptionsContent.findViewById(R.id.https_upgrade_item);
-        if (httpsUpgradeItem != null) {
-            httpsUpgradeItem.setOnClickListener(v -> showHttpsUpgradePanel());
+        View httpsUpgradeDivider = mAdvancedOptionsContent.findViewById(R.id.https_upgrade_divider);
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.HTTPS_BY_DEFAULT)) {
+            if (httpsUpgradeItem != null) {
+                httpsUpgradeItem.setOnClickListener(v -> showHttpsUpgradePanel());
+            }
+        } else {
+            if (httpsUpgradeItem != null) {
+                httpsUpgradeItem.setVisibility(View.GONE);
+            }
+            if (httpsUpgradeDivider != null) {
+                httpsUpgradeDivider.setVisibility(View.GONE);
+            }
         }
 
         View trackersItem = mAdvancedOptionsContent.findViewById(R.id.trackers_item);
@@ -1031,7 +1091,7 @@ public class BraveUnifiedPanelHandler {
         imageView.setLayoutParams(new ViewGroup.LayoutParams(width, height));
         imageView.fitBitmap(bitmap);
 
-        new AlertDialog.Builder(mContext)
+        new AlertDialog.Builder(mContext, R.style.ThemeOverlay_BrowserUI_AlertDialog)
                 .setView(imageView)
                 .setPositiveButton(android.R.string.ok, null)
                 .show();
@@ -1140,6 +1200,10 @@ public class BraveUnifiedPanelHandler {
     }
 
     public void hide() {
+        if (mDecorView != null) {
+            mDecorView.removeOnLayoutChangeListener(mDecorViewLayoutChangeListener);
+            mDecorView = null;
+        }
         if (mPopupWindow != null && mPopupWindow.isShowing()) {
             mPopupWindow.dismiss();
         }
@@ -1148,6 +1212,10 @@ public class BraveUnifiedPanelHandler {
 
     public void destroy() {
         hide();
+        if (mLifecycleOwner != null) {
+            mLifecycleOwner.getLifecycle().removeObserver(mLifecycleObserver);
+            mLifecycleOwner = null;
+        }
     }
 
     private void releaseResources() {
@@ -1633,7 +1701,8 @@ public class BraveUnifiedPanelHandler {
                             R.string.brave_shred_data_confirmation, mUrl.getOrigin().getSpec()));
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(mContext, R.style.ThemeOverlay_BrowserUI_AlertDialog);
         var mContext = this.mContext;
         builder.setTitle(R.string.brave_shred_data_dialog_title)
                 .setView(view)
@@ -1703,7 +1772,8 @@ public class BraveUnifiedPanelHandler {
             mContext.getString(R.string.shred_option_app_exit)
         };
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(mContext, R.style.ThemeOverlay_BrowserUI_AlertDialog);
         builder.setTitle(R.string.shred_auto_shred)
                 .setSingleChoiceItems(
                         options,

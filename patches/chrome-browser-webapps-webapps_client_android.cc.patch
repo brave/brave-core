@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/webapps/webapps_client_android.cc b/chrome/browser/webapps/webapps_client_android.cc
+index 3d28fa1a39c6232a1d4b30a209a88d08c853c662..7a753d26c0e66716926e42691e4b4dc4ad5f70f0 100644
+--- a/chrome/browser/webapps/webapps_client_android.cc
++++ b/chrome/browser/webapps/webapps_client_android.cc
+@@ -191,7 +191,7 @@ void WebappsClientAndroid::InstallWebApk(content::WebContents* web_contents,
+ void WebappsClientAndroid::InstallShortcut(
+     content::WebContents* web_contents,
+     const AddToHomescreenParams& params) {
+-  ShortcutHelper::AddToLauncherWithSkBitmap(
++  BraveAddToLauncherWithSkBitmap(
+       web_contents, *(params.shortcut_info), params.primary_icon,
+       params.installable_status);
+ }

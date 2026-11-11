@@ -1,20 +1,16 @@
 diff --git a/build/config/android/rules.gni b/build/config/android/rules.gni
-index 757bcaaf69864d47ae3a68d547515b29b956a71e..1de29779a4e266de1714dd61311bd2dab16646a2 100644
+index a3829f7f3af10720ff7459ba4ebb43605d679ed7..0b04cebfb49c5d65c50bbac8fd6e0bdad6f6cf4b 100644
 --- a/build/config/android/rules.gni
 +++ b/build/config/android/rules.gni
-@@ -218,6 +218,7 @@ if (!is_robolectric && enable_java_templates) {
-   #     ]
-   #   }
-   template("java_cpp_enum") {
-+    foreach(source, invoker.sources) { foreach(filter, brave_java_cpp_enum_filter) { if(source == filter) { invoker.sources -= [filter] }}}
-     action_with_pydeps(target_name) {
-       forward_variables_from(invoker,
-                              TESTONLY_AND_VISIBILITY + [
-@@ -411,6 +412,7 @@ if (!is_robolectric && enable_java_templates) {
+@@ -413,6 +413,11 @@ if (!is_robolectric && enable_java_templates) {
    #     output = "$target_gen_dir/AndroidManifest.xml"
    #   }
    template("jinja_template") {
-+    if (defined(invoker.includes)) { invoker.includes += brave_android_manifest_includes } else { invoker.includes = brave_android_manifest_includes }
++    if (defined(invoker.includes)) {
++      invoker.includes += brave_android_manifest_includes
++    } else {
++      invoker.includes = brave_android_manifest_includes
++    }
      action_with_pydeps(target_name) {
        forward_variables_from(invoker, TESTONLY_AND_VISIBILITY + [ "deps" ])
        inputs = [ invoker.input ]

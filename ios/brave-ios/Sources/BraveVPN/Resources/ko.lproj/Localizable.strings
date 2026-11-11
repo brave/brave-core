@@ -40,9 +40,6 @@
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "앱 버전";
 
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "이동통신사";
-
 /* Text to tell user to not modify support info below email's body. */
 "vpn.contactFormDoNotEditText" = "Brave는 사용자의 신원을 추적하지 않고, 앱 사용 패턴을 파악하지 않으며, VPN을 어떻게 설정했는지 전혀 알 수 없습니다. 겪으신 문제에 대한 정보를 공유해주시면 최대한 빨리 문제를 해결해드리겠습니다.";
 
@@ -227,7 +224,7 @@
 "vpn.serverTitle" = "%ld개의 서버";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Brave VPN으로 모든 앱을 보호하세요. 하나의 요금제로 최대 장치 10대를 보호하세요.";
+"vpn.settingHeaderBody" = "콘텐츠를 원하는 방식으로 스트리밍하세요. 1개의 구독으로 10개 기기의 모든 앱을 보호하세요.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "기술 지원팀에 문의";

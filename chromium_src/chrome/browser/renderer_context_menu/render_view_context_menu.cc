@@ -17,7 +17,6 @@
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
-#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
@@ -30,11 +29,12 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/common/channel_info.h"
 #include "components/grit/brave_components_strings.h"
@@ -42,6 +42,7 @@
 #include "components/omnibox/browser/autocomplete_classifier.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
 #include "components/omnibox/browser/autocomplete_match_type.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/security_principal.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/filename_util.h"
@@ -85,6 +86,10 @@
 #include "brave/components/email_aliases/features.h"
 #endif
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/common/features.h"
+#endif
+
 namespace {
 
 AutocompleteMatch GetAutocompleteMatchForText(Profile* profile,
@@ -98,19 +103,28 @@ AutocompleteMatch GetAutocompleteMatchForText(Profile* profile,
                   AutocompleteClassifier::DefaultOmniboxProviders()}),
       std::make_unique<BraveAutocompleteSchemeClassifier>(profile));
   classifier.Classify(text, false, false,
-                      metrics::OmniboxEventProto::INVALID_SPEC, &match, NULL);
+                      metrics::OmniboxEventProto::INVALID_SPEC, &match,
+                      nullptr);
   classifier.Shutdown();
   return match;
 }
 
-GURL GetSelectionNavigationURL(Profile* profile, const std::u16string& text) {
+// Upstream classifies the selection with AutocompleteClassifierFactory, which
+// has no service for off-the-record profiles, so classify with a temporary
+// classifier for those.
+GURL BraveResolveSelectionNavigationURL(Profile* profile,
+                                        const std::u16string& text,
+                                        const GURL& upstream_url) {
+  if (!profile->IsOffTheRecord()) {
+    return upstream_url;
+  }
   return GetAutocompleteMatchForText(profile, text).destination_url;
 }
 
 std::optional<GURL> GetSelectedURL(Profile* profile,
                                    const std::u16string& text) {
   auto match = GetAutocompleteMatchForText(profile, text);
-  if (match.type != AutocompleteMatchType::URL_WHAT_YOU_TYPED) {
+  if (match.type != omnibox::AutocompleteMatchType::kUrlWhatYouTyped) {
     return std::nullopt;
   }
   return match.destination_url;
@@ -124,33 +138,7 @@ base::OnceCallback<void(RenderViewContextMenu*)>* BraveGetMenuShownCallback() {
 
 }  // namespace
 
-void RenderViewContextMenu_Chromium::RegisterMenuShownCallbackForTesting(
-    base::OnceCallback<void(RenderViewContextMenu*)> cb) {
-  *BraveGetMenuShownCallback() = std::move(cb);
-}
-
-#define BRAVE_APPEND_SEARCH_PROVIDER                                     \
-  if (GetProfile()->IsOffTheRecord()) {                                  \
-    selection_navigation_url_ =                                          \
-        GetSelectionNavigationURL(GetProfile(), params_.selection_text); \
-    if (!selection_navigation_url_.is_valid())                           \
-      return;                                                            \
-  }
-
-// Use our subclass to initialize SpellingOptionsSubMenuObserver.
-#define SpellingOptionsSubMenuObserver BraveSpellingOptionsSubMenuObserver
-#define RegisterMenuShownCallbackForTesting \
-  RegisterMenuShownCallbackForTesting_unused
-#define RenderViewContextMenu RenderViewContextMenu_Chromium
-
 #include <chrome/browser/renderer_context_menu/render_view_context_menu.cc>
-
-#undef SpellingOptionsSubMenuObserver
-#undef RegisterMenuShownCallbackForTesting
-
-// Make it clear which class we mean here.
-#undef RenderViewContextMenu
-#undef BRAVE_APPEND_SEARCH_PROVIDER
 
 namespace {
 
@@ -303,8 +291,8 @@ void OnRewriteSuggestionCompleted(
     if (!ai_chat_service) {
       return;
     }
-    ai_chat::AIChatTabHelper* helper =
-        ai_chat::AIChatTabHelper::FromWebContents(web_contents.get());
+    ai_chat::AIChatTabHelper* helper = ai_chat::AIChatTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(web_contents.get()));
     if (!helper) {
       return;
     }
@@ -333,7 +321,7 @@ email_aliases::EmailAliasesController* GetEmailAliasesController(
   if (!browser) {
     return nullptr;
   }
-  return browser->GetFeatures().email_aliases_controller();
+  return email_aliases::EmailAliasesController::From(browser);
 }
 #endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)
 
@@ -559,8 +547,8 @@ void RenderViewContextMenu::ExecuteAIChatCommand(int command) {
                        source_web_contents_->GetWeakPtr(), selected_text,
                        action_type));
   } else {
-    ai_chat::AIChatTabHelper* helper =
-        ai_chat::AIChatTabHelper::FromWebContents(embedder_web_contents_);
+    ai_chat::AIChatTabHelper* helper = ai_chat::AIChatTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(embedder_web_contents_));
     if (!helper) {
       VLOG(1) << "Can't get AI chat tab helper";
       return;
@@ -734,14 +722,38 @@ void RenderViewContextMenu::AddAccessibilityLabelsServiceItem(bool is_checked) {
   // Suppress adding "Get image descriptions from Brave"
 }
 
+void RenderViewContextMenu::AppendReadAnythingItem() {
+  // Hide upstream's Reading Mode item when Speedreader is enabled (we have our
+  // own entry point); otherwise show it with the Speedreader icon.
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  if (base::FeatureList::IsEnabled(
+          speedreader::features::kSpeedreaderFeature)) {
+    return;
+  }
+#endif  // BUILDFLAG(ENABLE_SPEEDREADER)
+  RenderViewContextMenu_Chromium::AppendReadAnythingItem();
+  if (features::IsMenuSimplificationEnabled() &&
+      menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_OPEN_IN_READING_MODE)
+          .has_value()) {
+    menu_model_.SetIconForCommandId(
+        IDC_CONTENT_CONTEXT_OPEN_IN_READING_MODE,
+        ui::ImageModel::FromVectorIcon(kLeoProductSpeedreaderIcon,
+                                       ui::kColorMenuIcon, kTabMenuIconSize));
+  }
+}
+
 void RenderViewContextMenu::AppendDeveloperItems() {
   RenderViewContextMenu_Chromium::AppendDeveloperItems();
 
-  auto* shields_tab_helper =
-      brave_shields::BraveShieldsTabHelper::FromWebContents(
-          source_web_contents_);
-  bool add_block_elements = shields_tab_helper &&
-                            shields_tab_helper->IsBraveShieldsEnabled() &&
+  auto* shields_tab_helper = brave_shields::BraveShieldsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(source_web_contents_));
+  // Null for contents outside a tab, e.g. DevTools, extension popups or
+  // side panels.
+  if (!shields_tab_helper) {
+    return;
+  }
+
+  bool add_block_elements = shields_tab_helper->IsBraveShieldsEnabled() &&
                             shields_tab_helper->GetAdBlockMode() !=
                                 brave_shields::mojom::AdBlockMode::ALLOW;
   add_block_elements &=
@@ -898,7 +910,10 @@ void RenderViewContextMenu::InitMenu() {
                : IDS_CONTENT_CONTEXT_OPENLINKTOR);
   }
 #endif
-  if (!params_.link_url.is_empty() && params_.link_url.SchemeIsHTTPOrHTTPS()) {
+  // Only offer "Copy clean link" when cleaning would actually change the link.
+  if (!params_.link_url.is_empty() && params_.link_url.SchemeIsHTTPOrHTTPS() &&
+      brave::GetLinkWithStrictCleaning(GetProfile(), params_.link_url) !=
+          params_.link_url) {
     std::optional<size_t> link_index =
         menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_COPYLINKLOCATION);
     if (link_index.has_value()) {
@@ -927,6 +942,12 @@ void RenderViewContextMenu::InitMenu() {
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   BuildEmailAliasesMenu();
 #endif
+}
+
+// static
+void RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
+    base::OnceCallback<void(RenderViewContextMenu*)> cb) {
+  *BraveGetMenuShownCallback() = std::move(cb);
 }
 
 void RenderViewContextMenu::NotifyMenuShown() {

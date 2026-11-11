@@ -9,10 +9,12 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <tuple>
 #include <utility>
 #include <vector>
 
 #include "base/base64.h"
+#include "base/callback_list.h"
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -43,9 +45,12 @@
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/keyed_service/core/service_access_type.h"
+#include "components/tabs/public/mock_tab_interface.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/test/web_contents_tester.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "pdf/buildflags.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -367,9 +372,6 @@ TEST_F(AIChatUIPageHandlerWorkspaceTest,
   auto delegates = conversation->associated_content_manager()
                        ->GetContentDelegatesForTesting();
   ASSERT_EQ(1u, delegates.size());
-  auto* workspace_content =
-      static_cast<WorkspaceAssociatedContent*>(delegates[0]);
-  EXPECT_EQ(folder, workspace_content->folder_path());
 
   // The workspace page's WebContents is owned by the conversation, which
   // outlives the test harness. Drop it here so the harness doesn't report a
@@ -412,6 +414,62 @@ TEST_F(AIChatUIPageHandlerWorkspaceTest,
   last_dialog()->SelectFolder(base::FilePath(FILE_PATH_LITERAL("/tmp/nope")));
 
   EXPECT_EQ(std::nullopt, future.Get());
+}
+
+constexpr char kWorkspaceUrl[] =
+    "workspace://1b4e28ba-2fa1-41d2-883f-0016d3cca427";
+
+// Returns the workspaces attached to the new conversation.
+std::vector<mojom::AssociatedContentPtr> NewConversationWithWorkspace(
+    AIChatUIPageHandler& page_handler,
+    const GURL& workspace_url,
+    mojo::Remote<mojom::ConversationHandler>& conversation) {
+  mojo::PendingRemote<mojom::ConversationUI> conversation_ui;
+  std::ignore = conversation_ui.InitWithNewPipeAndPassReceiver();
+  page_handler.NewConversation(conversation.BindNewPipeAndPassReceiver(),
+                               std::move(conversation_ui), workspace_url);
+
+  base::test::TestFuture<std::vector<mojom::AssociatedContentPtr>> content;
+  conversation->GetAssociatedContentInfo(content.GetCallback());
+  std::vector<mojom::AssociatedContentPtr> workspaces;
+  for (auto& item : content.Take()) {
+    if (item->content_type == mojom::ContentType::Workspace) {
+      workspaces.push_back(std::move(item));
+    }
+  }
+  return workspaces;
+}
+
+TEST_F(AIChatUIPageHandlerTest, NewConversation_WorkspaceFeatureDisabled) {
+  mojo::Remote<mojom::ConversationHandler> conversation;
+  EXPECT_TRUE(NewConversationWithWorkspace(*page_handler(), GURL(kWorkspaceUrl),
+                                           conversation)
+                  .empty());
+}
+
+TEST_F(AIChatUIPageHandlerWorkspaceTest, NewConversation_AttachesWorkspace) {
+  mojo::Remote<mojom::ConversationHandler> conversation;
+  auto workspaces = NewConversationWithWorkspace(
+      *page_handler(), GURL(kWorkspaceUrl), conversation);
+
+  ASSERT_EQ(1u, workspaces.size());
+  EXPECT_EQ(GURL(kWorkspaceUrl), workspaces[0]->url);
+  EXPECT_NE("1b4e28ba-2fa1-41d2-883f-0016d3cca427", workspaces[0]->uuid);
+  EXPECT_FALSE(workspaces[0]->conversation_turn_uuid);
+
+  // Drop the workspace page's WebContents.
+  base::test::TestFuture<mojom::ConversationStatePtr> state;
+  conversation->GetState(state.GetCallback());
+  page_handler()->DisassociateContent(std::move(workspaces[0]),
+                                      state.Get()->conversation_uuid);
+}
+
+TEST_F(AIChatUIPageHandlerWorkspaceTest,
+       NewConversation_IgnoresInvalidWorkspaceUrl) {
+  mojo::Remote<mojom::ConversationHandler> conversation;
+  EXPECT_TRUE(NewConversationWithWorkspace(
+                  *page_handler(), GURL("https://example.com"), conversation)
+                  .empty());
 }
 
 TEST_F(AIChatUIPageHandlerTest, ProcessImageFile) {
@@ -573,8 +631,20 @@ class AIChatUIPageHandlerGlobalSidePanelTest
     ASSERT_TRUE(
         AIChatServiceFactory::GetForBrowserContext(GetBrowserContext()));
 
-    // The constructor expects an AIChatTabHelper on chat_context_web_contents.
-    AIChatTabHelper::CreateForWebContents(web_contents(), nullptr);
+    // The constructor expects an AIChatTabHelper on chat_context_web_contents's
+    // tab.
+    tab_contents_ = web_contents();
+    ON_CALL(tab_, GetContents()).WillByDefault([this] {
+      return tab_contents_.get();
+    });
+    ON_CALL(tab_, RegisterWillDiscardContents)
+        .WillByDefault(
+            [this](tabs::TabInterface::WillDiscardContentsCallback callback) {
+              return will_discard_contents_callbacks_.Add(std::move(callback));
+            });
+    tabs::TabLookupFromWebContents::CreateForWebContents(web_contents(), &tab_);
+    tab_helper_ = std::make_unique<AIChatTabHelper>(
+        tab_, AIChatTabHelper::PrintPreviewExtractionDelegateFactory());
 
     mojo::PendingReceiver<mojom::AIChatUIHandler> receiver;
     page_handler_ = std::make_unique<AIChatUIPageHandler>(
@@ -584,6 +654,9 @@ class AIChatUIPageHandlerGlobalSidePanelTest
 
   void TearDown() override {
     page_handler_.reset();
+    tab_helper_.reset();
+    tab_contents_ = nullptr;
+    discarded_in_contents_.reset();
     ChromeRenderViewHostTestHarness::TearDown();
   }
 
@@ -601,10 +674,29 @@ class AIChatUIPageHandlerGlobalSidePanelTest
 
   void FlushChatUI() { fake_chat_ui_receiver_->FlushForTesting(); }
 
+  // Replaces the tab's contents as discarding the tab does: observers are told
+  // before the tab returns the new contents.
+  content::WebContents* DiscardTabContents() {
+    discarded_in_contents_ = content::WebContentsTester::CreateTestWebContents(
+        GetBrowserContext(), nullptr);
+    will_discard_contents_callbacks_.Notify(&tab_, tab_contents_.get(),
+                                            discarded_in_contents_.get());
+    tab_contents_ = discarded_in_contents_.get();
+    tabs::TabLookupFromWebContents::CreateForWebContents(tab_contents_, &tab_);
+    return tab_contents_;
+  }
+
   AIChatUIPageHandler* page_handler() { return page_handler_.get(); }
 
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
+  tabs::MockTabInterface tab_;
+  raw_ptr<content::WebContents> tab_contents_ = nullptr;
+  std::unique_ptr<content::WebContents> discarded_in_contents_;
+  base::RepeatingCallbackList<
+      void(tabs::TabInterface*, content::WebContents*, content::WebContents*)>
+      will_discard_contents_callbacks_;
+  std::unique_ptr<AIChatTabHelper> tab_helper_;
   std::unique_ptr<AIChatUIPageHandler> page_handler_;
   FakeChatUI fake_chat_ui_;
   std::optional<mojo::Receiver<mojom::ChatUI>> fake_chat_ui_receiver_;
@@ -622,7 +714,14 @@ TEST_F(AIChatUIPageHandlerGlobalSidePanelTest,
   std::unique_ptr<content::WebContents> new_tab =
       content::WebContentsTester::CreateTestWebContents(GetBrowserContext(),
                                                         nullptr);
-  AIChatTabHelper::CreateForWebContents(new_tab.get(), nullptr);
+  tabs::MockTabInterface new_tab_interface;
+  ON_CALL(new_tab_interface, GetContents())
+      .WillByDefault(testing::Return(new_tab.get()));
+  tabs::TabLookupFromWebContents::CreateForWebContents(new_tab.get(),
+                                                       &new_tab_interface);
+  auto new_tab_helper = std::make_unique<AIChatTabHelper>(
+      new_tab_interface,
+      AIChatTabHelper::PrintPreviewExtractionDelegateFactory());
 
   // Simulate the active tab changing to |new_tab|.
   TabStripSelectionChange selection;
@@ -630,10 +729,11 @@ TEST_F(AIChatUIPageHandlerGlobalSidePanelTest,
   selection.new_contents = new_tab.get();
   ASSERT_TRUE(selection.active_tab_changed());
 
-  TabStripModelChange empty_change;
+  TabStripModelChange selection_only_change(
+      (TabStripModelChange::SelectionOnly()));
   static_cast<TabStripModelObserver*>(page_handler())
-      ->OnTabStripModelChanged(/*tab_strip_model=*/nullptr, empty_change,
-                               selection);
+      ->OnTabStripModelChanged(/*tab_strip_model=*/nullptr,
+                               selection_only_change, selection);
   FlushChatUI();
 
   // The tab switch itself notifies the frontend, but because the new tab's
@@ -654,6 +754,37 @@ TEST_F(AIChatUIPageHandlerGlobalSidePanelTest,
          "frontend";
   EXPECT_TRUE(fake_chat_ui.last_content_id_.has_value())
       << "https:// page should produce a non-null content_id";
+}
+
+// Discarding the tab destroys the content the handler observes. Once the tab
+// is active again, the handler follows the content the tab helper serves for
+// the new contents.
+TEST_F(AIChatUIPageHandlerGlobalSidePanelTest,
+       FollowsTabHelperContentAfterDiscard) {
+  auto& fake_chat_ui = BindFakeChatUI();
+  content::WebContents* const old_contents = web_contents();
+
+  content::WebContents* const new_contents = DiscardTabContents();
+  FlushChatUI();
+
+  TabStripSelectionChange selection;
+  selection.old_contents = old_contents;
+  selection.new_contents = new_contents;
+  ASSERT_TRUE(selection.active_tab_changed());
+  TabStripModelChange selection_only_change(
+      (TabStripModelChange::SelectionOnly()));
+  static_cast<TabStripModelObserver*>(page_handler())
+      ->OnTabStripModelChanged(/*tab_strip_model=*/nullptr,
+                               selection_only_change, selection);
+  FlushChatUI();
+  const int count_before_nav = fake_chat_ui.call_count_;
+
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(
+      new_contents, GURL("https://example.com"));
+  FlushChatUI();
+
+  EXPECT_GT(fake_chat_ui.call_count_, count_before_nav);
+  EXPECT_TRUE(fake_chat_ui.last_content_id_.has_value());
 }
 
 #endif  // !BUILDFLAG(IS_ANDROID)

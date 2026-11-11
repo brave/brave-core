@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_ads/core/browser/network/http_client_callback.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "services/network/public/cpp/network_context_getter.h"
 #include "url/gurl.h"
 
@@ -37,7 +38,8 @@ class ObliviousHttpKeyConfig;
 // requests are routed through the network service’s OHTTP implementation.
 class HttpClient final {
  public:
-  HttpClient(PrefService& local_state,
+  HttpClient(PrefService& prefs,
+             PrefService& local_state,
              scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
              network::NetworkContextGetter network_context_getter,
              bool use_ohttp_staging);
@@ -74,6 +76,14 @@ class HttpClient final {
       SendRequestCallback callback,
       mojom::UrlResponseInfoPtr mojom_url_response);
 
+  // Starts or stops fetching the OHTTP key config depending on whether it is
+  // still needed.
+  void UpdateOhttpKeyConfigFetching();
+
+  // Called when sponsored ads are enabled or disabled, the user joins or
+  // leaves Brave Rewards, or connects or disconnects an external wallet.
+  void OnOhttpPrefChanged();
+
   const raw_ref<PrefService> local_state_;
 
   const scoped_refptr<network::SharedURLLoaderFactory>
@@ -83,6 +93,8 @@ class HttpClient final {
 
   const std::unique_ptr<ObliviousHttpKeyConfig> oblivious_http_key_config_;
   const GURL oblivious_http_relay_url_;
+
+  PrefChangeRegistrar pref_change_registrar_;
 
   base::WeakPtrFactory<HttpClient> weak_ptr_factory_{this};
 };

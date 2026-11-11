@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "base/functional/callback_forward.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/uuid.h"
@@ -141,7 +140,9 @@ void AssociatedURLContent::OnContentExtractionComplete(
   timeout_timer_.Stop();
 
   // Update our cached content with the loaded content
-  set_cached_page_content(PageContent(std::move(content), is_video));
+  set_cached_page_content(PageContent(
+      std::move(content), is_video ? mojom::ContentType::VideoTranscript
+                                   : mojom::ContentType::PageContent));
 
   // Notify pending callbacks
   if (content_loaded_event_) {

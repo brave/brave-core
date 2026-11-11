@@ -62,11 +62,9 @@ def _check_output(*command, env: dict[str, str] | None = None) -> str:
         subprocess.CalledProcessError: if the command exits non-zero.
     """
     logging.info(' >>>> %s', ' '.join(str(a) for a in command))
-    return subprocess.run(command,
-                          check=True,
-                          text=True,
-                          stdout=subprocess.PIPE,
-                          env=env).stdout
+    return subprocess.run(
+        command, check=True, text=True, stdout=subprocess.PIPE, env=env
+    ).stdout
 
 
 @dataclasses.dataclass(frozen=True)
@@ -109,8 +107,15 @@ class UploadResult:
 
 
 # The fields of `UploadResult` that we want to be summarised.
-_PUBLIC_FIELDS = ('bucket', 'key', 'url', 'sha256', 'size_bytes', 'version_id',
-                  'etag')
+_PUBLIC_FIELDS = (
+    'bucket',
+    'key',
+    'url',
+    'sha256',
+    'size_bytes',
+    'version_id',
+    'etag',
+)
 
 
 def summarise(result: UploadResult) -> str:
@@ -119,9 +124,11 @@ def summarise(result: UploadResult) -> str:
     A user friendly summary of the upload result, suitable for printing in CI.
     """
     width = max(len(name) for name in _PUBLIC_FIELDS) + 1
-    return '\n'.join(f'{name + ":":<{width}} {getattr(result, name)}'
-                     for name in _PUBLIC_FIELDS
-                     if getattr(result, name) is not None)
+    return '\n'.join(
+        f'{name + ":":<{width}} {getattr(result, name)}'
+        for name in _PUBLIC_FIELDS
+        if getattr(result, name) is not None
+    )
 
 
 def sha256_file(path: Path) -> str:
@@ -140,9 +147,9 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
-def kms_verify(sha256_hex: str,
-               signature: ArtifactSignature,
-               region: str = DEFAULT_REGION) -> None:
+def kms_verify(
+    sha256_hex: str, signature: ArtifactSignature, region: str = DEFAULT_REGION
+) -> None:
     """Verify a KMS *signature* over a SHA-256 digest, raising on failure.
 
     The download-side counterpart to `S3Uploader.sign`: a consumer verifying a
@@ -154,10 +161,25 @@ def kms_verify(sha256_hex: str,
     """
     digest = bytes.fromhex(sha256_hex)
     message_b64 = base64.b64encode(digest).decode('ascii')
-    _check_output('aws', 'kms', 'verify', '--region', region, '--key-id',
-                  signature.key_id, '--signing-algorithm', KMS_ALGORITHM,
-                  '--message-type', 'DIGEST', '--message', message_b64,
-                  '--signature', signature.signature, '--output', 'json')
+    _check_output(
+        'aws',
+        'kms',
+        'verify',
+        '--region',
+        region,
+        '--key-id',
+        signature.key_id,
+        '--signing-algorithm',
+        KMS_ALGORITHM,
+        '--message-type',
+        'DIGEST',
+        '--message',
+        message_b64,
+        '--signature',
+        signature.signature,
+        '--output',
+        'json',
+    )
 
 
 class S3Uploader:
@@ -168,11 +190,13 @@ class S3Uploader:
     `aws` CLI with ambient credentials (see the module docstring).
     """
 
-    def __init__(self,
-                 bucket: str,
-                 region: str = DEFAULT_REGION,
-                 kms_key: str = DEFAULT_KMS_KEY,
-                 sign_role_arn: str | None = None):
+    def __init__(
+        self,
+        bucket: str,
+        region: str = DEFAULT_REGION,
+        kms_key: str = DEFAULT_KMS_KEY,
+        sign_role_arn: str | None = None,
+    ):
         """Bind the uploader to *bucket* and its signing parameters.
 
         Args:
@@ -200,10 +224,20 @@ class S3Uploader:
         if not self._sign_role_arn:
             return None
         credentials = json.loads(
-            _check_output('aws', 'sts', 'assume-role', '--region',
-                          self._region, '--role-arn', self._sign_role_arn,
-                          '--role-session-name', 'brave-upload-sign',
-                          '--output', 'json'))['Credentials']
+            _check_output(
+                'aws',
+                'sts',
+                'assume-role',
+                '--region',
+                self._region,
+                '--role-arn',
+                self._sign_role_arn,
+                '--role-session-name',
+                'brave-upload-sign',
+                '--output',
+                'json',
+            )
+        )['Credentials']
         return {
             **os.environ,
             'AWS_ACCESS_KEY_ID': credentials['AccessKeyId'],
@@ -222,30 +256,36 @@ class S3Uploader:
         digest = bytes.fromhex(sha256_hex)
         if len(digest) != 32:
             raise ValueError(
-                f'Expected a 32-byte SHA-256 digest, got {len(digest)} bytes.')
+                f'Expected a 32-byte SHA-256 digest, got {len(digest)} bytes.'
+            )
         message_b64 = base64.b64encode(digest).decode('ascii')
         response = json.loads(
-            _check_output('aws',
-                          'kms',
-                          'sign',
-                          '--region',
-                          self._region,
-                          '--key-id',
-                          self._kms_key,
-                          '--signing-algorithm',
-                          KMS_ALGORITHM,
-                          '--message-type',
-                          'DIGEST',
-                          '--message',
-                          message_b64,
-                          '--output',
-                          'json',
-                          env=self._assume_role_env()))
-        return ArtifactSignature(key_id=self._kms_key,
-                                 signature=response['Signature'])
+            _check_output(
+                'aws',
+                'kms',
+                'sign',
+                '--region',
+                self._region,
+                '--key-id',
+                self._kms_key,
+                '--signing-algorithm',
+                KMS_ALGORITHM,
+                '--message-type',
+                'DIGEST',
+                '--message',
+                message_b64,
+                '--output',
+                'json',
+                env=self._assume_role_env(),
+            )
+        )
+        return ArtifactSignature(
+            key_id=self._kms_key, signature=response['Signature']
+        )
 
-    def _put_object(self, path: Path, key: str,
-                    immutable: bool) -> tuple[str | None, str | None]:
+    def _put_object(
+        self, path: Path, key: str, immutable: bool
+    ) -> tuple[str | None, str | None]:
         """PUT *path* to `s3://<bucket>/<key>` and return `(version_id, etag)`.
 
         With *immutable* set, an `If-None-Match: *` precondition makes S3 reject
@@ -253,9 +293,21 @@ class S3Uploader:
         in place. `--checksum-algorithm SHA256` has S3 validate the bytes.
         """
         command = [
-            'aws', 's3api', 'put-object', '--region', self._region, '--bucket',
-            self._bucket, '--key', key, '--body',
-            str(path), '--checksum-algorithm', 'SHA256', '--output', 'json'
+            'aws',
+            's3api',
+            'put-object',
+            '--region',
+            self._region,
+            '--bucket',
+            self._bucket,
+            '--key',
+            key,
+            '--body',
+            str(path),
+            '--checksum-algorithm',
+            'SHA256',
+            '--output',
+            'json',
         ]
         if immutable:
             # Conditional write: fails with PreconditionFailed if the key
@@ -264,12 +316,14 @@ class S3Uploader:
         response = json.loads(_check_output(*command))
         return response.get('VersionId'), response.get('ETag')
 
-    def upload(self,
-               path: Path,
-               key: str | None = None,
-               prefix: str | None = None,
-               immutable: bool = True,
-               sign: bool = True) -> UploadResult:
+    def upload(
+        self,
+        path: Path,
+        key: str | None = None,
+        prefix: str | None = None,
+        immutable: bool = True,
+        sign: bool = True,
+    ) -> UploadResult:
         """Upload *path* and return its integrity + authenticity envelope.
 
         Args:
@@ -302,9 +356,15 @@ class S3Uploader:
         sha256_hex = sha256_file(path)
         size_bytes = path.stat().st_size
 
-        logging.info('Uploading %s (%d bytes, sha256=%s) to s3://%s/%s%s',
-                     path, size_bytes, sha256_hex, self._bucket, resolved_key,
-                     ' [immutable]' if immutable else '')
+        logging.info(
+            'Uploading %s (%d bytes, sha256=%s) to s3://%s/%s%s',
+            path,
+            size_bytes,
+            sha256_hex,
+            self._bucket,
+            resolved_key,
+            ' [immutable]' if immutable else '',
+        )
 
         # Sign before the upload so a KMS/permissions failure aborts without
         # leaving an unsigned object behind.
@@ -314,14 +374,16 @@ class S3Uploader:
 
         host = PUBLIC_URL_TEMPLATE.format(bucket=self._bucket)
         url = f'{host}/{resolved_key}'
-        return UploadResult(bucket=self._bucket,
-                            key=resolved_key,
-                            url=url,
-                            sha256=sha256_hex,
-                            size_bytes=size_bytes,
-                            version_id=version_id,
-                            etag=etag,
-                            signature=signature)
+        return UploadResult(
+            bucket=self._bucket,
+            key=resolved_key,
+            url=url,
+            sha256=sha256_hex,
+            size_bytes=size_bytes,
+            version_id=version_id,
+            etag=etag,
+            signature=signature,
+        )
 
 
 def main() -> int:
@@ -330,35 +392,43 @@ def main() -> int:
     parser.add_argument('file', help='Local file to upload.')
     parser.add_argument('--bucket', required=True, help='Destination bucket.')
     parser.add_argument('--key', help='Explicit destination key.')
-    parser.add_argument('--prefix',
-                        help='Key prefix used when --key is not given.')
-    parser.add_argument('--mutable',
-                        action='store_true',
-                        help='Allow overwriting an existing object (no '
-                        'If-None-Match).')
-    parser.add_argument('--no-sign',
-                        action='store_true',
-                        help='Skip KMS signing.')
+    parser.add_argument(
+        '--prefix', help='Key prefix used when --key is not given.'
+    )
+    parser.add_argument(
+        '--mutable',
+        action='store_true',
+        help='Allow overwriting an existing object (no If-None-Match).',
+    )
+    parser.add_argument(
+        '--no-sign', action='store_true', help='Skip KMS signing.'
+    )
     parser.add_argument('--kms-key', default=DEFAULT_KMS_KEY)
     parser.add_argument('--region', default=DEFAULT_REGION)
-    parser.add_argument('--sign-role-arn',
-                        default=os.environ.get(SIGN_ROLE_ARN_ENV),
-                        help='Role ARN to assume before signing (defaults to '
-                        f'${SIGN_ROLE_ARN_ENV}).')
+    parser.add_argument(
+        '--sign-role-arn',
+        default=os.environ.get(SIGN_ROLE_ARN_ENV),
+        help='Role ARN to assume before signing (defaults to '
+        f'${SIGN_ROLE_ARN_ENV}).',
+    )
     parser.add_argument('--verbose', action='store_true')
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
 
-    uploader = S3Uploader(bucket=args.bucket,
-                          region=args.region,
-                          kms_key=args.kms_key,
-                          sign_role_arn=args.sign_role_arn)
-    result = uploader.upload(Path(args.file).expanduser().resolve(),
-                             key=args.key,
-                             prefix=args.prefix,
-                             immutable=not args.mutable,
-                             sign=not args.no_sign)
+    uploader = S3Uploader(
+        bucket=args.bucket,
+        region=args.region,
+        kms_key=args.kms_key,
+        sign_role_arn=args.sign_role_arn,
+    )
+    result = uploader.upload(
+        Path(args.file).expanduser().resolve(),
+        key=args.key,
+        prefix=args.prefix,
+        immutable=not args.mutable,
+        sign=not args.no_sign,
+    )
     print(json.dumps(dataclasses.asdict(result), indent=2))
     return 0
 

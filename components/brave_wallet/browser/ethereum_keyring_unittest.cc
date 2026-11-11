@@ -8,7 +8,6 @@
 #include <array>
 #include <memory>
 #include <optional>
-#include <utility>
 
 #include "base/base64.h"
 #include "base/strings/string_number_conversions.h"
@@ -16,7 +15,6 @@
 #include "base/test/bind.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -63,8 +61,9 @@ TEST(EthereumKeyringUnitTest, EncodePrivateKeyForExport) {
       "8f9e36c31dc46e81472b6a5e40a4487e725ace445b8203f243fb8958",
       &seed));
   EthereumKeyring keyring(seed, base::BindRepeating(IsAddressAllowed));
-  auto address = *keyring.AddNewHDAccount(0);
-  EXPECT_EQ(keyring.EncodePrivateKeyForExport(address),
+  auto address = keyring.AddNewHDAccount(0);
+  ASSERT_TRUE(address);
+  EXPECT_EQ(keyring.EncodePrivateKeyForExport(*address),
             "8140cea58e3bebd6174dbc589a7f70e049556233d32e44969d62e51dd0d1189a");
 }
 
@@ -120,8 +119,9 @@ TEST(EthereumKeyringUnitTest, SignTransaction) {
       "8f9e36c31dc46e81472b6a5e40a4487e725ace445b8203f243fb8958",
       &seed));
   EthereumKeyring keyring2(seed, base::BindRepeating(IsAddressAllowed));
-  auto address = *keyring2.AddNewHDAccount(0);
-  keyring2.SignTransaction(address, &tx);
+  auto address = keyring2.AddNewHDAccount(0);
+  ASSERT_TRUE(address);
+  keyring2.SignTransaction(*address, &tx);
   EXPECT_TRUE(tx.IsSigned());
   EXPECT_EQ(base::HexEncodeLower(tx.GetSignedTransaction()),
             "307866383663303938353034613831376338303038323532303839343335333533"
@@ -141,25 +141,30 @@ TEST(EthereumKeyringUnitTest, SignMessage) {
 
   EthereumKeyring keyring(*MnemonicToSeed(kMnemonic),
                           base::BindRepeating(IsAddressAllowed));
-  auto address = *keyring.ImportAccount(private_key);
+  auto imported_address = keyring.ImportAccount(private_key);
+  ASSERT_TRUE(imported_address);
+  const std::string address = *imported_address;
   EXPECT_EQ(address, "0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB");
 
   std::vector<uint8_t> message;
   EXPECT_TRUE(base::HexStringToBytes("deadbeef", &message));
-  auto sig = *keyring.SignMessage(address, message, 0, false);
-  EXPECT_EQ(base::HexEncodeLower(sig),
+  auto sig = keyring.SignMessage(address, message, 0, false);
+  ASSERT_TRUE(sig);
+  EXPECT_EQ(base::HexEncodeLower(*sig),
             "a77440e5c84e5f16ca3636c7af5857c828d2a8f1afbc0a6945d33d4fc45f216e"
             "3eefd69ccc5b3cee000fdaa564d8f1512789af8fe62f2907f5a8c87885b508fa"
             "1b");
 
-  sig = *keyring.SignMessage(address, message, 3, false);
-  EXPECT_EQ(base::HexEncodeLower(sig),
+  sig = keyring.SignMessage(address, message, 3, false);
+  ASSERT_TRUE(sig);
+  EXPECT_EQ(base::HexEncodeLower(*sig),
             "a77440e5c84e5f16ca3636c7af5857c828d2a8f1afbc0a6945d33d4fc45f216e"
             "3eefd69ccc5b3cee000fdaa564d8f1512789af8fe62f2907f5a8c87885b508fa"
             "29");
 
-  sig = *keyring.SignMessage(address, message, 300, false);
-  EXPECT_EQ(base::HexEncodeLower(sig),
+  sig = keyring.SignMessage(address, message, 300, false);
+  ASSERT_TRUE(sig);
+  EXPECT_EQ(base::HexEncodeLower(*sig),
             "a77440e5c84e5f16ca3636c7af5857c828d2a8f1afbc0a6945d33d4fc45f216e"
             "3eefd69ccc5b3cee000fdaa564d8f1512789af8fe62f2907f5a8c87885b508fa"
             "7b");
@@ -173,8 +178,9 @@ TEST(EthereumKeyringUnitTest, SignMessage) {
   EXPECT_TRUE(base::HexStringToBytes(
       "be609aee343fb3c4b28e1df9e632fca64fcfaede20f02e86244efddf30957bd2",
       &message));
-  sig = *keyring.SignMessage(address, message, 3, true);
-  EXPECT_EQ(base::HexEncodeLower(sig),
+  sig = keyring.SignMessage(address, message, 3, true);
+  ASSERT_TRUE(sig);
+  EXPECT_EQ(base::HexEncodeLower(*sig),
             "789c0e9025bbf9410b58c2ca43ea1add3c6cfed66001300b9c102f78022cf6e21b"
             "bf3780d68ff28e72c0ccb4f515b3d527c585abf59bc03531f5047b0357ef3329");
 }
@@ -217,9 +223,10 @@ TEST(EthereumKeyringUnitTest, ImportedAccounts) {
   // SignMessage
   std::vector<uint8_t> message;
   EXPECT_TRUE(base::HexStringToBytes("68656c6c6f20776f726c64", &message));
-  auto sig = *keyring.SignMessage("0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB",
-                                  message, 0, false);
-  EXPECT_EQ(base::HexEncodeLower(sig),
+  auto sig = keyring.SignMessage("0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB",
+                                 message, 0, false);
+  ASSERT_TRUE(sig);
+  EXPECT_EQ(base::HexEncodeLower(*sig),
             "ce909e8ea6851bc36c007a0072d0524b07a3ff8d4e623aca4c71ca8e57250c4d0a"
             "3fc38fa8fbaaa81ead4b9f6bd03356b6f8bf18bccad167d78891636e1d69561b");
   EXPECT_TRUE(keyring.RemoveImportedAccount(
@@ -261,133 +268,6 @@ TEST(EthereumKeyringUnitTest, ImportedAccounts) {
   std::vector<uint8_t> private_key;
   EXPECT_TRUE(base::HexStringToBytes(account_0_pri_key, &private_key));
   EXPECT_FALSE(keyring.ImportAccount(private_key));
-}
-
-TEST(EthereumKeyringUnitTest, GetPublicKeyFromX25519_XSalsa20_Poly1305) {
-  EthereumKeyring keyring(*MnemonicToSeed(kMnemonic),
-                          base::BindRepeating(IsAddressAllowed));
-  auto address = *keyring.AddNewHDAccount(0);
-  std::string public_encryption_key;
-  EXPECT_TRUE(keyring.GetPublicKeyFromX25519_XSalsa20_Poly1305(
-      address, &public_encryption_key));
-  EXPECT_EQ(public_encryption_key,
-            "eui9/fqCHT7aSUkKK9eooQFnOCD9COK9Mi1ZtOxIj2A=");
-
-  // Incorrect address
-  EXPECT_FALSE(keyring.GetPublicKeyFromX25519_XSalsa20_Poly1305(
-      "0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB", &public_encryption_key));
-  // Invalid address
-  EXPECT_FALSE(keyring.GetPublicKeyFromX25519_XSalsa20_Poly1305(
-      "", &public_encryption_key));
-}
-
-TEST(EthereumKeyringUnitTest, DecryptCipherFromX25519_XSalsa20_Poly1305) {
-  EthereumKeyring keyring(*MnemonicToSeed(kMnemonic),
-                          base::BindRepeating(IsAddressAllowed));
-
-  // pub encryption key:
-  // "eui9/fqCHT7aSUkKK9eooQFnOCD9COK9Mi1ZtOxIj2A="
-  auto address = *keyring.AddNewHDAccount(0);
-
-  // {
-  //   version: 'x25519-xsalsa20-poly1305',
-  //   nonce: '2forT3nCPBRye9DeM1QSuWN8WvGZVpXN',
-  //   ephemPublicKey: 'mjgeR52JCGDl9336uQwN29qkbYR0WLKCginBPDFtyXY=',
-  //   ciphertext: 'e3xpKp2vGmpd9ecOjRJ6xltVr0Feo+Pm/C/gTMCyDg=='
-  // }
-  std::string ciphertext_str;
-  EXPECT_TRUE(base::Base64Decode("e3xpKp2vGmpd9ecOjRJ6xltVr0Feo+Pm/C/gTMCyDg==",
-                                 &ciphertext_str));
-  std::vector<uint8_t> ciphertext(ciphertext_str.begin(), ciphertext_str.end());
-  std::string nonce_str;
-  EXPECT_TRUE(
-      base::Base64Decode("2forT3nCPBRye9DeM1QSuWN8WvGZVpXN", &nonce_str));
-  std::vector<uint8_t> nonce(nonce_str.begin(), nonce_str.end());
-
-  std::string ephemeral_public_key_str;
-  EXPECT_TRUE(base::Base64Decode("mjgeR52JCGDl9336uQwN29qkbYR0WLKCginBPDFtyXY=",
-                                 &ephemeral_public_key_str));
-  std::vector<uint8_t> ephemeral_public_key(ephemeral_public_key_str.begin(),
-                                            ephemeral_public_key_str.end());
-
-  std::optional<std::vector<uint8_t>> message_bytes;
-  message_bytes = keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
-      "x25519-xsalsa20-poly1305", nonce, ephemeral_public_key, ciphertext,
-      address);
-  EXPECT_TRUE(message_bytes.has_value());
-  std::string message_str(message_bytes->begin(), message_bytes->end());
-  EXPECT_EQ(message_str, "Ode to Anthony!");
-
-  // 0 byte message
-  // {
-  //   version: 'x25519-xsalsa20-poly1305',
-  //   nonce: 'lz+CB6jeQsUkRB+j8u9jZ37z3hun62kE',
-  //   ephemPublicKey: 'InEw0fowJVqqcwtsaHjxTsAtp3kyFtyTMHgd7UrQ1Tg=',
-  //   ciphertext: 'J+hZ4WZ0Z+YmkOsz2unA+w=='
-  // }
-  EXPECT_TRUE(base::Base64Decode("J+hZ4WZ0Z+YmkOsz2unA+w==", &ciphertext_str));
-  ciphertext =
-      std::vector<uint8_t>(ciphertext_str.begin(), ciphertext_str.end());
-  EXPECT_TRUE(base::Base64Decode("InEw0fowJVqqcwtsaHjxTsAtp3kyFtyTMHgd7UrQ1Tg=",
-                                 &ephemeral_public_key_str));
-  ephemeral_public_key = std::vector<uint8_t>(ephemeral_public_key_str.begin(),
-                                              ephemeral_public_key_str.end());
-  EXPECT_TRUE(
-      base::Base64Decode("lz+CB6jeQsUkRB+j8u9jZ37z3hun62kE", &nonce_str));
-  nonce = std::vector<uint8_t>(nonce_str.begin(), nonce_str.end());
-  message_bytes = keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
-      "x25519-xsalsa20-poly1305", nonce, ephemeral_public_key, ciphertext,
-      address);
-  message_str = std::string(message_bytes->begin(), message_bytes->end());
-  EXPECT_TRUE(message_str.empty());
-
-  // Wrong version
-  EXPECT_EQ(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
-                "x25519-xsalsa20-poly1306", nonce, ephemeral_public_key,
-                ciphertext, address),
-            std::nullopt);
-
-  // Empty nonce
-  EXPECT_EQ(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
-                "x25519-xsalsa20-poly1305", std::vector<uint8_t>(),
-                ephemeral_public_key, ciphertext, address),
-            std::nullopt);
-
-  // Empty public key
-  EXPECT_EQ(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
-                "x25519-xsalsa20-poly1305", nonce, std::vector<uint8_t>(),
-                ciphertext, address),
-            std::nullopt);
-
-  // Empty ciphertext
-  EXPECT_EQ(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
-                "x25519-xsalsa20-poly1305", nonce, ephemeral_public_key,
-                std::vector<uint8_t>(), address),
-            std::nullopt);
-
-  // Wrong nonce
-  std::vector<uint8_t> bad_nonce = nonce;
-  bad_nonce[0] = 0;
-  EXPECT_EQ(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
-                "x25519-xsalsa20-poly1305", bad_nonce, ephemeral_public_key,
-                ciphertext, address),
-            std::nullopt);
-
-  // Wrong public key
-  std::vector<uint8_t> bad_ephemeral_public_key = ephemeral_public_key;
-  bad_ephemeral_public_key[0] = 0;
-  EXPECT_EQ(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
-                "x25519-xsalsa20-poly1305", nonce, bad_ephemeral_public_key,
-                ciphertext, address),
-            std::nullopt);
-
-  // Wrong ciphertext
-  std::vector<uint8_t> bad_ciphertext = ciphertext;
-  bad_ciphertext[0] = 0;
-  EXPECT_EQ(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
-                "x25519-xsalsa20-poly1305", nonce, ephemeral_public_key,
-                bad_ciphertext, address),
-            std::nullopt);
 }
 
 TEST(EthereumKeyringUnitTest, AddNewHDAccount_RestrictedAddress) {

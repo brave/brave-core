@@ -11,7 +11,23 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 
 public class DayZeroHelper {
-    // Change this value for testing purposes to manually override Day Zero study options.
+    // Day Zero experiment variants, as written by native. Any other value means no variant is
+    // active, which callers treat as DAY_ZERO_DEFAULT_VARIANT.
+
+    // Quick search engines day zero study.
+    public static final String DAY_ZERO_VARIANT_A = "A";
+    public static final String DAY_ZERO_VARIANT_B = "B";
+
+    // Appearance customizer day zero study.
+    public static final String DAY_ZERO_VARIANT_X = "X";
+    public static final String DAY_ZERO_VARIANT_Y = "Y";
+    public static final String DAY_ZERO_VARIANT_Z = "Z";
+
+    public static final String DAY_ZERO_DEFAULT_VARIANT = "Default";
+
+    // Returned when no variant has been stored yet, as opposed to DAY_ZERO_DEFAULT_VARIANT which
+    // is an actual variant value. Change it for testing purposes to manually override Day Zero
+    // study options.
     private static final String DEFAULT_DAY_ZERO_VALUE = "";
 
     @CalledByNative

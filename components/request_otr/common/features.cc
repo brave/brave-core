@@ -5,8 +5,6 @@
 
 #include "brave/components/request_otr/common/features.h"
 
-#include "base/feature_list.h"
-
 namespace request_otr::features {
 
 // When enabled, Brave will block domains listed in the Brave-maintained

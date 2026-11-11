@@ -215,6 +215,7 @@ class DataTypeContentSettings_Clearing
       case ContentSettingsType::BRAVE_ETHEREUM:
       case ContentSettingsType::BRAVE_SOLANA:
       case ContentSettingsType::BRAVE_CARDANO:
+      case ContentSettingsType::BRAVE_POLKADOT:
         return !BUILDFLAG(ENABLE_BRAVE_WALLET);
       case ContentSettingsType::BRAVE_WEBCOMPAT_ALL:
         // This value is used to determine the last WebCompat content setting
@@ -275,7 +276,7 @@ TEST_F(DataTypeContentSettings_Clearing, CheckAll) {
       content_settings::ContentSettingsRegistry::GetInstance();
 
   for (auto type = ContentSettingsType::BRAVE_START;
-       type < ContentSettingsType::kMaxValue;
+       type <= ContentSettingsType::kMaxValue;
        type = static_cast<ContentSettingsType>(std::to_underlying(type) + 1)) {
     const auto* web_setting = web_settings_registry->Get(type);
     if (ShouldNotBeRegistered(type)) {
@@ -316,11 +317,16 @@ TEST_F(DataTypeContentSettings_Clearing, CheckAll) {
     EXPECT_EQ(0u, complete_future.Get());
 
     content_settings::SettingInfo info;
-    map()->GetWebsiteSetting(url, GURL::EmptyGURL(), type, &info);
+    const base::Value cleared_value =
+        map()->GetWebsiteSetting(url, GURL::EmptyGURL(), type, &info);
     if (ShouldNotClear(type)) {
       // The content setting is designed to persist even when browsing data is
       // cleared.
       EXPECT_FALSE(info.primary_pattern.MatchesAllHosts());
+    } else if (web_setting->initial_default_value().is_none()) {
+      // Types without an initial default have no wildcard default rule to fall
+      // back to, so clearing leaves no rule (and no patterns) at all.
+      EXPECT_TRUE(cleared_value.is_none());
     } else {
       // Check the setting has been restored to the default.
       EXPECT_TRUE(info.primary_pattern.MatchesAllHosts());

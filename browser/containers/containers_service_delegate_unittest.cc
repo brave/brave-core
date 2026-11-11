@@ -12,6 +12,7 @@
 
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
+#include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
@@ -32,7 +33,7 @@
 #include "brave/components/containers/content/browser/session_utils.h"
 #include "chrome/browser/sessions/session_service.h"
 #include "chrome/browser/sessions/session_service_test_helper.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "components/sessions/content/content_test_helper.h"
 #include "ui/base/mojom/window_show_state.mojom.h"
 #include "ui/gfx/geometry/rect.h"
@@ -103,7 +104,7 @@ class TabRestoreTestHarness {
 
   testing::NiceMock<MockTabRestoreService> mock_;
   sessions::TabRestoreService::Entries entries_;
-  std::vector<sessions::TabRestoreServiceObserver*> observers_;
+  std::vector<raw_ptr<sessions::TabRestoreServiceObserver>> observers_;
   bool loaded_ = true;
 };
 
@@ -272,7 +273,7 @@ class ContainersServiceDelegateSessionServiceTest
   void PersistLastSessionWithOneContainerTab(const std::string& container_id) {
     SessionService* const session = session_service_.get();
     const SessionID window_id = SessionID::NewUnique();
-    session->SetWindowType(window_id, Browser::TYPE_NORMAL);
+    session->SetWindowType(window_id, BrowserWindowInterface::TYPE_NORMAL);
     session->SetWindowBounds(window_id, gfx::Rect(0, 0, 100, 100),
                              ui::mojom::WindowShowState::kNormal);
 

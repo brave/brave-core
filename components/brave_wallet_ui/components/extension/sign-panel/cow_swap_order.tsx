@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css/variables'
+import * as leo from '@brave/nala/tokens/css/variables'
 
 // Types / constants
 import { BraveWallet } from '../../../constants/types'
@@ -13,7 +13,7 @@ import { UNKNOWN_TOKEN_COINGECKO_ID } from '../../../common/constants/magics'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-import { findTokenByContractAddress } from '../../../utils/asset-utils'
+import { findTokenByChainAndContractAddress } from '../../../utils/asset-utils'
 import { getAccountLabel, getAddressLabel } from '../../../utils/account-utils'
 
 // Styled components
@@ -90,10 +90,20 @@ export function SignCowSwapOrder(props: Props) {
   const cowSwapOrder = data.signData.ethSignTypedData?.meta?.cowSwapOrder
 
   const buyToken = cowSwapOrder?.buyToken
-    ? findTokenByContractAddress(cowSwapOrder.buyToken, combinedTokensList)
+    ? findTokenByChainAndContractAddress(
+        cowSwapOrder.buyToken,
+        data.chainId,
+        data.coin,
+        combinedTokensList,
+      )
     : undefined
   const sellToken = cowSwapOrder?.sellToken
-    ? findTokenByContractAddress(cowSwapOrder.sellToken, combinedTokensList)
+    ? findTokenByChainAndContractAddress(
+        cowSwapOrder.sellToken,
+        data.chainId,
+        data.coin,
+        combinedTokensList,
+      )
     : undefined
 
   const { data: network } = useGetNetworkQuery({
@@ -125,7 +135,7 @@ export function SignCowSwapOrder(props: Props) {
 
       <HeaderTitle>{getLocale(S.BRAVE_WALLET_SWAP_REVIEW_HEADER)}</HeaderTitle>
 
-      <Origin originInfo={data.originInfo} />
+      <Origin originInfo={data.dappOriginInfo} />
 
       {!showDetails && (
         <SwapBase

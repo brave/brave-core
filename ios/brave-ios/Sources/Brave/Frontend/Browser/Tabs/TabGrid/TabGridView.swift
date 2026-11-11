@@ -760,12 +760,7 @@ private struct TabGridModeSwitcher: UIViewRepresentable {
   var regularTabCount: Int
 
   private var tabCount: String {
-    String.localizedStringWithFormat(
-      regularTabCount == 1
-        ? Strings.TabGrid.tabsCountFormatSingular
-        : Strings.TabGrid.tabsCountFormatPlural,
-      regularTabCount
-    )
+    String.localizedStringWithFormat(Strings.TabGrid.tabsCountFormat, regularTabCount)
   }
 
   private var controlHeight: CGFloat {

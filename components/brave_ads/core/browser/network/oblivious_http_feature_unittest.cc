@@ -9,16 +9,16 @@
 #include "base/time/time.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BraveAdsObliviousHttpFeatureTest, IsDisabled) {
-  EXPECT_FALSE(base::FeatureList::IsEnabled(kAdsObliviousHttpFeature));
+TEST(BraveAdsObliviousHttpFeatureTest, IsEnabled) {
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kAdsObliviousHttpFeature));
 }
 
-TEST(BraveAdsObliviousHttpFeatureTest, ShouldNotSupport) {
-  EXPECT_FALSE(kShouldSupportOhttp.Get());
+TEST(BraveAdsObliviousHttpFeatureTest, ShouldSupport) {
+  EXPECT_TRUE(kShouldSupportOhttp.Get());
 }
 
 TEST(BraveAdsObliviousHttpFeatureTest, TimeoutDuration) {

@@ -3,18 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// Nullify the Origin header for cross-origin CORS requests
-// originating from a .onion address.
-#define BRAVE_CORS_URL_LOADER_START_REQUEST                        \
-  if (base::EndsWith(request_.request_initiator->host(), ".onion", \
-                     base::CompareCase::INSENSITIVE_ASCII) &&      \
-      !request_.request_initiator->IsSameOriginWith(               \
-          url::Origin::Create(request_.url))) {                    \
-    request_.headers.SetHeader(net::HttpRequestHeaders::kOrigin,   \
-                               url::Origin().Serialize());         \
-  } else /* NOLINT */
+#include "net/base/url_util.h"
+#include "services/network/public/cpp/resource_request.h"
 
-#include "base/strings/string_util.h"
+namespace {
+
+// A .onion page must not disclose its address to other origins. Upstream
+// taints a request's origin only after a cross-origin redirect, so a direct
+// cross-origin request from a .onion page is tainted too, giving it an
+// opaque origin in its Origin header, its CORS preflight and the CORS checks.
+bool ShouldTaintOnionOrigin(const network::ResourceRequest& request) {
+  return request.request_initiator &&
+         net::IsCrossOriginOnionRequest(*request.request_initiator,
+                                        request.url);
+}
+
+}  // namespace
 
 #include <services/network/cors/cors_url_loader.cc>
-#undef BRAVE_CORS_URL_LOADER_START_REQUEST

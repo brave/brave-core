@@ -9,11 +9,13 @@ import Foundation
 import Shared
 import WebKit
 
+@MainActor
 public class HTTPBlockedHandler: InternalSchemeResponse {
   public static let path = InternalURL.Path.httpBlocked.rawValue
 
   public init() {}
 
+  @MainActor
   public func response(forRequest request: URLRequest) async -> (URLResponse, Data)? {
     guard let url = request.url, let internalURL = InternalURL(url),
       let originalURL = internalURL.extractedUrlParam
@@ -30,6 +32,9 @@ public class HTTPBlockedHandler: InternalSchemeResponse {
       return nil
     }
 
+    let originalHost =
+      (originalURL.host ?? originalURL.domainURL.absoluteDisplayString).htmlEntityEncodedString
+
     html =
       html
       .replacingOccurrences(
@@ -40,7 +45,7 @@ public class HTTPBlockedHandler: InternalSchemeResponse {
         of: "%blocked_title%",
         with: String.localizedStringWithFormat(
           Strings.Shields.theConnectionIsNotSecure,
-          "<tt>\(originalURL.host ?? originalURL.domainURL.absoluteDisplayString)</tt>"
+          "<tt>\(originalHost)</tt>"
         )
       )
       .replacingOccurrences(

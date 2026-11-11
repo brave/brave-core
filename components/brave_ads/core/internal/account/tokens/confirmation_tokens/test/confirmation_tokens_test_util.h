@@ -10,9 +10,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_token_info.h"
 
-namespace brave_ads {
-
-namespace test {
+namespace brave_ads::test {
 
 // Call this function to refill confirmation tokens for testing purposes with
 // random unblinded tokens.
@@ -27,8 +25,6 @@ ConfirmationTokenList RefillConfirmationTokens(size_t count);
 ConfirmationTokenInfo BuildConfirmationToken();
 ConfirmationTokenList BuildConfirmationTokens(size_t count);
 
-}  // namespace test
-
-}  // namespace brave_ads
+}  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TOKENS_CONFIRMATION_TOKENS_TEST_CONFIRMATION_TOKENS_TEST_UTIL_H_

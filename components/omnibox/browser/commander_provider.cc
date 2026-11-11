@@ -5,11 +5,8 @@
 
 #include "brave/components/omnibox/browser/commander_provider.h"
 
-#include <utility>
-
 #include "base/check.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/strings/strcat.h"
 #include "brave/components/commander/browser/commander_frontend_delegate.h"
 #include "brave/components/commander/common/constants.h"
 #include "brave/components/commander/common/features.h"
@@ -25,7 +22,7 @@
 namespace commander {
 CommanderProvider::CommanderProvider(AutocompleteProviderClient* client,
                                      AutocompleteProviderListener* listener)
-    : AutocompleteProvider(AutocompleteProvider::TYPE_BRAVE_COMMANDER),
+    : AutocompleteProvider(AutocompleteProvider::Type::kBraveCommander),
       client_(client) {
   if (listener) {
     AddListener(listener);
@@ -95,7 +92,7 @@ void CommanderProvider::OnCommanderUpdated() {
     }
 
     AutocompleteMatch match(this, rank--, false,
-                            AutocompleteMatchType::BOOKMARK_TITLE);
+                            omnibox::AutocompleteMatchType::kBookmarkTitle);
     match.RecordAdditionalInfo(kCommanderMatchMarker, true);
     match.takeover_action =
         base::MakeRefCounted<CommanderAction>(i, delegate->GetResultSetId());

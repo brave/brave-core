@@ -5,14 +5,11 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import Tooltip from '@brave/leo/react/tooltip'
-import Icon from '@brave/leo/react/icon'
+import Tooltip from '@brave/nala/react/tooltip'
+import Icon from '@brave/nala/react/icon'
 
 // Queries
-import {
-  useGetActiveOriginQuery,
-  useGetNetworkQuery,
-} from '../../../common/slices/api.slice'
+import { useGetNetworkQuery } from '../../../common/slices/api.slice'
 import { useAccountFromAddressQuery } from '../../../common/slices/api.slice.extra'
 
 // Utils
@@ -89,10 +86,6 @@ export function ConfirmSwapTransaction() {
   const [isContractAddressCopied, setIsContractAddressCopied] =
     React.useState<boolean>(false)
 
-  // Queries
-  const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
-    useGetActiveOriginQuery()
-
   // Hooks
   const {
     transactionDetails,
@@ -117,7 +110,6 @@ export function ConfirmSwapTransaction() {
   const onClickViewOnBlockExplorer = useExplorer(transactionsNetwork)
 
   // Computed
-  const originInfo = selectedPendingTransaction?.originInfo ?? activeOrigin
   const isBridgeTx = selectedPendingTransaction
     ? isBridgeTransaction(selectedPendingTransaction)
     : false
@@ -194,13 +186,13 @@ export function ConfirmSwapTransaction() {
           height='100%'
           justifyContent='flex-start'
         >
-          {originInfo && (
+          {selectedPendingTransaction.dappOriginInfo && (
             <Row
               justifyContent='flex-start'
               padding='0px 0px 14px 0px'
             >
               <OriginInfoCard
-                origin={originInfo}
+                origin={selectedPendingTransaction.dappOriginInfo}
                 noBackground={true}
               />
             </Row>

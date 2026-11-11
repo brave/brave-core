@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
 class BrowserWindowInterface;
 
@@ -28,12 +29,20 @@ class Rect;
 // while a transfer is in-flight.
 class AIChatSidePanelTabTransferBridge {
  public:
+  DECLARE_USER_DATA(AIChatSidePanelTabTransferBridge);
+
   explicit AIChatSidePanelTabTransferBridge(BrowserWindowInterface* browser);
   AIChatSidePanelTabTransferBridge(const AIChatSidePanelTabTransferBridge&) =
       delete;
   AIChatSidePanelTabTransferBridge& operator=(
       const AIChatSidePanelTabTransferBridge&) = delete;
   ~AIChatSidePanelTabTransferBridge();
+
+  // Returns the instance owned by `browser`, or nullptr. Null unless the
+  // `kAIChatMoveFullPageToSidePanel` feature is enabled and `browser` is a
+  // normal window with AI Chat available.
+  static AIChatSidePanelTabTransferBridge* From(
+      BrowserWindowInterface* browser);
 
   // Forward (tab -> side panel). Takes ownership of the live AI Chat
   // `web_contents` (already detached from the tab strip by the caller) and
@@ -73,6 +82,9 @@ class AIChatSidePanelTabTransferBridge {
   // `TransferFullPageContentsToSidePanel` and consumed by the side panel view
   // factory via `TakePendingContents`.
   std::unique_ptr<content::WebContents> pending_web_contents_;
+
+  ui::ScopedUnownedUserData<AIChatSidePanelTabTransferBridge>
+      scoped_unowned_user_data_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_AI_CHAT_SIDE_PANEL_TAB_TRANSFER_BRIDGE_H_

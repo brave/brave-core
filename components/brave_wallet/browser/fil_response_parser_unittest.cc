@@ -5,11 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/fil_response_parser.h"
 
-#include <memory>
 #include <string>
-#include <utility>
 
-#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/values_test_util.h"
@@ -37,7 +34,7 @@ TEST(FilResponseParserUnitTest, ParseFilGetBalance) {
             "10000000000000000000000000000");
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"\"}";
-  EXPECT_TRUE(ParseFilGetBalance(ParseJson(json))->empty());
+  EXPECT_EQ(ParseFilGetBalance(ParseJson(json)), "");
 }
 
 TEST(FilResponseParserUnitTest, ParseFilGetTransactionCount) {
@@ -90,7 +87,7 @@ TEST(FilResponseParserUnitTest, ParseFilEstimateGas) {
       })";
 
   auto parse_result = ParseFilEstimateGas(ParseJson(json));
-  EXPECT_TRUE(parse_result);
+  ASSERT_TRUE(parse_result);
   EXPECT_EQ(parse_result->gas_premium, "100466");
   EXPECT_EQ(parse_result->gas_fee_cap, "101520");
   EXPECT_EQ(parse_result->gas_limit, 2187060u);
@@ -178,7 +175,7 @@ TEST(FilResponseParserUnitTest, ParseFilGetChainHead) {
         }],
         "Height": "18446744073709551615"
       })"));
-  EXPECT_TRUE(height);
+  ASSERT_TRUE(height);
   EXPECT_EQ(*height, 18446744073709551615u);
   EXPECT_FALSE(ParseFilGetChainHead(base::Value()));
   EXPECT_FALSE(ParseFilGetChainHead(GetResponse(R"({})")));
@@ -195,14 +192,14 @@ TEST(FilResponseParserUnitTest, ParseFilStateSearchMsgLimited) {
           "{\"Message\": {\"/\":\"cid\"},\"Receipt\": {\"ExitCode\":\"" +
           base::NumberToString(INT64_MAX) + "\"}}"),
       "cid");
-  EXPECT_TRUE(exit_code);
+  ASSERT_TRUE(exit_code);
   EXPECT_EQ(*exit_code, INT64_MAX);
   exit_code = ParseFilStateSearchMsgLimited(
       GetResponse(
           "{\"Message\": {\"/\":\"cid\"},\"Receipt\": {\"ExitCode\":\"" +
           base::NumberToString(INT64_MIN) + "\"}}"),
       "cid");
-  EXPECT_TRUE(exit_code);
+  ASSERT_TRUE(exit_code);
   EXPECT_EQ(*exit_code, INT64_MIN);
   EXPECT_FALSE(ParseFilStateSearchMsgLimited(base::Value(), "cid"));
   EXPECT_FALSE(ParseFilStateSearchMsgLimited(ParseJson("{}"), "cid"));
@@ -226,7 +223,7 @@ TEST(FilResponseParserUnitTest, ParseSendFilecoinTransaction) {
   std::optional<std::string> cid = ParseSendFilecoinTransaction(GetResponse(R"({
     "/": "bafy2bzacea3wsdh6y3a36tb3skempjoxqpuyompjbmfeyf34fi3uy6uue42v4"
   })"));
-  EXPECT_TRUE(cid);
+  ASSERT_TRUE(cid);
   EXPECT_EQ(*cid,
             "bafy2bzacea3wsdh6y3a36tb3skempjoxqpuyompjbmfeyf34fi3uy6uue42v4");
   EXPECT_FALSE(ParseSendFilecoinTransaction(GetResponse(R"({})")));

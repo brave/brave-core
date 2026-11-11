@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import config from '../lib/config.ts'
-import util from '../lib/util.js'
+import util from '../lib/util.ts'
 import branding from '../lib/branding.js'
 import { getBuildArgs } from '../lib/buildArgs.ts'
 

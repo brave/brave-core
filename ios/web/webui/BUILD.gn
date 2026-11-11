@@ -58,6 +58,7 @@ source_set("ios_web_webui_inttests") {
     "//brave/ios/web/test:resources",
     "//brave/ios/web/webui",
     "//ios/components/webui:url_constants",
+    "//ios/web/navigation:core",
     "//ios/web/public/test",
     "//ios/web/public/test:test_fixture",
     "//ios/web/public/test:util",
@@ -65,6 +66,7 @@ source_set("ios_web_webui_inttests") {
     "//ios/web/public/webui",
     "//ios/web/test:test_constants",
     "//ios/web/web_state:web_state_impl_header",
+    "//ui/base",
     "//url",
   ]
 }

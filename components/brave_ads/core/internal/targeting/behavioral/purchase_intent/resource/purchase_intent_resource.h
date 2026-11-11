@@ -11,6 +11,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
+#include "brave/components/brave_ads/core/internal/common/resources/resource_load_state_types.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_resource_info.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
@@ -27,7 +28,7 @@ class PurchaseIntentResource final : public AdsClientNotifierObserver {
 
   ~PurchaseIntentResource() override;
 
-  bool IsLoaded() const { return !!resource_; }
+  ResourceLoadStateType GetLoadState() const { return load_state_; }
 
   std::optional<std::string> GetManifestVersion() const {
     return manifest_version_;
@@ -42,7 +43,8 @@ class PurchaseIntentResource final : public AdsClientNotifierObserver {
   void MaybeLoadOrUnload();
 
   void Load();
-  void LoadCallback(std::optional<PurchaseIntentResourceInfo> resource);
+  void LoadCallback(std::optional<PurchaseIntentResourceInfo> resource,
+                    bool exists);
 
   void MaybeUnload();
   void Unload();
@@ -56,6 +58,8 @@ class PurchaseIntentResource final : public AdsClientNotifierObserver {
   std::optional<std::string> manifest_version_;
 
   std::optional<PurchaseIntentResourceInfo> resource_;
+
+  ResourceLoadStateType load_state_ = ResourceLoadStateType::kNotLoaded;
 
   base::ScopedObservation<AdsClient, AdsClientNotifierObserver>
       ads_client_observation_{this};

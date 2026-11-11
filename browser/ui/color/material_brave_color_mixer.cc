@@ -6,6 +6,7 @@
 #include "brave/browser/ui/color/material_brave_color_mixer.h"
 
 #include "base/check.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/color/color_provider.h"
 #include "ui/color/color_recipe.h"
@@ -15,10 +16,6 @@ void AddMaterialBraveColorMixer(ui::ColorProvider* provider,
                                 const ui::ColorProviderKey& key) {
   CHECK(provider);
   ui::ColorMixer& mixer = provider->AddMixer();
-  const bool is_dark = key.color_mode == ui::ColorProviderKey::ColorMode::kDark;
 
-  // Use leo color when it's ready.
-  mixer[kColorTabSearchScrollbarThumb] = {
-      is_dark ? SkColorSetRGB(0x58, 0x58, 0x58)
-              : SkColorSetRGB(0xB4, 0xB4, 0xB4)};
+  mixer[kColorTabSearchScrollbarThumb] = {nala::kColorMiscScrollbarThumbColor};
 }

@@ -6,9 +6,16 @@
 import BraveCore
 import SwiftUI
 
+struct SignMessageRequestItem: Identifiable, Equatable {
+  let request: BraveWallet.SignMessageRequest
+  let account: BraveWallet.AccountInfo
+
+  var id: Int32 { request.id }
+}
+
 class SignMessageRequestStore: ObservableObject {
 
-  @Published var requests: [BraveWallet.SignMessageRequest] {
+  @Published var requests: [SignMessageRequestItem] {
     didSet {
       guard requests != oldValue else { return }
       update()
@@ -16,15 +23,12 @@ class SignMessageRequestStore: ObservableObject {
   }
 
   /// The current request on display
-  var currentRequest: BraveWallet.SignMessageRequest {
+  var currentRequest: SignMessageRequestItem {
     requests[requestIndex]
   }
 
   /// Current request index
   @Published var requestIndex: Int = 0
-  /// A map between request index and a boolean value indicates this request message needs pilcrow formating/
-  /// Key is the request id. This property is assigned by the view, because we need the view height to determine.
-  @Published var needPilcrowFormatted: [Int32: Bool] = [:]
   /// A map between request index and a boolean value indicates this request message is displayed as
   /// its original content. Key is the request id.
   @Published var showOrignalMessage: [Int32: Bool] = [:]
@@ -44,7 +48,7 @@ class SignMessageRequestStore: ObservableObject {
   private var tokenInfoCache: [BraveWallet.BlockchainToken] = []
 
   init(
-    requests: [BraveWallet.SignMessageRequest],
+    requests: [SignMessageRequestItem],
     keyringService: BraveWalletKeyringService,
     rpcService: BraveWalletJsonRpcService,
     assetRatioService: BraveWalletAssetRatioService,
@@ -65,20 +69,18 @@ class SignMessageRequestStore: ObservableObject {
       // setup default values
       for request in requests {
         if showOrignalMessage[request.id] == nil {
-          showOrignalMessage[request.id] = true
-        }
-        if needPilcrowFormatted[request.id] == nil {
-          needPilcrowFormatted[request.id] = false
+          showOrignalMessage[request.id] = false
         }
       }
 
       let cowSwapRequests: [(id: Int32, cowSwapOrder: BraveWallet.CowSwapOrder, chainId: String)] =
         self.requests
-        .compactMap { request in
-          guard let cowSwapOrder = request.signData.ethSignTypedData?.meta?.cowSwapOrder else {
+        .compactMap { item in
+          guard let cowSwapOrder = item.request.signData.ethSignTypedData?.meta?.cowSwapOrder
+          else {
             return nil
           }
-          return (request.id, cowSwapOrder, request.chainId)
+          return (item.request.id, cowSwapOrder, item.request.chainId)
         }
       guard !cowSwapRequests.isEmpty else { return }
 
@@ -182,7 +184,7 @@ class SignMessageRequestStore: ObservableObject {
       {
         // if we have not previously assigned a `showOriginalMessage`
         // value for the next request, assign it the default value now.
-        showOrignalMessage[nextRequestId] = true
+        showOrignalMessage[nextRequestId] = false
       }
       requestIndex = requestIndex + 1
     } else {

@@ -14,8 +14,10 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/color/color_palette.h"
+#include "brave/browser/ui/toolbars_small_icons.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "build/build_config.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
@@ -74,6 +76,15 @@ BraveAvatarToolbarButton::BraveAvatarToolbarButton(
     BrowserWindowInterface* browser)
     : AvatarToolbarButton(browser) {
   // Our toolbar button height is 28.
+  if (brave::IsToolbarsSmallIconsEnabled()) {
+    // Icon image size 18 + insets 10 (5x2) matches other toolbar buttons, so
+    // no delta is needed apart from Linux's 1px smaller vertical padding.
+#if BUILDFLAG(IS_LINUX)
+    SetLayoutInsetDelta(gfx::Insets::VH(-1, 0));
+#endif
+    return;
+  }
+
   // Icon image size 20 + vertical insets 8(4x2).
   // However, avatar button's icon image size is 16.
   // So, set delta insets to make its height to 28.
@@ -152,15 +163,17 @@ void BraveAvatarToolbarButton::OnThemeChanged() {
 }
 
 int BraveAvatarToolbarButton::GetIconSize() const {
-  return GetLayoutConstant(LayoutConstant::kLocationBarIconSize);
+  return GetLayoutConstant(brave::IsToolbarsSmallIconsEnabled()
+                               ? LayoutConstant::kToolbarButtonIconSize
+                               : LayoutConstant::kLocationBarIconSize);
 }
 
 void BraveAvatarToolbarButton::UpdateColorsAndInsets() {
   // Use custom bg/border for private/tor window.
   if (state_manager_.browser()->GetProfile()->IsOffTheRecord()) {
     const bool is_tor = state_manager_.browser()->GetProfile()->IsTor();
-    const auto text_color = is_tor ? SkColorSetRGB(0xE3, 0xB3, 0xFF)
-                                   : SkColorSetRGB(0xcc, 0xBE, 0xFE);
+    const ui::ColorId text_color =
+        is_tor ? nala::kColorTorWindow60 : nala::kColorPrivateWindow60;
     SetEnabledTextColors(text_color);
     SetTextColor(views::Button::STATE_DISABLED, text_color);
 
@@ -176,11 +189,13 @@ void BraveAvatarToolbarButton::UpdateColorsAndInsets() {
                                    kBraveAvatarButtonVerticalSpacing);
     }
 
-    const auto border_color = is_tor ? SkColorSetARGB(0x66, 0x91, 0x5E, 0xAE)
-                                     : SkColorSetARGB(0x66, 0x7B, 0x63, 0xBF);
-
+    SkColor border_color = gfx::kPlaceholderColor;
     SkColor toolbar_color = gfx::kPlaceholderColor;
     if (ui::ColorProvider* cp = GetColorProvider()) {
+      border_color =
+          SkColorSetA(cp->GetColor(is_tor ? nala::kColorTorWindow40
+                                          : nala::kColorPrivateWindow40),
+                      0x66);
       toolbar_color = cp->GetColor(kColorToolbar);
     }
     const auto final_border_color =

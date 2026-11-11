@@ -14,7 +14,7 @@ import Web
 private class BraveRewardsSettingsViewModel: ObservableObject {
   let rewards: BraveRewards
   private var rewardsObserver: RewardsObserver?
-  private var isEnabledObserver: NSKeyValueObservation?
+  private var notificationsEnabledObserver: NSKeyValueObservation?
 
   init(rewards: BraveRewards) {
     self.rewards = rewards
@@ -23,7 +23,8 @@ private class BraveRewardsSettingsViewModel: ObservableObject {
       isWalletInitialized = rewardsAPI.isInitialized
     }
 
-    isEnabledObserver = rewards.ads.observe(\.isEnabled, options: [.new]) { [weak self] _, change in
+    notificationsEnabledObserver = rewards.ads.observe(\.isNotificationsEnabled, options: [.new]) {
+      [weak self] _, change in
       if let newValue = change.newValue {
         self?.isRewardsEnabled = newValue
       }
@@ -63,7 +64,7 @@ private class BraveRewardsSettingsViewModel: ObservableObject {
   @MainActor
   func resetRewards() async {
     // Reset the rewards profile the same way desktop does: delete the rewards
-    // database and clear all rewards preferences.
+    // database, clear all rewards preferences and clear ads data.
     if let rewardsAPI = rewards.rewardsAPI {
       await withCheckedContinuation { continuation in
         rewardsAPI.completeReset { _ in
@@ -71,6 +72,7 @@ private class BraveRewardsSettingsViewModel: ObservableObject {
         }
       }
       isWalletInitialized = rewardsAPI.isInitialized
+      await rewards.clearAdsData()
     }
   }
 }

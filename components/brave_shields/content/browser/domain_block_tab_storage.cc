@@ -8,9 +8,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/containers/flat_map.h"
-#include "base/memory/ptr_util.h"
-#include "base/no_destructor.h"
 #include "content/public/browser/web_contents.h"
 
 namespace brave_shields {

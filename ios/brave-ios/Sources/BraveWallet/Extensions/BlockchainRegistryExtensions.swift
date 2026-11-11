@@ -72,31 +72,4 @@ extension BraveWalletBlockchainRegistry {
       }
     )
   }
-
-  /// Returns all buy-supported`BlockchainToken`s for each of the given network and a list
-  /// on-ramp providers
-  @MainActor func allBuyTokens(
-    in networks: [BraveWallet.NetworkInfo],
-    for providers: [BraveWallet.OnRampProvider]
-  ) async -> [BraveWallet.OnRampProvider: [BraveWallet.BlockchainToken]] {
-    await withTaskGroup(
-      of: [BraveWallet.OnRampProvider: [BraveWallet.BlockchainToken]].self,
-      body: { @MainActor group -> [BraveWallet.OnRampProvider: [BraveWallet.BlockchainToken]] in
-        for provider in providers {
-          group.addTask { @MainActor in
-            var allTokens: [BraveWallet.BlockchainToken] = []
-            for network in networks {
-              let allTokensForNetwork = await self.buyTokens(
-                provider: provider,
-                chainId: network.chainId
-              )
-              allTokens.append(contentsOf: allTokensForNetwork)
-            }
-            return [provider: allTokens]
-          }
-        }
-        return await group.reduce([:], { $0.merging($1) { (_, new) in new } })
-      }
-    )
-  }
 }

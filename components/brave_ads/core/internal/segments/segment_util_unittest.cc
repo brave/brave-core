@@ -10,7 +10,6 @@
 
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/test/token_generator_test_util.h"
-#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_json_reader.h"
@@ -21,7 +20,7 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 

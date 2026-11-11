@@ -1,0 +1,13 @@
+diff --git a/extensions/browser/api/system_cpu/BUILD.gn b/extensions/browser/api/system_cpu/BUILD.gn
+index 7734210021404df4515b60cc9ea7937b5fe1312f..ad1e0087b6ce0246131c0c5cd04d9c00201d3abf 100644
+--- a/extensions/browser/api/system_cpu/BUILD.gn
++++ b/extensions/browser/api/system_cpu/BUILD.gn
+@@ -33,7 +33,7 @@ source_set("system_cpu") {
+     sources += [ "cpu_info_provider_mac.cc" ]
+   }
+ 
+-  if (is_linux || is_chromeos || enable_desktop_android_extensions) {
++  if (is_linux || is_chromeos || (is_android && enable_extensions_core)) {
+     sources += [ "cpu_info_provider_linux.cc" ]
+   }
+ 

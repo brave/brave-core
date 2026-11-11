@@ -9,18 +9,15 @@
 #include <string>
 #include <vector>
 
-#include "base/base64.h"
-#include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
 #include "base/path_service.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/psst/core/browser/psst_rule_registry.h"
 #include "brave/components/psst/core/common/features.h"
 #include "components/component_updater/component_installer.h"
-#include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/component_updater_service.h"
+#include "components/crx_file/id_util.h"
 #include "components/prefs/pref_service.h"
-#include "crypto/sha2.h"
 
 using brave_component_updater::BraveOnDemandUpdater;
 
@@ -67,18 +64,11 @@ class PsstComponentInstallerPolicy
   bool IsBraveComponent() const override;
 
  private:
-  const std::string component_id_;
   const std::string component_name_;
-  std::array<uint8_t, crypto::kSHA256Length> component_hash_;
 };
 
 PsstComponentInstallerPolicy::PsstComponentInstallerPolicy()
-    : component_id_(kPsstComponentId), component_name_(kPsstComponentName) {
-  // Generate hash from public key.
-  auto decoded_public_key = base::Base64Decode(kPsstComponentBase64PublicKey);
-  CHECK(decoded_public_key);
-  component_hash_ = crypto::SHA256Hash(*decoded_public_key);
-}
+    : component_name_(kPsstComponentName) {}
 
 bool PsstComponentInstallerPolicy::SupportsGroupPolicyEnabledComponentUpdates()
     const {
@@ -112,11 +102,12 @@ bool PsstComponentInstallerPolicy::VerifyInstallation(
 }
 
 base::FilePath PsstComponentInstallerPolicy::GetRelativeInstallDir() const {
-  return base::FilePath::FromUTF8Unsafe(component_id_);
+  return base::FilePath::FromUTF8Unsafe(
+      crx_file::id_util::GenerateIdFromHash(kPsstComponentPublicKeySHA256));
 }
 
 void PsstComponentInstallerPolicy::GetHash(std::vector<uint8_t>* hash) const {
-  *hash = base::ToVector(component_hash_);
+  hash->assign_range(kPsstComponentPublicKeySHA256);
 }
 
 std::string PsstComponentInstallerPolicy::GetName() const {
@@ -143,7 +134,8 @@ void RegisterPsstComponent(component_updater::ComponentUpdateService* cus) {
       // After Register, run the callback with component id.
       cus, base::BindOnce([]() {
         brave_component_updater::BraveOnDemandUpdater::GetInstance()
-            ->EnsureInstalled(kPsstComponentId);
+            ->EnsureInstalled(crx_file::id_util::GenerateIdFromHash(
+                kPsstComponentPublicKeySHA256));
       }));
 }
 

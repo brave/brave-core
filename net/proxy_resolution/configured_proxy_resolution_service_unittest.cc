@@ -24,6 +24,7 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using net::test::IsError;
 using net::test::IsOk;
 
 namespace net {
@@ -73,6 +74,45 @@ TEST_F(ConfiguredProxyResolutionServiceTest, TorProxy) {
       NetLogWithSource::Make(NetLogSourceType::NONE), DEFAULT_PRIORITY);
   EXPECT_THAT(rv, IsOk());
 
+  ProxyServer server = info.proxy_chain().GetProxyServer(/*chain_index=*/0);
+  HostPortPair host_port = server.host_port_pair();
+  EXPECT_TRUE(server.scheme() == ProxyServer::SCHEME_SOCKS5);
+  EXPECT_EQ(host_port.host(), "127.0.0.1");
+  EXPECT_EQ(host_port.port(), 5566);
+  EXPECT_EQ(host_port.username(), circuit_anonymization_key);
+  EXPECT_FALSE(host_port.password().empty());
+}
+
+TEST_F(ConfiguredProxyResolutionServiceTest, TorProxyNotReadyHoldsRequests) {
+  auto config_service = std::make_unique<ProxyConfigServiceTor>();
+  ProxyConfigServiceTor* tor_config_service = config_service.get();
+  MockHostResolverBase* host_resolver = nullptr;
+  ConfiguredProxyResolutionService service(
+      std::move(config_service),
+      std::make_unique<MockAsyncProxyResolverFactory>(false), host_resolver,
+      nullptr, /*quick_check_enabled=*/true);
+
+  const GURL url("https://check.torproject.org/");
+  const std::string circuit_anonymization_key =
+      ProxyConfigServiceTor::CircuitAnonymizationKey(url);
+  const SchemefulSite url_site(url);
+  const auto network_anonymization_key =
+      NetworkAnonymizationKey::CreateFromFrameSite(url_site, url_site);
+
+  ProxyInfo info;
+  TestCompletionCallback callback;
+  std::unique_ptr<ProxyResolutionRequest> request;
+  int rv = service.ResolveProxy(
+      url, std::string(), network_anonymization_key,
+      handles::kInvalidNetworkHandle, &info, callback.callback(), &request,
+      NetLogWithSource::Make(NetLogSourceType::NONE), DEFAULT_PRIORITY);
+  EXPECT_THAT(rv, IsError(ERR_IO_PENDING));
+  EXPECT_FALSE(callback.have_result());
+
+  tor_config_service->UpdateProxyURI("socks5://127.0.0.1:5566");
+  EXPECT_THAT(callback.WaitForResult(), IsOk());
+
+  ASSERT_FALSE(info.is_direct());
   ProxyServer server = info.proxy_chain().GetProxyServer(/*chain_index=*/0);
   HostPortPair host_port = server.host_port_pair();
   EXPECT_TRUE(server.scheme() == ProxyServer::SCHEME_SOCKS5);

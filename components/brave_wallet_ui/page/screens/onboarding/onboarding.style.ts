@@ -4,8 +4,8 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import Button from '@brave/leo/react/button'
-import * as leo from '@brave/leo/tokens/css/variables'
+import Button from '@brave/nala/react/button'
+import * as leo from '@brave/nala/tokens/css/variables'
 
 // styles
 import { Column } from '../../../components/shared/style'

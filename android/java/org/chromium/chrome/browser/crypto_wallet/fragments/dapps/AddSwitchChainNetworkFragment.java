@@ -31,8 +31,8 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.chromium.brave_wallet.mojom.AddChainRequest;
 import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.DappOriginInfo;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.brave_wallet.mojom.SwitchChainRequest;
 import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
@@ -235,7 +235,7 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
                                 mNetworkInfo = addChainRequest.networkInfo;
                                 mHasMultipleAddSwitchChainRequest = addChainRequests.length > 1;
                                 updateState();
-                                fillOriginInfo(addChainRequest.originInfo);
+                                fillOriginInfo(addChainRequest.dappOriginInfo);
                             });
         } else if (mPanelType == SWITCH_ETHEREUM_CHAIN) {
             mBraveWalletBaseActivity
@@ -264,12 +264,12 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
                                                         }
                                                     }
                                                 });
-                                fillOriginInfo(mSwitchChainRequest.originInfo);
+                                fillOriginInfo(mSwitchChainRequest.dappOriginInfo);
                             });
         }
     }
 
-    private void fillOriginInfo(OriginInfo originInfo) {
+    private void fillOriginInfo(DappOriginInfo originInfo) {
         if (originInfo != null && URLUtil.isValidUrl(originInfo.originSpec)) {
             mSiteTv.setText(Utils.geteTldSpanned(originInfo));
             showFavIcon(new GURL(originInfo.originSpec));

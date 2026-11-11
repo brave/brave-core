@@ -1,0 +1,11 @@
+diff --git a/chrome/browser/ui/views/frame/browser_native_widget_factory_mac.mm b/chrome/browser/ui/views/frame/browser_native_widget_factory_mac.mm
+index ccb8362d05229ed6b466ab9da961b489f729757b..145273b75cb2ec726fd629c01e55cd0eff82bf63 100644
+--- a/chrome/browser/ui/views/frame/browser_native_widget_factory_mac.mm
++++ b/chrome/browser/ui/views/frame/browser_native_widget_factory_mac.mm
+@@ -9,5 +9,5 @@
+ BrowserNativeWidget* BrowserNativeWidgetFactory::Create(
+     BrowserWidget* browser_widget,
+     BrowserView* browser_view) {
+-  return new BrowserNativeWidgetMac(browser_widget, browser_view);
++  return new BraveBrowserNativeWidgetMac(browser_widget, browser_view);
+ }

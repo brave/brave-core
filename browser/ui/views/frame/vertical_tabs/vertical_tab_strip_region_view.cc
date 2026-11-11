@@ -25,6 +25,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/switches.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
+#include "brave/browser/ui/toolbars_small_icons.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/tab_strip_placement_coordinator.h"
@@ -35,8 +36,6 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
@@ -149,20 +148,21 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
 
     SetNotifyEnterExitOnChild(true);
 
-    constexpr int kNewTabVerticalPadding = 8;
-    constexpr int kNewTabHorizontalPadding = 7;
+    constexpr int kNewTabVerticalPadding = 7;
+    constexpr int kNewTabHorizontalPadding = 8;
     SetLayoutManager(std::make_unique<views::FlexLayout>())
         ->SetOrientation(views::LayoutOrientation::kHorizontal)
         .SetCrossAxisAlignment(views::LayoutAlignment::kStretch)
         .SetInteriorMargin(
-            gfx::Insets::VH(kNewTabHorizontalPadding, kNewTabVerticalPadding));
+            gfx::Insets::VH(kNewTabVerticalPadding, kNewTabHorizontalPadding));
 
     plus_icon_ = AddChildView(std::make_unique<views::ImageView>());
     plus_icon_->SetHorizontalAlignment(views::ImageView::Alignment::kCenter);
     plus_icon_->SetVerticalAlignment(views::ImageView::Alignment::kCenter);
     plus_icon_->SetImage(ui::ImageModel::FromVectorIcon(
         kLeoPlusAddIcon, kColorBraveVerticalTabNTBIconColor,
-        /* icon_size= */ 16));
+        /* icon_size= */
+        brave::GetToolbarsIconSize().value_or(16)));
     plus_icon_->SetProperty(
         views::kFlexBehaviorKey,
         views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
@@ -290,11 +290,11 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
       browser_(browser_view->browser()),
       original_region_view_(region_view),
       tab_style_(TabStyle::Get()) {
+  CHECK(original_region_view_);
+
   // Register this view to handle caption area hit test, so that users can drag
   // the window by dragging the vertical tab strip region.
-  browser_view->browser()
-      ->GetFeatures()
-      .brave_non_client_hit_test_helper()
+  BraveNonClientHitTestHelper::From(browser_view->browser())
       ->RegisterCaptionArea(this);
 
   // As we follow user's choice for vertical tab alignment,
@@ -331,11 +331,6 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
   SetBackground(views::CreateSolidBackground(kColorToolbar));
 
   auto* prefs = browser_->GetProfile()->GetPrefs();
-
-  sidebar_side_.Init(prefs::kSidePanelHorizontalAlignment, prefs,
-                     base::BindRepeating(
-                         &BraveVerticalTabStripRegionView::OnBrowserPanelsMoved,
-                         base::Unretained(this)));
 
   expanded_width_pref_.Init(
       brave_tabs::kVerticalTabsExpandedWidth, prefs,
@@ -381,7 +376,7 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
   vertical_tab_on_right_.Init(
       brave_tabs::kVerticalTabsOnRight, prefs,
       base::BindRepeating(
-          &BraveVerticalTabStripRegionView::OnBrowserPanelsMoved,
+          &BraveVerticalTabStripRegionView::OnVerticalTabSideChanged,
           base::Unretained(this)));
 
   if (base::FeatureList::IsEnabled(tabs::kBraveVerticalTabHideCompletely)) {
@@ -400,10 +395,10 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
 
   widget_observation_.Observe(browser_view->GetWidget());
 
-  if (auto* focus_mode_controller =
-          browser_->GetFeatures().focus_mode_controller()) {
+  if (auto* focus_mode_controller = FocusModeController::From(browser_)) {
     focus_mode_observation_.Observe(focus_mode_controller);
   }
+  UpdateFloatingStateForBrowserMode();
 
   // Subscribe browser closing event, so we can dispose of the context menu.
   browser_did_close_subscription_ = browser_->RegisterBrowserDidClose(
@@ -417,11 +412,14 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
 }
 
 BraveVerticalTabStripRegionView::~BraveVerticalTabStripRegionView() {
-  auto* container =
-      views::AsViewClass<BraveTabContainer>(tab_strip()->tab_container_);
-  CHECK(container);
-  // This view can be destroyed before the tab container is destroyed.
-  container->SetVerticalTabStripRegionView(nullptr);
+  // The tab container can be null here: upstream's own vertical tabs feature
+  // resets `tab_container_` whenever `prefs::kVerticalTabsEnabled` toggles on,
+  // regardless of whether our own vertical tab strip is what's actually shown.
+  // Nothing to unlink from in that case.
+  if (auto* container =
+          views::AsViewClass<BraveTabContainer>(tab_strip()->tab_container_)) {
+    container->SetVerticalTabStripRegionView(nullptr);
+  }
 
   // We need to move tab strip region to its original parent to avoid crash
   // during drag and drop session.
@@ -429,6 +427,21 @@ BraveVerticalTabStripRegionView::~BraveVerticalTabStripRegionView() {
     coordinator->ClearPlacement(TabStripPlacementKind::kVerticalTabStrip);
   }
   UpdateLayout();
+}
+
+void BraveVerticalTabStripRegionView::AddedToWidget() {
+  // Retry the placement, in case it was skipped while we weren't attached.
+  if (auto* coordinator = GetPlacementCoordinator(browser_view_)) {
+    coordinator->UpdatePlacement();
+  }
+}
+
+void BraveVerticalTabStripRegionView::RemovedFromWidget() {
+  // Only clear the placement data here, no reparenting: Views may be
+  // mid-iteration tearing down the tree at this point.
+  if (auto* coordinator = GetPlacementCoordinator(browser_view_)) {
+    coordinator->ClearPlacement(TabStripPlacementKind::kVerticalTabStrip);
+  }
 }
 
 void BraveVerticalTabStripRegionView::ToggleState() {
@@ -489,8 +502,7 @@ void BraveVerticalTabStripRegionView::StopListeningFullscreenChanges() {
 
 FullscreenController* BraveVerticalTabStripRegionView::GetFullscreenController()
     const {
-  auto* exclusive_access_manager =
-      browser_->GetFeatures().exclusive_access_manager();
+  auto* exclusive_access_manager = ExclusiveAccessManager::From(browser_);
   if (!exclusive_access_manager) {
     return nullptr;
   }
@@ -531,8 +543,7 @@ void BraveVerticalTabStripRegionView::SetState(State state) {
   last_state_ = std::exchange(state_, state);
   resize_area_->SetEnabled(state == State::kExpanded);
 
-  if (!VerticalTabController::FromBrowser(browser_)
-           ->ShouldShowBraveVerticalTabs()) {
+  if (!VerticalTabController::From(browser_)->ShouldShowBraveVerticalTabs()) {
     // This can happen when "float on mouse hover" is enabled and tab strip
     // orientation has been changed.
     return;
@@ -622,8 +633,7 @@ BraveVerticalTabStripRegionView::ExpandTabStripForDragging() {
 }
 
 int BraveVerticalTabStripRegionView::GetAvailableWidthForTabContainer() {
-  DCHECK(VerticalTabController::FromBrowser(browser_)
-             ->ShouldShowBraveVerticalTabs());
+  DCHECK(VerticalTabController::From(browser_)->ShouldShowBraveVerticalTabs());
   return GetPreferredWidthForState(state_, /*include_border=*/false,
                                    /*ignore_animation=*/false);
 }
@@ -636,7 +646,7 @@ gfx::Size BraveVerticalTabStripRegionView::CalculatePreferredSize(
 
 gfx::Size BraveVerticalTabStripRegionView::GetMinimumSize() const {
   if (IsFloatingEnabledForBrowserMode() ||
-      ((VerticalTabController::FromBrowser(browser_)
+      ((VerticalTabController::From(browser_)
             ->ShouldHideVerticalTabsCompletelyWhenCollapsed() &&
         state_ != State::kExpanded))) {
     // Vertical tab strip always overlaps the contents area.
@@ -660,17 +670,11 @@ gfx::Size BraveVerticalTabStripRegionView::GetMinimumSize() const {
     return size;
   }
 
-  // In rounded corners, border is changed on floating.
-  // If we calculated preferred size with |include_border|,
-  // it gives different size because of border change.
-  // If minumum size changes during the floating, it could affect
-  // contents size. It could cause contents area flickering.
-  // Append same border width to |size|.
-  if (BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
+  // Add the non-floating border width -- zero with rounded corners, where the
+  // separator only shows while floating.
+  if (!BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
           browser_)) {
-    size.Enlarge(-(tabs::kMarginForVerticalTabContainers / 2), 0);
-  } else {
-    size.Enlarge(kBorderThickness, 0);
+    size.Enlarge(GetInsets().width(), 0);
   }
 
   return size;
@@ -729,8 +733,7 @@ void BraveVerticalTabStripRegionView::OnShowVerticalTabsPrefChanged() {
   UpdateFloatingStateForBrowserMode();
   UpdateLayout();
 
-  if (!VerticalTabController::FromBrowser(browser_)
-           ->ShouldShowBraveVerticalTabs() &&
+  if (!VerticalTabController::From(browser_)->ShouldShowBraveVerticalTabs() &&
       state_ == State::kFloating) {
     mouse_enter_timer_.Stop();
     SetState(State::kCollapsed);
@@ -739,7 +742,7 @@ void BraveVerticalTabStripRegionView::OnShowVerticalTabsPrefChanged() {
   UpdateBorder();
 }
 
-void BraveVerticalTabStripRegionView::OnBrowserPanelsMoved() {
+void BraveVerticalTabStripRegionView::OnVerticalTabSideChanged() {
   UpdateBorder();
   PreferredSizeChanged();
 }
@@ -749,8 +752,8 @@ void BraveVerticalTabStripRegionView::UpdateLayout() {
     coordinator->UpdatePlacement();
   }
 
-  bool vertical_tabs = VerticalTabController::FromBrowser(browser_)
-                           ->ShouldShowBraveVerticalTabs();
+  bool vertical_tabs =
+      VerticalTabController::From(browser_)->ShouldShowBraveVerticalTabs();
   auto layout_orientation = vertical_tabs
                                 ? views::LayoutOrientation::kVertical
                                 : views::LayoutOrientation::kHorizontal;
@@ -880,8 +883,7 @@ void BraveVerticalTabStripRegionView::OnMousePressedInTree() {
 
 void BraveVerticalTabStripRegionView::OnBoundsChanged(
     const gfx::Rect& previous_bounds) {
-  if (!VerticalTabController::FromBrowser(browser_)
-           ->ShouldShowBraveVerticalTabs()) {
+  if (!VerticalTabController::From(browser_)->ShouldShowBraveVerticalTabs()) {
     return;
   }
 
@@ -956,8 +958,8 @@ void BraveVerticalTabStripRegionView::AnimationEnded(
 }
 
 void BraveVerticalTabStripRegionView::UpdateNewTabButtonVisibility() {
-  const bool is_vertical_tabs = VerticalTabController::FromBrowser(browser_)
-                                    ->ShouldShowBraveVerticalTabs();
+  const bool is_vertical_tabs =
+      VerticalTabController::From(browser_)->ShouldShowBraveVerticalTabs();
   auto* original_ntb = original_region_view_->new_tab_button();
   original_ntb->SetVisible(!is_vertical_tabs);
   new_tab_button_->SetVisible(is_vertical_tabs);
@@ -993,47 +995,25 @@ void BraveVerticalTabStripRegionView::UpdateBorder() {
 
     // Only show the border if the vertical tabs are enabled and in floating
     // mode, and the tabstrip is hovered.
-    return VerticalTabController::FromBrowser(browser_)
+    return VerticalTabController::From(browser_)
                ->ShouldShowBraveVerticalTabs() &&
            state_ == State::kFloating;
   };
 
-  // At this point |sidebar_side_| needs to be initialized.
-  CHECK(!sidebar_side_.GetPrefName().empty());
+  // No separator, no inset: the tabs' own padding is what spaces them from the
+  // contents, which reserves nothing on this side in turn.
+  if (!show_visible_border()) {
+    SetBorder(nullptr);
+    PreferredSizeChanged();
+    return;
+  }
 
-  // If the sidebar is on the same side as the vertical tab strip, we shouldn't
-  // take away the margin on the vertical tabs, because the sidebar will be
-  // between it and the web_contents.
-  bool is_on_right =
+  const bool is_on_right =
       !vertical_tab_on_right_.GetPrefName().empty() && *vertical_tab_on_right_;
-  bool sidebar_on_same_side = sidebar_side_.GetValue() == is_on_right;
-
-  gfx::Insets border_insets;
-  if (is_on_right) {
-    border_insets.set_left(kBorderThickness);
-  } else {
-    border_insets.set_right(kBorderThickness);
-  }
-
-  // When show vertical tab's border line, vertical tab can have its whole
-  // padding.
-  if (show_visible_border()) {
-    SetBorder(views::CreateSolidSidedBorder(
-        border_insets,
-        GetColorProvider()->GetColor(kColorBraveVerticalTabSeparator)));
-  } else {
-    // When vertical tab's border line is not shown, vertical tab should have
-    // only half of its padding because contents has half or margin to draw its
-    // shadow.
-    if (!sidebar_on_same_side) {
-      if (is_on_right) {
-        border_insets.set_left(-(tabs::kMarginForVerticalTabContainers / 2));
-      } else {
-        border_insets.set_right(-(tabs::kMarginForVerticalTabContainers / 2));
-      }
-    }
-    SetBorder(views::CreateEmptyBorder(border_insets));
-  }
+  SetBorder(views::CreateSolidSidedBorder(
+      is_on_right ? gfx::Insets::TLBR(0, kBorderThickness, 0, 0)
+                  : gfx::Insets::TLBR(0, 0, 0, kBorderThickness),
+      GetColorProvider()->GetColor(kColorBraveVerticalTabSeparator)));
 
   PreferredSizeChanged();
 }
@@ -1074,7 +1054,7 @@ void BraveVerticalTabStripRegionView::
   if (state_ == State::kCollapsed) {
     // When setting is turned on/off, we should make sure vertical tab strip is
     // getting hidden/shown.
-    SetVisible(!VerticalTabController::FromBrowser(browser_)
+    SetVisible(!VerticalTabController::From(browser_)
                     ->ShouldHideVerticalTabsCompletelyWhenCollapsed());
   }
 
@@ -1113,8 +1093,7 @@ gfx::Size BraveVerticalTabStripRegionView::GetPreferredSizeForState(
     State state,
     bool include_border,
     bool ignore_animation) const {
-  if (!VerticalTabController::FromBrowser(browser_)
-           ->ShouldShowBraveVerticalTabs()) {
+  if (!VerticalTabController::From(browser_)->ShouldShowBraveVerticalTabs()) {
     return {};
   }
 
@@ -1141,7 +1120,7 @@ int BraveVerticalTabStripRegionView::GetPreferredWidthForState(
       return 0;
     }
 
-    if (VerticalTabController::FromBrowser(browser_)
+    if (VerticalTabController::From(browser_)
             ->ShouldHideVerticalTabsCompletelyWhenCollapsed()) {
       return 0;
     }
@@ -1180,9 +1159,9 @@ int BraveVerticalTabStripRegionView::GetPreferredWidthForState(
 
 bool BraveVerticalTabStripRegionView::IsFloatingVerticalTabsEnabled() const {
   return IsFloatingEnabledForBrowserMode() ||
-         VerticalTabController::FromBrowser(browser_)
+         VerticalTabController::From(browser_)
              ->IsFloatingVerticalTabsEnabled() ||
-         VerticalTabController::FromBrowser(browser_)
+         VerticalTabController::From(browser_)
              ->ShouldHideVerticalTabsCompletelyWhenCollapsed();
 }
 
@@ -1197,8 +1176,7 @@ bool BraveVerticalTabStripRegionView::IsFloatingEnabledForBrowserMode() const {
 }
 
 void BraveVerticalTabStripRegionView::UpdateFloatingStateForBrowserMode() {
-  if (!VerticalTabController::FromBrowser(browser_)
-           ->ShouldShowBraveVerticalTabs()) {
+  if (!VerticalTabController::From(browser_)->ShouldShowBraveVerticalTabs()) {
     return;
   }
 
@@ -1329,7 +1307,7 @@ void BraveVerticalTabStripRegionView::OnCollapseAnimationEnded() {
   CHECK_EQ(state_, State::kCollapsed);
 
   if (IsFloatingEnabledForBrowserMode() ||
-      VerticalTabController::FromBrowser(browser_)
+      VerticalTabController::From(browser_)
           ->ShouldHideVerticalTabsCompletelyWhenCollapsed()) {
     // When the animation ends, we should hide the vertical tab strip as we
     // don't want the tabstrip to be visible partially. This view only takes a

@@ -13,7 +13,6 @@
 #include "base/test/test_future.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
-#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"

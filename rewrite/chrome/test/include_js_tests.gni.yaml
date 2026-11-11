@@ -1,0 +1,10 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Do not build the WebUI JS tests.
+    add_after_line:
+      line: include_js_tests = !(is_asan || is_msan || is_tsan || is_cfi)
+      code: '  include_js_tests = false'

@@ -30,19 +30,24 @@ from collections.abc import Mapping, Sequence
 import contextlib
 from pathlib import Path
 from types import MappingProxyType
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 import config_types
 from engine_types import PerGreenletState
 from recipe_api import RecipeApi
 
+if TYPE_CHECKING:
+    from recipe_modules import context
 
-def _check_type(name: str, var: object,
-                expect: type | tuple[type, ...]) -> None:
+
+def _check_type(
+    name: str, var: object, expect: type | tuple[type, ...]
+) -> None:
     if not isinstance(var, expect):
         expected = getattr(expect, '__name__', str(expect))
         raise TypeError(
-            f'{name} is not {expected}: {var!r} ({type(var).__name__})')
+            f'{name} is not {expected}: {var!r} ({type(var).__name__})'
+        )
 
 
 class _State(PerGreenletState):
@@ -88,6 +93,8 @@ class ContextApi(RecipeApi):
     The scope lives in greenlet-local storage, so concurrently running steps
     each see their own; see `_State`.
     """
+
+    m: context.DEPS
 
     def __init__(self) -> None:
         super().__init__()
@@ -150,7 +157,8 @@ class ContextApi(RecipeApi):
                 except Exception as exc:
                     raise ValueError(
                         'invalid %-format in env value, only %(VAR)s allowed: '
-                        f'{val!r}') from exc
+                        f'{val!r}'
+                    ) from exc
             new[key] = val
 
         try:
@@ -160,8 +168,10 @@ class ContextApi(RecipeApi):
                 # want; only a plain str/real Path needs wrapping.
                 _push(
                     'cwd',
-                    cwd if isinstance(cwd, (Path,
-                                            config_types.Path)) else Path(cwd))
+                    cwd
+                    if isinstance(cwd, (Path, config_types.Path))
+                    else Path(cwd),
+                )
             _add('env_prefixes', env_prefixes, _as_prefixes)
             _add('env_suffixes', env_suffixes, _as_suffixes)
             _add('env', env, _as_env)

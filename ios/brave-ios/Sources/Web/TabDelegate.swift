@@ -26,21 +26,27 @@ public protocol TabDelegate: AnyObject {
     _ tab: some TabState,
     requestMediaCapturePermissionsFor type: WebMediaCaptureType
   ) async -> WebPermissionDecision
+  /// `pageURL` is `nil` when the dialog originates from a frame with an opaque origin, such as a
+  /// sandboxed iframe or a `data:` URL.
   func tab(
     _ tab: some TabState,
     runJavaScriptAlertPanelWithMessage message: String,
-    pageURL: URL
+    pageURL: URL?
   ) async
+  /// `pageURL` is `nil` when the dialog originates from a frame with an opaque origin, such as a
+  /// sandboxed iframe or a `data:` URL.
   func tab(
     _ tab: some TabState,
     runJavaScriptConfirmPanelWithMessage message: String,
-    pageURL: URL
+    pageURL: URL?
   ) async -> Bool
+  /// `pageURL` is `nil` when the dialog originates from a frame with an opaque origin, such as a
+  /// sandboxed iframe or a `data:` URL.
   func tab(
     _ tab: some TabState,
     runJavaScriptConfirmPanelWithPrompt prompt: String,
     defaultText: String?,
-    pageURL: URL
+    pageURL: URL?
   ) async -> String?
   func tab(
     _ tab: some TabState,
@@ -126,13 +132,13 @@ extension TabDelegate {
   public func tab(
     _ tab: some TabState,
     runJavaScriptAlertPanelWithMessage message: String,
-    pageURL: URL
+    pageURL: URL?
   ) async {}
 
   public func tab(
     _ tab: some TabState,
     runJavaScriptConfirmPanelWithMessage message: String,
-    pageURL: URL
+    pageURL: URL?
   ) async -> Bool {
     return false
   }
@@ -141,7 +147,7 @@ extension TabDelegate {
     _ tab: some TabState,
     runJavaScriptConfirmPanelWithPrompt prompt: String,
     defaultText: String?,
-    pageURL: URL
+    pageURL: URL?
   ) async -> String? {
     return nil
   }

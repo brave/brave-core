@@ -13,11 +13,9 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/containers/extend.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 
@@ -25,17 +23,15 @@ namespace brave_wallet {
 
 namespace {
 
-base::DictValue GetMetadata(const mojom::OriginInfoPtr& origin_info) {
+base::DictValue GetMetadata(const mojom::DappOriginInfoPtr& dapp_origin_info) {
   base::DictValue metadata_object;
 
-  if (origin_info && origin_info->origin_spec != "chrome://wallet" &&
-      origin_info->origin_spec != "brave://wallet") {
-    metadata_object.Set("origin", origin_info->origin_spec);
+  if (dapp_origin_info) {
+    metadata_object.Set("origin", dapp_origin_info->origin_spec);
   } else {
     // TODO(onyb): We use "https://brave.com" as the default origin for now.
-    //  This is because Blowfish doesn't support "chrome://wallet" and
-    //  "brave://wallet" as origins yet. We'll update this once Blowfish
-    //  supports them.
+    // This is because Blowfish doesn't support "chrome://wallet" as origin yet.
+    // We'll update this once Blowfish supports it.
     metadata_object.Set("origin", "https://brave.com");
   }
 
@@ -120,7 +116,7 @@ std::optional<std::string> EncodeScanTransactionParams(
   base::ListValue tx_objects;
   tx_objects.Append(std::move(tx_object));
   params.Set("txObjects", std::move(tx_objects));
-  params.Set("metadata", GetMetadata(tx_info.origin_info));
+  params.Set("metadata", GetMetadata(tx_info.dapp_origin_info));
   params.Set("userAccount", from_address);
 
   return GetJSON(base::Value(std::move(params)));
@@ -218,7 +214,7 @@ std::optional<std::string> EncodeScanTransactionParams(
   base::DictValue params;
   params.Set("transactions", std::move(transactions));
   params.Set("metadata",
-             GetMetadata(std::move(sign_sol_transactions_request.origin_info)));
+             GetMetadata(sign_sol_transactions_request.dapp_origin_info));
   params.Set("userAccount", from_address);
 
   return GetJSON(base::Value(std::move(params)));
@@ -241,7 +237,7 @@ std::optional<std::string> EncodeScanTransactionParams(
 
   base::DictValue params;
   params.Set("transactions", std::move(transactions));
-  params.Set("metadata", GetMetadata(tx_info.origin_info));
+  params.Set("metadata", GetMetadata(tx_info.dapp_origin_info));
   params.Set("userAccount", from_address);
 
   return GetJSON(base::Value(std::move(params)));

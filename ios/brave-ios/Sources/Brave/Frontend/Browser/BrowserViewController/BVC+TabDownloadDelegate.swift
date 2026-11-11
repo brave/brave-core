@@ -145,7 +145,7 @@ extension BrowserViewController: TabDownloadDelegate {
         forceDownload: false,
         browserViewController: self
       ) {
-        Task {
+        _ = Task {
           await passbookHelper.open()
           try await AsyncFileManager.default.removeItem(at: destinationURL)
         }

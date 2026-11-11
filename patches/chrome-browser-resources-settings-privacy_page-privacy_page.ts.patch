@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.ts b/chrome/browser/resources/settings/privacy_page/privacy_page.ts
-index 22c524fdbab12842d33ee014507e9714270eb48e..552720419741c6d21fad0dec47e78303dcd8e2ec 100644
+index b3ecabfb8fd6fb2f461004a4232a3f504148bd63..1b606e7bd1bb4fdd66a49dd175b0c316a7f52dd9 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.ts
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.ts
-@@ -16,6 +16,7 @@ import '../icons.html.js';
- import '../privacy_icons.html.js';
- import '../settings_page/settings_section.js';
- import '../settings_shared.css.js';
+@@ -7,6 +7,7 @@
+  * 'settings-privacy-page' is the settings page containing privacy and
+  * security settings.
+  */
 +import './personalization_options.js';
- import './privacy_guide/privacy_guide_dialog.js';
- 
- import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js';
+ import 'chrome://resources/cr_elements/icons.html.js';
+ import 'chrome://resources/cr_elements/cr_link_row/cr_link_row.js';
+ import 'chrome://resources/cr_elements/cr_toast/cr_toast.js';

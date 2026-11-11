@@ -7,21 +7,23 @@
 #include <utility>
 
 #include "base/functional/callback_helpers.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "base/test/run_until.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/split_view/split_view_features.h"
+#include "brave/browser/ui/views/brave_layout_provider.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/split_view/brave_contents_container_outline.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_mini_toolbar.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -31,7 +33,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
-#include "chrome/browser/ui/views/frame/multi_contents_background_view.h"
+#include "chrome/browser/ui/views/frame/contents_capture_border_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_resize_area.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
 #include "chrome/browser/ui/views/infobars/infobar_container_view.h"
@@ -42,6 +44,8 @@
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/bookmarks/common/bookmark_bar_visibility_state.h"
+#include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/javascript_dialogs/tab_modal_dialog_manager.h"
@@ -57,6 +61,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "third_party/skia/include/core/SkRegion.h"
 #include "ui/compositor/layer.h"
@@ -68,6 +73,7 @@
 #include "ui/views/border.h"
 #include "ui/views/controls/button/image_button.h"
 #include "ui/views/controls/label.h"
+#include "ui/views/layout/layout_provider.h"
 #include "ui/views/view_utils.h"
 #include "ui/views/widget/widget.h"
 
@@ -157,6 +163,25 @@ constexpr char kTestPageWithLink[] = R"(
 </body>
 </html>
 )";
+
+std::string GetRequestHeader(const net::test_server::HttpRequest& request,
+                             std::string_view name) {
+  for (const auto& [key, value] : request.headers) {
+    if (base::EqualsCaseInsensitiveASCII(key, name)) {
+      return value;
+    }
+  }
+  return std::string();
+}
+
+// Echoes back the request's Cookie and Sec-Fetch-Site headers so that tests can
+// assert on what was actually sent to the network.
+std::string BuildEchoRequestPage(const net::test_server::HttpRequest& request) {
+  return base::StrCat(
+      {"<!DOCTYPE html><body><pre id=\"cookie\">",
+       GetRequestHeader(request, "Cookie"), "</pre><pre id=\"sec-fetch-site\">",
+       GetRequestHeader(request, "Sec-Fetch-Site"), "</pre></body>"});
+}
 
 // Observer for same-document navigations. Uses DidFinishNavigation to detect
 // same-document commits (event-driven), and RunUntil for the wait mechanism
@@ -310,7 +335,7 @@ class SplitViewBrowserTest : public InProcessBrowserTest {
 
   ContentsWebView* GetContentsWebView() {
     return BrowserView::GetBrowserViewForBrowser(browser())
-        ->contents_web_view();
+        ->contents_web_view_for_testing();
   }
 
  protected:
@@ -347,7 +372,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, BraveMultiContentsViewTest) {
   EXPECT_FALSE(
       browser_view->top_container_separator_for_testing()->GetVisible());
   EXPECT_TRUE(split_view_separator()->GetVisible());
-  EXPECT_EQ(4, split_view_separator()->GetPreferredSize().width());
+  EXPECT_EQ(kRoundedCornersContentsViewMargin,
+            split_view_separator()->GetPreferredSize().width());
 
   // Check corner radius.
   auto* multi_contents_view = brave_multi_contents_view();
@@ -359,8 +385,14 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, BraveMultiContentsViewTest) {
       multi_contents_view->contents_container_views_for_testing()[1]);
   ASSERT_TRUE(start_contents_container_view);
   ASSERT_TRUE(end_contents_container_view);
-  EXPECT_FALSE(
-      multi_contents_view->background_view_for_testing()->GetVisible());
+
+  // The capture border has to keep the highest z-order, which
+  // ContentsContainerView::GetChildrenInZOrder() only DCHECKs. Brave inserts
+  // the reader mode toolbar ahead of it, so assert the invariant here too.
+  EXPECT_EQ(start_contents_container_view->children().back(),
+            start_contents_container_view->capture_contents_border_view());
+  EXPECT_EQ(end_contents_container_view->children().back(),
+            end_contents_container_view->capture_contents_border_view());
 
   // Brave zeroes kSplitViewContentInset via chromium_src so that
   // MultiContentsView doesn't add insets — padding is handled by Brave's
@@ -371,35 +403,69 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, BraveMultiContentsViewTest) {
   EXPECT_EQ(multi_contents_view->height(),
             end_contents_container_view->height());
 
-  FullscreenController* fullscreen_controller = browser()
-                                                    ->GetFeatures()
-                                                    .exclusive_access_manager()
-                                                    ->fullscreen_controller();
-  fullscreen_controller->set_is_tab_fullscreen_for_testing(true);
-  brave_browser_view()->InvalidateLayout();
-  RunScheduledLayouts();
-  EXPECT_EQ(gfx::RoundedCornersF(),
-            start_contents_container_view->GetCornerRadius(true));
-  fullscreen_controller->set_is_tab_fullscreen_for_testing(false);
-  brave_browser_view()->InvalidateLayout();
-  RunScheduledLayouts();
-
   auto* start_contents_web_view =
       multi_contents_view->start_contents_view_for_testing();
   auto* end_contents_web_view =
       multi_contents_view->end_contents_view_for_testing();
   ASSERT_TRUE(start_contents_web_view);
   ASSERT_TRUE(end_contents_web_view);
-  EXPECT_EQ(start_contents_web_view->layer()->rounded_corner_radii(),
-            start_contents_container_view->GetCornerRadius(false));
-  EXPECT_EQ(end_contents_web_view->layer()->rounded_corner_radii(),
-            end_contents_container_view->GetCornerRadius(false));
 
-  // Check borders.
-  EXPECT_EQ(gfx::Insets(BraveContentsContainerView::kBorderThickness),
+  // In tab fullscreen the contents fill the window, so they aren't rounded.
+  FullscreenController* fullscreen_controller =
+      ExclusiveAccessManager::From(browser())->fullscreen_controller();
+  fullscreen_controller->set_is_tab_fullscreen_for_testing(true);
+  brave_browser_view()->InvalidateLayout();
+  RunScheduledLayouts();
+  EXPECT_EQ(gfx::RoundedCornersF(),
+            start_contents_web_view->layer()->rounded_corner_radii());
+  fullscreen_controller->set_is_tab_fullscreen_for_testing(false);
+  brave_browser_view()->InvalidateLayout();
+  RunScheduledLayouts();
+
+  // Otherwise each pane is rounded, and the corners meeting the split divider
+  // use the smaller adjacent-edge radius rather than the window radius.
+  const float adjacent_edge_radius =
+      views::LayoutProvider::Get()->GetCornerRadiusMetric(
+          ExtendedShapeContextTokens::kRoundedCornersBorderRadius);
+  const auto start_radii =
+      start_contents_web_view->layer()->rounded_corner_radii();
+  const auto end_radii = end_contents_web_view->layer()->rounded_corner_radii();
+  EXPECT_FALSE(start_radii.IsEmpty());
+  EXPECT_FALSE(end_radii.IsEmpty());
+  EXPECT_EQ(adjacent_edge_radius, start_radii.upper_right());
+  EXPECT_EQ(adjacent_edge_radius, start_radii.lower_right());
+  EXPECT_EQ(adjacent_edge_radius, end_radii.upper_left());
+  EXPECT_EQ(adjacent_edge_radius, end_radii.lower_left());
+
+  // Check borders. The new split tab is the active one.
+  using OutlineStyle = BraveContentsContainerOutline::Style;
+  auto outline_style = [](BraveContentsContainerView* container) {
+    return views::AsViewClass<BraveContentsContainerOutline>(
+               container->contents_outline_view())
+        ->style_for_testing();
+  };
+  EXPECT_EQ(OutlineStyle::kSplitInactive,
+            outline_style(start_contents_container_view));
+  EXPECT_EQ(OutlineStyle::kSplitActive,
+            outline_style(end_contents_container_view));
+
+  // Both panes reserve the same inset although the inactive one strokes
+  // thinner, so that activating a pane doesn't shift its contents.
+  EXPECT_EQ(gfx::Insets(BraveContentsContainerOutline::kSplitBorderThickness),
             start_contents_container_view->GetBorder()->GetInsets());
-  EXPECT_EQ(gfx::Insets(BraveContentsContainerView::kBorderThickness),
+  EXPECT_EQ(gfx::Insets(BraveContentsContainerOutline::kSplitBorderThickness),
             end_contents_container_view->GetBorder()->GetInsets());
+  EXPECT_LT(BraveContentsContainerOutline::GetStrokeThickness(
+                OutlineStyle::kSplitInactive),
+            BraveContentsContainerOutline::GetBorderThickness(
+                OutlineStyle::kSplitInactive));
+
+  // The outline clips the mini toolbar to the ring it strokes, so that no
+  // sliver of web contents can surface along the seam between the two.
+  EXPECT_FALSE(
+      start_contents_container_view->mini_toolbar()->clip_path().isEmpty());
+  EXPECT_FALSE(
+      end_contents_container_view->mini_toolbar()->clip_path().isEmpty());
 
   // Tolerate a 1px rounding asymmetry: GetViewSizes uses std::round(0.5 *
   // (available_size - resize_width)), which gives one side an extra pixel
@@ -428,6 +494,34 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, BraveMultiContentsViewTest) {
     return std::abs(start_contents_web_view->width() -
                     end_contents_web_view->width()) <= 1;
   }));
+}
+
+// The resize area's preferred size is recomputed by upstream on every layout
+// change, so check that the divider keeps Brave's thickness across a
+// side-by-side -> stacked -> side-by-side round trip.
+IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, ResizeAreaSizeAfterLayoutChange) {
+  NewSplitTab();
+  RunScheduledLayouts();
+
+  EXPECT_EQ(kRoundedCornersContentsViewMargin,
+            split_view_separator()->GetPreferredSize().width());
+
+  auto* tab_strip_model = browser()->tab_strip_model();
+  auto split_id =
+      tab_strip_model->GetSplitForTab(tab_strip_model->active_index());
+  ASSERT_TRUE(split_id);
+
+  tab_strip_model->UpdateSplitLayout(*split_id,
+                                     split_tabs::SplitTabLayout::kStacked);
+  RunScheduledLayouts();
+  EXPECT_EQ(kRoundedCornersContentsViewMargin,
+            split_view_separator()->GetPreferredSize().height());
+
+  tab_strip_model->UpdateSplitLayout(*split_id,
+                                     split_tabs::SplitTabLayout::kSideBySide);
+  RunScheduledLayouts();
+  EXPECT_EQ(kRoundedCornersContentsViewMargin,
+            split_view_separator()->GetPreferredSize().width());
 }
 
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SelectTabTest) {
@@ -565,23 +659,35 @@ IN_PROC_BROWSER_TEST_F(SplitViewWithRoundedCornersTest, ContentsOutlineTest) {
            gfx::Insets(kRoundedCornersContentsOutlineThickness);
   };
 
+  // The insets only report what a style reserves, so also check whether the
+  // outline view is actually drawn.
+  auto outline_drawn = [](BrowserView* browser_view) {
+    return BraveContentsContainerView::From(
+               browser_view->GetActiveContentsContainerView())
+        ->contents_outline_view()
+        ->GetVisible();
+  };
+
   // Outline if split tab is not active.
   RunScheduledLayouts();
   EXPECT_TRUE(has_contents_outline(brave_browser_view()));
+  EXPECT_TRUE(outline_drawn(brave_browser_view()));
 
   chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
                       split_tabs::SplitTabCreatedSource::kToolbarButton);
 
   auto* tab_strip_model = browser()->tab_strip_model();
 
-  // No outline if split tab is active.
+  // Split border instead of the subtle outline if split tab is active.
   EXPECT_TRUE(IsActiveTabSplit(tab_strip_model));
   EXPECT_FALSE(has_contents_outline(brave_browser_view()));
+  EXPECT_TRUE(outline_drawn(brave_browser_view()));
 
   // Outline if split tab is not active.
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
   EXPECT_FALSE(IsActiveTabSplit(tab_strip_model));
   EXPECT_TRUE(has_contents_outline(brave_browser_view()));
+  EXPECT_TRUE(outline_drawn(brave_browser_view()));
 
   // Turn off the rounded corners.
   browser()->GetProfile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners,
@@ -590,9 +696,14 @@ IN_PROC_BROWSER_TEST_F(SplitViewWithRoundedCornersTest, ContentsOutlineTest) {
   // Outline should be gone.
   RunScheduledLayouts();
   EXPECT_FALSE(has_contents_outline(brave_browser_view()));
+  EXPECT_FALSE(outline_drawn(brave_browser_view()));
+
+  // Split view turns the rounded corners back on regardless of the pref, so
+  // the split border is unaffected.
   browser()->tab_strip_model()->ActivateTabAt(0);
   EXPECT_TRUE(IsActiveTabSplit(tab_strip_model));
   EXPECT_FALSE(has_contents_outline(brave_browser_view()));
+  EXPECT_TRUE(outline_drawn(brave_browser_view()));
 
   // Turn on the rounded corners.
   browser()->GetProfile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, true);
@@ -618,10 +729,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewWithRoundedCornersTest,
       contents_view->layer()->rounded_corner_radii();
   EXPECT_FALSE(border_radius.IsEmpty());
 
-  FullscreenController* fullscreen_controller = browser()
-                                                    ->GetFeatures()
-                                                    .exclusive_access_manager()
-                                                    ->fullscreen_controller();
+  FullscreenController* fullscreen_controller =
+      ExclusiveAccessManager::From(browser())->fullscreen_controller();
 
   // Check rounded corners are cleared in tab fullscreen.
   fullscreen_controller->set_is_tab_fullscreen_for_testing(true);
@@ -663,7 +772,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewWithRoundedCornersTest,
       std::make_optional<ui_test_utils::BrowserCreatedObserver>();
 
   chrome::MoveTabsToNewWindow(browser(), split_indices);
-  Browser* new_browser = browser_created_observer->Wait();
+  BrowserWindowInterface* new_browser = browser_created_observer->Wait();
 
   ASSERT_TRUE(new_browser);
   EXPECT_FALSE(tab_strip_model->ContainsSplit(*split_id));
@@ -776,7 +885,9 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, BookmarksBarVisibilityTest) {
   NewSplitTab();
 
   // Check no bookmarks when any split tab is activated.
-  brave::SetBookmarkState(brave::BookmarkBarState::kNever, prefs);
+  prefs->SetInteger(
+      bookmarks::prefs::kBookmarkBarVisibilityState,
+      static_cast<int>(bookmarks::BookmarkBarVisibilityState::kAlwaysHide));
   ASSERT_TRUE(IsSplitWebContents(GetWebContentsAt(0)));
   ASSERT_TRUE(IsSplitWebContents(GetWebContentsAt(1)));
 
@@ -794,7 +905,10 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, BookmarksBarVisibilityTest) {
 
   // With SideBySide, bookmarks bar is shown always if one of split tab is NTP.
   // Otherwise, it's shown only when active split tab is NTP.
-  brave::SetBookmarkState(brave::BookmarkBarState::kNtp, prefs);
+  prefs->SetInteger(
+      bookmarks::prefs::kBookmarkBarVisibilityState,
+      static_cast<int>(bookmarks::BookmarkBarVisibilityState::kOnlyShowOnNtp));
+
   EXPECT_EQ(BookmarkBar::SHOW,
             BookmarkBarController::From(browser())->bookmark_bar_state());
   tab_strip_model->ActivateTabAt(1);
@@ -802,7 +916,9 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, BookmarksBarVisibilityTest) {
             BookmarkBarController::From(browser())->bookmark_bar_state());
 
   // Check bookmarks is shown always.
-  brave::SetBookmarkState(brave::BookmarkBarState::kAlways, prefs);
+  prefs->SetInteger(
+      bookmarks::prefs::kBookmarkBarVisibilityState,
+      static_cast<int>(bookmarks::BookmarkBarVisibilityState::kAlwaysShow));
   EXPECT_EQ(BookmarkBar::SHOW,
             BookmarkBarController::From(browser())->bookmark_bar_state());
   tab_strip_model->ActivateTabAt(0);
@@ -918,7 +1034,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewReloadTest) {
     LoadObserver observer_0(GetWebContentsAt(0));
     LoadObserver observer_1(GetWebContentsAt(1));
 
-    chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+    chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
     content::WaitForLoadStop(GetWebContentsAt(0));
     content::WaitForLoadStop(GetWebContentsAt(1));
 
@@ -939,7 +1055,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewReloadTest) {
     LoadObserver observer_1(GetWebContentsAt(1));
     LoadObserver observer_2(GetWebContentsAt(2));
 
-    chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+    chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
     content::WaitForLoadStop(GetWebContentsAt(0));
     content::WaitForLoadStop(GetWebContentsAt(1));
     content::WaitForLoadStop(GetWebContentsAt(2));
@@ -956,7 +1072,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewReloadTest) {
     LoadObserver observer_1(GetWebContentsAt(1));
     LoadObserver observer_2(GetWebContentsAt(2));
 
-    chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+    chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
     content::WaitForLoadStop(GetWebContentsAt(0));
     content::WaitForLoadStop(GetWebContentsAt(1));
     content::WaitForLoadStop(GetWebContentsAt(2));
@@ -975,7 +1091,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewReloadTest) {
     LoadObserver observer_1(GetWebContentsAt(1));
     LoadObserver observer_2(GetWebContentsAt(2));
 
-    chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+    chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
     content::WaitForLoadStop(GetWebContentsAt(0));
     content::WaitForLoadStop(GetWebContentsAt(1));
     content::WaitForLoadStop(GetWebContentsAt(2));
@@ -1042,6 +1158,12 @@ class SplitViewLinkTest : public SplitViewBrowserTest {
     embedded_test_server()->RegisterRequestHandler(base::BindRepeating(
         &SplitViewLinkTest::HandleRequest, base::Unretained(this)));
     ASSERT_TRUE(embedded_test_server()->Start());
+
+    // Sec-Fetch-* headers are only sent to potentially trustworthy URLs, so
+    // tests asserting on them need HTTPS.
+    embedded_https_test_server().RegisterRequestHandler(base::BindRepeating(
+        &SplitViewLinkTest::HandleRequest, base::Unretained(this)));
+    ASSERT_TRUE(embedded_https_test_server().Start());
   }
 
   std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
@@ -1059,6 +1181,10 @@ class SplitViewLinkTest : public SplitViewBrowserTest {
       response->set_code(net::HTTP_OK);
       response->set_content_type("text/html");
       response->set_content(kTargetPage);
+    } else if (request.relative_url == "/echo-request.html") {
+      response->set_code(net::HTTP_OK);
+      response->set_content_type("text/html");
+      response->set_content(BuildEchoRequestPage(request));
     } else {
       return nullptr;
     }
@@ -1096,6 +1222,51 @@ class SplitViewLinkTest : public SplitViewBrowserTest {
 
   GURL GetTargetPageURL() {
     return embedded_test_server()->GetURL("example.com", "/target.html");
+  }
+
+  // The default HTTPS test server certificate covers example.com, foo.com,
+  // bar.com and a/b/c.com, so |host| must be one of those.
+  GURL GetSecureLinkTestPageURL(std::string_view host) {
+    return embedded_https_test_server().GetURL(std::string(host),
+                                               "/link-test.html");
+  }
+
+  GURL GetSecureEchoRequestURL(std::string_view host) {
+    return embedded_https_test_server().GetURL(std::string(host),
+                                               "/echo-request.html");
+  }
+
+  void SetSameSiteCookies(const GURL& url) {
+    ASSERT_TRUE(content::SetCookie(browser()->GetProfile(), url,
+                                   "strict=1; SameSite=Strict; Path=/"));
+    ASSERT_TRUE(content::SetCookie(browser()->GetProfile(), url,
+                                   "lax=1; SameSite=Lax; Path=/"));
+  }
+
+  // Clicks a freshly inserted link to |url|. ExecJs supplies a user gesture, so
+  // this exercises the same code path as a real click.
+  void ClickLinkTo(content::WebContents* contents,
+                   const GURL& url,
+                   bool target_blank) {
+    constexpr char kScript[] = R"(
+      const a = document.createElement('a');
+      a.href = $1;
+      if ($2) {
+        a.target = '_blank';
+      }
+      a.textContent = 'link';
+      document.body.appendChild(a);
+      a.click();
+    )";
+    ASSERT_TRUE(content::ExecJs(
+        contents, content::JsReplace(kScript, url, target_blank)));
+  }
+
+  std::string GetEchoedHeader(content::WebContents* contents,
+                              std::string_view element_id) {
+    const std::string script = content::JsReplace(
+        "document.getElementById($1).textContent", element_id);
+    return content::EvalJs(contents, script).ExtractString();
   }
 
   content::WebContents* GetLeftPaneContents() {
@@ -1565,7 +1736,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest, WindowOpenVariationsWhenRedirected) {
     ASSERT_TRUE(content::ExecJs(left_pane, "windowOpenWithFeatures();"));
 
     // Wait for new browser window (popup) to be created
-    Browser* popup_browser = browser_created_observer.Wait();
+    BrowserWindowInterface* popup_browser = browser_created_observer.Wait();
     ASSERT_TRUE(popup_browser);
 
     // Verify a popup window was created
@@ -1705,6 +1876,93 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
            "on "
            "existing WebContents.";
   }
+}
+
+// Redirecting a link to the right pane must not launder the navigation into a
+// browser-initiated one. Otherwise SameSite=Strict cookies would be sent for a
+// cross-site link and Sec-Fetch-Site would be "none", which would make linked
+// split view a CSRF bypass.
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest, CrossSiteLinkRedirectKeepsInitiator) {
+  NewSplitTab();
+  SetSplitViewLinked(true);
+  ASSERT_TRUE(IsSplitViewLinked());
+
+  const GURL echo_url = GetSecureEchoRequestURL("b.com");
+  SetSameSiteCookies(echo_url);
+
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane,
+                                     GetSecureLinkTestPageURL("example.com")));
+
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+  content::TestNavigationObserver right_pane_observer(right_pane);
+  ClickLinkTo(left_pane, echo_url, /*target_blank=*/false);
+  right_pane_observer.Wait();
+
+  ASSERT_EQ(echo_url, right_pane->GetLastCommittedURL());
+  const std::string cookies = GetEchoedHeader(right_pane, "cookie");
+  EXPECT_THAT(cookies, testing::Not(testing::HasSubstr("strict=1")));
+  EXPECT_THAT(cookies, testing::HasSubstr("lax=1"));
+  EXPECT_EQ("cross-site", GetEchoedHeader(right_pane, "sec-fetch-site"));
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       CrossSiteTargetBlankLinkRedirectKeepsInitiator) {
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  SetSplitViewLinked(true);
+  ASSERT_TRUE(IsSplitViewLinked());
+
+  const GURL echo_url = GetSecureEchoRequestURL("b.com");
+  SetSameSiteCookies(echo_url);
+
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane,
+                                     GetSecureLinkTestPageURL("example.com")));
+
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+  content::TestNavigationObserver right_pane_observer(right_pane);
+  ClickLinkTo(left_pane, echo_url, /*target_blank=*/true);
+  right_pane_observer.Wait();
+
+  ASSERT_EQ(echo_url, right_pane->GetLastCommittedURL());
+  EXPECT_EQ(2, tab_strip_model->count());
+  const std::string cookies = GetEchoedHeader(right_pane, "cookie");
+  EXPECT_THAT(cookies, testing::Not(testing::HasSubstr("strict=1")));
+  EXPECT_THAT(cookies, testing::HasSubstr("lax=1"));
+  EXPECT_EQ("cross-site", GetEchoedHeader(right_pane, "sec-fetch-site"));
+}
+
+// The reverse direction: a same-origin link must still send Strict cookies.
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       SameOriginLinkRedirectStillSendsStrictCookies) {
+  NewSplitTab();
+  SetSplitViewLinked(true);
+  ASSERT_TRUE(IsSplitViewLinked());
+
+  const GURL echo_url = GetSecureEchoRequestURL("example.com");
+  SetSameSiteCookies(echo_url);
+
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane,
+                                     GetSecureLinkTestPageURL("example.com")));
+
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+  content::TestNavigationObserver right_pane_observer(right_pane);
+  ClickLinkTo(left_pane, echo_url, /*target_blank=*/false);
+  right_pane_observer.Wait();
+
+  ASSERT_EQ(echo_url, right_pane->GetLastCommittedURL());
+  const std::string cookies = GetEchoedHeader(right_pane, "cookie");
+  EXPECT_THAT(cookies, testing::HasSubstr("strict=1"));
+  EXPECT_THAT(cookies, testing::HasSubstr("lax=1"));
+  EXPECT_EQ("same-origin", GetEchoedHeader(right_pane, "sec-fetch-site"));
 }
 
 // Test class for testing that split view link feature can be disabled

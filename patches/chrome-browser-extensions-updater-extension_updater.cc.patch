@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/extensions/updater/extension_updater.cc b/chrome/browser/extensions/updater/extension_updater.cc
-index b538f65c4a375b267e73948bf6cb228f84bf83c5..e1782fb51ea00ac46ad8ad5018b8fda6f4e1c8a3 100644
+index fd6684c9250831d33fbae85a3473255a83b9bbb8..b8a378d8898119efb29a69ca924b86b6baae0b53 100644
 --- a/chrome/browser/extensions/updater/extension_updater.cc
 +++ b/chrome/browser/extensions/updater/extension_updater.cc
 @@ -231,7 +231,8 @@ void ExtensionUpdater::Start() {
-   DCHECK(registry_);
+   CHECK(registry_, base::NotFatalUntil::M161);
    alive_ = true;
    // Check soon, and set up the first delayed check.
 -  if (!g_skip_scheduled_checks_for_tests) {

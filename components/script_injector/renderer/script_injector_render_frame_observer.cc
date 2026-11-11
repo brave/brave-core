@@ -10,6 +10,7 @@
 
 #include "content/public/renderer/render_frame.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
+#include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
 
@@ -71,7 +72,7 @@ void ScriptInjectorRenderFrameObserver::RequestAsyncExecuteScript(
           },
           std::move(callback), want_result),
       blink::BackForwardCacheAware::kAllow, want_result, await_promise,
-      /*is_injected_extension_script=*/false);
+      /*script_injector_id=*/blink::WebString());
 }
 
 }  // namespace script_injector

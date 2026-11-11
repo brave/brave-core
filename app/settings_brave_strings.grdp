@@ -201,7 +201,7 @@
     Warns you about dangerous sites, even ones Brave didn't know about before, by analyzing more data from sites than standard protection. You can choose to skip Brave warnings.
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENHANCED_LEARN_MORE_LABEL" desc="The text for a link to a help center article that gives more information about Safe Browsing.">
-    Learn more about <ph name="BEGIN_LINK">&lt;a href="#" id="enhancedProtectionLearnMoreLink" on-click="onEnhancedProtectionLearnMoreClick_"&gt;</ph>how Brave keeps your data private<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+    Learn more about <ph name="BEGIN_LINK">&lt;a href="#" id="enhancedProtectionLearnMoreLink"&gt;</ph>how Brave keeps your data private<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
   </message>
   <message name="IDS_SETTINGS_SECURE_DNS_DESCRIPTION" desc="Secondary, continued explanation of secure DNS in Privacy options">
     Make it harder for people with access to your internet traffic to see which sites you visit. Brave uses a secure connection to look up a site's IP address in the DNS (Domain Name System).
@@ -331,6 +331,14 @@
     <message name="IDS_SETTINGS_SYSTEM_BACKGROUND_APPS_LABEL" desc="Label for the checkbox to allow apps to run in the background, when Brave is closed.">
       Continue running background apps when Brave is closed
     </message>
+    <if expr="is_win">
+      <message name="IDS_SETTINGS_SYSTEM_ISOLATION_STATE_LABEL" desc="Label for the Enable process isolation toggle.">
+        Isolate Brave from other apps
+      </message>
+      <message name="IDS_SETTINGS_SYSTEM_ISOLATION_STATE_SUBLABEL" desc="Sublabel for the Enable process isolation toggle.">
+        Protects Brave's memory from other applications on your computer.
+      </message>
+    </if>
   </if>
 
   <!-- Reset Page -->
@@ -400,20 +408,6 @@
   </message>
   <message name="IDS_SETTINGS_SAFETY_HUB_ABUSIVE_NOTIFICATION_PERMISSIONS_SETTING_SUBLABEL" desc="'Revoked Permissions' module shows the revoked permissions of websites. This text describes that abusive notification permissions were removed.">
     Dangerous site. Brave removed notifications.
-  </message>
-
-  <!-- Bundled Security Settings (chrome://settings/security) -->
-  <message name="IDS_SETTINGS_SECURITY_PASSWORDS_LEAK_DETECTION_DESC" desc="Text that briefly describes the 'Password Leak Detection' feature.">
-    Get warned if Brave finds one of your passwords in a public data breach
-  </message>
-  <message name="IDS_SETTINGS_SECURITY_SAFE_BROWSING_STANDARD_HOW_IT_WORKS_CONTENT" desc="Content of the Safe Browsing standard protection column describing how it works">
-    When you visit a site, Brave sends an obfuscated portion of the URL to <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://safebrowsing.google.com/"&gt;</ph>Google Safe Browsing<ph name="END_LINK">&lt;/a&gt;</ph> through a privacy server that hides your IP address. If a site does something suspicious, full URLs and bits of page content are also sent.
-  </message>
-  <message name="IDS_SETTINGS_SECURITY_JAVASCRIPT_GUARDRAILS_UNRECOGNIZED_SITES_DESCRIPTION" desc="Description of JavaScript Guardrails unrecognized sites option.">
-    Enhanced protection turns off JavaScript optimization for sites Brave doesn’t recognize
-  </message>
-  <message name="IDS_SETTINGS_SECURITY_BUNDLE_ENHANCED_BULLET_ONE" desc="First bullet point under the security settings enhanced bundle section">
-    Turns on additional features to provide Brave’s strongest protections
   </message>
 
   <!-- Secure connections -->

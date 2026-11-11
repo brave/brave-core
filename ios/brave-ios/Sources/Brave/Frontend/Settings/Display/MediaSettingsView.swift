@@ -111,16 +111,16 @@ struct MediaSettingsView: View {
       for filterList in newValue {
         switch filterList.entry.componentId {
         case AdblockFilterListCatalogEntry.youtubeDistractingElementsComponentID:
-          if filterList.isEnabled != self.youtubeDistractingElementsBlocking {
-            self.youtubeDistractingElementsBlocking = filterList.isEnabled
+          if filterList.isEnabledOrDefault != self.youtubeDistractingElementsBlocking {
+            self.youtubeDistractingElementsBlocking = filterList.isEnabledOrDefault
           }
         case AdblockFilterListCatalogEntry.youtubeMobileRecommendationsComponentID:
-          if filterList.isEnabled != self.youtubeRecommendationsBlocking {
-            self.youtubeRecommendationsBlocking = filterList.isEnabled
+          if filterList.isEnabledOrDefault != self.youtubeRecommendationsBlocking {
+            self.youtubeRecommendationsBlocking = filterList.isEnabledOrDefault
           }
         case AdblockFilterListCatalogEntry.youtubeShortsComponentID:
-          if filterList.isEnabled != self.youtubeShortsBlocking {
-            self.youtubeShortsBlocking = filterList.isEnabled
+          if filterList.isEnabledOrDefault != self.youtubeShortsBlocking {
+            self.youtubeShortsBlocking = filterList.isEnabledOrDefault
           }
         default:
           continue

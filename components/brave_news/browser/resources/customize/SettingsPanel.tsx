@@ -8,7 +8,7 @@ import {
   effect,
   radius,
   spacing,
-} from '@brave/leo/tokens/css/variables'
+} from '@brave/nala/tokens/css/variables'
 import * as React from 'react'
 import styled from 'styled-components'
 

@@ -254,10 +254,9 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
   }
 
   void SetUp() override {
-    scoped_feature_list_.InitWithFeaturesAndParameters(
-        {{features::kBraveWalletAnkrBalancesFeature, {}},
-         {features::kBraveWalletPolkadotFeature,
-          {{"polkadot_asset_discovery", "true"}}}},
+    scoped_feature_list_.InitWithFeatures(
+        {features::kBraveWalletAnkrBalancesFeature,
+         features::kBraveWalletPolkadotFeature},
         {});
 
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
@@ -1501,20 +1500,20 @@ TEST_F(AssetDiscoveryTaskUnitTest, DiscoverPolkadotAssets) {
 }
 
 TEST_F(AssetDiscoveryTaskUnitTest, DiscoverPolkadotAssetsFeatureDisabled) {
-  base::test::ScopedFeatureList disabled_feature;
-  disabled_feature.InitAndEnableFeatureWithParameters(
-      features::kBraveWalletPolkadotFeature,
-      {{"polkadot_asset_discovery", "false"}});
-
+  // User creates Polkadot accounts, then manually disables the feature. We
+  // should see no network requests when the feature is disabled.
   SetUpPolkadotAccounts();
   SetPolkadotTokenRegistry(
       {{mojom::kPolkadotPaseoAssetHub, {kPaseoBatcAssetId}}});
+
+  base::test::ScopedFeatureList disabled_feature;
+  disabled_feature.InitAndDisableFeature(features::kBraveWalletPolkadotFeature);
+
   url_loader_factory_.SetInterceptor(
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
         ADD_FAILURE() << "Unexpected request to " << request.url;
       }));
 
-  // Discovery still completes, it just skips the Polkadot leg entirely.
   std::vector<mojom::AccountIdPtr> accounts;
   accounts.push_back(dot_testnet_account_.Clone());
   TestDiscoverAssets(

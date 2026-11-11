@@ -105,19 +105,21 @@ struct OtherPrivacySettingsSectionView: View {
               Text(Strings.OKString),
               action: {
                 Task { @MainActor in
-                  try await Task.sleep(nanoseconds: NSEC_PER_MSEC * 100)
+                  do {
+                    try await Task.sleep(nanoseconds: NSEC_PER_MSEC * 100)
 
-                  Preferences.Privacy.persistentPrivateBrowsing.value = false
-                  await settings.clearPrivateData([CookiesAndCacheClearable()])
+                    Preferences.Privacy.persistentPrivateBrowsing.value = false
+                    await settings.clearPrivateData([CookiesAndCacheClearable()])
 
-                  // First remove all tabs so that only a blank tab exists.
-                  settings.tabManager.removeAll()
+                    // First remove all tabs so that only a blank tab exists.
+                    settings.tabManager.removeAll()
 
-                  // Reset tab configurations and delete all webviews..
-                  settings.tabManager.reset()
+                    // Reset tab configurations and delete all webviews..
+                    settings.tabManager.reset()
 
-                  // Restore all existing tabs by removing the blank tabs and recreating new ones..
-                  settings.tabManager.removeAll()
+                    // Restore all existing tabs by removing the blank tabs and recreating new ones..
+                    settings.tabManager.removeAll()
+                  } catch {}
                 }
               }
             ),
@@ -183,23 +185,11 @@ struct OtherPrivacySettingsSectionView: View {
       if settings.isSponsoredAdsSupported {
         ToggleView(
           title: Strings.Settings.sponsoredAdsEnabledTitle,
-          subtitle: Strings.Settings.sponsoredAdsEnabledDescription,
-          toggle: Binding(
-            get: { Preferences.NewTabPage.backgroundMediaType.isSponsored },
-            set: {
-              Preferences.NewTabPage.backgroundMediaType = $0 ? .sponsoredImages : .defaultImages
-            }
-          )
-        )
-      }
-      if FeatureList.kBraveNTPBrandedWallpaperSurveyPanelist.enabled {
-        ToggleView(
-          title: Strings.Settings.surveyPanelistTitle,
           subtitle: String.localizedStringWithFormat(
-            Strings.Settings.surveyPanelistDescription,
-            URL.brave.surveyPanelistLearnMoreLinkUrl.absoluteString
+            Strings.Settings.sponsoredAdsEnabledDescription,
+            URL.brave.sponsoredAdsLearnMoreLinkUrl.absoluteString
           ),
-          toggle: $settings.isSurveyPanelistEnabled
+          toggle: $settings.isSponsoredAdsEnabled
         )
       }
     } header: {

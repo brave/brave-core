@@ -14,24 +14,25 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/resource_coordinator/lifecycle_unit_state.mojom.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_external.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_source.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
-#include "chrome/browser/ui/views/page_action/test_support/page_action_test_support.h"
+#include "chrome/browser/ui/views/page_action/page_action_view.h"
+#include "chrome/browser/ui/views/page_action/test_support/page_action_test_accessor.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/download_manager.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
+#include "content/public/test/test_utils.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "ui/events/base_event_utils.h"
-#include "ui/events/event.h"
-#include "ui/gfx/geometry/point.h"
-#include "ui/views/test/button_test_api.h"
 
 namespace {
 
@@ -123,25 +124,19 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
     return test_http_server_.get();
   }
 
-  IconLabelBubbleView* GetOnionLocationView(Browser* browser) {
-    BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
-    if (!browser_view) {
-      return nullptr;
-    }
-    auto* provider = browser_view->toolbar_button_provider();
-    return page_actions::GetIconLabelBubbleViewForTesting(
-        provider->GetPageActionViewInterface(kActionShowOnionLocation),
-        kActionShowOnionLocation);
+  page_actions::PageActionTestAccessor GetOnionLocationView(
+      BrowserWindowInterface* browser) {
+    return page_actions::PageActionTestAccessor(browser,
+                                                kActionShowOnionLocation);
   }
 
-  void CheckOnionLocationLabel(Browser* browser,
+  void CheckOnionLocationLabel(BrowserWindowInterface* browser,
                                const GURL& url,
                                bool wait_for_tor_window = true) {
     bool is_tor = browser->GetProfile()->IsTor();
-    auto* onion_location_view = GetOnionLocationView(browser);
-    ASSERT_TRUE(onion_location_view);
-    EXPECT_TRUE(onion_location_view->GetVisible());
-    EXPECT_TRUE(onion_location_view->GetTooltipText().starts_with(
+    auto onion_location_view = GetOnionLocationView(browser);
+    EXPECT_TRUE(onion_location_view.GetVisible());
+    EXPECT_TRUE(onion_location_view.GetTooltipText().starts_with(
         l10n_util::GetStringFUTF16(
             is_tor ? IDS_LOCATION_BAR_ONION_AVAILABLE_TOOLTIP_TEXT
                    : IDS_LOCATION_BAR_OPEN_IN_TOR_TOOLTIP_TEXT,
@@ -152,23 +147,16 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
     content::TestNavigationObserver navigation_observer(
         url, content::MessageLoopRunner::QuitMode::IMMEDIATE, false);
     navigation_observer.StartWatchingNewWebContents();
-    ui::MouseEvent pressed(ui::EventType::kMousePressed, gfx::Point(),
-                           gfx::Point(), ui::EventTimeForNow(),
-                           ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON);
-    ui::MouseEvent released(ui::EventType::kMouseReleased, gfx::Point(),
-                            gfx::Point(), ui::EventTimeForNow(),
-                            ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON);
-    views::test::ButtonTestApi(onion_location_view).NotifyClick(pressed);
-    views::test::ButtonTestApi(onion_location_view).NotifyClick(released);
+    onion_location_view.Click();
     if (wait_for_tor_window) {
       browser_creation_observer.Wait();
     }
     ASSERT_EQ(2U, GlobalBrowserCollection::GetInstance()->GetSize());
-    Browser* tor_browser = nullptr;
+    BrowserWindowInterface* tor_browser = nullptr;
     GlobalBrowserCollection::GetInstance()->ForEach(
         [&tor_browser](BrowserWindowInterface* a_browser) {
           if (a_browser->GetProfile()->IsTor()) {
-            tor_browser = a_browser->GetBrowserForMigrationOnly();
+            tor_browser = a_browser;
           }
           return !tor_browser;
         });
@@ -183,7 +171,7 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
     EXPECT_EQ(tor_browser->GetTabStripModel()->count(), is_tor ? 2 : 1);
   }
 
-  Browser* OpenTorWindow() {
+  BrowserWindowInterface* OpenTorWindow() {
     return TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
   }
 
@@ -208,8 +196,8 @@ IN_PROC_BROWSER_TEST_P(OnionLocationHeaderNavigationThrottleBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser, url1));
   content::WebContents* web_contents =
       browser->tab_strip_model()->GetActiveWebContents();
-  tor::OnionLocationTabHelper* helper =
-      tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  tor::OnionLocationTabHelper* helper = tor::OnionLocationTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   EXPECT_TRUE(helper->should_show_icon());
   EXPECT_EQ(helper->onion_location(), GURL(kTestOnionURL));
   CheckOnionLocationLabel(browser, GURL(kTestOnionURL), false);
@@ -217,12 +205,43 @@ IN_PROC_BROWSER_TEST_P(OnionLocationHeaderNavigationThrottleBrowserTest,
   GURL url2 = test_server()->GetURL("/no_onion");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser, url2));
   web_contents = browser->tab_strip_model()->GetActiveWebContents();
-  helper = tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  helper = tor::OnionLocationTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   EXPECT_FALSE(helper->should_show_icon());
   EXPECT_TRUE(helper->onion_location().is_empty());
-  auto* onion_location_view = GetOnionLocationView(browser);
-  ASSERT_TRUE(onion_location_view);
-  EXPECT_FALSE(onion_location_view->GetVisible());
+  auto onion_location_view = GetOnionLocationView(browser);
+  EXPECT_FALSE(onion_location_view.GetVisible());
+}
+
+// Discarding a tab replaces its contents, for which the tab's features build a
+// new tab helper that must pick up the reloaded page's Onion-Location.
+IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
+                       FollowsDiscardedContents) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), test_server()->GetURL(kTestOnionPath),
+      WindowOpenDisposition::kNewBackgroundTab,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  TabStripModel* const tab_strip_model = browser()->tab_strip_model();
+  const int index = tab_strip_model->count() - 1;
+  tabs::TabInterface* const tab = tab_strip_model->GetTabAtIndex(index);
+  ASSERT_TRUE(tor::OnionLocationTabHelper::From(tab)->should_show_icon());
+
+  auto* const lifecycle_unit =
+      resource_coordinator::TabLifecycleUnitSource::GetTabLifecycleUnitExternal(
+          tab->GetContents());
+  ASSERT_TRUE(lifecycle_unit);
+  ASSERT_TRUE(
+      lifecycle_unit->DiscardTab(::mojom::LifecycleUnitDiscardReason::URGENT));
+  ASSERT_TRUE(tor::OnionLocationTabHelper::From(tab));
+  EXPECT_FALSE(tor::OnionLocationTabHelper::From(tab)->should_show_icon());
+
+  content::TestNavigationObserver navigation_observer(tab->GetContents());
+  tab_strip_model->ActivateTabAt(index);
+  tab->GetContents()->GetController().LoadIfNecessary();
+  navigation_observer.Wait();
+  EXPECT_TRUE(tor::OnionLocationTabHelper::From(tab)->should_show_icon());
+  EXPECT_EQ(tor::OnionLocationTabHelper::From(tab)->onion_location(),
+            GURL(kTestOnionURL));
 }
 
 IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
@@ -234,15 +253,16 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   nav_observer.Wait();
   // Original request was blocked
   EXPECT_EQ(nav_observer.last_net_error_code(), net::ERR_BLOCKED_BY_CLIENT);
-  tor::OnionLocationTabHelper* helper =
-      tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  tor::OnionLocationTabHelper* helper = tor::OnionLocationTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   EXPECT_TRUE(helper->should_show_icon());
   EXPECT_EQ(helper->onion_location(), GURL(kTestOnionURL));
   CheckOnionLocationLabel(browser(), GURL(kTestOnionURL));
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kTestNotOnionURL)));
   web_contents = browser()->tab_strip_model()->GetActiveWebContents();
-  helper = tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  helper = tor::OnionLocationTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   EXPECT_FALSE(helper->should_show_icon());
   EXPECT_TRUE(helper->onion_location().is_empty());
 }
@@ -252,7 +272,8 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   auto* tor_browser = OpenTorWindow();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(tor_browser, GURL(kTestOnionURL)));
   auto* web_contents = tor_browser->tab_strip_model()->GetActiveWebContents();
-  auto* helper = tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  auto* helper = tor::OnionLocationTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   EXPECT_FALSE(helper->should_show_icon());
   EXPECT_TRUE(helper->onion_location().is_empty());
 }
@@ -267,17 +288,89 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  tor::OnionLocationTabHelper* helper =
-      tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  tor::OnionLocationTabHelper* helper = tor::OnionLocationTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   EXPECT_FALSE(helper->should_show_icon());
   EXPECT_TRUE(helper->onion_location().is_empty());
 
   // Onion Domain
+  content::TestNavigationObserver nav_observer(web_contents);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kTestOnionURL)));
+  nav_observer.Wait();
+  EXPECT_EQ(nav_observer.last_net_error_code(), net::ERR_BLOCKED_BY_CLIENT);
+  EXPECT_FALSE(helper->should_show_icon());
   EXPECT_EQ(1U, GlobalBrowserCollection::GetInstance()->GetSize());
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(1U, GlobalBrowserCollection::GetInstance()->GetSize());
+}
+
+IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
+                       TorDisabledAfterOnionLocation) {
+  const GURL url = test_server()->GetURL(kTestOnionPath);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  tor::OnionLocationTabHelper* helper = tor::OnionLocationTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
+  ASSERT_TRUE(helper->should_show_icon());
+  ASSERT_TRUE(GetOnionLocationView(browser()).GetVisible());
+
+  TorProfileServiceFactory::SetTorDisabled(true);
+  EXPECT_FALSE(GetOnionLocationView(browser()).GetVisible());
+
+  // A page without Onion-Location.
+  content::RenderFrameHostWrapper onion_location_rfh(
+      web_contents->GetPrimaryMainFrame());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), test_server()->GetURL(kTestNotOnion)));
+  EXPECT_FALSE(helper->should_show_icon());
+  EXPECT_TRUE(helper->onion_location().is_empty());
+
+  // The page with Onion-Location, restored from the back/forward cache.
+  ASSERT_EQ(onion_location_rfh->GetLifecycleState(),
+            content::RenderFrameHost::LifecycleState::kInBackForwardCache);
+  ASSERT_TRUE(content::HistoryGoBack(web_contents));
+  ASSERT_EQ(onion_location_rfh.get(), web_contents->GetPrimaryMainFrame());
+  EXPECT_FALSE(GetOnionLocationView(browser()).GetVisible());
+
+  // A page with Onion-Location.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_FALSE(helper->should_show_icon());
+  EXPECT_TRUE(helper->onion_location().is_empty());
+
+  // A blocked .onion page.
+  content::TestNavigationObserver nav_observer(web_contents);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kTestOnionURL)));
+  nav_observer.Wait();
+  EXPECT_EQ(nav_observer.last_net_error_code(), net::ERR_BLOCKED_BY_CLIENT);
+  EXPECT_FALSE(helper->should_show_icon());
+  EXPECT_TRUE(helper->onion_location().is_empty());
+  EXPECT_FALSE(GetOnionLocationView(browser()).GetVisible());
+}
+
+IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
+                       GuestProfile) {
+  BrowserWindowInterface* guest_browser = CreateGuestBrowser();
+  ASSERT_TRUE(guest_browser);
+  ASSERT_TRUE(guest_browser->GetProfile()->IsGuestSession());
+  ASSERT_TRUE(
+      TorProfileServiceFactory::IsTorDisabled(guest_browser->GetProfile()));
+
+  content::WebContents* web_contents =
+      guest_browser->GetTabStripModel()->GetActiveWebContents();
+  tor::OnionLocationTabHelper* helper = tor::OnionLocationTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      guest_browser, test_server()->GetURL(kTestOnionPath)));
+  EXPECT_FALSE(helper->should_show_icon());
+
+  content::TestNavigationObserver nav_observer(web_contents);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(guest_browser, GURL(kTestOnionURL)));
+  nav_observer.Wait();
+  EXPECT_EQ(nav_observer.last_net_error_code(), net::ERR_BLOCKED_BY_CLIENT);
+  EXPECT_FALSE(helper->should_show_icon());
 }
 
 IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
@@ -286,8 +379,8 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  tor::OnionLocationTabHelper* helper =
-      tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  tor::OnionLocationTabHelper* helper = tor::OnionLocationTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   EXPECT_FALSE(helper->should_show_icon());
   EXPECT_TRUE(helper->onion_location().is_empty());
 
@@ -304,8 +397,8 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, NotOnion) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  tor::OnionLocationTabHelper* helper =
-      tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  tor::OnionLocationTabHelper* helper = tor::OnionLocationTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   EXPECT_FALSE(helper->should_show_icon());
   EXPECT_TRUE(helper->onion_location().is_empty());
 
@@ -322,8 +415,8 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, HTTPHost) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  tor::OnionLocationTabHelper* helper =
-      tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  tor::OnionLocationTabHelper* helper = tor::OnionLocationTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   EXPECT_FALSE(helper->should_show_icon());
   EXPECT_TRUE(helper->onion_location().is_empty());
 
@@ -346,13 +439,14 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, ErrorPage) {
 
   content::WebContents* web_contents =
       tor_browser->tab_strip_model()->GetActiveWebContents();
-  auto* helper = tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  auto* helper = tor::OnionLocationTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
 
   EXPECT_EQ(error_url, web_contents->GetLastCommittedURL());
   EXPECT_TRUE(web_contents->GetPrimaryMainFrame()->IsErrorDocument());
   EXPECT_FALSE(helper->should_show_icon());
   EXPECT_TRUE(helper->onion_location().is_empty());
-  EXPECT_FALSE(GetOnionLocationView(tor_browser)->GetVisible());
+  EXPECT_FALSE(GetOnionLocationView(tor_browser).GetVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, History) {
@@ -362,7 +456,8 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, History) {
     // Navigate to host without .onion
     const GURL url = test_server()->GetURL("/not_onion");
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    auto* helper = tor::OnionLocationTabHelper::FromWebContents(web_contents);
+    auto* helper = tor::OnionLocationTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(web_contents));
     EXPECT_FALSE(helper->should_show_icon());
     EXPECT_TRUE(helper->onion_location().is_empty());
   }
@@ -370,8 +465,8 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, History) {
     // Navigate to host with .onion
     const GURL url = test_server()->GetURL("/onion");
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    tor::OnionLocationTabHelper* helper =
-        tor::OnionLocationTabHelper::FromWebContents(web_contents);
+    tor::OnionLocationTabHelper* helper = tor::OnionLocationTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(web_contents));
     EXPECT_TRUE(helper->should_show_icon());
     EXPECT_EQ(helper->onion_location(), GURL(kTestOnionURL));
   }
@@ -379,23 +474,25 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, History) {
     // Go back. (not onion)
     web_contents->GetController().GoBack();
     content::WaitForLoadStop(web_contents);
-    auto* helper = tor::OnionLocationTabHelper::FromWebContents(web_contents);
+    auto* helper = tor::OnionLocationTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(web_contents));
     EXPECT_FALSE(helper->should_show_icon());
     EXPECT_TRUE(helper->onion_location().is_empty());
 
-    EXPECT_FALSE(GetOnionLocationView(browser())->GetVisible());
+    EXPECT_FALSE(GetOnionLocationView(browser()).GetVisible());
   }
   {
     // Go forward (onion).
     web_contents->GetController().GoForward();
     content::WaitForLoadStop(web_contents);
-    auto* helper = tor::OnionLocationTabHelper::FromWebContents(web_contents);
+    auto* helper = tor::OnionLocationTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(web_contents));
     ASSERT_TRUE(
         base::test::RunUntil([&]() { return helper->should_show_icon(); }));
     EXPECT_TRUE(helper->should_show_icon());
     EXPECT_EQ(helper->onion_location(), GURL(kTestOnionURL));
 
-    EXPECT_TRUE(GetOnionLocationView(browser())->GetVisible());
+    EXPECT_TRUE(GetOnionLocationView(browser()).GetVisible());
   }
 }
 
@@ -435,7 +532,8 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, Download) {
   download_manager->RemoveObserver(download_awaiter.get());
 
   // Onion location is not changed.
-  auto* helper = tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  auto* helper = tor::OnionLocationTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   EXPECT_TRUE(helper->should_show_icon());
   EXPECT_EQ(helper->onion_location(), GURL(kTestOnionURL));
 }
@@ -446,9 +544,9 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  tor::OnionLocationTabHelper* helper =
-      tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  tor::OnionLocationTabHelper* helper = tor::OnionLocationTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   EXPECT_FALSE(helper->should_show_icon());
   EXPECT_TRUE(helper->onion_location().is_empty());
-  EXPECT_FALSE(GetOnionLocationView(browser())->GetVisible());
+  EXPECT_FALSE(GetOnionLocationView(browser()).GetVisible());
 }

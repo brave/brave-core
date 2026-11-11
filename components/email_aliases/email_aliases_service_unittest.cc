@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/functional/bind.h"
-#include "base/functional/callback_helpers.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
@@ -20,14 +19,15 @@
 #include "base/test/test_future.h"
 #include "base/types/expected.h"
 #include "base/values.h"
-#include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/mock_brave_account_authentication.h"
+#include "brave/components/brave_account/mojom/get_service_token.mojom.h"
 #include "brave/components/brave_account/prefs.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/email_aliases/email_aliases_notes.h"
 #include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/pref_names.h"
 #include "brave/components/email_aliases/test_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/testing_pref_service.h"
@@ -45,11 +45,40 @@ namespace email_aliases {
 
 using ::testing::_;
 
+namespace {
+
+std::string MakeRefreshBody(const std::vector<std::string>& aliases,
+                            int max_aliases_count = mojom::kDefaultMaxAliases) {
+  base::ListValue aliases_list;
+  for (const auto& alias : aliases) {
+    aliases_list.Append(base::DictValue()
+                            .Set("email", "test@login.com")
+                            .Set("alias", alias)
+                            .Set("status", "active")
+                            .Set("created_at", "2025-01-01T00:00:00Z")
+                            .Set("last_used", ""));
+  }
+
+  base::DictValue info;
+  info.Set("max_aliases_count", max_aliases_count);
+
+  return base::DictValue()
+      .Set("result", std::move(aliases_list))
+      .Set("info", std::move(info))
+      .DebugString();
+}
+
+}  // namespace
+
 class AliasObserver : public mojom::EmailAliasesServiceObserver {
  public:
   void OnAliasesUpdated(mojom::AliasesUpdatePtr update) override {
     ++alias_updates;
     last_update_ = std::move(update);
+  }
+
+  void OnAliasesAccountUpdated(mojom::AliasesAccountUpdatePtr update) override {
+    last_account_update_ = std::move(update);
   }
 
   bool WaitForAliasUpdateCount(size_t count) {
@@ -66,14 +95,20 @@ class AliasObserver : public mojom::EmailAliasesServiceObserver {
 
   const mojom::AliasesUpdatePtr& last_update() const { return last_update_; }
 
+  const mojom::AliasesAccountUpdatePtr& last_account_update() const {
+    return last_account_update_;
+  }
+
   void ResetForTesting() {
     alias_updates = 0;
     last_update_.reset();
+    last_account_update_.reset();
   }
 
  private:
   size_t alias_updates = 0;
   mojom::AliasesUpdatePtr last_update_;
+  mojom::AliasesAccountUpdatePtr last_account_update_;
   mojo::Receiver<mojom::EmailAliasesServiceObserver> receiver{this};
 };
 
@@ -97,7 +132,8 @@ class EmailAliasesAPITest : public ::testing::Test {
     const GURL manage_url = test::GetEmailAliasesServiceURL();
     url_loader_factory_.AddResponse(
         manage_url.Resolve("?status=active").spec(),
-        refresh_body.value_or("{ \"result\": [] }"));
+        refresh_body.value_or(
+            R"({ "info": { "max_aliases_count": 5 }, "result": [] })"));
   }
 
   template <typename T, typename InvokeFn>
@@ -390,13 +426,15 @@ TEST_F(EmailAliasesAPITest, RefreshAliases_Notifies_OnValidResponse) {
       alias_email,
       /*put_body=*/R"({"message":"updated"})",
       /*refresh_body=*/
-      std::string(
-          "{ \"result\":[{\"email\":\"dest@example.com\",\"alias\":\"") +
+      std::string("{ \"info\":{\"max_aliases_count\":17}, "
+                  "\"result\":[{\"email\":\"dest@example.com\",\"alias\":\"") +
           alias_email +
           "\",\"created_at\":\"2025-01-01T00:00:00Z\",\"last_used\":\"\","
           "\"status\":\"active\"}] }",
       "note");
   ASSERT_TRUE(result_out.has_value());
+  ASSERT_TRUE(observer_.last_account_update());
+  EXPECT_EQ(observer_.last_account_update()->max_aliases_count, 17u);
   ASSERT_TRUE(observer_.last_update());
   ASSERT_EQ(observer_.last_update()->which(),
             mojom::AliasesUpdate::Tag::kAliases);
@@ -404,6 +442,23 @@ TEST_F(EmailAliasesAPITest, RefreshAliases_Notifies_OnValidResponse) {
   ASSERT_FALSE(aliases.empty());
   EXPECT_EQ(aliases[0]->email, alias_email);
   EXPECT_EQ(aliases[0]->note, "note");
+}
+
+TEST_F(EmailAliasesAPITest, RefreshAliases_Notifies_OnNegativeMaxResponse) {
+  const std::string alias_email = "alias@example.com";
+  auto result_out = CallUpdateAliasWith(
+      alias_email,
+      /*put_body=*/R"({"message":"updated"})",
+      /*refresh_body=*/
+      MakeRefreshBody(
+          /*aliases=*/{{"dest@example.com", alias_email, "2025-01-01T00:00:00Z",
+                        "", "active"}},
+          /*max_aliases_count=*/-10),
+      "note");
+  ASSERT_TRUE(result_out.has_value());
+  ASSERT_TRUE(observer_.last_account_update());
+  EXPECT_EQ(observer_.last_account_update()->max_aliases_count,
+            mojom::kDefaultMaxAliases);
 }
 
 TEST_F(EmailAliasesAPITest,
@@ -453,44 +508,100 @@ TEST_F(EmailAliasesAPITest, ApiFetch_AttachesAuthTokenAndAPIKeyHeaders) {
 }
 
 TEST_F(EmailAliasesAPITest, Notes) {
-  const GURL manage_url = test::GetEmailAliasesServiceURL();
-
-  const auto refresh_body = [](const std::vector<std::string>& aliases) {
-    base::ListValue aliases_list;
-    for (const auto& alias : aliases) {
-      aliases_list.Append(base::DictValue()
-                              .Set("email", "test@login.com")
-                              .Set("alias", alias)
-                              .Set("status", "active")
-                              .Set("created_at", "2025-01-01T00:00:00Z")
-                              .Set("last_used", ""));
-    }
-    return base::DictValue()
-        .Set("result", std::move(aliases_list))
-        .DebugString();
-  };
-
   EmailAliasesNotes notes(prefs_, "test@login.com");
 
   auto ignore = CallUpdateAliasWith("alias1", R"({"message":"updated"})",
-                                    refresh_body({"alias1"}), "note1");
+                                    MakeRefreshBody({"alias1"}), "note1");
   EXPECT_EQ("note1", *notes.GetNote("alias1"));
 
   ignore = CallUpdateAliasWith("alias1", R"({"message":"updated"})",
-                               refresh_body({"alias1"}), "note1_update");
+                               MakeRefreshBody({"alias1"}), "note1_update");
   EXPECT_EQ("note1_update", *notes.GetNote("alias1"));
 
   // alias1 no longer active - remove note
   ignore = CallUpdateAliasWith("alias1", R"({"message":"updated"})",
-                               refresh_body({}));
+                               MakeRefreshBody({}));
   EXPECT_EQ(std::nullopt, notes.GetNote("alias1"));
 
   ignore = CallUpdateAliasWith("alias1", R"({"message":"updated"})",
-                               refresh_body({"alias1"}), "note1");
+                               MakeRefreshBody({"alias1"}), "note1");
   EXPECT_EQ("note1", *notes.GetNote("alias1"));
 
   ignore = CallDeleteAliasWith("alias1", R"({"message":"deleted"})");
   EXPECT_EQ(std::nullopt, notes.GetNote("alias1"));
+}
+
+TEST_F(EmailAliasesAPITest, CachedAliases_SetOnRefresh) {
+  EXPECT_TRUE(service_->GetCachedAliases().empty());
+
+  auto result = CallUpdateAliasWith(
+      "alias1@example.com", R"({"message":"updated"})",
+      MakeRefreshBody({"alias1@example.com", "alias2@example.com"}), "note1");
+  ASSERT_TRUE(result.has_value());
+
+  EXPECT_EQ(prefs_.GetList(prefs::kCachedAliases),
+            base::ListValue()
+                .Append("alias1@example.com")
+                .Append("alias2@example.com"));
+
+  const auto cached = service_->GetCachedAliases();
+  ASSERT_EQ(cached.size(), 2u);
+  EXPECT_EQ(cached[0]->email, "alias1@example.com");
+  EXPECT_EQ(cached[0]->note, "note1");
+  EXPECT_EQ(cached[1]->email, "alias2@example.com");
+  EXPECT_EQ(cached[1]->note, std::nullopt);
+}
+
+TEST_F(EmailAliasesAPITest, CachedAliases_PreservedOnRefreshError) {
+  auto result = CallUpdateAliasWith(
+      "alias1@example.com", R"({"message":"updated"})",
+      MakeRefreshBody({"alias1@example.com", "alias2@example.com"}));
+  ASSERT_TRUE(result.has_value());
+  ASSERT_EQ(service_->GetCachedAliases().size(), 2u);
+
+  observer_.ResetForTesting();
+  result =
+      CallUpdateAliasWith("alias1@example.com", R"({"message":"updated"})",
+                          /*refresh_body=*/R"({"message":"backend_error"})",
+                          /*note=*/std::nullopt,
+                          /*wait_for_update=*/false);
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE(observer_.WaitForAliasUpdateCount(1));
+  ASSERT_EQ(observer_.last_update()->which(),
+            mojom::AliasesUpdate::Tag::kError);
+
+  EXPECT_EQ(service_->GetCachedAliases().size(), 2u);
+}
+
+TEST_F(EmailAliasesAPITest, CachedAliases_ClearedOnSignOut) {
+  auto result =
+      CallUpdateAliasWith("alias1@example.com", R"({"message":"updated"})",
+                          MakeRefreshBody({"alias1@example.com"}));
+  ASSERT_TRUE(result.has_value());
+  ASSERT_EQ(service_->GetCachedAliases().size(), 1u);
+
+  ON_CALL(*brave_account_auth_,
+          GetServiceToken(brave_account::mojom::Service::kEmailAliases, _))
+      .WillByDefault([](auto service, auto callback) {
+        std::move(callback).Run(base::unexpected(
+            brave_account::mojom::GetServiceTokenError::NewClientError(
+                brave_account::mojom::GetServiceTokenClientError::New(
+                    brave_account::mojom::GetServiceTokenClientErrorCode::
+                        kUnexpected))));
+      });
+
+  observer_.ResetForTesting();
+  email_aliases_auth_observer_remote_->OnAccountStateChanged(
+      brave_account::mojom::AccountState::NewLoggedOut(
+          brave_account::mojom::LoggedOutState::New(nullptr)));
+  email_aliases_auth_observer_remote_.FlushForTesting();
+
+  ASSERT_TRUE(
+      base::test::RunUntil([this]() { return !service_->IsAuthenticated(); }));
+  ASSERT_TRUE(observer_.WaitForAliasUpdateCount(1));
+
+  EXPECT_TRUE(prefs_.GetList(prefs::kCachedAliases).empty());
+  EXPECT_TRUE(service_->GetCachedAliases().empty());
 }
 
 }  // namespace email_aliases

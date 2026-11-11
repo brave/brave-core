@@ -27,6 +27,21 @@ files.
 headers for the underlying types. Same principle as class inheritance — if class
 B inherits from A, include B's header, not A's.
 
+**Exception — GN-private headers:** don't include a header that is private to
+its GN target (not in the target's `public` list, and your target isn't on its
+`friend`/`visibility` allowlist) — the GN header check will fail. Include the
+header the owner exports for that purpose instead, often a `*_test_util.h` or
+`mock_*.h` from a test-support target. Check the owning target in `BUILD.gn`
+first, and **NEVER flag the missing private include in review.**
+
+```cpp
+// ❌ WRONG - net/dns/host_resolver.h is private to //net/dns:host_resolver
+#include "net/dns/host_resolver.h"
+
+// ✅ CORRECT - exported by the test header upstream intends for this
+#include "net/dns/mock_host_resolver.h"
+```
+
 ---
 
 <a id="CS-002"></a>
@@ -167,8 +182,8 @@ std::string user_name;
 
 - **Opening brace** goes at the end of the previous line (K&R style)
 - **Continuation lines** should be indented 4 spaces
-- **Do NOT enforce include order** — include ordering is handled by code
-  formatting tools and lint, not by code review
+- **NEVER enforce include order in code review** — include ordering is handled
+  by code formatting tools and lint, not by code review
 
 ---
 
@@ -197,9 +212,16 @@ copy-paste old copyright years from other files.
 
 ## ❌ Don't Define Methods in Headers
 
-**Move method definitions to .cc files.** Headers should only contain
-declarations. Keep headers minimal - only include what's strictly required for
-the declarations.
+**Move method definitions to .cc files.** Keep headers minimal - only include
+what's strictly required for the declarations.
+
+**Exception — simple accessors.** Per the
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md),
+simple accessors should generally be the only inline functions. Name them
+`snake_case()`, and never declare a `virtual` function inline. Test accessors
+(see [TI-011](testing-isolation.md#TI-011)) and `constexpr` constants (see
+[CS-063](#CS-063), [CSA-025](coding-standards-apis.md#CSA-025)) also belong in
+headers.
 
 ```cpp
 // ❌ WRONG - method body in header
@@ -207,6 +229,11 @@ class RewardsProtocolHandler {
   static bool HandleURL(const GURL& url) {
     return url.scheme() == "rewards";
   }
+};
+
+// ❌ WRONG - virtual function declared inline
+class Handler {
+  virtual bool IsEnabled() const { return enabled_; }
 };
 
 // ✅ CORRECT - declaration in header, definition in .cc
@@ -217,10 +244,20 @@ bool HandleRewardsProtocol(const GURL& url);
 bool HandleRewardsProtocol(const GURL& url) {
   return url.scheme() == "rewards";
 }
+
+// ✅ CORRECT - simple accessor stays inline in the header
+class RewardsService {
+ public:
+  bool is_enabled() const { return is_enabled_; }
+
+ private:
+  bool is_enabled_ = false;
+};
 ```
 
-Also: `static` has no meaning for free functions in C++ (it's a C holdover). Use
-anonymous namespaces instead.
+Also: prefer an anonymous namespace over `static` for free functions local to a
+`.cc` file. Both give internal linkage, but Chromium style is to wrap everything
+local to a `.cc` file in an unnamed namespace (see [CS-016](#CS-016)).
 
 ---
 
@@ -231,7 +268,7 @@ anonymous namespaces instead.
 **Headers should use forward declarations instead of `#include` for types only
 used as pointers or references.** Move the full `#include` to the `.cc` file.
 
-**Exceptions — do NOT suggest forward declarations when:**
+**Exceptions — NEVER suggest forward declarations when:**
 
 - The type is **not directly `#include`d** but comes transitively through a base
   class header that must be included anyway (e.g., `content::WebUI*` comes
@@ -329,6 +366,23 @@ constexpr int kMaxRetries = 3;
 
 **Function definitions in `.cc` files should appear in the same order as their
 declarations in the corresponding `.h` file.**
+
+**In the header, group function overrides together within each access control
+section, with one labeled group per parent class.** See
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+
+```cpp
+// ✅ CORRECT - one labeled group per parent class
+class BraveAdsService : public KeyedService,
+                        public PrefObserver {
+ public:
+  // KeyedService:
+  void Shutdown() override;
+
+  // PrefObserver:
+  void OnPrefChanged(const std::string& path) override;
+};
+```
 
 ---
 
@@ -668,7 +722,30 @@ void RewardsService::SavePendingContribution(...) {
 
 **When a method's implementation is completely different on a platform, split it
 into a separate file** like `my_class_android.cc` rather than filling the main
-file with `#if defined(OS_ANDROID)` blocks.
+file with `#if BUILDFLAG(IS_ANDROID)` blocks.
+
+**Always use the buildflags from `build/build_config.h`** — `BUILDFLAG(IS_WIN)`,
+`BUILDFLAG(IS_ANDROID)`, `BUILDFLAG(IS_MAC)`, etc. Never test compiler-provided
+macros like `WIN32`, `__APPLE__`, or `__linux__`, and never the long-removed
+`defined(OS_*)` form. See
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+
+```cpp
+// ❌ WRONG - compiler macro
+#if defined(WIN32)
+
+// ❌ WRONG - `OS_ANDROID` was replaced by the BUILDFLAG form
+#if defined(OS_ANDROID)
+
+// ✅ CORRECT
+#include "build/build_config.h"
+#if BUILDFLAG(IS_ANDROID)
+```
+
+Put platform-specific `#include`s in their own section below the standard
+includes, repeating the normal include order within that section. Ordering is
+formatting, not review material — per [CS-010](#CS-010), leave it to
+`clang-format` and lint. **NEVER flag include order in review.**
 
 ---
 
@@ -681,7 +758,7 @@ feature-dependent, not platform-dependent.**
 
 ```cpp
 // ❌ WRONG - platform check for feature behavior
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   // Don't show notifications
 #endif
 
@@ -815,7 +892,7 @@ For expected or non-critical failure cases (e.g., a bad user-supplied filter
 list, a failed parse of optional data), use `VLOG` for debug info or
 `LOG(WARNING)` for noteworthy but non-critical issues.
 
-**Do not suggest lowering log severity for failures you haven't confirmed are
+**NEVER suggest lowering log severity for failures you haven't confirmed are
 non-critical.** The developer knows whether a failure is critical for their
 service better than a reviewer can infer from the code alone. For example,
 failing to load a model file may look non-critical in isolation but could be a
@@ -1007,8 +1084,8 @@ the inconvenience of writing an explicit type."
 
 However, `auto` **is appropriate** when the explicit type is verbose/complex and
 doesn't improve readability (e.g., nested templates, long type names). This is a
-preference, not a hard rule — always prefix with `nit:` and do not insist if the
-developer declines.
+preference, not a hard rule — always prefix with `nit:`. **NEVER insist if the
+developer declines.**
 
 ```cpp
 // ❌ WRONG - auto hides a short, descriptive type
@@ -1414,5 +1491,108 @@ farbling because the decision was not based on the embedder's origin.
 
 `about:blank` and `about:srcdoc` can themselves be opaque if they were embedded
 in an opaque-origin context.
+
+---
+
+<a id="CS-072"></a>
+
+## ❌ Don't Use `#pragma once` — Use `#include` Guards
+
+**Every header needs a standard `#include` guard; `#pragma once` is not
+allowed.** It was historically unsupported on some platforms and doesn't
+outperform guards. The guard name is the full path from the source root,
+uppercased with `/` and `.` replaced by `_`, plus a trailing `_`. See
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+
+```cpp
+// ❌ WRONG
+#pragma once
+
+// ✅ CORRECT - brave/components/foo/bar.h
+#ifndef BRAVE_COMPONENTS_FOO_BAR_H_
+#define BRAVE_COMPONENTS_FOO_BAR_H_
+
+...
+
+#endif  // BRAVE_COMPONENTS_FOO_BAR_H_
+```
+
+---
+
+<a id="CS-073"></a>
+
+## ✅ Use Braces on All Conditionals and Loops
+
+**Always brace the body of an `if`/`else`/`for`/`while`, even a single
+statement.** Braces keep a later added statement from silently falling outside
+the conditional. Chromium's `clang-format` configuration inserts them for the
+cases below, so writing them yourself leaves the formatter with nothing to do.
+See
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+
+```cpp
+// ❌ WRONG - unbraced body; clang-format rewrites this
+if (!service)
+  return;
+
+for (const auto& url : urls)
+  Prefetch(url);
+
+// ✅ CORRECT
+if (!service) {
+  return;
+}
+
+for (const auto& url : urls) {
+  Prefetch(url);
+}
+```
+
+**NEVER flag missing braces in review** — like include order
+([CS-010](#CS-010)), it is handled by tooling.
+
+Also prefer `(foo == 0)` over `(0 == foo)`.
+
+---
+
+<a id="CS-074"></a>
+
+## ✅ Use the Right Crash/Diagnostic Primitive
+
+**`CHECK`/`NOTREACHED` are for invariants. Reach for a different primitive when
+that isn't what you mean.** See
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md)
+and [CS-026](#CS-026)/[CS-027](#CS-027).
+
+| Primitive                            | Behavior                         | Use for                                             |
+| ------------------------------------ | -------------------------------- | --------------------------------------------------- |
+| `CHECK(cond)`                        | Crashes in all builds            | Invariants within the code's control                |
+| `DCHECK(cond)`                       | Debug-only                       | Invariants too expensive to verify in production    |
+| `NOTREACHED()`                       | Crashes; terminates control flow | Genuinely unreachable code                          |
+| `base::ImmediateCrash()`             | Terminates immediately           | Process must die for reasons outside its control    |
+| `base::debug::DumpWithoutCrashing()` | Uploads a report, keeps running  | Investigating a failure without killing the browser |
+| `ADD_FAILURE()`                      | Fails the current test           | Test code — never `CHECK` a test expectation        |
+
+**Prefer an unconditional `CHECK()` over an `if` that conditionally hits
+`NOTREACHED()`** — it's shorter and states the invariant directly.
+
+```cpp
+// ❌ WRONG - conditional NOTREACHED
+if (!profile) {
+  NOTREACHED();
+}
+
+// ❌ WRONG - crashing the browser to report a condition you're still diagnosing
+CHECK(entry_was_found);
+
+// ✅ CORRECT - unconditional CHECK
+CHECK(profile);
+
+// ✅ CORRECT - report and keep running while investigating
+if (!entry_was_found) {
+  base::debug::DumpWithoutCrashing();
+  return std::nullopt;
+}
+```
 
 ---

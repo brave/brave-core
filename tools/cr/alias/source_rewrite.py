@@ -23,14 +23,16 @@ SEARCH_EXCLUDE_EXTENSIONS: frozenset[str] = frozenset({'.patchinfo'})
 
 # C++ file extensions for include/guard/shadow-include handling.
 CPP_EXTENSIONS: frozenset[str] = frozenset(
-    {'.h', '.hh', '.cc', '.mm', '.m', '.cpp'})
+    {'.h', '.hh', '.cc', '.mm', '.m', '.cpp'}
+)
 
 # Extensions whose files may contain #include / #import directives.
 _INCLUDE_EXTENSIONS: frozenset[str] = CPP_EXTENSIONS | frozenset({'.mojom'})
 
 # Extensions whose files may contain // path references in comments.
 _COMMENT_EXTENSIONS: frozenset[str] = CPP_EXTENSIONS | frozenset(
-    {'.gni', '.gn'})
+    {'.gni', '.gn'}
+)
 
 # Extensions whose files contain GN references in double-quoted strings.
 _GN_EXTENSIONS: frozenset[str] = frozenset({'.gn', '.gni'})
@@ -63,8 +65,9 @@ def _is_path_excluded(rel_posix: str) -> bool:
     """Returns True if this brave-core-relative path is excluded by rules."""
     for include, pattern in _EXCLUDE_RULES:
         if '/' in pattern:
-            matched = rel_posix == pattern or rel_posix.startswith(pattern +
-                                                                   '/')
+            matched = rel_posix == pattern or rel_posix.startswith(
+                pattern + '/'
+            )
         else:
             matched = pattern in rel_posix.split('/')
         if matched:
@@ -82,8 +85,11 @@ def _should_walk_dir(rel_posix: str) -> bool:
     if not _is_path_excluded(rel_posix):
         return True
     prefix = rel_posix + '/'
-    return any(include and pattern.startswith(prefix)
-               for include, pattern in _EXCLUDE_RULES if '/' in pattern)
+    return any(
+        include and pattern.startswith(prefix)
+        for include, pattern in _EXCLUDE_RULES
+        if '/' in pattern
+    )
 
 
 def compute_guard(src_relative_path: Path | str) -> str:
@@ -101,8 +107,7 @@ def compute_guard(src_relative_path: Path | str) -> str:
 
 def find_guard(content: str) -> str | None:
     """Returns the include guard token if a #ifndef/#define pair is found."""
-    m = re.search(r'^#ifndef\s+(\w+)\s*\n#define\s+\1\b', content,
-                  re.MULTILINE)
+    m = re.search(r'^#ifndef\s+(\w+)\s*\n#define\s+\1\b', content, re.MULTILINE)
     return m.group(1) if m else None
 
 
@@ -117,7 +122,11 @@ def rewrite_guard_in_file(path: Path, old_guard: str, new_guard: str) -> None:
     if count != 3:
         logging.warning(
             '%s: guard rewrite produced %d occurrence(s) of %s (expected 3); '
-            'inspect manually.', path, count, new_guard)
+            'inspect manually.',
+            path,
+            count,
+            new_guard,
+        )
     path.write_text(new_content, encoding='utf-8', newline='\n')
 
 
@@ -144,19 +153,25 @@ def insert_guard(path: Path, new_guard: str) -> None:
             insert_idx = i
             break
 
-    new_lines = (lines[:insert_idx] + [
-        f'#ifndef {new_guard}\n',
-        f'#define {new_guard}\n',
-        '\n',
-    ] + lines[insert_idx:] + [
-        '\n',
-        f'#endif  // {new_guard}\n',
-    ])
+    new_lines = (
+        lines[:insert_idx]
+        + [
+            f'#ifndef {new_guard}\n',
+            f'#define {new_guard}\n',
+            '\n',
+        ]
+        + lines[insert_idx:]
+        + [
+            '\n',
+            f'#endif  // {new_guard}\n',
+        ]
+    )
     path.write_text(''.join(new_lines), encoding='utf-8', newline='\n')
 
 
-def update_shadow_include(path: Path, old_chromium_path: Path,
-                          new_chromium_path: Path) -> None:
+def update_shadow_include(
+    path: Path, old_chromium_path: Path, new_chromium_path: Path
+) -> None:
     """Updates the upstream angle-bracket include inside a chromium_src/ file.
 
     Replaces '#include <old_chromium_path>' with '#include <new_chromium_path>'.
@@ -190,6 +205,8 @@ def update_references(old_path: Path, new_path: Path) -> None:
       _update_gn_references for the per-file-type rules)
     - BUILD.gn / .gni source-list entries in the ancestor chain of the old file
     - For moved .mojom files: derived generated-header paths
+    - For moved .java files: class references in .java and ProGuard .flags
+      files (see _JavaClassRename)
 
     Skips directories in SEARCH_EXCLUDE_DIRS and files in
     SEARCH_EXCLUDE_EXTENSIONS.
@@ -197,24 +214,40 @@ def update_references(old_path: Path, new_path: Path) -> None:
     old_posix = old_path.as_posix()
     new_posix = new_path.as_posix()
 
-    include_re = re.compile(r'(#?(?:include|import)\s*[\"<])' +
-                            re.escape(old_posix) + r'([>\"])')
+    include_re = re.compile(
+        r'(#?(?:include|import)\s*[\"<])' + re.escape(old_posix) + r'([>\"])'
+    )
     include_sub = r'\g<1>' + new_posix + r'\g<2>'
 
     # For .mojom files, also rewrite derived generated-header paths.
     mojom_rewrites: list[tuple[re.Pattern[str], str]] = []
     if old_posix.endswith('.mojom'):
-        old_base = old_posix[:-len('.mojom')]
-        new_base = new_posix[:-len('.mojom')]
-        for suffix in ('.mojom.h', '.mojom-blink.h', '.mojom-shared.h',
-                       '.mojom-forward.h'):
-            pat = re.compile(r'(#?(?:include|import)\s*[\"<])' +
-                             re.escape(old_base + suffix) + r'([>\"])')
+        old_base = old_posix[: -len('.mojom')]
+        new_base = new_posix[: -len('.mojom')]
+        for suffix in (
+            '.mojom.h',
+            '.mojom-blink.h',
+            '.mojom-shared.h',
+            '.mojom-forward.h',
+        ):
+            pat = re.compile(
+                r'(#?(?:include|import)\s*[\"<])'
+                + re.escape(old_base + suffix)
+                + r'([>\"])'
+            )
             mojom_rewrites.append(
-                (pat, r'\g<1>' + new_base + suffix + r'\g<2>'))
+                (pat, r'\g<1>' + new_base + suffix + r'\g<2>')
+            )
+
+    java_rename = _JavaClassRename.from_paths(old_path, new_path)
 
     for fpath in _walk_brave_core():
         ext = fpath.suffix.lower()
+        # ProGuard `.flags` name classes by their dotted name too.
+        if ext in ('.java', '.flags'):
+            if java_rename:
+                java_rename.rewrite_file(fpath)
+            continue
         do_includes = ext in _INCLUDE_EXTENSIONS
         do_comments = ext in _COMMENT_EXTENSIONS
         if not (do_includes or do_comments):
@@ -231,8 +264,9 @@ def update_references(old_path: Path, new_path: Path) -> None:
         if do_comments:
             lines = new_content.splitlines(keepends=True)
             new_lines = [
-                line.replace(old_posix, new_posix) if
-                line.lstrip().startswith('//') and old_posix in line else line
+                line.replace(old_posix, new_posix)
+                if line.lstrip().startswith('//') and old_posix in line
+                else line
                 for line in lines
             ]
             new_content = ''.join(new_lines)
@@ -274,7 +308,8 @@ def _walk_brave_core() -> Iterator[Path]:
     for dirpath, dirnames, filenames in os.walk(repository.brave.root):
         rel_dir = Path(dirpath).relative_to(repository.brave.root).as_posix()
         dirnames[:] = [
-            d for d in dirnames
+            d
+            for d in dirnames
             if _should_walk_dir(d if rel_dir == '.' else f'{rel_dir}/{d}')
         ]
         if rel_dir != '.' and _is_path_excluded(rel_dir):
@@ -284,6 +319,98 @@ def _walk_brave_core() -> Iterator[Path]:
             if fpath.suffix in SEARCH_EXCLUDE_EXTENSIONS:
                 continue
             yield fpath
+
+
+def java_fqn(path: Path) -> str | None:
+    """The fully qualified name of the class a .java path holds, or None."""
+    if path.suffix != '.java':
+        return None
+    return _JavaClassRename.fqn_for(path)
+
+
+class _JavaClassRename:
+    """Rewrites references to a Java class whose source file moved.
+
+    Packages are derived from paths, assuming the package directories start
+    at the first `org` or `com` component, as they do throughout Chromium and
+    brave-core.
+    """
+
+    _PACKAGE_ROOTS = ('org', 'com')
+
+    def __init__(self, old_fqn: str, new_fqn: str) -> None:
+        self.old_package, _, self.old_name = old_fqn.rpartition('.')
+        self.new_package, _, self.new_name = new_fqn.rpartition('.')
+        self.new_fqn = new_fqn
+        # Matches both the dotted form (imports, qualified uses) and the
+        # slashed form (bytecode rewriter class names). The lookarounds stop
+        # `a.Foo` from matching `xa.Foo` or `a.FooBar`.
+        self._qualified_res = [
+            (
+                re.compile(
+                    r'(?<![\w.$/])'
+                    + re.escape(old_fqn.replace('.', sep))
+                    + r'\b'
+                ),
+                new_fqn.replace('.', sep),
+            )
+            for sep in ('.', '/')
+        ]
+        self._unqualified_re = re.compile(
+            r'(?<![\w.$])' + re.escape(self.old_name) + r'\b'
+        )
+
+    @classmethod
+    def from_paths(
+        cls, old_path: Path, new_path: Path
+    ) -> _JavaClassRename | None:
+        """Returns the rename for two .java paths, or None if not derivable."""
+        if old_path.suffix != '.java' or new_path.suffix != '.java':
+            return None
+        old_fqn = cls.fqn_for(old_path)
+        new_fqn = cls.fqn_for(new_path)
+        if not old_fqn or not new_fqn or old_fqn == new_fqn:
+            return None
+        return cls(old_fqn, new_fqn)
+
+    @classmethod
+    def fqn_for(cls, path: Path) -> str | None:
+        parts = path.with_suffix('').parts
+        root = next(
+            (i for i, p in enumerate(parts) if p in cls._PACKAGE_ROOTS), None
+        )
+        return '.'.join(parts[root:]) if root is not None else None
+
+    def rewrite_file(self, path: Path) -> None:
+        """Rewrites qualified references, importing the class where needed."""
+        content = path.read_bytes().decode('utf-8')
+        new_content = content
+        for pattern, sub in self._qualified_res:
+            new_content = pattern.sub(sub, new_content)
+        new_content = self._import_into_old_package(new_content)
+        if new_content != content:
+            path.write_text(new_content, encoding='utf-8', newline='\n')
+
+    def _import_into_old_package(self, content: str) -> str:
+        """Adds an import to files that used the class from its own package.
+
+        Those files referenced it unqualified, so no import existed to
+        rewrite. The formatter sorts the import into place afterwards.
+        """
+        package = re.search(r'^package\s+([\w.]+)\s*;\n', content, re.MULTILINE)
+        if (
+            not package
+            or package.group(1) != self.old_package
+            or self.old_package == self.new_package
+            or f'import {self.new_fqn};' in content
+        ):
+            return content
+        body = content[package.end() :]
+        if not self._unqualified_re.search(body):
+            return content
+        if self.old_name != self.new_name:
+            body = self._unqualified_re.sub(self.new_name, body)
+        return content[: package.end()] + f'\nimport {self.new_fqn};\n' + body
 
 
 def _gn_token_re(prefix: str) -> re.Pattern[str]:
@@ -311,7 +438,7 @@ def _update_gn_references(old_path: Path, new_path: Path) -> None:
         basename.
       - .gni or non-BUILD.gn .gn -> single-file move: rewrite the exact
         quoted root reference `"//<old_path>"`.
-      - C++ source -> single-file move: rewrite the exact quoted root
+      - C++ or Java source -> single-file move: rewrite the exact quoted root
         reference `"//<old_path>"`.
       - Other -> no-op.
 
@@ -336,10 +463,12 @@ def _update_gn_references(old_path: Path, new_path: Path) -> None:
                 continue
             content = fpath.read_bytes().decode('utf-8')
             new_content = root_re.sub(root_sub, content)
-            rel_old = os.path.relpath(old_abs_dir,
-                                      fpath.parent).replace('\\', '/')
-            rel_new = os.path.relpath(new_abs_dir,
-                                      fpath.parent).replace('\\', '/')
+            rel_old = os.path.relpath(old_abs_dir, fpath.parent).replace(
+                '\\', '/'
+            )
+            rel_new = os.path.relpath(new_abs_dir, fpath.parent).replace(
+                '\\', '/'
+            )
             if rel_old and rel_old != '.':
                 rel_re = _gn_token_re(rel_old)
                 new_content = rel_re.sub('"' + rel_new, new_content)
@@ -353,34 +482,50 @@ def _update_gn_references(old_path: Path, new_path: Path) -> None:
             new_build = repository.chromium.root / new_path
             if new_build.is_file():
                 content = new_build.read_bytes().decode('utf-8')
-                new_content = content.replace(f'"{old_basename}"',
-                                              f'"{new_basename}"')
-                new_content = new_content.replace(f':{old_basename}"',
-                                                  f':{new_basename}"')
+                new_content = content.replace(
+                    f'"{old_basename}"', f'"{new_basename}"'
+                )
+                new_content = new_content.replace(
+                    f':{old_basename}"', f':{new_basename}"'
+                )
                 if new_content != content:
-                    new_build.write_text(new_content,
-                                         encoding='utf-8',
-                                         newline='\n')
+                    new_build.write_text(
+                        new_content, encoding='utf-8', newline='\n'
+                    )
         return
 
-    if suffix not in _GN_EXTENSIONS and suffix not in CPP_EXTENSIONS:
+    if (
+        suffix not in _GN_EXTENSIONS
+        and suffix not in CPP_EXTENSIONS
+        and suffix != '.java'
+    ):
         return
 
     old_quoted = f'"//{old_path.as_posix()}"'
     new_quoted = f'"//{new_path.as_posix()}"'
+    # Java source lists also spell a file from `src` up, as
+    # `"../../brave/android/java/...java"` in `brave_java_sources.gni`.
+    relative = (
+        re.compile(r'"((?:\.\./)+)' + re.escape(old_path.as_posix()) + '"')
+        if suffix == '.java'
+        else None
+    )
     for fpath in _walk_brave_core():
         if fpath.suffix not in _GN_EXTENSIONS:
             continue
         content = fpath.read_bytes().decode('utf-8')
-        if old_quoted not in content:
-            continue
-        fpath.write_text(content.replace(old_quoted, new_quoted),
-                         encoding='utf-8',
-                         newline='\n')
+        new_content = content.replace(old_quoted, new_quoted)
+        if relative:
+            new_content = relative.sub(
+                lambda m: f'"{m.group(1)}{new_path.as_posix()}"', new_content
+            )
+        if new_content != content:
+            fpath.write_text(new_content, encoding='utf-8', newline='\n')
 
 
-def _update_build_ancestors(old_abs: Path, new_abs: Path,
-                            brave_root: Path) -> None:
+def _update_build_ancestors(
+    old_abs: Path, new_abs: Path, brave_root: Path
+) -> None:
     """Updates BUILD.gn/.gni entries in the ancestor dirs of old_abs."""
     cur = old_abs.parent
     while True:
@@ -390,8 +535,11 @@ def _update_build_ancestors(old_abs: Path, new_abs: Path,
                     continue
                 name = build_file.name
                 ext = build_file.suffix
-                if name not in ('BUILD.gn', ) and ext not in ('.gni', '.gyp',
-                                                              '.gypi'):
+                if name not in ('BUILD.gn',) and ext not in (
+                    '.gni',
+                    '.gyp',
+                    '.gypi',
+                ):
                     continue
                 _update_build_entries(build_file, cur, old_abs, new_abs)
         if cur == brave_root:
@@ -402,8 +550,9 @@ def _update_build_ancestors(old_abs: Path, new_abs: Path,
         cur = parent
 
 
-def _update_build_entries(build_file: Path, build_dir: Path, old_abs: Path,
-                          new_abs: Path) -> None:
+def _update_build_entries(
+    build_file: Path, build_dir: Path, old_abs: Path, new_abs: Path
+) -> None:
     """Replaces the source-list entry for old_abs with new_abs in build_file."""
     rel_old = os.path.relpath(old_abs, build_dir).replace('\\', '/')
     rel_new = os.path.relpath(new_abs, build_dir).replace('\\', '/')
@@ -412,6 +561,6 @@ def _update_build_entries(build_file: Path, build_dir: Path, old_abs: Path,
     content = build_file.read_bytes().decode('utf-8')
     if old_str not in content:
         return
-    build_file.write_text(content.replace(old_str, new_str),
-                          encoding='utf-8',
-                          newline='\n')
+    build_file.write_text(
+        content.replace(old_str, new_str), encoding='utf-8', newline='\n'
+    )

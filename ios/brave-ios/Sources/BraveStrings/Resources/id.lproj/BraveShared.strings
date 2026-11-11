@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "Tentang";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "Seputar Brave Shields";
-
-/* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "Sering kali saat membuka situs terdapat cookies dan skrip yang berusaha mengidentifikasi pengguna dan perangkatnya.  Mereka ingin mengetahui siapa Anda dan mengikuti Anda di seluruh situs - melacak apa yang Anda lakukan di setiap situs.\n\nBrave memblokir hal-hal tersebut sehingga Anda dapat menjelajah tanpa merasa diikuti.";
-
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "Ini mengizinkan kamu untuk simpan gambar ke rol kamera anda.";
 
@@ -36,9 +30,6 @@
 
 /* Text for the toggle switch to clear 'Brave Ads' data in settings */
 "ads.braveAdsDataToggleOption" = "Data Iklan Brave";
-
-/* individual blocking statistic title */
-"AdsAndTrackers" = "Iklan dan Pelacak";
 
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "Selalu Minta Situs Desktop";
@@ -130,17 +121,17 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "Isi-Otomatis";
 
-/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
-"AutoRedirectAMPPages" = "Halaman AMP yang Diarahkan Ulang Otomatis";
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with the current downloaded amount (e.g. '20MB') */
+"backgroundDownloadingSubtitle" = "%@";
 
-/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
-"AutoRedirectAMPPagesDescription" = "Selalu kunjungi hanya URL laman orisinal (non-AMP), dan bukan versi Laman Seluler Terakselerasi Google";
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with a progress and a file size. E.g. '1MB of 20MB' */
+"backgroundDownloadingSubtitleWithExpectedSize" = "%1$@ dari %2$@";
 
-/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
-"AutoRedirectTrackingURLs" = "URL Pelacakan Alih Otomatis";
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %lld is replaced with the number of active downloads */
+"backgroundDownloadingTitleMultiDownload" = "Mengunduh %lld file";
 
-/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
-"AutoRedirectTrackingURLsDescription" = "Mengaktifkan dukungan untuk melewati pengarahan ulang tingkat atas URL pelacakan";
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
+"backgroundDownloadingTitleSingleDownload" = "Mendownload \"%@\"";
 
 /* cookie settings option */
 "Block3rdPartyCookies" = "Blokir kuki pihak ke-3";
@@ -160,20 +151,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Gagal mengatur preferensi. Coba lagi.";
 
-/* A title for a setting that enables cookie consent notices */
-"BlockCookieConsentNotices" = "Memblokir Pemberitahuan Izin Kuki";
-
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Monitor Pemblokiran";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Blokir Pop-up";
-
-/* No comment provided by engineer. */
-"BlockScripts" = "Blokir Skrip";
-
-/* No comment provided by engineer. */
-"BlockScriptsDescription" = "Memblokir JavaScript (dapat merusak situs).";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "Tambahkan Markah untuk Tab %lld";
@@ -239,46 +221,10 @@
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Tutup";
 
 /* No comment provided by engineer. */
-"BraveShieldsAdvancedControls" = "Kontrol lanjutan";
-
-/* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Perisai Brave & Privasi";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Perisai & Privasi";
-
-/* The number of ads and trackers blocked will be next to this */
-"BraveShieldsBlockedCountLabel" = "Iklan dan hal mencurigakan lainnya diblokir";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Pelajari lebih lanjut";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "Ubah Bawaan Global Perisai Brave";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalControls" = "Kontrol Global";
-
-/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "Menyimpan informasi kontak untuk pelaporan situs yang rusak di masa mendatang";
-
-/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfoDescription" = "Jika Anda memberikan info kontak, maka info akan disimpan untuk laporan di masa mendatang";
-
-/* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "Jika situs ini tampak rusak, coba turunkan Shield";
-
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Brave Shields";
-
-/* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "Turun";
-
-/* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "Naik";
-
-/* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "Ketuk dua kali untuk mengalihkan Brave Shields";
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
@@ -736,6 +682,18 @@
 /* Accessibility Title for the button that edits the quick-search engines list. */
 "EditQuickSearchEnginesAccessibilityTitle" = "Edit mesin penelusuran cepat";
 
+/* The message on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertMessage" = "Jika Anda mengalami kerusakan atau macet, Brave dapat secara otomatis mengirim laporan diagnostik anonim untuk memperbaiki masalah tersebut. Anda selalu dapat menonaktifkan ini di Pengaturan nanti.";
+
+/* The title on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertTitle" = "Aktifkan laporan kerusakan otomatis";
+
+/* The confirmation button title on an alert presented to the user after the app crashes which will enable crash reporting */
+"EnableCrashReporterConfirmButtonTitle" = "Aktifkan";
+
+/* The button title on an alert presented to the user after the app crashes that ignores the alert */
+"EnableCrashReporterDenyButtonTitle" = "Jangan Sekarang";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Aktifkan Tarik-untuk-penyegaran";
 
@@ -832,15 +790,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findPreviousTitle" = "Temukan Sebelumnya";
 
-/* individual blocking statistic title */
-"FingerprintingMethods" = "Metode Sidik Jari";
-
-/* No comment provided by engineer. */
-"FingerprintingProtection" = "Blokir Penyidikjarian";
-
-/* No comment provided by engineer. */
-"FingerprintingProtectionDescription" = "Mempersulit bagi situs untuk mengenali karakteristik unik perangkat Anda.";
-
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Izinkan tautan universal membuka di aplikasi eksternal";
 
@@ -907,15 +856,6 @@
 /* No comment provided by engineer. */
 "Home" = "Beranda";
 
-/* No comment provided by engineer. */
-"HTTPSEverywhere" = "Tingkatkan Koneksi ke HTTPS";
-
-/* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Membuka situs dengan menggunakan HTTPS aman daripada dengan HTTP kapan saja memungkinkan.";
-
-/* individual blocking statistic title */
-"HTTPSUpgrades" = "Peningkatan HTTPS";
-
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Impor Data Penelusuran";
 
@@ -936,6 +876,9 @@
 
 /* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
+
+/* Title for Brave Leo voice input menu item. Brave Leo is the name of a product and should not be translated */
+"LeoVoiceInputMenuItem" = "Input Suara Leo";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "Login yang Disimpan akan dihapus permanen.";
@@ -1105,9 +1048,6 @@
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Gambar Bawaan";
 
-/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "Gambar & Video Bersponsor";
-
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "Gambar Sponsor";
 
@@ -1119,6 +1059,18 @@
 
 /* No comment provided by engineer. */
 "ntp.sponsoredImageDescription" = "Anda mendukung konten kreator dan penerbit dengan melihat gambar bersponsor ini.";
+
+/* The title of a picker for user to pick which type of topsites to show in NTP */
+"ntp.topsites" = "Situs Teratas";
+
+/* Favorites type of topsites. Selection means NTP will display favorites tiles if there is any. */
+"ntp.topsitesTypeFavorites" = "Favorit";
+
+/* MostVisited type of topsites. Selection means NTP will display most visited tiles if there is any. */
+"ntp.topsitesTypeMostVisited" = "Sering Dikunjungi";
+
+/* None type of topsites. Selection means there won't be any topsites tiles in NTP */
+"ntp.topsitesTypeNone" = "Tidak ada";
 
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Dengan mengaktifkan Rewards, berarti Anda setuju dengan %@.";
@@ -1510,12 +1462,6 @@
 /* The title for the alert that shows up when an item is expired */
 "playList.expiredAlertTitle" = "Video Telah Kedaluwarsa";
 
-/* Number of items in the playlsit folder. Example: '10 items' */
-"playlist.folderItemCountPlural" = "%d hal";
-
-/* Title for when there's a single item inside of a folder */
-"playlist.foldersCountSingular" = "%d hal";
-
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "Terjadi masalah saat memuat sumber!";
 
@@ -1648,17 +1594,8 @@
 /* The title of the screen to create a new folder */
 "playlistFolders.newFolderScreenTitle" = "Daftar Putar Baru";
 
-/* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
-"playlistFolders.subtitleItemCount" = "%lld hal";
-
-/* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
-"playlistFolders.subtitleItemSingleCount" = "1 hal";
-
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Daftar Putar Tanpa Judul";
-
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
-"PopoverShieldsMenuClose" = "Tutup Menu Perisai";
 
 /* Settings privacy section title */
 "Privacy" = "Privasi";
@@ -1849,6 +1786,18 @@
 /* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
 "quickview.back.accessibility.label" = "Halaman Sebelumnya";
 
+/* Button title to keep opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.keep.button.title" = "Tetap gunakan QuickView";
+
+/* Message of the alert shown the first time a user closes QuickView, explaining the feature and where to change it. */
+"quickview.confirmation.alert.message" = "QuickView memungkinkan Anda melihat pratinjau tautan tanpa meninggalkan halaman Anda. Anda dapat menonaktifkannya kapan saja di Pengaturan.";
+
+/* Title of the alert shown the first time a user closes QuickView, asking if they want to keep using it for future links. */
+"quickview.confirmation.alert.title" = "Tetap buka tautan percakapan di Quick View?";
+
+/* Button title to stop opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.turnOff.button.title" = "Matikan";
+
 /* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
 "quickview.forward.accessibility.label" = "Laman Berikut";
 
@@ -2008,41 +1957,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "Hapus Favorit";
 
-/* No comment provided by engineer. */
-"ReportABrokenSite" = "Laporkan Situs Rusak";
-
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "Laporkan Bug";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"ReportBrokenAdditionalDetails" = "Detail tambahan (opsional)";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"reportBrokenAdditionalDetailsRequired" = "Detail tambahan";
-
-/* A label for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "Apa masalah utama yang Anda lihat?";
-
-/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
-"ReportBrokenContactMe" = "Hubungi saya di: (opsional)";
-
-/* Contact info storing description */
-"ReportBrokenContactMeDescription" = "Jika Anda memberikan info kontak, maka info akan disimpan untuk pelaporan situs yang rusak di masa mendatang.";
-
-/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
-"ReportBrokenContactMeSuggestions" = "Surel, Twitter, dsb.";
-
-/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"ReportBrokenPlaceholder" = "Pilih satu opsi";
-
-/* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Beri tahu pengembang Brave bahwa situs ini tidak bekerja seperti yang diharapkan:";
-
-/* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Catatan: Laporan yang dikirim ke peladen Brave akan mencakup alamat situs, nomor versi Brave, pengaturan Perisai, status VPN, serta pengaturan bahasa.";
-
-/* No comment provided by engineer. */
-"ReportBrokenSubmitButtonTitle" = "Kirim";
 
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraAndMicrophonePermissionPrompt" = "\"%@\" Ingin Mengakses Kamera dan Mikrofon";
@@ -2088,6 +2004,15 @@
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Terima kasih telah membantu mendukung Brave dan komunitas BAT!";
+
+/* Message of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationMessage" = "Dengan mengatur ulang, profil Brave Rewards Anda saat ini akan dihapus, dan Brave Rewards tidak akan lagi diaktifkan.";
+
+/* Title of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationTitle" = "Setel Ulang Brave Rewards";
+
+/* Title of a button that resets the user's Brave Rewards profile */
+"rewards.settingsResetTitle" = "Setel ulang";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Bantulah mendukung Brave dan komunitas BAT dengan mengaktifkan Imbalan Brave dan melihat Iklan Brave.";
@@ -2311,9 +2236,6 @@
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Simpan Info Masuk";
 
-/* individual blocking statistic title */
-"ScriptsBlocked" = "Skrip Diblokir";
-
 /* The placeholder text for bookmark search */
 "searchBookmarksTitle" = "Cari Markah";
 
@@ -2401,8 +2323,8 @@
 /* Used as a button label for crash dialog prompt */
 "SendReportButtonTitle" = "Kirim Laporan";
 
-/* No comment provided by engineer. */
-"setDefaultBrowserCalloutTitle" = "Kini, Brave dapat diatur sebagai peramban bawaan Anda di iOS. Ketuk di sini untuk membuka pengaturan.";
+/* A callout that explains how to set Brave as the default browser. This is a markdown string, the ** is for bold. */
+"setDefaultBrowserCalloutTitle" = "**Tetapkan Brave sebagai browser default Anda dan blokir iklan di setiap situs yang Anda kunjungi.** Ketuk di sini untuk membuka Pengaturan dan tetapkan Brave sebagai default.";
 
 /* Settings item to set the Brave as a default browser on the iOS device. */
 "setDefaultBrowserSettingsCell" = "Tetapkan sebagai Peramban Bawaan";
@@ -2470,17 +2392,23 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Pengaturan Kualitas";
 
+/* Description to explain the send crash reports toggle */
+"settings.sendCrashReportsDescription" = "Kirimkan laporan diagnostik anonim jika Anda mengalami kerusakan atau kebekuan.";
+
+/* Title to explain the send crash reports toggle */
+"settings.sendCrashReportsTitle" = "Kirimkan laporan kerusakan";
+
 /* Description to explain the daily usage ping toggle */
 "settings.sendUsagePingDescription" = "Pesan privat ini memungkinkan Brave memperkirakan pengguna aktifnya.";
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Kirimkan ping penggunaan harian secara otomatis ke Brave";
 
-/* Description to explain the survey panelist toggle */
-"settings.surveyPanelistDescription" = "Memungkinkan Brave menampilkan tautan ke survei privat di halaman tab baru. Survei membantu kami membangun fitur yang lebih baik dan mengukur keefektifan kampanye iklan berbasis browser. [Pelajari selengkapnya](%@)";
+/* Markdown formatted description under the settings toggle that enables Sponsored Ads. %@ is replaced by a URL and should not be localized. */
+"settings.sponsoredAdsEnabledDescription" = "Bantu dukung misi Brave untuk membangun Web yang independen dan mengutamakan pengguna dengan Iklan Bersponsor. Kami mengukur performa iklan secara privat, tanpa mengidentifikasi Anda. [Pelajari lebih lanjut](%@)";
 
-/* Title to explain the survey panelist toggle */
-"settings.surveyPanelistTitle" = "Izinkan survei Brave";
+/* Title of the settings toggle that enables Sponsored Ads */
+"settings.sponsoredAdsEnabledTitle" = "Aktifkan Iklan Bersponsor";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -2553,21 +2481,6 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Iklan diblok selagi melihat video pada situs ini.";
-
-/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Default Global Perisai Brave";
-
-/* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "Ini adalah pengaturan bawaan Perisai untuk situs baru. Mengubah hal ini tidak akan memengaruhi pengaturan per-situs Anda yang telah ada.";
-
-/* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Anda sedang meramban situs ini tanpa perlindungan privasi Brave. Apakah ini tidak berfungsi dengan benar jika memasang Shield?";
-
-/* shields overview message */
-"ShieldsOverview" = "Perisai Situs memungkinkan Anda mengontrol saat iklan dan pelacak diblokir untuk setiap situs yang dikunjungi. Jika memilih untuk melihat iklan pada situs tertentu, Anda dapat mengaktifkannya di sini.";
-
-/* shields overview footer message */
-"ShieldsOverviewFooter" = "Catatan: Beberapa situs mungkin memerlukan skrip untuk bekerja dengan baik jadi perisai ini mati secara baku.";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Tab Privat Baru";
@@ -2754,15 +2667,6 @@
 
 /* Settings item for clearing site-specific settings and shields settings. */
 "SiteAndShieldsSettings" = "Pengaturan Situs dan Perisai";
-
-/* No comment provided by engineer. */
-"SiteReportedBody" = "Terima kasih telah memberi tahu pengembang Brave tentang masalah dengan situs ini. Kami akan berusaha sebaik mungkin untuk memperbaikinya!";
-
-/* No comment provided by engineer. */
-"SiteReportedTitle" = "Terima Kasih";
-
-/* Brave panel topmost title */
-"SiteShieldSettings" = "Pelindung";
 
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Tiap hari saya menghemat data karena melakukan penelusuran web dengan Brave.";
@@ -2954,7 +2858,7 @@
 "sync.maximumDeviceReachedErrorTitle" = "Batas perangkat";
 
 /* New sync code button title */
-"sync.newSyncCode" = "Mulai Rantai Sinkronisasi baru";
+"sync.newSyncCode" = "Sync Chain Baru";
 
 /* No internet connection alert body. */
 "sync.noConnectionBody" = "Periksa sambungan internet Anda, lalu coba lagi.";
@@ -3124,6 +3028,9 @@
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Penjelajahan Pribadi";
 
+/* A label in the tab tray mode switcher for private browsing mode */
+"tabGrid.privateBrowsingModeTitle" = "Pribadi";
+
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "Pengaturan Tab Pribadi";
 
@@ -3151,8 +3058,14 @@
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "Lihat Riwayat";
 
+/* Label for history menu item button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryMenuItemLabel" = "Histori";
+
 /* Accessibility label for a button that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsAccessibilityLabel" = "Lihat Tab yang Disinkronkan";
+
+/* Label for synced tabs menu item that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsMenuItemLabel" = "Sync";
 
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "Menyalakan atau mematikan mode pribadi";
@@ -3525,9 +3438,6 @@
 
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "Pengguna telah membatalkan";
-
-/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
-"UseRegionalAdblock" = "Gunakan pemblokir iklan tegional";
 
 /* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "Tutup";

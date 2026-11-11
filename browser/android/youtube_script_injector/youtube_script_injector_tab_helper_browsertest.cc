@@ -4,13 +4,16 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <string>
+#include <tuple>
 
 #include "base/files/file_util.h"
 #include "base/path_service.h"
+#include "base/test/test_future.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/test/base/android/android_browser_test.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/testing_browser_process.h"
+#include "content/public/browser/page.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
@@ -20,6 +23,8 @@
 #include "net/base/url_util.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "third_party/blink/public/mojom/manifest/manifest.mojom.h"
+#include "url/url_constants.h"
 
 namespace {
 constexpr char kReplaceCallCount[] = "window.getReplaceCallCount()";
@@ -111,6 +116,19 @@ class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
       modified_query.replace(v_pos + 2, end_pos - v_pos - 2, file_to_serve);
     }
     return https_server_.GetURL(host, modified_query);
+  }
+
+  std::tuple<blink::mojom::ManifestRequestResult,
+             GURL,
+             blink::mojom::ManifestPtr>
+  GetManifest() {
+    base::test::TestFuture<blink::mojom::ManifestRequestResult, GURL,
+                           blink::mojom::ManifestPtr>
+        future;
+    web_contents()->GetPrimaryPage().GetManifest(
+        future.GetCallback<blink::mojom::ManifestRequestResult, const GURL&,
+                           blink::mojom::ManifestPtr>());
+    return future.Take();
   }
 
  protected:
@@ -432,4 +450,50 @@ IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
           "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"another_"
           "flag_for_testing=true\")")
           .ExtractBool());
+}
+
+IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
+                       InjectManifestOnMobileYouTube) {
+  const GURL url =
+      GetTestUrlToServe("m.youtube.com", "/watch?v=abcd", "no_ytcfg_mock.html");
+
+  content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
+                                                      true);
+
+  auto [result, manifest_url, manifest] = GetManifest();
+  EXPECT_EQ(blink::mojom::ManifestRequestResult::kSuccess, result);
+  EXPECT_TRUE(manifest_url.SchemeIs(url::kDataScheme));
+  ASSERT_TRUE(manifest);
+  EXPECT_EQ(u"YouTube", manifest->name);
+  EXPECT_EQ(url.host(), manifest->start_url.host());
+  EXPECT_EQ(4u, manifest->icons.size());
+}
+
+IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
+                       DontInjectManifestOnDesktopYouTube) {
+  const GURL url =
+      GetTestUrlToServe("youtube.com", "/watch?v=abcd", "no_ytcfg_mock.html");
+
+  content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
+                                                      true);
+
+  auto [result, manifest_url, manifest] = GetManifest();
+  EXPECT_EQ(blink::mojom::ManifestRequestResult::kNoManifestSpecified, result);
+  EXPECT_TRUE(manifest_url.is_empty());
+}
+
+IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
+                       KeepExistingManifestOnMobileYouTube) {
+  const GURL url =
+      GetTestUrlToServe("m.youtube.com", "/watch?v=abcd", "manifest_mock.html");
+
+  content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
+                                                      true);
+
+  EXPECT_EQ(
+      1, content::EvalJs(web_contents(),
+                         "document.querySelectorAll('link[rel~=\"manifest\"]')"
+                         ".length"));
+  EXPECT_EQ(url.Resolve("/site.webmanifest"),
+            web_contents()->GetPrimaryPage().GetManifestUrl());
 }

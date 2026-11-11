@@ -295,7 +295,7 @@ struct EditPriorityFeeView: View {
 #if DEBUG
 struct EditPriorityFeeView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
+    NavigationStack {
       EditPriorityFeeView(
         transaction: .previewConfirmedSend,
         gasEstimation: .init(),

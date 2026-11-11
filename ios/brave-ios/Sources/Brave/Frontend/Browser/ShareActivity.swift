@@ -43,12 +43,9 @@ extension UIViewController {
     var activities = [UIActivity]()
 
     // Copy Clean URL Activity
-    if !url.isLocal, !InternalURL.isValid(url: url), !url.isInternalURL(for: .readermode) {
+    if let tab, !url.isLocal, !InternalURL.isValid(url: url), !url.isInternalURL(for: .readermode) {
       let cleanedURL =
-        URLSanitizerServiceFactory.get(
-          privateMode: tab?.isPrivate ?? true
-        )?.sanitize(url: url) ?? url
-
+        URLSanitizerServiceFactory.get(profile: tab.profile)?.sanitize(url: url) ?? url
       activities.append(
         BasicMenuActivity(
           activityType: .copyCleanLink,
@@ -234,7 +231,9 @@ extension UIViewController {
       }
 
       // Create PDF Activity
-      if let tab, tab.temporaryDocument == nil, tab.lastCommittedURL?.isWebPage() == true {
+      if let tab, !ShareableDocument.isShareable(tab),
+        tab.lastCommittedURL?.isWebPage() == true
+      {
         activities.append(
           BasicMenuActivity(
             activityType: .createPDF,

@@ -46,7 +46,7 @@ extension FeedDataSource {
     }
     if let firstPartySource = sources.first(where: { $0.feedURL == location.url }) {
       // If there is a source with the same feed URL already we will just follow it instead.
-      isFollowingSourceBinding(source: firstPartySource).wrappedValue = true
+      self[isFollowing: firstPartySource] = true
       return true
     }
     let feedUrl = location.url.absoluteString
@@ -85,10 +85,14 @@ extension FeedDataSource {
     FeedSourceOverride.get(fromId: location.id)?.enabled ?? true
   }
 
-  @MainActor public func isFollowingRSSFeedBinding(feed: RSSFeedLocation) -> Binding<Bool> {
-    .init {
-      self.rssFeedLocations.contains(where: { $0.id == feed.id })
-    } set: { [self] newValue in
+  /// Whether or not the user is following the RSS feed at `feed`.
+  ///
+  /// Setting this adds or removes the feed entirely since RSS feeds cannot be disabled.
+  @MainActor public subscript(isFollowing feed: RSSFeedLocation) -> Bool {
+    get {
+      rssFeedLocations.contains(where: { $0.id == feed.id })
+    }
+    set {
       // In news revamp, you cannot enable or disable an RSS feed, unfollowing results in removing it entirely
       if newValue {
         addRSSFeedLocation(feed)

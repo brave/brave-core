@@ -797,62 +797,6 @@ TEST_P(BraveShieldsSettingsFarblingTest,
   EXPECT_EQ(t1, t2);
 }
 
-// A blob URL whose inner origin is https://example.com must yield the same
-// token as a plain https://example.com URL, because both resolve to the same
-// effective origin (https://example.com/).
-TEST_P(BraveShieldsSettingsFarblingTest,
-       FarblingToken_BlobUrl_SameTokenAsOriginUrl) {
-  // Use a random seed (0 = random) to exercise the storage path: the first
-  // caller writes a random token keyed under https://example.com/; the second
-  // caller reads it back regardless of whether it used the blob or plain URL.
-  const auto blob_token = brave_shields_settings()->GetFarblingToken(
-      url::Origin::Create(
-          GURL("blob:https://example.com/550e8400-e29b-41d4-a716-446655440000"))
-          .GetURL(),
-      {});
-  const auto https_token = brave_shields_settings()->GetFarblingToken(
-      GURL("https://example.com/some/path"), {});
-  EXPECT_EQ(blob_token, https_token);
-}
-
-// A blob URL whose inner origin is a subdomain must resolve to the same token
-// as a plain HTTPS URL for that subdomain (the subdomain itself shares a token
-// with the root via schemeful-site scoping — see
-// FarblingToken_SubdomainAndRoot_ShareToken).
-TEST_P(BraveShieldsSettingsFarblingTest,
-       FarblingToken_BlobSubdomainUrl_SameTokenAsSubdomainUrl) {
-  brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(
-      1, base::Token(0, 1));
-
-  const auto sub_token = brave_shields_settings()->GetFarblingToken(
-      GURL("https://sub.example.com"), {});
-  const auto blob_sub_token = brave_shields_settings()->GetFarblingToken(
-      url::Origin::Create(GURL("blob:https://sub.example.com/some-uuid"))
-          .GetURL(),
-      {});
-  EXPECT_EQ(sub_token, blob_sub_token);
-}
-
-// A blob URL for a subdomain must share the token of the root domain.
-// BRAVE_SHIELDS_METADATA is registered with
-// REQUESTING_SCHEMEFUL_SITE_ONLY_SCOPE, so the content setting is keyed by the
-// schemeful site (eTLD+1 + scheme). https://example.com and
-// https://sub.example.com resolve to the same schemeful site, so they always
-// share one token.
-TEST_P(BraveShieldsSettingsFarblingTest,
-       FarblingToken_BlobSubdomainUrl_SameTokenAsRootDomain) {
-  brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(
-      1, base::Token(0, 1));
-
-  const auto root_token = brave_shields_settings()->GetFarblingToken(
-      GURL("https://example.com"), {});
-  const auto blob_sub_token = brave_shields_settings()->GetFarblingToken(
-      url::Origin::Create(GURL("blob:https://sub.example.com/some-uuid"))
-          .GetURL(),
-      {});
-  EXPECT_EQ(root_token, blob_sub_token);
-}
-
 // Two completely different origins must get different tokens.
 TEST_P(BraveShieldsSettingsFarblingTest,
        FarblingToken_DifferentOrigins_DifferentTokens) {

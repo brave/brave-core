@@ -8,8 +8,9 @@ import override_utils
 
 
 @override_utils.override_function(globals())
-async def _customize_and_sign_chrome(original_function, paths, dist_config,
-                                     *args):
+async def _customize_and_sign_chrome(
+    original_function, paths, dist_config, *args
+):
     base_config = dist_config.base_config
     # This also serves as a safeguard that .is_in_sign_chrome exists:
     value_before = base_config.is_in_sign_chrome

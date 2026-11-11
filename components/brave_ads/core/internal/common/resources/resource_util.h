@@ -15,7 +15,7 @@ namespace brave_ads {
 
 template <typename T>
 using LoadAndParseResourceComponentCallback =
-    base::OnceCallback<void(std::optional<T>)>;
+    base::OnceCallback<void(std::optional<T>, bool exists)>;
 
 template <typename T>
 void LoadAndParseResourceComponent(

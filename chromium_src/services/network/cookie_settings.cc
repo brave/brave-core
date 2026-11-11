@@ -19,7 +19,6 @@ bool CookieSettings::IsEphemeralCookieAccessible(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     const std::optional<url::Origin>& top_frame_origin,
-    const net::FirstPartySetMetadata& first_party_set_metadata,
     net::CookieSettingOverrides overrides,
     net::CookieInclusionStatus* cookie_inclusion_status) const {
   // Upstream now do single cookie-specific checks in some places to determine
@@ -34,8 +33,7 @@ bool CookieSettings::IsEphemeralCookieAccessible(
   }
 
   return IsCookieAccessible(cookie, url, site_for_cookies, top_frame_origin,
-                            first_party_set_metadata, overrides,
-                            cookie_inclusion_status);
+                            overrides, cookie_inclusion_status);
 }
 
 net::NetworkDelegate::PrivacySetting
@@ -58,7 +56,6 @@ bool CookieSettings::AnnotateAndMoveUserBlockedEphemeralCookies(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     const url::Origin* top_frame_origin,
-    const net::FirstPartySetMetadata& first_party_set_metadata,
     net::CookieSettingOverrides overrides,
     net::CookieAccessResultList& maybe_included_cookies,
     net::CookieAccessResultList& excluded_cookies) const {
@@ -73,8 +70,8 @@ bool CookieSettings::AnnotateAndMoveUserBlockedEphemeralCookies(
   }
 
   return AnnotateAndMoveUserBlockedCookies(
-      url, site_for_cookies, top_frame_origin, first_party_set_metadata,
-      overrides, maybe_included_cookies, excluded_cookies);
+      url, site_for_cookies, top_frame_origin, overrides,
+      maybe_included_cookies, excluded_cookies);
 }
 
 }  // namespace network

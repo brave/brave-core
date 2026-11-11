@@ -8,20 +8,42 @@
 
 #include <memory>
 
+#include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "chrome/browser/android/tab_features.h"
+#include "third_party/widevine/cdm/buildflags.h"
 
 class Profile;
 
 namespace ai_chat {
+class AIChatTabHelper;
 class TabDataWebContentsObserver;
 class WebMcpInjector;
-}
+}  // namespace ai_chat
+
+namespace playlist {
+class PlaylistTabHelper;
+}  // namespace playlist
+
+namespace brave_perf_predictor {
+class PerfPredictorTabHelper;
+}  // namespace brave_perf_predictor
 
 namespace content {
 class WebContents;
 }  // namespace content
 
+namespace image_metadata_stripper {
+class FileUploadController;
+}  // namespace image_metadata_stripper
+
 namespace tabs {
+
+class ContentsObservingTabFeature;
 
 // This class holds state that is scoped to a tab in Android. It is constructed
 // after the WebContents/tab_helpers, and destroyed before.
@@ -32,8 +54,62 @@ class BraveTabFeatures : public TabFeatures_Chromium {
   static BraveTabFeatures* FromTabFeatures(TabFeatures* tab_features);
 
  private:
+  // Records Cloudflare javascript-detection script loads. Null for
+  // incognito/guest profiles and when captcha metrics are disabled.
+  std::unique_ptr<ContentsObservingTabFeature>
+      cloudflare_js_detection_tab_helper_;
+
+  // Records page and media session metrics.
+  std::unique_ptr<ContentsObservingTabFeature> page_metrics_tab_helper_;
+
+  // Records searches. Null when SERP metrics are disabled or off the record.
+  std::unique_ptr<ContentsObservingTabFeature> serp_metrics_tab_helper_;
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  // Notifies the ads service of tab events.
+  std::unique_ptr<ContentsObservingTabFeature> ads_tab_helper_;
+  // Handles search result ads. Null off the record.
+  std::unique_ptr<ContentsObservingTabFeature>
+      creative_search_result_ad_tab_helper_;
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
+  // Offers and runs Web Discovery. Null outside regular profiles.
+  std::unique_ptr<ContentsObservingTabFeature> web_discovery_tab_helper_;
+#endif  // BUILDFLAG(ENABLE_WEB_DISCOVERY)
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  // Detects the Rewards creator of the page.
+  std::unique_ptr<ContentsObservingTabFeature> rewards_tab_helper_;
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  // Offers to enable Widevine when the page asks for it.
+  std::unique_ptr<ContentsObservingTabFeature> drm_tab_helper_;
+#endif  // BUILDFLAG(ENABLE_WIDEVINE)
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  // Finds the page's Brave News feeds. Null off the record.
+  std::unique_ptr<ContentsObservingTabFeature> brave_news_tab_helper_;
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  // Serves the wallet providers of the tab's frames.
+  std::unique_ptr<ContentsObservingTabFeature> brave_wallet_tab_helper_;
+#endif
+  // Estimates the bandwidth that Shields saves.
+  std::unique_ptr<brave_perf_predictor::PerfPredictorTabHelper>
+      perf_predictor_tab_helper_;
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  // Finds and saves the page's media. Null when Playlist is unavailable.
+  std::unique_ptr<playlist::PlaylistTabHelper> playlist_tab_helper_;
+#endif
+  // Enters fullscreen and Picture-in-Picture for YouTube videos.
+  std::unique_ptr<ContentsObservingTabFeature> youtube_script_injector_;
+
+  // Provides the tab's content to AI Chat. Null when AI Chat is not allowed.
+  std::unique_ptr<ai_chat::AIChatTabHelper> ai_chat_tab_helper_;
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
   std::unique_ptr<ai_chat::WebMcpInjector> web_mcp_injector_;
+
+  // The main controller which takes care of stripping metadata from images
+  // for the upload flow.
+  std::unique_ptr<image_metadata_stripper::FileUploadController>
+      stripper_upload_controller_;
 };
 
 }  // namespace tabs

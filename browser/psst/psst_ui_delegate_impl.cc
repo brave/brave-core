@@ -80,6 +80,10 @@ void PsstUiDelegateImpl::Show(
   }
 }
 
+void PsstUiDelegateImpl::HideAll() {
+  ui_presenter_->HideAll();
+}
+
 void PsstUiDelegateImpl::UpdateTasks(
     long progress,
     const std::vector<PolicyTask>& performed_tasks,
@@ -102,6 +106,11 @@ std::optional<PsstWebsiteSettings> PsstUiDelegateImpl::GetPsstWebsiteSettings(
     const url::Origin& origin,
     const std::string& user_id) {
   return psst_settings_service_->GetPsstWebsiteSettings(origin, user_id);
+}
+
+void PsstUiDelegateImpl::SetLogicalFlowCancelCallback(
+    base::RepeatingClosure cancel_callback) {
+  cancel_callback_ = std::move(cancel_callback);
 }
 
 void PsstUiDelegateImpl::AddObserver(Observer* obs) {
@@ -163,6 +172,14 @@ void PsstUiDelegateImpl::SubmitPsstErrorsReport() {
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
+void PsstUiDelegateImpl::OnDialogClose() {
+  ui_presenter_->HideInfoBar();
+  ui_presenter_->SetLocationBarIconStatus(LocationBarIconStatus::kHidden,
+                                        base::NullCallback(),
+                                        base::NullCallback());
+  CancelLogicalFlow();
+}
+
 void PsstUiDelegateImpl::OnUserAcceptedInfobar(const bool is_accepted) {
   // Handle the user's response to the infobar
   if (is_accepted) {
@@ -185,21 +202,17 @@ void PsstUiDelegateImpl::OnUserAcceptedInfobar(const bool is_accepted) {
 void PsstUiDelegateImpl::OnDontShowForThisSite() {
   CHECK(origin_);
   CHECK(dialog_data_);
+  CancelLogicalFlow();
   psst_settings_service_->SetPsstWebsiteSettings(
       origin_.value(), ConsentStatus::kBlock, dialog_data_->script_version,
       dialog_data_->user_id, {});
-  ui_presenter_->HideInfoBar();
-  ui_presenter_->SetLocationBarIconStatus(LocationBarIconStatus::kHidden,
-                                          base::NullCallback(),
-                                          base::NullCallback());
+  ui_presenter_->HideAll();
 }
 
 void PsstUiDelegateImpl::OnDisablePrivacySettingsTuning() {
+  CancelLogicalFlow();
   psst_settings_service_->SetPsstEnabled(false);
-  ui_presenter_->HideInfoBar();
-  ui_presenter_->SetLocationBarIconStatus(LocationBarIconStatus::kHidden,
-                                          base::NullCallback(),
-                                          base::NullCallback());
+  ui_presenter_->HideAll();
 }
 
 void PsstUiDelegateImpl::OnPsstEnableChange(bool new_value) {
@@ -207,11 +220,8 @@ void PsstUiDelegateImpl::OnPsstEnableChange(bool new_value) {
     return;
   }
 
-  ui_presenter_->HideInfoBar();
-  ui_presenter_->HideConsentDialog();
-  ui_presenter_->SetLocationBarIconStatus(LocationBarIconStatus::kHidden,
-                                          base::NullCallback(),
-                                          base::NullCallback());
+  CancelLogicalFlow();
+  ui_presenter_->HideAll();
 }
 
 void PsstUiDelegateImpl::RecordFailedTasks(
@@ -242,6 +252,13 @@ void PsstUiDelegateImpl::NotifyObserversOfTaskStatus(
 
 void PsstUiDelegateImpl::NotifyObserversOfPsstErrorsReportSent() {
   observer_list_.Notify(&Observer::OnPsstErrorsReportSent);
+}
+
+void PsstUiDelegateImpl::CancelLogicalFlow() {
+  if (!cancel_callback_) {
+    return;
+  }
+  cancel_callback_.Run();
 }
 
 }  // namespace psst

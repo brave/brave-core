@@ -20,7 +20,7 @@ const gfx::VectorIcon& AutocompleteMatch::GetVectorIcon(
            .empty()) {
     return kLeoCaratRightIcon;
   }
-  if (type == Type::STARTER_PACK && turl &&
+  if (type == Type::kStarterPack && turl &&
       turl->GetBuiltinEngineType() ==
           KEYWORD_MODE_STARTER_PACK_ASK_BRAVE_SEARCH) {
     return kLeoMessageBubbleAskIcon;

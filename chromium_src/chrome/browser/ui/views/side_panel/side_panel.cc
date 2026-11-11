@@ -188,11 +188,13 @@ void SidePanel::UpdateBorder() {
     // sides.
     insets.set_top(insets.top() + kRoundedCornersContentsOutlineThickness);
     insets.set_bottom(kWindowEdgeMargin);
+
+    const int outer_margin = brave::GetPanelOuterEdgeMargin(browser_view_);
     if (is_sidebar_leading) {
-      insets.set_left(kWindowEdgeMargin);
+      insets.set_left(outer_margin);
       insets.set_right(kRoundedCornersContentsOutlineThickness);
     } else {
-      insets.set_right(kWindowEdgeMargin);
+      insets.set_right(outer_margin);
       insets.set_left(kRoundedCornersContentsOutlineThickness);
     }
 

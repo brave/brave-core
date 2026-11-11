@@ -16,13 +16,13 @@
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/layout/brave_browser_view_tabbed_layout_impl.h"
@@ -32,7 +32,6 @@
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -66,7 +65,7 @@ namespace {
 
 using ShowSidebarOption = sidebar::SidebarService::ShowSidebarOption;
 
-sidebar::SidebarService* GetSidebarService(BraveBrowser* browser) {
+sidebar::SidebarService* GetSidebarService(BrowserWindowInterface* browser) {
   return sidebar::SidebarServiceFactory::GetForProfile(browser->GetProfile());
 }
 
@@ -105,54 +104,43 @@ class SidebarContainerView::BrowserWindowEventObserver
   const raw_ref<SidebarContainerView> host_;
 };
 
-SidebarContainerView::SidebarContainerView(Browser* browser)
+SidebarContainerView::SidebarContainerView(
+    BrowserWindowInterface* browser,
+    base::RepeatingClosure sidebar_control_view_visibility_changed_callback)
     : views::AnimationDelegateViews(this),
       browser_(browser),
       browser_window_event_observer_(
-          std::make_unique<BrowserWindowEventObserver>(*this)) {
+          std::make_unique<BrowserWindowEventObserver>(*this)),
+      sidebar_control_view_visibility_changed_callback_(
+          std::move(sidebar_control_view_visibility_changed_callback)) {
   constexpr int kAnimationDurationMS = 150;
   width_animation_.SetSlideDuration(base::Milliseconds(kAnimationDurationMS));
 
   SetNotifyEnterExitOnChild(true);
   SetUseDefaultFillLayout(true);
   SetBackground(views::CreateSolidBackground(kColorToolbar));
-}
 
-SidebarContainerView::~SidebarContainerView() = default;
-
-void SidebarContainerView::Init() {
-  initialized_ = true;
-
-  if (auto* focus_mode_controller =
-          browser_->GetFeatures().focus_mode_controller()) {
+  if (auto* focus_mode_controller = FocusModeController::From(browser_)) {
     focus_mode_observation_.Observe(focus_mode_controller);
   }
 
   AddChildViews();
   SetSidebarShowOption(
-      GetSidebarService(GetBraveBrowser())->GetSidebarShowOption());
+      GetSidebarService(browser_.get())->GetSidebarShowOption());
 }
 
-void SidebarContainerView::SetSidebarOnLeft(bool sidebar_on_left) {
-  DCHECK(initialized_);
+SidebarContainerView::~SidebarContainerView() = default;
 
+void SidebarContainerView::SetSidebarOnLeft(bool sidebar_on_left) {
   if (sidebar_on_left_ == sidebar_on_left) {
     return;
   }
 
   sidebar_on_left_ = sidebar_on_left;
-
-  DCHECK(sidebar_control_view_);
-  sidebar_control_view_->SetSidebarOnLeft(sidebar_on_left_);
 }
 
 bool SidebarContainerView::IsSidebarVisible() const {
   return sidebar_control_view_ && sidebar_control_view_->GetVisible();
-}
-
-void SidebarContainerView::SetSidebarControlViewVisibilityChangedCallback(
-    base::RepeatingClosure callback) {
-  sidebar_control_view_visibility_changed_callback_ = std::move(callback);
 }
 
 void SidebarContainerView::ChildVisibilityChanged(views::View* child) {
@@ -172,9 +160,28 @@ void SidebarContainerView::ShowSidebarOnMouseOver(
     return;
   }
 
+  auto* brave_browser_view =
+      BraveBrowserView::From(BrowserView::GetBrowserViewForBrowser(browser_));
   gfx::RectF mouse_event_detect_bounds(
-      BraveBrowserView::From(BrowserView::GetBrowserViewForBrowser(browser_))
-          ->GetBoundingBoxInScreenForMouseOverHandling());
+      brave_browser_view->GetBoundingBoxInScreenForMouseOverHandling());
+
+  // The vertical tab strip is laid out outside the sidebar when both are on the
+  // same side, so the sidebar's hot corner has to start where the strip ends.
+  auto* vertical_tab_controller = VerticalTabController::From(browser_);
+  if (vertical_tab_controller->ShouldShowBraveVerticalTabs() &&
+      vertical_tab_controller->IsVerticalTabOnRight() != sidebar_on_left_) {
+    const auto vertical_tab_width =
+        brave_browser_view->GetVerticalTabStripWidthAtWindowEdge();
+    if (!vertical_tab_width) {
+      // 'Hide completely when collapsed' is active, and the vertical tab width
+      // is zero.
+      return;
+    }
+
+    mouse_event_detect_bounds.Inset(
+        sidebar_on_left_ ? gfx::InsetsF::TLBR(0, *vertical_tab_width, 0, 0)
+                         : gfx::InsetsF::TLBR(0, 0, 0, *vertical_tab_width));
+  }
 
   constexpr int kHotCornerWidth = 7;
   const int inset = mouse_event_detect_bounds.width() - kHotCornerWidth;
@@ -188,10 +195,6 @@ void SidebarContainerView::ShowSidebarOnMouseOver(
     ShowSidebar();
     return;
   }
-}
-
-void SidebarContainerView::UpdateBorder() {
-  sidebar_control_view_->UpdateBorder();
 }
 
 void SidebarContainerView::SetSidebarShowOption(ShowSidebarOption show_option) {
@@ -210,12 +213,12 @@ void SidebarContainerView::UpdateSidebarVisibility() {
   // Pinning is an explicit user gesture, not a hover — snap to visible
   // without animation, mirroring kShowAlways above. Otherwise, fall through
   // and follow the current show option.
-  if (browser_->GetFeatures().sidebar_controller()->sidebar_pinned()) {
+  if (sidebar::SidebarController::From(browser_)->sidebar_pinned()) {
     ShowSidebar(AnimationStyle::kImmediate);
   } else {
     // Refresh sidebar visibility with current show option.
     SetSidebarShowOption(
-        GetSidebarService(GetBraveBrowser())->GetSidebarShowOption());
+        GetSidebarService(browser_.get())->GetSidebarShowOption());
   }
 }
 
@@ -236,8 +239,8 @@ void SidebarContainerView::MenuClosed() {
 }
 
 void SidebarContainerView::AddChildViews() {
-  sidebar_control_view_ = AddChildView(
-      std::make_unique<SidebarControlView>(this, GetBraveBrowser()));
+  sidebar_control_view_ =
+      AddChildView(std::make_unique<SidebarControlView>(this, browser_.get()));
   sidebar_control_view_->SetPaintToLayer();
 
   // To prevent showing layered-children while its bounds is invisible.
@@ -250,35 +253,36 @@ void SidebarContainerView::AddChildViews() {
 
 gfx::Size SidebarContainerView::CalculatePreferredSize(
     const views::SizeBounds& available_size) const {
-    if (!initialized_ || !sidebar_control_view_->GetVisible() ||
-        IsFullscreenByTab()) {
-      return gfx::Size();
-    }
+  if (!sidebar_control_view_ || !sidebar_control_view_->GetVisible() ||
+      IsFullscreenByTab()) {
+    return gfx::Size();
+  }
 
-    if (!width_animation_.is_animating()) {
-      return View::CalculatePreferredSize(available_size);
-    }
+  if (!width_animation_.is_animating()) {
+    return View::CalculatePreferredSize(available_size);
+  }
 
-    return {gfx::Tween::IntValueBetween(
-                width_animation_.GetCurrentValue(), 0,
-                sidebar_control_view_->GetPreferredSize().width()),
-            0};
+  return {gfx::Tween::IntValueBetween(
+              width_animation_.GetCurrentValue(), 0,
+              sidebar_control_view_->GetPreferredSize().width()),
+          0};
 }
 
 bool SidebarContainerView::IsFullscreenByTab() const {
-  DCHECK(browser_->GetFeatures().exclusive_access_manager() &&
-         browser_->GetFeatures()
-             .exclusive_access_manager()
-             ->fullscreen_controller());
-  return browser_->GetFeatures()
-      .exclusive_access_manager()
-      ->fullscreen_controller()
+  // Null while the browser window is still being constructed.
+  auto* exclusive_access_manager = ExclusiveAccessManager::From(browser_);
+  if (!exclusive_access_manager) {
+    return false;
+  }
+
+  CHECK(exclusive_access_manager->fullscreen_controller());
+  return exclusive_access_manager->fullscreen_controller()
       ->IsWindowFullscreenForTabOrPending();
 }
 
 bool SidebarContainerView::ShouldForceShowSidebar() const {
   // Don't hide sidebar when it's pinned.
-  return browser_->GetFeatures().sidebar_controller()->sidebar_pinned() ||
+  return sidebar::SidebarController::From(browser_)->sidebar_pinned() ||
          sidebar_control_view_->IsItemReorderingInProgress() ||
          sidebar_control_view_->IsBubbleWidgetVisible();
 }
@@ -322,10 +326,10 @@ void SidebarContainerView::AnimationProgressed(
 }
 
 void SidebarContainerView::AnimationEnded(const gfx::Animation* animation) {
-    if (width_animation_.GetCurrentValue() == 0) {
-      sidebar_control_view_->SetVisible(false);
-    }
-    PreferredSizeChanged();
+  if (width_animation_.GetCurrentValue() == 0) {
+    sidebar_control_view_->SetVisible(false);
+  }
+  PreferredSizeChanged();
 }
 
 void SidebarContainerView::OnFocusModeToggled(bool enabled) {
@@ -428,10 +432,6 @@ void SidebarContainerView::StartBrowserWindowEventMonitoring() {
 void SidebarContainerView::StopBrowserWindowEventMonitoring() {
   DVLOG(1) << __func__;
   browser_window_event_monitor_.reset();
-}
-
-BraveBrowser* SidebarContainerView::GetBraveBrowser() const {
-  return static_cast<BraveBrowser*>(browser_.get());
 }
 
 BEGIN_METADATA(SidebarContainerView)

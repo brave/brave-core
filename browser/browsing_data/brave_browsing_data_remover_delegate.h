@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_BROWSING_DATA_BRAVE_BROWSING_DATA_REMOVER_DELEGATE_H_
 #define BRAVE_BROWSER_BROWSING_DATA_BRAVE_BROWSING_DATA_REMOVER_DELEGATE_H_
 
+#include <vector>
+
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -16,6 +18,7 @@ namespace content_settings {
 class BravePrefProvider;
 }  // namespace content_settings
 
+class KeyedServiceBaseFactory;
 class Profile;
 
 class BraveBrowsingDataRemoverDelegate
@@ -29,6 +32,11 @@ class BraveBrowsingDataRemoverDelegate
       delete;
   BraveBrowsingDataRemoverDelegate operator=(
       const BraveBrowsingDataRemoverDelegate&) = delete;
+
+  // Factories of the Brave services the delegate clears data in. The upstream
+  // factory declares a dependency on each, so none is destroyed before a
+  // removal still running at profile teardown.
+  static std::vector<KeyedServiceBaseFactory*> GetServiceFactoryDependencies();
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveBrowsingDataRemoverDelegateTest,

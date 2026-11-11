@@ -8,17 +8,12 @@
 #include <utility>
 
 #include <string>
-#include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
-#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/filter_list.mojom-forward.h"
-#include "brave/components/brave_shields/core/common/filter_list.mojom-shared.h"
-#include "brave/components/brave_shields/core/common/pref_names.h"
-#include "components/prefs/pref_service.h"
 #include "ui/base/l10n/time_format.h"
 
 namespace brave_shields {

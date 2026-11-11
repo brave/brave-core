@@ -44,3 +44,30 @@ substitutions:
       code: |-
         auto pasted = SetInputIsPastedFromClipboard(
             controller_, paste_state_ != PasteState::kNone);
+
+  - description: |
+      Don't crash on a stale popup selection
+
+      `popup_selection_.line` can be past the end of the result when the
+      accessibility label is computed after pressing down in "@ask" keyword
+      mode, which made `AutocompleteResult::match_at()` abort.
+    preempt_function_impl:
+      function_name: OmniboxEditModel::GetPopupAccessibilityLabelForCurrentSelection
+      code: |-
+        if (popup_selection_.line >= autocomplete_controller()->result().size()) {
+          return std::u16string();
+        }
+
+  - description: |
+      Don't crash on a stale popup selection in GetInfoForCurrentText
+
+      Same stale `popup_selection_.line` as above, reached from a
+      different caller: `SetPopupSelection()` notifies `OnPopupDataChanged()`
+      with the new (possibly truncated) result before this function is asked
+      for the current match. `kNoMatch` is `SIZE_MAX`, so the size check below
+      already rules it out; no need to check it separately.
+    regex:
+      pattern: 'GetPopupSelection().line != OmniboxPopupSelection::kNoMatch'
+      replace: |-
+        GetPopupSelection().line <
+                           autocomplete_controller()->result().size()

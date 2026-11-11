@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/adaptive/AdaptiveToolbarStatePredictor.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/adaptive/AdaptiveToolbarStatePredictor.java
+index 6af23a0a3299efc4acae2d05536eb4065bc72d7c..30e8a076eb8217299077d48d3b5880a0545db397 100644
+--- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/adaptive/AdaptiveToolbarStatePredictor.java
++++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/adaptive/AdaptiveToolbarStatePredictor.java
+@@ -250,7 +250,7 @@ public class AdaptiveToolbarStatePredictor {
+         return AdaptiveToolbarButtonVariant.UNKNOWN;
+     }
+ 
+-    private boolean isVariantEnabled(@AdaptiveToolbarButtonVariant int variant) {
++    protected boolean isVariantEnabled(@AdaptiveToolbarButtonVariant int variant) {
+         switch (variant) {
+             case AdaptiveToolbarButtonVariant.NEW_TAB:
+                 return !isBottomBarEnabled();

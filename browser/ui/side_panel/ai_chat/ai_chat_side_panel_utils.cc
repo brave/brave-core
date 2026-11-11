@@ -16,7 +16,8 @@
 namespace ai_chat {
 
 #if !defined(TOOLKIT_VIEWS)
-Browser* GetBrowserForWebContents(content::WebContents* web_contents) {
+BrowserWindowInterface* GetBrowserForWebContents(
+    content::WebContents* web_contents) {
   NOTIMPLEMENTED();
   return nullptr;
 }

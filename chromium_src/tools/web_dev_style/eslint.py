@@ -16,7 +16,7 @@ with brave_chromium_utils.sys_path('//third_party/node'):
 def Run(_original_function, **kwargs):
     node_args = [
         brave_chromium_utils.wspath('//brave/node_modules/eslint/bin/eslint'),
-        '--quiet'
+        '--quiet',
     ]
     if os.environ.get('PRESUBMIT_FIX') == '1':
         node_args += ['--fix']

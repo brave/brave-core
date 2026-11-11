@@ -13,7 +13,9 @@
 
 #include "base/memory/raw_ref.h"
 #include "base/scoped_observation.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
@@ -26,6 +28,7 @@
 class BraveAppMenuBrowserTest;
 class BraveAppMenuModelBrowserTest;
 class BraveBrowserCommandControllerTest;
+class BrowserWindowInterface;
 enum class TabChangeType;
 
 namespace content {
@@ -90,10 +93,14 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
 #endif
 
   void InitBraveCommandState();
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   void UpdateCommandForBraveRewards();
+#endif
   void UpdateCommandForWebcompatReporter();
   void UpdateCommandForBraveSync();
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   void UpdateCommandForBraveWallet();
+#endif
   void UpdateCommandForSidebar();
   void UpdateCommandForAIChat();
   void UpdateCommandForBraveVPN();
@@ -113,7 +120,7 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
                                           base::TimeTicks time_stamp);
 
   PrefChangeRegistrar pref_change_registrar_;
-  const raw_ref<Browser> browser_;
+  const raw_ref<BrowserWindowInterface> browser_;
 
   CommandUpdaterImpl brave_command_updater_;
 };

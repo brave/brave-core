@@ -234,6 +234,45 @@ describe('useProvideConversationContext default tab attachment', () => {
     )
   })
 
+  it('does not clear a staged workspace when the default tab changes', async () => {
+    const disassociateContent = jest.fn()
+    const rendered = renderConversation({ disassociateContent })
+    const { result } = rendered
+
+    await setUpAttached(rendered, 10)
+
+    const stagedTab = stagedContent(10)
+    const stagedWorkspace: Mojom.AssociatedContent = {
+      ...stagedContent(0),
+      uuid: 'workspace-content',
+      contentType: Mojom.ContentType.Workspace,
+      title: 'Workspace',
+      url: { url: 'workspace://1b4e28ba-2fa1-41d2-883f-0016d3cca427' },
+    }
+    await act(async () => {
+      result.current.conversation.api.getState.update({
+        ...defaultConversationState,
+        associatedContent: [stagedTab, stagedWorkspace],
+      })
+    })
+
+    disassociateContent.mockClear()
+
+    await act(async () => {
+      result.current.aiChat.api.emitEvent('onNewDefaultConversation', [])
+    })
+    await act(async () => rendered.rerender())
+
+    expect(disassociateContent).toHaveBeenCalledWith(
+      stagedTab,
+      CONVERSATION_UUID,
+    )
+    expect(disassociateContent).not.toHaveBeenCalledWith(
+      stagedWorkspace,
+      CONVERSATION_UUID,
+    )
+  })
+
   it('attachFiles flips isUploadingFiles to true while running, and back to false when done', async () => {
     // Hold the processXFile call open via a controllable resolver so we can
     // observe both the rising and falling edge of isUploadingFiles.

@@ -7,7 +7,6 @@
 
 #include <string>
 
-#include "base/logging.h"
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
@@ -479,6 +478,11 @@ std::string GenerateContentStructure(const ContentNode& node,
              "\""});
       }
       base::StrAppend(&attributes, {BuildAttributes(attrs, detail)});
+      break;
+
+    case ContentAttributeType::CONTENT_ATTRIBUTE_MATH:
+      tag_name = "math";
+      attributes = BuildAttributes(attrs, detail);
       break;
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_UNKNOWN:

@@ -16,9 +16,7 @@ import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.brave_wallet.mojom.DecryptRequest;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
-import org.chromium.brave_wallet.mojom.GetEncryptionPublicKeyRequest;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
@@ -65,7 +63,8 @@ public class CryptoModel {
     private final Object mLock = new Object();
     private Context mContext;
 
-    private final NetworkModel mNetworkModel;
+    private final WalletNetworkModel mNetworkModel;
+    private final PanelNetworkModel mPanelNetworkModel;
 
     public LiveData<List<AccountInfo>> mAccountInfosFromKeyRingModel;
 
@@ -91,7 +90,10 @@ public class CryptoModel {
         mSharedData = new CryptoSharedDataImpl();
         mPendingTxHelper = new PendingTxHelper(mTxService, new AccountInfo[0], true, true);
         mNetworkModel =
-                new NetworkModel(
+                new WalletNetworkModel(
+                        mBraveWalletService, mJsonRpcService, mSharedData, mCryptoSharedActions);
+        mPanelNetworkModel =
+                new PanelNetworkModel(
                         mBraveWalletService, mJsonRpcService, mSharedData, mCryptoSharedActions);
     }
 
@@ -115,6 +117,7 @@ public class CryptoModel {
             this.mBraveWalletService = mBraveWalletService;
             mPendingTxHelper.setTxService(mTxService);
             mNetworkModel.resetServices(mBraveWalletService, mJsonRpcService);
+            mPanelNetworkModel.resetServices(mBraveWalletService, mJsonRpcService);
         }
         init();
     }
@@ -127,33 +130,8 @@ public class CryptoModel {
             refreshTransactions();
             updateCoinType();
             mNetworkModel.init();
+            mPanelNetworkModel.init();
         }
-    }
-
-    public void getPublicEncryptionRequest(Callback1<GetEncryptionPublicKeyRequest> onResult) {
-        if (mBraveWalletService == null) {
-            return;
-        }
-        mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(requests -> {
-            GetEncryptionPublicKeyRequest request = null;
-            if (requests != null && requests.length > 0) {
-                request = requests[0];
-            }
-            onResult.call(request);
-        });
-    }
-
-    public void getDecryptMessageRequest(Callback1<DecryptRequest> onResult) {
-        if (mBraveWalletService == null) {
-            return;
-        }
-        mBraveWalletService.getPendingDecryptRequests(requests -> {
-            DecryptRequest request = null;
-            if (requests != null && requests.length > 0) {
-                request = requests[0];
-            }
-            onResult.call(request);
-        });
     }
 
     public void refreshTransactions() {
@@ -201,8 +179,12 @@ public class CryptoModel {
         return mSharedData;
     }
 
-    public NetworkModel getNetworkModel() {
+    public WalletNetworkModel getNetworkModel() {
         return mNetworkModel;
+    }
+
+    public PanelNetworkModel getPanelNetworkModel() {
+        return mPanelNetworkModel;
     }
 
     public void updateCoinType() {
@@ -230,6 +212,7 @@ public class CryptoModel {
         this.mAccountInfosFromKeyRingModel = accountInfosFromKeyRingModel;
         // pass on the observer to other object
         mNetworkModel.setAccountInfosFromKeyRingModel(accountInfosFromKeyRingModel);
+        mPanelNetworkModel.setAccountInfosFromKeyRingModel(accountInfosFromKeyRingModel);
     }
 
     public void updateNftDiscovery(boolean isEnabled) {

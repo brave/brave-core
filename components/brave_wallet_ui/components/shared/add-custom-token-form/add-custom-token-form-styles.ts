@@ -4,13 +4,13 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css/variables'
-import ProgressRing from '@brave/leo/react/progressRing'
+import * as leo from '@brave/nala/tokens/css/variables'
+import ProgressRing from '@brave/nala/react/progressRing'
 
 // Shared Styles
 import { Text, WalletButton, Row } from '../style'
 import { CaratStrongDownIcon } from 'brave-ui/components/icons'
-import { layoutPanelWidth } from '../../desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+import { layoutPanelWidth } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 // graphics
 import NftPlaceholderIcon from '../../../assets/svg-icons/nft-placeholder.svg'

@@ -28,7 +28,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -495,6 +495,7 @@ class FakeAdsInternalsPage final : public bat_ads::mojom::AdsInternalsPage {
   std::optional<bool> last_rewards_enabled;
   std::optional<bool> last_wallet_connected;
   bool did_initialize_ads_service = false;
+  bool did_update_ad_format_settings = false;
 
  private:
   // bat_ads::mojom::AdsInternalsPage:
@@ -508,6 +509,10 @@ class FakeAdsInternalsPage final : public bat_ads::mojom::AdsInternalsPage {
 
   void UpdateDidInitializeAdsService() override {
     did_initialize_ads_service = true;
+  }
+
+  void UpdateAdFormatSettings() override {
+    did_update_ad_format_settings = true;
   }
 
   mojo::Receiver<bat_ads::mojom::AdsInternalsPage> receiver_{this};

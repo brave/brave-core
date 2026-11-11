@@ -11,21 +11,41 @@ left pointing at an ephemeral Xcode -- here at the recipe-module level, where
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    brave_core_checkout,
+    osx_sdk,
+    platform,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['brave_core_checkout', 'osx_sdk', 'platform', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    osx_sdk: osx_sdk.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    brave_core_checkout: brave_core_checkout.TEST_API
+    osx_sdk: osx_sdk.TEST_API
+    platform: platform.TEST_API
+
+
+def RunSteps(api: DEPS):
     with api.osx_sdk.ensure('/b/checkout/src'):
         pass
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'install fails',
         api.platform.name('mac'),
-        api.brave_core_checkout.deployed('tools/cr/toolchains'),
+        api.brave_core_checkout.with_git_cache(),
+        api.brave_core_checkout.deployed('tools/cr'),
         api.osx_sdk.mac_sdk_gni(),
         api.step_data('install xcode', retcode=1),
         api.post_process(post_process.StepFailure, 'install xcode'),
@@ -38,7 +58,8 @@ def GenTests(api):
     yield api.test(
         'install succeeds',
         api.platform.name('mac'),
-        api.brave_core_checkout.deployed('tools/cr/toolchains'),
+        api.brave_core_checkout.with_git_cache(),
+        api.brave_core_checkout.deployed('tools/cr'),
         api.osx_sdk.installed(),
         api.post_process(post_process.MustRun, 'reset xcode'),
         api.post_process(post_process.StatusSuccess),

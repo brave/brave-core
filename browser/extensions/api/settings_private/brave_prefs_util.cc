@@ -22,6 +22,7 @@
 #include "brave/components/debounce/core/common/pref_names.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
@@ -60,6 +61,10 @@
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/core/browser/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/local_ai/core/pref_names.h"
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -256,16 +261,15 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[browsing_data::prefs::kDeleteBraveLeoHistoryOnExit] =
       settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP] =
-      settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[kMRUCyclingEnabled] = settings_api::PrefType::kBoolean;
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   (*s_brave_allowlist)[kBraveWaybackMachineEnabled] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[kBraveWaybackMachineAutoCheckEnabled] =
       settings_api::PrefType::kBoolean;
 #endif
   (*s_brave_allowlist)[kEnableWindowClosingConfirm] =
       settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[kEnableClosingLastTab] =
+  (*s_brave_allowlist)[brave_tabs::kEnableClosingLastTab] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kShowFullscreenReminder] =
       settings_api::PrefType::kBoolean;
@@ -285,8 +289,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[brave_wallet::kDefaultCardanoWallet] =
       settings_api::PrefType::kNumber;
   (*s_brave_allowlist)[brave_wallet::kDefaultBaseCurrency] =
-      settings_api::PrefType::kString;
-  (*s_brave_allowlist)[brave_wallet::kDefaultBaseCryptocurrency] =
       settings_api::PrefType::kString;
   (*s_brave_allowlist)[brave_wallet::kShowWalletIconOnToolbar] =
       settings_api::PrefType::kBoolean;
@@ -312,6 +314,15 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatTabOrganizationEnabled] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)
+      [ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent] =
+          settings_api::PrefType::kBoolean;
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // Owned by the chrome://history toggle; the Leo settings page reads it to
+  // disable the send-page-content sub-option.
+  (*s_brave_allowlist)[local_ai::prefs::kBraveHistoryEmbeddingsEnabled] =
+      settings_api::PrefType::kBoolean;
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
   (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatTabOrganizationModelKey] =
       settings_api::PrefType::kString;
   (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatUserCustomizationEnabled] =
@@ -321,10 +332,13 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatOllamaFetchEnabled] =
       settings_api::PrefType::kBoolean;
 
-  // Survey Panelist pref
-  (*s_brave_allowlist)
-      [ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist] =
-          settings_api::PrefType::kBoolean;
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // On-device AI pref
+  (*s_brave_allowlist)[local_ai::prefs::kBraveHistoryEmbeddingsEnabled] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled] =
+      settings_api::PrefType::kBoolean;
+#endif
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   // Push Messaging Pref
@@ -335,8 +349,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[omnibox::kPreventUrlElisionsInOmnibox] =
       settings_api::PrefType::kBoolean;
 #if BUILDFLAG(ENABLE_TOR)
-  (*s_brave_allowlist)[tor::prefs::kOnionOnlyInTorWindows] =
-      settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[tor::prefs::kBridgesConfig] =
       settings_api::PrefType::kDictionary;
 #endif

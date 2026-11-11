@@ -6,10 +6,16 @@
 package org.chromium.chrome.browser.settings;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
+import android.view.TouchDelegate;
 import android.view.View;
-import android.widget.ImageButton;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -33,6 +39,7 @@ import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.billing.LinkSubscriptionUtils;
 import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
+import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs.CredentialFetchResult;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.policy.BravePolicyConstants;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -51,6 +58,13 @@ import java.util.Map;
 public class BraveOriginPreferences extends BravePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
     private static final String TAG = "BraveOriginPrefs";
+
+    /** Where "contact support" in the activation limit message goes. */
+    private static final String BRAVE_SUPPORT_URL =
+            "https://support.brave.app/hc/en-us/requests/new?ticket_form_id=360003078831";
+
+    /** Minimum tappable size for the snackbar action, which is shorter than that on its own. */
+    private static final int MIN_TOUCH_TARGET_DP = 48;
 
     /**
      * Fragment argument: when true, show the restart snackbar on open (set by native when a
@@ -172,11 +186,16 @@ public class BraveOriginPreferences extends BravePreferenceFragment
             setAllPreferencesEnabled(false);
 
             BraveOriginSubscriptionPrefs.setCredentialsFetchedCallback(
-                    (success) -> {
+                    (result) -> {
                         mIsFetchingCredentials = false;
-                        if (success) {
+                        if (result == CredentialFetchResult.SUCCESS) {
                             setAllPreferencesEnabled(true);
                             transitionSnackbarToRestart();
+                        } else if (result
+                                == CredentialFetchResult.ACTIVATION_LIMIT_EXTENDABLE) {
+                            showActivationLimitSnackbar(/* canExtend= */ true);
+                        } else if (result == CredentialFetchResult.ACTIVATION_LIMIT_REACHED) {
+                            showActivationLimitSnackbar(/* canExtend= */ false);
                         } else {
                             // Close the preferences screen on failure
                             dismissRestartSnackbar();
@@ -186,6 +205,12 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                         }
                     },
                     profile);
+
+            // A failed fetch leaves the prefs in the same state a killed one does, so returning to
+            // this screen finds "fetching" with nothing actually running. Restart it, or the
+            // spinner never resolves. No-op when a fetch is already in flight.
+            BraveOriginSubscriptionPrefs.resumeCredentialFetchIfNeeded(
+                    profile, /* openSettings= */ false);
         }
     }
 
@@ -236,6 +261,16 @@ public class BraveOriginPreferences extends BravePreferenceFragment
      * Shows a custom snackbar prompting the user to restart the browser after toggling a feature.
      */
     private void showRestartSnackbar() {
+        showRestartSnackbar(
+                R.string.origin_changing_brave_features_title,
+                R.string.origin_changing_brave_features_message);
+    }
+
+    /**
+     * Shows the restart snackbar with its own title and message, for callers whose reason for
+     * restarting is not a feature toggle.
+     */
+    private void showRestartSnackbar(int titleRes, int messageRes) {
         // Don't replace the fetching snackbar while credentials are loading
         if (mIsFetchingCredentials) {
             return;
@@ -264,20 +299,181 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                 LayoutInflater.from(requireContext())
                         .inflate(R.layout.origin_restart_snackbar, null);
 
+        ((TextView) customView.findViewById(R.id.snackbar_title)).setText(titleRes);
+        ((TextView) customView.findViewById(R.id.snackbar_message)).setText(messageRes);
+
         // Set up restart action
         TextView actionButton = customView.findViewById(R.id.snackbar_action);
+        // The action row is only as tall as its text, so hang the delegate off the snackbar root,
+        // which has the vertical room the expanded hit rect needs.
+        expandActionTouchTarget(actionButton, (ViewGroup) customView);
         actionButton.setOnClickListener(
                 v -> {
                     dismissRestartSnackbar();
                     BraveRelaunchUtils.restart();
                 });
 
-        // Set up close button
-        ImageButton closeButton = customView.findViewById(R.id.snackbar_close);
-        closeButton.setOnClickListener(v -> dismissRestartSnackbar());
 
         snackbarLayout.addView(customView, 0);
         mRestartSnackbar.show();
+    }
+
+    /**
+     * Shows the snackbar in the "activation limit reached" state: the subscription has been set up
+     * on as many devices as it allows.
+     *
+     * @param canExtend Whether the payment service will grant more activations. When true the
+     *     action asks for them and retries the credential fetch that the limit blocked; when false
+     *     there is no action to offer, and the message's support link is the only way forward.
+     */
+    private void showActivationLimitSnackbar(boolean canExtend) {
+        View view = getView();
+        if (view == null) {
+            return;
+        }
+        dismissRestartSnackbar();
+
+        mRestartSnackbar = Snackbar.make(view, "", Snackbar.LENGTH_INDEFINITE);
+        Snackbar.SnackbarLayout snackbarLayout =
+                (Snackbar.SnackbarLayout) mRestartSnackbar.getView();
+
+        snackbarLayout.removeAllViews();
+        snackbarLayout.setPadding(0, 0, 0, 0);
+        snackbarLayout.setBackground(null);
+
+        View customView =
+                LayoutInflater.from(requireContext())
+                        .inflate(R.layout.origin_restart_snackbar, null);
+
+        TextView titleView = customView.findViewById(R.id.snackbar_title);
+        titleView.setText(R.string.origin_activation_limit_title);
+
+        TextView messageView = customView.findViewById(R.id.snackbar_message);
+        messageView.setText(buildActivationLimitMessage());
+        messageView.setMovementMethod(LinkMovementMethod.getInstance());
+
+        View fetchingContainer = customView.findViewById(R.id.snackbar_fetching_container);
+        View restartContainer = customView.findViewById(R.id.snackbar_restart_container);
+        mFetchingContainer = fetchingContainer;
+        mRestartContainer = restartContainer;
+        fetchingContainer.setVisibility(View.GONE);
+        restartContainer.setVisibility(canExtend ? View.VISIBLE : View.GONE);
+
+        if (!canExtend) {
+            snackbarLayout.addView(customView, 0);
+            mRestartSnackbar.show();
+            return;
+        }
+
+        TextView fetchingText = customView.findViewById(R.id.snackbar_fetching_text);
+        fetchingText.setText(R.string.origin_processing);
+
+        TextView actionButton = customView.findViewById(R.id.snackbar_action);
+        // The action row is only as tall as its text, so hang the delegate off the snackbar root,
+        // which has the vertical room the expanded hit rect needs.
+        expandActionTouchTarget(actionButton, (ViewGroup) customView);
+        actionButton.setText(R.string.origin_request_more_activations);
+        actionButton.setOnClickListener(
+                v -> {
+                    // Title and message stay put; only the action area becomes the spinner.
+                    restartContainer.setVisibility(View.GONE);
+                    fetchingContainer.setVisibility(View.VISIBLE);
+
+                    // Re-register before asking: extendActivationLimit reports the retried fetch
+                    // through the credentials-fetched callback, which fired once to get us here
+                    // and cleared itself.
+                    Profile profile = getProfile();
+                    BraveOriginSubscriptionPrefs.setCredentialsFetchedCallback(
+                            this::onActivationExtendResult, profile);
+                    BraveOriginSubscriptionPrefs.extendActivationLimit(profile);
+                });
+
+        snackbarLayout.addView(customView, 0);
+        mRestartSnackbar.show();
+    }
+
+    /** Handles the credential fetch that follows a granted activation request. */
+    private void onActivationExtendResult(@CredentialFetchResult int result) {
+        if (result == CredentialFetchResult.ACTIVATION_LIMIT_REACHED) {
+            // The retry hit the limit again with nothing left to grant, so drop the action
+            // instead of offering a request that cannot succeed.
+            showActivationLimitSnackbar(/* canExtend= */ false);
+            return;
+        }
+        if (result != CredentialFetchResult.SUCCESS) {
+            // Put the action back so the user can try again or reach support, rather than
+            // stranding them on a spinner or closing the screen.
+            if (mFetchingContainer != null) {
+                mFetchingContainer.setVisibility(View.GONE);
+            }
+            if (mRestartContainer != null) {
+                mRestartContainer.setVisibility(View.VISIBLE);
+            }
+            return;
+        }
+
+        setAllPreferencesEnabled(true);
+        // Rebuild rather than transition: this snackbar's action was repurposed for the
+        // activation request, so it needs the restart text and listener back. The restart is
+        // prompted by the activation grant, not by a feature toggle, so it says so.
+        dismissRestartSnackbar();
+        showRestartSnackbar(
+                R.string.origin_ready_to_activate_title,
+                R.string.origin_ready_to_activate_message);
+    }
+
+    /**
+     * Builds the activation limit message with "contact support" rendered as a link. The link text
+     * is a separate resource so translations can move it within the sentence.
+     */
+    private CharSequence buildActivationLimitMessage() {
+        String linkText = getString(R.string.origin_contact_support);
+        String message = getString(R.string.origin_activation_limit_message, linkText);
+        SpannableString spannable = new SpannableString(message);
+        int start = message.indexOf(linkText);
+        if (start >= 0) {
+            spannable.setSpan(
+                    new ClickableSpan() {
+                        @Override
+                        public void onClick(View widget) {
+                            TabUtils.openURLWithBraveActivity(BRAVE_SUPPORT_URL);
+                        }
+                    },
+                    start,
+                    start + linkText.length(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return spannable;
+    }
+
+    /**
+     * Expands {@code action}'s touch area to {@link #MIN_TOUCH_TARGET_DP}, registering the
+     * delegate on {@code delegateParent} because the action's own row is only as tall as its text
+     * and a delegate never sees touches outside its view's bounds.
+     *
+     * <p>The listener is registered on the action itself so it is released along with it. A global
+     * layout listener would outlive the snackbar: once attached, getViewTreeObserver() hands back
+     * the window's observer, and nothing here would remove the listener from it.
+     */
+    private static void expandActionTouchTarget(View action, ViewGroup delegateParent) {
+        action.addOnLayoutChangeListener(
+                (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+                    Rect bounds = new Rect();
+                    action.getDrawingRect(bounds);
+                    delegateParent.offsetDescendantRectToMyCoords(action, bounds);
+
+                    float density = action.getResources().getDisplayMetrics().density;
+                    int extra =
+                            (Math.round(MIN_TOUCH_TARGET_DP * density) - bounds.height()) / 2;
+                    if (extra <= 0) {
+                        return;
+                    }
+                    bounds.top -= extra;
+                    bounds.bottom += extra;
+                    // One action per snackbar, so a plain delegate is enough - no need to
+                    // compose it with others.
+                    delegateParent.setTouchDelegate(new TouchDelegate(bounds, action));
+                });
     }
 
     private void dismissRestartSnackbar() {
@@ -350,20 +546,16 @@ public class BraveOriginPreferences extends BravePreferenceFragment
         mFetchingContainer.setVisibility(View.VISIBLE);
         mRestartContainer.setVisibility(View.GONE);
 
-        // Set up fetching-state close button
-        ImageButton fetchingCloseButton = customView.findViewById(R.id.snackbar_fetching_close);
-        fetchingCloseButton.setOnClickListener(v -> dismissRestartSnackbar());
-
         // Wire up the restart container buttons for when we transition
         TextView actionButton = customView.findViewById(R.id.snackbar_action);
+        // The action row is only as tall as its text, so hang the delegate off the snackbar root,
+        // which has the vertical room the expanded hit rect needs.
+        expandActionTouchTarget(actionButton, (ViewGroup) customView);
         actionButton.setOnClickListener(
                 v -> {
                     dismissRestartSnackbar();
                     BraveRelaunchUtils.restart();
                 });
-
-        ImageButton closeButton = customView.findViewById(R.id.snackbar_close);
-        closeButton.setOnClickListener(v -> dismissRestartSnackbar());
 
         snackbarLayout.addView(customView, 0);
         mRestartSnackbar.show();

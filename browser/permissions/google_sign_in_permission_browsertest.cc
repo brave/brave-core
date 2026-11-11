@@ -15,7 +15,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_test_util.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -134,9 +133,11 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
     return prompt_factory_.get();
   }
 
-  Browser* browser() { return current_browser_; }
+  BrowserWindowInterface* browser() { return current_browser_; }
 
-  void SetBrowser(Browser* browser) { current_browser_ = browser; }
+  void SetBrowser(BrowserWindowInterface* browser) {
+    current_browser_ = browser;
+  }
 
   void SetPromptFactory(permissions::PermissionRequestManager* manager) {
     prompt_factory_ =
@@ -336,7 +337,7 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   base::test::ScopedFeatureList feature_list_;
-  raw_ptr<Browser, DanglingUntriaged> current_browser_;
+  raw_ptr<BrowserWindowInterface, DanglingUntriaged> current_browser_;
 
  private:
   std::unique_ptr<permissions::MockPermissionPromptFactory> prompt_factory_;
@@ -405,7 +406,7 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeInheritAllow) {
   // Allowed permission for a website is inherited in incognito
   CheckAskAndAcceptFlow();
   Profile* profile = browser()->GetProfile();
-  Browser* incognito_browser = CreateIncognitoBrowser(profile);
+  BrowserWindowInterface* incognito_browser = CreateIncognitoBrowser(profile);
   SetBrowser(incognito_browser);
   SetPromptFactory(GetPermissionRequestManager());
   CheckAllowedFlow();
@@ -415,7 +416,7 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeInheritBlock) {
   // Blocked permission for a website is inherited in incognito
   CheckAskAndDenyFlow();
   Profile* profile = browser()->GetProfile();
-  Browser* incognito_browser = CreateIncognitoBrowser(profile);
+  BrowserWindowInterface* incognito_browser = CreateIncognitoBrowser(profile);
   SetBrowser(incognito_browser);
   SetPromptFactory(GetPermissionRequestManager());
   CheckBlockedFlow();
@@ -459,8 +460,8 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeDoesNotLeak) {
   // Permission set in Incognito does not leak back to normal mode.
-  Browser* original_browser = browser();
-  Browser* incognito_browser = CreateIncognitoBrowser();
+  BrowserWindowInterface* original_browser = browser();
+  BrowserWindowInterface* incognito_browser = CreateIncognitoBrowser();
   SetBrowser(incognito_browser);
   SetPromptFactory(GetPermissionRequestManager());
   CheckAskAndAcceptFlow();

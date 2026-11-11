@@ -37,6 +37,8 @@ source_set("page_info") {
     "//ui/base",
     "//ui/views/controls/webview",
   ]
+
+  public_deps = [ "//ui/base/unowned_user_data" ]
 }
 
 source_set("unit_tests") {
@@ -62,6 +64,7 @@ source_set("browser_tests") {
     "//brave/browser/ui/page_info",
     "//brave/components/brave_shields/core/common",
     "//chrome/browser/ui/views/frame",
+    "//chrome/browser/ui/views/frame:browser_view_header",
     "//chrome/browser/ui/views/location_bar",
     "//chrome/browser/ui/views/page_info",
     "//chrome/test:test_support",

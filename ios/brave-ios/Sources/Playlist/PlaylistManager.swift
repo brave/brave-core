@@ -462,7 +462,7 @@ public class PlaylistManager: NSObject {
 
     // Delete items from the folder
     return await withCheckedContinuation { continuation in
-      PlaylistItem.removeItems(itemsToDelete) {
+      PlaylistItem.removeItems(itemsToDelete) { [self] in
         // Attempt to delete the folder if we can
         if success, folder.uuid != PlaylistFolder.savedFolderUUID {
           PlaylistFolder.removeFolder(folder.uuid ?? "") { [weak self] in
@@ -554,7 +554,7 @@ public class PlaylistManager: NSObject {
           return true
         }
         Logger.module.error(
-          "An error occured deleting Playlist Cached Item \(cacheItem.name ?? item.tagId): \(error.localizedDescription)"
+          "An error occured deleting Playlist Cached Item \(cacheItem.name): \(error.localizedDescription)"
         )
         return false
       }
@@ -1034,36 +1034,30 @@ extension PlaylistManager {
       asset = await self.asset(for: item.tagId, mediaSrc: item.src)
     }
 
-    // Accessing tracks blocks the main-thread if not already loaded
-    // So we first need to check the track status before attempting to access it!
-    var error: NSError?
-    let trackStatus = asset.statusOfValue(forKey: "tracks", error: &error)
-
-    if trackStatus == .loaded {
-      if !asset.tracks.isEmpty,
-        let track = asset.tracks(withMediaType: .video).first
-          ?? asset.tracks(withMediaType: .audio).first
-      {
-        if track.timeRange.duration.isIndefinite {
-          return TimeInterval.infinity
-        } else {
-          return track.timeRange.duration.seconds
-        }
+    if case .loaded = asset.status(of: .tracks),
+      let tracks = try? await asset.load(.tracks),
+      let track = tracks.first(where: { $0.mediaType == .video })
+        ?? tracks.first(where: { $0.mediaType == .audio }),
+      let timeRange = try? await track.load(.timeRange)
+    {
+      if timeRange.duration.isIndefinite {
+        return TimeInterval.infinity
+      } else {
+        return timeRange.duration.seconds
       }
     }
 
-    // Accessing duration or commonMetadata blocks the main-thread if not already loaded
-    // So we first need to check the track status before attempting to access it!
-    let durationStatus = asset.statusOfValue(forKey: "duration", error: &error)
-    if durationStatus == .loaded {
+    if case .loaded = asset.status(of: .duration),
+      let duration = try? await asset.load(.duration)
+    {
       // If it's live/indefinite
-      if asset.duration.isIndefinite {
+      if duration.isIndefinite {
         return TimeInterval.infinity
       }
 
       // If it's a valid duration
-      if abs(asset.duration.seconds.distance(to: 0.0)) >= tolerance {
-        return asset.duration.seconds
+      if abs(duration.seconds.distance(to: 0.0)) >= tolerance {
+        return duration.seconds
       }
     }
 
@@ -1086,7 +1080,7 @@ extension PlaylistManager {
           if let track = loadedTracks.first(where: { $0.mediaType == .video })
             ?? loadedTracks.first(where: { $0.mediaType == .audio })
           {
-            duration = track.timeRange.duration
+            duration = try await track.load(.timeRange).duration
           } else {
             duration = loadedDuration
           }
@@ -1143,66 +1137,5 @@ extension PlaylistManager {
         return nil
       }
     }.value
-  }
-}
-
-extension PlaylistManager {
-  @MainActor
-  public static func syncSharedFolder(sharedFolderUrl: String) async throws {
-    guard let folder = PlaylistFolder.getSharedFolder(sharedFolderUrl: sharedFolderUrl),
-      let folderId = folder.uuid
-    else {
-      return
-    }
-
-    let model = try await PlaylistSharedFolderNetwork.fetchPlaylist(folderUrl: sharedFolderUrl)
-    var oldItems = Set(folder.playlistItems?.map({ PlaylistInfo(item: $0) }) ?? [])
-    let deletedItems = oldItems.subtracting(model.mediaItems)
-    let newItems = Set(model.mediaItems).subtracting(oldItems)
-    oldItems = []
-
-    for deletedItem in deletedItems {
-      await PlaylistManager.shared.delete(item: deletedItem)
-    }
-
-    if !newItems.isEmpty {
-      await withCheckedContinuation { continuation in
-        PlaylistItem.updateItems(Array(newItems), folderUUID: folderId, newETag: model.eTag) {
-          continuation.resume()
-        }
-      }
-    }
-  }
-
-  @MainActor
-  public static func syncSharedFolders() async throws {
-    let folderURLs = PlaylistFolder.getSharedFolders().compactMap({ $0.sharedFolderUrl })
-    await withTaskGroup(of: Void.self) { group in
-      folderURLs.forEach { url in
-        group.addTask {
-          try? await syncSharedFolder(sharedFolderUrl: url)
-        }
-      }
-    }
-  }
-}
-
-extension AVAsset {
-  func displayNames(for mediaSelection: AVMediaSelection) -> String? {
-    var names = ""
-    for mediaCharacteristic in availableMediaCharacteristicsWithMediaSelectionOptions {
-      guard
-        let mediaSelectionGroup = mediaSelectionGroup(forMediaCharacteristic: mediaCharacteristic),
-        let option = mediaSelection.selectedMediaOption(in: mediaSelectionGroup)
-      else { continue }
-
-      if names.isEmpty {
-        names += " " + option.displayName
-      } else {
-        names += ", " + option.displayName
-      }
-    }
-
-    return names.isEmpty ? nil : names
   }
 }

@@ -40,9 +40,6 @@
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "Έκδοση εφαρμογής";
 
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "Εταιρεία κινητής τηλεφωνίας";
-
 /* Text to tell user to not modify support info below email's body. */
 "vpn.contactFormDoNotEditText" = "Η Brave δεν σας παρακολουθεί ούτε γνωρίζει πώς χρησιμοποιείτε την εφαρμογή μας, επομένως δεν γνωρίζουμε πώς έχετε ρυθμίσει το VPN. Στείλτε μας πληροφορίες σχετικά με το πρόβλημα που αντιμετωπίζετε και θα κάνουμε ό,τι καλύτερο μπορούμε για να το επιλύσουμε το συντομότερο δυνατό.";
 
@@ -227,7 +224,7 @@
 "vpn.serverTitle" = "%ld Διακομιστής";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Προστατέψτε όλες τις εφαρμογές σας με το Brave VPN. Προστατέψτε έως και 10 συσκευές με ένα πρόγραμμα.";
+"vpn.settingHeaderBody" = "Απολαύστε ροή του περιεχομένου σας, με τον δικό σας τρόπο. Προστατέψτε κάθε εφαρμογή σε 10 συσκευές με 1 συνδρομή.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Επικοινωνία με την τεχνική υποστήριξη";

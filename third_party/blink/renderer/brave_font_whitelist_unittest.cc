@@ -38,7 +38,8 @@ TEST(BraveFontWhitelistTest, Platforms) {
   EXPECT_EQ(brave::GetFontWhitelistSizeForTesting(), 40UL);
 #elif BUILDFLAG(IS_LINUX)
   const auto distro = base::GetLinuxDistro();
-  if (distro.starts_with("Ubuntu 22.04")) {
+  if (distro.starts_with("Ubuntu 22.04") ||
+      distro.starts_with("Ubuntu 24.04")) {
     EXPECT_EQ(brave::GetFontWhitelistSizeForTesting(), 171UL);
   } else if (distro.starts_with("Ubuntu 20.04")) {
     EXPECT_EQ(brave::GetFontWhitelistSizeForTesting(), 163UL);
@@ -54,7 +55,8 @@ TEST(BraveFontWhitelistTest, Locales) {
 #if BUILDFLAG(IS_LINUX)
   size_t expected_size;
   const auto distro = base::GetLinuxDistro();
-  if (distro.starts_with("Ubuntu 22.04")) {
+  if (distro.starts_with("Ubuntu 22.04") ||
+      distro.starts_with("Ubuntu 24.04")) {
     expected_size = 372UL;
   } else if (distro.starts_with("Ubuntu 20.04")) {
     expected_size = 196UL;

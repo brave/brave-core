@@ -190,3 +190,69 @@ widget->Show();
 ```
 
 ---
+
+<a id="UV-006"></a>
+
+## ❌ Don't Use `ImageFetcher` for Off-the-Record or Tor Profiles
+
+**`ImageFetcherService` sends its requests through the browser-wide
+`SystemNetworkContextManager` network context, which is not bound to any
+profile.** For an off-the-record profile the request leaves the profile's
+network partition, and in a Tor window it bypasses the Tor proxy and goes
+straight to the destination host (leaking the user's IP and the visited site).
+Only use `ImageFetcher` when the profile is a regular profile; skip the fetch
+and fall back to a default (e.g. first letter of the hostname) otherwise.
+
+```cpp
+// ❌ WRONG - fetches through the system network context for any profile
+void SidebarModel::FetchFaviconFromNetwork(const SidebarItem& item) {
+  image_fetcher_->FetchImage(item.url, ...);
+}
+
+// ✅ CORRECT - skip the fetch for off-the-record (incl. Tor) profiles
+void SidebarModel::FetchFaviconFromNetwork(const SidebarItem& item) {
+  if (profile_->IsOffTheRecord()) {
+    return;  // Caller falls back to a default favicon.
+  }
+  image_fetcher_->FetchImage(item.url, ...);
+}
+```
+
+Any new use of `ImageFetcher` must be checked for this (e.g. favicon fetching
+for default search engine promotions). When a request must be profile-scoped,
+use a `SimpleURLLoader` with the profile's `URLLoaderFactory` instead.
+
+---
+
+<a id="UV-007"></a>
+
+## ✅ Mark Clipboard Writes from Off-the-Record Profiles as Off-the-Record
+
+**When browser UI code writes content derived from an off-the-record profile
+(Incognito, Private, Tor) to the clipboard, call
+`ScopedClipboardWriter::MarkAsOffTheRecord()`.** It sets
+`Clipboard::kNoLocalClipboardHistory | Clipboard::kNoCloudClipboard`, so
+OS-level clipboard history (e.g. Windows Win+V) and cloud clipboard sync to
+other devices do not retain the data. Without it, private-window content (such
+as screenshots) leaks outside the private session. Tor profiles are
+off-the-record, so `IsOffTheRecord()` covers them without a separate check.
+
+```cpp
+// ❌ WRONG - private-window content may land in clipboard history / cloud sync
+ui::ScopedClipboardWriter writer(ui::ClipboardBuffer::kCopyPaste);
+writer.WriteImage(bitmap);
+
+// ✅ CORRECT - mirrors content::ClipboardHostImpl and OmniboxViewViews
+ui::ScopedClipboardWriter writer(ui::ClipboardBuffer::kCopyPaste);
+writer.WriteImage(bitmap);
+if (profile->IsOffTheRecord()) {
+  writer.MarkAsOffTheRecord();
+}
+```
+
+Cover both branches in unit tests with a `ui::TestClipboard` subclass that
+records the `privacy_types` passed to
+`WritePortableAndPlatformRepresentations()` (including a regular-profile
+negative case).
+
+---

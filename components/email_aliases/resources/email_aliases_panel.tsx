@@ -7,7 +7,7 @@ import { createRoot } from 'react-dom/client'
 import * as React from 'react'
 import { StyleSheetManager } from 'styled-components'
 import { shouldForwardProp } from '$web-common/StyledComponentsProvider'
-import { setIconBasePath } from '@brave/leo/react/icon'
+import { setIconBasePath } from '@brave/nala/react/icon'
 import {
   EmailAliasModal,
   EmailAliasModalResultType,
@@ -20,7 +20,6 @@ import {
   EmailAliasesService,
   EmailAliasesPanelHandlerInterface,
   EmailAliasesPanelHandler,
-  MAX_ALIASES,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 import {
   useEmailAliases,
@@ -40,12 +39,12 @@ export const EmailAliasesPanelConnected = ({
   emailAliasesPanelHandler: EmailAliasesPanelHandlerInterface
   bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
 }) => {
-  const { aliasesUpdate } = useEmailAliases(bindObserver)
+  const { aliasesUpdate, accountInfo } = useEmailAliases(bindObserver)
   const aliases = aliasesUpdate.error ? [] : (aliasesUpdate.aliases ?? [])
   return (
     <EmailAliasModal
       aliases={aliases}
-      aliasLimit={MAX_ALIASES}
+      aliasLimit={accountInfo.maxAliasesCount}
       onReturnToMain={(action: EmailAliasModalResult) => {
         switch (action.type) {
           case EmailAliasModalResultType.Cancelled:

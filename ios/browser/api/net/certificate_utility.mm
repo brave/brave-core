@@ -26,6 +26,7 @@
 #include "net/cert/x509_util.h"
 #include "net/cert/x509_util_apple.h"
 #include "net/http/transport_security_state.h"
+#include "net/http/transport_security_state_pins_source.h"  // IWYU pragma: keep
 #include "net/log/net_log_with_source.h"
 #include "net/net_buildflags.h"
 #include "net/tools/transport_security_state_generator/cert_util.h"
@@ -41,6 +42,9 @@
 namespace net {
 namespace {
 #if BUILDFLAG(INCLUDE_TRANSPORT_SECURITY_STATE_PRELOAD_LIST)
+#include "net/http/transport_security_state_static_pins.h"  // nogncheck
+// Pins header must be included first because this header uses kFindHostPin
+// defined in the pins header.
 #include "net/http/transport_security_state_static.h"  // nogncheck
 #endif  // INCLUDE_TRANSPORT_SECURITY_STATE_PRELOAD_LIST
 }  // namespace

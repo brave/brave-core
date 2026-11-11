@@ -42,7 +42,9 @@ enum class WindowUsageStats {
 };
 
 const char* GetPrefNameForProfile(Profile* profile) {
-  if (profile->IsIncognitoProfile() && !profile->IsTor()) {
+  if ((profile->IsIncognitoProfile() ||
+       profile->IsEnterpriseIsolatedModeProfile()) &&
+      !profile->IsTor()) {
     return kLastTimeIncognitoUsed;
   }
   return nullptr;

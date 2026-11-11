@@ -27,12 +27,15 @@ import org.junit.runner.RunWith;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.ContextUtils;
+import org.chromium.base.ThreadUtils;
 import org.chromium.base.test.util.CriteriaHelper;
 import org.chromium.base.test.util.DoNotBatch;
 import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.policy.PolicyServiceFactory;
+import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tasks.tab_management.TabsSettings;
 import org.chromium.chrome.browser.tracing.settings.DeveloperSettings;
@@ -107,11 +110,7 @@ public class BraveMainSettingsFragmentTest {
         "background_images",
         "accessibility",
         "brave_languages",
-        "autofill_section",
-        "passwords",
-        "autofill_options",
-        "autofill_payment_methods",
-        "autofill_addresses",
+        "autofill_and_passwords",
         "support_section",
         "rate_brave",
         "about_section",
@@ -260,8 +259,8 @@ public class BraveMainSettingsFragmentTest {
         // settings screen in that case.
         int expectedCount =
                 ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS)
-                        ? 33
-                        : 34;
+                        ? 29
+                        : 30;
 
         assertEquals(
                 "Number of preferences has changed, please check and update preferenceCount"
@@ -273,6 +272,30 @@ public class BraveMainSettingsFragmentTest {
                         + " to exclude new from indexing.",
                 expectedCount,
                 nonVpnCount);
+    }
+
+    // Brave shows the address bar preference in its own Appearance settings. Upstream re-adds it to
+    // the main list on a configuration change and on a toolbar position change, neither of which
+    // goes through onResume, so both paths must stay covered.
+    @Test
+    @SmallTest
+    public void testAddressBarPrefNeverShown() {
+        startSettings();
+
+        assertAddressBarPrefAbsent("on start");
+
+        ThreadUtils.runOnUiThreadBlocking(
+                () ->
+                        mMainSettings.onConfigurationChanged(
+                                mMainSettings.getResources().getConfiguration()));
+        assertAddressBarPrefAbsent("after a configuration change");
+
+        ThreadUtils.runOnUiThreadBlocking(
+                () ->
+                        mMainSettings.onSharedPreferenceChanged(
+                                ContextUtils.getAppSharedPreferences(),
+                                ChromePreferenceKeys.TOOLBAR_TOP_ANCHORED));
+        assertAddressBarPrefAbsent("after a toolbar position change");
     }
 
     // For a Brave Origin subscriber, the policy-controlled feature rows must stay hidden until the
@@ -359,6 +382,14 @@ public class BraveMainSettingsFragmentTest {
     private boolean isPrefHidden(String key) {
         Preference pref = mMainSettings.getPreferenceScreen().findPreference(key);
         return pref != null && !pref.isVisible();
+    }
+
+    private void assertAddressBarPrefAbsent(String when) {
+        // getPreferenceScreen() is checked directly, as BraveMainPreferencesBase.findPreference()
+        // also returns removed preferences.
+        assertNull(
+                MainSettings.PREF_ADDRESS_BAR + " should not be in the main settings " + when,
+                mMainSettings.getPreferenceScreen().findPreference(MainSettings.PREF_ADDRESS_BAR));
     }
 
     private void startSettings() {

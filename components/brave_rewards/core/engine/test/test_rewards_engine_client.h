@@ -13,6 +13,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -33,15 +34,18 @@ struct FakeEncryption {
 };
 
 struct TestNetworkResult {
+  using Callback =
+      base::OnceCallback<mojom::UrlResponsePtr(const mojom::UrlRequest&)>;
+
   TestNetworkResult(const std::string& url,
                     mojom::UrlMethod method,
-                    mojom::UrlResponsePtr response);
+                    Callback callback);
 
   ~TestNetworkResult();
 
   std::string url;
   mojom::UrlMethod method;
-  mojom::UrlResponsePtr response;
+  Callback callback;
 };
 
 struct TestSPLAccountBalanceResult {
@@ -147,6 +151,10 @@ class TestRewardsEngineClient : public mojom::RewardsEngineClient {
                      DecryptStringCallback callback) override;
 
   // Test environment setup methods:
+
+  void AddNetworkResultForTesting(const std::string& url,
+                                  mojom::UrlMethod method,
+                                  TestNetworkResult::Callback callback);
 
   void AddNetworkResultForTesting(const std::string& url,
                                   mojom::UrlMethod method,

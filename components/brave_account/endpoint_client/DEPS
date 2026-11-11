@@ -1,6 +1,0 @@
-include_rules = [
-  "+google/protobuf",
-  "+services/network/public/cpp",
-  "+services/network/public/mojom",
-  "+services/network/test",
-]

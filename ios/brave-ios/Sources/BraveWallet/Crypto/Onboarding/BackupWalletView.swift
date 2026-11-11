@@ -3,17 +3,19 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveUI
 import DesignSystem
 import Foundation
 import Strings
 import SwiftUI
+@_spi(Advanced) import SwiftUIIntrospect
 
 struct BackupWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
   @State private var password: String
   @State private var passwordError: PasswordEntryError?
   @State private var acknowledgedWarning: Bool = false
-  @State private var recoveryWords: [RecoveryWord] = []
+  @State private var recoveryWords: [RecoveryWord]?
   private let requirePasswordEntry: Bool
 
   init(
@@ -115,28 +117,20 @@ struct BackupWalletView: View {
     .navigationBarBackButtonHidden(true)
     .navigationTitle(Strings.Wallet.cryptoTitle)
     .navigationBarTitleDisplayMode(.inline)
-    .introspectViewController { vc in
+    .introspect(.viewController, on: .iOS(.v18...)) { vc in
       vc.navigationItem.backButtonTitle = Strings.Wallet.backupWalletBackButtonTitle
       vc.navigationItem.backButtonDisplayMode = .minimal
     }
     .modifier(ToolbarModifier(isShowingCancel: !keyringStore.isOnboardingVisible))
     .background(Color(braveSystemName: .containerBackground).edgesIgnoringSafeArea(.all))
-    .background(
-      NavigationLink(
-        isActive: Binding(
-          get: { !recoveryWords.isEmpty },
-          set: { if !$0 { recoveryWords = [] } }
-        ),
-        destination: {
-          BackupRecoveryPhraseView(
-            password: password,
-            keyringStore: keyringStore
-          )
-        },
-        label: {
-          EmptyView()
-        }
-      )
+    .navigationDestination(
+      isPresented: $recoveryWords.isPresented,
+      destination: {
+        BackupRecoveryPhraseView(
+          password: password,
+          keyringStore: keyringStore
+        )
+      }
     )
   }
 
@@ -168,7 +162,7 @@ struct BackupWalletView: View {
 #if DEBUG
 struct BackupWalletView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
+    NavigationStack {
       BackupWalletView(
         password: "",
         keyringStore: .previewStore

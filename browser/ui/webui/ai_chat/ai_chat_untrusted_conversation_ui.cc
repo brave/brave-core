@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
 
+#include <memory>
 #include <optional>
 #include <string>
 #include <utility>
@@ -39,18 +40,22 @@
 #include "brave/components/local_ai/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
+#include "chrome/browser/ui/webui/theme_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_webui_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/tabs/public/tab_interface.h"
+#include "content/public/browser/global_routing_id.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/url_data_source.h"
+#include "content/public/browser/visibility.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
+#include "mojo/public/cpp/bindings/message.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
@@ -71,17 +76,49 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/android/ai_chat/brave_leo_settings_launcher_helper.h"
 #else
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/thumbnails/thumbnail_tracker.h"
-#include "chrome/browser/ui/webui/theme_source.h"
 #include "chrome/browser/ui/webui/util/image_util.h"
 #include "ui/base/base_window.h"
 #endif
 
 namespace {
+
+// Rejects messages from the untrusted conversation frame that didn't follow a
+// real user interaction. Transient activation can only come from genuine input,
+// so a message without one means the frame is driving these actions itself.
+// Mojo closes the pipe when WillDispatch returns false, which is the response
+// we want - no legitimate UI path sends these without a click.
+class RequireUserGestureFilter : public mojo::MessageFilter {
+ public:
+  explicit RequireUserGestureFilter(content::GlobalRenderFrameHostId frame_id)
+      : frame_id_(frame_id) {}
+  ~RequireUserGestureFilter() override = default;
+
+  bool WillDispatch(mojo::Message* message) override {
+    // By id, not by pointer - this filter lives as long as the pipe.
+    auto* rfh = content::RenderFrameHost::FromID(frame_id_);
+    if (!rfh || !rfh->IsActive() || !rfh->HasTransientUserActivation()) {
+      DVLOG(0) << __func__ << " no user activation for message "
+               << message->name();
+      return false;
+    }
+    auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
+    if (!web_contents ||
+        web_contents->GetVisibility() != content::Visibility::VISIBLE) {
+      DVLOG(0) << __func__ << " conversation is not visible";
+      return false;
+    }
+    return true;
+  }
+
+  void DidDispatchOrReject(mojo::Message* message, bool accepted) override {}
+
+ private:
+  content::GlobalRenderFrameHostId frame_id_;
+};
 
 // Implements the interface to calls from the UI to the browser
 class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
@@ -299,7 +336,9 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
   void BindConversationHandler(
       const std::string& conversation_id,
       mojo::PendingReceiver<ai_chat::mojom::UntrustedConversationHandler>
-          untrusted_conversation_handler_receiver) override {
+          untrusted_conversation_handler_receiver,
+      mojo::PendingReceiver<ai_chat::mojom::UntrustedConversationUserActions>
+          user_actions_receiver) override {
     if (conversation_id.empty()) {
       return;
     }
@@ -319,6 +358,10 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
         base::BindOnce(
             [](mojo::PendingReceiver<
                    ai_chat::mojom::UntrustedConversationHandler> receiver,
+               mojo::PendingReceiver<
+                   ai_chat::mojom::UntrustedConversationUserActions>
+                   user_actions_receiver,
+               content::GlobalRenderFrameHostId frame_id,
                ai_chat::ConversationHandler* conversation_handler) {
               if (!conversation_handler) {
                 DVLOG(0)
@@ -327,8 +370,13 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
                 return;
               }
               conversation_handler->Bind(std::move(receiver));
+              conversation_handler->BindUserActions(
+                  std::move(user_actions_receiver),
+                  std::make_unique<RequireUserGestureFilter>(frame_id));
             },
-            std::move(untrusted_conversation_handler_receiver)));
+            std::move(untrusted_conversation_handler_receiver),
+            std::move(user_actions_receiver),
+            web_ui_->GetRenderFrameHost()->GetGlobalId()));
   }
 
   void BindUntrustedUI(
@@ -360,10 +408,10 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     // conversation via `AIChatFullPageLinkObserver`.
     ai_chat::MaybeMoveFullPageChatToSidePanel(web_ui_->GetWebContents());
 #if !BUILDFLAG(IS_ANDROID)
-    Browser* browser =
+    BrowserWindowInterface* browser =
         ai_chat::GetBrowserForWebContents(web_ui_->GetWebContents());
     browser->OpenURL(
-        {url, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+        {url, content::Referrer(), WindowOpenDisposition::kNewForegroundTab,
          ui::PAGE_TRANSITION_LINK, false},
         /*navigation_handle_callback=*/{});
 #else
@@ -511,10 +559,8 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
                                   /*serve_untrusted=*/true));
   content::URLDataSource::Add(
       profile, std::make_unique<UntrustedSanitizedImageSource>(profile));
-#if !BUILDFLAG(IS_ANDROID)
   content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(
                                            profile, /*serve_untrusted=*/true));
-#endif
 }
 
 AIChatUntrustedConversationUI::~AIChatUntrustedConversationUI() = default;

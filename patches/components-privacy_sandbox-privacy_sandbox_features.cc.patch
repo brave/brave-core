@@ -1,14 +1,14 @@
 diff --git a/components/privacy_sandbox/privacy_sandbox_features.cc b/components/privacy_sandbox/privacy_sandbox_features.cc
-index 11ff98e1357672176d390337b2159db25897aa54..d2b82cb1e2c5715ed256a733def31c59b096ae20 100644
+index 11ff98e1357672176d390337b2159db25897aa54..7dff088f44263be5e25d2d0c8dcac74f9a68f3a0 100644
 --- a/components/privacy_sandbox/privacy_sandbox_features.cc
 +++ b/components/privacy_sandbox/privacy_sandbox_features.cc
-@@ -8,8 +8,9 @@
+@@ -8,8 +8,8 @@
  
  namespace privacy_sandbox {
  
-+// kEnforcePrivacySandboxAttestations feature state is enforced via plaster rewrite.
- BASE_FEATURE(kEnforcePrivacySandboxAttestations,
+-BASE_FEATURE(kEnforcePrivacySandboxAttestations,
 -             base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kEnforcePrivacySandboxAttestations,
 +             base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE(kDefaultAllowPrivacySandboxAttestations,

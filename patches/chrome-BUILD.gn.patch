@@ -1,58 +1,88 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index c84f6d48986034c51b14cad7278025a9f4e57adb..aff4f6265806f63bd9a603c330bd72cb6dc9ffcc 100644
+index 06bfcf5a90d093b9ac8e255e93ef2ffd0a00421e..9ea562206ecd016cbf002085855f7f5c286188a7 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -197,6 +197,7 @@ if (!is_android && !is_mac) {
-         "app/main_dll_loader_win.cc",
-         "app/main_dll_loader_win.h",
-       ]
-+      sources -= [ "app/chrome_exe.rc", ] sources += [ "//brave/app/brave_exe.rc", ] import("//brave/components/brave_origin/buildflags/buildflags.gni") if (is_brave_origin_branded) { defines += [ "IS_BRAVE_ORIGIN_BRANDED" ] }
+@@ -2,6 +2,10 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
-       deps += [
-         ":chrome_dll",
-@@ -550,11 +551,12 @@ if (is_win) {
-       args += [ "--keystone=0" ]
++import("//brave/browser/sources.gni")
++import("//brave/browser/updater/buildflags.gni")
++import("//brave/components/brave_origin/buildflags/buildflags.gni")
++import("//brave/updater/config.gni")
+ import("//build/config/chrome_build.gni")
+ import("//build/config/chromeos/args.gni")
+ import("//build/config/compiler/compiler.gni")
+@@ -407,6 +411,13 @@ if (!is_android && !is_mac) {
+     if (is_chrome_for_testing) {
+       deps += [ "//chrome/browser/chrome_for_testing:browser" ]
+     }
++    if (is_win) {
++      sources -= [ "app/chrome_exe.rc" ]
++      sources += [ "//brave/app/brave_exe.rc" ]
++      if (is_brave_origin_branded) {
++        defines += [ "IS_BRAVE_ORIGIN_BRANDED" ]
++      }
++    }
+   }
+ 
+   # TODO(crbug.com/40204298): Make this work on other platforms.
+@@ -540,6 +551,12 @@ if (is_win) {
      }
    }
-+  copy("brave_app_plist") { deps = [ "//brave:brave_app_plist" ] sources = [ "$root_gen_dir/brave/brave_app_plist_tweaked.plist" ] outputs = [ "$root_gen_dir/chrome/{{source_file_part}}" ] }
  
++  copy("brave_app_plist") {
++    deps = [ "//brave:brave_app_plist" ]
++    sources = [ "$root_gen_dir/brave/brave_app_plist_tweaked.plist" ]
++    outputs = [ "$root_gen_dir/chrome/{{source_file_part}}" ]
++  }
++
    mac_app_bundle("chrome_app") {
      output_name = chrome_product_full_name
  
--    info_plist_target = ":chrome_app_plist"
-+    info_plist_target = ":brave_app_plist"
-     extra_substitutions = [
-       "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
-       "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
-@@ -580,6 +582,7 @@ if (is_win) {
+@@ -559,6 +576,7 @@ if (is_win) {
        "//chrome/common:buildflags",
-       "//chrome/common:version_header",
+       "//content/public/app:aperitif",
      ]
 +    deps += [ "//brave:brave_app" ]
  
-     if (enable_updater) {
-       deps += [ ":chromium_updater_privileged_helper" ]
-@@ -725,6 +728,7 @@ if (is_win) {
-       # this dependency directly copies the file into the framework's
+     # Links the framework's shared library directly, after libaperitif, so
+     # that the framework's load command follows libaperitif's. `+link` can't
+@@ -605,6 +623,7 @@ if (is_win) {
+       # for runtime_deps at create_bundle nodes (https://crbug.com/40101435).
+       data_deps = [ ":chrome_framework" ]
+     }
++    info_plist_target = ":brave_app_plist"
+   }
+ 
+   if (verify_dynamic_libraries) {
+@@ -731,6 +750,9 @@ if (is_win) {
        # resources directory.
        public_deps += [ ":chrome_framework_widevine_signature" ]
-+      public_deps -= [ ":chrome_framework_widevine_signature" ]
      }
++    if (enable_widevine_cdm_host_verification) {
++      public_deps -= [ ":chrome_framework_widevine_signature" ]
++    }
    }
  
-@@ -768,9 +772,11 @@ if (is_win) {
-       "--scm=0",
+   if (enable_updater) {
+@@ -774,8 +796,15 @@ if (is_win) {
      ]
    }
-+  copy("brave_helper_plist") { deps = [ "//brave:brave_helper_plist" ] sources = [ "$root_gen_dir/brave/brave_helper_plist_tweaked.plist" ] outputs = [ "$root_gen_dir/chrome/{{source_file_part}}" ] } import("//brave/browser/updater/buildflags.gni") import("//brave/updater/config.gni") # For enable_omaha4 and use_prebuilt_omaha4 below.
  
++  copy("brave_helper_plist") {
++    deps = [ "//brave:brave_helper_plist" ]
++    sources = [ "$root_gen_dir/brave/brave_helper_plist_tweaked.plist" ]
++    outputs = [ "$root_gen_dir/chrome/{{source_file_part}}" ]
++  }
++
    compile_entitlements("entitlements") {
      entitlements_templates = [ "app/app-entitlements.plist" ]
 +    entitlements_templates += brave_entitlements_templates
      if (is_chrome_branded && include_branded_entitlements) {
        # These entitlements are bound to the official Google Chrome signing
        # certificate and will not necessarily work in any other build.
-@@ -795,6 +801,7 @@ if (is_win) {
+@@ -800,6 +829,7 @@ if (is_win) {
          info_plist_target = invoker.info_plist_target
        } else {
          info_plist_target = ":chrome_helper_plist"
@@ -60,23 +90,43 @@ index c84f6d48986034c51b14cad7278025a9f4e57adb..aff4f6265806f63bd9a603c330bd72cb
        }
  
        extra_substitutions = [
-@@ -1073,6 +1080,7 @@ if (is_win) {
+@@ -1081,6 +1111,11 @@ if (is_win) {
      if (enable_updater) {
        if (is_chrome_branded) {
          sources += [ "//third_party/updater/chrome_mac_universal_prod/cipd/${updater_product_full_name}.app" ]
-+      } else if (!enable_omaha4) {} else if (use_prebuilt_omaha4) { sources += ["//brave/third_party/updater/mac/${updater_product_full_name}.app"]
++      } else if (!enable_omaha4) {
++      } else if (use_prebuilt_omaha4) {
++        sources += [
++          "//brave/third_party/updater/mac/${updater_product_full_name}.app",
++        ]
        } else {
          sources += [ "$root_out_dir/${updater_product_full_name}.app" ]
  
-@@ -1431,6 +1439,7 @@ if (is_win) {
-       "-current_version",
-       chrome_dylib_version,
+@@ -1388,6 +1423,7 @@ if (is_win) {
+       "Libraries",
+       "Resources",
      ]
-+    import("//brave/browser/sources.gni") public_deps += brave_chrome_framework_public_deps bundle_deps += brave_chrome_framework_bundle_deps framework_contents += brave_chrome_framework_contents
++    framework_contents += brave_chrome_framework_contents
  
-     if (!is_component_build) {
-       # Specify a sensible install_name for static builds. The library is
-@@ -1642,6 +1651,7 @@ if (is_win) {
+     configs -= [ "//build/config/compiler:thinlto_optimize_default" ]
+     configs += [ "//build/config/compiler:thinlto_optimize_max" ]
+@@ -1399,6 +1435,7 @@ if (is_win) {
+     ]
+ 
+     public_deps = [ ":chrome_dll" ]
++    public_deps += brave_chrome_framework_public_deps
+ 
+     bundle_deps = [
+       ":aperitif_library",
+@@ -1411,6 +1448,7 @@ if (is_win) {
+       "//chrome/browser/web_applications/isolated_web_apps/key_distribution/preload:component_bundle",
+       "//components/privacy_sandbox/privacy_sandbox_attestations/preload:component_bundle",
+     ]
++    bundle_deps += brave_chrome_framework_bundle_deps
+ 
+     if (is_chrome_branded) {
+       bundle_deps += [ ":chromecompaneros_bundle_data" ]
+@@ -1648,6 +1686,7 @@ if (is_win) {
  
  group("dependencies") {
    public_deps = [
@@ -84,7 +134,7 @@ index c84f6d48986034c51b14cad7278025a9f4e57adb..aff4f6265806f63bd9a603c330bd72cb
      "//build:branding_buildflags",
      "//build:chromeos_buildflags",
      "//chrome/browser",
-@@ -1688,7 +1698,7 @@ group("dependencies") {
+@@ -1694,7 +1733,7 @@ group("dependencies") {
  
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
@@ -93,19 +143,22 @@ index c84f6d48986034c51b14cad7278025a9f4e57adb..aff4f6265806f63bd9a603c330bd72cb
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
  
-@@ -1737,6 +1747,7 @@ group("resources") {
+@@ -1740,6 +1779,7 @@ copy("visual_elements_resources") {
+ 
+ group("resources") {
+   public_deps = [
++    "//brave:resources",
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",
-+    "//brave:resources",
-   ]
- }
- 
-@@ -1762,6 +1773,7 @@ if (!is_android) {
+@@ -1768,6 +1808,10 @@ if (!is_android) {
      if (enable_resource_allowlist_generation) {
        repack_allowlist = _chrome_resource_allowlist
        deps = [ ":resource_allowlist" ]
-+      repack_allowlist = brave_allowlist_file deps += [ "//brave:merge_allowlists" ]
++      deps += [ "//brave:merge_allowlists" ]
++    }
++    if (enable_resource_allowlist_generation) {
++      repack_allowlist = brave_allowlist_file
      }
    }
  }

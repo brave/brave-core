@@ -1,0 +1,73 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Notify sync of the page visit from Brave's sync setup route.
+
+      Brave hosts these controls under BRAVE_SYNC_SETUP, not SYNC_ADVANCED.
+    regex:
+      re_pattern:
+        '(override connectedCallback\(\) \{.*?currentRoute ===
+        routes\.)SYNC_ADVANCED'
+      re_flags: [DOTALL]
+      replace: '\1BRAVE_SYNC_SETUP'
+
+  - description: |-
+      Let toggles follow "Sync everything" when there is no sync status.
+
+      Brave's sync page doesn't hand these controls a sync status, so the
+      upstream logic would leave every toggle disabled.
+    regex:
+      re_pattern: '(protected disableTypeCheckBox_\(.*?\{\n)'
+      re_flags: [DOTALL]
+      replace: |
+        \1    if (dataTypeManaged) {
+              return true;
+            }
+            if (!this.syncStatus || !this.syncPrefs) {
+              return !!this.syncPrefs?.syncAllDataTypes;
+            }
+
+  - description: |-
+      Drop the now-redundant `!!` on syncAllDataTypes.
+
+      The guard above narrows syncPrefs to defined, so lint rejects the `!!`.
+    regex:
+      re_pattern:
+        '(SignedInState\.SYNCING\) \{\n *return
+        )!!this\.syncPrefs\?\.syncAllDataTypes;'
+      replace: '\1this.syncPrefs?.syncAllDataTypes;'
+
+  - description: |-
+      Declare the AI Chat sync toggle's reactive properties.
+    regex:
+      re_pattern:
+        '(static override get properties\(\) \{\n *return \{.*?\n)( *)(\};\n
+        *\})'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+              isAiChatSyncEnabled_: {type: Boolean},
+              aiChatCheckboxLabel_: {type: String},
+        \2\3
+
+  - description: |-
+      Initialize the AI Chat sync toggle's state and label.
+
+      Read at runtime because the AI Chat strings aren't registered in builds
+      without AI Chat, so $i18n{} can't be used in the template.
+    regex:
+      re_pattern: '(\n)( *)(override connectedCallback\(\) \{)'
+      replace: |-
+        \1\2protected accessor isAiChatSyncEnabled_: boolean =
+        \2    loadTimeData.valueExists('isBraveSyncAIChatEnabled') &&
+        \2    loadTimeData.getBoolean('isBraveSyncAIChatEnabled');
+        \2protected accessor aiChatCheckboxLabel_: string =
+        \2    this.isAiChatSyncEnabled_ ?
+        \2    loadTimeData.getString('aiChatCheckboxLabel') :
+        \2    '';
+
+        \2\3

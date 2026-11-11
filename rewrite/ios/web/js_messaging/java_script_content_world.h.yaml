@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Declare `GetFeatureReplyingToPrompts`.
+
+      Window prompts are answered by the feature registered for the prompt's
+      script message handler name.
+    add_to_public:
+      class_name: JavaScriptContentWorld
+      code: |-
+        // Returns the added feature replying to prompts for `handler_name`, or
+        // nullptr if there is none.
+        const JavaScriptFeature* GetFeatureReplyingToPrompts(
+            const std::string& handler_name);
+
+  - description: 'Add the features replying to prompts, by handler name.'
+    add_to_protected:
+      class_name: JavaScriptContentWorld
+      code: |-
+        base::flat_map<std::string, const JavaScriptFeature*>
+            prompt_replying_features_;

@@ -55,6 +55,28 @@ mangle((root) => {
   sidePanelList.previousElementSibling?.remove()
   sidePanelList.remove()
 
+  // Remove the tab position (vertical tabs) dropdown row entirely; we have our
+  // own equivalent control on the Tabs settings page.
+  const tabStripPosition = root.getElementById('tabStripPosition')
+  if (!tabStripPosition) {
+    throw new Error(
+      `[Settings] Appearance page: couldn't find tabStripPosition`)
+  }
+  const tabStripPositionRow = tabStripPosition.closest('.cr-row')
+  if (!tabStripPositionRow) {
+    throw new Error(
+      `[Settings] Appearance page: couldn't find tabStripPosition row`)
+  }
+  // Remove the indented toggles (expand on hover, organizer panel, everything menu)
+  // that appear when vertical tabs are enabled.
+  const verticalTabsToggles = tabStripPositionRow.nextElementSibling
+  if (!verticalTabsToggles || !verticalTabsToggles.getAttribute('class')?.includes('indented-toggles')) {
+    throw new Error(
+      `[Settings] Appearance page: couldn't find vertical tabs toggles`)
+  }
+  verticalTabsToggles.remove()
+  tabStripPositionRow.remove()
+
   // showSavedTabGroups and autoPinNewTabGroups are shown in
   // <settings-brave-appearance-toolbar> instead, after the bookmark bar
   // setting.
@@ -113,4 +135,11 @@ mangle(
   (element) => { element.textContent = '' },
   (t) => t.text.includes('hoverCardMemoryUsageToggle')
       && !t.text.includes('hoverCardImagesToggle'),
+)
+
+// Remove upstream's Ctrl+Tab MRU toggle; Brave drives the same
+// browser.ctrl_tab_mru pref from its own toggle on the Content page.
+mangle(
+  (element) => { element.textContent = '' },
+  (t) => t.text.includes('id="ctrlTabMru"'),
 )

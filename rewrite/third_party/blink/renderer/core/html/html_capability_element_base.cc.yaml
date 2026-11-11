@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Abort user-media embedded permission registration.
+
+      The user-media descriptor path is disabled, and sending it to the browser
+      reaches an invalid permission-service path. Check the descriptor before
+      binding the receiver so camera and microphone elements return without
+      triggering that path, while other capability descriptors retain the
+      upstream flow.
+    regex:
+      re_pattern: |-
+        (bool HTMLCapabilityElementBase::MaybeRegisterPageEmbeddedPermissionControl\(\) \{.*?)^([ \t]*)(mojo::PendingRemote<EmbeddedPermissionControlClient> client;)
+      re_flags: [DOTALL, MULTILINE]
+      replace: |-
+        \1\2if (descriptor->detail->which() ==
+        \2    mojom::blink::EmbeddedPermissionControlDescriptorExtension::Tag::
+        \2        kUserMedia) {
+        \2  return false;
+        \2}
+
+        \2\3

@@ -5,14 +5,14 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
-import Input from '@brave/leo/react/input'
-import Label from '@brave/leo/react/label'
-import { font, color } from '@brave/leo/tokens/css/variables'
+import Input from '@brave/nala/react/input'
+import Label from '@brave/nala/react/label'
+import { font, color } from '@brave/nala/tokens/css/variables'
 
 // Shared Styles
 import {
   layoutPanelWidth, //
-} from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 const StyledSearchInput = styled(Input)`
   margin-top: 2px;

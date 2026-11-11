@@ -17,22 +17,20 @@
   {
     "cmd": [
       "git",
-      "-C",
-      "[WORKSPACE]/b/src/brave",
       "sparse-checkout",
       "list"
     ],
+    "cwd": "[WORKSPACE]/b/src/brave",
     "name": "sparse-checkout list"
   },
   {
     "cmd": [
       "git",
-      "-C",
-      "[WORKSPACE]/b/src/brave",
       "sparse-checkout",
       "add",
       "third_party/node"
     ],
+    "cwd": "[WORKSPACE]/b/src/brave",
     "name": "sparse-checkout add"
   },
   {
@@ -53,22 +51,20 @@
   {
     "cmd": [
       "git",
-      "-C",
-      "[WORKSPACE]/b/src/brave",
       "sparse-checkout",
       "list"
     ],
+    "cwd": "[WORKSPACE]/b/src/brave",
     "name": "sparse-checkout list (2)"
   },
   {
     "cmd": [
       "git",
-      "-C",
-      "[WORKSPACE]/b/src/brave",
       "sparse-checkout",
       "add",
-      "tools/cr/bootstrap"
+      "tools/cr"
     ],
+    "cwd": "[WORKSPACE]/b/src/brave",
     "name": "sparse-checkout add (2)"
   },
   {

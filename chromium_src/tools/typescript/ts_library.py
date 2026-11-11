@@ -11,7 +11,10 @@ import shlex
 
 import override_utils
 
-from brave_chromium_utils import get_webui_overridden_but_referenced_files, sys_path
+from brave_chromium_utils import (
+    get_webui_overridden_but_referenced_files,
+    sys_path,
+)
 
 with sys_path('//brave/tools/typescript'):
     import tsc_timeout_retry
@@ -29,7 +32,8 @@ def _write_tsconfig_json(original_function, gen_dir, tsconfig, tsconfig_file):
     in_files = tsconfig['files']
     in_folder = os.path.join(os.getcwd(), gen_dir)
     tsconfig['files'].extend(
-        get_webui_overridden_but_referenced_files(in_folder, in_files))
+        get_webui_overridden_but_referenced_files(in_folder, in_files)
+    )
     original_function(gen_dir, tsconfig, tsconfig_file)
 
 
@@ -40,7 +44,7 @@ def main(original_function, argv):
     rsp_args, _ = rsp_parser.parse_known_args(argv)
 
     if rsp_args.rsp:
-        with open(rsp_args.rsp, 'r') as f:
+        with open(rsp_args.rsp, 'r', encoding='utf-8') as f:
             # Do not prepend argv[0], because original script strips it.
             argv = shlex.split(f.read())
 
@@ -62,8 +66,7 @@ def main(original_function, argv):
             #
             # "error TS5055: Cannot write file '...' because it would overwrite
             # input file."
-            if args.root_dir != args.out_dir and is_gen_brave_dir(
-                    args.out_dir):
+            if args.root_dir != args.out_dir and is_gen_brave_dir(args.out_dir):
                 to_check = os.path.join(args.out_dir, pathname + '.d.ts')
                 if os.path.exists(to_check):
                     os.remove(to_check)
@@ -71,15 +74,18 @@ def main(original_function, argv):
     with tsc_timeout_retry.patch_subprocess_with_timeout_retry():
         original_function(argv)
 
-    manifest_path = os.path.join(args.gen_dir,
-                                 f'{args.output_suffix}_manifest.json')
+    manifest_path = os.path.join(
+        args.gen_dir, f'{args.output_suffix}_manifest.json'
+    )
     if os.path.exists(manifest_path):
-        manifest = json.load(open(manifest_path))
+        with open(manifest_path, encoding='utf-8') as f:
+            manifest = json.load(f)
 
         preprocess_dir = os.path.join(args.gen_dir, 'preprocessed')
         for override_file in get_webui_overridden_but_referenced_files(
-                preprocess_dir, args.in_files):
+            preprocess_dir, args.in_files
+        ):
             manifest['files'].append(re.sub(r'\.ts$', '.js', override_file))
 
-        with open(manifest_path, 'w') as f:
+        with open(manifest_path, 'w', encoding='utf-8') as f:
             json.dump(manifest, f)

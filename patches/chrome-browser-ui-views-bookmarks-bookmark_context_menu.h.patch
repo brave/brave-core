@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/bookmarks/bookmark_context_menu.h b/chrome/browser/ui/views/bookmarks/bookmark_context_menu.h
+index 9eccce7d56080d7b59116482e850e906cfd9d44e..fb650b2bd36dc304ec0371ea10746cb14f54de63 100644
+--- a/chrome/browser/ui/views/bookmarks/bookmark_context_menu.h
++++ b/chrome/browser/ui/views/bookmarks/bookmark_context_menu.h
+@@ -92,7 +92,7 @@ class BookmarkContextMenu : public BookmarkContextMenuControllerDelegate,
+   void UpdateSubMenuState();
+ 
+  private:
+-  std::unique_ptr<BookmarkContextMenuController> controller_;
++  std::unique_ptr<BraveBookmarkContextMenuController> controller_;
+ 
+   // The parent of dialog boxes opened from the context menu. Uses a WeakPtr
+   // because on macOS immersive fullscreen, the parent widget may be an

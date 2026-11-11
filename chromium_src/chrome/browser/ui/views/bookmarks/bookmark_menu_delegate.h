@@ -9,12 +9,6 @@
 #include "chrome/browser/ui/views/bookmarks/bookmark_menu_controller_views.h"
 #include "ui/views/controls/menu/menu_delegate.h"
 
-// Adjust maximum menu width to fit German localization.
-#define GetMaxWidthForMenu(...)           \
-  GetMaxWidthForMenu_UnUsed(__VA_ARGS__); \
-  int GetMaxWidthForMenu(__VA_ARGS__)
-
 #include <chrome/browser/ui/views/bookmarks/bookmark_menu_delegate.h>  // IWYU pragma: export
-#undef GetMaxWidthForMenu
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_BOOKMARKS_BOOKMARK_MENU_DELEGATE_H_

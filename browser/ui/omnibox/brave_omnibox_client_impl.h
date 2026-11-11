@@ -12,7 +12,9 @@
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "chrome/browser/ui/omnibox/chrome_omnibox_client.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "ui/base/window_open_disposition.h"
 
+class BrowserWindowInterface;
 class PrefRegistrySimple;
 class Profile;
 class SearchEngineTracker;
@@ -32,7 +34,7 @@ class PageMetrics;
 class BraveOmniboxClientImpl : public ChromeOmniboxClient {
  public:
   BraveOmniboxClientImpl(LocationBar* location_bar,
-                         Browser* browser,
+                         BrowserWindowInterface* browser,
                          Profile* profile);
   BraveOmniboxClientImpl(const BraveOmniboxClientImpl&) = delete;
   BraveOmniboxClientImpl& operator=(const BraveOmniboxClientImpl&) = delete;
@@ -42,6 +44,13 @@ class BraveOmniboxClientImpl : public ChromeOmniboxClient {
 
   const AutocompleteSchemeClassifier& GetSchemeClassifier() const override;
 
+  gfx::Image GetFaviconForDefaultSearchProvider(
+      FaviconFetchedCallback on_favicon_fetched) override;
+
+  gfx::Image GetFaviconForKeywordSearchProvider(
+      const TemplateURL* template_url,
+      FaviconFetchedCallback on_favicon_fetched) override;
+
   void OnURLOpenedFromOmnibox(OmniboxLog* log) override;
 
   void OnAutocompleteAccept(
@@ -49,7 +58,7 @@ class BraveOmniboxClientImpl : public ChromeOmniboxClient {
       TemplateURLRef::PostContent* post_content,
       WindowOpenDisposition disposition,
       ui::PageTransition transition,
-      AutocompleteMatchType::Type match_type,
+      omnibox::AutocompleteMatchType match_type,
       base::TimeTicks match_selection_timestamp,
       bool destination_url_entered_without_scheme,
       bool destination_url_entered_with_http_scheme,

@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_CONTAINERS_SERVICE_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -65,8 +66,12 @@ class ContainersService : public KeyedService {
   // the synced list, otherwise a placeholder from `CreateUnknownContainer`.
   void MarkContainerUsed(std::string_view container_id);
 
-  // Creates a temporary container and persists it locally.
-  mojom::ContainerPtr CreateAndPersistTemporaryContainer();
+  // Creates a temporary container and persists it locally. Uses `name` when
+  // given, otherwise generates one. Unlike
+  // `GetOrCreateTemporaryContainerByName`, always creates a new container, so
+  // the name need not be unique.
+  mojom::ContainerPtr CreateAndPersistTemporaryContainer(
+      std::optional<std::string_view> name = std::nullopt);
 
   // Returns the temporary container named `name`, creating and persisting it
   // if there isn't one yet. Containers that aren't temporary are never
@@ -91,8 +96,23 @@ class ContainersService : public KeyedService {
   // orphaned-container cleanup is discovering candidates.
   std::vector<std::string> GetUsedContainerIds() const;
 
+  // Marks the container with `id` as confined: its tabs must stay in it, so
+  // features that move a navigation to another container, such as Traffic
+  // Control, leave them alone. Held in memory only, until the container's
+  // storage is deleted.
+  void SetContainerConfined(std::string_view id);
+
+  // Whether `id` is confined.
+  bool IsContainerConfined(std::string_view id) const;
+
   // Whether the Containers controls (menus, management UI) should be shown.
   bool ShouldShowContainerControls() const;
+
+  // The user's "open new tabs in" choice (prefs::kNewTabTarget); null means
+  // no container. A container_id target is cleared whenever that container
+  // leaves the synced list, but callers must still resolve it
+  // (GetContainerIdFromContainerSpecifier) rather than trust it.
+  mojom::NewTabTargetPtr GetNewTabTarget() const;
 
   // Returns the container id for the given container specifier.
   std::optional<std::string> GetContainerIdFromContainerSpecifier(
@@ -108,6 +128,9 @@ class ContainersService : public KeyedService {
   // do not stay stale (names, icons, etc.). This is called when the synced
   // containers list changes.
   void RefreshLocallyUsedContainersFromSyncedList();
+  // Drops the new-tab target when its container is no longer in the
+  // synced list. Called when the synced containers list changes.
+  void ClearNewTabTargetIfContainerRemoved();
 
   // Schedules the cleanup of orphaned containers. Orphaned containers are
   // containers that are not referenced by any tab restore or session service.
@@ -133,6 +156,7 @@ class ContainersService : public KeyedService {
   OrphanedContainersCleanupState orphaned_cleanup_state_ =
       OrphanedContainersCleanupState::kIdle;
   base::flat_set<std::string> orphaned_containers_pending_removal_;
+  base::flat_set<std::string> confined_container_ids_;
   base::WeakPtrFactory<ContainersService> weak_factory_{this};
 };
 

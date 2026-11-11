@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/SwipeRefreshHandler.java b/chrome/android/java/src/org/chromium/chrome/browser/SwipeRefreshHandler.java
-index 8e9b1a75f060263c9724ec39ee552fa4c0d0cafd..868b98e06a0d7fbc7e5dd639fc613c9ab6fc85f0 100644
+index 03c19b48d681fff9465b452daa9e91785cd53024..e635c2d3df68c12fb21636a3c3291141dc392db2 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/SwipeRefreshHandler.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/SwipeRefreshHandler.java
-@@ -157,7 +157,7 @@ public class SwipeRefreshHandler extends TabWebContentsUserData
+@@ -163,7 +163,7 @@ public class SwipeRefreshHandler extends TabWebContentsUserData
       * @param tab The Tab where the swipe occurs.
       * @param swipeRefreshLayoutCreator Creates {@link SwipeRefreshLayout}.
       */

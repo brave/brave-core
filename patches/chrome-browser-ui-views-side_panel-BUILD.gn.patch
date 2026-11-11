@@ -1,12 +1,29 @@
 diff --git a/chrome/browser/ui/views/side_panel/BUILD.gn b/chrome/browser/ui/views/side_panel/BUILD.gn
-index f090138eb7424fc68ade28275a69912ae31b0335..a486a76a6b74b85b8edbcaf58ead8a69e89a8268 100644
+index 3b9d6f58cc2006c38da5cbe61594d9ef8d0b7ad3..b876d171982b54abcac1b70a9fe7e2e6bade3ae6 100644
 --- a/chrome/browser/ui/views/side_panel/BUILD.gn
 +++ b/chrome/browser/ui/views/side_panel/BUILD.gn
-@@ -176,6 +176,7 @@ source_set("side_panel") {
+@@ -2,6 +2,8 @@
+ # Use of this source code is governed by a BSD - style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/browser/ui/views/side_panel/sources.gni")
++
+ assert(is_win || is_mac || is_linux || is_chromeos)
+ 
+ import("//chrome/common/features.gni")
+@@ -91,6 +93,7 @@ source_set("side_panel") {
+     "//ui/webui/resources/cr_components/history_embeddings:mojo_bindings",
+     "//url",
+   ]
++  public_deps += brave_browser_ui_views_side_panel_public_deps
+   deps = [
+     "//base:i18n",
+     "//chrome/app:generated_resources",
+@@ -176,6 +179,7 @@ source_set("side_panel") {
+     "//ui/gfx/geometry:geometry_skia",
      "//ui/webui",
    ]
++  deps += brave_browser_ui_views_side_panel_deps
  
-+  import("//brave/browser/ui/views/side_panel/sources.gni") deps += brave_browser_ui_views_side_panel_deps public_deps += brave_browser_ui_views_side_panel_public_deps
-   if (enable_extensions) {
+   if (enable_extensions_core) {
      public_deps += [
-       "//extensions/browser",

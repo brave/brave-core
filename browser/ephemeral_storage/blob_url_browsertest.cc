@@ -17,7 +17,6 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -317,7 +316,7 @@ IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
       extension_loader.LoadExtension(test_extension_dir.UnpackedPath());
   const GURL url = extension->ResolveExtensionURL("/empty.html");
   auto* extension_rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(extension_rfh);
 

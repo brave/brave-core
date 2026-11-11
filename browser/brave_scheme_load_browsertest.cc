@@ -6,11 +6,12 @@
 #include "base/path_service.h"
 #include "base/strings/pattern.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/incognito_allowed_url.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
@@ -64,7 +65,7 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
     ui_test_utils::UrlLoadObserver load_complete(url);
     browser()->OpenURL(
         content::OpenURLParams(url, content::Referrer(),
-                               WindowOpenDisposition::CURRENT_TAB,
+                               WindowOpenDisposition::kCurrentTab,
                                ui::PAGE_TRANSITION_TYPED, false),
         /*navigation_handle_callback=*/{});
     load_complete.Wait();
@@ -80,7 +81,7 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
 
   // Check loading |url| in guest window is not allowed for an url.
   void TestURLIsNotLoadedInGuestWindow(const GURL& url) {
-    Browser* guest_browser = CreateGuestBrowser();
+    BrowserWindowInterface* guest_browser = CreateGuestBrowser();
     TabStripModel* guest_model = guest_browser->tab_strip_model();
 
     // Check guest window has one blank tab.
@@ -96,17 +97,16 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
                       ->GetController()
                       .GetLastCommittedEntry();
     EXPECT_EQ(entry->GetPageType(), content::PageType::PAGE_TYPE_ERROR);
-    EXPECT_EQ("about:blank", base::UTF16ToUTF8(browser()
-                                                   ->GetFeatures()
-                                                   .location_bar_model()
-                                                   ->GetFormattedFullURL()));
+    EXPECT_EQ("about:blank",
+              base::UTF16ToUTF8(
+                  LocationBarModel::From(browser())->GetFormattedFullURL()));
     EXPECT_EQ(1, browser()->tab_strip_model()->count());
   }
 
   // Check loading |url| in private window is redirected to normal
   // window.
   void TestURLIsNotLoadedInPrivateWindow(const std::string& url) {
-    Browser* private_browser = CreateIncognitoBrowser(nullptr);
+    BrowserWindowInterface* private_browser = CreateIncognitoBrowser(nullptr);
     TabStripModel* private_model = private_browser->tab_strip_model();
 
     // Check normal & private window have one blank tab.
@@ -130,10 +130,8 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
 
     browser()->tab_strip_model()->RemoveObserver(this);
 
-    EXPECT_EQ(
-        url,
-        base::UTF16ToUTF8(
-            browser()->GetFeatures().location_bar_model()->GetURLForDisplay()));
+    EXPECT_EQ(url, base::UTF16ToUTF8(
+                       LocationBarModel::From(browser())->GetURLForDisplay()));
     EXPECT_EQ(2, browser()->tab_strip_model()->count());
     // Private window stays as initial state.
     EXPECT_EQ("about:blank",
@@ -143,7 +141,7 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
 
   // Check loading |url| wallet URL in private window results in a load failure
   void TestURLIsNotLoadedInPrivateWindowOrRedirected(const std::string& url) {
-    Browser* private_browser = CreateIncognitoBrowser(nullptr);
+    BrowserWindowInterface* private_browser = CreateIncognitoBrowser(nullptr);
     TabStripModel* private_model = private_browser->tab_strip_model();
 
     // Check normal & private window have one blank tab.
@@ -160,15 +158,14 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
                       ->GetController()
                       .GetLastCommittedEntry();
     EXPECT_EQ(entry->GetPageType(), content::PageType::PAGE_TYPE_ERROR);
-    EXPECT_EQ(
-        "about:blank",
-        base::UTF16ToUTF8(
-            browser()->GetFeatures().location_bar_model()->GetURLForDisplay()));
+    EXPECT_EQ("about:blank",
+              base::UTF16ToUTF8(
+                  LocationBarModel::From(browser())->GetURLForDisplay()));
     EXPECT_EQ(1, browser()->tab_strip_model()->count());
   }
 
   void TestURLIsLoadedInPrivateWindow(const std::string& url) {
-    Browser* private_browser = CreateIncognitoBrowser();
+    BrowserWindowInterface* private_browser = CreateIncognitoBrowser();
     TabStripModel* private_model = private_browser->tab_strip_model();
     EXPECT_EQ("about:blank",
               private_model->GetActiveWebContents()->GetVisibleURL().spec());
@@ -295,7 +292,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest, MAYBE_CrashURLTest) {
   content::ScopedAllowRendererCrashes allow_renderer_crashes(active_contents());
   browser()->OpenURL(
       content::OpenURLParams(GURL("brave://crash"), content::Referrer(),
-                             WindowOpenDisposition::CURRENT_TAB,
+                             WindowOpenDisposition::kCurrentTab,
                              ui::PAGE_TRANSITION_TYPED, false),
       /*navigation_handle_callback=*/{});
   crash_observer.Wait();
@@ -322,6 +319,24 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
   EXPECT_FALSE(IsURLAllowedInIncognito(GURL("chrome://rewards")));
   EXPECT_TRUE(IsURLAllowedInIncognito(GURL("http://rewards")));
   TestURLIsNotLoadedInPrivateWindow("brave://rewards");
+}
+
+class BraveSchemeLoadRecapBrowserTest : public BraveSchemeLoadBrowserTest {
+ public:
+  BraveSchemeLoadRecapBrowserTest() {
+    feature_list_.InitAndEnableFeature(features::kBraveRecap);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveSchemeLoadRecapBrowserTest,
+                       RecapPageIsNotAllowedInPrivateWindow) {
+  EXPECT_FALSE(IsURLAllowedInIncognito(GURL("chrome://recap")));
+  // Opening brave://recap from a private window adds a tab showing it to the
+  // normal window and leaves the private window on about:blank.
+  TestURLIsNotLoadedInPrivateWindow("brave://recap");
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)

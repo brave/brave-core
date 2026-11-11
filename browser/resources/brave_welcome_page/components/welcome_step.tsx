@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 
 import { useWelcomeApi } from '../api/welcome_api_context'
 import { useStepTransition } from './use_step_transition'
@@ -24,7 +24,10 @@ export function WelcomeStep(props: StepComponentProps) {
     return null
   }
 
-  const canSetAsDefault = browserState.canBeDefault && !browserState.isDefault
+  const canSetAsDefault =
+    browserState.canBeDefault
+    && !browserState.isDefault
+    && !browserState.isDisabledByPolicy
 
   function renderActions() {
     if (!canSetAsDefault) {

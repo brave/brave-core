@@ -15,9 +15,7 @@ struct ChannelListContainerView: View {
     ChannelListView(
       channels: Array(dataSource.channels),
       isFollowingChannel: {
-        dataSource.isFollowingChannelBinding(
-          channel: .init(localeIdentifier: dataSource.selectedLocale, name: $0)
-        )
+        $dataSource[isFollowing: FeedChannel(localeIdentifier: dataSource.selectedLocale, name: $0)]
       }
     )
   }

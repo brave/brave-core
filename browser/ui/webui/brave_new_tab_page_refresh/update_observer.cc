@@ -14,6 +14,7 @@
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -63,8 +64,9 @@ UpdateObserver::UpdateObserver(PrefService& pref_service,
   AddPrefListener(kNewTabPageClockFormat, Source::kClock);
 
   AddPrefListener(kNewTabPageShowStats, Source::kShieldsStats);
-  AddPrefListener(kAdsBlocked, Source::kShieldsStats);
-  AddPrefListener(kTrackersBlocked, Source::kShieldsStats);
+  AddPrefListener(brave_shields::prefs::kAdsBlocked, Source::kShieldsStats);
+  AddPrefListener(brave_shields::prefs::kTrackersBlocked,
+                  Source::kShieldsStats);
   AddPrefListener(brave_perf_predictor::prefs::kBandwidthSavedBytes,
                   Source::kShieldsStats);
 

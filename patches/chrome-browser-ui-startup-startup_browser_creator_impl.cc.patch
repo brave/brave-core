@@ -1,20 +1,32 @@
 diff --git a/chrome/browser/ui/startup/startup_browser_creator_impl.cc b/chrome/browser/ui/startup/startup_browser_creator_impl.cc
-index 332a48ebee92fde32f995f387230cb8b6c780e9c..43c9ce117d309b633080c5b7e6aca11a06ab9be0 100644
+index 6b030c1f66d7a67f7a3bca718d765f5bff82ebe2..c8409eeeddd4c9d82a55daac782a1f0e8d44fbf0 100644
 --- a/chrome/browser/ui/startup/startup_browser_creator_impl.cc
 +++ b/chrome/browser/ui/startup/startup_browser_creator_impl.cc
-@@ -422,6 +422,7 @@ BrowserWindowInterface* StartupBrowserCreatorImpl::OpenTabsInBrowser(
-       params.disposition = WindowOpenDisposition::CURRENT_TAB;
+@@ -371,6 +371,9 @@ BrowserWindowInterface* StartupBrowserCreatorImpl::OpenTabsInBrowser(
+   custom_handlers::ProtocolHandlerRegistry* registry =
+       ProtocolHandlerRegistryFactory::GetForBrowserContext(profile_);
+   for (auto& tab : tabs) {
++    if (BraveIsScheduledForCleanup(tab.url, profile_)) {
++      continue;
++    }
+     // We skip URLs that we'd have to launch an external protocol handler for.
+     // This avoids us getting into an infinite loop asking ourselves to open
+     // a URL, should the handler be (incorrectly) configured to be us. Anyone
+@@ -428,7 +431,7 @@ BrowserWindowInterface* StartupBrowserCreatorImpl::OpenTabsInBrowser(
+       params.disposition = WindowOpenDisposition::kCurrentTab;
        params.tabstrip_add_types = ADD_NONE;
        first_tab = false;
-+      BraveModifyStartupTabNavigationParams(tab, browser, params);
-       Navigate(&params);
+-      Navigate(&params);
++      BraveNavigateStartupTab(tab, browser, params);
        continue;
      }
-@@ -452,6 +453,7 @@ BrowserWindowInterface* StartupBrowserCreatorImpl::OpenTabsInBrowser(
+ 
+@@ -462,7 +465,7 @@ BrowserWindowInterface* StartupBrowserCreatorImpl::OpenTabsInBrowser(
      }
  #endif  // BUILDFLAG(ENABLE_RLZ)
  
-+    BraveModifyStartupTabNavigationParams(tab, browser, params);
-     Navigate(&params);
+-    Navigate(&params);
++    BraveNavigateStartupTab(tab, browser, params);
      first_tab = false;
    }
+   if (!browser->GetTabStripModel()->GetActiveWebContents() &&

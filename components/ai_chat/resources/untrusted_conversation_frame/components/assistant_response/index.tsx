@@ -89,11 +89,7 @@ function AssistantEvent(
               + (checked ? 'x' : ' ')
               + processedCompletion.slice(at + 2)
             if (next === processedCompletion) return
-            context.conversationHandler?.modifyConversation(
-              entryUuid,
-              next,
-              null,
-            )
+            context.userActions?.modifyConversation(entryUuid, next, null)
           }
         : undefined
 
@@ -114,6 +110,7 @@ function AssistantEvent(
     return (
       <ToolEvent
         toolUseEvent={props.event.toolUseEvent}
+        entryUuid={entryUuid}
         isEntryActive={props.isEntryInteractivityAllowed}
         isExecuting={context.isToolExecuting}
       />

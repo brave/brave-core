@@ -52,6 +52,7 @@ source_set("impl") {
   deps = [
     ":brave_ads",
     "//base",
+    "//brave/browser:browser_process",
     "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_ads/device_id",
     "//brave/browser/brave_ads/services",
@@ -64,7 +65,6 @@ source_set("impl") {
     "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/p3a_utils",
     "//chrome/browser:browser_process",
-    "//chrome/browser:browser_public_dependencies",
     "//chrome/browser:fullscreen",
     "//chrome/browser:primitives",
     "//chrome/browser/content_settings:content_settings_factory",
@@ -72,12 +72,13 @@ source_set("impl") {
     "//chrome/browser/lifetime",
     "//chrome/browser/lifetime:termination_notification",
     "//chrome/browser/notifications",
+    "//chrome/browser/policy",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/profiles:profile_manager",
     "//chrome/browser/profiles:profile_util",
     "//chrome/browser/search_engines",
-    "//chrome/browser/ui",
     "//chrome/browser/ui/browser_window:create_browser_window",
+    "//chrome/browser/ui/navigator",
     "//chrome/common:channel_info",
     "//chrome/common:chrome_features",
     "//chrome/common:constants",
@@ -147,7 +148,10 @@ source_set("impl") {
       "application_state/notification_helper/notification_helper_impl_win.h",
     ]
 
-    deps += [ "//chrome/installer/util:with_no_strings" ]
+    deps += [
+      "//chrome/browser/ui:browser_window_header",
+      "//chrome/installer/util:with_no_strings",
+    ]
   }
 }
 
@@ -156,8 +160,6 @@ source_set("browser_tests") {
 
   sources = [
     "ads_service_delegate_browsertest.cc",
-    "ads_service_waiter.cc",
-    "ads_service_waiter.h",
     "analytics/p3a/brave_stats_helper_browsertest.cc",
     "application_state/notification_helper/notification_helper_impl_mock.cc",
     "application_state/notification_helper/notification_helper_impl_mock.h",
@@ -166,9 +168,13 @@ source_set("browser_tests") {
   deps = [
     ":brave_ads",
     ":impl",
+    "//brave/browser:browser_process",
+    "//brave/components/brave_ads/core/browser/service:test_support",
     "//chrome/browser",
     "//chrome/browser/lifetime",
+    "//chrome/browser/tab_list",
     "//chrome/test:test_support",
+    "//chrome/test/base:chrome_test_utils",
   ]
 
   if (is_android) {

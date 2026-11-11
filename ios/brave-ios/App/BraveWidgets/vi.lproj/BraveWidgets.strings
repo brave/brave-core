@@ -71,6 +71,9 @@
 "e13lS3-VBH4G6" = "Chúng tôi muốn xác nhận có đúng bạn muốn \"Lịch sử\"?";
 
 /* (No Comment) */
+"e13lS3-vQ8mZ1" = "Chúng tôi muốn xác nhận có đúng bạn muốn \"Nhập giọng nói Leo AI\"?";
+
+/* (No Comment) */
 "e13lS3-vs094F" = "Chúng tôi muốn xác nhận có đúng bạn muốn \"Thẻ riêng tư mới\"?";
 
 /* (No Comment) */
@@ -108,6 +111,9 @@
 
 /* (No Comment) */
 "EvESs0-VBH4G6" = "Chúng tôi muốn xác nhận có đúng bạn muốn \"Lịch sử\"?";
+
+/* (No Comment) */
+"EvESs0-vQ8mZ1" = "Chúng tôi muốn xác nhận có đúng bạn muốn \"Nhập giọng nói Leo AI\"?";
 
 /* (No Comment) */
 "EvESs0-vs094F" = "Chúng tôi muốn xác nhận có đúng bạn muốn \"Thẻ riêng tư mới\"?";
@@ -164,6 +170,9 @@
 "L1fziM-VBH4G6" = "Có ${count} tùy chọn khớp với \"Lịch sử\".";
 
 /* (No Comment) */
+"L1fziM-vQ8mZ1" = "Có ${count} tùy chọn khớp với \"Nhập giọng nói Leo AI\".";
+
+/* (No Comment) */
 "L1fziM-vs094F" = "Có ${count} tùy chọn khớp với \"Thẻ riêng tư mới\".";
 
 /* (No Comment) */
@@ -212,6 +221,9 @@
 "r2EI05-VBH4G6" = "Chúng tôi muốn xác nhận có đúng bạn muốn \"Lịch sử\"?";
 
 /* (No Comment) */
+"r2EI05-vQ8mZ1" = "Chúng tôi muốn xác nhận có đúng bạn muốn \"Nhập giọng nói Leo AI\"?";
+
+/* (No Comment) */
 "r2EI05-vs094F" = "Chúng tôi muốn xác nhận có đúng bạn muốn \"Thẻ riêng tư mới\"?";
 
 /* (No Comment) */
@@ -257,6 +269,9 @@
 "tNCrcE-VBH4G6" = "Có ${count} tùy chọn khớp với \"Lịch sử\".";
 
 /* (No Comment) */
+"tNCrcE-vQ8mZ1" = "Có ${count} tùy chọn khớp với \"Nhập giọng nói Leo AI\".";
+
+/* (No Comment) */
 "tNCrcE-vs094F" = "Có ${count} tùy chọn khớp với \"Thẻ riêng tư mới\".";
 
 /* (No Comment) */
@@ -296,6 +311,9 @@
 "TxuMja-VBH4G6" = "Có ${count} tùy chọn khớp với \"Lịch sử\".";
 
 /* (No Comment) */
+"TxuMja-vQ8mZ1" = "Có ${count} tùy chọn khớp với \"Nhập giọng nói Leo AI\".";
+
+/* (No Comment) */
 "TxuMja-vs094F" = "Có ${count} tùy chọn khớp với \"Thẻ riêng tư mới\".";
 
 /* (No Comment) */
@@ -315,6 +333,9 @@
 
 /* (No Comment) */
 "vjA5pZ" = "D.liệu tiết kiệm được ước tính";
+
+/* (No Comment) */
+"vQ8mZ1" = "Nhập giọng nói Leo AI";
 
 /* (No Comment) */
 "vs094F" = "Thẻ riêng tư mới";
@@ -359,6 +380,9 @@
 "YQiQuz-VBH4G6" = "Chúng tôi muốn xác nhận có đúng bạn muốn \"Lịch sử\"?";
 
 /* (No Comment) */
+"YQiQuz-vQ8mZ1" = "Chúng tôi muốn xác nhận có đúng bạn muốn \"Nhập giọng nói Leo AI\"?";
+
+/* (No Comment) */
 "YQiQuz-vs094F" = "Chúng tôi muốn xác nhận có đúng bạn muốn \"Thẻ riêng tư mới\"?";
 
 /* (No Comment) */
@@ -393,6 +417,9 @@
 
 /* (No Comment) */
 "z517nu-VBH4G6" = "Có ${count} tùy chọn khớp với \"Lịch sử\".";
+
+/* (No Comment) */
+"z517nu-vQ8mZ1" = "Có ${count} tùy chọn khớp với \"Nhập giọng nói Leo AI\".";
 
 /* (No Comment) */
 "z517nu-vs094F" = "Có ${count} tùy chọn khớp với \"Thẻ riêng tư mới\".";

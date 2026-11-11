@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/search_engines_handler.h b/chrome/browser/ui/webui/settings/search_engines_handler.h
-index 76977fc0455b19ed0c2555f483cf0de7ebe6084a..2338a10c4ef7a637ffd8971d022ad3a8f88e2938 100644
+index ebc7287489103de0e6a5a5ec4820b92b0e7158a8..bff64eb4cbc5c474bc0be04622279533c05eabea 100644
 --- a/chrome/browser/ui/webui/settings/search_engines_handler.h
 +++ b/chrome/browser/ui/webui/settings/search_engines_handler.h
-@@ -46,6 +46,7 @@ class SearchEnginesHandler : public SettingsPageUIHandler,
+@@ -54,6 +54,7 @@ class SearchEnginesHandler : public SettingsPageUIHandler,
    void OnJavascriptDisallowed() override;
  
   private:
@@ -10,7 +10,7 @@ index 76977fc0455b19ed0c2555f483cf0de7ebe6084a..2338a10c4ef7a637ffd8971d022ad3a8
    friend class SearchEnginesHandlerTest;
  
    // Retrieves all search engines and returns them to WebUI.
-@@ -57,7 +58,7 @@ class SearchEnginesHandler : public SettingsPageUIHandler,
+@@ -76,7 +77,7 @@ class SearchEnginesHandler : public SettingsPageUIHandler,
    // TODO (crbug.com/494551138): Remove once `SearchSettingsUpdate` is launched.
    void HandleGetSearchEnginesList(const base::ListValue& args);
  
@@ -19,3 +19,12 @@ index 76977fc0455b19ed0c2555f483cf0de7ebe6084a..2338a10c4ef7a637ffd8971d022ad3a8
  
    // Returns whether the search engine choice should be saved in guest mode
    // Returns null if the profile is not eligible for guest choice saving.
+@@ -152,7 +153,7 @@ class SearchEnginesHandler : public SettingsPageUIHandler,
+   // Returns a dictionary to pass to WebUI representing the given search engine.
+   // The engine is identified by an opaque string ID (e.g. "db:42") that the
+   // WebUI sends back to reference it in subsequent messages.
+-  base::DictValue CreateDictionaryForEngine(TemplateURL* template_url);
++  virtual base::DictValue CreateDictionaryForEngine(TemplateURL* template_url);
+ 
+   // Records the search hijacking heuristic metric if not already recorded.
+   void RecordSearchHijackingHeuristicMetric();

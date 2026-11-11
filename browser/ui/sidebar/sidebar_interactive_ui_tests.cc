@@ -10,9 +10,7 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/interactive_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -52,7 +50,7 @@ IN_PROC_BROWSER_TEST_F(SidebarInteractiveUITest, IterateBuiltInWebTypeTest) {
   // Create NTP and click wallet item. Then wallet tab(index 0) is activated.
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL("brave://newtab/"),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   // NTP is active tab.
   EXPECT_EQ(1, tab_model()->active_index());
@@ -65,7 +63,7 @@ IN_PROC_BROWSER_TEST_F(SidebarInteractiveUITest, IterateBuiltInWebTypeTest) {
   // Create NTP.
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL("brave://newtab/"),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   // NTP is active tab and load wallet on it.
   EXPECT_EQ(2, tab_model()->active_index());
@@ -90,11 +88,11 @@ IN_PROC_BROWSER_TEST_F(SidebarInteractiveUITest, IterateBuiltInWebTypeTest) {
   // item activates the other browser's first wallet tab and re-activates its
   // window. The activation waiter must be created before the activating call.
   ui_test_utils::BrowserActivationWaiter activation_waiter(browser());
-  auto* browser2_controller = browser2->GetFeatures().sidebar_controller();
+  auto* browser2_controller = sidebar::SidebarController::From(browser2);
   auto browser2_wallet_item_index = browser2_controller->model()->GetIndexOf(
       SidebarItem::BuiltInItemType::kWallet);
   ASSERT_TRUE(browser2_wallet_item_index.has_value());
-  browser2_controller->ActivateItemAt(browser2_wallet_item_index.value());
+  browser2_controller->OnItemPressed(browser2_wallet_item_index.value());
   activation_waiter.WaitForActivation();
 
   EXPECT_TRUE(BrowserWindow::FromBrowser(browser())->IsActive());

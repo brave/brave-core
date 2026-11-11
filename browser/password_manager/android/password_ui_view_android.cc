@@ -41,11 +41,13 @@
 #include "components/password_manager/core/browser/leak_detection/leak_detection_check_impl.h"
 #include "components/password_manager/core/browser/password_form.h"
 #include "components/password_manager/core/browser/password_store/password_form_converters.h"
+#include "components/password_manager/core/browser/password_string.h"
 #include "components/password_manager/core/browser/password_ui_utils.h"
 #include "components/password_manager/core/browser/ui/credential_provider_interface.h"
 #include "components/password_manager/core/browser/ui/credential_ui_entry.h"
 #include "components/password_manager/core/common/password_manager_constants.h"
 #include "content/public/browser/browser_thread.h"
+#include "third_party/jni_zero/jni_zero.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
@@ -157,7 +159,8 @@ void PasswordUiViewAndroid::InsertPasswordEntryForTesting(
   form.url = GURL(origin);
   form.signon_realm = password_manager::GetSignonRealm(form.url);
   form.username_value = username;
-  form.password_value = password;
+  form.password_value =
+      password_manager::PasswordString(std::u16string(password));
 
   profile_store_->AddLogin(password_manager::FromPasswordForm(form));
 }
@@ -178,7 +181,7 @@ ScopedJavaLocalRef<jobject> PasswordUiViewAndroid::GetSavedPasswordEntry(
   return Java_PasswordUiView_createSavedPasswordEntry(
       env, password_manager::GetShownOrigin(passwords_[index]),
       password_manager::GetShownUrl(passwords_[index]).spec(),
-      passwords_[index].username, passwords_[index].password);
+      passwords_[index].username, passwords_[index].password.value());
 }
 
 std::string PasswordUiViewAndroid::GetSavedPasswordException(JNIEnv* env,
@@ -352,12 +355,13 @@ jint JNI_PasswordUiView_GetMaxPasswordsPerCsvFile(JNIEnv* env) {
 }
 
 // static
-static jlong JNI_PasswordUiView_Init(JNIEnv* env,
-                                     const base::android::JavaRef<jobject>& obj,
-                                     Profile* profile) {
-  PasswordUiViewAndroid* controller =
-      new PasswordUiViewAndroid(env, obj, profile);
-  return reinterpret_cast<intptr_t>(controller);
+static jni_zero::JniRawPtr<PasswordUiViewAndroid> JNI_PasswordUiView_Init(
+    JNIEnv* env,
+    const base::android::JavaRef<jobject>& obj,
+    Profile* profile) {
+  // Not a JniUniquePtr: Destroy() may postpone the deletion until pending
+  // serialization tasks complete, so Java must not delete the object itself.
+  return jni_zero::MakeRaw(new PasswordUiViewAndroid(env, obj, profile));
 }
 
 void PasswordUiViewAndroid::OnSavedPasswordsChanged(

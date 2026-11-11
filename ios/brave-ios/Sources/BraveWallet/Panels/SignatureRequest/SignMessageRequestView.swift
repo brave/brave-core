@@ -17,8 +17,6 @@ struct SignMessageRequestView: View {
   let network: BraveWallet.NetworkInfo?
   let requestIndex: Int
   let requestCount: Int
-  /// A map between request id and a boolean value indicates this request message needs pilcrow formating.
-  @Binding var needPilcrowFormatted: [Int32: Bool]
   /// A map between request id and a boolean value indicates this request message is displayed as
   /// its original content.
   @Binding var showOrignalMessage: [Int32: Bool]
@@ -63,7 +61,7 @@ struct SignMessageRequestView: View {
             .foregroundColor(Color(braveSystemName: .textSecondary))
         }
       }
-      Text(originInfo: request.originInfo)
+      Text(dappOriginInfo: request.dappOriginInfo)
         .font(.caption)
         .foregroundColor(Color(braveSystemName: .textPrimary))
         .multilineTextAlignment(.center)
@@ -92,7 +90,6 @@ struct SignMessageRequestView: View {
         } else {
           SignMessageRequestContentView(
             request: request,
-            needPilcrowFormatted: $needPilcrowFormatted,
             showOrignalMessage: $showOrignalMessage
           )
         }

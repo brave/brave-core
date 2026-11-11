@@ -17,7 +17,7 @@
 "vpn.autoRenewSoonExpireTitle" = "Oh non ! Votre abonnement au VPN Brave va bientôt expirer.";
 
 /* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "VPN Brave";
+"vpn.buyVPNTitle" = "Brave VPN";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "Impossible de se connecter à l’App Store. Réessayez dans quelques minutes.";
@@ -66,6 +66,9 @@
 
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Proposé par";
+
+/* A VoiceOver label that describes the Guardian VPN image. Guardian is a company name */
+"vpn.poweredByGuardianAccessibilityLabel" = "Propulsé par Guardian";
 
 /* Name of automatic vpn region selector */
 "vpn.regionPickerAutomaticModeCellText" = "Automatique";

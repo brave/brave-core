@@ -90,8 +90,10 @@ def compare_cargo_snippet(captured: str) -> None:
     """
     config_path = Path('.cargo/config.toml')
     if not config_path.is_file():
-        print(f'warning: {config_path} not found; cannot verify source '
-              'replacement. Paste this snippet into it manually:\n')
+        print(
+            f'warning: {config_path} not found; cannot verify source '
+            'replacement. Paste this snippet into it manually:\n'
+        )
         print(captured)
         sys.exit(1)
 
@@ -110,9 +112,11 @@ def compare_cargo_snippet(captured: str) -> None:
     if not missing:
         return
 
-    print('\nERROR: .cargo/config.toml is out of sync with what cargo '
-          'vendor just produced. The following [source...] stanzas are '
-          'missing from config.toml:\n')
+    print(
+        '\nERROR: .cargo/config.toml is out of sync with what cargo '
+        'vendor just produced. The following [source...] stanzas are '
+        'missing from config.toml:\n'
+    )
     for line in missing:
         print(f'  {line}')
     print('\nUnified diff hint (section headers only):\n')
@@ -121,10 +125,13 @@ def compare_cargo_snippet(captured: str) -> None:
         (current + '\n' + captured).splitlines(keepends=True),
         fromfile='.cargo/config.toml (current)',
         tofile='.cargo/config.toml (with snippet appended)',
-        n=1)
+        n=1,
+    )
     sys.stdout.writelines(diff)
-    print('\nUpdate .cargo/config.toml to match what cargo vendor printed, '
-          'then re-run this script.')
+    print(
+        '\nUpdate .cargo/config.toml to match what cargo vendor printed, '
+        'then re-run this script.'
+    )
     sys.exit(1)
 
 
@@ -153,8 +160,12 @@ def get_excluded_files(vendor_dir: str) -> list[str]:
 
 with brave_chromium_utils.sys_path('//tools/rust'):
     import update_rust
-    CARGO = os.path.join(update_rust.RUST_TOOLCHAIN_OUT_DIR, 'bin',
-                         'cargo' + ('.exe' if sys.platform == 'win32' else ''))
+
+    CARGO = os.path.join(
+        update_rust.RUST_TOOLCHAIN_OUT_DIR,
+        'bin',
+        'cargo' + ('.exe' if sys.platform == 'win32' else ''),
+    )
 
 
 def main():
@@ -168,9 +179,17 @@ def main():
     # toolchains when invoked, so we blind it.
     env = os.environ.copy()
     env['CARGO_HOME'] = str(Path('.cargo-home').resolve())
-    for v in ('RUSTFLAGS', 'CARGO_BUILD_RUSTFLAGS', 'CARGO_BUILD_TARGET',
-              'RUSTC_WRAPPER', 'RUSTC_WORKSPACE_WRAPPER', 'RUSTUP_HOME',
-              'RUSTUP_TOOLCHAIN', 'RUSTUP_DIST_SERVER', 'RUSTUP_UPDATE_ROOT'):
+    for v in (
+        'RUSTFLAGS',
+        'CARGO_BUILD_RUSTFLAGS',
+        'CARGO_BUILD_TARGET',
+        'RUSTC_WRAPPER',
+        'RUSTC_WORKSPACE_WRAPPER',
+        'RUSTUP_HOME',
+        'RUSTUP_TOOLCHAIN',
+        'RUSTUP_DIST_SERVER',
+        'RUSTUP_UPDATE_ROOT',
+    ):
         env.pop(v, None)
 
     shutil.rmtree('vendor', ignore_errors=True)
@@ -180,11 +199,13 @@ def main():
     # `cargo update` (or edit Cargo.toml rev) beforehand -- the new
     # Cargo.lock needs to be consistent before this script runs.
     print(f'Running cargo vendor...')
-    result = subprocess.run([CARGO, 'vendor', '--locked'],
-                            env=env,
-                            check=True,
-                            capture_output=True,
-                            text=True)
+    result = subprocess.run(
+        [CARGO, 'vendor', '--locked'],
+        env=env,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
 
     restore_files(backed_up_files)
     shutil.rmtree('.cargo-home', ignore_errors=True)
@@ -197,15 +218,19 @@ def main():
 
     excluded_files = get_excluded_files('vendor')
     if excluded_files:
-        print('\nWARNING: The following files in "vendor" are excluded by git '
-              'and will not be committed. Please fix the exclusion rules '
-              'before committing changes.')
+        print(
+            '\nWARNING: The following files in "vendor" are excluded by git '
+            'and will not be committed. Please fix the exclusion rules '
+            'before committing changes.'
+        )
         for f in excluded_files:
             print(f'  {f}')
         print(f'Total: {len(excluded_files)} file(s).')
 
-    print('Update complete. Now run `create_licenses.py` to re-generate '
-          'Chromium licensing information.')
+    print(
+        'Update complete. Now run `create_licenses.py` to re-generate '
+        'Chromium licensing information.'
+    )
 
 
 if __name__ == '__main__':

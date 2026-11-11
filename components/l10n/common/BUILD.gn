@@ -10,6 +10,7 @@ static_library("common") {
     ":*",
     "//brave/browser:core",
     "//brave/browser/ui",
+    "//brave/browser/ui/webui/brave_rewards:rewards_page_handler",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/core/internal",

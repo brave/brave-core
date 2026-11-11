@@ -36,7 +36,6 @@ declare module '../page_visibility.js' {
     // <if expr="enable_speedreader">
     speedreader?: boolean
     // </if>
-    surveyPanelist?: boolean,
     braveTor?: boolean,
     emailAliases?: boolean
   }
@@ -76,7 +75,6 @@ function getPageVisibility () {
       // <if expr="enable_speedreader">
       speedreader: false,
       // </if>
-      surveyPanelist: false,
       braveTor: false,
       emailAliases: false,
     }
@@ -104,12 +102,17 @@ function getPageVisibility () {
     // <if expr="enable_brave_wallet">
     braveWallet: loadTimeData.getBoolean('isBraveWalletAllowed'),
     // </if>
+    // <if expr="not enable_brave_wallet">
+    braveWallet: false,
+    // </if>
     // <if expr="enable_ai_chat">
     leoAssistant: loadTimeData.getBoolean('isLeoAssistantAllowed'),
     leoPersonalization: loadTimeData.getBoolean('isLeoAssistantAllowed'),
     leoModels: loadTimeData.getBoolean('isLeoAssistantAllowed'),
     // </if>
-    surveyPanelist: loadTimeData.getBoolean('isSurveyPanelistAllowed'),
+    // <if expr="not enable_ai_chat">
+    leoAssistant: false,
+    // </if>
     // <if expr="enable_containers">
     containers: loadTimeData.getBoolean('isContainersEnabled'),
     // </if>

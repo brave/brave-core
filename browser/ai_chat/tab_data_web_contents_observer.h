@@ -7,13 +7,16 @@
 #define BRAVE_BROWSER_AI_CHAT_TAB_DATA_WEB_CONTENTS_OBSERVER_H_
 
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
-#include "content/public/browser/web_contents_observer.h"
+#include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
 
 namespace content {
 class NavigationEntry;
 class Page;
-class WebContents;
 }  // namespace content
+
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
 
 namespace ai_chat {
 
@@ -21,11 +24,11 @@ class TabTrackerService;
 
 // This class informs the TabTrackerService about changes to tabs (i.e.
 // creation, deletion, title/url updates). Each instance of this class is
-// associated with a single tab.
-class TabDataWebContentsObserver : public content::WebContentsObserver {
+// associated with a single tab, and follows the tab's contents when they are
+// replaced.
+class TabDataWebContentsObserver : public tabs::ContentsObservingTabFeature {
  public:
-  TabDataWebContentsObserver(int32_t tab_handle,
-                             content::WebContents* contents);
+  TabDataWebContentsObserver(int32_t tab_handle, tabs::TabInterface& tab);
   ~TabDataWebContentsObserver() override;
 
   TabDataWebContentsObserver(const TabDataWebContentsObserver&) = delete;

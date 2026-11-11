@@ -5,9 +5,9 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import Icon from '@brave/leo/react/icon'
-import ProgressRing from '@brave/leo/react/progressRing'
-import Tooltip from '@brave/leo/react/tooltip'
+import Icon from '@brave/nala/react/icon'
+import ProgressRing from '@brave/nala/react/progressRing'
+import Tooltip from '@brave/nala/react/tooltip'
 
 // Selectors
 import {

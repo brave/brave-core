@@ -150,8 +150,8 @@ TEST_F(PageMetricsUnitTest, DomainsLoadedCount) {
 #if BUILDFLAG(IS_MAC)
   // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
   // unexpected test timeout failures are resolved.
-  if (base::mac::MacOSMajorVersion() == 26) {
-    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  if (base::mac::MacOSMajorVersion() >= 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe and later.";
   }
 #endif
   // Test with non-default browser (already set in SetUp)
@@ -215,8 +215,8 @@ TEST_F(PageMetricsUnitTest, PagesLoadedCount) {
 #if BUILDFLAG(IS_MAC)
   // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
   // unexpected test timeout failures are resolved.
-  if (base::mac::MacOSMajorVersion() == 26) {
-    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  if (base::mac::MacOSMajorVersion() >= 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe and later.";
   }
 #endif
   // Set up rewards status
@@ -322,8 +322,8 @@ TEST_F(PageMetricsUnitTest, FirstPageLoadTimeLater) {
 #if BUILDFLAG(IS_MAC)
   // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
   // unexpected test timeout failures are resolved.
-  if (base::mac::MacOSMajorVersion() == 26) {
-    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  if (base::mac::MacOSMajorVersion() >= 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe and later.";
   }
 #endif
   task_environment_.FastForwardBy(base::Minutes(30));
@@ -346,8 +346,8 @@ TEST_F(PageMetricsUnitTest, FirstPageLoadTimeTooLate) {
 #if BUILDFLAG(IS_MAC)
   // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
   // unexpected test timeout failures are resolved.
-  if (base::mac::MacOSMajorVersion() == 26) {
-    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  if (base::mac::MacOSMajorVersion() >= 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe and later.";
   }
 #endif
   task_environment_.FastForwardBy(base::Days(7));
@@ -361,8 +361,8 @@ TEST_F(PageMetricsUnitTest, CombinedSearchStudyNotReportedTooEarly) {
 #if BUILDFLAG(IS_MAC)
   // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
   // unexpected test timeout failures are resolved.
-  if (base::mac::MacOSMajorVersion() == 26) {
-    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  if (base::mac::MacOSMajorVersion() >= 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe and later.";
   }
 #endif
   page_metrics_service_->RecordOmniboxQuery();
@@ -397,8 +397,8 @@ TEST_F(PageMetricsUnitTest, CombinedSearchStudyAttributes) {
 #if BUILDFLAG(IS_MAC)
   // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
   // unexpected test timeout failures are resolved.
-  if (base::mac::MacOSMajorVersion() == 26) {
-    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  if (base::mac::MacOSMajorVersion() >= 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe and later.";
   }
 #endif
   history_service_->AddPage(GURL("https://example.com"), base::Time::Now(),

@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 
 // Selectors
 import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
@@ -35,9 +35,9 @@ import { SelectTokenModal } from '../composer_ui/select_token_modal/select_token
 import { QuoteInfo } from './components/swap/quote-info/quote-info'
 import { PrivacyModal } from './components/swap/privacy-modal/privacy-modal'
 import { ComposerControls } from '../composer_ui/composer_controls/composer_controls'
-import WalletPageWrapper from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
-import { DefaultPanelHeader } from '../../../components/desktop/card-headers/default-panel-header'
-import { PanelActionHeader } from '../../../components/desktop/card-headers/panel-action-header'
+import WalletPageWrapper from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
+import { DefaultPanelHeader } from '$wallet/page/components/card_headers/default_panel_header'
+import { PanelActionHeader } from '$wallet/page/components/card_headers/panel_action_header'
 import { SwapProviders } from './components/swap/swap_providers/swap_providers'
 import {
   BottomSheet, //

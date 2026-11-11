@@ -4,9 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Dialog from '@brave/leo/react/dialog'
-import Dropdown from '@brave/leo/react/dropdown'
-import ProgressRing from '@brave/leo/react/progressRing'
+import Dialog from '@brave/nala/react/dialog'
+import Dropdown from '@brave/nala/react/dropdown'
+import ProgressRing from '@brave/nala/react/progressRing'
 import classnames from '$web-common/classnames'
 import { formatLocale, getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
@@ -27,8 +27,8 @@ interface Props {
 // and parsed back out.
 const PERMISSION_OPTIONS = [
   {
-    permission: Mojom.ToolPermission.kAlwaysAllow,
-    label: S.CHAT_UI_WEBSITE_TOOL_PERMISSION_ALWAYS_ALLOW,
+    permission: Mojom.ToolPermission.kAllowSession,
+    label: S.CHAT_UI_WEBSITE_TOOL_PERMISSION_ALLOW_SESSION,
   },
   {
     permission: Mojom.ToolPermission.kAsk,

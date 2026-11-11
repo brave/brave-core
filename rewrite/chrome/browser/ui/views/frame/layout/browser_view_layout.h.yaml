@@ -1,0 +1,43 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Make private members of BrowserViewLayout accessible to Brave
+
+      TODO(https://github.com/brave/brave-browser/issues/50488): There should be
+      no need to access these private members directly once the
+      const-correctness around these classes is resolved.
+    add_friend:
+      class_name: BrowserViewLayout
+      friend_type: class BraveBrowserViewLayout
+
+  - description: |-
+      Add new members to BrowserViewLayoutViews for Brave specific layout
+    regex:
+      re_pattern: |-
+        (struct BrowserViewLayoutViews {)
+      replace: |-
+        \1
+          raw_ptr<views::View> vertical_tab_strip_host = nullptr;
+          raw_ptr<views::View> focus_mode_title_bar = nullptr;
+          raw_ptr<SidebarContainerView> sidebar_container = nullptr;
+
+  - description: |-
+      Add setters for the Brave specific BrowserViewLayoutViews members
+
+      Counterpart of the members added to BrowserViewLayoutViews.
+    add_to_public:
+      class_name: BrowserViewLayout
+      code: |-
+        void set_vertical_tab_strip_host(views::View* vertical_tab_strip_host) {
+          views_.vertical_tab_strip_host = vertical_tab_strip_host;
+        }
+        void set_focus_mode_title_bar(views::View* focus_mode_title_bar) {
+          views_.focus_mode_title_bar = focus_mode_title_bar;
+        }
+        void set_sidebar_container(SidebarContainerView* sidebar_container) {
+          views_.sidebar_container = sidebar_container;
+        }

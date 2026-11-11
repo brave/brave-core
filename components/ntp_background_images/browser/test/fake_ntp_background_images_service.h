@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_TEST_FAKE_NTP_BACKGROUND_IMAGES_SERVICE_H_
 
 #include <cstddef>
+#include <memory>
 #include <optional>
 #include <string>
 
@@ -24,6 +25,7 @@ class VariationsService;
 
 namespace ntp_background_images {
 
+struct NTPBackgroundImagesData;
 struct NTPSponsoredSitesData;
 
 class FakeNTPBackgroundImagesService final : public NTPBackgroundImagesService {
@@ -41,6 +43,7 @@ class FakeNTPBackgroundImagesService final : public NTPBackgroundImagesService {
   ~FakeNTPBackgroundImagesService() override;
 
   void RegisterSponsoredImagesComponent() override;
+  void UnregisterSponsoredImagesComponent() override;
 
   // Test-only entry point: parses `json` and injects it as if the component
   // were ready. Passes `std::nullopt` to `OnHandledSponsoredComponentData` if
@@ -51,12 +54,22 @@ class FakeNTPBackgroundImagesService final : public NTPBackgroundImagesService {
   // manifest had just been loaded, notifying observers.
   void OnGetSponsoredSitesData(std::optional<NTPSponsoredSitesData> sites_data);
 
+  // Test-only entry point: injects `data` as the current background images
+  // data, as if the component had just been loaded.
+  void SetBackgroundImagesData(
+      std::unique_ptr<NTPBackgroundImagesData> data);
+
   size_t register_sponsored_images_component_call_count() const {
     return register_sponsored_images_component_call_count_;
   }
 
+  size_t unregister_sponsored_images_component_call_count() const {
+    return unregister_sponsored_images_component_call_count_;
+  }
+
  private:
   size_t register_sponsored_images_component_call_count_ = 0;
+  size_t unregister_sponsored_images_component_call_count_ = 0;
 };
 
 }  // namespace ntp_background_images

@@ -19,13 +19,14 @@ import sys
 
 def main(args):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--stamp',
-                        required=True,
-                        help='Path to stamp to mark when finished.')
+    parser.add_argument(
+        '--stamp', required=True, help='Path to stamp to mark when finished.'
+    )
     options = parser.parse_args(args)
 
     if options.stamp:
-        open(options.stamp, 'w').close()
+        with open(options.stamp, 'w', encoding='utf-8'):
+            pass
     else:
         return 1
 

@@ -57,7 +57,6 @@
     E_CPONLY(kColorSidebarAddBubbleItemTextBackgroundHovered) \
     E_CPONLY(kColorSidebarAddBubbleItemTextHovered)           \
     E_CPONLY(kColorSidebarAddBubbleItemTextNormal)            \
-    E_CPONLY(kColorSidebarArrowBackgroundHovered)             \
     E_CPONLY(kColorSidebarArrowDisabled)                      \
     E_CPONLY(kColorSidebarArrowNormal)                        \
     E_CPONLY(kColorSidebarButtonBase)                         \
@@ -96,8 +95,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-#define BRAVE_WAYBACK_MACHINE_COLOR_IDS      \
-    E_CPONLY(kColorWaybackMachineURLLoaded)  \
+#define BRAVE_WAYBACK_MACHINE_COLOR_IDS \
     E_CPONLY(kColorWaybackMachineURLNotAvailable)
 #else
 #define BRAVE_WAYBACK_MACHINE_COLOR_IDS

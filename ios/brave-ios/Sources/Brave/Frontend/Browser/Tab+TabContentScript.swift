@@ -47,7 +47,7 @@ extension TabContentScriptLoader {
 
   static func loadUserScript(named: String) -> String? {
     guard let path = Bundle.module.path(forResource: named, ofType: "js"),
-      let source: String = try? String(contentsOfFile: path)
+      let source: String = try? String(contentsOfFile: path, encoding: .utf8)
     else {
       Logger.module.error("Failed to load script: \(named).js")
       assertionFailure("Failed to Load Script: \(named).js")

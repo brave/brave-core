@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/tokens_feature.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 

@@ -50,7 +50,6 @@ extension BrowserViewController: TabObserver {
       // (orange color) as soon as the page has loaded.
       if let url = visibleURL {
         if !url.isInternalURL(for: .readermode) {
-          topToolbar.updateReaderModeState(.unavailable)
           hideReaderModeBar(animated: false)
         }
       }
@@ -130,7 +129,6 @@ extension BrowserViewController: TabObserver {
     }
 
     updateUIForReaderHomeStateForTab(tab)
-    updateBackForwardActionStatus(for: tab)
   }
 
   public func tabDidCommitSameDocumentNavigation(_ tab: some TabState) {
@@ -164,7 +162,7 @@ extension BrowserViewController: TabObserver {
       isSelected: tabManager.selectedTab === tab,
       isPrivate: privateBrowsingManager.isPrivateBrowsing
     )
-    tab.browserData?.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
+    tab.browserData?.reportPageLoad(to: rewards)
 
     if tab.visibleURL?.isLocal == false {
       // Set rewards inter site url as new page load url.
@@ -175,10 +173,6 @@ extension BrowserViewController: TabObserver {
       maybeRecordBraveSearchDailyUsage(url: lastCommittedURL)
     }
 
-    // Added this method to determine long press menu actions better
-    // Since these actions are depending on tabmanager opened WebsiteCount
-    updateToolbarUsingTabManager(tabManager)
-
     recordFinishedPageLoadP3A()
   }
 
@@ -187,9 +181,9 @@ extension BrowserViewController: TabObserver {
     if error.code == Int(CFNetworkErrors.cfurlErrorCancelled.rawValue) {
       if tab === tabManager.selectedTab {
         if let displayURL = tab.visibleURL?.displayURL {
-          updateToolbarCurrentURL(displayURL)
-        } else if let url = tab.url, !url.isLocal, !InternalURL.isValid(url: url) {
-          updateToolbarCurrentURL(url.displayURL)
+          updateScreenTimeUrl(displayURL)
+        } else if let url = tab.lastCommittedURL, !url.isLocal, !InternalURL.isValid(url: url) {
+          updateScreenTimeUrl(url.displayURL)
         }
         updateWebViewPageZoom(tab: tab)
       }
@@ -197,21 +191,7 @@ extension BrowserViewController: TabObserver {
     }
   }
 
-  public func tabRenderProcessDidTerminate(_ tab: some TabState) {
-    guard let url = tab.lastCommittedURL else { return }
-    if url.isWebPage(includeDataURIs: false) {
-      // For now just reload the page when the process crashes
-      tab.reload()
-    }
-  }
-
   public func tabDidUpdateURL(_ tab: some TabState) {
-    if tab.isDisplayingBasicAuthPrompt == true {
-      tab.setVirtualURL(
-        URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.basicAuth.rawValue)")
-      )
-    }
-
     if tab === tabManager.selectedTab && !tab.isRestoring {
       updateUIForReaderHomeStateForTab(tab)
     }
@@ -227,8 +207,8 @@ extension BrowserViewController: TabObserver {
       // didCommit is called and it will cause url bar be empty in that period
       // To fix this when tab display url is empty, webview url is used
       if tab === tabManager.selectedTab, tab.visibleURL?.displayURL == nil {
-        if let url = tab.url, !url.isLocal, !InternalURL.isValid(url: url) {
-          updateToolbarCurrentURL(url.displayURL)
+        if let url = tab.visibleURL, !url.isLocal, !InternalURL.isValid(url: url) {
+          updateScreenTimeUrl(url.displayURL)
         }
       } else if tab === tabManager.selectedTab, tab.visibleURL?.displayURL?.scheme == "about",
         !tab.isLoading
@@ -238,12 +218,6 @@ extension BrowserViewController: TabObserver {
         }
 
         navigateInTab(tab: tab)
-      } else if tab === tabManager.selectedTab, let tabData = tab.browserData,
-        tabData.isDisplayingBasicAuthPrompt
-      {
-        updateToolbarCurrentURL(
-          URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.basicAuth.rawValue)")
-        )
       }
     }
 
@@ -254,44 +228,8 @@ extension BrowserViewController: TabObserver {
         let rewardsURL = tab.rewardsXHRLoadURL,
         url.host == rewardsURL.host
       {
-        tab.browserData?.reportPageLoad(to: rewards, redirectChain: [url])
+        tab.browserData?.reportPageLoad(to: rewards)
       }
-    }
-
-    // Update the estimated progress when the URL changes. Estimated progress may update to 0.1 when the url
-    // is still an internal URL even though a request may be pending for a web page.
-    if tab === tabManager.selectedTab, let url = tab.visibleURL,
-      !url.isNewTabURL, !InternalURL.isValid(url: url), tab.isLoading, tab.estimatedProgress > 0
-    {
-      topToolbar.updateProgressBar(Float(tab.estimatedProgress))
-    }
-
-    Task {
-      if self.tabManager.selectedTab === tab {
-        self.updateToolbarSecureContentState(tab.visibleSecureContentState)
-      }
-    }
-  }
-
-  public func tabDidChangeLoadProgress(_ tab: some TabState) {
-    guard tab === tabManager.selectedTab else { return }
-    if let url = tab.visibleURL, !url.isNewTabURL, !InternalURL.isValid(url: url), tab.isLoading {
-      topToolbar.updateProgressBar(Float(tab.estimatedProgress))
-    } else {
-      topToolbar.hideProgressBar()
-    }
-  }
-
-  public func tabDidStartLoading(_ tab: some TabState) {
-    guard tab === tabManager.selectedTab else { return }
-    topToolbar.locationView.loading = tab.isLoading
-  }
-
-  public func tabDidStopLoading(_ tab: some TabState) {
-    guard tab === tabManager.selectedTab else { return }
-    topToolbar.locationView.loading = tab.isLoading
-    if tab.estimatedProgress != 1 {
-      topToolbar.updateProgressBar(1)
     }
   }
 
@@ -304,17 +242,6 @@ extension BrowserViewController: TabObserver {
     if !title.isEmpty && title != tab.lastTitle {
       navigateInTab(tab: tab)
       tabsBar.updateSelectedTabTitle()
-    }
-  }
-
-  public func tabDidChangeBackForwardState(_ tab: some TabState) {
-    if tab !== tabManager.selectedTab { return }
-    updateBackForwardActionStatus(for: tab)
-  }
-
-  public func tabDidChangeVisibleSecurityState(_ tab: some TabState) {
-    if tabManager.selectedTab === tab {
-      self.updateToolbarSecureContentState(tab.visibleSecureContentState)
     }
   }
 
@@ -334,7 +261,6 @@ extension BrowserViewController {
       DarkReaderScriptHandler(),
       BraveGetUA(),
       BraveSearchScriptHandler(profile: profile, rewards: rewards),
-      ResourceDownloadScriptHandler(),
       AdsMediaReportingScriptHandler(),
       DeAmpScriptHandler(),
       SiteStateListenerScriptHandler(),

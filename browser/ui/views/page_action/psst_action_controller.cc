@@ -16,6 +16,7 @@
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -29,7 +30,6 @@
 
 namespace {
 
-constexpr int kIconSize = 16;
 constexpr float kBadgeRadius = 3.0f;
 
 class PsstIconImageSource : public gfx::CanvasImageSource {
@@ -184,8 +184,7 @@ void PsstActionController::UpdatePageAction() {
   if (!show_badge_) {
     page_action_controller_->OverrideImage(
         kActionShowPsstIcon,
-        ui::ImageModel::FromVectorIcon(kLeoPsstIcon, kColorToolbarButtonIcon,
-                                       kIconSize));
+        ui::ImageModel::FromVectorIcon(kLeoPsstIcon, kColorToolbarButtonIcon));
     return;
   }
   content::WebContents* const contents = tab_->GetContents();
@@ -194,7 +193,11 @@ void PsstActionController::UpdatePageAction() {
   }
   const SkColor color =
       contents->GetColorProvider().GetColor(kColorToolbarButtonIcon);
-  gfx::IconDescription icon_description(kLeoPsstIcon, kIconSize, color);
+  // Badged images are drawn as-is, so build them at the size PageActionView
+  // uses for vector icons.
+  gfx::IconDescription icon_description(
+      kLeoPsstIcon,
+      GetLayoutConstant(LayoutConstant::kLocationBarTrailingIconSize), color);
   gfx::ImageSkia icon_image(
       std::make_unique<PsstIconImageSource>(icon_description),
       gfx::Size(icon_description.dip_size, icon_description.dip_size));

@@ -7,7 +7,11 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_TAB_SEARCH_TAB_SEARCH_PAGE_HANDLER_H_
 
 #include <optional>
+#include <string>
+#include <utility>
+#include <vector>
 
+#include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -16,6 +20,10 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/history_embeddings/content/open_tab_passages.h"
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 namespace history_embeddings {
 class HistoryEmbeddingsSearch;
@@ -99,6 +107,18 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
           search) {
     embeddings_search_for_testing_ = std::move(search);
   }
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  // Stands in for the passage read in `GetTabsForAIEngine`. The read needs a
+  // real `HistoryEmbeddingsService`, which the factory only builds behind
+  // signin and opt-in gating that a browser test can't satisfy.
+  using TabPassagesFetcher =
+      base::RepeatingCallback<void(const std::vector<GURL>&,
+                                   history_embeddings::TabPassagesCallback)>;
+  void SetTabPassagesFetcherForTesting(TabPassagesFetcher fetcher) {
+    tab_passages_fetcher_for_testing_ = std::move(fetcher);
+  }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
  private:
@@ -115,7 +135,17 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
   void OnTabOrganizationFeaturePrefChanged(Profile* profile);
   tab_search::mojom::ErrorPtr GetError(ai_chat::mojom::APIError error);
 
-  std::vector<ai_chat::Tab> GetTabsForAIEngine();
+  using TabsForAIEngineCallback =
+      base::OnceCallback<void(std::vector<ai_chat::Tab>)>;
+  // Collects the tabs to describe to the AI engine. Asynchronous because
+  // populating each tab's page excerpts means a trip through HistoryService
+  // and the history embeddings database.
+  void GetTabsForAIEngine(TabsForAIEngineCallback callback);
+  void OnTabsReadyForSuggestedTopics(GetSuggestedTopicsCallback callback,
+                                     std::vector<ai_chat::Tab> tabs);
+  void OnTabsReadyForFocusTabs(const std::string& topic,
+                               GetFocusTabsCallback callback,
+                               std::vector<ai_chat::Tab> tabs);
 
   PrefChangeRegistrar brave_pref_change_registrar_;
 
@@ -128,15 +158,32 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
  private:
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  void OnTabPassagesReady(
+      std::vector<ai_chat::Tab> tabs,
+      TabsForAIEngineCallback callback,
+      std::vector<std::vector<std::string>> passages_by_tab);
+
+  // Whether page excerpts may be attached to this profile's tab list.
+  // Checked before the passage reads start and again before their results
+  // are used, since the reads are asynchronous.
+  bool MaySendPageContent(Profile* profile);
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
   // Tracks per-tab HistoryService::QueryURL calls issued by
-  // SearchTabsByContent. Destruction cancels any in-flight resolution so a
-  // stale search can't fire its embeddings query after the handler is gone.
+  // SearchTabsByContent and the passage collection in GetTabsForAIEngine.
+  // Destruction cancels any in-flight resolution so a stale search can't fire
+  // its embeddings query after the handler is gone.
   base::CancelableTaskTracker query_url_task_tracker_;
 
   // Set means a test installed an override; the pointer inside may still have
   // been invalidated.
   std::optional<base::WeakPtr<history_embeddings::HistoryEmbeddingsSearch>>
       embeddings_search_for_testing_;
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  TabPassagesFetcher tab_passages_fetcher_for_testing_;
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)

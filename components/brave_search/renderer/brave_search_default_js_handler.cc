@@ -9,18 +9,14 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/no_destructor.h"
 #include "content/public/renderer/render_frame.h"
-#include "gin/arguments.h"
 #include "gin/function_template.h"
 #include "third_party/blink/public/mojom/devtools/console_message.mojom.h"
 #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/platform/web_string.h"
-#include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_console_message.h"
 #include "third_party/blink/public/web/web_local_frame.h"
-#include "third_party/blink/public/web/web_script_source.h"
 
 namespace brave_search {
 

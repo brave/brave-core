@@ -5,7 +5,6 @@
 
 #include "brave/components/omnibox/browser/brave_on_device_head_provider.h"
 
-#include <memory>
 #include <string_view>
 
 #include "base/base_paths.h"

@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Never show the "Manage your devices" footer.
+
+      It links to the Google account device page. Brave hides the same link in
+      the legacy device picker.
+    regex:
+      re_pattern: |-
+        (void updateManageDevicesVisibility\(boolean visible\) \{)
+      replace: |-
+        \1
+                if (visible) return;
+
+  - description: |-
+      Leave no room for the hidden "Manage your devices" footer.
+
+      The sheet height otherwise reserves the footer's height in the expanded
+      state, leaving an empty gap.
+    regex:
+      pattern: 'height += getElementHeightWithMarginsPx(mManageDevicesBlock);'
+      replace: 'height += 0;  // Never showing the footer'

@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+
+# Kept out of chrome_java so that targets chrome_java depends on, such as
+# //brave/browser/quick_search_engines/android:java, can read the Day Zero
+# variant without a dependency cycle.
+android_library("java") {
+  sources = [ "DayZeroHelper.java" ]
+  deps = [
+    "//base:base_java",
+    "//build/android:build_java",
+    "//chrome/browser/preferences:java",
+    "//third_party/jni_zero:jni_zero_java",
+  ]
+}

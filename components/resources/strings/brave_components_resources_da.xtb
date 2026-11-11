@@ -433,7 +433,6 @@
 <translation id="412480955826088549">Downloader komponent...</translation>
 <translation id="4894106830958548828">Jeg forstår</translation>
 <translation id="2729085694451916573">Teststreng til <ph name="PART_ONE"/>pladsholdere<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Få mere at vide<ph name="PART_TWO_END"/></translation>
-<translation id="6705666103672654256">Dine søgninger og sideindhold behandles på denne enhed. Intet sendes til Brave eller ses af menneskelige korrekturlæsere. Dette er en eksperimentel funktion og rammer ikke altid plet.</translation>
 <translation id="7534079972563542000">Unstoppable-domæner</translation>
 <translation id="4492298165410552103">Aktivér understøttelse af Unstoppable-domæner i Brave?</translation>
 <translation id="5015092481905019948">Brave vil bruge <ph name="PROVIDER_NAME"/> til at løse <ph name="DOMAIN_LIST"/> domænenavne, der er på <ph name="DOMAIN_PROVIDER_NAME"/>. Brave skjuler din IP-adresse. Hvis du aktiverer dette, vil <ph name="PROVIDER_NAME"/> se, at nogen forsøger at besøge disse domæner, men intet andet. Se <ph name="PROVIDER_NAME"/>s <ph name="BEGIN_PROVIDER_TOU_LINK"/>brugsbetingelser<ph name="END_PROVIDER_TOU_LINK"/> og <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>privatlivspolitik<ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
@@ -812,8 +811,6 @@
 <translation id="223536150967420869">Køb</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="6810855196544084176">Bridge</translation>
-<translation id="3488255243387417752">Sælg</translation>
-<translation id="5223034545851554347">Du har ikke nok <ph name="TOKEN_SYMBOL"/> på denne konto.</translation>
 <translation id="6585419509320235293">Vælg, hvilket aktiv der skal sendes</translation>
 <translation id="1018742998826182079">Vælg, hvilke aktiver der skal byttes</translation>
 <translation id="2791691551852500015">Indtast modtagerens adresse</translation>
@@ -867,9 +864,11 @@
 <translation id="646023614746251785">Bekræft byt</translation>
 <translation id="6264944956989873014">Bekræft bro</translation>
 <translation id="7067917728851842589">Bekræft afsendelse</translation>
+<translation id="2841837950101800123">Udbyder</translation>
 <translation id="1114725160772317155">Status på udbyderen</translation>
 <translation id="2351357639951873714">Bekræft beskyttelse</translation>
 <translation id="7480044382160806610">Bekræft unshield</translation>
+<translation id="6830542010524256586">Bekræft migrering</translation>
 <translation id="8332923694292360653">Brug</translation>
 <translation id="3735740477244556633">Sortér efter</translation>
 <translation id="6484605214219822434">Gennemgå bro</translation>
@@ -1328,7 +1327,6 @@
 <translation id="4312994183947987913">Køb/Indbetal</translation>
 <translation id="5133421763709317473">Der blev ikke fundet nogen aktiver, der matcher søgning eller filter</translation>
 <translation id="6423985584914773314">Ikke en gyldig FIL-adresse</translation>
-<translation id="6153197326949684688">Sælg med <ph name="OFFRAMP_PROVIDER"/></translation>
 <translation id="5795821518596541838">Transaktionspartner</translation>
 <translation id="1916136859742693273">Brave Wallet bruger Meld.io til at hjælpe med at finde og samle forskellige kryptoudbydere for din region. Vi deler oplysninger med Meld.io for at gennemføre transaktionen, herunder din wallet-adresse og landekode. Læs Melds brugsbetingelser for at få mere information.</translation>
 <translation id="245827814248186739">Jeg har læst og accepterer <ph name="LINK_BEFORE"/>Melds brugsbetingelser<ph name="LINK_AFTER"/></translation>
@@ -1408,8 +1406,10 @@
 <translation id="5503843345634715425">Refunderet</translation>
 <translation id="1778601041100951971">Afskærmer <ph name="AMOUNT"/></translation>
 <translation id="6439110433198887239">Unshielding <ph name="AMOUNT"/></translation>
+<translation id="6022412719565214018">Migrerer <ph name="AMOUNT"/></translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> er blevet afskærmet</translation>
 <translation id="3860973324426281816"><ph name="AMOUNT"/> er blevet unshielded</translation>
+<translation id="7338153249873692854"><ph name="AMOUNT"/> er blevet migreret</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} transaktion mere afventer.}
       other {{PENDING_TRANSACTIONS} transaktioner mere afventer.}
@@ -1642,7 +1642,7 @@
 <translation id="6646456430109279404">Toogtyvende</translation>
 <translation id="1961743941324393172">Treogtyvende</translation>
 <translation id="9079035825546416393">Fireogtyvende</translation>
-<translation id="1558531209852594808">Non-ASCII-tegn registreret!</translation>
+<translation id="6980520267116175375">Uventede tegn registreret</translation>
 <translation id="442709594176931966">Se oprindelige besked</translation>
 <translation id="2239252396088484499">Se besked i ASCII-kode</translation>
 <translation id="2894654529758326923">Information</translation>
@@ -1731,6 +1731,9 @@
 <translation id="2077392865355605472">Token-symbol påkrævet</translation>
 <translation id="4636925020451566238">Token-decimaler af præcisionsværdi er påkrævet</translation>
 <translation id="3797613444743816037">Mint-adresse</translation>
+<translation id="6571966497164575098">Aktiv-ID</translation>
+<translation id="2110442566771571217">Ugyldig eller tom token-aktiv-ID</translation>
+<translation id="4170599358417498979">Brugerdefinerede aktiver understøttes ikke på dette netværk</translation>
 <translation id="7951915459354237451">Gebyrgrænsen er sat lavere end grundgebyret. Din transaktion kan tage lang tid eller mislykkes.</translation>
 <translation id="2227702748249086756">Kunne ikke hente prisestimater</translation>
 <translation id="3225624966527491351">Importér NFT</translation>
@@ -1848,14 +1851,18 @@
 <translation id="9086302186042011942">Synkroniserer</translation>
 <translation id="99991973626409495">Gennemgå afskærmning</translation>
 <translation id="6779429520470417361">Gennemgå unshield</translation>
+<translation id="7861093868637278059">Gennemgå migrering</translation>
 <translation id="3114681061018999547">Afskærmer</translation>
 <translation id="1564172583156967455">Unshielding</translation>
+<translation id="7040674372746105444">Migrerer</translation>
 <translation id="8897189056319316783">Afskærm ZEC</translation>
 <translation id="508249542337194541">Unshield ZEC</translation>
+<translation id="3242332985109374549">Migrer ZEC</translation>
 <translation id="3382275793825152362">Afskærm overførsler</translation>
 <translation id="617149752238892649">Afskær midler</translation>
 <translation id="8631765320256788981">Du sender penge fra din åbne konto til din afskærmede konto.</translation>
 <translation id="3860364671495430495">Du sender penge fra din afskærmede konto til din åbne konto.</translation>
+<translation id="9664108035970394">Du sender penge fra din afskærmede ældre konto til din afskærmede konto.</translation>
 <translation id="7144878232160441200">Prøv igen</translation>
 <translation id="4750109510113597688">Denne transaktion kan omfatte et gebyr for kontooprettelse</translation>
 <translation id="6201709949885884577">Der kræves en adgangskode for at udføre denne handling.</translation>
@@ -1873,6 +1880,26 @@
 <translation id="2737084171727561244">Gå til portefølje</translation>
 <translation id="3499452861061048987">Tilføj token</translation>
 <translation id="5046066249040287308">Værktøjstjeneste til Brave Wallet</translation>
+<translation id="8767749833522980474">Krypto</translation>
+<translation id="4509084261025090951">Få dit kort</translation>
+<translation id="3624463584770657372">Bekræft din identitet for at se kortnumre og begynde at bruge det.</translation>
+<translation id="2508337767012636987">Tryk for at bekræfte</translation>
+<translation id="703964541421486259">Skjul saldi</translation>
+<translation id="302114796458112924">Vis saldi</translation>
+<translation id="9083210401924577263">Brave Rewards-kort</translation>
+<translation id="2433507940547922241">Udseende</translation>
+<translation id="3435738964857648380">Sikkerhed</translation>
+<translation id="6700561332544287722">Kræv oplåsning næste gang</translation>
+<translation id="5605360570977617291">Skjul <ph name="CARD_NAME"/> fra startsiden?</translation>
+<translation id="2721464457853369512">Din <ph name="CARD_NAME"/>-saldo er uændret. Dette skjuler kun kortet fra startsiden. Du kan vise det igen når som helst i Indstillinger under Wallet.</translation>
+<translation id="1543259266592091784">Tilføj midler</translation>
+<translation id="6202621179510403111">Nyt kort</translation>
+<translation id="2366365638711338487">Indtjening <ph name="DATE_BEGIN"/>(<ph name="DATE"/>)<ph name="DATE_END"/></translation>
+<translation id="4938547503015386493">Renter + <ph name="AMOUNT"/> BAT cashback</translation>
+<translation id="5124185664922725208">Forbrug</translation>
+<translation id="1591562245178063882">Denne måned</translation>
+<translation id="2781977263564899470">Få fysisk kort</translation>
+<translation id="3388543273143324626">Brug i butikker og hæveautomater</translation>
 <translation id="3155170474926428993">Tor Startprogram</translation>
 <translation id="3745016858329272300">Generel info</translation>
 <translation id="4045404575593562245">Tor kontrolhændelser</translation>
@@ -1912,7 +1939,6 @@
 <translation id="6261915643960475695">Business</translation>
 <translation id="8265589281845759879">Biler</translation>
 <translation id="7726519849288907308">Kendte</translation>
-<translation id="8767749833522980474">Krypto</translation>
 <translation id="7577010593836079522">Kultur</translation>
 <translation id="6807791860691150411">Uddannelse</translation>
 <translation id="3706423975342040244">Underholdning</translation>
@@ -2013,7 +2039,7 @@
 <translation id="418195046117003119">Dele-hub skærmbillede</translation>
 <translation id="4712056949543885424">Vis adgangskode-manager</translation>
 <translation id="8037472847879765671">Vis betalingsmetoder</translation>
-<translation id="7269867954894010756">Vis adresser</translation>
+<translation id="6262574309547773475">Vis kontaktoplysninger</translation>
 <translation id="6799213269525079335">Find næste</translation>
 <translation id="8666632926482119393">Find forrige</translation>
 <translation id="3567467864281922039">Luk find eller stop</translation>
@@ -2091,9 +2117,6 @@
 <translation id="3067105725259639716">Konfigurér Brave News</translation>
 <translation id="6286510487460330478">Konfigurér genveje</translation>
 <translation id="9214819486716388964">Vis Brave Talk</translation>
-<translation id="5950760360751948276">Vis altid bogmærkelinjen</translation>
-<translation id="2960757369920422313">Vis bogmærkelinje på ny fane</translation>
-<translation id="522953399371747698">Skjul bogmærkelinjen</translation>
 <translation id="9079813619990532635">Eksportér alle bogmærker</translation>
 <translation id="134184943774258988">Synlighed af til/-fra knappen til Alle bogmærker</translation>
 <translation id="2158862020143233462">Slå Shields fra/til</translation>
@@ -2142,6 +2165,7 @@
 <translation id="3142853026316054951">Skift fokustilstand</translation>
 <translation id="3468387898712904997">Nyt e-mail-alias</translation>
 <translation id="4711475997833555304">Opret en tilfældig e-mail, der videresendes til din indbakke.</translation>
+<translation id="5663901348199429994">Dine e-mail-aliaser</translation>
 <translation id="2796584247246518451">Ny midlertidig beholder</translation>
 <translation id="8591883849678260674">Se originalen</translation>
 <translation id="1969654232209826429">min. læsning</translation>
@@ -2206,20 +2230,22 @@
 <translation id="9215978379284690246">Statuskode: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Statuskode: <ph name="STATUS_CODE"/>, intern statuskode: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Du har nået premiumgrænsen. Prøv igen om et par timer.</translation>
+<translation id="6873128487002733717">Du har nået premium-grænsen for denne model. Vælg en anden model, eller prøv igen senere.</translation>
+<translation id="2688661132468689309">Du har nået premium-grænsen for denne model. Den nulstilles om <ph name="RESET_DURATION"/> (kl. <ph name="RESET_TIME"/>). Vælg en anden model, eller prøv igen derefter.</translation>
 <translation id="3683964919745779766">Du har nået prisgrænsen for denne model eller er løbet tør for kreditter. Prøv venligst igen senere.</translation>
 <translation id="7692501701960747469">Den API-nøgle, der er konfigureret til denne model, er ugyldig. Tjek venligst din konfiguration, og prøv igen.</translation>
 <translation id="7905602379229309187">Slutpunktet er i øjeblikket overbelastet. Prøv venligst igen senere.</translation>
 <translation id="8151638057146502721">Konfigurer</translation>
 <translation id="999273441077650169">Modellen ændrer sig dynamisk for at bruge den bedste til opgaven.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
-<translation id="3852808100039989429">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Qwen VL 30B, en model skabt af Alibaba Cloud til at være effektiv og anvendelig i mange forskellige sammenhænge. Qwen hostes af Brave via vores egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
-<translation id="784931275560506522">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af GLM-5.1, en model skabt af Zhipu AI til at være effektiv og anvendelig i mange forskellige sammenhænge. GLM-5.1 hostes af NEAR via deres egen dokumenterbart private sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
+<translation id="8218534413919828549">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Qwen 3.6 35B, en model skabt af Alibaba Cloud til at være effektiv og anvendelig i mange forskellige sammenhænge. Qwen hostes af Brave via vores egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
+<translation id="8659225822055186905">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af GLM-5.3 Flash, en model skabt af Zhipu AI til at være effektiv og anvendelig i mange forskellige sammenhænge. GLM-5.3 Flash hostes af NEAR via deres egen dokumenterbart private sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Hej, jeg er Leo. Jeg er en AI-assistent fra Brave. Jeg drives af Claude Instant, en model skabt af Anthropic til samtale- og tekstbehandling. Claude Instant hostes af Brave via vores eget sikre infrastruktur.<ph name="LINK_BEFORE"/>Læs mere<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Claude Haiku, en model skabt af Anthropic til at udføre samtale- og tekstbehandlingsopgaver. Claude Haiku hostes af Brave via vores egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Claude Sonnet, en model skabt af Anthropic til at udføre samtale- og tekstbehandlingsopgaver. Claude Sonnet hostes af Brave via vores egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Grok 4.3, en model skabt af xAI til at være effektiv og anvendelig i mange forskellige sammenhænge. Grok 4.3 hostes af Brave via vores egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af GPT 5.4, en model skabt af OpenAI til at være effektiv og anvendelig i mange forskellige sammenhænge. GPT 5.4 hostes af Brave via vores egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
+<translation id="3934503473603661122">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Grok 4.7, xAI's banebrydende ræsonneringsmodel på Amazon Bedrock. Grok 4.7 leveres via Braves sikre AWS-infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
+<translation id="8983215701788462580">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af GPT Luna, OpenAI's hurtige model med lav latenstid på Amazon Bedrock. GPT Luna leveres via Braves sikre AWS-infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af GPT 5.6 Terra, OpenAI's afbalancerede produktionsmodel på Amazon Bedrock Mantle. GPT 5.6 Terra leveres via Braves sikre AWS-infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Mistral Large, en model skabt af Mistral til at være effektiv og anvendelig i mange forskellige sammenhænge. Mistral Large hostes af Brave via vores egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Qwen 3 235B, en model skabt af Alibaba Cloud til at være effektiv og anvendelig i mange forskellige sammenhænge. Qwen 3 235B hostes af Brave via vores egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Qwen 3.8 Flash Next, en model skabt af Alibaba Cloud til at være effektiv og anvendelig i mange forskellige sammenhænge. Qwen 3.8 Flash Next hostes af Brave via vores egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Deepseek V3.2, en model skabt af Deepseek til at være effektiv og anvendelig i mange forskellige sammenhænge. Deepseek V3.2 hostes af Brave via vores egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Claude Opus, en model skabt af Anthropic til at udføre samtale- og tekstbehandlingsopgaver. Claude Opus hostes af Brave via vores egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af GLM-4-7-Flash, en model skabt af Zhipu AI til at være effektiv og anvendelig i mange forskellige sammenhænge. GLM-4-7-Flash hostes af Brave via vores egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
@@ -2232,7 +2258,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Anbefalede modeller</translation>
 <translation id="6568044140836233369">Vis alle modeller</translation>
-<translation id="6187065185557150870">Chat</translation>
 <translation id="4685048769603134644">Åbn hele siden</translation>
 <translation id="2961040541145689181">Ny chat</translation>
 <translation id="7557539689487606886">Vælg Premium</translation>
@@ -2268,6 +2293,10 @@
 <translation id="3027575440738035995">Leo Premium giver adgang til et udvidet antal sprogmodeller, hvilket giver endnu mere nuancerede svar. <ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
 <translation id="8261506727792406068">Slet</translation>
 <translation id="6574153208133461043">Er du sikker på, at du vil slette denne samtale? Denne handling kan ikke fortrydes.</translation>
+<translation id="1020105790073039189">Skift til en model, der kan læse billeder?</translation>
+<translation id="3797128260474242570"><ph name="CURRENT_MODEL"/> kan ikke læse billeder, og dine vedhæftninger kræver billedbehandling. For at sende dem skal du skifte denne samtale til <ph name="VISION_MODEL"/>. Den modtager hele samtalen, inklusive tidligere beskeder. Du kan også annullere og vælge en anden model, der kan læse billeder. Hvis du sender uden billeder, kan Leo ikke se vedhæftningerne.</translation>
+<translation id="830353068401992697">Skift og send</translation>
+<translation id="369110003363071587">Send uden billeder</translation>
 <translation id="7488762544858401571">Redigeret</translation>
 <translation id="5604254791550001355">Rediger prompt</translation>
 <translation id="8115786586976830777">Kopiér prompt</translation>
@@ -2334,6 +2363,8 @@
 <translation id="4370698775470316661">Denne samtale er for lang og kan ikke fortsættes. Der findes muligvis andre modeller, som Leo kan bruge til at bibeholde nøjagtigheden i længere samtaler.</translation>
 <translation id="4744144453035015075">Søger på internettet</translation>
 <translation id="8548351747582087191">Søger på internettet efter <ph name="SEARCH_TERMS"/>.</translation>
+<translation id="4395536726196773278">Søger i dine åbne faner efter "<ph name="QUERY"/>"…</translation>
+<translation id="4724926708866789382">Ingen åbne faner matcher "<ph name="QUERY"/>".</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> mere …</translation>
 <translation id="8103700533980268469">Luk denne besked</translation>
 <translation id="3417835166382867856">Søg i faner</translation>
@@ -2354,13 +2385,13 @@
 <translation id="887511360213807449">Historik er slået fra</translation>
 <translation id="5380979378058584412">For at kunne se dine tidligere samtaler med Leo skal du aktivere samtalehistorik.</translation>
 <translation id="3185367320601718531">Generering af samtale og tekst</translation>
-<translation id="2793458212460902934">Hurtig • Søg • Værktøjer</translation>
 <translation id="8506027496671575183">Søg • Billede • Værktøjer</translation>
 <translation id="3184606955650139158">Hurtig • Søg • Vision</translation>
 <translation id="7465032796278724624">Verificeret privat med NEAR AI TEE</translation>
 <translation id="8782867266498869301">Modellen ændrer sig dynamisk for at bruge den bedste til opgaven</translation>
 <translation id="7348809809749151120">Hurtig • Søg</translation>
 <translation id="3213834013136637671">Søg • Billede</translation>
+<translation id="2793458212460902934">Hurtig • Søg • Værktøjer</translation>
 <translation id="5276681919620506371">Søg • Værktøjer</translation>
 <translation id="7434375176361995333">Sammenfattelser • Hurtig</translation>
 <translation id="3965507912994218570">Leo-indstillinger</translation>
@@ -2381,6 +2412,11 @@
 <translation id="443008484043213881">Værktøjer</translation>
 <translation id="4343623396828510727">Disse websteder eksponerer værktøjer, som Leo kan bruge til at sende data til og fra dette websted. Tilknyt eller godkend ikke disse værktøjer, hvis denne samtale indeholder data, som du ikke ønsker, at dette websted skal se.</translation>
 <translation id="5021823940147712387">Fjern værktøjer</translation>
+<translation id="8712279871321308580">Tilgængelige webstedsværktøjer</translation>
+<translation id="3690996226559605619">Tilgængelige værktøjer (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Tillad for denne session</translation>
+<translation id="6240821072888636753">Spørg hver gang</translation>
+<translation id="4290920330097335010">Tillad aldrig</translation>
 <translation id="318819763888864209">Alle abonnementer bliver automatisk fornyet, men kan annulleres når som helst før næste fornyelse.</translation>
 <translation id="5091223967610958">Del værtsnavnet på den side, du er på (<ph name="HOST_NAME"/>) for at hjælpe os med at gøre Leo bedre..</translation>
 <translation id="8732450785281947197">Leo AI-redskaber</translation>
@@ -2415,10 +2451,12 @@
 <translation id="3024277805447899099">Forhåndsvis billede</translation>
 <translation id="6671495933530132209">Kopiér billede</translation>
 <translation id="6864459304226931083">Download billede</translation>
+<translation id="6323406350879995440">Åbn på fane</translation>
 <translation id="6332876390231524389">Nuværende faneindhold</translation>
 <translation id="6397861830483632092">Åbn faner…</translation>
 <translation id="802080272588201037">Bogmærker…</translation>
 <translation id="2716127283451902393">Historie…</translation>
+<translation id="8888171900079152025">Arbejdsområdemappe</translation>
 <translation id="49269513399674318">Brug mikrofon</translation>
 <translation id="3895031624234442305">Brugerdefinerede modeller</translation>
 <translation id="4572010449071015143">Start en ny samtale</translation>
@@ -2452,8 +2490,12 @@
 <translation id="3397808797783614750">At tillade AI at browse automatisk for dig kan medføre skadelige, utilsigtede konsekvenser for dit privatliv, dine økonomiske forhold og dine onlinekommunikationer. <ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Sikkerhedsadvarsel</translation>
 <translation id="6077070599873946984">Brave AI har brug for din tilladelse til: <ph name="TOOL_LABEL"/></translation>
+<translation id="908175046303050847">Brave AI vil gerne udføre **<ph name="TOOL_NAME"/>** på **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Handlingen blev identificeret som potentielt ikke i overensstemmelse med din anmodning:</translation>
+<translation id="5137568953923142260">Tillad én gang</translation>
 <translation id="3927932062596804919">Afvis</translation>
+<translation id="4191349941249805855">Vis værktøjsargumenter</translation>
+<translation id="7237059533128264835">Skjul værktøjsargumenter</translation>
 <translation id="4569155249847375786">Verificeret</translation>
 <translation id="8200772114523450471">Genoptag</translation>
 <translation id="7607002721634913082">Sat på pause</translation>
@@ -2464,11 +2506,14 @@
 <translation id="4838375634693651776">Udfører kode i sandkasse for at hjælpe med din forespørgsel</translation>
 <translation id="6990975553143971265">Søger i din browserhistorik efter "<ph name="QUERY"/>"</translation>
 <translation id="8302511726757276645">Søger i din browserhistorik</translation>
+<translation id="6727762439034900202">Opretter et arbejdsområde</translation>
+<translation id="261799307673205052">Arbejdsområde</translation>
 <translation id="8410699755320690690">Brave AI vil søge i din browserhistorik. Søgningen kører lokalt på din enhed, så hele din historik sendes ikke nogen steder hen. Kun de matchende siders titler, URL'er og indekserede tekstpassager sendes til Brave AI som en del af denne samtale.</translation>
 <translation id="4379566111233326721">Kode:</translation>
 <translation id="3542130965673205258">Output:</translation>
 <translation id="6911817209337314910">Genererer nogle valgmuligheder, du kan vælge imellem</translation>
 <translation id="5382076391290708074">Flytning af dine faner rundt</translation>
+<translation id="8717463977094156527">Hvis du tillader dette, sendes **URL'en** og **titlen** på alle dine faner og fanegrupper til Brave AI, plus **korte uddrag af sideteksten** i dine faner, hvor det er tilgængeligt fra dit Semantic History Search-indeks, og Brave AI får tilladelse til at flytte rundt på dine faner. Denne tilladelse gælder kun for denne samtale.</translation>
 <translation id="3862123464576147769">Hvis du tillader dette, vil <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> og <ph name="TITLE_FORMAT_START"/>Titel<ph name="TITLE_FORMAT_END"/> for alle dine faner og fangrupper blive sendt til Brave AI, og det vil tillade Brave AI at flytte dem rundt. Denne tilladelse gælder kun for denne samtale.</translation>
 <translation id="396165714586708444">Dyb forskning</translation>
 <translation id="577747221882855891">Søger: "<ph name="QUERY"/>"</translation>
@@ -2496,8 +2541,7 @@
 <translation id="7901376755618482277">Vis hintet "Nyt alias" på e-mailfelter</translation>
 <translation id="6002159997868894136">Klik for at kopiere alias</translation>
 <translation id="8105770564756958406">Brugt af <ph name="DOMAINS"/></translation>
-<translation id="5006956315579221642">Opret op til 5 gratis e-mail-aliaser for at beskytte din rigtige e-mail-adresse.</translation>
-<translation id="5663901348199429994">Dine e-mail-aliaser</translation>
+<translation id="6776324888261353420">Opret op til <ph name="MAX_ALIASES"/> gratis e-mail-aliaser for at beskytte din rigtige e-mail-adresse.</translation>
 <translation id="9046133327037621173">Nyt e-mail-alias</translation>
 <translation id="3768606658230902536">Opret en tilfældig e-mail-adresse, der videresender til din indbakke, samtidig med at du holder din personlige e-mail privat.</translation>
 <translation id="4452721050684632493">Aliasgrænse nået</translation>
@@ -2559,7 +2603,7 @@
 <translation id="9173319813356700250">NYHEDER</translation>
 <translation id="6543799171249004861">Billede af <ph name="AUTHOR"/></translation>
 <translation id="2361906291514218784">Leo AI</translation>
-<translation id="7978582287767542276">Fjern sponsorerede sider</translation>
+<translation id="7978582287767542276">Fjern annoncer på ny faneside</translation>
 <translation id="466214682712474574">Log ind på din <ph name="PROVIDER"/>-konto for at se din saldo</translation>
 <translation id="8332875111286275890">Log ind for at se din saldo</translation>
 <translation id="5430001801813715388">BELØNNINGER</translation>
@@ -2570,12 +2614,12 @@
 <translation id="6851426306697017546">Vis ur</translation>
 <translation id="4844370919312937270">Vis søgewidget i nye faner</translation>
 <translation id="5088374130885640159">Med <ph name="REWARDS_LINK_BEGIN"/>Brave Rewards<ph name="REWARDS_LINK_END"/> kan du tjene på at se annoncer på ny faneside. <ph name="LEARN_MORE_LINK_BEGIN"/>Få mere at vide<ph name="LEARN_MORE_LINK_END"/>.</translation>
-<translation id="4100520468072294616">Vis annoncer på ny faneside</translation>
-<translation id="4983925687993168579">Brave Stats</translation>
+<translation id="7020410251711260841">Vis sponsorerede Ads</translation>
+<translation id="4983925687993168579">Statistik</translation>
 <translation id="5009354496127441090">Vis populære sider</translation>
-<translation id="7705524343798198388">Brave VPN</translation>
-<translation id="2910653812138226931">Sponsorerede sider hjælper med at holde Brave gratis. Hvis du bruger <ph name="SITE_NAME"/>, støtter du Braves mission. Deaktiver dem når som helst. <ph name="LINK_BEGIN"/>Få mere at vide<ph name="LINK_END"/>.</translation>
-<translation id="5810241219736298115">Sponsorerede sider hjælper med at holde Brave gratis. Hvis du bruger dem, støtter du Braves mission. <ph name="LINK_BEGIN"/>Få mere at vide<ph name="LINK_END"/>.</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="2910653812138226931">Annoncer på ny faneside hjælper med at holde Brave gratis. Hvis du bruger <ph name="SITE_NAME"/>, støtter du Braves mission. Deaktiver dem når som helst. <ph name="LINK_BEGIN"/>Få mere at vide<ph name="LINK_END"/>.</translation>
+<translation id="5810241219736298115">Annoncer på ny faneside hjælper med at holde Brave gratis. Hvis du bruger dem, støtter du Braves mission. <ph name="LINK_BEGIN"/>Få mere at vide<ph name="LINK_END"/>.</translation>
 <translation id="4784802981241664605">STATISTIK</translation>
 <translation id="5236080651083907980">Krypterede videoopkald med Brave Videoopkald</translation>
 <translation id="2671474274417808910">Opkald med fokus på privatlivets fred</translation>
@@ -2593,6 +2637,7 @@
 <translation id="8814357473522731680">Køres af</translation>
 <translation id="7143207342074048698">Opretter forbindelse</translation>
 <translation id="1202549130170287307">Afbryder forbindelse</translation>
+<translation id="4989542687859782284">Ikke tilgængelig</translation>
 <translation id="8941703009412168350">BRAVE VPN</translation>
 <translation id="6303294677342628402">Afskærmning</translation>
 <translation id="8458987127502506209">Aktivér Brave-skjolde</translation>
@@ -2735,6 +2780,7 @@
 <translation id="701087249209337256">Tag dit gamle browserindhold med</translation>
 <translation id="142389341645668510">Tilpas Brave</translation>
 <translation id="112005628409144325">Tilpas din browseroplevelse med det fanelayout og de farvetilstande, du foretrækker.</translation>
+<translation id="4428982101636000516">Søg med Brave eller skriv en URL</translation>
 <translation id="7376367936988732808">Fanelayout</translation>
 <translation id="4734965478015604180">Vandret</translation>
 <translation id="490375751687810070">Lodret</translation>
@@ -2780,10 +2826,12 @@
 <translation id="6021669293402055982">Brave VPN: Frakoblet</translation>
 <translation id="3541307549916475335">Panel-interface for Brave VPN</translation>
 <translation id="2325196879156848326">Forbindelse fejlede</translation>
+<translation id="6246488334766115273">Forbindelse ikke tilgængelig</translation>
 <translation id="745054660363064771">Kan ikke oprette forbindelse til server</translation>
 <translation id="3936826714240735937">Vælg en anden server</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> kunne ikke oprette forbindelse til <ph name="REGION_NAME"/>-serveren. Prøv igen, eller vælg et andet land.</translation>
-<translation id="1776533911621317363">Start en 7-dages gratis prøveperiode</translation>
+<translation id="4872940635040426686"><ph name="PRODUCT_NAME"/> er ikke tilgængelig. Hvis problemet fortsætter, skal du geninstallere Brave eller kontakte vores tekniske supportteam.</translation>
+<translation id="1776533911621317363">Start din 7-dages gratis prøveperiode</translation>
 <translation id="3357036723290257445">Har du allerede købt en Brave VPN?</translation>
 <translation id="8652175077544655965">Luk indstillinger</translation>
 <translation id="5908163815855240493">Gå til forsiden</translation>
@@ -2795,11 +2843,13 @@
 <translation id="8416695199565594645">Sikrer, at trafikken dirigeres gennem dedikerede proxyservere for at give adgang til almindeligt begrænset indhold/sider eller tredjepartstjenester.</translation>
 <translation id="434523916398030617">Kontakt teknisk support</translation>
 <translation id="1116694919640316211">Om</translation>
-<translation id="8998067240267949220">Mere privatliv og sikkerhed online</translation>
-<translation id="8666111144393179185">Skjul din IP-adresse, og skift din placering</translation>
-<translation id="8881997962573369342">Hundredvis af servere over hele verden</translation>
+<translation id="8998067240267949220">Få adgang til dit yndlingsindhold uden begrænsninger</translation>
+<translation id="8666111144393179185">Hundredvis af servere over hele verden</translation>
+<translation id="8881997962573369342">Skjul nemt din IP-adresse, og skift din placering</translation>
 <translation id="1513801084412881009">Lynhurtige tilslutningshastigheder</translation>
-<translation id="6434859410115379558">Beskyt op til 10 enheder med ét abonnement</translation>
+<translation id="6434859410115379558">Ingen logføring, uafhængigt revideret</translation>
+<translation id="4886431881864826294">Ét abonnement dækker 10 enheder på tværs af desktop, Android og iOS</translation>
+<translation id="3649011006120934011">Ingen binding, opsig når som helst</translation>
 <translation id="1693568075761612600">Oprettelse af supportsag mislykedes. Tjek din forbindelse.</translation>
 <translation id="1407707415819020643">Vælg din server</translation>
 <translation id="7406947191797765434"><ph name="CITY_COUNT"/> byer <ph name="SERVER_COUNT"/> servere</translation>
@@ -2912,9 +2962,7 @@ Lad os få dig tilknyttet!</translation>
 <translation id="3750210661641549834">For at oprette din konto skal du bekræfte din e-mailadresse.</translation>
 <translation id="4351175281479794167">Indtast bekræftelseskode</translation>
 <translation id="1672793037892810340">Du burde have modtaget en e-mail med en kode, som du skal indtaste.</translation>
-<translation id="4821255729182569254">Gensend bekræftelses-e-mail</translation>
 <translation id="5837679375142747484">Kan du ikke se e-mailen? Tjek din spammappe eller <ph name="BEGIN_LINK"/>send igen<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">Kan du ikke se e-mailen? Tjek din spammappe eller send den igen.</translation>
 <translation id="1020730839570724178">Annuller registrering</translation>
 <translation id="7155125570724238786">For at nulstille din adgangskode skal du bekræfte din e-mailadresse.</translation>
 <translation id="816074628631172140">Din e-mail er blevet bekræftet. Angiv en ny adgangskode for at fuldføre nulstillingen af din adgangskode.</translation>
@@ -2923,9 +2971,13 @@ Lad os få dig tilknyttet!</translation>
 <translation id="4405566535206792621">For at ændre din adgangskode skal du bekræfte din e-mailadresse.</translation>
 <translation id="3135333563420939059">Din e-mail er blevet bekræftet. Angiv en ny adgangskode for at fuldføre ændringen af din adgangskode.</translation>
 <translation id="4227581348172626540">Annuller ændring af adgangskode</translation>
-<translation id="808894953321890993">Skift adgangskode</translation>
 <translation id="7967687455715421528">Kunne ikke ændre adgangskode</translation>
+<translation id="7413006094063730650">Slet konto</translation>
 <translation id="4869737930995549965">Log ud</translation>
+<translation id="4424262960694990728">Handling påkrævet</translation>
+<translation id="847260521336960132">Kontooplysninger</translation>
+<translation id="5399593843842221768">Personlige oplysninger om din Brave-konto.</translation>
+<translation id="5771731269320499905">Brave-kontooplysninger</translation>
 <translation id="5538654494923870167">Kom i gang med din Brave-konto</translation>
 <translation id="1544145635547515689">Opret en Brave-konto</translation>
 <translation id="3828644479849256404">Har du allerede en konto? Log ind</translation>
@@ -2941,6 +2993,7 @@ Lad os få dig tilknyttet!</translation>
 <translation id="7114054701490058191">Adgangskoder er ikke ens</translation>
 <translation id="4277028893293644418">Nulstil adgangskode</translation>
 <translation id="9033485352495162741">Bekræftelsen var vellykket. Indtast nu din ønskede nye adgangskode:</translation>
+<translation id="808894953321890993">Skift adgangskode</translation>
 <translation id="1293857704520741614">Log ind på din konto</translation>
 <translation id="118617366439356381">Glemt din adgangskode?</translation>
 <translation id="5636406393070713097">Bekræft din Brave-kontos e-mail, og du vil derefter modtage en kode til at nulstille din adgangskode. Koden er kun gyldig i 15 minutter.</translation>
@@ -2950,6 +3003,11 @@ Lad os få dig tilknyttet!</translation>
 <translation id="7228810962389847249">Indtast koden her</translation>
 <translation id="4683390091376980486">Bekræft kode</translation>
 <translation id="3970028678400797622">Send e-mailkode igen</translation>
+<translation id="3653907916071208187">Slet din Brave-konto?</translation>
+<translation id="8216839865292766307">Sletning af en Brave-konto sletter også dens e-mailaliasser. Du kan miste adgangen til onlinetjenester, hvor du brugte et alias til at tilmelde dig. Denne handling kan ikke fortrydes.</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">Skriv <ph name="KEYWORD"/> for at aktivere kontosletning</translation>
+<translation id="536306385881145656">Slet Brave-konto</translation>
 <translation id="2475982808118771221">Der opstod en fejl</translation>
 <translation id="5430795854491041407">fejl</translation>
 <translation id="2232323423357029857">Browseren stødte på en uventet fejl<ph name="ERROR_CODE"/>. Genstart venligst browseren og prøv igen.</translation>
@@ -2982,4 +3040,10 @@ Lad os få dig tilknyttet!</translation>
 <translation id="1063227610401477317">Anvend ændringer</translation>
 <translation id="5539769255716491933">Rapportér mislykkede trin</translation>
 <translation id="7562163394445060270">Opgaven kunne ikke fuldføres</translation>
+<translation id="691082536326552372">Rapportér mislykkede trin</translation>
+<translation id="2731141092023803480">Send en rapport om de mislykkede trin til Brave-teamet. Denne rapport vil indeholde de oplysninger, vi har brug for til at løse problemet. <ph name="LINK_BEFORE"/>Læs mere.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">Nuværende URL</translation>
+<translation id="4739707522207259415">Mislykket/mislykkede trin</translation>
+<translation id="1767991048059195456">Send rapport</translation>
+<translation id="2168036794078614559">Rapport sendt</translation>
 </translationbundle>

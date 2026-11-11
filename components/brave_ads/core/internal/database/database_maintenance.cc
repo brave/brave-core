@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_database_util.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_database_util.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_path_util.h"
@@ -69,7 +69,7 @@ void Maintenance::RepeatedlyScheduleAfter(base::TimeDelta after) {
 void Maintenance::RepeatedlyScheduleAfterCallback() {
   PurgeExpiredAdEvents();
   PurgeExpiredAdHistory();
-  PurgeExpiredCreativeSetConversions();
+  PurgeExpiredCampaignConversions();
   PurgeExpiredDeposits();
   PurgeExpiredTransactions();
 

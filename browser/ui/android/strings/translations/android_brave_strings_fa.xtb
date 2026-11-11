@@ -114,7 +114,7 @@
 <translation id="6920492760024499150">داستان‌های برتر امروز در یک فید خصوصی، فقط برای شما.</translation>
 <translation id="3803728444598576153">Brave News را روشن کنید تا حتی یک گزارش را از دست ندهید</translation>
 <translation id="7627131190984957214">«اخبار Brave» توسط آگهی‌های خصوصی و بی‌نام که منطبق با دستگاه شما است، تامین مالی می‌شود.</translation>
-<translation id="7897050360583141319">منابع دلخواه خود را در یک فید تکی دنبال کنید. کافی است زبانه‌ای را در Brave باز کنید، به پایین پیمایش کنید و…بفرمایید!\nاخبار Brave توسط آگهی‌های خصوصی و بی‌نام پشتیبانی می‌شود.</translation>
+<translation id="7897050360583141319">منابع دلخواه خود را در یک فید تکی دنبال کنید. کافی است زبانه‌ای را در Brave باز کنید، به پایین پیمایش کنید و…بفرمایید!</translation>
 <translation id="1765217911817124376">روشن کردن Brave News</translation>
 <translation id="8981973962043893066">جستجوی سایت، موضوع یا فید RSS</translation>
 <translation id="3225021799163709119">محبوب</translation>
@@ -192,9 +192,9 @@
 <translation id="5987838417172370108">وقتی «مروگر Brave» خراب یا متوقف می‌شود، با ارسال خودکار گزارش‌های عیب‌یابی، به بهبود پایداری محصول Brave کمک کنید.</translation>
 <translation id="7977176350719484850">داده به‌صورت تخمینی\nذخیره شده است</translation>
 <translation id="9008534313521214777">زمان تخمینی ذخیره شد</translation>
-<translation id="8347743943525229984">مجاز کردن نظرسنجی‌های Brave</translation>
-<translation id="6022939994702081659">به Brave اجازه می‌دهد تا لینک‌های نظرسنجی‌های خصوصی را در صفحه زبانه جدید نمایش دهد. نظرسنجی‌ها به ما کمک می‌کنند تا قابلیت‌های بهتری بسازیم و اثربخشی کمپین‌های تبلیغاتی مرورگرمحور را ارزیابی کنیم.</translation>
-<translation id="7746496306508543965">درباره نظرسنجی‌های Brave بیشتر بدانید</translation>
+<translation id="5668852698659986622">فعال‌سازی Ads اسپانسرشده</translation>
+<translation id="431194936581466649">با Ads اسپانسرشده به مأموریت Brave برای ساختن وبی مستقل و کاربرمحور کمک کنید. ما عملکرد آگهی‌ها را به‌صورت خصوصی و بدون شناسایی شما اندازه‌گیری می‌کنیم.</translation>
+<translation id="1939813747486101115">درباره تبلیغات دارای حامی مالی بیشتر بدانید</translation>
 <translation id="410351446219883937">پخش خودکار</translation>
 <translation id="7445411102860286510">اجازه به سایت‌ها برای پخش خودکار ویدیوهای صامت‌شده (توصیه می‌شود)</translation>
 <translation id="7837721118676387834">به پخش‌خودکار ویدیو‌های صامت‌شده برای سایتی خاص امکان دهید.</translation>
@@ -252,7 +252,6 @@
 <translation id="6213254277250932867">من یک عبارت بازیابی 12 کلمه‌ای دارم</translation>
 <translation id="4225265925807365011">من یک عبارت بازیابی 24 کلمه‌ای دارم</translation>
 <translation id="3570367516044491911">تنظیم به‌عنوان مرورگر پیش‌فرض</translation>
-<translation id="6800338374677644736">تنظیم به‌عنوان مرورگر پیش‌فرض</translation>
 <translation id="1545749641540134597">اسکن QR کد</translation>
 <translation id="5317781812114905957">دستورالعمل‌ها</translation>
 <translation id="8515319483805157233">برای اینکه بتوانید از طریق کد QR جستجو کنید، کد QR را در وسط کادر قرار دهید.</translation>
@@ -284,7 +283,6 @@
 <translation id="5582839680698949063">منوی اصلی</translation>
 <translation id="7002271985859760052">اقدامات صفحه</translation>
 <translation id="7104487676473617844">موارد زیر تنها در صورتی در منو نمایش داده می‌شوند که توسط صفحه باز فعلی پشتیبانی شوند.</translation>
-<translation id="4159764849281393303">وب‌اپلیکیشن</translation>
 <translation id="8038539967102225446">آگهی‌های Brave اینجاست!</translation>
 <translation id="222883304157347087">(این دستگاه)</translation>
 <translation id="4157741509680155021">دستگاه‌های موجود در زنجیره همگام‌سازی</translation>
@@ -293,7 +291,7 @@
 <translation id="2569646144216067185">تعداد کلمات: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">کد همگام‌سازی اشتباه است</translation>
 <translation id="8284063834901328650">کد QR همگام‌سازی اشتباه است</translation>
-<translation id="859506441384380749">این کد توسط نسخه منسوخ Brave ایجاد شده است، لطفاً ابتدا دستگاه دیگر خود را ارتقا دهید</translation>
+<translation id="4002014583969312635">به نظر می‌رسد این کد روی دستگاهی ساخته شده که نسخه‌ای قدیمی‌تر از Brave را اجرا می‌کند. لطفاً روی دستگاه دیگر خود به آخرین نسخه Brave به‌روزرسانی کنید و سپس یک کد همگام‌سازی جدید بسازید.</translation>
 <translation id="3132642509209154999">این کد منقضی شده است. لطفاً کد جدیدی در دستگاه دیگرتان ایجاد و دوباره تلاش کنید.</translation>
 <translation id="2859229680945501779">این کد نامعتبر است. لطفاً بررسی کنید که زمان و منطقه زمانی در دستگاهتان درست تنظیم شده باشند.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -339,8 +337,6 @@
 <translation id="8185825081026121627">با تماشای آگهی‌های «پاداش‌های Brave» که حریم‌خصوصی را رعایت می‌کنند، «توکن توجه پایه» کسب کنید.</translation>
 <translation id="5321518976657560663">خطای بازنشانی</translation>
 <translation id="4114170343590425996">خطایی در بازنشانی «پاداش‌های Brave» رخ داد. لطفاً مرورگر Brave را مجدداً راه‌اندازی و دوباره امتحان کنید.</translation>
-<translation id="6417420737057016607">آگهی‌های Brave</translation>
-<translation id="5611966874859284786">وقتی از Brave استفاده نمی‌شود، آگهی‌های اعلان نشان داده شود</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>بازنشانی داده‌های پاداش‌ها در Brave…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>پاک کردن داده‌های تبلیغات در Brave…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">افزودن نشانک</translation>
@@ -399,6 +395,13 @@
 <translation id="8793108040181436796">ویجت‌ها</translation>
 <translation id="8643377320501056697">نمایش سایت‌های برتر</translation>
 <translation id="7275773481201277457">نمایش آمار Brave</translation>
+<translation id="8516804522688861636">نمایش سایت‌های اغلب بازدیدشده</translation>
+<translation id="4546260624932151782">نمایش موارد دلخواه</translation>
+<translation id="5313967007315987356">افزودن سایت</translation>
+<translation id="1773147648972887693">نمایش اغلب بازدیدشده</translation>
+<translation id="7134741506051403308">پنهان کردن ویجت</translation>
+<translation id="1247759249260562308">ویرایش مورد دلخواه</translation>
+<translation id="6387214885349500492">سنجاق کردن این مورد دلخواه</translation>
 <translation id="7462178177755090262">صفحه‌ی آغازین</translation>
 <translation id="5365434987337264071">آخرین تب بازشده</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {تب جدید پس از <ph name="HOURS_ONE"/> ساعت عدم فعالیت} other {تب جدید پس از <ph name="HOURS_MANY"/> ساعت عدم فعالیت}}</translation>
@@ -722,6 +725,8 @@
 <translation id="1634828734222219955">مجموع</translation>
 <translation id="7995708795274219641">مبلغ + گاز</translation>
 <translation id="2186011161688824046">مبلغ + کارمزد</translation>
+<translation id="1118876217803190221">موجودی کافی نیست.</translation>
+<translation id="275990379543116961">وجوه برای گس کافی نیست</translation>
 <translation id="1950052789869821983">تراکنش</translation>
 <translation id="2304783958703511257">تنظیمات پیشرفته</translation>
 <translation id="4220062530885628403">نانس</translation>
@@ -971,6 +976,7 @@
 <translation id="6365389672683343144">اشتراک VPN مرتبط با Brave می‌تواند از حداکثر 5 دستگاه Android،‏ iOS و رایانه محافظت کند. کافی است اشتراک Google Play خود را به حساب Brave مرتبط کنید.</translation>
 <translation id="6610899852831463073">امکان فعال کردن مرور ایمن وجود ندارد</translation>
 <translation id="7954263306665462056">مرور ایمن در دستگاه شما غیرفعال شده است. برای فعال کردن آن، مطمئن شوید که خدمات Google Play نصب شده و به‌روز است.</translation>
+<translation id="6417420737057016607">آگهی‌های Brave</translation>
 <translation id="7748944510530490017">شبکه‌های اصلی</translation>
 <translation id="2781668117338732220">شبکه‌های ثانویه</translation>
 <translation id="282560918037172384">آزمایش شبکه‌ها</translation>
@@ -997,6 +1003,13 @@
 <translation id="7530313002494358590">فعال یا غیرفعال کردن یک ویژگی Brave نیاز به راه‌اندازی مجدد مرورگر دارد تا تغییرات اعمال شوند. لطفاً پس از اتمام بروزرسانی Brave Origin، روی <ph name="BEGIN_BOLD"/>اکنون راه‌اندازی مجدد کنید<ph name="END_BOLD"/> ضربه بزنید.</translation>
 <translation id="1028940738207645746">مطمئنید می‌خواهید تمام تنظیمات را به حالت پیش‌فرض بازنشانی کنید؟</translation>
 <translation id="5939518447894949180">بازنشانی</translation>
+<translation id="3222790865318305905">به محدودیت فعال‌سازی رسیده‌اید</translation>
+<translation id="3787857711016546034">برای جلوگیری از کلاهبرداری، فعال‌سازی‌های Origin محدود شده‌اند. اما همیشه می‌توانید برای استفاده از مجوز Origin خود روی تعداد بیشتری دستگاه، فعال‌سازی‌های بیشتری درخواست کنید. فقط روی گزینه درخواست فعال‌سازی‌های بیشتر کلیک کنید، یا برای کمک <ph name="CONTACT_SUPPORT"/>.</translation>
+<translation id="6760819753412779585">تماس با پشتیبانی</translation>
+<translation id="571697836019670200">درخواست فعال‌سازی‌های بیشتر</translation>
+<translation id="9019545131475425538">در حال پردازش…</translation>
+<translation id="7242700630179071243">آماده برای فعال‌سازی</translation>
+<translation id="5463918917265356202">Brave Origin اکنون روی این دستگاه فعال است. برای شروع استفاده از این قابلیت، باید مرورگر را دوباره راه‌اندازی کنید. آیا می‌خواهید همین حالا دوباره راه‌اندازی کنید؟</translation>
 <translation id="8554205386170195281">خریداری</translation>
 <translation id="8613144770663526433">ورورد از طریق کیف پول Brave</translation>
 <translation id="3696514931437952995">شما در حال وارد شدن به <ph name="ORIGIN"/> هستید. کیف پول Brave آدرس کیف پول شما را از طریق <ph name="ORIGIN"/> به اشتراک می‌گذارد.</translation>

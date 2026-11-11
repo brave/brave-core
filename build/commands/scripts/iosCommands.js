@@ -7,7 +7,7 @@ import { program, Option } from 'commander'
 import fs from 'fs-extra'
 import path from 'node:path'
 import config from '../lib/config.ts'
-import util from '../lib/util.js'
+import util from '../lib/util.ts'
 import * as buildOptions from '../lib/buildOptions.ts'
 
 const bootstrap = (options = {}) => {

@@ -16,7 +16,6 @@ import androidx.lifecycle.MutableLiveData;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.JsonRpcServiceObserver;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
@@ -33,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class NetworkModel implements JsonRpcServiceObserver {
+public abstract class NetworkModel implements JsonRpcServiceObserver {
     /**
      * A generic 1-argument callback.
      *
@@ -44,18 +43,17 @@ public class NetworkModel implements JsonRpcServiceObserver {
         void call(T1 arg1);
     }
 
-    private BraveWalletService mBraveWalletService;
-    private JsonRpcService mJsonRpcService;
+    protected BraveWalletService mBraveWalletService;
+    protected JsonRpcService mJsonRpcService;
     private final Object mLock = new Object();
-    private Mode mMode = Mode.WALLET_MODE;
 
-    private final MediatorLiveData<String> mMediatorChainId;
+    protected final MediatorLiveData<String> mMediatorChainId;
     private final MediatorLiveData<List<NetworkInfo>> mMediatorDefaultCoinCryptoNetworks;
     private final MutableLiveData<List<NetworkInfo>> mMutableCryptoNetworks;
-    private final CryptoSharedData mSharedData;
-    private final CryptoSharedActions mCryptoActions;
+    protected final CryptoSharedData mSharedData;
+    protected final CryptoSharedActions mCryptoActions;
     private final MediatorLiveData<Pair<String, List<NetworkInfo>>> mMediatorPairChainAndNetwork;
-    private final MediatorLiveData<NetworkInfo> mMediatorNeedToCreateAccountForNetwork;
+    protected final MediatorLiveData<NetworkInfo> mMediatorNeedToCreateAccountForNetwork;
     private final MediatorLiveData<NetworkInfo> mMediatorDefaultNetwork;
 
     public final LiveData<String> mChainId;
@@ -136,39 +134,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
                 });
     }
 
-    private void updateChainId() {
-        if (mMode == Mode.WALLET_MODE) {
-            if (mJsonRpcService == null) {
-                return;
-            }
-            Integer coinBoxed = mSharedData.getCoinTypeLd().getValue();
-            // Unboxing a live data value directly may
-            // produce a null pointer exception, so it's required
-            // checking against null.
-            if (coinBoxed == null) {
-                return;
-            }
-            @CoinType.EnumType int coin = coinBoxed;
-            mJsonRpcService.getNetwork(
-                    coin,
-                    null,
-                    networkInfo -> {
-                        if (networkInfo != null) {
-                            mMediatorChainId.postValue(networkInfo.chainId);
-                        }
-                    });
-        } else if (mMode == Mode.PANEL_MODE) {
-            if (mBraveWalletService == null) {
-                return;
-            }
-            mBraveWalletService.getNetworkForSelectedAccountOnActiveOrigin(
-                    networkInfo -> {
-                        if (networkInfo != null) {
-                            mMediatorChainId.postValue(networkInfo.chainId);
-                        }
-                    });
-        }
-    }
+    abstract void updateChainId();
 
     public void setAccountInfosFromKeyRingModel(
             LiveData<List<AccountInfo>> accountInfosFromKeyRingModel) {
@@ -229,6 +195,8 @@ public class NetworkModel implements JsonRpcServiceObserver {
                 return;
             }
 
+            updateChainId();
+
             // Mark hidden networks as visible in preferences.
             for (Map.Entry<String, Integer> entry :
                     WalletConstants.KNOWN_TEST_CHAINS_MAP.entrySet()) {
@@ -265,42 +233,6 @@ public class NetworkModel implements JsonRpcServiceObserver {
         }
     }
 
-    public void setNetworkWithAccountCheck(
-            NetworkInfo networkToBeSetAsSelected,
-            boolean setNetworkAsDefault,
-            Callback1<Boolean> callback) {
-        NetworkInfo selectedNetwork = mMediatorDefaultNetwork.getValue();
-        if (isSameNetwork(networkToBeSetAsSelected, selectedNetwork)) return;
-
-        mBraveWalletService.ensureSelectedAccountForChain(
-                networkToBeSetAsSelected.coin,
-                networkToBeSetAsSelected.chainId,
-                accountId -> {
-                    if (accountId == null) {
-                        mMediatorNeedToCreateAccountForNetwork.postValue(networkToBeSetAsSelected);
-                        callback.call(false);
-                        return;
-                    }
-                    if (setNetworkAsDefault) {
-                        setDefaultNetwork(networkToBeSetAsSelected, callback);
-                    } else {
-                        setNetworkForSelectedAccountOnActiveOrigin(
-                                networkToBeSetAsSelected, callback);
-                    }
-                });
-    }
-
-    public void setNetworkForSelectedAccountOnActiveOrigin(
-            NetworkInfo networkToBeSetAsSelected, Callback1<Boolean> callback) {
-        mBraveWalletService.setNetworkForSelectedAccountOnActiveOrigin(
-                networkToBeSetAsSelected.chainId,
-                success -> {
-                    callback.call(success);
-                    mCryptoActions.updateCoinType();
-                    init();
-                });
-    }
-
     public void setDefaultNetwork(
             @NonNull final NetworkInfo networkInfo, @NonNull final Callback1<Boolean> callback) {
         mJsonRpcService.setNetwork(
@@ -329,13 +261,6 @@ public class NetworkModel implements JsonRpcServiceObserver {
         return null;
     }
 
-    private boolean isSameNetwork(
-            NetworkInfo networkToBeSetAsSelected, NetworkInfo selectedNetwork) {
-        return selectedNetwork != null
-                && selectedNetwork.chainId.equals(networkToBeSetAsSelected.chainId)
-                && selectedNetwork.coin == networkToBeSetAsSelected.coin;
-    }
-
     @Override
     public void chainChangedEvent(String chainId, int coin, Origin origin) {
         updateChainId();
@@ -351,16 +276,6 @@ public class NetworkModel implements JsonRpcServiceObserver {
 
     @Override
     public void close() {}
-
-    public void updateMode(Mode mode) {
-        mMode = mode;
-        updateChainId();
-    }
-
-    public enum Mode {
-        PANEL_MODE,
-        WALLET_MODE
-    }
 
     public static class NetworkLists {
         public List<NetworkInfo> mPrimaryNetworkList;

@@ -54,6 +54,7 @@ import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.DappOriginInfo;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.OriginInfo;
@@ -69,7 +70,9 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.ui.text.ChromeClickableSpan;
+import org.chromium.url.GURL;
 
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
@@ -990,9 +993,17 @@ public class Utils {
     }
 
     public static String geteTldHtmlString(OriginInfo originInfo) {
+        return geteTldHtmlString(originInfo.originSpec, originInfo.eTldPlusOne);
+    }
+
+    public static String geteTldHtmlString(DappOriginInfo originInfo) {
+        return geteTldHtmlString(originInfo.originSpec, originInfo.eTldPlusOne);
+    }
+
+    private static String geteTldHtmlString(String originSpec, String eTldPlusOne) {
         StringBuilder builder = new StringBuilder();
-        builder.append(originInfo.originSpec);
-        int index = builder.lastIndexOf(originInfo.eTldPlusOne);
+        builder.append(originSpec);
+        int index = builder.lastIndexOf(eTldPlusOne);
         if (index > 0 && index < builder.length()) {
             builder.insert(index, "<b>");
             builder.insert(builder.length(), "</b>");
@@ -1002,6 +1013,19 @@ public class Utils {
 
     public static Spanned geteTldSpanned(OriginInfo originInfo) {
         return AndroidUtils.formatHTML(geteTldHtmlString(originInfo));
+    }
+
+    public static Spanned geteTldSpanned(DappOriginInfo originInfo) {
+        return AndroidUtils.formatHTML(geteTldHtmlString(originInfo));
+    }
+
+    public static OriginInfo getOriginInfo(GURL url) {
+        GURL origin = url.getOrigin();
+        OriginInfo originInfo = new OriginInfo();
+        originInfo.originSpec = origin.getSpec();
+        String eTldPlusOne = UrlUtilities.getDomainAndRegistry(origin.getSpec(), false);
+        originInfo.eTldPlusOne = eTldPlusOne == null ? "" : eTldPlusOne;
+        return originInfo;
     }
 
     @Nullable

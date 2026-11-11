@@ -18,6 +18,7 @@ extension TabDataValues {
   }
 }
 
+@MainActor
 public class CosmeticFilteringTabHelper: TabObserver, TabPolicyDecider {
 
   private weak var tab: (any TabState)?
@@ -49,6 +50,7 @@ public class CosmeticFilteringTabHelper: TabObserver, TabPolicyDecider {
 
   // MARK: - TabPolicyDecider
 
+  @MainActor
   public func tab(
     _ tab: some TabState,
     shouldAllowRequest request: URLRequest,
@@ -92,7 +94,7 @@ public class CosmeticFilteringTabHelper: TabObserver, TabPolicyDecider {
   }
 
   /// Combine new selectors with the cached selectors for the tab's visibleURL.
-  @MainActor func standardAndAggressiveSelectors(
+  func standardAndAggressiveSelectors(
     from models: [AdBlockGroupsManager.CosmeticFilterModelTuple]
   ) -> (Set<String>, Set<String>) {
     var cachedStandardSelectors: Set<String> = .init()
@@ -120,7 +122,7 @@ public class CosmeticFilteringTabHelper: TabObserver, TabPolicyDecider {
   /// - returns a tuple containing the `ContentCosmeticSetup` and a
   /// `Set<String>` of the procedural actions, or nil if Shields is disabled or
   /// unavailable
-  @MainActor func cosmeticFilteringSetup(
+  func cosmeticFilteringSetup(
     for frameURL: URL
   ) async -> (UserScriptType.ContentCosmeticSetup, Set<String>)? {
     guard let tab = tab,
@@ -161,7 +163,7 @@ public class CosmeticFilteringTabHelper: TabObserver, TabPolicyDecider {
   }
 }
 
-@MainActor extension CosmeticFilteringTabHelper: @MainActor CosmeticFilteringTabHelperBridge {
+extension CosmeticFilteringTabHelper: @MainActor CosmeticFilteringTabHelperBridge {
 
   public func cosmeticFilteringArgs(for url: URL) async -> CosmeticFilteringArgs? {
     guard let (setup, proceduralFilters) = await self.cosmeticFilteringSetup(for: url) else {
@@ -185,7 +187,7 @@ public class CosmeticFilteringTabHelper: TabObserver, TabPolicyDecider {
   /// - returns a tuple containing a `Set<String>` of standard selectors and
   /// aggressive selectors to hide, or nil if Shields is disabled or
   /// unavailable
-  @MainActor public func selectorsToHide(
+  public func selectorsToHide(
     for frameURL: URL,
     ids: Set<String>,
     classes: Set<String>,
@@ -220,7 +222,7 @@ public class CosmeticFilteringTabHelper: TabObserver, TabPolicyDecider {
           return nil
         }
 
-        return await (selectors, cachedEngine.type.isAlwaysAggressive)
+        return (selectors, cachedEngine.type.isAlwaysAggressive)
       } catch {
         Logger.module.error("\(error.localizedDescription)")
         return nil

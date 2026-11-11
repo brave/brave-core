@@ -382,8 +382,8 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
             }
 
         } else if (v == mBookmarksButton) {
-            TabUtils.showBookmarkTabPopupMenu(
-                    mContext, v, mBookmarkModelSupplier, mLocationBarModel, mBookmarkManagerOpener);
+            BottomToolbarBookmarksMenu.show(
+                    v, mBookmarkModelSupplier, mLocationBarModel, mBookmarkManagerOpener);
             return true;
         } else if (v == mNewTabButton) {
             TabUtils.showTabPopupMenu(mContext, v);

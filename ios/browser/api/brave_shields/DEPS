@@ -3,6 +3,7 @@ include_rules = [
   "+brave/components/brave_component_updater/browser",
   "+brave/components/cosmetic_filters/common",
   "+brave/components/cosmetic_filters/resources",
+  "+components/crx_file",
 ]
 
 specific_include_rules = {

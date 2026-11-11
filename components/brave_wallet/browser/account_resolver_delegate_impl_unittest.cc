@@ -18,7 +18,6 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -32,9 +31,11 @@ class AccountResolverDelegateImplUnitTest : public testing::Test {
  public:
   AccountResolverDelegateImplUnitTest() {
     feature_list_.InitWithFeatures({features::kBraveWalletBitcoinFeature,
+                                    features::kBraveWalletBitcoinImportFeature,
                                     features::kBraveWalletBitcoinLedgerFeature,
                                     features::kBraveWalletZCashFeature,
-                                    features::kBraveWalletCardanoFeature},
+                                    features::kBraveWalletCardanoFeature,
+                                    features::kBraveWalletPolkadotFeature},
                                    {});
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
@@ -101,7 +102,8 @@ TEST_F(AccountResolverDelegateImplUnitTest, ResolveAccountId) {
                                                        &some_acc->address));
     if (account_id->coin != mojom::CoinType::BTC &&
         account_id->coin != mojom::CoinType::ZEC &&
-        account_id->coin != mojom::CoinType::ADA) {
+        account_id->coin != mojom::CoinType::ADA &&
+        account_id->coin != mojom::CoinType::DOT) {
       // Resolved by address.
       EXPECT_EQ(account_id,
                 resolver()->ResolveAccountId(nullptr, &acc->address));
@@ -109,7 +111,7 @@ TEST_F(AccountResolverDelegateImplUnitTest, ResolveAccountId) {
   }
   static_assert(AllCoinsTested<7>());
 
-  static_assert(AllKeyringsTested<14>());
+  static_assert(AllKeyringsTested<18>());
 
   // HW account is not resolvable after removal.
   keyring_service()->RemoveAccount(hw_eth_acc->account_id.Clone(),
@@ -145,7 +147,7 @@ TEST_F(AccountResolverDelegateImplUnitTest, ResolveAccountId) {
   }
   static_assert(AllCoinsTested<7>());
 
-  static_assert(AllKeyringsTested<14>());
+  static_assert(AllKeyringsTested<18>());
 
   const std::string empty_address = "";
   EXPECT_FALSE(resolver()->ResolveAccountId(nullptr, &empty_address));
@@ -178,7 +180,7 @@ TEST_F(AccountResolverDelegateImplUnitTest, ValidateAccountId) {
   }
   static_assert(AllCoinsTested<7>());
 
-  static_assert(AllKeyringsTested<14>());
+  static_assert(AllKeyringsTested<18>());
 
   EXPECT_FALSE(
       resolver()->ValidateAccountId(GetAccountUtils().EthUnkownAccountId()));

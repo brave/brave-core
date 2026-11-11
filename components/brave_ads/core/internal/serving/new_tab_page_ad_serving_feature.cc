@@ -8,7 +8,6 @@
 namespace brave_ads {
 
 BASE_FEATURE(kNewTabPageAdServingFeature,
-             "NewTabPageAdServing",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace brave_ads

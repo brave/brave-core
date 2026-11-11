@@ -98,13 +98,8 @@ void CreativeSearchResultAdHandler::MaybeTriggerCreativeAdViewedEvent(
     return;
   }
 
-  if (!creative_search_result_ad) {
-    // No creative search result ads are present on the web page.
-    return;
-  }
-
   ads_service_->TriggerSearchResultAdEvent(
-      creative_search_result_ad->Clone(),
+      std::move(creative_search_result_ad),
       mojom::SearchResultAdEventType::kViewedImpression,
       /*intentional*/ base::DoNothing());
 }

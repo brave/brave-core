@@ -3,11 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/containers/to_vector.h"
 #include "base/functional/callback_helpers.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
@@ -20,6 +22,7 @@
 
 using base::test::ParseJsonDict;
 using testing::_;
+using testing::ElementsAre;
 
 namespace brave_wallet {
 
@@ -443,16 +446,57 @@ class KeyringServiceMigrationsUnitTest : public testing::Test {
   static std::optional<std::string> GetWalletMnemonic(
       const std::string& password,
       KeyringService* service) {
-    base::RunLoop run_loop;
-    std::optional<std::string> mnemonic;
-    service->GetWalletMnemonic(
-        password,
-        base::BindLambdaForTesting([&](const std::optional<std::string>& v) {
-          mnemonic = v;
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return mnemonic;
+    base::test::TestFuture<const std::optional<std::string>&> future;
+    service->GetWalletMnemonic(password, future.GetCallback());
+    return future.Get();
+  }
+
+  static mojom::RecoverWalletResult RecoverWallet(
+      KeyringService* service,
+      const std::string& mnemonic,
+      const std::string& new_password,
+      bool is_legacy_eth_seed_format,
+      bool allow_imported_account_removal) {
+    base::test::TestFuture<mojom::RecoverWalletResult> future;
+    service->RecoverWallet(mnemonic, new_password, is_legacy_eth_seed_format,
+                           allow_imported_account_removal,
+                           future.GetCallback());
+    return future.Get();
+  }
+
+  static bool Unlock(KeyringService* service, const std::string& password) {
+    base::test::TestFuture<bool> future;
+    service->Unlock(password, future.GetCallback());
+    return future.Get();
+  }
+
+  void ValidateRecoveredPrefs() {
+    for (auto [keyring_id, keyring] :
+         GetPrefs()->GetDict(kBraveWalletKeyrings)) {
+      ASSERT_TRUE(keyring.is_dict()) << keyring_id;
+      EXPECT_FALSE(keyring.GetDict().contains("imported_accounts"))
+          << keyring_id;
+      EXPECT_FALSE(keyring.GetDict().contains("encrypted_mnemonic"))
+          << keyring_id;
+      EXPECT_FALSE(keyring.GetDict().contains("password_encryptor_nonce"))
+          << keyring_id;
+      EXPECT_FALSE(keyring.GetDict().contains("password_encryptor_salt"))
+          << keyring_id;
+    }
+    EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletMnemonicBackedUp));
+    EXPECT_TRUE(
+        GetPrefs()->GetBoolean(kBraveWalletKeyringEncryptionKeysMigrated));
+  }
+
+  void ValidateUnlockAfterRecovery(KeyringService& service,
+                                   const std::string& new_password) {
+    EXPECT_EQ(GetWalletMnemonic(new_password, &service), kMnemonicDivideCruise);
+    service.Lock();
+
+    // The old password must not be revived by legacy migrations.
+    EXPECT_FALSE(Unlock(&service, kPassword));
+    EXPECT_TRUE(service.IsLockedSync());
+    EXPECT_TRUE(Unlock(&service, new_password));
   }
 
  private:
@@ -656,6 +700,36 @@ TEST_F(KeyringServiceMigrationsLegacyIterationsUnitTest,
             "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
 }
 
+TEST_F(KeyringServiceMigrationsLegacyIterationsUnitTest,
+       RecoverWalletWithNewPassword) {
+  SetupLegacyKeyringPrefs();
+
+  const char new_password[] = "new password";
+
+  KeyringService service(nullptr, GetPrefs(), GetLocalState());
+
+  EXPECT_EQ(RecoverWallet(&service, kMnemonicDivideCruise, new_password, false,
+                          false),
+            mojom::RecoverWalletResult::kImportedAccountsPresent);
+  EXPECT_TRUE(service.IsLockedSync());
+
+  EXPECT_EQ(
+      RecoverWallet(&service, kMnemonicDivideCruise, new_password, false, true),
+      mojom::RecoverWalletResult::kSuccess);
+  ValidateRecoveredPrefs();
+
+  const auto& all_accounts = service.GetAllAccountInfos();
+  EXPECT_THAT(
+      base::ToVector(all_accounts,
+                     [](const auto& account) { return account->address; }),
+      ElementsAre("0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
+                  "0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0",
+                  "f1qjidlytseoouzfhsgzczf3ettbhuaezorczeava",
+                  "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8"));
+
+  ValidateUnlockAfterRecovery(service, new_password);
+}
+
 class KeyringServiceMigrationsLegacyMnemonicFormatUnitTest
     : public KeyringServiceMigrationsUnitTest {
  public:
@@ -843,6 +917,43 @@ TEST_F(KeyringServiceMigrationsLegacyMnemonicFormatUnitTest,
             "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
   EXPECT_EQ(all_accounts[1]->address,
             "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
+}
+
+TEST_F(KeyringServiceMigrationsLegacyMnemonicFormatUnitTest,
+       RecoverWalletWithNewPassword) {
+  SetupLegacyKeyringPrefs();
+
+  const char new_password[] = "new password";
+
+  KeyringService service(nullptr, GetPrefs(), GetLocalState());
+
+  EXPECT_EQ(RecoverWallet(&service, kMnemonicDivideCruise, new_password, false,
+                          false),
+            mojom::RecoverWalletResult::kImportedAccountsPresent);
+  EXPECT_TRUE(service.IsLockedSync());
+
+  EXPECT_EQ(
+      RecoverWallet(&service, kMnemonicDivideCruise, new_password, false, true),
+      mojom::RecoverWalletResult::kSuccess);
+  ValidateRecoveredPrefs();
+
+  // Derived accounts survive and imported ones are dropped. Bitcoin and Zcash
+  // accounts have an empty address, so they are identified by unique key.
+  const auto& all_accounts = service.GetAllAccountInfos();
+  EXPECT_THAT(base::ToVector(all_accounts,
+                             [](const auto& account) {
+                               return account->address.empty()
+                                          ? account->account_id->unique_key
+                                          : account->address;
+                             }),
+              ElementsAre("0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
+                          "0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0",
+                          "f1qjidlytseoouzfhsgzczf3ettbhuaezorczeava",
+                          "t1dca7adhz5lbvin5n3qlw67munu6xhn5fpb77nly",
+                          "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+                          "0_4_0_0", "0_5_0_0", "133_6_0_0", "133_7_0_0"));
+
+  ValidateUnlockAfterRecovery(service, new_password);
 }
 
 }  // namespace brave_wallet

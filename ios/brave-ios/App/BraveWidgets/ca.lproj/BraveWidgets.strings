@@ -71,6 +71,9 @@
 "e13lS3-VBH4G6" = "Només per confirmar, volies 'Historial'?";
 
 /* (No Comment) */
+"e13lS3-vQ8mZ1" = "Només per confirmar, volies 'Entrada de veu de Leo IA'?";
+
+/* (No Comment) */
 "e13lS3-vs094F" = "Només per confirmar, volies 'Nova pestanya d'incògnit’?";
 
 /* (No Comment) */
@@ -108,6 +111,9 @@
 
 /* (No Comment) */
 "EvESs0-VBH4G6" = "Només per confirmar, volies 'Historial'?";
+
+/* (No Comment) */
+"EvESs0-vQ8mZ1" = "Només per confirmar, volies 'Entrada de veu de Leo IA'?";
 
 /* (No Comment) */
 "EvESs0-vs094F" = "Només per confirmar, volies 'Nova pestanya d'incògnit’?";
@@ -164,6 +170,9 @@
 "L1fziM-VBH4G6" = "Hi ha ${count} opcions que coincideixen amb 'Historial’.";
 
 /* (No Comment) */
+"L1fziM-vQ8mZ1" = "Hi ha ${count} opcions que coincideixen amb 'Entrada de veu de Leo IA'.";
+
+/* (No Comment) */
 "L1fziM-vs094F" = "Hi ha ${count} opcions que coincideixen amb 'Nova pestanya d'incògnit’.";
 
 /* (No Comment) */
@@ -212,6 +221,9 @@
 "r2EI05-VBH4G6" = "Només per confirmar, volies 'Historial'?";
 
 /* (No Comment) */
+"r2EI05-vQ8mZ1" = "Només per confirmar, volies 'Entrada de veu de Leo IA'?";
+
+/* (No Comment) */
 "r2EI05-vs094F" = "Només per confirmar, volies 'Nova pestanya d'incògnit’?";
 
 /* (No Comment) */
@@ -257,6 +269,9 @@
 "tNCrcE-VBH4G6" = "Hi ha ${count} opcions que coincideixen amb 'Historial’.";
 
 /* (No Comment) */
+"tNCrcE-vQ8mZ1" = "Hi ha ${count} opcions que coincideixen amb 'Entrada de veu de Leo IA'.";
+
+/* (No Comment) */
 "tNCrcE-vs094F" = "Hi ha ${count} opcions que coincideixen amb 'Nova pestanya d'incògnit’.";
 
 /* (No Comment) */
@@ -296,6 +311,9 @@
 "TxuMja-VBH4G6" = "Hi ha ${count} opcions que coincideixen amb 'Historial’.";
 
 /* (No Comment) */
+"TxuMja-vQ8mZ1" = "Hi ha ${count} opcions que coincideixen amb 'Entrada de veu de Leo IA'.";
+
+/* (No Comment) */
 "TxuMja-vs094F" = "Hi ha ${count} opcions que coincideixen amb 'Nova pestanya d'incògnit’.";
 
 /* (No Comment) */
@@ -315,6 +333,9 @@
 
 /* (No Comment) */
 "vjA5pZ" = "Dades estalviades (est.)";
+
+/* (No Comment) */
+"vQ8mZ1" = "Entrada de veu de Leo IA";
 
 /* (No Comment) */
 "vs094F" = "Nova pestanya d'incògnit";
@@ -359,6 +380,9 @@
 "YQiQuz-VBH4G6" = "Només per confirmar, volies 'Historial'?";
 
 /* (No Comment) */
+"YQiQuz-vQ8mZ1" = "Només per confirmar, volies 'Entrada de veu de Leo IA'?";
+
+/* (No Comment) */
 "YQiQuz-vs094F" = "Només per confirmar, volies 'Nova pestanya d'incògnit’?";
 
 /* (No Comment) */
@@ -393,6 +417,9 @@
 
 /* (No Comment) */
 "z517nu-VBH4G6" = "Hi ha ${count} opcions que coincideixen amb 'Historial’.";
+
+/* (No Comment) */
+"z517nu-vQ8mZ1" = "Hi ha ${count} opcions que coincideixen amb 'Entrada de veu de Leo IA'.";
 
 /* (No Comment) */
 "z517nu-vs094F" = "Hi ha ${count} opcions que coincideixen amb 'Nova pestanya d'incògnit’.";

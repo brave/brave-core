@@ -14,7 +14,6 @@
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
 #include "content/public/browser/web_contents.h"
-#include "third_party/blink/public/mojom/content_extraction/ai_page_content.mojom.h"
 
 namespace ai_chat {
 
@@ -58,7 +57,7 @@ void AIPageContentFetcher::OnAIPageContentReceived(
     FetchPageContentCallback callback,
     optimization_guide::AIPageContentResultOrError result) {
   if (!result.has_value()) {
-    DVLOG(1) << "Error getting AI page content: " << result.error();
+    DVLOG(1) << "Error getting AI page content: " << result.error().message;
     std::move(callback).Run("", false, "");
     return;
   }

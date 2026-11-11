@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/views/frame/browser_frame_view_linux.cc b/chrome/browser/ui/views/frame/browser_frame_view_linux.cc
+index 474b8356afdbaf6bc5b059820893b8504751a90d..32afe2eb1320ee4daaed9062c912a699898e0f83 100644
+--- a/chrome/browser/ui/views/frame/browser_frame_view_linux.cc
++++ b/chrome/browser/ui/views/frame/browser_frame_view_linux.cc
+@@ -32,7 +32,7 @@ BrowserFrameViewLinux::BrowserFrameViewLinux(
+     BrowserWidget* widget,
+     BrowserView* browser_view,
+     BrowserFrameViewLayoutLinux* layout)
+-    : OpaqueBrowserFrameView(widget, browser_view, layout), layout_(layout) {
++    : BraveOpaqueBrowserFrameView(widget, browser_view, layout), layout_(layout) {
+   layout->set_view(this);
+   if (auto* linux_ui = ui::LinuxUi::instance()) {
+     window_button_order_observation_.Observe(linux_ui);
+@@ -114,7 +114,7 @@ void BrowserFrameViewLinux::OnWindowButtonOrderingChange() {
+ }
+ 
+ int BrowserFrameViewLinux::NonClientHitTest(const gfx::Point& point) {
+-  int frame_component = OpaqueBrowserFrameView::NonClientHitTest(point);
++  int frame_component = BraveOpaqueBrowserFrameView::NonClientHitTest(point);
+   // Allow resizing at the top of the caption area. This is only done when
+   // shadows are not drawn, since the resize area is on the shadows otherwise.
+   if (frame_component == HTCAPTION && !ShouldDrawRestoredFrameShadow() &&

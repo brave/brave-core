@@ -142,8 +142,7 @@ public class PasswordSettingsSearchTest {
     @SmallTest
     @Feature({"Preferences"})
     public void testSearchTextInOverflowMenuVisible() {
-        mTestHelper.setPasswordSource(
-                null); // Initialize empty preferences.mSettingsActivityTestRule
+        mTestHelper.setPasswordSource(null); // Initialize empty preferences.
         mTestHelper.startPasswordSettingsFromMainSettings(mSettingsActivityTestRule);
         // Use a more specific matcher that excludes section headers in LinearLayouts
         onViewWaiting(
@@ -152,12 +151,14 @@ public class PasswordSettingsSearchTest {
                         not(withParent(isAssignableFrom(LinearLayout.class)))));
         PasswordSettings f = mSettingsActivityTestRule.getFragment();
 
-        // Force the search option into the overflow menu.
+        // Force the search option into the overflow menu. The icon has to go first:
+        // SettingsMenuHelper.onPrepareOptionsMenu() resets every menu item that has an icon back
+        // to SHOW_AS_ACTION_IF_ROOM, and it runs each time the overflow menu is opened.
         ThreadUtils.runOnUiThreadBlocking(
                 () -> {
-                    f.getMenuForTesting()
-                            .findItem(R.id.menu_id_search)
-                            .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                    MenuItem searchItem = f.getMenuForTesting().findItem(R.id.menu_id_search);
+                    searchItem.setIcon(null);
+                    searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
                 });
 
         // Open the overflow menu.

@@ -15,6 +15,7 @@
 
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/task/sequenced_task_runner.h"
@@ -28,6 +29,10 @@
 
 class PrefRegistrySimple;
 class PrefService;
+
+namespace net {
+class HttpResponseHeaders;
+}  // namespace net
 
 namespace network {
 namespace mojom {
@@ -114,8 +119,15 @@ class BraveReferralsService {
 
 #if BUILDFLAG(IS_ANDROID)
   void InitAndroidReferrer();
-  void OnAndroidBraveReferrerReady();
+  void OnAndroidBraveReferrerReady(const std::string& gbraid);
+  // Reports the conversion on the first run after the one that captured the
+  // gbraid. The value is dropped either way, so this reports at most once.
+  void MaybeReportAndroidConversion();
+  std::string BuildConversionPayload(const std::string& gbraid) const;
+  void OnConversionLoadComplete(
+      scoped_refptr<net::HttpResponseHeaders> headers);
   android_brave_referrer::BraveReferrer android_brave_referrer_;
+  std::unique_ptr<network::SimpleURLLoader> conversion_loader_;
 #endif
 
   bool initialized_ = false;

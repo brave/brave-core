@@ -3,7 +3,7 @@
 {%  for method in interface.methods %}
 {%-   set name = method|objc_method_name_formatter %}
 - (void){{name}}
-{%- if method.parameters or method.response_parameters %}:{%- endif -%}
+{%- if method.parameters or method.response_parameters is not none %}:{%- endif -%}
 {%- for param in method.parameters -%}
 {%-   if not loop.first -%}{{param.name|under_to_lower_camel}}:{%- endif -%}
 {%-   set nullable = param.kind|objc_argument_modifiers -%}
@@ -11,11 +11,11 @@
 ({{type}}){{param.name|under_to_lower_camel}}
 {%- if not loop.last %} {% endif -%}
 {%- endfor -%}
-{%- if method.response_parameters -%}
+{%- if method.response_parameters is not none -%}
 {%- if method.parameters %} completion:{% endif -%}
 (void (^){{ result_or_response_callback_type(method) }})completion
 {%- endif %} {
-{%- if method.response_parameters %}
+{%- if method.response_parameters is not none %}
 {%- if method.result_response %}
   auto callback = ^({{method|cpp_result_callback_type}} result) {
     if (result.has_value()) {
@@ -23,6 +23,9 @@
     } else {
       completion(nil, {{method.result_response.failure_kind|cpp_to_objc_assign_kind("result.error()")}});
     }
+  };
+  auto dropped = ^{
+    completion(nil, {{method.result_response.failure_kind|objc_response_default}});
   };
 {%- else %}
   auto callback = ^(
@@ -38,6 +41,14 @@
 {%- endfor -%}
     );
   };
+  auto dropped = ^{
+    completion(
+{%- for param in method.response_parameters -%}
+{{param.kind|objc_response_default}}
+{%- if not loop.last %}, {% endif -%}
+{%- endfor -%}
+    );
+  };
 {%- endif %}
 {%- endif %}
   web::GetUIThreadTaskRunner({})->PostTask(FROM_HERE, base::BindOnce(^{
@@ -46,9 +57,9 @@
 {{param|objc_to_cpp_assign}}
 {%- if not loop.last -%},{{" "}}{%- endif -%}
 {%- endfor -%}
-{%- if method.response_parameters -%}
+{%- if method.response_parameters is not none -%}
 {%- if method.parameters %}, {% endif -%}
-base::BindOnce(callback)
+mojo::WrapCallbackWithDropHandler(base::BindOnce(callback), base::BindOnce(dropped))
 {%- endif -%}
     );
   }));
@@ -59,9 +70,6 @@ base::BindOnce(callback)
 {%- set cpp_namespace = interface|cpp_namespace_from_kind %}
 @implementation {{class_prefix}}{{interface.name}}MojoImpl {
   mojo::Remote<{{cpp_namespace}}::{{interface.name}}> _wrappedValue;
-{%- for bridge in interface|interface_remote_sets %}
-  std::vector<base::SequenceBound<std::unique_ptr<{{bridge}}>>> _{{bridge|under_to_lower_camel}}Receivers;
-{%- endfor %}
 }
 
 - (instancetype)initWith{{interface.name}}:(mojo::PendingRemote<{{cpp_namespace}}::{{interface.name}}>)obj {

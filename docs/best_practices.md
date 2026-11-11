@@ -13,6 +13,9 @@ section links to a detailed document.
 
 - **[Architecture and Code Organization](./best-practices/architecture.md)** -
   Layering violations, dependency injection, factory patterns, pref management
+- **[Network Interception](./best-practices/network-interception.md)** -
+  Choosing Chromium hooks, throttles, and rulesets instead of Brave proxying
+  classes
 - **[C++ Coding Standards](./best-practices/coding-standards.md)** - IWYU,
   naming conventions, CHECK vs DCHECK, style, comments, logging
 - **[C++ Memory, Lifetime & Threading](./best-practices/coding-standards-memory.md)** -
@@ -29,11 +32,12 @@ section links to a detailed document.
   terms, product messaging
 - **[Front-End (TypeScript/React)](./best-practices/frontend.md)** - Component
   props, spread args, XSS prevention
-- **[Android (Java/Kotlin)](./best-practices/android.md)** - Activity/Fragment
-  lifecycle, null safety, LazyHolder singletons, theme handling, Robolectric,
-  bytecode patching, Material component preference, NullAway (`@Nullable`
-  placement, `@MonotonicNonNull`, assert/assume patterns, destruction, view
-  binders, Supplier variance, JNI nullness)
+- **[Android (Java/Kotlin)](./best-practices/android.md)** - Java file
+  placement, Activity/Fragment lifecycle, null safety, LazyHolder singletons,
+  theme handling, Robolectric, bytecode patching, Material component preference,
+  decorative `ImageView` content descriptions, NullAway (`@Nullable` placement,
+  `@MonotonicNonNull`, assert/assume patterns, destruction, view binders,
+  Supplier variance, JNI nullness)
 - **[chromium_src Overrides](./best-practices/chromium-src-overrides.md)** -
   Overrides vs patches, minimizing duplication, ChromiumImpl fallback
 - **[Build System](./best-practices/build-system.md)** - BUILD.gn organization,
@@ -41,6 +45,9 @@ section links to a detailed document.
 - **[C++ Buildflag Guards](./best-practices/coding-standards-buildflags.md)** -
   `#if BUILDFLAG(...)` in C++ sources and headers: guarding includes, `#endif`
   comments, forward declarations, `static_assert`
+- **[Modularization and Circular Dependencies](./best-practices/modularization.md)** -
+  Per-directory BUILD.gn, header/impl split, removing
+  `allow_circular_includes_from`, TabHelpers → TabFeatures prerequisites
 - **[UI/Views](./best-practices/ui-views.md)** - Desktop C++ views, view
   hierarchy, layout, styling
 - **[Patches](./best-practices/patches.md)** - Patch style, minimality,
@@ -68,8 +75,8 @@ section links to a detailed document.
 
 Before writing async tests, verify:
 
-- [ ] No `RunLoop::RunUntilIdle()` usage
-- [ ] No `EvalJs()` or `ExecJs()` inside `RunUntil()` lambdas
+- [ ] NEVER use `RunLoop::RunUntilIdle()`
+- [ ] NEVER call `EvalJs()` or `ExecJs()` inside `RunUntil()` lambdas
 - [ ] Using manual polling loops for JavaScript conditions
 - [ ] Using `base::test::RunUntil()` only for C++ conditions
 - [ ] Waiting for specific completion signals, not arbitrary timeouts

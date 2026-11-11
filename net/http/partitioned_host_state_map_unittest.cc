@@ -11,21 +11,21 @@
 #include <string_view>
 
 #include "base/containers/span.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace net {
 
 namespace {
 
-using HostHash = std::array<uint8_t, crypto::kSHA256Length>;
+using HostHash = std::array<uint8_t, crypto::hash::kSha256Size>;
 using PartitionedMap = PartitionedHostStateMap<std::map<HostHash, std::string>>;
 
 HostHash HashHost(std::string_view canonicalized_host) {
   if (canonicalized_host.empty()) {
     return {};
   }
-  return crypto::SHA256Hash(base::as_byte_span(canonicalized_host));
+  return crypto::hash::Sha256(canonicalized_host);
 }
 
 }  // namespace

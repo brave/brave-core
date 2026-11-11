@@ -18,8 +18,8 @@ import {
   verticalListSortingStrategy
 } from '@dnd-kit/sortable'
 
-import { color, font, spacing } from '@brave/leo/tokens/css/variables'
-import LeoButton from '@brave/leo/react/button'
+import { color, font, spacing } from '@brave/nala/tokens/css/variables'
+import LeoButton from '@brave/nala/react/button'
 
 import { PlaylistItem as PlaylistItemMojo } from 'gen/brave/components/playlist/core/common/mojom/playlist.mojom.m'
 

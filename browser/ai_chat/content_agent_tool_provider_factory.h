@@ -36,7 +36,8 @@ class ContentAgentToolProviderFactory : public ToolProviderFactory {
       const ContentAgentToolProviderFactory&) = delete;
 
   // ToolProviderFactory implementation
-  std::unique_ptr<ToolProvider> CreateToolProvider() override;
+  std::unique_ptr<ToolProvider> CreateToolProvider(
+      ConversationHandler* conversation) override;
 
  private:
   // Each instance needs an actor service to perform the actions. Not provided

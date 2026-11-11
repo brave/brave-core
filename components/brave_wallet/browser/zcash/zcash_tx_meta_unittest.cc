@@ -7,7 +7,6 @@
 
 #include <optional>
 
-#include "base/values.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -61,12 +60,9 @@ TEST(ZCashTxMeta, ToTransactionInfo_TransparentInputs) {
   EXPECT_EQ(ti->from_account_id, zec_account_id);
   EXPECT_EQ(ti->tx_status, meta.status());
   EXPECT_TRUE(ti->tx_data_union->is_zec_tx_data());
-  EXPECT_EQ(meta.created_time().InMillisecondsSinceUnixEpoch(),
-            ti->created_time.InMilliseconds());
-  EXPECT_EQ(meta.submitted_time().InMillisecondsSinceUnixEpoch(),
-            ti->submitted_time.InMilliseconds());
-  EXPECT_EQ(meta.confirmed_time().InMillisecondsSinceUnixEpoch(),
-            ti->confirmed_time.InMilliseconds());
+  EXPECT_EQ(meta.created_time(), ti->created_time);
+  EXPECT_EQ(meta.submitted_time(), ti->submitted_time);
+  EXPECT_EQ(meta.confirmed_time(), ti->confirmed_time);
 
   const auto& tx_data = ti->tx_data_union->get_zec_tx_data();
 
@@ -147,12 +143,9 @@ TEST(ZCashTxMeta, ToTransactionInfo_ShieldedInputs) {
   EXPECT_EQ(ti->from_account_id, zec_account_id);
   EXPECT_EQ(ti->tx_status, meta.status());
   EXPECT_TRUE(ti->tx_data_union->is_zec_tx_data());
-  EXPECT_EQ(meta.created_time().InMillisecondsSinceUnixEpoch(),
-            ti->created_time.InMilliseconds());
-  EXPECT_EQ(meta.submitted_time().InMillisecondsSinceUnixEpoch(),
-            ti->submitted_time.InMilliseconds());
-  EXPECT_EQ(meta.confirmed_time().InMillisecondsSinceUnixEpoch(),
-            ti->confirmed_time.InMilliseconds());
+  EXPECT_EQ(meta.created_time(), ti->created_time);
+  EXPECT_EQ(meta.submitted_time(), ti->submitted_time);
+  EXPECT_EQ(meta.confirmed_time(), ti->confirmed_time);
 
   const auto& tx_data = ti->tx_data_union->get_zec_tx_data();
 

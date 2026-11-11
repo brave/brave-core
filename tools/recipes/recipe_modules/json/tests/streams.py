@@ -11,22 +11,43 @@ command's report gets tested.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    json,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['json', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    json: json.API
+    step: step.API
 
 
-def RunSteps(api):
-    result = api.step('run tests', ['run_tests'],
-                      check=False,
-                      stdout=api.json.output(),
-                      step_test_data=lambda: api.json.test_api.output_stream(
-                          {'failed': ['a', 'b']}, retcode=1))
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    pass
+
+
+def RunSteps(api: DEPS):
+    result = api.step(
+        'run tests',
+        ['run_tests'],
+        check=False,
+        stdout=api.json.output(),
+        step_test_data=lambda: api.json.test_api.output_stream(
+            {'failed': ['a', 'b']}, retcode=1
+        ),
+    )
     assert result.retcode == 1, result.retcode
     assert result.stdout == {'failed': ['a', 'b']}, result.stdout
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'basic',
         api.post_process(post_process.StepFailure, 'run tests'),

@@ -28,7 +28,7 @@ private class LogLineCell: UITableViewCell, TableViewReusable {
 
 /// A file generator that copies all Rewards related log files into the sharable directory
 struct RewardsInternalsLogsGenerator: RewardsInternalsFileGenerator {
-  func generateFiles(
+  @concurrent func generateFiles(
     at path: String,
     using builder: RewardsInternalsSharableBuilder
   ) async throws {

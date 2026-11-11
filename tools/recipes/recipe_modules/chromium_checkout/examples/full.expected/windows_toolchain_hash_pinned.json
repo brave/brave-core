@@ -60,9 +60,7 @@
       "/b/cache",
       "https://chromium.googlesource.com/chromium/src.git",
       "--reset-fetch-config",
-      "--no-fetch-tags",
-      "--ref",
-      "main"
+      "--no-fetch-tags"
     ],
     "env": {
       "CHROME_HEADLESS": "1"
@@ -102,6 +100,71 @@
   {
     "cmd": [
       "git",
+      "config",
+      "gc.auto",
+      "0"
+    ],
+    "cwd": "[WORKSPACE]\\b\\src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "disable auto-gc: gc.auto=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autodetach",
+      "0"
+    ],
+    "cwd": "[WORKSPACE]\\b\\src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "disable auto-gc: gc.autodetach=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autopacklimit",
+      "0"
+    ],
+    "cwd": "[WORKSPACE]\\b\\src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "disable auto-gc: gc.autopacklimit=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.gc.enabled",
+      "false"
+    ],
+    "cwd": "[WORKSPACE]\\b\\src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "disable auto-gc: maintenance.gc.enabled=false"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.auto",
+      "false"
+    ],
+    "cwd": "[WORKSPACE]\\b\\src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "disable auto-gc: maintenance.auto=false"
+  },
+  {
+    "cmd": [
+      "git",
       "remote",
       "set-url",
       "origin",
@@ -134,7 +197,7 @@
       "fetch",
       "--no-show-forced-updates",
       "origin",
-      "main"
+      "refs/heads/main"
     ],
     "cwd": "[WORKSPACE]\\b\\src",
     "env": {

@@ -23,19 +23,20 @@
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/request_signed_tokens/request_signed_tokens_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/test/wallet_test_constants.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/test/wallet_test_util.h"
-#include "brave/components/brave_ads/core/internal/ads_client/test/ads_client_mock.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/profile_pref_value_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_ads/core/public/test/ads_client_mock.h"
 #include "net/http/http_status_code.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds
+// pnpm test brave_unit_tests --filter=BraveAds
 
 namespace brave_ads {
 
-class BraveAdsUserRewardsTest : public AdsClientMock, public test::TestBase {
+class BraveAdsUserRewardsTest : public test::AdsClientMock,
+                                public test::TestBase {
  protected:
   void SetUp() override {
     test::TestBase::SetUp();

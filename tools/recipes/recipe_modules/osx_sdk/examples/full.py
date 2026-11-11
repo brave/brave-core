@@ -5,29 +5,57 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    brave_core_checkout,
+    osx_sdk,
+    platform,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['brave_core_checkout', 'osx_sdk', 'platform', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    osx_sdk: osx_sdk.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    brave_core_checkout: brave_core_checkout.TEST_API
+    osx_sdk: osx_sdk.TEST_API
+    platform: platform.TEST_API
+
+
+def RunSteps(api: DEPS):
     with api.osx_sdk.ensure('/b/checkout/src') as info:
         if info is not None:
             api.step('xcodebuild -version', ['xcodebuild', '-version'])
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     # Happy path on mac: reads the gni pin, installs + selects, runs a build
     # step, then resets.
     yield api.test(
         'mac',
         api.platform.name('mac'),
-        api.brave_core_checkout.deployed('tools/cr/toolchains'),
+        api.brave_core_checkout.with_git_cache(),
+        api.brave_core_checkout.deployed('tools/cr'),
         api.osx_sdk.installed(),
-        api.post_process(post_process.StepCommandContains, 'read mac_sdk.gni',
-                         ['/b/checkout/src/build/config/mac/mac_sdk.gni']),
-        api.post_process(post_process.StepCommandContains, 'install xcode',
-                         ['--sdk-version', '26.5', '--sdk-build', '25F70']),
+        api.post_process(
+            post_process.StepCommandContains,
+            'read mac_sdk.gni',
+            ['/b/checkout/src/build/config/mac/mac_sdk.gni'],
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'install xcode',
+            ['--sdk-version', '26.5', '--sdk-build', '25F70'],
+        ),
         api.post_process(post_process.MustRun, 'xcodebuild -version'),
         api.post_process(post_process.MustRun, 'reset xcode'),
         api.post_process(post_process.StatusSuccess),
@@ -36,6 +64,7 @@ def GenTests(api):
     yield api.test(
         'linux',
         api.platform.name('linux'),
+        api.brave_core_checkout.with_git_cache(),
         api.post_process(post_process.DoesNotRun, 'read mac_sdk.gni'),
         api.post_process(post_process.DoesNotRun, 'install xcode'),
         api.post_process(post_process.DoesNotRun, 'reset xcode'),

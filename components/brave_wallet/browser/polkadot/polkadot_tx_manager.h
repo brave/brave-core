@@ -78,11 +78,13 @@ class PolkadotTxManager : public TxManager,
   PolkadotTxStateManager& GetPolkadotTxStateManager();
 
   void OnGetChainMetadataForUnapproved(
+      std::unique_ptr<PolkadotTxMeta> meta,
       mojom::NewPolkadotTransactionParamsPtr params,
       AddUnapprovedPolkadotTransactionCallback callback,
       base::expected<PolkadotChainMetadata, std::string> chain_metadata);
 
   void OnGetFeeForUnapproved(PolkadotChainMetadata chain_metadata,
+                             std::unique_ptr<PolkadotTxMeta> meta,
                              mojom::NewPolkadotTransactionParamsPtr params,
                              AddUnapprovedPolkadotTransactionCallback callback,
                              base::expected<PolkadotWalletService::FeeEstimate,

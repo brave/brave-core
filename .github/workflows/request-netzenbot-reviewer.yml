@@ -1,0 +1,34 @@
+name: Request netzenbot-reviewer
+
+# Asks netzenbot-reviewer, the account the scheduled automated review job reviews as, to review
+# every pull request. CODEOWNERS cannot name it (an owner without write access is ignored), and a
+# requested review that no rule requires blocks nothing.
+#
+# pull_request_target rather than pull_request because contributor pull requests come from a fork,
+# and a fork's token cannot write. That trigger runs the workflow on the base branch with a write
+# token, so this job checks nothing out and runs nothing the pull request supplies: the only input
+# is the pull request number from the event.
+on:
+  pull_request_target:
+    types: [opened, reopened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  request:
+    name: Request netzenbot-reviewer
+    # A pull request cannot ask its own author for a review.
+    if: github.event.pull_request.user.login != 'netzenbot-reviewer'
+    runs-on: ubuntu-slim
+    steps:
+      - name: Request the review
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            await github.rest.pulls.requestReviewers({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              reviewers: ['netzenbot-reviewer'],
+            })

@@ -6,9 +6,13 @@
 import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import {
+  PrefServiceObserverMixin,
+  PrefServiceObserverMixinInterface,
+} from '/shared/settings/prefs2/pref_service_observer_mixin.js'
+import {
   WebUiListenerMixin,
   WebUiListenerMixinInterface,
-} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+} from '/shared/settings/web_ui_listener_mixin.js'
 import { loadTimeData } from '../i18n_setup.js'
 
 import { getTemplate } from './brave_personalization_options.html.js'
@@ -20,13 +24,17 @@ import {
 import { assert } from 'chrome://resources/js/assert.js'
 import { SettingsToggleButtonElement } from '../controls/settings_toggle_button.js'
 
+import '/shared/settings/md_select.css.js'
+import 'chrome://resources/cr_elements/cr_icon/cr_icon.js'
 import '../controls/settings_dropdown_menu.js'
 import '../privacy_page/do_not_track_toggle.js'
 
 const SettingsBravePersonalizationOptionsBase = WebUiListenerMixin(
-  PolymerElement,
+  PrefServiceObserverMixin(PolymerElement),
 ) as {
-  new (): PolymerElement & WebUiListenerMixinInterface
+  new (): PolymerElement &
+    WebUiListenerMixinInterface &
+    PrefServiceObserverMixinInterface
 }
 
 export class SettingsBravePersonalizationOptions extends SettingsBravePersonalizationOptionsBase {
@@ -120,6 +128,23 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
           return loadTimeData.getBoolean('isPsstFeatureEnabled')
         },
       },
+      // <if expr="enable_local_ai">
+      isSemanticHistorySearchAvailable_: {
+        readOnly: true,
+        type: Boolean,
+        value: function () {
+          return loadTimeData.getBoolean('isSemanticHistorySearchAvailable')
+        },
+      },
+      isOnDeviceSpeechModelAvailable_: {
+        readOnly: true,
+        type: Boolean,
+        value: function () {
+          return loadTimeData.getBoolean('isOnDeviceSpeechModelAvailable')
+        },
+      },
+      semanticHistorySearchPref_: Object,
+      // </if>
       requestOTRActions_: {
         readOnly: true,
         type: Array,
@@ -132,6 +157,7 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
         },
       },
       requestOTRAction_: String,
+      pushMessagingPref_: Object,
       isWindowsRecallAvailable_: {
         readOnly: true,
         type: Boolean,
@@ -139,12 +165,7 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
           return loadTimeData.getBoolean('isWindowsRecallAvailable')
         },
       },
-      windowsRecallDisabledPref_: {
-        type: Object,
-        value: () => {
-          return {}
-        },
-      },
+      windowsRecallDisabled_: Boolean,
     }
   }
 
@@ -154,10 +175,16 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   declare private isDebounceFeatureEnabled_: boolean
   declare private isRequestOTRFeatureEnabled_: boolean
   declare private isPsstFeatureEnabled_: boolean
+  // <if expr="enable_local_ai">
+  declare private isSemanticHistorySearchAvailable_: boolean
+  declare private isOnDeviceSpeechModelAvailable_: boolean
+  declare private semanticHistorySearchPref_: chrome.settingsPrivate.PrefObject<boolean>
+  // </if>
   declare private requestOTRActions_: Object[]
   declare private requestOTRAction_: String
+  declare private pushMessagingPref_: chrome.settingsPrivate.PrefObject<boolean>
   declare private isWindowsRecallAvailable_: boolean
-  declare private windowsRecallDisabledPref_: chrome.settingsPrivate.PrefObject
+  declare private windowsRecallDisabled_: boolean
 
   browserProxy_: BravePrivacyBrowserProxy =
     BravePrivacyBrowserProxyImpl.getInstance()
@@ -170,6 +197,19 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
     return disabled != this.browserProxy_.wasWindowsRecallDisabledAtStartup()
   }
 
+  // <if expr="enable_local_ai">
+  // The index is built at profile setup, so the toggle only takes effect on
+  // the next launch. `semanticHistorySearchEnabledAtStartup` is the value the
+  // embedding services were built with and is fixed for the session, so
+  // comparing against it survives a reload of this page.
+  shouldShowRestartSemanticHistorySearch_(enabled: boolean) {
+    return (
+      enabled !=
+      loadTimeData.getBoolean('semanticHistorySearchEnabledAtStartup')
+    )
+  }
+  // </if>
+
   windowsRecallDisabledChange_(event: Event) {
     const target = event.target
     assert(target instanceof SettingsToggleButtonElement)
@@ -177,12 +217,7 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   }
 
   setWindowsRecallDisabled_(disabled: boolean) {
-    const pref = {
-      key: '',
-      type: chrome.settingsPrivate.PrefType.BOOLEAN,
-      value: disabled,
-    }
-    this.windowsRecallDisabledPref_ = pref
+    this.windowsRecallDisabled_ = disabled
   }
 
   restartBrowser_(e: Event) {
@@ -190,25 +225,20 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
     window.open('chrome://restart', '_self')
   }
 
+  override connectedCallback() {
+    super.connectedCallback()
+
+    this.mirrorPref('brave.gcm.channel_status', 'pushMessagingPref_')
+    // <if expr="enable_local_ai">
+    this.mirrorPref(
+      'brave.history_embeddings_enabled',
+      'semanticHistorySearchPref_',
+    )
+    // </if>
+  }
+
   override ready() {
     super.ready()
-    // Add hr to the "Do not track" row.
-    const doNotTrack = this.shadowRoot?.querySelector('#doNotTrack')
-    if (doNotTrack) {
-      const toggle = doNotTrack.shadowRoot?.querySelector('#toggle')
-      if (toggle) {
-        const toggleClass = toggle.getAttribute('class')
-        toggle.setAttribute('class', toggleClass + ' hr')
-      } else {
-        console.log(
-          '[Brave Settings Overrides] Could not find doNotTrack toggle',
-        )
-      }
-    } else {
-      console.log(
-        '[Brave Settings Overrides] Could not find element with id doNotTrack',
-      )
-    }
 
     if (this.isWindowsRecallAvailable_) {
       this.addWebUiListener(

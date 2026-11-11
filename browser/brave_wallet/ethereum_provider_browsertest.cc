@@ -10,7 +10,6 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -41,6 +40,24 @@ std::string CheckForEventScript(std::string_view event_var) {
                          event_var);
 }
 
+// Registers a listener, emits to it, then unregisters it. `provider_expr` is a
+// JS expression for the provider to exercise.
+std::string EmitterScript(std::string_view provider_expr) {
+  return absl::StrFormat(R"(
+      (() => {
+        const provider = %s;
+        let received = '';
+        const listener = (arg) => { received = arg; };
+        provider.on('accountsChanged', listener);
+        provider.emit('accountsChanged', 'emitted');
+        provider.removeListener('accountsChanged', listener);
+        provider.emit('accountsChanged', 'ignored');
+        return received;
+      })();
+    )",
+                         provider_expr);
+}
+
 }  // namespace
 
 namespace brave_wallet {
@@ -68,9 +85,6 @@ class EthereumProviderBrowserTest : public InProcessBrowserTest {
   }
 
   void SetUpOnMainThread() override {
-    brave_wallet::SetDefaultEthereumWallet(
-        browser()->GetProfile()->GetPrefs(),
-        brave_wallet::mojom::DefaultWallet::BraveWallet);
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
 
@@ -96,8 +110,8 @@ class EthereumProviderBrowserTest : public InProcessBrowserTest {
         kMnemonicDripCaution, kTestWalletPassword, false));
   }
 
-  void ReloadAndWaitForLoadStop(Browser* browser) {
-    chrome::Reload(browser, WindowOpenDisposition::CURRENT_TAB);
+  void ReloadAndWaitForLoadStop(BrowserWindowInterface* browser) {
+    chrome::Reload(browser, WindowOpenDisposition::kCurrentTab);
     ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
   }
 
@@ -168,6 +182,19 @@ IN_PROC_BROWSER_TEST_F(EthereumProviderBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   ReloadAndWaitForLoadStop(browser());
+}
+
+IN_PROC_BROWSER_TEST_F(EthereumProviderBrowserTest, EventEmitter) {
+  RestoreWallet();
+  GURL url = https_server()->GetURL("a.com", "/ethereum_provider.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  for (const std::string& provider :
+       {"window.ethereum", "window.braveEthereum"}) {
+    SCOPED_TRACE(provider);
+    EXPECT_EQ(base::Value("emitted"),
+              EvalJs(web_contents(), EmitterScript(provider)));
+  }
 }
 
 }  // namespace brave_wallet

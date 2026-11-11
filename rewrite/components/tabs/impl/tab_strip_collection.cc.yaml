@@ -16,7 +16,7 @@ substitutions:
     preempt_function_impl:
       function_name: TabStripCollection::RemoveTabAtIndexRecursive
       code: |-
-        #if !BUILDFLAG(IS_ANDROID)
+        #if BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
         {
           TabInterface* tab_to_be_removed = GetTabAtIndexRecursive(index);
           TabCollection* parent_collection =
@@ -33,4 +33,4 @@ substitutions:
             return tab;
           }
         }
-        #endif  // !BUILDFLAG(IS_ANDROID)
+        #endif  // BUILDFLAG(ENABLE_BRAVE_TREE_TABS)

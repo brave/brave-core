@@ -102,10 +102,17 @@ void ZCashBlocksBatchScanTask::GetFrontierTreeState() {
 
 void ZCashBlocksBatchScanTask::OnGetFrontierTreeState(
     base::expected<zcash::mojom::TreeStatePtr, std::string> result) {
-  if (!result.has_value() || !result.value()) {
+  if (!result.has_value()) {
     error_ = ZCashShieldSyncService::Error{
         ZCashShieldSyncService::ErrorCode::kFailedToReceiveTreeState,
         base::StrCat({"Frontier tree state failed, ", result.error()})};
+    ScheduleWorkOnTask();
+    return;
+  }
+  if (!result.value()) {
+    error_ = ZCashShieldSyncService::Error{
+        ZCashShieldSyncService::ErrorCode::kFailedToReceiveTreeState,
+        "Frontier tree state failed, empty tree state"};
     ScheduleWorkOnTask();
     return;
   }
@@ -123,10 +130,18 @@ void ZCashBlocksBatchScanTask::GetFrontierBlock() {
 void ZCashBlocksBatchScanTask::OnGetFrontierBlock(
     base::expected<std::vector<zcash::mojom::CompactBlockPtr>, std::string>
         result) {
-  if (!result.has_value() || result.value().size() != 1) {
+  if (!result.has_value()) {
     error_ = ZCashShieldSyncService::Error{
         ZCashShieldSyncService::ErrorCode::kFailedToDownloadBlocks,
         result.error()};
+    ScheduleWorkOnTask();
+    return;
+  }
+
+  if (result.value().size() != 1) {
+    error_ = ZCashShieldSyncService::Error{
+        ZCashShieldSyncService::ErrorCode::kFailedToDownloadBlocks,
+        "Expected block count doesn't match actual"};
     ScheduleWorkOnTask();
     return;
   }

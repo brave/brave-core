@@ -5,11 +5,8 @@
 
 #include "brave/components/ai_chat/core/common/test_mojom_printers.h"
 
-#include <utility>
-
 #include "base/base64.h"
 #include "base/i18n/time_formatting.h"
-#include "base/json/json_writer.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_ostream_operators.h"
@@ -150,8 +147,14 @@ void PrintTo(const mojom::ToolUseEvent& event, std::ostream* os) {
         << event.permission_challenge->assessment.value_or("<nullopt>") << "\n";
     *os << "  plan: " << event.permission_challenge->plan.value_or("<nullopt>")
         << "\n";
+    *os << "  title: "
+        << event.permission_challenge->title.value_or("<nullopt>") << "\n";
     *os << "  description: "
         << event.permission_challenge->description.value_or("<nullopt>")
+        << "\n";
+    *os << "  supports_allow_session: "
+        << (event.permission_challenge->supports_allow_session ? "true"
+                                                               : "false")
         << "\n";
   } else {
     *os << "[nullopt]\n";

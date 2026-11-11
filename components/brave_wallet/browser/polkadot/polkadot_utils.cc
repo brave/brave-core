@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
 
 #include "base/base64.h"
-#include "base/check.h"
 #include "base/containers/span.h"
 #include "base/containers/span_reader.h"
 #include "base/containers/span_writer.h"

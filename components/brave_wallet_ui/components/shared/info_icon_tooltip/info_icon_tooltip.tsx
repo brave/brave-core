@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
-import Tooltip, { TooltipProps } from '@brave/leo/react/tooltip'
+import Tooltip, { TooltipProps } from '@brave/nala/react/tooltip'
 
 // style
 import { InfoIcon, TooltipTextContent } from './info_icon_tooltip.style'

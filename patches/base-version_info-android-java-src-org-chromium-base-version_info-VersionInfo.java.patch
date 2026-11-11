@@ -1,0 +1,12 @@
+diff --git a/base/version_info/android/java/src/org/chromium/base/version_info/VersionInfo.java b/base/version_info/android/java/src/org/chromium/base/version_info/VersionInfo.java
+index d0897e80cdb2c7551605429fd1831ea867effcbe..16e7fc87df5e267547830d3721c0318596074772 100644
+--- a/base/version_info/android/java/src/org/chromium/base/version_info/VersionInfo.java
++++ b/base/version_info/android/java/src/org/chromium/base/version_info/VersionInfo.java
+@@ -84,6 +84,7 @@ public class VersionInfo {
+      * @return The version number.
+      */
+     public static String getProductVersion() {
++        if (true) return VersionConstants.PRODUCT_VERSION;
+         return ApkInfo.getPackageVersionName();
+     }
+ 

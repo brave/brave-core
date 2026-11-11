@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveUI
 import Preferences
 import Strings
 import SwiftUI
@@ -75,7 +76,7 @@ struct NetworkPicker: View {
     .background(
       Color.clear
         .sheet(isPresented: $isPresentingAddNetwork) {
-          NavigationView {
+          NavigationStack {
             NetworkDetailsView(networkStore: networkStore, model: .init())
           }
         }
@@ -83,13 +84,10 @@ struct NetworkPicker: View {
     .background(
       Color.clear
         .sheet(
-          isPresented: Binding(
-            get: { self.networkSelectionStore != nil },
-            set: { if !$0 { self.networkSelectionStore = nil } }
-          )
+          isPresented: $networkSelectionStore.isPresented
         ) {
           if let networkSelectionStore = networkSelectionStore {
-            NavigationView {
+            NavigationStack {
               NetworkSelectionView(
                 keyringStore: keyringStore,
                 networkStore: networkStore,
@@ -97,7 +95,6 @@ struct NetworkPicker: View {
               )
             }
             .accentColor(Color(braveSystemName: .primitivePrimary40))
-            .navigationViewStyle(.stack)
           }
         }
     )

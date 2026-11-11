@@ -18,7 +18,7 @@ import urllib.request
 
 
 def get_remote_audit_config(
-    url="https://raw.githubusercontent.com/brave/audit-config/main/config.json"
+    url="https://raw.githubusercontent.com/brave/audit-config/main/config.json",
 ):
     return json.loads(urllib.request.urlopen(url).read().decode("utf-8"))
 
@@ -35,25 +35,30 @@ IGNORED_NPM_ADVISORIES = [
 NPM_EXCLUDE_PATHS = [
     'build',
     os.path.join('node_modules'),
-    os.path.join('tools', 'crates')
+    os.path.join('tools', 'crates'),
 ]
 
 # Only check Cargo.lock for these paths.
 CARGO_INCLUDE_PATHS = [
     os.path.join('third_party', 'rust', 'chromium_crates_io'),
     os.path.join('tools', 'crates'),
-    os.path.join('components', 'skus', 'browser', 'rs', 'wasm')
+    os.path.join('components', 'skus', 'browser', 'rs', 'wasm'),
 ]
+
 
 def main():
     """Audit a specified path, or the whole project."""
 
     if len(IGNORED_NPM_ADVISORIES) > 0:
-        print(f"Ignoring NPM advisories "
-              f"{', '.join(map(str, IGNORED_NPM_ADVISORIES))}")
+        print(
+            f"Ignoring NPM advisories "
+            f"{', '.join(map(str, IGNORED_NPM_ADVISORIES))}"
+        )
     if len(IGNORED_CARGO_ADVISORIES) > 0:
-        print(f"Ignoring Cargo advisories "
-              f"{', '.join(map(str, IGNORED_CARGO_ADVISORIES))}")
+        print(
+            f"Ignoring Cargo advisories "
+            f"{', '.join(map(str, IGNORED_CARGO_ADVISORIES))}"
+        )
 
     args = parse_args()
     args.source_root = os.path.abspath(args.source_root)
@@ -63,7 +68,8 @@ def main():
         return audit_path(os.path.abspath(args.input_dir), args)
 
     for path in [
-            os.path.dirname(os.path.dirname(args.source_root)), args.source_root
+        os.path.dirname(os.path.dirname(args.source_root)),
+        args.source_root,
     ]:
         errors += audit_path(path, args)
 
@@ -77,7 +83,7 @@ def main():
         errors += cargo_audit_deps(os.path.join(args.source_root, p), args)
 
     if args.output:
-        with open(args.output, 'w') as f:
+        with open(args.output, 'w', encoding='utf-8') as f:
             json.dump(errors, f)
 
     return errors > 0
@@ -88,17 +94,25 @@ def audit_path(path, args):
     errors = 0
 
     full_path = os.path.join(os.path.abspath(path), "")
-    if os.path.isfile(os.path.join(path, 'package.json')) and \
-       os.path.isfile(os.path.join(path, 'package-lock.json')) and \
-       not any(full_path.startswith(os.path.join(args.source_root, p, ""))
-               for p in NPM_EXCLUDE_PATHS):
+    if (
+        os.path.isfile(os.path.join(path, 'package.json'))
+        and os.path.isfile(os.path.join(path, 'package-lock.json'))
+        and not any(
+            full_path.startswith(os.path.join(args.source_root, p, ""))
+            for p in NPM_EXCLUDE_PATHS
+        )
+    ):
         print(f'Auditing (npm) {path}')
         errors += npm_audit_deps(path, args)
 
-    if os.path.isfile(os.path.join(path, 'package.json')) and \
-       os.path.isfile(os.path.join(path, 'pnpm-lock.yaml')) and \
-       not any(full_path.startswith(os.path.join(args.source_root, p, ""))
-               for p in NPM_EXCLUDE_PATHS):
+    if (
+        os.path.isfile(os.path.join(path, 'package.json'))
+        and os.path.isfile(os.path.join(path, 'pnpm-lock.yaml'))
+        and not any(
+            full_path.startswith(os.path.join(args.source_root, p, ""))
+            for p in NPM_EXCLUDE_PATHS
+        )
+    ):
         print(f'Auditing (pnpm) {path}')
         errors += pnpm_audit_deps(path, args)
 
@@ -117,8 +131,10 @@ def npm_audit_deps(path, args):
         # Don't support npm audit --production until dev dependencies are
         # correctly identified in package.json
         print('npm audit --production not supported; auditing dev dependencies')
-    audit_process = subprocess.Popen(npm_args, stdout=subprocess.PIPE, cwd=path)
-    output, _ = audit_process.communicate()
+    with subprocess.Popen(
+        npm_args, stdout=subprocess.PIPE, cwd=path
+    ) as audit_process:
+        output, _ = audit_process.communicate()
 
     try:
         # results from audit
@@ -154,10 +170,10 @@ def pnpm_audit_deps(path, args):
         # Don't support pnpm audit --prod until dev dependencies are
         # correctly identified in package.json
         print('pnpm audit --prod not supported; auditing dev dependencies')
-    audit_process = subprocess.Popen(pnpm_args,
-                                     stdout=subprocess.PIPE,
-                                     cwd=path)
-    output, _ = audit_process.communicate()
+    with subprocess.Popen(
+        pnpm_args, stdout=subprocess.PIPE, cwd=path
+    ) as audit_process:
+        output, _ = audit_process.communicate()
 
     try:
         # results from audit
@@ -205,8 +221,10 @@ def extract_resolutions(result):
         for _, v in advisories.items():
             via = v['via']
             for item in via:
-                if isinstance(item, dict) and \
-                   item['url'] not in IGNORED_NPM_ADVISORIES:
+                if (
+                    isinstance(item, dict)
+                    and item['url'] not in IGNORED_NPM_ADVISORIES
+                ):
                     resolutions.append(item['url'])
     # npm 6 and earlier
     if 'advisories' in result:
@@ -225,13 +243,15 @@ def parse_args():
 
     parser = argparse.ArgumentParser(description='Audit brave-core npm deps')
     parser.add_argument('input_dir', nargs='?', help='Directory to check')
-    parser.add_argument('--source_root',
-                        required=True,
-                        help='Full path of the src/brave directory')
+    parser.add_argument(
+        '--source_root',
+        required=True,
+        help='Full path of the src/brave directory',
+    )
     parser.add_argument('--cargo_audit_exe', required=True)
-    parser.add_argument('--audit_dev_deps',
-                        action='store_true',
-                        help='Audit dev dependencies')
+    parser.add_argument(
+        '--audit_dev_deps', action='store_true', help='Audit dev dependencies'
+    )
     parser.add_argument('--output', help='Output file')
     return parser.parse_args()
 

@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAdsBrowserVersion*
+// pnpm test brave_unit_tests --filter=BraveAdsBrowserVersion*
 
 namespace brave_ads {
 

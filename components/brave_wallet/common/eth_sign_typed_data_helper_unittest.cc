@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/common/eth_sign_typed_data_helper.h"
 
-#include <array>
 #include <initializer_list>
 #include <memory>
 #include <string>

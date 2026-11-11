@@ -5,12 +5,17 @@
 
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 
+#include <utility>
+
+#include "base/check_is_test.h"
+#include "base/functional/bind.h"
 #include "base/logging.h"
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry_factory.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
@@ -24,26 +29,43 @@
 
 namespace brave_perf_predictor {
 
-PerfPredictorTabHelper::PerfPredictorTabHelper(
-    content::WebContents* web_contents)
-    : WebContentsObserver(web_contents),
-      content::WebContentsUserData<PerfPredictorTabHelper>(*web_contents),
+DEFINE_USER_DATA(PerfPredictorTabHelper);
+
+// static
+PerfPredictorTabHelper* PerfPredictorTabHelper::From(tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
+}
+
+PerfPredictorTabHelper::PerfPredictorTabHelper(tabs::TabInterface& tab)
+    : WebContentsObserver(tab.GetContents()),
       bandwidth_predictor_(std::make_unique<BandwidthSavingsPredictor>(
           NamedThirdPartyRegistryFactory::GetForBrowserContext(
-              web_contents->GetBrowserContext()))) {
-  if (web_contents->GetBrowserContext()->IsOffTheRecord()) {
+              tab.GetContents()->GetBrowserContext()))),
+      will_discard_contents_subscription_(tab.RegisterWillDiscardContents(
+          base::BindRepeating(&PerfPredictorTabHelper::OnDiscardContents,
+                              base::Unretained(this)))),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {
+  content::BrowserContext* const browser_context =
+      tab.GetContents()->GetBrowserContext();
+  if (browser_context->IsOffTheRecord()) {
     return;
   }
 
   bandwidth_tracker_ = std::make_unique<P3ABandwidthSavingsTracker>(
-      user_prefs::UserPrefs::Get(web_contents->GetBrowserContext()));
+      user_prefs::UserPrefs::Get(browser_context));
 }
 
-PerfPredictorTabHelper::~PerfPredictorTabHelper() = default;
+PerfPredictorTabHelper::~PerfPredictorTabHelper() {
+  RecordSavings();
+}
 
 void PerfPredictorTabHelper::OnPageLoadTimingUpdated(
     const page_load_metrics::mojom::PageLoadTiming& timing) {
   bandwidth_predictor_->OnPageLoadTimingUpdated(timing);
+  if (page_load_timing_updated_callback_for_testing_) {
+    CHECK_IS_TEST();
+    page_load_timing_updated_callback_for_testing_.Run();
+  }
 }
 
 // static
@@ -64,11 +86,16 @@ void PerfPredictorTabHelper::DispatchBlockedEvent(
   }
 
   PerfPredictorTabHelper* blocking_observer =
-      brave_perf_predictor::PerfPredictorTabHelper::FromWebContents(
-          web_contents);
+      brave_perf_predictor::PerfPredictorTabHelper::From(
+          tabs::TabInterface::MaybeGetFromContents(web_contents));
   if (blocking_observer) {
     blocking_observer->OnBlockedSubresource(subresource);
   }
+}
+
+void PerfPredictorTabHelper::SetPageLoadTimingUpdatedCallbackForTesting(
+    base::RepeatingClosure callback) {
+  page_load_timing_updated_callback_for_testing_ = std::move(callback);
 }
 
 void PerfPredictorTabHelper::RecordSavings() {
@@ -107,6 +134,15 @@ void PerfPredictorTabHelper::OnBlockedSubresource(
   bandwidth_predictor_->OnSubresourceBlocked(subresource);
 }
 
+void PerfPredictorTabHelper::OnDiscardContents(
+    tabs::TabInterface* tab,
+    content::WebContents* old_contents,
+    content::WebContents* new_contents) {
+  RecordSavings();
+  navigation_id_ = -1;
+  Observe(new_contents);
+}
+
 void PerfPredictorTabHelper::DidStartNavigation(
     content::NavigationHandle* handle) {
   if (!handle || !handle->IsInMainFrame() || handle->IsDownload()) {
@@ -140,13 +176,5 @@ void PerfPredictorTabHelper::ResourceLoadComplete(
                                                  resource_load_info);
   }
 }
-
-void PerfPredictorTabHelper::WebContentsDestroyed() {
-  // Run a prediction when Web Contents get destroyed (e.g. tab/window closed)
-  RecordSavings();
-  VLOG(3) << "Web contents destroyed, savings recorded";
-}
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(PerfPredictorTabHelper);
 
 }  // namespace brave_perf_predictor

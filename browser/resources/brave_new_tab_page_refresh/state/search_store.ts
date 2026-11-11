@@ -22,12 +22,7 @@ export interface SearchEngineInfo {
 // require.
 export type AutocompleteMatch = Pick<
   mojom.AutocompleteMatch,
-  | 'allowedToBeDefaultMatch'
-  | 'contents'
-  | 'description'
-  | 'iconUrl'
-  | 'imageUrl'
-  | 'destinationUrl'
+  'allowedToBeDefaultMatch' | 'iconUrl' | 'suggestTemplate' | 'destinationUrl'
 >
 
 export interface SearchState {
@@ -43,6 +38,7 @@ export interface SearchState {
   searchSuggestionsPromptDismissed: boolean
   activeSearchInputKey: string
   searchMatches: AutocompleteMatch[]
+  searchResultSequenceId: number
   searchBoxSuppressed: boolean
   actions: SearchActions
 }
@@ -63,6 +59,7 @@ export function defaultSearchStore(): SearchStore {
     searchSuggestionsPromptDismissed: false,
     activeSearchInputKey: '',
     searchMatches: [],
+    searchResultSequenceId: 0,
     searchBoxSuppressed: false,
     actions: {
       setShowSearchBox(showSearchBox) {},

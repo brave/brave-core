@@ -1,22 +1,31 @@
 diff --git a/services/network/public/cpp/features.cc b/services/network/public/cpp/features.cc
-index 56689dab5a3c9e0ea9af2f67e94cc577639b0fde..83cad3d473d7060769084fb2f09eb222565c2777 100644
+index e71dc39e2dc3a76c3de2f9277e3ebaa8ec06a036..2ccc955c856ff73ceb047f2dd8dac2dd6948901e 100644
 --- a/services/network/public/cpp/features.cc
 +++ b/services/network/public/cpp/features.cc
-@@ -269,6 +269,7 @@ BASE_FEATURE_PARAM(bool,
+@@ -256,7 +256,7 @@ BASE_FEATURE_PARAM(bool,
  // of vulnerable local devices.
  //
  // Spec: https://wicg.github.io/local-network-access/
-+// kLocalNetworkAccessChecksWebSockets feature state is enforced via plaster rewrite.
- BASE_FEATURE(kLocalNetworkAccessChecksWebSockets,
+-BASE_FEATURE(kLocalNetworkAccessChecksWebSockets,
++BASE_OVERRIDDEN_FEATURE(kLocalNetworkAccessChecksWebSockets,
               base::FEATURE_ENABLED_BY_DEFAULT);
  
-@@ -420,7 +421,8 @@ BASE_FEATURE(kUpdateRequestForCorsRedirect, base::FEATURE_ENABLED_BY_DEFAULT);
+ // Enables Local Network Access checks for WebTransport.
+@@ -413,7 +413,7 @@ BASE_FEATURE(kAllowSameOriginCredentialsWithDisableWebSecurity,
  
  // https://github.com/patcg-individual-drafts/topics
  // Kill switch for the Topics API.
 -BASE_FEATURE(kBrowsingTopics, base::FEATURE_ENABLED_BY_DEFAULT);
-+// kBrowsingTopics feature state is enforced via plaster rewrite.
-+BASE_FEATURE(kBrowsingTopics, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kBrowsingTopics, base::FEATURE_DISABLED_BY_DEFAULT);
  
  
  BASE_FEATURE(kIncreaseCookieAccessCacheSize, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -442,7 +442,7 @@ BASE_FEATURE(kCSPEmbeddedEnforcementTrustedTypes,
+ BASE_FEATURE(kCacheSharingForPervasiveResources,
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+-BASE_FEATURE(kPervasiveSharedDictionaries, base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kPervasiveSharedDictionaries, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kSendSameSiteLaxForFedCM, base::FEATURE_DISABLED_BY_DEFAULT);
+ 

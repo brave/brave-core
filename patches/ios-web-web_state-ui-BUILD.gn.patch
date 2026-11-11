@@ -1,12 +1,20 @@
 diff --git a/ios/web/web_state/ui/BUILD.gn b/ios/web/web_state/ui/BUILD.gn
-index ed74a7a416959ff2338bf46c8801cabd2290f319..04c116a3ae0f67d7554c36e3336b6ce98797ef43 100644
+index d4cc932202f2b0081a1611f3aa9f34878b62b6bd..d6f74b0aca19e779dad6c957791533e3cfb46c09 100644
 --- a/ios/web/web_state/ui/BUILD.gn
 +++ b/ios/web/web_state/ui/BUILD.gn
-@@ -88,6 +88,7 @@ source_set("ui") {
-     "crw_wk_ui_handler.mm",
-     "crw_wk_ui_handler_delegate.h",
-   ]
-+  import("//brave/ios/web/sources.gni") deps += brave_ios_web_web_state_ui_deps
- }
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
- source_set("web_controller_header") {
++import("//brave/ios/web/sources.gni")
+ import("//build/buildflag_header.gni")
+ import("//build/config/ios/ios_sdk.gni")
+ import("//ios/build/config.gni")
+@@ -60,6 +61,7 @@ source_set("ui") {
+     "//ui/base",
+     "//url",
+   ]
++  deps += brave_ios_web_web_state_ui_deps
+ 
+   if (!ios_is_app_extension) {
+     deps += [ "//ios/web/common:uikit" ]

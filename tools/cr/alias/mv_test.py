@@ -75,24 +75,28 @@ class ValidationTest(_Base):
     def test_source_not_found(self) -> None:
         with self.assertRaises(UserValidationError):
             cmd_mv(
-                [self._brave_rel('nonexistent.h'),
-                 self._brave_rel('dest.h')])
+                [self._brave_rel('nonexistent.h'), self._brave_rel('dest.h')]
+            )
 
     def test_dest_parent_missing_no_mkdir(self) -> None:
         self._commit('src.h', '// src\n')
         with self.assertRaises(UserValidationError):
-            cmd_mv([
-                self._brave_rel('src.h'),
-                self._brave_rel('missing_dir/dest.h')
-            ])
+            cmd_mv(
+                [
+                    self._brave_rel('src.h'),
+                    self._brave_rel('missing_dir/dest.h'),
+                ]
+            )
 
     def test_dest_parent_created_with_mkdir(self) -> None:
         self._commit('src.h', '// src\n')
-        cmd_mv([
-            '--mkdir',
-            self._brave_rel('src.h'),
-            self._brave_rel('new_dir/dest.h')
-        ])
+        cmd_mv(
+            [
+                '--mkdir',
+                self._brave_rel('src.h'),
+                self._brave_rel('new_dir/dest.h'),
+            ]
+        )
         self.assertTrue((self._brave / 'new_dir' / 'dest.h').exists())
         self.assertFalse((self._brave / 'src.h').exists())
 
@@ -114,10 +118,12 @@ class ValidationTest(_Base):
     def test_rewrite_yaml_to_outside_rewrite(self) -> None:
         self._commit('rewrite/A/foo.h.yaml', 'substitutions:\n')
         with self.assertRaises(UserValidationError):
-            cmd_mv([
-                self._brave_rel('rewrite/A/foo.h.yaml'),
-                self._brave_rel('other/foo.h.yaml')
-            ])
+            cmd_mv(
+                [
+                    self._brave_rel('rewrite/A/foo.h.yaml'),
+                    self._brave_rel('other/foo.h.yaml'),
+                ]
+            )
 
 
 # ---------------------------------------------------------------------------
@@ -130,54 +136,71 @@ class GuardTest(_Base):
 
     def test_guard_updated_in_three_places(self) -> None:
         """Moving a .h with a correct guard updates #ifndef, #define, #endif."""
-        self._commit('foo/bar.h', ('// Copyright\n'
-                                   '#ifndef BRAVE_FOO_BAR_H_\n'
-                                   '#define BRAVE_FOO_BAR_H_\n'
-                                   '\n'
-                                   'class Foo {};\n'
-                                   '\n'
-                                   '#endif  // BRAVE_FOO_BAR_H_\n'))
-        cmd_mv([
-            '--mkdir',
-            self._brave_rel('foo/bar.h'),
-            self._brave_rel('baz/bar.h')
-        ])
-        new_content = (self._brave / 'baz' /
-                       'bar.h').read_text(encoding='utf-8')
+        self._commit(
+            'foo/bar.h',
+            (
+                '// Copyright\n'
+                '#ifndef BRAVE_FOO_BAR_H_\n'
+                '#define BRAVE_FOO_BAR_H_\n'
+                '\n'
+                'class Foo {};\n'
+                '\n'
+                '#endif  // BRAVE_FOO_BAR_H_\n'
+            ),
+        )
+        cmd_mv(
+            [
+                '--mkdir',
+                self._brave_rel('foo/bar.h'),
+                self._brave_rel('baz/bar.h'),
+            ]
+        )
+        new_content = (self._brave / 'baz' / 'bar.h').read_text(
+            encoding='utf-8'
+        )
         self.assertEqual(new_content.count('BRAVE_BAZ_BAR_H_'), 3)
         self.assertNotIn('BRAVE_FOO_BAR_H_', new_content)
 
     def test_guard_count_warning_but_file_written(self) -> None:
         """Moving a .h with 4 guard occurrences warns but writes the file."""
         # 4 occurrences: comment + ifndef + define + endif-comment
-        self._commit('foo/bar.h', ('// Ref: BRAVE_FOO_BAR_H_\n'
-                                   '#ifndef BRAVE_FOO_BAR_H_\n'
-                                   '#define BRAVE_FOO_BAR_H_\n'
-                                   '#endif  // BRAVE_FOO_BAR_H_\n'))
+        self._commit(
+            'foo/bar.h',
+            (
+                '// Ref: BRAVE_FOO_BAR_H_\n'
+                '#ifndef BRAVE_FOO_BAR_H_\n'
+                '#define BRAVE_FOO_BAR_H_\n'
+                '#endif  // BRAVE_FOO_BAR_H_\n'
+            ),
+        )
         with self.assertLogs(level=logging.WARNING):
-            cmd_mv([
-                '--mkdir',
-                self._brave_rel('foo/bar.h'),
-                self._brave_rel('baz/bar.h')
-            ])
-        new_content = (self._brave / 'baz' /
-                       'bar.h').read_text(encoding='utf-8')
+            cmd_mv(
+                [
+                    '--mkdir',
+                    self._brave_rel('foo/bar.h'),
+                    self._brave_rel('baz/bar.h'),
+                ]
+            )
+        new_content = (self._brave / 'baz' / 'bar.h').read_text(
+            encoding='utf-8'
+        )
         # The replacement ran (old guard gone, new guard present).
         self.assertNotIn('BRAVE_FOO_BAR_H_', new_content)
         self.assertIn('BRAVE_BAZ_BAR_H_', new_content)
 
     def test_guard_inserted_when_absent(self) -> None:
         """Moving a .h with no guard inserts a complete guard block."""
-        self._commit('foo/bar.h', ('// Copyright\n'
-                                   '\n'
-                                   'class Foo {};\n'))
-        cmd_mv([
-            '--mkdir',
-            self._brave_rel('foo/bar.h'),
-            self._brave_rel('baz/bar.h')
-        ])
-        new_content = (self._brave / 'baz' /
-                       'bar.h').read_text(encoding='utf-8')
+        self._commit('foo/bar.h', ('// Copyright\n\nclass Foo {};\n'))
+        cmd_mv(
+            [
+                '--mkdir',
+                self._brave_rel('foo/bar.h'),
+                self._brave_rel('baz/bar.h'),
+            ]
+        )
+        new_content = (self._brave / 'baz' / 'bar.h').read_text(
+            encoding='utf-8'
+        )
         self.assertIn('#ifndef BRAVE_BAZ_BAR_H_', new_content)
         self.assertIn('#define BRAVE_BAZ_BAR_H_', new_content)
         self.assertIn('#endif  // BRAVE_BAZ_BAR_H_', new_content)
@@ -192,13 +215,16 @@ class GuardTest(_Base):
         """Moving a .cc file does not touch include guards."""
         original = '// Simple source\nvoid foo() {}\n'
         self._commit('foo/bar.cc', original)
-        cmd_mv([
-            '--mkdir',
-            self._brave_rel('foo/bar.cc'),
-            self._brave_rel('baz/bar.cc')
-        ])
-        new_content = (self._brave / 'baz' /
-                       'bar.cc').read_text(encoding='utf-8')
+        cmd_mv(
+            [
+                '--mkdir',
+                self._brave_rel('foo/bar.cc'),
+                self._brave_rel('baz/bar.cc'),
+            ]
+        )
+        new_content = (self._brave / 'baz' / 'bar.cc').read_text(
+            encoding='utf-8'
+        )
         self.assertNotIn('#ifndef', new_content)
         self.assertNotIn('#define', new_content)
 
@@ -213,39 +239,51 @@ class ShadowIncludeTest(_Base):
 
     def test_shadow_include_updated(self) -> None:
         """Moving chromium_src/A/foo.h updates the upstream include."""
-        self._commit('chromium_src/A/foo.h',
-                     ('// Shadow\n'
-                      '#ifndef BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
-                      '#define BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
-                      '\n'
-                      '#include <A/foo.h>\n'
-                      '\n'
-                      '#endif  // BRAVE_CHROMIUM_SRC_A_FOO_H_\n'))
-        cmd_mv([
-            '--mkdir',
-            self._brave_rel('chromium_src/A/foo.h'),
-            self._brave_rel('chromium_src/B/foo.h')
-        ])
-        new_content = (self._brave / 'chromium_src' / 'B' /
-                       'foo.h').read_text(encoding='utf-8')
+        self._commit(
+            'chromium_src/A/foo.h',
+            (
+                '// Shadow\n'
+                '#ifndef BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
+                '#define BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
+                '\n'
+                '#include <A/foo.h>\n'
+                '\n'
+                '#endif  // BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
+            ),
+        )
+        cmd_mv(
+            [
+                '--mkdir',
+                self._brave_rel('chromium_src/A/foo.h'),
+                self._brave_rel('chromium_src/B/foo.h'),
+            ]
+        )
+        new_content = (self._brave / 'chromium_src' / 'B' / 'foo.h').read_text(
+            encoding='utf-8'
+        )
         self.assertIn('#include <B/foo.h>', new_content)
         self.assertNotIn('#include <A/foo.h>', new_content)
 
     def test_no_shadow_include_when_absent(self) -> None:
         """Moving a shadow file without the upstream include is a no-op."""
-        original = ('// No upstream include\n'
-                    '#ifndef BRAVE_CHROMIUM_SRC_A_BAR_H_\n'
-                    '#define BRAVE_CHROMIUM_SRC_A_BAR_H_\n'
-                    '// code\n'
-                    '#endif  // BRAVE_CHROMIUM_SRC_A_BAR_H_\n')
+        original = (
+            '// No upstream include\n'
+            '#ifndef BRAVE_CHROMIUM_SRC_A_BAR_H_\n'
+            '#define BRAVE_CHROMIUM_SRC_A_BAR_H_\n'
+            '// code\n'
+            '#endif  // BRAVE_CHROMIUM_SRC_A_BAR_H_\n'
+        )
         self._commit('chromium_src/A/bar.h', original)
-        cmd_mv([
-            '--mkdir',
-            self._brave_rel('chromium_src/A/bar.h'),
-            self._brave_rel('chromium_src/B/bar.h')
-        ])
-        new_content = (self._brave / 'chromium_src' / 'B' /
-                       'bar.h').read_text(encoding='utf-8')
+        cmd_mv(
+            [
+                '--mkdir',
+                self._brave_rel('chromium_src/A/bar.h'),
+                self._brave_rel('chromium_src/B/bar.h'),
+            ]
+        )
+        new_content = (self._brave / 'chromium_src' / 'B' / 'bar.h').read_text(
+            encoding='utf-8'
+        )
         # No angle-bracket include of A/bar.h should appear.
         self.assertNotIn('#include <A/bar.h>', new_content)
 
@@ -253,13 +291,16 @@ class ShadowIncludeTest(_Base):
         """Moving a non-C++ file under chromium_src/ does not edit content."""
         original = '# Python script\nprint("hello")\n'
         self._commit('chromium_src/A/script.py', original)
-        cmd_mv([
-            '--mkdir',
-            self._brave_rel('chromium_src/A/script.py'),
-            self._brave_rel('chromium_src/B/script.py')
-        ])
-        new_content = (self._brave / 'chromium_src' / 'B' /
-                       'script.py').read_text(encoding='utf-8')
+        cmd_mv(
+            [
+                '--mkdir',
+                self._brave_rel('chromium_src/A/script.py'),
+                self._brave_rel('chromium_src/B/script.py'),
+            ]
+        )
+        new_content = (
+            self._brave / 'chromium_src' / 'B' / 'script.py'
+        ).read_text(encoding='utf-8')
         self.assertEqual(new_content, original)
 
 
@@ -281,16 +322,20 @@ class ReferencesTest(_Base):
         self._commit('other/user.h', '#include "brave/foo/bar.h"\n')
         self._commit('other/user.cc', '#include "brave/foo/bar.h"\n')
 
-        cmd_mv([
-            '--mkdir',
-            self._brave_rel('foo/bar.h'),
-            self._brave_rel('baz/bar.h')
-        ])
+        cmd_mv(
+            [
+                '--mkdir',
+                self._brave_rel('foo/bar.h'),
+                self._brave_rel('baz/bar.h'),
+            ]
+        )
 
-        h_content = (self._brave / 'other' /
-                     'user.h').read_text(encoding='utf-8')
-        cc_content = (self._brave / 'other' /
-                      'user.cc').read_text(encoding='utf-8')
+        h_content = (self._brave / 'other' / 'user.h').read_text(
+            encoding='utf-8'
+        )
+        cc_content = (self._brave / 'other' / 'user.cc').read_text(
+            encoding='utf-8'
+        )
         self.assertIn('#include "brave/baz/bar.h"', h_content)
         self.assertNotIn('#include "brave/foo/bar.h"', h_content)
         self.assertIn('#include "brave/baz/bar.h"', cc_content)
@@ -300,30 +345,37 @@ class ReferencesTest(_Base):
         self._setup_source_file()
         self._commit('other/user.mm', '#import "brave/foo/bar.h"\n')
 
-        cmd_mv([
-            '--mkdir',
-            self._brave_rel('foo/bar.h'),
-            self._brave_rel('baz/bar.h')
-        ])
+        cmd_mv(
+            [
+                '--mkdir',
+                self._brave_rel('foo/bar.h'),
+                self._brave_rel('baz/bar.h'),
+            ]
+        )
 
-        mm_content = (self._brave / 'other' /
-                      'user.mm').read_text(encoding='utf-8')
+        mm_content = (self._brave / 'other' / 'user.mm').read_text(
+            encoding='utf-8'
+        )
         self.assertIn('#import "brave/baz/bar.h"', mm_content)
         self.assertNotIn('#import "brave/foo/bar.h"', mm_content)
 
     def test_comment_reference_updated(self) -> None:
         self._setup_source_file()
-        self._commit('other/user.cc',
-                     '// See brave/foo/bar.h for details\nvoid f() {}\n')
+        self._commit(
+            'other/user.cc', '// See brave/foo/bar.h for details\nvoid f() {}\n'
+        )
 
-        cmd_mv([
-            '--mkdir',
-            self._brave_rel('foo/bar.h'),
-            self._brave_rel('baz/bar.h')
-        ])
+        cmd_mv(
+            [
+                '--mkdir',
+                self._brave_rel('foo/bar.h'),
+                self._brave_rel('baz/bar.h'),
+            ]
+        )
 
-        cc_content = (self._brave / 'other' /
-                      'user.cc').read_text(encoding='utf-8')
+        cc_content = (self._brave / 'other' / 'user.cc').read_text(
+            encoding='utf-8'
+        )
         self.assertIn('brave/baz/bar.h', cc_content)
         self.assertNotIn('brave/foo/bar.h', cc_content)
 
@@ -332,11 +384,13 @@ class ReferencesTest(_Base):
         # BUILD.gn at brave_root — entry uses path relative to brave_root.
         self._commit('BUILD.gn', 'sources = [\n  "foo/bar.h",\n]\n')
 
-        cmd_mv([
-            '--mkdir',
-            self._brave_rel('foo/bar.h'),
-            self._brave_rel('baz/bar.h')
-        ])
+        cmd_mv(
+            [
+                '--mkdir',
+                self._brave_rel('foo/bar.h'),
+                self._brave_rel('baz/bar.h'),
+            ]
+        )
 
         build_content = (self._brave / 'BUILD.gn').read_text(encoding='utf-8')
         self.assertIn('"baz/bar.h"', build_content)
@@ -346,14 +400,17 @@ class ReferencesTest(_Base):
         self._setup_source_file()
         self._commit('other/user.cc', '#include <base/feature_list.h>\n')
 
-        cmd_mv([
-            '--mkdir',
-            self._brave_rel('foo/bar.h'),
-            self._brave_rel('baz/bar.h')
-        ])
+        cmd_mv(
+            [
+                '--mkdir',
+                self._brave_rel('foo/bar.h'),
+                self._brave_rel('baz/bar.h'),
+            ]
+        )
 
-        cc_content = (self._brave / 'other' /
-                      'user.cc').read_text(encoding='utf-8')
+        cc_content = (self._brave / 'other' / 'user.cc').read_text(
+            encoding='utf-8'
+        )
         self.assertIn('#include <base/feature_list.h>', cc_content)
 
     def test_directory_move_rewrites_gn_references(self) -> None:
@@ -366,40 +423,50 @@ class ReferencesTest(_Base):
             '}\n'
             'source_set("test_support") {\n'
             '  public_deps = [ ":api_request_helper" ]\n'
-            '}\n')
-        self._commit('components/api_request_helper/api_request_helper.cc',
-                     '// impl\n')
+            '}\n',
+        )
+        self._commit(
+            'components/api_request_helper/api_request_helper.cc', '// impl\n'
+        )
         # Consumer at an unrelated dir uses a root reference.
         self._commit(
             'browser/BUILD.gn',
-            'deps = [ "//brave/components/api_request_helper:test_support" ]\n'
+            'deps = [ "//brave/components/api_request_helper:test_support" ]\n',
         )
         # Sibling under components/ uses a relative reference.
-        self._commit('components/ai_chat/BUILD.gn',
-                     'deps = [ "../api_request_helper" ]\n')
+        self._commit(
+            'components/ai_chat/BUILD.gn',
+            'deps = [ "../api_request_helper" ]\n',
+        )
 
-        cmd_mv([
-            '--mkdir',
-            self._brave_rel('components/api_request_helper'),
-            self._brave_rel('components/api_test')
-        ])
+        cmd_mv(
+            [
+                '--mkdir',
+                self._brave_rel('components/api_request_helper'),
+                self._brave_rel('components/api_test'),
+            ]
+        )
 
-        browser_content = (self._brave / 'browser' /
-                           'BUILD.gn').read_text(encoding='utf-8')
-        self.assertIn('"//brave/components/api_test:test_support"',
-                      browser_content)
+        browser_content = (self._brave / 'browser' / 'BUILD.gn').read_text(
+            encoding='utf-8'
+        )
+        self.assertIn(
+            '"//brave/components/api_test:test_support"', browser_content
+        )
         self.assertNotIn('api_request_helper', browser_content)
 
-        sibling_content = (self._brave / 'components' / 'ai_chat' /
-                           'BUILD.gn').read_text(encoding='utf-8')
+        sibling_content = (
+            self._brave / 'components' / 'ai_chat' / 'BUILD.gn'
+        ).read_text(encoding='utf-8')
         self.assertIn('"../api_test"', sibling_content)
         self.assertNotIn('api_request_helper', sibling_content)
 
         # The moved BUILD.gn's directory-name target is renamed too — both
         # the declaration and same-file label refs. The `api_request_helper.cc`
         # source-list entry is a stable same-dir reference and must remain.
-        moved_content = (self._brave / 'components' / 'api_test' /
-                         'BUILD.gn').read_text(encoding='utf-8')
+        moved_content = (
+            self._brave / 'components' / 'api_test' / 'BUILD.gn'
+        ).read_text(encoding='utf-8')
         self.assertIn('static_library("api_test")', moved_content)
         self.assertIn(':api_test"', moved_content)
         self.assertNotIn('"api_request_helper"', moved_content)
@@ -419,15 +486,16 @@ class PlasterTest(_Base):
         self._commit('rewrite/A/foo.h.yaml', 'substitutions:\n')
         self._commit('patches/A-foo.h.patch', 'diff --git a/foo\n')
 
-        cmd_mv([
-            '--mkdir',
-            self._brave_rel('rewrite/A/foo.h.yaml'),
-            self._brave_rel('rewrite/B/foo.h.yaml')
-        ])
+        cmd_mv(
+            [
+                '--mkdir',
+                self._brave_rel('rewrite/A/foo.h.yaml'),
+                self._brave_rel('rewrite/B/foo.h.yaml'),
+            ]
+        )
 
         self.assertFalse((self._brave / 'patches' / 'A-foo.h.patch').exists())
-        self.assertTrue(
-            (self._brave / 'rewrite' / 'B' / 'foo.h.yaml').exists())
+        self.assertTrue((self._brave / 'rewrite' / 'B' / 'foo.h.yaml').exists())
 
     def test_patchinfo_deleted_with_patch(self) -> None:
         """Sibling .patchinfo is removed when the patch is deleted."""
@@ -436,11 +504,13 @@ class PlasterTest(_Base):
         patchinfo = self._brave / 'patches' / 'A-foo.h.patchinfo'
         patchinfo.write_text('{}', encoding='utf-8')
 
-        cmd_mv([
-            '--mkdir',
-            self._brave_rel('rewrite/A/foo.h.yaml'),
-            self._brave_rel('rewrite/B/foo.h.yaml')
-        ])
+        cmd_mv(
+            [
+                '--mkdir',
+                self._brave_rel('rewrite/A/foo.h.yaml'),
+                self._brave_rel('rewrite/B/foo.h.yaml'),
+            ]
+        )
 
         self.assertFalse((self._brave / 'patches' / 'A-foo.h.patch').exists())
         self.assertFalse(patchinfo.exists())
@@ -450,14 +520,15 @@ class PlasterTest(_Base):
         self._commit('rewrite/A/foo.h.yaml', 'substitutions:\n')
         # No patches/A-foo.h.patch created.
         with self.assertLogs(level=logging.WARNING):
-            cmd_mv([
-                '--mkdir',
-                self._brave_rel('rewrite/A/foo.h.yaml'),
-                self._brave_rel('rewrite/B/foo.h.yaml')
-            ])
+            cmd_mv(
+                [
+                    '--mkdir',
+                    self._brave_rel('rewrite/A/foo.h.yaml'),
+                    self._brave_rel('rewrite/B/foo.h.yaml'),
+                ]
+            )
         # Command completed; YAML is at new location.
-        self.assertTrue(
-            (self._brave / 'rewrite' / 'B' / 'foo.h.yaml').exists())
+        self.assertTrue((self._brave / 'rewrite' / 'B' / 'foo.h.yaml').exists())
 
     def test_directory_move_handles_all_yamls(self) -> None:
         """Moving a rewrite/ directory moves all YAMLs and deletes patches."""
@@ -470,10 +541,8 @@ class PlasterTest(_Base):
 
         self.assertFalse((self._brave / 'patches' / 'A-foo.h.patch').exists())
         self.assertFalse((self._brave / 'patches' / 'A-bar.h.patch').exists())
-        self.assertTrue(
-            (self._brave / 'rewrite' / 'B' / 'foo.h.yaml').exists())
-        self.assertTrue(
-            (self._brave / 'rewrite' / 'B' / 'bar.h.yaml').exists())
+        self.assertTrue((self._brave / 'rewrite' / 'B' / 'foo.h.yaml').exists())
+        self.assertTrue((self._brave / 'rewrite' / 'B' / 'bar.h.yaml').exists())
 
 
 # ---------------------------------------------------------------------------
@@ -510,8 +579,9 @@ class CwdRelativeTest(_Base):
             text=True,
             check=False,
         )
-        self.assertEqual(result.returncode, 0,
-                         f'git cr mv failed: {result.stderr}')
+        self.assertEqual(
+            result.returncode, 0, f'git cr mv failed: {result.stderr}'
+        )
         self.assertTrue((self._brave / 'baz' / 'bar.h').exists())
         self.assertFalse((self._brave / 'foo' / 'bar.h').exists())
 
@@ -528,10 +598,7 @@ class NoGitTest(_Base):
         """--no-git moves the file without staging the change."""
         self._commit('src.h', '// content\n')
 
-        cmd_mv(
-            ['--no-git',
-             self._brave_rel('src.h'),
-             self._brave_rel('dst.h')])
+        cmd_mv(['--no-git', self._brave_rel('src.h'), self._brave_rel('dst.h')])
 
         self.assertTrue((self._brave / 'dst.h').exists())
         self.assertFalse((self._brave / 'src.h').exists())
@@ -547,11 +614,13 @@ class NoGitTest(_Base):
         patch_file.write_text('dummy\n', encoding='utf-8')
 
         (self._brave / 'rewrite' / 'B').mkdir(parents=True, exist_ok=True)
-        cmd_mv([
-            '--no-git',
-            self._brave_rel('rewrite/A/foo.h.yaml'),
-            self._brave_rel('rewrite/B/foo.h.yaml')
-        ])
+        cmd_mv(
+            [
+                '--no-git',
+                self._brave_rel('rewrite/A/foo.h.yaml'),
+                self._brave_rel('rewrite/B/foo.h.yaml'),
+            ]
+        )
 
         self.assertFalse(patch_file.exists())
 
@@ -598,10 +667,10 @@ class SubdirPatchDeletionTest(_Base):
             text=True,
             check=False,
         )
-        self.assertEqual(result.returncode, 0,
-                         f'git cr mv failed: {result.stderr}')
-        self.assertTrue(
-            (self._brave / 'rewrite' / 'B' / 'foo.h.yaml').exists())
+        self.assertEqual(
+            result.returncode, 0, f'git cr mv failed: {result.stderr}'
+        )
+        self.assertTrue((self._brave / 'rewrite' / 'B' / 'foo.h.yaml').exists())
         self.assertFalse((self._brave / 'patches' / 'A-foo.h.patch').exists())
 
 
@@ -613,11 +682,13 @@ class SubdirPatchDeletionTest(_Base):
 class PlasterApplyTest(_Base):
     """plaster.apply() is called after each YAML move by default."""
 
-    _SUBST_YAML = ('substitutions:\n'
-                   '  - description: Replace old_func\n'
-                   '    regex:\n'
-                   '      pattern: old_func\n'
-                   '      replace: new_func\n')
+    _SUBST_YAML = (
+        'substitutions:\n'
+        '  - description: Replace old_func\n'
+        '    regex:\n'
+        '      pattern: old_func\n'
+        '      replace: new_func\n'
+    )
 
     def _commit_chromium(self, rel: str, content: str) -> None:
         self._repo.write_and_stage_file(rel, content, self._repo.chromium)
@@ -630,11 +701,13 @@ class PlasterApplyTest(_Base):
         self._commit('rewrite/A/foo.cc.yaml', self._SUBST_YAML)
         self._commit('patches/A-foo.cc.patch', 'old patch\n')
 
-        cmd_mv([
-            '--mkdir',
-            self._brave_rel('rewrite/A/foo.cc.yaml'),
-            self._brave_rel('rewrite/B/foo.cc.yaml')
-        ])
+        cmd_mv(
+            [
+                '--mkdir',
+                self._brave_rel('rewrite/A/foo.cc.yaml'),
+                self._brave_rel('rewrite/B/foo.cc.yaml'),
+            ]
+        )
 
         old_patch = self._brave / 'patches' / 'A-foo.cc.patch'
         new_patch = self._brave / 'patches' / 'B-foo.cc.patch'
@@ -654,15 +727,18 @@ class PlasterApplyTest(_Base):
         self._commit('patches/A-foo.cc.patch', 'old patch\n')
 
         with self.assertLogs(level=logging.WARNING) as cm:
-            cmd_mv([
-                '--mkdir',
-                self._brave_rel('rewrite/A/foo.cc.yaml'),
-                self._brave_rel('rewrite/B/foo.cc.yaml')
-            ])
+            cmd_mv(
+                [
+                    '--mkdir',
+                    self._brave_rel('rewrite/A/foo.cc.yaml'),
+                    self._brave_rel('rewrite/B/foo.cc.yaml'),
+                ]
+            )
 
         self.assertTrue(any('plaster failed' in msg for msg in cm.output))
         self.assertTrue(
-            (self._brave / 'rewrite' / 'B' / 'foo.cc.yaml').exists())
+            (self._brave / 'rewrite' / 'B' / 'foo.cc.yaml').exists()
+        )
         self.assertFalse((self._brave / 'patches' / 'B-foo.cc.patch').exists())
 
     def test_no_run_plaster_skips_patch_creation(self) -> None:
@@ -671,11 +747,14 @@ class PlasterApplyTest(_Base):
         self._commit('rewrite/A/foo.cc.yaml', self._SUBST_YAML)
         self._commit('patches/A-foo.cc.patch', 'old patch\n')
 
-        cmd_mv([
-            '--mkdir', '--no-run-plaster',
-            self._brave_rel('rewrite/A/foo.cc.yaml'),
-            self._brave_rel('rewrite/B/foo.cc.yaml')
-        ])
+        cmd_mv(
+            [
+                '--mkdir',
+                '--no-run-plaster',
+                self._brave_rel('rewrite/A/foo.cc.yaml'),
+                self._brave_rel('rewrite/B/foo.cc.yaml'),
+            ]
+        )
 
         self.assertFalse((self._brave / 'patches' / 'B-foo.cc.patch').exists())
 
@@ -690,20 +769,25 @@ class FormatTest(_Base):
 
     def test_format_called_by_default(self) -> None:
         self._commit('foo/bar.h', '// header\n')
-        cmd_mv([
-            '--mkdir',
-            self._brave_rel('foo/bar.h'),
-            self._brave_rel('baz/bar.h')
-        ])
+        cmd_mv(
+            [
+                '--mkdir',
+                self._brave_rel('foo/bar.h'),
+                self._brave_rel('baz/bar.h'),
+            ]
+        )
         self._format_mock.assert_called_once()
 
     def test_format_skipped_with_no_format_flag(self) -> None:
         self._commit('foo/bar.h', '// header\n')
-        cmd_mv([
-            '--mkdir', '--no-format',
-            self._brave_rel('foo/bar.h'),
-            self._brave_rel('baz/bar.h')
-        ])
+        cmd_mv(
+            [
+                '--mkdir',
+                '--no-format',
+                self._brave_rel('foo/bar.h'),
+                self._brave_rel('baz/bar.h'),
+            ]
+        )
         self._format_mock.assert_not_called()
 
 

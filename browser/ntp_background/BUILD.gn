@@ -29,7 +29,6 @@ source_set("ntp_background") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/p3a",
     "//chrome/browser:browser_process",
-    "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/infobars",
     "//chrome/browser/profiles:profile",
@@ -53,6 +52,10 @@ source_set("ntp_background") {
     ]
   }
 
+  if (!is_android) {
+    deps += [ "//brave/browser/infobars" ]
+  }
+
   if (enable_custom_background) {
     sources += [
       "brave_ntp_custom_background_service_delegate.cc",
@@ -69,6 +72,7 @@ source_set("ntp_background") {
     deps += [
       "//chrome/browser/image_fetcher",
       "//chrome/browser/themes",
+      "//chrome/common",
       "//services/data_decoder/public/cpp",
     ]
   }
@@ -89,6 +93,7 @@ source_set("unit_tests") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/p3a",
     "//chrome/test:test_support",
+    "//chrome/test/base:chrome_render_view_host_test_harness",
     "//components/infobars/content",
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",
@@ -109,6 +114,7 @@ source_set("unit_tests") {
     deps += [
       "//brave/components/constants",
       "//chrome/test:test_support",
+      "//chrome/test/base:testing_browser_process",
     ]
   }
 }
@@ -121,19 +127,19 @@ if (enable_custom_background) {
 
     sources = [
       "custom_background_file_manager_browsertest.cc",
-      "ntp_sponsored_rich_media_browsertest.cc",
-      "ntp_sponsored_rich_media_with_csp_violation_browsertest.cc",
+      "ntp_dynamic_new_tab_takeover_browsertest.cc",
+      "ntp_dynamic_new_tab_takeover_with_csp_violation_browsertest.cc",
     ]
 
     deps = [
       ":ntp_background",
       "//base",
       "//base/test:test_support",
+      "//brave/browser:browser_process",
       "//brave/components/constants",
       "//brave/components/ntp_background_images/browser",
       "//brave/components/ntp_background_images/browser:test_support",
       "//chrome/browser/profiles:profile",
-      "//chrome/browser/ui",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
       "//content/test:test_support",

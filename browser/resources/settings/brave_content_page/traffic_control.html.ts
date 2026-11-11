@@ -5,7 +5,7 @@
 
 import '//resources/cr_components/localized_link/localized_link.js'
 
-import { html, nothing } from 'chrome://resources/lit/v3_0/lit.rollup.js'
+import { html, nothing, repeat } from 'chrome://resources/lit/v3_0/lit.rollup.js'
 
 import { TrafficControlStrings } from '../brave_generated_resources_webui_strings.js'
 import { SettingsBraveContentTrafficControlElement } from './traffic_control.js'
@@ -43,11 +43,22 @@ export function getHtml(this: SettingsBraveContentTrafficControlElement) {
             ${this.rulesList_?.length
               ? html`
                   <div class="cr-row continuation">
-                    <div class="list">
-                      ${this.rulesList_.map(
+                    <div
+                      class="list"
+                      @dragenter="${this.onListDragenter_}"
+                      @dragover="${this.onListDragover_}"
+                      @drop="${this.onListDrop_}"
+                    >
+                      ${repeat(
+                        this.dragReorderedItems_(this.rulesList_),
+                        (item) => item.id,
                         (item) => html`
-                          <div class="rule ${item.enabled ? '' : 'disabled'}">
+                          <div
+                            class="rule ${item.enabled ? '' : 'disabled'} ${this.dragRowClass_(item.id)}"
+                            data-drag-id="${item.id}"
+                          >
                             <div class="rule-summary">
+                              ${this.dragHandleTemplate_(item.id)}
                               <div class="filter-source">
                                 <site-favicon
                                   .url="${this.firstUrlFilterOf_(item)}"

@@ -5,8 +5,8 @@
 
 import styled from 'styled-components'
 import { WalletButton, Text } from '../../../../../components/shared/style'
-import * as leo from '@brave/leo/tokens/css/variables'
-import Icon from '@brave/leo/react/icon'
+import * as leo from '@brave/nala/tokens/css/variables'
+import Icon from '@brave/nala/react/icon'
 import Ipfs from '../../../../../assets/svg-icons/nft-ipfs/ipfs-color.svg'
 
 export const NFTWrapper = styled.div`

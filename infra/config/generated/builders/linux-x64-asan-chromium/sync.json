@@ -1,5 +1,4 @@
 {
-  "gclient_overrides": {},
-  "target_cpu": "x64",
-  "target_os": "linux"
+  "target_cpu": [],
+  "target_os": []
 }

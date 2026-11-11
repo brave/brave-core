@@ -20,5 +20,8 @@ BASE_FEATURE(kBravePictureInPictureForYouTubeVideos,
 BASE_FEATURE(kBraveYoutubeFullscreenSettingsWorkaround,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+BASE_FEATURE(kBraveYoutubeFullscreenVideoFitWorkaround,
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace features
 }  // namespace preferences

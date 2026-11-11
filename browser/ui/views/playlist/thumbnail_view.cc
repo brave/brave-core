@@ -9,7 +9,9 @@
 
 #include "base/auto_reset.h"
 #include "brave/grit/brave_theme_resources.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/color/color_provider.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/skia_paint_util.h"
@@ -30,12 +32,14 @@ class DefaultThumbnailBackground : public views::Background {
   // views::Background:
   void Paint(gfx::Canvas* canvas, views::View* view) const override {
     const auto& bounds = view->GetContentsBounds();
+    const ui::ColorProvider* color_provider = view->GetColorProvider();
     cc::PaintFlags flags;
     flags.setBlendMode(SkBlendMode::kSrcOver);
-    flags.setShader(
-        gfx::CreateGradientShader(bounds.bottom_right(), bounds.origin(),
-                                  /*start=*/SkColorSetRGB(0x32, 0x2F, 0xB4),
-                                  /*end*/ SkColorSetRGB(0x38, 0x35, 0xCA)));
+    // Fixed brand gradient for the placeholder thumbnail.
+    flags.setShader(gfx::CreateGradientShader(
+        bounds.bottom_right(), bounds.origin(),
+        /*start=*/color_provider->GetColor(nala::kColorPrimitiveBlurple35),
+        /*end=*/color_provider->GetColor(nala::kColorPrimitiveBlurple40)));
 
     canvas->DrawRect(bounds, flags);
   }

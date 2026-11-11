@@ -20,7 +20,7 @@ export function SuggestedQuestion({
   const context = useUntrustedConversationContext()
   return (
     <SuggestionButton
-      onClick={() => context.conversationHandler.submitSuggestion(question)}
+      onClick={() => context.userActions.submitSuggestion(question)}
       className={styles.questionButton}
     >
       <span

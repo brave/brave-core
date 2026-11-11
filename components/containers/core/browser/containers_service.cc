@@ -73,8 +73,9 @@ void ContainersService::MarkContainerUsed(std::string_view container_id) {
   SetLocallyUsedContainerToPrefs(container, *prefs_);
 }
 
-mojom::ContainerPtr ContainersService::CreateAndPersistTemporaryContainer() {
-  auto container = CreateTemporaryContainer();
+mojom::ContainerPtr ContainersService::CreateAndPersistTemporaryContainer(
+    std::optional<std::string_view> name) {
+  auto container = CreateTemporaryContainer(name);
   SetLocallyUsedContainerToPrefs(container, *prefs_);
   return container;
 }
@@ -143,6 +144,15 @@ std::vector<std::string> ContainersService::GetUsedContainerIds() const {
   return used_ids;
 }
 
+void ContainersService::SetContainerConfined(std::string_view id) {
+  CHECK(!id.empty());
+  confined_container_ids_.emplace(id);
+}
+
+bool ContainersService::IsContainerConfined(std::string_view id) const {
+  return confined_container_ids_.contains(id);
+}
+
 bool ContainersService::ShouldShowContainerControls() const {
   return prefs_->GetBoolean(prefs::kContainersEnabled);
 }
@@ -151,8 +161,13 @@ void ContainersService::ScheduleOrphanedContainersCleanupForTesting() {
   ScheduleOrphanedContainersCleanup();
 }
 
+mojom::NewTabTargetPtr ContainersService::GetNewTabTarget() const {
+  return GetNewTabTargetFromPrefs(*prefs_);
+}
+
 void ContainersService::OnSyncedContainersChanged() {
   RefreshLocallyUsedContainersFromSyncedList();
+  ClearNewTabTargetIfContainerRemoved();
   observers_.Notify(&ContainersServiceObserver::OnContainersListChanged);
 }
 
@@ -167,6 +182,15 @@ void ContainersService::RefreshLocallyUsedContainersFromSyncedList() {
       // removed with a separate cleanup logic later.
     }
   }
+}
+
+void ContainersService::ClearNewTabTargetIfContainerRemoved() {
+  auto target = GetNewTabTargetFromPrefs(*prefs_);
+  if (!target || !target->is_container_id() ||
+      GetContainerFromPrefs(*prefs_, target->get_container_id())) {
+    return;
+  }
+  SetNewTabTargetToPrefs(nullptr, *prefs_);
 }
 
 std::optional<std::string>
@@ -265,6 +289,8 @@ void ContainersService::OnContainerStorageDeleted(const std::string& id,
                  << " will retry on next launch";
     return;
   }
+
+  confined_container_ids_.erase(id);
 
   // If the container did not reappear in the synced containers list, remove the
   // used-container snapshot from the prefs to forget about it forever.

@@ -21,7 +21,6 @@
 #include "brave/components/history_embeddings/test/fake_history_embeddings_search.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -78,9 +77,11 @@ class OpenTabSearchBrowserTest : public InProcessBrowserTest {
     return https_server_.GetURL(host, path);
   }
 
-  void AppendTab(Browser* target, const GURL& url, const std::string& title) {
+  void AppendTab(BrowserWindowInterface* target,
+                 const GURL& url,
+                 const std::string& title) {
     ui_test_utils::NavigateToURLWithDisposition(
-        target, url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+        target, url, WindowOpenDisposition::kNewForegroundTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     content::WebContents* contents =
         target->tab_strip_model()->GetActiveWebContents();
@@ -89,7 +90,7 @@ class OpenTabSearchBrowserTest : public InProcessBrowserTest {
         base::UTF8ToUTF16(title));
   }
 
-  int TabIdAt(Browser* target, int index) {
+  int TabIdAt(BrowserWindowInterface* target, int index) {
     return target->tab_strip_model()
         ->GetTabAtIndex(index)
         ->GetHandle()
@@ -217,7 +218,7 @@ IN_PROC_BROWSER_TEST_F(OpenTabSearchBrowserTest, ExcludesOtherProfileTabs) {
   const GURL foo_url = GetURL("foo.com", "/empty.html");
   const GURL bar_url = GetURL("bar.com", "/empty.html");
   AppendTab(browser(), foo_url, "Foo");
-  Browser* incognito = CreateIncognitoBrowser();
+  BrowserWindowInterface* incognito = CreateIncognitoBrowser();
   AppendTab(incognito, bar_url, "Bar (incognito)");
 
   const int foo_tab_id = TabIdAt(browser(), 1);

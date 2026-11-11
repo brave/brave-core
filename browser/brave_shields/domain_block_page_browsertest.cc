@@ -13,10 +13,9 @@
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
-#include "brave/components/constants/pref_names.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
@@ -32,6 +31,7 @@ using brave_shields::ControlType;
 using brave_shields::SetBraveShieldsEnabled;
 using brave_shields::SetCosmeticFilteringControlType;
 using brave_shields::features::kBraveDomainBlock;
+using brave_shields::prefs::kAdsBlocked;
 
 class DomainBlockTestBase : public AdBlockServiceTest {
  public:
@@ -213,7 +213,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedDoesNotAffectNewTabs) {
   // clicking "Proceed anyway" in the other tab is tab-specific.
   ui_test_utils::AllBrowserTabAddedWaiter new_tab;
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   new_tab.Wait();
   ASSERT_TRUE(IsShowingInterstitial());
@@ -252,7 +252,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, DontWarnAgainAndProceed) {
   // this domain and are now respecting that choice.
   ui_test_utils::AllBrowserTabAddedWaiter new_tab;
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   new_tab.Wait();
   ASSERT_FALSE(IsShowingInterstitial());
@@ -291,7 +291,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, NoFetch) {
   BlockDomainByURL(url);
   ui_test_utils::AllBrowserTabAddedWaiter new_tab;
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   new_tab.Wait();
 

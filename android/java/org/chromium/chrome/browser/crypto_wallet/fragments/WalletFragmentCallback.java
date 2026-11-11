@@ -10,10 +10,16 @@ import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 
 /**
- * Contract that exposes the shared {@link WalletModel} to wallet fragments so they can access
- * services and state managed by the hosting activity {@link BraveWalletDAppsActivity}.
+ * Contract between a DApps panel, {@link BraveWalletDAppsActivity}, and the fragment it hosts. The
+ * fragment gets the shared {@link WalletModel} from it and tells it what to show next.
  */
 @NullMarked
 public interface WalletFragmentCallback {
     WalletModel getWalletModel();
+
+    /** Replaces the fragment on screen with the one for {@code activityType}. */
+    void showPanel(final BraveWalletDAppsActivity.ActivityType activityType);
+
+    /** Closes the panel, reporting that every request it was showing has been handled. */
+    void onAllRequestsHandled();
 }

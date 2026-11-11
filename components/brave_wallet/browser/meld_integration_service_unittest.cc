@@ -5,48 +5,38 @@
 
 #include "brave/components/brave_wallet/browser/meld_integration_service.h"
 
-#include <algorithm>
-#include <cstddef>
 #include <memory>
 #include <optional>
 #include <string>
 #include <string_view>
+#include <tuple>
 #include <utility>
 #include <vector>
 
-#include "base/functional/bind.h"
-#include "base/functional/callback_forward.h"
-#include "base/functional/callback_helpers.h"
+#include "base/containers/flat_map.h"
 #include "base/test/bind.h"
-#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/common/meld_integration.mojom-forward.h"
 #include "brave/components/brave_wallet/common/meld_integration.mojom.h"
 #include "components/grit/brave_components_strings.h"
+#include "net/base/url_search_params.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/public/mojom/url_loader_factory.mojom.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
 
-void CheckOptString(const std::string* val,
-                    const std::optional<std::string>& val_to_check) {
-  if (val_to_check) {
-    EXPECT_TRUE(val);
-    EXPECT_EQ(val_to_check, *val);
-  } else {
-    EXPECT_FALSE(val);
-  }
-}
-void CheckString(const std::string* val, const std::string& val_to_check) {
-  EXPECT_TRUE(val);
-  EXPECT_EQ(val_to_check, *val);
-}
+using base::test::IsJson;
+using base::test::TestFuture;
+using testing::ElementsAre;
+using testing::Pair;
+
 }  // namespace
 
 namespace brave_wallet {
@@ -60,68 +50,56 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
 
   ~MeldIntegrationServiceUnitTest() override = default;
 
-  using OnRequestPayloadCallback =
-      base::RepeatingCallback<void(const std::string& request_payload)>;
+  using Errors = std::optional<std::vector<std::string>>;
+  using ServiceProviders =
+      std::optional<std::vector<mojom::MeldServiceProviderPtr>>;
+  using CryptoQuotes = std::optional<std::vector<mojom::MeldCryptoQuotePtr>>;
+  using PaymentMethods =
+      std::optional<std::vector<mojom::MeldPaymentMethodPtr>>;
+  using FiatCurrencies = std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>;
+  using CryptoCurrencies =
+      std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>;
+  using Countries = std::optional<std::vector<mojom::MeldCountryPtr>>;
+  using CryptoWidget = mojom::MeldCryptoWidgetPtr;
 
   void SetInterceptor(
       const std::string& content,
       const net::HttpStatusCode http_status,
-      OnRequestPayloadCallback* request_payload_callback = nullptr) {
+      std::optional<std::string> expected_request = std::nullopt) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&, content, http_status,
-         request_payload_callback](const network::ResourceRequest& request) {
+         expected_request = std::move(expected_request)](
+            const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
           auto header =
               request.headers.GetHeader(brave_wallet::kMeldRpcVersionHeader);
           EXPECT_TRUE(header);
           EXPECT_FALSE(header->empty());
 
-          if (request_payload_callback) {
-            std::string request_string(request.request_body->elements()
-                                           ->at(0)
-                                           .As<network::DataElementBytes>()
-                                           .AsStringPiece());
-            request_payload_callback->Run(request_string);
+          if (expected_request) {
+            EXPECT_THAT(request.request_body->elements()
+                            ->at(0)
+                            .As<network::DataElementBytes>()
+                            .AsStringPiece(),
+                        IsJson(*expected_request));
           }
           url_loader_factory_.AddResponse(request.url.spec(), content,
                                           http_status);
         }));
   }
 
-  void TestGetServiceProvider(
+  std::tuple<ServiceProviders, Errors> TestGetServiceProvider(
       const std::string& content,
-      const std::string& countries,
-      const std::string& fiat_currencies,
-      const std::string& crypto_currencies,
-      const std::string& crypto_chains,
-      const std::string& service_providers,
-      const std::string& payment_method_types,
-      const std::string& statuses,
-      MeldIntegrationService::GetServiceProvidersCallback callback,
       const net::HttpStatusCode http_status = net::HTTP_OK) {
     SetInterceptor(content, http_status);
 
-    base::RunLoop run_loop;
-    base::MockCallback<MeldIntegrationService::GetServiceProvidersCallback>
-        mock_callback;
-    EXPECT_CALL(mock_callback, Run)
-        .Times(1)
-        .WillRepeatedly(
-            [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
-                const std::optional<std::vector<std::string>>& errors) {
-              std::move(callback).Run(std::move(sps), errors);
-              run_loop.Quit();
-            });
-    auto filter = mojom::MeldFilter::New(
-        countries, fiat_currencies, crypto_currencies, crypto_chains,
-        service_providers, payment_method_types, statuses);
-
-    meld_integration_service_->GetServiceProviders(std::move(filter),
-                                                   mock_callback.Get());
-    run_loop.Run();
+    TestFuture<ServiceProviders, Errors> future;
+    meld_integration_service_->GetServiceProviders(
+        future.GetCallback<ServiceProviders, const Errors&>());
+    return future.Take();
   }
 
-  void TestGetCryptoQuotes(
+  std::tuple<CryptoQuotes, Errors> TestGetCryptoQuotes(
       const std::string& content,
       const std::string& country,
       const std::string& from_asset,
@@ -129,516 +107,107 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
       const double source_amount,
       const std::optional<std::string>& account,
       const std::optional<std::string>& payment_method,
-      MeldIntegrationService::GetCryptoQuotesCallback callback,
+      const std::string& expected_request,
       const net::HttpStatusCode http_status = net::HTTP_OK) {
-    auto request_payload_check_callback = base::BindRepeating(
-        [](const std::string& country, const std::string& from_asset,
-           const std::string& to_asset, const double source_amount,
-           const std::optional<std::string>& account,
-           const std::optional<std::string>& payment_method,
-           const std::string& request_payload) {
-          auto request_payload_value = base::test::ParseJson(request_payload);
-          EXPECT_TRUE(request_payload_value.is_dict());
-          auto& request_payload_dict = request_payload_value.GetDict();
+    SetInterceptor(content, http_status, expected_request);
 
-          CheckString(request_payload_dict.FindString("countryCode"), country);
-          CheckString(request_payload_dict.FindString("sourceCurrencyCode"),
-                      from_asset);
-          CheckString(
-              request_payload_dict.FindString("destinationCurrencyCode"),
-              to_asset);
-          EXPECT_EQ(request_payload_dict.FindDouble("sourceAmount"),
-                    source_amount);
-
-          CheckOptString(request_payload_dict.FindString("walletAddress"),
-                         account);
-          CheckOptString(request_payload_dict.FindString("paymentMethodType"),
-                         payment_method);
-        },
-        country, from_asset, to_asset, source_amount, account, payment_method);
-
-    SetInterceptor(content, http_status, &request_payload_check_callback);
-
-    base::RunLoop run_loop;
-    base::MockCallback<MeldIntegrationService::GetCryptoQuotesCallback>
-        mock_callback;
-    EXPECT_CALL(mock_callback, Run)
-        .Times(1)
-        .WillRepeatedly(
-            [&](std::optional<std::vector<mojom::MeldCryptoQuotePtr>> quotes,
-                const std::optional<std::vector<std::string>>& errors) {
-              std::move(callback).Run(std::move(quotes), errors);
-              run_loop.Quit();
-            });
-
+    TestFuture<CryptoQuotes, Errors> future;
     meld_integration_service_->GetCryptoQuotes(
         country, from_asset, to_asset, source_amount, account, payment_method,
-        mock_callback.Get());
-    run_loop.Run();
+        future.GetCallback<CryptoQuotes, const Errors&>());
+    return future.Take();
   }
 
-  void TestGetPaymentMethods(
+  std::tuple<PaymentMethods, Errors> TestGetPaymentMethods(
       const std::string& content,
-      const std::string& countries,
-      const std::string& fiat_currencies,
-      const std::string& crypto_currencies,
-      const std::string& crypto_chains,
-      const std::string& service_providers,
-      const std::string& payment_method_types,
-      const std::string& statuses,
-      MeldIntegrationService::GetPaymentMethodsCallback callback,
-      const net::HttpStatusCode http_status = net::HTTP_OK) {
-    SetInterceptor(content, http_status);
-
-    base::RunLoop run_loop;
-    base::MockCallback<MeldIntegrationService::GetPaymentMethodsCallback>
-        mock_callback;
-    EXPECT_CALL(mock_callback, Run)
-        .Times(1)
-        .WillRepeatedly(
-            [&](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
-                    payment_methods,
-                const std::optional<std::vector<std::string>>& errors) {
-              std::move(callback).Run(std::move(payment_methods), errors);
-              run_loop.Quit();
-            });
-
-    auto filter = mojom::MeldFilter::New(
-        countries, fiat_currencies, crypto_currencies, crypto_chains,
-        service_providers, payment_method_types, statuses);
-
-    meld_integration_service_->GetPaymentMethods(std::move(filter),
-                                                 mock_callback.Get());
-    run_loop.Run();
-  }
-
-  void TestGetFiatCurrencies(
-      const std::string& content,
-      const std::string& countries,
-      const std::string& fiat_currencies,
-      const std::string& crypto_currencies,
-      const std::string& crypto_chains,
-      const std::string& service_providers,
-      const std::string& payment_method_types,
-      const std::string& statuses,
-      MeldIntegrationService::GetFiatCurrenciesCallback callback,
-      const net::HttpStatusCode http_status = net::HTTP_OK) {
-    SetInterceptor(content, http_status);
-
-    base::RunLoop run_loop;
-    base::MockCallback<MeldIntegrationService::GetFiatCurrenciesCallback>
-        mock_callback;
-    EXPECT_CALL(mock_callback, Run)
-        .Times(1)
-        .WillRepeatedly(
-            [&](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
-                    fiat_currencies,
-                const std::optional<std::vector<std::string>>& errors) {
-              std::move(callback).Run(std::move(fiat_currencies), errors);
-              run_loop.Quit();
-            });
-    auto filter = mojom::MeldFilter::New(
-        countries, fiat_currencies, crypto_currencies, crypto_chains,
-        service_providers, payment_method_types, statuses);
-
-    meld_integration_service_->GetFiatCurrencies(std::move(filter),
-                                                 mock_callback.Get());
-    run_loop.Run();
-  }
-
-  void TestGetCryptoCurrencies(
-      const std::string& content,
-      const std::string& countries,
-      const std::string& fiat_currencies,
-      const std::string& crypto_currencies,
-      const std::string& crypto_chains,
-      const std::string& service_providers,
-      const std::string& payment_method_types,
-      const std::string& statuses,
-      MeldIntegrationService::GetCryptoCurrenciesCallback callback,
-      const net::HttpStatusCode http_status = net::HTTP_OK) {
-    SetInterceptor(content, http_status);
-
-    base::RunLoop run_loop;
-    base::MockCallback<MeldIntegrationService::GetCryptoCurrenciesCallback>
-        mock_callback;
-    EXPECT_CALL(mock_callback, Run)
-        .Times(1)
-        .WillRepeatedly(
-            [&](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
-                    crypto_currencies,
-                const std::optional<std::vector<std::string>>& errors) {
-              std::move(callback).Run(std::move(crypto_currencies), errors);
-              run_loop.Quit();
-            });
-    auto filter = mojom::MeldFilter::New(
-        countries, fiat_currencies, crypto_currencies, crypto_chains,
-        service_providers, payment_method_types, statuses);
-    meld_integration_service_->GetCryptoCurrencies(std::move(filter),
-                                                   mock_callback.Get());
-    run_loop.Run();
-  }
-
-  void TestGetCountries(const std::string& content,
-                        const std::string& countries,
-                        const std::string& fiat_currencies,
-                        const std::string& crypto_currencies,
-                        const std::string& crypto_chains,
-                        const std::string& service_providers,
-                        const std::string& payment_method_types,
-                        const std::string& statuses,
-                        MeldIntegrationService::GetCountriesCallback callback,
-                        const net::HttpStatusCode http_status = net::HTTP_OK) {
-    SetInterceptor(content, http_status);
-
-    base::RunLoop run_loop;
-    base::MockCallback<MeldIntegrationService::GetCountriesCallback>
-        mock_callback;
-    EXPECT_CALL(mock_callback, Run)
-        .Times(1)
-        .WillRepeatedly(
-            [&](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
-                const std::optional<std::vector<std::string>>& errors) {
-              std::move(callback).Run(std::move(countries), errors);
-              run_loop.Quit();
-            });
-    auto filter = mojom::MeldFilter::New(
-        countries, fiat_currencies, crypto_currencies, crypto_chains,
-        service_providers, payment_method_types, statuses);
-    meld_integration_service_->GetCountries(std::move(filter),
-                                            mock_callback.Get());
-    run_loop.Run();
-  }
-
-  void TestCryptoBuyWidgetCreate(
-      const std::string& content,
-      const std::string& country_code,
-      const std::string& destination_currency_code,
-      std::optional<std::vector<std::string>> lock_fields,
-      const std::optional<std::string>& payment_method_type,
-      const std::optional<std::string>& redirect_url,
-      const std::string& service_provider,
-      const std::string& source_amount,
+      const std::string& country,
       const std::string& source_currency_code,
-      const std::string& wallet_address,
-      const std::optional<std::string>& wallet_tag,
-      const std::optional<std::string>& customer_object_email,
-      const std::optional<std::string>& customer_id,
-      const std::optional<std::string>& external_customer_id,
-      const std::optional<std::string>& external_session_id,
-      MeldIntegrationService::CryptoBuyWidgetCreateCallback callback,
-      const net::HttpStatusCode http_status = net::HTTP_OK,
-      const bool is_session_data_null = false) {
-    mojom::CryptoBuySessionDataPtr session_data;
-    if (!is_session_data_null) {
-      session_data = mojom::CryptoBuySessionData::New(
-          country_code, destination_currency_code, lock_fields,
-          payment_method_type, redirect_url, service_provider, source_amount,
-          source_currency_code, wallet_address, wallet_tag);
-    }
+      const net::HttpStatusCode http_status = net::HTTP_OK) {
+    SetInterceptor(content, http_status);
 
-    mojom::CryptoWidgetCustomerDataPtr customer_data;
-    if (customer_object_email || customer_id || external_customer_id ||
-        external_session_id) {
-      customer_data = mojom::CryptoWidgetCustomerData::New(
-          customer_object_email
-              ? mojom::CustomerObject::New(customer_object_email.value())
-              : nullptr,
-          customer_id, external_customer_id, external_session_id);
-    }
+    TestFuture<PaymentMethods, Errors> future;
+    meld_integration_service_->GetPaymentMethods(
+        country, source_currency_code,
+        future.GetCallback<PaymentMethods, const Errors&>());
+    return future.Take();
+  }
 
-    auto request_payload_check_callback = base::BindRepeating(
-        [](const std::optional<std::string>& customer_id,
-           const std::optional<std::string>& external_customer_id,
-           const std::optional<std::string>& external_session_id,
-           const std::string& country_code,
-           const std::string& destination_currency_code,
-           const std::optional<std::string>& payment_method_type,
-           const std::optional<std::string>& redirect_url,
-           const std::string& service_provider,
-           const std::string& source_amount,
-           const std::string& source_currency_code,
-           const std::string& wallet_address,
-           const std::optional<std::string>& wallet_tag,
-           const std::string& request_payload) {
-          auto request_payload_value = base::test::ParseJson(request_payload);
-          EXPECT_TRUE(request_payload_value.is_dict());
-          auto& request_payload_dict = request_payload_value.GetDict();
+  std::tuple<FiatCurrencies, Errors> TestGetFiatCurrencies(
+      const std::string& content,
+      const net::HttpStatusCode http_status = net::HTTP_OK) {
+    SetInterceptor(content, http_status);
 
-          CheckString(request_payload_dict.FindString("sessionType"), "BUY");
+    TestFuture<FiatCurrencies, Errors> future;
+    meld_integration_service_->GetFiatCurrencies(
+        future.GetCallback<FiatCurrencies, const Errors&>());
+    return future.Take();
+  }
 
-          CheckOptString(request_payload_dict.FindString("customerId"),
-                         customer_id);
-          CheckOptString(request_payload_dict.FindString("externalCustomerId"),
-                         external_customer_id);
-          CheckOptString(request_payload_dict.FindString("externalSessionId"),
-                         external_session_id);
+  std::tuple<CryptoCurrencies, Errors> TestGetCryptoCurrencies(
+      const std::string& content,
+      const net::HttpStatusCode http_status = net::HTTP_OK) {
+    SetInterceptor(content, http_status);
 
-          auto* session_data_dict =
-              request_payload_dict.FindDict("sessionData");
-          EXPECT_TRUE(session_data_dict);
-          CheckString(session_data_dict->FindString("countryCode"),
-                      country_code);
-          CheckString(session_data_dict->FindString("destinationCurrencyCode"),
-                      destination_currency_code);
-          CheckOptString(session_data_dict->FindString("paymentMethodType"),
-                         payment_method_type);
-          CheckOptString(session_data_dict->FindString("redirectUrl"),
-                         redirect_url);
-          CheckString(session_data_dict->FindString("serviceProvider"),
-                      service_provider);
-          CheckString(session_data_dict->FindString("sourceAmount"),
-                      source_amount);
-          CheckString(session_data_dict->FindString("sourceCurrencyCode"),
-                      source_currency_code);
-          CheckString(session_data_dict->FindString("walletAddress"),
-                      wallet_address);
-          CheckOptString(session_data_dict->FindString("walletTag"),
-                         wallet_tag);
-        },
-        customer_id, external_customer_id, external_session_id, country_code,
-        destination_currency_code, payment_method_type, redirect_url,
-        service_provider, source_amount, source_currency_code, wallet_address,
-        wallet_tag);
+    TestFuture<CryptoCurrencies, Errors> future;
+    meld_integration_service_->GetCryptoCurrencies(
+        future.GetCallback<CryptoCurrencies, const Errors&>());
+    return future.Take();
+  }
 
-    SetInterceptor(content, http_status, &request_payload_check_callback);
+  std::tuple<Countries, Errors> TestGetCountries(
+      const std::string& content,
+      const net::HttpStatusCode http_status = net::HTTP_OK) {
+    SetInterceptor(content, http_status);
 
-    base::RunLoop run_loop;
-    base::MockCallback<MeldIntegrationService::CryptoBuyWidgetCreateCallback>
-        mock_callback;
-    EXPECT_CALL(mock_callback, Run)
-        .Times(1)
-        .WillRepeatedly(
-            [&](mojom::MeldCryptoWidgetPtr crypto_widget,
-                const std::optional<std::vector<std::string>>& errors) {
-              std::move(callback).Run(std::move(crypto_widget), errors);
-              run_loop.Quit();
-            });
+    TestFuture<Countries, Errors> future;
+    meld_integration_service_->GetCountries(
+        future.GetCallback<Countries, const Errors&>());
+    return future.Take();
+  }
+
+  std::tuple<CryptoWidget, Errors> TestCryptoBuyWidgetCreate(
+      const std::string& content,
+      mojom::CryptoBuySessionDataPtr session_data,
+      mojom::CryptoWidgetCustomerDataPtr customer_data,
+      std::optional<std::string> expected_request,
+      const net::HttpStatusCode http_status = net::HTTP_OK) {
+    SetInterceptor(content, http_status, std::move(expected_request));
+
+    TestFuture<CryptoWidget, Errors> future;
     meld_integration_service_->CryptoBuyWidgetCreate(
-        std::move(session_data), std::move(customer_data), mock_callback.Get());
-    run_loop.Run();
+        std::move(session_data), std::move(customer_data),
+        future.GetCallback<CryptoWidget, const Errors&>());
+    return future.Take();
   }
 
-  void TestCryptoSellWidgetCreate(
+  std::tuple<CryptoWidget, Errors> TestCryptoSellWidgetCreate(
       const std::string& content,
-      const std::string& country_code,
-      const std::string& destination_currency_code,
-      std::optional<std::vector<std::string>> lock_fields,
-      const std::optional<std::string>& payment_method_type,
-      const std::optional<std::string>& redirect_url,
-      const std::string& service_provider,
-      const std::string& source_amount,
-      const std::string& source_currency_code,
-      const std::optional<std::string>& wallet_address,
-      const std::optional<std::string>& wallet_tag,
-      const std::optional<std::string>& customer_object_email,
-      const std::optional<std::string>& customer_id,
-      const std::optional<std::string>& external_customer_id,
-      const std::optional<std::string>& external_session_id,
-      MeldIntegrationService::CryptoBuyWidgetCreateCallback callback,
-      const net::HttpStatusCode http_status = net::HTTP_OK,
-      const bool is_session_data_null = false) {
-    mojom::CryptoSellSessionDataPtr session_data;
-    if (!is_session_data_null) {
-      session_data = mojom::CryptoSellSessionData::New(
-          country_code, destination_currency_code, lock_fields,
-          payment_method_type, redirect_url, service_provider, source_amount,
-          source_currency_code, wallet_address, wallet_tag);
-    }
+      mojom::CryptoSellSessionDataPtr session_data,
+      mojom::CryptoWidgetCustomerDataPtr customer_data,
+      std::optional<std::string> expected_request,
+      const net::HttpStatusCode http_status = net::HTTP_OK) {
+    SetInterceptor(content, http_status, std::move(expected_request));
 
-    mojom::CryptoWidgetCustomerDataPtr customer_data;
-    if (customer_object_email || customer_id || external_customer_id ||
-        external_session_id) {
-      customer_data = mojom::CryptoWidgetCustomerData::New(
-          customer_object_email
-              ? mojom::CustomerObject::New(customer_object_email.value())
-              : nullptr,
-          customer_id, external_customer_id, external_session_id);
-    }
-
-    auto request_payload_check_callback = base::BindRepeating(
-        [](const std::optional<std::string>& customer_id,
-           const std::optional<std::string>& external_customer_id,
-           const std::optional<std::string>& external_session_id,
-           const std::string& country_code,
-           const std::string& destination_currency_code,
-           const std::optional<std::string>& payment_method_type,
-           const std::optional<std::string>& redirect_url,
-           const std::string& service_provider,
-           const std::string& source_amount,
-           const std::string& source_currency_code,
-           const std::optional<std::string>& wallet_address,
-           const std::optional<std::string>& wallet_tag,
-           const std::string& request_payload) {
-          auto request_payload_value = base::test::ParseJson(request_payload);
-          EXPECT_TRUE(request_payload_value.is_dict());
-          auto& request_payload_dict = request_payload_value.GetDict();
-
-          CheckString(request_payload_dict.FindString("sessionType"), "SELL");
-
-          CheckOptString(request_payload_dict.FindString("customerId"),
-                         customer_id);
-          CheckOptString(request_payload_dict.FindString("externalCustomerId"),
-                         external_customer_id);
-          CheckOptString(request_payload_dict.FindString("externalSessionId"),
-                         external_session_id);
-
-          auto* session_data_dict =
-              request_payload_dict.FindDict("sessionData");
-          EXPECT_TRUE(session_data_dict);
-          CheckString(session_data_dict->FindString("countryCode"),
-                      country_code);
-          CheckString(session_data_dict->FindString("destinationCurrencyCode"),
-                      destination_currency_code);
-          CheckOptString(session_data_dict->FindString("paymentMethodType"),
-                         payment_method_type);
-          CheckOptString(session_data_dict->FindString("redirectUrl"),
-                         redirect_url);
-          CheckString(session_data_dict->FindString("serviceProvider"),
-                      service_provider);
-          CheckString(session_data_dict->FindString("sourceAmount"),
-                      source_amount);
-          CheckString(session_data_dict->FindString("sourceCurrencyCode"),
-                      source_currency_code);
-          CheckOptString(session_data_dict->FindString("walletAddress"),
-                         wallet_address);
-          CheckOptString(session_data_dict->FindString("walletTag"),
-                         wallet_tag);
-        },
-        customer_id, external_customer_id, external_session_id, country_code,
-        destination_currency_code, payment_method_type, redirect_url,
-        service_provider, source_amount, source_currency_code, wallet_address,
-        wallet_tag);
-
-    SetInterceptor(content, http_status, &request_payload_check_callback);
-
-    base::RunLoop run_loop;
-    base::MockCallback<MeldIntegrationService::CryptoBuyWidgetCreateCallback>
-        mock_callback;
-    EXPECT_CALL(mock_callback, Run)
-        .Times(1)
-        .WillRepeatedly(
-            [&](mojom::MeldCryptoWidgetPtr crypto_widget,
-                const std::optional<std::vector<std::string>>& errors) {
-              std::move(callback).Run(std::move(crypto_widget), errors);
-              run_loop.Quit();
-            });
+    TestFuture<CryptoWidget, Errors> future;
     meld_integration_service_->CryptoSellWidgetCreate(
-        std::move(session_data), std::move(customer_data), mock_callback.Get());
-    run_loop.Run();
+        std::move(session_data), std::move(customer_data),
+        future.GetCallback<CryptoWidget, const Errors&>());
+    return future.Take();
   }
 
-  void TestCryptoTransferWidgetCreate(
+  std::tuple<CryptoWidget, Errors> TestCryptoTransferWidgetCreate(
       const std::string& content,
-      const std::optional<std::string>& country_code,
-      const std::optional<std::string>& institution_id,
-      std::optional<std::vector<std::string>> lock_fields,
-      const std::optional<std::string>& redirect_url,
-      const std::string& service_provider,
-      const std::optional<std::string>& source_amount,
-      const std::vector<std::string>& source_currency_codes,
-      const std::optional<std::string>& wallet_address,
-      const std::optional<std::string>& wallet_tag,
-      const std::optional<std::string>& customer_object_email,
-      const std::optional<std::string>& customer_id,
-      const std::optional<std::string>& external_customer_id,
-      const std::optional<std::string>& external_session_id,
-      MeldIntegrationService::CryptoBuyWidgetCreateCallback callback,
-      const net::HttpStatusCode http_status = net::HTTP_OK,
-      const bool is_session_data_null = false) {
-    mojom::CryptoTransferSessionDataPtr session_data;
-    if (!is_session_data_null) {
-      session_data = mojom::CryptoTransferSessionData::New(
-          country_code, institution_id, lock_fields, redirect_url,
-          service_provider, source_amount, source_currency_codes,
-          wallet_address, wallet_tag);
-    }
+      mojom::CryptoTransferSessionDataPtr session_data,
+      mojom::CryptoWidgetCustomerDataPtr customer_data,
+      std::optional<std::string> expected_request,
+      const net::HttpStatusCode http_status = net::HTTP_OK) {
+    SetInterceptor(content, http_status, std::move(expected_request));
 
-    mojom::CryptoWidgetCustomerDataPtr customer_data;
-    if (customer_object_email || customer_id || external_customer_id ||
-        external_session_id) {
-      customer_data = mojom::CryptoWidgetCustomerData::New(
-          customer_object_email
-              ? mojom::CustomerObject::New(customer_object_email.value())
-              : nullptr,
-          customer_id, external_customer_id, external_session_id);
-    }
-
-    auto request_payload_check_callback = base::BindRepeating(
-        [](const std::optional<std::string>& customer_id,
-           const std::optional<std::string>& external_customer_id,
-           const std::optional<std::string>& external_session_id,
-           const std::optional<std::string>& country_code,
-           const std::optional<std::string>& institution_id,
-           const std::optional<std::string>& redirect_url,
-           const std::string& service_provider,
-           const std::optional<std::string>& source_amount,
-           const std::vector<std::string>& source_currency_codes,
-           const std::optional<std::string>& wallet_address,
-           const std::optional<std::string>& wallet_tag,
-           const std::string& request_payload) {
-          auto request_payload_value = base::test::ParseJson(request_payload);
-          EXPECT_TRUE(request_payload_value.is_dict());
-          auto& request_payload_dict = request_payload_value.GetDict();
-
-          CheckString(request_payload_dict.FindString("sessionType"),
-                      "TRANSFER");
-
-          CheckOptString(request_payload_dict.FindString("customerId"),
-                         customer_id);
-          CheckOptString(request_payload_dict.FindString("externalCustomerId"),
-                         external_customer_id);
-          CheckOptString(request_payload_dict.FindString("externalSessionId"),
-                         external_session_id);
-
-          auto* session_data_dict =
-              request_payload_dict.FindDict("sessionData");
-          EXPECT_TRUE(session_data_dict);
-          CheckOptString(session_data_dict->FindString("countryCode"),
-                         country_code);
-          CheckOptString(session_data_dict->FindString("institutionId"),
-                         institution_id);
-          CheckOptString(session_data_dict->FindString("redirectUrl"),
-                         redirect_url);
-          CheckString(session_data_dict->FindString("serviceProvider"),
-                      service_provider);
-          CheckOptString(session_data_dict->FindString("sourceAmount"),
-                         source_amount);
-
-          auto* source_currency_codes_list =
-              session_data_dict->FindList("sourceCurrencyCodes");
-          EXPECT_TRUE(source_currency_codes_list);
-          for (const auto& item_value : *source_currency_codes_list) {
-            EXPECT_EQ(std::ranges::count_if(
-                          source_currency_codes,
-                          [&](const auto& item) { return item == item_value; }),
-                      1);
-          }
-          CheckOptString(session_data_dict->FindString("walletAddress"),
-                         wallet_address);
-          CheckOptString(session_data_dict->FindString("walletTag"),
-                         wallet_tag);
-        },
-        customer_id, external_customer_id, external_session_id, country_code,
-        institution_id, redirect_url, service_provider, source_amount,
-        source_currency_codes, wallet_address, wallet_tag);
-
-    SetInterceptor(content, http_status, &request_payload_check_callback);
-
-    base::RunLoop run_loop;
-    base::MockCallback<MeldIntegrationService::CryptoBuyWidgetCreateCallback>
-        mock_callback;
-    EXPECT_CALL(mock_callback, Run)
-        .Times(1)
-        .WillRepeatedly(
-            [&](mojom::MeldCryptoWidgetPtr crypto_widget,
-                const std::optional<std::vector<std::string>>& errors) {
-              std::move(callback).Run(std::move(crypto_widget), errors);
-              run_loop.Quit();
-            });
+    TestFuture<CryptoWidget, Errors> future;
     meld_integration_service_->CryptoTransferWidgetCreate(
-        std::move(session_data), std::move(customer_data), mock_callback.Get());
-    run_loop.Run();
+        std::move(session_data), std::move(customer_data),
+        future.GetCallback<CryptoWidget, const Errors&>());
+    return future.Take();
   }
 
  protected:
@@ -650,19 +219,15 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
 };
 
 TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
-  auto filter = mojom::MeldFilter::New(
-      "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
-  const auto url = MeldIntegrationService::GetServiceProviderURL(filter);
+  std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps;
+  Errors errors;
+
+  const auto url = MeldIntegrationService::GetServiceProviderURL();
   EXPECT_EQ(url.path(), "/service-providers");
-  EXPECT_EQ(url.query(),
-            "accountFilter=false&statuses=LIVE%2CRECENTLY_ADDED&countries=US%"
-            "2CCA&fiatCurrencies=USD%2CEUR&cryptoCurrencies=BTC%2CETH&"
-            "cryptoChains=BTC%2CDOGE&"
-            "serviceProviders=BANXA%2CBLOCKCHAINDOTCOM&paymentMethodTypes="
-            "MOBILE_WALLET%2CBANK_TRANSFER");
-  TestGetServiceProvider(
-      R"([
+  EXPECT_THAT(net::UrlSearchParams(url).params(),
+              ElementsAre(Pair("accountFilter", "false"),
+                          Pair("statuses", "LIVE,RECENTLY_ADDED")));
+  std::tie(sps, errors) = TestGetServiceProvider(R"([
   {
     "serviceProvider": "BANXA",
     "name": "Banxa",
@@ -675,8 +240,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
     },
     "websiteUrl": "http://www.banxa.com",
     "logos": {
-      "dark": "https://images-serviceprovider.meld.io/BANXA/logo_dark.png",
-      "light": "https://images-serviceprovider.meld.io/BANXA/logo_light.png",
       "darkShort": "https://images-serviceprovider.meld.io/BANXA/short_logo_dark.png",
       "lightShort": null
     }
@@ -693,51 +256,25 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
     },
     "websiteUrl": "https://www.blockchain.com",
     "logos": null
-  }])",
-      "US", "USD", "ETH", "BTC,DOGE", "", "", "",
-      base::BindLambdaForTesting(
-          [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
-              const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_FALSE(errors.has_value());
-            EXPECT_EQ(std::ranges::count_if(
-                          *sps,
-                          [](const auto& item) {
-                            return item->name == "Banxa" &&
-                                   item->service_provider == "BANXA" &&
-                                   item->status == "LIVE" &&
-                                   !item->categories.empty() &&
-                                   item->categories[0] == "CRYPTO_ONRAMP" &&
-                                   item->web_site_url ==
-                                       "http://www.banxa.com" &&
-                                   item->logo_images &&
-                                   item->logo_images->dark_url ==
-                                       "https://images-serviceprovider.meld.io/"
-                                       "BANXA/logo_dark.png" &&
-                                   item->logo_images->dark_short_url ==
-                                       "https://images-serviceprovider.meld.io/"
-                                       "BANXA/short_logo_dark.png" &&
-                                   item->logo_images->light_url ==
-                                       "https://images-serviceprovider.meld.io/"
-                                       "BANXA/logo_light.png" &&
-                                   !item->logo_images->light_short_url;
-                          }),
-                      1);
-            EXPECT_EQ(std::ranges::count_if(
-                          *sps,
-                          [](const auto& item) {
-                            return item->name == "Blockchain.com" &&
-                                   item->service_provider ==
-                                       "BLOCKCHAINDOTCOM" &&
-                                   item->status == "LIVE" &&
-                                   item->categories[0] == "CRYPTO_ONRAMP" &&
-                                   item->web_site_url ==
-                                       "https://www.blockchain.com" &&
-                                   !item->logo_images;
-                          }),
-                      1);
-          }));
-  TestGetServiceProvider(
-      R"([{
+  }])");
+  EXPECT_FALSE(errors.has_value());
+  ASSERT_TRUE(sps);
+
+  std::vector<mojom::MeldServiceProviderPtr> expected;
+  expected.push_back(mojom::MeldServiceProvider::New(
+      "Banxa", "BANXA", "LIVE", "http://www.banxa.com",
+      std::vector<std::string>{"CRYPTO_ONRAMP"},
+      base::flat_map<std::string, std::string>{{"CRYPTO_ONRAMP", "LIVE"}},
+      "https://images-serviceprovider.meld.io/BANXA/short_logo_dark.png",
+      std::nullopt));
+  expected.push_back(mojom::MeldServiceProvider::New(
+      "Blockchain.com", "BLOCKCHAINDOTCOM", "LIVE",
+      "https://www.blockchain.com", std::vector<std::string>{"CRYPTO_ONRAMP"},
+      base::flat_map<std::string, std::string>{{"CRYPTO_ONRAMP", "LIVE"}},
+      std::nullopt, std::nullopt));
+  EXPECT_EQ(*sps, expected);
+
+  std::tie(sps, errors) = TestGetServiceProvider(R"([{
     "status": "LIVE",
     "categories": [
       "CRYPTO_ONRAMP"
@@ -745,55 +282,33 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
     "categoryStatuses": {
       "CRYPTO_ONRAMP": "LIVE"
     }
-  }])",
-      "US", "USD", "ETH", "BTC,DOGE", "", "", "",
-      base::BindLambdaForTesting(
-          [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
-              const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
-          }));
-  TestGetServiceProvider(
-      R"({
+  }])");
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>{
+                         l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
+
+  std::tie(sps, errors) = TestGetServiceProvider(R"({
     "code": "UNAUTHORIZED",
     "message": "invalid profile or secret",
     "requestId": "315a",
     "timestamp": "2024-04-24T18:55:09.327818Z"
   })",
-      "US", "USD", "ETH", "BTC,DOGE", "", "", "",
-      base::BindLambdaForTesting(
-          [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
-              const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{"invalid profile or secret"});
-          }),
-      net::HTTP_UNAUTHORIZED);
-  TestGetServiceProvider(
-      "some wrone data", "US", "USD", "ETH", "BTC,DOGE", "", "", "",
-      base::BindLambdaForTesting(
-          [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
-              const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
-          }));
-  TestGetServiceProvider(
-      "some wrone data", "US", "USD", "ETH", "BTC,DOGE", "", "", "",
-      base::BindLambdaForTesting(
-          [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
-              const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
-          }),
-      net::HTTP_REQUEST_TIMEOUT);
-  TestGetServiceProvider(
-      R"({
+                                                 net::HTTP_UNAUTHORIZED);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>{"invalid profile or secret"});
+
+  std::tie(sps, errors) = TestGetServiceProvider("some wrone data");
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>{
+                         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
+
+  std::tie(sps, errors) =
+      TestGetServiceProvider("some wrone data", net::HTTP_REQUEST_TIMEOUT);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>{
+                         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
+
+  std::tie(sps, errors) = TestGetServiceProvider(R"({
     "code": "BAD_REQUEST",
     "message": "Bad request",
     "errors": [
@@ -803,19 +318,17 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
     "requestId": "356d",
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
-      "US", "USD", "ETH", "BTC,DOGE", "", "", "",
-      base::BindLambdaForTesting(
-          [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
-              const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors, std::vector<std::string>(
-                                   {"[sourceAmount] must not be null",
-                                    "[sourceCurrencyCode] must not be blank"}));
-          }),
-      net::HTTP_BAD_REQUEST);
+                                                 net::HTTP_BAD_REQUEST);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>(
+                         {"[sourceAmount] must not be null",
+                          "[sourceCurrencyCode] must not be blank"}));
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
+  std::optional<std::vector<mojom::MeldCryptoQuotePtr>> quotes;
+  Errors errors;
+
   const std::string content = R"({
     "quotes": [
       {
@@ -841,63 +354,53 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
     "error": null
   })";
 
+  constexpr char kRequest[] = R"({
+    "countryCode": "US",
+    "sourceCurrencyCode": "USD",
+    "destinationCurrencyCode": "BTC",
+    "sourceAmount": 50.0,
+    "walletAddress": "btc account address",
+    "paymentMethodType": "VISA"
+  })";
+
+  constexpr char kMinimalRequest[] = R"({
+    "countryCode": "US",
+    "sourceCurrencyCode": "USD",
+    "destinationCurrencyCode": "BTC",
+    "sourceAmount": 50.0
+  })";
+
   auto check_parsed_content =
       [](const std::optional<std::vector<mojom::MeldCryptoQuotePtr>>& quotes,
          const std::optional<std::vector<std::string>>& errors) {
         EXPECT_FALSE(errors.has_value());
-        EXPECT_EQ(std::ranges::count_if(
-                      *quotes,
-                      [](const auto& item) {
-                        return item->transaction_type == "CRYPTO_PURCHASE" &&
-                               item->source_amount == "50" &&
-                               item->source_amount_without_fee == "43.97" &&
-                               item->fiat_amount_without_fees == "43.97" &&
-                               item->destination_amount_without_fees ==
-                                   std::nullopt &&
-                               item->source_currency_code == "USD" &&
-                               item->country_code == "US" &&
-                               item->total_fee == "6.03" &&
-                               item->network_fee == "3.53" &&
-                               item->transaction_fee == "2" &&
-                               item->destination_amount == "0.00066413" &&
-                               item->destination_currency_code == "BTC" &&
-                               item->exchange_rate == "75286" &&
-                               item->payment_method == "APPLE_PAY" &&
-                               item->customer_score == "20" &&
-                               item->service_provider == "TRANSAK";
-                      }),
-                  1);
+        ASSERT_TRUE(quotes);
+
+        std::vector<mojom::MeldCryptoQuotePtr> expected;
+        expected.push_back(mojom::MeldCryptoQuote::New(
+            "CRYPTO_PURCHASE", "75286", "2", "USD", "50", "43.97", "43.97",
+            "6.03", "3.53", "APPLE_PAY", "BTC", "0.00066413", std::nullopt,
+            "20", "TRANSAK", "US"));
+        EXPECT_EQ(*quotes, expected);
       };
 
-  TestGetCryptoQuotes(
-      content, "US", "USD", "BTC", 50, "btc account address", "VISA",
-      base::BindLambdaForTesting(
-          [&](std::optional<std::vector<mojom::MeldCryptoQuotePtr>> quotes,
-              const std::optional<std::vector<std::string>>& errors) {
-            check_parsed_content(quotes, errors);
-          }));
+  std::tie(quotes, errors) = TestGetCryptoQuotes(
+      content, "US", "USD", "BTC", 50, "btc account address", "VISA", kRequest);
+  check_parsed_content(quotes, errors);
 
-  TestGetCryptoQuotes(
-      content, "US", "USD", "BTC", 50, std::nullopt, std::nullopt,
-      base::BindLambdaForTesting(
-          [&](std::optional<std::vector<mojom::MeldCryptoQuotePtr>> quotes,
-              const std::optional<std::vector<std::string>>& errors) {
-            check_parsed_content(quotes, errors);
-          }));
+  std::tie(quotes, errors) =
+      TestGetCryptoQuotes(content, "US", "USD", "BTC", 50, std::nullopt,
+                          std::nullopt, kMinimalRequest);
+  check_parsed_content(quotes, errors);
 
-  TestGetCryptoQuotes(
+  std::tie(quotes, errors) = TestGetCryptoQuotes(
       "some wrong data", "US", "USD", "BTC", 50, "btc account address", "VISA",
-      base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldCryptoQuotePtr>> quotes,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
-          }),
-      net::HTTP_REQUEST_TIMEOUT);
+      kRequest, net::HTTP_REQUEST_TIMEOUT);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>{
+                         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
 
-  TestGetCryptoQuotes(
+  std::tie(quotes, errors) = TestGetCryptoQuotes(
       R"({
     "quotes": [
       {
@@ -922,17 +425,13 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
     "message": null,
     "error": "error description"
   })",
-      "US", "USD", "BTC", 50, "btc account address", "VISA",
-      base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldCryptoQuotePtr>> quotes,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors, std::vector<std::string>{"error description"});
-            EXPECT_FALSE(quotes);
-          }));
+      "US", "USD", "BTC", 50, "btc account address", "VISA", kRequest);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>{"error description"});
+  EXPECT_FALSE(quotes);
 
-  TestGetCryptoQuotes(
-      R"({
+  std::tie(quotes, errors) =
+      TestGetCryptoQuotes(R"({
     "code": "BAD_REQUEST",
     "message": "Bad request",
     "errors": [
@@ -942,181 +441,88 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
     "requestId": "356dd2b40fa55037bfe9d190b6438f59",
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
-      "US", "USD", "BTC", 50, "btc account address", "VISA",
-      base::BindLambdaForTesting(
-          [&](std::optional<std::vector<mojom::MeldCryptoQuotePtr>> quotes,
-              const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors, std::vector<std::string>(
-                                   {"[sourceAmount] must not be null",
-                                    "[sourceCurrencyCode] must not be blank"}));
-          }),
-      net::HTTP_BAD_REQUEST);
-  TestGetCryptoQuotes(
-      R"({
+                          "US", "USD", "BTC", 50, "btc account address", "VISA",
+                          kRequest, net::HTTP_BAD_REQUEST);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>(
+                         {"[sourceAmount] must not be null",
+                          "[sourceCurrencyCode] must not be blank"}));
+
+  std::tie(quotes, errors) =
+      TestGetCryptoQuotes(R"({
     "quotes": null,
     "message": null,
     "error": "No Valid Quote Combinations Found For Provided Quote Request."
   })",
-      "US", "USD", "BTC", 50, "btc account address", "VISA",
-      base::BindLambdaForTesting(
-          [&](std::optional<std::vector<mojom::MeldCryptoQuotePtr>> quotes,
-              const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors, std::vector<std::string>(
-                                   {"No Valid Quote Combinations Found For "
-                                    "Provided Quote Request."}));
-          }),
-      net::HTTP_BAD_REQUEST);
+                          "US", "USD", "BTC", 50, "btc account address", "VISA",
+                          kRequest, net::HTTP_BAD_REQUEST);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors,
+            std::vector<std::string>({"No Valid Quote Combinations Found For "
+                                      "Provided Quote Request."}));
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
-  auto filter = mojom::MeldFilter::New(
-      "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
+  std::optional<std::vector<mojom::MeldPaymentMethodPtr>> payment_methods;
+  Errors errors;
 
-  const auto url = MeldIntegrationService::GetPaymentMethodsURL(filter);
-  EXPECT_EQ(url.path(), "/service-providers/properties/payment-methods");
-  EXPECT_EQ(url.query(),
-            "accountFilter=false&includeServiceProviderDetails=false&statuses="
-            "LIVE%2CRECENTLY_"
-            "ADDED&countries=US%2CCA&fiatCurrencies=USD%2CEUR&cryptoCurrencies="
-            "BTC%2CETH&cryptoChains=BTC%2CDOGE&serviceProviders=BANXA%"
-            "2CBLOCKCHAINDOTCOM&"
-            "paymentMethodTypes=MOBILE_WALLET%2CBANK_TRANSFER");
-  TestGetPaymentMethods(
-      R"([
+  const auto url = MeldIntegrationService::GetPaymentMethodsURL("US", "USD");
+  EXPECT_EQ(url.path(), "/network-partner/supported/payment-methods");
+  EXPECT_THAT(net::UrlSearchParams(url).params(),
+              ElementsAre(Pair("category", "CRYPTO_ONRAMP"),  //
+                          Pair("country", "US"),              //
+                          Pair("currencyCode", "USD")));
+  std::tie(payment_methods, errors) = TestGetPaymentMethods(R"([
   {
-    "paymentMethod": "ACH",
+    "method": "ACH",
     "name": null,
-    "paymentType": "BANK_TRANSFER",
-    "logos": {
+    "type": "BANK_TRANSFER",
+    "logo": {
       "dark": "https://images-paymentMethod.meld.io/ACH/logo_dark.png",
       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
     }
   }
   ])",
-      "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", "",
-      base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
-                 payment_methods,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_FALSE(errors.has_value());
-            EXPECT_EQ(std::ranges::count_if(
-                          *payment_methods,
-                          [](const auto& item) {
-                            return item->payment_method == "ACH" &&
-                                   !item->name &&
-                                   item->payment_type == "BANK_TRANSFER" &&
-                                   item->logo_images &&
-                                   !item->logo_images->dark_short_url &&
-                                   !item->logo_images->light_short_url &&
-                                   item->logo_images->dark_url ==
-                                       "https://images-paymentMethod.meld.io/"
-                                       "ACH/logo_dark.png" &&
-                                   item->logo_images->light_url ==
-                                       "https://images-paymentMethod.meld.io/"
-                                       "ACH/logo_light.png";
-                          }),
-                      1);
-          }));
+                                                            "US", "USD");
+  EXPECT_FALSE(errors.has_value());
+  ASSERT_TRUE(payment_methods);
 
-  TestGetPaymentMethods(
-      R"([
+  std::vector<mojom::MeldPaymentMethodPtr> expected;
+  expected.push_back(mojom::MeldPaymentMethod::New(
+      "ACH", std::nullopt, "BANK_TRANSFER",
+      "https://images-paymentMethod.meld.io/ACH/logo_dark.png",
+      "https://images-paymentMethod.meld.io/ACH/logo_light.png"));
+  EXPECT_EQ(*payment_methods, expected);
+
+  std::tie(payment_methods, errors) = TestGetPaymentMethods(R"([
   {
-    "paymentMethod": "ACH",
+    "method": "ACH",
     "name": "ACH",
-    "paymentType": "BANK_TRANSFER",
-    "logos": {
+    "type": "BANK_TRANSFER",
+    "logo": {
       "dark": null,
       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
     }
   }
   ])",
-      "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", "",
-      base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
-                 payment_methods,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_FALSE(errors.has_value());
-            EXPECT_EQ(std::ranges::count_if(
-                          *payment_methods,
-                          [](const auto& item) {
-                            return item->payment_method == "ACH" &&
-                                   item->name == "ACH" &&
-                                   item->payment_type == "BANK_TRANSFER" &&
-                                   item->logo_images &&
-                                   !item->logo_images->dark_short_url &&
-                                   !item->logo_images->light_short_url &&
-                                   !item->logo_images->dark_url &&
-                                   item->logo_images->light_url ==
-                                       "https://images-paymentMethod.meld.io/"
-                                       "ACH/logo_light.png";
-                          }),
-                      1);
-          }));
+                                                            "US", "USD");
+  EXPECT_FALSE(errors.has_value());
+  ASSERT_TRUE(payment_methods);
 
-  TestGetPaymentMethods(
-      R"({
-    "paymentMethod": "ACH",
-    "name": "ACH",
-    "paymentType": "BANK_TRANSFER",
-    "logos": {
-      "dark": null,
-      "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
-    }
-  })",
-      "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", "",
-      base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
-                 payment_methods,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
-          }));
+  std::vector<mojom::MeldPaymentMethodPtr> expected_null_dark_logo;
+  expected_null_dark_logo.push_back(mojom::MeldPaymentMethod::New(
+      "ACH", "ACH", "BANK_TRANSFER", std::nullopt,
+      "https://images-paymentMethod.meld.io/ACH/logo_light.png"));
+  EXPECT_EQ(*payment_methods, expected_null_dark_logo);
 
-  TestGetPaymentMethods(
-      R"([{
-    "name": "ACH",
-    "paymentType": "BANK_TRANSFER",
-    "logos": {
-      "dark": null,
-      "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
-    }
-  }])",
-      "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", "",
-      base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
-                 payment_methods,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
-          }));
+  std::tie(payment_methods, errors) = TestGetPaymentMethods(
+      "some wrong data", "US", "USD", net::HTTP_REQUEST_TIMEOUT);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>{
+                         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
 
-  TestGetPaymentMethods(
-      "some wrong data", "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE",
-      "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
-      base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
-                 payment_methods,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
-          }),
-      net::HTTP_REQUEST_TIMEOUT);
-
-  TestGetPaymentMethods(
-      R"({
+  std::tie(payment_methods, errors) =
+      TestGetPaymentMethods(R"({
     "code": "BAD_REQUEST",
     "message": "Bad request",
     "errors": [
@@ -1126,126 +532,56 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
     "requestId": "356dd2b40fa55037bfe9d190b6438f59",
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
-      "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", "",
-      base::BindLambdaForTesting(
-          [&](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
-                  payment_methods,
-              const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors, std::vector<std::string>(
-                                   {"[sourceAmount] must not be null",
-                                    "[sourceCurrencyCode] must not be blank"}));
-          }),
-      net::HTTP_BAD_REQUEST);
+                            "US", "USD", net::HTTP_BAD_REQUEST);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>(
+                         {"[sourceAmount] must not be null",
+                          "[sourceCurrencyCode] must not be blank"}));
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
-  auto filter = mojom::MeldFilter::New(
-      "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
-  const auto url = MeldIntegrationService::GetFiatCurrenciesURL(filter);
-  EXPECT_EQ(url.path(), "/service-providers/properties/fiat-currencies");
-  EXPECT_EQ(url.query(),
-            "accountFilter=false&includeServiceProviderDetails=false&statuses="
-            "LIVE%2CRECENTLY_"
-            "ADDED&countries=US%2CCA&fiatCurrencies=USD%2CEUR&cryptoCurrencies="
-            "BTC%2CETH&cryptoChains=BTC%2CDOGE&serviceProviders=BANXA%"
-            "2CBLOCKCHAINDOTCOM&"
-            "paymentMethodTypes=MOBILE_WALLET%2CBANK_TRANSFER");
+  std::optional<std::vector<mojom::MeldFiatCurrencyPtr>> fiat_currencies;
+  Errors errors;
 
-  TestGetFiatCurrencies(
-      R"([
-  {
-    "currencyCode": "AFN",
-    "name": null,
-    "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
-  },
-  {
-    "currencyCode": "DZD",
-    "name": "Algerian Dinar",
-    "symbolImageUrl": "https://images-currency.meld.io/fiat/DZD/symbol.png"
-  }])",
-      "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", "",
-      base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
-                 fiat_currencies,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_FALSE(errors.has_value());
-            EXPECT_EQ(std::ranges::count_if(
-                          *fiat_currencies,
-                          [](const auto& item) {
-                            return item->currency_code == "AFN" &&
-                                   !item->name &&
-                                   item->symbol_image_url ==
-                                       "https://images-currency.meld.io/fiat/"
-                                       "AFN/symbol.png";
-                          }),
-                      1);
-            EXPECT_EQ(std::ranges::count_if(
-                          *fiat_currencies,
-                          [](const auto& item) {
-                            return item->currency_code == "DZD" &&
-                                   item->name == "Algerian Dinar" &&
-                                   item->symbol_image_url ==
-                                       "https://images-currency.meld.io/fiat/"
-                                       "DZD/symbol.png";
-                          }),
-                      1);
-          }));
+  const auto url = MeldIntegrationService::GetFiatCurrenciesURL();
+  EXPECT_EQ(url.path(), "/network-partner/supported/currencies");
+  EXPECT_THAT(net::UrlSearchParams(url).params(),
+              ElementsAre(Pair("category", "CRYPTO_ONRAMP"),  //
+                          Pair("type", "FIAT")));
 
-  TestGetFiatCurrencies(
-      R"({
-    "currencyCode": "AFN",
-    "name": null,
-    "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
-  })",
-      "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", "",
-      base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
-                 fiat_currencies,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
-          }));
+  std::tie(fiat_currencies, errors) = TestGetFiatCurrencies(R"({
+  "currencies": [
+    {
+      "currencyCode": "AFN",
+      "name": null,
+      "symbol": "https://images-currency.meld.io/fiat/AFN/symbol.png"
+    },
+    {
+      "currencyCode": "DZD",
+      "name": "Algerian Dinar",
+      "symbol": "https://images-currency.meld.io/fiat/DZD/symbol.png"
+    }
+  ]})");
+  EXPECT_FALSE(errors.has_value());
+  ASSERT_TRUE(fiat_currencies);
 
-  TestGetFiatCurrencies(
-      R"([{
-    "name": null,
-    "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
-  }])",
-      "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", "",
-      base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
-                 fiat_currencies,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
-          }));
+  std::vector<mojom::MeldFiatCurrencyPtr> expected;
+  expected.push_back(mojom::MeldFiatCurrency::New(
+      "AFN", std::nullopt,
+      "https://images-currency.meld.io/fiat/AFN/symbol.png"));
+  expected.push_back(mojom::MeldFiatCurrency::New(
+      "DZD", "Algerian Dinar",
+      "https://images-currency.meld.io/fiat/DZD/symbol.png"));
+  EXPECT_EQ(*fiat_currencies, expected);
 
-  TestGetFiatCurrencies(
-      "some wrong data", "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE",
-      "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
-      base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
-                 fiat_currencies,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
-          }),
-      net::HTTP_REQUEST_TIMEOUT);
+  std::tie(fiat_currencies, errors) =
+      TestGetFiatCurrencies("some wrong data", net::HTTP_REQUEST_TIMEOUT);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>{
+                         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
 
-  TestGetFiatCurrencies(
-      R"({
+  std::tie(fiat_currencies, errors) =
+      TestGetFiatCurrencies(R"({
     "code": "BAD_REQUEST",
     "message": "Bad request",
     "errors": [
@@ -1255,152 +591,65 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
     "requestId": "356dd2b40fa55037bfe9d190b6438f59",
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
-      "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", "",
-      base::BindLambdaForTesting(
-          [&](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
-                  fiat_currencies,
-              const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors, std::vector<std::string>(
-                                   {"[sourceAmount] must not be null",
-                                    "[sourceCurrencyCode] must not be blank"}));
-          }),
-      net::HTTP_BAD_REQUEST);
+                            net::HTTP_BAD_REQUEST);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>(
+                         {"[sourceAmount] must not be null",
+                          "[sourceCurrencyCode] must not be blank"}));
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
-  auto filter = mojom::MeldFilter::New(
-      "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
-  const auto url = MeldIntegrationService::GetCryptoCurrenciesURL(filter);
-  EXPECT_EQ(url.path(), "/service-providers/properties/crypto-currencies");
-  EXPECT_EQ(url.query(),
-            "accountFilter=false&includeServiceProviderDetails=false&statuses="
-            "LIVE%2CRECENTLY_"
-            "ADDED&countries=US%2CCA&fiatCurrencies=USD%2CEUR&cryptoCurrencies="
-            "BTC%2CETH&cryptoChains=BTC%2CDOGE&serviceProviders=BANXA%"
-            "2CBLOCKCHAINDOTCOM&"
-            "paymentMethodTypes=MOBILE_WALLET%2CBANK_TRANSFER");
+  std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>> crypto_currencies;
+  Errors errors;
 
-  TestGetCryptoCurrencies(
-      R"([
-  {
-    "currencyCode": "USDT_KCC",
-    "name": null,
-    "chainCode": "KCC",
-    "chainName": "KuCoin Community Chain",
-    "chainId": "137",
-    "contractAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
-    "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
-  },
-  {
-    "currencyCode": "00",
-    "name": "00 Token",
-    "chainCode": "ETH",
-    "chainName": "Ethereum",
-    "chainId": "1",
-    "contractAddress": "0x111111111117dc0aa78b770fa6a738034120c302",
-    "symbolImageUrl": "https://images-currency.meld.io/crypto/00/symbol.png"
-  }])",
-      "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", "LIVE,RECENTLY_ADDED",
-      base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
-                 crypto_currencies,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_FALSE(errors.has_value());
-            EXPECT_EQ(
-                std::ranges::count_if(
-                    *crypto_currencies,
-                    [](const auto& item) {
-                      return item->currency_code == "USDT_KCC" && !item->name &&
-                             item->chain_code == "KCC" &&
-                             item->chain_name == "KuCoin Community Chain" &&
-                             item->chain_id == "0x89" &&
-                             item->contract_address ==
-                                 "0xe41d2489571d322189246dafa5ebde1f4699f498" &&
-                             item->symbol_image_url ==
-                                 "https://images-currency.meld.io/crypto/"
-                                 "USDT_KCC/symbol.png";
-                    }),
-                1);
-            EXPECT_EQ(
-                std::ranges::count_if(
-                    *crypto_currencies,
-                    [](const auto& item) {
-                      return item->currency_code == "00" &&
-                             item->name == "00 Token" &&
-                             item->chain_code == "ETH" &&
-                             item->chain_name == "Ethereum" &&
-                             item->chain_id == "0x1" &&
-                             item->contract_address ==
-                                 "0x111111111117dc0aa78b770fa6a738034120c302" &&
-                             item->symbol_image_url ==
-                                 "https://images-currency.meld.io/crypto/00/"
-                                 "symbol.png";
-                    }),
-                1);
-          }));
-  TestGetCryptoCurrencies(
-      R"({
-    "currencyCode": "USDT_KCC",
-    "name": null,
-    "chainCode": "KCC",
-    "chainName": "KuCoin Community Chain",
-    "chainId": "0",
-    "contractAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
-    "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
-  })",
-      "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", "",
-      base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
-                 crypto_currencies,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
-          }));
+  const auto url = MeldIntegrationService::GetCryptoCurrenciesURL();
 
-  TestGetCryptoCurrencies(
-      R"([{
-    "name": null,
-    "chainCode": "KCC",
-    "chainName": "KuCoin Community Chain",
-    "chainId": "0",
-    "contractAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
-    "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
-  }])",
-      "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", "",
-      base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
-                 crypto_currencies,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
-          }));
+  EXPECT_EQ(url.path(), "/network-partner/supported/currencies");
+  EXPECT_THAT(net::UrlSearchParams(url).params(),
+              ElementsAre(Pair("category", "CRYPTO_ONRAMP"),  //
+                          Pair("type", "CRYPTO")));
 
-  TestGetCryptoCurrencies(
-      "some wrong data", "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE",
-      "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
-      base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
-                 crypto_currencies,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
-          }),
-      net::HTTP_REQUEST_TIMEOUT);
+  std::tie(crypto_currencies, errors) = TestGetCryptoCurrencies(R"({
+  "currencies": [
+    {
+      "currencyCode": "USDT_POLYGON",
+      "name": "Tether",
+      "chainCode": "POLYGON",
+      "chainId": "137",
+      "contract": "0xe41d2489571d322189246dafa5ebde1f4699f498",
+      "symbol": "https://images-currency.meld.io/crypto/USDT_POLYGON/symbol.png"
+    },
+    {
+      "currencyCode": "00",
+      "name": "00 Token",
+      "chainCode": "ETH",
+      "chainId": "1",
+      "contract": "0x111111111117dc0aa78b770fa6a738034120c302",
+      "symbol": "https://images-currency.meld.io/crypto/00/symbol.png"
+    }
+  ]})");
+  EXPECT_FALSE(errors.has_value());
+  ASSERT_TRUE(crypto_currencies);
 
-  TestGetCryptoCurrencies(
-      R"({
+  std::vector<mojom::MeldCryptoCurrencyPtr> expected;
+  expected.push_back(mojom::MeldCryptoCurrency::New(
+      mojom::CoinType::ETH, "0x89", "USDT", "USDT_POLYGON", "Tether", "POLYGON",
+      "0xe41d2489571d322189246dafa5ebde1f4699f498",
+      "https://images-currency.meld.io/crypto/USDT_POLYGON/symbol.png"));
+  expected.push_back(mojom::MeldCryptoCurrency::New(
+      mojom::CoinType::ETH, "0x1", "00", "00", "00 Token", "ETH",
+      "0x111111111117dc0aa78b770fa6a738034120c302",
+      "https://images-currency.meld.io/crypto/00/symbol.png"));
+  EXPECT_EQ(*crypto_currencies, expected);
+
+  std::tie(crypto_currencies, errors) =
+      TestGetCryptoCurrencies("some wrong data", net::HTTP_REQUEST_TIMEOUT);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>{
+                         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
+
+  std::tie(crypto_currencies, errors) =
+      TestGetCryptoCurrencies(R"({
     "code": "BAD_REQUEST",
     "message": "Bad request",
     "errors": [
@@ -1410,132 +659,52 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
     "requestId": "356dd2b40fa55037bfe9d190b6438f59",
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
-      "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", "",
-      base::BindLambdaForTesting(
-          [&](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
-                  crypto_currencies,
-              const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors, std::vector<std::string>(
-                                   {"[sourceAmount] must not be null",
-                                    "[sourceCurrencyCode] must not be blank"}));
-          }),
-      net::HTTP_BAD_REQUEST);
+                              net::HTTP_BAD_REQUEST);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>(
+                         {"[sourceAmount] must not be null",
+                          "[sourceCurrencyCode] must not be blank"}));
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
-  auto filter = mojom::MeldFilter::New(
-      "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
-  const auto url = MeldIntegrationService::GetCountriesURL(filter);
-  EXPECT_EQ(url.path(), "/service-providers/properties/countries");
-  EXPECT_EQ(url.query(),
-            "accountFilter=false&includeServiceProviderDetails=false&statuses="
-            "LIVE%2CRECENTLY_"
-            "ADDED&countries=US%2CCA&fiatCurrencies=USD%2CEUR&cryptoCurrencies="
-            "BTC%2CETH&cryptoChains=BTC%2CDOGE&serviceProviders=BANXA%"
-            "2CBLOCKCHAINDOTCOM&"
-            "paymentMethodTypes=MOBILE_WALLET%2CBANK_TRANSFER");
-  TestGetCountries(
-      R"([
-  {
-    "countryCode": "AF",
-    "name": "Afghanistan",
-    "flagImageUrl": "https://images-country.meld.io/AF/flag.svg",
-    "regions": [
-      {
-        "regionCode": "CA-AB",
-        "name": "Alberta"
-      },
-      {
-        "regionCode": "CA-BC",
-        "name": "British Columbia"
-      }
-    ]
-  },
-  {
-    "countryCode": "AL",
-    "name": "Albania",
-    "flagImageUrl": "https://images-country.meld.io/AL/flag.svg",
-    "regions": null
-  }])",
-      "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", "LIVE,RECENTLY_ADDED",
-      base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_FALSE(errors.has_value());
-            EXPECT_EQ(
-                std::ranges::count_if(
-                    *countries,
-                    [](const auto& item) {
-                      return item->country_code == "AF" &&
-                             item->name == "Afghanistan" &&
-                             item->flag_image_url ==
-                                 "https://images-country.meld.io/AF/flag.svg" &&
-                             item->regions &&
-                             (*item->regions)[0]->region_code == "CA-AB" &&
-                             (*item->regions)[0]->name == "Alberta";
-                    }),
-                1);
-            EXPECT_EQ(
-                std::ranges::count_if(
-                    *countries,
-                    [](const auto& item) {
-                      return item->country_code == "AL" &&
-                             item->name == "Albania" &&
-                             item->flag_image_url ==
-                                 "https://images-country.meld.io/AL/flag.svg" &&
-                             !item->regions;
-                    }),
-                1);
-          }));
-  TestGetCountries(
-      R"([
-  {
-    "name": "Albania",
-    "flagImageUrl": "https://images-country.meld.io/AL/flag.svg",
-    "regions": null
-  }])",
-      "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", "",
-      base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
-          }));
+  std::optional<std::vector<mojom::MeldCountryPtr>> countries;
+  Errors errors;
 
-  TestGetCountries(
-      "some wrong data", "US,CA", "USD,EUR", "BTC,DOGE", "BTC,ETH",
-      "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
-      base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
-          }));
+  const auto url = MeldIntegrationService::GetCountriesURL();
+  EXPECT_EQ(url.path(), "/network-partner/supported/countries");
+  EXPECT_THAT(net::UrlSearchParams(url).params(),
+              ElementsAre(Pair("category", "CRYPTO_ONRAMP")));
+  std::tie(countries, errors) = TestGetCountries(R"({
+  "countries": [
+    {
+      "countryCode": "AF",
+      "name": "Afghanistan"
+    },
+    {
+      "countryCode": "AL",
+      "name": "Albania"
+    }
+  ]})");
+  EXPECT_FALSE(errors.has_value());
+  ASSERT_TRUE(countries);
 
-  TestGetCountries(
-      "some wrong data", "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE",
-      "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
-      base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
-          }),
-      net::HTTP_REQUEST_TIMEOUT);
+  std::vector<mojom::MeldCountryPtr> expected;
+  expected.push_back(mojom::MeldCountry::New("AF", "Afghanistan"));
+  expected.push_back(mojom::MeldCountry::New("AL", "Albania"));
+  EXPECT_EQ(*countries, expected);
 
-  TestGetCountries(
-      R"({
+  std::tie(countries, errors) = TestGetCountries("some wrong data");
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>{
+                         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
+
+  std::tie(countries, errors) =
+      TestGetCountries("some wrong data", net::HTTP_REQUEST_TIMEOUT);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>{
+                         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
+
+  std::tie(countries, errors) = TestGetCountries(R"({
     "code": "BAD_REQUEST",
     "message": "Bad request",
     "errors": [
@@ -1545,21 +714,62 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
     "requestId": "356dd2b40fa55037bfe9d190b6438f59",
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
-      "US,CA", "USD,EUR", "BTC,ETH", "BTC,DOGE", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", "",
-      base::BindLambdaForTesting(
-          [&](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
-              const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors, std::vector<std::string>(
-                                   {"[sourceAmount] must not be null",
-                                    "[sourceCurrencyCode] must not be blank"}));
-          }),
-      net::HTTP_BAD_REQUEST);
+                                                 net::HTTP_BAD_REQUEST);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>(
+                         {"[sourceAmount] must not be null",
+                          "[sourceCurrencyCode] must not be blank"}));
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, CryptoBuyWidgetCreate) {
-  TestCryptoBuyWidgetCreate(
+  mojom::MeldCryptoWidgetPtr crypto_widget;
+  Errors errors;
+
+  const auto session_data = mojom::CryptoBuySessionData::New(
+      "US", "BTC", std::vector<std::string>{"cryptoCurrency"}, "BANK_TRANSFER",
+      "https://sb.fluidmoney.xyz", "AKOYA", "100", "USD", "testWalletAddress",
+      "walletTag");
+  const auto customer_data = mojom::CryptoWidgetCustomerData::New(
+      mojom::CustomerObject::New("customer@email"), "customer_id",
+      "external_customer_id", "external_session_id");
+
+  constexpr char kRequestWithCustomer[] = R"({
+    "sessionType": "BUY",
+    "sessionData": {
+      "countryCode": "US",
+      "destinationCurrencyCode": "BTC",
+      "lockFields": ["cryptoCurrency"],
+      "paymentMethodType": "BANK_TRANSFER",
+      "redirectUrl": "https://sb.fluidmoney.xyz",
+      "serviceProvider": "AKOYA",
+      "sourceAmount": "100",
+      "sourceCurrencyCode": "USD",
+      "walletAddress": "testWalletAddress",
+      "walletTag": "walletTag"
+    },
+    "customer": {"email": "customer@email"},
+    "customerId": "customer_id",
+    "externalCustomerId": "external_customer_id",
+    "externalSessionId": "external_session_id"
+  })";
+
+  constexpr char kRequestWithoutCustomer[] = R"({
+    "sessionType": "BUY",
+    "sessionData": {
+      "countryCode": "US",
+      "destinationCurrencyCode": "BTC",
+      "lockFields": ["cryptoCurrency"],
+      "paymentMethodType": "BANK_TRANSFER",
+      "redirectUrl": "https://sb.fluidmoney.xyz",
+      "serviceProvider": "AKOYA",
+      "sourceAmount": "100",
+      "sourceCurrencyCode": "USD",
+      "walletAddress": "testWalletAddress",
+      "walletTag": "walletTag"
+    }
+  })";
+
+  std::tie(crypto_widget, errors) = TestCryptoBuyWidgetCreate(
       R"({
   "id": "WXDpzmm2cNmtJWLDHgu1GT",
   "externalSessionId": "external_session_id",
@@ -1568,26 +778,18 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoBuyWidgetCreate) {
   "widgetUrl": "https://meldcrypto.com?token=token-val",
   "token": "token-val"
 })",
-      "US", "BTC", std::vector<std::string>{"cryptoCurrency"}, "BANK_TRANSFER",
-      "https://sb.fluidmoney.xyz", "AKOYA", "100", "USD", "testWalletAddress",
-      "walletTag", "customer@email", "customer_id", "external_customer_id",
-      "external_session_id",
-      base::BindLambdaForTesting(
-          [](mojom::MeldCryptoWidgetPtr crypto_widget,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_FALSE(errors.has_value());
-            EXPECT_EQ("WXDpzmm2cNmtJWLDHgu1GT", crypto_widget->id);
-            EXPECT_EQ("external_customer_id",
-                      crypto_widget->external_customer_id);
-            EXPECT_EQ("external_session_id",
-                      crypto_widget->external_session_id);
-            EXPECT_EQ("WXEvEDzSgNedXWnJ55pwUJ", crypto_widget->customer_id);
-            EXPECT_EQ("token-val", crypto_widget->token);
-            EXPECT_EQ("https://meldcrypto.com?token=token-val",
-                      crypto_widget->widget_url);
-          }));
+      session_data.Clone(), customer_data.Clone(), kRequestWithCustomer);
+  EXPECT_FALSE(errors.has_value());
+  ASSERT_TRUE(crypto_widget);
+  EXPECT_EQ("WXDpzmm2cNmtJWLDHgu1GT", crypto_widget->id);
+  EXPECT_EQ("external_customer_id", crypto_widget->external_customer_id);
+  EXPECT_EQ("external_session_id", crypto_widget->external_session_id);
+  EXPECT_EQ("WXEvEDzSgNedXWnJ55pwUJ", crypto_widget->customer_id);
+  EXPECT_EQ("token-val", crypto_widget->token);
+  EXPECT_EQ("https://meldcrypto.com?token=token-val",
+            crypto_widget->widget_url);
 
-  TestCryptoBuyWidgetCreate(
+  std::tie(crypto_widget, errors) = TestCryptoBuyWidgetCreate(
       R"({
   "externalSessionId": "external_session_id",
   "externalCustomerId": "external_customer_id",
@@ -1595,60 +797,32 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoBuyWidgetCreate) {
   "widgetUrl": "https://meldcrypto.com?token=token-val",
   "token": "token-val"
 })",
-      "US", "BTC", std::vector<std::string>{"cryptoCurrency"}, "BANK_TRANSFER",
-      "https://sb.fluidmoney.xyz", "AKOYA", "100", "USD", "testWalletAddress",
-      "walletTag", std::nullopt, std::nullopt, std::nullopt, std::nullopt,
-      base::BindLambdaForTesting(
-          [](mojom::MeldCryptoWidgetPtr crypto_widget,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
-          }));
+      session_data.Clone(), nullptr, kRequestWithoutCustomer);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>{
+                         l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
 
-  TestCryptoBuyWidgetCreate(
-      "some wrong data", "US", "BTC",
-      std::vector<std::string>{"cryptoCurrency"}, "BANK_TRANSFER",
-      "https://sb.fluidmoney.xyz", "AKOYA", "100", "USD", "testWalletAddress",
-      "walletTag", std::nullopt, std::nullopt, std::nullopt, std::nullopt,
-      base::BindLambdaForTesting(
-          [](mojom::MeldCryptoWidgetPtr crypto_widget,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
-          }));
-  TestCryptoBuyWidgetCreate(
-      "some wrong data", "US", "BTC",
-      std::vector<std::string>{"cryptoCurrency"}, "BANK_TRANSFER",
-      "https://sb.fluidmoney.xyz", "AKOYA", "100", "USD", "testWalletAddress",
-      "walletTag", std::nullopt, std::nullopt, std::nullopt, std::nullopt,
-      base::BindLambdaForTesting(
-          [](mojom::MeldCryptoWidgetPtr crypto_widget,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
-          }),
+  std::tie(crypto_widget, errors) =
+      TestCryptoBuyWidgetCreate("some wrong data", session_data.Clone(),
+                                nullptr, kRequestWithoutCustomer);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>{
+                         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
+
+  std::tie(crypto_widget, errors) = TestCryptoBuyWidgetCreate(
+      "some wrong data", session_data.Clone(), nullptr, kRequestWithoutCustomer,
       net::HTTP_REQUEST_TIMEOUT);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>{
+                         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
 
-  TestCryptoBuyWidgetCreate(
-      "", "", "", std::nullopt, std::nullopt, std::nullopt, "", "", "", "",
-      std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt,
-      base::BindLambdaForTesting(
-          [](mojom::MeldCryptoWidgetPtr crypto_widget,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{l10n_util::GetStringUTF8(
-                          IDS_WALLET_REQUEST_PROCESSING_ERROR)});
-          }),
-      net::HTTP_OK, true);
+  std::tie(crypto_widget, errors) =
+      TestCryptoBuyWidgetCreate("", nullptr, nullptr, std::nullopt);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>{l10n_util::GetStringUTF8(
+                         IDS_WALLET_REQUEST_PROCESSING_ERROR)});
 
-  TestCryptoBuyWidgetCreate(
+  std::tie(crypto_widget, errors) = TestCryptoBuyWidgetCreate(
       R"({
     "code": "BAD_REQUEST",
     "message": "Bad request",
@@ -1659,22 +833,81 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoBuyWidgetCreate) {
     "requestId": "356dd2b40fa55037bfe9d190b6438f59",
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
-      "US", "BTC", std::vector<std::string>{"cryptoCurrency"}, "BANK_TRANSFER",
-      "https://sb.fluidmoney.xyz", "AKOYA", "100", "USD", "testWalletAddress",
-      "walletTag", std::nullopt, std::nullopt, std::nullopt, std::nullopt,
-      base::BindLambdaForTesting(
-          [](mojom::MeldCryptoWidgetPtr crypto_widget,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors, std::vector<std::string>(
-                                   {"[sourceAmount] must not be null",
-                                    "[sourceCurrencyCode] must not be blank"}));
-          }),
+      session_data.Clone(), nullptr, kRequestWithoutCustomer,
       net::HTTP_BAD_REQUEST);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>(
+                         {"[sourceAmount] must not be null",
+                          "[sourceCurrencyCode] must not be blank"}));
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, CryptoSellWidgetCreate) {
-  TestCryptoSellWidgetCreate(
+  mojom::MeldCryptoWidgetPtr crypto_widget;
+  Errors errors;
+
+  const auto session_data = mojom::CryptoSellSessionData::New(
+      "US", "BTC", std::vector<std::string>{"cryptoCurrency"}, "BANK_TRANSFER",
+      "https://sb.fluidmoney.xyz", "AKOYA", "100", "USD", "testWalletAddress",
+      "walletTag");
+  auto session_data_without_wallet = session_data.Clone();
+  session_data_without_wallet->wallet_address = std::nullopt;
+  const auto customer_data = mojom::CryptoWidgetCustomerData::New(
+      mojom::CustomerObject::New("customer@email"), "customer_id",
+      "external_customer_id", "external_session_id");
+
+  constexpr char kRequestWithCustomer[] = R"({
+    "sessionType": "SELL",
+    "sessionData": {
+      "countryCode": "US",
+      "destinationCurrencyCode": "BTC",
+      "lockFields": ["cryptoCurrency"],
+      "paymentMethodType": "BANK_TRANSFER",
+      "redirectUrl": "https://sb.fluidmoney.xyz",
+      "serviceProvider": "AKOYA",
+      "sourceAmount": "100",
+      "sourceCurrencyCode": "USD",
+      "walletTag": "walletTag"
+    },
+    "customer": {"email": "customer@email"},
+    "customerId": "customer_id",
+    "externalCustomerId": "external_customer_id",
+    "externalSessionId": "external_session_id"
+  })";
+
+  constexpr char kRequestWithoutCustomer[] = R"({
+    "sessionType": "SELL",
+    "sessionData": {
+      "countryCode": "US",
+      "destinationCurrencyCode": "BTC",
+      "lockFields": ["cryptoCurrency"],
+      "paymentMethodType": "BANK_TRANSFER",
+      "redirectUrl": "https://sb.fluidmoney.xyz",
+      "serviceProvider": "AKOYA",
+      "sourceAmount": "100",
+      "sourceCurrencyCode": "USD",
+      "walletAddress": "testWalletAddress",
+      "walletTag": "walletTag"
+    }
+  })";
+
+  constexpr char kRequestWithExternalSessionId[] = R"({
+    "sessionType": "SELL",
+    "sessionData": {
+      "countryCode": "US",
+      "destinationCurrencyCode": "BTC",
+      "lockFields": ["cryptoCurrency"],
+      "paymentMethodType": "BANK_TRANSFER",
+      "redirectUrl": "https://sb.fluidmoney.xyz",
+      "serviceProvider": "AKOYA",
+      "sourceAmount": "100",
+      "sourceCurrencyCode": "USD",
+      "walletAddress": "testWalletAddress",
+      "walletTag": "walletTag"
+    },
+    "externalSessionId": "external_session_id"
+  })";
+
+  std::tie(crypto_widget, errors) = TestCryptoSellWidgetCreate(
       R"({
   "id": "WXDpzmm2cNmtJWLDHgu1GT",
   "externalSessionId": "external_session_id",
@@ -1683,26 +916,18 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoSellWidgetCreate) {
   "widgetUrl": "https://meldcrypto.com?token=token-val",
   "token": "token-val"
 })",
-      "US", "BTC", std::vector<std::string>{"cryptoCurrency"}, "BANK_TRANSFER",
-      "https://sb.fluidmoney.xyz", "AKOYA", "100", "USD", std::nullopt,
-      "walletTag", "customer@email", "customer_id", "external_customer_id",
-      "external_session_id",
-      base::BindLambdaForTesting(
-          [](mojom::MeldCryptoWidgetPtr crypto_widget,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_FALSE(errors.has_value());
-            EXPECT_EQ("WXDpzmm2cNmtJWLDHgu1GT", crypto_widget->id);
-            EXPECT_EQ("external_customer_id",
-                      crypto_widget->external_customer_id);
-            EXPECT_EQ("external_session_id",
-                      crypto_widget->external_session_id);
-            EXPECT_EQ("WXEvEDzSgNedXWnJ55pwUJ", crypto_widget->customer_id);
-            EXPECT_EQ("token-val", crypto_widget->token);
-            EXPECT_EQ("https://meldcrypto.com?token=token-val",
-                      crypto_widget->widget_url);
-          }));
+      std::move(session_data_without_wallet), customer_data.Clone(),
+      kRequestWithCustomer);
+  EXPECT_FALSE(errors.has_value());
+  EXPECT_EQ("WXDpzmm2cNmtJWLDHgu1GT", crypto_widget->id);
+  EXPECT_EQ("external_customer_id", crypto_widget->external_customer_id);
+  EXPECT_EQ("external_session_id", crypto_widget->external_session_id);
+  EXPECT_EQ("WXEvEDzSgNedXWnJ55pwUJ", crypto_widget->customer_id);
+  EXPECT_EQ("token-val", crypto_widget->token);
+  EXPECT_EQ("https://meldcrypto.com?token=token-val",
+            crypto_widget->widget_url);
 
-  TestCryptoSellWidgetCreate(
+  std::tie(crypto_widget, errors) = TestCryptoSellWidgetCreate(
       R"({
   "externalSessionId": "external_session_id",
   "externalCustomerId": "external_customer_id",
@@ -1710,61 +935,32 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoSellWidgetCreate) {
   "widgetUrl": "https://meldcrypto.com?token=token-val",
   "token": "token-val"
 })",
-      "US", "BTC", std::vector<std::string>{"cryptoCurrency"}, "BANK_TRANSFER",
-      "https://sb.fluidmoney.xyz", "AKOYA", "100", "USD", "testWalletAddress",
-      "walletTag", std::nullopt, std::nullopt, std::nullopt, std::nullopt,
-      base::BindLambdaForTesting(
-          [](mojom::MeldCryptoWidgetPtr crypto_widget,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
-          }));
+      session_data.Clone(), nullptr, kRequestWithoutCustomer);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>{
+                         l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
 
-  TestCryptoSellWidgetCreate(
-      "some wrong data", "US", "BTC",
-      std::vector<std::string>{"cryptoCurrency"}, "BANK_TRANSFER",
-      "https://sb.fluidmoney.xyz", "AKOYA", "100", "USD", "testWalletAddress",
-      "walletTag", std::nullopt, std::nullopt, std::nullopt, std::nullopt,
-      base::BindLambdaForTesting(
-          [](mojom::MeldCryptoWidgetPtr crypto_widget,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
-          }));
-  TestCryptoSellWidgetCreate(
-      "some wrong data", "US", "BTC",
-      std::vector<std::string>{"cryptoCurrency"}, "BANK_TRANSFER",
-      "https://sb.fluidmoney.xyz", "AKOYA", "100", "USD", "testWalletAddress",
-      "walletTag", std::nullopt, std::nullopt, std::nullopt, std::nullopt,
-      base::BindLambdaForTesting(
-          [](mojom::MeldCryptoWidgetPtr crypto_widget,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
-          }),
+  std::tie(crypto_widget, errors) =
+      TestCryptoSellWidgetCreate("some wrong data", session_data.Clone(),
+                                 nullptr, kRequestWithoutCustomer);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>{
+                         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
+
+  std::tie(crypto_widget, errors) = TestCryptoSellWidgetCreate(
+      "some wrong data", session_data.Clone(), nullptr, kRequestWithoutCustomer,
       net::HTTP_REQUEST_TIMEOUT);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>{
+                         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
 
-  TestCryptoSellWidgetCreate(
-      "", "", "", std::nullopt, std::nullopt, std::nullopt, "", "", "",
-      std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt,
-      std::nullopt,
-      base::BindLambdaForTesting(
-          [](mojom::MeldCryptoWidgetPtr crypto_widget,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{l10n_util::GetStringUTF8(
-                          IDS_WALLET_REQUEST_PROCESSING_ERROR)});
-          }),
-      net::HTTP_OK, true);
+  std::tie(crypto_widget, errors) =
+      TestCryptoSellWidgetCreate("", nullptr, nullptr, std::nullopt);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>{l10n_util::GetStringUTF8(
+                         IDS_WALLET_REQUEST_PROCESSING_ERROR)});
 
-  TestCryptoSellWidgetCreate(
+  std::tie(crypto_widget, errors) = TestCryptoSellWidgetCreate(
       R"({
     "code": "BAD_REQUEST",
     "message": "Bad request",
@@ -1775,23 +971,61 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoSellWidgetCreate) {
     "requestId": "356dd2b40fa55037bfe9d190b6438f59",
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
-      "US", "BTC", std::vector<std::string>{"cryptoCurrency"}, "BANK_TRANSFER",
-      "https://sb.fluidmoney.xyz", "AKOYA", "100", "USD", "testWalletAddress",
-      "walletTag", std::nullopt, std::nullopt, std::nullopt,
-      "external_session_id",
-      base::BindLambdaForTesting(
-          [](mojom::MeldCryptoWidgetPtr crypto_widget,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors, std::vector<std::string>(
-                                   {"[sourceAmount] must not be null",
-                                    "[sourceCurrencyCode] must not be blank"}));
-          }),
-      net::HTTP_BAD_REQUEST);
+      session_data.Clone(),
+      mojom::CryptoWidgetCustomerData::New(nullptr, std::nullopt, std::nullopt,
+                                           "external_session_id"),
+      kRequestWithExternalSessionId, net::HTTP_BAD_REQUEST);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>(
+                         {"[sourceAmount] must not be null",
+                          "[sourceCurrencyCode] must not be blank"}));
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, CryptoTransferWidgetCreate) {
-  TestCryptoTransferWidgetCreate(
+  mojom::MeldCryptoWidgetPtr crypto_widget;
+  Errors errors;
+
+  const auto session_data = mojom::CryptoTransferSessionData::New(
+      "US", "institution", std::vector<std::string>{"cryptoCurrency"},
+      "https://sb.fluidmoney.xyz", "AKOYA", "1",
+      std::vector<std::string>{"BTC", "ETH"}, std::nullopt, "walletTag");
+  const auto customer_data = mojom::CryptoWidgetCustomerData::New(
+      mojom::CustomerObject::New("customer@email"), "customer_id",
+      "external_customer_id", "external_session_id");
+
+  constexpr char kRequestWithCustomer[] = R"({
+    "sessionType": "TRANSFER",
+    "sessionData": {
+      "countryCode": "US",
+      "institutionId": "institution",
+      "lockFields": ["cryptoCurrency"],
+      "redirectUrl": "https://sb.fluidmoney.xyz",
+      "serviceProvider": "AKOYA",
+      "sourceAmount": "1",
+      "sourceCurrencyCodes": ["BTC", "ETH"],
+      "walletTag": "walletTag"
+    },
+    "customer": {"email": "customer@email"},
+    "customerId": "customer_id",
+    "externalCustomerId": "external_customer_id",
+    "externalSessionId": "external_session_id"
+  })";
+
+  constexpr char kRequestWithoutCustomer[] = R"({
+    "sessionType": "TRANSFER",
+    "sessionData": {
+      "countryCode": "US",
+      "institutionId": "institution",
+      "lockFields": ["cryptoCurrency"],
+      "redirectUrl": "https://sb.fluidmoney.xyz",
+      "serviceProvider": "AKOYA",
+      "sourceAmount": "1",
+      "sourceCurrencyCodes": ["BTC", "ETH"],
+      "walletTag": "walletTag"
+    }
+  })";
+
+  std::tie(crypto_widget, errors) = TestCryptoTransferWidgetCreate(
       R"({
   "id": "WXDpzmm2cNmtJWLDHgu1GT",
   "externalSessionId": "external_session_id",
@@ -1800,26 +1034,17 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoTransferWidgetCreate) {
   "widgetUrl": "https://meldcrypto.com?token=token-val",
   "token": "token-val"
 })",
-      "US", "institution", std::vector<std::string>{"cryptoCurrency"},
-      "https://sb.fluidmoney.xyz", "AKOYA", "1",
-      std::vector<std::string>{"BTC", "ETH"}, std::nullopt, "walletTag",
-      "customer@email", "customer_id", "external_customer_id",
-      "external_session_id",
-      base::BindLambdaForTesting(
-          [](mojom::MeldCryptoWidgetPtr crypto_widget,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_FALSE(errors.has_value());
-            EXPECT_EQ("WXDpzmm2cNmtJWLDHgu1GT", crypto_widget->id);
-            EXPECT_EQ("external_customer_id",
-                      crypto_widget->external_customer_id);
-            EXPECT_EQ("external_session_id",
-                      crypto_widget->external_session_id);
-            EXPECT_EQ("WXEvEDzSgNedXWnJ55pwUJ", crypto_widget->customer_id);
-            EXPECT_EQ("token-val", crypto_widget->token);
-            EXPECT_EQ("https://meldcrypto.com?token=token-val",
-                      crypto_widget->widget_url);
-          }));
-  TestCryptoTransferWidgetCreate(
+      session_data.Clone(), customer_data.Clone(), kRequestWithCustomer);
+  EXPECT_FALSE(errors.has_value());
+  EXPECT_EQ("WXDpzmm2cNmtJWLDHgu1GT", crypto_widget->id);
+  EXPECT_EQ("external_customer_id", crypto_widget->external_customer_id);
+  EXPECT_EQ("external_session_id", crypto_widget->external_session_id);
+  EXPECT_EQ("WXEvEDzSgNedXWnJ55pwUJ", crypto_widget->customer_id);
+  EXPECT_EQ("token-val", crypto_widget->token);
+  EXPECT_EQ("https://meldcrypto.com?token=token-val",
+            crypto_widget->widget_url);
+
+  std::tie(crypto_widget, errors) = TestCryptoTransferWidgetCreate(
       R"({
   "externalSessionId": "external_session_id",
   "externalCustomerId": "external_customer_id",
@@ -1827,62 +1052,32 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoTransferWidgetCreate) {
   "widgetUrl": "https://meldcrypto.com?token=token-val",
   "token": "token-val"
 })",
-      "US", "institution", std::vector<std::string>{"cryptoCurrency"},
-      "https://sb.fluidmoney.xyz", "AKOYA", "1",
-      std::vector<std::string>{"BTC", "ETH"}, std::nullopt, "walletTag",
-      std::nullopt, std::nullopt, std::nullopt, std::nullopt,
-      base::BindLambdaForTesting(
-          [](mojom::MeldCryptoWidgetPtr crypto_widget,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
-          }));
+      session_data.Clone(), nullptr, kRequestWithoutCustomer);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>{
+                         l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
 
-  TestCryptoTransferWidgetCreate(
-      "some wrong data", "US", "institution",
-      std::vector<std::string>{"cryptoCurrency"}, "https://sb.fluidmoney.xyz",
-      "AKOYA", "1", std::vector<std::string>{"BTC", "ETH"}, std::nullopt,
-      "walletTag", std::nullopt, std::nullopt, std::nullopt, std::nullopt,
-      base::BindLambdaForTesting(
-          [](mojom::MeldCryptoWidgetPtr crypto_widget,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
-          }));
-  TestCryptoTransferWidgetCreate(
-      "some wrong data", "US", "institution",
-      std::vector<std::string>{"cryptoCurrency"}, "https://sb.fluidmoney.xyz",
-      "AKOYA", "1", std::vector<std::string>{"BTC", "ETH"}, std::nullopt,
-      "walletTag", std::nullopt, std::nullopt, std::nullopt, std::nullopt,
-      base::BindLambdaForTesting(
-          [](mojom::MeldCryptoWidgetPtr crypto_widget,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
-          }),
+  std::tie(crypto_widget, errors) =
+      TestCryptoTransferWidgetCreate("some wrong data", session_data.Clone(),
+                                     nullptr, kRequestWithoutCustomer);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>{
+                         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
+
+  std::tie(crypto_widget, errors) = TestCryptoTransferWidgetCreate(
+      "some wrong data", session_data.Clone(), nullptr, kRequestWithoutCustomer,
       net::HTTP_REQUEST_TIMEOUT);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>{
+                         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
 
-  TestCryptoTransferWidgetCreate(
-      "", std::nullopt, std::nullopt, std::nullopt, std::nullopt, "", "",
-      std::vector<std::string>{}, std::nullopt, std::nullopt, std::nullopt,
-      std::nullopt, std::nullopt, std::nullopt,
-      base::BindLambdaForTesting(
-          [](mojom::MeldCryptoWidgetPtr crypto_widget,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{l10n_util::GetStringUTF8(
-                          IDS_WALLET_REQUEST_PROCESSING_ERROR)});
-          }),
-      net::HTTP_OK, true);
+  std::tie(crypto_widget, errors) =
+      TestCryptoTransferWidgetCreate("", nullptr, nullptr, std::nullopt);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>{l10n_util::GetStringUTF8(
+                         IDS_WALLET_REQUEST_PROCESSING_ERROR)});
 
-  TestCryptoTransferWidgetCreate(
+  std::tie(crypto_widget, errors) = TestCryptoTransferWidgetCreate(
       R"({
     "code": "BAD_REQUEST",
     "message": "Bad request",
@@ -1893,20 +1088,12 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoTransferWidgetCreate) {
     "requestId": "356dd2b40fa55037bfe9d190b6438f59",
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
-      "US", "institution", std::vector<std::string>{"cryptoCurrency"},
-      "https://sb.fluidmoney.xyz", "AKOYA", "1",
-      std::vector<std::string>{"BTC", "ETH"}, std::nullopt, "walletTag",
-      "customer@email", "customer_id", "external_customer_id",
-      "external_session_id",
-      base::BindLambdaForTesting(
-          [](mojom::MeldCryptoWidgetPtr crypto_widget,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors, std::vector<std::string>(
-                                   {"[sourceAmount] must not be null",
-                                    "[sourceCurrencyCode] must not be blank"}));
-          }),
+      session_data.Clone(), customer_data.Clone(), kRequestWithCustomer,
       net::HTTP_BAD_REQUEST);
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(*errors, std::vector<std::string>(
+                         {"[sourceAmount] must not be null",
+                          "[sourceCurrencyCode] must not be blank"}));
 }
 
 }  // namespace brave_wallet

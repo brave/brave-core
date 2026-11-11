@@ -29,7 +29,7 @@ public class BraveTalkTabHelper: TabObserver, @preconcurrency BraveTalkTabHelper
     tab.addObserver(self)
   }
 
-  deinit {
+  isolated deinit {
     tab?.removeObserver(self)
   }
 

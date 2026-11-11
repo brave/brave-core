@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 import { formatLocale, getLocale } from '$web-common/locale'
 import ConversationAreaButton from '../../../common/components/conversation_area_button'
 import * as Mojom from '../../../common/mojom'
@@ -112,6 +112,16 @@ export default function ToolPermissionChallenge(props: Props) {
     return null
   }
 
+  const answer = (decision: Mojom.PermissionChallengeDecision) => {
+    if (!props.isInteractive) {
+      return
+    }
+    conversationContext.userActions?.processPermissionChallenge?.(
+      props.toolUseEvent.id,
+      decision,
+    )
+  }
+
   // Tools can provide a human-readable, markdown-formatted description of
   // what they want permission to do (e.g. website-provided WebMCP tools
   // describe themselves as "Brave AI would like to execute **name** on
@@ -137,7 +147,8 @@ export default function ToolPermissionChallenge(props: Props) {
           className={styles.headerIcon}
         />
         <span className={styles.headerText}>
-          {getLocale(S.CHAT_UI_PERMISSION_CHALLENGE_HEADER)}
+          {permissionChallenge.title
+            ?? getLocale(S.CHAT_UI_PERMISSION_CHALLENGE_HEADER)}
         </span>
       </div>
 
@@ -153,7 +164,14 @@ export default function ToolPermissionChallenge(props: Props) {
           </>
         )}
 
-        {toolPermissionImplications && <p>{toolPermissionImplications}</p>}
+        {permissionChallenge.implications ? (
+          <MarkdownRenderer
+            text={permissionChallenge.implications}
+            shouldShowTextCursor={false}
+          />
+        ) : (
+          toolPermissionImplications && <p>{toolPermissionImplications}</p>
+        )}
         {permissionChallenge.plan && (
           <p className={styles.assessment}>{permissionChallenge.plan}</p>
         )}
@@ -167,33 +185,33 @@ export default function ToolPermissionChallenge(props: Props) {
           className={styles.permissionButton}
           icon={<>✅</>}
           isDisabled={!props.isInteractive}
-          onClick={
-            props.isInteractive
-              ? () =>
-                  conversationContext.conversationHandler?.processPermissionChallenge?.(
-                    props.toolUseEvent.id,
-                    true,
-                  )
-              : () => {}
-          }
+          onClick={() => answer(Mojom.PermissionChallengeDecision.kAllowOnce)}
         >
           <div className={styles.permissionButtonText}>
             {getLocale(S.CHAT_UI_PERMISSION_CHALLENGE_ALLOW_BUTTON)}
           </div>
         </ConversationAreaButton>
+        {/* Labelled as in the website tools dialog, since it sets the same
+            thing. */}
+        {permissionChallenge.supportsAllowSession && (
+          <ConversationAreaButton
+            className={styles.permissionButton}
+            icon={<>🔁</>}
+            isDisabled={!props.isInteractive}
+            onClick={() =>
+              answer(Mojom.PermissionChallengeDecision.kAllowSession)
+            }
+          >
+            <div className={styles.permissionButtonText}>
+              {getLocale(S.CHAT_UI_WEBSITE_TOOL_PERMISSION_ALLOW_SESSION)}
+            </div>
+          </ConversationAreaButton>
+        )}
         <ConversationAreaButton
           className={styles.permissionButton}
           icon={<>❌</>}
           isDisabled={!props.isInteractive}
-          onClick={
-            props.isInteractive
-              ? () =>
-                  conversationContext.conversationHandler?.processPermissionChallenge?.(
-                    props.toolUseEvent.id,
-                    false,
-                  )
-              : () => {}
-          }
+          onClick={() => answer(Mojom.PermissionChallengeDecision.kDeny)}
         >
           <div className={styles.permissionButtonText}>
             {getLocale(S.CHAT_UI_PERMISSION_CHALLENGE_DENY_BUTTON)}

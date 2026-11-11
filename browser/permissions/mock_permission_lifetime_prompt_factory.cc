@@ -29,8 +29,9 @@ MockPermissionLifetimePromptFactory::MockPermissionLifetimePromptFactory(
 }
 
 MockPermissionLifetimePromptFactory::~MockPermissionLifetimePromptFactory() {
-  for (auto* prompt : prompts_)
+  for (MockPermissionLifetimePrompt* prompt : prompts_) {
     prompt->ResetFactory();
+  }
   prompts_.clear();
 }
 

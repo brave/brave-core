@@ -10,12 +10,23 @@ import fs from 'node:fs'
 import { program } from 'commander'
 import path from 'node:path'
 import config from '../lib/config.ts'
-import util from '../lib/util.js'
+import util from '../lib/util.ts'
 import * as Log from '../lib/log.ts'
 import depotTools from '../lib/depotTools.js'
 import { isCI } from '../lib/ciDetect.ts'
-import syncUtil from '../lib/syncUtils.js'
-import sisoUtils from '../lib/sisoUtils.js'
+import * as syncUtil from '../lib/syncUtils.ts'
+import { writeSisoRc } from '../lib/sisoUtils.ts'
+import {
+  getBuilderBuildTarget,
+  getBuilderGclientTargets,
+  supportBuilder,
+} from '../lib/builder.ts'
+import * as buildOptions from '../lib/buildOptions.ts'
+import type {
+  BuildTarget,
+  GclientTargets,
+  SyncTargetOptions,
+} from '../lib/syncTypes.ts'
 
 program
   .version(process.env.npm_package_version || 'unknown')
@@ -41,11 +52,15 @@ program
   )
   .option('--nohooks', 'Do not run hooks after updating')
   .option(
-    '--with_issue_44921',
-    'Do not pass --revision to gclient to avoid process hanging on jenkins. https://github.com/brave/brave-browser/issues/44921',
+    '--lean_sync',
+    'An experimental lean sync checkout mode. https://github.com/brave/brave-browser/issues/44921',
   )
-  .action(sync)
-  .parse()
+  .apply(buildOptions.supportQuiet)
+
+// TODO(http://brave.dev/b/56449): Experimental implementation for integration
+// with our bots generator.
+supportBuilder(program, { allowed: ['init'] })
+program.action(sync).parse()
 
 function syncBrave(options) {
   let args = ['sync', '--nohooks']
@@ -81,26 +96,16 @@ async function sync(options) {
   // Install depot_tools early to make Python available.
   depotTools.installDepotTools()
 
-  // Read the existing .gclient config to reuse some values from it if they are
-  // not provided.
-  const existingGclientConfig = options.init ? {} : syncUtil.readGclientConfig()
-
-  // --target_os, --target_arch as lists make sense only for `init/sync`
-  // commands. Handle comma-separated values here and only pass the first value
-  // to the config.update() call.
-  const targetOSList = commaSeparatedToList(
-    options.target_os,
-    existingGclientConfig.target_os || [],
-  )
-  if (targetOSList.length > 0) {
-    options.target_os = targetOSList[0]
+  const { targetOSList, targetArchList } = getGclientTargets(options)
+  const { targetOS, targetArch } = getBuildTarget(options, {
+    targetOSList,
+    targetArchList,
+  })
+  if (targetOS) {
+    options.target_os = targetOS
   }
-  const targetArchList = commaSeparatedToList(
-    options.target_arch,
-    existingGclientConfig.target_cpu || [],
-  )
-  if (targetArchList.length > 0) {
-    options.target_arch = targetArchList[0]
+  if (targetArch) {
+    options.target_arch = targetArch
   }
 
   config.update(options)
@@ -147,7 +152,46 @@ async function sync(options) {
     })
   }
 
-  sisoUtils.writeSisoRc()
+  writeSisoRc()
+}
+
+// Returns the target lists written into .gclient. --target_os, --target_arch
+// as lists make sense only for `init/sync` commands. Values not provided are
+// reused from the existing .gclient config.
+function getGclientTargets(options: SyncTargetOptions): GclientTargets {
+  // TODO(http://brave.dev/b/56449): Experimental implementation for integration
+  // with our bots generator.
+  if (options.builder) {
+    return getBuilderGclientTargets(options.builder)
+  }
+
+  const existingGclientConfig = options.init ? {} : syncUtil.readGclientConfig()
+  return {
+    targetOSList: commaSeparatedToList(
+      options.target_os,
+      existingGclientConfig.target_os || [],
+    ),
+    targetArchList: commaSeparatedToList(
+      options.target_arch,
+      existingGclientConfig.target_cpu || [],
+    ),
+  }
+}
+
+// Returns the one target passed to the config.update() call. A builder's comes
+// from its GN args. Without one, the first value of each .gclient list is the
+// target.
+function getBuildTarget(
+  options: SyncTargetOptions,
+  { targetOSList, targetArchList }: GclientTargets,
+): BuildTarget {
+  // TODO(http://brave.dev/b/56449): Experimental implementation for integration
+  // with our bots generator.
+  if (options.builder) {
+    return getBuilderBuildTarget(options.builder, config.hostOS)
+  }
+
+  return { targetOS: targetOSList[0], targetArch: targetArchList[0] }
 }
 
 function commaSeparatedToList(value, defaultValue) {

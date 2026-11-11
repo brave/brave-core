@@ -1,11 +1,12 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 module brave_wallet.mojom;
 
 import "brave/components/brave_wallet/common/meld_integration.mojom";
+import "brave/components/brave_wallet/common/mojom/brave_wallet_common.mojom";
 import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
 import "url/mojom/origin.mojom";
@@ -263,6 +264,53 @@ interface CardanoProvider {
   IsEnabled() => (bool enabled);
 };
 
+struct PolkadotProviderErrorBundle {
+  PolkadotProviderError code;
+  string message;
+};
+
+// Our `InjectedAccount` impl.
+// https://github.com/polkadot-js/extension/blob/master/packages/extension-inject/src/types.ts
+struct PolkadotInjectedAccount {
+  // SS58-encoded with the prefix of the chain the account belongs to.
+  string address;
+  // Set when the account is restricted to a single chain, letting a dapp
+  // filter out accounts that can't be used with the chain it talks to.
+  // Currently not something we support, which means all accounts are available
+  // to any parachain, similar to how Talisman works today.
+  string? genesis_hash;
+  string name;
+  // `KeypairType`, e.g. "sr25519".
+  string type;
+};
+
+// Our `SignerResult` impl.
+// https://github.com/polkadot-js/api/blob/master/packages/types/src/types/extrinsic.ts
+struct PolkadotSignerResult {
+  // The per-Injected id of the request the user approved.
+  int32 id;
+  // Hex-encoded sr25519 signature over the SCALE-encoded signer payload.
+  string signature;
+};
+
+interface PolkadotApi {
+  // `accounts.get(anyType)`. `any_type` asks for accounts that can't be used
+  // for signing, which we have none of so we ignore the param.
+  GetAccounts(bool any_type) => (array<PolkadotInjectedAccount>? accounts,
+                                 PolkadotProviderErrorBundle? error);
+
+  // `signer.signPayload(payload)`. `payload_json` is the dApp's
+  // `SignerPayloadJSON`, serialized by the renderer.
+  SignPayload(string payload_json)
+      => (PolkadotSignerResult? result, PolkadotProviderErrorBundle? error);
+};
+
+// https://github.com/polkadot-js/extension#injection-information
+interface PolkadotProvider {
+  Enable() => (pending_remote<PolkadotApi>? api,
+               PolkadotProviderErrorBundle? error);
+};
+
 struct ChainId {
   CoinType coin;
   string chain_id;
@@ -429,8 +477,18 @@ enum PermissionLifetimeOption {
   kForever = 3,
 };
 
+interface PanelHandlerObserver {
+  // Fired when the origin of the tab attached to the panel changes.
+  OnActivePanelOriginChanged(OriginInfo origin_info);
+};
+
 // Browser-side handler for requests from WebUI page.
 interface PanelHandler {
+  AddObserver(pending_remote<PanelHandlerObserver> observer);
+
+  // Returns origin of the page panel is attached to.
+  GetActivePanelOrigin() => (OriginInfo origin_info);
+
   // Notify the backend that the UI is ready to be shown.
   ShowUI();
 
@@ -482,6 +540,11 @@ interface PageHandler {
   // Mobile only
   // - Used by Wallet WebUI when user needs to scan QR code to read address
   ScanQRCode() => (string address);
+
+  // Mobile Only
+  // - Used by Wallet WebUI when user taps on an external link from
+  // Wallet WebUI
+  OpenTab(url.mojom.Url url);
 };
 
 enum AssetPriceTimeframe {
@@ -495,7 +558,7 @@ enum AssetPriceTimeframe {
 };
 
 struct AssetTimePrice {
-  mojo_base.mojom.TimeDelta date;
+  mojo_base.mojom.JSTime date;
   string price;
 };
 
@@ -538,21 +601,6 @@ struct CoinMarket {
   double price_change_24h;
   double price_change_percentage_24h;
   double total_volume;
-};
-
-struct Dapp {
-  uint32 id;  // Assigned by DappRadar
-  string name;
-  string description;
-  string logo;
-  string website;
-  array<string> chains;
-  array<string> categories;
-  uint32 transactions;
-  uint32 uaw;
-  double volume;
-  double balance;
-  string range;
 };
 
 enum RoutePriority {
@@ -976,6 +1024,14 @@ enum AccountKind {
   kHardware,
 };
 
+enum RecoverWalletResult {
+  kSuccess = 0,
+  kInvalidMnemonic = 1,
+  kMnemonicMismatch = 2,
+  kImportedAccountsPresent = 3,
+  kInternalError = 4,
+};
+
 struct AccountId {
   CoinType coin;
   // TODO(apaymyshev): that should be different keyrings for different kinds.
@@ -1010,12 +1066,14 @@ struct AllAccountsInfo {
   AccountInfo? eth_dapp_selected_account;
   AccountInfo? sol_dapp_selected_account;
   AccountInfo? ada_dapp_selected_account;
+  AccountInfo? dot_dapp_selected_account;
 };
 
 struct WalletInfo {
   bool is_wallet_created;
   bool is_wallet_locked;
   bool is_wallet_backed_up;
+  bool is_filecoin_ledger_enabled;
   bool is_bitcoin_enabled;
   bool is_bitcoin_import_enabled;
   bool is_bitcoin_ledger_enabled;
@@ -1028,6 +1086,8 @@ struct WalletInfo {
   array<CoinType> enabled_coins;
   bool is_cardano_dapp_support_enabled;
   bool is_polkadot_enabled;
+  bool is_polkadot_dapp_support_enabled;
+  bool is_card_stack_ui_enabled;
 };
 
 // Browser-side handler for common panel / page things
@@ -1126,17 +1186,6 @@ interface KeyringServiceObserver {
   SelectedDappAccountChanged(CoinType coin, AccountInfo? account);
 };
 
-enum OnRampProvider {
-  kRamp = 0,
-  kTransak = 2,
-  kStripe = 3,
-  kCoinbase = 4,
-};
-
-enum OffRampProvider {
-  kRamp = 1,
-};
-
 // List of tokens and coins that are supported.
 // is_nft property in the returned registry tokens is not reliable, the value is
 // based
@@ -1155,29 +1204,10 @@ interface BlockchainRegistry {
   GetAllTokens(string chain_id, CoinType coin)
       => (array<BlockchainToken> tokens);
 
-  // Below APIs are Ethereum only for the moment.
-  // Obtains all tokens for a single provider for the Buy UI
-  GetBuyTokens(OnRampProvider provider, string chain_id)
-      => (array<BlockchainToken> tokens);
-
-  // Obtains all tokens for multiple providers for the Buy UI
-  GetProvidersBuyTokens(array<OnRampProvider> providers, string chain_id)
-      => (array<BlockchainToken> tokens);
-
-  // Obtains all tokens for the Sell UI
-  GetSellTokens(OffRampProvider provider, array<string> chain_ids)
-      => (array<BlockchainToken> tokens);
-
-  // Get currencies list
-  GetOnRampCurrencies() => (array<OnRampCurrency> currencies);
-
   // Returns list of prepopulated networks.
   GetPrepopulatedNetworks() => (array<NetworkInfo> networks);
 
-  // Returns lists of top dapps
-  GetTopDapps(string chain_id, CoinType coin) => (array<Dapp> dapps);
-
-  // Returns the Coincecko ID for a given chain id and contract address
+  // Returns the Coingecko ID for a given chain id and contract address
   GetCoingeckoId(string chain_id, string contract_address)
       => (string? coingecko_id);
 };
@@ -1208,6 +1238,17 @@ interface KeyringService {
   RestoreWallet(
       string mnemonic, string password, bool is_legacy_eth_seed_format)
       => (bool is_valid_mnemonic);
+
+  // Recovers access to an existing locked wallet using its mnemonic and a new
+  // password. Imported accounts cannot be recovered from the mnemonic, so if
+  // any exist this returns kImportedAccountsPresent unless
+  // `allow_imported_account_removal` is true, in which case they are removed.
+  // If `new_password` is the current password, the wallet is just unlocked.
+  RecoverWallet(string mnemonic,
+                string new_password,
+                bool is_legacy_eth_seed_format,
+                bool allow_imported_account_removal)
+      => (RecoverWalletResult result);
 
   // Locks the keyring.
   Lock();
@@ -1343,21 +1384,6 @@ interface KeyringService {
 
 // Used for cryptocurrency prices over time.
 interface AssetRatioService {
-  // Obtains the URL for buying assets specifying currency
-  GetBuyUrlV1(OnRampProvider provider,
-              string chain_id,
-              string address,
-              string symbol,
-              string amount,
-              string currencyCode) => (string url, string? error);
-
-  // Obtains the URL for selling assets specifying currency
-  GetSellUrl(OffRampProvider provider,
-             string chain_id,
-             string symbol,
-             string amount,
-             string currencyCode) => (string url, string? error);
-
   // Obtains the prices from a list of requests
   GetPrice(array<AssetPriceRequest> requests, string vs_currency)
       => (bool success, array<AssetPrice> values);
@@ -1370,57 +1396,6 @@ interface AssetRatioService {
   // Obtain list of top currencies and their market data
   GetCoinMarkets(string vs_asset, uint8 limit)
       => (bool success, array<CoinMarket> values);
-};
-
-interface MeldIntegrationService {
-  // Obtains the list of Service Providers
-  // All parameters are optional
-  GetServiceProviders(MeldFilter filter)
-      => (array<MeldServiceProvider>? service_providers,
-          array<string>? error);
-
-  // Obtains the crypto quotes
-  // Note that next parameters are mandatory:
-  // destination_currency_code, country, source_amount, source_currency_code
-  GetCryptoQuotes(string country,
-                  string source_currency_code,
-                  string destination_currency_code,
-                  double source_amount,
-                  string? account,
-                  string? payment_method)
-      => (array<MeldCryptoQuote>? crypto_quotes, array<string>? error);
-
-  // Obtains the list of payment methods
-  // All parameters are optional
-  GetPaymentMethods(MeldFilter filter)
-      => (array<MeldPaymentMethod>? payment_methods, array<string>? error);
-
-  // Obtains the list of fiat currencies
-  // All parameters are optional
-  GetFiatCurrencies(MeldFilter filter)
-      => (array<MeldFiatCurrency>? fiat_currencies, array<string>? error);
-
-  // Obtains the list of crypto currencies
-  // All parameters are optional
-  GetCryptoCurrencies(MeldFilter filter)
-      => (array<MeldCryptoCurrency>? fiat_currencies, array<string>? error);
-
-  // Obtains the list of countries
-  // All parameters are optional
-  GetCountries(MeldFilter filter)
-      => (array<MeldCountry>? countries, array<string>? error);
-
-  CryptoBuyWidgetCreate(CryptoBuySessionData session_data,
-                        CryptoWidgetCustomerData? customer_data)
-      => (MeldCryptoWidget? widget_data, array<string>? error);
-
-  CryptoSellWidgetCreate(CryptoSellSessionData session_data,
-                         CryptoWidgetCustomerData? customer_data)
-      => (MeldCryptoWidget? widget_data, array<string>? error);
-
-  CryptoTransferWidgetCreate(CryptoTransferSessionData session_data,
-                             CryptoWidgetCustomerData? customer_data)
-      => (MeldCryptoWidget? widget_data, array<string>? error);
 };
 
 // Implements cross-chain swap functionality using 0x, Jupiter, and LiFi APIs
@@ -1578,6 +1553,18 @@ const string kPolkadotMainnet = "polkadot_mainnet";
 
 const string kPolkadotMainnetAssetHub = "polkadot_asset_hub";
 
+const string kPolkadotAcala = "polkadot_acala";
+
+const string kPolkadotBifrost = "polkadot_bifrost";
+
+const string kPolkadotHydration = "polkadot_hydration";
+
+const string kPolkadotNeuroWeb = "polkadot_neuroweb";
+
+const string kPolkadotJamton = "polkadot_jamton";
+
+const string kPolkadotKusamaHub = "kusama_asset_hub";
+
 const string kPolkadotTestnet = "polkadot_testnet";
 
 const string kPolkadotTestnetAssetHub = "westend_asset_hub";
@@ -1700,17 +1687,6 @@ const string kScrollChainId = "0x82750";
 const string kBatTokenContractAddress =
     "0x0D8775F648430679A709E98d2b0Cb6250d2887EF";
 
-// https://github.com/satoshilabs/slips/blob/master/slip-0044.md
-enum CoinType {
-  BTC = 0,
-  ZEC = 133,
-  ETH = 60,
-  FIL = 461,
-  SOL = 501,
-  ADA = 1815,
-  DOT = 354,
-};
-
 struct NetworkInfo {
   string chain_id;
   string chain_name;
@@ -1725,33 +1701,27 @@ struct NetworkInfo {
   array<KeyringId> supported_keyrings;
 };
 
+// Origin details for dApp-related requests. Always derived from an origin
+// satisfying `IsValidDappOrigin`, e.g. non-opaque and http/https.
+struct DappOriginInfo {
+  string origin_spec;
+  string e_tld_plus_one;
+};
+
 struct OriginInfo {
   string origin_spec;
   string e_tld_plus_one;
 };
 
 struct AddChainRequest {
-  OriginInfo origin_info;
+  DappOriginInfo dapp_origin_info;
   NetworkInfo network_info;
 };
 
 struct SwitchChainRequest {
   string request_id;
-  OriginInfo origin_info;
+  DappOriginInfo dapp_origin_info;
   string chain_id;
-};
-
-struct GetEncryptionPublicKeyRequest {
-  string request_id;
-  OriginInfo origin_info;
-  AccountId account_id;
-};
-
-struct DecryptRequest {
-  string request_id;
-  OriginInfo origin_info;
-  AccountId account_id;
-  string unsafe_message;
 };
 
 struct OptionalMaxRetries {
@@ -1828,7 +1798,6 @@ struct AllNetworks {
   array<string> hidden_chain_ids;
   array<string> ankr_chain_ids;
   array<string> swap_chain_ids;
-  array<string> off_ramp_chain_ids;
 };
 
 // Deals with the ETH JSON RPC API, as well as things like the user's current
@@ -2313,6 +2282,16 @@ enum PolkadotValidationStatus {
   kFailedToFetchMetadata = 3,
 };
 
+struct OptionalUint16 {
+  uint16 val;
+};
+
+struct PolkadotChainProperties {
+  OptionalUint16? ss58_format;
+  array<uint32> token_decimals;
+  array<string> token_symbol;
+};
+
 interface PolkadotWalletService {
   GetCompatibleNetworks(AccountId account) => (array<NetworkInfo>? networks);
 
@@ -2329,6 +2308,16 @@ interface PolkadotWalletService {
 
   ValidateAddressForTransaction(string chain_id, string address)
       => (PolkadotValidationStatus status);
+
+  // The dApp `signer.signPayload()` calls awaiting the user's approval, oldest
+  // first.
+  GetPendingSignPolkadotTransactionRequests()
+      => (array<SignPolkadotTransactionRequest> requests);
+
+  // Used for UI notifying native when the user approves/rejects the sign
+  // request at the front of the queue.
+  NotifySignPolkadotTransactionRequestProcessed(
+      bool approved, int32 id, string? error);
 };
 
 enum TransactionStatus {
@@ -2361,6 +2350,7 @@ enum TransactionType {
   SolanaCompressedNftTransfer = 15,
   CardanoSendLovelace = 16,
   CardanoSendToken = 17,
+  ERC721SetApprovalForAll = 18,
 };
 
 struct FilTxData {
@@ -2521,10 +2511,10 @@ struct TransactionInfo {
   TransactionType tx_type;
   array<string> tx_params;
   array<string> tx_args;
-  mojo_base.mojom.TimeDelta created_time;
-  mojo_base.mojom.TimeDelta submitted_time;
-  mojo_base.mojom.TimeDelta confirmed_time;
-  OriginInfo? origin_info;
+  mojo_base.mojom.JSTime created_time;
+  mojo_base.mojom.JSTime submitted_time;
+  mojo_base.mojom.JSTime confirmed_time;
+  DappOriginInfo? dapp_origin_info;
   string chain_id;
   // Currently only available for ETH and FIL
   // Represent effective recipient of the transaction
@@ -2829,9 +2819,6 @@ interface BtcTxManagerProxy {
 };
 
 interface BraveWalletServiceObserver {
-  // Fired when the active origin is changed along with its eTLD+1
-  OnActiveOriginChanged(OriginInfo origin_info);
-
   // Fired when the default Ethereum wallet setting changes
   OnDefaultEthereumWalletChanged(DefaultWallet wallet);
 
@@ -2843,9 +2830,6 @@ interface BraveWalletServiceObserver {
 
   // Fired when the default base currency changes (e.g. USD -> CAD)
   OnDefaultBaseCurrencyChanged(string currency);
-
-  // Fired when the default base currency changes (e.g. BTC -> ETH)
-  OnDefaultBaseCryptocurrencyChanged(string cryptocurrency);
 
   // Fired when the list of networks changes
   OnNetworkListChanged();
@@ -2946,7 +2930,7 @@ union SignDataUnion {
 };
 
 struct SignMessageRequest {
-  OriginInfo origin_info;
+  DappOriginInfo dapp_origin_info;
   int32 id;
   AccountId account_id;
   SignDataUnion sign_data;
@@ -2962,7 +2946,7 @@ enum SignMessageErrorType {
 
 struct SignMessageError {
   string id;
-  OriginInfo origin_info;
+  DappOriginInfo dapp_origin_info;
   SignMessageErrorType type;
   // Localized error message for UI display
   string localized_err_msg;
@@ -2971,7 +2955,7 @@ struct SignMessageError {
 };
 
 struct SignSolTransactionsRequest {
-  OriginInfo origin_info;
+  DappOriginInfo dapp_origin_info;
   int32 id;
   AccountId from_account_id;
   array<SolanaTxData> tx_datas;
@@ -2983,7 +2967,7 @@ struct SignCardanoTransactionRequest {
   int32 id;
 
   AccountId account_id;
-  OriginInfo origin_info;
+  DappOriginInfo dapp_origin_info;
   ChainId chain_id;
 
   string raw_tx_data;
@@ -2992,12 +2976,40 @@ struct SignCardanoTransactionRequest {
   string details_json;
 };
 
+// A dApp's `signer.signPayload()` call awaiting the user's approval.
+struct SignPolkadotTransactionRequest {
+  int32 id;
+
+  AccountId account_id;
+  DappOriginInfo? dapp_origin_info;
+  ChainId chain_id;
+
+  // The `SignerPayloadJSON` the dApp handed us, serialized by the renderer.
+  // https://github.com/polkadot-js/api/blob/master/packages/types/src/types/extrinsic.ts
+  string raw_payload_json;
+
+  // SCALE-encoded runtime metadata for `chain_id`, so the UI can decode the
+  // payload's call data without fetching metadata itself.
+  array<uint8> metadata_bytes;
+
+  // Carried alongside `metadata_bytes` because the metadata does not describe
+  // them: without them the UI denominates the call's balances in the type
+  // registry's generic defaults rather than the chain's own units.
+  PolkadotChainProperties chain_properties;
+
+  // The bytes `raw_payload_json` encodes to, un-hashed, filled in by the
+  // browser once the bridge frame has described the request. Null until then,
+  // which is what keeps a request from being signed before the user has been
+  // shown what signing it means.
+  array<uint8>? signature_payload;
+};
+
 enum ExternalWalletType {
   MetaMask = 1,
 };
 
 struct AddSuggestTokenRequest {
-  OriginInfo origin;
+  DappOriginInfo dapp_origin_info;
   BlockchainToken token;
 };
 
@@ -3065,50 +3077,61 @@ interface BraveWalletService {
   // Sets the default base currency
   SetDefaultBaseCurrency(string currency);
 
-  // Obtains the default base cryptocurrency
-  GetDefaultBaseCryptocurrency() => (string cryptocurrency);
-
-  // Sets the default base cryptocurrency
-  SetDefaultBaseCryptocurrency(string cryptocurrency);
-
   // This selects account which supports coin and chain_id pair. Nothing is
   // changed if such account is already selected. Returns null if no such
   // suitable account could be found.
   EnsureSelectedAccountForChain(CoinType coin, string chain_id)
       => (AccountId? account_id);
 
-  // These will automatically fetch active origin for caller to set/get
-  // chain_id properly according to the origin. Setting chain_id fails if
-  // currently selected account does not support it.
-  GetNetworkForSelectedAccountOnActiveOrigin() => (NetworkInfo? network);
+  // Setting chain_id fails if the selected account does not support it.
+  // active_origin_spec must be the serialized non-opaque origin_spec from
+  // PanelHandler.GetActivePanelOrigin. An invalid or opaque spec returns null.
+  GetNetworkForSelectedAccountOnActiveOrigin(string active_origin_spec)
+      => (NetworkInfo? network);
 
-  SetNetworkForSelectedAccountOnActiveOrigin(string chain_id)
-      => (bool success);
+  // active_origin_spec must be the serialized non-opaque origin_spec from
+  // PanelHandler.GetActivePanelOrigin. An invalid or opaque spec returns
+  // false.
+  SetNetworkForSelectedAccountOnActiveOrigin(
+      string active_origin_spec, string chain_id) => (bool success);
 
   // At this time only coin will be used to manage chain id setting,
   // so any account can be used.
   // But in the future we are going to make unique relation
   // between origin, account and chain.
-  // GetNetworkForSelectedAccountOnActiveOrigin and
-  // SetNetworkForSelectedAccountOnActiveOrigin will be deprecated.
-  GetNetworkForAccountOnActiveOrigin(AccountId account)
-      => (NetworkInfo? network);
+  // active_origin_spec must be the serialized non-opaque origin_spec from
+  // PanelHandler.GetActivePanelOrigin. An invalid or opaque spec returns
+  // null.
+  GetNetworkForAccountOnActiveOrigin(
+      string active_origin_spec, AccountId account) => (NetworkInfo? network);
 
-  SetNetworkForAccountOnActiveOrigin(AccountId account, string chain_id)
+  // active_origin_spec must be the serialized non-opaque origin_spec from
+  // PanelHandler.GetActivePanelOrigin. An invalid or opaque spec returns
+  // false.
+  SetNetworkForAccountOnActiveOrigin(
+      string active_origin_spec, AccountId account, string chain_id)
       => (bool success);
 
-  // Filters accounts with permissions on active origin.
-  HasPermission(array<AccountId> accounts)
+  // Filters accounts with permissions on the specified origin.
+  // active_origin_spec must be the serialized non-opaque origin_spec from
+  // PanelHandler.GetActivePanelOrigin. An invalid or opaque spec returns
+  // false with no accounts.
+  HasPermission(string active_origin_spec, array<AccountId> accounts)
       => (bool success, array<AccountId> accounts_with_permission);
 
-  // Resets the permission of coin for the account on active origin.
-  ResetPermission(AccountId account_id) => (bool success);
+  // Resets the permission of coin for the account on the specified origin.
+  // active_origin_spec must be the serialized non-opaque origin_spec from
+  // PanelHandler.GetActivePanelOrigin. An invalid or opaque spec returns
+  // false.
+  ResetPermission(string active_origin_spec, AccountId account_id)
+      => (bool success);
 
-  // Check if permission is denied for the active origin.
-  IsPermissionDenied(CoinType coin) => (bool denied);
-
-  // Obtains the active origin info.
-  GetActiveOrigin() => (OriginInfo origin_info);
+  // Checks if permission is denied for the specified origin.
+  // active_origin_spec must be the serialized non-opaque origin_spec from
+  // PanelHandler.GetActivePanelOrigin. An invalid or opaque spec returns
+  // true, i.e. denied.
+  IsPermissionDenied(string active_origin_spec, CoinType coin)
+      => (bool denied);
 
   // Gets all websites with a permission of coin
   GetWebSitesWithPermission(CoinType coin) => (array<string> web_sites);
@@ -3162,19 +3185,6 @@ interface BraveWalletService {
   // cleared when user switch networks.
   GetPendingAddSuggestTokenRequests()
       => (array<AddSuggestTokenRequest> requests);
-
-  // This is used for UI notifying native when the user approves or
-  // rejects getting the public key for an origin
-  NotifyGetPublicKeyRequestProcessed(string request_id, bool approved);
-
-  GetPendingGetEncryptionPublicKeyRequests()
-      => (array<GetEncryptionPublicKeyRequest> requests);
-
-  // This is used for UI notifying native when the user approves or
-  // rejects decrypting data for an origin
-  NotifyDecryptRequestProcessed(string request_id, bool approved);
-
-  GetPendingDecryptRequests() => (array<DecryptRequest> requests);
 
   IsBase58EncodedSolanaPubkey(string key) => (bool result);
 
@@ -3231,12 +3241,6 @@ enum DefaultWallet {
   CryptoWalletsDeprecated = 2,
   BraveWalletPreferExtension = 3,
   BraveWallet = 4,
-};
-
-struct EncryptionKeyRequest {
-  string origin;
-  string address;
-  string? message;
 };
 
 struct OptionalUint8 {
@@ -3426,12 +3430,6 @@ enum RequestPermissionsError {
   kNone = 0,
   kRequestInProgress = 1,
   kInternal = 2,
-};
-
-struct OnRampCurrency {
-  string currency_code;
-  string currency_name;
-  array<OnRampProvider> providers;
 };
 
 // Common Blowfish types for both EVM and Solana.
@@ -3920,4 +3918,26 @@ interface SimulationService {
       => (SolanaSimulationResponse? response,
           string error_response,
           string error_string);
+};
+
+// Browser-side service exposing snap load to the wallet UI.
+interface SnapService {
+  // Load the snap's bundle through the snap host page.
+  // On success, |result| contains the exported value when it is a string.
+  LoadSnap(string snap_id) => (bool success, string? error, string? result);
+
+  // The page passes the remote end of its SnapHostBridge (last-wins).
+  BindSnapHostBridge(pending_remote<SnapHostBridge> bridge);
+};
+
+// Implemented by the snap host page TypeScript (SnapHostBridge).
+// Called from the browser to manage snap iframes.
+interface SnapHostBridge {
+  // Ensure the snap has an iframe and evaluate |source_code| in it.
+  // On success, |result| contains the exported value when it is a string.
+  LoadSnap(string snap_id, string source_code)
+      => (bool success, string? error, string? result);
+
+  // Tear down the iframe for |snap_id|.
+  UnloadSnap(string snap_id);
 };

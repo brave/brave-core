@@ -112,6 +112,15 @@ export const isFullPageScreenshot = (file: Mojom.UploadedFile): boolean => {
 }
 
 /**
+ * Checks if associated content is a Leo workspace.
+ */
+export const isWorkspaceContent = (
+  content: Mojom.AssociatedContent,
+): boolean => {
+  return content.contentType === Mojom.ContentType.Workspace
+}
+
+/**
  * Updates the conversation history by either merging a new entry with an
  * existing one or appending it if it doesn't exist.
  *

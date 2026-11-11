@@ -1,0 +1,43 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Pass the NetworkAnonymizationKey when querying the HSTS upgrade decision.
+
+      HSTS state is partitioned by NetworkAnonymizationKey.
+    regex:
+      re_pattern: '(hsts->GetSSLUpgradeDecision\()'
+      replace: '\1request->isolation_info().network_anonymization_key(), '
+
+  - description: |-
+      Pass the NetworkAnonymizationKey when checking if SSL errors are fatal.
+
+      HSTS state is partitioned by NetworkAnonymizationKey.
+    regex:
+      re_pattern: '(state->ShouldSSLErrorsBeFatal\()'
+      replace: '\1request_->isolation_info().network_anonymization_key(), '
+
+  - description: |-
+      Pass the IsolationInfo when adding an HSTS header.
+
+      HSTS state is partitioned by NetworkAnonymizationKey.
+    regex:
+      re_pattern: '(security_state->AddHSTSHeader\()'
+      replace: '\1request_->isolation_info(), '
+
+  - description: |-
+      Keep the Accept-Language header position independent of farbling.
+
+      Must run before the default Accept-Language is added below, so the
+      header ends up last whether or not farbling is on.
+    regex:
+      re_pattern: >-
+        (URLRequestHttpJob::AddExtraHeaders\(\) \{.*?\n)(  if
+        \(http_user_agent_settings_\) \{)
+      re_flags: [DOTALL]
+      replace: |-
+        \1  BraveAcceptLanguageHttpHeaderReposition(request_info_.extra_headers);
+        \2

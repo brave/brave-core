@@ -10,12 +10,11 @@
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
-#include "chrome/browser/ui/views/page_action/test_support/page_action_test_support.h"
+#include "chrome/browser/ui/views/page_action/page_action_view.h"
+#include "chrome/browser/ui/views/page_action/test_support/page_action_test_accessor.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
@@ -25,8 +24,6 @@
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
-#include "ui/events/base_event_utils.h"
-#include "ui/views/test/button_test_api.h"
 #include "url/gurl.h"
 
 namespace {
@@ -67,28 +64,9 @@ std::unique_ptr<net::test_server::HttpResponse> HandleSetStrictCookie(
   return response;
 }
 
-IconLabelBubbleView* GetOnionLocationView(Browser* browser) {
-  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
-  if (!browser_view) {
-    return nullptr;
-  }
-  auto* provider = browser_view->toolbar_button_provider();
-  return page_actions::GetIconLabelBubbleViewForTesting(
-      provider->GetPageActionViewInterface(kActionShowOnionLocation),
-      kActionShowOnionLocation);
-}
-
-void ClickOnionLocationIcon(Browser* browser) {
-  auto* onion_location_view = GetOnionLocationView(browser);
-  ASSERT_TRUE(onion_location_view);
-  ui::MouseEvent pressed(ui::EventType::kMousePressed, gfx::Point(),
-                         gfx::Point(), ui::EventTimeForNow(),
-                         ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON);
-  ui::MouseEvent released(ui::EventType::kMouseReleased, gfx::Point(),
-                          gfx::Point(), ui::EventTimeForNow(),
-                          ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON);
-  views::test::ButtonTestApi(onion_location_view).NotifyClick(pressed);
-  views::test::ButtonTestApi(onion_location_view).NotifyClick(released);
+void ClickOnionLocationIcon(BrowserWindowInterface* browser) {
+  page_actions::PageActionTestAccessor(browser, kActionShowOnionLocation)
+      .Click();
 }
 
 std::vector<std::string> GetEchoedHeaders(content::WebContents* web_contents) {
@@ -138,7 +116,7 @@ class SameSiteStrictCookieTorBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(SameSiteStrictCookieTorBrowserTest,
                        OpenLinkInTorDoesNotSendSameSiteStrictCookie) {
-  Browser* tor_browser =
+  BrowserWindowInterface* tor_browser =
       TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
 
   const auto set_cookie_url =
@@ -183,7 +161,7 @@ IN_PROC_BROWSER_TEST_F(SameSiteStrictCookieTorBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(SameSiteStrictCookieTorBrowserTest, OnionLocation) {
-  Browser* tor_browser =
+  BrowserWindowInterface* tor_browser =
       TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
 
   const auto set_cookie_url =
@@ -212,7 +190,7 @@ IN_PROC_BROWSER_TEST_F(SameSiteStrictCookieTorBrowserTest, OnionLocation) {
 IN_PROC_BROWSER_TEST_F(
     SameSiteStrictCookieTorBrowserTest,
     BlockedOnionLinkCrossSiteDoesNotSendSameSiteStrictCookie) {
-  Browser* tor_browser =
+  BrowserWindowInterface* tor_browser =
       TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
 
   const GURL set_cookie_url =
@@ -234,8 +212,8 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_EQ(nav_observer.last_net_error_code(), net::ERR_BLOCKED_BY_CLIENT);
   EXPECT_TRUE(web_contents->GetPrimaryMainFrame()->IsErrorDocument());
 
-  tor::OnionLocationTabHelper* helper =
-      tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  tor::OnionLocationTabHelper* helper = tor::OnionLocationTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   ASSERT_TRUE(helper);
   EXPECT_TRUE(helper->should_show_icon());
   EXPECT_EQ(helper->onion_location(), onion_echo_url);

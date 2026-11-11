@@ -5,7 +5,7 @@
 
 import path from 'node:path'
 import config from './config.ts'
-import util from './util.js'
+import util from './util.ts'
 import l10nUtil from './l10nUtil.js'
 
 const pushL10n = (options) => {

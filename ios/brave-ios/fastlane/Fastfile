@@ -173,12 +173,13 @@ platform :ios do
     {
       project: "App/Client.xcodeproj",
       scheme: "Debug (No Core)",
-      devices: ["iPhone 17 (26.2)"],
+      devices: ["iPhone 18 Pro (27.2)"],
       code_coverage: true,
       output_types: "junit",
       output_files: "junit.xml",
       derived_data_path: "../../../out/DerivedData",
       buildlog_path: "../../../out/fastlane_logs/scan",
+      xcargs: "-collect-test-diagnostics never",
       number_of_retries: 1,
       output_remove_retry_attempts: true
     }

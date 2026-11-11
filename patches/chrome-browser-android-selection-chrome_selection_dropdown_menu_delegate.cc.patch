@@ -1,0 +1,102 @@
+diff --git a/chrome/browser/android/selection/chrome_selection_dropdown_menu_delegate.cc b/chrome/browser/android/selection/chrome_selection_dropdown_menu_delegate.cc
+index 152de7b2a65cdc1b9efa90e52bca39380c33fd23..f255f27ae4cd6c0c163ac7b82e53db2527f5c715 100644
+--- a/chrome/browser/android/selection/chrome_selection_dropdown_menu_delegate.cc
++++ b/chrome/browser/android/selection/chrome_selection_dropdown_menu_delegate.cc
+@@ -41,7 +41,7 @@
+ #include "third_party/blink/public/mojom/forms/form_control_type.mojom-shared.h"
+ #endif
+ 
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+ #include "chrome/browser/extensions/extension_menu_model_android.h"
+ #endif
+ 
+@@ -67,7 +67,7 @@ constexpr int kPrintMenuItemOrderReadOnly = 65;
+ constexpr int kPrintMenuItemOrderEditable = 120;
+ #endif
+ 
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+ // The display order for extension items in the selection dropdown menu.
+ // Placed after alternative and Share items (order > Menu.CATEGORY_ALTERNATIVE +
+ // 1).
+@@ -78,14 +78,14 @@ constexpr int kExtensionMenuItemOrder = 300000;
+ // menu. Positioned at the absolute end of the selection dropdown menu.
+ constexpr int kInspectElementItemOrder = 1000000;
+ 
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+ using BaseSelectionDropdownMenuModel = extensions::ExtensionMenuModel;
+ #else
+ using BaseSelectionDropdownMenuModel = ui::SimpleMenuModel;
+ #endif
+ 
+ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
+-#if !BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if !BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+     ,
+                                          public ui::SimpleMenuModel::Delegate
+ #endif
+@@ -93,7 +93,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
+  public:
+   ChromeSelectionDropdownMenuModel(content::RenderFrameHost& render_frame_host,
+                                    const content::ContextMenuParams& params)
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+       : BaseSelectionDropdownMenuModel(render_frame_host, params),
+ #else
+       : BaseSelectionDropdownMenuModel(this),
+@@ -137,7 +137,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
+         IDC_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_SELECT_PASSWORD) {
+       return kSelectPasswordMenuItemOrder;
+     }
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+     int base_order = BaseSelectionDropdownMenuModel::GetDisplayOrderAt(index);
+     if (base_order >= 0) {
+       return base_order;
+@@ -204,7 +204,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
+       return;
+     }
+ 
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+     BaseSelectionDropdownMenuModel::ExecuteCommand(command_id, event_flags);
+ #endif
+   }
+@@ -233,7 +233,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
+       return false;
+     }
+ 
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+     return BaseSelectionDropdownMenuModel::IsCommandIdChecked(command_id);
+ #else
+     return false;
+@@ -268,7 +268,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
+       return true;
+     }
+ 
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+     return BaseSelectionDropdownMenuModel::IsCommandIdEnabled(command_id);
+ #else
+     return false;
+@@ -279,7 +279,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
+     if (IsChromeOwnedCommand(command_id)) {
+       return true;
+     }
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+     return BaseSelectionDropdownMenuModel::IsCommandIdVisible(command_id);
+ #else
+     return false;
+@@ -314,7 +314,7 @@ ChromeSelectionDropdownMenuDelegate::GetSelectionPopupExtraItems(
+   }
+ #endif
+ 
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+   if (model->GetItemCount() > 0) {
+     model->AddSeparator(ui::NORMAL_SEPARATOR);
+   }

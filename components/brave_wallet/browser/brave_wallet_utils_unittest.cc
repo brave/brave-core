@@ -6,11 +6,9 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 
 #include <algorithm>
-#include <memory>
 #include <optional>
 #include <set>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "base/strings/string_util.h"
@@ -337,9 +335,10 @@ TEST(BraveWalletUtilsUnitTest, SwapInfoToValue_NullPtr) {
 
 TEST(BraveWalletUtilsUnitTest, SwapInfoToValue_DifferentProviders) {
   std::vector<mojom::SwapProvider> providers = {
-      mojom::SwapProvider::kAuto,   mojom::SwapProvider::kLiFi,
-      mojom::SwapProvider::kZeroEx, mojom::SwapProvider::kJupiter,
-      mojom::SwapProvider::kSquid,  mojom::SwapProvider::kNearIntents,
+      mojom::SwapProvider::kAuto,    mojom::SwapProvider::kLiFi,
+      mojom::SwapProvider::kZeroEx,  mojom::SwapProvider::kJupiter,
+      mojom::SwapProvider::kSquid,   mojom::SwapProvider::kNearIntents,
+      mojom::SwapProvider::kCowSwap,
   };
 
   for (auto provider : providers) {
@@ -362,6 +361,11 @@ TEST(BraveWalletUtilsUnitTest, SwapInfoToValue_DifferentProviders) {
 
     ASSERT_TRUE(swap_info_from_value);
     EXPECT_EQ(swap_info->provider, swap_info_from_value->provider);
+
+    if (provider == mojom::SwapProvider::kCowSwap) {
+      ASSERT_TRUE(value.FindString("provider"));
+      EXPECT_EQ(*value.FindString("provider"), "COW_SWAP");
+    }
   }
 }
 
@@ -402,7 +406,8 @@ TEST(BraveWalletUtilsUnitTest, ValueToSwapInfo_MissingRequiredFields) {
                                    "destination_token_address",
                                    "destination_amount",
                                    "recipient",
-                                   "provider"};
+                                   "provider",
+                                   "route_id"};
 
   base::DictValue base_value;
   base_value.Set("source_coin", "ETH");
@@ -418,7 +423,11 @@ TEST(BraveWalletUtilsUnitTest, ValueToSwapInfo_MissingRequiredFields) {
   base_value.Set("route_id", "test-route-id");
 
   // The valid dict should be accepted
-  EXPECT_TRUE(ValueToSwapInfo(base_value));
+  auto valid_swap_info = ValueToSwapInfo(base_value);
+  ASSERT_TRUE(valid_swap_info);
+  // destination_amount_min is optional and defaults to an empty string.
+  EXPECT_EQ(valid_swap_info->destination_amount_min, "");
+  EXPECT_EQ(valid_swap_info->route_id, "test-route-id");
 
   for (const auto* field : required_fields) {
     base::DictValue value = base_value.Clone();
@@ -484,11 +493,19 @@ TEST(BraveWalletUtilsUnitTest, MakeOriginInfo) {
       MakeOriginInfo(url::Origin::Create(GURL("https://blog.brave.com:443")));
   EXPECT_EQ("https://blog.brave.com", origin_info->origin_spec);
   EXPECT_EQ("brave.com", origin_info->e_tld_plus_one);
+}
 
-  url::Origin empty_origin;
-  auto empty_origin_info = MakeOriginInfo(empty_origin);
-  EXPECT_EQ("null", empty_origin_info->origin_spec);
-  EXPECT_EQ("", empty_origin_info->e_tld_plus_one);
+TEST(BraveWalletUtilsUnitTest, MakeOriginInfoAllowsNonDappOrigins) {
+  const url::Origin wallet_origin =
+      url::Origin::Create(GURL("chrome://wallet"));
+  auto wallet_origin_info = MakeOriginInfo(wallet_origin);
+  ASSERT_TRUE(wallet_origin_info);
+  EXPECT_EQ(wallet_origin.Serialize(), wallet_origin_info->origin_spec);
+
+  const url::Origin opaque_origin;
+  auto opaque_origin_info = MakeOriginInfo(opaque_origin);
+  ASSERT_TRUE(opaque_origin_info);
+  EXPECT_EQ(opaque_origin.Serialize(), opaque_origin_info->origin_spec);
 }
 
 TEST(BraveWalletUtilsUnitTest, GenerateRandomHexString) {
@@ -683,8 +700,9 @@ TEST(BraveWalletUtilsUnitTest, PolkadotNativeAssets) {
 TEST(BraveWalletUtilsUnitTest, DefaultZCashShieldedAssets_FeatureEnabled) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitWithFeaturesAndParameters(
-      {{features::kBraveWalletZCashFeature,
-        {{"zcash_shielded_transactions_enabled", "true"}}},
+      {
+          {features::kBraveWalletZCashFeature,
+           {{"zcash_shielded_transactions_enabled", "true"}}},
       },
       {}  // disabled features
   );

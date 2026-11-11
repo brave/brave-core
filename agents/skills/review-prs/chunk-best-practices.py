@@ -33,7 +33,7 @@ import os
 import re
 import sys
 
-DEFAULT_CHUNK_SIZE = 10
+DEFAULT_CHUNK_SIZE = 35
 
 
 def split_into_rules(text):
@@ -69,7 +69,7 @@ def split_into_rules(text):
     if not rule_starts:
         return text, []
 
-    header = "\n".join(lines[:rule_starts[0]])
+    header = "\n".join(lines[: rule_starts[0]])
     rules = []
     for i, start in enumerate(rule_starts):
         end = rule_starts[i + 1] if i + 1 < len(rule_starts) else len(lines)
@@ -110,7 +110,7 @@ def chunk_rules(rules, chunk_size=DEFAULT_CHUNK_SIZE):
     start = 0
     for i in range(num_chunks):
         size = base_size + (1 if i < extra else 0)
-        chunks.append(rules[start:start + size])
+        chunks.append(rules[start : start + size])
         start += size
 
     return chunks
@@ -118,43 +118,49 @@ def chunk_rules(rules, chunk_size=DEFAULT_CHUNK_SIZE):
 
 def process_doc(doc_path, chunk_size=DEFAULT_CHUNK_SIZE):
     """Process a best-practice document and return chunks as dicts."""
-    with open(doc_path) as f:
+    with open(doc_path, encoding='utf-8') as f:
         text = f.read()
 
     header, rules = split_into_rules(text)
 
     if not rules:
-        return [{
-            "doc": os.path.basename(doc_path),
-            "chunk_index": 0,
-            "total_chunks": 1,
-            "rule_count": 0,
-            "headings": [],
-            "content": text,
-        }]
+        return [
+            {
+                "doc": os.path.basename(doc_path),
+                "chunk_index": 0,
+                "total_chunks": 1,
+                "rule_count": 0,
+                "headings": [],
+                "content": text,
+            }
+        ]
 
     chunks = chunk_rules(rules, chunk_size)
 
     result = []
     for i, chunk in enumerate(chunks):
-        chunk_content = (header.rstrip("\n") + "\n\n" +
-                         "\n".join(r["text"] for r in chunk))
+        chunk_content = (
+            header.rstrip("\n") + "\n\n" + "\n".join(r["text"] for r in chunk)
+        )
         headings = [r["heading"] for r in chunk]
-        result.append({
-            "doc": os.path.basename(doc_path),
-            "chunk_index": i,
-            "total_chunks": len(chunks),
-            "rule_count": len(chunk),
-            "headings": headings,
-            "content": chunk_content,
-        })
+        result.append(
+            {
+                "doc": os.path.basename(doc_path),
+                "chunk_index": i,
+                "total_chunks": len(chunks),
+                "rule_count": len(chunk),
+                "headings": headings,
+                "content": chunk_content,
+            }
+        )
 
     return result
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Chunk best-practice documents for parallel review")
+        description="Chunk best-practice documents for parallel review"
+    )
     parser.add_argument("doc_path", help="Path to the best-practice document")
     parser.add_argument(
         "--chunk-size",

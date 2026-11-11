@@ -1,0 +1,12 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add the Brave sync engine sources.
+    add_literal_to_list:
+      target: engine
+      list_name: sources
+      literal: brave_components_sync_engine_sources
+      import: //brave/components/sync/engine/sources.gni

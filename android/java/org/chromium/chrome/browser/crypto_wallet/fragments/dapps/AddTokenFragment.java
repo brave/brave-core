@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -20,8 +19,8 @@ import android.widget.TextView;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AddSuggestTokenRequest;
+import org.chromium.brave_wallet.mojom.DappOriginInfo;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
@@ -87,11 +86,11 @@ public class AddTokenFragment extends BaseDAppsFragment {
         getBraveWalletService()
                 .getPendingAddSuggestTokenRequests(
                         requests -> {
+                            if (!isAdded()) {
+                                return;
+                            }
                             if (requests == null || requests.length == 0) {
-                                Intent intent = new Intent();
-                                getActivity().setResult(Activity.RESULT_OK, intent);
-                                getActivity().finish();
-
+                                getWalletFragmentCallback().onAllRequestsHandled();
                                 return;
                             }
                             mCurrentAddSuggestTokenRequest = requests[0];
@@ -125,13 +124,13 @@ public class AddTokenFragment extends BaseDAppsFragment {
                                             }
                                         });
                             }
-                            fillOriginInfo(mCurrentAddSuggestTokenRequest.origin);
+                            fillOriginInfo(mCurrentAddSuggestTokenRequest.dappOriginInfo);
                             initToken();
                             updateNetwork(selectedNetwork);
                         });
     }
 
-    private void fillOriginInfo(OriginInfo originInfo) {
+    private void fillOriginInfo(DappOriginInfo originInfo) {
         if (originInfo != null && URLUtil.isValidUrl(originInfo.originSpec)) {
             mWebSite.setText(Utils.geteTldSpanned(originInfo));
         }

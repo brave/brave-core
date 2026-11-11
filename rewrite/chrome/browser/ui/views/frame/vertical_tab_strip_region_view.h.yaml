@@ -1,0 +1,39 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Rename VerticalTabStripRegionView to VerticalTabStripRegionView_ChromiumImpl
+
+      We provide our own VerticalTabStripRegionView inheriting Chromium's 
+      implementation.
+    rename_class:
+      class_name: 'VerticalTabStripRegionView'
+      rename: 'VerticalTabStripRegionView_ChromiumImpl'
+
+  - description: |-
+      Drop 'final' from VerticalTabStripRegionView_ChromiumImpl so that we can subclass
+    drop_final:
+      class_name: 'VerticalTabStripRegionView_ChromiumImpl'
+
+  - description: Add GetCollapsedWidth()
+    add_to_public:
+      class_name: 'VerticalTabStripRegionView_ChromiumImpl'
+      code: 'int GetCollapsedWidth() const;'
+
+  - description: Add IsMouseInHotCorner()
+    add_to_protected:
+      class_name: 'VerticalTabStripRegionView_ChromiumImpl'
+      code: 'bool IsMouseInHotCorner() const;'
+
+  - description: 'Add VerticalTabStripRegionView as a friend'
+    add_friend:
+      class_name: 'VerticalTabStripRegionView_ChromiumImpl'
+      friend_type: 'class VerticalTabStripRegionView'
+
+  - description: 'Make AnimationProgressed virtual'
+    make_virtual:
+      class_name: 'VerticalTabStripRegionView_ChromiumImpl'
+      method_name: 'OnAnimationProgressed'

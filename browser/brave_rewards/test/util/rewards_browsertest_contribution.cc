@@ -17,7 +17,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -30,7 +30,7 @@ RewardsBrowserTestContribution::RewardsBrowserTestContribution() = default;
 RewardsBrowserTestContribution::~RewardsBrowserTestContribution() = default;
 
 void RewardsBrowserTestContribution::Initialize(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     RewardsServiceImpl* rewards_service) {
   DCHECK(browser && rewards_service);
   browser_ = browser;
@@ -82,7 +82,7 @@ void RewardsBrowserTestContribution::TipPublisher(
 
   // Navigate to a site in a new tab
   ui_test_utils::NavigateToURLWithDisposition(
-      browser_, url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser_, url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that the tip button is disabled for unverified publishers.

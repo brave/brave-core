@@ -93,10 +93,6 @@ class RecentSearchQRCodeScannerController: UIViewController {
   }
 
   override func viewDidAppear(_ animated: Bool) {
-    if let orientation = view.window?.windowScene?.interfaceOrientation {
-      scannerView.cameraView.videoPreviewLayer?.connection?.videoOrientation =
-        AVCaptureVideoOrientation(ui: orientation)
-    }
     scannerView.cameraView.startRunning()
   }
 
@@ -109,10 +105,6 @@ class RecentSearchQRCodeScannerController: UIViewController {
     coordinator.animate(alongsideTransition: nil) { [weak self] _ in
       guard let self else { return }
 
-      if let orientation = self.view.window?.windowScene?.interfaceOrientation {
-        self.scannerView.cameraView.videoPreviewLayer?.connection?.videoOrientation =
-          AVCaptureVideoOrientation(ui: orientation)
-      }
       self.scannerView.cameraView.startRunning()
     }
   }
@@ -167,27 +159,38 @@ extension RecentSearchQRCodeScannerController {
             string: scannedText,
             attributes: [
               .font: UIFont.preferredFont(forTextStyle: .body),
+              .foregroundColor: UIColor(braveSystemName: .schemesOnPrimary),
               .paragraphStyle: paragraphStyle,
             ]
           )
 
-          scannedDisplayButton.titleLabel?.lineBreakMode = truncationMode
-          scannedDisplayButton.setAttributedTitle(title, for: .normal)
+          scannedDisplayButton.configuration?.titleLineBreakMode = truncationMode
+          scannedDisplayButton.configuration?.attributedTitle = AttributedString(title)
         } else {
-          scannedDisplayButton.setTitle(nil, for: .normal)
+          scannedDisplayButton.configuration?.attributedTitle = nil
         }
       }
     }
 
     let scannedDisplayButton = UIButton().then {
-      $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
-      $0.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
-      $0.titleLabel?.lineBreakMode = .byTruncatingTail
-      $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
-      $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
-      $0.layer.cornerRadius = 10
-      $0.layer.cornerCurve = .continuous
-      $0.layer.masksToBounds = true
+      var configuration = UIButton.Configuration.borderedProminent()
+      configuration.baseForegroundColor = UIColor(braveSystemName: .schemesOnPrimary)
+      configuration.baseBackgroundColor = UIColor(braveSystemName: .buttonBackground)
+      configuration.cornerStyle = .capsule
+      configuration.contentInsets = NSDirectionalEdgeInsets(
+        top: 12,
+        leading: 16,
+        bottom: 12,
+        trailing: 16
+      )
+      configuration.titleLineBreakMode = .byTruncatingTail
+      configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer {
+        incoming in
+        var outgoing = incoming
+        outgoing.font = UIFont.preferredFont(forTextStyle: .body)
+        return outgoing
+      }
+      $0.configuration = configuration
       $0.isHidden = true
     }
 

@@ -4,20 +4,23 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <optional>
+#include <vector>
 
 #include "base/command_line.h"
 #include "base/test/bind.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+#include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -61,6 +64,18 @@ class WalletWatchAssetBrowserTest : public InProcessBrowserTest {
     https_server_.ServeFilesFromDirectory(BraveWalletTestDataFolder());
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
     ASSERT_TRUE(https_server()->Start());
+    // Unknown contracts wait on eth_call before the panel opens. Register
+    // these addresses so the test stays on the synchronous path.
+    EnsureSuggestedTokensAreKnown();
+  }
+
+  void TearDownOnMainThread() override {
+    if (restore_mainnet_token_list_) {
+      BlockchainRegistry::GetInstance()->UpdateTokenList(
+          GetTokenListKey(mojom::CoinType::ETH, mojom::kMainnetChainId),
+          std::move(original_mainnet_tokens_));
+    }
+    InProcessBrowserTest::TearDownOnMainThread();
   }
 
   content::WebContents* web_contents() {
@@ -72,6 +87,45 @@ class WalletWatchAssetBrowserTest : public InProcessBrowserTest {
   BraveWalletService* brave_wallet_service() {
     return BraveWalletServiceFactory::GetServiceForContext(
         browser()->GetProfile());
+  }
+
+  void EnsureSuggestedTokensAreKnown() {
+    auto* registry = BlockchainRegistry::GetInstance();
+    bool called = false;
+    registry->GetAllTokens(
+        mojom::kMainnetChainId, mojom::CoinType::ETH,
+        base::BindLambdaForTesting(
+            [&](std::vector<mojom::BlockchainTokenPtr> tokens) {
+              original_mainnet_tokens_ = std::move(tokens);
+              called = true;
+            }));
+    ASSERT_TRUE(called);
+
+    std::vector<mojom::BlockchainTokenPtr> updated;
+    updated.reserve(original_mainnet_tokens_.size() + addresses_.size());
+    for (const auto& token : original_mainnet_tokens_) {
+      updated.push_back(token.Clone());
+    }
+    bool added = false;
+    for (size_t i = 0; i < addresses_.size(); ++i) {
+      if (registry->GetTokenByAddress(mojom::kMainnetChainId,
+                                      mojom::CoinType::ETH, addresses_[i])) {
+        continue;
+      }
+      updated.push_back(mojom::BlockchainToken::New(
+          addresses_[i], symbols_[i], "", false, true, false, false,
+          mojom::SPLTokenProgram::kUnsupported, false, false, symbols_[i],
+          decimals_[i], true, "", "", mojom::kMainnetChainId,
+          mojom::CoinType::ETH, mojom::ZCashTokenType::kNone));
+      added = true;
+    }
+    if (!added) {
+      return;
+    }
+    restore_mainnet_token_list_ = true;
+    registry->UpdateTokenList(
+        GetTokenListKey(mojom::CoinType::ETH, mojom::kMainnetChainId),
+        std::move(updated));
   }
 
   void RestoreWallet() {
@@ -110,6 +164,8 @@ class WalletWatchAssetBrowserTest : public InProcessBrowserTest {
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
+  bool restore_mainnet_token_list_ = false;
+  std::vector<mojom::BlockchainTokenPtr> original_mainnet_tokens_;
 };
 
 IN_PROC_BROWSER_TEST_F(WalletWatchAssetBrowserTest, UserApprovedRequest) {
@@ -127,9 +183,9 @@ IN_PROC_BROWSER_TEST_F(WalletWatchAssetBrowserTest, UserApprovedRequest) {
                                   decimals_[i]),
                content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
     base::RunLoop().RunUntilIdle();
-    EXPECT_TRUE(
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-            ->IsShowingBubble());
+    EXPECT_TRUE(brave_wallet::BraveWalletTabHelper::From(
+                    tabs::TabInterface::MaybeGetFromContents(web_contents()))
+                    ->IsShowingBubble());
     brave_wallet_service()->NotifyAddSuggestTokenRequestsProcessed(
         true, {addresses_[i]});
   }
@@ -151,9 +207,9 @@ IN_PROC_BROWSER_TEST_F(WalletWatchAssetBrowserTest, UserRejectedRequest) {
                                   decimals_[i]),
                content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
     base::RunLoop().RunUntilIdle();
-    EXPECT_TRUE(
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-            ->IsShowingBubble());
+    EXPECT_TRUE(brave_wallet::BraveWalletTabHelper::From(
+                    tabs::TabInterface::MaybeGetFromContents(web_contents()))
+                    ->IsShowingBubble());
     brave_wallet_service()->NotifyAddSuggestTokenRequestsProcessed(
         false, {addresses_[i]});
   }

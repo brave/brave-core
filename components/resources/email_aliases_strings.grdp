@@ -31,7 +31,7 @@
     Delete
   </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_CREATE_DESCRIPTION" desc="The description for the create email alias" formatter_data="webui=EmailAliases">
-    Create up to 5 free email aliases to protect your real email address.
+    Create up to <ph name="MAX_ALIASES">$1<ex>5</ex></ph> free email aliases to protect your real email address.
   </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_LIST_TITLE" desc="The title for the email alias list" formatter_data="webui=EmailAliases">
     Your Email aliases

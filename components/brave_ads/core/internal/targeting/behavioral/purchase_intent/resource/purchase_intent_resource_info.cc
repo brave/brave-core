@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_value_util.h"
 
 namespace brave_ads {
@@ -25,14 +24,10 @@ PurchaseIntentResourceInfo::~PurchaseIntentResourceInfo() = default;
 // static
 std::optional<PurchaseIntentResourceInfo>
 PurchaseIntentResourceInfo::MaybeFromDict(const base::DictValue dict) {
+  // An unsupported version is not malformed content, so it's left for the
+  // caller to decide (see `PurchaseIntentResource::LoadCallback`) rather
+  // than treated as a parse failure here.
   std::optional<int> version = ParseVersion(dict);
-  if (!version) {
-    return std::nullopt;
-  }
-
-  if (version != kPurchaseIntentResourceVersion.Get()) {
-    return std::nullopt;
-  }
 
   std::optional<SegmentList> segments = ParseSegments(dict);
   if (!segments) {

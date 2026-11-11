@@ -6,6 +6,7 @@
 #include "brave/components/web_discovery/browser/reporter.h"
 
 #include <algorithm>
+#include <array>
 #include <utility>
 
 #include "base/containers/span_writer.h"
@@ -19,7 +20,7 @@
 #include "brave/components/web_discovery/browser/pref_names.h"
 #include "brave/components/web_discovery/browser/signature_basename.h"
 #include "brave/components/web_discovery/browser/util.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/header_util.h"
 #include "services/network/public/cpp/resource_request_body.h"
@@ -191,7 +192,8 @@ void Reporter::PrepareRequest(const base::Value& request_data) {
   }
 
   VLOG(2) << "Preparing to report payload: " << final_payload_json;
-  auto payload_hash = crypto::SHA256HashString(final_payload_json);
+  std::array<uint8_t, crypto::hash::kSha256Size> payload_hash =
+      crypto::hash::Sha256(final_payload_json);
   credential_signer_->Sign(
       std::vector<uint8_t>(payload_hash.begin(), payload_hash.end()),
       basename_result->basename,

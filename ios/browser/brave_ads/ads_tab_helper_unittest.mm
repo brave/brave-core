@@ -99,9 +99,9 @@ class FakeNavigationManagerWithRestore final
 
 }  // namespace
 
-class AdsTabHelperTest : public PlatformTest {
+class BraveAdsTabHelperTest : public PlatformTest {
  public:
-  AdsTabHelperTest() {
+  BraveAdsTabHelperTest() {
     profile_ = TestProfileIOS::Builder().Build();
 
     profile_->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
@@ -127,10 +127,10 @@ class AdsTabHelperTest : public PlatformTest {
     AdsTabHelper::CreateForWebState(web_state_.get(), &ads_service_mock_);
   }
 
-  AdsTabHelperTest(const AdsTabHelperTest&) = delete;
-  AdsTabHelperTest& operator=(const AdsTabHelperTest&) = delete;
+  BraveAdsTabHelperTest(const BraveAdsTabHelperTest&) = delete;
+  BraveAdsTabHelperTest& operator=(const BraveAdsTabHelperTest&) = delete;
 
-  ~AdsTabHelperTest() override = default;
+  ~BraveAdsTabHelperTest() override = default;
 
   void DisableBraveRewards() {
     profile_->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, false);
@@ -193,7 +193,7 @@ class AdsTabHelperTest : public PlatformTest {
   base::Value page_load_js_result_;
 };
 
-TEST_F(AdsTabHelperTest, NotifyTabDidChange) {
+TEST_F(BraveAdsTabHelperTest, NotifyTabDidChange) {
   EXPECT_CALL(ads_service_mock(),
               NotifyTabDidChange(/*tab_id=*/testing::_,
                                  /*redirect_chain=*/testing::_,
@@ -203,7 +203,7 @@ TEST_F(AdsTabHelperTest, NotifyTabDidChange) {
   Navigation(GURL("https://brave.com")).Simulate();
 }
 
-TEST_F(AdsTabHelperTest, NotifyTabDidChangeIfTabWasRestored) {
+TEST_F(BraveAdsTabHelperTest, NotifyTabDidChangeIfTabWasRestored) {
   navigation_manager().SetNativeRestoreInProgress(true);
   EXPECT_CALL(ads_service_mock(),
               NotifyTabDidChange(/*tab_id=*/testing::_,
@@ -216,7 +216,7 @@ TEST_F(AdsTabHelperTest, NotifyTabDidChangeIfTabWasRestored) {
 }
 
 TEST_F(
-    AdsTabHelperTest,
+    BraveAdsTabHelperTest,
     NotifyTabDidChangeIfTabWasRestoredForSameDocumentNavigationBeforePageLoaded) {
   navigation_manager().SetNativeRestoreInProgress(true);
   Navigation(GURL("https://brave.com")).Simulate();
@@ -234,7 +234,7 @@ TEST_F(
 }
 
 TEST_F(
-    AdsTabHelperTest,
+    BraveAdsTabHelperTest,
     NotifyTabDidChangeIfTabWasNotRestoredForSameDocumentNavigationAfterPageLoaded) {
   navigation_manager().SetNativeRestoreInProgress(true);
   Navigation(GURL("https://brave.com")).Simulate();
@@ -253,7 +253,7 @@ TEST_F(
 }
 
 TEST_F(
-    AdsTabHelperTest,
+    BraveAdsTabHelperTest,
     NotifyTabDidChangeIfTabWasRestoredForSameDocumentNavigationAfterErrorPage) {
   Navigation(GURL("https://brave.com")).Simulate();
   SimulatePageLoad(kInnerText);
@@ -273,13 +273,13 @@ TEST_F(
   SimulateVisibilityChanged(true);
 }
 
-TEST_F(AdsTabHelperTest, NotifyTabDidLoadForHttpSuccessfulResponsePage) {
+TEST_F(BraveAdsTabHelperTest, NotifyTabDidLoadForHttpSuccessfulResponsePage) {
   EXPECT_CALL(ads_service_mock(),
               NotifyTabDidLoad(/*tab_id=*/testing::_, net::HTTP_OK));
   Navigation(GURL("https://brave.com")).Simulate();
 }
 
-TEST_F(AdsTabHelperTest, NotifyTabDidLoadForHttpClientErrorResponsePage) {
+TEST_F(BraveAdsTabHelperTest, NotifyTabDidLoadForHttpClientErrorResponsePage) {
   EXPECT_CALL(ads_service_mock(),
               NotifyTabDidLoad(/*tab_id=*/testing::_, net::HTTP_NOT_FOUND));
   Navigation(GURL("https://brave.com"))
@@ -288,7 +288,7 @@ TEST_F(AdsTabHelperTest, NotifyTabDidLoadForHttpClientErrorResponsePage) {
       .Simulate();
 }
 
-TEST_F(AdsTabHelperTest, NotifyTabDidLoadForHttpServerErrorResponsePage) {
+TEST_F(BraveAdsTabHelperTest, NotifyTabDidLoadForHttpServerErrorResponsePage) {
   EXPECT_CALL(
       ads_service_mock(),
       NotifyTabDidLoad(/*tab_id=*/testing::_, net::HTTP_INTERNAL_SERVER_ERROR));
@@ -298,7 +298,7 @@ TEST_F(AdsTabHelperTest, NotifyTabDidLoadForHttpServerErrorResponsePage) {
       .Simulate();
 }
 
-TEST_F(AdsTabHelperTest, DoNotNotifyTabDidLoadForNetErrorPage) {
+TEST_F(BraveAdsTabHelperTest, DoNotNotifyTabDidLoadForNetErrorPage) {
   NSError* error = [NSError errorWithDomain:@"test" code:-1 userInfo:nil];
   EXPECT_CALL(ads_service_mock(), NotifyTabDidLoad).Times(0);
   EXPECT_CALL(ads_service_mock(), NotifyTabDidFailToLoad);
@@ -306,7 +306,7 @@ TEST_F(AdsTabHelperTest, DoNotNotifyTabDidLoadForNetErrorPage) {
   Navigation(GURL("https://brave.com")).WithError(error).Simulate();
 }
 
-TEST_F(AdsTabHelperTest,
+TEST_F(BraveAdsTabHelperTest,
        NotifyTabTextContentDidChangeForRewardsUserWithNotificationAdsEnabled) {
   Navigation(GURL("https://brave.com")).Simulate();
   EXPECT_CALL(ads_service_mock(),
@@ -316,7 +316,8 @@ TEST_F(AdsTabHelperTest,
   SimulatePageLoad(kInnerText);
 }
 
-TEST_F(AdsTabHelperTest, DoNotNotifyTabTextContentDidChangeForNonRewardsUser) {
+TEST_F(BraveAdsTabHelperTest,
+       DoNotNotifyTabTextContentDidChangeForNonRewardsUser) {
   DisableBraveRewards();
   Navigation(GURL("https://brave.com")).Simulate();
   EXPECT_CALL(ads_service_mock(), NotifyTabTextContentDidChange).Times(0);
@@ -324,7 +325,7 @@ TEST_F(AdsTabHelperTest, DoNotNotifyTabTextContentDidChangeForNonRewardsUser) {
 }
 
 TEST_F(
-    AdsTabHelperTest,
+    BraveAdsTabHelperTest,
     DoNotNotifyTabTextContentDidChangeForNonRewardsUserWithNotificationAdsDisabled) {
   DisableBraveRewards();
   DisableNotificationAds();
@@ -334,7 +335,7 @@ TEST_F(
 }
 
 TEST_F(
-    AdsTabHelperTest,
+    BraveAdsTabHelperTest,
     DoNotNotifyTabTextContentDidChangeForRewardsUserWithNotificationAdsDisabled) {
   DisableNotificationAds();
   Navigation(GURL("https://brave.com")).Simulate();
@@ -342,14 +343,15 @@ TEST_F(
   SimulatePageLoad(kInnerText);
 }
 
-TEST_F(AdsTabHelperTest, DoNotNotifyTabTextContentDidChangeIfTabWasRestored) {
+TEST_F(BraveAdsTabHelperTest,
+       DoNotNotifyTabTextContentDidChangeIfTabWasRestored) {
   navigation_manager().SetNativeRestoreInProgress(true);
   Navigation(GURL("https://brave.com")).Simulate();
   EXPECT_CALL(ads_service_mock(), NotifyTabTextContentDidChange).Times(0);
   SimulatePageLoad(kInnerText);
 }
 
-TEST_F(AdsTabHelperTest,
+TEST_F(BraveAdsTabHelperTest,
        DoNotNotifyTabTextContentDidChangeForSameDocumentNavigation) {
   Navigation(GURL("https://brave.com")).Simulate();
   SimulatePageLoad(kInnerText);
@@ -361,7 +363,7 @@ TEST_F(AdsTabHelperTest,
   SimulatePageLoad(kInnerText);
 }
 
-TEST_F(AdsTabHelperTest,
+TEST_F(BraveAdsTabHelperTest,
        DoNotNotifyTabTextContentDidChangeForPreviouslyCommittedNavigation) {
   Navigation(GURL("https://brave.com")).Simulate();
   SimulatePageLoad(kInnerText);
@@ -383,7 +385,7 @@ TEST_F(AdsTabHelperTest,
   SimulatePageLoad(kInnerText);
 }
 
-TEST_F(AdsTabHelperTest,
+TEST_F(BraveAdsTabHelperTest,
        DoNotNotifyTabTextContentDidChangeForHttpClientErrorResponsePage) {
   EXPECT_CALL(ads_service_mock(), NotifyTabTextContentDidChange).Times(0);
   Navigation(GURL("https://brave.com"))
@@ -393,7 +395,7 @@ TEST_F(AdsTabHelperTest,
   SimulatePageLoad(kInnerText);
 }
 
-TEST_F(AdsTabHelperTest,
+TEST_F(BraveAdsTabHelperTest,
        DoNotNotifyTabTextContentDidChangeForHttpServerErrorResponsePage) {
   EXPECT_CALL(ads_service_mock(), NotifyTabTextContentDidChange).Times(0);
   Navigation(GURL("https://brave.com"))
@@ -403,13 +405,13 @@ TEST_F(AdsTabHelperTest,
   SimulatePageLoad(kInnerText);
 }
 
-TEST_F(AdsTabHelperTest, NotifyTabDidStartPlayingMedia) {
+TEST_F(BraveAdsTabHelperTest, NotifyTabDidStartPlayingMedia) {
   EXPECT_CALL(ads_service_mock(), NotifyTabDidStartPlayingMedia);
 
   ads_tab_helper()->NotifyTabDidStartPlayingMedia(/*player_id=*/1);
 }
 
-TEST_F(AdsTabHelperTest,
+TEST_F(BraveAdsTabHelperTest,
        DoNotNotifyTabDidStartPlayingMediaForAlreadyPlayingPlayer) {
   ads_tab_helper()->NotifyTabDidStartPlayingMedia(/*player_id=*/1);
   EXPECT_CALL(ads_service_mock(), NotifyTabDidStartPlayingMedia).Times(0);
@@ -417,7 +419,7 @@ TEST_F(AdsTabHelperTest,
   ads_tab_helper()->NotifyTabDidStartPlayingMedia(/*player_id=*/1);
 }
 
-TEST_F(AdsTabHelperTest,
+TEST_F(BraveAdsTabHelperTest,
        DoNotNotifyTabDidStartPlayingMediaWhenAnotherPlayerIsAlreadyPlaying) {
   ads_tab_helper()->NotifyTabDidStartPlayingMedia(/*player_id=*/1);
   EXPECT_CALL(ads_service_mock(), NotifyTabDidStartPlayingMedia).Times(0);
@@ -425,14 +427,14 @@ TEST_F(AdsTabHelperTest,
   ads_tab_helper()->NotifyTabDidStartPlayingMedia(/*player_id=*/2);
 }
 
-TEST_F(AdsTabHelperTest, NotifyTabDidStopPlayingMedia) {
+TEST_F(BraveAdsTabHelperTest, NotifyTabDidStopPlayingMedia) {
   ads_tab_helper()->NotifyTabDidStartPlayingMedia(/*player_id=*/1);
   EXPECT_CALL(ads_service_mock(), NotifyTabDidStopPlayingMedia);
 
   ads_tab_helper()->NotifyTabDidStopPlayingMedia(/*player_id=*/1);
 }
 
-TEST_F(AdsTabHelperTest,
+TEST_F(BraveAdsTabHelperTest,
        DoNotNotifyTabDidStopPlayingMediaWhenAnotherPlayerIsStillPlaying) {
   ads_tab_helper()->NotifyTabDidStartPlayingMedia(/*player_id=*/1);
   ads_tab_helper()->NotifyTabDidStartPlayingMedia(/*player_id=*/2);
@@ -441,14 +443,14 @@ TEST_F(AdsTabHelperTest,
   ads_tab_helper()->NotifyTabDidStopPlayingMedia(/*player_id=*/1);
 }
 
-TEST_F(AdsTabHelperTest,
+TEST_F(BraveAdsTabHelperTest,
        DoNotNotifyTabDidStopPlayingMediaForPlayerThatWasNotPlaying) {
   EXPECT_CALL(ads_service_mock(), NotifyTabDidStopPlayingMedia).Times(0);
 
   ads_tab_helper()->NotifyTabDidStopPlayingMedia(/*player_id=*/1);
 }
 
-TEST_F(AdsTabHelperTest,
+TEST_F(BraveAdsTabHelperTest,
        NotifyTabDidStartPlayingMediaForReusedPlayerIdAfterNavigation) {
   ads_tab_helper()->NotifyTabDidStartPlayingMedia(/*player_id=*/1);
   Navigation(GURL("https://brave.com")).Simulate();
@@ -457,7 +459,7 @@ TEST_F(AdsTabHelperTest,
   ads_tab_helper()->NotifyTabDidStartPlayingMedia(/*player_id=*/1);
 }
 
-TEST_F(AdsTabHelperTest, NotifyDidCloseTab) {
+TEST_F(BraveAdsTabHelperTest, NotifyDidCloseTab) {
   EXPECT_CALL(ads_service_mock(), NotifyDidCloseTab);
   SimulateCloseTab();
 }

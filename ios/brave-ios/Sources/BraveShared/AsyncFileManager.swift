@@ -10,7 +10,7 @@ import Foundation
 /// is required to be done in sequence with other calls (at which point, use FileManager + Dispatch)
 ///
 /// Simply replace `FileManager.default` with `AsyncFileManager.default` and add `await`
-public final class AsyncFileManager {
+public final class AsyncFileManager: @unchecked Sendable {
   public static let `default` = AsyncFileManager(fileManager: .default)
 
   /// The underlying file manager to execute items on
@@ -33,7 +33,7 @@ public final class AsyncFileManager {
   }
 
   /// Locates and optionally creates the specified common directory in a domain.
-  public func url(
+  @concurrent public func url(
     for directory: FileManager.SearchPathDirectory,
     in domain: FileManager.SearchPathDomainMask,
     create: Bool
@@ -44,7 +44,7 @@ public final class AsyncFileManager {
   // MARK: - Discovering Directory Contents
 
   /// Performs a shallow search of the specified directory and returns URLs for the contained items.
-  public func contentsOfDirectory(
+  @concurrent public func contentsOfDirectory(
     at url: URL,
     includingPropertiesForKeys keys: [URLResourceKey]?,
     options mask: FileManager.DirectoryEnumerationOptions = []
@@ -58,7 +58,7 @@ public final class AsyncFileManager {
 
   /// Performs a shallow search of the specified directory and returns the paths of any contained
   /// items.
-  public func contentsOfDirectory(
+  @concurrent public func contentsOfDirectory(
     atPath path: String
   ) async throws -> [String] {
     try fileManager.contentsOfDirectory(atPath: path)
@@ -95,14 +95,14 @@ public final class AsyncFileManager {
 
   /// Performs a deep enumeration of the specified directory and returns the paths of all of the
   /// contained subdirectories.
-  public func subpathsOfDirectory(atPath path: String) async throws -> [String] {
+  @concurrent public func subpathsOfDirectory(atPath path: String) async throws -> [String] {
     try fileManager.subpathsOfDirectory(atPath: path)
   }
 
   // MARK: - Creating and Deleting Items
 
   /// Creates a directory with the given attributes at the specified URL.
-  public func createDirectory(
+  @concurrent public func createDirectory(
     at url: URL,
     withIntermediateDirectories createIntermediates: Bool,
     attributes: [FileAttributeKey: Any]? = nil
@@ -115,7 +115,7 @@ public final class AsyncFileManager {
   }
 
   /// Creates a directory with given attributes at the specified path.
-  public func createDirectory(
+  @concurrent public func createDirectory(
     atPath path: String,
     withIntermediateDirectories createIntermediates: Bool,
     attributes: [FileAttributeKey: Any]? = nil
@@ -129,7 +129,7 @@ public final class AsyncFileManager {
 
   /// Creates a file with the specified content and attributes at the given location.
   @discardableResult
-  public func createFile(
+  @concurrent public func createFile(
     atPath path: String,
     contents data: Data?,
     attributes attr: [FileAttributeKey: Any]? = nil
@@ -138,12 +138,12 @@ public final class AsyncFileManager {
   }
 
   /// Removes the file or directory at the specified URL.
-  public func removeItem(at url: URL) async throws {
+  @concurrent public func removeItem(at url: URL) async throws {
     try fileManager.removeItem(at: url)
   }
 
   /// Removes the file or directory at the specified path.
-  public func removeItem(atPath path: String) async throws {
+  @concurrent public func removeItem(atPath path: String) async throws {
     try fileManager.removeItem(atPath: path)
   }
 
@@ -151,7 +151,7 @@ public final class AsyncFileManager {
 
   /// Replaces the contents of the item at the specified URL in a manner that ensures no data
   /// loss occurs.
-  public func replaceItemAt(
+  @concurrent public func replaceItemAt(
     _ originalItemURL: URL,
     withItemAt newItemURL: URL,
     backupItemName: String? = nil,
@@ -168,7 +168,7 @@ public final class AsyncFileManager {
   // MARK: - Moving and Copying Items
 
   /// Copies the file at the specified URL to a new location.
-  public func copyItem(
+  @concurrent public func copyItem(
     at srcURL: URL,
     to dstURL: URL
   ) async throws {
@@ -176,7 +176,7 @@ public final class AsyncFileManager {
   }
 
   /// Copies the item at the specified path to a new location.
-  public func copyItem(
+  @concurrent public func copyItem(
     atPath srcPath: String,
     toPath dstPath: String
   ) async throws {
@@ -184,7 +184,7 @@ public final class AsyncFileManager {
   }
 
   /// Moves the file at the specified URL to a new location.
-  public func moveItem(
+  @concurrent public func moveItem(
     at srcURL: URL,
     to dstURL: URL
   ) async throws {
@@ -192,7 +192,7 @@ public final class AsyncFileManager {
   }
 
   /// Moves the item at the specified path to a new location.
-  public func moveItem(
+  @concurrent public func moveItem(
     atPath srcPath: String,
     toPath dstPath: String
   ) async throws {
@@ -202,12 +202,12 @@ public final class AsyncFileManager {
   // MARK: - Determining Access to Files
 
   /// Returns a Boolean value that indicates whether a file or directory exists at a specified path.
-  public func fileExists(atPath path: String) async -> Bool {
+  @concurrent public func fileExists(atPath path: String) async -> Bool {
     fileManager.fileExists(atPath: path)
   }
 
   /// Returns a Boolean value that indicates whether a file or directory exists at a specified path.
-  public func fileExists(
+  @concurrent public func fileExists(
     atPath path: String,
     isDirectory: UnsafeMutablePointer<ObjCBool>?
   ) async -> Bool {
@@ -217,12 +217,14 @@ public final class AsyncFileManager {
   // MARK: - Getting and Setting Attributes
 
   /// Returns the attributes of the item at a given path.
-  public func attributesOfItem(atPath path: String) async throws -> [FileAttributeKey: Any] {
+  @concurrent public func attributesOfItem(
+    atPath path: String
+  ) async throws -> [FileAttributeKey: Any] {
     try fileManager.attributesOfItem(atPath: path)
   }
 
   /// Sets the attributes of the specified file or directory.
-  public func setAttributes(
+  @concurrent public func setAttributes(
     _ attributes: [FileAttributeKey: Any],
     ofItemAtPath path: String
   ) async throws {
@@ -232,13 +234,13 @@ public final class AsyncFileManager {
   // MARK: - Getting and Comparing File Contents
 
   /// Returns the contents of the file at the specified path.
-  public func contents(atPath path: String) async -> Data? {
+  @concurrent public func contents(atPath path: String) async -> Data? {
     fileManager.contents(atPath: path)
   }
 
   /// Returns a Boolean value that indicates whether the files or directories in specified paths
   /// have the same contents.
-  public func contentsEqual(
+  @concurrent public func contentsEqual(
     atPath path1: String,
     andPath path2: String
   ) async -> Bool {
@@ -254,7 +256,7 @@ extension AsyncFileManager {
   ///
   /// - Note: Do not use this method if the intent is to pass in
   ///         `FileManager.SearchPathDirectory.itemReplacementDirectory`
-  public func url(
+  @concurrent public func url(
     for directory: FileManager.SearchPathDirectory,
     appending pathComponent: String,
     create: Bool,
@@ -281,7 +283,7 @@ extension AsyncFileManager {
   }
 
   /// Obtains the total size of all files found in a given directory
-  public func sizeOfDirectory(at url: URL) async throws -> UInt64 {
+  @concurrent public func sizeOfDirectory(at url: URL) async throws -> UInt64 {
     let allocatedSizeResourceKeys: Set<URLResourceKey> = [
       .isRegularFileKey,
       .fileAllocatedSizeKey,
@@ -306,7 +308,7 @@ extension AsyncFileManager {
 extension AsyncFileManager {
   /// Creates a file with a string encoded with UTF8 and attributes at the given location.
   @discardableResult
-  public func createUTF8File(
+  @concurrent public func createUTF8File(
     atPath path: String,
     contents string: String,
     attributes attr: [FileAttributeKey: Any]? = nil
@@ -315,7 +317,7 @@ extension AsyncFileManager {
   }
 
   /// Returns the string contents of the file at the specified path.
-  public func utf8Contents(
+  @concurrent public func utf8Contents(
     at url: URL
   ) async -> String? {
     guard let data = fileManager.contents(atPath: url.path(percentEncoded: false)) else {
@@ -329,7 +331,7 @@ extension AsyncFileManager {
 extension AsyncFileManager {
   /// URL where files downloaded by user are stored.
   /// If the download folder doesn't exists it creates a new one
-  public func downloadsPath() async throws -> URL {
+  @concurrent public func downloadsPath() async throws -> URL {
     try await url(for: .documentDirectory, appending: "Downloads", create: true)
   }
 }

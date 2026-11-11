@@ -21,7 +21,7 @@
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/page_info/features.h"
-#include "brave/browser/ui/webui/settings/brave_account/brave_account_row_handler.h"
+#include "brave/browser/ui/webui/settings/brave_account/brave_account_dialog_opener.h"
 #include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
 #include "brave/browser/ui/webui/settings/brave_default_extensions_handler.h"
@@ -46,7 +46,6 @@
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
-#include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
@@ -275,16 +274,13 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 #endif
 
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
-  // Survey Panelist is tied to Brave Rewards, which is compiled out of Brave
+  // Sponsored Ads is tied to Brave Rewards, which is compiled out of Brave
   // Origin branded builds, so the setting is never available there.
-  html_source->AddBoolean("isSurveyPanelistAllowed", false);
+  html_source->AddBoolean("isSponsoredAdsAllowed", false);
 #else
-  html_source->AddBoolean("isSurveyPanelistAllowed",
-                          base::FeatureList::IsEnabled(
-                              ntp_background_images::features::
-                                  kBraveNTPBrandedWallpaperSurveyPanelist) &&
-                              !profile->GetPrefs()->GetBoolean(
-                                  brave_rewards::prefs::kDisabledByPolicy));
+  html_source->AddBoolean("isSponsoredAdsAllowed",
+                          !profile->GetPrefs()->GetBoolean(
+                              brave_rewards::prefs::kDisabledByPolicy));
 #endif
 #if BUILDFLAG(ENABLE_PLAYLIST)
   html_source->AddBoolean(
@@ -376,6 +372,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isShowBraveShieldsInPageInfoEnabled",
       page_info::features::IsShowBraveShieldsInPageInfoEnabled());
+  html_source->AddBoolean("isUpstreamVerticalTabsFeatureEnabled",
+                          tabs::IsUpstreamVerticalTabsForceEnabled());
 }
 
 // static
@@ -429,10 +427,11 @@ void BraveSettingsUI::BindInterface(
 }
 
 void BraveSettingsUI::BindInterface(
-    mojo::PendingReceiver<brave_account::mojom::RowHandler> pending_receiver) {
-  MakeOwnedReceiver(
-      std::make_unique<brave_account::BraveAccountRowHandler>(web_ui()),
-      std::move(pending_receiver));
+    mojo::PendingReceiver<brave_account::mojom::DialogOpener>
+        pending_receiver) {
+  MakeOwnedReceiver(std::make_unique<brave_account::BraveAccountDialogOpener>(
+                        CHECK_DEREF(web_ui())),
+                    std::move(pending_receiver));
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)

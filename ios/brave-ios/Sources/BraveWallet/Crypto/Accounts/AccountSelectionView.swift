@@ -50,13 +50,12 @@ struct AccountSelectionView: View {
       }
     }
     .sheet(isPresented: $isPresentingAddAccount) {
-      NavigationView {
+      NavigationStack {
         AddAccountView(
           keyringStore: keyringStore,
           networkStore: networkStore
         )
       }
-      .navigationViewStyle(.stack)
     }
   }
 }

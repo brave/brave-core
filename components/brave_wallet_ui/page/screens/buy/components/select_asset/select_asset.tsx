@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { VariableSizeList as List } from 'react-window'
 import AutoSizer from 'react-virtualized-auto-sizer'
-import { DialogProps } from '@brave/leo/react/dialog'
+import { DialogProps } from '@brave/nala/react/dialog'
 
 // Selectors
 import {
@@ -20,17 +20,12 @@ import {
 } from '../../../../../options/network-filter-options'
 
 // Queries
-import { useGetNetworksQuery } from '$wallet/common/slices/api.slice'
+import { useGetVisibleNetworksQuery } from '$wallet/common/slices/api.slice'
 
 // Types
 import { BraveWallet, MeldCryptoCurrency } from '../../../../../constants/types'
 
 // Utils
-import {
-  getAssetSymbol,
-  getAssetIdKey,
-  getMeldTokensCoinType,
-} from '../../../../../utils/meld_utils'
 import { getLocale } from '../../../../../../common/locale'
 
 // Components
@@ -39,7 +34,7 @@ import {
 } from '../../../../../components/shared/create-network-icon'
 import {
   NetworkFilterSelector, //
-} from '../../../../../components/desktop/network-filter-selector'
+} from '$wallet/page/components/network_filter_selector/network_filter_selector'
 import {
   SearchBar, //
 } from '../../../../../components/shared/search-bar/index'
@@ -84,6 +79,12 @@ interface AssetListItemProps {
   network?: BraveWallet.NetworkInfo
 }
 
+const getAssetIdKey = (asset: MeldCryptoCurrency) => {
+  return `${asset.coin}-${asset.chainId}-${asset.currencyCode}-${
+    asset.contractAddress
+  }`
+}
+
 const assetItemHeight = 64
 
 export const AssetListItem = ({
@@ -94,15 +95,16 @@ export const AssetListItem = ({
   onSelect,
   network,
 }: AssetListItemProps) => {
-  const { symbolImageUrl, currencyCode, chainName } = asset
+  const { symbolImageUrl, currencyCode } = asset
 
   // Computed
-  const assetSymbol = getAssetSymbol(asset)
+  const assetSymbol = asset.symbol
+  const chainName = network?.chainName ?? ''
   const networkDescription =
     currencyCode !== ''
       ? getLocale(S.BRAVE_WALLET_PORTFOLIO_ASSET_NETWORK_DESCRIPTION)
           .replace('$1', assetSymbol ?? '')
-          .replace('$2', chainName ?? '')
+          .replace('$2', chainName)
       : chainName
 
   // Methods
@@ -173,12 +175,16 @@ export const SelectAsset = (props: SelectAssetProps) => {
   )
 
   // Queries
-  const { data: networkList = [] } = useGetNetworksQuery()
+  const { data: networkList = [] } = useGetVisibleNetworksQuery()
 
   // Memos
   const assetsFilteredByNetwork = React.useMemo(() => {
+    const visibleChainIds = new Set(
+      networkList.map((network) => network.chainId),
+    )
+
     if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
-      return assets
+      return assets.filter((asset) => visibleChainIds.has(asset.chainId))
     }
     return assets.filter(
       (asset) => asset.chainId === selectedNetworkFilter.chainId,
@@ -189,7 +195,7 @@ export const SelectAsset = (props: SelectAssetProps) => {
     if (searchText === '') return assetsFilteredByNetwork
 
     return assetsFilteredByNetwork.filter((asset) => {
-      const assetSymbol = getAssetSymbol(asset).toLowerCase()
+      const assetSymbol = asset.symbol.toLowerCase()
       const assetName = asset.name?.toLowerCase() ?? ''
       return (
         assetName.startsWith(searchText.toLowerCase())
@@ -236,8 +242,8 @@ export const SelectAsset = (props: SelectAssetProps) => {
     (asset: MeldCryptoCurrency) => {
       return networkList.find(
         (network) =>
-          network.chainId.toLowerCase() === asset.chainId?.toLowerCase()
-          && getMeldTokensCoinType(asset) === network.coin,
+          network.chainId.toLowerCase() === asset.chainId.toLowerCase()
+          && asset.coin === network.coin,
       )
     },
     [networkList],

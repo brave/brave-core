@@ -36,3 +36,11 @@ bool IsExtensionReplacementEnabled() {
 }
 
 }  // namespace extensions_mv2::features
+
+namespace extensions_features {
+
+// Serialize extension updates to avoid concurrent update checks.
+BASE_FEATURE(kBraveSequentialExtensionsUpdate,
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
+}  // namespace extensions_features

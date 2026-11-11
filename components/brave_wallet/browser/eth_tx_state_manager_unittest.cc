@@ -26,7 +26,6 @@
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "url/origin.h"
 
 namespace brave_wallet {
 
@@ -93,7 +92,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   meta.set_tx_receipt(tx_receipt);
   meta.set_tx_hash(
       "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238");
-  meta.set_origin(url::Origin::Create(GURL("https://test.brave.com")));
+  meta.set_dapp_origin(url::Origin::Create(GURL("https://test.brave.com")));
   meta.set_chain_id(mojom::kMainnetChainId);
 
   base::DictValue meta_value = meta.ToValue();
@@ -111,7 +110,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   EXPECT_EQ(meta_from_value->confirmed_time(), meta.confirmed_time());
   EXPECT_EQ(meta_from_value->tx_receipt(), meta.tx_receipt());
   EXPECT_EQ(meta_from_value->tx_hash(), meta.tx_hash());
-  EXPECT_EQ(meta_from_value->origin(), meta.origin());
+  EXPECT_EQ(meta_from_value->dapp_origin(), meta.dapp_origin());
   EXPECT_EQ(meta_from_value->chain_id(), meta.chain_id());
   ASSERT_EQ(meta_from_value->tx()->type(), EthTransactionType::kLegacy);
   EXPECT_EQ(*meta_from_value->tx(), *meta.tx());
@@ -196,10 +195,14 @@ TEST_F(EthTxStateManagerUnitTest, MetaChainIdUsedWhenTxChainIdMissing) {
 
   // `chain_id` might be missing in tx value, `chain_id` from meta should be
   // used in that case.
-  EXPECT_EQ(*meta_value.FindStringByDottedPath("tx.chain_id"), "0x1");
+  const std::string* tx_chain_id =
+      meta_value.FindStringByDottedPath("tx.chain_id");
+  ASSERT_TRUE(tx_chain_id);
+  EXPECT_EQ(*tx_chain_id, "0x1");
   meta_value.RemoveByDottedPath("tx.chain_id");
   meta_value.Set("chain_id", "0x123");
   auto meta_from_value = eth_tx_state_manager_->ValueToEthTxMeta(meta_value);
+  ASSERT_NE(meta_from_value, nullptr);
   EXPECT_EQ(meta_from_value->tx()->chain_id(), uint256_t{0x123});
 }
 

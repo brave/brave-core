@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/views/page_action/playlist_page_action_controller.h"
 
-#include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "brave/components/playlist/core/common/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -95,8 +94,7 @@ void PlaylistPageActionController::AttachToTabHelper(
     content::WebContents* contents) {
   tab_helper_observation_.Reset();
   if (contents) {
-    if (auto* tab_helper =
-            playlist::PlaylistTabHelper::FromWebContents(contents)) {
+    if (auto* tab_helper = playlist::PlaylistTabHelper::From(&tab_.get())) {
       tab_helper_observation_.Observe(tab_helper);
     }
   }
@@ -114,10 +112,13 @@ void PlaylistPageActionController::ShowBubble(
     return;
   }
 
-  BrowserView& browser_view =
-      CHECK_DEREF(BrowserView::GetBrowserViewForBrowser(bwi));
+  // Not a BrowserView, e.g. a WebUIBrowserWindow.
+  BrowserView* const browser_view = BrowserView::GetBrowserViewForBrowser(bwi);
+  if (!browser_view) {
+    return;
+  }
   views::View* const anchor_view =
-      browser_view.toolbar_button_provider()
+      browser_view->toolbar_button_provider()
           ->GetPageActionBubbleAnchor(kActionShowPlaylistPageAction)
           .GetIfView();
   if (!anchor_view || !anchor_view->GetWidget()) {
@@ -132,8 +133,7 @@ void PlaylistPageActionController::UpdateState(content::WebContents* contents) {
   bool has_saved_items = false;
   bool has_found_items = false;
   if (contents) {
-    if (auto* tab_helper =
-            playlist::PlaylistTabHelper::FromWebContents(contents)) {
+    if (auto* tab_helper = playlist::PlaylistTabHelper::From(&tab_.get())) {
       has_saved_items = !tab_helper->saved_items().empty();
       has_found_items = !tab_helper->found_items().empty();
     }

@@ -4,15 +4,15 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import { color, font } from '@brave/leo/tokens/css/variables'
-import ProgressRing from '@brave/leo/react/progressRing'
-import LeoDropdown from '@brave/leo/react/dropdown'
-import Icon from '@brave/leo/react/icon'
+import { color, font } from '@brave/nala/tokens/css/variables'
+import ProgressRing from '@brave/nala/react/progressRing'
+import LeoDropdown from '@brave/nala/react/dropdown'
+import Icon from '@brave/nala/react/icon'
 
 // Shared Styles
 import {
   layoutPanelWidth, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 import { Column, Row } from '../../../components/shared/style'
 
 export const ContentWrapper = styled(Column)`

@@ -6,7 +6,6 @@
 #include "brave/browser/download/brave_download_manager_delegate.h"
 
 #include <memory>
-#include <string>
 #include <utility>
 
 #include "base/feature_list.h"
@@ -15,12 +14,14 @@
 #include "base/location.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/image_metadata_stripper/image_metadata_stripper.h"
+#include "brave/components/misc_metrics/image_metadata_stripper_metrics.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/download/public/common/download_item.h"
 #include "content/public/browser/browser_thread.h"
-#include "content/public/browser/download_manager.h"
 
 // Factory used by the plastered download_core_service_impl.cc construction
 // site. Keeping the Brave header out of chrome/browser/download avoids pulling
@@ -46,13 +47,8 @@ bool BraveDownloadManagerDelegate::IsDownloadReadyForCompletion(
         item, std::move(internal_complete_callback));
   }
 
-  // IPTC metadata stripping only available for jpeg.
-  // TODO(https://github.com/brave/brave-browser/issues/5238): PNG needs
-  // more investigation whether FBMD is present or not.
-  const base::FilePath path = item->GetTargetFilePath();
-  const bool is_jpeg_ext = path.MatchesExtension(FILE_PATH_LITERAL(".jpg")) ||
-                           path.MatchesExtension(FILE_PATH_LITERAL(".jpeg"));
-  if (!is_jpeg_ext) {
+  if (!image_metadata_stripper::IsSupportedImagePath(
+          item->GetTargetFilePath())) {
     return ChromeDownloadManagerDelegate::IsDownloadReadyForCompletion(
         item, std::move(internal_complete_callback));
   }
@@ -107,11 +103,11 @@ bool BraveDownloadManagerDelegate::IsDownloadReadyForCompletion(
 }
 
 void BraveDownloadManagerDelegate::OnImageMetadataStripped(uint32_t download_id,
-                                                           bool /*stripped*/) {
+                                                           bool stripped) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  // The download may have been removed while the stripping task was running, so
-  // the item and its keyed state have to be looked up again.
+  // The download may have been removed while the stripping task was
+  // running, so the item and its keyed state have to be looked up again.
   if (download_manager_) {
     download::DownloadItem* item = download_manager_->GetDownload(download_id);
     if (item) {
@@ -121,6 +117,20 @@ void BraveDownloadManagerDelegate::OnImageMetadataStripped(uint32_t download_id,
         DCHECK(state->stripping_started);
         state->CompleteDownload();
       }
+    }
+  }
+
+  // Record the metrics.
+  if (g_brave_browser_process &&
+      g_brave_browser_process->process_misc_metrics() &&
+      g_brave_browser_process->process_misc_metrics()
+          ->image_metadata_stripper_metrics()) {
+    auto* stripper_metrics_reporter =
+        g_brave_browser_process->process_misc_metrics()
+            ->image_metadata_stripper_metrics();
+    if (stripped) {
+      stripper_metrics_reporter->RecordFbmd(
+          image_metadata_stripper::StrippingClient::kDownloadManager);
     }
   }
 }

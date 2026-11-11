@@ -5,14 +5,10 @@
 
 #include "brave/components/ntp_background_images/browser/features.h"
 
-#include "base/feature_list.h"
-
 namespace ntp_background_images::features {
 
-BASE_FEATURE(kBraveNTPBrandedWallpaperSurveyPanelist,
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
-BASE_FEATURE(kBraveNTPBrandedWallpaper,
+BASE_FEATURE(kBraveNTPNewTabTakeoverWallpaper,
+             "BraveNTPBrandedWallpaper",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kCenterNttCtaButton, base::FEATURE_DISABLED_BY_DEFAULT);

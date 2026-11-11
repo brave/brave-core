@@ -108,7 +108,7 @@ class BottomSheetViewController: UIViewController {
 
   private var isLandscapePhone: Bool {
     traitCollection.userInterfaceIdiom == .phone
-      && UIApplication.shared.statusBarOrientation.isLandscape
+      && view.window?.windowScene?.interfaceOrientation.isLandscape == true
   }
 
   // MARK: - Lifecycle
@@ -142,6 +142,13 @@ class BottomSheetViewController: UIViewController {
     contentView.isHidden = true
 
     makeConstraints()
+
+    registerForTraitChanges([
+      UITraitHorizontalSizeClass.self,
+      UITraitUserInterfaceIdiom.self,
+    ]) { (self: Self, _) in
+      self.view.setNeedsUpdateConstraints()
+    }
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -151,11 +158,6 @@ class BottomSheetViewController: UIViewController {
 
   override func viewDidLayoutSubviews() {
     yPosition = contentView.isHidden ? view.frame.maxY : initialDrawerYPosition
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    view.setNeedsUpdateConstraints()
   }
 
   override func updateViewConstraints() {

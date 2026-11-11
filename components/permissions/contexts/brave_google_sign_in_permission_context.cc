@@ -5,11 +5,7 @@
 
 #include "brave/components/permissions/contexts/brave_google_sign_in_permission_context.h"
 
-#include <utility>
-
-#include "components/content_settings/browser/page_specific_content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
-#include "components/permissions/permission_request_id.h"
 
 namespace permissions {
 

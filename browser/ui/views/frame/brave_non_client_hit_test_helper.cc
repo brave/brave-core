@@ -7,12 +7,24 @@
 
 #include "base/check_deref.h"
 #include "base/check_op.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/base/hit_test.h"
 #include "ui/views/window/hit_test_utils.h"
 
-BraveNonClientHitTestHelper::BraveNonClientHitTestHelper() = default;
+DEFINE_USER_DATA(BraveNonClientHitTestHelper);
+
+BraveNonClientHitTestHelper::BraveNonClientHitTestHelper(
+    ui::UnownedUserDataHost& host)
+    : scoped_unowned_user_data_(host, *this) {}
+
 BraveNonClientHitTestHelper::~BraveNonClientHitTestHelper() = default;
+
+// static
+BraveNonClientHitTestHelper* BraveNonClientHitTestHelper::From(
+    BrowserWindowInterface* browser) {
+  return Get(browser->GetUnownedUserDataHost());
+}
 
 int BraveNonClientHitTestHelper::NonClientHitTest(
     BrowserView* browser_view,
@@ -33,6 +45,16 @@ int BraveNonClientHitTestHelper::NonClientHitTest(
     // widget's coordinate space, producing spurious HTCAPTION results.
     // Callers must guard against this before calling NonClientHitTest().
     CHECK_EQ(view->GetWidget(), browser_view->GetWidget());
+
+    // GetHitTestComponent() only looks at |view|'s subtree, so ignore points
+    // where another view is drawn above it (e.g. the vertical tab strip that's
+    // expanded on hover over the toolbar).
+    const views::View* target =
+        view->GetWidget()->GetRootView()->GetEventHandlerForPoint(
+            point_in_widget);
+    if (!view->Contains(target)) {
+      return HTNOWHERE;
+    }
 
 #if BUILDFLAG(IS_WIN)
     auto hit_test_result = views::GetHitTestComponent(view, point_in_widget);

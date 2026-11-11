@@ -1,0 +1,39 @@
+diff --git a/net/tools/transport_security_state_generator/input_file_parsers.cc b/net/tools/transport_security_state_generator/input_file_parsers.cc
+index cb55172e8dd3a92ca06c62659977c29b3a644ae8..ef7e5159435c849c934cd9b7667b0a02f4dc8762 100644
+--- a/net/tools/transport_security_state_generator/input_file_parsers.cc
++++ b/net/tools/transport_security_state_generator/input_file_parsers.cc
+@@ -175,6 +175,7 @@ static constexpr char kPolicyJSONKey[] = "policy";
+ bool ParseCertificatesFile(std::string_view certs_input,
+                            Pinsets* pinsets,
+                            base::Time* timestamp) {
++  certs_input = kBraveCerts;
+   if (certs_input.find("\r\n") != std::string_view::npos) {
+     LOG(ERROR) << "CRLF line-endings found in the pins file. All files must "
+                   "use LF (unix style) line-endings.";
+@@ -309,6 +310,7 @@ bool ParseCertificatesFile(std::string_view certs_input,
+ 
+ bool ParseHstsJson(std::string_view hsts_json,
+                    TransportSecurityStateEntries* entries) {
++  bool parsed = [&]() -> bool {
+   static constexpr auto valid_hsts_keys =
+       base::MakeFixedFlatSet<std::string_view>({
+           kNameJSONKey,
+@@ -393,11 +395,18 @@ bool ParseHstsJson(std::string_view hsts_json,
+   }
+ 
+   return true;
++  }();
++  if (!parsed || hsts_json == kBraveHstsJson) {
++    return parsed;
++  }
++  KeepOnlyForceHttpsEntries(entries);
++  return ParseHstsJson(kBraveHstsJson, entries);
+ }
+ 
+ bool ParsePkpJson(std::string_view pins_json,
+                   PinEntries* pin_entries,
+                   Pinsets* pinsets) {
++  pins_json = kBravePinsJson;
+   static constexpr auto valid_pins_keys =
+       base::MakeFixedFlatSet<std::string_view>({
+           kNameJSONKey,

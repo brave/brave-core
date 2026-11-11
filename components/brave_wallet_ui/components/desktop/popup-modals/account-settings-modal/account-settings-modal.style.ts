@@ -4,11 +4,11 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import AlertReact from '@brave/leo/react/alert'
-import * as leo from '@brave/leo/tokens/css/variables'
+import AlertReact from '@brave/nala/react/alert'
+import * as leo from '@brave/nala/tokens/css/variables'
 import LeoSegmentedControl, {
   SegmentedControlProps,
-} from '@brave/leo/react/segmentedControl'
+} from '@brave/nala/react/segmentedControl'
 
 // Assets
 import ClipboardIcon from '../../../../assets/svg-icons/copy-to-clipboard-icon.svg'
@@ -17,7 +17,7 @@ import ClipboardIcon from '../../../../assets/svg-icons/copy-to-clipboard-icon.s
 import { Text, WalletButton, Row, Column } from '../../../shared/style'
 import {
   layoutPanelWidth, //
-} from '../../wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const StyledWrapper = styled.div`
   display: flex;

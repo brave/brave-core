@@ -8,6 +8,8 @@ syntax = "proto3";
 package recipe_modules.brave.chromium_checkout.examples.full;
 
 message InputProperties {
-  // Chromium ref (tag or branch) to check out in the example.
+  // Chromium ref (e.g. `refs/tags/151.0.7917.1`) to check out in the example.
   string chromium_ref = 1;
+  // Skip `gclient sync` after the checkout.
+  bool skip_sync = 2;
 }

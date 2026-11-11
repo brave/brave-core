@@ -14,8 +14,8 @@ enum BraveVPNSubscriptionTier: String {
 }
 
 struct BraveVPNPremiumTierSelectionView: View {
-  var originalProduct: SKProduct?
-  var discountedProduct: SKProduct?
+  var originalProduct: Product?
+  var discountedProduct: Product?
 
   var type: BraveVPNSubscriptionTier
 
@@ -55,12 +55,8 @@ struct BraveVPNPremiumTierSelectionView: View {
 
             Spacer()
 
-            if let product = originalProduct,
-              let formattedPrice = product.price.frontSymbolCurrencyFormatted(
-                with: product.priceLocale
-              )
-            {
-              createPriceTagLabel(product: product, price: formattedPrice)
+            if let product = originalProduct {
+              createPriceTagLabel(product: product)
             } else {
               ProgressView()
                 .tint(Color.white)
@@ -79,7 +75,7 @@ struct BraveVPNPremiumTierSelectionView: View {
             Spacer()
 
             if type == .yearly, let product = originalProduct {
-              createDiscountTagLabel(product: product, price: "")
+              createDiscountTagLabel(product: product)
             }
           }
         }
@@ -104,16 +100,16 @@ struct BraveVPNPremiumTierSelectionView: View {
   }
 
   @ViewBuilder
-  private func createPriceTagLabel(product: SKProduct, price: String) -> some View {
-    Text(
-      "\(product.priceLocale.currency?.identifier ?? "")"
-    )
-    .font(.footnote)
-    .foregroundColor(Color(braveSystemName: .primitiveBlurple95))
+  private func createPriceTagLabel(product: Product) -> some View {
+    let locale = product.priceFormatStyle.locale
+    let currencyIdentifier = locale.currency?.identifier ?? ""
+    let currencySymbol = locale.currencySymbol ?? ""
 
-      + Text(
-        " \(price)"
-      )
+    Text("\(currencyIdentifier)\(currencySymbol)")
+      .font(.footnote)
+      .foregroundColor(Color(braveSystemName: .primitiveBlurple95))
+
+      + Text(product.price, format: .currency(code: "").locale(locale))
       .font(.headline)
       .foregroundColor(.white)
 
@@ -126,8 +122,9 @@ struct BraveVPNPremiumTierSelectionView: View {
 
   @ViewBuilder
   private func createDiscountPercentageLabel() -> some View {
-    let yearlyDouble = originalProduct?.price.doubleValue ?? 0.0
-    let discountDouble = discountedProduct?.price.multiplying(by: 12).doubleValue ?? 0.0
+    let yearlyDouble = originalProduct.map { NSDecimalNumber(decimal: $0.price).doubleValue } ?? 0.0
+    let discountDouble =
+      discountedProduct.map { NSDecimalNumber(decimal: $0.price * 12).doubleValue } ?? 0.0
     let discountSavingPercentage =
       discountDouble > 0.0 ? 100 - Int((yearlyDouble * 100) / discountDouble) : 0
 
@@ -143,20 +140,21 @@ struct BraveVPNPremiumTierSelectionView: View {
   }
 
   @ViewBuilder
-  private func createDiscountTagLabel(product: SKProduct, price: String) -> some View {
-    let discountDouble =
-      discountedProduct?.price.multiplying(by: 12).frontSymbolCurrencyFormatted(
-        with: product.priceLocale
-      ) ?? ""
+  private func createDiscountTagLabel(product: Product) -> some View {
+    let locale = product.priceFormatStyle.locale
+    let currencyIdentifier = locale.currency?.identifier ?? ""
+    let currencySymbol = locale.currencySymbol ?? ""
 
     Group {
-      Text(product.priceLocale.currency?.identifier ?? "")
-        .font(.footnote)
-        .foregroundColor(Color(braveSystemName: .primitiveBlurple95))
-        + Text("\(discountDouble)")
-        .font(.subheadline.weight(.semibold))
-        .kerning(0.075)
-        .foregroundColor(.white)
+      if let discountedProduct {
+        Text("\(currencyIdentifier)\(currencySymbol)")
+          .font(.footnote)
+          .foregroundColor(Color(braveSystemName: .primitiveBlurple95))
+          + Text(discountedProduct.price * 12, format: .currency(code: "").locale(locale))
+          .font(.subheadline.weight(.semibold))
+          .kerning(0.075)
+          .foregroundColor(.white)
+      }
     }
     .strikethrough()
     .opacity(0.6)
@@ -164,51 +162,25 @@ struct BraveVPNPremiumTierSelectionView: View {
 }
 
 #if DEBUG
-struct BraveVPNPremiumTierSelectionView_Previews: PreviewProvider {
-  static var previews: some View {
-    let mockMonthlyProduct = BraveVPNMockSKProduct(
-      price: NSDecimalNumber(string: "9.99"),
-      priceLocale: Locale(identifier: "en_US")
+#Preview {
+  VStack {
+    BraveVPNPremiumTierSelectionView(
+      originalProduct: nil,
+      discountedProduct: nil,
+      type: .yearly,
+      selectedTierType: Binding.constant(.yearly)
     )
 
-    let mockYearlyProduct = BraveVPNMockSKProduct(
-      price: NSDecimalNumber(string: "99.99"),
-      priceLocale: Locale(identifier: "en_US")
-    )
-
-    VStack {
-      BraveVPNPremiumTierSelectionView(
-        originalProduct: mockYearlyProduct,
-        discountedProduct: mockMonthlyProduct,
-        type: .yearly,
-        selectedTierType: Binding.constant(.yearly)
-      )
-
-      BraveVPNPremiumTierSelectionView(
-        originalProduct: mockYearlyProduct,
-        discountedProduct: mockMonthlyProduct,
-        type: .yearly,
-        selectedTierType: Binding.constant(.monthly)
-      )
-
-      BraveVPNPremiumTierSelectionView(
-        originalProduct: mockMonthlyProduct,
-        discountedProduct: nil,
-        type: .monthly,
-        selectedTierType: Binding.constant(.monthly)
-      )
-
-      BraveVPNPremiumTierSelectionView(
-        originalProduct: mockMonthlyProduct,
-        discountedProduct: nil,
-        type: .monthly,
-        selectedTierType: Binding.constant(.yearly)
-      )
-    }
-    .padding()
-    .background(
-      Color(braveSystemName: .primitivePrimary10)
+    BraveVPNPremiumTierSelectionView(
+      originalProduct: nil,
+      discountedProduct: nil,
+      type: .monthly,
+      selectedTierType: Binding.constant(.monthly)
     )
   }
+  .padding()
+  .background(
+    Color(braveSystemName: .primitivePrimary10)
+  )
 }
 #endif

@@ -19,7 +19,6 @@
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
@@ -29,6 +28,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "extensions/buildflags/buildflags.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
@@ -129,7 +129,7 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
   }
 
   void ReloadAndWaitForLoadStop() {
-    chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+    chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
     ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
   }
 
@@ -572,108 +572,40 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, Iframe3P) {
     GURL iframe_url;
   } ethereum_undefined_cases[] =
       {{// 3p iframe
-        "true", secure_top_url, iframe_url_3p},
-       {// 1st party iframe with allow="ethereum 'none'"
-        R"(
-      document.querySelector('iframe').setAttribute('allow', 'ethereum \'none\'');
-      true
-      )",
-        secure_top_url, iframe_url_1p},
+        "", secure_top_url, iframe_url_3p},
        {// 1st party iframe with sandbox="allow-scripts"
         R"(
-      document.querySelector('iframe').removeAttribute('allow');
       document.querySelector('iframe').setAttribute('sandbox', 'allow-scripts');
-      true
       )",
         secure_top_url, iframe_url_1p},
        {// 3p iframe with sandbox="allow-scripts allow-same-origin"
         R"(
-      document.querySelector('iframe').removeAttribute('allow');
       document.querySelector('iframe')
           .setAttribute('sandbox', 'allow-scripts allow-same-origin');
-      true
       )",
         secure_top_url, iframe_url_3p},
-       {// 3p iframe with allow="solana"
-        R"(
-      document.querySelector('iframe').removeAttribute('sandbox');
-      document.querySelector('iframe').setAttribute('allow', 'solana');
-      true
-      )",
-        secure_top_url, iframe_url_3p},
-
-       {// 3p iframe with allow="solana; ethereum" but insecure top level
-        R"(
-      document.querySelector('iframe').removeAttribute('sandbox');
-      document.querySelector('iframe')
-          .setAttribute('allow', 'solana; ethereum');
-      true
-      )",
-        insecure_top_url, iframe_url_3p},
-
-       {// 3p iframe with allow="solana; ethereum" but insecure top level (data
-        // URI)
-        R"(
-      document.querySelector('iframe').removeAttribute('sandbox');
-      document.querySelector('iframe')
-          .setAttribute('allow', 'solana; ethereum');
-      true
-      )",
-        data_top_url, iframe_url_3p},
-       {// 3p iframe with allow="solana; ethereum" but insecure iframe
-        R"(
-      document.querySelector('iframe').removeAttribute('sandbox');
-      document.querySelector('iframe')
-          .setAttribute('allow', 'solana; ethereum');
-      true
-      )",
-        secure_top_url, data_simple_url},
-       {// insecure top level and insecure iframe allow="solana; ethereum"
-        R"(
-      document.querySelector('iframe').removeAttribute('sandbox');
-      document.querySelector('iframe')
-          .setAttribute('allow', 'solana; ethereum');
-      true
-      )",
-        data_top_url, data_simple_url}},
+       {// 3p iframe with insecure top level
+        "", insecure_top_url, iframe_url_3p},
+       {// 3p iframe with insecure top level (data URI)
+        "", data_top_url, iframe_url_3p},
+       {// insecure iframe
+        "", secure_top_url, data_simple_url},
+       {// insecure top level and insecure iframe
+        "", data_top_url, data_simple_url}},
     ethereum_defined_cases[] = {
         {// 1st party iframe
-         "true", secure_top_url, iframe_url_1p},
+         "", secure_top_url, iframe_url_1p},
         {// 1st party iframe sandbox="allow-scripts allow-same-origin"
          R"(
-      document.querySelector('iframe').removeAttribute('allow');
       document.querySelector('iframe')
           .setAttribute('sandbox', 'allow-scripts allow-same-origin');
-      true
       )",
-         secure_top_url, iframe_url_1p},
-        {// 3p iframe with allow="ethereum"
-         R"(
-      document.querySelector('iframe').removeAttribute('sandbox');
-      document.querySelector('iframe').setAttribute('allow', 'ethereum');
-      true
-      )",
-         secure_top_url, iframe_url_3p},
-        {// 3p iframe with allow="solana; ethereum"
-         R"(
-      document.querySelector('iframe').removeAttribute('sandbox');
-      document.querySelector('iframe')
-          .setAttribute('allow', 'solana; ethereum');
-      true
-      )",
-         secure_top_url, iframe_url_3p},
-        {// 3rd party iframe with sandbox="allow-scripts" allow="ethereum"
-         R"(
-      document.querySelector('iframe').setAttribute('allow', 'ethereum');
-      document.querySelector('iframe').setAttribute('sandbox', 'allow-scripts');
-      true
-      )",
-         secure_top_url, iframe_url_3p}};
+         secure_top_url, iframe_url_1p}};
 
   for (auto& c : ethereum_undefined_cases) {
     SCOPED_TRACE(testing::Message() << c.script << c.top_url << c.iframe_url);
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), c.top_url));
-    EXPECT_TRUE(content::EvalJs(primary_main_frame(), c.script).ExtractBool());
+    EXPECT_TRUE(content::ExecJs(primary_main_frame(), c.script));
     EXPECT_TRUE(NavigateIframeToURL(web_contents(), "test", c.iframe_url));
     EXPECT_TRUE(content::EvalJs(ChildFrameAt(primary_main_frame(), 0),
                                 kEvalEthereumUndefined)
@@ -682,7 +614,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, Iframe3P) {
   for (auto& c : ethereum_defined_cases) {
     SCOPED_TRACE(testing::Message() << c.script << c.top_url << c.iframe_url);
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), c.top_url));
-    EXPECT_TRUE(content::EvalJs(primary_main_frame(), c.script).ExtractBool());
+    EXPECT_TRUE(content::ExecJs(primary_main_frame(), c.script));
     EXPECT_TRUE(NavigateIframeToURL(web_contents(), "test", c.iframe_url));
     EXPECT_FALSE(content::EvalJs(ChildFrameAt(primary_main_frame(), 0),
                                  kEvalEthereumUndefined)

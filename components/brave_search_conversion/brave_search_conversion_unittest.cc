@@ -7,7 +7,6 @@
 
 #include "base/feature_list.h"
 #include "base/metrics/field_trial.h"
-#include "base/metrics/field_trial_param_associator.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_search_conversion/features.h"

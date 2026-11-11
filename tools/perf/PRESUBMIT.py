@@ -11,6 +11,8 @@ PRESUBMIT_VERSION = '2.0.0'
 
 
 def CheckChange(input_api, output_api):
+  if not input_api.HasAffectedFiles(extensions='.py'):
+    return []
   tests = []
   results = []
   testing_path = pathlib.Path(input_api.PresubmitLocalPath())
@@ -19,16 +21,17 @@ def CheckChange(input_api, output_api):
   if platform.system() in ('Linux', 'Darwin'):
     run_pytype_path = os.path.join(str(testing_path), 'tests', 'run_pytype.py')
     tests.append(
-        input_api.Command(
-            name='pytype',
-            cmd=[
-                input_api.python3_executable,
-                run_pytype_path,
-            ],
-            message=output_api.PresubmitError,
-            kwargs={},
-            python3=True,
-        ))
+      input_api.Command(
+        name='pytype',
+        cmd=[
+          input_api.python3_executable,
+          run_pytype_path,
+        ],
+        message=output_api.PresubmitError,
+        kwargs={},
+        python3=True,
+      )
+    )
   # ---------------------------------------------------------------------------
   # Run all test
   results += input_api.RunTests(tests)

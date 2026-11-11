@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "brave/common/brave_renderer_configuration.mojom.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -31,11 +30,7 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
-#if BUILDFLAG(ENABLE_TOR)
-#include "brave/components/tor/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
 #include "extensions/browser/extension_registry.h"
 #endif
 
@@ -66,10 +61,6 @@ BraveRendererUpdater::BraveRendererUpdater(
 #endif
 
   de_amp_enabled_.Init(de_amp::kDeAmpPrefEnabled, pref_service);
-#if BUILDFLAG(ENABLE_TOR)
-  onion_only_in_tor_windows_.Init(tor::prefs::kOnionOnlyInTorWindows,
-                                  pref_service);
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   CheckActiveWallet();
@@ -108,24 +99,14 @@ BraveRendererUpdater::BraveRendererUpdater(
           &BraveRendererUpdater::CheckActiveWalletAndMaybeUpdateRenderers,
           base::Unretained(this)));
 #endif
-#if BUILDFLAG(ENABLE_TOR)
-  pref_change_registrar_.Add(
-      tor::prefs::kOnionOnlyInTorWindows,
-      base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
-                          base::Unretained(this)));
-#endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
-  if (local_state_) {
-    widevine_enabled_.Init(kWidevineEnabled, local_state_);
-    local_state_change_registrar_.Init(local_state_);
-    local_state_change_registrar_.Add(
-        kWidevineEnabled,
-        base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
-                            base::Unretained(this)));
-  } else {
-    CHECK_IS_TEST();
-  }
+  widevine_enabled_.Init(kWidevineEnabled, local_state_);
+  local_state_change_registrar_.Init(local_state_);
+  local_state_change_registrar_.Add(
+      kWidevineEnabled,
+      base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
+                          base::Unretained(this)));
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -222,7 +203,7 @@ void BraveRendererUpdater::UpdateRenderer(
     mojo::AssociatedRemote<brave::mojom::BraveRendererConfiguration>*
         renderer_configuration) {
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
   extensions::ExtensionRegistry* registry =
       extensions::ExtensionRegistry::Get(profile_);
   bool has_installed_metamask =
@@ -284,22 +265,18 @@ void BraveRendererUpdater::UpdateRenderer(
   bool install_window_brave_cardano_provider =
       can_install_providers && brave_wallet::IsCardanoDAppSupportEnabled() &&
       default_cardano_wallet == brave_wallet::mojom::DefaultWallet::BraveWallet;
+
+  // There is no default-wallet pref for Polkadot yet, so the feature flag is
+  // the only per-chain gate.
+  bool install_window_brave_polkadot_provider =
+      can_install_providers && brave_wallet::IsPolkadotDAppSupportEnabled();
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
   PrefService* pref_service = profile_->GetPrefs();
   bool de_amp_enabled = de_amp::IsDeAmpEnabled(pref_service);
-  bool onion_only_in_tor_windows = true;
-#if BUILDFLAG(ENABLE_TOR)
-  onion_only_in_tor_windows =
-      pref_service->GetBoolean(tor::prefs::kOnionOnlyInTorWindows);
-#endif
   bool widevine_enabled = false;
 #if BUILDFLAG(ENABLE_WIDEVINE)
-  if (local_state_) {
-    widevine_enabled = local_state_->GetBoolean(kWidevineEnabled);
-  } else {
-    CHECK_IS_TEST();
-  }
+  widevine_enabled = local_state_->GetBoolean(kWidevineEnabled);
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -317,6 +294,8 @@ void BraveRendererUpdater::UpdateRenderer(
   params->install_window_ethereum_provider = install_window_ethereum_provider;
   params->install_window_brave_cardano_provider =
       install_window_brave_cardano_provider;
+  params->install_window_brave_polkadot_provider =
+      install_window_brave_polkadot_provider;
   params->allow_overwrite_window_ethereum_provider =
       allow_overwrite_window_ethereum_provider;
   params->brave_use_native_solana_wallet = brave_use_native_solana_wallet;
@@ -324,7 +303,6 @@ void BraveRendererUpdater::UpdateRenderer(
       allow_overwrite_window_solana_provider;
 #endif
   params->de_amp_enabled = de_amp_enabled;
-  params->onion_only_in_tor_windows = onion_only_in_tor_windows;
   params->widevine_enabled = widevine_enabled;
   params->playlist_enabled = playlist_enabled;
 

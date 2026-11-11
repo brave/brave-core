@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query'
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 
 // types
 import { BraveWallet } from '../../../constants/types'
@@ -72,10 +72,16 @@ export function AllowAddChangeNetworkPanel(props: Props) {
   // state
   const [showNetworkDetails, setShowNetworkDetails] = React.useState(false)
 
+  // computed from props
+  const dappOriginInfo = switchChainRequest
+    ? switchChainRequest.dappOriginInfo
+    : addChainRequest.dappOriginInfo
+
   // queries
   const { data: dappsAccounts } = useGetSelectedDappAccountsQuery()
   const { data: selectedNetwork } = useGetNetworkForAccountOnActiveOriginQuery({
     accountId: dappsAccounts?.ethAccountId,
+    activeOriginSpec: dappOriginInfo.originSpec,
   })
 
   const { data: switchChainRequestNetwork } = useGetNetworkQuery(
@@ -97,11 +103,6 @@ export function AllowAddChangeNetworkPanel(props: Props) {
   // mutations
   const [acknowledgeSwitchChainRequest] =
     useAcknowledgeSwitchChainRequestMutation()
-
-  // computed from props
-  const originInfo = switchChainRequest
-    ? switchChainRequest.originInfo
-    : addChainRequest.originInfo
 
   // mutations
   const [acknowledgePendingAddChainRequest] =
@@ -172,7 +173,7 @@ export function AllowAddChangeNetworkPanel(props: Props) {
           height='100%'
           justifyContent='space-between'
         >
-          {originInfo && <OriginInfoCard origin={originInfo} />}
+          <OriginInfoCard origin={dappOriginInfo} />
           <Column
             padding='0px 16px'
             gap='8px'

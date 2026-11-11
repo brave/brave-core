@@ -8,16 +8,16 @@
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_builder.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_builder.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_database_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_handler_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
-void MaybeBuildAndSaveCreativeSetConversion(
+void MaybeBuildAndSaveCampaignConversion(
     const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad,
     mojom::SearchResultAdEventType mojom_ad_event_type) {
   const bool user_has_joined_rewards = UserHasJoinedBraveRewards();
@@ -42,9 +42,9 @@ void MaybeBuildAndSaveCreativeSetConversion(
     return;
   }
 
-  if (std::optional<CreativeSetConversionInfo> creative_set_conversion =
-          FromMojomMaybeBuildCreativeSetConversion(mojom_creative_ad)) {
-    database::SaveCreativeSetConversions({*creative_set_conversion});
+  if (std::optional<CampaignConversionInfo> campaign_conversion =
+          FromMojomMaybeBuildCampaignConversion(mojom_creative_ad)) {
+    database::SaveCampaignConversions({*campaign_conversion});
   }
 }
 
@@ -63,8 +63,8 @@ bool IsAllowedToFireAdEvent(
     return false;
   }
 
-  if (!mojom_creative_ad->creative_set_conversion) {
-    // Not allowed if there is no creative set conversion for non-Rewards users.
+  if (!mojom_creative_ad->campaign_conversion) {
+    // Not allowed if there is no campaign conversion for non-Rewards users.
     return false;
   }
 

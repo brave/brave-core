@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/themes/BUILD.gn b/chrome/browser/themes/BUILD.gn
+index c84bd3ff084fa3af2ddc4b06a03a3d77bdf4ab94..c6a810ca2ea720514193cee7a3fdf9b579035c87 100644
+--- a/chrome/browser/themes/BUILD.gn
++++ b/chrome/browser/themes/BUILD.gn
+@@ -28,6 +28,7 @@ source_set("themes") {
+     "theme_service_utils.cc",
+   ]
+   deps = [
++    "//brave/browser/themes/buildflags",
+     "//chrome/browser:browser_process",
+     "//chrome/browser/infobars",
+     "//chrome/browser/new_tab_page/chrome_colors",

@@ -29,6 +29,7 @@
 #include "chrome/common/buildflags.h"
 #include "components/browsing_data/content/browsing_data_helper.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/keyed_service/core/keyed_service_base_factory.h"
 #include "content/public/browser/browsing_data_filter_builder.h"
 #include "content/public/browser/browsing_data_remover.h"
 
@@ -136,6 +137,22 @@ BraveBrowsingDataRemoverDelegate::BraveBrowsingDataRemoverDelegate(
       profile_(Profile::FromBrowserContext(browser_context)) {}
 
 BraveBrowsingDataRemoverDelegate::~BraveBrowsingDataRemoverDelegate() = default;
+
+// static
+std::vector<KeyedServiceBaseFactory*>
+BraveBrowsingDataRemoverDelegate::GetServiceFactoryDependencies() {
+  std::vector<KeyedServiceBaseFactory*> factories = {
+      misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance(),
+      serp_metrics::SerpMetricsServiceFactory::GetInstance(),
+  };
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  factories.push_back(ai_chat::AIChatServiceFactory::GetInstance());
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  factories.push_back(brave_news::BraveNewsControllerFactory::GetInstance());
+#endif
+  return factories;
+}
 
 void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
     const base::Time& delete_begin,

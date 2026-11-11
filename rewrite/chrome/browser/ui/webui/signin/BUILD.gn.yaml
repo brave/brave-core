@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Import the custom profile image availability flag.
+    add_import:
+      import: //brave/ui/webui/custom_profile_image/buildflags/buildflags.gni
+  - description: |-
+      Add custom image feature and string dependencies to profile_impl.
+
+      The chromium_src override always includes the buildflags header, but only
+      uses the custom image feature and strings when the feature is built.
+    append_to_target:
+      target: profile_impl
+      code: |-
+        deps += [ "//brave/ui/webui/custom_profile_image/buildflags" ]
+        if (enable_brave_custom_profile_image_webui) {
+          deps += [
+            "//brave/browser/ui/webui/custom_profile_image",
+            "//brave/app:brave_generated_resources_grit",
+          ]
+        }

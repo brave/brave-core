@@ -1,11 +1,11 @@
 diff --git a/components/infobars/core/infobar_delegate.h b/components/infobars/core/infobar_delegate.h
-index 55d775c0d059a0cac6ac9c68c48e497cede6ba54..94e0114aa1b978358ad6c58492df3bf23f2a2fb2 100644
+index 5c0c180b10215c9f809b40d6e78e90ff2949021a..e672f8009ba71f0dfeb6bab94d88e0080f0a9482 100644
 --- a/components/infobars/core/infobar_delegate.h
 +++ b/components/infobars/core/infobar_delegate.h
-@@ -212,6 +212,18 @@ class InfoBarDelegate {
-     SIGNIN_QRCODE_INFOBAR_DELEGATE = 137,
+@@ -213,6 +213,18 @@ class InfoBarDelegate {
      FORMS_AI_PRIVATE_INFERENCE_INFOBAR_DELEGATE_IOS = 138,
      PASSWORD_SAVED_INFOBAR_DELEGATE_IOS = 139,
+     CONTEXTUAL_CUE_INFOBAR_DELEGATE_IOS = 140,
 +    BRAVE_CONFIRM_P3A_INFOBAR_DELEGATE = 500,
 +    // WAYBACK_MACHINE_INFOBAR_DELEGATE = 502
 +    // SYNC_V2_MIGRATE_INFOBAR_DELEGATE = 503

@@ -127,7 +127,7 @@ struct NetworkSelectionRootView: View {
 #if DEBUG
 struct NetworkSelectionRootView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
+    NavigationStack {
       NetworkSelectionRootView(
         navigationTitle: Strings.Wallet.selectNetworksTitle,
         selectedNetworks: [.mockMainnet, .mockSolana, .mockPolygon],

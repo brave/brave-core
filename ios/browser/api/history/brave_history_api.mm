@@ -35,17 +35,6 @@
 #error "This file requires ARC support."
 #endif
 
-namespace {
-
-history::WebHistoryService* WebHistoryServiceGetter(
-    base::WeakPtr<ProfileIOS> profile) {
-  DCHECK(profile.get())
-      << "Getter should not be called after ProfileIOS destruction.";
-  return ios::WebHistoryServiceFactory::GetForProfile(profile.get());
-}
-
-}  // anonymous namespace
-
 DomainMetricTypeIOS const DomainMetricTypeIOSNoMetric =
     static_cast<history::DomainMetricType>(
         history::DomainMetricType::kNoMetric);
@@ -165,7 +154,7 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
 
 - (instancetype)init {
   return [self initWithMaxCount:0
-                       hostOnly:NO
+                 hostnameSuffix:nil
               duplicateHandling:HistoryDuplicateHandlingIOSRemoveAll
                       beginDate:nil
                         endDate:nil];
@@ -175,20 +164,20 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
                duplicateHandling:
                    (HistoryDuplicateHandlingIOS)duplicateHandling {
   return [self initWithMaxCount:maxCount
-                       hostOnly:NO
+                 hostnameSuffix:nil
               duplicateHandling:duplicateHandling
                       beginDate:nil
                         endDate:nil];
 }
 
 - (instancetype)initWithMaxCount:(NSUInteger)maxCount
-                        hostOnly:(BOOL)hostOnly
+                  hostnameSuffix:(nullable NSString*)hostnameSuffix
                duplicateHandling:(HistoryDuplicateHandlingIOS)duplicateHandling
                        beginDate:(nullable NSDate*)beginDate
                          endDate:(nullable NSDate*)endDate {
   if ((self = [super init])) {
     self.maxCount = maxCount;
-    self.hostOnly = hostOnly;
+    self.hostnameSuffix = hostnameSuffix;
     self.duplicateHandling = duplicateHandling;
     self.beginDate = beginDate;
     self.endDate = endDate;
@@ -224,19 +213,17 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
     DCHECK_CURRENTLY_ON(web::WebThread::UI);
     _profile = profile;
 
-    history_service_ = ios::HistoryServiceFactory::GetForProfile(
-        _profile, ServiceAccessType::EXPLICIT_ACCESS);
+    history_service_ = ios::HistoryServiceFactory::GetForProfile(_profile);
     web_history_service_ =
         ios::WebHistoryServiceFactory::GetForProfile(_profile);
 
-    _browsingHistoryDriver = std::make_unique<HistoryDriverIOS>(
-        base::BindRepeating(&WebHistoryServiceGetter, _profile->AsWeakPtr()));
+    _browsingHistoryDriver = std::make_unique<HistoryDriverIOS>();
 
     _browsingHistoryService = std::make_unique<history::BrowsingHistoryService>(
         _browsingHistoryDriver.get(),
-        ios::HistoryServiceFactory::GetForProfile(
-            _profile, ServiceAccessType::EXPLICIT_ACCESS),
-        SyncServiceFactory::GetForProfile(_profile));
+        ios::HistoryServiceFactory::GetForProfile(_profile),
+        web_history_service_, SyncServiceFactory::GetForProfile(_profile),
+        /*device_info_tracker=*/nullptr);
   }
   return self;
 }
@@ -351,7 +338,8 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
     // Creating fetch options for querying history
     history::QueryOptions options;
     options.max_count = static_cast<int>(searchOptions.maxCount);
-    options.host_only = searchOptions.hostOnly;
+    options.hostname_suffix =
+        base::SysNSStringToUTF8(searchOptions.hostnameSuffix);
 
     if (searchOptions.beginDate) {
       options.begin_time = base::Time::FromNSDate(searchOptions.beginDate);

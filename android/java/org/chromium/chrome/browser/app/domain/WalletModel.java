@@ -115,14 +115,18 @@ public class WalletModel {
     }
 
     public void createAccountAndSetDefaultNetwork(NetworkInfo networkInfo) {
-        getKeyringModel().addAccount(
-                networkInfo.coin, networkInfo.chainId, null, isAccountAdded -> {
-                    getNetworkModel().clearCreateAccountState();
+        getKeyringModel()
+                .addAccount(
+                        networkInfo.coin,
+                        networkInfo.chainId,
+                        null,
+                        isAccountAdded -> {
+                            mCryptoModel.getPanelNetworkModel().clearCreateAccountState();
 
-                    if (isAccountAdded) {
-                        getNetworkModel().setDefaultNetwork(networkInfo, success -> {});
-                    }
-                });
+                            if (isAccountAdded) {
+                                getNetworkModel().setDefaultNetwork(networkInfo, success -> {});
+                            }
+                        });
     }
 
     /*

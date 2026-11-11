@@ -27,6 +27,7 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
 #include "extensions/common/constants.h"
@@ -34,6 +35,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/resource/resource_bundle.h"
+#include "ui/color/color_provider.h"
 #include "ui/color/color_provider_manager.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/image/image_skia_rep.h"
@@ -106,8 +108,8 @@ void BraveShieldsActionController::AddObserverToWebContentsIfPresent(
   if (!contents) {
     return;
   }
-  if (auto* tab_helper =
-          brave_shields::BraveShieldsTabHelper::FromWebContents(contents)) {
+  if (auto* tab_helper = brave_shields::BraveShieldsTabHelper::From(
+          tabs::TabInterface::MaybeGetFromContents(contents))) {
     if (!tab_helper->HasObserver(this)) {
       tab_helper->AddObserver(this);
     }
@@ -119,8 +121,8 @@ void BraveShieldsActionController::RemoveObserverFromWebContents(
   if (!contents) {
     return;
   }
-  if (auto* tab_helper =
-          brave_shields::BraveShieldsTabHelper::FromWebContents(contents)) {
+  if (auto* tab_helper = brave_shields::BraveShieldsTabHelper::From(
+          tabs::TabInterface::MaybeGetFromContents(contents))) {
     if (tab_helper->HasObserver(this)) {
       tab_helper->RemoveObserver(this);
     }
@@ -173,8 +175,8 @@ BraveShieldsActionController::GetImageSource(
   std::string badge_text;
 
   if (web_contents) {
-    auto* shields_data_controller =
-        brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
+    auto* shields_data_controller = brave_shields::BraveShieldsTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(web_contents));
 
     int count = shields_data_controller->GetTotalBlockedCount();
     if (count > 0) {
@@ -185,10 +187,12 @@ BraveShieldsActionController::GetImageSource(
                  !IsPageInReaderMode(web_contents);
 
     if (!badge_text.empty()) {
+      const ui::ColorProvider* color_provider =
+          GetColorProviderForWebContents(web_contents);
+      // White text on the fixed badge colors in every theme.
       badge = std::make_unique<IconWithBadgeImageSource::Badge>(
-          badge_text, SK_ColorWHITE,
-          GetColorProviderForWebContents(web_contents)
-              ->GetColor(nala::kColorPrimitiveNeutral40));
+          badge_text, color_provider->GetColor(nala::kColorPrimitiveNeutral100),
+          color_provider->GetColor(nala::kColorPrimitiveNeutral40));
     }
   }
 
@@ -237,8 +241,8 @@ bool BraveShieldsActionController::IsPageInReaderMode(
     return false;
   }
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  if (auto* speedreader_tab_helper =
-          speedreader::SpeedreaderTabHelper::FromWebContents(web_contents)) {
+  if (auto* speedreader_tab_helper = speedreader::SpeedreaderTabHelper::From(
+          tabs::TabInterface::MaybeGetFromContents(web_contents))) {
     return speedreader::IsDistilled(speedreader_tab_helper->PageDistillState());
   }
 #endif
@@ -293,8 +297,8 @@ std::u16string BraveShieldsActionController::GetTooltipText() const {
   if (content::WebContents* web_contents =
           tab_strip_model_->GetActiveWebContents()) {
     if (auto* shields_data_controller =
-            brave_shields::BraveShieldsTabHelper::FromWebContents(
-                web_contents)) {
+            brave_shields::BraveShieldsTabHelper::From(
+                tabs::TabInterface::MaybeGetFromContents(web_contents))) {
       int count = shields_data_controller->GetTotalBlockedCount();
       if (count > 0) {
         return l10n_util::GetStringFUTF16Int(IDS_BRAVE_SHIELDS_ICON_TOOLTIP,

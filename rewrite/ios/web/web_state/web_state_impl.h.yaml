@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Expose the main frame WebUI and the WebUI count
+
+      Brave keeps one WebUI per host, so a chrome-untrusted:// frame can have its
+      own. Some Brave WebUI implementations need the main frame one, and tests
+      the count.
+    add_to_public:
+      class_name: WebStateImpl
+      code: |-
+        WebUIIOS* GetMainFrameWebUI();
+        size_t GetWebUICountForTesting();

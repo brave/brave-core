@@ -40,8 +40,9 @@ import {
 import { networkSupportsAccount } from '../../../utils/network-utils'
 import {
   getAssetIdKey,
-  getDoesCoinSupportSwap,
-  getDoesCoinSupportBridge,
+  getDoesTokenSupportSwap,
+  getDoesTokenSupportBridge,
+  getDoesTokenSupportDeposit,
 } from '../../../utils/asset-utils'
 import { getLocale } from '../../../../common/locale'
 import { isRewardsAssetId } from '../../../utils/rewards_utils'
@@ -64,7 +65,7 @@ import {
 // Components
 import {
   LineChartControls, //
-} from '../../../components/desktop/line-chart/line-chart-controls/line-chart-controls'
+} from '$wallet/page/components/line_chart_controls/line_chart_controls'
 import {
   AccountsAndTransactionsList, //
 } from './components/accounts_and_transactions_list/accounts_and_transactions_list'
@@ -79,10 +80,10 @@ import {
 } from '../../../components/desktop/popup-modals/hide_token_modal/hide_token_modal'
 import {
   WalletPageWrapper, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import {
   AssetDetailsHeader, //
-} from '../../../components/desktop/card-headers/asset-details-header'
+} from '$wallet/page/components/card_headers/asset_details_header'
 import {
   TokenDetailsModal, //
 } from '../../../components/desktop/popup-modals/token_details_modal/token_details_modal'
@@ -290,11 +291,12 @@ export const FungibleAssetDetails = () => {
     querySubscriptionOptions60s,
   )
 
-  const selectedCoin = selectedAssetFromParams?.coin
   const isSwapSupported =
-    selectedCoin !== undefined && getDoesCoinSupportSwap(selectedCoin)
+    selectedAssetFromParams !== undefined
+    && getDoesTokenSupportSwap(selectedAssetFromParams)
   const isBridgeSupported =
-    selectedCoin !== undefined && getDoesCoinSupportBridge(selectedCoin)
+    selectedAssetFromParams !== undefined
+    && getDoesTokenSupportBridge(selectedAssetFromParams)
 
   const selectedAssetTransactions = React.useMemo(() => {
     if (selectedAssetFromParams && tokensList && networksRegistry) {
@@ -368,7 +370,9 @@ export const FungibleAssetDetails = () => {
   )
 
   const isSelectedAssetDepositSupported =
-    !isRewardsToken && Boolean(selectedAssetFromParams)
+    selectedAssetFromParams !== undefined
+    && !isRewardsToken
+    && getDoesTokenSupportDeposit(selectedAssetFromParams)
 
   const goBack = React.useCallback(() => {
     dispatch(WalletPageActions.updateNFTMetadata(undefined))

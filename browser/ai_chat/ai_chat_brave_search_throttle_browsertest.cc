@@ -11,11 +11,13 @@
 #include "base/files/file_path.h"
 #include "base/location.h"
 #include "base/path_service.h"
+#include "base/test/run_until.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/components/constants/brave_paths.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/permissions/test/mock_permission_prompt_factory.h"
@@ -104,7 +106,7 @@ class AIChatBraveSearchThrottleBrowserTest : public InProcessBrowserTest {
 
   bool IsLeoOpened() {
     sidebar::SidebarController* controller =
-        browser()->GetFeatures().sidebar_controller();
+        sidebar::SidebarController::From(browser());
     auto index = controller->model()->GetIndexOf(
         sidebar::SidebarItem::BuiltInItemType::kChatUI);
     return index.has_value() && controller->IsActiveIndex(index);
@@ -112,9 +114,7 @@ class AIChatBraveSearchThrottleBrowserTest : public InProcessBrowserTest {
 
   void CloseLeoPanel(const base::Location& location) {
     SCOPED_TRACE(testing::Message() << location.ToString());
-    sidebar::SidebarController* controller =
-        browser()->GetFeatures().sidebar_controller();
-    controller->DeactivateCurrentPanel();
+    SidePanelUI::From(browser())->Close();
     ASSERT_FALSE(IsLeoOpened());
   }
 
@@ -143,8 +143,13 @@ class AIChatBraveSearchThrottleBrowserTest : public InProcessBrowserTest {
     ClickOpenAIChatButton();
     observer.Wait();
 
-    EXPECT_EQ(IsLeoOpened(), expected_leo_opened);
+    // The prompt is shown, and Leo opened, after the navigation is cancelled.
+    EXPECT_TRUE(base::test::RunUntil([&]() {
+      return prompt_factory_->show_count() == expected_prompt_count &&
+             IsLeoOpened() == expected_leo_opened;
+    }));
     EXPECT_EQ(expected_prompt_count, prompt_factory_->show_count());
+    EXPECT_EQ(IsLeoOpened(), expected_leo_opened);
     EXPECT_EQ(observer.last_navigation_url().path(), kLeoPath);
     EXPECT_EQ(GetActiveWebContents()->GetLastCommittedURL().path(),
               expected_last_committed_path);

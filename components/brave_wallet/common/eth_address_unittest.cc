@@ -171,6 +171,37 @@ TEST(EthAddressUnitTest, ToEip1191ChecksumAddress) {
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1");
   EXPECT_EQ(addr.value(), "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d");
 
+  // RSK mainnet (chain id 30) uses a different checksum prefix.
+  addr = EthAddress::ToEip1191ChecksumAddress(
+      "0x27b1fdb04752bbc536007a920d24acb045561c26", "0x1e");
+  EXPECT_EQ(addr.value(), "0x27b1FdB04752BBc536007A920D24ACB045561c26");
+
+  addr = EthAddress::ToEip1191ChecksumAddress(
+      "0x52908400098527886e0f7030069857d2e4169ee7", "0x1e");
+  EXPECT_EQ(addr.value(), "0x52908400098527886E0F7030069857D2E4169ee7");
+
+  // RSK testnet (chain id 31).
+  addr = EthAddress::ToEip1191ChecksumAddress(
+      "0x27b1fdb04752bbc536007a920d24acb045561c26", "0x1f");
+  EXPECT_EQ(addr.value(), "0x27B1FdB04752BbC536007a920D24acB045561C26");
+
+  addr = EthAddress::ToEip1191ChecksumAddress(
+      "0x52908400098527886e0f7030069857d2e4169ee7", "0x1f");
+  EXPECT_EQ(addr.value(), "0x52908400098527886E0F7030069857D2e4169EE7");
+
+  // Unparsable chain ids are rejected.
+  addr = EthAddress::ToEip1191ChecksumAddress(
+      "0x06012c8cf97bead5deae237070f9587f8e7a266d", "abc");
+  EXPECT_FALSE(addr.has_value());
+
+  addr = EthAddress::ToEip1191ChecksumAddress(
+      "0x06012c8cf97bead5deae237070f9587f8e7a266d", "0xzz");
+  EXPECT_FALSE(addr.has_value());
+
+  addr = EthAddress::ToEip1191ChecksumAddress(
+      "0x06012c8cf97bead5deae237070f9587f8e7a266d", "");
+  EXPECT_FALSE(addr.has_value());
+
   addr = EthAddress::ToEip1191ChecksumAddress("", "0x1");
   EXPECT_EQ(addr.value(), "");
 

@@ -33,7 +33,7 @@ export function Background() {
           <ImageBackground
             url={currentBackground.imageUrl}
             className='sponsored'
-            onLoadError={actions.notifySponsoredImageLoadError}
+            onLoadError={actions.notifyNewTabTakeoverLoadError}
             onContextMenu={(e) => e.preventDefault()}
           />
         )

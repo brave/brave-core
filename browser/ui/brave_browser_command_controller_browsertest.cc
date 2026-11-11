@@ -9,6 +9,7 @@
 #include <optional>
 
 #include "base/check.h"
+#include "base/containers/contains.h"
 #include "base/functional/callback_helpers.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
@@ -20,6 +21,7 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/features.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -35,7 +37,6 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -67,6 +68,14 @@
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/components/brave_rewards/core/rewards_util.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
@@ -115,6 +124,30 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
   }
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  void BlockRewardsByPolicy(bool value) {
+    policy::PolicyMap policies;
+    policies.Set(policy::key::kBraveRewardsDisabled,
+                 policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+                 policy::POLICY_SOURCE_PLATFORM, base::Value(value), nullptr);
+    provider_.UpdateChromePolicy(policies);
+    EXPECT_EQ(brave_rewards::IsSupported(browser()->GetProfile()->GetPrefs()),
+              !value);
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  void BlockWalletByPolicy(bool value) {
+    policy::PolicyMap policies;
+    policies.Set(policy::key::kBraveWalletDisabled,
+                 policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+                 policy::POLICY_SOURCE_PLATFORM, base::Value(value), nullptr);
+    provider_.UpdateChromePolicy(policies);
+    EXPECT_EQ(brave_wallet::IsAllowed(browser()->GetProfile()->GetPrefs()),
+              !value);
+  }
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   void BlockVPNByPolicy(bool value) {
     policy::PolicyMap policies;
@@ -127,7 +160,8 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
               value);
   }
 
-  void SetPurchasedUserForBraveVPN(Browser* browser, bool purchased) {
+  void SetPurchasedUserForBraveVPN(BrowserWindowInterface* browser,
+                                   bool purchased) {
     auto* service =
         brave_vpn::BraveVpnServiceFactory::GetForProfile(browser->GetProfile());
     ASSERT_TRUE(!!service);
@@ -143,7 +177,7 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
         ->OnPurchasedStateChanged(target_state, std::nullopt);
   }
 
-  void CheckBraveVPNCommands(Browser* browser) {
+  void CheckBraveVPNCommands(BrowserWindowInterface* browser) {
     // Only IDC_BRAVE_VPN_MENU command is changed based on purchased state.
     auto* command_controller = chrome::BrowserCommandController::From(browser);
     SetPurchasedUserForBraveVPN(browser, false);
@@ -173,7 +207,7 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
     EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_BRAVE_VPN));
   }
 
-  void CheckBraveVPNCommandsDisabledByPolicy(Browser* browser) {
+  void CheckBraveVPNCommandsDisabledByPolicy(BrowserWindowInterface* browser) {
     auto* command_controller = chrome::BrowserCommandController::From(browser);
     SetPurchasedUserForBraveVPN(browser, false);
     EXPECT_FALSE(
@@ -258,7 +292,11 @@ class BraveBrowserCommandControllerPictureInPictureTest
                           return true;
                         })())"));
     ASSERT_TRUE(base::test::RunUntil([&]() {
-      return content::MediaSession::Get(contents())->GetRoutedFrame() != nullptr;
+      auto* session = content::MediaSession::GetIfExists(contents());
+      return session && session->GetRoutedFrame() &&
+             base::Contains(
+                 session->GetMediaSessionActionsSync(),
+                 media_session::mojom::MediaSessionAction::kEnterPictureInPicture);
     }));
   }
 
@@ -301,9 +339,51 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerPictureInPictureTest,
   ASSERT_TRUE(content::ExecJs(
       contents(),
       "document.querySelector('video').disablePictureInPicture = true"));
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    auto* session = content::MediaSession::GetIfExists(contents());
+    return session &&
+           !base::Contains(
+               session->GetMediaSessionActionsSync(),
+               media_session::mojom::MediaSessionAction::kEnterPictureInPicture);
+  }));
   ASSERT_TRUE(
       chrome::ExecuteCommand(browser(), IDC_TOGGLE_PICTURE_IN_PICTURE));
   EXPECT_FALSE(contents()->HasPictureInPictureVideo());
+  EXPECT_FALSE(contents()->HasPictureInPictureDocument());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerPictureInPictureTest,
+                       PiPInOtherTabIsNotClosed) {
+  ASSERT_NO_FATAL_FAILURE(LoadPlayingVideo());
+  content::WebContents* video_tab = contents();
+  content::TitleWatcher enter_watcher(video_tab, u"enterpictureinpicture");
+  ASSERT_TRUE(
+      chrome::ExecuteCommand(browser(), IDC_TOGGLE_PICTURE_IN_PICTURE));
+  EXPECT_EQ(u"enterpictureinpicture", enter_watcher.WaitAndGetTitle());
+  ASSERT_TRUE(video_tab->HasPictureInPictureVideo());
+
+  chrome::AddTabAt(browser(), GURL("about:blank"), -1, /*foreground*/ true);
+  ASSERT_NE(video_tab, contents());
+  ASSERT_TRUE(
+      chrome::ExecuteCommand(browser(), IDC_TOGGLE_PICTURE_IN_PICTURE));
+  EXPECT_TRUE(video_tab->HasPictureInPictureVideo());
+  EXPECT_FALSE(contents()->HasPictureInPictureVideo());
+  EXPECT_FALSE(contents()->HasPictureInPictureDocument());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerPictureInPictureTest,
+                       ExitDocumentPictureInPicture) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), embedded_test_server()->GetURL("/simple.html")));
+  ASSERT_EQ(true, content::EvalJs(
+                      contents(),
+                      "documentPictureInPicture.requestWindow().then(() => true)"));
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return contents()->HasPictureInPictureDocument();
+  }));
+
+  ASSERT_TRUE(
+      chrome::ExecuteCommand(browser(), IDC_TOGGLE_PICTURE_IN_PICTURE));
   EXPECT_FALSE(contents()->HasPictureInPictureDocument());
 }
 
@@ -314,19 +394,14 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        BraveCommandsEnableTest) {
   // Test normal browser's brave commands status.
   auto* command_controller = chrome::BrowserCommandController::From(browser());
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
 
-#if BUILDFLAG(ENABLE_TOR)
+  EXPECT_EQ(BUILDFLAG(ENABLE_BRAVE_REWARDS),
+            command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
+
   EXPECT_FALSE(
       command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));
-  EXPECT_TRUE(
-      command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
-#else
-  EXPECT_FALSE(
-      command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));
-  EXPECT_FALSE(
-      command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
-#endif
+  EXPECT_EQ(BUILDFLAG(ENABLE_TOR), command_controller->IsCommandEnabled(
+                                       IDC_NEW_OFFTHERECORD_WINDOW_TOR));
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   EXPECT_FALSE(brave_vpn::IsBraveVPNDisabledByPolicy(
@@ -338,15 +413,11 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   CheckBraveVPNCommands(browser());
 #endif
 
-  if (syncer::IsSyncAllowedByFlag()) {
-    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
-  } else {
-    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
-  }
+  EXPECT_EQ(syncer::IsSyncAllowedByFlag(),
+            command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
 
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
-#endif
+  EXPECT_EQ(BUILDFLAG(ENABLE_BRAVE_WALLET),
+            command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
 
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_ADD_NEW_PROFILE));
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
@@ -369,24 +440,21 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   auto* private_browser = CreateIncognitoBrowser();
   auto* command_controller =
       chrome::BrowserCommandController::From(private_browser);
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
 
-#if BUILDFLAG(ENABLE_TOR)
+  EXPECT_EQ(BUILDFLAG(ENABLE_BRAVE_REWARDS),
+            command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
+
   EXPECT_FALSE(
       command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));
-  EXPECT_TRUE(
-      command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
-#endif
+  EXPECT_EQ(BUILDFLAG(ENABLE_TOR), command_controller->IsCommandEnabled(
+                                       IDC_NEW_OFFTHERECORD_WINDOW_TOR));
 
-  if (syncer::IsSyncAllowedByFlag()) {
-    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
-  } else {
-    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
-  }
+  EXPECT_EQ(syncer::IsSyncAllowedByFlag(),
+            command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
 
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
-#endif
+  EXPECT_EQ(BUILDFLAG(ENABLE_BRAVE_WALLET),
+            command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
+
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_ADD_NEW_PROFILE));
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
   EXPECT_TRUE(
@@ -402,7 +470,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   ui_test_utils::BrowserCreatedObserver browser_creation_observer;
   profiles::SwitchToGuestProfile(base::DoNothing());
 
-  Browser* guest_browser = browser_creation_observer.Wait();
+  BrowserWindowInterface* guest_browser = browser_creation_observer.Wait();
   DCHECK(guest_browser);
   EXPECT_TRUE(guest_browser->GetProfile()->IsGuestSession());
   auto* command_controller =
@@ -436,7 +504,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        BraveCommandsEnableTestPrivateTorWindow) {
   ui_test_utils::BrowserCreatedObserver tor_browser_creation_observer;
   brave::NewOffTheRecordWindowTor(browser());
-  Browser* tor_browser = tor_browser_creation_observer.Wait();
+  BrowserWindowInterface* tor_browser = tor_browser_creation_observer.Wait();
   DCHECK(tor_browser);
   EXPECT_TRUE(tor_browser->GetProfile()->IsTor());
   auto* command_controller =
@@ -490,6 +558,58 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_AI_CHAT));
 }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       RewardsButton_HiddenWhenDisabledByPolicy) {
+  auto* command_controller = chrome::BrowserCommandController::From(browser());
+  // Sanity check Rewards is enabled by default.
+  EXPECT_TRUE(brave_rewards::IsSupported(browser()->GetProfile()->GetPrefs()));
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
+
+  // When Rewards is disabled by policy, the app menu entry (and, downstream,
+  // the location bar button) should become unavailable, even though the
+  // window/command controller was already created before the policy change.
+  BlockRewardsByPolicy(true);
+  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
+
+  // Once the policy is lifted, the entry should become available again.
+  BlockRewardsByPolicy(false);
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       WalletButton_HiddenWhenDisabledByPolicy) {
+  auto* command_controller = chrome::BrowserCommandController::From(browser());
+  // Sanity check Wallet is allowed by default.
+  EXPECT_TRUE(brave_wallet::IsAllowed(browser()->GetProfile()->GetPrefs()));
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
+  EXPECT_TRUE(
+      command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET_PANEL));
+  EXPECT_TRUE(
+      command_controller->IsCommandEnabled(IDC_CLOSE_BRAVE_WALLET_PANEL));
+
+  // When Wallet is disabled by policy, the app menu entry should become
+  // unavailable, even though the window/command controller was already
+  // created before the policy change.
+  BlockWalletByPolicy(true);
+  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
+  EXPECT_FALSE(
+      command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET_PANEL));
+  EXPECT_FALSE(
+      command_controller->IsCommandEnabled(IDC_CLOSE_BRAVE_WALLET_PANEL));
+
+  // Once the policy is lifted, the entry should become available again.
+  BlockWalletByPolicy(false);
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
+  EXPECT_TRUE(
+      command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET_PANEL));
+  EXPECT_TRUE(
+      command_controller->IsCommandEnabled(IDC_CLOSE_BRAVE_WALLET_PANEL));
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        BraveCommandsCloseTabsToLeft) {
@@ -629,6 +749,19 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerElementPickerDisabledTest,
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_BLOCK_ELEMENTS));
 }
 #endif  // !BUILDFLAG(IS_ANDROID)
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       QuickCommandsDisabledForPopupWindow) {
+  auto* popup = CreateBrowserWindow(BrowserWindowCreateParams(
+      BrowserWindowInterface::TYPE_POPUP, browser()->GetProfile(), true));
+  chrome::AddTabAt(popup, GURL("about:blank"), -1, true);
+  BrowserWindow::FromBrowser(popup)->Show();
+
+  // IDC_COMMANDER (Quick commands) should be disabled in popup windows
+  // because the omnibox is read-only.
+  EXPECT_FALSE(chrome::BrowserCommandController::From(popup)->IsCommandEnabled(
+      IDC_COMMANDER));
+}
 
 // Closes every duplicate across the whole tab strip, keeping the first
 // occurrence of each URL.
@@ -811,7 +944,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        BraveCommandsToggleVerticalTabs) {
   auto* command_controller = chrome::BrowserCommandController::From(browser());
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_VERTICAL_TABS));
-  auto* vtc = VerticalTabController::FromBrowser(browser());
+  auto* vtc = VerticalTabController::From(browser());
   ASSERT_FALSE(vtc->ShouldShowBraveVerticalTabs());
 
   // Enable Vertical tabs
@@ -941,7 +1074,7 @@ class BraveBrowserCommandControllerFocusModeTest
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerFocusModeTest,
                        FocusModeToggle) {
-  auto* controller = browser()->GetFeatures().focus_mode_controller();
+  auto* controller = FocusModeController::From(browser());
   ASSERT_TRUE(controller);
 
   EXPECT_FALSE(controller->IsEnabled());
@@ -1017,7 +1150,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithEmailAliasesTest,
   ASSERT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_EMAIL_ALIASES));
   command_controller->ExecuteCommand(IDC_SHOW_EMAIL_ALIASES);
 
-  auto* controller = browser()->GetFeatures().email_aliases_controller();
+  auto* controller = email_aliases::EmailAliasesController::From(browser());
   ASSERT_NE(nullptr, controller->GetBubbleForTesting());
 
   // Closing navigates to settings.

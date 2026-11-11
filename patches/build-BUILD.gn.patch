@@ -1,5 +1,5 @@
 diff --git a/build/BUILD.gn b/build/BUILD.gn
-index 3fa5cae7e11f653c84af0e091277c98e3fd1d189..80403a4d76fd66cf83793218051f3baacff1e35b 100644
+index 3cddfa5da50a4128e7d8d51651019a88fc224a60..8cfbdaa02da77485b5e2658d4e674cd5fd84dd5b 100644
 --- a/build/BUILD.gn
 +++ b/build/BUILD.gn
 @@ -54,6 +54,7 @@ buildflag_header("branding_buildflags") {

@@ -20,6 +20,17 @@
     Add a new skill
   </message>
 
+  <!-- App Menu Skills strings -->
+  <message name="IDS_EXTENSIONS_AND_SKILLS_MENU" desc="The text for the Extensions and Skills item in the Brave App Menu">
+    Extensions and Skills
+  </message>
+  <message name="IDS_SKILLS_MENU_MANAGE_SKILLS" desc="The text for the Manage Skills item in the Skills sub-menu">
+    Manage skills
+  </message>
+  <message name="IDS_SKILLS_MENU_BROWSE_SKILLS" desc="The text for the Browse Skills item in the Skills sub-menu">
+    Browse skills
+  </message>
+
   <!-- chrome://skills page -->
   <message name="IDS_SKILL_PAGE_TITLE" desc="Text for the title of the chrome://skills page.">
     Skills
@@ -52,6 +63,9 @@
   </message>
   <message name="IDS_SKILLS_GO_TO_SETTINGS" desc="Label of the button that navigates the user to Brave Settings page for Skills.">
     Go to Settings
+  </message>
+  <message name="IDS_SKILLS_SIGN_IN_TO_CHROME" desc="Label of the button that prompts the user to sign in to Brave on the Skills error page.">
+    Sign in to Brave
   </message>
   <message name="IDS_SKILLS_NO_SEARCH_RESULT_TITLE" desc="Title of the page that occurs when chrome://skills has no search results">
     No search results

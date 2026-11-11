@@ -11,9 +11,12 @@
 :: the `git cr` subcommand work without registering a per-repository alias.
 ::
 :: `%~dp0` can expand to the current directory when the shim is invoked as a
-:: bare name by another process; if launcher.py is not there, resolve our own
+:: bare name by another process; if runner.py is not there, resolve our own
 :: name on %PATH% (`%~dp$PATH:0`) to find it beside the shim.
 setlocal
 set "_dir=%~dp0"
-if not exist "%_dir%launcher.py" set "_dir=%~dp$PATH:0"
-python3 "%_dir%launcher.py" git-cr %*
+if not exist "%_dir%runner.py" set "_dir=%~dp$PATH:0"
+set "_python="
+for /f "usebackq delims=" %%i in (`python3 "%_dir%runner.py"`) do set "_python=%%i"
+if not defined _python exit /b 1
+"%_python%" "%_dir%launcher.py" git-cr %*

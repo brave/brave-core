@@ -19,12 +19,14 @@
 #include "brave/browser/ui/views/playlist/playlist_edit_bubble_view.h"
 #include "brave/browser/ui/views/playlist/thumbnail_provider.h"
 #include "brave/components/playlist/content/browser/playlist_tab_helper.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/grit/generated_resources.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/base/ui_base_types.h"
+#include "ui/color/color_provider.h"
 #include "ui/gfx/animation/animation.h"
 #include "ui/gfx/animation/animation_delegate.h"
 #include "ui/gfx/animation/slide_animation.h"
@@ -79,8 +81,9 @@ class LoadingSpinner : public views::View, public gfx::AnimationDelegate {
         GetLocalBounds().CenterPoint() -
         gfx::Vector2d(preferred_size.width() / 2, preferred_size.height() / 2);
 
-    SkColor foreground_color = SkColorSetRGB(0x3f, 0x39, 0xe8);
-    SkColor background_color = SkColorSetA(foreground_color, 0.3 * 255);
+    const SkColor foreground_color =
+        GetColorProvider()->GetColor(nala::kColorIconInteractive);
+    const SkColor background_color = SkColorSetA(foreground_color, 0.3 * 255);
     views::DrawSpinningRing(
         canvas, gfx::RectToSkRect(gfx::Rect(origin, preferred_size)),
         background_color, foreground_color, kSpinnerStrokeWidth,

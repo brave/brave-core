@@ -15,13 +15,13 @@ namespace brave_vpn {
 class BraveVpnService;
 }  // namespace brave_vpn
 
-class Browser;
+class BrowserWindowInterface;
 
 class BraveVPNToggleButton : public views::ToggleButton,
                              public brave_vpn::BraveVpnServiceObserver {
   METADATA_HEADER(BraveVPNToggleButton, views::ToggleButton)
  public:
-  explicit BraveVPNToggleButton(Browser* browser);
+  explicit BraveVPNToggleButton(BrowserWindowInterface* browser);
   ~BraveVPNToggleButton() override;
 
   BraveVPNToggleButton(const BraveVPNToggleButton&) = delete;
@@ -35,7 +35,7 @@ class BraveVPNToggleButton : public views::ToggleButton,
   void OnButtonPressed(const ui::Event& event);
   void UpdateState();
 
-  raw_ptr<Browser> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   raw_ptr<brave_vpn::BraveVpnService> service_ = nullptr;
 };
 

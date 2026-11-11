@@ -4,6 +4,11 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
+  - description: 'Ship kAndroidTipsNotifications disabled.'
+    set_feature_flag_default_state:
+      feature_name: kAndroidTipsNotifications
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
   - description: 'Ship kSegmentationPlatformDeviceTier disabled.'
     set_feature_flag_default_state:
       feature_name: kSegmentationPlatformDeviceTier

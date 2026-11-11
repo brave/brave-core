@@ -7,40 +7,47 @@
 #define BRAVE_BROWSER_MISC_METRICS_PAGE_METRICS_TAB_HELPER_H_
 
 #include "base/memory/raw_ptr.h"
-#include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_user_data.h"
+#include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
 #include "ui/base/page_transition_types.h"
 
 namespace content {
 class BrowserContext;
 class MediaSession;
 class NavigationHandle;
+class WebContents;
 }  // namespace content
+
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
 
 namespace misc_metrics {
 
 class MediaSessionMetricsImpl;
 class PageMetrics;
 
-class PageMetricsTabHelper
-    : public content::WebContentsObserver,
-      public content::WebContentsUserData<PageMetricsTabHelper> {
+// Records page and media session metrics for a tab.
+class PageMetricsTabHelper : public tabs::ContentsObservingTabFeature {
  public:
-  explicit PageMetricsTabHelper(content::WebContents* web_contents);
+  explicit PageMetricsTabHelper(tabs::TabInterface& tab);
   ~PageMetricsTabHelper() override;
 
   PageMetricsTabHelper(const PageMetricsTabHelper&) = delete;
   PageMetricsTabHelper& operator=(const PageMetricsTabHelper&) = delete;
 
  private:
-  friend class content::WebContentsUserData<PageMetricsTabHelper>;
+  // tabs::ContentsObservingTabFeature:
+  void OnDiscardContents(tabs::TabInterface* tab,
+                         content::WebContents* old_contents,
+                         content::WebContents* new_contents) override;
 
   // content::WebContentsObserver:
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
   void MediaSessionCreated(content::MediaSession* media_session) override;
-  void WebContentsDestroyed() override;
+
+  // Stops tracking the media session of the observed contents, if any.
+  void ReleaseMediaSession();
 
   bool IsRelevantNavigationEvent(content::NavigationHandle* navigation_handle);
   bool IsPrivateWindowEvent();
@@ -51,8 +58,6 @@ class PageMetricsTabHelper
   raw_ptr<PageMetrics> page_metrics_ = nullptr;
   raw_ptr<MediaSessionMetricsImpl> media_session_metrics_ = nullptr;
   raw_ptr<content::MediaSession> media_session_ = nullptr;
-
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 
 }  // namespace misc_metrics

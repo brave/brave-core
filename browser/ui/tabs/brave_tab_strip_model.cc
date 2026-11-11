@@ -16,7 +16,6 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tree_tab_strip_collection_delegate.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/tabs/public/brave_tab_strip_collection.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
@@ -68,21 +67,6 @@ void BraveTabStripModel::SetTreeTabNodeCollapsed(
     auto change =
         TreeTabChange(id, TreeTabChange::CollapsedStateChangedChange(*node));
     observers_.Notify(&TabStripModelObserver::OnTreeTabChanged, change);
-  }
-}
-
-void BraveTabStripModel::SelectRelativeTab(TabRelativeDirection direction,
-                                           TabStripUserGestureDetails detail) {
-  if (count() == 0) {
-    return;
-  }
-
-  bool is_mru_enabled = profile()->GetPrefs()->GetBoolean(kMRUCyclingEnabled);
-
-  if (is_mru_enabled) {
-    SelectMRUTab(direction, detail);
-  } else {
-    TabStripModel::SelectRelativeTab(direction, detail);
   }
 }
 
@@ -141,8 +125,21 @@ bool BraveTabStripModel::IsOnlyActiveTabAndTreeDescendantsSelected() {
   return selected_indices == expected_indices;
 }
 
+void BraveTabStripModel::CycleToNextMRUTab(TabStripUserGestureDetails detail) {
+  SelectMRUTab(TabRelativeDirection::kNext, detail);
+}
+
+void BraveTabStripModel::CycleToPreviousMRUTab(
+    TabStripUserGestureDetails detail) {
+  SelectMRUTab(TabRelativeDirection::kPrevious, detail);
+}
+
 void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
                                       TabStripUserGestureDetails detail) {
+  if (empty()) {
+    return;
+  }
+
   if (mru_cycle_list_.empty()) {
     // Start cycling
 
@@ -164,7 +161,9 @@ void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
               });
 
     // Tell the cycling controller that we start cycling to handle tabs keys
-    BraveBrowserWindow::From(browser_window)->StartTabCycling();
+    if (auto* brave_browser_window = BraveBrowserWindow::From(browser_window)) {
+      brave_browser_window->StartTabCycling();
+    }
   }
 
   if (direction == TabRelativeDirection::kNext) {
@@ -234,6 +233,13 @@ void BraveTabStripModel::BuildTreeTabs() {
               &BraveTabStripModel::NotifyTreeTabNodeReparented,
               base::Unretained(this))));
 
+  tree_tab_node_children_changed_subscription_ =
+      std::make_unique<base::CallbackListSubscription>(
+          tree_tab_model_->RegisterTreeTabNodeChildrenChangedCallback(
+              base::BindRepeating(
+                  &BraveTabStripModel::NotifyTreeTabNodeChildrenChanged,
+                  base::Unretained(this))));
+
   contents_data()->SetDelegate(
       std::make_unique<BraveTreeTabStripCollectionDelegate>(
           *contents_data(), tree_tab_model_->GetWeakPtr()));
@@ -250,6 +256,7 @@ void BraveTabStripModel::FlattenTreeTabs() {
   tree_tab_node_will_be_destroyed_subscription_.reset();
   tree_tab_node_created_subscription_.reset();
   tree_tab_node_moved_subscription_.reset();
+  tree_tab_node_children_changed_subscription_.reset();
   tree_tab_model_.reset();
 }
 
@@ -278,6 +285,12 @@ void BraveTabStripModel::NotifyTreeTabNodeReparented(
     return;
   }
   auto change = TreeTabChange(id, TreeTabChange::ReparentedChange(*node));
+  observers_.Notify(&TabStripModelObserver::OnTreeTabChanged, change);
+}
+
+void BraveTabStripModel::NotifyTreeTabNodeChildrenChanged(
+    const tree_tab::TreeTabNodeId& id) {
+  auto change = TreeTabChange(TreeTabChange::kNodeChildrenChanged, id, nullptr);
   observers_.Notify(&TabStripModelObserver::OnTreeTabChanged, change);
 }
 

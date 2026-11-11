@@ -1,0 +1,14 @@
+diff --git a/base/version_info/version_info.cc b/base/version_info/version_info.cc
+index 4b76dfc87b55e60f05b86dc6470d56831fda2db8..07aadec210c4250fff34bfd52a5ab52abe069c37 100644
+--- a/base/version_info/version_info.cc
++++ b/base/version_info/version_info.cc
+@@ -19,6 +19,9 @@ namespace version_info {
+ 
+ #if BUILDFLAG(IS_ANDROID)
+ std::string_view GetVersionNumber() {
++  if ((true)) {
++    return PRODUCT_VERSION;
++  }
+   return base::android::apk_info::package_version_name();
+ }
+ #endif

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { color, font } from '@brave/leo/tokens/css/variables'
+import { color, font } from '@brave/nala/tokens/css/variables'
 import { scoped } from '$web-common/scoped_css'
 
 export const style = scoped.css`
@@ -60,14 +60,24 @@ export const style = scoped.css`
   }
 
   leo-dropdown {
-    flex: 1 1 auto;
+    --leo-control-padding: 10px 6px;
+
+    flex: 1;
+    min-width: 0;
 
     [slot=value] {
-      display: flex;
-      width: 100%;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
       align-items: center;
-      gap: 8px;
+      column-gap: 6px;
+      min-width: 100%;
     }
+  }
+
+  .label {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   .counter {

@@ -7,7 +7,6 @@
 #include "base/test/bind.h"
 #include "base/values.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_actions.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/customize_chrome/side_panel_controller.h"
@@ -30,7 +29,7 @@ class CustomizeChromeSidePanelBrowserTest : public InProcessBrowserTest {
  protected:
   // Returns the CustomizeChromeTabHelper associated with the tab
   customize_chrome::SidePanelController* GetSidePanelController(
-      Browser* browser) {
+      BrowserWindowInterface* browser) {
     return customize_chrome::SidePanelController::Get(
         browser->GetActiveTabInterface()->GetUnownedUserDataHost());
   }
@@ -72,11 +71,11 @@ class CustomizeChromeSidePanelBrowserTest : public InProcessBrowserTest {
   base::ListValue ListActions(content::WebContents* web_contents) {
     constexpr char kScript[] = R"(
         (async () => {
-          const {CustomizeToolbarApiProxy} = await import(
+          const {browserProxyFactory} = await import(
               'chrome://customize-chrome-side-panel.top-chrome/' +
-              'customize_toolbar/customize_toolbar_api_proxy.js');
+              'customize_toolbar.mojom-webui.js');
           const {actions} =
-              await CustomizeToolbarApiProxy.getInstance().handler
+              await browserProxyFactory.getInstance().handler
                   .listActions();
           return actions.map(a => ({id: a.id, category: a.category}));
         })()
@@ -189,11 +188,11 @@ IN_PROC_BROWSER_TEST_F(CustomizeChromeSidePanelBrowserTest,
   // Listen for the WebUI client being notified that actions changed.
   ASSERT_TRUE(content::ExecJs(web_contents, R"(
       (async () => {
-        const {CustomizeToolbarApiProxy} = await import(
+        const {browserProxyFactory} = await import(
             'chrome://customize-chrome-side-panel.top-chrome/' +
-            'customize_toolbar/customize_toolbar_api_proxy.js');
+            'customize_toolbar.mojom-webui.js');
         window.notified = false;
-        CustomizeToolbarApiProxy.getInstance()
+        browserProxyFactory.getInstance()
             .callbackRouter.notifyActionsUpdated.addListener(() => {
               window.notified = true;
             });

@@ -65,7 +65,6 @@
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/browser/workspaces/workspace_service_factory.h"
@@ -102,6 +101,10 @@
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/browser/extensions/extension_malware_blocklist_enforcer_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
 #include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_migrator.h"
 #endif
 
@@ -159,9 +162,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   SearchEngineTrackerFactory::GetInstance();
   ntp_background_images::ViewCounterServiceFactory::GetInstance();
 
-#if !BUILDFLAG(IS_ANDROID)
-  BookmarkPrefsServiceFactory::GetInstance();
-#else
+#if BUILDFLAG(IS_ANDROID)
   brave_shields::FilterListServiceFactory::GetInstance();
   ntp_background_images::NTPBackgroundImagesBridgeFactory::GetInstance();
 #endif
@@ -254,6 +255,10 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
+  extensions::ExtensionMalwareBlocklistEnforcerFactory::GetInstance();
+#endif
+
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
   extensions_mv2::ExtensionsManifestV2MigratorFactory::GetInstance();
 #endif
   BraveShieldsSettingsServiceFactory::GetInstance();

@@ -9,6 +9,7 @@
 #include <array>
 #include <string>
 #include <string_view>
+#include <utility>
 
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"
@@ -44,15 +45,6 @@ inline constexpr size_t kBalanceScannerBatchSize = 4000;
 
 inline constexpr char kWalletBaseDirectory[] = "BraveWallet";
 inline constexpr char kImageSourceHost[] = "erc-token-images";
-inline constexpr char kRampBaseUrl[] = "https://app.ramp.network";
-inline constexpr char kOffRampEnabledFlows[] = "OFFRAMP";
-inline constexpr char kOnRampEnabledFlows[] = "ONRAMP";
-inline constexpr char kOnRampID[] = "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf";
-inline constexpr char kOffRampID[] = "y57zqta99ohs7o2paf4ak6vpfb7wf8ubj9krwtwe";
-inline constexpr char kTransakURL[] = "https://global.transak.com/";
-inline constexpr char kTransakApiKey[] = "985d14f0-4cf5-4a4c-8917-78107620d3b7";
-inline constexpr char kCoinbaseURL[] = "https://pay.coinbase.com";
-inline constexpr char kCoinbaseAppId[] = "8072ff71-8469-4fef-9404-7c905e2359c9";
 inline constexpr size_t kSimpleHashMaxBatchSize = 50;
 
 // 0x swap constants
@@ -116,7 +108,29 @@ inline constexpr char kBitcoinTestnetRpcEndpoint[] =
 
 inline constexpr char kMeldRpcEndpoint[] = "https://api-meld.wallet.brave.com";
 inline constexpr char kMeldRpcVersionHeader[] = "Meld-Version";
-inline constexpr char kMeldRpcVersion[] = "2023-05-26";
+inline constexpr char kMeldRpcVersion[] = "2026-02-03";
+
+// Meld chain codes mapped to Brave's coin and chain id.
+inline constexpr auto kMeldSupportedChains =
+    base::MakeFixedFlatMap<std::string_view,
+                           std::pair<mojom::CoinType, std::string_view>>({
+        {"ARBITRUM", {mojom::CoinType::ETH, mojom::kArbitrumMainnetChainId}},
+        {"AURORA", {mojom::CoinType::ETH, mojom::kAuroraMainnetChainId}},
+        {"AVAXC", {mojom::CoinType::ETH, mojom::kAvalancheMainnetChainId}},
+        {"BASE", {mojom::CoinType::ETH, mojom::kBaseMainnetChainId}},
+        {"BSC", {mojom::CoinType::ETH, mojom::kBnbSmartChainMainnetChainId}},
+        {"CELO", {mojom::CoinType::ETH, mojom::kCeloMainnetChainId}},
+        {"ETH", {mojom::CoinType::ETH, mojom::kMainnetChainId}},
+        {"FTM", {mojom::CoinType::ETH, mojom::kFantomMainnetChainId}},
+        {"OPTIMISM", {mojom::CoinType::ETH, mojom::kOptimismMainnetChainId}},
+        {"POLYGON", {mojom::CoinType::ETH, mojom::kPolygonMainnetChainId}},
+        {"SOLANA", {mojom::CoinType::SOL, mojom::kSolanaMainnet}},
+        {"FIL", {mojom::CoinType::FIL, mojom::kFilecoinMainnet}},
+        {"BTC", {mojom::CoinType::BTC, mojom::kBitcoinMainnet}},
+        {"ZEC", {mojom::CoinType::ZEC, mojom::kZCashMainnet}},
+        {"ADA", {mojom::CoinType::ADA, mojom::kCardanoMainnet}},
+        {"DOT", {mojom::CoinType::DOT, mojom::kPolkadotMainnetAssetHub}},
+    });
 
 inline constexpr auto kEthBalanceScannerContractAddresses =
     base::MakeFixedFlatMap<std::string_view, std::string_view>(
@@ -153,20 +167,6 @@ inline constexpr auto kAnkrBlockchains =
          {mojom::kRolluxMainnetChainId, "rollux"},
          {mojom::kSyscoinMainnetChainId, "syscoin"},
          {mojom::kZkSyncEraChainId, "zksync_era"}});
-
-inline constexpr auto kOffRampChains =
-    base::MakeFixedFlatSet<std::string_view>({
-        mojom::kMainnetChainId,
-        mojom::kPolygonMainnetChainId,
-        mojom::kBnbSmartChainMainnetChainId,
-        mojom::kAvalancheMainnetChainId,
-        mojom::kFantomMainnetChainId,
-        mojom::kCeloMainnetChainId,
-        mojom::kOptimismMainnetChainId,
-        mojom::kArbitrumMainnetChainId,
-        mojom::kSolanaMainnet,
-        mojom::kBitcoinMainnet,
-    });
 
 inline constexpr auto kEthSupportedNftInterfaces =
     std::to_array<std::string_view>({

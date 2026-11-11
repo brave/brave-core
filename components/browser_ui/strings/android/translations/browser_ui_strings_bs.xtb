@@ -7,11 +7,11 @@
 <translation id="1046742265332833834">Plava tema</translation>
 <translation id="1070329623210597193">Fajlovi koje ova web lokacija može pregledati ili urediti</translation>
 <translation id="1074758928858737435">Možete zatražiti da vidite računarsku verziju web lokacija</translation>
+<translation id="1760197532822135980">Dobijanje prijedloga u Braveu u drugim aplikacijama</translation>
 <translation id="1109482864356262001">Funkcije koje trebaju senzore kretanja ili svjetlosti neće funkcionirati</translation>
 <translation id="6670155282615872564">Izvršite predložene radnje u nastavku da iskoristite sve prednosti Bravea</translation>
 <translation id="113098737392899175">Krećite se stranicama putem kursora za tekst kada je tastatura povezana</translation>
 <translation id="1148624853678088576">Spremni ste!</translation>
-<translation id="738393714577080438">Pohranjujte lozinke u Braveu</translation>
 <translation id="1178015372320901893">Donja tabela Moje prečice</translation>
 <translation id="1178581264944972037">Pauziraj</translation>
 <translation id="1181037720776840403">Ukloni</translation>
@@ -46,12 +46,14 @@
 <translation id="1464044141348608623">Nemoj dozvoliti web lokacijama da znaju kada se uređaj aktivno koristi</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> web lokacija}one{<ph name="SITE_COUNT"/> web lokacija}few{<ph name="SITE_COUNT"/> web lokacije}other{<ph name="SITE_COUNT"/> web lokacija}}</translation>
 <translation id="1476700086976862423">Sepija boja teme</translation>
+<translation id="1497214680865404175">Slika koju je otpremio korisnik</translation>
 <translation id="1500473259453106018">Sakrij karticu Padovi cijena na karticama</translation>
 <translation id="1508931164824684991">Web lokacije mogu koristiti JavaScript</translation>
 <translation id="1510341833810331442">Web lokacijama nije dozvoljeno da pohranjuju podatke na uređaj</translation>
 <translation id="1532175480576580256">Donja tabela Moje prečice je otvorena u punoj visini</translation>
 <translation id="1538031354170655462">Web lokacije obično koriste komunikaciju bliskog polja (NFC) da rade s lokatorima ili uređajima u blizini, poput skeniranja znački ili beskontaktnog plaćanja</translation>
 <translation id="1547123415014299762">Kolačići treće strane su dozvoljeni</translation>
+<translation id="1565353932454306569"><ph name="ORIGIN"/> – prevucite s bočne strane ekrana da izađete iz prikaza preko cijelog ekrana.</translation>
 <translation id="3665719978526894928">Ubrzavaj web lokacije pomoću Braveovog pretraživača V8, ali učini Brave malo otpornijim na napade</translation>
 <translation id="1593426485665524382">Nove radnje su dostupne pri vrhu ekrana</translation>
 <translation id="1594521731409209842">Promjena veličine fotografije spajanjem/razdvajanjem prstiju na ekranu</translation>
@@ -83,6 +85,7 @@
 <translation id="1818308510395330587">Da aplikaciji <ph name="APP_NAME"/> dozvolite korištenje AR-a, također uključite kameru u <ph name="BEGIN_LINK"/>Postavkama Androida<ph name="END_LINK"/>.</translation>
 <translation id="1822318649925991542">Promijenite položaj da prilagodite iskustvo pregledanja</translation>
 <translation id="1848033246551405023">Font Sans Serif</translation>
+<translation id="1861244985839668297">Kada je ovo uključeno, web lokacije mogu zatražiti da koriste uređaje s ljudskim interfejsom. Kada je ovo isključeno, web lokacije ne mogu koristiti uređaje s ljudskim interfejsom.</translation>
 <translation id="1861262398884155592">Ovaj folder je prazan</translation>
 <translation id="1881806992065048905">Donja tabela izgleda stranice Nova kartica</translation>
 <translation id="1887786770086287077">Pristup lokaciji je isključen za ovaj uređaj. Uključite ga u <ph name="BEGIN_LINK"/>Postavkama Androida<ph name="END_LINK"/>.</translation>
@@ -135,6 +138,7 @@
 <translation id="2315043854645842844">Operativni sistem ne podržava odabir potvrde na strani klijenta.</translation>
 <translation id="2347601491101454548">Donja tabela Moje prečice je otvorena na pola visine</translation>
 <translation id="2359808026110333948">Nastavi</translation>
+<translation id="2364212713469273030"><ph name="ORIGIN"/> – prevucite s vrha, a zatim s lijevog ili desnog ruba da izađete iz prikaza preko cijelog ekrana.</translation>
 <translation id="904887679952026733">Tamna tema će se primjenjivati na web lokacije kada Brave koristi tamnu temu, kada je to moguće</translation>
 <translation id="2390272837142897736">Povećavanje zumiranja</translation>
 <translation id="2397689164757137845">Dozvoljeno • Precizno</translation>
@@ -224,7 +228,6 @@
 <translation id="3167868116600277716">Sažetak sadržaja na Discoveru</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> pohranjenih podataka</translation>
 <translation id="3199078925536734975">Dozvoljeno je ovaj put • Približno</translation>
-<translation id="3208584281581115441">Provjeri sada</translation>
 <translation id="321187648315454507">Da dozvolite da vam aplikacija <ph name="APP_NAME"/> šalje obavještenja, također uključite obavještenja u <ph name="BEGIN_LINK"/>Postavkama Androida<ph name="END_LINK"/>.</translation>
 <translation id="3223425961342298674">Lokacija nije dozvoljena</translation>
 <translation id="3227137524299004712">Mikrofon</translation>
@@ -281,7 +284,6 @@
 <translation id="381841723434055211">Brojevi telefona</translation>
 <translation id="3823453485268218808">Font Mono</translation>
 <translation id="3826050100957962900">Prijava treće strane</translation>
-<translation id="3831065134033923230">Provjerite sačuvane lozinke</translation>
 <translation id="3835233591525155343">Korištenje vašeg uređaja</translation>
 <translation id="1799795508209440035">Brave će ponovo blokirati kolačiće danas</translation>
 <translation id="385051799172605136">Nazad</translation>
@@ -289,7 +291,6 @@
 <translation id="9046306654872718870">Personalizirajte Brave prilagođenim bojama i slikama za početnu stranicu</translation>
 <translation id="389521680295183045">Web lokacije mogu tražiti da znaju kada aktivno koristite uređaj</translation>
 <translation id="3895926599014793903">Prisilno omogući zumiranje</translation>
-<translation id="3903738175795615004">Prevucite s vrha ili pritisnite tipku Esc da izađete iz prikaza preko cijelog ekrana.</translation>
 <translation id="3905475044299942653">Zaustavite slanje velikog broja obavještenja</translation>
 <translation id="3922092564198021702">Na telefonu otvorite Postavke.</translation>
 <translation id="3924858949939391676">Prikaz linkova nakon uključivanja načina rada za čitanje</translation>
@@ -350,7 +351,6 @@
 <translation id="4479647676395637221">Web lokacije moraju tražiti dopuštenje da koriste kameru (preporučeno)</translation>
 <translation id="4505788138578415521">URL je proširen</translation>
 <translation id="4522570452068850558">Detalji</translation>
-<translation id="4523472416386354622">Prijavite se da započnete</translation>
 <translation id="4529207923544043455">Donja tabela koja prikazuje završene i nezavršene zadatke s liste za postavljanje</translation>
 <translation id="4534723447064627427">Da aplikaciji <ph name="APP_NAME"/> dozvolite pristup mikrofonu, također uključite mikrofon u <ph name="BEGIN_LINK"/>Postavkama Androida<ph name="END_LINK"/>.</translation>
 <translation id="4545694195887112015">Tabela postavljanja je zatvorena</translation>
@@ -363,13 +363,13 @@
 <translation id="4645575059429386691">Upravlja roditelj</translation>
 <translation id="4651224148644053314">Više boja i opcija</translation>
 <translation id="4652266463001779298">Nije dozvoljeno</translation>
-<translation id="4655846733459137112">Dodirnite Da da lako upotrijebite ovu lozinku prilikom sljedeće prijave</translation>
 <translation id="4663373278480897665">Kamera je dozvoljena</translation>
 <translation id="4670064810192446073">Virtuelna realnost</translation>
 <translation id="5652778654712411580">Dodir na aplikaciju Preglednik, a zatim na Brave</translation>
 <translation id="4676059169848868271">Da dozvolite aplikaciji <ph name="APP_NAME"/> da koristi praćenje ruku, također uključite praćenje ruku u <ph name="BEGIN_LINK"/>postavkama sistema<ph name="END_LINK"/>.</translation>
 <translation id="4688045258817337666">Upravljajte karticama</translation>
 <translation id="4722332387043141878">Web lokacije obično koriste senzore kretanja i svjetlosti uređaja za funkcije kao što je virtuelna realnost ili praćenje fitnesa</translation>
+<translation id="4748783296226936791">Web lokacije se obično povezuju s HID uređajima radi funkcija koje koriste neuobičajene tastature, kontrolere igara i ostale uređaje</translation>
 <translation id="4755971844837804407">Kada je postavka uključena, web lokacije vam mogu prikazivati bilo koje oglase. Kada je postavka isključena, web lokacije ne mogu prikazivati ometajuće ni obmanjujuće oglase.</translation>
 <translation id="4779083564647765204">Uvećaj</translation>
 <translation id="4807122856660838973">Uključite Sigurno pregledanje</translation>
@@ -407,7 +407,6 @@
 <translation id="512938610812707830">Donja tabela kolekcija tema izgleda stranice Nova kartica je otvorena u punoj visini</translation>
 <translation id="5137460097045297858">Donja tabela sažetka sadržaja Discovera je otvorena na pola visine</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{Pad cijene na otvorenim karticama}one{Padovi cijena na otvorenim karticama}few{Padovi cijena na otvorenim karticama}other{Padovi cijena na otvorenim karticama}}</translation>
-<translation id="5150048675001754041">Brzo i lako se prijavljujte na web lokacije i u aplikacije</translation>
 <translation id="5186036860380548585">Opcije su dostupne pri vrhu ekrana</translation>
 <translation id="5197729504361054390">Kontakti koje odaberete će se podijeliti s web lokacijom <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="5198930230016462977">Donja tabela prilagođavanja stranice nove kartice je zatvorena</translation>
@@ -417,7 +416,6 @@
 <translation id="5239623327352565343">Lokacija je dozvoljena</translation>
 <translation id="5246825184569358663">Ova radnja će izbrisati sve lokalne podatke, uključujući kolačiće, i poništiti sva odobrenja za domenu <ph name="DOMAIN"/> i sve web lokacije na njoj</translation>
 <translation id="5264323282659631142">Uklanjanje stavke "<ph name="CHIP_LABEL"/>"</translation>
-<translation id="528192093759286357">Povucite s vrha i dodirnite dugme za nazad da napustite prikaz preko cijelog ekrana.</translation>
 <translation id="5286194356314741248">Skeniranje</translation>
 <translation id="5300589172476337783">Prikaži</translation>
 <translation id="5301954838959518834">Uredu, razumijem</translation>
@@ -447,11 +445,13 @@
 <translation id="5668404140385795438">Zaobilaženje zahtjeva web lokacije kako bi se spriječilo zumiranje</translation>
 <translation id="5668843533782548925">Web lokacije su sporije, ali su sigurnije</translation>
 <translation id="5677928146339483299">Blokirano</translation>
+<translation id="98560749650104566">Brave vam sada može prikazivati prijedloge u drugim aplikacijama na osnovu podataka o pregledanju, kao što je nedavna historija pregledanja. Ovi podaci se sigurno obrađuju na uređaju. Ovo možete isključiti bilo kada u postavkama Bravea.</translation>
 <translation id="5689516760719285838">Lokacija</translation>
 <translation id="5690795753582697420">Kamera je isključena u postavkama Androida</translation>
 <translation id="5700761515355162635">Kolačići treće strane su dozvoljeni</translation>
 <translation id="5706552988683188916">Ovim se brišu kolačići i drugi podaci web lokacije za <ph name="WEBSITE"/></translation>
 <translation id="571222594670061844">Web lokacije vam mogu prikazati upite za prijavu koji potiču od usluga identiteta</translation>
+<translation id="5719854774000914513">Web lokacije mogu tražiti da se povežu s HID uređajima</translation>
 <translation id="5740126560802162366">Web lokacije mogu pohranjivati podatke na vaš uređaj</translation>
 <translation id="5743425052258407233">Dobijajte historiju na svim svojim uređajima da možete lako nastaviti tamo gdje ste stali</translation>
 <translation id="5749158352074143502">Nastavi s ovom karticom</translation>
@@ -463,7 +463,6 @@
 <translation id="5804241973901381774">Odobrenja</translation>
 <translation id="5817042798620209981">Informacije o web lokaciji, dijaloški okvir</translation>
 <translation id="5822675474983796325">Donja tabela prilagođavanja stranice nove kartice je otvorena u punoj visini</translation>
-<translation id="4298364316773778595">Donja tabela s uputstvima za pohranjivanje lozinki u Braveu</translation>
 <translation id="5833899990800318936">Nemoj dozvoliti web lokacijama da koriste JavaScript</translation>
 <translation id="583673505367439042">Web lokacije mogu tražiti da uređuju fajlove i foldere na vašem uređaju</translation>
 <translation id="5844448279347999754">Kada je postavka uključena, web lokacije mogu zatražiti da vide tekst i slike sačuvane u međumemoriji. Kada je postavka isključena, web lokacije ne mogu vidjeti tekst ni slike sačuvane u međumemoriji.</translation>
@@ -500,7 +499,7 @@
 <translation id="6085954183010297841">Izbrisati odobrenje za uređivanje fajla? <ph name="FILE"/></translation>
 <translation id="6104860901391833523">Kada je ovo uključeno, web lokacije mogu automatski aktivirati sliku u slici. Kada je ovo isključeno, web lokacije ne mogu automatski aktivirati sliku u slici.</translation>
 <translation id="6120483543004435978">Kada je postavka uključena, web lokacije mogu zatražiti informacije o tome kada aktivno koristite uređaj. Kada je postavka isključena, web lokacije ne mogu znati kada aktivno koristite uređaj.</translation>
-<translation id="4852158809106762963">Brave će ponuditi opciju da sačuva lozinku</translation>
+<translation id="5773142757282836623">Sakrij Dobijanje prijedloga u Braveu u drugim aplikacijama</translation>
 <translation id="615886654739818377">Nemoj dozvoliti web lokacijama da upravljaju prozorima na svim mojim ekranima</translation>
 <translation id="6165508094623778733">Saznajte više</translation>
 <translation id="6171020522141473435">Kada je postavka uključena, web lokacije mogu zatražiti da koriste Bluetooth uređaje. Kada je postavka isključena, web lokacije ne mogu koristiti Bluetooth uređaje.</translation>
@@ -571,11 +570,11 @@
 <translation id="6950072572526089586">Web lokacija koju posjetite može sačuvati informacije o tome šta radite kako bi funkcionirala prema očekivanjima – naprimjer, da ostanete prijavljeni na web lokaciju ili sačuvate artikle u kolica za kupovinu. Web lokacije često privremeno pohranjuju te informacije na vaš uređaj.</translation>
 <translation id="6964291282260073066">"WebGPU" je onemogućen.</translation>
 <translation id="6965382102122355670">Uredu</translation>
+<translation id="6972629891077993081">HID uređaji</translation>
 <translation id="6980507581230208647">Ružičasta tema</translation>
 <translation id="6980861169612950611">Izbrisati podatke web lokacije? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Pristupačnost</translation>
 <translation id="6991142177939282156">Dozvoljeno • Korištenje približne lokacije</translation>
-<translation id="6992014788289743568">Poboljšajte sigurnost i zaštitu podataka provjerom lozinki</translation>
 <translation id="6992289844737586249">Web lokacije moraju tražiti dopuštenje da koriste mikrofon (preporučeno)</translation>
 <translation id="7000754031042624318">Isključeno u postavkama Androida</translation>
 <translation id="7036823721811529709">Slušanje u pozadini</translation>
@@ -583,7 +582,6 @@
 <translation id="7053983685419859001">Blokiraj</translation>
 <translation id="7055552182600664515">Da reproduciraju sadržaj zaštićen autorskim pravima, web lokacije će možda trebati koristiti uslugu zaštite sadržaja. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 odabrana kartica}one{# odabrana kartica}few{# odabrane kartice}other{# odabranih kartica}}</translation>
-<translation id="708014373017851679">Aplikacija <ph name="APP_NAME"/> je zastarjela. Ažurirajte aplikaciju.</translation>
 <translation id="7084115944294706056">Odaberite položaj trake za adresu</translation>
 <translation id="7087918508125750058">Odabrali ste <ph name="ITEM_COUNT"/>.  Opcije su dostupne pri vrhu ekrana</translation>
 <translation id="7141896414559753902">Blokiranje prikazivanja skočnih prozora na web lokacijama i preusmjeravanje (preporučeno)</translation>
@@ -643,7 +641,6 @@ Napredna zaštita upravlja ovim postavkama Bravea:</translation>
 <translation id="775043444390799886">Opozovi odobrenje</translation>
 <translation id="7758789811447313947">Ljubičasta tema</translation>
 <translation id="7759147511335618829">Kontrola/reprogram. MIDI uređaja</translation>
-<translation id="7771089277295008211">Donja tabela s uputstvima za pohranjivanje lozinki je zatvorena</translation>
 <translation id="7781829728241885113">Jučer</translation>
 <translation id="7791543448312431591">Dodaj</translation>
 <translation id="780301667611848630">Ne, hvala</translation>
@@ -660,7 +657,6 @@ Napredna zaštita upravlja ovim postavkama Bravea:</translation>
 <translation id="7940722705963108451">Podsjeti me</translation>
 <translation id="7948081750384205628">Saznajte više o postavci <ph name="SETTING_TITLE"/></translation>
 <translation id="7952708427581814389">Web lokacije mogu tražiti da vide tekst i slike u međumemoriji</translation>
-<translation id="7958779728312669715">Donja tabela s uputstvima za pohranjivanje lozinki je potpuno otvorena</translation>
 <translation id="798299424881500862">Narandžasta tema</translation>
 <translation id="7986741934819883144">Odaberite kontakt</translation>
 <translation id="7990211076305263060">Kada je postavka uključena, web lokacije mogu zatražiti da koriste vaš mikrofon. Kada je postavka isključena, web lokacije ne mogu koristiti vaš mikrofon.</translation>
@@ -728,6 +724,7 @@ Napredna zaštita upravlja ovim postavkama Bravea:</translation>
 <translation id="8593422116412089302">Kada je postavka uključena, web lokacije mogu zatražiti da koriste sačuvane informacije o vama. Kada je postavka isključena, web lokacije ne mogu zatražiti da koriste sačuvane informacije o vama.</translation>
 <translation id="8609465669617005112">Pomjeri nagore</translation>
 <translation id="8617611086246832542">Kada je postavka uključena, web lokacije se prikazuju u obliku prikaza na računaru. Kada je postavka isključena, web lokacije se prikazuju u obliku prikaza na mobilnom uređaju.</translation>
+<translation id="8625916342247441948">Nemoj dozvoliti web lokacijama povezivanje s HID uređajima</translation>
 <translation id="8670078035093027626">Donja tabela zadanog preglednika je otvorena u punoj visini</translation>
 <translation id="8676316391139423634">Kada je ova postavka uključena, web lokacije mogu zatražiti da prate vaše ruke. Kada je isključena, web lokacije ne mogu pratiti vaše ruke.</translation>
 <translation id="8676374126336081632">Brisanje unosa</translation>
@@ -754,7 +751,6 @@ Napredna zaštita upravlja ovim postavkama Bravea:</translation>
 <translation id="7532165358672313130">Kako nastavljate pregledati, web lokacije mogu provjeravati u Braveu i s prethodnom web lokacijom koju ste posjetili potvrditi da ste stvarna osoba</translation>
 <translation id="8899807382908246773">Ometajući oglasi</translation>
 <translation id="8903921497873541725">Uvećaj</translation>
-<translation id="8919911527569629802">Prijavite se na bilo koju web lokaciju</translation>
 <translation id="8921772741368021346"><ph name="POSITION"/> / <ph name="DURATION"/></translation>
 <translation id="8926389886865778422">Ne pitaj ponovo</translation>
 <translation id="8926666909099850184">NFC je isključen na ovom uređaju. Uključite ga u <ph name="BEGIN_LINK"/>Postavkama Androida<ph name="END_LINK"/>.</translation>
@@ -778,6 +774,7 @@ Napredna zaštita upravlja ovim postavkama Bravea:</translation>
 <translation id="9138217887606523162">Trenutno zumiranje je <ph name="ZOOM_LEVEL"/> %%</translation>
 <translation id="7359422048569205930">Dozvolite Braveu da vam prikazuje nedavne kartice na listi aplikacija i u rezultatima pretraživanja na uređaju. Možete isključiti ovo bilo kada u postavkama Bravea.</translation>
 <translation id="9162462602695099906">Ova stranica je opasna</translation>
+<translation id="9172068157980844189">Da uključite traku oznaka, idite u Postavke &gt; Izgled</translation>
 <translation id="9182556968660520230">Nemoj dozvoliti web lokacijama reproduciranje zaštićenog sadržaja</translation>
 <translation id="927148002081263046">Dijelite kontakt</translation>
 <translation id="947156494302904893">Web lokacije koje posjećujete mogu potvrditi da ste stvarna osoba, a ne bot</translation>

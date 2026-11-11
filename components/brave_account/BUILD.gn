@@ -6,9 +6,14 @@
 import("//brave/build/config.gni")
 import("//brave/components/email_aliases/buildflags/buildflags.gni")
 
+# Header-only, so that users needing just the constants do not pull in the
+# service.
+source_set("constants") {
+  sources = [ "brave_account_constants.h" ]
+}
+
 source_set("brave_account") {
   sources = [
-    "brave_account_constants.h",
     "brave_account_encryption.cc",
     "brave_account_encryption.h",
     "brave_account_service.cc",
@@ -49,15 +54,18 @@ source_set("brave_account") {
     "state_internal.h",
   ]
 
+  # brave_account_ui_base.h includes brave_account_constants.h.
+  public_deps = [ "//brave/components/brave_account:constants" ]
+
   deps = [
     "//base",
     "//brave/components/brave_account:features",
     "//brave/components/brave_account:internal",
-    "//brave/components/brave_account/endpoint_client",
     "//brave/components/brave_account/endpoints",
     "//brave/components/brave_account/mojom",
     "//brave/components/brave_account/resources",
     "//brave/components/constants",
+    "//brave/components/endpoint_client",
     "//brave/components/password_strength_meter",
     "//brave/components/password_strength_meter:mojom",
     "//brave/components/resources:static_resources_grit",
@@ -160,11 +168,11 @@ source_set("unit_tests") {
     "//brave/components/brave_account:features",
     "//brave/components/brave_account:internal",
     "//brave/components/brave_account:test_support",
-    "//brave/components/brave_account/endpoint_client",
-    "//brave/components/brave_account/endpoint_client:json_test_endpoint_bodies",
-    "//brave/components/brave_account/endpoint_client:test_support",
     "//brave/components/brave_account/endpoints",
     "//brave/components/brave_account/mojom",
+    "//brave/components/endpoint_client",
+    "//brave/components/endpoint_client:json_test_endpoint_bodies",
+    "//brave/components/endpoint_client:test_support",
     "//components/os_crypt/async/browser:test_support",
     "//components/os_crypt/async/common",
     "//components/prefs:test_support",

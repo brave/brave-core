@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profile_resetter/reset_report_uploader.cc b/chrome/browser/profile_resetter/reset_report_uploader.cc
-index 31be669f3f607d99f84d1465c9d936074e40af87..041c8274e5e0cd5ea4bd49412fa13dba1a8dea90 100644
+index 38cd08856f157b0242c7fbbb7f20245cc73c5371..b4682d7aeac77a86cdb19c838f3670d1eff92171 100644
 --- a/chrome/browser/profile_resetter/reset_report_uploader.cc
 +++ b/chrome/browser/profile_resetter/reset_report_uploader.cc
-@@ -52,6 +52,7 @@ void ResetReportUploader::DispatchReport(
+@@ -53,6 +53,7 @@ void ResetReportUploader::DispatchReport(
  
  void ResetReportUploader::DispatchReportInternal(
      const std::string& request_data) {

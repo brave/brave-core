@@ -170,6 +170,19 @@
   {
     "cmd": [
       "git",
+      "config",
+      "maintenance.auto",
+      "false"
+    ],
+    "cwd": "[WORKSPACE]/b/src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "disable auto-gc: maintenance.auto=false"
+  },
+  {
+    "cmd": [
+      "git",
       "checkout",
       "--force",
       "ef35003457e93c278f911a334b06e4a5f8967e06",

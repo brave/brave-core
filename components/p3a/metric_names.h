@@ -35,6 +35,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.AIChat.ContextMenu.FreeUsages", MetricConfig{.ephemeral = true}},
     {"Brave.AIChat.ContextMenu.MostUsedAction", MetricConfig{.ephemeral = true}},
     {"Brave.AIChat.ContextMenu.PremiumUsages", MetricConfig{.ephemeral = true}},
+    {"Brave.AIChat.ConversationCount", MetricConfig{.ephemeral = true}},
     {"Brave.AIChat.Enabled.2", {}},
     {"Brave.AIChat.FirstChatPrompts", MetricConfig{.ephemeral = true}},
     {"Brave.AIChat.FullPageSwitches", MetricConfig{.ephemeral = true}},
@@ -108,7 +109,6 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.NTP.DefaultPage", {}},
     {"Brave.NTP.OpeningScreenSwitch", MetricConfig{.ephemeral = true}},
     {"Brave.NTP.SponsoredMediaType", {}},
-    {"Brave.NTP.ShowSponsoredAds", {}},
     {"Brave.Omnibox.SearchCount.NonRewards", {}},
     {"Brave.Omnibox.SearchCount.Rewards", {}},
     {"Brave.Omnibox.SearchCount.RewardsWallet", {}},
@@ -152,69 +152,77 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Shields.DevModeEnabled", {}},
     {"Brave.Shields.DomainAdsSettingsAboveGlobal", {}},
     {"Brave.Shields.DomainAdsSettingsBelowGlobal", {}},
-    {"Brave.Shields.FPInput.Canvas", MetricConfig{
+    // Keep the image metadata metrics in sync with components/misc_metrics/image_metadata_stripper_metrics.h.
+    {"Brave.Shields.DownloadFBMDStripped", MetricConfig{.ephemeral=true}},
+    {"Brave.Shields.FPInput.Canvas.2", MetricConfig{
       .ephemeral = true,
-      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kPlatform, MetricAttribute::kRegion, MetricAttribute::kSubregion, MetricAttribute::kCountryCode},
     }},
-    {"Brave.Shields.FPInput.DeviceMemory", MetricConfig{
+    {"Brave.Shields.FPInput.Combined.2", MetricConfig{
       .ephemeral = true,
-      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kPlatform, MetricAttribute::kRegion, MetricAttribute::kSubregion, MetricAttribute::kCountryCode},
     }},
-    {"Brave.Shields.FPInput.DevicePixelRatio", MetricConfig{
+    {"Brave.Shields.FPInput.DeviceMemory.2", MetricConfig{
       .ephemeral = true,
-      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kPlatform, MetricAttribute::kRegion, MetricAttribute::kSubregion, MetricAttribute::kCountryCode},
     }},
-    {"Brave.Shields.FPInput.Fonts", MetricConfig{
+    {"Brave.Shields.FPInput.DevicePixelRatio.2", MetricConfig{
       .ephemeral = true,
-      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kPlatform, MetricAttribute::kRegion, MetricAttribute::kSubregion, MetricAttribute::kCountryCode},
     }},
-    {"Brave.Shields.FPInput.HardwareConcurrency", MetricConfig{
+    {"Brave.Shields.FPInput.Fonts.2", MetricConfig{
       .ephemeral = true,
-      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kPlatform, MetricAttribute::kRegion, MetricAttribute::kSubregion, MetricAttribute::kCountryCode},
     }},
-    {"Brave.Shields.FPInput.Languages", MetricConfig{
+    {"Brave.Shields.FPInput.HardwareConcurrency.2", MetricConfig{
       .ephemeral = true,
-      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kPlatform, MetricAttribute::kRegion, MetricAttribute::kSubregion, MetricAttribute::kCountryCode},
     }},
-    {"Brave.Shields.FPInput.ScreenAvailSize", MetricConfig{
+    {"Brave.Shields.FPInput.Languages.2", MetricConfig{
       .ephemeral = true,
-      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kPlatform, MetricAttribute::kRegion, MetricAttribute::kSubregion, MetricAttribute::kCountryCode},
     }},
-    {"Brave.Shields.FPInput.ScreenPixelDepth", MetricConfig{
+    {"Brave.Shields.FPInput.ScreenAvailSize.2", MetricConfig{
       .ephemeral = true,
-      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kPlatform, MetricAttribute::kRegion, MetricAttribute::kSubregion, MetricAttribute::kCountryCode},
     }},
-    {"Brave.Shields.FPInput.ScreenSize", MetricConfig{
+    {"Brave.Shields.FPInput.ScreenPixelDepth.2", MetricConfig{
       .ephemeral = true,
-      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kPlatform, MetricAttribute::kRegion, MetricAttribute::kSubregion, MetricAttribute::kCountryCode},
     }},
-    {"Brave.Shields.FPInput.Timezone", MetricConfig{
+    {"Brave.Shields.FPInput.ScreenSize.2", MetricConfig{
       .ephemeral = true,
-      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kPlatform, MetricAttribute::kRegion, MetricAttribute::kSubregion, MetricAttribute::kCountryCode},
     }},
-    {"Brave.Shields.FPInput.UserAgent", MetricConfig{
+    {"Brave.Shields.FPInput.Timezone.2", MetricConfig{
       .ephemeral = true,
-      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kPlatform, MetricAttribute::kRegion, MetricAttribute::kSubregion, MetricAttribute::kCountryCode},
     }},
-    {"Brave.Shields.FPInput.WebAudio", MetricConfig{
+    {"Brave.Shields.FPInput.UserAgent.2", MetricConfig{
       .ephemeral = true,
-      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kPlatform, MetricAttribute::kRegion, MetricAttribute::kSubregion, MetricAttribute::kCountryCode},
     }},
-    {"Brave.Shields.FPInput.WebGLExtensions", MetricConfig{
+    {"Brave.Shields.FPInput.WebAudio.2", MetricConfig{
       .ephemeral = true,
-      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kPlatform, MetricAttribute::kRegion, MetricAttribute::kSubregion, MetricAttribute::kCountryCode},
     }},
-    {"Brave.Shields.FPInput.WebGLRenderer", MetricConfig{
+    {"Brave.Shields.FPInput.WebGLExtensions.2", MetricConfig{
       .ephemeral = true,
-      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kPlatform, MetricAttribute::kRegion, MetricAttribute::kSubregion, MetricAttribute::kCountryCode},
     }},
-    {"Brave.Shields.FPInput.WebGLVendor", MetricConfig{
+    {"Brave.Shields.FPInput.WebGLRenderer.2", MetricConfig{
       .ephemeral = true,
-      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kPlatform, MetricAttribute::kRegion, MetricAttribute::kSubregion, MetricAttribute::kCountryCode},
+    }},
+    {"Brave.Shields.FPInput.WebGLVendor.2", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kPlatform, MetricAttribute::kRegion, MetricAttribute::kSubregion, MetricAttribute::kCountryCode},
     }},
     {"Brave.Shields.FilterLists.2", {}},
     {"Brave.Shields.FingerprintBlockSetting", {}},
     {"Brave.Shields.ManualShred", {}},
+    // Keep the image metadata metrics in sync with components/misc_metrics/image_metadata_stripper_metrics.h.
+    {"Brave.Shields.UploadFBMDStripped", MetricConfig{.ephemeral=true}},
     {"Brave.Shields.UpgradeHTTPSGlobal", {}},
     {"Brave.Shields.UpgradeHTTPSPerSite.2", {}},
     {"Brave.Shields.UsageStatus", {}},
@@ -243,7 +251,6 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.VerticalTabs.PinnedTabs", MetricConfig{.ephemeral = true}},
     {"Brave.Wallet.UsageWeekly", MetricConfig{.ephemeral = true}},
     {"Brave.Web3.DappVisited", MetricConfig{.ephemeral = true}},
-    {"Brave.WebTorrent.UsageWeekly", MetricConfig{.ephemeral = true}},
 });
 
 inline constexpr auto kCollectedSlowHistograms =
@@ -276,16 +283,54 @@ inline constexpr auto kCollectedSlowHistograms =
 
 inline constexpr auto kCollectedExpressHistograms =
   base::MakeFixedFlatMap<std::string_view, std::optional<MetricConfig>>({
-    {"Brave.Ads.SurveyPanelistEnabled", {}},
+    {"Brave.Ads.SponsoredEnabled", {}},
     {"Brave.AIChat.UsageDaily.2", MetricConfig{
       .ephemeral = true,
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kDateOfActivation, MetricAttribute::kVersion, MetricAttribute::kYoi, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode, MetricAttribute::kWoi},
       .record_activation_date = true,
     }},
-    {"Brave.CaptchaCount.Cloudflare", MetricConfig{.ephemeral = true}},
-    {"Brave.CaptchaCount.Google", MetricConfig{.ephemeral = true}},
-    {"Brave.CaptchaCount.Total", MetricConfig{.ephemeral = true}},
-    {"Brave.CaptchaCount.hCaptcha", MetricConfig{.ephemeral = true}},
+    // Please keep the names consistent with captcha_metrics.h
+    {"Brave.CaptchaCount.Cloudflare", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kCustomAttribute, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode},
+      .custom_attributes = {"likely_bot"},
+    }},
+    {"Brave.CaptchaCount.Cloudflare.UserActivated", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kCustomAttribute, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode},
+      .custom_attributes = {"likely_bot"},
+    }},
+    {"Brave.CaptchaCount.Google", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kCustomAttribute, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode},
+      .custom_attributes = {"likely_bot"},
+    }},
+    {"Brave.CaptchaCount.Google.UserActivated", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kCustomAttribute, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode},
+      .custom_attributes = {"likely_bot"},
+    }},
+    {"Brave.CaptchaCount.Total", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kCustomAttribute, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode},
+      .custom_attributes = {"likely_bot"},
+    }},
+    {"Brave.CaptchaCount.Total.UserActivated", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kCustomAttribute, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode},
+      .custom_attributes = {"likely_bot"},
+    }},
+    {"Brave.CaptchaCount.hCaptcha", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kCustomAttribute, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode},
+      .custom_attributes = {"likely_bot"},
+    }},
+    {"Brave.CaptchaCount.hCaptcha.UserActivated", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kCustomAttribute, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode},
+      .custom_attributes = {"likely_bot"},
+    }},
+
     {"Brave.Core.IsDefaultDaily.2", MetricConfig{
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kDateOfInstall, MetricAttribute::kDateOfActivation, MetricAttribute::kGeneralPlatform, MetricAttribute::kSubregion, MetricAttribute::kVersion},
       .record_activation_date = true,
@@ -384,6 +429,26 @@ inline constexpr auto kCollectedExpressHistograms =
     {"Brave.Search.QuickSearchPercent", MetricConfig{
       .ephemeral = true,
       .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
+    }},
+    {"Brave.Search.SERPBrave", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kPlatform},
+      .priority = true,
+    }},
+    {"Brave.Search.SERPGoogle", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kPlatform},
+      .priority = true,
+    }},
+    {"Brave.Search.SERPOther", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kPlatform},
+      .priority = true,
+    }},
+    {"Brave.Search.SERPStale", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kPlatform},
+      .priority = true,
     }},
     {"Brave.Search.SwitchEngine.2", MetricConfig{
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kDateOfInstall, MetricAttribute::kVersion, MetricAttribute::kLocaleCountryCode},

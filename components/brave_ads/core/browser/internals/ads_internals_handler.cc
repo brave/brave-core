@@ -12,11 +12,13 @@
 #include "base/json/json_writer.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "base/types/to_address.h"
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "components/prefs/pref_service.h"
 #include "components/variations/service/variations_service.h"
@@ -61,7 +63,7 @@ AdsInternalsHandler::AdsInternalsHandler(
           std::move(get_ntp_sponsored_images_manifest_version_callback)),
       get_is_sponsored_tiles_shown_callback_(
           std::move(get_is_sponsored_tiles_shown_callback)) {
-  pref_change_registrar_.Init(&*prefs_);
+  pref_change_registrar_.Init(base::to_address(prefs_));
   pref_change_registrar_.Add(
       brave_rewards::prefs::kEnabled,
       base::BindRepeating(
@@ -72,6 +74,14 @@ AdsInternalsHandler::AdsInternalsHandler(
       base::BindRepeating(
           &AdsInternalsHandler::OnBraveRewardsWalletConnectedPrefChanged,
           weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      brave_ads::prefs::kSponsoredEnabled,
+      base::BindRepeating(&AdsInternalsHandler::OnAdFormatSettingsPrefChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      ntp_background_images::prefs::kNewTabPageShowBackgroundImage,
+      base::BindRepeating(&AdsInternalsHandler::OnAdFormatSettingsPrefChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
 
   if (ads_service_) {
     ads_service_->AddObserver(this);
@@ -150,7 +160,7 @@ void AdsInternalsHandler::EvaluateConditionMatcher(
       pref_path, condition, test_value,
       base::BindOnce(
           [](EvaluateConditionMatcherCallback callback,
-             std::string current_value, std::string matches) {
+             const std::string& current_value, const std::string& matches) {
             std::move(callback).Run(current_value, matches);
           },
           std::move(callback)));
@@ -276,6 +286,19 @@ void AdsInternalsHandler::UpdateBraveRewardsWalletConnected() {
   const bool is_connected =
       !prefs_->GetString(brave_rewards::prefs::kExternalWalletType).empty();
   ads_internals_page_remote_->UpdateBraveRewardsWalletConnected(is_connected);
+}
+
+void AdsInternalsHandler::OnAdFormatSettingsPrefChanged(
+    const std::string& /*path*/) {
+  UpdateAdFormatSettings();
+}
+
+void AdsInternalsHandler::UpdateAdFormatSettings() {
+  if (!ads_internals_page_remote_) {
+    return;
+  }
+
+  ads_internals_page_remote_->UpdateAdFormatSettings();
 }
 
 void AdsInternalsHandler::OnDidInitializeAdsService() {

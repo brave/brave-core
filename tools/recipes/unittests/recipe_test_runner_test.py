@@ -22,7 +22,6 @@ import recipe_test_runner as runner  # pylint: disable=wrong-import-position
 
 
 class DiscoveryTest(unittest.TestCase):
-
     def test_iter_recipe_ids_includes_recipes_and_examples(self):
         ids = runner._iter_recipe_ids()
         self.assertIn('toolchains/rust/package_rust', ids)

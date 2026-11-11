@@ -9,7 +9,7 @@
 // Security Policy directive does not 'allow-duplicates'` error.
 
 // On some pages (like chrome://settings) we generate multiple bundles
-// with their own copies of @brave/leo. Each of these bundles will
+// with their own copies of @brave/nala. Each of these bundles will
 // attempt to register their own `svelte-trusted-html` policy.
 
 // To workaround this, we disable the creation of a second

@@ -1,23 +1,38 @@
 /* Title for Ask Brave shortcut. Brave is the company name and should not be translated */
 "widgets.askBrave" = "Pergunte ao Brave";
 
+/* Description for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.askBraveWidgetDescription" = "Faça uma pergunta ao Brave.";
+
+/* Title for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.askBraveWidgetTitle" = "Pergunte ao Brave";
+
 /* Title for bookmarks menu item */
 "widgets.BookmarksMenuItem" = "Barra de marcadores";
 
 /* The name of the feature */
 "widgets.braveLeo" = "Leo AI";
 
+/* Title for the Leo AI voice input shortcut. Leo is the name of a product and should not be translated */
+"widgets.braveLeoVoiceInput" = "Introdução por voz do Leo";
+
 /* The name of the feature */
 "widgets.braveNews" = "Notícias Brave";
+
+/* Title for the Brave Search control. Brave is the company name and should not be translated */
+"widgets.braveSearch" = "Pesquisa Brave";
+
+/* Description for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.braveSearchWidgetDescription" = "Pesquise na web com o Brave.";
+
+/* Title for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.braveSearchWidgetTitle" = "Pesquisa Brave";
 
 /* Title for downloads menu item */
 "widgets.DownloadsMenuItem" = "Transferências";
 
 /* Description for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetDescription" = "Acesse rapidamente seus sites favoritos.";
-
-/* Title for favorites widget on 'add widget' screen. */
-"widgets.favoritesWidgetTitle" = "Favoritos";
 
 /* Title for history menu item */
 "widgets.HistoryMenuItem" = "Histórico";

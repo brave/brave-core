@@ -8,9 +8,11 @@
 #include <memory>
 #include <optional>
 
+#include "brave/browser/ui/views/brave_layout_provider.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h"
+#include "chrome/browser/ui/views/tabs/organizer/organizer_panel_host.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/gfx/geometry/insets.h"
@@ -28,8 +30,7 @@ class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
   FakeBrowserViewLayoutDelegate() = default;
   ~FakeBrowserViewLayoutDelegate() override = default;
 
-  bool ShouldDrawTabStrip() const override { return false; }
-  bool ShouldDrawVerticalTabStrip() const override { return false; }
+  TabStripType GetTabStripType() const override { return TabStripType::kNone; }
   bool IsVerticalTabStripCollapsed() const override { return false; }
   bool ShouldDrawWebAppFrameToolbar() const override { return false; }
   bool GetUnframedModeEnabled() const override { return false; }
@@ -57,6 +58,9 @@ class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
   ExclusiveAccessBubbleViews* GetExclusiveAccessBubble() const override {
     return nullptr;
   }
+  OrganizerPanelLocation GetOrganizerPanelLocation() const override {
+    return OrganizerPanelLocation::kNone;
+  }
   bool IsTopControlsSlideBehaviorEnabled() const override { return false; }
   float GetTopControlsSlideBehaviorShownRatio() const override { return 0.0f; }
   gfx::NativeView GetHostViewForAnchoring() const override {
@@ -68,7 +72,7 @@ class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
   void UpdateWindowControlsOverlay(const gfx::Rect&) override {}
   bool ShouldLayoutTabStrip() const override { return false; }
   int GetExtraInfobarOffset() const override { return 0; }
-  bool IsOrganizerPanelVisible() const override { return false; }
+  int GetRestoredWindowCornerRadius() const override { return 0; }
   base::CallbackListSubscription AddOnGlassModeChangedCallback(
       base::RepeatingCallback<void(bool)> callback,
       bool* current_state_out) override {
@@ -110,13 +114,17 @@ class MockBrowserViewLayoutDelegate : public FakeBrowserViewLayoutDelegate {
               (),
               (const, override));
   MOCK_METHOD(bool, IsFullscreenForTab, (), (const, override));
+  MOCK_METHOD(BrowserViewLayoutDelegate::TabStripType,
+              GetTabStripType,
+              (),
+              (const, override));
+  MOCK_METHOD(bool, ShouldShowVerticalTabs, (), (const, override));
   MOCK_METHOD(WindowState, GetBrowserWindowState, (), (const, override));
 };
 
 int GetWindowCornerRadius() {
   return views::LayoutProvider::Get()->GetCornerRadiusMetric(
-      views::ShapeContextTokensOverride::
-          kRoundedCornersBorderRadiusAtWindowCorner);
+      ExtendedShapeContextTokens::kRoundedCornersBorderRadiusAtWindowCorner);
 }
 
 }  // namespace
@@ -340,6 +348,65 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
 }
 
 // ---------------------------------------------------------------------------
+// GetUpstreamVerticalTabStripWidth
+//
+// Upstream's vertical tab strip reserves no width when Brave's own vertical
+// tabs are in use, when the tab strip isn't vertical, or when the region view
+// isn't parented to the browser view.
+// ---------------------------------------------------------------------------
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     UpstreamVerticalTabStripWidthZeroWithBraveVerticalTabs) {
+  auto mock =
+      std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
+  EXPECT_CALL(*mock, ShouldShowVerticalTabs())
+      .WillRepeatedly(::testing::Return(true));
+  EXPECT_CALL(*mock, GetTabStripType())
+      .WillRepeatedly(::testing::Return(
+          BrowserViewLayoutDelegate::TabStripType::kVertical));
+
+  BrowserViewLayoutViews views;
+  auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
+      std::move(mock), std::move(views));
+
+  EXPECT_EQ(0, layout->GetUpstreamVerticalTabStripWidthForTesting());
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     UpstreamVerticalTabStripWidthZeroWhenTabStripNotVertical) {
+  auto mock =
+      std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
+  EXPECT_CALL(*mock, ShouldShowVerticalTabs())
+      .WillRepeatedly(::testing::Return(false));
+  EXPECT_CALL(*mock, GetTabStripType())
+      .WillRepeatedly(::testing::Return(
+          BrowserViewLayoutDelegate::TabStripType::kHorizontal));
+
+  BrowserViewLayoutViews views;
+  auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
+      std::move(mock), std::move(views));
+
+  EXPECT_EQ(0, layout->GetUpstreamVerticalTabStripWidthForTesting());
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     UpstreamVerticalTabStripWidthZeroWithoutRegionView) {
+  auto mock =
+      std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
+  EXPECT_CALL(*mock, ShouldShowVerticalTabs())
+      .WillRepeatedly(::testing::Return(false));
+  EXPECT_CALL(*mock, GetTabStripType())
+      .WillRepeatedly(::testing::Return(
+          BrowserViewLayoutDelegate::TabStripType::kVertical));
+
+  BrowserViewLayoutViews views;
+  auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
+      std::move(mock), std::move(views));
+
+  EXPECT_EQ(0, layout->GetUpstreamVerticalTabStripWidthForTesting());
+}
+
+// ---------------------------------------------------------------------------
 // CalculateContentsCornerRadii
 //
 // A corner that meets the window frame follows the window's own corner radius;
@@ -351,7 +418,7 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
 
 TEST(BraveBrowserViewTabbedLayoutImplTest,
      CalculateContentsCornerRadiiEmptyWithoutRoundedCorners) {
-  views::LayoutProvider layout_provider;
+  BraveLayoutProvider layout_provider;
   auto mock =
       std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
   EXPECT_CALL(*mock, ShouldUseBraveWebViewRoundedCornersForContents())
@@ -367,7 +434,7 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
 
 TEST(BraveBrowserViewTabbedLayoutImplTest,
      CalculateContentsCornerRadiiEmptyInTabFullscreen) {
-  views::LayoutProvider layout_provider;
+  BraveLayoutProvider layout_provider;
   auto mock =
       std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
   EXPECT_CALL(*mock, ShouldUseBraveWebViewRoundedCornersForContents())
@@ -386,7 +453,7 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
 
 TEST(BraveBrowserViewTabbedLayoutImplTest,
      CalculateContentsCornerRadiiWindowCornersAtTopEdge) {
-  views::LayoutProvider layout_provider;
+  BraveLayoutProvider layout_provider;
   auto mock =
       std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
   EXPECT_CALL(*mock, ShouldUseBraveWebViewRoundedCornersForContents())

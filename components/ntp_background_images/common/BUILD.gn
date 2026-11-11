@@ -8,6 +8,7 @@ import("//brave/components/brave_ads/buildflags/buildflags.gni")
 source_set("common") {
   sources = [
     "infobar_constants.h",
+    "new_tab_takeover_disclosure_constants.h",
     "pref_names.h",
     "url_constants.h",
     "view_counter_pref_names.h",

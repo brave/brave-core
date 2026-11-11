@@ -14,9 +14,12 @@
 ::
 :: `%~dp0` is normally this script's directory, but when the shim is invoked as
 :: a bare `pnpm` by another process (e.g. npm running a package's scripts) cmd
-:: can expand it to the current directory instead. If launcher.py is not there,
+:: can expand it to the current directory instead. If runner.py is not there,
 :: resolve our own name on %PATH% (`%~dp$PATH:0`) to find it beside the shim.
 setlocal
 set "_dir=%~dp0"
-if not exist "%_dir%launcher.py" set "_dir=%~dp$PATH:0"
-python3 "%_dir%launcher.py" --allow-fallback pnpm %*
+if not exist "%_dir%runner.py" set "_dir=%~dp$PATH:0"
+set "_python="
+for /f "usebackq delims=" %%i in (`python3 "%_dir%runner.py"`) do set "_python=%%i"
+if not defined _python exit /b 1
+"%_python%" "%_dir%launcher.py" --allow-fallback pnpm %*

@@ -99,7 +99,9 @@ class TabBrowserData: NSObject, TabObserver {
 
   var lastTitle: String?
 
-  var isDisplayingBasicAuthPrompt = false
+  /// Whether or not an HTTP authentication prompt is being presented for an origin other than the
+  /// one currently visible
+  var isDisplayingCrossOriginBasicAuthPrompt = false
 
   // This variable is used to keep track of current page. It is used to detect
   // and report same document navigations to Brave Rewards library.
@@ -174,10 +176,6 @@ class TabBrowserData: NSObject, TabObserver {
 
   /// A list of domains that we want to proceed to anyways regardless of any ad-blocking
   var proceedAnywaysDomainList: Set<String> = []
-
-  /// When viewing a non-HTML content type in the webview (like a PDF document), this URL will
-  /// point to a tempfile containing the content so it can be shared to external applications.
-  var temporaryDocument: TemporaryDocument?
 
   func addContentScript(_ helper: TabContentScript, name: String, contentWorld: WKContentWorld) {
     guard let tab else { return }

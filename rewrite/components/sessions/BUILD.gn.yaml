@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add the Brave sessions deps.
+
+      `sessions` is declared in both branches of an `if`/`else`, so the
+      declaring call names the one meant here.
+    add_literal_to_list:
+      target: sessions
+      type: component
+      list_name: deps
+      literal: brave_components_sessions_deps
+      import: //brave/components/sessions/sources.gni
+
+  - description: Add the Brave shared sessions public_deps.
+    add_literal_to_list:
+      target: shared
+      list_name: public_deps
+      literal: brave_components_sessions_shared_public_deps
+      import: //brave/components/sessions/sources.gni

@@ -87,9 +87,9 @@ class FrozenDict(collections.abc.Mapping[K, V]):
         self._d = dict(*args, **kwargs)
         # Computed eagerly so that constructing a FrozenDict of unhashable
         # values fails immediately, at the point of freezing, not on first use.
-        self._hash = functools.reduce(operator.xor,
-                                      (hash(i)
-                                       for i in enumerate(self._d.items())), 0)
+        self._hash = functools.reduce(
+            operator.xor, (hash(i) for i in enumerate(self._d.items())), 0
+        )
 
     def __iter__(self) -> Iterator[K]:
         return iter(self._d)
@@ -104,7 +104,7 @@ class FrozenDict(collections.abc.Mapping[K, V]):
         return self._hash
 
     def __repr__(self) -> str:
-        return 'FrozenDict(%r)' % (list(self._d.items()), )
+        return 'FrozenDict(%r)' % (list(self._d.items()),)
 
 
 class ConfigError(Exception):
@@ -119,8 +119,14 @@ class AnonymousGnConfig:
     for reuse.
     """
 
-    def __init__(self, *, args: Mapping[str, Any], configs: Sequence[str],
-                 args_file: str, secrets: Mapping[str, str]) -> None:
+    def __init__(
+        self,
+        *,
+        args: Mapping[str, Any],
+        configs: Sequence[str],
+        args_file: str,
+        secrets: Mapping[str, str],
+    ) -> None:
         # GN arg key-value pairs this config contributes directly.
         self.gn_args = freeze(args)
 
@@ -135,17 +141,25 @@ class AnonymousGnConfig:
         self.secrets = freeze(secrets)
 
     def __repr__(self) -> str:
-        return ('AnonymousGnConfig(gn_args=%r, configs=%r, args_file=%r, '
-                'secrets=%r)' %
-                (self.gn_args, self.configs, self.args_file, self.secrets))
+        return (
+            'AnonymousGnConfig(gn_args=%r, configs=%r, args_file=%r, '
+            'secrets=%r)'
+            % (self.gn_args, self.configs, self.args_file, self.secrets)
+        )
 
 
 class _GnConfigNode:
     """One registered, named node in the GN-args include graph."""
 
-    def __init__(self, name: str, *, args: Mapping[str, Any],
-                 configs: Sequence[str], args_file: str,
-                 secrets: Mapping[str, str]) -> None:
+    def __init__(
+        self,
+        name: str,
+        *,
+        args: Mapping[str, Any],
+        configs: Sequence[str],
+        args_file: str,
+        secrets: Mapping[str, str],
+    ) -> None:
         # The name it was registered under.
         self.name = name
 
@@ -163,8 +177,14 @@ class _GnConfigNode:
         self.secrets = freeze(secrets)
 
 
-def _merge_into(dst: dict, *, args_file: str, args: Mapping[str, Any],
-                secrets: Mapping[str, str], config_name: str) -> None:
+def _merge_into(
+    dst: dict,
+    *,
+    args_file: str,
+    args: Mapping[str, Any],
+    secrets: Mapping[str, str],
+    config_name: str,
+) -> None:
     """Merges one node's contribution into a resolution-in-progress `dst`.
 
     `dst`'s existing entries lose to `args`/`secrets` on key conflicts, which
@@ -176,8 +196,9 @@ def _merge_into(dst: dict, *, args_file: str, args: Mapping[str, Any],
         if dst['args_file']:
             raise ConfigError(
                 'gn_args config %r: each GN config can only contain a '
-                'single args_file (already have %r, got %r)' %
-                (config_name, dst['args_file'], args_file))
+                'single args_file (already have %r, got %r)'
+                % (config_name, dst['args_file'], args_file)
+            )
         dst['args_file'] = args_file
     dst['gn_args'].update(args)
     dst['secrets'].update(secrets)
@@ -199,13 +220,13 @@ class GnArgsRegistry:
         self._resolved: dict[str, dict] = {}
 
     def config(
-            self,
-            *,
-            name: str | None = None,
-            args: Mapping[str, Any] | None = None,
-            configs: Sequence[str] | None = None,
-            args_file: str = '',
-            secrets: Mapping[str, str] | None = None
+        self,
+        *,
+        name: str | None = None,
+        args: Mapping[str, Any] | None = None,
+        configs: Sequence[str] | None = None,
+        args_file: str = '',
+        secrets: Mapping[str, str] | None = None,
     ) -> None | AnonymousGnConfig:
         """Defines a GN config, or returns one inline.
 
@@ -232,19 +253,19 @@ class GnArgsRegistry:
 
         if name:
             if name in self._nodes:
-                raise ConfigError('gn_args config %r is already defined' %
-                                  name)
-            self._nodes[name] = _GnConfigNode(name,
-                                              args=args,
-                                              configs=configs,
-                                              args_file=args_file,
-                                              secrets=secrets)
+                raise ConfigError('gn_args config %r is already defined' % name)
+            self._nodes[name] = _GnConfigNode(
+                name,
+                args=args,
+                configs=configs,
+                args_file=args_file,
+                secrets=secrets,
+            )
             return None
 
-        return AnonymousGnConfig(args=args,
-                                 configs=configs,
-                                 args_file=args_file,
-                                 secrets=secrets)
+        return AnonymousGnConfig(
+            args=args, configs=configs, args_file=args_file, secrets=secrets
+        )
 
     def resolve(self, name: str) -> dict:
         """Resolves the named config's GN args, secrets and args_file.
@@ -280,14 +301,17 @@ class GnArgsRegistry:
             result['secrets'] = dict(resolved['secrets'])
         return result
 
-    def _resolve_node(self, node: _GnConfigNode, stack: tuple[str,
-                                                              ...]) -> dict:
+    def _resolve_node(
+        self, node: _GnConfigNode, stack: tuple[str, ...]
+    ) -> dict:
         if node.name in self._resolved:
             return self._resolved[node.name]
         if node.name in stack:
-            raise ConfigError('gn_args config cycle: %s -> %s' %
-                              (' -> '.join(stack), node.name))
-        stack = stack + (node.name, )
+            raise ConfigError(
+                'gn_args config cycle: %s -> %s'
+                % (' -> '.join(stack), node.name)
+            )
+        stack = stack + (node.name,)
 
         merged = {'args_file': '', 'gn_args': {}, 'secrets': {}}
 
@@ -299,21 +323,26 @@ class GnArgsRegistry:
                 child = self._nodes[child_name]
             except KeyError as e:
                 raise ConfigError(
-                    'gn_args config %r includes undefined config %r' %
-                    (node.name, child_name)) from e
+                    'gn_args config %r includes undefined config %r'
+                    % (node.name, child_name)
+                ) from e
             child_resolved = self._resolve_node(child, stack)
-            _merge_into(merged,
-                        args_file=child_resolved['args_file'],
-                        args=child_resolved['gn_args'],
-                        secrets=child_resolved['secrets'],
-                        config_name=node.name)
+            _merge_into(
+                merged,
+                args_file=child_resolved['args_file'],
+                args=child_resolved['gn_args'],
+                secrets=child_resolved['secrets'],
+                config_name=node.name,
+            )
 
         # Merge the node's own values last, so they win over anything included.
-        _merge_into(merged,
-                    args_file=node.args_file,
-                    args=node.gn_args,
-                    secrets=node.secrets,
-                    config_name=node.name)
+        _merge_into(
+            merged,
+            args_file=node.args_file,
+            args=node.gn_args,
+            secrets=node.secrets,
+            config_name=node.name,
+        )
 
         self._resolved[node.name] = merged
         return merged
@@ -328,8 +357,7 @@ _UNSET = object()
 
 
 class Defaults:
-    """A settable group of module-level defaults for `builder()`.
-    """
+    """A settable group of module-level defaults for `builder()`."""
 
     def __init__(self, **defaults: Any) -> None:
         self._values = dict(defaults)
@@ -348,31 +376,296 @@ class Defaults:
         return self._values[name]
 
 
-class SyncConfig:
-    """What a builder needs to reach a synced tree: target platform plus
-    whatever gclient overrides `init`/`sync` should apply."""
+class _Enum:
+    """starlark-libs' `enums.enum()`: one attribute per named value, plus
+    `values`, for checking a value is one of them."""
 
-    def __init__(self, *, target_os: str, target_cpu: str,
-                 **gclient_overrides: Any) -> None:
-        # GN's target_os, and what `init`/`sync` sync a checkout for.
-        self.target_os = target_os
+    def __init__(self, **members: str) -> None:
+        if 'values' in members:
+            raise ConfigError("cannot create an enum value named 'values'")
+        self.__dict__.update(members)
+        self.__dict__['values'] = tuple(members.values())
 
-        # GN's target_cpu.
-        self.target_cpu = target_cpu
+    def __setattr__(self, name: str, value: Any) -> None:
+        raise TypeError('enum values cannot be reassigned')
 
-        # Custom vars, deps or revision pins for gclient, by name. Schema
-        # not yet settled (A1).
-        self.gclient_overrides = gclient_overrides
+
+_build_config = _Enum(
+    RELEASE='Release',
+    DEBUG='Debug',
+)
+
+_target_arch = _Enum(
+    INTEL='intel',
+    ARM='arm',
+)
+
+_target_platform = _Enum(
+    LINUX='linux',
+    WIN='win',
+    MAC='mac',
+    IOS='ios',
+    ANDROID='android',
+)
+
+_host_platform = _Enum(
+    LINUX='linux',
+    WIN='win',
+    MAC='mac',
+)
+
+# The CPUs Brave builds for, by their gclient (and GN) names.
+_GCLIENT_CPUS = (
+    'arm',
+    'arm64',
+    'x64',
+    'x86',
+)
+
+# GN's target_cpu for a chromium_config's (target_arch, target_bits).
+_GN_TARGET_CPU = {
+    (_target_arch.INTEL, 32): 'x86',
+    (_target_arch.INTEL, 64): 'x64',
+    (_target_arch.ARM, 32): 'arm',
+    (_target_arch.ARM, 64): 'arm64',
+}
+
+
+class GclientConfig:
+    """What `init`/`sync` write into `.gclient` for a builder.
+
+    The platforms the checkout has dependencies for, which can be more than
+    the one the builder builds for (its `chromium_config`). As in gclient
+    itself, the host's are always synced, so a builder that only builds for
+    its host can leave both lists empty.
+    """
+
+    def __init__(
+        self,
+        *,
+        target_os: Sequence[str],
+        target_cpu: Sequence[str],
+    ) -> None:
+        # gclient's `target_os`: `target_platform` values.
+        self.target_os = _sorted_values(
+            'target_os', target_os, _target_platform.values
+        )
+
+        # gclient's `target_cpu`, e.g. ("arm64",).
+        self.target_cpu = _sorted_values(
+            'target_cpu', target_cpu, _GCLIENT_CPUS
+        )
+
+
+def _sorted_values(
+    field: str, values: Sequence[str], allowed: Sequence[str]
+) -> tuple[str, ...]:
+    if isinstance(values, str):
+        raise ConfigError('%s must be a list, got %r' % (field, values))
+    for value in values:
+        if value not in allowed:
+            raise ConfigError('unknown %s: %r' % (field, value))
+    return tuple(sorted(set(values)))
+
+
+class ChromiumConfig:
+    """The one platform a builder builds for, and how.
+
+    Mirrors upstream's `builder_config.chromium_config()`, minus the recipe
+    config item names (`config`, `apply_configs`) and the CrOS boards, which
+    have no use here.
+    """
+
+    def __init__(
+        self,
+        *,
+        target_platform: str,
+        host_platform: str | None,
+        build_config: str | None,
+        target_arch: str | None,
+        target_bits: int | None,
+    ) -> None:
+        if (
+            build_config is not None
+            and build_config not in _build_config.values
+        ):
+            raise ConfigError('unknown build_config: %r' % (build_config,))
+        if target_arch is not None and target_arch not in _target_arch.values:
+            raise ConfigError('unknown target_arch: %r' % (target_arch,))
+        if target_bits is not None and target_bits not in (32, 64):
+            raise ConfigError('unknown target_bits: %r' % (target_bits,))
+        if (
+            host_platform is not None
+            and host_platform not in _host_platform.values
+        ):
+            raise ConfigError('unknown host_platform: %r' % (host_platform,))
+        if target_platform not in _target_platform.values:
+            raise ConfigError(
+                'unknown target_platform: %r' % (target_platform,)
+            )
+
+        # A `target_platform` value: GN's target_os.
+        self.target_platform = target_platform
+
+        # A `host_platform` value: what the builder runs on.
+        self.host_platform = host_platform
+
+        # A `build_config` value.
+        self.build_config = build_config
+
+        # A `target_arch` value; with `target_bits`, GN's target_cpu.
+        self.target_arch = target_arch
+
+        # 32 or 64.
+        self.target_bits = target_bits
+
+    def gn_target_cpu(self) -> str | None:
+        """GN's target_cpu, if `target_arch` and `target_bits` are set."""
+        if self.target_arch is None or self.target_bits is None:
+            return None
+        return _GN_TARGET_CPU[(self.target_arch, self.target_bits)]
+
+
+class BuilderSpec:
+    """How a builder syncs and what it builds for."""
+
+    def __init__(
+        self, *, gclient_config: GclientConfig, chromium_config: ChromiumConfig
+    ) -> None:
+        if not isinstance(gclient_config, GclientConfig):
+            raise ConfigError(
+                'gclient_config must be a builder_config.gclient_config()'
+            )
+        if not isinstance(chromium_config, ChromiumConfig):
+            raise ConfigError(
+                'chromium_config must be a builder_config.chromium_config()'
+            )
+
+        # This builder's `gclient_config()`.
+        self.gclient_config = gclient_config
+
+        # This builder's `chromium_config()`.
+        self.chromium_config = chromium_config
+
+
+class _BuilderConfig:
+    """What spec files reach as `builder_config`, as upstream's
+    `builder_config.star` exports it."""
+
+    build_config = _build_config
+    target_arch = _target_arch
+    target_platform = _target_platform
+    host_platform = _host_platform
+
+    @staticmethod
+    def gclient_config(
+        *,
+        target_os: Sequence[str] = (),
+        target_cpu: Sequence[str] = (),
+    ) -> GclientConfig:
+        """The platforms `init`/`sync` sync for, besides the host's.
+
+        Unlike upstream's, which names gclient recipe config items, this
+        takes the `.gclient` lists directly: `target_os` takes
+        `target_platform` values.
+        """
+        return GclientConfig(target_os=target_os, target_cpu=target_cpu)
+
+    @staticmethod
+    def chromium_config(
+        *,
+        target_platform: str,
+        host_platform: str | None = None,
+        build_config: str | None = None,
+        target_arch: str | None = None,
+        target_bits: int | None = None,
+    ) -> ChromiumConfig:
+        return ChromiumConfig(
+            target_platform=target_platform,
+            host_platform=host_platform,
+            build_config=build_config,
+            target_arch=target_arch,
+            target_bits=target_bits,
+        )
+
+    @staticmethod
+    def builder_spec(
+        *, gclient_config: GclientConfig, chromium_config: ChromiumConfig
+    ) -> BuilderSpec:
+        return BuilderSpec(
+            gclient_config=gclient_config, chromium_config=chromium_config
+        )
+
+
+# What spec files import: `from lib.config import builder_config`.
+builder_config = _BuilderConfig()
+
+
+def check_builder_spec(
+    builder: Builder, resolved_gn_args: Mapping[str, Any]
+) -> None:
+    """Checks a builder's spec against its resolved GN args.
+
+    The build target is stated by both `chromium_config` and the GN args, so
+    they must agree. A builder declaring its `host_platform` must also sync
+    the platform it builds for.
+
+    Raises:
+        ConfigError: they disagree.
+    """
+    chromium_config = builder.builder_spec.chromium_config
+    if resolved_gn_args.get('target_os') != chromium_config.target_platform:
+        raise ConfigError(
+            'builder %r: chromium_config target_platform %r does not match '
+            'GN target_os %r'
+            % (
+                builder.name,
+                chromium_config.target_platform,
+                resolved_gn_args.get('target_os'),
+            )
+        )
+    target_cpu = chromium_config.gn_target_cpu()
+    if (
+        target_cpu is not None
+        and resolved_gn_args.get('target_cpu') != target_cpu
+    ):
+        raise ConfigError(
+            'builder %r: chromium_config target_arch %r and target_bits %r '
+            'make GN target_cpu %r, not %r'
+            % (
+                builder.name,
+                chromium_config.target_arch,
+                chromium_config.target_bits,
+                target_cpu,
+                resolved_gn_args.get('target_cpu'),
+            )
+        )
+    gclient_config = builder.builder_spec.gclient_config
+    if (
+        chromium_config.host_platform is not None
+        and chromium_config.target_platform != chromium_config.host_platform
+        and chromium_config.target_platform not in gclient_config.target_os
+    ):
+        raise ConfigError(
+            'builder %r: builds for %r on %r, but gclient_config target_os '
+            'does not sync it'
+            % (
+                builder.name,
+                chromium_config.target_platform,
+                chromium_config.host_platform,
+            )
+        )
 
 
 class Targets:
     """What a builder compiles and runs."""
 
     def __init__(
-            self,
-            *,
-            compile: Sequence[str],  # pylint: disable=redefined-builtin
-            tests: Sequence[str]) -> None:
+        self,
+        *,
+        compile: Sequence[str],  # pylint: disable=redefined-builtin
+        tests: Sequence[str],
+    ) -> None:
         # GN target labels to compile, e.g. "brave:all".
         self.compile = tuple(compile)
 
@@ -388,10 +681,17 @@ class Builder:
     the one way to read them back, same as for any other config.
     """
 
-    def __init__(self, *, name: str, builder_group: str | None,
-                 execution_timeout_mins: int | None, channel: str | None,
-                 notifies: Sequence[str], sync_config: SyncConfig,
-                 targets: Targets) -> None:
+    def __init__(
+        self,
+        *,
+        name: str,
+        builder_group: str | None,
+        execution_timeout_mins: int | None,
+        channel: str | None,
+        notifies: Sequence[str],
+        builder_spec: BuilderSpec,
+        targets: Targets,
+    ) -> None:
         # The name it was registered under; also its `gn_args` node name.
         self.name = name
 
@@ -407,16 +707,16 @@ class Builder:
         # Who to notify on a build result worth telling someone about.
         self.notifies = tuple(notifies)
 
-        # This builder's `sync_config()`.
-        self.sync_config = sync_config
+        # This builder's `builder_config.builder_spec()`.
+        self.builder_spec = builder_spec
 
         # This builder's `targets()`.
         self.targets = targets
 
 
 class BuildersRegistry:
-    """A registry of builders, and the `sync_config`/`targets` constructors
-    used to describe them.
+    """A registry of builders, and the `targets` constructor used to
+    describe them.
 
     Spec files call `builder()` to declare a builder; `defaults.set()` sets
     module-level fallbacks for the fields a group of builders share, the way
@@ -451,46 +751,45 @@ class BuildersRegistry:
         if isinstance(value, str):
             self._gn_args.config(name=builder_name, configs=[value])
         elif isinstance(value, AnonymousGnConfig):
-            self._gn_args.config(name=builder_name,
-                                 configs=list(value.configs),
-                                 args=dict(value.gn_args),
-                                 args_file=value.args_file,
-                                 secrets=dict(value.secrets))
+            self._gn_args.config(
+                name=builder_name,
+                configs=list(value.configs),
+                args=dict(value.gn_args),
+                args_file=value.args_file,
+                secrets=dict(value.secrets),
+            )
         else:
             raise ConfigError(
                 'builder %r: gn_args must be a config name or an anonymous '
-                'gn_args.config(), got %r' % (builder_name, value))
-
-    def sync_config(self, *, target_os: str, target_cpu: str,
-                    **gclient_overrides: Any) -> SyncConfig:
-        return SyncConfig(target_os=target_os,
-                          target_cpu=target_cpu,
-                          **gclient_overrides)
+                'gn_args.config(), got %r' % (builder_name, value)
+            )
 
     def targets(
-            self,
-            *,
-            compile: Sequence[str],  # pylint: disable=redefined-builtin
-            tests: Sequence[str]) -> Targets:
+        self,
+        *,
+        compile: Sequence[str],  # pylint: disable=redefined-builtin
+        tests: Sequence[str],
+    ) -> Targets:
         return Targets(compile=compile, tests=tests)
 
     def builder(
-            self,
-            *,
-            name: str,
-            sync_config: SyncConfig,
-            gn_args: Any,  # pylint: disable=redefined-outer-name
-            targets: Targets,
-            builder_group: str | None = _UNSET,
-            execution_timeout_mins: int | None = _UNSET,
-            channel: str | None = _UNSET,
-            notifies: Sequence[str] = _UNSET) -> Builder:
+        self,
+        *,
+        name: str,
+        builder_spec: BuilderSpec,
+        gn_args: Any,  # pylint: disable=redefined-outer-name
+        targets: Targets,
+        builder_group: str | None = _UNSET,
+        execution_timeout_mins: int | None = _UNSET,
+        channel: str | None = _UNSET,
+        notifies: Sequence[str] = _UNSET,
+    ) -> Builder:
         """Defines a builder.
 
         Args:
             name: The builder's name. Also what its GN args are registered
                 under (see `_register_gn_args`).
-            sync_config: This builder's `sync_config()`.
+            builder_spec: This builder's `builder_config.builder_spec()`.
             gn_args: The config name, or `gn_args.config()` called without
                 `name`, describing this builder's GN args.
             targets: This builder's `targets()`.
@@ -502,17 +801,23 @@ class BuildersRegistry:
         """
         if name in self._builders:
             raise ConfigError('builder %r is already defined' % name)
+        if not isinstance(builder_spec, BuilderSpec):
+            raise ConfigError(
+                'builder %r: builder_spec must be a '
+                'builder_config.builder_spec()' % name
+            )
 
         self._register_gn_args(name, gn_args)
 
         builder = Builder(
             name=name,
             builder_group=self.defaults.get('builder_group', builder_group),
-            execution_timeout_mins=self.defaults.get('execution_timeout_mins',
-                                                     execution_timeout_mins),
+            execution_timeout_mins=self.defaults.get(
+                'execution_timeout_mins', execution_timeout_mins
+            ),
             channel=self.defaults.get('channel', channel),
             notifies=self.defaults.get('notifies', notifies),
-            sync_config=sync_config,
+            builder_spec=builder_spec,
             targets=targets,
         )
         self._builders[name] = builder

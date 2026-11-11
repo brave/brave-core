@@ -22,33 +22,6 @@ import bootstrap
 import launcher
 
 
-def _make_executable(directory: Path, name: str) -> Path:
-    """Create an executable file `name` under `directory` (POSIX exec bits)."""
-    directory.mkdir(parents=True, exist_ok=True)
-    exe = directory / name
-    exe.write_text('#!/bin/sh\n', encoding='utf-8', newline='')
-    exe.chmod(exe.stat().st_mode | stat.S_IEXEC | stat.S_IXGRP | stat.S_IXOTH)
-    return exe
-
-
-def _make_wrapper_dir(directory: Path, *tools: str) -> Path:
-    """Create a routing-wrapper dir: the `npm_wrapper.py` sentinel plus `tools`.
-
-    Mirrors `build/npm_wrapper`, whose presence on `$PATH` ahead of our shims
-    would loop a naive `npm` fallback back into itself.
-
-    TODO(https://brave.dev/b/57477): remove with the rest of the `npm_wrapper`
-    special-casing once `build/npm_wrapper` is gone.
-    """
-    directory.mkdir(parents=True, exist_ok=True)
-    (directory / 'npm_wrapper.py').write_text('#',
-                                              encoding='utf-8',
-                                              newline='')
-    for tool in tools:
-        _make_executable(directory, tool)
-    return directory
-
-
 class PosixBlockTest(unittest.TestCase):
     """Exercises the bash/zsh managed-block helpers."""
 
@@ -77,8 +50,8 @@ class PosixBlockTest(unittest.TestCase):
     def test_remove_block_round_trips(self):
         base = 'line one\nline two\n'
         self.assertEqual(
-            bootstrap.remove_block(bootstrap.apply_block(base, self.DIR)),
-            base)
+            bootstrap.remove_block(bootstrap.apply_block(base, self.DIR)), base
+        )
 
     def test_remove_block_no_op_without_block(self):
         text = 'nothing to see here\n'
@@ -98,7 +71,9 @@ class FishDropInTest(unittest.TestCase):
         # Prepends to $PATH and drops any prior occurrence (lands first, once).
         self.assertIn(
             'set -gx PATH "/a/b/bootstrap" '
-            '(string match --invert -- "/a/b/bootstrap" $PATH)', content)
+            '(string match --invert -- "/a/b/bootstrap" $PATH)',
+            content,
+        )
         # Must NOT use fish_add_path: it persists universal state that would
         # survive uninstall (deleting this file).
         self.assertNotIn('fish_add_path', content)
@@ -128,26 +103,32 @@ class WindowsPathTest(unittest.TestCase):
         # Present (lowercased, trailing slash) but not first -> moved to front
         # exactly once, in canonical form.
         current = rf'C:\Windows;{str(self.DIR).lower()}\\;C:\Tools'
-        self.assertEqual(bootstrap.add_windows_entry(current, self.DIR),
-                         rf'{self.DIR};C:\Windows;C:\Tools')
+        self.assertEqual(
+            bootstrap.add_windows_entry(current, self.DIR),
+            rf'{self.DIR};C:\Windows;C:\Tools',
+        )
 
     def test_add_is_idempotent(self):
         once = bootstrap.add_windows_entry(r'C:\Windows', self.DIR)
         self.assertEqual(bootstrap.add_windows_entry(once, self.DIR), once)
 
     def test_add_to_empty(self):
-        self.assertEqual(bootstrap.add_windows_entry('', self.DIR),
-                         str(self.DIR))
+        self.assertEqual(
+            bootstrap.add_windows_entry('', self.DIR), str(self.DIR)
+        )
 
     def test_remove_drops_entry(self):
         current = rf'C:\Windows;{self.DIR};C:\Tools'
-        self.assertEqual(bootstrap.remove_windows_entry(current, self.DIR),
-                         r'C:\Windows;C:\Tools')
+        self.assertEqual(
+            bootstrap.remove_windows_entry(current, self.DIR),
+            r'C:\Windows;C:\Tools',
+        )
 
     def test_remove_no_op(self):
         current = r'C:\Windows;C:\Tools'
-        self.assertEqual(bootstrap.remove_windows_entry(current, self.DIR),
-                         current)
+        self.assertEqual(
+            bootstrap.remove_windows_entry(current, self.DIR), current
+        )
 
 
 class FindExistingBootstrapTest(unittest.TestCase):
@@ -163,24 +144,30 @@ class FindExistingBootstrapTest(unittest.TestCase):
         os.environ['PATH'] = ''
         self.assertIsNone(bootstrap.find_existing_bootstrap())
 
-    @unittest.skipIf(platform.system() == 'Windows',
-                     'POSIX exec-bit lookup; Windows uses PATHEXT')
+    @unittest.skipIf(
+        platform.system() == 'Windows',
+        'POSIX exec-bit lookup; Windows uses PATHEXT',
+    )
     def test_found_when_shim_on_path(self):
         with tempfile.TemporaryDirectory() as tmp:
             shim_path = Path(tmp) / bootstrap._INSTALL_MARKER
             shim_path.write_text('#!/bin/sh\n', encoding='utf-8', newline='')
             shim_path.chmod(shim_path.stat().st_mode | stat.S_IXUSR)
             os.environ['PATH'] = tmp
-            self.assertEqual(bootstrap.find_existing_bootstrap(),
-                             str(shim_path))
+            self.assertEqual(
+                bootstrap.find_existing_bootstrap(), str(shim_path)
+            )
 
     def test_installed_dir_falls_back_to_own_dir(self):
         os.environ['PATH'] = ''
-        self.assertEqual(bootstrap.installed_bootstrap_dir(),
-                         bootstrap.BOOTSTRAP_DIR)
+        self.assertEqual(
+            bootstrap.installed_bootstrap_dir(), bootstrap.BOOTSTRAP_DIR
+        )
 
-    @unittest.skipIf(platform.system() == 'Windows',
-                     'POSIX exec-bit lookup; Windows uses PATHEXT')
+    @unittest.skipIf(
+        platform.system() == 'Windows',
+        'POSIX exec-bit lookup; Windows uses PATHEXT',
+    )
     def test_installed_dir_is_parent_of_on_path_shim(self):
         # uninstall must target wherever the live shim actually resides, which
         # may differ from this checkout's BOOTSTRAP_DIR.
@@ -207,8 +194,6 @@ class ResolveVpython3Test(unittest.TestCase):
         self.assertIn(resolved.name.lower(), ('vpython3', 'vpython3.bat'))
 
 
-
-
 class ResolveSystemBinaryTest(unittest.TestCase):
     """Exercises `launcher._resolve_system_binary`'s self-exclusion.
 
@@ -221,8 +206,9 @@ class ResolveSystemBinaryTest(unittest.TestCase):
         directory.mkdir(parents=True, exist_ok=True)
         exe = directory / name
         exe.write_text('#!/bin/sh\n', encoding='utf-8', newline='')
-        exe.chmod(exe.stat().st_mode | stat.S_IEXEC | stat.S_IXGRP
-                  | stat.S_IXOTH)
+        exe.chmod(
+            exe.stat().st_mode | stat.S_IEXEC | stat.S_IXGRP | stat.S_IXOTH
+        )
         return exe
 
     def test_skips_excluded_shim_dir(self):
@@ -237,8 +223,9 @@ class ResolveSystemBinaryTest(unittest.TestCase):
             os.environ['PATH'] = os.pathsep.join([str(shim), str(real)])
             try:
                 # pylint: disable=protected-access
-                resolved = launcher._resolve_system_binary('node',
-                                                           exclude_dir=shim)
+                resolved = launcher._resolve_system_binary(
+                    'node', exclude_dir=shim
+                )
             finally:
                 os.environ['PATH'] = old_path
             self.assertEqual(Path(resolved).resolve(), real_node.resolve())
@@ -250,196 +237,10 @@ class ResolveSystemBinaryTest(unittest.TestCase):
             try:
                 # pylint: disable=protected-access
                 self.assertIsNone(
-                    launcher._resolve_system_binary('definitely-not-a-tool'))
+                    launcher._resolve_system_binary('definitely-not-a-tool')
+                )
             finally:
                 os.environ['PATH'] = old_path
-
-
-class IsWrapperDirTest(unittest.TestCase):
-    """Exercises `launcher._is_wrapper_dir` sentinel detection.
-
-    TODO(https://brave.dev/b/57477): remove with the rest of the `npm_wrapper`
-    special-casing once `build/npm_wrapper` is gone.
-    """
-
-    def test_true_when_sentinel_present(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            wrapper = _make_wrapper_dir(Path(tmp) / 'npm_wrapper')
-            self.assertTrue(launcher._is_wrapper_dir(wrapper))
-
-    def test_false_for_plain_dir(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            self.assertFalse(launcher._is_wrapper_dir(Path(tmp)))
-
-    def test_false_for_missing_dir(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            self.assertFalse(launcher._is_wrapper_dir(Path(tmp) / 'nope'))
-
-    def test_recognizes_every_declared_sentinel(self):
-        # Contract guard: each declared sentinel marks a dir as a wrapper.
-        self.assertTrue(launcher._WRAPPER_SENTINELS)
-        for sentinel in launcher._WRAPPER_SENTINELS:
-            with tempfile.TemporaryDirectory() as tmp:
-                (Path(tmp) / sentinel).write_text('#',
-                                                  encoding='utf-8',
-                                                  newline='')
-                self.assertTrue(launcher._is_wrapper_dir(Path(tmp)), sentinel)
-
-
-@unittest.skipIf(platform.system() == 'Windows',
-                 'POSIX exec-bit lookup; Windows uses PATHEXT')
-class SystemBinarySkipsWrapperTest(unittest.TestCase):
-    """`_resolve_system_binary` must never fall back into a routing wrapper.
-
-    In CI the `$PATH` layout is [npm_wrapper, our shims, system] -- npm_wrapper
-    first. When our `npm` shim finds no checkout-local binary and falls back, it
-    must resolve the real system `npm` and skip npm_wrapper; otherwise the
-    wrapper would re-invoke our shim, which would fall back to the wrapper
-    again, ping-ponging forever. The special-casing is `npm`-only (the wrapper
-    shadows `npm` alone).
-
-    TODO(https://brave.dev/b/57477): remove with the rest of the `npm_wrapper`
-    special-casing once `build/npm_wrapper` is gone.
-    """
-
-    def setUp(self):
-        self._saved_path = os.environ.get('PATH', '')
-
-    def tearDown(self):
-        os.environ['PATH'] = self._saved_path
-
-    def _set_path(self, *dirs: Path) -> None:
-        os.environ['PATH'] = os.pathsep.join(str(d) for d in dirs)
-
-    def test_skips_wrapper_and_finds_real_binary(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            shim = root / 'shim'
-            shim.mkdir()
-            wrapper = _make_wrapper_dir(root / 'wrapper', 'npm')
-            real = _make_executable(root / 'system', 'npm')
-            self._set_path(shim, wrapper, root / 'system')
-            resolved = launcher._resolve_system_binary('npm', exclude_dir=shim)
-            self.assertEqual(Path(resolved).resolve(), real.resolve())
-
-    def test_returns_none_when_only_wrapper_has_it(self):
-        # The tool exists only in the wrapper: refuse to loop -> resolve to
-        # nothing so the caller reports no system binary and stops.
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            shim = root / 'shim'
-            shim.mkdir()
-            wrapper = _make_wrapper_dir(root / 'wrapper', 'npm')
-            self._set_path(shim, wrapper)
-            self.assertIsNone(
-                launcher._resolve_system_binary('npm', exclude_dir=shim))
-
-    def test_skips_both_shim_and_wrapper(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            shim = root / 'shim'
-            _make_executable(shim, 'npm')  # our own shim, excluded by dir
-            wrapper = _make_wrapper_dir(root / 'wrapper', 'npm')
-            real = _make_executable(root / 'system', 'npm')
-            self._set_path(shim, wrapper, root / 'system')
-            resolved = launcher._resolve_system_binary('npm', exclude_dir=shim)
-            self.assertEqual(Path(resolved).resolve(), real.resolve())
-
-    def test_plain_dir_with_tool_is_not_skipped(self):
-        # Only wrapper dirs are excluded; a normal dir that merely holds `npm`
-        # (no sentinel) is used as usual.
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            shim = root / 'shim'
-            shim.mkdir()
-            plain = _make_executable(root / 'plain', 'npm')
-            self._set_path(shim, root / 'plain')
-            resolved = launcher._resolve_system_binary('npm', exclude_dir=shim)
-            self.assertEqual(Path(resolved).resolve(), plain.resolve())
-
-    def test_non_npm_tool_does_not_skip_wrapper(self):
-        # The special-casing is npm-only. A non-npm tool (here pnpm) is resolved
-        # normally, even out of a wrapper dir -- proving the guard's scope. In
-        # practice npm_wrapper only ever shadows `npm`, so this never bites; the
-        # test pins the scope so the guard can't silently widen.
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            shim = root / 'shim'
-            shim.mkdir()
-            wrapper = _make_wrapper_dir(root / 'wrapper', 'pnpm')
-            self._set_path(shim, wrapper)
-            resolved = launcher._resolve_system_binary('pnpm',
-                                                       exclude_dir=shim)
-            self.assertEqual(
-                Path(resolved).resolve(), (wrapper / 'pnpm').resolve())
-
-    def test_wrapper_before_and_after_shim_both_skipped(self):
-        # Defensive: a wrapper dir anywhere on $PATH is skipped, not just first.
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            shim = root / 'shim'
-            shim.mkdir()
-            first = _make_wrapper_dir(root / 'w1', 'npm')
-            second = _make_wrapper_dir(root / 'w2', 'npm')
-            real = _make_executable(root / 'system', 'npm')
-            self._set_path(first, shim, second, root / 'system')
-            resolved = launcher._resolve_system_binary('npm', exclude_dir=shim)
-            self.assertEqual(Path(resolved).resolve(), real.resolve())
-
-
-@unittest.skipIf(platform.system() == 'Windows',
-                 'POSIX exec-bit lookup; Windows uses PATHEXT')
-class ResolveInvocationWrapperFallbackTest(unittest.TestCase):
-    """End-to-end: with npm_wrapper ahead of our shims on `$PATH`, an `npm`
-    fallback from `resolve_invocation` lands on the real system binary, never
-    the wrapper -- so our shims can coexist with a higher-priority npm_wrapper
-    without ping-ponging.
-
-    TODO(https://brave.dev/b/57477): remove with the rest of the `npm_wrapper`
-    special-casing once `build/npm_wrapper` is gone.
-    """
-
-    def setUp(self):
-        self._saved_path = os.environ.get('PATH', '')
-
-    def tearDown(self):
-        os.environ['PATH'] = self._saved_path
-
-    def _own_shim_dir(self) -> Path:
-        # resolve_invocation's fallback excludes launcher.py's own directory;
-        # the CI layout puts that real shim dir between wrapper and system.
-        return Path(launcher.__file__).parent.resolve()
-
-    def _ci_layout(self, root: Path, *, real_npm: bool = True):
-        # [npm_wrapper, our real shim dir, system] -- npm_wrapper highest.
-        wrapper = _make_wrapper_dir(root / 'npm_wrapper', 'npm')
-        system = root / 'system'
-        system.mkdir(parents=True, exist_ok=True)
-        real = _make_executable(system, 'npm') if real_npm else None
-        os.environ['PATH'] = os.pathsep.join(
-            [str(wrapper),
-             str(self._own_shim_dir()),
-             str(system)])
-        return real
-
-    def test_npm_fallback_resolves_real_npm_not_wrapper(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            real = self._ci_layout(root)
-            # A checkout with no local npm target forces the fallback path.
-            checkout = root / 'src' / 'brave'
-            invocation = launcher.resolve_invocation('npm', checkout, True)
-            self.assertIsNotNone(invocation)
-            self.assertEqual(Path(invocation[0]).resolve(), real.resolve())
-
-    def test_npm_fallback_none_when_only_wrapper(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            self._ci_layout(root, real_npm=False)
-            checkout = root / 'src' / 'brave'
-            # No real npm anywhere but the wrapper -> refuse to loop -> None.
-            self.assertIsNone(
-                launcher.resolve_invocation('npm', checkout, True))
 
 
 class FindShimTargetTest(unittest.TestCase):
@@ -448,14 +249,20 @@ class FindShimTargetTest(unittest.TestCase):
     def test_qualified_name_is_used_as_is(self):
         # A shim that knows its platform passes a key listed verbatim (the
         # `.bat` variants pass `node-win` / `npm-win`).
-        self.assertEqual(launcher.find_shim_target('node-win'),
-                         launcher.SHIM_TARGETS['node-win'])
-        self.assertEqual(launcher.find_shim_target('npm-mac_arm64'),
-                         launcher.SHIM_TARGETS['npm-mac_arm64'])
+        self.assertEqual(
+            launcher.find_shim_target('node-win'),
+            launcher.SHIM_TARGETS['node-win'],
+        )
+        self.assertEqual(
+            launcher.find_shim_target('npm-mac_arm64'),
+            launcher.SHIM_TARGETS['npm-mac_arm64'],
+        )
 
     def test_listed_token_is_used_as_is(self):
-        self.assertEqual(launcher.find_shim_target('brockit'),
-                         launcher.SHIM_TARGETS['brockit'])
+        self.assertEqual(
+            launcher.find_shim_target('brockit'),
+            launcher.SHIM_TARGETS['brockit'],
+        )
 
     def test_git_cr_token_resolves_to_cmd(self):
         # git resolves `git cr` to the `git-cr` shim, which passes `git-cr`
@@ -469,8 +276,10 @@ class FindShimTargetTest(unittest.TestCase):
         key = launcher.host_platform_key()
         if key is None:
             self.skipTest('unsupported host platform')
-        self.assertEqual(launcher.find_shim_target('node'),
-                         launcher.SHIM_TARGETS[f'node-{key}'])
+        self.assertEqual(
+            launcher.find_shim_target('node'),
+            launcher.SHIM_TARGETS[f'node-{key}'],
+        )
 
     def test_pnpm_is_a_single_cross_platform_node_shim(self):
         # pnpm lives in the one node_modules tree (no per-platform suffix), so
@@ -480,8 +289,10 @@ class FindShimTargetTest(unittest.TestCase):
         self.assertEqual(target, launcher.SHIM_TARGETS['pnpm'])
         self.assertEqual(target.runtime, 'node')
         self.assertTrue(target.path.endswith('node_modules/pnpm/bin/pnpm.mjs'))
-        self.assertEqual(target.self_update_extra_dep_entry,
-                         'src/brave/third_party/node/node_modules')
+        self.assertEqual(
+            target.self_update_extra_dep_entry,
+            'src/brave/third_party/node/node_modules',
+        )
 
     def test_unknown_token_raises(self):
         with self.assertRaises(launcher.UnknownShimError):
@@ -512,9 +323,9 @@ class ResolveInvocationTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root, key = Path(tmp), self._key()
             node = self._make_target(root, f'node-{key}')
-            invocation = launcher.resolve_invocation(f'node-{key}',
-                                                     self._checkout(root),
-                                                     False)
+            invocation = launcher.resolve_invocation(
+                f'node-{key}', self._checkout(root), False
+            )
             self.assertEqual(invocation, [str(node)])
 
     def test_npm_runs_through_node_on_path(self):
@@ -522,20 +333,21 @@ class ResolveInvocationTest(unittest.TestCase):
             root, key = Path(tmp), self._key()
             npm_cli = self._make_target(root, f'npm-{key}')
             # npm runs as `<node from $PATH> npm-cli.js` — never bare npm.
-            with mock.patch.object(launcher.shutil,
-                                   'which',
-                                   return_value='/usr/bin/node'):
+            with mock.patch.object(
+                launcher.shutil, 'which', return_value='/usr/bin/node'
+            ):
                 invocation = launcher.resolve_invocation(
-                    f'npm-{key}', self._checkout(root), True)
+                    f'npm-{key}', self._checkout(root), True
+                )
             self.assertEqual(invocation, ['/usr/bin/node', str(npm_cli)])
 
     def test_vpython_tool_runs_through_vpython3(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self._make_target(root, 'brockit')
-            invocation = launcher.resolve_invocation('brockit',
-                                                     self._checkout(root),
-                                                     False)
+            invocation = launcher.resolve_invocation(
+                'brockit', self._checkout(root), False
+            )
             self.assertIsNotNone(invocation)
             # brockit is launched as: <vpython3> <brockit.py>.
             self.assertEqual(len(invocation), 2)
@@ -545,9 +357,9 @@ class ResolveInvocationTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self._make_target(root, 'git-cr')
-            invocation = launcher.resolve_invocation('git-cr',
-                                                     self._checkout(root),
-                                                     False)
+            invocation = launcher.resolve_invocation(
+                'git-cr', self._checkout(root), False
+            )
             self.assertIsNotNone(invocation)
             # git-cr is launched as: <vpython3> <cmd.py>.
             self.assertEqual(len(invocation), 2)
@@ -556,19 +368,22 @@ class ResolveInvocationTest(unittest.TestCase):
     def test_falls_back_to_system_when_allowed(self):
         with tempfile.TemporaryDirectory() as tmp:
             # No checkout-local node, but fallback is allowed → system node.
-            with mock.patch.object(launcher.shutil,
-                                   'which',
-                                   return_value='/usr/bin/node'):
+            with mock.patch.object(
+                launcher.shutil, 'which', return_value='/usr/bin/node'
+            ):
                 invocation = launcher.resolve_invocation(
-                    'node', self._checkout(Path(tmp)), True)
+                    'node', self._checkout(Path(tmp)), True
+                )
             self.assertEqual(invocation, ['/usr/bin/node'])
 
     def test_none_without_target_and_no_fallback(self):
         with tempfile.TemporaryDirectory() as tmp:
             # Known tool, no checkout-local target, no fallback → None.
             self.assertIsNone(
-                launcher.resolve_invocation(f'node-{self._key()}',
-                                            self._checkout(Path(tmp)), False))
+                launcher.resolve_invocation(
+                    f'node-{self._key()}', self._checkout(Path(tmp)), False
+                )
+            )
 
     def test_unknown_tool_always_raises(self):
         # A token that is not a shim is rejected outright — fallback or not.
@@ -593,52 +408,110 @@ class ResolveInvocationTest(unittest.TestCase):
             checkout = self._checkout(root)
             self._make_installer(checkout)
             dep = launcher.SHIM_TARGETS[
-                f'node-{key}'].self_update_extra_dep_entry
+                f'node-{key}'
+            ].self_update_extra_dep_entry
 
             def _fake_download(_argv):
                 # Simulate the installer deploying the node target.
                 self._make_target(root, f'node-{key}')
                 return 0
 
-            with mock.patch.object(launcher.SelfUpdater,
-                                   '_load_extra_deps',
-                                   return_value=self._fake_extra_deps(
-                                       dep, deployed=False)):
-                with mock.patch.object(launcher.subprocess,
-                                       'call',
-                                       side_effect=_fake_download) as call:
+            with mock.patch.object(
+                launcher.SelfUpdater,
+                '_load_extra_deps',
+                return_value=self._fake_extra_deps(dep, deployed=False),
+            ):
+                with mock.patch.object(
+                    launcher.subprocess, 'call', side_effect=_fake_download
+                ) as call:
                     with contextlib.redirect_stderr(io.StringIO()):
                         invocation = launcher.resolve_invocation(
-                            f'node-{key}', checkout, False)
+                            f'node-{key}', checkout, False
+                        )
             call.assert_called_once()
             self.assertEqual(
                 invocation,
-                [str(root / launcher.SHIM_TARGETS[f'node-{key}'].path)])
+                [str(root / launcher.SHIM_TARGETS[f'node-{key}'].path)],
+            )
 
     def test_missing_node_falls_back_when_download_deploys_nothing(self):
-        # The bootstrap is attempted but deploys no node; with fallback allowed
-        # the system node is used instead.
+        # The bootstrap succeeds but deploys no node (an older checkout whose
+        # installer knows nothing of this entry); with fallback allowed the
+        # system node is used instead.
         with tempfile.TemporaryDirectory() as tmp:
             root, key = Path(tmp), self._key()
             checkout = self._checkout(root)
             self._make_installer(checkout)
             dep = launcher.SHIM_TARGETS[
-                f'node-{key}'].self_update_extra_dep_entry
-            with mock.patch.object(launcher.SelfUpdater,
-                                   '_load_extra_deps',
-                                   return_value=self._fake_extra_deps(
-                                       dep, deployed=False)):
-                with mock.patch.object(launcher.subprocess,
-                                       'call',
-                                       return_value=1) as call:
-                    with mock.patch.object(launcher.shutil,
-                                           'which',
-                                           return_value='/usr/bin/node'):
+                f'node-{key}'
+            ].self_update_extra_dep_entry
+            with mock.patch.object(
+                launcher.SelfUpdater,
+                '_load_extra_deps',
+                return_value=self._fake_extra_deps(dep, deployed=False),
+            ):
+                with mock.patch.object(
+                    launcher.subprocess, 'call', return_value=0
+                ) as call:
+                    with mock.patch.object(
+                        launcher.shutil, 'which', return_value='/usr/bin/node'
+                    ):
                         with contextlib.redirect_stderr(io.StringIO()):
                             invocation = launcher.resolve_invocation(
-                                'node', checkout, True)
+                                'node', checkout, True
+                            )
             call.assert_called_once()
             self.assertEqual(invocation, ['/usr/bin/node'])
+
+    def test_failed_deploy_raises_rather_than_falling_back(self):
+        # A failing installer must NOT be swallowed: the checkout asked for a
+        # pinned node and could not get it, so falling back to whatever node is
+        # on $PATH would hide the failure and re-run the broken download on
+        # every single invocation.
+        with tempfile.TemporaryDirectory() as tmp:
+            root, key = Path(tmp), self._key()
+            checkout = self._checkout(root)
+            self._make_installer(checkout)
+            dep = launcher.SHIM_TARGETS[
+                f'node-{key}'
+            ].self_update_extra_dep_entry
+            with mock.patch.object(
+                launcher.SelfUpdater,
+                '_load_extra_deps',
+                return_value=self._fake_extra_deps(dep, deployed=False),
+            ):
+                with mock.patch.object(
+                    launcher.subprocess, 'call', return_value=1
+                ):
+                    with mock.patch.object(
+                        launcher.shutil, 'which', return_value='/usr/bin/node'
+                    ):
+                        with self.assertRaises(
+                            launcher.subprocess.CalledProcessError
+                        ):
+                            launcher.resolve_invocation('node', checkout, True)
+
+    def test_unlaunchable_installer_raises(self):
+        # The installer is there but cannot be executed at all.
+        with tempfile.TemporaryDirectory() as tmp:
+            root, key = Path(tmp), self._key()
+            checkout = self._checkout(root)
+            self._make_installer(checkout)
+            dep = launcher.SHIM_TARGETS[
+                f'node-{key}'
+            ].self_update_extra_dep_entry
+            with mock.patch.object(
+                launcher.SelfUpdater,
+                '_load_extra_deps',
+                return_value=self._fake_extra_deps(dep, deployed=False),
+            ):
+                with mock.patch.object(
+                    launcher.subprocess, 'call', side_effect=OSError('no exec')
+                ):
+                    with self.assertRaisesRegex(OSError, 'no exec'):
+                        launcher.resolve_invocation(
+                            f'node-{key}', checkout, False
+                        )
 
     def test_no_bootstrap_without_installer(self):
         # With no install_extra_deps.py present the bootstrap is a no-op, and
@@ -647,8 +520,10 @@ class ResolveInvocationTest(unittest.TestCase):
             root, key = Path(tmp), self._key()
             with mock.patch.object(launcher.subprocess, 'call') as call:
                 self.assertIsNone(
-                    launcher.resolve_invocation(f'node-{key}',
-                                                self._checkout(root), False))
+                    launcher.resolve_invocation(
+                        f'node-{key}', self._checkout(root), False
+                    )
+                )
             call.assert_not_called()
 
     def test_no_bootstrap_when_checkout_lacks_extra_deps(self):
@@ -663,11 +538,12 @@ class ResolveInvocationTest(unittest.TestCase):
             checkout = self._checkout(root)
             self._make_installer(checkout)  # installer present, extra_deps not
             with mock.patch.object(launcher.subprocess, 'call') as call:
-                with mock.patch.object(launcher.shutil,
-                                       'which',
-                                       return_value='/usr/bin/node'):
+                with mock.patch.object(
+                    launcher.shutil, 'which', return_value='/usr/bin/node'
+                ):
                     invocation = launcher.resolve_invocation(
-                        'node', checkout, True)
+                        'node', checkout, True
+                    )
             call.assert_not_called()
             self.assertEqual(invocation, ['/usr/bin/node'])
 
@@ -677,8 +553,9 @@ class ResolveInvocationTest(unittest.TestCase):
         # not downloaded).
         with tempfile.TemporaryDirectory() as tmp:
             with mock.patch.object(launcher.subprocess, 'call') as call:
-                launcher.resolve_invocation('brockit',
-                                            self._checkout(Path(tmp)), False)
+                launcher.resolve_invocation(
+                    'brockit', self._checkout(Path(tmp)), False
+                )
             call.assert_not_called()
 
     def _fake_extra_deps(self, dep: str, deployed: bool) -> mock.Mock:
@@ -698,21 +575,24 @@ class ResolveInvocationTest(unittest.TestCase):
             self._make_installer(checkout)
             self._make_target(root, f'node-{key}')  # present but "stale"
             dep = launcher.SHIM_TARGETS[
-                f'node-{key}'].self_update_extra_dep_entry
+                f'node-{key}'
+            ].self_update_extra_dep_entry
             module = self._fake_extra_deps(dep, deployed=False)
-            with mock.patch.object(launcher.SelfUpdater,
-                                   '_load_extra_deps',
-                                   return_value=module):
-                with mock.patch.object(launcher.subprocess,
-                                       'call',
-                                       return_value=0) as call:
+            with mock.patch.object(
+                launcher.SelfUpdater, '_load_extra_deps', return_value=module
+            ):
+                with mock.patch.object(
+                    launcher.subprocess, 'call', return_value=0
+                ) as call:
                     with contextlib.redirect_stderr(io.StringIO()):
                         invocation = launcher.resolve_invocation(
-                            f'node-{key}', checkout, False)
+                            f'node-{key}', checkout, False
+                        )
             call.assert_called_once()
             self.assertEqual(
                 invocation,
-                [str(root / launcher.SHIM_TARGETS[f'node-{key}'].path)])
+                [str(root / launcher.SHIM_TARGETS[f'node-{key}'].path)],
+            )
 
     def test_pinned_version_deployed_skips_bootstrap(self):
         # The version check says the pinned node is deployed -> no bootstrap.
@@ -722,18 +602,21 @@ class ResolveInvocationTest(unittest.TestCase):
             self._make_installer(checkout)
             self._make_target(root, f'node-{key}')
             dep = launcher.SHIM_TARGETS[
-                f'node-{key}'].self_update_extra_dep_entry
+                f'node-{key}'
+            ].self_update_extra_dep_entry
             module = self._fake_extra_deps(dep, deployed=True)
-            with mock.patch.object(launcher.SelfUpdater,
-                                   '_load_extra_deps',
-                                   return_value=module):
+            with mock.patch.object(
+                launcher.SelfUpdater, '_load_extra_deps', return_value=module
+            ):
                 with mock.patch.object(launcher.subprocess, 'call') as call:
                     invocation = launcher.resolve_invocation(
-                        f'node-{key}', checkout, False)
+                        f'node-{key}', checkout, False
+                    )
             call.assert_not_called()
             self.assertEqual(
                 invocation,
-                [str(root / launcher.SHIM_TARGETS[f'node-{key}'].path)])
+                [str(root / launcher.SHIM_TARGETS[f'node-{key}'].path)],
+            )
 
     def test_load_extra_deps_reads_checkout_module(self):
         # `SelfUpdater._load_extra_deps` loads the module by path from the
@@ -747,7 +630,8 @@ class ResolveInvocationTest(unittest.TestCase):
                 'def check_extra_deps_installed(root, path):\n'
                 '    return True\n',
                 encoding='utf-8',
-                newline='')
+                newline='',
+            )
             module = launcher.SelfUpdater(checkout, 'src/x')._load_extra_deps()
             self.assertIsNotNone(module)
             self.assertEqual(module.EXTRA_DEPS, {'x': 1})
@@ -764,9 +648,9 @@ class ResolveInvocationTest(unittest.TestCase):
         updater = launcher.SelfUpdater(Path('/ws/src/brave'), 'src/absent')
         module = mock.Mock()
         module.check_extra_deps_installed.side_effect = KeyError('src/absent')
-        with mock.patch.object(launcher.SelfUpdater,
-                               '_load_extra_deps',
-                               return_value=module):
+        with mock.patch.object(
+            launcher.SelfUpdater, '_load_extra_deps', return_value=module
+        ):
             self.assertFalse(updater.needs_update())
 
 
@@ -807,7 +691,8 @@ class ResolveCheckoutTest(unittest.TestCase):
             inside = checkout / 'components' / 'foo'
             inside.mkdir(parents=True)
             self.assertEqual(
-                self._resolve_from_cwd(inside).resolve(), checkout.resolve())
+                self._resolve_from_cwd(inside).resolve(), checkout.resolve()
+            )
 
     def test_resolves_from_nested_deps_repo(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -815,15 +700,16 @@ class ResolveCheckoutTest(unittest.TestCase):
             nested = checkout / 'vendor' / 'web-discovery-project' / 'src'
             nested.mkdir(parents=True)
             self.assertEqual(
-                self._resolve_from_cwd(nested).resolve(), checkout.resolve())
+                self._resolve_from_cwd(nested).resolve(), checkout.resolve()
+            )
 
     def test_resolves_from_above_src_brave(self):
         # The `npm run init` case: cwd is the workspace root, src/brave a child.
         with tempfile.TemporaryDirectory() as tmp:
             checkout = self._make_checkout(Path(tmp))
             self.assertEqual(
-                self._resolve_from_cwd(Path(tmp)).resolve(),
-                checkout.resolve())
+                self._resolve_from_cwd(Path(tmp)).resolve(), checkout.resolve()
+            )
 
     def test_resolves_from_sibling_chromium_dir(self):
         # A chromium dir like src/chrome resolves to the sibling src/brave.
@@ -832,7 +718,8 @@ class ResolveCheckoutTest(unittest.TestCase):
             chrome = Path(tmp) / 'src' / 'chrome'
             chrome.mkdir(parents=True)
             self.assertEqual(
-                self._resolve_from_cwd(chrome).resolve(), checkout.resolve())
+                self._resolve_from_cwd(chrome).resolve(), checkout.resolve()
+            )
 
     def test_none_outside_any_workspace(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -873,7 +760,8 @@ class ResolveCheckoutTest(unittest.TestCase):
         # never set.
         with tempfile.TemporaryDirectory() as tmp:
             os.environ[self.ENV_VAR] = str(
-                Path(tmp) / 'stale' / 'src' / 'brave')
+                Path(tmp) / 'stale' / 'src' / 'brave'
+            )
             cwd_checkout = self._make_checkout(Path(tmp) / 'cwd')
             checkout = self._resolve_from_cwd(cwd_checkout)
         # See test_falls_back_to_cwd_when_env_unset: the cwd fallback path
@@ -943,13 +831,13 @@ class MainPropagatesCheckoutEnvTest(unittest.TestCase):
                 seen['env'] = env
                 return 0
 
-            with mock.patch.object(launcher.Path, 'cwd',
-                                   return_value=checkout):
-                with mock.patch.object(launcher.sys, 'argv',
-                                       ['launcher.py', 'node', 'build.js']):
-                    with mock.patch.object(launcher.subprocess,
-                                           'call',
-                                           side_effect=_capture) as call:
+            with mock.patch.object(launcher.Path, 'cwd', return_value=checkout):
+                with mock.patch.object(
+                    launcher.sys, 'argv', ['launcher.py', 'node', 'build.js']
+                ):
+                    with mock.patch.object(
+                        launcher.subprocess, 'call', side_effect=_capture
+                    ) as call:
                         return_code = launcher.main()
             self.assertEqual(return_code, 0)
             call.assert_called_once()
@@ -963,7 +851,6 @@ class MainPropagatesCheckoutEnvTest(unittest.TestCase):
         calls; returns the dict (populated once `main()` calls `copy()`)."""
 
         class _RecordingDict(dict):
-
             def __init__(self, *args, **kwargs):
                 super().__init__(*args, **kwargs)
                 self.written_keys = []
@@ -978,9 +865,9 @@ class MainPropagatesCheckoutEnvTest(unittest.TestCase):
             recorded['env'] = _RecordingDict(os.environ)
             return recorded['env']
 
-        return recorded, mock.patch.object(launcher.os.environ,
-                                           'copy',
-                                           side_effect=_fake_copy)
+        return recorded, mock.patch.object(
+            launcher.os.environ, 'copy', side_effect=_fake_copy
+        )
 
     def test_does_not_rewrite_when_already_set(self):
         # `env` (os.environ.copy()) already carries forward whatever this
@@ -1000,11 +887,12 @@ class MainPropagatesCheckoutEnvTest(unittest.TestCase):
 
             recorded, patch_copy = self._capture_written_env_keys()
             with patch_copy:
-                with mock.patch.object(launcher.sys, 'argv',
-                                       ['launcher.py', 'node', 'build.js']):
-                    with mock.patch.object(launcher.subprocess,
-                                           'call',
-                                           return_value=0):
+                with mock.patch.object(
+                    launcher.sys, 'argv', ['launcher.py', 'node', 'build.js']
+                ):
+                    with mock.patch.object(
+                        launcher.subprocess, 'call', return_value=0
+                    ):
                         return_code = launcher.main()
             self.assertEqual(return_code, 0)
             self.assertNotIn(self.ENV_VAR, recorded['env'].written_keys)
@@ -1027,20 +915,23 @@ class MainPropagatesCheckoutEnvTest(unittest.TestCase):
 
             recorded, patch_copy = self._capture_written_env_keys()
             with patch_copy:
-                with mock.patch.object(launcher.Path,
-                                       'cwd',
-                                       return_value=checkout):
+                with mock.patch.object(
+                    launcher.Path, 'cwd', return_value=checkout
+                ):
                     with mock.patch.object(
-                            launcher.sys, 'argv',
-                        ['launcher.py', 'node', 'build.js']):
-                        with mock.patch.object(launcher.subprocess,
-                                               'call',
-                                               return_value=0):
+                        launcher.sys,
+                        'argv',
+                        ['launcher.py', 'node', 'build.js'],
+                    ):
+                        with mock.patch.object(
+                            launcher.subprocess, 'call', return_value=0
+                        ):
                             return_code = launcher.main()
             self.assertEqual(return_code, 0)
             self.assertNotIn(self.ENV_VAR, recorded['env'].written_keys)
-            self.assertEqual(recorded['env'][self.ENV_VAR],
-                             '/some/other/checkout')
+            self.assertEqual(
+                recorded['env'][self.ENV_VAR], '/some/other/checkout'
+            )
 
     def test_no_env_var_set_when_no_checkout_resolved(self):
         # A system-binary fallback outside any checkout has nothing to record.
@@ -1049,9 +940,9 @@ class MainPropagatesCheckoutEnvTest(unittest.TestCase):
             outside = Path(tmp) / 'elsewhere'
             outside.mkdir()
             with mock.patch.object(launcher.Path, 'cwd', return_value=outside):
-                with mock.patch.object(launcher.shutil,
-                                       'which',
-                                       return_value='/usr/bin/node'):
+                with mock.patch.object(
+                    launcher.shutil, 'which', return_value='/usr/bin/node'
+                ):
                     seen = {}
 
                     def _capture(_argv, env=None):
@@ -1059,11 +950,13 @@ class MainPropagatesCheckoutEnvTest(unittest.TestCase):
                         return 0
 
                     with mock.patch.object(
-                            launcher.sys, 'argv',
-                        ['launcher.py', '--allow-fallback', 'node']):
-                        with mock.patch.object(launcher.subprocess,
-                                               'call',
-                                               side_effect=_capture):
+                        launcher.sys,
+                        'argv',
+                        ['launcher.py', '--allow-fallback', 'node'],
+                    ):
+                        with mock.patch.object(
+                            launcher.subprocess, 'call', side_effect=_capture
+                        ):
                             return_code = launcher.main()
         self.assertEqual(return_code, 0)
         self.assertNotIn(self.ENV_VAR, seen['env'])
@@ -1093,22 +986,32 @@ class MainPropagatesCheckoutEnvTest(unittest.TestCase):
             # cwd is pnpm's own store tmp dir, e.g.
             # ~/.local/share/pnpm/store/v11/tmp/_tmp_DAPDJk -- a sibling tree
             # with no `src/brave` anywhere above it.
-            pnpm_store_tmp = (Path(tmp) / '.local' / 'share' / 'pnpm' /
-                              'store' / 'v11' / 'tmp' / '_tmp_DAPDJk')
+            pnpm_store_tmp = (
+                Path(tmp)
+                / '.local'
+                / 'share'
+                / 'pnpm'
+                / 'store'
+                / 'v11'
+                / 'tmp'
+                / '_tmp_DAPDJk'
+            )
             pnpm_store_tmp.mkdir(parents=True)
 
-            with mock.patch.object(launcher.Path,
-                                   'cwd',
-                                   return_value=pnpm_store_tmp):
-                with mock.patch.object(launcher.shutil,
-                                       'which',
-                                       return_value='/usr/bin/node'):
+            with mock.patch.object(
+                launcher.Path, 'cwd', return_value=pnpm_store_tmp
+            ):
+                with mock.patch.object(
+                    launcher.shutil, 'which', return_value='/usr/bin/node'
+                ):
                     with mock.patch.object(
-                            launcher.sys, 'argv',
-                        ['launcher.py', '--allow-fallback', 'pnpm']):
-                        with mock.patch.object(launcher.subprocess,
-                                               'call',
-                                               return_value=0) as call:
+                        launcher.sys,
+                        'argv',
+                        ['launcher.py', '--allow-fallback', 'pnpm'],
+                    ):
+                        with mock.patch.object(
+                            launcher.subprocess, 'call', return_value=0
+                        ) as call:
                             return_code = launcher.main()
             self.assertEqual(return_code, 0)
             call.assert_called_once()
@@ -1121,26 +1024,91 @@ class MainPropagatesCheckoutEnvTest(unittest.TestCase):
         # reported failure comes back -- proving the fix, not a tautology.
         os.environ.pop(self.ENV_VAR, None)
         with tempfile.TemporaryDirectory() as tmp:
-            pnpm_store_tmp = (Path(tmp) / '.local' / 'share' / 'pnpm' /
-                              'store' / 'v11' / 'tmp' / '_tmp_DAPDJk')
+            pnpm_store_tmp = (
+                Path(tmp)
+                / '.local'
+                / 'share'
+                / 'pnpm'
+                / 'store'
+                / 'v11'
+                / 'tmp'
+                / '_tmp_DAPDJk'
+            )
             pnpm_store_tmp.mkdir(parents=True)
 
-            with mock.patch.object(launcher.Path,
-                                   'cwd',
-                                   return_value=pnpm_store_tmp):
-                with mock.patch.object(launcher.shutil,
-                                       'which',
-                                       return_value=None):
+            with mock.patch.object(
+                launcher.Path, 'cwd', return_value=pnpm_store_tmp
+            ):
+                with mock.patch.object(
+                    launcher.shutil, 'which', return_value=None
+                ):
                     with mock.patch.object(
-                            launcher.sys, 'argv',
-                        ['launcher.py', '--allow-fallback', 'pnpm']):
+                        launcher.sys,
+                        'argv',
+                        ['launcher.py', '--allow-fallback', 'pnpm'],
+                    ):
                         with contextlib.redirect_stderr(
-                                io.StringIO()) as stderr:
+                            io.StringIO()
+                        ) as stderr:
                             return_code = launcher.main()
         self.assertEqual(return_code, 1)
         self.assertIn(
             'pnpm: no checkout-local binary found and no pnpm on $PATH.',
-            stderr.getvalue())
+            stderr.getvalue(),
+        )
+
+
+class MainFailsOnBrokenSelfUpdateTest(unittest.TestCase):
+    """End-to-end regression: a shim whose pinned target cannot be deployed
+    fails and runs nothing.
+
+    A swallowed installer failure used to leave the shim running some other
+    node (or none), so a broken download never failed a build -- it just
+    re-downloaded, and re-failed, on every invocation. The failure is left
+    unhandled on purpose, so the traceback reaches whoever has to investigate
+    it.
+    """
+
+    def test_main_fails_without_running_the_tool(self):
+        key = launcher.host_platform_key()
+        if key is None:
+            self.skipTest('unsupported host platform')
+        with tempfile.TemporaryDirectory() as tmp:
+            # Resolved, as the launcher resolves the checkout: on Windows the
+            # temp dir can be an 8.3 short name (`ADMINI~1`).
+            root = Path(tmp).resolve()
+            checkout = root / 'src' / 'brave'
+            sentinel = checkout / 'tools' / 'cr' / 'bootstrap' / 'launcher.py'
+            sentinel.parent.mkdir(parents=True, exist_ok=True)
+            sentinel.write_text('', encoding='utf-8', newline='')
+            installer = checkout / 'tools' / 'cr' / 'tarball_installer.py'
+            installer.write_text('', encoding='utf-8', newline='')
+            # The node target is present but stale, so the shim self-updates.
+            node = root / launcher.SHIM_TARGETS[f'node-{key}'].path
+            node.parent.mkdir(parents=True, exist_ok=True)
+            node.write_text('', encoding='utf-8', newline='')
+
+            module = mock.Mock()
+            module.check_extra_deps_installed.return_value = False
+            argv = ['launcher.py', 'node', 'build.js']
+            os.environ.pop(launcher._CHECKOUT_ENV_VAR, None)
+            with mock.patch.object(launcher.Path, 'cwd', return_value=checkout):
+                with mock.patch.object(
+                    launcher.SelfUpdater,
+                    '_load_extra_deps',
+                    return_value=module,
+                ):
+                    with mock.patch.object(launcher.sys, 'argv', argv):
+                        with mock.patch.object(
+                            launcher.subprocess, 'call', return_value=1
+                        ) as call:
+                            with self.assertRaises(
+                                launcher.subprocess.CalledProcessError
+                            ):
+                                launcher.main()
+            # Only the installer ran: the tool itself was never invoked.
+            call.assert_called_once()
+            self.assertEqual(Path(call.call_args.args[0][1]), installer)
 
 
 class MultiRepoSelfUpdaterTest(unittest.TestCase):
@@ -1168,7 +1136,8 @@ class MultiRepoSelfUpdaterTest(unittest.TestCase):
             (self._target_cr(root) / 'extra_deps.py').write_text(
                 'EXTRA_DEPS = {"src/only/in/target": 1}\n',
                 encoding='utf-8',
-                newline='')
+                newline='',
+            )
             checkout = root / 'src' / 'brave'
             module = launcher.SelfUpdater(checkout, 'x')._load_extra_deps()
             self.assertEqual(module.EXTRA_DEPS, {'src/only/in/target': 1})
@@ -1178,19 +1147,24 @@ class MultiRepoSelfUpdaterTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             (self._target_cr(root) / 'tarball_installer.py').write_text(
-                '', encoding='utf-8', newline='')
+                '', encoding='utf-8', newline=''
+            )
             checkout = root / 'src' / 'brave'
-            with mock.patch.object(launcher.subprocess, 'call',
-                                   return_value=0) as call:
+            with mock.patch.object(
+                launcher.subprocess, 'call', return_value=0
+            ) as call:
                 launcher.SelfUpdater(checkout, 'src/dep').deploy()
             argv = call.call_args.args[0]
+            self.assertEqual(argv[0], str(launcher._resolve_vpython3(checkout)))
             self.assertEqual(
                 Path(argv[1]),
-                checkout / 'tools' / 'cr' / 'tarball_installer.py')
+                checkout / 'tools' / 'cr' / 'tarball_installer.py',
+            )
             self.assertEqual(argv[2], 'src/dep')
             # Emphatically not the launcher's own installer.
-            self.assertNotEqual(Path(argv[1]),
-                                self._OWN_CR / 'tarball_installer.py')
+            self.assertNotEqual(
+                Path(argv[1]), self._OWN_CR / 'tarball_installer.py'
+            )
 
     def test_needs_update_reads_the_target_sidecar_tree(self):
         # Copy the real `extra_deps` into a target checkout with node NOT
@@ -1202,10 +1176,14 @@ class MultiRepoSelfUpdaterTest(unittest.TestCase):
             checkout = root / 'src' / 'brave'
             # `extra_deps.py` loads the sibling `EXTRA_DEPS` data file, so the
             # target checkout needs both.
-            shutil.copy(self._OWN_CR / 'extra_deps.py',
-                        self._target_cr(root) / 'extra_deps.py')
-            shutil.copy(self._OWN_CR.parent.parent / 'EXTRA_DEPS',
-                        checkout / 'EXTRA_DEPS')
+            shutil.copy(
+                self._OWN_CR / 'extra_deps.py',
+                self._target_cr(root) / 'extra_deps.py',
+            )
+            shutil.copy(
+                self._OWN_CR.parent.parent / 'EXTRA_DEPS',
+                checkout / 'EXTRA_DEPS',
+            )
             updater = launcher.SelfUpdater(checkout, self.NODE)
             self.assertTrue(updater.needs_update())
 
@@ -1214,8 +1192,9 @@ class MultiRepoSelfUpdaterTest(unittest.TestCase):
             obj = module.EXTRA_DEPS[self.NODE]['objects'][0]
             dest = root / self.NODE
             dest.mkdir(parents=True, exist_ok=True)
-            module.sidecar_path(dest, obj['object_name'],
-                                '_hash').write_text(obj['sha256sum'] + '\n')
+            module.sidecar_path(dest, obj['object_name'], '_hash').write_text(
+                obj['sha256sum'] + '\n'
+            )
             self.assertFalse(updater.needs_update())
 
 
@@ -1234,25 +1213,34 @@ class ArgumentForwardingTest(unittest.TestCase):
     def test_forwards_help_to_tool(self):
         # The bug: `--help` after TOOL was intercepted by the launcher instead
         # of reaching the tool.
-        self.assertEqual(self._split(['gen-rust-toolchain', '--help']),
-                         (False, 'gen-rust-toolchain', ['--help']))
-        self.assertEqual(self._split(['brockit', '-h']),
-                         (False, 'brockit', ['-h']))
+        self.assertEqual(
+            self._split(['gen-rust-toolchain', '--help']),
+            (False, 'gen-rust-toolchain', ['--help']),
+        )
+        self.assertEqual(
+            self._split(['brockit', '-h']), (False, 'brockit', ['-h'])
+        )
 
     def test_forwards_tool_flags_verbatim(self):
-        self.assertEqual(self._split(['brockit', 'lift', '--to=1.2.3.4']),
-                         (False, 'brockit', ['lift', '--to=1.2.3.4']))
+        self.assertEqual(
+            self._split(['brockit', 'lift', '--to=1.2.3.4']),
+            (False, 'brockit', ['lift', '--to=1.2.3.4']),
+        )
 
     def test_leading_allow_fallback_is_consumed(self):
         # Before TOOL, `--allow-fallback` is the launcher's own flag.
-        self.assertEqual(self._split(['--allow-fallback', 'node', 'build.js']),
-                         (True, 'node', ['build.js']))
+        self.assertEqual(
+            self._split(['--allow-fallback', 'node', 'build.js']),
+            (True, 'node', ['build.js']),
+        )
 
     def test_allow_fallback_after_tool_is_forwarded(self):
         # After TOOL, the identical flag is the tool's — forwarded, not
         # acted on.
-        self.assertEqual(self._split(['brockit', '--allow-fallback', 'foo']),
-                         (False, 'brockit', ['--allow-fallback', 'foo']))
+        self.assertEqual(
+            self._split(['brockit', '--allow-fallback', 'foo']),
+            (False, 'brockit', ['--allow-fallback', 'foo']),
+        )
 
     def test_bare_tool_has_no_args(self):
         self.assertEqual(self._split(['brockit']), (False, 'brockit', []))
@@ -1271,12 +1259,19 @@ class BatShimLauncherResolutionTest(unittest.TestCase):
     the current directory, so a bare `python3 "%~dp0launcher.py"` pointed at the
     cwd and failed with `can't open file '...\\launcher.py'`. Each Windows shim
     must fall back to resolving its own name on `%PATH%` (`%~dp$PATH:0`) so
-    `launcher.py` is found beside the shim, not in the cwd. Covers both `.bat`
+    `runner.py` is found beside the shim, not in the cwd. Covers both `.bat`
     and `.cmd` variants (npm/pnpm ship `.cmd`, which callers spawn by name).
     """
 
-    _WIN_SHIMS = ('node.bat', 'npm.bat', 'npm.cmd', 'pnpm.cmd', 'brockit.bat',
-                  'plaster.bat', 'git-cr.bat')
+    _WIN_SHIMS = (
+        'node.bat',
+        'npm.bat',
+        'npm.cmd',
+        'pnpm.cmd',
+        'brockit.bat',
+        'plaster.bat',
+        'git-cr.bat',
+    )
 
     def _read(self, name: str) -> str:
         path = Path(launcher.__file__).resolve().parent / name
@@ -1286,23 +1281,30 @@ class BatShimLauncherResolutionTest(unittest.TestCase):
         for name in self._WIN_SHIMS:
             self.assertTrue(
                 (Path(launcher.__file__).resolve().parent / name).is_file(),
-                name)
+                name,
+            )
 
     def test_win_shims_resolve_launcher_via_path_fallback(self):
         for name in self._WIN_SHIMS:
             text = self._read(name)
-            self.assertIn('launcher.py', text, name)
+            self.assertIn('runner.py', text, name)
             # Try `%~dp0` first, but fall back to a %PATH% search for our own
-            # name when launcher.py is not beside `%~dp0` (i.e. it was the cwd).
-            self.assertIn('if not exist "%_dir%launcher.py"', text, name)
+            # name when runner.py is not beside `%~dp0` (i.e. it was the
+            # cwd).
+            self.assertIn('if not exist "%_dir%runner.py"', text, name)
             self.assertIn('%~dp$PATH:0', text, name)
+            # launcher.py runs under the interpreter runner.py prints, and
+            # never at all when it prints none.
+            self.assertIn('"%_python%" "%_dir%launcher.py"', text, name)
+            self.assertIn('if not defined _python exit /b 1', text, name)
 
     def test_win_shims_do_not_run_launcher_straight_from_dp0(self):
-        # The fragile form this bug was about: python3 invoking `%~dp0launcher`
-        # directly, with no %PATH% fallback.
+        # The fragile form this bug was about: python3 invoking a script
+        # straight from `%~dp0`, with no %PATH% fallback.
         for name in self._WIN_SHIMS:
             text = self._read(name)
             self.assertNotIn('python3 "%~dp0launcher.py"', text, name)
+            self.assertNotIn('python3 "%~dp0runner.py"', text, name)
 
 
 if __name__ == '__main__':

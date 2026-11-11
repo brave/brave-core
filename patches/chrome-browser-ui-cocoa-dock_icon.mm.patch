@@ -1,0 +1,73 @@
+diff --git a/chrome/browser/ui/cocoa/dock_icon.mm b/chrome/browser/ui/cocoa/dock_icon.mm
+index 4813226a968582408720d332b198136a14ee38a1..7c4ad02736662bf89f60fa9647e33b70dd2092c1 100644
+--- a/chrome/browser/ui/cocoa/dock_icon.mm
++++ b/chrome/browser/ui/cocoa/dock_icon.mm
+@@ -185,6 +185,15 @@ constexpr struct {
+ @end
+ 
+ @implementation DockIcon {
++  // The number of downloads in progress.
++  int _downloads;
++
++  // Whether the progress of those downloads is known yet.
++  BOOL _indeterminate;
++
++  // The progress made on those downloads. Ranges from [0..1].
++  float _progress;
++
+   // The time that the icon was last updated.
+   base::TimeTicks _lastUpdate;
+ 
+@@ -195,7 +204,6 @@ constexpr struct {
+ 
+ + (DockIcon*)sharedDockIcon {
+   static DockIcon* icon = [] {
+-    NSApp.dockTile.contentView = [[DockTileView alloc] init];
+     return [[DockIcon alloc] init];
+   }();
+ 
+@@ -242,37 +250,32 @@ constexpr struct {
+   _lastUpdate = now;
+   _forceUpdate = NO;
+ 
+-  [NSApp.dockTile display];
++  NSApp.dockTile.badgeLabel =
++      DockBadgeLabel(_downloads, _indeterminate, _progress);
+ }
+ 
+ - (void)setDownloads:(int)downloads {
+   CHECK_CURRENTLY_ON(BrowserThread::UI, base::NotFatalUntil::M162);
+-  DockTileView* dockTileView =
+-      base::apple::ObjCCast<DockTileView>(NSApp.dockTile.contentView);
+ 
+-  if (downloads != dockTileView.downloads) {
+-    dockTileView.downloads = downloads;
++  if (downloads != _downloads) {
++    _downloads = downloads;
+     _forceUpdate = YES;
+   }
+ }
+ 
+ - (void)setIndeterminate:(BOOL)indeterminate {
+   CHECK_CURRENTLY_ON(BrowserThread::UI, base::NotFatalUntil::M162);
+-  DockTileView* dockTileView =
+-      base::apple::ObjCCast<DockTileView>(NSApp.dockTile.contentView);
+ 
+-  if (indeterminate != dockTileView.indeterminate) {
+-    dockTileView.indeterminate = indeterminate;
++  if (indeterminate != _indeterminate) {
++    _indeterminate = indeterminate;
+     _forceUpdate = YES;
+   }
+ }
+ 
+ - (void)setProgress:(float)progress {
+   CHECK_CURRENTLY_ON(BrowserThread::UI, base::NotFatalUntil::M162);
+-  DockTileView* dockTileView =
+-      base::apple::ObjCCast<DockTileView>(NSApp.dockTile.contentView);
+ 
+-  dockTileView.progress = progress;
++  _progress = progress;
+ }
+ 
+ @end

@@ -12,6 +12,7 @@
 #include "base/command_line.h"
 #include "base/path_service.h"
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
+#include "brave/browser/image_metadata_stripper/file_upload_controller.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_rewards/core/rewards_flags.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
@@ -60,8 +61,9 @@
 #include "brave/browser/infobars/brave_confirm_p3a_infobar_delegate.h"
 #include "brave/browser/infobars/brave_sync_account_deleted_infobar_delegate.h"
 #include "brave/browser/infobars/sync_cannot_run_infobar_delegate.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #else
 #include "brave/browser/android/youtube_script_injector/features.h"
@@ -169,6 +171,9 @@ void ChromeBrowserMainParts::PostBrowserStart() {
   ipfs::CleanupIpfsComponent(
       base::PathService::CheckedGet(chrome::DIR_USER_DATA));
 #endif  // BUILDFLAG(DEPRECATE_IPFS)
+
+  // Clean-up any image metadata stripper stale files.
+  image_metadata_stripper::FileUploadController::CleanUpFromLastSession();
 }
 
 void ChromeBrowserMainParts::PreShutdown() {
@@ -182,8 +187,9 @@ void ChromeBrowserMainParts::PreProfileInit() {
   auto* command_line = base::CommandLine::ForCurrentProcess();
   if (!base::FeatureList::IsEnabled(brave_sync::features::kBraveSync)) {
     // Disable sync temporarily
-    if (!command_line->HasSwitch(syncer::kDisableSync))
+    if (!command_line->HasSwitch(syncer::kDisableSync)) {
       command_line->AppendSwitch(syncer::kDisableSync);
+    }
   } else {
     // Relaunch after flag changes will still have the switch
     // when switching from disabled to enabled

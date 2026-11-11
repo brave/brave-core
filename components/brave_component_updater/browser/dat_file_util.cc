@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 
-#include <memory>
 #include <string>
 
 #include "base/files/file_path.h"

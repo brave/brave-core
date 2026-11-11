@@ -57,17 +57,4 @@ bool IsNewTabPageAdsEnabled() {
          IsSponsoredAdsEnabled();
 }
 
-bool UserHasOptedInToSurveyPanelist() {
-  if (GetProfileBooleanPref(brave_rewards::prefs::kDisabledByPolicy)) {
-    return false;
-  }
-
-  if (!IsNewTabPageAdsEnabled()) {
-    return false;
-  }
-
-  return GetProfileBooleanPref(
-      ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist);
-}
-
 }  // namespace brave_ads

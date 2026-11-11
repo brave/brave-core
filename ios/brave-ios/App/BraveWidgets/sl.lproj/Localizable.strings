@@ -1,23 +1,38 @@
 /* Title for Ask Brave shortcut. Brave is the company name and should not be translated */
 "widgets.askBrave" = "Vprašaj Brave";
 
+/* Description for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.askBraveWidgetDescription" = "Zastavite Brave vprašanje.";
+
+/* Title for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.askBraveWidgetTitle" = "Vprašaj Brave";
+
 /* Title for bookmarks menu item */
 "widgets.BookmarksMenuItem" = "Zaznamki";
 
 /* The name of the feature */
 "widgets.braveLeo" = "Leo AI";
 
+/* Title for the Leo AI voice input shortcut. Leo is the name of a product and should not be translated */
+"widgets.braveLeoVoiceInput" = "Glasovni vnos Leo";
+
 /* The name of the feature */
 "widgets.braveNews" = "Brave novice";
+
+/* Title for the Brave Search control. Brave is the company name and should not be translated */
+"widgets.braveSearch" = "Iskanje na Brave";
+
+/* Description for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.braveSearchWidgetDescription" = "Iščite po spletu z Brave.";
+
+/* Title for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.braveSearchWidgetTitle" = "Iskanje na Brave";
 
 /* Title for downloads menu item */
 "widgets.DownloadsMenuItem" = "Prenosi";
 
 /* Description for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetDescription" = "Hitro dostopajte do svojih priljubljenih spletnih mest.";
-
-/* Title for favorites widget on 'add widget' screen. */
-"widgets.favoritesWidgetTitle" = "Priljubljene";
 
 /* Title for history menu item */
 "widgets.HistoryMenuItem" = "Zgodovina";

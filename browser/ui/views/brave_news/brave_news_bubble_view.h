@@ -36,7 +36,6 @@ class BraveNewsBubbleView : public views::BubbleDialogDelegateView {
 
   // views::BubbleDialogDelegateView:
   void OnWidgetDestroyed(views::Widget*) override;
-  void OnThemeChanged() override;
 
  private:
   raw_ptr<content::WebContents> contents_ = nullptr;

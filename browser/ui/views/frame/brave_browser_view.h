@@ -8,6 +8,7 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -69,7 +70,6 @@ namespace views {
 class Widget;
 }  // namespace views
 
-class BraveBrowser;
 class BraveShieldsToolbarButton;
 class BraveHelpBubbleHostView;
 class BraveMultiContentsView;
@@ -82,7 +82,6 @@ class TabStripPlacementCoordinator;
 class BraveVerticalTabStripContainerView;
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-class WalletButton;
 #endif
 
 class BraveBrowserView : public BrowserView,
@@ -91,7 +90,7 @@ class BraveBrowserView : public BrowserView,
                          public FocusModeController::Observer {
   METADATA_HEADER(BraveBrowserView, BrowserView)
  public:
-  explicit BraveBrowserView(Browser* browser);
+  explicit BraveBrowserView(BrowserWindowInterface* browser);
   BraveBrowserView(const BraveBrowserView&) = delete;
   BraveBrowserView& operator=(const BraveBrowserView&) = delete;
   ~BraveBrowserView() override;
@@ -109,22 +108,18 @@ class BraveBrowserView : public BrowserView,
   static bool ShouldUseBraveWebViewRoundedCornersForContents(
       const BrowserWindowInterface* browser);
 
-  void ShowUpdateChromeDialog() override;
-
   // Returns the bounding rectangle, in screen coordinates, used to detect
   // mouse-over events that control sidebar visibility. The bounds of a
   // specific view are used here so that sidebar show/hide behavior is
   // consistently tied to that view's on-screen region.
   gfx::Rect GetBoundingBoxInScreenForMouseOverHandling() const;
 
+  // Width the vertical tab strip renders at the window edge beside the
+  // contents. Nullopt when the strip owns the edge instead: vertical tabs are
+  // off, the strip overlays the contents, or it's floated open over them.
+  std::optional<int> GetVerticalTabStripWidthAtWindowEdge() const;
+
   void ShowBraveVPNBubble(bool show_select = false);
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  void CreateWalletBubble();
-  void CreateApproveWalletBubble();
-  void CloseWalletBubble();
-  WalletButton* GetWalletButton();
-  views::View* GetWalletButtonAnchorView();
-#endif
 
   // BrowserView overrides:
   void StartTabCycling() override;
@@ -149,7 +144,6 @@ class BraveBrowserView : public BrowserView,
   bool AcceleratorPressed(const ui::Accelerator& accelerator) override;
   bool IsInTabDragging() const override;
   void ReadyToListenFullscreenChanges() override;
-  bool IsWebPanelContents(content::WebContents* contents) override;
   ClientFrameElementInfo GetFrameElementInfo() const override;
 
   void OnImmersiveFullscreenExited() override;
@@ -192,7 +186,7 @@ class BraveBrowserView : public BrowserView,
 
   void UpdateRoundedCornersUI();
   void UpdateVerticalTabStripBorder();
-  void UpdateSidebarBorder();
+  void UpdateSidePanelBorder();
 
   // Re-applies the side panel border so the content corner radii track the
   // sidebar control view's visibility. Wired as SidebarContainerView's
@@ -305,8 +299,6 @@ class BraveBrowserView : public BrowserView,
   void StopTabCycling();
   void OnCompactModePrefChanged();
   void OnPreferenceChanged(const std::string& pref_name);
-  void OnWindowClosingConfirmResponse(bool allowed_to_close);
-  BraveBrowser* GetBraveBrowser() const;
   void UpdateFocusModeState();
   bool ShouldDisableFocusModeForActiveTab() const;
 
@@ -334,21 +326,14 @@ class BraveBrowserView : public BrowserView,
   // class's ctor body runs).
   void EnsureFindBarHostViewIsLastChild();
 
-  sidebar::Sidebar* InitSidebar() override;
-  void ToggleSidebar() override;
   bool HasSelectedURL() const override;
   void CleanAndCopySelectedURL() override;
-
-#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-  void ShowPlaylistBubble() override;
-#endif
 
   void UpdateSideBarHorizontalAlignment();
 
   std::unique_ptr<TabStripPlacementCoordinator> tab_strip_placement_;
   std::unique_ptr<views::Widget> vertical_tab_strip_widget_;
 
-  bool closing_confirm_dialog_activated_ = false;
   bool show_active_contents_domain_ = false;
   raw_ptr<BraveHelpBubbleHostView> brave_help_bubble_host_view_ = nullptr;
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;

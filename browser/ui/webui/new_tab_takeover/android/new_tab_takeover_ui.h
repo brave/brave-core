@@ -14,6 +14,7 @@
 #include "base/memory/raw_ref.h"
 #include "brave/components/new_tab_takeover/mojom/new_tab_takeover.mojom.h"
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
+#include "components/omnibox/browser/autocomplete_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -23,7 +24,7 @@
 
 namespace ntp_background_images {
 class NTPBackgroundImagesService;
-class NTPSponsoredRichMediaAdEventHandler;
+class NTPDynamicNewTabTakeoverAdEventHandler;
 }  // namespace ntp_background_images
 
 // On desktop, we use a Web UI to display new tab pages. On Android, however,
@@ -34,15 +35,16 @@ class NTPSponsoredRichMediaAdEventHandler;
 // display rich media HTML alongside Brave Stats and Brave News, we use a
 // `ThinWebView` to render the HTML behind these overlays.
 class NewTabTakeoverUI : public ui::MojoWebUIController,
-                         public new_tab_takeover::mojom::NewTabTakeover {
+                         public new_tab_takeover::mojom::NewTabTakeover,
+                         public AutocompleteController::Observer {
  public:
   NewTabTakeoverUI(
       content::WebUI* const web_ui,
       ntp_background_images::NTPBackgroundImagesService&
           ntp_background_images_service,
       std::unique_ptr<
-          ntp_background_images::NTPSponsoredRichMediaAdEventHandler>
-          rich_media_ad_event_handler);
+          ntp_background_images::NTPDynamicNewTabTakeoverAdEventHandler>
+          sponsored_content_ad_event_handler);
 
   NewTabTakeoverUI(const NewTabTakeoverUI&) = delete;
   NewTabTakeoverUI& operator=(const NewTabTakeoverUI&) = delete;
@@ -55,17 +57,28 @@ class NewTabTakeoverUI : public ui::MojoWebUIController,
 
   void SetSafeArea(const gfx::RectF& safe_area);
 
+  void SetAutocompleteControllerForTesting(
+      std::unique_ptr<AutocompleteController> autocomplete_controller);
+
  private:
   // new_tab_takeover::mojom::NewTabTakeover:
   void SetPage(mojo::PendingRemote<new_tab_takeover::mojom::NewTabTakeoverPage>
                    page) override;
-  void SetSponsoredRichMediaAdEventHandler(
+  void SetSponsoredContentAdEventHandler(
       mojo::PendingReceiver<
-          ntp_background_images::mojom::SponsoredRichMediaAdEventHandler>
+          ntp_background_images::mojom::SponsoredContentAdEventHandler>
           event_handler) override;
   void GetCurrentWallpaper(const std::string& creative_instance_id,
                            GetCurrentWallpaperCallback callback) override;
   void NavigateToUrl(const GURL& url) override;
+  void QueryAutocomplete(const std::string& input,
+                         QueryAutocompleteCallback callback) override;
+  void SetDefaultSearchEngineAsBraveSearch(
+      SetDefaultSearchEngineAsBraveSearchCallback callback) override;
+
+  // AutocompleteController::Observer:
+  void OnResultChanged(AutocompleteController* controller,
+                       bool default_match_changed) override;
 
   mojo::Receiver<new_tab_takeover::mojom::NewTabTakeover>
       new_tab_takeover_receiver_{this};
@@ -77,8 +90,12 @@ class NewTabTakeoverUI : public ui::MojoWebUIController,
   const raw_ref<ntp_background_images::NTPBackgroundImagesService>
       ntp_background_images_service_;  // Not owned.
 
-  std::unique_ptr<ntp_background_images::NTPSponsoredRichMediaAdEventHandler>
-      rich_media_ad_event_handler_;
+  std::unique_ptr<ntp_background_images::NTPDynamicNewTabTakeoverAdEventHandler>
+      sponsored_content_ad_event_handler_;
+
+  std::unique_ptr<AutocompleteController> autocomplete_controller_;
+
+  QueryAutocompleteCallback pending_query_autocomplete_callback_;
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

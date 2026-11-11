@@ -9,7 +9,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "arrayvec",
  "base64",
- "bitflags 2.13.1",
+ "bitflags 2.13.2",
  "cssparser",
  "flatbuffers",
  "idna",
@@ -174,7 +174,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "bitflags"
-version = "2.13.1"
+version = "2.13.2"
 dependencies = [
  "serde_core",
 ]
@@ -310,7 +310,7 @@ dependencies = [
 
 [[package]]
 name = "cfg-if"
-version = "1.0.4"
+version = "1.0.5"
 
 [[package]]
 name = "chacha20"
@@ -437,14 +437,14 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "4.6.6"
+version = "4.6.7"
 dependencies = [
  "clap_builder",
 ]
 
 [[package]]
 name = "clap_builder"
-version = "4.6.6"
+version = "4.6.7"
 dependencies = [
  "anstyle",
  "clap_lex",
@@ -453,7 +453,7 @@ dependencies = [
 
 [[package]]
 name = "clap_lex"
-version = "1.1.0"
+version = "1.1.1"
 
 [[package]]
 name = "codespan-reporting"
@@ -523,7 +523,7 @@ dependencies = [
 
 [[package]]
 name = "crc32fast"
-version = "1.5.0"
+version = "1.5.2"
 dependencies = [
  "cfg-if",
 ]
@@ -602,7 +602,7 @@ dependencies = [
 
 [[package]]
 name = "cxx"
-version = "1.0.199"
+version = "1.0.202"
 dependencies = [
  "cc",
  "cxx-build",
@@ -615,41 +615,41 @@ dependencies = [
 
 [[package]]
 name = "cxx-build"
-version = "1.0.199"
+version = "1.0.202"
 dependencies = [
  "cc",
  "codespan-reporting",
- "indexmap 2.14.0",
+ "indexmap 2.14.2",
  "proc-macro2",
  "quote",
  "scratch",
- "syn 3.0.3",
+ "syn 3.0.6",
 ]
 
 [[package]]
 name = "cxxbridge-cmd"
-version = "1.0.199"
+version = "1.0.202"
 dependencies = [
  "clap",
  "codespan-reporting",
- "indexmap 2.14.0",
+ "indexmap 2.14.2",
  "proc-macro2",
  "quote",
- "syn 3.0.3",
+ "syn 3.0.6",
 ]
 
 [[package]]
 name = "cxxbridge-flags"
-version = "1.0.199"
+version = "1.0.202"
 
 [[package]]
 name = "cxxbridge-macro"
-version = "1.0.199"
+version = "1.0.202"
 dependencies = [
- "indexmap 2.14.0",
+ "indexmap 2.14.2",
  "proc-macro2",
  "quote",
- "syn 3.0.3",
+ "syn 3.0.6",
 ]
 
 [[package]]
@@ -834,7 +834,7 @@ name = "flatbuffers"
 version = "25.12.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bitflags 2.13.1",
+ "bitflags 2.13.2",
  "rustc_version",
 ]
 
@@ -1102,6 +1102,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "hashbrown"
 version = "0.16.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "allocator-api2",
  "equivalent",
@@ -1195,7 +1196,7 @@ dependencies = [
 
 [[package]]
 name = "indexmap"
-version = "2.14.0"
+version = "2.14.2"
 dependencies = [
  "equivalent",
  "hashbrown 0.17.1",
@@ -1259,21 +1260,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "cssparser",
  "html5ever",
- "indexmap 2.14.0",
+ "indexmap 2.14.2",
  "precomputed-hash",
  "selectors 0.32.0",
 ]
 
 [[package]]
 name = "lazy_static"
-version = "1.5.0"
+version = "1.5.1"
 dependencies = [
  "spin",
 ]
 
 [[package]]
 name = "libc"
-version = "0.2.189"
+version = "0.2.190"
 
 [[package]]
 name = "libm"
@@ -1303,14 +1304,14 @@ dependencies = [
 
 [[package]]
 name = "log"
-version = "0.4.33"
+version = "0.4.34"
 
 [[package]]
 name = "lol_html"
 version = "2.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bitflags 2.13.1",
+ "bitflags 2.13.2",
  "cfg-if",
  "cssparser",
  "encoding_rs",
@@ -1319,7 +1320,7 @@ dependencies = [
  "mime",
  "precomputed-hash",
  "selectors 0.32.0",
- "thiserror 2.0.20",
+ "thiserror 2.0.21",
 ]
 
 [[package]]
@@ -1752,7 +1753,7 @@ dependencies = [
 name = "readability"
 version = "0.1.4"
 dependencies = [
- "bitflags 2.13.1",
+ "bitflags 2.13.2",
  "html5ever",
  "kuchikiki",
  "lazy_static",
@@ -1784,7 +1785,7 @@ name = "redox_syscall"
 version = "0.5.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bitflags 2.13.1",
+ "bitflags 2.13.2",
 ]
 
 [[package]]
@@ -1880,7 +1881,7 @@ name = "selectors"
 version = "0.31.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bitflags 2.13.1",
+ "bitflags 2.13.2",
  "cssparser",
  "derive_more 2.1.1",
  "fxhash",
@@ -1898,7 +1899,7 @@ name = "selectors"
 version = "0.32.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bitflags 2.13.1",
+ "bitflags 2.13.2",
  "cssparser",
  "derive_more 2.1.1",
  "log",
@@ -1945,7 +1946,7 @@ version = "1.0.229"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 3.0.3",
+ "syn 3.0.6",
 ]
 
 [[package]]
@@ -1994,7 +1995,7 @@ name = "shardtree"
 version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bitflags 2.13.1",
+ "bitflags 2.13.2",
  "either",
  "incrementalmerkletree",
  "tracing",
@@ -2216,7 +2217,7 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "3.0.3"
+version = "3.0.6"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2255,9 +2256,9 @@ dependencies = [
 
 [[package]]
 name = "thiserror"
-version = "2.0.20"
+version = "2.0.21"
 dependencies = [
- "thiserror-impl 2.0.20",
+ "thiserror-impl 2.0.21",
 ]
 
 [[package]]
@@ -2272,11 +2273,11 @@ dependencies = [
 
 [[package]]
 name = "thiserror-impl"
-version = "2.0.20"
+version = "2.0.21"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 3.0.3",
+ "syn 3.0.6",
 ]
 
 [[package]]
@@ -2336,7 +2337,7 @@ dependencies = [
 
 [[package]]
 name = "unicode-ident"
-version = "1.0.24"
+version = "1.0.26"
 
 [[package]]
 name = "unicode-width"

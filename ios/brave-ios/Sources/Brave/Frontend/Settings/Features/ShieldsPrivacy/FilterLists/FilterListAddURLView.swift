@@ -110,7 +110,7 @@ struct FilterListAddURLView: View {
 
       customFilterListStorage.filterListsURLs.append(customURL)
 
-      await FilterListCustomURLDownloader.shared.startFetching(
+      FilterListCustomURLDownloader.shared.startFetching(
         filterListCustomURL: customURL
       )
 

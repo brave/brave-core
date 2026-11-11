@@ -40,8 +40,9 @@ public class RequestBlockingTabHelper: TabObserver {
   }
 }
 
-@MainActor extension RequestBlockingTabHelper: RequestBlockingTabHelperBridge {
+extension RequestBlockingTabHelper: RequestBlockingTabHelperBridge {
 
+  @MainActor
   public func shouldBlock(requestURL: URL, sourceURL: URL, resourceType: String) async -> Bool {
     guard let tab,
       let resourceType = AdblockResourceType(rawValue: resourceType),

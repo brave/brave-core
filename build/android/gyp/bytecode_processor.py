@@ -12,32 +12,56 @@ import subprocess
 import sys
 
 sys.path.append(
-    os.path.join(os.path.dirname(__file__), os.pardir, os.pardir, os.pardir,
-                 os.pardir, 'build'))
+    os.path.join(
+        os.path.dirname(__file__),
+        os.pardir,
+        os.pardir,
+        os.pardir,
+        os.pardir,
+        'build',
+    )
+)
 import action_helpers  # pylint: disable=wrong-import-position
 
 sys.path.append(
-    os.path.join(os.path.dirname(__file__), os.pardir, os.pardir, os.pardir,
-                 os.pardir, 'build', 'android', 'gyp'))
+    os.path.join(
+        os.path.dirname(__file__),
+        os.pardir,
+        os.pardir,
+        os.pardir,
+        os.pardir,
+        'build',
+        'android',
+        'gyp',
+    )
+)
 from util import build_utils  # pylint: disable=no-name-in-module,wrong-import-position
 
 
 def _AddSwitch(parser, val):
     parser.add_argument(
-        val, action='store_const', default='--disabled', const=val)
+        val, action='store_const', default='--disabled', const=val
+    )
 
 
 def main(argv):
     argv = build_utils.ExpandFileArgs(argv[1:])
     parser = argparse.ArgumentParser()
-    parser.add_argument('--script', required=True,
-                        help='Path to the java binary wrapper script.')
+    parser.add_argument(
+        '--script',
+        required=True,
+        help='Path to the java binary wrapper script.',
+    )
     parser.add_argument('--input-jar', required=True)
     parser.add_argument('--output-jar', required=True)
     parser.add_argument('--sdk-classpath-jars', required=True)
-    parser.add_argument('--extra-classpath-jars', dest='extra_jars',
-                        action='append', default=[],
-                        help='Extra inputs, passed last to the binary script.')
+    parser.add_argument(
+        '--extra-classpath-jars',
+        dest='extra_jars',
+        action='append',
+        default=[],
+        help='Extra inputs, passed last to the binary script.',
+    )
     parser.add_argument('--missing-classes-allowlist')
     _AddSwitch(parser, '--enable-thread-annotations')
     args = parser.parse_args(argv)
@@ -49,16 +73,22 @@ def main(argv):
     for a in args.extra_jars:
         extra_classpath_jars.extend(action_helpers.parse_gn_list(a))
     args.missing_classes_allowlist = action_helpers.parse_gn_list(
-        args.missing_classes_allowlist)
+        args.missing_classes_allowlist
+    )
 
-    cmd = ([
-        args.script,
-        args.input_jar,
-        args.output_jar,
-        args.enable_thread_annotations,
-    ] + [str(len(args.missing_classes_allowlist))] +
-           args.missing_classes_allowlist + [str(len(sdk_jars))] + sdk_jars +
-           extra_classpath_jars)
+    cmd = (
+        [
+            args.script,
+            args.input_jar,
+            args.output_jar,
+            args.enable_thread_annotations,
+        ]
+        + [str(len(args.missing_classes_allowlist))]
+        + args.missing_classes_allowlist
+        + [str(len(sdk_jars))]
+        + sdk_jars
+        + extra_classpath_jars
+    )
     subprocess.check_call(cmd)
 
 

@@ -43,8 +43,6 @@ class AdEvents final : public TableInterface {
                    mojom::ConfirmationType confirmation_type,
                    IsFirstTimeCallback callback) const;
 
-  void GetAll(GetAdEventsCallback callback) const;
-
   void Get(mojom::AdType mojom_ad_type,
            mojom::ConfirmationType mojom_confirmation_type,
            base::TimeDelta time_window,

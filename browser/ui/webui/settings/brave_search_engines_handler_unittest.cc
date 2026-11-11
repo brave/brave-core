@@ -10,6 +10,9 @@
 
 #include "base/command_line.h"
 #include "base/memory/raw_ptr.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
@@ -127,6 +130,9 @@ class BraveSearchEnginesHandlerTest : public testing::Test {
   content::TestWebUI* web_ui() { return web_ui_.get(); }
   Profile* profile() { return profile_; }
   TemplateURLService* template_url_service() { return template_url_service_; }
+  base::DictValue CreateDictionaryForEngine(TemplateURL* template_url) {
+    return handler_->CreateDictionaryForEngine(template_url);
+  }
 
  protected:
   std::string engine_a_guid_;
@@ -195,7 +201,8 @@ TEST_F(BraveSearchEnginesHandlerTest, SetDefaultPrivateEngineByDatabaseId) {
                 prefs::kSyncedDefaultPrivateSearchProviderGUID));
 
   base::ListValue args;
-  args.Append(static_cast<int>(engine_a_id_));
+  args.Append(
+      base::StrCat({"db:", base::NumberToString(engine_a_id_.value())}));
   web_ui()->HandleReceivedMessage("setDefaultPrivateSearchEngine", args);
 
   EXPECT_EQ(engine_a_guid_,
@@ -223,7 +230,8 @@ TEST_F(BraveSearchEnginesHandlerTest, SetDefaultPrivateEngineUserAddedEngine) {
   ASSERT_TRUE(default_engine);
 
   base::ListValue args;
-  args.Append(static_cast<int>(default_engine->id()));
+  args.Append(base::StrCat(
+      {"db:", base::NumberToString(default_engine->id().value())}));
   web_ui()->HandleReceivedMessage("setDefaultPrivateSearchEngine", args);
 
   EXPECT_EQ(user_engine_guid,
@@ -238,11 +246,102 @@ TEST_F(BraveSearchEnginesHandlerTest, SetDefaultPrivateEngineUnknownIdIsNoop) {
       prefs::kSyncedDefaultPrivateSearchProviderGUID);
 
   base::ListValue args;
-  args.Append(999999);
+  args.Append("db:999999");
   web_ui()->HandleReceivedMessage("setDefaultPrivateSearchEngine", args);
 
   EXPECT_EQ(initial_guid, profile()->GetPrefs()->GetString(
                               prefs::kSyncedDefaultPrivateSearchProviderGUID));
+}
+
+// Verify that http(s) favicon URLs are routed through the Brave favicon proxy
+// instead of being fetched directly from the search engine.
+TEST_F(BraveSearchEnginesHandlerTest, IconURLIsProxied) {
+  TemplateURLData data;
+  data.SetShortName(u"engine_c");
+  data.SetKeyword(u"engine_c");
+  data.SetURL("https://engine-c.example/search?q={searchTerms}");
+  data.favicon_url = GURL("https://cdn.engine-c.example/favicon.ico");
+  TemplateURL* engine =
+      template_url_service()->Add(std::make_unique<TemplateURL>(data));
+  ASSERT_TRUE(engine);
+
+  const base::DictValue dict = CreateDictionaryForEngine(engine);
+  const std::string* icon_url = dict.FindString("iconURL");
+  ASSERT_TRUE(icon_url);
+  EXPECT_EQ(*icon_url,
+            "https://favicons.proxy.brave.com/"
+            "faviconV2?client=chrome&nfrp=2&check_seen=true&size=32&min_size=16"
+            "&max_size=256&fallback_opts=TYPE,SIZE,URL&url=https%3A%2F%2F"
+            "engine-c.example%2F");
+}
+
+// Verify that www.google.com is passed to the favicon proxy as google.com,
+// since Google's favicon server has no icon for www.google.com.
+TEST_F(BraveSearchEnginesHandlerTest, IconURLProxyStripsWwwForGoogle) {
+  TemplateURLData google_data;
+  google_data.SetShortName(u"engine_d");
+  google_data.SetKeyword(u"engine_d");
+  google_data.SetURL("https://www.google.com/search?q={searchTerms}");
+  google_data.favicon_url = GURL("https://www.google.com/favicon.ico");
+  TemplateURL* google =
+      template_url_service()->Add(std::make_unique<TemplateURL>(google_data));
+  ASSERT_TRUE(google);
+
+  TemplateURLData other_data;
+  other_data.SetShortName(u"engine_e");
+  other_data.SetKeyword(u"engine_e");
+  other_data.SetURL("https://www.engine-e.example/search?q={searchTerms}");
+  other_data.favicon_url = GURL("https://www.engine-e.example/favicon.ico");
+  TemplateURL* other =
+      template_url_service()->Add(std::make_unique<TemplateURL>(other_data));
+  ASSERT_TRUE(other);
+
+  const base::DictValue google_dict = CreateDictionaryForEngine(google);
+  const std::string* google_icon_url = google_dict.FindString("iconURL");
+  ASSERT_TRUE(google_icon_url);
+  EXPECT_TRUE(
+      base::EndsWith(*google_icon_url, "&url=https%3A%2F%2Fgoogle.com%2F"))
+      << *google_icon_url;
+
+  // Other www. hosts are passed through unchanged.
+  const base::DictValue other_dict = CreateDictionaryForEngine(other);
+  const std::string* other_icon_url = other_dict.FindString("iconURL");
+  ASSERT_TRUE(other_icon_url);
+  EXPECT_TRUE(base::EndsWith(*other_icon_url,
+                             "&url=https%3A%2F%2Fwww.engine-e.example%2F"))
+      << *other_icon_url;
+}
+
+// Verify that non-http(s) and empty favicon URLs are not routed through the
+// favicon proxy.
+TEST_F(BraveSearchEnginesHandlerTest, NonHttpIconURLIsNotProxied) {
+  constexpr char kDataFaviconURL[] = "data:image/png;base64,AAAA";
+  TemplateURLData data_icon_data;
+  data_icon_data.SetShortName(u"engine_f");
+  data_icon_data.SetKeyword(u"engine_f");
+  data_icon_data.SetURL("https://engine-f.example/search?q={searchTerms}");
+  data_icon_data.favicon_url = GURL(kDataFaviconURL);
+  TemplateURL* data_icon_engine = template_url_service()->Add(
+      std::make_unique<TemplateURL>(data_icon_data));
+  ASSERT_TRUE(data_icon_engine);
+
+  TemplateURLData no_icon_data;
+  no_icon_data.SetShortName(u"engine_g");
+  no_icon_data.SetKeyword(u"engine_g");
+  no_icon_data.SetURL("https://engine-g.example/search?q={searchTerms}");
+  TemplateURL* no_icon_engine =
+      template_url_service()->Add(std::make_unique<TemplateURL>(no_icon_data));
+  ASSERT_TRUE(no_icon_engine);
+
+  const base::DictValue data_icon_dict =
+      CreateDictionaryForEngine(data_icon_engine);
+  const std::string* data_icon_url = data_icon_dict.FindString("iconURL");
+  ASSERT_TRUE(data_icon_url);
+  EXPECT_EQ(*data_icon_url, kDataFaviconURL);
+
+  const base::DictValue no_icon_dict =
+      CreateDictionaryForEngine(no_icon_engine);
+  EXPECT_FALSE(no_icon_dict.FindString("iconURL"));
 }
 
 }  // namespace settings

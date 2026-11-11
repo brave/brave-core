@@ -47,27 +47,6 @@ extension Strings {
       comment: "Description for shortcuts widget on 'add widget' screen."
     )
 
-    public static let shortcutsNewTabButton = NSLocalizedString(
-      "widgets.shortcutsNewTabButton",
-      bundle: widgetBundle,
-      value: "New Tab",
-      comment: "Button to open new browser tab."
-    )
-
-    public static let shortcutsPrivateTabButton = NSLocalizedString(
-      "widgets.shortcutsPrivateTabButton",
-      bundle: widgetBundle,
-      value: "Private Tab",
-      comment: "Button to open new private browser tab."
-    )
-
-    public static let shortcutsPlaylistButton = NSLocalizedString(
-      "widgets.shortcutsPlaylistButton",
-      bundle: widgetBundle,
-      value: "Playlist",
-      comment: "Button to open video playlist window."
-    )
-
     public static let shortcutsEnterURLButton = NSLocalizedString(
       "widgets.shortcutsEnterURLButton",
       bundle: widgetBundle,
@@ -110,44 +89,6 @@ extension Strings {
       comment: "Description for Brave Shields single stat widget on 'add widget' screen."
     )
 
-    public static let searchShortcutTitle = NSLocalizedString(
-      "widgets.searchShortcutTitle",
-      bundle: widgetBundle,
-      value: "Search",
-      comment: "Description for the search option on the 'shortcuts' widget."
-    )
-
-    public static let walletShortcutTitle = NSLocalizedString(
-      "widgets.walletShortcutTitle",
-      bundle: widgetBundle,
-      value: "Brave Wallet",
-      comment: "Description for the Brave Wallet option on the 'shortcuts' widget."
-    )
-    public static let bookmarksMenuItem = NSLocalizedString(
-      "widgets.BookmarksMenuItem",
-      bundle: widgetBundle,
-      value: "Bookmarks",
-      comment: "Title for bookmarks menu item"
-    )
-    public static let historyMenuItem = NSLocalizedString(
-      "widgets.HistoryMenuItem",
-      bundle: widgetBundle,
-      value: "History",
-      comment: "Title for history menu item"
-    )
-    public static let downloadsMenuItem = NSLocalizedString(
-      "widgets.DownloadsMenuItem",
-      bundle: widgetBundle,
-      value: "Downloads",
-      comment: "Title for downloads menu item"
-    )
-    // swift-format-ignore
-    public static let QRCode = NSLocalizedString(
-      "widgets.QRCode",
-      bundle: widgetBundle,
-      value: "QR Code",
-      comment: "QR Code section title"
-    )
     public static let newsClusteringWidgetTitle = NSLocalizedString(
       "widgets.newsClusteringWidgetTitle",
       bundle: widgetBundle,
@@ -178,26 +119,6 @@ extension Strings {
       value: "Brave News",
       comment: "The name of the feature"
     )
-    public static let braveLeo = NSLocalizedString(
-      "widgets.braveLeo",
-      bundle: widgetBundle,
-      value: "Leo AI",
-      comment: "The name of the feature"
-    )
-    public static let askBrave = NSLocalizedString(
-      "widgets.askBrave",
-      bundle: widgetBundle,
-      value: "Ask Brave",
-      comment:
-        "Title for Ask Brave shortcut. Brave is the company name and should not be translated"
-    )
-    public static let braveLeoVoiceInput = NSLocalizedString(
-      "widgets.braveLeoVoiceInput",
-      bundle: widgetBundle,
-      value: "Leo Voice Input",
-      comment:
-        "Title for the Leo AI voice input shortcut. Leo is the name of a product and should not be translated"
-    )
     public static let newsUnavailableByPolicy = NSLocalizedString(
       "widgets.newsUnavailableByPolicy",
       bundle: widgetBundle,
@@ -209,6 +130,41 @@ extension Strings {
       bundle: widgetBundle,
       value: "Turned off by your organization's policy",
       comment: "Displayed on a news widget wont load due to admin policies"
+    )
+    public static let braveSearch = NSLocalizedString(
+      "widgets.braveSearch",
+      bundle: widgetBundle,
+      value: "Brave Search",
+      comment:
+        "Title for the Brave Search control. Brave is the company name and should not be translated"
+    )
+    public static let braveSearchWidgetTitle = NSLocalizedString(
+      "widgets.braveSearchWidgetTitle",
+      bundle: widgetBundle,
+      value: "Brave Search",
+      comment:
+        "Title for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated"
+    )
+    public static let braveSearchWidgetDescription = NSLocalizedString(
+      "widgets.braveSearchWidgetDescription",
+      bundle: widgetBundle,
+      value: "Search the web with Brave.",
+      comment:
+        "Description for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated"
+    )
+    public static let askBraveWidgetTitle = NSLocalizedString(
+      "widgets.askBraveWidgetTitle",
+      bundle: widgetBundle,
+      value: "Ask Brave",
+      comment:
+        "Title for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated"
+    )
+    public static let askBraveWidgetDescription = NSLocalizedString(
+      "widgets.askBraveWidgetDescription",
+      bundle: widgetBundle,
+      value: "Ask Brave a question.",
+      comment:
+        "Description for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated"
     )
   }
 }

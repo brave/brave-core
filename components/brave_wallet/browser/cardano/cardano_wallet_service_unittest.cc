@@ -25,7 +25,6 @@
 #include "brave/components/brave_wallet/common/test_utils.h"  // IWYU pragma: keep
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"  // IWYU pragma: keep
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::test::TestFuture;
@@ -114,6 +113,7 @@ TEST_F(CardanoWalletServiceUnitTest, GetBalance) {
 
   auto [balance, error] = balance_future.Take();
   EXPECT_FALSE(error);
+  ASSERT_TRUE(balance);
   EXPECT_EQ(balance->total_balance, 969750u + 2000000u + 7000000u);
 }
 
@@ -147,6 +147,7 @@ TEST_F(CardanoWalletServiceUnitTest, GetBalanceForToken) {
 
   auto [balance, error] = balance_future.Take();
   EXPECT_FALSE(error);
+  ASSERT_TRUE(balance);
   EXPECT_EQ(balance->total_balance, 12345u);
 
   cardano_wallet_service_->GetBalance(
@@ -156,6 +157,7 @@ TEST_F(CardanoWalletServiceUnitTest, GetBalanceForToken) {
 
   std::tie(balance, error) = balance_future.Take();
   EXPECT_FALSE(error);
+  ASSERT_TRUE(balance);
   EXPECT_EQ(balance->total_balance, 100u + 200u);
 
   // Lovelace balance still works.
@@ -164,6 +166,7 @@ TEST_F(CardanoWalletServiceUnitTest, GetBalanceForToken) {
 
   std::tie(balance, error) = balance_future.Take();
   EXPECT_FALSE(error);
+  ASSERT_TRUE(balance);
   EXPECT_EQ(balance->total_balance, 969750u + 2000000u + 7000000u);
 }
 
@@ -190,8 +193,8 @@ TEST_F(CardanoWalletServiceUnitTest, GetUtxos) {
   cardano_wallet_service_->GetUtxos(account_id(), utxos_future.GetCallback());
 
   auto utxos = utxos_future.Take();
-  EXPECT_TRUE(utxos.has_value());
-  EXPECT_EQ(utxos->size(), 3u);
+  ASSERT_TRUE(utxos.has_value());
+  ASSERT_EQ(utxos->size(), 3u);
 
   EXPECT_EQ(utxos->at(0).coin_value.lovelace_amount, 969750u);
   EXPECT_EQ(utxos->at(0).address_to.ToString(),
@@ -340,7 +343,7 @@ TEST_F(CardanoWalletServiceUnitTest, GetTransactionStatus) {
 TEST_F(CardanoWalletServiceUnitTest, GetUsedAddresses) {
   SetupCardanoAccount();
   auto addresses = cardano_wallet_service_->GetUsedAddresses(account_id());
-  EXPECT_EQ(addresses.size(), 1u);
+  ASSERT_EQ(addresses.size(), 1u);
   EXPECT_EQ(addresses[0]->address_string, kExternal0Address);
 }
 
@@ -372,9 +375,9 @@ TEST_F(CardanoWalletServiceUnitTest, CreateAndSignCardanoTransaction) {
 
   ASSERT_TRUE(captured_tx.has_value());
 
-  EXPECT_EQ(captured_tx->inputs().size(), 3u);
+  ASSERT_EQ(captured_tx->inputs().size(), 3u);
 
-  EXPECT_EQ(captured_tx->outputs().size(), 2u);
+  ASSERT_EQ(captured_tx->outputs().size(), 2u);
   EXPECT_EQ(captured_tx->inputs()[0].coin_value.tokens, cardano_rpc::Tokens());
 
   EXPECT_EQ(captured_tx->outputs()[0].type,
@@ -448,8 +451,8 @@ TEST_F(CardanoWalletServiceUnitTest,
 
   ASSERT_TRUE(captured_tx.has_value());
 
-  EXPECT_EQ(captured_tx->inputs().size(), 1u);
-  EXPECT_EQ(captured_tx->outputs().size(), 2u);
+  ASSERT_EQ(captured_tx->inputs().size(), 1u);
+  ASSERT_EQ(captured_tx->outputs().size(), 2u);
   EXPECT_EQ(captured_tx->inputs()[0].coin_value.tokens,
             cardano_rpc::Tokens({{GetMockTokenId("brave"), 10}}));
 

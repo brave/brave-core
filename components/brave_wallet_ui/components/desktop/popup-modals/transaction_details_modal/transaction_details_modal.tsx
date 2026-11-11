@@ -5,8 +5,8 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
+import Button from '@brave/nala/react/button'
+import Icon from '@brave/nala/react/icon'
 
 // Slices
 import {
@@ -61,7 +61,6 @@ import {
   isBridgeTransaction,
   getTransactionMemo,
 } from '../../../../utils/tx-utils'
-import { serializedTimeDeltaToJSDate } from '../../../../utils/datetime-utils'
 import { getCoinFromTxDataUnion } from '../../../../utils/network-utils'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
 import {
@@ -126,7 +125,7 @@ import {
   SellIconPlaceholder,
   BuyIconPlaceholder,
   SwapPlaceholderIcon,
-} from '../../portfolio_transaction_item/portfolio_transaction_item.style'
+} from '$wallet/page/components/virtualized_transaction_list/portfolio_transaction_item/portfolio_transaction_item.style'
 import {
   Column,
   HorizontalSpace,
@@ -615,9 +614,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                 textSize='12px'
                 textAlign='right'
               >
-                {serializedTimeDeltaToJSDate(
-                  transaction.createdTime,
-                ).toUTCString()}
+                {new Date(transaction.createdTime.msec).toUTCString()}
               </DateText>
               <NetworkNameText
                 textSize='12px'

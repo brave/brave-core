@@ -13,11 +13,13 @@
 #include "base/feature_list.h"
 #include "brave/browser/sessions/brave_session_keys.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/components/tabs/public/brave_tab_strip_collection.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "chrome/browser/sessions/session_service.h"
 #include "chrome/browser/sessions/session_service_factory.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/sessions/content/session_tab_helper.h"
@@ -26,18 +28,28 @@
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 
-TreeTabSessionManager::TreeTabSessionManager(Profile* profile,
+DEFINE_USER_DATA(TreeTabSessionManager);
+
+TreeTabSessionManager::TreeTabSessionManager(ui::UnownedUserDataHost& host,
+                                             Profile* profile,
                                              TabStripModel* tab_strip_model,
                                              SessionID session_id)
     : profile_(profile),
       tab_strip_model_(tab_strip_model),
-      session_id_(session_id) {
+      session_id_(session_id),
+      scoped_unowned_user_data_(host, *this) {
   CHECK(profile_);
   CHECK(tab_strip_model_);
   tab_strip_model_->AddObserver(this);
 }
 
 TreeTabSessionManager::~TreeTabSessionManager() = default;
+
+// static
+TreeTabSessionManager* TreeTabSessionManager::From(
+    BrowserWindowInterface* browser) {
+  return Get(browser->GetUnownedUserDataHost());
+}
 
 void TreeTabSessionManager::MaybePopulateTreeTabExtraData(
     int index,
@@ -114,6 +126,8 @@ void TreeTabSessionManager::OnTreeTabChanged(const TreeTabChange& change) {
       break;
     case TreeTabChange::Type::kNodeReparented:
       UpdateTreeTabSessionDataForNode(change.GetReparentedChange().node.get());
+      break;
+    case TreeTabChange::Type::kNodeChildrenChanged:
       break;
     case TreeTabChange::Type::kNodeWillBeDestroyed:
       // Do not clear tree data when a node is destroyed. The tree node data
@@ -283,8 +297,8 @@ void TreeTabSessionManager::RestoreTreeTabNodeCollection(
     return;  // Already correctly nested (shouldn't happen, but guard anyway).
   }
 
-  auto* current_parent = tree_coll->GetParentCollection();
-  auto owned = current_parent->MaybeRemoveCollection(tree_coll);
-  parent_collection->AddCollection(std::move(owned),
-                                   parent_collection->ChildCount());
+  auto* contents_data =
+      static_cast<BraveTabStripModel*>(tab_strip_model_)->contents_data();
+  contents_data->MoveCollectionAndNotify(tree_coll, parent_collection,
+                                         parent_collection->ChildCount());
 }

@@ -4,4 +4,19 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Core `step` module: run a subprocess as a named build step."""
 
-DEPS = ['context', 'platform']
+from dataclasses import dataclass
+
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    context,
+    platform,
+)
+
+from .api import StepApi as API
+from .test_api import StepTestApi as TEST_API
+
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    context: context.API
+    platform: platform.API

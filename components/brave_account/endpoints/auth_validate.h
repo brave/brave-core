@@ -6,18 +6,18 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINTS_AUTH_VALIDATE_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINTS_AUTH_VALIDATE_H_
 
-#include "brave/components/brave_account/endpoint_client/brave_endpoint.h"
-#include "brave/components/brave_account/endpoint_client/request_types.h"
-#include "brave/components/brave_account/endpoint_client/response.h"
 #include "brave/components/brave_account/endpoints/auth_validate_bodies.h"
 #include "brave/components/brave_account/endpoints/error_body.h"
+#include "brave/components/endpoint_client/brave_endpoint.h"
+#include "brave/components/endpoint_client/request_types.h"
+#include "brave/components/endpoint_client/response.h"
 
 namespace brave_account::endpoints {
 
 using AuthValidate = endpoint_client::BraveEndpoint<
     "accounts.bsg",
     "/v2/auth/validate",
-    endpoint_client::GET<AuthValidateRequestBody>,
+    endpoint_client::Get<AuthValidateRequestBody>,
     endpoint_client::Response<AuthValidateSuccessBody, ErrorBody>>;
 
 }  // namespace brave_account::endpoints

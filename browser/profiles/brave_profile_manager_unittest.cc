@@ -12,11 +12,12 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/test_browser_window.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -24,6 +25,7 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_utils.h"
+#include "net/base/features.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -319,7 +321,7 @@ TEST_P(BraveProfileManagerAIAgentProfileTest, GetLastOpenedProfiles) {
   // Simulate opening profiles by setting them as active in the same way
   // as profile_manager_unittest.cc
   BrowserWindowCreateParams profile1_params(regular_profile1, true);
-  std::unique_ptr<Browser> browser1(
+  std::unique_ptr<BrowserWindowInterface> browser1(
       CreateBrowserWithTestWindowForParams(std::move(profile1_params)));
 
   last_opened_profiles = profile_manager->GetLastOpenedProfiles();
@@ -329,7 +331,7 @@ TEST_P(BraveProfileManagerAIAgentProfileTest, GetLastOpenedProfiles) {
 
   // And for ai chat profile
   BrowserWindowCreateParams ai_chat_params(ai_chat_profile, true);
-  std::unique_ptr<Browser> browser_ai_chat(
+  std::unique_ptr<BrowserWindowInterface> browser_ai_chat(
       CreateBrowserWithTestWindowForParams(std::move(ai_chat_params)));
 
   last_opened_profiles = profile_manager->GetLastOpenedProfiles();
@@ -344,7 +346,7 @@ TEST_P(BraveProfileManagerAIAgentProfileTest, GetLastOpenedProfiles) {
 
   // And for profile2
   BrowserWindowCreateParams profile2_params(regular_profile2, true);
-  std::unique_ptr<Browser> browser2(
+  std::unique_ptr<BrowserWindowInterface> browser2(
       CreateBrowserWithTestWindowForParams(std::move(profile2_params)));
 
   last_opened_profiles = profile_manager->GetLastOpenedProfiles();

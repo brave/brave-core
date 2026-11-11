@@ -69,9 +69,9 @@ def _prune_caches(root: Path) -> bool:
     to reclaim. Processes deepest paths first so a parent like scripts/ is
     re-checked and removed after its own __pycache__ child is gone.
     """
-    for path in sorted(root.rglob('*'),
-                       key=lambda p: len(p.parts),
-                       reverse=True):
+    for path in sorted(
+        root.rglob('*'), key=lambda p: len(p.parts), reverse=True
+    ):
         if not path.is_dir():
             continue
         if path.name == '__pycache__':
@@ -132,8 +132,10 @@ def _link_one(name: str, src: Path, dest: Path) -> tuple[bool, bool]:
         else:
             # Warning-level so it survives -q in the sync hook.
             logging.warning(
-                '  SKIP %s — a real dir with content at %s '
-                '(left as-is)', name, dest)
+                '  SKIP %s — a real dir with content at %s (left as-is)',
+                name,
+                dest,
+            )
             return True, False
 
     dest.parent.mkdir(parents=True, exist_ok=True)
@@ -142,9 +144,9 @@ def _link_one(name: str, src: Path, dest: Path) -> tuple[bool, bool]:
         logging.debug('  copied  %s', name)
     else:
         # Relative target keeps the link valid if the checkout moves.
-        os.symlink(os.path.relpath(src, dest.parent),
-                   dest,
-                   target_is_directory=True)
+        os.symlink(
+            os.path.relpath(src, dest.parent), dest, target_is_directory=True
+        )
         logging.debug('  linked  %s', name)
     return True, True
 
@@ -216,28 +218,34 @@ def list_skills(user: bool) -> bool:
 def main() -> int:
     parser = argparse.ArgumentParser(
         description=__doc__,
-        formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('command',
-                        choices=['link', 'unlink', 'list'],
-                        nargs='?',
-                        default='link')
-    parser.add_argument('--user',
-                        action='store_true',
-                        help='Target ~/.claude/skills instead of the project '
-                        'src/brave/.claude/skills.')
-    parser.add_argument('-q',
-                        '--quiet',
-                        action='store_true',
-                        help='Only log warnings/errors (for sync hooks).')
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument(
+        'command', choices=['link', 'unlink', 'list'], nargs='?', default='link'
+    )
+    parser.add_argument(
+        '--user',
+        action='store_true',
+        help='Target ~/.claude/skills instead of the project '
+        'src/brave/.claude/skills.',
+    )
+    parser.add_argument(
+        '-q',
+        '--quiet',
+        action='store_true',
+        help='Only log warnings/errors (for sync hooks).',
+    )
     args = parser.parse_args()
 
-    logging.basicConfig(level=logging.WARNING if args.quiet else logging.INFO,
-                        format='%(message)s')
+    logging.basicConfig(
+        level=logging.WARNING if args.quiet else logging.INFO,
+        format='%(message)s',
+    )
 
     handler = {
         'link': link_skills,
         'unlink': unlink_skills,
-        'list': list_skills
+        'list': list_skills,
     }[args.command]
     return 0 if handler(args.user) else 1
 

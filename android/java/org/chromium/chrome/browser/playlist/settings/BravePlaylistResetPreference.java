@@ -19,13 +19,10 @@ public class BravePlaylistResetPreference extends Preference
         implements Preference.OnPreferenceClickListener {
     private static final String TAG = "BravePlaylistResetPreference";
 
-    private final int mPrefAccentColor;
-
     /** Constructor for BravePlaylistResetPreference. */
     public BravePlaylistResetPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        mPrefAccentColor = getContext().getColor(R.color.wallet_error_text_color);
         setOnPreferenceClickListener(this);
     }
 
@@ -33,7 +30,7 @@ public class BravePlaylistResetPreference extends Preference
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
         TextView titleView = (TextView) holder.findViewById(android.R.id.title);
-        titleView.setTextColor(mPrefAccentColor);
+        titleView.setTextAppearance(R.style.TextAppearance_Brave_PreferenceTitle_DestructiveAction);
     }
 
     @Override

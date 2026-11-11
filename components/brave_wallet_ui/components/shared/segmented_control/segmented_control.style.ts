@@ -6,12 +6,12 @@
 import styled from 'styled-components'
 import LeoSegmentedControl, {
   SegmentedControlProps,
-} from '@brave/leo/react/segmentedControl'
+} from '@brave/nala/react/segmentedControl'
 
 // Shared Styles
 import {
   layoutSmallWidth, //
-} from '../../desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const StyledWrapper = styled.div<{ maxWidth?: string }>`
   display: flex;

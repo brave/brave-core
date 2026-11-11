@@ -16,10 +16,10 @@ import os
 import sys
 
 from lib.helpers import BRAVE_REPO, BRAVE_CORE_REPO
-from lib.github import (GitHub, parse_user_logins)
+from lib.github import GitHub, parse_user_logins
 
 
-class TriageConfig():
+class TriageConfig:
     is_verbose = False
     is_dryrun = False
     github_token = None
@@ -44,9 +44,9 @@ class TriageConfig():
             self.github_token = os.environ.get('GITHUB_TOKEN')
 
             # team report
-            self.parsed_team = parse_user_logins(self.github_token,
-                                                 args.team,
-                                                 verbose=self.is_verbose)
+            self.parsed_team = parse_user_logins(
+                self.github_token, args.team, verbose=self.is_verbose
+            )
             # stale script
             self.leave_comment = args.leave_comment
             self.close_issue = args.close_issue
@@ -72,8 +72,10 @@ class TriageConfig():
             return 0
         except Exception as e:
             print(
-                '[ERROR] error returned from GitHub API while initializing ' +
-                'config: ' + str(e))
+                '[ERROR] error returned from GitHub API while initializing '
+                + 'config: '
+                + str(e)
+            )
             return 1
 
 
@@ -82,80 +84,97 @@ config = TriageConfig()
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='automation for triaging `brave-browser` issues')
+        description='automation for triaging `brave-browser` issues'
+    )
 
     # team report
     parser.add_argument(
         '--team',
         help='run the "team" script. Comma separated list of GitHub logins',
-        default=None)
+        default=None,
+    )
 
     # stale script
-    parser.add_argument('--stale',
-                        help='run the "stale" script',
-                        action='store_true',
-                        default=None)
-    parser.add_argument('--leave-comment',
-                        help='leave a comment when running "stale" script',
-                        action='store_true',
-                        default=False)
-    parser.add_argument('--close-issue',
-                        help='close issue when running "stale" script',
-                        action='store_true',
-                        default=False)
-    parser.add_argument('--ignore-comments',
-                        help='consider issues which have more than 0 comments',
-                        action='store_true',
-                        default=False)
+    parser.add_argument(
+        '--stale',
+        help='run the "stale" script',
+        action='store_true',
+        default=None,
+    )
+    parser.add_argument(
+        '--leave-comment',
+        help='leave a comment when running "stale" script',
+        action='store_true',
+        default=False,
+    )
+    parser.add_argument(
+        '--close-issue',
+        help='close issue when running "stale" script',
+        action='store_true',
+        default=False,
+    )
+    parser.add_argument(
+        '--ignore-comments',
+        help='consider issues which have more than 0 comments',
+        action='store_true',
+        default=False,
+    )
     parser.add_argument(
         '--ignore-priority',
         help='consider issues which already have priority label',
         action='store_true',
-        default=False)
+        default=False,
+    )
     parser.add_argument(
         '--limit',
         help='maximum number of issues to modify (if applicable)',
-        default=None)
+        default=None,
+    )
     parser.add_argument(
         '--months',
-        help=
-        'number of months without activity before an issue is considered stale '
+        help='number of months without activity before an issue is considered stale '
         + '(default: 36)',
-        default=None)
+        default=None,
+    )
     parser.add_argument(
         '--ghost-only',
-        help=
-        'only consider issues created by deleted accounts when running "stale" '
+        help='only consider issues created by deleted accounts when running "stale" '
         + 'script',
         action='store_true',
-        default=False)
+        default=False,
+    )
     parser.add_argument(
         '--issues-expected',
-        help='minimum number of stale issues to collect before processing ' +
-        '(default: 30)',
-        default=None)
+        help='minimum number of stale issues to collect before processing '
+        + '(default: 30)',
+        default=None,
+    )
     parser.add_argument(
         '--max-comments',
-        help='maximum number of comments an issue can have to be considered ' +
-        'stale (default: 9)',
-        default=None)
+        help='maximum number of comments an issue can have to be considered '
+        + 'stale (default: 9)',
+        default=None,
+    )
     parser.add_argument(
         '--max-reactions',
         help='maximum number of reactions an issue can have to be considered '
         + 'stale (default: 4)',
-        default=None)
+        default=None,
+    )
 
     # general
-    parser.add_argument('-v',
-                        '--verbose',
-                        action='store_true',
-                        help='prints the output of the GitHub API calls')
+    parser.add_argument(
+        '-v',
+        '--verbose',
+        action='store_true',
+        help='prints the output of the GitHub API calls',
+    )
     parser.add_argument(
         '-n',
         '--dry-run',
         action='store_true',
-        help=
-        'don\'t perform any changes; just show which actions would be taken')
+        help='don\'t perform any changes; just show which actions would be taken',
+    )
 
     return parser.parse_args()
 
@@ -166,8 +185,9 @@ def get_issues_for_team_member(login):
         get_data = {
             'q': 'repo:' + BRAVE_REPO + ' is:issue is:open assignee:' + login
         }
-        response = GitHub(
-            config.github_token).search().issues().get(params=get_data)
+        response = (
+            GitHub(config.github_token).search().issues().get(params=get_data)
+        )
         total_count = int(response['total_count'])
     except Exception:
         # this can happen if account is set as private
@@ -178,9 +198,11 @@ def get_issues_for_team_member(login):
         total_count = len(response)
         # TODO: put count of P1 and P2 issues!
     print(
-        '- ' + str(total_count) +
-        ' issues assigned. https://github.com/brave/brave-browser/issues?q=is%3Aissue%20state%3Aopen%20assignee%3A'
-        + login)
+        '- '
+        + str(total_count)
+        + ' issues assigned. https://github.com/brave/brave-browser/issues?q=is%3Aissue%20state%3Aopen%20assignee%3A'
+        + login
+    )
 
 
 def get_prs_for_team_member(login):
@@ -189,8 +211,9 @@ def get_prs_for_team_member(login):
         get_data = {
             'q': 'repo:' + BRAVE_CORE_REPO + ' is:pr is:open assignee:' + login
         }
-        response = GitHub(
-            config.github_token).search().issues().get(params=get_data)
+        response = (
+            GitHub(config.github_token).search().issues().get(params=get_data)
+        )
         total_count = int(response['total_count'])
     except Exception:
         # This condition can be hit if the GitHub account is set as private.
@@ -199,9 +222,12 @@ def get_prs_for_team_member(login):
         repo = GitHub(config.github_token).repos(BRAVE_CORE_REPO)
         response = repo.issues().get(params=get_data)
         total_count = len(response)
-    print('- ' + str(total_count) +
-          ' open PRs. https://github.com/brave/brave-core/pulls/assigned/' +
-          login)
+    print(
+        '- '
+        + str(total_count)
+        + ' open PRs. https://github.com/brave/brave-core/pulls/assigned/'
+        + login
+    )
 
 
 def get_stale_issues(page=1):
@@ -210,11 +236,11 @@ def get_stale_issues(page=1):
         'sort': 'updated',
         'direction': 'asc',
         'per_page': 100,
-        'page': page
+        'page': page,
     }
     repo = GitHub(config.github_token).repos(BRAVE_REPO)
 
-    get_headers = dict()
+    get_headers = {}
     response = repo.issues().get(params=get_data, headers=get_headers)
 
     link_header = get_headers['ResponseHeaders']['Link']
@@ -227,25 +253,33 @@ def get_stale_issues(page=1):
     if cutoff_month <= 0:
         cutoff_month += 12
         cutoff_year -= 1
-    cutoff_day = min(now.day,
-                     calendar.monthrange(cutoff_year, cutoff_month)[1])
-    cutoff_date = now.replace(year=cutoff_year,
-                              month=cutoff_month,
-                              day=cutoff_day)
+    cutoff_day = min(now.day, calendar.monthrange(cutoff_year, cutoff_month)[1])
+    cutoff_date = now.replace(
+        year=cutoff_year, month=cutoff_month, day=cutoff_day
+    )
 
     for issue in response:
         # Search only issues opened by ghost (deleted account).
         if config.ghost_only:
             if issue['user'] is not None and issue['user']['login'] != 'ghost':
-                print('[INFO] Issue ' + str(issue['number']) +
-                      ' has a valid author (not ghost account); skipping.' +
-                      issue['html_url'])
+                print(
+                    '[INFO] Issue '
+                    + str(issue['number'])
+                    + ' has a valid author (not ghost account); skipping.'
+                    + issue['html_url']
+                )
                 continue
         # By default, skip any issues with comments.
         # Override by providing --ignore-comments
         if not config.ignore_comments and issue['comments'] > 0:
-            print('[INFO] Issue ' + str(issue['number']) + ' has comments (' +
-                  str(issue['comments']) + '); skipping.' + issue['html_url'])
+            print(
+                '[INFO] Issue '
+                + str(issue['number'])
+                + ' has comments ('
+                + str(issue['comments'])
+                + '); skipping.'
+                + issue['html_url']
+            )
             continue
         # By default, skip any issues with priority set.
         # Override by providing --ignore-priority
@@ -258,47 +292,73 @@ def get_stale_issues(page=1):
                     priority_found = label['name']
                     break
             if not can_add_issue:
-                print('[INFO] Issue ' + str(issue['number']) +
-                      ' has a priority label on it (' + priority_found +
-                      '); skipping. ' + issue['html_url'])
+                print(
+                    '[INFO] Issue '
+                    + str(issue['number'])
+                    + ' has a priority label on it ('
+                    + priority_found
+                    + '); skipping. '
+                    + issue['html_url']
+                )
                 continue
         # safeguard: Don't triage issues with too many comments.
         if issue['comments'] > config.max_comments:
-            print('[INFO] Skipping issue ' + str(issue['number']) +
-                  ' as it has more than ' + str(config.max_comments) +
-                  ' comments. ' + issue['html_url'])
+            print(
+                '[INFO] Skipping issue '
+                + str(issue['number'])
+                + ' as it has more than '
+                + str(config.max_comments)
+                + ' comments. '
+                + issue['html_url']
+            )
             continue
         # safeguard: Don't triage issues with too many reactions.
         if issue['reactions']['total_count'] > config.max_reactions:
-            print('[INFO] Skipping issue ' + str(issue['number']) +
-                  ' as it has more than ' + str(config.max_reactions) +
-                  ' reactions. ' + issue['html_url'])
+            print(
+                '[INFO] Skipping issue '
+                + str(issue['number'])
+                + ' as it has more than '
+                + str(config.max_reactions)
+                + ' reactions. '
+                + issue['html_url']
+            )
             continue
         # Label safeguards:
         skip_issue = False
         for label in issue['labels']:
             # Don't close P1/P2 issues
             if label['name'] in ['priority/P1', 'priority/P2']:
-                print('[INFO] Skipping issue as it\'s flagged as P1 or P2. ' +
-                      issue['html_url'])
+                print(
+                    '[INFO] Skipping issue as it\'s flagged as P1 or P2. '
+                    + issue['html_url']
+                )
                 skip_issue = True
                 break
             # don't close code health issues
             if label['name'] in ['dev-concern', 'ci-concern']:
                 skip_issue = True
-                print('[INFO] Skipping issue as it\'s a code health issue. ' +
-                      issue['html_url'])
+                print(
+                    '[INFO] Skipping issue as it\'s a code health issue. '
+                    + issue['html_url']
+                )
                 break
         if skip_issue:
             continue
 
-        issue_updated_at = datetime.fromisoformat(issue['updated_at'].replace(
-            "Z", "+00:00"))
+        issue_updated_at = datetime.fromisoformat(
+            issue['updated_at'].replace("Z", "+00:00")
+        )
         if issue_updated_at < cutoff_date:
             stale_issues.append(issue['number'])
         if config.is_verbose:
-            print('[INFO] ' + issue['title'] + ' (' + str(issue['comments']) +
-                  ' comments) ' + issue['html_url'])
+            print(
+                '[INFO] '
+                + issue['title']
+                + ' ('
+                + str(issue['comments'])
+                + ' comments) '
+                + issue['html_url']
+            )
 
     return stale_issues, has_pages_remaining
 
@@ -311,10 +371,17 @@ def process_stale_issue(issue_number):
     patch_data = {'labels': []}
 
     # Add the stale label, remove specific labels if closing
-    labels_to_remove = {
-        'priority/P3', 'priority/P4', 'priority/P5', 'help wanted',
-        'good first issue'
-    } if config.close_issue else set()
+    labels_to_remove = (
+        {
+            'priority/P3',
+            'priority/P4',
+            'priority/P5',
+            'help wanted',
+            'good first issue',
+        }
+        if config.close_issue
+        else set()
+    )
     for label in response['labels']:
         if label['name'] not in labels_to_remove:
             patch_data['labels'].append(label['name'])
@@ -338,35 +405,54 @@ def process_stale_issue(issue_number):
         if config.is_dryrun:
             print('- Would leave comment')
             if config.is_verbose:
-                print('[INFO] would call `repo.issues(' + str(issue_number) +
-                      ').comments.post(' + str(post_data) + ')`')
+                print(
+                    '[INFO] would call `repo.issues('
+                    + str(issue_number)
+                    + ').comments.post('
+                    + str(post_data)
+                    + ')`'
+                )
         else:
             print('- Leaving comment')
             if config.is_verbose:
-                print('[INFO] calling `repo.issues(' + str(issue_number) +
-                      ').comments.post(' + str(post_data) + ')`')
+                print(
+                    '[INFO] calling `repo.issues('
+                    + str(issue_number)
+                    + ').comments.post('
+                    + str(post_data)
+                    + ')`'
+                )
             response = repo.issues(issue_number).comments.post(data=post_data)
 
     if config.is_dryrun:
         print('- Would add stale label')
         if config.close_issue:
             removed = labels_to_remove & {
-                label['name']
-                for label in response['labels']
+                label['name'] for label in response['labels']
             }
             if removed:
                 print('- Would remove labels: ' + ', '.join(sorted(removed)))
             print('- Would close issue')
         if config.is_verbose:
-            print('[INFO] would call `repo.issues(' + str(issue_number) +
-                  ').patch(' + str(patch_data) + ')`')
+            print(
+                '[INFO] would call `repo.issues('
+                + str(issue_number)
+                + ').patch('
+                + str(patch_data)
+                + ')`'
+            )
         return
 
     # Update the issue
     try:
         if config.is_verbose:
-            print('[INFO] calling `repo.issues(' + str(issue_number) +
-                  ').patch(' + str(patch_data) + ')`')
+            print(
+                '[INFO] calling `repo.issues('
+                + str(issue_number)
+                + ').patch('
+                + str(patch_data)
+                + ')`'
+            )
         response = repo.issues(issue_number).patch(data=patch_data)
         print('- Added stale label')
         if config.close_issue:
@@ -380,7 +466,6 @@ def main():
     if args.verbose:
         print('[INFO] args: ' + str(args))
 
-    global config
     result = config.initialize(args)
     if result != 0:
         return result
@@ -404,16 +489,28 @@ def main():
         page = 1
         issues, has_pages_remaining = get_stale_issues()
         issues_found += len(issues)
-        print('(page 1) Got ' + str(len(issues)) + ' issues (' +
-              str(issues_found) + ' total).\n')
+        print(
+            '(page 1) Got '
+            + str(len(issues))
+            + ' issues ('
+            + str(issues_found)
+            + ' total).\n'
+        )
 
         # Code will continue making requests until it finds the minimum number
         # of issues or there are no more result pages.
         while issues_found < config.issues_expected and has_pages_remaining:
             page = page + 1
             more_issues, has_pages_remaining = get_stale_issues(page)
-            print('(page ' + str(page) + ') Got ' + str(len(more_issues)) +
-                  ' more issues (' + str(issues_found) + ' total).\n')
+            print(
+                '(page '
+                + str(page)
+                + ') Got '
+                + str(len(more_issues))
+                + ' more issues ('
+                + str(issues_found)
+                + ' total).\n'
+            )
             issues_found += len(more_issues)
             issues += more_issues
 

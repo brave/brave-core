@@ -1,0 +1,13 @@
+diff --git a/extensions/renderer/bindings/api_binding_util.cc b/extensions/renderer/bindings/api_binding_util.cc
+index 8ce0b539c861c7e51e3697d1ec15cb4d38094f15..abb4a0016eab439ca7eaf0f198ed14a485d0d316 100644
+--- a/extensions/renderer/bindings/api_binding_util.cc
++++ b/extensions/renderer/bindings/api_binding_util.cc
+@@ -148,7 +148,7 @@ std::string_view GetPlatformString() {
+   return "mac";
+ #elif BUILDFLAG(IS_WIN)
+   return "win";
+-#elif BUILDFLAG(IS_DESKTOP_ANDROID)
++#elif BUILDFLAG(IS_ANDROID)
+   return "desktop_android";
+ #else
+   NOTREACHED();

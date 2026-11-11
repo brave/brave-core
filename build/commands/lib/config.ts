@@ -10,7 +10,7 @@ import assert from 'node:assert'
 import rootDir from './rootDir.cjs'
 import EnvConfig from './envConfig.ts'
 import * as Log from './log.ts'
-import util from './util.js'
+import util from './util.ts'
 import { isCI, isTeamcity } from './ciDetect.ts'
 import type * as buildOptions from './buildOptions.ts'
 
@@ -30,6 +30,7 @@ type UpdateOptions = buildOptions.BuildDirOptions
   & buildOptions.NinjaOptions & {
     build_config?: string | undefined
     gclient_verbose?: boolean | undefined
+    lean_sync?: boolean | undefined
   }
 
 const validTargetOSValues = ['android', 'ios', 'linux', 'mac', 'win'] as const
@@ -59,6 +60,11 @@ export class Config {
   gclientFile: string
   gclientVerbose: boolean
   disableGclientConfigUpdate: boolean
+  gerritMirrorsUser: string | undefined
+  gerritMirrorGitConfig: string
+  leanSync: boolean
+  // `quiet` in .env: the `--quiet`/`--no-quiet` default, AI agent or not.
+  quiet: boolean | undefined
   gclientGlobalVars: Record<string, any>
   targetArch: string
   targetEnvironment: string | undefined
@@ -169,6 +175,14 @@ export class Config {
       ['disable_gclient_config_update'],
       false,
     )
+    this.gerritMirrorsUser =
+      process.env.BRAVE_USE_GERRIT_MIRRORS_USER || undefined
+    this.gerritMirrorGitConfig = path.join(
+      this.braveCoreDir,
+      '.gitconfig_gerrit_mirror_redirect',
+    )
+    this.leanSync = envConfig.getBoolean(['lean_sync'], false)
+    this.quiet = envConfig.getBoolean(['quiet'])
     this.gclientGlobalVars = envConfig.getMergedObject([
       'gclient',
       'global_vars',
@@ -287,6 +301,7 @@ export class Config {
             'reapi_instance': 'default',
           }
         : {}),
+      ...(this.is_msan ? { 'checkout_instrumented_libraries': true } : {}),
       ...envConfig.getMergedObject(['projects', 'chrome', 'custom_vars']),
     }
 
@@ -609,6 +624,10 @@ export class Config {
       this.gclientVerbose = options.gclient_verbose
     }
 
+    if (options.lean_sync) {
+      this.leanSync = options.lean_sync
+    }
+
     if (options.ignore_compile_failure) {
       this.ignore_compile_failure = true
     }
@@ -685,6 +704,14 @@ export class Config {
     assert(!isCI)
   }
 
+  // Points GIT_CONFIG_GLOBAL at the generated mirror git config, so every
+  // process spawned from here on fetches through our Gerrit mirrors. Only
+  // called by sync after generating the file, so the generator never runs with
+  // GIT_CONFIG_GLOBAL pointing at its own output.
+  applyGerritMirrorsGitConfig() {
+    process.env.GIT_CONFIG_GLOBAL = this.gerritMirrorGitConfig
+  }
+
   update(options: UpdateOptions) {
     if (this.use_no_gn_gen) {
       this.fromGnArgs(options)
@@ -756,10 +783,7 @@ export class Config {
       ['brave', 'script'],
       ['tools', 'grit', 'grit', 'extern'],
       ['brave', 'vendor', 'requests'],
-      ['brave', 'third_party', 'cryptography'],
-      ['brave', 'third_party', 'macholib'],
       ['build'],
-      ['third_party', 'depot_tools'],
     ]
     pythonPaths.forEach((p) => {
       env = this.addPythonPathToEnv(env, path.join(this.srcDir, ...p))

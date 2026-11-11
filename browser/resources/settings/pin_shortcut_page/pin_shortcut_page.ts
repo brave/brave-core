@@ -7,7 +7,7 @@ import '../settings_shared.css.js'
 import '../settings_vars.css.js'
 
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import {WebUiListenerMixin} from '/shared/settings/web_ui_listener_mixin.js'
 import {SettingsPinShortcutPageBrowserProxyImpl} from './pin_shortcut_page_browser_proxy.js'
 import {getTemplate} from './pin_shortcut_page.html.js'
 

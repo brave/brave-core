@@ -3,18 +3,14 @@
 <translationbundle lang="te">
 <translation id="1751249301761991853">వ్యక్తిగత</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
-<translation id="7561196759112975576">ఎప్పుడూ</translation>
-<translation id="7961015016161918242">ఎప్పుడూ లేదు</translation>
 <translation id="8507663778530179003">అన్ని బుక్‌మార్క్ బటన్ చూపించు</translation>
 <translation id="9018648632047670921">అన్ని బుక్‌మార్క్ బటన్ చూపించు</translation>
 <translation id="7630214457764713113">సజీవ లింక్‌లను కాపీ చేయండి</translation>
 <translation id="7973394300052703468">కొత్త &amp;అజ్ఞాత విండో</translation>
 <translation id="4615489450165434530">ఒక విఫలమైన సైట్ నివేదించండి</translation>
 <translation id="8097438084542431276">సజీవ లింక్‌లను కాపీ చేయండి</translation>
-<translation id="4678672101289648246">కొత్త టాబ్ పేజీపై మాత్రమే</translation>
 <translation id="6516243500644829484">కొత్త &amp;అజ్ఞాత విండో</translation>
 <translation id="1209739344687072997">బ్రోకెన్ సైట్ నివేదిక</translation>
-<translation id="8294286161128352783">కొత్త టాబ్ పేజీపై మాత్రమే</translation>
 <translation id="6406506848690869874">Sync</translation>
 <translation id="1544192797660353713">వాలెట్</translation>
 <translation id="2361906291514218784">Leo AI</translation>
@@ -112,12 +108,17 @@
 <translation id="3114478090884951591">కనిపించే ప్రాంతం</translation>
 <translation id="2026367923222947564">పూర్తి పేజీ</translation>
 <translation id="4218885227032158909">ఎంచుకున్న ప్రాంతం</translation>
+<translation id="2586386106930448447">స్క్రీన్‌షాట్ ప్రివ్యూ</translation>
+<translation id="7514365320538308">డౌన్లోడ్</translation>
+<translation id="2743387203779672305">క్లిప్‌బోర్డ్ కు కాపీ చేయండి</translation>
 <translation id="4928988318462976765">వెబ్ ఎక్స్టెన్షన్స్ స్టోర్</translation>
 <translation id="9181207987584064303">వెబ్ ఎక్స్టెన్షన్స్ స్టోర్ లో వీక్షించండి</translation>
 <translation id="3161744659507801211">హెచ్చరిక: Brave పొడిగింపులు మీ బ్రౌజింగ్ చరిత్రను రికార్డు చేయడాన్ని నివారించలేరు.</translation>
 <translation id="2162109630536601963">ఈ పొడిగింపు నెట్‌వర్క్ రిక్వెస్టులు చేస్తే, అవి టార్ లేదా ప్రైవేట్ మోడ్ ద్వారా చేయబడ్డాయి.</translation>
 <translation id="2725327089319971976">ఈ పొడిగింపును ప్రైవేట్ మోడ్ మరియు టార్ మోడ్‌లో అచేతనం చేయడానికి, ఈ ఎంపికను అవుగొల్పండి.</translation>
 <translation id="438106944087726695">Brave-hosted</translation>
+<translation id="2265651566599167057">Socket ద్వారా మాల్‌వేర్‌గా ఫ్లాగ్ చేయబడింది.</translation>
+<translation id="2607395470596637070">Brave‌లోని Socket మిమ్మల్ని ఎలా రక్షిస్తుందో మరింత తెలుసుకోండి</translation>
 <translation id="3371343170427636147">Brave బ్రౌజర్ Nightly Apps</translation>
 <translation id="4097979995947147464">Brave బ్రౌజర్ Beta Apps</translation>
 <translation id="8303432794159193481">Brave బ్రౌజర్ Dev Apps</translation>
@@ -192,7 +193,9 @@
 <translation id="5977931179408079967">స్థానం</translation>
 <translation id="3790384768741064842">కుడివైపు చూపించు</translation>
 <translation id="7444424316576061724">ఎడమవైపు చూపించు</translation>
+<translation id="7561196759112975576">ఎప్పుడూ</translation>
 <translation id="7060352228894039151">మౌస్ ఓవర్ లో</translation>
+<translation id="7961015016161918242">ఎప్పుడూ లేదు</translation>
 <translation id="8981254605840444865">సెట్టింగ్‌లు చూపించు</translation>
 <translation id="59174027418879706">ప్రారంభించబడింది</translation>
 <translation id="4176463684765177261">ఆపివేయబడింది</translation>
@@ -213,11 +216,12 @@
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 డోమైన్లు</translation>
 <translation id="1458638489455808030">Wayback మెషిన్</translation>
-<translation id="8039999492770627305">క్షమించాలి, ఈ పేజీ లేద.</translation>
-<translation id="208311458690012764">శేషమైన వెర్షన్ను లోడ్ చేయడంలో విఫలమైంది</translation>
-<translation id="4515057635283480525">వర్తిస్తున్న వెర్షన్ Wayback యంత్రం ఉనికిలో ఉందోలేదో చెక్ చేయాలా?</translation>
-<translation id="8252977752585110703">Wayback యంత్రం ఈ సైట్ యొక్క సజీవ వెర్షన్ను కనుగొనలేదు.</translation>
-<translation id="8748778103033196270">శేష ఉన్న వెర్షన్ను చెక్ చేయండి</translation>
+<translation id="8039999492770627305">పేజీ లేదు</translation>
+<translation id="208311458690012764">ఆర్కైవ్ చేసిన వెర్షన్ ఏదీ అందుబాటులో లేదు</translation>
+<translation id="4515057635283480525">ఇంటర్నెట్ ఆర్కైవ్ చాలా వెబ్ పేజీల గత వెర్షన్‌లను సేవ్ చేస్తుంది. ఈ పేజీ కోసం ఆర్కైవ్‌లో వెతకాలనుకుంటున్నారా?</translation>
+<translation id="8252977752585110703">క్షమించండి, మేము ఇంటర్నెట్ ఆర్కైవ్‌ను తనిఖీ చేసాము మరియు దానికి ఈ పేజీ ఆర్కైవ్ చేసిన వెర్షన్ లేదు.</translation>
+<translation id="8748778103033196270">ఆర్కైవ్‌లో చూడండి</translation>
+<translation id="7369915833843501413">ఆర్కైవ్‌లో చూస్తోంది</translation>
 <translation id="191143826155037518">Brave ని <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) క్రింద మీకు అందుకొనిచ్చారు మరియు అనుకూల్యముగా ఉన్న మరెన్నో ఇతర లైసెన్స్‌ల క్రింద <ph name="BEGIN_LINK_OSS"/>ఓపెన్ సోర్స్ సాఫ్ట్వేర్<ph name="END_LINK_OSS"/> ని కలిగి ఉన్నది.
  మీరు <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>డౌన్లోడ్ మరియు కాపీ రాయడం ఎలానో తెలుసుకొనుటకొరకు మార్గదర్శనాలను<ph name="END_LINK_BUILD_INSTRUCTIONS"/> చదవవచ్చు దాంట్లో ఉపయోగంచిన స్పెసిఫిక్<ph name="BEGIN_LINK_SOURCE_CODE"/>తనిఖీ కోడ్‌ను<ph name="END_LINK_SOURCE_CODE"/> కూడా చదవవచ్చు.</translation>
 <translation id="4474155171896946103">అన్ని టాబ్‌లను బుక్‌మార్క్ చెయ్యి...</translation>
@@ -364,10 +368,11 @@
 <translation id="6847541693235449912">వెళ్ళు</translation>
 <translation id="2079545284768500474">చర్య రద్దు</translation>
 <translation id="1533980864758658574"><ph name="TOPIC"/> కొరకు కొత్త విండో సృష్టించబడింది</translation>
+<translation id="530437350080973527">ఆ అంశానికి సరిపోలే ట్యాబ్‌లు లేవు. దీన్ని వేరే విధంగా వివరించడానికి ప్రయత్నించండి.</translation>
 <translation id="7985042437720138349">మీ వద్ద ఉన్న టాబ్‌ల గురించి సమాచారం లోను పంపుతుంది, Brave యొక్క AI-చే ప్రేరేపిత బ్రౌజర్ సహాయకుడు.</translation>
 <translation id="6165508094623778733">మరింత తెలుసుకోండి</translation>
 <translation id="7557539689487606886">ప్రీమియం పొందండి</translation>
-<translation id="1035309871698658326">తెరిచినప్పుడు, అది ఆటోమాటిక్‌గా అన్ని ప్రైవేట్ కాని ట్యాబ్‌ల శీర్షికలు మరియు మూలాలను లియోకు పంపుతుంది వాటిని వర్గీకరించడానికి.</translation>
+<translation id="7103144720752576727">తెరిచినప్పుడు, ఇది అన్ని నాన్-ప్రైవేట్ ట్యాబ్‌ల శీర్షికలు మరియు ఆరిజిన్‌ను వర్గీకరించడానికి స్వయంచాలకంగా Leoకు పంపుతుంది. మీరు పేజీ కంటెంట్‌ను పంపడాన్ని కూడా ఆన్ చేస్తే, ప్రతి ట్యాబ్ యొక్క టెక్స్ట్ యొక్క చిన్న సారాంశాలు కూడా పంపబడతాయి.</translation>
 <translation id="3435896845095436175">ప్రారంభించండి</translation>
 <translation id="9031526219709160683">Brave ఈ సైట్ యొక్క గోప్యతా సెట్టింగ్‌లను ఆప్టిమైజ్ చేయడంలో మీకు సహాయం చేయగలదు. Brave యొక్క సూచనలను సమీక్ష చేయాలనుకుంటున్నారా?</translation>
 <translation id="5739953050957336013">సూచనలను సమీక్ష చేయండి</translation>
@@ -382,8 +387,6 @@
 <translation id="8570228839666486945">డివైస్‌పై AI</translation>
 <translation id="7447041379556102185">పరికరంలో స్పీచ్ రికగ్నిషన్</translation>
 <translation id="3456536577668402695">మీ శోధనలు మరియు పేజీ కంటెంట్‌లు ఈ పరికరంలో ప్రాసెస్ చేయబడతాయి. ఏదీ Brave కి పంపబడదు లేదా మానవ సమీక్షకులు చూడరు.</translation>
-<translation id="4751537843966994505">సెమాంటిక్ హిస్టరీ సెర్చ్</translation>
-<translation id="6175973371938222040">మీరు స్థానికంగా సందర్శించే పేజీలను ఇండెక్స్ చేయండి, తద్వారా మీరు మీ హిస్టరీని అర్థం ద్వారా శోధించవచ్చు. అన్ని ప్రాసెసింగ్ ఈ పరికరంలోనే ఉంటుంది.</translation>
 <translation id="9156965752763025780">మీ మార్పులు మీరు Braveని మరుసటిసారి ప్రారంభించినప్పుడు ప్రభావాన్ని చూపుతాయి.</translation>
 <translation id="7179921470347911571">ఇప్పుడే మళ్లీ ప్రారంభించు</translation>
 <translation id="1426410128494586442">అవును</translation>
@@ -421,6 +424,24 @@
 <translation id="4328541188421002379">మీ కంటైనర్‌కు పని లేదా వ్యక్తిగత వంటి పేరు ఇవ్వండి</translation>
 <translation id="4976989127264491396">లోపం: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">కంటైనర్ కనుగొనబడలేదు</translation>
+<translation id="5831840958001766835">అంశాన్ని మళ్లీ క్రమబద్ధీకరించండి. తరలించడానికి బాణం కీలను ఉపయోగించండి.</translation>
+<translation id="6055154402239241620">ట్రాఫిక్ నియంత్రణ</translation>
+<translation id="8134521925475508805">మీ బ్రౌజింగ్ సెషన్‌ల మధ్య వేర్పాటును సృష్టిస్తూ, నిర్దిష్ట సందర్భంలో స్వయంచాలకంగా తెరవడానికి నిర్దిష్ట సైట్‌లను కాన్ఫిగర్ చేయండి. <ph name="BEGIN_LINK"/>మరింత తెలుసుకోండి<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">ట్రాఫిక్ నియంత్రణను ప్రారంభించండి</translation>
+<translation id="1358255827354528344">కొత్త నియమాన్ని జోడించండి</translation>
+<translation id="7183128985801806752">కొత్త ట్రాఫిక్ నియంత్రణ నియమం</translation>
+<translation id="2474694032500407328">ట్రాఫిక్ నియంత్రణ నియమాన్ని సవరించండి</translation>
+<translation id="5543417389274097206">నియమాన్ని సృష్టించండి</translation>
+<translation id="6532106788206463496">మార్పులను సేవ్ చేయండి</translation>
+<translation id="1172800769374812685">నియమాన్ని తొలగించండి</translation>
+<translation id="2389682807835777591">మీరు ఖచ్చితంగా <ph name="RULE_LABEL"/> నియమాన్ని తొలగించాలనుకుంటున్నారా?</translation>
+<translation id="4853129331778360252">నిర్దిష్ట బ్రౌజింగ్ సందర్భంలో నిర్వహించడానికి మరియు ఎల్లప్పుడూ తెరవడానికి URLలను నమోదు చేయండి.</translation>
+<translation id="1173480005453148926">నిర్వహించాల్సిన URLలు</translation>
+<translation id="6217532416180299470">ట్రాఫిక్ నియంత్రణతో నిర్వహించడానికి URLలను నమోదు చేయండి</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> సైట్ మరియు దాని సబ్‌డొమైన్‌లతో సరిపోలుతుంది; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> ఖచ్చితమైన సైట్‌తో సరిపోలుతుంది; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> అన్ని సైట్‌లతో సరిపోలుతుంది; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> అనేది వ్యాఖ్య.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (మరియు మరో <ph name="COUNT"/> URLలు)</translation>
+<translation id="3700798663085748181">నియమాన్ని ప్రారంభించండి</translation>
+<translation id="2967480878853054068">URL ఫిల్టర్ చెల్లదు</translation>
 <translation id="2263346047290834619">ట్రీ టాబ్లను ఉపయోగించండి</translation>
 <translation id="5860254591544742609">పేరుతిట్టిని చూపించు</translation>
 <translation id="4691131445504068802">చిన్నదిగా మార్చినప్పుడు పూర్తిగా మరచివేయి</translation>
@@ -456,10 +477,6 @@
 <translation id="7310387888625228830">Leo AI అసిస్టెంట్</translation>
 <translation id="5222974844674487962">Brave News బటన్ చూపించు</translation>
 <translation id="2085436423511121572">Leo AI బటన్ చూపించు</translation>
-<translation id="6156323911414505561">బుక్‌మార్క్‌ల పట్టీని చూపు</translation>
-<translation id="4054323497808446566">బుక్‌మార్క్ బార్ అన్ని పేజీలలో కనిపిస్తుంది</translation>
-<translation id="8693858092251192712">బుక్‌మార్క్ బార్ కొత్త టాబ్ పేజీ తప్పా అన్ని పేజీలలో దాగిపోతుంది</translation>
-<translation id="7158817046543187970">బుక్‌మార్క్ బార్ అన్ని పేజీలలో దాగిపోతుంది</translation>
 <translation id="3416468988018290825">పూర్తి URLలను ఎల్లప్పుడూ చూపించు</translation>
 <translation id="5529693968082667490">టాబ్ శోధన బటన్ చూపించు</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -528,7 +545,6 @@
 <translation id="6745592621698551453">ఇప్పుడే నవీకరించు</translation>
 <translation id="5334844597069022743">మూలాన్ని వీక్షించండి</translation>
 <translation id="4720556299488643018">Unsubscribe</translation>
-<translation id="6532106788206463496">మార్పులను సేవ్ చేయండి</translation>
 <translation id="4516904298421534459">ఫిల్టర్ జాబితాలు</translation>
 <translation id="4435215931544457255">జాబితాలో చాలా ప్రాచుర్యం పొందిన కమ్యూనిటీ జాబితాలు. చాలా ఫిల్టర్లు ఉపయోగించడం బ్రౌజింగ్ వేగాన్ని తగ్గిస్తుంది.</translation>
 <translation id="802154636333426148">డౌన్‌లోడ్ విఫలమైంది</translation>
@@ -592,6 +608,8 @@
 <translation id="5825943197137337319">డిఫాల్ట్ పబ్లిక్ ఇంటర్‌ఫేస్ మాత్రమే</translation>
 <translation id="1689062823386843231">నాన్-ప్రాక్సిడ్ UDPని నిలిపివేయండి</translation>
 <translation id="3540231253392253941">పుష్ సందేశాల కోసం Google సేవలను ఉపయోగించండి</translation>
+<translation id="2224032129673914306">సెమాంటిక్ హిస్టరీ సెర్చ్</translation>
+<translation id="6045998903985162478">మీరు సందర్శించే పేజీలను ఇండెక్స్ చేయండి, తద్వారా మీరు వాటిని హిస్టరీ, తెరిచిన ట్యాబ్‌లు మరియు Leoలో సులభంగా కనుగొనవచ్చు.</translation>
 <translation id="5813105074916486721">స్థానిక హిస్టరీ నిలుపుదల</translation>
 <translation id="5671611745062206644">Brave మీ బ్రౌజింగ్ హిస్టరీని స్థానికంగా ఎంతకాలం నిల్వ చేస్తుంది</translation>
 <translation id="7184510058087008090">1 రోజు</translation>
@@ -611,6 +629,8 @@
 <translation id="509873765238158442">Microsoft Recall ని నిరోధించండి</translation>
 <translation id="4763421121695677716">Microsoft Windows కంప్యూటర్‌లపై మైక్రోసాఫ్ట్ రీకాల్ ఫీచర్‌ను ఎందుకింత తేలికగా బ్లాకింగ్ చేయవచ్చు.</translation>
 <translation id="1968895725257436430">డేటా సేకరణ</translation>
+<translation id="5668852698659986622">స్పాన్సర్ చేసిన Adsను ప్రారంభించండి</translation>
+<translation id="431194936581466649">స్పాన్సర్ చేసిన Adsతో స్వతంత్ర, వినియోగదారు-మొదటి వెబ్‌ను నిర్మించే Brave లక్ష్యానికి మద్దతు ఇవ్వండి. మిమ్మల్ని గుర్తించకుండా, మేము ప్రకటన పనితీరును ప్రైవేట్‌గా కొలుస్తాము.</translation>
 <translation id="1700052872056357670">బయటకు వెళ్లినప్పుడు డేటాను తొలగించండి</translation>
 <translation id="216468847346280584">Brave Ads డేటాను క్లియర్ చేయండి...</translation>
 <translation id="96212973142796240">Brave యాడ్స్ డేటా క్లియర్ చేయబడింది</translation>
@@ -705,7 +725,7 @@
 <translation id="4432071071853308688">ఈ కోడ్ ఖాళీగా ఉంది</translation>
 <translation id="955848693465029904">ఆంత‌ర్యంలో సమకాలీకరణ ఏర్పాటు లోపం</translation>
 <translation id="7456398316301207582">ఆంత‌ర్యంలో అకౌంట్ తొలగింపు లోపం</translation>
-<translation id="859506441384380749">ఈ కోడ్ Brave యొక్క కోరిక తప్ప విషయం నుండి ఉత్పత్తి చేయబడింది, పలు ప్రసార విధానాల తొలగింపు చిట్టాలో అయినది, దయచేసి మీ ఇతర పరికరాన్ని అప్‌గ్రేడ్ చేయండి</translation>
+<translation id="4002014583969312635">ఈ కోడ్ పాత Brave వెర్షన్‌లో నడుస్తున్న పరికరంలో రూపొందించబడినట్లు కనిపిస్తోంది. దయచేసి మీ ఇతర పరికరంలో Brave యొక్క తాజా వెర్షన్‌కు అప్‌డేట్ చేసి, ఆపై కొత్త సింక్ కోడ్‌ను రూపొందించండి.</translation>
 <translation id="3132642509209154999">ఈ కోడ్ కాలదలయం అయింది. దయచేసి మీ ఇతర పరికరంలో కొత్తదాన్ని ఉత్పత్తి చేసి మరో మారు ప్రయత్నించండి.</translation>
 <translation id="2859229680945501779">ఈ కోడ్ అవాస్తవం. దయచేసి మీ పరికరంలో సమయం మరియు కాలమానం సరిచేయబడిన లేక ఉన్నాయని నిర్ధారించండి.</translation>
 <translation id="2339730291919608488">సమకాలీకరణ చైన్‌ని వీడండి</translation>
@@ -853,6 +873,7 @@
 <translation id="2618193846561624884">నివ్వలి నెట్‌వర్క్‌ను అప్‌డేట్ చేయాలనుకుంటున్నారా?</translation>
 <translation id="1643029991199044105">Ctrl-Tabతో ఈ మధ్యనే వాడిన ట్యాబ్‌లను సైకిల్ చేయండి</translation>
 <translation id="2775956301559569472">'404 పేజీలు'పై Wayback Machine ప్రాంప్ట్ చూపించండి</translation>
+<translation id="8485716275262929774">404 పేజీలలో Wayback Machine నుండి సేవ్ చేయబడిన వర్షన్‌లను స్వయంచాలకంగా లోడ్ చేయండి</translation>
 <translation id="3095201688102519917">మల్టిపుల్ ట్యాబ్‌లతో విండోను మూసివేస్తూ నేను హెచ్చరించమని చెప్పు</translation>
 <translation id="7120553802660696133">చివరి ట్యాబ్ మూసివేయబడినప్పుడు విండో మూసివేయి</translation>
 <translation id="3394171693948989253">పూర్తి స్క్రీన్ రిమైండర్ చూపించండి, నిష్క్రమించడానికి Esc నొక్కండి</translation>
@@ -862,6 +883,8 @@
 <translation id="1529674267267221673">మీరు వెబ్‌సైట్‌లో రైట్ క్లిక్ చేసినప్పుడు లియో కంటెక్స్‌మెనూలో కనిపిస్తుంది. మీ ప్రస్తుత వెబ్ పేజీ నుండి లియోకు కంటెక్స్ పంపబడుతుంది.</translation>
 <translation id="5226020406479918122">టాబ్ ఫోకస్ మోడ్</translation>
 <translation id="3705539672403311123">టాబ్ సెర్చ్ పేజీ లో ట్యాబ్ ఆర్గనైజేషన్ ప్రారంభించండి. తెరిచినప్పుడు, అది ఆటోమాటిక్‌గా అన్ని ప్రైవేట్ కాని ట్యాబ్‌ల శీర్షికలు మరియు మూలాలను లియో కు పంపుతుంది వాటిని వర్గీకరించడానికి. <ph name="BEGIN_LINK"/>మరింత తెలుసుకోండి<ph name="END_LINK"/></translation>
+<translation id="2002238795517052616">ట్యాబ్ ఫోకస్ కోసం పేజీ కంటెంట్‌ను పంపండి</translation>
+<translation id="2276823422122514441">ప్రతి ట్యాబ్ యొక్క టెక్స్ట్ యొక్క చిన్న సారాంశాలను కూడా పంపండి, తద్వారా ట్యాబ్‌లు వాటి శీర్షిక ఆధారంగా కాకుండా పేజీ దేని గురించి ఉందో దాని ఆధారంగా సమూహపరచబడతాయి. సారాంశాలు Leoకి వెళ్తాయి, లేదా మీరు ట్యాబ్ ఫోకస్ కోసం ఎంచుకున్నట్లయితే మీ స్వంత మోడల్‌కి వెళ్తాయి. దీనికి <ph name="BEGIN_LINK"/><ph name="SEMANTIC_HISTORY_SEARCH"/><ph name="END_LINK"/> అవసరం, ఇది మీ పరికరంలో సారాంశాలను రూపొందిస్తుంది.</translation>
 <translation id="9049433973274198706">ట్యాబ్ ఫోకస్ కోసం డిఫాల్ట్ మోడల్</translation>
 <translation id="2161546758719933059">ట్యాబ్ ఫోకస్ మోడ్‌లో మీ ట్యాబ్‌లను నిర్వహించడానికి ఉపయోగించే మోడల్. <ph name="BEGIN_LINK"/>మరింత తెలుసుకోండి<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">సంభాషణలో సూచించిన ప్రాంప్ట్‌లను చూపించు</translation>
@@ -943,9 +966,6 @@
 <translation id="1838374766361614909">శోధనను క్లియర్ చేయి</translation>
 <translation id="5126255551970171328">మెమొరీ కోసం శోధించు</translation>
 <translation id="7402116145895962069">మీ Ollama స్థానిక మోడళ్లను సమకాలీకరించండి</translation>
-<translation id="5985516785067818307">సర్వే ప్యానలిస్ట్</translation>
-<translation id="8347743943525229984">Brave సర్వేలను అనుమతించండి</translation>
-<translation id="3204080538332044581">కొత్త ట్యాబ్ పేజీలో ప్రైవేట్ సర్వేలకు లింకులను చూపించడానికి Brave కి అనుమతిస్తుంది. సర్వేలు మాకు ఉత్తమ ఫీచర్లను రూపొందించడంలో మరియు బ్రౌజర్-ఆధారిత ప్రకటనల ప్రచారాల ప్రభావాన్ని కొలవడంలో సహాయపడతాయి. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">ప్లేలిస్ట్ను ప్రారంభించండి</translation>
 <translation id="7903608716704052878">ఆఫ్‌లైన్ వీక్షణ కోసం ఫైళ్లను ఆటోమేటిక్‌గా చేర్చండి</translation>
 <translation id="384666453982355633">మీడియా ఫైళ్లను ఆటోమేటిక్‌గా క్యాష్ చేస్తుంది కాబట్టి మీరు అవి ఇంటర్నెట్ కనెక్షన్ లేకుండా ప్లే చేయవచ్చు</translation>
@@ -990,4 +1010,12 @@
 <translation id="154702742922788359">ఓపెన్ మోడ్</translation>
 <translation id="2249111429176737533">ట్యాబ్ ఉపయోగించే విండోగా తెరవండి</translation>
 <translation id="7022756207310403729">బ్రౌజర్‌లో తెరవండి</translation>
+<translation id="1916785651473363467">అనుకూల ప్రొఫైల్ చిత్రం</translation>
+<translation id="5336092064678832560">అనుకూల చిత్రాన్ని అప్‌లోడ్ చేయండి</translation>
+<translation id="1062407476771304334">భర్తీ చేయండి</translation>
+<translation id="1428299461403073820">అనుకూల ప్రొఫైల్ చిత్రాన్ని భర్తీ చేయండి</translation>
+<translation id="7994453838803296517">అనుకూల ప్రొఫైల్ చిత్రం మునుజూపు, ఎంపిక చేయబడింది</translation>
+<translation id="6578040791557152233">అనుకూల ప్రొఫైల్ చిత్రాన్ని అప్‌లోడ్ చేయండి</translation>
+<translation id="9222124079546967592">అనుకూల ప్రొఫైల్ చిత్రాన్ని తీసివేయండి</translation>
+<translation id="6058660912941570282">Brave ఈ ఫైల్‌ను ఉపయోగించలేదు. మరో చిత్రాన్ని ఎంచుకుని మళ్లీ ప్రయత్నించండి.</translation>
 </translationbundle>

@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/sequence_checker.h"
 #include "sql/statement.h"
@@ -345,6 +344,11 @@ int RewardsDatabase::GetTablesCount() {
 
 void RewardsDatabase::OnMemoryPressure(base::MemoryPressureLevel level) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  if (level == base::MEMORY_PRESSURE_LEVEL_NONE) {
+    return;
+  }
+
   db_.TrimMemory();
 }
 

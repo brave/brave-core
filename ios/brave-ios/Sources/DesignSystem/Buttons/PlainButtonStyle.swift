@@ -48,6 +48,7 @@ public struct PlainGlassButtonStyle: ButtonStyle {
       // on content behind the button and disabled status matches Apple
       .foregroundStyle(isEnabled ? .primary : .tertiary)
       .glassEffect(.regular.interactive(isEnabled), in: .capsule)
+      .contentShape(.capsule)
   }
 }
 

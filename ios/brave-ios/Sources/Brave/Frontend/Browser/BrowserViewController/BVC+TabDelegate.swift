@@ -26,6 +26,7 @@ extension BrowserViewController: TabDelegate {
     tabManager.removeTab(tab)
   }
 
+  @MainActor
   public func tab(
     _ tab: some TabState,
     contextMenuConfigurationForLinkURL linkURL: URL?
@@ -36,7 +37,7 @@ extension BrowserViewController: TabDelegate {
       return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: nil)
     }
 
-    let actionProvider: UIContextMenuActionProvider = { _ -> UIMenu? in
+    let actionProvider: UIContextMenuActionProvider = { [self] _ -> UIMenu? in
       var actions = [UIAction]()
 
       if let currentTab = self.tabManager.selectedTab {
@@ -57,7 +58,7 @@ extension BrowserViewController: TabDelegate {
         let openNewPrivateTabAction = UIAction(
           title: Strings.openNewPrivateTabButtonTitle,
           image: UIImage(braveSystemNamed: "leo.product.private-window")
-        ) { _ in
+        ) { [unowned self] _ in
           if !isPrivate, Preferences.Privacy.privateBrowsingLock.value {
             self.askForLocalAuthentication { [weak self] success, error in
               if success {
@@ -114,33 +115,26 @@ extension BrowserViewController: TabDelegate {
         copyAction.accessibilityLabel = "linkContextMenu.copyLink"
         actions.append(copyAction)
 
-        let copyCleanLinkAction = UIAction(
-          title: Strings.copyCleanLink,
-          image: UIImage(braveSystemNamed: "leo.copy.clean"),
-          handler: UIAction.deferredActionHandler { _ in
-            let service = URLSanitizerServiceFactory.get(privateMode: currentTab.isPrivate)
-            let cleanedURL = service?.sanitize(url: url) ?? url
-            UIPasteboard.general.url = cleanedURL
-          }
-        )
-        copyCleanLinkAction.accessibilityLabel = "linkContextMenu.copyCleanLink"
-        actions.append(copyCleanLinkAction)
+        if let service = URLSanitizerServiceFactory.get(profile: currentTab.profile) {
+          let copyCleanLinkAction = UIAction(
+            title: Strings.copyCleanLink,
+            image: UIImage(braveSystemNamed: "leo.copy.clean"),
+            handler: UIAction.deferredActionHandler { _ in
+              let cleanedURL = service.sanitize(url: url) ?? url
+              UIPasteboard.general.url = cleanedURL
+            }
+          )
+          copyCleanLinkAction.accessibilityLabel = "linkContextMenu.copyCleanLink"
+          actions.append(copyCleanLinkAction)
+        }
 
         let shareAction = UIAction(
           title: Strings.shareLinkActionTitle,
           image: UIImage(braveSystemNamed: "leo.share.macos")
         ) { _ in
-          // TODO: Find a way to add fixes brave-ios#3323 and brave-ios#2961 here:
-          // Normally we use `tab.temporaryDocument` for the downloaded file on the tab.
-          // `temporaryDocument` returns the downloaded file to disk on the current tab.
-          // Using a downloaded file url results in having functions like "Save to files" available.
-          // It also attaches the file (image, pdf, etc) and not the url to emails, slack, etc.
-          // Since this is **not** a tab but a standalone web view, the downloaded temporary file is **not** available.
-          // This results in the fixes for #3323 and #2961 not being included in this share scenario.
-          // This is not a regression, we simply never handled this scenario in both fixes.
-          // Some possibile fixes include:
-          // - Detect the file type and download it if necessary and don't rely on the `tab.temporaryDocument`.
-          // - Add custom "Save to file" functionality (needs investigation).
+          // The tab share sheet downloads the displayed document via `ShareableDocument` so that
+          // functions like "Save to Files" are available and the file is attached to emails, etc.
+          // A link is not the tab's displayed content so that path does not apply here.
           self.presentActivityViewController(
             url,
             tab: self.tabManager.selectedTab,
@@ -207,6 +201,7 @@ extension BrowserViewController: TabDelegate {
     tab.loadRequest(URLRequest(url: linkURL))
   }
 
+  @MainActor
   public func tab(
     _ tab: some TabState,
     requestMediaCapturePermissionsFor type: WebMediaCaptureType
@@ -275,12 +270,15 @@ extension BrowserViewController: TabDelegate {
     }
   }
 
+  @MainActor
   public func tab(
     _ tab: some TabState,
     runJavaScriptAlertPanelWithMessage message: String,
-    pageURL: URL
+    pageURL: URL?
   ) async {
-    guard case let origin = pageURL.origin, !origin.isOpaque, tab === tabManager.selectedTab else {
+    guard tab === tabManager.selectedTab,
+      case (let origin, let title)? = javaScriptDialogOriginAndTitle(tab: tab, pageURL: pageURL)
+    else {
       return
     }
     await withCheckedContinuation { continuation in
@@ -288,6 +286,7 @@ extension BrowserViewController: TabDelegate {
         continuation.resume()
       }
       var messageAlert = MessageAlert(
+        title: title,
         message: message,
         origin: origin,
         completionHandler: completionHandler,
@@ -299,12 +298,15 @@ extension BrowserViewController: TabDelegate {
     }
   }
 
+  @MainActor
   public func tab(
     _ tab: some TabState,
     runJavaScriptConfirmPanelWithMessage message: String,
-    pageURL: URL
+    pageURL: URL?
   ) async -> Bool {
-    guard case let origin = pageURL.origin, !origin.isOpaque, tab === tabManager.selectedTab else {
+    guard tab === tabManager.selectedTab,
+      case (let origin, let title)? = javaScriptDialogOriginAndTitle(tab: tab, pageURL: pageURL)
+    else {
       return false
     }
     return await withCheckedContinuation { continuation in
@@ -312,6 +314,7 @@ extension BrowserViewController: TabDelegate {
         continuation.resume(returning: result)
       }
       var confirmAlert = ConfirmPanelAlert(
+        title: title,
         message: message,
         origin: origin,
         completionHandler: completionHandler,
@@ -323,13 +326,16 @@ extension BrowserViewController: TabDelegate {
     }
   }
 
+  @MainActor
   public func tab(
     _ tab: some TabState,
     runJavaScriptConfirmPanelWithPrompt prompt: String,
     defaultText: String?,
-    pageURL: URL
+    pageURL: URL?
   ) async -> String? {
-    guard case let origin = pageURL.origin, !origin.isOpaque, tab === tabManager.selectedTab else {
+    guard tab === tabManager.selectedTab,
+      case (let origin, let title)? = javaScriptDialogOriginAndTitle(tab: tab, pageURL: pageURL)
+    else {
       return nil
     }
     return await withCheckedContinuation { continuation in
@@ -337,6 +343,7 @@ extension BrowserViewController: TabDelegate {
         continuation.resume(returning: result)
       }
       var textInputAlert = TextInputAlert(
+        title: title,
         message: prompt,
         origin: origin,
         completionHandler: completionHandler,
@@ -373,13 +380,13 @@ extension BrowserViewController: TabDelegate {
   }
 
   private class LookupMenuReplacement: UIMenu {
-    convenience init(lookupMenu: UIMenu, searchWebAction: UIAction) {
+    convenience init(lookupMenu: UIMenu, searchWebAction: UIAction? = nil) {
       self.init(
         title: lookupMenu.title,
         image: lookupMenu.image,
         identifier: lookupMenu.identifier,
         options: lookupMenu.options,
-        children: lookupMenu.children + [searchWebAction]
+        children: lookupMenu.children + [searchWebAction].compactMap { $0 }
       )
     }
 
@@ -411,18 +418,23 @@ extension BrowserViewController: TabDelegate {
         }
       }
     }
-    let searchWithBrave = UIAction(title: Strings.searchWithBrave) { [weak tab, weak self] _ in
-      tab?.evaluateJavaScript(
-        functionName: "getSelection().toString",
-        contentWorld: .defaultClient
-      ) {
-        result,
-        _ in
-        guard let tab, let selectedText = result as? String else { return }
-        self?.didSelectSearchWithBrave(selectedText, tab: tab)
-      }
-    }
     if let lookupMenu = builder.menu(for: .lookup) {
+      // JavaScript selection does not work when WKWebView renders a PDF directly.
+      // Exclude the entire lookup menu to since we are not adding "Search with Brave".
+      let searchWithBrave: UIAction? =
+        tab.contentsMimeType == MIMEType.pdf
+        ? nil
+        : UIAction(title: Strings.searchWithBrave) { [weak tab, weak self] _ in
+          tab?.evaluateJavaScript(
+            functionName: "getSelection().toString",
+            contentWorld: .defaultClient
+          ) {
+            result,
+            _ in
+            guard let tab, let selectedText = result as? String else { return }
+            self?.didSelectSearchWithBrave(selectedText, tab: tab)
+          }
+        }
       builder.replace(
         menu: .lookup,
         with: LookupMenuReplacement(
@@ -498,6 +510,23 @@ extension BrowserViewController {
       contentWorld: .defaultClient,
       asFunction: false
     )
+  }
+
+  /// Resolves the origin and title to use for a JavaScript dialog. A `nil` `pageURL` means the
+  /// dialog came from an embedded frame with an opaque origin, so it is attributed to the main
+  /// frame's origin but titled generically rather than displaying that origin.
+  private func javaScriptDialogOriginAndTitle(
+    tab: some TabState,
+    pageURL: URL?
+  ) -> (URLOrigin, String?)? {
+    if let pageURL {
+      let origin = pageURL.origin
+      return origin.isOpaque ? nil : (origin, origin.serialized)
+    }
+    guard let origin = tab.lastCommittedURL?.origin, !origin.isOpaque else {
+      return nil
+    }
+    return (origin, Strings.javaScriptDialogEmbeddedPageTitle)
   }
 
   func handleAlert<T: JSAlertInfo>(
@@ -596,24 +625,21 @@ extension BrowserViewController {
 
     // The challenge may come from a background tab, so ensure it's the one visible.
     tabManager.selectTab(tab)
-    tab.isDisplayingBasicAuthPrompt = true
-    defer {
-      tab.isDisplayingBasicAuthPrompt = false
-      updateToolbarCurrentURL(tab.visibleURL)
-    }
 
     let isHidden = tab.view.isHidden
     defer { tab.view.isHidden = isHidden }
 
-    // Manually trigger a `url` change notification
+    // Hide the page and its URL when a different origin is requesting credentials so that neither
+    // can be mistaken for the origin making the request
     if host != tab.visibleURL?.host {
       tab.view.isHidden = true
-
-      if tabManager.selectedTab === tab {
-        updateToolbarCurrentURL(
-          URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.basicAuth.rawValue)")
-        )
-      }
+      tab.isDisplayingCrossOriginBasicAuthPrompt = true
+      toolbarState.isDisplayingCrossOriginBasicAuthPrompt = true
+    }
+    defer {
+      tab.isDisplayingCrossOriginBasicAuthPrompt = false
+      toolbarState.isDisplayingCrossOriginBasicAuthPrompt =
+        tabManager.selectedTab?.browserData?.isDisplayingCrossOriginBasicAuthPrompt == true
     }
 
     do {

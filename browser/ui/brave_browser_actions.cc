@@ -255,6 +255,17 @@ void BraveBrowserActions::InitializeBrowserActions() {
                                                      ui::kColorIcon))
             .SetEnabled(true)
             .Build());
+  } else {
+    const auto speedreader_icon = ui::ImageModel::FromVectorIcon(
+        kLeoProductSpeedreaderIcon, ui::kColorIcon);
+    for (actions::ActionId id :
+         {kActionSidePanelShowReadAnything, kActionShowReadingModeKeyboard,
+          kActionShowReadingModeSidePanel}) {
+      if (auto* action = actions::ActionManager::Get().FindAction(
+              id, root_action_item_.get())) {
+        action->SetImage(speedreader_icon);
+      }
+    }
   }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 

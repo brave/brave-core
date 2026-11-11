@@ -1,0 +1,12 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add the deps the Brave network delegate overrides need.
+    add_literal_to_list:
+      target: network_delegate
+      list_name: deps
+      literal: brave_chromium_src_ios_chrome_browser_net_deps
+      import: //brave/chromium_src/ios/chrome/browser/net/sources.gni

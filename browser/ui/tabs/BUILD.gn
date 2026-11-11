@@ -4,12 +4,20 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
+import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
+import("//third_party/widevine/cdm/widevine.gni")
 
 assert(is_win || is_mac || is_linux || is_chromeos || is_android)
 
@@ -18,25 +26,42 @@ assert(is_win || is_mac || is_linux || is_chromeos || is_android)
 source_set("tabs_public") {
   sources = [
     "public/brave_tab_features.h",
+    "public/shared_pinned_tab_utils.h",
     "public/switches.h",
     "public/vertical_tab_controller.h",
   ]
 
   public_deps = [
+    "//base",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/psst/buildflags",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/tabs:tabs_public",
+    "//ui/base/unowned_user_data",
   ]
 
   deps = [
+    "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_news/common/buildflags",
+    "//brave/components/brave_rewards/core/buildflags",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/containers/buildflags",
     "//brave/components/playlist/core/common/buildflags",
+    "//brave/components/request_otr/common/buildflags",
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/tor/buildflags",
+    "//brave/components/web_discovery/buildflags",
+    "//third_party/widevine/cdm:buildflags",
   ]
+
+  if (!is_android) {
+    sources += [
+      "public/before_unload_ignore_controller.h",
+      "public/closing_last_tab_controller.h",
+    ]
+    public_deps += [ "//chrome/browser/ui/tabs:tab_strip_model_observer" ]
+  }
 }
 
 if (!is_android) {
@@ -44,26 +69,107 @@ if (!is_android) {
     visibility = [ "//brave/browser:core" ]
 
     sources = [
+      "before_unload_ignore_controller.cc",
       "brave_tab_features.cc",
+      "closing_last_tab_controller.cc",
+      "shared_pinned_tab_utils.cc",
       "vertical_tab_controller.cc",
     ]
 
     deps = [
       ":tabs_public",
+      "//brave/browser:tab_helpers_header",
+      "//brave/browser/brave_shields",
+      "//brave/browser/drag_drop",
+      "//brave/browser/image_metadata_stripper",
+      "//brave/browser/misc_metrics:misc_metrics_impl",
+      "//brave/browser/new_tab",
+      "//brave/browser/onboarding",
+      "//brave/browser/serp_metrics",
+      "//brave/browser/ui:brave_tab_prefs",
+      "//brave/browser/ui:ui_features",
       "//brave/browser/ui/focus_mode",
       "//brave/browser/ui/side_panel",
+      "//brave/browser/ui/sidebar",
       "//brave/browser/ui/views/page_action",
+      "//brave/components/brave_ads/buildflags",
+      "//brave/components/brave_news/common/buildflags",
+      "//brave/components/brave_perf_predictor/browser",
+      "//brave/components/brave_rewards/core/buildflags",
+      "//brave/components/brave_wallet/common/buildflags",
+      "//brave/components/image_metadata_stripper/common",
+      "//brave/components/misc_metrics",
+      "//brave/components/request_otr/common/buildflags",
+      "//brave/components/web_discovery/buildflags",
       "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/profiles",
+      "//chrome/browser/ui:browser_commands",
+      "//chrome/browser/ui:browser_tabstrip",
       "//chrome/browser/ui:ui_features",
+      "//chrome/browser/ui:unload_controller",
+      "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/page_action",
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
       "//chrome/browser/ui/tabs",
+      "//chrome/browser/ui/tabs:features",
       "//chrome/browser/ui/tabs:impl",
+      "//chrome/browser/ui/tabs:tab_strip",
+      "//chrome/browser/ui/thumbnails",
+      "//components/prefs",
+      "//third_party/widevine/cdm:buildflags",
     ]
 
     if (enable_ai_chat) {
-      deps += [ "//brave/browser/ai_chat" ]
+      deps += [
+        "//brave/browser/ai_chat",
+        "//brave/components/ai_chat/content/browser",
+      ]
+    }
+
+    if (enable_web_discovery) {
+      deps += [ "//brave/browser/web_discovery" ]
+    }
+
+    if (is_win || is_mac || is_linux) {
+      deps += [ "//brave/browser/ui/geolocation" ]
+    }
+
+    if (enable_brave_rewards) {
+      deps += [ "//brave/browser/brave_rewards:tab_helper" ]
+    }
+
+    if (enable_widevine) {
+      deps += [ "//brave/browser/widevine" ]
+    }
+
+    if (enable_brave_news) {
+      deps += [ "//brave/browser/brave_news:tab_helper" ]
+    }
+
+    if (enable_brave_wallet) {
+      deps += [ "//brave/browser/brave_wallet:tab_helper" ]
+    }
+
+    if (enable_speedreader) {
+      deps += [ "//brave/browser/ui/speedreader" ]
+    }
+
+    if (enable_tor) {
+      deps += [ "//brave/components/tor" ]
+    }
+
+    if (enable_brave_ads) {
+      deps += [
+        "//brave/browser/brave_ads/creatives/search_result_ad",
+        "//brave/browser/brave_ads/tabs",
+      ]
+    }
+
+    if (enable_request_otr) {
+      deps += [
+        "//brave/browser/request_otr",
+        "//brave/components/request_otr/common",
+      ]
     }
 
     if (enable_containers) {
@@ -89,6 +195,15 @@ if (!is_android) {
       deps += [ "//brave/components/brave_wayback_machine" ]
     }
 
+    if (enable_playlist) {
+      deps += [
+        "//brave/browser/playlist",
+        "//brave/components/playlist/content/browser",
+        "//brave/components/playlist/core/browser",
+        "//components/user_prefs",
+      ]
+    }
+
     if (enable_playlist_webui) {
       # This is necessary for the time being, because
       # PlaylistPageActionController lives in //brave/browser/ui as it needs
@@ -107,22 +222,19 @@ if (!is_android) {
     ]
 
     deps = [
+      "//brave/browser/ui:brave_browser_window_header",
+      "//brave/browser/ui:brave_tab_prefs",
       "//brave/components/tabs",
+      "//chrome/browser/ui:browser_window_header",
       "//chrome/browser/ui/tabs:features",
       "//chrome/browser/ui/tabs:tab_strip",
     ]
 
-    public_deps = [
-      ":tree_tab",
-      "//chrome/browser:browser_public_dependencies",
-    ]
+    public_deps = [ ":tree_tab" ]
   }
 
   source_set("tab_menu") {
-    sources = [
-      "brave_tab_menu_model_factory.cc",
-      "brave_tab_menu_model_factory.h",
-    ]
+    sources = []
 
     deps = [
       "//base",
@@ -144,6 +256,7 @@ if (!is_android) {
         "//brave/components/containers/content/browser",
         "//brave/components/containers/core/browser",
         "//brave/components/containers/core/common",
+        "//chrome/browser/ui/views/frame:browser_view_header",
         "//components/tabs:public",
       ]
     }
@@ -188,12 +301,15 @@ if (!is_android) {
       "tree_tab_session_manager.h",
     ]
 
+    public_deps = [ "//ui/base/unowned_user_data" ]
+
     deps = [
       "//base",
       "//brave/browser/sessions",
       "//brave/browser/ui/tabs:tab_strip",
       "//brave/components/tabs",
       "//chrome/browser/sessions",
+      "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/tabs:features",
       "//chrome/browser/ui/tabs:tab_strip",
       "//components/sessions",
@@ -211,9 +327,10 @@ source_set("browser_tests") {
   sources = [ "brave_tab_menu_browsertest.cc" ]
 
   deps = [
+    "//brave/browser/ui",
+    "//brave/browser/ui/tabs:tabs_public",
     "//brave/components/containers/buildflags",
     "//brave/components/resources:strings_grit",
-    "//chrome/browser/ui",
     "//chrome/test:test_support",
     "//content/public/browser",
     "//content/test:test_support",
@@ -234,6 +351,9 @@ source_set("browser_tests") {
     deps += [
       ":tab_menu",
       ":tab_model",
+      "//chrome/browser/ui:browser_tabstrip",
+      "//chrome/browser/ui/tabs:tab_menu",
+      "//chrome/browser/ui/views/frame:browser_view_header",
     ]
   }
 

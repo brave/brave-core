@@ -7,15 +7,5 @@
  * #type=style
  * #css_wrapper_metadata_end */
 
-a[href] {
-  text-decoration: none !important;
-}
-
-.content-settings-header{
-  padding-top: var(--leo-spacing-2xl) !important;
-}
-
-.settings-box :first-child {
-  border-top: none !important;
-}
-
+/* Purposefully empty since this style is generated at build time from the
+ * equivalent Lit version. */

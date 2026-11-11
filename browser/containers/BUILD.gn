@@ -36,6 +36,27 @@ source_set("containers") {
   ]
 }
 
+source_set("navigator") {
+  sources = [
+    "containers_navigator_utils.cc",
+    "containers_navigator_utils.h",
+  ]
+
+  deps = [
+    ":containers",
+    "//brave/components/containers/content/browser",
+    "//brave/components/containers/core/browser",
+    "//brave/components/containers/core/common",
+    "//brave/components/containers/core/mojom",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui:browser_tabstrip",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/navigator",
+    "//content/public/browser",
+    "//ui/base",
+  ]
+}
+
 source_set("browser_tests") {
   testonly = true
 
@@ -44,6 +65,8 @@ source_set("browser_tests") {
   deps = [
     ":containers",
     "//brave/app:brave_generated_resources_grit_grit",
+    "//brave/browser/ui",
+    "//brave/browser/ui:brave_tab_prefs",
     "//brave/components/containers/content/browser",
     "//brave/components/containers/core/browser",
     "//brave/components/containers/core/browser:test_support",
@@ -54,7 +77,12 @@ source_set("browser_tests") {
     "//chrome/browser/browsing_data:constants",
     "//chrome/browser/prefs:util",
     "//chrome/browser/renderer_context_menu:test_support",
+    "//chrome/browser/ui:browser_actions",
+    "//chrome/browser/ui/views/frame:browser_view_header",
+    "//chrome/browser/ui/views/frame:horizontal_tab_strip_region_view",
     "//chrome/browser/ui/views/page_action:page_action_test_support",
+    "//chrome/browser/ui/views/tabs/hovercard",
+    "//chrome/browser/ui/views/tabs/hovercard:test_support",
     "//chrome/browser/ui/zoom",
     "//chrome/browser/web_applications",
     "//chrome/browser/web_applications:web_applications_test_support",
@@ -64,6 +92,7 @@ source_set("browser_tests") {
     "//components/services/app_service/public/cpp:app_types",
     "//components/webapps/common",
     "//content/public/browser",
+    "//content/public/common",
     "//content/test:test_support",
     "//third_party/blink/public:blink_headers",
   ]
@@ -87,6 +116,7 @@ source_set("unit_tests") {
     "//brave/components/containers/core/common:features",
     "//brave/components/containers/core/mojom",
     "//chrome/browser",
+    "//chrome/browser/ui/browser_window",
     "//chrome/test:test_support",
     "//components/permissions",
     "//components/sessions:test_support",

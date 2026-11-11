@@ -7,11 +7,11 @@
 <translation id="1046742265332833834">Tema biru</translation>
 <translation id="1070329623210597193">Fail yang boleh dilihat atau diedit oleh laman ini</translation>
 <translation id="1074758928858737435">Anda boleh meminta untuk melihat versi desktop laman</translation>
+<translation id="1760197532822135980">Dapatkan cadangan Brave pada apl lain</translation>
 <translation id="1109482864356262001">Ciri yang memerlukan penderia gerakan atau cahaya tidak akan berfungsi</translation>
 <translation id="6670155282615872564">Lengkapkan tindakan yang dicadangkan di bawah untuk memanfaatkan Brave sepenuhnya</translation>
 <translation id="113098737392899175">Navigasi halaman dengan kursor teks apabila papan kekunci disambungkan</translation>
 <translation id="1148624853678088576">Anda telah bersedia!</translation>
-<translation id="738393714577080438">Simpan kata laluan dalam Brave</translation>
 <translation id="1178015372320901893">Helaian bawah pintasan saya</translation>
 <translation id="1178581264944972037">Jeda</translation>
 <translation id="1181037720776840403">Alih keluar</translation>
@@ -46,12 +46,14 @@
 <translation id="1464044141348608623">Jangan benarkan laman mengetahui waktunya anda aktif menggunakan peranti</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> laman}other{<ph name="SITE_COUNT"/> laman}}</translation>
 <translation id="1476700086976862423">Tema warna sepia</translation>
+<translation id="1497214680865404175">Imej yang dimuat naik oleh pengguna</translation>
 <translation id="1500473259453106018">Sembunyikan kad penurunan harga pada tab</translation>
 <translation id="1508931164824684991">Laman boleh menggunakan JavaScript</translation>
 <translation id="1510341833810331442">Laman tidak dibenarkan menyimpan data pada peranti anda</translation>
 <translation id="1532175480576580256">Helaian bawah pintasan saya dibuka pada ketinggian penuh</translation>
 <translation id="1538031354170655462">Laman biasanya menggunakan Komunikasi Medan Dekat (NFC) untuk berfungsi dengan tag atau peranti berdekatan, seperti mengimbas lencana atau membuat bayaran tanpa sentuhan</translation>
 <translation id="1547123415014299762">Kuki pihak ketiga dibenarkan</translation>
+<translation id="1565353932454306569"><ph name="ORIGIN"/> – Seret daripada bahagian sisi skrin untuk keluar daripada skrin penuh.</translation>
 <translation id="3665719978526894928">Mempercepat laman dengan enjin V8 Brave tetapi Brave menjadi kurang tahan sedikit terhadap serangan</translation>
 <translation id="1593426485665524382">Tindakan baharu tersedia berdekatan bahagian atas skrin</translation>
 <translation id="1594521731409209842">Cubit skrin untuk mengubah saiz foto</translation>
@@ -83,6 +85,7 @@
 <translation id="1818308510395330587">Untuk membolehkan <ph name="APP_NAME"/> menggunakan AR, hidupkan juga kamera dalam <ph name="BEGIN_LINK"/>Tetapan Android<ph name="END_LINK"/>.</translation>
 <translation id="1822318649925991542">Tukar kedudukan untuk menyesuaikan pengalaman penyemakan imbas anda</translation>
 <translation id="1848033246551405023">Fon Sans Serif</translation>
+<translation id="1861244985839668297">Apabila dihidupkan, laman dapat meminta untuk menggunakan peranti HID. Apabila dimatikan, laman tidak dapat menggunakan peranti HID.</translation>
 <translation id="1861262398884155592">Folder ini kosong</translation>
 <translation id="1881806992065048905">Helaian bawah penampilan halaman tab baharu</translation>
 <translation id="1887786770086287077">Akses lokasi dimatikan untuk peranti ini. Hidupkannya dalam <ph name="BEGIN_LINK"/>Tetapan Android<ph name="END_LINK"/>.</translation>
@@ -135,6 +138,7 @@
 <translation id="2315043854645842844">Pemilihan sijil pihak pelanggan tidak disokong oleh sistem pengendalian ini.</translation>
 <translation id="2347601491101454548">Helaian bawah pintasan saya dibuka pada ketinggian separuh</translation>
 <translation id="2359808026110333948">Teruskan</translation>
+<translation id="2364212713469273030"><ph name="ORIGIN"/> – Seret daripada bahagian atas dan leret dari sisi kiri atau kanan untuk keluar daripada skrin penuh.</translation>
 <translation id="904887679952026733">Gunakan tema gelap pada laman apabila Brave menggunakan tema gelap, jika boleh</translation>
 <translation id="2390272837142897736">Zum masuk</translation>
 <translation id="2397689164757137845">Dibenarkan • Tepat</translation>
@@ -224,7 +228,6 @@
 <translation id="3167868116600277716">Temukan suapan</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> data disimpan</translation>
 <translation id="3199078925536734975">Dibenarkan pada masa ini • Anggaran</translation>
-<translation id="3208584281581115441">Semak sekarang</translation>
 <translation id="321187648315454507">Untuk membolehkan <ph name="APP_NAME"/> menghantar pemberitahuan kepada anda, hidupkan juga pemberitahuan dalam <ph name="BEGIN_LINK"/>Tetapan Android<ph name="END_LINK"/>.</translation>
 <translation id="3223425961342298674">Lokasi tidak dibenarkan</translation>
 <translation id="3227137524299004712">Mikrofon</translation>
@@ -281,7 +284,6 @@
 <translation id="381841723434055211">Nombor telefon</translation>
 <translation id="3823453485268218808">Fon Mono</translation>
 <translation id="3826050100957962900">Log masuk pihak ketiga</translation>
-<translation id="3831065134033923230">Semak kata laluan anda yang disimpan</translation>
 <translation id="3835233591525155343">Penggunaan peranti anda</translation>
 <translation id="1799795508209440035">Brave akan menyekat kuki lagi hari ini</translation>
 <translation id="385051799172605136">Kembali</translation>
@@ -289,7 +291,6 @@
 <translation id="9046306654872718870">Peribadikan Brave mengikut cita rasa anda dengan warna dan imej tersuai untuk halaman utama anda</translation>
 <translation id="389521680295183045">Laman boleh meminta untuk mengetahui waktu anda aktif menggunakan peranti</translation>
 <translation id="3895926599014793903">Zum didaya paksa</translation>
-<translation id="3903738175795615004">Seret daripada bahagian atas atau tekan kekunci Esc untuk keluar daripada skrin penuh.</translation>
 <translation id="3905475044299942653">Hentikan banyak pemberitahuan</translation>
 <translation id="3922092564198021702">Pada telefon anda, buka Tetapan</translation>
 <translation id="3924858949939391676">Tunjukkan pautan setelah Mod Membaca dihidupkan</translation>
@@ -350,7 +351,6 @@
 <translation id="4479647676395637221">Tanya dahulu sebelum membenarkan tapak menggunakan kamera anda (disyorkan)</translation>
 <translation id="4505788138578415521">URL dikembangkan</translation>
 <translation id="4522570452068850558">Butiran</translation>
-<translation id="4523472416386354622">Log masuk untuk bermula</translation>
 <translation id="4529207923544043455">Helaian bawah memaparkan tugasan senarai persediaan yang telah selesai dan belum selesai</translation>
 <translation id="4534723447064627427">Untuk membolehkan <ph name="APP_NAME"/> mengakses mikrofon anda, hidupkan juga mikrofon dalam <ph name="BEGIN_LINK"/>Tetapan Android<ph name="END_LINK"/>.</translation>
 <translation id="4545694195887112015">Helaian persediaan ditutup</translation>
@@ -363,13 +363,13 @@
 <translation id="4645575059429386691">Diurus oleh ibu bapa anda</translation>
 <translation id="4651224148644053314">Lebih banyak warna &amp; pilihan</translation>
 <translation id="4652266463001779298">Tidak dibenarkan</translation>
-<translation id="4655846733459137112">Ketik Ya untuk menggunakan kata laluan ini dengan mudah apabila anda log masuk selepas ini</translation>
 <translation id="4663373278480897665">Kamera dibenarkan</translation>
 <translation id="4670064810192446073">Realiti maya</translation>
 <translation id="5652778654712411580">Ketik apl Penyemak imbas kemudian ketik Brave</translation>
 <translation id="4676059169848868271">Untuk membenarkan <ph name="APP_NAME"/> menggunakan penjejakan tangan, hidupkan penjejakan tangan dalam <ph name="BEGIN_LINK"/>tetapan sistem<ph name="END_LINK"/>.</translation>
 <translation id="4688045258817337666">Urus kad anda</translation>
 <translation id="4722332387043141878">Biasanya laman menggunakan penderia gerakan dan cahaya peranti anda untuk ciri seperti realiti maya atau penjejakan kecergasan</translation>
+<translation id="4748783296226936791">Laman biasanya menyambung kepada peranti HID untuk ciri yang menggunakan papan kekunci yang tidak biasa digunakan, pengawal permainan dan peranti lain</translation>
 <translation id="4755971844837804407">Apabila dihidupkan, laman dapat memaparkan sebarang iklan kepada anda. Apabila dimatikan, laman tidak dapat memaparkan iklan yang mengganggu atau mengelirukan.</translation>
 <translation id="4779083564647765204">Zum</translation>
 <translation id="4807122856660838973">Hidupkan Penyemakan Imbas Selamat</translation>
@@ -407,7 +407,6 @@
 <translation id="512938610812707830">Helaian bawah koleksi tema penampilan halaman tab baharu dibuka pada ketinggian penuh</translation>
 <translation id="5137460097045297858">Temukan helaian bawah suapan yang dibuka pada ketinggian separuh</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{Penurunan harga pada tab terbuka anda}other{Penurunan harga pada tab terbuka anda}}</translation>
-<translation id="5150048675001754041">Log masuk ke laman dan apl dengan pantas dan mudah</translation>
 <translation id="5186036860380548585">Pilihan tersedia berhampiran bahagian atas skrin</translation>
 <translation id="5197729504361054390">Kenalan yang anda pilih akan dikongsi dengan <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="5198930230016462977">Sesuaikan helaian bawah halaman tab baharu anda ditutup</translation>
@@ -417,7 +416,6 @@
 <translation id="5239623327352565343">Lokasi dibenarkan</translation>
 <translation id="5246825184569358663">Tindakan ini akan memadamkan semua data setempat, termasuk kuki, dan menetapkan semula semua kebenaran untuk <ph name="DOMAIN"/> serta semua laman dalam bahagian domain ini</translation>
 <translation id="5264323282659631142">Alih keluar '<ph name="CHIP_LABEL"/>'</translation>
-<translation id="528192093759286357">Seret dari atas dan sentuh butang kembali untuk keluar daripada skrin penuh.</translation>
 <translation id="5286194356314741248">Mengimbas</translation>
 <translation id="5300589172476337783">Paparkan</translation>
 <translation id="5301954838959518834">OK, faham</translation>
@@ -447,11 +445,13 @@
 <translation id="5668404140385795438">Mengatasi permintaan laman web untuk menghalang zum masuk</translation>
 <translation id="5668843533782548925">Laman lebih perlahan tetapi lebih selamat</translation>
 <translation id="5677928146339483299">Disekat</translation>
+<translation id="98560749650104566">Kini Brave boleh menunjukkan cadangan kepada anda pada apl lain berdasarkan data semakan imbas anda, seperti sejarah penyemakan imbas terbaharu. Data ini diproses dengan selamat pada peranti anda. Anda boleh mematikan ciri ini dalam tetapan Brave pada bila-bila masa.</translation>
 <translation id="5689516760719285838">Lokasi</translation>
 <translation id="5690795753582697420">Kamera dimatikan dalam tetapan Android</translation>
 <translation id="5700761515355162635">Kuki pihak ketiga dibenarkan</translation>
 <translation id="5706552988683188916">Tindakan ini memadamkan kuki dan data laman lain untuk <ph name="WEBSITE"/></translation>
 <translation id="571222594670061844">Laman boleh menunjukkan gesaan log masuk daripada perkhidmatan identiti</translation>
+<translation id="5719854774000914513">Tapak boleh meminta untuk menyambung kepada peranti HID</translation>
 <translation id="5740126560802162366">Laman boleh menyimpan data pada peranti anda</translation>
 <translation id="5743425052258407233">Dapatkan sejarah anda pada semua peranti anda agar anda boleh menyambung semula pada tempat anda berhenti dengan mudah</translation>
 <translation id="5749158352074143502">Teruskan dengan tab ini</translation>
@@ -463,7 +463,6 @@
 <translation id="5804241973901381774">Kebenaran</translation>
 <translation id="5817042798620209981">Maklumat laman, dialog</translation>
 <translation id="5822675474983796325">Sesuaikan helaian bawah halaman tab baharu anda dibuka pada ketinggian penuh</translation>
-<translation id="4298364316773778595">Helaian bawah arahan untuk menyimpan kata laluan dalam Brave</translation>
 <translation id="5833899990800318936">Jangan benarkan laman menggunakan JavaScript</translation>
 <translation id="583673505367439042">Laman boleh meminta untuk mengedit fail dan folder pada peranti anda</translation>
 <translation id="5844448279347999754">Apabila dihidupkan, laman dapat meminta untuk melihat teks dan imej yang disimpan pada papan keratan anda. Apabila dimatikan, laman tidak dapat melihat teks atau imej pada papan keratan anda.</translation>
@@ -500,7 +499,7 @@
 <translation id="6085954183010297841">Padamkan kebenaran pengeditan fail? <ph name="FILE"/></translation>
 <translation id="6104860901391833523">Apabila dihidupkan, laman boleh memasukkan gambar dalam gambar secara automatik. Apabila dimatikan, laman tidak dapat memasukkan gambar dalam gambar secara automatik.</translation>
 <translation id="6120483543004435978">Apabila dihidupkan, laman dapat meminta untuk mengetahui waktu anda menggunakan peranti secara aktif. Apabila dimatikan, laman tidak dapat mengetahui waktu anda menggunakan peranti secara aktif.</translation>
-<translation id="4852158809106762963">Brave akan menawarkan untuk menyimpan kata laluan anda</translation>
+<translation id="5773142757282836623">Sembunyikan Dapatkan cadangan Brave dalam apl lain</translation>
 <translation id="615886654739818377">Jangan benarkan laman mengurus tetingkap pada semua paparan anda</translation>
 <translation id="6165508094623778733">Ketahui lebih lanjut</translation>
 <translation id="6171020522141473435">Apabila dihidupkan, laman dapat meminta untuk menggunakan peranti Bluetooth. Apabila dimatikan, laman tidak dapat menggunakan peranti Bluetooth.</translation>
@@ -571,11 +570,11 @@
 <translation id="6950072572526089586">Laman yang anda lawati boleh menyimpan maklumat tentang perkara yang anda lakukan agar laman tersebut berfungsi seperti yang dijangkakan — contohnya, untuk memastikan anda terus dilog masuk ke laman atau untuk menyimpan item dalam troli beli-belah anda. Selalunya laman menyimpan maklumat ini pada peranti anda buat sementara waktu.</translation>
 <translation id="6964291282260073066">"WebGPU" dilumpuhkan.</translation>
 <translation id="6965382102122355670">OK</translation>
+<translation id="6972629891077993081">Peranti HID</translation>
 <translation id="6980507581230208647">Tema ros</translation>
 <translation id="6980861169612950611">Padamkan data laman? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Kebolehcapaian</translation>
 <translation id="6991142177939282156">Dibenarkan • Menggunakan anggaran</translation>
-<translation id="6992014788289743568">Kukuhkan keselamatan anda dan pastikan data anda lebih selamat dengan menyemak kata laluan anda</translation>
 <translation id="6992289844737586249">Tanya dahulu sebelum membenarkan tapak menggunakan mikrofon anda (disyorkan)</translation>
 <translation id="7000754031042624318">Dimatikan dalam tetapan Android</translation>
 <translation id="7036823721811529709">Dengar pada latar</translation>
@@ -583,7 +582,6 @@
 <translation id="7053983685419859001">Sekat</translation>
 <translation id="7055552182600664515">Untuk memainkan kandungan yang dilindungi oleh hak cipta, laman mungkin perlu menggunakan perkhidmatan perlindungan kandungan. <ph name="BEGIN_LINK"/>Ketahui lebih lanjut<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 dipilih}other{# dipilih}}</translation>
-<translation id="708014373017851679">'<ph name="APP_NAME"/>' sudah lapuk. Sila kemas kinikan apl.</translation>
 <translation id="7084115944294706056">Pilih kedudukan bar alamat</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> dipilih. Pilihan tersedia berhampiran bahagian atas skrin</translation>
 <translation id="7141896414559753902">Sekat tapak daripada memaparkan tetingkap timbul dan ubah hala (disyorkan)</translation>
@@ -643,7 +641,6 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:</translation>
 <translation id="775043444390799886">Batalkan kebenaran</translation>
 <translation id="7758789811447313947">Tema ungu lembayung</translation>
 <translation id="7759147511335618829">Kawalan &amp; pengaturcaraan semula peranti MIDI</translation>
-<translation id="7771089277295008211">Helaian bawah arahan simpan kata laluan telah ditutup</translation>
 <translation id="7781829728241885113">Semalam</translation>
 <translation id="7791543448312431591">Tambah</translation>
 <translation id="780301667611848630">Tidak, terima kasih</translation>
@@ -660,7 +657,6 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:</translation>
 <translation id="7940722705963108451">Ingatkan saya</translation>
 <translation id="7948081750384205628">Ketahui <ph name="SETTING_TITLE"/> dengan lebih lanjut</translation>
 <translation id="7952708427581814389">Tapak boleh meminta untuk melihat teks dan imej pada papan keratan anda</translation>
-<translation id="7958779728312669715">Helaian bawah arahan simpan kata laluan telah dibuka sepenuhnya</translation>
 <translation id="798299424881500862">Tema jingga</translation>
 <translation id="7986741934819883144">Pilih kenalan</translation>
 <translation id="7990211076305263060">Apabila dihidupkan, laman dapat meminta untuk menggunakan mikrofon anda. Apabila dimatikan, laman tidak dapat menggunakan mikrofon anda.</translation>
@@ -728,6 +724,7 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:</translation>
 <translation id="8593422116412089302">Apabila dihidupkan, laman dapat meminta untuk menggunakan maklumat yang disimpan tentang anda. Apabila dimatikan, laman tidak dapat meminta untuk menggunakan maklumat yang disimpan tentang anda.</translation>
 <translation id="8609465669617005112">Alihkan ke atas</translation>
 <translation id="8617611086246832542">Apabila dihidupkan, paparan desktop laman web akan dipaparkan. Apabila dimatikan, paparan mudah alih laman web akan dipaparkan.</translation>
+<translation id="8625916342247441948">Jangan benarkan laman menyambung kepada peranti HID</translation>
 <translation id="8670078035093027626">Helaian bawah penyemak imbas lalai dibuka pada ketinggian penuh</translation>
 <translation id="8676316391139423634">Apabila pilihan ini dihidupkan, laman boleh meminta untuk menjejaki tangan anda. Apabila pilihan ini dimatikan, laman tidak boleh menjejaki tangan anda.</translation>
 <translation id="8676374126336081632">Kosongkan input</translation>
@@ -754,7 +751,6 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:</translation>
 <translation id="7532165358672313130">Sementara anda terus menyemak imbas, laman boleh menyemak dengan Brave dan membuat pengesahan dengan laman yang telah anda lawati sebelum ini bahawa anda berkemungkinan merupakan orang yang sebenar</translation>
 <translation id="8899807382908246773">Iklan mengganggu</translation>
 <translation id="8903921497873541725">Zum masuk</translation>
-<translation id="8919911527569629802">Log masuk ke mana-mana laman web</translation>
 <translation id="8921772741368021346"><ph name="POSITION"/> / <ph name="DURATION"/></translation>
 <translation id="8926389886865778422">Jangan tanya lagi</translation>
 <translation id="8926666909099850184">NFC dimatikan untuk peranti ini. Hidupkan dalam <ph name="BEGIN_LINK"/>Tetapan Android<ph name="END_LINK"/>.</translation>
@@ -778,6 +774,7 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:</translation>
 <translation id="9138217887606523162">Zum semasa ialah <ph name="ZOOM_LEVEL"/> %%</translation>
 <translation id="7359422048569205930">Benarkan Brave memaparkan tab terbaharu anda dalam senarai apl dan hasil carian peranti anda. Anda boleh mematikan ciri ini dalam tetapan Brave pada bila-bila masa.</translation>
 <translation id="9162462602695099906">Halaman ini berbahaya</translation>
+<translation id="9172068157980844189">Anda boleh menghidupkan bar penanda halaman dalam Tetapan &gt; Penampilan</translation>
 <translation id="9182556968660520230">Jangan benarkan laman memainkan kandungan yang dilindungi</translation>
 <translation id="927148002081263046">Kongsi kenalan</translation>
 <translation id="947156494302904893">Laman yang anda lawati boleh mengesahkan bahawa anda orang sebenar dan bukan bot</translation>

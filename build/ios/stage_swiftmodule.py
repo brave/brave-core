@@ -28,24 +28,30 @@ _EXTENSIONS = ['swiftmodule', 'swiftdoc', 'abi.json']
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--module-dir',
-                        required=True,
-                        help='directory containing the compiled module')
-    parser.add_argument('--module-name',
-                        required=True,
-                        help='name of the compiled Swift module')
-    parser.add_argument('--output-dir',
-                        required=True,
-                        help='directory to stage the module artifacts into')
-    parser.add_argument('--name',
-                        action='append',
-                        default=[],
-                        dest='names',
-                        help='name to stage the artifacts as (repeatable)')
+    parser.add_argument(
+        '--module-dir',
+        required=True,
+        help='directory containing the compiled module',
+    )
+    parser.add_argument(
+        '--module-name', required=True, help='name of the compiled Swift module'
+    )
+    parser.add_argument(
+        '--output-dir',
+        required=True,
+        help='directory to stage the module artifacts into',
+    )
+    parser.add_argument(
+        '--name',
+        action='append',
+        default=[],
+        dest='names',
+        help='name to stage the artifacts as (repeatable)',
+    )
     parser.add_argument('--depfile', required=True, help='path to the depfile')
-    parser.add_argument('--depfile-target',
-                        required=True,
-                        help='output the depfile is keyed on')
+    parser.add_argument(
+        '--depfile-target', required=True, help='output the depfile is keyed on'
+    )
 
     args = parser.parse_args()
 
@@ -53,11 +59,14 @@ def main():
 
     inputs = []
     for extension in _EXTENSIONS:
-        source = os.path.join(args.module_dir,
-                              f'{args.module_name}.{extension}')
+        source = os.path.join(
+            args.module_dir, f'{args.module_name}.{extension}'
+        )
         if not os.path.exists(source):
-            print(f'error: missing Swift module artifact: {source}',
-                  file=sys.stderr)
+            print(
+                f'error: missing Swift module artifact: {source}',
+                file=sys.stderr,
+            )
             return 1
 
         inputs.append(source)

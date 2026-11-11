@@ -12,7 +12,7 @@ substitutions:
     regex:
       pattern: 'DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAutofillValuableMetadata);'
       replace:
-        'BASE_FEATURE(kSyncAutofillValuableMetadata,
+        'BASE_OVERRIDDEN_FEATURE(kSyncAutofillValuableMetadata,
         base::FEATURE_DISABLED_BY_DEFAULT);'
 
   - description: |-

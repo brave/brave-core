@@ -28,8 +28,6 @@ inline constexpr char kDefaultCardanoWallet[] =
     "brave.wallet.default_cardano_wallet";
 inline constexpr char kDefaultBaseCurrency[] =
     "brave.wallet.default_base_currency";
-inline constexpr char kDefaultBaseCryptocurrency[] =
-    "brave.wallet.default_base_cryptocurrency";
 inline constexpr char kShowWalletIconOnToolbar[] =
     "brave.wallet.show_wallet_icon_on_toolbar";
 inline constexpr char kBraveWalletLastUnlockTime[] =
@@ -54,6 +52,8 @@ inline constexpr char kBraveWalletSelectedSolDappAccount[] =
     "brave.wallet.selected_sol_dapp_account";
 inline constexpr char kBraveWalletSelectedAdaDappAccount[] =
     "brave.wallet.selected_ada_dapp_account";
+inline constexpr char kBraveWalletSelectedDotDappAccount[] =
+    "brave.wallet.selected_dot_dapp_account";
 inline constexpr char kBraveWalletKeyrings[] = "brave.wallet.keyrings";
 inline constexpr char kBraveWalletUserAssetsList[] =
     "brave.wallet.wallet_user_assets_list";
@@ -112,6 +112,10 @@ inline constexpr char kBraveWalletPingReportedUnlockTimeDeprecated[] =
 // Added 08/2026
 inline constexpr char kBraveWalletLocalhostNetworksMigrated[] =
     "brave.wallet.localhost_networks_migrated";
+
+// Deprecated 10/2026
+inline constexpr char kDefaultBaseCryptocurrencyDeprecated[] =
+    "brave.wallet.default_base_cryptocurrency";
 
 // Localstate prefs registration and migration functions.
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);

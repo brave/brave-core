@@ -43,10 +43,7 @@ mangle((root) => {
 }, (t) => t.text.includes('settings-search-engine-list-dialog'))
 
 // Add our private-search-engine card above the "Manage search engines"
-// link row. `.prefs` is forwarded from the settings-prefs singleton by the
-// companion search_page.ts override, since this Lit page has no `prefs`
-// property of its own to bind. Gated on bravePrefs_ being loaded so the element
-// never connects with an empty/placeholder `prefs`.
+// link row.
 mangle((root) => {
   const enginesSubpageTrigger = root.getElementById('enginesSubpageTrigger')
   if (!enginesSubpageTrigger) {
@@ -55,8 +52,5 @@ mangle((root) => {
   }
   enginesSubpageTrigger.insertAdjacentHTML(
     'beforebegin',
-    '${this.bravePrefs_ ? html`' +
-    '<settings-brave-search-page .prefs="${this.bravePrefs_}">' +
-    '</settings-brave-search-page>' +
-    '` : \'\'}')
+    '<settings-brave-search-page></settings-brave-search-page>')
 }, (t) => t.text.includes('enginesSubpageTrigger'))

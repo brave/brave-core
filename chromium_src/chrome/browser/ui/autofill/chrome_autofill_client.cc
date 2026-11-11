@@ -13,7 +13,6 @@
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/autofill/autofill_suggestion_controller_utils.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/page_info/page_info_dialog.h"
 #include "components/autofill/content/browser/renderer_forms_from_browser_form.h"
@@ -22,7 +21,6 @@
 #include "components/autofill/core/browser/webdata/autocomplete/autocomplete_entry.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
-#include "components/optimization_guide/core/optimization_guide_features.h"
 #include "components/strike_database/strike_database.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -49,7 +47,7 @@ bool IsPrivateProfile(content::WebContents* web_contents) {
   }
   return (profile_metrics::GetBrowserProfileType(profile) ==
           profile_metrics::BrowserProfileType::kIncognito) ||
-         profile->IsTor();
+         profile->IsEnterpriseIsolatedModeProfile() || profile->IsTor();
 }
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
@@ -64,7 +62,7 @@ email_aliases::EmailAliasesController* GetEmailAliasesControllerFromWebContents(
   if (!window_interface) {
     return nullptr;
   }
-  return window_interface->GetFeatures().email_aliases_controller();
+  return email_aliases::EmailAliasesController::From(window_interface);
 }
 #endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)
 
@@ -82,9 +80,6 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
 
   AutofillOptimizationGuideDecider* GetAutofillOptimizationGuideDecider()
       const override {
-    if (optimization_guide::features::IsOptimizationHintsEnabled()) {
-      return ChromeAutofillClient::GetAutofillOptimizationGuideDecider();
-    }
     return nullptr;
   }
 
@@ -100,6 +95,8 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
   bool IsAutofillEnabled() const override {
     auto enabled = ChromeAutofillClient::IsAutofillEnabled();
     if (GetProfileType() != profile_metrics::BrowserProfileType::kIncognito &&
+        GetProfileType() !=
+            profile_metrics::BrowserProfileType::kEnterpriseIsolated &&
         GetProfileType() !=
             profile_metrics::BrowserProfileType::kOtherOffTheRecordProfile) {
       return enabled;
@@ -142,7 +139,7 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
       return std::nullopt;
     }
 
-    const auto& aliases = service->aliases();
+    const auto aliases = service->GetCachedAliases();
     if (aliases.empty()) {
       return std::nullopt;
     }

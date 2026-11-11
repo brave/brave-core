@@ -1,13 +1,14 @@
 diff --git a/components/sync/model/model_error.h b/components/sync/model/model_error.h
-index 6a99be5a2d1f245267e80382202d698f3c18095f..5532517b46b617f55972577dac241e2a38092eb2 100644
+index fbe4ed43eb7887acae8012289253cea614cb00e5..74412397b88cfcd928c2b8aa8b2e056459bf960f 100644
 --- a/components/sync/model/model_error.h
 +++ b/components/sync/model/model_error.h
-@@ -201,7 +201,7 @@ class ModelError {
-     kDataTypeControllerInFailedState = 191,
-     kBookmarksLocalCountExceededLimitAfterInitialMerge = 192,
-     kTabContextContainerFailedToDeserializeSpecifics = 193,
--    kMaxValue = kTabContextContainerFailedToDeserializeSpecifics,
-+    kAIChatFailedToLoadMetadata = 193, kMaxValue = kAIChatFailedToLoadMetadata,
+@@ -204,7 +204,8 @@ class ModelError {
+     kJourneysFailedToLoadMetadata = 194,
+     kJourneysDatabaseError = 195,
+     kAutofillEntitySuppressionEncryptionUnavailable = 196,
+-    kMaxValue = kAutofillEntitySuppressionEncryptionUnavailable,
++    kAIChatFailedToLoadMetadata,
++    kMaxValue = kAIChatFailedToLoadMetadata,
    };
    // LINT.ThenChange(//tools/metrics/histograms/metadata/sync/enums.xml:SyncModelError)
  

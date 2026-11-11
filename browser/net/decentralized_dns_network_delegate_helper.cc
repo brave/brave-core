@@ -28,6 +28,14 @@
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 
+namespace {
+
+bool IsValidDecentralizedDnsRedirectUrl(const GURL& url) {
+  return url.is_valid() && url.SchemeIsHTTPOrHTTPS();
+}
+
+}  // namespace
+
 namespace decentralized_dns {
 
 template <template <typename> class T>
@@ -120,7 +128,9 @@ void OnBeforeURLRequest_EnsRedirectWork(
   GURL ipfs_uri = ipfs::ContentHashToCIDv1URL(content_hash);
   if (ipfs_uri.is_valid() &&
       ipfs::TranslateIPFSURI(ipfs_uri, &resolved_ipfs_uri, true)) {
-    ctx->set_new_url_spec(resolved_ipfs_uri.spec());
+    if (IsValidDecentralizedDnsRedirectUrl(resolved_ipfs_uri)) {
+      ctx->set_new_url_spec(resolved_ipfs_uri.spec());
+    }
   }
 
   next_callback.Run();
@@ -132,7 +142,7 @@ void OnBeforeURLRequest_SnsRedirectWork(
     T<brave::BraveRequestInfo> ctx,
     const std::optional<GURL>& url) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  if (ctx && url.has_value() && url->is_valid()) {
+  if (ctx && url.has_value() && IsValidDecentralizedDnsRedirectUrl(*url)) {
     ctx->set_new_url_spec(url->spec());
   }
 
@@ -150,7 +160,7 @@ void OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
     const std::string& error_message) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (ctx && error == brave_wallet::mojom::ProviderError::kSuccess && url &&
-      url->is_valid()) {
+      IsValidDecentralizedDnsRedirectUrl(*url)) {
     ctx->set_new_url_spec(url->spec());
   }
 

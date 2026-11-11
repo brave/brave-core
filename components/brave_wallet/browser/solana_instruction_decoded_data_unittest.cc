@@ -11,7 +11,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/test/gtest_util.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/solana_instruction_data_decoder.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"

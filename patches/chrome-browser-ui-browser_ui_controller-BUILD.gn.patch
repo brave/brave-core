@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/browser_ui_controller/BUILD.gn b/chrome/browser/ui/browser_ui_controller/BUILD.gn
+index 6ea2a379145cb3973e67545f8667ab00be09d251..a5e640e45a7da23ee075ba0081edc8c44944d7bc 100644
+--- a/chrome/browser/ui/browser_ui_controller/BUILD.gn
++++ b/chrome/browser/ui/browser_ui_controller/BUILD.gn
+@@ -24,6 +24,7 @@ source_set("impl") {
+ 
+   deps = [
+     "//base",
++    "//brave/browser/ui/sidebar",
+     "//chrome/browser/app_mode",
+     "//chrome/browser/profiles:profile",
+     "//chrome/browser/ui:browser_command_controller",

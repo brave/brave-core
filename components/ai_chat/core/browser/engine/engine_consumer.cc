@@ -11,7 +11,6 @@
 #include "base/base64.h"
 #include "base/containers/to_vector.h"
 #include "base/json/json_reader.h"
-#include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"

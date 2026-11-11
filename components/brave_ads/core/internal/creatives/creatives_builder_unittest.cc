@@ -22,7 +22,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -229,10 +229,13 @@ TEST_F(BraveAdsCreativesBuilderTest, BuildCreativesIncludesValidConversion) {
   const CreativesInfo creatives = BuildCreatives(catalog);
 
   // Assert
-  ASSERT_EQ(1U, creatives.conversions.size());
-  EXPECT_EQ(test::kCreativeSetId, creatives.conversions.front().id);
-  EXPECT_EQ("https://example.com/*", creatives.conversions.front().url_pattern);
-  EXPECT_EQ(base::Days(7), creatives.conversions.front().observation_window);
+  EXPECT_THAT(
+      creatives.conversions,
+      ::testing::ElementsAre(::testing::FieldsAre(
+          /*id=*/test::kCampaignId,
+          /*url_pattern=*/"https://example.com/*",
+          /*observation_window=*/base::Days(7),
+          /*expire_at=*/::testing::Optional(test::Now() + base::Days(7)))));
 }
 
 TEST_F(BraveAdsCreativesBuilderTest,

@@ -2,19 +2,18 @@
 
 ## Text Classification
 
-The text classification resource is identified by
-`awdrtoxdlcdyjmckgmtqptnhdtlxgblp`. See [README.md](../../../internal/targeting/contextual/text_classification/README.md).
+The text classification resource is identified by `awdrtoxdlcdyjmckgmtqptnhdtlxgblp`.
 
 ## Purchase Intent
 
-The purchase intent resource is identified by `bejenkminijgplakmkmcgkhjjnkelbld`. See [README.md](../../../internal/targeting/behavioral/purchase_intent/README.md).
+The purchase intent resource is identified by `bejenkminijgplakmkmcgkhjjnkelbld`.
 
 ## Anti-Targeting
 
-The anti-targeting resource is identified by `mkdhnfmjhklfnamlheoliekgeohamoig`. See [README.md](../../../internal/targeting/behavioral/anti_targeting/README.md).
+The anti-targeting resource is identified by `mkdhnfmjhklfnamlheoliekgeohamoig`.
 
 ## Conversions
 
-The conversions resource is identified by `nnqccijfhvzwyrxpxwjrpmynaiazctqb`. See [README.md](../../../internal/user_engagement/conversions/README.md).
+The conversions resource is identified by `nnqccijfhvzwyrxpxwjrpmynaiazctqb`.
 
 Please add to it!

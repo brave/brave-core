@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/get_signed_tokens/test/get_signed_tokens_url_request_builder_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 

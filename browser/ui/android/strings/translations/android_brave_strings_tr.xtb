@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">Devre dışı</translation>
 <translation id="59174027418879706">Etkin</translation>
 <translation id="6920492760024499150">Bugünün en çok okunan hikayeleri özel bir akışta, yalnızca sizin için.</translation>
-<translation id="3803728444598576153">Brave News'i açın ve hiçbir haberi kaçırmayın</translation>
+<translation id="3803728444598576153">Brave Haberler'i açın ve hiçbir haberi kaçırmayın</translation>
 <translation id="7627131190984957214">Brave Haberleri cihazınızda eşleştirilen gizli ve anonim reklamlarla desteklenir.</translation>
-<translation id="7897050360583141319">Favori kaynaklarınızı tek akıştan takip edin. Sadece Brave'de bir sekme açın, aşağı kaydırın ve… işte oldu!\nBrave News, gizli ve anonimleştirilmiş reklamlarla desteklenir.</translation>
+<translation id="7897050360583141319">Favori kaynaklarınızı tek akıştan takip edin. Sadece Brave'de bir sekme açın, aşağı kaydırın ve… işte oldu!</translation>
 <translation id="1765217911817124376">Brave Haberleri'ni aç</translation>
 <translation id="8981973962043893066">Site, konu veya RSS akışı için arama yapın</translation>
 <translation id="3225021799163709119">Popüler</translation>
@@ -190,9 +190,9 @@
 <translation id="5987838417172370108">Brave Tarayıcı çöktüğünde veya donduğunda tanı raporlarını otomatik olarak göndererek, Brave'in ürün stabilitesini iyileştirmeye yardımcı olun.</translation>
 <translation id="7977176350719484850">Tahmini Veri\nTasarrufu</translation>
 <translation id="9008534313521214777">Tahmini Zaman\nTasarruf edildi</translation>
-<translation id="8347743943525229984">Brave anketlerine izin ver</translation>
-<translation id="6022939994702081659">Brave'in yeni sekme sayfasında özel anketlere bağlantılar göstermesine izin verir. Anketler, daha iyi özellikler oluşturmamıza ve tarayıcı tabanlı reklam kampanyalarının etkinliğini ölçmemize yardımcı olur.</translation>
-<translation id="7746496306508543965">Brave anketleri hakkında daha fazla bilgi edinin</translation>
+<translation id="5668852698659986622">Sponsorlu Reklamları Etkinleştir</translation>
+<translation id="431194936581466649">Brave'in bağımsız, kullanıcı öncelikli bir Web oluşturma misyonunu Sponsorlu Reklamlarla destekleyin. Reklam performansını sizi tanımlamadan, gizli bir şekilde ölçüyoruz.</translation>
+<translation id="1939813747486101115">Sponsorlu Reklamlar hakkında daha fazla bilgi edinin</translation>
 <translation id="410351446219883937">Otomatik oynatma</translation>
 <translation id="7445411102860286510">Sitelerin, sesi kapatılmış videoları otomatik olarak oynatmasına izin ver (önerilen)</translation>
 <translation id="7837721118676387834">Belirli bir sitenin, sesi kapatılmış videoları otomatik olarak oynatmasına izin verin.</translation>
@@ -250,7 +250,6 @@
 <translation id="6213254277250932867">12 kelimelik kurtarma ifadem var</translation>
 <translation id="4225265925807365011">24 kelimelik kurtarma ifadem var</translation>
 <translation id="3570367516044491911">Varsayılan tarayıcı olarak ayarla</translation>
-<translation id="6800338374677644736">Varsayılan Tarayıcı olarak ayarla</translation>
 <translation id="1545749641540134597">QR Kodunu Tara</translation>
 <translation id="5317781812114905957">Talimatlar</translation>
 <translation id="8515319483805157233">QR Koduyla arama yapmak için QR Kodunu çerçevenin ortasına hizalayın.</translation>
@@ -282,7 +281,6 @@
 <translation id="5582839680698949063">Ana menü</translation>
 <translation id="7002271985859760052">Sayfa eylemleri</translation>
 <translation id="7104487676473617844">Aşağıdaki öğeler yalnızca açık olan web sayfası tarafından destekleniyorsa menüde görünür.</translation>
-<translation id="4159764849281393303">WebUygulaması</translation>
 <translation id="8038539967102225446">Brave Reklamları burada!</translation>
 <translation id="222883304157347087">(bu cihaz)</translation>
 <translation id="4157741509680155021">EŞİTLEME ZİNCİRİNDEKİ CİHAZLAR</translation>
@@ -291,7 +289,7 @@
 <translation id="2569646144216067185">Sözcük sayısı: <ph name="WORD_COUNT"/> yok</translation>
 <translation id="7507533586185621084">Yanlış eşzamanlama kodu</translation>
 <translation id="8284063834901328650">Yanlış eş zamanlama QR kodu</translation>
-<translation id="859506441384380749">Bu kod Brave'in artık kullanılmayan bir sürümü tarafından oluşturulmuş, lütfen önce diğer cihazınızı yükseltin</translation>
+<translation id="4002014583969312635">Görünüşe göre bu kod Brave'in eski bir sürümünü çalıştıran bir cihazda oluşturulmuş. Lütfen diğer cihazınızda Brave'i en yeni sürümüne güncelleyin ve bundan sonra yeni bir senkronizasyon kodu oluşturun.</translation>
 <translation id="3132642509209154999">Bu kodun süresi dolmuş. Lütfen diğer cihazınızda yeni bir kod oluşturun ve tekrar deneyin.</translation>
 <translation id="2859229680945501779">Bu kod geçersiz. Lütfen cihazınızdaki saatin ve saat diliminin doğru şekilde ayarlandığını teyit edin.</translation>
 <translation id="3149880132460839085">Brave Senkronizasyonu</translation>
@@ -337,8 +335,6 @@
 <translation id="8185825081026121627">Gizliliği koruyan Brave Rewards reklamlarına bakarak Basic Attention Token kazanın.</translation>
 <translation id="5321518976657560663">Sıfırlama Hatası</translation>
 <translation id="4114170343590425996">Brave Ödülleri sıfırlanırken bir hata oluştu. Lütfen Brave'i yeniden başlatın ve tekrar deneyin.</translation>
-<translation id="6417420737057016607">Brave Reklamları</translation>
-<translation id="5611966874859284786">Brave kullanımda olmadığında bildirim reklamlarını göster</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Brave Ödülleri verilerini sıfırla…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Brave Reklamları verilerini temizle…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Yer İşareti Ekle</translation>
@@ -398,6 +394,13 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="8793108040181436796">Widget'lar</translation>
 <translation id="8643377320501056697">En Popüler Siteleri Göster</translation>
 <translation id="7275773481201277457">Brave İstatistiklerini Göster</translation>
+<translation id="8516804522688861636">Sık ziyaret edilen siteleri göster</translation>
+<translation id="4546260624932151782">Favorileri göster</translation>
+<translation id="5313967007315987356">Site ekle</translation>
+<translation id="1773147648972887693">Sık ziyaret edilenleri göster</translation>
+<translation id="7134741506051403308">Öğeyi gizle</translation>
+<translation id="1247759249260562308">Sık kullanılanı düzenle</translation>
+<translation id="6387214885349500492">Bu favoriyi sabitle</translation>
 <translation id="7462178177755090262">Açılış Ekranı</translation>
 <translation id="5365434987337264071">Son açık sekme</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {<ph name="HOURS_ONE"/> saatlik hareketsizlikten sonra yeni sekme} other {<ph name="HOURS_MANY"/> saatlik hareketsizlikten sonra yeni sekme}}</translation>
@@ -721,6 +724,8 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="1634828734222219955">Toplam</translation>
 <translation id="7995708795274219641">Tutar + Gas</translation>
 <translation id="2186011161688824046">Tutar + ücret</translation>
+<translation id="1118876217803190221">Yetersiz bakiye</translation>
+<translation id="275990379543116961">GAS için yetersiz bakiye</translation>
 <translation id="1950052789869821983">İşlem</translation>
 <translation id="2304783958703511257">Gelişmiş Ayarlar</translation>
 <translation id="4220062530885628403">Tek seferlik anahtar</translation>
@@ -970,6 +975,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="6365389672683343144">Brave VPN aboneliğiniz; Android, iOS ve masaüstü genelinde 5 cihaza kadar koruma sağlayabilir. Sadece Google Play aboneliğinizi Brave hesabınıza bağlayın.</translation>
 <translation id="6610899852831463073">Güvenli Tarama etkinleştirilemiyor</translation>
 <translation id="7954263306665462056">Güvenli Tarama, cihazınızda devre dışı bırakıldı. Etkinleştirmek için Google Play hizmetlerinin yüklendiğinden ve güncel olduğundan emin olun.</translation>
+<translation id="6417420737057016607">Brave Reklamları</translation>
 <translation id="7748944510530490017">Birincil Ağlar</translation>
 <translation id="2781668117338732220">İkincil Ağlar</translation>
 <translation id="282560918037172384">Test Ağları</translation>
@@ -996,6 +1002,13 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="7530313002494358590">Brave özelliğini etkinleştirmek veya devre dışı bırakmak değişiklikleri uygulamak için tarayıcının yeniden başlatılmasını gerektirir. Lütfen Brave Origin güncelleştirmeyi bitirdikten sonra <ph name="BEGIN_BOLD"/>Şimdi yeniden başlat<ph name="END_BOLD"/> seçeneğine dokunun.</translation>
 <translation id="1028940738207645746">Tüm ayarları varsayılana sıfırlamak istediğinizden emin misiniz?</translation>
 <translation id="5939518447894949180">Sıfırla</translation>
+<translation id="3222790865318305905">Etkinleştirme limitine ulaşıldı</translation>
+<translation id="3787857711016546034">Dolandırıcılığı önlemek için Origin etkinleştirmeleri sınırlandırılmıştır. Ancak Origin lisansınızı daha fazla cihazda kullanmak için her zaman daha fazla etkinleştirme talep edebilirsiniz. Yalnızca Daha fazla etkinleştirme talep et seçeneğine tıklayın veya yardım için <ph name="CONTACT_SUPPORT"/>.</translation>
+<translation id="6760819753412779585">destek birimine ulaşın</translation>
+<translation id="571697836019670200">Daha fazla etkinleştirme talep et</translation>
+<translation id="9019545131475425538">İşleniyor…</translation>
+<translation id="7242700630179071243">Etkinleştirmeye hazır</translation>
+<translation id="5463918917265356202">Brave Origin artık bu cihazda etkin. Özelliği kullanmaya başlamak için tarayıcıyı yeniden başlatmanız gerekir. Şimdi yeniden başlatmak ister misiniz?</translation>
 <translation id="8554205386170195281">Satın al</translation>
 <translation id="8613144770663526433">Brave Cüzdan'la oturum açın</translation>
 <translation id="3696514931437952995"><ph name="ORIGIN"/> adresinde oturum açıyorsunuz. Brave Cüzdanı, cüzdan adresinizi <ph name="ORIGIN"/> ile paylaşacak.</translation>

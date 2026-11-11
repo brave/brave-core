@@ -159,6 +159,77 @@ TEST_F(TreeTabNodeTabCollectionUnitTest, CanAddSplitTabCollection) {
   EXPECT_EQ(0, tree_tab_node.GetIndexOfCollection(split_tab_collection_ptr));
 }
 
+TEST_F(TreeTabNodeTabCollectionUnitTest,
+       GroupTabCollection_HeightShouldBeZeroWhenRemovingTreeNode) {
+  tabs::TreeTabNodeTabCollection tree_tab_node(
+      tree_tab::TreeTabNodeId::GenerateNew(),
+      std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing(),
+      base::DoNothing(), base::DoNothing());
+
+  TabGroupDesktop::Factory tab_group_factory(profile());
+  auto tab_group_tab_collection = std::make_unique<tabs::TabGroupTabCollection>(
+      tab_group_factory, tab_groups::TabGroupId::GenerateNew(),
+      tab_groups::TabGroupVisualData());
+  auto tab_group_tab_collection_ptr = tab_group_tab_collection.get();
+  tree_tab_node.AddCollection(std::move(tab_group_tab_collection), 0);
+
+  ASSERT_EQ(0,
+            tree_tab_node.GetIndexOfCollection(tab_group_tab_collection_ptr));
+
+  EXPECT_EQ(0, tree_tab_node.node().height());
+
+  // Adding a tree node as a child should increase the height of the parent.
+  auto tree_child = std::make_unique<tabs::TreeTabNodeTabCollection>(
+      tree_tab::TreeTabNodeId::GenerateNew(),
+      std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing(),
+      base::DoNothing(), base::DoNothing());
+  auto tree_child_ptr = tree_child.get();
+  tree_tab_node.AddCollection(std::move(tree_child), 0);
+
+  EXPECT_EQ(1, tree_tab_node.node().height());
+  EXPECT_EQ(0, tree_child_ptr->node().height());
+
+  // Removing the tree child should decrease the height of the parent.
+  auto removed = tree_tab_node.MaybeRemoveCollection(tree_child_ptr);
+  EXPECT_EQ(0, tree_tab_node.node().height());
+  EXPECT_EQ(0, tree_tab_node.node().GetTreeHeight());
+}
+
+TEST_F(TreeTabNodeTabCollectionUnitTest,
+       SplitTabCollection_HeightShouldBeZeroWhenRemovingTreeNode) {
+  tabs::TreeTabNodeTabCollection tree_tab_node(
+      tree_tab::TreeTabNodeId::GenerateNew(),
+      std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing(),
+      base::DoNothing(), base::DoNothing());
+
+  split_tabs::SplitTabId split_id = split_tabs::SplitTabId::GenerateNew();
+  split_tabs::SplitTabVisualData visual_data;
+  auto split_tab_collection =
+      std::make_unique<tabs::SplitTabCollection>(split_id, visual_data);
+  auto split_tab_collection_ptr = split_tab_collection.get();
+  tree_tab_node.AddCollection(std::move(split_tab_collection), 0);
+
+  ASSERT_EQ(0, tree_tab_node.GetIndexOfCollection(split_tab_collection_ptr));
+
+  EXPECT_EQ(0, tree_tab_node.node().height());
+
+  // Adding a tree node as a child should increase the height of the parent.
+  auto tree_child = std::make_unique<tabs::TreeTabNodeTabCollection>(
+      tree_tab::TreeTabNodeId::GenerateNew(),
+      std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing(),
+      base::DoNothing(), base::DoNothing());
+  auto tree_child_ptr = tree_child.get();
+  tree_tab_node.AddCollection(std::move(tree_child), 0);
+
+  EXPECT_EQ(1, tree_tab_node.node().height());
+  EXPECT_EQ(0, tree_child_ptr->node().height());
+
+  // Removing the tree child should decrease the height of the parent.
+  auto removed = tree_tab_node.MaybeRemoveCollection(tree_child_ptr);
+  EXPECT_EQ(0, tree_tab_node.node().height());
+  EXPECT_EQ(0, tree_tab_node.node().GetTreeHeight());
+}
+
 // Tests for level and height calculation (root is level 0; leaf height is 0).
 TEST_F(TreeTabNodeTabCollectionUnitTest, LevelAndHeight_SingleRootNode) {
   auto tree_tab_node = std::make_unique<tabs::TreeTabNodeTabCollection>(

@@ -5,9 +5,7 @@
 
 #include "brave/components/brave_rewards/core/engine/test/test_rewards_engine_client.h"
 
-#include "base/test/bind.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
 #include "sql/statement.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

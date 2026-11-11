@@ -18,12 +18,14 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "chrome/browser/ui/webui/sanitized_image/sanitized_image_source.h"
+#include "chrome/browser/ui/webui/theme_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
@@ -37,7 +39,6 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/webui/plural_string_handler.h"
-#include "chrome/browser/ui/webui/theme_source.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
@@ -103,11 +104,20 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
       network::mojom::CSPDirectiveName::ImgSrc,
       "img-src 'self' data: chrome://resources chrome://erc-token-images "
       "chrome://image;");
+  std::string frame_src = std::string("frame-src ") + kUntrustedTrezorURL +
+                          " " + kUntrustedLedgerURL + " " + kUntrustedNftURL +
+                          " " + kUntrustedLineChartURL + " " +
+                          kUntrustedMarketURL;
+#if BUILDFLAG(ENABLE_SNAP)
+  if (IsSnapFeatureEnabled()) {
+    // Snaps run in the nested chrome://snaps-container/ page, which parents
+    // the chrome-untrusted://snap-host frames itself.
+    frame_src += std::string(" ") + kBraveUISnapsContainerURL;
+  }
+#endif
+  frame_src += ";";
   source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::FrameSrc,
-      std::string("frame-src ") + kUntrustedTrezorURL + " " +
-          kUntrustedLedgerURL + " " + kUntrustedNftURL + " " +
-          kUntrustedLineChartURL + " " + kUntrustedMarketURL + ";");
+      network::mojom::CSPDirectiveName::FrameSrc, frame_src);
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
@@ -116,13 +126,12 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   source->AddBoolean("isMobile", IsMobile());
   source->AddBoolean("isIOS", false);
   source->AddBoolean("rewardsFeatureEnabled", IsRewardsFeatureEnabled(profile));
-  source->AddBoolean("isLedgerMojoBridgeEnabled",
-                     IsMojoForHardwareWalletEnabled());
+  source->AddBoolean("isLedgerMojoBridgeEnabled", IsMojoForLedgerEnabled());
   source->AddBoolean("walletDebug", IsWalletDebugEnabled());
+  source->AddBoolean("isSnapEnabled", IsSnapFeatureEnabled());
+  source->AddString("braveSnapsContainerUrl", kBraveUISnapsContainerURL);
 
-#if !BUILDFLAG(IS_ANDROID)
   content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
-#endif
 
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));

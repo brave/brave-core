@@ -11,7 +11,6 @@
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/time_period_storage/scoped_timezone_for_testing.h"
-#include "build/buildflag.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"

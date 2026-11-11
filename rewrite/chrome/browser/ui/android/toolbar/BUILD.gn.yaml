@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add the Brave toolbar java sources.
+    add_literal_to_list:
+      target: core_java
+      list_name: sources
+      literal: brave_browser_ui_android_toolbar_sources
+
+  - description: Depend on the Brave toolbar java resources.
+    insert_into_list:
+      target: java_resources
+      list_name: deps
+      values:
+        - //brave/browser/ui/android/toolbar:java_resources

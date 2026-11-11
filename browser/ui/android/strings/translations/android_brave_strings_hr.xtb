@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">Onemogućeno</translation>
 <translation id="59174027418879706">Omogućeno</translation>
 <translation id="6920492760024499150">Današnje najpopularnije priče u potpuno privatnom sažetku sadržaja samo za vas.</translation>
-<translation id="3803728444598576153">Uključi značajku Novosti Brave i nikada ne propusti priču</translation>
+<translation id="3803728444598576153">Uključi Brave Novosti i nikada ne propusti priču</translation>
 <translation id="7627131190984957214">Uslugom Novosti Brave podržavaju se oglasi s privatnim i anonimiziranim oglasima prilagođenih vašem uređaju.</translation>
-<translation id="7897050360583141319">Pratite svoje omiljene izvore, u jednom sažetku sadržaja. Samo otvorite karticu u pregledniku Brave, pomaknite prema dolje i…voila!\nUsluga Brave News podržava se oglasima s privatnim, anonimnim oglasima.</translation>
+<translation id="7897050360583141319">Pratite svoje omiljene izvore u jednom sažetku sadržaja. Samo otvorite karticu u pregledniku Brave, pomaknite prema dolje i… voila!</translation>
 <translation id="1765217911817124376">Uključi Novosti Brave</translation>
 <translation id="8981973962043893066">Pretraži mrežna mjesta, teme ili sažetke RSS sadržaja</translation>
 <translation id="3225021799163709119">Popularno</translation>
@@ -190,9 +190,9 @@
 <translation id="5987838417172370108">Pomozite unaprijediti\u2019s stabilnost proizvoda marke Brave automatskim slanjem dijagnostičkih izvješća kada se preglednik Brave sruši ili zamrzne.</translation>
 <translation id="7977176350719484850">Procjena smanjenog broja\npodataka</translation>
 <translation id="9008534313521214777">Procjena ušteđenog\nvremena</translation>
-<translation id="8347743943525229984">Omogući Braveove ankete</translation>
-<translation id="6022939994702081659">Omogućuje Braveu da pokaže poveznice na anonimne ankete u novoj kartici. Ankete nam pomažu da izgradimo bolje funkcionalnosti i mjerimo učinkovitost oglašivačkih kampanja u pregledniku.</translation>
-<translation id="7746496306508543965">Doznajte više o Braveovim anketama</translation>
+<translation id="5668852698659986622">Omogući sponzorirane oglase</translation>
+<translation id="431194936581466649">Pomozite podržati Braveovu misiju izgradnje neovisnog weba usmjerenog na korisnike putem sponzoriranih oglasa. Uspješnost oglasa mjerimo privatno, bez identificiranja vas.</translation>
+<translation id="1939813747486101115">Doznajte više o Sponzoriranim oglasima</translation>
 <translation id="410351446219883937">Automatska reprodukcija</translation>
 <translation id="7445411102860286510">Web-lokacije mogu automatski reproducirati zanemarene videozapise (preporučeno)</translation>
 <translation id="7837721118676387834">Dopustite automatsku reprodukciju videozapisa s isključenim tonom za određenu web-lokaciju.</translation>
@@ -250,7 +250,6 @@
 <translation id="6213254277250932867">Imam rečenicu za oporavak od 12 riječi</translation>
 <translation id="4225265925807365011">Imam rečenicu za oporavak od 24 riječi</translation>
 <translation id="3570367516044491911">Postavi kao zadani preglednik</translation>
-<translation id="6800338374677644736">Postavi kao zadani preglednik</translation>
 <translation id="1545749641540134597">Skeniraj kôd QR</translation>
 <translation id="5317781812114905957">Upute</translation>
 <translation id="8515319483805157233">Za pretraživanje po kôdu QR postavite kôd QR u središte okvira.</translation>
@@ -282,7 +281,6 @@
 <translation id="5582839680698949063">Glavni izbornik</translation>
 <translation id="7002271985859760052">Radnje stranice</translation>
 <translation id="7104487676473617844">Sljedeće stavke bit će vidljive u izborniku samo kada ih podržava trenutno otvorena web-stranica.</translation>
-<translation id="4159764849281393303">Web-aplikacija</translation>
 <translation id="8038539967102225446">Oglasi su Brave ovdje!</translation>
 <translation id="222883304157347087">(ovaj uređaj)</translation>
 <translation id="4157741509680155021">UREĐAJI U LANCU ZA SINKRONIZIRANJE</translation>
@@ -291,7 +289,7 @@
 <translation id="2569646144216067185">Broj riječi: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Pogrešni kôd za sinkronizaciju</translation>
 <translation id="8284063834901328650">Pogrešni kôd QR za sinkronizaciju</translation>
-<translation id="859506441384380749">Ovaj kôd generirao se zastarjelom inačicom preglednika Brave, prvo nadogradite drugi uređaj</translation>
+<translation id="4002014583969312635">Izgleda da je ovaj kȏd nastao na uređaju s instaliranom starijom inačicom preglednika Brave. Ažurirajte na najnoviju inačicu preglednika Brave na svom drugom uređaju, a zatim stvorite novi kȏd za sinkronizaciju.</translation>
 <translation id="3132642509209154999">Kôd je istekao. Generirajte novi na drugom uređaju i pokušajte ponovno.</translation>
 <translation id="2859229680945501779">Ovaj kôd nije valjan. Provjerite jesu li na uređaju vrijeme i vremenska zona ispravno postavljeni.</translation>
 <translation id="3149880132460839085">Sinkronizacija Brave</translation>
@@ -337,8 +335,6 @@
 <translation id="8185825081026121627">Osvojite osnovne privlačne tokene za pregledavanje oglasa kojima se poštuje privatnost u nagradama Brave.</translation>
 <translation id="5321518976657560663">Greška ponovnog postavljanja</translation>
 <translation id="4114170343590425996">Došlo je do greške prilikom ponovnog postavljanja nagrada Brave. Ponovno pokrenite preglednik Brave i pokušajte ponovno...</translation>
-<translation id="6417420737057016607">Brave Ads</translation>
-<translation id="5611966874859284786">Prikaži obavijesti kada se preglednik Brave ne upotrebljava</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Ponovno postavite podatke Nagrada Brave…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Obriši podatke oglasa Brave…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Dodaj oznaku</translation>
@@ -397,6 +393,13 @@ Sigurno želite to napraviti?</translation>
 <translation id="8793108040181436796">Mali programi (widgeti)</translation>
 <translation id="8643377320501056697">Prikaži glavna mrežna mjesta</translation>
 <translation id="7275773481201277457">Prikaži stanja Brave</translation>
+<translation id="8516804522688861636">Prikaži često posjećene stranice</translation>
+<translation id="4546260624932151782">Prikaži omiljene</translation>
+<translation id="5313967007315987356">Dodaj web-lokaciju</translation>
+<translation id="1773147648972887693">Prikaži često posjećeno</translation>
+<translation id="7134741506051403308">Sakrij spravicu</translation>
+<translation id="1247759249260562308">Uređivanje omiljene stavke</translation>
+<translation id="6387214885349500492">Prikvači ovaj favorit</translation>
 <translation id="7462178177755090262">Zaslon za otvaranje</translation>
 <translation id="5365434987337264071">Zadnja otvorena kartica</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -725,6 +728,8 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="1634828734222219955">Ukupno</translation>
 <translation id="7995708795274219641">Iznos i gorivo</translation>
 <translation id="2186011161688824046">Iznos + naknada</translation>
+<translation id="1118876217803190221">Nedovoljno raspoloživo stanje</translation>
+<translation id="275990379543116961">Nedovoljno sredstava za gorivo</translation>
 <translation id="1950052789869821983">Transakcija</translation>
 <translation id="2304783958703511257">Napredne postavke</translation>
 <translation id="4220062530885628403">Broj transakcija s iste adrese</translation>
@@ -977,6 +982,7 @@ račun. Želite li ga sada napraviti?</translation>
 <translation id="6365389672683343144">Vašom pretplatom na VPN preglednika Brave može se zaštititi do 5 uređaja, preko sustava Android, iOS i stolnog računala. Samo povežite svoju pretplatu na Google Play s računom Brave.</translation>
 <translation id="6610899852831463073">Nije moguće omogućiti sigurno pregledavanje</translation>
 <translation id="7954263306665462056">Sigurno pregledavanje onemogućeno je na vašem uređaju. Da biste ga omogućili, pobrinite se da ste instalirali aplikaciju Usluge za Google Play i da je ona ažurirana.</translation>
+<translation id="6417420737057016607">Brave Ads</translation>
 <translation id="7748944510530490017">Primarne mreže</translation>
 <translation id="2781668117338732220">Sekundarne mreže</translation>
 <translation id="282560918037172384">Probne mreže</translation>
@@ -1003,6 +1009,13 @@ račun. Želite li ga sada napraviti?</translation>
 <translation id="7530313002494358590">Omogućavanje ili isključivanje značajke Brave zahtijeva ponovno pokretanje preglednika da bi se promjene primijenile. Molimo tapnite <ph name="BEGIN_BOLD"/>Ponovno pokreni sada<ph name="END_BOLD"/> kada Brave Origin završi s ažuriranjem.</translation>
 <translation id="1028940738207645746">Jeste li sigurni da želite ponovno postaviti sve postavke na zadanu vrijednost?</translation>
 <translation id="5939518447894949180">Ponovno postavi</translation>
+<translation id="3222790865318305905">Dosegnuto je ograničenje aktivacija</translation>
+<translation id="3787857711016546034">Kako bi se spriječila prijevara, aktivacije sustava Origin imaju ograničenu brzinu. No uvijek možete zatražiti više aktivacija kako biste svoju licencu za Origin koristili na više uređaja. Samo kliknite opciju Zatraži više aktivacija ili <ph name="CONTACT_SUPPORT"/> za pomoć.</translation>
+<translation id="6760819753412779585">obrati se podršci</translation>
+<translation id="571697836019670200">Zatraži više aktivacija</translation>
+<translation id="9019545131475425538">Obrađuje se…</translation>
+<translation id="7242700630179071243">Spremno za aktivaciju</translation>
+<translation id="5463918917265356202">Brave Origin sada je aktivan na ovom uređaju. Kako biste počeli upotrebljavati ovu značajku, morate ponovno pokrenuti preglednik. Želite li ga ponovno pokrenuti sada?</translation>
 <translation id="8554205386170195281">Kupnja</translation>
 <translation id="8613144770663526433">Prijava Novčanikom Brave</translation>
 <translation id="3696514931437952995">Prijavljujete se u <ph name="ORIGIN"/>. Novčanikom Brave dijeli se adresa vašeg novčanika sa sljedećim: <ph name="ORIGIN"/>.</translation>

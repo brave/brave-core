@@ -112,7 +112,7 @@
 <translation id="6920492760024499150">Dnešní nejzajímavější příběhy v soukromém kanálu jen pro vás.</translation>
 <translation id="3803728444598576153">Zapněte si zprávy Brave a nenechte si ujít žádný příběh</translation>
 <translation id="7627131190984957214">Služba Zprávy Brave je podporována reklamami a obsahuje soukromé a anonymizované reklamy, které odpovídají vašemu zařízení.</translation>
-<translation id="7897050360583141319">Sledujte své oblíbené zdroje v jediném kanálu. Stačí otevřít kartu v Brave, sjet dolů a… voila!\nZpravodajská služba Brave News je podporována příjmy z reklamy. Reklamy jsou anonymizované a respektují ochranu soukromí.</translation>
+<translation id="7897050360583141319">Sledujte své oblíbené zdroje v jediném kanálu. Stačí otevřít kartu v Brave, sjet dolů a… voila!</translation>
 <translation id="1765217911817124376">Zapnout zprávy Brave</translation>
 <translation id="8981973962043893066">Hledat stránky, témata nebo kanály RSS</translation>
 <translation id="3225021799163709119">Populární</translation>
@@ -190,9 +190,9 @@
 <translation id="5987838417172370108">Pomozte vylepšit stabilitu produktu Brave/u2019s automatickým odesíláním diagnostických zpráv, když prohlížeč Brave spadne nebo zmrzne.</translation>
 <translation id="7977176350719484850">Odhadovaná uložená data</translation>
 <translation id="9008534313521214777">Odh. ušetřená\ndoba</translation>
-<translation id="8347743943525229984">Povolit průzkumy Brave</translation>
-<translation id="6022939994702081659">Umožňuje službě Brave zobrazovat na nové kartě odkazy na soukromé průzkumy. Průzkumy nám pomáhají vytvářet lepší funkce a měřit účinnost reklamních kampaní v prohlížeči.</translation>
-<translation id="7746496306508543965">Další informace o průzkumech Brave</translation>
+<translation id="5668852698659986622">Povolit sponzorované reklamy</translation>
+<translation id="431194936581466649">Pomozte podpořit misi Brave vybudovat nezávislý web, který dává uživatele na první místo, prostřednictvím sponzorovaných reklam. Výkon reklam měříme soukromě, aniž bychom vás identifikovali.</translation>
+<translation id="1939813747486101115">Zjistit více o sponzorovaných reklamách</translation>
 <translation id="410351446219883937">Automatické přehrávání</translation>
 <translation id="7445411102860286510">Povolit webům automaticky přehrávat ztlumená videa (doporučeno)</translation>
 <translation id="7837721118676387834">Povolit automatické přehrávání ztlumených videí na konkrétním webu.</translation>
@@ -250,7 +250,6 @@
 <translation id="6213254277250932867">Mám frázi pro obnovení v délce 12 slov</translation>
 <translation id="4225265925807365011">Mám frázi pro obnovení v délce 24 slov</translation>
 <translation id="3570367516044491911">Nastavit jako výchozí prohlížeč</translation>
-<translation id="6800338374677644736">Nastavit jako výchozí prohlížeč</translation>
 <translation id="1545749641540134597">Naskenovat QR kód</translation>
 <translation id="5317781812114905957">Instrukce</translation>
 <translation id="8515319483805157233">Pro vyhledávání podle QR kódu zarovnejte QR kód do středu rámečku.</translation>
@@ -282,7 +281,6 @@
 <translation id="5582839680698949063">Hlavní nabídka</translation>
 <translation id="7002271985859760052">Akce stránky</translation>
 <translation id="7104487676473617844">Následující položky budou zobrazeny v nabídce pouze tehdy, pokud je podporuje aktuálně otevřená webová stránka.</translation>
-<translation id="4159764849281393303">Webová aplikace</translation>
 <translation id="8038539967102225446">Reklamy Brave jsou tady!</translation>
 <translation id="222883304157347087">(toto zařízení)</translation>
 <translation id="4157741509680155021">ZAŘÍZENÍ V SYNCHRONIZAČNÍM ŘETĚZCI</translation>
@@ -291,7 +289,7 @@
 <translation id="2569646144216067185">Počet slov: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Nesprávný synchronizační kód</translation>
 <translation id="8284063834901328650">Nesprávný synchronizační QR kód</translation>
-<translation id="859506441384380749">Tento kód byl vygenerován zastaralou verzí prohlížeče Brave, nejprve aktualizujte své druhé zařízení</translation>
+<translation id="4002014583969312635">Zdá se, že tento kód byl vytvořen na zařízení, které má starší verzi Brave. Aktualizujte prosím na nejnovější verzi Brave na svém druhém zařízení a poté vytvořte nový synchronizační kód.</translation>
 <translation id="3132642509209154999">Platnost tohoto kódu vypršela. Vygenerujte si nový na jiném zařízení a zkuste to znovu.</translation>
 <translation id="2859229680945501779">Tento kód je neplatný. Zkontrolujte, je na vašem zařízení správně nastaven čas a časové pásmo.</translation>
 <translation id="3149880132460839085">Synchronizace prohlížeče Brave</translation>
@@ -337,8 +335,6 @@
 <translation id="8185825081026121627">Získejte základní žeton pozornosti za prohlížení reklam Brave Rewards, které zachovávají vaše soukromí.</translation>
 <translation id="5321518976657560663">Chyba obnovení</translation>
 <translation id="4114170343590425996">Během obnovování odměn Brave došlo k chybě. Spusťte Brave znovu a pokus opakujte.</translation>
-<translation id="6417420737057016607">Reklamy Brave</translation>
-<translation id="5611966874859284786">Zobrazení reklamních oznámení, když se Brave nepoužívá</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Resetovat data Odměn Brave…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Smazat data Reklam Brave…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Přidat záložku</translation>
@@ -397,6 +393,13 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="8793108040181436796">Widgety</translation>
 <translation id="8643377320501056697">Ukázat Top stránky</translation>
 <translation id="7275773481201277457">Zobrazit statistiky Brave</translation>
+<translation id="8516804522688861636">Zobrazit často navštěvované stránky</translation>
+<translation id="4546260624932151782">Zobrazit oblíbené</translation>
+<translation id="5313967007315987356">Přidat web</translation>
+<translation id="1773147648972887693">Zobrazit často navštěvované</translation>
+<translation id="7134741506051403308">Skrýt widget</translation>
+<translation id="1247759249260562308">Upravit oblíbené</translation>
+<translation id="6387214885349500492">Připnout tuto oblíbenou položku</translation>
 <translation id="7462178177755090262">Úvodní obrazovka</translation>
 <translation id="5365434987337264071">Poslední otevřená záložka</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Nová karta po <ph name="HOURS_ONE"/> hodině nečinnosti} few {Nová karta po <ph name="HOURS_MANY"/> hodinách nečinnosti} many {Nová karta po <ph name="HOURS_MANY"/> hodinách nečinnosti} other {Nová karta po <ph name="HOURS_MANY"/> hodinách nečinnosti}}</translation>
@@ -720,6 +723,8 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="1634828734222219955">Celkem</translation>
 <translation id="7995708795274219641">Částka + palivo</translation>
 <translation id="2186011161688824046">Částka + poplatek</translation>
+<translation id="1118876217803190221">Nedostatečný zůstatek</translation>
+<translation id="275990379543116961">Nedostatek finančních prostředků na benzín</translation>
 <translation id="1950052789869821983">Transakce</translation>
 <translation id="2304783958703511257">Pokročilá nastavení</translation>
 <translation id="4220062530885628403">Nonce</translation>
@@ -969,6 +974,7 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="6365389672683343144">Vaše předplatné Brave VPN může chránit až 5 zařízení se systémem Android, iOS nebo osobních počítačů. Stačí propojit předplatné Google Play s účtem Brave.</translation>
 <translation id="6610899852831463073">Bezpečné procházení nelze zapnout</translation>
 <translation id="7954263306665462056">Bezpečné procházení bylo na vašem zařízení vypnuto. Chcete-li ho zapnout, zkontrolujte, zda je nainstalovaná služba Google Play Services a zda je aktuální.</translation>
+<translation id="6417420737057016607">Reklamy Brave</translation>
 <translation id="7748944510530490017">Primární sítě</translation>
 <translation id="2781668117338732220">Sekundární sítě</translation>
 <translation id="282560918037172384">Testovací sítě</translation>
@@ -995,6 +1001,13 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="7530313002494358590">Povolení nebo zakázání funkce Brave vyžaduje restartování prohlížeče, aby se změny projevily. Po dokončení aktualizace Brave Origin prosím klepněte na <ph name="BEGIN_BOLD"/>Restartovat nyní<ph name="END_BOLD"/>.</translation>
 <translation id="1028940738207645746">Opravdu chcete resetovat všechna nastavení na výchozí hodnoty?</translation>
 <translation id="5939518447894949180">Resetovat</translation>
+<translation id="3222790865318305905">Dosažen limit aktivací</translation>
+<translation id="3787857711016546034">Aby se zabránilo podvodům, jsou aktivace Origin omezeny. Vždy ale můžete požádat o další aktivace, abyste mohli používat svou licenci Origin na více zařízeních. Stačí kliknout na možnost Požádat o další aktivace, nebo <ph name="CONTACT_SUPPORT"/> pro pomoc.</translation>
+<translation id="6760819753412779585">kontaktovat podporu</translation>
+<translation id="571697836019670200">Požádat o další aktivace</translation>
+<translation id="9019545131475425538">Zpracování…</translation>
+<translation id="7242700630179071243">Připraveno k aktivaci</translation>
+<translation id="5463918917265356202">Brave Origin je nyní na tomto zařízení aktivní. Chcete-li začít funkci používat, musíte prohlížeč restartovat. Chcete jej restartovat nyní?</translation>
 <translation id="8554205386170195281">Koupit</translation>
 <translation id="8613144770663526433">Přihlásit se peněženkou Brave Wallet</translation>
 <translation id="3696514931437952995">Přihlašujete se do <ph name="ORIGIN"/>. Peněženka Brave Wallet bude s <ph name="ORIGIN"/> sdílet adresu vaší peněženky.</translation>

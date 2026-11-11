@@ -12,6 +12,10 @@ BASE_FEATURE(kBraveNtpSearchWidget,
 
 BASE_FEATURE(kBraveFilledBookmarkFolderIcon, base::FEATURE_DISABLED_BY_DEFAULT);
 
+// Uses 18px icons in the toolbar, tab strip, vertical tabs, sidebar, side
+// panel header and bookmarks bar. Exposed as #toolbars-small-icons.
+BASE_FEATURE(kBraveToolbarsSmallIcons, base::FEATURE_DISABLED_BY_DEFAULT);
+
 #if BUILDFLAG(IS_WIN)
 // Enables window cloaking on window creation to prevent a white flash.
 BASE_FEATURE(kBraveWorkaroundNewWindowFlash,
@@ -21,5 +25,8 @@ BASE_FEATURE(kBraveWorkaroundNewWindowFlash,
 // A feature flag to force all popup windows to be opened as tabs.
 // https://github.com/brave/brave-browser/issues/40959
 BASE_FEATURE(kForcePopupToBeOpenedAsTab, base::FEATURE_DISABLED_BY_DEFAULT);
+
+// Enables brave://recap, a shareable summary of lifetime Shields stats.
+BASE_FEATURE(kBraveRecap, base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace features

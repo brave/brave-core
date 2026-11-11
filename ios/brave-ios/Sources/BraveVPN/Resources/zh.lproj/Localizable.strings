@@ -40,9 +40,6 @@
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "應用程式版本";
 
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "行動通訊業者";
-
 /* Text to tell user to not modify support info below email's body. */
 "vpn.contactFormDoNotEditText" = "Brave 不會追蹤您，也不會知道您使用應用程式的情形，因此不會得知您的 VPN 設定方式。請與我們分享所發生問題的相關資訊，我們會在最短時間內盡力解決問題。";
 
@@ -227,7 +224,7 @@
 "vpn.serverTitle" = "%ld 服务器";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "使用 Brave VPN 保护每个应用。一个套餐可保护多达 10 台设备。";
+"vpn.settingHeaderBody" = "以您的方式流式传输您的内容。仅需 1 个订阅即可保护 10 台设备上的每个应用。";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "與技術支援人員聯絡";

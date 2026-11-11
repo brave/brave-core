@@ -11,12 +11,26 @@ import os.log
 public final class FilterListSetting: NSManagedObject, CRUD {
   @MainActor @NSManaged public var uuid: String
   @MainActor @NSManaged public var componentId: String?
-  @MainActor @NSManaged public var isEnabled: Bool
   @MainActor @NSManaged public var isHidden: Bool
   @MainActor @NSManaged public var isAlwaysAggressive: Bool
   @MainActor @NSManaged public var isDefaultEnabled: Bool
   @MainActor @NSManaged public var order: NSNumber?
   @MainActor @NSManaged public var folderPath: String?
+
+  /// Whether the user has explicitly enabled or disabled this filter list.
+  ///
+  /// `nil` means the user has never made a choice for it. Backed by a KVC accessor
+  /// since an optional `Bool` can't be exposed to Objective-C via `@NSManaged`.
+  @MainActor public var isEnabled: Bool? {
+    get { (value(forKey: "isEnabled") as? NSNumber)?.boolValue }
+    set { setValue(newValue.map({ NSNumber(value: $0) }), forKey: "isEnabled") }
+  }
+
+  /// The enabled state to use, falling back to the catalog default when the user
+  /// has never made a choice for this filter list.
+  @MainActor public var isEnabledOrDefault: Bool {
+    return isEnabled ?? isDefaultEnabled
+  }
 
   /// Tells us which filter lists should be compiled during launch.
   ///
@@ -26,7 +40,7 @@ public final class FilterListSetting: NSManagedObject, CRUD {
   /// This includes the "default" and "first party" filter lists.
   /// These are not available when using the regional catalog (i.e. `regional_catalog.json`).
   @MainActor public var isEagerlyLoaded: Bool {
-    return isEnabled && isHidden
+    return isEnabledOrDefault && isHidden
   }
 
   /// Load all the flter list settings
@@ -40,7 +54,7 @@ public final class FilterListSetting: NSManagedObject, CRUD {
   @MainActor public class func create(
     uuid: String,
     componentId: String?,
-    isEnabled: Bool,
+    isEnabled: Bool?,
     isHidden: Bool,
     order: Int,
     inMemory: Bool,

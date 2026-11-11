@@ -30,7 +30,7 @@ class ConfirmationTokens final : public TableInterface {
               ResultCallback callback);
   void DeleteAll(ResultCallback callback);
 
-  void GetAll(GetConfirmationTokensCallback callback) const;
+  void Load(GetConfirmationTokensCallback callback) const;
 
   // TableInterface:
   void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) override;

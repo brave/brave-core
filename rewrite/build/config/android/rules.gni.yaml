@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add the Brave manifest includes to every jinja template.
+    add_after_line:
+      line: template("jinja_template") {
+      code: |2-
+            if (defined(invoker.includes)) {
+              invoker.includes += brave_android_manifest_includes
+            } else {
+              invoker.includes = brave_android_manifest_includes
+            }

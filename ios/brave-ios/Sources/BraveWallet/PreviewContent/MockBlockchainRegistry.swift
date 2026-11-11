@@ -169,41 +169,6 @@ class MockBlockchainRegistry: BraveWalletBlockchainRegistry {
     completion(Self.testTokens)
   }
 
-  func buyTokens(
-    provider: BraveWallet.OnRampProvider,
-    chainId: String,
-    completion: @escaping ([BraveWallet.BlockchainToken]) -> Void
-  ) {
-    completion(Self.testTokens)
-  }
-
-  func sellTokens(
-    provider: BraveWallet.OffRampProvider,
-    chainIds: [String],
-    completion: @escaping ([BraveWallet.BlockchainToken]) -> Void
-  ) {
-    completion(Self.testTokens)
-  }
-
-  func providersBuyTokens(
-    providers: [NSNumber],
-    chainId: String,
-    completion: @escaping ([BraveWallet.BlockchainToken]) -> Void
-  ) {
-    completion(Self.testTokens)
-  }
-
-  func buyUrl(
-    _ provider: BraveWallet.OnRampProvider,
-    chainId: String,
-    address: String,
-    symbol: String,
-    amount: String,
-    completion: @escaping (String, String?) -> Void
-  ) {
-    completion("", nil)
-  }
-
   func searchNetworks(
     _ chainIdFilter: String?,
     chainNameFilter: String?,
@@ -213,18 +178,6 @@ class MockBlockchainRegistry: BraveWalletBlockchainRegistry {
   }
 
   func prepopulatedNetworks(completion: @escaping ([BraveWallet.NetworkInfo]) -> Void) {
-    completion([])
-  }
-
-  func onRampCurrencies(completion: @escaping ([BraveWallet.OnRampCurrency]) -> Void) {
-    completion([])
-  }
-
-  func topDapps(
-    chainId: String,
-    coin: BraveWallet.CoinType,
-    completion: @escaping ([BraveWallet.Dapp]) -> Void
-  ) {
     completion([])
   }
 

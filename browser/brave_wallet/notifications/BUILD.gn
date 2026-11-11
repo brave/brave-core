@@ -16,8 +16,8 @@ source_set("notifications") {
 
   deps = [
     "//brave/browser/brave_wallet",
+    "//brave/browser/ui",
     "//brave/components/brave_wallet/browser",
-    "//chrome/browser/ui",
     "//chrome/browser/ui/browser_window",
   ]
 

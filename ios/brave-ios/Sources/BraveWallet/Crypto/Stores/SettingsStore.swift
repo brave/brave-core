@@ -100,11 +100,35 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
     }
   }
 
+  /// The default wallet for the given coin as presented on iOS.
+  ///
+  /// iOS only exposes `none` and `braveWallet` as options, so `braveWalletPreferExtension` is
+  /// reported as `braveWallet`. Unsupported coins report `braveWallet` and ignore writes.
+  subscript(defaultWalletFor coin: BraveWallet.CoinType) -> BraveWallet.DefaultWallet {
+    get {
+      let wallet: BraveWallet.DefaultWallet
+      switch coin {
+      case .eth: wallet = defaultEthWallet
+      case .sol: wallet = defaultSolWallet
+      case .ada: wallet = defaultCardanoWallet
+      default: wallet = .braveWallet
+      }
+      return wallet == .braveWalletPreferExtension ? .braveWallet : wallet
+    }
+    set {
+      switch coin {
+      case .eth: defaultEthWallet = newValue
+      case .sol: defaultSolWallet = newValue
+      case .ada: defaultCardanoWallet = newValue
+      default: break
+      }
+    }
+  }
+
   private let keyringService: BraveWalletKeyringService
   private let walletService: BraveWalletBraveWalletService
   private let rpcService: BraveWalletJsonRpcService
   private let txService: BraveWalletTxService
-  let ipfsApi: IpfsAPI
   private let keychain: KeychainType
   private var keyringServiceObserver: KeyringServiceObserver?
   private var walletServiceObserver: WalletServiceObserver?
@@ -118,14 +142,12 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
     walletService: BraveWalletBraveWalletService,
     rpcService: BraveWalletJsonRpcService,
     txService: BraveWalletTxService,
-    ipfsApi: IpfsAPI,
     keychain: KeychainType = Keychain()
   ) {
     self.keyringService = keyringService
     self.walletService = walletService
     self.rpcService = rpcService
     self.txService = txService
-    self.ipfsApi = ipfsApi
     self.keychain = keychain
     self.setupObservers()
   }
@@ -202,8 +224,6 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
     Preferences.Wallet.migrateWalletUserAssetToCoreCompleted.reset()
     // onboarding
     Preferences.Wallet.isOnboardingCompleted.reset()
-    // meld
-    Preferences.Wallet.meldAPIAgreementShownAndAgreed.reset()
 
     Task { @MainActor in
       await WalletUserAssetGroup.removeAllGroup()

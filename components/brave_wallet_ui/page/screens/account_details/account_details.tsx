@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
+import Button from '@brave/nala/react/button'
+import Icon from '@brave/nala/react/icon'
 import { Redirect, useParams, useHistory } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
@@ -82,11 +82,11 @@ import { NftGrid } from '../nfts/nfts.styles'
 // Components
 import {
   PortfolioAssetItemLoadingSkeleton, //
-} from '../../../components/desktop/portfolio-asset-item/portfolio-asset-item-loading-skeleton'
-import { PortfolioAssetItem } from '../../../components/desktop/portfolio-asset-item/index'
+} from '$wallet/page/components/portfolio_asset_item/portfolio_asset_item_loading_skeleton'
+import { PortfolioAssetItem } from '$wallet/page/components/portfolio_asset_item/portfolio_asset_item'
 import {
   AccountDetailsHeader, //
-} from '../../../components/desktop/card-headers/account-details-header'
+} from '$wallet/page/components/card_headers/account_details_header'
 import {
   SegmentedControl, //
 } from '../../../components/shared/segmented_control/segmented_control'
@@ -101,10 +101,10 @@ import {
 } from '../../../components/desktop/popup-modals/add-edit-nft-modal/add-edit-nft-modal'
 import {
   WalletPageWrapper, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import {
   EmptyTokenListState, //
-} from '../../../components/desktop/empty_token_list_state/empty_token_list_state'
+} from '$wallet/page/components/empty_token_list_state/empty_token_list_state'
 import {
   ViewOnBlockExplorerModal, //
 } from '../../../components/desktop/popup-modals/view_on_block_explorer_modal/view_on_block_explorer_modal'
@@ -116,7 +116,7 @@ import {
 } from './components/shield_account_alert/shield_account_alert'
 import {
   VirtualizedTransactionList, //
-} from '../../../components/desktop/virtualized_transaction_list/virtualized_transaction_list'
+} from '$wallet/page/components/virtualized_transaction_list/virtualized_transaction_list'
 import {
   ShieldZCashAccountModal, //
 } from '../../../components/desktop/popup-modals/shield_zcash_account/shield_zcash_account'
@@ -125,7 +125,7 @@ import {
 } from '../../../components/desktop/popup-modals/transaction_details_modal/transaction_details_modal'
 import {
   ZCashMigrationBanner, //
-} from '../../../components/desktop/banners/zcash_migration_banner/zcash_migration_banner'
+} from '$wallet/page/components/banners/zcash_migration_banner/zcash_migration_banner'
 
 // options
 import { AccountDetailsOptions } from '../../../options/nav-options'

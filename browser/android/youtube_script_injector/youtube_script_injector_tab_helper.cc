@@ -17,6 +17,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
@@ -123,6 +124,71 @@ constexpr char16_t kYoutubeFullscreenSettingsWorkaround[] =
       pending = false;
     }
   }, true);
+}());
+)";
+
+// Fit the mobile video to the fullscreen viewport instead of YouTube's inline
+// size and offsets. See https://github.com/brave/brave-browser/issues/56763.
+constexpr char16_t kYoutubeFullscreenVideoFitWorkaround[] =
+    uR"(
+(function() {
+  const style = document.createElement('style');
+  style.textContent = `
+    #player-container-id:fullscreen video.html5-main-video {
+      width: 100% !important;
+      height: 100dvh !important;
+      left: 0 !important;
+      top: 0 !important;
+      object-fit: contain !important;
+    }
+  `;
+  document.documentElement.appendChild(style);
+}());
+)";
+
+// m.youtube.com has no manifest, so Add to Home screen would generate a
+// monogram icon. Declare one mirroring www.youtube.com's; that one can't be
+// linked directly as it isn't served with CORS headers.
+constexpr char16_t kYoutubeManifest[] =
+    uR"(
+(function() {
+  function addManifest() {
+    if (document.querySelector('head > link[rel~="manifest"]')) {
+      return;
+    }
+    const origin = location.origin;
+    const icons = 'https://www.gstatic.com/youtube/img';
+    const manifest = {
+      name: 'YouTube',
+      short_name: 'YouTube',
+      start_url: origin + '/?feature=ytca',
+      scope: origin + '/',
+      display: 'minimal-ui',
+      background_color: '#FFFFFF',
+      theme_color: '#FF0033',
+      icons: [
+        {src: icons + '/branding/favicon/favicon_144x144_v2.png',
+         sizes: '144x144', type: 'image/png'},
+        {src: icons + '/branding/favicon/favicon_192x192_v2.png',
+         sizes: '192x192', type: 'image/png'},
+        {src: icons + '/web/maskable/logo_192x192.png',
+         sizes: '192x192', type: 'image/png', purpose: 'maskable'},
+        {src: icons + '/web/maskable/logo_512x512.png',
+         sizes: '512x512', type: 'image/png', purpose: 'maskable'},
+      ],
+    };
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = 'data:application/manifest+json,'
+        + encodeURIComponent(JSON.stringify(manifest));
+    document.head.appendChild(link);
+  }
+  // Blink only reads manifest links that are children of <head>.
+  if (document.head) {
+    addManifest();
+  } else {
+    document.addEventListener('DOMContentLoaded', addManifest, {once: true});
+  }
 }());
 )";
 
@@ -358,10 +424,18 @@ bool IsPictureInPictureRequested(content::NavigationEntry& entry) {
 
 }  // namespace
 
+DEFINE_USER_DATA(YouTubeScriptInjectorTabHelper);
+
+// static
+YouTubeScriptInjectorTabHelper* YouTubeScriptInjectorTabHelper::From(
+    tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
+}
+
 YouTubeScriptInjectorTabHelper::YouTubeScriptInjectorTabHelper(
-    content::WebContents* contents)
-    : WebContentsObserver(contents),
-      content::WebContentsUserData<YouTubeScriptInjectorTabHelper>(*contents) {}
+    tabs::TabInterface& tab)
+    : tabs::ContentsObservingTabFeature(tab),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {}
 
 YouTubeScriptInjectorTabHelper::~YouTubeScriptInjectorTabHelper() {}
 
@@ -420,6 +494,16 @@ void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
           preferences::features::kBraveYoutubeFullscreenSettingsWorkaround)) {
     contents->GetPrimaryMainFrame()->ExecuteJavaScript(
         kYoutubeFullscreenSettingsWorkaround, base::NullCallback());
+  }
+  if (IsYouTubeDomain(/*mobileOnly=*/true) &&
+      base::FeatureList::IsEnabled(
+          preferences::features::kBraveYoutubeFullscreenVideoFitWorkaround)) {
+    contents->GetPrimaryMainFrame()->ExecuteJavaScript(
+        kYoutubeFullscreenVideoFitWorkaround, base::NullCallback());
+  }
+  if (IsYouTubeDomain(/*mobileOnly=*/true)) {
+    contents->GetPrimaryMainFrame()->ExecuteJavaScript(kYoutubeManifest,
+                                                       base::NullCallback());
   }
 }
 
@@ -595,5 +679,3 @@ void YouTubeScriptInjectorTabHelper::EnsureBound(
   rfh->GetRemoteAssociatedInterfaces()->GetInterface(&script_injector_remote_);
   script_injector_remote_.reset_on_disconnect();
 }
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(YouTubeScriptInjectorTabHelper);

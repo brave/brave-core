@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { color, font } from '@brave/leo/tokens/css/variables'
+import { color, font } from '@brave/nala/tokens/css/variables'
 import { scoped } from '$web-common/scoped_css'
 
 export const collapsedTileColumnCount = 7
@@ -181,13 +181,12 @@ export const style = scoped.css`
     align-self: stretch;
     color: ${color.white};
     text-align: center;
-    text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.20);
+    text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.40);
     font-size: 10px;
     font-style: normal;
     font-weight: 400;
     line-height: 100%;
     letter-spacing: -0.08px;
-    opacity: 0.6;
     margin-top: -6px;
   }
 

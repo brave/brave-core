@@ -80,9 +80,9 @@ extension URL {
       string:
         "https://support.brave.app/hc/en-us/articles/35182999599501"
     )!
-    public static let surveyPanelistLearnMoreLinkUrl = URL(
+    public static let sponsoredAdsLearnMoreLinkUrl = URL(
       string:
-        "https://support.brave.app/hc/en-us/articles/36550092449165"
+        "https://support.brave.app/hc/en-us/articles/48376231110413"
     )!
   }
   public enum Apple {

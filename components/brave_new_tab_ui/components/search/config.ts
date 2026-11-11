@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { loadTimeData } from '$web-common/loadTimeData'
-import { radius } from "@brave/leo/tokens/css/variables"
+import { radius } from "@brave/nala/tokens/css/variables"
 
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 export const ENABLED_SEARCH_ENGINES_KEY = 'search-engines'

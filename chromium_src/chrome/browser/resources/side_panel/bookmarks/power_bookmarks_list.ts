@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { RegisterPolymerPrototypeModification } from '//resources/brave/polymer_overriding.js'
 import { injectStyle } from '//resources/brave/lit_overriding.js'
 import { css } from '//resources/lit/v3_0/lit.rollup.js'
 import { PowerBookmarksService } from './power_bookmarks_service.js';
@@ -38,26 +37,35 @@ PowerBookmarksService.prototype.sortBookmarks = function (
   return originalSortBookmarks.apply(this, [bookmarks, activeSortIndex])
 }
 
-RegisterPolymerPrototypeModification({
-  'power-bookmarks-list': prototype => {
-    const originalOnBookmarkMoved = prototype.onBookmarkMoved
-    prototype.onBookmarkMoved = function (
-      bookmark: BookmarksTreeNode,
-      oldParent: BookmarksTreeNode,
-      newParent: BookmarksTreeNode) {
-      originalOnBookmarkMoved.apply(this, [bookmark, oldParent, newParent])
-      const shouldShow = prototype.bookmarkShouldShow_.apply(this, [bookmark]);
-      // Update if currently visible item is moved in the same directory,
-      // Upstream doesn't update in this situation because they don't support
-      // custom order. Moving in same direcotry doesn't affect with upstream's
-      // sort orders.
-      if (oldParent === newParent && shouldShow &&
-          this.activeSortIndex === /* customOrder */5) {
-        prototype.updateDisplayList_.apply(this)
-      }
-    }
+// The members below are protected or private upstream, so reach them through an
+// untyped view of the prototype.
+const proto = PowerBookmarksListElement.prototype as unknown as {
+  activeSortIndex: number
+  bookmarkShouldShow_(bookmark: BookmarksTreeNode): boolean
+  updateDisplayList_(): void
+  onBookmarkMoved(
+    bookmark: BookmarksTreeNode,
+    oldParent: BookmarksTreeNode,
+    newParent: BookmarksTreeNode): void
+}
+
+const originalOnBookmarkMoved = proto.onBookmarkMoved
+proto.onBookmarkMoved = function (
+  this: typeof proto,
+  bookmark: BookmarksTreeNode,
+  oldParent: BookmarksTreeNode,
+  newParent: BookmarksTreeNode) {
+  originalOnBookmarkMoved.apply(this, [bookmark, oldParent, newParent])
+  const shouldShow = this.bookmarkShouldShow_(bookmark)
+  // Update if currently visible item is moved in the same directory,
+  // Upstream doesn't update in this situation because they don't support
+  // custom order. Moving in same direcotry doesn't affect with upstream's
+  // sort orders.
+  if (oldParent === newParent && shouldShow &&
+      this.activeSortIndex === /* customOrder */5) {
+    this.updateDisplayList_()
   }
-})
+}
 
 export * from './power_bookmarks_list-chromium.js'
 customElements.define(PowerBookmarksListElement.is, PowerBookmarksListElement);

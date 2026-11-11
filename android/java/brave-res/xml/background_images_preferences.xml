@@ -30,12 +30,16 @@
         android:title="@string/widgets">
 
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="show_brave_stats"
+            android:title="@string/show_brave_stats" />
+
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="show_top_sites"
             android:title="@string/show_top_sites" />
 
-        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-            android:key="show_brave_stats"
-            android:title="@string/show_brave_stats" />
+        <org.chromium.chrome.browser.settings.BraveRadioButtonGroupTopSitesDisplayModePreference
+            android:key="top_sites_display_mode"
+            android:selectable="false" />
 
     </PreferenceCategory>
 

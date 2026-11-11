@@ -13,7 +13,7 @@ import { useConversation } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
 import { FuzzyFinder } from './fuzzy_finder'
 import { makeEdit, stringifyContent } from '../input_box/editable_content'
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 
 type Attachment = TabData | Bookmark
 

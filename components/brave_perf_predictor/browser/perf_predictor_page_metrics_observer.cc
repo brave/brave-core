@@ -7,6 +7,7 @@
 
 #include "base/logging.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
@@ -23,14 +24,13 @@ PerfPredictorPageMetricsObserver::OnCommit(
   // Skip if off the record
   if (navigation_handle->GetWebContents()
           ->GetBrowserContext()
-          ->IsOffTheRecord())
+          ->IsOffTheRecord()) {
     return STOP_OBSERVING;
+  }
 
   navigation_id_ = navigation_handle->GetNavigationId();
-  // We'll be forwarding all performance metrics to the observer
-  observer_ = PerfPredictorTabHelper::FromWebContents(
-      navigation_handle->GetWebContents());
-  if (!observer_) {
+  // We'll be forwarding all performance metrics to the tab helper
+  if (!GetTabHelper()) {
     VLOG(2) << navigation_id_ << " could not get PerfPredictorTabHelper";
     return STOP_OBSERVING;
   }
@@ -48,30 +48,18 @@ PerfPredictorPageMetricsObserver::ShouldObserveMimeType(
 
 void PerfPredictorPageMetricsObserver::OnFirstContentfulPaintInPage(
     const page_load_metrics::mojom::PageLoadTiming& timing) {
-  if (observer_) {
-    observer_->OnPageLoadTimingUpdated(timing);
-  } else {
-    VLOG(2) << "PerfPredictorTabHelper not ready for timing updates";
-  }
+  OnPageLoadTimingUpdated(timing);
 }
 
 void PerfPredictorPageMetricsObserver::
     OnFirstMeaningfulPaintInMainFrameDocument(
         const page_load_metrics::mojom::PageLoadTiming& timing) {
-  if (observer_) {
-    observer_->OnPageLoadTimingUpdated(timing);
-  } else {
-    VLOG(2) << "PerfPredictorTabHelper not ready for timing updates";
-  }
+  OnPageLoadTimingUpdated(timing);
 }
 
 void PerfPredictorPageMetricsObserver::OnLoadEventStart(
     const page_load_metrics::mojom::PageLoadTiming& timing) {
-  if (observer_) {
-    observer_->OnPageLoadTimingUpdated(timing);
-  } else {
-    VLOG(2) << "PerfPredictorTabHelper not ready for timing updates";
-  }
+  OnPageLoadTimingUpdated(timing);
 }
 
 page_load_metrics::PageLoadMetricsObserver::ObservePolicy
@@ -89,6 +77,20 @@ PerfPredictorPageMetricsObserver::OnPrerenderStart(
     content::NavigationHandle* navigation_handle,
     const GURL& currently_committed_url) {
   return STOP_OBSERVING;
+}
+
+PerfPredictorTabHelper* PerfPredictorPageMetricsObserver::GetTabHelper() const {
+  return PerfPredictorTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(GetDelegate().GetWebContents()));
+}
+
+void PerfPredictorPageMetricsObserver::OnPageLoadTimingUpdated(
+    const page_load_metrics::mojom::PageLoadTiming& timing) {
+  if (auto* tab_helper = GetTabHelper()) {
+    tab_helper->OnPageLoadTimingUpdated(timing);
+  } else {
+    VLOG(2) << "PerfPredictorTabHelper not ready for timing updates";
+  }
 }
 
 }  // namespace brave_perf_predictor

@@ -8,8 +8,8 @@ substitutions:
       'Use rounded corners from layout constants in GetHighlightPath()'
     regex:
       re_pattern:
-        'const SkRect rect = RectToSkRect\(highlight_bounds\);[\s\S]*?return
-        SkPath::RRect\(SkRRect::MakeRectRadii\(rect, sk_radii\)\);'
+        'return SkPath::RRect\(\s*RoundedRectToSkRRect\(highlight_bounds,
+        GetCornerRadii\(\)\)\);'
       replace: |-
         const int layout_radius =
               GetLayoutConstant(LayoutConstant::kLocationBarChildCornerRadius);

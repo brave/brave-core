@@ -1,12 +1,36 @@
 diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
-index ac8af97f18f2928a00659cf7014d80080b35ac77..40a05556d667315ed27ebcbb2c78fd76a67f99dd 100644
+index 5beda3489b369b52fd9f711eecf3505a41732bc4..a8600dfb956a2261295ba851ec6ef9d70e0211ac 100644
 --- a/content/browser/BUILD.gn
 +++ b/content/browser/BUILD.gn
-@@ -3600,6 +3600,7 @@ source_set("browser") {
-     deps += [ "//components/vrp_flags" ]
-     public_deps += [ "//components/vrp_flags:mojom" ]
-   }
-+  import("//brave/content/browser/sources.gni") sources += brave_content_browser_sources deps += brave_content_browser_deps
- }
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
- if (is_android) {
++import("//brave/content/browser/sources.gni")
+ import("//base/allocator/partition_allocator/partition_alloc.gni")
+ import("//build/buildflag_header.gni")
+ import("//build/config/compiler/pgo/pgo.gni")
+@@ -397,6 +398,7 @@ source_set("browser") {
+     "//v8",
+     "//v8:v8_version",
+   ]
++  deps += brave_content_browser_deps
+ 
+   public_deps = [
+     "//base",
+@@ -2401,6 +2403,7 @@ source_set("browser") {
+     "worker_host/worker_util.cc",
+     "worker_host/worker_util.h",
+   ]
++  sources += brave_content_browser_sources
+ 
+   if (is_android) {
+     sources += [
+@@ -3683,6 +3686,7 @@ group("for_content_tests") {
+     "//content/test/*",
+     "//content/web_test:web_test_browser",
+   ]
++  visibility += brave_content_browser_for_content_tests_visibility
+   if (!is_component_build) {
+     public_deps = [ ":browser" ]
+   } else {

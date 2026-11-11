@@ -16,7 +16,6 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     BraveWallet.SepoliaChainId: [.previewToken],
   ]
   private var defaultCurrency = CurrencyCode.usd
-  private var defaultCryptocurrency = "eth"
   private var coin: BraveWallet.CoinType = .eth
 
   func userAssets(
@@ -81,7 +80,7 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   }
 
   func activeOrigin(completion: @escaping (BraveWallet.OriginInfo) -> Void) {
-    completion(.init())
+    completion(.init(originSpec: "https://example.com", eTldPlusOne: "example.com"))
   }
 
   func pendingSignMessageRequests(
@@ -102,14 +101,6 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
 
   func setDefaultBaseCurrency(_ currency: String) {
     defaultCurrency = CurrencyCode(code: currency)
-  }
-
-  func defaultBaseCryptocurrency(completion: @escaping (String) -> Void) {
-    completion(defaultCryptocurrency)
-  }
-
-  func setDefaultBaseCryptocurrency(_ cryptocurrency: String) {
-    defaultCryptocurrency = cryptocurrency
   }
 
   func isExternalWalletInstalled(
@@ -169,21 +160,6 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     completion("", "")
   }
 
-  func notifyGetPublicKeyRequestProcessed(requestId: String, approved: Bool) {
-  }
-
-  func pendingGetEncryptionPublicKeyRequests() async -> [BraveWallet.GetEncryptionPublicKeyRequest]
-  {
-    return []
-  }
-
-  func notifyDecryptRequestProcessed(requestId: String, approved: Bool) {
-  }
-
-  func pendingDecryptRequests() async -> [BraveWallet.DecryptRequest] {
-    return []
-  }
-
   func showWalletTestNetworks(_ completion: @escaping (Bool) -> Void) {
     completion(false)
   }
@@ -201,13 +177,18 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   }
 
   func hasPermission(
+    activeOriginSpec: String,
     accounts: [BraveWallet.AccountId],
     completion: @escaping (Bool, [BraveWallet.AccountId]) -> Void
   ) {
     completion(false, [])
   }
 
-  func resetPermission(accountId: BraveWallet.AccountId, completion: @escaping (Bool) -> Void) {
+  func resetPermission(
+    activeOriginSpec: String,
+    accountId: BraveWallet.AccountId,
+    completion: @escaping (Bool) -> Void
+  ) {
     completion(false)
   }
 
@@ -266,7 +247,11 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     completion([])
   }
 
-  func isPermissionDenied(coin: BraveWallet.CoinType, completion: @escaping (Bool) -> Void) {
+  func isPermissionDenied(
+    activeOriginSpec: String,
+    coin: BraveWallet.CoinType,
+    completion: @escaping (Bool) -> Void
+  ) {
     completion(false)
   }
 
@@ -357,12 +342,14 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   }
 
   func networkForSelectedAccountOnActiveOrigin(
+    activeOriginSpec: String,
     completion: @escaping (BraveWallet.NetworkInfo?) -> Void
   ) {
     completion(nil)
   }
 
   func setNetworkForSelectedAccountOnActiveOrigin(
+    activeOriginSpec: String,
     chainId: String,
     completion: @escaping (Bool) -> Void
   ) {
@@ -370,6 +357,7 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   }
 
   func networkForAccountOnActiveOrigin(
+    activeOriginSpec: String,
     account: BraveWallet.AccountId,
     completion: @escaping (BraveWallet.NetworkInfo?) -> Void
   ) {
@@ -377,6 +365,7 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   }
 
   func setNetworkForAccountOnActiveOrigin(
+    activeOriginSpec: String,
     account: BraveWallet.AccountId,
     chainId: String,
     completion: @escaping (Bool) -> Void

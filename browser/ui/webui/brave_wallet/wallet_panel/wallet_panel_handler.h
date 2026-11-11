@@ -12,10 +12,14 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
+#include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
 
-class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
+class WalletPanelHandler : public brave_wallet::mojom::PanelHandler,
+                           public content::WebContentsObserver {
  public:
   using PanelCloseOnDeactivationCallback = base::RepeatingCallback<void(bool)>;
   WalletPanelHandler(
@@ -28,6 +32,10 @@ class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
   ~WalletPanelHandler() override;
 
   // brave_wallet::mojom::PanelHandler:
+  void AddObserver(
+      mojo::PendingRemote<brave_wallet::mojom::PanelHandlerObserver> observer)
+      override;
+  void GetActivePanelOrigin(GetActivePanelOriginCallback callback) override;
   void ShowUI() override;
   void CloseUI() override;
   void CloseSidePanel() override;
@@ -43,9 +51,12 @@ class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
                          RequestPermissionCallback callback) override;
 
  private:
+  // content::WebContentsObserver:
+  void PrimaryPageChanged(content::Page& page) override;
+
   mojo::Receiver<brave_wallet::mojom::PanelHandler> receiver_;
   const raw_ptr<TopChromeWebUIController> webui_controller_;
-  raw_ptr<content::WebContents> active_web_contents_ = nullptr;
+  mojo::RemoteSet<brave_wallet::mojom::PanelHandlerObserver> observers_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_PANEL_WALLET_PANEL_HANDLER_H_

@@ -4,9 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
-import Toggle from '@brave/leo/react/toggle'
+import Button from '@brave/nala/react/button'
+import Icon from '@brave/nala/react/icon'
+import Toggle from '@brave/nala/react/toggle'
 
 import { getString } from '../../lib/strings'
 import { ConnectionState } from '../../state/vpn_store'
@@ -93,6 +93,8 @@ export function VpnWidget() {
         return getString(S.NEW_TAB_VPN_STATUS_CONNECTING)
       case ConnectionState.DISCONNECTING:
         return getString(S.NEW_TAB_VPN_STATUS_DISCONNECTING)
+      case ConnectionState.CONNECT_NO_AGENT:
+        return getString(S.NEW_TAB_VPN_STATUS_UNAVAILABLE)
       default:
         console.error('Unhandled ConnectionState', connectionState)
         return ''
@@ -145,6 +147,7 @@ export function VpnWidget() {
               connectionState === ConnectionState.CONNECTED
               || connectionState === ConnectionState.CONNECTING
             }
+            disabled={connectionState === ConnectionState.CONNECT_NO_AGENT}
             onChange={() => actions.toggleVpnConnection()}
           />
         </div>

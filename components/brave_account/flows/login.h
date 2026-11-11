@@ -47,8 +47,7 @@ class Login : public FlowBase {
 
   ~Login();
 
-  void Step1(mojom::Service initiating_service,
-             const std::string& email,
+  void Step1(const std::string& email,
              const std::string& serialized_ke1,
              mojom::Authentication::LoginStep1Callback callback);
 

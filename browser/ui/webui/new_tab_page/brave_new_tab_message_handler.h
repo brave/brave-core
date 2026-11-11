@@ -60,7 +60,7 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   void HandleGetNewTabAdsData(const base::ListValue& args);
   void HandleSaveNewTabPagePref(const base::ListValue& args);
   void HandleRegisterNewTabPageView(const base::ListValue& args);
-  void HandleBrandedWallpaperLogoClicked(const base::ListValue& args);
+  void HandleNewTabTakeoverLogoClicked(const base::ListValue& args);
   void HandleGetWallpaperData(const base::ListValue& args);
   void HandleGetWallpaperDataCallback(base::Value callback_id,
                                       std::optional<base::DictValue> data);

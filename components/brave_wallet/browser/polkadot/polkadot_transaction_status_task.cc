@@ -239,8 +239,7 @@ void PolkadotTransactionStatusTask::OnGetEvents(
   std::array<uint8_t, 16> fee_bytes = {};
 
   bool was_successful = was_extrinsic_successful(
-      ::rust::Slice<const uint8_t>(events.value()), *extrinsic_idx_, *pubkey,
-      **chain_metadata_, fee_bytes);
+      events.value(), *extrinsic_idx_, *pubkey, **chain_metadata_, fee_bytes);
 
   auto fee = base::bit_cast<uint128_t>(fee_bytes);
   if (fee == 0) {

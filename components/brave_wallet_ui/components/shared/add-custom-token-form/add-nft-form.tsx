@@ -6,9 +6,9 @@
 import * as React from 'react'
 import { assertNotReached } from 'chrome://resources/js/assert.js'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import Input, { InputEventDetail } from '@brave/leo/react/input'
-import Alert from '@brave/leo/react/alert'
-import Button from '@brave/leo/react/button'
+import Input, { InputEventDetail } from '@brave/nala/react/input'
+import Alert from '@brave/nala/react/alert'
+import Button from '@brave/nala/react/button'
 
 // utils
 import { BraveWallet } from '../../../constants/types'
@@ -61,7 +61,7 @@ import {
 } from './add-custom-token-form-styles'
 import { Column, Row } from '../style'
 import { Skeleton } from '../loading-skeleton/styles'
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 import Tooltip from '../tooltip'
 
 const NftIconWithPlaceholder = withPlaceholderIcon(NftIcon, {

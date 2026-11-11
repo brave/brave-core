@@ -9,7 +9,6 @@
 
 #include "base/check_is_test.h"
 #include "base/containers/span_rust.h"
-#include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_wallet/browser/internal/sr25519.rs.h"
 #include "crypto/secure_util.h"
 

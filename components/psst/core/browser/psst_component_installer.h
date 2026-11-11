@@ -6,6 +6,11 @@
 #ifndef BRAVE_COMPONENTS_PSST_CORE_BROWSER_PSST_COMPONENT_INSTALLER_H_
 #define BRAVE_COMPONENTS_PSST_CORE_BROWSER_PSST_COMPONENT_INSTALLER_H_
 
+#include <cstdint>
+#include <iterator>
+
+#include "crypto/sha2.h"
+
 namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
@@ -14,14 +19,12 @@ namespace psst {
 
 inline constexpr char kPsstComponentName[] =
     "Brave Privacy Settings Selection for Sites Tool (PSST) Files";
-inline constexpr char kPsstComponentId[] = "bchfnigamfmpeanhekjggkphjfobpipo";
-inline constexpr char kPsstComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAz7OnL/yxxX0a/"
-    "IKLJc2LCQ5k12S6uQFuSCkruf7mGLuDhepKo8lA5orJQI8dqUMivTmxXC7SWYVS9uj05b9LTcL"
-    "tmlcNiUjdYFoCzmdtRh6rBTCzTZ7wkyyhacUpY7N3BRIR5dRk1OLfx2ovm8BLQqak3YJ7dsPxD"
-    "29714xPlbaMXDCsXEgibaGlXSNpDuCKFtzhVuRhSD6hRRQ7OgLQ7vm0b5BECO/"
-    "jRuMHra4G4S9Z0rRN8KA9dC38t55O+FeOGZMhjJzBEJPk5AlQzlbPGq/"
-    "MVPUu+4XFNEUoaeu65PjoAc05apRFCQQ/lcNy5gQfzwVExTNyrdP62eoRf+ANhQIDAQAB";
+inline constexpr uint8_t kPsstComponentPublicKeySHA256[32] = {
+    0x12, 0x75, 0xd8, 0x60, 0xc5, 0xcf, 0x40, 0xd7, 0x4a, 0x96, 0x6a,
+    0xf7, 0x95, 0xe1, 0xf8, 0xfe, 0xc7, 0x3c, 0x95, 0x80, 0x00, 0x92,
+    0x03, 0xe0, 0x99, 0x80, 0x94, 0x66, 0xfd, 0x7f, 0xb2, 0x74};
+static_assert(std::size(kPsstComponentPublicKeySHA256) ==
+              crypto::kSHA256Length);
 
 // Registers the PSST component with the component updater.
 void RegisterPsstComponent(component_updater::ComponentUpdateService* cus);

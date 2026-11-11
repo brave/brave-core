@@ -25,9 +25,9 @@ import WebKit
   /// The stats class to get the engine data from
   private var groupsManager: AdBlockGroupsManager
 
-  init(mainFrameURL: URL, groupsManager: AdBlockGroupsManager = AdBlockGroupsManager.shared) {
+  init(mainFrameURL: URL, groupsManager: AdBlockGroupsManager? = nil) {
     self.mainFrameURL = mainFrameURL
-    self.groupsManager = groupsManager
+    self.groupsManager = groupsManager ?? AdBlockGroupsManager.shared
   }
 
   /// This method builds all the user scripts that should be included for this page
@@ -69,11 +69,6 @@ import WebKit
       // Nothing changed. Return nil
       return false
     }
-  }
-
-  /// Return the domain for this current page passing any options needed for its persistance
-  @MainActor func domain(persistent: Bool) -> Domain {
-    return Domain.getOrCreate(forUrl: mainFrameURL, persistent: persistent)
   }
 
   /// Return all the user script types for this page. The number of script types grows as more frames are loaded.

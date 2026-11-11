@@ -16,11 +16,13 @@ def CheckToModifyInputApi(input_api, _output_api):
 
 # Ensure that all entries in the filter files start with the minus.
 def CheckFilterEntriesStartWithMinus(input_api, output_api):
-    files_to_check = (r'.+\.filter$', )
+    files_to_check = (r'.+\.filter$',)
     files_to_skip = ()
 
-    file_filter = lambda f: input_api.FilterSourceFile(
-        f, files_to_check=files_to_check, files_to_skip=files_to_skip)
+    def file_filter(f):
+        return input_api.FilterSourceFile(
+            f, files_to_check=files_to_check, files_to_skip=files_to_skip
+        )
 
     items = []
     for f in input_api.AffectedSourceFiles(file_filter):
@@ -36,5 +38,6 @@ def CheckFilterEntriesStartWithMinus(input_api, output_api):
 
     return [
         output_api.PresubmitError(
-            "Entries in upstream test filters should start with '-'", items)
+            "Entries in upstream test filters should start with '-'", items
+        )
     ]

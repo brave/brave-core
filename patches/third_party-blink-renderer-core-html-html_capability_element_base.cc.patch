@@ -1,0 +1,17 @@
+diff --git a/third_party/blink/renderer/core/html/html_capability_element_base.cc b/third_party/blink/renderer/core/html/html_capability_element_base.cc
+index c7e1bbfbfad29fb44f60bee027b4c02426b228d4..d7924280189a377bbaef681767d828fa3f70d41e 100644
+--- a/third_party/blink/renderer/core/html/html_capability_element_base.cc
++++ b/third_party/blink/renderer/core/html/html_capability_element_base.cc
+@@ -705,6 +705,12 @@ bool HTMLCapabilityElementBase::MaybeRegisterPageEmbeddedPermissionControl() {
+     return false;
+   }
+ 
++  if (descriptor->detail->which() ==
++      mojom::blink::EmbeddedPermissionControlDescriptorExtension::Tag::
++          kUserMedia) {
++    return false;
++  }
++
+   mojo::PendingRemote<EmbeddedPermissionControlClient> client;
+   embedded_permission_control_receiver_.Bind(
+       client.InitWithNewPipeAndPassReceiver(), GetTaskRunner());

@@ -146,7 +146,10 @@ class BraveTemplateURLPrepopulateDataTest : public testing::Test {
  protected:
   base::test::SingleThreadTaskEnvironment task_environment_;
   search_engines::SearchEnginesTestEnvironment search_engines_test_environment_;
-  std::vector<const PrepopulatedEngine*> brave_prepopulated_engines_;
+  // Points at static engine data, and is exposed as a
+  // `base::span<const PrepopulatedEngine* const>`.
+  RAW_PTR_EXCLUSION std::vector<const PrepopulatedEngine*>
+      brave_prepopulated_engines_;
 };
 
 // Verifies that the set of all prepopulate data doesn't contain entries with
@@ -174,16 +177,30 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueKeywords) {
   }
 }
 
-// Verifies that kPrepopulatedEnginesMigration is not enabled. When the flag
-// becomes enabled we will need to update our engines to reflect the migrations
-// (Yahoo JP, for example).
+// Verifies that kPrepopulatedEnginesMigration and
+// kPrepopulatedEnginesShadowVariants are not enabled. Both trigger
+// `ApplyPrepopulatedEnginesMigration()`, which resolves `migrate_to_id` via
+// `regional_capabilities::GetAllPrepopulatedEngines()` -- the upstream engine
+// list, not our overrides. If either flag becomes enabled, any engine we
+// override in brave/components/search_engines/brave_prepopulated_engines.h/cc
+// with a non-zero `migrate_to_id` (Yahoo JP, for example) would silently be
+// replaced by its plain upstream counterpart instead of a Brave-specified one.
 TEST_F(BraveTemplateURLPrepopulateDataTest,
        PrepopulatedEnginesMigrationIsDisabled) {
   EXPECT_FALSE(
       base::FeatureList::IsEnabled(switches::kPrepopulatedEnginesMigration))
       << "Upstream enabled switches::kPrepopulatedEnginesMigration. This means "
          "we need to check upstream's prepopulated engines' migrate_to_id "
-         "values and see if any of search engines we override in "
+         "values and see if any of the search engines we override in "
+         "brave/components/search_engines/brave_prepopulated_engines.h/cc need "
+         "to be migrated to new IDs as well.";
+  EXPECT_FALSE(base::FeatureList::IsEnabled(
+      switches::kPrepopulatedEnginesShadowVariants))
+      << "Upstream enabled switches::kPrepopulatedEnginesShadowVariants. This "
+         "triggers the same engine migration as "
+         "switches::kPrepopulatedEnginesMigration, so we need to check "
+         "upstream's prepopulated engines' migrate_to_id values and see if "
+         "any of the search engines we override in "
          "brave/components/search_engines/brave_prepopulated_engines.h/cc need "
          "to be migrated to new IDs as well.";
 }

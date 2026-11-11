@@ -30,6 +30,7 @@ import org.chromium.base.Callback;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.brave_wallet.mojom.PermissionLifetimeOption;
 import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
@@ -40,7 +41,6 @@ import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.fragments.CreateAccountBottomSheetFragment;
-import org.chromium.chrome.browser.crypto_wallet.fragments.WalletFragmentCallback;
 import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccountsListAdapter;
 import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccountsListAdapter.Mode;
 import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccountsListAdapter.PermissionListener;
@@ -48,9 +48,11 @@ import org.chromium.chrome.browser.crypto_wallet.util.AccountsPermissionsHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabObserver;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper.DefaultFaviconHelper;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper.FaviconImageCallback;
+import org.chromium.content_public.browser.NavigationHandle;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.url.GURL;
 
@@ -70,26 +72,35 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
     private @MonotonicNonNull BravePermissionAccountsListAdapter mAccountsListAdapter;
     private RecyclerView mRecyclerView;
     private @Nullable AccountInfo mSelectedAccount;
+    private @Nullable Tab mObservedTab;
+    private OriginInfo mOriginInfo = new OriginInfo();
     private FaviconHelper mFaviconHelper;
     private @Nullable DefaultFaviconHelper mDefaultFaviconHelper;
     private @MonotonicNonNull WalletModel mWalletModel;
+    private final TabObserver mTabObserver =
+            new TabObserver() {
+                @Override
+                public void onDidFinishNavigationInPrimaryMainFrame(
+                        Tab tab, NavigationHandle navigationHandle) {
+                    if (navigationHandle.hasCommitted()
+                            && navigationHandle.isInPrimaryMainFrame()) {
+                        updateWebsite(tab);
+                    }
+                }
+            };
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
-        if (context instanceof WalletFragmentCallback walletFragmentCallback) {
-            mWalletModel = walletFragmentCallback.getWalletModel();
-        } else {
-            throw new IllegalStateException("Host activity must implement WalletFragmentCallback.");
-        }
+        mWalletModel = getWalletFragmentCallback().getWalletModel();
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private void updateAccounts() {
         if (mSelectedAccount == null || mAccountInfos == null) return;
         AccountsPermissionsHelper accountsPermissionsHelper =
-                new AccountsPermissionsHelper(getBraveWalletService(), mAccountInfos);
+                new AccountsPermissionsHelper(
+                        getBraveWalletService(), mOriginInfo.originSpec, mAccountInfos);
         accountsPermissionsHelper.checkAccounts(
                 () -> {
                     mAccountsWithPermissions =
@@ -133,13 +144,31 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
         mRecyclerView = view.findViewById(R.id.accounts_list);
         mFavicon = view.findViewById(R.id.favicon);
 
-        assumeNonNull(mWalletModel)
-                .getBraveWalletService()
-                .getActiveOrigin(originInfo -> mWebSite.setText(Utils.geteTldSpanned(originInfo)));
+        ChromeTabbedActivity activity = BraveActivity.getChromeTabbedActivity();
+        observeTab(activity == null ? null : activity.getActivityTab());
 
         initComponents();
 
         return view;
+    }
+
+    private void observeTab(@Nullable Tab tab) {
+        if (mObservedTab != null) {
+            mObservedTab.removeObserver(mTabObserver);
+        }
+        mObservedTab = tab;
+        if (tab == null) {
+            mOriginInfo = Utils.getOriginInfo(GURL.emptyGURL());
+            mWebSite.setText("");
+            return;
+        }
+        tab.addObserver(mTabObserver);
+        updateWebsite(tab);
+    }
+
+    private void updateWebsite(Tab tab) {
+        mOriginInfo = Utils.getOriginInfo(tab.getUrl());
+        mWebSite.setText(Utils.geteTldSpanned(mOriginInfo));
     }
 
     private void initComponents() {
@@ -198,6 +227,15 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
         super.onDestroy();
         if (mFaviconHelper != null) mFaviconHelper.destroy();
         if (mDefaultFaviconHelper != null) mDefaultFaviconHelper.clearCache();
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (mObservedTab != null) {
+            mObservedTab.removeObserver(mTabObserver);
+            mObservedTab = null;
+        }
+        super.onDestroyView();
     }
 
     @Override
@@ -272,6 +310,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
     public void disconnectAccount(final AccountInfo account) {
         getBraveWalletService()
                 .resetPermission(
+                        mOriginInfo.originSpec,
                         account.accountId,
                         success -> {
                             if (!success) {

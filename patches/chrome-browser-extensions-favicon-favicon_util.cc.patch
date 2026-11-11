@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/extensions/favicon/favicon_util.cc b/chrome/browser/extensions/favicon/favicon_util.cc
+index e15bc1bd21e72c4ddcd2bde9178f4cd12dbd9349..bd7011b685d08fdbc67a092d90919f505939c1d6 100644
+--- a/chrome/browser/extensions/favicon/favicon_util.cc
++++ b/chrome/browser/extensions/favicon/favicon_util.cc
+@@ -38,10 +38,10 @@ int GetResourceID(int size_in_pixels) {
+       ui::NativeTheme::GetInstanceForNativeUi()->preferred_color_scheme() ==
+       ui::NativeTheme::PreferredColorScheme::kDark;
+   if (size_in_pixels >= 64) {
+-    return is_dark ? IDR_DEFAULT_FAVICON_DARK_64 : IDR_DEFAULT_FAVICON_64;
++    return is_dark ? BRAVE_IDR_DEFAULT_FAVICON_DARK_64 : BRAVE_IDR_DEFAULT_FAVICON_64;
+   }
+   if (size_in_pixels >= 32) {
+-    return is_dark ? IDR_DEFAULT_FAVICON_DARK_32 : IDR_DEFAULT_FAVICON_32;
++    return is_dark ? BRAVE_IDR_DEFAULT_FAVICON_DARK_32 : BRAVE_IDR_DEFAULT_FAVICON_32;
+   }
+   return is_dark ? IDR_DEFAULT_FAVICON_DARK : IDR_DEFAULT_FAVICON;
+ }

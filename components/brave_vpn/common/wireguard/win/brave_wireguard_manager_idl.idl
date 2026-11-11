@@ -20,6 +20,23 @@ interface IBraveVpnWireguardManager : IUnknown
 };
 
 [
+  object,
+  oleautomation,
+  uuid(199DAF4E-A602-49CC-A3B0-2F51B9559682),
+  helpstring("IBraveVpnWireguardManager2 Interface"),
+  pointer_default(unique)
+]
+interface IBraveVpnWireguardManager2 : IBraveVpnWireguardManager
+{
+  HRESULT EnableVpn2([in] BSTR public_key,
+                     [in] BSTR private_key,
+                     [in] BSTR address,
+                     [in] BSTR endpoint,
+                     [in] BOOL allow_lan_traffic,
+                     [out] DWORD* last_error);
+};
+
+[
   uuid(A0575AC4-E934-4055-B210-655CCCB40535),
   version(1.0),
   helpstring("BraveVpnWireguardService 1.0 Type Library")
@@ -28,4 +45,5 @@ library BraveVpnWireguardServiceLib {
   importlib("stdole2.tlb");
 
   interface IBraveVpnWireguardManager;
+  interface IBraveVpnWireguardManager2;
 };

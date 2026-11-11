@@ -30,6 +30,7 @@ Coverage:
 
 from __future__ import annotations
 
+import contextlib
 import os
 import subprocess
 import sys
@@ -46,11 +47,13 @@ import cherry_picks as m
 
 def _git(repo: Path, *args: str, env: dict | None = None) -> str:
     """Run `git -C <repo> <args...>` and return stripped stdout."""
-    return subprocess.run(('git', '-C', str(repo), *args),
-                          check=True,
-                          capture_output=True,
-                          text=True,
-                          env=env).stdout.strip()
+    return subprocess.run(
+        ('git', '-C', str(repo), *args),
+        check=True,
+        capture_output=True,
+        text=True,
+        env=env,
+    ).stdout.strip()
 
 
 def _init_repo(repo: Path) -> None:
@@ -82,9 +85,10 @@ class _RepoTestCase(unittest.TestCase):
     """Base fixture providing a temp dir and a helper to build repos."""
 
     def setUp(self) -> None:
-        self._tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(self._tmp.cleanup)
-        self.root = Path(self._tmp.name)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self._tmp = stack.enter_context(tempfile.TemporaryDirectory())
+        self.root = Path(self._tmp)
 
     def _new_repo(self, name: str) -> Path:
         repo = self.root / name
@@ -121,8 +125,7 @@ class NoopTest(_RepoTestCase):
         # Point origin at a path that does not exist. Because the commit object
         # is already present and reachable, the fetch branch must be skipped
         # entirely, so a broken remote is never contacted.
-        _git(repo, 'remote', 'add', 'origin',
-             str(self.root / 'does-not-exist'))
+        _git(repo, 'remote', 'add', 'origin', str(self.root / 'does-not-exist'))
         present = self._head(repo)
         with m.cherry_picks(repo, [present]):
             pass
@@ -141,8 +144,9 @@ class ApplyTest(_RepoTestCase):
         repo = self._new_repo('repo')
         base = self._head(repo)
         _git(repo, 'checkout', '-q', '-b', 'feature')
-        commit = _commit_file(repo, 'feature.txt', 'feature\n',
-                              'feature commit')
+        commit = _commit_file(
+            repo, 'feature.txt', 'feature\n', 'feature commit'
+        )
         _git(repo, 'checkout', '-q', 'main')
         self.assertEqual(self._head(repo), base)
         return repo, base, commit
@@ -185,8 +189,7 @@ class ApplyTest(_RepoTestCase):
         # A commit that exists only on a side branch of `origin`, built on the
         # shared base so it cherry-picks cleanly onto the clone's HEAD.
         _git(origin, 'checkout', '-q', '-b', 'feature')
-        commit = _commit_file(origin, 'fetched.txt', 'fetched\n',
-                              'origin only')
+        commit = _commit_file(origin, 'fetched.txt', 'fetched\n', 'origin only')
         _git(origin, 'checkout', '-q', 'main')  # main stays at the base commit
 
         # A single-branch clone of `main` shares the base but never fetches the
@@ -194,15 +197,34 @@ class ApplyTest(_RepoTestCase):
         # `--no-local` forces real fetch negotiation; without it a same-filesystem
         # clone hardlinks the entire object database and pulls the commit anyway.
         local = self.root / 'local'
-        _git(self.root, 'clone', '-q', '--no-local', '--single-branch',
-             '--branch', 'main', str(origin), str(local))
+        _git(
+            self.root,
+            'clone',
+            '-q',
+            '--no-local',
+            '--single-branch',
+            '--branch',
+            'main',
+            str(origin),
+            str(local),
+        )
         _git(local, 'config', 'user.name', 'Test')
         _git(local, 'config', 'user.email', 'test@example.com')
         self.assertNotEqual(
-            subprocess.run(('git', '-C', str(local), 'cat-file', '-e',
-                            f'{commit}^{{commit}}'),
-                           check=False,
-                           capture_output=True).returncode, 0)
+            subprocess.run(
+                (
+                    'git',
+                    '-C',
+                    str(local),
+                    'cat-file',
+                    '-e',
+                    f'{commit}^{{commit}}',
+                ),
+                check=False,
+                capture_output=True,
+            ).returncode,
+            0,
+        )
 
         local_base = self._head(local)
         with m.cherry_picks(local, [commit]):
@@ -223,16 +245,22 @@ class MetadataTest(_RepoTestCase):
     def _apply_and_read(self, overrides: dict | None) -> dict[str, str]:
         repo = self._new_repo('repo')
         _git(repo, 'checkout', '-q', '-b', 'feature')
-        commit = _commit_file(repo, 'feature.txt', 'feature\n',
-                              'feature commit')
+        commit = _commit_file(
+            repo, 'feature.txt', 'feature\n', 'feature commit'
+        )
         _git(repo, 'checkout', '-q', 'main')
         fmt = '%cn%n%ce%n%cd%n%an%n%ae'
         kwargs = {} if overrides is None else {'metadata_overrides': overrides}
         result: dict[str, str] = {}
         with m.cherry_picks(repo, [commit], **kwargs):
             lines = _git(repo, 'log', '-1', f'--format={fmt}').splitlines()
-            keys = ('committer_name', 'committer_email', 'committer_date',
-                    'author_name', 'author_email')
+            keys = (
+                'committer_name',
+                'committer_email',
+                'committer_date',
+                'author_name',
+                'author_email',
+            )
             result = dict(zip(keys, lines))
         return result
 
@@ -240,10 +268,14 @@ class MetadataTest(_RepoTestCase):
         got = self._apply_and_read(None)
         # `git cherry-pick` preserves the *author* of the original commit and
         # only the committer is rewritten, which is what the overrides pin.
-        self.assertEqual(got['committer_name'],
-                         m.GIT_METADATA_OVERRIDES['GIT_COMMITTER_NAME'])
-        self.assertEqual(got['committer_email'],
-                         m.GIT_METADATA_OVERRIDES['GIT_COMMITTER_EMAIL'])
+        self.assertEqual(
+            got['committer_name'],
+            m.GIT_METADATA_OVERRIDES['GIT_COMMITTER_NAME'],
+        )
+        self.assertEqual(
+            got['committer_email'],
+            m.GIT_METADATA_OVERRIDES['GIT_COMMITTER_EMAIL'],
+        )
         self.assertIn('2099', got['committer_date'])
         # The author is the original commit's, not the override.
         self.assertEqual(got['author_name'], 'Test')
@@ -252,8 +284,9 @@ class MetadataTest(_RepoTestCase):
     def test_pinned_committer_date_is_timezone_independent(self) -> None:
         repo = self._new_repo('repo')
         _git(repo, 'checkout', '-q', '-b', 'feature')
-        commit = _commit_file(repo, 'feature.txt', 'feature\n',
-                              'feature commit')
+        commit = _commit_file(
+            repo, 'feature.txt', 'feature\n', 'feature commit'
+        )
         _git(repo, 'checkout', '-q', 'main')
 
         def pick_under(tz: str) -> tuple[str, str]:
@@ -267,8 +300,9 @@ class MetadataTest(_RepoTestCase):
             """
             with mock.patch.dict(os.environ, {'TZ': tz}):
                 with m.cherry_picks(repo, [commit]):
-                    head, date = _git(repo, 'log', '-1',
-                                      '--format=%H%n%cI').splitlines()
+                    head, date = _git(
+                        repo, 'log', '-1', '--format=%H%n%cI'
+                    ).splitlines()
                     return head, date
 
         # A committer date with no offset is parsed in the machine's local
@@ -281,8 +315,11 @@ class MetadataTest(_RepoTestCase):
         _, committed = pick_under('UTC')
         self.assertEqual(
             datetime.fromisoformat(committed),
-            datetime.strptime(m.GIT_METADATA_OVERRIDES['GIT_COMMITTER_DATE'],
-                              '%Y-%m-%d %H:%M:%S %z'))
+            datetime.strptime(
+                m.GIT_METADATA_OVERRIDES['GIT_COMMITTER_DATE'],
+                '%Y-%m-%d %H:%M:%S %z',
+            ),
+        )
 
     def test_custom_overrides_are_honoured(self) -> None:
         overrides = {
@@ -312,26 +349,48 @@ class ShallowCloneTest(_RepoTestCase):
         # top of it, exactly like a real cherry-pick candidate that long ago
         # made it into a release branch.
         fix = _commit_file(origin, 'base.txt', 'base\nfixed\n', 'the fix')
-        _commit_file(origin, 'other.txt', 'other\n',
-                     'later, unrelated commit (becomes the shallow tip)')
+        _commit_file(
+            origin,
+            'other.txt',
+            'other\n',
+            'later, unrelated commit (becomes the shallow tip)',
+        )
 
         local = self.root / 'local'
         # `file://` forces real fetch negotiation for `--depth`; a same-
         # filesystem path clone hardlinks the whole object database and
         # ignores `--depth` entirely (per `git help clone`).
-        _git(self.root, 'clone', '-q', '--depth', '1', f'file://{origin}',
-             str(local))
+        _git(
+            self.root,
+            'clone',
+            '-q',
+            '--depth',
+            '1',
+            f'file://{origin}',
+            str(local),
+        )
         _git(local, 'config', 'user.name', 'Test')
         _git(local, 'config', 'user.email', 'test@example.com')
-        self.assertEqual(_git(local, 'rev-parse', '--is-shallow-repository'),
-                         'true')
+        self.assertEqual(
+            _git(local, 'rev-parse', '--is-shallow-repository'), 'true'
+        )
         # The fix's own commit object isn't present at all -- the shallow
         # clone only carries the tip.
         self.assertNotEqual(
-            subprocess.run(('git', '-C', str(local), 'cat-file', '-e',
-                            f'{fix}^{{commit}}'),
-                           check=False,
-                           capture_output=True).returncode, 0)
+            subprocess.run(
+                (
+                    'git',
+                    '-C',
+                    str(local),
+                    'cat-file',
+                    '-e',
+                    f'{fix}^{{commit}}',
+                ),
+                check=False,
+                capture_output=True,
+            ).returncode,
+            0,
+        )
 
         local_head = self._head(local)
         with m.cherry_picks(local, [fix]):

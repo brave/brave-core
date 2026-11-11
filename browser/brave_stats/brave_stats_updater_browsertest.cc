@@ -24,7 +24,6 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_paths.h"
-#include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_test.h"
@@ -33,7 +32,6 @@
 #include "net/test/embedded_test_server/http_response.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/ui/browser.h"
 #endif
 
 namespace {

@@ -289,7 +289,7 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
     }
 
     private final Comparator<TransactionInfo> mSortByDateComparator =
-            (lhs, rhs) -> Long.compare(rhs.createdTime.microseconds, lhs.createdTime.microseconds);
+            (lhs, rhs) -> Double.compare(rhs.createdTime.msec, lhs.createdTime.msec);
 
     private static class TransactionCacheRecord {
         private final TxActionType mTxActionType;

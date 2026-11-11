@@ -6,21 +6,43 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    context,
+    futures,
+    path,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['context', 'futures', 'path', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    context: context.API
+    futures: futures.API
+    path: path.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    pass
+
+
+def RunSteps(api: DEPS):
     # Fan work out, then collect it in completion order. A simulated step never
     # blocks, so each greenlet runs to completion once it is switched to, and
     # the steps come out in spawn order.
-    futures = [
-        api.futures.spawn(api.step,
-                          f'work {i}', ['echo', str(i)],
-                          __name=f'w{i}') for i in range(3)
+    spawned = [
+        api.futures.spawn(
+            api.step, f'work {i}', ['echo', str(i)], __name=f'w{i}'
+        )
+        for i in range(3)
     ]
-    names = [future.name for future in api.futures.iwait(futures)]
+    names = [future.name for future in api.futures.iwait(spawned)]
     api.step('collected', ['echo', *names])
 
     # Consuming only part of an `iwait` leaks resources unless it is used as a
@@ -49,12 +71,14 @@ def RunSteps(api):
         return i
 
     api.futures.wait(
-        [api.futures.spawn(limited, i, __meta={'i': i}) for i in range(3)])
+        [api.futures.spawn(limited, i, __meta={'i': i}) for i in range(3)]
+    )
 
     # `spawn_immediate` switches to the new greenlet straight away, so its step
     # runs before the one after the spawn.
-    immediate = api.futures.spawn_immediate(api.step, 'immediate',
-                                            ['echo', 'now'])
+    immediate = api.futures.spawn_immediate(
+        api.step, 'immediate', ['echo', 'now']
+    )
     api.step('after immediate', ['echo', 'later'])
     immediate.result()
 
@@ -72,9 +96,9 @@ def RunSteps(api):
 
     # A failing greenlet surfaces its exception through the Future rather than
     # at the spawn site, and `__meta` rides along with it.
-    failing = api.futures.spawn(api.step,
-                                'boom', ['false'],
-                                __meta='meta-value')
+    failing = api.futures.spawn(
+        api.step, 'boom', ['false'], __meta='meta-value'
+    )
     exc = failing.exception()
     api.step('caught', ['echo', type(exc).__name__, failing.meta])
 
@@ -85,31 +109,39 @@ def RunSteps(api):
     api.step('after cancel', ['echo', str(cancelled.done)])
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'full',
         api.step_data('boom', retcode=1),
         # Fanned-out work completes in spawn order and is collected by name.
         api.post_process(post_process.MustRun, 'work 0', 'work 1', 'work 2'),
-        api.post_process(post_process.StepCommandContains, 'collected',
-                         ['w0', 'w1', 'w2']),
-        api.post_process(post_process.StepCommandContains, 'waited',
-                         ['inner', 'True']),
-        api.post_process(post_process.MustRun, 'limited 0', 'limited 1',
-                         'limited 2'),
+        api.post_process(
+            post_process.StepCommandContains, 'collected', ['w0', 'w1', 'w2']
+        ),
+        api.post_process(
+            post_process.StepCommandContains, 'waited', ['inner', 'True']
+        ),
+        api.post_process(
+            post_process.MustRun, 'limited 0', 'limited 1', 'limited 2'
+        ),
         # `spawn_immediate` runs its step before the following one.
         api.post_process(post_process.MustRun, 'immediate', 'after immediate'),
         # The expectation records each step's cwd, so the golden is what
         # asserts that the spawned greenlet inherits its parent's cwd, that a
         # scope entered inside it applies only there, and that the parent's
         # scope is undisturbed afterwards.
-        api.post_process(post_process.MustRun, 'inherits cwd', 'own cwd',
-                         'parent cwd intact'),
+        api.post_process(
+            post_process.MustRun, 'inherits cwd', 'own cwd', 'parent cwd intact'
+        ),
         # A failure is delivered through the Future, so the recipe carries on.
-        api.post_process(post_process.StepCommandContains, 'caught',
-                         ['CalledProcessError', 'meta-value']),
+        api.post_process(
+            post_process.StepCommandContains,
+            'caught',
+            ['CalledProcessError', 'meta-value'],
+        ),
         api.post_process(post_process.DoesNotRun, 'never runs'),
-        api.post_process(post_process.StepCommandContains, 'after cancel',
-                         ['True']),
+        api.post_process(
+            post_process.StepCommandContains, 'after cancel', ['True']
+        ),
         api.post_process(post_process.StatusSuccess),
     )

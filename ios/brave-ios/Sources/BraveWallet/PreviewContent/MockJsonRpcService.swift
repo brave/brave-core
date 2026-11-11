@@ -11,7 +11,7 @@ import Foundation
 /// JsonRpcService implementation used for previews and unit tests.
 /// Implements default responses for commonly used functions to avoid unimplemented crashes.
 /// Override `_*` functions to implement unit test specific responses as needed.
-class MockJsonRpcService: BraveWallet.TestJsonRpcService {
+class MockJsonRpcService: BraveWallet.TestJsonRpcService, @unchecked Sendable {
   static let allKnownNetworks: [BraveWallet.NetworkInfo] = [
     .mockMainnet, .mockPolygon, .mockSepolia,
     .mockSolana, .mockSolanaTestnet,
@@ -48,8 +48,7 @@ class MockJsonRpcService: BraveWallet.TestJsonRpcService {
             customChainIds: [],
             hiddenChainIds: [],
             ankrChainIds: [],
-            swapChainIds: [],
-            offRampChainIds: []
+            swapChainIds: []
           )
         )
         return
@@ -60,8 +59,7 @@ class MockJsonRpcService: BraveWallet.TestJsonRpcService {
           customChainIds: self.allCustomNetworks.map(\.chainId),
           hiddenChainIds: self.hiddenNetworks.map(\.chainId),
           ankrChainIds: [],
-          swapChainIds: self.swapSupportedChainIds,
-          offRampChainIds: []
+          swapChainIds: self.swapSupportedChainIds
         )
       )
     }

@@ -152,6 +152,30 @@ function checkWebsocketConnection(url) {
     return false;
   });
 }
+
+function checkSharedWorkerWebsocketConnection(url) {
+  return new Promise((resolve, reject) => {
+    const worker = new SharedWorker(
+      './shared_worker_websocket.js', `websocket-${crypto.randomUUID()}`);
+    worker.port.onmessage = event => resolve(event.data);
+    // Reject (rather than resolving false) if the worker itself fails to load
+    // or run, so that a broken worker can't masquerade as a blocked WebSocket.
+    // The test should only pass when the handshake was actually attempted and
+    // reported back as blocked via the port message above.
+    worker.onerror = () => reject(new Error('SharedWorker failed to load/run'));
+    worker.port.postMessage(url);
+  });
+}
+
+async function checkServiceWorkerWebsocketConnection(url) {
+  const registration = await navigator.serviceWorker.register(
+    './service_worker_websocket.js', { scope: './' });
+  await navigator.serviceWorker.ready;
+  return new Promise(resolve => {
+    navigator.serviceWorker.onmessage = event => resolve(event.data);
+    registration.active.postMessage(url);
+  });
+}
 </script>
 </head>
 <body>

@@ -8,6 +8,7 @@
 #include "brave/browser/brave_local_state_prefs.h"
 #include "brave/browser/brave_profile_prefs.h"
 #include "brave/browser/brave_stats/buildflags.h"
+#include "brave/browser/misc_metrics/fingerprint_frequency_metrics.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -62,9 +63,16 @@
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_initializer.h"
 #include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page_prefs.h"
+
+// Defined in //brave/browser/ui:brave_tab_prefs, linked through
+// //brave/browser:core.
+namespace brave_tabs {
+void MigrateBraveProfilePrefs(PrefService* prefs);
+void MaybeApplyVerticalTabMigrationTestingOverride(PrefService* prefs);
+}  // namespace brave_tabs
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -79,6 +87,7 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/pref_names.h"
+#include "brave/components/tor/tor_profile_service.h"
 #include "brave/components/tor/tor_utils.h"
 #endif
 
@@ -189,6 +198,8 @@ void MigrateObsoleteBraveProfilePrefsAfterChromium(
   // Added 03/2024
 #if BUILDFLAG(ENABLE_TOR)
   profile_prefs->ClearPref(tor::prefs::kAutoOnionRedirect);
+
+  tor::TorProfileService::MigrateObsoleteProfilePrefs(profile_prefs);
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -222,6 +233,8 @@ void MigrateObsoleteBraveProfilePrefsAfterChromium(
 #if !BUILDFLAG(IS_ANDROID)
   // Added 2024-01
   brave_tabs::MigrateBraveProfilePrefs(profile_prefs);
+  // Dev/QA override for vertical tab migration testing
+  brave_tabs::MaybeApplyVerticalTabMigrationTestingOverride(profile_prefs);
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   // Added 2024-04
@@ -270,6 +283,11 @@ void MigrateObsoleteBraveProfilePrefsAfterChromium(
 
   // Added 2026-06
   profile_prefs->ClearPref(kTabsSearchShow);
+
+  // Added 2026-09
+#if !BUILDFLAG(IS_ANDROID)
+  brave::MigrateBookmarkState(profile_prefs);
+#endif
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }
 
@@ -297,6 +315,7 @@ void MigrateObsoleteBraveLocalStatePrefsAfterChromium(
 #endif
 
   misc_metrics::UptimeMonitorImpl::MigrateObsoletePrefs(local_state);
+  misc_metrics::FingerprintFrequencyMetrics::MigrateObsoletePrefs(local_state);
   brave_search::BackupResultsMetrics::MigrateObsoleteLocalStatePrefs(
       local_state);
   brave_search_conversion::p3a::MigrateObsoleteLocalStatePrefs(local_state);

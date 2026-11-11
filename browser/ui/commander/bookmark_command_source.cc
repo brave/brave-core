@@ -19,7 +19,6 @@
 #include "brave/browser/ui/commander/fuzzy_finder.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/url_and_title.h"
@@ -41,7 +40,8 @@ std::unique_ptr<CommandItem> CreateOpenBookmarkItem(
   item->command =
       base::BindOnce(&chrome::AddTabAt, base::Unretained(browser),
                      GURL(bookmark.url), /*index=*/-1, /*foreground=*/true,
-                     /*group=*/std::nullopt, /*pinned=*/false);
+                     /*group=*/std::nullopt, /*pinned=*/false,
+                     /*window_action=*/std::nullopt);
   return item;
 }
 

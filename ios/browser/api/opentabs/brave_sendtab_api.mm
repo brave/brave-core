@@ -6,13 +6,14 @@
 #include "brave/ios/browser/api/opentabs/brave_sendtab_api.h"
 
 #include "base/check.h"
+#include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/api/opentabs/brave_sendtab_observer.h"
 #include "brave/ios/browser/api/opentabs/sendtab_model_listener_ios.h"
 #include "components/send_tab_to_self/send_tab_to_self_model.h"
 #include "components/send_tab_to_self/send_tab_to_self_sync_service.h"
-#include "components/send_tab_to_self/target_device_info.h"
+#include "components/sync_device_info/remote_device_info.h"
 #include "net/base/apple/url_conversions.h"
 
 namespace brave {
@@ -113,9 +114,9 @@ TargetDeviceType DeviceTypeFromSyncDeviceType(
   NSMutableArray<IOSSendTabTargetDevice*>* targetDeviceList =
       [[NSMutableArray alloc] init];
 
-  // The list of devices with thier names, cache_guids, device types,
+  // The list of devices with their names, cache_guids, device types,
   // and active times.
-  std::vector<send_tab_to_self::TargetDeviceInfo> target_device_list_ =
+  std::vector<syncer::RemoteDeviceInfo> target_device_list_ =
       sendtab_sync_service_->GetSendTabToSelfModel()
           ->GetTargetDeviceInfoSortedList();
 

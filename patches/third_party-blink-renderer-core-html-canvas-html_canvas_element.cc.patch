@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
-index fb2d3e7f4a4549a3bffe1a57c97fc7eb726a358b..e5a68785475e02c9c9cc9c213af86fe5f8d4fbc9 100644
+index 5d9d963d79a9457b85372bfa38701b5c75b6eda6..4b76c1854003f0e7e340208d53f1da2b4e238be4 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
-@@ -1305,6 +1305,7 @@ String HTMLCanvasElement::ToDataURLInternal(
+@@ -1443,6 +1443,7 @@ String HTMLCanvasElement::ToDataURLInternal(
      if (!data_buffer)
        return String("data:,");
  

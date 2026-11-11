@@ -13,17 +13,15 @@ import android.os.Bundle;
 import androidx.preference.Preference;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.base.Log;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
+import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.DefaultWallet;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
@@ -37,7 +35,6 @@ import org.chromium.mojo.system.MojoException;
 @NullMarked
 public class BraveWalletPreferences extends BravePreferenceFragment
         implements ConnectionErrorHandler, Preference.OnPreferenceChangeListener {
-    private static final String TAG = "WalletPreferences";
     private static final String PREF_BRAVE_WALLET_AUTOLOCK = "pref_brave_wallet_autolock";
 
     private static final String BRAVE_WALLET_WEB3_NOTIFICATION_SWITCH = "web3_notifications_switch";
@@ -61,7 +58,7 @@ public class BraveWalletPreferences extends BravePreferenceFragment
     private @Nullable ChromeSwitchPreference mWeb3NftDiscoverySwitch;
 
     private @Nullable KeyringService mKeyringService;
-    private @Nullable WalletModel mWalletModel;
+    private @Nullable BraveWalletService mBraveWalletService;
 
     private final SettableMonotonicObservableSupplier<String> mPageTitle =
             ObservableSuppliers.createMonotonic();
@@ -73,13 +70,6 @@ public class BraveWalletPreferences extends BravePreferenceFragment
 
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
-        try {
-            BraveActivity activity = BraveActivity.getBraveActivity();
-            mWalletModel = activity.getWalletModel();
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "onCreatePreferences", e);
-        }
-
         mPageTitle.set(getString(R.string.brave_ui_brave_wallet));
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_wallet_preferences);
 
@@ -94,27 +84,11 @@ public class BraveWalletPreferences extends BravePreferenceFragment
         if (mDefaultEthereumWallet != null) {
             mDefaultEthereumWallet.setOnPreferenceChangeListener(this);
             mDefaultEthereumWallet.setEnabled(false);
-            if (mWalletModel != null) {
-                mWalletModel
-                        .getBraveWalletService()
-                        .getDefaultEthereumWallet(
-                                (@DefaultWallet.EnumType int defaultEthereumWallet) ->
-                                        setupDefaultWalletPreference(
-                                                mDefaultEthereumWallet, defaultEthereumWallet));
-            }
         }
         mDefaultSolanaWallet = findPreference(PREF_DEFAULT_SOLANA_WALLET);
         if (mDefaultSolanaWallet != null) {
             mDefaultSolanaWallet.setOnPreferenceChangeListener(this);
             mDefaultSolanaWallet.setEnabled(false);
-            if (mWalletModel != null) {
-                mWalletModel
-                        .getBraveWalletService()
-                        .getDefaultSolanaWallet(
-                                (@DefaultWallet.EnumType int defaultSolanaWallet) ->
-                                        setupDefaultWalletPreference(
-                                                mDefaultSolanaWallet, defaultSolanaWallet));
-            }
         }
 
         mPrefAutolock = findPreference(PREF_BRAVE_WALLET_AUTOLOCK);
@@ -126,6 +100,7 @@ public class BraveWalletPreferences extends BravePreferenceFragment
         }
 
         initKeyringService();
+        initBraveWalletService();
     }
 
     @Override
@@ -175,15 +150,9 @@ public class BraveWalletPreferences extends BravePreferenceFragment
     }
 
     private void setUpNftDiscoveryPreference() {
-        if (mWalletModel == null) return;
         mWeb3NftDiscoverySwitch = findPreference(BRAVE_WALLET_WEB3_NFT_DISCOVERY_SWITCH);
         assertNonNull(mWeb3NftDiscoverySwitch);
-        mWalletModel
-                .getCryptoModel()
-                .isNftDiscoveryEnabled(
-                        isNftDiscoveryEnabled ->
-                                assumeNonNull(mWeb3NftDiscoverySwitch)
-                                        .setChecked(isNftDiscoveryEnabled));
+        mWeb3NftDiscoverySwitch.setEnabled(false);
         mWeb3NftDiscoverySwitch.setOnPreferenceChangeListener(this);
 
         BraveInlineTextButtonPreference learnMorePreference =
@@ -207,18 +176,74 @@ public class BraveWalletPreferences extends BravePreferenceFragment
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
+        closeServices();
+        super.onDestroy();
+    }
+
+    private void closeServices() {
         if (mKeyringService != null) {
             mKeyringService.close();
+            mKeyringService = null;
+        }
+        if (mBraveWalletService != null) {
+            mBraveWalletService.close();
+            mBraveWalletService = null;
         }
     }
 
     @Override
     public void onConnectionError(MojoException e) {
-        assumeNonNull(mKeyringService).close();
-        mKeyringService = null;
+        closeServices();
+        if (!canUpdatePreferences()) return;
         initKeyringService();
+        initBraveWalletService();
+        refreshAutolockView();
+    }
+
+    private void initBraveWalletService() {
+        if (mBraveWalletService != null) return;
+
+        // Settings can be restored before the browser activity's WalletModel is ready.
+        BraveWalletService service =
+                BraveWalletServiceFactory.getInstance().getBraveWalletService(this);
+        mBraveWalletService = service;
+        if (mDefaultEthereumWallet != null) {
+            mDefaultEthereumWallet.setEnabled(false);
+            service.getDefaultEthereumWallet(
+                    defaultWallet -> {
+                        if (!canUpdateWalletPreferences(service)) return;
+                        setupDefaultWalletPreference(mDefaultEthereumWallet, defaultWallet);
+                    });
+        }
+        if (mDefaultSolanaWallet != null) {
+            mDefaultSolanaWallet.setEnabled(false);
+            service.getDefaultSolanaWallet(
+                    defaultWallet -> {
+                        if (!canUpdateWalletPreferences(service)) return;
+                        setupDefaultWalletPreference(mDefaultSolanaWallet, defaultWallet);
+                    });
+        }
+        if (mWeb3NftDiscoverySwitch != null) {
+            mWeb3NftDiscoverySwitch.setEnabled(false);
+            service.getNftDiscoveryEnabled(
+                    enabled -> {
+                        if (!canUpdateWalletPreferences(service)) return;
+                        assumeNonNull(mWeb3NftDiscoverySwitch).setChecked(enabled);
+                        assumeNonNull(mWeb3NftDiscoverySwitch).setEnabled(true);
+                    });
+        }
+    }
+
+    private boolean canUpdateWalletPreferences(BraveWalletService service) {
+        return mBraveWalletService == service && canUpdatePreferences();
+    }
+
+    private boolean canUpdatePreferences() {
+        return isAdded()
+                && getActivity() != null
+                && !requireActivity().isFinishing()
+                && !requireActivity().isDestroyed();
     }
 
     private void initKeyringService() {
@@ -233,6 +258,7 @@ public class BraveWalletPreferences extends BravePreferenceFragment
         if (mKeyringService != null) {
             mKeyringService.getAutoLockMinutes(
                     minutes -> {
+                        if (!canUpdatePreferences() || getView() == null) return;
                         mPrefAutolock.setSummary(
                                 requireContext()
                                         .getResources()
@@ -256,20 +282,21 @@ public class BraveWalletPreferences extends BravePreferenceFragment
     @Override
     public boolean onPreferenceChange(Preference preference, Object object) {
         String key = preference.getKey();
-        if (PREF_DEFAULT_ETHEREUM_WALLET.equals(key) && mWalletModel != null) {
+        if (PREF_DEFAULT_ETHEREUM_WALLET.equals(key) && mBraveWalletService != null) {
             @DefaultWallet.EnumType
             final int defaultEthereumWallet = convertToNativeDefaultWallet((Integer) object);
-            mWalletModel.getBraveWalletService().setDefaultEthereumWallet(defaultEthereumWallet);
+            mBraveWalletService.setDefaultEthereumWallet(defaultEthereumWallet);
             setupDefaultWalletPreference(mDefaultEthereumWallet, defaultEthereumWallet);
-        } else if (PREF_DEFAULT_SOLANA_WALLET.equals(key) && mWalletModel != null) {
+        } else if (PREF_DEFAULT_SOLANA_WALLET.equals(key) && mBraveWalletService != null) {
             @DefaultWallet.EnumType
             final int defaultSolanaWallet = convertToNativeDefaultWallet((Integer) object);
-            mWalletModel.getBraveWalletService().setDefaultSolanaWallet(defaultSolanaWallet);
+            mBraveWalletService.setDefaultSolanaWallet(defaultSolanaWallet);
             setupDefaultWalletPreference(mDefaultSolanaWallet, defaultSolanaWallet);
         } else if (BRAVE_WALLET_WEB3_NOTIFICATION_SWITCH.equals(key)) {
             setPrefWeb3NotificationsEnabled((boolean) object);
-        } else if (BRAVE_WALLET_WEB3_NFT_DISCOVERY_SWITCH.equals(key) && mWalletModel != null) {
-            mWalletModel.getCryptoModel().updateNftDiscovery((boolean) object);
+        } else if (BRAVE_WALLET_WEB3_NFT_DISCOVERY_SWITCH.equals(key)
+                && mBraveWalletService != null) {
+            mBraveWalletService.setNftDiscoveryEnabled((boolean) object);
         }
         return true;
     }

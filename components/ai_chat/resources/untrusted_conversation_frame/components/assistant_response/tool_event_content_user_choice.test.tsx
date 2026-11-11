@@ -11,14 +11,14 @@ import MockContext from '../../mock_untrusted_conversation_context'
 import ToolEvent from './tool_event'
 
 const validArgumentsJsonThreeChoices =
-  '{"choices": ["first", "second", "third"]}'
+  '{"choice_type": "preference", "choices": ["first", "second", "third"]}'
 
 describe('ToolEventContentUserChoice', () => {
   it('should render clickable choices', () => {
     const mockRespondToToolUseRequest = jest.fn()
     render(
       <MockContext
-        conversationHandler={{
+        userActions={{
           respondToToolUseRequest: mockRespondToToolUseRequest,
         }}
       >
@@ -29,6 +29,7 @@ describe('ToolEventContentUserChoice', () => {
             argumentsJson: validArgumentsJsonThreeChoices,
             output: undefined,
           }}
+          entryUuid='entry-1'
           isEntryActive={true}
         />
       </MockContext>,
@@ -40,6 +41,7 @@ describe('ToolEventContentUserChoice', () => {
 
     fireEvent.click(screen.getByTestId('tool-choice-text-0'))
     expect(mockRespondToToolUseRequest).toHaveBeenCalledWith(
+      'entry-1',
       '123',
       [
         {
@@ -52,11 +54,30 @@ describe('ToolEventContentUserChoice', () => {
     )
   })
 
+  it('should not render follow-up choices, which become suggestions', () => {
+    const { container } = render(
+      <MockContext>
+        <ToolEvent
+          toolUseEvent={{
+            toolName: 'user_choice_tool',
+            id: '123',
+            argumentsJson:
+              '{"choice_type": "follow_up", "choices": ["first", "second"]}',
+            output: undefined,
+          }}
+          isEntryActive={true}
+        />
+      </MockContext>,
+    )
+
+    expect(container.innerHTML).toBe('')
+  })
+
   it('should render disabled choices when not active', () => {
     const mockRespondToToolUseRequest = jest.fn()
     render(
       <MockContext
-        conversationHandler={{
+        userActions={{
           respondToToolUseRequest: mockRespondToToolUseRequest,
         }}
       >
@@ -80,11 +101,35 @@ describe('ToolEventContentUserChoice', () => {
     expect(mockRespondToToolUseRequest).not.toHaveBeenCalled()
   })
 
+  it('should not answer when the response is not known', () => {
+    const mockRespondToToolUseRequest = jest.fn()
+    render(
+      <MockContext
+        userActions={{
+          respondToToolUseRequest: mockRespondToToolUseRequest,
+        }}
+      >
+        <ToolEvent
+          toolUseEvent={{
+            toolName: 'user_choice_tool',
+            id: '123',
+            argumentsJson: validArgumentsJsonThreeChoices,
+            output: undefined,
+          }}
+          isEntryActive={true}
+        />
+      </MockContext>,
+    )
+
+    fireEvent.click(screen.getByTestId('tool-choice-text-0'))
+    expect(mockRespondToToolUseRequest).not.toHaveBeenCalled()
+  })
+
   it('should render completed state for user choice tool events', () => {
     const mockRespondToToolUseRequest = jest.fn()
     render(
       <MockContext
-        conversationHandler={{
+        userActions={{
           respondToToolUseRequest: mockRespondToToolUseRequest,
         }}
       >

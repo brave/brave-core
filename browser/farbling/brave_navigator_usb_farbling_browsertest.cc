@@ -16,7 +16,6 @@
 #include "brave/components/webcompat/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/chooser_bubble_testapi.h"
 #include "chrome/browser/ui/dialogs/browser_dialogs.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"

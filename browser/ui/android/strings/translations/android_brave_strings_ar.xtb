@@ -111,9 +111,9 @@
 <translation id="4176463684765177261">غير مفعّل</translation>
 <translation id="59174027418879706">تم التمكين</translation>
 <translation id="6920492760024499150">أهم أخبار اليوم في موجز خاص، من أجلك فقط.</translation>
-<translation id="3803728444598576153">قم بتشغيل Brave News، ولا تفوت أي خبر</translation>
+<translation id="3803728444598576153">قم بتشغيل أخبار Brave، ولا تفوت أي خبر</translation>
 <translation id="7627131190984957214">Brave News عبارة عن خدمة مدعومة بالإعلانات، وتتضمن إعلانات خاصة ومجهولة ومطابقة لجهازك.</translation>
-<translation id="7897050360583141319">تابع المصادر التي تفضلها، في موجو واحد، ليس عليك سوى فتح علامة تبويب في منصة Brave، والتمرير لأسفل، و… ها هو ذا!\nأخبار Brave هي خدمة مدعومة بالإعلانات، وتتضمن إعلانات خاصة، وإعلانات مجهولة المصدر.</translation>
+<translation id="7897050360583141319">تابع المصادر التي تفضلها، في موجز واحد، ليس عليك سوى فتح علامة تبويب في منصة Brave، والتمرير لأسفل، و… ها هو ذا!</translation>
 <translation id="1765217911817124376">تشغيل أخبار Brave</translation>
 <translation id="8981973962043893066">بحث عن موقع، أو موضوع، أو موجز RSS</translation>
 <translation id="3225021799163709119">الشائع</translation>
@@ -191,9 +191,9 @@
 <translation id="5987838417172370108">ساعد في تحسين استقرار منتج Brave\u2019s عن خلال إرسال التقارير التشخيصية تلقائيًا أثناء تعطل متصفح Brave أو توقفه عن العمل.</translation>
 <translation id="7977176350719484850">البيانات التقديرية المحفوظة</translation>
 <translation id="9008534313521214777">الوقت المقدر\nالذي تم توفيره</translation>
-<translation id="8347743943525229984">السماح لاستطلاعات الرأي لـ Brave</translation>
-<translation id="6022939994702081659">السماح لـ Brave بإظهار الروابط لاستطلاعات الرأي الخاصة في صفحة علامة التبويب الجديدة. تساعدنا استطلاعات الرأي على إنشاء ميزات أفضل وقياس فعالية الحملات الإعلانية المستندة إلى المتصفح.</translation>
-<translation id="7746496306508543965">تعرف على المزيد حول استطلاعات الرأي الخاصة بـ Brave</translation>
+<translation id="5668852698659986622">تمكين الإعلانات المدعومة</translation>
+<translation id="431194936581466649">ساعد في دعم مهمة Brave لبناء ويب مستقل يضع المستخدم أولاً من خلال الإعلانات المدعومة. نقيس أداء الإعلانات بشكل خاص، دون التعرف على هويتك.</translation>
+<translation id="1939813747486101115">تعرف على المزيد حول الإعلانات الدعائية</translation>
 <translation id="410351446219883937">التشغيل التلقائي</translation>
 <translation id="7445411102860286510">السماح لمواقع الويب بتشغيل الفيديوهات المكتومة الصوت تلقائيًا (مُستحسن)</translation>
 <translation id="7837721118676387834">السماح لموقع ويب معيّن بالتشغيل التلقائي للفيديوهات المكتومة الصوت</translation>
@@ -251,7 +251,6 @@
 <translation id="6213254277250932867">لدي عبارة استرداد مكونة من 12 كلمة</translation>
 <translation id="4225265925807365011">لدي عبارة استرداد مكونة من 24 كلمة</translation>
 <translation id="3570367516044491911">تعيين كمتصفح افتراضي</translation>
-<translation id="6800338374677644736">التعيين كمتصفح افتراضي</translation>
 <translation id="1545749641540134597">مسح كود الاستجابة السريعة QR</translation>
 <translation id="5317781812114905957">تعليمات</translation>
 <translation id="8515319483805157233">للبحث عن طريق رمز الاستجابة السريعة، قم بمحاذاة رمز الاستجابة السريعة في وسط الإطار.</translation>
@@ -283,7 +282,6 @@
 <translation id="5582839680698949063">القائمة الرئيسية</translation>
 <translation id="7002271985859760052">إجراءات الصفحة</translation>
 <translation id="7104487676473617844">ستكون العناصر التالية مرئية فقط في القائمة عندما تكون مدعومة من قبل صفحة الويب المفتوحة حالياً.</translation>
-<translation id="4159764849281393303">تطبيق ويب</translation>
 <translation id="8038539967102225446">إعلانات Brave هنا!</translation>
 <translation id="222883304157347087">(هذا الجهاز)</translation>
 <translation id="4157741509680155021">الأجهزة المرتبطة بسلسلة التزامن</translation>
@@ -292,7 +290,7 @@
 <translation id="2569646144216067185">عدد الكلمات: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">كود مزامنة خاطئ</translation>
 <translation id="8284063834901328650">كود QR للمزامنة غير صحيح</translation>
-<translation id="859506441384380749">تم إنشاء هذا الرمز بواسطة إصدار لا يتلقى تحديثات من Brave، يرجى ترقية جهازك الآخر أولاً</translation>
+<translation id="4002014583969312635">يبدو أنه تم إنشاء هذا الرمز على جهاز يعمل بإصدار أقدم من Brave. يرجى التحديث إلى أحدث إصدار من Brave على جهازك الآخر، ثم إنشاء رمز مزامنة جديد.</translation>
 <translation id="3132642509209154999">لقد انتهت صلاحية هذا الرمز. يرجى  إنشاء رمز جديد على جهازك الآخر والمحاولة مرة أخرى.</translation>
 <translation id="2859229680945501779">هذا الرمز غير صالح. يُرجى التحقق من ضبط الوقت والمنطقة الزمنية بشكل صحيح على جهازك.</translation>
 <translation id="3149880132460839085">مزامنة Brave</translation>
@@ -338,8 +336,6 @@
 <translation id="8185825081026121627">اربح عملة Basic Attention الرمزية مقابل استعراضك لإعلانات Brave Rewards التي تحترم الخصوصية.</translation>
 <translation id="5321518976657560663">حدث خطأ أثناء إعادة التعيين</translation>
 <translation id="4114170343590425996">لقد حدث خطأ أثناء إعادة تعيين مكافآت Brave. يرجى إعادة تشغيل متصفح Brave وإعادة المحاولة مرةً أخرى.</translation>
-<translation id="6417420737057016607">إعلانات Brave</translation>
-<translation id="5611966874859284786">يتم عرض الإشعارات الخاصة بالإعلانات عندما لا يتم استخدام موقع Brave</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>إعادة تعيين بيانات Brave Rewards…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>مسح بيانات إعلانات Brave…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">إضافة إشارة مرجعية</translation>
@@ -394,6 +390,13 @@
 <translation id="8793108040181436796">عناصر واجهة المستخدم</translation>
 <translation id="8643377320501056697">عرض أهم المواقع</translation>
 <translation id="7275773481201277457">إظهار إحصائيات Brave</translation>
+<translation id="8516804522688861636">عرض المواقع التي تمت زيارتها بشكل متكرر</translation>
+<translation id="4546260624932151782">عرض قائمة التفضيلات</translation>
+<translation id="5313967007315987356">إضافة موقع ويب</translation>
+<translation id="1773147648972887693">عرض المواقع التي تمت زيارتها بشكل متكرر</translation>
+<translation id="7134741506051403308">إخفاء عنصر واجهة المستخدم</translation>
+<translation id="1247759249260562308">تحرير قائمة المفضلات</translation>
+<translation id="6387214885349500492">تثبيت هذه المفضلة</translation>
 <translation id="7462178177755090262">شاشة البدء</translation>
 <translation id="5365434987337264071">علامة التبويب الأخيرة المفتوحة</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -720,6 +723,8 @@
 <translation id="1634828734222219955">الإجمالي</translation>
 <translation id="7995708795274219641">المبلغ + الغاز</translation>
 <translation id="2186011161688824046">المبلغ + الرسوم</translation>
+<translation id="1118876217803190221">رصيد غير كافٍ</translation>
+<translation id="275990379543116961">أموال غير كافية للغاز</translation>
 <translation id="1950052789869821983">معاملة</translation>
 <translation id="2304783958703511257">الإعدادات المتقدمة</translation>
 <translation id="4220062530885628403">الرقم الخاص</translation>
@@ -969,6 +974,7 @@
 <translation id="6365389672683343144">يمكن لاشتراك Brave VPN الخاص بك حماية ما يصل إلى 5 أجهزة عبر نظام التشغيل Android و iOS وسطح المكتب. ما عليك سوى ربط اشتراكك في Google Play بحساب Brave الخاص بك.</translation>
 <translation id="6610899852831463073">لا يمكن تمكين التصفح الآمن</translation>
 <translation id="7954263306665462056">تم تعطيل التصفح الآمن على جهازك. لتمكين التصفح الآمن، تأكد من تثبيت خدمات Google Play وتحديثها.</translation>
+<translation id="6417420737057016607">إعلانات Brave</translation>
 <translation id="7748944510530490017">الشبكات الأساسية</translation>
 <translation id="2781668117338732220">الشبكات الثانوية</translation>
 <translation id="282560918037172384">اختبار الشبكات</translation>
@@ -995,6 +1001,13 @@
 <translation id="7530313002494358590">يتطلب تفعيل أو تعطيل ميزة Brave إعادة تشغيل المتصفح لتطبيق التغييرات. يرجى النقر على <ph name="BEGIN_BOLD"/>إعادة التشغيل الآن<ph name="END_BOLD"/> بمجرد انتهاء Brave Origin من التحديث.</translation>
 <translation id="1028940738207645746">هل أنت متأكد من أنك تريد إعادة تعيين جميع الإعدادات إلى الافتراضية؟</translation>
 <translation id="5939518447894949180">إعادة الضبط</translation>
+<translation id="3222790865318305905">تم الوصول إلى حد التفعيل</translation>
+<translation id="3787857711016546034">لمنع الاحتيال، يتم تحديد معدل عمليات تفعيل Origin. لكن يمكنك دائمًا طلب المزيد من عمليات التفعيل لاستخدام ترخيص Origin الخاص بك على المزيد من الأجهزة. ما عليك سوى النقر على خيار طلب المزيد من عمليات التفعيل، أو <ph name="CONTACT_SUPPORT"/> للحصول على المساعدة.</translation>
+<translation id="6760819753412779585">التواصل مع الدعم</translation>
+<translation id="571697836019670200">طلب المزيد من عمليات التفعيل</translation>
+<translation id="9019545131475425538">جارٍ المعالجة…</translation>
+<translation id="7242700630179071243">جاهز للتفعيل</translation>
+<translation id="5463918917265356202">أصبح Brave Origin نشطًا الآن على هذا الجهاز. لبدء استخدام الميزة، تحتاج إلى إعادة تشغيل المتصفح. هل تريد إعادة التشغيل الآن؟</translation>
 <translation id="8554205386170195281">شراء</translation>
 <translation id="8613144770663526433">تسجيل الدخول إلى Brave Wallet</translation>
 <translation id="3696514931437952995">أنت الآن تقوم بتسجيل الدخول في <ph name="ORIGIN"/>. سوف تشارك Brave wallet عنوان محفظتك مع <ph name="ORIGIN"/>.</translation>

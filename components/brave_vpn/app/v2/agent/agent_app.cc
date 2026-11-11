@@ -19,6 +19,7 @@
 #include "base/task/single_thread_task_runner.h"
 #include "base/threading/thread.h"
 #include "brave/components/brave_vpn/app/v2/agent/browser_registry.h"
+#include "brave/components/brave_vpn/app/v2/agent/connection_manager.h"
 #include "brave/components/brave_vpn/app/v2/agent/shutdown_handlers.h"
 #include "brave/components/brave_vpn/common/v2/agent_utils.h"
 #include "mojo/core/embedder/configuration.h"
@@ -60,6 +61,9 @@ int AgentApp::Run() {
     VLOG(1) << "Shutdown handlers not installed";
   }
 
+  // Shared by every browser session; must outlive BrowserRegistry, whose hosts
+  // observe it.
+  ConnectionManager connection_manager;
   {
     // Initialize Mojo on a separate thread.
     base::Thread ipc_thread(kMojoIpcThreadName);
@@ -73,7 +77,7 @@ int AgentApp::Run() {
 
     // Initialize the browser registry, which will manage the lifetime of
     // client browser instances and their associated Mojo connections.
-    BrowserRegistry browser_registry{*server_name};
+    BrowserRegistry browser_registry{connection_manager, *server_name};
 
     run_loop.Run();
   }

@@ -29,18 +29,22 @@ PR_URL = 'https://github.com/brave/brave-core/pull/123'
 class FakeGh:
     """Answers the `gh` calls made through `gh_cli.GhCli`."""
 
-    def __init__(self,
-                 *,
-                 logged_in: bool = True,
-                 issue_list: list | None = None,
-                 issue_create_url: str = ISSUE_URL,
-                 pr_list: list | None = None,
-                 pr_create_url: str = PR_URL,
-                 pr_create_error: Exception | None = None,
-                 pr_base_branch: str | None = None,
-                 milestones: list | None = None) -> None:
+    def __init__(
+        self,
+        *,
+        logged_in: bool = True,
+        issue_list: list | None = None,
+        issue_list_error: Exception | None = None,
+        issue_create_url: str = ISSUE_URL,
+        pr_list: list | None = None,
+        pr_create_url: str = PR_URL,
+        pr_create_error: Exception | None = None,
+        pr_base_branch: str | None = None,
+        milestones: list | None = None,
+    ) -> None:
         self.logged_in = logged_in
         self.issue_list = issue_list if issue_list is not None else []
+        self.issue_list_error = issue_list_error
         self.issue_create_url = issue_create_url
         self.pr_list = pr_list if pr_list is not None else []
         self.pr_create_url = pr_create_url
@@ -60,8 +64,11 @@ class FakeGh:
             if not self.logged_in:
                 raise subprocess.CalledProcessError(1, cmd, stderr='no auth')
             return SimpleNamespace(
-                stdout='Logged in to github.com account fake')
+                stdout='Logged in to github.com account fake'
+            )
         if verb == ['issue', 'list']:
+            if self.issue_list_error is not None:
+                raise self.issue_list_error
             return SimpleNamespace(stdout=json.dumps(self.issue_list))
         if verb == ['issue', 'create']:
             return SimpleNamespace(stdout=f'{self.issue_create_url}\n')
@@ -73,7 +80,8 @@ class FakeGh:
             if self.pr_base_branch is None:
                 raise subprocess.CalledProcessError(1, cmd, stderr='no pr')
             return SimpleNamespace(
-                stdout=json.dumps({'baseRefName': self.pr_base_branch}))
+                stdout=json.dumps({'baseRefName': self.pr_base_branch})
+            )
         if verb == ['pr', 'create']:
             if self.pr_create_error is not None:
                 raise self.pr_create_error
@@ -87,7 +95,7 @@ class FakeGh:
     def call_matching(self, *prefix: str) -> list[str] | None:
         """Returns the first recorded call whose start matches `prefix`."""
         prefix = list(prefix)
-        return next((c for c in self.calls if c[:len(prefix)] == prefix), None)
+        return next((c for c in self.calls if c[: len(prefix)] == prefix), None)
 
     def pr_create_cmd(self) -> list[str] | None:
         """The recorded `gh pr create` call, if any."""

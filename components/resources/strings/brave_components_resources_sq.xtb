@@ -433,7 +433,6 @@
 <translation id="412480955826088549">Shkarkimi i Komponentit...</translation>
 <translation id="4894106830958548828">E kuptoj</translation>
 <translation id="2729085694451916573">Test tekst për <ph name="PART_ONE"/>mbajtës vendesh<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Mësoni më shumë<ph name="PART_TWO_END"/></translation>
-<translation id="6705666103672654256">Kërkimet dhe përmbajtja e faqeve tuaja përpunohen në këtë pajisje. Asgjë nuk i dërgohet Brave dhe asgjë nuk shihet nga shqyrtues njerëzorë. Kjo është një veçori eksperimentale dhe nuk do ta gjejë gjithmonë saktë.</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Aktivizoni mbështetjen e Unstoppable Domains në Brave?</translation>
 <translation id="5015092481905019948">Brave do të përdorë <ph name="PROVIDER_NAME"/> për të zgjidhur emrat e domeneve <ph name="DOMAIN_LIST"/> që janë tek <ph name="DOMAIN_PROVIDER_NAME"/>. Brave fsheh adresën tuaj IP. Nëse e aktivizoni këtë, <ph name="PROVIDER_NAME"/> do të shohë që dikush po përpiqet të vizitojë këto domene, por asgjë tjetër. Shihni <ph name="PROVIDER_NAME"/> <ph name="BEGIN_PROVIDER_TOU_LINK"/>kushtet e përdorimit<ph name="END_PROVIDER_TOU_LINK"/> dhe <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>politikën e privatësisë<ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
@@ -802,8 +801,6 @@
 <translation id="223536150967420869">Bli</translation>
 <translation id="538450413584738399">Ndërro</translation>
 <translation id="6810855196544084176">Ura</translation>
-<translation id="3488255243387417752">Shite</translation>
-<translation id="5223034545851554347">Nuk ke mjaftueshëm <ph name="TOKEN_SYMBOL"/> në këtë llogari.</translation>
 <translation id="6585419509320235293">Zgjidh pasurinë për të dërguar</translation>
 <translation id="1018742998826182079">Zgjidh pasurinë për të ndërruar</translation>
 <translation id="2791691551852500015">Vendos adresën e marrësit</translation>
@@ -854,9 +851,11 @@
 <translation id="646023614746251785">Konfirmo ndërrimin</translation>
 <translation id="6264944956989873014">Konfirmo urën</translation>
 <translation id="7067917728851842589">Konfirmo dërgimin</translation>
+<translation id="2841837950101800123">Furnizuesi</translation>
 <translation id="1114725160772317155">Statusi i furnizuesit</translation>
 <translation id="2351357639951873714">Konfirmo mbrojtjen</translation>
 <translation id="7480044382160806610">Konfirmo çmbrojtjen</translation>
+<translation id="6830542010524256586">Konfirmo migrimin</translation>
 <translation id="8332923694292360653">Shpenzo</translation>
 <translation id="3735740477244556633">Renditi sipas</translation>
 <translation id="6484605214219822434">Rishiko lidhjen</translation>
@@ -1315,7 +1314,6 @@
 <translation id="4312994183947987913">Bli/Depozito</translation>
 <translation id="5133421763709317473">Nuk u gjetën asete që përputhen me kërkimin ose filtrin</translation>
 <translation id="6423985584914773314">Nuk është adresë e vlefshme FIL</translation>
-<translation id="6153197326949684688">Shite me <ph name="OFFRAMP_PROVIDER"/></translation>
 <translation id="5795821518596541838">Partneri i Transaksioneve</translation>
 <translation id="1916136859742693273">Brave Wallet përdor Meld.io për të ndihmuar në agregimin dhe prezantimin e ofruesve të ndryshëm të kriptos për rajonin tuaj. Ne do t'i ndajmë informacione me Meld.io për të përfunduar transaksionin, duke përfshirë adresën e portofolit tuaj dhe kodin e vendit. Për më shumë informacion lexoni kushtet e përdorimit të Meld.</translation>
 <translation id="245827814248186739">Kam lexuar dhe pranoj <ph name="LINK_BEFORE"/>Kushtet e përdorimit të Meld<ph name="LINK_AFTER"/></translation>
@@ -1395,8 +1393,10 @@
 <translation id="5503843345634715425">Rimbursum</translation>
 <translation id="1778601041100951971">Duke mbrojtur <ph name="AMOUNT"/></translation>
 <translation id="6439110433198887239">Duke çmbrojtur <ph name="AMOUNT"/></translation>
+<translation id="6022412719565214018">Duke migruar <ph name="AMOUNT"/></translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> është mbrojtur</translation>
 <translation id="3860973324426281816"><ph name="AMOUNT"/> është çmbrojtur</translation>
+<translation id="7338153249873692854"><ph name="AMOUNT"/> është migruar</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} transaksion i mbetur.}
       other {{PENDING_TRANSACTIONS} transaksione të mbetura.}
@@ -1629,7 +1629,7 @@
 <translation id="6646456430109279404">E Njëzet e Dyta</translation>
 <translation id="1961743941324393172">E Njëzet e Treta</translation>
 <translation id="9079035825546416393">E Njëzet e Katërta</translation>
-<translation id="1558531209852594808">Karaktere jo-ASCII të zbuluara!</translation>
+<translation id="6980520267116175375">Karaktere të papritura të zbuluara</translation>
 <translation id="442709594176931966">Shiko mesazhin origjinal</translation>
 <translation id="2239252396088484499">Shiko mesazhin në kodim ASCII</translation>
 <translation id="2894654529758326923">Informacion</translation>
@@ -1718,6 +1718,9 @@
 <translation id="2077392865355605472">Simboli i token-it është i domosdoshëm</translation>
 <translation id="4636925020451566238">Numri i decimalëve të token-it është i domosdoshëm</translation>
 <translation id="3797613444743816037">Adresa e mint-it</translation>
+<translation id="6571966497164575098">ID e asetit</translation>
+<translation id="2110442566771571217">ID e pasurisë së tokenit e pavlefshme ose bosh</translation>
+<translation id="4170599358417498979">Asetet e personalizuara nuk mbështeten në këtë rrjet</translation>
 <translation id="7951915459354237451">Kufiri i tarifës është vendosur më poshtë se tarifa bazë. Transaksioni juaj mund të zgjasë shumë ose të dështojë.</translation>
 <translation id="2227702748249086756">Nuk mund të merren përllogaritjet e tarifës</translation>
 <translation id="3225624966527491351">Importo NFT</translation>
@@ -1835,14 +1838,18 @@
 <translation id="9086302186042011942">Po sinkronizon</translation>
 <translation id="99991973626409495">Rishiko mburojën</translation>
 <translation id="6779429520470417361">Shqyrto çmbrojtjen</translation>
+<translation id="7861093868637278059">Rishiko migrimin</translation>
 <translation id="3114681061018999547">Mbrojtja</translation>
 <translation id="1564172583156967455">Duke çmbrojtur</translation>
+<translation id="7040674372746105444">Duke migruar</translation>
 <translation id="8897189056319316783">Shield ZEC</translation>
 <translation id="508249542337194541">Çmbroj ZEC</translation>
+<translation id="3242332985109374549">Migro ZEC</translation>
 <translation id="3382275793825152362">Mbro fonde</translation>
 <translation id="617149752238892649">Shfaq fonde</translation>
 <translation id="8631765320256788981">Je duke dërguar fonde nga llogaria jote transparente në llogarinë tënde të mbrojtur.</translation>
 <translation id="3860364671495430495">Je duke dërguar fonde nga llogaria jote e mbrojtur në llogarinë tënde transparente.</translation>
+<translation id="9664108035970394">Je duke dërguar fonde nga llogaria jote e vjetër e mbrojtur në llogarinë tënde të mbrojtur.</translation>
 <translation id="7144878232160441200">Përsërite</translation>
 <translation id="4750109510113597688">Ky transaksion mund të përfshijë një tarifë krijimi të llogarisë</translation>
 <translation id="6201709949885884577">Fjalëkalimi kërkohet për të vazhduar këtë veprim.</translation>
@@ -1860,6 +1867,26 @@
 <translation id="2737084171727561244">Shko te Portofoli</translation>
 <translation id="3499452861061048987">Shto token</translation>
 <translation id="5046066249040287308">Shërbimi i Mjeteve të Portofolit</translation>
+<translation id="8767749833522980474">Kripto</translation>
+<translation id="4509084261025090951">Merr kartën tënde</translation>
+<translation id="3624463584770657372">Verifiko identitetin tënd për të parë numrat e kartës dhe filluar shpenzimet.</translation>
+<translation id="2508337767012636987">Trokit për të verifikuar</translation>
+<translation id="703964541421486259">Fshih balancat</translation>
+<translation id="302114796458112924">Trego balancat</translation>
+<translation id="9083210401924577263">Karta e Shpërblimeve Brave</translation>
+<translation id="2433507940547922241">Dukje</translation>
+<translation id="3435738964857648380">Siguria</translation>
+<translation id="6700561332544287722">Kërko shkyçje herën tjetër</translation>
+<translation id="5605360570977617291">Të fshehet <ph name="CARD_NAME"/> nga kreu?</translation>
+<translation id="2721464457853369512">Balanca jote e <ph name="CARD_NAME"/> është e pandryshuar. Kjo vetëm e fsheh kartën nga kreu. Mund ta tregosh përsëri në çdo kohë te Parametrat, nën Kuleta.</translation>
+<translation id="1543259266592091784">Shto fonde</translation>
+<translation id="6202621179510403111">Kartë e re</translation>
+<translation id="2366365638711338487">Fitimet <ph name="DATE_BEGIN"/>(<ph name="DATE"/>)<ph name="DATE_END"/></translation>
+<translation id="4938547503015386493">Interes + <ph name="AMOUNT"/> BAT cashback</translation>
+<translation id="5124185664922725208">Shpenzimet</translation>
+<translation id="1591562245178063882">Këtë muaj</translation>
+<translation id="2781977263564899470">Merr kartën fizike</translation>
+<translation id="3388543273143324626">Përdore në dyqane dhe ATM</translation>
 <translation id="3155170474926428993">Nisës Tor-i</translation>
 <translation id="3745016858329272300">Informacione të Përgjithshme</translation>
 <translation id="4045404575593562245">Ngjarjet e Kontrollit të Torit</translation>
@@ -1899,7 +1926,6 @@
 <translation id="6261915643960475695">Biznes</translation>
 <translation id="8265589281845759879">Makina</translation>
 <translation id="7726519849288907308">Të famshme</translation>
-<translation id="8767749833522980474">Kripto</translation>
 <translation id="7577010593836079522">Kulturë</translation>
 <translation id="6807791860691150411">Arsim</translation>
 <translation id="3706423975342040244">Argëtim</translation>
@@ -2000,7 +2026,7 @@
 <translation id="418195046117003119">Shfaq menaxherin e fjalëkalimeve</translation>
 <translation id="4712056949543885424">Shfaq mënyrat e pagesës</translation>
 <translation id="8037472847879765671">Shfaq adresat</translation>
-<translation id="7269867954894010756">Gjej më pas</translation>
+<translation id="6262574309547773475">Shfaq informacionin e kontaktit</translation>
 <translation id="6799213269525079335">Gjej më parë</translation>
 <translation id="8666632926482119393">Mbyll kërkimin ose ndal}</translation>
 <translation id="3567467864281922039">Rivendos zmadhimin</translation>
@@ -2078,9 +2104,6 @@
 <translation id="3067105725259639716">Konfiguro Lajme Brave</translation>
 <translation id="6286510487460330478">Konfiguro shkurtoret</translation>
 <translation id="9214819486716388964">Shfaq Bisedën Brave</translation>
-<translation id="5950760360751948276">Shfaqi gjithmonë shiritin e faqeshënuesve</translation>
-<translation id="2960757369920422313">Shfaq shiritin e faqeshënuesve në faqen e re</translation>
-<translation id="522953399371747698">Fshih shiritin e faqeshënuesve</translation>
 <translation id="9079813619990532635">Eksporto të gjitha faqeshënuesit</translation>
 <translation id="134184943774258988">Ndiz/Fik butonin 'Të gjitha faqeshënuesit'</translation>
 <translation id="2158862020143233462">Ndiz/Fik mburojat</translation>
@@ -2129,6 +2152,7 @@
 <translation id="3142853026316054951">Aktivizo/çaktivizo modalitetin e fokusit</translation>
 <translation id="3468387898712904997">Pseudonim i ri i email-it</translation>
 <translation id="4711475997833555304">Krijoni një email të rastësishëm që përcillet te kutia juaj postare.</translation>
+<translation id="5663901348199429994">Pseudonimet e Email-it tënd</translation>
 <translation id="2796584247246518451">Kontejner i përkohshëm i ri</translation>
 <translation id="8591883849678260674">Shfaq origjinalin</translation>
 <translation id="1969654232209826429">min. leximi</translation>
@@ -2193,20 +2217,22 @@
 <translation id="9215978379284690246">Kodi i statusit: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Kodi i statusit: <ph name="STATUS_CODE"/>, kodi i brendshëm i statusit: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Ke arritur kufirin e shpejtësisë premium. Provoni përsëri pas disa orësh.</translation>
+<translation id="6873128487002733717">Keni arritur limitin premium për këtë model. Zgjidhni një model tjetër ose provoni përsëri më vonë.</translation>
+<translation id="2688661132468689309">Keni arritur limitin premium për këtë model. Rivendoset në <ph name="RESET_DURATION"/> (në <ph name="RESET_TIME"/>). Zgjidhni një model tjetër ose provoni përsëri atëherë.</translation>
 <translation id="3683964919745779766">Keni arritur limitin e shpejtësisë për këtë model ose jeni pa kredite. Ju lutem provoni përsëri më vonë.</translation>
 <translation id="7692501701960747469">Çelësi API i konfiguruar për këtë model është i pavlefshëm. Ju lutem kontrolloni konfigurimin tuaj dhe provoni përsëri.</translation>
 <translation id="7905602379229309187">Pika e fundit është aktualisht e ngarkuar. Ju lutem provoni përsëri më vonë.</translation>
 <translation id="8151638057146502721">Konfiguroje</translation>
 <translation id="999273441077650169">Modeli ndryshon në mënyrë dinamike për të përdorur më të mirin për detyrën. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="3852808100039989429">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Qwen VL 30B, një model i krijuar nga Alibaba Cloud për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Qwen është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="784931275560506522">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GLM-5.1, një model i krijuar nga Zhipu AI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. GLM-5.1 është i mbajtur në NEAR përmes infrastrukturës së tyre të verifikueshme dhe të sigurt të privatësisë. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
+<translation id="8218534413919828549">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Qwen 3.6 35B, një model i krijuar nga Alibaba Cloud për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Qwen është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt.<ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
+<translation id="8659225822055186905">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GLM-5.3 Flash, një model i krijuar nga Zhipu AI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. GLM-5.3 Flash është i mbajtur në NEAR përmes infrastrukturës së tyre të verifikueshme dhe të sigurt të privatësisë.<ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Përshëndetje, unë jam Leo. Unë jam një asistent AI i Brave. Kam fuqi nga Claude Instant, një model i krijuar nga Anthropic për të kryer detyra bisedore dhe përpunimi teksti. Claude Instant ofrohet nga Brave përmes infrastrukturës sonë të sigurt.<ph name="LINK_BEFORE"/>Mësoni më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Claude Haiku, një model i krijuar nga Anthropic për të fuqizuar detyrat e bisedave dhe përpunimit të teksteve. Claude Haiku është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Claude Sonnet, një model i krijuar nga Anthropic për të fuqizuar detyrat e bisedave dhe përpunimit të teksteve. Claude Sonnet është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Grok 4.3, një model i krijuar nga xAI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Grok 4.3 është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GPT 5.4, një model i krijuar nga OpenAI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. GPT 5.4 është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
+<translation id="3934503473603661122">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Grok 4.7, modeli frontier i arsyetimit i xAI në Amazon Bedrock. Grok 4.7 shërbehet përmes infrastrukturës së sigurt AWS të Brave.<ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
+<translation id="8983215701788462580">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GPT Luna, modeli i shpejtë dhe me vonesë të ulët i OpenAI në Amazon Bedrock. GPT Luna shërbehet përmes infrastrukturës së sigurt AWS të Brave.<ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GPT 5.6 Terra, modeli i balancuar i prodhimit i OpenAI në Amazon Bedrock Mantle. GPT 5.6 Terra shërbehet përmes infrastrukturës së sigurt AWS të Brave.<ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Mistral Large, një model i krijuar nga Mistral për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Mistral Large është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Qwen 3 235B, një model i krijuar nga Alibaba Cloud për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Qwen 3 235B është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Qwen 3.8 Flash Next, një model i krijuar nga Alibaba Cloud për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Qwen 3.8 Flash Next është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt.<ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Deepseek V3.2, një model i krijuar nga Deepseek për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Deepseek V3.2 është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Claude Opus, një model i krijuar nga Anthropic për të fuqizuar detyrat e bisedave dhe përpunimit të teksteve. Claude Opus është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GLM-4-7-Flash, një model i krijuar nga Zhipu AI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. GLM-4-7-Flash është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
@@ -2219,7 +2245,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Modelet e rekomanduara</translation>
 <translation id="6568044140836233369">Shfaq të gjitha modelet</translation>
-<translation id="6187065185557150870">Biseda</translation>
 <translation id="4685048769603134644">Hap faqen e plotë</translation>
 <translation id="2961040541145689181">Bisedë e re</translation>
 <translation id="7557539689487606886">Bëhu Premium</translation>
@@ -2255,6 +2280,10 @@
 <translation id="3027575440738035995">Leo Premium ofron akses në një grup të zgjeruar modelesh të gjuhës për nuancë më të madhe të përgjigjeve. <ph name="LINK_BEFORE"/>Mësoni më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="8261506727792406068">Fshije</translation>
 <translation id="6574153208133461043">A jeni të sigurt se dëshironi të fshini këtë bisedë? Ky veprim nuk mund të zhbëhet.</translation>
+<translation id="1020105790073039189">Të kalosh në një model që mund të lexojë imazhe?</translation>
+<translation id="3797128260474242570"><ph name="CURRENT_MODEL"/> nuk mund të lexojë imazhe, dhe bashkëngjitjet e tua kanë nevojë për përpunim imazhi. Për t'i dërguar, kalo këtë bisedë në <ph name="VISION_MODEL"/>. Ai do të marrë të gjithë bisedën, përfshirë mesazhet e mëparshme. Mund gjithashtu të anulosh dhe të zgjedhësh një model tjetër që mund të lexojë imazhe. Nëse dërgon pa imazhe, Leo nuk mund t'i shohë bashkëngjitjet.</translation>
+<translation id="830353068401992697">Kalo dhe dërgo</translation>
+<translation id="369110003363071587">Dërgo pa imazhe</translation>
 <translation id="7488762544858401571">E redaktuar</translation>
 <translation id="5604254791550001355">Redakto promptin</translation>
 <translation id="8115786586976830777">Kopjo promptin</translation>
@@ -2321,6 +2350,8 @@
 <translation id="4370698775470316661">Kjo bisedë është shumë e gjatë dhe nuk mund të vazhdojë. Mund të ketë modele të tjera të disponueshme me të cilat Leo është në gjendje të mbajë saktësinë për biseda më të gjata.</translation>
 <translation id="4744144453035015075">Po kërkon në internet</translation>
 <translation id="8548351747582087191">Po kërkon në internet për <ph name="SEARCH_TERMS"/>.</translation>
+<translation id="4395536726196773278">Duke kërkuar në skedat e tua të hapura për "<ph name="QUERY"/>"…</translation>
+<translation id="4724926708866789382">Asnjë skedë e hapur nuk përputhet me "<ph name="QUERY"/>".</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> më shumë...</translation>
 <translation id="8103700533980268469">Mbylle këtë njoftim</translation>
 <translation id="3417835166382867856">Kërko skedat</translation>
@@ -2341,13 +2372,13 @@
 <translation id="887511360213807449">Historia është ç'aktivizuar</translation>
 <translation id="5380979378058584412">Për të parë bisedat e mëparshme me Leo, duhet të aktivizoni historikun e bisedave.</translation>
 <translation id="3185367320601718531">Bisedë dhe gjenerim tekstesh</translation>
-<translation id="2793458212460902934">I shpejtë • Kërkim • Mjete</translation>
 <translation id="8506027496671575183">Kërkim • Vision • Mjete</translation>
 <translation id="3184606955650139158">I shpejtë • Kërkim • Vision</translation>
 <translation id="7465032796278724624">Verifikuar si Privat nga NEAR AI TEE</translation>
 <translation id="8782867266498869301">Modeli ndryshon dinamikisht për të përdorur më të mirën për detyrën</translation>
 <translation id="7348809809749151120">I shpejtë • Kërkim</translation>
 <translation id="3213834013136637671">Kërkim • Vision</translation>
+<translation id="2793458212460902934">I shpejtë • Kërkim • Mjete</translation>
 <translation id="5276681919620506371">Kërkim • Mjete</translation>
 <translation id="7434375176361995333">Përmbledhje • I shpejtë</translation>
 <translation id="3965507912994218570">Parametrat e Leo</translation>
@@ -2368,6 +2399,11 @@
 <translation id="443008484043213881">Mjete</translation>
 <translation id="4343623396828510727">Këto sajte ekspozojnë mjete që Leo mund t'i përdorë për të dërguar të dhëna nga dhe drejt këtij sajti. Mos i bashkëngjitni ose aprovoni këto mjete nëse ky bisedim përmban të dhëna që nuk doni t'i shohë ky sajt.</translation>
 <translation id="5021823940147712387">Hiqni mjetet</translation>
+<translation id="8712279871321308580">Mjetet e disponueshme të sajtit</translation>
+<translation id="3690996226559605619">Mjetet e disponueshme (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Lejo për këtë seancë</translation>
+<translation id="6240821072888636753">Pyet çdo herë</translation>
+<translation id="4290920330097335010">Mos e lejo kurrë</translation>
 <translation id="318819763888864209">Të gjitha abonimet rinovohen automatikisht, por mund tëanulohen në çdo kohë përpara rinovimit.</translation>
 <translation id="5091223967610958">Ndaj emrin e hostit të faqes ku je (<ph name="HOST_NAME"/>) për të na ndihmuar të përmirësojmë Leoin.</translation>
 <translation id="8732450785281947197">Mjetet Leo AI</translation>
@@ -2402,10 +2438,12 @@
 <translation id="3024277805447899099">Shiko paraprakisht figurën</translation>
 <translation id="6671495933530132209">Kopjo imazhin</translation>
 <translation id="6864459304226931083">Shkarko imazhin</translation>
+<translation id="6323406350879995440">Hape në skedë</translation>
 <translation id="6332876390231524389">Përmbajtja e skedës aktuale</translation>
 <translation id="6397861830483632092">Hap skedat…</translation>
 <translation id="802080272588201037">Faqeshënuesit…</translation>
 <translation id="2716127283451902393">Historiku…</translation>
+<translation id="8888171900079152025">Dosja e hapësirës së punës</translation>
 <translation id="49269513399674318">Përdor mikrofonin</translation>
 <translation id="3895031624234442305">Modele të personalizuara</translation>
 <translation id="4572010449071015143">Fillo bisedë të re</translation>
@@ -2439,8 +2477,12 @@
 <translation id="3397808797783614750">Aktivizimi i AI për të shfletuar automatikisht për ju mund të shkaktojë pasoja të dëmshme dhe të padëshiruara për privatësinë, financat dhe komunikimet tuaja në internet. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Paralajmërim sigurie</translation>
 <translation id="6077070599873946984">Brave AI ka nevojë për lejen tuaj për: <ph name="TOOL_LABEL"/></translation>
+<translation id="908175046303050847">Brave AI dëshiron të ekzekutojë **<ph name="TOOL_NAME"/>** në **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Operacioni është detektuar si potencialisht jo në përputhje me kërkesën tuaj:</translation>
+<translation id="5137568953923142260">Lejo një herë</translation>
 <translation id="3927932062596804919">Refuzo</translation>
+<translation id="4191349941249805855">Shfaq argumentet e mjetit</translation>
+<translation id="7237059533128264835">Fshih argumentet e mjetit</translation>
 <translation id="4569155249847375786">I verifikuar</translation>
 <translation id="8200772114523450471">Vazhdo</translation>
 <translation id="7607002721634913082">Në pauzë</translation>
@@ -2451,11 +2493,14 @@
 <translation id="4838375634693651776">Po ekzekuton kodin në sandbox për t'ju ndihmuar me pyetjen tuaj</translation>
 <translation id="6990975553143971265">Duke kërkuar në historikun tënd për "<ph name="QUERY"/>"</translation>
 <translation id="8302511726757276645">Duke kërkuar në historikun tënd</translation>
+<translation id="6727762439034900202">Duke krijuar një hapësirë pune</translation>
+<translation id="261799307673205052">Hapësira e punës</translation>
 <translation id="8410699755320690690">Brave AI dëshiron të kërkojë në historikun tënd të shfletimit. Kërkimi ekzekutohet lokalisht në pajisjen tënde, kështu që historiku yt i plotë nuk dërgohet askund. Vetëm titujt, URL-të dhe pasazhet e tekstit të indeksuar të faqeve përputhëse do t'i dërgohen Brave AI si pjesë e këtij bisedimi.</translation>
 <translation id="4379566111233326721">Kodi:</translation>
 <translation id="3542130965673205258">Output-i:</translation>
 <translation id="6911817209337314910">Po gjeneron disa opsione për ju për të zgjedhur</translation>
 <translation id="5382076391290708074">Lëvizja e skedave tuaja</translation>
+<translation id="8717463977094156527">Lejimi i kësaj do të dërgojë **URL-në** dhe **Titullin** e të gjitha Skedave dhe Grupeve të Skedave te Brave AI, plus **fragmente të shkurtra të tekstit të faqes** në Skedat e tua ku janë të disponueshme nga indeksi yt i Kërkimit Semantik të Historisë, dhe do të lejojë Brave AI të lëvizë Skedat e tua. Kjo leje zbatohet vetëm për këtë bisedë.</translation>
 <translation id="3862123464576147769">Duke e lejuar këtë, do të dërgohej <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> dhe <ph name="TITLE_FORMAT_START"/>Titull<ph name="TITLE_FORMAT_END"/> i të gjithë skedave dhe grupeve të skedave tuaja në Brave AI, dhe do të lejonte Brave AI t'i lëvizë ato. Ky leje zbatohet vetëm në këtë bisedë.</translation>
 <translation id="396165714586708444">Hulumtim i thellë</translation>
 <translation id="577747221882855891">Kërkues: "<ph name="QUERY"/>"</translation>
@@ -2483,8 +2528,7 @@
 <translation id="7901376755618482277">Shfaq udhëzimin "Alias i Ri" në fushat e email-it</translation>
 <translation id="6002159997868894136">Kliko për të kopjuar pseudonimin</translation>
 <translation id="8105770564756958406">Përdorur nga <ph name="DOMAINS"/></translation>
-<translation id="5006956315579221642">Krijo deri në 5 pseudonime falas të email-it për të mbrojtur adresën tënde të vërtetë të email-it.</translation>
-<translation id="5663901348199429994">Pseudonimet e Email-it tënd</translation>
+<translation id="6776324888261353420">Krijo deri në <ph name="MAX_ALIASES"/> pseudonime falas të email-it për të mbrojtur adresën tënde të vërtetë të email-it.</translation>
 <translation id="9046133327037621173">Pseudonim i ri i email-it</translation>
 <translation id="3768606658230902536">Krijo një adresë të rastësishme të email-it që dërgon në kutinë tënde postare ndërsa mban private adresën tënde personale të email-it.</translation>
 <translation id="4452721050684632493">Kufiri i pseudonimeve u arrit</translation>
@@ -2546,7 +2590,7 @@
 <translation id="9173319813356700250">LAJME</translation>
 <translation id="6543799171249004861">Foto nga <ph name="AUTHOR"/></translation>
 <translation id="2361906291514218784">Leo AI</translation>
-<translation id="7978582287767542276">Hiq sajtet e sponsorizuara</translation>
+<translation id="7978582287767542276">Hiq reklamat e faqes së re të skedës</translation>
 <translation id="466214682712474574">Identifikou në llogarinë <ph name="PROVIDER"/> për të parë balancin tuaj</translation>
 <translation id="8332875111286275890">Identifikohu për të parë balancin tënd</translation>
 <translation id="5430001801813715388">SHËRBIME</translation>
@@ -2557,12 +2601,12 @@
 <translation id="6851426306697017546">Shfaq oren</translation>
 <translation id="4844370919312937270">Shfaq kutinë e kërkimit në skeda të reja</translation>
 <translation id="5088374130885640159">Me <ph name="REWARDS_LINK_BEGIN"/>Shpërblime Brave<ph name="REWARDS_LINK_END"/>, mund të fitosh për të parë reklamat në faqen e re të skedës. <ph name="LEARN_MORE_LINK_BEGIN"/>Mëso më shumë<ph name="LEARN_MORE_LINK_END"/>.</translation>
-<translation id="4100520468072294616">Shfaq reklamat e faqes së re të skedës</translation>
-<translation id="4983925687993168579">Statistika Brave</translation>
+<translation id="7020410251711260841">Trego Reklamat e Sponsorizuara</translation>
+<translation id="4983925687993168579">Statistika</translation>
 <translation id="5009354496127441090">Shfaq sajtet më të larta</translation>
-<translation id="7705524343798198388">Brave VPN</translation>
-<translation id="2910653812138226931">Sajtet e sponsorizuara ndihmojnë ta mbajnë Brave falas. Nëse përdor <ph name="SITE_NAME"/>, po mbështet misionin e Brave. Çaktivizoji ato në çdo kohë. <ph name="LINK_BEGIN"/>Mëso më shumë<ph name="LINK_END"/>.</translation>
-<translation id="5810241219736298115">Sajtet e sponsorizuara ndihmojnë ta mbajnë Brave falas. Nëse i përdor ato, po mbështet misionin e Brave. <ph name="LINK_BEGIN"/>Mëso më shumë<ph name="LINK_END"/>.</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="2910653812138226931">Reklamat e faqes së re të skedës ndihmojnë ta mbajnë Brave falas. Nëse përdor <ph name="SITE_NAME"/>, po mbështet misionin e Brave. Çaktivizoji ato në çdo kohë. <ph name="LINK_BEGIN"/>Mëso më shumë<ph name="LINK_END"/>.</translation>
+<translation id="5810241219736298115">Reklamat e faqes së re të skedës ndihmojnë ta mbajnë Brave falas. Nëse i përdor ato, po mbështet misionin e Brave. <ph name="LINK_BEGIN"/>Mëso më shumë<ph name="LINK_END"/>.</translation>
 <translation id="4784802981241664605">STATS</translation>
 <translation id="5236080651083907980">Thirrjet video të enkriptuara me Bisedën Brave</translation>
 <translation id="2671474274417808910">Thirrje me Privatësi të Parë</translation>
@@ -2580,6 +2624,7 @@
 <translation id="8814357473522731680">Mundësuar nga</translation>
 <translation id="7143207342074048698">Duke u lidhur</translation>
 <translation id="1202549130170287307">Duke u shkëputur</translation>
+<translation id="4989542687859782284">E padisponueshme</translation>
 <translation id="8941703009412168350">VPN BRAVE</translation>
 <translation id="6303294677342628402">Mburoja</translation>
 <translation id="8458987127502506209">Aktivizo Mburojat Brave</translation>
@@ -2722,6 +2767,7 @@
 <translation id="701087249209337256">Sill me vete përmbajtjen e shfletuesit tënd të vjetër</translation>
 <translation id="142389341645668510">Përshtat Brave</translation>
 <translation id="112005628409144325">Personalizo eksperiencën tënde të shfletimit me strukturën e skedave dhe modalitetet e ngjyrave që preferon.</translation>
+<translation id="4428982101636000516">Kërko me Brave ose shkruaj një URL</translation>
 <translation id="7376367936988732808">Struktura e skedave</translation>
 <translation id="4734965478015604180">Horizontale</translation>
 <translation id="490375751687810070">Vertikale</translation>
@@ -2767,10 +2813,12 @@
 <translation id="6021669293402055982">VPN Brave: I lidhur</translation>
 <translation id="3541307549916475335">Paneli VPN Brave</translation>
 <translation id="2325196879156848326">Dështoi lidhja</translation>
+<translation id="6246488334766115273">Lidhja e padisponueshme</translation>
 <translation id="745054660363064771">Nuk mund të lidhet me serverin</translation>
 <translation id="3936826714240735937">Zgjidhni një server tjetër</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> nuk mundi të lidhej me serverin <ph name="REGION_NAME"/>. Provo përsëri ose zgjidh një vend tjetër.</translation>
-<translation id="1776533911621317363">Fillo provë 7-ditore falas</translation>
+<translation id="4872940635040426686"><ph name="PRODUCT_NAME"/> nuk është i disponueshëm. Nëse problemi vazhdon, ju lutemi riinstaloni Brave ose kontaktoni ekipin tonë të mbështetjes teknike.</translation>
+<translation id="1776533911621317363">Fillo provën tënde 7-ditore falas</translation>
 <translation id="3357036723290257445">Ke blerë Brave VPN?</translation>
 <translation id="8652175077544655965">Mbyll cilësimet</translation>
 <translation id="5908163815855240493">Shko te kryesorja</translation>
@@ -2782,11 +2830,13 @@
 <translation id="8416695199565594645">Siguron që trafiku të drejtohet përmes serverëve të proxy-t të dedikuar për të mundësuar akses në përmbajtje / site të kufizuar zakonisht ose shërbime të palëve të treta.</translation>
 <translation id="434523916398030617">Kontaktoni mbështetjen teknike</translation>
 <translation id="1116694919640316211">Rreth</translation>
-<translation id="8998067240267949220">Privatësi shtesë &amp; siguri në internet</translation>
-<translation id="8666111144393179185">IP e fshehtë &amp; ndrysho vendndodhjen</translation>
-<translation id="8881997962573369342">Qindra servera në mbarë botën</translation>
+<translation id="8998067240267949220">Qasu përmbajtjes tënde të preferuar pa kufizime</translation>
+<translation id="8666111144393179185">Qindra servera në mbarë botën</translation>
+<translation id="8881997962573369342">Fshihe lehtësisht IP-në tënde &amp; ndrysho vendndodhjen tënde</translation>
 <translation id="1513801084412881009">Lidhje me shpejtësi rrufe</translation>
-<translation id="6434859410115379558">Mbro deri në 10 pajisje me një plan</translation>
+<translation id="6434859410115379558">Pa regjistrim, i audituar në mënyrë të pavarur</translation>
+<translation id="4886431881864826294">Një abonim mbulon 10 pajisje në desktop, Android, &amp; iOS</translation>
+<translation id="3649011006120934011">Pa angazhim, anulo në çdo kohë</translation>
 <translation id="1693568075761612600">Dështoi krijimi i një bilete mbështetëse, kontrolloni lidhjen tuaj.</translation>
 <translation id="1407707415819020643">Zgjidhni serverin tuaj</translation>
 <translation id="7406947191797765434"><ph name="CITY_COUNT"/> qytete - <ph name="SERVER_COUNT"/> serverë</translation>
@@ -2897,9 +2947,7 @@ Le të ju lidhim!</translation>
 <translation id="3750210661641549834">Që të krijohet llogaria jote, të lutemi verifiko adresën tënde email.</translation>
 <translation id="4351175281479794167">Fut kodin e verifikimit</translation>
 <translation id="1672793037892810340">Duhet të kesh marrë një email me një kod që duhet ta fusësh.</translation>
-<translation id="4821255729182569254">Ridërgo emailin e konfirmimit</translation>
 <translation id="5837679375142747484">Nuk e sheh emailin? Kontrollo dosjen e postës së padëshiruar ose <ph name="BEGIN_LINK"/>ridërgoje<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">Nuk e sheh emailin? Kontrollo dosjen e postës së padëshiruar ose ridërgoje.</translation>
 <translation id="1020730839570724178">Anulo regjistrimin</translation>
 <translation id="7155125570724238786">Që të rivendoset fjalëkalimi yt, të lutemi verifiko adresën tënde email.</translation>
 <translation id="816074628631172140">Emaili yt është verifikuar. Vendos një fjalëkalim të ri për të përfunduar rivendosjen e fjalëkalimit.</translation>
@@ -2908,9 +2956,13 @@ Le të ju lidhim!</translation>
 <translation id="4405566535206792621">Që të ndryshosh fjalëkalimin tënd, të lutemi verifiko adresën tënde email.</translation>
 <translation id="3135333563420939059">Emaili yt është verifikuar. Vendos një fjalëkalim të ri për të përfunduar ndryshimin e fjalëkalimit.</translation>
 <translation id="4227581348172626540">Anulo ndryshimin e fjalëkalimit</translation>
-<translation id="808894953321890993">Ndrysho fjalëkalimin</translation>
 <translation id="7967687455715421528">I pamundur ndryshimi i fjalëkalimit</translation>
+<translation id="7413006094063730650">Fshij llogarinë</translation>
 <translation id="4869737930995549965">Çkyçu</translation>
+<translation id="4424262960694990728">Kërkohet veprim</translation>
+<translation id="847260521336960132">Detajet e llogarisë</translation>
+<translation id="5399593843842221768">Informacion personal rreth llogarisë tënde Brave.</translation>
+<translation id="5771731269320499905">Detajet e llogarisë Brave</translation>
 <translation id="5538654494923870167">Fillo me llogarinë tënde Brave</translation>
 <translation id="1544145635547515689">Krijo një llogari Brave</translation>
 <translation id="3828644479849256404">Ke tashmë një llogari? Futu</translation>
@@ -2926,6 +2978,7 @@ Le të ju lidhim!</translation>
 <translation id="7114054701490058191">Fjalëkalimet nuk përputhen</translation>
 <translation id="4277028893293644418">Rivendos fjalëkalimin</translation>
 <translation id="9033485352495162741">Konfirmimi u krye me sukses. Tani fut fjalëkalimin tënd të ri të dëshiruar:</translation>
+<translation id="808894953321890993">Ndrysho fjalëkalimin</translation>
 <translation id="1293857704520741614">Futu në llogarinë tënde</translation>
 <translation id="118617366439356381">Harrove fjalëkalimin?</translation>
 <translation id="5636406393070713097">Konfirmo emailin e llogarisë tënde Brave dhe më pas do të marrësh një kod për të rivendosur fjalëkalimin. Kodi do të jetë i vlefshëm vetëm për 15 minuta.</translation>
@@ -2935,6 +2988,11 @@ Le të ju lidhim!</translation>
 <translation id="7228810962389847249">Fut kodin këtu</translation>
 <translation id="4683390091376980486">Konfirmo kodin</translation>
 <translation id="3970028678400797622">Ridërgo kodin me email</translation>
+<translation id="3653907916071208187">Të fshij llogarinë tënde Brave?</translation>
+<translation id="8216839865292766307">Fshirja e një llogarie Brave do të fshijë gjithashtu pseudonimet e email-it të saj. Mund të humbisni aksesin në shërbimet online ku keni përdorur një pseudonim për t'u regjistruar. Ky veprim nuk mund të zhbëhet.</translation>
+<translation id="3672274694560812974">FSHIJ</translation>
+<translation id="1886662169666501462">Shkruani <ph name="KEYWORD"/> për të aktivizuar fshirjen e llogarisë</translation>
+<translation id="536306385881145656">Fshij llogarinë Brave</translation>
 <translation id="2475982808118771221">Ndodhi një gabim</translation>
 <translation id="5430795854491041407">gabim</translation>
 <translation id="2232323423357029857">Browser-i hasi një gabim të papritur<ph name="ERROR_CODE"/>. Të lutemi rinise browser-in dhe provo sërish.</translation>
@@ -2967,4 +3025,10 @@ Le të ju lidhim!</translation>
 <translation id="1063227610401477317">Zbato Ndryshimet</translation>
 <translation id="5539769255716491933">Raporto Hapat e Dështuar</translation>
 <translation id="7562163394445060270">Përfundimi i detyrës dështoi</translation>
+<translation id="691082536326552372">Raporto hapat e dështuar</translation>
+<translation id="2731141092023803480">Dërgoni një raport të hapave të dështuar te ekipi i Brave. Ky raport do të përmbajë informacionin e nevojshëm që ne të rregullojmë problemin. <ph name="LINK_BEFORE"/>Mëso më shumë.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">URL-ja aktuale</translation>
+<translation id="4739707522207259415">Hapi(at) e dështuar</translation>
+<translation id="1767991048059195456">Dërgo raportin</translation>
+<translation id="2168036794078614559">Raporti u dërgua</translation>
 </translationbundle>

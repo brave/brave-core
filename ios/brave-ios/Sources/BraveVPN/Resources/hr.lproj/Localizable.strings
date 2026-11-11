@@ -40,9 +40,6 @@
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "Inačica aplikacije";
 
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "Mobilni operater";
-
 /* Text to tell user to not modify support info below email's body. */
 "vpn.contactFormDoNotEditText" = "Društvo Brave vas ne prati niti zna kako upotrebljavate aplikaciju, pa ne znamo kako ste postavili mrežu VPN. Podijelite informacije o problemu koji imate, a mi ćemo se potruditi da ga riješimo što je prije moguće.";
 
@@ -227,7 +224,7 @@
 "vpn.serverTitle" = "%ld poslužitelj";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Zaštitite svaku aplikaciju uz Brave VPN. Zaštitite do 10 uređaja jednom pretplatom.";
+"vpn.settingHeaderBody" = "Strujite svoj sadržaj na svoj način. Zaštitite svaku aplikaciju na 10 uređaja s 1 pretplatom.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Obrati se tehničkoj podršci";

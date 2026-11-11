@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -145,7 +145,7 @@ TEST_F(BraveAdsConditionMatcherTimePeriodStorageUtilTest,
 TEST_F(BraveAdsConditionMatcherTimePeriodStorageUtilTest,
        SumListValuesWithEntryOnCusp) {
   // Arrange
-  const base::Time cutoff = test::Now() - base::Days(7);
+  const base::Time cutoff = test::TimeFromString("November 18 2020 12:34:56");
   const base::ListValue list =
       base::ListValue()
           .Append(base::DictValue()

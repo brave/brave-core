@@ -9,7 +9,6 @@
 #include <cstdint>
 #include <string>
 
-#include "base/memory/raw_ptr.h"
 #include "components/page_load_metrics/browser/page_load_metrics_observer.h"
 #include "services/metrics/public/cpp/ukm_source_id.h"
 
@@ -59,10 +58,14 @@ class PerfPredictorPageMetricsObserver
   ObservePolicy OnPrerenderStart(content::NavigationHandle* navigation_handle,
                                  const GURL& currently_committed_url) override;
 
-  int64_t navigation_id_ = 0;
+  // Returns the tab helper of the tab showing this page. Null once the page is
+  // no longer in a tab, as when its tab closes or discards it.
+  PerfPredictorTabHelper* GetTabHelper() const;
 
-  // The browser context this navigation is operating in.
-  raw_ptr<PerfPredictorTabHelper> observer_ = nullptr;
+  void OnPageLoadTimingUpdated(
+      const page_load_metrics::mojom::PageLoadTiming& timing);
+
+  int64_t navigation_id_ = 0;
 };
 
 }  // namespace brave_perf_predictor

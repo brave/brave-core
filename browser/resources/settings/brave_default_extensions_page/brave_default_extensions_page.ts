@@ -5,8 +5,8 @@
 
 import './brave_extensions_manifest_v2_subpage.js';
 
-import {PrefsMixin, PrefsMixinInterface} from '/shared/settings/prefs/prefs_mixin.js';
-import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import {PrefServiceObserverMixin, PrefServiceObserverMixinInterface} from '/shared/settings/prefs2/pref_service_observer_mixin.js';
+import {WebUiListenerMixin, WebUiListenerMixinInterface} from '/shared/settings/web_ui_listener_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import type {CrViewManagerElement} from 'chrome://resources/cr_elements/cr_view_manager/cr_view_manager.js';
 
@@ -21,8 +21,8 @@ import {BraveDefaultExtensionsBrowserProxyImpl} from './brave_default_extensions
 import {getTemplate} from './brave_default_extensions_page.html.js'
 
 const SettingBraveDefaultExtensionsPageElementBase =
-  SearchableViewContainerMixin(SettingsViewMixin(WebUiListenerMixin(PrefsMixin(PolymerElement)))) as {
-  new (): PolymerElement & WebUiListenerMixinInterface & PrefsMixinInterface & SearchableViewContainerMixinInterface & SettingsViewMixinInterface
+  SearchableViewContainerMixin(SettingsViewMixin(WebUiListenerMixin(PrefServiceObserverMixin(PolymerElement)))) as {
+  new (): PolymerElement & WebUiListenerMixinInterface & PrefServiceObserverMixinInterface & SearchableViewContainerMixinInterface & SettingsViewMixinInterface
 }
 
 export interface SettingBraveDefaultExtensionsPageElement {
@@ -48,14 +48,9 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
   static get properties() {
     return {
       showRestartToast_: Boolean,
-      widevineEnabledPref_: {
-        type: Object,
-        value() {
-          // TODO(dbeam): this is basically only to appease PrefControlMixin.
-          // Maybe add a no-validate attribute instead? This makes little sense.
-          return {}
-        },
-      },
+      googleLoginPref_: Object,
+      mediaRouterPref_: Object,
+      widevineEnabled_: Boolean,
       isExtensionsManifestV2FeatureEnabled_: {
         value: () => loadTimeData.getBoolean('extensionsManifestV2Feature'),
       }
@@ -64,8 +59,19 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
 
   private browserProxy_ = BraveDefaultExtensionsBrowserProxyImpl.getInstance()
   declare showRestartToast_: boolean
-  declare widevineEnabledPref_: chrome.settingsPrivate.PrefObject
+  declare googleLoginPref_: chrome.settingsPrivate.PrefObject<boolean>
+  declare mediaRouterPref_: chrome.settingsPrivate.PrefObject<boolean>
+  declare widevineEnabled_: boolean
   declare isExtensionsManifestV2FeatureEnabled_: boolean
+
+  override connectedCallback() {
+    super.connectedCallback()
+
+    this.mirrorPrefs({
+      'signin.allowed_on_next_startup': 'googleLoginPref_',
+      'brave.enable_media_router_on_restart': 'mediaRouterPref_',
+    })
+  }
 
   override ready() {
     super.ready()
@@ -78,11 +84,11 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
       this.showRestartToast_ = show
     })
 
-    // PrefControlMixin checks for a pref being valid, so have to fake it,
-    // same as upstream.
-    const setWidevineEnabledPref = (enabled: boolean) => this.setWidevineEnabledPref_(enabled)
-    this.addWebUiListener('widevine-enabled-changed', setWidevineEnabledPref)
-    this.browserProxy_.isWidevineEnabled().then(setWidevineEnabledPref)
+    const setWidevineEnabled = (enabled: boolean) => {
+      this.widevineEnabled_ = enabled
+    }
+    this.addWebUiListener('widevine-enabled-changed', setWidevineEnabled)
+    this.browserProxy_.isWidevineEnabled().then(setWidevineEnabled)
   }
 
   override getAssociatedControlFor(childViewId: string): HTMLElement {
@@ -97,15 +103,6 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
   restartBrowser_(e: Event) {
     e.stopPropagation()
     window.open("chrome://restart", "_self")
-  }
-
-  setWidevineEnabledPref_(enabled: boolean) {
-    const pref = {
-      key: '',
-      type: chrome.settingsPrivate.PrefType.BOOLEAN,
-      value: enabled,
-    }
-    this.widevineEnabledPref_ = pref
   }
 
   onWidevineEnabledChange_() {

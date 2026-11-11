@@ -33,11 +33,20 @@ class ReaderModeTabHelper {
     }
     self.tab = tab
     self.readerModeCache = readerModeCache
+    tab.addPolicyDecider(self)
     tab.addObserver(self)
+  }
+
+  /// When the tab is showing reader mode, navigations may only target normal web pages.
+  static func allowsNavigation(from source: URL?, to destination: URL) -> Bool {
+    guard let source, InternalURL(source)?.isReaderModePage == true else { return true }
+    if destination == source { return true }
+    return destination.isWebPage(includeDataURIs: true)
   }
 
   deinit {
     tab?.removeObserver(self)
+    tab?.removePolicyDecider(self)
   }
 
   var state: ReaderModeState {
@@ -156,6 +165,23 @@ class ReaderModeTabHelper {
   }
 }
 
+// MARK: - TabPolicyDecider
+
+extension ReaderModeTabHelper: TabPolicyDecider {
+  func tab(
+    _ tab: some TabState,
+    shouldAllowRequest request: URLRequest,
+    requestInfo: WebRequestInfo
+  ) async -> WebPolicyDecision {
+    guard let requestURL = request.url else { return .cancel }
+    let sourceURL = tab.visibleURL ?? tab.lastCommittedURL
+    if Self.allowsNavigation(from: sourceURL, to: requestURL) {
+      return .allow
+    }
+    return .cancel
+  }
+}
+
 // MARK: - TabObserver
 
 extension ReaderModeTabHelper: TabObserver {
@@ -215,6 +241,7 @@ extension ReaderModeTabHelper: TabObserver {
 
   func tabWillBeDestroyed(_ tab: some TabState) {
     tab.removeObserver(self)
+    tab.removePolicyDecider(self)
   }
 }
 

@@ -9,21 +9,24 @@ import re
 import override_utils
 
 # Remove redirect_cc from the command line.
-CMD_PATTERN_TO_REPLACE = (r'rewrapper(\.exe)',
-                          r'(rewrapper|redirect_cc)(\.exe)')
+CMD_PATTERN_TO_REPLACE = (
+    r'rewrapper(\.exe)',
+    r'(rewrapper|redirect_cc)(\.exe)',
+)
 
 _CLANG_WRAPPER_CMD_LINE_RE: object  # Injected from upstream compile_db.py.
+# pylint: disable-next=used-before-assignment
 assert CMD_PATTERN_TO_REPLACE[0] in _CLANG_WRAPPER_CMD_LINE_RE.pattern
 _CLANG_WRAPPER_CMD_LINE_RE = re.compile(
     _CLANG_WRAPPER_CMD_LINE_RE.pattern.replace(*CMD_PATTERN_TO_REPLACE),
-    re.VERBOSE)
+    re.VERBOSE,
+)
 
 
 @override_utils.override_function(globals())
-def ProcessCompileDatabase(original_function,
-                           compile_db,
-                           filtered_args,
-                           target_os=None):
+def ProcessCompileDatabase(
+    original_function, compile_db, filtered_args, target_os=None
+):
     # Handle multiple flags passed as a single comma-separated value.
     if filtered_args and len(filtered_args) == 1 and ',' in filtered_args[0]:
         filtered_args = filtered_args[0].split(',')
@@ -63,14 +66,17 @@ def _ProcessEntry(original_function, entry, filtered_args, target_os):
     entry = original_function(entry, filtered_args, target_os)
 
     entry_file = entry['file']
-    brave_chromium_src_file = re.sub(r'^(\.\./\.\./|gen/)',
-                                     '../../brave/chromium_src/', entry_file)
+    brave_chromium_src_file = re.sub(
+        r'^(\.\./\.\./|gen/)', '../../brave/chromium_src/', entry_file
+    )
     if brave_chromium_src_file != entry_file:
-        abs_brave_chromium_src_file = os.path.join(entry['directory'],
-                                                   brave_chromium_src_file)
+        abs_brave_chromium_src_file = os.path.join(
+            entry['directory'], brave_chromium_src_file
+        )
         if os.path.exists(abs_brave_chromium_src_file):
             entry['command'] = entry['command'].replace(
-                entry_file, brave_chromium_src_file)
+                entry_file, brave_chromium_src_file
+            )
             entry['file'] = brave_chromium_src_file
 
     return entry

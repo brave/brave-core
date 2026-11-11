@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">Deaktiveret</translation>
 <translation id="59174027418879706">Aktiveret</translation>
 <translation id="6920492760024499150">Dagens tophistorier i et privat feed, kun til dig.</translation>
-<translation id="3803728444598576153">Aktiver Brave News, og gå aldrig glip af en historie igen</translation>
+<translation id="3803728444598576153">Aktiver Brave Nyheder, og gå aldrig glip af en historie</translation>
 <translation id="7627131190984957214">Brave News er reklamefinansieret med private og anonymiserede reklamer, der matches på din enhed.</translation>
-<translation id="7897050360583141319">Følg dine yndlingskilder i et enkelt feed. Du skal bare åbne en fane i Brace, scrolle ned og … værsgo!\nBrave News er reklameunderstøttet med helt fortrolige og anonymiserede reklame.</translation>
+<translation id="7897050360583141319">Følg dine yndlingskilder i et enkelt feed. Du skal bare åbne en fane i Brave, scrolle ned og … værsgo!</translation>
 <translation id="1765217911817124376">Aktivér Brave News</translation>
 <translation id="8981973962043893066">Søg efter sider, emner eller RSS-feed</translation>
 <translation id="3225021799163709119">Populær</translation>
@@ -190,9 +190,9 @@
 <translation id="5987838417172370108">Hjælp med at forbedre Braves produktstabilitet ved automatisk at sende diagnostioceringsrapporter, Brave Browser bryder sammen eller fryser.</translation>
 <translation id="7977176350719484850">Est. datamængde\nsparet</translation>
 <translation id="9008534313521214777">Est. tid\nsparet</translation>
-<translation id="8347743943525229984">Tillad Brave-undersøgelser</translation>
-<translation id="6022939994702081659">Giver Brave mulighed for at vise links til private undersøgelser i den nye fane. Undersøgelser hjælper os med at opbygge bedre funktioner og måle effektiviteten af browserbaserede annoncekampagner.</translation>
-<translation id="7746496306508543965">Få mere at vide om Brave-undersøgelser</translation>
+<translation id="5668852698659986622">Aktiver Sponsorerede Ads</translation>
+<translation id="431194936581466649">Hjælp med at støtte Braves mission om at bygge et uafhængigt, brugerfokuseret internet med Sponsorerede Ads. Vi måler annonceydelse privat uden at identificere dig.</translation>
+<translation id="1939813747486101115">Få mere at vide om sponsorerede annoncer</translation>
 <translation id="410351446219883937">Autoplay</translation>
 <translation id="7445411102860286510">Tillad, at websites automatisk afspiller videoer med lyden slået fra (anbefales)</translation>
 <translation id="7837721118676387834">Tillad automatisk afspilning af videoer, hvor lyden er slået fra, for et bestemt website.</translation>
@@ -250,7 +250,6 @@
 <translation id="6213254277250932867">Jeg har en gendannelsessætning på 12 ord</translation>
 <translation id="4225265925807365011">Jeg har en gendannelsessætning på 24 ord</translation>
 <translation id="3570367516044491911">Indstil som standardbrowser</translation>
-<translation id="6800338374677644736">Indstil som standardbrowser</translation>
 <translation id="1545749641540134597">Scan QR-kode</translation>
 <translation id="5317781812114905957">Instruktioner</translation>
 <translation id="8515319483805157233">For at søge efter QR-kode skal du sørge for, at QR-koden er i midten af rammen.</translation>
@@ -282,7 +281,6 @@
 <translation id="5582839680698949063">Hovedmenu</translation>
 <translation id="7002271985859760052">Sidehandlinger</translation>
 <translation id="7104487676473617844">Følgende elementer vil kun være synlige i menuen, når de understøttes af den aktuelt åbne webside.</translation>
-<translation id="4159764849281393303">WebApp</translation>
 <translation id="8038539967102225446">Brave-Annoncer er her!</translation>
 <translation id="222883304157347087">(denne enhed)</translation>
 <translation id="4157741509680155021">ENHEDER I SYNKRONISERINGSKÆDE</translation>
@@ -291,7 +289,7 @@
 <translation id="2569646144216067185">Ordtælling: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Forkert synkroniseringskode</translation>
 <translation id="8284063834901328650">Forkert QR-synkroniseringskode</translation>
-<translation id="859506441384380749">Denne kode er genereret af en forældet version af Brave. Opgradér venligst din anden enhed først</translation>
+<translation id="4002014583969312635">Denne kode ser ud til at være oprettet på en enhed med en ældre version af Brave. Opdatér til den nyeste version af Brave på din anden enhed, og opret en ny synkroniseringskode.</translation>
 <translation id="3132642509209154999">Denne kode er udløbet. Generér venligst en ny på din anden enhed, og prøv igen.</translation>
 <translation id="2859229680945501779">Hoden er ugyldig. Kontrollér at tidspunkt og tidszone er korrekt indstillet på din enhed.</translation>
 <translation id="3149880132460839085">Brave-synkronisering</translation>
@@ -337,8 +335,6 @@
 <translation id="8185825081026121627">Optjen et Basic Attention Token for at se privatlivsbevarende Brave Rewards-annoncer.</translation>
 <translation id="5321518976657560663">Nulstillingsfejl</translation>
 <translation id="4114170343590425996">Der opstod en fejl ved nulstilling af Brave Rewards. Genstart venligst Brave og prøv igen.</translation>
-<translation id="6417420737057016607">Brave Reklamer</translation>
-<translation id="5611966874859284786">Vis notifikationsannoncer, når Brave ikke er i brug</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Nulstil data om Brave-belønninger …<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Slet data om Brave-reklamer …<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Tilføj bogmærke</translation>
@@ -397,6 +393,13 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">Vis topsider</translation>
 <translation id="7275773481201277457">Vis Brave Stats</translation>
+<translation id="8516804522688861636">Vis ofte besøgte sites</translation>
+<translation id="4546260624932151782">Vis favoritter</translation>
+<translation id="5313967007315987356">Tilføj website</translation>
+<translation id="1773147648972887693">Vis ofte besøgte</translation>
+<translation id="7134741506051403308">Skjul widget</translation>
+<translation id="1247759249260562308">Rediger favorit</translation>
+<translation id="6387214885349500492">Fastgør denne favorit</translation>
 <translation id="7462178177755090262">Startskærm</translation>
 <translation id="5365434987337264071">Senest åbnede fane</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Ny fane efter <ph name="HOURS_ONE"/> times inaktivitet} other {Ny fane efter <ph name="HOURS_MANY"/> timers inaktivitet}}</translation>
@@ -720,6 +723,8 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="1634828734222219955">Total</translation>
 <translation id="7995708795274219641">Beløb + Brændstof</translation>
 <translation id="2186011161688824046">Beløb + gebyr</translation>
+<translation id="1118876217803190221">Utilstrækkelig saldo</translation>
+<translation id="275990379543116961">Ikke nok midler til benzin</translation>
 <translation id="1950052789869821983">Transaktion</translation>
 <translation id="2304783958703511257">Avancerede indstillinger</translation>
 <translation id="4220062530885628403">Nonce</translation>
@@ -969,6 +974,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="6365389672683343144">Dit VPN-abonnement hos Brave kan beskytte op til 5 enheder – både Android, iOS eller PC. Du skal bare forbinde din Google Play-konto med din Brave-konto.</translation>
 <translation id="6610899852831463073">Kan ikke aktivere Sikker browsing</translation>
 <translation id="7954263306665462056">Sikker browsing er blevet deaktiveret på din enhed. Hvis du vil aktivere denne funktion, skal du sikre dig, at Google Play Services er installeret og er opdateret.</translation>
+<translation id="6417420737057016607">Brave Reklamer</translation>
 <translation id="7748944510530490017">Primære netværker</translation>
 <translation id="2781668117338732220">Sekundære netværk</translation>
 <translation id="282560918037172384">Test netværker</translation>
@@ -995,6 +1001,13 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="7530313002494358590">Aktivering eller deaktivering af en Brave-funktion kræver, at browseren genstartes for at anvende ændringer. Tryk på <ph name="BEGIN_BOLD"/>Genstart nu<ph name="END_BOLD"/> når Brave Origin er færdig med at opdatere.</translation>
 <translation id="1028940738207645746">Er du sikker på, at du vil nulstille alle indstillinger til standard?</translation>
 <translation id="5939518447894949180">Nulstil</translation>
+<translation id="3222790865318305905">Aktiveringsgrænse nået</translation>
+<translation id="3787857711016546034">For at forhindre svindel er Origin-aktiveringer begrænset. Men du kan altid anmode om flere aktiveringer for at bruge din Origin-licens på flere enheder. Klik blot på muligheden Anmod om flere aktiveringer, eller <ph name="CONTACT_SUPPORT"/> for hjælp.</translation>
+<translation id="6760819753412779585">konktakt support</translation>
+<translation id="571697836019670200">Anmod om flere aktiveringer</translation>
+<translation id="9019545131475425538">Behandler…</translation>
+<translation id="7242700630179071243">Klar til aktivering</translation>
+<translation id="5463918917265356202">Brave Origin er nu aktiv på denne enhed. For at begynde at bruge funktionen skal du genstarte browseren. Vil du genstarte nu?</translation>
 <translation id="8554205386170195281">Køb</translation>
 <translation id="8613144770663526433">Log ind med Brave Wallet</translation>
 <translation id="3696514931437952995">Du er ved at logge ind på <ph name="ORIGIN"/>. Brave Wallet deler din wallet-adresse med <ph name="ORIGIN"/>.</translation>

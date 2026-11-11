@@ -4,15 +4,13 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { assert, assertNotReached } from 'chrome://resources/js/assert.js'
-
+import type { JSTime } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import { EntityState } from '@reduxjs/toolkit'
 
 // types
 import {
   BraveWallet,
   SerializableTransactionInfo,
-  TimeDelta,
-  SerializableTimeDelta,
   SortingOrder,
   TransactionInfo,
   ParsedSwapInfo,
@@ -32,7 +30,10 @@ import {
   getTypedSolanaTxInstructions,
   TypedSolanaInstructionWithParams,
 } from './solana-instruction-utils'
-import { findTokenByContractAddress } from './asset-utils'
+import {
+  findTokenByChainAndContractAddress,
+  findTokenByContractAddress,
+} from './asset-utils'
 import Amount from './amount'
 import { getCoinFromTxDataUnion, TxDataPresence } from './network-utils'
 import { toProperCase } from './string-utils'
@@ -42,7 +43,6 @@ import {
 } from './pricing-utils'
 import { makeNetworkAsset } from '../options/asset-options'
 import { getAccountLabel, getAddressLabel } from './account-utils'
-import { makeSerializableTimeDelta } from './model-serialization-utils'
 import {
   NetworksRegistry,
   networkSelectors,
@@ -115,7 +115,7 @@ export interface ParsedTransaction
   id: string
   hash: string
   nonce: string
-  createdTime: SerializableTimeDelta
+  createdTime: JSTime
   status: BraveWallet.TransactionStatus
   senderLabel: string
   recipient: string
@@ -127,7 +127,7 @@ export interface ParsedTransaction
   erc721TokenId?: string
   intent: string
   chainId: string
-  originInfo?: BraveWallet.OriginInfo | undefined
+  dappOriginInfo?: BraveWallet.OriginInfo | undefined
 
   // Value
   value: string
@@ -176,9 +176,7 @@ export type ParsedTransactionWithoutFiatValues = Omit<
   'fiatTotal' | 'fiatValue' | 'gasFeeFiat'
 >
 
-export const sortTransactionByDate = <
-  T extends { createdTime: TimeDelta | SerializableTimeDelta },
->(
+export const sortTransactionByDate = <T extends { createdTime: JSTime }>(
   transactions: T[],
   order: SortingOrder = 'ascending',
 ): T[] => {
@@ -215,14 +213,14 @@ export const getTransactionStatusString = (statusId: number) => {
 }
 
 export const transactionSortByDateComparer = <
-  T extends { createdTime: TimeDelta | SerializableTimeDelta },
+  T extends { createdTime: JSTime },
 >(
   order: SortingOrder = 'ascending',
 ): ((a: T, b: T) => number) | undefined => {
   return function (x: T, y: T) {
     return order === 'ascending'
-      ? Number(x.createdTime.microseconds) - Number(y.createdTime.microseconds)
-      : Number(y.createdTime.microseconds) - Number(x.createdTime.microseconds)
+      ? x.createdTime.msec - y.createdTime.msec
+      : y.createdTime.msec - x.createdTime.msec
   }
 }
 
@@ -312,7 +310,8 @@ export function isPolkadotAssetTransaction(
 } {
   return (
     isPolkadotTransaction(tx)
-    && tx.txDataUnion.polkadotTxData.assetId !== undefined
+    // Mojo optional fields decode as null when unset, not undefined.
+    && tx.txDataUnion.polkadotTxData.assetId != null
   )
 }
 
@@ -581,10 +580,12 @@ export const findTransactionToken = <
     )
   }
 
-  // Solana Dapps, Filecoin & EVM
-  return findTokenByContractAddress(
-    // tx interacts with the contract address
+  // Solana Dapps, Filecoin & EVM. Match the chain too: the same contract
+  // address can be a watched asset with different decimals on another chain.
+  return findTokenByChainAndContractAddress(
     getTransactionInteractionAddress(tx),
+    tx.chainId,
+    tx.fromAccountId.coin,
     tokensList,
   )
 }
@@ -639,7 +640,12 @@ export const parseSwapInfo = ({
     swapInfo.sourceTokenAddress === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
       ? sourceNativeAsset
       : swapInfo.sourceTokenAddress
-        ? findTokenByContractAddress(swapInfo.sourceTokenAddress, tokensList)
+        ? findTokenByChainAndContractAddress(
+            swapInfo.sourceTokenAddress,
+            swapInfo.sourceChainId,
+            swapInfo.sourceCoin,
+            tokensList,
+          )
           // token not found
           // return a "faked" coin (will need to "discover" it later)
           || ({
@@ -664,8 +670,10 @@ export const parseSwapInfo = ({
     swapInfo.destinationTokenAddress === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
       ? destinationNativeAsset
       : swapInfo.destinationTokenAddress
-        ? findTokenByContractAddress(
+        ? findTokenByChainAndContractAddress(
             swapInfo.destinationTokenAddress,
+            swapInfo.destinationChainId,
+            swapInfo.destinationCoin,
             tokensList,
           )
           // token not found
@@ -833,7 +841,7 @@ export function getTransactionTransferredValue(
     const wei = new Amount(amount)
     return {
       wei,
-      normalized: wei.divideByDecimals(token?.decimals ?? 18),
+      normalized: token ? wei.divideByDecimals(token.decimals) : Amount.empty(),
     }
   }
 
@@ -1938,7 +1946,6 @@ export const parseTransactionWithoutPrices = ({
 
   const approvalTargetLabel = getAddressLabel(approvalTarget, accounts)
   const coinType = getCoinFromTxDataUnion(tx.txDataUnion)
-  const createdTime = makeSerializableTimeDelta(tx.createdTime)
 
   const contractAddressError = isSendingToKnownTokenContractAddress(
     tx,
@@ -2001,7 +2008,7 @@ export const parseTransactionWithoutPrices = ({
     chainId: transactionNetwork?.chainId || '',
     coinType,
     contractAddressError,
-    createdTime,
+    createdTime: tx.createdTime,
     decimals,
     erc721BlockchainToken,
     erc721TokenId,
@@ -2026,7 +2033,7 @@ export const parseTransactionWithoutPrices = ({
     maxPriorityFeePerGas,
     missingGasLimitError,
     nonce: getTransactionNonce(tx),
-    originInfo: tx.originInfo,
+    dappOriginInfo: tx.dappOriginInfo,
     recipient: to,
     recipientLabel: getAddressLabel(to, accounts),
     sameAddressError,
@@ -2119,6 +2126,42 @@ export const isCancelTransaction = (
   return (
     hasZeroValue && hasEmptyData && isSelfSend && hasSubmittedTxWithSameNonce
   )
+}
+
+/**
+ * Detects ERC-721/ERC-1155 `setApprovalForAll(operator, approved)` transactions
+ * that are *granting* approval (approved === true).
+ *
+ * The calldata is decoded in core (eth_data_parser.cc); here we only read the
+ * resulting txType and txArgs, mirroring how every other ERC type is handled.
+ * Revoking approval (approved === false) is intentionally not flagged.
+ */
+export const isSetApprovalForAllTransaction = (
+  tx: Pick<TransactionInfo, 'txType' | 'txArgs'>,
+): boolean => {
+  if (tx.txType !== BraveWallet.TransactionType.ERC721SetApprovalForAll) {
+    return false
+  }
+
+  // txArgs: [address operator, bool approved ("0x1" or "0x0")]
+  const [, approved] = tx.txArgs
+  return approved === '0x1'
+}
+
+/**
+ * Returns the operator address being granted approval in a
+ * `setApprovalForAll` transaction, or an empty string for any other type.
+ */
+export const getSetApprovalForAllOperator = (
+  tx: Pick<TransactionInfo, 'txType' | 'txArgs'>,
+): string => {
+  if (tx.txType !== BraveWallet.TransactionType.ERC721SetApprovalForAll) {
+    return ''
+  }
+
+  // txArgs: [address operator, bool approved]
+  const [operator] = tx.txArgs
+  return operator ?? ''
 }
 
 export const parseTransactionWithPrices = ({
@@ -2219,6 +2262,9 @@ export function getTransactionTypeName(txType: BraveWallet.TransactionType) {
 
     case BraveWallet.TransactionType.ERC721TransferFrom:
       return getLocale(S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_NFT_TRANSFER)
+
+    case BraveWallet.TransactionType.ERC721SetApprovalForAll:
+      return getLocale(S.BRAVE_WALLET_APPROVAL_FOR_ALL_WARNING_TITLE)
 
     case BraveWallet.TransactionType.ETHFilForwarderTransfer:
       return getLocale(S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_FORWARD_FIL)

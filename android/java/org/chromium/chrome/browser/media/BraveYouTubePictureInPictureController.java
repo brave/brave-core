@@ -672,8 +672,8 @@ public class BraveYouTubePictureInPictureController {
         // session stays consistent and the receiver keeps listening for a later wake-up.
         if (mActivity.isChangingConfigurations()
                 || mActivity.isActivityFinishingOrDestroyed()
-                || !BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
-                        webContents)) {
+                || !BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(webContents)
+                || !isPictureInPictureEnabled()) {
             return;
         }
 
@@ -750,6 +750,12 @@ public class BraveYouTubePictureInPictureController {
         if (!isBackgroundVideoPlaybackEnabled(webContents)) {
             suspendMediaSession(webContents);
         }
+    }
+
+    // Covers the system checks the native availability check lacks.
+    @VisibleForTesting
+    protected boolean isPictureInPictureEnabled() {
+        return PictureInPicture.isEnabled(mActivity);
     }
 
     /**

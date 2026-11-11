@@ -192,6 +192,7 @@ source_set("unit_tests") {
     "conversation_handler_unittest.cc",
     "conversation_share_manager_unittest.cc",
     "conversation_share_store_unittest.cc",
+    "conversation_tools_unittest.cc",
     "customization_settings_handler_unittest.cc",
     "engine/conversation_api_client_unittest.cc",
     "engine/deep_research_parsing_unittest.cc",

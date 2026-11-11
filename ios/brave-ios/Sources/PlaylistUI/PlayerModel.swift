@@ -45,7 +45,7 @@ public final class PlayerModel: ObservableObject {
     setupPlaylistManagerObservation()
 
     Task { @MainActor in
-      updateSystemPlayer()
+      await updateSystemPlayer()
       UIApplication.shared.beginReceivingRemoteControlEvents()
     }
 
@@ -251,7 +251,7 @@ public final class PlayerModel: ObservableObject {
     .init(rawValue: Preferences.Playlist.repeatMode.value) ?? .none
   {
     didSet {
-      updateSystemPlayer()
+      Task { await updateSystemPlayer() }
       Preferences.Playlist.repeatMode.value = repeatMode.rawValue
     }
   }
@@ -260,7 +260,7 @@ public final class PlayerModel: ObservableObject {
     didSet {
       if oldValue != isShuffleEnabled {
         makeItemQueue(selectedItemID: selectedItemID)
-        updateSystemPlayer()
+        Task { await updateSystemPlayer() }
         Preferences.Playlist.isShuffleEnabled.value = isShuffleEnabled
       }
     }
@@ -298,33 +298,28 @@ public final class PlayerModel: ObservableObject {
       if isPlaying {
         player.rate = playbackSpeed.rate
       }
-      updateSystemPlayer()
+      Task { await updateSystemPlayer() }
     }
   }
 
-  private var sleepTimer: Timer?
+  private var sleepTimer: Task<Void, Never>?
   enum SleepTimerCondition {
     case date(Date)
     case itemPlaybackCompletion
   }
   @MainActor @Published var sleepTimerCondition: SleepTimerCondition? {
     didSet {
-      sleepTimer?.invalidate()
+      sleepTimer?.cancel()
       guard let sleepTimerCondition else {
         return
       }
       if case .date(let date) = sleepTimerCondition {
-        let timer = Timer(
-          fire: date,
-          interval: 0,
-          repeats: false,
-          block: { [weak self] _ in
-            self?.pause()
-            self?.sleepTimerCondition = nil
-          }
-        )
-        RunLoop.main.add(timer, forMode: .default)
-        self.sleepTimer = timer
+        sleepTimer = Task { @MainActor [weak self] in
+          try? await Task.sleep(for: .seconds(max(0, date.timeIntervalSinceNow)))
+          guard !Task.isCancelled else { return }
+          self?.pause()
+          self?.sleepTimerCondition = nil
+        }
       }
     }
   }
@@ -420,7 +415,7 @@ public final class PlayerModel: ObservableObject {
     }
     didSet {
       selectedItemUUID = selectedItemID.flatMap { PlaylistItem.getItem(id: $0)?.uuid }
-      updateSystemPlayer(loadArtwork: true)
+      Task { await updateSystemPlayer(loadArtwork: true) }
     }
   }
 
@@ -617,9 +612,6 @@ public final class PlayerModel: ObservableObject {
     }
   }
 
-  @MainActor var isErrorAlertPresented: Binding<Bool> {
-    .init(get: { self.error != nil }, set: { if !$0 { self.error = nil } })
-  }
   @MainActor @Published var error: PlayerModelError?
 
   @MainActor func prepareToPlaySelectedItem(
@@ -632,7 +624,7 @@ public final class PlayerModel: ObservableObject {
     if let cachedData = item.cachedData {
       if let cachedDataURL = await PlaylistItem.resolvingCachedData(cachedData) {
         playerItemToReplace = await Task.detached {
-          .init(asset: .init(url: cachedDataURL))
+          .init(asset: AVURLAsset(url: cachedDataURL))
         }.value
       }
     }
@@ -743,8 +735,8 @@ public final class PlayerModel: ObservableObject {
     player.replaceCurrentItem(with: item)
     await MainActor.run {
       setupPlayerItemKeyPathObservation()
-      updateSystemPlayer()
     }
+    await updateSystemPlayer()
   }
   private(set) var playerLayer: AVPlayerLayer = .init()
 
@@ -899,8 +891,8 @@ public final class PlayerModel: ObservableObject {
     }
     let timeControlStatusObservable = player.observe(\.timeControlStatus, options: [.new]) {
       [weak self] _, _ in
-      DispatchQueue.main.async {
-        self?.updateSystemPlayer()
+      Task { @MainActor in
+        await self?.updateSystemPlayer()
       }
     }
     cancellables.formUnion([
@@ -919,8 +911,8 @@ public final class PlayerModel: ObservableObject {
       objectWillChangeSubscriber(on: item, for: keyPath)
     }
     let statusObservable = item.observe(\.status) { [weak self] _, _ in
-      DispatchQueue.main.async {
-        self?.updateSystemPlayer()
+      Task { @MainActor in
+        await self?.updateSystemPlayer()
       }
     }
     itemCancellables.formUnion([
@@ -964,14 +956,14 @@ extension AVPlayer {
 // MARK: - System Media Player
 
 extension PlayerModel {
-  @MainActor private func updateSystemPlayer(loadArtwork: Bool = false) {
+  @MainActor private func updateSystemPlayer(loadArtwork: Bool = false) async {
     guard let selectedItem else {
       MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
       return
     }
 
     let mediaType: MPNowPlayingInfoMediaType =
-      currentItem?.isVideoTracksAvailable() == true ? .video : .audio
+      await currentItem?.isVideoTrackAvailable == true ? .video : .audio
     let nowPlayingInfo: [String: Any] = [
       MPNowPlayingInfoPropertyAssetURL: selectedItem.pageSrc.asURL as Any,
       MPNowPlayingInfoPropertyElapsedPlaybackTime: currentTime,

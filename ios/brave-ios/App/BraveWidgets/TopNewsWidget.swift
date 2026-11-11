@@ -43,6 +43,10 @@ extension WidgetFamily {
       return true
     case .systemSmall, .systemMedium, .systemLarge, .systemExtraLarge:
       return false
+    #if compiler(>=6.4)
+    case .systemExtraLargePortrait:
+      return false
+    #endif
     @unknown default:
       return false
     }

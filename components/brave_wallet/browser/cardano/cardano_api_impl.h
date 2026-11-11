@@ -25,7 +25,7 @@ class CardanoApiImpl final : public mojom::CardanoApi {
   CardanoApiImpl(BraveWalletService& brave_wallet_service,
                  std::unique_ptr<BraveWalletProviderDelegate> delegate,
                  mojom::AccountIdPtr selected_account,
-                 const url::Origin& origin);
+                 const url::Origin& dapp_origin);
   ~CardanoApiImpl() override;
 
   void GetNetworkId(GetNetworkIdCallback callback) override;
@@ -106,7 +106,7 @@ class CardanoApiImpl final : public mojom::CardanoApi {
   raw_ref<BraveWalletService> brave_wallet_service_;
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   mojom::AccountIdPtr selected_account_;
-  url::Origin origin_;
+  const url::Origin dapp_origin_;
 
   base::WeakPtrFactory<CardanoApiImpl> weak_ptr_factory_{this};
 };

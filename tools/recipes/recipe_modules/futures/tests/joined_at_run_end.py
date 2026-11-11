@@ -12,19 +12,36 @@ greenlets run to completion rather than being dropped on the floor.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    futures,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['futures', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    futures: futures.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    pass
+
+
+def RunSteps(api: DEPS):
     # Deliberately never waited on. `spawn` does not switch to the greenlet, so
     # nothing here gives it a chance to run.
     api.futures.spawn(api.step, 'forgotten', ['echo', 'ran anyway'])
     api.step('last', ['echo', 'done'])
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'joined at run end',
         api.post_process(post_process.MustRun, 'last'),

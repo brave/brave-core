@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.referrer;
 
+import static org.chromium.build.NullUtil.assumeNonNull;
+
 import android.content.Context;
 import android.net.Uri;
 
@@ -17,6 +19,7 @@ import com.android.installreferrer.api.ReferrerDetails;
 
 import org.jni_zero.CalledByNative;
 import org.jni_zero.JNINamespace;
+import org.jni_zero.JniType;
 import org.jni_zero.NativeMethods;
 
 import org.chromium.base.BravePreferenceKeys;
@@ -28,6 +31,8 @@ import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
+import org.chromium.chrome.browser.util.BraveProfileUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 
 import java.io.File;
@@ -52,6 +57,7 @@ public class BraveReferrer implements InstallReferrerStateListener {
 
     private @MonotonicNonNull String mPromoCodeFilePath;
     private @MonotonicNonNull InstallReferrerClient mReferrerClient;
+    private String mGbraid = "";
 
     private long mNativeBraveReferrer;
 
@@ -194,7 +200,15 @@ public class BraveReferrer implements InstallReferrerStateListener {
         return value == null || value.isEmpty();
     }
 
-    private static @Nullable String getReferralCode(Uri uri, @Nullable String referrer) {
+    private @Nullable String getReferralCode(Uri uri, @Nullable String referrer) {
+        // Captured independently of the referral code below: which campaign gets
+        // credit and whether there was an ad click to report are separate.
+        String gbraid = uri.getQueryParameter("gbraid");
+        boolean hasGbraid = !isNullOrEmpty(gbraid);
+        if (hasGbraid) {
+            mGbraid = assumeNonNull(gbraid);
+        }
+
         String urpc = uri.getQueryParameter("urpc");
         if (!isNullOrEmpty(urpc)) {
             return urpc;
@@ -205,15 +219,22 @@ public class BraveReferrer implements InstallReferrerStateListener {
             // Set flag to indicate that the install originated from the Search Choice Screen
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(BravePreferenceKeys.SEARCH_CHOICE_SCREEN_INSTALL, true);
+            // The referrer resolves asynchronously, so the DSE may already have been initialized
+            // from the country default by now. Apply the user's choice regardless, once the
+            // regular profile exists. ProfileManager is single threaded, hence the hop to the UI
+            // thread: this runs on a background task.
+            PostTask.postTask(
+                    TaskTraits.UI_DEFAULT,
+                    () ->
+                            BraveProfileUtils.onRegularProfileAvailable(
+                                    BraveSearchEngineUtils::applySearchChoiceScreenDefault));
             return SEARCH_CHOICE_SCREEN_REFERRAL_CODE;
         } else if (UTM_SOURCE_EEA_BROWSER_CHOICE.equals(utmSource)) {
             return BROWSER_CHOICE_SCREEN_REFERRAL_CODE;
         }
 
         String gclid = uri.getQueryParameter("gclid");
-        String gbraid = uri.getQueryParameter("gbraid");
         boolean hasGclid = !isNullOrEmpty(gclid);
-        boolean hasGbraid = !isNullOrEmpty(gbraid);
         if (hasGclid && hasGbraid) {
             return PLAY_STORE_AD_GCLID_GBRAID_REFERRAL_CODE;
         } else if (hasGbraid) {
@@ -235,7 +256,17 @@ public class BraveReferrer implements InstallReferrerStateListener {
         if (isNullOrEmpty(referrer)) {
             return null;
         }
-        return getReferralCode(Uri.parse("http://www.stub.co/?" + referrer), referrer);
+        return new BraveReferrer(0)
+                .getReferralCode(Uri.parse("http://www.stub.co/?" + referrer), referrer);
+    }
+
+    @VisibleForTesting
+    static String getGbraidForTesting(String referrer) {
+        BraveReferrer braveReferrer = new BraveReferrer(0);
+        if (!isNullOrEmpty(referrer)) {
+            braveReferrer.getReferralCode(Uri.parse("http://www.stub.co/?" + referrer), referrer);
+        }
+        return braveReferrer.mGbraid;
     }
 
     @Override
@@ -248,12 +279,12 @@ public class BraveReferrer implements InstallReferrerStateListener {
         PostTask.postTask(
                 TaskTraits.UI_BEST_EFFORT,
                 () -> {
-                    BraveReferrerJni.get().onReferrerReady(mNativeBraveReferrer);
+                    BraveReferrerJni.get().onReferrerReady(mNativeBraveReferrer, mGbraid);
                 });
     }
 
     @NativeMethods
     interface Natives {
-        void onReferrerReady(long nativeBraveReferrer);
+        void onReferrerReady(long nativeBraveReferrer, @JniType("std::string") String gbraid);
     }
 }

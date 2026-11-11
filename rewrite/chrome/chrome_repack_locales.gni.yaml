@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add the Brave locale source patterns.
+
+      The template declares its target through `target_name`, so the action
+      is named by what declares it rather than by a literal name.
+    add_literal_to_list:
+      target: target_name
+      type: repack_locales
+      list_name: source_patterns
+      literal: brave_locale_source_patterns
+
+  - description: Add the Brave locale deps.
+    add_literal_to_list:
+      target: target_name
+      type: repack_locales
+      list_name: deps
+      literal: brave_locale_deps

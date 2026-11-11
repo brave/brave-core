@@ -27,13 +27,15 @@
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/actor/actor_keyed_service_factory.h"
 #include "chrome/browser/actor/actor_proto_conversion.h"
 #include "chrome/browser/actor/tab_observation_strategy.h"
+#include "chrome/browser/actor/ui/actor_ui_state_manager.h"
 #include "chrome/browser/glic/actor/glic_actor_policy_checker.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -44,9 +46,20 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/containers/containers_service_factory.h"
+#include "brave/components/containers/content/browser/storage_partition_utils.h"
+#include "brave/components/containers/core/browser/containers_service.h"
+#include "brave/components/containers/core/browser/temporary_container.h"
+#include "brave/components/containers/core/mojom/containers.mojom.h"
+#include "components/grit/brave_components_strings.h"
+#include "ui/base/l10n/l10n_util.h"
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 namespace ai_chat {
 
@@ -148,10 +161,10 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
     // Create the agent profile
     auto* profile = browser()->GetProfile();
     SetUserOptedIn(profile->GetPrefs(), true);
-    base::test::TestFuture<Browser*> browser_future;
+    base::test::TestFuture<BrowserWindowInterface*> browser_future;
     OpenBrowserWindowForAIChatAgentProfileForTesting(
         *profile, browser_future.GetCallback());
-    Browser* browser = browser_future.Take();
+    BrowserWindowInterface* browser = browser_future.Take();
     ASSERT_NE(browser, nullptr);
     agent_profile_ = browser->GetProfile();
     agent_browser_window_ = browser;
@@ -162,8 +175,9 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
     ASSERT_NE(actor_service, nullptr);
 
     // Create the tool provider
-    tool_provider_ =
-        std::make_unique<ContentAgentToolProvider>(GetProfile(), actor_service);
+    tool_provider_ = std::make_unique<ContentAgentToolProvider>(
+        GetProfile(), actor_service,
+        *actor::ui::ActorUiStateManager::Get(GetProfile()));
     ASSERT_NE(tool_provider_, nullptr);
   }
 
@@ -318,6 +332,133 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
             initial_tab_count + 1);
 }
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+// The AI browsing profile is itself the agent's isolation, so its tabs are not
+// put in a container.
+IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
+                       AgentProfileTaskTabHasNoContainer) {
+  tabs::TabHandle tab_handle = GetToolProviderTabHandle();
+  ASSERT_TRUE(tab_handle.Get());
+  EXPECT_TRUE(
+      containers::GetContainerIdForWebContents(tab_handle.Get()->GetContents())
+          .empty());
+  EXPECT_THAT(ContainersServiceFactory::GetForProfile(GetProfile())
+                  ->GetUsedContainerIds(),
+              testing::IsEmpty());
+}
+
+// In a main profile the agent's tab is isolated in a temporary container. The
+// content agent's tools are not yet registered in main profiles, so these
+// tests create the provider directly.
+class ContentAgentToolProviderMainProfileBrowserTest
+    : public ContentAgentToolProviderBrowserTest {
+ protected:
+  std::unique_ptr<ContentAgentToolProvider> CreateMainProfileToolProvider() {
+    Profile* profile = browser()->GetProfile();
+    return std::make_unique<ContentAgentToolProvider>(
+        profile, actor::ActorKeyedServiceFactory::GetActorKeyedService(profile),
+        *actor::ui::ActorUiStateManager::Get(profile));
+  }
+
+  tabs::TabHandle GetTabHandle(ContentAgentToolProvider& tool_provider) {
+    base::test::TestFuture<tabs::TabHandle> tab_handle_future;
+    tool_provider.GetOrCreateTabHandleForTask(tab_handle_future.GetCallback());
+    return tab_handle_future.Take();
+  }
+
+  containers::ContainersService* GetMainProfileContainersService() {
+    return ContainersServiceFactory::GetForProfile(browser()->GetProfile());
+  }
+};
+
+// The container is not created until the agent needs a tab.
+IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderMainProfileBrowserTest,
+                       TaskTabContainerIsCreatedLazily) {
+  auto* containers_service = GetMainProfileContainersService();
+  ASSERT_TRUE(containers_service);
+
+  // A conversation that hasn't opened a tab has no container.
+  auto tool_provider = CreateMainProfileToolProvider();
+  ASSERT_FALSE(tool_provider->GetTools().empty());
+  EXPECT_THAT(containers_service->GetUsedContainerIds(), testing::IsEmpty());
+
+  tabs::TabHandle tab_handle = GetTabHandle(*tool_provider);
+  ASSERT_TRUE(tab_handle.Get());
+  content::WebContents* contents = tab_handle.Get()->GetContents();
+  const std::string container_id =
+      containers::GetContainerIdForWebContents(contents);
+  EXPECT_TRUE(containers::IsTemporaryContainerId(container_id));
+  EXPECT_THAT(containers_service->GetUsedContainerIds(),
+              testing::ElementsAre(container_id));
+
+  // The tab starts on a blank page that, unlike about:blank, can be put in a
+  // container.
+  content::WaitForLoadStop(contents);
+  EXPECT_EQ(contents->GetLastCommittedURL(), GURL("data:text/html,"));
+}
+
+// The container is named so the user can tell the tab is the AI's, e.g. in its
+// tooltip.
+IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderMainProfileBrowserTest,
+                       TaskTabContainerIsNamed) {
+  auto tool_provider = CreateMainProfileToolProvider();
+  tabs::TabHandle tab_handle = GetTabHandle(*tool_provider);
+  ASSERT_TRUE(tab_handle.Get());
+  containers::mojom::ContainerPtr container =
+      GetMainProfileContainersService()->GetRuntimeContainerById(
+          containers::GetContainerIdForWebContents(
+              tab_handle.Get()->GetContents()));
+  ASSERT_TRUE(container);
+  EXPECT_EQ(container->name,
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CONTENT_AGENT_CONTAINER_NAME));
+}
+
+// A new task tab, after the user closes the previous one, stays in the
+// conversation's container rather than creating another.
+IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderMainProfileBrowserTest,
+                       TaskTabContainerIsReusedWithinConversation) {
+  auto tool_provider = CreateMainProfileToolProvider();
+  tabs::TabHandle first_handle = GetTabHandle(*tool_provider);
+  ASSERT_TRUE(first_handle.Get());
+  const std::string container_id = containers::GetContainerIdForWebContents(
+      first_handle.Get()->GetContents());
+  ASSERT_FALSE(container_id.empty());
+
+  first_handle.Get()->Close();
+  ASSERT_TRUE(base::test::RunUntil([&]() { return !first_handle.Get(); }));
+
+  tabs::TabHandle second_handle = GetTabHandle(*tool_provider);
+  ASSERT_TRUE(second_handle.Get());
+  EXPECT_NE(first_handle, second_handle);
+  EXPECT_EQ(containers::GetContainerIdForWebContents(
+                second_handle.Get()->GetContents()),
+            container_id);
+  EXPECT_THAT(GetMainProfileContainersService()->GetUsedContainerIds(),
+              testing::ElementsAre(container_id));
+}
+
+// Conversations don't share storage with each other.
+IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderMainProfileBrowserTest,
+                       EachConversationHasItsOwnContainer) {
+  auto tool_provider = CreateMainProfileToolProvider();
+  auto other_tool_provider = CreateMainProfileToolProvider();
+
+  tabs::TabHandle tab_handle = GetTabHandle(*tool_provider);
+  ASSERT_TRUE(tab_handle.Get());
+  tabs::TabHandle other_tab_handle = GetTabHandle(*other_tool_provider);
+  ASSERT_TRUE(other_tab_handle.Get());
+
+  const std::string container_id =
+      containers::GetContainerIdForWebContents(tab_handle.Get()->GetContents());
+  const std::string other_container_id =
+      containers::GetContainerIdForWebContents(
+          other_tab_handle.Get()->GetContents());
+  EXPECT_TRUE(containers::IsTemporaryContainerId(container_id));
+  EXPECT_TRUE(containers::IsTemporaryContainerId(other_container_id));
+  EXPECT_NE(container_id, other_container_id);
+}
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
 // Test calling ExecuteActions on a closed tab is handled
 IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
                        ExecuteActions_TabClosed) {
@@ -363,8 +504,10 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
   ASSERT_TRUE(tab_handle_future.Wait());
 
   base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> result_future;
-  ReceivedAnnotatedPageContent(result_future.GetCallback(),
-                               base::unexpected("Uninitialized"));
+  ReceivedAnnotatedPageContent(
+      result_future.GetCallback(),
+      base::unexpected(
+          optimization_guide::AIPageContentError{.message = "Uninitialized"}));
   auto [result, artifacts] = result_future.Take();
   EXPECT_TRUE(artifacts.empty());
   EXPECT_THAT(result, ContentBlockText(

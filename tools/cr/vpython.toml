@@ -1,0 +1,20 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+requires-python = '>=3.11,<3.12'
+dependencies = [
+  'charset-normalizer==3.3.2',
+  'certifi==2024.7.4',
+  'idna==3.4',
+  'markdown-it-py==2.1.0',
+  'mdurl==0.1.2',
+  'pygments==2.14.0',
+  'requests==2.31.0',
+  'rich==13.2.0',
+  'urllib3==2.1.0',
+  'pyyaml==6.0.1',
+  'httplib2==0.22.0',
+  'pyparsing==3.2.0',
+]

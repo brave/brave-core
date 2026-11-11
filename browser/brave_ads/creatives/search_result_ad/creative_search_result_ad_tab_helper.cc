@@ -25,11 +25,11 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_contents_user_data.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -52,11 +52,21 @@ constexpr std::string_view kDataPlacementIdVisibilityCheckJavaScript =
 
 }  // namespace
 
+// static
+std::unique_ptr<CreativeSearchResultAdTabHelper>
+CreativeSearchResultAdTabHelper::MaybeCreate(tabs::TabInterface& tab) {
+  content::BrowserContext* const browser_context =
+      tab.GetContents()->GetBrowserContext();
+  if (!browser_context || browser_context->IsOffTheRecord()) {
+    return nullptr;
+  }
+
+  return std::make_unique<CreativeSearchResultAdTabHelper>(tab);
+}
+
 CreativeSearchResultAdTabHelper::CreativeSearchResultAdTabHelper(
-    content::WebContents* web_contents)
-    : content::WebContentsObserver(web_contents),
-      content::WebContentsUserData<CreativeSearchResultAdTabHelper>(
-          *web_contents) {}
+    tabs::TabInterface& tab)
+    : tabs::ContentsObservingTabFeature(tab) {}
 
 CreativeSearchResultAdTabHelper::~CreativeSearchResultAdTabHelper() = default;
 
@@ -67,19 +77,6 @@ void CreativeSearchResultAdTabHelper::SetAdsServiceForTesting(
   CHECK(!g_ads_service_for_testing || !ads_service);
 
   g_ads_service_for_testing = ads_service;
-}
-
-// static
-void CreativeSearchResultAdTabHelper::MaybeCreateForWebContents(
-    content::WebContents* web_contents) {
-  CHECK(web_contents);
-
-  if (!web_contents->GetBrowserContext() ||
-      web_contents->GetBrowserContext()->IsOffTheRecord()) {
-    return;
-  }
-
-  CreateForWebContents(web_contents);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -206,10 +203,6 @@ void CreativeSearchResultAdTabHelper::MaybeHandleCreativeAdClickedEvent(
 
 void CreativeSearchResultAdTabHelper::MaybeHandleCreativeAdClickedEventCallback(
     mojom::CreativeSearchResultAdInfoPtr creative_search_result_ad) {
-  if (!creative_search_result_ad) {
-    return;
-  }
-
   AdsService* ads_service = GetAdsService();
   if (!ads_service) {
     return;
@@ -221,6 +214,17 @@ void CreativeSearchResultAdTabHelper::MaybeHandleCreativeAdClickedEventCallback(
       base::BindOnce(&CreativeSearchResultAdTabHelper::
                          MaybeTriggerCreativeAdClickedEventCallback,
                      weak_factory_.GetWeakPtr()));
+}
+
+void CreativeSearchResultAdTabHelper::OnDiscardContents(
+    tabs::TabInterface* tab,
+    content::WebContents* old_contents,
+    content::WebContents* new_contents) {
+  // The handler and any pending callbacks are for the old contents' page.
+  creative_search_result_ad_handler_.reset();
+  weak_factory_.InvalidateWeakPtrs();
+  tabs::ContentsObservingTabFeature::OnDiscardContents(tab, old_contents,
+                                                       new_contents);
 }
 
 void CreativeSearchResultAdTabHelper::DidStartNavigation(
@@ -248,11 +252,5 @@ void CreativeSearchResultAdTabHelper::
     DocumentOnLoadCompletedInPrimaryMainFrame() {
   MaybeExtractCreativeAdPlacementIdsFromWebPageAndHandleViewedEvents();
 }
-
-void CreativeSearchResultAdTabHelper::WebContentsDestroyed() {
-  creative_search_result_ad_handler_.reset();
-}
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(CreativeSearchResultAdTabHelper);
 
 }  // namespace brave_ads

@@ -34,13 +34,12 @@ mojom::TabDataPtr CreateTabDataFromWebContents(
 
 }  // namespace
 
-TabDataWebContentsObserver::TabDataWebContentsObserver(
-    int32_t tab_handle,
-    content::WebContents* web_contents)
-    : content::WebContentsObserver(web_contents),
+TabDataWebContentsObserver::TabDataWebContentsObserver(int32_t tab_handle,
+                                                       tabs::TabInterface& tab)
+    : tabs::ContentsObservingTabFeature(tab),
       tab_handle_(tab_handle),
       service_(*TabTrackerServiceFactory::GetForBrowserContext(
-          web_contents->GetBrowserContext())) {}
+          tab.GetContents()->GetBrowserContext())) {}
 
 TabDataWebContentsObserver::~TabDataWebContentsObserver() {
   service_->UpdateTab(tab_handle_, nullptr);

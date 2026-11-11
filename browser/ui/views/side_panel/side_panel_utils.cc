@@ -5,24 +5,37 @@
 
 #include "brave/browser/ui/views/side_panel/side_panel_utils.h"
 
+#include "brave/browser/ui/views/brave_layout_provider.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "ui/views/layout/layout_provider.h"
 #include "ui/views/view.h"
 
-using views::ShapeContextTokensOverride::kRoundedCornersBorderRadius;
-using views::ShapeContextTokensOverride::
-    kRoundedCornersBorderRadiusAtWindowCorner;
 
 namespace brave {
 
 bool ShouldShowSidePanelHeader(SidePanelEntryId id) {
   return id == SidePanelEntryId::kReadingList ||
-         id == SidePanelEntryId::kBookmarks;
+         id == SidePanelEntryId::kBookmarks ||
+         id == SidePanelEntryId::kReadAnything;
+}
+
+int GetPanelOuterEdgeMargin(BrowserView* browser_view) {
+  auto* brave_browser_view = BraveBrowserView::From(browser_view);
+  CHECK(brave_browser_view);
+
+  if (brave_browser_view->IsSidebarVisible()) {
+    return kRoundedCornersContentsOutlineThickness;
+  }
+
+  // Include the outline thickness so the panel aligns with the main contents.
+  return kRoundedCornersContentsViewMargin +
+         kRoundedCornersContentsOutlineThickness;
 }
 
 gfx::RoundedCornersF GetPanelContentsRoundedCorners(

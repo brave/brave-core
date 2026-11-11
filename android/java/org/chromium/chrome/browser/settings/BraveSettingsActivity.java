@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -21,11 +22,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.SettableNonNullObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeUtils;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.components.browser_ui.styles.SemanticColorUtils;
 import org.chromium.ui.edge_to_edge.EdgeToEdgeSystemBarColorHelper;
 import org.chromium.ui.util.ColorUtils;
@@ -70,6 +74,9 @@ public class BraveSettingsActivity extends SettingsActivity {
                 }
             };
 
+    private final SettableNonNullObservableSupplier<Integer> mSnackbarBottomMarginSupplier =
+            ObservableSuppliers.createNonNull(0);
+
     @Override
     protected boolean shouldDrawEdgeToEdgeOnCreate() {
         // Settings applies its own navigation-bar inset, so it can always draw behind the bar.
@@ -93,6 +100,11 @@ public class BraveSettingsActivity extends SettingsActivity {
         View contentView = getContentView();
         mContentView = contentView;
         contentView.setBackgroundColor(SemanticColorUtils.getSettingsBackgroundColor(this));
+        getSnackbarManager()
+                .pushParentViewOverride(
+                        SnackbarManager.ParentOverrideSlot.ONE_OFF,
+                        getContentView(),
+                        mSnackbarBottomMarginSupplier);
         ViewCompat.setOnApplyWindowInsetsListener(contentView, this::updateSettingsContentInsets);
         ViewCompat.requestApplyInsets(contentView);
     }
@@ -178,22 +190,43 @@ public class BraveSettingsActivity extends SettingsActivity {
         WindowInsetsCompat rootWindowInsets = ViewCompat.getRootWindowInsets(contentView);
         if (rootWindowInsets == null) rootWindowInsets = windowInsets;
 
-        setBottomPadding(
-                contentView, rootWindowInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom);
-
-        Insets navigationBarInsets =
-                rootWindowInsets.getInsets(WindowInsetsCompat.Type.navigationBars());
-        Insets tappableElementInsets =
-                rootWindowInsets.getInsets(WindowInsetsCompat.Type.tappableElement());
+        applyContentInsets(contentView, mOriginalContentBottomPaddings, rootWindowInsets);
         int navigationBarBottomInset =
-                Math.max(navigationBarInsets.bottom, tappableElementInsets.bottom);
-        for (Map.Entry<View, Integer> entry : mOriginalContentBottomPaddings.entrySet()) {
-            setBottomPadding(entry.getKey(), entry.getValue() + navigationBarBottomInset);
-        }
+                Math.max(
+                        rootWindowInsets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom,
+                        rootWindowInsets.getInsets(WindowInsetsCompat.Type.tappableElement())
+                                .bottom);
+        // The snackbar's parent already applies the keyboard inset as bottom padding.
+        mSnackbarBottomMarginSupplier.set(
+                Math.max(0, navigationBarBottomInset - contentView.getPaddingBottom()));
         return windowInsets;
     }
 
-    private static @Nullable View getInsetView(Fragment fragment, View fragmentView) {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    static void applyContentInsets(
+            View contentView,
+            Map<View, Integer> originalBottomPaddings,
+            WindowInsetsCompat windowInsets) {
+        int imeBottomInset = windowInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom;
+        setBottomPadding(contentView, imeBottomInset);
+
+        Insets navigationBarInsets =
+                windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars());
+        Insets tappableElementInsets =
+                windowInsets.getInsets(WindowInsetsCompat.Type.tappableElement());
+        // The outer content already avoids the keyboard, including its navigation-bar area.
+        int navigationBarBottomInset =
+                Math.max(
+                        0,
+                        Math.max(navigationBarInsets.bottom, tappableElementInsets.bottom)
+                                - imeBottomInset);
+        for (Map.Entry<View, Integer> entry : originalBottomPaddings.entrySet()) {
+            setBottomPadding(entry.getKey(), entry.getValue() + navigationBarBottomInset);
+        }
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    static @Nullable View getInsetView(Fragment fragment, View fragmentView) {
         if (fragment instanceof BottomInsetViewProvider provider) {
             return provider.getBottomInsetView(fragmentView);
         }

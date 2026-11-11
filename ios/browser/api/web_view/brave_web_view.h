@@ -10,6 +10,12 @@
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
 
+#if __swift__
+#import "brave_account.mojom.objc.h"
+#else
+#include "brave/components/brave_account/mojom/brave_account.mojom.objc.h"
+#endif
+
 #import "cwv_export.h"               // NOLINT
 #import "cwv_navigation_action.h"    // NOLINT
 #import "cwv_navigation_delegate.h"  // NOLINT
@@ -22,6 +28,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol AIChatUIHandlerBridge;
+@protocol BraveAccountScreenOpenerBridge;
 @protocol WalletPageHandlerBridge;
 @protocol AIChatAssociatedContentPageFetcher;
 @protocol ProfileBridge;
@@ -178,6 +185,17 @@ CWV_EXPORT
 @end
 
 CWV_EXPORT
+@interface BraveWebView (BraveAccountWebUI)
+/// The dialog mode the Brave Account WebUI page is served in.
+/// Set before loading brave://account; read back by the page through
+/// `brave_account::mojom::DialogController::GetDialogMode()`.
+@property(nonatomic) BraveAccountDialogMode braveAccountDialogMode;
+/// A bridge for opening the screens the WebUI page asks for.
+@property(nonatomic, weak, nullable) id<BraveAccountScreenOpenerBridge>
+    braveAccountScreenOpener;
+@end
+
+CWV_EXPORT
 @interface BraveWebView (Wallet)
 /// A bridge for handling Brave Wallet WebUI page actions
 @property(nonatomic, weak, nullable) id<WalletPageHandlerBridge>
@@ -194,6 +212,13 @@ CWV_EXPORT
 @end
 
 CWV_EXPORT
+@interface BraveWebView (ErrorPage)
+/// Loads Chromium's generic network error page for `URL` in place of the
+/// current page, as if a navigation to `URL` had failed.
+- (void)loadGenericErrorPageForURL:(NSURL*)URL;
+@end
+
+CWV_EXPORT
 @interface BraveWebView (PageMetadata)
 // Fetches the page metadata (OpenSearch & RSS feeds from the page) and returns
 // a JSON string with the results
@@ -204,18 +229,6 @@ CWV_EXPORT
 @interface BraveWebView (Logins)
 /// A bridge for handling Logins script messages
 - (void)setLoginsHelper:(id<LoginsTabHelperBridge>)loginsHelper;
-@end
-
-CWV_EXPORT
-@interface BraveWebView (DocumentFetch)
-/// Downloads the resource at `url` using an XHR in the page context and
-/// delivers the result to `completionHandler`. On success `data` contains the
-/// response body and `statusCode` is the HTTP status code. On failure (no main
-/// frame, network error, etc.) `statusCode` is 0 and `data` is nil.
-- (void)downloadDocumentAtURL:(NSURL*)url
-            completionHandler:
-                (void (^)(NSInteger statusCode,
-                          NSData* _Nullable data))completionHandler;
 @end
 
 CWV_EXPORT

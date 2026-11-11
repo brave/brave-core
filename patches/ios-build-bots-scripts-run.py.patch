@@ -1,8 +1,8 @@
 diff --git a/ios/build/bots/scripts/run.py b/ios/build/bots/scripts/run.py
-index 20ce36be897e035b56539695a95a73d1103c4d26..9e372761cafa1795e14ebe9776393b12ed94e302 100755
+index b7c7d5fe706685435ccc981df3a8609a341e529b..a43dda10d6e0abf5605a1752167d229e0c8976cb 100755
 --- a/ios/build/bots/scripts/run.py
 +++ b/ios/build/bots/scripts/run.py
-@@ -722,7 +722,7 @@ def main(args):
+@@ -791,7 +791,7 @@ def main(args):
    logging.basicConfig(
      format='[%(asctime)s:%(levelname)s] %(message)s',
      level=logging.DEBUG,

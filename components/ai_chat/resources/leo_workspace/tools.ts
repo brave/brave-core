@@ -4,13 +4,16 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Registers the workspace file tools with Leo via the WebMCP API
-// (document.modelContext). The primary editing tool follows Anthropic's
-// text-editor tool ("str_replace_based_edit_tool"): a single tool with a
-// `command` enum (view / create / str_replace / insert) and matching parameter
-// names, so it lands in the model's training distribution. Search and
-// repo-structure helpers with no text-editor analog are registered as separate
-// auxiliary tools. All ops run against the FileSystemDirectoryHandle in
-// file_ops.
+// (document.modelContext). The editing tool follows Anthropic's text-editor
+// tool ("str_replace_based_edit_tool"): a `command` enum (create / str_replace
+// / insert) with matching parameter names, so it lands in the model's training
+// distribution. Its `view` command is split out into a separate read-only
+// `view` tool because the user grants permission per tool: if view and edit
+// shared a tool, allowing the model to read files would also allow it to
+// modify them. Search and repo-structure helpers with no text-editor analog
+// are registered as separate auxiliary tools. All ops run against the
+// FileSystemDirectoryHandle in file_ops, which is resolved lazily on each call
+// (see registerTools).
 
 import * as ops from './file_ops'
 
@@ -55,8 +58,11 @@ function asInt(v: unknown, fallback: number): number {
   return typeof v === 'number' ? v : fallback
 }
 
+// |getRoot| is called each time a tool runs, rather than once up front, so the
+// tools can be registered before the workspace has a folder and the folder can
+// be chosen the first time one is actually needed.
 export async function registerTools(
-  root: FileSystemDirectoryHandle,
+  getRoot: () => Promise<FileSystemDirectoryHandle>,
 ): Promise<void> {
   const mc = document.modelContext
   if (!mc) {
@@ -64,34 +70,76 @@ export async function registerTools(
     return
   }
 
+  // Registered all at once, rather than one after another, so every tool is
+  // registered synchronously, before the page finishes loading: the browser
+  // reads the page's tools once it has loaded (see
+  // AssociatedContentManager::OnToolsAttachedChanged), and registerTool() only
+  // resolves after a round trip to the browser.
+  const registrations: Array<Promise<void>> = []
   const reg = (
     name: string,
     description: string,
     inputSchema: object,
-    run: (input: Record<string, unknown>) => Promise<string>,
+    run: (
+      root: FileSystemDirectoryHandle,
+      input: Record<string, unknown>,
+    ) => Promise<string>,
   ) =>
-    mc.registerTool({
-      name,
-      description,
-      inputSchema,
-      execute: async (input) => {
-        try {
-          return await run(input ?? {})
-        } catch (e) {
-          return `Error: ${e instanceof Error ? e.message : String(e)}`
-        }
-      },
-    })
+    registrations.push(
+      mc.registerTool({
+        name,
+        description,
+        inputSchema,
+        execute: async (input) => {
+          try {
+            return await run(await getRoot(), input ?? {})
+          } catch (e) {
+            return `Error: ${e instanceof Error ? e.message : String(e)}`
+          }
+        },
+      }),
+    )
 
-  // The text-editor tool: one tool, dispatched on `command`. Paths are relative
-  // to the workspace root and confined to it by the File System Access API.
-  await reg(
-    'str_replace_based_edit_tool',
-    'Tool for viewing, creating and editing files in the workspace, modeled '
-      + "on Anthropic's text editor tool. Commands:\n"
-      + '- view: show a file with 1-indexed line numbers, or list a directory. '
+  // Read-only, and deliberately a separate tool from the editor below so that
+  // permission to read the workspace doesn't also grant permission to write
+  // it. Paths are relative to the workspace root and confined to it by the
+  // File System Access API.
+  reg(
+    'view',
+    'Show a workspace file with 1-indexed line numbers, or list a directory. '
       + 'Optionally pass view_range=[start, end] (end -1 = end of file) to show '
-      + 'part of a file.\n'
+      + 'part of a file. This tool only reads; use str_replace_based_edit_tool '
+      + 'to change files.',
+    schema(
+      {
+        path: str('File or directory path relative to the workspace root.'),
+        view_range: intArray(
+          'For a file: optional [start, end] 1-indexed line range. Use end of '
+            + '-1 to read through the end of the file.',
+        ),
+      },
+      ['path'],
+    ),
+    async (root, i) => {
+      const path = asString(i.path)
+      return (await ops.isDirectory(root, path))
+        ? ops.listDir(root, path, 2)
+        : ops.viewFile(
+            root,
+            path,
+            Array.isArray(i.view_range)
+              ? (i.view_range as number[])
+              : undefined,
+          )
+    },
+  )
+
+  // The text-editor tool, dispatched on `command`. Every command writes.
+  reg(
+    'str_replace_based_edit_tool',
+    'Tool for creating and editing files in the workspace, modeled on '
+      + "Anthropic's text editor tool. To read files or list directories, use "
+      + 'the `view` tool instead. Commands:\n'
       + '- create: create a file with `file_text`, overwriting it if it exists. '
       + 'IMPORTANT: a large `file_text` gets truncated and rejected. For anything '
       + 'longer than a few lines, call create with an empty or very short '
@@ -105,10 +153,10 @@ export async function registerTools(
     schema(
       {
         command: strEnum(
-          ['view', 'create', 'str_replace', 'insert'],
+          ['create', 'str_replace', 'insert'],
           'The edit command to run.',
         ),
-        path: str('File or directory path relative to the workspace root.'),
+        path: str('File path relative to the workspace root.'),
         file_text: str('For create: full contents of the file.'),
         old_str: str(
           'For str_replace: exact existing text to replace (must be unique).',
@@ -118,26 +166,12 @@ export async function registerTools(
           'For insert: line number to insert after (0 = start of file).',
         ),
         insert_text: str('For insert: text to insert.'),
-        view_range: intArray(
-          'For view on a file: optional [start, end] 1-indexed line range. '
-            + 'Use end of -1 to read through the end of the file.',
-        ),
       },
       ['command', 'path'],
     ),
-    async (i) => {
+    async (root, i) => {
       const path = asString(i.path)
       switch (i.command) {
-        case 'view':
-          return (await ops.isDirectory(root, path))
-            ? ops.listDir(root, path, 2)
-            : ops.viewFile(
-                root,
-                path,
-                Array.isArray(i.view_range)
-                  ? (i.view_range as number[])
-                  : undefined,
-              )
         case 'create':
           return ops.createFile(root, path, asString(i.file_text))
         case 'str_replace':
@@ -154,6 +188,13 @@ export async function registerTools(
             asInt(i.insert_line, 0),
             asString(i.insert_text),
           )
+        case 'view':
+          // Models trained on Anthropic's tool contract may still send this.
+          // Never fall through to reading: this tool's permission grant is for
+          // edits.
+          throw new Error(
+            'view is not a command of this tool; use the `view` tool instead',
+          )
         default:
           throw new Error(`unknown command: ${String(i.command)}`)
       }
@@ -161,7 +202,7 @@ export async function registerTools(
   )
 
   // Auxiliary tools with no text-editor analog.
-  await reg(
+  reg(
     'grep',
     'Search file contents within the workspace for a regular expression.',
     schema(
@@ -178,7 +219,7 @@ export async function registerTools(
       },
       ['pattern'],
     ),
-    (i) =>
+    (root, i) =>
       ops.grep(
         root,
         asString(i.path),
@@ -187,7 +228,7 @@ export async function registerTools(
       ),
   )
 
-  await reg(
+  reg(
     'glob',
     'Find files in the workspace whose relative path matches a glob.',
     schema(
@@ -200,10 +241,10 @@ export async function registerTools(
       },
       ['pattern'],
     ),
-    (i) => ops.glob(root, asString(i.path), asString(i.pattern)),
+    (root, i) => ops.glob(root, asString(i.path), asString(i.pattern)),
   )
 
-  await reg(
+  reg(
     'append_file',
     'Append `content` to the end of a workspace file, creating it if needed. '
       + 'Use this to build a file across several calls: create an empty file, '
@@ -217,8 +258,9 @@ export async function registerTools(
       },
       ['path', 'content'],
     ),
-    (i) => ops.appendFile(root, asString(i.path), asString(i.content)),
+    (root, i) => ops.appendFile(root, asString(i.path), asString(i.content)),
   )
 
+  await Promise.all(registrations)
   console.log('[leo-workspace] registered WebMCP tools')
 }

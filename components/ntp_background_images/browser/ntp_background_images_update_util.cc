@@ -61,6 +61,10 @@ void CheckAndUpdateSponsoredImagesComponentCallback(
                  "data callback";
       break;
     }
+    case update_client::Error::UPDATE_DISABLED: {
+      VLOG(6) << "NTP Sponsored Images component update disabled";
+      break;
+    }
   }
 }
 

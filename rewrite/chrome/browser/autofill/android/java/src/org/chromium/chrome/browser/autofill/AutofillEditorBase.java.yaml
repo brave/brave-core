@@ -1,0 +1,36 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Import the Settings bottom inset provider.
+
+    regex:
+      re_pattern: '(package org.chromium.chrome.browser.autofill;)'
+      replace: |-
+        \1
+
+        import org.chromium.chrome.browser.settings.BottomInsetViewProvider;
+
+  - description: |
+      Let Autofill editors supply their bottom inset target.
+
+    regex:
+      re_pattern: '(class AutofillEditorBase extends Fragment\s+implements )'
+      replace: '\1BottomInsetViewProvider, '
+
+  - description: |
+      Inset the whole Autofill editor so its footer clears system navigation.
+
+      The editor uses a ScrollView rather than the preference RecyclerView
+      that Settings insets by default.
+    regex:
+      re_pattern: '(class AutofillEditorBase\b[^{]*\{)'
+      replace: |
+        \1
+            @Override
+            public View getBottomInsetView(View fragmentView) {
+                return fragmentView;
+            }

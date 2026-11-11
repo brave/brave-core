@@ -415,7 +415,9 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
         return
       }
 
-      currentLanguageInfo.currentLanguage = .init(identifier: Locale.current.identifier)
+      currentLanguageInfo.currentLanguage = .init(
+        identifier: Bundle.main.preferredLocalizations.first ?? Locale.current.identifier
+      )
       currentLanguageInfo.pageLanguage = nil
 
       translationState = .unavailable
@@ -680,7 +682,9 @@ class BraveTranslateLanguageInfo: ObservableObject {
   var pageLanguage: Locale.Language?
 
   init() {
-    currentLanguage = .init(identifier: Locale.current.identifier)
+    currentLanguage = .init(
+      identifier: Bundle.main.preferredLocalizations.first ?? Locale.current.identifier
+    )
     pageLanguage = nil
   }
 

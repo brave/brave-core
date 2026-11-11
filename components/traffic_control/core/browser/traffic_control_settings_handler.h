@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_TRAFFIC_CONTROL_CORE_BROWSER_TRAFFIC_CONTROL_SETTINGS_HANDLER_H_
 
 #include <string>
+#include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/traffic_control/core/mojom/traffic_control.mojom.h"
@@ -35,6 +36,8 @@ class TrafficControlSettingsHandler
   void UpdateRule(mojom::TrafficRulePtr rule,
                   UpdateRuleCallback callback) override;
   void RemoveRule(const std::string& id, RemoveRuleCallback callback) override;
+  void ReorderRules(const std::vector<std::string>& ordered_ids,
+                    ReorderRulesCallback callback) override;
 
  private:
   void OnRulesPrefChanged();

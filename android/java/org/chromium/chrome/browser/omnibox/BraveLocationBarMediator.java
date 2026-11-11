@@ -21,16 +21,13 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.lens.LensController;
-import org.chromium.chrome.browser.locale.LocaleManager;
 import org.chromium.chrome.browser.omnibox.UrlBar.ScrollType;
 import org.chromium.chrome.browser.omnibox.fusebox.FuseboxCoordinator;
 import org.chromium.chrome.browser.omnibox.styles.OmniboxResourceProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteCoordinator;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxLoadUrlParams;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeUtils;
-import org.chromium.chrome.browser.ui.theme.BrandedColorScheme;
 import org.chromium.components.browser_ui.accessibility.PageZoomIndicatorCoordinator;
 import org.chromium.components.omnibox.AutocompleteInput;
 import org.chromium.components.omnibox.AutocompleteInput.AutocompleteState;
@@ -60,9 +57,6 @@ public class BraveLocationBarMediator extends LocationBarMediator {
     private AutocompleteCoordinator mAutocompleteCoordinator;
     private UrlBarCoordinator mUrlCoordinator;
 
-    private static final @BrandedColorScheme int BRANDED_COLOR_SCHEME =
-            BrandedColorScheme.APP_DEFAULT;
-
     // The fields mWindowAndroid, mLocationBarLayout, mContext, mTemplateUrlServiceSupplier are
     // initialized at LocationBarMediator.ctor and are declared here only to be removed later
     // with asm. NullAway expects them to be initialized here, so ignore this warning.
@@ -74,17 +68,14 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             OmniboxResourceProvider resourceProvider,
             LocationBarEmbedderUiOverrides embedderUiOverrides,
             MonotonicObservableSupplier<Profile> profileSupplier,
-            OverrideUrlLoadingDelegate overrideUrlLoadingDelegate,
-            LocaleManager localeManager,
+            LocationBarNavigator locationBarNavigator,
             OneshotSupplier<TemplateUrlService> templateUrlServiceSupplier,
             BackKeyBehaviorDelegate backKeyBehavior,
             WindowAndroid windowAndroid,
             boolean isTablet,
             LensController lensController,
-            OmniboxUma omniboxUma,
             BooleanSupplier isToolbarMicEnabledSupplier,
             OmniboxSuggestionsDropdownEmbedderImpl dropdownEmbedder,
-            MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             @Nullable BrowserControlsStateProvider browserControlsStateProvider,
             Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
             @Nullable PageZoomIndicatorCoordinator pageZoomIndicatorCoordinator,
@@ -100,17 +91,14 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 resourceProvider,
                 embedderUiOverrides,
                 profileSupplier,
-                overrideUrlLoadingDelegate,
-                localeManager,
+                locationBarNavigator,
                 templateUrlServiceSupplier,
                 backKeyBehavior,
                 windowAndroid,
                 isTablet,
                 lensController,
-                omniboxUma,
                 isToolbarMicEnabledSupplier,
                 dropdownEmbedder,
-                tabModelSelectorSupplier,
                 browserControlsStateProvider,
                 modalDialogManagerSupplier,
                 pageZoomIndicatorCoordinator,
@@ -129,8 +117,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
         return LensController.class;
     }
 
-    public static Class<LocaleManager> getLocaleManagerClass() {
-        return LocaleManager.class;
+    public static Class<LocationBarNavigator> getLocationBarNavigatorClass() {
+        return LocationBarNavigator.class;
     }
 
     public static Class<OmniboxSuggestionsDropdownEmbedderImpl>
@@ -166,7 +154,7 @@ public class BraveLocationBarMediator extends LocationBarMediator {
         if (mLocationBarLayout instanceof BraveLocationBarLayout) {
             ((BraveLocationBarLayout) mLocationBarLayout)
                     .setQRButtonTint(
-                            ThemeUtils.getThemedToolbarIconTint(mContext, BRANDED_COLOR_SCHEME));
+                            ThemeUtils.getThemedToolbarIconTint(mContext, getBrandedColorScheme()));
         }
     }
 
@@ -280,6 +268,6 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 UrlBar.ScrollType.NO_SCROLL,
                 TextSelection.SELECT_ALL);
         mAutocompleteCoordinator.startAutocompleteForQuery(query);
-        mUrlCoordinator.setKeyboardVisibility(true, false);
+        mUrlCoordinator.setKeyboardVisibility(true);
     }
 }

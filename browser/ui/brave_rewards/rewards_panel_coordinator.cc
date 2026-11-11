@@ -14,13 +14,24 @@
 
 namespace brave_rewards {
 
+DEFINE_USER_DATA(RewardsPanelCoordinator);
+
 RewardsPanelCoordinator::RewardsPanelCoordinator(
     BrowserWindowInterface* browser_window_interface)
-    : browser_window_interface_(browser_window_interface) {
+    : browser_window_interface_(browser_window_interface),
+      scoped_unowned_user_data_(
+          browser_window_interface->GetUnownedUserDataHost(),
+          *this) {
   CHECK(browser_window_interface_);
 }
 
 RewardsPanelCoordinator::~RewardsPanelCoordinator() = default;
+
+// static
+RewardsPanelCoordinator* RewardsPanelCoordinator::From(
+    BrowserWindowInterface* browser) {
+  return Get(browser->GetUnownedUserDataHost());
+}
 
 bool RewardsPanelCoordinator::IsRewardsPanelURLForTesting(const GURL& url) {
   return url.host() == kRewardsPageTopHost;

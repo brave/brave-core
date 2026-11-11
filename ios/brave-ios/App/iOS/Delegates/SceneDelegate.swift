@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import AppIntents
 import Brave
 import BraveCore
 import BraveNews
@@ -19,6 +20,7 @@ import Preferences
 import Shared
 import SwiftUI
 import UIKit
+import UserNotifications
 import os.log
 
 extension Logger {
@@ -60,7 +62,7 @@ struct ProfileState {
     // Setup Rewards & Ads
     let configuration = BraveRewards.Configuration.current()
     Migration.migrateAdsConfirmations(for: configuration)
-    rewards = BraveRewards(configuration: configuration)
+    rewards = BraveRewards(configuration: configuration, profile: profileController.profile)
 
     // Setup BraveCore profile migrations
     migrations = BraveProfileMigrations(profileController: profileController)
@@ -202,7 +204,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     AppState.shared.uptimeMonitor.beginMonitoring()
 
     appDelegate.receivedURLs = nil
-    UIApplication.shared.applicationIconBadgeNumber = 0
+    UNUserNotificationCenter.current().setBadgeCount(0)
 
     if let browserViewController = scene.browserViewController {
       Preferences.AppState.backgroundedCleanly.value = false
@@ -473,6 +475,13 @@ extension SceneDelegate {
       handleCustomUserActivityActions(sceneState.windowScene, userActivity: currentActivity)
     }
 
+    if #available(iOS 26.0, *) {
+      handleControlWidgetIntentIfNeeded(
+        sceneState.connectionOptions.appIntent,
+        browserViewController: browserViewController
+      )
+    }
+
     if sceneState.windowScene.activationState == .foregroundActive {
       // Perform any actions that would also execute in sceneDidBecomeActive
       Preferences.AppState.backgroundedCleanly.value = false
@@ -493,6 +502,25 @@ extension SceneDelegate {
     }
   }
 
+  @available(iOS 26.0, *)
+  private func handleControlWidgetIntentIfNeeded(
+    _ appIntent: (any UISceneAppIntent)?,
+    browserViewController: BrowserViewController
+  ) {
+    let shortcut: WidgetShortcut?
+    if appIntent is OpenAskBraveControlIntent {
+      shortcut = .askBrave
+    } else if appIntent is OpenBraveSearchControlIntent {
+      shortcut = .search
+    } else if let intent = appIntent as? OpenControlWidgetShortcutIntent {
+      shortcut = intent.shortcut
+    } else {
+      shortcut = nil
+    }
+    guard let shortcut else { return }
+    browserViewController.handleNavigationPath(path: .widgetShortcutURL(shortcut))
+  }
+
   private func sendDAUPingIfNeeded() {
     guard let profileState = Self.profileState else { return }
     // We try to send DAU ping each time the app goes to foreground to work around network edge cases
@@ -505,9 +533,9 @@ extension SceneDelegate {
 
   private func refreshSKUsCredentials(in scene: UIWindowScene) {
     Task { @MainActor in
-      let isPrivateBrowsing =
-        scene.browserViewController?.privateBrowsingManager.isPrivateBrowsing == true
-      await Skus.SkusServiceFactory.get(privateMode: isPrivateBrowsing)?.refreshSkusCredentials()
+      if let profile = Self.profileState?.profile {
+        await Skus.SkusServiceFactory.get(profile: profile)?.refreshSkusCredentials()
+      }
     }
   }
 
@@ -906,6 +934,16 @@ extension SceneDelegate {
     let onlyPrivateTabs = privateTabs.count == windowTabs.count
 
     return selectedTabIsPrivate || onlyPrivateTabs
+  }
+}
+
+@available(iOS 26.0, *)
+extension SceneDelegate: AppIntentSceneDelegate {
+  func scene(_ scene: UIScene, willPerformAppIntent appIntent: any UISceneAppIntent) {
+    guard let windowScene = scene as? UIWindowScene,
+      let browserViewController = windowScene.browserViewController
+    else { return }
+    handleControlWidgetIntentIfNeeded(appIntent, browserViewController: browserViewController)
   }
 }
 

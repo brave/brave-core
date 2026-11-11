@@ -42,6 +42,8 @@ const iconMap: { [key: string]: string } = {
     'privacy:code': 'code', // javascript
     'privacy:code-off': 'code-off', // javascript
     'settings:cookie': 'cookie', // cookies
+    'privacy:cookie': 'cookie', // cookies
+    'privacy:lock': 'lock', // security
     'privacy:imagesmode': 'image', // images
     'privacy:hide-image': 'image-off', // images off
     'cr:open-in-new': 'launch', // popups & redirects

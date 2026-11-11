@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Make the Brave locale exclusions available.
+    add_import:
+      import: //brave/build/config/locales.gni
+
+  - description: |-
+      Drop the extended locales Brave does not ship
+
+      Subtracted before `platform_pak_locales` is derived from the list, so
+      desktop keeps these locales in its paks.
+    add_before_line:
+      line: platform_pak_locales = all_chrome_locales
+      code: extended_locales -= brave_extended_locales_exclusions

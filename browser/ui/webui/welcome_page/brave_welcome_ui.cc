@@ -28,7 +28,6 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/webui/settings/settings_default_browser_handler.h"
@@ -96,13 +95,12 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWelcomeHelpWDPReject", IDS_BRAVE_WELCOME_HELP_WDP_REJECT}};
 
 void OpenJapanWelcomePage(Profile* profile) {
-  auto* browser = ProfileBrowserCollection::GetForProfile(profile)
-                      ->FindTabbedBrowser()
-                      ->GetBrowserForMigrationOnly();
+  auto* browser =
+      ProfileBrowserCollection::GetForProfile(profile)->FindTabbedBrowser();
   if (browser) {
     content::OpenURLParams open_params(
         GURL("https://brave.com/ja/desktop-ntp-tutorial"), content::Referrer(),
-        WindowOpenDisposition::NEW_BACKGROUND_TAB,
+        WindowOpenDisposition::kNewBackgroundTab,
         ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
     browser->OpenURL(open_params, /*navigation_handle_callback=*/{});
   }
@@ -185,6 +183,12 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, std::string_view name)
                          metrics::prefs::kMetricsReportingEnabled));
   source->AddBoolean("isP3AEnabledManaged",
                      local_state->IsManagedPreference(p3a::kP3AEnabled));
+  // settings::DefaultBrowserHandler CHECK-fails if the WebUI asks it to set the
+  // default browser while the policy forbids it, so don't offer the action.
+  source->AddBoolean(
+      "isDefaultBrowserDisabledByPolicy",
+      local_state->IsManagedPreference(prefs::kDefaultBrowserSettingEnabled) &&
+          !local_state->GetBoolean(prefs::kDefaultBrowserSettingEnabled));
 
   profile->GetPrefs()->SetBoolean(
       brave_welcome_page::prefs::kHasSeenBraveWelcomePage, true);

@@ -70,7 +70,7 @@ public class HttpsUpgradeTabHelper {
   /// Allow `http` for the given url's host.
   public func allowHttp(for url: URL) {
     guard let tab, let host = url.host(percentEncoded: false) else { return }
-    HttpsUpgradeServiceFactory.get(privateMode: tab.isPrivate)?.allowHttp(forHost: host)
+    HttpsUpgradeServiceFactory.get(profile: tab.profile)?.allowHttp(forHost: host)
   }
 
   /// Clear any stored upgrade without rolling it back.
@@ -82,7 +82,7 @@ public class HttpsUpgradeTabHelper {
 
   /// Determines if the given url should be upgraded from http to https.
   private func shouldUpgradeToHttps(url: URL, isPrivate: Bool) -> Bool {
-    guard let httpsUpgradeService = HttpsUpgradeServiceFactory.get(privateMode: isPrivate),
+    guard let tab, let httpsUpgradeService = HttpsUpgradeServiceFactory.get(profile: tab.profile),
       url.scheme == "http", let host = url.host
     else {
       return false
@@ -127,6 +127,7 @@ public class HttpsUpgradeTabHelper {
 
 // MARK: - TabPolicyDecider
 extension HttpsUpgradeTabHelper: TabPolicyDecider {
+  @MainActor
   public func tab(
     _ tab: some TabState,
     shouldAllowRequest request: URLRequest,
@@ -183,11 +184,13 @@ extension HttpsUpgradeTabHelper: TabPolicyDecider {
       withTimeInterval: Self.upgradeTimeout,
       repeats: false,
       block: { [weak self, weak tab] _ in
-        guard let self, let tab,
-          let fallbackRequest = self.handleInvalidHTTPSUpgrade(responseURL: upgradedURL)
-        else { return }
-        tab.stopLoading()
-        tab.loadRequest(fallbackRequest)
+        Task { @MainActor [weak self, weak tab] in
+          guard let self, let tab,
+            let fallbackRequest = self.handleInvalidHTTPSUpgrade(responseURL: upgradedURL)
+          else { return }
+          tab.stopLoading()
+          tab.loadRequest(fallbackRequest)
+        }
       }
     )
 

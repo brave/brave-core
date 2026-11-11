@@ -384,6 +384,21 @@ export default class Amount {
     return `0.0${Amount.toSubscript(leadingZeros)}${digits}`
   }
 
+  /**
+   * Fixed decimal places without trimming trailing zeros
+   * (0 → `0.000` when decimals is 3).
+   */
+  formatFixed(decimals: number, commas: boolean = true): string {
+    if (this.value === undefined || this.value.isNaN()) {
+      return ''
+    }
+
+    const fixed = this.value.toFixed(decimals)
+    return commas
+      ? fixed.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
+      : fixed
+  }
+
   formatAsAsset(significantDigits?: number, symbol?: string): string {
     const result = this.format(significantDigits, true)
     if (!symbol) {
@@ -391,6 +406,14 @@ export default class Amount {
     }
 
     return result === '' ? '' : `${result} ${symbol}`
+  }
+
+  /**
+   * Hidden-balance placeholder for asset amounts. Matches formatAsAsset
+   * suffix placement (`•••• BAT`).
+   */
+  static formatHiddenAsAsset(symbol?: string): string {
+    return symbol ? `•••• ${symbol}` : '••••'
   }
 
   formatAsFiat(currency?: string, maxDecimals: number = 20): string {
@@ -414,6 +437,46 @@ export default class Amount {
     return Intl.NumberFormat(navigator.language, options).format(
       new BigNumber(this.format(4)).toNumber(),
     )
+  }
+
+  /**
+   * Hidden-balance placeholder that keeps the locale currency symbol and
+   * placement, while replacing the numeric value (including grouping and
+   * decimal separators) with bullets.
+   */
+  static formatHiddenAsFiat(currency?: string): string {
+    const options: Intl.NumberFormatOptions = {
+      style: 'decimal',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }
+
+    const resolvedCurrency = Amount.resolveCurrency(currency)
+    if (resolvedCurrency) {
+      options.style = 'currency'
+      options.currency = resolvedCurrency
+      options.currencyDisplay = 'narrowSymbol'
+    }
+
+    let maskedNumber = false
+    return Intl.NumberFormat(navigator.language, options)
+      .formatToParts(0)
+      .map((part) => {
+        if (
+          part.type === 'integer'
+          || part.type === 'group'
+          || part.type === 'decimal'
+          || part.type === 'fraction'
+        ) {
+          if (maskedNumber) {
+            return ''
+          }
+          maskedNumber = true
+          return '••••'
+        }
+        return part.value
+      })
+      .join('')
   }
 
   /**

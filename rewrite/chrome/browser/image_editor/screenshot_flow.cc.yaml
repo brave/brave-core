@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Correct the screenshot overlay's bounds for
+      NativeViewHostManagesLayers.
+
+      CreateAndAddUIOverlay() and ResetUIOverlayBounds() both compute the
+      overlay bounds identically, so the same fix applies in both places.
+      See https://github.com/brave/brave-browser/issues/58258.
+    count: 2
+    regex:
+      pattern: 'const gfx::Rect bounds = native_window->bounds();'
+      replace: |-
+        const gfx::Rect bounds = AdjustScreenshotOverlayBounds(native_window->bounds());

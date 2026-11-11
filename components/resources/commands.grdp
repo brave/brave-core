@@ -184,8 +184,8 @@
   <message name="IDS_IDC_SHOW_PAYMENT_METHODS">
     Show payment methods
   </message>
-  <message name="IDS_IDC_SHOW_ADDRESSES">
-    Show addresses
+  <message name="IDS_IDC_SHOW_CONTACT_INFO">
+    Show contact info
   </message>
   <message name="IDS_IDC_FIND_NEXT">
     Find next
@@ -420,15 +420,6 @@
   </message>
   <message name="IDS_IDC_SHOW_BRAVE_TALK">
     Show Brave Talk
-  </message>
-  <message name="IDS_IDC_BRAVE_BOOKMARK_BAR_ALWAYS">
-    Always show bookmark bar
-  </message>
-  <message name="IDS_IDC_BRAVE_BOOKMARK_BAR_NTP">
-    Show bookmark bar on NTP
-  </message>
-  <message name="IDS_IDC_BRAVE_BOOKMARK_BAR_NEVER">
-    Hide bookmark bar
   </message>
   <message name="IDS_IDC_EXPORT_ALL_BOOKMARKS">
     Export all bookmarks

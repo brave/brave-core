@@ -24,19 +24,26 @@ OPENGREP_VERSION = 'v1.14.1'
 # SHA256 checksums for each platform binary
 BINARY_CHECKSUMS = {
     'opengrep_osx_arm64': (
-        '1272dd1322d686d09fb97f1a3b743e17d7d1babcfc0d421f20c76d7dbdef4695'),
+        '1272dd1322d686d09fb97f1a3b743e17d7d1babcfc0d421f20c76d7dbdef4695'
+    ),
     'opengrep_osx_x86': (
-        '34bc4b5db6dc6654cf71324388f13d29f9cb40a0170f47935389f0f30434b28a'),
+        '34bc4b5db6dc6654cf71324388f13d29f9cb40a0170f47935389f0f30434b28a'
+    ),
     'opengrep_manylinux_x86': (
-        '85e8a4af4a37d58565c35010221574887329a043271d4efff81e35e455c87f9e'),
+        '85e8a4af4a37d58565c35010221574887329a043271d4efff81e35e455c87f9e'
+    ),
     'opengrep_manylinux_aarch64': (
-        '30efbe59a173c53f020c995c33d8db6ae34eccc958a14bbe5fe4047d36595abf'),
+        '30efbe59a173c53f020c995c33d8db6ae34eccc958a14bbe5fe4047d36595abf'
+    ),
     'opengrep_musllinux_x86': (
-        'ff9bb40afc87cb324ccf5bb79b8e772bf2eb05cca9bbe3f1c42ea95488d9ae5a'),
+        'ff9bb40afc87cb324ccf5bb79b8e772bf2eb05cca9bbe3f1c42ea95488d9ae5a'
+    ),
     'opengrep_musllinux_aarch64': (
-        '829d7a6b72a501c3ff938bd8551cc596a66bbc1e8ac55966742b5992c430d681'),
+        '829d7a6b72a501c3ff938bd8551cc596a66bbc1e8ac55966742b5992c430d681'
+    ),
     'opengrep_windows_x86.exe': (
-        '58f4bba7ef474b143bb5eeee803a4791a05269fd461737e0e2faa96732160ac3'),
+        '58f4bba7ef474b143bb5eeee803a4791a05269fd461737e0e2faa96732160ac3'
+    ),
 }
 
 # Download directory (relative to brave core)
@@ -126,8 +133,10 @@ def DownloadOpengrep():
 
     # Construct download URL
     # original url: https://github.com/opengrep/opengrep/releases/download/
-    url = (f'https://brave-build-deps-public.s3.brave.com/opengrep/'
-           f'{OPENGREP_VERSION}/{dist_name}')
+    url = (
+        f'https://brave-build-deps-public.s3.brave.com/opengrep/'
+        f'{OPENGREP_VERSION}/{dist_name}'
+    )
 
     print(f'Downloading opengrep {OPENGREP_VERSION}...')
 
@@ -138,6 +147,7 @@ def DownloadOpengrep():
     tmp_path = None
     try:
         import tempfile
+
         with tempfile.NamedTemporaryFile(delete=False, dir=INSTALL_DIR) as tmp:
             deps.DownloadUrl(url, tmp)
             tmp_path = tmp.name
@@ -155,8 +165,10 @@ def DownloadOpengrep():
         # Make executable (Unix-like systems)
         if platform.system() != 'Windows':
             st = os.stat(tmp_path)
-            os.chmod(tmp_path,
-                     st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+            os.chmod(
+                tmp_path,
+                st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH,
+            )
 
         # Move to final location
         if os.path.exists(binary_path):

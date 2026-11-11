@@ -9,7 +9,8 @@ import WebKit
 import os.log
 
 class AIChatPDFRecognition {
-  static func parse(pdfData: String) async -> String? {
+  // @concurrent: parses the PDF document synchronously
+  @concurrent static func parse(pdfData: String) async -> String? {
     guard let data = Data(base64Encoded: pdfData) else {
       return nil
     }

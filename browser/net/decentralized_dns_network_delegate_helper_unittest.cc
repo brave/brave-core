@@ -456,6 +456,52 @@ TYPED_TEST(DecentralizedDnsNetworkDelegateHelperTest,
             "inbrowser.link/");
 }
 
+TYPED_TEST(DecentralizedDnsNetworkDelegateHelperTest,
+           UnstoppableDomainsRedirectWorkDirectCall) {
+  GURL url("http://brave.crypto");
+  auto brave_request_info = this->MakeRequest(url);
+
+  // No redirect for failed requests.
+  OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
+      base::DoNothing(), brave_request_info, std::nullopt,
+      brave_wallet::mojom::ProviderError::kInternalError, "todo");
+  EXPECT_TRUE(brave_request_info->new_url_spec().empty());
+
+  OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
+      base::DoNothing(), brave_request_info, GURL("https://brave.com"),
+      brave_wallet::mojom::ProviderError::kInternalError, "todo");
+  EXPECT_TRUE(brave_request_info->new_url_spec().empty());
+
+  // No redirect for a missing url.
+  OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
+      base::DoNothing(), brave_request_info, std::nullopt,
+      brave_wallet::mojom::ProviderError::kSuccess, "");
+  EXPECT_TRUE(brave_request_info->new_url_spec().empty());
+
+  // No redirect for a valid url with a disallowed scheme.
+  OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
+      base::DoNothing(), brave_request_info, GURL("javascript:alert(1)"),
+      brave_wallet::mojom::ProviderError::kSuccess, "");
+  EXPECT_TRUE(brave_request_info->new_url_spec().empty());
+
+  OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
+      base::DoNothing(), brave_request_info,
+      GURL("data:text/html,<script>alert(1)</script>"),
+      brave_wallet::mojom::ProviderError::kSuccess, "");
+  EXPECT_TRUE(brave_request_info->new_url_spec().empty());
+
+  OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
+      base::DoNothing(), brave_request_info, GURL("file:///etc/passwd"),
+      brave_wallet::mojom::ProviderError::kSuccess, "");
+  EXPECT_TRUE(brave_request_info->new_url_spec().empty());
+
+  // Redirect for valid http(s) url.
+  OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
+      base::DoNothing(), brave_request_info, GURL("https://brave.com"),
+      brave_wallet::mojom::ProviderError::kSuccess, "");
+  EXPECT_EQ(brave_request_info->new_url_spec(), GURL("https://brave.com"));
+}
+
 TYPED_TEST(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
   GURL url("http://brantly.eth");
   auto brave_request_info = this->MakeRequest(url);
@@ -535,6 +581,20 @@ TYPED_TEST(DecentralizedDnsNetworkDelegateHelperTest, SnsRedirectWork) {
   // No redirect for invalid url.
   OnBeforeURLRequest_SnsRedirectWork(base::DoNothing(), brave_request_info,
                                      GURL("invalid"));
+  EXPECT_TRUE(brave_request_info->new_url_spec().empty());
+
+  // No redirect for a valid url with a disallowed scheme.
+  OnBeforeURLRequest_SnsRedirectWork(base::DoNothing(), brave_request_info,
+                                     GURL("javascript:alert(1)"));
+  EXPECT_TRUE(brave_request_info->new_url_spec().empty());
+
+  OnBeforeURLRequest_SnsRedirectWork(
+      base::DoNothing(), brave_request_info,
+      GURL("data:text/html,<script>alert(1)</script>"));
+  EXPECT_TRUE(brave_request_info->new_url_spec().empty());
+
+  OnBeforeURLRequest_SnsRedirectWork(base::DoNothing(), brave_request_info,
+                                     GURL("file:///etc/passwd"));
   EXPECT_TRUE(brave_request_info->new_url_spec().empty());
 
   // Redirect for valid url.

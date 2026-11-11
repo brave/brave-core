@@ -121,8 +121,8 @@ BraveOmniboxPopupViewViews* BraveOmniboxResultView::GetPopupView() {
 void BraveOmniboxResultView::HandleSelectionStateChangedForPromotionView() {
   if (brave_search_promotion_view_ && IsBraveSearchPromotionMatch(match_)) {
     brave_search_promotion_view_->OnSelectionStateChanged(
-        GetMatchSelected() &&
-        popup_view_->GetSelection().state == OmniboxPopupSelection::NORMAL);
+        GetMatchSelected() && popup_view_->GetSelection().state ==
+                                  OmniboxPopupSelection::LineState::kNormal);
   }
 }
 

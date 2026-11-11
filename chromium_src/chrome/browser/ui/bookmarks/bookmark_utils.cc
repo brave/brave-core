@@ -8,17 +8,12 @@
 #include <string>
 
 #include "brave/browser/resources/bookmark_icon/grit/bookmark_icon_resources.h"
-#include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/brave_scheme_utils.h"
 #include "brave/browser/ui/brave_ui_features.h"
-#include "brave/components/constants/pref_names.h"
+#include "brave/browser/ui/toolbars_small_icons.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
-#include "components/bookmarks/common/bookmark_pref_names.h"
-#include "components/prefs/pref_service.h"
-#include "components/user_prefs/user_prefs.h"
 #include "components/vector_icons/vector_icons.h"
-#include "content/public/browser/browser_context.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/color/color_id.h"
@@ -28,17 +23,6 @@
 #include "url/gurl.h"
 
 namespace chrome {
-
-void BraveToggleBookmarkBarState(content::BrowserContext* browser_context) {
-  auto* prefs = user_prefs::UserPrefs::Get(browser_context);
-  // On macOS with the View menu or via hotkeys, the options Always show
-  // bookmarks is a checkbox. We will keep that checkbox to be Always and Never.
-  const bool always_show =
-      prefs->GetBoolean(bookmarks::prefs::kShowBookmarkBar);
-  brave::SetBookmarkState(always_show ? brave::BookmarkBarState::kAlways
-                                      : brave::BookmarkBarState::kNever,
-                          prefs);
-}
 
 #if defined(TOOLKIT_VIEWS)
 ui::ImageModel GetBraveBookmarkFolderIcon(BookmarkFolderIconType icon_type,
@@ -95,7 +79,8 @@ ui::ImageModel GetBraveBookmarkFolderIcon(BookmarkFolderIconType icon_type,
     color = kColorToolbarButtonIcon;
   }
 
-  return ui::ImageModel::FromVectorIcon(*id, color, 20);
+  return ui::ImageModel::FromVectorIcon(
+      *id, color, brave::GetToolbarsIconSize().value_or(20));
 }
 
 #endif  // defined(TOOLKIT_VIEWS)

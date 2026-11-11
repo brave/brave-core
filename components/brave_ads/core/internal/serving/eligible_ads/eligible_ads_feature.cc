@@ -7,8 +7,6 @@
 
 namespace brave_ads {
 
-BASE_FEATURE(kEligibleAdFeature,
-             "EligibleAds",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kEligibleAdFeature, base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace brave_ads

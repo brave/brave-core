@@ -161,6 +161,9 @@
   <message name="IDS_EXTENSIONS_HOST_PERMISSIONS_SUB_HEADING" desc="The heading above the details of which websites an extension is allowed to run on, for the new site access settings.">
     You can always click the extension to use it on any site
   </message>
+  <message name="IDS_EXTENSIONS_HOST_PERMISSIONS_OVERRIDE_WARNING" desc="Warning text shown in the extension details page informing that site access settings can be overridden.">
+    Note: These site access settings may be overridden by enterprise policies or powerful APIs.
+  </message>
   <message name="IDS_EXTENSIONS_HOST_ACCESS_ON_CLICK" desc="The text for the option to only allow an extension to read and change data when the user clicks on the extension.">
     On click
   </message>
@@ -274,6 +277,15 @@
   </message>
   <message name="IDS_EXTENSIONS_ITEM_DETAILS" desc="The text on the button to show more details for a given extension.">
     Details
+  </message>
+  <message name="IDS_EXTENSIONS_ITEM_RATE_IT" desc="The text on the link allowing the user to rate an extension on the Web Store.">
+    Rate it
+  </message>
+  <message name="IDS_EXTENSIONS_ITEM_DISABLED_BY_EXTENSION" desc="The text to indicate that an extension was disabled by another, known extension.">
+    Extension disabled by <ph name="EXTENSION_NAME">$1<ex>AdBlock</ex></ph>
+  </message>
+  <message name="IDS_EXTENSIONS_ITEM_DISABLED_BY_EXTENSION_GENERIC" desc="The text to indicate that an extension was disabled by another extension, but that specific extension is not known.">
+    Extension disabled by another extension
   </message>
   <message name="IDS_EXTENSIONS_DETAILS_BACK_BUTTON_ARIA_LABEL" desc="Text read by screen readers when focusing on the back button on details page. If the back button is activated, it will navigate to the previous page. This text will only be announced by screen readers and will not be visible in the UI." is_accessibility_with_no_ui="true">
     <ph name="SUBPAGE_TITLE">$1<ex>Google Docs</ex></ph> details page back button
@@ -544,6 +556,9 @@
   </message>
   <message name="IDS_EXTENSIONS_MODERN_WEB_GUIDANCE_PROMO" desc="The promotional text displayed in the sidebar of the chrome://extensions page when Developer Mode is enabled. It encourages developers to download the Brave Extensions and Web Store skill for their AI coding agents to get latest API updates and best practices.">
     Using AI coding agents to build extensions? Install the <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph><ph name="CHROME_EXTENSIONS">Brave Extensions<ex>Brave Extensions</ex></ph> and <ph name="WEB_STORE_SKILL">Web Store skill<ex>Web Store skill</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph> to teach your coding agent the latest API updates and best practices.
+  </message>
+  <message name="IDS_EXTENSIONS_WHATS_NEW_PROMO" desc="The promotional text displayed in the sidebar of the chrome://extensions page when Developer Mode is enabled. It encourages developers to read about recent changes in the Brave Extensions developer documentation.">
+    Developing extensions? Stay up to date on <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>What's New<ph name="END_LINK">&lt;/a&gt;</ph> with Google Extension developer documentation.
   </message>
   <message name="IDS_EXTENSIONS_SIDEBAR_KEYBOARD_SHORTCUTS" desc="The text for the link to manage keyboard shortcuts for extensions.">
     Keyboard shortcuts

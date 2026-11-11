@@ -12,13 +12,14 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/compiler_specific.h"
+#include "base/containers/span.h"
 #include "base/logging.h"
 #include "base/strings/string_view_util.h"
 #include "base/time/time.h"
 #include "components/cbor/reader.h"
 #include "components/cbor/writer.h"
-#include "crypto/sha2.h"
-#include "crypto/signature_verifier.h"
+#include "crypto/keypair.h"
+#include "crypto/sign.h"
 #include "net/cert/asn1_util.h"
 #include "net/cert/time_conversions.h"
 #include "third_party/boringssl/src/include/openssl/bn.h"
@@ -119,13 +120,13 @@ bool CoseSign1::DecodeFromBytes(const std::vector<uint8_t>& data) {
 
   protected_encoded_ = cose_arr[0].Clone();
 
-  if (!protected_encoded_.is_bytestring()) {
+  if (!protected_encoded_->is_bytestring()) {
     LOG(ERROR) << "COSE: protected value is not bstr";
     return false;
   }
 
   std::optional<cbor::Value> protected_decoded_val =
-      cbor::Reader::Read(protected_encoded_.GetBytestring(), cbor_config);
+      cbor::Reader::Read(protected_encoded_->GetBytestring(), cbor_config);
   if (cbor_config.error_code_out != nullptr &&
       *cbor_config.error_code_out !=
           cbor::Reader::DecoderError::CBOR_NO_ERROR) {
@@ -142,7 +143,7 @@ bool CoseSign1::DecodeFromBytes(const std::vector<uint8_t>& data) {
 
   protected_headers_ = protected_decoded_val->Clone();
   const cbor::Value::MapValue& protected_headers_map =
-      protected_headers_.GetMap();
+      protected_headers_->GetMap();
   cbor::Value::MapValue::const_iterator alg_value_it =
       protected_headers_map.find(cbor::Value(1));
 
@@ -165,13 +166,13 @@ bool CoseSign1::DecodeFromBytes(const std::vector<uint8_t>& data) {
   unprotected_headers_ = unprotected_val.Clone();
 
   payload_encoded_ = cose_arr[2].Clone();
-  if (!payload_encoded_.is_bytestring()) {
+  if (!payload_encoded_->is_bytestring()) {
     LOG(ERROR) << "COSE: inner payload value is not bstr";
     return false;
   }
 
   std::optional<cbor::Value> payload_dec_val =
-      cbor::Reader::Read(payload_encoded_.GetBytestring(), cbor_config);
+      cbor::Reader::Read(payload_encoded_->GetBytestring(), cbor_config);
   if (!payload_dec_val.has_value() ||
       (cbor_config.error_code_out != nullptr &&
        *cbor_config.error_code_out !=
@@ -215,9 +216,9 @@ bool CoseSign1::Verify(const bssl::ParsedCertificateList& cert_chain) {
 
   std::vector<cbor::Value> sig_data_vec;
   sig_data_vec.emplace_back(cbor::Value("Signature1"));
-  sig_data_vec.push_back(protected_encoded_.Clone());
+  sig_data_vec.push_back(protected_encoded_->Clone());
   sig_data_vec.emplace_back(cbor::Value(std::vector<uint8_t>()));
-  sig_data_vec.push_back(payload_encoded_.Clone());
+  sig_data_vec.push_back(payload_encoded_->Clone());
   cbor::Value sig_data(sig_data_vec);
 
   std::optional<std::vector<uint8_t>> encoded_sig_data =
@@ -232,36 +233,32 @@ bool CoseSign1::Verify(const bssl::ParsedCertificateList& cert_chain) {
     return false;
   }
 
-  std::vector<uint8_t> low_cert_spki_vec(low_cert_spki.begin(),
-                                         low_cert_spki.end());
+  std::optional<crypto::keypair::PublicKey> low_cert_public_key =
+      crypto::keypair::PublicKey::FromSubjectPublicKeyInfo(
+          base::as_byte_span(low_cert_spki));
+  if (!low_cert_public_key.has_value()) {
+    LOG(ERROR) << "COSE verification: could not parse SPKI from cert";
+    return false;
+  }
 
   std::vector<uint8_t> sig_der;
   if (!ConvertCoseSignatureToDER(signature_, &sig_der)) {
     return false;
   }
 
-  crypto::SignatureVerifier sig_verifier;
-  if (!sig_verifier.VerifyInit(
-          crypto::SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384, sig_der,
-          low_cert_spki_vec)) {
-    LOG(ERROR) << "COSE verification: failed to init cert verifier";
-    return false;
-  }
-
-  sig_verifier.VerifyUpdate(*encoded_sig_data);
-
-  return sig_verifier.VerifyFinal();
+  return crypto::sign::Verify(crypto::sign::ECDSA_SHA384, *low_cert_public_key,
+                              *encoded_sig_data, sig_der);
 }
 
-const cbor::Value& CoseSign1::protected_headers() {
+const std::optional<cbor::Value>& CoseSign1::protected_headers() {
   return protected_headers_;
 }
 
-const cbor::Value& CoseSign1::unprotected_headers() {
+const std::optional<cbor::Value>& CoseSign1::unprotected_headers() {
   return unprotected_headers_;
 }
 
-const cbor::Value& CoseSign1::payload() {
+const std::optional<cbor::Value>& CoseSign1::payload() {
   return payload_;
 }
 
@@ -271,7 +268,7 @@ bool CoseSign1::IsSignatureAlgorithmAcceptable(
   return true;
 }
 
-bool CoseSign1::IsPublicKeyAcceptable(EVP_PKEY* public_key,
+bool CoseSign1::IsPublicKeyAcceptable(const EVP_PKEY* public_key,
                                       bssl::CertErrors* errors) {
   return true;
 }
@@ -294,5 +291,11 @@ bool CoseSign1::IsCosignatureVerificationResultAcceptable(
     std::vector<std::vector<uint8_t>> valid_additional_cosigners) {
   return true;
 }
+
+bool CoseSign1::IsDebugLogEnabled() {
+  return false;
+}
+
+void CoseSign1::DebugLog(std::string_view msg) {}
 
 }  // namespace nitro_utils

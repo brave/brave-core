@@ -13,7 +13,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "ui/gfx/animation/animation_test_api.h"
@@ -61,13 +60,16 @@ class SidebarBrowserTest : public InProcessBrowserTest {
 
   // InProcessBrowserTest:
   void SetUpOnMainThread() override;
-  void PreRunTestOnMainThread() override;
+
+  // Tests that verify which show option is selected by default override this
+  // to keep the profile's own value.
+  virtual bool ShouldForceShowAlwaysOption() const;
 
   SidebarModel* model() const { return controller()->model(); }
   TabStripModel* tab_model() const { return browser()->tab_strip_model(); }
 
   SidebarController* controller() const {
-    return browser()->GetFeatures().sidebar_controller();
+    return sidebar::SidebarController::From(browser());
   }
 
   SidePanelButton* GetSidePanelToolbarButton() const;

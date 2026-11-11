@@ -6,19 +6,32 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import step
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    step: step.TEST_API
+
+
+def RunSteps(api: DEPS):
     api.step('first', ['echo', 'hello'])
     # A checked step that fails aborts the recipe: 'after' won't run.
     api.step('might fail', ['do-thing'])
     api.step('after', ['echo', 'done'])
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'all pass',
         api.post_process(post_process.MustRun, 'first'),

@@ -6,7 +6,6 @@
 #include "brave/browser/ui/views/omnibox/brave_omnibox_popup_view_views.h"
 
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -15,8 +14,7 @@ BraveOmniboxPopupViewViews::~BraveOmniboxPopupViewViews() = default;
 
 gfx::Rect BraveOmniboxPopupViewViews::GetTargetBounds() const {
   auto bounds = OmniboxPopupViewViews::GetTargetBounds();
-  if (auto* vtc =
-          VerticalTabController::FromBrowser(location_bar_view_->browser());
+  if (auto* vtc = VerticalTabController::From(location_bar_view_->browser());
       vtc && vtc->ShouldShowBraveVerticalTabs() &&
       !vtc->ShouldShowWindowTitleForVerticalTabs()) {
     // Remove top shadow inset so that omnibox popup stays inside browser

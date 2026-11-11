@@ -75,7 +75,7 @@ public class URIFixup {
       return url as URL
     }
 
-    guard let escaped = trimmed.addingPercentEncoding(withAllowedCharacters: .urlAllowed) else {
+    guard trimmed.addingPercentEncoding(withAllowedCharacters: .urlAllowed) != nil else {
       return nil
     }
 
@@ -86,7 +86,7 @@ public class URIFixup {
     // like "filetype:" are recognised as searches rather than URLs.
     // Use `URL(string: entry)` so it doesn't double percent escape URLs.
     if let url = entryURL as URL?, url.schemeIsValid {
-      guard let match = AutocompleteClassifier.classify(url.absoluteString) else {
+      guard let match = LegacyAutocompleteClassifier.classify(url.absoluteString) else {
         return nil
       }
 
@@ -114,7 +114,7 @@ public class URIFixup {
     }
 
     // See above comments
-    guard let match = AutocompleteClassifier.classify(entry) else {
+    guard let match = LegacyAutocompleteClassifier.classify(entry) else {
       return nil
     }
 

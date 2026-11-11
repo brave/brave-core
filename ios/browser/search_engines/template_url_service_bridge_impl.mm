@@ -20,7 +20,10 @@
 #include "components/search_engines/template_url_data_util.h"
 #include "components/search_engines/template_url_service.h"
 #include "components/search_engines/template_url_service_observer.h"
+#include "components/search_engines/template_url_starter_pack_data.h"
+#include "components/search_engines/util.h"
 #include "net/base/apple/url_conversions.h"
+#include "url/gurl.h"
 
 namespace {
 
@@ -82,6 +85,7 @@ class TemplateURLServiceObserverImpl : public TemplateURLServiceObserver {
 @implementation TemplateURLServiceBridgeImpl {
   raw_ptr<TemplateURLService> _service;
   raw_ptr<PrefService> _prefs;
+  SearchTermsDataBridge* _searchTermsData;
 }
 
 - (instancetype)initWithTemplateURLService:(TemplateURLService*)service
@@ -89,8 +93,14 @@ class TemplateURLServiceObserverImpl : public TemplateURLServiceObserver {
   if ((self = [super init])) {
     _service = service;
     _prefs = prefs;
+    _searchTermsData = [[SearchTermsDataBridge alloc]
+        initWithSearchTermsData:&service->search_terms_data()];
   }
   return self;
+}
+
+- (SearchTermsDataBridge*)searchTermsData {
+  return _searchTermsData;
 }
 
 - (BOOL)isLoaded {
@@ -107,13 +117,37 @@ class TemplateURLServiceObserverImpl : public TemplateURLServiceObserver {
   NSMutableArray<TemplateURLBridge*>* bridged =
       [NSMutableArray arrayWithCapacity:templateURLs.size()];
   for (TemplateURL* templateURL : templateURLs) {
-    if (!_service->ShowInDefaultList(templateURL)) {
+    if (templateURL->starter_pack_id() !=
+        template_url_starter_pack_data::StarterPackId::kNone) {
       continue;
     }
     [bridged
         addObject:[[TemplateURLBridge alloc] initWithTemplateURL:templateURL]];
   }
   return [bridged copy];
+}
+
+- (BOOL)showInDefaultList:(TemplateURLBridge*)templateURL {
+  return _service->ShowInDefaultList(templateURL.templateURL);
+}
+
+- (TemplateURLBridge*)templateURLForGUID:(NSString*)syncGUID {
+  TemplateURL* templateURL =
+      _service->GetTemplateURLForGUID(base::SysNSStringToUTF8(syncGUID));
+  if (!templateURL) {
+    return nil;
+  }
+  return [[TemplateURLBridge alloc] initWithTemplateURL:templateURL];
+}
+
+- (TemplateURLBridge*)templateURLForPrepopulateID:
+    (BravePrepopulatedEngineID)prepopulateID {
+  TemplateURL* templateURL = FindURLByPrepopulateID(
+      _service->GetTemplateURLs(), static_cast<int>(prepopulateID));
+  if (!templateURL) {
+    return nil;
+  }
+  return [[TemplateURLBridge alloc] initWithTemplateURL:templateURL];
 }
 
 - (TemplateURLBridge*)defaultSearchProvider {
@@ -133,6 +167,15 @@ class TemplateURLServiceObserverImpl : public TemplateURLServiceObserver {
     }
   }
   return [self defaultSearchProvider];
+}
+
+- (NSURL*)generateSearchURLForDefaultSearchProvider:(NSString*)searchTerms {
+  GURL url = _service->GenerateSearchURLForDefaultSearchProvider(
+      base::SysNSStringToUTF16(searchTerms));
+  if (!url.is_valid()) {
+    return nil;
+  }
+  return net::NSURLWithGURL(url);
 }
 
 - (void)setUserSelectedDefaultSearchProviderWithGUID:(NSString*)syncGUID {
@@ -179,6 +222,20 @@ class TemplateURLServiceObserverImpl : public TemplateURLServiceObserver {
     return nil;
   }
   return [[TemplateURLBridge alloc] initWithTemplateURL:templateURL];
+}
+
+- (void)resetTemplateURLWithGUID:(NSString*)syncGUID
+                           title:(NSString*)title
+                         keyword:(NSString*)keyword
+                       searchURL:(NSString*)searchURL {
+  TemplateURL* templateURL =
+      _service->GetTemplateURLForGUID(base::SysNSStringToUTF8(syncGUID));
+  if (!templateURL) {
+    return;
+  }
+  _service->ResetTemplateURL(templateURL, base::SysNSStringToUTF16(title),
+                             base::SysNSStringToUTF16(keyword),
+                             base::SysNSStringToUTF8(searchURL));
 }
 
 - (void)removeTemplateURLWithGUID:(NSString*)syncGUID {

@@ -15,13 +15,13 @@
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_observer.h"
 
-class BraveBrowser;
+class BrowserWindowInterface;
 
 class SidebarItemAddButton : public SidebarButtonView,
                              public views::WidgetObserver {
   METADATA_HEADER(SidebarItemAddButton, SidebarButtonView)
  public:
-  explicit SidebarItemAddButton(BraveBrowser* browser,
+  explicit SidebarItemAddButton(BrowserWindowInterface* browser,
                                 const std::u16string& accessible_name);
   ~SidebarItemAddButton() override;
 
@@ -39,7 +39,7 @@ class SidebarItemAddButton : public SidebarButtonView,
   void UpdateButtonImages();
   void OnButtonPressed();
 
-  raw_ptr<BraveBrowser> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   base::CallbackListSubscription on_enabled_changed_subscription_;
   base::ScopedObservation<views::Widget, views::WidgetObserver> observation_{
       this};

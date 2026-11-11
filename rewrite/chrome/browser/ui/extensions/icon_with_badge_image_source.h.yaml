@@ -1,0 +1,49 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Friend brave::BraveIconWithBadgeImageSource.
+
+      BraveIconWithBadgeImageSource extends IconWithBadgeImageSource. Upstream
+      implementation limits the icons size but BraveIconWithBadgeImageSource
+      allows custom size, so that it can be used by not only page actions but
+      also toolbar buttons, such as wallet.
+    add_friend:
+      class_name: IconWithBadgeImageSource
+      friend_type: class brave::BraveIconWithBadgeImageSource
+
+  - description: |-
+      Add protected methods for customizing the icon graphic drawn by Draw().
+
+      GetCustomGraphicSize/XOffset/YOffset are virtual so that
+      BraveIconWithBadgeImageSource can override them with custom size.
+
+    add_to_protected:
+      class_name: IconWithBadgeImageSource
+      code: |-
+        virtual std::optional<int> GetCustomGraphicSize();
+        virtual std::optional<int> GetCustomGraphicXOffset();
+        virtual std::optional<int> GetCustomGraphicYOffset();
+        void ApplyCustomGraphicOffsets(int& x_offset, int& y_offset);
+
+  - description: |-
+      Make PaintBadge virtual
+
+      BraveIconWithBadgeImageSource allows badge to be drawn with empty text.
+
+    make_virtual:
+      class_name: IconWithBadgeImageSource
+      method_name: PaintBadge
+
+  - description: |-
+      Make GetIconAreaRect virtual
+
+      BraveIconWithBadgeImageSource allows custom size, while upstream
+      implementation caps the icon size.
+
+    make_virtual:
+      class_name: IconWithBadgeImageSource
+      method_name: GetIconAreaRect

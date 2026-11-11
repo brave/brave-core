@@ -5,7 +5,7 @@
 
 import("//extensions/buildflags/buildflags.gni")
 
-assert(enable_extensions)
+assert(enable_extensions_core)
 
 brave_chrome_common_extensions_public = [
   "//brave/common/extensions/brave_extensions_api_provider.h",

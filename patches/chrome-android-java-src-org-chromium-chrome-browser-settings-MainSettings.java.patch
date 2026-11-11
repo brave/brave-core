@@ -1,0 +1,12 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java
+index e8d7dccac1c614a36f9271d4005f83bbfe5cb084..0bfc168e9ef2c84a59ac45263f5355416b279ed9 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java
+@@ -774,6 +774,7 @@ public class MainSettings extends ChromeBaseSettingsFragment
+     }
+ 
+     private static boolean shouldShowAddressBarPref(Context context) {
++        if ((true)) return false;
+         // Similar to ToolbarPositionController#isToolbarPositionCustomizationEnabled(), except
+         // - no CCT checks (settings are not accessible from CCTs),
+         // - showing on Foldables in unfolded (open) state.

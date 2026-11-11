@@ -844,7 +844,7 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
     }
   }
 
-  private func detectedFileExtension(
+  @concurrent private func detectedFileExtension(
     for downloadTask: URLSessionDownloadTask,
     location: URL
   ) async -> String? {

@@ -11,10 +11,12 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
+#include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/image_fetcher/image_fetcher_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_key.h"
@@ -58,21 +60,19 @@ constexpr net::NetworkTrafficAnnotationTag kSidebarFaviconTrafficAnnotation =
 }  // namespace
 
 SidebarModel::SidebarModel(Profile* profile)
-    : profile_(profile), task_tracker_(new base::CancelableTaskTracker{}) {}
+    : profile_(profile), task_tracker_(new base::CancelableTaskTracker{}) {
+  sidebar_observed_.Observe(GetSidebarService(profile_));
+
+  // Null for TestingProfile.
+  if (auto* history_service = HistoryServiceFactory::GetForProfile(
+          profile_, ServiceAccessType::EXPLICIT_ACCESS)) {
+    history_observed_.Observe(history_service);
+  } else {
+    CHECK_IS_TEST();
+  }
+}
 
 SidebarModel::~SidebarModel() = default;
-
-void SidebarModel::Init(history::HistoryService* history_service) {
-  // Start with saved item list.
-  int index = 0u;
-  for (const auto& item : GetAllSidebarItems())
-    AddItem(item, index++, false);
-
-  sidebar_observed_.Observe(GetSidebarService(profile_));
-  // Can be null in test.
-  if (history_service)
-    history_observed_.Observe(history_service);
-}
 
 void SidebarModel::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
@@ -273,6 +273,17 @@ void SidebarModel::OnGetLocalFaviconImage(
 }
 
 void SidebarModel::FetchFaviconFromNetwork(const sidebar::SidebarItem& item) {
+  // Sidebar can be used in private contexts, including with Tor windows.
+  // For those, we should skip the favicon fetch. The ImageFetcherService sends
+  // its requests through the browser-wide system network context, not through
+  // the profile's own network context. For an off-the-record profile this
+  // request would leave the profile's network partition, and in a Tor window it
+  // would bypass the Tor proxy. Skipping will force a default favicon (ex:
+  // first letter of hostname)
+  if (profile_->IsOffTheRecord()) {
+    return;
+  }
+
   auto* service =
       ImageFetcherServiceFactory::GetForKey(profile_->GetProfileKey());
   DCHECK(service);

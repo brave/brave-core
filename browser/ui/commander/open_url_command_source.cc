@@ -17,7 +17,6 @@
 #include "base/i18n/case_conversion.h"
 #include "brave/browser/ui/commander/fuzzy_finder.h"
 #include "build/branding_buildflags.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/grit/locale_settings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -71,7 +70,8 @@ CommandSource::CommandResults OpenURLCommandSource::GetCommands(
     item->command =
         base::BindOnce(&chrome::AddTabAt, base::Unretained(browser),
                        command_spec.second, /*index=*/-1, /*foreground=*/true,
-                       /*group=*/std::nullopt, /*pinned=*/false);
+                       /*group=*/std::nullopt, /*pinned=*/false,
+                       /*window_action=*/std::nullopt);
     results.push_back(std::move(item));
   }
   return results;

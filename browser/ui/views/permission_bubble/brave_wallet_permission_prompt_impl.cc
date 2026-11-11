@@ -8,8 +8,10 @@
 #include <optional>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "components/permissions/permission_uma_util.h"
+#include "components/tabs/public/tab_interface.h"
 
 BraveWalletPermissionPromptImpl::BraveWalletPermissionPromptImpl(
     content::WebContents* web_contents,
@@ -22,13 +24,18 @@ BraveWalletPermissionPromptImpl::BraveWalletPermissionPromptImpl(
 }
 
 BraveWalletPermissionPromptImpl::~BraveWalletPermissionPromptImpl() {
-  brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_)
-      ->CloseBubble();
+  // The tab helper is already gone, and closed its bubble, when the prompt is
+  // destroyed with the tab.
+  if (auto* tab_helper = brave_wallet::BraveWalletTabHelper::From(
+          tabs::TabInterface::MaybeGetFromContents(web_contents_))) {
+    tab_helper->CloseBubble();
+  }
 }
 
 void BraveWalletPermissionPromptImpl::ShowBubble() {
-  brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_)
-      ->ShowBubble();
+  CHECK_DEREF(brave_wallet::BraveWalletTabHelper::From(
+                  tabs::TabInterface::MaybeGetFromContents(web_contents_)))
+      .ShowBubble();
 }
 
 bool BraveWalletPermissionPromptImpl::UpdateAnchor() {

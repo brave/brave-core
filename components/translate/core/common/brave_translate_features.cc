@@ -10,7 +10,6 @@
 
 namespace translate {
 
-namespace features {
 BASE_FEATURE(kUseBraveTranslateGo,
              base::FeatureState::FEATURE_ENABLED_BY_DEFAULT);
 
@@ -19,15 +18,13 @@ const base::FeatureParam<bool> kUpdateLanguageListParam{
 
 BASE_FEATURE(kBraveEnableAutoTranslate,
              base::FeatureState::FEATURE_DISABLED_BY_DEFAULT);
-}  // namespace features
 
 bool IsBraveTranslateGoAvailable() {
-  return base::FeatureList::IsEnabled(features::kUseBraveTranslateGo);
+  return base::FeatureList::IsEnabled(kUseBraveTranslateGo);
 }
 
 bool ShouldUpdateLanguagesList() {
-  return IsBraveTranslateGoAvailable() &&
-         features::kUpdateLanguageListParam.Get();
+  return IsBraveTranslateGoAvailable() && kUpdateLanguageListParam.Get();
 }
 
 bool UseGoogleTranslateEndpoint() {
@@ -37,7 +34,7 @@ bool UseGoogleTranslateEndpoint() {
 }
 
 bool IsBraveAutoTranslateEnabled() {
-  return base::FeatureList::IsEnabled(features::kBraveEnableAutoTranslate);
+  return base::FeatureList::IsEnabled(kBraveEnableAutoTranslate);
 }
 
 }  // namespace translate

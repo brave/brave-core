@@ -6,7 +6,7 @@
 import 'emptykit.css'
 import * as React from 'react'
 import { withKnobs, boolean } from '@storybook/addon-knobs'
-import { setIconBasePath } from '@brave/leo/react/icon'
+import { setIconBasePath } from '@brave/nala/react/icon'
 import { getString } from './locale'
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
 import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
@@ -15,7 +15,7 @@ import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 // come from `chrome://resources/brave/css/nala.css`, which Storybook can't
 // load, so pull in the static token stylesheet globally here. It defines both
 // the light and dark values, keyed off `prefers-color-scheme`.
-import '@brave/leo/tokens/css/variables.css'
+import '@brave/nala/tokens/css/variables.css'
 
 // Fonts
 import '../../ui/webui/resources/fonts/poppins.css'

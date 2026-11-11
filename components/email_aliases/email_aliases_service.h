@@ -8,6 +8,7 @@
 
 #include <optional>
 #include <string>
+#include <vector>
 
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
@@ -91,9 +92,8 @@ class EmailAliasesService : public KeyedService,
   // Marks the promo as shown to the user.
   void MarkPromoShown();
 
-  const std::vector<email_aliases::mojom::AliasPtr>& aliases() const {
-    return aliases_;
-  }
+  // Returns the aliases cached from the last successful refresh.
+  std::vector<mojom::AliasPtr> GetCachedAliases() const;
 
  private:
   using TokenResult =
@@ -140,13 +140,11 @@ class EmailAliasesService : public KeyedService,
   std::optional<EmailAliasesAuth> auth_;
 
   // URL loader factory used to issue network requests to Brave Accounts.
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  const scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
   const raw_ref<PrefService> pref_service_;
 
   EmailAliasesMetrics metrics_;
-
-  std::vector<email_aliases::mojom::AliasPtr> aliases_;
 
   // WeakPtrFactory to safely bind callbacks across async network operations.
   base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};

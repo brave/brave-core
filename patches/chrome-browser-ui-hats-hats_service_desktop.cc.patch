@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/hats/hats_service_desktop.cc b/chrome/browser/ui/hats/hats_service_desktop.cc
-index 2b8084bcec83f62f014136d9405002161859eb8c..bd85a39326928410f0179b522db2fcbe829b4395 100644
+index a0ad7901eda42b6c3e155b0a2972c963e70e21a8..1017700f15fd4045e4c30085b4b83fa7a49056a0 100644
 --- a/chrome/browser/ui/hats/hats_service_desktop.cc
 +++ b/chrome/browser/ui/hats/hats_service_desktop.cc
-@@ -443,6 +443,7 @@ bool HatsServiceDesktop::CanShowSurvey(const std::string& trigger) const {
+@@ -472,6 +472,7 @@ bool HatsServiceDesktop::CanShowSurvey(const std::string& trigger) const {
  
  HatsService::LaunchError HatsServiceDesktop::RunCommonLaunchChecks(
      const std::string& trigger) const {

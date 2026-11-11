@@ -4,10 +4,10 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveStrings
+import CoreData
 import Data
 import DesignSystem
 import Foundation
-import Introspect
 import SwiftUI
 
 struct PlaylistChangeFoldersView: View {
@@ -101,21 +101,13 @@ struct PlaylistChangeFoldersView: View {
       guard let folder = folders.first(where: { $0.id == newValue }) else { return }
       PlaylistItem.moveItems(items: [item.objectID], to: folder.uuid)
     }
-    .background {
-      NavigationLink(isActive: $isNewFolderActive) {
-        CreateFolderView(item: item, selectedFolderID: $selectedFolderID)
-      } label: {
-        EmptyView()
-      }
+    .navigationDestination(isPresented: $isNewFolderActive) {
+      CreateFolderView(item: item, selectedFolderID: $selectedFolderID)
     }
   }
 
   private func folderCountLabel(_ count: Int) -> String {
-    String.localizedStringWithFormat(
-      count == 1
-        ? Strings.PlayList.folderItemCountSingular : Strings.PlayList.folderItemCountPlural,
-      count
-    )
+    String.localizedStringWithFormat(Strings.PlayList.folderItemCountFormat, count)
   }
 }
 
@@ -178,10 +170,9 @@ struct PlaylistChangeFoldersContainerView: View {
   var item: PlaylistItem
 
   var body: some View {
-    NavigationView {
+    NavigationStack {
       PlaylistChangeFoldersView(item: item)
     }
-    .navigationViewStyle(.stack)
     .environment(\.managedObjectContext, DataController.swiftUIContext)
   }
 }

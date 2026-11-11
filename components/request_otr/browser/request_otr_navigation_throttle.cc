@@ -10,7 +10,6 @@
 
 #include "base/check.h"
 #include "base/feature_list.h"
-#include "base/metrics/histogram_macros.h"
 #include "brave/components/request_otr/browser/request_otr_blocking_page.h"
 #include "brave/components/request_otr/browser/request_otr_controller_client.h"
 #include "brave/components/request_otr/browser/request_otr_service.h"
@@ -25,7 +24,6 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_contents_user_data.h"
 #include "net/base/features.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_response_headers.h"

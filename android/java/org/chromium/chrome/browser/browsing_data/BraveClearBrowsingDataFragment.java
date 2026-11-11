@@ -20,6 +20,7 @@ import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_leo.BraveLeoMojomHelper;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.BottomInsetViewProvider;
 import org.chromium.chrome.browser.settings.BraveSettingsPreferenceGroupAdapter;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.ClickableSpansTextMessagePreference;
@@ -28,8 +29,15 @@ import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.text.SpanApplier;
 import org.chromium.ui.text.SpanApplier.SpanInfo;
 
-public class BraveClearBrowsingDataFragment extends ClearBrowsingDataFragment {
+public class BraveClearBrowsingDataFragment extends ClearBrowsingDataFragment
+        implements BottomInsetViewProvider {
     ClearBrowsingDataCheckBoxPreference mClearAIChatDataCheckBoxPreference;
+
+    @Override
+    public View getBottomInsetView(View fragmentView) {
+        // The delete button is outside the preference list.
+        return fragmentView;
+    }
 
     @Override
     protected @NonNull PreferenceGroupAdapter onCreateAdapter(

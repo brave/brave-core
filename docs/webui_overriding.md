@@ -123,6 +123,20 @@ export * from './fancy-chromium.js'
 customElements.define(FancyElement.is, FancyElement)
 ```
 
+> [!WARNING]
+>
+> The `...super.properties` spread is needed to keep the getter's return type
+> compatible with the upstream class, but it also makes Lit re-create accessors
+> for the upstream properties, against the subclass prototype. Finding no own
+> accessor there to wrap, Lit gives each of them a disconnected one backed by
+> fresh storage, so whatever upstream's class-field initializers wrote is lost:
+> the property reads back `undefined` until something reassigns it. Properties
+> that are reassigned before they are first read self-heal; ones that only ever
+> get their initializer's value never do. Assign those explicitly in the
+> subclass constructor. Redeclaring them as fields is not a fix: for a
+> `protected` upstream member that gives it a new declaring class, which breaks
+> the type interchangeability the declaration merge relies on.
+
 ## Lit Mangling
 
 Unfortunately, the above strategies don't work for modifying Lit HTML. To modify
@@ -131,6 +145,13 @@ done with a Lit mangler.
 
 Create a file in `chromium_src` for `path/to/your/file.html.ts` at
 `chromium_src/path/to/your/file.html.ts.lit_mangler.ts`
+
+Some elements have no checked-in `.html.ts`; upstream keeps a plain
+`path/to/your/file.html` that `html_to_wrapper` turns into one at build time.
+Mangle the `.html` instead —
+`chromium_src/path/to/your/file.html.lit_mangler.ts` — which runs before the
+wrapper is generated. The mangler treats the whole file as the root template, so
+everything below works the same way.
 
 ```ts
 import mangle from 'lit-mangler'
@@ -204,6 +225,27 @@ mangle(
   (t) => t.text.startsWith('<li'),
 )
 ```
+
+A template that holds a nested `html` template literal inside an _attribute
+value_ can't be mangled at all — the quotes in the nested template terminate the
+attribute as far as the parser is concerned, and round-tripping it silently
+drops markup. Mangle one of its nested templates instead (only the templates you
+actually mangle get re-serialized; the rest are carried through as text), and do
+whatever is left from the companion `chromium_src` override. The snapshot test
+below shows what the round-trip did, so check it whenever a mangle is added.
+
+Two more things the DOM APIs can't express, because the mangler round-trips the
+template through a real HTML parser:
+
+- `setAttribute()` rejects Lit's `?attr` and `@event` names ('?' and '@' aren't
+  valid in an attribute name), even though the parser accepts them in markup. To
+  add one to an element that's already in the template, splice it into the
+  element's `outerHTML` — which re-parses, and so invalidates your reference to
+  that element.
+- Attribute names are lowercased, so a `.camelCaseProperty` binding only
+  survives if that exact spelling already appears somewhere in the file being
+  mangled. Otherwise, render the element from a method on the component and
+  interpolate that (`${this.renderThing_()}`) instead.
 
 These overrides have an automatically generated test which checks to see whether
 the mangler still applies. To generate (or update the test) run

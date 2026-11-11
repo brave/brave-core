@@ -6,9 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_TABS_PUBLIC_TAB_COLLECTION_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_TABS_PUBLIC_TAB_COLLECTION_H_
 
-#include "build/build_config.h"
+#include "brave/components/tabs/buildflags/buildflags.h"
 
-#if !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
 // Add new collection Type enum value for Tree tab feature on Desktop.
 // Keep our additions to this tabs::TabCollection::Type enum in sync with
 // TabCollectionNode::Type enum.
@@ -31,13 +31,13 @@
  public:                                                   \
   void OnTabRemovedFromTree()
 
-#endif  // !BUILDFLAG(IS_ANDROID)
+#endif  // BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
 
 #include <components/tabs/public/tab_collection.h>  // IWYU pragma: export
 
-#if !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
 #undef OnTabRemovedFromTree
 #undef UNPINNED
-#endif  // !BUILDFLAG(IS_ANDROID)
+#endif  // BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_TABS_PUBLIC_TAB_COLLECTION_H_

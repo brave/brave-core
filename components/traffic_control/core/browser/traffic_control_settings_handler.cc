@@ -14,6 +14,7 @@
 #include "brave/components/traffic_control/core/browser/rule_validation.h"
 #include "brave/components/traffic_control/core/mojom/traffic_control.mojom.h"
 #include "components/prefs/pref_service.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace traffic_control {
 
@@ -85,6 +86,41 @@ void TrafficControlSettingsHandler::RemoveRule(const std::string& id,
     return;
   }
   rules.erase(it);
+  SetRulesToPrefs(std::move(rules), *prefs_);
+  std::move(callback).Run(std::nullopt);
+}
+
+void TrafficControlSettingsHandler::ReorderRules(
+    const std::vector<std::string>& ordered_ids,
+    ReorderRulesCallback callback) {
+  auto rules = GetRulesFromPrefs(*prefs_);
+  if (ordered_ids.size() != rules.size()) {
+    std::move(callback).Run(mojom::RuleOperationError::kNotFound);
+    return;
+  }
+
+  absl::flat_hash_map<std::string, size_t> order_map;
+  order_map.reserve(ordered_ids.size());
+  for (size_t i = 0; i < ordered_ids.size(); ++i) {
+    order_map.emplace(ordered_ids[i], i);
+  }
+
+  if (order_map.size() != ordered_ids.size()) {
+    std::move(callback).Run(mojom::RuleOperationError::kNotFound);
+    return;
+  }
+
+  for (const auto& rule : rules) {
+    if (!order_map.contains(rule->id)) {
+      std::move(callback).Run(mojom::RuleOperationError::kNotFound);
+      return;
+    }
+  }
+
+  std::ranges::sort(rules, [&order_map](const auto& lhs, const auto& rhs) {
+    return order_map.at(lhs->id) < order_map.at(rhs->id);
+  });
+
   SetRulesToPrefs(std::move(rules), *prefs_);
   std::move(callback).Run(std::nullopt);
 }

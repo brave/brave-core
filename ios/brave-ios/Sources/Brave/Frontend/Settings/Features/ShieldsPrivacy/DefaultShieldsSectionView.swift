@@ -32,7 +32,13 @@ struct DefaultShieldsSectionView: View {
         )
       }
 
-      if FeatureList.kBraveHttpsByDefault.enabled {
+      if FeatureList.kTransitionToUpstreamHttpsUpgrades.enabled {
+        ToggleView(
+          title: Strings.Shields.upgradeConnectionsToHTTPS,
+          subtitle: nil,
+          toggle: $settings.isHttpsOnlyModeEnabled
+        )
+      } else if FeatureList.kBraveHttpsByDefault.enabled {
         FormPicker(selection: $settings.httpsUpgradeLevel) {
           ForEach(HTTPSUpgradeLevel.allCases) { level in
             Text(level.localizedTitle)
@@ -49,16 +55,7 @@ struct DefaultShieldsSectionView: View {
         ToggleView(
           title: Strings.Shields.upgradeConnectionsToHTTPS,
           subtitle: Strings.Shields.httpsEverywhereDescription,
-          toggle: Binding(
-            get: {
-              settings.httpsUpgradeLevel.isEnabled
-            },
-            set: { newValue in
-              settings.httpsUpgradeLevel =
-                !newValue
-                ? .disabled : (Preferences.Shields.httpsUpgradePriorEnabledLevel ?? .standard)
-            }
-          )
+          toggle: $settings.isHTTPSUpgradeEnabled
         )
       }
 
@@ -120,11 +117,7 @@ struct DefaultShieldsSectionView: View {
   }
 }
 
-extension ShieldLevel: Identifiable {
-  public var id: String {
-    return rawValue
-  }
-
+extension ShieldLevel {
   public var localizedTitle: String {
     switch self {
     case .aggressive: return Strings.Shields.trackersAndAdsBlockingAggressive

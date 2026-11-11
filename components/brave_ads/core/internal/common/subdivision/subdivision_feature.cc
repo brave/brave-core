@@ -7,8 +7,6 @@
 
 namespace brave_ads {
 
-BASE_FEATURE(kSubdivisionFeature,
-             "Subdivision",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kSubdivisionFeature, base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace brave_ads

@@ -1,56 +1,70 @@
 diff --git a/components/permissions/permission_request_manager.cc b/components/permissions/permission_request_manager.cc
-index d147085a8d66b8b03a9c611486db760c0a2919c3..cb3eed0c4b59c42adaa3a57598faa5f35944b5f8 100644
+index ddbb3fcf569d23599e2db680b44b019bfb23537c..c4c957e2d8134e668c11691ffaa61c2f50cd6d77 100644
 --- a/components/permissions/permission_request_manager.cc
 +++ b/components/permissions/permission_request_manager.cc
-@@ -604,6 +604,7 @@ void PermissionRequestManager::OnVisibilityChanged(
+@@ -595,6 +595,10 @@ void PermissionRequestManager::DidStartNavigation(
+ 
+ void PermissionRequestManager::DidFinishNavigation(
+     content::NavigationHandle* navigation_handle) {
++  if (navigation_handle->IsInPrimaryMainFrame() &&
++      !navigation_handle->HasCommitted()) {
++    ScheduleDequeueRequestIfNeeded();
++  }
+   if (!navigation_handle->IsInPrimaryMainFrame() ||
+       !navigation_handle->HasCommitted() ||
+       navigation_handle->IsSameDocument()) {
+@@ -674,6 +678,7 @@ void PermissionRequestManager::OnVisibilityChanged(
    }
    bool prior_tab_is_active_ = tab_is_active_;
    tab_is_active_ = visibility != content::Visibility::HIDDEN;
-+  BRAVE_PERMISSION_REQUEST_MANAGER_ON_VISIBILITY_CHANGED
++  UpdateTabIsHiddenWithTabActivationState();
    if (prior_tab_is_active_ != tab_is_active_) {
      OnTabActiveChanged();
    }
-@@ -619,6 +620,7 @@ GURL PermissionRequestManager::GetRequestingOrigin() const {
+@@ -701,7 +706,8 @@ GURL PermissionRequestManager::GetRequestingOrigin() const {
    GURL origin = requests_.front()->requesting_origin();
    if (DCHECK_IS_ON()) {
      for (const auto& request : requests_) {
-+      BRAVE_PERMISSION_REQUEST_MANAGER_GET_REQUESTING_ORIGIN
-       DCHECK_EQ(origin, request->requesting_origin());
+-      DCHECK_EQ(origin, request->requesting_origin());
++      if (!ShouldBeGrouppedInRequests(request.get()))
++        DCHECK_EQ(origin, request->requesting_origin());
      }
    }
-@@ -910,7 +912,7 @@ bool PermissionRequestManager::RecreateView() {
+   return origin;
+@@ -991,7 +997,8 @@ bool PermissionRequestManager::RecreateView() {
    // has an initiated permission prompt. If a flow model is not created even
    // though a permission prompt has been requested, it will cause a crash.
    if (PermissionUtil::ShouldCurrentRequestUsePermissionElementSecondaryUI(
 -          this, web_contents())) {
-+          this, web_contents()) && BRAVE_PERMISSION_REQUEST_MANAGER_RECREATE_VIEW) {
++          this, web_contents()) &&
++      !IsCurrentRequestBraveWalletInitiated()) {
      if (!embedded_prompt_flow_model_) {
        embedded_prompt_flow_model_ =
            std::make_unique<EmbeddedPermissionPromptFlowModel>(web_contents(),
-@@ -1046,7 +1048,7 @@ void PermissionRequestManager::DequeueRequestIfNeeded() {
+@@ -1127,7 +1134,7 @@ void PermissionRequestManager::DequeueRequestIfNeeded() {
    // only after the camera request is resolved. This is caused by code in
    // PermissionBubbleMediaAccessHandler and UserMediaClient. We probably don't
    // need two permission queues, so resolve the duplication.
 -  if (web_contents()->HasUncommittedNavigationInPrimaryMainFrame() || view_ ||
-+  if (!web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame() || view_ ||
++  if (HasUncommittedNavigationBlockingPrompt(web_contents(), requests_, pending_permission_requests_) || view_ ||
        IsRequestInProgress()) {
      return;
    }
-@@ -1184,7 +1186,7 @@ void PermissionRequestManager::ShowPrompt() {
+@@ -1265,7 +1272,7 @@ void PermissionRequestManager::ShowPrompt() {
      return;
    }
  
 -  DCHECK(!web_contents()->HasUncommittedNavigationInPrimaryMainFrame());
-+  DCHECK(web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame());
++  DCHECK(!HasUncommittedNavigationBlockingPrompt(web_contents(), requests_, pending_permission_requests_));
    DCHECK(current_request_ui_to_use_);
  
    if (!tab_is_active_) {
-@@ -2092,7 +2094,7 @@ void PermissionRequestManager::OnTabActiveChanged() {
+@@ -2191,7 +2198,7 @@ void PermissionRequestManager::OnTabActiveChanged() {
      return;
    }
  
 -  if (web_contents()->HasUncommittedNavigationInPrimaryMainFrame()) {
-+  if (!web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame()) {
++  if (HasUncommittedNavigationBlockingPrompt(web_contents(), requests_, pending_permission_requests_)) {
      return;
    }
  

@@ -1,0 +1,16 @@
+diff --git a/ios/web/public/test/fakes/fake_web_client.mm b/ios/web/public/test/fakes/fake_web_client.mm
+index abbb3fc33c805f2e0ddf800fc708e391756f7a65..61e5b4f1b50c350ad1766b2c7f049149057fe2ee 100644
+--- a/ios/web/public/test/fakes/fake_web_client.mm
++++ b/ios/web/public/test/fakes/fake_web_client.mm
+@@ -23,8 +23,11 @@ FakeWebClient::FakeWebClient() = default;
+ FakeWebClient::~FakeWebClient() = default;
+ 
+ void FakeWebClient::AddAdditionalSchemes(Schemes* schemes) const {
++  [&]() -> void {
+   schemes->standard_schemes.push_back(kTestWebUIScheme);
+   schemes->standard_schemes.push_back(kTestAppSpecificScheme);
++  }();
++  schemes->standard_schemes.push_back(kChromeUIUntrustedScheme);
+ }
+ 
+ bool FakeWebClient::IsAppSpecificURL(const GURL& url) const {

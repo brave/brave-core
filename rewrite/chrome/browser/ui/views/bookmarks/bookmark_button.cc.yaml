@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Remove InstallPillHighlightPathGenerator
+
+      Skips highlightPath the default highlight path is what we want.
+      And in order to render label clearly over the ink drop, it should have its
+      own layer. Otherwise, the ink drop will be rendered over the label.
+    regex:
+      pattern: 'views::InstallPillHighlightPathGenerator(this);'
+      replace: 'brave::RestyleBookmarkLabel(label());'

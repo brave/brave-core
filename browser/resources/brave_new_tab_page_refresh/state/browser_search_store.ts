@@ -126,15 +126,10 @@ export function createSearchStore() {
 
   searchProxy.addListeners({
     autocompleteResultChanged(result) {
-      const searchMatches = result.matches.map((match) => {
-        if (match.swapContentsAndDescription) {
-          const { contents } = match
-          match.contents = match.description
-          match.description = contents
-        }
-        return match
+      store.update({
+        searchMatches: result.matches,
+        searchResultSequenceId: result.sequenceId,
       })
-      store.update({ searchMatches })
     },
   })
 
@@ -205,6 +200,7 @@ export function createSearchStore() {
         store.update({
           activeSearchInputKey: key,
           searchMatches: [],
+          searchResultSequenceId: 0,
         })
       }
     },
@@ -216,6 +212,7 @@ export function createSearchStore() {
       }
       searchProxy.handler.queryAutocomplete(
         activeQueryId++,
+        null,
         query,
         false,
         query.length,
@@ -230,11 +227,13 @@ export function createSearchStore() {
       if (index < 0) {
         return
       }
-      const match = store.getState().searchMatches.at(index)
+      const { searchMatches, searchResultSequenceId } = store.getState()
+      const match = searchMatches.at(index)
       if (!match) {
         return
       }
       searchProxy.handler.openAutocompleteMatch(
+        searchResultSequenceId,
         index,
         match.destinationUrl,
         true,

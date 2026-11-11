@@ -136,7 +136,7 @@ class EngineConsumer {
   // contain the first turn and completed assistant response.
   virtual void GenerateConversationTitle(
       const PageContentsMap& page_contents,
-      const ConversationHistory& conversation_history,
+      const ConversationHistoryView& conversation_history,
       GenerationCompletedCallback completed_callback) {}
 
   // Prevent indirect prompt injections being sent to the AI model.

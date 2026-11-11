@@ -1,12 +1,3 @@
-/* The description for the error message when the user's session has expired */
-"aichat.accountSessionExpiredDescription" = "Ваш сеанс в обліковому записі Brave сплив. Перейдіть до сторінки облікового запису, щоб оновити її, а потім поверніться до преміумфункцій.";
-
-/* The title for button that submits feedback */
-"aichat.addFeedbackActionTitle" = "Додати відгук";
-
-/* The description for the settings to show search suggestions from Leo in url-address bar */
-"aichat.advancedSettingsAutocompleteDescription" = "Увімкніть, щоб показувати комбінацію для запуску Leo з адресного рядка.";
-
 /* The title for the settings to change default model for conversations */
 "aichat.advancedSettingsDefaultModelTitle" = "Типова модель";
 
@@ -43,12 +34,6 @@
 /* The title for the error showing there is an error from App Store */
 "aichat.appStoreErrorTitle" = "Помилка з’єднання з App Store";
 
-/* The title of the search bar suggestion when prompting to Ask Leo */
-"aichat.askLeoSearchSuggestionTitle" = "Запитайте Leo";
-
-/* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
-"aichat.busyErrorDescription" = "Leo дуже зайнятий. Повторіть спробу за кілька хвилин.";
-
 /* The button title for adding a new custom model */
 "aichat.byomAddNewModelButtonTitle" = "Додати нову модель";
 
@@ -63,36 +48,6 @@
 
 /* The section header title for the Bring Your Own Model feature */
 "aichat.byomSectionHeaderTitle" = "Додайте власну модель";
-
-/* The subtitle for intro view which triggers just chat */
-"aichat.chatIntroJustTalkSubTitle" = "Запитайте в мене що завгодно! Ми можемо обговорити будь-яку тему. Я постійно навчаюся та вдосконалююся, щоб давати кращі відповіді.";
-
-/* The title for intro view which triggers just chat */
-"aichat.chatIntroJustTalkTitle" = "Хочете просто поспілкуватися?";
-
-/* The subtitle for intro view */
-"aichat.chatIntroSubTitle" = "Розумний асистент на базі штучного інтелекту, вбудований безпосередньо в Brave.";
-
-/* The title for intro view */
-"aichat.chatIntroTitle" = "Привіт, я Leo!";
-
-/* The subtitle for intro view which triggers website help for article */
-"aichat.chatIntroWebsiteHelpSubtitleArticleSummarize" = "Я допоможу вам створити резюме статей, розширити контент вебсайту та виконати інші дії.";
-
-/* The subtitle for intro view which triggers website help for summary */
-"aichat.chatIntroWebsiteHelpSubtitlePageSummarize" = "Я допоможу вам створити резюме статей, розширити контент вебсайту та виконати інші дії. Не знаєте, з чого почати? Спробуйте зробити це:";
-
-/* The title for intro view which triggers website help */
-"aichat.chatIntroWebsiteHelpTitle" = "Потрібна допомога з вебсайтом?";
-
-/* The title for the chat section in the menu */
-"aichat.chatMenuSectionTitle" = "Чат";
-
-/* The title shown on limit reached error view, which is suggesting user to change default model */
-"aichat.contextLimitErrorTitle" = "Ця розмова задовга, її неможливо продовжити.\nМожуть бути інші моделі, з якими Leo має змогу підтримувати точність для довших розмов.";
-
-/* The title of the section where custom models are displayed as a list. */
-"aichat.customModelChatSectionTitle" = "Користувацькі моделі";
 
 /* The navigation bar title when adding a new custom model */
 "aichat.customModelFormAddModelNavigationTitle" = "Додати модель";
@@ -181,110 +136,8 @@
 /* The label for the vision support toggle */
 "aichat.customModelFormVisionSupportFieldTitle" = "Підтримка зображень";
 
-/* The title for the custom models section in the menu */
-"aichat.customModelsMenuSectionTitle" = "Користувацькі моделі";
-
-/* The title of the section where chat models are displayed as a list. */
-"aichat.defaultModelChatSectionTitle" = "Чат";
-
-/* The title of the section where language models are displayed as a list. */
-"aichat.defaultModelLanguageSectionTitle" = "МОВНІ МОДЕЛІ";
-
-/* The title of the menu where user can change the default model */
-"aichat.defaultModelViewTitle" = "Типова модель";
-
-/* The checkbox title for the privacy alert warning that will make it not warn the user again */
-"aichat.dontShowAgainTitle" = "Більше не показувати";
-
-/* The text displayed under an edited user prompt/message beside a timestamp. */
-"aichat.editedMessageCaption" = "Відредаговано";
-
-/* The title for view which user type feedback */
-"aichat.feedbackInputViewTitle" = "Надайте відгук тут";
-
-/* The title for view which listsfeedback option list */
-"aichat.feedbackOptionsViewTitle" = "Про що ваш відгук?";
-
-/* The title for incorrect feedback option */
-"aichat.feedbackOptionTitleIncorrect" = "Помилковий";
-
-/* The title for helpful feedback option */
-"aichat.feedbackOptionTitleNotHelpful" = "Некорисний";
-
-/* The title for other feedback option */
-"aichat.feedbackOptionTitleOther" = "Інше";
-
-/* The title for unsafe/harmful feedback option */
-"aichat.feedbackOptionTitleUnsafeHarmful" = "Небезпечний / шкідливий";
-
-/* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
-"aichat.feedbackPremiumAdTitle" = "Leo Premium надає доступ до розширеної вибірки мовних моделей для ще точніших відповідей. [Детальніше](https://brave.com/) - [Пропустити](braveai://dismiss)";
-
-/* The title for the button that submits feedback */
-"aichat.feedbackSubmitActionTitle" = "Надіслати";
-
-/* The title for feedback view when it fails to submit feedback */
-"aichat.feedbackSubmittedErrorTitle" = "Сталася помилка. Спробуйте ще раз.";
-
-/* The title for feedback view when it is submitted */
-"aichat.feedbackSubmittedTitle" = "Відгук надіслано";
-
-/* The title for feedback view when response is sucessfull but disliked */
-"aichat.feedbackSuccessAnswerDisLikedTitle" = "Відповідь не вподобано";
-
-/* The title for feedback view when response is sucessfull also liked */
-"aichat.feedbackSuccessAnswerLikedTitle" = "Відповідь сподобалася";
-
-/* The title for view which user type feedback */
-"aichat.feedbackViewMainTitle" = "Надайте відгук про ШІ від Brave";
-
 /* The button title for opening paywall screen */
 "aichat.goPremiumButtonTitle" = "Перейти на версію Premium";
-
-/* Description about answers are changing with page context */
-"aichat.infoAboutPageContext" = "Відповіді формуються на базі вмісту сторінки";
-
-/* The title for view that shows an internal error screen. Suggests to try again later. */
-"aichat.internalErrorViewTitle" = "Сталася помилка під час обробки запиту. Спробуйте пізніше.";
-
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Привіт, я — Лео, вбудований AI-асистент від Brave. Працюю на моделі Claude Haiku від Anthropic, яка оптимізована для діалогів та обробки тексту. Brave розміщує її через власну інфраструктуру.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageClaudeHaikuModelPurposeDescription" = "Блискавично швидкий чат";
-
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Привіт, я — Лео, вбудований AI-асистент від Brave. Працюю на моделі Claude Instant від Anthropic, яка оптимізована для діалогів та обробки тексту. Brave розміщує її через власну інфраструктуру.";
-
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Привіт, я — Лео, вбудований AI-асистент від Brave. Працюю на моделі Claude Sonnet від Anthropic, яка оптимізована для діалогів та обробки тексту. Brave розміщує її через власну інфраструктуру.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageClaudeSonnetModelPurposeDescription" = "Збалансована швидкість і розум";
-
-/* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
-"aichat.introMessageGenericMessageDescription" = "Вітаю, я Leo. Я помічник на базі від Brave і працюю на базі %@. Запитайте в мене будь-що, а я спробую відповісти якомога точніше.";
-
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageQwenMessageDescription" = "Привіт, я — Лео, вбудований AI-асистент від Brave. Мене створено на базі моделі Qwen VL 30B від Alibaba Cloud для високої продуктивності та широкого спектру застосування. Brave розміщує Qwen на власній захищеній інфраструктурі.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageQwenModelPurposeDescription" = "Чат для різних задач, програмування та іншого";
-
-/* The title for intro message */
-"aichat.introMessageTitle" = "Чат";
-
-/* The title for view that shows an invalid API key error screen. Suggests to try again later. */
-"aichat.invalidApiKeyErrorViewTitle" = "API-ключ для цієї моделі недійсний. Перевірте налаштування та спробуйте ще раз.";
-
-/* The title for view that shows an invalid endpoint error screen. Suggests to try again later. */
-"aichat.invalidEndpointErrorViewTitle" = "Ця модель має невірну кінцеву точку. Будь ласка, перевірте налаштування та спробуйте ще раз.";
-
-/* The name of the AI-Assistant that's responsing to the user */
-"aichat.leoAssistantNameTitle" = "Leo";
-
-/* The default title displayed above a code block when the language of the code is not known. */
-"aichat.leoCodeExampleDefaultTitle" = "Приклад коду";
 
 /* The message that shows in an alert, to let the user know the 'Leo' feature is disabled, and explains how to re-enable the feature. */
 "aichat.leoDisabledMessageDescription" = "Наразі Leo вимкнено за допомогою прапорців функцій. Щоб увімкнути Leo, відвідайте brave://flags і увімкніть його.";
@@ -298,53 +151,14 @@
 /* The title that shows in an alert when the Leo/AI-Chat is disabled due to the user being in private browsing mode. */
 "aichat.leoDisabledPrivateBrowsingMessageTitle" = "Leo недоступний";
 
-/* The text that's read aloud to the user when accessibility is enabled for the Document Picker button */
-"aichat.leoDocumentPickerButtonAccessibilityTitle" = "Завантажити зображення";
-
-/* The text displayed on the loading screen when searching for a user query */
-"aichat.leoImprovedAnswerBraveSearch" = "Покращений пошук відповідей на";
-
-/* The text displayed on the loading screen when searching for a user query */
-"aichat.leoImprovingAnswerBraveSearch" = "Покращуємо відповіді у Пошуку Brave…";
-
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "ШІ Leo";
-
-/* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
-"aichat.leoPageContextInfoDescriptionTitle" = "Увімкніть, щоб ставити запитання про цю сторінку. Її контент буде передано до Brave Leo разом із вашими повідомленнями.";
-
-/* The accessibility text to read out loud when the user taps on the info icon on the page context view */
-"aichat.leoPageContextInfoIconAccessibilityTitle" = "Інформація про контекст сторінки";
-
-/* The text that's read aloud to the user when accessibility is enabled for the Slash Tools button */
-"aichat.leoSlashToolsButtonAccessibilityTitle" = "Інструменти Slash";
-
-/* The text that's displayed when the user selects an invalid slash tools option */
-"aichat.leoSlashToolsOptionNull" = "Немає";
-
-/* The text that's displayed when the user selects an invalid slash tools option */
-"aichat.leoSlashToolsOptionUnknown" = "Невідомо";
-
-/* The title to display when the duration of the subscription is unknown */
-"aichat.leoSubscriptionUnknownDateTitle" = "Н/Д";
 
 /* The button title for managing subscriptions */
 "aichat.manageSubscriptionsButtonTitle" = "Керувати підписками";
 
-/* The description for alert needed to have microphone permission */
-"aichat.microphonePermissionAlertDescription" = "Щоб користуватися анонімним голосовим уведенням, надайте програмі Brave дозвіл на доступ до мікрофона в меню «Системні налаштування iOS».";
-
-/* The description for alert needed to have microphone permission */
-"aichat.microphonePermissionAlertTitle" = "Потрібен доступ до мікрофона";
-
 /* Title showing monthly subscription */
 "aichat.monthlySubscriptionTitle" = "Щомісячна підписка";
-
-/* The title for view that shows network - connection error and suggesting to try again */
-"aichat.networkErrorViewTitle" = "Під час підключення до Leo сталася помилка мережі, перевірте підключення й повторіть спробу.";
-
-/* The title for button that starts a new chat */
-"aichat.newChatActionTitle" = "Новий чат";
 
 /* The text which will be used to indicate period of payments like 10 / month */
 "aichat.paywallMonthlyPriceDividend" = "місяць";
@@ -418,38 +232,8 @@
 /* The title of the badge where a model which can be used limited */
 "aichat.premiumModelStatusTitle" = "Преміум";
 
-/* Title shown next to Leo in navigation bar when user has premium subcription */
-"aichat.premiumNavigationBarBadgeTitle" = "Преміум";
-
 /* Title showing premium subscription - not determined monthly por yearly */
 "aichat.premiumSubscriptionTitle" = "Передплата Premium";
-
-/* The text for placeholder on textfield for entering questions for AI, after the user has asked initial question */
-"aichat.promptFollowUpPlaceHolderDescription" = "Задати додаткове запитання";
-
-/* The text for placeholder on textfield for entering questions for AI */
-"aichat.promptPlaceHolderDescription" = "Чим я можу допомогти?";
-
-/* The title of action for quick menu which displaying advanced settings */
-"aichat.quickMenuAdvancedSettingsActionTitle" = "Розширені налаштування";
-
-/* The title of action for quick menu which presents payment screen for premium */
-"aichat.quickMenuGoPremiumActionTitle" = "Перейти на версію Premium";
-
-/* The title of action for quick menu which display subscription management view */
-"aichat.quickMenuManageSubscriptionActionTitle" = "Керувати підписками";
-
-/* The title for error when rating a response is not success */
-"aichat.rateAnswerActionErrorText" = "Помилка оцінки відповіді";
-
-/* The message for privacy warning alert when rating a response */
-"aichat.rateAnswerFeedbackPrivacyWarningMessage" = "Оцінка відповіді надсилає Brave інформацію про розмову, модель, мову, версію та підписку для покращення Лео.\n[Докладніше](%@)";
-
-/* The title for privacy warning alert when rating a response */
-"aichat.rateAnswerFeedbackPrivacyWarningTitle" = "Оцінка відповіді";
-
-/* The title for button that refreshes user credentials */
-"aichat.refreshCredentialsActionTitle" = "Оновити";
 
 /* The title for the button where it triggers reset leo data */
 "aichat.resetLeoDataActionTitle" = "Скинути налаштування й вилучити дані Leo";
@@ -463,63 +247,9 @@
 /* The title for the error whre leo data reset */
 "aichat.resetLeoDataErrorTitle" = "Скинути дані Leo";
 
-/* The title for copying response to clipboard action */
-"aichat.responseContextMenuCopyTitle" = "Скопіювати";
-
-/* The title for disliking response to clipboard action */
-"aichat.responseContextMenuDislikeAnswerTitle" = "Відповідь не подобається";
-
-/* The title for editing AI response action from context menu */
-"aichat.responseContextMenuEditAnswerTitle" = "Редагувати відповідь";
-
-/* The title for editing user prompt action from context menu */
-"aichat.responseContextMenuEditPromptTitle" = "Редагувати запит";
-
-/* The title for liking response to clipboard action */
-"aichat.responseContextMenuLikeAnswerTitle" = "Відповідь подобається";
-
-/* The title for regenerating response action from context menu */
-"aichat.responseContextMenuRegenerateTitle" = "Згенерувати ще";
-
 /* The button title for restoring ai-app purchse for Leo. */
 "aichat.restorePaywallButtonTitle" = "Відновити";
 
-/* The title for button for re-try */
-"aichat.retryActionTitle" = "Спробувати знову";
-
-/* The title for view that shows a service overloaded error screen. Suggests to try again later. */
-"aichat.serviceOverloadedErrorViewTitle" = "Сервер зараз перевантажений. Повторіть спробу пізніше.";
-
-/* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
-"aichat.speechRecognizerDisclaimer" = "Brave не зберігає та не передає іншим сторонам дані ваших голосових пошуків.";
-
-/* Title showing the user has no subscription. */
-"aichat.subscriptionNoneTitle" = "Немає";
-
-/* The title for the button to generate suggestions */
-"aichat.suggestionsGenerationButtonTitle" = "Запропонувати запитання…";
-
-/* The title for button that start summarizing page */
-"aichat.summarizePageActionTitle" = "Створити огляд цієї сторінки";
-
-/* The title for expressing acknowledgement for the terms and conditions of Brave AI */
-"aichat.termsConditionsApproveActionTitle" = "Я розумію";
-
-/* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo — приватний розумний асистент на базі ШІ для комфортної роботи в мережі. Leo доступний безкоштовно, але з обмеженнями. Преміум-версія Brave Leo відкриває більше моделей, підвищені ліміти та ранній доступ до нових функцій. Основна модель час від часу оновлюється. Подробиці дивись у **[Довідковому центрі] Brave (%1$@)** \n\nЗа замовчуванням, коли ви ставите Leo запитання про сайт або сторінку, яку переглядаєте, її вміст або виділений текст, а також пошуковий запит надсилаються на сервери Brave, щоб Leo міг дати відповідь. У деяких випадках Leo може надсилати запити, створені на основі вашого вводу, у Пошук Brave і використовувати результати пошуку для кращої відповіді. Brave не гарантує точність відповідей, і вони можуть містити неточну, оманливу або хибну інформацію. Не надсилайте Brave Leo конфіденційні або приватні дані та обережно ставтеся до відповідей щодо здоров’я, фінансів, безпеки тощо. Ви можете змінити параметри Leo у Налаштуваннях у будь-який час. Перейдіть у Налаштування > Leo.\n\nLeo не збирає ідентифікатори, такі як ваша IP-адреса, які можна прив’язати до вас. Ми не навчаємо наші моделі на основі ваших даних, включно з пошуковими запитами або відповідями Brave Leo. Жодні персональні дані не зберігаються на наших серверах і не утримуються Brave. Перегляньте **[Політику конфіденційності](%2$@)** для докладнішої інформації.";
-
-/* The title terms and conditions for AI chat usage */
-"aichat.termsConditionsTitle" = "Приватно спілкуйтеся з Brave Leo";
-
-/* The title of the badge where a model which can be used unlimited */
-"aichat.unlimitedModelStatusTitle" = "Необмежено";
-
-/* The accessibility description when pressing the microphone button to access voice entry. */
-"aichat.voiceInputButtonTitle" = "Голосове введення";
-
 /* Title showing yearly subscription - annual */
 "aichat.yearlySubscriptionTitle" = "Щорічна передплата";
-
-/* The word 'You' as in 'Me', 'Myself', 'I' (the user). */
-"aichat.youMessageTitle" = "Ви";
 

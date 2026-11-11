@@ -30,27 +30,33 @@ class ProtoTestApi(RecipeTestApi):
         return codecs.do_encode(proto_msg, codec, **kwargs)
 
     @staticmethod
-    def decode(data: Any, msg_class: type[Message], codec: codecs.Codec | str,
-               **kwargs) -> Message:
+    def decode(
+        data: Any, msg_class: type[Message], codec: codecs.Codec | str, **kwargs
+    ) -> Message:
         """Same as `api.proto.decode`."""
         return codecs.do_decode(data, msg_class, codec, **kwargs)
 
     @placeholder_step_data
-    def output(self,
-               proto_msg: Message,
-               retcode: int | None = None,
-               name: str | None = None):
+    def output(
+        self,
+        proto_msg: Message,
+        retcode: int | None = None,
+        name: str | None = None,
+    ):
         """Seed an `api.proto.output()` placeholder to return *proto_msg*."""
         if not isinstance(proto_msg, Message):
-            raise ValueError('expected a protobuf message, got '
-                             f'{type(proto_msg)}')
+            raise ValueError(
+                f'expected a protobuf message, got {type(proto_msg)}'
+            )
         return proto_msg, retcode, name
 
     @placeholder_step_data('output')
-    def invalid(self,
-                raw_data: str = 'i are not protoh',
-                retcode: int | None = None,
-                name: str | None = None):
+    def invalid(
+        self,
+        raw_data: str = 'i are not protoh',
+        retcode: int | None = None,
+        name: str | None = None,
+    ):
         """Seed an `api.proto.output()` placeholder with unparseable data.
 
         For exercising what a recipe does when a step writes garbage: the
@@ -59,9 +65,9 @@ class ProtoTestApi(RecipeTestApi):
         return raw_data, retcode, name
 
     @placeholder_step_data('output')
-    def backing_file_missing(self,
-                             retcode: int | None = None,
-                             name: str | None = None):
+    def backing_file_missing(
+        self, retcode: int | None = None, name: str | None = None
+    ):
         """Seed an output placeholder as if the step never wrote its file.
 
         Only meaningful for a placeholder created with `leak_to`; without it the

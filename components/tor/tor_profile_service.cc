@@ -8,8 +8,17 @@
 #include "base/time/time.h"
 #include "brave/components/tor/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/pref_service.h"
 
 namespace tor {
+
+namespace {
+
+// Restricted .onion requests to Tor windows. Removed 10/2026.
+constexpr char kObsoleteOnionOnlyInTorWindows[] =
+    "tor.onion_only_in_tor_windows";
+
+}  // namespace
 
 TorProfileService::TorProfileService() = default;
 
@@ -25,7 +34,19 @@ void TorProfileService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 // static
 void TorProfileService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kAutoOnionRedirect, false);
-  registry->RegisterBooleanPref(prefs::kOnionOnlyInTorWindows, true);
+}
+
+// static
+void TorProfileService::RegisterProfilePrefsForMigration(
+    PrefRegistrySimple* registry) {
+  // Added 10/2026
+  registry->RegisterBooleanPref(kObsoleteOnionOnlyInTorWindows, true);
+}
+
+// static
+void TorProfileService::MigrateObsoleteProfilePrefs(PrefService* prefs) {
+  // Added 10/2026
+  prefs->ClearPref(kObsoleteOnionOnlyInTorWindows);
 }
 
 }  // namespace tor

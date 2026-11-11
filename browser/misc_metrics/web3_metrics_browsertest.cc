@@ -112,13 +112,13 @@ IN_PROC_BROWSER_TEST_F(Web3MetricsBrowserTest, ProviderAccessReported) {
   histogram_tester_.ExpectTotalCount(kWeb3DappVisitHistogramName, 0);
 
   // Assign a provider (routes through the injected setter) and then call a
-  // method on it. Reading `.request` fires the proxy `get` trap (1) and
-  // invoking it fires the `apply` trap (2).
+  // method on it. Only reading `.request` fires the proxy `get` trap; the
+  // returned function is not wrapped, so invoking it records nothing.
   ASSERT_TRUE(content::ExecJs(primary_main_frame(),
                               "window.ethereum = { request: () => 42 };"
                               "window.ethereum.request();"));
 
-  WaitForDappVisits(2);
+  WaitForDappVisits(1);
 }
 
 // With no wallet the proxy isn't installed, so the page keeps a plain

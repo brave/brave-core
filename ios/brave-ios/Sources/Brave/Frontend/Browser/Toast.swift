@@ -102,7 +102,7 @@ class Toast: UIView {
 
     self.displayState = .pendingShow
 
-    DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [self] in
       self.tapInterceptingOverlay.didTapOutside = { [weak self] in
         if self?.tapDismissalMode == .noDismissal {
           return

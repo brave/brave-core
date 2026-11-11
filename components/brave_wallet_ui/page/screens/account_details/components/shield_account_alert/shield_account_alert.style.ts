@@ -4,13 +4,13 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import LeoAlert from '@brave/leo/react/alert'
+import LeoAlert from '@brave/nala/react/alert'
 
 // Shared Styles
 import { Row } from '../../../../../components/shared/style'
 import {
   layoutPanelWidth, //
-} from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const Wrapper = styled(Row)`
   padding: 0px 32px;

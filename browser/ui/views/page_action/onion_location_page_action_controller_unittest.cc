@@ -8,8 +8,10 @@
 #include <memory>
 #include <vector>
 
-#include "base/functional/bind.h"
+#include "base/callback_list.h"
+#include "base/functional/callback_helpers.h"
 #include "base/scoped_observation.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/browser/ui/views/page_action/page_action_test_observer.h"
 #include "brave/browser/ui/views/page_action/test_tab_interface.h"
 #include "brave/components/tor/onion_location_tab_helper.h"
@@ -22,6 +24,8 @@
 #include "chrome/browser/ui/page_action/test_support/test_page_action_properties_provider.h"
 #include "chrome/browser/ui/toolbar/pinned_toolbar/pinned_toolbar_actions_model.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/policy/core/common/policy_pref_names.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -30,14 +34,6 @@
 #include "url/gurl.h"
 
 namespace page_actions {
-
-namespace {
-
-void AttachTabHelpers(content::WebContents* contents) {
-  tor::OnionLocationTabHelper::CreateForWebContents(contents);
-}
-
-}  // namespace
 
 class OnionLocationPageActionControllerTest : public testing::Test {
  public:
@@ -53,9 +49,12 @@ class OnionLocationPageActionControllerTest : public testing::Test {
   void SetUp() override {
     pinned_actions_model_ =
         std::make_unique<PinnedToolbarActionsModel>(&profile_);
-    tab_interface_ = std::make_unique<TestTabInterface>(
-        &profile_, base::BindRepeating(&AttachTabHelpers));
+    tab_interface_ =
+        std::make_unique<TestTabInterface>(&profile_, base::DoNothing());
     tab_interface_->Activate();
+
+    tab_helper_ =
+        std::make_unique<tor::OnionLocationTabHelper>(*tab_interface_);
 
     page_action_controller_ = std::make_unique<PageActionControllerImpl>(
         *tab_interface_,
@@ -82,6 +81,7 @@ class OnionLocationPageActionControllerTest : public testing::Test {
   void TearDown() override {
     observation_.Reset();
     controller_.reset();
+    tab_helper_.reset();
     action_item_subscription_ = base::CallbackListSubscription();
     action_item_.reset();
     page_action_controller_.reset();
@@ -89,10 +89,7 @@ class OnionLocationPageActionControllerTest : public testing::Test {
     pinned_actions_model_.reset();
   }
 
-  tor::OnionLocationTabHelper* tab_helper() {
-    return tor::OnionLocationTabHelper::FromWebContents(
-        tab_interface_->GetContents());
-  }
+  tor::OnionLocationTabHelper* tab_helper() { return tab_helper_.get(); }
 
   // Re-triggers the controller's RegisterDidActivate subscription, which is
   // how it picks up onion-location state changes made directly on the tab
@@ -100,6 +97,7 @@ class OnionLocationPageActionControllerTest : public testing::Test {
   void RefreshPageAction() { tab_interface_->Activate(); }
 
   TestTabInterface& tab_interface() { return *tab_interface_; }
+  TestingProfile& profile() { return profile_; }
 
   OnionLocationPageActionController* controller() { return controller_.get(); }
   const PageActionTestObserver& observer() const { return observer_; }
@@ -119,6 +117,7 @@ class OnionLocationPageActionControllerTest : public testing::Test {
   base::ScopedObservation<PageActionModelInterface, PageActionModelObserver>
       observation_{&observer_};
 
+  std::unique_ptr<tor::OnionLocationTabHelper> tab_helper_;
   std::unique_ptr<OnionLocationPageActionController> controller_;
 };
 
@@ -148,20 +147,44 @@ TEST_F(OnionLocationPageActionControllerTest, HiddenAgainAfterReset) {
   EXPECT_FALSE(observer().visible());
 }
 
+TEST_F(OnionLocationPageActionControllerTest, HiddenWhenTorDisabled) {
+  tab_helper()->SetOnionLocationForTesting(GURL("http://example.onion/"));
+  RefreshPageAction();
+  ASSERT_TRUE(observer().visible());
+
+  TorProfileServiceFactory::SetTorDisabled(true);
+  EXPECT_FALSE(observer().visible());
+
+  TorProfileServiceFactory::SetTorDisabled(false);
+  EXPECT_TRUE(observer().visible());
+}
+
+TEST_F(OnionLocationPageActionControllerTest, HiddenWhenIncognitoDisabled) {
+  tab_helper()->SetOnionLocationForTesting(GURL("http://example.onion/"));
+  RefreshPageAction();
+  ASSERT_TRUE(observer().visible());
+
+  profile().GetTestingPrefService()->SetManagedPref(
+      policy::policy_prefs::kIncognitoModeAvailability,
+      base::Value(
+          static_cast<int>(policy::IncognitoModeAvailability::kDisabled)));
+  EXPECT_FALSE(observer().visible());
+
+  profile().GetTestingPrefService()->RemoveManagedPref(
+      policy::policy_prefs::kIncognitoModeAvailability);
+  EXPECT_TRUE(observer().visible());
+}
+
 // The tab's contents can be swapped out - by tab discarding, or by a shared
-// pinned tab being moved to another window. The controller has to follow the
-// swapped in contents, and stop observing the outgoing one, which is about to
-// be destroyed.
+// pinned tab being moved to another window. The tab helper follows the swapped
+// in contents and forgets the old page's onion location.
 TEST_F(OnionLocationPageActionControllerTest, FollowsDiscardedContents) {
-  tor::OnionLocationTabHelper* const discarded_tab_helper = tab_helper();
-  discarded_tab_helper->SetOnionLocationForTesting(
-      GURL("http://example.onion/"));
+  tab_helper()->SetOnionLocationForTesting(GURL("http://example.onion/"));
   RefreshPageAction();
   ASSERT_TRUE(observer().visible());
 
   // The swapped in contents has no onion location, so the action hides.
   tab_interface().DiscardContents();
-  ASSERT_NE(discarded_tab_helper, tab_helper());
   EXPECT_FALSE(observer().visible());
 
   // The swapped in contents is the one driving the page action now.

@@ -9,9 +9,8 @@ import './brave_tor_snowflake_install_failed_dialog.js'
 import type {CrInputElement} from 'chrome://resources/cr_elements/cr_input/cr_input.js'
 import type {CrRadioGroupElement} from 'chrome://resources/cr_elements/cr_radio_group/cr_radio_group.js'
 import type {SettingsToggleButtonElement} from '../controls/settings_toggle_button.js'
-import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
-import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import {WebUiListenerMixin} from '/shared/settings/web_ui_listener_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import {loadTimeData} from '../i18n_setup.js'
@@ -30,11 +29,12 @@ import {getTemplate} from './brave_tor_subpage.html.js'
 interface SettingsBraveTorPageElement {
   $: {
     bridgesGroup: CrRadioGroupElement,
+    builtInBridgesType: HTMLSelectElement,
   }
 }
 
 const SettingBraveTorPageElementBase =
-  I18nMixin(RouteObserverMixin(WebUiListenerMixin(PrefsMixin(PolymerElement))))
+  I18nMixin(RouteObserverMixin(WebUiListenerMixin(PolymerElement)))
 
 const Usage = Object.freeze({
   NOT_USED: 0,
@@ -98,18 +98,12 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
         notify: true
       },
 
-      isUsingBridgesPref_: {
-        type: Object,
-        value() {
-          return {}
-        },
-        notify: true,
-      },
+      isUsingBridges_: Boolean,
 
       shouldShowBridgesGroup_: {
         type: Boolean,
         value: false,
-        computed: 'computeShouldShowBridgesGroup_(isUsingBridgesPref_.value, torEnabledPref_.value)'
+        computed: 'computeShouldShowBridgesGroup_(isUsingBridges_, torEnabled_)'
       },
 
       requestedBridgesPlaceholder_: {
@@ -133,34 +127,11 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
 
       isTorManaged_: Boolean,
 
-      // PrefControlMixin checks for a pref being valid, so have to fake it,
-      // same as torEnabledPref_ below, since useBridges_ isn't backed by a
-      // real chrome.settingsPrivate pref.
-      useBridgesValuePref_: {
-        type: Object,
-        value() {
-          return {}
-        },
-      },
+      torEnabled_: Boolean,
 
-      torEnabledPref_: {
-        type: Object,
-        value() {
-          // TODO(dbeam): this is basically only to appease PrefControlMixin.
-          // Maybe add a no-validate attribute instead? This makes little sense.
-          return {}
-        },
-      },
-
-      torSnowflakeExtensionEnabledPref_: {
-        type: Object,
-        value() {
-          return {
-            key: '',
-            type: chrome.settingsPrivate.PrefType.BOOLEAN,
-            value: false,
-          }
-        },
+      torSnowflakeExtensionEnabled_: {
+        type: Boolean,
+        value: false,
       },
 
       torSnowflakeExtensionAllowed_: {
@@ -172,7 +143,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
 
       isConfigChanged_: {
         type: Boolean,
-        computed: 'computeIsConfigChanged_(useBridges_, builtinBridges_, requestedBridges_, providedBridges_, loadedConfig_, shouldShowBridgesGroup_, torEnabledPref_.value)',
+        computed: 'computeIsConfigChanged_(useBridges_, builtinBridges_, requestedBridges_, providedBridges_, loadedConfig_, shouldShowBridgesGroup_, torEnabled_)',
         value: false,
         notify: true
       },
@@ -183,7 +154,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
 
   static get observers() {
     return [
-      'isUsingBridgesChanged_(isUsingBridgesPref_.value)'
+      'isUsingBridgesChanged_(isUsingBridges_)'
     ]
   }
 
@@ -194,15 +165,14 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
   private declare builtinBridges_: number
   private declare requestedBridges_: string
   private declare providedBridges_: string
-  private declare isUsingBridgesPref_: chrome.settingsPrivate.PrefObject
+  private declare isUsingBridges_: boolean
   private declare shouldShowBridgesGroup_: boolean
   private declare requestedBridgesPlaceholder_: string
   private declare providedBridgesPlaceholder_: string
   private declare invalidBridge_: string
   private declare isTorManaged_: boolean
-  private declare useBridgesValuePref_: chrome.settingsPrivate.PrefObject
-  private declare torEnabledPref_: chrome.settingsPrivate.PrefObject
-  private declare torSnowflakeExtensionEnabledPref_: chrome.settingsPrivate.PrefObject
+  private declare torEnabled_: boolean
+  private declare torSnowflakeExtensionEnabled_: boolean
   private declare torSnowflakeExtensionAllowed_: boolean
   private declare showRequestBridgesDialog_: boolean
   private declare isConfigChanged_: boolean
@@ -211,34 +181,27 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
   private browserProxy_: BraveTorBrowserProxy =
     BraveTorBrowserProxyImpl.getInstance()
 
-  override ready() {
-    super.ready()
+  private hasConnectedBefore_ = false
 
-    if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
-      window.testing = window.testing || {}
-      window.testing['torSubpage'] = this.shadowRoot
+  override connectedCallback() {
+    super.connectedCallback()
+    // dom-repeat re-inserts its <option>s on reconnect, which resets the
+    // <select> to its last option without Polymer's `selected` bindings
+    // noticing. Wait for the re-insertion, then resync.
+    if (this.hasConnectedBefore_ && this.builtinBridges_ !== undefined) {
+      queueMicrotask(() => {
+        this.$.builtInBridgesType.value = String(this.builtinBridges_)
+      })
     }
+    this.hasConnectedBefore_ = true
 
-    this.browserProxy_.getBridgesConfig().then((config) => {
-      this.loadedConfig_ = config
-      this.isUsingBridgesPref_ = {
-        key: '',
-        type: chrome.settingsPrivate.PrefType.BOOLEAN,
-        value: config.use_bridges !== Usage.NOT_USED,
-      }
-      this.useBridges_ = config.use_bridges
-      this.builtinBridges_ = config.use_builtin_bridges
-      this.requestedBridges_ = config.requested_bridges.join('\n')
-      this.providedBridges_ = config.provided_bridges.join('\n')
-    })
-
-    // PrefControlMixin checks for a pref being valid, so have to fake it,
-    // same as upstream.
+    // WebUiListenerMixin drops its listeners on disconnect, so re-register
+    // and refresh on every connect.
     this.addWebUiListener('tor-enabled-changed', (enabled: boolean) => {
-      this.setTorEnabledPref_(enabled)
+      this.torEnabled_ = enabled
     })
     this.browserProxy_.isTorEnabled().then((enabled: boolean) => {
-      this.setTorEnabledPref_(enabled)
+      this.torEnabled_ = enabled
     })
     this.browserProxy_.isTorManaged().then((managed: boolean) => {
       this.isTorManaged_ = managed
@@ -251,13 +214,31 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
         })
       this.addWebUiListener('tor-snowflake-extension-enabled',
         (enabled: boolean) => {
-          this.setTorSnowflakeExtensionEnabledPref_(enabled)
+          this.torSnowflakeExtensionEnabled_ = enabled
       })
       this.browserProxy_.
         isSnowflakeExtensionEnabled().then((enabled:boolean) => {
-          this.setTorSnowflakeExtensionEnabledPref_(enabled)
+          this.torSnowflakeExtensionEnabled_ = enabled
       })
     }
+  }
+
+  override ready() {
+    super.ready()
+
+    if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
+      window.testing = window.testing || {}
+      window.testing['torSubpage'] = this.shadowRoot
+    }
+
+    this.browserProxy_.getBridgesConfig().then((config) => {
+      this.loadedConfig_ = config
+      this.isUsingBridges_ = config.use_bridges !== Usage.NOT_USED
+      this.useBridges_ = config.use_bridges
+      this.builtinBridges_ = config.use_builtin_bridges
+      this.requestedBridges_ = config.requested_bridges.join('\n')
+      this.providedBridges_ = config.provided_bridges.join('\n')
+    })
   }
 
   override currentRouteChanged() {
@@ -354,7 +335,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
       return true
     }
 
-    if (!this.loadedConfig_ || !this.torEnabledPref_.value) {
+    if (!this.loadedConfig_ || !this.torEnabled_) {
       return false
     }
 
@@ -384,7 +365,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
   }
 
   private computeShouldShowBridgesGroup_() {
-    return this.isUsingBridgesPref_.value && this.torEnabledPref_.value
+    return this.isUsingBridges_ && this.torEnabled_
   }
 
   private builtInTypeEqual_(item: unknown, selection: unknown) {
@@ -395,15 +376,6 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
     return usage === current
   }
 
-  private setTorEnabledPref_(enabled: boolean) {
-    const pref = {
-      key: '',
-      type: chrome.settingsPrivate.PrefType.BOOLEAN,
-      value: enabled,
-    }
-    this.torEnabledPref_ = pref
-  }
-
   private onTorEnabledChange_(event: Event) {
     event.stopPropagation()
     this.browserProxy_.
@@ -412,6 +384,8 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
 
   private onUseBridgesChange_(event: Event) {
     event.stopPropagation()
+    this.isUsingBridges_ =
+      (event.target as SettingsToggleButtonElement).checked
     setTimeout(() => {
       this.$.bridgesGroup.scrollIntoView()
     })
@@ -442,22 +416,16 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
     }
   }
 
-  private setTorSnowflakeExtensionEnabledPref_(enabled: boolean) {
-    const pref = {
-      key: '',
-      type: chrome.settingsPrivate.PrefType.BOOLEAN,
-      value: enabled,
-    }
-    this.torSnowflakeExtensionEnabledPref_ = pref
-  }
-
   private onTorSnowflakeExtensionChange_(event: Event) {
     event.stopPropagation()
-    const enabled = (event.target as SettingsToggleButtonElement).checked
-    this.browserProxy_.enableSnowflakeExtension(enabled).
+    const toggle = event.target as SettingsToggleButtonElement
+    this.browserProxy_.enableSnowflakeExtension(toggle.checked).
       catch((reason: String) => {
         console.log(reason)
-        this.setTorSnowflakeExtensionEnabledPref_(false)
+        // The toggle already flipped itself; reset it directly since the
+        // bound value may not change.
+        toggle.checked = false
+        this.torSnowflakeExtensionEnabled_ = false
         this.showTorSnowflakeInstallFailed_ = true
       })
   }

@@ -60,6 +60,7 @@ class ExternalAppURLTabHelper: TabPolicyDecider, @preconcurrency TabObserver {
 
   // MARK: - TabPolicyDecider
 
+  @MainActor
   func tab(
     _ tab: some TabState,
     shouldAllowRequest request: URLRequest,

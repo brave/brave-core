@@ -11,10 +11,8 @@ import { BraveWallet } from '../../../constants/types'
 import {
   LoadingSkeleton, //
 } from '../../../components/shared/loading-skeleton/index'
-import {
-  CoinType,
-  ZCashShieldSyncStatus,
-} from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m'
+import { ZCashShieldSyncStatus } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m'
+import { CoinType } from 'gen/brave/components/brave_wallet/common/mojom/brave_wallet_common.mojom.m'
 import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
 
 const StyledWrapper = styled.div`

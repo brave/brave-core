@@ -11,7 +11,6 @@
 
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -108,47 +107,6 @@ class AssetRatioServiceUnitTest : public testing::Test {
         }));
   }
 
-  void TestGetBuyUrlV1(mojom::OnRampProvider on_ramp_provider,
-                       const std::string& chain_id,
-                       const std::string& address,
-                       const std::string& symbol,
-                       const std::string& amount,
-                       const std::string& currency_code,
-                       const std::string& expected_url,
-                       std::optional<std::string> expected_error) {
-    base::RunLoop run_loop;
-    asset_ratio_service_->GetBuyUrlV1(
-        on_ramp_provider, chain_id, address, symbol, amount, currency_code,
-        base::BindLambdaForTesting(
-            [&](const std::string& url,
-                const std::optional<std::string>& error) {
-              EXPECT_EQ(url, expected_url);
-              EXPECT_EQ(error, expected_error);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
-  }
-
-  void TestGetSellUrl(mojom::OffRampProvider off_ramp_provider,
-                      const std::string& chain_id,
-                      const std::string& symbol,
-                      const std::string& amount,
-                      const std::string& currency_code,
-                      const std::string& expected_url,
-                      std::optional<std::string> expected_error) {
-    base::RunLoop run_loop;
-    asset_ratio_service_->GetSellUrl(
-        off_ramp_provider, chain_id, symbol, amount, currency_code,
-        base::BindLambdaForTesting(
-            [&](const std::string& url,
-                const std::optional<std::string>& error) {
-              EXPECT_EQ(url, expected_url);
-              EXPECT_EQ(error, expected_error);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
-  }
-
  protected:
   std::unique_ptr<AssetRatioService> asset_ratio_service_;
   base::test::TaskEnvironment task_environment_;
@@ -156,29 +114,6 @@ class AssetRatioServiceUnitTest : public testing::Test {
  private:
   network::TestURLLoaderFactory url_loader_factory_;
 };
-
-TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Ramp) {
-  TestGetBuyUrlV1(mojom::OnRampProvider::kRamp, mojom::kMainnetChainId,
-                  "0xdeadbeef", "USDC", "55000000", "USD",
-                  "https://app.ramp.network/"
-                  "?enabledFlows=ONRAMP"
-                  "&userAddress=0xdeadbeef&swapAsset=USDC&fiatValue=55000000"
-                  "&fiatCurrency=USD&hostApiKey="
-                  "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf",
-                  std::nullopt);
-}
-
-TEST_F(AssetRatioServiceUnitTest, GetSellUrl) {
-  TestGetSellUrl(mojom::OffRampProvider::kRamp, mojom::kMainnetChainId,
-                 "ETH_BAT", "250", "USD",
-                 "https://app.ramp.network/"
-                 "?enabledFlows=OFFRAMP"
-                 "&swapAsset=ETH_BAT&offrampAsset=ETH_BAT"
-                 "&swapAmount=250"
-                 "&fiatCurrency=USD&hostApiKey="
-                 "y57zqta99ohs7o2paf4ak6vpfb7wf8ubj9krwtwe",
-                 std::nullopt);
-}
 
 TEST_F(AssetRatioServiceUnitTest, GetPrice) {
   SetInterceptor(R"([
@@ -303,12 +238,14 @@ TEST_F(AssetRatioServiceUnitTest, GetPriceHistory) {
       expected_price_history_response;
 
   auto asset_time_price = brave_wallet::mojom::AssetTimePrice::New();
-  asset_time_price->date = base::Milliseconds(1622733088498);
+  asset_time_price->date =
+      base::Time::FromMillisecondsSinceUnixEpoch(1622733088498);
   asset_time_price->price = "0.8201346624954003";
   expected_price_history_response.push_back(std::move(asset_time_price));
 
   asset_time_price = brave_wallet::mojom::AssetTimePrice::New();
-  asset_time_price->date = base::Milliseconds(1622737203757);
+  asset_time_price->date =
+      base::Time::FromMillisecondsSinceUnixEpoch(1622737203757);
   asset_time_price->price = "0.8096978545029869";
   expected_price_history_response.push_back(std::move(asset_time_price));
 
@@ -444,54 +381,6 @@ TEST_F(AssetRatioServiceUnitTest, GetCoinMarketsUnexpectedResponse) {
 
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_run);
-}
-
-TEST_F(AssetRatioServiceUnitTest, GetStripeBuyURL) {
-  SetInterceptor(R"({
-      "url": "https://crypto.link.com?session_hash=abcdefgh"
-    })");
-
-  TestGetBuyUrlV1(mojom::OnRampProvider::kStripe, mojom::kMainnetChainId,
-                  "0xdeadbeef", "USDC", "55000000", "USD",
-                  "https://crypto.link.com?session_hash=abcdefgh",
-                  std::nullopt);
-
-  // Test with unexpected response
-  SetInterceptor("mischief managed");
-  TestGetBuyUrlV1(mojom::OnRampProvider::kStripe, mojom::kMainnetChainId,
-                  "0xdeadbeef", "USDC", "55000000", "USD", "", "PARSING_ERROR");
-
-  // Test with non 2XX response
-  SetErrorInterceptor("");
-  TestGetBuyUrlV1(mojom::OnRampProvider::kStripe, mojom::kMainnetChainId,
-                  "0xdeadbeef", "USDC", "55000000", "USD", "",
-                  "INTERNAL_SERVICE_ERROR");
-}
-
-TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Coinbase) {
-  // Eth address
-  TestGetBuyUrlV1(
-      mojom::OnRampProvider::kCoinbase, mojom::kMainnetChainId,
-      "0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961", "USDC", "1", "USD",
-      "https://pay.coinbase.com/"
-      "?appId=8072ff71-8469-4fef-9404-7c905e2359c9&defaultExperience=buy&"
-      "presetFiatAmount=1&destinationWallets=%5B%7B%22address%22%3A%"
-      "220xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961%22%2C%22assets%22%3A%5B%"
-      "22USDC%22%5D%2C%22blockchains%22%3A%5B%22ethereum%22%2C%22arbitrum%22%"
-      "2C%22optimism%22%2C%22polygon%22%2C%22avalanche-c-chain%22%2C%22celo%22%"
-      "5D%7D%5D",
-      std::nullopt);
-
-  // Sol address
-  TestGetBuyUrlV1(
-      mojom::OnRampProvider::kCoinbase, mojom::kMainnetChainId,
-      "FBG2vwk2tGKHbEWHSxf7rJGDuZ2eHaaNQ8u6c7xGt9Yv", "SOL", "1", "USD",
-      "https://pay.coinbase.com/"
-      "?appId=8072ff71-8469-4fef-9404-7c905e2359c9&defaultExperience=buy&"
-      "presetFiatAmount=1&destinationWallets=%5B%7B%22address%22%3A%"
-      "22FBG2vwk2tGKHbEWHSxf7rJGDuZ2eHaaNQ8u6c7xGt9Yv%22%2C%22assets%22%3A%5B%"
-      "22SOL%22%5D%2C%22blockchains%22%3A%5B%22solana%22%5D%7D%5D",
-      std::nullopt);
 }
 
 }  // namespace brave_wallet

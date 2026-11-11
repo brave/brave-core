@@ -5,7 +5,6 @@
 
 #include "brave/components/misc_metrics/features.h"
 
-#include "base/feature_list.h"
 #include "base/time/time.h"
 
 namespace misc_metrics::features {
@@ -15,6 +14,6 @@ BASE_FEATURE(kFingerprintInputMetrics, base::FEATURE_DISABLED_BY_DEFAULT);
 BASE_FEATURE(kCaptchaMetricsCollection, base::FEATURE_DISABLED_BY_DEFAULT);
 
 const base::FeatureParam<base::TimeDelta> kFingerprintInputRendererInterval{
-    &kFingerprintInputMetrics, "renderer_interval", base::Hours(10)};
+    &kFingerprintInputMetrics, "renderer_interval", base::Hours(5)};
 
 }  // namespace misc_metrics::features

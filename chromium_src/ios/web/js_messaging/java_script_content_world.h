@@ -8,22 +8,7 @@
 
 #include "base/containers/flat_map.h"
 
-// Add a new function `GetFeatureReplyingToPrompts` and map to the
-// `JavaScriptContentWorld` type which will be used to obtain a
-// `JavaScriptFeature` based on the supplied handler name to call into when
-// handling window prompts
-#define AddFeature(...)                                 \
-  AddFeature(__VA_ARGS__);                              \
-  const JavaScriptFeature* GetFeatureReplyingToPrompts( \
-      const std::string& handler_name)
-#define features_                                       \
-  features_;                                            \
-  base::flat_map<std::string, const JavaScriptFeature*> \
-      prompt_replying_features_
-
+// The plastered header declares a `base::flat_map` member.
 #include <ios/web/js_messaging/java_script_content_world.h>  // IWYU pragma: export
-
-#undef features_
-#undef AddFeature
 
 #endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_JS_MESSAGING_JAVA_SCRIPT_CONTENT_WORLD_H_

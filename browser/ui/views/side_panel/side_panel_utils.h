@@ -27,6 +27,13 @@ gfx::RoundedCornersF GetPanelContentsRoundedCorners(
     BrowserView* browser_view,
     bool flatten_top_for_header = true);
 
+// Returns the inset to reserve on the side panel's outer (window-facing) edge.
+// When the sidebar control view is visible it sits between the panel and the
+// window edge and already supplies that gap through its buttons' horizontal
+// padding, so only the outline thickness is needed; otherwise the panel faces
+// the window chrome directly and reserves the full margin.
+int GetPanelOuterEdgeMargin(BrowserView* browser_view);
+
 // Returns true when the entry with `id` should show Brave's custom side panel
 // header view.
 bool ShouldShowSidePanelHeader(SidePanelEntryId id);

@@ -21,7 +21,6 @@ import prune_test_filters as ptf
 
 
 class PruneTestFiltersTest(unittest.TestCase):
-
     def setUp(self):
         self.temp_dir = tempfile.mkdtemp()
         self.build_dir = Path(self.temp_dir) / "build"
@@ -61,40 +60,47 @@ class PruneTestFiltersTest(unittest.TestCase):
 
         with mock.patch("subprocess.check_output", side_effect=fake):
             tests_by_binary = ptf.collect_tests_per_binary(
-                self.build_dir, "linux")
+                self.build_dir, "linux"
+            )
 
         self.assertIn("foo", tests_by_binary)
-        self.assertEqual(tests_by_binary["foo"],
-                         {"SuiteA.Test1", "SuiteA.Test2"})
+        self.assertEqual(
+            tests_by_binary["foo"], {"SuiteA.Test1", "SuiteA.Test2"}
+        )
 
     def test_scan_filter_files_detects_obsolete(self):
         self.write_filter(
-            "foo.filter", """# header
+            "foo.filter",
+            """# header
 
 - SuiteA.Test1
 - SuiteA.TestMissing
-""")
+""",
+        )
 
         tests_by_binary = {"foo": {"SuiteA.Test1"}}
 
-        result = ptf.scan_filter_files(tests_by_binary,
-                                       current_platform="linux",
-                                       apply=False)
+        result = ptf.scan_filter_files(
+            tests_by_binary, current_platform="linux", apply=False
+        )
 
         self.assertEqual(len(result), 1)
         file_path = next(iter(result))
         self.assertIn("- SuiteA.TestMissing", result[file_path])
 
     def test_scan_filter_files_apply_removes_obsolete(self):
-        path = self.write_filter("foo.filter", """- SuiteA.Test1
+        path = self.write_filter(
+            "foo.filter",
+            """- SuiteA.Test1
 - SuiteA.TestMissing
-""")
+""",
+        )
 
         tests_by_binary = {"foo": {"SuiteA.Test1"}}
 
-        ptf.scan_filter_files(tests_by_binary,
-                              current_platform="linux",
-                              apply=True)
+        ptf.scan_filter_files(
+            tests_by_binary, current_platform="linux", apply=True
+        )
 
         updated = path.read_text()
         self.assertIn("SuiteA.Test1", updated)
@@ -107,9 +113,9 @@ class PruneTestFiltersTest(unittest.TestCase):
 
         tests_by_binary = {"foo": set()}
 
-        result = ptf.scan_filter_files(tests_by_binary,
-                                       current_platform="linux",
-                                       apply=False)
+        result = ptf.scan_filter_files(
+            tests_by_binary, current_platform="linux", apply=False
+        )
 
         # Should not be marked obsolete
         self.assertEqual(result, {})
@@ -119,9 +125,9 @@ class PruneTestFiltersTest(unittest.TestCase):
 
         tests_by_binary = {"foo": {"SuiteA.Test1"}}
 
-        result = ptf.scan_filter_files(tests_by_binary,
-                                       current_platform="linux",
-                                       apply=False)
+        result = ptf.scan_filter_files(
+            tests_by_binary, current_platform="linux", apply=False
+        )
 
         # File should be skipped entirely
         self.assertEqual(result, {})

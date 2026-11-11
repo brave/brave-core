@@ -12,7 +12,6 @@
 #include "base/test/test_future.h"
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/browser_context.h"
@@ -93,14 +92,16 @@ class CookieExpirationTest : public InProcessBrowserTest {
   }
 
   // Set a cookie with JavaScript.
-  void JSDocumentCookieWriteCookie(Browser* browser, std::string age) {
+  void JSDocumentCookieWriteCookie(BrowserWindowInterface* browser,
+                                   std::string age) {
     std::string cookie_string =
         absl::StrFormat("document.cookie = 'name=Test; %s'", age);
     ASSERT_TRUE(content::ExecJs(
         browser->tab_strip_model()->GetActiveWebContents(), cookie_string));
   }
 
-  void JSCookieStoreWriteCookie(Browser* browser, std::string expires_in_ms) {
+  void JSCookieStoreWriteCookie(BrowserWindowInterface* browser,
+                                std::string expires_in_ms) {
     ASSERT_TRUE(
         content::ExecJs(browser->tab_strip_model()->GetActiveWebContents(),
                         absl::StrFormat("(async () => {"
@@ -113,7 +114,8 @@ class CookieExpirationTest : public InProcessBrowserTest {
                                         expires_in_ms)));
   }
 
-  std::vector<net::CanonicalCookie> GetAllCookiesDirect(Browser* browser) {
+  std::vector<net::CanonicalCookie> GetAllCookiesDirect(
+      BrowserWindowInterface* browser) {
     base::RunLoop run_loop;
 
     std::vector<net::CanonicalCookie> cookies_out;

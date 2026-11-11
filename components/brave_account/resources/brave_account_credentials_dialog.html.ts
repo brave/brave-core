@@ -23,19 +23,19 @@ export function getHtml(this: BraveAccountCredentialsDialogElement) {
         : this.isChangePassword()
           ? '$i18n{BRAVE_ACCOUNT_CHANGE_PASSWORD_DIALOG_TITLE}'
           : '$i18n{BRAVE_ACCOUNT_SET_NEW_PASSWORD_DIALOG_TITLE}'}
-      ?show-back-button=${!this.verification}
+      ?show-back-button="${!this.verification}"
     >
       <div slot="inputs">
-        ${this.verification
-          ? nothing
-          : html`<brave-account-email-input
+        ${!this.verification
+          ? html`<brave-account-email-input
               block-brave-alias
               @email-input=${(e: CustomEvent<EmailInputEventDetail>) => {
                 this.email = e.detail.email
                 this.isEmailValid = e.detail.isValid
               }}
             >
-            </brave-account-email-input>`}
+            </brave-account-email-input>`
+          : nothing}
         <brave-account-password-input
           .config=${{
             mode: 'strength',
@@ -67,11 +67,11 @@ export function getHtml(this: BraveAccountCredentialsDialogElement) {
       </div>
       <leo-button
         slot="buttons"
-        ?isDisabled=${(!this.verification && !this.isEmailValid)
+        ?isDisabled="${(!this.verification && !this.isEmailValid)
         || !this.isPasswordValid
         || !this.isPasswordStrongEnough
         || this.passwordConfirmation !== this.password
-        || this.isSubmitting}
+        || this.isSubmitting}"
         @click=${this.onSubmitButtonClicked}
       >
         ${!this.verification

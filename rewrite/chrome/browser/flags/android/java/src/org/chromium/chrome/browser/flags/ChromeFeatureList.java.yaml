@@ -5,14 +5,11 @@
 
 substitutions:
   - description: |-
-      Show the bottom bar on the NTP by default.
+      Ship the AndroidTipsNotifications safe default disabled.
 
-      Brave's New Tab Page keeps the real address bar rather than replacing it
-      with a fakebox, so there is no reason to take the bottom bar away there.
-      Options of the flag that set `disable_on_ntp` themselves still win, this
-      only moves the value the plain "Enabled" option falls back to.
+      Matches the C++ default Brave sets for kAndroidTipsNotifications, so the
+      tips opt-in promo stays off before native flags are cached.
     regex:
-      re_pattern: |-
-        (newBooleanCachedFeatureParam\(ANDROID_BOTTOM_BAR, "disable_on_ntp", )true\)
-      replace: |-
-        \1false)
+      pattern: 'newMutableFlagWithSafeDefault(ANDROID_TIPS_NOTIFICATIONS, true)'
+      replace:
+        'newMutableFlagWithSafeDefault(ANDROID_TIPS_NOTIFICATIONS, false)'

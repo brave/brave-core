@@ -17,7 +17,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -181,7 +180,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserFrameViewTest,
   ScopedLinuxUiGetter scoped_getter(&fake_getter);
   ThemeServiceFactory::GetForProfile(browser()->GetProfile())->UseSystemTheme();
 
-  Browser* gtk_browser = CreateBrowser(browser()->GetProfile());
+  BrowserWindowInterface* gtk_browser = CreateBrowser(browser()->GetProfile());
   auto* native_frame = views::AsViewClass<BraveBrowserFrameViewLinuxNative>(
       BrowserView::GetBrowserViewForBrowser(gtk_browser)
           ->browser_widget()

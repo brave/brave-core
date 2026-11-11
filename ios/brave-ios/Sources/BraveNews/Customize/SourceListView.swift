@@ -24,7 +24,7 @@ struct SourceListContainerView: View {
   var body: some View {
     return SourceListView(
       sources: localizedSourcesByRank,
-      isFollowing: { dataSource.isFollowingSourceBinding(source: $0) }
+      isFollowing: { $dataSource[isFollowing: $0] }
     )
   }
 }

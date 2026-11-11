@@ -10,7 +10,6 @@
   DoHistoryQueryUnused();                                     \
   friend class BraveSearchProvider;                           \
   friend class BraveSearchProviderTest;                       \
-  bool IsBraveRichSuggestion(bool is_keyword);                \
                                                               \
  public:                                                      \
   virtual class BraveSearchProvider* AsBraveSearchProvider(); \

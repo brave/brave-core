@@ -1,0 +1,28 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |
+      Let Brave supply the Android accent color
+
+      Upstream Android never reports an accent color, so the ColorProviderKey
+      for web contents has no `user_color` and WebUI colors (e.g.
+      chrome://theme/colors.css) always use the baseline palette. Brave sets the
+      accent (the Material You dynamic color, when enabled) from Java via
+      `SetAccentColor()`. Implemented in
+      `brave/chromium_src/ui/native_theme/os_settings_provider_android.cc`.
+    add_to_public:
+      class_name: OsSettingsProviderAndroid
+      code: |-
+        std::optional<SkColor> AccentColor() const override;
+        void SetAccentColor(std::optional<SkColor> accent_color);
+
+  - description: 'Storage for the accent color set by `SetAccentColor()`'
+    add_to_protected:
+      class_name: OsSettingsProviderAndroid
+      code: |-
+        std::optional<SkColor> accent_color_;

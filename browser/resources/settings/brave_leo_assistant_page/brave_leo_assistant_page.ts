@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import '//resources/cr_elements/md_select.css.js'
+import '/shared/settings/md_select.css.js'
 import 'chrome://resources/brave/leo.bundle.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
-import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
+import {WebUiListenerMixin} from '/shared/settings/web_ui_listener_mixin.js'
+import {PrefServiceObserverMixin} from '/shared/settings/prefs2/pref_service_observer_mixin.js'
 import {Router} from '../router.js'
 import {loadTimeData} from '../i18n_setup.js'
 import {routes} from '../route.js';
@@ -19,7 +19,7 @@ import {BraveLeoAssistantBrowserProxy,
   from './brave_leo_assistant_browser_proxy.js'
 
 const BraveLeoAssistantPageBase =
-  WebUiListenerMixin(I18nMixin(PrefsMixin(PolymerElement)))
+  WebUiListenerMixin(I18nMixin(PrefServiceObserverMixin(PolymerElement)))
 
 /**
  * 'settings-brave-leo-assistant-page' is the settings page containing
@@ -36,11 +36,13 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
 
     static get properties() {
       return {
-        leoAssistantShowOnToolbarPref_: {
+        leoAssistantShowOnToolbar_: {
           type: Boolean,
           value: false,
           notify: true,
         },
+        tabOrganizationEnabledPref_: Object,
+        historyEmbeddingsEnabledPref_: Object,
         isPremiumUser_: {
           type: Boolean,
           value: false,
@@ -55,14 +57,24 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
           value: () => loadTimeData.getBoolean(
             'isTabOrganizationFeatureEnabled')
         },
+        isHistoryEmbeddingsFeatureEnabled_: {
+          type: Boolean,
+          value: () => loadTimeData.getBoolean(
+            'isHistoryEmbeddingsFeatureEnabled')
+        },
       }
     }
 
     private declare isPremiumUser_: boolean
+    private declare tabOrganizationEnabledPref_:
+      chrome.settingsPrivate.PrefObject<boolean> | undefined
+    private declare historyEmbeddingsEnabledPref_:
+      chrome.settingsPrivate.PrefObject<boolean> | undefined
 
     declare isHistoryFeatureEnabled_: boolean
     declare isTabOrganizationFeatureEnabled_: boolean
-    declare leoAssistantShowOnToolbarPref_: boolean
+    declare isHistoryEmbeddingsFeatureEnabled_: boolean
+    declare leoAssistantShowOnToolbar_: boolean
     premiumStatus_: PremiumStatus = PremiumStatus.Unknown
     browserProxy_: BraveLeoAssistantBrowserProxy =
       BraveLeoAssistantBrowserProxyImpl.getInstance()
@@ -76,6 +88,14 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       }
     }
 
+    override connectedCallback() {
+      super.connectedCallback()
+      this.mirrorPrefs({
+        'brave.ai_chat.tab_organization_enabled': 'tabOrganizationEnabledPref_',
+        'brave.history_embeddings_enabled': 'historyEmbeddingsEnabledPref_',
+      })
+    }
+
     override ready () {
       super.ready()
 
@@ -84,7 +104,7 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
 
       this.addWebUiListener('settings-brave-leo-assistant-changed',
       (isLeoVisible: boolean) => {
-        this.leoAssistantShowOnToolbarPref_ = isLeoVisible
+        this.leoAssistantShowOnToolbar_ = isLeoVisible
       })
 
       this.browserProxy_.getSettingsHelper().getManageUrl()
@@ -100,18 +120,9 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       })
     }
 
-    itemPref_(enabled: boolean) {
-      return {
-        key: '',
-        type: chrome.settingsPrivate.PrefType.BOOLEAN,
-        value: enabled,
-      }
-    }
-
-
     private updateShowLeoAssistantIcon_() {
       this.browserProxy_.getLeoIconVisibility().then((result) => {
-        this.leoAssistantShowOnToolbarPref_ = result
+        this.leoAssistantShowOnToolbar_ = result
       })
     }
 
@@ -140,6 +151,10 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
 
     openManageAccountPage_() {
       window.open(this.manageUrl_, "_self", "noopener noreferrer")
+    }
+
+    openHistorySettings_() {
+      Router.getInstance().navigateTo(routes.PRIVACY)
     }
 
     openTabOrganizationLearnMore_() {

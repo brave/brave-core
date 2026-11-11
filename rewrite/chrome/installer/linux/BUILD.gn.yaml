@@ -1,0 +1,113 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Make the Brave build config available.
+    add_import:
+      import: //brave/build/config.gni
+
+  - description: |-
+      Package the Brave executables
+
+      Adjusted before the binaries list is derived from them.
+    add_before_line:
+      line:
+        packaging_files_binaries = packaging_files_executables +
+        packaging_files_shlibs
+      code: |
+        packaging_files_executables -= excluded_packaging_files_executables
+        packaging_files_executables += brave_packaging_files_executables
+
+  - description: Strip the Brave binary.
+    append_to_target:
+      target: strip_chrome_binary
+      code: |-
+        binary_input = "$root_out_dir/brave"
+        symbol_output = "$root_out_dir/brave.debug"
+        stripped_binary_output = "$root_out_dir/brave.stripped"
+
+  - description: Build the Brave binary before stripping it.
+    add_literal_to_list:
+      target: strip_chrome_binary
+      list_name: deps
+      literal: strip_chrome_binary_deps
+
+  - description: Strip the Brave sandbox.
+    append_to_target:
+      target: strip_chrome_sandbox
+      code: |-
+        binary_input = "$root_out_dir/brave_sandbox"
+        symbol_output = "$root_out_dir/brave_sandbox.debug"
+        stripped_binary_output = "$root_out_dir/brave_sandbox.stripped"
+
+  - description: Build the Brave sandbox before stripping it.
+    add_literal_to_list:
+      target: strip_chrome_sandbox
+      list_name: deps
+      literal: strip_chrome_sandbox_deps
+
+  - description: Swap the upstream packaging files Brave replaces for its own.
+    append_to_target:
+      target: common_packaging_files
+      code: |-
+        sources -= common_packaging_files_excluded_sources
+        sources += common_packaging_files_sources
+
+  - description: Add the Brave installer deps.
+    add_literal_to_list:
+      target: installer_deps
+      list_name: public_deps
+      literal: brave_installer_deps
+
+  - description: Name the unstable channel dev, as Brave ships it.
+    add_after_line:
+      line: channel = invoker.channel
+      code: |2-
+          if (channel == "unstable") {
+            channel = "dev"
+          }
+
+  - description: Name and version the package as Brave.
+    add_after_line:
+      line: package = "chromium-browser"
+      code: |2-
+            package = brave_linux_package_name
+            chrome_version_full = brave_version
+
+  - description: |-
+      Name the Debian package as Brave does
+
+      No channel suffix on stable, and no package revision on any channel.
+    add_after_line:
+      line:
+        outputs = [
+        "$root_out_dir/${package}-${channel}_${chrome_version_full}-1_${deb_arch}.deb"
+        ]
+      code: |2-
+            outputs = []
+            if (channel == "stable") {
+              outputs = [ "$root_out_dir/${package}_${chrome_version_full}_${deb_arch}.deb" ]
+            } else {
+              outputs = [ "$root_out_dir/${package}-${channel}_${chrome_version_full}_${deb_arch}.deb" ]
+            }
+
+  - description: Leave the channel suffix off the stable RPM package.
+    add_after_line:
+      line:
+        outputs = [
+        "$root_out_dir/${package}-${channel}-${chrome_version_full}-1.${rpm_arch}.rpm"
+        ]
+      code: |2-
+              if (channel == "stable") {
+                outputs = []
+                outputs = [ "$root_out_dir/${package}-${chrome_version_full}-1.${rpm_arch}.rpm" ]
+              }
+
+  - description: Add the nightly channel package.
+    add_at_end_of_the_file:
+      code: |-
+        linux_package("nightly") {
+          channel = "nightly"
+        }

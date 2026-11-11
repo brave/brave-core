@@ -9,9 +9,10 @@ source_set("layout_provider") {
     "brave_layout_provider.h",
   ]
 
+  public_deps = [ "//chrome/browser/ui/views:layout_provider" ]
+
   deps = [
     "//base",
-    "//chrome/browser/ui/views:layout_provider",
     "//ui/views",
   ]
 }

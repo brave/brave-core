@@ -11,7 +11,6 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"

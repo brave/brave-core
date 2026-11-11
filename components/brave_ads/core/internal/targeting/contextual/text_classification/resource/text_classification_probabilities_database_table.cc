@@ -61,7 +61,7 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
   return row_count;
 }
 
-void GetAllCallback(
+void LoadCallback(
     GetTextClassificationProbabilitiesCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
   if (!IsTransactionSuccessful(mojom_db_transaction_result)) {
@@ -209,7 +209,7 @@ void TextClassificationProbabilities::DeleteAll(ResultCallback callback) {
                  std::move(callback));
 }
 
-void TextClassificationProbabilities::GetAll(
+void TextClassificationProbabilities::Load(
     GetTextClassificationProbabilitiesCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
@@ -237,7 +237,7 @@ void TextClassificationProbabilities::GetAll(
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                 base::BindOnce(&GetAllCallback, std::move(callback)));
+                 base::BindOnce(&LoadCallback, std::move(callback)));
 }
 
 void TextClassificationProbabilities::Create(

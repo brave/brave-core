@@ -23,7 +23,7 @@
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
-#include "brave/components/ntp_background_images/browser/ntp_sponsored_sites_data.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/site/ntp_sponsored_sites_data.h"
 #include "brave/components/ntp_background_images/browser/test/fake_ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"

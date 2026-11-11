@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">Kikapcsolva</translation>
 <translation id="59174027418879706">Engedélyezve</translation>
 <translation id="6920492760024499150">A mai nap legfontosabb eseményei privát hírfolyamban, csak az Ön számára.</translation>
-<translation id="3803728444598576153">A Brave-hírek bekapcsolásával egyetlen történetről sem marad le</translation>
+<translation id="3803728444598576153">Kapcsolja be a Brave híreket, és soha ne maradjon le egyetlen történetről sem</translation>
 <translation id="7627131190984957214">A Brave Híreket privát és anonimizált hirdetésekkel tartjuk fenn, amelyek illeszkednek az Ön készülékéhez.</translation>
-<translation id="7897050360583141319">Kövesse a kedvenc forrásait, egy csatornán. Csak nyisson meg egy lapot a Brave-ben, görgessen le, és tessék!\nA Brave híreket teljesen privát és anonim hirdetések támogatják.</translation>
+<translation id="7897050360583141319">Kövesse a kedvenc forrásait, egy csatornán. Csak nyisson meg egy lapot a Brave-ben, görgessen le, és tessék!</translation>
 <translation id="1765217911817124376">A Brave News bekapcsolása</translation>
 <translation id="8981973962043893066">Keresés oldalra, témára vagy RSS-csatornára</translation>
 <translation id="3225021799163709119">Népszerű</translation>
@@ -190,9 +190,9 @@
 <translation id="5987838417172370108">Segítsen fejleszteni a Brave termékstabilitását azáltal, hogy engedélyezi a diagnosztikai jelentések automatikus elküldését a Brave böngésző összeomlása vagy lefagyása esetén.</translation>
 <translation id="7977176350719484850">Becs. adatok\nmentve</translation>
 <translation id="9008534313521214777">Becsült megtakarított\nidő</translation>
-<translation id="8347743943525229984">Brave felmérések engedélyezése</translation>
-<translation id="6022939994702081659">Engedélyezi, hogy a Brave privát kérdőívekre mutató hivatkozásokat jelenítsen meg az új lap oldalon. A kérdőívek segítenek jobb funkciókat létrehozni, és mérni a böngészőalapú hirdetési kampányok hatékonyságát.</translation>
-<translation id="7746496306508543965">Tudjon meg többet a Brave-felmérésekről</translation>
+<translation id="5668852698659986622">Szponzorált hirdetések engedélyezése</translation>
+<translation id="431194936581466649">Támogassa a Brave küldetését, hogy egy független, felhasználó-központú webet építsen a szponzorált hirdetésekkel. A hirdetések teljesítményét privát módon mérjük, anélkül, hogy azonosítanánk Önt.</translation>
+<translation id="1939813747486101115">Tudj meg többet a szponzorált hirdetésekről</translation>
 <translation id="410351446219883937">Automatikus lejátszás</translation>
 <translation id="7445411102860286510">Lehetővé teszi a webhelyek számára a némított videók automatikus lejátszását (ajánlott)</translation>
 <translation id="7837721118676387834">A némított videók automatikus lejátszásának engedélyezése az adott webhelyen.</translation>
@@ -250,7 +250,6 @@
 <translation id="6213254277250932867">12 szavas helyreállítási kifejezésem van</translation>
 <translation id="4225265925807365011">24 szavas helyreállítási kifejezésem van</translation>
 <translation id="3570367516044491911">Beállítás alapértelmezett böngészőként</translation>
-<translation id="6800338374677644736">Beállítás alapértelmezett böngészőként</translation>
 <translation id="1545749641540134597">QR-kód beolvasása</translation>
 <translation id="5317781812114905957">Utasítások</translation>
 <translation id="8515319483805157233">A QR-kód alapján történő kereséshez helyezze a QR-kódot a keret közepéhez.</translation>
@@ -282,7 +281,6 @@
 <translation id="5582839680698949063">Főmenü</translation>
 <translation id="7002271985859760052">Oldalműveletek</translation>
 <translation id="7104487676473617844">A következő elemek csak akkor jelennek meg a menüben, ha az aktuálisan megnyitott weboldal támogatja őket.</translation>
-<translation id="4159764849281393303">WebApp</translation>
 <translation id="8038539967102225446">Itt vannak a Brave Hirdetések!</translation>
 <translation id="222883304157347087">(ez a készülék)</translation>
 <translation id="4157741509680155021">KÉSZÜLÉKEK A fSZINKRONLÁNCON</translation>
@@ -291,7 +289,7 @@
 <translation id="2569646144216067185">Szavak száma: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Rossz szinkronizálási kód</translation>
 <translation id="8284063834901328650">Rossz szinkronizálási QR-kód</translation>
-<translation id="859506441384380749">Ezt a kódot a Brave egy elavult verziója generálta; kérjük, előbb frissítse a másik eszközt</translation>
+<translation id="4002014583969312635">Úgy tűnik, ezt a kódot a Brave régebbi verzióját használó eszközön hozták létre. Frissítsen a legújabb Brave-verzióra a másik eszközén, majd hozzon létre új szinkronizálási kódot.</translation>
 <translation id="3132642509209154999">Ez a kód lejárt. Generáljon egy újat a másik eszközén, majd próbálja újra.</translation>
 <translation id="2859229680945501779">Ez a kód érvénytelen. Ellenőrizze, hogy az eszköze idő- és időzóna-beállításai helyesek-e.</translation>
 <translation id="3149880132460839085">Brave szinkronizáció</translation>
@@ -337,8 +335,6 @@
 <translation id="8185825081026121627">Általános figyelmi zsetont szerezhet, ha adatvádelmi Brave Rewards hirdetéseket néz meg.</translation>
 <translation id="5321518976657560663">Újraállítási hiba</translation>
 <translation id="4114170343590425996">Hiba történt a Brave Rewards újraállításakor. Indítsa újra a Brave-et, majd próbálja újra.</translation>
-<translation id="6417420737057016607">Brave hirdetések</translation>
-<translation id="5611966874859284786">Mutasson értesítéseket, amikor a Brave nincs használatban</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>A Brave-jutalmak adatainak visszaállítása…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>A Brave-jutalmak adatainak törlése…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Könyvjelző hozzáadása</translation>
@@ -397,6 +393,13 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="8793108040181436796">Widgetek</translation>
 <translation id="8643377320501056697">Legjobb oldalak mutatása</translation>
 <translation id="7275773481201277457">Brave statisztikák mutatása</translation>
+<translation id="8516804522688861636">Gyakran látogatott oldalak mutatása</translation>
+<translation id="4546260624932151782">Kedvencek mutatása</translation>
+<translation id="5313967007315987356">Webhely hozzáadása</translation>
+<translation id="1773147648972887693">Gyakran látogatottak mutatása</translation>
+<translation id="7134741506051403308">Modul elrejtése</translation>
+<translation id="1247759249260562308">Kedvenc szerkesztése</translation>
+<translation id="6387214885349500492">Kedvenc rögzítése</translation>
 <translation id="7462178177755090262">Kezdőképernyő</translation>
 <translation id="5365434987337264071">Utoljára megnyitott lap</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Új lap <ph name="HOURS_ONE"/> óra tétlenség után} other {Új lap <ph name="HOURS_MANY"/> óra tétlenség után}}</translation>
@@ -720,6 +723,8 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="1634828734222219955">Összesen</translation>
 <translation id="7995708795274219641">Összeg + gáz</translation>
 <translation id="2186011161688824046">Összeg + díj</translation>
+<translation id="1118876217803190221">Nincs fedezet</translation>
+<translation id="275990379543116961">Nincs elegendő fedezet a gashez</translation>
 <translation id="1950052789869821983">Tranzakció</translation>
 <translation id="2304783958703511257">Speciális beállítások</translation>
 <translation id="4220062530885628403">Nonce</translation>
@@ -969,6 +974,7 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="6365389672683343144">A Brave VPN-előfizetésével legfeljebb 5 eszközt tud biztonságban, legyen szó Androidos, iOS vagy asztali alkalmazásról. Csak kapcsolja a Google Play-előfizetését a Brave-fiókjához.</translation>
 <translation id="6610899852831463073">Nem engedélyezhető a biztonságos böngészés</translation>
 <translation id="7954263306665462056">A biztonságos böngészés le van tiltva az Ön eszközén. Az engedélyezéshez győződjön meg arról, hogy a Google Play-szolgáltatások telepítve vannak és naprakészek-e!</translation>
+<translation id="6417420737057016607">Brave hirdetések</translation>
 <translation id="7748944510530490017">Elsődleges hálózatok</translation>
 <translation id="2781668117338732220">Másodlagos hálózatok</translation>
 <translation id="282560918037172384">Teszthálózatok</translation>
@@ -995,6 +1001,13 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="7530313002494358590">A Brave-funkciók engedélyezése vagy letiltása böngésző-újraindítást igényel a módosítások alkalmazásához. Kérjük, kattintson a <ph name="BEGIN_BOLD"/>Újraindítás most<ph name="END_BOLD"/> gombra, miután a Brave Origin befejezte a frissítést.</translation>
 <translation id="1028940738207645746">Biztosan visszaállítja az összes beállítást az alapértelmezettre?</translation>
 <translation id="5939518447894949180">Visszaállítás</translation>
+<translation id="3222790865318305905">Aktiválási korlát elérve</translation>
+<translation id="3787857711016546034">A csalás megelőzése érdekében az Origin-aktiválások száma korlátozott. De bármikor kérhet több aktiválást, hogy az Origin-licencét több eszközön is használhassa. Csak kattintson a Több aktiválás kérése lehetőségre, vagy <ph name="CONTACT_SUPPORT"/> segítségért.</translation>
+<translation id="6760819753412779585">lépjen kapcsolatba az ügyfélszolgálattal</translation>
+<translation id="571697836019670200">Több aktiválás kérése</translation>
+<translation id="9019545131475425538">Feldolgozás…</translation>
+<translation id="7242700630179071243">Készen áll az aktiválásra</translation>
+<translation id="5463918917265356202">A Brave Origin most már aktív ezen az eszközön. A funkció használatának megkezdéséhez újra kell indítania a böngészőt. Szeretné most újraindítani?</translation>
 <translation id="8554205386170195281">Vásárlás</translation>
 <translation id="8613144770663526433">Bejelentkezés a Brave pénztárcával</translation>
 <translation id="3696514931437952995">A következőbe jelentkezik be: <ph name="ORIGIN"/>. A Brave pénztárca meg fogja osztani a pénztárcája címét a következővel: <ph name="ORIGIN"/>.</translation>

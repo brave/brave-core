@@ -5,30 +5,34 @@
 
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_mini_toolbar.h"
 
-#include "base/i18n/rtl.h"
+#include <memory>
+
 #include "brave/browser/ui/brave_scheme_utils.h"
-#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
-#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
-#include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
+#include "brave/browser/ui/views/frame/split_view/brave_contents_container_outline.h"
 #include "brave/components/vector_icons/vector_icons.h"
-#include "chrome/browser/ui/layout_constants.h"
-#include "chrome/browser/ui/views/frame/themed_background.h"
-#include "third_party/skia/include/core/SkMatrix.h"
-#include "third_party/skia/include/core/SkPath.h"
-#include "third_party/skia/include/core/SkPathBuilder.h"
+#include "chrome/browser/ui/views/frame/contents_container_outline.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/color/color_provider.h"
-#include "ui/gfx/canvas.h"
 #include "ui/gfx/vector_icon_types.h"
 #include "ui/views/controls/button/image_button.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/layout/flex_layout.h"
 
 namespace {
+// Upstream keeps its own copy of this file-local, so we cannot share it. The
+// notch radius we do share: it belongs to the outline, which draws it.
 constexpr int kMiniToolbarContentPadding = 4;
-constexpr int kMiniToolbarOutlineCornerRadius = 8;
 }  // namespace
+
+// Declared by chromium_src/chrome/browser/ui/views/frame/
+// contents_container_view.cc so that upstream's constructor builds our toolbar
+// from the start, instead of us replacing the one it would have created.
+std::unique_ptr<MultiContentsViewMiniToolbar> CreateBraveMiniToolbar(
+    BrowserView* browser_view,
+    ContentsWebView* contents_view) {
+  return std::make_unique<BraveMultiContentsViewMiniToolbar>(browser_view,
+                                                             contents_view);
+}
 
 // static
 const gfx::VectorIcon& MultiContentsViewMiniToolbar::GetMoreVerticalIcon() {
@@ -89,114 +93,30 @@ void BraveMultiContentsViewMiniToolbar::UpdateState(bool is_active,
 
   // The leading margin must clear the curved inner side when the favicon is
   // displayed.
-  const int leading_margin =
-      domain_visible
-          ? kMiniToolbarOutlineCornerRadius * 2
-          : kMiniToolbarOutlineCornerRadius + kMiniToolbarContentPadding;
+  const int leading_margin = domain_visible
+                                 ? ContentsContainerOutline::kCornerRadius * 2
+                                 : ContentsContainerOutline::kCornerRadius +
+                                       kMiniToolbarContentPadding;
 
   // Without a split border, the trailing child needs its own padding.
-  int trailing_margin = kMiniToolbarOutlineCornerRadius;
+  int trailing_margin = ContentsContainerOutline::kCornerRadius;
   if (UsesSplitBorder()) {
-    trailing_margin =
-        domain_visible ? GetOutlineThickness() : GetOutlineThickness() * 2;
+    // Otherwise clear the ring that BraveContentsContainerOutline strokes down
+    // this side.
+    using OutlineStyle = BraveContentsContainerOutline::Style;
+    const int stroke = BraveContentsContainerOutline::GetStrokeThickness(
+        is_active_ ? OutlineStyle::kSplitActive : OutlineStyle::kSplitInactive);
+    trailing_margin = domain_visible ? stroke : stroke * 2;
   }
 
   static_cast<views::FlexLayout*>(GetLayoutManager())
       ->SetInteriorMargin(gfx::Insets::TLBR(
-          kMiniToolbarOutlineCornerRadius + kMiniToolbarContentPadding,
+          ContentsContainerOutline::kCornerRadius + kMiniToolbarContentPadding,
           leading_margin, kMiniToolbarContentPadding, trailing_margin));
-
-  UpdateClipPath();
-}
-
-void BraveMultiContentsViewMiniToolbar::OnBoundsChanged(
-    const gfx::Rect& previous_bounds) {
-  UpdateClipPath();
-}
-
-void BraveMultiContentsViewMiniToolbar::OnPaint(gfx::Canvas* canvas) {
-  // Bypassing MultiContentsViewMiniToolbar::OnPaint() and Paint the mini
-  // toolbar background to match the toolbar.
-  ThemedBackground::PaintBackground(canvas, this, browser_view_);
-
-  // Draw the bordering stroke.
-  cc::PaintFlags flags;
-  flags.setStrokeWidth(GetOutlineThickness() * 2);
-  flags.setColor(GetColorProvider()->GetColor(GetStrokeColor()));
-  flags.setStyle(cc::PaintFlags::kStroke_Style);
-  flags.setAntiAlias(true);
-  SkPath path = GetPath(/*border_stroke_only=*/true);
-  canvas->DrawPath(path, flags);
 }
 
 bool BraveMultiContentsViewMiniToolbar::UsesSplitBorder() const {
   return style_ != Style::kStandalone;
-}
-
-ui::ColorId BraveMultiContentsViewMiniToolbar::GetStrokeColor() const {
-  if (!UsesSplitBorder()) {
-    return kColorBraveContentsOutline;
-  }
-
-  return is_active_ ? kColorBraveSplitViewActiveWebViewBorder
-                    : kColorBraveSplitViewInactiveWebViewBorder;
-}
-
-int BraveMultiContentsViewMiniToolbar::GetOutlineThickness() const {
-  if (!UsesSplitBorder()) {
-    return kRoundedCornersContentsOutlineThickness;
-  }
-
-  return is_active_ ? BraveContentsContainerView::kBorderThickness
-                    : BraveContentsContainerView::kBorderThickness / 2;
-}
-
-int BraveMultiContentsViewMiniToolbar::GetContainerBorderThickness() const {
-  return UsesSplitBorder() ? BraveContentsContainerView::kBorderThickness
-                           : kRoundedCornersContentsOutlineThickness;
-}
-
-SkPath BraveMultiContentsViewMiniToolbar::GetPath(
-    bool border_stroke_only) const {
-  const gfx::Rect local_bounds = GetLocalBounds();
-  const int border_thickness = GetContainerBorderThickness();
-  SkPathBuilder path;
-  path.moveTo(0, local_bounds.height() - border_thickness);
-  path.arcTo({kMiniToolbarOutlineCornerRadius, kMiniToolbarOutlineCornerRadius},
-             0, SkPathBuilder::kSmall_ArcSize, SkPathDirection::kCCW,
-             {kMiniToolbarOutlineCornerRadius,
-              static_cast<float>(local_bounds.height() -
-                                 kMiniToolbarOutlineCornerRadius)});
-  path.lineTo(kMiniToolbarOutlineCornerRadius,
-              kMiniToolbarOutlineCornerRadius * 2);
-  path.arcTo(
-      {kMiniToolbarOutlineCornerRadius, kMiniToolbarOutlineCornerRadius},
-      270.0f, SkPathBuilder::kSmall_ArcSize, SkPathDirection::kCW,
-      {kMiniToolbarOutlineCornerRadius * 2, kMiniToolbarOutlineCornerRadius});
-  path.lineTo(local_bounds.width() - kMiniToolbarOutlineCornerRadius,
-              kMiniToolbarOutlineCornerRadius);
-  path.arcTo({kMiniToolbarOutlineCornerRadius, kMiniToolbarOutlineCornerRadius},
-             0, SkPathBuilder::kSmall_ArcSize, SkPathDirection::kCCW,
-             {static_cast<float>(local_bounds.width() - border_thickness), 0});
-  if (!border_stroke_only) {
-    path.lineTo(local_bounds.width(), 0);
-    path.lineTo(local_bounds.width(), local_bounds.height());
-    path.lineTo(0, local_bounds.height());
-    path.lineTo(0, local_bounds.height() - border_thickness);
-  }
-  if (base::i18n::IsRTL()) {
-    // Mirror if in RTL.
-    gfx::Point center = local_bounds.CenterPoint();
-    SkMatrix flip;
-    flip.setScale(-1, 1, center.x(), center.y());
-    path.transform(flip);
-  }
-  return path.detach();
-}
-
-void BraveMultiContentsViewMiniToolbar::UpdateClipPath() {
-  // Clip the curved inner side of the mini toolbar.
-  SetClipPath(GetPath(/*border_stroke_only=*/false));
 }
 
 BEGIN_METADATA(BraveMultiContentsViewMiniToolbar)

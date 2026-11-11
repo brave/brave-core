@@ -6,7 +6,6 @@
 #include "brave/components/ai_chat/content/browser/ai_chat_brave_search_throttle.h"
 
 #include <string>
-#include <type_traits>
 #include <utility>
 
 #include "base/check.h"
@@ -16,6 +15,7 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/utils.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/permission_controller.h"
@@ -24,7 +24,6 @@
 #include "content/public/browser/permission_result.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
-#include "third_party/blink/public/mojom/permissions/permission_status.mojom-shared.h"
 
 namespace content {
 class RenderFrameHost;
@@ -78,12 +77,17 @@ AIChatBraveSearchThrottle::WillStartRequest() {
     return content::NavigationThrottle::PROCEED;
   }
 
+  // Null for contents outside a tab, e.g. a <webview> guest.
+  auto* tab_helper = AIChatTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
+  if (!tab_helper) {
+    return content::NavigationThrottle::PROCEED;
+  }
+
   // Check if nonce in HTML tag matches the one in the URL.
-  AIChatTabHelper::FromWebContents(web_contents)
-      ->web_contents_content()
-      .GetOpenAIChatButtonNonce(
-          base::BindOnce(&AIChatBraveSearchThrottle::OnGetOpenAIChatButtonNonce,
-                         weak_factory_.GetWeakPtr()));
+  tab_helper->web_contents_content().GetOpenAIChatButtonNonce(
+      base::BindOnce(&AIChatBraveSearchThrottle::OnGetOpenAIChatButtonNonce,
+                     weak_factory_.GetWeakPtr()));
   return content::NavigationThrottle::DEFER;
 }
 
@@ -93,10 +97,14 @@ void AIChatBraveSearchThrottle::OpenAIChatWithStagedEntries() {
     return;
   }
 
+  auto* tab_helper = AIChatTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
+  if (!tab_helper) {
+    return;
+  }
+
   ai_chat_service_->OpenConversationWithStagedEntries(
-      AIChatTabHelper::FromWebContents(web_contents)
-          ->web_contents_content()
-          .GetWeakPtr(),
+      tab_helper->web_contents_content().GetWeakPtr(),
       base::BindOnce(&AIChatBraveSearchThrottle::OnOpenAIChat,
                      weak_factory_.GetWeakPtr()));
 }
@@ -136,6 +144,9 @@ void AIChatBraveSearchThrottle::OnGetOpenAIChatButtonNonce(
     OpenAIChatWithStagedEntries();
     CancelDeferredNavigation(content::NavigationThrottle::CANCEL);
   } else {  // ask
+    // The prompt is only shown once the tab has no uncommitted navigation, so
+    // the navigation is cancelled right after the request is made, and the
+    // result is handled independently of this throttle.
     permission_controller->RequestPermissionFromCurrentDocument(
         rfh,
         content::PermissionRequestDescription(
@@ -144,17 +155,38 @@ void AIChatBraveSearchThrottle::OnGetOpenAIChatButtonNonce(
                     blink::PermissionType::BRAVE_OPEN_AI_CHAT),
             /*user_gesture=*/true),
         base::BindOnce(&AIChatBraveSearchThrottle::OnPermissionPromptResult,
-                       weak_factory_.GetWeakPtr()));
+                       web_contents->GetWeakPtr(),
+                       std::move(open_ai_chat_delegate_),
+                       base::Unretained(ai_chat_service_.get())));
+    CancelDeferredNavigation(content::NavigationThrottle::CANCEL);
   }
 }
 
+// static
 void AIChatBraveSearchThrottle::OnPermissionPromptResult(
+    base::WeakPtr<content::WebContents> web_contents,
+    base::OnceCallback<void(content::WebContents*)> open_ai_chat_delegate,
+    AIChatService* ai_chat_service,
     content::PermissionResult status) {
-  if (status.status == content::PermissionStatus::GRANTED) {
-    OpenAIChatWithStagedEntries();
+  // `ai_chat_service` outlives the WebContents of its BrowserContext.
+  if (!web_contents || status.status != content::PermissionStatus::GRANTED) {
+    return;
   }
-
-  CancelDeferredNavigation(content::NavigationThrottle::CANCEL);
+  auto* tab_helper = AIChatTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents.get()));
+  if (!tab_helper) {
+    return;
+  }
+  ai_chat_service->OpenConversationWithStagedEntries(
+      tab_helper->web_contents_content().GetWeakPtr(),
+      base::BindOnce(
+          [](base::WeakPtr<content::WebContents> web_contents,
+             base::OnceCallback<void(content::WebContents*)> open_ai_chat) {
+            if (web_contents) {
+              std::move(open_ai_chat).Run(web_contents.get());
+            }
+          },
+          web_contents, std::move(open_ai_chat_delegate)));
 }
 
 const char* AIChatBraveSearchThrottle::GetNameForLogging() {

@@ -33,6 +33,7 @@ export const defaultServiceState: Mojom.ServiceState = {
   isStoragePrefEnabled: false,
   isStorageNoticeDismissed: false,
   canShowPremiumPrompt: false,
+  isContentAgentUserSelectable: false,
 }
 
 export const defaultConversationState: Mojom.ConversationState & {
@@ -66,7 +67,9 @@ export const defaultConversationState: Mojom.ConversationState & {
   errorDetails: undefined,
   temporary: false,
   toolUseTaskState: Mojom.TaskState.kNone,
-  capabilitiesEnabled: [Mojom.ConversationCapability.CHAT],
+  capabilitiesEnabled: [],
+  visionModelSwitchKey: undefined,
+  isContentAgentChosen: false,
 }
 
 const emptyTurn: Mojom.ConversationTurn = {
@@ -138,6 +141,8 @@ export function createMockConversationHandler(
     stopTask: () => {},
     setToolsAttached: () => {},
     setContentToolPermission: () => {},
+    respondToVisionModelSwitch: () => {},
+    setContentAgentChosen: () => {},
 
     // Apply overrides - these will replace defaults
     ...overrides,
@@ -243,6 +248,7 @@ export function createMockUIHandler(
     getFaviconDataURL: () => Promise.resolve({ dataUrl: null }),
     setChatUI: () => Promise.resolve({ isStandalone: false }),
     showWorkspaceFolderPicker: () => Promise.resolve({ selectedPath: null }),
+    openWorkspaceFile: () => {},
 
     // Action methods - fire and forget stubs
     newConversation: () => {},

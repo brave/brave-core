@@ -5,7 +5,6 @@
 
 #include "brave/components/omnibox/browser/open_here_action.h"
 
-#include <numeric>
 #include <utility>
 
 #include "build/build_config.h"
@@ -27,7 +26,7 @@ OpenHereAction::OpenHereAction(GURL url)
 OpenHereAction::~OpenHereAction() = default;
 
 void OpenHereAction::Execute(ExecutionContext& context) const {
-  context.disposition_ = WindowOpenDisposition::CURRENT_TAB;
+  context.disposition_ = WindowOpenDisposition::kCurrentTab;
   OpenURL(context, url_);
 }
 

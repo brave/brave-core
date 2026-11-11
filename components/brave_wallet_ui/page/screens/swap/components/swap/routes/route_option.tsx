@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import Label from '@brave/leo/react/label'
+import Label from '@brave/nala/react/label'
 
 // Types
 import { QuoteOption } from '../../../constants/types'

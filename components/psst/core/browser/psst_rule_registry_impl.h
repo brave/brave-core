@@ -26,9 +26,9 @@ class PsstRuleRegistryImpl : public PsstRuleRegistry {
   ~PsstRuleRegistryImpl();
 
   // PsstRuleRegistry overrides
-  void CheckIfMatch(
-      const GURL& url,
-      base::OnceCallback<void(std::unique_ptr<MatchedRule>)> cb) override;
+  void CheckIfMatch(const GURL& url,
+                    base::OnceCallback<void(std::unique_ptr<MatchedRule>)> cb,
+                    base::OnceClosure no_matched_rules_callback) override;
   void LoadRules(const base::FilePath& path, OnLoadCallback cb) override;
 
  private:

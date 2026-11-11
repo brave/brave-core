@@ -10,10 +10,9 @@
 #include "base/check.h"
 #include "base/check_deref.h"
 #include "base/feature_list.h"
-#include "base/logging.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_account/endpoint_client/client.h"
+#include "base/values.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
@@ -22,6 +21,7 @@
 #include "brave/components/email_aliases/email_aliases_notes.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/email_aliases/pref_names.h"
+#include "brave/components/endpoint_client/client.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -85,7 +85,7 @@ auto MakeRequest(const std::string& bearer_token) {
   Request request;
   request.network_traffic_annotation_tag =
       net::MutableNetworkTrafficAnnotationTag(kTrafficAnnotation);
-  brave_account::endpoint_client::SetBearerToken(request, bearer_token);
+  endpoint_client::SetBearerToken(request, bearer_token);
   request.headers.SetHeader(kBraveServicesKeyHeader,
                             BUILDFLAG(BRAVE_SERVICES_KEY));
   return request;
@@ -96,6 +96,14 @@ void NotifyObserversAliasesUpdated(
     mojom::AliasesUpdatePtr update) {
   for (auto& observer : observers) {
     observer->OnAliasesUpdated(mojo::Clone(update));
+  }
+}
+
+void NotifyObserversAliasesAccountUpdated(
+    mojo::RemoteSet<mojom::EmailAliasesServiceObserver>& observers,
+    mojom::AliasesAccountUpdatePtr update) {
+  for (auto& observer : observers) {
+    observer->OnAliasesAccountUpdated(mojo::Clone(update));
   }
 }
 
@@ -111,6 +119,7 @@ EmailAliasesService::EmailAliasesService(
       metrics_(pref_service) {
   CHECK(base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases));
   CHECK(brave_account_auth);
+  CHECK(url_loader_factory_);
 
   auth_.emplace(std::move(brave_account_auth),
                 base::BindRepeating(&EmailAliasesService::OnAuthChanged,
@@ -126,6 +135,7 @@ void EmailAliasesService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
 
   registry->RegisterBooleanPref(
       prefs::kEmailAliasesNewAliasAutofillSuggestionEnabled, true);
+  registry->RegisterListPref(prefs::kCachedAliases);
   EmailAliasesMetrics::RegisterProfilePrefs(registry);
   EmailAliasesNotes::RegisterProfilePrefs(registry);
 }
@@ -156,8 +166,26 @@ std::string EmailAliasesService::GetAuthEmail() const {
   return auth_->GetAuthEmail();
 }
 
+std::vector<mojom::AliasPtr> EmailAliasesService::GetCachedAliases() const {
+  EmailAliasesNotes notes(pref_service_.get(), GetAuthEmail());
+  std::vector<mojom::AliasPtr> aliases;
+  for (const auto& value : pref_service_->GetList(prefs::kCachedAliases)) {
+    const std::string* email = value.GetIfString();
+    if (!email) {
+      continue;
+    }
+    auto alias = mojom::Alias::New();
+    alias->email = *email;
+    alias->note = notes.GetNote(*email);
+    aliases.push_back(std::move(alias));
+  }
+  return aliases;
+}
+
 void EmailAliasesService::OnAuthChanged() {
-  if (IsAuthenticated() && ShouldShowPromo()) {
+  if (!IsAuthenticated()) {
+    pref_service_->ClearPref(prefs::kCachedAliases);
+  } else if (ShouldShowPromo()) {
     MarkPromoShown();
   }
   RefreshAliases();
@@ -240,7 +268,9 @@ void EmailAliasesService::OnEditAliasResponse(
 
 void EmailAliasesService::RefreshAliases() {
   CHECK(auth_);
-  aliases_.clear();
+  if (observers_.empty()) {
+    return;
+  }
   auth_->GetServiceToken(
       base::BindOnce(&EmailAliasesService::RefreshAliasesWithToken,
                      weak_factory_.GetWeakPtr()));
@@ -248,10 +278,11 @@ void EmailAliasesService::RefreshAliases() {
 
 void EmailAliasesService::RefreshAliasesWithToken(TokenResult token) {
   if (token.has_value()) {
-    auto request = MakeRequest<brave_account::endpoint_client::WithHeaders<
-        endpoints::AliasList::Request>>(token.value()->serviceToken);
-    brave_account::endpoint_client::Client<endpoints::AliasList>::Send(
-        url_loader_factory_, std::move(request),
+    auto request = MakeRequest<
+        endpoint_client::WithHeaders<endpoints::AliasList::Request>>(
+        token.value()->serviceToken);
+    endpoint_client::Client<endpoints::AliasList>::Send(
+        *url_loader_factory_, std::move(request),
         base::BindOnce(&EmailAliasesService::OnRefreshAliasesResponse,
                        weak_factory_.GetWeakPtr()));
   } else {
@@ -264,10 +295,11 @@ void EmailAliasesService::RefreshAliasesWithToken(TokenResult token) {
 void EmailAliasesService::GenerateAliasWithToken(GenerateAliasCallback callback,
                                                  TokenResult token) {
   if (token.has_value()) {
-    auto request = MakeRequest<brave_account::endpoint_client::WithHeaders<
-        endpoints::GenerateAlias::Request>>(token.value()->serviceToken);
-    brave_account::endpoint_client::Client<endpoints::GenerateAlias>::Send(
-        url_loader_factory_, std::move(request),
+    auto request = MakeRequest<
+        endpoint_client::WithHeaders<endpoints::GenerateAlias::Request>>(
+        token.value()->serviceToken);
+    endpoint_client::Client<endpoints::GenerateAlias>::Send(
+        *url_loader_factory_, std::move(request),
         base::BindOnce(&EmailAliasesService::OnGenerateAliasResponse,
                        weak_factory_.GetWeakPtr(), std::move(callback)));
   } else {
@@ -285,14 +317,15 @@ void EmailAliasesService::UpdateAliasWithToken(
     bool refresh_aliases = true;
 
     if (update_data->active.has_value()) {
-      auto request = MakeRequest<brave_account::endpoint_client::WithHeaders<
-          endpoints::UpdateAlias::Request>>(token.value()->serviceToken);
+      auto request = MakeRequest<
+          endpoint_client::WithHeaders<endpoints::UpdateAlias::Request>>(
+          token.value()->serviceToken);
       request.body.alias = alias_email;
       request.body.status = *update_data->active ? "active" : "inactive";
 
       refresh_aliases = false;  // will be updated in response.
-      brave_account::endpoint_client::Client<endpoints::UpdateAlias>::Send(
-          url_loader_factory_, std::move(request),
+      endpoint_client::Client<endpoints::UpdateAlias>::Send(
+          *url_loader_factory_, std::move(request),
           base::BindOnce(&EmailAliasesService::OnEditAliasResponse,
                          weak_factory_.GetWeakPtr(), std::move(callback),
                          /*update_expected=*/true));
@@ -319,11 +352,12 @@ void EmailAliasesService::DeleteAliasWithToken(const std::string& alias_email,
                                                DeleteAliasCallback callback,
                                                TokenResult token) {
   if (token.has_value()) {
-    auto request = MakeRequest<brave_account::endpoint_client::WithHeaders<
-        endpoints::DeleteAlias::Request>>(token.value()->serviceToken);
+    auto request = MakeRequest<
+        endpoint_client::WithHeaders<endpoints::DeleteAlias::Request>>(
+        token.value()->serviceToken);
     request.body.alias = alias_email;
-    brave_account::endpoint_client::Client<endpoints::DeleteAlias>::Send(
-        url_loader_factory_, std::move(request),
+    endpoint_client::Client<endpoints::DeleteAlias>::Send(
+        *url_loader_factory_, std::move(request),
         base::BindOnce(&EmailAliasesService::OnEditAliasResponse,
                        weak_factory_.GetWeakPtr(), std::move(callback),
                        /*update_expected=*/false));
@@ -352,22 +386,31 @@ void EmailAliasesService::OnRefreshAliasesResponse(
     return;
   }
 
+  const uint32_t max_aliases_count =
+      response.body.value()->info.max_aliases_count > 0
+          ? response.body.value()->info.max_aliases_count
+          : mojom::kDefaultMaxAliases;
+  NotifyObserversAliasesAccountUpdated(
+      observers_, mojom::AliasesAccountUpdate::New(max_aliases_count));
+
   EmailAliasesNotes notes(pref_service_.get(), GetAuthEmail());
   notes.RemoveNotesForDeletedAliases(response.body.value()->result);
 
   std::vector<email_aliases::mojom::AliasPtr> aliases;
+  base::ListValue cached_aliases;
   for (const auto& entry : response.body.value()->result) {
     auto alias_obj = email_aliases::mojom::Alias::New();
     alias_obj->email = entry.alias;
     alias_obj->note = notes.GetNote(entry.alias);
     aliases.push_back(std::move(alias_obj));
+    cached_aliases.Append(entry.alias);
   }
 
-  aliases_ = std::move(aliases);
+  pref_service_->SetList(prefs::kCachedAliases, std::move(cached_aliases));
 
   metrics_.ReportEmailAliasPresence(!aliases.empty());
   NotifyObserversAliasesUpdated(
-      observers_, mojom::AliasesUpdate::NewAliases(mojo::Clone(aliases_)));
+      observers_, mojom::AliasesUpdate::NewAliases(std::move(aliases)));
 }
 
 }  // namespace email_aliases

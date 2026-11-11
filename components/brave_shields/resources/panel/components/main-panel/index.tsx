@@ -4,9 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
-import Toggle from '@brave/leo/react/toggle'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
+import Toggle from '@brave/nala/react/toggle'
+import Button from '@brave/nala/react/button'
+import Icon from '@brave/nala/react/icon'
 
 import * as S from './style'
 import AdvancedControlsContent from '../advanced-controls-content'
@@ -21,7 +21,7 @@ import DataContext from '../../state/context'
 import getPanelBrowserAPI from '../../api/panel_browser_api'
 import { useIsExpanded } from '../../state/hooks'
 import styled from 'styled-components'
-import { color } from '@brave/leo/tokens/css/variables'
+import { color } from '@brave/nala/tokens/css/variables'
 
 const ManagedIcon = styled(Icon).attrs({ name: 'news-business' })`
   --leo-icon-size: 17px;

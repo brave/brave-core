@@ -171,11 +171,13 @@ def discover_docs(bp_dir, changed_files=None):
         if not f.endswith(".md"):
             continue
         category = categorize_doc(f)
-        all_docs.append({
-            "doc": f,
-            "path": os.path.abspath(os.path.join(bp_dir, f)),
-            "category": category,
-        })
+        all_docs.append(
+            {
+                "doc": f,
+                "path": os.path.abspath(os.path.join(bp_dir, f)),
+                "category": category,
+            }
+        )
 
     if changed_files is None:
         # No filtering — return all docs
@@ -194,7 +196,8 @@ def list_categories(bp_dir):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Discover applicable best-practice documents")
+        description="Discover applicable best-practice documents"
+    )
     parser.add_argument("bp_dir", help="Path to the best-practices directory")
     parser.add_argument(
         "--changed-files",

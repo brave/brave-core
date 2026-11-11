@@ -413,6 +413,7 @@ if (!window.__firefox__) {
     return new Promise((resolve, reject) => {
       var oldWebkit = window.webkit;
       delete window['webkit'];
+      delete window.webkit.messageHandlers;
 
       if (window.webkit.messageHandlers && window.webkit.messageHandlers[messageHandlerName]) {
         let result = window.webkit.messageHandlers[messageHandlerName].postMessage(message);

@@ -174,11 +174,6 @@ public enum BraveStoreProduct: String, AppStoreProduct, CaseIterable {
 /// A structure for handling Brave Store transactions, products, and purchases
 public class BraveStoreSDK: AppStoreSDK {
 
-  @available(iOS, deprecated, message: "Create a new BraveStoreSDK instance instead.")
-  public static let shared = BraveStoreSDK(
-    skusService: Skus.SkusServiceFactory.get(privateMode: false)
-  )
-
   // MARK: - Error
 
   /// A BraveStoreSDK Error
@@ -248,6 +243,11 @@ public class BraveStoreSDK: AppStoreSDK {
   }
 
   /// The current store environment
+  @diagnose(
+    DeprecatedDeclaration,
+    as: ignored,
+    reason: "GuardianConnect SDK still uses legacy receipts"
+  )
   public var environment: BraveStoreEnvironment {
     if AppConstants.buildChannel == .release {
       return .production

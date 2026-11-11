@@ -1,12 +1,21 @@
 diff --git a/net/proxy_resolution/configured_proxy_resolution_service.cc b/net/proxy_resolution/configured_proxy_resolution_service.cc
-index 11520accc8cf0c0bd2841cc0d7c8de7160f7e041..6d0a32620f96ffd2ca514499923a7936bbe58124 100644
+index 76060b4e2efddda3aa01e2ece02f4091c410907b..deaae5745d7a504b22daca4777031142120b184c 100644
 --- a/net/proxy_resolution/configured_proxy_resolution_service.cc
 +++ b/net/proxy_resolution/configured_proxy_resolution_service.cc
-@@ -1006,6 +1006,7 @@ int ConfiguredProxyResolutionService::ResolveProxy(
-   // using a direct connection for example).
-   int rv = TryToCompleteSynchronously(url, /*bypass_override_rules=*/false,
-                                       net_log, result);
-+  BRAVE_CONFIGURED_PROXY_RESOLUTION_SERVICE_RESOLVE_PROXY
-   if (rv != ERR_IO_PENDING) {
-     rv = DidFinishResolvingProxy(url, network_anonymization_key, method, result,
-                                  rv, net_log);
+@@ -1109,6 +1109,7 @@ int ConfiguredProxyResolutionService::TryResolveSynchronously(
+ }
+ 
+ ConfiguredProxyResolutionService::~ConfiguredProxyResolutionService() {
++  ProxyConfigServiceTor::ClearProxyAuthorization(this);
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+   in_destruction_ = true;
+   NetworkChangeNotifier::RemoveIPAddressObserver(this);
+@@ -1280,6 +1281,8 @@ int ConfiguredProxyResolutionService::ProcessResolutionResult(
+     ProxyInfo* result,
+     int result_code,
+     const NetLogWithSource& net_log) {
++  MaybeSetTorCircuitIsolation(result_code, config_, url,
++                              network_anonymization_key, result, this);
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+ 
+   // Log the result of the proxy resolution.

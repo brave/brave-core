@@ -12,11 +12,11 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
-#include "brave/components/brave_account/endpoint_client/request_types.h"
-#include "brave/components/brave_account/endpoint_client/response.h"
 #include "brave/components/brave_vpn/browser/v2/api/endpoint_constants.h"
 #include "brave/components/brave_vpn/browser/v2/api/error_body.h"
 #include "brave/components/brave_vpn/browser/v2/api/raw_json_response_body.h"
+#include "brave/components/endpoint_client/request_types.h"
+#include "brave/components/endpoint_client/response.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
@@ -61,10 +61,8 @@ struct CreateSupportTicketRequestBody {
 };
 
 struct CreateSupportTicket {
-  using Request =
-      brave_account::endpoint_client::POST<CreateSupportTicketRequestBody>;
-  using Response = brave_account::endpoint_client::Response<RawJsonResponseBody,
-                                                            VpnErrorBody>;
+  using Request = endpoint_client::Post<CreateSupportTicketRequestBody>;
+  using Response = endpoint_client::Response<RawJsonResponseBody, VpnErrorBody>;
 
   static GURL URL() {
     return GURL(base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,

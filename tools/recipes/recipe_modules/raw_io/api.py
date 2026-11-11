@@ -21,10 +21,17 @@ import errno
 import os
 from pathlib import Path
 import tempfile
-from typing import Any, Callable
+from typing import Any, Callable, TYPE_CHECKING
 
-from recipe_api import (InputPlaceholder, OutputPlaceholder, RecipeApi,
-                        returns_placeholder)
+from recipe_api import (
+    InputPlaceholder,
+    OutputPlaceholder,
+    RecipeApi,
+    returns_placeholder,
+)
+
+if TYPE_CHECKING:
+    from recipe_modules import raw_io
 
 # What an output placeholder renders to under simulation. Steps never really run
 # there, so a fixed, obviously-fake path keeps expectations stable (and makes an
@@ -35,10 +42,9 @@ SIM_TMP_PREFIX = '/path/to/tmp/'
 class InputDataPlaceholder(InputPlaceholder):
     """Writes `data` (bytes) to a temp file and renders to its path."""
 
-    def __init__(self,
-                 data: bytes,
-                 suffix: str = '',
-                 name: str | None = None) -> None:
+    def __init__(
+        self, data: bytes, suffix: str = '', name: str | None = None
+    ) -> None:
         self.data = data
         self.suffix = suffix
         self._backing_file: str | None = None
@@ -78,10 +84,9 @@ class InputDataPlaceholder(InputPlaceholder):
 class InputTextPlaceholder(InputDataPlaceholder):
     """As `InputDataPlaceholder`, but the data is UTF-8 text."""
 
-    def __init__(self,
-                 data: str,
-                 suffix: str = '',
-                 name: str | None = None) -> None:
+    def __init__(
+        self, data: str, suffix: str = '', name: str | None = None
+    ) -> None:
         super().__init__(data, suffix, name=name)
         assert isinstance(data, str)
 
@@ -96,10 +101,12 @@ class InputTextPlaceholder(InputDataPlaceholder):
 class OutputDataPlaceholder(OutputPlaceholder):
     """Renders to a path the step writes to, then reads it back as bytes."""
 
-    def __init__(self,
-                 suffix: str = '',
-                 leak_to: str | Path | None = None,
-                 name: str | None = None) -> None:
+    def __init__(
+        self,
+        suffix: str = '',
+        leak_to: str | Path | None = None,
+        name: str | None = None,
+    ) -> None:
         self.suffix = suffix
         self.leak_to = leak_to
         self._backing_file: str | None = None
@@ -116,8 +123,7 @@ class OutputDataPlaceholder(OutputPlaceholder):
         elif test.enabled:
             self._backing_file = SIM_TMP_PREFIX + self.suffix.lstrip('.')
         else:  # pragma: no cover - production placeholder backend.
-            output_fd, self._backing_file = tempfile.mkstemp(
-                suffix=self.suffix)
+            output_fd, self._backing_file = tempfile.mkstemp(suffix=self.suffix)
             os.close(output_fd)
         return [self._backing_file]
 
@@ -158,8 +164,9 @@ class OutputTextPlaceholder(OutputDataPlaceholder):
     def read_data(self) -> str:  # pragma: no cover - production placeholder.
         # Any byte that isn't valid UTF-8 becomes U+FFFD rather than an error,
         # so a step emitting stray bytes doesn't sink the recipe.
-        return Path(self._backing_file).read_text(encoding='utf-8',
-                                                  errors='replace')
+        return Path(self._backing_file).read_text(
+            encoding='utf-8', errors='replace'
+        )
 
     def read_test_data(self, test) -> str:
         data = test.data or ''
@@ -177,8 +184,9 @@ class _LazyDirectoryReader(Mapping):
     content again, and makes further reads of it an error.
     """
 
-    def __init__(self, paths: Iterator[str], read: Callable[[str],
-                                                            bytes]) -> None:
+    def __init__(
+        self, paths: Iterator[str], read: Callable[[str], bytes]
+    ) -> None:
         self._paths = set(paths)
         self._read = read
         self._content: dict[str, bytes] = {}
@@ -213,10 +221,12 @@ class OutputDataDirPlaceholder(OutputPlaceholder):  # pylint: disable=abstract-m
 
     is_file_backed = False
 
-    def __init__(self,
-                 path_api,
-                 leak_to: str | Path | None = None,
-                 name: str | None = None) -> None:
+    def __init__(
+        self,
+        path_api,
+        leak_to: str | Path | None = None,
+        name: str | None = None,
+    ) -> None:
         self._path_api = path_api
         self._backing_dir = leak_to
         self._used = False
@@ -228,8 +238,9 @@ class OutputDataDirPlaceholder(OutputPlaceholder):  # pylint: disable=abstract-m
         # Without `leak_to`, a fresh temporary directory under the job's scratch
         # space. `api.path.mkdtemp` is the seam here, so nothing is created on
         # disk in test mode and the name stays stable across runs.
-        self._backing_dir = str(self._backing_dir
-                                or self._path_api.mkdtemp('tmp'))
+        self._backing_dir = str(
+            self._backing_dir or self._path_api.mkdtemp('tmp')
+        )
         if not test.enabled:  # pragma: no cover - production placeholder.
             os.makedirs(self._backing_dir, exist_ok=True)
         return [self._backing_dir]
@@ -246,8 +257,10 @@ class OutputDataDirPlaceholder(OutputPlaceholder):  # pylint: disable=abstract-m
         for dir_path, _dir_names, file_names in os.walk(self._backing_dir):
             for file_name in file_names:
                 paths.add(
-                    os.path.relpath(os.path.join(dir_path, file_name),
-                                    self._backing_dir))
+                    os.path.relpath(
+                        os.path.join(dir_path, file_name), self._backing_dir
+                    )
+                )
 
         def _read(rel_path: str) -> bytes:
             return Path(self._backing_dir, rel_path).read_bytes()
@@ -267,11 +280,12 @@ def _remove(path: str) -> None:  # pragma: no cover - production placeholder.
 class RawIOApi(RecipeApi):
     """Placeholders carrying raw bytes (or UTF-8 text) in and out of steps."""
 
+    m: raw_io.DEPS
+
     @returns_placeholder
-    def input(self,
-              data: bytes,
-              suffix: str = '',
-              name: str | None = None) -> InputDataPlaceholder:
+    def input(
+        self, data: bytes, suffix: str = '', name: str | None = None
+    ) -> InputDataPlaceholder:
         """A placeholder expanding to the path of a file holding *data*.
 
         The engine writes *data* to a temporary file, passes its path to the
@@ -291,10 +305,9 @@ class RawIOApi(RecipeApi):
         return InputDataPlaceholder(data, suffix, name=name)
 
     @returns_placeholder
-    def input_text(self,
-                   data: str,
-                   suffix: str = '',
-                   name: str | None = None) -> InputTextPlaceholder:
+    def input_text(
+        self, data: str, suffix: str = '', name: str | None = None
+    ) -> InputTextPlaceholder:
         """As `input`, but for UTF-8 text.
 
         Any character that cannot be encoded as UTF-8 is replaced with U+FFFD.
@@ -306,10 +319,12 @@ class RawIOApi(RecipeApi):
         return InputTextPlaceholder(data, suffix, name=name)
 
     @returns_placeholder
-    def output(self,
-               suffix: str = '',
-               leak_to: str | Path | None = None,
-               name: str | None = None) -> OutputDataPlaceholder:
+    def output(
+        self,
+        suffix: str = '',
+        leak_to: str | Path | None = None,
+        name: str | None = None,
+    ) -> OutputDataPlaceholder:
         """A placeholder expanding to a path the step is expected to write.
 
         Once the step is done the engine reads that file back as bytes and
@@ -329,10 +344,12 @@ class RawIOApi(RecipeApi):
         return OutputDataPlaceholder(suffix, leak_to, name=name)
 
     @returns_placeholder
-    def output_text(self,
-                    suffix: str = '',
-                    leak_to: str | Path | None = None,
-                    name: str | None = None) -> OutputTextPlaceholder:
+    def output_text(
+        self,
+        suffix: str = '',
+        leak_to: str | Path | None = None,
+        name: str | None = None,
+    ) -> OutputTextPlaceholder:
         """As `output`, but decodes the data the step wrote as UTF-8 text.
 
         Any byte that isn't valid UTF-8 is replaced with U+FFFD.
@@ -340,9 +357,9 @@ class RawIOApi(RecipeApi):
         return OutputTextPlaceholder(suffix, leak_to, name=name)
 
     @returns_placeholder
-    def output_dir(self,
-                   leak_to: str | Path | None = None,
-                   name: str | None = None) -> OutputDataDirPlaceholder:
+    def output_dir(
+        self, leak_to: str | Path | None = None, name: str | None = None
+    ) -> OutputDataDirPlaceholder:
         """A placeholder expanding to a directory the step writes into.
 
         Once the step is done, the result filed at

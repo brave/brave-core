@@ -328,8 +328,9 @@ void BraveVpnServiceImpl::ResetConnectionState() {
   connection_manager_->ResetConnectionState();
 }
 
-void BraveVpnServiceImpl::EnableOnDemand(bool enable) {
+void BraveVpnServiceImpl::EnableAutoReconnect(bool enable) {
 #if BUILDFLAG(IS_MAC)
+  // On macOS, auto-reconnect is implemented with NEVPNManager OnDemand rules.
   local_prefs_->SetBoolean(prefs::kBraveVPNOnDemandEnabled, enable);
 
   // If not connected, do nothing because on-demand bit will
@@ -343,7 +344,8 @@ void BraveVpnServiceImpl::EnableOnDemand(bool enable) {
 #endif
 }
 
-void BraveVpnServiceImpl::GetOnDemandState(GetOnDemandStateCallback callback) {
+void BraveVpnServiceImpl::GetAutoReconnectState(
+    GetAutoReconnectStateCallback callback) {
 #if BUILDFLAG(IS_MAC)
   std::move(callback).Run(
       /*available*/ true,
@@ -370,6 +372,33 @@ void BraveVpnServiceImpl::GetSmartProxyRoutingState(
     GetSmartProxyRoutingStateCallback callback) {
   std::move(callback).Run(
       local_prefs_->GetBoolean(prefs::kBraveVPNSmartProxyRoutingEnabled));
+}
+
+void BraveVpnServiceImpl::AllowLanTraffic(bool allow) {
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
+  local_prefs_->SetBoolean(prefs::kBraveVPNWireguardAllowLanTraffic, allow);
+
+  if (delegate_) {
+    delegate_->SetAllowLanTraffic(allow);
+  }
+
+  if (IsConnected()) {
+    VLOG(2) << __func__ << " : reconnect to apply this change(" << allow
+            << ") to current connection";
+    Connect();
+  }
+#endif
+}
+
+void BraveVpnServiceImpl::GetAllowLanTraffic(
+    GetAllowLanTrafficCallback callback) {
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
+  std::move(callback).Run(
+      brave_vpn::IsBraveVPNWireguardEnabled(local_prefs_),
+      local_prefs_->GetBoolean(prefs::kBraveVPNWireguardAllowLanTraffic));
+#else
+  std::move(callback).Run(/*available*/ false, /*allowed*/ false);
+#endif
 }
 
 // NOTE(bsclifton): Desktop uses API to create a ticket.

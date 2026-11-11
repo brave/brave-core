@@ -12,9 +12,9 @@
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_account/brave_account_state_prefs.h"
-#include "brave/components/brave_account/endpoint_client/request_handle.h"
 #include "brave/components/brave_account/endpoints/auth_validate.h"
 #include "brave/components/brave_account/flows/flow_base.h"
+#include "brave/components/endpoint_client/request_handle.h"
 
 namespace network {
 class SharedURLLoaderFactory;

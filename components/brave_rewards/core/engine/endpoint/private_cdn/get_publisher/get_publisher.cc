@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_private_cdn/headers.h"
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
 #include "brave/components/brave_rewards/core/engine/publisher/protos/channel_response.pb.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
@@ -209,6 +210,10 @@ void GetPublisher::Request(const std::string& publisher_key,
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(hash_prefix);
   request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
+
+  for (const auto& [header, _] : brave::private_cdn_headers) {
+    request->headers.push_back(header + ":");
+  }
 
   engine_->Get<URLLoader>().Load(
       std::move(request), URLLoader::LogLevel::kBasic,

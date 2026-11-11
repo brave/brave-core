@@ -23,6 +23,7 @@
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/net/brave_system_request_handler.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
+#include "brave/browser/serp_metrics/serp_metrics_p3a.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/brave_component_updater_delegate.h"
@@ -100,7 +101,6 @@
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "chrome/browser/first_run/first_run.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #endif
 
@@ -150,7 +150,15 @@ void InitSystemRequestHandlerCallback() {
 
 using content::BrowserThread;
 
-BraveBrowserProcessImpl::~BraveBrowserProcessImpl() = default;
+BraveBrowserProcessImpl::~BraveBrowserProcessImpl() {
+  // StartTearDown is skipped on early startup exits, leaving P3AService
+  // observing process_misc_metrics_, which is destroyed first. Members are
+  // still alive here, so tear down while the observed object is valid.
+  if (p3a_service_) {
+    p3a_service_->StartTeardown();
+  }
+  profile_manager_.reset();
+}
 
 BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
     : BrowserProcessImpl(startup_data) {
@@ -260,6 +268,9 @@ void BraveBrowserProcessImpl::StartTearDown() {
   if (ntp_background_images_service_) {
     ntp_background_images_service_->StartTearDown();
   }
+  if (process_misc_metrics_) {
+    process_misc_metrics_->serp_metrics_p3a()->Shutdown();
+  }
   if (p3a_service_) {
     p3a_service_->StartTeardown();
   }
@@ -317,6 +328,9 @@ ProfileManager* BraveBrowserProcessImpl::profile_manager() {
 
 void BraveBrowserProcessImpl::StartBraveServices() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  process_misc_metrics()->serp_metrics_p3a()->Init(
+      p3a_service(), profile_manager()->GetProfileAttributesStorage());
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   resource_component();

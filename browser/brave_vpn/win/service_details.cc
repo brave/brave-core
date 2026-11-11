@@ -33,6 +33,13 @@ constexpr IID kBraveWireguardServiceIID = {
     0x441e,
     {0x8c, 0x94, 0x5c, 0x18, 0xd8, 0xe7, 0xe9, 0xd7}};
 
+// 199DAF4E-A602-49CC-A3B0-2F51B9559682
+constexpr IID kBraveWireguardServiceIID2 = {
+    0x199daf4e,
+    0xa602,
+    0x49cc,
+    {0xa3, 0xb0, 0x2f, 0x51, 0xb9, 0x55, 0x96, 0x82}};
+
 constexpr wchar_t kBraveNightlyWireguardTunnelServiceName[] =
     L"BraveVpnNightlyWireguardTunnelService";
 // A8D57D90-7A29-4405-91D7-A712F347E426
@@ -101,6 +108,10 @@ const CLSID& GetBraveVpnWireguardServiceClsid() {
 
 const IID& GetBraveVpnWireguardServiceIid() {
   return kBraveWireguardServiceIID;
+}
+
+const IID& GetBraveVpnWireguardServiceIid2() {
+  return kBraveWireguardServiceIID2;
 }
 
 std::wstring GetBraveVpnWireguardServiceDisplayName() {

@@ -18,11 +18,16 @@ source_set("vertical_tabs") {
     sources += [ "vertical_tab_strip_region_view_mac.mm" ]
   }
 
-  public_deps = [ "//brave/browser/ui/focus_mode" ]
+  public_deps = [
+    "//brave/browser/ui/focus_mode",
+    "//chrome/browser/ui/views/frame:horizontal_tab_strip_region_view",
+  ]
 
   deps = [
     "//base",
+    "//brave/app/vector_icons",
     "//brave/browser/ui:brave_tab_prefs",
+    "//brave/browser/ui:ui_features",
     "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/views/frame",
     "//brave/components/constants",
@@ -55,25 +60,48 @@ source_set("browser_tests") {
 
   deps = [
     ":vertical_tabs",
+    "//base/i18n:test_support",
+    "//brave/browser/ui",
+    "//brave/browser/ui:brave_tab_prefs",
     "//brave/browser/ui/tabs:tab_menu",
     "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/views/frame",
+    "//brave/browser/ui/views/sidebar",
+    "//brave/components/sidebar/browser",
+    "//cc/paint",
     "//chrome/browser",
     "//chrome/browser/tab_group_sync:factories",
-    "//chrome/browser/ui",
+    "//chrome/browser/ui:browser_command_controller",
+    "//chrome/browser/ui:browser_commands",
+    "//chrome/browser/ui:browser_tabstrip",
+    "//chrome/browser/ui:browser_window_header",
     "//chrome/browser/ui:view_ids",
+    "//chrome/browser/ui/tabs:tab_menu",
+    "//chrome/browser/ui/views/animations",
     "//chrome/browser/ui/views/frame",
+    "//chrome/browser/ui/views/frame:browser_frame_view",
+    "//chrome/browser/ui/views/frame:custom_floating_corner",
+    "//chrome/browser/ui/views/frame:opaque_browser_frame_view",
+    "//chrome/browser/ui/views/frame:vertical_tab_strip_region_view",
     "//chrome/browser/ui/views/location_bar",
+    "//chrome/browser/ui/views/tabs:new_tab_button",
+    "//chrome/browser/ui/views/tabs:tab_strip",
     "//chrome/browser/ui/views/tabs/tab",
+    "//chrome/browser/ui/views/tabs/vertical",
     "//chrome/test:test_support_ui",
     "//content/test:test_support",
     "//testing/gtest",
     "//ui/base",
     "//ui/base:test_support",
+    "//ui/compositor",
     "//ui/display:test_support",
     "//ui/views",
     "//ui/views:test_support",
   ]
+
+  if (is_win) {
+    deps += [ "//chrome/browser/ui/views/frame:browser_frame_view_win" ]
+  }
 
   if (use_aura) {
     deps += [ "//ui/aura:test_support" ]
@@ -95,10 +123,10 @@ source_set("interactive_ui_tests") {
 
   deps = [
     ":vertical_tabs",
+    "//brave/browser/ui",
     "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/views/frame",
     "//chrome/browser",
-    "//chrome/browser/ui",
     "//chrome/browser/ui/exclusive_access",
     "//chrome/test:test_support_ui",
     "//content/public/browser",

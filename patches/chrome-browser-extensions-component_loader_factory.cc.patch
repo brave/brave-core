@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/component_loader_factory.cc b/chrome/browser/extensions/component_loader_factory.cc
-index 2d2c332880ffeced368c11b004eb3c96f6ae823d..580e22a60d02a75f94547793914ebc5d177939b0 100644
+index 2d2c332880ffeced368c11b004eb3c96f6ae823d..4fffbdeb5ea1e709b5fa462026c951418a6c7526 100644
 --- a/chrome/browser/extensions/component_loader_factory.cc
 +++ b/chrome/browser/extensions/component_loader_factory.cc
 @@ -56,7 +56,7 @@ ComponentLoaderFactory::BuildServiceInstanceForBrowserContext(
@@ -7,7 +7,7 @@ index 2d2c332880ffeced368c11b004eb3c96f6ae823d..580e22a60d02a75f94547793914ebc5d
    Profile* profile = Profile::FromBrowserContext(context);
    // Use `new` to access private constructor.
 -  return base::WrapUnique(new ComponentLoader(profile));
-+  return base::WrapUnique(new BraveComponentLoader(profile));
++  return base::WrapUnique(new CurrentComponentLoader(profile));
  }
  
  }  // namespace extensions

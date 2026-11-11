@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Taint cross-origin onion requests before generating Origin.
+
+      A .onion page must not disclose its address to other origins. The
+      tainted flag gives these requests an opaque origin in the request, its
+      preflight and the response checks alike, and stays set across redirects.
+
+      Tainting also applies upstream's other rules for a tainted origin, which
+      are accepted trade-offs: preflights are not cached, so each preflighted
+      request sends its own OPTIONS; Timing-Allow-Origin is checked against the
+      opaque origin; and no-cors responses are opaque. Any new upstream reader
+      of tainted_ applies to these requests too.
+
+      A no-cors redirect from the onion origin to another origin does not call
+      MaybeSetOriginHeader(), so it is not tainted. Its Origin is still nulled
+      by net's RedirectUtil; only its Timing-Allow-Origin check differs.
+    preempt_function_impl:
+      function_name: CorsURLLoader::MaybeSetOriginHeader
+      code: 'tainted_ |= ShouldTaintOnionOrigin(request_);'

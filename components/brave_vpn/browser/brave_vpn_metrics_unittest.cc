@@ -91,8 +91,8 @@ TEST_F(BraveVpnMetricsTest, NewUserReturningMetric) {
 #if BUILDFLAG(IS_MAC)
   // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
   // unexpected test timeout failures are resolved.
-  if (base::mac::MacOSMajorVersion() == 26) {
-    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  if (base::mac::MacOSMajorVersion() >= 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe and later.";
   }
 #endif
   metrics_->RecordAllMetrics(false);
@@ -114,8 +114,8 @@ TEST_F(BraveVpnMetricsTest, DaysInMonthUsedMetric) {
 #if BUILDFLAG(IS_MAC)
   // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
   // unexpected test timeout failures are resolved.
-  if (base::mac::MacOSMajorVersion() == 26) {
-    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  if (base::mac::MacOSMajorVersion() >= 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe and later.";
   }
 #endif
   metrics_->RecordAllMetrics(false);

@@ -683,6 +683,9 @@
       <message name="IDS_BOOKMARKS_BAR_EMPTY_MESSAGE" desc="Message shown in a popup menu when a bookmarks bar folder is opened and contains no bookmarks.">
         This folder is empty
       </message>
+      <message name="IDS_BOOKMARK_BAR_IPH_MESSAGE" desc="IPH text bubble encouraging users to turn on the bookmark bar in settings.">
+        You can turn on the bookmark bar in Settings &gt; Appearance
+      </message>
       <!-- USB -->
       <message name="IDS_CONNECTED_TO_USB_DEVICE_NOTIFICATION_TITLE" desc="Text to be shown as a notification when a website is connected to a USB device.">
         Connected to a USB device
@@ -898,17 +901,17 @@
       </message>
 
       <!-- Fullscreen -->
-      <message name="IDS_IMMERSIVE_FULLSCREEN_API_NOTIFICATION" desc="Notification message when a site has entered immersive fullscreen and the directions of how to exit.">
-        Drag from top and touch the back button to exit full screen.
-      </message>
       <message name="IDS_IMMERSIVE_FULLSCREEN_GESTURE_NAVIGATION_MODE_API_NOTIFICATION" desc="Notification message when a site has entered immersive fullscreen and the directions of how to exit when the system gesture navigation mode is on.">
         Drag from top and swipe from the left or right edge to exit full screen.
       </message>
-      <message name="IDS_IMMERSIVE_FULLSCREEN_API_NOTIFICATION_DESKTOP" desc="Notification message when a site has entered immersive fullscreen and the directions of how to exit when is on desktop.">
-        Drag from top or press Esc key to exit full screen.
+      <message name="IDS_IMMERSIVE_FULLSCREEN_GESTURE_NAVIGATION_MODE_API_NOTIFICATION_WITH_ORIGIN" desc="Notification message when a site has entered immersive fullscreen and the directions of how to exit when the system gesture navigation mode is on, with the origin of the URL that requests fullscreen.">
+        <ph name="ORIGIN">%1$s<ex>www.youtube.com</ex></ph> – Drag from top and swipe from the left or right edge to exit full screen.
       </message>
       <message name="IDS_IMMERSIVE_FULLSCREEN_AUTOMOTIVE_TOOLBAR_IMPROVEMENTS" desc="Notification message when a site has entered immersive fullscreen and the directions of how to exit by swiping left.">
         Drag from the side of the screen to exit full screen.
+      </message>
+      <message name="IDS_IMMERSIVE_FULLSCREEN_AUTOMOTIVE_TOOLBAR_IMPROVEMENTS_WITH_ORIGIN" desc="Notification message when a site has entered immersive fullscreen and the directions of how to exit by swiping left, with the origin of the URL that requests fullscreen.">
+        <ph name="ORIGIN">%1$s<ex>www.youtube.com</ex></ph> – Drag from the side of the screen to exit full screen.
       </message>
 
       <!-- WebApk name/icon report abuse dialog -->
@@ -926,9 +929,6 @@
       </message>
 
       <!-- WebApk outofdate warning string -->
-      <message name="IDS_WEBAPK_MAPSGO_DEPRECATION_WARNING" desc="The toast message when user trying to launch the deprecated Maps Go WebAPK.">
-        '<ph name="APP_NAME">%1$s<ex>Maps Go</ex></ph>' is out of date. Please update the app.
-      </message>
       <message name="IDS_WEBAPK_DEPRECATION_WARNING" desc="The toast message when user trying to launch the deprecated WebAPKs.">
         '<ph name="APP_NAME">%1$s<ex>Maps Go</ex></ph>' is out of date. Please re-install the app.
       </message>
@@ -1011,12 +1011,6 @@
       </message>
       <message name="IDS_ACCESSIBILITY_CAPTIONS_TITLE" desc="Title of the preference that allows the user to update caption settings.">
         Captions
-      </message>
-      <message name="IDS_JUMP_START_OMNIBOX_TITLE" desc="When this preference is enabled, Brave start-up time is reduced, and the user is taken directly to an active Omnibox">
-        Jump-start Omnibox
-      </message>
-      <message name="IDS_JUMP_START_OMNIBOX_SUMMARY" desc="When this preference is enabled, Brave start-up time is reduced, and the user is taken directly to an active Omnibox">
-        Launch Brave with the Omnibox focused, reducing start-up time on low-end devices.
       </message>
       <message name="IDS_TOUCHPAD_OVERSCROLL_HISTORY_NAVIGATION_TITLE" desc="Title of the preference to enable swipe-to-navigate by touchpad horizontal overscroll">
         Swipe between pages using a touchpad
@@ -1157,6 +1151,15 @@
       </message>
 
       <!-- Auxiliary search Magic Stack strings -->
+      <message name="IDS_AUXILIARY_SEARCH_BROWSING_DATA_MODULE_NAME" desc="Name of the auxiliary search module on NTP for browsing data donation.">
+        Get Brave suggestions in other apps
+      </message>
+      <message name="IDS_AUXILIARY_SEARCH_BROWSING_DATA_MODULE_CONTEXT_MENU_HIDE" desc="The string that is going to be part of the context menu item string to hide the auxiliary search browsing data card.">
+        Hide Get Brave suggestions in other apps
+      </message>
+      <message name="IDS_AUXILIARY_SEARCH_BROWSING_DATA_MODULE_CONTENT" desc="Content of the auxiliary search module on NTP for browsing data donation.">
+        Brave can now show you suggestions in other apps based on your browsing data, such as recent browsing history. This data is processed securely on your device. You can turn this off anytime in Brave settings.
+      </message>
       <message name="IDS_AUXILIARY_SEARCH_MODULE_NAME" desc="Name of the auxiliary search module on NTP.">
         View tabs in your app list
       </message>
@@ -1280,18 +1283,15 @@
         Let’s go
       </message>
 
-      <!-- Setup List strings -->
-
-      <!-- Setup list Sign in promo strings -->
+      <!-- Sign in promo strings -->
       <message name="IDS_EDUCATIONAL_TIP_SIGN_IN_PROMO_TITLE" desc="Title of the sign in promo that invites users to sign in to Brave in the educational tip module on NTP.">
         Make Brave your own
       </message>
       <message name="IDS_EDUCATIONAL_TIP_SIGN_IN_PROMO_DESCRIPTION" desc="Description of the sign in promo that invites users to sign in to Brave in the educational tip module on NTP.">
         Sign in to easily continue on all your devices
       </message>
-      <message name="IDS_EDUCATIONAL_TIP_SIGN_IN_PROMO_BUTTON" desc="Text on the clickable button on the sign in promo that invites users to sign in to Brave in the educational tip module on NTP.">
-        Sign in to start
-      </message>
+
+      <!-- Setup List strings -->
 
       <!-- Setup list Enhanced Safe Browsing promo strings -->
       <message name="IDS_EDUCATIONAL_TIP_ENHANCED_SAFE_BROWSING_TITLE" desc="Title of the enhanced safe browsing promo that invites users to turn on enhanced safe browsing in the educational tip module on NTP.">
@@ -1299,48 +1299,6 @@
       </message>
       <message name="IDS_EDUCATIONAL_TIP_ENHANCED_SAFE_BROWSING_DESCRIPTION" desc="Description of the enhanced safe browsing promo that invites users to turn on enhanced safe browsing in the educational tip module on NTP.">
         Get Brave’s strongest protection against online threats
-      </message>
-
-      <!-- Setup list Save Passwords promo strings -->
-      <message name="IDS_EDUCATIONAL_TIP_SAVE_PASSWORDS_TITLE" desc="Title of the Save Passwords promo that invites users to turn on the save passwords feature in the educational tip module on NTP.">
-        Save passwords in Brave
-      </message>
-      <message name="IDS_EDUCATIONAL_TIP_SAVE_PASSWORDS_DESCRIPTION" desc="Description of the Save Passwords promo that invites users to turn on the save passwords feature in the educational tip module on NTP.">
-        Sign in quickly and easily into sites and apps
-      </message>
-      <message name="IDS_EDUCATIONAL_TIP_SAVE_PASSWORDS_BUTTON" desc="Text on the clickable button on the Save Passwords promo in the educational tip module on NTP.">
-        Show me how
-      </message>
-
-      <!-- Save Passwords instructional bottom sheet strings -->
-      <message name="IDS_EDUCATIONAL_TIP_SAVE_PASSWORDS_BOTTOM_SHEET_FIRST_STEP" desc="The first step in the bottom sheet of the save passwords section within the educational tip module on the NTP.">
-        Sign in to any website
-      </message>
-      <message name="IDS_EDUCATIONAL_TIP_SAVE_PASSWORDS_BOTTOM_SHEET_SECOND_STEP" desc="The second step in the bottom sheet of the save passwords section within the educational tip module on the NTP.">
-        Brave will offer to save your password
-      </message>
-      <message name="IDS_EDUCATIONAL_TIP_SAVE_PASSWORDS_BOTTOM_SHEET_THIRD_STEP" desc="The third step in the bottom sheet of the save passwords section within the educational tip module on the NTP.">
-        Tap Yes to easily use this password the next time you sign in
-      </message>
-      <message name="IDS_EDUCATIONAL_TIP_SAVE_PASSWORDS_BOTTOM_SHEET_ACCESSIBILITY_CLOSED" desc="Accessibility string that describes that the save passwords bottom sheet has closed.">
-        Save passwords instructional bottom sheet has closed
-      </message>
-      <message name="IDS_EDUCATIONAL_TIP_SAVE_PASSWORDS_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Accessibility string that describes the save passwords bottom sheet.">
-        Instructional bottom sheet for saving passwords in Brave
-      </message>
-      <message name="IDS_EDUCATIONAL_TIP_SAVE_PASSWORDS_BOTTOM_SHEET_ACCESSIBILITY_OPENED_FULL" desc="Accessibility string that describes that the save passwords bottom sheet has fully opened.">
-        Save passwords instructional bottom sheet has fully opened
-      </message>
-
-      <!-- Setup list Password Checkup promo strings -->
-      <message name="IDS_EDUCATIONAL_TIP_PASSWORD_CHECKUP_TITLE" desc="Title of the Password Checkup promo that invites users to check their saved passwords in the educational tip module on NTP.">
-        Check your saved passwords
-      </message>
-      <message name="IDS_EDUCATIONAL_TIP_PASSWORD_CHECKUP_DESCRIPTION" desc="Description of the Password Checkup promo that invites users to check their saved passwords in the educational tip module on NTP.">
-        Strengthen your security and keep your data safer by checking your passwords
-      </message>
-      <message name="IDS_EDUCATIONAL_TIP_PASSWORD_CHECKUP_BUTTON" desc="Text on the clickable button on the Password Checkup promo in the educational tip module on NTP.">
-        Check now
       </message>
 
       <!-- Setup list Address Bar Placement promo strings -->
@@ -1390,9 +1348,6 @@
       </message>
       <message name="IDS_SAFETY_HUB_MAGIC_STACK_HIDE_TEXT" desc="Text that appears in the context menu when the Safety Check Magic Stack cards are long pressed. Hides and disables the Safety Check Magic Stack module when pressed.">
         Hide Safety Check card
-      </message>
-      <message name="IDS_SAFETY_HUB_MAGIC_STACK_NOTIFICATIONS_TITLE" desc="Title for the notification review Safety Check module on the Magic Stack. Shown when Safety Check has identified several sites that sent lots of notifications.">
-        Stop lots of notifications
       </message>
       <message name="IDS_SAFETY_HUB_MAGIC_STACK_SAFE_STATE_BUTTON_TEXT" desc="Action button for the safe state modules of Safety Check in the Magic Stack. Shown in the notification or permissions review modules. Opens Safety Check when clicked.">
         Review
@@ -1600,6 +1555,9 @@
       </message>
       <message name="IDS_ACCESSIBILITY_NTP_VIOLET_COLOR_THEME" is_accessibility_with_no_ui="true" desc="Name of the color theme shown on the Brave Colors bottom sheet.">
         Violet theme
+      </message>
+      <message name="IDS_ACCESSIBILITY_UPLOAD_IMAGE" is_accessibility_with_no_ui="true" desc="Accessibility string for the uploaded image option on the new tab page.">
+        User uploaded image
       </message>
 
       <!-- Time Last Accessed strings -->

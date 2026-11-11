@@ -6,6 +6,7 @@
 import BraveCore
 import BraveShared
 import BraveStrings
+import CoreData
 import Data
 import DesignSystem
 import Favicon
@@ -257,12 +258,12 @@ struct HistoryView: View {
         prompt: Strings.History.historySearchBarTitle
       )
     }
-    .onChange(of: searchText) { _, searchText in
+    .onChange(of: searchText) { [weak model] _, searchText in
       self.timer?.invalidate()
       self.timer = Timer.scheduledTimer(
         withTimeInterval: 0.1,
         repeats: false,
-        block: { [weak model] timer in
+        block: { timer in
           timer.invalidate()
           model?.refreshHistory(query: searchText)
         }

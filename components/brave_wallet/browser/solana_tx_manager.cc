@@ -27,15 +27,12 @@
 #include "brave/components/brave_wallet/browser/solana_instruction_data_decoder.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/browser/solana_message.h"
-#include "brave/components/brave_wallet/browser/solana_message_header.h"
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
 #include "brave/components/brave_wallet/browser/solana_tx_state_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
-#include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/solana_address.h"
-#include "brave/components/brave_wallet/common/solana_utils.h"
 #include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -221,14 +218,8 @@ void SolanaTxManager::AddUnapprovedSolanaTransaction(
     return;
   }
 
-  auto meta = std::make_unique<SolanaTxMeta>(from, std::move(tx));
-  meta->set_id(TxMeta::GenerateMetaID());
-  meta->set_origin(
-      origin.value_or(url::Origin::Create(GURL("chrome://wallet"))));
-  meta->set_created_time(base::Time::Now());
-  meta->set_status(mojom::TransactionStatus::Unapproved);
-  meta->set_chain_id(chain_id);
-  meta->set_swap_info(std::move(swap_info));
+  auto meta = SolanaTxMeta::MakeUnapproved(from, std::move(tx), chain_id,
+                                           std::move(swap_info), origin);
 
   // Skip preflight checks for compressed NFT transfers to avoid a potential
   // Solana RPC bug that incorrectly shows compute budget exceeded, causing

@@ -7,16 +7,22 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_WORKSPACE_ASSOCIATED_CONTENT_H_
 
 #include <memory>
+#include <optional>
 #include <string>
+#include <string_view>
 
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
+#include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "content/public/browser/weak_document_ptr.h"
 #include "content/public/browser/web_contents_observer.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/blink/public/mojom/content_extraction/ai_page_content.mojom.h"
+#include "url/gurl.h"
+#include "url/origin.h"
 
 namespace content {
 class BrowserContext;
@@ -27,18 +33,25 @@ class WebContents;
 namespace ai_chat {
 
 // Associated content backed by a hidden, headless
-// chrome-untrusted://leo-workspace page. The page holds a
+// chrome-untrusted://<uuid>.leo-workspace page, where the uuid is the
+// workspace's, giving each workspace its own origin. The content is
+// identified (and stored) by workspace://<uuid>, its |url()|, which is never
+// loaded. The page holds a
 // FileSystemDirectoryHandle for a user-picked folder (delivered by the browser
 // via launchQueue) and registers the local file tools with Leo via WebMCP
-// (navigator.modelContext). This delegate owns the background WebContents, so
+// (document.modelContext). This delegate owns the background WebContents, so
 // its lifetime (and the page's) is tied to the conversation that owns the
 // delegate. Tool discovery reuses the same AIPageContentAgent harvest as tab
 // content (see GetContentTools).
 class WorkspaceAssociatedContent : public AssociatedContentDelegate,
-                                   public content::WebContentsObserver {
+                                   public content::WebContentsObserver,
+                                   public mojom::ContentToolsListener {
  public:
+  // Creates a new workspace. A null |folder_path| creates an empty workspace,
+  // which is sent no folder, so the page uses its origin private file system
+  // (OPFS) as the workspace's folder instead.
   WorkspaceAssociatedContent(
-      base::FilePath folder_path,
+      std::optional<base::FilePath> folder_path,
       content::BrowserContext* browser_context,
       base::OnceCallback<void(content::WebContents*)> attach_tab_helpers);
   ~WorkspaceAssociatedContent() override;
@@ -46,24 +59,66 @@ class WorkspaceAssociatedContent : public AssociatedContentDelegate,
   WorkspaceAssociatedContent& operator=(const WorkspaceAssociatedContent&) =
       delete;
 
-  const base::FilePath& folder_path() const { return folder_path_; }
+  // Opens a workspace from its workspace://<uuid> URL, attached with
+  // |content_uuid| (or a new one), as several conversations can share a
+  // workspace. Returns nullptr if |url| is not a valid workspace URL.
+  static std::unique_ptr<WorkspaceAssociatedContent> CreateFromUrl(
+      GURL url,
+      std::optional<std::string> content_uuid,
+      content::BrowserContext* browser_context,
+      base::OnceCallback<void(content::WebContents*)> attach_tab_helpers);
+
+  // Returns the URL of the workspace page showing |file_path| from the
+  // workspace identified by |workspace_url| (workspace://<uuid>):
+  // chrome-untrusted://<uuid>.leo-workspace/#file=<file_path>. Returns
+  // std::nullopt if |workspace_url| is not a valid workspace URL or
+  // |file_path| is empty.
+  static std::optional<GURL> GetFileUrl(const GURL& workspace_url,
+                                        std::string_view file_path);
 
   // AssociatedContentDelegate:
   void GetContent(GetPageContentCallback callback) override;
   void GetContentTools(GetContentToolsCallback callback) override;
+  void OnAssociatedWithConversation() override;
+  url::Origin GetOrigin() const override;
+
+  // The URL of the page hosting the workspace's tools:
+  // chrome-untrusted://<uuid>.leo-workspace/.
+  const GURL& page_url() const { return page_url_; }
 
   content::WebContents* GetWebContentsForTesting() {
     return web_contents_.get();
   }
 
  private:
+  // Sets up the identity of the workspace with |workspace_uuid|, attached with
+  // |content_uuid|, without loading it.
+  WorkspaceAssociatedContent(std::string_view workspace_uuid,
+                             std::string content_uuid);
+
+  // Creates the hidden WebContents and loads |page_url_| in it.
+  void AttachWebContents(
+      content::BrowserContext* browser_context,
+      base::OnceCallback<void(content::WebContents*)> attach_tab_helpers);
+
   // content::WebContentsObserver:
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
+
+  // mojom::ContentToolsListener:
+  void OnContentToolsChanged() override;
+
+  // Subscribes to WebMCP tool registration changes from the workspace page.
+  void SubscribeToContentToolChanges();
 
   // Grants the workspace origin File System Access read/write permission, mints
   // a directory handle for |folder_path_|, and delivers it to the page's JS via
   // launchQueue. Runs once the page's main frame has loaded.
   void DeliverDirectoryHandle(content::RenderFrameHost* rfh);
+
+  // Whether the workspace origin has been granted File System Access to a
+  // user-picked folder. If not, its tools can only touch the workspace's own
+  // OPFS, so they run without a permission prompt.
+  bool HasFolderAccess() const;
 
   void OnContentToolsFetched(
       GetContentToolsCallback callback,
@@ -71,13 +126,23 @@ class WorkspaceAssociatedContent : public AssociatedContentDelegate,
       mojo::Remote<blink::mojom::AIPageContentAgent> agent,
       blink::mojom::AIPageContentPtr result);
 
-  const base::FilePath folder_path_;
+  // The page hosting the workspace's tools; see page_url().
+  const GURL page_url_;
+
+  // The folder path for new workspaces. Empty for empty workspaces, and for
+  // restored workspaces, which get their FileSystemDirectoryHandle from
+  // IndexedDB instead.
+  std::optional<base::FilePath> folder_path_;
   std::unique_ptr<content::WebContents> web_contents_;
 
   // True once the workspace page has loaded and its handle has been delivered.
   // Until then GetContentTools reports no tools synchronously, so the manager's
   // add-time probe can't race with (and clobber) the attach we do on load.
   bool page_ready_ = false;
+
+  // Mojo bindings for receiving WebMCP tool change notifications.
+  mojo::Remote<mojom::PageContentExtractor> content_tools_extractor_;
+  mojo::Receiver<mojom::ContentToolsListener> content_tools_listener_{this};
 
   base::WeakPtrFactory<WorkspaceAssociatedContent> weak_ptr_factory_{this};
 };

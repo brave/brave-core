@@ -14,6 +14,7 @@
 
 #include "base/base64.h"
 #include "base/check.h"
+#include "base/containers/span.h"
 #include "base/files/file_util.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
@@ -48,7 +49,6 @@
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -63,6 +63,7 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "crypto/sha2.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/install_default_websocket_handlers.h"
@@ -72,7 +73,6 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/ui_test_utils.h"
 #endif
 
@@ -102,11 +102,6 @@ constexpr char kAdBlockTestPage[] = "/blocking.html";
 constexpr char kAdBlockEasyListFranceUUID[] =
     "9852EFC4-99E4-4F2D-A915-9C3196C7A1DE";
 
-constexpr char kDefaultAdBlockComponentTestId[] =
-    "naccapggpomhlhoifnlebfoocegenbol";
-constexpr char kRegionalAdBlockComponentTestId[] =
-    "dlpmaigjliompnelofkljgcmlenklieh";
-
 constexpr char kDefaultAdBlockComponentTest64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtV7Vr69kkvSvu2lhcMDh"
     "j4Jm3FKU1zpUkALaum5719/cccVvGpMKKFyy4WYXsmAfcIONmGO4ThK/q6jkgC5v"
@@ -131,6 +126,7 @@ using brave_shields::features::kBraveAdblockDefault1pBlocking;
 using brave_shields::features::kBraveAdblockProceduralFiltering;
 using brave_shields::features::kBraveAdblockScriptletDebugLogs;
 using brave_shields::features::kCosmeticFilteringJsPerformance;
+using brave_shields::prefs::kAdsBlocked;
 
 namespace {
 
@@ -289,7 +285,7 @@ base::FilePath AdBlockServiceTest::MakeTestDataCopy(
   EXPECT_TRUE(dir->CreateUniqueTempDir());
   auto temp_path = dir->GetPath();
 
-  EXPECT_TRUE(base::CopyDirectoryExcl(source_location, temp_path, true));
+  EXPECT_TRUE(base::CopyDirectory(source_location, temp_path, true));
 
   temp_dirs_.push_back(std::move(dir));
 
@@ -389,10 +385,13 @@ void AdBlockServiceTest::InstallComponent(
 }
 
 void AdBlockServiceTest::InstallDefaultAdBlockComponent() {
+  const std::optional<std::vector<uint8_t>> decoded_public_key =
+      base::Base64Decode(kDefaultAdBlockComponentTest64PublicKey);
+  CHECK(decoded_public_key);
   auto catalog_entry = brave_shields::FilterListCatalogEntry(
       "default", "", "Brave Ad Block Updater", {}, "",
       "Default lists for Brave Browser", true, true, true, 0, {},
-      kDefaultAdBlockComponentTestId, kDefaultAdBlockComponentTest64PublicKey);
+      crypto::SHA256Hash(*decoded_public_key));
 
   InstallComponent(catalog_entry);
 }
@@ -400,12 +399,14 @@ void AdBlockServiceTest::InstallDefaultAdBlockComponent() {
 void AdBlockServiceTest::InstallRegionalAdBlockComponent(
     const std::string& uuid,
     bool enable_list) {
+  const std::optional<std::vector<uint8_t>> decoded_public_key =
+      base::Base64Decode(kRegionalAdBlockComponentTest64PublicKey);
+  CHECK(decoded_public_key);
   auto catalog_entry = brave_shields::FilterListCatalogEntry(
       uuid, "https://easylist-downloads.adblockplus.org/liste_fr.txt",
       "EasyList Liste FR", {"fr"}, "https://forums.lanik.us/viewforum.php?f=91",
       "Removes advertisements from French websites", false, enable_list, false,
-      0, {}, kRegionalAdBlockComponentTestId,
-      kRegionalAdBlockComponentTest64PublicKey);
+      0, {}, crypto::SHA256Hash(*decoded_public_key));
 
   InstallComponent(catalog_entry);
 }
@@ -773,6 +774,117 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_WebSocketBlocking) {
   EXPECT_EQ(false,
             EvalJs(contents, content::JsReplace("checkWebsocketConnection($1)",
                                                 ws_url.spec())));
+}
+
+// See crbug.com/1372291.
+#if BUILDFLAG(IS_ANDROID)
+#define MAYBE_SharedWorkerWebSocketBlocking \
+  DISABLED_SharedWorkerWebSocketBlocking
+#define MAYBE_ServiceWorkerWebSocketBlocking \
+  DISABLED_ServiceWorkerWebSocketBlocking
+#define MAYBE_SharedWorkerWebSocketAllowed DISABLED_SharedWorkerWebSocketAllowed
+#define MAYBE_ServiceWorkerWebSocketAllowed \
+  DISABLED_ServiceWorkerWebSocketAllowed
+#else
+#define MAYBE_SharedWorkerWebSocketBlocking SharedWorkerWebSocketBlocking
+#define MAYBE_ServiceWorkerWebSocketBlocking ServiceWorkerWebSocketBlocking
+#define MAYBE_SharedWorkerWebSocketAllowed SharedWorkerWebSocketAllowed
+#define MAYBE_ServiceWorkerWebSocketAllowed ServiceWorkerWebSocketAllowed
+#endif
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       MAYBE_SharedWorkerWebSocketBlocking) {
+  UpdateAdBlockInstanceWithRules("*$websocket");
+
+  net::EmbeddedTestServer ws_server(net::EmbeddedTestServer::TYPE_HTTPS);
+  net::test_server::InstallDefaultWebSocketHandlers(&ws_server);
+  ASSERT_TRUE(ws_server.Start());
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  NavigateToURL(url);
+  content::WebContents* contents = web_contents();
+
+  GURL ws_url =
+      net::test_server::GetWebSocketURL(ws_server, "/echo-with-no-extension");
+
+  EXPECT_EQ(false,
+            EvalJs(contents, content::JsReplace(
+                                 "checkSharedWorkerWebsocketConnection($1)",
+                                 ws_url.spec())));
+}
+
+// Counterpart to SharedWorkerWebSocketBlocking: with a rule that does not match
+// the WebSocket, a shared worker's WebSocket must still be allowed to connect.
+// This guards against a regression where WillInterceptWebSocket (which now
+// returns true for frameless handshakes) wrongly blocks connections that should
+// succeed.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_SharedWorkerWebSocketAllowed) {
+  // A $websocket rule that does not match the test WebSocket URL
+  // (/echo-with-no-extension), so the connection should be allowed.
+  UpdateAdBlockInstanceWithRules("does-not-match-this-websocket$websocket");
+
+  net::EmbeddedTestServer ws_server(net::EmbeddedTestServer::TYPE_HTTPS);
+  net::test_server::InstallDefaultWebSocketHandlers(&ws_server);
+  ASSERT_TRUE(ws_server.Start());
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  NavigateToURL(url);
+  content::WebContents* contents = web_contents();
+
+  GURL ws_url =
+      net::test_server::GetWebSocketURL(ws_server, "/echo-with-no-extension");
+
+  EXPECT_EQ(true,
+            EvalJs(contents, content::JsReplace(
+                                 "checkSharedWorkerWebsocketConnection($1)",
+                                 ws_url.spec())));
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       MAYBE_ServiceWorkerWebSocketBlocking) {
+  UpdateAdBlockInstanceWithRules("*$websocket");
+
+  net::EmbeddedTestServer ws_server(net::EmbeddedTestServer::TYPE_HTTPS);
+  net::test_server::InstallDefaultWebSocketHandlers(&ws_server);
+  ASSERT_TRUE(ws_server.Start());
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  NavigateToURL(url);
+  content::WebContents* contents = web_contents();
+
+  GURL ws_url =
+      net::test_server::GetWebSocketURL(ws_server, "/echo-with-no-extension");
+
+  EXPECT_EQ(false,
+            EvalJs(contents, content::JsReplace(
+                                 "checkServiceWorkerWebsocketConnection($1)",
+                                 ws_url.spec())));
+}
+
+// Counterpart to ServiceWorkerWebSocketBlocking: with a rule that does not
+// match the WebSocket, a service worker's WebSocket must still be allowed to
+// connect.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       MAYBE_ServiceWorkerWebSocketAllowed) {
+  // A $websocket rule that does not match the test WebSocket URL
+  // (/echo-with-no-extension), so the connection should be allowed.
+  UpdateAdBlockInstanceWithRules("does-not-match-this-websocket$websocket");
+
+  net::EmbeddedTestServer ws_server(net::EmbeddedTestServer::TYPE_HTTPS);
+  net::test_server::InstallDefaultWebSocketHandlers(&ws_server);
+  ASSERT_TRUE(ws_server.Start());
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  NavigateToURL(url);
+  content::WebContents* contents = web_contents();
+
+  GURL ws_url =
+      net::test_server::GetWebSocketURL(ws_server, "/echo-with-no-extension");
+
+  EXPECT_EQ(true,
+            EvalJs(contents, content::JsReplace(
+                                 "checkServiceWorkerWebsocketConnection($1)",
+                                 ws_url.spec())));
 }
 
 // Load a page with an ad image which is matched by a filter in the additional
@@ -1986,11 +2098,11 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, HiddenListsNotPresented) {
   filter_list_catalog.push_back(brave_shields::FilterListCatalogEntry(
       "uuid1", "https://example.com", "Hidden list", {},
       "https://support.example.com", "first list", true, false, false, 0, {},
-      "testid1", "pubkey1"));
+      crypto::SHA256Hash(base::as_byte_span(std::string_view("pubkey1")))));
   filter_list_catalog.push_back(brave_shields::FilterListCatalogEntry(
       "uuid2", "https://example.com", "Normal list", {},
       "https://support.example.com", "second list", false, false, false, 0, {},
-      "testid2", "pubkey2"));
+      crypto::SHA256Hash(base::as_byte_span(std::string_view("pubkey2")))));
   component_service_manager()->SetFilterListCatalog(filter_list_catalog);
 
   auto regional_lists = component_service_manager()->GetRegionalLists();
@@ -3237,7 +3349,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        ContentPickerInPrivateModeIsNotAvailableByDefault) {
   const GURL tab_url =
       embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
-  Browser* private_browser = CreateIncognitoBrowser();
+  BrowserWindowInterface* private_browser = CreateIncognitoBrowser();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(private_browser, tab_url));
   content::WebContents* contents =
       private_browser->tab_strip_model()->GetActiveWebContents();
@@ -3255,7 +3367,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                                             true);
   const GURL tab_url =
       embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
-  Browser* private_browser = CreateIncognitoBrowser();
+  BrowserWindowInterface* private_browser = CreateIncognitoBrowser();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(private_browser, tab_url));
   content::WebContents* contents =
       private_browser->tab_strip_model()->GetActiveWebContents();

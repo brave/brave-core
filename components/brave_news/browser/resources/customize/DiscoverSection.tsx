@@ -6,7 +6,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import Flex from '$web-common/Flex'
-import { font, spacing } from '@brave/leo/tokens/css/variables'
+import { font, spacing } from '@brave/nala/tokens/css/variables'
 
 interface Props {
   name?: string

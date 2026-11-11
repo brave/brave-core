@@ -2,7 +2,7 @@ Name: anonymous-credentials
 URL: https://crates.io/crates/anonymous-credentials
 Version: 0.1.4
 License: MPL-2.0
-License File:
+License File: //brave/components/web_discovery/browser/anonymous_credentials/../../../../common/licenses/MPL-2.0
 Shipped: yes
 Security Critical: yes
 

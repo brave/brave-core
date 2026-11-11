@@ -5,8 +5,10 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_ironwood_to_transparent_transaction_task.h"
 
+#include <cstdint>
 #include <memory>
 #include <utility>
+#include <vector>
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
@@ -302,6 +304,145 @@ TEST_F(ZCashCreateIronwoodToTransparentTransactionTaskTest,
             70000u + 80000u - 3 * 5000u);
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].address,
             kTransparentAddress);
+}
+
+// Fee correctness for Ironwood to transparent unshielding. The transparent
+// target output forms its own bundle - max(0, 1) = 1 action - while the
+// Ironwood spends and their change output form another, so the fee is
+// 5000 * max(2, 1 + max(spends, change, 2)). Billing the spends anywhere but
+// the Ironwood bundle would raise a spurious extra bundle, see
+// https://github.com/brave/brave-browser/issues/58957.
+TEST_F(ZCashCreateIronwoodToTransparentTransactionTaskTest, FeeCorrectness) {
+  // Notes are picked ascending until they cover amount + fee, so the note set
+  // and amount together control the spend count.
+  struct {
+    const char* label;
+    std::vector<uint64_t> note_amounts;
+    uint64_t amount;
+    size_t expected_inputs;
+    uint64_t expected_fee;
+  } const kCases[] = {
+      // 1 spend + change, 1 transparent target -> 1 + max(1, 1, 2) = 3.
+      {"single note", {30000u}, 5000u, 1u, 15000u},
+      // 2 spends still sit at the Ironwood minimum -> 1 + max(2, 1, 2) = 3.
+      {"two notes", {20000u, 60000u}, 40000u, 2u, 15000u},
+      // 3 spends exceed it -> 1 + max(3, 1, 2) = 4.
+      {"three notes", {20000u, 30000u, 40000u}, 60000u, 3u, 20000u},
+      // 5 spends -> 1 + max(5, 1, 2) = 6.
+      {"five notes",
+       {20000u, 30000u, 40000u, 50000u, 60000u},
+       165000u,
+       5u,
+       30000u},
+  };
+
+  for (const auto& test_case : kCases) {
+    SCOPED_TRACE(test_case.label);
+
+    ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+        .WillByDefault([&](OrchardPool pool,
+                           const mojom::AccountIdPtr& account_id,
+                           const OrchardAddrRawPart& addr) {
+          EXPECT_EQ(pool, OrchardPool::kIronwood);
+          OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
+          uint32_t block_id = 1u;
+          for (uint64_t note_amount : test_case.note_amounts) {
+            OrchardNote note;
+            note.block_id = block_id++;
+            note.amount = note_amount;
+            note.note_version = 2;
+            spendable_notes_bundle.spendable_notes.push_back(std::move(note));
+          }
+          spendable_notes_bundle.anchor_block_id = 10u;
+          return spendable_notes_bundle;
+        });
+
+    auto task =
+        std::make_unique<ZCashCreateIronwoodToTransparentTransactionTask>(
+            pass_key(), zcash_wallet_service(), action_context(),
+            kTransparentAddress, test_case.amount);
+
+    base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
+    base::expected<ZCashTransaction, std::string> tx_result;
+    EXPECT_CALL(callback, Run(_))
+        .WillOnce(::testing::DoAll(
+            SaveArg<0>(&tx_result),
+            base::test::RunOnceClosure(task_environment().QuitClosure())));
+
+    task->Start(callback.Get());
+    task_environment().RunUntilQuit();
+
+    ASSERT_TRUE(tx_result.has_value());
+    EXPECT_EQ(tx_result.value().v6_part().ironwood.inputs.size(),
+              test_case.expected_inputs);
+    EXPECT_EQ(tx_result.value().fee(), test_case.expected_fee);
+
+    // The transparent side carries only the target output - change goes back to
+    // the Ironwood pool the notes were spent from.
+    EXPECT_EQ(tx_result.value().transparent_part().inputs.size(), 0u);
+    EXPECT_EQ(tx_result.value().transparent_part().outputs.size(), 1u);
+    EXPECT_EQ(tx_result.value().transparent_part().outputs[0].amount,
+              test_case.amount);
+    EXPECT_EQ(tx_result.value().transparent_part().outputs[0].address,
+              kTransparentAddress);
+
+    // Nothing may be billed to the legacy Orchard bundle.
+    EXPECT_EQ(tx_result.value().v6_part().legacy_orchard.inputs.size(), 0u);
+    EXPECT_EQ(tx_result.value().v6_part().legacy_orchard.outputs.size(), 0u);
+
+    // Value is conserved: spent notes = target + Ironwood change + fee.
+    uint64_t total_outputs = test_case.amount;
+    for (const auto& output : tx_result.value().v6_part().ironwood.outputs) {
+      total_outputs += output.value;
+    }
+    EXPECT_EQ(tx_result.value().TotalInputsAmount().ValueOrDie(),
+              total_outputs + tx_result.value().fee());
+  }
+}
+
+// Full amount sends have no change output, so the Ironwood bundle covers the
+// spends alone: 1 + max(spends, 0, 2).
+TEST_F(ZCashCreateIronwoodToTransparentTransactionTaskTest,
+       FeeCorrectness_MaxAmount) {
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+      .WillByDefault([&](OrchardPool pool,
+                         const mojom::AccountIdPtr& account_id,
+                         const OrchardAddrRawPart& addr) {
+        OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
+        for (uint32_t i = 0; i < 3u; ++i) {
+          OrchardNote note;
+          note.block_id = i + 1u;
+          note.amount = 70000u;
+          note.note_version = 2;
+          spendable_notes_bundle.spendable_notes.push_back(std::move(note));
+        }
+        spendable_notes_bundle.anchor_block_id = 10u;
+        return spendable_notes_bundle;
+      });
+
+  auto task = std::make_unique<ZCashCreateIronwoodToTransparentTransactionTask>(
+      pass_key(), zcash_wallet_service(), action_context(), kTransparentAddress,
+      kZCashFullAmount);
+
+  base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
+  base::expected<ZCashTransaction, std::string> tx_result;
+  EXPECT_CALL(callback, Run(_))
+      .WillOnce(::testing::DoAll(
+          SaveArg<0>(&tx_result),
+          base::test::RunOnceClosure(task_environment().QuitClosure())));
+
+  task->Start(callback.Get());
+  task_environment().RunUntilQuit();
+
+  ASSERT_TRUE(tx_result.has_value());
+
+  // 3 spends, no change, 1 transparent target -> 1 + max(3, 0, 2) = 4 actions.
+  EXPECT_EQ(tx_result.value().v6_part().ironwood.inputs.size(), 3u);
+  EXPECT_EQ(tx_result.value().fee(), 20000u);
+  EXPECT_EQ(tx_result.value().v6_part().ironwood.outputs.size(), 0u);
+  EXPECT_EQ(tx_result.value().transparent_part().outputs.size(), 1u);
+  EXPECT_EQ(tx_result.value().transparent_part().outputs[0].amount,
+            3u * 70000u - 20000u);
 }
 
 TEST_F(ZCashCreateIronwoodToTransparentTransactionTaskTest, NotEnoughFunds) {

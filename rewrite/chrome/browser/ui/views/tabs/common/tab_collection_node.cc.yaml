@@ -1,0 +1,31 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Map Brave's TREE_NODE collection type in GetTypeFromNode().
+
+      TREE_NODE is Brave-specific type and we need to map collection and node types
+    regex:
+      re_pattern: |-
+        (TabCollectionNode::Type GetTypeFromNode\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{)
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+              case tabs::TabCollection::Type::TREE_NODE:
+                return TabCollectionNode::Type::TREE_NODE;
+
+  - description: |-
+      Never create a view for a TREE_NODE in CreateViewForNode().
+
+      We don't have speciali view for TREE_NODE yet.
+    regex:
+      re_pattern: |-
+        (TabCollectionNode::CreateViewForNode\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{)
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            case Type::TREE_NODE:
+              NOTREACHED();

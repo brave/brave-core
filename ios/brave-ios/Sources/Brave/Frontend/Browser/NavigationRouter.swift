@@ -56,9 +56,20 @@ public enum NavigationPath: Equatable {
       self = .deepLink(link)
     } else if urlString.starts(with: "\(scheme)://open-url") {
       let urlText = components.valueForQuery("url")
-      let url = URIFixup.getURL(urlText ?? "") ?? urlText?.asURL
-      let forcedPrivate = Preferences.Privacy.privateBrowsingOnly.value || isPrivateBrowsing
-      let isPrivate = Bool(components.valueForQuery("private") ?? "") ?? forcedPrivate
+      let url: URL?
+      if let urlText, !urlText.isEmpty {
+        guard let resolvedURL = URIFixup.getURL(urlText) ?? urlText.asURL,
+          resolvedURL.isWebPage(includeDataURIs: false)
+        else {
+          return nil
+        }
+        url = resolvedURL
+      } else {
+        return nil
+      }
+      let isPrivate =
+        Preferences.Privacy.privateBrowsingOnly.value
+        ? true : Bool(components.valueForQuery("private") ?? "") ?? isPrivateBrowsing
       self = .url(webURL: url, isPrivate: isPrivate)
     } else if urlString.starts(with: "\(scheme)://open-text") {
       let text = components.valueForQuery("text")
@@ -77,6 +88,7 @@ public enum NavigationPath: Equatable {
     }
   }
 
+  @MainActor
   static func handle(nav: NavigationPath, with bvc: BrowserViewController) {
     switch nav {
     case .deepLink(let link): NavigationPath.handleDeepLink(link, with: bvc)
@@ -147,7 +159,22 @@ public enum NavigationPath: Equatable {
     )
   }
 
+  /// Tab mode for external `brave://shortcut` handling. Private Browsing Only must override
+  /// per-branch literals or default parameters so links cannot open normal tabs.
+  static func effectiveIsPrivateBrowsing(
+    privateBrowsingOnly: Bool,
+    isPrivateBrowsing: Bool
+  ) -> Bool {
+    privateBrowsingOnly || isPrivateBrowsing
+  }
+
+  @MainActor
   static func handleWidgetShortcut(_ path: WidgetShortcut, with bvc: BrowserViewController) {
+    let isPrivate = effectiveIsPrivateBrowsing(
+      privateBrowsingOnly: Preferences.Privacy.privateBrowsingOnly.value,
+      isPrivateBrowsing: bvc.privateBrowsingManager.isPrivateBrowsing
+    )
+
     switch path {
     case .unknown, .search:
       // Search
@@ -156,7 +183,7 @@ public enum NavigationPath: Equatable {
       } else {
         bvc.openBlankNewTab(
           attemptLocationFieldFocus: true,
-          isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing
+          isPrivate: isPrivate
         )
       }
       if let tab = bvc.tabManager.selectedTab {
@@ -167,7 +194,7 @@ public enum NavigationPath: Equatable {
     case .newTab:
       bvc.openBlankNewTab(
         attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
-        isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing
+        isPrivate: isPrivate
       )
     case .newPrivateTab:
       if Preferences.Privacy.lockWithPasscode.value {
@@ -212,7 +239,7 @@ public enum NavigationPath: Equatable {
       bvc.scanQRCode()
     case .braveNews:
       // need to stay in NTP for Brave News
-      bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: false, isExternal: true)
+      bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: isPrivate, isExternal: true)
       bvc.popToBVC()
       guard let newTabPageController = bvc.tabManager.selectedTab?.newTabPageViewController else {
         return
@@ -228,7 +255,7 @@ public enum NavigationPath: Equatable {
     case .askBrave:
       guard let url = URL(string: "https://search.brave.com/ask") else { return }
       bvc.popToBVC()
-      bvc.openURLInNewTab(url, isPrivileged: false)
+      bvc.openURLInNewTab(url, isPrivate: isPrivate, isPrivileged: false)
     @unknown default:
       assertionFailure()
       break

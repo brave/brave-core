@@ -16,6 +16,7 @@
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/android/chrome_jni_headers/BraveLeoUtils_jni.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 
 namespace ai_chat {
@@ -36,8 +37,8 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
   // or a conversation based on the provided WebContents.
   ConversationHandler* conversation;
   if (conversation_uuid_str.empty()) {
-    AIChatTabHelper* chat_tab_helper =
-        AIChatTabHelper::FromWebContents(web_contents);
+    AIChatTabHelper* chat_tab_helper = AIChatTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(web_contents));
     DCHECK(chat_tab_helper);
     conversation = ai_chat_service->GetOrCreateConversationHandlerForContent(
         chat_tab_helper->web_contents_content().content_id(),
@@ -64,7 +65,7 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
 
   content::OpenURLParams params(
       ConversationUrl(conversation->get_conversation_uuid()),
-      content::Referrer(), WindowOpenDisposition::CURRENT_TAB,
+      content::Referrer(), WindowOpenDisposition::kCurrentTab,
       ui::PAGE_TRANSITION_FROM_API, false);
   web_contents->OpenURL(params, {});
 }
@@ -77,8 +78,8 @@ static void JNI_BraveLeoUtils_OpenLeoUrlForTab(
   AIChatService* ai_chat_service = AIChatServiceFactory::GetForBrowserContext(
       web_contents->GetBrowserContext());
   DCHECK(ai_chat_service);
-  AIChatTabHelper* chat_tab_helper =
-      AIChatTabHelper::FromWebContents(web_contents);
+  AIChatTabHelper* chat_tab_helper = AIChatTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   DCHECK(chat_tab_helper);
   ConversationHandler* conversation =
       ai_chat_service->GetOrCreateConversationHandlerForContent(
@@ -87,7 +88,7 @@ static void JNI_BraveLeoUtils_OpenLeoUrlForTab(
 
   content::OpenURLParams params(
       ConversationUrl(conversation->get_conversation_uuid()),
-      content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      content::Referrer(), WindowOpenDisposition::kNewForegroundTab,
       ui::PAGE_TRANSITION_FROM_API, false);
   web_contents->OpenURL(params, {});
 }

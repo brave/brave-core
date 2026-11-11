@@ -76,7 +76,6 @@ public class BraveClassAdapter {
         chain = new BraveHubManagerImplClassAdapter(chain);
         chain = new BraveIdentityDiscControllerClassAdapter(chain);
         chain = new BraveIncognitoNewTabPageClassAdapter(chain);
-        chain = new BraveIncognitoTabSwitcherPaneClassAdapter(chain);
         chain = new BraveIntentHandlerClassAdapter(chain);
         chain = new BraveLauncherActivityClassAdapter(chain);
         chain = new BraveLaunchIntentDispatcherClassAdapter(chain);
@@ -86,7 +85,6 @@ public class BraveClassAdapter {
         chain = new BraveLogoMediatorClassAdapter(chain);
         chain = new BraveMainPreferenceBaseClassAdapter(chain);
         chain = new BraveManageAccountDevicesLinkViewClassAdapter(chain);
-        chain = new BraveManageSyncSettingsClassAdapter(chain);
         chain = new BraveMediaNotificationControllerDelegateAdapter(chain);
         chain = new BraveMediaSessionHelperClassAdapter(chain);
         chain = new BraveMediaSessionTabHelperClassAdapter(chain);
@@ -108,7 +106,6 @@ public class BraveClassAdapter {
         chain = new BraveNotificationPermissionRationaleDialogControllerClassAdapter(chain);
         chain = new BraveNotificationPlatformBridgeClassAdapter(chain);
         chain = new BraveNullAccountManagerDelegateAdapter(chain);
-        chain = new BraveOmniboxResourceProviderClassAdapter(chain);
         chain = new BraveOmniboxViewHolderFactoryClassAdapter(chain);
         chain = new BravePartialCustomTabBottomSheetStrategyClassAdapter(chain);
         chain = new BravePasswordManagerHelperClassAdapter(chain);
@@ -153,7 +150,6 @@ public class BraveClassAdapter {
         chain = new BraveToolbarPositionControllerClassAdapter(chain);
         chain = new BraveToolbarSwipeLayoutClassAdapter(chain);
         chain = new BraveTopToolbarCoordinatorClassAdapter(chain);
-        chain = new BraveUndoBarControllerBaseClassAdapter(chain);
         chain = new BraveVariationsSeedFetcherClassAdapter(chain);
         chain = new BraveWebsiteClassAdapter(chain);
         chain = new BraveWebsitePermissionsFetcherClassAdapter(chain);

@@ -21,15 +21,16 @@ source_set("unit_tests") {
 
     deps = [
       "//base/test:test_support",
+      "//brave/browser/ui",
       "//brave/components/brave_shields/core/common",
       "//brave/components/resources:strings_grit",
       "//chrome/browser",
       "//chrome/browser/regional_capabilities",
       "//chrome/browser/search_engines",
-      "//chrome/browser/ui",
       "//chrome/browser/ui/navigator",
       "//chrome/browser/ui/webui/settings",
       "//chrome/test:test_support",
+      "//chrome/test/base:testing_browser_process",
       "//components/browsing_data/content:test_support",
       "//components/regional_capabilities",
       "//components/search_engines",
@@ -73,12 +74,13 @@ source_set("browser_tests") {
 
     sources = [
       "brave_manage_profile_browsertest.cc",
+      "brave_settings_overrides_browsertest.cc",
+      "brave_settings_toggle_browsertest.cc",
       "settings_secure_dns_handler_browsertest.cc",
     ]
 
     deps = [
       "//brave/ui/webui/custom_profile_image/buildflags",
-      "//chrome/browser/ui/",
       "//chrome/browser/ui/webui/settings",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
@@ -86,7 +88,6 @@ source_set("browser_tests") {
 
     if (enable_brave_custom_profile_image_webui) {
       deps += [ "//brave/browser/ui/webui/custom_profile_image" ]
-      data_deps = [ "//chrome:browser_tests_pak" ]
     }
 
     if (enable_email_aliases) {
@@ -97,6 +98,8 @@ source_set("browser_tests") {
         "//chrome/browser/ui:chrome_pages",
       ]
     }
+
+    data_deps = [ "//chrome:browser_tests_pak" ]
 
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
   }

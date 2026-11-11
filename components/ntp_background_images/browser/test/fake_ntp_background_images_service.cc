@@ -9,7 +9,8 @@
 
 #include "base/files/file_path.h"
 #include "base/json/json_reader.h"
-#include "brave/components/ntp_background_images/browser/ntp_sponsored_sites_data.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/site/ntp_sponsored_sites_data.h"
 
 namespace ntp_background_images {
 
@@ -28,9 +29,14 @@ void FakeNTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   ++register_sponsored_images_component_call_count_;
 }
 
+void FakeNTPBackgroundImagesService::UnregisterSponsoredImagesComponent() {
+  NTPBackgroundImagesService::UnregisterSponsoredImagesComponent();
+  ++unregister_sponsored_images_component_call_count_;
+}
+
 void FakeNTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
     const std::string& json) {
-  sponsored_images_installed_dir_ =
+  sponsored_content_installed_dir_ =
       base::FilePath::FromASCII("fake_sponsored_images_installed_dir");
   NTPBackgroundImagesService::OnHandledSponsoredComponentData(
       base::JSONReader::ReadDict(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS));
@@ -40,6 +46,11 @@ void FakeNTPBackgroundImagesService::OnGetSponsoredSitesData(
     std::optional<NTPSponsoredSitesData> sites_data) {
   NTPBackgroundImagesService::OnHandledSponsoredSitesData(
       std::move(sites_data));
+}
+
+void FakeNTPBackgroundImagesService::SetBackgroundImagesData(
+    std::unique_ptr<NTPBackgroundImagesData> data) {
+  background_images_data_ = std::move(data);
 }
 
 }  // namespace ntp_background_images

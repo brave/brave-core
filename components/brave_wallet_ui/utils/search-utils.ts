@@ -156,8 +156,9 @@ export const filterTransactionsBySearchValue = (
         && tx.approvalTarget.toLowerCase().includes(lowerCaseSearchValue))
       || (tx.approvalTargetLabel
         && tx.approvalTargetLabel.toLowerCase().includes(lowerCaseSearchValue)) // Origin
-      || tx.originInfo?.eTldPlusOne.toLowerCase().includes(lowerCaseSearchValue)
-      || tx.originInfo?.originSpec.toLowerCase().includes(lowerCaseSearchValue)
+      || tx.dappOriginInfo?.originSpec
+        .toLowerCase()
+        .includes(lowerCaseSearchValue)
     )
   })
 }

@@ -7,15 +7,12 @@
 #include <iterator>
 #include <memory>
 
-#include "base/memory/scoped_refptr.h"
 #include "base/metrics/field_trial.h"
-#include "base/metrics/field_trial_param_associator.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_search_conversion/types.h"
 #include "brave/components/brave_search_conversion/utils.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/omnibox/browser/promotion_provider.h"
@@ -28,7 +25,6 @@
 #include "components/omnibox/browser/fake_autocomplete_provider_client.h"
 #include "components/omnibox/browser/omnibox_prefs.h"
 #include "components/omnibox/browser/test_scheme_classifier.h"
-#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/search_engines/search_engines_test_environment.h"
 #include "components/search_engines/template_url_data_util.h"
@@ -56,9 +52,10 @@ class DummyProvider : public AutocompleteProvider {
 
   // AutocompleteProvider overrides:
   void Start(const AutocompleteInput& input, bool minimal_changes) override {
-    if (type_ == AutocompleteProvider::TYPE_SEARCH) {
-      AutocompleteMatch match(nullptr, 800, true,
-                              AutocompleteMatchType::SEARCH_WHAT_YOU_TYPED);
+    if (type_ == AutocompleteProvider::Type::kSearch) {
+      AutocompleteMatch match(
+          nullptr, 800, true,
+          omnibox::AutocompleteMatchType::kSearchWhatYouTyped);
       match.keyword = u"brave";
       matches_.push_back(match);
 
@@ -66,7 +63,7 @@ class DummyProvider : public AutocompleteProvider {
       matches_.push_back(match);
     } else {
       AutocompleteMatch match(nullptr, 600, true,
-                              AutocompleteMatchType::BOOKMARK_TITLE);
+                              omnibox::AutocompleteMatchType::kBookmarkTitle);
       matches_.push_back(match);
       matches_.push_back(match);
     }
@@ -122,22 +119,23 @@ class OmniboxPromotionTest : public testing::Test {
     ON_CALL(*client_fake, IsOffTheRecord()).WillByDefault(Return(incognito));
     auto controller = std::make_unique<AutocompleteController>(
         std::move(client_fake),
-        AutocompleteControllerConfig{.provider_types =
-                                         AutocompleteProvider::TYPE_SEARCH});
+        AutocompleteControllerConfig{.provider_types = static_cast<int>(
+                                         AutocompleteProvider::Type::kSearch)});
     controller->providers_.push_back(
-        new DummyProvider(AutocompleteProvider::TYPE_SEARCH));
+        new DummyProvider(AutocompleteProvider::Type::kSearch));
     controller->providers_.push_back(
-        new DummyProvider(AutocompleteProvider::TYPE_BOOKMARK));
+        new DummyProvider(AutocompleteProvider::Type::kBookmark));
     return controller;
   }
 
   ACMatches CreateTestMatches() {
     ACMatches matches;
     // Make first item is search query with default provider.
-    AutocompleteMatch match(nullptr, 800, true,
-                            AutocompleteMatchType::SEARCH_WHAT_YOU_TYPED);
+    AutocompleteMatch match(
+        nullptr, 800, true,
+        omnibox::AutocompleteMatchType::kSearchWhatYouTyped);
     matches.push_back(match);
-    match.type = AutocompleteMatchType::NAVSUGGEST;
+    match.type = omnibox::AutocompleteMatchType::kNavsuggest;
     matches.push_back(match);
     matches.push_back(match);
     matches.push_back(match);
@@ -246,7 +244,7 @@ TEST_F(OmniboxPromotionTest, AutocompleteResultTest) {
   SetConversionTypeToMatch(ConversionType::kBannerTypeB, &matches[2]);
   result.AppendMatches(matches);
   // Make first match is not search query with default provider.
-  result.begin()->type = AutocompleteMatchType::NAVSUGGEST;
+  result.begin()->type = omnibox::AutocompleteMatchType::kNavsuggest;
   // Check promotion match is deleted from |result|.
   SortBraveSearchPromotionMatch(&result);
   for (const auto& match : result) {

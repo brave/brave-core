@@ -22,6 +22,7 @@ android_library("java") {
     "//base:base_java",
     "//base:supplier_java",
     "//base:tasks_java",
+    "//brave/android:settings_insets_java",
     "//brave/browser/ui/android/theme:dynamic_colors_java",
     "//chrome/browser/preferences:java",
     "//chrome/browser/profiles/android:java",

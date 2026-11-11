@@ -7,6 +7,8 @@ package org.chromium.chrome.browser.ntp;
 
 import android.app.Activity;
 
+import androidx.annotation.DrawableRes;
+
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.NullMarked;
@@ -31,6 +33,7 @@ import org.chromium.chrome.browser.ui.native_page.TouchEnabledDelegate;
 import org.chromium.chrome.browser.ui.side_ui.SideUiStateProvider;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
+import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.ui.base.ActivityResultTracker;
 import org.chromium.ui.base.WindowAndroid;
@@ -69,7 +72,8 @@ public class BraveNewTabPageCoordinator extends NewTabPageCoordinator {
             Supplier<Integer> tabStripHeightSupplier,
             OneshotSupplier<SideUiStateProvider> sideUiStateProviderSupplier,
             @Nullable HomeSurfaceTracker homeSurfaceTracker,
-            BackPressManager backPressManager) {
+            BackPressManager backPressManager,
+            TemplateUrlService templateUrlService) {
         super(
                 manager,
                 activity,
@@ -87,7 +91,8 @@ public class BraveNewTabPageCoordinator extends NewTabPageCoordinator {
                 tabStripHeightSupplier,
                 sideUiStateProviderSupplier,
                 homeSurfaceTracker,
-                backPressManager);
+                backPressManager,
+                templateUrlService);
 
         mNewTabPageManager = manager;
 
@@ -110,8 +115,7 @@ public class BraveNewTabPageCoordinator extends NewTabPageCoordinator {
             FeedSurfaceScrollDelegate scrollDelegate,
             TouchEnabledDelegate touchEnabledDelegate,
             UiConfig uiConfig,
-            ActivityLifecycleDispatcher lifecycleDispatcher,
-            Supplier<GURL> composeplateUrlSupplier) {
+            ActivityLifecycleDispatcher lifecycleDispatcher) {
         super.initialize(
                 new BraveTileGroupDelegate(tileGroupDelegate, mActivity),
                 searchProviderHasLogo,
@@ -119,8 +123,7 @@ public class BraveNewTabPageCoordinator extends NewTabPageCoordinator {
                 scrollDelegate,
                 touchEnabledDelegate,
                 uiConfig,
-                lifecycleDispatcher,
-                composeplateUrlSupplier);
+                lifecycleDispatcher);
 
         mBraveNewTabPageLayout.initialize(mNewTabPageManager, mActivity, mProfile, mWindowAndroid);
     }
@@ -169,6 +172,26 @@ public class BraveNewTabPageCoordinator extends NewTabPageCoordinator {
         @Override
         public void initAndroidPrerenderManager(AndroidPrerenderManager androidPrerenderManager) {
             mDelegate.initAndroidPrerenderManager(androidPrerenderManager);
+        }
+
+        @Override
+        public @Nullable String getAiModeTileTitle() {
+            return mDelegate.getAiModeTileTitle();
+        }
+
+        @Override
+        public @Nullable GURL getAiModeTileUrl() {
+            return mDelegate.getAiModeTileUrl();
+        }
+
+        @Override
+        public @Nullable String getAiModeTileContentDescription() {
+            return mDelegate.getAiModeTileContentDescription();
+        }
+
+        @Override
+        public @DrawableRes int getAiModeTileIconDrawableId() {
+            return mDelegate.getAiModeTileIconDrawableId();
         }
 
         @Override

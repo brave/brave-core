@@ -32,7 +32,6 @@
 
 namespace content {
 class BrowserContext;
-class RenderFrameHost;
 }  // namespace content
 
 // Ensures that all web socket requests go through Brave network request
@@ -57,8 +56,13 @@ class BraveProxyingWebSocket
   BraveProxyingWebSocket& operator=(const BraveProxyingWebSocket&) = delete;
   ~BraveProxyingWebSocket() override;
 
+  // `render_frame_token` is default-constructed when the initiator is a shared
+  // or service worker (no frame). In that case `initiator_origin` is the only
+  // origin source.
   static BraveProxyingWebSocket* ProxyWebSocket(
-      content::RenderFrameHost* frame,
+      content::BrowserContext* browser_context,
+      content::GlobalRenderFrameHostToken render_frame_token,
+      const url::Origin& initiator_origin,
       content::ContentBrowserClient::WebSocketFactory factory,
       const GURL& url,
       const net::SiteForCookies& site_for_cookies,

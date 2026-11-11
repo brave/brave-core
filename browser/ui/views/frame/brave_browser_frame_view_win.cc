@@ -14,7 +14,7 @@
 #include "brave/browser/ui/views/frame/focus_mode_top_overlay.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/frame/browser_caption_button_container_win.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -46,7 +46,7 @@ BraveBrowserFrameViewWin::BraveBrowserFrameViewWin(
       base::BindRepeating(&BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged,
                           base::Unretained(this)));
 
-  if (auto* controller = browser->GetFeatures().focus_mode_controller()) {
+  if (auto* controller = FocusModeController::From(browser)) {
     focus_mode_observation_.Observe(controller);
     if (auto* overlay =
             BraveBrowserView::From(browser_view)->focus_mode_top_overlay()) {
@@ -55,6 +55,7 @@ BraveBrowserFrameViewWin::BraveBrowserFrameViewWin(
               &BraveBrowserFrameViewWin::OnTopOverlayRevealFractionChanged,
               base::Unretained(this)));
     }
+    OnFocusModeToggled(controller->IsEnabled());
   }
 }
 
@@ -62,7 +63,7 @@ BraveBrowserFrameViewWin::~BraveBrowserFrameViewWin() = default;
 
 bool BraveBrowserFrameViewWin::ShouldCaptionButtonsBeDrawnOverToolbar() const {
   auto* browser = GetBrowserView()->browser();
-  auto* vtc = VerticalTabController::FromBrowser(browser);
+  auto* vtc = VerticalTabController::From(browser);
   return vtc->ShouldShowBraveVerticalTabs() &&
          !vtc->ShouldShowWindowTitleForVerticalTabs();
 }
@@ -91,7 +92,7 @@ void BraveBrowserFrameViewWin::OnPaint(gfx::Canvas* canvas) {
 
 int BraveBrowserFrameViewWin::GetTopInset(bool restored) const {
   auto* browser = GetBrowserView()->browser();
-  if (auto* vtc = VerticalTabController::FromBrowser(browser);
+  if (auto* vtc = VerticalTabController::From(browser);
       vtc->ShouldShowBraveVerticalTabs()) {
     if (!vtc->ShouldShowWindowTitleForVerticalTabs()) {
       if (auto* widget = GetWidget(); !widget || !widget->IsMaximized()) {
@@ -155,9 +156,9 @@ int BraveBrowserFrameViewWin::NonClientHitTest(const gfx::Point& point) {
   }
 
   auto* browser = GetBrowserView()->browser();
-  if (auto overridden_result = browser->GetFeatures()
-                                   .brave_non_client_hit_test_helper()
-                                   ->NonClientHitTest(GetBrowserView(), point);
+  if (auto overridden_result =
+          BraveNonClientHitTestHelper::From(browser)->NonClientHitTest(
+              GetBrowserView(), point);
       overridden_result != HTNOWHERE) {
     return overridden_result;
   }
@@ -178,7 +179,7 @@ void BraveBrowserFrameViewWin::OnTopOverlayRevealFractionChanged(
 
 bool BraveBrowserFrameViewWin::ShouldShowWindowTitle(TitlebarType type) const {
   auto* browser = GetBrowserView()->browser();
-  if (auto* vtc = VerticalTabController::FromBrowser(browser);
+  if (auto* vtc = VerticalTabController::From(browser);
       vtc->ShouldShowBraveVerticalTabs() &&
       vtc->ShouldShowWindowTitleForVerticalTabs() &&
       type == TitlebarType::kCustom &&
@@ -210,7 +211,7 @@ void BraveBrowserFrameViewWin::LayoutCaptionButtons() {
   }
 
   auto* browser = GetBrowserView()->browser();
-  if (auto* vtc = VerticalTabController::FromBrowser(browser);
+  if (auto* vtc = VerticalTabController::From(browser);
       vtc->ShouldShowBraveVerticalTabs()) {
     // TODO(https://github.com/brave/brave-browser/issues/55744): Investigate
     // why calculated container height is 1px longer than around.(ex, title bar
@@ -241,7 +242,7 @@ int BraveBrowserFrameViewWin::FrameTopBorderThickness(bool restored) const {
   }
 
   auto* browser = GetBrowserView()->browser();
-  if (auto* vtc = VerticalTabController::FromBrowser(browser);
+  if (auto* vtc = VerticalTabController::From(browser);
       vtc->ShouldShowBraveVerticalTabs() &&
       !vtc->ShouldShowWindowTitleForVerticalTabs()) {
     return 0;

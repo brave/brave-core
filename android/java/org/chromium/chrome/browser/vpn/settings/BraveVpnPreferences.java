@@ -543,7 +543,8 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     }
 
     private void showConfirmDialog() {
-        AlertDialog.Builder confirmDialog = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder confirmDialog =
+                new AlertDialog.Builder(getActivity(), R.style.ThemeOverlay_BrowserUI_AlertDialog);
         confirmDialog.setTitle(
                 getActivity().getResources().getString(R.string.reset_vpn_config_dialog_title));
         confirmDialog.setMessage(

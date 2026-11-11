@@ -5,13 +5,17 @@
 
 #include "brave/components/brave_wayback_machine/wayback_machine_url_fetcher.h"
 
+#include <optional>
+#include <string>
 #include <utility>
 
+#include "base/functional/callback_helpers.h"
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
-#include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/time/time.h"
 #include "brave/components/brave_wayback_machine/url_constants.h"
+#include "brave/components/brave_wayback_machine/wayback_snapshot_info.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -27,15 +31,23 @@ class WaybackClient : public WaybackMachineURLFetcher::Client {
     callback_ = std::move(callback);
   }
   void SetExpectedURL(GURL expected_url) { expected_url_ = expected_url; }
-  void OnWaybackURLFetched(const GURL& lastest_wayback_url) override {
-    EXPECT_EQ(lastest_wayback_url, expected_url_);
+  void OnWaybackURLFetched(
+      std::optional<WaybackSnapshotInfo> snapshot) override {
+    EXPECT_EQ(snapshot ? snapshot->url : GURL(), expected_url_);
+    snapshot_time_ = snapshot ? snapshot->time : base::Time();
+    ++call_count_;
     if (callback_) {
       std::move(callback_).Run();
     }
   }
 
+  base::Time snapshot_time() const { return snapshot_time_; }
+  int call_count() const { return call_count_; }
+
  private:
   GURL expected_url_;
+  base::Time snapshot_time_;
+  int call_count_ = 0;
   base::OnceClosure callback_;
 };
 
@@ -111,6 +123,60 @@ TEST_F(WaybackMachineURLFetcherUnitTest, SanitizedResponse) {
   Fetch(GURL::EmptyGURL());
 }
 
+TEST_F(WaybackMachineURLFetcherUnitTest, SnapshotTime) {
+  SetResponseText(
+      R"({"archived_snapshots":{"closest":{
+          "url":"https://web.archive.org/favicon.ico",
+          "timestamp":"20240226123456"}}})");
+  Fetch(GURL("https://web.archive.org/favicon.ico"));
+  base::Time expected;
+  ASSERT_TRUE(base::Time::FromUTCExploded({.year = 2024,
+                                           .month = 2,
+                                           .day_of_month = 26,
+                                           .hour = 12,
+                                           .minute = 34,
+                                           .second = 56},
+                                          &expected));
+  EXPECT_EQ(expected, client_->snapshot_time());
+
+  // Missing timestamp still returns the url.
+  SetResponseText(
+      R"({"archived_snapshots":{"closest":{
+          "url":"https://web.archive.org/favicon.ico"}}})");
+  Fetch(GURL("https://web.archive.org/favicon.ico"));
+  EXPECT_TRUE(client_->snapshot_time().is_null());
+
+  // No time is reported when the url is rejected.
+  SetResponseText(
+      R"({"archived_snapshots":{"closest":{
+          "url":"https://another_archive.org/favicon.ico",
+          "timestamp":"20240226123456"}}})");
+  Fetch(GURL::EmptyGURL());
+  EXPECT_TRUE(client_->snapshot_time().is_null());
+}
+
+TEST_F(WaybackMachineURLFetcherUnitTest, ParseSnapshotTimestampTest) {
+  EXPECT_FALSE(
+      WaybackMachineURLFetcher::ParseSnapshotTimestamp("20240226123456")
+          .is_null());
+  EXPECT_TRUE(WaybackMachineURLFetcher::ParseSnapshotTimestamp("").is_null());
+  EXPECT_TRUE(WaybackMachineURLFetcher::ParseSnapshotTimestamp("2024022612345")
+                  .is_null());
+  EXPECT_TRUE(
+      WaybackMachineURLFetcher::ParseSnapshotTimestamp("202402261234567")
+          .is_null());
+  EXPECT_TRUE(WaybackMachineURLFetcher::ParseSnapshotTimestamp("2024022612345a")
+                  .is_null());
+  EXPECT_TRUE(WaybackMachineURLFetcher::ParseSnapshotTimestamp("-0240226123456")
+                  .is_null());
+  EXPECT_TRUE(WaybackMachineURLFetcher::ParseSnapshotTimestamp("20241326123456")
+                  .is_null());
+  EXPECT_TRUE(WaybackMachineURLFetcher::ParseSnapshotTimestamp("20240230123456")
+                  .is_null());
+  EXPECT_TRUE(WaybackMachineURLFetcher::ParseSnapshotTimestamp("20240226250000")
+                  .is_null());
+}
+
 TEST_F(WaybackMachineURLFetcherUnitTest, InputURLSanitizeTest) {
   constexpr char kInputURL[] = "http://myid:mypwd@test.com/";
   constexpr char kSanitizedURL[] = "http://test.com/";
@@ -122,8 +188,60 @@ TEST_F(WaybackMachineURLFetcherUnitTest, InputURLSanitizeTest) {
                GURL(base::StrCat({kWaybackQueryURL, kSanitizedURL})));
 }
 
+TEST_F(WaybackMachineURLFetcherUnitTest, FetchCancelsPendingRequest) {
+  constexpr char kFirstURL[] = "https://first.com/";
+  constexpr char kSecondURL[] = "https://second.com/";
+  const std::string first_query = base::StrCat({kWaybackQueryURL, kFirstURL});
+  const std::string second_query = base::StrCat({kWaybackQueryURL, kSecondURL});
+  url_loader_factory_.SetInterceptor(base::DoNothing());
+  url_loader_factory_.AddResponse(
+      first_query,
+      R"({"archived_snapshots":{"closest":{"url":"https://web.archive.org/first"}}})");
+  url_loader_factory_.AddResponse(
+      second_query,
+      R"({"archived_snapshots":{"closest":{"url":"https://web.archive.org/second"}}})");
+
+  base::RunLoop loop;
+  client_->SetCallback(loop.QuitClosure());
+  client_->SetExpectedURL(GURL("https://web.archive.org/second"));
+  wayback_url_loader_->Fetch(GURL(kFirstURL));
+  wayback_url_loader_->Fetch(GURL(kSecondURL));
+  loop.Run();
+  EXPECT_EQ(client_->call_count(), 1);
+}
+
+TEST_F(WaybackMachineURLFetcherUnitTest, CancelDropsPendingRequest) {
+  constexpr char kFirstURL[] = "https://first.com/";
+  constexpr char kSecondURL[] = "https://second.com/";
+  const std::string first_query = base::StrCat({kWaybackQueryURL, kFirstURL});
+  const std::string second_query = base::StrCat({kWaybackQueryURL, kSecondURL});
+  url_loader_factory_.SetInterceptor(base::DoNothing());
+  url_loader_factory_.AddResponse(
+      first_query,
+      R"({"archived_snapshots":{"closest":{"url":"https://web.archive.org/first"}}})");
+  url_loader_factory_.AddResponse(
+      second_query,
+      R"({"archived_snapshots":{"closest":{"url":"https://web.archive.org/second"}}})");
+
+  wayback_url_loader_->Fetch(GURL(kFirstURL));
+  wayback_url_loader_->Cancel();
+
+  // Use a separate fetcher and client to make another request. Since requests
+  // are queued, once that request completes we can verify that the request
+  // above was cancelled.
+  WaybackClient other_client;
+  WaybackMachineURLFetcher other_fetcher(
+      &other_client, url_loader_factory_.GetSafeWeakWrapper());
+  base::RunLoop loop;
+  other_client.SetCallback(loop.QuitClosure());
+  other_client.SetExpectedURL(GURL("https://web.archive.org/second"));
+  other_fetcher.Fetch(GURL(kSecondURL));
+  loop.Run();
+  EXPECT_EQ(client_->call_count(), 0);
+}
+
 TEST_F(WaybackMachineURLFetcherUnitTest, WaybackURLSanitizeTest) {
-  // Blocked non http/https sheme urls.
+  // Blocked non http/https scheme urls.
   SetResponseText(
       R"({"archived_snapshots":{"closest":{"url":"javascript:abcd"}}})");
   Fetch(GURL::EmptyGURL());

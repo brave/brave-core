@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 
 #include <algorithm>
+#include <array>
 #include <map>
 #include <numeric>
 #include <optional>
@@ -15,6 +16,7 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/containers/flat_set.h"
 #include "base/logging.h"
 #include "base/sequence_checker.h"
 #include "base/strings/string_split.h"
@@ -41,6 +43,17 @@ namespace ai_chat {
 namespace {
 
 constexpr char kSearchQueriesSeparator[] = "|||";
+
+// Tables whose rows are keyed by - and only reachable through - the uuid of a
+// single conversation_entry row.
+constexpr auto kEntryEventTables = std::to_array<const char*>({
+    "conversation_entry_event_completion",
+    "conversation_entry_event_search_queries",
+    "conversation_entry_event_web_sources",
+    "conversation_entry_event_inline_search",
+    "conversation_entry_event_tool_use",
+    "conversation_entry_uploaded_files",
+});
 
 constexpr char kConversationEntriesQueryTemplate[] =
     "SELECT uuid, thread_uuid, date, entry_text, prompt, character_type, "
@@ -199,6 +212,30 @@ bool MigrateFrom10to11(sql::Database* db) {
   return statement.is_valid() && statement.Run();
 }
 
+// Removes child rows that earlier versions left behind: the delete paths did
+// not recurse into an entry's edits, which are conversation_entry rows owning
+// their own child rows, and did not cover every event table.
+bool MigrateFrom11to12(sql::Database* db) {
+  for (const char* table : kEntryEventTables) {
+    sql::Statement statement(db->GetUniqueStatement(
+        absl::StrFormat("DELETE FROM %s WHERE conversation_entry_uuid NOT IN"
+                        " (SELECT uuid FROM conversation_entry)",
+                        table)));
+    if (!statement.is_valid() || !statement.Run()) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool MigrateFrom12to13(sql::Database* db) {
+  static constexpr char kAddIsSyncStubColumnQuery[] =
+      "ALTER TABLE conversation ADD COLUMN is_sync_stub INTEGER NOT NULL "
+      "DEFAULT 0";
+  sql::Statement statement(db->GetUniqueStatement(kAddIsSyncStubColumnQuery));
+  return statement.is_valid() && statement.Run();
+}
+
 // Key in sql::MetaTable for the serialized DataTypeState.
 const char kAIChatDataTypeStateKey[] = "ai_chat_data_type_state";
 
@@ -214,7 +251,7 @@ constexpr int kLowestSupportedDatabaseVersion = 1;
 constexpr int kCompatibleDatabaseVersionNumber = 7;
 
 // Current version of the database. Increase if breaking changes are made.
-constexpr int kCurrentDatabaseVersion = 11;
+constexpr int kCurrentDatabaseVersion = 13;
 
 AIChatDatabase::AIChatDatabase(
     const base::FilePath& db_file_path,
@@ -369,6 +406,24 @@ sql::InitStatus AIChatDatabase::InitInternal() {
       }
       current_version = 11;
     }
+    if (migration_success && current_version == 11) {
+      migration_success = MigrateFrom11to12(&GetDB());
+      if (migration_success) {
+        migration_success = meta_table.SetCompatibleVersionNumber(
+                                kCompatibleDatabaseVersionNumber) &&
+                            meta_table.SetVersionNumber(12);
+      }
+      current_version = 12;
+    }
+    if (migration_success && current_version == 12) {
+      migration_success = MigrateFrom12to13(&GetDB());
+      if (migration_success) {
+        migration_success = meta_table.SetCompatibleVersionNumber(
+                                kCompatibleDatabaseVersionNumber) &&
+                            meta_table.SetVersionNumber(13);
+      }
+      current_version = 13;
+    }
     // Migration unsuccessful, raze the database and re-init
     if (!migration_success) {
       transaction.Rollback();
@@ -415,6 +470,7 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
       "  ORDER BY conversation_entry.date desc) "
       " AS last_activity_date"
       " ON last_activity_date.conversation_uuid = conversation.uuid"
+      " WHERE NOT conversation.is_sync_stub"
       " ORDER BY conversation.uuid ASC";
   sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
   CHECK(statement.is_valid());
@@ -506,6 +562,24 @@ mojom::ConversationArchivePtr AIChatDatabase::GetConversationData(
   return mojom::ConversationArchive::New(
       std::move(entries), std::move(threads),
       GetArchiveContentsForConversation(conversation_uuid));
+}
+
+std::optional<std::string> AIChatDatabase::GetConversationUuidForEntry(
+    std::string_view conversation_entry_uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return std::nullopt;
+  }
+
+  static constexpr char kQuery[] =
+      "SELECT conversation_uuid FROM conversation_entry WHERE uuid=?";
+  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
+  CHECK(statement.is_valid());
+  statement.BindString(0, conversation_entry_uuid);
+  if (!statement.Step()) {
+    return std::nullopt;
+  }
+  return statement.ColumnString(0);
 }
 
 std::vector<mojom::ConversationTurnPtr>
@@ -823,7 +897,7 @@ AIChatDatabase::GetArchiveContentsForConversation(
       "SELECT uuid, last_contents, conversation_entry_uuid"
       " FROM associated_content"
       " WHERE conversation_uuid=?"
-      " AND last_contents IS NOT NULL"
+      " AND (last_contents IS NOT NULL OR content_type = 2)"
       " ORDER BY uuid ASC";
   sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
   CHECK(statement.is_valid());
@@ -1151,7 +1225,9 @@ bool AIChatDatabase::AddConversationEntry(
             return false;
           }
           event_statement.BindString(2, entry->uuid.value());
-          event_statement.Run();
+          if (!event_statement.Run()) {
+            return false;
+          }
           break;
         }
         case mojom::ConversationEntryEvent::Tag::kSearchQueriesEvent: {
@@ -1171,7 +1247,9 @@ bool AIChatDatabase::AddConversationEntry(
             return false;
           }
           event_statement.BindString(2, entry->uuid.value());
-          event_statement.Run();
+          if (!event_statement.Run()) {
+            return false;
+          }
           break;
         }
         case mojom::ConversationEntryEvent::Tag::kSourcesEvent: {
@@ -1194,7 +1272,9 @@ bool AIChatDatabase::AddConversationEntry(
             return false;
           }
           event_statement.BindString(2, entry->uuid.value());
-          event_statement.Run();
+          if (!event_statement.Run()) {
+            return false;
+          }
           break;
         }
         case mojom::ConversationEntryEvent::Tag::kInlineSearchEvent: {
@@ -1218,7 +1298,9 @@ bool AIChatDatabase::AddConversationEntry(
             return false;
           }
           event_statement.BindString(2, entry->uuid.value());
-          event_statement.Run();
+          if (!event_statement.Run()) {
+            return false;
+          }
           break;
         }
         case mojom::ConversationEntryEvent::Tag::kToolUseEvent: {
@@ -1244,7 +1326,9 @@ bool AIChatDatabase::AddConversationEntry(
             return false;
           }
           event_statement.BindString(2, entry->uuid.value());
-          event_statement.Run();
+          if (!event_statement.Run()) {
+            return false;
+          }
           break;
         }
         default: {
@@ -1289,7 +1373,9 @@ bool AIChatDatabase::AddConversationEntry(
       BindAndEncryptOptionalString(uploaded_file_statement, 5,
                                    uploaded_file->extracted_text);
       uploaded_file_statement.BindString(6, entry->uuid.value());
-      uploaded_file_statement.Run();
+      if (!uploaded_file_statement.Run()) {
+        return false;
+      }
     }
   }
 
@@ -1491,69 +1577,28 @@ bool AIChatDatabase::DeleteConversation(std::string_view conversation_uuid) {
     return false;
   }
 
-  // Delete all conversation entries
-  static constexpr char kSelectConversationEntryQuery[] =
-      "SELECT uuid FROM conversation_entry WHERE conversation_uuid=?";
-  sql::Statement select_conversation_entry_statement(
-      GetDB().GetUniqueStatement(kSelectConversationEntryQuery));
-  CHECK(select_conversation_entry_statement.is_valid());
-  select_conversation_entry_statement.BindString(0, conversation_uuid);
-
-  // Delete all conversation entry events
-  while (select_conversation_entry_statement.Step()) {
-    std::string conversation_entry_uuid =
-        select_conversation_entry_statement.ColumnString(0);
-    static constexpr char kDeleteCompletionEventQuery[] =
-        "DELETE FROM conversation_entry_event_completion"
-        " WHERE conversation_entry_uuid=?";
-    sql::Statement delete_completion_event_statement(
-        GetDB().GetUniqueStatement(kDeleteCompletionEventQuery));
-    CHECK(delete_completion_event_statement.is_valid());
-    delete_completion_event_statement.BindString(0, conversation_entry_uuid);
-    if (!delete_completion_event_statement.Run()) {
+  // Collect every entry uuid before deleting any of them, so that the
+  // statement isn't stepped while its rows are being removed. Edits are
+  // included here as well as being reached through the entry they edit, in
+  // case an edit's parent row is missing.
+  std::vector<std::string> entry_uuids;
+  {
+    static constexpr char kQuery[] =
+        "SELECT uuid FROM conversation_entry WHERE conversation_uuid=?";
+    sql::Statement statement(GetDB().GetUniqueStatement(kQuery));
+    CHECK(statement.is_valid());
+    statement.BindString(0, conversation_uuid);
+    while (statement.Step()) {
+      entry_uuids.push_back(statement.ColumnString(0));
+    }
+    if (!statement.Succeeded()) {
       return false;
     }
+  }
 
-    static constexpr char kDeleteSearchQueriesEventQuery[] =
-        "DELETE FROM conversation_entry_event_search_queries "
-        " WHERE conversation_entry_uuid=?";
-    sql::Statement delete_queries_event_statement(
-        GetDB().GetUniqueStatement(kDeleteSearchQueriesEventQuery));
-    CHECK(delete_queries_event_statement.is_valid());
-    delete_queries_event_statement.BindString(0, conversation_entry_uuid);
-    if (!delete_queries_event_statement.Run()) {
-      return false;
-    }
-
-    static constexpr char kDeleteWebSourcesEventQuery[] =
-        "DELETE FROM conversation_entry_event_web_sources "
-        " WHERE conversation_entry_uuid=?";
-    sql::Statement delete_web_sources_event_statement(
-        GetDB().GetUniqueStatement(kDeleteWebSourcesEventQuery));
-    CHECK(delete_web_sources_event_statement.is_valid());
-    delete_web_sources_event_statement.BindString(0, conversation_entry_uuid);
-    if (!delete_web_sources_event_statement.Run()) {
-      return false;
-    }
-
-    static constexpr char kDeleteEntryQuery[] =
-        "DELETE FROM conversation_entry WHERE uuid=?";
-    sql::Statement delete_conversation_entry_statement(
-        GetDB().GetUniqueStatement(kDeleteEntryQuery));
-    CHECK(delete_conversation_entry_statement.is_valid());
-    delete_conversation_entry_statement.BindString(0, conversation_entry_uuid);
-    if (!delete_conversation_entry_statement.Run()) {
-      return false;
-    }
-
-    static constexpr char kDeleteUploadedFilesQuery[] =
-        "DELETE FROM conversation_entry_uploaded_files "
-        " WHERE conversation_entry_uuid=?";
-    sql::Statement delete_uploaded_images_statement(
-        GetDB().GetUniqueStatement(kDeleteUploadedFilesQuery));
-    CHECK(delete_uploaded_images_statement.is_valid());
-    delete_uploaded_images_statement.BindString(0, conversation_entry_uuid);
-    if (!delete_uploaded_images_statement.Run()) {
+  for (const auto& entry_uuid : entry_uuids) {
+    if (!DeleteEntryAndOwnedRows(entry_uuid,
+                                 /*keep_workspace_content=*/false)) {
       return false;
     }
   }
@@ -1611,118 +1656,96 @@ bool AIChatDatabase::DeleteConversationEntry(
     return false;
   }
 
-  // Delete from associated_content
-  {
-    sql::Statement delete_statement(GetDB().GetUniqueStatement(
-        "DELETE FROM associated_content WHERE conversation_entry_uuid=?"));
-    CHECK(delete_statement.is_valid());
-    delete_statement.BindString(0, conversation_entry_uuid);
-    if (!delete_statement.Run()) {
-      DLOG(ERROR) << "Failed to delete from associated_content for turn uuid: "
-                  << conversation_entry_uuid;
-      return false;
-    }
-  }
-
-  // Delete from conversation_entry_event_completion
-  {
-    sql::Statement delete_statement(GetDB().GetUniqueStatement(
-        "DELETE FROM conversation_entry_event_completion WHERE "
-        "conversation_entry_uuid=?"));
-    delete_statement.BindString(0, conversation_entry_uuid);
-    if (!delete_statement.Run()) {
-      DLOG(ERROR)
-          << "Failed to delete from conversation_entry_event_completion "
-             "for id: "
-          << conversation_entry_uuid;
-      return false;
-    }
-  }
-
-  // Delete from conversation_entry_event_search_queries
-  {
-    static constexpr char kQuery[] =
-        "DELETE FROM conversation_entry_event_search_queries WHERE "
-        "conversation_entry_uuid=?";
-    sql::Statement delete_statement(GetDB().GetUniqueStatement(kQuery));
-    CHECK(delete_statement.is_valid());
-    delete_statement.BindString(0, conversation_entry_uuid);
-    if (!delete_statement.Run()) {
-      DLOG(ERROR) << "Failed to delete from "
-                     "conversation_entry_event_search_queries for conversation "
-                     "entry uuid: "
-                  << conversation_entry_uuid;
-      return false;
-    }
-  }
-
-  // Delete from conversation_entry_event_web_sources
-  {
-    static constexpr char kQuery[] =
-        "DELETE FROM conversation_entry_event_web_sources WHERE "
-        "conversation_entry_uuid=?";
-    sql::Statement delete_statement(GetDB().GetUniqueStatement(kQuery));
-    CHECK(delete_statement.is_valid());
-    delete_statement.BindString(0, conversation_entry_uuid);
-    if (!delete_statement.Run()) {
-      DLOG(ERROR) << "Failed to delete from "
-                     "conversation_entry_event_web_sources for conversation "
-                     "entry uuid: "
-                  << conversation_entry_uuid;
-      return false;
-    }
-  }
-
-  // Delete edits
-  {
-    static constexpr char kQuery[] =
-        "DELETE FROM conversation_entry WHERE editing_entry_uuid = ?";
-    sql::Statement delete_statement(GetDB().GetUniqueStatement(kQuery));
-    CHECK(delete_statement.is_valid());
-    delete_statement.BindString(0, conversation_entry_uuid);
-    if (!delete_statement.Run()) {
-      DLOG(ERROR) << "Failed to delete from conversation_entry for "
-                     "conversation entry uuid: "
-                  << conversation_entry_uuid;
-      return false;
-    }
-  }
-
-  // Delete from conversation_entry_uploaded_files
-  {
-    static constexpr char kQuery[] =
-        "DELETE FROM conversation_entry_uploaded_files WHERE "
-        "conversation_entry_uuid=?";
-    sql::Statement delete_statement(GetDB().GetUniqueStatement(kQuery));
-    CHECK(delete_statement.is_valid());
-    delete_statement.BindString(0, conversation_entry_uuid);
-    if (!delete_statement.Run()) {
-      DLOG(ERROR) << "Failed to delete from "
-                     "conversation_entry_uploaded_files for conversation "
-                     "entry uuid: "
-                  << conversation_entry_uuid;
-      return false;
-    }
-  }
-
-  // Delete from conversation_entry
-  {
-    static constexpr char kQuery[] =
-        "DELETE FROM conversation_entry WHERE uuid=?";
-    sql::Statement delete_statement(GetDB().GetUniqueStatement(kQuery));
-    CHECK(delete_statement.is_valid());
-    delete_statement.BindString(0, conversation_entry_uuid);
-    if (!delete_statement.Run()) {
-      DLOG(ERROR) << "Failed to delete from conversation_entry for id: "
-                  << conversation_entry_uuid;
-      return false;
-    }
+  if (!DeleteEntryAndOwnedRows(conversation_entry_uuid,
+                               /*keep_workspace_content=*/false)) {
+    return false;
   }
 
   if (!transaction.Commit()) {
     DVLOG(0) << "Transaction commit failed with reason: "
              << db_.GetErrorMessage();
     return false;
+  }
+  return true;
+}
+
+bool AIChatDatabase::DeleteEntryAndOwnedRows(
+    std::string_view conversation_entry_uuid,
+    bool keep_workspace_content) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  // An edit is a conversation_entry row of its own which owns its own child
+  // rows, so it has to be deleted the same way. Walked iteratively with a set
+  // of visited uuids because entry uuids come from the caller, so a cycle of
+  // editing_entry_uuid references can't be ruled out.
+  std::vector<std::string> pending = {std::string(conversation_entry_uuid)};
+  base::flat_set<std::string> visited;
+  while (!pending.empty()) {
+    std::string entry_uuid = std::move(pending.back());
+    pending.pop_back();
+    if (!visited.insert(entry_uuid).second) {
+      continue;
+    }
+
+    {
+      static constexpr char kQuery[] =
+          "SELECT uuid FROM conversation_entry WHERE editing_entry_uuid=?";
+      sql::Statement statement(GetDB().GetUniqueStatement(kQuery));
+      CHECK(statement.is_valid());
+      statement.BindString(0, entry_uuid);
+      while (statement.Step()) {
+        pending.push_back(statement.ColumnString(0));
+      }
+      if (!statement.Succeeded()) {
+        return false;
+      }
+    }
+
+    // associated_content is keyed by conversation_entry_uuid but is also
+    // scoped by conversation, so it isn't one of kEntryEventTables.
+    {
+      static constexpr char kDeleteAllQuery[] =
+          "DELETE FROM associated_content WHERE conversation_entry_uuid=?";
+      static constexpr char kDeleteNonWorkspaceQuery[] =
+          "DELETE FROM associated_content WHERE conversation_entry_uuid=?"
+          " AND content_type != 2";
+      sql::Statement statement;
+      if (keep_workspace_content) {
+        statement.Assign(GetDB().GetUniqueStatement(kDeleteNonWorkspaceQuery));
+      } else {
+        statement.Assign(GetDB().GetUniqueStatement(kDeleteAllQuery));
+      }
+      CHECK(statement.is_valid());
+      statement.BindString(0, entry_uuid);
+      if (!statement.Run()) {
+        DVLOG(0) << "Failed to delete from associated_content for entry uuid: "
+                 << entry_uuid;
+        return false;
+      }
+    }
+
+    for (const char* table : kEntryEventTables) {
+      sql::Statement statement(GetDB().GetUniqueStatement(absl::StrFormat(
+          "DELETE FROM %s WHERE conversation_entry_uuid=?", table)));
+      CHECK(statement.is_valid());
+      statement.BindString(0, entry_uuid);
+      if (!statement.Run()) {
+        DVLOG(0) << "Failed to delete from " << table
+                 << " for entry uuid: " << entry_uuid;
+        return false;
+      }
+    }
+
+    static constexpr char kDeleteEntryQuery[] =
+        "DELETE FROM conversation_entry WHERE uuid=?";
+    sql::Statement statement(GetDB().GetUniqueStatement(kDeleteEntryQuery));
+    CHECK(statement.is_valid());
+    statement.BindString(0, entry_uuid);
+    if (!statement.Run()) {
+      DVLOG(0) << "Failed to delete from conversation_entry for uuid: "
+               << entry_uuid;
+      return false;
+    }
   }
   return true;
 }
@@ -1878,7 +1901,10 @@ bool AIChatDatabase::CreateSchema() {
       "title BLOB,"
       "model_key TEXT,"
       "total_tokens INTEGER NOT NULL,"
-      "trimmed_tokens INTEGER NOT NULL)";
+      "trimmed_tokens INTEGER NOT NULL,"
+      // Set while the row only holds synced entries whose conversation
+      // metadata record hasn't arrived. GetAllConversations() skips these.
+      "is_sync_stub INTEGER NOT NULL DEFAULT 0)";
   CHECK(GetDB().IsSQLValid(kCreateConversationTableQuery));
   if (!GetDB().Execute(kCreateConversationTableQuery)) {
     return false;
@@ -2065,6 +2091,138 @@ bool AIChatDatabase::CreateSchema() {
   }
 
   return true;
+}
+
+bool AIChatDatabase::ApplyRemoteConversationMetadata(
+    mojom::ConversationPtr conversation) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(conversation);
+  CHECK(!conversation->uuid.empty());
+  if (!LazyInit()) {
+    return false;
+  }
+
+  // Upsert by uuid: update the row in place, and insert only when there is
+  // none. Chromium builds SQLite with SQLITE_OMIT_UPSERT, and INSERT OR REPLACE
+  // would reset every column it doesn't name, whereas UPDATE keeps them.
+  // Neither touches the entry or associated content rows, which sync as their
+  // own records. Clearing is_sync_stub lists a stub that ApplyRemoteEntry
+  // created ahead of this record.
+  static constexpr char kUpdateConversationQuery[] =
+      "UPDATE conversation SET title=?, model_key=?, total_tokens=?,"
+      " trimmed_tokens=?, is_sync_stub=0 WHERE uuid=?";
+  static constexpr char kInsertConversationQuery[] =
+      "INSERT INTO conversation"
+      "  (title, model_key, total_tokens, trimmed_tokens, uuid)"
+      "  VALUES(?, ?, ?, ?, ?)";
+  // Both statements take the same parameters in the same order.
+  auto bind = [&](sql::Statement& statement) {
+    // Fail on an encryption error rather than bind NULL over the stored title.
+    if (conversation->title.empty()) {
+      statement.BindNull(0);
+    } else if (!BindAndEncryptString(statement, 0, conversation->title)) {
+      return false;
+    }
+    BindOptionalString(statement, 1, conversation->model_key);
+    statement.BindInt64(2, conversation->total_tokens);
+    statement.BindInt64(3, conversation->trimmed_tokens);
+    statement.BindString(4, conversation->uuid);
+    return true;
+  };
+
+  sql::Statement update_statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE, kUpdateConversationQuery));
+  CHECK(update_statement.is_valid());
+  if (!bind(update_statement)) {
+    return false;
+  }
+  if (!update_statement.Run()) {
+    DVLOG(0) << "Failed to update remote conversation: "
+             << db_.GetErrorMessage();
+    return false;
+  }
+  if (GetDB().GetLastChangeCount() > 0) {
+    return true;
+  }
+
+  sql::Statement insert_statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE, kInsertConversationQuery));
+  CHECK(insert_statement.is_valid());
+  if (!bind(insert_statement)) {
+    return false;
+  }
+  if (!insert_statement.Run()) {
+    DVLOG(0) << "Failed to insert remote conversation: "
+             << db_.GetErrorMessage();
+    return false;
+  }
+  return true;
+}
+
+bool AIChatDatabase::ApplyRemoteEntry(
+    std::string_view conversation_uuid,
+    mojom::ConversationTurnPtr entry,
+    std::vector<mojom::AssociatedContentPtr> associated_content,
+    std::vector<std::string> contents) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(!conversation_uuid.empty());
+  CHECK(entry);
+  CHECK(entry->uuid.has_value() && !entry->uuid->empty());
+  CHECK_EQ(associated_content.size(), contents.size());
+  if (!LazyInit()) {
+    return false;
+  }
+
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    DVLOG(0) << "Transaction cannot begin";
+    return false;
+  }
+
+  // AddConversationEntry refuses to create an orphan entry, so make sure the
+  // parent row exists first. An entry and its conversation metadata are
+  // separate sync records and can arrive in either order: OR IGNORE leaves an
+  // existing conversation untouched, and otherwise holds the entry in a stub
+  // row that ApplyRemoteConversationMetadata fills in when the metadata
+  // record arrives. Until then the stub is hidden from GetAllConversations(),
+  // so it can't be shown, replied to, or uploaded with placeholder metadata.
+  static constexpr char kInsertStubConversationQuery[] =
+      "INSERT OR IGNORE INTO conversation"
+      "  (uuid, title, model_key, total_tokens, trimmed_tokens, is_sync_stub)"
+      "  VALUES(?, NULL, NULL, 0, 0, 1)";
+  sql::Statement stub_statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE, kInsertStubConversationQuery));
+  CHECK(stub_statement.is_valid());
+  stub_statement.BindString(0, conversation_uuid);
+  if (!stub_statement.Run()) {
+    DVLOG(0) << "Failed to insert stub conversation: " << db_.GetErrorMessage();
+    return false;
+  }
+
+  // Full-replace the entry: delete the existing row along with its event,
+  // uploaded file, associated content and edit rows, then re-insert. Sync does
+  // not carry edit revisions, so the only ones written back are those the
+  // caller passes in |entry->edits|. Workspace content is device-local and
+  // never synced, so its rows stay attached to the re-inserted entry.
+  if (!DeleteEntryAndOwnedRows(*entry->uuid,
+                               /*keep_workspace_content=*/true)) {
+    return false;
+  }
+  if (!AddConversationEntry(conversation_uuid, std::move(entry))) {
+    return false;
+  }
+
+  // Re-add the synced associated content removed above, with the
+  // caller-supplied texts. An empty list means the remote entry has none, and
+  // the rows stay deleted.
+  if (!associated_content.empty() &&
+      !AddOrUpdateAssociatedContent(conversation_uuid,
+                                    std::move(associated_content),
+                                    std::move(contents))) {
+    return false;
+  }
+
+  return transaction.Commit();
 }
 
 bool AIChatDatabase::GetAllSyncMetadata(syncer::MetadataBatch* metadata_batch) {

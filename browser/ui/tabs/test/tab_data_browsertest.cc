@@ -7,7 +7,6 @@
 
 #include <memory>
 
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -30,7 +29,7 @@ class BraveTabDataBrowserTest : public InProcessBrowserTest {};
 IN_PROC_BROWSER_TEST_F(BraveTabDataBrowserTest, NTPFaviconOverride) {
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL(chrome::kChromeUINewTabURL),
-      WindowOpenDisposition::CURRENT_TAB,
+      WindowOpenDisposition::kCurrentTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
 
   TabInterface* const tab_interface =

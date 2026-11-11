@@ -52,9 +52,10 @@ public class ShieldsPanelViewModel: ObservableObject {
       tab.braveShieldsHelper?.setShredLevel(autoShredLevel, for: tab.visibleURL)
     }
   }
-  /// A boolean value indicates to wether to show `Advanced controls`or not inside the shield panel
-  /// with a default value true
-  @Published public var advancedControlsEnabled: Bool = true
+  /// Indicates if Advanced Controls are visible
+  public let isAdvancedControlsEnabled: Bool
+  /// Indicates if Shred is enabled
+  public let isShredEnabled: Bool
 
   public var isPrivateBrowsing: Bool {
     tab.isPrivate
@@ -71,7 +72,8 @@ public class ShieldsPanelViewModel: ObservableObject {
     tab: some TabState,
     stats: some Publisher<TrackingProtectionPageStats, Never>,
     blockedRequests: AnyPublisher<[BlockedRequestInfo], Never>,
-    isAdvancedControlsEnabled: Bool
+    isAdvancedControlsEnabled: Bool = true,
+    isShredEnabled: Bool
   ) {
     self.tab = tab
     self.blockedRequests = blockedRequests
@@ -104,7 +106,8 @@ public class ShieldsPanelViewModel: ObservableObject {
         considerAllShieldsOption: true
       ) ?? .never
     self.stats = .init()
-    self.advancedControlsEnabled = isAdvancedControlsEnabled
+    self.isAdvancedControlsEnabled = isAdvancedControlsEnabled
+    self.isShredEnabled = isShredEnabled
 
     stats.receive(on: DispatchQueue.main).assign(to: &$stats)
   }

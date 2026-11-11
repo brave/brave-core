@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/browser/test/fake_bat_ads_client_notifier.h"
 
-#include <ostream>
 #include <utility>
 
 #include "mojo/public/cpp/bindings/pending_receiver.h"

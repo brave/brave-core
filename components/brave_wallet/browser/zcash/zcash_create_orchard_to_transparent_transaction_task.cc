@@ -14,8 +14,6 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
-#include "components/grit/brave_components_strings.h"
-#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
@@ -117,14 +115,9 @@ void ZCashCreateOrchardToTransparentTransactionTask::CreateTransaction() {
   ZCashTransaction zcash_transaction;
   zcash_transaction.init_v6_part();
 
-  // Pick Orchard inputs. This spends the legacy Orchard pool inside a v6
-  // transaction, which disables cross-address transfers (see
-  // orchard::BundleVersion::permits_cross_address_transfers), so a spend and
-  // an output never share an action.
   auto pick_result =
       PickZCashOrchardInputs(spendable_notes_->spendable_notes, amount_,
-                             ZCashTargetOutputType::kTransparent,
-                             /*orchard_cross_address_disabled=*/true);
+                             ZCashTargetOutputType::kTransparent);
   if (!pick_result) {
     error_ = "Can't pick inputs";
     ScheduleWorkOnTask();

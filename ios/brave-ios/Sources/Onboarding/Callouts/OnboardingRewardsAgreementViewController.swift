@@ -88,8 +88,6 @@ extension OnboardingRewardsAgreementViewController {
 
     let turnOnButton = OnboardingCommon.Views.primaryButton(text: Strings.yes).then {
       $0.accessibilityIdentifier = "OnboardingRewardsAgreementViewController.OBTurnOnButton"
-      $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
-      $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
       $0.titleLabel?.minimumScaleFactor = 0.75
     }
 
@@ -302,19 +300,27 @@ extension OnboardingRewardsAgreementViewController {
 }
 
 extension OnboardingRewardsAgreementViewController.View: UITextViewDelegate {
-  @objc
   func textView(
     _ textView: UITextView,
-    shouldInteractWith url: URL,
-    in characterRange: NSRange,
-    interaction: UITextItemInteraction
-  ) -> Bool {
-    if url.absoluteString == "brave_terms_of_service" {
-      onTermsOfServicePressed?()
-    } else if url.absoluteString == "brave_privacy_policy" {
-      onPrivacyPolicyPressed?()
+    primaryActionFor textItem: UITextItem,
+    defaultAction: UIAction
+  ) -> UIAction? {
+    guard case .link(let url) = textItem.content else { return defaultAction }
+    return UIAction { [weak self] _ in
+      if url.absoluteString == "brave_terms_of_service" {
+        self?.onTermsOfServicePressed?()
+      } else if url.absoluteString == "brave_privacy_policy" {
+        self?.onPrivacyPolicyPressed?()
+      }
     }
-    return false
+  }
+
+  func textView(
+    _ textView: UITextView,
+    menuConfigurationFor textItem: UITextItem,
+    defaultMenu: UIMenu
+  ) -> UITextItem.MenuConfiguration? {
+    return nil
   }
 
   @objc

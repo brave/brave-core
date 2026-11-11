@@ -40,9 +40,6 @@
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "Verze aplikace";
 
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "Mobilní operátor";
-
 /* Text to tell user to not modify support info below email's body. */
 "vpn.contactFormDoNotEditText" = "Brave vás nesleduje a ani neví, jak používáte naši aplikaci, takže nevíme, jak jste nastavili VPN. Sdílejte prosím informace o problému, se kterým se potýkáte, a my se budeme snažit jej vyřešit, jakmile to bude možné.";
 
@@ -134,7 +131,7 @@
 "vpn.installTitle" = "Instalace sítě VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "Spusťte 7denní zkušební verzi zdarma";
+"vpn.learnMore" = "Spustit 7denní zkušební verzi zdarma";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Obnovuje se každý měsíc";
@@ -227,7 +224,7 @@
 "vpn.serverTitle" = "%ld Server";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Chraňte každou aplikaci pomocí Brave VPN. S jedním předplatným ochráníte až 10 zařízení.";
+"vpn.settingHeaderBody" = "Streamujte svůj obsah po svém. Chraňte každou aplikaci na 10 zařízeních s 1 předplatným.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Kontaktujte technickou podporu";

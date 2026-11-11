@@ -12,7 +12,6 @@
 #include <string>
 
 #include "base/check.h"
-#include "base/compiler_specific.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
@@ -38,8 +37,7 @@
 #include "components/omnibox/browser/autocomplete_provider.h"
 #include "components/omnibox/browser/remote_suggestions_service.h"
 #include "components/omnibox/browser/search_provider.h"
-#include "components/search_engines/search_engines_pref_names.h"
-#include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "components/search_engines/template_url_id.h"
 #include "components/variations/scoped_variations_ids_provider.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -139,7 +137,7 @@ class BraveSearchProviderTest : public testing::Test {
     default_t_url_ = turl_model->Add(std::make_unique<TemplateURL>(data));
     turl_model->SetUserSelectedDefaultSearchProvider(default_t_url_);
     TemplateURLID default_provider_id = default_t_url_->id();
-    ASSERT_NE(0, default_provider_id);
+    ASSERT_NE(kInvalidTemplateURLID, default_provider_id);
 
     // Keywords are updated by the InMemoryHistoryBackend only after the message
     // has been processed on the history thread. Block until history processes
@@ -302,7 +300,7 @@ TEST_F(BraveSearchProviderTest, DontSendClipboardTextToSuggest) {
 TEST_F(BraveSearchProviderTest, ArithmeticIsAnsweredLocally) {
   const auto has_calculator_match = [&]() {
     return std::ranges::any_of(provider_->matches(), [](const auto& match) {
-      return match.type == AutocompleteMatchType::CALCULATOR;
+      return match.type == omnibox::AutocompleteMatchType::kCalculator;
     });
   };
 
@@ -343,7 +341,7 @@ TEST_F(BraveSearchProviderTest, ArithmeticIsNotAnsweredWhenFeatureDisabled) {
   EXPECT_FALSE(test_url_loader_factory_.IsPending(
       base::StrCat({kSuggestionUrlHost, base::EscapePath("9500+7804")})));
   EXPECT_FALSE(std::ranges::any_of(provider_->matches(), [](const auto& match) {
-    return match.type == AutocompleteMatchType::CALCULATOR;
+    return match.type == omnibox::AutocompleteMatchType::kCalculator;
   }));
 }
 
@@ -351,8 +349,8 @@ TEST_F(BraveSearchProviderTest, SearchSuggestionsSendTest) {
 #if BUILDFLAG(IS_MAC)
   // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
   // unexpected test timeout failures are resolved.
-  if (base::mac::MacOSMajorVersion() == 26) {
-    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  if (base::mac::MacOSMajorVersion() >= 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe and later.";
   }
 #endif
   struct {

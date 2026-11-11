@@ -70,6 +70,7 @@ void AdsInitializer::LoadClientStateCallback(mojom::WalletInfoPtr wallet,
                                              ResultCallback callback,
                                              bool success) {
   if (!success) {
+    BLOG(0, "Failed to load client state");
     return std::move(callback).Run(/*success=*/false);
   }
 

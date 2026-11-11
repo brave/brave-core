@@ -71,6 +71,8 @@ class TreeTabModel {
       base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> callback);
   base::CallbackListSubscription RegisterMovedTreeTabNodeCallback(
       base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> callback);
+  base::CallbackListSubscription RegisterTreeTabNodeChildrenChangedCallback(
+      base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> callback);
 
   bool has_pending_add_tree_tab_node_notification_for_testing() const {
     return pending_add_tree_tab_node_notification_count_for_testing_ > 0;
@@ -97,6 +99,8 @@ class TreeTabModel {
       will_remove_tree_tab_node_callback_list_;
   base::RepeatingCallbackList<void(const tree_tab::TreeTabNodeId&)>
       moved_tree_tab_node_callback_list_;
+  base::RepeatingCallbackList<void(const tree_tab::TreeTabNodeId&)>
+      tree_tab_node_children_changed_callback_list_;
 
   base::WeakPtrFactory<TreeTabModel> weak_ptr_factory_{this};
 };

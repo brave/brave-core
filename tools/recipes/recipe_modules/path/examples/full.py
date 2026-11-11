@@ -6,12 +6,32 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    path,
+    platform,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['path', 'platform', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    path: path.API
+    platform: platform.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    path: path.TEST_API
+    platform: platform.TEST_API
+
+
+def RunSteps(api: DEPS):
     if api.platform.is_win:
         assert api.path.sep == '\\'
         assert api.path.pathsep == ';'
@@ -40,9 +60,12 @@ def RunSteps(api):
     assert api.path.is_dir(first) and api.path.is_dir(unpacked)
     assert first.parent == api.path.cleanup_dir, first
     api.step('temp dirs', ['echo', str(first), str(second), str(unpacked)])
+    # The job's temp dir is scratch space too, apart from mkdtemp's.
+    assert api.path.temp_dir.parent == api.path.cleanup_dir
+    assert api.path.temp_dir not in (first, second, unpacked)
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     # `config_types.Path._OS_SEP` is driven by the simulated platform, not the
     # real host running the test suite: run the same case under both `linux` and
     # `win`, and check the separator in the recorded commands actually flips,
@@ -55,19 +78,29 @@ def GenTests(api):
             api.path.files('b/src/chrome/VERSION'),
             api.post_process(post_process.MustRun, 'found version'),
             api.post_process(post_process.MustRun, 'out ready'),
-            api.post_process(post_process.StepCommandContains, 'out ready',
-                             [f'[WORKSPACE]{sep}out']),
-            api.post_process(post_process.StepCommandContains, 'home',
-                             ['[HOME]']),
-            api.post_process(post_process.StepCommandContains, 'home again',
-                             ['[HOME]']),
-            api.post_process(post_process.StepCommandContains, 'cache',
-                             [f'[HOME]{sep}cache']),
-            api.post_process(post_process.StepCommandContains, 'temp dirs', [
-                f'[WORKSPACE]{sep}rc{sep}tmp_tmp_1',
-                f'[WORKSPACE]{sep}rc{sep}tmp_tmp_2',
-                f'[WORKSPACE]{sep}rc{sep}unpacked_tmp_1'
-            ]),
+            api.post_process(
+                post_process.StepCommandContains,
+                'out ready',
+                [f'[WORKSPACE]{sep}out'],
+            ),
+            api.post_process(
+                post_process.StepCommandContains, 'home', ['[HOME]']
+            ),
+            api.post_process(
+                post_process.StepCommandContains, 'home again', ['[HOME]']
+            ),
+            api.post_process(
+                post_process.StepCommandContains, 'cache', [f'[HOME]{sep}cache']
+            ),
+            api.post_process(
+                post_process.StepCommandContains,
+                'temp dirs',
+                [
+                    f'[WORKSPACE]{sep}rc{sep}tmp_tmp_1',
+                    f'[WORKSPACE]{sep}rc{sep}tmp_tmp_2',
+                    f'[WORKSPACE]{sep}rc{sep}unpacked_tmp_1',
+                ],
+            ),
             api.post_process(post_process.StatusSuccess),
         )
     yield api.test(

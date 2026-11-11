@@ -9,6 +9,7 @@
 
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
+#include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
 #include "brave/browser/ui/views/tabs/dragging/tab_drag_controller.h"
@@ -17,7 +18,6 @@
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_container.h"
-#include "chrome/browser/ui/views/tabs/tab_container_impl.h"
 
 #if BUILDFLAG(IS_WIN)
 #include "ui/gfx/win/hwnd_util.h"
@@ -28,7 +28,6 @@
 #define param(TAB, MODEL_INDEX, PINNED) \
   param(std::make_unique<BraveTab>(tab_data.handle, this), MODEL_INDEX, PINNED)
 
-#define TabContainerImpl BraveTabContainer
 #define TabHoverCardController BraveTabHoverCardController
 
 // Macros for TabDragContextImpl. TabDragContextImpl is in anonymous namespace
@@ -37,7 +36,7 @@
 // seems to be the most efficient way for now. If we could split this into
 // another file or child class, that'd be great.
 #define BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX               \
-  if (auto* vertical_tab_controller = VerticalTabController::FromBrowser(   \
+  if (auto* vertical_tab_controller = VerticalTabController::From(          \
           tab_strip_->GetBrowserWindowInterface());                         \
       vertical_tab_controller &&                                            \
       vertical_tab_controller->ShouldShowBraveVerticalTabs()) {             \
@@ -51,7 +50,7 @@
   }
 
 #define BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS      \
-  if (auto* vertical_tab_controller = VerticalTabController::FromBrowser(   \
+  if (auto* vertical_tab_controller = VerticalTabController::From(          \
           tab_strip_->GetBrowserWindowInterface());                         \
       vertical_tab_controller &&                                            \
       vertical_tab_controller->ShouldShowBraveVerticalTabs()) {             \
@@ -63,7 +62,6 @@
 #undef BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS
 #undef BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX
 #undef TabHoverCardController
-#undef TabContainerImpl
 #undef param
 
 bool TabStrip::ShouldAlwaysHideCloseButton() const {
@@ -114,7 +112,7 @@ bool TabStrip::IsInCollapsedTreeTabNode(
 }
 
 brave_tabs::TabMinWidthMode TabStrip::GetTabMinWidthMode() const {
-  return brave_tabs::TabMinWidthMode::kDefault;
+  return {};
 }
 
 bool TabStrip::IsHorizontalScrollingEnabled() const {

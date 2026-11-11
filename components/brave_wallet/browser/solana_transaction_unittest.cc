@@ -655,8 +655,65 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
 
   for (const auto& invalid_value_string : invalid_value_strings) {
     auto invalid_value = base::test::ParseJson(invalid_value_string);
+    EXPECT_FALSE(SolanaTransaction::FromValue(invalid_value.GetDict()))
+        << ":" << invalid_value_string;
     EXPECT_FALSE(SolanaMessage::FromValue(invalid_value.GetDict()))
         << ":" << invalid_value_string;
+  }
+
+  // Every required key must be present and of the right type.
+  for (const char* key :
+       {"message", "to_wallet_address", "spl_token_mint_address", "tx_type",
+        "lamports", "amount"}) {
+    base::DictValue missing = value.Clone();
+    ASSERT_TRUE(missing.Remove(key)) << key;
+    EXPECT_FALSE(SolanaTransaction::FromValue(missing)) << key;
+
+    base::DictValue wrong_type = value.Clone();
+    wrong_type.Set(key, base::ListValue());
+    EXPECT_FALSE(SolanaTransaction::FromValue(wrong_type)) << key;
+  }
+
+  // lamports and amount must be parsable as uint64.
+  for (const char* key : {"lamports", "amount"}) {
+    for (const char* bad : {"not_a_number", "-1", ""}) {
+      base::DictValue invalid = value.Clone();
+      invalid.Set(key, bad);
+      EXPECT_FALSE(SolanaTransaction::FromValue(invalid)) << key << ":" << bad;
+    }
+  }
+
+  // Invalid sign_tx_param.
+  ASSERT_TRUE(value.FindDict("sign_tx_param"));
+  {
+    base::DictValue invalid = value.Clone();
+    invalid.FindDict("sign_tx_param")->Set("encoded_serialized_msg", "");
+    EXPECT_FALSE(SolanaTransaction::FromValue(invalid));
+  }
+  {
+    base::DictValue invalid = value.Clone();
+    ASSERT_TRUE(
+        invalid.FindDict("sign_tx_param")->Remove("encoded_serialized_msg"));
+    EXPECT_FALSE(SolanaTransaction::FromValue(invalid));
+  }
+  {
+    base::DictValue invalid = value.Clone();
+    ASSERT_TRUE(invalid.FindDict("sign_tx_param")->Remove("signatures"));
+    EXPECT_FALSE(SolanaTransaction::FromValue(invalid));
+  }
+  {
+    base::DictValue invalid = value.Clone();
+    base::ListValue signatures;
+    signatures.Append(5);
+    invalid.FindDict("sign_tx_param")->Set("signatures", std::move(signatures));
+    EXPECT_FALSE(SolanaTransaction::FromValue(invalid));
+  }
+  {
+    base::DictValue invalid = value.Clone();
+    base::ListValue signatures;
+    signatures.Append(base::DictValue());
+    invalid.FindDict("sign_tx_param")->Set("signatures", std::move(signatures));
+    EXPECT_FALSE(SolanaTransaction::FromValue(invalid));
   }
 }
 

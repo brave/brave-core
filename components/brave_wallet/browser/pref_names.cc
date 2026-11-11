@@ -148,7 +148,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       kDefaultCardanoWallet,
       static_cast<int>(brave_wallet::mojom::DefaultWallet::BraveWallet));
   registry->RegisterStringPref(kDefaultBaseCurrency, "USD");
-  registry->RegisterStringPref(kDefaultBaseCryptocurrency, "BTC");
   registry->RegisterBooleanPref(kShowWalletIconOnToolbar, true);
   registry->RegisterDictionaryPref(kBraveWalletKeyrings);
   registry->RegisterBooleanPref(kBraveWalletKeyringEncryptionKeysMigrated,
@@ -178,6 +177,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kBraveWalletSelectedEthDappAccount, "");
   registry->RegisterStringPref(kBraveWalletSelectedSolDappAccount, "");
   registry->RegisterStringPref(kBraveWalletSelectedAdaDappAccount, "");
+  registry->RegisterStringPref(kBraveWalletSelectedDotDappAccount, "");
 
   registry->RegisterIntegerPref(
       kBraveWalletTransactionSimulationOptInStatus,
@@ -251,6 +251,9 @@ void RegisterProfilePrefsForMigration(
 
   // Added 08/2026
   registry->RegisterBooleanPref(kBraveWalletLocalhostNetworksMigrated, false);
+
+  // Added 10/2026
+  registry->RegisterStringPref(kDefaultBaseCryptocurrencyDeprecated, "");
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -274,6 +277,7 @@ void ClearKeyringServiceProfilePrefs(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletSelectedEthDappAccount);
   prefs->ClearPref(kBraveWalletSelectedSolDappAccount);
   prefs->ClearPref(kBraveWalletSelectedAdaDappAccount);
+  prefs->ClearPref(kBraveWalletSelectedDotDappAccount);
   prefs->ClearPref(kBraveWalletHiddenAccounts);
 }
 
@@ -281,7 +285,6 @@ void ClearBraveWalletServicePrefs(PrefService* prefs) {
   DCHECK(prefs);
   prefs->ClearPref(kBraveWalletUserAssetsList);
   prefs->ClearPref(kDefaultBaseCurrency);
-  prefs->ClearPref(kDefaultBaseCryptocurrency);
   prefs->ClearPref(kBraveWalletEthAllowancesCache);
 }
 
@@ -321,6 +324,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 08/2026
   BraveWalletService::MaybeMigrateLocalhostNetworks(prefs);
+
+  // Added 10/2026
+  prefs->ClearPref(kDefaultBaseCryptocurrencyDeprecated);
 }
 
 }  // namespace brave_wallet

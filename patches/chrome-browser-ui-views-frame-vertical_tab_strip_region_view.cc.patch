@@ -1,0 +1,543 @@
+diff --git a/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.cc b/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.cc
+index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098591b895d 100644
+--- a/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.cc
++++ b/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.cc
+@@ -118,10 +118,10 @@ constexpr base::TimeDelta kVerticalTabsExpandOnHoverVelocityHeuristicEdgeDelay =
+ 
+ }  // namespace
+ 
+-DEFINE_CLASS_CUSTOM_ELEMENT_EVENT_TYPE(VerticalTabStripRegionView,
++DEFINE_CLASS_CUSTOM_ELEMENT_EVENT_TYPE(VerticalTabStripRegionView_ChromiumImpl,
+                                        kAnimationCompletedEvent);
+ 
+-VerticalTabStripRegionView::VerticalTabStripRegionView(
++VerticalTabStripRegionView_ChromiumImpl::VerticalTabStripRegionView_ChromiumImpl(
+     tabs::VerticalTabStripStateController* state_controller,
+     actions::ActionItem* root_action_item,
+     BrowserView* browser_view)
+@@ -177,7 +177,7 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
+       std::make_unique<VerticalTabStripBottomContainer>(
+           state_controller_, root_action_item, browser_view->browser(),
+           base::BindRepeating(
+-              &VerticalTabStripRegionView::RecordNewTabButtonPressed,
++              &VerticalTabStripRegionView_ChromiumImpl::RecordNewTabButtonPressed,
+               base::Unretained(this))));
+   bottom_button_container_->SetProperty(
+       views::kFlexBehaviorKey,
+@@ -209,7 +209,7 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
+   OnCollapseStateChanged(state_controller_->GetCollapseState());
+   collapsed_state_changed_subscription_ =
+       state_controller_->RegisterOnCollapseChanged(base::BindRepeating(
+-          &VerticalTabStripRegionView::OnCollapseStateChanged,
++          &VerticalTabStripRegionView_ChromiumImpl::OnCollapseStateChanged,
+           base::Unretained(this)));
+ 
+   SetProperty(views::kElementIdentifierKey, kTabStripRegionElementId);
+@@ -233,7 +233,7 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
+   SetNotifyEnterExitOnChild(true);
+ }
+ 
+-VerticalTabStripRegionView::~VerticalTabStripRegionView() {
++VerticalTabStripRegionView_ChromiumImpl::~VerticalTabStripRegionView_ChromiumImpl() {
+   for (const auto& lock : hover_locks_) {
+     lock->ClearRegionViewOnDestruction();
+   }
+@@ -243,12 +243,12 @@ VerticalTabStripRegionView::~VerticalTabStripRegionView() {
+   state_controller_->SetDelegate(nullptr);
+ }
+ 
+-bool VerticalTabStripRegionView::IsAnimatingSize() const {
++bool VerticalTabStripRegionView_ChromiumImpl::IsAnimatingSize() const {
+   return BrowserAnimationController::From(browser_view()->browser())
+       ->IsAnimating(TabStripAnimations::kVerticalTabStrip);
+ }
+ 
+-void VerticalTabStripRegionView::OnAnimationProgressed(
++void VerticalTabStripRegionView_ChromiumImpl::OnAnimationProgressed(
+     const BrowserAnimationController* controller,
+     BrowserAnimationUpdate status) {
+   switch (status) {
+@@ -308,7 +308,7 @@ void VerticalTabStripRegionView::OnAnimationProgressed(
+   }
+ }
+ 
+-bool VerticalTabStripRegionView::IsPositionInWindowCaption(
++bool VerticalTabStripRegionView_ChromiumImpl::IsPositionInWindowCaption(
+     const gfx::Point& point) {
+   // Check the resize area first, it should always take precedence over other
+   // children regardless of order.
+@@ -364,22 +364,22 @@ bool VerticalTabStripRegionView::IsPositionInWindowCaption(
+   return true;
+ }
+ 
+-void VerticalTabStripRegionView::SetToolbarHeightForLayout(int toolbar_height) {
++void VerticalTabStripRegionView_ChromiumImpl::SetToolbarHeightForLayout(int toolbar_height) {
+   top_button_container_->SetToolbarHeightForLayout(toolbar_height);
+ }
+ 
+-void VerticalTabStripRegionView::SetCaptionButtonWidthForLayout(
++void VerticalTabStripRegionView_ChromiumImpl::SetCaptionButtonWidthForLayout(
+     int caption_button_width) {
+   top_button_container_->SetCaptionButtonWidthForLayout(caption_button_width);
+ }
+ 
+-void VerticalTabStripRegionView::SetIsExitingExpandOnHoverForLayout(
++void VerticalTabStripRegionView_ChromiumImpl::SetIsExitingExpandOnHoverForLayout(
+     bool is_exiting_expand_on_hover) {
+   top_button_container_->SetIsExitingExpandOnHoverForLayout(
+       is_exiting_expand_on_hover);
+ }
+ 
+-void VerticalTabStripRegionView::SetTransitionButtonOpacity(float opacity) {
++void VerticalTabStripRegionView_ChromiumImpl::SetTransitionButtonOpacity(float opacity) {
+   if (views::LabelButton* label_button =
+           top_button_container_->GetCollapseButton()) {
+     auto* button = static_cast<TopContainerButton*>(label_button);
+@@ -395,30 +395,30 @@ void VerticalTabStripRegionView::SetTransitionButtonOpacity(float opacity) {
+   }
+ }
+ 
+-bool VerticalTabStripRegionView::WillWrapDueToOverflow(
++bool VerticalTabStripRegionView_ChromiumImpl::WillWrapDueToOverflow(
+     int available_width) const {
+   return top_button_container_->WillWrapDueToOverflow(available_width);
+ }
+ 
+-void VerticalTabStripRegionView::AddedToWidget() {
++void VerticalTabStripRegionView_ChromiumImpl::AddedToWidget() {
+   BaseTabStripRegionView::AddedToWidget();
+   paint_as_active_subscription_ =
+       GetWidget()->RegisterPaintAsActiveChangedCallback(base::BindRepeating(
+-          &VerticalTabStripRegionView::UpdateExpandOnHoverState,
++          &VerticalTabStripRegionView_ChromiumImpl::UpdateExpandOnHoverState,
+           base::Unretained(this), /*hovered=*/std::nullopt));
+   if (GetFocusManager()) {
+     GetFocusManager()->AddFocusChangeListener(&focus_listener_);
+   }
+ }
+ 
+-void VerticalTabStripRegionView::RemovedFromWidget() {
++void VerticalTabStripRegionView_ChromiumImpl::RemovedFromWidget() {
+   if (GetFocusManager()) {
+     GetFocusManager()->RemoveFocusChangeListener(&focus_listener_);
+   }
+   BaseTabStripRegionView::RemovedFromWidget();
+ }
+ 
+-views::ProposedLayout VerticalTabStripRegionView::CalculateProposedLayout(
++views::ProposedLayout VerticalTabStripRegionView_ChromiumImpl::CalculateProposedLayout(
+     const views::SizeBounds& size_bounds) const {
+   views::ProposedLayout layout;
+ 
+@@ -431,7 +431,7 @@ views::ProposedLayout VerticalTabStripRegionView::CalculateProposedLayout(
+   const bool blending_with_organizer_tray =
+       !organizer_panel_view_ && organizer_panel_show_percent_ > 0.0;
+   const int blend_target_width = state_controller_->IsCollapsed()
+-                                     ? tabs::kVerticalTabStripCollapsedWidth
++                                     ? GetCollapsedWidth()
+                                      : state_controller_->GetUncollapsedWidth();
+ 
+   views::SizeBounds button_available_size = size_bounds;
+@@ -502,7 +502,7 @@ views::ProposedLayout VerticalTabStripRegionView::CalculateProposedLayout(
+   return layout;
+ }
+ 
+-void VerticalTabStripRegionView::Layout(PassKey) {
++void VerticalTabStripRegionView_ChromiumImpl::Layout(PassKey) {
+   LayoutSuperclass<BaseTabStripRegionView>(this);
+ 
+   // Manually position the resize area as it overlaps views handled by the flex
+@@ -520,7 +520,7 @@ void VerticalTabStripRegionView::Layout(PassKey) {
+   }
+ }
+ 
+-views::View* VerticalTabStripRegionView::GetDefaultFocusableChild() {
++views::View* VerticalTabStripRegionView_ChromiumImpl::GetDefaultFocusableChild() {
+   tabs::TabInterface* active_tab = tab_strip_model()->GetActiveTab();
+   if (active_tab) {
+     return GetTabAnchorView(active_tab->GetHandle());
+@@ -529,15 +529,15 @@ views::View* VerticalTabStripRegionView::GetDefaultFocusableChild() {
+   return top_button_container_;
+ }
+ 
+-gfx::Size VerticalTabStripRegionView::GetMinimumSize() const {
++gfx::Size VerticalTabStripRegionView_ChromiumImpl::GetMinimumSize() const {
+   auto min_size = BaseTabStripRegionView::GetMinimumSize();
+   min_size.set_width((state_controller_->IsCollapsed() || IsAnimatingSize())
+-                         ? tabs::kVerticalTabStripCollapsedWidth
++                         ? GetCollapsedWidth()
+                          : tabs::kVerticalTabStripUncollapsedMinWidth);
+   return min_size;
+ }
+ 
+-gfx::Size VerticalTabStripRegionView::CalculatePreferredSize(
++gfx::Size VerticalTabStripRegionView_ChromiumImpl::CalculatePreferredSize(
+     const views::SizeBounds& available_size) const {
+   auto size = BaseTabStripRegionView::CalculatePreferredSize(available_size);
+   const auto* controller =
+@@ -546,18 +546,18 @@ gfx::Size VerticalTabStripRegionView::CalculatePreferredSize(
+       controller->GetCurrentMotion(TabStripAnimations::kVerticalTabStrip);
+   const int expand_amount =
+       std::max(0, target_collapse_state_.uncollapsed_width -
+-                      tabs::kVerticalTabStripCollapsedWidth);
++                      GetCollapsedWidth());
+   const double expand_percent =
+       *controller->GetCurrentValue(TabStripAnimations::kVerticalTabStrip,
+                                    TabStripAnimations::kTabStripWidth);
+-  size.set_width(tabs::kVerticalTabStripCollapsedWidth +
++  size.set_width(GetCollapsedWidth() +
+                  (motion == TabStripAnimations::kExpand
+                       ? std::floor<double>
+                       : std::ceil<double>)(expand_amount * expand_percent));
+   return size;
+ }
+ 
+-bool VerticalTabStripRegionView::OnKeyPressed(const ui::KeyEvent& event) {
++bool VerticalTabStripRegionView_ChromiumImpl::OnKeyPressed(const ui::KeyEvent& event) {
+   if (resize_area_->HasFocus()) {
+     int resize_amount = 0;
+ 
+@@ -590,7 +590,7 @@ bool VerticalTabStripRegionView::OnKeyPressed(const ui::KeyEvent& event) {
+   return BaseTabStripRegionView::OnKeyPressed(event);
+ }
+ 
+-void VerticalTabStripRegionView::OnMouseEntered(const ui::MouseEvent& event) {
++void VerticalTabStripRegionView_ChromiumImpl::OnMouseEntered(const ui::MouseEvent& event) {
+   if (mouse_exit_timer_.IsRunning()) {
+     mouse_exit_timer_.Stop();
+     return;
+@@ -598,18 +598,18 @@ void VerticalTabStripRegionView::OnMouseEntered(const ui::MouseEvent& event) {
+   UpdateExpandOnHoverState(true);
+ }
+ 
+-void VerticalTabStripRegionView::OnMouseMoved(const ui::MouseEvent& event) {
++void VerticalTabStripRegionView_ChromiumImpl::OnMouseMoved(const ui::MouseEvent& event) {
+   if (mouse_exit_timer_.IsRunning()) {
+     mouse_exit_timer_.Stop();
+   }
+   UpdateExpandOnHoverState(true);
+ }
+ 
+-void VerticalTabStripRegionView::OnMouseExited(const ui::MouseEvent& event) {
++void VerticalTabStripRegionView_ChromiumImpl::OnMouseExited(const ui::MouseEvent& event) {
+   HandleMouseExited();
+ }
+ 
+-void VerticalTabStripRegionView::SetOrganizerPanelView(
++void VerticalTabStripRegionView_ChromiumImpl::SetOrganizerPanelView(
+     std::unique_ptr<views::View> panel_view) {
+   CHECK(!organizer_panel_view_);
+   panel_view->SetVisible(false);
+@@ -618,7 +618,7 @@ void VerticalTabStripRegionView::SetOrganizerPanelView(
+ }
+ 
+ std::unique_ptr<views::View>
+-VerticalTabStripRegionView::TakeOrganizerPanelView() {
++VerticalTabStripRegionView_ChromiumImpl::TakeOrganizerPanelView() {
+   CHECK(organizer_panel_view_);
+   organizer_panel_show_percent_ = 0.0;
+   // Since we mess with the opacity when animating the panel in/out, return it
+@@ -627,20 +627,20 @@ VerticalTabStripRegionView::TakeOrganizerPanelView() {
+   return RemoveChildViewT(std::exchange(organizer_panel_view_, nullptr));
+ }
+ 
+-bool VerticalTabStripRegionView::HasOrganizerPanelView() const {
++bool VerticalTabStripRegionView_ChromiumImpl::HasOrganizerPanelView() const {
+   return organizer_panel_view_ != nullptr;
+ }
+ 
+-void VerticalTabStripRegionView::HandleMouseExited() {
++void VerticalTabStripRegionView_ChromiumImpl::HandleMouseExited() {
+   // On Windows, we get mouse exit events when moving between the caption area
+   // and client as well as when we transition between web contents area
+   // underneath the expanded on hover overlay to outside it.
+ #if BUILDFLAG(IS_WIN)
+   constexpr base::TimeDelta kMouseExitDebounceTimer = base::Milliseconds(100);
+-  if (IsMouseHovered()) {
++  if ((IsMouseHovered() || IsMouseInHotCorner())) {
+     mouse_exit_timer_.Start(
+         FROM_HERE, kMouseExitDebounceTimer,
+-        base::BindOnce(&VerticalTabStripRegionView::HandleMouseExited,
++        base::BindOnce(&VerticalTabStripRegionView_ChromiumImpl::HandleMouseExited,
+                        base::Unretained(this)));
+     return;
+   }
+@@ -649,12 +649,12 @@ void VerticalTabStripRegionView::HandleMouseExited() {
+ }
+ 
+ std::unique_ptr<ExpandOnHoverLock>
+-VerticalTabStripRegionView::GetExpandOnHoverLock(
++VerticalTabStripRegionView_ChromiumImpl::GetExpandOnHoverLock(
+     ExpandOnHoverLockType lock_type) {
+   return std::make_unique<VerticalTabStripExpandOnHoverLock>(this, lock_type);
+ }
+ 
+-void VerticalTabStripRegionView::HandleDragUpdate(
++void VerticalTabStripRegionView_ChromiumImpl::HandleDragUpdate(
+     const std::optional<BrowserRootView::DropIndex>& index) {
+   SetLinkDropArrow(index);
+   UpdateExpandOnHoverState(true);
+@@ -664,13 +664,13 @@ void VerticalTabStripRegionView::HandleDragUpdate(
+   }
+ }
+ 
+-void VerticalTabStripRegionView::HandleDragExited() {
++void VerticalTabStripRegionView_ChromiumImpl::HandleDragExited() {
+   SetLinkDropArrow(std::nullopt);
+   link_drag_lock_.reset();
+   UpdateExpandOnHoverState(false);
+ }
+ 
+-gfx::Point VerticalTabStripRegionView::GetLinkDropArrowPosition(
++gfx::Point VerticalTabStripRegionView_ChromiumImpl::GetLinkDropArrowPosition(
+     const BrowserRootView::DropIndex& drop_index,
+     DropArrow::Direction* direction) {
+   int target_x = GetBoundsInScreen().x();
+@@ -738,7 +738,7 @@ gfx::Point VerticalTabStripRegionView::GetLinkDropArrowPosition(
+   return gfx::Point(target_x, target_y);
+ }
+ 
+-void VerticalTabStripRegionView::OnResize(int resize_amount,
++void VerticalTabStripRegionView_ChromiumImpl::OnResize(int resize_amount,
+                                           bool done_resizing) {
+   CHECK(tab_strip_view());
+   tab_strip_view()->SetIsAnimatingSize(!done_resizing);
+@@ -789,7 +789,7 @@ void VerticalTabStripRegionView::OnResize(int resize_amount,
+                             : "VerticalTabs_TabStrip_ResizeToUncollapsed"));
+     base::UmaHistogramCounts1000("Tabs.VerticalTabs.TabStripSize",
+                                  new_state.collapsed
+-                                     ? tabs::kVerticalTabStripCollapsedWidth
++                                     ? GetCollapsedWidth()
+                                      : new_state.uncollapsed_width);
+   }
+ 
+@@ -804,18 +804,18 @@ void VerticalTabStripRegionView::OnResize(int resize_amount,
+   }
+ }
+ 
+-void VerticalTabStripRegionView::SetCollapsedStateUpdatedCallback(
++void VerticalTabStripRegionView_ChromiumImpl::SetCollapsedStateUpdatedCallback(
+     base::RepeatingCallback<void(bool)> callback) {
+   update_state_controller_collapsed_callback_ = std::move(callback);
+ }
+ 
+-bool VerticalTabStripRegionView::IsCollapsing() {
++bool VerticalTabStripRegionView_ChromiumImpl::IsCollapsing() {
+   return BrowserAnimationController::From(browser_view()->browser())
+              ->GetCurrentMotion(TabStripAnimations::kVerticalTabStrip) ==
+          TabStripAnimations::kCollapse;
+ }
+ 
+-void VerticalTabStripRegionView::RequestCollapse(bool collapse) {
++void VerticalTabStripRegionView_ChromiumImpl::RequestCollapse(bool collapse) {
+   target_collapse_state_.collapsed = collapse;
+   if (collapse) {
+     suppress_expand_on_hover_ = IsCollapseButtonHovered();
+@@ -837,7 +837,7 @@ void VerticalTabStripRegionView::RequestCollapse(bool collapse) {
+       ->Start(TabStripAnimations::kVerticalTabStrip, motion);
+ }
+ 
+-void VerticalTabStripRegionView::SetOrganizerPanelShowPercent(double percent) {
++void VerticalTabStripRegionView_ChromiumImpl::SetOrganizerPanelShowPercent(double percent) {
+   if (organizer_panel_show_percent_ == percent) {
+     return;
+   }
+@@ -845,7 +845,7 @@ void VerticalTabStripRegionView::SetOrganizerPanelShowPercent(double percent) {
+   InvalidateLayout(/*avoid_propagate_during_layout=*/true);
+ }
+ 
+-void VerticalTabStripRegionView::UpdatePanelClipAndOpacity() {
++void VerticalTabStripRegionView_ChromiumImpl::UpdatePanelClipAndOpacity() {
+   if (organizer_panel_view_) {
+     auto* const bg = background()->AsA<CustomCornersBackground>();
+     bg->ClipViewToBackground(organizer_panel_view_);
+@@ -854,11 +854,11 @@ void VerticalTabStripRegionView::UpdatePanelClipAndOpacity() {
+   content_area_view_->layer()->SetOpacity(1.0 - organizer_panel_show_percent_);
+ }
+ 
+-VerticalTabStripRegionView::RegionViewFocusListener::RegionViewFocusListener(
+-    VerticalTabStripRegionView* region_view)
++VerticalTabStripRegionView_ChromiumImpl::RegionViewFocusListener::RegionViewFocusListener(
++    VerticalTabStripRegionView_ChromiumImpl* region_view)
+     : region_view_(region_view) {}
+ 
+-void VerticalTabStripRegionView::RegionViewFocusListener::OnDidChangeFocus(
++void VerticalTabStripRegionView_ChromiumImpl::RegionViewFocusListener::OnDidChangeFocus(
+     views::View* focused_before,
+     views::View* focused_now) {
+   if ((focused_before && region_view_->Contains(focused_before)) ||
+@@ -867,7 +867,7 @@ void VerticalTabStripRegionView::RegionViewFocusListener::OnDidChangeFocus(
+   }
+ }
+ 
+-void VerticalTabStripRegionView::AddTabStripView(
++void VerticalTabStripRegionView_ChromiumImpl::AddTabStripView(
+     std::unique_ptr<views::View> view) {
+   view->SetProperty(
+       views::kFlexBehaviorKey,
+@@ -897,19 +897,19 @@ void VerticalTabStripRegionView::AddTabStripView(
+ 
+   on_animation_update_subscription_ = animation_controller->Subscribe(
+       TabStripAnimations::kVerticalTabStrip,
+-      base::BindRepeating(&VerticalTabStripRegionView::OnAnimationProgressed,
++      base::BindRepeating(&VerticalTabStripRegionView_ChromiumImpl::OnAnimationProgressed,
+                           base::Unretained(this)));
+ 
+   expand_on_hover_enabled_changed_subscription_ =
+       state_controller_->RegisterOnExpandOnHoverEnabledChanged(
+           base::BindRepeating(
+-              &VerticalTabStripRegionView::OnExpandOnHoverEnabledChanged,
++              &VerticalTabStripRegionView_ChromiumImpl::OnExpandOnHoverEnabledChanged,
+               base::Unretained(this)));
+ 
+   OnCollapseStateChanged(state_controller_->GetCollapseState());
+ }
+ 
+-std::unique_ptr<views::View> VerticalTabStripRegionView::RemoveTabStripView(
++std::unique_ptr<views::View> VerticalTabStripRegionView_ChromiumImpl::RemoveTabStripView(
+     views::View* view) {
+   on_animation_update_subscription_.reset();
+   expand_on_hover_enabled_changed_subscription_.reset();
+@@ -919,7 +919,7 @@ std::unique_ptr<views::View> VerticalTabStripRegionView::RemoveTabStripView(
+   return BaseTabStripRegionView::RemoveTabStripView(view);
+ }
+ 
+-void VerticalTabStripRegionView::OnCollapseStateChanged(
++void VerticalTabStripRegionView_ChromiumImpl::OnCollapseStateChanged(
+     tabs::VerticalTabStripCollapseState state) {
+   // Apply padding immediately at the start of the animation by including
+   // the collapsing state.
+@@ -958,14 +958,14 @@ void VerticalTabStripRegionView::OnCollapseStateChanged(
+   }
+ }
+ 
+-bool VerticalTabStripRegionView::IsCollapseButtonHovered() const {
++bool VerticalTabStripRegionView_ChromiumImpl::IsCollapseButtonHovered() const {
+   return SafeInvoke(top_button_container_.get())
+       .Then(&VerticalTabStripTopContainer::GetCollapseButton)
+       .Then(&views::View::IsMouseHovered)
+       .value_or(false);
+ }
+ 
+-gfx::Rect VerticalTabStripRegionView::GetTabStripDraggableBounds() const {
++gfx::Rect VerticalTabStripRegionView_ChromiumImpl::GetTabStripDraggableBounds() const {
+   // Tabs should be draggable from the top of the tab strip to the bottom of the
+   // tab strip's max size, saving space for the bottom button container and
+   // padding.
+@@ -979,13 +979,13 @@ gfx::Rect VerticalTabStripRegionView::GetTabStripDraggableBounds() const {
+   return tab_strip_draggable_bounds;
+ }
+ 
+-void VerticalTabStripRegionView::OnExpandOnHoverEnabledChanged(bool enabled) {
++void VerticalTabStripRegionView_ChromiumImpl::OnExpandOnHoverEnabledChanged(bool enabled) {
+   resize_area_->SetVisible(!state_controller_->IsCollapsed() || !enabled ||
+                            resize_area_->is_resizing());
+   UpdateExpandOnHoverState();
+ }
+ 
+-void VerticalTabStripRegionView::UpdateExpandOnHoverState(
++void VerticalTabStripRegionView_ChromiumImpl::UpdateExpandOnHoverState(
+     std::optional<bool> hovered) {
+   // If not collapsed, then we shouldn't be in or entering the expand on hover
+   // state.
+@@ -1036,7 +1036,7 @@ void VerticalTabStripRegionView::UpdateExpandOnHoverState(
+   const bool should_expand =
+       !suppress_expand_on_hover_ &&
+       state_controller_->IsExpandOnHoverEnabled() &&
+-      (hovered.value_or(IsMouseHovered()) ||
++      (hovered.value_or((IsMouseHovered() || IsMouseInHotCorner())) ||
+        (GetFocusManager() && Contains(GetFocusManager()->GetFocusedView())));
+ 
+   if (!should_expand) {
+@@ -1061,10 +1061,10 @@ void VerticalTabStripRegionView::UpdateExpandOnHoverState(
+   CalculateMouseVelocityForExpandOnHover();
+ }
+ 
+-void VerticalTabStripRegionView::OnMouseVelocityHeuristicInterval() {
++void VerticalTabStripRegionView_ChromiumImpl::OnMouseVelocityHeuristicInterval() {
+   const bool should_expand =
+       state_controller_->IsExpandOnHoverEnabled() &&
+-      (IsMouseHovered() ||
++      ((IsMouseHovered() || IsMouseInHotCorner()) ||
+        (GetFocusManager() && Contains(GetFocusManager()->GetFocusedView())));
+ 
+   if (!should_expand || is_expanded_on_hover_) {
+@@ -1075,7 +1075,7 @@ void VerticalTabStripRegionView::OnMouseVelocityHeuristicInterval() {
+   CalculateMouseVelocityForExpandOnHover();
+ }
+ 
+-void VerticalTabStripRegionView::CalculateMouseVelocityForExpandOnHover() {
++void VerticalTabStripRegionView_ChromiumImpl::CalculateMouseVelocityForExpandOnHover() {
+   gfx::Point current_point = display::Screen::Get()->GetCursorScreenPoint();
+   ConvertPointFromScreen(this, &current_point);
+ 
+@@ -1087,7 +1087,7 @@ void VerticalTabStripRegionView::CalculateMouseVelocityForExpandOnHover() {
+     expand_on_hover_heuristic_timer_.Start(
+         FROM_HERE, kVerticalTabsExpandOnHoverVelocityHeuristicInterval,
+         base::BindRepeating(
+-            &VerticalTabStripRegionView::OnMouseVelocityHeuristicInterval,
++            &VerticalTabStripRegionView_ChromiumImpl::OnMouseVelocityHeuristicInterval,
+             base::Unretained(this)));
+     return;
+   }
+@@ -1129,7 +1129,7 @@ void VerticalTabStripRegionView::CalculateMouseVelocityForExpandOnHover() {
+   }
+ }
+ 
+-void VerticalTabStripRegionView::ResetExpandOnHoverTimers() {
++void VerticalTabStripRegionView_ChromiumImpl::ResetExpandOnHoverTimers() {
+   hover_card_animation_lock_.reset();
+ 
+   expand_on_hover_heuristic_timer_.Stop();
+@@ -1138,7 +1138,7 @@ void VerticalTabStripRegionView::ResetExpandOnHoverTimers() {
+   expand_on_hover_heuristic_samples_ = 0;
+ }
+ 
+-void VerticalTabStripRegionView::AnimateExpandOnHover(bool expand) {
++void VerticalTabStripRegionView_ChromiumImpl::AnimateExpandOnHover(bool expand) {
+   is_expanded_on_hover_ = expand;
+   ResetExpandOnHoverTimers();
+ 
+@@ -1163,7 +1163,7 @@ void VerticalTabStripRegionView::AnimateExpandOnHover(bool expand) {
+                      : TabStripAnimations::kCollapseOnHover);
+ }
+ 
+-void VerticalTabStripRegionView::RegisterExpandOnHoverLock(
++void VerticalTabStripRegionView_ChromiumImpl::RegisterExpandOnHoverLock(
+     VerticalTabStripExpandOnHoverLock* lock) {
+   hover_locks_.insert(lock);
+   ExpandOnHoverLockType lock_type = lock->lock_type();
+@@ -1184,7 +1184,7 @@ void VerticalTabStripRegionView::RegisterExpandOnHoverLock(
+   UpdateExpandOnHoverState();
+ }
+ 
+-void VerticalTabStripRegionView::UnregisterExpandOnHoverLock(
++void VerticalTabStripRegionView_ChromiumImpl::UnregisterExpandOnHoverLock(
+     VerticalTabStripExpandOnHoverLock* lock) {
+   hover_locks_.erase(lock);
+   ExpandOnHoverLockType lock_type = lock->lock_type();
+@@ -1216,7 +1216,7 @@ void VerticalTabStripRegionView::UnregisterExpandOnHoverLock(
+   }
+ }
+ 
+-void VerticalTabStripRegionView::OnOmniboxPopupVisibilityChanged(bool is_open) {
++void VerticalTabStripRegionView_ChromiumImpl::OnOmniboxPopupVisibilityChanged(bool is_open) {
+   if (is_open) {
+     if (!omnibox_open_lock_) {
+       omnibox_open_lock_ =
+@@ -1228,7 +1228,7 @@ void VerticalTabStripRegionView::OnOmniboxPopupVisibilityChanged(bool is_open) {
+   }
+ }
+ 
+-void VerticalTabStripRegionView::OnActiveTabChanged(
++void VerticalTabStripRegionView_ChromiumImpl::OnActiveTabChanged(
+     const tabs::TabInterface* active_tab) {
+   BaseTabStripRegionView::OnActiveTabChanged(active_tab);
+   omnibox_tab_helper_observation_.Reset();
+@@ -1242,5 +1242,5 @@ void VerticalTabStripRegionView::OnActiveTabChanged(
+   }
+ }
+ 
+-BEGIN_METADATA(VerticalTabStripRegionView)
++BEGIN_METADATA(VerticalTabStripRegionView_ChromiumImpl)
+ END_METADATA

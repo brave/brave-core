@@ -10,7 +10,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-OBJC_EXPORT NSString* const BraveAccountInitiatingServiceNameQueryParam;
+OBJC_EXPORT
+@interface BraveAccount : NSObject
+- (instancetype)init NS_UNAVAILABLE;
+@end
+
+OBJC_EXPORT NSString* const BraveAccountSettingsPath;
 
 NS_ASSUME_NONNULL_END
 

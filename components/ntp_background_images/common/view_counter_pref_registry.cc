@@ -7,6 +7,7 @@
 
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/infobar_constants.h"
+#include "brave/components/ntp_background_images/common/new_tab_takeover_disclosure_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -22,7 +23,7 @@ namespace ntp_background_images {
 namespace {
 
 // Added 09/2023.
-constexpr char kCountToBrandedWallpaperPref[] =
+constexpr char kCountToNewTabTakeoverWallpaperPref[] =
     "brave.count_to_branded_wallpaper";
 
 // Added 05/2025.
@@ -42,6 +43,10 @@ constexpr char kObsoleteNewTabPageShowSponsoredImages[] =
 constexpr char kObsoleteNewTabPageShowSponsoredSites[] =
     "brave.new_tab_page.show_sponsored_sites";
 
+// Added 09/2026.
+constexpr char kObsoleteNewTabPageSponsoredImagesSurveyPanelist[] =
+    "brave.new_tab_page.sponsored_images.survey_panelist";
+
 }  // namespace
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -50,21 +55,22 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(prefs::kNewTabPageSponsoredImagesSurveyPanelist,
-                                false);
-  registry->RegisterBooleanPref(prefs::kBrandedWallpaperNotificationDismissed,
+  registry->RegisterBooleanPref(prefs::kNewTabTakeoverNotificationDismissed,
                                 false);
   registry->RegisterBooleanPref(prefs::kNewTabPageShowBackgroundImage, true);
   registry->RegisterIntegerPref(
       prefs::kNewTabTakeoverInfobarRemainingDisplayCount,
       kNewTabTakeoverInfobarRemainingDisplayCountThreshold);
+  registry->RegisterIntegerPref(
+      prefs::kNewTabTakeoverDisclosureTooltipRemainingDisplayCount,
+      kNewTabTakeoverDisclosureTooltipRemainingDisplayCountThreshold);
   registry->RegisterListPref(prefs::kNewTabsCreatedDaily);
 }
 
 void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
   // Added 09/2023.
-  registry->RegisterIntegerPref(kCountToBrandedWallpaperPref, 0);
+  registry->RegisterIntegerPref(kCountToNewTabTakeoverWallpaperPref, 0);
 
   // Added 05/2025.
   registry->RegisterIntegerPref(kNewTabTakeoverInfobarShowCount, 0);
@@ -75,11 +81,15 @@ void RegisterProfilePrefsForMigration(
   // Added 08/2026.
   registry->RegisterBooleanPref(kObsoleteNewTabPageShowSponsoredImages, true);
   registry->RegisterBooleanPref(kObsoleteNewTabPageShowSponsoredSites, true);
+
+  // Added 09/2026.
+  registry->RegisterBooleanPref(
+      kObsoleteNewTabPageSponsoredImagesSurveyPanelist, false);
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   // Added 09/2023.
-  prefs->ClearPref(kCountToBrandedWallpaperPref);
+  prefs->ClearPref(kCountToNewTabTakeoverWallpaperPref);
 
   // Added 05/2025.
   prefs->ClearPref(kNewTabTakeoverInfobarShowCount);
@@ -99,6 +109,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   prefs->ClearPref(kObsoleteNewTabPageShowSponsoredImages);
   prefs->ClearPref(kObsoleteNewTabPageShowSponsoredSites);
+
+  // Added 09/2026.
+  prefs->ClearPref(kObsoleteNewTabPageSponsoredImagesSurveyPanelist);
 }
 
 }  // namespace ntp_background_images

@@ -12,6 +12,7 @@ the bootstrap shims rely on.
 
 from __future__ import annotations
 
+import contextlib
 import sys
 import tempfile
 import unittest
@@ -32,7 +33,8 @@ class SidecarTest(unittest.TestCase):
         keying) and carries the `.stamp` tail."""
         self.assertEqual(
             m.sidecar_path(Path('/d'), 'Linux_x64/pkg.tar.gz', '_hash').name,
-            '.Linux_x64_pkg_tar_gz_hash.stamp')
+            '.Linux_x64_pkg_tar_gz_hash.stamp',
+        )
 
     def test_is_deployed_true_when_hash_matches(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -63,16 +65,19 @@ class CheapInstallStateTest(unittest.TestCase):
     PATH = 'src/brave/third_party/node/node-linux-x64'
 
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        tmp = stack.enter_context(tempfile.TemporaryDirectory())
         # The workspace root (the parent of `src`).
-        self.root = Path(tmp.name)
+        self.root = Path(tmp)
 
-    def _spec(self,
-              *,
-              objects: list[dict] | None = None,
-              object_name: str = 'node.tar.gz',
-              sha256sum: str = 'abc') -> dict:
+    def _spec(
+        self,
+        *,
+        objects: list[dict] | None = None,
+        object_name: str = 'node.tar.gz',
+        sha256sum: str = 'abc',
+    ) -> dict:
         if objects is None:
             objects = [{'object_name': object_name, 'sha256sum': sha256sum}]
         return {'bucket': 'https://downloads.invalid/', 'objects': objects}
@@ -82,8 +87,9 @@ class CheapInstallStateTest(unittest.TestCase):
         obj = spec['objects'][0]
         dest = self.root / self.PATH
         dest.mkdir(parents=True, exist_ok=True)
-        m.sidecar_path(dest, obj['object_name'],
-                       '_hash').write_text(obj['sha256sum'] + '\n')
+        m.sidecar_path(dest, obj['object_name'], '_hash').write_text(
+            obj['sha256sum'] + '\n'
+        )
 
     def _check(self, spec: dict) -> bool:
         """`check_extra_deps_installed` looks the entry up in `EXTRA_DEPS`, so
@@ -109,18 +115,20 @@ class CheapInstallStateTest(unittest.TestCase):
                 m.check_extra_deps_installed(self.root, self.PATH)
 
     def test_multiple_objects_raises(self):
-        spec = self._spec(objects=[
-            {
-                'object_name': 'a.tar.gz',
-                'sha256sum': 'a',
-                'condition': 'host_os == "linux"'
-            },
-            {
-                'object_name': 'b.tar.gz',
-                'sha256sum': 'b',
-                'condition': 'host_os == "mac"'
-            },
-        ])
+        spec = self._spec(
+            objects=[
+                {
+                    'object_name': 'a.tar.gz',
+                    'sha256sum': 'a',
+                    'condition': 'host_os == "linux"',
+                },
+                {
+                    'object_name': 'b.tar.gz',
+                    'sha256sum': 'b',
+                    'condition': 'host_os == "mac"',
+                },
+            ]
+        )
         with self.assertRaisesRegex(ValueError, 'single-object'):
             self._check(spec)
 

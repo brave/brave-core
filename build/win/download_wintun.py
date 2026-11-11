@@ -46,15 +46,15 @@ def main():
     args = parse_args()
     dep_url = DEPS_PACKAGES_URL + '/' + args.dep_path
     dest_dir = wspath(args.dest_dir)
-    deps.DownloadIfChanged(dep_url,
-                           dest_dir,
-                           sha256=args.sha256,
-                           download_fn=fetch_and_stage)
+    deps.DownloadIfChanged(
+        dep_url, dest_dir, sha256=args.sha256, download_fn=fetch_and_stage
+    )
 
 
 def parse_args():
     parser = ArgumentParser(
-        description='Download and stage the Wintun prebuilt binaries.')
+        description='Download and stage the Wintun prebuilt binaries.'
+    )
     parser.add_argument('dep_path')
     parser.add_argument('dest_dir')
     parser.add_argument('sha256')
@@ -67,15 +67,15 @@ def parse_version(filename):
     if not filename.startswith(prefix) or not filename.endswith(suffix):
         raise ValueError(
             f'Could not parse version from filename: {filename!r}. '
-            f'Expected the form "wintun-<version>.zip".')
-    return filename[len(prefix):-len(suffix)]
+            f'Expected the form "wintun-<version>.zip".'
+        )
+    return filename[len(prefix) : -len(suffix)]
 
 
 def write_readme(dest_dir, version, url):
-    with open(join(dest_dir, 'README.chromium'),
-              'w',
-              encoding='utf-8',
-              newline='\n') as f:
+    with open(
+        join(dest_dir, 'README.chromium'), 'w', encoding='utf-8', newline='\n'
+    ) as f:
         f.write(README_TEMPLATE.format(version=version, url=url))
 
 
@@ -88,8 +88,10 @@ def fetch_and_stage(dep_url, dest_dir, sha256):
     # callers reference '//brave/third_party/wintun/...' directly.
     inner = join(dest_dir, 'wintun')
     if not exists(inner):
-        raise ValueError(f'Expected a top-level "wintun/" directory in '
-                         f'{filename}, but it was missing.')
+        raise ValueError(
+            f'Expected a top-level "wintun/" directory in '
+            f'{filename}, but it was missing.'
+        )
     for entry in os.listdir(inner):
         shutil.move(join(inner, entry), join(dest_dir, entry))
     # The inner directory must be empty by now; rmdir asserts that.
@@ -108,10 +110,14 @@ def fetch_and_stage(dep_url, dest_dir, sha256):
         raise ValueError(
             f'LICENSE.txt not found in {dest_dir} after extraction. '
             f'README.chromium references it, so the credits build would '
-            f'fail.')
+            f'fail.'
+        )
 
-    write_readme(dest_dir, parse_version(filename),
-                 f'https://www.wintun.net/builds/{filename}')
+    write_readme(
+        dest_dir,
+        parse_version(filename),
+        f'https://www.wintun.net/builds/{filename}',
+    )
 
 
 if __name__ == '__main__':

@@ -143,14 +143,9 @@ void ZCashCreateOrchardToIronwoodTransactionTask::CreateTransaction() {
   ZCashTransaction zcash_transaction;
   zcash_transaction.init_v6_part();
 
-  // Pick Orchard inputs. This spends the legacy Orchard pool inside a v6
-  // transaction, which disables cross-address transfers (see
-  // orchard::BundleVersion::permits_cross_address_transfers), so a spend and
-  // an output never share an action.
   auto pick_result =
       PickZCashOrchardInputs(spendable_notes_->spendable_notes, amount_,
-                             ZCashTargetOutputType::kIronwood,
-                             /*orchard_cross_address_disabled=*/true);
+                             ZCashTargetOutputType::kIronwood);
   if (!pick_result) {
     error_ = "Can't pick inputs";
     ScheduleWorkOnTask();

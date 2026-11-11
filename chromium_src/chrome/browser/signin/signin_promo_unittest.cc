@@ -49,6 +49,33 @@ TEST_F(ShowSigninPromoTestExplicitBrowserSigninIsDisabled,
   EXPECT_FALSE(ShouldShowExtensionSignInPromo(*profile(), *CreateExtension()));
 }
 
+class BraveComputeProfileMenuAvatarButtonPromoInfoTest
+    : public ComputeProfileMenuAvatarButtonPromoInfoTestBase,
+      public testing::WithParamInterface<
+          ProfileMenuAvatarButtonPromoInfo::Type> {};
+
+TEST_P(BraveComputeProfileMenuAvatarButtonPromoInfoTest, NoPromo) {
+  profile()->GetPrefs()->SetBoolean(prefs::kSigninAllowed, true);
+  SetRequirementsForInputPromo(GetParam());
+
+  base::MockCallback<base::OnceCallback<void(ProfileMenuAvatarButtonPromoInfo)>>
+      result_callback;
+  EXPECT_CALL(result_callback, Run(ProfileMenuAvatarButtonPromoInfo()));
+  ComputeProfileMenuAvatarButtonPromoInfo(*profile(), result_callback.Get(),
+                                          /*allow_batch_upload_promos=*/true);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    BraveComputeProfileMenuAvatarButtonPromoInfoTest,
+    testing::ValuesIn(
+        {ProfileMenuAvatarButtonPromoInfo::Type::kHistorySyncPromo,
+         ProfileMenuAvatarButtonPromoInfo::Type::kBatchUploadPromo,
+         ProfileMenuAvatarButtonPromoInfo::Type::kBatchUploadBookmarksPromo,
+         ProfileMenuAvatarButtonPromoInfo::Type::
+             kBatchUploadWindows10DepreciationPromo,
+         ProfileMenuAvatarButtonPromoInfo::Type::kSigninPromo}));
+
 #endif  // BUILDFLAG(ENABLE_DICE_SUPPORT)
 
 }  // namespace signin

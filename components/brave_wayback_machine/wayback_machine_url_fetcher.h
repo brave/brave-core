@@ -7,31 +7,42 @@
 #define BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_WAYBACK_MACHINE_URL_FETCHER_H_
 
 #include <memory>
+#include <optional>
+#include <string_view>
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/time/time.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_wayback_machine/wayback_snapshot_info.h"
 
 namespace network {
 class SharedURLLoaderFactory;
-class SimpleURLLoader;
 }  // network
 
 class GURL;
 
-// This only tries to fetch one wayback url at once.
-// If client calls Fetch() before OnWaybackURLFetched is called, previous fetch
-// request is dropped.
+// Looks up the latest Wayback Machine snapshot of a URL. At most one lookup is
+// in flight at a time: starting a new lookup or calling Cancel() drops the
+// pending one, and the client is never notified about a dropped lookup.
+// Destroying the fetcher also drops the pending lookup.
 class WaybackMachineURLFetcher final {
  public:
+  // Receives the results of lookups started with Fetch().
   class Client {
    public:
-    virtual void OnWaybackURLFetched(const GURL& lastest_wayback_url) = 0;
+    // Called asynchronously once for each lookup that is not dropped, with the
+    // latest snapshot info, or nullopt if no snapshot is available or the
+    // response is invalid.
+    virtual void OnWaybackURLFetched(
+        std::optional<WaybackSnapshotInfo> snapshot) = 0;
+
    protected:
     virtual ~Client() = default;
   };
 
+  // |client| must outlive the fetcher.
   WaybackMachineURLFetcher(
       Client* client,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -40,14 +51,20 @@ class WaybackMachineURLFetcher final {
   WaybackMachineURLFetcher(const WaybackMachineURLFetcher&) = delete;
   WaybackMachineURLFetcher& operator=(const WaybackMachineURLFetcher&) = delete;
 
+  // Starts looking up the latest snapshot of |url|, dropping any pending
+  // lookup. The fragment and credentials of |url| are not sent.
   void Fetch(const GURL& url);
+
+  // Drops the pending lookup, if any.
+  void Cancel();
 
  private:
   FRIEND_TEST_ALL_PREFIXES(WaybackMachineURLFetcherUnitTest,
                            InputURLSanitizeTest);
+  FRIEND_TEST_ALL_PREFIXES(WaybackMachineURLFetcherUnitTest,
+                           ParseSnapshotTimestampTest);
 
   void OnWaybackURLFetched(
-      const GURL& original_url,
       api_request_helper::APIRequestResult api_request_result);
 
   // Clear sensitive data such as username/password from |url|.
@@ -57,10 +74,11 @@ class WaybackMachineURLFetcher final {
   // archive.org.
   GURL GetSanitizedWaybackURL(const GURL& url) const;
 
+  // Parses a UTC "YYYYMMDDhhmmss" timestamp. Returns a null time on failure.
+  static base::Time ParseSnapshotTimestamp(std::string_view timestamp);
+
   raw_ptr<Client> client_ = nullptr;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  std::unique_ptr<network::SimpleURLLoader> wayback_url_loader_;
 };
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_WAYBACK_MACHINE_URL_FETCHER_H_

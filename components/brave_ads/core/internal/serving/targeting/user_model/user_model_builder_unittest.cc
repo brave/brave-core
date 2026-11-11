@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/test/targeting_test_helper.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 

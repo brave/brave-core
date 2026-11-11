@@ -20,14 +20,15 @@ namespace brave_component_updater {
 
 namespace {
 
-void RegisterComponent(component_updater::ComponentUpdateService* cus,
-                       const std::string& name,
-                       const std::string& base64_public_key,
-                       base::OnceClosure registered_callback,
-                       BraveComponent::ReadyCallback ready_callback) {
+void RegisterComponent(
+    component_updater::ComponentUpdateService* cus,
+    const std::string& name,
+    base::span<const uint8_t, crypto::kSHA256Length> public_key_sha256,
+    base::OnceClosure registered_callback,
+    BraveComponent::ReadyCallback ready_callback) {
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<BraveComponentInstallerPolicy>(
-          name, base64_public_key, std::move(ready_callback)));
+          name, public_key_sha256, std::move(ready_callback)));
   installer->Register(cus, std::move(registered_callback));
 }
 
@@ -49,12 +50,13 @@ BraveComponentUpdaterDelegate::~BraveComponentUpdaterDelegate() = default;
 
 void BraveComponentUpdaterDelegate::Register(
     const std::string& component_name,
-    const std::string& component_base64_public_key,
+    base::span<const uint8_t, crypto::kSHA256Length>
+        component_public_key_sha256,
     base::OnceClosure registered_callback,
     BraveComponent::ReadyCallback ready_callback) {
   if (!BraveOnDemandUpdater::GetInstance()->is_component_update_disabled()) {
     RegisterComponent(base::to_address(component_updater_), component_name,
-                      component_base64_public_key,
+                      component_public_key_sha256,
                       std::move(registered_callback),
                       std::move(ready_callback));
   }

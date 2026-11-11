@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add brave/browser:core to the allow_circular_includes_from allowlist.
+
+      We have to extend this list for now for our own Brave-specific circular
+      cases, until we correct them all.
+    add_literal_to_variable:
+      variable: allow_circular_includes_from_allowlist
+      literal: allow_circular_includes_from_brave
+      import: //brave/build/circular_includes_brave.gni

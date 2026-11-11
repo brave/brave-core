@@ -1,12 +1,46 @@
 diff --git a/ui/webui/resources/BUILD.gn b/ui/webui/resources/BUILD.gn
-index e395a144cbeefaa22902d3fc041ea5de8a7b76fe..0b748c22a20781126b6e348acfc176a316141dd3 100644
+index ebebce61a325e6a967d198167c5152d54564c208..9d11a26d7597e0de7ad450d76342a31958d97a2b 100644
 --- a/ui/webui/resources/BUILD.gn
 +++ b/ui/webui/resources/BUILD.gn
-@@ -126,6 +126,7 @@ generate_grd("build_grd") {
+@@ -2,6 +2,8 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//extensions/buildflags/buildflags.gni")
++import("//brave/ui/webui/resources/sources.gni")
+ import("//components/signin/features.gni")
+ import("//crypto/features.gni")
+ import("//tools/grit/grit_rule.gni")
+@@ -41,6 +43,7 @@ generate_grd("build_grd") {
+     "mojo:build_grdp",
+     "//third_party/lit/v3_0:build_grdp",
+   ]
++  public_deps += brave_resources_extra_grdps_deps
+   grdp_files = [
+     "$root_gen_dir/third_party/lit/v3_0/resources.grdp",
+     "$target_gen_dir/cr_components/commerce/resources.grdp",
+@@ -50,6 +53,7 @@ generate_grd("build_grd") {
+     "$target_gen_dir/js/resources.grdp",
+     "$target_gen_dir/mojo/resources.grdp",
+   ]
++  grdp_files += brave_resources_extra_grdps
+ 
+   if ((!is_android && !is_ios) || is_desktop_android) {
+     public_deps += [
+@@ -137,6 +141,16 @@ generate_grd("build_grd") {
      public_deps += [ "cr_components/signin:build_grdp" ]
      grdp_files += [ "$target_gen_dir/cr_components/signin/resources.grdp" ]
    }
-+  import("//brave/ui/webui/resources/sources.gni") grdp_files += brave_resources_extra_grdps public_deps += brave_resources_extra_grdps_deps
++  if (is_android && !is_desktop_android && enable_extensions_core) {
++    public_deps += [
++      "cr_components/cr_shortcut_input:build_grdp",
++      "cr_components/managed_footnote:build_grdp",
++    ]
++    grdp_files += [
++      "$target_gen_dir/cr_components/cr_shortcut_input/resources.grdp",
++      "$target_gen_dir/cr_components/managed_footnote/resources.grdp",
++    ]
++  }
  }
  
  if (is_chromeos) {

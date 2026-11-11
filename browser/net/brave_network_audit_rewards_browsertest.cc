@@ -16,7 +16,6 @@
 #include "brave/components/brave_rewards/content/rewards_service_impl.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
@@ -110,11 +109,15 @@ class BraveRewardsNetworkAuditTest : public InProcessBrowserTest {
 
             // Brave Ads production.
             "https://geo.ads.brave.com/v1/getstate",
+            "https://ohttp.ads.brave.com/v1/ohttp/gateway",
             "https://static.ads.brave.com/v9/catalog",
+            "https://static.ads.brave.com/v1/ohttp/hpkekeyconfig",
 
             // Brave Ads staging.
             "https://geo.ads.bravesoftware.com/v1/getstate",
+            "https://ohttp.ads.bravesoftware.com/v1/ohttp/gateway",
             "https://static.ads.bravesoftware.com/v9/catalog",
+            "https://static.ads.bravesoftware.com/v1/ohttp/hpkekeyconfig",
         });
   }
 

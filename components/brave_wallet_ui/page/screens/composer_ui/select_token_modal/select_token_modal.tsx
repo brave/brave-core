@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useHistory } from 'react-router'
 
@@ -42,7 +42,11 @@ import {
   getTokenPriceFromRegistry,
   getPriceRequestsForTokens,
 } from '../../../../utils/pricing-utils'
-import { getAssetIdKey, isNativeAsset } from '../../../../utils/asset-utils'
+import {
+  getAssetIdKey,
+  isLegacyShieldedToken,
+  isNativeAsset,
+} from '../../../../utils/asset-utils'
 import {
   getEntitiesListFromEntityState, //
 } from '../../../../utils/entities.utils'
@@ -305,8 +309,10 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
     const tokensBySelectedComposerOption = React.useMemo(() => {
       if (modalType === 'swap' || modalType === 'bridge') {
-        return fullVisibleFungibleTokensList.filter((token) =>
-          swapNetworks.some(({ chainId }) => chainId === token.chainId),
+        return fullVisibleFungibleTokensList.filter(
+          (token) =>
+            swapNetworks.some(({ chainId }) => chainId === token.chainId)
+            && !isLegacyShieldedToken(token),
         )
       }
 

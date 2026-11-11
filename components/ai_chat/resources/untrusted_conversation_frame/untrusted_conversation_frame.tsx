@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
-import { setIconBasePath } from '@brave/leo/react/icon'
+import { setIconBasePath } from '@brave/nala/react/icon'
 import '$web-common/defaultTrustedTypesPolicy'
 import Conversation from './components/conversation'
 import { UntrustedConversationContextProvider } from './untrusted_conversation_context'
@@ -48,7 +48,7 @@ function App(props: AppProps) {
   useUntrustedFrameDragHandling(onDrag)
 
   const isConversationLoaded =
-    !api.useGetConversationHistory().isPlaceholderData
+    !api.useGetConversationHistory(null).isPlaceholderData
 
   // Set up document height communication with parent frame only when
   // ready to avoid layout flash.

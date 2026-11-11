@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Alert from '@brave/leo/react/alert'
-import Button from '@brave/leo/react/button'
-import { spacing } from '@brave/leo/tokens/css/variables'
+import Alert from '@brave/nala/react/alert'
+import Button from '@brave/nala/react/button'
+import { spacing } from '@brave/nala/tokens/css/variables'
 import { formatLocale, getLocale } from '$web-common/locale'
 import * as React from 'react'
 import styled from 'styled-components'

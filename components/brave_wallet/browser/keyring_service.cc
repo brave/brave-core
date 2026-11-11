@@ -19,8 +19,8 @@
 #include "base/check_is_test.h"
 #include "base/check_op.h"
 #include "base/command_line.h"
+#include "base/containers/enum_set.h"
 #include "base/containers/span.h"
-#include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/notreached.h"
@@ -30,6 +30,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/timer/timer.h"
 #include "base/value_iterators.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
@@ -46,7 +47,6 @@
 #include "brave/components/brave_wallet/browser/filecoin_keyring.h"
 #include "brave/components/brave_wallet/browser/json_keystore_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
-#include "brave/components/brave_wallet/browser/keyring_service_migrations.h"
 #include "brave/components/brave_wallet/browser/keyring_service_prefs.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_import_keyring.h"
@@ -375,6 +375,29 @@ void SetImportedAccountsForKeyring(
   imported_accounts.clear();
   for (auto& account : accounts) {
     imported_accounts.Append(account.ToValue());
+  }
+}
+
+bool HasImportedAccounts(const base::DictValue& keyrings) {
+  for (auto [_, keyring_value] : keyrings) {
+    const auto* keyring = keyring_value.GetIfDict();
+    const auto* imported_accounts =
+        keyring ? keyring->FindList(kImportedAccounts) : nullptr;
+    if (imported_accounts && !imported_accounts->empty()) {
+      return true;
+    }
+  }
+  return false;
+}
+
+void ClearUnrecoverableKeyringSecrets(base::DictValue& keyrings) {
+  for (auto [_, keyring_value] : keyrings) {
+    if (auto* keyring = keyring_value.GetIfDict()) {
+      keyring->Remove(kImportedAccounts);
+      keyring->Remove(kEncryptedMnemonicDeprecated);
+      keyring->Remove(kPasswordEncryptorNonceDeprecated);
+      keyring->Remove(kPasswordEncryptorSaltDeprecated);
+    }
   }
 }
 
@@ -1685,13 +1708,142 @@ bool KeyringService::RestoreWalletSync(const std::string& mnemonic,
   MaybeRunPasswordMigrations(profile_prefs_, password);
 
   if (CanResumeWallet(mnemonic, password, is_legacy_eth_seed_format)) {
-    Unlock(password, base::DoNothing());
+    UnlockSync(password);
     return true;
   }
 
   Reset(false);
   return CreateWalletInternal(mnemonic, password, is_legacy_eth_seed_format,
                               true);
+}
+
+void KeyringService::RecoverWallet(const std::string& mnemonic,
+                                   const std::string& new_password,
+                                   bool is_legacy_eth_seed_format,
+                                   bool allow_imported_account_removal,
+                                   RecoverWalletCallback callback) {
+  std::move(callback).Run(RecoverWalletSync(mnemonic, new_password,
+                                            is_legacy_eth_seed_format,
+                                            allow_imported_account_removal));
+}
+
+std::optional<std::string> KeyringService::GetDefaultEthAccountFromSeed(
+    const KeyringSeed& keyring_seed) const {
+  auto is_address_allowed =
+      base::BindRepeating([](const std::string&) { return true; });
+  EthereumKeyring ethereum_keyring(keyring_seed.eth_seed,
+                                   std::move(is_address_allowed));
+  return ethereum_keyring.GetDiscoveryAddress(0);
+}
+
+bool KeyringService::ReEncryptWallet(const std::string& mnemonic,
+                                     const std::string& new_password,
+                                     bool is_legacy_eth_seed_format) {
+  auto salt = CreateSaltArray();
+  auto encryptor = PasswordEncryptor::CreateEncryptor(new_password, salt);
+  if (!encryptor) {
+    return false;
+  }
+
+  std::vector<mojom::AccountIdPtr> removed_imported_accounts;
+  for (auto keyring_id :
+       base::EnumSet<mojom::KeyringId, mojom::KeyringId::kDefault,
+                     mojom::KeyringId::kMaxValue>::All()) {
+    for (const auto& imported_account :
+         GetImportedAccountsForKeyring(profile_prefs_, keyring_id)) {
+      removed_imported_accounts.push_back(imported_account.GetAccountId());
+    }
+  }
+
+  auto keyrings = profile_prefs_->GetDict(kBraveWalletKeyrings).Clone();
+  const bool had_imported_accounts = HasImportedAccounts(keyrings);
+  // Drop imported accounts because they cannot be decrypted without the old
+  // password.
+  ClearUnrecoverableKeyringSecrets(keyrings);
+
+  auto encrypted_mnemonic = encryptor->EncryptToDict(
+      base::as_byte_span(mnemonic), CreateNonceArray());
+  auto encoded_salt = base::Base64Encode(salt);
+
+  // Commit only after all replacement values have been prepared.
+  profile_prefs_->SetDict(kBraveWalletKeyrings, std::move(keyrings));
+  profile_prefs_->SetBoolean(kBraveWalletKeyringEncryptionKeysMigrated, true);
+  profile_prefs_->SetBoolean(kBraveWalletLegacyEthSeedFormat,
+                             is_legacy_eth_seed_format);
+  profile_prefs_->SetDict(kBraveWalletMnemonic, std::move(encrypted_mnemonic));
+  profile_prefs_->SetString(kBraveWalletEncryptorSalt, encoded_salt);
+
+  const bool unlocked = UnlockSync(new_password);
+
+  if (had_imported_accounts) {
+    if (delegate_) {
+      for (const auto& account_id : removed_imported_accounts) {
+        delegate_->ResetPermissionsForAccount(
+            account_id->coin, GetAccountPermissionIdentifier(account_id));
+      }
+    }
+
+    ResetAllAccountInfosCache();
+    NotifyAccountsChanged();
+    MaybeFixAccountSelection();
+  }
+
+  // Recovery proves the user has the mnemonic.
+  if (!IsWalletBackedUpSync()) {
+    NotifyWalletBackupComplete();
+  }
+
+  return unlocked;
+}
+
+mojom::RecoverWalletResult KeyringService::RecoverWalletSync(
+    const std::string& mnemonic,
+    const std::string& new_password,
+    bool is_legacy_eth_seed_format,
+    bool allow_imported_account_removal) {
+  if (!IsWalletCreatedSync() || !IsLockedSync()) {
+    return mojom::RecoverWalletResult::kInternalError;
+  }
+
+  auto keyring_seed = MakeSeedFromMnemonic(mnemonic, is_legacy_eth_seed_format);
+  if (!keyring_seed) {
+    return mojom::RecoverWalletResult::kInvalidMnemonic;
+  }
+
+  auto recovery_address = GetDefaultEthAccountFromSeed(*keyring_seed);
+
+  std::optional<std::string> stored_address;
+  for (const auto& account :
+       GetDerivedAccountsForKeyring(profile_prefs_, KeyringId::kDefault)) {
+    if (account.account_index == 0) {
+      stored_address = account.account_address;
+      break;
+    }
+  }
+
+  if (!recovery_address || !stored_address) {
+    return mojom::RecoverWalletResult::kInternalError;
+  }
+  if (!base::EqualsCaseInsensitiveASCII(*recovery_address, *stored_address)) {
+    return mojom::RecoverWalletResult::kMnemonicMismatch;
+  }
+
+  MaybeRunPasswordMigrations(profile_prefs_, new_password);
+  // Unlock wallet if password matches old one.
+  if (ValidatePasswordInternal(new_password)) {
+    return UnlockSync(new_password)
+               ? mojom::RecoverWalletResult::kSuccess
+               : mojom::RecoverWalletResult::kInternalError;
+  }
+
+  if (!allow_imported_account_removal &&
+      HasImportedAccounts(profile_prefs_->GetDict(kBraveWalletKeyrings))) {
+    return mojom::RecoverWalletResult::kImportedAccountsPresent;
+  }
+
+  return ReEncryptWallet(mnemonic, new_password, is_legacy_eth_seed_format)
+             ? mojom::RecoverWalletResult::kSuccess
+             : mojom::RecoverWalletResult::kInternalError;
 }
 
 void KeyringService::AddAccount(mojom::CoinType coin,
@@ -2342,6 +2494,11 @@ std::vector<mojom::AccountInfoPtr> KeyringService::GetHardwareAccountsSync(
     if (!account_value) {
       continue;
     }
+
+    if (IsFilecoinKeyring(keyring_id) && !IsFilecoinLedgerEnabled()) {
+      continue;
+    }
+
     SerializeHardwareAccounts(id, account_value, keyring_id, &accounts);
   }
 
@@ -2564,40 +2721,6 @@ std::optional<std::string> KeyringService::RecoverAddressByDefaultKeyring(
   return EthereumKeyring::RecoverAddress(message, eth_signature);
 }
 
-bool KeyringService::GetPublicKeyFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
-    const mojom::AccountIdPtr& account_id,
-    std::string* key) {
-  CHECK(account_id);
-  CHECK(key);
-  auto* keyring = GetKeyring<EthereumKeyring>(account_id);
-  if (!keyring) {
-    return false;
-  }
-  auto addr = EthAddress::From0xHex(account_id->address);
-  if (!addr) {
-    return false;
-  }
-  return keyring->GetPublicKeyFromX25519_XSalsa20_Poly1305(
-      addr->ToChecksumAddress(), key);
-}
-
-std::optional<std::vector<uint8_t>>
-KeyringService::DecryptCipherFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
-    const mojom::AccountIdPtr& account_id,
-    const std::string& version,
-    base::span<const uint8_t> nonce,
-    base::span<const uint8_t> ephemeral_public_key,
-    base::span<const uint8_t> ciphertext) {
-  CHECK(account_id);
-  auto* keyring = GetKeyring<EthereumKeyring>(account_id);
-  if (!keyring) {
-    return std::nullopt;
-  }
-
-  return keyring->DecryptCipherFromX25519_XSalsa20_Poly1305(
-      version, nonce, ephemeral_public_key, ciphertext, account_id->address);
-}
-
 std::vector<uint8_t> KeyringService::SignMessageBySolanaKeyring(
     const mojom::AccountIdPtr& account_id,
     base::span<const uint8_t> message) {
@@ -2668,26 +2791,27 @@ void KeyringService::ReportUsageMetrics() {
 
 void KeyringService::Unlock(const std::string& password,
                             KeyringService::UnlockCallback callback) {
+  std::move(callback).Run(UnlockSync(password));
+}
+
+bool KeyringService::UnlockSync(const std::string& password) {
   MaybeRunPasswordMigrations(profile_prefs_, password);
 
   auto encryptor = PasswordEncryptor::CreateEncryptor(
       password, GetSaltFromPrefs(profile_prefs_));
   if (!encryptor) {
-    std::move(callback).Run(false);
-    return;
+    return false;
   }
 
   auto mnemonic = DecryptWalletMnemonicFromPrefs(profile_prefs_, *encryptor);
   if (!mnemonic) {
-    std::move(callback).Run(false);
-    return;
+    return false;
   }
 
   auto keyring_seed =
       MakeSeedFromMnemonic(*mnemonic, IsLegacyEthSeedFormat(profile_prefs_));
   if (!keyring_seed) {
-    std::move(callback).Run(false);
-    return;
+    return false;
   }
 
   encryptor_ = std::move(encryptor);
@@ -2709,7 +2833,7 @@ void KeyringService::Unlock(const std::string& password,
   // pay for ParseLists when the wallet is never opened.
   WalletDataFilesInstaller::GetInstance().OnWalletUnlocked();
 
-  std::move(callback).Run(true);
+  return true;
 }
 
 void KeyringService::OnAutoLockFired() {
@@ -2786,7 +2910,7 @@ mojom::AllAccountsInfoPtr KeyringService::GetAllAccountsSync() {
   return mojom::AllAccountsInfo::New(
       std::move(all_accounts), GetSelectedWalletAccount(),
       GetSelectedEthereumDappAccount(), GetSelectedSolanaDappAccount(),
-      GetSelectedCardanoDappAccount());
+      GetSelectedCardanoDappAccount(), GetSelectedPolkadotDappAccount());
 }
 
 void KeyringService::SetSelectedAccount(mojom::AccountIdPtr account_id,
@@ -3854,6 +3978,13 @@ mojom::AccountInfoPtr KeyringService::GetSelectedCardanoDappAccount() {
   return GetSelectedDappAccount(mojom::CoinType::ADA);
 }
 
+mojom::AccountInfoPtr KeyringService::GetSelectedPolkadotDappAccount() {
+  if (!CoinSupportsDapps(mojom::CoinType::DOT)) {
+    return nullptr;
+  }
+  return GetSelectedDappAccount(mojom::CoinType::DOT);
+}
+
 mojom::AccountInfoPtr KeyringService::GetSelectedDappAccount(
     mojom::CoinType coin) {
   CHECK(CoinSupportsDapps(coin));
@@ -3870,12 +4001,15 @@ mojom::AccountInfoPtr KeyringService::GetSelectedDappAccount(
       keyring_ids = {mojom::KeyringId::kCardanoMainnet,
                      mojom::KeyringId::kCardanoTestnet};
       break;
+    case mojom::CoinType::DOT:
+      keyring_ids = {mojom::KeyringId::kPolkadotMainnet,
+                     mojom::KeyringId::kPolkadotImport};
+      break;
     default:
       NOTREACHED();
   }
 
   auto unique_key = GetSelectedDappAccountFromPrefs(profile_prefs_, coin);
-
   for (auto keyring_id : keyring_ids) {
     for (auto& account_info : GetAccountInfosForKeyring(keyring_id)) {
       if (account_info->account_id->unique_key == unique_key) {
@@ -3938,7 +4072,7 @@ void KeyringService::MaybeUnlockWithCommandLine() {
       base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
           kDevWalletPassword);
   if (!dev_wallet_password.empty()) {
-    Unlock(dev_wallet_password, base::DoNothing());
+    UnlockSync(dev_wallet_password);
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET_DEV_CMD_LINE_UNLOCK)
 }

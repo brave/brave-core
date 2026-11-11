@@ -102,6 +102,7 @@ void Subdivision::OnDidFetchSubdivision(const std::string& subdivision) {
   std::optional<std::string> subdivision_code = GetSubdivisionCode(subdivision);
 
   if (!country_code || !subdivision_code) {
+    BLOG(0, "Failed to parse malformed subdivision: " << subdivision);
     return;
   }
 

@@ -18,6 +18,11 @@ public class BraveReaderModeManagerClassAdapter extends BraveClassVisitor {
 
         redirectConstructor(sReaderModeManagerClassName, sBraveReaderModeManagerClassName);
 
+        changeMethodOwner(
+                sReaderModeManagerClassName,
+                "shouldUseReaderModeMessages",
+                sBraveReaderModeManagerClassName);
+
         deleteField(sBraveReaderModeManagerClassName, "mTab");
         makeProtectedField(sReaderModeManagerClassName, "mTab");
     }

@@ -3,16 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { color, font, radius, spacing } from '@brave/leo/tokens/css/variables'
+import { color, font, radius, spacing } from '@brave/nala/tokens/css/variables'
 import * as React from 'react'
 import { formatLocale, getLocale } from '$web-common/locale'
-import Alert from '@brave/leo/react/alert'
+import Alert from '@brave/nala/react/alert'
 import Col from './styles/Col'
 import styled from 'styled-components'
 import { Alias } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
-import Tooltip from '@brave/leo/react/tooltip'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
+import Tooltip from '@brave/nala/react/tooltip'
+import Button from '@brave/nala/react/button'
+import Icon from '@brave/nala/react/icon'
 import './strings'
 
 const SectionCol = styled(Col)`

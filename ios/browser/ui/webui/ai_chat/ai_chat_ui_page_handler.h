@@ -76,6 +76,8 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void ShowWorkspaceFolderPicker(
       const std::string& conversation_uuid,
       ShowWorkspaceFolderPickerCallback callback) override;
+  void OpenWorkspaceFile(const GURL& workspace_url,
+                         const std::string& file_path) override;
   void CloseUI() override;
   void SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
                  SetChatUICallback callback) override;
@@ -92,8 +94,8 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
                            const std::string& conversation_uuid) override;
   void NewConversation(
       mojo::PendingReceiver<mojom::ConversationHandler> receiver,
-      mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler)
-      override;
+      mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler,
+      const std::optional<GURL>& workspace_url) override;
 
   void BindParentUIFrameFromChildFrame(
       mojo::PendingReceiver<mojom::ParentUIFrame> receiver);

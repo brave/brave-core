@@ -65,6 +65,7 @@ int GetStatusIconTooltip(brave_vpn::mojom::ConnectionState state) {
       return IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_DISCONNECTED;
     case brave_vpn::mojom::ConnectionState::CONNECT_FAILED:
     case brave_vpn::mojom::ConnectionState::CONNECT_NOT_ALLOWED:
+    case brave_vpn::mojom::ConnectionState::CONNECT_NO_AGENT:
       return IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_ERROR;
   }
 
@@ -87,6 +88,7 @@ int GetStatusTrayIcon(brave_vpn::mojom::ConnectionState state) {
                         : IDR_BRAVE_VPN_TRAY_DARK_CONNECTING;
     case brave_vpn::mojom::ConnectionState::CONNECT_FAILED:
     case brave_vpn::mojom::ConnectionState::CONNECT_NOT_ALLOWED:
+    case brave_vpn::mojom::ConnectionState::CONNECT_NO_AGENT:
       return dark_theme ? IDR_BRAVE_VPN_TRAY_LIGHT_ERROR
                         : IDR_BRAVE_VPN_TRAY_DARK_ERROR;
   }
@@ -118,10 +120,11 @@ bool StatusTrayRunner::IsVPNConnected() const {
 void StatusTrayRunner::ConnectVPN() {
   if (IsWireguardActive()) {
     wireguard::EnableBraveVpnWireguardService(
-        // passing empty params will reconnect using last known good config.
+        // passing empty params will reconnect using last known good config,
+        // with its AllowedIPs refreshed from |allow_lan_traffic|.
         // TODO(https://github.com/brave/brave-browser/issues/47115): fetch
         // actual server details. See issue for more info.
-        "", "", "", "", std::nullopt,
+        "", "", "", "", IsLanTrafficAllowed(), std::nullopt,
         base::BindOnce(&StatusTrayRunner::OnConnected,
                        weak_factory_.GetWeakPtr()));
   } else {

@@ -413,6 +413,30 @@ TEST_F(ZCashBlocksBatchScanTest, Error_PartialDecoding) {
   EXPECT_FALSE(result_future.Get().has_value());
 }
 
+TEST_F(ZCashBlocksBatchScanTest, EmptyFrontierBlock) {
+  ON_CALL(zcash_rpc(), GetCompactBlocks(_, _, _, _))
+      .WillByDefault([](const std::string& chain_id, uint32_t from, uint32_t to,
+                        ZCashRpc::GetCompactBlocksCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
+        std::move(callback).Run(std::vector<zcash::mojom::CompactBlockPtr>());
+      });
+
+  auto block_scanner = CreateMockOrchardBlockScannerProxy();
+  ZCashActionContext context = CreateContext();
+
+  base::test::TestFuture<base::expected<void, ZCashShieldSyncService::Error>>
+      result_future;
+  auto task = ZCashBlocksBatchScanTask(context, *block_scanner,
+                                       {kNu5BlockUpdate + 1, 200},
+                                       result_future.GetCallback());
+  task.Start();
+
+  auto result = result_future.Get();
+  EXPECT_FALSE(result.has_value());
+  EXPECT_EQ(result.error().code,
+            ZCashShieldSyncService::ErrorCode::kFailedToDownloadBlocks);
+}
+
 TEST_F(ZCashBlocksBatchScanTest, NetworkError_Blocks) {
   ON_CALL(zcash_rpc(), GetCompactBlocks(_, _, _, _))
       .WillByDefault([](const std::string& chain_id, uint32_t from, uint32_t to,
@@ -454,6 +478,31 @@ TEST_F(ZCashBlocksBatchScanTest, NetworkError_TreeState) {
   task.Start();
 
   EXPECT_FALSE(result_future.Get().has_value());
+}
+
+TEST_F(ZCashBlocksBatchScanTest, EmptyTreeState) {
+  ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
+      .WillByDefault([](const std::string& chain_id,
+                        zcash::mojom::BlockIDPtr block,
+                        ZCashRpc::GetTreeStateCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
+        std::move(callback).Run(zcash::mojom::TreeStatePtr());
+      });
+
+  auto block_scanner = CreateMockOrchardBlockScannerProxy();
+  ZCashActionContext context = CreateContext();
+
+  base::test::TestFuture<base::expected<void, ZCashShieldSyncService::Error>>
+      result_future;
+  auto task = ZCashBlocksBatchScanTask(context, *block_scanner,
+                                       {kNu5BlockUpdate + 1, 200},
+                                       result_future.GetCallback());
+  task.Start();
+
+  auto result = result_future.Get();
+  EXPECT_FALSE(result.has_value());
+  EXPECT_EQ(result.error().code,
+            ZCashShieldSyncService::ErrorCode::kFailedToReceiveTreeState);
 }
 
 TEST_F(ZCashBlocksBatchScanTest, DecodingError) {

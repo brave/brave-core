@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_max_lovelace_send_solver.h"
 
-#include <utility>
-
 #include "base/containers/span.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -17,7 +15,6 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "crypto/hash.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -145,7 +142,9 @@ TEST_F(CardanoMaxLovelaceSendSolverUnitTest, SetupOutputs) {
 
   EXPECT_FALSE(tx.TargetOutput());
   EXPECT_FALSE(tx.ChangeOutput());
-  EXPECT_TRUE(CardanoMaxLovelaceSendSolver::SetupOutputs(tx, builder_params));
+  ASSERT_TRUE(CardanoMaxLovelaceSendSolver::SetupOutputs(tx, builder_params));
+  ASSERT_TRUE(tx.TargetOutput());
+  ASSERT_TRUE(tx.ChangeOutput());
   EXPECT_EQ(tx.TargetOutput()->type, CardanoTransaction::TxOutputType::kTarget);
   EXPECT_EQ(tx.TargetOutput()->address, builder_params.send_to_address);
   EXPECT_EQ(tx.TargetOutput()->coin_value.lovelace_amount, 0u);

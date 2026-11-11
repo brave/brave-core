@@ -4,32 +4,30 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: |
-      Brave additions to `component("color")`.
+  - description: Add the Brave sources to `component("color")`.
+    add_literal_to_list:
+      target: color
+      list_name: sources
+      literal: brave_ui_color_sources
+      import: //brave/ui/color/sources.gni
 
-      The `sources.gni` import and the Brave deps are grouped together at the
-      end of the target.
-    regex:
-      re_pattern: '(component\("color"\).*?)\n\}'
-      re_flags: [DOTALL]
-      replace: |-
-        \1
-          import("//brave/ui/color/sources.gni")
-          sources += brave_ui_color_sources
-          public_deps += brave_ui_color_public_deps
-        }
+  - description: Add the Brave public_deps to `component("color")`.
+    add_literal_to_list:
+      target: color
+      list_name: public_deps
+      literal: brave_ui_color_public_deps
+      import: //brave/ui/color/sources.gni
 
-  - description: |
-      Brave additions to `component("mixers")`.
+  - description: Add the Brave mixer sources to `component("mixers")`.
+    add_literal_to_list:
+      target: mixers
+      list_name: sources
+      literal: brave_ui_color_mixer_sources
+      import: //brave/ui/color/sources.gni
 
-      The `sources.gni` import and the Brave deps are grouped together at the
-      end of the target.
-    regex:
-      re_pattern: '(component\("mixers"\).*?)\n\}'
-      re_flags: [DOTALL]
-      replace: |-
-        \1
-          import("//brave/ui/color/sources.gni")
-          sources += brave_ui_color_mixer_sources
-          public_deps += brave_ui_color_mixer_public_deps
-        }
+  - description: Add the Brave mixer public_deps to `component("mixers")`.
+    add_literal_to_list:
+      target: mixers
+      list_name: public_deps
+      literal: brave_ui_color_mixer_public_deps
+      import: //brave/ui/color/sources.gni

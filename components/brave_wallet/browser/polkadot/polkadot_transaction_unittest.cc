@@ -336,7 +336,7 @@ TEST(PolkadotTransaction, FromValue) {
   }
 
   {
-    // ss58_prefix exceeds uint16_t limits.
+    // ss58_prefix is not representable as an integer.
 
     const char tx_json[] = R"({
       "amount": "f201ec6f0cdf44ab0000000000000000",
@@ -348,6 +348,54 @@ TEST(PolkadotTransaction, FromValue) {
 
     EXPECT_FALSE(
         PolkadotTransaction::FromValue(base::test::ParseJsonDict(tx_json)));
+  }
+
+  {
+    // ss58_prefix is an int that exceeds the uint16_t limit.
+
+    const char tx_json[] = R"({
+      "amount": "f201ec6f0cdf44ab0000000000000000",
+      "fee": "dc8df1b5030000000000000000000000",
+      "recipient": "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48",
+      "ss58_prefix": 65536,
+      "transfer_all": true
+    })";
+
+    EXPECT_FALSE(
+        PolkadotTransaction::FromValue(base::test::ParseJsonDict(tx_json)));
+  }
+
+  {
+    // ss58_prefix is negative.
+
+    const char tx_json[] = R"({
+      "amount": "f201ec6f0cdf44ab0000000000000000",
+      "fee": "dc8df1b5030000000000000000000000",
+      "recipient": "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48",
+      "ss58_prefix": -1,
+      "transfer_all": true
+    })";
+
+    EXPECT_FALSE(
+        PolkadotTransaction::FromValue(base::test::ParseJsonDict(tx_json)));
+  }
+
+  {
+    // ss58_prefix at the uint16_t maximum is accepted.
+
+    const char tx_json[] = R"({
+      "amount": "f201ec6f0cdf44ab0000000000000000",
+      "fee": "dc8df1b5030000000000000000000000",
+      "recipient": "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48",
+      "ss58_prefix": 65535,
+      "transfer_all": true
+    })";
+
+    auto tx =
+        PolkadotTransaction::FromValue(base::test::ParseJsonDict(tx_json));
+    ASSERT_TRUE(tx);
+    ASSERT_TRUE(tx->recipient().ss58_prefix.has_value());
+    EXPECT_EQ(tx->recipient().ss58_prefix.value(), uint16_t{65535});
   }
 
   {

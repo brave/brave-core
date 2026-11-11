@@ -9,67 +9,100 @@ rest of the module's operations.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 from PB.recipe_modules.brave.file.examples.full import Greeting
 
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    file,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['file', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    file: file.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    file: file.TEST_API
+
+
+def RunSteps(api: DEPS):
     # Each read takes a `test_data`: the result the step reports under
     # simulation, so a test only has to seed the reads it wants to steer.
-    text = api.file.read_text('read greeting',
-                              '/etc/greeting',
-                              test_data='hello\n')
+    text = api.file.read_text(
+        'read greeting', '/etc/greeting', test_data='hello\n'
+    )
     api.step('echo', ['echo', text])
 
-    raw = api.file.read_raw('read raw greeting',
-                            '/etc/greeting',
-                            test_data=b'hello bytes')
+    raw = api.file.read_raw(
+        'read raw greeting', '/etc/greeting', test_data=b'hello bytes'
+    )
     api.step('echo raw', ['echo', raw.decode('utf-8')])
 
-    config = api.file.read_json('read config',
-                                '/etc/config.json',
-                                test_data={'key': 'value'})
+    config = api.file.read_json(
+        'read config', '/etc/config.json', test_data={'key': 'value'}
+    )
     api.step('echo config', ['echo', str(config)])
 
-    greeting = api.file.read_proto('read proto greeting',
-                                   '/etc/greeting.json',
-                                   Greeting,
-                                   'JSONPB',
-                                   test_proto=Greeting(text='hello proto'))
+    greeting = api.file.read_proto(
+        'read proto greeting',
+        '/etc/greeting.json',
+        Greeting,
+        'JSONPB',
+        test_proto=Greeting(text='hello proto'),
+    )
     api.step('echo proto', ['echo', greeting.text])
 
     # Left to itself, a `read_proto` returns an empty message under simulation.
-    empty = api.file.read_proto('read empty proto', '/etc/empty.json',
-                                Greeting, 'JSONPB')
+    empty = api.file.read_proto(
+        'read empty proto', '/etc/empty.json', Greeting, 'JSONPB'
+    )
     api.step('echo empty proto', ['echo', repr(empty.text)])
 
     # Writes carry their content into the step, so there is nothing to seed.
     api.file.write_text('write greeting', '/tmp/greeting', 'hello again\n')
-    api.file.write_raw('write raw greeting', '/tmp/greeting.bin',
-                       b'\x00binary')
-    api.file.write_json('write config',
-                        '/tmp/config.json', {'key': 'value'},
-                        indent=2)
-    api.file.write_proto('write proto greeting', '/tmp/greeting.json',
-                         Greeting(text='bye proto'), 'JSONPB')
+    api.file.write_raw('write raw greeting', '/tmp/greeting.bin', b'\x00binary')
+    api.file.write_json(
+        'write config', '/tmp/config.json', {'key': 'value'}, indent=2
+    )
+    api.file.write_proto(
+        'write proto greeting',
+        '/tmp/greeting.json',
+        Greeting(text='bye proto'),
+        'JSONPB',
+    )
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     # Happy path: the recipe's own `test_data` supplies each read's result,
     # which flows through to the step after it.
     yield api.test(
         'basic',
-        api.post_process(post_process.StepCommandContains, 'echo',
-                         ['echo', 'hello\n']),
-        api.post_process(post_process.StepCommandContains, 'echo raw',
-                         ['echo', 'hello bytes']),
-        api.post_process(post_process.StepCommandContains, 'echo config',
-                         ['echo', "{'key': 'value'}"]),
-        api.post_process(post_process.StepCommandContains, 'echo proto',
-                         ['echo', 'hello proto']),
+        api.post_process(
+            post_process.StepCommandContains, 'echo', ['echo', 'hello\n']
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'echo raw',
+            ['echo', 'hello bytes'],
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'echo config',
+            ['echo', "{'key': 'value'}"],
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'echo proto',
+            ['echo', 'hello proto'],
+        ),
         api.post_process(post_process.StatusSuccess),
     )
     # A test can override a read's default by seeding the step directly.
@@ -78,16 +111,28 @@ def GenTests(api):
         api.step_data('read greeting', api.file.read_text('seeded\n')),
         api.step_data('read raw greeting', api.file.read_raw(b'seeded bytes')),
         api.step_data('read config', api.file.read_json({'seeded': True})),
-        api.step_data('read proto greeting',
-                      api.file.read_proto(Greeting(text='seeded proto'))),
-        api.post_process(post_process.StepCommandContains, 'echo',
-                         ['echo', 'seeded\n']),
-        api.post_process(post_process.StepCommandContains, 'echo raw',
-                         ['echo', 'seeded bytes']),
-        api.post_process(post_process.StepCommandContains, 'echo config',
-                         ['echo', "{'seeded': True}"]),
-        api.post_process(post_process.StepCommandContains, 'echo proto',
-                         ['echo', 'seeded proto']),
+        api.step_data(
+            'read proto greeting',
+            api.file.read_proto(Greeting(text='seeded proto')),
+        ),
+        api.post_process(
+            post_process.StepCommandContains, 'echo', ['echo', 'seeded\n']
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'echo raw',
+            ['echo', 'seeded bytes'],
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'echo config',
+            ['echo', "{'seeded': True}"],
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'echo proto',
+            ['echo', 'seeded proto'],
+        ),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
     )

@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/browser/application_state/test/test_application_state_observer.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 

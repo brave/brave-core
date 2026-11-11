@@ -9,6 +9,9 @@
 // single path segment and reject '..' and separators, and the handle is scoped
 // to the picked folder, so there is no way to escape the workspace root.
 
+// Type-only: JSZip itself is loaded on demand by zipWorkspace().
+import type JSZip from 'jszip'
+
 // Caps to keep tool output within reason for the model.
 const kMaxGrepMatches = 200
 const kMaxGlobResults = 500
@@ -85,12 +88,20 @@ export async function isDirectory(
   }
 }
 
+// Returns the file itself (a Blob) rather than decoded text, so that callers
+// can handle arbitrary binary content.
+export async function readFile(
+  root: FileSystemDirectoryHandle,
+  rel: string,
+): Promise<File> {
+  return (await getFile(root, rel)).getFile()
+}
+
 async function readText(
   root: FileSystemDirectoryHandle,
   rel: string,
 ): Promise<string> {
-  const fh = await getFile(root, rel)
-  return (await fh.getFile()).text()
+  return (await readFile(root, rel)).text()
 }
 
 async function writeText(
@@ -157,6 +168,34 @@ async function* walkFiles(
       yield { path: rel, handle: handle as FileSystemFileHandle }
     }
   }
+}
+
+// Builds a zip archive of every file and folder in the workspace. Empty folders
+// are kept so the archive mirrors the workspace tree. JSZip (~100KB) is only
+// needed when the user downloads the workspace, so it loads as its own chunk
+// rather than sitting in the workspace's initial bundle.
+export async function zipWorkspace(
+  root: FileSystemDirectoryHandle,
+): Promise<JSZip> {
+  const { default: JSZipImpl } = await import('jszip')
+  const zip = new JSZipImpl()
+
+  async function recurse(dir: FileSystemDirectoryHandle, folder: JSZip) {
+    for await (const [name, handle] of entriesOf(dir)) {
+      if (handle.kind === 'directory') {
+        await recurse(
+          handle as FileSystemDirectoryHandle,
+          folder.folder(name) as JSZip,
+        )
+      } else {
+        const file = await (handle as FileSystemFileHandle).getFile()
+        folder.file(name, new Uint8Array(await file.arrayBuffer()))
+      }
+    }
+  }
+
+  await recurse(root, zip)
+  return zip
 }
 
 export async function listDir(

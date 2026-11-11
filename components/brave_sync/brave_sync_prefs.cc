@@ -5,12 +5,8 @@
 
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 
-#include <utility>
-
-#include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/files/file_path.h"
-#include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"

@@ -32,7 +32,6 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
-#include "third_party/boringssl/src/include/openssl/pool.h"
 #include "third_party/boringssl/src/pki/parsed_certificate.h"
 
 namespace nitro_utils {
@@ -235,13 +234,13 @@ void ParseAndVerifyDocument(
   CoseSign1 cose_doc;
 
   if (!cose_doc.DecodeFromBytes(*cose_encoded) ||
-      !cose_doc.payload().is_map()) {
+      !cose_doc.payload()->is_map()) {
     LOG(ERROR) << "Nitro verification: Failed to decode COSE/CBOR document";
     std::move(result_callback).Run(scoped_refptr<net::X509Certificate>());
     return;
   }
 
-  const cbor::Value::MapValue& cose_map = cose_doc.payload().GetMap();
+  const cbor::Value::MapValue& cose_map = cose_doc.payload()->GetMap();
 
   if (!VerifyNonce(cose_map, nonce)) {
     std::move(result_callback).Run(scoped_refptr<net::X509Certificate>());

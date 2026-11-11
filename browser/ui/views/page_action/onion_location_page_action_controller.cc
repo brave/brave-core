@@ -10,12 +10,17 @@
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/tor/tor_profile_manager.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/onion_location_tab_helper.h"
+#include "brave/components/tor/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/ui/color/nala/nala_color_id.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "components/policy/core/common/policy_pref_names.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
@@ -26,13 +31,6 @@
 #include "url/origin.h"
 
 namespace page_actions {
-
-namespace {
-
-constexpr SkColor kOnionButtonBackground = SkColorSetRGB(0x8c, 0x30, 0xbb);
-constexpr SkColor kOnionButtonTextColor = SK_ColorWHITE;
-
-}  // namespace
 
 OnionLocationPageActionController::OnionLocationPageActionController(
     tabs::TabInterface& tab,
@@ -63,6 +61,19 @@ void OnionLocationPageActionController::Init() {
             self->UpdatePageAction(new_contents);
           },
           base::Unretained(this)));
+  // Mirrors the prefs TorProfileServiceFactory::IsTorDisabled() reads.
+  local_state_change_registrar_.Init(g_browser_process->local_state());
+  local_state_change_registrar_.Add(
+      tor::prefs::kTorDisabled,
+      base::BindRepeating(
+          &OnionLocationPageActionController::OnTorAvailabilityChanged,
+          base::Unretained(this)));
+  profile_pref_change_registrar_.Init(tab_->GetProfile()->GetPrefs());
+  profile_pref_change_registrar_.Add(
+      policy::policy_prefs::kIncognitoModeAvailability,
+      base::BindRepeating(
+          &OnionLocationPageActionController::OnTorAvailabilityChanged,
+          base::Unretained(this)));
   AttachToWebContents(tab_->GetContents());
   UpdatePageAction(tab_->GetContents());
 }
@@ -72,7 +83,7 @@ void OnionLocationPageActionController::ExecuteAction() {
   if (!contents) {
     return;
   }
-  auto* helper = tor::OnionLocationTabHelper::FromWebContents(contents);
+  auto* helper = tor::OnionLocationTabHelper::From(&tab_.get());
   if (!helper || !helper->should_show_icon()) {
     return;
   }
@@ -106,8 +117,11 @@ void OnionLocationPageActionController::UpdatePageAction(
     return;
   }
 
-  auto* helper = tor::OnionLocationTabHelper::FromWebContents(contents);
-  if (!helper || !helper->should_show_icon()) {
+  auto* helper = tor::OnionLocationTabHelper::From(&tab_.get());
+  // A location saved before Tor became unavailable, e.g. on a page restored
+  // from the back/forward cache, is not offered.
+  if (!helper || !helper->should_show_icon() ||
+      TorProfileServiceFactory::IsTorDisabled(contents->GetBrowserContext())) {
     ResetPageAction();
     return;
   }
@@ -123,8 +137,9 @@ void OnionLocationPageActionController::UpdatePageAction(
   if (profile->IsTor()) {
     page_action_controller_->OverrideImage(
         kActionShowOnionLocation,
+        // White on the Tor chip; there is no semantic white token.
         ui::ImageModel::FromVectorIcon(kLeoProductTorIcon,
-                                       kOnionButtonTextColor));
+                                       nala::kColorPrimitiveTorWindow100));
     page_action_controller_->ShowSuggestionChip(kActionShowOnionLocation);
     page_action_controller_->SetAlwaysShowLabel(kActionShowOnionLocation, true);
     page_action_controller_->OverrideText(
@@ -135,9 +150,10 @@ void OnionLocationPageActionController::UpdatePageAction(
         l10n_util::GetStringFUTF16(
             IDS_LOCATION_BAR_ONION_AVAILABLE_TOOLTIP_TEXT,
             onion_location_text));
-    page_action_controller_->OverrideChipColors(kActionShowOnionLocation,
-                                                kOnionButtonBackground,
-                                                kOnionButtonTextColor);
+    page_action_controller_->OverrideChipColors(
+        kActionShowOnionLocation,
+        color_provider.GetColor(nala::kColorTorWindow30),
+        color_provider.GetColor(nala::kColorPrimitiveTorWindow100));
   } else {
     page_action_controller_->OverrideImage(
         kActionShowOnionLocation,
@@ -162,6 +178,10 @@ void OnionLocationPageActionController::ResetPageAction() {
   page_action_controller_->ClearOverrideChipColors(kActionShowOnionLocation);
   page_action_controller_->ClearOverrideText(kActionShowOnionLocation);
   page_action_controller_->ClearOverrideTooltip(kActionShowOnionLocation);
+}
+
+void OnionLocationPageActionController::OnTorAvailabilityChanged() {
+  UpdatePageAction(tab_->GetContents());
 }
 
 void OnionLocationPageActionController::DidFinishNavigation(

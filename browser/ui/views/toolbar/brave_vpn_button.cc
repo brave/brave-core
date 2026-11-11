@@ -19,8 +19,8 @@
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
@@ -29,14 +29,9 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider_manager.h"
-#include "ui/compositor/layer.h"
 #include "ui/gfx/canvas.h"
-#include "ui/gfx/color_utils.h"
-#include "ui/gfx/geometry/rect_f.h"
-#include "ui/gfx/geometry/rrect_f.h"
 #include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/paint_vector_icon.h"
-#include "ui/gfx/skia_util.h"
 #include "ui/menus/simple_menu_model.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/animation/ink_drop_host.h"
@@ -54,7 +49,7 @@ constexpr int kBadgeSize = 10;
 // For error icon's inner color.
 class ConnectErrorIconBackground : public views::Background {
  public:
-  explicit ConnectErrorIconBackground(SkColor color) { SetColor(color); }
+  explicit ConnectErrorIconBackground(SkColor color) { set_color(color); }
 
   ConnectErrorIconBackground(const ConnectErrorIconBackground&) = delete;
   ConnectErrorIconBackground& operator=(const ConnectErrorIconBackground&) =
@@ -72,7 +67,7 @@ class VPNButtonMenuModel : public ui::SimpleMenuModel,
                            public ui::SimpleMenuModel::Delegate,
                            public brave_vpn::BraveVpnServiceObserver {
  public:
-  explicit VPNButtonMenuModel(Browser* browser)
+  explicit VPNButtonMenuModel(BrowserWindowInterface* browser)
       : SimpleMenuModel(this),
         browser_(browser),
         service_(brave_vpn::BraveVpnServiceFactory::GetForProfile(
@@ -116,7 +111,7 @@ class VPNButtonMenuModel : public ui::SimpleMenuModel,
     }
   }
 
-  raw_ptr<Browser, DanglingUntriaged> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface, DanglingUntriaged> browser_ = nullptr;
   raw_ptr<brave_vpn::BraveVpnService, DanglingUntriaged> service_ = nullptr;
 };
 
@@ -170,7 +165,7 @@ class BraveVPNBadgeImageSource : public brave::BraveIconWithBadgeImageSource {
 
 }  // namespace
 
-BraveVPNButton::BraveVPNButton(Browser* browser)
+BraveVPNButton::BraveVPNButton(BrowserWindowInterface* browser)
     : ToolbarButton(base::BindRepeating(&BraveVPNButton::OnButtonPressed,
                                         base::Unretained(this)),
                     std::make_unique<VPNButtonMenuModel>(browser),
@@ -288,14 +283,9 @@ SkColor BraveVPNButton::GetIconColor() {
     return cp->GetColor(kColorBraveVpnButtonIconError);
   }
 
-  const auto ink_drop_state =
-      views::InkDrop::Get(this)->GetInkDrop()->GetTargetInkDropState();
-  ui::ColorId icon_color_id = kColorToolbarButtonIcon;
-  if (ink_drop_state == views::InkDropState::ACTIVATED) {
-    icon_color_id = kColorToolbarButtonActivated;
-  }
-
-  return cp->GetColor(icon_color_id);
+  return cp->GetColor(
+      IsActivated() ? static_cast<ui::ColorId>(kColorToolbarButtonActivated)
+                    : static_cast<ui::ColorId>(kColorToolbarButtonIcon));
 }
 
 SkColor BraveVPNButton::GetBadgeColor() {
@@ -331,21 +321,11 @@ std::u16string BraveVPNButton::GetRenderedTooltipText(
 
 void BraveVPNButton::OnThemeChanged() {
   ToolbarButton::OnThemeChanged();
-
-  // Configure vpn button specific ink drop config as ink drop is reset
-  // whenever theme changes.
-
-  // Set 0.0f to use same color for activated state.
-  views::InkDrop::Get(this)->SetVisibleOpacity(0.00f);
-
-  // Different base color is set per themes and it has alpha.
-  views::InkDrop::Get(this)->SetHighlightOpacity(1.0f);
-
   UpdateColorsAndInsets();
 }
 
-void BraveVPNButton::InkDropRippleAnimationEnded(views::InkDropState state) {
-  // To use different icon color when activated.
+void BraveVPNButton::UpdateIcon() {
+  // The icon image is built with the background and border.
   UpdateColorsAndInsets();
 }
 
@@ -363,6 +343,7 @@ ConnectionState BraveVPNButton::GetVpnConnectionState() const {
 bool BraveVPNButton::IsConnectError() const {
   const auto state = GetVpnConnectionState();
   return (state == ConnectionState::CONNECT_NOT_ALLOWED ||
+          state == ConnectionState::CONNECT_NO_AGENT ||
           state == ConnectionState::CONNECT_FAILED);
 }
 

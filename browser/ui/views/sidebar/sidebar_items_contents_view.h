@@ -30,7 +30,7 @@ namespace sidebar {
 class SidebarBrowserTest;
 }  // namespace sidebar
 
-class BraveBrowser;
+class BrowserWindowInterface;
 class SidebarItemView;
 
 class SidebarItemsContentsView : public views::View,
@@ -39,7 +39,7 @@ class SidebarItemsContentsView : public views::View,
                                  public ui::SimpleMenuModel::Delegate {
   METADATA_HEADER(SidebarItemsContentsView, views::View)
  public:
-  SidebarItemsContentsView(BraveBrowser* browser,
+  SidebarItemsContentsView(BrowserWindowInterface* browser,
                            views::DragController* drag_controller);
   ~SidebarItemsContentsView() override;
 
@@ -49,6 +49,7 @@ class SidebarItemsContentsView : public views::View,
   // views::View overrides:
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
+  void AddedToWidget() override;
   void OnThemeChanged() override;
 
   // views::ContextMenuController overrides:
@@ -97,11 +98,15 @@ class SidebarItemsContentsView : public views::View,
     kItemRemove,
   };
 
+  // Builds the views for the items that exist before this view does. Only
+  // called from AddedToWidget() because SetDefaultImageFor() needs a widget
+  // for the device scale factor.
+  void BuildItemViews();
+
   void AddItemView(const sidebar::SidebarItem& item,
                    int index,
                    bool user_gesture);
   void UpdateItemViewStateAt(size_t index, bool active);
-  bool IsBuiltInTypeItemView(views::View* view) const;
   void SetDefaultImageFor(const sidebar::SidebarItem& item);
 
   // Called when each item is pressed.
@@ -111,7 +116,7 @@ class SidebarItemsContentsView : public views::View,
   ui::ImageModel GetImageForBuiltInItems(
       sidebar::SidebarItem::BuiltInItemType type,
       views::Button::ButtonState state) const;
-  void UpdateAllBuiltInItemsViewState();
+  void UpdateAllItemsViewState();
   void ShowItemAddedFeedbackBubble(views::View* anchor_view);
 
   // When item count is five, drag indicator is drawn in front of first item.
@@ -123,7 +128,7 @@ class SidebarItemsContentsView : public views::View,
   SidebarItemView* GetItemViewAt(size_t index);
   void LaunchEditItemDialog();
 
-  raw_ptr<BraveBrowser> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   raw_ptr<views::DragController> drag_controller_ = nullptr;
   raw_ptr<views::View> view_for_context_menu_ = nullptr;
   raw_ptr<sidebar::SidebarModel> sidebar_model_ = nullptr;

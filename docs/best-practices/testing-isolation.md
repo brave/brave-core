@@ -764,9 +764,17 @@ ensure that new logic, branches, and edge cases have corresponding tests. This
 applies to all PRs, not just bug fixes. Don't be overly strict — use judgment —
 but flag obvious gaps where meaningful test coverage is missing.
 
-**Exception:** Don't require a dedicated test when the change is trivial UI with
+**Rough target:** Chromium aims for a minimum of 80% coverage, ideally 90%+, and
+weighs the coverage of the lines a change touches more heavily than the
+project-wide number. Chasing coverage past ~90% is counterproductive: the
+remaining lines are usually `NOTREACHED()`/`CHECK()`/`LOG(FATAL)` paths that
+take contrived abuse to reach and yield little beyond what the check already
+guarantees. See
+[Chromium C++ testing best practices](https://www.chromium.org/chromium-os/developer-library/guides/testing/cpp-writing-tests/).
+
+**Exception: NEVER require a dedicated test when the change is trivial UI with
 no meaningful logic to test (e.g. a toggle wired to a pref), or when it follows
-an existing untested pattern in the surrounding code.
+an existing untested pattern in the surrounding code.**
 
 **If code is difficult to test, suggest refactors that improve testability**
 rather than accepting untested code. Common refactors include extracting logic
@@ -967,3 +975,66 @@ Practical notes:
 
 Related: [TI-041](#TI-041) covers the multi-flag case, where a class is affected
 by several features and you want all 2^N combinations.
+
+---
+
+<a id="TI-043"></a>
+
+## Confirm the Test Exists in the Binary Before Trusting a Pass
+
+A `--gtest_filter` that matches nothing is not an error. The launcher prints a
+warning, reports success, and exits `0`:
+
+```
+WARNING: No matching tests to run.
+SUCCESS: all tests passed.
+Tests took 0 seconds.
+```
+
+That output is indistinguishable from a real pass in a log or a CI summary, and
+it is the normal outcome when a test's target is compiled out of the build dir
+you are using. Several of our test targets are buildflag-gated, so a locally
+configured build can omit them entirely:
+
+```gn
+# brave/components/ai_chat/core/common/buildflags/buildflags.gni
+enable_ai_chat = !is_brave_origin_branded
+```
+
+With `is_brave_origin_branded=true`, `//brave/browser/ai_chat:browser_tests` is
+not part of `brave_browser_tests` at all — every `AIChatPDFOCRBrowserTest.*`
+filter "passes" while running zero tests.
+
+**Before reporting a test as passing, confirm it was actually there:**
+
+```bash
+# Should list the tests you expect. Empty output = they are not in this binary.
+./out/<dir>/brave_browser_tests --gtest_list_tests --gtest_filter='MyTest.*'
+```
+
+Then check the run itself: a real pass prints a `[ RUN ]` / `[ OK ]` pair per
+test with a non-zero duration. `Tests took 0 seconds` for a browser test means
+nothing ran.
+
+If the tests are missing, build a **separate** output directory with the flag
+flipped rather than reconfiguring a shared one:
+
+```bash
+pnpm run build Component -C ComponentAIChat --target=brave_browser_tests \
+  --gn is_brave_origin_branded:false
+```
+
+`-C` is relative to `out/` (`-C out/Foo` creates `out/out/Foo` and trips a gn
+assertion about output-directory depth). `--gn` is what flips the arg:
+`buildArgs.ts` forwards the `.env`/`package.json` value into the gn args first
+and applies `--gn` values last, so the override wins.
+
+`--gn` does not, however, change which branding defaults are imported — that
+choice comes from `config.isBraveOriginBranded`, which `EnvConfig` reads only
+from `.env` and `package.json`'s `config`, never from a process environment
+variable. The dir you get therefore has `is_brave_origin_branded=false` with
+`brave_origin` branding still imported, which is enough to compile a gated test
+target back in; edit `.env`/`package.json` if you need the branding to match.
+
+The same "matches nothing, still succeeds" failure mode applies to parameterized
+suites; see [TI-042](#TI-042).

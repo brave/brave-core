@@ -10,24 +10,21 @@
 #include "base/command_line.h"
 #include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/run_until.h"
 #include "base/test/test_future.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/ui/base/clipboard/test/privacy_capturing_test_clipboard.h"
 #include "chrome/browser/notifications/notification_display_service_tester.h"
 #include "chrome/browser/notifications/notification_handler.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -36,10 +33,9 @@
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/test_navigation_observer.h"
-#include "mojo/public/cpp/bindings/pending_remote.h"
-#include "mojo/public/cpp/bindings/receiver.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "ui/base/clipboard/clipboard.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/message_center/public/cpp/notification.h"
 #include "url/origin.h"
@@ -47,43 +43,6 @@
 using base::test::TestFuture;
 
 namespace brave_wallet {
-
-namespace {
-
-void OnGetActiveOrigin(bool* callback_called,
-                       mojom::OriginInfoPtr expected_active_origin,
-                       mojom::OriginInfoPtr active_origin) {
-  EXPECT_EQ(expected_active_origin, active_origin);
-  *callback_called = true;
-}
-
-}  // namespace
-
-class TestBraveWalletServiceObserver
-    : public brave_wallet::BraveWalletServiceObserverBase {
- public:
-  TestBraveWalletServiceObserver() = default;
-
-  void OnActiveOriginChanged(mojom::OriginInfoPtr origin_info) override {
-    active_origin_info_ = origin_info->Clone();
-  }
-
-  const mojom::OriginInfoPtr& active_origin_info() const {
-    return active_origin_info_;
-  }
-
-  mojo::PendingRemote<brave_wallet::mojom::BraveWalletServiceObserver>
-  GetReceiver() {
-    return observer_receiver_.BindNewPipeAndPassRemote();
-  }
-
-  void Reset() { active_origin_info_ = {}; }
-
- private:
-  mojom::OriginInfoPtr active_origin_info_;
-  mojo::Receiver<brave_wallet::mojom::BraveWalletServiceObserver>
-      observer_receiver_{this};
-};
 
 class BraveWalletServiceTest : public InProcessBrowserTest {
  public:
@@ -170,65 +129,40 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<NotificationDisplayServiceTester> notification_tester_;
-  raw_ptr<Browser> incognito_browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> incognito_browser_ = nullptr;
   net::EmbeddedTestServer https_server_;
 };
-
-IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
-  GURL url = https_server()->GetURL("a.test", "/simple.html");
-  auto expected_origin_info = MakeOriginInfo(url::Origin::Create(url));
-  TestBraveWalletServiceObserver observer;
-  wallet_service()->AddObserver(observer.GetReceiver());
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-
-  bool callback_called = false;
-  wallet_service()->GetActiveOrigin(base::BindOnce(
-      &OnGetActiveOrigin, &callback_called, expected_origin_info->Clone()));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
-  EXPECT_EQ(observer.active_origin_info(), expected_origin_info);
-
-  url = https_server()->GetURL("b.test", "/simple.html");
-  expected_origin_info = MakeOriginInfo(url::Origin::Create(url));
-  callback_called = false;
-  observer.Reset();
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  wallet_service()->GetActiveOrigin(base::BindOnce(
-      &OnGetActiveOrigin, &callback_called, expected_origin_info->Clone()));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
-  EXPECT_EQ(observer.active_origin_info(), expected_origin_info);
-
-  url = https_server()->GetURL("c.test", "/simple.html");
-  expected_origin_info = MakeOriginInfo(url::Origin::Create(url));
-  observer.Reset();
-  ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
-  wallet_service()->GetActiveOrigin(base::BindOnce(
-      &OnGetActiveOrigin, &callback_called, expected_origin_info->Clone()));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
-  EXPECT_EQ(observer.active_origin_info(), expected_origin_info);
-
-  url = https_server()->GetURL("d.test", "/simple.html");
-  expected_origin_info = MakeOriginInfo(url::Origin::Create(url));
-  observer.Reset();
-  ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::NEW_WINDOW,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
-  wallet_service()->GetActiveOrigin(base::BindOnce(
-      &OnGetActiveOrigin, &callback_called, expected_origin_info->Clone()));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
-  EXPECT_EQ(observer.active_origin_info(), expected_origin_info);
-}
 
 IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, IsPrivateWindow) {
   TestIsPrivateWindow(wallet_service(), false);
   wallet_service()->SetPrivateWindowsEnabled(true);
   TestIsPrivateWindow(incognito_wallet_service(), true);
   TestIsPrivateWindow(wallet_service(), false);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, WriteToClipboardPrivacyTypes) {
+  brave::ScopedPrivacyCapturingTestClipboard fake_clipboard;
+
+  // Sensitive text is concealed everywhere.
+  wallet_service()->WriteToClipboard("secret", /*is_sensitive=*/true);
+  EXPECT_EQ(static_cast<uint32_t>(ui::Clipboard::kNoDisplay |
+                                  ui::Clipboard::kNoLocalClipboardHistory |
+                                  ui::Clipboard::kNoCloudClipboard),
+            fake_clipboard.last_privacy_types());
+
+  // Non-sensitive text from a normal window stays eligible for OS clipboard
+  // history and cloud clipboard sync.
+  wallet_service()->WriteToClipboard("0xdeadbeef", /*is_sensitive=*/false);
+  EXPECT_EQ(static_cast<uint32_t>(ui::Clipboard::kNone),
+            fake_clipboard.last_privacy_types());
+
+  // Non-sensitive text from a private window does not.
+  wallet_service()->SetPrivateWindowsEnabled(true);
+  incognito_wallet_service()->WriteToClipboard("0xdeadbeef",
+                                               /*is_sensitive=*/false);
+  EXPECT_EQ(static_cast<uint32_t>(ui::Clipboard::kNoLocalClipboardHistory |
+                                  ui::Clipboard::kNoCloudClipboard),
+            fake_clipboard.last_privacy_types());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, DisplayTxNotification) {
@@ -248,9 +182,9 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, DisplayTxNotification) {
                              "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                              "0x0", std::vector<uint8_t>())),
       mojom::TransactionStatus::Confirmed, mojom::TransactionType::ETHSend,
-      std::vector<std::string>(), std::vector<std::string>(),
-      base::Milliseconds(0), base::Milliseconds(0), base::Milliseconds(0),
-      nullptr, mojom::kMainnetChainId, std::nullopt, false, nullptr, nullptr);
+      std::vector<std::string>(), std::vector<std::string>(), base::Time(),
+      base::Time(), base::Time(), nullptr, mojom::kMainnetChainId, std::nullopt,
+      false, nullptr, nullptr);
   tx_service()->OnTransactionStatusChanged(std::move(tx_info));
 
   ASSERT_TRUE(base::test::RunUntil(

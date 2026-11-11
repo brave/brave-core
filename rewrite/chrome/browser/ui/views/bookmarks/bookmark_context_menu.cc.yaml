@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Inject Brave bookmark context menu items for Containers'
+    add_before_line:
+      line: |-
+        if (menu_model->GetCommandIdAt(i) == IDC_BOOKMARK_BAR_SUBMENU) {
+      code: |-
+        MaybeAppendContainerSubmenu(i, menu_model, menu_);
+
+  - description: |-
+      Rename BookmarkContextMenuController to BraveBookmarkContextMenuController
+    rename_class:
+      class_name: 'BookmarkContextMenuController'
+      rename: 'BraveBookmarkContextMenuController'

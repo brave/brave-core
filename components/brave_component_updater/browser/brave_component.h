@@ -6,15 +6,18 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_BRAVE_COMPONENT_H_
 #define BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_BRAVE_COMPONENT_H_
 
+#include <cstdint>
 #include <string>
 
 #include "base/component_export.h"
+#include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "components/update_client/update_client.h"
+#include "crypto/sha2.h"
 
 class PrefService;
 
@@ -42,7 +45,8 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) BraveComponent {
    public:
     virtual ~Delegate() = default;
     virtual void Register(const std::string& component_name,
-                          const std::string& component_base64_public_key,
+                          base::span<const uint8_t, crypto::kSHA256Length>
+                              component_public_key_sha256,
                           base::OnceClosure registered_callback,
                           ReadyCallback ready_callback) = 0;
     virtual bool Unregister(const std::string& component_id) = 0;
@@ -65,8 +69,8 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) BraveComponent {
   BraveComponent& operator=(const BraveComponent&) = delete;
   virtual ~BraveComponent();
   void Register(const std::string& component_name,
-                const std::string& component_id,
-                const std::string& component_base64_public_key);
+                base::span<const uint8_t, crypto::kSHA256Length>
+                    component_public_key_sha256);
 
   bool Unregister();
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
@@ -100,7 +104,6 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) BraveComponent {
 
   std::string component_name_;
   std::string component_id_;
-  std::string component_base64_public_key_;
   raw_ptr<Delegate, DanglingUntriaged> delegate_ = nullptr;  // NOT OWNED
   base::WeakPtrFactory<BraveComponent> weak_factory_;
 };

@@ -1,12 +1,20 @@
 diff --git a/net/BUILD.gn b/net/BUILD.gn
-index 1195c4be9c68406b8b8fc4a844ecaff779a411b6..c6fb358f882f3ef2a774902e3523c07c3dbfcc8a 100644
+index a7353c1507d807387bebf4c532a6afcb793ae012..d2d786eb476ebda63786a4617dce6de6b48c840c 100644
 --- a/net/BUILD.gn
 +++ b/net/BUILD.gn
-@@ -1290,6 +1290,7 @@ component("net") {
-       "reporting/reporting_uploader.h",
-     ]
-   }
-+  sources += brave_net_sources import("//brave/components/brave_wallet/sources.gni") deps += brave_net_deps
+@@ -1249,6 +1249,7 @@ component("net") {
+     "url_request/websocket_handshake_userdata_key.cc",
+     "url_request/websocket_handshake_userdata_key.h",
+   ]
++  sources += brave_net_sources
  
-   if (enable_device_bound_sessions) {
-     sources += [
+   if (is_posix || is_fuchsia) {
+     sources += [ "base/net_errors_posix.cc" ]
+@@ -1277,6 +1278,7 @@ component("net") {
+     "//third_party/rust/sfv/v0_15/wrapper",
+     "//third_party/simdutf",
+   ]
++  deps += brave_net_deps
+ 
+   public_deps = [
+     ":chrome_root_store_types",

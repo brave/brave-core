@@ -13,6 +13,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
@@ -78,8 +79,6 @@ class EthPendingTxTrackerUnitTest : public testing::Test {
   network::TestURLLoaderFactory* test_url_loader_factory() {
     return &url_loader_factory_;
   }
-
-  void WaitForResponse() { task_environment_.RunUntilIdle(); }
 
  private:
   network::TestURLLoaderFactory url_loader_factory_;
@@ -169,7 +168,6 @@ TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {
   EthNonceTracker nonce_tracker(tx_state_manager_.get(), json_rpc_service());
   EthPendingTxTracker pending_tx_tracker(tx_state_manager_.get(),
                                          json_rpc_service(), &nonce_tracker);
-  base::RunLoop().RunUntilIdle();
 
   for (const std::string& chain_id :
        {mojom::kMainnetChainId, mojom::kSepoliaChainId,
@@ -229,7 +227,15 @@ TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {
     EXPECT_TRUE(pending_tx_tracker.UpdatePendingTransactions(
         chain_id, &pending_chain_ids));
     EXPECT_EQ(1UL, pending_chain_ids.size());
-    WaitForResponse();
+    ASSERT_TRUE(base::test::RunUntil([&] {
+      auto tx_001 =
+          tx_state_manager_->GetEthTx(base::StrCat({chain_id, "001"}));
+      auto tx_005 =
+          tx_state_manager_->GetEthTx(base::StrCat({chain_id, "005"}));
+      return tx_001 && tx_005 &&
+             tx_001->status() == mojom::TransactionStatus::Confirmed &&
+             tx_005->status() == mojom::TransactionStatus::Confirmed;
+    }));
     auto meta_from_state =
         tx_state_manager_->GetEthTx(base::StrCat({chain_id, "001"}));
     ASSERT_NE(meta_from_state, nullptr);

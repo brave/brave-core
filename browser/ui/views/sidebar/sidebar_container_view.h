@@ -31,8 +31,8 @@ namespace sidebar {
 class SidebarBrowserTest;
 }  // namespace sidebar
 
-class BraveBrowser;
-class Browser;
+class BrowserWindowInterface;
+class BrowserWindowInterface;
 
 // This view is the parent view of all sidebar ui.
 // Direct child views are control view and panel view.
@@ -50,13 +50,16 @@ class SidebarContainerView : public sidebar::Sidebar,
                              public FocusModeController::Observer {
   METADATA_HEADER(SidebarContainerView, views::View)
  public:
-  explicit SidebarContainerView(Browser* browser);
+  // The callback runs whenever the sidebar control view's visibility changes,
+  // so the side panel can recompute its content corner radii (which depend on
+  // that visibility — see GetPanelContentsRoundedCorners()).
+  SidebarContainerView(
+      BrowserWindowInterface* browser,
+      base::RepeatingClosure sidebar_control_view_visibility_changed_callback);
   ~SidebarContainerView() override;
 
   SidebarContainerView(const SidebarContainerView&) = delete;
   SidebarContainerView& operator=(const SidebarContainerView&) = delete;
-
-  void Init();
 
   bool sidebar_on_left() const { return sidebar_on_left_; }
   void SetSidebarOnLeft(bool sidebar_on_left);
@@ -65,13 +68,6 @@ class SidebarContainerView : public sidebar::Sidebar,
 
   // Show sidebar if the hot corner contains |point_in_screen|.
   void ShowSidebarOnMouseOver(const gfx::PointF& point_in_screen);
-  void UpdateBorder();
-
-  // Runs `callback` whenever the sidebar control view's visibility changes, so
-  // the side panel can recompute its content corner radii (which depend on
-  // sidebar control view visibility — see GetPanelContentsRoundedCorners()).
-  void SetSidebarControlViewVisibilityChangedCallback(
-      base::RepeatingClosure callback);
 
   // Sidebar overrides:
   void SetSidebarShowOption(
@@ -132,13 +128,8 @@ class SidebarContainerView : public sidebar::Sidebar,
   void StartBrowserWindowEventMonitoring();
   void StopBrowserWindowEventMonitoring();
 
-  // Casts |browser_| to BraveBrowser, as storing it as BraveBrowser would cause
-  // a precocious downcast.
-  BraveBrowser* GetBraveBrowser() const;
-
-  raw_ptr<Browser> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   raw_ptr<SidebarControlView> sidebar_control_view_ = nullptr;
-  bool initialized_ = false;
   bool sidebar_on_left_ = true;
   base::OneShotTimer sidebar_hide_timer_;
   sidebar::SidebarService::ShowSidebarOption show_sidebar_option_ =

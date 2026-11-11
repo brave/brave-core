@@ -21,30 +21,8 @@
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 class RenderViewContextMenu;
-using RenderViewContextMenu_BraveImpl = RenderViewContextMenu;
 
-#define BRAVE_RENDER_VIEW_CONTEXT_MENU_H_ \
- private:                                 \
-  friend RenderViewContextMenu_BraveImpl; \
-                                          \
- public:
-// define BRAVE_RENDER_VIEW_CONTEXT_MENU_H_
-
-// Get the Chromium declaration.
-#define RenderViewContextMenu RenderViewContextMenu_Chromium
-
-#define RegisterMenuShownCallbackForTesting                           \
-  RegisterMenuShownCallbackForTesting(                                \
-      base::OnceCallback<void(RenderViewContextMenu_BraveImpl*)> cb); \
-  static void RegisterMenuShownCallbackForTesting_unused
-#define AppendReadAnythingItem virtual AppendReadAnythingItem
-#define AppendDeveloperItems virtual AppendDeveloperItems
 #include <chrome/browser/renderer_context_menu/render_view_context_menu.h>  // IWYU pragma: export
-#undef AppendDeveloperItems
-#undef AppendReadAnythingItem
-#undef RegisterMenuShownCallbackForTesting
-#undef RenderViewContextMenu
-#undef BRAVE_RENDER_VIEW_CONTEXT_MENU_H_
 
 // Declare our own subclass with overridden methods.
 class RenderViewContextMenu : public RenderViewContextMenu_Chromium
@@ -69,10 +47,13 @@ class RenderViewContextMenu : public RenderViewContextMenu_Chromium
   static void AddSpellCheckServiceItem(ui::SimpleMenuModel* menu,
                                        bool is_checked);
   void AddAccessibilityLabelsServiceItem(bool is_checked) override;
-  // Do nothing as we have our own speed reader
-  void AppendReadAnythingItem() override {}
+  void AppendReadAnythingItem() override;
 
   void AppendDeveloperItems() override;
+
+  // Hides the upstream static, which takes a callback of the upstream type.
+  static void RegisterMenuShownCallbackForTesting(
+      base::OnceCallback<void(RenderViewContextMenu*)> cb);
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   // ContainersMenuModelDelegate:

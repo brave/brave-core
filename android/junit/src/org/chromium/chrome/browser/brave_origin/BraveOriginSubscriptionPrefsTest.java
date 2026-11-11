@@ -7,11 +7,10 @@ package org.chromium.chrome.browser.brave_origin;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-
-import androidx.test.filters.SmallTest;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -41,13 +40,11 @@ public class BraveOriginSubscriptionPrefsTest {
     }
 
     @Test
-    @SmallTest
     public void isProfileUsable_nullProfile_returnsFalse() {
         assertFalse(BraveOriginSubscriptionPrefs.isProfileUsable(null));
     }
 
     @Test
-    @SmallTest
     public void isProfileUsable_destroyedProfile_returnsFalse() {
         when(mProfile.shutdownStarted()).thenReturn(true);
 
@@ -55,7 +52,6 @@ public class BraveOriginSubscriptionPrefsTest {
     }
 
     @Test
-    @SmallTest
     public void isProfileUsable_liveProfile_returnsTrue() {
         when(mProfile.shutdownStarted()).thenReturn(false);
 
@@ -68,7 +64,6 @@ public class BraveOriginSubscriptionPrefsTest {
      * non-null. See https://github.com/brave/brave-browser/issues/NNNNN.
      */
     @Test
-    @SmallTest
     public void setIsSubscriptionActive_destroyedProfile_doesNotWritePrefs() {
         when(mProfile.shutdownStarted()).thenReturn(true);
 
@@ -78,7 +73,6 @@ public class BraveOriginSubscriptionPrefsTest {
     }
 
     @Test
-    @SmallTest
     public void setIsSubscriptionActive_nullProfile_doesNotWritePrefs() {
         BraveOriginSubscriptionPrefs.setIsSubscriptionActive(null, true);
 
@@ -86,7 +80,6 @@ public class BraveOriginSubscriptionPrefsTest {
     }
 
     @Test
-    @SmallTest
     public void setIsSubscriptionActive_liveProfile_writesPref() {
         when(mProfile.shutdownStarted()).thenReturn(false);
 
@@ -96,11 +89,90 @@ public class BraveOriginSubscriptionPrefsTest {
     }
 
     @Test
-    @SmallTest
     public void getIsSubscriptionActive_destroyedProfile_returnsFalseWithoutReadingPrefs() {
         when(mProfile.shutdownStarted()).thenReturn(true);
 
         assertFalse(BraveOriginSubscriptionPrefs.getIsSubscriptionActive(mProfile));
+        verifyNoInteractions(mPrefService);
+    }
+
+    /** Puts the prefs in the state a purchase leaves behind before credentials are fetched. */
+    private void setUpFetchingState(boolean active, String orderId, String purchaseToken) {
+        when(mProfile.shutdownStarted()).thenReturn(false);
+        when(mPrefService.getBoolean(BravePref.BRAVE_ORIGIN_SUBSCRIPTION_ACTIVE_ANDROID))
+                .thenReturn(active);
+        when(mPrefService.getString(BravePref.BRAVE_ORIGIN_ORDER_ID_ANDROID)).thenReturn(orderId);
+        when(mPrefService.getString(BravePref.BRAVE_ORIGIN_PURCHASE_TOKEN_ANDROID))
+                .thenReturn(purchaseToken);
+    }
+
+    /**
+     * A failed credential fetch leaves exactly the state a killed one does, because the order ID is
+     * only persisted on success. That is why returning to the Origin settings screen has to restart
+     * the fetch: without it the screen shows a spinner nothing will ever resolve.
+     */
+    @Test
+    public void isFetchingCredentials_activeWithNoOrderId_returnsTrue() {
+        setUpFetchingState(/* active= */ true, /* orderId= */ "", /* purchaseToken= */ "token");
+
+        assertTrue(BraveOriginSubscriptionPrefs.isFetchingCredentials(mProfile));
+    }
+
+    @Test
+    public void isFetchingCredentials_orderIdPersisted_returnsFalse() {
+        setUpFetchingState(
+                /* active= */ true, /* orderId= */ "order", /* purchaseToken= */ "token");
+
+        assertFalse(BraveOriginSubscriptionPrefs.isFetchingCredentials(mProfile));
+    }
+
+    @Test
+    public void isFetchingCredentials_noPurchaseToken_returnsFalse() {
+        setUpFetchingState(/* active= */ true, /* orderId= */ "", /* purchaseToken= */ "");
+
+        assertFalse(BraveOriginSubscriptionPrefs.isFetchingCredentials(mProfile));
+    }
+
+    @Test
+    public void isFetchingCredentials_subscriptionInactive_returnsFalse() {
+        setUpFetchingState(/* active= */ false, /* orderId= */ "", /* purchaseToken= */ "token");
+
+        assertFalse(BraveOriginSubscriptionPrefs.isFetchingCredentials(mProfile));
+    }
+
+    @Test
+    public void isFetchingCredentials_destroyedProfile_returnsFalse() {
+        when(mProfile.shutdownStarted()).thenReturn(true);
+
+        assertFalse(BraveOriginSubscriptionPrefs.isFetchingCredentials(null));
+        assertFalse(BraveOriginSubscriptionPrefs.isFetchingCredentials(mProfile));
+    }
+
+    /**
+     * The settings screen calls this on every entry, so it must stay a no-op once the order ID is
+     * persisted - otherwise opening Origin settings would refetch credentials every time.
+     */
+    @Test
+    public void resumeCredentialFetchIfNeeded_notFetching_startsNoFetch() {
+        setUpFetchingState(
+                /* active= */ true, /* orderId= */ "order", /* purchaseToken= */ "token");
+
+        BraveOriginSubscriptionPrefs.resumeCredentialFetchIfNeeded(
+                mProfile, /* openSettings= */ false);
+
+        // createFetchOrder() reads these two to build the receipt payload; untouched means it
+        // never ran.
+        verify(mPrefService, never()).getString(BravePref.BRAVE_ORIGIN_PACKAGE_NAME_ANDROID);
+        verify(mPrefService, never()).getString(BravePref.BRAVE_ORIGIN_PRODUCT_ID_ANDROID);
+    }
+
+    @Test
+    public void resumeCredentialFetchIfNeeded_destroyedProfile_startsNoFetch() {
+        when(mProfile.shutdownStarted()).thenReturn(true);
+
+        BraveOriginSubscriptionPrefs.resumeCredentialFetchIfNeeded(
+                mProfile, /* openSettings= */ false);
+
         verifyNoInteractions(mPrefService);
     }
 }

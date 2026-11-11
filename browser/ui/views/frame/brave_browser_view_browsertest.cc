@@ -5,26 +5,32 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 
+#include <algorithm>
+#include <memory>
 #include <string>
 
 #include "base/functional/callback.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/infobars/brave_confirm_infobar_creator.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
+#include "brave/browser/ui/views/brave_layout_provider.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
+#include "brave/browser/ui/views/infobars/brave_confirm_infobar.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/screenshot_button.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -33,7 +39,6 @@
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_bubble_type.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -55,6 +60,8 @@
 #include "chrome/browser/ui/window_feature_controller/window_feature_controller.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/bookmarks/common/bookmark_bar_visibility_state.h"
+#include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/confirm_infobar_delegate.h"
 #include "components/infobars/core/infobar.h"
@@ -62,6 +69,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/compositor/layer.h"
 #include "ui/events/keycodes/keyboard_codes.h"
@@ -69,6 +77,7 @@
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/views/layout/layout_provider.h"
 #include "ui/views/view_class_properties.h"
+#include "ui/views/view_utils.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
 
@@ -76,10 +85,6 @@
 #include "base/mac/mac_util.h"
 #include "chrome/browser/ui/fullscreen_util_mac.h"
 #endif  // BUILDFLAG(IS_MAC)
-
-using views::ShapeContextTokensOverride::kRoundedCornersBorderRadius;
-using views::ShapeContextTokensOverride::
-    kRoundedCornersBorderRadiusAtWindowCorner;
 
 namespace {
 class TestInfoBarDelegate : public ConfirmInfoBarDelegate {
@@ -103,6 +108,26 @@ class TestInfoBarDelegate : public ConfirmInfoBarDelegate {
     return u"This is a test InfoBar injected from a browser test.";
   }
 };
+
+class StubBraveConfirmInfoBarDelegate : public BraveConfirmInfoBarDelegate {
+ public:
+  StubBraveConfirmInfoBarDelegate() = default;
+  ~StubBraveConfirmInfoBarDelegate() override = default;
+
+  // BraveConfirmInfoBarDelegate:
+  infobars::InfoBarDelegate::InfoBarIdentifier GetIdentifier() const override {
+    return TEST_INFOBAR;
+  }
+
+  std::u16string GetMessageText() const override { return u"Test message"; }
+};
+
+bool HasBraveConfirmInfoBarView(const views::View* infobar_container) {
+  return std::ranges::any_of(
+      infobar_container->children(), [](const views::View* child) {
+        return views::IsViewClass<BraveConfirmInfoBar>(child);
+      });
+}
 
 }  // namespace
 
@@ -150,6 +175,32 @@ class BraveBrowserViewTest : public InProcessBrowserTest {
     return static_cast<BraveToolbarView*>(browser_view()->toolbar())
         ->screenshot_button();
   }
+
+  void NewSplitTab() {
+    chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
+                        split_tabs::SplitTabCreatedSource::kToolbarButton);
+  }
+
+  int GetRoundedCornersBorderRadius() const {
+    return views::LayoutProvider::Get()->GetCornerRadiusMetric(
+        kRoundedCornersBorderRadius);
+  }
+
+  int GetRoundedCornersBorderRadiusAtWindowCorner() const {
+    return views::LayoutProvider::Get()->GetCornerRadiusMetric(
+        kRoundedCornersBorderRadiusAtWindowCorner);
+  }
+
+  void ExpectSplitContentsViewRadii(int index,
+                                    float lower_left,
+                                    float lower_right) {
+    auto radii = browser_view()
+                     ->GetContentsContainerViews()[index]
+                     ->contents_view()
+                     ->GetBackgroundRadii();
+    EXPECT_EQ(lower_left, radii.lower_left());
+    EXPECT_EQ(lower_right, radii.lower_right());
+  }
 };
 
 // Tests bookmark/infobar/contents container layout with vertical tab.
@@ -159,7 +210,9 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   auto* prefs = browser()->GetProfile()->GetPrefs();
 
   // Check bookmark only on the NTP is default.
-  EXPECT_EQ(brave::BookmarkBarState::kNtp, brave::GetBookmarkBarState(prefs));
+  EXPECT_EQ(
+      prefs->GetInteger(bookmarks::prefs::kBookmarkBarVisibilityState),
+      static_cast<int>(bookmarks::BookmarkBarVisibilityState::kOnlyShowOnNtp));
 
   // BookmarkBar not visible as current active tab is not NTP.
   EXPECT_FALSE(bookmark_bar()->GetVisible());
@@ -168,18 +221,13 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
       BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
           browser());
 
-  // With rounded corners, we need
-  // distance(tabs::kMarginForVerticalTabContainers) between vertical tab and
-  // contents. Each side has half of it as a margin.
-  const int contents_margin =
-      rounded_corners ? (tabs::kMarginForVerticalTabContainers / 2) : 0;
   const int top_contents_separator_height = rounded_corners ? 0 : 1;
 
+  // The vertical tab strip owns the gap between itself and the contents
+  // through its own padding, so the contents reserves no margin on that side
+  // and starts exactly where the infobar and bookmark bar do.
   auto contents_area_origin = [&]() {
-    return gfx::Point(
-        browser_view()->contents_container()->bounds().origin().x() -
-            contents_margin,
-        browser_view()->contents_container()->bounds().origin().y());
+    return browser_view()->contents_container()->bounds().origin();
   };
 
 #if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
@@ -221,8 +269,12 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
 
   // Hide bookmark bar always.
   // Check contents container is positioned right after the vertical tab.
-  brave::SetBookmarkState(brave::BookmarkBarState::kNever, prefs);
-  EXPECT_EQ(brave::BookmarkBarState::kNever, brave::GetBookmarkBarState(prefs));
+  prefs->SetInteger(
+      bookmarks::prefs::kBookmarkBarVisibilityState,
+      static_cast<int>(bookmarks::BookmarkBarVisibilityState::kAlwaysHide));
+  EXPECT_EQ(
+      prefs->GetInteger(bookmarks::prefs::kBookmarkBarVisibilityState),
+      static_cast<int>(bookmarks::BookmarkBarVisibilityState::kAlwaysHide));
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return !BrowserView::GetBrowserViewForBrowser(browser())
                 ->IsBookmarkBarAnimating();
@@ -243,9 +295,12 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   // Show bookmark bar always.
   // Check vertical tab is positioned below the bookmark bar.
   // Check contents container is positioned below the info bar.
-  brave::SetBookmarkState(brave::BookmarkBarState::kAlways, prefs);
-  EXPECT_EQ(brave::BookmarkBarState::kAlways,
-            brave::GetBookmarkBarState(prefs));
+  prefs->SetInteger(
+      bookmarks::prefs::kBookmarkBarVisibilityState,
+      static_cast<int>(bookmarks::BookmarkBarVisibilityState::kAlwaysShow));
+  EXPECT_EQ(
+      prefs->GetInteger(bookmarks::prefs::kBookmarkBarVisibilityState),
+      static_cast<int>(bookmarks::BookmarkBarVisibilityState::kAlwaysShow));
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return !BrowserView::GetBrowserViewForBrowser(browser())
                 ->IsBookmarkBarAnimating();
@@ -273,6 +328,29 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
             contents_area_origin());
 }
 
+IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
+                       RemovesBraveConfirmInfoBarViewWhenInfoBarIsRemoved) {
+  auto disable_rich_animation =
+      gfx::AnimationTestApi::SetRichAnimationRenderMode(
+          gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
+
+  infobars::ContentInfoBarManager* infobar_manager =
+      infobars::ContentInfoBarManager::FromWebContents(
+          browser()->tab_strip_model()->GetActiveWebContents());
+  infobar_manager->RemoveAllInfoBars(/*animate=*/false);
+
+  infobars::InfoBar* infobar =
+      infobar_manager->AddInfoBar(CreateBraveConfirmInfoBar(
+          std::make_unique<StubBraveConfirmInfoBarDelegate>()));
+  ASSERT_TRUE(infobar);
+  ASSERT_TRUE(HasBraveConfirmInfoBarView(infobar_container()));
+
+  infobar_manager->RemoveInfoBar(infobar);
+
+  EXPECT_THAT(infobar_manager->infobars(), testing::IsEmpty());
+  EXPECT_FALSE(HasBraveConfirmInfoBarView(infobar_container()));
+}
+
 IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, TopSeparatorWithPanelTest) {
   auto disable_rich_animation =
       gfx::AnimationTestApi::SetRichAnimationRenderMode(
@@ -296,7 +374,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, TopSeparatorWithPanelTest) {
                   ->GetVisible());
 
   // Check separator is still visible after panel opens.
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   panel_ui->Toggle();
   RunScheduledLayouts();
   ASSERT_TRUE(
@@ -372,8 +450,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
 // browser() is actually launched with vertical tabs already on.
 IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
                        PRE_ShouldNotShowWindowIconWithVerticalTabTest) {
-  ASSERT_FALSE(VerticalTabController::FromBrowser(browser())
-                   ->ShouldShowBraveVerticalTabs());
+  ASSERT_FALSE(
+      VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
   EXPECT_FALSE(browser_view()->ShouldShowWindowIcon());
 
   browser()->GetProfile()->GetPrefs()->SetBoolean(
@@ -383,8 +461,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
 IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
                        ShouldNotShowWindowIconWithVerticalTabTest) {
   // Browser is launched with vertical tab mode already on.
-  ASSERT_TRUE(VerticalTabController::FromBrowser(browser())
-                  ->ShouldShowBraveVerticalTabs());
+  ASSERT_TRUE(
+      VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
   EXPECT_FALSE(browser_view()->ShouldShowWindowIcon());
 }
 
@@ -401,11 +479,6 @@ class BraveBrowserViewWithRoundedCornersTest
     BraveBrowserViewTest::SetUpOnMainThread();
     browser()->GetProfile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners,
                                                     IsRoundedCornersEnabled());
-  }
-
-  void NewSplitTab() {
-    chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
-                        split_tabs::SplitTabCreatedSource::kToolbarButton);
   }
 
   BrowserFrameView* browser_non_client_frame_view() {
@@ -432,17 +505,6 @@ class BraveBrowserViewWithRoundedCornersTest
   bool IsRoundedCornersEnabled() const { return GetParam(); }
 
  protected:
-  // Helper methods to get metrics
-  int GetRoundedCornersBorderRadius() const {
-    return views::LayoutProvider::Get()->GetCornerRadiusMetric(
-        kRoundedCornersBorderRadius);
-  }
-
-  int GetRoundedCornersBorderRadiusAtWindowCorner() const {
-    return views::LayoutProvider::Get()->GetCornerRadiusMetric(
-        kRoundedCornersBorderRadiusAtWindowCorner);
-  }
-
   // Helper methods for common assertions
   void ExpectContentsContainerMargins(views::View* contents_container,
                                       int expected_margin) {
@@ -466,17 +528,6 @@ class BraveBrowserViewWithRoundedCornersTest
     EXPECT_EQ(lower_right, radii.lower_right());
   }
 
-  void ExpectSplitContentsViewRadii(int index,
-                                    float lower_left,
-                                    float lower_right) {
-    auto radii = browser_view()
-                     ->GetContentsContainerViews()[index]
-                     ->contents_view()
-                     ->GetBackgroundRadii();
-    EXPECT_EQ(lower_left, radii.lower_left());
-    EXPECT_EQ(lower_right, radii.lower_right());
-  }
-
  private:
   const gfx::AnimationTestApi::RenderModeResetter disable_rich_animations_;
 };
@@ -487,12 +538,12 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
 #if BUILDFLAG(IS_MAC)
   // TODO(https://github.com/brave/brave-browser/issues/55995): Re-enable on
   // macOS 26.
-  if (base::mac::MacOSMajorVersion() == 26) {
-    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  if (base::mac::MacOSMajorVersion() >= 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe and later.";
   }
 #endif
 
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   panel_ui->Toggle();
   RunScheduledLayouts();
 
@@ -546,8 +597,8 @@ IN_PROC_BROWSER_TEST_P(
 #if BUILDFLAG(IS_MAC)
   // TODO(https://github.com/brave/brave-browser/issues/55995): Re-enable on
   // macOS 26.
-  if (base::mac::MacOSMajorVersion() == 26) {
-    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  if (base::mac::MacOSMajorVersion() >= 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe and later.";
   }
 #endif
 
@@ -570,7 +621,7 @@ IN_PROC_BROWSER_TEST_P(
                             window_corner_radius);
   }
 
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
 
   // --- Right-aligned panel (default: kSidePanelHorizontalAlignment = true) ---
   panel_ui->Toggle();
@@ -618,12 +669,12 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
 #if BUILDFLAG(IS_MAC)
   // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
   // unexpected test timeout failures are resolved.
-  if (base::mac::MacOSMajorVersion() == 26) {
-    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  if (base::mac::MacOSMajorVersion() >= 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe and later.";
   }
 #endif
 
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   panel_ui->Toggle();
   RunScheduledLayouts();
 
@@ -650,18 +701,62 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                                rounded_corners_border_radius);
 }
 
+// The corners meeting the split divider are shrunk to the border radius, so
+// switching to the stacked layout must move that from the left/right pairs to
+// the pairs facing the now horizontal divider. Not parameterized on the
+// rounded corners pref because a split always gets rounded corners.
+IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
+                       RoundedCornersWithStackedSplitTabTest) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(https://github.com/brave/brave-browser/issues/55995): Re-enable on
+  // macOS 26.
+  if (base::mac::MacOSMajorVersion() >= 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe and later.";
+  }
+#endif  // BUILDFLAG(IS_MAC)
+
+  NewSplitTab();
+  RunScheduledLayouts();
+
+  const auto border_radius = GetRoundedCornersBorderRadius();
+  const auto window_corner_radius =
+      GetRoundedCornersBorderRadiusAtWindowCorner();
+
+  // The sidebar sits at the right contents edge by default, so the right
+  // corners already use the border radius and only a lower left corner can
+  // show the window radius.
+  // Vertical divider: the first pane's lower left corner is at the window
+  // corner, while the second pane's faces the divider.
+  ExpectSplitContentsViewRadii(0, window_corner_radius, border_radius);
+  ExpectSplitContentsViewRadii(1, border_radius, border_radius);
+
+  auto* tab_strip_model = browser()->tab_strip_model();
+  auto split_id =
+      tab_strip_model->GetSplitForTab(tab_strip_model->active_index());
+  ASSERT_TRUE(split_id);
+  tab_strip_model->UpdateSplitLayout(*split_id,
+                                     split_tabs::SplitTabLayout::kStacked);
+  RunScheduledLayouts();
+
+  // Horizontal divider: both of the top pane's lower corners now face it, so
+  // its lower left drops to the border radius, and the bottom pane's lower
+  // left becomes the one at the window corner.
+  ExpectSplitContentsViewRadii(0, border_radius, border_radius);
+  ExpectSplitContentsViewRadii(1, window_corner_radius, border_radius);
+}
+
 // Test 3: Rounded corners after exiting split tab mode
 IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                        RoundedCornersAfterExitingSplitTabTest) {
 #if BUILDFLAG(IS_MAC)
   // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
   // unexpected test timeout failures are resolved.
-  if (base::mac::MacOSMajorVersion() == 26) {
-    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  if (base::mac::MacOSMajorVersion() >= 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe and later.";
   }
 #endif
 
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   panel_ui->Toggle();
   RunScheduledLayouts();
 
@@ -793,7 +888,7 @@ INSTANTIATE_TEST_SUITE_P(
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
                        BoundingBoxStableWithSidePanelTest) {
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   auto* brave_view = brave_browser_view();
 
   // Get bounds with panel closed.
@@ -864,9 +959,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
   browser()->GetProfile()->GetPrefs()->SetBoolean(kShowFullscreenReminder,
                                                   false);
 
-  browser()
-      ->GetFeatures()
-      .exclusive_access_manager()
+  ExclusiveAccessManager::From(browser())
       ->context()
       ->UpdateExclusiveAccessBubble(
           {
@@ -888,18 +981,14 @@ IN_PROC_BROWSER_TEST_F(
   browser()->GetProfile()->GetPrefs()->SetBoolean(kShowFullscreenReminder,
                                                   false);
 
-  browser()
-      ->GetFeatures()
-      .exclusive_access_manager()
-      ->context()
-      ->UpdateExclusiveAccessBubble(
-          {
-              .origin = url::Origin::Create(GURL("http://www.example.com")),
-              .type = ExclusiveAccessBubbleType::
-                  EXCLUSIVE_ACCESS_BUBBLE_TYPE_BROWSER_FULLSCREEN_EXIT_INSTRUCTION,
-              .force_update = true,
-          },
-          base::NullCallback());
+  ExclusiveAccessManager::From(browser())->context()->UpdateExclusiveAccessBubble(
+      {
+          .origin = url::Origin::Create(GURL("http://www.example.com")),
+          .type = ExclusiveAccessBubbleType::
+              EXCLUSIVE_ACCESS_BUBBLE_TYPE_BROWSER_FULLSCREEN_EXIT_INSTRUCTION,
+          .force_update = true,
+      },
+      base::NullCallback());
 
   EXPECT_FALSE(browser_view()
                    ->GetExclusiveAccessContext()
@@ -911,9 +1000,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
   browser()->GetProfile()->GetPrefs()->SetBoolean(kShowFullscreenReminder,
                                                   true);
 
-  browser()
-      ->GetFeatures()
-      .exclusive_access_manager()
+  ExclusiveAccessManager::From(browser())
       ->context()
       ->UpdateExclusiveAccessBubble(
           {
@@ -934,18 +1021,14 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
   browser()->GetProfile()->GetPrefs()->SetBoolean(kShowFullscreenReminder,
                                                   true);
 
-  browser()
-      ->GetFeatures()
-      .exclusive_access_manager()
-      ->context()
-      ->UpdateExclusiveAccessBubble(
-          {
-              .origin = url::Origin::Create(GURL("http://www.example.com")),
-              .type = ExclusiveAccessBubbleType::
-                  EXCLUSIVE_ACCESS_BUBBLE_TYPE_BROWSER_FULLSCREEN_EXIT_INSTRUCTION,
-              .force_update = true,
-          },
-          base::NullCallback());
+  ExclusiveAccessManager::From(browser())->context()->UpdateExclusiveAccessBubble(
+      {
+          .origin = url::Origin::Create(GURL("http://www.example.com")),
+          .type = ExclusiveAccessBubbleType::
+              EXCLUSIVE_ACCESS_BUBBLE_TYPE_BROWSER_FULLSCREEN_EXIT_INSTRUCTION,
+          .force_update = true,
+      },
+      base::NullCallback());
 
   EXPECT_TRUE(browser_view()
                   ->GetExclusiveAccessContext()
@@ -960,18 +1043,14 @@ IN_PROC_BROWSER_TEST_F(
   browser()->GetProfile()->GetPrefs()->SetBoolean(kShowFullscreenReminder,
                                                   true);
 
-  browser()
-      ->GetFeatures()
-      .exclusive_access_manager()
-      ->context()
-      ->UpdateExclusiveAccessBubble(
-          {
-              .origin = url::Origin::Create(GURL("http://www.example.com")),
-              .type = ExclusiveAccessBubbleType::
-                  EXCLUSIVE_ACCESS_BUBBLE_TYPE_EXTENSION_FULLSCREEN_EXIT_INSTRUCTION,
-              .force_update = true,
-          },
-          base::NullCallback());
+  ExclusiveAccessManager::From(browser())->context()->UpdateExclusiveAccessBubble(
+      {
+          .origin = url::Origin::Create(GURL("http://www.example.com")),
+          .type = ExclusiveAccessBubbleType::
+              EXCLUSIVE_ACCESS_BUBBLE_TYPE_EXTENSION_FULLSCREEN_EXIT_INSTRUCTION,
+          .force_update = true,
+      },
+      base::NullCallback());
 
   EXPECT_TRUE(browser_view()
                   ->GetExclusiveAccessContext()
@@ -986,8 +1065,8 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
                        ImmersiveModeAndVerticalTabsAtStartup) {
   // Default browser: vertical tabs off at startup.
-  ASSERT_FALSE(VerticalTabController::FromBrowser(browser())
-                   ->ShouldShowBraveVerticalTabs());
+  ASSERT_FALSE(
+      VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
   EXPECT_TRUE(
       WindowFeatureController::From(browser())->UsesImmersiveFullscreenMode());
   ToggleVerticalTabStrip();
@@ -997,7 +1076,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
   // Second window: vertical tabs on at startup.
   browser()->GetProfile()->GetPrefs()->SetBoolean(
       brave_tabs::kVerticalTabsEnabled, true);
-  Browser* browser_with_vertical_at_startup =
+  BrowserWindowInterface* browser_with_vertical_at_startup =
       CreateBrowser(browser()->GetProfile());
   BraveBrowserView* view_with_vertical_at_startup = BraveBrowserView::From(
       BrowserView::GetBrowserViewForBrowser(browser_with_vertical_at_startup));
@@ -1031,7 +1110,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
 
   // Second window: compact mode on at startup.
   local_state->SetBoolean(brave_tabs::kCompactHorizontalTabs, true);
-  Browser* browser_with_compact_at_startup =
+  BrowserWindowInterface* browser_with_compact_at_startup =
       CreateBrowser(browser()->GetProfile());
   EXPECT_FALSE(WindowFeatureController::From(browser_with_compact_at_startup)
                    ->UsesImmersiveFullscreenMode());
@@ -1051,24 +1130,22 @@ IN_PROC_BROWSER_TEST_F(
     ShouldHideTopUIInTabFullscreenAfterVerticalTabsEnabledAtRuntime) {
   // Verify the precondition that triggers the bug: horizontal tabs at startup
   // means immersive mode is on (and fullscreen_toolbar_controller_ is nil).
-  ASSERT_FALSE(VerticalTabController::FromBrowser(browser())
-                   ->ShouldShowBraveVerticalTabs());
+  ASSERT_FALSE(
+      VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
   ASSERT_TRUE(
       WindowFeatureController::From(browser())->UsesImmersiveFullscreenMode());
 
   // Switch to vertical tabs at runtime.
   ToggleVerticalTabStrip();
-  ASSERT_TRUE(VerticalTabController::FromBrowser(browser())
-                  ->ShouldShowBraveVerticalTabs());
+  ASSERT_TRUE(
+      VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
   ASSERT_FALSE(
       WindowFeatureController::From(browser())->UsesImmersiveFullscreenMode());
 
   // Fake tab (content) fullscreen without triggering any OS fullscreen
   // transition — IsWindowFullscreenForTabOrPending() becomes true immediately.
-  auto* fullscreen_controller = browser()
-                                    ->GetFeatures()
-                                    .exclusive_access_manager()
-                                    ->fullscreen_controller();
+  auto* fullscreen_controller =
+      ExclusiveAccessManager::From(browser())->fullscreen_controller();
   fullscreen_controller->set_is_tab_fullscreen_for_testing(true);
   ASSERT_TRUE(fullscreen_utils::IsInContentFullscreen(browser()));
 

@@ -16,7 +16,7 @@ declare_args() {
 }
 
 java_cpp_enum("brave_android_java_enums_srcjar") {
-  sources = [ "//brave/chromium_src/chrome/browser/notifications/notification_handler_impl.h" ]
+  sources = []
 
   if (enable_brave_wallet) {
     sources += [ "//brave/components/decentralized_dns/core/constants.h" ]
@@ -78,6 +78,13 @@ android_library("qrreader_java") {
     "//third_party/androidx:androidx_activity_activity_java",
     "//third_party/androidx:androidx_annotation_annotation_java",
   ]
+}
+
+android_library("settings_insets_java") {
+  sources = [
+    "java/org/chromium/chrome/browser/settings/BottomInsetViewProvider.java",
+  ]
+  deps = [ "//build/android:build_java" ]
 }
 
 # Brave-specific resources.
@@ -188,6 +195,7 @@ android_resources("java_resources") {
     "java/brave-res/drawable/blue_48_rounded_bg.xml",
     "java/brave-res/drawable/blue_rounded_notification_bg.xml",
     "java/brave-res/drawable/bookmark_menu_bg.xml",
+    "java/brave-res/drawable/bookmark_menu_bg_dynamic.xml",
     "java/brave-res/drawable/brave_checkbox.xml",
     "java/brave-res/drawable/brave_icon_search.xml",
     "java/brave-res/drawable/brave_menu_new_private_tab.xml",
@@ -220,6 +228,7 @@ android_resources("java_resources") {
     "java/brave-res/drawable/brave_sync_tab_layout_bg.xml",
     "java/brave-res/drawable/brave_sync_top_rounded.xml",
     "java/brave-res/drawable/brave_sync_top_rounded_light.xml",
+    "java/brave-res/drawable/brave_top_sites_tooltip_background.xml",
     "java/brave-res/drawable/button_full.xml",
     "java/brave-res/drawable/button_outline.xml",
     "java/brave-res/drawable/button_transparent.xml",
@@ -308,7 +317,6 @@ android_resources("java_resources") {
     "java/brave-res/drawable/ic_coinbase.xml",
     "java/brave-res/drawable/ic_disabled.xml",
     "java/brave-res/drawable/ic_discount.xml",
-    "java/brave-res/drawable/ic_drag.xml",
     "java/brave-res/drawable/ic_eth.xml",
     "java/brave-res/drawable/ic_eth_24.xml",
     "java/brave-res/drawable/ic_eth_color.xml",
@@ -322,7 +330,6 @@ android_resources("java_resources") {
     "java/brave-res/drawable/ic_guardian.xml",
     "java/brave-res/drawable/ic_help_filled.xml",
     "java/brave-res/drawable/ic_key.xml",
-    "java/brave-res/drawable/ic_laptop.xml",
     "java/brave-res/drawable/ic_mask.xml",
     "java/brave-res/drawable/ic_matic_color.xml",
     "java/brave-res/drawable/ic_menu.xml",
@@ -339,15 +346,12 @@ android_resources("java_resources") {
     "java/brave-res/drawable/ic_popular_sources.xml",
     "java/brave-res/drawable/ic_rocket.xml",
     "java/brave-res/drawable/ic_search_21dp.xml",
-    "java/brave-res/drawable/ic_settings.xml",
     "java/brave-res/drawable/ic_settings_dapps.xml",
     "java/brave-res/drawable/ic_shield_done_filled.xml",
-    "java/brave-res/drawable/ic_smartphone.xml",
     "java/brave-res/drawable/ic_sol_asset_icon.xml",
     "java/brave-res/drawable/ic_sol_color.xml",
     "java/brave-res/drawable/ic_stats_notification_background.xml",
     "java/brave-res/drawable/ic_suggestions.xml",
-    "java/brave-res/drawable/ic_tablet.xml",
     "java/brave-res/drawable/ic_theme_system.xml",
     "java/brave-res/drawable/ic_tipping_error.xml",
     "java/brave-res/drawable/ic_toggle_down.xml",
@@ -489,7 +493,6 @@ android_resources("java_resources") {
     "java/brave-res/layout/bottom_toolbar_browsing.xml",
     "java/brave-res/layout/bottom_toolbar_menu_button.xml",
     "java/brave-res/layout/bottom_toolbar_tab_switcher.xml",
-    "java/brave-res/layout/brave_account_alert_dialog.xml",
     "java/brave-res/layout/brave_ads_existing_user_dialog_layout.xml",
     "java/brave-res/layout/brave_ads_new_user_dialog_layout.xml",
     "java/brave-res/layout/brave_ask_play_store_rating_dialog.xml",
@@ -535,6 +538,7 @@ android_resources("java_resources") {
     "java/brave-res/layout/brave_sync_done.xml",
     "java/brave-res/layout/brave_sync_layout.xml",
     "java/brave-res/layout/brave_toolbar.xml",
+    "java/brave-res/layout/brave_top_sites_tooltip_layout.xml",
     "java/brave-res/layout/brave_trackers_ads_panel.xml",
     "java/brave-res/layout/brave_unified_panel_layout.xml",
     "java/brave-res/layout/brave_vpn_server_selection_item_layout.xml",
@@ -573,7 +577,6 @@ android_resources("java_resources") {
     "java/brave-res/layout/fragment_create_custom_filters.xml",
     "java/brave-res/layout/fragment_creating_wallet.xml",
     "java/brave-res/layout/fragment_dormant_users_engagement_dialog.xml",
-    "java/brave-res/layout/fragment_encryption_key.xml",
     "java/brave-res/layout/fragment_fingerprint_unlock.xml",
     "java/brave-res/layout/fragment_link_subscription_dialog.xml",
     "java/brave-res/layout/fragment_onboarding_network_selection.xml",

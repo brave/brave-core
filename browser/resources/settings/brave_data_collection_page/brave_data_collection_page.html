@@ -3,7 +3,7 @@
   <template is="dom-if" if="[[!isP3AEnabledManaged_]]">
     <settings-toggle-button id="p3aEnabled"
         class="cr-row"
-        pref="[[p3aEnabledPref_]]"
+        checked="[[p3aEnabled_]]"
         label="$i18n{p3aEnableTitle}"
         sub-label="$i18n{p3aEnabledDesc}"
         on-settings-boolean-control-change="onP3AEnabledChange_">
@@ -12,7 +12,7 @@
   <template is="dom-if" if="[[!isStatsReportingEnabledManaged_]]">
     <settings-toggle-button id="statsUsagePingEnabled"
         class="cr-row"
-        pref="[[statsUsagePingEnabledPref_]]"
+        checked="[[statsUsagePingEnabled_]]"
         label="$i18n{statsUsagePingEnabledTitle}"
         sub-label="$i18n{statsUsagePingEnabledDesc}"
         on-settings-boolean-control-change="onStatsUsagePingEnabledChange_">
@@ -20,9 +20,10 @@
   </template>
   <settings-toggle-button id="metricsReportingControl"
       class="hr"
-      pref="[[metricsReportingPref_]]"
+      checked="[[metricsReportingEnabled_]]"
+      disabled="[[isMetricsReportingManaged_]]"
       label="$i18n{enablePersonalizationLogging}"
-      sub-label="$i18n{enablePersonalizationLoggingDesc}" no-set-pref
+      sub-label="$i18n{enablePersonalizationLoggingDesc}"
       on-settings-boolean-control-change="onMetricsReportingChange_">
     <template is="dom-if" if="[[showRestartForMetricsReporting_]]" restamp>
       <cr-button on-click="restartBrowser_" id="restart"
@@ -32,18 +33,14 @@
     </template>
   </settings-toggle-button>
 <if expr="enable_brave_ads">
-  <settings-toggle-button id="sponsoredAdsEnabled"
-      class="hr"
-      pref="{{prefs.brave.brave_ads.sponsored.enabled}}"
-      label="$i18n{sponsoredAdsEnabledTitle}"
-      sub-label="$i18n{sponsoredAdsEnabledDesc}">
-  </settings-toggle-button>
-</if>
-  <template is="dom-if" if="[[showSurveyPanelist_]]">
-    <cr-link-row id="surveyPanelistLinkRow"
-      class="hr" label="$i18n{surveyPanelist}"
-      on-click="onSurveyPanelistLinkClicked_"
-      role-description="$i18n{subpageArrowRoleDescription}">
-    </cr-link-row>
+  <template is="dom-if" if="[[showSponsoredAdsEnabledToggle_]]">
+    <settings-toggle-button id="sponsoredAdsEnabled"
+        class="hr"
+        pref-key="brave.brave_ads.sponsored.enabled"
+        label="$i18n{sponsoredAdsEnabledTitle}"
+        sub-label="$i18n{sponsoredAdsEnabledDesc}"
+        learn-more-url="$i18n{sponsoredAdsLearnMoreURL}">
+    </settings-toggle-button>
   </template>
+</if>
 </settings-section>

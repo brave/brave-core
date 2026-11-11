@@ -13,7 +13,7 @@ import '../settings_shared.css.js'
 import '../site_favicon.js'
 
 import type {CrDialogElement} from 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js'
-import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import {WebUiListenerMixin} from '/shared/settings/web_ui_listener_mixin.js'
 import {assert} from 'chrome://resources/js/assert.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {loadTimeData} from '../i18n_setup.js'
@@ -109,7 +109,7 @@ export class SettingsNormalSearchEngineListDialogElement extends
 
   private onSetAsDefaultClick_() {
     const searchEngine = this.searchEngines.find(
-      engine => engine.id === parseInt(this.selectedEngineId_))
+      engine => engine.id === this.selectedEngineId_)
     assert(searchEngine)
 
     this.browserProxy_.setDefaultSearchEngine(
@@ -138,7 +138,7 @@ export class SettingsNormalSearchEngineListDialogElement extends
     const defaultSearchEngine =
         this.searchEngines.find(searchEngine => searchEngine.default)
     assert(defaultSearchEngine)
-    this.selectedEngineId_ = defaultSearchEngine.id.toString()
+    this.selectedEngineId_ = defaultSearchEngine.id
   }
 
   private computeShowSaveGuestChoice_(saveGuestChoice: boolean|null): boolean {

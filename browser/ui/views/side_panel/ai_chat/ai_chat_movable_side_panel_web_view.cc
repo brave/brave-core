@@ -10,28 +10,25 @@
 
 #include "base/check.h"
 #include "base/functional/callback.h"
+#include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_link_opener.h"
 #include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_tab_transfer_bridge.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
-#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/file_select_helper.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/navigator/browser_navigator.h"
-#include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_scope.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "chrome/browser/ui/views/status_bubble_views.h"
 #include "chrome/browser/ui/webui/webui_embedding_context.h"
-#include "components/tabs/public/tab_interface.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
 #include "content/public/browser/file_select_listener.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_delegate.h"
+#include "content/public/common/referrer.h"
 #include "extensions/buildflags/buildflags.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/page_transition_types.h"
@@ -81,9 +78,8 @@ std::unique_ptr<views::View> AIChatMovableSidePanelWebView::CreateView(
   auto web_view = std::make_unique<AIChatMovableSidePanelWebView>(profile);
 
   AIChatSidePanelTabTransferBridge* transfer_bridge =
-      scope.GetBrowserWindowInterface()
-          .GetFeatures()
-          .ai_chat_side_panel_tab_transfer_bridge();
+      AIChatSidePanelTabTransferBridge::From(
+          &scope.GetBrowserWindowInterface());
 
   if (transfer_bridge && transfer_bridge->HasPendingTransfer()) {
     // A full-page AI Chat is being moved into the side panel: adopt that live
@@ -205,32 +201,27 @@ content::WebContents* AIChatMovableSidePanelWebView::AddNewContents(
   }
 
   // If AI Chat is not open in the side panel, don't open the tab.
-  if (browser->GetFeatures().side_panel_ui()->GetCurrentEntryId() !=
+  if (SidePanelUI::From(browser)->GetCurrentEntryId() !=
       SidePanelEntryId::kChatUI) {
     return nullptr;
   }
 
-  // Rather than opening a new tab from the side panel we navigate the active
-  // tab next to the sidepanel.
-  tabs::TabInterface* active_tab = browser->GetActiveTabInterface();
-  NavigateParams params(browser, target_url, ui::PAGE_TRANSITION_LINK);
+  return ai_chat::OpenSidePanelLinkContents(browser, std::move(new_contents),
+                                            target_url, window_features,
+                                            user_gesture);
+}
 
-  // If the global side panel is enabled, open the url in the current active
-  // tab. Otherwise open in a new tab.
-  if (ai_chat::features::IsAIChatGlobalSidePanelEverywhereEnabled()) {
-    params.source_contents = active_tab ? active_tab->GetContents() : nullptr;
-    params.disposition = WindowOpenDisposition::CURRENT_TAB;
-  } else {
-    // We open in a new foreground tab so we don't start a new conversation.
-    params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
-  }
-
-  params.window_action = NavigateParams::WindowAction::kNoAction;
-  params.user_gesture = user_gesture;
-
-  Navigate(&params);
-
-  return params.navigated_or_inserted_contents;
+void AIChatMovableSidePanelWebView::DidOpenRequestedURL(
+    content::WebContents* new_contents,
+    content::RenderFrameHost* source_render_frame_host,
+    const GURL& url,
+    const content::Referrer& referrer,
+    WindowOpenDisposition disposition,
+    ui::PageTransition transition,
+    bool started_from_context_menu,
+    bool renderer_initiated) {
+  ai_chat::RecordSidePanelLinkOpener(new_contents, source_render_frame_host,
+                                     referrer);
 }
 
 content::WebContents* AIChatMovableSidePanelWebView::OpenURLFromTab(
@@ -240,10 +231,10 @@ content::WebContents* AIChatMovableSidePanelWebView::OpenURLFromTab(
         navigation_handle_callback) {
   BrowserWindowInterface* browser = webui::GetBrowserWindowInterface(source);
   if (browser &&
-      (params.disposition == WindowOpenDisposition::NEW_FOREGROUND_TAB ||
-       params.disposition == WindowOpenDisposition::NEW_BACKGROUND_TAB ||
-       params.disposition == WindowOpenDisposition::NEW_WINDOW ||
-       params.disposition == WindowOpenDisposition::OFF_THE_RECORD)) {
+      (params.disposition == WindowOpenDisposition::kNewForegroundTab ||
+       params.disposition == WindowOpenDisposition::kNewBackgroundTab ||
+       params.disposition == WindowOpenDisposition::kNewWindow ||
+       params.disposition == WindowOpenDisposition::kOffTheRecord)) {
     return browser->OpenURL(params, std::move(navigation_handle_callback));
   }
   return nullptr;

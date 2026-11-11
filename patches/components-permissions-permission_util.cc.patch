@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_util.cc b/components/permissions/permission_util.cc
-index 5f510af63db41687d95cdc95cce402b20c62b559..66be225e588acac73a5dcbac18cb7c0060e2b88c 100644
+index b47da08dde4ab059be8959e2c8c44576bc3e3fb4..12a79aa669f84c29cf8e77d88edd563f2b28972a 100644
 --- a/components/permissions/permission_util.cc
 +++ b/components/permissions/permission_util.cc
 @@ -84,6 +84,7 @@ constexpr const char* kIsFileURLHistogram =
@@ -10,7 +10,7 @@ index 5f510af63db41687d95cdc95cce402b20c62b559..66be225e588acac73a5dcbac18cb7c00
    if (
  #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
        first_request == RequestType::kCameraPanTiltZoom ||
-@@ -225,6 +226,7 @@ RequestTypeForUma PermissionUtil::GetUmaValueForRequestType(
+@@ -229,6 +230,7 @@ RequestTypeForUma PermissionUtil::GetUmaValueForRequestType(
  #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
      case RequestType::kIdentityProvider:
        return RequestTypeForUma::PERMISSION_IDENTITY_PROVIDER;
@@ -18,7 +18,7 @@ index 5f510af63db41687d95cdc95cce402b20c62b559..66be225e588acac73a5dcbac18cb7c00
    }
  }
  
-@@ -586,6 +588,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingsTypeSafe(
+@@ -591,6 +593,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingsTypeSafe(
        return ContentSettingsType::LOOPBACK_NETWORK;
      case PermissionType::NUM:
        break;

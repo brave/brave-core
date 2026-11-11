@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AVKit
+import BraveUI
 import Data
 import Foundation
 import Strings

@@ -7,14 +7,12 @@
 
 #include <utility>
 
-#include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
 #include "components/policy/core/common/policy_bundle.h"
 #include "components/policy/core/common/policy_map.h"
 #include "components/policy/core/common/policy_namespace.h"
 #include "components/policy/core/common/policy_types.h"
-#include "components/prefs/pref_service.h"
 
 namespace brave_policy {
 

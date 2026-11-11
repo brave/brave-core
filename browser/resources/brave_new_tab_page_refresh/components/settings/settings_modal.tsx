@@ -4,10 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Dialog from '@brave/leo/react/dialog'
-import Icon from '@brave/leo/react/icon'
-import Navigation from '@brave/leo/react/navigation'
-import NavigationItem from '@brave/leo/react/navigationItem'
+import Dialog from '@brave/nala/react/dialog'
+import Icon from '@brave/nala/react/icon'
+import Navigation from '@brave/nala/react/navigation'
+import NavigationItem from '@brave/nala/react/navigationItem'
 
 import { useBraveNews } from '../../../../../components/brave_news/browser/resources/shared/Context'
 

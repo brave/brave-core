@@ -1,23 +1,38 @@
 /* Title for Ask Brave shortcut. Brave is the company name and should not be translated */
 "widgets.askBrave" = "Kérdezz a Brave-tól";
 
+/* Description for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.askBraveWidgetDescription" = "Tegyen fel egy kérdést a Brave-nek.";
+
+/* Title for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.askBraveWidgetTitle" = "Kérdezz a Brave-tól";
+
 /* Title for bookmarks menu item */
 "widgets.BookmarksMenuItem" = "Könyvjelzők";
 
 /* The name of the feature */
 "widgets.braveLeo" = "Leo MI";
 
+/* Title for the Leo AI voice input shortcut. Leo is the name of a product and should not be translated */
+"widgets.braveLeoVoiceInput" = "Leo Hangbemenet";
+
 /* The name of the feature */
 "widgets.braveNews" = "Brave News";
+
+/* Title for the Brave Search control. Brave is the company name and should not be translated */
+"widgets.braveSearch" = "Brave kereső";
+
+/* Description for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.braveSearchWidgetDescription" = "Keresés a weben a Brave-vel.";
+
+/* Title for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.braveSearchWidgetTitle" = "Brave kereső";
 
 /* Title for downloads menu item */
 "widgets.DownloadsMenuItem" = "Letöltések";
 
 /* Description for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetDescription" = "Gyorsan elérheti kedvenc webhelyeit.";
-
-/* Title for favorites widget on 'add widget' screen. */
-"widgets.favoritesWidgetTitle" = "Kedvencek";
 
 /* Title for history menu item */
 "widgets.HistoryMenuItem" = "Előzmények";

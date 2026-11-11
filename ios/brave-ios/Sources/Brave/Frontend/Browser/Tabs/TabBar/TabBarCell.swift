@@ -18,13 +18,19 @@ class TabBarCell: UICollectionViewCell {
   private lazy var closeButton: UIButton = {
     let button = UIButton()
     button.addTarget(self, action: #selector(closeTab), for: .touchUpInside)
-    button.setImage(
-      UIImage(named: "close_tab_bar", in: .module, compatibleWith: nil)!.template,
-      for: .normal
-    )
     button.tintColor = UIColor(braveSystemName: .textPrimary)
     // Close button is a bit wider to increase tap area, this aligns the 'X' image closer to the right.
-    button.imageEdgeInsets.left = 6
+    var configuration = UIButton.Configuration.plain()
+    configuration.baseBackgroundColor = .clear
+    configuration.image =
+      UIImage(named: "close_tab_bar", in: .module, compatibleWith: nil)!.template
+    configuration.contentInsets = NSDirectionalEdgeInsets(
+      top: 0,
+      leading: 6,
+      bottom: 0,
+      trailing: -6
+    )
+    button.configuration = configuration
     return button
   }()
 
@@ -72,6 +78,10 @@ class TabBarCell: UICollectionViewCell {
     updateFont()
 
     isSelected = false
+
+    registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+      self.updateFont()
+    }
   }
 
   private var privateModeCancellable: AnyCancellable?
@@ -133,11 +143,6 @@ class TabBarCell: UICollectionViewCell {
     }
     updateFont()
     updateColors()
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    updateFont()
   }
 
   func resetConfiguration() {

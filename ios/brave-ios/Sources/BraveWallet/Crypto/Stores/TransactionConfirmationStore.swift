@@ -39,17 +39,17 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   @Published var proposedAllowance: String = ""
   /// The details of this transaction
   @Published var transactionDetails: String = ""
-  /// The gas esitimation for this eip1559 transaction
+  /// The gas estimation for this eip1559 transaction
   @Published var eip1559GasEstimation: BraveWallet.GasEstimation1559?
-  /// The gas premium for filcoin transaction
+  /// The gas premium for filecoin transaction
   @Published var filTxGasPremium: String?
-  /// The gas limit for filcoin transaction
+  /// The gas limit for filecoin transaction
   @Published var filTxGasLimit: String?
-  /// The gas fee cap for filcoin transaction
+  /// The gas fee cap for filecoin transaction
   @Published var filTxGasFeeCap: String?
-  /// The origin info of this transaction
-  @Published var originInfo: BraveWallet.OriginInfo?
-  /// This is an id for the unppproved transaction that is currently displayed on screen
+  /// The dApp origin info of this transaction
+  @Published var dappOriginInfo: BraveWallet.DappOriginInfo?
+  /// This is an id for the unapproved transaction that is currently displayed on screen
   @Published var activeTransactionId: BraveWallet.TransactionInfo.ID = "" {
     didSet {
       if let tx = allTxs.first(where: { $0.id == activeTransactionId }) {
@@ -96,7 +96,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   @Published var isShowingActiveTxStatus: Bool = false
   @Published var confirmButtonTitle: String = Strings.Wallet.confirm
 
-  /// This is a list of all unpproved transactions iterated through all the accounts for all supported keyrings
+  /// This is a list of all unapproved transactions iterated through all the accounts for all supported keyrings
   var unapprovedTxs: [BraveWallet.TransactionInfo] {
     return allTxs.filter { $0.txStatus == .unapproved }
   }
@@ -216,7 +216,6 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   private let bitcoinWalletService: BraveWalletBitcoinWalletService
   private let zcashWalletService: BraveWalletZCashWalletService
   private let cardanoWalletService: BraveWalletCardanoWalletService
-  private let ipfsApi: IpfsAPI
   private let assetManager: WalletUserAssetManagerType
   private var selectedChain: BraveWallet.NetworkInfo = .init()
   private var txServiceObserver: TxServiceObserver?
@@ -238,7 +237,6 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     bitcoinWalletService: BraveWalletBitcoinWalletService,
     zcashWalletService: BraveWalletZCashWalletService,
     cardanoWalletService: BraveWalletCardanoWalletService,
-    ipfsApi: IpfsAPI,
     userAssetManager: WalletUserAssetManagerType
   ) {
     self.assetRatioService = assetRatioService
@@ -252,7 +250,6 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     self.bitcoinWalletService = bitcoinWalletService
     self.zcashWalletService = zcashWalletService
     self.cardanoWalletService = cardanoWalletService
-    self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
 
     self.setupObservers()
@@ -389,11 +386,11 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       }
 
       if activeParsedTransaction.transaction.id != parsedTransaction.transaction.id {
-        clearTrasactionInfoBeforeUpdate()
+        clearTransactionInfoBeforeUpdate()
       }
       activeParsedTransaction = parsedTransaction
       updateIsContractAddress()
-      await updateComfirmButtonTitle()
+      await updateConfirmButtonTitle()
 
       await fetchActiveTransactionDetails(
         accounts: allAccountsForCoin,
@@ -452,6 +449,19 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     self.activeTxStatusStore = nil
   }
 
+  /// Whether or not there is an active transaction status to display.
+  ///
+  /// Setting this to `false` closes the active transaction status store. Setting it to `true` has no
+  /// effect.
+  var isShowingTxStatus: Bool {
+    get { activeTxStatusStore != nil }
+    set {
+      if !newValue {
+        closeTxStatusStore()
+      }
+    }
+  }
+
   func updateAllTx(with txId: String) async -> Bool {
     // cancel or speed up only supported for .eth
     guard let txInfo = await txService.transactionInfo(coinType: .eth, txMetaId: txId),
@@ -506,7 +516,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     return .none
   }
 
-  private func clearTrasactionInfoBeforeUpdate() {
+  private func clearTransactionInfoBeforeUpdate() {
     // clear fields that could have dynamic async changes
     fiat = ""
     gasFiat = ""
@@ -703,7 +713,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     shouldFetchCurrentAllowance: Bool,
     shouldFetchGasTokenBalance: Bool
   ) async {
-    originInfo = activeParsedTransaction.transaction.originInfo
+    dappOriginInfo = activeParsedTransaction.transaction.dappOriginInfo
     transactionDetails = activeTransactionDetails
 
     switch activeParsedTransaction.details {
@@ -1253,7 +1263,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     }
   }
 
-  @MainActor private func updateComfirmButtonTitle() async {
+  @MainActor private func updateConfirmButtonTitle() async {
     guard activeParsedTransaction.coin == .zec,
       let zecTxData = activeParsedTransaction.transaction.txDataUnion.zecTxData
     else {

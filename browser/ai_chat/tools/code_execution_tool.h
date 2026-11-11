@@ -120,6 +120,7 @@ class CodeExecutionTool : public Tool {
   std::string tool_description_;
   std::list<CodeExecutionRequest> requests_;
   base::TimeDelta execution_time_limit_;
+  base::WeakPtrFactory<CodeExecutionTool> weak_ptr_factory_{this};
 };
 
 }  // namespace ai_chat

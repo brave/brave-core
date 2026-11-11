@@ -8,3 +8,7 @@ substitutions:
     set_feature_flag_default_state:
       feature_name: kApiGlicPrivate
       value: base::FEATURE_DISABLED_BY_DEFAULT
+  - description: 'Ship kApiDesktopAndroidNativeMessaging disabled.'
+    set_feature_flag_default_state:
+      feature_name: kApiDesktopAndroidNativeMessaging
+      value: base::FEATURE_DISABLED_BY_DEFAULT

@@ -7,8 +7,6 @@
 
 namespace brave_ads {
 
-BASE_FEATURE(kUserIdleDetectionFeature,
-             "UserIdleDetection",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kUserIdleDetectionFeature, base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace brave_ads

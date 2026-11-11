@@ -26,3 +26,25 @@ source_set("local_ai") {
     "//ui/webui",
   ]
 }
+
+source_set("browser_tests") {
+  testonly = true
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "on_device_speech_recognition_worker_ui_browsertest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/local_ai/core",
+    "//brave/components/local_ai/core:features",
+    "//brave/components/local_ai/resources/speech_worker:on_device_speech_recognition_worker_generated",
+    "//chrome/test:test_support",
+    "//chrome/test:test_support_ui",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//services/network/public/cpp",
+    "//url",
+  ]
+}

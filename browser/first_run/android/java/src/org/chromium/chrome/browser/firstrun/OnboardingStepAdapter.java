@@ -4,6 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.chromium.chrome.browser.firstrun;
 
+import static org.chromium.chrome.browser.day_zero.DayZeroHelper.DAY_ZERO_VARIANT_Y;
+import static org.chromium.chrome.browser.day_zero.DayZeroHelper.DAY_ZERO_VARIANT_Z;
+
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -12,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.LayoutRes;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -19,6 +23,9 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 
 import org.chromium.brave.browser.firstrun.R;
 import org.chromium.build.annotations.NullMarked;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * RecyclerView adapter for the onboarding ViewPager2, inflating one layout per step and delegating
@@ -29,13 +36,12 @@ public class OnboardingStepAdapter
         extends RecyclerView.Adapter<OnboardingStepAdapter.OnboardingBaseViewHolder> {
 
     /**
-     * Listener used by onboarding step views to request a forward page change in the host.
+     * Listener used by onboarding step views to dismiss the onboarding and to report preference
+     * changes to the host.
      *
      * @see WelcomeOnboardingActivity
      */
     public interface OnboardingNavigationListener {
-        void onRequestPageChange(final int position);
-
         void onDismiss();
 
         void onWebDiscoverPreferenceEnabled();
@@ -45,15 +51,12 @@ public class OnboardingStepAdapter
         void onP3aPreferenceChanged(final boolean enabled);
     }
 
-    private static final int[] STEPS = {
-        R.layout.help_brave_search, R.layout.block_interruptions, R.layout.make_brave_better
-    };
-
-    private static final int HELP_BRAVE_SEARCH_POSITION = 0;
-    private static final int BLOCK_INTERRUPTIONS_POSITION = 1;
-    private static final int MAKE_BRAVE_BETTER_POSITION = 2;
+    /** Layouts of the visible steps, in display order. */
+    private final List<Integer> mSteps = new ArrayList<>();
 
     private final SpannableString mWdpLearnMore;
+    private final String mDayZeroVariant;
+    private final PageBounceAnimator mPageBounceAnimator;
     private final OnboardingNavigationListener mListener;
 
     private boolean mCrashReportingChecked;
@@ -62,31 +65,64 @@ public class OnboardingStepAdapter
     private boolean mP3aManaged;
 
     public OnboardingStepAdapter(
-            final SpannableString wdpLearnMore, final OnboardingNavigationListener listener) {
+            final SpannableString wdpLearnMore,
+            final String dayZeroVariant,
+            final boolean skipMakeBraveBetter,
+            final PageBounceAnimator pageBounceAnimator,
+            final OnboardingNavigationListener listener) {
         mWdpLearnMore = wdpLearnMore;
+        mDayZeroVariant = dayZeroVariant;
+        mPageBounceAnimator = pageBounceAnimator;
         mListener = listener;
+
+        mSteps.add(R.layout.help_brave_search);
+        mSteps.add(R.layout.block_interruptions);
+        if (DAY_ZERO_VARIANT_Y.equals(dayZeroVariant)
+                || DAY_ZERO_VARIANT_Z.equals(dayZeroVariant)) {
+            mSteps.add(R.layout.customize_brave);
+        }
+        if (!skipMakeBraveBetter) {
+            mSteps.add(R.layout.make_brave_better);
+        }
     }
 
     @Override
     public OnboardingBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(STEPS[viewType], parent, false);
-        return switch (viewType) {
-            case HELP_BRAVE_SEARCH_POSITION ->
-                    new HelpBraveSearchViewHolder(view, mWdpLearnMore, mListener);
-            case BLOCK_INTERRUPTIONS_POSITION -> new BlockInterruptionsViewHolder(view, mListener);
-            case MAKE_BRAVE_BETTER_POSITION ->
-                    new MakeBraveBetterViewHolder(
-                            view,
-                            mCrashReportingManaged,
-                            mCrashReportingChecked,
-                            mP3aManaged,
-                            mP3aChecked,
-                            mListener);
-            default ->
-                    throw new IllegalStateException(
-                            String.format("View not found for view type %d.", viewType));
-        };
+        final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        final View view = inflater.inflate(viewType, parent, false);
+
+        if (viewType == R.layout.help_brave_search) {
+            return new HelpBraveSearchViewHolder(
+                    view, mWdpLearnMore, getNextPosition(viewType), mPageBounceAnimator, mListener);
+        }
+
+        if (viewType == R.layout.block_interruptions) {
+            // When it is the last step the next position is -1 and the view holder dismisses.
+            return new BlockInterruptionsViewHolder(
+                    view, getNextPosition(viewType), mPageBounceAnimator, mListener);
+        }
+
+        if (viewType == R.layout.customize_brave) {
+            return new CustomizeBraveViewHolder(
+                    view,
+                    mDayZeroVariant,
+                    getNextPosition(viewType),
+                    mPageBounceAnimator,
+                    mListener);
+        }
+
+        if (viewType == R.layout.make_brave_better) {
+            return new MakeBraveBetterViewHolder(
+                    view,
+                    mCrashReportingManaged,
+                    mCrashReportingChecked,
+                    mP3aManaged,
+                    mP3aChecked,
+                    mListener);
+        }
+
+        throw new IllegalStateException(
+                String.format("View not found for view type %d.", viewType));
     }
 
     @Override
@@ -103,13 +139,13 @@ public class OnboardingStepAdapter
     }
 
     @Override
-    public int getItemViewType(int position) {
-        return position;
+    public @LayoutRes int getItemViewType(int position) {
+        return mSteps.get(position);
     }
 
     @Override
     public int getItemCount() {
-        return STEPS.length;
+        return mSteps.size();
     }
 
     public void setCrashReportingChecked(final boolean checked) {
@@ -117,7 +153,7 @@ public class OnboardingStepAdapter
             return;
         }
         mCrashReportingChecked = checked;
-        notifyItemChanged(MAKE_BRAVE_BETTER_POSITION);
+        notifyStepChanged(R.layout.make_brave_better);
     }
 
     public void setCrashReportingManaged(final boolean managed) {
@@ -125,7 +161,7 @@ public class OnboardingStepAdapter
             return;
         }
         mCrashReportingManaged = managed;
-        notifyItemChanged(MAKE_BRAVE_BETTER_POSITION);
+        notifyStepChanged(R.layout.make_brave_better);
     }
 
     public void setP3aChecked(final boolean checked) {
@@ -133,7 +169,7 @@ public class OnboardingStepAdapter
             return;
         }
         mP3aChecked = checked;
-        notifyItemChanged(MAKE_BRAVE_BETTER_POSITION);
+        notifyStepChanged(R.layout.make_brave_better);
     }
 
     public void setP3aManaged(final boolean managed) {
@@ -141,7 +177,20 @@ public class OnboardingStepAdapter
             return;
         }
         mP3aManaged = managed;
-        notifyItemChanged(MAKE_BRAVE_BETTER_POSITION);
+        notifyStepChanged(R.layout.make_brave_better);
+    }
+
+    /** Returns the position after the given step, or -1 when it is the last one. */
+    private int getNextPosition(@LayoutRes final int step) {
+        final int next = mSteps.indexOf(step) + 1;
+        return next < mSteps.size() ? next : -1;
+    }
+
+    private void notifyStepChanged(@LayoutRes final int step) {
+        final int position = mSteps.indexOf(step);
+        if (position != -1) {
+            notifyItemChanged(position);
+        }
     }
 
     public abstract static class OnboardingBaseViewHolder extends RecyclerView.ViewHolder {
@@ -162,6 +211,8 @@ public class OnboardingStepAdapter
         private HelpBraveSearchViewHolder(
                 final View itemView,
                 final SpannableString wdpLearnMore,
+                final int nextPosition,
+                final PageBounceAnimator pageBounceAnimator,
                 final OnboardingNavigationListener listener) {
             super(itemView);
             mSubtitle = itemView.findViewById(R.id.brave_onboarding_subtitle);
@@ -171,15 +222,14 @@ public class OnboardingStepAdapter
 
             mLater = itemView.findViewById(R.id.onboarding_later);
             mLater.setClipToOutline(true);
-            mLater.setOnClickListener(
-                    v -> listener.onRequestPageChange(BLOCK_INTERRUPTIONS_POSITION));
+            mLater.setOnClickListener(v -> pageBounceAnimator.animateToPosition(nextPosition));
 
             mSure = itemView.findViewById(R.id.onboarding_sure);
             mSure.setClipToOutline(true);
             mSure.setOnClickListener(
                     view -> {
                         listener.onWebDiscoverPreferenceEnabled();
-                        listener.onRequestPageChange(BLOCK_INTERRUPTIONS_POSITION);
+                        pageBounceAnimator.animateToPosition(nextPosition);
                     });
         }
 
@@ -194,12 +244,21 @@ public class OnboardingStepAdapter
         final LottieAnimationView mBlockInterruptions;
 
         private BlockInterruptionsViewHolder(
-                final View itemView, final OnboardingNavigationListener listener) {
+                final View itemView,
+                final int nextOnboardingPosition,
+                final PageBounceAnimator pageBounceAnimator,
+                final OnboardingNavigationListener listener) {
             super(itemView);
             mContinue = itemView.findViewById(R.id.onboarding_continue);
             mContinue.setClipToOutline(true);
             mContinue.setOnClickListener(
-                    view -> listener.onRequestPageChange(MAKE_BRAVE_BETTER_POSITION));
+                    view -> {
+                        if (nextOnboardingPosition == -1) {
+                            listener.onDismiss();
+                        } else {
+                            pageBounceAnimator.animateToPosition(nextOnboardingPosition);
+                        }
+                    });
 
             mBlockInterruptions = itemView.findViewById(R.id.onboarding_illustration);
         }
@@ -207,6 +266,56 @@ public class OnboardingStepAdapter
         @Override
         public void viewRecycled() {
             mBlockInterruptions.cancelAnimation();
+        }
+    }
+
+    private static final class CustomizeBraveViewHolder extends OnboardingBaseViewHolder {
+
+        private CustomizeBraveViewHolder(
+                final View itemView,
+                final String dayZeroVariant,
+                final int nextOnboardingPosition,
+                final PageBounceAnimator pageBounceAnimator,
+                final OnboardingNavigationListener listener) {
+            super(itemView);
+            final Button leftButton = itemView.findViewById(R.id.onboarding_left_button);
+            final Button rightButton = itemView.findViewById(R.id.onboarding_right_button);
+
+            // Variant Z shows Customize on the left, variant Y shows it on the right.
+            final Button customize;
+            final Button useDefaults;
+            if (DAY_ZERO_VARIANT_Z.equals(dayZeroVariant)) {
+                customize = leftButton;
+                useDefaults = rightButton;
+            } else {
+                assert DAY_ZERO_VARIANT_Y.equals(dayZeroVariant);
+                customize = rightButton;
+                useDefaults = leftButton;
+            }
+
+            final View.OnClickListener goToNextStep =
+                    view -> {
+                        if (nextOnboardingPosition == -1) {
+                            listener.onDismiss();
+                        } else {
+                            pageBounceAnimator.animateToPosition(nextOnboardingPosition);
+                        }
+                    };
+
+            customize.setText(R.string.customize_onboarding);
+            customize.setClipToOutline(true);
+            // TODO(https://github.com/brave/brave-browser/issues/60480): Open the appearance
+            // customizer flow with address bar position customization.
+            // customize.setOnClickListener(openAppearanceCustomizer);
+
+            useDefaults.setText(R.string.use_defaults_onboarding);
+            useDefaults.setClipToOutline(true);
+            useDefaults.setOnClickListener(goToNextStep);
+        }
+
+        @Override
+        public void viewRecycled() {
+            /* No-op. */
         }
     }
 

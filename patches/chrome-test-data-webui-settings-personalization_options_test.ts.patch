@@ -1,5 +1,5 @@
 diff --git a/chrome/test/data/webui/settings/personalization_options_test.ts b/chrome/test/data/webui/settings/personalization_options_test.ts
-index dc7a00b2646c01af5984c8fd09125894b8c823e3..6b2f154859a84899d8dc45a4449c3b7d0d306e83 100644
+index 737656c393302f30f26d0e2bf5b97ce65d23be2c..dad9e962e73f4b825068769f6600af763fd09089 100644
 --- a/chrome/test/data/webui/settings/personalization_options_test.ts
 +++ b/chrome/test/data/webui/settings/personalization_options_test.ts
 @@ -14,11 +14,11 @@ import {OpenWindowProxyImpl} from 'chrome://settings/settings.js';
@@ -25,7 +25,7 @@ index dc7a00b2646c01af5984c8fd09125894b8c823e3..6b2f154859a84899d8dc45a4449c3b7d
    test('chromeSigninUserChoiceAvailableInitialization', async function() {
      assertFalse(isVisible(testElement.$.chromeSigninUserChoiceSelection));
  
-@@ -321,7 +321,9 @@ suite('AllBuilds', function() {
+@@ -319,7 +319,9 @@ suite('AllBuilds', function() {
      buildTestElement();  // Rebuild the element after modifying loadTimeData.
      assertFalse(isVisible(testElement.$.signinAllowedToggle));
    });

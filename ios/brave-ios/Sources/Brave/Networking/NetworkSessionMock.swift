@@ -75,7 +75,7 @@ class BaseMockNetworkSession: NetworkSession, @unchecked Sendable {
 }
 
 /// A fixed NetworkSession mock that is only able to return fixed results
-class NetworkSessionMock: BaseMockNetworkSession {
+class NetworkSessionMock: BaseMockNetworkSession, @unchecked Sendable {
   var data: Data?
   var response: URLResponse?
   var error: Error?

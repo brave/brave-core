@@ -65,7 +65,7 @@ class NTPNotificationViewController: TranslucentBottomSheet {
 
   private var isPortraitPhone: Bool {
     traitCollection.userInterfaceIdiom == .phone
-      && UIApplication.shared.statusBarOrientation.isPortrait
+      && view.window?.windowScene?.interfaceOrientation.isPortrait == true
   }
 
   override func close(immediately: Bool = false) {

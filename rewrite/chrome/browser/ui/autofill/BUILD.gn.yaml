@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add the deps the Brave autofill overrides need.
+    add_literal_to_list:
+      target: impl
+      list_name: deps
+      literal: brave_chromium_src_chrome_browser_ui_autofill_deps
+      import: //brave/chromium_src/chrome/browser/ui/autofill/sources.gni
+
+  - description: |
+      Add the Brave autofill deps.
+
+      Upstream only builds these on Android, so the addition is made under
+      the same condition.
+    add_literal_to_list:
+      target: impl
+      list_name: deps
+      literal: brave_chrome_browser_ui_autofill_deps
+      conditional: is_android
+      import: //brave/browser/ui/autofill/sources.gni

@@ -6,7 +6,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/test/bind.h"
 #include "chrome/browser/password_manager/factories/profile_password_store_factory.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -14,6 +13,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/password_manager/core/browser/password_form_manager_for_ui.h"
 #include "components/password_manager/core/browser/password_store/password_form_converters.h"
+#include "components/password_manager/core/browser/password_string.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "url/gurl.h"
@@ -40,7 +40,7 @@ IN_PROC_BROWSER_TEST_F(PasswordManagerTest,
   form.url = GURL("https://example.com");
   form.signon_realm = "https://example.com";
   form.username_value = u"test_user";
-  form.password_value = u"test_password";
+  form.password_value = password_manager::PasswordString(u"test_password");
   form.scheme = password_manager::PasswordForm::Scheme::kHtml;
   base::RunLoop run_loop;
   store_->AddLogin(password_manager::FromPasswordForm(form),

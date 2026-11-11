@@ -18,7 +18,6 @@
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -329,7 +328,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled, DefaultAPIFalsePrivateWindow) {
   // Opensearch providers are only allowed in the root of a site,
   // See SearchEngineTabHelper::GenerateKeywordFromNavigationEntry.
   GURL url = https_server()->GetURL(kAllowedDomain, "/");
-  Browser* private_browser = CreateIncognitoBrowser(nullptr);
+  BrowserWindowInterface* private_browser = CreateIncognitoBrowser(nullptr);
   search_test_utils::WaitForTemplateURLServiceToLoad(
       TemplateURLServiceFactory::GetForProfile(private_browser->GetProfile()));
   ASSERT_TRUE(ui_test_utils::NavigateToURL(private_browser, url));

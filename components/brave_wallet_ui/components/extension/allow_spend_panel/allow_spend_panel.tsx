@@ -4,12 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
-import Tooltip from '@brave/leo/react/tooltip'
-import Icon from '@brave/leo/react/icon'
-
-// Queries
-import { useGetActiveOriginQuery } from '../../../common/slices/api.slice'
+import Button from '@brave/nala/react/button'
+import Tooltip from '@brave/nala/react/tooltip'
+import Icon from '@brave/nala/react/icon'
 
 // Hooks
 import { useExplorer } from '../../../common/hooks/explorer'
@@ -66,10 +63,6 @@ import {
 } from '../shared-panel-styles'
 
 export const AllowSpendPanel = () => {
-  // Queries
-  const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
-    useGetActiveOriginQuery()
-
   // State
   const [showEditSpendLimit, setShowEditSpendLimit] = React.useState(false)
   const [showEditNetworkFee, setShowEditNetworkFee] =
@@ -107,7 +100,6 @@ export const AllowSpendPanel = () => {
 
   // Computed
   const isApprovalUnlimited = transactionDetails?.isApprovalUnlimited ?? false
-  const originInfo = selectedPendingTransaction?.originInfo ?? activeOrigin
 
   if (!selectedPendingTransaction || !transactionDetails) {
     return <LoadingPanel />
@@ -144,7 +136,11 @@ export const AllowSpendPanel = () => {
             height='100%'
             justifyContent='space-between'
           >
-            {originInfo && <OriginInfoCard origin={originInfo} />}
+            {selectedPendingTransaction.dappOriginInfo && (
+              <OriginInfoCard
+                origin={selectedPendingTransaction.dappOriginInfo}
+              />
+            )}
             <ScrollableColumn
               width='100%'
               height='100%'

@@ -29,6 +29,7 @@
 #include "brave/components/ai_chat/content/browser/associated_url_content.h"
 #include "brave/components/ai_chat/content/browser/workspace_associated_content.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
@@ -245,8 +246,8 @@ AIChatUIPageHandler::AIChatUIPageHandler(
       ai_chat_metrics_->RecordSidebarUsage();
     }
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-    active_chat_tab_helper_ =
-        ai_chat::AIChatTabHelper::FromWebContents(chat_context_web_contents);
+    active_chat_tab_helper_ = ai_chat::AIChatTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(chat_context_web_contents));
 
     associated_content_delegate_observation_.Observe(
         &active_chat_tab_helper_->web_contents_content());
@@ -434,14 +435,41 @@ void AIChatUIPageHandler::OnWorkspaceFolderChosen(
     std::move(callback).Run(std::nullopt);
     return;
   }
-  // The workspace page is a chrome-untrusted:// content, which isn't in
-  // |kAllowedContentSchemes|, so attach it directly via the manager rather than
+  // A workspace's workspace:// URL isn't in |kAllowedContentSchemes|, so attach
+  // it directly via the manager rather than
   // AIChatService::AssociateOwnedContent (which would reject the scheme).
   conversation->associated_content_manager()->AddOwnedContent(
       std::make_unique<ai_chat::WorkspaceAssociatedContent>(
           *selected, context,
           base::BindOnce(&brave::AttachPrivacySensitiveTabHelpers)));
   std::move(callback).Run(selected->AsUTF8Unsafe());
+}
+
+void AIChatUIPageHandler::OpenWorkspaceFile(const GURL& workspace_url,
+                                            const std::string& file_path) {
+  if (!base::FeatureList::IsEnabled(features::kAIChatWorkspaceTools)) {
+    return;
+  }
+  std::optional<GURL> file_url =
+      ai_chat::WorkspaceAssociatedContent::GetFileUrl(workspace_url, file_path);
+  if (!file_url) {
+    return;
+  }
+
+  // From the side panel, the current tab is the one the panel is alongside.
+  if (active_chat_tab_helper_) {
+    active_chat_tab_helper_->GetWebContents().OpenURL(
+        {*file_url, content::Referrer(), WindowOpenDisposition::kCurrentTab,
+         ui::PAGE_TRANSITION_LINK, false},
+        /*navigation_handle_callback=*/{});
+    return;
+  }
+
+  // AI Chat is itself the current tab, so don't navigate it away from the
+  // conversation. Move the conversation into the side panel (when supported)
+  // and open the file in a tab in its place, as for other links.
+  ai_chat::MaybeMoveFullPageChatToSidePanel(owner_web_contents_);
+  OpenURLInNewTab(*file_url);
 }
 
 void AIChatUIPageHandler::OpenAIChatSettings() {
@@ -481,7 +509,7 @@ void AIChatUIPageHandler::OpenConversationFullPage(
 
   NavigateParams params(profile_, ConversationUrl(conversation_uuid),
                         ui::PAGE_TRANSITION_TYPED);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   params.referrer = content::Referrer();
   Navigate(&params);
 
@@ -519,12 +547,12 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
 void AIChatUIPageHandler::OpenURLInNewTab(const GURL& url) {
 #if BUILDFLAG(IS_ANDROID)
   owner_web_contents_->OpenURL(
-      {url, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      {url, content::Referrer(), WindowOpenDisposition::kNewForegroundTab,
        ui::PAGE_TRANSITION_LINK, false},
       /*navigation_handle_callback=*/{});
 #else
   NavigateParams params(profile_, url, ui::PAGE_TRANSITION_LINK);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   params.referrer = content::Referrer();
   Navigate(&params);
 #endif  // !BUILDFLAG(IS_ANDROID)
@@ -585,8 +613,8 @@ void AIChatUIPageHandler::OnTabStripModelChanged(
 
   auto* new_contents = selection.new_contents.get();
   if (new_contents) {
-    auto* active_chat_tab_helper =
-        ai_chat::AIChatTabHelper::FromWebContents(new_contents);
+    auto* active_chat_tab_helper = ai_chat::AIChatTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(new_contents));
     if (active_chat_tab_helper) {
       active_chat_tab_helper_ = active_chat_tab_helper;
       associated_content_delegate_observation_.Observe(
@@ -604,6 +632,13 @@ void AIChatUIPageHandler::OnTabStripModelChanged(
   NotifyNewDefaultConversation();
 }
 #endif
+
+void AIChatUIPageHandler::OnDestroyed(AssociatedContentDelegate* delegate) {
+  // The content is owned by the tab helper, which is destroyed before its
+  // contents when the tab closes or its contents is replaced.
+  associated_content_delegate_observation_.Reset();
+  active_chat_tab_helper_ = nullptr;
+}
 
 void AIChatUIPageHandler::OnNewPage(AssociatedContentDelegate* delegate) {
   if (!features::IsAIChatGlobalSidePanelEverywhereEnabled() ||
@@ -711,8 +746,8 @@ void AIChatUIPageHandler::AssociateTab(mojom::TabDataPtr mojom_tab,
       contents, base::BindOnce(
                     [](const std::string& conversation_uuid,
                        content::WebContents* contents) {
-                      auto* tab_helper =
-                          ai_chat::AIChatTabHelper::FromWebContents(contents);
+                      auto* tab_helper = ai_chat::AIChatTabHelper::From(
+                          tabs::TabInterface::MaybeGetFromContents(contents));
                       if (!tab_helper) {
                         return;
                       }
@@ -747,7 +782,8 @@ void AIChatUIPageHandler::DisassociateContent(
 
 void AIChatUIPageHandler::NewConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
-    mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
+    mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler,
+    const std::optional<GURL>& workspace_url) {
   ConversationHandler* conversation;
   if (active_chat_tab_helper_ && conversations_are_content_associated_) {
     conversation =
@@ -765,6 +801,18 @@ void AIChatUIPageHandler::NewConversation(
             &active_chat_tab_helper_->web_contents_content())) {
       conversation->associated_content_manager()->AddContent(
           &active_chat_tab_helper_->web_contents_content());
+    }
+  }
+
+  // Content uuids are unique across conversations, so the workspace gets a new
+  // one.
+  if (workspace_url &&
+      base::FeatureList::IsEnabled(features::kAIChatWorkspaceTools)) {
+    if (auto workspace = WorkspaceAssociatedContent::CreateFromUrl(
+            *workspace_url, /*content_uuid=*/std::nullopt, profile_,
+            base::BindOnce(&brave::AttachPrivacySensitiveTabHelpers))) {
+      conversation->associated_content_manager()->AddOwnedContent(
+          std::move(workspace));
     }
   }
 

@@ -4,6 +4,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import contextlib
 import io
 import json
 import os
@@ -14,8 +15,12 @@ import unittest
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-from vscode import (VsCodeIpcConnection, _NamedPipeSocket,
-                    _PosixVsCodeIpcConnection, _WinVsCodeIpcConnection)
+from vscode import (
+    VsCodeIpcConnection,
+    _NamedPipeSocket,
+    _PosixVsCodeIpcConnection,
+    _WinVsCodeIpcConnection,
+)
 
 
 class PosixVsCodeIpcConnectionTest(unittest.TestCase):
@@ -23,9 +28,10 @@ class PosixVsCodeIpcConnectionTest(unittest.TestCase):
 
     def setUp(self):
         """Creates a temporary directory and derives a socket path from it."""
-        self._tmp_dir = tempfile.TemporaryDirectory()
-        self.sock_path = os.path.join(self._tmp_dir.name, 'vscode.sock')
-        self.addCleanup(self._tmp_dir.cleanup)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        tmp_dir = stack.enter_context(tempfile.TemporaryDirectory())
+        self.sock_path = os.path.join(tmp_dir, 'vscode.sock')
 
     def test_init_reads_socket_path_from_env(self):
         """_socket_path is set from VSCODE_IPC_HOOK_CLI."""
@@ -40,8 +46,9 @@ class PosixVsCodeIpcConnectionTest(unittest.TestCase):
             conn = _PosixVsCodeIpcConnection()
             self.assertEqual(conn._socket_path, '')
 
-    @unittest.skipUnless(hasattr(socket, 'AF_UNIX'),
-                         'AF_UNIX is not available on this platform')
+    @unittest.skipUnless(
+        hasattr(socket, 'AF_UNIX'), 'AF_UNIX is not available on this platform'
+    )
     def test_connect_creates_unix_socket(self):
         """connect() opens an AF_UNIX socket and connects to _socket_path."""
         with patch.dict(os.environ, {'VSCODE_IPC_HOOK_CLI': self.sock_path}):
@@ -52,7 +59,8 @@ class PosixVsCodeIpcConnectionTest(unittest.TestCase):
                 conn.connect()
                 mock_socket_cls.assert_called_once_with(
                     socket.AF_UNIX,  # pylint: disable=no-member
-                    socket.SOCK_STREAM)
+                    socket.SOCK_STREAM,
+                )
                 mock_sock.connect.assert_called_once_with(self.sock_path)
 
     def test_open_file_skips_when_no_socket_path(self):
@@ -81,8 +89,10 @@ class PosixVsCodeIpcConnectionTest(unittest.TestCase):
             mock_response.reason = 'OK'
             mock_response.read.return_value = b''
             file_path = Path('/path/to/file.cc')
-            with patch.object(conn, 'request') as mock_request, \
-                 patch.object(conn, 'getresponse', return_value=mock_response):
+            with (
+                patch.object(conn, 'request') as mock_request,
+                patch.object(conn, 'getresponse', return_value=mock_response),
+            ):
                 conn.open_file([file_path])
                 mock_request.assert_called_once()
                 method, path, body, headers = mock_request.call_args[0]
@@ -90,8 +100,9 @@ class PosixVsCodeIpcConnectionTest(unittest.TestCase):
                 self.assertEqual(path, '/')
                 payload = json.loads(body)
                 self.assertEqual(payload['type'], 'open')
-                self.assertEqual(payload['fileURIs'],
-                                 [file_path.resolve().as_uri()])
+                self.assertEqual(
+                    payload['fileURIs'], [file_path.resolve().as_uri()]
+                )
                 self.assertTrue(payload['forceReuseWindow'])
                 self.assertEqual(headers['Content-Type'], 'application/json')
 
@@ -99,14 +110,17 @@ class PosixVsCodeIpcConnectionTest(unittest.TestCase):
         """open_file logs a warning and does not raise on connection failure."""
         with patch.dict(os.environ, {'VSCODE_IPC_HOOK_CLI': self.sock_path}):
             conn = _PosixVsCodeIpcConnection()
-            with patch.object(conn,
-                              'request',
-                              side_effect=ConnectionRefusedError('refused')):
+            with patch.object(
+                conn, 'request', side_effect=ConnectionRefusedError('refused')
+            ):
                 with self.assertLogs(level='WARNING') as captured:
                     conn.open_file([Path('/path/to/file.cc')])
                 self.assertTrue(
-                    any('Could not open files in VS Code window' in line
-                        for line in captured.output))
+                    any(
+                        'Could not open files in VS Code window' in line
+                        for line in captured.output
+                    )
+                )
 
 
 class _ReadableRawIO(io.RawIOBase):
@@ -205,8 +219,10 @@ class WinVsCodeIpcConnectionTest(unittest.TestCase):
             mock_response.reason = 'OK'
             mock_response.read.return_value = b''
             file_path = Path('/path/to/file.cc')
-            with patch.object(conn, 'request') as mock_request, \
-                 patch.object(conn, 'getresponse', return_value=mock_response):
+            with (
+                patch.object(conn, 'request') as mock_request,
+                patch.object(conn, 'getresponse', return_value=mock_response),
+            ):
                 conn.open_file([file_path])
                 mock_request.assert_called_once()
                 method, path, body, headers = mock_request.call_args[0]
@@ -214,8 +230,9 @@ class WinVsCodeIpcConnectionTest(unittest.TestCase):
                 self.assertEqual(path, '/')
                 payload = json.loads(body)
                 self.assertEqual(payload['type'], 'open')
-                self.assertEqual(payload['fileURIs'],
-                                 [file_path.resolve().as_uri()])
+                self.assertEqual(
+                    payload['fileURIs'], [file_path.resolve().as_uri()]
+                )
                 self.assertTrue(payload['forceReuseWindow'])
                 self.assertEqual(headers['Content-Type'], 'application/json')
 
@@ -223,14 +240,17 @@ class WinVsCodeIpcConnectionTest(unittest.TestCase):
         """open_file logs a warning and does not raise on connection failure."""
         with patch.dict(os.environ, {'VSCODE_GIT_IPC_HANDLE': self.PIPE_PATH}):
             conn = _WinVsCodeIpcConnection()
-            with patch.object(conn,
-                              'request',
-                              side_effect=ConnectionRefusedError('refused')):
+            with patch.object(
+                conn, 'request', side_effect=ConnectionRefusedError('refused')
+            ):
                 with self.assertLogs(level='WARNING') as captured:
                     conn.open_file([Path('/path/to/file.cc')])
                 self.assertTrue(
-                    any('Could not open files in VS Code window' in line
-                        for line in captured.output))
+                    any(
+                        'Could not open files in VS Code window' in line
+                        for line in captured.output
+                    )
+                )
 
 
 class VsCodeIpcConnectionDispatchTest(unittest.TestCase):

@@ -1,0 +1,13 @@
+diff --git a/base/i18n/win/embedded_i18n/generate_embedded_i18n.gni b/base/i18n/win/embedded_i18n/generate_embedded_i18n.gni
+index 556b766c322ecca2623581db491173975376bf0d..178cf507988ec6611386c80852f294b42ea0e338 100644
+--- a/base/i18n/win/embedded_i18n/generate_embedded_i18n.gni
++++ b/base/i18n/win/embedded_i18n/generate_embedded_i18n.gni
+@@ -154,5 +154,8 @@ template("generate_embedded_i18n") {
+ 
+     forward_variables_from(invoker, [ "deps" ])
+     forward_variables_from(invoker, [ "visibility" ])
++    if (defined(invoker.sources)) {
++      sources = invoker.sources
++    }
+   }
+ }

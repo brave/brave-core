@@ -1,0 +1,13 @@
+diff --git a/ios/web/public/test/fakes/fake_navigation_manager.h b/ios/web/public/test/fakes/fake_navigation_manager.h
+index 368c598b30aa1c887f78ed0810006ed53025ff30..12d24fc7522c77f426d5f5577531758b3d0123d1 100644
+--- a/ios/web/public/test/fakes/fake_navigation_manager.h
++++ b/ios/web/public/test/fakes/fake_navigation_manager.h
+@@ -91,6 +91,8 @@ class FakeNavigationManager : public NavigationManager {
+   // Returns whether RequestMobileSite has been called.
+   bool RequestMobileSiteWasCalled();
+ 
++  bool IsNativeRestoreInProgress() const override;
++
+  private:
+   // A list of items constructed by calling AddItem().
+   std::vector<std::unique_ptr<NavigationItem>> items_;

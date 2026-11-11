@@ -35,11 +35,6 @@ SplitViewLinkNavigationThrottle::WillStartRequest() {
 
 content::NavigationThrottle::ThrottleCheckResult
 SplitViewLinkNavigationThrottle::MaybeRedirectToRightPane() {
-  content::WebContents* source = navigation_handle()->GetWebContents();
-  if (!source) {
-    return PROCEED;
-  }
-
   // Only handle main frame navigations
   if (!navigation_handle()->IsInMainFrame()) {
     return PROCEED;
@@ -52,6 +47,13 @@ SplitViewLinkNavigationThrottle::MaybeRedirectToRightPane() {
 
   // Only intercept renderer-initiated navigations.
   if (!navigation_handle()->IsRendererInitiated()) {
+    return PROCEED;
+  }
+
+  // Without an initiator origin the navigation we re-issue in the right pane
+  // would look browser-initiated, which would send SameSite=Strict cookies and
+  // `Sec-Fetch-Site: none`.
+  if (!navigation_handle()->GetInitiatorOrigin()) {
     return PROCEED;
   }
 
@@ -72,9 +74,7 @@ SplitViewLinkNavigationThrottle::MaybeRedirectToRightPane() {
   }
 
   // Use the shared redirect manager to check and perform redirect
-  if (split_view::MaybeRedirectToRightPane(
-          source, navigation_handle()->GetURL(),
-          content::Referrer(navigation_handle()->GetReferrer()))) {
+  if (split_view::MaybeRedirectToRightPane(*navigation_handle())) {
     return CANCEL;
   }
 

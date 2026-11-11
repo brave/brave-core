@@ -9,7 +9,6 @@
 #include "base/test/bind.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -283,7 +282,7 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest, HSTSIsPartitioned) {
   // Load b.com in another tab and expect HSTS is not applied.
   GURL b_com_url("http://b.com/iframe.html");
   auto* b_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), b_com_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), b_com_url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(b_com_rfh);
   EXPECT_EQ(b_com_rfh->GetLastCommittedURL(), b_com_url);
@@ -325,7 +324,7 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
   // Load sub.a.com, expect b.com HSTS state is applied.
   GURL sub_a_com_url("http://sub.a.com/simple.html");
   auto* sub_a_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), sub_a_com_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), sub_a_com_url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(sub_a_com_rfh);
 
@@ -348,7 +347,7 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
 
   // Load a.com in another tab, expect HSTS is applied.
   auto* a_com_rfh2 = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), a_com_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), a_com_url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(a_com_rfh2);
   EXPECT_TRUE(a_com_rfh2->GetLastCommittedURL().SchemeIsCryptographic());
@@ -371,7 +370,7 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest, HSTSIsCleared) {
   // Load b.com in another tab and expect c.com HSTS is not applied.
   GURL b_com_url("http://b.com/simple.html");
   auto* b_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), b_com_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), b_com_url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(b_com_rfh);
   EXPECT_EQ(b_com_rfh->GetLastCommittedURL(), b_com_url);
@@ -436,7 +435,7 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
 
   // Load a.com in another tab, expect HSTS is applied.
   auto* a_com_rfh2 = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), a_com_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), a_com_url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(a_com_rfh2);
   EXPECT_TRUE(a_com_rfh2->GetLastCommittedURL().SchemeIsCryptographic());
@@ -480,7 +479,7 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
 
   GURL a_com_url("http://a.com/simple.html");
   auto* a_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), a_com_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), a_com_url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(a_com_rfh);
   EXPECT_TRUE(a_com_rfh->GetLastCommittedURL().SchemeIsCryptographic());
@@ -513,7 +512,7 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest, NetworkContextAPI) {
 
   GURL b_com_url("http://b.com/iframe.html");
   auto* b_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), b_com_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), b_com_url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(b_com_rfh);
   EXPECT_EQ(b_com_rfh->GetLastCommittedURL(), b_com_url);
@@ -657,7 +656,7 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningDisabledBrowserTest,
   // Load b.com in another tab and expect HSTS is applied.
   GURL b_com_url("http://b.com/simple.html");
   auto* b_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), b_com_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), b_com_url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(b_com_rfh);
   EXPECT_TRUE(b_com_rfh->GetLastCommittedURL().SchemeIsCryptographic());
@@ -665,7 +664,7 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningDisabledBrowserTest,
   // Load b.com in another tab and expect HSTS is applied.
   GURL c_com_url("http://c.com/simple.html");
   auto* c_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), c_com_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), c_com_url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(c_com_rfh);
   EXPECT_TRUE(c_com_rfh->GetLastCommittedURL().SchemeIsCryptographic());

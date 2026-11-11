@@ -7,14 +7,24 @@ import * as React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
+// Types
+import { BraveWallet } from '../../../constants/types'
+
 // Utils
 import {
   createMockStore,
   WalletTestThemeProvider,
 } from '../../../utils/test-utils'
+import { mockUniswapOriginInfo } from '../../../stories/mock-data/mock-origin-info'
+import { mockBasicAttentionToken } from '../../../stories/mock-data/mock-asset-options'
 
 // Components
 import { AddSuggestedTokenPanel } from './add_suggested_token_panel'
+
+const mockSuggestToken: BraveWallet.AddSuggestTokenRequest = {
+  dappOriginInfo: mockUniswapOriginInfo,
+  token: mockBasicAttentionToken,
+}
 
 describe('AddSuggestedTokenPanel', () => {
   it('should render add suggested token panel correctly', async () => {
@@ -22,7 +32,10 @@ describe('AddSuggestedTokenPanel', () => {
     const { container } = render(
       <Provider store={store}>
         <WalletTestThemeProvider>
-          <AddSuggestedTokenPanel />
+          <AddSuggestedTokenPanel
+            suggestToken={mockSuggestToken}
+            requestsLength={1}
+          />
         </WalletTestThemeProvider>
       </Provider>,
     )

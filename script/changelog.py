@@ -6,7 +6,7 @@ import sys
 
 from argparse import RawTextHelpFormatter
 
-from lib.changelog import *
+from lib.changelog import download_from_url, render_html, render_markdown
 
 
 def main():
@@ -35,21 +35,26 @@ def main():
     tag = args.tag
 
     if not re.match(r'^refs/tags/', tag) and not re.match(r'^v', tag):
-        logging.error(" Tag prefix must contain {} or {}".format(
-            "\"refs/tags/\"", "\"v\""))
-        exit(1)
+        logging.error(
+            " Tag prefix must contain %s or %s", "\"refs/tags/\"", "\"v\""
+        )
+        sys.exit(1)
 
     match = re.match(r'^refs/tags/(.*)$', tag)
     if match:
         tag = match.group(1)
 
     match = re.match(r'^v(.*)$', tag)
-    if match:
-        version = match.group(1)
+    if not match:
+        logging.error(
+            " Tag must start with \"v\" after \"refs/tags/\": %s", args.tag
+        )
+        sys.exit(1)
+    version = match.group(1)
 
-    logging.debug("CHANGELOG_URL: {}".format(changelog_url))
-    logging.debug("TAG: {}".format(tag))
-    logging.debug("VERSION: {}".format(version))
+    logging.debug("CHANGELOG_URL: %s", changelog_url)
+    logging.debug("TAG: %s", tag)
+    logging.debug("VERSION: %s", version)
 
     changelog_txt = download_from_url(args, logging, changelog_url)
 
@@ -63,16 +68,29 @@ def parse_args():
     desc = "Parse Brave Browser changelog and return changes for a tag"
 
     parser = argparse.ArgumentParser(
-        description=desc, formatter_class=RawTextHelpFormatter)
-    parser.add_argument('-d', '--debug', action='store_true',
-                        help='Print debug statements')
+        description=desc, formatter_class=RawTextHelpFormatter
+    )
     parser.add_argument(
-        '-o', '--output', help='Output format: markdown or html (required)', required=True)
-    parser.add_argument('-t', '--tag',
-                        help='Brave version tag (allowed format: "v1.5.45" or "refs/tags/v1.5.45") (required)',
-                        required=True)
+        '-d', '--debug', action='store_true', help='Print debug statements'
+    )
     parser.add_argument(
-        '-u', '--url', help='URL for Brave Browser raw markdown file (required)', required=True)
+        '-o',
+        '--output',
+        help='Output format: markdown or html (required)',
+        required=True,
+    )
+    parser.add_argument(
+        '-t',
+        '--tag',
+        help='Brave version tag (allowed format: "v1.5.45" or "refs/tags/v1.5.45") (required)',
+        required=True,
+    )
+    parser.add_argument(
+        '-u',
+        '--url',
+        help='URL for Brave Browser raw markdown file (required)',
+        required=True,
+    )
     return parser.parse_args()
 
 

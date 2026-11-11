@@ -14,7 +14,7 @@ import type {CrViewManagerElement} from 'chrome://resources/cr_elements/cr_view_
 
 import {SyncBrowserProxy, SyncBrowserProxyImpl, SyncPrefs} from '/shared/settings/people_page/sync_browser_proxy.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
-import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
+import {WebUiListenerMixin, WebUiListenerMixinInterface} from '/shared/settings/web_ui_listener_mixin.js';
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
 import {BaseMixin} from '../base_mixin.js'
@@ -60,7 +60,6 @@ export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBa
 
   static get properties() {
     return {
-      prefs: Object,
       /**
        * The current sync status, supplied by SyncBrowserProxy.
        * @type {?SyncStatus}
@@ -77,7 +76,6 @@ export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBa
     };
   }
 
-  declare prefs: Record<string, unknown>;
 
   private declare syncStatus_: BraveSyncStatus;
   private declare isEncryptionSet_: boolean;

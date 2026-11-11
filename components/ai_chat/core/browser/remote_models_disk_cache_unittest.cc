@@ -46,7 +46,7 @@ mojom::ModelPtr MakeTestModel(const std::string& key, const std::string& name) {
   model->display_name = name + " Display";
   model->is_suggested_model = false;
   model->is_near_model = false;
-  model->supported_capabilities = {mojom::ConversationCapability::CHAT};
+  model->supported_capabilities = {};
   model->options = mojom::ModelOptions::NewLeoModelOptions(std::move(leo_opts));
   return model;
 }
@@ -174,8 +174,8 @@ TEST_F(RemoteModelsDiskCacheTest, RoundTripPreservesModelFields) {
   auto model = MakeTestModel("chat/claude-3-haiku", "claude-haiku-20240307");
   model->is_suggested_model = true;
   model->is_near_model = false;
-  model->supported_capabilities = {mojom::ConversationCapability::CHAT,
-                                   mojom::ConversationCapability::FILES};
+  model->supported_capabilities = {
+      mojom::ConversationCapability::CONTENT_AGENT};
   {
     auto& leo = model->options->get_leo_model_options();
     leo->display_maker = "Anthropic";
@@ -199,17 +199,16 @@ TEST_F(RemoteModelsDiskCacheTest, RoundTripPreservesModelFields) {
   EXPECT_TRUE(loaded.is_suggested_model);
   EXPECT_FALSE(loaded.is_near_model);
 
-  ASSERT_EQ(loaded.supported_capabilities.size(), 2u);
+  ASSERT_EQ(loaded.supported_capabilities.size(), 1u);
   EXPECT_EQ(loaded.supported_capabilities[0],
-            mojom::ConversationCapability::CHAT);
-  EXPECT_EQ(loaded.supported_capabilities[1],
-            mojom::ConversationCapability::FILES);
+            mojom::ConversationCapability::CONTENT_AGENT);
 
   ASSERT_TRUE(loaded.options && loaded.options->is_leo_model_options());
   const auto& leo = loaded.options->get_leo_model_options();
   EXPECT_EQ(leo->name, "claude-haiku-20240307");
   EXPECT_EQ(leo->display_maker, "Anthropic");
   EXPECT_EQ(leo->description, "Fast and capable");
+  EXPECT_EQ(leo->category, mojom::ModelCategory::CHAT);
   EXPECT_EQ(leo->access, mojom::ModelAccess::PREMIUM);
   EXPECT_EQ(leo->max_associated_content_length, 90000u);
   EXPECT_EQ(leo->long_conversation_warning_character_limit, 160000u);
@@ -237,12 +236,13 @@ TEST_F(RemoteModelsDiskCacheTest, SaveOverwritesPreviousCache) {
 TEST_F(RemoteModelsDiskCacheTest, AllCapabilitiesRoundTrip) {
   auto cache = MakeCache();
 
-  auto model = MakeTestModel("summary-model", "summary-model-v1");
-  model->supported_capabilities = {mojom::ConversationCapability::CHAT,
-                                   mojom::ConversationCapability::CONTENT_AGENT,
-                                   mojom::ConversationCapability::DEEP_RESEARCH,
-                                   mojom::ConversationCapability::FILES,
-                                   mojom::ConversationCapability::SUMMARY};
+  const std::vector<mojom::ConversationCapability> kAllCapabilities = {
+      mojom::ConversationCapability::CONTENT_AGENT,
+      mojom::ConversationCapability::DEEP_RESEARCH,
+      mojom::ConversationCapability::MATH_ML};
+
+  auto model = MakeTestModel("agent-model", "agent-model-v1");
+  model->supported_capabilities = kAllCapabilities;
 
   std::vector<mojom::ModelPtr> save;
   save.push_back(std::move(model));
@@ -251,7 +251,31 @@ TEST_F(RemoteModelsDiskCacheTest, AllCapabilitiesRoundTrip) {
   auto result = RunLoad(cache);
   ASSERT_TRUE(result.has_value());
   ASSERT_EQ(result->size(), 1u);
-  EXPECT_EQ((*result)[0]->supported_capabilities.size(), 5u);
+  EXPECT_EQ((*result)[0]->supported_capabilities, kAllCapabilities);
+}
+
+// The category is serialized alongside the conversation capabilities, so make
+// sure a non-default one survives the round trip.
+TEST_F(RemoteModelsDiskCacheTest, AllCategoriesRoundTrip) {
+  auto cache = MakeCache();
+
+  std::vector<mojom::ModelPtr> save;
+  save.push_back(MakeTestModel("chat-key", "chat-name"));
+
+  auto summary = MakeTestModel("summary-key", "summary-name");
+  summary->options->get_leo_model_options()->category =
+      mojom::ModelCategory::SUMMARY;
+  save.push_back(std::move(summary));
+
+  SaveAndWait(cache, std::move(save));
+
+  auto result = RunLoad(cache);
+  ASSERT_TRUE(result.has_value());
+  ASSERT_EQ(result->size(), 2u);
+  EXPECT_EQ((*result)[0]->options->get_leo_model_options()->category,
+            mojom::ModelCategory::CHAT);
+  EXPECT_EQ((*result)[1]->options->get_leo_model_options()->category,
+            mojom::ModelCategory::SUMMARY);
 }
 
 TEST_F(RemoteModelsDiskCacheTest, AllAccessLevelsRoundTrip) {

@@ -35,6 +35,7 @@
 #include "components/dom_distiller/content/browser/distillable_page_utils.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
@@ -47,7 +48,6 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_browser_window.h"
-#include "chrome/browser/ui/browser.h"
 #else
 #include "ui/android/view_android.h"
 #include "ui/events/android/gesture_event_android.h"
@@ -69,50 +69,58 @@ std::u16string GetSpeedreaderData(
        base::UTF8ToUTF16(base::WriteJson(sr_data).value_or("{}"))});
 }
 
+DEFINE_USER_DATA(SpeedreaderTabHelper);
+
+// static
+SpeedreaderTabHelper* SpeedreaderTabHelper::From(tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
+}
+
 SpeedreaderTabHelper::SpeedreaderTabHelper(
-    content::WebContents* web_contents,
+    tabs::TabInterface& tab,
     SpeedreaderService& speedreader_service,
     SpeedreaderRewriterService* rewriter_service)
-    : content::WebContentsObserver(web_contents),
-      content::WebContentsUserData<SpeedreaderTabHelper>(*web_contents),
-      PageDistiller(web_contents),
+    : tabs::ContentsObservingTabFeature(tab),
+      PageDistiller(tab.GetContents()),
       speedreader_service_(speedreader_service),
-      rewriter_service_(rewriter_service) {
-  dom_distiller::AddObserver(web_contents, this);
+      rewriter_service_(rewriter_service),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {
+  dom_distiller::AddObserver(tab.GetContents(), this);
   speedreader_service_observation_.Observe(&speedreader_service_.get());
   tts_player_observation_.Observe(speedreader::TtsPlayer::GetInstance());
-  is_visible_ = web_contents->GetVisibility() != content::Visibility::HIDDEN;
+  is_visible_ =
+      tab.GetContents()->GetVisibility() != content::Visibility::HIDDEN;
 }
 
 SpeedreaderTabHelper::~SpeedreaderTabHelper() {
-  DCHECK(!speedreader_bubble_);
-  DCHECK(!speedreader_service_observation_.IsObserving());
+  StopObserving();
 }
 
 // static
-void SpeedreaderTabHelper::MaybeCreateForWebContents(
-    content::WebContents* contents) {
+std::unique_ptr<SpeedreaderTabHelper> SpeedreaderTabHelper::MaybeCreate(
+    tabs::TabInterface& tab) {
   if (!base::FeatureList::IsEnabled(features::kSpeedreaderFeature)) {
-    return;
+    return nullptr;
   }
+  content::WebContents* contents = tab.GetContents();
 
   // Check if speedreader is available (feature enabled and not disabled by
   // policy)
   auto* speedreader_service = SpeedreaderServiceFactory::GetForBrowserContext(
       contents->GetBrowserContext());
   if (!speedreader_service) {
-    return;
+    return nullptr;
   }
 
   auto* rewriter_service =
       g_brave_browser_process->speedreader_rewriter_service();
   if (!rewriter_service) {
     CHECK_IS_TEST();
-    return;
+    return nullptr;
   }
 
-  SpeedreaderTabHelper::CreateForWebContents(contents, *speedreader_service,
-                                             rewriter_service);
+  return std::make_unique<SpeedreaderTabHelper>(tab, *speedreader_service,
+                                                rewriter_service);
 }
 
 // static
@@ -123,7 +131,8 @@ void SpeedreaderTabHelper::BindSpeedreaderHost(
   if (!sender) {
     return;
   }
-  auto* tab_helper = SpeedreaderTabHelper::FromWebContents(sender);
+  auto* tab_helper = SpeedreaderTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(sender));
   if (!tab_helper) {
     return;
   }
@@ -133,7 +142,8 @@ void SpeedreaderTabHelper::BindSpeedreaderHost(
 // static
 PageDistiller* SpeedreaderTabHelper::GetPageDistiller(
     content::WebContents* contents) {
-  auto* tab_helper = SpeedreaderTabHelper::FromWebContents(contents);
+  auto* tab_helper = SpeedreaderTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(contents));
   if (!tab_helper) {
     return nullptr;
   }
@@ -372,6 +382,18 @@ void SpeedreaderTabHelper::ReadyToCommitNavigation(
 
 void SpeedreaderTabHelper::DidStartNavigation(
     content::NavigationHandle* navigation_handle) {
+  // The stored content belongs only to the reload of the page it was distilled
+  // from. Any other navigation which replaces the reload must not receive it.
+  if (!single_show_content_.empty() && navigation_handle->IsInMainFrame() &&
+      !navigation_handle->IsSameDocument() &&
+      (navigation_handle->GetReloadType() == content::ReloadType::NONE ||
+       navigation_handle->GetURL().GetWithoutRef() !=
+           single_show_content_url_.GetWithoutRef())) {
+    single_show_content_.clear();
+    if (IsDistilling(distill_state_)) {
+      TransitStateTo(ViewOriginal(), true);
+    }
+  }
   ProcessNavigation(navigation_handle);
 }
 
@@ -426,12 +448,32 @@ void SpeedreaderTabHelper::OnVisibilityChanged(content::Visibility visibility) {
   UpdateUI();
 }
 
-void SpeedreaderTabHelper::WebContentsDestroyed() {
+void SpeedreaderTabHelper::StopObserving() {
   speedreader_service_observation_.Reset();
   tts_player_observation_.Reset();
-  dom_distiller::RemoveObserver(web_contents(), this);
+  if (web_contents()) {
+    dom_distiller::RemoveObserver(web_contents(), this);
+  }
   SetWebContents(nullptr);
   HideSpeedreaderBubble();
+}
+
+void SpeedreaderTabHelper::OnDiscardContents(
+    tabs::TabInterface* tab,
+    content::WebContents* old_contents,
+    content::WebContents* new_contents) {
+  // The distillation and its bubble belong to the old contents' page.
+  HideSpeedreaderBubble();
+  dom_distiller::RemoveObserver(old_contents, this);
+  receiver_.reset();
+  single_show_content_.clear();
+  distill_state_ = ViewOriginal();
+  tabs::ContentsObservingTabFeature::OnDiscardContents(tab, old_contents,
+                                                       new_contents);
+  SetWebContents(new_contents);
+  dom_distiller::AddObserver(new_contents, this);
+  is_visible_ = new_contents->GetVisibility() != content::Visibility::HIDDEN;
+  UpdateUI();
 }
 
 bool SpeedreaderTabHelper::IsPageDistillationAllowed() {
@@ -591,6 +633,7 @@ void SpeedreaderTabHelper::OnGetDocumentSource(bool success, std::string html) {
   }
 
   single_show_content_ = std::move(html);
+  single_show_content_url_ = web_contents()->GetLastCommittedURL();
   TransitStateTo(Distilling(Distilling::Reason::kManual));
 }
 
@@ -621,7 +664,5 @@ bool SpeedreaderTabHelper::SendGestureEvent(ui::ViewAndroid* view,
       /*prevent_boosting*/ false));
 }
 #endif
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(SpeedreaderTabHelper);
 
 }  // namespace speedreader

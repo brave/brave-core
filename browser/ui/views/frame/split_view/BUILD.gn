@@ -7,6 +7,8 @@ import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 
 source_set("split_view") {
   sources = [
+    "brave_contents_container_outline.cc",
+    "brave_contents_container_outline.h",
     "brave_contents_container_view.cc",
     "brave_contents_container_view.h",
     "brave_multi_contents_view.cc",
@@ -20,6 +22,7 @@ source_set("split_view") {
   deps = [
     "//brave/browser/ui/sidebar",
     "//brave/browser/ui/tabs:tab_model",
+    "//brave/browser/ui/views:layout_provider",
     "//brave/browser/ui/views/frame",
     "//brave/components/vector_icons",
     "//chrome/browser/devtools",
@@ -28,13 +31,22 @@ source_set("split_view") {
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/color:mixers",
     "//chrome/browser/ui/exclusive_access",
+    "//chrome/browser/ui/side_panel:side_panel_views_dependent",
     "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/browser/ui/views/frame:browser_view_header",
     "//chrome/browser/ui/views/frame:contents_container_outline",
+    "//chrome/browser/ui/views/frame:contents_web_view",
+    "//chrome/browser/ui/views/frame:multi_contents_resize_area",
+    "//chrome/browser/ui/views/frame:multi_contents_view",
+    "//chrome/browser/ui/views/frame:multi_contents_view_delegate",
+    "//chrome/browser/ui/views/frame:multi_contents_view_mini_toolbar",
     "//chrome/browser/ui/views/frame:scrim_view",
     "//ui/base/metadata",
     "//ui/compositor",
     "//ui/views",
   ]
+
+  public_deps = [ "//brave/components/speedreader/common/buildflags" ]
 
   if (enable_speedreader) {
     deps += [ "//brave/browser/ui/views/speedreader" ]

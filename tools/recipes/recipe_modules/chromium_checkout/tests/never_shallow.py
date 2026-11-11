@@ -2,33 +2,64 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Tests that the working checkout is never made shallow.
-"""
+"""Tests that the working checkout is never made shallow."""
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    chromium_checkout,
+    env,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['chromium_checkout', 'env']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    chromium_checkout: chromium_checkout.API
+    env: env.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    chromium_checkout: chromium_checkout.TEST_API
+    env: env.TEST_API
+
+
+def RunSteps(api: DEPS):
     api.chromium_checkout.ensure_checkout(ref=api.env.get('REF'))
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'fresh clone is not shallow',
-        api.env.set('REF', 'main'),
+        api.env.set('REF', 'refs/heads/main'),
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.git_cache_populated(),
-        api.post_process(post_process.StepCommandRE, 'clone from git cache', [
-            'git', 'clone', '--no-checkout', '--local', '--shared', '.*', '.*'
-        ]),
-        api.post_process(post_process.StepCommandDoesNotContain,
-                         'git cache populate', ['--depth']),
-        api.post_process(post_process.StepCommandContains, 'checkout ref',
-                         ['main']),
+        api.post_process(
+            post_process.StepCommandRE,
+            'clone from git cache',
+            [
+                'git',
+                'clone',
+                '--no-checkout',
+                '--local',
+                '--shared',
+                '.*',
+                '.*',
+            ],
+        ),
+        api.post_process(
+            post_process.StepCommandDoesNotContain,
+            'git cache populate',
+            ['--depth'],
+        ),
+        api.post_process(
+            post_process.StepCommandContains, 'checkout ref', ['origin/main']
+        ),
         api.post_process(post_process.DoesNotRun, 'fetch ref'),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
@@ -40,38 +71,53 @@ def GenTests(api):
         api.env.set('REF', 'refs/branch-heads/7917'),
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.git_cache_populated(),
-        api.post_process(post_process.StepCommandDoesNotContain, 'fetch ref',
-                         ['--depth']),
-        api.post_process(post_process.StepCommandContains, 'fetch ref',
-                         ['--no-show-forced-updates']),
+        api.post_process(
+            post_process.StepCommandDoesNotContain, 'fetch ref', ['--depth']
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'fetch ref',
+            ['--no-show-forced-updates'],
+        ),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
     )
     yield api.test(
         'existing checkout branch fetch is not shallow',
-        api.env.set('REF', 'main'),
+        api.env.set('REF', 'refs/heads/main'),
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.existing_checkout(),
         api.chromium_checkout.git_cache_populated(),
-        api.post_process(post_process.StepCommandDoesNotContain,
-                         'git cache populate for ref', ['--depth']),
-        api.post_process(post_process.StepCommandDoesNotContain, 'fetch ref',
-                         ['--depth']),
-        api.post_process(post_process.StepCommandContains, 'fetch ref',
-                         ['--no-show-forced-updates']),
+        api.post_process(
+            post_process.StepCommandDoesNotContain,
+            'git cache populate for ref',
+            ['--depth'],
+        ),
+        api.post_process(
+            post_process.StepCommandDoesNotContain, 'fetch ref', ['--depth']
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'fetch ref',
+            ['--no-show-forced-updates'],
+        ),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
     )
     yield api.test(
         'existing checkout tag fetch is not shallow',
-        api.env.set('REF', '151.0.7917.1'),
+        api.env.set('REF', 'refs/tags/151.0.7917.1'),
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.existing_checkout(),
         api.chromium_checkout.git_cache_populated(),
-        api.post_process(post_process.StepCommandDoesNotContain, 'fetch tag',
-                         ['--depth']),
-        api.post_process(post_process.StepCommandContains, 'fetch tag',
-                         ['--no-show-forced-updates']),
+        api.post_process(
+            post_process.StepCommandDoesNotContain, 'fetch tag', ['--depth']
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'fetch tag',
+            ['--no-show-forced-updates'],
+        ),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
     )

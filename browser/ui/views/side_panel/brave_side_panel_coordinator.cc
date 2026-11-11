@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/side_panel/brave_side_panel_coordinator.h"
 
+#include <memory>
 #include <optional>
 #include <string>
 #include <utility>
@@ -12,7 +13,10 @@
 #include "base/check.h"
 #include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
+#include "base/types/to_address.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
@@ -20,14 +24,34 @@
 #include "brave/browser/ui/views/side_panel/brave_side_panel_header.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel_header_controller.h"
 #include "brave/browser/ui/views/side_panel/side_panel_utils.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
+#include "chrome/browser/ui/side_panel/side_panel_registry.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
+#include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_web_view.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "base/feature_list.h"
+#include "brave/browser/ui/views/side_panel/brave_news/brave_news_side_panel_web_view.h"
+#include "brave/components/brave_news/common/features.h"
+#endif
 
 namespace {
 
@@ -42,6 +66,49 @@ std::optional<SidePanelEntry::Id> GetDefaultEntryId(Profile* profile) {
 
 }  // namespace
 
+BraveSidePanelCoordinator::BraveSidePanelCoordinator(
+    BrowserWindowInterface* browser)
+    : SidePanelCoordinator(browser) {
+  [[maybe_unused]] SidePanelRegistry* global_registry =
+      SidePanelRegistry::From(browser);
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  // The playlist coordinator is not created for popup windows, or for
+  // desktop PWAs.
+  if (auto* playlist_coordinator =
+          PlaylistSidePanelCoordinator::From(browser)) {
+    playlist_coordinator->CreateAndRegisterEntry(global_registry);
+  }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  // AI Chat side panel as a global panel and not tab-specific is conditional
+  // for now.
+  // TODO(https://github.com/brave/brave-browser/issues/48526): Remove the
+  // condition when the feature flag is removed.
+  if (ai_chat::AIChatServiceFactory::GetForBrowserContext(
+          browser->GetProfile()) &&
+      ai_chat::ShouldSidePanelBeGlobal(browser->GetProfile())) {
+    global_registry->Register(std::make_unique<SidePanelEntry>(
+        SidePanelEntry::Key(SidePanelEntry::Id::kChatUI),
+        base::BindRepeating(&AIChatSidePanelWebView::CreateView,
+                            browser->GetProfile(),
+                            /*is_tab_associated=*/false),
+        base::NullCallback()));
+  }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsSidebar)) {
+    global_registry->Register(std::make_unique<SidePanelEntry>(
+        SidePanelEntry::Key(SidePanelEntry::Id::kBraveNews),
+        base::BindRepeating(&BraveNewsSidePanelWebView::CreateView,
+                            browser->GetProfile()),
+        base::NullCallback()));
+  }
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
+}
+
 BraveSidePanelCoordinator::~BraveSidePanelCoordinator() = default;
 
 void BraveSidePanelCoordinator::Show(
@@ -55,14 +122,19 @@ void BraveSidePanelCoordinator::Show(
   sidebar::AddItemForSidePanelIdIfNeeded(browser_->GetProfile(),
                                          entry.key.id());
 
-  SidePanelCoordinator::Show(entry, open_trigger, suppress_animations);
-
   // SidebarContainerView does not monitor panel show/hide events, so the
   // coordinator must update the active item state directly here.
-  auto* controller = browser_->GetFeatures().sidebar_controller();
+  auto* controller =
+      sidebar::SidebarController::From(base::to_address(browser_));
   CHECK(controller);
-  controller->UpdateActiveItemState(
-      sidebar::BuiltInItemTypeFromSidePanelId(entry.key.id()));
+
+  // The sidebar owns the surfaces this panel is mutually exclusive with, so it
+  // decides whether the transition into this panel should animate.
+  const bool suppress =
+      suppress_animations || controller->ShouldSuppressSidePanelOpenAnimation();
+  SidePanelCoordinator::Show(entry, open_trigger, suppress);
+
+  controller->HandleSidePanelOpened(entry.key.id());
 }
 
 void BraveSidePanelCoordinator::Close(SidePanelEntryHideReason hide_reason,
@@ -71,9 +143,10 @@ void BraveSidePanelCoordinator::Close(SidePanelEntryHideReason hide_reason,
   // events, so clear the active item state here.
   // As upstream creates SidePanelCoordinator for all browser type
   // Close() is called when Browser shutdown. When it calls from non-normal
-  // browser, sidebar_controller() is null.
-  if (auto* controller = browser_->GetFeatures().sidebar_controller()) {
-    controller->UpdateActiveItemState();
+  // browser, there is no SidebarController.
+  if (auto* controller =
+          sidebar::SidebarController::From(base::to_address(browser_))) {
+    controller->HandleSidePanelClosed();
   }
 
   SidePanelCoordinator::Close(hide_reason, suppress_animations);

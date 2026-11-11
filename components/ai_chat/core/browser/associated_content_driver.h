@@ -107,6 +107,10 @@ class AssociatedContentDriver : public AssociatedContentDelegate {
   void OnExistingGeneratePageContentComplete(GetPageContentCallback callback,
                                              int64_t navigation_id);
 
+  // Signals and clears |on_page_text_fetch_complete_|. No-op if no fetch is
+  // outstanding.
+  void SignalPageTextFetchComplete();
+
   void OnSearchSummarizerKeyFetched(GetStagedEntriesCallback callback,
                                     int64_t navigation_id,
                                     const std::optional<std::string>& key);

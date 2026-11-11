@@ -1,8 +1,8 @@
 diff --git a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridContextMenuCoordinator.java b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridContextMenuCoordinator.java
-index 594356d63d390dba30cf09fff964f1abf386fbdf..1fec1e6313fe5a6f3f3768fb3ce0523d13b4dd94 100644
+index 6370f8af1394a4bffbb0badfacad63a40f73fee2..eeb2afee645b7dd98f78ac73294b49f7a0ecc101 100644
 --- a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridContextMenuCoordinator.java
 +++ b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridContextMenuCoordinator.java
-@@ -128,7 +128,7 @@ public class TabGridContextMenuCoordinator extends TabOverflowMenuCoordinator<@T
+@@ -123,7 +123,7 @@ public class TabGridContextMenuCoordinator extends TabOverflowMenuCoordinator<@T
          CollaborationService collaborationService =
                  CollaborationServiceFactory.getForProfile(profile);
  

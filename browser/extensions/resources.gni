@@ -3,7 +3,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
-brave_extensions_resources = [
-  "//brave/browser/extensions/api:generated_api_registration",
-  "//brave/browser/extensions:resources",
-]
+import("//extensions/buildflags/buildflags.gni")
+
+brave_extensions_resources = []
+
+# These targets are desktop-only; Android builds only the extensions core.
+if (enable_extensions) {
+  brave_extensions_resources += [
+    "//brave/browser/extensions/api:generated_api_registration",
+    "//brave/browser/extensions:resources",
+  ]
+}

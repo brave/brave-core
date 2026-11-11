@@ -13,7 +13,6 @@
 
 #include "brave/browser/workspaces/workspace_metadata.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabrestore.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -178,7 +177,7 @@ void RestoreBrowserSessionCommandsForWorkspace(
     }
 
     if (GetBrowserWindowCreationStatusForProfile(*profile) !=
-        Browser::CreationStatus::kOk) {
+        BrowserWindowInterface::CreationStatus::kOk) {
       continue;
     }
 
@@ -190,8 +189,7 @@ void RestoreBrowserSessionCommandsForWorkspace(
     params.initial_visible_on_all_workspaces_state =
         window->visible_on_all_workspaces;
     params.should_trigger_session_restore = false;
-    Browser* browser =
-        CreateBrowserWindow(std::move(params))->GetBrowserForMigrationOnly();
+    BrowserWindowInterface* browser = CreateBrowserWindow(std::move(params));
     if (!browser) {
       continue;
     }

@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 
 #include <optional>
-#include <tuple>
 #include <utility>
 
 #include "base/check.h"
@@ -18,7 +17,6 @@
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "net/base/data_url.h"
 #include "tools/json_schema_compiler/util.h"
 
 namespace brave_wallet::eth {

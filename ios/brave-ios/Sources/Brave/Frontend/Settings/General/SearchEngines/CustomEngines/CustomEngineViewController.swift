@@ -148,11 +148,10 @@ class CustomEngineViewController: UIViewController {
     doLayout()
 
     doneButtonStatus = customEngineActionType == .add ? .enabled : .disabled
-  }
 
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    setTheme()
+    registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _) in
+      self.setTheme()
+    }
   }
 
   // MARK: Internal

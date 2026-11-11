@@ -10,7 +10,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
-#include "content/public/test/test_utils.h"
+#include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
 #include "services/network/public/cpp/network_switches.h"
 
@@ -38,13 +38,29 @@ class TrezorUIBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
+  // Opens a blank popup from `opener`, navigates it to `url` and returns
+  // whether the popup kept `window.opener`.
+  bool BlankPopupKeepsOpener(content::RenderFrameHost* opener,
+                             const GURL& url) {
+    content::WebContentsAddedObserver popup_observer;
+    EXPECT_TRUE(
+        content::ExecJs(opener, "window.popup = window.open('', '_blank')"));
+    content::WebContents* popup = popup_observer.GetWebContents();
+    content::TestNavigationObserver navigation_observer(popup);
+    EXPECT_TRUE(content::ExecJs(
+        opener, content::JsReplace("window.popup.location.href = $1", url)));
+    navigation_observer.Wait();
+    EXPECT_EQ(url, popup->GetLastCommittedURL());
+    return content::EvalJs(popup, "!!window.opener").ExtractBool();
+  }
+
   net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};
 };
 
 IN_PROC_BROWSER_TEST_F(TrezorUIBrowserTest, CheckOpenerInPopup) {
   auto* trezor_bridge = ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL(kUntrustedTrezorURL),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   {
@@ -56,35 +72,61 @@ IN_PROC_BROWSER_TEST_F(TrezorUIBrowserTest, CheckOpenerInPopup) {
         "window.open('https://connect.trezor.io/empty.html', 'modal')"));
 
     content::WebContents* trezor_popup = trezor_popup_observer.GetWebContents();
+    ASSERT_TRUE(trezor_popup)
+        << "window.open(..., 'modal') did not create a new WebContents";
     EXPECT_TRUE(WaitForLoadStop(trezor_popup));
 
     // Ensure there is non-null `opener` in opened window.
     EXPECT_TRUE(content::EvalJs(trezor_popup, "!!window.opener").ExtractBool());
 
-    // Close() is asynchronous. The next block reuses the same "modal" window
-    // name, so we must wait for this popup to be fully destroyed before opening
-    // the next one. Otherwise window.open() may reuse the still-alive named
-    // browsing context instead of creating a new WebContents, and the next
-    // block's WebContentsAddedObserver would never fire.
-    content::WebContentsDestroyedWatcher destroyed_watcher(trezor_popup);
     trezor_popup->Close();
-    destroyed_watcher.Wait();
   }
 
   {
     // Try to open non-"connect.trezor.io" origin window. It will not have
     // opener set.
+    //
+    // The window name must differ from the "modal" name used for the
+    // connect.trezor.io popup: closing that popup only tears down its
+    // `WebContents` in the browser process, while the opener's renderer drops
+    // the matching remote frame asynchronously. Reusing the name could
+    // therefore resolve to that not-yet-detached frame and navigate it instead
+    // of creating a new `WebContents`, in which case
+    // `WebContentsAddedObserver` would never fire. Chromium names popups the
+    // same way, see `OpenPopup(shell(), a_url, "popup2")` in
+    // content/browser/site_per_process_browsertest.cc.
     content::WebContentsAddedObserver example_popup_observer;
     EXPECT_TRUE(content::ExecJs(
         trezor_bridge,
-        "window.open('https://example.com/empty.html', 'modal')"));
+        "window.open('https://example.com/empty.html', 'modal2')"));
     content::WebContents* example_popup =
         example_popup_observer.GetWebContents();
+    ASSERT_TRUE(example_popup)
+        << "window.open(..., 'modal2') did not create a new WebContents";
     EXPECT_TRUE(WaitForLoadStop(example_popup));
     EXPECT_FALSE(
         content::EvalJs(example_popup, "!!window.opener").ExtractBool());
     example_popup->Close();
   }
+}
+
+IN_PROC_BROWSER_TEST_F(TrezorUIBrowserTest, BlankPopupToOtherSiteLosesOpener) {
+  auto* trezor_bridge = ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL(kUntrustedTrezorURL),
+      WindowOpenDisposition::kNewForegroundTab,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+  EXPECT_FALSE(BlankPopupKeepsOpener(trezor_bridge,
+                                     GURL("https://example.com/empty.html")));
+}
+
+IN_PROC_BROWSER_TEST_F(TrezorUIBrowserTest,
+                       BlankPopupFromOtherUntrustedUILosesOpener) {
+  auto* ledger_bridge = ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL(kUntrustedLedgerURL),
+      WindowOpenDisposition::kNewForegroundTab,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+  EXPECT_FALSE(BlankPopupKeepsOpener(
+      ledger_bridge, GURL("https://connect.trezor.io/empty.html")));
 }
 
 }  // namespace brave_wallet

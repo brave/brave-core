@@ -9,7 +9,6 @@
 #include "chrome/browser/password_manager/chrome_password_manager_client.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/autofill/chrome_autofill_client.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/autofill/content/browser/content_autofill_driver.h"
@@ -33,7 +32,8 @@ class BraveAutofillBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(embedded_test_server()->Start());
   }
 
-  content::WebContents* PrepareWebContents(Browser* browser, const GURL& url) {
+  content::WebContents* PrepareWebContents(BrowserWindowInterface* browser,
+                                           const GURL& url) {
     TabStripModel* model = browser->tab_strip_model();
     auto* active_contents = model->GetActiveWebContents();
     EXPECT_TRUE(content::NavigateToURL(active_contents, url));
@@ -42,7 +42,9 @@ class BraveAutofillBrowserTest : public InProcessBrowserTest {
     return active_contents;
   }
 
-  void TestAutofillInWindow(Browser* browser, const GURL& url, bool enabled) {
+  void TestAutofillInWindow(BrowserWindowInterface* browser,
+                            const GURL& url,
+                            bool enabled) {
     auto* active_contents = PrepareWebContents(browser, url);
     // Logins.
     autofill::ChromeAutofillClient* autofill_client =
@@ -71,7 +73,7 @@ IN_PROC_BROWSER_TEST_F(BraveAutofillBrowserTest,
   browser()->GetProfile()->GetPrefs()->SetBoolean(kBraveAutofillPrivateWindows,
                                                   false);
   TestAutofillInWindow(browser(), url, true);
-  Browser* private_browser = CreateIncognitoBrowser(nullptr);
+  BrowserWindowInterface* private_browser = CreateIncognitoBrowser(nullptr);
   TestAutofillInWindow(private_browser, url, false);
 
   // Enable autofill in private windows.

@@ -188,7 +188,8 @@ class SelectAccountTokenStoreTests: XCTestCase {
           selectedAccount: .mockEthAccount,
           ethDappSelectedAccount: .mockEthAccount,
           solDappSelectedAccount: .mockSolAccount,
-          adaDappSelectedAccount: nil
+          adaDappSelectedAccount: nil,
+          dotDappSelectedAccount: nil
         )
       )
     }
@@ -263,7 +264,6 @@ class SelectAccountTokenStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
-      ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
     )
 

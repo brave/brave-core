@@ -199,9 +199,34 @@ TEST(FilAddressUnitTest, FromPayload) {
                                   &public_secp_key);
   EXPECT_TRUE(result);
 
+  empty_address = FilAddress::FromPayload(public_secp_key,
+                                          mojom::FilecoinAddressProtocol::BLS,
+                                          mojom::kFilecoinTestnet);
+  EXPECT_EQ(empty_address.EncodeAsString(), "");
+  EXPECT_TRUE(empty_address.IsEmpty());
+
+  // wrong payload size for delegated
   empty_address = FilAddress::FromPayload(
-      public_bls_key, mojom::FilecoinAddressProtocol::SECP256K1,
-      mojom::kFilecoinTestnet);
+      public_bls_key, mojom::FilecoinAddressProtocol::DELEGATED,
+      mojom::kFilecoinMainnet);
+  EXPECT_EQ(empty_address.EncodeAsString(), "");
+  EXPECT_TRUE(empty_address.IsEmpty());
+
+  std::vector<uint8_t> short_payload(public_secp_key.begin(),
+                                     public_secp_key.end() - 1);
+  ASSERT_EQ(short_payload.size(), 19u);
+  empty_address = FilAddress::FromPayload(
+      short_payload, mojom::FilecoinAddressProtocol::DELEGATED,
+      mojom::kFilecoinMainnet);
+  EXPECT_EQ(empty_address.EncodeAsString(), "");
+  EXPECT_TRUE(empty_address.IsEmpty());
+
+  std::vector<uint8_t> long_payload = public_secp_key;
+  long_payload.push_back(0);
+  ASSERT_EQ(long_payload.size(), 21u);
+  empty_address = FilAddress::FromPayload(
+      long_payload, mojom::FilecoinAddressProtocol::DELEGATED,
+      mojom::kFilecoinMainnet);
   EXPECT_EQ(empty_address.EncodeAsString(), "");
   EXPECT_TRUE(empty_address.IsEmpty());
 }

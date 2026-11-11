@@ -5,6 +5,18 @@
 
 substitutions:
   - description: |
+      Register action ids for Brave-only commands that have accelerators.
+
+      Without an action id, AcceleratorTableTest.EveryAcceleratorMapsToAnAction
+      fails for any Brave accelerator whose command has no entry here.
+    regex:
+      re_pattern: '(#define CHROME_COMMON_ACTION_IDS \\\n)'
+      replace: |
+        \1  E(kActionToggleTabMute, IDC_TOGGLE_TAB_MUTE) \
+          E(kActionToggleSidebar, IDC_TOGGLE_SIDEBAR) \
+          E(kActionNewOffTheRecordWindowTor, IDC_NEW_OFFTHERECORD_WINDOW_TOR) \
+          E(kActionCommander, IDC_COMMANDER) \
+  - description: |
       Register Brave's side panel action ids.
     regex:
       re_pattern: '(#define SIDE_PANEL_ACTION_IDS \\\n)'

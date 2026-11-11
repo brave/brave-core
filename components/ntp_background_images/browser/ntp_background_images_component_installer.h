@@ -7,8 +7,10 @@
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_BACKGROUND_IMAGES_COMPONENT_INSTALLER_H_
 
 #include <string>
+#include <vector>
 
-#include "base/functional/callback.h"
+#include "brave/components/ntp_background_images/browser/component_ready_callback.h"
+#include "components/component_updater/component_installer.h"
 
 namespace base {
 class FilePath;
@@ -20,19 +22,44 @@ class ComponentUpdateService;
 
 namespace ntp_background_images {
 
-using OnComponentReadyCallback =
-      base::RepeatingCallback<void(const base::FilePath& install_path)>;
+class NTPBackgroundImagesComponentInstallerPolicy
+    : public component_updater::ComponentInstallerPolicy {
+ public:
+  explicit NTPBackgroundImagesComponentInstallerPolicy(
+      ComponentReadyCallback callback);
+
+  NTPBackgroundImagesComponentInstallerPolicy(
+      const NTPBackgroundImagesComponentInstallerPolicy&) = delete;
+  NTPBackgroundImagesComponentInstallerPolicy& operator=(
+      const NTPBackgroundImagesComponentInstallerPolicy&) = delete;
+
+  ~NTPBackgroundImagesComponentInstallerPolicy() override;
+
+  // component_updater::ComponentInstallerPolicy
+  bool SupportsGroupPolicyEnabledComponentUpdates() const override;
+  bool RequiresNetworkEncryption() const override;
+  update_client::CrxInstaller::Result OnCustomInstall(
+      const base::DictValue& manifest,
+      const base::FilePath& install_dir) override;
+  void OnCustomUninstall() override;
+  bool VerifyInstallation(const base::DictValue& manifest,
+                          const base::FilePath& install_dir) const override;
+  void ComponentReady(const base::Version& version,
+                      const base::FilePath& path,
+                      base::DictValue manifest) override;
+  base::FilePath GetRelativeInstallDir() const override;
+  void GetHash(std::vector<uint8_t>* hash) const override;
+  std::string GetName() const override;
+  update_client::InstallerAttributes GetInstallerAttributes() const override;
+  bool IsBraveComponent() const override;
+
+ private:
+  ComponentReadyCallback ready_callback_;
+};
 
 void RegisterNTPBackgroundImagesComponent(
     component_updater::ComponentUpdateService* component_update_service,
-    OnComponentReadyCallback callback);
-
-void RegisterNTPSponsoredImagesComponent(
-    component_updater::ComponentUpdateService* component_update_service,
-    const std::string& component_public_key,
-    const std::string& component_id,
-    const std::string& component_name,
-    OnComponentReadyCallback callback);
+    ComponentReadyCallback callback);
 
 }  // namespace ntp_background_images
 

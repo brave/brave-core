@@ -9,8 +9,6 @@ source_set("frame") {
     "focus_mode_title_bar_view.h",
     "focus_mode_top_overlay.cc",
     "focus_mode_top_overlay.h",
-    "layout/brave_browser_view_layout_delegate_impl.cc",
-    "layout/brave_browser_view_layout_delegate_impl.h",
     "layout/brave_browser_view_tabbed_layout_impl.cc",
     "layout/brave_browser_view_tabbed_layout_impl.h",
     "tab_strip_placement_coordinator.h",
@@ -19,6 +17,7 @@ source_set("frame") {
   public_deps = [
     "//base",
     "//brave/browser/ui/views/frame/edge_reveal",
+    "//chrome/browser/ui/views/frame:browser_view_header",
     "//components/tabs:public",
     "//ui/views",
   ]
@@ -26,9 +25,18 @@ source_set("frame") {
   deps = [
     "//brave/browser/ui:brave_tab_prefs",
     "//brave/browser/ui/tabs:tabs_public",
+    "//brave/browser/ui/views:layout_provider",
     "//brave/browser/ui/views/sidebar",
     "//chrome/browser/ui/exclusive_access",
     "//chrome/browser/ui/views/bookmarks",
+    "//chrome/browser/ui/views/frame:browser_frame_view",
+    "//chrome/browser/ui/views/frame:browser_view_layout_delegate",
+    "//chrome/browser/ui/views/frame:browser_view_layout_delegate_impl",
+    "//chrome/browser/ui/views/frame:browser_view_tabbed_layout_impl",
+    "//chrome/browser/ui/views/frame:custom_corners_background",
+    "//chrome/browser/ui/views/frame:multi_contents_view",
+    "//chrome/browser/ui/views/frame:top_container_view",
+    "//chrome/browser/ui/views/frame:vertical_tab_strip_region_view",
     "//chrome/browser/ui/views/infobars",
     "//ui/compositor",
   ]
@@ -47,6 +55,7 @@ source_set("frame_impl") {
     "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/views/frame/vertical_tabs",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui:tab_ui_helper",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/color:mixers",
     "//chrome/browser/ui/tabs:tab_strip",
@@ -65,17 +74,17 @@ source_set("unit_tests") {
     "layout/brave_browser_view_tabbed_layout_impl_unittest.cc",
   ]
 
-  if (is_linux) {
-    sources += [ "browser_frame_view_layout_linux_unittest.cc" ]
-  }
-
   deps = [
     ":frame",
     ":frame_impl",
     "//base",
     "//base/test:test_support",
-    "//chrome/browser/ui",
+    "//brave/browser/ui/views:layout_provider",
+    "//chrome/browser/ui:tab_ui_helper",
     "//chrome/browser/ui/views:layout_provider",
+    "//chrome/browser/ui/views/frame:browser_view_layout_delegate",
+    "//chrome/browser/ui/views/frame:opaque_browser_frame_view_layout_delegate",
+    "//chrome/browser/ui/views/tabs/organizer:organizer_panel_host",
     "//chrome/test:test_support",
     "//components/tabs:test_support",
     "//content/test:test_support",
@@ -86,6 +95,14 @@ source_set("unit_tests") {
     "//ui/views:test_support",
     "//url",
   ]
+
+  if (is_linux) {
+    sources += [ "browser_frame_view_layout_linux_unittest.cc" ]
+
+    deps += [
+      "//chrome/browser/ui/views/frame:browser_frame_view_layout_linux_native",
+    ]
+  }
 }
 
 source_set("browser_tests") {
@@ -106,26 +123,36 @@ source_set("browser_tests") {
     ":frame_impl",
     "//base",
     "//base/test:test_support",
+    "//brave/browser/infobars",
     "//brave/browser/ui",
     "//brave/browser/ui:brave_tab_prefs",
     "//brave/browser/ui/focus_mode",
     "//brave/browser/ui/sidebar:sidebar_impl",
     "//brave/browser/ui/tabs:tabs_public",
+    "//brave/browser/ui/views:layout_provider",
+    "//brave/browser/ui/views/frame/split_view",
     "//brave/browser/ui/views/frame/vertical_tabs",
     "//brave/browser/ui/views/sidebar",
     "//brave/browser/ui/views/toolbar:screenshot",
     "//brave/components/brave_origin/buildflags",
     "//brave/components/constants",
+    "//brave/components/infobars/core",
     "//chrome/browser",
     "//chrome/browser/infobars",
     "//chrome/browser/profiles:profile",
-    "//chrome/browser/ui",
+    "//chrome/browser/ui:browser_tabstrip",
     "//chrome/browser/ui:ui_features",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/exclusive_access",
+    "//chrome/browser/ui/immersive:immersive_mode_controller",
     "//chrome/browser/ui/side_panel:side_panel_views_dependent",
     "//chrome/browser/ui/tabs:features",
+    "//chrome/browser/ui/views:tab_search_bubble_host",
+    "//chrome/browser/ui/views/frame:browser_frame_view",
+    "//chrome/browser/ui/views/frame:browser_view_header",
+    "//chrome/browser/ui/views/frame:multi_contents_view_mini_toolbar",
     "//chrome/browser/ui/views/frame:scrim_view",
+    "//chrome/browser/ui/views/frame:top_container_view",
     "//chrome/browser/ui/views/infobars",
     "//chrome/browser/ui/views/tabs/shared",
     "//chrome/browser/ui/window_feature_controller",
@@ -134,6 +161,7 @@ source_set("browser_tests") {
     "//components/infobars/content",
     "//components/prefs",
     "//content/test:test_support",
+    "//testing/gmock",
     "//ui/views",
   ]
 
@@ -147,6 +175,8 @@ source_set("browser_tests") {
       "//chrome/browser/ui:layout_constants",
       "//chrome/browser/ui/tabs:features",
       "//chrome/browser/ui/views/frame",
+      "//chrome/browser/ui/views/frame:custom_corners_background",
+      "//chrome/browser/ui/views/frame:top_container_view",
       "//components/prefs",
       "//ui/linux:test_support",
       "//ui/native_theme",
@@ -161,6 +191,15 @@ source_set("browser_tests") {
       "//brave/browser/ui:brave_tab_prefs",
       "//chrome/browser/ui/tabs:features",
       "//chrome/browser/ui/views/frame",
+      "//chrome/browser/ui/views/frame:browser_caption_button_container_win",
+      "//chrome/browser/ui/views/frame:browser_frame_view_win",
+    ]
+  }
+
+  if (is_mac) {
+    deps += [
+      "//chrome/browser/ui:fullscreen_util_mac",
+      "//ui/base:test_support",
     ]
   }
 }

@@ -24,8 +24,9 @@
 #include "chrome/browser/actor/actor_task.h"
 #include "chrome/browser/actor/execution_engine.h"
 #include "chrome/browser/actor/site_policy.h"
+#include "chrome/browser/actor/ui/actor_ui_state_manager.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -57,7 +58,10 @@ class ContentAgentToolsTest : public InProcessBrowserTest {
   ContentAgentToolsTest() {
     scoped_feature_list_.InitWithFeatures(
         /*enabled_features=*/{features::kAIChatAgentProfile},
-        /*disabled_features=*/{actor::kGlicCrossOriginNavigationGating});
+        // kGlicConfirmTabClose: typed test navigations on the task tab would
+        // otherwise block on the "Leave site and end task?" dialog.
+        /*disabled_features=*/{actor::kGlicCrossOriginNavigationGating,
+                               ::features::kGlicConfirmTabClose});
   }
 
   ~ContentAgentToolsTest() override = default;
@@ -67,7 +71,7 @@ class ContentAgentToolsTest : public InProcessBrowserTest {
 
     host_resolver()->AddRule("*", "127.0.0.1");
     embedded_https_test_server().SetCertHostnames(
-        {"chromewebstore.google.com"});
+        {"chromewebstore.google.com", "example.com"});
     embedded_test_server()->ServeFilesFromSourceDirectory(
         "components/test/data");
     embedded_https_test_server().ServeFilesFromSourceDirectory(
@@ -78,10 +82,10 @@ class ContentAgentToolsTest : public InProcessBrowserTest {
     // Create the agent profile
     auto* profile = browser()->GetProfile();
     SetUserOptedIn(profile->GetPrefs(), true);
-    base::test::TestFuture<Browser*> browser_future;
+    base::test::TestFuture<BrowserWindowInterface*> browser_future;
     OpenBrowserWindowForAIChatAgentProfileForTesting(
         *profile, browser_future.GetCallback());
-    Browser* browser = browser_future.Take();
+    BrowserWindowInterface* browser = browser_future.Take();
     ASSERT_NE(browser, nullptr);
     agent_profile_ = browser->GetProfile();
 
@@ -91,8 +95,9 @@ class ContentAgentToolsTest : public InProcessBrowserTest {
     ASSERT_NE(actor_service, nullptr);
 
     // Get the browser tool provider
-    tool_provider_ =
-        std::make_unique<ContentAgentToolProvider>(GetProfile(), actor_service);
+    tool_provider_ = std::make_unique<ContentAgentToolProvider>(
+        GetProfile(), actor_service,
+        *actor::ui::ActorUiStateManager::Get(GetProfile()));
     ASSERT_NE(tool_provider_, nullptr);
   }
 
@@ -174,7 +179,15 @@ class ContentAgentToolsTest : public InProcessBrowserTest {
         tab_handle_future.GetCallback());
     tabs::TabHandle tab_handle = tab_handle_future.Take();
 
-    GURL test_url = embedded_test_server()->GetURL(file_path);
+    // Use the HTTPS server with a named host rather than the HTTP server's
+    // literal 127.0.0.1 IP. Page actions require HTTPS or localhost
+    // (DecisionSource::kRequireHttpsOrLocalhost), and with
+    // `kGlicActorLocalhostIsSensitive` (enabled by default) a literal loopback
+    // IP is treated as sensitive and blocked for page actions (unlike
+    // navigations). Upstream's own actor tool browser tests use the same
+    // pattern (see chrome/browser/actor/tools/type_tool_browsertest.cc).
+    GURL test_url =
+        embedded_https_test_server().GetURL("example.com", file_path);
     ASSERT_TRUE(
         content::NavigateToURL(tab_handle.Get()->GetContents(), test_url));
   }

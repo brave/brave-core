@@ -1,12 +1,29 @@
 diff --git a/components/history/core/browser/BUILD.gn b/components/history/core/browser/BUILD.gn
-index 367f69e5e8d81894b4a45a192c1d96ccba3b356b..af7cccd7e327461b9e358a1ff1ae26a1a9f350e6 100644
+index 5b91250a3d6d06f4587920e3b365eacd2f9edc76..f05bb3570ba024e8cab8b614ae646f57c559cef2 100644
 --- a/components/history/core/browser/BUILD.gn
 +++ b/components/history/core/browser/BUILD.gn
-@@ -152,6 +152,7 @@ static_library("browser") {
+@@ -2,6 +2,8 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/components/history/core/browser/sources.gni")
++
+ component("features") {
+   sources = [
+     "features.cc",
+@@ -129,6 +131,7 @@ static_library("browser") {
+     "web_history_service.h",
+     "web_history_service_observer.h",
+   ]
++  sources += brave_components_history_core_browser_sources
+ 
+   public_deps = [
+     ":features",
+@@ -168,6 +171,7 @@ static_library("browser") {
      "//ui/gfx",
      "//url",
    ]
-+  import("//brave/components/history/core/browser/sources.gni") sources += brave_components_history_core_browser_sources deps += brave_components_history_core_browser_deps
++  deps += brave_components_history_core_browser_deps
  }
  
  source_set("unit_tests") {

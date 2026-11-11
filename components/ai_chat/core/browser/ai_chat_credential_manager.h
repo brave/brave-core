@@ -8,7 +8,9 @@
 
 #include <optional>
 #include <string>
+#include <vector>
 
+#include "base/containers/circular_deque.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -38,6 +40,9 @@ struct CredentialCacheEntry {
 // premium credentials.
 class AIChatCredentialManager {
  public:
+  using FetchPremiumCredentialCallback =
+      base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>;
+
   AIChatCredentialManager(
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
           skus_service_getter,
@@ -50,9 +55,7 @@ class AIChatCredentialManager {
   virtual void GetPremiumStatus(
       mojom::Service::GetPremiumStatusCallback callback);
 
-  virtual void FetchPremiumCredential(
-      base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
-          callback);
+  virtual void FetchPremiumCredential(FetchPremiumCredentialCallback callback);
 
   virtual void PutCredentialInCache(CredentialCacheEntry credential);
 
@@ -74,27 +77,40 @@ class AIChatCredentialManager {
 
   void OnMojoConnectionError();
 
-  void OnCredentialSummary(mojom::Service::GetPremiumStatusCallback callback,
-                           const std::string& domain,
+  void OnCredentialSummary(const std::string& domain,
                            const bool credential_in_cache,
                            skus::mojom::SkusResultPtr summary_result);
 
-  void OnGetPremiumStatus(
-      base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
-          callback,
-      mojom::PremiumStatus,
-      mojom::PremiumInfoPtr);
+  void CompleteGetPremiumStatus(mojom::PremiumStatus status,
+                                mojom::PremiumInfoPtr info);
+
+  void OnGetPremiumStatus(mojom::PremiumStatus status,
+                          mojom::PremiumInfoPtr info);
 
   void OnPrepareCredentialsPresentation(
-      base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
-          callback,
       const std::string& domain,
       skus::mojom::SkusResultPtr credential_as_cookie);
+
+  void ProcessNextFetchPremiumCredential();
+
+  void CompleteFetchPremiumCredential(
+      std::optional<CredentialCacheEntry> credential);
 
   base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
       skus_service_getter_;
   mojo::Remote<skus::mojom::SkusService> skus_service_;
   raw_ptr<PrefService> prefs_service_ = nullptr;
+
+  // Callbacks waiting on the in-flight GetPremiumStatus request. All of them
+  // receive the same result.
+  std::vector<mojom::Service::GetPremiumStatusCallback>
+      pending_premium_status_callbacks_;
+
+  // FetchPremiumCredential requests are processed one at a time since each
+  // caller must receive a distinct credential. The front entry is the request
+  // currently being processed.
+  base::circular_deque<FetchPremiumCredentialCallback>
+      pending_fetch_credential_callbacks_;
 
   base::WeakPtrFactory<AIChatCredentialManager> weak_ptr_factory_{this};
 };

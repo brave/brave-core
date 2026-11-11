@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Assert against lottie whenever Brave does not link its framework
+
+      Upstream keys this off the providers target, which Brave replaces.
+    regex:
+      re_pattern:
+        'ios_provider_target
+        !=\s+"//ios/chrome/browser/providers:chromium_providers"\) \{'
+      replace: '!ios_chrome_links_with_lottie_framework) {'

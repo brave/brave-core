@@ -6,13 +6,10 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_block_tracker.h"
 
 #include <memory>
-#include <optional>
 #include <string>
 
 #include "base/scoped_observation.h"
-#include "base/test/bind.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
@@ -58,7 +55,8 @@ class PolkadotBlockTrackerUnitTest : public testing::Test {
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
 
     polkadot_substrate_rpc_ = std::make_unique<PolkadotSubstrateRpc>(
-        *network_manager_, url_loader_factory_.GetSafeWeakWrapper());
+        *network_manager_, url_loader_factory_.GetSafeWeakWrapper(),
+        NoParachainUrlMap());
 
     polkadot_mock_rpc_ = std::make_unique<PolkadotMockRpc>(
         &url_loader_factory_, network_manager_.get());

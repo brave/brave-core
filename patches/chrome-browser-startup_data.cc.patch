@@ -1,0 +1,31 @@
+diff --git a/chrome/browser/startup_data.cc b/chrome/browser/startup_data.cc
+index 66d5eeb02bcc5c70a342a272b0ac6e5e2155359a..b9d83a3d1332d68de89a6428afa00531cd636854 100644
+--- a/chrome/browser/startup_data.cc
++++ b/chrome/browser/startup_data.cc
+@@ -56,7 +56,7 @@
+ #include "mojo/public/cpp/bindings/pending_remote.h"
+ #include "services/preferences/public/mojom/tracked_preference_validation_delegate.mojom.h"
+ 
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+ #include "chrome/browser/extensions/chrome_extensions_browser_client.h"
+ #include "extensions/browser/extensions_browser_client.h"
+ #endif
+@@ -209,7 +209,7 @@ StartupData::TakeProtoDatabaseProvider() {
+ void StartupData::PreProfilePrefServiceInit() {
+   pref_registry_ = base::MakeRefCounted<user_prefs::PrefRegistrySyncable>();
+ 
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+   // On desktop Android the ExtensionsBrowserClient is created here because it
+   // must be initialized before BrowserContextKeyedServiceFactories are built.
+   // Some factories use ExtensionsBrowserClient::Get() in their DependsOn().
+@@ -292,7 +292,7 @@ void StartupData::CreateServicesInternal() {
+ }
+ #endif
+ 
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+ std::unique_ptr<extensions::ExtensionsBrowserClient>
+ StartupData::TakeExtensionsBrowserClient() {
+   return std::move(extensions_browser_client_);

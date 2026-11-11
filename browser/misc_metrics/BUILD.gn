@@ -16,8 +16,10 @@ source_set("misc_metrics") {
   ]
 
   deps = [
+    "//base",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/misc_metrics",
+    "//brave/components/p3a_utils",
     "//brave/components/time_period_storage",
     "//chrome/browser/profiles:profile",
     "//components/keyed_service/content",
@@ -34,6 +36,11 @@ static_library("misc_metrics_impl") {
     "//brave/browser:core",
     "//brave/browser/misc_metrics/*",
   ]
+  if (!is_android) {
+    visibility += [ "//brave/browser/ui/tabs:impl" ]
+  } else {
+    visibility += [ "//brave/browser/android:tabs_impl" ]
+  }
 
   sources = [
     "//brave/browser/misc_metrics/captcha_metrics.cc",
@@ -56,6 +63,7 @@ static_library("misc_metrics_impl") {
     "//brave/browser/brave_stats",
     "//brave/browser/misc_metrics",
     "//brave/browser/profiles:util",
+    "//brave/browser/serp_metrics",
     "//brave/components/brave_shields/core/common",
     "//brave/components/constants",
     "//brave/components/misc_metrics",
@@ -69,8 +77,9 @@ static_library("misc_metrics_impl") {
     "//chrome/browser/page_load_metrics",
     "//chrome/browser/profiles",
     "//chrome/browser/search_engines",
-    "//chrome/browser/ui",
     "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/tabs:tabs_public",
+    "//chrome/common",
     "//chrome/common:constants",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
@@ -114,6 +123,7 @@ static_library("misc_metrics_impl") {
     deps += [
       "//brave/browser/extensions/manifest_v2",
       "//brave/browser/themes",
+      "//brave/browser/ui:brave_tab_prefs",
       "//chrome/browser/themes",
       "//chrome/browser/ui/tabs:tab_strip",
       "//extensions/browser",
@@ -172,6 +182,7 @@ source_set("unit_tests") {
     "//components/bookmarks/browser",
     "//components/prefs:test_support",
     "//components/search_engines",
+    "//content/public/common",
     "//content/test:test_support",
     "//mojo/public/cpp/bindings",
     "//services/media_session/public/mojom",
@@ -187,9 +198,11 @@ source_set("unit_tests") {
 
     deps += [
       ":usage_clock",
+      "//brave/browser/new_tab",
       "//brave/browser/themes",
       "//chrome/browser/metrics/desktop_session_duration",
       "//chrome/browser/themes",
+      "//chrome/test/base:testing_browser_process",
     ]
   }
 
@@ -223,6 +236,7 @@ source_set("browser_tests") {
     "//brave/browser:browser_process",
     "//brave/browser/misc_metrics",
     "//brave/browser/misc_metrics:misc_metrics_impl",
+    "//brave/browser/ui:brave_tab_prefs",
     "//brave/components/constants",
     "//brave/components/misc_metrics",
     "//chrome/browser:browser_process",
@@ -230,6 +244,7 @@ source_set("browser_tests") {
     "//chrome/browser/profiles:profile",
     "//chrome/browser/tab_group_sync:factories",
     "//chrome/test:test_support",
+    "//chrome/test/base:chrome_test_utils",
     "//components/language/core/browser",
     "//components/page_load_metrics/browser:test_support",
     "//components/prefs",
@@ -239,6 +254,13 @@ source_set("browser_tests") {
     "//testing/gtest",
     "//url",
   ]
+
+  if (!is_android) {
+    deps += [
+      "//chrome/browser/ui:browser_tabstrip",
+      "//chrome/browser/ui:browser_window_header",
+    ]
+  }
 
   if (enable_brave_wallet) {
     deps += [

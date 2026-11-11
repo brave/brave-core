@@ -5,6 +5,7 @@
 
 #include "brave/browser/psst/psst_ui_desktop_presenter.h"
 
+#include "base/functional/callback_helpers.h"
 #include "brave/browser/psst/psst_infobar_delegate.h"
 #include "brave/browser/ui/views/page_action/psst_action_controller.h"
 #include "brave/components/psst/core/common/constants.h"
@@ -12,7 +13,9 @@
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
+
 namespace {
 
 constexpr int kDialogMinHeight = 100;
@@ -139,11 +142,9 @@ void PsstUiDesktopPresenter::PsstUiDesktopDelegate::CloseDialog() {
 }
 
 PsstUiDesktopPresenter::PsstUiDesktopPresenter(
-    base::WeakPtr<content::WebContents> web_contents,
+    tabs::TabInterface& tab,
     base::WeakPtr<page_actions::PsstActionController> psst_action_controller)
-    : web_contents_(std::move(web_contents)),
-      psst_action_controller_(std::move(psst_action_controller)) {
-  CHECK(web_contents_);
+    : tab_(tab), psst_action_controller_(std::move(psst_action_controller)) {
   CHECK(psst_action_controller_);
   psst_action_controller_->SetMenuModelDelegate(this);
 }
@@ -171,12 +172,8 @@ void PsstUiDesktopPresenter::SetLocationBarIconStatus(
 }
 
 void PsstUiDesktopPresenter::ShowInfoBar(InfoBarCallback on_accept_callback) {
-  if (!web_contents_) {
-    return;
-  }
-
   infobars::ContentInfoBarManager* infobar_manager =
-      infobars::ContentInfoBarManager::FromWebContents(web_contents_.get());
+      infobars::ContentInfoBarManager::FromWebContents(tab_->GetContents());
   if (!infobar_manager) {
     return;
   }
@@ -185,12 +182,8 @@ void PsstUiDesktopPresenter::ShowInfoBar(InfoBarCallback on_accept_callback) {
 }
 
 void PsstUiDesktopPresenter::HideInfoBar() {
-  if (!web_contents_) {
-    return;
-  }
-
   infobars::ContentInfoBarManager* infobar_manager =
-      infobars::ContentInfoBarManager::FromWebContents(web_contents_.get());
+      infobars::ContentInfoBarManager::FromWebContents(tab_->GetContents());
   if (!infobar_manager) {
     return;
   }
@@ -212,7 +205,8 @@ void PsstUiDesktopPresenter::HideInfoBar() {
 }
 
 void PsstUiDesktopPresenter::ShowConsentDialog() {
-  if (!web_contents_) {
+  // Prevents dialogs from stacking on top of each other.
+  if (IsDialogShown()) {
     return;
   }
 
@@ -220,7 +214,7 @@ void PsstUiDesktopPresenter::ShowConsentDialog() {
     psst_action_controller_->SetShowBadge(false);
   }
 
-  dialog_delegate_ = OpenPsstDialog(web_contents_.get());
+  dialog_delegate_ = OpenPsstDialog(tab_->GetContents());
 }
 
 void PsstUiDesktopPresenter::HideConsentDialog() {
@@ -237,6 +231,13 @@ bool PsstUiDesktopPresenter::IsDialogShown() const {
   }
 
   return dialog_delegate_->IsDialogShown();
+}
+
+void PsstUiDesktopPresenter::HideAll() {
+  HideInfoBar();
+  HideConsentDialog();
+  SetLocationBarIconStatus(LocationBarIconStatus::kHidden, base::NullCallback(),
+                           base::NullCallback());
 }
 
 void PsstUiDesktopPresenter::OnShowConsentDialogSelected() {

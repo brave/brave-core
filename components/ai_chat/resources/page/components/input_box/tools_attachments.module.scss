@@ -35,6 +35,23 @@
   max-width: 320px;
   white-space: normal;
   word-break: break-word;
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+
+  p {
+    margin: 0;
+  }
+}
+
+.learnMoreLink {
+  align-self: start;
+  color: inherit;
+  text-decoration: underline;
+
+  &:hover {
+    color: var(--leo-color-text-interactive);
+  }
 }
 
 .toolsPills {
@@ -65,7 +82,7 @@
   border-radius: var(--leo-radius-full);
   background-color: var(--leo-color-container-background);
 
-  &:hover {
+  &:not(.toolPillStatic):hover {
     background-color: var(--leo-color-container-highlight);
   }
 }
@@ -84,15 +101,18 @@
   overflow: hidden;
 }
 
-// Opens the tools dialog, but styled as plain pill content so the pill still
-// reads as a single element.
-.toolPillOpen {
+.toolPillContent {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: var(--leo-spacing-s);
   width: 100%;
   min-width: 0;
+}
+
+// Opens the tools dialog, but styled as plain pill content so the pill still
+// reads as a single element.
+.toolPillOpen {
   appearance: none;
   margin: 0;
   padding: 0;

@@ -11,10 +11,23 @@ source_set("download") {
 
   deps = [
     "//base",
+    "//brave/browser:browser_process",
+    "//brave/browser/misc_metrics",
     "//brave/components/image_metadata_stripper",
     "//brave/components/image_metadata_stripper/common",
+    "//brave/components/misc_metrics",
     "//chrome/browser/download",
     "//chrome/browser/profiles:profile",
+  ]
+}
+
+source_set("chromium_impl") {
+  visibility = [ "//brave/browser:core" ]
+  sources = [ "background_download_service_factory.cc" ]
+  deps = [
+    "//base",
+    "//brave/browser:browser_process",
+    "//brave/components/brave_shields/content/browser",
   ]
 }
 
@@ -27,11 +40,15 @@ source_set("browser_tests") {
     ":download",
     "//base",
     "//base/test:test_support",
+    "//brave/browser/misc_metrics",
     "//brave/components/image_metadata_stripper/common",
+    "//brave/components/misc_metrics",
+    "//brave/components/misc_metrics:test_support",
     "//chrome/browser/download",
     "//chrome/browser/profiles:profile",
     "//chrome/common",
     "//chrome/test:test_support",
+    "//chrome/test/base:chrome_test_utils",
     "//components/prefs",
     "//content/public/browser",
     "//content/test:test_support",

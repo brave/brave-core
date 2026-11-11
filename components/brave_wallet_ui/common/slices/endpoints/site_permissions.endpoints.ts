@@ -23,8 +23,8 @@ export const sitePermissionEndpoints = ({
   query,
 }: WalletApiEndpointBuilderParams) => {
   return {
-    getActiveOriginConnectedAccountIds: query<BraveWallet.AccountId[], void>({
-      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+    getActiveOriginConnectedAccountIds: query<BraveWallet.AccountId[], string>({
+      queryFn: async (originSpec, { endpoint }, extraOptions, baseQuery) => {
         try {
           const { data: api, cache } = baseQuery(undefined)
           const { braveWalletService } = api
@@ -35,6 +35,7 @@ export const sitePermissionEndpoints = ({
           // Get a list of accounts with permissions of the active origin
           const { accountsWithPermission } =
             await braveWalletService.hasPermission(
+              originSpec,
               accounts.map((acc) => acc.accountId),
             )
 
@@ -192,13 +193,21 @@ export const sitePermissionEndpoints = ({
       ],
     }),
 
-    removeSitePermission: mutation<true, BraveWallet.AccountId>({
-      queryFn: async (accountId, { endpoint }, extraOptions, baseQuery) => {
+    removeSitePermission: mutation<
+      true,
+      { accountId: BraveWallet.AccountId; originSpec: string }
+    >({
+      queryFn: async (
+        { accountId, originSpec },
+        { endpoint },
+        extraOptions,
+        baseQuery,
+      ) => {
         try {
           const { data: api, cache } = baseQuery(undefined)
           const { braveWalletService } = api
 
-          await braveWalletService.resetPermission(accountId)
+          await braveWalletService.resetPermission(originSpec, accountId)
 
           // Backend updates the selected dapp account in prefs when
           // disconnecting (e.g. to the remaining connected account). Clear

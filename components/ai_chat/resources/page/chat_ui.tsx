@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
-import { setIconBasePath } from '@brave/leo/react/icon'
+import { setIconBasePath } from '@brave/nala/react/icon'
 import '$web-common/defaultTrustedTypesPolicy'
 import * as Mojom from '../common/mojom'
 import bindWebUiServices from './api/bind_webui_services'

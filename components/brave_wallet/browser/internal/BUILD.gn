@@ -108,7 +108,10 @@ rust_static_library("sr25519_rs") {
 }
 
 rust_static_library("polkadot_extrinsic_rs") {
-  visibility = [ "//brave/components/brave_wallet/browser:*" ]
+  visibility = [
+    ":polkadot_extrinsic_bindings",
+    "//brave/components/brave_wallet/browser:*",
+  ]
 
   crate_name = "polkadot_extrinsic"
   crate_root = "polkadot_extrinsic.rs"
@@ -117,7 +120,11 @@ rust_static_library("polkadot_extrinsic_rs") {
     "polkadot_chain_metadata.rs",
     "polkadot_extrinsic.rs",
   ]
-  cxx_bindings = [ "polkadot_extrinsic.rs" ]
+  cpp_api_from_rust = {
+    target_name = "polkadot_extrinsic_bindings"
+    cpp_namespace = "brave_wallet"
+    h_out = "${target_gen_dir}/polkadot_extrinsic_rs.h"
+  }
 
   deps = [
     "//brave/third_party/rust/blake2b_simd/v1:lib",

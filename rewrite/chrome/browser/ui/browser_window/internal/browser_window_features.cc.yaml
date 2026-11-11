@@ -4,27 +4,18 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: |
-      Append `vertical tab controller` to the WindowFeatureController CreateInstance call
+  - description: |-
+      Create Brave's early window features first.
 
-      `WindowFeatureController` takes the owning `vertical_tab_controller` as its
-      last constructor argument for Brave-specific code. The non-greedy regex captures the full
-      argument list (no matter how many arguments upstream chooses to pass) and
-      appends `vertical tab controller` immediately before the closing `);`.
-    regex:
-      re_pattern: '(CreateInstance<WindowFeatureController>\(.*?)(\);)'
-      re_flags: [DOTALL]
-      replace:
-        '\1, browser->GetFeatures().vertical_tab_controller()->GetWeakPtr()\2'
-
-  - description: |
-      Rename BrowserWindowFeatures to BrowserWindowFeatures_ChromiumImpl.
-
-      Matches the rename in browser_window_features.h so these definitions
-      target the class Brave's BrowserWindowFeatures subclass wraps.
-    rename_class:
-      class_name: BrowserWindowFeatures
-      rename: BrowserWindowFeatures_ChromiumImpl
+      See the members added in browser_window_features.h for why they have to
+      exist before the rest of Init() runs.
+    preempt_function_impl:
+      function_name: BrowserWindowFeatures::Init
+      code: |-
+        brave_focus_mode_controller_ =
+            CreateBraveFocusModeController(GetUserDataFactory(), browser);
+        brave_vertical_tab_controller_ = CreateBraveVerticalTabController(
+            GetUserDataFactory(), browser, brave_focus_mode_controller_.get());
 
   - description: 'Construct BraveBrowserActions instead of BrowserActions.'
     rename_class:

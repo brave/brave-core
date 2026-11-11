@@ -244,9 +244,9 @@ export const CreateAccountOptions: NavOption[] = [
   },
   {
     id: 'accounts',
-    name: S.BRAVE_WALLET_WELCOME_RESTORE_BUTTON,
+    name: S.BRAVE_WALLET_UNHIDE_ACCOUNT,
     icon: 'reload',
-    route: WalletRoutes.RestoreAccountsModal,
+    route: WalletRoutes.UnhideAccountsModal,
   },
 ]
 

@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Suppress the extra top border when the toolbar is visible
+
+      Upstream returns kExtraTopBorder (3px) whenever IsTabStripVisible() is
+      false, intending to add a thin resize border for popup windows. With Brave
+      vertical tabs, IsTabStripVisible() is also false even though the toolbar
+      is present, producing a spurious 3px strip at the top. Only popup windows
+      (no tab strip, no toolbar) need it.
+    preempt_function_impl:
+      function_name: BrowserFrameViewLayoutLinux::NonClientExtraTopThickness
+      return_if: delegate_->IsToolbarVisible()
+      return_value: '0'

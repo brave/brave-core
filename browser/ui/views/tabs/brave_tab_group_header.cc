@@ -10,13 +10,15 @@
 #include "base/check.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
+#include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/vector_icons/vector_icons.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
-#include "chrome/browser/ui/views/tabs/tab_group_style.h"
+#include "chrome/browser/ui/views/tabs/common/tab_group_style.h"
+#include "chrome/browser/ui/views/tabs/tab_group_style_views.h"
 #include "chrome/browser/ui/views/tabs/tab_group_underline.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 #include "third_party/skia/include/core/SkPath.h"
@@ -70,7 +72,7 @@ void BraveTabGroupHeader::VisualsChanged() {
 
   if (auto chip_background_color = GetChipBackgroundColor()) {
     title_chip_->SetBackground(views::CreateRoundedRectBackground(
-        *chip_background_color, group_style_->GetChipCornerRadius()));
+        *chip_background_color, TabGroupStyle::GetChipCornerRadius()));
   } else {
     title_chip_->SetBackground(nullptr);
   }
@@ -107,7 +109,7 @@ void BraveTabGroupHeader::Layout(PassKey) {
 }
 
 bool BraveTabGroupHeader::ShouldShowVerticalTabs() const {
-  auto* vtc = VerticalTabController::FromBrowser(
+  auto* vtc = VerticalTabController::From(
       tab_slot_controller_->GetBrowserWindowInterface());
   return vtc && vtc->ShouldShowBraveVerticalTabs();
 }

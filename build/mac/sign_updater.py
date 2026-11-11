@@ -33,8 +33,10 @@ def main():
         new_args = upstream_args + ['--output', tmp_dir]
         exit_code = call_upstream(args.upstream_sign_updater_py, new_args)
         if exit_code == 0:
-            os.rename(join(tmp_dir, args.output_file),
-                      join(args.output_dir, args.output_file))
+            os.rename(
+                join(tmp_dir, args.output_file),
+                join(args.output_dir, args.output_file),
+            )
         return exit_code
 
 

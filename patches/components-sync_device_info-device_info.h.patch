@@ -1,21 +1,21 @@
 diff --git a/components/sync_device_info/device_info.h b/components/sync_device_info/device_info.h
-index 71109037ce266ed45586537e4c63faee025ef4a8..e7bcc8a1ff7891dc295313f4cf2901b271ac594e 100644
+index d07e15de55ad2627d619de8431b7383234087711..cae15a9833213324e6502e3f2a91490d18d48a9a 100644
 --- a/components/sync_device_info/device_info.h
 +++ b/components/sync_device_info/device_info.h
-@@ -210,7 +210,9 @@ class DeviceInfo {
-                  desktop_to_ios_promo_receiving_types,
-              GlicExperimentalTriggeringState glic_experimental_triggering_state,
-              std::optional<int> glic_experimental_triggering_version,
--             std::optional<std::string> android_os_build_fingerprint_prefix);
-+             std::optional<std::string> android_os_build_fingerprint_prefix,
+@@ -239,7 +239,9 @@ class DeviceInfo {
+       std::optional<int> glic_experimental_triggering_version,
+       base::flat_set<std::string> glic_experimental_triggering_capabilities,
+       std::optional<std::string> android_os_build_fingerprint_prefix,
+-      std::optional<PersonalContextInfo> personal_context_info);
++      std::optional<PersonalContextInfo> personal_context_info,
 +             SelfDeleteSupport self_delete_support =
 +                 SelfDeleteSupport::kNotSupported);
  
    DeviceInfo& operator=(const DeviceInfo&) = delete;
  
-@@ -347,6 +349,22 @@ class DeviceInfo {
-   // Glic. Pass std::nullopt if unavailable.
-   void set_glic_experimental_triggering_version(std::optional<int> version);
+@@ -383,6 +385,22 @@ class DeviceInfo {
+   void set_glic_experimental_triggering_capabilities(
+       const base::flat_set<std::string>& capabilities);
  
 +  DeviceInfo(DeviceInfo&&);
 +
@@ -36,7 +36,7 @@ index 71109037ce266ed45586537e4c63faee025ef4a8..e7bcc8a1ff7891dc295313f4cf2901b2
   private:
    // Used by DeepCopyForTesting().
    DeviceInfo(const DeviceInfo& other);
-@@ -426,6 +444,7 @@ class DeviceInfo {
+@@ -465,6 +483,7 @@ class DeviceInfo {
    // |IsStoredLocalDeviceInfoStillAccurate| in device_info_sync_bridge.cc or
    // else changes in that member might not trigger uploads of updated
    // DeviceInfos.

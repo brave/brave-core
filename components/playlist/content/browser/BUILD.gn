@@ -44,7 +44,10 @@ static_library("browser") {
     "type_converter.h",
   ]
 
-  public_deps = [ "//brave/components/playlist/core/common" ]
+  public_deps = [
+    "//brave/components/playlist/core/common",
+    "//ui/base/unowned_user_data",
+  ]
 
   deps = [
     "//base",
@@ -54,9 +57,11 @@ static_library("browser") {
     "//brave/components/resources:static_resources",
     "//brave/components/resources:strings",
     "//components/component_updater",
+    "//components/crx_file",
     "//components/download/public/common:public",
     "//components/keyed_service/core",
     "//components/prefs",
+    "//components/tabs:public",
     "//components/user_prefs",
     "//content/public/browser",
     "//content/public/common",

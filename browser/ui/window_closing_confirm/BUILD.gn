@@ -1,0 +1,45 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+assert(!is_android)
+
+source_set("window_closing_confirm") {
+  sources = [
+    "window_closing_confirm_controller.cc",
+    "window_closing_confirm_controller.h",
+    "window_closing_confirm_dialog_view.cc",
+    "window_closing_confirm_dialog_view.h",
+  ]
+
+  # The dialog is created only through the controller. Tests reach the
+  # dialog to answer it.
+  public = [
+    "window_closing_confirm_controller.h",
+    "window_closing_confirm_dialog_view.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//ui/base/unowned_user_data",
+    "//ui/views",
+  ]
+
+  deps = [
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/components/constants",
+    "//chrome/app:branded_strings",
+    "//chrome/browser/lifetime",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui:browser_commands",
+    "//chrome/browser/ui:browser_window_header",
+    "//chrome/browser/ui:unload_controller",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/browser/ui/views/frame:browser_view_header",
+    "//components/constrained_window",
+    "//components/prefs",
+    "//ui/base",
+  ]
+}

@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+import("//third_party/jni_zero/jni_zero.gni")
+
+assert(is_android)
+
+generate_jni("jni_headers") {
+  sources = [ "java/src/org/chromium/chrome/browser/brave_account/BraveAccountDialogMode.java" ]
+}
+
+android_library("java") {
+  srcjar_deps = [ "//brave/browser/brave_account/android:jni_headers" ]
+
+  sources = [ "java/src/org/chromium/chrome/browser/brave_account/BraveAccountDialogMode.java" ]
+
+  deps = [
+    "//brave/components/brave_account/mojom:mojom_java",
+    "//build/android:build_java",
+    "//content/public/android:content_java",
+    "//third_party/jni_zero:jni_zero_java",
+  ]
+}

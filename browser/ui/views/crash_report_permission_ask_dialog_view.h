@@ -7,20 +7,23 @@
 #define BRAVE_BROWSER_UI_VIEWS_CRASH_REPORT_PERMISSION_ASK_DIALOG_VIEW_H_
 
 #include "base/memory/raw_ptr.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/window/dialog_delegate.h"
 
-class Browser;
+class BrowserWindowInterface;
 
 namespace views {
 class Checkbox;
 }  // namespace views
 
 class CrashReportPermissionAskDialogView : public views::DialogDelegateView {
+  METADATA_HEADER(CrashReportPermissionAskDialogView, views::DialogDelegateView)
+
  public:
-  static void Show(Browser* browser);
+  static void Show(BrowserWindowInterface* browser);
 
  private:
-  explicit CrashReportPermissionAskDialogView(Browser* browser);
+  CrashReportPermissionAskDialogView();
   ~CrashReportPermissionAskDialogView() override;
 
   CrashReportPermissionAskDialogView(
@@ -36,7 +39,7 @@ class CrashReportPermissionAskDialogView : public views::DialogDelegateView {
 
   void OnAcceptButtonClicked();
   void OnWindowClosing();
-  void CreateChildViews(views::Widget* parent);
+  void CreateChildViews();
 
   raw_ptr<views::Checkbox> dont_ask_again_checkbox_ = nullptr;
 };

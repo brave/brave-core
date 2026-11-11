@@ -10,9 +10,7 @@ package*.json @brave/js-deps-reviewers
 # approve changes to this file.
 /package.json @brave/js-deps-reviewers @brave/build-commands-reviewers
 pnpm*.yaml @brave/js-deps-reviewers
-rewrite/ @brave/brave-core-owners
-rewrite/**/*.h.yaml @brave/brave-core-owners @brave/chromium-src-reviewers
-rewrite/**/*.cc.yaml @brave/brave-core-owners @brave/chromium-src-reviewers
+rewrite/ @brave/chromium-src-reviewers
 
 # Views
 # Do not add to BRAVE_VIEW_OWNED_BY_CLIENT_PASS_KEY
@@ -45,14 +43,18 @@ components/brave_rewards/core/engine/util/request_signer.cc @brave/sec-team
 components/brave_rewards/core/engine/util/request_signer.h @brave/sec-team
 
 # Network
-browser/net/ @brave/brave-core-owners
 chromium_src/chrome/browser/net/profile_network_context_service.cc @brave/sec-team
 chromium_src/net/tools/transport_security_state_generator/input_file_parsers.cc @brave/sec-team
 
 # Tor
 browser/tor/ @brave/tor-reviewers
+browser/resources/settings/brave_tor_page/ @brave/tor-reviewers
+browser/search_engines/tor_window_search_engine_provider_service.* @brave/tor-reviewers
+browser/ui/views/page_action/onion_location_page_action_controller* @brave/tor-reviewers
 browser/ui/webui/tor_internals_ui.* @brave/tor-reviewers
 browser/ui/webui/settings/brave_tor*.* @brave/tor-reviewers
+components/definitions/torInternals.d.ts @brave/tor-reviewers
+components/services/tor/ @brave/tor-reviewers
 components/tor/ @brave/tor-reviewers
 net/proxy_resolution/ @brave/tor-reviewers
 

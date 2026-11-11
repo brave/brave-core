@@ -1,0 +1,28 @@
+diff --git a/chrome/browser/ui/webui/favicon_source.cc b/chrome/browser/ui/webui/favicon_source.cc
+index 758297fceffe31ffafd3a29ee292bbc2229b5d97..91eae846b8cdc081f03e5c386498b4225c179975 100644
+--- a/chrome/browser/ui/webui/favicon_source.cc
++++ b/chrome/browser/ui/webui/favicon_source.cc
+@@ -257,6 +257,9 @@ bool FaviconSource::ShouldServiceRequest(
+ 
+ std::string FaviconSource::GetAccessControlAllowOriginForOrigin(
+     const std::string& origin) {
++  if (BraveIsFavicon2AllowedOnOrigin(serve_untrusted_, origin)) {
++    return origin;
++  }
+   // chrome-untrusted://favicon2 serves the favicons that the Data Sharing
+   // page renders for the tabs of a shared tab group.
+   if (serve_untrusted_ &&
+@@ -363,11 +366,11 @@ void FaviconSource::SendDefaultResponse(
+ #if !BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_DESKTOP_ANDROID)
+     case 64:
+       resource_id =
+-          dark_mode ? IDR_DEFAULT_FAVICON_DARK_64 : IDR_DEFAULT_FAVICON_64;
++          dark_mode ? BRAVE_IDR_DEFAULT_FAVICON_DARK_64 : BRAVE_IDR_DEFAULT_FAVICON_64;
+       break;
+     case 32:
+       resource_id =
+-          dark_mode ? IDR_DEFAULT_FAVICON_DARK_32 : IDR_DEFAULT_FAVICON_32;
++          dark_mode ? BRAVE_IDR_DEFAULT_FAVICON_DARK_32 : BRAVE_IDR_DEFAULT_FAVICON_32;
+       break;
+ #endif
+     default:

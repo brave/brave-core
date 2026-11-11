@@ -18,7 +18,6 @@
 #include "base/scoped_observation.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
@@ -38,7 +37,6 @@
 #include "brave/components/brave_wallet/browser/solana_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
-#include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -1071,7 +1069,7 @@ TEST_F(SolanaTxManagerUnitTest, WalletOrigin) {
   auto tx_meta = solana_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->chain_id(), mojom::kSolanaMainnet);
-  EXPECT_EQ(tx_meta->origin(), url::Origin::Create(GURL("chrome://wallet")));
+  EXPECT_FALSE(tx_meta->dapp_origin());
 }
 
 TEST_F(SolanaTxManagerUnitTest, SomeSiteOrigin) {
@@ -1094,7 +1092,7 @@ TEST_F(SolanaTxManagerUnitTest, SomeSiteOrigin) {
   auto tx_meta = solana_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->chain_id(), mojom::kSolanaMainnet);
-  EXPECT_EQ(tx_meta->origin(),
+  EXPECT_EQ(tx_meta->dapp_origin(),
             url::Origin::Create(GURL("https://some.site.com")));
 }
 

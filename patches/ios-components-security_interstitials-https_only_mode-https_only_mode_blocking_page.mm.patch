@@ -1,0 +1,14 @@
+diff --git a/ios/components/security_interstitials/https_only_mode/https_only_mode_blocking_page.mm b/ios/components/security_interstitials/https_only_mode/https_only_mode_blocking_page.mm
+index b71feeaf4e19623ca3a9c1d42d2bc8b852706df1..3c211fc6c3f56536c0920c2fe9d24cbbcb90127d 100644
+--- a/ios/components/security_interstitials/https_only_mode/https_only_mode_blocking_page.mm
++++ b/ios/components/security_interstitials/https_only_mode/https_only_mode_blocking_page.mm
+@@ -20,7 +20,8 @@ namespace {
+ 
+ // Must match the value of kLearnMoreLink in
+ // components/security_interstitials/content/https_only_mode_blocking_page.cc
+-const char kLearnMoreLink[] = "https://support.google.com/chrome?p=first_mode";
++const char kLearnMoreLink[] =
++    "https://support.brave.app/hc/en-us/articles/15513090104717";
+ 
+ }  // namespace
+ 

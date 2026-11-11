@@ -112,7 +112,7 @@
 <translation id="6920492760024499150">Bugungi asosiy yangiliklar maxfiy tasmada, faqat siz uchun.</translation>
 <translation id="3803728444598576153">Brave Yangiliklarini yoqing va hech bir yangilikni oʻtkazib yubormang</translation>
 <translation id="7627131190984957214">Brave Yangiliklar qurilmangizda moslanadigan maxfiy va anonimlashtirilgan reklamalar bilan dastaklanadi.</translation>
-<translation id="7897050360583141319">Sevimli manbalarni bitta lentada kuzatib boring. Faqat Brave'da yangi varaqqa o‘ting, pastga aylantiring va ... voilá! Brave Yangiliklar shaxsiy, anonimlashtirilgan reklamalari bilan qo‘llab-quvvatlanadi.</translation>
+<translation id="7897050360583141319">Sevimli manbalaringizni bitta lentada kuzatib boring. Faqat Brave’da yangi varaq oching, pastga siljiting va… voila!</translation>
 <translation id="1765217911817124376">Brave Yangiliklarini yoqish</translation>
 <translation id="8981973962043893066">Sayt, mavzu yoki RSS tasmasini qidirish</translation>
 <translation id="3225021799163709119">Ommabop</translation>
@@ -190,9 +190,9 @@
 <translation id="5987838417172370108">Brave Brauzer ishlamay qolganida yoki muzlab qolganida diagnostika xisobotini avtomatik yuborish orqali Brave mahsulotining barqarorligini yaxshilashga yordam bering.</translation>
 <translation id="7977176350719484850">Taxm. tejalgan\ntrafik</translation>
 <translation id="9008534313521214777">Taxm. tejalgan\nvaqt</translation>
-<translation id="8347743943525229984">Brave soʻrovnomalariga ruxsat bering</translation>
-<translation id="6022939994702081659">Brave'ga yangi varaq sahifasida shaxsiy soʻrovnomalarga havolalarni koʻrsatishga ruxsat beradi. Soʻrovnomalar bizga yangi funksiyalarni yaxshilash va brauzer orqali amalga oshiriladigan reklama kampaniyalarining samaradorligini baholashga yordam beradi.</translation>
-<translation id="7746496306508543965">Brave soʻrovnomalari haqida batafsil</translation>
+<translation id="5668852698659986622">Homiylik reklamalarini yoqish</translation>
+<translation id="431194936581466649">Homiylik reklamalari bilan Brave'ning mustaqil, foydalanuvchini birinchi o'ringa qo'yuvchi Web qurish missiyasini qo'llab-quvvatlashga yordam bering. Biz reklama samaradorligini sizni aniqlamasdan, maxfiy tarzda o'lchaymiz.</translation>
+<translation id="1939813747486101115">Homiylik qilingan reklamalar haqida ko‘proq bilib oling</translation>
 <translation id="410351446219883937">Avtomatik ijro</translation>
 <translation id="7445411102860286510">Saytlarga ovozsiz videolarni avtomatik o‘ynatishga ruxsat bering (tavsiya etiladi)</translation>
 <translation id="7837721118676387834">Ma’lum bir sayt uchun ovozsiz videolarni avtomatik ijro etishga ruxsat bering.</translation>
@@ -250,7 +250,6 @@
 <translation id="6213254277250932867">Menda 12 so‘zni tiklash iborasi bor</translation>
 <translation id="4225265925807365011">Menda 24 so‘zni tiklash iborasi bor</translation>
 <translation id="3570367516044491911">Birlamchi brauzer qilib sozlash</translation>
-<translation id="6800338374677644736">Birlamchi brauzer qilib sozlash</translation>
 <translation id="1545749641540134597">QR Kod skaneri</translation>
 <translation id="5317781812114905957">Koʻrsatmalar</translation>
 <translation id="8515319483805157233">QR Kod bilan qidirish uchun, QR Kodni ramkaning markaziga joylang.</translation>
@@ -282,7 +281,6 @@
 <translation id="5582839680698949063">Asosiy menyu</translation>
 <translation id="7002271985859760052">Sahifa amallari</translation>
 <translation id="7104487676473617844">Quyidagi elementlar faqat joriy ochilgan veb-sahifa tomonidan qoʻllab-quvvatlanganda menyuda koʻrinadi.</translation>
-<translation id="4159764849281393303">Veb-ilova</translation>
 <translation id="8038539967102225446">Brave Ads mana bu yerda!</translation>
 <translation id="222883304157347087">(bu qurilma)</translation>
 <translation id="4157741509680155021">SYNC CHAIN'DAGI QURILMALAR</translation>
@@ -291,7 +289,7 @@
 <translation id="2569646144216067185">Soʻzlar soni: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Noto‘g‘ri sync kodi</translation>
 <translation id="8284063834901328650">Noto‘g‘ri sync QR kodeksi</translation>
-<translation id="859506441384380749">Bu kod Brave'ning eskirgan versiyasi tomonidan yaratilgan, avval boshqa qurilmangizni yangilang</translation>
+<translation id="4002014583969312635">Koʻrinishidan bu kod Brave brauzerining eskiroq versiyasida ishlovchi qurilmada yaratilgan. Iltimos, boshqa qurilmangizda Brave brauzerining eng soʻnggi versiyasiga yangilang va yangi sinxronlash kodini yarating.</translation>
 <translation id="3132642509209154999">Bu kodning muddati tugagan. Boshqa qurilmangizda yangisini yarating va qayta urining.</translation>
 <translation id="2859229680945501779">Bu kod notoʻgʻri. Qurilmangizda vaqt va vaqt mintaqasi toʻgʻri sozlanganini tekshiring.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -344,8 +342,6 @@ Quyida ko'rsatilgan sinxronizatsiya zanjiri kod so'zlarini kiriting.</translatio
 <translation id="8185825081026121627">Maxfiylikni saqlaydigan Brave Mukofoti reklamalarini ko'rish orqali Basic Attention Token ishlab oling.</translation>
 <translation id="5321518976657560663">Qayta o'rnatish xatosi</translation>
 <translation id="4114170343590425996">Brave Mukofotlarini tiklashda xatolik yuz berdi. Iltimos, Braveʼni qayta ishga tushiring va qayta urinib koʼring.</translation>
-<translation id="6417420737057016607">Brave reklamalari</translation>
-<translation id="5611966874859284786">Brave foydalanilmayotganda bildirishnoma reklamalarini ko'rsatish</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Brave Mukofotlari maʼlumotlarini qayta tiklash…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/> Brave Ads maʼlumotlarini tozalash… <ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Bukmark qoʻshish</translation>
@@ -404,6 +400,13 @@ Buni qilishga ishonchingiz komilmi?</translation>
 <translation id="8793108040181436796">Vidgetlar</translation>
 <translation id="8643377320501056697">Eng ko'p kirilgan saytlarni ko'rsatish</translation>
 <translation id="7275773481201277457">Brave Statistikasini koʻrsatish</translation>
+<translation id="8516804522688861636">Tez-tez tashrif buyuriladigan saytlarni koʻrsatish</translation>
+<translation id="4546260624932151782">Sevimlilarni koʻrsatish</translation>
+<translation id="5313967007315987356">Sayt qoʻshish</translation>
+<translation id="1773147648972887693">Tez-tez tashrif buyuriladiganlarni koʻrsatish</translation>
+<translation id="7134741506051403308">Vidjetni yashirish</translation>
+<translation id="1247759249260562308">Sevimlini tahrirlash</translation>
+<translation id="6387214885349500492">Bu sevimlini mahkamlash</translation>
 <translation id="7462178177755090262">Ochilish ekrani</translation>
 <translation id="5365434987337264071">Oxirgi ochilgan tab</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Faolliksiz <ph name="HOURS_ONE"/> soatdan so‘ng yangi tab ochiladi} other {Faolliksiz <ph name="HOURS_MANY"/> soatdan so‘ng yangi tab ochiladi}}</translation>
@@ -735,6 +738,8 @@ Dastlab yanada koʻproq maʼlumot baham koʻrsangiz, bizning yordam xizmatimiz m
 <translation id="1634828734222219955">Jami</translation>
 <translation id="7995708795274219641">Summa + Gaz</translation>
 <translation id="2186011161688824046">Summa + toʻlov</translation>
+<translation id="1118876217803190221">Yetarli balans yo‘q</translation>
+<translation id="275990379543116961">Gaz uchun mablag' yetarli emas</translation>
 <translation id="1950052789869821983">Tranzaksiya</translation>
 <translation id="2304783958703511257">Kengaytirilgan sozlamalar</translation>
 <translation id="4220062530885628403">Nonce</translation>
@@ -988,6 +993,7 @@ Dastlab yanada koʻproq maʼlumot baham koʻrsangiz, bizning yordam xizmatimiz m
 <translation id="6365389672683343144">Brave VPN obunasi Android, iOS va stol ustida 5 tagacha qurilmani himoya qilishi mumkin. GCP obunasini Brave hisobi bilan bog'lang.</translation>
 <translation id="6610899852831463073">Xavfsiz ko'rish yoqib bo'linmadi</translation>
 <translation id="7954263306665462056">Inqirozga qarshi ko'rish qurilmangizda oʻchirilgan. Uni yoqish uchun, Google Play xizmatlari oʻrnatilishi va yangilanganligiga ishonch hosil qiling.</translation>
+<translation id="6417420737057016607">Brave reklamalari</translation>
 <translation id="7748944510530490017">Asosiy Tarmoqlar</translation>
 <translation id="2781668117338732220">Ikkinchi Tarmoqlar</translation>
 <translation id="282560918037172384">Sinov Tarmoqlar</translation>
@@ -1014,6 +1020,13 @@ Dastlab yanada koʻproq maʼlumot baham koʻrsangiz, bizning yordam xizmatimiz m
 <translation id="7530313002494358590">Brave funksiyasini faollashtirish yoki oʻchirish oʻzgarishlarni qoʻllash uchun brauzerni qayta ishga tushirishni talab qiladi. Iltimos, Brave Origin yangilanishini tugatgach <ph name="BEGIN_BOLD"/>Hozir qayta ishga tushiring<ph name="END_BOLD"/> tugmasini bosing.</translation>
 <translation id="1028940738207645746">Siz haqiqatan ham barcha sozlamalarni standartga qaytarishni xohlaysizmi?</translation>
 <translation id="5939518447894949180">Tiklash</translation>
+<translation id="3222790865318305905">Faollashtirish chegarasiga yetildi</translation>
+<translation id="3787857711016546034">Firibgarlikning oldini olish uchun Origin faollashtirishlari cheklangan. Lekin siz Origin litsenziyangizni koʻproq qurilmalarda ishlatish uchun istalgan vaqtda qoʻshimcha faollashtirishlar soʻrashingiz mumkin. Faqat Qoʻshimcha faollashtirishlar soʻrash opsiyasini bosing yoki yordam uchun <ph name="CONTACT_SUPPORT"/>.</translation>
+<translation id="6760819753412779585">yordam bilan bog‘lanish</translation>
+<translation id="571697836019670200">Qoʻshimcha faollashtirishlar soʻrash</translation>
+<translation id="9019545131475425538">Qayta ishlanmoqda…</translation>
+<translation id="7242700630179071243">Faollashtirishga tayyor</translation>
+<translation id="5463918917265356202">Brave Origin endi ushbu qurilmada faol. Funksiyadan foydalanishni boshlash uchun brauzerni qayta ishga tushirishingiz kerak. Hozir qayta ishga tushirmoqchimisiz?</translation>
 <translation id="8554205386170195281">Sotib olish</translation>
 <translation id="8613144770663526433">Brave hamyon bilan kirish</translation>
 <translation id="3696514931437952995">Siz <ph name="ORIGIN"/> ga kiryapsiz. Brave hamyon manzilingizni <ph name="ORIGIN"/> bilan boʻlishadi.</translation>

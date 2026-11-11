@@ -36,7 +36,7 @@ interface API {
   pageCallbackRouter: BraveNewTabPage.PageCallbackRouter
   pageHandler: BraveNewTabPage.PageHandlerRemote
   newTabMetrics: BraveNewTabPage.NewTabMetricsRemote
-  sponsoredRichMediaAdEventHandler: NTPBackgroundMedia.SponsoredRichMediaAdEventHandlerRemote
+  sponsoredContentAdEventHandler: NTPBackgroundMedia.SponsoredContentAdEventHandlerRemote
   addBackgroundUpdatedListener: (listener: BackgroundUpdated) => void
   addCustomImageBackgroundsUpdatedListener: (listener: CustomImageBackgroundsUpdated) => void
   addSearchPromotionDisabledListener: (listener: () => void) => void
@@ -51,7 +51,7 @@ class NTPBrowserAPI implements API {
   pageCallbackRouter = new BraveNewTabPage.PageCallbackRouter()
   pageHandler = new BraveNewTabPage.PageHandlerRemote()
   newTabMetrics = new BraveNewTabPage.NewTabMetricsRemote()
-  sponsoredRichMediaAdEventHandler = new NTPBackgroundMedia.SponsoredRichMediaAdEventHandlerRemote()
+  sponsoredContentAdEventHandler = new NTPBackgroundMedia.SponsoredContentAdEventHandlerRemote()
 
   constructor () {
     const factory = BraveNewTabPage.PageHandlerFactory.getRemote()
@@ -59,7 +59,7 @@ class NTPBrowserAPI implements API {
       this.pageCallbackRouter.$.bindNewPipeAndPassRemote(),
       this.pageHandler.$.bindNewPipeAndPassReceiver(),
       this.newTabMetrics.$.bindNewPipeAndPassReceiver(),
-      this.sponsoredRichMediaAdEventHandler.$.bindNewPipeAndPassReceiver()
+      this.sponsoredContentAdEventHandler.$.bindNewPipeAndPassReceiver()
     )
   }
 

@@ -29,6 +29,14 @@ transpile_web_ui("ai_chat_ui") {
       "leo_workspace",
       rebase_path("leo_workspace/index.tsx"),
     ],
+    [
+      "leo_workspace_view",
+      rebase_path("leo_workspace/leo_workspace_view.tsx"),
+    ],
+    [
+      "leo_workspace_view_sw",
+      rebase_path("leo_workspace/leo_workspace_view_sw.ts"),
+    ],
   ]
 
   imports_from = [ "//brave/components/ai_chat/resources/" ]
@@ -46,6 +54,7 @@ preprocess_if_expr("preprocess_html") {
     "chart_display/chart_display.html",
     "code_sandbox/code_sandbox.html",
     "leo_workspace/leo_workspace.html",
+    "leo_workspace/leo_workspace_view.html",
     "page/ai_chat_ui.html",
     "untrusted_conversation_frame/untrusted_conversation_frame.html",
   ]

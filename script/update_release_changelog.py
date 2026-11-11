@@ -12,16 +12,11 @@ import sys
 
 import requests
 from argparse import RawTextHelpFormatter
+from http.client import HTTPConnection
 
 from lib.changelog import download_from_url
 from lib.github import GitHub
 from lib.helpers import BRAVE_REPO, get_release, retry_func
-
-if os.environ.get('DEBUG_HTTP_HEADERS') == 'true':
-    try:
-        from http.client import HTTPConnection  # python3
-    except ImportError:
-        from httplib import HTTPConnection  # python2
 
 
 DEFAULT_SECTION_TITLE = 'Release Notes'
@@ -42,7 +37,7 @@ def parse_h1_sections(body):
     if not matches:
         return body, []
 
-    preamble = body[:matches[0].start()].rstrip()
+    preamble = body[: matches[0].start()].rstrip()
     sections = [(match.group(1), match.group(2).rstrip()) for match in matches]
     return preamble, sections
 
@@ -62,8 +57,9 @@ def normalize_section_title(title):
     return re.sub(r'\s+', '', title.strip().lower())
 
 
-def merge_release_changelog_section(body, section_title, section_content,
-                                    logger):
+def merge_release_changelog_section(
+    body, section_title, section_content, logger
+):
     """Insert changelog section after removing all prior matching sections."""
     normalized_title = section_title.strip()
     remove_titles = {normalize_section_title(section_title)}
@@ -73,8 +69,11 @@ def merge_release_changelog_section(body, section_title, section_content,
 
     for title, content in sections:
         if normalize_section_title(title) in remove_titles:
-            logger.info('Removing existing "%s" section: %s', normalized_title,
-                        title.strip())
+            logger.info(
+                'Removing existing "%s" section: %s',
+                normalized_title,
+                title.strip(),
+            )
             if insert_index is None:
                 insert_index = len(kept)
             continue
@@ -89,8 +88,10 @@ def merge_release_changelog_section(body, section_title, section_content,
     return assemble_body(preamble, kept)
 
 
-TAG_FORMAT_HELP = ('Tag must be "vX.Y.Z" or "refs/tags/vX.Y.Z" '
-                   '(example: v1.5.45 or refs/tags/v1.5.45)')
+TAG_FORMAT_HELP = (
+    'Tag must be "vX.Y.Z" or "refs/tags/vX.Y.Z" '
+    '(example: v1.5.45 or refs/tags/v1.5.45)'
+)
 
 
 def normalize_tag(raw_tag):
@@ -111,10 +112,12 @@ def version_header_pattern(version):
 
 def extract_changelog_section(changelog_txt, version):
     """Return release notes body for version from a CHANGELOG.md excerpt."""
-    header_pattern = (r'^## [^\n]*' + version_header_pattern(version) +
-                      r'[^\n]*\n+')
-    rn_regex = re.compile(header_pattern + r'(.*?)(?:\n+^##\s|\Z)',
-                          flags=re.DOTALL | re.MULTILINE)
+    header_pattern = (
+        r'^## [^\n]*' + version_header_pattern(version) + r'[^\n]*\n+'
+    )
+    rn_regex = re.compile(
+        header_pattern + r'(.*?)(?:\n+^##\s|\Z)', flags=re.DOTALL | re.MULTILINE
+    )
     match = rn_regex.search(changelog_txt)
     if not match:
         return None
@@ -139,7 +142,8 @@ def main():
         logging.basicConfig(level=logging.DEBUG)
         logging.getLogger("urllib3").setLevel(logging.DEBUG)
         logging.debug(
-            "DEBUG_HTTP_HEADERS env var is enabled, logging HTTP headers")
+            "DEBUG_HTTP_HEADERS env var is enabled, logging HTTP headers"
+        )
         debug_requests_on()
 
     args = parse_args()
@@ -172,18 +176,19 @@ def main():
     logging.debug("Release body before update: \n'%s'", release['body'])
 
     logging.info("Merging original release body with changelog")
-    new_body = merge_release_changelog_section(release['body'],
-                                               args.section_title,
-                                               changelog_section, logging)
+    new_body = merge_release_changelog_section(
+        release['body'], args.section_title, changelog_section, logging
+    )
     logging.debug("release body is now: \n'%s'", new_body)
 
-    data = dict(tag_name=tag, name=release['name'], body=new_body)
+    data = {'tag_name': tag, 'name': release['name'], 'body': new_body}
     release_id = release['id']
     logging.debug("Updating release with id: %s", release_id)
-    release = retry_func(lambda _attempt: repo.releases.__call__(
-        f'{release_id}').patch(data=data),
-                         catch=requests.exceptions.ConnectionError,
-                         retries=3)
+    release = retry_func(
+        lambda _attempt: repo.releases(f'{release_id}').patch(data=data),
+        catch=requests.exceptions.ConnectionError,
+        retries=3,
+    )
     logging.debug("Release body after update: \n'%s'", release['body'])
 
 
@@ -210,34 +215,45 @@ def debug_requests_off():
 
 
 def parse_args():
-    desc = ("Parse Brave Browser or Brave Origin changelog and add markdown "
-            "to release notes for tag\n\nRequires the following ENVIRONMENT "
-            "VARIABLES be set:\n\nGITHUB_TOKEN: GitHub token with permission "
-            "to update the release body (draft or published). ")
+    desc = (
+        "Parse Brave Browser or Brave Origin changelog and add markdown "
+        "to release notes for tag\n\nRequires the following ENVIRONMENT "
+        "VARIABLES be set:\n\nGITHUB_TOKEN: GitHub token with permission "
+        "to update the release body (draft or published). "
+    )
 
     parser = argparse.ArgumentParser(
-        description=desc, formatter_class=RawTextHelpFormatter)
-    parser.add_argument('-d', '--debug', action='store_true',
-                        help='Print debug statements')
+        description=desc, formatter_class=RawTextHelpFormatter
+    )
+    parser.add_argument(
+        '-d', '--debug', action='store_true', help='Print debug statements'
+    )
     parser.add_argument(
         '-t',
         '--tag',
-        help=('Brave version tag (allowed format: "v1.5.45" or '
-              '"refs/tags/v1.5.45") (required)'),
-        required=True)
+        help=(
+            'Brave version tag (allowed format: "v1.5.45" or '
+            '"refs/tags/v1.5.45") (required)'
+        ),
+        required=True,
+    )
     parser.add_argument(
         '-u',
         '--url',
         help='URL for Brave Browser or Brave Origin CHANGELOG.md (required)',
-        required=True)
+        required=True,
+    )
     parser.add_argument(
         '-s',
         '--section-title',
         default=DEFAULT_SECTION_TITLE,
-        help=('H1 section title for the inserted release notes '
-              '(written as "# <title>"; replaces existing H1 '
-              'sections with the same title; '
-              'default: "%(default)s")'))
+        help=(
+            'H1 section title for the inserted release notes '
+            '(written as "# <title>"; replaces existing H1 '
+            'sections with the same title; '
+            'default: "%(default)s")'
+        ),
+    )
     return parser.parse_args()
 
 

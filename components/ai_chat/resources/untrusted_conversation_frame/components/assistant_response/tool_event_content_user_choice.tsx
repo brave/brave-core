@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 import classnames from '$web-common/classnames'
 import ConversationAreaButton from '../../../common/components/conversation_area_button'
 import { createTextContentBlock } from '../../../common/content_block'
@@ -12,11 +12,22 @@ import { useUntrustedConversationContext } from '../../untrusted_conversation_co
 import type { ToolComponent, ToolUseContent } from './tool_event'
 import styles from './tool_event.module.scss'
 
+// Matches the choice_type input property values of the user choice tool. Any
+// other value, including a missing one, is treated as a preference choice.
+const FOLLOW_UP_CHOICE_TYPE = 'follow_up'
+
 const ToolEventContentUserChoice: ToolComponent = (props) => {
   const context = useUntrustedConversationContext()
   const content: ToolUseContent = {
     toolLabel: null,
     expandedContent: null,
+  }
+
+  // Follow-ups are questions the user could ask next, not a decision the
+  // assistant is waiting on. The browser moves them to the conversation's
+  // suggested questions, so nothing is displayed with the response itself.
+  if (props.toolInput?.choice_type === FOLLOW_UP_CHOICE_TYPE) {
+    return props.children(content)
   }
 
   if (props.toolUseEvent.output) {
@@ -38,10 +49,11 @@ const ToolEventContentUserChoice: ToolComponent = (props) => {
     )
   } else if (props.toolInput?.choices?.length) {
     const handleChoice = (choice: string) => {
-      if (!props.isEntryActive) {
+      if (!props.isEntryActive || !props.entryUuid) {
         return
       }
-      context.conversationHandler?.respondToToolUseRequest(
+      context.userActions?.respondToToolUseRequest(
+        props.entryUuid,
         props.toolUseEvent.id,
         [createTextContentBlock(choice)],
         [],

@@ -16,18 +16,14 @@ substitutions:
 
   - description: |-
       Ship kOmniboxMobileParityUpdateV2 disabled on Android only.
+    set_feature_flag_default_state:
+      feature_name: kOmniboxMobileParityUpdateV2
+      value: |
 
-      Upstream ships this enabled on every platform, and Brave only means to
-      override the Android default. set_feature_flag_default_state pins the
-      value on every platform, so a plain regex is used instead to keep the
-      override guarded to IS_ANDROID.
-    regex:
-      pattern: 'BASE_FEATURE(kOmniboxMobileParityUpdateV2, ENABLED);'
-      replace: |-
         #if BUILDFLAG(IS_ANDROID)
-        BASE_FEATURE(kOmniboxMobileParityUpdateV2, DISABLED);
+          DISABLED
         #else
-        BASE_FEATURE(kOmniboxMobileParityUpdateV2, ENABLED);
+          ENABLED
         #endif
 
   - description: 'Ship kRichAutocompletion disabled.'

@@ -28,7 +28,8 @@ import XCTest
           selectedAccount: .previewAccount,
           ethDappSelectedAccount: .previewAccount,
           solDappSelectedAccount: nil,
-          adaDappSelectedAccount: nil
+          adaDappSelectedAccount: nil,
+          dotDappSelectedAccount: nil
         )
       )
     }
@@ -112,7 +113,8 @@ import XCTest
           selectedAccount: .previewAccount,
           ethDappSelectedAccount: .previewAccount,
           solDappSelectedAccount: nil,
-          adaDappSelectedAccount: nil
+          adaDappSelectedAccount: nil,
+          dotDappSelectedAccount: nil
         )
       )
     }
@@ -160,7 +162,7 @@ import XCTest
         completion(.mockBitcoinMainnet)
       case .zec:
         completion(.mockZcashMainnet)
-      case .ada:
+      case .ada, .dot:
         fallthrough
       @unknown default:
         completion(.mockMainnet)

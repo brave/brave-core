@@ -22,13 +22,14 @@ import recipe_test_runner  # pylint: disable=wrong-import-position
 
 
 class RecipeExpectationsTest(unittest.TestCase):
-
     def test_all_expectations_are_current(self):
         exit_code = recipe_test_runner.run_tests(train=False)
         self.assertEqual(
-            exit_code, 0,
+            exit_code,
+            0,
             'recipe expectations are stale or a check failed; run '
-            '`python3 tools/recipes/engine.py test train` and review the diff')
+            '`python3 tools/recipes/engine.py test train` and review the diff',
+        )
 
 
 if __name__ == '__main__':

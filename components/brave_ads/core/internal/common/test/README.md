@@ -57,7 +57,7 @@ See [command_line_switch_test_util.h](command_line_switch_test_util.h).
 
 ## Mocking Prefs
 
-You can register preferences in [pref_registry_test_util.cc](./pref_registry_test_util.cc) or by using `RegisterProfile*Pref` or `RegisterLocalState*Pref`. To set a preference and notify listeners, use `SetProfile*Pref` or `SetLocalState*Pref`. To set a preference without notifying listeners, use `SetProfile*PrefValue` or `SetLocalState*PrefValue`. See [profile_pref_value_test_util.h](./profile_pref_value_test_util.h) and [local_state_pref_value_test_util.h](./local_state_pref_value_test_util.h).
+You can register preferences in [profile_pref_registry_test_util.cc](./profile_pref_registry_test_util.cc) or [local_state_pref_registry_test_util.cc](./local_state_pref_registry_test_util.cc), or by using `RegisterProfile*Pref` or `RegisterLocalState*Pref`. To set a preference and notify listeners, use `SetProfile*Pref` or `SetLocalState*Pref`. To set a preference without notifying listeners, use `SetProfile*PrefValue` or `SetLocalState*PrefValue`. See [profile_pref_value_test_util.h](./profile_pref_value_test_util.h) and [local_state_pref_value_test_util.h](./local_state_pref_value_test_util.h).
 
 ## Mocking Files
 
@@ -155,7 +155,7 @@ You can add one or more responses per request. These will be returned in the giv
 
 | setting  | type  | default  | example  |
 |---|---|---|---|
-| Browser version number  | string  | `1.2.3.4`  | `fake_browser_version_.SetNumber("2.0.0.0");` — see [`fake_browser_version.h`](../application_state/test/fake_browser_version.h)  |
+| Browser version number  | string  | `1.2.3.4`  | `fake_browser_version_.SetNumber("2.0.0.0");` — see [`fake_browser_version.h`](../../application_state/test/fake_browser_version.h)  |
 | Device identifier  | string  | `21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e`  | `test::SetUpDeviceId();`  |
 | Language code  | string (ISO 639-1)  | `en`  | `fake_locale_.SetLanguageCode("fr");`  |
 | Country code  | string (ISO 3166-1)  | `US`  | `fake_locale_.SetCountryCode("FR");`  |

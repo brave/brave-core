@@ -21,6 +21,7 @@ BASE_DECLARE_FEATURE(kBraveCopyCleanLinkFromJs);
 BASE_DECLARE_FEATURE(kBraveOverrideDownloadDangerLevel);
 BASE_DECLARE_FEATURE(kBraveRoundedCornersByDefault);
 BASE_DECLARE_FEATURE(kBraveDayZeroExperiment);
+BASE_DECLARE_FEATURE(kBraveEnableShieldsForWebSocketsFromWorkers);
 #if BUILDFLAG(BRAVE_V8_ENABLE_DRUMBRAKE)
 BASE_DECLARE_FEATURE(kBraveWebAssemblyJitless);
 #endif  // BUILDFLAG(BRAVE_V8_ENABLE_DRUMBRAKE)
@@ -30,6 +31,7 @@ BASE_DECLARE_FEATURE(kBraveAndroidDynamicColorsByDefault);
 BASE_DECLARE_FEATURE(kBraveFreshNtpAfterIdleExperiment);
 BASE_DECLARE_FEATURE(kBraveCustomSearchEngines);
 BASE_DECLARE_FEATURE(kBraveAndroidTabGroupsSettings);
+BASE_DECLARE_FEATURE(kBraveAndroidMergeInstallPwaAndCreateShortcut);
 #endif  // BUILDFLAG(IS_ANDROID)
 
 extern const base::FeatureParam<std::string> kBraveDayZeroExperimentVariant;

@@ -5,8 +5,6 @@
 
 #include "brave/components/webcompat/core/common/features.h"
 
-#include "base/feature_list.h"
-
 namespace webcompat::features {
 
 // This flag enables the webcompat exceptions service, which allows

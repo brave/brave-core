@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_account/flows/login.h"
-
 #include <optional>
 #include <string>
 
@@ -41,8 +39,8 @@ struct LoginStep1TestCase {
                   base::test::TaskEnvironment& task_environment,
                   mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    authentication->LoginStep1(mojom::Service::kAccounts, kEmailAddress,
-                               "serialized_ke1", std::move(callback));
+    authentication->LoginStep1(kEmailAddress, "serialized_ke1",
+                               std::move(callback));
   }
 
   std::string test_name;

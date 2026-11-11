@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 
+#include "base/containers/map_util.h"
+#include "base/strings/strcat.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
@@ -14,10 +16,13 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "net/base/net_errors.h"
+#include "net/http/http_status_code.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "services/network/test/test_utils.h"
@@ -41,10 +46,23 @@ class PolkadotSubstrateRpcUnitTest : public testing::Test {
 
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
     polkadot_substrate_rpc_ = std::make_unique<PolkadotSubstrateRpc>(
-        *network_manager_, url_loader_factory_.GetSafeWeakWrapper());
+        *network_manager_, url_loader_factory_.GetSafeWeakWrapper(),
+        NoParachainUrlMap());
   }
 
  protected:
+  std::unique_ptr<PolkadotSubstrateRpc> MakeRpcWithUrlMap(
+      base::flat_map<std::string, std::vector<GURL>> url_map) {
+    return std::make_unique<PolkadotSubstrateRpc>(
+        *network_manager_, url_loader_factory_.GetSafeWeakWrapper(),
+        base::BindLambdaForTesting(
+            [url_map = std::move(url_map)](
+                std::string_view chain_id) -> std::vector<GURL> {
+              const auto* urls = base::FindOrNull(url_map, chain_id);
+              return urls ? *urls : std::vector<GURL>();
+            }));
+  }
+
   base::test::ScopedFeatureList feature_list_;
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
@@ -316,7 +334,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
         "jsonrpc":"2.0",
         "result":[
           {
-            "block":""0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c",
+            "block":"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c",
             "changes":[["", "0x1234"]]
           }
         ]
@@ -328,6 +346,30 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
     auto [account_info, error] = future.Take();
     EXPECT_EQ(error, WalletParsingErrorMessage());
     EXPECT_FALSE(account_info);
+  }
+
+  {
+    // Account data is one byte short or one byte too long. Both must be
+    // rejected rather than padded or truncated.
+
+    for (const size_t num_bytes : {size_t{79}, size_t{81}}) {
+      SCOPED_TRACE(num_bytes);
+
+      url_loader_factory_.AddResponse(
+          testnet_url,
+          base::StrCat(
+              {R"({"id":1,"jsonrpc":"2.0","result":[{"block":)",
+               R"("0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c",)",
+               R"("changes":[["", "0x)", std::string(num_bytes * 2, '0'),
+               R"("]]}]})"}));
+
+      polkadot_substrate_rpc_->GetAccountBalance(chain_id, pubkey,
+                                                 future.GetCallback());
+
+      auto [account_info, error] = future.Take();
+      EXPECT_EQ(error, WalletParsingErrorMessage());
+      EXPECT_FALSE(account_info);
+    }
   }
 
   {
@@ -2371,6 +2413,436 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetMetadata) {
     ASSERT_FALSE(metadata.has_value());
     EXPECT_EQ(metadata.error(), WalletInternalErrorMessage());
   }
+}
+
+TEST_F(PolkadotSubstrateRpcUnitTest, GetSystemProperties) {
+  url_loader_factory_.ClearResponses();
+
+  const auto* chain_id = mojom::kPolkadotTestnet;
+  std::string testnet_url =
+      network_manager_
+          ->GetKnownChain(mojom::kPolkadotTestnet, mojom::CoinType::DOT)
+          ->rpc_endpoints.front()
+          .spec();
+
+  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
+
+  base::test::TestFuture<
+      base::expected<mojom::PolkadotChainPropertiesPtr, std::string>>
+      future;
+
+  {
+    // Successful RPC call, scalar token fields (Asset Hub Polkadot's shape).
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+
+    auto* reqs = url_loader_factory_.pending_requests();
+    ASSERT_TRUE(reqs);
+    ASSERT_EQ(reqs->size(), 1u);
+
+    auto const& req = reqs->at(0);
+    ASSERT_TRUE(req.request.request_body->elements());
+    auto const& element = req.request.request_body->elements()->at(0);
+
+    std::string expected_body = R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "system_properties",
+        "params": []
+      })";
+
+    EXPECT_EQ(base::test::ParseJsonDict(
+                  element.As<network::DataElementBytes>().AsStringPiece()),
+              base::test::ParseJsonDict(expected_body));
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "ss58Format": 0,
+          "tokenDecimals": 10,
+          "tokenSymbol": "DOT"
+        }
+      })");
+
+    auto properties = future.Take();
+    ASSERT_TRUE(properties.has_value());
+    ASSERT_TRUE((*properties)->ss58_format);
+    EXPECT_EQ((*properties)->ss58_format->val, 0u);
+    EXPECT_EQ((*properties)->token_decimals, std::vector<uint32_t>({10}));
+    EXPECT_EQ((*properties)->token_symbol, std::vector<std::string>({"DOT"}));
+  }
+
+  {
+    // Successful RPC call, array token fields (Acala's shape). Index 0 is the
+    // native token; the rest are retained in order.
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "ss58Format": 10,
+          "tokenDecimals": [12, 12, 10, 10],
+          "tokenSymbol": ["ACA", "AUSD", "DOT", "LDOT"]
+        }
+      })");
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+
+    auto properties = future.Take();
+    ASSERT_TRUE(properties.has_value());
+    ASSERT_TRUE((*properties)->ss58_format);
+    EXPECT_EQ((*properties)->ss58_format->val, 10u);
+    EXPECT_EQ((*properties)->token_decimals,
+              std::vector<uint32_t>({12, 12, 10, 10}));
+    EXPECT_EQ((*properties)->token_symbol,
+              std::vector<std::string>({"ACA", "AUSD", "DOT", "LDOT"}));
+  }
+
+  {
+    // Chains carry arbitrary extra keys in their properties map; they're
+    // ignored rather than failing the parse.
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "isEthereum": false,
+          "ss58Format": 42,
+          "ss58Prefix": 42,
+          "tokenDecimals": 12,
+          "tokenSymbol": "WND"
+        }
+      })");
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+
+    auto properties = future.Take();
+    ASSERT_TRUE(properties.has_value());
+    ASSERT_TRUE((*properties)->ss58_format);
+    EXPECT_EQ((*properties)->ss58_format->val, 42u);
+    EXPECT_EQ((*properties)->token_decimals, std::vector<uint32_t>({12}));
+    EXPECT_EQ((*properties)->token_symbol, std::vector<std::string>({"WND"}));
+  }
+
+  {
+    // Empty token arrays parse to empty vectors rather than failing.
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "ss58Format": 65535,
+          "tokenDecimals": [],
+          "tokenSymbol": []
+        }
+      })");
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+
+    auto properties = future.Take();
+    ASSERT_TRUE(properties.has_value());
+    ASSERT_TRUE((*properties)->ss58_format);
+    EXPECT_EQ((*properties)->ss58_format->val, 65535u);
+    EXPECT_TRUE((*properties)->token_decimals.empty());
+    EXPECT_TRUE((*properties)->token_symbol.empty());
+  }
+
+  {
+    // ss58 format missing is not an error.
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "tokenDecimals": 12,
+          "tokenSymbol": "HDX"
+        }
+      })");
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+
+    auto properties = future.Take();
+    ASSERT_TRUE(properties.has_value());
+    EXPECT_FALSE((*properties)->ss58_format);
+    EXPECT_EQ((*properties)->token_decimals, std::vector<uint32_t>({12}));
+    EXPECT_EQ((*properties)->token_symbol, std::vector<std::string>({"HDX"}));
+  }
+
+  {
+    // RPC error includes a message.
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "error": {"code": -32601, "message": "Method not found"}
+      })");
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+
+    auto properties = future.Take();
+    ASSERT_FALSE(properties.has_value());
+    EXPECT_EQ(properties.error(), "Method not found");
+  }
+
+  {
+    // RPC error has no message.
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "error": {"code": -32601}
+      })");
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+
+    auto properties = future.Take();
+    ASSERT_FALSE(properties.has_value());
+    EXPECT_EQ(properties.error(), WalletInternalErrorMessage());
+  }
+
+  {
+    // Error due to non-2XX response.
+    url_loader_factory_.AddResponse(testnet_url, "",
+                                    net::HTTP_INTERNAL_SERVER_ERROR);
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+
+    auto properties = future.Take();
+    ASSERT_FALSE(properties.has_value());
+    EXPECT_EQ(properties.error(), WalletInternalErrorMessage());
+  }
+
+  const struct {
+    std::string_view test_name;
+    std::string_view response;
+  } parse_error_cases[] = {
+      {"TokenFieldLengthMismatch", R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "ss58Format": 10,
+          "tokenDecimals": [12, 12, 10],
+          "tokenSymbol": ["ACA", "AUSD", "DOT", "LDOT"]
+        }
+      })"},
+      {"ResultExplicitlyNull", R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": null
+      })"},
+      {"ResultMissing", R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1
+      })"},
+      {"ResultNotADictionary", R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": 1234
+      })"},
+      {"Ss58FormatExceedsUint16", R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "ss58Format": 65536,
+          "tokenDecimals": 10,
+          "tokenSymbol": "DOT"
+        }
+      })"},
+      {"Ss58FormatNegative", R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "ss58Format": -1,
+          "tokenDecimals": 10,
+          "tokenSymbol": "DOT"
+        }
+      })"},
+      {"TokenDecimalsAbsent", R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "ss58Format": 0,
+          "tokenSymbol": "DOT"
+        }
+      })"},
+      // Neither an integer nor an integer array.
+      {"TokenDecimalsWrongType", R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "ss58Format": 0,
+          "tokenDecimals": "10",
+          "tokenSymbol": "DOT"
+        }
+      })"},
+      {"TokenDecimalsEntryNegative", R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "ss58Format": 0,
+          "tokenDecimals": [10, -1],
+          "tokenSymbol": ["DOT", "KSM"]
+        }
+      })"},
+      {"TokenSymbolAbsent", R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "ss58Format": 0,
+          "tokenDecimals": 10
+        }
+      })"},
+      // Neither a string nor a string array.
+      {"TokenSymbolWrongType", R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "ss58Format": 0,
+          "tokenDecimals": 10,
+          "tokenSymbol": 10
+        }
+      })"},
+  };
+
+  for (const auto& tc : parse_error_cases) {
+    SCOPED_TRACE(tc.test_name);
+
+    url_loader_factory_.AddResponse(testnet_url, tc.response);
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+
+    auto properties = future.Take();
+    ASSERT_FALSE(properties.has_value());
+    EXPECT_EQ(properties.error(), WalletParsingErrorMessage());
+  }
+}
+
+TEST_F(PolkadotSubstrateRpcUnitTest, DappParachainRpcUrls) {
+  url_loader_factory_.ClearResponses();
+
+  const struct {
+    std::string_view chain_id;
+    std::string_view rpc_url;
+  } test_cases[] = {
+      {mojom::kPolkadotAcala, "https://acala-rpc-0.aca-api.network/"},
+      {mojom::kPolkadotBifrost, "https://hk.p.bifrost-rpc.liebi.com/"},
+      {mojom::kPolkadotHydration, "https://hydration-rpc.n.dwellir.com/"},
+      {mojom::kPolkadotNeuroWeb, "https://parachain-rpc.origin-trail.network/"},
+      {mojom::kPolkadotJamton, "https://rpc.jamton.network/"},
+      {mojom::kPolkadotKusamaHub,
+       "https://rpc-asset-hub-kusama.luckyfriday.io/"},
+  };
+
+  base::flat_map<std::string, std::vector<GURL>> url_map;
+  for (const auto& tc : test_cases) {
+    url_map.emplace(tc.chain_id, std::vector<GURL>{GURL(tc.rpc_url)});
+  }
+
+  auto rpc = MakeRpcWithUrlMap(std::move(url_map));
+
+  base::MockCallback<PolkadotSubstrateRpc::GetMetadataCallback> callback;
+  auto* reqs = url_loader_factory_.pending_requests();
+
+  for (const auto& test_case : test_cases) {
+    SCOPED_TRACE(test_case.chain_id);
+
+    ASSERT_TRUE(network_manager_
+                    ->GetNetworkURL(test_case.chain_id, mojom::CoinType::DOT)
+                    .is_empty());
+
+    rpc->GetMetadata(test_case.chain_id, callback.Get());
+
+    ASSERT_EQ(reqs->size(), 1u);
+    EXPECT_EQ(reqs->front().request.url, test_case.rpc_url);
+
+    reqs->clear();
+  }
+
+  // We route Asset Hub through the same URL our wallet natively uses.
+  rpc->GetMetadata(mojom::kPolkadotMainnetAssetHub, callback.Get());
+  ASSERT_EQ(reqs->size(), 1u);
+  EXPECT_EQ(reqs->front().request.url,
+            "https://polkadot-asset-hub.wallet.brave.com/");
+  reqs->clear();
+
+  // Users can also manually set where Asset Hub points.
+  network_manager_->SetNetworkURLForTesting(
+      mojom::kPolkadotMainnetAssetHub,
+      GURL("https://asset-hub.example.com/rpc"));
+  rpc->GetMetadata(mojom::kPolkadotMainnetAssetHub, callback.Get());
+  ASSERT_EQ(reqs->size(), 1u);
+  EXPECT_EQ(reqs->front().request.url, "https://asset-hub.example.com/rpc");
+  reqs->clear();
+}
+
+TEST_F(PolkadotSubstrateRpcUnitTest, DappRequestEmptyMap) {
+  // Want to prove that if our dapp rpc url map is empty that we get an expected
+  // error.
+  url_loader_factory_.ClearResponses();
+
+  // An unknown chain resolves to an empty URL. The real network service fails
+  // such a request outright, so model that here instead of leaving it pending.
+  url_loader_factory_.AddResponse(
+      GURL(), network::CreateURLResponseHead(net::HTTP_BAD_REQUEST), "",
+      network::URLLoaderCompletionStatus(net::ERR_INVALID_URL));
+
+  auto* reqs = url_loader_factory_.pending_requests();
+  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+      future;
+
+  // An empty map resolves nothing, so there's no endpoint to talk to.
+  polkadot_substrate_rpc_->GetMetadata(mojom::kPolkadotAcala,
+                                       future.GetCallback());
+
+  ASSERT_TRUE(reqs->empty());
+
+  auto metadata = future.Take();
+  ASSERT_FALSE(metadata.has_value());
+  EXPECT_EQ(metadata.error(), WalletInternalErrorMessage());
+
+  // Same story for a loaded map that simply doesn't know the chain.
+  base::flat_map<std::string, std::vector<GURL>> url_map;
+  url_map.emplace(
+      mojom::kPolkadotBifrost,
+      std::vector<GURL>{GURL("https://hk.p.bifrost-rpc.liebi.com/")});
+
+  auto rpc = MakeRpcWithUrlMap(std::move(url_map));
+
+  rpc->GetMetadata(mojom::kPolkadotAcala, future.GetCallback());
+
+  metadata = future.Take();
+  ASSERT_FALSE(metadata.has_value());
+  EXPECT_EQ(metadata.error(), WalletInternalErrorMessage());
+  EXPECT_TRUE(reqs->empty());
 }
 
 TEST_F(PolkadotSubstrateRpcUnitTest, SubmitExtrinsic) {

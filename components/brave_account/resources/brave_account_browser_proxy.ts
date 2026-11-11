@@ -7,7 +7,7 @@ import {
   Authentication,
   AuthenticationObserverCallbackRouter,
   DialogController,
-  Service,
+  DialogMode,
 } from './brave_account.mojom-webui.js'
 import type {
   AuthenticationInterface,
@@ -15,7 +15,6 @@ import type {
 } from './brave_account.mojom-webui.js'
 import { PasswordStrengthMeter } from './password_strength_meter.mojom-webui.js'
 import type { PasswordStrengthMeterInterface } from './password_strength_meter.mojom-webui.js'
-import { loadTimeData } from '//resources/js/load_time_data.js'
 
 export interface BraveAccountBrowserProxy {
   authentication: AuthenticationInterface
@@ -23,7 +22,7 @@ export interface BraveAccountBrowserProxy {
   dialog_controller: DialogControllerInterface
   password_strength_meter: PasswordStrengthMeterInterface
   closeDialog: () => void
-  getInitiatingService: () => Service
+  getDialogMode: () => Promise<DialogMode>
 }
 
 export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
@@ -31,6 +30,8 @@ export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
   authenticationObserverCallbackRouter: AuthenticationObserverCallbackRouter
   dialog_controller: DialogControllerInterface
   password_strength_meter: PasswordStrengthMeterInterface
+
+  private dialogMode?: Promise<DialogMode>
 
   private constructor() {
     this.authentication = Authentication.getRemote()
@@ -48,11 +49,12 @@ export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
     this.dialog_controller.closeDialog()
   }
 
-  getInitiatingService(): Service {
-    const id = 'initiatingService'
-    return loadTimeData.valueExists(id)
-      ? (loadTimeData.getInteger(id) as Service)
-      : Service.kAccounts
+  // The mode is fixed for the page's lifetime, so the round trip is made once
+  // and every caller awaits the same promise.
+  getDialogMode(): Promise<DialogMode> {
+    return (this.dialogMode ??= this.dialog_controller
+      .getDialogMode()
+      .then(({ dialogMode }) => dialogMode))
   }
 
   static getInstance(): BraveAccountBrowserProxy {

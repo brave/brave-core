@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -15,8 +16,12 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "url/gurl.h"
 
 namespace brave_wallet {
+
+using PolkadotRpcUrlMapCallback =
+    base::RepeatingCallback<std::vector<GURL>(std::string_view)>;
 
 class NetworkManager;
 
@@ -29,9 +34,10 @@ struct PolkadotRuntimeVersion {
 // the Substrate-based parachains.
 class PolkadotSubstrateRpc {
  public:
-  explicit PolkadotSubstrateRpc(
+  PolkadotSubstrateRpc(
       NetworkManager& network_manager,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      PolkadotRpcUrlMapCallback rpc_url_callback);
   virtual ~PolkadotSubstrateRpc();
 
   using GetChainNameCallback =
@@ -67,6 +73,9 @@ class PolkadotSubstrateRpc {
 
   using GetMetadataCallback = base::OnceCallback<void(
       base::expected<std::vector<uint8_t>, std::string>)>;
+
+  using GetSystemPropertiesCallback = base::OnceCallback<void(
+      base::expected<mojom::PolkadotChainPropertiesPtr, std::string>)>;
 
   using SubmitExtrinsicCallback =
       base::OnceCallback<void(std::optional<std::string>,
@@ -156,6 +165,13 @@ class PolkadotSubstrateRpc {
   virtual void GetMetadata(std::string_view chain_id,
                            GetMetadataCallback callback);
 
+  // Fetches the chain spec's properties for |chain_id|: its ss58 prefix and the
+  // decimals and symbol of its native token. These are not part of the runtime
+  // metadata, so a type registry built from metadata alone falls back to
+  // polkadot-js's generic defaults when formatting addresses and balances.
+  void GetSystemProperties(std::string_view chain_id,
+                           GetSystemPropertiesCallback callback);
+
   void SubmitExtrinsic(std::string_view chain_id,
                        std::string_view signed_extrinsic,
                        SubmitExtrinsicCallback callback);
@@ -194,6 +210,7 @@ class PolkadotSubstrateRpc {
                                             base::ListValue params);
 
   GURL GetNetworkURL(std::string_view chain_id);
+  GURL GetRpcUrlFromChainId(std::string_view chain_id);
 
   // Issues a POST request with a JSON payload to `url`, attaching the Brave
   // services key header when `url` points at a Brave wallet proxy endpoint.
@@ -213,11 +230,14 @@ class PolkadotSubstrateRpc {
   void OnGetRuntimeVersion(GetRuntimeVersionCallback callback,
                            APIRequestResult res);
   void OnGetMetadata(GetMetadataCallback callback, APIRequestResult res);
+  void OnGetSystemProperties(GetSystemPropertiesCallback callback,
+                             APIRequestResult res);
   void OnSubmitExtrinsic(SubmitExtrinsicCallback callback,
                          APIRequestResult res);
   void OnGetPaymentInfo(GetPaymentInfoCallback callback, APIRequestResult res);
   void OnGetEvents(GetEventsCallback callback, APIRequestResult res);
 
+  const PolkadotRpcUrlMapCallback rpc_url_callback_;
   const raw_ref<NetworkManager> network_manager_;
   api_request_helper::APIRequestHelper api_request_helper_;
   base::WeakPtrFactory<PolkadotSubstrateRpc> weak_ptr_factory_{this};

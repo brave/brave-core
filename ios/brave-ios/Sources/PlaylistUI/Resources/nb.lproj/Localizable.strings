@@ -91,12 +91,6 @@
 /* A title shown above a list of videos in your default playlist. '%@' will be replaced with the default playlist name which has already been localized, for example: 'Add from your Play Later playlist' */
 "playlist.fillNewPlaylistTitle" = "Legg til fra **%@**-spillelisten din";
 
-/* A count of how many items there are in the playlist. '%lld' would be replaced with a number, for example: 10 items */
-"playlist.itemCountPlural" = "%lld enheter";
-
-/* A count of how many items there are in the playlist */
-"playlist.itemCountSingular" = "1 element";
-
 /* A label shown on an item when it is being prepared for offline play */
 "playlist.itemDownloadStatusPreparing" = "Forbereder";
 

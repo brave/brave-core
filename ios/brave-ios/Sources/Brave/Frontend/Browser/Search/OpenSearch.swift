@@ -271,7 +271,7 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
   }
 
   private func regionalClientParam(_ locale: Locale) -> String {
-    if shortName == EngineNames.duckDuckGo, let region = locale.regionCode {
+    if shortName == EngineNames.duckDuckGo, let region = locale.region?.identifier {
       switch region {
       case "AU", "IE", "NZ": return "braveed"
       case "DE": return "bravened"
@@ -296,7 +296,11 @@ class OpenSearchParser {
     self.pluginMode = pluginMode
   }
 
-  func parse(_ file: String, engineID: String, referenceURL: String?) async -> OpenSearchEngine? {
+  @concurrent func parse(
+    _ file: String,
+    engineID: String,
+    referenceURL: String?
+  ) async -> OpenSearchEngine? {
     guard let data = try? Data(contentsOf: URL(fileURLWithPath: file)) else {
       print("Invalid search file")
       return nil
@@ -305,7 +309,7 @@ class OpenSearchParser {
     return await parse(data, engineID: engineID, referenceURL: referenceURL)
   }
 
-  func parse(
+  @concurrent func parse(
     _ data: Data,
     engineID: String = "",
     referenceURL: String? = nil,

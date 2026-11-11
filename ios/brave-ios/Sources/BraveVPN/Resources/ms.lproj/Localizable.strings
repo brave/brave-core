@@ -40,9 +40,6 @@
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "Versi Aplikasi";
 
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "Pembawa Selular";
-
 /* Text to tell user to not modify support info below email's body. */
 "vpn.contactFormDoNotEditText" = "Brave tidak menjejaki anda atau mengetahui cara anda menggunakan apl, oleh itu kami tidak tahu cara anda menyediakan VPN. Sila kongsikan maklumat tentang isu yang anda alami dan kami akan mencuba sedaya upaya kami untuk menyelesaikan isu secepat mungkin.";
 
@@ -134,7 +131,7 @@
 "vpn.installTitle" = "Pasang VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "Mulakan percubaan percuma selama 7 hari";
+"vpn.learnMore" = "Mulakan Percubaan Percuma Selama 7 Hari";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Diperbaharui setiap bulan";
@@ -227,7 +224,7 @@
 "vpn.serverTitle" = "%ld Pelayan";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Lindungi setiap aplikasi dengan Brave VPN. Lindungi sehingga 10 peranti dengan satu pelan.";
+"vpn.settingHeaderBody" = "Strim kandungan anda, dengan cara anda. Lindungi setiap apl pada 10 peranti dengan 1 langganan.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Hubungi Sokongan Teknikal";

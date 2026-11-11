@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index c6de5399c556a091a289f8480b094706dbce0f7e..88ea38a10b8388eb68f037f2c33190b1a1508c5f 100644
+index c1de007fc1cfb008bd58b2826ca080cc2daa2a05..569d8a5cb2a9b20cceea3bc0c515e3aff13856d8 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -62,7 +62,9 @@ by a child template that "extends" this file.
@@ -12,7 +12,7 @@ index c6de5399c556a091a289f8480b094706dbce0f7e..88ea38a10b8388eb68f037f2c33190b1
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
  
      <!--  Needed for allowing downloaded APKs to be installed. -->
-@@ -72,28 +74,38 @@ by a child template that "extends" this file.
+@@ -72,11 +74,15 @@ by a child template that "extends" this file.
      <uses-permission android:name="android.permission.CAPTURE_KEYBOARD" />
      <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
      <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -28,7 +28,8 @@ index c6de5399c556a091a289f8480b094706dbce0f7e..88ea38a10b8388eb68f037f2c33190b1
      {% endif %}
      <!-- TODO(crbug.com/40259231): Remove this tools:ignore attribute once it's no longer necessary. -->
      <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" tools:ignore="SystemPermissionTypo" />
-     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" tools:ignore="SystemPermissionTypo" />
+@@ -84,11 +90,17 @@ by a child template that "extends" this file.
+     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SHORT_SERVICE" tools:ignore="SystemPermissionTypo" />
      <uses-permission android:name="android.permission.RUN_USER_INITIATED_JOBS" />
  
 +<!--
@@ -43,16 +44,18 @@ index c6de5399c556a091a289f8480b094706dbce0f7e..88ea38a10b8388eb68f037f2c33190b1
      <uses-permission android:name="android.permission.NFC"/>
 +-->
      <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
- 
+     <!-- Permission to request promoted ongoing status (Live Updates) for Actor task notifications on Android 16+. -->
+     <uses-permission android:name="android.permission.POST_PROMOTED_NOTIFICATIONS" />
+@@ -96,7 +108,7 @@ by a child template that "extends" this file.
      <!-- Needed to determine whether an app installed on the device should handle a web navigation.  -->
      <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
  
 -    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"  android:maxSdkVersion="32"/>
++    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>
  
      <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
      <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-@@ -103,12 +115,14 @@ by a child template that "extends" this file.
+@@ -106,12 +118,14 @@ by a child template that "extends" this file.
        resizeTo, moveBy}|).
      -->
      <uses-permission android:name="android.permission.REPOSITION_SELF_WINDOWS"/>
@@ -68,17 +71,22 @@ index c6de5399c556a091a289f8480b094706dbce0f7e..88ea38a10b8388eb68f037f2c33190b1
  
      <!-- Permission for using Android 14's credential management framework. -->
      <uses-permission android:name="android.permission.CREDENTIAL_MANAGER_QUERY_CANDIDATE_CREDENTIALS"/>
-@@ -161,7 +175,9 @@ by a child template that "extends" this file.
+@@ -173,11 +187,14 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
  
 +<!--
      <uses-permission android:name="com.google.android.apps.now.CURRENT_ACCOUNT_ACCESS" />
-+--> <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE"/>
++-->
  
      <!-- Permission for using pinned windowing layer for document picture-in-picture. -->
      <uses-permission android:name="android.permission.USE_PINNED_WINDOWING_LAYER" />
-@@ -375,6 +391,7 @@ by a child template that "extends" this file.
+ 
++    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE"/>
+     {% block extra_uses_permissions %}
+     {% endblock %}
+ 
+@@ -398,6 +415,7 @@ by a child template that "extends" this file.
              <intent-filter>
                  <action android:name="com.sec.android.airview.HOVER" />
              </intent-filter>
@@ -86,7 +94,7 @@ index c6de5399c556a091a289f8480b094706dbce0f7e..88ea38a10b8388eb68f037f2c33190b1
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -975,6 +992,7 @@ by a child template that "extends" this file.
+@@ -1003,6 +1021,7 @@ by a child template that "extends" this file.
          </service>
  
          <!-- Quick Action Search widget -->
@@ -94,15 +102,16 @@ index c6de5399c556a091a289f8480b094706dbce0f7e..88ea38a10b8388eb68f037f2c33190b1
          <receiver
              android:name="org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch"
              android:label="@string/quick_action_search_widget_title"
-@@ -1004,6 +1022,7 @@ by a child template that "extends" this file.
-                 android:name="android.appwidget.provider"
+@@ -1033,6 +1052,8 @@ by a child template that "extends" this file.
                  android:resource="@xml/quick_action_search_widget_dino_info" />
          </receiver>
-+        -->
  
++        -->
++        {% include "//brave/android/java/AndroidManifest_widgets.xml" %}
          <!-- Bookmarks widget -->
          <receiver android:name="com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidgetProvider"
-@@ -1223,7 +1242,7 @@ by a child template that "extends" this file.
+             android:label="@string/bookmark_widget_title"
+@@ -1254,7 +1275,7 @@ by a child template that "extends" this file.
  
          <service android:name="org.chromium.chrome.browser.media.MediaCaptureNotificationService"
              {% if enable_screen_capture == "true" %}
@@ -111,7 +120,7 @@ index c6de5399c556a091a289f8480b094706dbce0f7e..88ea38a10b8388eb68f037f2c33190b1
              {% else %}
              android:foregroundServiceType="camera|microphone"
              {% endif %}
-@@ -1306,6 +1325,7 @@ by a child template that "extends" this file.
+@@ -1347,6 +1368,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  

@@ -8,6 +8,7 @@
 
 #include <string_view>
 
+#include "base/byte_size.h"
 #include "base/files/file_path.h"
 #include "base/no_destructor.h"
 #include "base/observer_list.h"
@@ -16,21 +17,33 @@
 
 namespace local_ai {
 
-// Subdirectory of the install dir holding the model files. Shared so that the
-// installer policy verifies the directory this class hands out.
-inline constexpr std::string_view kModelDirName =
-    "nemotron-speech-streaming-en-0.6b-int4-onnx";
+// Brave's on-device speech recognition models.
+enum class OnDeviceSpeechModel {
+  kEnglish,
+  kMultilingual,
+};
 
-// Singleton holding the install directory of Brave's on-device speech
-// recognition model. The component installer populates it on `ComponentReady`.
+// Subdirectory of `model`'s install dir holding its files. Shared so that the
+// installer policy verifies the directory this class hands out.
+std::string_view GetModelDirName(OnDeviceSpeechModel model);
+
+// About how much the model takes on disk, for telling a user what they would
+// download. Only has to be close, so it need not follow every model update.
+inline constexpr base::ByteSize kApproxModelSize = base::MiB(636);
+
+// Singleton holding the install directory of each of Brave's on-device speech
+// recognition models. The component installer of each model populates its
+// directory on `ComponentReady`.
 class OnDeviceSpeechModelsState {
  public:
-  // Notified when the model directory changes, which covers a model arriving,
-  // a model being removed, and a component update moving it to a new version.
+  // Notified when the directory of a model changes, which covers a model
+  // arriving, a model being removed, and a component update moving it to a new
+  // version.
   class Observer : public base::CheckedObserver {
    public:
-    // `model_dir` is empty when no model is installed.
-    virtual void OnSpeechModelDirChanged(const base::FilePath& model_dir) = 0;
+    // `model_dir` is empty when `model` is not installed.
+    virtual void OnSpeechModelDirChanged(OnDeviceSpeechModel model,
+                                         const base::FilePath& model_dir) = 0;
   };
 
   static OnDeviceSpeechModelsState* GetInstance();
@@ -39,33 +52,42 @@ class OnDeviceSpeechModelsState {
   OnDeviceSpeechModelsState& operator=(const OnDeviceSpeechModelsState&) =
       delete;
 
-  // Fires `OnSpeechModelDirChanged` immediately with the current directory.
+  // Fires `OnSpeechModelDirChanged` immediately, once for each model, with its
+  // current directory.
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  // Sets the component install directory, which `GetModelDir()` is derived
-  // from. An empty path clears the state.
-  void SetInstallDir(const base::FilePath& install_dir);
+  // Sets the component install directory of `model`, which its
+  // `GetModelDir()` is derived from. An empty path clears it.
+  void SetInstallDir(OnDeviceSpeechModel model,
+                     const base::FilePath& install_dir);
 
-  const base::FilePath& GetInstallDir() const;
+  const base::FilePath& GetInstallDir(OnDeviceSpeechModel model) const;
 
-  // Whether there is a model to use, which is the same as the last directory
-  // published to `OnSpeechModelDirChanged` not being empty.
-  bool IsModelInstalled() const;
+  // Whether `model` is there to use, which is the same as the last directory
+  // published for it to `OnSpeechModelDirChanged` not being empty.
+  bool IsModelInstalled(OnDeviceSpeechModel model) const;
 
-  // Returns the model subdirectory within the install dir, or an empty path
-  // when no component is installed.
-  const base::FilePath& GetModelDir() const;
+  // Returns the subdirectory of `model` within its install dir, or an empty
+  // path when its component is not installed.
+  const base::FilePath& GetModelDir(OnDeviceSpeechModel model) const;
 
  private:
   friend base::NoDestructor<OnDeviceSpeechModelsState>;
   OnDeviceSpeechModelsState();
   ~OnDeviceSpeechModelsState();
 
-  void NotifyModelDirChanged();
+  struct ModelDirs {
+    base::FilePath install_dir;
+    base::FilePath model_dir;
+  };
 
-  base::FilePath install_dir_;
-  base::FilePath model_dir_;
+  // Returns the directories of `model`.
+  ModelDirs& GetDirs(OnDeviceSpeechModel model);
+  const ModelDirs& GetDirs(OnDeviceSpeechModel model) const;
+
+  ModelDirs english_dirs_;
+  ModelDirs multilingual_dirs_;
 
   base::ObserverList<Observer> observers_;
 

@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Let AllSiteSettings supply its bottom inset view.
+
+      Use the Brave base class for both embedded and standalone Settings so
+      Storage and Zoom footer buttons stay above system navigation.
+    regex:
+      re_pattern: '(class AllSiteSettings extends )BaseSiteSettingsFragment\b'
+      replace: '\1BraveAllSiteSettings'

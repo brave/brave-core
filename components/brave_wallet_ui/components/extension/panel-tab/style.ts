@@ -3,18 +3,19 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css/variables'
+import * as leo from '@brave/nala/tokens/css/variables'
 
 // Shared Styles
 import { Text, WalletButton } from '../../shared/style'
 
 interface StyleProps {
   isSelected: boolean
+  width?: string
 }
 
 export const StyledButton = styled(WalletButton)<Partial<StyleProps>>`
   display: flex;
-  width: 240px;
+  width: ${(p) => (p.width ? p.width : '240px')};
   align-items: center;
   justify-content: center;
   flex-direction: column;

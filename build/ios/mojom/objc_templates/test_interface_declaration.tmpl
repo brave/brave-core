@@ -12,7 +12,7 @@ NS_SWIFT_NAME({{class_prefix}}.Test{{interface.name}})
 {{type}} {{param.name|under_to_lower_camel}}
 {%-     if not loop.last -%},{{" "}}{%- endif -%}
 {%-   endfor -%}
-{%-   if method.response_parameters -%}
+{%-   if method.response_parameters is not none -%}
 {%-   if method.parameters -%},{{" "}}{%- endif -%}
 void (^completion){{ result_or_response_callback_type(method) }}
 {%- endif -%}

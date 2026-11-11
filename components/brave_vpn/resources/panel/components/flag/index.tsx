@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 
 const FlagIcon = styled(Icon)`
   --leo-icon-size: 24px;

@@ -11,25 +11,28 @@ import time
 from typing import List, Optional
 
 from components.perf_test_utils import GetProcessOutput
-import components.path_util as path_util
+from components import path_util
 
 
 def RunAsRoot(cmd: str) -> bool:
   result, _ = GetProcessOutput(
-      [path_util.GetAdbPath(), 'shell', 'su', '-c', '\'' + cmd + '\''])
+    [path_util.GetAdbPath(), 'shell', 'su', '-c', '\'' + cmd + '\'']
+  )
   return result
 
 
 def SetupAndroidDevice() -> None:
   '''Pushes and run setup_android_device.sh script on the device.'''
   tmp_file = '/data/local/tmp/setup_android_device.sh'
-  GetProcessOutput([
+  GetProcessOutput(
+    [
       path_util.GetAdbPath(),
       'push',
       os.path.join(path_util.GetBravePerfDir(), 'setup_android_device.sh'),
       tmp_file,
-  ],
-                   check=True)
+    ],
+    check=True,
+  )
   if not RunAsRoot(f'sh {tmp_file}'):
     raise RuntimeError('Failed to setup the device: setup_android_device.sh')
   RunAsRoot('killall adbd')  # Restart adbd on the device to apply the changes
@@ -45,7 +48,8 @@ def RebootAndroid() -> None:
   while attempts_left > 0:
     time.sleep(5)
     result, output = GetProcessOutput(
-        [path_util.GetAdbPath(), 'shell', 'getprop', 'sys.boot_completed'])
+      [path_util.GetAdbPath(), 'shell', 'getprop', 'sys.boot_completed']
+    )
     if result and output.strip() == '1':
       time.sleep(10)  # Extra delay to make sure the device is ready
       logging.debug('Device is ready after reboot')
@@ -57,20 +61,28 @@ def RebootAndroid() -> None:
 
 def GetPackageVersion(package: str) -> str:
   _, dump_info = GetProcessOutput(
-      [path_util.GetAdbPath(), 'shell', 'dumpsys', 'package', package],
-      check=True,
-      output_to_debug=False)
+    [path_util.GetAdbPath(), 'shell', 'dumpsys', 'package', package],
+    check=True,
+    output_to_debug=False,
+  )
   version_match = re.search(r'versionName=((?:\w|\.)+)', dump_info)
   assert version_match is not None
   return version_match.group(1)
 
 
 def GetPackageName(apk_path: str) -> str:
-  aapt2 = os.path.join(path_util.GetSrcDir(), 'third_party',
-                       'android_build_tools', 'aapt2', 'cipd', 'aapt2')
+  aapt2 = os.path.join(
+    path_util.GetSrcDir(),
+    'third_party',
+    'android_build_tools',
+    'aapt2',
+    'cipd',
+    'aapt2',
+  )
   assert apk_path.endswith('.apk')
-  _, aapt2_info = GetProcessOutput([aapt2, 'dump', 'badging', apk_path],
-                                   check=True)
+  _, aapt2_info = GetProcessOutput(
+    [aapt2, 'dump', 'badging', apk_path], check=True
+  )
   package_match = re.search(r'package: name=\'((?:\w|\.)+)\'', aapt2_info)
   assert package_match is not None
   return package_match.group(1)
@@ -91,23 +103,36 @@ def InstallApk(apk_path: str, expected_version: Optional[str]) -> str:
   logging.debug('Installed version: %s', installed_version)
 
   # grant the permissions to prevent showing popup
-  GetProcessOutput([
-      adb, 'shell', 'pm', 'grant', package,
-      'android.permission.POST_NOTIFICATIONS'
-  ],
-                   check=True)
+  GetProcessOutput(
+    [
+      adb,
+      'shell',
+      'pm',
+      'grant',
+      package,
+      'android.permission.POST_NOTIFICATIONS',
+    ],
+    check=True,
+  )
 
   # stop all the other browsers to avoid an interference.
-  GetProcessOutput([
-      adb, 'shell',
-      ('ps -o NAME -A' +
-       '| grep -e com.brave -e com.chrome -e com.chromium -e android.chrome' +
-       '| xargs -r -n 1 am force-stop')
-  ],
-                   check=True)
+  GetProcessOutput(
+    [
+      adb,
+      'shell',
+      (
+        'ps -o NAME -A'
+        + '| grep -e com.brave -e com.chrome -e com.chromium -e android.chrome'
+        + '| xargs -r -n 1 am force-stop'
+      ),
+    ],
+    check=True,
+  )
 
   if expected_version is not None and installed_version != expected_version:
-    raise RuntimeError('Version mismatch: expected ' +
-                       f'{expected_version}, installed {installed_version}')
+    raise RuntimeError(
+      'Version mismatch: expected '
+      + f'{expected_version}, installed {installed_version}'
+    )
 
   return package

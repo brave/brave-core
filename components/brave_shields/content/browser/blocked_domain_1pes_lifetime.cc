@@ -7,11 +7,8 @@
 
 #include "base/check.h"
 #include "base/containers/flat_map.h"
-#include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
-#include "content/public/browser/web_contents.h"
-#include "url/url_constants.h"
 
 namespace brave_shields {
 

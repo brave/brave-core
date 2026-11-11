@@ -66,13 +66,13 @@ import {
 import SearchBar from '../../../../../components/shared/search-bar/index'
 import {
   PortfolioAssetItemLoadingSkeleton, //
-} from '../../../../../components/desktop/portfolio-asset-item/portfolio-asset-item-loading-skeleton'
+} from '$wallet/page/components/portfolio_asset_item/portfolio_asset_item_loading_skeleton'
 import {
   AssetGroupContainer, //
 } from '../asset_group_container/asset_group_container'
 import {
   EmptyTokenListState, //
-} from '../../../../../components/desktop/empty_token_list_state/empty_token_list_state'
+} from '$wallet/page/components/empty_token_list_state/empty_token_list_state'
 
 // Queries
 import {

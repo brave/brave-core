@@ -41,6 +41,7 @@ source_set("unit_tests") {
     "//brave/components/local_ai/core",
     "//chrome/browser/profiles",
     "//chrome/test:test_support",
+    "//chrome/test/base:testing_browser_process",
     "//content/public/browser",
     "//content/test:test_support",
     "//testing/gtest",

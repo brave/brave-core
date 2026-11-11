@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_rewards/core/engine/contribution/contribution_util.h"
 
-#include <utility>
-
 #include "base/check.h"
 #include "base/check_op.h"
 #include "brave/components/brave_rewards/core/engine/constants.h"

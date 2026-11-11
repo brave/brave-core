@@ -13,10 +13,8 @@
 #include "content/public/renderer/v8_value_converter.h"
 #include "gin/converter.h"
 #include "gin/object_template_builder.h"
-#include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/web/web_console_message.h"
-#include "third_party/blink/public/web/web_local_frame.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "v8/include/v8-microtask-queue.h"
 #include "v8/include/v8-proxy.h"
@@ -75,18 +73,18 @@ void JSCardanoWalletApi::OnDestruct() {
 gin::ObjectTemplateBuilder JSCardanoWalletApi::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
   return gin::Wrappable<JSCardanoWalletApi>::GetObjectTemplateBuilder(isolate)
-      .SetMethod("getNetworkId", &JSCardanoWalletApi::GetNetworkId)
-      .SetMethod("getUsedAddresses", &JSCardanoWalletApi::GetUsedAddresses)
-      .SetMethod("getUnusedAddresses", &JSCardanoWalletApi::GetUnusedAddresses)
-      .SetMethod("getChangeAddress", &JSCardanoWalletApi::GetChangeAddress)
-      .SetMethod("getRewardAddresses", &JSCardanoWalletApi::GetRewardAddresses)
-      .SetMethod("getUtxos", &JSCardanoWalletApi::GetUtxos)
-      .SetMethod("getBalance", &JSCardanoWalletApi::GetBalance)
-      .SetMethod("signTx", &JSCardanoWalletApi::SignTx)
-      .SetMethod("signData", &JSCardanoWalletApi::SignData)
-      .SetMethod("submitTx", &JSCardanoWalletApi::SubmitTx)
-      .SetMethod("getExtensions", &JSCardanoWalletApi::GetExtensions)
-      .SetMethod("getCollateral", &JSCardanoWalletApi::GetCollateral);
+      .SetMethod<&JSCardanoWalletApi::GetNetworkId>("getNetworkId")
+      .SetMethod<&JSCardanoWalletApi::GetUsedAddresses>("getUsedAddresses")
+      .SetMethod<&JSCardanoWalletApi::GetUnusedAddresses>("getUnusedAddresses")
+      .SetMethod<&JSCardanoWalletApi::GetChangeAddress>("getChangeAddress")
+      .SetMethod<&JSCardanoWalletApi::GetRewardAddresses>("getRewardAddresses")
+      .SetMethod<&JSCardanoWalletApi::GetUtxos>("getUtxos")
+      .SetMethod<&JSCardanoWalletApi::GetBalance>("getBalance")
+      .SetMethod<&JSCardanoWalletApi::SignTx>("signTx")
+      .SetMethod<&JSCardanoWalletApi::SignData>("signData")
+      .SetMethod<&JSCardanoWalletApi::SubmitTx>("submitTx")
+      .SetMethod<&JSCardanoWalletApi::GetExtensions>("getExtensions")
+      .SetMethod<&JSCardanoWalletApi::GetCollateral>("getCollateral");
 }
 
 const gin::WrapperInfo* JSCardanoWalletApi::wrapper_info() const {

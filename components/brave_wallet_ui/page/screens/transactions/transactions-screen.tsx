@@ -43,17 +43,17 @@ import { UISelectors } from '../../../common/selectors'
 // components
 import {
   WalletPageWrapper, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import {
   ActivityPageHeader, //
-} from '../../../components/desktop/card-headers/activity_page_header'
+} from '$wallet/page/components/card_headers/activity_page_header'
 import { SearchBar } from '../../../components/shared/search-bar'
 import {
   TransactionDetailsModal, //
 } from '../../../components/desktop/popup-modals/transaction_details_modal/transaction_details_modal'
 import {
   VirtualizedTransactionList, //
-} from '../../../components/desktop/virtualized_transaction_list/virtualized_transaction_list'
+} from '$wallet/page/components/virtualized_transaction_list/virtualized_transaction_list'
 
 // styles
 import { Column, Text, VerticalSpacer } from '../../../components/shared/style'

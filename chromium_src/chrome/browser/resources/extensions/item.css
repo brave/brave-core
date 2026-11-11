@@ -28,3 +28,7 @@
   font: var(--leo-font-components-button-small);
   width: fit-content;
 }
+
+#brave-socket-learn-more {
+  margin-inline-start: var(--leo-spacing-s);
+}

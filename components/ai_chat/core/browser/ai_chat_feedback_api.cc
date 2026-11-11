@@ -8,7 +8,6 @@
 #include <string_view>
 #include <utility>
 
-#include "base/containers/checked_iterators.h"
 #include "base/containers/flat_map.h"
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"

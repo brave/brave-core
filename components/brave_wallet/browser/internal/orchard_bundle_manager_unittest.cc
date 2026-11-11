@@ -69,17 +69,21 @@ TEST(OrchardBundleManagerTest, SingleOutput) {
   auto unauthorized_state = OrchardBundleManager::Create(
       std::vector<uint8_t>(), orchard_spends_bundle, std::move(outputs),
       OrchardPool::kOrchard, /*is_v6_transaction=*/false);
-  EXPECT_TRUE(unauthorized_state);
+  ASSERT_TRUE(unauthorized_state);
   // Unauthorized state doesn't have raw tx bytes
   EXPECT_FALSE(unauthorized_state->GetRawTxBytes());
+  auto digest = unauthorized_state->GetOrchardDigest();
+  ASSERT_TRUE(digest);
   EXPECT_EQ(
       "0x10a9b751104fc2ca413fa45efaab70bcf6eaa3bafe865402a97db549456cd1ec",
-      ToHex(unauthorized_state->GetOrchardDigest().value()));
+      ToHex(*digest));
 
   auto authorized_state =
       unauthorized_state->ApplySignature(std::array<uint8_t, 32>());
+  ASSERT_TRUE(authorized_state);
   // Digest is provided only in unauthorized state
   EXPECT_FALSE(authorized_state->GetOrchardDigest().has_value());
+  ASSERT_TRUE(authorized_state->GetRawTxBytes());
 
   // Can't apply signature second time
   EXPECT_FALSE(authorized_state->ApplySignature(std::array<uint8_t, 32>()));
@@ -362,17 +366,21 @@ TEST(OrchardBundleManagerTest, MultiplyOutputs) {
   auto unauthorized_state = OrchardBundleManager::Create(
       std::vector<uint8_t>(), orchard_spends_bundle, std::move(outputs),
       OrchardPool::kOrchard, /*is_v6_transaction=*/false);
-  EXPECT_TRUE(unauthorized_state);
+  ASSERT_TRUE(unauthorized_state);
   // Unauthorized state doesn't have raw tx bytes
   EXPECT_FALSE(unauthorized_state->GetRawTxBytes());
+  auto digest = unauthorized_state->GetOrchardDigest();
+  ASSERT_TRUE(digest);
   EXPECT_EQ(
       "0x3d2262384c3ec04891319d594ff6a6dd3a3ce6f4510cd3a33942c3f816c751a4",
-      ToHex(unauthorized_state->GetOrchardDigest().value()));
+      ToHex(*digest));
 
   auto authorized_state =
       unauthorized_state->ApplySignature(std::array<uint8_t, 32>());
+  ASSERT_TRUE(authorized_state);
   // Digest is provided only in unauthorized state
   EXPECT_FALSE(authorized_state->GetOrchardDigest().has_value());
+  ASSERT_TRUE(authorized_state->GetRawTxBytes());
 
   // Can't apply signature second time
   EXPECT_FALSE(authorized_state->ApplySignature(std::array<uint8_t, 32>()));
@@ -786,15 +794,17 @@ TEST(OrchardBundleManagerTest, NoOutputs) {
       state_tree_bytes.value(), std::move(spends_bundle),
       std::vector<OrchardOutput>(), OrchardPool::kOrchard,
       /*is_v6_transaction=*/false);
-  EXPECT_TRUE(orchard_bundle_manager);
+  ASSERT_TRUE(orchard_bundle_manager);
 
   std::array<uint8_t, 32> sighash;
-  EXPECT_TRUE(
+  ASSERT_TRUE(
       PrefixedHexStringToFixed("0xd3e77b18c34129e4ec1e30bc4b8d29d16"
                                "b7163ab5829730d8af3f41edc99721c",
                                sighash));
-  auto orchard_raw_part =
-      orchard_bundle_manager->ApplySignature(sighash)->GetRawTxBytes();
+  auto signed_manager = orchard_bundle_manager->ApplySignature(sighash);
+  ASSERT_TRUE(signed_manager);
+  auto orchard_raw_part = signed_manager->GetRawTxBytes();
+  ASSERT_TRUE(orchard_raw_part);
 
   EXPECT_EQ(
       ToHex(orchard_raw_part.value()),

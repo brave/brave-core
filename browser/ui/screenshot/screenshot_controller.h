@@ -19,8 +19,11 @@
 #include "base/types/expected.h"
 #include "printing/buildflags/buildflags.h"
 #include "third_party/skia/include/core/SkBitmap.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 #include "ui/gfx/native_ui_types.h"
 #include "ui/shell_dialogs/select_file_dialog.h"
+
+class BrowserWindowInterface;
 
 namespace content {
 class BrowserContext;
@@ -41,6 +44,8 @@ class PrintPreviewExtractor;
 // drives a Save As dialog.
 class ScreenshotController : public ui::SelectFileDialog::Listener {
  public:
+  DECLARE_USER_DATA(ScreenshotController);
+
   enum class Error {
     kNoTab,
     kBusy,
@@ -67,11 +72,15 @@ class ScreenshotController : public ui::SelectFileDialog::Listener {
       base::OnceCallback<void(std::vector<uint8_t>)> on_copy,
       base::OnceClosure on_cancel)>;
 
-  ScreenshotController(content::BrowserContext* profile,
+  // `host` is the UnownedUserDataHost of the browser window this controller
+  // belongs to.
+  ScreenshotController(ui::UnownedUserDataHost& host,
+                       content::BrowserContext* profile,
                        NativeWindowGetter parent_window_getter,
                        PreviewDialogShower preview_dialog_shower);
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
-  ScreenshotController(content::BrowserContext* profile,
+  ScreenshotController(ui::UnownedUserDataHost& host,
+                       content::BrowserContext* profile,
                        NativeWindowGetter parent_window_getter,
                        PreviewDialogShower preview_dialog_shower,
                        std::unique_ptr<screenshot::PrintPreviewExtractor>
@@ -80,6 +89,9 @@ class ScreenshotController : public ui::SelectFileDialog::Listener {
   ScreenshotController(const ScreenshotController&) = delete;
   ScreenshotController& operator=(const ScreenshotController&) = delete;
   ~ScreenshotController() override;
+
+  // Returns the instance owned by `browser`, or nullptr.
+  static ScreenshotController* From(BrowserWindowInterface* browser);
 
   // capture is already in flight.
   base::expected<void, Error> CanCapture(
@@ -157,6 +169,8 @@ class ScreenshotController : public ui::SelectFileDialog::Listener {
   raw_ptr<content::BrowserContext> profile_;
 
   scoped_refptr<ui::SelectFileDialog> select_dialog_;
+
+  ui::ScopedUnownedUserData<ScreenshotController> scoped_unowned_user_data_;
 
   SEQUENCE_CHECKER(sequence_checker_);
   base::WeakPtrFactory<ScreenshotController> weak_factory_{this};

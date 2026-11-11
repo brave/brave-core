@@ -13,7 +13,6 @@
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 #include "brave/components/brave_wallet/browser/solana_instruction_builder.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet::solana_ins_data_decoder {

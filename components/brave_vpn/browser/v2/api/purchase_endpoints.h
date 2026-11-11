@@ -11,11 +11,11 @@
 
 #include "base/strings/strcat.h"
 #include "base/values.h"
-#include "brave/components/brave_account/endpoint_client/request_types.h"
-#include "brave/components/brave_account/endpoint_client/response.h"
 #include "brave/components/brave_vpn/browser/v2/api/endpoint_constants.h"
 #include "brave/components/brave_vpn/browser/v2/api/error_body.h"
 #include "brave/components/brave_vpn/browser/v2/api/raw_json_response_body.h"
+#include "brave/components/endpoint_client/request_types.h"
+#include "brave/components/endpoint_client/response.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
@@ -84,9 +84,9 @@ struct GetSubscriberCredentialSuccessBody {
 
 template <typename RequestBody>
 struct GetSubscriberCredentialBase {
-  using Request = brave_account::endpoint_client::POST<RequestBody>;
-  using Response = brave_account::endpoint_client::
-      Response<GetSubscriberCredentialSuccessBody, VpnErrorBody>;
+  using Request = endpoint_client::Post<RequestBody>;
+  using Response = endpoint_client::Response<GetSubscriberCredentialSuccessBody,
+                                             VpnErrorBody>;
 
   static GURL URL() {
     return GURL(base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
@@ -119,11 +119,9 @@ struct VerifyPurchaseTokenRequestBody {
 };
 
 struct VerifyPurchaseToken {
-  using Request =
-      brave_account::endpoint_client::POST<VerifyPurchaseTokenRequestBody>;
+  using Request = endpoint_client::Post<VerifyPurchaseTokenRequestBody>;
   using Response =
-      brave_account::endpoint_client::Response<RawJsonResponseBody,
-                                               RawJsonResponseBody>;
+      endpoint_client::Response<RawJsonResponseBody, RawJsonResponseBody>;
 
   static GURL URL() {
     return GURL(base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,

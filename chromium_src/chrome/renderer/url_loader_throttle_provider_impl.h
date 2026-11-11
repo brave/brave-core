@@ -9,7 +9,7 @@
 #include "extensions/buildflags/buildflags.h"
 #include "third_party/blink/public/platform/url_loader_throttle_provider.h"
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
 #include "extensions/renderer/extension_throttle_manager.h"
 #endif
 

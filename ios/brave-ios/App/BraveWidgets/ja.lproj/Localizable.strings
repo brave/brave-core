@@ -1,23 +1,38 @@
 /* Title for Ask Brave shortcut. Brave is the company name and should not be translated */
 "widgets.askBrave" = "Braveに質問";
 
+/* Description for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.askBraveWidgetDescription" = "Braveに質問する。";
+
+/* Title for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.askBraveWidgetTitle" = "Braveに質問";
+
 /* Title for bookmarks menu item */
 "widgets.BookmarksMenuItem" = "ブックマーク";
 
 /* The name of the feature */
 "widgets.braveLeo" = "Leo AI";
 
+/* Title for the Leo AI voice input shortcut. Leo is the name of a product and should not be translated */
+"widgets.braveLeoVoiceInput" = "Leo 音声入力";
+
 /* The name of the feature */
 "widgets.braveNews" = "Braveニュース";
+
+/* Title for the Brave Search control. Brave is the company name and should not be translated */
+"widgets.braveSearch" = "Brave Search";
+
+/* Description for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.braveSearchWidgetDescription" = "Braveでウェブを検索する。";
+
+/* Title for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.braveSearchWidgetTitle" = "Brave Search";
 
 /* Title for downloads menu item */
 "widgets.DownloadsMenuItem" = "ダウンロード";
 
 /* Description for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetDescription" = "お気にいりのウェブサイトに素早くアクセス";
-
-/* Title for favorites widget on 'add widget' screen. */
-"widgets.favoritesWidgetTitle" = "お気に入り";
 
 /* Title for history menu item */
 "widgets.HistoryMenuItem" = "履歴";

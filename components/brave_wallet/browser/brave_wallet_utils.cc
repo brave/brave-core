@@ -652,15 +652,6 @@ std::string GetDefaultBaseCurrency(PrefService* prefs) {
   return prefs->GetString(kDefaultBaseCurrency);
 }
 
-void SetDefaultBaseCryptocurrency(PrefService* prefs,
-                                  std::string_view cryptocurrency) {
-  prefs->SetString(kDefaultBaseCryptocurrency, cryptocurrency);
-}
-
-std::string GetDefaultBaseCryptocurrency(PrefService* prefs) {
-  return prefs->GetString(kDefaultBaseCryptocurrency);
-}
-
 std::string GetEnsRegistryContractAddress(std::string_view chain_id) {
   std::string chain_id_lower = base::ToLowerASCII(chain_id);
   DCHECK_EQ(chain_id_lower, mojom::kMainnetChainId);
@@ -968,6 +959,16 @@ mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin) {
   return mojom::OriginInfo::New(origin.Serialize(), eTLDPlusOne(origin));
 }
 
+mojom::DappOriginInfoPtr MakeDappOriginInfo(
+    base::optional_ref<const url::Origin> dapp_origin) {
+  if (!dapp_origin) {
+    return nullptr;
+  }
+  DCHECK(IsValidDappOrigin(*dapp_origin));
+  return mojom::DappOriginInfo::New(dapp_origin->Serialize(),
+                                    eTLDPlusOne(*dapp_origin));
+}
+
 std::string GenerateRandomHexString() {
   std::vector<uint8_t> bytes(32);
   crypto::RandBytes(bytes);
@@ -1125,7 +1126,8 @@ std::string SPLTokenProgramToProgramID(mojom::SPLTokenProgram program) {
 std::string GetAccountPermissionIdentifier(
     const mojom::AccountIdPtr& account_id) {
   CHECK(account_id);
-  if (account_id->coin == mojom::CoinType::ADA) {
+  if (account_id->coin == mojom::CoinType::ADA ||
+      account_id->coin == mojom::CoinType::DOT) {
     return account_id->unique_key;
   } else {
     return account_id->address;

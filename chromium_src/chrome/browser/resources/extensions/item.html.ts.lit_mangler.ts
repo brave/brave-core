@@ -24,3 +24,25 @@ mangle(
   },
   (t) => t.text.includes('id="name-and-version"'),
 )
+
+mangle(
+  (element) => {
+    const warning = element.querySelector('#blocklisted-warning')
+    if (!warning) {
+      throw new Error(
+        '[Brave Extensions Overrides] '
+          + 'Could not find #blocklisted-warning. Has the ID changed?',
+      )
+    }
+    warning.insertAdjacentHTML(
+      'afterend',
+      `<a id="brave-socket-learn-more" target="_blank"
+          ?hidden="\${!this.isFlaggedBySocket_(this.data.blocklistText)}"
+          href="$i18n{braveBlocklistedMalwareSocketLearnMoreUrl}"
+          aria-label="$i18n{braveBlocklistedMalwareSocketLearnMore}">
+        $i18n{learnMore}
+      </a>`,
+    )
+  },
+  (t) => t.text.includes('id="blocklisted-warning"'),
+)

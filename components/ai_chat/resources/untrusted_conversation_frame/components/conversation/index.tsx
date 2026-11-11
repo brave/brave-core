@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
+import Button from '@brave/nala/react/button'
+import Icon from '@brave/nala/react/icon'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
 import * as Mojom from '../../../common/mojom'
@@ -108,7 +108,7 @@ function Conversation(props: ConversationProps) {
       case Mojom.APIError.ConnectionIssue:
         currentErrorElement = (
           <ErrorConnection
-            onRetry={() => context.conversationHandler.retryAPIRequest()}
+            onRetry={() => context.conversationHandler.retryAPIRequest(null)}
             errorDetails={state.currentErrorDetails}
             isNearModel={!!currentModel?.isNearModel}
           />
@@ -117,19 +117,25 @@ function Conversation(props: ConversationProps) {
       case Mojom.APIError.InvalidAPIKey:
         currentErrorElement = (
           <ErrorInvalidAPIKey
-            onRetry={() => context.conversationHandler.retryAPIRequest()}
+            onRetry={() => context.conversationHandler.retryAPIRequest(null)}
           />
         )
         break
       case Mojom.APIError.ServiceOverloaded:
         currentErrorElement = (
           <ErrorServiceOverloaded
-            onRetry={() => context.conversationHandler.retryAPIRequest()}
+            onRetry={() => context.conversationHandler.retryAPIRequest(null)}
           />
         )
         break
       case Mojom.APIError.RateLimitReached:
-        currentErrorElement = <ErrorRateLimit />
+      case Mojom.APIError.ModelRateLimitReached:
+        currentErrorElement = (
+          <ErrorRateLimit
+            apiError={state.currentError}
+            errorDetails={state.currentErrorDetails}
+          />
+        )
         break
       case Mojom.APIError.ContextLimitReached:
         currentErrorElement = <ErrorConversationEnd />

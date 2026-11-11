@@ -7,12 +7,10 @@
 
 #include "base/check.h"
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_add_button.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
@@ -21,6 +19,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/singleton_tabs.h"
@@ -31,7 +30,6 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/background.h"
-#include "ui/views/border.h"
 #include "ui/views/controls/menu/menu_runner.h"
 #include "ui/views/layout/flex_layout.h"
 
@@ -57,7 +55,7 @@ class ControlViewMenuModel : public ui::SimpleMenuModel {
   }
 };
 
-bool IsSidebarOnLeft(Browser* browser) {
+bool IsSidebarOnLeft(BrowserWindowInterface* browser) {
   return !browser->GetProfile()->GetPrefs()->GetBoolean(
       prefs::kSidePanelHorizontalAlignment);
 }
@@ -65,7 +63,7 @@ bool IsSidebarOnLeft(Browser* browser) {
 }  // namespace
 
 SidebarControlView::SidebarControlView(Delegate* delegate,
-                                       BraveBrowser* browser)
+                                       BrowserWindowInterface* browser)
     : delegate_(delegate), browser_(browser) {
   // Don't follow RTL layout. Sidebar position is determined by its own setting.
   SetMirrored(false);
@@ -76,7 +74,7 @@ SidebarControlView::SidebarControlView(Delegate* delegate,
   UpdateSettingsButtonState();
 
   sidebar_model_observed_.Observe(
-      browser_->GetFeatures().sidebar_controller()->model());
+      sidebar::SidebarController::From(browser_)->model());
   SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kVertical);
   SetBackground(views::CreateSolidBackground(kColorToolbar));
@@ -87,19 +85,6 @@ void SidebarControlView::OnThemeChanged() {
 
   UpdateItemAddButtonState();
   UpdateSettingsButtonState();
-}
-
-void SidebarControlView::UpdateBorder() {
-  // When rounded corners is on, contents and side panel already have an
-  // inward margin. Without adjustment the gap between the control view and
-  // the content would be double that margin. Use a negative inset on the
-  // content-facing side to overlap into that existing margin, keeping visual
-  // spacing tight. When rounded corners is off the margin is 0, so
-  // overlap is 0.
-  const int overlap =
-      -BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser_);
-  SetBorder(views::CreateEmptyBorder(gfx::Insets::TLBR(
-      0, sidebar_on_left_ ? 0 : overlap, 0, sidebar_on_left_ ? overlap : 0)));
 }
 
 SidebarControlView::~SidebarControlView() = default;
@@ -222,8 +207,7 @@ void SidebarControlView::UpdateItemAddButtonState() {
   DCHECK(sidebar_item_add_view_);
   // Determine add button enabled state.
   bool should_enable = true;
-  if (browser_->GetFeatures()
-          .sidebar_controller()
+  if (sidebar::SidebarController::From(browser_)
           ->model()
           ->IsSidebarHasAllBuiltInItems() &&
       !sidebar::CanAddCurrentActiveTabToSidebar(browser_)) {
@@ -237,17 +221,17 @@ void SidebarControlView::UpdateSettingsButtonState() {
   sidebar_settings_view_->SetImageModel(
       views::Button::STATE_NORMAL,
       ui::ImageModel::FromVectorIcon(kLeoSettingsIcon, kColorSidebarButtonBase,
-                                     SidebarButtonView::kDefaultIconSize));
+                                     SidebarButtonView::GetDefaultIconSize()));
   sidebar_settings_view_->SetImageModel(
       views::Button::STATE_PRESSED,
       ui::ImageModel::FromVectorIcon(kLeoSettingsIcon,
                                      kColorSidebarButtonPressed,
-                                     SidebarButtonView::kDefaultIconSize));
+                                     SidebarButtonView::GetDefaultIconSize()));
   sidebar_settings_view_->SetImageModel(
       views::Button::STATE_DISABLED,
       ui::ImageModel::FromVectorIcon(kLeoSettingsIcon,
                                      kColorToolbarButtonIconInactive,
-                                     SidebarButtonView::kDefaultIconSize));
+                                     SidebarButtonView::GetDefaultIconSize()));
 }
 
 bool SidebarControlView::IsItemReorderingInProgress() const {
@@ -268,11 +252,6 @@ bool SidebarControlView::IsBubbleWidgetVisible() const {
   }
 
   return false;
-}
-
-void SidebarControlView::SetSidebarOnLeft(bool sidebar_on_left) {
-  sidebar_on_left_ = sidebar_on_left;
-  UpdateBorder();
 }
 
 BEGIN_METADATA(SidebarControlView)

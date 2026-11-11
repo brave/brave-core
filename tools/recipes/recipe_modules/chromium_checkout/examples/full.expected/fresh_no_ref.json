@@ -168,6 +168,19 @@
   {
     "cmd": [
       "git",
+      "config",
+      "maintenance.auto",
+      "false"
+    ],
+    "cwd": "[WORKSPACE]/b/src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "disable auto-gc: maintenance.auto=false"
+  },
+  {
+    "cmd": [
+      "git",
       "checkout",
       "--force",
       "origin/HEAD",
@@ -178,6 +191,21 @@
       "CHROME_HEADLESS": "1"
     },
     "name": "checkout origin/HEAD"
+  },
+  {
+    "cmd": [
+      "git",
+      "remote",
+      "set-url",
+      "--push",
+      "origin",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "cwd": "[WORKSPACE]/b/src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "restore origin push url"
   },
   {
     "name": "$result"

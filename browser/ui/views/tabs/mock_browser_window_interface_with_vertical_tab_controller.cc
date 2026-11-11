@@ -7,15 +7,17 @@
 
 #include <memory>
 
+#include "base/check_deref.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 MockBrowserWindowInterfaceWithVerticalTabController::
-    MockBrowserWindowInterfaceWithVerticalTabController(PrefService* prefs) {
-  features_.SetVerticalTabControllerForTesting(
-      std::make_unique<VerticalTabController>(
-          BrowserWindowInterface::TYPE_NORMAL, prefs, &focus_mode_controller_));
+    MockBrowserWindowInterfaceWithVerticalTabController(PrefService* prefs)
+    : focus_mode_controller_(GetUnownedUserDataHost(), CHECK_DEREF(prefs)) {
+  vertical_tab_controller_ = std::make_unique<VerticalTabController>(
+      GetUnownedUserDataHost(), BrowserWindowInterface::TYPE_NORMAL, prefs,
+      &focus_mode_controller_);
   ON_CALL(*this, GetFeatures()).WillByDefault(testing::ReturnRef(features_));
   ON_CALL(testing::Const(*this), GetFeatures())
       .WillByDefault(testing::ReturnRef(features_));

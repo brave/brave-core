@@ -1,28 +1,44 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index 62e11c5a7a4f2d235b97fdaae2abb26a8b9aa053..a95dd6dd4c4771209a5278b5d7dfcde573e9a503 100644
+index b0ef6f56ecd6a27bbdb508455b79b783c389853e..202d6a34e0bafdc4b5103b0d078f2ce979c98adf 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
-@@ -507,6 +507,7 @@ static_library("test_support") {
-     "//ui/gl",
-   ]
+@@ -14,6 +14,7 @@
+ # targets, see //chrome/browser/ui/views/tab_sharing/BUILD.gn and its reference
+ # below.
  
-+  import("//brave/chromium_src/chrome/test/sources.gni") deps += brave_chromium_src_chrome_test_test_support_deps sources += brave_chromium_src_chrome_test_test_support_sources
-   data = []
-   data_deps = []
++import("//brave/chromium_src/chrome/test/sources.gni")
+ import("//build/cipd/cipd.gni")
+ import("//build/config/buildflags_paint_preview.gni")
+ import("//build/config/chrome_build.gni")
+@@ -154,6 +155,7 @@ if (is_android) {
+ source_set("test_support") {
+   testonly = true
+   deps = []
++  deps += brave_chromium_src_chrome_test_test_support_deps
  
-@@ -5833,6 +5834,7 @@ test("unit_tests") {
-     "//ui/webui",
-     "//v8",
+   public_deps = [
+     "//chrome/browser/notifications:test_support",
+@@ -522,6 +524,7 @@ source_set("test_support") {
+   # All test_support sources have been migrated into per-feature
+   # targets. Do not add new sources to //chrome/test:test_support.
+   sources = []
++  sources += brave_chromium_src_chrome_test_test_support_sources
+ }
+ 
+ if (is_android) {
+@@ -2789,6 +2792,7 @@ test("unit_tests") {
+     "//ui/strings:app_locale_settings_grit",
+     "//ui/strings:ui_strings_grit",
    ]
-+  import("//brave/chromium_src/chrome/test/sources.gni") deps += brave_chromium_src_chrome_test_unit_tests_deps
++  deps += brave_chromium_src_chrome_test_unit_tests_deps
  
    if (enable_devtools_frontend) {
      deps += [ "//chrome/browser/ui/webui/devtools:unit_tests" ]
-@@ -8816,6 +8818,7 @@ if (!is_android && !is_chromeos_device) {
-       "//ui/views",
-       "//ui/web_dialogs:test_support",
-     ]
-+    deps += [ "//brave/test:browser_test_support" ]
- 
-     if (is_linux) {
-       deps += [ "//ui/linux:display_server_utils" ]
+@@ -3919,6 +3923,7 @@ if (!is_android && !is_chromeos_device) {
+     deps = [
+       ":test_support",
+       ":test_support_ui",
++      "//brave/test:browser_test_support",
+       "//chrome/browser/actor/ui:interactive_ui_tests",
+       "//chrome/browser/ai:interactive_ui_tests",
+       "//chrome/browser/autofill:interactive_ui_tests",

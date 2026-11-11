@@ -4,10 +4,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 '''This script takes the input resource ids file
-   (//tools/gritsettings/resource_ids.spec) and filters out all entries that
-   Brave doesn't use (e.g. chromeos, ash, glic). These entries are defined by
-   the patterns below. This is done to reduce the resource ids range taken by
-   upstream and free up space for Brave resources.
+(//tools/gritsettings/resource_ids.spec) and filters out all entries that
+Brave doesn't use (e.g. chromeos, ash, glic). These entries are defined by
+the patterns below. This is done to reduce the resource ids range taken by
+upstream and free up space for Brave resources.
 '''
 
 import argparse
@@ -65,8 +65,7 @@ def filter_ids(in_file, out_file, srcdir):
     for grd_filename in list(ids_dict.keys()):
         # If the key matches our removal pattern but not in exclusions, then
         # remove the entry
-        if re.search(patterns,
-                     grd_filename) and not grd_filename in exclusions:
+        if re.search(patterns, grd_filename) and not grd_filename in exclusions:
             ids_dict.pop(grd_filename)
     with open(out_file, 'w', encoding='utf-8', newline='\n') as f:
         f.write(repr(ids_dict))
@@ -75,7 +74,8 @@ def filter_ids(in_file, out_file, srcdir):
 def parse_args():
     '''Parses arguments passed to the script.'''
     parser = argparse.ArgumentParser(
-        description='Filter out unused resource ids')
+        description='Filter out unused resource ids'
+    )
     parser.add_argument('--input', nargs=1, required=True)
     parser.add_argument('--output', nargs=1, required=True)
     parser.add_argument('--srcdir', nargs=1, required=True)

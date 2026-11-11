@@ -17,16 +17,15 @@ struct SuggestedNetworkView: View {
   }
 
   var mode: Mode
-  var originInfo: BraveWallet.OriginInfo {
+  var dappOriginInfo: BraveWallet.DappOriginInfo {
     switch mode {
     case .addNetwork(let request):
-      return request.originInfo
+      return request.dappOriginInfo
     case .switchNetworks(let request):
-      return request.originInfo
+      return request.dappOriginInfo
     }
   }
   var cryptoStore: CryptoStore
-  @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
 
   @State private var isPresentingNetworkDetails: NetworkModel?
@@ -46,13 +45,11 @@ struct SuggestedNetworkView: View {
   init(
     mode: Mode,
     cryptoStore: CryptoStore,
-    keyringStore: KeyringStore,
     networkStore: NetworkStore,
     onDismiss: @escaping () -> Void
   ) {
     self.mode = mode
     self.cryptoStore = cryptoStore
-    self.keyringStore = keyringStore
     self.networkStore = networkStore
     self.onDismiss = onDismiss
   }
@@ -98,7 +95,7 @@ struct SuggestedNetworkView: View {
   @ViewBuilder private var faviconAndOrigin: some View {
     VStack(spacing: 8) {
       Group {
-        if let url = URL(string: originInfo.originSpec) {
+        if let url = URL(string: dappOriginInfo.originSpec) {
           FaviconReader(url: url) { image in
             if let image = image {
               Image(uiImage: image)
@@ -113,7 +110,7 @@ struct SuggestedNetworkView: View {
       }
       .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
       .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
-      Text(originInfo: originInfo)
+      Text(dappOriginInfo: dappOriginInfo)
         .font(.subheadline)
         .foregroundColor(Color(braveSystemName: .textPrimary))
         .multilineTextAlignment(.center)
@@ -123,33 +120,6 @@ struct SuggestedNetworkView: View {
 
   private var headerView: some View {
     VStack {
-      Menu {
-        Text(keyringStore.selectedAccount.address.zwspOutput)
-        Button {
-          UIPasteboard.general.string = keyringStore.selectedAccount.address
-        } label: {
-          Label(Strings.Wallet.copyAddressButtonTitle, braveSystemImage: "leo.copy.plain-text")
-            .font(.body)
-        }
-      } label: {
-        HStack(spacing: 8) {
-          Spacer()
-          if !keyringStore.selectedAccount.address.isEmpty {
-            Text(keyringStore.selectedAccount.address.truncatedAddress)
-              .fontWeight(.semibold)
-          }
-          Blockie(address: keyringStore.selectedAccount.blockieSeed)
-            .frame(
-              width: min(blockieSize, maxBlockieSize),
-              height: min(blockieSize, maxBlockieSize)
-            )
-            .aspectRatio(1, contentMode: .fit)
-        }
-      }
-      .accessibilityLabel(Strings.Wallet.selectedAccountAccessibilityLabel)
-      .accessibilityValue(
-        "\(keyringStore.selectedAccount.name), \(keyringStore.selectedAccount.address.truncatedAddress)"
-      )
       VStack(spacing: 8) {
         faviconAndOrigin
         Text(headerTitle)
@@ -249,13 +219,12 @@ struct SuggestedNetworkView: View {
     .background(
       Color.clear
         .sheet(item: $isPresentingNetworkDetails) { detailsModel in
-          NavigationView {
+          NavigationStack {
             NetworkDetailsView(
               networkStore: networkStore,
               model: detailsModel
             )
           }
-          .navigationViewStyle(StackNavigationViewStyle())
         }
     )
     .background(
@@ -371,12 +340,14 @@ struct SuggestedNetworkView_Previews: PreviewProvider {
       SuggestedNetworkView(
         mode: .addNetwork(
           .init(
-            originInfo: .init(originSpec: "https://app.uniswap.org", eTldPlusOne: "uniswap.org"),
+            dappOriginInfo: .init(
+              originSpec: "https://app.uniswap.org",
+              eTldPlusOne: "uniswap.org"
+            ),
             networkInfo: .mockSepolia
           )
         ),
         cryptoStore: .previewStore,
-        keyringStore: .previewStoreWithWalletCreated,
         networkStore: .previewStore,
         onDismiss: {}
       )
@@ -384,7 +355,7 @@ struct SuggestedNetworkView_Previews: PreviewProvider {
         mode: .switchNetworks(
           .init(
             requestId: UUID().uuidString,
-            originInfo: .init(
+            dappOriginInfo: .init(
               originSpec: "https://polygon.technology/",
               eTldPlusOne: "polygon.technology"
             ),
@@ -392,7 +363,6 @@ struct SuggestedNetworkView_Previews: PreviewProvider {
           )
         ),
         cryptoStore: .previewStore,
-        keyringStore: .previewStoreWithWalletCreated,
         networkStore: .previewStore,
         onDismiss: {}
       )

@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      accelerator_table.cc chromium_src override uses ENABLE_COMMANDER build
+      flag. The dependency for the flag needs to be added.
+    insert_into_list:
+      target: accelerator_table
+      list_name: deps
+      values:
+        - //brave/components/commander/common/buildflags
+
+  - description: |-
+      layout_constants.cc chromium_src override reads the compact horizontal
+      tabs pref from local state and the toolbars small icons flag.
+    insert_into_list:
+      target: layout_constants
+      list_name: deps
+      values:
+        - //brave/browser/ui:brave_tab_prefs
+        - //brave/browser/ui:ui_features
+        - //components/prefs

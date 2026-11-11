@@ -5,6 +5,19 @@
 
 substitutions:
   - description: |
+      Use sequential updates for extensions when the feature is enabled.
+
+      go-updater backend currently struggles with parallel update, this feature
+      allows us to serialize extension updates to avoid issues with the backend.
+    preempt_function_impl:
+      function_name: ChromeExtensionsBrowserClient::CreateUpdateClient
+      code: |-
+        if (base::FeatureList::IsEnabled(
+          extensions_features::kBraveSequentialExtensionsUpdate)) {
+          return update_client::SequentialUpdateClientFactory(configurator);
+        }
+
+  - description: |
       Use a BraveExtensionsAPIClient instead of a ChromeExtensionsAPIClient.
     regex:
       pattern: 'ChromeExtensionsAPIClient'

@@ -1,0 +1,40 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add the Brave grdp files to the WebUI resources.
+    add_literal_to_list:
+      target: build_grd
+      list_name: grdp_files
+      literal: brave_resources_extra_grdps
+      import: //brave/ui/webui/resources/sources.gni
+
+  - description: Depend on the targets producing the Brave grdp files.
+    add_literal_to_list:
+      target: build_grd
+      list_name: public_deps
+      literal: brave_resources_extra_grdps_deps
+      import: //brave/ui/webui/resources/sources.gni
+
+  - description: Needed by the enable_extensions_core check below.
+    add_import:
+      import: //extensions/buildflags/buildflags.gni
+
+  - description: |-
+      chrome://extensions needs cr_shortcut_input and managed_footnote on
+      non-desktop Android too, which upstream only bundles for desktop.
+    append_to_target:
+      target: build_grd
+      code: |-
+        if (is_android && !is_desktop_android && enable_extensions_core) {
+          public_deps += [
+            "cr_components/cr_shortcut_input:build_grdp",
+            "cr_components/managed_footnote:build_grdp",
+          ]
+          grdp_files += [
+            "$target_gen_dir/cr_components/cr_shortcut_input/resources.grdp",
+            "$target_gen_dir/cr_components/managed_footnote/resources.grdp",
+          ]
+        }

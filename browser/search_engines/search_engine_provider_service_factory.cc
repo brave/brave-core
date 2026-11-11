@@ -51,7 +51,7 @@ SearchEngineProviderServiceFactory::BuildServiceInstanceForBrowserContext(
   Profile* profile = Profile::FromBrowserContext(context);
 
 #if BUILDFLAG(IS_ANDROID)
-  if (profile->IsIncognitoProfile()) {
+  if (profile->IsPrimaryOTRProfileWithRegularParent()) {
     return std::make_unique<PrivateWindowSearchEngineProviderServiceAndroid>(
         profile);
   }
@@ -66,7 +66,7 @@ SearchEngineProviderServiceFactory::BuildServiceInstanceForBrowserContext(
     return std::make_unique<TorWindowSearchEngineProviderService>(profile);
   }
 
-  if (profile->IsIncognitoProfile()) {
+  if (profile->IsPrimaryOTRProfileWithRegularParent()) {
     return std::make_unique<PrivateWindowSearchEngineProviderService>(profile);
   }
 

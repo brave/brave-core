@@ -41,7 +41,6 @@ void RunCreateSupportTicketCallback(
 }  // namespace
 
 bool BraveVpnServiceImpl::IsConnected() const {
-  NOTIMPLEMENTED();
   return connection_state_ == mojom::ConnectionState::CONNECTED &&
          IsPurchased();
 }
@@ -51,13 +50,11 @@ void BraveVpnServiceImpl::ToggleConnection() {
 }
 
 mojom::ConnectionState BraveVpnServiceImpl::GetConnectionState() const {
-  NOTIMPLEMENTED();
   return connection_state_;
 }
 
 std::string BraveVpnServiceImpl::GetLastConnectionError() const {
-  NOTIMPLEMENTED();
-  return std::string();
+  return last_connection_error_;
 }
 
 void BraveVpnServiceImpl::RecordWidgetUsageMetrics(bool new_usage) {
@@ -127,11 +124,12 @@ void BraveVpnServiceImpl::ResetConnectionState() {
   NOTIMPLEMENTED();
 }
 
-void BraveVpnServiceImpl::EnableOnDemand(bool /*enable*/) {
+void BraveVpnServiceImpl::EnableAutoReconnect(bool /*enable*/) {
   NOTIMPLEMENTED();
 }
 
-void BraveVpnServiceImpl::GetOnDemandState(GetOnDemandStateCallback callback) {
+void BraveVpnServiceImpl::GetAutoReconnectState(
+    GetAutoReconnectStateCallback callback) {
   NOTIMPLEMENTED();
   std::move(callback).Run(false, false);
 }
@@ -146,10 +144,47 @@ void BraveVpnServiceImpl::GetSmartProxyRoutingState(
   std::move(callback).Run(false);
 }
 
+void BraveVpnServiceImpl::AllowLanTraffic(bool /*allow*/) {
+  NOTIMPLEMENTED();
+}
+
+void BraveVpnServiceImpl::GetAllowLanTraffic(
+    GetAllowLanTrafficCallback callback) {
+  NOTIMPLEMENTED();
+  std::move(callback).Run(false, false);
+}
+
+void BraveVpnServiceImpl::ReconnectToAgent() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+  if (!agent_client_) {
+    return;
+  }
+  VLOG(1) << "Retrying agent connection on user request";
+  agent_client_->Reset();
+  agent_client_->EnsureConnected();
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+}
+
+void BraveVpnServiceImpl::UpdateConnectionState(
+    mojom::ConnectionState state,
+    std::optional<std::string> connection_error) {
+  const bool connection_error_changed =
+      connection_error.has_value() &&
+      *connection_error != last_connection_error_;
+  if (connection_state_ == state && !connection_error_changed) {
+    return;
+  }
+  connection_state_ = state;
+  if (connection_error) {
+    last_connection_error_ = std::move(*connection_error);
+  }
+  NotifyConnectionStateChanged(state);
+}
+
 void BraveVpnServiceImpl::SetConnectionStateForTesting(  // IN-TEST
     mojom::ConnectionState state) {
-  connection_state_ = state;
-  NotifyConnectionStateChanged(state);
+  UpdateConnectionState(state);
 }
 
 void BraveVpnServiceImpl::SetPurchasedStateForTesting(  // IN-TEST

@@ -41,14 +41,16 @@ def _copy_for_copytree(src: str, dest: str, hardlink: bool) -> None:
         shutil.copy2(src, dest)
 
 
-def _copytree(source: str, dest: str, symlinks: bool, hardlink: bool,
-              allow_override: bool) -> None:
+def _copytree(
+    source: str, dest: str, symlinks: bool, hardlink: bool, allow_override: bool
+) -> None:
     shutil.copytree(
         source,
         dest,
         symlinks=symlinks,
         dirs_exist_ok=allow_override,
-        copy_function=lambda src, dst: _copy_for_copytree(src, dst, hardlink))
+        copy_function=lambda src, dst: _copy_for_copytree(src, dst, hardlink),
+    )
 
 
 def _move(source: str, dest: str) -> None:
@@ -103,9 +105,8 @@ def _rmglob(root: str, wildcard: str, include_hidden: bool) -> None:
     # `include_hidden` was added to glob.glob() in Python 3.11; the pinned
     # pylint's stdlib stubs predate it.
     for item in glob.glob(  # pylint: disable=unexpected-keyword-arg
-            pattern,
-            recursive=True,
-            include_hidden=include_hidden):
+        pattern, recursive=True, include_hidden=include_hidden
+    ):
         try:
             os.remove(item)
         except OSError as e:
@@ -118,7 +119,8 @@ def _glob(base: str, pattern: str, include_hidden: bool) -> str:
     hits = glob.glob(  # pylint: disable=unexpected-keyword-arg
         os.path.join(base, pattern),
         recursive=True,
-        include_hidden=include_hidden)
+        include_hidden=include_hidden,
+    )
     return '\n'.join(sorted(os.path.relpath(hit, start=base) for hit in hits))
 
 
@@ -127,8 +129,8 @@ def _listdir(source: str, recursive: bool) -> str:
         out = []
         for dirpath, _dirnames, files in os.walk(source):
             out.extend(
-                os.path.relpath(os.path.join(dirpath, f), source)
-                for f in files)
+                os.path.relpath(os.path.join(dirpath, f), source) for f in files
+            )
     else:
         out = os.listdir(source)
     return '\n'.join(sorted(out))
@@ -173,8 +175,9 @@ def _flatten_single_directories(path: str) -> None:
         tmpname = tempfile.mktemp(dir=path)
         os.rename(first_single_dir, tmpname)
         for name in itertools.chain(dirs, files):
-            fullname = os.path.join(root,
-                                    name).replace(first_single_dir, tmpname)
+            fullname = os.path.join(root, name).replace(
+                first_single_dir, tmpname
+            )
             os.rename(fullname, os.path.join(path, name))
         shutil.rmtree(tmpname)
         return
@@ -203,8 +206,9 @@ def _compute_hash(base_path: str, rel_paths: list[str]) -> str:
                 dirs.sort()
                 files.sort()
                 for f_name in files:
-                    rel_file_path = os.path.relpath(os.path.join(root, f_name),
-                                                    base_path)
+                    rel_file_path = os.path.relpath(
+                        os.path.join(root, f_name), base_path
+                    )
                     _hash_file_into(sha, rel_file_path, base_path)
     return sha.hexdigest()
 
@@ -228,8 +232,9 @@ def _is_executable(path: str) -> str:
 # None, for operations with nothing to report beyond ok/errno_name/message).
 _OPERATIONS = {
     'copy': lambda o: _copy(o.source, o.dest),
-    'copytree': lambda o: _copytree(o.source, o.dest, o.symlinks, o.hardlink, o
-                                    .allow_override),
+    'copytree': lambda o: _copytree(
+        o.source, o.dest, o.symlinks, o.hardlink, o.allow_override
+    ),
     'move': lambda o: _move(o.source, o.dest),
     'chmod': lambda o: _chmod(o.path, o.mode, o.recursive),
     'remove': lambda o: _remove(o.source),
@@ -242,8 +247,7 @@ _OPERATIONS = {
     'filesizes': lambda o: _filesizes(o.file),
     'symlink': lambda o: _symlink(o.source, o.linkname),
     'truncate': lambda o: _truncate(o.path, o.size_mb),
-    'flatten_single_directories': lambda o: _flatten_single_directories(o.path
-                                                                        ),
+    'flatten_single_directories': lambda o: _flatten_single_directories(o.path),
     'compute_hash': lambda o: _compute_hash(o.base_path, o.rel_paths),
     'file_hash': lambda o: _file_hash(o.file_path),
     'is_executable': lambda o: _is_executable(o.path),
@@ -256,21 +260,25 @@ def _octal(value: str) -> int:
 
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument('--json-output',
-                        required=True,
-                        type=argparse.FileType('w'),
-                        help='Where to write the {ok, errno_name, message} '
-                        'result of the operation.')
+    parser.add_argument(
+        '--json-output',
+        required=True,
+        type=argparse.FileType('w'),
+        help='Where to write the {ok, errno_name, message} '
+        'result of the operation.',
+    )
     subparsers = parser.add_subparsers(dest='command', required=True)
 
-    p = subparsers.add_parser('copy',
-                              help='Copy a file. Behaves like shutil.copy().')
+    p = subparsers.add_parser(
+        'copy', help='Copy a file. Behaves like shutil.copy().'
+    )
     p.add_argument('source')
     p.add_argument('dest')
 
     p = subparsers.add_parser(
         'copytree',
-        help='Recursively copy a tree. Behaves like shutil.copytree().')
+        help='Recursively copy a tree. Behaves like shutil.copytree().',
+    )
     p.add_argument('--symlinks', action='store_true')
     p.add_argument('--hardlink', action='store_true')
     p.add_argument('--allow-override', action='store_true')
@@ -278,7 +286,8 @@ def main(argv: list[str]) -> int:
     p.add_argument('dest')
 
     p = subparsers.add_parser(
-        'move', help='Move/rename a file. Behaves like shutil.move().')
+        'move', help='Move/rename a file. Behaves like shutil.move().'
+    )
     p.add_argument('source')
     p.add_argument('dest')
 
@@ -294,61 +303,72 @@ def main(argv: list[str]) -> int:
     p.add_argument('source')
 
     p = subparsers.add_parser(
-        'rmcontents', help='Recursively remove the contents of a directory.')
+        'rmcontents', help='Recursively remove the contents of a directory.'
+    )
     p.add_argument('source')
 
     p = subparsers.add_parser(
-        'rmglob', help='Remove entries under a directory matching a glob.')
+        'rmglob', help='Remove entries under a directory matching a glob.'
+    )
     p.add_argument('root')
     p.add_argument('wildcard')
     p.add_argument('--hidden', action='store_true')
 
     p = subparsers.add_parser(
-        'glob', help='Print paths under a directory matching a glob.')
+        'glob', help='Print paths under a directory matching a glob.'
+    )
     p.add_argument('base')
     p.add_argument('pattern')
     p.add_argument('--hidden', action='store_true')
 
-    p = subparsers.add_parser('listdir',
-                              help='Print all entries in the given directory.')
+    p = subparsers.add_parser(
+        'listdir', help='Print all entries in the given directory.'
+    )
     p.add_argument('source')
     p.add_argument('--recursive', action='store_true')
 
-    p = subparsers.add_parser('ensure_directory',
-                              help='Ensure that a path is a directory.')
+    p = subparsers.add_parser(
+        'ensure_directory', help='Ensure that a path is a directory.'
+    )
     p.add_argument('dest')
     p.add_argument('--mode', required=True, type=_octal)
 
-    p = subparsers.add_parser('filesizes',
-                              help='Print each given file\'s size, in bytes.')
+    p = subparsers.add_parser(
+        'filesizes', help='Print each given file\'s size, in bytes.'
+    )
     p.add_argument('file', nargs='+')
 
     p = subparsers.add_parser(
-        'symlink', help='Create a symlink. Behaves like os.symlink.')
+        'symlink', help='Create a symlink. Behaves like os.symlink.'
+    )
     p.add_argument('source')
     p.add_argument('linkname')
 
-    p = subparsers.add_parser('truncate',
-                              help='Create an empty file of the given size.')
+    p = subparsers.add_parser(
+        'truncate', help='Create an empty file of the given size.'
+    )
     p.add_argument('path')
     p.add_argument('size_mb', type=int)
 
     p = subparsers.add_parser(
         'flatten_single_directories',
-        help='Move contents of nested singular directories to the top.')
+        help='Move contents of nested singular directories to the top.',
+    )
     p.add_argument('path')
 
     p = subparsers.add_parser(
         'compute_hash',
-        help='Hash the given directories/files, relative to a base path.')
+        help='Hash the given directories/files, relative to a base path.',
+    )
     p.add_argument('base_path')
     p.add_argument('rel_paths', nargs='+')
 
     p = subparsers.add_parser('file_hash', help='Hash a single file.')
     p.add_argument('file_path')
 
-    p = subparsers.add_parser('is_executable',
-                              help='Check whether a file is executable.')
+    p = subparsers.add_parser(
+        'is_executable', help='Check whether a file is executable.'
+    )
     p.add_argument('path')
 
     opts = parser.parse_args(argv)

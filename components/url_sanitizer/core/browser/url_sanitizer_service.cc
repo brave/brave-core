@@ -5,7 +5,6 @@
 
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
 
-#include <memory>
 #include <optional>
 #include <vector>
 

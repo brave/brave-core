@@ -7,28 +7,45 @@
 
 namespace sidebar {
 
-// static
-SidebarItem SidebarItem::Create(const std::u16string& title,
-                                Type type,
-                                BuiltInItemType built_in_item_type,
-                                bool open_in_panel) {
+namespace {
+
+SidebarItem MakeItem(const GURL& url,
+                     const std::u16string& title,
+                     SidebarItem::Type type,
+                     SidebarItem::BuiltInItemType built_in_item_type,
+                     SidebarItem::PanelType panel_type) {
   SidebarItem item;
+  item.url = url;
   item.title = title;
   item.type = type;
   item.built_in_item_type = built_in_item_type;
-  item.open_in_panel = open_in_panel;
+  item.panel_type = panel_type;
   return item;
 }
 
+}  // namespace
+
 // static
-SidebarItem SidebarItem::Create(const GURL& url,
-                                const std::u16string& title,
-                                Type type,
-                                BuiltInItemType built_in_item_type,
-                                bool open_in_panel) {
-  SidebarItem item = Create(title, type, built_in_item_type, open_in_panel);
-  item.url = url;
-  return item;
+SidebarItem SidebarItem::CreateBuiltInItem(BuiltInItemType built_in_item_type,
+                                           const std::u16string& title,
+                                           PanelType panel_type,
+                                           const GURL& url) {
+  return MakeItem(url, title, Type::kTypeBuiltIn, built_in_item_type,
+                  panel_type);
+}
+
+// static
+SidebarItem SidebarItem::CreateWebPanelItem(const GURL& url,
+                                            const std::u16string& title) {
+  return MakeItem(url, title, Type::kTypeWeb, BuiltInItemType::kNone,
+                  PanelType::kWebPanel);
+}
+
+// static
+SidebarItem SidebarItem::CreateWebTabItem(const GURL& url,
+                                          const std::u16string& title) {
+  return MakeItem(url, title, Type::kTypeWeb, BuiltInItemType::kNone,
+                  PanelType::kNone);
 }
 
 SidebarItem::SidebarItem() = default;
@@ -42,12 +59,23 @@ SidebarItem::~SidebarItem() = default;
 bool SidebarItem::operator==(const SidebarItem& item) const {
   return url == item.url && title == item.title && type == item.type &&
          built_in_item_type == item.built_in_item_type &&
-         open_in_panel == item.open_in_panel;
+         panel_type == item.panel_type;
 }
 
 bool SidebarItem::IsValidItem() const {
   // Any type should have valid title.
   if (title.empty()) {
+    return false;
+  }
+
+  // A side panel entry is registered per built-in item type.
+  if (panel_type == SidebarItem::PanelType::kSidePanel &&
+      built_in_item_type == SidebarItem::BuiltInItemType::kNone) {
+    return false;
+  }
+
+  // A web panel loads `url`.
+  if (panel_type == SidebarItem::PanelType::kWebPanel && !url.is_valid()) {
     return false;
   }
 

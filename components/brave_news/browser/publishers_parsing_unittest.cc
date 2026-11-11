@@ -8,7 +8,6 @@
 #include <optional>
 #include <string>
 
-#include "base/containers/flat_map.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"

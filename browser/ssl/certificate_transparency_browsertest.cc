@@ -14,7 +14,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/ssl/ssl_browsertest_util.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"

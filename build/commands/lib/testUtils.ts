@@ -65,9 +65,9 @@ export function getTestsToRun(config: Config, suite: string) {
 //
 // For instance, for Windows 64-bit and assuming all the filters files exist
 // in the filesystem, this method would return paths to the following files:
-//   - unit-tests.filter              -> Base filters
-//   - unit_tests-windows.filters:    -> Platform specific
-//   - unit_tests-windows-x86.filters -> Platform & Architecture specific
+//   - unit-tests.filter          -> Base filters
+//   - unit_tests-win.filters:    -> OS specific
+//   - unit_tests-win-x86.filters -> OS & Architecture specific
 //
 // Each filter is looked up both in test/filters/ (hand-written) and in
 // test/filters/generated/ (auto-generated upstream flake filters, see
@@ -77,33 +77,47 @@ export function getApplicableFilters(
   suite: string,
   { includeMissing = false } = {},
 ) {
-  let filterFilePaths: string[] = []
+  const suites = (additionalSuiteFilters[suite] ?? []).concat(suite)
+  return suites.flatMap((s) => getSuiteFilters(config, s, includeMissing))
+}
 
-  let targetPlatform: string = process.platform
-  if (targetPlatform === 'win32') {
-    targetPlatform = 'windows'
-  } else if (targetPlatform === 'darwin') {
-    targetPlatform = 'macos'
-  }
+// Suites that run another suite's tests and therefore take its filters too.
+// updater_tests_system is updater_tests for a system-wide install.
+const additionalSuiteFilters: Record<string, string[]> = {
+  updater_tests_system: ['updater_tests'],
+}
+
+function getSuiteFilters(
+  config: Config,
+  suite: string,
+  includeMissing: boolean,
+) {
+  let filterFilePaths: string[] = []
 
   let possibleFilters: string[] = [
     suite,
-    [suite, targetPlatform].join('-'),
-    [suite, targetPlatform, config.targetArch].join('-'),
+    [suite, config.targetOS].join('-'),
+    [suite, config.targetOS, config.targetArch].join('-'),
   ]
+
+  // Upstream names its filters after the mode they apply to rather than after
+  // a build config (see the README in testing/buildbot/filters/), so they get
+  // names of their own.
+  let possibleUpstreamFilters: string[] = []
 
   // If you make changes to the list of *san variants here, also update
   // update-upstream-flake-filters.py.
   if (config.is_ubsan) {
-    possibleFilters.push([suite, targetPlatform, 'ubsan'].join('-'))
+    possibleFilters.push([suite, config.targetOS, 'ubsan'].join('-'))
   }
 
   if (config.is_asan) {
-    possibleFilters.push([suite, targetPlatform, 'asan'].join('-'))
+    possibleFilters.push([suite, config.targetOS, 'asan'].join('-'))
+    possibleUpstreamFilters.push([config.targetOS, 'asan', suite].join('.'))
   }
 
   if (config.is_msan) {
-    possibleFilters.push([suite, targetPlatform, 'msan'].join('-'))
+    possibleFilters.push([suite, config.targetOS, 'msan'].join('-'))
   }
 
   const filterDirs = [
@@ -116,6 +130,19 @@ export function getApplicableFilters(
       if (includeMissing || fs.existsSync(filterFilePath)) {
         filterFilePaths.push(filterFilePath)
       }
+    }
+  })
+
+  const upstreamFilterDir = path.join(
+    config.srcDir,
+    'testing',
+    'buildbot',
+    'filters',
+  )
+  possibleUpstreamFilters.forEach((filterName) => {
+    let filterFilePath = path.join(upstreamFilterDir, `${filterName}.filter`)
+    if (includeMissing || fs.existsSync(filterFilePath)) {
+      filterFilePaths.push(filterFilePath)
     }
   })
 

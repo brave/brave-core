@@ -30,5 +30,13 @@ if (is_win || is_mac || is_linux) {
       "//components/update_client",
       "//testing/gtest",
     ]
+    if (is_win) {
+      sources += [
+        "com_classes_legacy_unittest.cc",
+        "win_constants_unittest.cc",
+        "win_util_unittest.cc",
+      ]
+      deps += [ "//chrome/updater/app/server/win:updater_legacy_idl" ]
+    }
   }
 }

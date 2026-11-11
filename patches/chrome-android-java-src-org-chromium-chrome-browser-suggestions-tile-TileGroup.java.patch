@@ -1,0 +1,41 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGroup.java b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGroup.java
+index bfd336f98f222d71ad16015dfd502e6f201f8b26..8bca599f3b1ca66f1bffa836e332569f2fbc07ba 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGroup.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGroup.java
+@@ -50,6 +50,8 @@ public class TileGroup implements MostVisitedSites.Observer {
+      * avoid useless rendering (e.g., when an NTP is not visible).
+      */
+     public static class PendingChanges {
++        /** Whether the most recently stored update was user-triggered. */
++        public boolean isUserTriggered;
+         /** Most recently received tile data pending displayed (eager or deferred). */
+         public @Nullable List<SiteSuggestion> siteSuggestions;
+ 
+@@ -343,7 +345,7 @@ public class TileGroup implements MostVisitedSites.Observer {
+             new TileSetupDelegate() {
+                 @Override
+                 public TileInteractionDelegate createInteractionDelegate(Tile tile, View view) {
+-                    return new TileInteractionDelegateImpl(
++                    return new BraveTileInteractionDelegateImpl(
+                             mContextMenuManager,
+                             mTileGroupDelegate,
+                             mTileDragDelegate,
+@@ -414,6 +416,7 @@ public class TileGroup implements MostVisitedSites.Observer {
+         // Store incoming suggestions for later usage by loadTiles(). This may happen eagerly below
+         // if conditions are met, or deferred to onSwitchToForeground().
+         mPendingChanges.siteSuggestions = new ArrayList<>(siteSuggestions);
++        mPendingChanges.isUserTriggered = isUserTriggered;
+         if (!mHasReceivedData || !mUiDelegate.isVisible() || isUserTriggered) {
+             loadTiles(); // Eager update.
+         }
+@@ -534,7 +537,9 @@ public class TileGroup implements MostVisitedSites.Observer {
+         List<Tile> newPersonalizedTiles = mTileSections.get(TileSectionType.PERSONALIZED);
+         assumeNonNull(newPersonalizedTiles);
+         boolean dataChanged =
+-                isInitialLoad || !tileListAreEqual(oldPersonalizedTiles, newPersonalizedTiles);
++                isInitialLoad
++                        || mPendingChanges.isUserTriggered
++                        || !tileListAreEqual(oldPersonalizedTiles, newPersonalizedTiles);
+ 
+         if (dataChanged) {
+             maybeKillDragSession();

@@ -4,8 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
+import Button from '@brave/nala/react/button'
+import Icon from '@brave/nala/react/icon'
 
 import { AutocompleteMatch, ClickEvent } from '../../state/search_store'
 import { useSearchState, useSearchActions } from '../../context/search_context'
@@ -16,9 +16,13 @@ import { SafeImage } from '../common/safe_image'
 import { style } from './search_results.style'
 
 function MatchImage(props: { match: AutocompleteMatch }) {
-  const { imageUrl, iconUrl } = props.match
+  const { suggestTemplate, iconUrl } = props.match
+  const imageUrl = suggestTemplate.image?.url
 
-  if (props.match.description === getString(S.OMNIBOX_ASK_LEO_DESCRIPTION)) {
+  if (
+    suggestTemplate.secondaryText?.text
+    === getString(S.OMNIBOX_ASK_LEO_DESCRIPTION)
+  ) {
     return (
       <Icon
         name='product-brave-leo'
@@ -49,10 +53,11 @@ function MatchImage(props: { match: AutocompleteMatch }) {
 }
 
 function MatchText(props: { match: AutocompleteMatch }) {
+  const { primaryText, secondaryText } = props.match.suggestTemplate
   return (
     <>
-      {props.match.contents}
-      <span className='description'>{props.match.description}</span>
+      {primaryText.text}
+      <span className='description'>{secondaryText?.text}</span>
     </>
   )
 }

@@ -1,12 +1,12 @@
 diff --git a/components/tabs/impl/tab_strip_collection.cc b/components/tabs/impl/tab_strip_collection.cc
-index bfb0b512753a58c0486b3a82669c17c024076e54..278b2bec3e988c591fb9b66cfbc6b9b07d1ef240 100644
+index bfb0b512753a58c0486b3a82669c17c024076e54..78337102bd33c849452d9db6f9924af0b7b49674 100644
 --- a/components/tabs/impl/tab_strip_collection.cc
 +++ b/components/tabs/impl/tab_strip_collection.cc
 @@ -314,6 +314,24 @@ ChildrenPtrs TabStripCollection::GetTabsAndCollectionsForMove(
  }
  
  ScopedTab TabStripCollection::RemoveTabAtIndexRecursive(size_t index) {
-+  #if !BUILDFLAG(IS_ANDROID)
++  #if BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
 +  {
 +    TabInterface* tab_to_be_removed = GetTabAtIndexRecursive(index);
 +    TabCollection* parent_collection =
@@ -23,7 +23,7 @@ index bfb0b512753a58c0486b3a82669c17c024076e54..278b2bec3e988c591fb9b66cfbc6b9b0
 +      return tab;
 +    }
 +  }
-+  #endif  // !BUILDFLAG(IS_ANDROID)
++  #endif  // BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
    TabInterface* tab_to_be_removed = GetTabAtIndexRecursive(index);
    TabCollection* parent_collection =
        tab_to_be_removed->GetParentCollection(GetPassKey());

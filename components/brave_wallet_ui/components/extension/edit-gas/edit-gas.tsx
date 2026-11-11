@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import Alert from '@brave/leo/react/alert'
+import Alert from '@brave/nala/react/alert'
 
 import { getLocale } from '../../../../common/locale'
 import {

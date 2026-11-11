@@ -85,6 +85,7 @@
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
+      <part file="autofill_strings_override.grdp" />
       <part file="bookmark_bar_strings_override.grdp" />
       <part file="error_page_strings_override.grdp" />
       <part file="history_clusters_strings_override.grdp" />

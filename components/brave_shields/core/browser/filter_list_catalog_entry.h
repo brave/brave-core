@@ -8,9 +8,14 @@
 
 #include <stdint.h>
 
+#include <array>
 #include <functional>
+#include <optional>
 #include <string>
 #include <vector>
+
+#include "base/containers/span.h"
+#include "crypto/sha2.h"
 
 namespace base {
 template <typename StructType>
@@ -27,19 +32,19 @@ namespace brave_shields {
 class FilterListCatalogEntry {
  public:
   FilterListCatalogEntry();
-  FilterListCatalogEntry(const std::string& uuid,
-                         const std::string& url,
-                         const std::string& title,
-                         const std::vector<std::string>& langs,
-                         const std::string& support_url,
-                         const std::string& desc,
-                         bool hidden,
-                         bool default_enabled,
-                         bool first_party_protections,
-                         uint8_t permission_mask,
-                         const std::vector<std::string>& platforms,
-                         const std::string& component_id,
-                         const std::string& base64_public_key);
+  FilterListCatalogEntry(
+      const std::string& uuid,
+      const std::string& url,
+      const std::string& title,
+      const std::vector<std::string>& langs,
+      const std::string& support_url,
+      const std::string& desc,
+      bool hidden,
+      bool default_enabled,
+      bool first_party_protections,
+      uint8_t permission_mask,
+      const std::vector<std::string>& platforms,
+      base::span<const uint8_t, crypto::kSHA256Length> public_key_sha256);
   explicit FilterListCatalogEntry(const FilterListCatalogEntry& other);
   ~FilterListCatalogEntry();
 
@@ -57,8 +62,7 @@ class FilterListCatalogEntry {
   uint8_t permission_mask = 0;
   std::vector<std::string> platforms = {};
 
-  std::string component_id;
-  std::string base64_public_key;
+  std::optional<std::array<uint8_t, crypto::kSHA256Length>> public_key_sha256;
 
   static void RegisterJSONConverter(
       base::JSONValueConverter<FilterListCatalogEntry>*);

@@ -6,12 +6,29 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    futures,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['futures', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    futures: futures.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    pass
+
+
+def RunSteps(api: DEPS):
     # Steps inside the block are named under the nest.
     with api.step.nest('build'):
         api.step('configure', ['gn', 'gen'])
@@ -41,24 +58,28 @@ def RunSteps(api):
         api.step('reports', ['echo', parent.name])
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'nest',
         # The nest itself is recorded, with no command.
         api.post_process(post_process.MustRun, 'build'),
-        api.post_process(post_process.MustRun, 'build.configure',
-                         'build.compile'),
+        api.post_process(
+            post_process.MustRun, 'build.configure', 'build.compile'
+        ),
         # Same leaf name under two different namespaces, plus a deeper nest.
-        api.post_process(post_process.MustRun, 'package.compile',
-                         'package.sign.compile'),
+        api.post_process(
+            post_process.MustRun, 'package.compile', 'package.sign.compile'
+        ),
         # Repeated name in one namespace gets suffixed.
         api.post_process(post_process.MustRun, 'twice', 'twice (2)'),
         # Spawned work is namespaced under the nest that spawned it, and is
         # joined before the nest exits.
-        api.post_process(post_process.MustRun, 'fan out.fetch 0',
-                         'fan out.fetch 1', 'after'),
+        api.post_process(
+            post_process.MustRun, 'fan out.fetch 0', 'fan out.fetch 1', 'after'
+        ),
         # The parent's own name is the namespaced one.
-        api.post_process(post_process.StepCommandContains, 'outer.reports',
-                         ['outer']),
+        api.post_process(
+            post_process.StepCommandContains, 'outer.reports', ['outer']
+        ),
         api.post_process(post_process.StatusSuccess),
     )

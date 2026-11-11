@@ -7,10 +7,12 @@
 # Add new entries here to override additional Chromium icons.
 #
 # The Nala source replaces the upstream drawable verbatim, which drops
-# upstream's `android:tint="?attr/colorControlNormal"` and leaves the Nala
-# `@color/icon_default` fill in its place. Only override icons whose call sites
-# apply their own tint: an untinted usage renders that static fill instead of
-# the theme colour, so it stops following dynamic colours.
+# upstream's `android:tint` and leaves the Nala `@color/icon_default` fill in
+# its place. That fill is a plain resource reference, so it follows day/night
+# but cannot follow dynamic colours the way a theme attribute does. Either
+# override only icons whose call sites apply their own tint, or set
+# `tint = "@macro/default_icon_color"` on the entry to re-add upstream's tint
+# to the generated drawable.
 nala_icon_overrides = [
   {
     # Override Chromium's star icon in the bookmark bar with Brave's bookmark
@@ -123,6 +125,11 @@ nala_icon_overrides = [
     source = "ic_trash.xml"
     dest = "ic_delete_24dp.xml"
   },
+  {
+    # Override Chromium's Site controls (app menu).
+    source = "ic_tune_small.xml"
+    dest = "ic_settings_tune_24dp.xml"
+  },
 ]
 
 # Overrides for drawables under //chrome/android/java/res, which
@@ -141,6 +148,13 @@ nala_chrome_app_icon_overrides = [
     # already defines ic_plus_add at 36dp and wins the merge.
     source = "ic_plus_add.xml"
     dest = "ic_add_box_rounded_corner.xml"
+  },
+  {
+    # Override the extensions menu footer's settings icon
+    # (//chrome/browser/ui/android/extensions ships its own ic_settings.xml,
+    # which would otherwise win the resource_overlay merge unpredictably).
+    source = "ic_settings.xml"
+    dest = "ic_settings.xml"
   },
   {
     # Override Chromium's back arrow (app menu icon row, tablet toolbar; also
@@ -203,11 +217,6 @@ nala_chrome_app_icon_overrides = [
     dest = "ic_mobile_friendly_24dp.xml"
   },
   {
-    # Override Chromium's Open web app (app menu).
-    source = "ic_phone_call_out.xml"
-    dest = "ic_open_webapk.xml"
-  },
-  {
     # Override Chromium's Image descriptions (app menu).
     source = "ic_image.xml"
     dest = "ic_image_descriptions.xml"
@@ -219,7 +228,7 @@ nala_chrome_app_icon_overrides = [
   },
   {
     # Override Chromium's Find in page (app menu).
-    source = "ic_search.xml"
+    source = "ic_file_search.xml"
     dest = "ic_find_in_page.xml"
   },
   {
@@ -231,6 +240,62 @@ nala_chrome_app_icon_overrides = [
     # Override Chromium's Install and create shortcut (app menu).
     source = "ic_phone_call_in.xml"
     dest = "ic_add_to_home_screen.xml"
+  },
+
+  # The device picker's ImageView applies no tint of its own, so these four
+  # carry upstream's tint to keep following dynamic colours.
+  {
+    # Override the desktop device icon in the send tab to self device picker.
+    source = "ic_laptop.xml"
+    dest = "computer_black_24dp.xml"
+    tint = "@macro/default_icon_color"
+  },
+  {
+    # Override the phone device icon in the send tab to self device picker.
+    source = "ic_smartphone.xml"
+    dest = "smartphone_black_24dp.xml"
+    tint = "@macro/default_icon_color"
+  },
+  {
+    # Override the tablet device icon in the send tab to self device picker.
+    source = "ic_tablet.xml"
+    dest = "tablet_black_24dp.xml"
+    tint = "@macro/default_icon_color"
+  },
+  {
+    # Override the generic device icon, used both for a device of unknown form
+    # factor and as the icon of the cross-device UI itself, so it has to stay a
+    # multi-device glyph rather than match the three above.
+    source = "ic_smartphone_laptop.xml"
+    dest = "devices_black_24dp.xml"
+    tint = "@macro/default_icon_color"
+  },
+
+  # The following carry upstream's tint (or fill colour) since their call sites
+  # rely on the drawable for it.
+  {
+    # Override Chromium's password manager key (settings, keyboard accessory).
+    source = "ic_key.xml"
+    dest = "ic_password_manager_key.xml"
+    tint = "@macro/default_icon_color"
+  },
+  {
+    # Override Chromium's credit card (settings, payment dialogs).
+    source = "ic_credit_card.xml"
+    dest = "credit_card.xml"
+    tint = "@macro/default_icon_color"
+  },
+  {
+    # Override Chromium's email icon.
+    source = "ic_email.xml"
+    dest = "ic_outline_email_24dp.xml"
+    tint = "@macro/default_icon_color_secondary"
+  },
+  {
+    # Override Chromium's settings gear.
+    source = "ic_settings.xml"
+    dest = "ic_settings_24dp.xml"
+    tint = "@macro/default_icon_color"
   },
 ]
 
@@ -329,31 +394,36 @@ nala_icons = [
   "ic_bar_chart.xml",
   "ic_bar_chart_search.xml",
   "ic_brave_icon_search.xml",
+  "ic_browser_add.xml",
   "ic_browser_customizable_shortcut.xml",
   "ic_browser_group.xml",
   "ic_browser_home.xml",
   "ic_browser_mobile_bottom_tab_groups.xml",
   "ic_browser_mobile_bottom_toolbar.xml",
+  "ic_browser_mobile_tab_new.xml",
   "ic_browser_mobile_tabs.xml",
   "ic_browser_mobile_tabs_bottom.xml",
   "ic_browser_mobile_tabs_top.xml",
+  "ic_check_circle_filled.xml",
   "ic_check_normal.xml",
   "ic_checkbox_checked.xml",
   "ic_checkbox_unchecked.xml",
   "ic_close.xml",
   "ic_code.xml",
-  "ic_credit_card.xml",
   "ic_disable_outline.xml",
   "ic_download.xml",
+  "ic_edit_box.xml",
   "ic_edit_pencil.xml",
   "ic_email_shield.xml",
   "ic_face_happy.xml",
   "ic_face_sad.xml",
   "ic_grid04.xml",
+  "ic_group_new_tab.xml",
   "ic_history.xml",
   "ic_idea.xml",
   "ic_info_outline.xml",
   "ic_key.xml",
+  "ic_laptop.xml",
   "ic_launch.xml",
   "ic_link_normal.xml",
   "ic_location_on.xml",
@@ -363,6 +433,7 @@ nala_icons = [
   "ic_notification.xml",
   "ic_outside.xml",
   "ic_picture_in_picture.xml",
+  "ic_pin.xml",
   "ic_product_bat_color.xml",
   "ic_product_bat_outline.xml",
   "ic_product_bookmarks.xml",
@@ -383,11 +454,16 @@ nala_icons = [
   "ic_share.xml",
   "ic_shield_done.xml",
   "ic_shred_data.xml",
+  "ic_smartphone.xml",
+  "ic_smartphone_home.xml",
+  "ic_smartphone_laptop.xml",
   "ic_social_brave_carved_favicon_fullheight.xml",
   "ic_social_brave_monochrome_favicon_fullheight_color.xml",
   "ic_social_brave_outline_favicon_fullheight.xml",
   "ic_social_brave_release_favicon_fullheight_color.xml",
   "ic_star_circle.xml",
+  "ic_star_outline.xml",
+  "ic_tablet.xml",
   "ic_theme_dark.xml",
   "ic_themes.xml",
   "ic_trash.xml",

@@ -14,6 +14,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 
 namespace {
@@ -22,11 +23,12 @@ base::OnceCallback<void(std::string_view coin_name)>*
     g_account_creation_callback_for_testing = nullptr;
 
 // These are names of coins used by `create-account-options.ts`. We support only
-// Solana and Cardano account creation triggered by dApp.
+// Solana, Cardano and Polkadot account creation triggered by dApp.
 constexpr auto kAccountCreationCoinName =
     base::MakeFixedFlatMap<brave_wallet::mojom::CoinType, std::string_view>(
         {{brave_wallet::mojom::CoinType::SOL, "Solana"},
-         {brave_wallet::mojom::CoinType::ADA, "Cardano"}});
+         {brave_wallet::mojom::CoinType::ADA, "Cardano"},
+         {brave_wallet::mojom::CoinType::DOT, "Polkadot"}});
 }  // namespace
 
 namespace brave_wallet {
@@ -36,8 +38,8 @@ void ShowPanel(content::WebContents* web_contents) {
     return;
   }
 
-  auto* tab_helper =
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents);
+  auto* tab_helper = brave_wallet::BraveWalletTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   if (tab_helper) {
     tab_helper->ShowBubble();
   }

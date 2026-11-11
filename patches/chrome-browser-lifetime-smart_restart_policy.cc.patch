@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/lifetime/smart_restart_policy.cc b/chrome/browser/lifetime/smart_restart_policy.cc
+index de75eb19b8f4272f8ccfd4d56be4dc6d569deb4a..923bfc42468ce82c908b7b31739cf0ffa7172ec1 100644
+--- a/chrome/browser/lifetime/smart_restart_policy.cc
++++ b/chrome/browser/lifetime/smart_restart_policy.cc
+@@ -90,6 +90,9 @@ ExtendedExecutionOutcome SmartRestartPolicy::ShouldRestart(
+ // static
+ ExtendedExecutionOutcome SmartRestartPolicy::CanLockScreenRestartProceed(
+     const ExtendedRestartabilityState& state) {
++  if (IsSmartRestartBlockedByBrave()) {
++    return ExtendedExecutionOutcome::kBlockedByPolicy;
++  }
+   // Respect the RelaunchWindow enterprise policy when configured.
+   if (!IsLockScreenRestartAllowedByPolicy()) {
+     return ExtendedExecutionOutcome::kBlockedByPolicy;
+@@ -122,6 +125,9 @@ ExtendedExecutionOutcome SmartRestartPolicy::CanLockScreenRestartProceed(
+ #if BUILDFLAG(IS_MAC)
+ // static
+ bool SmartRestartPolicy::CanZeroWindowRestartProceed() {
++  if (IsSmartRestartBlockedByBrave()) {
++    return false;
++  }
+   // Respect administrative update controls via enterprise policy.
+   if (!IsZeroWindowRestartAllowedByPolicy()) {
+     return false;

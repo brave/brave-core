@@ -177,12 +177,5 @@ extension Strings {
         "A text element that describes the translation feature and explains that hte user might have to download or configure languages on their device."
     )
 
-    public static let disableTranslateButtonTitle = NSLocalizedString(
-      "BraveTranslateOnboarding.disableTranslateButtonTitle",
-      bundle: .module,
-      value: "Disable This Feature",
-      comment:
-        "A button that allows the user to disable the brave translate feature. When pressed, the page will not be automatically translated to the user's language."
-    )
   }
 }

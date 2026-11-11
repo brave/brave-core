@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/user_education/browser_user_education_service.cc b/chrome/browser/ui/views/user_education/browser_user_education_service.cc
-index 3568a071ff517522fd17da0f5b33a663b5194548..86354dde3e514892a9011bfa462aa98dcfb7a2fe 100644
+index a14d4dbd6dd2234ae350d7d9959078a5f8a51280..08264eccde6ebf0158fbc3e7261dd4e1735ce258 100644
 --- a/chrome/browser/ui/views/user_education/browser_user_education_service.cc
 +++ b/chrome/browser/ui/views/user_education/browser_user_education_service.cc
-@@ -364,6 +364,7 @@ void MaybeRegisterChromeFeaturePromos(
+@@ -477,6 +477,7 @@ void MaybeRegisterChromeFeaturePromos(
            feature_engagement::kIPHWebUiHelpBubbleTestFeature)) {
      return;
    }

@@ -14,21 +14,22 @@
 #include "base/functional/callback.h"
 #include "base/strings/strcat.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_account/endpoint_client/client.h"
-#include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "brave/components/brave_vpn/browser/v2/api/device_endpoints.h"
 #include "brave/components/brave_vpn/browser/v2/api/purchase_endpoints.h"
 #include "brave/components/brave_vpn/browser/v2/api/region_endpoints.h"
 #include "brave/components/brave_vpn/browser/v2/api/support_endpoints.h"
+#include "brave/components/endpoint_client/client.h"
+#include "brave/components/endpoint_client/with_headers.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/fetch_api.mojom.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
-using brave_account::endpoint_client::Client;
-using brave_account::endpoint_client::WithHeaders;
+using endpoint_client::Client;
+using endpoint_client::WithHeaders;
 
 namespace brave_vpn::v2 {
 
@@ -68,7 +69,10 @@ const net::NetworkTrafficAnnotationTag kTrafficAnnotation =
     )");
 
 // Builds a request with the traffic annotation and retry policy common to all
-// Brave VPN endpoints.
+// Brave VPN endpoints. Relies on endpoint_client's default kError redirect
+// mode: following redirects could send requests carrying VPN credentials or
+// subscriber data to an unintended host. Guardian has confirmed their
+// endpoints don't use redirects.
 template <typename Request>
 Request MakeRequest() {
   Request request;
@@ -141,7 +145,7 @@ void BraveVpnApiClient::GetSubscriberCredential(
   request.body.bundle_id = bundle_id;
 
   Client<endpoints::GetSubscriberCredential>::Send(
-      url_loader_factory_, std::move(request),
+      *url_loader_factory_, std::move(request),
       base::BindOnce(&BraveVpnApiClient::OnGetSubscriberCredentialResponse,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -177,7 +181,7 @@ void BraveVpnApiClient::GetSubscriberCredentialV12(
                             environment);
 
   Client<endpoints::GetSubscriberCredentialV12>::Send(
-      url_loader_factory_, std::move(request),
+      *url_loader_factory_, std::move(request),
       base::BindOnce(&BraveVpnApiClient::OnGetSubscriberCredentialResponse,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -195,7 +199,7 @@ void BraveVpnApiClient::VerifyPurchaseToken(
   request.body.bundle_id = bundle_id;
 
   Client<endpoints::VerifyPurchaseToken>::Send(
-      url_loader_factory_, std::move(request),
+      *url_loader_factory_, std::move(request),
       base::BindOnce(&BraveVpnApiClient::OnVerifyPurchaseTokenResponse,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -232,7 +236,7 @@ void BraveVpnApiClient::CreateSupportTicket(
   request.body.timezone = timezone;
 
   Client<endpoints::CreateSupportTicket>::Send(
-      url_loader_factory_, std::move(request),
+      *url_loader_factory_, std::move(request),
       base::BindOnce(&BraveVpnApiClient::OnRawJsonResponse,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -240,11 +244,12 @@ void BraveVpnApiClient::CreateSupportTicket(
 void BraveVpnApiClient::GetServerRegions(RawJsonCallback callback,
                                          const std::string& region_precision) {
   auto request = MakeRequest<GetServerRegions::Request>();
+  request.max_body_size = std::nullopt;
   request.url_replacements.SetPath(
       base::StrCat({GetServerRegions::URL().path(), "/", region_precision}));
 
   Client<endpoints::GetServerRegions>::Send(
-      url_loader_factory_, std::move(request),
+      *url_loader_factory_, std::move(request),
       base::BindOnce(&BraveVpnApiClient::OnRawJsonResponse,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -252,7 +257,7 @@ void BraveVpnApiClient::GetServerRegions(RawJsonCallback callback,
 void BraveVpnApiClient::GetTimezonesForRegions(RawJsonCallback callback) {
   auto request = MakeRequest<GetTimezonesForRegions::Request>();
   Client<endpoints::GetTimezonesForRegions>::Send(
-      url_loader_factory_, std::move(request),
+      *url_loader_factory_, std::move(request),
       base::BindOnce(&BraveVpnApiClient::OnRawJsonResponse,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -266,7 +271,7 @@ void BraveVpnApiClient::GetHostnamesForRegion(
   request.body.region_precision = region_precision;
 
   Client<endpoints::GetHostnamesForRegion>::Send(
-      url_loader_factory_, std::move(request),
+      *url_loader_factory_, std::move(request),
       base::BindOnce(&BraveVpnApiClient::OnRawJsonResponse,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -291,7 +296,7 @@ void BraveVpnApiClient::GetProfileCredentials(
   request.url_replacements.SetHost(hostname);
 
   Client<endpoints::GetProfileCredentials>::Send(
-      url_loader_factory_, std::move(request),
+      *url_loader_factory_, std::move(request),
       base::BindOnce(&BraveVpnApiClient::OnRawJsonResponse,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -308,7 +313,7 @@ void BraveVpnApiClient::VerifyCredentials(RawJsonCallback callback,
                     endpoints::kDeviceApiVerifyCredentialsSuffix}));
 
   Client<endpoints::VerifyCredentials>::Send(
-      url_loader_factory_, std::move(request),
+      *url_loader_factory_, std::move(request),
       base::BindOnce(&BraveVpnApiClient::OnRawJsonResponse,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -328,7 +333,7 @@ void BraveVpnApiClient::InvalidateCredentials(
                     endpoints::kDeviceApiInvalidateCredentialsSuffix}));
 
   Client<endpoints::InvalidateCredentials>::Send(
-      url_loader_factory_, std::move(request),
+      *url_loader_factory_, std::move(request),
       base::BindOnce(&BraveVpnApiClient::OnRawJsonResponse,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -347,7 +352,7 @@ void BraveVpnApiClient::GetAvailableMultihopExitRegions(
        endpoints::kDeviceApiConfigMultihopSuffix}));
 
   Client<endpoints::GetAvailableMultihopExitRegions>::Send(
-      url_loader_factory_, std::move(request),
+      *url_loader_factory_, std::move(request),
       base::BindOnce(&BraveVpnApiClient::OnRawJsonResponse,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -389,7 +394,7 @@ void BraveVpnApiClient::DoSetMultihopExitRegion(
                     endpoints::kDeviceApiConfigMultihopSuffix}));
 
   Client<endpoints::SetMultihopExitRegion>::Send(
-      url_loader_factory_, std::move(request),
+      *url_loader_factory_, std::move(request),
       base::BindOnce(&BraveVpnApiClient::OnRawJsonResponse,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }

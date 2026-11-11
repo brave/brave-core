@@ -12,6 +12,7 @@
 #include "brave/components/playlist/content/browser/playlist_tab_helper.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "components/tabs/public/tab_interface.h"
 
 namespace playlist {
 
@@ -77,7 +78,8 @@ PlaylistActiveTabTracker::GetPlaylistTabHelperForActiveWebContents() {
     return nullptr;
   }
 
-  return playlist::PlaylistTabHelper::FromWebContents(active_web_contents);
+  return playlist::PlaylistTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(active_web_contents));
 }
 
 bool PlaylistActiveTabTracker::ShouldShowAddMediaFromPageUI() {

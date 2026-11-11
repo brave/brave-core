@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_INTERNALS_ADS_INTERNALS_VERBOSE_MODE_FEATURE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_INTERNALS_ADS_INTERNALS_VERBOSE_MODE_FEATURE_H_
 
-#include "base/feature_list.h"
+#include "base/feature.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));

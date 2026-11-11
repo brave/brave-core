@@ -6,7 +6,6 @@
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 
 #include <string_view>
-#include <utility>
 
 #include "base/base64.h"
 #include "base/check_op.h"
@@ -26,7 +25,7 @@
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "components/grit/brave_components_resources.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "url/gurl.h"
 
@@ -51,8 +50,7 @@ std::string WrapStylesheetWithCSP(const std::string& stylesheet,
     >)html";
 
   const auto make_style_data = [](std::string_view id, std::string_view data) {
-    const std::string& hash = crypto::SHA256HashString(data);
-    const std::string& sha256 = base::Base64Encode(base::as_byte_span(hash));
+    const std::string sha256 = base::Base64Encode(crypto::hash::Sha256(data));
 
     return base::StrCat({"<script type=\"brave-style-data\" id=\"", id,
                          "\" integrity=\"", sha256, "\">", data, "</script>"});

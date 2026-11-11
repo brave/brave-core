@@ -11,7 +11,7 @@ substitutions:
       function_name: PermissionPromptBubbleBaseView::CreatePermissionButtons
       code: |-
         BrowserWindowInterface* const brave_browser = GetBrowser();
-        AddAdditionalWidevineViewControlsIfNeeded(this, delegate_->Requests());
+        AddAdditionalPermissionViewControlsIfNeeded(this, delegate_->Requests());
         auto* permission_lifetime_view =
             AddPermissionLifetimeComboboxIfNeeded(this, delegate_.get());
         AddFootnoteViewIfNeeded(this, delegate_->Requests(), brave_browser);

@@ -15,11 +15,15 @@ for a file that a step reads from or writes to: a module hands one to
 `api.step(...)`, the engine renders it into real command-line arguments just
 before the step runs, and (for outputs) reads the data back afterwards. See the
 "Getting data back from a step" section of README.md.
+
+`RecipeScriptApi`, the `api` passed to a recipe's `RunSteps`, lives here too;
+a recipe subclasses it to declare its `DEPS` as a dataclass.
 """
 
 from __future__ import annotations
 
 from collections.abc import Callable
+from dataclasses import dataclass
 import functools
 from pathlib import Path
 from typing import Any
@@ -32,7 +36,7 @@ class ModuleInjectionSite:
     """Namespace holding a module's resolved DEPS (and the module itself).
 
     The engine populates one per module instance: each entry in the module's
-    `DEPS` becomes an attribute named after that dependency module. Attributes
+    `DEPS` becomes an attribute named after its local name. Attributes
     are set dynamically by the engine, so the class declares no members itself.
     """
 
@@ -41,7 +45,8 @@ class ModuleInjectionSite:
         # not declared in DEPS. (Also tells static analysis that attributes are
         # dynamic, so accessing an injected dep is not flagged as no-member.)
         raise AttributeError(
-            f'{name!r} is not a declared dependency (add it to DEPS?)')
+            f'{name!r} is not a declared dependency (add it to DEPS?)'
+        )
 
 
 class Placeholder:
@@ -74,8 +79,9 @@ class Placeholder:
 
     def __init__(self, name: str | None = None) -> None:
         if name is not None and not isinstance(name, str):
-            raise ValueError('Expected a string name for a placeholder, but '
-                             f'got {name!r}')
+            raise ValueError(
+                f'Expected a string name for a placeholder, but got {name!r}'
+            )
         self.name = name
         # (module name, method name); filled in by `returns_placeholder`.
         self.namespaces: tuple[str, str] | None = None
@@ -107,8 +113,7 @@ class Placeholder:
         return f'{module}.{method}[{self.name}]'
 
     def __repr__(self) -> str:
-        namespaced = ('<unnamespaced>'
-                      if self.namespaces is None else self.label)
+        namespaced = '<unnamespaced>' if self.namespaces is None else self.label
         return f'{type(self).__name__}({namespaced})'
 
 
@@ -137,17 +142,21 @@ class OutputPlaceholder(Placeholder):
         """
 
 
-def _returns_placeholder(func: Callable[..., Placeholder],
-                         alternate_name: str | None = None):
+def _returns_placeholder(
+    func: Callable[..., Placeholder], alternate_name: str | None = None
+):
 
     @functools.wraps(func)
     def inner(self, *args, **kwargs):
         placeholder = func(self, *args, **kwargs)
         assert isinstance(placeholder, Placeholder), (
             f'{func.__name__} is decorated with returns_placeholder but '
-            f'returned {placeholder!r}')
-        placeholder.namespaces = (self._module_name, alternate_name
-                                  or func.__name__)
+            f'returned {placeholder!r}'
+        )
+        placeholder.namespaces = (
+            self._module_name,
+            alternate_name or func.__name__,
+        )
         return placeholder
 
     return inner
@@ -166,8 +175,9 @@ def returns_placeholder(func_or_name):
             raise ValueError('returns_placeholder needs a non-empty name')
         return lambda func: _returns_placeholder(func, func_or_name)
     if not callable(func_or_name):
-        raise ValueError('Expected either a function or a string; got '
-                         f'{func_or_name!r}')
+        raise ValueError(
+            f'Expected either a function or a string; got {func_or_name!r}'
+        )
     return _returns_placeholder(func_or_name)
 
 
@@ -182,10 +192,6 @@ class RecipeApi:
         # The `path` module derives the named job paths from it; most modules
         # ignore it. Defaults to `.` until the engine overrides it.
         self._workspace: Path = Path()
-
-        # brave-core ref the checkout modules clone, seeded by the engine.
-        # `brave_core_checkout` uses it; defaults to `master` until overridden.
-        self._brave_core_ref: str = 'master'
 
         # The run's stack of open steps, seeded by the engine. `step` pushes
         # each step onto it and `futures` registers spawned greenlets against
@@ -228,10 +234,10 @@ class RecipeApi:
         """Hook run once after DEPS are injected. Override for setup."""
 
     def resource(self, *pieces: str) -> config_types.Path:
-        """Path to a file under this module's `resources/` directory.
-        """
+        """Path to a file under this module's `resources/` directory."""
         base = config_types.ResolvedBasePath.for_recipe_module(
-            self._test is not None, self._module_name, str(self._module_dir))
+            self._test is not None, self._module_name, str(self._module_dir)
+        )
         return config_types.Path(base, 'resources', *pieces)
 
     # -- Configs (see the "Configs" section of README.md) ---------------------
@@ -245,10 +251,12 @@ class RecipeApi:
         """
         return {}
 
-    def make_config(self,
-                    config_name: str | None = None,
-                    optional: bool = False,
-                    **CONFIG_VARS):
+    def make_config(
+        self,
+        config_name: str | None = None,
+        optional: bool = False,
+        **CONFIG_VARS,
+    ):
         """Return a fresh config blob for this module (without storing it)."""
         return self.make_config_params(config_name, optional, **CONFIG_VARS)[0]
 
@@ -265,14 +273,13 @@ class RecipeApi:
             if optional:
                 return None
             raise KeyError(
-                '%s is not the name of a configuration for module %s: %s' %
-                (config_name, self._module_name, sorted(
-                    ctx.CONFIG_ITEMS))) from None
+                '%s is not the name of a configuration for module %s: %s'
+                % (config_name, self._module_name, sorted(ctx.CONFIG_ITEMS))
+            ) from None
 
-    def make_config_params(self,
-                           config_name: str | None,
-                           optional: bool = False,
-                           **CONFIG_VARS):
+    def make_config_params(
+        self, config_name: str | None, optional: bool = False, **CONFIG_VARS
+    ):
         """Return `(config_blob, params)` for this module.
 
         `params` are merged from, in increasing precedence:
@@ -302,20 +309,66 @@ class RecipeApi:
             return base, params
         return itm(base), params
 
-    def set_config(self,
-                   config_name: str | None = None,
-                   optional: bool = False,
-                   **CONFIG_VARS) -> None:
+    def set_config(
+        self,
+        config_name: str | None = None,
+        optional: bool = False,
+        **CONFIG_VARS,
+    ) -> None:
         """Set `self.c` to the named configuration for this module."""
-        config, _ = self.make_config_params(config_name, optional,
-                                            **CONFIG_VARS)
+        config, _ = self.make_config_params(
+            config_name, optional, **CONFIG_VARS
+        )
         if config:
             self.c = config
 
-    def apply_config(self,
-                     config_name: str,
-                     config_object=None,
-                     optional: bool = False) -> None:
+    def apply_config(
+        self, config_name: str, config_object=None, optional: bool = False
+    ) -> None:
         """Apply a named config item on top of an existing blob (`self.c`)."""
         itm = self._get_config_item(config_name)
         itm(config_object or self.c, optional=optional)
+
+
+@dataclass
+class RecipeScriptApi:
+    """The `api` object passed to a recipe's `RunSteps`.
+
+    Carries the recipe's top-level `DEPS`: each one is attached as an attribute
+    named after its local name (e.g. `api.chromium_checkout`). A recipe may
+    declare `DEPS` as a `@dataclass` subclass of this class, whose fields name
+    the modules it uses, and the engine instantiates that subclass as `api`:
+
+        @dataclass
+        class DEPS(RecipeScriptApi):
+            step: step.API
+
+        def RunSteps(api: DEPS): ...
+    """
+
+    # Simulation context, or None in production (see `RecipeApi._test`; the
+    # same `None`-means-production convention).
+    _test: Any
+
+    # This recipe's `/`-separated id (e.g. `gerrit/refresh_mirrors`). Used to
+    # namespace `resource()`'s test-mode token.
+    _recipe_name: str
+
+    # This recipe's own `<name>.resources` directory. `resource()` derives real
+    # paths from it.
+    _resources_dir: Path
+
+    def resource(self, *pieces: str) -> config_types.Path:
+        """Path to a file under this recipe's `<name>.resources/` directory."""
+        base = config_types.ResolvedBasePath.for_recipe_script_resources(
+            self._test is not None, self._recipe_name, str(self._resources_dir)
+        )
+        return config_types.Path(base, *pieces)
+
+    def __getattr__(self, name: str):
+        # DEPS are injected by the engine; a missing one means it was not
+        # declared in the recipe's DEPS. (Also tells static analysis that
+        # attributes are dynamic, so accessing a dep is not flagged no-member.)
+        raise AttributeError(
+            f'{name!r} is not a declared dependency (add it to DEPS?)'
+        )

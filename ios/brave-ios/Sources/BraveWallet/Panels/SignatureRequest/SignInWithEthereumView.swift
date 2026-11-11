@@ -12,7 +12,7 @@ import SwiftUI
 struct SignInWithEthereumView: View {
 
   let account: BraveWallet.AccountInfo
-  let originInfo: BraveWallet.OriginInfo
+  let dappOriginInfo: BraveWallet.DappOriginInfo
   let message: BraveWallet.SIWEMessage
   var action: (_ approved: Bool) -> Void
 
@@ -59,9 +59,9 @@ struct SignInWithEthereumView: View {
 
   private var faviconAndOrigin: some View {
     VStack(spacing: 8) {
-      OriginInfoFavicon(originInfo: originInfo)
-      Text(verbatim: originInfo.eTldPlusOne)
-      Text(originInfo: originInfo)
+      OriginInfoFavicon(originInfo: dappOriginInfo)
+      Text(verbatim: dappOriginInfo.eTldPlusOne)
+      Text(dappOriginInfo: dappOriginInfo)
         .font(.caption)
         .foregroundColor(Color(braveSystemName: .textPrimary))
         .multilineTextAlignment(.center)
@@ -78,14 +78,14 @@ struct SignInWithEthereumView: View {
       Text(
         String.localizedStringWithFormat(
           Strings.Wallet.signInWithBraveWalletMessage,
-          originInfo.eTldPlusOne,
-          originInfo.eTldPlusOne
+          dappOriginInfo.eTldPlusOne,
+          dappOriginInfo.eTldPlusOne
         )
       )
 
       NavigationLink(
         destination: SignInWithEthereumDetailsView(
-          originInfo: originInfo,
+          dappOriginInfo: dappOriginInfo,
           message: message
         )
       ) {
@@ -161,7 +161,7 @@ struct SignInWithEthereumView: View {
 /// The view pushed when user taps to view request details.
 private struct SignInWithEthereumDetailsView: View {
 
-  let originInfo: BraveWallet.OriginInfo
+  let dappOriginInfo: BraveWallet.DappOriginInfo
   let message: BraveWallet.SIWEMessage
 
   var body: some View {
@@ -169,7 +169,10 @@ private struct SignInWithEthereumDetailsView: View {
       LazyVStack {
         LazyVStack {
           Group {  // Max view count on `LazyVStack`
-            detailRow(title: Strings.Wallet.siweOriginLabel, value: Text(originInfo: originInfo))
+            detailRow(
+              title: Strings.Wallet.siweOriginLabel,
+              value: Text(dappOriginInfo: dappOriginInfo)
+            )
             Divider()
             detailRow(
               title: Strings.Wallet.siweAddressLabel,

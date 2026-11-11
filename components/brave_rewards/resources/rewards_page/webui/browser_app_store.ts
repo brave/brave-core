@@ -231,7 +231,9 @@ export function createAppStore(): AppStore {
           shouldAllowSubdivisionTargeting:
             settings.shouldAllowSubdivisionTargeting,
           currentSubdivision: settings.currentSubdivision,
-          availableSubdivisions: settings.availableSubdivisions,
+          availableSubdivisions: settings.availableSubdivisions.toSorted(
+            (a, b) => a.name.localeCompare(b.name),
+          ),
           autoDetectedSubdivision: settings.autoDetectedSubdivision,
         },
       })

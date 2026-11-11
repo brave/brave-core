@@ -19,7 +19,6 @@
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/components/brave_account/brave_account_encryption.h"
 #include "brave/components/brave_account/brave_account_service.h"
-#include "brave/components/brave_account/endpoint_client/test_support.h"
 #include "brave/components/brave_account/endpoints/auth_validate.h"
 #include "brave/components/brave_account/endpoints/login_finalize.h"
 #include "brave/components/brave_account/endpoints/login_init.h"
@@ -31,13 +30,12 @@
 #include "brave/components/email_aliases/email_aliases_service.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/email_aliases/pref_names.h"
+#include "brave/components/endpoint_client/test_support.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_browsertest_util.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -76,7 +74,7 @@ void MockLoginResponses(
   using brave_account::endpoints::LoginInit;
   using brave_account::endpoints::ServiceToken;
 
-  brave_account::endpoint_client::MockResponseFor<LoginInit>(
+  endpoint_client::MockResponseFor<LoginInit>(
       test_url_loader_factory,
       {.net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
          LoginInit::Response::SuccessBody body;
@@ -85,7 +83,7 @@ void MockLoginResponses(
          return body;
        }()});
 
-  brave_account::endpoint_client::MockResponseFor<LoginFinalize>(
+  endpoint_client::MockResponseFor<LoginFinalize>(
       test_url_loader_factory,
       {.net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
          LoginFinalize::Response::SuccessBody body;
@@ -94,7 +92,7 @@ void MockLoginResponses(
          return body;
        }()});
 
-  brave_account::endpoint_client::MockResponseFor<ServiceToken>(
+  endpoint_client::MockResponseFor<ServiceToken>(
       test_url_loader_factory,
       {.net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
          ServiceToken::Response::SuccessBody body;
@@ -202,8 +200,7 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
         base::expected<brave_account::mojom::LoginStep1ResultPtr,
                        brave_account::mojom::LoginErrorPtr>>
         login_step1_future;
-    authentication_->LoginStep1(brave_account::mojom::Service::kEmailAliases,
-                                kSuccessEmail, "serialized_ke1",
+    authentication_->LoginStep1(kSuccessEmail, "serialized_ke1",
                                 login_step1_future.GetCallback());
     const auto login_step1_result = login_step1_future.Take();
     ASSERT_TRUE(login_step1_result.has_value());
@@ -256,7 +253,7 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
 
   content::WebContents* Navigate(const GURL& url) {
     ui_test_utils::NavigateToURLWithDisposition(
-        browser(), url, WindowOpenDisposition::CURRENT_TAB,
+        browser(), url, WindowOpenDisposition::kCurrentTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     return ActiveWebContents();
   }
@@ -481,8 +478,7 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorized) {
   InjectHelpers(ActiveWebContents());
 
   EmailAliasesController::DisableAutoCloseBubbleForTesting(true);
-  auto* email_aliases_controller =
-      browser()->GetFeatures().email_aliases_controller();
+  auto* email_aliases_controller = EmailAliasesController::From(browser());
 
   EXPECT_EQ("", GetText("#type-email"));
 
@@ -516,8 +512,7 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedManage) {
   waiter.StartWatchingNewWebContents();
 
   EmailAliasesController::DisableAutoCloseBubbleForTesting(true);
-  auto* email_aliases_controller =
-      browser()->GetFeatures().email_aliases_controller();
+  auto* email_aliases_controller = EmailAliasesController::From(browser());
 
   ContextMenuWaiter menu_waiter(IDC_NEW_EMAIL_ALIAS);
   RunContextMenuOn("type-email");
@@ -543,8 +538,7 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedCancel) {
   InjectHelpers(ActiveWebContents());
 
   EmailAliasesController::DisableAutoCloseBubbleForTesting(true);
-  auto* email_aliases_controller =
-      browser()->GetFeatures().email_aliases_controller();
+  auto* email_aliases_controller = EmailAliasesController::From(browser());
 
   ContextMenuWaiter menu_waiter(IDC_NEW_EMAIL_ALIAS);
   RunContextMenuOn("type-email");

@@ -10,7 +10,7 @@ import { mockOriginInfo, mockUniswapOriginInfo } from './mock-origin-info'
 import { mockEthAccount } from './mock-wallet-accounts'
 
 export const mockSignMessageRequest: BraveWallet.SignMessageRequest = {
-  originInfo: mockOriginInfo,
+  dappOriginInfo: mockOriginInfo,
   id: -1,
   accountId: mockEthAccount.accountId,
   signData: {
@@ -74,30 +74,16 @@ export const mockSignMessageError: BraveWallet.SignMessageError = {
   localizedErrMsg: 'This is an error message, unable to sign.',
   type: 1,
   id: '1',
-  originInfo: mockOriginInfo,
+  dappOriginInfo: mockOriginInfo,
 }
 
 export const mockAddChainRequest = {
-  originInfo: mockUniswapOriginInfo,
+  dappOriginInfo: mockUniswapOriginInfo,
   networkInfo: mockBNBChainNetwork,
 }
 
-export const mockGetEncryptionPublicKeyRequest: //
-BraveWallet.GetEncryptionPublicKeyRequest = {
+export const mockSwitchChainRequest: BraveWallet.SwitchChainRequest = {
   requestId: '',
-  originInfo: mockOriginInfo,
-  accountId: mockEthAccount.accountId,
-}
-
-export const mockDecryptRequest = {
-  requestId: '',
-  originInfo: mockOriginInfo,
-  accountId: mockEthAccount.accountId,
-  unsafeMessage: '',
-}
-
-export const mockSwitchChainRequest = {
-  requestId: '',
-  originInfo: mockUniswapOriginInfo,
+  dappOriginInfo: mockUniswapOriginInfo,
   chainId: BraveWallet.BNB_SMART_CHAIN_MAINNET_CHAIN_ID,
 }

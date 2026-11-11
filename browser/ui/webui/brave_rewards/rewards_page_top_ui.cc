@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
@@ -17,9 +18,9 @@
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "content/public/common/url_constants.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
@@ -62,11 +63,8 @@ class RewardsPageBubbleDelegate : public RewardsPageHandler::BubbleDelegate {
     }
     if (auto* browser = ProfileBrowserCollection::GetForProfile(profile_.get())
                             ->GetLastActiveBrowser()) {
-      if (auto* contents =
-              browser->GetTabStripModel()->GetActiveWebContents()) {
-        if (auto* tab_helper = RewardsTabHelper::FromWebContents(contents)) {
-          return tab_helper->GetPublisherIdForTab();
-        }
+      if (auto* tab = browser->GetTabStripModel()->GetActiveTab()) {
+        return CHECK_DEREF(RewardsTabHelper::From(tab)).GetPublisherIdForTab();
       }
     }
     return "";

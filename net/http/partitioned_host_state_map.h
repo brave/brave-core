@@ -14,7 +14,7 @@
 #include "base/auto_reset.h"
 #include "base/check.h"
 #include "base/containers/span.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 #include "net/base/net_export.h"
 
 namespace net {
@@ -22,7 +22,7 @@ namespace net {
 // Implements partitioning support for structures in TransportSecurityState.
 class NET_EXPORT PartitionedHostStateMapBase {
  public:
-  using HashedHost = std::array<uint8_t, crypto::kSHA256Length>;
+  using HashedHost = std::array<uint8_t, crypto::hash::kSha256Size>;
 
   PartitionedHostStateMapBase();
   ~PartitionedHostStateMapBase();
@@ -114,9 +114,9 @@ class NET_EXPORT PartitionedHostStateMap : public PartitionedHostStateMapBase {
   // Removes all items with similar first 16 bytes of |k|, effectively ignoring
   // partition hash part.
   bool DeleteDataInAllPartitions(const key_type& k) {
-    static_assert(crypto::kSHA256Length == sizeof(key_type));
+    static_assert(crypto::hash::kSha256Size == sizeof(key_type));
     auto equal_range_pair = std::ranges::equal_range(
-        map_, base::span(k).template first<crypto::kSHA256Length / 2>(),
+        map_, base::span(k).template first<crypto::hash::kSha256Size / 2>(),
         [](const auto& v1, const auto& v2) {
           // Mimic std::less by calling memcmp on base::span arrays.
           DCHECK(v1.size() == v2.size());
@@ -124,7 +124,7 @@ class NET_EXPORT PartitionedHostStateMap : public PartitionedHostStateMapBase {
         },
         [](const value_type& v) {
           return base::span(v.first)
-              .template first<crypto::kSHA256Length / 2>();
+              .template first<crypto::hash::kSha256Size / 2>();
         });
 
     if (equal_range_pair.begin() == equal_range_pair.end()) {

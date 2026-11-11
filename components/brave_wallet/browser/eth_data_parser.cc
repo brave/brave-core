@@ -10,10 +10,9 @@
 #include <utility>
 
 #include "base/check_op.h"
-#include "base/strings/strcat.h"
+#include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/eth_abi_decoder.h"
-#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -26,6 +25,7 @@ constexpr char kERC20TransferSelector[] = "0xa9059cbb";
 constexpr char kERC20ApproveSelector[] = "0x095ea7b3";
 constexpr char kERC721TransferFromSelector[] = "0x23b872dd";
 constexpr char kERC721SafeTransferFromSelector[] = "0x42842e0e";
+constexpr char kERC721SetApprovalForAllSelector[] = "0xa22cb465";
 constexpr char kERC1155SafeTransferFromSelector[] = "0xf242432a";
 constexpr char kFilForwarderTransferSelector[] =
     "0xd948d468";  // forward(bytes)
@@ -643,6 +643,23 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
         std::vector<std::string>{decoded.value()[0].GetString(),
                                  decoded.value()[1].GetString(),
                                  decoded.value()[2].GetString()},
+        nullptr);
+  } else if (selector == kERC721SetApprovalForAllSelector) {
+    auto type = eth_abi::Tuple()
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Bool())
+                    .build();
+    auto decoded = ABIDecode(type, calldata);
+    if (!decoded) {
+      return std::nullopt;
+    }
+
+    return std::make_tuple(
+        mojom::TransactionType::ERC721SetApprovalForAll,
+        std::vector<std::string>{"address",  // operator
+                                 "bool"},    // approved
+        std::vector<std::string>{decoded.value()[0].GetString(),
+                                 decoded.value()[1].GetBool() ? "0x1" : "0x0"},
         nullptr);
   } else if (selector == kSellEthForTokenToUniswapV3Selector) {
     // Function:
@@ -1455,6 +1472,34 @@ std::optional<std::string> GetFinalRecipient(
   }
 
   return base_to;
+}
+
+bool IsNonPayableTokenTransactionType(mojom::TransactionType tx_type) {
+  switch (tx_type) {
+    case mojom::TransactionType::ERC20Transfer:
+    case mojom::TransactionType::ERC20Approve:
+    case mojom::TransactionType::ERC721TransferFrom:
+    case mojom::TransactionType::ERC721SafeTransferFrom:
+    case mojom::TransactionType::ERC721SetApprovalForAll:
+    case mojom::TransactionType::ERC1155SafeTransferFrom:
+      return true;
+    case mojom::TransactionType::ETHSend:
+    case mojom::TransactionType::ETHSwap:
+    case mojom::TransactionType::ETHFilForwarderTransfer:
+    case mojom::TransactionType::Other:
+    case mojom::TransactionType::SolanaSystemTransfer:
+    case mojom::TransactionType::SolanaSPLTokenTransfer:
+    case mojom::TransactionType::
+        SolanaSPLTokenTransferWithAssociatedTokenAccountCreation:
+    case mojom::TransactionType::SolanaDappSignAndSendTransaction:
+    case mojom::TransactionType::SolanaDappSignTransaction:
+    case mojom::TransactionType::SolanaSwap:
+    case mojom::TransactionType::SolanaCompressedNftTransfer:
+    case mojom::TransactionType::CardanoSendLovelace:
+    case mojom::TransactionType::CardanoSendToken:
+      return false;
+  }
+  NOTREACHED();
 }
 
 }  // namespace brave_wallet

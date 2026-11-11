@@ -11,6 +11,7 @@
 #include "brave/browser/ui/views/toolbar/brave_browser_app_menu_button.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -24,6 +25,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
 #include "ui/base/ui_base_features.h"
+#include "ui/color/color_provider.h"
 #include "ui/views/controls/button/toggle_button.h"
 #include "ui/views/controls/menu/menu_item_view.h"
 #include "ui/views/controls/menu/menu_runner.h"
@@ -53,7 +55,8 @@ class BraveAppMenuBrowserTest : public InProcessBrowserTest {
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  void SetPurchasedUserForBraveVPN(Browser* browser, bool purchased) {
+  void SetPurchasedUserForBraveVPN(BrowserWindowInterface* browser,
+                                   bool purchased) {
     auto* service =
         brave_vpn::BraveVpnServiceFactory::GetForProfile(browser->GetProfile());
     ASSERT_TRUE(!!service);
@@ -86,21 +89,24 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, AppMenuButtonUpgradeAlertTest) {
   theme_service->SetBrowserColorScheme(
       ThemeService::BrowserColorScheme::kLight);
   EXPECT_EQ(brave_menu_button->GetHighlightColor(), std::nullopt);
+  // Severity colors are Nala primitives, picked by contrast with the toolbar.
+  const ui::ColorProvider* color_provider =
+      brave_menu_button->GetColorProvider();
   brave_menu_button->SetTypeAndSeverity(
       {AppMenuIconController::IconType::kUpgradeNotification,
        AppMenuIconController::Severity::kLow});
   EXPECT_EQ(brave_menu_button->GetHighlightColor(),
-            SkColorSetRGB(0x00, 0x46, 0x07));
+            color_provider->GetColor(nala::kColorPrimitiveGreen20));
   brave_menu_button->SetTypeAndSeverity(
       {AppMenuIconController::IconType::kUpgradeNotification,
        AppMenuIconController::Severity::kMedium});
   EXPECT_EQ(brave_menu_button->GetHighlightColor(),
-            SkColorSetRGB(0x4A, 0x39, 0x00));
+            color_provider->GetColor(nala::kColorPrimitiveYellow30));
   brave_menu_button->SetTypeAndSeverity(
       {AppMenuIconController::IconType::kUpgradeNotification,
        AppMenuIconController::Severity::kHigh});
   EXPECT_EQ(brave_menu_button->GetHighlightColor(),
-            SkColorSetRGB(0x7D, 0x00, 0x1A));
+            color_provider->GetColor(nala::kColorPrimitiveRed35));
 
   EXPECT_EQ(GetLayoutConstant(LayoutConstant::kToolbarButtonHeight),
             brave_menu_button->height());
@@ -111,7 +117,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, AppMenuButtonUpgradeAlertTest) {
 // Check toggle menu item has additional toggle button for purchased user.
 IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, PurchasedVPN) {
   SetPurchasedUserForBraveVPN(browser(), true);
-  menu_button()->ShowMenu(views::MenuRunner::NO_FLAGS);
+  menu_button()->ShowMenu();
   views::MenuItemView* menu_root = menu_button()->app_menu()->root_menu_item();
   auto* toggle_menu_item = menu_root->GetMenuItemByID(IDC_TOGGLE_BRAVE_VPN);
   ASSERT_TRUE(!!toggle_menu_item);
@@ -124,7 +130,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, PurchasedVPN) {
 // Check app menu has show vpn panel menu item for not purchased user.
 IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, NotPurchasedVPN) {
   SetPurchasedUserForBraveVPN(browser(), false);
-  menu_button()->ShowMenu(views::MenuRunner::NO_FLAGS);
+  menu_button()->ShowMenu();
   views::MenuItemView* menu_root = menu_button()->app_menu()->root_menu_item();
   EXPECT_TRUE(!!menu_root->GetMenuItemByID(IDC_SHOW_BRAVE_VPN_PANEL));
 }

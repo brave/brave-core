@@ -260,6 +260,34 @@ class BraveTreeTabStripCollectionDelegate
       std::optional<tab_groups::TabGroupId> new_group_id,
       const tabs::TabCollection::TypeEnumSet retain_collection_types);
 
+  // Helpers that manipulate the direct children of |parent| and notify
+  // observers of the change, as TabCollection doesn't notify by itself. The
+  // children are expected to be added/removed without being placed in the
+  // hierarchy in between, so these use the notifications for a detached node.
+  void AddTabAndNotify(tabs::TabCollection* parent,
+                       tabs::ScopedTab tab,
+                       size_t index) const;
+  void AddCollectionAndNotify(tabs::TabCollection* parent,
+                              std::unique_ptr<tabs::TabCollection> collection,
+                              size_t index) const;
+  tabs::ScopedTab RemoveTabAndNotify(tabs::TabCollection* parent,
+                                     tabs::TabInterface* tab) const;
+  std::unique_ptr<tabs::TabCollection> RemoveCollectionAndNotify(
+      tabs::TabCollection* parent,
+      tabs::TabCollection* collection) const;
+
+  // Moves a direct child of |src_parent| to |dst_parent|, which is an ancestor
+  // of |src_parent|, and notifies the changes as TabStripCollection does for
+  // moves: removal until |dst_parent|, and the move from |dst_parent| upwards.
+  void MoveTabToAncestorAndNotify(tabs::TabCollection* src_parent,
+                                  tabs::TabInterface* tab,
+                                  tabs::TabCollection* dst_parent,
+                                  size_t dst_index) const;
+  void MoveCollectionToAncestorAndNotify(tabs::TabCollection* src_parent,
+                                         tabs::TabCollection* collection,
+                                         tabs::TabCollection* dst_parent,
+                                         size_t dst_index) const;
+
   bool in_destruction_ = false;
   bool handling_pinned_state_inconsistency_ = false;
 

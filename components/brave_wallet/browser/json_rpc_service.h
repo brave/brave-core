@@ -243,7 +243,7 @@ class JsonRpcService : public mojom::JsonRpcService {
   void AddChain(mojom::NetworkInfoPtr chain,
                 AddChainCallback callback) override;
   std::string AddEthereumChainForOrigin(mojom::NetworkInfoPtr chain,
-                                        const url::Origin& origin);
+                                        const url::Origin& dapp_origin);
   void AddEthereumChainRequestCompleted(const std::string& chain_id,
                                         bool approved) override;
   void RemoveChain(const std::string& chain_id,
@@ -412,7 +412,7 @@ class JsonRpcService : public mojom::JsonRpcService {
   // return false when there is an error before processing request
   bool AddSwitchEthereumChainRequest(
       const std::string& chain_id,
-      const url::Origin& origin,
+      const url::Origin& dapp_origin,
       mojom::EthereumProvider::RequestCallback callback,
       base::Value id);
 

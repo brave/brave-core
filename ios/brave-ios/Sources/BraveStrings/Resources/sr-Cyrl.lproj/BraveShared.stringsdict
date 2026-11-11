@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>playlist.folderItemCountFormat</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@items@</string>
+		<key>items</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>few</key>
+			<string>Ставки: %lld</string>
+			<key>many</key>
+			<string>%lld items</string>
+			<key>one</key>
+			<string>%lld ставка</string>
+			<key>other</key>
+			<string>Ставки: %lld</string>
+			<key>two</key>
+			<string>%lld items</string>
+			<key>zero</key>
+			<string>%lld items</string>
+		</dict>
+	</dict>
+	<key>playlistFolders.subtitleItemCountFormat</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@items@</string>
+		<key>items</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>few</key>
+			<string>Ставки: %lld</string>
+			<key>many</key>
+			<string>%lld Items</string>
+			<key>one</key>
+			<string>%lld ставка</string>
+			<key>other</key>
+			<string>Ставки: %lld</string>
+			<key>two</key>
+			<string>%lld Items</string>
+			<key>zero</key>
+			<string>%lld Items</string>
+		</dict>
+	</dict>
+	<key>tabGrid.tabsCountFormat</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@tabs@</string>
+		<key>tabs</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>few</key>
+			<string>%lld картица</string>
+			<key>many</key>
+			<string>%lld Tabs</string>
+			<key>one</key>
+			<string>%lld картица</string>
+			<key>other</key>
+			<string>%lld картица</string>
+			<key>two</key>
+			<string>%lld Tabs</string>
+			<key>zero</key>
+			<string>%lld Tabs</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

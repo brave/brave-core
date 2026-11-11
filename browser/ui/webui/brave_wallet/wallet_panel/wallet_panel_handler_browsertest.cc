@@ -11,18 +11,16 @@
 #include "base/memory/raw_ptr.h"
 #include "base/test/run_until.h"
 #include "base/test/test_future.h"
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/permissions/test/permission_request_observer.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
@@ -115,10 +113,7 @@ class WalletPanelHandlerBrowserTest : public InProcessBrowserTest {
 
   // The origin the panel puts on screen for this tab.
   std::string GetDisplayedOriginSpec() {
-    return brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-               browser()->GetProfile())
-        ->GetActiveOriginSync()
-        ->origin_spec;
+    return main_frame()->GetLastCommittedOrigin().Serialize();
   }
 
   // RequestPermission, ConnectToSite and IsSolanaAccountConnected never touch
@@ -184,8 +179,8 @@ IN_PROC_BROWSER_TEST_F(WalletPanelHandlerBrowserTest,
   ASSERT_EQ(url::Origin::Create(main_frame_url_).Serialize(),
             GetDisplayedOriginSpec());
 
-  auto* tab_helper =
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents());
+  auto* tab_helper = brave_wallet::BraveWalletTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents()));
   ASSERT_TRUE(tab_helper);
   auto handler = CreateHandler();
 

@@ -31,8 +31,9 @@ using GetTextClassificationProbabilitiesCallback =
 // the in-memory cache, and written here on every append.
 class TextClassificationProbabilities final : public TableInterface {
  public:
-  // Saves one page visit's worth of probabilities, all sharing `created_at`
-  // so the original visit ordering can be reconstructed by `GetAll`.
+  // Saves one page visit's worth of probabilities, linking every row to the
+  // single page probability entry created at `created_at`, so the original
+  // visit ordering can be reconstructed by `Load`.
   void Save(const TextClassificationProbabilityMap& probabilities,
             base::Time created_at,
             ResultCallback callback);
@@ -42,7 +43,7 @@ class TextClassificationProbabilities final : public TableInterface {
 
   void DeleteAll(ResultCallback callback);
 
-  void GetAll(GetTextClassificationProbabilitiesCallback callback) const;
+  void Load(GetTextClassificationProbabilitiesCallback callback) const;
 
   // TableInterface:
   void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) override;

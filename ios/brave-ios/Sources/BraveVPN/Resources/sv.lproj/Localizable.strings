@@ -40,9 +40,6 @@
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "App-version";
 
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "Mobilleverantör";
-
 /* Text to tell user to not modify support info below email's body. */
 "vpn.contactFormDoNotEditText" = "Brave spårar inte dig och vet inte hur du använder vår app, så vi vet inte hur du har konfigurerat VPN. Dela gärna med dig av information om problemet du upplever så ska vi göra vårt bästa för att lösa det så fort vi kan.";
 
@@ -134,7 +131,7 @@
 "vpn.installTitle" = "Installera VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "Starta 7-dagars gratis provperiod";
+"vpn.learnMore" = "Starta 7 dagars gratis provperiod";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Förnyas varje månad";
@@ -227,7 +224,7 @@
 "vpn.serverTitle" = "%ld server";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Skydda varje app med Brave VPN. Skydda upp till 10 enheter med ett abonnemang.";
+"vpn.settingHeaderBody" = "Streama ditt innehåll på ditt sätt. Skydda alla appar på 10 enheter med 1 prenumeration.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Kontakta teknisk support";

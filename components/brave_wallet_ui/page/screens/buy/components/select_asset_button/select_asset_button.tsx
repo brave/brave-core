@@ -14,12 +14,6 @@ import {
 // Types
 import { MeldCryptoCurrency } from '../../../../../constants/types'
 
-// Utils
-import {
-  getAssetSymbol,
-  getMeldTokensCoinType,
-} from '../../../../../utils/meld_utils'
-
 // Components
 import {
   CreateNetworkIcon, //
@@ -51,13 +45,13 @@ export const SelectAssetButton = (props: SelectAssetButtonProps) => {
     selectedAsset?.chainId
       ? {
           chainId: selectedAsset.chainId,
-          coin: getMeldTokensCoinType(selectedAsset),
+          coin: selectedAsset.coin,
         }
       : skipToken,
   )
 
   // Computed
-  const assetSymbol = selectedAsset ? getAssetSymbol(selectedAsset) : ''
+  const assetSymbol = selectedAsset ? selectedAsset.symbol : ''
   const assetURL = selectedAsset?.symbolImageUrl ?? ''
 
   return (

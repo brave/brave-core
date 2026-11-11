@@ -19,10 +19,11 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/test/creative_new_tab_page_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/last_unidle_time_diagnostic_entry_util.h"
+#include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds.*
+// pnpm test brave_unit_tests --filter=BraveAds.*
 
 namespace brave_ads {
 
@@ -113,7 +114,7 @@ TEST_F(BraveAdsDiagnosticManagerTest, GetDiagnostics) {
             "storageEntries": [
               {
                 "name": "Schema version",
-                "value": "60"
+                "value": "61"
               },
               {
                 "name": "Last migration failure reason",
@@ -131,7 +132,7 @@ TEST_F(BraveAdsDiagnosticManagerTest, GetDiagnostics) {
               },
               {
                 "name": "Catalog next update",
-                "value": "Wednesday, November 18, 1970 at 2:34:56 PM (15093 days ago)"
+                "value": "Wednesday, November 18, 1970 at 12:34:56 PM (15093 days ago)"
               },
               {
                 "name": "Text classification resource",
@@ -197,6 +198,34 @@ TEST_F(BraveAdsDiagnosticManagerTest, GetDiagnostics) {
   base::MockCallback<GetDiagnosticsCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_diagnostics))));
   DiagnosticManager::GetInstance().GetDiagnostics(callback.Get());
+}
+
+TEST_F(BraveAdsDiagnosticManagerTest,
+       AllowCatalogPermissionWhenNotificationAdsAreDisabled) {
+  // Arrange
+  test::DisableNotificationAds();
+
+  // Act
+  base::test::TestFuture<std::optional<base::DictValue>> future;
+  DiagnosticManager::GetInstance().GetDiagnostics(future.GetCallback());
+  const std::optional<base::DictValue>& diagnostics = future.Get();
+  ASSERT_TRUE(diagnostics);
+
+  const base::ListValue* const permission_rules_entries =
+      diagnostics->FindList("permissionRulesEntries");
+  ASSERT_TRUE(permission_rules_entries);
+
+  bool found_catalog_permission_entry = false;
+  for (const base::Value& entry : *permission_rules_entries) {
+    const std::string* const name = entry.GetDict().FindString("name");
+    if (name && *name == "Catalog permission") {
+      found_catalog_permission_entry = true;
+
+      // Assert
+      EXPECT_EQ("true", *entry.GetDict().FindString("value"));
+    }
+  }
+  ASSERT_TRUE(found_catalog_permission_entry);
 }
 
 TEST_F(BraveAdsDiagnosticManagerTest, GetConditionMatchers) {

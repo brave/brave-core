@@ -5,7 +5,7 @@
 
 import config from '../lib/config.ts'
 import path from 'node:path'
-import util from '../lib/util.js'
+import util from '../lib/util.ts'
 
 const args = [
   path.join(config.srcDir, 'brave', 'third_party', 'wasm', 'update.py'),

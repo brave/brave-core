@@ -10,7 +10,7 @@ import SwiftUI
 
 public struct Action: Hashable, Identifiable, Sendable {
 
-  public enum HandlerResult {
+  public enum HandlerResult: Sendable {
     case none
     case updateAction(Action)
   }

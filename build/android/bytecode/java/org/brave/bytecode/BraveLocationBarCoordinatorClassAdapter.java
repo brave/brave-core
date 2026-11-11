@@ -20,8 +20,5 @@ public class BraveLocationBarCoordinatorClassAdapter extends BraveClassVisitor {
 
         deleteField(sBraveLocationBarCoordinator, "mLocationBarMediator");
         makeProtectedField(sLocationBarCoordinator, "mLocationBarMediator");
-
-        deleteField(sBraveLocationBarCoordinator, "mUrlBar");
-        makeProtectedField(sLocationBarCoordinator, "mUrlBar");
     }
 }

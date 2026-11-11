@@ -5,42 +5,40 @@
 
 package org.chromium.brave.browser.quick_search_engines.views;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.brave.browser.quick_search_engines.R;
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesCallback;
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesModel;
 import org.chromium.brave.browser.quick_search_engines.utils.QuickSearchEnginesUtil;
+import org.chromium.build.annotations.NullMarked;
 
 import java.util.List;
 
+@NullMarked
 public class QuickSearchEnginesViewAdapter
         extends RecyclerView.Adapter<QuickSearchEnginesViewHolder> {
     private final List<QuickSearchEnginesModel> mSearchEngines;
     private final QuickSearchEnginesCallback mQuickSearchEnginesCallback;
 
     public QuickSearchEnginesViewAdapter(
-            Context context,
-            List<QuickSearchEnginesModel> searchEngines,
-            QuickSearchEnginesCallback quickSearchEnginesCallback) {
+            final List<QuickSearchEnginesModel> searchEngines,
+            final QuickSearchEnginesCallback quickSearchEnginesCallback) {
         mSearchEngines = searchEngines;
         mQuickSearchEnginesCallback = quickSearchEnginesCallback;
     }
 
     @Override
-    public void onBindViewHolder(
-            @NonNull QuickSearchEnginesViewHolder quickSearchViewHolder, int position) {
+    public void onBindViewHolder(final QuickSearchEnginesViewHolder quickSearchViewHolder,
+                                 final int position) {
         QuickSearchEnginesModel quickSearchEnginesModel = mSearchEngines.get(position);
-        int adapterPosition = quickSearchViewHolder.getAdapterPosition();
         String keyword = quickSearchEnginesModel.getKeyword();
 
-        if (adapterPosition == 0
+        if (position == 0
                 && quickSearchEnginesModel.getType()
                         == QuickSearchEnginesModel.QuickSearchEnginesModelType.AI_ASSISTANT) {
             quickSearchViewHolder.mSearchEngineLogo.setImageResource(R.drawable.ic_leo_icon);
@@ -61,12 +59,13 @@ public class QuickSearchEnginesViewAdapter
         quickSearchViewHolder.mSearchEngineLogo.setOnClickListener(
                 v ->
                         mQuickSearchEnginesCallback.onSearchEngineClick(
-                                adapterPosition, quickSearchEnginesModel));
+                                quickSearchViewHolder.getBindingAdapterPosition(),
+                                quickSearchEnginesModel));
     }
 
-    @NonNull
     @Override
-    public QuickSearchEnginesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public QuickSearchEnginesViewHolder onCreateViewHolder(final ViewGroup parent,
+                                                           final int viewType) {
         View view =
                 LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.quick_search_engines_view_item, parent, false);
@@ -76,9 +75,5 @@ public class QuickSearchEnginesViewAdapter
     @Override
     public int getItemCount() {
         return mSearchEngines.size();
-    }
-
-    public List<QuickSearchEnginesModel> getSearchEngines() {
-        return mSearchEngines;
     }
 }

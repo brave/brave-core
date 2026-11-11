@@ -10,13 +10,10 @@
 #include "base/containers/flat_map.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/constants/url_constants.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/grit/components_resources.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/resource_path.h"
 #include "ui/base/webui/web_ui_util.h"
 
@@ -212,38 +209,7 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                {"editCardsTitle", IDS_EDIT_CARDS_TITLE},
                {"braveRewardsTitle", IDS_BRAVE_NEW_TAB_BRAVE_REWARDS_TITLE},
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-               // Private Tab - General
                {"learnMore", IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE},
-               {"done", IDS_BRAVE_PRIVATE_NEW_TAB_DONE},
-               {"headerLabel", IDS_BRAVE_PRIVATE_NEW_TAB_THIS_IS_A},
-
-               // Private Tab - Header Private Window
-               {"headerTitle", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW},
-               {"headerText", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC},
-               {"headerText1", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC1},
-               {"headerText2", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC2},
-               {"headerButton",
-                IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_BUTTON},
-
-               // Private Tab - Header Private Window with Tor
-               {"headerTorTitle", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR},
-               {"headerTorText",
-                IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR_DESC},
-
-               // Private Tab - Box for DDG
-               {"boxDdgButton", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_BUTTON},
-
-               // Private Tab - Box for Tor
-               {"boxTorLabel", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_LABEL},
-               {"boxTorLabel2", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_LABEL_2},
-               {"boxTorTitle", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TITLE},
-
-               // Private Tab - Private Window with Tor - Tor Box
-               {"boxTorText", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_1},
-
-               // Private Tab - Private Window - Tor Box
-               {"boxTorText2", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_2},
-               {"boxTorButton", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_BUTTON},
 #endif  // !BUILDFLAG(IS_ANDROID)
 
                // Rewards widget

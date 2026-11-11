@@ -11,38 +11,64 @@ test-only `mock_add_file`/`mock_add_directory`/`mock_copy_paths`/
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    context,
+    path,
+    platform,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['context', 'path', 'platform', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    context: context.API
+    path: path.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    platform: platform.TEST_API
+
+
+def RunSteps(api: DEPS):
     sample = api.path.chromium_src / 'chrome' / 'VERSION'
 
     # dirname/basename/split: a Path argument keeps dirname a Path; basename
     # is always a str regardless of the argument's type.
     assert api.path.dirname(sample) == api.path.chromium_src / 'chrome'
     assert api.path.basename(sample) == 'VERSION'
-    assert api.path.split(sample) == (api.path.chromium_src / 'chrome',
-                                      'VERSION')
+    assert api.path.split(sample) == (
+        api.path.chromium_src / 'chrome',
+        'VERSION',
+    )
 
     # Same, but for a plain string argument -- dirname then returns a str.
     sample_str = api.path.join(str(api.path.chromium_src), 'chrome', 'VERSION')
     assert api.path.dirname(sample_str) == api.path.join(
-        str(api.path.chromium_src), 'chrome')
+        str(api.path.chromium_src), 'chrome'
+    )
     assert api.path.basename(sample_str) == 'VERSION'
 
     # splitext strips only the last extension, on both a Path and a str.
     archive = api.path.out / 'archive.tar.gz'
     assert api.path.splitext(archive) == (api.path.out / 'archive.tar', '.gz')
     archive_str = api.path.join(str(api.path.out), 'archive.tar.gz')
-    assert api.path.splitext(archive_str) == (api.path.join(
-        str(api.path.out), 'archive.tar'), '.gz')
+    assert api.path.splitext(archive_str) == (
+        api.path.join(str(api.path.out), 'archive.tar'),
+        '.gz',
+    )
 
     # normpath collapses '..'/'.' lexically.
     messy = api.path.join(str(api.path.workspace), 'a', '..', 'b')
-    assert api.path.normpath(messy) == api.path.join(str(api.path.workspace),
-                                                     'b')
+    assert api.path.normpath(messy) == api.path.join(
+        str(api.path.workspace), 'b'
+    )
 
     # abspath/realpath expand '~' and fully resolve, exactly like abs().
     assert api.path.abspath('~/x') == str(api.path.home() / 'x')
@@ -87,11 +113,12 @@ def RunSteps(api):
 
     api.path.mock_remove_paths(scratch)
     api.step('scratch removed', ['echo', str(api.path.is_file(scratch))])
-    api.step('copy survives removal',
-             ['echo', str(api.path.is_file(copy_dest))])
+    api.step(
+        'copy survives removal', ['echo', str(api.path.is_file(copy_dest))]
+    )
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     # Run under both simulated platforms: every assertion above is built
     # entirely from other `api.path.*` calls (never a hardcoded '/' or '\\'),
     # so it should hold either way -- the same proof of separator-independence
@@ -101,17 +128,27 @@ def GenTests(api):
         yield api.test(
             plat,
             api.platform.name(plat),
-            api.post_process(post_process.StepCommandContains, 'mkstemp',
-                             [f'[WORKSPACE]{sep}rc{sep}scratch_tmp_1']),
-            api.post_process(post_process.StepCommandContains,
-                             'scratch is file', ['True']),
-            api.post_process(post_process.StepCommandContains,
-                             'scratch dir is dir', ['True']),
-            api.post_process(post_process.StepCommandContains, 'copy is file',
-                             ['True']),
-            api.post_process(post_process.StepCommandContains,
-                             'scratch removed', ['False']),
-            api.post_process(post_process.StepCommandContains,
-                             'copy survives removal', ['True']),
+            api.post_process(
+                post_process.StepCommandContains,
+                'mkstemp',
+                [f'[WORKSPACE]{sep}rc{sep}scratch_tmp_1'],
+            ),
+            api.post_process(
+                post_process.StepCommandContains, 'scratch is file', ['True']
+            ),
+            api.post_process(
+                post_process.StepCommandContains, 'scratch dir is dir', ['True']
+            ),
+            api.post_process(
+                post_process.StepCommandContains, 'copy is file', ['True']
+            ),
+            api.post_process(
+                post_process.StepCommandContains, 'scratch removed', ['False']
+            ),
+            api.post_process(
+                post_process.StepCommandContains,
+                'copy survives removal',
+                ['True'],
+            ),
             api.post_process(post_process.StatusSuccess),
         )

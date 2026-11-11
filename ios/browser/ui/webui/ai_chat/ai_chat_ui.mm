@@ -79,6 +79,10 @@ AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
   source->AddBoolean(
       "isWorkspaceToolsEnabled",
       base::FeatureList::IsEnabled(ai_chat::features::kAIChatWorkspaceTools));
+  source->AddBoolean(
+      "isWorkspaceNativeDirectoriesEnabled",
+      base::FeatureList::IsEnabled(ai_chat::features::kAIChatWorkspaceTools) &&
+          ai_chat::features::kWorkspaceNativeDirectories.Get());
   // Brave client version, used to tag serialized conversations for sharing.
   source->AddString("braveVersion",
                     version_info::GetBraveVersionWithoutChromiumMajorVersion());
@@ -179,8 +183,7 @@ void AIChatUI::BindInterfaceParentUIFrame(
 void AIChatUI::BindInterfaceHistoryUIHandler(
     mojo::PendingReceiver<ai_chat::mojom::HistoryUIHandler> receiver) {
   history_ui_handler_ = std::make_unique<ai_chat::HistoryUIHandler>(
-      std::move(receiver), ios::HistoryServiceFactory::GetForProfile(
-                               profile_, ServiceAccessType::EXPLICIT_ACCESS));
+      std::move(receiver), ios::HistoryServiceFactory::GetForProfile(profile_));
   CHECK(history_ui_handler_);
 }
 

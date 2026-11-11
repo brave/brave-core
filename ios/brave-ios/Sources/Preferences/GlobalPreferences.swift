@@ -233,5 +233,11 @@ extension Preferences {
       key: "debug.user-agent-override",
       default: ""
     )
+    /// The number of minutes after which unused tabs are auto-closed, overriding the interval of
+    /// the selected auto close tabs setting.
+    public static let autocloseTabsMinutesOverride = Option<Int?>(
+      key: "debug.autoclose-tabs-minutes-override",
+      default: nil
+    )
   }
 }

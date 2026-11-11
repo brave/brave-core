@@ -5,6 +5,8 @@
 
 source_set("most_visited_sites") {
   sources = [
+    "features.h",
+    "features.mm",
     "most_visited_sites_bridge.h",
     "most_visited_sites_bridge_impl.h",
     "most_visited_sites_bridge_impl.mm",

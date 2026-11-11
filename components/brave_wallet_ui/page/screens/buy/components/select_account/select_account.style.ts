@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import { color, font } from '@brave/leo/tokens/css/variables'
+import { color, font } from '@brave/nala/tokens/css/variables'
 
 export const AccountName = styled.span`
   font: ${font.default.semibold};

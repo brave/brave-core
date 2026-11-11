@@ -77,7 +77,7 @@ class BraveOriginPolicyManager {
   bool IsExpectedToBeInitialized() const;
 
   // Set/get the purchase state. When the purchase state changes,
-  // observers are notified to refresh policies.
+  // observers are notified to refresh policies. Only true is persisted.
   void SetPurchased(bool purchased);
   bool IsPurchased() const;
 

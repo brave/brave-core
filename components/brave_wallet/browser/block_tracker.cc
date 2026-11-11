@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/block_tracker.h"
 
 #include "base/containers/map_util.h"
-#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 
 namespace brave_wallet {
 

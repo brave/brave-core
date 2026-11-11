@@ -5,9 +5,9 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query'
-import { DialogProps } from '@brave/leo/react/dialog'
-import { InputEventDetail } from '@brave/leo/react/input'
-import Button from '@brave/leo/react/button'
+import { DialogProps } from '@brave/nala/react/dialog'
+import { InputEventDetail } from '@brave/nala/react/input'
+import Button from '@brave/nala/react/button'
 
 // Queries
 import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
@@ -30,7 +30,6 @@ import { MeldCryptoCurrency, BraveWallet } from '../../../../../constants/types'
 import { getLocale } from '../../../../../../common/locale'
 import { suggestNewAccountName } from '../../../../../utils/address-utils'
 import { keyringIdForNewAccount } from '../../../../../utils/account-utils'
-import { getMeldTokensCoinType } from '../../../../../utils/meld_utils'
 
 // Components
 import {
@@ -71,7 +70,7 @@ export const CreateAccount = (props: Props) => {
     token?.chainId
       ? {
           chainId: token.chainId,
-          coin: getMeldTokensCoinType(token),
+          coin: token.coin,
         }
       : skipToken,
   )

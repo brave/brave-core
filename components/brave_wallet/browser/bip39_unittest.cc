@@ -10,7 +10,6 @@
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
-#include "base/strings/string_util.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -159,13 +158,16 @@ TEST(BraveWalletUtilsUnitTest, Mnemonic) {
   };
 
   for (const auto& entry : cases) {
+    SCOPED_TRACE(entry.mnemonic);
     std::vector<uint8_t> bytes;
     EXPECT_TRUE(base::HexStringToBytes(entry.entropy, &bytes));
     auto entropy = MnemonicToEntropy(entry.mnemonic);
+    ASSERT_TRUE(entropy);
     EXPECT_EQ(base::HexEncodeLower(*entropy), entry.entropy);
 
     EXPECT_EQ(GenerateMnemonic(bytes), entry.mnemonic);
     auto seed = MnemonicToSeed(entry.mnemonic, "TREZOR");
+    ASSERT_TRUE(seed);
     EXPECT_EQ(base::HexEncodeLower(*seed), entry.seed);
   }
 

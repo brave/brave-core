@@ -51,14 +51,16 @@ struct ShortcutSettingsView: View {
         Section {
           Button {
             Task { @MainActor in
-              let shortcuts = try await INVoiceShortcutCenter.shared.allVoiceShortcuts()
-              if let shortcut = shortcuts.first(where: {
-                $0.shortcut.userActivity?.activityType == activityType.identifier
-              }) {
-                shortcutSheet = .edit(shortcut)
-              } else {
-                shortcutSheet = .add(activityType)
-              }
+              do {
+                let shortcuts = try await INVoiceShortcutCenter.shared.allVoiceShortcuts()
+                if let shortcut = shortcuts.first(where: {
+                  $0.shortcut.userActivity?.activityType == activityType.identifier
+                }) {
+                  shortcutSheet = .edit(shortcut)
+                } else {
+                  shortcutSheet = .add(activityType)
+                }
+              } catch {}
             }
           } label: {
             // Use NavigationLink pattern for disclosure indicator

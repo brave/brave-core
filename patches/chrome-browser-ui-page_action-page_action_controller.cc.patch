@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/page_action/page_action_controller.cc b/chrome/browser/ui/page_action/page_action_controller.cc
-index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e6790adbec0e 100644
+index ae3efc0bf95729b334ce23050071ba7deef85164..ae789c1ff12e0dde14aaa0b4ca0ae69233c3aea4 100644
 --- a/chrome/browser/ui/page_action/page_action_controller.cc
 +++ b/chrome/browser/ui/page_action/page_action_controller.cc
-@@ -77,7 +77,7 @@ void ScopedPageActionActivity::RegisterWillDestroyControllerCallback() {
+@@ -81,7 +81,7 @@ void ScopedPageActionActivity::RegisterWillDestroyControllerCallback() {
    }
  }
  
@@ -11,7 +11,7 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
      tabs::TabInterface& tab_interface,
      const std::vector<actions::ActionId>& action_ids,
      const PageActionPropertiesProviderInterface& properties_provider,
-@@ -93,24 +93,24 @@ PageActionControllerImpl::PageActionControllerImpl(
+@@ -97,9 +97,9 @@ PageActionControllerImpl::PageActionControllerImpl(
    }
    tab_activated_callback_subscription_ =
        tab_interface.RegisterDidActivate(base::BindRepeating(
@@ -21,7 +21,15 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
 -      base::BindRepeating(&PageActionControllerImpl::OnTabWillDeactivate,
 +      base::BindRepeating(&PageActionControllerImpl_ChromiumImpl::OnTabWillDeactivate,
                            base::Unretained(this)));
+   user_education::ProductMessagingController* product_messaging_controller =
+       nullptr;
+@@ -112,15 +112,15 @@ PageActionControllerImpl::PageActionControllerImpl(
+   }
    chip_selector_ = CreateChipSelector(
+       base::BindRepeating(
+-          &PageActionControllerImpl::IsPageActionSuppressedByOmnibox,
++          &PageActionControllerImpl_ChromiumImpl::IsPageActionSuppressedByOmnibox,
+           base::Unretained(this)),
 -      base::BindRepeating(&PageActionControllerImpl::DoShowSuggestionChip,
 +      base::BindRepeating(&PageActionControllerImpl_ChromiumImpl::DoShowSuggestionChip,
                            base::Unretained(this)),
@@ -33,8 +41,10 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
                            base::Unretained(this)),
 -      base::BindRepeating(&PageActionControllerImpl::DoHideAnchoredMessage,
 +      base::BindRepeating(&PageActionControllerImpl_ChromiumImpl::DoHideAnchoredMessage,
-                           base::Unretained(this)));
- 
+                           base::Unretained(this)),
+       product_messaging_controller);
+   chip_selector_->OnTabActiveChanged(tab_interface.IsActivated());
+@@ -128,7 +128,7 @@ PageActionControllerImpl::PageActionControllerImpl(
    metrics_recorder_ = CreateMetricsRecorder(
        tab_interface,
        base::BindRepeating(
@@ -43,7 +53,7 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
            base::Unretained(this)));
  
    for (actions::ActionId id : action_ids) {
-@@ -127,11 +127,11 @@ PageActionControllerImpl::PageActionControllerImpl(
+@@ -145,11 +145,11 @@ PageActionControllerImpl::PageActionControllerImpl(
    }
  }
  
@@ -57,7 +67,7 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
      actions::ActionId action_id,
      bool is_tab_active,
      bool is_ephemeral,
-@@ -146,21 +146,21 @@ void PageActionControllerImpl::Register(
+@@ -164,21 +164,21 @@ void PageActionControllerImpl::Register(
    activity_counters_[action_id] = 0;
  }
  
@@ -83,7 +93,7 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
      actions::ActionId action_id,
      const SuggestionChipConfig& config) {
    if (config.priority == PageActionPriorityCategory::kUnknown &&
-@@ -175,7 +175,7 @@ void PageActionControllerImpl::ShowSuggestionChip(
+@@ -193,7 +193,7 @@ void PageActionControllerImpl::ShowSuggestionChip(
    }
  }
  
@@ -92,7 +102,7 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
      actions::ActionId action_id,
      const SuggestionChipConfig& config) {
    PageActionModelInterface& model = FindPageActionModel(action_id);
-@@ -183,18 +183,18 @@ void PageActionControllerImpl::DoShowSuggestionChip(
+@@ -201,18 +201,18 @@ void PageActionControllerImpl::DoShowSuggestionChip(
    model.SetShouldShowSuggestionChip(PageActionPassKey(), /*show=*/true);
  }
  
@@ -113,8 +123,8 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
 +void PageActionControllerImpl_ChromiumImpl::ShowAnchoredMessage(
      actions::ActionId action_id,
      const AnchoredMessageConfig& config) {
-   if (config.priority == PageActionPriorityCategory::kUnknown &&
-@@ -209,7 +209,7 @@ void PageActionControllerImpl::ShowAnchoredMessage(
+   if (config.priority != PageActionPriorityCategory::kUserInteraction &&
+@@ -232,7 +232,7 @@ void PageActionControllerImpl::ShowAnchoredMessage(
    }
  }
  
@@ -123,7 +133,7 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
      actions::ActionId action_id,
      const AnchoredMessageConfig& config) {
    FindPageActionModel(action_id).SetShouldShowAnchoredMessage(
-@@ -225,11 +225,11 @@ void PageActionControllerImpl::DoShowAnchoredMessage(
+@@ -248,11 +248,11 @@ void PageActionControllerImpl::DoShowAnchoredMessage(
    }
    anchored_message_timeout_.Start(
        FROM_HERE, base::Seconds(15),
@@ -137,7 +147,7 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
      actions::ActionId action_id) {
    if (active_anchored_message_ != action_id) {
      return;
-@@ -237,12 +237,12 @@ void PageActionControllerImpl::DowngradeAnchoredMessage(
+@@ -260,12 +260,12 @@ void PageActionControllerImpl::DowngradeAnchoredMessage(
    ShowSuggestionChip(action_id);
  }
  
@@ -152,7 +162,7 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
      actions::ActionId action_id) {
    if (active_anchored_message_ == action_id) {
      active_anchored_message_ = std::nullopt;
-@@ -257,7 +257,7 @@ void PageActionControllerImpl::DoHideAnchoredMessage(
+@@ -280,7 +280,7 @@ void PageActionControllerImpl::DoHideAnchoredMessage(
        /*show=*/false);
  }
  
@@ -161,7 +171,7 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
      actions::ActionId action_id) {
    if (active_anchored_message_ == action_id) {
      ++anchored_message_timeout_pause_count_;
-@@ -268,7 +268,7 @@ void PageActionControllerImpl::PauseAnchoredMessageTimeout(
+@@ -291,7 +291,7 @@ void PageActionControllerImpl::PauseAnchoredMessageTimeout(
    }
  }
  
@@ -170,7 +180,24 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
      actions::ActionId action_id) {
    if (active_anchored_message_ == action_id) {
      --anchored_message_timeout_pause_count_;
-@@ -281,11 +281,11 @@ void PageActionControllerImpl::ResumeAnchoredMessageTimeout(
+@@ -303,14 +303,14 @@ void PageActionControllerImpl::ResumeAnchoredMessageTimeout(
+   }
+ }
+ 
+-bool PageActionControllerImpl::IsAnyPageActionBubbleShowing() const {
++bool PageActionControllerImpl_ChromiumImpl::IsAnyPageActionBubbleShowing() const {
+   return std::ranges::any_of(page_actions_, [](const auto& pair) {
+     return pair.second->GetActionItemIsShowingBubble() ||
+            pair.second->GetActionActive();
+   });
+ }
+ 
+-void PageActionControllerImpl::OnPageActionAnchoredUiShown() {
++void PageActionControllerImpl_ChromiumImpl::OnPageActionAnchoredUiShown() {
+   chip_selector_->DowngradeQueuedAnchoredMessageRequests();
+   // Only downgrade if the timeout is running so that we don't downgrade
+   // anchored messages that users are actively interacting with (e.g. expanded
+@@ -323,11 +323,11 @@ void PageActionControllerImpl::OnPageActionAnchoredUiShown() {
  }
  
  std::optional<actions::ActionId>
@@ -183,9 +210,15 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
 +ScopedPageActionActivity PageActionControllerImpl_ChromiumImpl::AddActivity(
      actions::ActionId action_id) {
    auto& counter = activity_counters_[action_id];
-   ++counter;
-@@ -293,7 +293,7 @@ ScopedPageActionActivity PageActionControllerImpl::AddActivity(
+   const bool was_active = (counter > 0);
+@@ -339,12 +339,12 @@ ScopedPageActionActivity PageActionControllerImpl::AddActivity(
    return ScopedPageActionActivity(*this, action_id);
+ }
+ 
+-bool PageActionControllerImpl::IsPageActionSuppressedByOmnibox(
++bool PageActionControllerImpl_ChromiumImpl::IsPageActionSuppressedByOmnibox(
+     actions::ActionId page_action_id) {
+   return FindPageActionModel(page_action_id).IsAffectedByOmniboxSuppression();
  }
  
 -void PageActionControllerImpl::DecrementActivityCounter(
@@ -193,7 +226,7 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
      actions::ActionId action_id) {
    auto it = activity_counters_.find(action_id);
    CHECK(it != activity_counters_.end());
-@@ -304,42 +304,42 @@ void PageActionControllerImpl::DecrementActivityCounter(
+@@ -355,7 +355,7 @@ void PageActionControllerImpl::DecrementActivityCounter(
    }
  }
  
@@ -201,19 +234,23 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
 +void PageActionControllerImpl_ChromiumImpl::ActionItemChanged(
      const actions::ActionItem* action_item) {
    auto& model = FindPageActionModel(action_item->GetActionId().value());
-   model.SetActionItemProperties(PageActionPassKey(), action_item);
+   const bool was_showing_bubble = model.GetActionItemIsShowingBubble();
+@@ -365,7 +365,7 @@ void PageActionControllerImpl::ActionItemChanged(
+   }
  }
  
 -void PageActionControllerImpl::OnTabActivated(tabs::TabInterface* tab) {
 +void PageActionControllerImpl_ChromiumImpl::OnTabActivated(tabs::TabInterface* tab) {
    SetModelsTabActive(/*is_active=*/true);
+   chip_selector_->OnTabActiveChanged(/*is_tab_active=*/true);
    if (anchored_message_timeout_.IsRunning()) {
-     anchored_message_timeout_.Reset();
+@@ -373,30 +373,30 @@ void PageActionControllerImpl::OnTabActivated(tabs::TabInterface* tab) {
    }
  }
  
 -void PageActionControllerImpl::OnTabWillDeactivate(tabs::TabInterface* tab) {
 +void PageActionControllerImpl_ChromiumImpl::OnTabWillDeactivate(tabs::TabInterface* tab) {
+   chip_selector_->OnTabActiveChanged(/*is_tab_active=*/false);
    SetModelsTabActive(/*is_active=*/false);
  }
  
@@ -243,7 +280,7 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
      actions::ActionId action_id,
      const std::u16string& override_accessible_name) {
    FindPageActionModel(action_id).SetOverrideAccessibleName(
-@@ -347,26 +347,26 @@ void PageActionControllerImpl::OverrideAccessibleName(
+@@ -404,26 +404,26 @@ void PageActionControllerImpl::OverrideAccessibleName(
        /*override_accessible_name=*/override_accessible_name);
  }
  
@@ -274,7 +311,7 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
      actions::ActionId action_id,
      const ui::ImageModel& override_image,
      PageActionColorSource color_source,
-@@ -375,7 +375,7 @@ void PageActionControllerImpl::OverrideImage(
+@@ -432,7 +432,7 @@ void PageActionControllerImpl::OverrideImage(
        PageActionPassKey(), override_image, color_source, animation_parameters);
  }
  
@@ -283,7 +320,7 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
    auto& model = FindPageActionModel(action_id);
    model.SetOverrideImage(PageActionPassKey(),
                           /*override_image=*/std::nullopt,
-@@ -383,77 +383,77 @@ void PageActionControllerImpl::ClearOverrideImage(actions::ActionId action_id) {
+@@ -440,84 +440,84 @@ void PageActionControllerImpl::ClearOverrideImage(actions::ActionId action_id) {
                           /*animation_parameters=*/std::nullopt);
  }
  
@@ -337,6 +374,14 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
        PageActionPassKey(), override_background_color_id);
  }
  
+-void PageActionControllerImpl::OverrideForegroundColor(
++void PageActionControllerImpl_ChromiumImpl::OverrideForegroundColor(
+     actions::ActionId action_id,
+     std::optional<ui::ColorId> override_foreground_color_id) {
+   FindPageActionModel(action_id).SetOverrideForegroundColorId(
+       PageActionPassKey(), override_foreground_color_id);
+ }
+ 
 -void PageActionControllerImpl::SetAnchoredMessageText(
 +void PageActionControllerImpl_ChromiumImpl::SetAnchoredMessageText(
      actions::ActionId action_id,
@@ -373,7 +418,7 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
      actions::ActionId action_id,
      AnchoredMessageActionIconType action_icon_type,
      std::unique_ptr<ui::SimpleMenuModel> model) {
-@@ -467,11 +467,11 @@ void PageActionControllerImpl::SetAnchoredMessageAction(
+@@ -531,11 +531,11 @@ void PageActionControllerImpl::SetAnchoredMessageAction(
        PageActionPassKey(), action_icon_type, std::move(model));
  }
  
@@ -387,7 +432,7 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
      actions::ActionId action_id,
      base::ScopedObservation<PageActionModelInterface, PageActionModelObserver>&
          observation) {
-@@ -479,17 +479,17 @@ void PageActionControllerImpl::AddObserver(
+@@ -543,17 +543,17 @@ void PageActionControllerImpl::AddObserver(
  }
  
  base::CallbackListSubscription
@@ -408,8 +453,8 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
      bool should_hide_page_actions) {
    for (auto& [id, model] : page_actions_) {
      model->SetIsSuppressedByOmnibox(PageActionPassKey(),
-@@ -497,11 +497,11 @@ void PageActionControllerImpl::SetShouldHidePageActions(
-   }
+@@ -562,11 +562,11 @@ void PageActionControllerImpl::SetShouldHidePageActions(
+   chip_selector_->ReevaluateAfterSuppressionChange();
  }
  
 -void PageActionControllerImpl::OnActionsChanged() {
@@ -422,7 +467,7 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
    PinnedToolbarActionsModel* pinned_actions_model =
        pinned_actions_observation_.GetSource();
    CHECK(pinned_actions_model);
-@@ -511,7 +511,7 @@ void PageActionControllerImpl::PinnedActionsModelChanged() {
+@@ -576,7 +576,7 @@ void PageActionControllerImpl::PinnedActionsModelChanged() {
    }
  }
  
@@ -431,7 +476,7 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
      actions::ActionId action_id) const {
    auto id_to_model = page_actions_.find(action_id);
    CHECK(id_to_model != page_actions_.end());
-@@ -519,7 +519,7 @@ PageActionModelInterface& PageActionControllerImpl::FindPageActionModel(
+@@ -584,7 +584,7 @@ PageActionModelInterface& PageActionControllerImpl::FindPageActionModel(
    return *id_to_model->second.get();
  }
  
@@ -440,7 +485,7 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
      actions::ActionId action_id,
      bool is_ephemeral) {
    if (page_action_model_factory_ != nullptr) {
-@@ -530,7 +530,7 @@ std::unique_ptr<PageActionModelInterface> PageActionControllerImpl::CreateModel(
+@@ -595,7 +595,7 @@ std::unique_ptr<PageActionModelInterface> PageActionControllerImpl::CreateModel(
  }
  
  std::unique_ptr<PageActionMetricsRecorderInterface>
@@ -449,7 +494,7 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
      tabs::TabInterface& tab_interface,
      VisibleEphemeralPageActionsCountCallback
          visible_ephemeral_page_actions_count_callback) {
-@@ -545,37 +545,37 @@ PageActionControllerImpl::CreateMetricsRecorder(
+@@ -610,40 +610,40 @@ PageActionControllerImpl::CreateMetricsRecorder(
    }
  }
  
@@ -482,6 +527,10 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
 -      &PageActionControllerImpl::ResumeAnchoredMessageTimeout,
 +      &PageActionControllerImpl_ChromiumImpl::ResumeAnchoredMessageTimeout,
        weak_factory_.GetWeakPtr(), action_id));
+   delegate->SetAnchoredMessageDowngradeCallback(
+-      base::BindRepeating(&PageActionControllerImpl::DowngradeAnchoredMessage,
++      base::BindRepeating(&PageActionControllerImpl_ChromiumImpl::DowngradeAnchoredMessage,
+                           weak_factory_.GetWeakPtr(), action_id));
  }
  
 -void PageActionControllerImpl::RecordClickMetric(
@@ -496,7 +545,7 @@ index ed4faf58cfdc75904bc024958fefc85a63332528..0710645ad490dba18984899537c9e679
    int visible_ephemeral_page_actions_count = 0;
    for (auto& [id, model] : page_actions_) {
      if (model->GetVisible() && model->IsEphemeral()) {
-@@ -586,19 +586,19 @@ int PageActionControllerImpl::GetVisibleEphemeralPageActionsCount() const {
+@@ -654,19 +654,19 @@ int PageActionControllerImpl::GetVisibleEphemeralPageActionsCount() const {
  }
  
  base::CallbackListSubscription

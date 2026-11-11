@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc b/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
-index 534277a85ae07f59ea9fabdd98b7ad411d18e5d0..a84d9304fafa68e0a68315e9a66d6a154ab2358d 100644
+index 3608837758b40f02b78631c3d709a2b7561cea7e..7f1fd3cd1c08f5f1c74b7aa5854d5491ad6dd905 100644
 --- a/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
 +++ b/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
-@@ -63,6 +63,7 @@ DOMPluginArray::DOMPluginArray(LocalDOMWindow* window) : window_(window) {
+@@ -64,6 +64,7 @@ DOMPluginArray::DOMPluginArray(LocalDOMWindow* window) : window_(window) {
      for (auto name : plugins) {
        dom_plugins_.push_back(MakeFakePlugin(name, window));
      }

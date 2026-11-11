@@ -28,8 +28,6 @@ inline constexpr auto kAllowedContentSchemes =
 
 // Model key for the automatic model.
 inline constexpr char kChatAutomaticModelKey[] = "chat-automatic";
-// Model key for Claude Haiku model.
-inline constexpr char kClaudeHaikuModelKey[] = "chat-claude-haiku";
 // Model key for Claude Sonnet model.
 inline constexpr char kClaudeSonnetModelKey[] = "chat-claude-sonnet";
 
@@ -54,9 +52,29 @@ inline constexpr char kAIChatCodeSandboxUIURL[] =
     "chrome-untrusted://aichat-code-sandbox/";
 
 // The chrome-untrusted WebUI that hosts Leo's local "workspace" file tools.
+// Each workspace is served from its own subdomain of this host
+// (chrome-untrusted://<uuid>.leo-workspace) rather than from a path under it,
+// so that every workspace is its own origin and therefore gets its own storage
+// and its own File System Access grants. LeoWorkspaceUIConfig opts into this by
+// overriding WebUIConfig::ShouldHandleSubdomains().
 inline constexpr char kAIChatLeoWorkspaceUIHost[] = "leo-workspace";
-inline constexpr char kAIChatLeoWorkspaceUIURL[] =
-    "chrome-untrusted://leo-workspace/";
+
+// The suffix every workspace host ends with, for IsAIChatLeoWorkspaceHost().
+inline constexpr char kAIChatLeoWorkspaceUIHostSuffix[] = ".leo-workspace";
+static_assert(
+    std::string_view(kAIChatLeoWorkspaceUIHostSuffix).substr(1) ==
+        std::string_view(kAIChatLeoWorkspaceUIHost),
+    "The workspace host suffix must be the workspace host, preceded by a dot.");
+
+// Prefixed to a workspace's host to get the host of that workspace's viewer
+// document (chrome-untrusted://view.<uuid>.leo-workspace), which is a separate
+// origin from the workspace that frames it.
+inline constexpr char kAIChatLeoWorkspaceViewUIHostPrefix[] = "view.";
+
+// The scheme of the URL a workspace is identified by, as stored in the
+// conversation's associated content: workspace://<uuid>. It is never loaded;
+// the workspace's page is chrome-untrusted://<uuid>.leo-workspace.
+inline constexpr char kAIChatWorkspaceScheme[] = "workspace";
 
 }  // namespace ai_chat
 

@@ -9,7 +9,6 @@
 #include <optional>
 #include <string>
 
-#include "base/strings/string_util.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
@@ -24,7 +23,6 @@
 #include "brave/components/brave_wallet/common/test_utils.h"  // IWYU pragma: keep
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"  // IWYU pragma: keep
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::test::TestFuture;
@@ -101,8 +99,10 @@ TEST_F(CardanoGetUtxosTaskUnitTest, OneAddress) {
       utxos_future;
   task.Start(utxos_future.GetCallback());
 
-  auto utxos = utxos_future.Take().value();
-  EXPECT_EQ(utxos.size(), 2u);
+  auto result = utxos_future.Take();
+  ASSERT_TRUE(result.has_value());
+  auto& utxos = result.value();
+  ASSERT_EQ(utxos.size(), 2u);
 
   EXPECT_EQ(utxos[0].coin_value.lovelace_amount, 969750u);
   EXPECT_EQ(utxos[0].address_to, addr1);
@@ -123,8 +123,10 @@ TEST_F(CardanoGetUtxosTaskUnitTest, TwoAddresses) {
       utxos_future;
   task.Start(utxos_future.GetCallback());
 
-  auto utxos = utxos_future.Take().value();
-  EXPECT_EQ(utxos.size(), 3u);
+  auto result = utxos_future.Take();
+  ASSERT_TRUE(result.has_value());
+  auto& utxos = result.value();
+  ASSERT_EQ(utxos.size(), 3u);
 
   EXPECT_EQ(utxos[0].coin_value.lovelace_amount, 969750u);
   EXPECT_EQ(utxos[0].address_to, addr1);

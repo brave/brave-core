@@ -182,9 +182,11 @@ extension BrowserViewController {
     struct StandaloneAIChatPaywallView: View {
       @Environment(\.dismiss) private var dismiss
       var openURL: (URL) -> Void
+      var skusService: SkusSkusService?
 
       var body: some View {
         AIChatPaywallView(
+          storeSDK: .init(skusService: skusService),
           refreshCredentials: {
             openURL(.brave.braveLeoRefreshCredentials)
             dismiss()
@@ -197,13 +199,16 @@ extension BrowserViewController {
       }
     }
     let controller = UIHostingController(
-      rootView: StandaloneAIChatPaywallView(openURL: { [weak self] url in
-        guard let self else { return }
-        tabManager.addTabAndSelect(
-          URLRequest(url: url),
-          isPrivate: privateBrowsingManager.isPrivateBrowsing
-        )
-      })
+      rootView: StandaloneAIChatPaywallView(
+        openURL: { [weak self] url in
+          guard let self else { return }
+          tabManager.addTabAndSelect(
+            URLRequest(url: url),
+            isPrivate: privateBrowsingManager.isPrivateBrowsing
+          )
+        },
+        skusService: Skus.SkusServiceFactory.get(profile: profileController.profile)
+      )
     )
     present(controller, animated: true)
   }

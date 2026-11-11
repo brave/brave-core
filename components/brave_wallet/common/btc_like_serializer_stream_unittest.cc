@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/numerics/safe_conversions.h"
@@ -68,6 +69,58 @@ TEST(BtcLikeSerializerStreamTest, PushCompactSize) {
             "ABFDCDABFE01EFCDABFF8967452301EFCDAB");
 
   EXPECT_EQ(stream.data().size(), 18u);
+}
+
+TEST(BtcLikeSerializerStreamTest, PushCompactSizeBoundaries) {
+  const struct {
+    uint64_t value;
+    const char* expected_hex;
+  } cases[] = {
+      {0, "00"},
+      {0xfc, "FC"},
+      {0xfd, "FDFD00"},
+      {0xfe, "FDFE00"},
+      {0xffff, "FDFFFF"},
+      {0x10000, "FE00000100"},
+      {0xffffffff, "FEFFFFFFFF"},
+      {0x100000000, "FF0000000001000000"},
+  };
+
+  for (const auto& test_case : cases) {
+    BtcLikeSerializerStream stream;
+    stream.PushCompactSize(test_case.value);
+    EXPECT_EQ(base::HexEncode(stream.data()), test_case.expected_hex)
+        << test_case.value;
+  }
+}
+
+TEST(BtcLikeSerializerStreamTest, PushSizeAndBytesBoundaries) {
+  const struct {
+    size_t size;
+    std::string_view expected_prefix_hex;
+  } cases[] = {
+      {0, "00"},
+      {0xfc, "FC"},
+      {0xfd, "FDFD00"},
+      {0xffff, "FDFFFF"},
+  };
+
+  for (const auto& test_case : cases) {
+    std::vector<uint8_t> bytes(test_case.size, 0xab);
+    BtcLikeSerializerStream stream;
+    stream.PushSizeAndBytes(bytes);
+
+    const size_t prefix_size = test_case.expected_prefix_hex.size() / 2;
+    ASSERT_EQ(stream.data().size(), prefix_size + test_case.size)
+        << test_case.size;
+    EXPECT_EQ(base::HexEncode(base::span(stream.data()).first(prefix_size)),
+              test_case.expected_prefix_hex)
+        << test_case.size;
+    EXPECT_TRUE(
+        std::ranges::all_of(base::span(stream.data()).subspan(prefix_size),
+                            [](auto c) { return c == 0xab; }))
+        << test_case.size;
+  }
 }
 
 TEST(BtcLikeSerializerStreamTest, PushSizeAndBytes) {

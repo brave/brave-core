@@ -1,0 +1,31 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Guard Start() against null ProviderStateService.
+
+      ProviderStateService is unavailable for incognito/OTR profiles because
+      ProviderStateServiceFactory uses ProfileSelection::kOriginalOnly.
+      Without the calculator cache, this provider cannot function.
+    preempt_function_impl:
+      function_name: CalculatorProvider::Start
+      code: |-
+        if (!client_->GetProviderStateService()) {
+          done_ = true;
+          return;
+        }
+
+  - description: |
+      Guard DeleteMatch() against null ProviderStateService.
+
+      ProviderStateService is unavailable for incognito/OTR profiles because
+      ProviderStateServiceFactory uses ProfileSelection::kOriginalOnly.
+    preempt_function_impl:
+      function_name: CalculatorProvider::DeleteMatch
+      code: |-
+        if (!client_->GetProviderStateService()) {
+          return;
+        }

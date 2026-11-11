@@ -141,7 +141,6 @@ struct UnlockWalletView: View {
     }
     .navigationTitle(Strings.Wallet.cryptoTitle)
     .navigationBarTitleDisplayMode(.inline)
-    .transparentUnlessScrolledNavigationAppearance()
     .ignoresSafeArea(.keyboard, edges: .bottom)
   }
 
@@ -168,7 +167,7 @@ struct UnlockWalletView: View {
 #if DEBUG
 struct UnlockWalletView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
+    NavigationStack {
       UnlockWalletView(
         keyringStore: .previewStoreWithWalletCreated,
         dismissAction: {}

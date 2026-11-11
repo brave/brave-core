@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
@@ -24,18 +23,14 @@
 #include "components/grit/brave_components_strings.h"
 #include "content/public/common/isolated_world_ids.h"
 #include "content/public/renderer/v8_value_converter.h"
-#include "gin/array_buffer.h"
 #include "gin/converter.h"
 #include "gin/object_template_builder.h"
 #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/platform/web_string.h"
-#include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_console_message.h"
 #include "third_party/blink/public/web/web_local_frame.h"
-#include "third_party/blink/public/web/web_script_source.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "ui/base/resource/resource_bundle.h"
 #include "v8/include/cppgc/allocation.h"
 #include "v8/include/v8-cppgc.h"
 #include "v8/include/v8-microtask-queue.h"
@@ -183,23 +178,23 @@ gin::ObjectTemplateBuilder JSSolanaProvider::GetObjectTemplateBuilder(
   // Note: When adding a new method, you would need to update the list in
   // kSolanaProxyHandlerScript too otherwise the function call would fail.
   return gin::Wrappable<JSSolanaProvider>::GetObjectTemplateBuilder(isolate)
-      .SetProperty("isPhantom", &JSSolanaProvider::GetIsPhantom)
-      .SetProperty("isBraveWallet", &JSSolanaProvider::GetIsBraveWallet)
-      .SetProperty("isConnected", &JSSolanaProvider::GetIsConnected)
-      .SetProperty("publicKey", &JSSolanaProvider::GetPublicKey)
-      .SetMethod("connect", &JSSolanaProvider::Connect)
-      .SetMethod("disconnect", &JSSolanaProvider::Disconnect)
-      .SetMethod("signAndSendTransaction",
-                 &JSSolanaProvider::SignAndSendTransaction)
-      .SetMethod("signMessage", &JSSolanaProvider::SignMessage)
-      .SetMethod("request", &JSSolanaProvider::Request)
+      .SetProperty<&JSSolanaProvider::GetIsPhantom>("isPhantom")
+      .SetProperty<&JSSolanaProvider::GetIsBraveWallet>("isBraveWallet")
+      .SetProperty<&JSSolanaProvider::GetIsConnected>("isConnected")
+      .SetProperty<&JSSolanaProvider::GetPublicKey>("publicKey")
+      .SetMethod<&JSSolanaProvider::Connect>("connect")
+      .SetMethod<&JSSolanaProvider::Disconnect>("disconnect")
+      .SetMethod<&JSSolanaProvider::SignAndSendTransaction>(
+          "signAndSendTransaction")
+      .SetMethod<&JSSolanaProvider::SignMessage>("signMessage")
+      .SetMethod<&JSSolanaProvider::Request>("request")
       // Deprecated
-      .SetMethod("signTransaction", &JSSolanaProvider::SignTransaction)
+      .SetMethod<&JSSolanaProvider::SignTransaction>("signTransaction")
       // Deprecated
-      .SetMethod("signAllTransactions", &JSSolanaProvider::SignAllTransactions)
+      .SetMethod<&JSSolanaProvider::SignAllTransactions>("signAllTransactions")
       // Internal function used to load and initialize wallet-standard natively.
       // It only function once and further calls do nothing.
-      .SetMethod("walletStandardInit", &JSSolanaProvider::WalletStandardInit);
+      .SetMethod<&JSSolanaProvider::WalletStandardInit>("walletStandardInit");
 }
 
 const gin::WrapperInfo* JSSolanaProvider::wrapper_info() const {

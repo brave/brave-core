@@ -23,7 +23,8 @@ bool BravePrivateNewTabUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {
   Profile* profile = Profile::FromBrowserContext(browser_context);
   return profile->IsIncognitoProfile() || profile->IsTor() ||
-         profile->IsGuestSession();
+         profile->IsGuestSession() ||
+         profile->IsEnterpriseIsolatedModeProfile();
 }
 
 BravePrivateNewTabUI::BravePrivateNewTabUI(content::WebUI* web_ui)
@@ -42,6 +43,13 @@ BravePrivateNewTabUI::BravePrivateNewTabUI(content::WebUI* web_ui)
   }
 
   source->AddBoolean("isWindowTor", profile->IsTor());
+  source->AddBoolean(
+      "infoCardsDismissed",
+      BravePrivateNewTabPageHandler::IsDisclaimerDismissed(profile));
+  source->AddBoolean("isTorDisabled",
+                     BravePrivateNewTabPageHandler::IsTorDisabled(profile));
+  source->AddBoolean("isTorConnected",
+                     BravePrivateNewTabPageHandler::IsTorConnected());
 
   AddBackgroundColorToSource(source, web_ui->GetWebContents());
 }

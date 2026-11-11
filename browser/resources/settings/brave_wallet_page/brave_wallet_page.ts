@@ -7,11 +7,12 @@ import './wallet_networks_subpage.js'
 
 import type {CrInputElement} from 'chrome://resources/cr_elements/cr_input/cr_input.js'
 
-import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
+import {PrefService} from '/shared/settings/prefs2/pref_service.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
-import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import {WebUiListenerMixin} from '/shared/settings/web_ui_listener_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
+import type {SettingsToggleButtonElement} from '../controls/settings_toggle_button.js'
 import {RouteObserverMixin, Router} from '../router.js'
 import {SettingsViewMixin} from '../settings_page/settings_view_mixin.js'
 
@@ -42,7 +43,7 @@ interface CurrencyType {
 }
 
 const SettingsBraveWalletPageBase =
-  WebUiListenerMixin(PrefsMixin(I18nMixin(RouteObserverMixin(SettingsViewMixin(PolymerElement)))))
+  WebUiListenerMixin(I18nMixin(RouteObserverMixin(SettingsViewMixin(PolymerElement))))
 
 class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
   static get is() {
@@ -83,13 +84,6 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
         }
       },
 
-      cryptocurrency_list_: {
-        type: Array,
-        value() {
-          return []
-        }
-      },
-
       currency_list_: {
         type: Array,
         value() {
@@ -106,12 +100,7 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
         value: false,
       },
 
-      isPrivateWindowsEnabled_: {
-        type: Object,
-        value() {
-          return {}
-        },
-      },
+      isPrivateWindowsEnabled_: Boolean,
 
       showRestartToast_: {
         type: Boolean,
@@ -128,10 +117,9 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
   private declare solana_provider_options_: SolanaProvider[]
   private declare cardano_provider_options_: CardanoProvider[]
   private declare transaction_simulation_opt_in_options_: Option[]
-  private declare cryptocurrency_list_: CurrencyType[]
   private declare currency_list_: CurrencyType[]
   private declare isTransactionSimulationsFeatureEnabled: boolean
-  private declare isPrivateWindowsEnabled_: chrome.settingsPrivate.PrefObject<boolean>
+  private declare isPrivateWindowsEnabled_: boolean
   private declare showRestartToast_: boolean
   private declare isZCashShieldedTxEnabled_: boolean
   private declare isCardanoDAppSupportEnabled_: boolean
@@ -163,11 +151,7 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
         this.transaction_simulation_opt_in_options_ = list
       })
     this.browserProxy_.getWalletInPrivateWindowsEnabled().then((val) => {
-      this.isPrivateWindowsEnabled_ = {
-        key: '',
-        type: chrome.settingsPrivate.PrefType.BOOLEAN,
-        value: val,
-      }
+      this.isPrivateWindowsEnabled_ = val
     })
     this.browserProxy_.isZCashShieldedTxEnabled().then(val => {
       this.isZCashShieldedTxEnabled_ = val
@@ -175,22 +159,6 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     this.browserProxy_.isCardanoDAppSupportEnabled().then(val => {
       this.isCardanoDAppSupportEnabled_ = val
     })
-
-    this.cryptocurrency_list_ = [
-      { value: 'BTC', name: 'BTC' },
-      { value: 'ETH', name: 'ETH' },
-      { value: 'LTC', name: 'LTC' },
-      { value: 'BCH', name: 'BCH' },
-      { value: 'BNB', name: 'BNB' },
-      { value: 'EOS', name: 'EOS' },
-      { value: 'XRP', name: 'XRP' },
-      { value: 'XLM', name: 'XLM' },
-      { value: 'LINK', name: 'LINK' },
-      { value: 'DOT', name: 'DOT' },
-      { value: 'YFI', name: 'YFI' }
-    ]
-    this.cryptocurrency_list_.
-      every((item: CurrencyType) => assert(item.name === item.value))
 
     this.currency_list_ = [
       { value: 'AED', name: 'AED' },
@@ -259,7 +227,7 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     if (Number.isNaN(value) || value < 1 || value > 10080) {
       return
     }
-    this.setPrefValue('brave.wallet.auto_lock_minutes', value)
+    PrefService.getInstance().setPrefValue('brave.wallet.auto_lock_minutes', value)
   }
 
   private onWalletNetworksEditorClick_() {
@@ -294,14 +262,10 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     window.alert(this.i18n('walletResetTransactionInfoConfirmed'))
   }
 
-  private onPrivateWindowsEnabled_() {
-    // Toggle the setting switch UI, but don't actually update the pref.
-    const pref: chrome.settingsPrivate.PrefObject = {
-      key: '',
-      type: chrome.settingsPrivate.PrefType.BOOLEAN,
-      value: !this.isPrivateWindowsEnabled_.value,
-    }
-    this.isPrivateWindowsEnabled_ = pref
+  private onPrivateWindowsEnabled_(e: Event) {
+    // Reflect the switch in the UI, but don't update the pref until restart.
+    this.isPrivateWindowsEnabled_ =
+      (e.target as SettingsToggleButtonElement).checked
     this.updateRestartToast_()
   }
 
@@ -309,7 +273,7 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     // Show restart toast if current private windows pref
     // value does not match UI switch.
     this.browserProxy_.getWalletInPrivateWindowsEnabled().then(enabled => {
-      if (enabled !== this.isPrivateWindowsEnabled_.value) {
+      if (enabled !== this.isPrivateWindowsEnabled_) {
         this.showRestartToast_ = true
       } else {
         this.showRestartToast_ = false
@@ -319,7 +283,7 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
 
   private applyPrefChangesAndRestart(e: Event) {
     this.browserProxy_.setWalletInPrivateWindowsEnabled(
-      this.isPrivateWindowsEnabled_.value
+      this.isPrivateWindowsEnabled_
     ).then(() => {
         e.stopPropagation()
         window.open("chrome://restart", "_self")

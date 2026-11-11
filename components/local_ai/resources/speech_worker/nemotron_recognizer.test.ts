@@ -9,8 +9,9 @@
 // runEncoder() and runDecoder() return synthetic encoder/decoder outputs instead
 // of invoking ONNX Runtime and the actual Nemotron model.
 
-import { describe, expect, it, jest } from '@jest/globals'
+import { afterEach, describe, expect, it, jest } from '@jest/globals'
 
+import { StreamingMelFrontend } from './audio_features'
 import { NemotronStreamSession, OrtNemotronModel } from './nemotron_recognizer'
 
 import * as config from './configs'
@@ -81,9 +82,17 @@ function samplesForStableFrames(frameCount: number): number {
   return config.STREAMING_RIGHT_CONTEXT + (frameCount - 1) * config.HOP_LENGTH
 }
 
-// Raw samples needed before exactly `chunkCount` complete encoder chunks can be available.
+// The session starts its frontend with this much silence before addAudio().
+const LEADING_SILENCE_SAMPLES =
+  (config.TARGET_SAMPLE_RATE * config.LEADING_SILENCE_MS) / 1000
+
+// Samples addAudio() must receive before exactly `chunkCount` complete encoder
+// chunks can be available, net of the leading silence.
 function samplesForChunks(chunkCount: number): number {
-  return samplesForStableFrames(chunkCount * config.NEMO_CHUNK)
+  return (
+    samplesForStableFrames(chunkCount * config.NEMO_CHUNK)
+    - LEADING_SILENCE_SAMPLES
+  )
 }
 
 // Once the first chunk is available, each additional encoder chunk advances by exactly 56 * 160 samples.
@@ -365,6 +374,126 @@ describe('NemotronStreamSession', () => {
       expect(wholeMock.runEncoder).toHaveBeenCalledTimes(2)
 
       expect(splitMock.runEncoder).toHaveBeenCalledTimes(2)
+    })
+  })
+
+  describe('leading silence', () => {
+    // Streaming tests for the lead-in silence verifying that -
+    // (a) the session feeds exactly LEADING_SILENCE_SAMPLES zeros to the
+    // frontend when it starts, before any addAudio()
+    // (b) the silence is added only once for the whole session, however many
+    // addAudio() calls follow, and finish() adds only its own flush silence
+    // (c) the first real sample directly follows the silence
+    // (d) every real sample reaches the frontend unchanged and in order
+    afterEach(() => {
+      jest.restoreAllMocks()
+    })
+
+    // Records every array the session passes to the real frontend. Call this
+    // before createSession(), because the silence is fed in the constructor.
+    function recordFrontendInput(): () => Float32Array[] {
+      const spy = jest.spyOn(
+        StreamingMelFrontend.prototype,
+        'appendAudioSamples',
+      )
+      return () => spy.mock.calls.map(([samples]) => samples)
+    }
+
+    function concat(parts: Float32Array[]): Float32Array {
+      const all = new Float32Array(
+        parts.reduce((total, part) => total + part.length, 0),
+      )
+      let offset = 0
+      for (const part of parts) {
+        all.set(part, offset)
+        offset += part.length
+      }
+      return all
+    }
+
+    // Non-zero samples that differ from each other, so a dropped, repeated or
+    // reordered sample is detectable and none can pass for silence.
+    function makeRealAudio(length: number): Float32Array {
+      return Float32Array.from({ length }, (_, i) => (i + 1) / 1000)
+    }
+
+    function splitInto(audio: Float32Array, sizes: number[]): Float32Array[] {
+      const packets: Float32Array[] = []
+      let offset = 0
+      for (const size of sizes) {
+        packets.push(audio.slice(offset, offset + size))
+        offset += size
+      }
+      return packets
+    }
+
+    it('feeds the silence at construction, before any real audio', () => {
+      const frontendInput = recordFrontendInput()
+      createSession(createMockModel())
+
+      const calls = frontendInput()
+
+      expect(LEADING_SILENCE_SAMPLES).toBeGreaterThan(0)
+      expect(calls).toHaveLength(1)
+      expect(calls[0]).toHaveLength(LEADING_SILENCE_SAMPLES)
+      expect(calls[0].every((sample) => sample === 0)).toBe(true)
+    })
+
+    it('places the first real sample right after the silence', () => {
+      const frontendInput = recordFrontendInput()
+      const { session } = createSession(createMockModel())
+      const real = makeRealAudio(100)
+
+      session.addAudio(real)
+
+      const stream = concat(frontendInput())
+
+      expect(stream[LEADING_SILENCE_SAMPLES - 1]).toBe(0)
+      expect(stream[LEADING_SILENCE_SAMPLES]).toBe(real[0])
+    })
+
+    it('adds the silence once and keeps every real sample in order', async () => {
+      const frontendInput = recordFrontendInput()
+      const { session } = createSession(createMockModel())
+      const packetSizes = [1, 700, 5000, 300]
+      const real = makeRealAudio(packetSizes.reduce((a, b) => a + b, 0))
+
+      for (const packet of splitInto(real, packetSizes)) {
+        session.addAudio(packet)
+      }
+      await waitForIdle(session)
+
+      const calls = frontendInput()
+      const stream = concat(calls)
+
+      // One call for the silence, then one per addAudio() call.
+      expect(calls).toHaveLength(1 + packetSizes.length)
+      expect(stream).toHaveLength(LEADING_SILENCE_SAMPLES + real.length)
+      expect(
+        stream
+          .slice(0, LEADING_SILENCE_SAMPLES)
+          .every((sample) => sample === 0),
+      ).toBe(true)
+      expect(stream.slice(LEADING_SILENCE_SAMPLES)).toEqual(real)
+    })
+
+    it('adds only the flush silence on finish, not another lead-in', async () => {
+      const frontendInput = recordFrontendInput()
+      const { session } = createSession(createMockModel())
+      const real = makeRealAudio(2000)
+      const flushSamples =
+        config.SILENCE_FLUSH_CHUNKS * config.NEMO_CHUNK * config.HOP_LENGTH
+
+      session.addAudio(real)
+      session.finish()
+      await waitForIdle(session)
+
+      const stream = concat(frontendInput())
+      const realEnd = LEADING_SILENCE_SAMPLES + real.length
+
+      expect(stream).toHaveLength(realEnd + flushSamples)
+      expect(stream.slice(LEADING_SILENCE_SAMPLES, realEnd)).toEqual(real)
+      expect(stream.slice(realEnd).every((sample) => sample === 0)).toBe(true)
     })
   })
 

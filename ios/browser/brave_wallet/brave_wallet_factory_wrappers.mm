@@ -8,6 +8,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
+#include "brave/ios/browser/api/brave_wallet/meld_integration.mojom.objc+private.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper+private.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"

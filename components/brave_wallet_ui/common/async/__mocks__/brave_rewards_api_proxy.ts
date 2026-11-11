@@ -11,6 +11,7 @@ export class MockBraveRewardsProxy {
     rewardsEnabled: true,
     balance: 100.5,
     externalWallet: null,
+    isRewardsCardVerified: false,
   }
 
   applyOverrides = (overrides?: BraveRewardsProxyOverrides) => {
@@ -31,6 +32,10 @@ export class MockBraveRewardsProxy {
 
   getExternalWallet = async () => {
     return this.overrides.externalWallet
+  }
+
+  getIsRewardsCardVerified = async () => {
+    return this.overrides.isRewardsCardVerified ?? false
   }
 }
 

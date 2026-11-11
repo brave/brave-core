@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/tools/eslint_ts.py b/ui/webui/resources/tools/eslint_ts.py
-index b3f9ff70a599cab4937b53368b4705f125d005fc..0c823a3c6130b8f47723c370eb6893b4eff9a842 100755
+index 9712aafb042921a53f554e70b6e4c46ae3aeca41..9a5d9943137d565ceb811f5889778e0f166167b9 100755
 --- a/ui/webui/resources/tools/eslint_ts.py
 +++ b/ui/webui/resources/tools/eslint_ts.py
 @@ -122,5 +122,6 @@ def main(argv):

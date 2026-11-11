@@ -7,13 +7,14 @@ assert(!is_android)
 
 source_set("brave_account") {
   sources = [
-    "brave_account_row_handler.cc",
-    "brave_account_row_handler.h",
+    "brave_account_dialog_opener.cc",
+    "brave_account_dialog_opener.h",
   ]
 
   deps = [
     "//base",
-    "//brave/browser/ui/webui/brave_account",
+    "//brave/browser/ui/brave_account",
     "//brave/components/brave_account/mojom",
+    "//content/public/browser",
   ]
 }

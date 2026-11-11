@@ -164,8 +164,7 @@ export class TabFocusPageElement extends CrLitElement {
     return topic.match(/^\p{Emoji}/u)![0]
   }
 
-  protected onTopicClick_(e: Event) {
-    const index = Number((e.currentTarget as HTMLElement).dataset['index'])
+  protected onTopicClick_(index: number) {
     if (this.topics_[index]) {
       this.getFocusTabs_(this.topics_[index])
     }

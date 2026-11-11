@@ -149,7 +149,7 @@ void ZCashCreateTransparentToIronwoodTransactionTask::CreateTransaction() {
   CHECK(chain_tip_height_);
 
   auto pick_result = PickZCashTransparentInputs(
-      *utxo_map_, amount_, ZCashTargetOutputType::kOrchard);
+      *utxo_map_, amount_, ZCashTargetOutputType::kIronwood);
   if (!pick_result) {
     error_ = "Can't pick inputs";
     ScheduleWorkOnTask();

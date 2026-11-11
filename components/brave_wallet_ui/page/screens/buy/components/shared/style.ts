@@ -5,17 +5,17 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
-import { color, font } from '@brave/leo/tokens/css/variables'
-import Icon from '@brave/leo/react/icon'
-import LeoDialog from '@brave/leo/react/dialog'
-import LeoDropdown from '@brave/leo/react/dropdown'
-import Input from '@brave/leo/react/input'
+import { color, font } from '@brave/nala/tokens/css/variables'
+import Icon from '@brave/nala/react/icon'
+import LeoDialog from '@brave/nala/react/dialog'
+import LeoDropdown from '@brave/nala/react/dropdown'
+import Input from '@brave/nala/react/input'
 
 // Shared Styles
 import { WalletButton } from '../../../../../components/shared/style'
 import {
   layoutPanelWidth, //
-} from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const Label = styled.label`
   color: ${color.text.tertiary};

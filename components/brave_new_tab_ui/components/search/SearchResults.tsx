@@ -2,8 +2,9 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import { color, radius, spacing } from '@brave/leo/tokens/css/variables'
+import { color, radius, spacing } from '@brave/nala/tokens/css/variables'
 import { AutocompleteMatch, AutocompleteResult, OmniboxPopupSelection } from 'chrome://resources/mojo/components/omnibox/browser/searchbox.mojom-webui.js'
+import type { FormattedString } from 'chrome://resources/mojo/components/omnibox/browser/suggest_template_info.mojom-webui.js'
 import * as React from 'react'
 import styled from 'styled-components'
 import SearchResult from './SearchResult'
@@ -35,7 +36,7 @@ const Container = styled.div`
 
 // Handles opening an autocomplete match, which may or may not be part of an
 // autocomplete result.
-const openMatch = (match: AutocompleteMatch, line: number, event: React.MouseEvent | KeyboardEvent, searchEngine?: SearchEngineInfo) => {
+const openMatch = (resultSequenceId: number, match: AutocompleteMatch, line: number, event: React.MouseEvent | KeyboardEvent, searchEngine?: SearchEngineInfo) => {
   if (line === -1) {
     handleOpenURLClick(match.destinationUrl, event)
     return
@@ -45,7 +46,7 @@ const openMatch = (match: AutocompleteMatch, line: number, event: React.MouseEve
   if (searchEngine) {
     getNTPBrowserAPI().newTabMetrics.reportNTPSearchUsage(searchEngine.prepopulateId)
   }
-  omniboxController.openAutocompleteMatch(line, match.destinationUrl, true, button, {
+  omniboxController.openAutocompleteMatch(resultSequenceId, line, match.destinationUrl, true, button, {
     altKey: event.altKey,
     ctrlKey: event.ctrlKey,
     metaKey: event.metaKey,
@@ -70,9 +71,14 @@ const useUrlWhatYouTyped = (query: string) => React.useMemo(() => {
 
     return {
       destinationUrl: url.toString(),
-      contents: url.toString(),
-      description: '',
-      imageUrl: `chrome://favicon/size/64@1x/${q.toString()}`,
+      suggestTemplate: {
+        primaryText: { text: url.toString(), fragments: [], a11yText: null } as FormattedString,
+        secondaryText: { text: '', fragments: [], a11yText: null } as FormattedString,
+        image: {
+          url: `chrome://favicon/size/64@1x/${q.toString()}`,
+          dominantColor: ''
+        }
+      },
       allowedToBeDefaultMatch: true
     } as AutocompleteMatch
   } catch {
@@ -168,7 +174,7 @@ export default function SearchResults() {
         return;
       }
 
-      openMatch(match, result?.matches.indexOf(match) ?? -1, e, searchEngine)
+      openMatch(result?.sequenceId ?? 0, match, result?.matches.indexOf(match) ?? -1, e, searchEngine)
     }
     document.addEventListener('keydown', handler)
     return () => {
@@ -178,7 +184,7 @@ export default function SearchResults() {
 
   const onSearchResultClick = (match: AutocompleteMatch) => {
     const line = result?.matches.indexOf(match) ?? -1
-    return (e: React.MouseEvent) => openMatch(match, line, e, searchEngine)
+    return (e: React.MouseEvent) => openMatch(result?.sequenceId ?? 0, match, line, e, searchEngine)
   }
 
   return matches.length ? <Container className='search-results'>

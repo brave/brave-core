@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "chrome/browser/profiles/profile_window.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
@@ -22,7 +21,7 @@ class BraveSettingsUIBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveSettingsUIBrowserTest, GuestProfileLoadsSettings) {
   // Switch to guest profile and wait for browser to open
   profiles::SwitchToGuestProfile();
-  Browser* guest_browser = ui_test_utils::WaitForBrowserToOpen();
+  BrowserWindowInterface* guest_browser = ui_test_utils::WaitForBrowserToOpen();
   ASSERT_NE(guest_browser, nullptr);
 
   // Navigate to settings - this should trigger all BindInterface calls

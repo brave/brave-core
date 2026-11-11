@@ -15,6 +15,7 @@
 #include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_news/browser/brave_news_engine.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
@@ -83,7 +84,9 @@ class BraveNewsController
       history::HistoryService* history_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::unique_ptr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate,
-      std::unique_ptr<Delegate> delegate);
+      std::unique_ptr<Delegate> delegate,
+      bool is_first_run,
+      base::Time first_run_time);
   ~BraveNewsController() override;
   BraveNewsController(const BraveNewsController&) = delete;
   BraveNewsController& operator=(const BraveNewsController&) = delete;

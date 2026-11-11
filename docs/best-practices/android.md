@@ -334,11 +334,11 @@ In these cases, use direct `.java.patch` files instead. Also use direct
 
 ## ✅ `ProfileManager.getLastUsedRegularProfile()` Is Acceptable in Widgets
 
-**While the presubmit check flags `ProfileManager.getLastUsedRegularProfile()`
-as a banned pattern, it is acceptable in Android widget providers** (e.g.,
+**NEVER flag `ProfileManager.getLastUsedRegularProfile()` as a banned-pattern
+violation in Android widget providers** (e.g.,
 `QuickActionSearchAndBookmarkWidgetProvider`) where no Activity or WebContents
-context is available. This matches upstream Chromium's approach in their own
-widgets.
+context is available, even though presubmit flags it. This matches upstream
+Chromium's approach in their own widgets.
 
 ---
 
@@ -1149,13 +1149,135 @@ styled `Button`, `BottomSheetDialogFragment` over hand-rolled sheets,
 `MaterialAlertDialogBuilder` over custom modal views, `Snackbar`, `Chip`,
 `TextInputLayout`, `MaterialCardView`.
 
-**Brave subclasses are fine, and often required.** A class like
-`BraveSettingsSwitch extends MaterialSwitch` is the correct pattern, not a
-violation — it's how Brave adds theming or telemetry on top of Material. If a
-Brave subclass exists in the module, callers should use it instead of the raw
-Material class.
+**NEVER flag a Brave subclass of a Material component as a custom
+reimplementation.** A class like `BraveSettingsSwitch extends MaterialSwitch` is
+how Brave adds theming or telemetry on top of Material. If a Brave subclass
+exists in the module, callers should use it instead of the raw Material class.
 
-**Flag as `nit:` only, never a blocker.** Ask why Material wasn't used; the
-author may have a valid constraint that just isn't documented. Before flagging,
-verify the flagged class does **not** extend any `com.google.android.material.*`
-component (check the full class hierarchy, not just the file in the diff).
+**Flag as `nit:` only. NEVER make this a blocker.** Ask why Material wasn't
+used; the author may have a valid constraint that just isn't documented. Before
+flagging, verify the flagged class does **not** extend any
+`com.google.android.material.*` component (check the full class hierarchy, not
+just the file in the diff).
+
+---
+
+<a id="AND-056"></a>
+
+## ✅ Place New Java Files in Feature-Local Android Directories
+
+**Default: put new feature-specific Java files in the feature's Android
+directory, not the legacy Android Java tree.** In Chromium, prefer
+`chrome/browser/<feature>/android/` over the deprecated
+`chrome/android/java/src/org/chromium/chrome/browser/...` layout. In Brave, use
+`browser/<feature>/android/` rather than
+`android/java/org/chromium/chrome/browser/...` (paths relative to `brave-core`).
+This keeps Android code with the feature it implements.
+
+Illustrative GN configurations for a new standalone feature class (the
+`my_feature` files and target below are hypothetical). Assume the class uses
+`org.chromium.base` APIs, but no JNI or resources:
+
+```gn
+# ❌ WRONG - append standalone feature code to the legacy source list
+# android/brave_java_sources.gni (after the existing list definition)
+brave_java_sources += [
+  "../../brave/android/java/org/chromium/chrome/browser/my_feature/MyFeatureController.java",
+]
+```
+
+```gn
+# ✅ CORRECT - give the feature its own Android module
+# browser/my_feature/android/BUILD.gn
+import("//build/config/android/rules.gni")
+
+android_library("java") {
+  sources = [ "java/src/org/chromium/chrome/browser/my_feature/MyFeatureController.java" ]
+  deps = [ "//base:base_java" ]
+}
+```
+
+Consumers depend on the feature target instead of compiling its sources through
+`brave_java_sources`. For a caller compiled in `//chrome/android:chrome_java`,
+use the existing dependency hook:
+
+```gn
+# ✅ CORRECT - integrate the module as a dependency
+# build/android/config.gni (after the existing list definition)
+brave_chrome_java_deps += [ "//brave/browser/my_feature/android:java" ]
+```
+
+Keep the module's dependencies limited to the APIs it uses; do not add a reverse
+dependency on `//chrome/android:chrome_java`. If the caller is in another
+module, add the feature target to that caller's `deps` instead. Do not also add
+the feature's Java files to `brave_java_sources`.
+
+For an existing feature-local example, see
+[`browser/brave_origin/android/BUILD.gn`](../../browser/brave_origin/android/BUILD.gn),
+which defines `android_library("java")` for `BraveOriginServiceFactory.java`
+with its own dependencies and JNI generation. Its target is included in
+`brave_chrome_java_deps` in
+[`build/android/config.gni`](../../build/android/config.gni).
+
+`chrome/browser/android/` serves a different purpose: common browser-support
+code that feature-local Android code can depend on. **NEVER flag
+`chrome/browser/android/` as deprecated under this rule.** It is not the default
+home for feature-specific Java files.
+
+**Exception: NEVER flag new files that subclass upstream classes in deprecated
+locations for using the corresponding deprecated Brave location.** For example,
+`android/java/org/chromium/chrome/browser/app/bookmarks/BraveBookmarkActivity.java`
+extends upstream `BookmarkActivity` in
+`chrome/android/java/src/org/chromium/chrome/browser/app/bookmarks/`.
+
+The `brave_java_sources` GN source list in
+[`android/brave_java_sources.gni`](../../android/brave_java_sources.gni)
+includes these legacy sources under `android/java/org/chromium/chrome/browser/`,
+including `BraveBookmarkActivity.java`, and is appended to upstream
+`chrome_java_sources`. It also aggregates feature-local source lists, so
+membership in `brave_java_sources` alone does not determine a file's location.
+Use the default and subclass exception above to choose the directory.
+
+```gn
+# ✅ CORRECT - existing upstream subclass in the corresponding legacy location
+# android/brave_java_sources.gni (excerpt; other entries omitted)
+brave_java_sources = [
+  "../../brave/android/java/org/chromium/chrome/browser/app/bookmarks/BraveBookmarkActivity.java",
+]
+```
+
+---
+
+<a id="AND-057"></a>
+
+## ❌ Don't Give Decorative `ImageView`s a Content Description
+
+**Set `android:contentDescription="@null"` on an `ImageView` that is purely
+decorative**, rather than a string resource. An image is decorative when it
+isn't interactive and conveys nothing beyond nearby text, e.g. an icon beside a
+title or an onboarding illustration. A description there makes TalkBack read
+noise or repeat the adjacent label, and adds a needless translatable string. Use
+`@null`, not an empty string or an omitted attribute, so the intent is explicit.
+The same applies to `setContentDescription(...)` in Java.
+
+```xml
+<!-- ❌ WRONG - icon description repeats the adjacent title -->
+<ImageView
+    android:src="@drawable/ic_shield_done"
+    android:contentDescription="@string/brave_shields_title" />
+<TextView
+    android:text="@string/brave_shields_title" />
+
+<!-- ✅ CORRECT - decorative icon is skipped by screen readers -->
+<ImageView
+    android:src="@drawable/ic_shield_done"
+    android:contentDescription="@null" />
+<TextView
+    android:text="@string/brave_shields_title" />
+```
+
+Before flagging, confirm the image really is decorative. Images that carry
+meaning on their own still need a real description: clickable images, icon-only
+buttons, QR codes, and status icons with no accompanying text.
+
+---

@@ -14,6 +14,7 @@
 #include "base/strings/strcat.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
@@ -29,7 +30,6 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
@@ -41,6 +41,7 @@
 #include "content/public/common/content_paths.h"
 #include "content/public/common/content_switches.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "net/base/features.h"
 #include "net/dns/mock_host_resolver.h"
@@ -316,7 +317,7 @@ EphemeralStorageBrowserTest::GetValuesFromFrames(WebContents* web_contents) {
 WebContents* EphemeralStorageBrowserTest::LoadURLInNewTab(GURL url) {
   ui_test_utils::AllBrowserTabAddedWaiter add_tab;
   EXPECT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   return add_tab.Wait();
 }
@@ -854,7 +855,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
   // A browser with the same profile should share all values with the
   // first browser, including ephemeral storage values.
-  Browser* same_profile_browser = CreateBrowser(browser()->GetProfile());
+  BrowserWindowInterface* same_profile_browser =
+      CreateBrowser(browser()->GetProfile());
   ASSERT_TRUE(ui_test_utils::NavigateToURL(same_profile_browser,
                                            a_site_ephemeral_storage_url_));
   auto* same_profile_web_contents =
@@ -879,7 +881,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
   // A browser with a different profile shouldn't share any values with
   // the first set of browsers.
-  Browser* private_browser = CreateIncognitoBrowser(nullptr);
+  BrowserWindowInterface* private_browser = CreateIncognitoBrowser(nullptr);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(private_browser,
                                            a_site_ephemeral_storage_url_));
   auto* private_web_contents =
@@ -1478,6 +1480,35 @@ IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
   EXPECT_EQ("b.com", site_b_tab_values.main_frame.local_storage);
   EXPECT_EQ("b.com", site_b_tab_values.iframe_1.local_storage);
   EXPECT_EQ("b.com", site_b_tab_values.iframe_2.local_storage);
+}
+
+IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
+                       ShredClosesTabsWithoutRunningBeforeUnload) {
+  WebContents* site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+  ASSERT_TRUE(site_a_tab);
+  ASSERT_TRUE(content::ExecJs(site_a_tab, R"(
+    window.addEventListener('beforeunload', (event) => {
+      event.preventDefault();
+      event.returnValue = '';
+    });
+  )"));
+  content::PrepContentsForBeforeUnloadTest(site_a_tab);
+
+  auto* profile = browser()->GetProfile();
+  EphemeralStorageServiceFactory::GetInstance()
+      ->GetForContext(profile)
+      ->CleanupTLDFirstPartyStorage(site_a_tab->GetLastCommittedURL(),
+                                    site_a_tab->GetSiteInstance()
+                                        ->GetSecurityPrincipal()
+                                        .GetStoragePartitionConfig(),
+                                    true);
+  WaitForCleanupAfterKeepAlive(profile);
+
+  // A beforeunload dialog would have kept the tab open.
+  EXPECT_TRUE(base::test::RunUntil([&]() {
+    return browser()->tab_strip_model()->GetIndexOfWebContents(site_a_tab) ==
+           TabStripModel::kNoTab;
+  }));
 }
 
 IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,

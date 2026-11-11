@@ -28,7 +28,7 @@ void TokenStateManager::LoadState(ResultCallback callback) {
   BLOG(3, "Loading token state");
 
   database::table::ConfirmationTokens confirmation_tokens_database_table;
-  confirmation_tokens_database_table.GetAll(
+  confirmation_tokens_database_table.Load(
       base::BindOnce(&TokenStateManager::GetAllConfirmationTokensCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }

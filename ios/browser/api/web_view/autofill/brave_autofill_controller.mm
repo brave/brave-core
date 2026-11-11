@@ -9,9 +9,12 @@
 
 #include <string>
 
+#include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
+#include "base/location.h"
 #include "base/notimplemented.h"
 #include "base/strings/sys_string_conversions.h"
+#include "base/task/single_thread_task_runner.h"
 #include "brave/ios/browser/api/web_view/autofill/brave_web_view_autofill_client.h"
 #include "components/autofill/core/browser/foundations/autofill_client.h"
 #include "components/autofill/core/browser/ui/payments/card_unmask_prompt_options.h"
@@ -82,8 +85,9 @@ using UserDecision = autofill::AutofillClient::AddressPromptUserDecision;
 
 - (void)showAutofillPopup:(const std::vector<autofill::Suggestion>&)suggestions
        suggestionDelegate:
-           (const base::WeakPtr<autofill::AutofillSuggestionDelegate>&)
-               delegate {
+           (const base::WeakPtr<autofill::AutofillSuggestionDelegate>&)delegate
+                   formId:(autofill::FormGlobalId)formId
+                  fieldId:(autofill::FieldGlobalId)fieldId {
   // We only want Autofill suggestions.
   std::vector<autofill::Suggestion> filtered_suggestions;
   std::ranges::copy_if(
@@ -93,7 +97,9 @@ using UserDecision = autofill::AutofillClient::AddressPromptUserDecision;
                suggestion.type == autofill::SuggestionType::kCreditCardEntry;
       });
   [_autofillAgent showAutofillPopup:filtered_suggestions
-                 suggestionDelegate:delegate];
+                 suggestionDelegate:delegate
+                             formId:formId
+                            fieldId:fieldId];
 }
 
 - (void)hideAutofillPopup {
@@ -164,6 +170,11 @@ using UserDecision = autofill::AutofillClient::AddressPromptUserDecision;
 - (void)notifyFormsSeen:(std::vector<autofill::FormData>)updatedForms
                 inFrame:(web::WebFrame*)frame {
   [_autofillAgent notifyFormsSeen:updatedForms inFrame:frame];
+}
+
+- (void)scrollFieldIntoView:(const autofill::FieldRendererId&)field
+                    inFrame:(web::WebFrame*)frame {
+  [_autofillAgent scrollFieldIntoView:field inFrame:frame];
 }
 
 #pragma mark - CWVAutofillClientIOSBridge
@@ -292,6 +303,28 @@ using UserDecision = autofill::AutofillClient::AddressPromptUserDecision;
 
 - (void)didReceiveUnmaskOtpVerificationResult:
     (autofill::OtpUnmaskResult)unmaskResult {
+  NOTIMPLEMENTED();
+}
+
+- (BOOL)canAuthenticateUser {
+  // TODO(https://github.com/brave/brave-browser/issues/60051):
+  // Investigate if we should implement.
+  return NO;
+}
+
+- (void)authenticateUserWithReason:(NSString*)reason
+                        completion:(base::OnceCallback<void(bool)>)completion {
+  // Must never run synchronously.
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(std::move(completion), false));
+}
+
+- (BOOL)shouldRequireMandatoryReauth {
+  return NO;
+}
+
+- (void)showAutofillErrorDialogWithContext:
+    (const autofill::AutofillErrorDialogContext&)context {
   NOTIMPLEMENTED();
 }
 

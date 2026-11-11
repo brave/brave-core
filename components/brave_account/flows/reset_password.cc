@@ -12,10 +12,10 @@
 #include "base/functional/bind.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_account/brave_account_utils.h"
-#include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "brave/components/brave_account/flows/make_request.h"
 #include "brave/components/brave_account/mojom/reset_password.mojom.h"
 #include "brave/components/brave_account/state_internal.h"
+#include "brave/components/endpoint_client/with_headers.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_account {
@@ -94,8 +94,6 @@ void ResetPassword::Step3(
   auto request = MakeRequest<WithHeaders<endpoints::PasswordInit::Request>>();
   SetBearerToken(request, *verification_token);
   request.body.blinded_message = blinded_message;
-  request.body.initiating_service_name =
-      kServiceToString.at(mojom::Service::kAccounts);
   request.body.serialize_response = true;
 
   SendFlowOwnedRequest<endpoints::PasswordInit>(

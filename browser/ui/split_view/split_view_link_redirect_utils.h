@@ -7,19 +7,17 @@
 #define BRAVE_BROWSER_UI_SPLIT_VIEW_SPLIT_VIEW_LINK_REDIRECT_UTILS_H_
 
 namespace content {
-struct Referrer;
+class NavigationHandle;
 class WebContents;
 }  // namespace content
-
-class GURL;
 
 namespace split_view {
 
 // Manages redirecting navigations from the left pane in a split view to the
-// right pane when the split view is linked.
-bool MaybeRedirectToRightPane(content::WebContents* source,
-                              const GURL& url,
-                              const content::Referrer& referrer);
+// right pane when the split view is linked. The intercepted |handle| must have
+// an initiator origin so that the re-issued navigation keeps the original
+// initiator's identity.
+bool MaybeRedirectToRightPane(content::NavigationHandle& handle);
 
 // Sets the split tab ID on a |new_contents| if the |source| is the left pane of
 // a linked split view. This is used to temporarily mark a WebContents as

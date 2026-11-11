@@ -19,9 +19,16 @@ class ReaderModeButton: UIButton {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-    adjustsImageWhenHighlighted = false
-    setImage(UIImage(braveSystemNamed: "leo.product.speedreader"), for: .normal)
+    var configuration = UIButton.Configuration.plain()
+    configuration.baseBackgroundColor = .clear
+    configuration.contentInsets = .zero
+    configuration.image = UIImage(braveSystemNamed: "leo.product.speedreader")
+    self.configuration = configuration
     updateIconSize()
+
+    registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+      self.updateIconSize()
+    }
   }
 
   @available(*, unavailable)
@@ -53,21 +60,14 @@ class ReaderModeButton: UIButton {
 
   private var _readerModeState: ReaderModeState = .unavailable
 
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    updateIconSize()
-  }
-
   private func updateIconSize() {
     let sizeCategory = traitCollection.toolbarButtonContentSizeCategory
     let pointSize = UIFont.preferredFont(
       forTextStyle: .body,
       compatibleWith: .init(preferredContentSizeCategory: sizeCategory)
     ).pointSize
-    setPreferredSymbolConfiguration(
-      .init(pointSize: pointSize, weight: .regular, scale: .medium),
-      forImageIn: .normal
-    )
+    configuration?.preferredSymbolConfigurationForImage =
+      .init(pointSize: pointSize, weight: .regular, scale: .medium)
   }
 
   var readerModeState: ReaderModeState {

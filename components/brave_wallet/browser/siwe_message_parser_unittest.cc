@@ -12,7 +12,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 #include "url/origin.h"
-#include "url/url_constants.h"
 
 namespace brave_wallet {
 

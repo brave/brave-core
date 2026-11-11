@@ -71,6 +71,13 @@ void BraveVpnService::NotifySmartProxyRoutingStateChanged(bool enabled) {
     obs->OnSmartProxyRoutingStateChanged(enabled);
   }
 }
+
+void BraveVpnService::NotifyAgentFailure() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  for (const auto& obs : observers_) {
+    obs->OnAgentFailure();
+  }
+}
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace brave_vpn

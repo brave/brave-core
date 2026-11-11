@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-// Email Aliases – authentication/session JSON types
+// Email Aliases - authentication/session JSON types
 // https://brave.github.io/accounts/#/Email%20verification
 [none_as_absent_optional]
 namespace email_aliases {
 
-// Email Aliases – aliases management JSON types
+// Email Aliases - aliases management JSON types
 // Base URL: https://aliases.bravesoftware.com/manage
 
 // Request body for POST /manage (generate alias)
@@ -62,8 +62,14 @@ dictionary AliasListEntry {
 dictionary AliasListRequest {
 };
 
+dictionary AliasesAccountInfo {
+  long max_aliases_count;
+};
+
 // Response to GET /manage?status=active (alias list result)
 dictionary AliasListResponse {
+  AliasesAccountInfo info;
+
   // Array of AliasListEntry objects.
   AliasListEntry[] result;
 };

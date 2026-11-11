@@ -75,10 +75,12 @@ def _setup_logging(quiet: bool):
     stream = logging.StreamHandler(sys.stderr)
     stream.setFormatter(logging.Formatter('[boringtun] %(message)s'))
     if quiet:
-        _buffer = logging.handlers.MemoryHandler(capacity=10000,
-                                                 flushLevel=logging.CRITICAL,
-                                                 target=stream,
-                                                 flushOnClose=False)
+        _buffer = logging.handlers.MemoryHandler(
+            capacity=10000,
+            flushLevel=logging.CRITICAL,
+            target=stream,
+            flushOnClose=False,
+        )
         log.addHandler(_buffer)
     else:
         log.addHandler(stream)
@@ -114,7 +116,7 @@ def _finalize_logging(flush: bool):
 
 def _has_prebuilt_std(toolchain_root: Path, triple: str) -> bool:
     """Check whether prebuilt rust-std is installed for the given target.
- 
+
     A present rustlib/<triple>/lib/ with at least one libcore-*.rlib
     indicates the stdlib was installed via the toolchain's normal
     component-install mechanism. When this returns False, the caller
@@ -126,18 +128,19 @@ def _has_prebuilt_std(toolchain_root: Path, triple: str) -> bool:
     return any(target_lib_dir.glob('libcore-*.rlib'))
 
 
-def _build_merged_vendor(target_dir: Path, project_vendor: Path,
-                         rust_std_vendor: Path) -> Path:
+def _build_merged_vendor(
+    target_dir: Path, project_vendor: Path, rust_std_vendor: Path
+) -> Path:
     """Create a merged view containing both vendor directories.
- 
+
     Required because `-Zbuild-std` needs std's dependencies AND
     boringtun's dependencies (in "vendor") resolvable from the same
     crates-io source replacement. Cargo doesn't support two disjoint
     directory sources for crates-io.
- 
+
     The merged view uses symlinks: fast to create, zero byte duplication,
     and cargo's checksum verification reads through them transparently.
- 
+
     Placed under target_dir so it's ephemeral -- wiped when the cargo
     target dir is cleaned, never committed to the source tree.
     """
@@ -160,8 +163,9 @@ def _build_merged_vendor(target_dir: Path, project_vendor: Path,
             link = merged / name
             if name in seen:
                 link.unlink()
-            (merged / name).symlink_to(crate_dir.resolve(),
-                                       target_is_directory=True)
+            (merged / name).symlink_to(
+                crate_dir.resolve(), target_is_directory=True
+            )
             seen.add(name)
     return merged
 
@@ -189,6 +193,14 @@ def _ensure_win_clang_shim(binpath: Path, shim_dir: Path) -> Path:
     if not src.is_file():
         raise FileNotFoundError(f'clang-cl not found at {src}')
     shim_dir.mkdir(parents=True, exist_ok=True)
+    if sys.platform != 'win32':
+        # Remove the old POSIX hardlink before writing the PATH wrapper; it
+        # shares the compiler inode and makes Clang look for headers here.
+        dst = shim_dir / CLANG
+        if dst.is_symlink() or (dst.exists() and os.path.samefile(src, dst)):
+            dst.unlink()
+        return shim_dir
+
     dst = shim_dir / CLANG
     if dst.is_symlink() or dst.exists():
         dst.unlink()
@@ -199,22 +211,29 @@ def _ensure_win_clang_shim(binpath: Path, shim_dir: Path) -> Path:
     return shim_dir
 
 
-def _write_shell_wrapper(directory: Path, name: str, command: str,
-                         flags: list[str], *, flags_after_args: bool) -> Path:
+def _write_shell_wrapper(
+    directory: Path,
+    name: str,
+    command: str,
+    flags: list[str],
+    *,
+    flags_after_args: bool,
+) -> Path:
     """Write a host-appropriate shell wrapper invoking `command` with
     `flags` plus the user's args.
- 
-    Host (sys.platform) selects .cmd vs .sh; flags_after_args selects
-    the position of the user's args relative to our injected flags:
- 
+
+    Windows uses a .cmd suffix; POSIX wrappers are executable shell scripts.
+    flags_after_args selects the position of the user's args relative to our
+    injected flags:
+
     flags_after_args=False -> `"command" <flags> <args>`
     flags_after_args=True  -> `"command" <args> <flags>`
- 
+
     `command` is wrapped in double quotes; any path-quoting needed
     inside individual `flags` entries is the caller's responsibility
     (e.g. f'"{sysroot}"' for paths that may contain spaces). On POSIX
     hosts the resulting .sh is chmod'd 0755.
- 
+
     Returns the path to the written wrapper.
     """
     directory.mkdir(parents=True, exist_ok=True)
@@ -222,15 +241,17 @@ def _write_shell_wrapper(directory: Path, name: str, command: str,
     if sys.platform == 'win32':
         path = directory / f'{name}.cmd'
         argv = f'%* {flag_str}' if flags_after_args else f'{flag_str} %*'
-        path.write_text(f'@echo off\r\n"{command}" {argv}\r\n',
-                        encoding='ascii',
-                        newline='')
+        path.write_text(
+            f'@echo off\r\n"{command}" {argv}\r\n', encoding='ascii', newline=''
+        )
     else:
-        path = directory / f'{name}.sh'
+        path = directory / name
         argv = f'"$@" {flag_str}' if flags_after_args else f'{flag_str} "$@"'
-        path.write_text(f'#!/bin/sh\nexec "{command}" {argv}\n',
-                        encoding='ascii',
-                        newline='\n')
+        path.write_text(
+            f'#!/bin/sh\nexec "{command}" {argv}\n',
+            encoding='ascii',
+            newline='\n',
+        )
         path.chmod(0o755)
     return path
 
@@ -249,9 +270,13 @@ def _win_vc_tools_dir(winsysroot: Path) -> Path:
     if not msvc.is_dir():
         sys.exit(f'MSVC toolset dir not found at {msvc}')
     versions = sorted(
-        (d for d in msvc.iterdir()
-         if d.is_dir() and all(p.isdigit() for p in d.name.split('.'))),
-        key=lambda d: [int(p) for p in d.name.split('.')])
+        (
+            d
+            for d in msvc.iterdir()
+            if d.is_dir() and all(p.isdigit() for p in d.name.split('.'))
+        ),
+        key=lambda d: [int(p) for p in d.name.split('.')],
+    )
     if not versions:
         sys.exit(f'no MSVC toolset installed under {msvc}')
     return versions[-1]
@@ -272,14 +297,17 @@ def _win_sysroot_flags(winsysroot: Path, winsdkdir: Path | None) -> list[str]:
     """
     if winsdkdir and not (winsysroot / 'Windows Kits' / '10').is_dir():
         return [
-            '/vctoolsdir', f'"{_win_vc_tools_dir(winsysroot)}"', '/winsdkdir',
-            f'"{winsdkdir}"'
+            '/vctoolsdir',
+            f'"{_win_vc_tools_dir(winsysroot)}"',
+            '/winsdkdir',
+            f'"{winsdkdir}"',
         ]
     return ['/winsysroot', f'"{winsysroot}"']
 
 
-def _win_sysroot_flags_gnu(winsysroot: Path,
-                           winsdkdir: Path | None) -> list[str]:
+def _win_sysroot_flags_gnu(
+    winsysroot: Path, winsdkdir: Path | None
+) -> list[str]:
     """GNU-driver (bare clang) counterpart of _win_sysroot_flags().
 
     Bare clang does not accept the CL-style /winsysroot family; the
@@ -305,11 +333,16 @@ def _win_sysroot_flags_gnu(winsysroot: Path,
     return ['-Xmicrosoft-windows-sys-root', f'"{fwd(winsysroot)}"']
 
 
-def _make_compiler_wrappers(wrappers_dir: Path, binpath: Path,
-                            winsysroot: Path,
-                            winsdkdir: Path | None) -> tuple[Path, Path]:
-    """Create clang and clang-cl shell scripts that inject the Windows
-    sysroot in the dialect each compiler personality understands.
+def _make_compiler_wrappers(
+    wrappers_dir: Path, binpath: Path, winsysroot: Path, winsdkdir: Path | None
+) -> tuple[Path, Path]:
+    """Write compiler wrappers under `<CARGO_TARGET_DIR>/.tool-wrappers`.
+
+    The extensionless POSIX `clang` wrapper is also the PATH entry used by
+    build scripts that look up bare `clang`.
+
+    The wrappers inject the Windows sysroot in the dialect each compiler
+    personality understands.
 
     The bare-clang shim and clang-cl share CFLAGS via cc-rs, but they
     accept different sysroot flags: clang-cl takes the /winsysroot
@@ -320,9 +353,9 @@ def _make_compiler_wrappers(wrappers_dir: Path, binpath: Path,
     Wrappers move the sysroot out of CFLAGS so each personality gets
     its own form.
 
-    The clang wrapper invokes the local `clang` (placed by
-    _ensure_win_clang_shim) via a script-dir-relative path -- never
-    through PATH, which would risk recursing into the wrapper itself.
+    On Windows, the clang wrapper invokes the local `clang` executable placed
+    by _ensure_win_clang_shim. On POSIX, it invokes the compiler from binpath
+    directly so Clang finds its resource headers beside the toolchain.
 
     Returns (clang_wrapper, clang_cl_wrapper).
     """
@@ -336,15 +369,13 @@ def _make_compiler_wrappers(wrappers_dir: Path, binpath: Path,
         flags_after_args=False,
     )
 
-    # clang wrapper: invoke the sibling `clang` (the shim) by
-    # script-dir-relative path. %~dp0 / $(dirname "$0") avoids the
-    # cwd-relative ".\clang.exe" / "./clang" form, which would only
-    # resolve correctly when the build's cwd happens to be the wrappers
-    # directory.
+    # The Windows PATH shim must be a physical executable. On POSIX, invoke
+    # the real compiler path so Clang finds its resource headers relative to
+    # the LLVM installation rather than the temporary wrapper directory.
     if sys.platform == 'win32':
         local_clang = f'%~dp0{CLANG}'
     else:
-        local_clang = f'$(dirname "$0")/{CLANG}'
+        local_clang = str(binpath / CLANG)
     clang = _write_shell_wrapper(
         wrappers_dir,
         'clang',
@@ -360,7 +391,7 @@ def _make_compiler_wrappers(wrappers_dir: Path, binpath: Path,
 
 def _target_rustflags(target_os: str, libname: str) -> list[str]:
     """Non-default rustflags by target OS, applied to all build profiles.
- 
+
     Windows: +crt-static statically links the MSVC runtime so the
         shipped DLL has no vcruntime/msvcp redistributable dependency.
     Linux: -Wl,--no-undefined makes the linker fail on unresolved
@@ -385,7 +416,7 @@ def _target_rustflags(target_os: str, libname: str) -> list[str]:
 
 def _cross_compile_flags(triple, target_os, sysroot, mac_min_version) -> list:
     """Return the compiler flags shared between CFLAGS and the linker wrapper.
- 
+
     Includes --target, --sysroot (POSIX targets only; Windows targets
     use clang-cl's /winsysroot, which the caller adds separately), and
     -mmacosx-version-min when applicable. Order is stable but argument
@@ -399,13 +430,15 @@ def _cross_compile_flags(triple, target_os, sysroot, mac_min_version) -> list:
     return flags
 
 
-def _make_linker_wrapper(wrappers_dir: Path,
-                         linker_path: Path,
-                         sysroot: Path,
-                         target_os,
-                         triple=None,
-                         mac_min_version=None,
-                         winsdkdir: Path | None = None) -> Path:
+def _make_linker_wrapper(
+    wrappers_dir: Path,
+    linker_path: Path,
+    sysroot: Path,
+    target_os,
+    triple=None,
+    mac_min_version=None,
+    winsdkdir: Path | None = None,
+) -> Path:
     """Create a wrapper script that invokes the given linker with appropriate
     flags. On Windows, this is used to pass /winsysroot to the linker in
     cross-builds. On macOS, this is used to select clang with -fuse-ld=lld
@@ -427,7 +460,8 @@ def _make_linker_wrapper(wrappers_dir: Path,
         flags_after_args = True
     else:
         flags = ['-fuse-ld=lld'] + _cross_compile_flags(
-            triple, target_os, sysroot, mac_min_version)
+            triple, target_os, sysroot, mac_min_version
+        )
         flags_after_args = False
 
     return _write_shell_wrapper(
@@ -439,21 +473,23 @@ def _make_linker_wrapper(wrappers_dir: Path,
     )
 
 
-def _setup_cc_env(env,
-                  triple,
-                  target_os,
-                  wrappers_dir: Path,
-                  binpath: Path,
-                  sysroot: Path,
-                  mac_min_version,
-                  win_sdk_dir=None):
+def _setup_cc_env(
+    env,
+    triple,
+    target_os,
+    wrappers_dir: Path,
+    binpath: Path,
+    sysroot: Path,
+    mac_min_version,
+    win_sdk_dir=None,
+):
     """Configure env vars for cc-rs and cargo's target linker.
- 
+
     Ring and other Rust crates that build C via build.rs use cc-rs,
     which looks up CC_<triple>, CFLAGS_<triple>, AR_<triple>. Cargo
     itself looks up CARGO_TARGET_<TRIPLE>_LINKER. All of these are
     expected to be set consistently for a clean cross-compile.
- 
+
     CRATE_CC_NO_DEFAULTS=1 stops cc-rs from adding host-probed flags
     on top of what we pass, which is essential for cross-builds where
     host defaults would be wrong.
@@ -473,17 +509,27 @@ def _setup_cc_env(env,
             # Discards the bare-clang wrapper return value: that wrapper
             # exists only for ring's PATH-based clang lookup; cc_path
             # below is the clang-cl wrapper used as CC_<triple>.
-            _, cc_path = _make_compiler_wrappers(wrappers_dir, binpath,
-                                                 sysroot, win_sdk_dir)
+            _, cc_path = _make_compiler_wrappers(
+                wrappers_dir, binpath, sysroot, win_sdk_dir
+            )
         else:
             cc_path = binpath / cc_name
         ar_path = binpath / ar_name
-        linker_path = _make_linker_wrapper(wrappers_dir, binpath / link_name,
-                                           sysroot, target_os, triple,
-                                           mac_min_version, win_sdk_dir)
+        linker_path = _make_linker_wrapper(
+            wrappers_dir,
+            binpath / link_name,
+            sysroot,
+            target_os,
+            triple,
+            mac_min_version,
+            win_sdk_dir,
+        )
 
-        for tool, label in [(cc_path, 'CC'), (ar_path, 'AR'),
-                            (linker_path, 'Linker')]:
+        for tool, label in [
+            (cc_path, 'CC'),
+            (ar_path, 'AR'),
+            (linker_path, 'Linker'),
+        ]:
             if not tool.is_file():
                 raise FileNotFoundError(f'{label} not found at {tool}')
 
@@ -492,72 +538,89 @@ def _setup_cc_env(env,
         env[f'CARGO_TARGET_{triple_env_suffix_uc}_LINKER'] = str(linker_path)
 
     env[f'CFLAGS_{triple_env_suffix_lc}'] = ' '.join(
-        _cross_compile_flags(triple, target_os, sysroot, mac_min_version))
+        _cross_compile_flags(triple, target_os, sysroot, mac_min_version)
+    )
 
 
-def _run_cargo(cargo,
-               manifest,
-               triple,
-               target_os,
-               libname,
-               env,
-               *,
-               is_debug,
-               locked,
-               build_std,
-               merged_vendor=None):
+def _run_cargo(
+    cargo,
+    manifest,
+    triple,
+    target_os,
+    libname,
+    env,
+    *,
+    is_debug,
+    locked,
+    build_std,
+    merged_vendor=None,
+):
     """Invoke `cargo build` with our pinned configuration.
- 
+
     Always passes --offline so cargo cannot reach the network and must
     resolve from the vendored sources. --locked is the default; pass
     locked=False only on first-time setup to allow Cargo.lock generation.
- 
+
     When build_std is True, also passes -Zbuild-std=std,panic_abort and
     --config source.vendored-sources.directory=<merged_vendor> so std
     and project crates resolve from a single vendor view.
- 
+
     On failure, raises subprocess.CalledProcessError. In quiet mode,
     cargo's stdout/stderr is appended to the log buffer so main()'s
     failure path can flush it alongside our progress logs.
     """
     cmd = [
-        cargo, 'build', '--target', triple, '-p', 'boringtun', '--offline',
+        cargo,
+        'build',
+        '--target',
+        triple,
+        '-p',
+        'boringtun',
+        '--offline',
         '--manifest-path',
-        str(manifest)
+        str(manifest),
     ]
     if locked:
         cmd.append('--locked')
     if not is_debug:
         cmd.append('--release')
         # Release profile overrides to match BoringTun's upstream configuration.
-        cmd.extend([
-            '--config',
-            'profile.release.lto="fat"',
-            '--config',
-            'profile.release.codegen-units=1',
-        ])
+        cmd.extend(
+            [
+                '--config',
+                'profile.release.lto="fat"',
+                '--config',
+                'profile.release.codegen-units=1',
+            ]
+        )
 
     rustflags = _target_rustflags(target_os, libname)
     if rustflags:
         rustflags_toml = '[' + ', '.join(f'"{f}"' for f in rustflags) + ']'
-        cmd.extend([
-            '--config',
-            f'target.{triple}.rustflags={rustflags_toml}',
-        ])
+        cmd.extend(
+            [
+                '--config',
+                f'target.{triple}.rustflags={rustflags_toml}',
+            ]
+        )
 
     if build_std:
-        cmd.extend([
-            '-Zbuild-std=std,panic_abort',
-            '-Zbuild-std-features=panic-unwind',
-        ])
+        cmd.extend(
+            [
+                '-Zbuild-std=std,panic_abort',
+                '-Zbuild-std-features=panic-unwind',
+            ]
+        )
         if merged_vendor is None:
             raise ValueError('build_std requires merged_vendor')
         # Fix slashes for Cargo's config parser on all platforms.
         merged_str = str(merged_vendor).replace('\\', '/')
-        cmd.extend([
-            '--config',
-            f'source.vendored-sources.directory="{merged_str}"',
-        ])
+        cmd.extend(
+            [
+                '--config',
+                f'source.vendored-sources.directory="{merged_str}"',
+            ]
+        )
 
     log.info('$ ' + ' '.join(cmd))
     # Capture cargo output so success is silent, when logging is buffered.
@@ -565,25 +628,28 @@ def _run_cargo(cargo,
     # output together. Run from the manifest's dir so cargo's config
     # discovery finds .cargo/config.toml.
     quiet = _is_logging_buffered()
-    result = subprocess.run(cmd,
-                            env=env,
-                            cwd=manifest.parent,
-                            capture_output=quiet,
-                            text=True,
-                            check=False)
+    result = subprocess.run(
+        cmd,
+        env=env,
+        cwd=manifest.parent,
+        capture_output=quiet,
+        text=True,
+        check=False,
+    )
     if quiet:
         if result.stdout:
             log.info(result.stdout.rstrip())
         if result.stderr:
             log.error(result.stderr.rstrip())
     if result.returncode != 0:
-        raise subprocess.CalledProcessError(result.returncode, cmd,
-                                            result.stdout, result.stderr)
+        raise subprocess.CalledProcessError(
+            result.returncode, cmd, result.stdout, result.stderr
+        )
 
 
 def _locate_cargo_and_rustc(rust_sysroot: Path | None, src_root: Path):
     """Resolve cargo and rustc within the bundled Rust toolchain.
- 
+
     Resolution order:
     1. --rust-sysroot (passed by BUILD.gn from Chromium's rust_sysroot).
     2. Auto-derive third_party/rust-toolchain from this script's location
@@ -602,49 +668,53 @@ def _locate_cargo_and_rustc(rust_sysroot: Path | None, src_root: Path):
     cargo = toolchain_bin / CARGO
     rustc = toolchain_bin / RUSTC
     if not cargo.exists():
-        sys.exit(f'cargo not found at {cargo}: pass --rust-sysroot or '
-                 f'ensure the bundled toolchain is present')
+        sys.exit(
+            f'cargo not found at {cargo}: pass --rust-sysroot or '
+            f'ensure the bundled toolchain is present'
+        )
     if not rustc.exists():
-        sys.exit(f'rustc not found at {rustc}: bundled toolchain is '
-                 f'incomplete')
+        sys.exit(f'rustc not found at {rustc}: bundled toolchain is incomplete')
     return str(cargo), rustc, toolchain_bin
 
 
 # Static scrub list -- known names that affect cargo/rustc behavior.
-_STATIC_SCRUB = frozenset({
-    # Flag-injection vectors. CARGO_ENCODED_* take precedence over the
-    # non-encoded variants and over .cargo/config.toml, so both forms
-    # must be scrubbed.
-    'RUSTFLAGS',
-    'CARGO_ENCODED_RUSTFLAGS',
-    'RUSTDOCFLAGS',
-    'CARGO_ENCODED_RUSTDOCFLAGS',
-    'CARGO_BUILD_RUSTFLAGS',
-    # Build target / wrapper override.
-    'CARGO_BUILD_TARGET',
-    'RUSTC_WRAPPER',
-    'RUSTC_WORKSPACE_WRAPPER',
-    # Blind rustup's shim if it gets invoked via PATH by a build script.
-    # Without its env vars, it falls through to exec'ing whatever `rustc`
-    # it can find, rather than trying to install toolchains or components
-    # mid-build. Makes the build robust against any local rustup state.
-    'RUSTUP_HOME',
-    'RUSTUP_TOOLCHAIN',
-    'RUSTUP_DIST_SERVER',
-    'RUSTUP_UPDATE_ROOT',
-})
+_STATIC_SCRUB = frozenset(
+    {
+        # Flag-injection vectors. CARGO_ENCODED_* take precedence over the
+        # non-encoded variants and over .cargo/config.toml, so both forms
+        # must be scrubbed.
+        'RUSTFLAGS',
+        'CARGO_ENCODED_RUSTFLAGS',
+        'RUSTDOCFLAGS',
+        'CARGO_ENCODED_RUSTDOCFLAGS',
+        'CARGO_BUILD_RUSTFLAGS',
+        # Build target / wrapper override.
+        'CARGO_BUILD_TARGET',
+        'RUSTC_WRAPPER',
+        'RUSTC_WORKSPACE_WRAPPER',
+        # Blind rustup's shim if it gets invoked via PATH by a build script.
+        # Without its env vars, it falls through to exec'ing whatever `rustc`
+        # it can find, rather than trying to install toolchains or components
+        # mid-build. Makes the build robust against any local rustup state.
+        'RUSTUP_HOME',
+        'RUSTUP_TOOLCHAIN',
+        'RUSTUP_DIST_SERVER',
+        'RUSTUP_UPDATE_ROOT',
+    }
+)
 
 
-def _make_isolated_env(toolchain_bin: Path, rustc: Path, cargo_home: Path,
-                       target_dir: Path) -> dict:
+def _make_isolated_env(
+    toolchain_bin: Path, rustc: Path, cargo_home: Path, target_dir: Path
+) -> dict:
     """Build a process env dict with all flag-injection vectors scrubbed.
- 
+
         Drops anything inherited from Chromium's build that could change
     cargo's behavior; this build depends only on our own config.
     Untrusted upstream environments are also a concern -- these env
     vars are how an attacker would inject rustc flags to disable safety
     checks, alter codegen, or smuggle in a malicious linker/wrapper.
- 
+
     Sets RUSTC to the bundled rustc and prepends the bundled bin to
     PATH so any sibling tools (rustdoc, rustfmt) resolve consistently
     rather than via rustup's shim.
@@ -663,7 +733,8 @@ def _make_isolated_env(toolchain_bin: Path, rustc: Path, cargo_home: Path,
     # RUSTFLAGS). The triple varies, so scrub by pattern.
     for v in list(env):
         if v.startswith('CARGO_TARGET_') and v.endswith(
-            ('_RUSTFLAGS', '_LINKER')):
+            ('_RUSTFLAGS', '_LINKER')
+        ):
             env.pop(v, None)
 
     # Pin cargo to the bundled rustc (not whatever rustup's shim on PATH
@@ -707,63 +778,79 @@ def _write_depfile(depfile_path, stamp_path, vendor_dir):
         lines.append(f'  {escape(rel(f))}{suffix}')
 
     depfile_path.parent.mkdir(parents=True, exist_ok=True)
-    depfile_path.write_text('\n'.join(lines) + '\n',
-                            encoding='utf-8',
-                            newline='\n')
+    depfile_path.write_text(
+        '\n'.join(lines) + '\n', encoding='utf-8', newline='\n'
+    )
     log.info(f'depfile -> {depfile_path} ({len(checksums)} vendored crates)')
 
 
 def main():
     start = time.monotonic()
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('--target-os',
-                    required=True,
-                    choices=['win', 'linux', 'mac'])
-    ap.add_argument('--target-cpu',
-                    required=True,
-                    choices=['x86', 'x64', 'arm64'])
-    ap.add_argument('--debug',
-                    action='store_true',
-                    help='Build debug mode (default is release).')
+    ap.add_argument(
+        '--target-os', required=True, choices=['win', 'linux', 'mac']
+    )
+    ap.add_argument(
+        '--target-cpu', required=True, choices=['x86', 'x64', 'arm64']
+    )
+    ap.add_argument(
+        '--debug',
+        action='store_true',
+        help='Build debug mode (default is release).',
+    )
     ap.add_argument('--cargo-target-dir')
-    ap.add_argument('--rust-sysroot',
-                    help='Path to the bundled Rust toolchain root '
-                    '(typically src/third_party/rust-toolchain). When '
-                    'absent, the script auto-derives it from its own '
-                    'location.')
-    ap.add_argument('--cc-binpath',
-                    help='Path to C compiler bin directory for the target '
-                    'platform, if hermetic toolchain is used.')
-    ap.add_argument('--cc-sysroot',
-                    help='Path to the sysroot for the target platform, if '
-                    'needed. On Windows, it should be the MSVC winsysroot.')
-    ap.add_argument('--win-sdk-dir',
-                    help='Path to the Windows SDK root (e.g. "C:\\Program '
-                    'Files (x86)\\Windows Kits\\10"). Only used when the '
-                    'SDK does not live under --cc-sysroot as '
-                    '"Windows Kits\\10", i.e. a locally installed Visual '
-                    'Studio rather than the hermetic toolchain package; '
-                    'hermetic layouts keep using /winsysroot.')
-    ap.add_argument('--mac-min-version',
-                    help='Minimum macOS version to target, e.g. "12.0". Only '
-                    'needed for cross-building on macOS.')
-    ap.add_argument('--output-lib',
-                    help='Optional extra path to copy the built lib to.')
-    ap.add_argument('--output-headers',
-                    help='Optional extra path to copy the header files to.')
+    ap.add_argument(
+        '--rust-sysroot',
+        help='Path to the bundled Rust toolchain root '
+        '(typically src/third_party/rust-toolchain). When '
+        'absent, the script auto-derives it from its own '
+        'location.',
+    )
+    ap.add_argument(
+        '--cc-binpath',
+        help='Path to C compiler bin directory for the target '
+        'platform, if hermetic toolchain is used.',
+    )
+    ap.add_argument(
+        '--cc-sysroot',
+        help='Path to the sysroot for the target platform, if '
+        'needed. On Windows, it should be the MSVC winsysroot.',
+    )
+    ap.add_argument(
+        '--win-sdk-dir',
+        help='Path to the Windows SDK root (e.g. "C:\\Program '
+        'Files (x86)\\Windows Kits\\10"). Only used when the '
+        'SDK does not live under --cc-sysroot as '
+        '"Windows Kits\\10", i.e. a locally installed Visual '
+        'Studio rather than the hermetic toolchain package; '
+        'hermetic layouts keep using /winsysroot.',
+    )
+    ap.add_argument(
+        '--mac-min-version',
+        help='Minimum macOS version to target, e.g. "12.0". Only '
+        'needed for cross-building on macOS.',
+    )
+    ap.add_argument(
+        '--output-lib', help='Optional extra path to copy the built lib to.'
+    )
+    ap.add_argument(
+        '--output-headers',
+        help='Optional extra path to copy the header files to.',
+    )
     ap.add_argument('--depfile', help='Write this depfile for GN.')
     ap.add_argument('--stamp', help='Touch this file on success (for GN).')
-    ap.add_argument('--no-locked',
-                    dest='locked',
-                    action='store_false',
-                    default=True)
-    ap.add_argument('--quiet-until-error',
-                    action='store_true',
-                    help='Buffer all output (script progress logs AND '
-                    'cargo\'s stdout/stderr) and only flush on '
-                    'failure. Default is live streaming. GN actions '
-                    'set this so successful builds stay clean in '
-                    'ninja output.')
+    ap.add_argument(
+        '--no-locked', dest='locked', action='store_false', default=True
+    )
+    ap.add_argument(
+        '--quiet-until-error',
+        action='store_true',
+        help='Buffer all output (script progress logs AND '
+        'cargo\'s stdout/stderr) and only flush on '
+        'failure. Default is live streaming. GN actions '
+        'set this so successful builds stay clean in '
+        'ninja output.',
+    )
 
     args = ap.parse_args()
     _setup_logging(args.quiet_until_error)
@@ -774,20 +861,24 @@ def main():
     src_root = script.parents[3]
     manifest = boringtun / 'Cargo.toml'
     cargo_home = boringtun / '.cargo-home'
-    target_dir = (Path(args.cargo_target_dir).resolve()
-                  if args.cargo_target_dir else boringtun / 'target')
+    target_dir = (
+        Path(args.cargo_target_dir).resolve()
+        if args.cargo_target_dir
+        else boringtun / 'target'
+    )
     wrappers_dir = target_dir / '.tool-wrappers'
 
-    rust_sysroot = (Path(args.rust_sysroot).resolve()
-                    if args.rust_sysroot else None)
+    rust_sysroot = (
+        Path(args.rust_sysroot).resolve() if args.rust_sysroot else None
+    )
     cargo, rustc, toolchain_bin = _locate_cargo_and_rustc(
-        rust_sysroot, src_root)
+        rust_sysroot, src_root
+    )
     env = _make_isolated_env(toolchain_bin, rustc, cargo_home, target_dir)
 
     bin_path = Path(args.cc_binpath).resolve() if args.cc_binpath else None
     sysroot_path = Path(args.cc_sysroot).resolve() if args.cc_sysroot else None
-    win_sdk_dir = Path(
-        args.win_sdk_dir).resolve() if args.win_sdk_dir else None
+    win_sdk_dir = Path(args.win_sdk_dir).resolve() if args.win_sdk_dir else None
 
     if bin_path:
         extra = str(bin_path)
@@ -808,8 +899,16 @@ def main():
     triple = TRIPLE[(args.target_os, args.target_cpu)]
 
     # Set up any necessary C compiler env vars for build scripts.
-    _setup_cc_env(env, triple, args.target_os, wrappers_dir, bin_path,
-                  sysroot_path, args.mac_min_version, win_sdk_dir)
+    _setup_cc_env(
+        env,
+        triple,
+        args.target_os,
+        wrappers_dir,
+        bin_path,
+        sysroot_path,
+        args.mac_min_version,
+        win_sdk_dir,
+    )
 
     # Decide whether to compile std from source. Brave's bundled rust
     # toolchain ships prebuilt rust-std only for the host triple per
@@ -822,29 +921,40 @@ def main():
         # -Z flags require nightly unless RUSTC_BOOTSTRAP is set.
         # Chromium's own Rust builds use this pattern; we follow suit.
         env['RUSTC_BOOTSTRAP'] = '1'
-        rust_std_vendor = (toolchain_bin.parent / 'lib' / 'rustlib' / 'src' /
-                           'rust' / 'library' / 'vendor')
+        rust_std_vendor = (
+            toolchain_bin.parent
+            / 'lib'
+            / 'rustlib'
+            / 'src'
+            / 'rust'
+            / 'library'
+            / 'vendor'
+        )
         if not rust_std_vendor.is_dir():
-            sys.exit(f'rust-src vendor not found at {rust_std_vendor}; '
-                     'cannot build std from source.')
-        merged_vendor = _build_merged_vendor(target_dir, boringtun / 'vendor',
-                                             rust_std_vendor)
+            sys.exit(
+                f'rust-src vendor not found at {rust_std_vendor}; '
+                'cannot build std from source.'
+            )
+        merged_vendor = _build_merged_vendor(
+            target_dir, boringtun / 'vendor', rust_std_vendor
+        )
         log.info(f'merged vendor:    {merged_vendor}')
-        log.info(
-            f'prebuilt rust-std not found for {triple}; using -Zbuild-std')
+        log.info(f'prebuilt rust-std not found for {triple}; using -Zbuild-std')
     else:
         log.info(f'using prebuilt rust-std for {triple}')
 
-    _run_cargo(cargo,
-               manifest,
-               triple,
-               args.target_os,
-               lib_filename,
-               env,
-               is_debug=args.debug,
-               locked=args.locked,
-               build_std=build_std,
-               merged_vendor=merged_vendor)
+    _run_cargo(
+        cargo,
+        manifest,
+        triple,
+        args.target_os,
+        lib_filename,
+        env,
+        is_debug=args.debug,
+        locked=args.locked,
+        build_std=build_std,
+        merged_vendor=merged_vendor,
+    )
 
     if args.output_lib:
         profile = 'debug' if args.debug else 'release'
@@ -866,8 +976,9 @@ def main():
         log.info(f'header -> {include_dir / "wireguard_ffi.h"}')
 
     if args.depfile and args.stamp:
-        _write_depfile(Path(args.depfile), Path(args.stamp),
-                       boringtun / 'vendor')
+        _write_depfile(
+            Path(args.depfile), Path(args.stamp), boringtun / 'vendor'
+        )
 
     if args.stamp:
         Path(args.stamp).parent.mkdir(parents=True, exist_ok=True)

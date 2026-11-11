@@ -64,7 +64,7 @@
         android:src="@drawable/onboarding_illustration"
         android:background="@color/schemes_surface_container"
         android:padding="@dimen/onboarding_illustration_padding"
-        android:contentDescription="@string/brave_onboarding_help_brave_search_illustration_description"
+        android:contentDescription="@null"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/image_start_guide"

@@ -5,8 +5,14 @@
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 
+#include <string>
+
+#include "base/command_line.h"
 #include "base/feature_list.h"
+#include "brave/browser/ui/tabs/public/switches.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
@@ -25,15 +31,17 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kVerticalTabsShowTitleOnWindow, false);
 #endif
 
+#if !BUILDFLAG(IS_ANDROID)
   if (base::FeatureList::IsEnabled(tabs::kBraveVerticalTabHideCompletely)) {
     registry->RegisterBooleanPref(kVerticalTabsHideCompletelyWhenCollapsed,
                                   false);
   }
+  registry->RegisterBooleanPref(kVerticalTabsOnRight, false);
+#endif
 
   registry->RegisterBooleanPref(kVerticalTabsFloatingEnabled, true);
   registry->RegisterBooleanPref(kVerticalTabsShowToggleButton, true);
   registry->RegisterIntegerPref(kVerticalTabsExpandedWidth, 220);
-  registry->RegisterBooleanPref(kVerticalTabsOnRight, false);
   registry->RegisterBooleanPref(kVerticalTabsShowScrollbar, false);
   registry->RegisterBooleanPref(kShowHorizontalTabScrollButtons, false);
 
@@ -57,7 +65,35 @@ void MigrateBraveProfilePrefs(PrefService* prefs) {
       base::FeatureList::IsEnabled(tabs::kBraveVerticalTabScrollBar)) {
     prefs->SetBoolean(kVerticalTabsShowScrollbar, true);
   }
+
+  // Added 10/2026.
+  if (auto* pref = prefs->FindPreference(kMRUCyclingEnabled);
+      pref && !pref->IsDefaultValue()) {
+    prefs->SetBoolean(prefs::kCtrlTabMru, pref->GetValue()->GetBool());
+    prefs->ClearPref(kMRUCyclingEnabled);
+  }
 }
+
+#if !BUILDFLAG(IS_ANDROID)
+void MaybeApplyVerticalTabMigrationTestingOverride(PrefService* prefs) {
+  auto* command_line = base::CommandLine::ForCurrentProcess();
+  const std::string value =
+      command_line->HasSwitch(tabs::switches::kVerticalTabMigrationSwitch)
+          ? command_line->GetSwitchValueASCII(
+                tabs::switches::kVerticalTabMigrationSwitch)
+          : "";
+  if (value == tabs::switches::kVerticalTabMigrationForceUpstreamValue) {
+    prefs->SetBoolean(prefs::kVerticalTabsEnabled, true);
+    return;
+  }
+
+  // Unset/Default -> falls back to upstream's own default (false);
+  // VerticalTabController::SupportsBraveVerticalTabs() only considers the
+  // switch value, and having the pref turned on simultaneously would cause
+  // crash.
+  prefs->ClearPref(prefs::kVerticalTabsEnabled);
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kCompactHorizontalTabs, false);

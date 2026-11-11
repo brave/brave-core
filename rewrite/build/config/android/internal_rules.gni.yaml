@@ -1,0 +1,53 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Rewrite the bytecode of the Brave-listed compiled jars
+
+      Inside the `_has_sources` branch, after its processed jar path is chosen.
+    regex:
+      re_pattern: '(\n( *)_processed_jar_path = _javac_jar_path\n *\}\n)'
+      replace: |
+        \1        foreach(bytecode_jar, brave_bytecode_jars) {
+                  if (rebase_path(_javac_jar_path, root_build_dir) == bytecode_jar) {
+                    _processed_jar_path =
+                        "$target_out_dir/$target_name.bytecode-rewritten.jar"
+                  }
+                }
+
+  - description: Give java libraries their full javac classpath.
+    append_to_target:
+      target: _build_config_target_name
+      type: write_build_config
+      code: |-
+        if (_type == "java_library") {
+          needs_full_javac_classpath = true
+        }
+
+  - description: |-
+      Run the Brave bytecode rewriter over the Brave-listed jars
+
+      Before the unprocessed jar is filtered and processed further.
+    add_before_line:
+      line: if (_filter_jar && _is_prebuilt) {
+      code: |2-
+              _rebased_unprocessed_jar_path =
+                  rebase_path(_unprocessed_jar_path, root_build_dir)
+              _rebased_javac_jar_path = ""
+              if (_has_sources) {
+                _rebased_javac_jar_path = rebase_path(_javac_jar_path, root_build_dir)
+              }
+              foreach(bytecode_jar, brave_bytecode_jars) {
+                if (_rebased_unprocessed_jar_path == bytecode_jar ||
+                    _rebased_javac_jar_path == bytecode_jar) {
+                  _bytecode_rewriter_output_jar = _processed_jar_path
+                  brave_bytecode_rewriter("${target_name}__bytecode_rewrite") {
+                    build_config = _build_config
+                  }
+                  _unprocessed_jar_deps += [ ":${target_name}__bytecode_rewrite" ]
+                  _unprocessed_jar_path = _bytecode_rewriter_output_jar
+                }
+              }

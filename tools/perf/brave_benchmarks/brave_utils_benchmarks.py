@@ -7,7 +7,7 @@
 #
 # Used as part of chromium src/tools/perf/benchmarks/
 # Uses the the same code conventions (including pylint).
-# pylint: disable=import-error, no-self-use
+# pylint: disable=import-error
 # pylint: disable=no-name-in-module, too-few-public-methods
 # pytype: disable=import-error
 
@@ -17,6 +17,8 @@ from core import perf_benchmark
 
 from core.path_util import SysPath, GetChromiumSrcDir
 
+from telemetry.web_perf import timeline_based_measurement
+
 with SysPath(os.path.join(GetChromiumSrcDir(), 'brave', 'tools', 'perf')):
   from brave_page_sets.brave_perf_utils_pages import BravePerfUtilsStorySet
 
@@ -24,11 +26,19 @@ with SysPath(os.path.join(GetChromiumSrcDir(), 'brave', 'tools', 'perf')):
 class BraveUtilsBenchmark(perf_benchmark.PerfBenchmark):
   """A special benchmark for utility purposes.
 
-    Doesn't measure anything.
+  Doesn't measure anything.
   """
 
   def CreateStorySet(self, options):
     return BravePerfUtilsStorySet(30, False, options)
+
+  def CreateCoreTimelineBasedMeasurementOptions(self):
+    # This benchmark only updates a profile. Chrome tracing makes trace
+    # shutdown attach DevTools to every restored tab, and a discarded one
+    # hangs until Log.enable times out.
+    options = timeline_based_measurement.Options()
+    options.config.enable_chrome_trace = False
+    return options
 
   @classmethod
   def Name(cls):
@@ -37,8 +47,9 @@ class BraveUtilsBenchmark(perf_benchmark.PerfBenchmark):
 
 class BraveUtilsOnlineBenchmark(BraveUtilsBenchmark):
   """A version of BraveUtilsBenchmark with an internet connection."""
+
   options = {
-      'use_live_sites': True,
+    'use_live_sites': True,
   }
   # A default delay.
   # SB database update is started <=5 minutes after browser start

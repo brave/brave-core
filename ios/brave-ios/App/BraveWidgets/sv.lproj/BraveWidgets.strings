@@ -71,6 +71,9 @@
 "e13lS3-VBH4G6" = "Var det ”Historik” du sökte efter?";
 
 /* (No Comment) */
+"e13lS3-vQ8mZ1" = "Bara för att bekräfta, du ville ha \"Leo AI-röstinmatning\"?";
+
+/* (No Comment) */
 "e13lS3-vs094F" = "Var det ”Ny privat flik” du sökte efter?";
 
 /* (No Comment) */
@@ -108,6 +111,9 @@
 
 /* (No Comment) */
 "EvESs0-VBH4G6" = "Var det ”Historik” du sökte efter?";
+
+/* (No Comment) */
+"EvESs0-vQ8mZ1" = "Bara för att bekräfta, du ville ha \"Leo AI-röstinmatning\"?";
 
 /* (No Comment) */
 "EvESs0-vs094F" = "Var det ”Ny privat flik” du sökte efter?";
@@ -164,6 +170,9 @@
 "L1fziM-VBH4G6" = "Det finns ${count} alternativ som matchar ”Historik”.";
 
 /* (No Comment) */
+"L1fziM-vQ8mZ1" = "Det finns ${count} alternativ som matchar \"Leo AI-röstinmatning\".";
+
+/* (No Comment) */
 "L1fziM-vs094F" = "Det finns ${count} alternativ som matchar ”Ny privat flik”.";
 
 /* (No Comment) */
@@ -212,6 +221,9 @@
 "r2EI05-VBH4G6" = "Var det ”Historik” du sökte efter?";
 
 /* (No Comment) */
+"r2EI05-vQ8mZ1" = "Bara för att bekräfta, du ville ha \"Leo AI-röstinmatning\"?";
+
+/* (No Comment) */
 "r2EI05-vs094F" = "Var det ”Ny privat flik” du sökte efter?";
 
 /* (No Comment) */
@@ -257,6 +269,9 @@
 "tNCrcE-VBH4G6" = "Det finns ${count} alternativ som matchar ”Historik”.";
 
 /* (No Comment) */
+"tNCrcE-vQ8mZ1" = "Det finns ${count} alternativ som matchar \"Leo AI-röstinmatning\".";
+
+/* (No Comment) */
 "tNCrcE-vs094F" = "Det finns ${count} alternativ som matchar ”Ny privat flik”.";
 
 /* (No Comment) */
@@ -296,6 +311,9 @@
 "TxuMja-VBH4G6" = "Det finns ${count} alternativ som matchar ”Historik”.";
 
 /* (No Comment) */
+"TxuMja-vQ8mZ1" = "Det finns ${count} alternativ som matchar \"Leo AI-röstinmatning\".";
+
+/* (No Comment) */
 "TxuMja-vs094F" = "Det finns ${count} alternativ som matchar ”Ny privat flik”.";
 
 /* (No Comment) */
@@ -315,6 +333,9 @@
 
 /* (No Comment) */
 "vjA5pZ" = "Uppskattade data sparade";
+
+/* (No Comment) */
+"vQ8mZ1" = "Leo AI-röstinmatning";
 
 /* (No Comment) */
 "vs094F" = "Ny privat flik";
@@ -359,6 +380,9 @@
 "YQiQuz-VBH4G6" = "Var det ”Historik” du sökte efter?";
 
 /* (No Comment) */
+"YQiQuz-vQ8mZ1" = "Bara för att bekräfta, du ville ha \"Leo AI-röstinmatning\"?";
+
+/* (No Comment) */
 "YQiQuz-vs094F" = "Var det ”Ny privat flik” du sökte efter?";
 
 /* (No Comment) */
@@ -393,6 +417,9 @@
 
 /* (No Comment) */
 "z517nu-VBH4G6" = "Det finns ${count} alternativ som matchar ”Historik”.";
+
+/* (No Comment) */
+"z517nu-vQ8mZ1" = "Det finns ${count} alternativ som matchar \"Leo AI-röstinmatning\".";
 
 /* (No Comment) */
 "z517nu-vs094F" = "Det finns ${count} alternativ som matchar ”Ny privat flik”.";

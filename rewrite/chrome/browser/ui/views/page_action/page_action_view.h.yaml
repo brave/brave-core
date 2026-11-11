@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add the extra IconLabelBubbleView overrides and hooks Brave needs.
+
+      CalculateProposedLayout/GetSizeForLabelWidth/ShouldShowLabel/
+      ShouldAlwaysShowLabel let Brave honor a per-model height override and an
+      always-show-label flag. GetOverrideHeight and
+      OnPageActionModelVisualRefresh are plain Brave hooks used by those
+      overrides, and by OnNewActiveController/OnPageActionModelChanged
+      (see page_action_view.cc.yaml).
+    add_to_public:
+      class_name: PageActionView
+      code: |-
+        FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,
+                                 AlwaysShowsLabelEnsuresLabelWidth);
+        FRIEND_TEST_ALL_PREFIXES(PageActionViewTest, UseTonalColorsWhenExpanded);
+        FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,
+                                 DefaultBackgroundColorIsTransparent);
+        FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,
+                                 OverrideBackgroundColorReturnsModelValue);
+        views::ProposedLayout CalculateProposedLayout(
+            const views::SizeBounds& size_bounds) const override;
+        gfx::Size GetSizeForLabelWidth(int label_width) const override;
+        bool ShouldShowLabel() const override;
+        std::optional<int> GetOverrideHeight() const;
+        void OnPageActionModelVisualRefresh(PageActionModelInterface* model);
+        bool ShouldAlwaysShowLabel() const override;

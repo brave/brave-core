@@ -7,7 +7,8 @@
 
 #include "base/check.h"
 #include "base/strings/string_number_conversions.h"
-#include "crypto/sha2.h"
+#include "base/strings/string_view_util.h"
+#include "crypto/hash.h"
 
 namespace brave_rewards::internal::publisher {
 
@@ -15,7 +16,7 @@ std::string GetHashPrefixRaw(const std::string& publisher_key,
                              size_t prefix_size) {
   DCHECK(!publisher_key.empty());
   DCHECK(prefix_size > 0 && prefix_size <= kMaxPrefixSize);
-  std::string hash = crypto::SHA256HashString(publisher_key);
+  std::string hash(base::as_string_view(crypto::hash::Sha256(publisher_key)));
   hash.resize(prefix_size);
   return hash;
 }

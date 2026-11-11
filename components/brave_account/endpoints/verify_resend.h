@@ -6,18 +6,18 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINTS_VERIFY_RESEND_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINTS_VERIFY_RESEND_H_
 
-#include "brave/components/brave_account/endpoint_client/brave_endpoint.h"
-#include "brave/components/brave_account/endpoint_client/request_types.h"
-#include "brave/components/brave_account/endpoint_client/response.h"
 #include "brave/components/brave_account/endpoints/error_body.h"
 #include "brave/components/brave_account/endpoints/verify_resend_bodies.h"
+#include "brave/components/endpoint_client/brave_endpoint.h"
+#include "brave/components/endpoint_client/request_types.h"
+#include "brave/components/endpoint_client/response.h"
 
 namespace brave_account::endpoints {
 
 using VerifyResend = endpoint_client::BraveEndpoint<
     "accounts.bsg",
     "/v2/verify/resend",
-    endpoint_client::POST<VerifyResendRequestBody>,
+    endpoint_client::Post<VerifyResendRequestBody>,
     endpoint_client::Response<VerifyResendSuccessBody, ErrorBody>>;
 
 }  // namespace brave_account::endpoints

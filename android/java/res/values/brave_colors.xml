@@ -287,7 +287,6 @@
     <!-- Brave Leo colors-->
     <color name="leo_plan_upgrade_now_bt_bg_start">#FF1F01</color>
     <color name="leo_plan_upgrade_now_bt_bg_end">#FF5601</color>
-    <color name="leo_reset_text_color">#FF4B6A</color>
     <!-- End Brave Leo colors-->
 
     <color name="text_primary">#1c1c1d</color>

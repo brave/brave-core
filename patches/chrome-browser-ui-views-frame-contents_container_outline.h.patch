@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/views/frame/contents_container_outline.h b/chrome/browser/ui/views/frame/contents_container_outline.h
+index 3dd6c5cf3093b6ab68040a4b6d37395618f03730..820061ba513e509665c6ab505f275eb9357e99db 100644
+--- a/chrome/browser/ui/views/frame/contents_container_outline.h
++++ b/chrome/browser/ui/views/frame/contents_container_outline.h
+@@ -41,7 +41,8 @@ class ContentsContainerOutline : public views::View,
+   void UpdateState(bool is_active, bool is_highlighted);
+ 
+  private:
+-  void SetClipPath();
++  friend class BraveContentsContainerOutline;
++  virtual void SetClipPath();
+ 
+   // views::View
+   void OnPaint(gfx::Canvas* canvas) override;

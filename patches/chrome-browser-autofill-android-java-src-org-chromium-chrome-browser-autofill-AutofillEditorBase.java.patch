@@ -1,0 +1,27 @@
+diff --git a/chrome/browser/autofill/android/java/src/org/chromium/chrome/browser/autofill/AutofillEditorBase.java b/chrome/browser/autofill/android/java/src/org/chromium/chrome/browser/autofill/AutofillEditorBase.java
+index dbe08735dc22d64ea67ee46ba02f3a17709ff380..f9d43c14edf1faff8492172b59006ba622f0ed24 100644
+--- a/chrome/browser/autofill/android/java/src/org/chromium/chrome/browser/autofill/AutofillEditorBase.java
++++ b/chrome/browser/autofill/android/java/src/org/chromium/chrome/browser/autofill/AutofillEditorBase.java
+@@ -4,6 +4,8 @@
+ 
+ package org.chromium.chrome.browser.autofill;
+ 
++import org.chromium.chrome.browser.settings.BottomInsetViewProvider;
++
+ import static org.chromium.build.NullUtil.assumeNonNull;
+ 
+ import android.content.Context;
+@@ -34,7 +36,12 @@ import org.chromium.ui.text.EmptyTextWatcher;
+ /** Base class for Autofill editors (e.g. credit cards and profiles). */
+ @NullMarked
+ public abstract class AutofillEditorBase extends Fragment
+-        implements EmbeddableSettingsPage, EmptyTextWatcher {
++        implements BottomInsetViewProvider, EmbeddableSettingsPage, EmptyTextWatcher {
++    @Override
++    public View getBottomInsetView(View fragmentView) {
++        return fragmentView;
++    }
++
+     /** We know which profile to edit based on the GUID stuffed in extras. */
+     public static final String AUTOFILL_GUID = "guid";
+ 

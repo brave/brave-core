@@ -48,75 +48,75 @@ class FileTestApi(RecipeTestApi):
                 'errno_name': errno_name,
                 # A real run's message comes from the OS and usually carries
                 # more detail than this.
-                'message': f'file command encountered system error {errno_name}'
+                'message': f'file command encountered system error {errno_name}',
             }
         return self.m.json.output(result)
 
-    def read_raw(self,
-                 content: bytes = b'',
-                 errno_name: str | None = None) -> StepTestData:
+    def read_raw(
+        self, content: bytes = b'', errno_name: str | None = None
+    ) -> StepTestData:
         """Seed the bytes a `read_raw` step returns."""
         return self.m.raw_io.output(content) + self.errno(errno_name)
 
-    def read_text(self,
-                  text_content: str = '',
-                  errno_name: str | None = None) -> StepTestData:
+    def read_text(
+        self, text_content: str = '', errno_name: str | None = None
+    ) -> StepTestData:
         """Seed the text a `read_text` step returns."""
         return self.m.raw_io.output_text(text_content) + self.errno(errno_name)
 
-    def read_json(self,
-                  json_content: Any = None,
-                  errno_name: str | None = None) -> StepTestData:
+    def read_json(
+        self, json_content: Any = None, errno_name: str | None = None
+    ) -> StepTestData:
         """Seed the value a `read_json` step returns."""
         text = json.dumps(json_content, indent=2, sort_keys=True)
         return self.m.raw_io.output_text(text) + self.errno(errno_name)
 
-    def read_proto(self,
-                   proto_msg: Message,
-                   errno_name: str | None = None) -> StepTestData:
+    def read_proto(
+        self, proto_msg: Message, errno_name: str | None = None
+    ) -> StepTestData:
         """Seed the message a `read_proto` step returns."""
         return self.m.proto.output(proto_msg) + self.errno(errno_name)
 
-    def listdir(self,
-                paths: Sequence[str] = (),
-                errno_name: str | None = None) -> StepTestData:
+    def listdir(
+        self, paths: Sequence[str] = (), errno_name: str | None = None
+    ) -> StepTestData:
         """Seed the entries a `listdir` step finds, relative to its source."""
-        return (self.m.raw_io.stream_output_text('\n'.join(
-            sorted(str(p) for p in paths))) + self.errno(errno_name))
+        return self.m.raw_io.stream_output_text(
+            '\n'.join(sorted(str(p) for p in paths))
+        ) + self.errno(errno_name)
 
-    def glob_paths(self,
-                   names: Sequence[str] = (),
-                   errno_name: str | None = None) -> StepTestData:
+    def glob_paths(
+        self, names: Sequence[str] = (), errno_name: str | None = None
+    ) -> StepTestData:
         """Seed the paths a `glob_paths` step matches, relative to its source."""
-        return (self.m.raw_io.stream_output_text('\n'.join(
-            sorted(str(n) for n in names))) + self.errno(errno_name))
+        return self.m.raw_io.stream_output_text(
+            '\n'.join(sorted(str(n) for n in names))
+        ) + self.errno(errno_name)
 
-    def filesizes(self,
-                  sizes: Sequence[int] = (),
-                  errno_name: str | None = None) -> StepTestData:
+    def filesizes(
+        self, sizes: Sequence[int] = (), errno_name: str | None = None
+    ) -> StepTestData:
         """Seed the sizes a `filesizes` step reports."""
-        return (
-            self.m.raw_io.stream_output_text('\n'.join(str(s)
-                                                       for s in sizes)) +
-            self.errno(errno_name))
+        return self.m.raw_io.stream_output_text(
+            '\n'.join(str(s) for s in sizes)
+        ) + self.errno(errno_name)
 
-    def compute_hash(self,
-                     digest: str = '',
-                     errno_name: str | None = None) -> StepTestData:
+    def compute_hash(
+        self, digest: str = '', errno_name: str | None = None
+    ) -> StepTestData:
         """Seed the hash a `compute_hash` step reports."""
-        return (self.m.raw_io.stream_output_text(digest) +
-                self.errno(errno_name))
+        return self.m.raw_io.stream_output_text(digest) + self.errno(errno_name)
 
-    def file_hash(self,
-                  digest: str = '',
-                  errno_name: str | None = None) -> StepTestData:
+    def file_hash(
+        self, digest: str = '', errno_name: str | None = None
+    ) -> StepTestData:
         """Seed the hash a `file_hash` step reports."""
-        return (self.m.raw_io.stream_output_text(digest) +
-                self.errno(errno_name))
+        return self.m.raw_io.stream_output_text(digest) + self.errno(errno_name)
 
-    def is_executable(self,
-                      executable: bool = True,
-                      errno_name: str | None = None) -> StepTestData:
+    def is_executable(
+        self, executable: bool = True, errno_name: str | None = None
+    ) -> StepTestData:
         """Seed the answer an `is_executable` step reports."""
-        return (self.m.raw_io.stream_output_text(str(executable)) +
-                self.errno(errno_name))
+        return self.m.raw_io.stream_output_text(str(executable)) + self.errno(
+            errno_name
+        )

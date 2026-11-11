@@ -7,9 +7,10 @@
 
 #include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_database_table_test_util.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::database::table {
 
@@ -29,9 +30,8 @@ TEST_F(BraveAdsPurchaseIntentSignalHistoryDatabaseTableTest,
   // Assert
   base::test::TestFuture<bool, PurchaseIntentSignalHistoryMap>
       get_all_test_future;
-  database_table_.GetAll(
-      get_all_test_future
-          .GetCallback<bool, const PurchaseIntentSignalHistoryMap&>());
+  test::GetAll(get_all_test_future
+                   .GetCallback<bool, const PurchaseIntentSignalHistoryMap&>());
   const auto [success, purchase_intent_signal_history] =
       get_all_test_future.Take();
   EXPECT_TRUE(success);
@@ -56,9 +56,8 @@ TEST_F(BraveAdsPurchaseIntentSignalHistoryDatabaseTableTest,
   // Assert
   base::test::TestFuture<bool, PurchaseIntentSignalHistoryMap>
       get_all_test_future;
-  database_table_.GetAll(
-      get_all_test_future
-          .GetCallback<bool, const PurchaseIntentSignalHistoryMap&>());
+  test::GetAll(get_all_test_future
+                   .GetCallback<bool, const PurchaseIntentSignalHistoryMap&>());
   const auto [success, actual_purchase_intent_signal_history] =
       get_all_test_future.Take();
   EXPECT_TRUE(success);
@@ -91,9 +90,8 @@ TEST_F(BraveAdsPurchaseIntentSignalHistoryDatabaseTableTest,
   // Assert
   base::test::TestFuture<bool, PurchaseIntentSignalHistoryMap>
       get_all_test_future;
-  database_table_.GetAll(
-      get_all_test_future
-          .GetCallback<bool, const PurchaseIntentSignalHistoryMap&>());
+  test::GetAll(get_all_test_future
+                   .GetCallback<bool, const PurchaseIntentSignalHistoryMap&>());
   const auto [success, purchase_intent_signal_history] =
       get_all_test_future.Take();
   EXPECT_TRUE(success);
@@ -120,9 +118,8 @@ TEST_F(BraveAdsPurchaseIntentSignalHistoryDatabaseTableTest,
   // Assert
   base::test::TestFuture<bool, PurchaseIntentSignalHistoryMap>
       get_all_test_future;
-  database_table_.GetAll(
-      get_all_test_future
-          .GetCallback<bool, const PurchaseIntentSignalHistoryMap&>());
+  test::GetAll(get_all_test_future
+                   .GetCallback<bool, const PurchaseIntentSignalHistoryMap&>());
   const auto [success, purchase_intent_signal_history] =
       get_all_test_future.Take();
   EXPECT_TRUE(success);
@@ -145,9 +142,8 @@ TEST_F(BraveAdsPurchaseIntentSignalHistoryDatabaseTableTest,
   // Assert
   base::test::TestFuture<bool, PurchaseIntentSignalHistoryMap>
       get_all_test_future;
-  database_table_.GetAll(
-      get_all_test_future
-          .GetCallback<bool, const PurchaseIntentSignalHistoryMap&>());
+  test::GetAll(get_all_test_future
+                   .GetCallback<bool, const PurchaseIntentSignalHistoryMap&>());
   const auto [success, purchase_intent_signal_history] =
       get_all_test_future.Take();
   EXPECT_TRUE(success);

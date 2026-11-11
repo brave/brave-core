@@ -2,17 +2,23 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""The `hello` module API: greets its configured TARGET with its configured tool.
-"""
+"""The `hello` module API: greets its configured TARGET with its configured tool."""
 
 from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from PB.recipe_modules.brave.hello.properties import InputProperties
 from recipe_api import RecipeApi
 
+if TYPE_CHECKING:
+    from recipe_modules import hello
+
 
 class HelloApi(RecipeApi):
     """Greets the configured TARGET, running the configured tool as a step."""
+
+    m: hello.DEPS
 
     def __init__(self, properties: InputProperties) -> None:
         super().__init__()
@@ -32,7 +38,10 @@ class HelloApi(RecipeApi):
 
     def greet(self) -> None:
         """Greet `self.c.TARGET`, invoking `self.c.tool` as the step command."""
-        self.m.step('Greet Admired Individual', [
-            self.m.path.workspace / self.c.tool,
-            self.c.verb % self.c.TARGET,
-        ])
+        self.m.step(
+            'Greet Admired Individual',
+            [
+                self.m.path.workspace / self.c.tool,
+                self.c.verb % self.c.TARGET,
+            ],
+        )

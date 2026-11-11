@@ -48,11 +48,9 @@ mojom::CreativeSearchResultAdInfoPtr BuildCreativeSearchResultAdWithConversion(
       BuildCreativeSearchResultAd(use_random_uuids);
   CHECK(mojom_creative_ad);
 
-  mojom_creative_ad->creative_set_conversion =
-      mojom::CreativeSetConversionInfo::New();
-  mojom_creative_ad->creative_set_conversion->url_pattern =
-      kConversionUrlPattern;
-  mojom_creative_ad->creative_set_conversion->observation_window =
+  mojom_creative_ad->campaign_conversion = mojom::CampaignConversionInfo::New();
+  mojom_creative_ad->campaign_conversion->url_pattern = kConversionUrlPattern;
+  mojom_creative_ad->campaign_conversion->observation_window =
       kConversionObservationWindow;
 
   return mojom_creative_ad;

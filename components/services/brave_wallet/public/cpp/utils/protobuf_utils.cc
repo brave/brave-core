@@ -5,10 +5,7 @@
 
 #include "brave/components/services/brave_wallet/public/cpp/utils/protobuf_utils.h"
 
-#include <utility>
-
 #include "base/containers/span.h"
-#include "base/functional/callback.h"
 #include "base/numerics/byte_conversions.h"
 
 namespace brave_wallet {

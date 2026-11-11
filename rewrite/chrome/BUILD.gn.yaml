@@ -1,0 +1,167 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Make the Brave Origin buildflags available.
+    add_import:
+      import: //brave/components/brave_origin/buildflags/buildflags.gni
+
+  - description: Make the Brave updater buildflags available.
+    add_import:
+      import: //brave/browser/updater/buildflags.gni
+
+  - description: Make the Brave updater config available.
+    add_import:
+      import: //brave/updater/config.gni
+
+  - description: |-
+      Build the Windows executable with the Brave resources
+
+      Also defines `IS_BRAVE_ORIGIN_BRANDED` for Brave Origin builds.
+    append_to_target:
+      target: chrome_initial
+      type: executable
+      code: |-
+        if (is_win) {
+          sources -= [ "app/chrome_exe.rc" ]
+          sources += [ "//brave/app/brave_exe.rc" ]
+          if (is_brave_origin_branded) {
+            defines += [ "IS_BRAVE_ORIGIN_BRANDED" ]
+          }
+        }
+
+  - description: Generate the Brave app Info.plist.
+    add_before_line:
+      line: mac_app_bundle("chrome_app") {
+      code: |2
+          copy("brave_app_plist") {
+            deps = [ "//brave:brave_app_plist" ]
+            sources = [ "$root_gen_dir/brave/brave_app_plist_tweaked.plist" ]
+            outputs = [ "$root_gen_dir/chrome/{{source_file_part}}" ]
+          }
+
+  - description: Bundle the app with the Brave Info.plist.
+    append_to_target:
+      target: chrome_app
+      type: mac_app_bundle
+      code: info_plist_target = ":brave_app_plist"
+
+  - description: Add the Brave app to the bundle.
+    add_literal_to_list:
+      target: chrome_app
+      list_name: deps
+      literal: '[ "//brave:brave_app" ]'
+      type: mac_app_bundle
+
+  - description: Leave the Widevine signature out of the versioned bundle.
+    append_to_target:
+      target: chrome_versioned_bundle_data
+      type: bundle_data
+      code: |-
+        if (enable_widevine_cdm_host_verification) {
+          public_deps -= [ ":chrome_framework_widevine_signature" ]
+        }
+
+  - description: Generate the Brave helper Info.plist.
+    add_before_line:
+      line: compile_entitlements("entitlements") {
+      code: |2
+          copy("brave_helper_plist") {
+            deps = [ "//brave:brave_helper_plist" ]
+            sources = [ "$root_gen_dir/brave/brave_helper_plist_tweaked.plist" ]
+            outputs = [ "$root_gen_dir/chrome/{{source_file_part}}" ]
+          }
+
+  - description: Add the Brave entitlements.
+    add_literal_to_list:
+      target: entitlements
+      list_name: entitlements_templates
+      literal: brave_entitlements_templates
+      type: compile_entitlements
+
+  - description: |-
+      Bundle helpers with the Brave helper Info.plist
+
+      Only where the helper does not name its own.
+    add_after_line:
+      line: info_plist_target = ":chrome_helper_plist"
+      code: '        info_plist_target = ":brave_helper_plist"'
+
+  - description: |-
+      Bundle Brave's updater
+
+      Nothing without Omaha 4, the prebuilt app when told to use one, and the
+      one upstream builds otherwise.
+    regex:
+      re_pattern:
+        '(sources \+= \[
+        "//third_party/updater/chrome_mac_universal_prod/cipd/\$\{updater_product_full_name\}\.app"
+        \]\n)(\s*)\} else \{'
+      replace: |-
+        \1\2} else if (!enable_omaha4) {
+        \2} else if (use_prebuilt_omaha4) {
+        \2  sources += [ "//brave/third_party/updater/mac/${updater_product_full_name}.app" ]
+        \2} else {
+
+  - description: Add the Brave framework public_deps.
+    add_literal_to_list:
+      target: chrome_framework
+      list_name: public_deps
+      literal: brave_chrome_framework_public_deps
+      type: mac_framework_bundle
+      import: //brave/browser/sources.gni
+
+  - description: Add the Brave framework bundle deps.
+    add_literal_to_list:
+      target: chrome_framework
+      list_name: bundle_deps
+      literal: brave_chrome_framework_bundle_deps
+      type: mac_framework_bundle
+      import: //brave/browser/sources.gni
+
+  - description: Add the Brave framework contents.
+    add_literal_to_list:
+      target: chrome_framework
+      list_name: framework_contents
+      literal: brave_chrome_framework_contents
+      type: mac_framework_bundle
+      import: //brave/browser/sources.gni
+
+  - description: Depend on the Brave browser.
+    insert_into_list:
+      target: dependencies
+      list_name: public_deps
+      values:
+        - //brave:browser_dependencies
+
+  - description: Version the Windows executable as Brave.
+    set_attribute:
+      target: chrome_exe_version
+      attribute: sources:list
+      value: //brave/app/brave_exe.ver
+
+  - description: Add the Brave resources.
+    insert_into_list:
+      target: resources
+      list_name: public_deps
+      values:
+        - //brave:resources
+
+  - description: Merge the Brave resource allowlists first.
+    add_literal_to_list:
+      target: packed_resources
+      list_name: deps
+      literal: '[ "//brave:merge_allowlists" ]'
+      type: chrome_paks
+      conditional: enable_resource_allowlist_generation
+
+  - description: Repack the resources with the Brave allowlist.
+    append_to_target:
+      target: packed_resources
+      type: chrome_paks
+      code: |-
+        if (enable_resource_allowlist_generation) {
+          repack_allowlist = brave_allowlist_file
+        }

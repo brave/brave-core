@@ -5,10 +5,10 @@
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
-import Button from '@brave/leo/react/button'
-import Input from '@brave/leo/react/input'
-import Icon from '@brave/leo/react/icon'
-import Checkbox from '@brave/leo/react/checkbox'
+import Button from '@brave/nala/react/button'
+import Input from '@brave/nala/react/input'
+import Icon from '@brave/nala/react/icon'
+import Checkbox from '@brave/nala/react/checkbox'
 
 // utils
 import { getLocale } from '../../../../../common/locale'

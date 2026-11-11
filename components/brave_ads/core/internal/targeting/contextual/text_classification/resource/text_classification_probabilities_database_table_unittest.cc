@@ -8,9 +8,10 @@
 #include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_probabilities_database_table_test_util.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::database::table {
 
@@ -30,7 +31,7 @@ TEST_F(BraveAdsTextClassificationProbabilitiesDatabaseTableTest,
   // Assert
   base::test::TestFuture<bool, TextClassificationProbabilityList>
       get_all_test_future;
-  database_table_.GetAll(
+  test::GetAll(
       get_all_test_future
           .GetCallback<bool, const TextClassificationProbabilityList&>());
   const auto [success, text_classification_probabilities] =
@@ -63,7 +64,7 @@ TEST_F(BraveAdsTextClassificationProbabilitiesDatabaseTableTest,
   // Assert
   base::test::TestFuture<bool, TextClassificationProbabilityList>
       get_all_test_future;
-  database_table_.GetAll(
+  test::GetAll(
       get_all_test_future
           .GetCallback<bool, const TextClassificationProbabilityList&>());
   const auto [success, text_classification_probabilities] =
@@ -97,7 +98,7 @@ TEST_F(BraveAdsTextClassificationProbabilitiesDatabaseTableTest,
   // Assert
   base::test::TestFuture<bool, TextClassificationProbabilityList>
       get_all_test_future;
-  database_table_.GetAll(
+  test::GetAll(
       get_all_test_future
           .GetCallback<bool, const TextClassificationProbabilityList&>());
   const auto [success, text_classification_probabilities] =
@@ -123,7 +124,7 @@ TEST_F(BraveAdsTextClassificationProbabilitiesDatabaseTableTest,
   // Assert
   base::test::TestFuture<bool, TextClassificationProbabilityList>
       get_all_test_future;
-  database_table_.GetAll(
+  test::GetAll(
       get_all_test_future
           .GetCallback<bool, const TextClassificationProbabilityList&>());
   const auto [success, text_classification_probabilities] =
@@ -154,7 +155,7 @@ TEST_F(BraveAdsTextClassificationProbabilitiesDatabaseTableTest,
   // Assert
   base::test::TestFuture<bool, TextClassificationProbabilityList>
       get_all_test_future;
-  database_table_.GetAll(
+  test::GetAll(
       get_all_test_future
           .GetCallback<bool, const TextClassificationProbabilityList&>());
   const auto [success, text_classification_probabilities] =
@@ -187,7 +188,7 @@ TEST_F(BraveAdsTextClassificationProbabilitiesDatabaseTableTest,
   // Assert
   base::test::TestFuture<bool, TextClassificationProbabilityList>
       get_all_test_future;
-  database_table_.GetAll(
+  test::GetAll(
       get_all_test_future
           .GetCallback<bool, const TextClassificationProbabilityList&>());
   const auto [success, text_classification_probabilities] =
@@ -216,7 +217,7 @@ TEST_F(BraveAdsTextClassificationProbabilitiesDatabaseTableTest,
   // Assert
   base::test::TestFuture<bool, TextClassificationProbabilityList>
       get_all_test_future;
-  database_table_.GetAll(
+  test::GetAll(
       get_all_test_future
           .GetCallback<bool, const TextClassificationProbabilityList&>());
   const auto [success, text_classification_probabilities] =

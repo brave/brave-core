@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/functional/callback.h"
+#include "base/functional/callback_forward.h"
 #include "brave/components/psst/core/browser/matched_rule.h"
 #include "brave/components/psst/core/browser/psst_rule.h"
 #include "url/gurl.h"
@@ -30,7 +31,8 @@ class PsstRuleRegistry {
   // Returns the matched PSST rule, if any.
   virtual void CheckIfMatch(
       const GURL& url,
-      base::OnceCallback<void(std::unique_ptr<MatchedRule>)> cb) = 0;
+      base::OnceCallback<void(std::unique_ptr<MatchedRule>)> cb,
+      base::OnceClosure no_matched_rules_callback) = 0;
 
   virtual void LoadRules(const base::FilePath& path, OnLoadCallback cb) = 0;
 };

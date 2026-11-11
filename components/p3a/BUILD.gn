@@ -122,6 +122,7 @@ source_set("unit_tests") {
     "//brave/components/p3a",
     "//brave/components/p3a_utils",
     "//components/cbor",
+    "//components/component_updater:test_support",
     "//components/prefs:test_support",
     "//net",
     "//services/network:test_support",

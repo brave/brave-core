@@ -9,6 +9,7 @@
 <translation id="1011206368273183593">Dateien werden vorbereitet</translation>
 <translation id="1014509239502131234">Aktion wird rückgängig gemacht</translation>
 <translation id="1015730422737071372">Weitere Details angeben</translation>
+<translation id="1016671033299705843">Führerschein sicher hinzufügen</translation>
 <translation id="1019413721762100891">Aus</translation>
 <translation id="1024111578869940408">Angreifer kopieren manchmal Websites und nehmen unauffällige Änderungen an der Webadresse vor.</translation>
 <translation id="102916930470544692">Passkey</translation>
@@ -21,7 +22,6 @@
 <translation id="1038106730571050514">Vorschläge anzeigen</translation>
 <translation id="1038168778161626396">Nur verschlüsseln</translation>
 <translation id="1038842779957582377">Unbekannter Name</translation>
-<translation id="1039767473048604223"><ph name="DEVICE_NAME"/> <ph name="MODEL"/></translation>
 <translation id="1041998700806130099">Auftragsblattnachricht</translation>
 <translation id="1044897699341250361">Was das bedeutet</translation>
 <translation id="1049837829250301306">Inhalte konnten aufgrund der Richtlinien deiner Organisation nicht eingefügt werden</translation>
@@ -69,7 +69,6 @@
 <translation id="1110994991967754504">Berechtigung für <ph name="PERMISSION_NAME"/> auswählen</translation>
 <translation id="1113000785583998331">IBAN speichern?</translation>
 <translation id="1113869188872983271">&amp;Neu anordnen rückgängig machen</translation>
-<translation id="1117709830616495622">Basierend auf Personal Intelligence mit Gemini.</translation>
 <translation id="111897705806685148">Passkey von einem anderen Gerät verwenden</translation>
 <translation id="1375173438929018886"><ph name="MANAGE_SYNC_FOCUSED_FRIENDLY_MATCH_TEXT"/> – drücke die Tabulatortaste und dann die Eingabetaste, um festzulegen, welche Brave-Daten in deinem Brave-Konto gespeichert werden sollen</translation>
 <translation id="1121990216147052230">Erstelle eine To-do-Liste für mich</translation>
@@ -78,14 +77,13 @@
 <translation id="112840717907525620">Richtlinien-Cache einwandfrei</translation>
 <translation id="1131264053432022307">Von dir kopiertes Bild</translation>
 <translation id="1132735979845538847"><ph name="ORIGIN"/> – zum Beenden des Vollbildmodus: von oben ziehen und auf den Button „Zurück“ tippen</translation>
-<translation id="1133418583142946603">Aktuellen Tab hinzufügen</translation>
 <translation id="1138458427267715730">Du kannst dich benachrichtigen lassen, wenn der Preis auf einer Website sinkt</translation>
 <translation id="1142713751288681188">Papiertyp</translation>
 <translation id="1142965388643537393">Reiseinformationen</translation>
 <translation id="1143142264369994168">Signaturgeber des Zertifikats</translation>
 <translation id="1149617035358809955">deine Identität zu bestätigen, damit du die Zahlungsinformationen eingeben kannst</translation>
 <translation id="1150979032973867961">Dieser Server konnte nicht beweisen, dass er <ph name="DOMAIN"/> ist. Sein Sicherheitszertifikat wird vom Betriebssystem deines Computers als nicht vertrauenswürdig eingestuft. Mögliche Gründe sind eine fehlerhafte Konfiguration oder ein Angreifer, der deine Verbindung abfängt.</translation>
-<translation id="1115388613038124176">In Brave Wallet gespeicherte Karteninformaitonen können automatisch eingefügt werden</translation>
+<translation id="1151858212483238980">In Google Wallet gespeicherte Karteninformationen können automatisch eingefügt werden</translation>
 <translation id="1151972924205500581">Passwort erforderlich</translation>
 <translation id="1156303062776767266">Du siehst dir eine lokale oder freigegebene Datei an</translation>
 <translation id="1158211211994409885"><ph name="HOST_NAME"/> hat die Verbindung unerwartet geschlossen.</translation>
@@ -122,7 +120,7 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="1201402288615127009">Weiter</translation>
 <translation id="1201895884277373915">Mehr von dieser Website</translation>
 <translation id="1204184165594298176">{0,plural, =1{Datei kann nicht kopiert werden}other{<ph name="FILE_COUNT"/> Dateien können nicht kopiert werden}}</translation>
-<translation id="1476484148752770616">In Brave Wallet gespeicherte Karteninformationen können automatisch eingefügt werden.</translation>
+<translation id="1205344127823614428">In Google Wallet gespeicherte Karteninformationen können automatisch eingefügt werden.</translation>
 <translation id="1206967143813997005">Erste Signatur ungültig</translation>
 <translation id="1209206284964581585">Vorerst ausblenden</translation>
 <translation id="121201262018556460">Du hast versucht, auf <ph name="DOMAIN"/> zuzugreifen, der Server hat jedoch ein Zertifikat mit einem schwachen Schlüssel übermittelt. Ein Hacker könnte den privaten Schlüssel geknackt haben, sodass es sich möglicherweise nicht um den erwarteten Server handelt, sondern du stattdessen mit einem Hacker kommunizierst.</translation>
@@ -193,8 +191,9 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="1319245136674974084">Für diese App nicht mehr nachfragen</translation>
 <translation id="132301787627749051">Nach Bild aus Zwischenablage suchen</translation>
 <translation id="1323433172918577554">Mehr anzeigen</translation>
+<translation id="1326962902431997202">Durchgestrichen</translation>
 <translation id="1330449323196174374">Linksseitige Fensterfaltung</translation>
-<translation id="2753620827734134329">Redress Number sicher in Brave Wallet speichern</translation>
+<translation id="1330952240988133220">Redress Number sicher in Google Wallet speichern</translation>
 <translation id="133173645041092770">Website schließen</translation>
 <translation id="4274264486214599895">Brave Dino spielen</translation>
 <translation id="1333989956347591814">Deine Aktivität <ph name="BEGIN_EMPHASIS"/>bleibt eventuell sichtbar<ph name="END_EMPHASIS"/> für:
@@ -210,6 +209,7 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="4167284810587724062">In Brave anmelden</translation>
 <translation id="1346748346194534595">Rechts</translation>
 <translation id="1348779747280417563">Namen bestätigen</translation>
+<translation id="1353546633704510580">Ausgewählter Bereich</translation>
 <translation id="1357195169723583938">Letzte Nutzer dieses Geräts und Zeitpunkt der Verwendung</translation>
 <translation id="1358187717814494928">Tabelle erstellen</translation>
 <translation id="1361528602584216624">Limit pro Pix‑Zahlung: <ph name="TRANSACTION_LIMIT"/> BRL</translation>
@@ -234,8 +234,8 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="1392813880755413602">OpenDocument-Präsentation</translation>
 <translation id="139305205187523129"><ph name="HOST_NAME"/> hat keine Daten gesendet.</translation>
 <translation id="3057197202055415269">Auf dieser Website besteht die Gefahr, dass Angreifer dich zur Installation von Software oder zur Preisgabe von Daten wie Passwörtern, deiner Telefonnummer oder Kreditkartennummern verleiten möchten. Brave rät dringend dazu, auf den Button „Zurück zu sicherer Website“ zu klicken. <ph name="BEGIN_LEARN_MORE_LINK"/>Weitere Informationen zu dieser Warnung<ph name="END_LEARN_MORE_LINK"/></translation>
+<translation id="1397342126322860141">Personalausweis sicher zu Google Wallet hinzufügen</translation>
 <translation id="1398743098754840707">Websites, die du hier hinzufügst, werden für Antworten nicht berücksichtigt, auch wenn der Tab geöffnet ist. Wenn eine von dir hinzugefügte Website gerade in einem Thread verwendet wird, kann es bis zu 30 Minuten dauern, bis der Thread nicht mehr darauf verweist.</translation>
-<translation id="1402151528875251561">Verlauf in der Seitenleiste anzeigen</translation>
 <translation id="1405567553485452995">Hellgrün</translation>
 <translation id="1406370515365284486">Deine Zahlungsmethoden bleiben gespeichert</translation>
 <translation id="1406500794671479665">Überprüfung wird durchgeführt...</translation>
@@ -247,7 +247,7 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="1410306713026702438"><ph name="SUGGESTION_TITLE"/>, <ph name="SUGGESTION_DESCRIPTION"/>. <ph name="SUGGESTION_TYPE"/>. <ph name="MATCH_POSITION"/> von <ph name="NUM_MATCHES_IN_GROUP"/> in der Gruppe „<ph name="GROUP_HEADER"/>“.</translation>
 <translation id="5488251800208457874">Andere Personen, die dieses Gerät verwenden, können deine Aktivitäten nicht sehen, sodass du privat surfen kannst. Dies hat keine Auswirkungen darauf, wie Daten durch von dir besuchte Websites und den von ihnen genutzten Diensten, einschließlich Brave, erhoben werden. Downloads, Lesezeichen und Webseiten auf deiner Leseliste werden gespeichert.</translation>
 <translation id="1410941016594047814">Umschlag Invite</translation>
-<translation id="648124447162177252">Der CVC dieser Karte wird verschlüsselt und für einen schnelleren Bezahlvorgang in Brave Wallet gespeichert</translation>
+<translation id="1413235258620101697">Der CVC dieser Karte wird verschlüsselt und für einen schnelleren Bezahlvorgang in Google Wallet gespeichert</translation>
 <translation id="1413809658975081374">Datenschutzfehler</translation>
 <translation id="5305237486453576422">Button „Downloads in Brave verwalten“ – aktivieren, um in Brave heruntergeladene Dateien zu verwalten</translation>
 <translation id="1580876941880939337">Für diese Zahlung kann die Zahlungsmethode verwendet werden, die du für automatische Zahlungen festgelegt hast. Wenn du E‑Wallets in Brave deaktivieren möchtest, rufe deine <ph name="BEGIN_LINK1"/>Zahlungseinstellungen<ph name="END_LINK1"/> auf.</translation>
@@ -274,17 +274,16 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="1445896388055045436">Beim Bezahlen verfügbare Vorteile und Prämien der Karte anzeigen. Es gelten die Bedingungen des Ausstellers.</translation>
 <translation id="1447067628680007684">(x86_64)</translation>
 <translation id="1448166547804028941">Die Schlüssel „<ph name="DATA_CONTROLS_FIRST_KEY_SET"/>“ können nicht im selben Wörterbuch festgelegt werden wie die Schlüssel „<ph name="DATA_CONTROLS_SECOND_KEY_SET"/>“</translation>
-<translation id="923286722567024030">Redress Number in Brave Wallet speichern</translation>
+<translation id="1449251255954293933">Redress Number in Google Wallet speichern</translation>
 <translation id="1455413310270022028">Radierer</translation>
+<translation id="1456749217800922313">Bestätigungscode</translation>
 <translation id="1457992721081300557">{NUM_REVIEWS,plural, =0{0 Rezensionen ansehen}=1{1 Rezension ansehen}other{Alle # Rezensionen ansehen}}</translation>
-<translation id="1458770162980644530">Bildschirm mit den Nutzungsbedingungen für „Jetzt kaufen, später bezahlen“. Tastatur ausgeblendet.</translation>
 <translation id="1460317464907341501">Diese E‑Mail-Adresse automatisch bestätigen?</translation>
 <translation id="1461041542809785877">Leistung</translation>
 <translation id="1462245070427461050">JIS B9</translation>
 <translation id="1462951478840426066">Die Schriftarten auf deinem Computer verwenden, damit du High Fidelity-Inhalte erstellen kannst</translation>
 <translation id="4855177403643365941">IBAN in deinem Brave-Konto gespeichert</translation>
 <translation id="1467432559032391204">Links</translation>
-<translation id="1471514598850585811">Laptop</translation>
 <translation id="1472675084647422956">Mehr anzeigen</translation>
 <translation id="1473183651233018052">JIS B10</translation>
 <translation id="1473495410389165587">Gib mindestens 3 Wörter ein, um Hilfe beim Schreiben zu erhalten</translation>
@@ -298,7 +297,6 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="1486096554574027028">Passwörter suchen</translation>
 <translation id="1492194039220927094">Richtlinien per Push-Benachrichtigung:</translation>
 <translation id="1495677929897281669">Zurück zum Tab</translation>
-<translation id="1496318738909526466">Erweitertes Autofill verwalten</translation>
 <translation id="1500286806237135498">Kameras (<ph name="CAMERAS_COUNT"/>)</translation>
 <translation id="1504042622576912555">Gewellt</translation>
 <translation id="1507202001669085618">&lt;p&gt;Diese Fehlermeldung wird angezeigt, wenn du ein WLAN-Portal verwendest, bei dem eine Anmeldung erforderlich ist, bevor du online gehen kannst.&lt;/p&gt;
@@ -348,6 +346,7 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="1574714699824202614">Zahlungsmethode wird bestätigt</translation>
 <translation id="1576277203042721907">Shopping Insights</translation>
 <translation id="1579189948231786790">Diese Website wurde von deiner Organisation blockiert</translation>
+<translation id="1579940597679293608">Alle isolierten Fenster schließen</translation>
 <translation id="1581080074034554886">CVC</translation>
 <translation id="1583429793053364125">Fehler beim Anzeigen dieser Webseite.</translation>
 <translation id="1585306568496579337">Die Erweiterung „<ph name="EXTENSION_NAME"/>“ möchte Links vom Typ „<ph name="PROTOCOL"/>“ über <ph name="HANDLER_HOSTNAME"/> öffnen</translation>
@@ -440,13 +439,12 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="173080396488393970">Dieser Kartentyp wird nicht unterstützt</translation>
 <translation id="1731563515262205847">ML-DSA-65</translation>
 <translation id="1732445923934584865">Stattdessen persönlich fragen</translation>
-<translation id="5456336665142990002">Redress Number in Brave Wallet aktualisieren</translation>
+<translation id="1732796940245838248">Redress Number in Google Wallet aktualisieren</translation>
 <translation id="1733064249834771892">Schriftarten</translation>
 <translation id="1733762317901693627">Selbst Websites, die normalerweise sicher sind, werden manchmal gehackt. Besuche diese <ph name="BEGIN_LINK"/>unsichere Website<ph name="END_LINK"/> nur, wenn du dir über die Risiken im Klaren bist.</translation>
 <translation id="1734864079702812349">American Express</translation>
 <translation id="1734878702283171397">Setze dich mit dem Systemadministrator in Verbindung.</translation>
 <translation id="1736163675982669961"><ph name="CARD_NICKNAME"/>, <ph name="CARD_NETWORK_NAME"/>, <ph name="CARD_LAST_FOUR_DIGITS"/>, gültig bis: <ph name="CARD_EXPIRATION"/></translation>
-<translation id="1736420071277903564">Computer</translation>
 <translation id="1739364174357629566">Known Traveler Number aktualisieren</translation>
 <translation id="1740404923954980840">Zum Beenden des Vollbildmodus: von oben ziehen und auf den Button „Zurück“ tippen</translation>
 <translation id="1741474054575634405">Kundenkarten verwalten…</translation>
@@ -489,6 +487,7 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="18139523105317219">Name der EDI-Partei</translation>
 <translation id="1816436748874040213">Darf nachfragen, ob auf geteilten Tabs gescrollt und gezoomt werden darf</translation>
 <translation id="1816707915923025275">Gib „@Verlauf“ ein, um in deinem Browserverlauf zu suchen</translation>
+<translation id="1816771466809215784">Wenn der Name des Karteninhabers für diese Karte beim Bezahlen automatisch ausgefüllt werden soll, speichere ihn in Google Wallet</translation>
 <translation id="8221062743840200789">Rolle: Brave-Tipp. Bedienungshilfen-Label: <ph name="CHROME_TIP"/></translation>
 <translation id="182139138257690338">Automatische Downloads</translation>
 <translation id="1821930232296380041">Anfrage oder Anfrageparameter ungültig</translation>
@@ -496,7 +495,7 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="1823768272150895732">Schriftart</translation>
 <translation id="1824402189105105503">Achte Rolle</translation>
 <translation id="1826516787628120939">Überprüfung läuft</translation>
-<translation id="6275942451098940709">Speichern von Informationen in Brave Wallet</translation>
+<translation id="1829026591231985685">Speichern von Informationen in Google Wallet</translation>
 <translation id="1832474362231610822">Foto in OneDrive gespeichert</translation>
 <translation id="1832730227369924598">Desktop-Synchronisierung</translation>
 <translation id="1837606605602726453">Die Risikobewertung und -kategorien werden ignoriert, da die Erweiterung vom Administrator explizit zugelassen oder blockiert wird.</translation>
@@ -512,6 +511,7 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="1849438148665368129">Der Kaufbetrag muss unter <ph name="CHECKOUT_AMOUNT_MAXIMUM"/> liegen</translation>
 <translation id="1853392626017747777">Registrierung der virtuellen Karte beendet</translation>
 <translation id="1854180393107901205">Übertragung beenden</translation>
+<translation id="1860986945084448084">Details zum Zertifikat öffnen</translation>
 <translation id="1863257867908022953">Fach 12</translation>
 <translation id="1863374797460198869">Chat ausgeblendet</translation>
 <translation id="1871208020102129563">Der Proxy ist zur Verwendung von festen Proxyservern konfiguriert, nicht zur Verwendung einer PAC-Script-URL.</translation>
@@ -533,7 +533,7 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="1902576642799138955">Gültigkeitsdauer</translation>
 <translation id="1908217026282415406">Kamera verwenden und bewegen</translation>
 <translation id="1908690643053136980">Dein Administrator erlaubt die Berechtigung „<ph name="PERMISSION"/>“ für diese Website nicht</translation>
-<translation id="5430059593940336932">Personalausweis in Brave Wallet speichern</translation>
+<translation id="1912750443952232242">Personalausweis in Google Wallet speichern</translation>
 <translation id="1913037223029790376">CVC für diese virtuelle Karte verwenden</translation>
 <translation id="191374271204266022">Als JSON kopieren</translation>
 <translation id="1914326953223720820">Dienst entpacken</translation>
@@ -544,6 +544,7 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="1924727005275031552">Neu</translation>
 <translation id="4527827173940627753">Brave protokolliert, wie du die Funktion verwendest, z. B. deine Anfragen und dein Verhalten, wenn du Vorschläge annimmst oder ignorierst</translation>
 <translation id="1932098463447129402">Nicht vor</translation>
+<translation id="1932629105611536854">Postleitzahl des Lieferorts</translation>
 <translation id="1935353813610900265">Feedback zur KI‑gestützten Verlaufssuche senden</translation>
 <translation id="1935995810530254458">Trotzdem kopieren</translation>
 <translation id="1938580037092872316">Neue Informationen zu gespeicherter Adresse hinzufügen</translation>
@@ -608,6 +609,7 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="2045871135676061132">Umschlag Personal</translation>
 <translation id="2048261947532620704">Seite wird übersetzt</translation>
 <translation id="2055016614992422886">Unterhaltung</translation>
+<translation id="2057654338925604102">Domain des Transportunternehmens</translation>
 <translation id="2059166748188874810">Gemeinde</translation>
 <translation id="2059202684901022309">22 x 34 Zoll</translation>
 <translation id="2063929825539050431">Halte die Adressleiste gedrückt, um diese Seite schnell an ein anderes Gerät zu senden</translation>
@@ -627,6 +629,7 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="2090451897496479509">Wende dich für weitere Informationen an den Anbieter</translation>
 <translation id="2090686487550343086">IBANs</translation>
 <translation id="2091887806945687916">Ton</translation>
+<translation id="2092361763640578821">Weitere Informationen zum</translation>
 <translation id="2093184051799735948">In <ph name="ENGINE_NAME"/> suchen oder URL eingeben</translation>
 <translation id="4871965986998315786">Brave versucht, Windows Hello zum Ausfüllen von Passwörtern zu deaktivieren.</translation>
 <translation id="2094505752054353250">Domains stimmen nicht überein.</translation>
@@ -634,11 +637,13 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="2096183846792489672">Die Inhalte und URLs der von dir besuchten Seiten werden möglicherweise in einem vertraulichen Profil in der Cloud verarbeitet.</translation>
 <translation id="209961642949927292">Das nächste Mal schneller bezahlen?</translation>
 <translation id="2099652385553570808">Drei Heftklammern links</translation>
+<translation id="210056520177407132">EU-Gütesiegel</translation>
 <translation id="2101225219012730419">Version:</translation>
 <translation id="2102134110707549001">Starkes Passwort vorschlagen…</translation>
 <translation id="2102495993840063010">Android-Apps</translation>
 <translation id="2103210856015238101">Die Liste mit den Kundenkarten, deren Daten bei Berührung eingefügt werden, ist vollständig geöffnet.</translation>
 <translation id="2104739941682874393">Mit erweitertem Autofill werden Inhalte in Formularen besser erkannt und Formulare können schneller automatisch ausgefüllt werden</translation>
+<translation id="2105237910269166838">Frage zur Seite</translation>
 <translation id="2107021941795971877">Stützstrukturen für Druck</translation>
 <translation id="2108755909498034140">Computer neu starten</translation>
 <translation id="2109845311767915560">Geteilte Tabgruppe</translation>
@@ -651,12 +656,14 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="2119867082804433120">Lochung unten rechts</translation>
 <translation id="2122214041802369259">Der Preis ist hoch</translation>
 <translation id="2122719317867821810">Diese Richtlinie funktioniert wie beabsichtigt, an anderer Stelle ist jedoch ein widersprüchlicher Wert festgelegt, der von dieser Richtlinie überschrieben wird.</translation>
-<translation id="1405760536280692221">Fahrzeug in Brave Wallet aktualisieren</translation>
+<translation id="2124081665399116863">Fahrzeug in Google Wallet aktualisieren</translation>
 <translation id="2126374524350484896">PDF-Erstellungsprogramm:</translation>
 <translation id="2127090458081644412">Passwort auf diesem Gerät gespeichert</translation>
 <translation id="2127747486437921899">Kursiv</translation>
+<translation id="2129163794581571479">Basierend auf Gemini mit Personal Intelligence. Deine Anfragen, Seitentitel und URLs werden möglicherweise überprüft, um die Funktion „Erweitertes Autofill“ zu verbessern. <ph name="BEGIN_LINK"/>Einstellungen verwalten<ph name="END_LINK"/></translation>
 <translation id="2130448033692577677">Die von dir angegebenen Vorlagen können nicht angewendet werden, weil die Richtlinie "DnsOverHttpsMode" nicht konfiguriert ist.</translation>
 <translation id="2130699163006053678">A3x7</translation>
+<translation id="2131006834960167560">Funktion zum automatischen Ausfüllen von Zahlungsinformationen ist vollständig geöffnet.</translation>
 <translation id="2131511685263818470"><ph name="SEARCH_ENGINE_NAME"/>. <ph name="MARKETING_SNIPPET"/></translation>
 <translation id="2132825047782982803">Die Reihenfolge ist zufällig. Du kannst deine Einstellung jederzeit ändern.</translation>
 <translation id="2134584557120247184">Flugticket</translation>
@@ -731,6 +738,7 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="2233745931693710080">Compact Disc</translation>
 <translation id="2236949375853147973">Meine Aktivitäten</translation>
 <translation id="2239100178324503013">Jetzt senden</translation>
+<translation id="223921069122391343">Dein gespeichertes Angebot ist beim Bezahlen über Autofill verfügbar. <ph name="BEGIN_LINK"/>Nutzungsbedingungen ansehen<ph name="END_LINK"/></translation>
 <translation id="224130779555573777">Redress-Nummer hinzufügen</translation>
 <translation id="2241693394036365668">Datei heruntergeladen</translation>
 <translation id="2242389809734574253">Ansicht „IBAN speichern“ wurde geschlossen.</translation>
@@ -756,6 +764,7 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="2277753418458118549">Verbindungsdetails anzeigen</translation>
 <translation id="2277949605527755300"><ph name="URL"/> möchte deine Hände tracken</translation>
 <translation id="22792995594807632">Vor dem Download ist eine Überprüfung erforderlich</translation>
+<translation id="2279607542590042584">Passkey • Apple Passwörter</translation>
 <translation id="2283340219607151381">Adressen für Autofill speichern</translation>
 <translation id="2283447177162560884">„<ph name="PAGE_TITLE"/>“ wurde gelöscht</translation>
 <translation id="2283599456633275070">Reisen</translation>
@@ -764,8 +773,8 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="2288422996159078444">Alles, was du eingibst, alle Seiten, die du besuchst, und alle sonstigen Aktivitäten im Internet werden überwacht. Inhalte von Websites können ohne dein Wissen verändert werden.</translation>
 <translation id="2289385804009217824">Zuschneiden</translation>
 <translation id="2292556288342944218">Deine Internetverbindung ist gesperrt</translation>
+<translation id="2294150501457238325">Reisepass sicher hinzufügen</translation>
 <translation id="2295831393422400053">Aktiviere die Einstellung „Suchanfragen und das Surfen verbessern“, um „Formuliere für mich“ zu verwenden</translation>
-<translation id="2296244067976588032">Passkey • iCloud-Schlüsselbund</translation>
 <translation id="2296331629987861142">In Raten zahlen (es gelten bestimmte Voraussetzungen, Gebühren fallen an)</translation>
 <translation id="2300306941146563769">Nicht hochgeladen</translation>
 <translation id="2301064673700597535">Qualifizierte Zertifikatsanweisungen</translation>
@@ -781,7 +790,8 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="2318594867107319532">Letzter Richtlinien-Zeitstempel:</translation>
 <translation id="2321291402658100099">Informationen verwalten</translation>
 <translation id="2322254345061973671">{COUNT,plural, =1{1 Fenster}other{# Fenster}}</translation>
-<translation id="4848600035394410348">Es können jetzt mehr Informationen aus Brave Wallet automatisch eingefügt werden</translation>
+<translation id="2325722389016720813">Zur automatischen Vervollständigung die Pfeiltaste nach oben oder unten drücken. Zur automatischen Vervollständigung Text eingeben.</translation>
+<translation id="2326283484705860548">Es können jetzt mehr Informationen aus Google Wallet automatisch eingefügt werden</translation>
 <translation id="2326747055382936979">Erweitertes Autofill verwalten</translation>
 <translation id="2328651992442742497">Zugelassen (Standardeinstellung)</translation>
 <translation id="2330137317877982892"><ph name="CREDIT_CARD"/>, läuft am <ph name="EXPIRATION_DATE_ABBR"/> ab</translation>
@@ -827,7 +837,7 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="2396249848217231973">&amp;Löschen rückgängig machen</translation>
 <translation id="4124760202519850347">Diese IBAN wurde in deinem Brave-Konto gespeichert, damit du sie auch in anderen Brave-Diensten verwenden kannst.</translation>
 <translation id="2400263725572336749">Reisepass hinzufügen</translation>
-<translation id="1258449952808226603">Kundenkarten in Brave Wallet verwalten</translation>
+<translation id="2400271059665846158">Kundenkarten in Google Wallet verwalten</translation>
 <translation id="2400600116338235695">Darf nachfragen, wenn sie eine Verbindung mit seriellen Ports herstellen möchte</translation>
 <translation id="2403474027143565107">Genau</translation>
 <translation id="240450251994300576">Logo der sekundären Kopfzeile</translation>
@@ -842,27 +852,28 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="2436186046335138073">Öffnen aller <ph name="PROTOCOL"/>-Links durch <ph name="HANDLER_HOSTNAME"/> zulassen?</translation>
 <translation id="4819123264415400027">Diese Karte konnte nicht in deinem Brave-Konto gespeichert werden. Sie wurde stattdessen in Brave auf diesem Gerät gespeichert.</translation>
 <translation id="2438874542388153331">Vierfache Lochung rechts</translation>
-<translation id="2441854154602066476">Zahlungsmethoden, die bei Berührung ausgefüllt werden. Tastatur ausgeblendet.</translation>
+<translation id="2442033148418774391">Hinweis „Nutze die Cloud – für eine smartere ‚Autofill‘-Funktion“ geschlossen</translation>
 <translation id="2448295565072560657">An dieses Gerät angeschlossene Peripheriegeräte, während du angemeldet bist</translation>
-<translation id="7174054574169352743">Zahlungsmethoden und andere Informationen aus Brave Wallet</translation>
+<translation id="2450019289047528273">Zahlungsmethoden und andere Informationen aus Google Wallet</translation>
 <translation id="2451201933352935301"><ph name="URL"/> möchte Fenster auf allen deinen Bildschirmen verwalten</translation>
 <translation id="2451607499823206582">Tracking</translation>
 <translation id="2452837234288608067">Dabei konnten wir nicht helfen. Bitte versuche es noch einmal.</translation>
 <translation id="2453045048779611513">Deine Organisation schränkt ein, was du speichern kannst</translation>
+<translation id="2456490423293803882">Hinweis „Nutze die Cloud – für eine smartere ‚Autofill‘-Funktion“ vollständig geöffnet</translation>
 <translation id="2459882793359532780">Angewandte Browserrichtlinien (Computer- und Profilrichtlinien)</translation>
 <translation id="246127430128361016">Mit Brave Enterprise Core kannst du Browserrichtlinien über die Cloud zentral konfigurieren</translation>
 <translation id="2461822463642141190">Aktuell</translation>
 <translation id="2462724976360937186">Schlüssel-ID der Zertifizierungsstelle</translation>
 <translation id="2465688316154986572">Heften</translation>
 <translation id="4058615531773510267">In Brave heruntergeladene Dateien verwalten</translation>
-<translation id="2466682894498377850">Tab von deinem Gerät (<ph name="DEVICE_NAME"/>) gesendet</translation>
 <translation id="2467272921457885625">Gerätehardwarespezifikationen und -statistiken, etwa der Verlauf der CPU-/RAM-Nutzung</translation>
 <translation id="2467421459221956357">Sensoren verwenden?</translation>
 <translation id="2467694685043708798"><ph name="BEGIN_LINK"/>Netzwerkdiagnose ausführen<ph name="END_LINK"/></translation>
+<translation id="2468247643665097563">Sortieren</translation>
 <translation id="2469153820345007638">1-zu-N-Reihenfolge</translation>
 <translation id="24699311393038040">Papier (beschichtet)</translation>
 <translation id="2471632709106952369">Vergleichstabellen</translation>
-<translation id="768574016157037999">Known Traveler Number sicher in Brave Wallet speichern</translation>
+<translation id="2472396075297339227">Known Traveler Number sicher in Google Wallet speichern</translation>
 <translation id="50589553892093838">Andere Brave-Daten</translation>
 <translation id="247903268499247848">Zugriff auf Bewegungs- und Lichtsensoren nicht erlaubt</translation>
 <translation id="2479148705183875116">Zu den Einstellungen</translation>
@@ -875,8 +886,8 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="2491120439723279231">Das Serverzertifikat enthält Fehler.</translation>
 <translation id="2491414235131909199">Diese Seite wurde von einer Erweiterung blockiert</translation>
 <translation id="2493122313108999546">Größe geändert</translation>
-<translation id="249376477913017009">Hinweis zum automatischen Ausfüllen aus Gmail und anderen Quellen geöffnet</translation>
 <translation id="2495083838625180221">JSON-Parser</translation>
+<translation id="2495909791227061512">Mit Geräten in der Nähe verbinden?</translation>
 <translation id="2496402116964818747">Du kannst in den <ph name="SETTINGS"/> ändern, ob dein Fingerabdruck zum Ausfüllen von Passwörtern verwendet werden soll</translation>
 <translation id="2498091847651709837">Neue Karte scannen</translation>
 <translation id="2501270939904835585">Etiketten (Satin)</translation>
@@ -885,6 +896,7 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="2505063700931618106">Karteninformationen gespeichert</translation>
 <translation id="2505268675989099013">Konto schützen</translation>
 <translation id="2508626115198287271"><ph name="BENEFIT_DESCRIPTION"/> (Bedingungen gelten)</translation>
+<translation id="251033673027346551">In Google Wallet kannst du deine <ph name="BEGIN_LINK"/>Daten- und Datenschutzeinstellungen<ph name="END_LINK"/> verwalten.</translation>
 <translation id="2512101340618156538">Nicht zugelassen (Standardeinstellung)</translation>
 <translation id="3233967599412104589">Button „Brave als Standardbrowser festlegen“ – drücke die Eingabetaste, um Brave in den iOS-Einstellungen als Standardbrowser für das System festzulegen</translation>
 <translation id="2515629240566999685">Signal an deinem Standort prüfen</translation>
@@ -895,11 +907,9 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="5238917643845023930"><ph name="BEGIN_BOLD"/>Inhalte von der Zahlungsseite werden an Brave weitergegeben, um diese Optionen anzubieten.<ph name="END_BOLD"/> Die Verfügbarkeit von Ratenzahlungen hängt von der Erfüllung bestimmter Voraussetzungen ab. Du kannst die Option „Später bezahlen“ in den <ph name="BEGIN_LINK"/>Zahlungseinstellungen<ph name="END_LINK"/> ausblenden.</translation>
 <translation id="2526062290525841862">Wenn du diese App ausführen möchtest, aktiviere den Entwicklermodus für isolierte Web-Apps wieder</translation>
 <translation id="5151177152796946073">Du kannst gespeicherte Adressen in verschiedenen Brave-Produkten verwenden. Diese Adresse wird in deinem Brave-Konto <ph name="ACCOUNT"/> gespeichert.</translation>
-<translation id="2526590354069164005">Desktop</translation>
 <translation id="2527451058878391043">Der CVC befindet sich auf der Vorderseite deiner Karte. Er ist der vierstellige Code rechts oben über der Kartennummer.</translation>
 <translation id="2529899080962247600">Dieses Feld sollte nicht mehr als <ph name="MAX_ITEMS_LIMIT"/> Einträge enthalten. Alle weiteren Einträge werden ignoriert.</translation>
 <translation id="2530042584066815841">Maussperre und ‑nutzung</translation>
-<translation id="253493526287553278">Details zu Gutscheincode ansehen</translation>
 <translation id="2535659140340599600">{COUNT,plural, =1{und 1 weitere}other{und # weitere}}</translation>
 <translation id="2536110899380797252">Adresse hinzufügen</translation>
 <translation id="3140033400151786080">Andere Personen, die dieses Gerät verwenden, können deine Aktivitäten nicht sehen, sodass du privat surfen kannst. Dies hat keine Auswirkungen darauf, wie Daten durch von dir besuchte Websites und den von ihnen genutzten Diensten, einschließlich Brave, erhoben werden. Downloads und Lesezeichen werden gespeichert.</translation>
@@ -909,6 +919,7 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="2544644783021658368">Einzelnes Dokument</translation>
 <translation id="5342827302598046226">Brave als Standardbrowser festlegen</translation>
 <translation id="2546283357679194313">Cookies und Websitedaten</translation>
+<translation id="254672217349157196">E‑Mail-Adresse automatisch bestätigen</translation>
 <translation id="254947805923345898">Der Richtlinienwert ist ungültig.</translation>
 <translation id="255002559098805027"><ph name="HOST_NAME"/> hat eine ungültige Antwort gesendet.</translation>
 <translation id="2551608178605132291">Adresse: <ph name="ADDRESS"/>.</translation>
@@ -922,6 +933,7 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="2556173336856001120"><ph name="USER_GIVEN_NAME"/> • <ph name="DEVICE_NAME"/></translation>
 <translation id="2556876185419854533">&amp;Bearbeiten rückgängig machen</translation>
 <translation id="2559566667529177711">Mehrlagig</translation>
+<translation id="2561224416042784023">Einstellungen ansehen</translation>
 <translation id="2570734079541893434">Einstellungen verwalten</translation>
 <translation id="257136025287118539">Dein Administrator verschiebt deine Dateien nach <ph name="CLOUD_PROVIDER"/>. Du kannst diese Dateien ändern, sobald der Upload abgeschlossen ist.</translation>
 <translation id="2571488850200220306">Für mehr Sicherheit kann ein Admin auch das Betriebssystem, die Browserversion und die installierte Software des Geräts sehen</translation>
@@ -957,7 +969,6 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="6484547507342500969">Dieser Server konnte nicht beweisen, dass er <ph name="DOMAIN"/> ist, da er ein Sicherheitszertifikat verwendet, das von Brave oder deiner Systemkonfiguration für die Verschlüsselung von Web-Traffic nicht als vertrauenswürdig eingestuft wird. Mögliche Gründe sind eine fehlerhafte Konfiguration oder ein Angreifer, der deine Verbindung abfängt.</translation>
 <translation id="2628224721443278970">In Microsoft OneDrive anmelden</translation>
 <translation id="2631059741268498165">Dein Administrator hat dieses Gerät gefunden, während es deaktiviert war. Es wurde wieder aktiviert und ist einsatzbereit.</translation>
-<translation id="2631387782019878060">Bestätigungscode: <ph name="OTP"/></translation>
 <translation id="2634124572758952069">Die Server-IP-Adresse von <ph name="HOST_NAME"/> wurde nicht gefunden.</translation>
 <translation id="2635276683026132559">Signatur</translation>
 <translation id="2638070510549214427">Als sicher markieren</translation>
@@ -984,7 +995,6 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="2677748264148917807">Verlassen</translation>
 <translation id="2679216653373462289">Bewegungs- und Lichtsensoren verwenden</translation>
 <translation id="2679659833697380">Deine Informationen werden auf deinem Gerät gespeichert</translation>
-<translation id="2489045475086745601">An Brave auf deinem Gerät (<ph name="DEVICE_NAME"/>) gesendet.</translation>
 <translation id="2683195745483370038">Andere Ergebnisse für die Suche</translation>
 <translation id="2686919536310834199">Feedback zu „Formuliere für mich“ senden.</translation>
 <translation id="2687555958734450033">Beste Anordnung</translation>
@@ -1025,7 +1035,7 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="2734797989819862638">Nicht kopieren</translation>
 <translation id="2738771556149464852">Nicht nach</translation>
 <translation id="2740531572673183784">Ok</translation>
-<translation id="275259155159336003">Unterstützt durch Personal Intelligence mit Gemini. Deine Anfragen, Seitentitel und URLs werden möglicherweise überprüft, um die Funktion „Erweitertes Autofill“ zu verbessern. <ph name="BEGIN_LINK"/>Einstellungen verwalten<ph name="END_LINK"/></translation>
+<translation id="2750602117850059078">{COUNT,plural, =0{Keine}=1{1 Skill}other{# Skills}}</translation>
 <translation id="2757727729385895652"><ph name="COUNT"/> Dateien werden in Google Drive hochgeladen</translation>
 <translation id="2759299890026163685">Versuche es noch einmal, wenn du eine stabile Internetverbindung hast</translation>
 <translation id="2759825833388495838">dein Passwort in <ph name="APP_NAME"/> einzugeben</translation>
@@ -1039,7 +1049,6 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="2781692009645368755">Google Pay</translation>
 <translation id="2781799097551205934">Bezahlvorgang wird vorbereitet</translation>
 <translation id="2784474685437057136">B5 Extra</translation>
-<translation id="2784795832957740711">Passwörter · Passkeys</translation>
 <translation id="2784949926578158345">Verbindung wurde zurückgesetzt.</translation>
 <translation id="2792012897584536778">Administratoren dieses Geräts haben Sicherheitszertifikate eingerichtet, die es ihnen möglicherweise erlauben, Inhalte der von dir besuchten Websites anzuzeigen.</translation>
 <translation id="2793425367785017642">Damit Formulare besser verstanden und ausgefüllt werden können, werden die Inhalte und URLs der von dir besuchten Seiten möglicherweise in einem vertraulichen Profil in der Cloud verarbeitet.</translation>
@@ -1067,10 +1076,12 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="2859806420264540918">Diese Website zeigt aufdringliche oder irreführende Werbung an.</translation>
 <translation id="2873317327342476681">Dino-Spiel – tippe auf den Dino oder drücke die Leertaste, um das Spiel zu starten</translation>
 <translation id="287387905105155974">Infofeld</translation>
+<translation id="2111353921621866764">Wenn Brave Sicherheitshinweise meldet, werden relevante Informationen an deinen Administrator gesendet. Dazu gehören z. B. URLs und Titel der von dir in Brave besuchten Seiten, URLs von Seiten, von denen du Daten kopiert hast, Dateinamen oder Metadaten, IP-Adressen, Browser- oder Tab-Abstürze sowie der Nutzername, den du zum Anmelden in Webanwendungen, auf deinem Gerät und in Brave verwendest.</translation>
 <translation id="1117301625415017890"><ph name="MANAGE_SECURITY_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/> – drücke die Tabulatortaste und dann die Eingabetaste, um beispielsweise Safe Browsing in den Brave-Einstellungen zu verwalten</translation>
 <translation id="2878197950673342043">Posterfaltung</translation>
 <translation id="2878424575911748999">A1</translation>
 <translation id="2879694782644540289">die Displaysperre zum Ausfüllen von Passwörtern zu verwenden</translation>
+<translation id="2880119244122776372">Erstellen und programmieren</translation>
 <translation id="2881276955470682203">Karte speichern?</translation>
 <translation id="2882280148032777436">Known Traveler Number löschen</translation>
 <translation id="2882949212241984732">Doppelte Fensterfaltung</translation>
@@ -1087,7 +1098,7 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="2905107382358353958">Benachrichtigung über neue Zahlungseinstellung</translation>
 <translation id="2909946352844186028">Eine Netzwerkänderung ist aufgetreten.</translation>
 <translation id="2910062169995917863">Zeitüberschreitung</translation>
-<translation id="7085506453142803285">Deine Brave Wallet-Einstellungen gelten für Informationen, die in Brave gespeichert wurden</translation>
+<translation id="7165817952874613339">Deine Google Wallet-Einstellungen gelten für Informationen, die in Brave gespeichert wurden</translation>
 <translation id="2911973620368911614">Nutzer-ID der Konto-ID des Auftrags</translation>
 <translation id="2915068235268646559">Absturz vom <ph name="CRASH_TIME"/></translation>
 <translation id="2916038427272391327">Andere Programme schließen</translation>
@@ -1146,6 +1157,7 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="3008410317623852235">Jetzt kannst du Informationen aus Gmail und mehr suchen und einfügen.</translation>
 <translation id="3009036448238594149"><ph name="ACTION_IN_SUGGEST_FOCUSED_FRIENDLY_MATCH_TEXT"/>, drücke die Tabulatortaste, um die verfügbaren Aktionen aufzurufen, und dann die Eingabetaste, um die ausgewählte Aktion auszuführen.</translation>
 <translation id="3010991137650052245">Wenn du deine „<ph name="PERMISSION"/>“-Berechtigung auf dieser Website verwenden möchtest, musst du <ph name="SHORT_PRODUCT_NAME"/> Zugriff erlauben</translation>
+<translation id="3013536714390403689">Bestätigte E-Mail-Adresse</translation>
 <translation id="3014726756341138577">Erweiterte Druckerfunktionen</translation>
 <translation id="301521992641321250">Automatisch blockiert</translation>
 <translation id="3016780570757425217">Deinen Standort abrufen</translation>
@@ -1164,12 +1176,12 @@ Du wirst sonst gemäß deinen Datenschutzeinstellungen blockiert. Wenn Cookies u
 <translation id="3041176923638368519">Nutzungsbedingungen für Kartenvorteile ansehen</translation>
 <translation id="3041584414879052436">Die Liste der Anbieter von „Jetzt kaufen, später bezahlen“ ist geschlossen.</translation>
 <translation id="3041612393474885105">Zertifikatinformationen</translation>
+<translation id="5109572183258601052">Brave kann jetzt dank der optimierten Formularbearbeitung noch mehr Formulare erkennen und ausfüllen. Dazu können Seiteninhalte und URLs in einem vertraulichen Profil in der Cloud verarbeitet werden. Du kannst diese Funktion in den Einstellungen verwalten.</translation>
 <translation id="9014065296419901407">Wenn du deine Daten in <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE_1"/> speicherst, lassen sich viele Dinge schneller erledigen, z. B. das Ausfüllen von Formularen in Brave-Produkten. <ph name="BEGIN_LINK"/>Über diesen Link<ph name="END_LINK"/> kannst du deine Daten für <ph name="ACCOUNT"/> in <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE_2"/> verwalten.</translation>
 <translation id="8418829431154568330">Brave Remote Desktop-Verlauf, einschließlich Zeitstempeln, Hosts und Client-Sitzungs-IDs</translation>
 <translation id="2396578282884469363">Normalerweise verbindest du dich auf sichere Weise mit Websites, aber Brave konnte dieses Mal keine verschlüsselte Verbindung herstellen. Möglicherweise versucht ein Angreifer, deine Onlineaktivitäten zu beobachten oder deine Netzwerkverbindung zu modifizieren. <ph name="BEGIN_LEARN_MORE_LINK"/>Weitere Informationen zu dieser Warnung<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3052964831964880138"><ph name="PRICE_DROP"/> Preisnachlass auf das Produkt „<ph name="PRODUCT_NAME"/>“</translation>
 <translation id="3053013834507634016">Zertifikatschlüsselverwendung</translation>
-<translation id="3056660797732519147">Fehlerbildschirm für „Jetzt kaufen, später bezahlen“. Tastatur ausgeblendet.</translation>
 <translation id="3057844102210575426">Reiseinformationen verwalten</translation>
 <translation id="3061707000357573562">Patchdienst</translation>
 <translation id="3062655045399308513">Browserdaten löschen...</translation>
@@ -1202,7 +1214,6 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="3109788962812161063">Profilverwaltung</translation>
 <translation id="3112892588078695695">Telefonnummer: <ph name="PHONE"/>.</translation>
 <translation id="3113284927548439113">Dritte Schicht</translation>
-<translation id="3113930177999394798">Gib „@Verlauf“ ein, um deinen Browserverlauf basierend auf KI zu durchsuchen</translation>
 <translation id="3114040155724590991">Android-System wird aktualisiert
     Das Starten deiner App kann länger als gewöhnlich dauern.</translation>
 <translation id="3114197119223448048">Neue Aktivität</translation>
@@ -1239,6 +1250,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="3162559335345991374">Unter Umständen musst du die Anmeldeseite des verwendeten WLAN-Netzwerken aufrufen.</translation>
 <translation id="316542773973815724">Navigation</translation>
 <translation id="316638481603975524">Darf nachfragen, ob Web-Apps installiert werden können</translation>
+<translation id="3166688462674378969">Button „Isolierte Fenster schließen“ – aktivieren, um alle derzeit geöffneten isolierten Fenster zu schließen</translation>
 <translation id="5128545107355520364">Wenn du das nächste Mal auf die Daten zugreifst, wirst du von Brave gefragt, ob sie in <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> gespeichert werden sollen</translation>
 <translation id="3169472444629675720">Discover</translation>
 <translation id="3176929007561373547">Vergewissere dich, dass der Proxyserver funktioniert. Überprüfe die
@@ -1252,6 +1264,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="3190736958609431397">Nicht mehr beobachten</translation>
 <translation id="3194737229810486521"><ph name="URL"/> möchte Daten dauerhaft auf deinem Gerät speichern</translation>
 <translation id="3194765668709099364">Klarna</translation>
+<translation id="3194768112587954116">Führerschein zu Google Wallet hinzufügen</translation>
 <translation id="3195213714973468956"><ph name="PRINTER_NAME"/> auf <ph name="SERVER_NAME"/></translation>
 <translation id="3196374699162453920">Buchungscode</translation>
 <translation id="3196902089458890316">Relevante Tabs immer teilen, um bessere Antworten zu erhalten?</translation>
@@ -1263,8 +1276,10 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="3207960819495026254">Mit einem Lesezeichen versehen</translation>
 <translation id="3209034400446768650">Auf der Seite wird möglicherweise Geld verlangt</translation>
 <translation id="809694630565139611">Deine Anfragen, Seitentitel und URLs werden an Brave gesendet und möglicherweise überprüft, um die Funktion „Erweitertes Autofill“ zu verbessern</translation>
+<translation id="3211727636285361260"><ph name="PROTOCOL"/>-Links über <ph name="HANDLER_HOSTNAME"/> öffnen</translation>
 <translation id="3212468046572043669">Download gestartet. Zum Ansehen: von oben ziehen und auf den Button „Zurück“ tippen</translation>
 <translation id="3212581601480735796">Deine Aktivität auf <ph name="HOSTNAME"/> wird überwacht</translation>
+<translation id="1886580873774405358">{NUM_SOURCES,plural, =1{Brave schlägt diese Informationen nicht mehr vor. Die ursprüngliche Quelle wird nicht gelöscht.}other{Brave schlägt diese Informationen nicht mehr vor. Die ursprünglichen Quellen werden nicht gelöscht.}}</translation>
 <translation id="3215092763954878852">WebAuthn konnte nicht verwendet werden</translation>
 <translation id="3215311088819828484">Ergebnis aktualisiert</translation>
 <translation id="3218181027817787318">Relativ</translation>
@@ -1285,7 +1300,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="323585066388831737">Hellrot</translation>
 <translation id="3235902901585019063">Lokale Dateien werden am <ph name="DATE_TIME"/> gelöscht. Achte darauf, dass alle wichtigen geschäftlichen oder privaten Daten extern gespeichert sind.</translation>
 <translation id="3236212803136366317">Kartenvorteile</translation>
-<translation id="2816340899490518371">Konnte nicht in Brave Wallet gespeichert werden</translation>
+<translation id="3237427677128462778">Konnte nicht in Google Wallet gespeichert werden</translation>
 <translation id="3240683217920639535"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/> – drücke die Tabulatortaste und dann die Eingabetaste, um das Erscheinungsbild deines Browsers anzupassen</translation>
 <translation id="3243131902823383230"><ph name="MANUFACTURER"/>-Laptop</translation>
 <translation id="3243650379537999343">Zeichnen</translation>
@@ -1309,7 +1324,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="7460223968433527020">Dein Administrator kann Änderungen an deinem Profil und Browser per Fernzugriff vornehmen, Informationen über den Browser durch Berichte analysieren und andere notwendige Aufgaben ausführen. Aktivitäten auf diesem Gerät können auch außerhalb von Brave verwaltet werden. <ph name="BEGIN_LINK"/>Weitere Informationen<ph name="END_LINK"/></translation>
 <translation id="3273757719652748628">Die Ansicht „IBAN speichern“ ist vollständig geöffnet.</translation>
 <translation id="327455571215090823">Nutze die Cloud – für eine smartere „Autofill“-Funktion</translation>
-<translation id="5506816339792547413">Reisepass sicher in Brave Wallet aktualisieren</translation>
+<translation id="3280440382387335343">Reisepass sicher in Google Wallet aktualisieren</translation>
 <translation id="3281350579597955952">{0,plural, =1{Laut Administratorrichtlinie wird das Öffnen dieser Datei in <ph name="DESTINATION_NAME"/> nicht empfohlen}other{Laut Administratorrichtlinie wird das Öffnen dieser Dateien in <ph name="DESTINATION_NAME"/> nicht empfohlen}}</translation>
 <translation id="3282085321714087552">Deine Organisation, <ph name="ENROLLMENT_DOMAIN"/>, hat Informationen wie z. B. Einstellungen oder Richtlinien an folgende Websites gesendet.</translation>
 <translation id="3286372614333682499">Hochformat</translation>
@@ -1317,6 +1332,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="3289578402369490638">Von anderen Onlineshops</translation>
 <translation id="3293642807462928945">Weitere Informationen zur "<ph name="POLICY_NAME"/>"-Richtlinie</translation>
 <translation id="5894665462526421022">Passwörter in den Brave-Einstellungen ansehen und verwalten</translation>
+<translation id="3296595523896103792">Funktion zum automatischen Ausfüllen von Zahlungsinformationen geschlossen.</translation>
 <translation id="3299098170013242198">Windows Hello ist zum Ausfüllen von Passwörtern aktiviert</translation>
 <translation id="3183696044082232280">Inhalte konnten aufgrund der Richtlinien deiner Organisation nicht außerhalb des verwalteten Brave-Kontexts eingefügt werden</translation>
 <translation id="3299720788264079132">Bei der Verwendung von <ph name="FEATURE_NAME"/> ist ein Fehler aufgetreten</translation>
@@ -1328,6 +1344,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="4731386748664539266">Button „Brave anpassen“ – aktivieren, um das Erscheinungsbild des Browsers anzupassen</translation>
 <translation id="3308006649705061278">Organisationseinheit (OU)</translation>
 <translation id="3312952471765023168">Upload erfolgreich</translation>
+<translation id="3323135197619890621">Autofill aktivieren, um das Einkaufen zu erleichtern</translation>
 <translation id="3324687287337751929">4 × 6 Zoll</translation>
 <translation id="3325568918769906282">in absteigender Reihenfolge</translation>
 <translation id="3325662270238538525">Letzte Zugriffe auf Dateien und Änderungen, einschließlich Dateinamen, digitale Fingerabdrücke des Dateiinhalts, Downloadquelle und Metadaten</translation>
@@ -1356,6 +1373,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="3380864720620200369">Client-ID: </translation>
 <translation id="3383566085871012386">Aktuelle Rangfolge</translation>
 <translation id="3383713837163550889">Deine lokalen Dateien werden in 1 Minute gelöscht</translation>
+<translation id="33837817515081754">Known Traveler Number zu Google Wallet hinzufügen</translation>
 <translation id="3384522979010096022">Deine Organisation lässt nicht zu, dass du diese Website aufrufst</translation>
 <translation id="3391030046425686457">Lieferadresse</translation>
 <translation id="3391482648489541560">Dateibearbeitung</translation>
@@ -1372,14 +1390,13 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="3413466783792948876">Wenn du ein öffentliches Netzwerk verwendest, ist es am sichersten, diese Website erst später aufzurufen. Das Risiko ist bei einem vertrauenswürdigen Netzwerk – wie dem WLAN zu Hause oder am Arbeitsplatz – geringer.</translation>
 <translation id="3414952576877147120">Größe:</translation>
 <translation id="7115177860507615612">Button „Brave Dino spielen“ – aktivieren, um Brave Dino zu spielen</translation>
-<translation id="8251789548015352228">Deine Suchanfragen, die besten Ergebnisse und die zugehörigen Seiteninhalte werden an Brave gesendet und möglicherweise von Prüfern gelesen, um diese Funktion zu verbessern. Dies ist eine experimentelle Funktion, die manchmal fehlerhaft sein kann.</translation>
 <translation id="3417390269491141648">Vergleiche meine Krankenversicherungsoptionen und liste die wichtigsten Unterschiede zwischen ihnen auf</translation>
 <translation id="3421387094817716717">Öffentlicher Schlüssel für elliptische Kurven</translation>
 <translation id="3422248202833853650">Versuche, andere Programme zu beenden, um Speicher freizugeben.</translation>
 <translation id="3422472998109090673"><ph name="HOST_NAME"/> ist momentan nicht erreichbar.</translation>
 <translation id="3422794267539320056">Tippe auf den Dino oder drücke die Leertaste, um das Spiel zu starten</translation>
 <translation id="3423742043356668186">Vom System angegeben</translation>
-<translation id="6418111414395514325">Reisepass in Brave Wallet aktualisieren</translation>
+<translation id="3426672782316020729">Reisepass in Google Wallet aktualisieren</translation>
 <translation id="3427342743765426898">&amp;Bearbeiten wiederholen</translation>
 <translation id="3428151540071562330">Einer oder mehrere der "DnsOverHttpsTemplates"-Servervorlagen-URIs sind ungültig und werden nicht verwendet.</translation>
 <translation id="3432601291244612633">Seite schließen</translation>
@@ -1396,6 +1413,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="3447884698081792621">Zertifikat anzeigen (ausgestellt von <ph name="ISSUER"/>)</translation>
 <translation id="3450323514459570273">Darf darum bitten, meine MIDI-Geräte zu steuern und neu zu programmieren</translation>
 <translation id="3452404311384756672">Abrufintervall: </translation>
+<translation id="345268527248907593">Diese Website ist nicht erreichbar</translation>
 <translation id="3453962258458347894">Anzahl der Wiederholungen</translation>
 <translation id="3461266716147554923"><ph name="URL"/> möchte Texte und Bilder aus der Zwischenablage abrufen</translation>
 <translation id="3461824795358126837">Textmarker</translation>
@@ -1407,12 +1425,14 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="3807334561457710885">Button „Schriftarten anpassen“ – aktivieren, um Schriftgrößen und Schriftarten in Brave anzupassen</translation>
 <translation id="3478033058537426179">Nach Gruppe</translation>
 <translation id="3479552764303398839">Jetzt nicht</translation>
+<translation id="3481315707647070701">Visualisieren und bearbeiten</translation>
 <translation id="3484861421501147767">Erinnerung: gespeicherter Gutscheincode verfügbar</translation>
 <translation id="3569096371291033687">Bestätige deine Identität, um Passwörter und andere Daten in deinem Brave-Konto verwenden zu können</translation>
 <translation id="3487845404393360112">Fach 4</translation>
 <translation id="3493881266323043047">Gültigkeit</translation>
 <translation id="3495081129428749620">Auf Seite "<ph name="PAGE_TITLE"/>" suchen</translation>
 <translation id="3495818359064790343">Gehalt</translation>
+<translation id="3496531230994554300">Wallet-Benachrichtigung vollständig geöffnet.</translation>
 <translation id="3497627066518778351">Liste der Websitedaten auf dem Gerät in einem neuen Fenster öffnen</translation>
 <translation id="3498215018399854026">Wir können deinen Vater bzw. deine Mutter momentan nicht erreichen. Bitte versuche es später noch einmal.</translation>
 <translation id="350069200438440499">Dateiname:</translation>
@@ -1425,6 +1445,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="3517264445792388751">Das Dateisystem wurde vom Administrator deaktiviert</translation>
 <translation id="3518941727116570328">Handhabung mehrerer Objekte</translation>
 <translation id="3519670528214225835"><ph name="KEYWORD_SUFFIX"/> fragen</translation>
+<translation id="3520762308733579540">Fahrzeug zu Google Wallet hinzufügen</translation>
 <translation id="3525130752944427905">10 × 14 Zoll</translation>
 <translation id="3525435918300186947">MIDI-Geräte steuern und neu programmieren?</translation>
 <translation id="3527624163937328588">Anhang entfernen</translation>
@@ -1450,7 +1471,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="3549904448933807997">Informationen zu Browsern und Profilen (einschließlich privater und Arbeitsprofile)</translation>
 <translation id="3552155506104542239">Warnung: Diese Richtlinie steht mit der Richtlinie „<ph name="POLICY_NAME"/>“ im Konflikt und hat deshalb keine Auswirkungen auf Android-Apps. Ansonsten funktioniert diese Richtlinie ordnungsgemäß.</translation>
 <translation id="3552297013052089404">Schriftart Sans-Serif</translation>
-<translation id="379073195905791294">IBAN in Brave Wallet gespeichert</translation>
+<translation id="3558335486599406178">IBAN in Google Wallet gespeichert</translation>
 <translation id="3558573058928565255">Tageszeit</translation>
 <translation id="3559897352860026926">Bitte deinen Administrator, die <ph name="CLOUD_PROVIDER"/>-Konfigurationseinstellungen zu überprüfen.</translation>
 <translation id="3560824484345057728">Ähnliche Websites ansehen</translation>
@@ -1468,6 +1489,8 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="3577473026931028326">Ein Fehler ist aufgetreten. Versuche es noch einmal.</translation>
 <translation id="3580550219062570293"><ph name="TOS_TITLE"/> <ph name="LOGO_DESCRIPTION"/></translation>
 <translation id="230476913390177517">Brave informiert dich, wenn diese Seite bereit ist. &lt;a&gt;Abbrechen&lt;/a&gt;</translation>
+<translation id="3581499772329034229">Tabs automatisch hinzufügen</translation>
+<translation id="3582670569275100909">Lieferungen</translation>
 <translation id="3582930987043644930">Namen hinzufügen</translation>
 <translation id="3583757800736429874">&amp;Verschieben wiederholen</translation>
 <translation id="3584299510153766161">Doppelte Lochung unten</translation>
@@ -1486,7 +1509,8 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="3614001939154393113">Angreifer könnten versuchen, deine Informationen von <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> zu stehlen, etwa Passwörter, Nachrichten oder Kreditkartendaten. <ph name="BEGIN_LEARN_MORE_LINK"/>Weitere Informationen zu dieser Warnung<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="361438452008624280">Listeneintrag "<ph name="LANGUAGE_ID"/>": Unbekannte oder nicht unterstützte Sprache.</translation>
 <translation id="3274500070896023877"><ph name="RUN_CHROME_SAFETY_CHECK_FOCUSED_FRIENDLY_MATCH_TEXT"/> – drücke die Tabulatortaste und dann die Eingabetaste, um den Sicherheitscheck in den Brave-Einstellungen auszuführen</translation>
-<translation id="8284620253545560278">Diese IBAN konnte nicht in Brave Wallet gespeichert werden. Sie wurde stattdessen in Brave auf diesem Gerät gespeichert. Wenn du diese IBAN das nächste Mal verwendest, fragt Brave dich noch einmal.</translation>
+<translation id="3615354126333642335"><ph name="TEXT"/>, <ph name="SUBTEXT"/></translation>
+<translation id="1705437522221127648">Diese IBAN konnte nicht in Google Wallet gespeichert werden. Sie wurde stattdessen in Brave auf diesem Gerät gespeichert. Wenn du diese IBAN das nächste Mal verwendest, fragt Brave dich noch einmal.</translation>
 <translation id="3621401353678567613">Wenn du Benachrichtigungen zu Preissenkungen für Produkte erhalten möchtest, die du beobachtest, musst du in den Einstellungen Benachrichtigungen aktivieren.</translation>
 <translation id="362276910939193118">Gesamtverlauf anzeigen</translation>
 <translation id="5043591794632164789">Wenn du deine Kamera verwenden möchtest, erlaube Brave über die <ph name="LINK"/> den Zugriff darauf.</translation>
@@ -1500,10 +1524,12 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="3632892046558972264">Bildschirmfreigabe pausiert</translation>
 <translation id="3634530185120165534">Fach 5</translation>
 <translation id="3638102297696182302">„Formuliere für mich“ fortsetzen. Zum Öffnen Tabulator- und Eingabetaste drücken</translation>
+<translation id="5164471176749888807">Diese IBAN wurde in Google Wallet gespeichert, damit du sie auch in anderen Brave-Produkten verwenden kannst.</translation>
 <translation id="3642196846309122856">Versuche noch einmal, deine Dateien herunterzuladen</translation>
 <translation id="3642638418806704195">Anwendung:</translation>
 <translation id="3647286794400715637">Jeder URL-Stringeintrag muss eine oder zwei URLs enthalten.</translation>
 <translation id="5085151248144746413">Button „Brave-Tipp schließen“ – Drück die Eingabetaste zum Schließen, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
+<translation id="3647730822767756911">Aktivitätserfassung</translation>
 <translation id="3648667207586409316">Was kann ich tun, um Stress abzubauen?</translation>
 <translation id="3650584904733503804">Überprüfung erfolgreich</translation>
 <translation id="3650594806107685466">Bitte gib aus Sicherheitsgründen den CVC auf der <ph name="SIDE_OF_CARD"/> ein</translation>
@@ -1511,7 +1537,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="3655670868607891010">Sollte dir diese Meldung häufiger angezeigt werden, sieh dir unsere <ph name="HELP_LINK"/> an.</translation>
 <translation id="3658742229777143148">Überarbeitung</translation>
 <translation id="3659521826520353662">Welche vom Administrator festgelegten Websites zu welchem Zeitpunkt besucht werden: <ph name="ALLOWLISTED_WEBSITES"/></translation>
-<translation id="4298771595289948957">Diese IBAN wurde in Brave Wallet gespeichert, damit du sie auch in anderen Brave-Diensten verwenden kannst.</translation>
+<translation id="3663760610864720538">Basierend auf Gemini mit Personal Intelligence. <ph name="BEGIN_LINK"/>Einstellungen verwalten<ph name="END_LINK"/></translation>
 <translation id="3664479564786885722">Weitere Kaufoptionen in anderen Geschäften suchen, die dieses Produkt verkaufen.</translation>
 <translation id="3664782872746246217">Suchbegriffe:</translation>
 <translation id="3670030362669914947">Nummer</translation>
@@ -1531,6 +1557,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="3693516565203081475">Zahlungsmethode wählen</translation>
 <translation id="3698353241727597930">Dein Administrator hat festgelegt, dass <ph name="FILES"/> im unternehmensverwalteten <ph name="CLOUD_STORAGE"/>‑Speicher gespeichert werden. Diese Dateien werden möglicherweise überwacht, geprüft und aufbewahrt, nachdem du sie gelöscht hast.</translation>
 <translation id="974818914962304978">Button „Website erstellen“ – aktivieren, um schnell eine neue Website in Brave Sites zu erstellen</translation>
+<translation id="3698708128812719147">Drücke an einer beliebigen Stelle im Web zweimal die Taste „Strg“, um weitere Informationen abzurufen und einzufügen</translation>
 <translation id="3700094625653511150">Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die <ph name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_FOOTNOTE_HIDE_OPTION_PAYMENT_SETTINGS_LINK_TEXT"/> auf</translation>
 <translation id="3700966190175650601">Du verwendest deinen Fingerabdruck zum Ausfüllen von Passwörtern</translation>
 <translation id="3701427423622901115">Zurücksetzen bestätigt.</translation>
@@ -1538,12 +1565,15 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="3704162925118123524">Eventuell musst du die Anmeldeseite des verwendeten Netzwerks aufrufen.</translation>
 <translation id="3705189812819839667"><ph name="RESULT_OWNER"/> – <ph name="RESULT_PRODUCT_SOURCE"/></translation>
 <translation id="370665806235115550">Wird geladen...</translation>
+<translation id="7773998265513139683">Deine Organisation verlangt, dass du dich in Brave anmeldest</translation>
 <translation id="3709599264800900598">Von dir kopierter Text</translation>
+<translation id="3711223220609269738">Neuer isolierter Tab</translation>
 <translation id="450379565246785127">Der Brave-Browser versucht, Passwörter anzuzeigen</translation>
 <translation id="3711895659073496551">Suspend-Modus</translation>
 <translation id="3712004750972384495">Bildschirmaufzeichnung wird gespeichert</translation>
 <translation id="3712006010833051684">Umschlag Nr. 10</translation>
 <translation id="3712624925041724820">Lizenzen aufgebraucht</translation>
+<translation id="371302509916403935">Unterstreichen</translation>
 <translation id="3713277100229669269">Du kannst jetzt schon vor dem Bezahlen Kartenvorteile sehen</translation>
 <translation id="3714633008798122362">Web-Kalender</translation>
 <translation id="3714780639079136834">Mobile Daten oder WLAN aktivieren</translation>
@@ -1551,11 +1581,14 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="3715597595485130451">WLAN-Verbindung herstellen</translation>
 <translation id="3717027428350673159"><ph name="BEGIN_LINK"/>Proxy, Firewall und DNS-Konfiguration prüfen<ph name="END_LINK"/></translation>
 <translation id="3723316892512143176">IBAN</translation>
+<translation id="3724078054554953078">Versanddatum</translation>
 <translation id="372429172604983730">Anwendungen, die diesen Fehler verursachen können, sind Antivirensoftware, Firewalls, Webfilter- oder Proxy-Software.</translation>
 <translation id="3838210050876514022"><ph name="CREATE_GOOGLE_SLIDE_FOCUSED_FRIENDLY_MATCH_TEXT"/> – drücke die Tabulatortaste und dann die Eingabetaste, um schnell eine neue Präsentation in Brave Präsentationen zu erstellen</translation>
 <translation id="3727309136762649052">Namespace</translation>
 <translation id="8077319455765501118">Wenn du den Brave Passwortmanager mit dem macOS-Schlüsselbund verwenden möchtest, starte Brave neu und erlaube den Zugriff auf den Schlüsselbund. Deine Tabs werden nach dem Neustart wieder geöffnet.</translation>
 <translation id="2967969024210491578">Der Brave-Browser benötigt deinen Fingerabdruck nicht mehr, um Passwörter automatisch einzufügen</translation>
+<translation id="3729811201279509483">Tabs manuell hinzufügen</translation>
+<translation id="3732370487905329239">Voraussichtlicher Liefertermin</translation>
 <translation id="8656776619448807468">Der Brave-Browser versucht, deine vertraulichen Daten auf <ph name="APP_NAME"/> auszufüllen.</translation>
 <translation id="3738166223076830879">Dein Browser wird von deinem Administrator verwaltet.</translation>
 <translation id="3739842843727261045">Mit „Mag ich“ gibst du an, dass dir diese Ergebnisse gefallen.</translation>
@@ -1569,7 +1602,6 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="3752181611900535304">Adresse im Konto speichern?</translation>
 <translation id="3752543821772132562">Ignoriert, weil <ph name="POLICY_NAME"/> nicht konfiguriert ist.</translation>
 <translation id="3754210790023674521">Bild im Bild beenden</translation>
-<translation id="3754664361823138853">&amp;Verlaufsseite öffnen</translation>
 <translation id="3757511311058373406">Filter für automatisches Browsen</translation>
 <translation id="3759461132968374835">Es liegen keine kürzlich gemeldeten Abstürze vor. Abstürze, die bei deaktivierter Absturzberichtsfunktion aufgetreten sind, werden hier nicht angezeigt.</translation>
 <translation id="3760561303380396507">Windows Hello anstelle des CVCs verwenden?</translation>
@@ -1641,6 +1673,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="3865339060090354361">Hier findest du die Nutzungsbedingungen für <ph name="CREDIT_CARD_NAME"/></translation>
 <translation id="3869939189466884821">Deine lokalen Dateien werden in <ph name="MINUTES"/> Minuten gelöscht</translation>
 <translation id="3875783148670536197">So gehts</translation>
+<translation id="3877021395754842994">Alle derzeit geöffneten isolierten Fenster schließen</translation>
 <translation id="3877603629930976930">Nicht teilen</translation>
 <translation id="3878445208930547646">Das Kopieren von dieser Website ist nicht zulässig</translation>
 <translation id="3879674895057686427">Sprache auswählen, in die übersetzt werden soll</translation>
@@ -1659,7 +1692,6 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="3905894480064208252">{0,plural, =1{Datei kann nicht übertragen werden}other{<ph name="FILE_COUNT"/> Dateien können nicht übertragen werden}}</translation>
 <translation id="3906022360148923497">Symbol für Zahlungsmittel</translation>
 <translation id="3906234161316839040">Andere Bestellungen</translation>
-<translation id="3906954721959377182">Tablet</translation>
 <translation id="3909695131102177774"><ph name="LABEL"/> – <ph name="ERROR"/></translation>
 <translation id="3910231615117880630">Weitere Informationen zu eingebetteten Inhalten</translation>
 <translation id="3920504717067627103">Zertifikatrichtlinien</translation>
@@ -1670,6 +1702,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="3928806096717999469">Bearbeiten, öffnet ein neues Fenster</translation>
 <translation id="393417216277380082">Bewegungs- und Lichtsensoren</translation>
 <translation id="3937640725563832867">Alternativer Name des Zertifikatausstellers</translation>
+<translation id="3938243129430544357">Mit Autofill sicher bezahlen</translation>
 <translation id="3939773374150895049">WebAuthn anstelle des CVCs verwenden?</translation>
 <translation id="3941630233824954464">Obligatorische erneute Authentifizierung aktivieren</translation>
 <translation id="3942048175062210325">Versuche noch einmal, deine Dateien zu öffnen</translation>
@@ -1737,7 +1770,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="404831776305217138">Die Update-URL für die Erweiterung mit der ID „<ph name="EXTENSION_ID"/>“ ist ungültig oder verwendet ein nicht unterstütztes Schema. Unterstützte Schemas sind <ph name="HTTP_SCHEME"/>, <ph name="HTTPS_SCHEME"/> und <ph name="FILE_SCHEME"/>.</translation>
 <translation id="2635033286761217583">Du kannst sie dann in anderen Brave-Produkten verwenden</translation>
 <translation id="336808635693308470">Brave versucht, Zahlungsmethoden zu bearbeiten.</translation>
-<translation id="4051369790469504434">Autofill mit einer gespeicherten Zahlungsmethode</translation>
+<translation id="4051369790469504434">Mit einer gespeicherten Zahlungsmethode automatisch ausfüllen</translation>
 <translation id="4052683751389375539">Bearbeiten, wird in neuem Fenster geöffnet</translation>
 <translation id="4056223980640387499">Sepia</translation>
 <translation id="4059523390906550209">Weitere Informationen zu Sensitive Data Protection</translation>
@@ -1773,6 +1806,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="4103249731201008433">Seriennummer des Geräts ist ungültig.</translation>
 <translation id="4103592298805904008">Karton (einwandig)</translation>
 <translation id="4104702906064390950">IBAN-Informationen werden gespeichert</translation>
+<translation id="4104995898379951162">Known Traveler Number sicher hinzufügen</translation>
 <translation id="4106101218644797743">Synchronisierungseinstellungen verwalten.</translation>
 <translation id="4106887816571530227">Eingebettete Inhalte nicht zulässig</translation>
 <translation id="4107047499377819067">Die Installation der VPN-Hintergrunddienste wurde gestartet. Dies kann einige Minuten dauern.</translation>
@@ -1807,13 +1841,12 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="4153446078232988116"><ph name="SITE"/> unterstützt keine sichere Verbindung mit HTTPS</translation>
 <translation id="4153858337812834972">Zuletzt geöffnete Tabs</translation>
 <translation id="6923879007831202776">Brave prüft jetzt deine Identität, bevor Zahlungsmethoden ausgefüllt werden. Du kannst dies jederzeit in den <ph name="IDS_AUTOFILL_MANDATORY_REAUTH_CONFIRMATION_SETTINGS_LINK"/> aktualisieren.</translation>
-<translation id="4157273919218514718">Basierend auf Personal Intelligence mit Gemini. <ph name="BEGIN_LINK"/>Einstellungen verwalten<ph name="END_LINK"/></translation>
 <translation id="4157469997675439324">Führerschein sicher aktualisieren</translation>
 <translation id="4159784952369912983">Violett</translation>
 <translation id="4165422751765527461">Hilfeartikel wird in einem neuen Tab geöffnet</translation>
 <translation id="4165986682804962316">Website-Einstellungen</translation>
-<translation id="535085301118821481">Du kannst in Brave Wallet Kundenkarten verwalten oder diese Vorschläge deaktivieren</translation>
-<translation id="4169535189173047238">Nicht zulassen</translation>
+<translation id="4169189393773057143">Du kannst in Google Wallet Kundenkarten verwalten oder diese Vorschläge deaktivieren</translation>
+<translation id="4169535189173047238">Nicht erlauben</translation>
 <translation id="4170851022123611628">Liste mit Kundenkarten ist geschlossen.</translation>
 <translation id="4171400957073367226">Ungültige Bestätigungssignatur</translation>
 <translation id="4171489848299289778"><ph name="RESULT_MODIFIED_DATE"/> – <ph name="RESULT_OWNER"/> – <ph name="RESULT_PRODUCT_SOURCE"/></translation>
@@ -1825,11 +1858,12 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="4179515394835346607"><ph name="ROW_NAME"/>: <ph name="ROW_CONTENT"/></translation>
 <translation id="4185037616931963178">Redress Number sicher aktualisieren</translation>
 <translation id="4186035307311647330">Preis nicht mehr beobachten</translation>
-<translation id="4190446002599583608">KI‑gestützte Verlaufssuche</translation>
 <translation id="4191334393248735295">Länge</translation>
+<translation id="4192770747482479191">Drücke an einer beliebigen Stelle im Web zweimal die Taste „⌘“, um weitere Informationen abzurufen und einzufügen</translation>
 <translation id="9150836098508392713">Button „Brave-Tipps aufrufen“ – aktivieren, um mehr über die Funktionen von Brave zu erfahren</translation>
 <translation id="4195643157523330669">In neuem Tab öffnen</translation>
 <translation id="4196861286325780578">&amp;Verschieben wiederholen</translation>
+<translation id="4199131764832701740">Reisepass zu Google Wallet hinzufügen</translation>
 <translation id="4202554117186904723">Fünfte Rolle</translation>
 <translation id="4203769790323223880">Kameranutzung nicht zulässig</translation>
 <translation id="4203896806696719780"><ph name="BEGIN_LINK"/>Firewall und Antivirenkonfiguration prüfen<ph name="END_LINK"/></translation>
@@ -1838,6 +1872,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="4209092469652827314">Groß</translation>
 <translation id="4210602799576081649">Bestätigungscode abgelaufen, fordere einen neuen an</translation>
 <translation id="421066178035138955">Virtual-Reality-Geräte und ‑Daten verwenden</translation>
+<translation id="4211023027325848327">Qualifiziertes EU-Zertifikat zur Website-Authentifizierung (QWAC) öffnen</translation>
 <translation id="4214357935346142455">Profil der Anmeldeseite</translation>
 <translation id="4218327733815631046">Ungefähren Standort beibehalten</translation>
 <translation id="4219596572397833317">Sieh dir den Preisverlauf und weitere Informationen an, um bessere Kaufentscheidungen treffen zu können.</translation>
@@ -1848,12 +1883,11 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="4231448684371260244">8 × 13 in</translation>
 <translation id="279016548542240532">Bezahle mit Pix, ohne zwischen Apps in Brave zu wechseln</translation>
 <translation id="4238607350028440048">Hilf mir, mich auf mein Vorstellungsgespräch vorzubereiten, indem du mir Fragen stellst, als wärst du ein Personalverantwortlicher</translation>
-<translation id="3325641703531153643">Führerschein sicher in Brave Wallet speichern</translation>
+<translation id="4239215166147486528">Führerschein sicher in Google Wallet speichern</translation>
 <translation id="4239799716689808527">Etiketten</translation>
 <translation id="424063167283213501">Known Traveler Number speichern</translation>
 <translation id="4241830393007970744">Auf dieser Website besteht die Gefahr, dass Angreifer dich zur Installation von Software oder zur Preisgabe von Daten wie Passwörtern, deiner Telefonnummer oder Kreditkartennummern verleiten möchten.</translation>
 <translation id="4242380780309416996">Umschlag (schwer)</translation>
-<translation id="4242981939686657948">Du kannst deinen Browserverlauf jetzt effektiver durchsuchen – aktiviere dazu</translation>
 <translation id="4244926541863471678">Film</translation>
 <translation id="42481816218163154">Erstelle eine 15-minütige Morgenroutine, die mir hilft, besser in den Tag zu starten. Achte darauf, dass eine Achtsamkeitsübung enthalten ist.</translation>
 <translation id="4250343410682686342">Der Fehlerbildschirm für „Jetzt kaufen, später bezahlen“ ist vollständig geöffnet.</translation>
@@ -1871,6 +1905,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="4265635050210404830">Meine Kundenkarten</translation>
 <translation id="4265872034478892965">Von deinem Administrator zugelassen</translation>
 <translation id="7044970527849636581">Wenn du deinen Verlauf von deinen anderen Geräten abrufen möchtest, melde dich an und synchronisiere deinen Verlauf. Du kannst dann auch auf allen deinen Geräten auf deine Passwörter und weitere Daten zugreifen. Du kannst die Synchronisierung jederzeit in den Einstellungen beenden. Brave kann die Brave Suche und andere Dienste auf der Grundlage deines Verlaufs personalisieren.</translation>
+<translation id="4267837382000002014">URLs und Titel von Seiten, die du besuchst, werden zur Analyse an Google Cloud oder Dritte gesendet und können für deinen Administrator sichtbar sein. Sie werden beispielsweise gescannt, um unsichere Websites zu identifizieren oder Websites auf Grundlage von Regeln zu filtern, die vom Administrator eingerichtet wurden.</translation>
 <translation id="4268025649754414643">Schlüsselverschlüsselung</translation>
 <translation id="4269599248168651462">Das Serverzertifikat wird für einen nicht eindeutigen Namen ausgestellt.</translation>
 <translation id="4270541775497538019">Stapelfach 6</translation>
@@ -1889,6 +1924,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="4284885181066817063">Blockiert durch <ph name="DOMAIN"/></translation>
 <translation id="4288101205645068104">Fahrzeug löschen</translation>
 <translation id="4290920330097335010">Nie erlauben</translation>
+<translation id="4291909791598163333">Deine Organisation hat dich daran gehindert, die angeforderte Website aufzurufen</translation>
 <translation id="4297502707443874121">Miniaturansicht für Seite <ph name="THUMBNAIL_PAGE"/></translation>
 <translation id="4297937944457164390"><ph name="ATTRIBUTE_NAME"/> wurde aktualisiert</translation>
 <translation id="4298148761711700950">Sofort bezahlen, ohne einen QR-Code hochzuladen</translation>
@@ -1959,7 +1995,8 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="5221858344642681996">Aus Sicherheitsgründen erlaubt deine Organisation nicht, dass Passwörter in Brave wiederverwendet werden. Passwörter in Brave werden aus Gründen des Datenschutzes verschlüsselt.</translation>
 <translation id="4409271659088619928">Du hast <ph name="DSE"/> als Suchmaschine festgelegt. Informationen zum Löschen deines Suchverlaufs findest du in der zugehörigen Anleitung.</translation>
 <translation id="4409556632583862731">Neue Unterhaltung</translation>
-<translation id="4235960211211581927">Personalausweis sicher in Brave Wallet aktualisieren</translation>
+<translation id="4410614037742891410">Personalausweis sicher in Google Wallet aktualisieren</translation>
+<translation id="441152911646545600"><ph name="CLOSE_ISOLATED_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT"/> – Tabulatortaste und dann Eingabetaste drücken, um alle isolierten Fenster zu schließen, die derzeit geöffnet sind</translation>
 <translation id="4412074349188076601">Diese Konfiguration ist als installierbar gekennzeichnet, aber für diese Architektur ist kein Image verfügbar, weshalb sie nicht installiert werden kann.</translation>
 <translation id="4412377069090572315">Was andere Nutzer sagen</translation>
 <translation id="4414515549596849729">Cookies und Websitedaten</translation>
@@ -1970,6 +2007,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="4419287616181386201">Passwörter können in den jeweiligen Verwaltungseinstellungen gelöscht werden</translation>
 <translation id="4425137053900958839">Mit Pix genießt du Komfort und Sicherheit, auf die du dich verlassen kannst</translation>
 <translation id="443121186588148776">Serieller Port</translation>
+<translation id="6820946380501615505">Aus Brave entfernen?</translation>
 <translation id="4432688616882109544"><ph name="HOST_NAME"/> hat dein Anmeldezertifikat nicht akzeptiert oder es wurde keines bereitgestellt.</translation>
 <translation id="4432792777822557199">Seiten auf <ph name="SOURCE_LANGUAGE"/> werden ab jetzt auf <ph name="TARGET_LANGUAGE"/> übersetzt</translation>
 <translation id="4433642172056592619">Ignoriert, weil der Nutzer nicht mit der Maschinenverwaltung verknüpft ist oder die Maschine nicht verwaltet wird.</translation>
@@ -1992,15 +2030,14 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="8294153737034342992"><ph name="BEGIN_ENHANCED_PROTECTION_LINK"/>Aktiviere den erweiterten Schutz<ph name="END_ENHANCED_PROTECTION_LINK"/>, um für ein Höchstmaß an Sicherheit zu sorgen</translation>
 <translation id="4475299370877036544">Diese Aktion verstößt möglicherweise gegen die Richtlinien deiner Organisation</translation>
 <translation id="447665707681730621"><ph name="BUBBLE_MESSAGE"/>. <ph name="LEARN_MORE_TEXT"/></translation>
-<translation id="4476953670630786061">Dieses Formular ist nicht sicher. „Autofill“ wurde deaktiviert.</translation>
 <translation id="4477350412780666475">Nächster Titel</translation>
 <translation id="4480760608050410381">MP4-Video</translation>
 <translation id="4489023393592172404">Umschlag Kaku 4</translation>
-<translation id="4489977488133295402">Vor Autofill-Nutzung Identität bestätigen</translation>
+<translation id="4489977488133295402">Vor Autofill für Zahlungsmethoden Identität bestätigen</translation>
 <translation id="4490717597759821841">A7</translation>
 <translation id="3966104135245031874">Synchronisierte Passwörter mit meinem Brave-Konto verschlüsseln</translation>
 <translation id="4493480324863638523">Ungültige URL. Dies muss eine URL mit einem Standardschema sein, z. B. "http://example.com" oder "https://example.com".</translation>
-<translation id="4497010149473852018">Kundenkarten, deren Daten bei Berührung eingefügt werden. Tastatur ausgeblendet.</translation>
+<translation id="4497843134750481377">Angebote verwalten</translation>
 <translation id="4500587658229086076">Unsichere Inhalte</translation>
 <translation id="4501939680615452918">Suche nach freien Tischen in angesagten Restaurants</translation>
 <translation id="4503459574136856756">Schreib meine Biografie um, damit sie professioneller klingt</translation>
@@ -2035,7 +2072,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="455113658016510503">A9</translation>
 <translation id="4556069465387849460">Du verwendest die Displaysperre zum Ausfüllen von Passwörtern</translation>
 <translation id="4558551763791394412">Deaktiviere deine Erweiterungen.</translation>
-<translation id="6895010158785274408">Amtlichen Ausweis in Brave Wallet aktualisieren</translation>
+<translation id="4568572491321119037">Amtlichen Ausweis in Google Wallet aktualisieren</translation>
 <translation id="4569155249847375786">Bestätigt</translation>
 <translation id="4570008401337135432">Textausrichtung</translation>
 <translation id="457875822857220463">Lieferung</translation>
@@ -2047,16 +2084,16 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="4592951414987517459">Deine Verbindung zu <ph name="DOMAIN"/> ist mit einer modernen Codier-Suite verschlüsselt.</translation>
 <translation id="4594403342090139922">&amp;Löschen rückgängig machen</translation>
 <translation id="4598556348158889687">Speicherplatzverwaltung</translation>
-<translation id="5585910165070997524">Wenn du deine Karte speicherst, kannst du mit Google Pay schneller bezahlen. Die Kartendetails werden in Brave Wallet verschlüsselt.</translation>
+<translation id="4599572944836204718">Wenn du deine Karte speicherst, kannst du mit Google Pay schneller bezahlen. Die Kartendetails werden in Google Wallet verschlüsselt.</translation>
 <translation id="4603727370377253901">Flugreservierungen</translation>
 <translation id="8338928872956435647">Brave-Tipps aufrufen</translation>
-<translation id="4607879293515681409">Mit der Funktion „Erweitertes Autofill“ kannst du jetzt Informationen wie Flugnummern und Termine aus Apps wie Gmail und Brave Fotos abrufen und einfügen</translation>
 <translation id="460848736049414407">Vom Administrator blockiert</translation>
 <translation id="4610279718074907952">Diese Website ist einer durch <ph name="SET_OWNER"/> definierten Gruppe zugeordnet, die deine Aktivitäten sehen kann</translation>
 <translation id="4612631413844865947">Bei der Verarbeitung deiner Bestellung bei <ph name="MERCHANT_ORIGIN"/> über <ph name="PAYMENT_APP_ORIGIN"/> ist ein Fehler aufgetreten.</translation>
 <translation id="4612904677925722054">Diese Website enthält möglicherweise nicht jugendfreie Inhalte. Ein Elternteil oder Erziehungsberechtigter muss dir erlauben, diese Website zu besuchen.</translation>
+<translation id="4613873770449493819">Die URL muss auf eine <ph name="GEMINI_ENTERPRISE_PRODUCT_NAME"/>-Domain verweisen.</translation>
 <translation id="4619564267100705184">Identität bestätigen</translation>
-<translation id="3127071008735497897">Führerschein in Brave Wallet speichern</translation>
+<translation id="4619669610757527494">Führerschein in Google Wallet speichern</translation>
 <translation id="4622292761762557753">Trotzdem übertragen</translation>
 <translation id="4622647778991854660">Hier kannst du Benachrichtigungen im Benachrichtigungscenter aktivieren. Öffne „<ph name="LINK"/>“.</translation>
 <translation id="4623894491222334521">Ausweisdokumente</translation>
@@ -2064,7 +2101,6 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="4628948037717959914">Foto</translation>
 <translation id="4629370161347991046">A4x6</translation>
 <translation id="462989688138616749">Der Dateiupload in <ph name="CLOUD_PROVIDER"/> beginnt in <ph name="HOURS"/> Stunden</translation>
-<translation id="4631881646528206880">Registrierung einer virtuellen Karte</translation>
 <translation id="4635278307999235413">Daten an Admin-Konsole senden</translation>
 <translation id="4636930964841734540">Info</translation>
 <translation id="4640225694041297329">Ergebnisse der letzten 7 Tage anzeigen</translation>
@@ -2109,6 +2145,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="4711628883879888561">Gemeinsam an Tabgruppe arbeiten</translation>
 <translation id="4712404868219726379">Windows Hello</translation>
 <translation id="4714279348049646935">Berechne meinen Notendurchschnitt, indem du die Stunden für Leistungspunkte, Kursstufen und Notenwerte gewichtest</translation>
+<translation id="4717533164160330041">Wenn du diese Funktion verwenden möchtest, musst du zuerst die smarten Funktionen in Gmail aktivieren</translation>
 <translation id="471880041731876836">Du bist nicht berechtigt, auf diese Website zuzugreifen</translation>
 <translation id="4718897478554657123">600 × 900 mm</translation>
 <translation id="4722547256916164131"><ph name="BEGIN_LINK"/>Windows-Netzwerkdiagnose ausführen<ph name="END_LINK"/></translation>
@@ -2117,12 +2154,13 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="4725766358270333890"><ph name="COUNT"/> Dateien werden in Microsoft OneDrive hochgeladen</translation>
 <translation id="4726672564094551039">Richtlinien neu laden</translation>
 <translation id="4728558894243024398">Plattform</translation>
-<translation id="4730773064303503917">Du kannst mit Pix in Brave Wallet Geld an Freunde und Unternehmen senden</translation>
+<translation id="4730773064303503917">Du kannst mit Pix in Google Wallet Geld an Freunde und Unternehmen senden</translation>
 <translation id="4730977633786878901">Rezensionen</translation>
 <translation id="4731638775147756694">Diese App wurde von deinem Administrator blockiert</translation>
 <translation id="4732860731866514038">Sprachpaket für <ph name="LANGUAGE"/> wird heruntergeladen… <ph name="PERCENT"/> %</translation>
 <translation id="4733082559415072992"><ph name="URL"/> möchte den Standort deines Geräts verwenden</translation>
 <translation id="473414950835101501">Kamera verwenden</translation>
+<translation id="4736089601076994090">Gültig bis: <ph name="EXPIRATION_DATE"/></translation>
 <translation id="4736934858538408121">Virtuelle Karte</translation>
 <translation id="473775607612524610">Aktualisieren</translation>
 <translation id="4738601419177586157">Suchvorschlag: <ph name="TEXT"/></translation>
@@ -2138,6 +2176,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="4750917950439032686">Deine Daten wie Passwörter oder Kreditkartennummern sind geschützt, wenn du sie an diese Website sendest.</translation>
 <translation id="4754461935447132332">Nicht zulässig für nicht sichere Websites</translation>
 <translation id="4756501505996488486">PRC 16K</translation>
+<translation id="4757119894147311267">Wähle das Feld für den Gutscheincode aus, um deine gespeicherten Angebote anzusehen und auszufüllen</translation>
 <translation id="4757740693289347881">Der Code ist ungültig</translation>
 <translation id="1015173303159845845">Du hast dein Passwort gerade auf einer verdächtigen Seite eingegeben. Brave empfiehlt, deine gespeicherten Passwörter zu überprüfen, um deine Konten besser zu schützen.</translation>
 <translation id="4758311279753947758">Kontaktdaten hinzufügen</translation>
@@ -2150,7 +2189,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="4766713847338118463">Zwei Heftklammern unten</translation>
 <translation id="4768816584204270288">Wenn du in Raten bezahlst, wird eine einmalige virtuelle Kartennummer ausgefüllt. Du kannst klicken, um die Kartendetails für diesen Kauf zu kopieren und einzufügen.</translation>
 <translation id="4768864802656530630">Detaillierte Systemprotokolle. <ph name="BEGIN_LINK"/>Weitere Informationen<ph name="END_LINK"/></translation>
-<translation id="4341731325100657394">KTN in Brave Wallet aktualisieren</translation>
+<translation id="4770909831299304090">KTN in Google Wallet aktualisieren</translation>
 <translation id="4771973620359291008">Ein unbekannter Fehler ist aufgetreten.</translation>
 <translation id="4775456404799771098">Die Datei geht endgültig verloren</translation>
 <translation id="477945296921629067">{NUM_POPUPS,plural, =1{Pop-up blockiert}other{# Pop-ups blockiert}}</translation>
@@ -2169,9 +2208,10 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="4803924862070940586"><ph name="FORMATTED_TOTAL_AMOUNT"/> <ph name="CURRENCY_CODE"/></translation>
 <translation id="4805128460707321168">Amtlichen Ausweis sicher aktualisieren</translation>
 <translation id="4807098396393229769">Name auf der Karte</translation>
+<translation id="4808598252755230865">Known Traveler Number sicher zu Google Wallet hinzufügen</translation>
 <translation id="4809079943450490359">Anweisungen des Geräteadministrators:</translation>
 <translation id="4811450222531576619">Informationen zur Quelle und zum Thema</translation>
-<translation id="1177020771645812087">Fahrzeug sicher in Brave Wallet speichern</translation>
+<translation id="4811696127853690432">Fahrzeug sicher in Google Wallet speichern</translation>
 <translation id="4811918461974803225">Google Pay-Logo, Affirm-Logo</translation>
 <translation id="4813512666221746211">Netzwerkfehler</translation>
 <translation id="4814114628197290459">IBAN löschen</translation>
@@ -2198,6 +2238,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="4855395119669662878">Dein Administrator beginnt um <ph name="DATE_TIME"/> damit, deine Dateien in <ph name="CLOUD_PROVIDER"/> hochzuladen. Lass dein Gerät verbunden, bis der Dateiupload abgeschlossen ist. Während des Uploads kannst du nur lokale Dateien lesen.</translation>
 <translation id="485902285759009870">Code wird geprüft...</translation>
 <translation id="4860260582253463350">Bevor du YouTube aufrufen kannst, müssen wir zuerst überprüfen, ob du es bist. Es werden die Einstellungen angewendet, die dein Elternteil oder Erziehungsberechtigter in Family Link festgelegt hat.</translation>
+<translation id="4861514638281352187">Redress Number sicher hinzufügen</translation>
 <translation id="4862642413395066333">Signatur von OCSP-Antworten</translation>
 <translation id="4864406669374375262">Versionsstring in Zwischenablage kopiert</translation>
 <translation id="486459320933704969">Ein Elternteil oder Erziehungsberechtigter muss dir erlauben, diese Website zu besuchen.</translation>
@@ -2219,8 +2260,10 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="4885256590493466218">An der Kasse mit <ph name="CARD_DETAIL"/> zahlen</translation>
 <translation id="4300808005160908299">Der Brave-Browser möchte deine Identität bestätigen, bevor du Einstellungen änderst</translation>
 <translation id="4887406273302438710">Passwörter mit Windows Hello schützen</translation>
+<translation id="4887435305021446590">Gmail öffnen</translation>
 <translation id="4887785555357166111">Videoframe speichern</translation>
 <translation id="5465328071969343355"><ph name="CLEAR_BROWSING_DATA_FOCUSED_FRIENDLY_MATCH_TEXT"/> – drücke die Tabulatortaste und dann die Eingabetaste, um in den Brave-Einstellungen deinen Browserverlauf, deine Cookies und andere Daten zu löschen sowie den Cache zu leeren</translation>
+<translation id="4892391379033030113">Button „Isoliertes Fenster öffnen“ – aktivieren, um ein neues isoliertes Fenster zu öffnen und privat zu surfen</translation>
 <translation id="4892518386797173871">Hinten</translation>
 <translation id="4894390983254799375">Beispielsweise Geräte-ID, Name sowie Version und Nutzername des Betriebssystems</translation>
 <translation id="4895877746940133817"><ph name="TYPE_1"/>, <ph name="TYPE_2"/>, <ph name="TYPE_3"/></translation>
@@ -2256,10 +2299,11 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="4943620199112228840">Mikrofon verwenden</translation>
 <translation id="4943872375798546930">Keine Ergebnisse</translation>
 <translation id="494701040141924538">Ok, Benachrichtigung schließen</translation>
+<translation id="4951038790614970523">Text, den du ausschneidest oder in die Zwischenablage kopierst, wird zur Analyse an Google Cloud oder Dritte gesendet. Er kann beispielsweise auf sensible Daten geprüft und gemäß Unternehmensrichtlinien gespeichert werden. Er kann auch für deinen Administrator sichtbar sein.</translation>
 <translation id="495170559598752135">Aktionen</translation>
 <translation id="4953689047182316270">Auf Bedienungshilfen reagieren</translation>
 <translation id="2087849210737883918">Damit du Vorschläge erhalten kannst und diese Funktion verbessert werden kann, werden die URL und die Inhalte der Seite an Brave gesendet</translation>
-<translation id="888946399124114802">Mit einer gespeicherten Karte kannst du schneller bezahlen. Die Kartendetails werden in Brave Wallet verschlüsselt.</translation>
+<translation id="4954891067389874142">Mit einer gespeicherten Karte kannst du schneller bezahlen. Die Kartendetails werden in Google Wallet verschlüsselt.</translation>
 <translation id="2351178841237473727">Button „Brave-Verlauf ansehen“ – aktivieren, um in den Brave-Einstellungen deinen Browserverlauf aufzurufen und zu verwalten</translation>
 <translation id="4957781475307065660">{DOMAIN_COUNT,plural, =1{und 1 weiteren Website}other{und # weiteren Websites}}</translation>
 <translation id="4958444002117714549">Liste einblenden</translation>
@@ -2308,7 +2352,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="5026121202864677765">Verfasse mein Anschreiben</translation>
 <translation id="5030338702439866405">Ausgestellt von</translation>
 <translation id="503069730517007720">Für „<ph name="SOFTWARE_NAME"/>“ ist ein Stammzertifikat erforderlich, das nicht installiert ist. Dein IT-Administrator sollte die Konfigurationsanweisungen für „<ph name="SOFTWARE_NAME"/>“ lesen, um das Problem zu beheben. <ph name="FURTHER_EXPLANATION"/></translation>
-<translation id="7106879493637631619">KTN sicher in Brave Wallet speichern</translation>
+<translation id="5034488401832901795">KTN sicher in Google Wallet speichern</translation>
 <translation id="503498442187459473"><ph name="HOST"/> möchte deine Kamera und dein Mikrofon verwenden</translation>
 <translation id="503574301575803523">SRA3</translation>
 <translation id="5039762155821394373">Schriftgröße</translation>
@@ -2319,14 +2363,14 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="5045550434625856497">Falsches Passwort</translation>
 <translation id="5051254010007014901"><ph name="TOOLBELT_PRECEDING_MATCH_TEXT"/>, drücke die Tabulatortaste, um weitere Kürzel für die Suche zu sehen, die nach diesem Suchvorschlag verfügbar sind</translation>
 <translation id="5052488928733955073">Deine Informationen können nicht eingegeben werden. Überprüfe deine Verbindung.</translation>
-<translation id="4845759156174221500">Beim Bezahlen mit dieser Karte wird eine virtuelle Kartennummer eingegeben, um deine tatsächlichen Kartendetails zu schützen. Du kannst diese Einstellung in Brave Wallet verwalten. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL"/></translation>
+<translation id="5053116470141135293">Beim Bezahlen mit dieser Karte wird eine virtuelle Kartennummer eingegeben, um deine tatsächlichen Kartendetails zu schützen. Du kannst diese Einstellung in Google Wallet verwalten. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="5056425809654826431">{NUM_FILES,plural, =1{Damit du diese Datei mit Nearby Share senden kannst, musst du auf deinem Gerät Speicherplatz (<ph name="DISK_SPACE_SIZE"/>) freigeben}other{Damit du diese Dateien mit Nearby Share senden kannst, musst du auf deinem Gerät Speicherplatz (<ph name="DISK_SPACE_SIZE"/>) freigeben}}</translation>
-<translation id="5056587122125565772">Bild erstellen</translation>
 <translation id="505757197798929356">Gib den Grund für das Öffnen an (erforderlich)</translation>
 <translation id="5058282932481719070">weitere Informationen zu erweitertem Autofill in den Einstellungen erhalten</translation>
 <translation id="5061227663725596739">Meintest du <ph name="LOOKALIKE_DOMAIN"/>?</translation>
 <translation id="5066056036849835175">Druckverlauf</translation>
 <translation id="5068524481479508725">A10</translation>
+<translation id="5068915318814087203">Bestimmte Browseraktivitäten können von deiner Organisation erfasst werden, um Datenverlust zu verhindern. Weitere Informationen unter <ph name="BEGIN_LINK"/>chrome://management<ph name="END_LINK"/></translation>
 <translation id="5070335125961472645"><ph name="BEGIN_LINK"/>Proxyadresse prüfen<ph name="END_LINK"/></translation>
 <translation id="5070838744279127212">Zehnte Rolle</translation>
 <translation id="507130231501693183">Ablage 4</translation>
@@ -2357,7 +2401,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="5114987907971894280">Virtual Reality</translation>
 <translation id="5115232566827194440">Eingeschränkte verwaltete Gastsitzung überschreiben</translation>
 <translation id="5115563688576182185">(64-Bit)</translation>
-<translation id="5116015291385561204">Vor Autofill-Nutzung Identität bestätigen</translation>
+<translation id="5116015291385561204">Vor Autofill von vertraulichen Daten Identität bestätigen</translation>
 <translation id="5122786942953798871">Umschlag (Baumwolle)</translation>
 <translation id="5123063207673082822">Wochenende</translation>
 <translation id="5124797626438336458">Der Fehlerbildschirm für „Jetzt kaufen, später bezahlen“ ist halb geöffnet.</translation>
@@ -2397,6 +2441,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="5177076414499237632">Informationen zu Quelle und Thema dieser Seite</translation>
 <translation id="5179490652562926740">Einstellungen für die Zahlungsbestätigung gespeichert</translation>
 <translation id="5180662470511508940">Tastatursperre nicht zulässig</translation>
+<translation id="5180732217498483224"><ph name="APP_NAME"/>-Quelle öffnen: <ph name="TITLE"/></translation>
 <translation id="5190072300954988691">Kamera- und Mikrofonberechtigung nicht gewährt</translation>
 <translation id="5190835502935405962">Lesezeichenleiste</translation>
 <translation id="5191315092027169558">Dein Profil wird von <ph name="DOMAIN"/> verwaltet</translation>
@@ -2438,14 +2483,15 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="5255583962255635076">Auf dein Arbeitsprofil angewandte Browserrichtlinien</translation>
 <translation id="5255690596502591079">Trotzdem aufnehmen</translation>
 <translation id="5255771248404149177">Der Kartenanbieter muss deine Identität bestätigen</translation>
-<translation id="525579853540851404">Fortschrittsbildschirm für „Jetzt kaufen, später bezahlen“. Tastatur ausgeblendet.</translation>
 <translation id="5255833070095767006">350 × 460 mm</translation>
 <translation id="5257739419779698609">{0,plural, =1{Gemäß der Administratorrichtlinie wird nicht empfohlen, diese Datei nach <ph name="DESTINATION_NAME"/> zu kopieren}other{Gemäß der Administratorrichtlinie wird nicht empfohlen, diese Dateien nach <ph name="DESTINATION_NAME"/> zu kopieren}}</translation>
 <translation id="5258473597674772367">Die Tabgruppe „<ph name="GROUP_NAME"/>“ ist nicht mehr verfügbar</translation>
 <translation id="5260842098960755113">Thread geschlossen</translation>
 <translation id="5262342527470539728">Deine Informationen werden in <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> für <ph name="ACCOUNT"/> gespeichert</translation>
+<translation id="5263202631354741256">ID</translation>
 <translation id="5263867360296733198">Vor dem Upload ist eine Überprüfung erforderlich</translation>
 <translation id="5266128565379329178">Bindung oben</translation>
+<translation id="5268746892698450173">Name des Transportunternehmens</translation>
 <translation id="5269225904387178860">Vierfache Lochung unten</translation>
 <translation id="5271381225185906340">„<ph name="DATA_CONTROLS_ATTRIBUTE"/>“ ist keine unterstützte Bedingung für „<ph name="DATA_CONTROLS_RESTRICTION"/>“</translation>
 <translation id="527191520368130807">Optimieren</translation>
@@ -2473,6 +2519,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="5314967030527622926">Falzmaschine</translation>
 <translation id="5316812925700871227">Gegen den Uhrzeigersinn drehen</translation>
 <translation id="5317780077021120954">Speichern</translation>
+<translation id="5318654747230250818">Code: <ph name="PROMO_CODE"/></translation>
 <translation id="5323043727018853753">Eingebettete Inhalte zulässig</translation>
 <translation id="5323105697514565458"><ph name="FRIENDLY_MATCH_TEXT"/>, <ph name="MATCH_POSITION"/> von <ph name="NUM_MATCHES"/></translation>
 <translation id="2334093076041322971">Im Brave-Konto verwalten</translation>
@@ -2485,6 +2532,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="533323551986281710">Ansicht mit Preisinformationen am unteren Rand ist vollständig geöffnet</translation>
 <translation id="5334013548165032829">Detaillierte Systemprotokolle</translation>
 <translation id="5340250774223869109">Die App ist blockiert</translation>
+<translation id="5342666539242413840">Text wird in die Zwischenablage kopiert</translation>
 <translation id="5342693890921195472">Vor # Min.</translation>
 <translation id="534295439873310000">NFC-Geräte</translation>
 <translation id="5344579389779391559">Auf dieser Seite wird möglicherweise versucht, dir etwas in Rechnung zu stellen</translation>
@@ -2517,10 +2565,9 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="5396631636586785122">Mehrere Heftklammern rechts</translation>
 <translation id="5396837962335265787"><ph name="ATTRIBUTE_NAME"/>, früher <ph name="OLD_ATTRIBUTE_ATTRIBUTE"/></translation>
 <translation id="5397794290049113714">Ich</translation>
-<translation id="7948560911043168202">Wenn diese IBAN beim nächsten Mal automatisch eingefügt werden soll, speichere sie in Brave Wallet</translation>
+<translation id="5398461103557553443">Wenn diese IBAN beim nächsten Mal automatisch eingefügt werden soll, speichere sie in Google Wallet</translation>
 <translation id="5398772614898833570">Werbung blockiert</translation>
 <translation id="5400836586163650660">Grau</translation>
-<translation id="5402715318763077894">Zugriff auf lokales Netzwerk zulassen?</translation>
 <translation id="540949333488055151">Kunststoff (bunt)</translation>
 <translation id="540969355065856584">Dieser Server konnte nicht beweisen, dass er <ph name="DOMAIN"/> ist. Sein Sicherheitszertifikat ist zurzeit ungültig. Mögliche Gründe sind eine fehlerhafte Konfiguration oder ein Angreifer, der deine Verbindung abfängt.</translation>
 <translation id="5411462078004183575">Preisgünstige Option</translation>
@@ -2530,7 +2577,6 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="5414306071315087019">„Jetzt kaufen, später bezahlen“ ist mit Google Pay verfügbar</translation>
 <translation id="5414446060143308245">Vor der Übertragung ist eine Überprüfung erforderlich</translation>
 <translation id="5414511064953050917">Trotzdem verschieben</translation>
-<translation id="5418700249417444482">URLs von Seiten, die du besuchst, werden zur Analyse an Google Cloud oder Dritte gesendet und können für deinen Administrator sichtbar sein. Sie werden beispielsweise gescannt, um unsichere Websites zu identifizieren oder Websites auf Grundlage von Regeln zu filtern, die vom Administrator eingerichtet wurden.</translation>
 <translation id="5419311651396341287">Dein Administrator kann möglicherweise Folgendes sehen:</translation>
 <translation id="5423269318075950257">Preis beobachten</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> möchte dir Benachrichtigungen senden</translation>
@@ -2543,19 +2589,19 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
             <ph name="LIST_ITEM"/>Cookies und Websitedaten
             <ph name="LIST_ITEM"/>In Formulare eingegebene Informationen
           <ph name="END_LIST"/></translation>
-<translation id="4203264631355936344">Du kannst diesen CVC in Brave Wallet (<ph name="ACCOUNT_EMAIL"/>) speichern, um schneller zu bezahlen</translation>
+<translation id="5434803328547504573">Du kannst diesen CVC in Google Wallet (<ph name="ACCOUNT_EMAIL"/>) speichern, um schneller zu bezahlen</translation>
 <translation id="5436307623797390637">Apps auf dem Gerät</translation>
 <translation id="543656192084990644">Zugriff auf Bewegungssensoren nicht erlaubt</translation>
 <translation id="5441409130426352029"><ph name="ATTRIBUTE_VALUE"/>, zuvor: <ph name="PREVIOUS_VALUE"/></translation>
 <translation id="5443468954631487277">Umgekehrte Reihenfolge mit der Vorderseite nach oben</translation>
-<translation id="4784093498984929780">Reisepass in Brave Wallet speichern</translation>
+<translation id="5447103258548475868">Reisepass in Google Wallet speichern</translation>
 <translation id="5447235695608032700"><ph name="SITE"/> erlauben, Informationen, die zu deiner Person gespeichert wurden, zu verwenden</translation>
 <translation id="5447973833955560753">Wiederherstellungspasswort</translation>
-<translation id="6108397422772394696">Wenn Brave Sicherheitshinweise meldet, werden relevante Informationen an deinen Administrator gesendet. Dazu gehören z. B. URLs der von dir in Brave besuchten Seiten, URLs von Seiten, von denen du Daten kopiert hast, Dateinamen oder Metadaten, IP-Adressen, Browser- oder Tab-Abstürze sowie der Nutzername, den du zum Anmelden in Webanwendungen, auf deinem Gerät und in Brave verwendest.</translation>
 <translation id="5452270690849572955">Diese <ph name="HOST_NAME"/>-Seite wurde nicht gefunden</translation>
 <translation id="5452923259299906094">Mit E‑Wallet und Pix bezahlen</translation>
 <translation id="5455374756549232013">Zeitstempel der Richtlinie ist fehlerhaft.</translation>
 <translation id="5456428544444655325">Nie anzeigen</translation>
+<translation id="5457082343331641453">Suchanfrage ergänzen</translation>
 <translation id="5458150163479425638">{CONTACT,plural, =0{<ph name="CONTACT_PREVIEW"/>}=1{<ph name="CONTACT_PREVIEW"/> und <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> weiterer}other{<ph name="CONTACT_PREVIEW"/> und <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> weitere}}</translation>
 <translation id="5463625433003343978">Geräte werden gesucht…</translation>
 <translation id="5465128270485645058">Wenn du geöffnete Tabs in diesem Fenster automatisch teilst, wenn sie mit diesem Thread zusammenhängen, erhältst du besser auf dich zugeschnittene Antworten.</translation>
@@ -2586,6 +2632,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="5499229993630251170">Diese Unterhaltung fortsetzen?</translation>
 <translation id="5506286895894263601">Die Liste enthält keine gültigen Verknüpfungen.</translation>
 <translation id="5507756662695126555">Zugelassen</translation>
+<translation id="5508515366054931524">Aufforderung zur Bestätigung der E‑Mail-Adresse vollständig geöffnet</translation>
 <translation id="5509762909502811065">B0</translation>
 <translation id="5509780412636533143">Verwaltete Lesezeichen</translation>
 <translation id="5510766032865166053">Eventuell wurde sie verschoben oder gelöscht.</translation>
@@ -2624,6 +2671,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="5561747310506483298">Amtliche Ausweise</translation>
 <translation id="55635442646131152">Dokumentstruktur</translation>
 <translation id="1702142849385752335">Wenn du deinen Standort verwenden möchtest, erlaube Brave über die <ph name="LINK"/> den Zugriff darauf.</translation>
+<translation id="5565613377956908865">Personalausweis zu Google Wallet hinzufügen</translation>
 <translation id="5565735124758917034">Aktiv</translation>
 <translation id="5570825185877910964">Konto schützen</translation>
 <translation id="5571083550517324815">Diese Abholadresse wird nicht unterstützt. Bitte wähle eine andere Adresse aus.</translation>
@@ -2632,7 +2680,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="5580958916614886209">Prüfe den Ablaufmonat und versuche es dann erneut</translation>
 <translation id="5582453333200265572">Ausweisdaten aktualisieren</translation>
 <translation id="5583442610070676234">Weitere Aktionen für Vergleichstabelle „<ph name="COMPARE_SET_NAME"/>“</translation>
-<translation id="1279569289359558111">Diese IBAN konnte nicht in Brave Wallet gespeichert werden. Sie wurde stattdessen in Brave auf diesem Gerät gespeichert.</translation>
+<translation id="3962928901296144284">Diese IBAN konnte nicht in Google Wallet gespeichert werden. Sie wurde stattdessen in Brave auf diesem Gerät gespeichert.</translation>
 <translation id="558420943003240152">Passwörter und Passkeys verwalten</translation>
 <translation id="5586446728396275693">Keine gespeicherten Adressen</translation>
 <translation id="5586831831248371458">Auf <ph name="KEYWORD_SUFFIX"/> suchen</translation>
@@ -2680,12 +2728,13 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="5648166631817621825">Letzte 7 Tage</translation>
 <translation id="5649053991847567735">Automatische Downloads</translation>
 <translation id="5651323159439184939">Endlosdruck</translation>
-<translation id="5987316528511737389">Amtlichen Ausweis sicher in Brave Wallet aktualisieren</translation>
+<translation id="5653681867130739344">Amtlichen Ausweis sicher in Google Wallet aktualisieren</translation>
 <translation id="5654927323611874862">ID für hochgeladenen Absturzbericht:</translation>
 <translation id="5654965123204121933">Die URL enthält nicht den erforderlichen Ersatzstring „<ph name="SEARCH_TERMS_REPLACEMENT"/>“: <ph name="SEARCH_URL"/></translation>
 <translation id="5659593005791499971">E-Mail</translation>
 <translation id="5660122698869360728">Ein neuer intelligenter Ordner, in dem du alle deine Shoppingseiten an einem einzigen Ort speichern und beispielsweise automatisch Preise beobachten und Preisinformationen abrufen kannst.</translation>
 <translation id="5663955426505430495">Der Administrator dieses Geräts hat Erweiterungen für zusätzliche Funktionen installiert. Diese Erweiterungen können auf einige deiner Daten zugreifen.</translation>
+<translation id="5664075349639500330">Weitere Informationen zum Surfen im isolierten Modus.</translation>
 <translation id="5675650730144413517">Diese Seite funktioniert nicht</translation>
 <translation id="5675959228867414813">Nach Datum anzeigen</translation>
 <translation id="567604591393105935">Ansicht mit Preisinformationen am unteren Rand ist halb geöffnet</translation>
@@ -2708,7 +2757,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="5715150588940290235">Gespeicherte Sicherheitscodes löschen?</translation>
 <translation id="5715918316982363436"><ph name="TAB_COUNT"/> von <ph name="WINDOW_COUNT"/> auf diesem Gerät</translation>
 <translation id="5716325061445053985">Tippe hier, um den Tab auf dem Smartphone zu öffnen</translation>
-<translation id="5576354004856163244">Kartendetails werden beim Online-Bezahlvorgang automatisch ausgefüllt. Karten werden sicher in Brave Wallet gespeichert.</translation>
+<translation id="5717281954932320486">Kartendetails werden beim Online-Bezahlvorgang automatisch ausgefüllt. Karten werden sicher in Google Wallet gespeichert.</translation>
 <translation id="5718326209176373202">Anmerkungen hinzufügen</translation>
 <translation id="5718601519531438273">Dazu gehören Informationen aus Reisepässen und Führerscheinen</translation>
 <translation id="5720705177508910913">Aktueller Nutzer</translation>
@@ -2729,6 +2778,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="573974402615125334">Wenn du Tabgruppen teilen, ihnen beitreten und gemeinsam mit anderen an ihnen arbeiten möchtest, synchronisiere deinen Verlauf und deine Tabs</translation>
 <translation id="5740911612628596808">Umschlag C9</translation>
 <translation id="574392208103952083">Mittel</translation>
+<translation id="5744350700955456407">Mit der Funktion „Erweitertes Autofill“ kannst du jetzt Informationen wie Bestellnummern und Bestätigungscodes für Flüge aus Apps wie Gmail und Brave Fotos abrufen und einfügen</translation>
 <translation id="932970570458196494">Brave verarbeitet Seitentitel und URLs in der Cloud</translation>
 <translation id="5745733273847572235">Darf nach meinem Standort fragen</translation>
 <translation id="5750869797196646528">Handtracking</translation>
@@ -2757,6 +2807,8 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="5789643057113097023">.</translation>
 <translation id="5793317771769868848">Diese Zahlungsmethode wird von diesem Gerät gelöscht</translation>
 <translation id="5794065675298686371">Benachrichtigungen zum Preis-Tracking aktivieren</translation>
+<translation id="5794093550048860249">Sendungsnummer</translation>
+<translation id="7504725958983465699">Aktiviere „<ph name="BEGIN_LINK"/>Smarte Funktionen in anderen Brave-Produkten<ph name="LINK_END"/>“</translation>
 <translation id="5797984091151707075">Durch Administratorrichtlinie blockiert</translation>
 <translation id="5804241973901381774">Berechtigungen</translation>
 <translation id="5806871454498484178">Scrollen und Zoomen blockiert</translation>
@@ -2770,7 +2822,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="5820751560028604030">Lokaler Download blockiert</translation>
 <translation id="5826507051599432481">Allgemeiner Name (CN)</translation>
 <translation id="5830698870816298009">Kamera verwenden und bewegen</translation>
-<translation id="8488282162676695335">Brave Wallet</translation>
+<translation id="5831217499016131155">Google Wallet</translation>
 <translation id="5832976493438355584">Gesperrt</translation>
 <translation id="5837220895135257862">Gib Speicherplatz in <ph name="CLOUD_PROVIDER"/> frei und versuche es dann noch einmal</translation>
 <translation id="5838278095973806738">Du solltest keine vertraulichen Informationen wie Passwörter oder Kreditkartennummern auf dieser Website eingeben, da sie von Angreifern gestohlen werden könnten.</translation>
@@ -2779,7 +2831,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="5841007907672481419">Von <ph name="TYPE_1"/></translation>
 <translation id="5843987376989109187">Diese Sprache wird noch nicht unterstützt.
     <ph name="BEGIN_LINK"/>Weitere Informationen<ph name="END_LINK"/></translation>
-<translation id="8224714187340014040">Nachdem du deine Bestellung geprüft hast, musst du dich mit <ph name="BNPL_ISSUER_NAME"/> in deinem Konto anmelden oder ein neues Konto erstellen. Dieses Konto wird automatisch in Brave Wallet verknüpft.</translation>
+<translation id="5848445080378515710">Nachdem du deine Bestellung geprüft hast, musst du dich mit <ph name="BNPL_ISSUER_NAME"/> in deinem Konto anmelden oder ein neues Konto erstellen. Dieses Konto wird automatisch in Google Wallet verknüpft.</translation>
 <translation id="5851548754964597211">Tab-Liste</translation>
 <translation id="5851868085455377790">Aussteller</translation>
 <translation id="5852909432155870672">RA4</translation>
@@ -2793,7 +2845,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="5866898949289125849">Du hast eine Entwicklertools-Seite aufgerufen</translation>
 <translation id="5869405914158311789">Die Website ist nicht erreichbar</translation>
 <translation id="5869522115854928033">Gespeicherte Passwörter</translation>
-<translation id="1025941152813277982">KTN sicher in Brave Wallet aktualisieren</translation>
+<translation id="5872115357279348603">KTN sicher in Google Wallet aktualisieren</translation>
 <translation id="5872215789867188990">Die Tabgruppe „<ph name="GROUP_TITLE"/>“ ist nicht mehr verfügbar</translation>
 <translation id="5872692522325383488">IBAN gespeichert</translation>
 <translation id="5879989559903563723">Im Gastmodus nicht zulässig</translation>
@@ -2808,13 +2860,14 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="3476147989326158506">Brave versucht, vertrauliche Daten anzuzeigen</translation>
 <translation id="5898767305816764989">Button „Mag ich“ – Eingabetaste drücken, um positives Feedback zu <ph name="THUMBS_UP_SUGGESTION_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/> zu senden</translation>
 <translation id="5901630391730855834">Gelb</translation>
+<translation id="5902204772823742902">Führerschein sicher zu Google Wallet hinzufügen</translation>
 <translation id="5903264686717710770">Titel:</translation>
 <translation id="3704860399319731107">Mit deiner Arbeitsadresse kannst du Brave-Dienste besser nutzen, z. B. relevantere Suchergebnisse und Wegbeschreibungen in Brave Maps erhalten. Du kannst deine Adresse <ph name="BEGIN_LINK"/>in deinem Brave-Konto <ph name="ACCOUNT"/><ph name="END_LINK"/> bearbeiten oder löschen.</translation>
 <translation id="5908541034548427511"><ph name="TYPE_1"/> (synchronisiert)</translation>
 <translation id="5910140988253729859">Autofill rückgängig machen</translation>
 <translation id="5911110632211230665">Öffnen blockiert</translation>
-<translation id="1765144800915733093">Brave Wallet öffnen</translation>
-<translation id="7227888833179196534">Known Traveler Number (KTN) in Brave Wallet speichern</translation>
+<translation id="5912796581727968237">Google Wallet öffnen</translation>
+<translation id="5914185423510719251">Known Traveler Number (KTN) in Google Wallet speichern</translation>
 <translation id="5914465277418006379"><ph name="MEMBER_FIRST_NAME"/> hat diesen Tab hinzugefügt</translation>
 <translation id="59174027418879706">Aktiviert</translation>
 <translation id="5917538780499455803">Personalausweis sicher speichern</translation>
@@ -2849,7 +2902,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="5968022600320704045">Keine Suchergebnisse</translation>
 <translation id="5968400720580217226">KI‑Modus</translation>
 <translation id="5969199813874624822">Speichern und Preis beobachten</translation>
-<translation id="5972020793760134803">Zu folgendem Tab wechseln:</translation>
+<translation id="5972020793760134803">Zum Tab wechseln</translation>
 <translation id="5973514677932942122"><ph name="EXPIRATION_DATE"/> | <ph name="SECURITY_CODE"/></translation>
 <translation id="5974052231147553524">Sechste Rolle</translation>
 <translation id="5975083100439434680">Verkleinern</translation>
@@ -2882,6 +2935,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="6025416945513303461"><ph name="TYPE_1"/>, <ph name="TYPE_2"/>, <ph name="TYPE_3"/> (synchronisiert)</translation>
 <translation id="6025471531651464742">Dateien hinzufügen</translation>
 <translation id="6028591542479806248">Hier kannst du deine mobilen Benachrichtigungen und E-Mail-Benachrichtigungen einrichten</translation>
+<translation id="6029805223627823735"><ph name="LAUNCH_ISOLATED_FOCUSED_FRIENDLY_MATCH_TEXT"/> – Tabulatortaste und Eingabetaste drücken, um ein neues isoliertes Fenster zu öffnen und privat zu surfen</translation>
 <translation id="603068602130820122">Zwei Heftklammern rechts</translation>
 <translation id="6031824805267965302">Bewegungssensoren verwenden</translation>
 <translation id="6032524144326295339">Ablage 2</translation>
@@ -2919,7 +2973,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="6085149458302186532">Etiketten (farbig)</translation>
 <translation id="6087312102907839798">Ähnliche Suchanfragen</translation>
 <translation id="7851017866080575588">Tabs, die du aus deinem Brave-Verlauf löschst, werden weiterhin in deinen Vergleichstabellen angezeigt</translation>
-<translation id="8165276822290438118">Brave Wallet-Logo</translation>
+<translation id="6091115085465716987">Google Wallet-Logo</translation>
 <translation id="6091691259076781835">Du kannst diesen CVC auf deinem Gerät speichern, um schneller zu bezahlen</translation>
 <translation id="6093599771645355227">Gelb 1</translation>
 <translation id="6093795393556121384">Ihre Karte wurde bestätigt.</translation>
@@ -3019,7 +3073,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="6248988683584659830">In den Einstellungen suchen</translation>
 <translation id="6251906504834538140">{0,plural, =1{Datei kann nicht verschoben werden}other{<ph name="FILE_COUNT"/> Dateien können nicht verschoben werden}}</translation>
 <translation id="3917320044622606497"><ph name="MANAGE_CHROME_DOWNLOADS_FOCUSED_FRIENDLY_MATCH_TEXT"/> – drücke die Tabulatortaste und dann die Eingabetaste, um in Brave heruntergeladene Dateien zu verwalten</translation>
-<translation id="8057290549484414862">Karte in Brave Wallet speichern</translation>
+<translation id="6253380015872250643">Karte in Google Wallet speichern</translation>
 <translation id="6254436959401408446">Nicht genügend Speicher, um diese Seite zu öffnen</translation>
 <translation id="625463612687472648">Nicht mehr zulassen</translation>
 <translation id="6259156558325130047">&amp;Neu anordnen rückgängig machen</translation>
@@ -3028,8 +3082,10 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="6263376278284652872"><ph name="DOMAIN"/>-Lesezeichen</translation>
 <translation id="6264376385120300461">Trotzdem herunterladen</translation>
 <translation id="6264485186158353794">Zurück zu sicherer Website</translation>
+<translation id="6264507470395196064">Sicheres Gateway</translation>
 <translation id="6264636978858465832">Der Passwortmanager benötigt einen umfassenderen Zugriff</translation>
 <translation id="6265794661083428563">Den Wert der Richtlinie <ph name="POLICY_NAME"/> kopieren</translation>
+<translation id="6271264012613848937">Aufgrund der Richtlinien deiner Organisation konnte <ph name="URL"/> nicht aufgerufen werden. Wenn dies unerwartet ist, wende dich an deinen Administrator.</translation>
 <translation id="1300170712564922349">Du kannst weiter stöbern, um relevante Aktivitäten in deinem Brave-Verlauf zu sehen</translation>
 <translation id="9136010393039243713">Brave Update</translation>
 <translation id="6278015583149890680">Google Drive und OneDrive</translation>
@@ -3054,16 +3110,19 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="6311410654831092784">Cardstock</translation>
 <translation id="6311642842034740437">Benannter Standort</translation>
 <translation id="6312113039770857350">Webseite nicht verfügbar</translation>
+<translation id="6313189007657889655">Bestell-ID</translation>
 <translation id="6316110367871394043">Dateiupload in <ph name="CLOUD_PROVIDER"/> wurde pausiert</translation>
 <translation id="63172326633386613">Einstellungen für Bedienungshilfen verwalten</translation>
 <translation id="7867333304076398451">Diese Website bleibt gesperrt, weil du das erweiterte Sicherheitsprogramm von Brave nutzt. <ph name="BEGIN_LEARN_MORE_LINK"/>Weitere Informationen zu dieser Warnung<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="6321917430147971392">Überprüfe die DNS-Einstellungen.</translation>
 <translation id="6322182122604171028">Windows Hello konnte nicht verwendet werden</translation>
+<translation id="5267531627648004734">Aus Brave entfernen</translation>
 <translation id="7962450223988560278">Brave in den iOS-Einstellungen als Standardbrowser für das System festlegen</translation>
 <translation id="6328639280570009161">Deaktiviere die Netzwerkvorhersage.</translation>
 <translation id="2992154309947281535">Wenn deine Informationen automatisch eingefügt werden sollen, aktiviere in den Wallet-Einstellungen die Option „Karten/Tickets auf Brave verwenden“</translation>
 <translation id="6329815962353376655">&lt;Frage eingeben&gt;</translation>
 <translation id="633348045801643466">Optionen für <ph name="PAY_LATER_OPTIONS_HELP_LINK_BEGIN"/>Später bezahlen<ph name="PAY_LATER_OPTIONS_HELP_LINK_END"/> an der Kasse anzeigen</translation>
+<translation id="6335364777769284858">Aktiviere „Smarte Funktionen“ in den <ph name="BEGIN_LINK"/>Gmail-Einstellungen<ph name="LINK_END"/></translation>
 <translation id="6336948221660696475">VR-Berechtigung nicht gewährt</translation>
 <translation id="6337534724793800597">Richtlinien nach Name filtern</translation>
 <translation id="633770708279464947">Der <ph name="SECURE_DNS_SALT"/>-Wert ist ungültig und wird nicht verwendet.</translation>
@@ -3087,7 +3146,6 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="6361757823711327522">B7</translation>
 <translation id="6363786367719063276">Protokolle ansehen</translation>
 <translation id="6364095313648930329"><ph name="BEGIN_LINK"/>Proxy- und Firewallkonfiguration sowie Konfiguration sicherer DNS-Abfragen überprüfen<ph name="END_LINK"/></translation>
-<translation id="6365513578140103119">E-Mail-Adressen automatisch bestätigen</translation>
 <translation id="6366710531182496394">Zwei Heftklammern links</translation>
 <translation id="6367196786591004737">Eintrag löschen</translation>
 <translation id="6370022303958842211">Aktionen für den Gerätezugriff wie Anmeldungen (einschließlich fehlgeschlagener Anmeldeversuche), Abmeldungen, Sperrungen und Entsperrungen</translation>
@@ -3122,7 +3180,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="6412543105195503444">Dialogfeld für die Genehmigung auf der übergeordneten Website</translation>
 <translation id="6416877227920300343">EDP</translation>
 <translation id="6418199314628742460">Achte darauf, dass alle wichtigen geschäftlichen oder privaten Daten extern gespeichert sind.</translation>
-<translation id="4561848316196784217">Fahrzeug sicher in Brave Wallet aktualisieren</translation>
+<translation id="6422648598133086441">Fahrzeug sicher in Google Wallet aktualisieren</translation>
 <translation id="6425092077175753609">Material</translation>
 <translation id="6427730057873428458">Fensterfaltung</translation>
 <translation id="6429267199680088961">A4-Tab</translation>
@@ -3195,6 +3253,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="6547208576736763147">Doppelte Lochung links</translation>
 <translation id="6550245281449521513">Maussperre nicht zulässig</translation>
 <translation id="6551737294564628267"><ph name="ATTRIBUTE_NAME"/>, neu</translation>
+<translation id="6552244083450538912">Deine Aktivitäten sind möglicherweise für die von dir besuchten Websites, deinen Arbeitgeber oder deine Bildungseinrichtung sowie deinen Internetanbieter sichtbar</translation>
 <translation id="6552566579578780089">Zahlungen</translation>
 <translation id="6553777254569586547"><ph name="SUGGESTION_TITLE"/>. <ph name="SUGGESTION_TYPE"/>. <ph name="MATCH_POSITION"/> von <ph name="NUM_MATCHES_IN_GROUP"/> in der Gruppe „<ph name="GROUP_HEADER"/>“.</translation>
 <translation id="6554732001434021288">Vor <ph name="NUM_DAYS"/> Tagen zuletzt besucht</translation>
@@ -3209,7 +3268,8 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="2679746641101586196">Brave versucht, deine vertraulichen Daten auf <ph name="APP_NAME"/> auszufüllen.</translation>
 <translation id="6578434528542148658">Ungültige Erweiterungs-ID.</translation>
 <translation id="3157702622633401823">Auf dieser Website besteht die Gefahr, dass Angreifer Schadsoftware installieren, mit der beispielsweise Passwörter, Fotos, Nachrichten oder Kreditkartennummern gestohlen oder gelöscht werden können. Brave rät dringend dazu, auf den Button „Zurück zu sicherer Website“ zu klicken. <ph name="BEGIN_LEARN_MORE_LINK"/>Weitere Informationen zu dieser Warnung<ph name="END_LEARN_MORE_LINK"/></translation>
-<translation id="2571911185264872034">In Brave Wallet gespeichert</translation>
+<translation id="6583309742916093092">In Google Wallet gespeichert</translation>
+<translation id="2765043438745652392">Diese Karte wurde in Google Wallet gespeichert, damit du sie auch in anderen Brave-Produkten verwenden kannst</translation>
 <translation id="6587893660316489419">Umschlag B5</translation>
 <translation id="6587923378399804057">Von dir kopierter Link</translation>
 <translation id="6591833882275308647">Dein <ph name="DEVICE_TYPE"/> wird nicht verwaltet</translation>
@@ -3222,16 +3282,18 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="5887670611153282204">Weitere Informationen zu deiner Suchmaschine in Brave</translation>
 <translation id="6615297766614333076">Stapelfach 2</translation>
 <translation id="6619496928666593220">IBAN nicht ausgefüllt</translation>
+<translation id="662009501953240458">Fahrzeug sicher zu Google Wallet hinzufügen</translation>
 <translation id="6624427990725312378">Kontaktdaten</translation>
 <translation id="6625629379283886932">Bring mir bei, wie man programmiert</translation>
 <translation id="6628463337424475685"><ph name="ENGINE"/>-Suche</translation>
 <translation id="6630043285902923878">USB-Geräte werden gesucht…</translation>
 <translation id="4945711024178085608">Button „Einstellungen verwalten“ – aktivieren, um deine Brave-Einstellungen aufzurufen</translation>
 <translation id="663260587451432563">JIS B4</translation>
+<translation id="8669809408036157295">Wenn du die folgende Website besuchen möchtest, musst du dich mit deinem verwalteten Brave-Konto anmelden.</translation>
 <translation id="6635900375070654124">einem Authentifizierungsgerät</translation>
 <translation id="6641852376826221947">Kauf bestätigen</translation>
 <translation id="6643016212128521049">Löschen</translation>
-<translation id="6978162289423667633">Diese Karte konnte nicht in Brave Wallet gespeichert werden. Sie wurde stattdessen in Brave auf diesem Gerät gespeichert.</translation>
+<translation id="5131980803947333612">Diese Karte konnte nicht in Google Wallet gespeichert werden. Sie wurde stattdessen in Brave auf diesem Gerät gespeichert.</translation>
 <translation id="6645291930348198241">Auf Cookies und Websitedaten zugreifen.</translation>
 <translation id="6645478838938543427">Benachrichtigungen zu Preisnachlässen werden an <ph name="EMAIL_ADDRESS"/> gesendet</translation>
 <translation id="6678472970290886941">Dein Administrator kann die Browsereinstellungen per Remote-Zugriff ändern. Aktivitäten auf diesem Gerät können auch außerhalb von Brave verwaltet werden.</translation>
@@ -3297,9 +3359,11 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="6743841972744298686">Synchronisierungseinstellungen</translation>
 <translation id="3792994947670632937">Automatisch Name und E‑Mail-Adresse aus deinem Brave-Konto einfügen lassen</translation>
 <translation id="674580074662200768">Reisepass sicher aktualisieren</translation>
+<translation id="6749473226660745022">Fotos</translation>
 <translation id="6751487147225428522">ROC 8K</translation>
 <translation id="6753269504797312559">Wert der Richtlinie</translation>
 <translation id="6753434778807740853">Eintrag „<ph name="ENTRY_VOICEOVER"/>“ löschen</translation>
+<translation id="3557432974914530754">Vorschlag aus Brave entfernt</translation>
 <translation id="6757797048963528358">Dein Gerät ist im Ruhemodus.</translation>
 <translation id="6758934187792712102"><ph name="URL"/> möchte deine Bewegungs- und Lichtsensoren verwenden</translation>
 <translation id="6770747695101757579">Papier (Baumwolle)</translation>
@@ -3352,6 +3416,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="6860888819347870819">Darf nachfragen, ob der Bild-im-Bild-Modus aktiviert werden soll</translation>
 <translation id="6864189428899665393">267 x 389 mm</translation>
 <translation id="6865412394715372076">Diese Karte kann momentan nicht geprüft werden</translation>
+<translation id="6871073333584947219">Wallet-Benachrichtigung geschlossen.</translation>
 <translation id="6871813064737840684">Preisentwicklung für diese Option im Web</translation>
 <translation id="6873456682041376666">Oberes Fach</translation>
 <translation id="6874604403660855544">&amp;Hinzufügen wiederholen</translation>
@@ -3377,6 +3442,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="6897140037006041989">User-Agent</translation>
 <translation id="6898699227549475383">Organisation (O)</translation>
 <translation id="6900702165119149418">Du bist abgemeldet</translation>
+<translation id="6902049722133977432">Rückgängig machen</translation>
 <translation id="6910211073230771657">Gelöscht</translation>
 <translation id="691024665142758461">Mehrere Dateien herunterladen</translation>
 <translation id="691046363691324218">Redress Number</translation>
@@ -3393,12 +3459,11 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="6927878187051807444">Kameradateien und Screenshots</translation>
 <translation id="6090573860187511325"><ph name="BEGIN_BOLD"/>Mit der Standardsuchmaschine hast du die Möglichkeit, im Web zu suchen und Brave-Funktionen zu nutzen.<ph name="END_BOLD"/> Du kannst beispielsweise über die Adressleiste oder über Bilder auf Webseiten suchen. Eine Funktion ist möglicherweise nicht verfügbar, wenn sie nicht von deiner Suchmaschine unterstützt wird.</translation>
 <translation id="6722453239914327220">Dieser Name stammt aus deinem Brave-Konto</translation>
-<translation id="7372037107287931628">Informationen von Kundenkarten können jetzt aus Brave Wallet automatisch eingefügt werden.</translation>
+<translation id="6935077351544118151">Informationen von Kundenkarten können jetzt aus Google Wallet automatisch eingefügt werden.</translation>
 <translation id="6935179587384421592"><ph name="SIZE"/>. Einige Websites werden beim nächsten Besuch möglicherweise langsamer geladen.</translation>
 <translation id="6936976777388162184">Dieses Gerät ist Teil eines Sets und kann nicht mit dem Upgrade für Kioske und Beschilderung registriert werden.</translation>
 <translation id="6942444979237658241">Kommentare – <ph name="GROUP_NAME"/></translation>
 <translation id="6944692733090228304">Du hast dein Passwort auf einer Website eingegeben, die nicht von <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/> verwaltet wird. Zum Schutz deines Kontos solltest du das Passwort nicht für andere Apps und Websites verwenden.</translation>
-<translation id="9000864348890316168">Mit Brave im Web suchen</translation>
 <translation id="6948051842255602737">Spiel vorbei, deine Punktzahl ist <ph name="SCORE"/>.</translation>
 <translation id="4203796512947064623">Wenn du in Brave einkaufst, wird die Option für Pix angezeigt</translation>
 <translation id="6948701128805548767">Wähle eine Adresse aus, um Abholoptionen und -anforderungen zu sehen</translation>
@@ -3411,6 +3476,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="6957153644870901611">Aktiviere das erweiterte Autofill, um mehr Felder automatisch ausfüllen zu lassen</translation>
 <translation id="6957887021205513506">Das Zertifikat des Servers ist möglicherweise eine Fälschung.</translation>
 <translation id="774679539085757206">Datenschutzeinstellungen in deinem Brave-Konto verwalten</translation>
+<translation id="3446213142631997348">Der Brave Passwortmanager kann diese Codes für dich aus deinem Gmail-Konto (<ph name="EMAIL"/>) abrufen. Du kannst deine Meinung jederzeit ändern und <ph name="IDS_AUTOFILL_GMAIL_OTP_OPT_IN_LEARN_MORE_LINK"/>.</translation>
 <translation id="6961844873822989059">Darf nachfragen, ob Schriftarten verwendet werden können, die auf meinem Gerät installiert sind</translation>
 <translation id="6962858948849099922">Zeitüberschreitung beim Verschieben</translation>
 <translation id="6963520811470373926">Ersetzt</translation>
@@ -3426,6 +3492,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="4008528679917598915">Wenn du deine Zwischenablage verwenden möchtest, erlaube Brave über die <ph name="LINK"/> den Zugriff darauf.</translation>
 <translation id="6973656660372572881">Sowohl feste Proxyserver als auch eine PAC-Script-URL sind festgelegt.</translation>
 <translation id="6973988895180423160">3,5 × 5 Zoll</translation>
+<translation id="6976229914347655621">Von deiner Organisation benötigte Erweiterungen bleiben aktiviert. Weitere Informationen unter <ph name="BEGIN_LINK"/>chrome://extensions<ph name="END_LINK"/></translation>
 <translation id="6978236010531171013">Trotzdem freigeben</translation>
 <translation id="6979158407327259162">Google Drive</translation>
 <translation id="6979440798594660689">Stummschalten (Standard)</translation>
@@ -3439,7 +3506,6 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="6998512609912910179">Formulare schneller ausfüllen</translation>
 <translation id="7000094925113284872">Beschreibe den Lebenszyklus eines Sterns</translation>
 <translation id="7002897669829306463">Privatadresse, <ph name="ADDRESS"/></translation>
-<translation id="7004499039102548441">Zuletzt geöffnete Tabs</translation>
 <translation id="7004562620237466965">Nur entschlüsseln</translation>
 <translation id="7006930604109697472">Trotzdem senden</translation>
 <translation id="7009364359744329733">Diese Karte ist momentan nicht verfügbar. Bitte versuche es später noch einmal.</translation>
@@ -3471,7 +3537,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="7058163556978339998"><ph name="BROWSER"/> hat verifiziert, dass <ph name="ISSUER"/> das Zertifikat dieser Website ausgestellt hat.</translation>
 <translation id="7058774143982824355">CSV-Passwort-Parser-Service</translation>
 <translation id="7059913660448028407">Gerade nicht verfügbar</translation>
-<translation id="6761410840196521760">Karte und Rechnungsadresse in Brave Wallet speichern, damit du zukünftig schneller bezahlen kannst</translation>
+<translation id="7062344833049251424">Karte und Rechnungsadresse in Google Wallet speichern, damit du zukünftig schneller bezahlen kannst</translation>
 <translation id="5320462991730735481">Adressen in den Brave-Einstellungen hinzufügen und verwalten</translation>
 <translation id="7063157783216323487">Grün 2</translation>
 <translation id="7064851114919012435">Kontaktdaten</translation>
@@ -3487,7 +3553,9 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="7083258188081898530">Fach 9</translation>
 <translation id="70846382339153529">OpenDocument-Text</translation>
 <translation id="7086090958708083563">Upload vom Nutzer angefordert</translation>
+<translation id="7089745480771070611">Wird in der Seitenleiste geöffnet</translation>
 <translation id="7090698782953528257">Hilf mir, eine Funktion grafisch darzustellen, um die mathematische Gleichung zu visualisieren und die Form der Kurve zu sehen</translation>
+<translation id="7092087596499105699">Dein Administrator hat den Connector für das sichere Gateway konfiguriert, um den Zugriff auf die privaten Webanwendungen deiner Organisation zu schützen. Möglicherweise werden Daten aus deinem Arbeitsprofil verwendet, um den Zugriff zu bestätigen.</translation>
 <translation id="1313878436434241688"><ph name="MANAGE_SITE_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/> – drücke die Tabulatortaste und dann die Eingabetaste, um Berechtigungen und gespeicherte Daten von Websites in den Brave-Einstellungen zu verwalten</translation>
 <translation id="709604659664854823">Finde für mich für heute Abend eine Last-Minute-Reservierung in einem Restaurant in der Nähe</translation>
 <translation id="7096341143397839437">E-Mail: <ph name="EMAIL"/>.</translation>
@@ -3532,7 +3600,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 <translation id="7162277662076933695">Intelligentes Kartenlesegerät</translation>
 <translation id="7163295244162773898">{0,plural, =1{Vertrauliche Datei kopieren?}other{Vertrauliche Dateien kopieren?}}</translation>
 <translation id="7168625890036931112">„<ph name="DATA_CONTROLS_RESTRICTION"/>“ ist keine unterstützte Einschränkung auf dieser Plattform</translation>
-<translation id="6390064556944765055">Alle auf deinem Gerät und in Brave Wallet gespeicherten Sicherheitscodes werden gelöscht</translation>
+<translation id="7170930892977483182">Alle auf deinem Gerät und in Google Wallet gespeicherten Sicherheitscodes werden gelöscht</translation>
 <translation id="717330890047184534">GAIA-ID: </translation>
 <translation id="7173338713290252554">Preisentwicklung im Web</translation>
 <translation id="7174545416324379297">Zusammengeführt</translation>
@@ -3576,7 +3644,7 @@ Wenn du die Optionen für „Später bezahlen“ ausblenden möchtest, rufe die 
 Weitere Details:
 <ph name="DEBUG_INFO"/></translation>
 <translation id="7252424535852086046">Wenn du diese Daten löschen möchtest, ruf die entsprechenden Verwaltungseinstellungen auf</translation>
-<translation id="4241646169865720085">Redress Number sicher in Brave Wallet aktualisieren</translation>
+<translation id="7253051586755429279">Redress Number sicher in Google Wallet aktualisieren</translation>
 <translation id="7255540419660272073">Button „Mag ich nicht“ – Eingabetaste drücken, um ein Formular zu öffnen, über das du detailliertes Feedback dazu geben kannst, warum dir <ph name="THUMBS_DOWN_SUGGESTION_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/> nicht gefällt</translation>
 <translation id="7256634549594854023">Hinteres Fach</translation>
 <translation id="725866823122871198">Es kann keine private Verbindung zu <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> hergestellt werden, weil Datum und Uhrzeit deines Computers falsch sind (<ph name="DATE_AND_TIME"/>).</translation>
@@ -3584,18 +3652,21 @@ Weitere Details:
 <translation id="7261463765917514051">Sicher bezahlen mit Autofill</translation>
 <translation id="7265608370113700582">Die Adresse ist nur auf diesem Gerät verfügbar</translation>
 <translation id="7266094331715305887">Apps auf dem Gerät</translation>
+<translation id="7268742523336093718">Reisepass sicher zu Google Wallet hinzufügen</translation>
 <translation id="7269151392155523061">Das Kürzel darf nicht mit dem von <ph name="SEARCH_AGGREGATOR_SETTINGS_POLICY"/> festgelegten Suchaggregator-Suchbegriff übereinstimmen: <ph name="SHORTCUT_NAME"/></translation>
+<translation id="7271135282910524932">Bei den von deiner Organisation festgelegten Schutzmaßnahmen oder Richtlinien ist ein Fehler aufgetreten. Versuche es später noch einmal oder kontaktiere deinen Administrator.</translation>
 <translation id="7273111226200291353">Dateien, die du herunterlädst, werden zur Analyse an Google Cloud oder Dritte gesendet. Sie können beispielsweise auf sensible Daten oder Malware geprüft und gemäß Unternehmensrichtlinien gespeichert und für deinen Administrator sichtbar sein.</translation>
 <translation id="7275334191706090484">Verwaltete Lesezeichen</translation>
+<translation id="7278933725460302617">Du bist jetzt im isolierten Modus</translation>
 <translation id="2837210582972105306"><ph name="CHANGE_GOOGLE_PASSWORD_FOCUSED_FRIENDLY_MATCH_TEXT"/> – drücke die Tabulatortaste und dann die Eingabetaste, um das Passwort für dein Brave-Konto zu ändern</translation>
 <translation id="7286908876112207905">Das Einfügen dieser Inhalte auf dieser Website ist nicht zulässig</translation>
 <translation id="7291578327729322058">Führerschein hinzufügen</translation>
 <translation id="7292031607255951991">Name des Empfängers</translation>
-<translation id="5119862674579456673">Informationen von besuchten Seiten in Brave Wallet speichern</translation>
+<translation id="7297228218361240128">Informationen von besuchten Seiten in Google Wallet speichern</translation>
 <translation id="7298195798382681320">Empfohlen</translation>
 <translation id="7299471494012161875">Angeschlossene Anzeigegeräte</translation>
 <translation id="7299721129597238157">Lesezeichen löschen</translation>
-<translation id="7996735040909243152">Kundenkarten in Brave Wallet verwalten</translation>
+<translation id="7299769361777046949">Kundenkarten in Google Wallet verwalten</translation>
 <translation id="7304030187361489308">Hoch</translation>
 <translation id="244157907932852817">Datenschutzeinstellungen des Brave-Kontos verwalten</translation>
 <translation id="7305756307268530424">Verlangsamen</translation>
@@ -3609,6 +3680,7 @@ Weitere Details:
 <translation id="7316521168101843192">Datei wird in Microsoft OneDrive gespeichert</translation>
 <translation id="7319430975418800333">A3</translation>
 <translation id="7320336641823683070">Hilfe bei der Verbindungsherstellung</translation>
+<translation id="7328315434053660512">Isoliertes Fenster öffnen</translation>
 <translation id="733354035281974745">Durch Sitzung mit einem lokalen Gerätekonto überschrieben</translation>
 <translation id="7334320624316649418">&amp;Neu anordnen wiederholen</translation>
 <translation id="7335157162773372339">Darf nachfragen, wenn sie meine Kamera verwenden möchte</translation>
@@ -3621,6 +3693,7 @@ Weitere Details:
 <translation id="7347640536700429009">Der Name auf der Karte ist ungültig</translation>
 <translation id="7352651011704765696">Ein Problem ist aufgetreten</translation>
 <translation id="7353601530677266744">Befehlszeile</translation>
+<translation id="7358055687760675498"><ph name="PROTOCOL"/>-Links über <ph name="HANDLER_HOSTNAME"/> statt über <ph name="REPLACED_HANDLER_TITLE"/> öffnen</translation>
 <translation id="7359588939039777303">Werbung blockiert.</translation>
 <translation id="7362281996276843968">Diese Gruppe ist geschlossen</translation>
 <translation id="5417725730200908216"><ph name="MANAGE_ADDRESSES_FOCUSED_FRIENDLY_MATCH_TEXT"/> – drücke die Tabulatortaste und dann die Eingabetaste, um Adressen in den Brave-Einstellungen hinzuzufügen und zu verwalten</translation>
@@ -3628,6 +3701,7 @@ Weitere Details:
 <translation id="7366117520888504990">198 x 275 mm</translation>
 <translation id="7366362069757178916">Zahlungs-Handler</translation>
 <translation id="4662831882520898447">Informationen dazu, wie du deine Passwörter mit Brave schützen kannst</translation>
+<translation id="7366909168761621528">Browserdaten</translation>
 <translation id="7370751048350026847">Das Einfügen dieser Inhalte auf dieser Website wird nicht empfohlen</translation>
 <translation id="7372526636730851647">Foto (glänzend)</translation>
 <translation id="7372973238305370288">Suchergebnis</translation>
@@ -3654,6 +3728,7 @@ Weitere Details:
 <translation id="7402375256128852434">Zuletzt geöffnete Tabs hinzufügen</translation>
 <translation id="7403392780200267761">Diesen Tab über den Link, über einen QR-Code, über Streamen usw. teilen</translation>
 <translation id="7403591733719184120">Dein <ph name="DEVICE_NAME"/> wird verwaltet</translation>
+<translation id="7404785524901232736">{NUM_SOURCES,plural, =1{Vorschlag entfernt. Die ursprüngliche Quelle wird nicht gelöscht.}other{Vorschlag entfernt. Die ursprünglichen Quellen werden nicht gelöscht.}}</translation>
 <translation id="7405878640835614059"><ph name="ENROLLMENT_DOMAIN"/> hat Anwendungen für zusätzliche Funktionen installiert. Diese Anwendungen können auf einige deiner Daten zugreifen.</translation>
 <translation id="2789355205455889336">Arbeitsadresse aus Brave Autofill entfernen?</translation>
 <translation id="2562227627470773235">&lt;p&gt;Du erhältst diese Fehlermeldung, wenn auf deinem Windows-Computer Superfish-Software installiert ist.&lt;/p&gt;
@@ -3668,7 +3743,7 @@ Weitere Details:
       &lt;/ol&gt;</translation>
 <translation id="7410852728357935715">Auf ein Gerät streamen</translation>
 <translation id="741204030948306876">Ja, bitte</translation>
-<translation id="2863838403912088928">Deine Karte wurde in Brave Wallet gespeichert, damit ihre Details bei zukünftigen Käufen automatisch eingefügt werden können</translation>
+<translation id="7412081313067625215">Deine Karte wurde in Google Wallet gespeichert, damit ihre Details bei zukünftigen Käufen automatisch eingefügt werden können</translation>
 <translation id="7416351320495623771">Passwörter verwalten…</translation>
 <translation id="741772962178517671">Affirm</translation>
 <translation id="7419106976560586862">Profilpfad</translation>
@@ -3703,7 +3778,6 @@ Weitere Details:
 <translation id="7470854469646445678">Gib den Grund für das Kopieren an (erforderlich)</translation>
 <translation id="7471007961486718967">Gib den Grund für die Übertragung an (erforderlich)</translation>
 <translation id="7473033553872550521">Du kannst auch den Websiteinhaber kontaktieren und ihm vorschlagen, auf HTTPS umzustellen. <ph name="LEARN_MORE"/></translation>
-<translation id="7473555040328423550">Tab hinzufügen</translation>
 <translation id="7473891865547856676">Nein, danke</translation>
 <translation id="7475618719385705713">Diese Seite ist blockiert</translation>
 <translation id="7481312909269577407">Vorwärts</translation>
@@ -3721,6 +3795,7 @@ Weitere Details:
 <translation id="7500917112031739411">Nach Gruppe anzeigen</translation>
 <translation id="7501663406926337752">Die angeforderte Website wurde von deiner Organisation gemeldet</translation>
 <translation id="7502044688973049724">deine Daten verwalten</translation>
+<translation id="7506748477220312995">Quellen für Vorschläge</translation>
 <translation id="7507075214339298899">Umschlag Nr. 9</translation>
 <translation id="7508255263130623398">Zurückgegebene Geräte-ID der Richtlinie ist leer oder entspricht nicht der aktuellen Geräte-ID</translation>
 <translation id="7511707705708508147">Währung nicht unterstützt</translation>
@@ -3744,6 +3819,7 @@ Weitere Details:
 <translation id="1015559447832000638">Privatadresse aus Brave Autofill entfernen?</translation>
 <translation id="753714465667062283">Melde dich an, um dein Foto zu speichern</translation>
 <translation id="7537536606612762813">Verbindlich</translation>
+<translation id="7540924742308928499">Brainstormen und zusammenfassen</translation>
 <translation id="7543525346216957623">Frag deine Eltern</translation>
 <translation id="7546409722674205727"><ph name="APP_NAME"/> wird gestartet</translation>
 <translation id="7548892272833184391">Verbindungsfehler beheben</translation>
@@ -3755,12 +3831,13 @@ Weitere Details:
 <translation id="7554791636758816595">Neuer Tab</translation>
 <translation id="7556328470713619625">Passkey verwenden</translation>
 <translation id="7559278538486662777">Die Größe dieser App kann nicht geändert werden.</translation>
+<translation id="7561202748196702434">Surfen im isolierten Modus</translation>
 <translation id="7561784249784255101">Digital Versatile Disc</translation>
 <translation id="7567204685887185387">Dieser Server konnte nicht beweisen, dass er <ph name="DOMAIN"/> ist. Sein Sicherheitszertifikat wurde möglicherweise in betrügerischer Absicht ausgegeben. Mögliche Gründe sind eine fehlerhafte Konfiguration oder ein Angreifer, der deine Verbindung abfängt.</translation>
 <translation id="8661288256654172117">Brave versucht, dein Passwort auf <ph name="APP_NAME"/> auszufüllen.</translation>
 <translation id="7569072768465750771">{COUNT,plural, =0{Keine}=1{1 Tab auf diesem Gerät}other{# Tabs auf diesem Gerät}}</translation>
 <translation id="7569983096843329377">Schwarz</translation>
-<translation id="5042051836875308124">Personalausweis in Brave Wallet aktualisieren</translation>
+<translation id="7570524564113479209">Personalausweis in Google Wallet aktualisieren</translation>
 <translation id="7570862164055912832">Redress Control Number</translation>
 <translation id="5806362888687058351">„Brave AI“-Modus</translation>
 <translation id="7575207903026901870">Button „Vorschlag entfernen“, zum Entfernen dieses Vorschlags Eingabetaste drücken</translation>
@@ -3783,7 +3860,7 @@ Weitere Details:
 <translation id="7599089013883397081">Zeitüberschreitung beim Herunterladen</translation>
 <translation id="1062868744766141611">Brave Fragen zu dieser Seite stellen</translation>
 <translation id="7606123685356405076">Gemini 3-Modelle</translation>
-<translation id="7138721839933201978">Fahrzeug in Brave Wallet speichern</translation>
+<translation id="760632772920590778">Fahrzeug in Google Wallet speichern</translation>
 <translation id="7610193165460212391">Wert liegt außerhalb des zulässigen Bereichs (<ph name="VALUE"/>).</translation>
 <translation id="761261689936461781">Dick</translation>
 <translation id="7613889955535752492">Gültig bis: <ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
@@ -3792,7 +3869,6 @@ Weitere Details:
 <translation id="7615932826417658001">Amtlichen Ausweis hinzufügen</translation>
 <translation id="7616390733770379387">Die Suchmaschinen werden in zufälliger Reihenfolge angezeigt.</translation>
 <translation id="8565825862287624454">Dein Administrator hat Brave Enterprise Connectors für deinen Browser aktiviert. Diese Connectors haben Zugriff auf einen Teil deiner Daten.</translation>
-<translation id="6114261010694947707">Diese Karte wurde in Brave Wallet gespeichert, damit du sie auch in anderen Brave-Diensten verwenden kannst</translation>
 <translation id="7617825962482469577">Umschlag C7/C6</translation>
 <translation id="7619838219691048931">Endblatt</translation>
 <translation id="7621546470643449009">Erstelle eine Anfängeranleitung für die Sternbeobachtung, damit ich lerne, wonach ich am Nachthimmel suchen muss, einschließlich 3 leicht identifizierbarer Sternbilder</translation>
@@ -3811,7 +3887,7 @@ Weitere Details:
 <translation id="7648133459447652947">Zum Einblenden des Cursors wechsle zu einer anderen App, lade die Seite neu oder gehe zurück</translation>
 <translation id="764847582138410250">Zum Anmelden mit dem Smartphone scannen</translation>
 <translation id="7648527891719919697">Diese Website bleibt gesperrt, weil du das erweiterte Sicherheitsprogramm in den <ph name="BEGIN_ANDROID_SETTINGS_LINK"/>Android-Einstellungen<ph name="END_ANDROID_SETTINGS_LINK"/> aktiviert hast. <ph name="BEGIN_LEARN_MORE_LINK"/>Weitere Informationen zu dieser Warnung<ph name="END_LEARN_MORE_LINK"/></translation>
-<translation id="1658842203772810888">Known Traveler Number in Brave Wallet speichern</translation>
+<translation id="7648900539798595789">Known Traveler Number in Google Wallet speichern</translation>
 <translation id="7648992873808071793">Dateien auf diesem Gerät speichern</translation>
 <translation id="7649070708921625228">Hilfe</translation>
 <translation id="7650141368285545431">Passkey eines anderen Geräts verwenden</translation>
@@ -3851,11 +3927,13 @@ Weitere Details:
 <translation id="7696107855583699585">Known Traveler Number bearbeiten</translation>
 <translation id="7698864304447945242">Google Play-Dienste für AR aktualisieren?</translation>
 <translation id="7699509138503320152">Formuliere meine E-Mail überzeugender</translation>
+<translation id="7700664778039213995">{COUNT,plural, =0{Keine}=1{1 Skill (synchronisiert)}other{# Skills (synchronisiert)}}</translation>
 <translation id="7701040980221191251">Keine Einträge</translation>
 <translation id="7704050614460855821"><ph name="BEGIN_LINK"/>Weiter zu <ph name="SITE"/> (unsicher)<ph name="END_LINK"/></translation>
 <translation id="7705085181312584869">Formuliere für mich</translation>
 <translation id="7705992072972338699">Optische Disk (hochglanz)</translation>
 <translation id="7706689436519265630">Dateien, die du kopierst oder verschiebst, werden zur Analyse an Google Cloud oder Dritte gesendet. Sie können beispielsweise auf sensible Daten oder Malware geprüft und gemäß den Unternehmensrichtlinien gespeichert werden.</translation>
+<translation id="7709934467582922028">Aufforderung zur Bestätigung der E‑Mail-Adresse geschlossen</translation>
 <translation id="7714351089363296478">Du warst gerade hier</translation>
 <translation id="7714404809393719981">Foto (halbglanz)</translation>
 <translation id="7714464543167945231">Zertifikat</translation>
@@ -3866,6 +3944,7 @@ Weitere Details:
 <translation id="7718626066800460799">Scan kann nicht gespeichert werden</translation>
 <translation id="772128550427553158">Der CVC befindet sich auf der Vorderseite deiner Karte.</translation>
 <translation id="7724603315864178912">Ausschneiden</translation>
+<translation id="7726402116075326231">Neues isoliertes Fenster öffnen, um privat zu surfen</translation>
 <translation id="7730057435797792985">Sortieren</translation>
 <translation id="1296098648902562076">Schnell ein neues Formular in Brave Formulare erstellen</translation>
 <translation id="773466115871691567">Seiten auf <ph name="SOURCE_LANGUAGE"/> immer übersetzen</translation>
@@ -3882,6 +3961,7 @@ Weitere Details:
 <translation id="7758069387465995638">Möglicherweise wurde die Verbindung von einer Firewall oder Antivirensoftware blockiert.</translation>
 <translation id="7759147511335618829">MIDI-Gerätesteuerung &amp; -Neuprogrammierung</translation>
 <translation id="7759809451544302770">Optional</translation>
+<translation id="7760566304700414795">Lieferung</translation>
 <translation id="776110834126722255">Veraltet</translation>
 <translation id="7761159795823346334">Kamera zulassen?</translation>
 <translation id="7761701407923456692">Das Serverzertifikat stimmt nicht mit der URL überein.</translation>
@@ -3889,10 +3969,11 @@ Weitere Details:
 <translation id="7765158879357617694">Verschieben</translation>
 <translation id="7766518757692125295">Skirt</translation>
 <translation id="776749070095465053">Stoff</translation>
+<translation id="7772659560036894129">Produktnamen</translation>
 <translation id="7773005668374414287">Gleiche Reihenfolge Vorderseite nach oben</translation>
 <translation id="7779418012194492374">Zugriff für <ph name="DEVICE_NAME"/> widerrufen</translation>
 <translation id="7781829728241885113">Gestern</translation>
-<translation id="15891224440739379">Amtlichen Ausweis in Brave Wallet speichern</translation>
+<translation id="7782228658217918863">Amtlichen Ausweis in Google Wallet speichern</translation>
 <translation id="7782465647372057580">Kontoinformationen werden verschlüsselt und vertraulich behandelt</translation>
 <translation id="7785471469930192436">Informationen zum Löschen deines Suchverlaufs findest du in der Anleitung deiner Suchmaschine</translation>
 <translation id="7785790577395078482">diesem Tablet</translation>
@@ -3924,7 +4005,6 @@ Weitere Details:
 <translation id="7839192898639727867">Schlüssel-ID des Zertifikatsinhabers</translation>
 <translation id="7840103971441592723">Bildschirmaufnahme wurde gestartet</translation>
 <translation id="784137052867620416">Shopping Insights</translation>
-<translation id="7841633276323004751">Verfügbare Zahlungsmethoden, die ausgewählt werden können, um mit der Zahlung fortzufahren. Tastatur ausgeblendet.</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{Keine}=1{1 App (<ph name="EXAMPLE_APP_1"/>)}=2{2 Apps (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}other{# Apps (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
 <translation id="7846161022626028328">Ein Fehler ist aufgetreten. Versuche es noch einmal.</translation>
 <translation id="784623644169604270">Keine neuen Aktivitäten</translation>
@@ -3996,6 +4076,7 @@ Weitere Details:
 <translation id="7955105108888461311">Persönlich fragen</translation>
 <translation id="7956713633345437162">Mobile Lesezeichen</translation>
 <translation id="7961015016161918242">Nie</translation>
+<translation id="7961493403319780137">Weitere Informationen zu dieser Funktion – Bestätigungscodes aus Gmail automatisch einfügen</translation>
 <translation id="7962467575542381659">Plattformgerät</translation>
 <translation id="5335890850142030688">Brave bestätigt diese E‑Mail-Adresse auf unterstützten Websites nicht mehr automatisch.</translation>
 <translation id="7966803981046576691">Kontotyp des Auftrags</translation>
@@ -4003,7 +4084,6 @@ Weitere Details:
 <translation id="79682505114836835">Der Wert „<ph name="VALUE"/>“ ist kein gültiger Hex-Farbcode.</translation>
 <translation id="7968982339740310781">Details ansehen</translation>
 <translation id="7972714317346275248">PKCS #1 SHA-384 mit RSA-Verschlüsselung</translation>
-<translation id="7976053965094442846">Die Liste der Anbieter von „Jetzt kaufen, später bezahlen“, die für Ratenzahlung verfügbar sind. Tastatur ausgeblendet.</translation>
 <translation id="7976214039405368314">Zu viele Anfragen</translation>
 <translation id="7977029776654598145">Bei Verwendung</translation>
 <translation id="7977538094055660992">Ausgabegerät</translation>
@@ -4013,6 +4093,7 @@ Weitere Details:
 <translation id="8896585555528145662">Du kannst <ph name="SITE"/> zurzeit nicht aufrufen, weil die Website verschlüsselte Anmeldedaten gesendet hat, die von Brave nicht verarbeitet werden können. Netzwerkfehler und Angriffe sind in der Regel nur vorübergehend, sodass die Seite wahrscheinlich später wieder funktioniert.</translation>
 <translation id="7986319120639858961"><ph name="CARD_TITLE"/> <ph name="TIME"/> <ph name="BOOKMARKED"/> <ph name="TITLE"/> <ph name="DOMAIN"/></translation>
 <translation id="7987087088851949178">Die Liste der Anbieter von „Jetzt kaufen, später bezahlen“, die für Ratenzahlung verfügbar sind, ist vollständig geöffnet.</translation>
+<translation id="7990290316254726169">Du siehst diese Warnung, weil diese Website kein HTTPS unterstützt und du den isolierten Modus nutzt. <ph name="BEGIN_LEARN_MORE_LINK"/>Weitere Informationen zu dieser Warnung<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="799149739215780103">Binden</translation>
 <translation id="7992044431894087211">Die Bildschirmfreigabe mit <ph name="APPLICATION_TITLE"/> wurde fortgesetzt</translation>
 <translation id="799384093520583425">Deine Organisation hat die Verwendung der Entwicklertools auf dieser Seite blockiert</translation>
@@ -4055,6 +4136,7 @@ Weitere Details:
 <translation id="8075898834294118863">Website-Einstellungen verwalten</translation>
 <translation id="8076492880354921740">Tabs</translation>
 <translation id="546884209099464360">Unter <ph name="BEGIN_LINK_GMA"/>myactivity.google.com<ph name="END_LINK_GMA"/> sind möglicherweise weitere Arten von Browserverlaufsdaten für dein Brave-Konto gespeichert, z. B. dein <ph name="BEGIN_LINK_GAA"/>Aktivitätsverlauf in Gemini-Apps<ph name="END_LINK_GAA"/></translation>
+<translation id="8077465698530018904">Ausgewählten Bereich entfernen</translation>
 <translation id="8077669823243888800">Umschlag Chinesisch Nr. 8</translation>
 <translation id="8078006011486731853">{0,plural, =1{Vertrauliche Datei hochladen?}other{Vertrauliche Dateien hochladen?}}</translation>
 <translation id="8079031581361219619">Website neu laden?</translation>
@@ -4073,6 +4155,7 @@ Weitere Details:
 <translation id="8099473231501330216">beantragen, dass diese Informationen gelöscht werden</translation>
 <translation id="8103161714697287722">Zahlungsmethode</translation>
 <translation id="8103643211515685474">Trotzdem drucken</translation>
+<translation id="8104153649317588511">Quellenansicht geschlossen</translation>
 <translation id="8105368624971345109">Deaktivieren</translation>
 <translation id="810875025413331850">Keine Geräte in der Nähe gefunden.</translation>
 <translation id="8116925261070264013">Stummgeschaltet</translation>
@@ -4080,11 +4163,13 @@ Weitere Details:
 <translation id="8118506371121007279">Feedback geben</translation>
 <translation id="812020627659652807">Dateien jetzt löschen</translation>
 <translation id="8120720167840853945">Mit dieser Richtlinie wird derzeit das Standardverhalten von keinen anderen Richtlinien festgelegt.</translation>
+<translation id="8120827570827570666">Händlerdomain</translation>
 <translation id="8127301229239896662">"<ph name="SOFTWARE_NAME"/>" war nicht ordnungsgemäß auf deinem Computer oder im Netzwerk installiert. Bitte deinen IT-Administrator, das Problem zu lösen.</translation>
 <translation id="8130113808541743942">Verschieben nach...</translation>
 <translation id="813024282736408069">Virtuelle Karte für Autofill aktivieren</translation>
 <translation id="8131740175452115882">Bestätigen</translation>
 <translation id="8135546115396015134">die linke Taste</translation>
+<translation id="8136385032646505126">Name des Karteninhabers speichern?</translation>
 <translation id="8137185688006450980">Vergleiche Krankenversicherungsoptionen</translation>
 <translation id="8138591088112729119">Basierend auf Personal Intelligence</translation>
 <translation id="814071672416123670">Inhalte konnten aufgrund der Richtlinien deiner Organisation nicht kopiert werden</translation>
@@ -4095,12 +4180,11 @@ Weitere Details:
 <translation id="208389643640023363">Mit den Informationen aus deinem Brave-Konto <ph name="ACCOUNT"/> kannst du Formulare in Brave schneller ausfüllen</translation>
 <translation id="8150722005171944719">Die Datei unter <ph name="URL"/> kann nicht gelesen werden. Sie wurde möglicherweise entfernt oder verschoben oder die Dateiberechtigungen verhindern den Zugriff.</translation>
 <translation id="8151185429379586178">Entwicklertools</translation>
-<translation id="8152194419479742504">Gib in einem beliebigen Formular „@@“ ein, um Informationen abzurufen und einzufügen, ohne den Tab zu wechseln</translation>
 <translation id="8153865548451212769">{0,plural, =1{Gemäß der Administratorrichtlinie wird nicht empfohlen, diese Datei auf „<ph name="DESTINATION_NAME"/>“ herunterzuladen}other{Gemäß der Administratorrichtlinie wird nicht empfohlen, diese Dateien auf „<ph name="DESTINATION_NAME"/>“ herunterzuladen}}</translation>
 <translation id="8155253549374198915">Zuletzt geöffnete Tabs</translation>
 <translation id="7904243652775639741">Brave verfügt über integrierte Sicherheitsfunktionen, die dich beim Surfen schützen. Eine dieser Funktionen, Google Safe Browsing, hat auf dieser Website kürzlich <ph name="BEGIN_LINK"/>Malware gefunden<ph name="END_LINK"/>.</translation>
 <translation id="8161095570253161196">Suche fortsetzen</translation>
-<translation id="4900205713719197017">Aktiviere Autofill, um sicher online zu bezahlen. Die Kartendetails werden in Brave Wallet verschlüsselt.</translation>
+<translation id="8163468049564974856">Aktiviere Autofill, um sicher online zu bezahlen. Die Kartendetails werden in Google Wallet verschlüsselt.</translation>
 <translation id="8163866351304776260">Vierfache Lochung links</translation>
 <translation id="8164078261547504572">Möchtest du per E‑Mail über Preissenkungen informiert werden?</translation>
 <translation id="8169175551046720804">Die Schlüssel „<ph name="DATA_CONTROLS_KEYS"/>“ können nicht im selben Wörterbuch festgelegt werden</translation>
@@ -4141,6 +4225,7 @@ Weitere Details:
 <translation id="8241707690549784388">Die gesuchte Seite hat die von dir eingegebenen Informationen verwendet bzw. verarbeitet. Wenn du zu dieser Seite zurückgehst, wird eventuell eine schon ausgeführte Aktion wiederholt. Möchtest du fortfahren?</translation>
 <translation id="8242426110754782860">Fortfahren</translation>
 <translation id="824620968958405573">Aufgabe „Automatisches Browsen“</translation>
+<translation id="8247824837030847066">Personalausweis sicher hinzufügen</translation>
 <translation id="8248406213705193919">Karte sicher speichern?</translation>
 <translation id="8249296373107784235">Abbrechen</translation>
 <translation id="8996951854370742934">Diese Adresse ist momentan auf diesem Gerät gespeichert. Wenn du sie in allen Brave-Produkten verwenden möchtest, speichere sie in deinem Brave-Konto (<ph name="ACCOUNT"/>).</translation>
@@ -4157,6 +4242,7 @@ Weitere Details:
 <translation id="8269242089528251720">Getrennte Dokumente/sortierte Kopien</translation>
 <translation id="8269703227894255363">{0,plural, =1{Datei kann nicht geöffnet werden}other{<ph name="FILE_COUNT"/> Dateien können nicht geöffnet werden}}</translation>
 <translation id="8270242299912238708">PDF-Dokumente</translation>
+<translation id="8270320981823560179">Drive</translation>
 <translation id="8277900682056760511">Das Dokument zur Zahlungsabwicklung ist geöffnet</translation>
 <translation id="827820107214076967">Protokolle aktualisieren</translation>
 <translation id="2164614088382669062">Du musst Brave-Benachrichtigungen aktivieren. Rufe dazu einfach die <ph name="BEGIN_LINK"/><ph name="NOTIFICATION_SETTINGS"/><ph name="END_LINK"/> auf.</translation>
@@ -4164,7 +4250,7 @@ Weitere Details:
 <translation id="8280630997017109758">Fach 11</translation>
 <translation id="8281886186245836920">Überspringen</translation>
 <translation id="8282292167096638950">Führerschein löschen</translation>
-<translation id="792704835644878748">IBAN in Brave Wallet speichern</translation>
+<translation id="828282277746732142">IBAN in Google Wallet speichern</translation>
 <translation id="8282947398454257691">Deine eindeutige Geräte-ID abrufen</translation>
 <translation id="8283946103133796868">Berechne meinen gewichteten Notenschnitt</translation>
 <translation id="4596532552309852907">Safe Browsing und mehr in den Brave-Einstellungen verwalten</translation>
@@ -4183,12 +4269,13 @@ Weitere Details:
 <translation id="8297545700510100061">Durch Cookies und andere Websitedaten erinnert sich die Website an dich, z. B. für die Anmeldung oder personalisierte Werbung. Du kannst Cookies für alle Websites in den <ph name="SETTINGS"/> verwalten.</translation>
 <translation id="8298115750975731693">Unter Umständen erfordert das verwendete WLAN (<ph name="WIFI_NAME"/>), dass du <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/> aufrufst.</translation>
 <translation id="8298399736867690281">Karte nur auf Gerät gespeichert</translation>
-<translation id="7150057276888666361">Personalausweis sicher in Brave Wallet speichern</translation>
+<translation id="8300302621078931927">Personalausweis sicher in Google Wallet speichern</translation>
 <translation id="8301894345671534559">Code eingeben</translation>
 <translation id="830498451218851433">Zur Hälfte falten</translation>
 <translation id="830868413617744215">Beta</translation>
 <translation id="8310477433309274098">Keine Gebühren, bis zu 0 % effektiver Jahreszins</translation>
 <translation id="8312841338723044391">LIVE</translation>
+<translation id="8314036873065514376">Händlername</translation>
 <translation id="8316555157357957253">Wird verwendet</translation>
 <translation id="8319414634934645341">Erweiterte Schlüsselverwendung</translation>
 <translation id="831997045666694187">Abends</translation>
@@ -4210,7 +4297,6 @@ Weitere Details:
 <translation id="8350416046273606058">Kürzel darf keine Leerzeichen enthalten: „<ph name="SHORTCUT_NAME"/>“</translation>
 <translation id="8351131234907093545">Notiz erstellen</translation>
 <translation id="8352849934814541340">Der Administrator dieses Geräts hat Anwendungen für zusätzliche Funktionen installiert. Diese Anwendungen können auf einige deiner Daten zugreifen.</translation>
-<translation id="8353273112634584260">Basierend auf Personal Intelligence mit Gemini. Deine Anfragen, Seitentitel und URLs werden möglicherweise überprüft, um die Funktion „Erweitertes Autofill“ zu verbessern.</translation>
 <translation id="8355270400102541638">Kontext für lokalen Absturz:</translation>
 <translation id="8362914115861174987">Zielsprache</translation>
 <translation id="8363502534493474904">Flugmodus ausschalten</translation>
@@ -4225,6 +4311,7 @@ Weitere Details:
 <translation id="8371841335382565017">Geräteliste für das Streamen anzeigen</translation>
 <translation id="8371889962595521444">Benutzerdefinierte Root-Zertifikate</translation>
 <translation id="8374636051559112948">Variiert</translation>
+<translation id="8377507422902936905">Bestellungen</translation>
 <translation id="837840316697671463">Wenn du eine Datei auf deinem Gerät nicht findest, suche in <ph name="CLOUD_PROVIDER"/> danach.</translation>
 <translation id="8378714024927312812">Von deiner Organisation verwaltet</translation>
 <translation id="8380941800586852976">Schädlich</translation>
@@ -4233,7 +4320,7 @@ Weitere Details:
 <translation id="8389532092404711541">In der Regel <ph name="LOW_PRICE"/></translation>
 <translation id="8390725133630534698">Die Administratorrichtlinie blockiert das Teilen von <ph name="ORIGIN_NAME"/> mit <ph name="VM_NAME"/></translation>
 <translation id="8392783408127179588">Richtlinien werden neu geladen</translation>
-<translation id="2792973694349074955">Führerschein in Brave Wallet aktualisieren</translation>
+<translation id="8393948304336153065">Führerschein in Google Wallet aktualisieren</translation>
 <translation id="8396522675989118466">Dies ist der <ph name="NUMBER_OF_DIGITS"/>-stellige Code auf der <ph name="SIDE_OF_CARD"/></translation>
 <translation id="8398335999901363925">Die Liste mit den Zahlungsmethoden, deren Daten bei Berührung ausgefüllt werden, ist vollständig geöffnet.</translation>
 <translation id="8398446215576328011">Angewandte Richtlinien wiederherstellen</translation>
@@ -4247,6 +4334,7 @@ Weitere Details:
 <translation id="8410956920192583322">Monatlich oder in 4 Raten</translation>
 <translation id="8412145213513410671">Abstürze (<ph name="CRASH_COUNT"/>)</translation>
 <translation id="8412392972487953978">Du musst zweimal dieselbe Passphrase eingeben.</translation>
+<translation id="8413126021676339697">Gesamtverlauf anzeigen</translation>
 <translation id="8414322570408428950">Erweiterungsereignis tritt auf</translation>
 <translation id="8416694386774425977">Die Netzwerkkonfiguration ist ungültig und konnte nicht importiert werden.
 Weitere Details:
@@ -4285,6 +4373,7 @@ Weitere Details:
 <translation id="8473626140772740486">300 × 450 mm</translation>
 <translation id="8473863474539038330">Adressen und andere Daten</translation>
 <translation id="8474910779563686872">Entwicklerdetails anzeigen</translation>
+<translation id="84764251640219124">Websites können keine Drittanbieter-Cookies verwenden. Wenn eine Website, die auf diese Cookies angewiesen ist, nicht funktioniert, <ph name="BEGIN_LINK"/>kannst du auf dieser Website vorübergehend Drittanbieter-Cookies akzeptieren<ph name="END_LINK"/>, um das Problem zu beheben.</translation>
 <translation id="8479754468255770962">Heftklammer unten links</translation>
 <translation id="8714154125294613524">Diese Adresse wird aus deinem Brave-Konto (<ph name="ACCOUNT"/>) gelöscht</translation>
 <translation id="8488350697529856933">Gilt für</translation>
@@ -4303,7 +4392,6 @@ Weitere Details:
 <translation id="1426902392270366682">Mithilfe von Brave kannst du dein Brave-Konto schützen und dein Passwort ändern.</translation>
 <translation id="8523574453888018351">Bring mir eine neue Sprache bei</translation>
 <translation id="852450791482410042">Jetzt bezahlen</translation>
-<translation id="8528479410903501741">IBAN speichern</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8533587060884335451">Genauen Standort verwenden</translation>
 <translation id="8533619373899488139">Unter &lt;strong&gt;chrome://policy&lt;/strong&gt; findest du eine Liste mit blockierten URLs und andere Richtlinien, die von deinem Systemadministrator festgelegt wurden.</translation>
@@ -4347,11 +4435,14 @@ Weitere Details:
 <translation id="860043288473659153">Name des Karteninhabers</translation>
 <translation id="8601206103050338563">TLS-WWW-Client-Authentifizierung</translation>
 <translation id="8604103095921958091">Der Bildschirm mit den Nutzungsbedingungen für „Jetzt kaufen, später bezahlen“ ist vollständig geöffnet.</translation>
+<translation id="8605014984308506350">Du siehst diese Warnung, weil diese Website kein HTTPS unterstützt und du den isolierten Modus nutzt. <ph name="LEARN_MORE"/></translation>
 <translation id="8617269623452051934">Informationen zu deiner Gerätenutzung</translation>
 <translation id="8619130384334725124">Aktueller Standard</translation>
 <translation id="8620276786115098679">Umschlag Kaku 7</translation>
 <translation id="8622864575115813231">Dein Finanzinstitut wird kontaktiert…</translation>
+<translation id="8632584659860846053">Dein Browserverlauf, Cookies und Websitedaten, der Cache und die in Formulare eingegebenen Informationen werden gelöscht, sobald du alle isolierten Fenster schließt</translation>
 <translation id="8634957317623797170">54 × 86 mm</translation>
+<translation id="8635822281281406185">Du kannst maximal 10 Dateien, Tabs oder Bilder hinzufügen</translation>
 <translation id="1669370144926680379">Brave verfügt über integrierte Sicherheitsfunktionen, die dich beim Surfen schützen. Eine dieser Funktionen, Google Safe Browsing, hat auf dieser Website kürzlich <ph name="BEGIN_LINK"/>Phishing-Versuche festgestellt<ph name="END_LINK"/>. Phishing-Websites geben sich als andere Websites aus, um dich zu täuschen.<ph name="NEW_LINE"/>Selbst Websites, die normalerweise sicher sind, werden manchmal gehackt. Wenn du der Meinung bist, dass es sich um einen Fehler handelt und diese Website keine Gefahr darstellt, melde uns das bitte <ph name="BEGIN_ERROR_LINK"/>unter diesem Link<ph name="END_ERROR_LINK"/>.</translation>
 <translation id="8294734273090232456">Wenn du Tabs teilen und mit anderen zusammenarbeiten möchtest, musst du dich in Brave anmelden können</translation>
 <translation id="8641131559425911240">Umschlag (Hartpost)</translation>
@@ -4386,7 +4477,6 @@ Weitere Details:
 <translation id="8699041776323235191">HID-Gerät</translation>
 <translation id="8699985386408839112">Umschlag Kaku 1</translation>
 <translation id="8702965365666568344">Klebeband</translation>
-<translation id="8703242769654966101">Pix in Wallet aktivieren</translation>
 <translation id="8703372953981978786">Dieser Link funktioniert nicht</translation>
 <translation id="8703575177326907206">Die Verbindung zu <ph name="DOMAIN"/> ist nicht verschlüsselt.</translation>
 <translation id="8705331520020532516">Seriennummer</translation>
@@ -4396,7 +4486,7 @@ Weitere Details:
 <translation id="8712637175834984815">Ok</translation>
 <translation id="4328387382326136101">Brave hat gerade eine Website gemeldet, die du aufrufen wolltest. Hilf uns, diese Warnungen zu verbessern, indem du dir 1 Minute Zeit für diese Umfrage nimmst.</translation>
 <translation id="8716983145825913456">Fahrzeug sicher speichern</translation>
-<translation id="3201352891862147498">Reisepass sicher in Brave Wallet speichern</translation>
+<translation id="8717177139469452440">Reisepass sicher in Google Wallet speichern</translation>
 <translation id="8718314106902482036">Zahlung nicht abgeschlossen</translation>
 <translation id="8719263113926255150"><ph name="ENTITY"/>, <ph name="DESCRIPTION"/>, Suchvorschlag</translation>
 <translation id="8719528812645237045">Mehrfache Lochung oben</translation>
@@ -4478,7 +4568,7 @@ Weitere Details:
 <translation id="7487066225574140895">Datenfreigabe an Brave</translation>
 <translation id="4764754838347156633">Brave empfiehlt, dein Passwort für <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/> zurückzusetzen, wenn du es auf anderen Websites verwendet hast.</translation>
 <translation id="885906927438988819">Wenn die URL keinen Tippfehler enthält, <ph name="BEGIN_LINK"/>kannst du die Windows-Netzwerkdiagnose durchführen<ph name="END_LINK"/>.</translation>
-<translation id="1154336171889402657">Diese Daten konnten nicht in Brave Wallet gespeichert werden. Sie wurde stattdessen in Brave auf diesem Gerät gespeichert. Wenn du das nächste Mal auf die Daten zugreifst, wirst du von Brave gefragt, ob sie in Wallet gespeichert werden sollen.</translation>
+<translation id="7950428070992438240">Diese Daten konnten nicht in Google Wallet gespeichert werden. Sie wurde stattdessen in Brave auf diesem Gerät gespeichert. Wenn du das nächste Mal auf die Daten zugreifst, wirst du von Brave gefragt, ob sie in Wallet gespeichert werden sollen.</translation>
 <translation id="8863218129525348270">Karte auf deinem Gerät speichern, um beim nächsten Mal schneller bezahlen zu können</translation>
 <translation id="8866481888320382733">Fehler beim Parsen der Richtlinieneinstellungen</translation>
 <translation id="8866928039507595380">Falten</translation>
@@ -4494,7 +4584,8 @@ Weitere Details:
 <translation id="888169490072887292">Finde familienfreundliche Restaurants mit Kinderspeisekarte</translation>
 <translation id="8883863364960302898">Google Drive-Ordner</translation>
 <translation id="8884537526797090108">Vertrauliche Inhalte können nicht aufgezeichnet werden</translation>
-<translation id="4135437686782002023">Führerschein sicher in Brave Wallet aktualisieren</translation>
+<translation id="8889525327610245418">Führerschein sicher in Google Wallet aktualisieren</translation>
+<translation id="8890516388109605451">Quellen</translation>
 <translation id="8891031436559779793">Du wirst benachrichtigt, wenn der Preis auf einer Website sinkt.</translation>
 <translation id="8891727572606052622">Ungültiger Proxymodus</translation>
 <translation id="8894794286471754040">Lange Seite zuerst</translation>
@@ -4511,7 +4602,7 @@ Weitere Details:
 <translation id="4805806622840861220">Brave neu starten</translation>
 <translation id="8918062451146297192">CVC für virtuelle Karte</translation>
 <translation id="8919895429178014996">Alle Elemente ausblenden</translation>
-<translation id="8919989290032064330">Identität bestätigen, um Zahlungsmethoden automatisch auszufüllen?</translation>
+<translation id="8919989290032064330">Vor Autofill für Zahlungsmethoden Identität bestätigen?</translation>
 <translation id="8922013791253848639">Werbung auf dieser Website immer zulassen</translation>
 <translation id="8922734931659847428">Eine begrenzte Liste mit URLs der von dir besuchten Seiten, auf denen <ph name="BEGIN_LINK"/>Probleme aufgrund von veralteter Technologie<ph name="END_LINK"/> auftreten</translation>
 <translation id="892588693504540538">Lochung oben rechts</translation>
@@ -4532,7 +4623,6 @@ Weitere Details:
 <translation id="8963117664422609631">Website-Einstellungen aufrufen</translation>
 <translation id="8963213021028234748"><ph name="MARKUP_1"/>Vorschläge:<ph name="MARKUP_2"/>Vergewissere dich, dass du über eine Datenverbindung verfügst.<ph name="MARKUP_3"/>Lade diese Webseite später neu.<ph name="MARKUP_4"/>Überprüfe die von dir eingegebene Adresse.<ph name="MARKUP_5"/></translation>
 <translation id="8963969435440878110">Deine lokalen Dateien werden in <ph name="HOURS"/> Stunden gelöscht</translation>
-<translation id="8964904785315870349">Bestätigte E-Mail-Adresse</translation>
 <translation id="8968766641738584599">Karte speichern</translation>
 <translation id="8970887620466824814">Es gab ein Problem.</translation>
 <translation id="8971063699422889582">Das Serverzertifikat ist abgelaufen.</translation>
@@ -4547,13 +4637,13 @@ Weitere Details:
 <translation id="8988966534058783995">Bewegungssensoren verwenden?</translation>
 <translation id="899688752321268742"><ph name="URL"/> möchte Informationen zu deiner aktiven Nutzung dieses Geräts abrufen</translation>
 <translation id="8997023839087525404">Der Server präsentierte ein Zertifikat, das nicht gemäß der Richtlinie zur Zertifikatstransparenz öffentlich offengelegt wurde. Dies ist für einige Zertifikate jedoch eine Voraussetzung, mit der sichergestellt wird, dass sie vertrauenswürdig sind und vor Angriffen schützen.</translation>
-<translation id="9000145382638074673">Meine Geräte</translation>
 <translation id="9001074447101275817">Für den Proxy <ph name="DOMAIN"/> sind ein Nutzername und ein Passwort erforderlich.</translation>
 <translation id="9001963517402879850">Springen!</translation>
-<translation id="9003263770394939629">Von Gemini vorgeschlagen. Du kannst die Funktion „Erweitertes Autofill“ in den Einstellungen verwalten.</translation>
+<translation id="9002677862950442746">Bestätigungscode: <ph name="OTP"/></translation>
 <translation id="9003639428623471314">Umschlag Kaku</translation>
 <translation id="9004367719664099443">VR-Sitzung läuft</translation>
 <translation id="9005998258318286617">Fehler beim Laden des PDF-Dokuments.</translation>
+<translation id="900686221526305417">Fahrzeug sicher hinzufügen</translation>
 <translation id="9008201768610948239">Ignorieren</translation>
 <translation id="9010187979699879769">Erstelle einen Lernplan für mich</translation>
 <translation id="9011281744469077577">{COUNT,plural, =0{Keine}=1{Von 1 Website}other{Von # Websites}}</translation>
@@ -4566,8 +4656,8 @@ Weitere Details:
 <translation id="5979301400168151411">Brave Sites</translation>
 <translation id="8309858808266687860">Brave Enterprise Core testen</translation>
 <translation id="9027531288681624875">Zum Beenden des Vollbildmodus |<ph name="ACCELERATOR"/>| gedrückt halten</translation>
+<translation id="9030785788945687215">Gmail</translation>
 <translation id="9035022520814077154">Sicherheitsfehler</translation>
-<translation id="9035699147763101514">Unterstützt durch Personal Intelligence mit Gemini. Du kannst deine Auswahl in den Einstellungen verwalten.</translation>
 <translation id="9035824888276246493">Sicherheitscodes speichern</translation>
 <translation id="9036306139374661733">Mikrofon zulassen?</translation>
 <translation id="9036484080057916082">Liste mit Zeitstempeln der signierten Zertifikate</translation>
@@ -4707,6 +4797,8 @@ Weitere Details:
 <translation id="1283739678317676574"><ph name="CREATE_GOOGLE_SITE_FOCUSED_FRIENDLY_MATCH_TEXT"/> – drücke die Tabulatortaste und dann die Eingabetaste, um schnell eine neue Website in Brave Sites zu erstellen</translation>
 <translation id="949026252328034572"><ph name="MEMBER_COUNT"/> Mitglieder sind der Tabgruppe „<ph name="GROUP_NAME"/>“ beigetreten</translation>
 <translation id="949314938206378263">Deine Anfrage wurde gesendet. Dein Elternteil kann sie in Family Link prüfen.</translation>
+<translation id="949484466204182817">Redress Number zu Google Wallet hinzufügen</translation>
+<translation id="950533895669718124">findest in den Einstellungen weitere Informationen zu dieser Funktion</translation>
 <translation id="950736567201356821">Dreifache Lochung oben</translation>
 <translation id="1762533279914543867">Passkey • Brave Passwortmanager</translation>
 <translation id="952165179818196872"><ph name="PROVIDER"/> hinzufügen, um zu bezahlen, ohne die App zu wechseln</translation>
@@ -4720,7 +4812,7 @@ Weitere Details:
 <translation id="961930410699694996">Berechtigung zur Standortermittlung einmal gewährt</translation>
 <translation id="962484866189421427">Dieser Inhalt könnte betrügerische Apps installieren, die scheinbar einem anderen Zweck dienen oder Daten erfassen, um dich auszuspionieren. <ph name="BEGIN_LINK"/>Trotzdem zeigen<ph name="END_LINK"/></translation>
 <translation id="776356972507701422">Gemäß einem Gesetz in deiner Region wirst du von Brave aufgefordert, deine Standardsuchmaschine festzulegen. Diese Suchmaschinen sind in deiner Region beliebt und werden in zufälliger Reihenfolge angezeigt.</translation>
-<translation id="963837307749850257">Alle Nutzer</translation>
+<translation id="963988220224168636">Redress Number sicher zu Google Wallet hinzufügen</translation>
 <translation id="964050462028070434">Passwörter und Passkeys verwalten…</translation>
 <translation id="964681140808832181">Ja, ich möchte abbrechen</translation>
 <translation id="969892804517981540">Offizieller Build</translation>
@@ -4728,18 +4820,20 @@ Weitere Details:
 <translation id="973788791897303708">Diese Tabgruppe ist voll</translation>
 <translation id="975560348586398090">{COUNT,plural, =0{Keine}=1{1 Element}other{# Elemente}}</translation>
 <translation id="976522784004777030">5 × 8 Zoll</translation>
-<translation id="3666543487519182654">Informationen dieser Karte bei Käufen in Brave automatisch einfügen, wenn sie in Brave Wallet gespeichert ist</translation>
+<translation id="3027500266970040515">Informationen dieser Karte bei Käufen in Brave automatisch einfügen, wenn sie in Google Wallet gespeichert ist</translation>
 <translation id="979107176848483472">Dein Browser und Profil werden verwaltet von <ph name="DOMAIN"/></translation>
 <translation id="981121421437150478">Offline</translation>
-<translation id="5456048065008297112">Amtlichen Ausweis sicher in Brave Wallet speichern</translation>
+<translation id="98237783946365638">Amtlichen Ausweis sicher in Google Wallet speichern</translation>
 <translation id="983587187183716432">Button „<ph name="AI_ENGINE_NAME"/>“, Eingabetaste drücken, um <ph name="AI_ENGINE_NAME"/> zu fragen</translation>
 <translation id="984275831282074731">Zahlungsmethoden</translation>
+<translation id="984950103108016064">Von <ph name="EMAIL"/></translation>
 <translation id="985199708454569384">&lt;p&gt;Diese Fehlermeldung wird angezeigt, wenn das Datum bzw. die Uhrzeit auf deinem Computer oder Mobilgerät nicht korrekt ist.&lt;/p&gt;
     &lt;p&gt;Korrigiere in den Geräteeinstellungen die Uhrzeit und das Datum, um den Fehler zu beheben.&lt;/p&gt;</translation>
 <translation id="987264212798334818">Allgemein</translation>
 <translation id="988159990683914416">Entwickler-Build</translation>
 <translation id="989988560359834682">Adresse bearbeiten</translation>
 <translation id="990164307229195234"><ph name="DEVICE_NAME"/> (<ph name="DISAMBIGUATION_LABEL"/>)</translation>
+<translation id="990812705189376036">Merkle-Baum-Nachweis</translation>
 <translation id="992110854164447044">Wenn du eine virtuelle Karte verwendest, werden deine tatsächlichen Kartendetails nicht preisgegeben – dadurch bist du besser vor Betrugsversuchen geschützt. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="992115559265932548"><ph name="MICROSOFT_ACTIVE_DIRECTORY"/></translation>
 <translation id="992256792861109788">Rosa</translation>
@@ -4752,6 +4846,7 @@ Weitere Details:
 <translation id="995755448277384931">IBAN hinzufügen</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="997986563973421916">Aus Google Pay</translation>
+<translation id="7029809446516969842">Passwörter</translation>
 <translation id="8820817407110198400">Lesezeichen</translation>
 <translation id="676689908809408009">Sie können diese Seite nicht im privaten Modus aufrufen</translation>
 <translation id="8542769081853340165">Ihre Organisation hat diese Seite im privaten Modus blockiert.</translation>

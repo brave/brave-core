@@ -1,12 +1,20 @@
 diff --git a/components/metrics/BUILD.gn b/components/metrics/BUILD.gn
-index 5a58311150b7e8e7e1c4dd7b44296ac8bd45fe98..9b507b25866d4b2b98366b013d3d90360266a91a 100644
+index 841f17de22f6147d24aab391c641e0c4c977a2fe..568a6abaa8545285e4a46507e4447221345681aa 100644
 --- a/components/metrics/BUILD.gn
 +++ b/components/metrics/BUILD.gn
-@@ -373,6 +373,7 @@ if (!is_cronet_build || is_ios) {
-         "motherboard_metrics_provider.h",
-       ]
-     }
-+    import("//brave/components/metrics/sources.gni") deps += brave_components_metrics_deps
-   }
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
-   static_library("test_support") {
++import("//brave/components/metrics/sources.gni")
+ import("//build/config/cronet/config.gni")
+ import("//build/config/features.gni")
+ import("//testing/test.gni")
+@@ -318,6 +319,7 @@ if (!is_cronet_build || is_ios) {
+       "//ui/base",
+       "//url",
+     ]
++    deps += brave_components_metrics_deps
+ 
+     if (is_android) {
+       sources += [

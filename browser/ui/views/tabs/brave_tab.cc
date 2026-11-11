@@ -13,6 +13,7 @@
 #include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/containers/container_model.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
@@ -22,7 +23,6 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/alert/tab_alert_controller.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -51,7 +51,6 @@
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/containers/core/common/features.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "components/tabs/public/tab_interface.h"
@@ -224,6 +223,12 @@ void BraveTab::RemovedFromWidget() {
   Tab::RemovedFromWidget();
 }
 
+bool BraveTab::IsHovering() const {
+  // Upstream gives true when the tab is in split tab and another tab is
+  // hovered. But, we only want to show hover effect for currently hovered tab.
+  return mouse_hovered_;
+}
+
 #if BUILDFLAG(ENABLE_CONTAINERS)
 void BraveTab::MaybeStartObservingFullscreenChanges() {
   if (!small_accent_icon_view_ || fullscreen_subscription_) {
@@ -235,8 +240,7 @@ void BraveTab::MaybeStartObservingFullscreenChanges() {
     return;
   }
 
-  auto* exclusive_access_manager =
-      browser->GetFeatures().exclusive_access_manager();
+  auto* exclusive_access_manager = ExclusiveAccessManager::From(browser);
   if (!exclusive_access_manager) {
     return;
   }
@@ -287,7 +291,7 @@ int BraveTab::GetTreeHeight() const {
 }
 
 views::BubbleBorder::Arrow BraveTab::GetAnchorPosition() const {
-  if (auto* vtc = VerticalTabController::FromBrowser(
+  if (auto* vtc = VerticalTabController::From(
           controller()->GetBrowserWindowInterface());
       vtc && vtc->ShouldShowBraveVerticalTabs()) {
     return views::BubbleBorder::Arrow::LEFT_TOP;
@@ -345,7 +349,7 @@ void BraveTab::ActiveStateChanged() {
 
 std::optional<SkColor> BraveTab::GetGroupColor() const {
   // Hide tab border with group color as it doesn't go well with vertical tabs.
-  if (auto* vtc = VerticalTabController::FromBrowser(
+  if (auto* vtc = VerticalTabController::From(
           controller()->GetBrowserWindowInterface());
       vtc && vtc->ShouldShowBraveVerticalTabs()) {
     return {};
@@ -361,8 +365,8 @@ std::optional<SkColor> BraveTab::GetGroupColor() const {
 
 void BraveTab::UpdateIconVisibility() {
   Tab::UpdateIconVisibility();
-  auto* vtc = VerticalTabController::FromBrowser(
-      controller()->GetBrowserWindowInterface());
+  auto* vtc =
+      VerticalTabController::From(controller()->GetBrowserWindowInterface());
   if (!vtc || !vtc->ShouldShowBraveVerticalTabs()) {
     return;
   }
@@ -435,9 +439,7 @@ void BraveTab::UpdateIconVisibility() {
 
     const bool is_active = IsActive();
     const bool can_enter_floating_mode = vtc->IsFloatingVerticalTabsEnabled();
-    const bool should_show_tree_toggle_button = tree_toggle_button_ &&
-                                                IsTreeNodeCollapsed() &&
-                                                HasTreeTabNodeDescendants();
+    const bool should_show_tree_toggle_button = CanShowTreeTabToggle();
 
     // When floating mode enabled, we don't show close button as the tab strip
     // will be expanded as soon as mouse hovers onto the tab.
@@ -464,6 +466,21 @@ bool BraveTab::HasTreeTabNodeDescendants() const {
   return false;
 }
 
+bool BraveTab::CanShowTreeTabToggle() const {
+  if (!tree_toggle_button_ || !HasTreeTabNodeDescendants()) {
+    return false;
+  }
+
+  // At minimum width, the toggle button covers the tab's entire clickable
+  // area, so an inactive tab must remain selectable regardless of whether
+  // its tree is collapsed or expanded (issue #58992).
+  if (IsAtMinWidthForVerticalTabStrip() && !IsActive()) {
+    return false;
+  }
+
+  return IsTreeNodeCollapsed() || mouse_hovered_;
+}
+
 void BraveTab::LayoutTreeToggleButton() {
   if (!tree_toggle_button_) {
     return;
@@ -476,15 +493,16 @@ void BraveTab::LayoutTreeToggleButton() {
   }
 
   const bool has_descendants = HasTreeTabNodeDescendants();
+  const bool should_show_tree_toggle = CanShowTreeTabToggle();
   if (showing_close_button_ && has_descendants) {
     // In case of tree tab node has descendants, we show tree toggle button
     // instead of close button.
     tree_toggle_button_->SetBoundsRect(close_button_->bounds());
     close_button_->SetVisible(false);
     tree_toggle_button_->SetVisible(true);
-  } else if (has_descendants && (node->collapsed() || mouse_hovered_)) {
-    // In this case, we always show tree toggle button in order to indicate that
-    // this tab has descendants hidden by collapsed state.
+  } else if (should_show_tree_toggle) {
+    // Keep the inactive collapsed tab selectable when the vertical tab strip
+    // is at its minimum width; the toggle would otherwise cover its click area.
     // Here, showing_close_button_ is false and the bounds of the close button
     // is incorrect, as upstream code skips close button when
     // showing_close_button_ is false. So we need to decide toggle button
@@ -632,7 +650,7 @@ void BraveTab::Layout(PassKey) {
 
 void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
                                            int visual_width) const {
-  if (auto* vtc = VerticalTabController::FromBrowser(
+  if (auto* vtc = VerticalTabController::From(
           controller()->GetBrowserWindowInterface());
       !vtc || !vtc->ShouldShowBraveVerticalTabs()) {
     Tab::MaybeAdjustLeftForPinnedTab(bounds, visual_width);
@@ -660,7 +678,7 @@ bool BraveTab::ShouldShowLargeAccentIcon() const {
     return false;
   }
 
-  if (auto* vtc = VerticalTabController::FromBrowser(
+  if (auto* vtc = VerticalTabController::From(
           controller()->GetBrowserWindowInterface());
       vtc && vtc->ShouldShowBraveVerticalTabs()) {
     return width() >= tabs::kVerticalTabMinWidth + kTabAccentIconAreaWidth;
@@ -675,7 +693,7 @@ bool BraveTab::ShouldRenderAsNormalTab() const {
     return false;
   }
 
-  if (auto* vtc = VerticalTabController::FromBrowser(
+  if (auto* vtc = VerticalTabController::From(
           controller()->GetBrowserWindowInterface());
       vtc && vtc->ShouldShowBraveVerticalTabs() && data().pinned &&
       !controller_->IsVerticalTabsFloating()) {
@@ -688,8 +706,8 @@ bool BraveTab::ShouldRenderAsNormalTab() const {
 }
 
 bool BraveTab::IsAtMinWidthForVerticalTabStrip() const {
-  auto* vtc = VerticalTabController::FromBrowser(
-      controller()->GetBrowserWindowInterface());
+  auto* vtc =
+      VerticalTabController::From(controller()->GetBrowserWindowInterface());
   return vtc && vtc->ShouldShowBraveVerticalTabs() &&
          width() <= tabs::kVerticalTabMinWidth;
 }
@@ -701,12 +719,12 @@ void BraveTab::OnTabDataChanged(TabChangeType tab_change_type,
 
   // Our vertical tab uses CompoundTabContainer.
   // When tab is moved from the group by pinning, it's moved to
-  // pinned TabContainerImpl before its tab group id is cleared.
-  // And it causes runtime crash as using this tab from pinned TabContainerImpl
+  // pinned TabContainer before its tab group id is cleared.
+  // And it causes runtime crash as using this tab from pinned TabContainer
   // has assumption that it's not included in any group.
-  // So, clear in-advance when tab enters to pinned TabContainerImpl.
-  auto* vtc = VerticalTabController::FromBrowser(
-      controller()->GetBrowserWindowInterface());
+  // So, clear in-advance when tab enters to pinned TabContainer.
+  auto* vtc =
+      VerticalTabController::From(controller()->GetBrowserWindowInterface());
   if (data_changed && vtc && vtc->ShouldShowBraveVerticalTabs() &&
       data_.pinned) {
     SetGroup(std::nullopt);
@@ -725,7 +743,7 @@ bool BraveTab::IsActive() const {
 }
 
 TabSizeInfo BraveTab::GetTabSizeInfo() const {
-  if (auto* vtc = VerticalTabController::FromBrowser(
+  if (auto* vtc = VerticalTabController::From(
           controller()->GetBrowserWindowInterface());
       vtc && vtc->ShouldShowBraveVerticalTabs()) {
     return Tab::GetTabSizeInfo();

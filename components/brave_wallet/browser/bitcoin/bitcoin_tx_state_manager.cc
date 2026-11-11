@@ -11,7 +11,6 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_meta.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 
 namespace brave_wallet {

@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveUI
 import CoreData
 import Data
 import DesignSystem
@@ -55,16 +56,7 @@ struct PopulateNewPlaylistView: View {
           ForEach(items) { item in
             ItemToggle(
               item: item,
-              isSelected: Binding(
-                get: { selectedItems.contains(item.id) },
-                set: { isOn in
-                  if isOn {
-                    selectedItems.insert(item.id)
-                  } else {
-                    selectedItems.remove(item.id)
-                  }
-                }
-              )
+              isSelected: $selectedItems[contains: item.id]
             )
           }
         }

@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">ተሰናክሏል</translation>
 <translation id="59174027418879706">ነቅቷል</translation>
 <translation id="6920492760024499150">ለእርስዎ ብቻ በግልዎ የተላኩ የዛሬ ምርጥ ታሪኮች።</translation>
-<translation id="3803728444598576153">Brave News ያብሩት፣ እና ማንኛውም ታሪክ አያምልጥዎ</translation>
+<translation id="3803728444598576153">Brave News ያብሩት እና ማንኛውም ታሪክ አያምልጥዎ</translation>
 <translation id="7627131190984957214">ብሬቭ ኒውስ ከመሳሪያዎ ጋር የሚስማሙ የግል እና ማንነታቸው ያልታወቁ ማስታወቂያዎችን የተደገፈ ነው።</translation>
-<translation id="7897050360583141319">ተወዳጅ ምንጮችዎን በአንድ መረጃ መጋቢ ውስጥ ይከተሉ። በቀላሉ በ Brave ውስጥ ትር ይክፈቱ፣ ወደ ታች ይውረዱ እና… ይኸው!\nየ Brave ዜና ግላዊ እና በማያጋልጡ ማስታወቂያዎች የተደገፈ ነው።</translation>
+<translation id="7897050360583141319">ተወዳጅ ምንጮችዎን በአንድ መረጃ መጋቢ ውስጥ ይከተሉ። በቀላሉ በ Brave ውስጥ ትር ይክፈቱ፣ ወደ ታች ይውረዱ እና… ይኸው!</translation>
 <translation id="1765217911817124376">የ Brave ዜናዎች ን ያንቁ</translation>
 <translation id="8981973962043893066">ጣቢያ፣ ርዕስ ወይም RSS ግብአት ይፈልጉ</translation>
 <translation id="3225021799163709119">ታዋቂ</translation>
@@ -190,9 +190,9 @@
 <translation id="5987838417172370108">የ Brave አሳሽ ሲበላሽ ወይም ሲቆም የምርመራ ሪፖርቶችን በራስ ሰር በመላክ፣ የ Brave\u2019s ምርት በስርዓት እንዲሰራ ለማስቻል ያግዙ።</translation>
 <translation id="7977176350719484850">Est. ውሂብ\nተቀምጧል</translation>
 <translation id="9008534313521214777">የተቆጠበ\nጊዜ በግምት</translation>
-<translation id="8347743943525229984">የBrave ምርመራዎችን ፍቀድ</translation>
-<translation id="6022939994702081659">እንድትረዱ Brave የኢንዱስትሪ መሪነት ሥራ ለየድር ግልጋሎትና ለክፍተት የተቀመጡ መዘምበር ቆጥሮች</translation>
-<translation id="7746496306508543965">ስለ Brave እሴቶች ተጨማሪ ተማሩ</translation>
+<translation id="5668852698659986622">የተደገፉ ማስታወቂያዎችን አንቃ</translation>
+<translation id="431194936581466649">Brave ገለልተኛ የሆነ፣ ተጠቃሚን ቅድሚያ የሚሰጥ ድር ለመገንባት ያለውን ተልእኮ በተደገፉ ማስታወቂያዎች ይደግፉ። የማስታወቂያ አፈጻጸምን በግል እንለካለን፣ እርስዎን ሳንለይ።</translation>
+<translation id="1939813747486101115">ስለ Sponsored Ads ተጨማሪ ይማሩ</translation>
 <translation id="410351446219883937">ራስ-አጫውት</translation>
 <translation id="7445411102860286510">ጣቢያዎች ድምፀ-ከል የተደረገባቸው ቪዲዮዎችን በራስ-ሰር እንዲያጫውቱ ይፍቀዱላቸው (የሚመከር)</translation>
 <translation id="7837721118676387834">ለአንድ የተወሰነ ጣቢያ ድምጸ-ከል የተደረጉ ቪዲዮዎችን በራስ-ሰር ማጫወትን ይፍቀዱ።</translation>
@@ -250,7 +250,6 @@
 <translation id="6213254277250932867">12-ቃላት የመመለሻ ሐረግ አለኝ</translation>
 <translation id="4225265925807365011">24-ቃላት የመመለሻ ሐረግ አለኝ</translation>
 <translation id="3570367516044491911">እንደ ነባሪ አሳሽዎ አድርገው ያዋቅሩት</translation>
-<translation id="6800338374677644736">ነባሪ አሳሽዎ ያድርጉት።</translation>
 <translation id="1545749641540134597">የ QR ኮድ ስካን ያድርጉ</translation>
 <translation id="5317781812114905957">መመሪያዎች</translation>
 <translation id="8515319483805157233">በ QR ኮድ ለመፈለግ QR ኮዱን በፍሬሙ መሃል ላይ አስተካክለው ያስቀምጡ።</translation>
@@ -282,7 +281,6 @@
 <translation id="5582839680698949063">ዋና ምናሌ</translation>
 <translation id="7002271985859760052">የገፅ ተግባራት</translation>
 <translation id="7104487676473617844">የሚከተሉት ንጥሎች በአሁኑ ከፍተኛ ዌብጤት ድጋፍ ያገኛሉ ብቻ በምናሌ ላይ የሚታዩ ይሆናሉ።</translation>
-<translation id="4159764849281393303">ዌብአፕ</translation>
 <translation id="8038539967102225446">የ Brave ማስታወቂያዎች እዚህ ናቸው!</translation>
 <translation id="222883304157347087">(ይህ መሳሪያ)</translation>
 <translation id="4157741509680155021">በ አስምር ሰንሰለት ውስጥ ያሉ መሳሪያዎች</translation>
@@ -291,7 +289,7 @@
 <translation id="2569646144216067185">የቃላት ብዛት፡ <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">የተሳሳተ የማመሳሰል ኮድ</translation>
 <translation id="8284063834901328650">የተሳሳተ የማመሳሰል QR ኮድ</translation>
-<translation id="859506441384380749">ይህ ኮድ የተፈጠረው ከአገልግሎት ውጭ በሆነው የ Brave ስሪት ነው፣ እባክዎ መጀመሪያ ሌላው መሳሪያዎን ያሻሽሉ።</translation>
+<translation id="4002014583969312635">ይህ ኮድ የቆየ የBrave ስሪት በሚያስኬድ መሣሪያ ላይ የተፈጠረ ይመስላል። እባክዎ በሌላኛው መሣሪያዎ ላይ ወደ የቅርብ ጊዜው የBrave ስሪት ያዘምኑ፣ ከዚያም አዲስ የማመሳሰል ኮድ ይፍጠሩ።</translation>
 <translation id="3132642509209154999">ይህ ኮድ ጊዜው አልፎበታል። እባክዎ በሌላኛው መሳሪያዎ ላይ አዲስ ይፍጠሩና እንደገና ይሞክሩ።</translation>
 <translation id="2859229680945501779">ይህ ኮድ ልክ ያልሆነ ነው። እባክዎ ሰዓቱ እና የሰዓት ዞን በመሳሪያዎ ላይ በትክክል መዘጋጀታቸውን ያረጋግጡ።</translation>
 <translation id="3149880132460839085">የብሬቭ ማመሳሰል</translation>
@@ -337,8 +335,6 @@
 <translation id="8185825081026121627">ግላዊነትን የሚጠብቁ ደፋር ወሮታዎች ማስታወቂያዎችን ለማየት መሰረታዊ የትኩረት ምልክትን ያግኙ ፡፡</translation>
 <translation id="5321518976657560663">ስህተተን እንደገና ሙላ</translation>
 <translation id="4114170343590425996">የ Brave ሽልማቶች ሲዘጋጁ የተፈጠረ ስህተት አለ። እባክዎ Brave ን እንደገና በማስጀመር ደግመው ይሞክሩ።</translation>
-<translation id="6417420737057016607">የብሬቭ ማስታቂያዎች</translation>
-<translation id="5611966874859284786">Brave ጥቅም ላይ በማይውልበት ጊዜ የማሳወቂያ ማስታወቂያዎችን አሳይ</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>የ Brave Rewards መረጃዎችን ዳግም አስጀምር…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>የ Brave ማስታወቂያዎችን መረጃ ያጽዱ…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">ዕልባት ያክሉ</translation>
@@ -397,6 +393,13 @@
 <translation id="8793108040181436796">ምግብሮች</translation>
 <translation id="8643377320501056697">ከፍተኛ ጣቢያዎችን አሳይ</translation>
 <translation id="7275773481201277457">የ Brave ስታቲስቲክስ አሳይ</translation>
+<translation id="8516804522688861636">በተደጋጋሚ የተጎበኙ ሳይቶችን አሳይ</translation>
+<translation id="4546260624932151782">ተወዳጆችን አሳይ</translation>
+<translation id="5313967007315987356">ጣቢያ አክል</translation>
+<translation id="1773147648972887693">በተደጋጋሚ የተጎበኙን አሳይ</translation>
+<translation id="7134741506051403308">መግብሩን ደብቅ</translation>
+<translation id="1247759249260562308">ተወዳጅ ያስተካክሉ</translation>
+<translation id="6387214885349500492">ይህን ተወዳጅ ይሰኩ</translation>
 <translation id="7462178177755090262">መከፈቻ ማብሪያ ማያ</translation>
 <translation id="5365434987337264071">መጨረሻ የተከፈተ ታብ</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {ከ<ph name="HOURS_ONE"/> ሰአት ዝምታ በኋላ አዲስ ታብ} other {ከ<ph name="HOURS_MANY"/> ሰአታት ዝምታ በኋላ አዲስ ታብ}}</translation>
@@ -706,6 +709,8 @@
 <translation id="1634828734222219955">ድምር</translation>
 <translation id="7995708795274219641">የገንዘብ መጠን + ነዳጅ</translation>
 <translation id="2186011161688824046">መጠን + ክፍያ</translation>
+<translation id="1118876217803190221">በቂ ያልሆነ ገንዘብ</translation>
+<translation id="275990379543116961">ለነዳጅ በቂ ገንዘብ የለም</translation>
 <translation id="1950052789869821983">ግብይት</translation>
 <translation id="2304783958703511257">የላቁ ቅንብሮች</translation>
 <translation id="4220062530885628403">የአንድ ጊዜ</translation>
@@ -959,6 +964,7 @@
 <translation id="6365389672683343144">የእርስዎ Brave VPN ደንበኝነት ምዝገባ በአንድሮይድ፣ iOS እና ዴስክቶፕ ላይ እስከ 5 የሚደርሱ መሳሪያዎችን መጠበቅ ይችላል። የ Google Play ደንበኝነት ምዝገባዎን ከ Brave መለያዎ ጋር ያገናኙት።</translation>
 <translation id="6610899852831463073">ደህንነቱ የተጠበቀ አሰሳን ማንቃት አልተቻለም</translation>
 <translation id="7954263306665462056">ደህንነቱ የተጠበቀ አሰሳ በመሳሪያዎ ላይ ተሰናክሏል። እሱን ለማንቃት  የGoogle Play አገልግሎቶች መጫኑንና የተዘመነ መሆኑን ያረጋግጡ።</translation>
+<translation id="6417420737057016607">የብሬቭ ማስታቂያዎች</translation>
 <translation id="7748944510530490017">የመጀመሪያ ደረጃ አውታረ መረብ</translation>
 <translation id="2781668117338732220">ሁለተኛ አውታረ መረቦች</translation>
 <translation id="282560918037172384">አውታረመረቦችን ይሞክሩ</translation>
@@ -985,6 +991,13 @@
 <translation id="7530313002494358590">የBrave ባህሪን ማንቃት ወይም ማቦዘን ለውጦቹን ለመተግበር አሳሹን እንደገና ማስጀመር ይጠይቃል። Brave Origin ማዘመኑን እንደጨረሰ እባክዎ <ph name="BEGIN_BOLD"/>አሁን እንደገና አስጀምር<ph name="END_BOLD"/> የሚለውን ይንኩ።</translation>
 <translation id="1028940738207645746">እርግጠኛ ነዎት ሁሉንም ቅንጅቶች ወደ ነባሪ ሊመልሱ ይፈልጋሉ?</translation>
 <translation id="5939518447894949180">ዳግም አስጀምር</translation>
+<translation id="3222790865318305905">የማግበር ገደብ ላይ ደርሷል</translation>
+<translation id="3787857711016546034">ማጭበርበርን ለመከላከል፣ የOrigin ማግበሮች በፍጥነት የተገደቡ ናቸው። ነገር ግን የOrigin ፍቃድዎን በተጨማሪ መሣሪያዎች ላይ ለመጠቀም ሁልጊዜ ተጨማሪ ማግበሮችን መጠየቅ ይችላሉ። ተጨማሪ ማግበሮችን ይጠይቁ የሚለውን አማራጭ ጠቅ ያድርጉ፣ ወይም ለእገዛ <ph name="CONTACT_SUPPORT"/>።</translation>
+<translation id="6760819753412779585">ድጋፍ ሰችን ያነጋግሩ</translation>
+<translation id="571697836019670200">ተጨማሪ ማግበሮችን ይጠይቁ</translation>
+<translation id="9019545131475425538">በማስኬድ ላይ…</translation>
+<translation id="7242700630179071243">ለማግበር ዝግጁ</translation>
+<translation id="5463918917265356202">Brave Origin አሁን በዚህ መሣሪያ ላይ ንቁ ነው። ባህሪውን መጠቀም ለመጀመር፣ አሳሹን እንደገና ማስጀመር ያስፈልግዎታል። አሁን እንደገና ማስጀመር ይፈልጋሉ?</translation>
 <translation id="8554205386170195281">ግዥ</translation>
 <translation id="8613144770663526433">በBrave Wallet ይግቡ</translation>
 <translation id="3696514931437952995">እርስዎ ወደ <ph name="ORIGIN"/>እየገቡ ነው። Brave ዋሌት የእርስዎን የዋሌት አድራሻ ከ<ph name="ORIGIN"/>ጋር ያጋራል።</translation>

@@ -30,9 +30,12 @@ source_set("ai_chat") {
   public_deps = [ "//ui/shell_dialogs" ]
 
   deps = [
+    "//brave/browser:tab_helpers_header",
     "//brave/browser/ai_chat",
     "//brave/browser/ai_chat/ollama",
     "//brave/browser/misc_metrics",
+    "//brave/browser/ui/webui:brave_webui_source",
+    "//brave/browser/ui/webui:untrusted_sanitized_image_source",
     "//brave/common:webui_url_constants",
     "//brave/components/ai_chat/content/browser",
     "//brave/components/ai_chat/core/browser",
@@ -54,8 +57,10 @@ source_set("ai_chat") {
     "//chrome/browser/history_embeddings",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/navigator",
     "//chrome/browser/ui/select_file_policy",
     "//chrome/browser/ui/webui:favicon_source",
+    "//chrome/browser/ui/webui:theme_source",
     "//components/favicon/core",
     "//components/favicon_base",
     "//components/history_embeddings/content",
@@ -68,6 +73,7 @@ source_set("ai_chat") {
     "//pdf:buildflags",
     "//printing",
     "//services/data_decoder/public/cpp",
+    "//third_party/abseil-cpp:absl",
     "//ui/base",
     "//ui/gfx/codec",
     "//ui/webui",
@@ -76,10 +82,10 @@ source_set("ai_chat") {
   if (!is_android) {
     deps += [
       "//chrome/browser/ui:chrome_pages",
+      "//chrome/browser/ui:singleton_tabs",
       "//chrome/browser/ui/tabs:tab_model",
       "//chrome/browser/ui/tabs:tab_strip",
       "//chrome/browser/ui/thumbnails",
-      "//chrome/browser/ui/webui:theme_source",
       "//chrome/browser/ui/webui/top_chrome",
       "//chrome/browser/ui/webui/util",
     ]
@@ -122,6 +128,9 @@ source_set("unit_tests") {
     "//brave/components/ai_chat/core/common/mojom",
     "//chrome/browser/favicon",
     "//chrome/test:test_support",
+    "//chrome/test/base:chrome_render_view_host_test_harness",
+    "//components/tabs:public",
+    "//components/tabs:test_support",
     "//content/test:test_support",
     "//pdf:buildflags",
     "//services/data_decoder/public/cpp:test_support",
@@ -145,10 +154,13 @@ source_set("browser_tests") {
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/constants",
     "//chrome/browser/profiles:profile",
-    "//chrome/browser/ui",
     "//chrome/test",
     "//chrome/test:test_support",
+    "//chrome/test/base:chrome_test_utils",
+    "//content/test:test_support",
+    "//net:test_support",
   ]
 
   if (!is_android) {
@@ -158,5 +170,8 @@ source_set("browser_tests") {
     ]
   }
 
-  sources = [ "ai_chat_ui_page_handler_browsertest.cc" ]
+  sources = [
+    "ai_chat_ui_page_handler_browsertest.cc",
+    "ai_chat_untrusted_conversation_ui_browsertest.cc",
+  ]
 }

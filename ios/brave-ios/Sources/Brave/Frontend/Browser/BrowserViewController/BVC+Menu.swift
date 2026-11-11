@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import AVKit
 import BraveCore
 import BraveShared
 import BraveUI
@@ -20,10 +21,10 @@ import os.log
 
 extension BrowserViewController {
   private var settingsController: SettingsViewController {
-    let isPrivateMode = privateBrowsingManager.isPrivateBrowsing
-    let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: isPrivateMode)
-    let walletService = BraveWallet.ServiceFactory.get(privateMode: isPrivateMode)
-    let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: isPrivateMode)
+    let profile = profileController.profile
+    let keyringService = BraveWallet.KeyringServiceFactory.get(profile: profile)
+    let walletService = BraveWallet.ServiceFactory.get(profile: profile)
+    let rpcService = BraveWallet.JsonRpcServiceFactory.get(profile: profile)
 
     var keyringStore: KeyringStore? = walletStore?.keyringStore
     if keyringStore == nil {
@@ -41,10 +42,7 @@ extension BrowserViewController {
 
     var cryptoStore: CryptoStore? = walletStore?.cryptoStore
     if cryptoStore == nil {
-      cryptoStore = CryptoStore.from(
-        ipfsApi: profileController.ipfsAPI,
-        privateMode: isPrivateMode
-      )
+      cryptoStore = CryptoStore.from(profile: profile)
     }
 
     let vc = SettingsViewController(
@@ -280,6 +278,21 @@ extension BrowserViewController {
           return .none
         }
       )
+      if AVPictureInPictureController.isPictureInPictureSupported() {
+        actions.append(
+          .init(
+            id: .pictureInPicture,
+            attributes: playlistActivity?.enabled == true ? [] : .disabled
+          ) { @MainActor [unowned self] _ in
+            self.dismiss(animated: true) {
+              self.tabManager.selectedTab?.evaluateJavaScriptUnsafe(
+                Self.requestPictureInPictureScript
+              )
+            }
+            return .none
+          }
+        )
+      }
     }
     if BraveCore.FeatureList.kBraveShredFeature.enabled {
       let isShredAvailable = tabManager.selectedTab?.visibleURL?.isShredAvailable ?? false
@@ -316,6 +329,24 @@ extension BrowserViewController {
     }
     return actions
   }
+
+  /// Requests Picture in Picture on the currently playing video element, falling back to the first
+  /// video on the page with media loaded if none are actively playing.
+  private static let requestPictureInPictureScript = """
+    (function() {
+      const videos = Array.from(document.querySelectorAll('video'));
+      const video = videos.find((v) => !v.paused && !v.ended && v.readyState > 2)
+        ?? videos.find((v) => v.readyState > 0);
+      if (!video) {
+        return;
+      }
+      if (document.pictureInPictureEnabled && !video.disablePictureInPicture) {
+        video.requestPictureInPicture().catch(() => {});
+      } else if (typeof video.webkitSetPresentationMode === 'function') {
+        video.webkitSetPresentationMode('picture-in-picture');
+      }
+    })();
+    """
 
   private var vpnMenuAction: Action {
     let alertForExpiredState: () -> UIAlertController? = { [unowned self] in
@@ -383,8 +414,9 @@ extension BrowserViewController {
           },
           installVPNProfile: { [weak self] in
             guard let self else { return }
-            self.popToBVC()
-            self.present(UIHostingController(rootView: InstallVPNProfileView()), animated: true)
+            self.popToBVC { [weak self] in
+              self?.present(UIHostingController(rootView: InstallVPNProfileView()), animated: true)
+            }
           }
         )
 
@@ -442,6 +474,7 @@ extension BrowserViewController {
         let vc = BookmarksViewController(
           folder: bookmarkManager.lastVisitedFolder(),
           bookmarkManager: bookmarkManager,
+          bookmarkImporter: BookmarkImporterFactory.get(profile: profileController.profile),
           isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
         )
         vc.toolbarUrlActionsDelegate = self

@@ -7,6 +7,11 @@ import fs from 'node:fs'
 import { glob } from 'node:fs/promises'
 import path from 'node:path'
 import config from '../lib/config.ts'
+import {
+  getPatchedRepositories,
+  joinSourcePath,
+  splitSourcePath,
+} from '../lib/repositories.ts'
 import updatePatches from '../lib/updatePatches.js'
 
 function loadChromiumPathFilter(filePath) {
@@ -62,12 +67,17 @@ const plasterExtension = '.yaml'
 // A file that when present indicates that we are doing a lift with brockit.
 const versionUpgradeFile = '.version_upgrade'
 
-// Builds a predicate that tells whether a Chromium source path's patch is owned
-// by a plaster file. A plaster file at `rewrite/<source>.yaml` is responsible
-// for generating the patch for `<source>`, so `update_patches` must not
-// regenerate it.
-async function loadPlasterPathFilter(rewriteDir) {
-  const managedSources = new Set()
+// Builds, per repository, a predicate that tells whether one of its source
+// paths has its patch managed by a plaster file. In such case
+// `update_patches` by-default skips the given patch.
+async function loadPlasterPathFilters(repositories, rewriteDir) {
+  // Keyed by label, the name a repository is identified by, so nothing here
+  // has to know how its path is spelled.
+  /** @type {Map<string, Set<string>>} */
+  const managedSources = new Map(
+    repositories.map((repo) => [repo.label, new Set()]),
+  )
+  const sourcesFor = (repo) => managedSources.get(repo.label) ?? new Set()
 
   // The second pattern matches plaster files whose name starts with a dot (e.g.
   // a plaster for a dotfile like `.rustfmt.toml.yaml`); glob's `*` skips
@@ -80,50 +90,25 @@ async function loadPlasterPathFilter(rewriteDir) {
       .split(path.sep)
       .join('/')
       .slice(0, -plasterExtension.length)
-    managedSources.add(source)
+    // The path is relative to `src/`, so its leading directories name the
+    // repository holding the source, exactly as plaster resolves it.
+    const split = splitSourcePath(repositories, source)
+    sourcesFor(split.repository).add(split.relativePath)
   }
 
-  return (s) => managedSources.has(s)
+  return (repo) => {
+    const sources = sourcesFor(repo)
+    return (s) => sources.has(s)
+  }
 }
 
 export default async function RunCommand(filePaths, options) {
   config.update(options)
 
-  const chromiumDir = config.srcDir
-  const v8Dir = path.join(config.srcDir, 'v8')
-  const catapultDir = path.join(config.srcDir, 'third_party', 'catapult')
-  const devtoolsFrontendDir = path.join(
-    config.srcDir,
-    'third_party',
-    'devtools-frontend',
-    'src',
-  )
-  const searchEngineDataDir = path.join(
-    config.srcDir,
-    'third_party',
-    'search_engines_data',
-    'resources',
-  )
-  const ffmpegDir = path.join(config.srcDir, 'third_party', 'ffmpeg')
-  const patchDir = path.join(config.braveCoreDir, 'patches')
-  const v8PatchDir = path.join(patchDir, 'v8')
-  const catapultPatchDir = path.join(patchDir, 'third_party', 'catapult')
-  const devtoolsFrontendPatchDir = path.join(
-    patchDir,
-    'third_party',
-    'devtools-frontend',
-    'src',
-  )
-  const searchEngineDataPatchDir = path.join(
-    patchDir,
-    'third_party',
-    'search_engines_data',
-    'resources',
-  )
-  const ffmpegPatchDir = path.join(patchDir, 'third_party', 'ffmpeg')
+  const repositories = getPatchedRepositories()
 
-  // Plaster only applies to sources in Chromium's `src` repo, so the filter is
-  // passed to the chromium update only.
+  // Plaster is passed a filter per repository it supports, since a plaster
+  // file's patch has to be left to plaster wherever that patch lives.
   //
   // The filter is skipped when a brockit lift is in progress, or when
   // `--no-plaster-check` is passed, as in both cases we want update_patches to
@@ -143,31 +128,33 @@ export default async function RunCommand(filePaths, options) {
   }
 
   const skipPlasterCheck = duringBrockitLift || noPlasterCheckFlag
-  const plasterPathFilter = skipPlasterCheck
-    ? undefined
-    : await loadPlasterPathFilter(path.join(config.braveCoreDir, 'rewrite'))
+  const plasterPathFilterFor = skipPlasterCheck
+    ? () => undefined
+    : await loadPlasterPathFilters(
+        repositories,
+        path.join(config.braveCoreDir, 'rewrite'),
+      )
 
-  Promise.all([
-    // chromium
-    updatePatches(
-      chromiumDir,
-      patchDir,
-      filePaths,
-      chromiumPathFilter,
-      [],
-      plasterPathFilter,
+  // Every repository is updated the same way, from the directories the
+  // repositories module resolves for it. Only chromium carries the exclusions
+  // filter, the other repositories having no paths to exclude.
+  Promise.all(
+    repositories.map((repo) =>
+      updatePatches(
+        repo.path,
+        repo.patchDir,
+        filePaths,
+        repo.isChromium ? chromiumPathFilter : undefined,
+        [],
+        plasterPathFilterFor(repo),
+      ).then((outdated) =>
+        // Reported paths are repository-relative, so they are named the way
+        // the checkout sees them, which is how the plaster file that owns
+        // each one is found under `rewrite/`.
+        (outdated ?? []).map((source) => joinSourcePath(repo, source)),
+      ),
     ),
-    // v8
-    updatePatches(v8Dir, v8PatchDir, filePaths),
-    // third_party/catapult
-    updatePatches(catapultDir, catapultPatchDir, filePaths),
-    // third_party/devtools-frontend/src
-    updatePatches(devtoolsFrontendDir, devtoolsFrontendPatchDir, filePaths),
-    // third_party/search_engines_data
-    updatePatches(searchEngineDataDir, searchEngineDataPatchDir, filePaths),
-    // third_party/ffmpeg
-    updatePatches(ffmpegDir, ffmpegPatchDir, filePaths),
-  ])
+  )
     .then((results) => {
       const outdatedPlasterPaths = results.flat().filter(Boolean)
       if (outdatedPlasterPaths.length) {

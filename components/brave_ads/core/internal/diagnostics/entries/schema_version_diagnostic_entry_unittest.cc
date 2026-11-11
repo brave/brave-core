@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds.*
+// pnpm test brave_unit_tests --filter=BraveAds.*
 
 namespace brave_ads {
 

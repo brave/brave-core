@@ -31,7 +31,8 @@ import XCTest
           selectedAccount: .previewAccount,
           ethDappSelectedAccount: .previewAccount,
           solDappSelectedAccount: nil,
-          adaDappSelectedAccount: nil
+          adaDappSelectedAccount: nil,
+          dotDappSelectedAccount: nil
         )
       )
     }
@@ -228,7 +229,8 @@ import XCTest
           selectedAccount: accountInfosDict[.eth]?.first,
           ethDappSelectedAccount: accountInfosDict[.eth]?.first,
           solDappSelectedAccount: accountInfosDict[.sol]?.first,
-          adaDappSelectedAccount: nil
+          adaDappSelectedAccount: nil,
+          dotDappSelectedAccount: nil
         )
       )
     }

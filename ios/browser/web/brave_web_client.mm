@@ -26,6 +26,7 @@
 #include "brave/ios/browser/brave_search/brave_search_make_default_javascript_feature.h"
 #include "brave/ios/browser/brave_shields/cookie_control_javascript_feature.h"
 #include "brave/ios/browser/brave_shields/cosmetic_filtering/cosmetic_filtering_javascript_feature.h"
+#include "brave/ios/browser/brave_shields/element_picker/element_picker_javascript_feature.h"
 #include "brave/ios/browser/brave_shields/farbling_javascript_feature.h"
 #include "brave/ios/browser/brave_shields/protection_stats_javascript_feature.h"
 #include "brave/ios/browser/brave_shields/request_blocking/request_blocking_javascript_feature.h"
@@ -37,7 +38,6 @@
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "brave/ios/browser/web/brave_web_main_parts.h"
 #include "brave/ios/browser/web/de_amp/de_amp_javascript_feature.h"
-#include "brave/ios/browser/web/document_fetch/document_fetch_javascript_feature.h"
 #include "brave/ios/browser/web/force_paste/force_paste_javascript_feature.h"
 #include "brave/ios/browser/web/fullscreen/fullscreen_helper_javascript_feature.h"
 #include "brave/ios/browser/web/logins/logins_javascript_feature.h"
@@ -175,7 +175,6 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
     features.push_back(
         CookieControlJavaScriptFeature::FromBrowserState(browser_state));
     features.push_back(DeAmpJavaScriptFeature::GetInstance());
-    features.push_back(DocumentFetchJavaScriptFeature::GetInstance());
     features.push_back(ForcePasteJavaScriptFeature::GetInstance());
     features.push_back(FullscreenHelperJavaScriptFeature::GetInstance());
     // On iOS 27+ WebKit handles GPC natively when the feature is enabled
@@ -204,6 +203,10 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
     features.push_back(youtube::YouTubeQualityJavaScriptFeature::GetInstance());
     features.push_back(CosmeticFilteringJavaScriptFeature::GetInstance());
     features.push_back(ScriptletsJavaScriptFeature::GetInstance());
+    if (base::FeatureList::IsEnabled(
+            brave_shields::features::kBraveShieldsElementPicker)) {
+      features.push_back(ElementPickerJavaScriptFeature::GetInstance());
+    }
     if (!base::FeatureList::IsEnabled(
             brave::features::kUseChromiumWebViewsAutofill)) {
       features.push_back(LoginsJavaScriptFeature::GetInstance());
@@ -300,6 +303,15 @@ bool BraveWebClient::ShouldBlockUniversalLinks(web::WebState* webState,
     return [navigationDelegate webView:webView
         shouldBlockUniversalLinksForRequest:request];
   }
+  return false;
+}
+
+bool BraveWebClient::ShouldBlockUniversalLinksForURL(
+    web::BrowserState* browser_state,
+    const GURL& url) const {
+  // TODO(https://github.com/brave/brave-browser/issues/59555): Adopt this
+  // upstream hook (added in df474c52db32a) in place of our own
+  // ShouldBlockUniversalLinks override above.
   return false;
 }
 

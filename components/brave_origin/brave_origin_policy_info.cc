@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
 
-#include <utility>
-
 namespace brave_origin {
 
 BraveOriginPolicyInfo::BraveOriginPolicyInfo() = default;

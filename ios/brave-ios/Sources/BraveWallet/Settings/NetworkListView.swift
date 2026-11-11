@@ -171,13 +171,12 @@ struct NetworkListView: View {
       }
     }
     .sheet(item: $isPresentingNetworkDetails) { detailsModel in
-      NavigationView {
+      NavigationStack {
         NetworkDetailsView(
           networkStore: networkStore,
           model: detailsModel
         )
       }
-      .navigationViewStyle(StackNavigationViewStyle())
     }
     .task {
       await networkStore.updateChainList()
@@ -198,10 +197,10 @@ struct NetworkListView: View {
 #if DEBUG
 struct CustomNetworkListView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
+    NavigationStack {
       NetworkListView(networkStore: .previewStore)
     }
-    NavigationView {
+    NavigationStack {
       NetworkListView(networkStore: .previewStoreWithCustomNetworkAdded)
     }
   }

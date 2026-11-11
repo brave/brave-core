@@ -22,3 +22,14 @@ substitutions:
         \1
               {"profile_customization_app-chromium.js",
                IDR_SIGNIN_PROFILE_CUSTOMIZATION_PROFILE_CUSTOMIZATION_APP_CHROMIUM_JS},
+
+  - description: |-
+      Supply custom profile image data at the end of the constructor.
+
+      The chromium_src override defines the helper before including this file.
+    regex:
+      re_pattern: '(ProfileCustomizationUI::ProfileCustomizationUI\([^)]*\).*?)(^\})'
+      re_flags: [DOTALL, MULTILINE]
+      replace: |-
+        \1  AddProfileCustomizationData(source);
+        \2

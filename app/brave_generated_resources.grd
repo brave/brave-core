@@ -194,12 +194,6 @@
       <message name="IDS_SHOW_BRAVE_REWARDS" desc="The show Brave Rewards menu in the app menu">
         Brave Rewards
       </message>
-      <message name="IDS_BOOKMAR_BAR_MENU_SHOW_ALWAYS" desc="The name of the context menu item to always show bookmark bar">
-        Always
-      </message>
-      <message name="IDS_BOOKMAR_BAR_MENU_SHOW_NEVER" desc="The name of the context menu item to never show bookmark bar">
-        Never
-      </message>
       <if expr="use_titlecase">
         <message name="IDS_SHOW_ALL_BOOKMARKS_BUTTON" desc="The name of an checked menu item to toggle visibility of All Bookmarks button on the bookmarks bar">
           Show All Bookmarks Button
@@ -223,9 +217,6 @@
         <message name="IDS_COPY_CLEAN_LINK" desc="The name of the context menu item to copy clean link">
           Copy Clean Link
         </message>
-        <message name="IDS_BOOKMAR_BAR_MENU_SHOW_NTP" desc="The name of the context menu item to show bookmark bar on ntp only">
-          Only On the New Tab Page
-        </message>
       </if>
       <if expr="not use_titlecase">
         <message name="IDS_BRAVE_NEW_INCOGNITO_WINDOW" desc="The text label of a menu item for opening a new Private window">
@@ -236,9 +227,6 @@
         </message>
         <message name="IDS_COPY_CLEAN_LINK" desc="The name of the context menu item to copy clean link">
           Copy clean link
-        </message>
-        <message name="IDS_BOOKMAR_BAR_MENU_SHOW_NTP" desc="The name of the context menu item to show bookmark bar on ntp only">
-           Only on the new tab page
         </message>
       </if>
       <message name="IDS_SHOW_BRAVE_SYNC" desc="The show brave sync menu in the app menu">
@@ -375,7 +363,7 @@
       <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
           Install and run Google Widevine
       </message>
-      <message name="IDS_WIDEVINE_DONT_ASK_AGAIN_CHECKBOX" desc="Checkbox for prevent showing widevine install prompt">
+      <message name="IDS_PERMISSIONS_BUBBLE_DONT_ASK_AGAIN_CHECKBOX" desc="Checkbox in a permission prompt that has no site setting to remember a block in, to stop the prompt from being shown again.">
         Don't ask again
       </message>
       <if expr="is_linux">
@@ -403,6 +391,10 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
       <message name="IDS_PERMISSIONS_BUBBLE_SETTINGS_EXTENSIONS_LINK" desc="Settings extenions link in the widevine permission bubble footnote description." translateable="false">
         brave://settings/extensions
+      </message>
+      <!-- On-device speech recognition -->
+      <message name="IDS_ON_DEVICE_SPEECH_MODEL_PERMISSION_FRAGMENT" desc="Text fragment of the permission prompt that asks to download Brave's on-device speech recognition model. It follows 'example.com wants to'.">
+        Download a speech recognition model (<ph name="DOWNLOAD_SIZE">$1<ex>636 MB</ex></ph>) to process speech on this device
       </message>
       <message name="IDS_BRAVE_PERMISSIONS_BUBBLE_PROMPT" desc="The label that is used to introduce permission request details to the user in a popup.">
         <ph name="SITE_NAME">$1<ex>google.com</ex></ph> is asking you to
@@ -660,6 +652,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
       <message name="IDS_EXTENSIONS_BRAVE_HOSTED" desc="Displayed in extensions management UI if an extension is hosted on the Brave server.">
         Brave-hosted
+      </message>
+      <message name="IDS_BRAVE_EXTENSIONS_BLOCKLISTED_MALWARE" desc="Shown on the extensions page when an extension has been disabled because it appears on Brave's malicious-extension list, which is sourced from Socket.">
+        Flagged as malware by Socket.
+      </message>
+      <message name="IDS_BRAVE_EXTENSIONS_BLOCKLISTED_MALWARE_LEARN_MORE" desc="Accessible label for the 'Learn more' link shown when Socket flags an extension as malware.">
+        Learn more about how Socket in Brave protects you
       </message>
 
       <!-- App shortcuts -->
@@ -1056,6 +1054,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
       <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_DONT_ASK_AGAIN_TEXT" desc="Button label that disables the Wayback Machine feature and closes the bubble">
         Don't ask again
+      </message>
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CHECKING_ACCESSIBLE_NAME" desc="Screen reader announcement while the Wayback Machine bubble is searching the Internet Archive">
+        Looking in the Archive
       </message>
 
       <!-- Brave's copyright statement -->
@@ -1607,7 +1608,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Dismiss
       </message>
       <message name="IDS_BRAVE_ORGANIZE_TAB_PRIVACY_DISCLAIMER" desc="Disclaimer text for enabling the tab focus feature">
-        When opened, this will automatically send the titles and origin of all non-private tabs to Leo to classify them.
+        When opened, this will automatically send the titles and origin of all non-private tabs to Leo to classify them. If you also turn on sending page content, short excerpts of the text of each tab are sent too.
       </message>
       <message name="IDS_BRAVE_ORGANIZE_TAB_ENABLE_BUTTON_LABEL" desc="Text of enable tab focus button">
         Enable
@@ -1664,14 +1665,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
            string and swap the IDS in chromium_src overrides. -->
       <message name="IDS_BRAVE_HISTORY_EMBEDDINGS_DISCLAIMER" desc="Disclaimer shown on chrome://history and in the history search IPH promo, indicating that history semantic search runs entirely on-device.">
         Your searches and page contents are processed on this device. Nothing is sent to Brave or seen by human reviewers.
-      </message>
-
-      <!-- Semantic History Search toggle in the chrome://history side bar. -->
-      <message name="IDS_BRAVE_HISTORY_EMBEDDINGS_TOGGLE_LABEL" desc="Label for the toggle on chrome://history that turns Semantic History Search on or off.">
-        Semantic History Search
-      </message>
-      <message name="IDS_BRAVE_HISTORY_EMBEDDINGS_TOGGLE_DESCRIPTION" desc="One-line explainer below the Semantic History Search toggle on chrome://history.">
-        Index pages you visit locally so you can search your history by meaning. All processing stays on this device.
       </message>
       <!--Add new items to the appropriate sections above -->
     </messages>

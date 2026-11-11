@@ -104,7 +104,8 @@ class ManageSiteConnectionsStoreTests: CoreDataTestCase {
           selectedAccount: self.walletAccount,
           ethDappSelectedAccount: nil,
           solDappSelectedAccount: nil,
-          adaDappSelectedAccount: nil
+          adaDappSelectedAccount: nil,
+          dotDappSelectedAccount: nil
         )
       )
     }

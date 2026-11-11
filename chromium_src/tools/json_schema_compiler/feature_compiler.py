@@ -34,8 +34,10 @@ class BraveFeatureDefinitionExtender:
             return None
 
         with open(
-                brave_chromium_utils.wspath(
-                    f"//brave/chromium_src/{source_file}"), "r") as f:
+            brave_chromium_utils.wspath(f"//brave/chromium_src/{source_file}"),
+            "r",
+            encoding='utf-8',
+        ) as f:
             parsed_json = json_parse.Parse(f.read())
         return parsed_json
 
@@ -44,7 +46,8 @@ class BraveFeatureDefinitionExtender:
         if has_counterpart is None:
             raise RuntimeError(
                 f"Unknown features file {source_file}. Please update "
-                f"{brave_chromium_utils.get_chromium_src_override(__file__)}")
+                f"{brave_chromium_utils.get_chromium_src_override(__file__)}"
+            )
         return has_counterpart
 
     def _ValidateKnownFiles(self):
@@ -58,9 +61,11 @@ class BraveFeatureDefinitionExtender:
                 )
             # Ensure override file exists if it has to.
             overridden_filepath = brave_chromium_utils.wspath(
-                f"//brave/chromium_src/{source_file}")
-            assert should_exist == os.path.exists(
-                overridden_filepath), overridden_filepath
+                f"//brave/chromium_src/{source_file}"
+            )
+            assert should_exist == os.path.exists(overridden_filepath), (
+                overridden_filepath
+            )
 
 
 @override_utils.override_method(FeatureCompiler)
@@ -73,7 +78,7 @@ def Load(self, original_method):
 
     for source_file in self._source_files:
         assert source_file.startswith(parent_dir_prefix), source_file
-        source_file = source_file[len(parent_dir_prefix):]
+        source_file = source_file[len(parent_dir_prefix) :]
 
         # Skip files that we never override.
         if source_file.startswith("brave/") or "/test/" in source_file:
@@ -84,12 +89,13 @@ def Load(self, original_method):
             for feature, definitions in feature_definitions.items():
                 should_replace = feature.startswith(feature_replace_prefix)
                 if should_replace:
-                    feature = feature[len(feature_replace_prefix):]
+                    feature = feature[len(feature_replace_prefix) :]
 
                 existing_definitions = self._json.get(feature, None)
                 if existing_definitions is None:
                     raise RuntimeError(
-                        f"Feature {feature} not found in {source_file}")
+                        f"Feature {feature} not found in {source_file}"
+                    )
 
                 if should_replace:
                     # Fully replace definitions.

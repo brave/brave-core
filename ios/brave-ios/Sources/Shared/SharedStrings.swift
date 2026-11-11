@@ -81,22 +81,8 @@ extension Strings {
     comment:
       "Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site."
   )
-  public static let saveLoginPrompt = NSLocalizedString(
-    "SaveLoginPrompt",
-    bundle: .module,
-    value: "Save password for %@?",
-    comment:
-      "Prompt for saving a password with no username. The parameter is the hostname of the site."
-  )
   public static let updateLoginUsernamePrompt = NSLocalizedString(
     "UpdateLoginUsernamePrompt",
-    bundle: .module,
-    value: "Update login %@ for %@?",
-    comment:
-      "Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site."
-  )
-  public static let updateLoginPrompt = NSLocalizedString(
-    "UpdateLoginPrompt",
     bundle: .module,
     value: "Update login %@ for %@?",
     comment:
@@ -277,12 +263,6 @@ extension Strings {
     value: "Scan QR Code",
     comment: "Title for the QR code scanner view."
   )
-  public static let scanQRCodeInstructionsLabel = NSLocalizedString(
-    "ScanQRCodeInstructionsLabel",
-    bundle: .module,
-    value: "Align QR code within frame to scan",
-    comment: "Text for the instructions label, displayed in the QR scanner view"
-  )
   public static let scanQRCodeInvalidDataErrorMessage = NSLocalizedString(
     "ScanQRCodeInvalidDataErrorMessage",
     bundle: .module,
@@ -319,21 +299,5 @@ extension Strings {
     value: "Request Mobile Site",
     comment:
       "Label for the button, displayed in the menu, used to request the mobile version of the current website."
-  )
-  public static let appMenuCopyURLConfirmMessage = NSLocalizedString(
-    "AppMenuCopyURLConfirmMessage",
-    bundle: .module,
-    value: "URL Copied To Clipboard",
-    comment: "Toast displayed to user after copy url pressed."
-  )
-}
-
-// Snackbar shown when tapping app store link
-extension Strings {
-  public static let externalLinkAppStoreConfirmationTitle = NSLocalizedString(
-    "ExternalLinkAppStoreConfirmationTitle",
-    bundle: .module,
-    value: "Open this link in the App Store app?",
-    comment: "Question shown to user when tapping a link that opens the App Store app"
   )
 }

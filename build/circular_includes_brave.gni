@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Brave counterpart to Chromium's `allow_circular_includes_from_untriaged`.
+allow_circular_includes_from_brave = [
+  # //brave/browser:core's allow_circular_includes_from pulls in
+  # //brave/browser/tor:impl, which depends back on
+  # //brave/browser:browser_process.
+  "//brave/browser:core",
+
+  # brave_prefs_util_impl depends back on //brave/browser/extensions:extensions.
+  "//brave/browser/extensions:extensions",
+
+  # brave_ui_allow_circular_includes_from lists sub-targets (e.g.
+  # //brave/browser/ui/brave_origin) that depend back on
+  # //brave/browser/ui:ui.
+  "//brave/browser/ui:ui",
+]

@@ -36,15 +36,15 @@ class NET_EXPORT TransportSecurityState
 
   SSLUpgradeDecision GetSSLUpgradeDecision(
       const NetworkAnonymizationKey& network_anonymization_key,
-      const std::string& host,
+      std::string_view host,
       bool is_top_level_nav,
       const NetLogWithSource& net_log = NetLogWithSource());
   bool ShouldSSLErrorsBeFatal(
       const NetworkAnonymizationKey& network_anonymization_key,
-      const std::string& host);
+      std::string_view host);
   bool ShouldUpgradeToSSL(
       const NetworkAnonymizationKey& network_anonymization_key,
-      const std::string& host,
+      std::string_view host,
       bool is_top_level_nav,
       const NetLogWithSource& net_log = NetLogWithSource());
   bool AddHSTSHeader(const IsolationInfo& isolation_info,
@@ -56,12 +56,12 @@ class NET_EXPORT TransportSecurityState
                const base::Time& expiry,
                bool include_subdomains);
   // These are used in some places where no NIK is available.
-  bool ShouldSSLErrorsBeFatal(const std::string& host);
-  bool ShouldUpgradeToSSL(const std::string& host,
+  bool ShouldSSLErrorsBeFatal(std::string_view host);
+  bool ShouldUpgradeToSSL(std::string_view host,
                           bool is_top_level_nav,
                           const NetLogWithSource& net_log = NetLogWithSource());
-  bool GetDynamicSTSState(const std::string& host, STSState* result);
-  bool DeleteDynamicDataForHost(const std::string& host);
+  bool GetDynamicSTSState(std::string_view host, STSState* result);
+  bool DeleteDynamicDataForHost(std::string_view host);
 };
 
 }  // namespace net

@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/location.h"
@@ -20,9 +21,32 @@
 #include "net/proxy_resolution/mock_proxy_resolver.h"
 #include "net/proxy_resolution/proxy_config_service.h"
 #include "net/proxy_resolution/proxy_config_with_annotation.h"
+#include "net/proxy_resolution/proxy_info.h"
 #include "net/test/test_with_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
+
+namespace {
+
+// Site hosts that contain characters which the proxy-rules string grammar
+// treats as separators. GURL keeps ',', ';' and '=' in special-URL hosts, and
+// SchemefulSite keeps them in the site (an unknown last label is treated as
+// the registry).
+struct SeparatorSiteCase {
+  std::string_view url;
+  std::string_view key;
+};
+
+constexpr SeparatorSiteCase kSeparatorSiteCases[] = {
+    {"http://example.com,x/", "example.com,x"},
+    {"https://www.example.com,x/", "example.com,x"},
+    {"http://a,b.com/", "a,b.com"},
+    {"http://example.com;x/", "example.com;x"},
+    {"http://a=b.x/", "a=b.x"},
+    {"http://q=z.com;x/", "q=z.com;x"},
+};
+
+}  // namespace
 
 namespace net {
 
@@ -147,6 +171,23 @@ TEST_F(ProxyConfigServiceTorTest, CircuitAnonymizationKey) {
   }
 }
 
+TEST_F(ProxyConfigServiceTorTest, PendingUntilProxyURIIsKnown) {
+  ProxyConfigServiceTor proxy_config_service;
+  ProxyConfigWithAnnotation config;
+  EXPECT_EQ(proxy_config_service.GetLatestProxyConfig(&config),
+            ProxyConfigService::CONFIG_PENDING);
+
+  proxy_config_service.UpdateProxyURI(proxy_uri());
+  ASSERT_EQ(proxy_config_service.GetLatestProxyConfig(&config),
+            ProxyConfigService::CONFIG_VALID);
+  const ProxyServer proxy_server =
+      config.value().proxy_rules().single_proxies.First().GetProxyServer(
+          /*chain_index=*/0);
+  EXPECT_EQ(proxy_server.scheme(), ProxyServer::SCHEME_SOCKS5);
+  EXPECT_EQ(proxy_server.host_port_pair().host(), "127.0.0.1");
+  EXPECT_EQ(proxy_server.host_port_pair().port(), 5566);
+}
+
 TEST_F(ProxyConfigServiceTorTest, SetNewTorCircuit) {
   const GURL site_url("https://check.torproject.org/");
   const std::string circuit_anonymization_key =
@@ -235,6 +276,40 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
       empty_proxy_rules_config, site_url, network_anonymization_key, service(),
       &info);
   EXPECT_TRUE(info.is_empty());
+}
+
+TEST_F(ProxyConfigServiceTorTest, ClearProxyAuthorization) {
+  const GURL site_url("https://check.torproject.org/");
+  const std::string circuit_anonymization_key =
+      ProxyConfigServiceTor::CircuitAnonymizationKey(site_url);
+  const net::SchemefulSite site(site_url);
+  const auto network_anonymization_key =
+      net::NetworkAnonymizationKey::CreateFromFrameSite(site, site);
+
+  ProxyConfigServiceTor proxy_config_service(proxy_uri());
+  ProxyConfigWithAnnotation config;
+  proxy_config_service.GetLatestProxyConfig(&config);
+
+  ProxyInfo info;
+  ProxyConfigServiceTor::SetProxyAuthorization(
+      config, site_url, network_anonymization_key, service(), &info);
+  auto proxy_server = info.proxy_chain().GetProxyServer(/*server_index=*/0);
+  CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key);
+  const std::string password = proxy_server.host_port_pair().password();
+
+  // The same service keeps the site's credentials.
+  ProxyConfigServiceTor::SetProxyAuthorization(
+      config, site_url, network_anonymization_key, service(), &info);
+  proxy_server = info.proxy_chain().GetProxyServer(/*server_index=*/0);
+  EXPECT_EQ(proxy_server.host_port_pair().password(), password);
+
+  // Once cleared, the service gets new credentials for the site.
+  ProxyConfigServiceTor::ClearProxyAuthorization(service());
+  ProxyConfigServiceTor::SetProxyAuthorization(
+      config, site_url, network_anonymization_key, service(), &info);
+  proxy_server = info.proxy_chain().GetProxyServer(/*server_index=*/0);
+  CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key);
+  EXPECT_NE(proxy_server.host_port_pair().password(), password);
 }
 
 TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization_Subresources) {
@@ -375,6 +450,89 @@ TEST_F(ProxyConfigServiceTorTest, CircuitTimeout_MultiSite) {
   proxy_server = info.proxy_chain().GetProxyServer(0);
   EXPECT_NE(password2_initial, proxy_server.host_port_pair().password())
       << "site2 credential should have expired after 11 minutes";
+}
+
+TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization_SeparatorCharsInSite) {
+  ProxyConfigServiceTor proxy_config_service(proxy_uri());
+  ProxyConfigWithAnnotation config;
+  proxy_config_service.GetLatestProxyConfig(&config);
+
+  for (const auto& c : kSeparatorSiteCases) {
+    SCOPED_TRACE(c.url);
+    const GURL url(c.url);
+    ASSERT_TRUE(url.is_valid());
+    std::string expected_key{c.key};
+    const std::string circuit_anonymization_key =
+        ProxyConfigServiceTor::CircuitAnonymizationKey(url);
+    EXPECT_EQ(circuit_anonymization_key, expected_key);
+
+    const net::SchemefulSite site(url);
+    const auto network_anonymization_key =
+        net::NetworkAnonymizationKey::CreateFromFrameSite(site, site);
+
+    ProxyInfo info;
+    ProxyConfigServiceTor::SetProxyAuthorization(
+        config, url, network_anonymization_key, service(), &info);
+    ASSERT_FALSE(info.is_empty());
+    ASSERT_FALSE(info.is_direct());
+    ASSERT_EQ(info.proxy_list().size(), 1u);
+    ASSERT_TRUE(info.proxy_chain().is_single_proxy());
+    CheckProxyServer(FROM_HERE,
+                     info.proxy_chain().GetProxyServer(/*server_index=*/0),
+                     circuit_anonymization_key);
+    EXPECT_EQ(info.traffic_annotation().unique_id_hash_code,
+              ProxyConfigServiceTor::GetTorAnnotationTagForTesting()
+                  .unique_id_hash_code);
+  }
+}
+
+TEST_F(ProxyConfigServiceTorTest, SetNewTorCircuit_SeparatorCharsInSite) {
+  const GURL other_url("https://brave.com/");
+  const net::SchemefulSite other_site(other_url);
+  const auto other_network_anonymization_key =
+      net::NetworkAnonymizationKey::CreateFromFrameSite(other_site, other_site);
+
+  for (const auto& c : kSeparatorSiteCases) {
+    SCOPED_TRACE(c.url);
+    const GURL url(c.url);
+    const std::string expected_key{c.key};
+    ProxyConfigServiceTor proxy_config_service(proxy_uri());
+    proxy_config_service.SetNewTorCircuit(url);
+
+    ProxyConfigWithAnnotation config;
+    ASSERT_EQ(proxy_config_service.GetLatestProxyConfig(&config),
+              ProxyConfigService::CONFIG_VALID);
+    const auto& rules = config.value().proxy_rules();
+    ASSERT_EQ(rules.type, ProxyConfig::ProxyRules::Type::PROXY_LIST);
+    ASSERT_EQ(rules.single_proxies.size(), 1u);
+    ASSERT_TRUE(rules.single_proxies.First().is_single_proxy());
+    CheckProxyServer(
+        FROM_HERE,
+        rules.single_proxies.First().GetProxyServer(/*chain_index=*/0),
+        expected_key);
+
+    // Rules without per-request credentials still select the Tor endpoint.
+    ProxyInfo applied;
+    rules.Apply(url, &applied);
+    ASSERT_FALSE(applied.is_direct());
+    ASSERT_EQ(applied.proxy_list().size(), 1u);
+    CheckProxyServer(FROM_HERE,
+                     applied.proxy_chain().GetProxyServer(/*server_index=*/0),
+                     expected_key);
+
+    // Per-request credentials for another site are built on the same endpoint.
+    ProxyInfo info;
+    ProxyConfigServiceTor::SetProxyAuthorization(
+        config, other_url, other_network_anonymization_key, service(), &info);
+    ASSERT_FALSE(info.is_direct());
+    ASSERT_EQ(info.proxy_list().size(), 1u);
+    CheckProxyServer(FROM_HERE,
+                     info.proxy_chain().GetProxyServer(/*server_index=*/0),
+                     ProxyConfigServiceTor::CircuitAnonymizationKey(other_url));
+    EXPECT_EQ(info.traffic_annotation().unique_id_hash_code,
+              ProxyConfigServiceTor::GetTorAnnotationTagForTesting()
+                  .unique_id_hash_code);
+  }
 }
 
 }  // namespace net

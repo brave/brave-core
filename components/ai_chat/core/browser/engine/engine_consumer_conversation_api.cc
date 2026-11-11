@@ -139,7 +139,7 @@ bool EngineConsumerConversationAPI::RequiresClientSideTitleGeneration() const {
 
 void EngineConsumerConversationAPI::GenerateConversationTitle(
     const PageContentsMap& page_contents,
-    const ConversationHistory& conversation_history,
+    const ConversationHistoryView& conversation_history,
     GenerationCompletedCallback completed_callback) {
   auto messages = BuildOAIGenerateConversationTitleMessages(
       page_contents, conversation_history, max_associated_content_length_,

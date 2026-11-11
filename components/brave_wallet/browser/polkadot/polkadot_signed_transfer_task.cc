@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_signed_transfer_task.h"
 
 #include "base/containers/to_vector.h"
-#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
@@ -255,19 +254,18 @@ void PolkadotSignedTransferTask::MaybeFinalizeSignTransaction() {
                 signing_header_->block_number, *genesis_hash_,
                 *signing_block_hash_);
 
-  if (!signature_payload_result->is_ok()) {
+  if (!signature_payload_result.has_value()) {
     return StopWithError(WalletInternalErrorMessage());
   }
 
-  auto signature_payload = signature_payload_result->unwrap();
-  signature_payload_ = base::ToVector(signature_payload->bytes);
+  signature_payload_ = base::ToVector(*signature_payload_result);
 
   std::array<uint8_t, kSr25519SignatureSize> signature = {};
   if (use_dummy_signature_) {
     signature.fill(uint8_t{0x01});
   } else {
     auto sig = keyring_service_->SignMessageByPolkadotKeyring(
-        sender_account_id_, signature_payload->bytes);
+        sender_account_id_, signature_payload_);
     if (!sig) {
       return StopWithError(WalletInternalErrorMessage());
     }
@@ -290,11 +288,10 @@ void PolkadotSignedTransferTask::MaybeFinalizeSignTransaction() {
                                   signature, signing_header_->block_number,
                                   account_info_->nonce);
 
-  if (!extrinsic_result->is_ok()) {
+  if (!extrinsic_result.has_value()) {
     return StopWithError(WalletInternalErrorMessage());
   }
-  auto extrinsic = extrinsic_result->unwrap();
-  extrinsic_ = base::ToVector(extrinsic->bytes);
+  extrinsic_ = base::ToVector(*extrinsic_result);
 
   std::move(callback_).Run(base::ok(GetMetadata()));
 }

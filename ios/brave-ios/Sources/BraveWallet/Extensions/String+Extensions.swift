@@ -41,6 +41,34 @@ extension String {
     return false
   }
 
+  /// Characters that can make the displayed message disagree with the bytes being signed.
+  var hasUnexpectedCharacters: Bool {
+    hasNullBytes || hasNewLines || hasControlCharacters || hasUnknownUnicode
+  }
+
+  var hasNullBytes: Bool {
+    unicodeScalars.contains { $0.value == 0 }
+  }
+
+  /// Non-printable ASCII other than null and newline: the rest of the C0 controls, and delete.
+  /// Space is printable and excluded.
+  var hasControlCharacters: Bool {
+    unicodeScalars.contains { c in
+      (c.value < 0x20 && c.value != 0 && c.value != 0x0A) || c.value == 0x7F
+    }
+  }
+
+  /// Replaces null bytes with a visible symbol. A text view stops rendering at a null,
+  /// silently dropping everything after it, so the raw message needs this to stay honest.
+  /// Display only, never for signing.
+  var visibleNullBytes: String {
+    replacingOccurrences(of: "\0", with: "\u{2400}")
+  }
+
+  var hasNewLines: Bool {
+    unicodeScalars.contains { $0.value == 10 }
+  }
+
   var hasConsecutiveNewLines: Bool {
     // return true if string has two or more consecutive newline chars
     return range(of: "\\n{3,}", options: .regularExpression) != nil

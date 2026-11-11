@@ -5,8 +5,8 @@
 
 import * as React from 'react'
 
-import Icon from '@brave/leo/react/icon'
-import Button from '@brave/leo/react/button'
+import Icon from '@brave/nala/react/icon'
+import Button from '@brave/nala/react/button'
 
 import { getPlaylistAPI } from '../api/api'
 import { getLocalizedString } from '../utils/l10n'

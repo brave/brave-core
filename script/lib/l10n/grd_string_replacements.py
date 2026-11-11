@@ -6,16 +6,23 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+# Replaces every "Google" except "Google Play".
+GOOGLE_BRANDING_PATTERN = r'(Google)(?!\sPlay)'
+
 # Strings we want to replace but that we also replace automatically
 # for XTB files
 branding_replacements = [
-    (r'The\sChromium\sAuthors.\sAll\srights\sreserved.',
-     r'The Brave Authors. All rights reserved.'),
-    (r'Google\sLLC.\sAll\srights\sreserved.',
-     r'The Brave Authors. All rights reserved.'),
+    (
+        r'The\sChromium\sAuthors.\sAll\srights\sreserved.',
+        r'The Brave Authors. All rights reserved.',
+    ),
+    (
+        r'Google\sLLC.\sAll\srights\sreserved.',
+        r'The Brave Authors. All rights reserved.',
+    ),
     (r'The\sChromium\sAuthors', r'Brave Software Inc'),
     (r'Google\sChrome', r'Brave'),
-    (r'(Google)(?!\sPlay)', r'Brave'),
+    (GOOGLE_BRANDING_PATTERN, r'Brave'),
     (r'Chromium', r'Brave'),
     (r'Chrome', r'Brave'),
     (r'क्रोमियम', r'Brave'),  # Chromium in Hindi
@@ -33,6 +40,9 @@ default_replacements = [
     (r'Incognito', r'Private'),
     (r'inco&gnito', r'&private'),
     (r'Inco&gnito', r'&Private'),
+    # TODO(https://github.com/brave/brave-browser/issues/60062): Remove once
+    # Brave Password Manager supports passkeys.
+    (r'Passwords · Passkeys', r'Passwords'),
 ]
 
 
@@ -44,11 +54,14 @@ fixup_replacements = [
     (r'Brave OS', r'Chrome OS'),
     (r'BraveOS', r'ChromeOS'),
     (r'Brave Safe Browsing', r'Google Safe Browsing'),
-    (r'Safe Browsing \(protects you and your device from dangerous sites\)',
-     r'Google Safe Browsing (protects you and your device from dangerous sites)'
-     ),
-    (r'Sends URLs of some pages you visit to Brave',
-     r'Sends URLs of some pages you visit to Google'),
+    (
+        r'Safe Browsing \(protects you and your device from dangerous sites\)',
+        r'Google Safe Browsing (protects you and your device from dangerous sites)',
+    ),
+    (
+        r'Sends URLs of some pages you visit to Brave',
+        r'Sends URLs of some pages you visit to Google',
+    ),
     (r'Google Google', r'Google'),
     (r'Brave Account', r'Brave sync chain'),
     (r'Brave Lens', r'Google Lens'),
@@ -60,10 +73,40 @@ fixup_replacements = [
     (r'Brave Projects', r'Chromium Projects'),
     (r'Brave Root Program', r'Chrome Root Program'),
     (r'BraveVox', r'ChromeVox'),
+    (r'Brave Wallet', r'Google Wallet'),
     (r'powered by Brave AI', r'powered by Google AI'),
-    (r'Brave Extension developer documentation',
-     r'Google Extension developer documentation'),
+    (
+        r'Brave Extension developer documentation',
+        r'Google Extension developer documentation',
+    ),
 ]
+
+
+# Declined or mistyped brand forms that the language-agnostic rules above miss,
+# keyed by locale. Applied to XTB translations after the rules above.
+language_branding_replacements = {
+    'cs': [(r'\bChromu\b', r'Brave')],
+    # Skip chrome:// and chrome-untrusted:// URLs, paths such as /chrome and
+    # chrome.exe, but not a sentence-ending "chrome.".
+    'fa': [(r'(?<![/.\-])\bchrome\b(?![:\-/]|\.\w)', r'Brave')],
+    # Chromium's translation starts with a Cyrillic C.
+    'ky': [(r'\u0421hrome', r'Brave')],
+    'sl': [
+        (r'Brave Chroma\b', r'Brave'),
+        (r'\bChroma\b', r'Brave'),
+        (r'\bChromov\b', r'Braveov'),
+    ],
+}
+
+
+# Messages about Google services that Brave does not offer. Their translations
+# keep "Google", because a localized name such as "Google 월렛" would otherwise
+# become "Brave 월렛". The English fixups above cannot cover localized names.
+keep_google_message_names = {
+    'IDS_IPH_KEYBOARD_ACCESSORY_AUTOFILL_AI_VALUABLES_IPH',
+    'IDS_IPH_KEYBOARD_ACCESSORY_ENABLE_LOYALTY_CARDS',
+    'IDS_IPH_KEYBOARD_ACCESSORY_AT_MEMORY',
+}
 
 
 # Replacements for text nodes and neither for inside descriptions nor comments
@@ -77,7 +120,10 @@ main_text_only_replacements = [
 # Replacements for strings in brave_strings.grd for situations where using a
 # different GRD would be impractical. These need to be translated in Crowdin.
 brave_strings_grd_replacements = [
-    ('IDS_LOCAL_NETWORK_ACCESS_PERMISSION_DESC', r'''
+    (
+        'IDS_LOCAL_NETWORK_ACCESS_PERMISSION_DESC',
+        r'''
           This will allow you to share content from Brave to your local devices, such as a TV or speaker.
-        '''),
+        ''',
+    ),
 ]

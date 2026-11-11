@@ -16,7 +16,7 @@ from typing import Optional
 
 from components.perf_test_utils import GetProcessOutput
 from components.version import BraveVersion
-import components.git_tools as git_tools
+from components import git_tools
 
 
 class FieldTrialsMode(Enum):
@@ -42,6 +42,7 @@ def _GetPNPMCommand() -> str:
     raise RuntimeError('pnpm not found in PATH')
   return pnpm_path
 
+
 def ParseFieldTrialsMode(string_type: str) -> FieldTrialsMode:
   if string_type in ('no-trials', ''):  # Default
     return FieldTrialsMode.NO_TRIALS
@@ -52,9 +53,13 @@ def ParseFieldTrialsMode(string_type: str) -> FieldTrialsMode:
   raise RuntimeError('Bad field trial mode ' + string_type)
 
 
-def MakeFieldTrials(mode: FieldTrialsMode, variations_channel: Optional[str],
-                    artifacts_dir: str, version: Optional[BraveVersion],
-                    variations_repo_dir: Optional[str]) -> FieldTrialConfig:
+def MakeFieldTrials(
+  mode: FieldTrialsMode,
+  variations_channel: Optional[str],
+  artifacts_dir: str,
+  version: Optional[BraveVersion],
+  variations_repo_dir: Optional[str],
+) -> FieldTrialConfig:
   if mode != FieldTrialsMode.GRIFFIN:
     return FieldTrialConfig(mode, None, '')
 
@@ -62,24 +67,30 @@ def MakeFieldTrials(mode: FieldTrialsMode, variations_channel: Optional[str],
     raise RuntimeError('Using Griffin requires a version')
 
   if variations_repo_dir is None:
-    variations_repo_dir = os.path.join(tempfile.gettempdir(),
-                                       'brave-variations')
-    git_tools.EnsureRepositoryUpdated(git_tools.GH_BRAVE_VARIATIONS_GIT_URL,
-                                      'main', variations_repo_dir)
+    variations_repo_dir = os.path.join(
+      tempfile.gettempdir(), 'brave-variations'
+    )
+    git_tools.EnsureRepositoryUpdated(
+      git_tools.GH_BRAVE_VARIATIONS_GIT_URL, 'main', variations_repo_dir
+    )
 
-  sha1 = git_tools.GetRevisionFromDate(version.commit_date, 'main',
-                                       variations_repo_dir)
+  sha1 = git_tools.GetRevisionFromDate(
+    version.commit_date, 'main', variations_repo_dir
+  )
 
   seed_path = os.path.join(artifacts_dir, 'seed.bin')
 
   pnpm = _GetPNPMCommand()
-  GetProcessOutput([pnpm, 'install', '--frozen-lockfile'],
-                   cwd=variations_repo_dir,
-                   check=True)
+  GetProcessOutput(
+    [pnpm, 'install', '--frozen-lockfile'], cwd=variations_repo_dir, check=True
+  )
 
-  args = [pnpm, 'seed_tools', 'create'] + [
-      'studies', seed_path, '--perf_mode'
-  ] + ['--revision', sha1] + ['--version', f'perf@{sha1}']
+  args = (
+    [pnpm, 'seed_tools', 'create']
+    + ['studies', seed_path, '--perf_mode']
+    + ['--revision', sha1]
+    + ['--version', f'perf@{sha1}']
+  )
 
   GetProcessOutput(args, cwd=variations_repo_dir, check=True)
 
@@ -89,8 +100,9 @@ def MakeFieldTrials(mode: FieldTrialsMode, variations_channel: Optional[str],
   return FieldTrialConfig(mode, seed, sha1, variations_channel)
 
 
-def MaybeInjectSeedToLocalState(field_trial_config: FieldTrialConfig,
-                                profile_dir: Optional[str]) -> None:
+def MaybeInjectSeedToLocalState(
+  field_trial_config: FieldTrialConfig, profile_dir: Optional[str]
+) -> None:
   if field_trial_config.mode != FieldTrialsMode.GRIFFIN:
     return
   assert field_trial_config.seed

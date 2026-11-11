@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveUI
 import SwiftUI
 
 struct PlaylistDebugFilesView: View {
@@ -95,10 +96,7 @@ struct PlaylistDebugFilesView: View {
       .onAppear(perform: loadFiles)
       .alert(
         "Couldn't delete file",
-        isPresented: Binding(
-          get: { deleteError != nil },
-          set: { if !$0 { deleteError = nil } }
-        ),
+        isPresented: $deleteError.isPresented,
         presenting: deleteError
       ) { _ in
         Button("OK", role: .cancel) {}

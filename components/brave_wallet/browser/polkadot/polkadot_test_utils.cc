@@ -12,10 +12,14 @@
 #include "base/containers/map_util.h"
 #include "base/containers/span.h"
 #include "base/files/file_util.h"
+#include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/path_service.h"
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_wallet/browser/bip39.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_keyring.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -115,6 +119,16 @@ const base::ListValue* FindParamsOrNull(const base::DictValue& req_body) {
 }
 
 }  // namespace
+
+PolkadotRpcUrlMapCallback NoParachainUrlMap() {
+  return base::BindRepeating(
+      [](std::string_view chain_id) -> std::vector<GURL> { return {}; });
+}
+
+PolkadotWalletService::OriginPermissionChecker NoOriginPermissionChecking() {
+  return base::BindRepeating(
+      [](const url::Origin&, const mojom::AccountIdPtr&) { return true; });
+}
 
 base::DictValue RequestBodyToJsonDict(const network::ResourceRequest& req) {
   const auto* body_elems = req.request_body->elements();
@@ -225,9 +239,9 @@ std::optional<PolkadotChainMetadata> PolkadotMetadataFromChainName(
         /*transfer_allow_death_call_index=*/0,
         /*transfer_keep_alive_call_index=*/3,
         /*transfer_all_call_index=*/4,
-        /*ss58_prefix=*/0, /*spec_version=*/kUnknownSpecVersion,
+        /*ss58_prefix=*/42, /*spec_version=*/kUnknownSpecVersion,
         /*signed_extensions=*/
-        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18},
+        {21, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18},
         /*has_assets_pallet=*/true,
         /*assets_pallet_index=*/50,
         /*assets_transfer_all_call_index=*/32,
@@ -291,6 +305,28 @@ PolkadotChainMetadata MakePaseoAssetHubMetadata() {
   return PolkadotMetadataFromChainName("Paseo Asset Hub").value();
 }
 
+std::string MakePolkadotImportJsonExport(mojom::KeyringId keyring_id,
+                                         uint32_t key_index) {
+  CHECK(IsPolkadotImportKeyring(keyring_id));
+
+  auto hd_keyring_id = keyring_id == mojom::KeyringId::kPolkadotImport
+                           ? mojom::KeyringId::kPolkadotMainnet
+                           : mojom::KeyringId::kPolkadotTestnet;
+
+  auto seed = bip39::MnemonicToEntropyToSeed(kPolkadotImportMnemonic);
+  CHECK(seed);
+
+  PolkadotKeyring keyring(
+      base::span(*seed).first<kPolkadotSeedSize>(), hd_keyring_id,
+      base::BindRepeating([](const std::string&) { return true; }));
+  CHECK(keyring.AddNewHDAccount(key_index));
+
+  auto json_export = keyring.EncodePrivateKeyForExport(
+      key_index, kPolkadotImportExportPassword);
+  CHECK(json_export);
+  return *json_export;
+}
+
 PolkadotMockRpc::PolkadotMockRpc(
     network::TestURLLoaderFactory* url_loader_factory,
     NetworkManager* network_manager)
@@ -318,6 +354,10 @@ void PolkadotMockRpc::RejectExtrinsicSubmission() {
 
 void PolkadotMockRpc::RejectAccountInfoRequest() {
   reject_account_info_request_ = true;
+}
+
+void PolkadotMockRpc::RejectSystemPropertiesRequest() {
+  reject_system_properties_request_ = true;
 }
 
 void PolkadotMockRpc::RejectPaymentInfoRequest() {
@@ -530,22 +570,34 @@ void PolkadotMockRpc::AddGetRuntimeInfo() {
 }
 
 void PolkadotMockRpc::AddGetLatestRuntimeVersion(uint32_t spec_version) {
-  // The metadata provider probes the chain's latest runtime version to decide
-  // whether its cached metadata is still current. Only specVersion and
-  // transactionVersion are consumed.
-  req_res_pairs_.emplace(
-      base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"state_getRuntimeVersion","params":[]})"),
-      absl::StrFormat(
-          R"({
-            "jsonrpc":"2.0",
-            "id":1,
-            "result":{
-              "specVersion":%u,
-              "transactionVersion":27
-            }
-          })",
-          spec_version));
+  AddRuntimeVersionReqRes(/*params_json=*/"[]", spec_version);
+}
+
+void PolkadotMockRpc::AddRuntimeVersionReqRes(std::string_view params_json,
+                                              uint32_t spec_version) {
+  static constexpr char kRequestFormat[] =
+      R"({"id":1,"jsonrpc":"2.0","method":"state_getRuntimeVersion","params":%s})";
+
+  // Only specVersion and transactionVersion are consumed by callers.
+  static constexpr char kResponseFormat[] = R"({
+    "jsonrpc":"2.0",
+    "id":1,
+    "result":{
+      "specVersion":%u,
+      "transactionVersion":27
+    }
+  })";
+
+  auto request =
+      base::test::ParseJsonDict(absl::StrFormat(kRequestFormat, params_json));
+
+  if (reject_runtime_version_) {
+    req_res_pairs_.emplace(std::move(request), std::string(kRpcErrorResponse));
+    return;
+  }
+
+  req_res_pairs_.emplace(std::move(request),
+                         absl::StrFormat(kResponseFormat, spec_version));
 }
 
 void PolkadotMockRpc::AddGetGenesisBlockHash() {
@@ -947,6 +999,10 @@ void PolkadotMockRpc::RequestInterceptor(const network::ResourceRequest& req) {
     return;
   }
 
+  if (HandleSystemPropertiesRequest(req, req_body)) {
+    return;
+  }
+
   if (HandleGetAccountInfoRequest(req, req_body)) {
     return;
   }
@@ -1033,6 +1089,41 @@ bool PolkadotMockRpc::HandleMetadataRequest(const network::ResourceRequest& req,
     }
 
     return false;
+  }
+
+  return false;
+}
+
+bool PolkadotMockRpc::HandleSystemPropertiesRequest(
+    const network::ResourceRequest& req,
+    const base::DictValue& req_body) {
+  const auto* method = req_body.FindString("method");
+  if (!method) {
+    return false;
+  }
+
+  if (*method == "system_properties") {
+    if (reject_system_properties_request_) {
+      url_loader_factory_->AddResponse(req.url.spec(), R"(
+        { "jsonrpc": "2.0",
+          "error": { "code": 1234 },
+          "id": 1 })");
+      return true;
+    }
+
+    if (req.url == GURL(polkadot_asset_hub_url_)) {
+      url_loader_factory_->AddResponse(req.url.spec(),
+                                       R"({
+          "jsonrpc":"2.0",
+          "id":1,
+          "result":{
+            "ss58Format":0,
+            "tokenDecimals":10,
+            "tokenSymbol":"DOT"
+          }})");
+
+      return true;
+    }
   }
 
   return false;
@@ -1220,6 +1311,10 @@ bool PolkadotMockRpc::HandleAuthorSubmitExtrinsic(
       } else {
         if (expected_extrinsic_.has_value()) {
           if (*expected_extrinsic_ != *extrinsic) {
+            ADD_FAILURE() << "author_submitExtrinsic extrinsic mismatch"
+                          << "\n  expected: " << *expected_extrinsic_
+                          << "\n    actual: " << *extrinsic;
+
             url_loader_factory_->AddResponse(req.url.spec(), R"(
               {
                 "jsonrpc": "2.0",

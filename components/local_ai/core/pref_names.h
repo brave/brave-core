@@ -11,7 +11,7 @@ class PrefRegistrySimple;
 namespace local_ai::prefs {
 
 // Profile-scoped: per-profile history embeddings on/off. Surfaced as the
-// chrome://history side bar toggle.
+// "Semantic history search" toggle in brave://settings/privacy.
 inline constexpr char kBraveHistoryEmbeddingsEnabled[] =
     "brave.history_embeddings_enabled";
 
@@ -21,6 +21,30 @@ inline constexpr char kBraveHistoryEmbeddingsEnabled[] =
 // chrome://flags entry, the EmbeddingGemma model component install, ...) is
 // dormant regardless of the per-profile toggle.
 inline constexpr char kBraveLocalAIEnabled[] = "brave.local_ai_enabled";
+
+// Profile-scoped: whether to ask this user before downloading the on-device
+// speech recognition model. False once the user blocks the prompt with "Don't
+// ask again". One person's choice, so it does not follow the model, which every
+// profile shares.
+inline constexpr char kAskEnableOnDeviceSpeechModel[] =
+    "brave.local_ai.ask_enable_on_device_speech_model";
+
+// Local-state-scoped: whether the user enabled the English on-device speech
+// recognition model, which allowing its download does. The consent covers only
+// the English model. The model is only registered for download and update while
+// this is true. Cleared when on-device speech recognition is no longer allowed,
+// so turning it back on asks again rather than downloading.
+inline constexpr char kOnDeviceSpeechEnglishModelEnabled[] =
+    "brave.local_ai.on_device_speech_model_enabled";
+
+// Local-state-scoped: whether the user enabled the multilingual on-device
+// speech recognition model, which allowing its download does. The consent
+// covers only the multilingual model. The model is only registered for download
+// and update while this is true. Cleared when on-device speech recognition is
+// no longer allowed or `kBraveOnDeviceSpeechMultilingual` is disabled, so
+// turning them back on asks again rather than downloading.
+inline constexpr char kOnDeviceSpeechMultilingualModelEnabled[] =
+    "brave.local_ai.on_device_speech_multilingual_model_enabled";
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);

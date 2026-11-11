@@ -7,10 +7,10 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 import * as Styles from './style'
-import Icon from '@brave/leo/react/icon'
-import Tooltip from '@brave/leo/react/tooltip'
+import Icon from '@brave/nala/react/icon'
+import Tooltip from '@brave/nala/react/tooltip'
 import Flag from '../flag'
-import { color } from '@brave/leo/tokens/css/variables'
+import { color } from '@brave/nala/tokens/css/variables'
 import { ConnectionState, Region } from '../../api/panel_browser_api'
 import { useSelector, useDispatch } from '../../state/hooks'
 import * as Actions from '../../state/actions'
@@ -242,19 +242,21 @@ function RegionAutomatic() {
 
 export function PanelHeader(props: {
   title: string
-  buttonAriaLabel: string
-  onClick: () => void
+  buttonAriaLabel?: string
+  onClick?: () => void
 }) {
   return (
     <Styles.PanelHeader>
-      <Styles.StyledButton
-        type='button'
-        onClick={props.onClick}
-        aria-label={props.buttonAriaLabel}
-        title={props.buttonAriaLabel}
-      >
-        <Styles.StyledIcon name='arrow-left'></Styles.StyledIcon>
-      </Styles.StyledButton>
+      {props.onClick && (
+        <Styles.StyledButton
+          type='button'
+          onClick={props.onClick}
+          aria-label={props.buttonAriaLabel}
+          title={props.buttonAriaLabel}
+        >
+          <Styles.StyledIcon name='arrow-left'></Styles.StyledIcon>
+        </Styles.StyledButton>
+      )}
       <Styles.HeaderLabel>{props.title}</Styles.HeaderLabel>
     </Styles.PanelHeader>
   )

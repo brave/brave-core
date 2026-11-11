@@ -11,7 +11,7 @@
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
-#include "brave/components/brave_wallet/browser/internal/polkadot_extrinsic.rs.h"
+#include "brave/components/brave_wallet/browser/internal/polkadot_extrinsic_rs.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_keyring.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -34,13 +34,12 @@ constexpr uint8_t kSchnorrkelSeed[] = {
     105, 25,  112, 59,  172, 3,   28, 174, 127, 96,
 };
 
-std::vector<uint8_t> UnwrapExtrinsicBytes(
-    ::rust::Box<CxxPolkadotExtrinsicResult> result) {
-  if (!result->is_ok()) {
-    ADD_FAILURE() << result->error_message();
+std::vector<uint8_t> UnwrapExtrinsicBytes(const auto& result) {
+  if (!result.has_value()) {
+    ADD_FAILURE() << result.error().as_str().to_string_view();
     return {};
   }
-  return base::ToVector(result->unwrap()->bytes);
+  return base::ToVector(*result);
 }
 
 }  // namespace
@@ -631,8 +630,10 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_AssetsTransferKeepAlive) {
 
   EXPECT_TRUE(keypair.VerifyMessage(signature, signature_payload));
 
+  // Paseo regularly updates its SignedExtensions, which means all signatures
+  // are temporal in nature.
   const char expected_signatured[] =
-      R"(5efe791156873c32cc943d154cb2876b041b5345df6c975a5f426afefd121b10cc8da530fcecda4b14d8670669d33ac0685c83511af89eeae64b5c4c63532a88)";
+      R"(06fdc4b509c6427f45ab0fb8c6f34b405e91c28ebb4adb02b6e4d033ffd35837be379dc8e20c9c149a4916b7d47b9f56bf6bf85710b663d0ae3f8b698caf7083)";
   EXPECT_EQ(base::HexEncodeLower(signature), expected_signatured);
 
   auto signed_extrinsic =
@@ -644,16 +645,16 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_AssetsTransferKeepAlive) {
   auto extrinsic = base::HexEncodeLower(signed_extrinsic);
 
   std::string_view expected_extrinsic =
-      "6502"  // SCALE-encoded length.
+      "5d02"  // SCALE-encoded length.
       "84"    // Signed, extrinsic v4.
       "00"    // Multi-address type.
       // Sender.
       "0e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e"
       "01"  // Signature type (sr25519)
       // Signature.
-      "5efe791156873c32cc943d154cb2876b041b5345df6c975a5f426afefd121b10"
-      "cc8da530fcecda4b14d8670669d33ac0685c83511af89eeae64b5c4c63532a88"
-      "0000000000"
+      "06fdc4b509c6427f45ab0fb8c6f34b405e91c28ebb4adb02b6e4d033ffd35837"
+      "be379dc8e20c9c149a4916b7d47b9f56bf6bf85710b663d0ae3f8b698caf7083"
+      "000000"
       "a500"      // Mortal era.
       "14"        // SCALE-encoded nonce.
       "00"        // Tip.
@@ -734,7 +735,7 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_AssetsTransferAll) {
   EXPECT_TRUE(keypair.VerifyMessage(signature, signature_payload));
 
   const char expected_signatured[] =
-      R"(36ef9fb067bc836b62c7b7c73c92970b3862067fa5e87efd0bae5b092d81181612480cdcd9b2282a3c25b0c19928ccb9e3e000ad82611ec747fc9f5d74ab748f)";
+      R"(780744176c0e1176eabe9e09de85daf61d58a2bebfad71a942c23d7590fc705034858de06d3d522821ee50284041fcbc047b9b76a0c882b65f2959c0436c2d89)";
   EXPECT_EQ(base::HexEncodeLower(signature), expected_signatured);
 
   auto signed_extrinsic =
@@ -746,16 +747,16 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_AssetsTransferAll) {
   auto extrinsic = base::HexEncodeLower(signed_extrinsic);
 
   std::string_view expected_extrinsic =
-      "5902"  // SCALE-encoded length.
+      "5102"  // SCALE-encoded length.
       "84"    // Signed, extrinsic v4.
       "00"    // Multi-address type.
       // Sender
       "ae70948d0c015b6c2b1ac46b8931ad6301f2c648f3f0adf71d08a68fe745561e"
       "01"  // Signature type (sr25519).
       // Signature.
-      "36ef9fb067bc836b62c7b7c73c92970b3862067fa5e87efd0bae5b092d811816"
-      "12480cdcd9b2282a3c25b0c19928ccb9e3e000ad82611ec747fc9f5d74ab748f"
-      "0000000000"
+      "780744176c0e1176eabe9e09de85daf61d58a2bebfad71a942c23d75"
+      "90fc705034858de06d3d522821ee50284041fcbc047b9b76a0c882b65f2959c0436c2d89"
+      "000000"
       "6501"      // Mortal era.
       "04"        // SCALE-encoded nonce.
       "00"        // Tip.
@@ -814,7 +815,7 @@ TEST(PolkadotExtrinsics, ShuffledSignedExtensions) {
 
   {
     // Clear all the signed extensions. We should still get something out.
-    testnet_metadata->signed_extensions = {};
+    testnet_metadata->signed_extensions.bytes = {};
     auto signature_payload =
         UnwrapExtrinsicBytes(generate_extrinsic_signature_payload(
             *testnet_metadata, sender_nonce, send_amount_bytes, transfer_all,
@@ -841,7 +842,7 @@ TEST(PolkadotExtrinsics, ShuffledSignedExtensions) {
   {
     // Generate random valid SignedExtensions, any order and with any number of
     // repetitions.
-    for (auto& ext : testnet_metadata->signed_extensions) {
+    for (auto& ext : testnet_metadata->signed_extensions.bytes) {
       ext = base::RandIntInclusive(1, 20);
     }
 
@@ -862,7 +863,7 @@ TEST(PolkadotExtrinsics, ShuffledSignedExtensions) {
     // something exploitable.
     EXPECT_NE(base::HexEncodeLower(signed_extrinsic), "")
         << "SignedExtensions used were: "
-        << testing::PrintToString(testnet_metadata->signed_extensions);
+        << testing::PrintToString(testnet_metadata->signed_extensions.bytes);
   }
 }
 
@@ -1087,9 +1088,8 @@ TEST(PolkadotExtrinsics, EventsParsing) {
 
   std::array<uint8_t, 16> actual_fee_bytes = {};
 
-  EXPECT_TRUE(was_extrinsic_successful(rust::Slice<const uint8_t>(events),
-                                       extrinsic_idx, sender, *chain_metadata,
-                                       actual_fee_bytes));
+  EXPECT_TRUE(was_extrinsic_successful(events, extrinsic_idx, sender,
+                                       *chain_metadata, actual_fee_bytes));
 
   EXPECT_EQ(base::bit_cast<uint128_t>(actual_fee_bytes), uint128_t{161026911});
   EXPECT_EQ(base::HexEncodeLower(actual_fee_bytes),
@@ -1148,9 +1148,8 @@ TEST(PolkadotExtrinsics, EventsParsing_AssetTransferKeepAlive) {
 
   std::array<uint8_t, 16> actual_fee_bytes = {};
 
-  EXPECT_TRUE(was_extrinsic_successful(rust::Slice<const uint8_t>(events),
-                                       extrinsic_idx, sender, *chain_metadata,
-                                       actual_fee_bytes));
+  EXPECT_TRUE(was_extrinsic_successful(events, extrinsic_idx, sender,
+                                       *chain_metadata, actual_fee_bytes));
 
   EXPECT_EQ(base::bit_cast<uint128_t>(actual_fee_bytes), uint128_t{9488398});
   EXPECT_EQ(base::HexEncodeLower(actual_fee_bytes),
@@ -1212,9 +1211,8 @@ TEST(PolkadotExtrinsics, EventsParsing_AssetTransferAll) {
 
   std::array<uint8_t, 16> actual_fee_bytes = {};
 
-  EXPECT_TRUE(was_extrinsic_successful(rust::Slice<const uint8_t>(events),
-                                       extrinsic_idx, sender, *chain_metadata,
-                                       actual_fee_bytes));
+  EXPECT_TRUE(was_extrinsic_successful(events, extrinsic_idx, sender,
+                                       *chain_metadata, actual_fee_bytes));
 
   EXPECT_EQ(base::bit_cast<uint128_t>(actual_fee_bytes), uint128_t{9338398});
   EXPECT_EQ(base::HexEncodeLower(actual_fee_bytes),
@@ -1289,9 +1287,8 @@ TEST(PolkadotExtrinsics, EventsParsing_WithAccountCreation) {
 
   std::array<uint8_t, 16> actual_fee_bytes = {};
 
-  EXPECT_TRUE(was_extrinsic_successful(rust::Slice<const uint8_t>(events),
-                                       extrinsic_idx, sender, *chain_metadata,
-                                       actual_fee_bytes));
+  EXPECT_TRUE(was_extrinsic_successful(events, extrinsic_idx, sender,
+                                       *chain_metadata, actual_fee_bytes));
 
   EXPECT_EQ(base::bit_cast<uint128_t>(actual_fee_bytes), uint128_t{161026911});
   EXPECT_EQ(base::HexEncodeLower(actual_fee_bytes),
@@ -1348,9 +1345,8 @@ TEST(PolkadotExtrinsics, EventsParsing_FailedExtrinsic_ArithmeticUnderflow) {
 
   std::array<uint8_t, 16> actual_fee_bytes = {};
 
-  EXPECT_FALSE(was_extrinsic_successful(rust::Slice<const uint8_t>(events),
-                                        extrinsic_idx, sender, *chain_metadata,
-                                        actual_fee_bytes));
+  EXPECT_FALSE(was_extrinsic_successful(events, extrinsic_idx, sender,
+                                        *chain_metadata, actual_fee_bytes));
 
   EXPECT_EQ(base::bit_cast<uint128_t>(actual_fee_bytes), uint128_t{166026911});
   EXPECT_EQ(base::HexEncodeLower(actual_fee_bytes),
@@ -1407,9 +1403,8 @@ TEST(PolkadotExtrinsics, EventsParsing_FailedExtrinsic_BelowMinimum) {
 
   std::array<uint8_t, 16> actual_fee_bytes = {};
 
-  EXPECT_FALSE(was_extrinsic_successful(rust::Slice<const uint8_t>(events),
-                                        extrinsic_idx, sender, *chain_metadata,
-                                        actual_fee_bytes));
+  EXPECT_FALSE(was_extrinsic_successful(events, extrinsic_idx, sender,
+                                        *chain_metadata, actual_fee_bytes));
 
   EXPECT_EQ(base::bit_cast<uint128_t>(actual_fee_bytes), uint128_t{161026911});
   EXPECT_EQ(base::HexEncodeLower(actual_fee_bytes),
@@ -1632,8 +1627,7 @@ TEST(PolkadotExtrinsics, EventsParsing_Error) {
 
     std::array<uint8_t, 16> actual_fee_bytes = {};
 
-    EXPECT_FALSE(was_extrinsic_successful(rust::Slice<const uint8_t>(events),
-                                          extrinsic_idx, sender,
+    EXPECT_FALSE(was_extrinsic_successful(events, extrinsic_idx, sender,
                                           *chain_metadata, actual_fee_bytes))
         << input;
 

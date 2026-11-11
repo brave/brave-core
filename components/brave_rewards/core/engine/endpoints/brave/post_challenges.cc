@@ -14,7 +14,6 @@
 #include "brave/components/brave_rewards/core/engine/util/request_signer.h"
 #include "brave/components/brave_rewards/core/engine/util/url_loader.h"
 #include "brave/components/brave_rewards/core/engine/wallet/wallet.h"
-#include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoints {
 

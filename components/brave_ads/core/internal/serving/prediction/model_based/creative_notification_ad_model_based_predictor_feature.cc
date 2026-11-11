@@ -8,7 +8,6 @@
 namespace brave_ads {
 
 BASE_FEATURE(kCreativeNotificationAdModelBasedPredictorFeature,
-             "CreativeNotificationAdModelBasedPredictor",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace brave_ads

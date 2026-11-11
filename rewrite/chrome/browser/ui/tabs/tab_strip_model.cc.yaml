@@ -5,6 +5,26 @@
 
 substitutions:
   - description: |
+      Append Brave-specific entries to switch statements in TabStripModel::IsContextMenuCommandEnabled().
+
+      Avoids enumeration values not handled in switch error.
+    regex:
+      re_pattern: |
+        (bool\ TabStripModel::IsContextMenuCommandEnabled\(.*?switch\s*\(command_id\)\s*\{)
+      re_flags: ['DOTALL']
+      replace: |-
+        \1
+            case CommandRestoreTab:
+            case CommandBookmarkAllTabs:
+            case CommandShowVerticalTabs:
+            case CommandToggleTabMuted:
+            case CommandBringAllTabsToThisWindow:
+            case CommandCloseDuplicateTabs:
+            case CommandOpenInContainer:
+            case CommandRenameTab:
+              NOTREACHED();\n
+
+  - description: |
       Append Brave-specific entries to switch statements in TabStripModel::ExecuteContextMenuCommand().
 
       Avoids enumeration values not handled in switch error.

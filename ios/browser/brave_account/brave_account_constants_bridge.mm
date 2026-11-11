@@ -8,5 +8,8 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_account/brave_account_constants.h"
 
-NSString* const BraveAccountInitiatingServiceNameQueryParam =
-    base::SysUTF8ToNSString(brave_account::kInitiatingServiceNameQueryParam);
+@implementation BraveAccount
+@end
+
+NSString* const BraveAccountSettingsPath =
+    base::SysUTF8ToNSString(brave_account::kSettingsPath);

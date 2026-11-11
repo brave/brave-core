@@ -7,9 +7,8 @@
 #define BRAVE_BROWSER_WIDEVINE_WIDEVINE_PERMISSION_REQUEST_H_
 
 #include "base/gtest_prod_util.h"
-#include "components/permissions/permission_request.h"
-
 #include "base/memory/raw_ptr.h"
+#include "components/permissions/permission_request.h"
 #include "url/gurl.h"
 
 class PrefService;

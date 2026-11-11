@@ -17,7 +17,7 @@ struct RewardsInternalsSharableBuilder {
   /// A formatter to use when adding dates and times to a file
   var dateAndTimeFormatter: DateFormatter
   /// Writes a JSON object to `path` with a given name.
-  func writeJSON(from object: Any, named: String, at path: String) async throws {
+  @concurrent func writeJSON(from object: Any, named: String, at path: String) async throws {
     let data = try JSONSerialization.data(withJSONObject: object, options: [.prettyPrinted])
     try data.write(to: URL(fileURLWithPath: "\(path)/\(named).json"))
   }

@@ -12,22 +12,23 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/psst/psst_tab_web_contents_observer.h"
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
-#include "brave/components/psst/core/common/psst_ui_common.mojom-shared.h"
 #include "brave/components/psst/core/common/psst_ui_common.mojom.h"
-#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+
+namespace content {
+class WebContents;
+}  // namespace content
 
 namespace psst {
 
 class BravePsstDialogUI;
 class PsstTabWebContentsObserver;
 class BravePsstDialogHandler : public psst::mojom::PsstConsentHelper,
-                               public PsstUiDelegateImpl::Observer,
-                               public TabStripModelObserver {
+                               public PsstUiDelegateImpl::Observer {
  public:
   explicit BravePsstDialogHandler(
-      TabStripModel* tab_strip_model,
+      content::WebContents* initiator_web_contents,
       BravePsstDialogUI* dialog_ui,
       mojo::PendingReceiver<psst::mojom::PsstConsentHelper> pending_receiver,
       mojo::PendingRemote<psst::mojom::PsstConsentDialog> client_page,
@@ -51,15 +52,8 @@ class BravePsstDialogHandler : public psst::mojom::PsstConsentHelper,
                           const std::optional<std::string>& error) override;
   void OnPsstErrorsReportSent() override;
 
-  // TabStripModelObserver
-  void OnTabStripModelChanged(
-      TabStripModel* tab_strip_model,
-      const TabStripModelChange& change,
-      const TabStripSelectionChange& selection) override;
-
-  base::WeakPtr<psst::PsstTabWebContentsObserver> active_tab_helper_;
+  base::WeakPtr<psst::PsstTabWebContentsObserver> psst_tab_helper_;
   base::WeakPtr<PsstUiDelegateImpl> psst_dialog_delegate_;
-  raw_ptr<TabStripModel> tab_strip_model_{nullptr};
   raw_ptr<BravePsstDialogUI> const dialog_ui_{nullptr};
   mojo::Receiver<psst::mojom::PsstConsentHelper> receiver_;
   mojo::Remote<psst::mojom::PsstConsentDialog> client_page_;

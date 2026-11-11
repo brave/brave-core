@@ -121,10 +121,7 @@ export const SignSolanaTxsPanel = ({
         textColor='secondary'
         variant='xSmall.regular'
       >
-        <CreateSiteOrigin
-          originSpec={selectedRequest.originInfo.originSpec}
-          eTldPlusOne={selectedRequest.originInfo.eTldPlusOne}
-        />
+        <CreateSiteOrigin originInfo={selectedRequest.dappOriginInfo} />
       </URLText>
       <Tooltip
         text={signingAccount.address || ''}

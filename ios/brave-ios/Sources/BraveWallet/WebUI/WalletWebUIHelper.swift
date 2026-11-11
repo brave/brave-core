@@ -14,6 +14,7 @@ public class WalletWebUIHelper: NSObject, TabObserver, WalletPageHandler {
   private var showOnboardingHandler: ((Bool) -> Void)?
   private var openWalletHomeHandler: (() -> Void)?
   private var scanAddressQRCodeHandler: ((@escaping (String) -> Void) -> Void)?
+  private var openTabHandler: ((URL) -> Void)?
 
   public init?(
     tab: some TabState,
@@ -22,7 +23,8 @@ public class WalletWebUIHelper: NSObject, TabObserver, WalletPageHandler {
     unlockWalletHandler: (() -> Void)?,
     showOnboardingHandler: ((Bool) -> Void)?,
     openWalletHomeHandler: (() -> Void)?,
-    scanAddressQRCodeHandler: ((@escaping (String) -> Void) -> Void)?
+    scanAddressQRCodeHandler: ((@escaping (String) -> Void) -> Void)?,
+    openTabHandler: ((URL) -> Void)?
   ) {
     if !tab.isChromiumTab {
       return nil
@@ -34,6 +36,7 @@ public class WalletWebUIHelper: NSObject, TabObserver, WalletPageHandler {
     self.showOnboardingHandler = showOnboardingHandler
     self.openWalletHomeHandler = openWalletHomeHandler
     self.scanAddressQRCodeHandler = scanAddressQRCodeHandler
+    self.openTabHandler = openTabHandler
     super.init()
     tab.addObserver(self)
   }
@@ -75,6 +78,10 @@ public class WalletWebUIHelper: NSObject, TabObserver, WalletPageHandler {
 
   public func scanAddressQRCode(_ completion: @escaping (String) -> Void) {
     scanAddressQRCodeHandler?(completion)
+  }
+
+  public func openTab(_ url: URL) {
+    openTabHandler?(url)
   }
 }
 

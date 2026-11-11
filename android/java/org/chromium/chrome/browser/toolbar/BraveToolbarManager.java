@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.toolbar;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewStub;
@@ -15,10 +16,10 @@ import android.view.ViewStub;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Callback;
 import org.chromium.base.CallbackController;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.supplier.LazyOneshotSupplier;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
@@ -32,7 +33,6 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
-import org.chromium.chrome.browser.app.tabwindow.TabWindowManagerSingleton;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
@@ -50,12 +50,15 @@ import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
 import org.chromium.chrome.browser.ephemeraltab.EphemeralTabCoordinator;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
-import org.chromium.chrome.browser.glic.GlicButtonDelegate;
+import org.chromium.chrome.browser.glic.toolbar_button.GlicButtonDelegate;
 import org.chromium.chrome.browser.homepage.HomepageManager;
+import org.chromium.chrome.browser.hub.HubManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
+import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
+import org.chromium.chrome.browser.ntp.BraveNewTabPage;
 import org.chromium.chrome.browser.omnibox.LocationBar;
 import org.chromium.chrome.browser.omnibox.OmniboxChipManager;
 import org.chromium.chrome.browser.omnibox.suggestions.action.OmniboxActionDelegateImpl;
@@ -65,12 +68,14 @@ import org.chromium.chrome.browser.readaloud.ReadAloudController;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
+import org.chromium.chrome.browser.tab_group_sync.TabGroupSyncServiceFactory;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tab_ui.TabModelDotInfo;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabClosureParams;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.tasks.tab_management.GroupWindowChecker;
 import org.chromium.chrome.browser.tasks.tab_management.TabGroupUiOneshotSupplier;
 import org.chromium.chrome.browser.theme.BottomUiThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
@@ -110,6 +115,7 @@ import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuPopulatorFactory;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.omnibox.AutocompleteInput;
+import org.chromium.components.tab_group_sync.TabGroupSyncService;
 import org.chromium.content_public.browser.selection.SelectionDropdownMenuDelegate;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.ui.base.ActivityResultTracker;
@@ -229,7 +235,7 @@ public class BraveToolbarManager extends ToolbarManager
             ActivityTabProvider tabProvider,
             ScrimManager scrimManager,
             ToolbarActionModeCallback toolbarActionModeCallback,
-            FindToolbarManager findToolbarManager,
+            LazyOneshotSupplier<FindToolbarManager> findToolbarManagerSupplier,
             MonotonicObservableSupplier<@Nullable Profile> profileSupplier,
             NullableObservableSupplier<BookmarkModel> bookmarkModelSupplier,
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
@@ -247,6 +253,7 @@ public class BraveToolbarManager extends ToolbarManager
             StatusBarColorController statusBarColorController,
             AppMenuDelegate appMenuDelegate,
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
+            MultiWindowModeStateDispatcher multiWindowModeStateDispatcher,
             BottomSheetController bottomSheetController,
             DataSharingTabManager dataSharingTabManager,
             TabContentManager tabContentManager,
@@ -270,9 +277,9 @@ public class BraveToolbarManager extends ToolbarManager
             @Nullable OmniboxChipManager omniboxChipManager,
             @Nullable BottomBarHostManager bottomBarHostManager,
             @Nullable ActionRegistry actionRegistry,
-            @Nullable OneshotSupplier<String> countrySupplier,
             GlicButtonDelegate toggleGlicCallback,
-            boolean suppressTabStripAtStart) {
+            boolean suppressTabStripAtStart,
+            @Nullable OneshotSupplier<HubManager> hubManagerSupplier) {
         super(
                 activity,
                 bottomControlsStacker,
@@ -292,7 +299,7 @@ public class BraveToolbarManager extends ToolbarManager
                 tabProvider,
                 scrimManager,
                 toolbarActionModeCallback,
-                findToolbarManager,
+                findToolbarManagerSupplier,
                 profileSupplier,
                 bookmarkModelSupplier,
                 layoutStateProviderSupplier,
@@ -310,6 +317,7 @@ public class BraveToolbarManager extends ToolbarManager
                 statusBarColorController,
                 appMenuDelegate,
                 activityLifecycleDispatcher,
+                multiWindowModeStateDispatcher,
                 bottomSheetController,
                 dataSharingTabManager,
                 tabContentManager,
@@ -332,9 +340,9 @@ public class BraveToolbarManager extends ToolbarManager
                 omniboxChipManager,
                 bottomBarHostManager,
                 actionRegistry,
-                countrySupplier,
                 toggleGlicCallback,
-                suppressTabStripAtStart);
+                suppressTabStripAtStart,
+                hubManagerSupplier);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
@@ -435,14 +443,32 @@ public class BraveToolbarManager extends ToolbarManager
         BrowserStateBrowserControlsVisibilityDelegate controlsVisibilityDelegate =
                 mBrowserControlsSizer.getBrowserVisibilityDelegate();
         assert controlsVisibilityDelegate != null;
+
+        Resources res = mBottomControls.getResources();
+        int bottomToolbarHeight = res.getDimensionPixelSize(R.dimen.brave_bottom_toolbar_height);
+
         var bottomControlsCoordinator =
                 new BraveBottomControlsCoordinator(
                         mLayoutStateProviderSupplier,
                         BottomTabSwitcherActionMenuCoordinator.createOnLongClickListener(
                                 id -> ((ChromeActivity) mActivity).onOptionsItemSelected(id, null),
-                                mProfileSupplier.get(),
+                                mProfileSupplier,
                                 mTabModelSelectorSupplier,
-                                TabWindowManagerSingleton.getInstance()),
+                                (tabModel, currentTabGroupId) -> {
+                                    Profile modelProfile = tabModel.getProfile();
+                                    if (modelProfile == null) {
+                                        return false;
+                                    }
+                                    TabGroupSyncService syncService =
+                                            !modelProfile.isOffTheRecord()
+                                                    ? TabGroupSyncServiceFactory.getForProfile(
+                                                            modelProfile)
+                                                    : null;
+                                    GroupWindowChecker windowChecker =
+                                            new GroupWindowChecker(
+                                                    mActivity, syncService, tabModel);
+                                    return windowChecker.hasOtherGroups(currentTabGroupId);
+                                }),
                         mActivityTabProvider,
                         mToolbarTabController::openHomepage,
                         mCallbackController.makeCancelable(
@@ -462,7 +488,7 @@ public class BraveToolbarManager extends ToolbarManager
                         mActivityTabProvider.asObservable(),
                         mBottomControls,
                         LayerType.TABSTRIP_TOOLBAR,
-                        R.dimen.brave_bottom_toolbar_height,
+                        bottomToolbarHeight,
                         bottomControlsContentDelegateSupplier,
                         mTabObscuringHandler,
                         mLayoutManager.getOverlayPanelManager().getPanelStateSupplier(),
@@ -512,6 +538,7 @@ public class BraveToolbarManager extends ToolbarManager
         mTabGroupUiBottomControlsCoordinatorSupplier.set(bottomControlsCoordinator);
         mBottomControls.setBottomControlsCoordinatorSupplier(
                 mTabGroupUiBottomControlsCoordinatorSupplier);
+        updateBookmarkButtonStatus();
         updateBraveBottomControlsVisibility();
         if (mIsBraveBottomControlsVisible) {
             mBottomControls.setVisibility(View.VISIBLE);
@@ -636,6 +663,20 @@ public class BraveToolbarManager extends ToolbarManager
         if (isToolbarPhone()) {
             updateBraveBottomControlsVisibility(hasFocus);
         }
+        if (hasFocus) {
+            dismissNtpTopSitesTooltip();
+        }
+    }
+
+    // The NTP's top-sites tooltip is a floating popup, not part of the NTP's own view
+    // hierarchy, so it does not participate in the omnibox-focus animation that fades/hides the
+    // rest of the NTP content - it must be dismissed explicitly here instead.
+    private void dismissNtpTopSitesTooltip() {
+        Tab tab = mActivityTabProvider.get();
+        if (tab == null || !(tab.getNativePage() instanceof BraveNewTabPage)) {
+            return;
+        }
+        ((BraveNewTabPage) tab.getNativePage()).dismissTopSitesTooltip();
     }
 
     private void registerHubLayoutObserver() {
@@ -813,10 +854,9 @@ public class BraveToolbarManager extends ToolbarManager
     public void onSharedPreferenceChanged(
             SharedPreferences sharedPreferences, @Nullable String key) {
         if (ChromePreferenceKeys.TOOLBAR_TOP_ANCHORED.equals(key)) {
-            if (sharedPreferences.getBoolean(
-                    BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, true)) {
-                updateBraveBottomControlsVisibility();
-            }
+            // Also refreshes whether the menu opens from the bottom, which follows the address
+            // bar position even with the bottom controls off.
+            updateBraveBottomControlsVisibility();
         }
     }
 

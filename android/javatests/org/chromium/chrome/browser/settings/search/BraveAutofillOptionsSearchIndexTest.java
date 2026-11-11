@@ -24,7 +24,6 @@ import org.chromium.base.ThreadUtils;
 import org.chromium.base.test.util.Batch;
 import org.chromium.base.test.util.CommandLineFlags;
 import org.chromium.base.test.util.DisableLeakChecks;
-import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.autofill.settings.AutofillAndPasswordsFragment;
@@ -83,35 +82,12 @@ public class BraveAutofillOptionsSearchIndexTest {
 
     @Test
     @SmallTest
-    @DisableFeatures(ChromeFeatureList.YOUR_SAVED_INFO_SETTINGS_PAGE_ANDROID)
-    public void testPrivateWindowEntrySurvivesLegacyRoute() {
-        buildIndex();
-
-        SettingsIndexData.Entry entry = getPrivateWindowEntry();
-        assertSettingsReferrerExtras(entry);
-        assertSearchFindsPrivateWindowEntry(entry);
-
-        SettingsIndexData.Entry legacyAutofillOptionsEntry =
-                mIndexData.getEntryForKey(
-                        MainSettings.class.getName(), MainSettings.PREF_AUTOFILL_OPTIONS);
-        assertNotNull(legacyAutofillOptionsEntry);
-        assertEquals(AutofillOptionsFragment.class.getName(), legacyAutofillOptionsEntry.fragment);
-        assertSettingsReferrerExtras(legacyAutofillOptionsEntry);
-    }
-
-    @Test
-    @SmallTest
-    @EnableFeatures(ChromeFeatureList.YOUR_SAVED_INFO_SETTINGS_PAGE_ANDROID)
     public void testPrivateWindowEntrySurvivesHomeOfTransactionsRoute() {
         buildIndex();
 
         SettingsIndexData.Entry entry = getPrivateWindowEntry();
-        assertSettingsReferrerExtras(entry);
+        assertSettingsSearchReferrerExtras(entry);
         assertSearchFindsPrivateWindowEntry(entry);
-
-        assertNull(
-                mIndexData.getEntryForKey(
-                        MainSettings.class.getName(), MainSettings.PREF_AUTOFILL_OPTIONS));
 
         SettingsIndexData.Entry mainAutofillAndPasswordsEntry =
                 mIndexData.getEntryForKey(
@@ -128,13 +104,13 @@ public class BraveAutofillOptionsSearchIndexTest {
                         AutofillAndPasswordsFragment.PREF_AUTOFILL_SETTINGS);
         assertNotNull(homeAutofillOptionsEntry);
         assertEquals(AutofillOptionsFragment.class.getName(), homeAutofillOptionsEntry.fragment);
-        assertSettingsReferrerExtras(homeAutofillOptionsEntry);
+        assertSettingsSearchReferrerExtras(homeAutofillOptionsEntry);
 
         List<SettingsIndexData.Entry> breadcrumbEntries =
                 mIndexData.getBreadcrumbEntries(
                         AutofillOptionsFragment.class.getName(),
                         AutofillOptionsFragment.createRequiredArgs(
-                                AutofillOptionsReferrer.SETTINGS),
+                                AutofillOptionsReferrer.SETTINGS_SEARCH),
                         MainSettings.class.getName());
         assertNotNull(breadcrumbEntries);
         assertEquals(2, breadcrumbEntries.size());
@@ -157,10 +133,10 @@ public class BraveAutofillOptionsSearchIndexTest {
         return entry;
     }
 
-    private void assertSettingsReferrerExtras(SettingsIndexData.Entry entry) {
+    private void assertSettingsSearchReferrerExtras(SettingsIndexData.Entry entry) {
         assertTrue(entry.extras.containsKey(AutofillOptionsFragment.AUTOFILL_OPTIONS_REFERRER));
         assertEquals(
-                AutofillOptionsReferrer.SETTINGS,
+                AutofillOptionsReferrer.SETTINGS_SEARCH,
                 entry.extras.getInt(AutofillOptionsFragment.AUTOFILL_OPTIONS_REFERRER));
     }
 

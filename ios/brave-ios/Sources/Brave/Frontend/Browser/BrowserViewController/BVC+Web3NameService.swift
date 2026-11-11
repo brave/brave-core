@@ -17,18 +17,18 @@ extension BrowserViewController: Web3NameServiceScriptHandlerDelegate {
       !isPrivateMode,
       let url,
       DecentralizedDNSHelper.isSupported(domain: url.domainURL.schemelessAbsoluteDisplayString),
-      let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: isPrivateMode)
+      let rpcService = BraveWallet.JsonRpcServiceFactory.get(profile: profileController.profile)
     else { return nil }
     return DecentralizedDNSHelper(
       rpcService: rpcService,
-      ipfsApi: profileController.ipfsAPI,
       isPrivateMode: isPrivateMode
     )
   }
 
   func web3NameServiceDecisionHandler(_ proceed: Bool, web3Service: Web3Service, originalURL: URL) {
     let isPrivateMode = privateBrowsingManager.isPrivateBrowsing
-    guard let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: isPrivateMode),
+    guard !isPrivateMode,
+      let rpcService = BraveWallet.JsonRpcServiceFactory.get(profile: profileController.profile),
       let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: originalURL)
     else {
       finishEditingAndSubmit(originalURL)
@@ -51,7 +51,7 @@ extension BrowserViewController: Web3NameServiceScriptHandlerDelegate {
       switch result {
       case .load(let resolvedURL):
         if resolvedURL.isIPFSScheme,
-          let resolvedIPFSURL = profileController.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
+          let resolvedIPFSURL = IpfsAPI.resolveGatewayUrl(for: resolvedURL)
         {
           finishEditingAndSubmit(resolvedIPFSURL)
         } else {

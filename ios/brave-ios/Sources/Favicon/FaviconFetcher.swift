@@ -20,7 +20,7 @@ public enum FaviconError: Error {
 /// Handles obtaining favicons for URLs from local files, database or internet
 public class FaviconFetcher {
 
-  public static func clearCache() async {
+  @concurrent public static func clearCache() async {
     SDImageCache.shared.memoryCache.removeAllObjects()
     SDImageCache.shared.diskCache.removeAllData()
   }
@@ -32,7 +32,7 @@ public class FaviconFetcher {
   /// 4. Fetch Monogram Icons
   /// Notes: Does NOT make a request to fetch icons from the page.
   ///      Requests are only made in FaviconScriptHandler, when the user visits the page.
-  public static func loadIcon(
+  @concurrent public static func loadIcon(
     url: URL,
     persistent: Bool
   ) async throws -> Favicon {
@@ -71,7 +71,7 @@ public class FaviconFetcher {
   /// Creates a monogram Favicon with the following conditions
   /// 1. If `monogramString` is not null, it is used to render the Favicon image.
   /// 2. If `monogramString` is null, the first character of the URL's domain is used to render the Favicon image.
-  public static func monogramIcon(
+  @concurrent public static func monogramIcon(
     url: URL,
     monogramString: Character? = nil,
     persistent: Bool
@@ -94,7 +94,7 @@ public class FaviconFetcher {
   }
 
   /// Retrieves a Favicon from the cache
-  public static func getIconFromCache(for url: URL) async -> Favicon? {
+  @concurrent public static func getIconFromCache(for url: URL) async -> Favicon? {
     // Handle internal URLs
     var url = url
     if let internalURL = InternalURL(url),
@@ -125,7 +125,11 @@ public class FaviconFetcher {
   }
 
   /// Updates the Favicon in the cache with the specified icon if any, otherwise removes the favicon from the cache.
-  public static func updateCache(_ favicon: Favicon?, for url: URL, persistent: Bool) async {
+  @concurrent public static func updateCache(
+    _ favicon: Favicon?,
+    for url: URL,
+    persistent: Bool
+  ) async {
     guard let favicon, !favicon.isMonogramImage else {
       let cachedURL = cacheURL(for: url)
       SDImageCache.shared.memoryCache.removeObject(forKey: cachedURL.absoluteString)
@@ -137,7 +141,7 @@ public class FaviconFetcher {
   }
 
   /// Delete the favicon from disk and memory cache for the given URL
-  public static func deleteCache(for url: URL) async {
+  @concurrent public static func deleteCache(for url: URL) async {
     let cachedURL = cacheURL(for: url)
     SDImageCache.shared.memoryCache.removeObject(forKey: cachedURL.absoluteString)
     SDImageCache.shared.diskCache.removeData(forKey: cachedURL.absoluteString)
@@ -151,7 +155,11 @@ public class FaviconFetcher {
     return url.domainURL
   }
 
-  private static func storeInCache(_ favicon: Favicon, for url: URL, persistent: Bool) async {
+  @concurrent private static func storeInCache(
+    _ favicon: Favicon,
+    for url: URL,
+    persistent: Bool
+  ) async {
     // Do not cache non-persistent icons to disk
     if persistent {
       do {
@@ -170,7 +178,7 @@ public class FaviconFetcher {
     }
   }
 
-  private static func getFromCache(for url: URL) async -> Favicon? {
+  @concurrent private static func getFromCache(for url: URL) async -> Favicon? {
     let cachedURL = cacheURL(for: url)
     if let favicon = SDImageCache.shared.memoryCache.object(forKey: cachedURL.absoluteString)
       as? Favicon

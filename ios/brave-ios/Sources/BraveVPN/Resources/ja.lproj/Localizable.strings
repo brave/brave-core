@@ -40,9 +40,6 @@
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "アプリバージョン";
 
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "通信キャリア";
-
 /* Text to tell user to not modify support info below email's body. */
 "vpn.contactFormDoNotEditText" = "Braveはお客様の個人情報を追跡したり、お客様がどのようにアプリを使用したかを把握していないため、VPNの設定内容についてお答えすることができません。できるだけ早く解決できるよう最善を尽くしますので、発生している問題の情報を共有してください。";
 
@@ -227,7 +224,7 @@
 "vpn.serverTitle" = "サーバー %ld 台";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "ブレイブVPNであらゆるアプリを保護。1つのプランで最大10台のデバイスで使用可能です。";
+"vpn.settingHeaderBody" = "あなたのコンテンツを、あなたの方法でストリーミング。1つのサブスクリプションで10台のデバイスのすべてのアプリを保護します。";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "テクニカルサポートへのお問い合わせ";

@@ -139,6 +139,24 @@ namespace polkadot_substrate_rpc_responses {
     Error? error;
   };
 
+  // system_properties' RPC structure is described here:
+  // https://github.com/w3f/PSPs/blob/b6d570173146e7a012cf43d270177e02ed886e2e/PSPs/drafts/psp-6.md#156-system_properties
+  //
+  // Chains return either a single u32/string or an array.
+  dictionary SystemProperties {
+    long? ss58Format;
+    (long or long[]) tokenDecimals;
+    (DOMString or DOMString[]) tokenSymbol;
+  };
+
+  dictionary PolkadotSystemProperties {
+    DOMString jsonrpc;
+    long id;
+
+    SystemProperties? result;
+    Error? error;
+  };
+
   // author_submitExtrinsic's RPC structure is described here:
   // https://github.com/w3f/PSPs/blob/b6d570173146e7a012cf43d270177e02ed886e2e/PSPs/drafts/psp-6.md#182-author_submitextrinsic
 

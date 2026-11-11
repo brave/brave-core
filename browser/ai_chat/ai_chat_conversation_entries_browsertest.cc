@@ -11,6 +11,7 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "content/public/test/browser_test.h"
 
 namespace ai_chat {

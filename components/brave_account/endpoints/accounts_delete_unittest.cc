@@ -16,11 +16,6 @@
 
 namespace brave_account::endpoints {
 
-bool operator==(const AccountsDelete::Response::SuccessBody&,
-                const AccountsDelete::Response::SuccessBody&) {
-  return true;
-}
-
 namespace {
 
 using AccountsDeleteTestCase = EndpointTestCase<AccountsDelete>;

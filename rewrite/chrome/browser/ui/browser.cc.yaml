@@ -5,17 +5,6 @@
 
 substitutions:
   - description: |
-      Instantiate BraveBrowser instead of Browser
-
-      Both `Browser::Create` and `Browser::DeprecatedCreateOwnedForTesting`
-      construct the Brave subclass so Brave-specific behaviour is always in
-      place.
-    count: 2
-    regex:
-      pattern: 'base::WrapUnique(new Browser(std::move(params)))'
-      replace: 'base::WrapUnique(new BraveBrowser(std::move(params)))'
-
-  - description: |
       Use BraveTabStripModel for the browser's tab strip model
     regex:
       pattern: 'std::make_unique<TabStripModel>'
@@ -29,3 +18,26 @@ substitutions:
     regex:
       pattern: 'std::make_unique<chrome::BrowserTabStripModelDelegate>'
       replace: 'std::make_unique<chrome::BraveTabStripModelDelegate>'
+
+  - description: |-
+      Close windows left with only shared pinned tabs.
+
+      Shared pinned tabs are mirrored in every window of the profile, so a
+      window whose last regular tab closes is closed when another window has
+      the same tabs.
+    after_function_impl:
+      function_name: Browser::OnTabClosing
+      code: 'brave_tabs::MaybeCloseWindowWithOnlySharedPinnedTabs(this);'
+
+  - description: |-
+      Keep the window open when its last tab closes.
+
+      Unless the kEnableClosingLastTab pref allows closing it, a normal window
+      gets a new tab instead of closing when its tab strip empties.
+    preempt_function_impl:
+      function_name: Browser::TabStripEmpty
+      code: |-
+        if (auto* controller = ClosingLastTabController::From(this);
+            controller && controller->MaybeKeepWindowOpen()) {
+          return;
+        }

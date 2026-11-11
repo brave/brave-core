@@ -22,8 +22,6 @@ import { qrCodeEndpoints } from './endpoints/qr-code.endpoints'
 import { handleEndpointError } from '../../utils/api-utils'
 import { walletEndpoints } from './endpoints/wallet.endpoints'
 import { tokenEndpoints } from './endpoints/token.endpoints'
-import { offRampEndpoints } from './endpoints/off-ramp.endpoints'
-import { coingeckoEndpoints } from './endpoints/coingecko-endpoints'
 import {
   tokenSuggestionsEndpoints, //
 } from './endpoints/token_suggestions.endpoints'
@@ -36,7 +34,6 @@ import { fiatCurrencyEndpoints } from './endpoints/fiat_currency.endpoints'
 import { sitePermissionEndpoints } from './endpoints/site_permissions.endpoints'
 import { transactionEndpoints } from './endpoints/transaction.endpoints'
 import { swapEndpoints } from './endpoints/swap.endpoints'
-import { encryptionEndpoints } from './endpoints/encryption.endpoints'
 import { signingEndpoints } from './endpoints/signing.endpoints'
 import { meldIntegrationEndpoints } from './endpoints/meld_integration.endpoints'
 import { zcashEndpoints } from './endpoints/zcash.endpoints'
@@ -117,10 +114,6 @@ export function createWalletApi() {
       .injectEndpoints({ endpoints: pricingEndpoints })
       // nfts endpoints
       .injectEndpoints({ endpoints: nftsEndpoints })
-      // offRamp endpoints
-      .injectEndpoints({ endpoints: offRampEndpoints })
-      // coingecko endpoints
-      .injectEndpoints({ endpoints: coingeckoEndpoints })
       // token suggestion request endpoints
       .injectEndpoints({ endpoints: tokenSuggestionsEndpoints })
       // QR Code generator endpoints
@@ -143,8 +136,6 @@ export function createWalletApi() {
       .injectEndpoints({ endpoints: sitePermissionEndpoints })
       // Brave Swap endpoints
       .injectEndpoints({ endpoints: swapEndpoints })
-      // Encryption endpoints
-      .injectEndpoints({ endpoints: encryptionEndpoints })
       // Message Signing endpoints
       .injectEndpoints({ endpoints: signingEndpoints })
       // meld integration endpoints
@@ -188,13 +179,12 @@ export const {
   useGetAccountInfosRegistryQuery,
   useGetAccountTokenCurrentBalanceQuery,
   useGetActiveOriginConnectedAccountIdsQuery,
-  useGetActiveOriginQuery,
+  useGetActivePanelOriginQuery,
   useGetAddressByteCodeQuery,
   useGetAddressFromNameServiceUrlQuery,
   useGetAvailableShieldedAccountQuery,
   useGetBitcoinBalancesQuery,
   useGetChainTipStatusQuery,
-  useGetCoingeckoIdQuery,
   useGetCoinMarketQuery,
   useGetDefaultEthereumWalletQuery,
   useGetDefaultFiatCurrencyQuery,
@@ -218,10 +208,7 @@ export const {
   useGetNftAssetIdsByCollectionRegistryQuery,
   useGetNftDiscoveryEnabledStatusQuery,
   useGetNftMetadataQuery,
-  useGetOffRampAssetsQuery,
   useGetPendingAddChainRequestQuery,
-  useGetPendingDecryptRequestQuery,
-  useGetPendingGetEncryptionPublicKeyRequestQuery,
   useGetPendingSignSolTransactionsRequestsQuery,
   useGetPendingSignCardanoTransactionRequestsQuery,
   useGetPendingSignMessageErrorsQuery,
@@ -278,7 +265,6 @@ export const {
   useLazyGetNftDiscoveryEnabledStatusQuery,
   useLazyGetPendingTokenSuggestionRequestsQuery,
   useLazyGetPolkadotAddressForNetworkQuery,
-  useLazyGetSellAssetUrlQuery,
   useLazyGetSolanaEstimatedFeeQuery,
   useLazyGetTokenBalancesForChainIdQuery,
   useLazyGetTokenBalancesRegistryQuery,
@@ -294,8 +280,6 @@ export const {
   useNewUnapprovedTxAddedMutation,
   useOpenPanelUIMutation,
   usePrefetch,
-  useProcessPendingDecryptRequestMutation,
-  useProcessPendingGetEncryptionPublicKeyRequestMutation,
   useProcessSignSolTransactionsRequestHardwareMutation,
   useProcessSignSolTransactionsRequestMutation,
   useProcessSignCardanoTransactionRequestMutation,
@@ -308,6 +292,7 @@ export const {
   useRemoveSitePermissionMutation,
   useRemoveUserTokenMutation,
   useRequestSitePermissionMutation,
+  useRecoverWalletMutation,
   useRestoreNetworksMutation,
   useRestoreWalletMutation,
   useRetryTransactionMutation,
@@ -364,19 +349,6 @@ export const useGetNetworksQuery = (opts?: { skip?: boolean }) => {
       isLoading: res.isLoading,
       error: res.error,
       data: networkSelectors.selectAll(res.data),
-    }),
-    skip: opts?.skip,
-  })
-
-  return queryResults
-}
-
-export const useGetOffRampNetworksQuery = (opts?: { skip?: boolean }) => {
-  const queryResults = useGetNetworksRegistryQuery(undefined, {
-    selectFromResult: (res) => ({
-      isLoading: res.isLoading,
-      error: res.error,
-      data: networkSelectors.selectOffRampNetworks(res.data),
     }),
     skip: opts?.skip,
   })

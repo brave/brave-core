@@ -23,7 +23,6 @@ class JsonRpcService;
 class KeyringService;
 class FilNonceTracker;
 class FilTxStateManager;
-class FilTransaction;
 
 class FilTxManager : public TxManager, public FilBlockTracker::Observer {
  public:
@@ -47,7 +46,6 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
       const std::string& chain_id,
       mojom::FilTxDataPtr fil_tx_data,
       const mojom::AccountIdPtr& from,
-      const std::optional<url::Origin>& origin,
       mojom::SwapInfoPtr swap_info,
       AddUnapprovedFilecoinTransactionCallback callback);
   void ApproveTransaction(const std::string& tx_meta_id,
@@ -70,10 +68,7 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
       const mojom::FilecoinSignaturePtr& hw_signature,
       ProcessFilHardwareSignatureCallback callback);
 
-  void GetEstimatedGas(const std::string& chain_id,
-                       const mojom::AccountIdPtr& from_account_id,
-                       const std::optional<url::Origin>& origin,
-                       std::unique_ptr<FilTransaction> tx,
+  void GetEstimatedGas(std::unique_ptr<FilTxMeta> meta,
                        AddUnapprovedFilecoinTransactionCallback callback);
   std::unique_ptr<FilTxMeta> GetTxForTesting(const std::string& tx_meta_id);
 
@@ -97,10 +92,7 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
                                  mojom::FilecoinProviderError error,
                                  const std::string& error_message);
   void ContinueAddUnapprovedTransaction(
-      const std::string& chain_id,
-      const mojom::AccountIdPtr& from_account_id,
-      const std::optional<url::Origin>& origin,
-      std::unique_ptr<FilTransaction> tx,
+      std::unique_ptr<FilTxMeta> meta,
       AddUnapprovedFilecoinTransactionCallback callback,
       const std::string& gas_premium,
       const std::string& gas_fee_cap,

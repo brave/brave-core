@@ -64,7 +64,6 @@ public final class FakeTabState: TabState {
   public var canGoBack: Bool { false }
   public var canGoForward: Bool { false }
   public var backForwardList: (any BackForwardListProxy)? { nil }
-  public var redirectChain: [URL] = []
   public var currentInitialURL: URL? { nil }
   public var currentUserAgentType: UserAgentType { .automatic }
 
@@ -81,6 +80,10 @@ public final class FakeTabState: TabState {
   public var canTakeSnapshot: Bool { false }
   public func takeSnapshot(rect: CGRect, handler: @escaping (UIImage?) -> Void) { handler(nil) }
   public func createFullPagePDF() async throws -> Data? { nil }
+  public func downloadCurrentPage(to fileURL: URL) async throws {}
+  public func suggestedFilenameForCurrentPage(contentDisposition: String?) -> String {
+    "document"
+  }
   public var isFindNavigatorVisible: Bool { false }
   public func presentFindInteraction(with text: String) {}
   public func dismissFindInteraction() {}

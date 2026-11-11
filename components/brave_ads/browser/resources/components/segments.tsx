@@ -17,6 +17,60 @@ interface CreativeSetSegments {
   segments: string[]
 }
 
+function SegmentList({ segments, likedSegments, dislikedSegments }: {
+  segments: string[]
+  likedSegments: string[]
+  dislikedSegments: string[]
+}) {
+  const [expanded, setExpanded] = React.useState(false)
+  const [isTruncated, setIsTruncated] = React.useState(false)
+  const collapsedRef = React.useRef<HTMLSpanElement>(null)
+
+  React.useLayoutEffect(() => {
+    const element = collapsedRef.current
+    if (!expanded && element) {
+      setIsTruncated(element.scrollWidth > element.clientWidth)
+    }
+  }, [expanded, segments])
+
+  if (segments.length === 0) {
+    return <span className='diagnostic-muted'>None</span>
+  }
+
+  const list = segments.map((segment, index) => (
+    <React.Fragment key={segment}>
+      {segment}
+      {(likedSegments.includes(segment) ||
+        dislikedSegments.includes(segment)) && (
+        <span className='id-with-reaction'>
+          {likedSegments.includes(segment) && <ReactionIcon type='liked' />}
+          {dislikedSegments.includes(segment) && (
+            <ReactionIcon type='disliked' />
+          )}
+        </span>
+      )}
+      {index < segments.length - 1 && ', '}
+    </React.Fragment>
+  ))
+
+  if (expanded) {
+    return <span className='segment-list'>{list}</span>
+  }
+
+  return (
+    <span className='segment-list'>
+      <span ref={collapsedRef} className='segment-list-collapsed'>
+        {list}
+      </span>
+      {isTruncated && (
+        <span className='text-link' onClick={() => setExpanded(true)}>
+          show all ({segments.length})
+        </span>
+      )}
+    </span>
+  )
+}
+
 // A creative set only ever belongs to one campaign, so flattening across
 // both ad formats' campaign lists and keying by creative set id (rather than
 // nesting under campaign, the way the Campaigns tab does) is enough to list
@@ -105,22 +159,11 @@ export function Segments() {
                     </span>
                   </td>
                   <td>
-                    {segments.length === 0
-                      ? <span className='diagnostic-muted'>None</span>
-                      : segments.map((segment, index) => (
-                        <React.Fragment key={segment}>
-                          {index > 0 && ', '}
-                          <span className='id-with-reaction'>
-                            {segment}
-                            {likedSegments.includes(segment) && (
-                              <ReactionIcon type='liked' />
-                            )}
-                            {dislikedSegments.includes(segment) && (
-                              <ReactionIcon type='disliked' />
-                            )}
-                          </span>
-                        </React.Fragment>
-                      ))}
+                    <SegmentList
+                      segments={segments}
+                      likedSegments={likedSegments}
+                      dislikedSegments={dislikedSegments}
+                    />
                   </td>
                 </tr>
               ))}

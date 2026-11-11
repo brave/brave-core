@@ -9,13 +9,17 @@
 
 #include "base/check.h"
 #include "base/notreached.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/renderer/js_cardano_provider.h"
 #include "brave/components/brave_wallet/renderer/js_ethereum_provider.h"
+#include "brave/components/brave_wallet/renderer/js_polkadot_provider.h"
 #include "brave/components/brave_wallet/renderer/js_solana_provider.h"
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
+#include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_local_frame.h"
+#include "url/origin.h"
 #include "v8/include/v8-microtask-queue.h"
 
 namespace brave_wallet {
@@ -28,10 +32,13 @@ BraveWalletRenderFrameObserver::BraveWalletRenderFrameObserver(
 
 BraveWalletRenderFrameObserver::~BraveWalletRenderFrameObserver() = default;
 
-bool BraveWalletRenderFrameObserver::CanCreateProvider() {
+bool BraveWalletRenderFrameObserver::CanCreateProviders() {
   auto* web_frame = render_frame()->GetWebFrame();
 
-  if (!GURL(web_frame->GetDocument().Url()).SchemeIsHTTPOrHTTPS()) {
+  // Rejects opaque origins, which includes sandboxed frames without
+  // allow-same-origin.
+  const url::Origin origin = web_frame->GetDocument().GetSecurityOrigin();
+  if (!IsValidDappOrigin(origin)) {
     return false;
   }
 
@@ -45,11 +52,17 @@ bool BraveWalletRenderFrameObserver::CanCreateProvider() {
     return false;
   }
 
+  // Wallet provider objects are not exposed to third party iframes
+  if (!render_frame()->IsMainFrame() &&
+      web_frame->IsCrossOriginToOutermostMainFrame()) {
+    return false;
+  }
+
   return true;
 }
 
 void BraveWalletRenderFrameObserver::DidClearWindowObject() {
-  if (!CanCreateProvider()) {
+  if (!CanCreateProviders()) {
     return;
   }
 
@@ -69,6 +82,7 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
   if (!dynamic_params.install_window_brave_ethereum_provider &&
       !dynamic_params.install_window_ethereum_provider &&
       !dynamic_params.install_window_brave_cardano_provider &&
+      !dynamic_params.install_window_brave_polkadot_provider &&
       !dynamic_params.brave_use_native_solana_wallet) {
     return;
   }
@@ -78,26 +92,24 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
     NOTREACHED();
   }
 
-  if (dynamic_params.install_window_brave_ethereum_provider &&
-      web_frame->GetDocument().IsDOMFeaturePolicyEnabled(isolate, context,
-                                                         "ethereum")) {
+  if (dynamic_params.install_window_brave_ethereum_provider) {
     JSEthereumProvider::Install(
         dynamic_params.install_window_ethereum_provider,
         dynamic_params.allow_overwrite_window_ethereum_provider,
         render_frame());
   }
 
-  if (web_frame->GetDocument().IsDOMFeaturePolicyEnabled(isolate, context,
-                                                         "solana") &&
-      dynamic_params.brave_use_native_solana_wallet) {
+  if (dynamic_params.brave_use_native_solana_wallet) {
     JSSolanaProvider::Install(
         dynamic_params.allow_overwrite_window_solana_provider, render_frame());
   }
 
-  if (web_frame->GetDocument().IsDOMFeaturePolicyEnabled(isolate, context,
-                                                         "cardano") &&
-      dynamic_params.install_window_brave_cardano_provider) {
+  if (dynamic_params.install_window_brave_cardano_provider) {
     JSCardanoProvider::Install(render_frame());
+  }
+
+  if (dynamic_params.install_window_brave_polkadot_provider) {
+    JSPolkadotProvider::Install(render_frame());
   }
 }
 

@@ -17,6 +17,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
@@ -120,8 +121,8 @@ const gfx::VectorIcon* BraveLocationBarModelDelegate::GetVectorIconOverride()
   if (!web_contents) {
     return fallback_icon;
   }
-  auto* shields_helper =
-      brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
+  auto* shields_helper = brave_shields::BraveShieldsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   if (!shields_helper) {
     return fallback_icon;
   }

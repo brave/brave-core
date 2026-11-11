@@ -28,14 +28,12 @@ bool PolkadotChainMetadata::operator==(
 
 std::optional<PolkadotChainMetadata> PolkadotChainMetadata::FromBytes(
     base::span<const uint8_t> metadata_bytes) {
-  auto result = parse_chain_metadata_from_scale(
-      ::rust::Slice<const uint8_t>(metadata_bytes));
-  if (!result->is_ok()) {
+  auto result = parse_chain_metadata_from_scale(metadata_bytes);
+  if (!result.has_value()) {
     return std::nullopt;
   }
 
-  auto parsed = result->unwrap();
-  return PolkadotChainMetadata(*parsed);
+  return PolkadotChainMetadata(*result);
 }
 
 // static
@@ -67,7 +65,7 @@ PolkadotChainMetadata PolkadotChainMetadata::FromFields(
   metadata->has_assets_pallet = has_assets_pallet;
   metadata->ss58_prefix = ss58_prefix;
   metadata->spec_version = spec_version;
-  metadata->signed_extensions = signed_extensions;
+  metadata->signed_extensions.bytes = signed_extensions;
 
   return metadata;
 }

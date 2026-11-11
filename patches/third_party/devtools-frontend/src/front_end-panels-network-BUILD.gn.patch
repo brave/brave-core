@@ -1,12 +1,20 @@
 diff --git a/front_end/panels/network/BUILD.gn b/front_end/panels/network/BUILD.gn
-index d2595e90b65def9722807ac0389e3f624742b361..1ce12993c5cfc8fdda7eef7793705f219502f422 100644
+index de18f7823f310a28cdbe92e453856647e22f7138..fcbf67d0b36e682f4dc4415cb773d13fdb0e581e 100644
 --- a/front_end/panels/network/BUILD.gn
 +++ b/front_end/panels/network/BUILD.gn
-@@ -114,6 +114,7 @@ devtools_ui_module("network") {
-     "./components:bundle",
-     "./forward:bundle",
-   ]
-+  import("//brave/third_party/devtools-frontend/src/front_end/panels/network/sources.gni") sources += brave_devtools_front_end_panels_network_sources deps += brave_devtools_front_end_panels_network_deps
- }
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
- devtools_entrypoint("bundle") {
++import("//brave/third_party/devtools-frontend/src/front_end/panels/network/sources.gni")
+ import("../../../scripts/build/ninja/devtools_entrypoint.gni")
+ import("../../../scripts/build/ninja/devtools_module.gni")
+ import("../../../scripts/build/ninja/generate_css.gni")
+@@ -66,6 +67,7 @@ devtools_ui_module("network") {
+     "ShowMoreDetailsWidget.ts",
+     "SignedExchangeInfoView.ts",
+   ]
++  sources += brave_devtools_front_end_panels_network_sources
+ 
+   ts_deps = [
+     "../../core/common:bundle",

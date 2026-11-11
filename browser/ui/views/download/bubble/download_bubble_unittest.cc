@@ -3,8 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/memory/raw_ptr.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/ui/base/clipboard/test/privacy_capturing_test_clipboard.h"
 #include "chrome/browser/download/download_item_model.h"
 #include "chrome/browser/download/download_ui_context_menu.h"
 #include "chrome/browser/ui/download/download_bubble_info_utils.h"
@@ -14,13 +16,13 @@
 #include "chrome/test/base/testing_profile_manager.h"
 #include "components/download/public/common/mock_download_item.h"
 #include "components/safe_browsing/core/common/features.h"
+#include "content/public/browser/download_item_utils.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/base/clipboard/clipboard_buffer.h"
 #include "ui/base/clipboard/test/clipboard_test_util.h"
-#include "ui/base/clipboard/test/test_clipboard.h"
 #include "ui/menus/simple_menu_model.h"
 #include "url/gurl.h"
 
@@ -57,7 +59,14 @@ class DownloadBubbleTest : public testing::Test {
 
   void SetUp() override {
     ASSERT_TRUE(testing_profile_manager_.SetUp());
-    testing_profile_manager_.CreateTestingProfile("testing_profile");
+    profile_ = testing_profile_manager_.CreateTestingProfile("testing_profile");
+  }
+
+  // DownloadItemModel::profile() is derived from the item, so tests that reach
+  // profile-dependent code have to associate one first.
+  void AttachProfileToDownloadItem(Profile* profile) {
+    content::DownloadItemUtils::AttachInfoForTesting(&item_, profile,
+                                                     /*web_contents=*/nullptr);
   }
 
   // Sets up defaults for the download item and sets |model_| to a new
@@ -114,6 +123,7 @@ class DownloadBubbleTest : public testing::Test {
   NiceMock<download::MockDownloadItem> item_;
   DownloadItemModel model_;
   TestingProfileManager testing_profile_manager_;
+  raw_ptr<TestingProfile> profile_ = nullptr;
 };
 
 TEST_F(DownloadBubbleTest, ContextMenuCompletedItemTest) {
@@ -222,8 +232,9 @@ TEST_F(DownloadBubbleTest,
 }
 
 TEST_F(DownloadBubbleTest, DownloadCommands_CopyDownloadLink) {
-  ui::TestClipboard::CreateForCurrentThread();
+  brave::ScopedPrivacyCapturingTestClipboard fake_clipboard;
 
+  AttachProfileToDownloadItem(profile_);
   SetupDownloadItemDefaults();
 
   // Check if "Copy download link" command exists.
@@ -240,5 +251,29 @@ TEST_F(DownloadBubbleTest, DownloadCommands_CopyDownloadLink) {
 
   EXPECT_EQ(base::UTF8ToUTF16(model_.GetURL().spec()), clipboard_text);
 
-  ui::TestClipboard::DestroyClipboardForCurrentThread();
+  // A normal profile copy stays eligible for OS clipboard history and cloud
+  // clipboard sync.
+  EXPECT_EQ(static_cast<uint32_t>(ui::Clipboard::kNone),
+            fake_clipboard.last_privacy_types());
+}
+
+// A download link copied from a private/Tor window must not leak into the OS
+// clipboard history or cloud clipboard sync.
+TEST_F(DownloadBubbleTest, DownloadCommands_CopyDownloadLinkOffTheRecord) {
+  brave::ScopedPrivacyCapturingTestClipboard fake_clipboard;
+
+  Profile* otr_profile =
+      profile_->GetPrimaryOTRProfile(/*create_if_needed=*/true);
+  ASSERT_TRUE(otr_profile->IsOffTheRecord());
+  AttachProfileToDownloadItem(otr_profile);
+
+  SetupDownloadItemDefaults();
+
+  DownloadCommands commands(model_.GetWeakPtr());
+  ASSERT_TRUE(commands.IsCommandEnabled(DownloadCommands::COPY_DOWNLOAD_LINK));
+  commands.ExecuteCommand(DownloadCommands::COPY_DOWNLOAD_LINK);
+
+  EXPECT_EQ(static_cast<uint32_t>(ui::Clipboard::kNoLocalClipboardHistory |
+                                  ui::Clipboard::kNoCloudClipboard),
+            fake_clipboard.last_privacy_types());
 }

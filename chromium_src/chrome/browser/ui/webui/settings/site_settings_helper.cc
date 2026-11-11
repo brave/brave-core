@@ -34,6 +34,9 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
   if (type == ContentSettingsType::BRAVE_CARDANO) {
     return true;
   }
+  if (type == ContentSettingsType::BRAVE_POLKADOT) {
+    return true;
+  }
 #endif
   if (type == ContentSettingsType::BRAVE_SHIELDS) {
     return true;

@@ -57,7 +57,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                        BraveWalletService* brave_wallet_service,
                        std::unique_ptr<BraveWalletProviderDelegate> delegate,
                        PrefService* prefs,
-                       const url::Origin& origin);
+                       const url::Origin& dapp_origin);
   ~EthereumProviderImpl() override;
 
   void SendErrorOnRequest(const mojom::ProviderError& error,
@@ -94,14 +94,6 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                       RequestCallback callback,
                       base::Value id);
 
-  void GetEncryptionPublicKey(const std::string& address,
-                              RequestCallback callback,
-                              base::Value id);
-  void Decrypt(const std::string& untrusted_encrypted_data_json,
-               const std::string& address,
-               const url::Origin& origin,
-               RequestCallback callback,
-               base::Value id);
   // Used for eth_signTypedData
   void SignTypedMessage(mojom::EthSignTypedDataPtr eth_sign_typed_data,
                         RequestCallback callback,
@@ -114,9 +106,9 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   // Used for wallet_watchAsset.
   // It will prompt an UI for user to confirm, and add the token into user's
   // visible asset list if user approves.
-  // Note that we will use the token data from BlockchainRegistry (for
-  // mainnet) or from user asset list if there is an existing token with the
-  // same contract address, instead of the token data in the request.
+  // An existing user or registry token on the same chain replaces the request.
+  // An unknown contract is not shown until its decimals and symbol are read
+  // from that chain.
   void AddSuggestToken(mojom::BlockchainTokenPtr token,
                        RequestCallback callback,
                        base::Value id);
@@ -184,10 +176,6 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                                       RequestCallback request_callback);
   void HandleEthSignTypedDataV4Method(JsonRpcRequest request,
                                       RequestCallback request_callback);
-  void HandleEthGetEncryptionPublicKeyMethod(JsonRpcRequest request,
-                                             RequestCallback request_callback);
-  void HandleEthDecryptMethod(JsonRpcRequest request,
-                              RequestCallback request_callback);
   void HandleWalletWatchAssetMethod(JsonRpcRequest request,
                                     RequestCallback request_callback);
   void HandleMetamaskWatchAssetMethod(JsonRpcRequest request,
@@ -208,6 +196,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
       base::Value& id,
       mojom::EthereumProvider::RequestCallback& callback);
   mojom::AccountIdPtr FindAccountByAddress(const std::string& address);
+  std::string GetCurrentChainId();
 
   // mojom::EthereumProvider:
   void Init(
@@ -266,7 +255,6 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
       RequestCallback callback,
       base::Value id,
       const mojom::AccountIdPtr& account_id,
-      const url::Origin& origin,
       base::expected<base::Value, std::string> result);
   void SendOrSignTransactionInternal(RequestCallback callback,
                                      base::Value id,
@@ -299,13 +287,11 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
 
   void RequestEthereumPermissions(RequestCallback callback,
                                   base::Value id,
-                                  const std::string& method,
-                                  const url::Origin& origin);
+                                  const std::string& method);
   void OnRequestEthereumPermissions(
       RequestCallback callback,
       base::Value id,
       const std::string& method,
-      const url::Origin& origin,
       RequestPermissionsError error,
       const std::optional<std::vector<std::string>>& allowed_accounts);
   void OnSendRawTransaction(RequestCallback callback,
@@ -316,6 +302,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   void OnGetBlockByNumber(base::Value result,
                           mojom::ProviderError,
                           const std::string&);
+  void OnSuggestTokenAdded();
 
   void OnResponse(bool format_json_rpc_response,
                   RequestCallback callback,
@@ -334,7 +321,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   base::flat_map<std::string_view, MethodHandler> method_handlers_;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
-  const url::Origin origin_;
+  const url::Origin dapp_origin_;
   mojo::Remote<mojom::EventsListener> events_listener_;
   raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
@@ -346,7 +333,6 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   base::flat_map<std::string, base::Value> add_tx_ids_;
   RequestCallback pending_request_ethereum_permissions_callback_;
   base::Value pending_request_ethereum_permissions_id_;
-  url::Origin pending_request_ethereum_permissions_origin_;
   std::string pending_request_ethereum_permissions_method_;
   mojo::Receiver<mojom::JsonRpcServiceObserver> rpc_observer_receiver_{this};
   mojo::Receiver<mojom::TxServiceObserver> tx_observer_receiver_{this};

@@ -20,7 +20,9 @@
 
 #if BUILDFLAG(ENABLE_SESSION_SERVICE)
 #include "chrome/browser/sessions/session_service_base_observer.h"
+#include "components/sessions/core/command_storage_read_status.h"
 #include "components/sessions/core/session_id.h"
+#include "components/sessions/core/session_service_commands.h"
 #endif
 
 class Profile;
@@ -77,7 +79,8 @@ class ContainersServiceDelegate
   void OnGotLastSession(
       std::vector<std::unique_ptr<sessions::SessionWindow>> windows,
       SessionID active_window_id,
-      bool read_error);
+      sessions::CommandStorageReadStatus read_status,
+      sessions::SessionReplayResult replay_result);
 #endif
 
   // sessions::TabRestoreServiceObserver:

@@ -5,10 +5,12 @@
 
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <utility>
 
+#include "base/containers/span.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
@@ -30,6 +32,7 @@
 #include "chrome/test/base/testing_browser_process.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
+#include "crypto/sha2.h"
 #include "net/base/net_errors.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/log/net_log.h"
@@ -74,7 +77,8 @@ class TestingBraveComponentUpdaterDelegate : public BraveComponent::Delegate {
 
   // brave_component_updater::BraveComponent::Delegate implementation
   void Register(const std::string& component_name,
-                const std::string& component_base64_public_key,
+                base::span<const uint8_t, crypto::kSHA256Length>
+                    component_public_key_sha256,
                 base::OnceClosure registered_callback,
                 BraveComponent::ReadyCallback ready_callback) override {}
   bool Unregister(const std::string& component_id) override { return true; }

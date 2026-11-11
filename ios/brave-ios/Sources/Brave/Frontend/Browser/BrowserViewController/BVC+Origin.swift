@@ -25,7 +25,7 @@ extension BrowserViewController {
       return
     }
 
-    Task {
+    Task { [self] in
       guard FeatureList.kBraveOrigin.enabled,
         let originService = BraveOriginServiceFactory.get(profile: profileController.profile),
         let skusService = Skus.SkusServiceFactory.get(profile: profileController.profile)
@@ -33,7 +33,7 @@ extension BrowserViewController {
         return
       }
       let isPurchased = await originService.checkPurchaseState()
-      let originSettingsController: () -> UIViewController = {
+      let originSettingsController: () -> UIViewController = { [self] in
         // Origin settings is typically presented from inside settings, so we need to:
         //   1. Set up a UINavigationController container
         //   2. Add a done button to the toolbar

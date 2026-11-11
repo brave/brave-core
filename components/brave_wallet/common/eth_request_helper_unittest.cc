@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 
 #include <array>
-#include <functional>
 #include <utility>
 #include <vector>
 
@@ -48,16 +47,8 @@ TEST(EthRequestHelperUnitTest, CommonParseErrors) {
     EXPECT_FALSE(ParseWalletWatchAssetParams(list_params, message));
     std::string signature;
     EXPECT_FALSE(ParsePersonalEcRecoverParams(list_params));
-    EXPECT_FALSE(ParseEthGetEncryptionPublicKeyParams(list_params));
-    EXPECT_FALSE(ParseEthDecryptParams(list_params));
-  }
-
-  auto dict_error_cases =
-      std::to_array({"{\"params\":[{},{}]}", "{\"params\":[0]}", "{}"});
-  for (const auto& error_case : dict_error_cases) {
-    auto dict_params = base::test::ParseJsonDict(error_case);
-
-    EXPECT_FALSE(ParseEthDecryptData(dict_params));
+    EXPECT_FALSE(ParseEthSignTypedDataParams(
+        list_params, EthSignTypedDataHelper::Version::kV4));
   }
 }
 
@@ -437,89 +428,6 @@ TEST(EthResponseHelperUnitTest, ParsePersonalEcRecoverParams) {
       "e58cd19ed438ce7e2d7360b59020489e9ac05e56e8637d3e516165c3f11c");
 }
 
-TEST(EthResponseHelperUnitTest, ParseEthGetEncryptionPublicKeyParams) {
-  const std::string json(
-      R"({
-        "params": [
-          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83"
-        ]
-      })");
-  const std::string json_extra_entry(
-      R"({
-        "params": [
-          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83",
-          "12345",
-          null,
-          123
-        ]
-      })");
-
-  EXPECT_EQ(ParseEthGetEncryptionPublicKeyParams(ParseParamsList(json)),
-            "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
-  EXPECT_EQ(
-      ParseEthGetEncryptionPublicKeyParams(ParseParamsList(json_extra_entry)),
-      "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
-}
-
-TEST(EthResponseHelperUnitTest, ParseEthDecryptParams) {
-  const std::string json(
-      R"({
-        "params": [
-          "0x7b2276657273696f6e223a227832353531392d7873616c736132302d706f6c7931333035222c226e6f6e6365223a224f702f7353626241455474506d704c42337a4933686430693969486e62682f38222c22657068656d5075626c69634b6579223a22474e62315a4d635436335235687962483034563344537551677137674d4d5937705a61354235546b66446f3d222c2263697068657274657874223a224b454a72325564686d4237663838514b7a6a413151666a3650586932784f34357a3377766d673d3d227d",
-          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83"
-        ]
-      })");
-  const std::string json_extra_entry(
-      R"({
-        "params": [
-          "0x7b2276657273696f6e223a227832353531392d7873616c736132302d706f6c7931333035222c226e6f6e6365223a224f702f7353626241455474506d704c42337a4933686430693969486e62682f38222c22657068656d5075626c69634b6579223a22474e62315a4d635436335235687962483034563344537551677137674d4d5937705a61354235546b66446f3d222c2263697068657274657874223a224b454a72325564686d4237663838514b7a6a413151666a3650586932784f34357a3377766d673d3d227d",
-          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83",
-          null,
-          123
-        ]
-      })");
-  const std::string json_extra_first_entry(
-      R"({
-        "params": [
-          "extra_front",
-          "0x7b2276657273696f6e223a227832353531392d7873616c736132302d706f6c7931333035222c226e6f6e6365223a224f702f7353626241455474506d704c42337a4933686430693969486e62682f38222c22657068656d5075626c69634b6579223a22474e62315a4d635436335235687962483034563344537551677137674d4d5937705a61354235546b66446f3d222c2263697068657274657874223a224b454a72325564686d4237663838514b7a6a413151666a3650586932784f34357a3377766d673d3d227d",
-          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83",
-        ]
-      })");
-
-  auto decrypt_params = ParseEthDecryptParams(ParseParamsList(json));
-  EXPECT_TRUE(decrypt_params);
-  EXPECT_EQ(
-      decrypt_params->untrusted_encrypted_data_json,
-      R"({"version":"x25519-xsalsa20-poly1305","nonce":"Op/sSbbAETtPmpLB3zI3hd0i9iHnbh/8","ephemPublicKey":"GNb1ZMcT63R5hybH04V3DSuQgq7gMMY7pZa5B5TkfDo=","ciphertext":"KEJr2UdhmB7f88QKzjA1Qfj6PXi2xO45z3wvmg=="})");
-  EXPECT_EQ(decrypt_params->address,
-            "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
-
-  decrypt_params = ParseEthDecryptParams(ParseParamsList(json_extra_entry));
-  EXPECT_TRUE(decrypt_params);
-  EXPECT_EQ(
-      decrypt_params->untrusted_encrypted_data_json,
-      R"({"version":"x25519-xsalsa20-poly1305","nonce":"Op/sSbbAETtPmpLB3zI3hd0i9iHnbh/8","ephemPublicKey":"GNb1ZMcT63R5hybH04V3DSuQgq7gMMY7pZa5B5TkfDo=","ciphertext":"KEJr2UdhmB7f88QKzjA1Qfj6PXi2xO45z3wvmg=="})");
-  EXPECT_EQ(decrypt_params->address,
-            "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
-  EXPECT_FALSE(ParseEthDecryptParams(ParseParamsList(json_extra_first_entry)));
-}
-
-TEST(EthResponseHelperUnitTest, ParseEthDecryptData) {
-  const std::string json(
-      R"({"version":"x25519-xsalsa20-poly1305","nonce":"Op/sSbbAETtPmpLB3zI3hd0i9iHnbh/8","ephemPublicKey":"GNb1ZMcT63R5hybH04V3DSuQgq7gMMY7pZa5B5TkfDo=","ciphertext":"KEJr2UdhmB7f88QKzjA1Qfj6PXi2xO45z3wvmg=="})");
-
-  auto eth_decrypt_data = ParseEthDecryptData(base::test::ParseJsonDict(json));
-  ASSERT_TRUE(eth_decrypt_data);
-  EXPECT_EQ(eth_decrypt_data->version, "x25519-xsalsa20-poly1305");
-  EXPECT_EQ(base::Base64Encode(eth_decrypt_data->nonce),
-            "Op/sSbbAETtPmpLB3zI3hd0i9iHnbh/8");
-  EXPECT_EQ(base::Base64Encode(eth_decrypt_data->ephemeral_public_key),
-            "GNb1ZMcT63R5hybH04V3DSuQgq7gMMY7pZa5B5TkfDo=");
-  EXPECT_EQ(base::Base64Encode(eth_decrypt_data->ciphertext),
-            "KEJr2UdhmB7f88QKzjA1Qfj6PXi2xO45z3wvmg==");
-}
-
 TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {
   // Happy path
   std::string json = R"({
@@ -660,6 +568,11 @@ TEST(EthResponseHelperUnitTest, ParseSwitchEthereumChainParams) {
   EXPECT_EQ(ParseSwitchEthereumChainParams(
                 ParseParamsList("{\"params\": [{\"chainId\": \"0x1\"}]}")),
             "0x1");
+
+  // Chain id is normalized to lowercase.
+  EXPECT_EQ(ParseSwitchEthereumChainParams(
+                ParseParamsList("{\"params\": [{\"chainId\": \"0xA86A\"}]}")),
+            "0xa86a");
 
   EXPECT_FALSE(ParseSwitchEthereumChainParams(
       ParseParamsList("{\"params\": [{\"chainId\": 1}]}")));
@@ -829,6 +742,102 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
       eth_sign_typed_data->domain_hash, eth_sign_typed_data->primary_hash);
   EXPECT_EQ(base::HexEncodeLower(message_to_sign), expected_message_to_sign);
   EXPECT_FALSE(eth_sign_typed_data->meta);
+}
+
+TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParamsInvalidInput) {
+  constexpr char kAddress[] = "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826";
+  constexpr char kTypedDataJson[] = R"({
+    "types": {
+      "EIP712Domain": [
+        {"name": "name", "type": "string"},
+        {"name": "version", "type": "string"},
+        {"name": "chainId", "type": "uint256"},
+        {"name": "verifyingContract", "type": "address"}
+      ],
+      "Mail": [
+        {"name": "from", "type": "Person"},
+        {"name": "to", "type": "Person"},
+        {"name": "contents", "type": "string"}
+      ],
+      "Person": [
+        {"name": "name", "type": "string"},
+        {"name": "wallet", "type": "address"}
+      ]
+    },
+    "primaryType": "Mail",
+    "domain": {
+      "name": "Ether Mail",
+      "version": "1",
+      "chainId": 1,
+      "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"
+    },
+    "message": {
+      "from": {
+        "name": "Cow",
+        "wallet": "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826"
+      },
+      "to": {
+        "name": "Bob",
+        "wallet": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"
+      },
+      "contents": "Hello, Bob!"
+    }
+  })";
+
+  auto parse = [](const base::ListValue& params) {
+    return ParseEthSignTypedDataParams(params,
+                                       EthSignTypedDataHelper::Version::kV4);
+  };
+  auto make_params = [&](base::Value typed_data) {
+    base::ListValue params;
+    params.Append(std::string(kAddress));
+    params.Append(std::move(typed_data));
+    return params;
+  };
+
+  // Sanity check: the unmodified typed data is accepted.
+  EXPECT_TRUE(parse(make_params(base::Value(ParseJsonDict(kTypedDataJson)))));
+  EXPECT_TRUE(parse(make_params(base::Value(std::string(kTypedDataJson)))));
+
+  // Wrong number of params.
+  EXPECT_FALSE(parse(base::ListValue()));
+  {
+    base::ListValue params;
+    params.Append(std::string(kAddress));
+    EXPECT_FALSE(parse(params));
+  }
+  {
+    auto params = make_params(base::Value(ParseJsonDict(kTypedDataJson)));
+    params.Append("extra");
+    EXPECT_FALSE(parse(params));
+  }
+
+  // Address is not a string.
+  {
+    base::ListValue params;
+    params.Append(1);
+    params.Append(base::Value(ParseJsonDict(kTypedDataJson)));
+    EXPECT_FALSE(parse(params));
+  }
+
+  // Typed data is neither a dict nor a string with a JSON dict.
+  EXPECT_FALSE(parse(make_params(base::Value(1))));
+  EXPECT_FALSE(parse(make_params(base::Value("not a json"))));
+  EXPECT_FALSE(parse(make_params(base::Value("[]"))));
+
+  // Required typed data fields are missing or have a wrong type.
+  for (const char* key :
+       std::to_array({"primaryType", "domain", "message", "types"})) {
+    SCOPED_TRACE(key);
+
+    auto missing = ParseJsonDict(kTypedDataJson);
+    ASSERT_TRUE(missing.Remove(key));
+    EXPECT_FALSE(parse(make_params(base::Value(std::move(missing)))));
+
+    auto wrong_type = ParseJsonDict(kTypedDataJson);
+    wrong_type.Set(key, 1);
+    EXPECT_FALSE(parse(make_params(base::Value(std::move(wrong_type)))));
+  }
 }
 
 TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
@@ -1190,6 +1199,93 @@ TEST(EthResponseHelperUnitTest, ParseEthSendRawTransaction) {
       ParseEthSendRawTransactionParams(ParseParamsList(R"({"params": []})")));
   EXPECT_FALSE(ParseEthSendRawTransactionParams(
       ParseParamsList(R"({"params": [123]})")));
+}
+
+TEST(EthRequestHelperUnitTest, ParseCowSwapOrderRequiresSettlementDomain) {
+  auto params_for_domain = [](const std::string& domain_json) {
+    return base::test::ParseJsonList(absl::StrFormat(
+        R"([
+      "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
+      {
+        "types": {
+          "EIP712Domain": [
+            {"name": "name", "type": "string"},
+            {"name": "version", "type": "string"},
+            {"name": "chainId", "type": "uint256"},
+            {"name": "verifyingContract", "type": "address"}
+          ],
+          "Order": [
+            {"name": "sellToken", "type": "address"},
+            {"name": "buyToken", "type": "address"},
+            {"name": "receiver", "type": "address"},
+            {"name": "sellAmount", "type": "uint256"},
+            {"name": "buyAmount", "type": "uint256"},
+            {"name": "validTo", "type": "uint32"},
+            {"name": "appData", "type": "bytes32"},
+            {"name": "feeAmount", "type": "uint256"},
+            {"name": "kind", "type": "string"},
+            {"name": "partiallyFillable", "type": "bool"},
+            {"name": "sellTokenBalance", "type": "string"},
+            {"name": "buyTokenBalance", "type": "string"}
+          ]
+        },
+        "primaryType": "Order",
+        "domain": %s,
+        "message": {
+          "sellToken": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          "buyToken": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          "receiver": "0x000000000000000000000000000000000000dEaD",
+          "sellAmount": "100000000",
+          "buyAmount": "10000000000000000",
+          "validTo": "1798761600",
+          "appData": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "feeAmount": "0",
+          "kind": "sell",
+          "partiallyFillable": false,
+          "sellTokenBalance": "erc20",
+          "buyTokenBalance": "erc20"
+        }
+      }
+    ])",
+        domain_json));
+  };
+
+  auto typed_data =
+      ParseEthSignTypedDataParams(params_for_domain(R"({
+        "name": "Gnosis Protocol",
+        "version": "v2",
+        "chainId": 1,
+        "verifyingContract": "0x9008d19f58aabd9ed0d60971565aa8510560ab41"
+      })"),
+                                  EthSignTypedDataHelper::Version::kV4);
+  ASSERT_TRUE(typed_data);
+  ASSERT_TRUE(typed_data->meta);
+  ASSERT_TRUE(typed_data->meta->is_cow_swap_order());
+  EXPECT_EQ(typed_data->meta->get_cow_swap_order()->sell_amount, "100000000");
+
+  // Same Order type, different settlement contract.
+  typed_data =
+      ParseEthSignTypedDataParams(params_for_domain(R"({
+        "name": "Gnosis Protocol",
+        "version": "v2",
+        "chainId": 1,
+        "verifyingContract": "0x0000000000000000000000000000000000000001"
+      })"),
+                                  EthSignTypedDataHelper::Version::kV4);
+  ASSERT_TRUE(typed_data);
+  EXPECT_FALSE(typed_data->meta);
+
+  // Same settlement contract, different domain name.
+  typed_data =
+      ParseEthSignTypedDataParams(params_for_domain(R"({
+        "name": "Not CoW",
+        "version": "v2",
+        "chainId": 1,
+        "verifyingContract": "0x9008D19f58AAbD9eD0D60971565AA8510560ab41"
+      })"),
+                                  EthSignTypedDataHelper::Version::kV4);
+  ASSERT_TRUE(typed_data);
+  EXPECT_FALSE(typed_data->meta);
 }
 
 }  // namespace brave_wallet

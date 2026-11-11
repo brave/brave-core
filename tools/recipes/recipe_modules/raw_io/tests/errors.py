@@ -11,9 +11,30 @@ bug in the recipe (or in the test), not a step failure to recover from.
 
 from __future__ import annotations
 
-import post_process
+from dataclasses import dataclass
 
-DEPS = ['env', 'raw_io', 'step']
+import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    env,
+    raw_io,
+    step,
+)
+from recipe_test_api import RecipeTestApi
+
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    env: env.API
+    raw_io: raw_io.API
+    step: step.API
+
+
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    env: env.TEST_API
+    raw_io: raw_io.TEST_API
+
 
 # Each mode, and the stdout placeholder the step should use for it.
 MODES = {
@@ -43,16 +64,12 @@ MODES = {
 # The test data each `output_dir_test_data_*` mode feeds the placeholder.
 BAD_OUTPUT_DIR_DATA = {
     'output_dir_test_data_not_a_dict': ['some/file'],
-    'output_dir_test_data_bad_path': {
-        1: b'contents'
-    },
-    'output_dir_test_data_not_bytes': {
-        'some/file': 'text, not bytes'
-    },
+    'output_dir_test_data_bad_path': {1: b'contents'},
+    'output_dir_test_data_not_bytes': {'some/file': 'text, not bytes'},
 }
 
 
-def RunSteps(api):
+def RunSteps(api: DEPS):
     mode = api.env.get('MODE')
     if mode == 'input_not_bytes':
         api.step('cat', ['cat', api.raw_io.input(123)])
@@ -61,24 +78,34 @@ def RunSteps(api):
     elif mode == 'bad_placeholder_name':
         api.step('cat', ['cat', api.raw_io.output_text(name=123)])
     elif mode == 'output_test_data_not_bytes':
-        api.step('cat', ['cat'],
-                 stdout=api.raw_io.output(),
-                 step_test_data=lambda: api.raw_io.test_api.output(123))
+        api.step(
+            'cat',
+            ['cat'],
+            stdout=api.raw_io.output(),
+            step_test_data=lambda: api.raw_io.test_api.output(123),
+        )
     elif mode == 'output_text_test_data_not_text':
-        api.step('cat', ['cat'],
-                 stdout=api.raw_io.output_text(),
-                 step_test_data=lambda: api.raw_io.test_api.output_text(123))
+        api.step(
+            'cat',
+            ['cat'],
+            stdout=api.raw_io.output_text(),
+            step_test_data=lambda: api.raw_io.test_api.output_text(123),
+        )
     elif mode == 'output_dir_on_stdout':
         api.step('cat', ['cat'], stdout=api.raw_io.output_dir())
     elif mode in BAD_OUTPUT_DIR_DATA:
-        api.step('dump', ['dump_files', api.raw_io.output_dir()],
-                 step_test_data=lambda: api.raw_io.test_api.output_dir(
-                     BAD_OUTPUT_DIR_DATA[mode]))
+        api.step(
+            'dump',
+            ['dump_files', api.raw_io.output_dir()],
+            step_test_data=lambda: api.raw_io.test_api.output_dir(
+                BAD_OUTPUT_DIR_DATA[mode]
+            ),
+        )
     else:
         api.step('cat', ['cat'], stdout=getattr(api.raw_io, MODES[mode])())
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     mismatched = {
         'text_placeholder_given_bytes': api.raw_io.output(b'bytes'),
         'bytes_placeholder_given_text': api.raw_io.output_text('text'),
@@ -87,8 +114,11 @@ def GenTests(api):
         yield api.test(
             mode,
             api.env.set('MODE', mode),
-            *([api.step_data('cat', stdout=mismatched[mode])]
-              if mode in mismatched else []),
+            *(
+                [api.step_data('cat', stdout=mismatched[mode])]
+                if mode in mismatched
+                else []
+            ),
             api.post_process(post_process.StatusException),
             api.post_process(post_process.DropExpectation),
             status='EXCEPTION',

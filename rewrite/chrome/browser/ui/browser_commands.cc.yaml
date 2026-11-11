@@ -24,11 +24,31 @@ substitutions:
       re_flags: [DOTALL, MULTILINE]
       replace: \1chrome::kChromeUINewTabURL\3
 
+  - description: |-
+      Consider Container when performing NewSplitTab()
+
+      When source tab is in a Container, the new split tab should also be opened
+      with the Container. In order to achieve this, replaces AddTabAt() with
+      other tab insertion methods that respect the Container context.
+    regex:
+      re_pattern:
+        '(void
+        NewSplitTab\(.*?)(tab_strip_model->delegate\(\)->AddTabAt\(.*?\);)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1#if BUILDFLAG(ENABLE_CONTAINERS)
+          if (!brave::MaybeAddTabAtInheritingActiveContainer(
+              browser, new_tab_url, active_index + 1, true,
+              tab_strip_model->GetTabGroupForTab(active_index),
+              tab_strip_model->IsTabPinned(active_index)))
+        #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+          \2
+
   - description:
       Nullify toast controller in CloseTab() not to show toast when closing a
       pinned tab
     regex:
-      re_pattern: (void CloseTab\(.*?toast_controller\(\);)
+      re_pattern: (void CloseTab\(.*?ToastController::From\(browser\);)
       re_flags: [DOTALL]
       replace: \1\n  toast_controller = nullptr;
 
@@ -83,3 +103,18 @@ substitutions:
         \1 ||
               static_cast<BraveTabStripModel*>(browser->GetTabStripModel())
                   ->IsOnlyActiveTabAndTreeDescendantsSelected()) {
+
+  - description: |-
+      Make the tab being duplicated the opener in DuplicateTabAt() in tree tab
+      mode.
+
+      ADD_INHERIT_OPENER makes the active tab the opener of the duplicated tab.
+      When duplicating a non-active tab (e.g. via the tab context menu), the
+      active tab is unrelated to the duplicated tab, and using it as the opener
+      can place the new tab in a wrong tree in tree tab mode.
+      BraveInsertDuplicatedTab() sets the tab being duplicated as the opener in
+      that case when tree tabs are enabled.
+    regex:
+      re_pattern: '(content::WebContents\*\s+DuplicateTabAt\(.*?)tab_strip_model->InsertWebContentsAt\('
+      re_flags: [DOTALL]
+      replace: '\1BraveInsertDuplicatedTab(tab_strip_model, index, '

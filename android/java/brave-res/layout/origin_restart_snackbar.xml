@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/origin_changing_brave_features_title"
-        android:textColor="@android:color/white" />
+        android:textColor="?attr/colorOnSurfaceInverse" />
 
     <TextView
         android:id="@+id/snackbar_message"
@@ -26,12 +26,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="@string/origin_changing_brave_features_message"
-        android:textColor="@android:color/white" />
+        android:textColor="?attr/colorOnSurfaceInverse"
+        android:textColorLink="?attr/colorOnSurfaceInverse" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="20dp">
 
         <!-- Shown during credential fetch: "Disabling features" + spinner + close -->
         <LinearLayout
@@ -42,31 +43,21 @@
             android:orientation="horizontal"
             android:visibility="gone">
 
+            <ProgressBar
+                android:id="@+id/snackbar_fetching_spinner"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:indeterminate="true"
+                android:indeterminateTint="?attr/colorPrimaryInverse" />
+
             <TextView
                 android:id="@+id/snackbar_fetching_text"
                 style="@style/DefaultRegular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/origin_disabling_features"
-                android:textColor="@color/schemes_primary_fixed_dim" />
-
-            <ProgressBar
-                android:id="@+id/snackbar_fetching_spinner"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
                 android:layout_marginStart="8dp"
-                android:indeterminate="true"
-                android:indeterminateTint="@color/schemes_primary_fixed_dim" />
-
-            <ImageButton
-                android:id="@+id/snackbar_fetching_close"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="20dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@android:string/cancel"
-                android:src="@drawable/ic_close"
-                android:tint="@color/schemes_primary_fixed_dim" />
+                android:text="@string/origin_disabling_features"
+                android:textColor="?attr/colorPrimaryInverse" />
 
         </LinearLayout>
 
@@ -85,23 +76,11 @@
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
                 android:paddingStart="12dp"
-                android:paddingTop="8dp"
                 android:paddingEnd="12dp"
-                android:paddingBottom="8dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:text="@string/origin_restart_now"
-                android:textColor="@color/schemes_primary_fixed_dim" />
-
-            <ImageButton
-                android:id="@+id/snackbar_close"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="8dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@android:string/cancel"
-                android:src="@drawable/ic_close"
-                android:tint="@color/schemes_primary_fixed_dim" />
+                android:textColor="?attr/colorPrimaryInverse" />
 
         </LinearLayout>
 

@@ -34,7 +34,7 @@ substitutions:
       kBraveLocalAIEnabled master switch.
 
       This function is the chokepoint every upstream consumer reaches the
-      feature through (model component installer, side bar toggle
+      feature through (model component installer, settings toggle
       visibility, history embeddings service factory, etc.), so folding it
       off here folds off every consumer with it, without needing to touch
       each of them individually. See ShouldForceHistoryEmbeddingsFeatureDisabled
@@ -46,8 +46,7 @@ substitutions:
 
   - description: |-
       Additionally gate IsHistoryEmbeddingsEnabledForProfile on the
-      per-profile kBraveHistoryEmbeddingsEnabled pref backing the
-      chrome://history side bar toggle.
+      per-profile kBraveHistoryEmbeddingsEnabled pref.
 
       See ComputeHistoryEmbeddingsEnabledForProfile in the chromium_src
       override for the actual check.
@@ -59,8 +58,8 @@ substitutions:
   - description: |-
       Force IsHistoryEmbeddingsSettingVisible off.
 
-      The per-profile toggle lives on chrome://history, so the
-      chrome://settings/ai History Search entry is never surfaced.
+      kBraveHistoryEmbeddingsEnabled is surfaced by Brave's own settings UI,
+      so the chrome://settings/ai History Search entry is never surfaced.
     preempt_function_impl:
       function_name: IsHistoryEmbeddingsSettingVisible
       code: |-

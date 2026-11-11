@@ -10,7 +10,6 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/web_discovery/browser/content_scraper.h"
 #include "brave/components/web_discovery/browser/payload_generator.h"
 #include "brave/components/web_discovery/browser/privacy_guard.h"

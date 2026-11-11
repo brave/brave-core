@@ -10,7 +10,6 @@ import {
   MeldCryptoCurrency,
   SortOrder,
 } from '../constants/types'
-import { getAssetSymbol } from './meld_utils'
 
 export const sortCoinMarkets = (
   marketData: BraveWallet.CoinMarket[],
@@ -52,7 +51,7 @@ export const filterCoinMarkets = (
   filter: MarketAssetFilterOption,
 ) => {
   const tradableAssetsSymbols = tradableAssets?.map((asset) =>
-    getAssetSymbol(asset).toLowerCase(),
+    asset.symbol.toLowerCase(),
   )
 
   if (filter === 'all') {

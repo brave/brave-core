@@ -52,11 +52,6 @@ class SearchSuggestionCell: UICollectionViewCell, CollectionViewReusable {
     }
   }
 
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    setTheme()
-  }
-
   override init(frame: CGRect) {
     super.init(frame: frame)
 
@@ -83,6 +78,10 @@ class SearchSuggestionCell: UICollectionViewCell, CollectionViewReusable {
     }
 
     openButton.addTarget(self, action: #selector(onOpenButtonPressed), for: .touchUpInside)
+
+    registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+      self.setTheme()
+    }
   }
 
   required init?(coder: NSCoder) {

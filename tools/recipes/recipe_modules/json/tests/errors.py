@@ -12,16 +12,29 @@ returning some fallback value.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import json
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['json']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    json: json.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    pass
+
+
+def RunSteps(api: DEPS):
     api.json.dumps({'set': {'a', 'b'}})
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'not_serializable',
         api.post_process(post_process.StatusException),

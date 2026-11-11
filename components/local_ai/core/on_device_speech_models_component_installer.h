@@ -14,6 +14,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/values.h"
+#include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/update_client/update_client.h"
@@ -30,20 +31,22 @@ class ComponentUpdateService;
 
 namespace local_ai {
 
-// Component id of Brave's on-device speech recognition model, derived from the
-// public key it is signed with.
-inline constexpr char kOnDeviceSpeechModelsComponentId[] =
+// Component ids of Brave's on-device speech recognition models, each derived
+// from the public key its component is signed with.
+inline constexpr char kOnDeviceSpeechEnglishModelComponentId[] =
     "nhkekccefdppopbldokibkoegppanbba";
+inline constexpr char kOnDeviceSpeechMultilingualModelComponentId[] =
+    "gcanmpgghlnodnjdmialcjddcnloedij";
 
-// Component Updater policy for Brave's on-device speech recognition model.
-// Exposed for testing - follows upstream Chromium pattern.
+// Component Updater policy for one of Brave's on-device speech recognition
+// models. Exposed for testing - follows upstream Chromium pattern.
 class OnDeviceSpeechModelsComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
-  // `local_state` gates `ComponentReady` on the `kBraveLocalAIEnabled` master
-  // switch, which can turn off while an update is already in flight.
-  explicit OnDeviceSpeechModelsComponentInstallerPolicy(
-      PrefService* local_state);
+  // `local_state` gates `ComponentReady` on `ShouldInstallOnDeviceSpeechModel`,
+  // which can turn false while an update is already in flight.
+  OnDeviceSpeechModelsComponentInstallerPolicy(OnDeviceSpeechModel model,
+                                               PrefService* local_state);
   ~OnDeviceSpeechModelsComponentInstallerPolicy() override;
 
   OnDeviceSpeechModelsComponentInstallerPolicy(
@@ -70,13 +73,19 @@ class OnDeviceSpeechModelsComponentInstallerPolicy
   bool IsBraveComponent() const override;
 
  private:
+  const OnDeviceSpeechModel model_;
   raw_ptr<PrefService> local_state_ = nullptr;
 };
 
-// Called once, while components are registered at startup. Sets up the
-// registrar, which from then on follows the `kBraveLocalAIEnabled` master
-// switch and the feature for the rest of the session, registering the
-// component or taking the model back off disk to match.
+// Called once, while components are registered at startup. Sets up a
+// registrar per model, which from then on follows the `kBraveLocalAIEnabled`
+// master switch, `kBraveOnDeviceSpeechRecognition` and the model's own enabled
+// pref (`GetOnDeviceSpeechModelEnabledPref`) for the rest of the session. The
+// multilingual registrar also follows `kBraveOnDeviceSpeechMultilingual`. Each
+// registers its model only while that model is enabled, and otherwise takes
+// it back off disk. Turning the switch or `kBraveOnDeviceSpeechRecognition` off
+// also clears both enabled prefs. `kBraveOnDeviceSpeechMultilingual` off clears
+// only the multilingual pref.
 //
 // Brave Origin manages the switch and verifies the purchase asynchronously, so
 // its value can land after components are registered, which is why the switch
@@ -95,13 +104,16 @@ void ManageOnDeviceSpeechModelsComponentRegistration(
 // `local_state` are destroyed.
 void ShutdownOnDeviceSpeechModelsComponentRegistration();
 
-// Registers the component, publishing a copy already on disk and asking the
-// updater to download one that is not. Safe to call repeatedly. `callback`
-// runs once, asynchronously, with whether a model ended up installed, even
-// when nothing is registered, which is the case while the feature or the
-// master switch is off, or before
+// Registers `model`'s component, publishing a copy already on disk and asking
+// the updater to download one that is not. Safe to call repeatedly.
+// `callback` runs once, asynchronously, with whether `model` ended up
+// installed, even when nothing is registered, which is the case while the
+// feature or the master switch is off, while `kBraveOnDeviceSpeechMultilingual`
+// is off for the multilingual model, while `model` is not enabled
+// (`GetOnDeviceSpeechModelEnabledPref`), or before
 // `ManageOnDeviceSpeechModelsComponentRegistration` has run.
 void MaybeRegisterOnDeviceSpeechModelsComponent(
+    OnDeviceSpeechModel model,
     base::OnceCallback<void(bool)> callback);
 
 }  // namespace local_ai

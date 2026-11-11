@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Label from '@brave/leo/react/label'
+import Label from '@brave/nala/react/label'
 import { getLocale } from '$web-common/locale'
 import styles from './near_label_style.module.scss'
 import NearLogo from '../../assets/near_ai.svg'

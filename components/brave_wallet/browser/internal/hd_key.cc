@@ -8,7 +8,6 @@
 #include <array>
 #include <memory>
 #include <optional>
-#include <utility>
 
 #include "base/check.h"
 #include "base/check_op.h"
@@ -197,55 +196,6 @@ std::vector<uint8_t> HDKey::GetUncompressedPublicKey() const {
 
 std::string HDKey::GetZCashTransparentAddress(bool testnet) const {
   return PubkeyToTransparentAddress(public_key_, testnet);
-}
-
-std::vector<uint8_t> HDKey::GetPublicKeyFromX25519_XSalsa20_Poly1305() const {
-  size_t public_key_len = crypto_scalarmult_curve25519_tweet_BYTES;
-  std::vector<uint8_t> public_key(public_key_len);
-  const uint8_t* private_key_ptr = private_key_.data();
-  if (crypto_scalarmult_curve25519_tweet_base(public_key.data(),
-                                              private_key_ptr) != 0) {
-    return std::vector<uint8_t>();
-  }
-  return public_key;
-}
-
-std::optional<std::vector<uint8_t>>
-HDKey::DecryptCipherFromX25519_XSalsa20_Poly1305(
-    const std::string& version,
-    base::span<const uint8_t> nonce,
-    base::span<const uint8_t> ephemeral_public_key,
-    base::span<const uint8_t> ciphertext) const {
-  // Only x25519-xsalsa20-poly1305 is supported by MM at the time of writing
-  if (version != "x25519-xsalsa20-poly1305") {
-    return std::nullopt;
-  }
-  if (nonce.size() != crypto_box_curve25519xsalsa20poly1305_tweet_NONCEBYTES) {
-    return std::nullopt;
-  }
-  if (ephemeral_public_key.size() !=
-      crypto_box_curve25519xsalsa20poly1305_tweet_PUBLICKEYBYTES) {
-    return std::nullopt;
-  }
-  if (private_key_.size() !=
-      crypto_box_curve25519xsalsa20poly1305_tweet_SECRETKEYBYTES) {
-    return std::nullopt;
-  }
-
-  std::vector<uint8_t> padded_ciphertext(ciphertext.begin(), ciphertext.end());
-  padded_ciphertext.insert(padded_ciphertext.begin(), crypto_box_BOXZEROBYTES,
-                           0);
-  std::vector<uint8_t> padded_plaintext(padded_ciphertext.size());
-  const uint8_t* private_key_ptr = private_key_.data();
-  if (crypto_box_open(padded_plaintext.data(), padded_ciphertext.data(),
-                      padded_ciphertext.size(), nonce.data(),
-                      ephemeral_public_key.data(), private_key_ptr) != 0) {
-    return std::nullopt;
-  }
-  std::vector<uint8_t> plaintext(
-      padded_plaintext.cbegin() + crypto_box_ZEROBYTES,
-      padded_plaintext.cend());
-  return plaintext;
 }
 
 void HDKey::SetChainCode(

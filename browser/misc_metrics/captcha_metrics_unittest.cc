@@ -6,10 +6,16 @@
 #include "brave/browser/misc_metrics/captcha_metrics.h"
 
 #include <memory>
+#include <optional>
 
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/scoped_command_line.h"
 #include "base/time/time.h"
+#include "base/values.h"
+#include "brave/components/misc_metrics/pref_names.h"
+#include "brave/components/p3a_utils/test_event_relay_observer.h"
 #include "components/prefs/testing_pref_service.h"
+#include "content/public/common/content_switches.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -61,8 +67,9 @@ class CaptchaMetricsTest : public testing::Test {
     histogram_tester_.ExpectTotalCount(kCaptchaHCaptchaCountHistogramName, 0);
   }
 
-  void MaybeRecordCaptchaForUrl(const GURL& url) {
-    metrics_->MaybeRecordCaptchaForUrl(url);
+  void MaybeRecordCaptchaForUrl(const GURL& url,
+                                bool is_user_activated = false) {
+    metrics_->MaybeRecordCaptchaForUrl(url, is_user_activated);
   }
 
  protected:
@@ -70,6 +77,8 @@ class CaptchaMetricsTest : public testing::Test {
   TestingPrefServiceSimple pref_service_;
   std::unique_ptr<CaptchaMetrics> metrics_;
   base::HistogramTester histogram_tester_;
+  base::test::ScopedCommandLine scoped_command_line_;
+  p3a_utils::TestEventRelayObserver event_relay_observer_;
 };
 
 TEST_F(CaptchaMetricsTest, DoesNotReportOnConstruction) {
@@ -150,6 +159,63 @@ TEST_F(CaptchaMetricsTest, RecordsProviderCounts) {
   histogram_tester_.ExpectBucketCount(kCaptchaHCaptchaCountHistogramName, 1, 1);
 }
 
+TEST_F(CaptchaMetricsTest, RecordsUserActivatedCounts) {
+  // Two google captchas shown; only one is interacted with by the user.
+  MaybeRecordCaptchaForUrl(GoogleCaptchaUrl());
+  MaybeRecordCaptchaForUrl(GoogleCaptchaUrl(), /*is_user_activated=*/true);
+
+  task_environment_.FastForwardBy(base::Days(1));
+
+  histogram_tester_.ExpectBucketCount(kCaptchaTotalCountHistogramName, 1, 1);
+  histogram_tester_.ExpectBucketCount(kCaptchaGoogleCountHistogramName, 1, 1);
+
+  // User-activated counts include only the interacted-with load.
+  histogram_tester_.ExpectBucketCount(
+      kCaptchaTotalCountUserActivatedHistogramName, 1, 1);
+  histogram_tester_.ExpectBucketCount(
+      kCaptchaGoogleCountUserActivatedHistogramName, 1, 1);
+
+  // Providers that were never interacted with emit nothing on the
+  // user-activated series.
+  histogram_tester_.ExpectTotalCount(
+      kCaptchaCloudflareCountUserActivatedHistogramName, 0);
+  histogram_tester_.ExpectTotalCount(
+      kCaptchaHCaptchaCountUserActivatedHistogramName, 0);
+}
+
+TEST_F(CaptchaMetricsTest, StoresCountsInNestedProviderDict) {
+  // One activated + one non-activated Google captcha, plus one Cloudflare.
+  MaybeRecordCaptchaForUrl(GoogleCaptchaUrl());
+  MaybeRecordCaptchaForUrl(GoogleCaptchaUrl(), /*is_user_activated=*/true);
+  MaybeRecordCaptchaForUrl(CloudflareCaptchaUrl());
+
+  // Counts are stored nested per-provider, keyed by provider with inner
+  // "total" / "user_activated" fields, rather than as flat dotted keys.
+  const base::DictValue& counts =
+      pref_service_.GetDict(kMiscMetricsCaptchaDictionaryPref);
+
+  // "all": total counts every non-activated load (google + cloudflare = 2);
+  // user_activated counts the single interacted-with load.
+  const base::DictValue* all = counts.FindDict("all");
+  ASSERT_TRUE(all);
+  EXPECT_EQ(all->FindInt("total"), 2);
+  EXPECT_EQ(all->FindInt("user_activated"), 1);
+
+  const base::DictValue* google = counts.FindDict("google");
+  ASSERT_TRUE(google);
+  EXPECT_EQ(google->FindInt("total"), 1);
+  EXPECT_EQ(google->FindInt("user_activated"), 1);
+
+  // Cloudflare was never interacted with, so it has no user_activated field.
+  const base::DictValue* cloudflare = counts.FindDict("cloudflare");
+  ASSERT_TRUE(cloudflare);
+  EXPECT_EQ(cloudflare->FindInt("total"), 1);
+  EXPECT_FALSE(cloudflare->FindInt("user_activated").has_value());
+
+  // Providers with no captchas seen have no entry at all.
+  EXPECT_FALSE(counts.FindDict("hcaptcha"));
+}
+
 TEST_F(CaptchaMetricsTest, ExpiresAfterOneDay) {
   for (int i = 0; i < 6; ++i) {
     MaybeRecordCaptchaForUrl(GoogleCaptchaUrl());
@@ -162,6 +228,37 @@ TEST_F(CaptchaMetricsTest, ExpiresAfterOneDay) {
   task_environment_.FastForwardBy(base::Days(1));
   histogram_tester_.ExpectTotalCount(kCaptchaTotalCountHistogramName, 1);
   histogram_tester_.ExpectTotalCount(kCaptchaGoogleCountHistogramName, 1);
+}
+
+TEST_F(CaptchaMetricsTest, SetsBotAttributeWhenNotAutomated) {
+  MaybeRecordCaptchaForUrl(GoogleCaptchaUrl());
+  task_environment_.FastForwardBy(base::Days(1));
+
+  EXPECT_EQ(
+      event_relay_observer_.GetCustomAttribute(kCaptchaCustomAttributeBotName),
+      "false");
+}
+
+TEST_F(CaptchaMetricsTest, SetsBotAttributeInAutomationMode) {
+  scoped_command_line_.GetProcessCommandLine()->AppendSwitch(
+      switches::kEnableAutomation);
+
+  MaybeRecordCaptchaForUrl(GoogleCaptchaUrl());
+  task_environment_.FastForwardBy(base::Days(1));
+
+  EXPECT_EQ(
+      event_relay_observer_.GetCustomAttribute(kCaptchaCustomAttributeBotName),
+      "true");
+}
+
+TEST_F(CaptchaMetricsTest, DoesNotSetBotAttributeWithoutCaptchas) {
+  scoped_command_line_.GetProcessCommandLine()->AppendSwitch(
+      switches::kEnableAutomation);
+  task_environment_.FastForwardBy(base::Days(1));
+
+  EXPECT_EQ(
+      event_relay_observer_.GetCustomAttribute(kCaptchaCustomAttributeBotName),
+      std::nullopt);
 }
 
 }  // namespace misc_metrics

@@ -18,6 +18,7 @@ class TabStripControlButton : public TabStripControlButton_ChromiumImpl {
   using TabStripControlButton_ChromiumImpl::TabStripControlButton_ChromiumImpl;
   ~TabStripControlButton() override;
   int GetCornerRadius() const override;
+  void UpdateIcon() override;
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_STRIP_CONTROL_BUTTON_H_

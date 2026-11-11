@@ -1,0 +1,23 @@
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<!-- Included ahead of upstream's Bookmarks widget so ours is the first
+     app widget declared (Play Store's install-time widget suggestion). -->
+<receiver
+    android:name="org.chromium.chrome.browser.widget.quickactionsearchandbookmark.QuickActionSearchAndBookmarkWidgetProvider"
+    android:exported="false">
+    <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+    </intent-filter>
+
+    <meta-data
+        android:name="android.appwidget.provider"
+        android:resource="@xml/quick_action_search_and_bookmark_widget_info" />
+</receiver>
+
+<service
+    android:name="org.chromium.chrome.browser.widget.quickactionsearchandbookmark.QuickActionSearchAndBookmarkWidgetService"
+    android:permission="android.permission.BIND_REMOTEVIEWS"
+    android:exported="false" />

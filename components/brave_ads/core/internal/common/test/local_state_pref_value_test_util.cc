@@ -7,28 +7,16 @@
 
 #include <utility>
 
-#include "base/check.h"
 #include "base/json/values_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/local_state_pref_storage_test_util_internal.h"
-#include "brave/components/brave_ads/core/internal/common/test/internal/pref_value_test_info.h"
+#include "components/prefs/testing_pref_service.h"
 
 namespace brave_ads::test {
 
 void SetLocalStatePrefValue(const std::string& path, base::Value value) {
-  CHECK(HasLocalStatePref(path))
-      << "Check failed. Trying to write an unregistered pref: " << path;
-
-  LocalStatePref(path).value = std::move(value);
-}
-
-void SetDefaultLocalStatePrefValue(const std::string& path,
-                                   base::Value default_value) {
-  CHECK(HasLocalStatePref(path))
-      << "Check failed. Trying to write an unregistered pref: " << path;
-
-  LocalStatePref(path).default_value = std::move(default_value);
+  GetLocalStatePrefServiceForTesting().Set(path, value);
 }
 
 void SetLocalStateBooleanPrefValue(const std::string& path, bool value) {

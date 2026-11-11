@@ -16,6 +16,7 @@ from subprocess import run, DEVNULL, Popen, PIPE, STDOUT
 from tempfile import TemporaryDirectory
 from threading import Thread
 
+import contextlib
 import plistlib
 import re
 import shlex
@@ -23,8 +24,9 @@ import sys
 import unittest
 
 SRC_ROOT = dirname(dirname(dirname(realpath(__file__))))
-KEYSTONE_INSTALL_SH = join(SRC_ROOT, "chrome", "installer", "mac",
-                           "keystone_install.sh")
+KEYSTONE_INSTALL_SH = join(
+    SRC_ROOT, "chrome", "installer", "mac", "keystone_install.sh"
+)
 
 # We make it possible for the Python test to mock system executables. For
 # example:
@@ -62,24 +64,22 @@ UPDATE_VERSION = "2.0.0.0"
 
 @unittest.skipUnless(sys.platform == "darwin", "requires macOS")
 class KeystoneInstallShPatchTest(unittest.TestCase):
-
     def setUp(self):
-        self.temp_dir = TemporaryDirectory()
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self.temp_dir = stack.enter_context(TemporaryDirectory())
         self.dmg_dir = self._prepare_dmg_dir()
         self.install_sh, self.bin_dir = self._prepare_install_sh()
 
-    def tearDown(self):
-        self.temp_dir.cleanup()
-
     def test_nonstandard_app_dir_name(self):
-        app_dir = join(self.temp_dir.name, "User Renamed Brave.app")
+        app_dir = join(self.temp_dir, "User Renamed Brave.app")
         self._make_app(app_dir, CURRENT_VERSION)
         self._run_install_sh(app_dir)
         self._check_app(app_dir, UPDATE_VERSION)
 
     def test_nonroot_omits_perms_and_link_and_dir_times(self):
         # See Chromium CL 5866112.
-        app_dir = join(self.temp_dir.name, f"{PRODUCT_NAME}.app")
+        app_dir = join(self.temp_dir, f"{PRODUCT_NAME}.app")
         self._make_app(app_dir, CURRENT_VERSION)
         rsync_args = []
 
@@ -88,14 +88,19 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
             return system_rsync(args)
 
         self._run_install_sh(app_dir, commands={'rsync': rsync})
-        for arg in ('--ignore-times', '--links', '--no-perms',
-                    '--executability', '--chmod=u=rwX,go=rX'):
+        for arg in (
+            '--ignore-times',
+            '--links',
+            '--no-perms',
+            '--executability',
+            '--chmod=u=rwX,go=rX',
+        ):
             self.assertIn(arg, rsync_args)
         for arg in ('--perms', '--times'):
             self.assertNotIn(arg, rsync_args)
 
     def test_root_has_perms_and_link_and_dir_times(self):
-        app_dir = join(self.temp_dir.name, f"{PRODUCT_NAME}.app")
+        app_dir = join(self.temp_dir, f"{PRODUCT_NAME}.app")
         self._make_app(app_dir, CURRENT_VERSION)
         rsync_args = []
 
@@ -111,7 +116,7 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
 
     def test_versioned_rsync_retry_succeeds(self):
         """Initial versioned rsync fails, mkdir succeeds, retry succeeds."""
-        app_dir = join(self.temp_dir.name, f"{PRODUCT_NAME}.app")
+        app_dir = join(self.temp_dir, f"{PRODUCT_NAME}.app")
         self._make_app(app_dir, CURRENT_VERSION)
         calls = []
 
@@ -121,14 +126,14 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
                 return 1, ""
             return system_rsync(args)
 
-        self._run_install_sh(app_dir,
-                             commands={'rsync': rsync},
-                             expected_exit_code=76)
+        self._run_install_sh(
+            app_dir, commands={'rsync': rsync}, expected_exit_code=76
+        )
         self.assertEqual(2, len(calls))
 
     def test_versioned_rsync_into_parent_succeeds(self):
         """Initial rsync and retry both fail; rsync into parent succeeds."""
-        app_dir = join(self.temp_dir.name, f"{PRODUCT_NAME}.app")
+        app_dir = join(self.temp_dir, f"{PRODUCT_NAME}.app")
         self._make_app(app_dir, CURRENT_VERSION)
         calls = []
 
@@ -138,9 +143,9 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
                 return 1, ""
             return system_rsync(args)
 
-        self._run_install_sh(app_dir,
-                             commands={'rsync': rsync},
-                             expected_exit_code=77)
+        self._run_install_sh(
+            app_dir, commands={'rsync': rsync}, expected_exit_code=77
+        )
         self.assertEqual(3, len(calls))
         # The third invocation rsyncs into installed_versions_dir, with no
         # trailing slash on the source path.
@@ -148,7 +153,7 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
 
     def test_versioned_rsync_clean_slate_parent_succeeds(self):
         """First 3 rsync attempts fail; clean-slate parent-rsync succeeds."""
-        app_dir = join(self.temp_dir.name, f"{PRODUCT_NAME}.app")
+        app_dir = join(self.temp_dir, f"{PRODUCT_NAME}.app")
         self._make_app(app_dir, CURRENT_VERSION)
         calls = []
 
@@ -158,17 +163,19 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
                 return 1, ""
             return system_rsync(args)
 
-        self._run_install_sh(app_dir,
-                             commands={'rsync': rsync},
-                             expected_exit_code=78)
+        self._run_install_sh(
+            app_dir, commands={'rsync': rsync}, expected_exit_code=78
+        )
         self.assertEqual(4, len(calls))
 
     def test_versioned_rsync_all_attempts_fail(self):
-        app_dir = join(self.temp_dir.name, f"{PRODUCT_NAME}.app")
+        app_dir = join(self.temp_dir, f"{PRODUCT_NAME}.app")
         self._make_app(app_dir, CURRENT_VERSION)
-        self._run_install_sh(app_dir,
-                             commands={'rsync': lambda args: (1, '')},
-                             expected_exit_code=79)
+        self._run_install_sh(
+            app_dir,
+            commands={'rsync': lambda args: (1, '')},
+            expected_exit_code=79,
+        )
 
     def test_mkdir_failure_classified_by_stderr(self):
         """
@@ -187,7 +194,7 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
         ]
         for i, (expected_exit_code, stderr_msg) in enumerate(cases):
             with self.subTest(stderr=stderr_msg):
-                app_dir = join(self.temp_dir.name, f"App-{i}.app")
+                app_dir = join(self.temp_dir, f"App-{i}.app")
                 self._make_app(app_dir, CURRENT_VERSION)
 
                 def mock_mkdir(args, msg=stderr_msg):
@@ -198,33 +205,37 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
                         return 1, f"mkdir: {args[-1]}: {msg}"
                     return 0, ""
 
-                self._run_install_sh(app_dir,
-                                     commands={
-                                         'rsync': lambda args: (1, ""),
-                                         'mkdir': mock_mkdir
-                                     },
-                                     expected_exit_code=expected_exit_code)
+                self._run_install_sh(
+                    app_dir,
+                    commands={
+                        'rsync': lambda args: (1, ""),
+                        'mkdir': mock_mkdir,
+                    },
+                    expected_exit_code=expected_exit_code,
+                )
 
     def _prepare_dmg_dir(self):
-        dmg_dir = join(self.temp_dir.name, "dmg")
+        dmg_dir = join(self.temp_dir, "dmg")
         mkdir(dmg_dir)
         self._make_app(join(dmg_dir, f"{PRODUCT_NAME}.app"), UPDATE_VERSION)
         return dmg_dir
 
     def _prepare_install_sh(self):
-        with open(KEYSTONE_INSTALL_SH, "r") as f:
+        with open(KEYSTONE_INSTALL_SH, "r", encoding='utf-8') as f:
             source = f.read()
-        bin_dir = join(self.temp_dir.name, "bin")
+        bin_dir = join(self.temp_dir, "bin")
         mkdir(bin_dir)
         # Prepend bin/ to PATH so tests can override commands like rsync.
-        patched, count = re.subn(r'^export PATH="',
-                                 f'export PATH="{bin_dir}:',
-                                 source,
-                                 count=1,
-                                 flags=re.MULTILINE)
+        patched, count = re.subn(
+            r'^export PATH="',
+            f'export PATH="{bin_dir}:',
+            source,
+            count=1,
+            flags=re.MULTILINE,
+        )
         self.assertEqual(1, count)
-        install_sh_path = join(self.temp_dir.name, "keystone_install.sh")
-        with open(install_sh_path, "w") as f:
+        install_sh_path = join(self.temp_dir, "keystone_install.sh")
+        with open(install_sh_path, "w", encoding='utf-8') as f:
             f.write(patched)
         chmod(install_sh_path, stat(install_sh_path).st_mode | S_IXUSR)
         return install_sh_path, bin_dir
@@ -232,8 +243,9 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
     def _make_app(self, bundle_path, version):
         """Create the minimum .app bundle that the script's checks accept."""
         contents = join(bundle_path, "Contents")
-        framework_dir = join(contents, "Frameworks",
-                             f"{PRODUCT_NAME} Framework.framework")
+        framework_dir = join(
+            contents, "Frameworks", f"{PRODUCT_NAME} Framework.framework"
+        )
         makedirs(join(framework_dir, "Versions", version, "Resources"))
         with open(join(contents, "Info.plist"), "wb") as f:
             plistlib.dump(
@@ -266,17 +278,19 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
         )
         self.assertTrue(exists(versioned_dir), msg=versioned_dir)
 
-    def _run_install_sh(self,
-                        installed_app_dir,
-                        is_root=False,
-                        commands=None,
-                        expected_exit_code=0,
-                        env=None):
+    def _run_install_sh(
+        self,
+        installed_app_dir,
+        is_root=False,
+        commands=None,
+        expected_exit_code=0,
+        env=None,
+    ):
         commands = commands or {}
         env = env.copy() if env is not None else {}
         for name in commands:
             wrapper_path = join(self.bin_dir, name)
-            with open(wrapper_path, "w") as f:
+            with open(wrapper_path, "w", encoding='utf-8') as f:
                 f.write(COMMAND_WRAPPER)
             chmod(wrapper_path, stat(wrapper_path).st_mode | S_IXUSR)
         prompt_r, prompt_w = pipe()
@@ -290,67 +304,74 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
         env["KS_TICKET_XC_PATH"] = installed_app_dir
         if is_root:
             env["EUID"] = "0"
-        proc = Popen([self.install_sh, self.dmg_dir],
-                     stdin=DEVNULL,
-                     stdout=PIPE,
-                     stderr=STDOUT,
-                     text=True,
-                     bufsize=1,
-                     env=env,
-                     pass_fds=(prompt_w, response_r))
-        # The subprocess inherited its own copies of prompt_w and response_r
-        # via pass_fds. A pipe only reaches EOF once *every* writer has closed
-        # its end, so we must drop our copy of prompt_w here; otherwise the
-        # read loop below would block forever even after the subprocess and
-        # its children exited. We also close our copy of response_r so that
-        # only the subprocess can read responses.
-        close(prompt_w)
-        close(response_r)
-        output_lines = []
+        with Popen(
+            [self.install_sh, self.dmg_dir],
+            stdin=DEVNULL,
+            stdout=PIPE,
+            stderr=STDOUT,
+            text=True,
+            bufsize=1,
+            env=env,
+            pass_fds=(prompt_w, response_r),
+        ) as proc:
+            # The subprocess inherited its own copies of prompt_w and
+            # response_r via pass_fds. A pipe only reaches EOF once *every*
+            # writer has closed its end, so we must drop our copy of prompt_w
+            # here; otherwise the read loop below would block forever even
+            # after the subprocess and its children exited. We also close our
+            # copy of response_r so that only the subprocess can read
+            # responses.
+            close(prompt_w)
+            close(response_r)
+            output_lines = []
 
-        def drain():
-            for line in proc.stdout:
-                output_lines.append(line)
+            def drain():
+                for line in proc.stdout:
+                    output_lines.append(line)
 
-        drain_thread = Thread(target=drain)
-        drain_thread.start()
-        responses = fdopen(response_w, "w")
-        try:
-            with fdopen(prompt_r, "r") as prompts:
-                for line in prompts:
-                    name, *args = shlex.split(line)
-                    exit_code, stderr = commands[name](args)
-                    try:
-                        responses.write(f"{exit_code}\n{stderr}\n")
-                        responses.flush()
-                    except BrokenPipeError:
-                        break
-            proc.wait(timeout=30)
-        finally:
-            # Reap the subprocess if wait() timed out or the loop raised.
-            if proc.poll() is None:
-                proc.kill()
-                proc.wait()
+            drain_thread = Thread(target=drain)
+            drain_thread.start()
+            responses = fdopen(response_w, "w")
             try:
-                responses.close()
-            except BrokenPipeError:
-                # This can happen when the script exited before we got to
-                # write the last response.
-                pass
-            drain_thread.join(timeout=5)
+                with fdopen(prompt_r, "r") as prompts:
+                    for line in prompts:
+                        name, *args = shlex.split(line)
+                        exit_code, stderr = commands[name](args)
+                        try:
+                            responses.write(f"{exit_code}\n{stderr}\n")
+                            responses.flush()
+                        except BrokenPipeError:
+                            break
+                proc.wait(timeout=30)
+            finally:
+                # Reap the subprocess if wait() timed out or the loop raised.
+                if proc.poll() is None:
+                    proc.kill()
+                    proc.wait()
+                try:
+                    responses.close()
+                except BrokenPipeError:
+                    # This can happen when the script exited before we got to
+                    # write the last response.
+                    pass
+                drain_thread.join(timeout=5)
         output = "".join(output_lines)
         self.assertEqual(
-            expected_exit_code, proc.returncode,
+            expected_exit_code,
+            proc.returncode,
             f"Command {self.install_sh} exited with code {proc.returncode} "
-            f"instead of {expected_exit_code}.\n\nOutput:\n{output}")
+            f"instead of {expected_exit_code}.\n\nOutput:\n{output}",
+        )
 
 
 def system_rsync(args):
-    cp = run(["/usr/bin/rsync"] + args,
-             stdout=DEVNULL,
-             stderr=PIPE,
-             text=True,
-             check=False)
+    cp = run(
+        ["/usr/bin/rsync"] + args,
+        stdout=DEVNULL,
+        stderr=PIPE,
+        text=True,
+        check=False,
+    )
     return cp.returncode, cp.stderr
 
 

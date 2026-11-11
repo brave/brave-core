@@ -2,27 +2,49 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Tests for how `chromium_checkout` relies on the git cache.
-"""
+"""Tests for how `chromium_checkout` relies on the git cache."""
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    chromium_checkout,
+    env,
+    path,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['chromium_checkout', 'env', 'path', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    chromium_checkout: chromium_checkout.API
+    env: env.API
+    path: path.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    chromium_checkout: chromium_checkout.TEST_API
+    env: env.TEST_API
+    path: path.TEST_API
+    step: step.TEST_API
+
+
+def RunSteps(api: DEPS):
     mode = api.env.get('MODE')
     if mode == 'should_clone_false':
-        api.chromium_checkout.checkout_ref(api.path.chromium_src,
-                                           ref='main',
-                                           should_clone=False)
+        api.chromium_checkout.checkout_ref(
+            api.path.chromium_src, ref='refs/heads/main', should_clone=False
+        )
     else:
-        api.chromium_checkout.ensure_checkout(ref='main')
+        api.chromium_checkout.ensure_checkout(ref='refs/heads/main')
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     # The cache comes from the environment; nothing is passed to the checkout.
     yield api.test(
         'checkout uses the configured cache',

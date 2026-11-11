@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 
-import { color, font } from '@brave/leo/tokens/css/variables'
+import { color, font } from '@brave/nala/tokens/css/variables'
 
 export const StyledTitleTab = styled.div`
   color: ${color.white};

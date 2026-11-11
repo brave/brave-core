@@ -77,6 +77,9 @@ class KeyringService : public mojom::KeyringService {
                  PrefService* local_state);
   ~KeyringService() override;
 
+  KeyringService(const KeyringService&) = delete;
+  KeyringService& operator=(const KeyringService&) = delete;
+
   void SetDelegate(BraveWalletServiceDelegate* delegate);
 
   void Bind(mojo::PendingReceiver<mojom::KeyringService> receiver);
@@ -101,7 +104,13 @@ class KeyringService : public mojom::KeyringService {
   bool RestoreWalletSync(const std::string& mnemonic,
                          const std::string& password,
                          bool is_legacy_eth_seed_format);
+  void RecoverWallet(const std::string& mnemonic,
+                     const std::string& new_password,
+                     bool is_legacy_eth_seed_format,
+                     bool allow_imported_account_removal,
+                     RecoverWalletCallback callback) override;
   void Unlock(const std::string& password, UnlockCallback callback) override;
+  bool UnlockSync(const std::string& password);
   void Lock() override;
   void IsLocked(IsLockedCallback callback) override;
   void AddAccount(mojom::CoinType coin,
@@ -205,16 +214,6 @@ class KeyringService : public mojom::KeyringService {
   std::optional<std::string> RecoverAddressByDefaultKeyring(
       base::span<const uint8_t> message,
       base::span<const uint8_t> eth_signature);
-  bool GetPublicKeyFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
-      const mojom::AccountIdPtr& account_id,
-      std::string* key);
-  std::optional<std::vector<uint8_t>>
-  DecryptCipherFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
-      const mojom::AccountIdPtr& account_id,
-      const std::string& version,
-      base::span<const uint8_t> nonce,
-      base::span<const uint8_t> ephemeral_public_key,
-      base::span<const uint8_t> ciphertext);
 
   void AddAccountsWithDefaultName(const mojom::CoinType& coin_type,
                                   mojom::KeyringId keyring_id,
@@ -346,6 +345,7 @@ class KeyringService : public mojom::KeyringService {
   mojom::AccountInfoPtr GetSelectedEthereumDappAccount();
   mojom::AccountInfoPtr GetSelectedSolanaDappAccount();
   mojom::AccountInfoPtr GetSelectedCardanoDappAccount();
+  mojom::AccountInfoPtr GetSelectedPolkadotDappAccount();
   void MaybeFixAccountSelection();
 
  private:
@@ -412,6 +412,7 @@ class KeyringService : public mojom::KeyringService {
   friend class SolanaTransactionUnitTest;
   friend class PolkadotWalletServiceUnitTest;
   friend class PolkadotTxManagerUnitTest;
+  friend class PolkadotApiImplUnitTest;
 
   void ResetAllAccountInfosCache();
   mojom::AccountInfoPtr AddHDAccountForKeyring(mojom::KeyringId keyring_id,
@@ -454,6 +455,16 @@ class KeyringService : public mojom::KeyringService {
                             const std::string& password,
                             bool is_legacy_eth_seed_format,
                             bool from_restore);
+  std::optional<std::string> GetDefaultEthAccountFromSeed(
+      const KeyringSeed& keyring_seed) const;
+  mojom::RecoverWalletResult RecoverWalletSync(
+      const std::string& mnemonic,
+      const std::string& new_password,
+      bool is_legacy_eth_seed_format,
+      bool allow_imported_account_removal);
+  bool ReEncryptWallet(const std::string& mnemonic,
+                       const std::string& new_password,
+                       bool is_legacy_eth_seed_format);
   void CreateKeyringInternal(mojom::KeyringId keyring_id,
                              const KeyringSeed& keyring_seed);
   bool IsKeyringEnabled(mojom::KeyringId keyring_id) const;
@@ -541,9 +552,6 @@ class KeyringService : public mojom::KeyringService {
   mojo::ReceiverSet<mojom::KeyringService> receivers_;
 
   base::WeakPtrFactory<KeyringService> weak_ptr_factory_{this};
-
-  KeyringService(const KeyringService&) = delete;
-  KeyringService& operator=(const KeyringService&) = delete;
 };
 
 }  // namespace brave_wallet
