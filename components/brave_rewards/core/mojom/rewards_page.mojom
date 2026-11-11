@@ -209,6 +209,9 @@ interface RewardsPageHandler {
   // Records metric for offer click events.
   RecordOfferClick() => ();
 
+  // Reports an offer wall event by spending a blinded token.
+  RecordOfferEvent(string offer_id, string event_type);
+
   // Records metrics for Rewards onboarding click events on the NTP.
   RecordNewTabOnboardingClick() => ();
 };

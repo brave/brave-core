@@ -60,6 +60,9 @@ void FakeRewardsService::FetchUICards(FetchUICardsCallback callback) {
   std::move(callback).Run(std::nullopt);
 }
 
+void FakeRewardsService::RecordOfferEvent(const std::string& offer_id,
+                                          const std::string& event_type) {}
+
 void FakeRewardsService::GetActivityInfoList(
     uint32_t /*start*/,
     uint32_t /*limit*/,

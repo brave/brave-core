@@ -124,6 +124,9 @@ class RewardsService : public KeyedService {
   using FetchUICardsCallback = mojom::RewardsEngine::FetchUICardsCallback;
   virtual void FetchUICards(FetchUICardsCallback callback) = 0;
 
+  virtual void RecordOfferEvent(const std::string& offer_id,
+                                const std::string& event_type) = 0;
+
   virtual void GetActivityInfoList(const uint32_t start,
                                    const uint32_t limit,
                                    mojom::ActivityInfoFilterPtr filter,

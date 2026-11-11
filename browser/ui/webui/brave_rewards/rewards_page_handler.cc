@@ -12,6 +12,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/containers/fixed_flat_map.h"
+#include "base/feature_list.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/scoped_observation.h"
@@ -22,6 +23,7 @@
 #include "brave/components/brave_rewards/content/rewards_p3a.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/content/rewards_service_observer.h"
+#include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
@@ -696,6 +698,13 @@ void RewardsPageHandler::RecordOfferView(RecordOfferViewCallback callback) {
 void RewardsPageHandler::RecordOfferClick(RecordOfferClickCallback callback) {
   p3a::RecordOfferClicks(prefs_, true);
   std::move(callback).Run();
+}
+
+void RewardsPageHandler::RecordOfferEvent(const std::string& offer_id,
+                                          const std::string& event_type) {
+  if (base::FeatureList::IsEnabled(features::kOfferEventsFeature)) {
+    rewards_service_->RecordOfferEvent(offer_id, event_type);
+  }
 }
 
 void RewardsPageHandler::RecordNewTabOnboardingClick(
