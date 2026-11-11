@@ -107,8 +107,6 @@ class ZCashGetChainTipStatusTaskTest : public testing::Test {
         *zcash_wallet_service_->sync_state_ptr);
   }
 
-  base::test::TaskEnvironment& task_environment() { return task_environment_; }
-
   mojom::AccountIdPtr& account_id() { return account_id_; }
 
   ZCashWalletService& zcash_wallet_service() { return *zcash_wallet_service_; }
