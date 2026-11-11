@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
@@ -99,6 +100,7 @@ source_set("browser_tests") {
     "//brave/app:command_ids",
     "//brave/browser/ui:brave_browser_window_header",
     "//brave/browser/ui/peek",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/containers/buildflags",
     "//chrome/browser",
     "//chrome/browser/profiles:profile",
@@ -133,6 +135,14 @@ source_set("browser_tests") {
     "//ui/views:test_support",
     "//url",
   ]
+
+  if (enable_brave_wallet) {
+    deps += [
+      "//brave/browser/brave_wallet:brave_wallet_delegate",
+      "//brave/browser/brave_wallet:tab_helper",
+      "//brave/components/brave_wallet/common:mojom",
+    ]
+  }
 
   if (enable_containers) {
     deps += [

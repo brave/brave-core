@@ -72,6 +72,9 @@ bool PeekControllerImpl::Open(content::WebContents& source,
   std::unique_ptr<content::WebContents> contents =
       PeekContents::CreateWebContents(browser_->GetProfile(), params.url,
                                       source);
+  if (!contents) {
+    return false;
+  }
   content::WebContents* raw_contents = contents.get();
   Show(std::move(contents));
 

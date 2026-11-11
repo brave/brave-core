@@ -21,6 +21,7 @@
 #include "brave/browser/ui/views/peek/peek_controller_impl.h"
 #include "brave/browser/ui/views/peek/peek_shields_button.h"
 #include "brave/browser/ui/views/peek/peek_view.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/download/download_prefs.h"
 #include "chrome/browser/profiles/profile.h"
@@ -82,6 +83,12 @@
 #include "ui/views/widget/widget.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
+#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+#include "brave/components/brave_wallet/common/mojom/brave_wallet_common.mojom.h"
+#endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
@@ -357,6 +364,19 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ContextMenuOpensPeek) {
   EXPECT_EQ(target_url, peek_contents()->GetLastCommittedURL());
 }
 
+// The menu can outlive the document it was opened on. A link from that document
+// must not be opened with the initiator of whatever replaced it.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ContextMenuIgnoredAfterFrameNavigates) {
+  auto menu =
+      CreateLinkContextMenu(active_contents(), GetURL("b.com", "/title2.html"));
+  ASSERT_TRUE(menu->IsItemPresent(IDC_CONTENT_CONTEXT_OPENLINKPEEK));
+
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GetURL("c.com", "/title1.html")));
+  menu->ExecuteCommand(IDC_CONTENT_CONTEXT_OPENLINKPEEK, 0);
+  EXPECT_FALSE(controller()->IsShowing());
+}
+
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, EscapeClosesPeek) {
   OpenPeek(GetURL("b.com", "/title2.html"));
   // Input sent while the new page is still paint-holding is dropped.
@@ -471,6 +491,39 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ShieldsButtonMovesToTabAndShowsPanel) {
   ASSERT_TRUE(base::test::RunUntil(
       [&] { return !window->GetShieldsBubbleRect().IsEmpty(); }));
 }
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+// The wallet moves Peek into a tab and keeps using the same contents, so the
+// move must be synchronous and must not destroy them.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, WalletPanelMovesToTab) {
+  const GURL url = https_server_.GetURL("b.test", "/title1.html");
+  OpenPeek(url);
+  content::WebContents* contents = peek_contents();
+
+  brave_wallet::ShowPanel(contents);
+
+  EXPECT_FALSE(controller()->IsShowing());
+  ASSERT_EQ(contents, active_contents());
+  EXPECT_EQ(url, contents->GetLastCommittedURL());
+  EXPECT_TRUE(brave_wallet::BraveWalletTabHelper::From(
+      tab_strip_model()->GetActiveTab()));
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, WalletAccountCreationMovesToTab) {
+  const GURL url = https_server_.GetURL("b.test", "/title1.html");
+  OpenPeek(url);
+  content::WebContents* contents = peek_contents();
+
+  brave_wallet::ShowAccountCreation(contents,
+                                    brave_wallet::mojom::CoinType::SOL);
+
+  EXPECT_FALSE(controller()->IsShowing());
+  // Account creation opens the wallet in another tab, after the moved one.
+  ASSERT_NE(TabStripModel::kNoTab,
+            tab_strip_model()->GetIndexOfWebContents(contents));
+  EXPECT_EQ(url, contents->GetLastCommittedURL());
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpenGrowsCard) {
   auto rich_animation = gfx::AnimationTestApi::SetRichAnimationRenderMode(
@@ -924,11 +977,22 @@ IN_PROC_BROWSER_TEST_F(PeekContainersBrowserTest, InheritsContainerPartition) {
   ASSERT_EQ(containers::kContainersStoragePartitionDomain,
             source_config.partition_domain());
 
-  OpenPeek(GetURL("b.com", "/title2.html"));
+  // The default partition's cookies must not be sent from the container.
+  const std::string path = "/title2.html?container";
+  const GURL url = https_server_.GetURL("b.test", path);
+  ASSERT_TRUE(content::SetCookie(browser()->GetProfile(), url, "default=1"));
+
+  OpenPeek(url);
   EXPECT_EQ(source_config, peek_contents()
                                ->GetPrimaryMainFrame()
                                ->GetStoragePartition()
                                ->GetConfig());
+  std::optional<net::test_server::HttpRequest::HeaderMap> headers;
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    headers = GetRequestHeaders(path);
+    return headers.has_value();
+  }));
+  EXPECT_EQ(std::string::npos, GetHeader(*headers, "Cookie").find("default=1"));
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 

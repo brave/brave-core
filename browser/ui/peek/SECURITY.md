@@ -76,7 +76,8 @@ Tests: `HttpPageIsNotMarkedSecure`, `HttpsPageIsMarkedSecure`,
 - Brave Wallet: requests that would open the wallet panel or account creation
   move Peek to a tab first (`brave_wallet_provider_delegate_impl_helper.cc`).
 
-Tests: `PermissionRequestMovesToTab`.
+Tests: `PermissionRequestMovesToTab`, `WalletPanelMovesToTab`,
+`WalletAccountCreationMovesToTab`.
 
 ### Downloads
 
@@ -166,7 +167,8 @@ outcome.
   `RenderFrameHost::GetCurrentInitiatorNavigationState()`, as a
   renderer-initiated link click. This follows the Lens and side panel link
   handlers. Nothing is opened if the frame is gone, no longer active or now has
-  a different origin.
+  a different origin. A new document of the same origin in the same frame is
+  accepted: it has the same authority as the one the menu was opened on.
 - `peek::CanOpenInPeek` rejects params without the state, so a new entry point
   that forgets it fails closed.
 
@@ -179,13 +181,17 @@ nothing is reloaded.
 Tests: `ShiftClickSendsInitiatorOrigin`, `ContextMenuSendsInitiatorOrigin`,
 `ContextMenuLoadCarriesInitiatorNavigationState` (the context-menu load has the
 state, is renderer-initiated and has the source origin as initiator),
-`OpenRequiresHttpInitiatorAndTarget`, and the `peek_utils` unit tests.
+`ContextMenuIgnoredAfterFrameNavigates`, `OpenRequiresHttpInitiatorAndTarget`,
+and the `peek_utils` unit tests.
 
 ### Contexts: containers, sidebar, split view, private and Tor windows
 
 - Containers: the Peek `WebContents` is created in the source tab's storage
   partition (`containers::MaybeInheritStoragePartition`), like a link opened in
-  a new tab. Test: `InheritsContainerPartition`.
+  a new tab. The partition is checked against the source's after the contents
+  are created, and Peek doesn't open if they differ. Test:
+  `InheritsContainerPartition`, which also checks that the default partition's
+  cookies aren't sent.
 - Sidebar: Peek only opens from tabs in the same window. Sidebar web panels are
   excluded explicitly, since they are backed by tabs.
 - Split view: Peek covers the whole contents area (both panes). "Open as tab"
@@ -216,6 +222,22 @@ state, is renderer-initiated and has the source origin as initiator),
   UI, like permission prompts.
 
 Test: `ShieldsButtonMovesToTabAndShowsPanel`.
+
+### Object lifetimes
+
+- Moving to a tab hands the `WebContents` to the tab strip; it is never
+  destroyed. Only the Peek objects (`PeekContents`, the widget and its views)
+  are. Synchronous moves (`OnPeekMoveToTabRequired()`, the wallet helpers) are
+  only made where the caller doesn't touch those objects afterwards: the
+  `PeekContents` delegate methods only use their arguments, and the wallet
+  helpers only use the `WebContents`, which is now a tab.
+- `PeekControllerImpl` is owned by the window's features and destroyed in
+  `TearDownPreBrowserWindowDestruction()`, before the `BrowserView`. The Shields
+  panel provider, which points to the `BrowserView`, is owned by the controller,
+  so it can't outlive it.
+- Requests from the card's buttons and from page events run as tasks bound to
+  a weak pointer to the controller, so they're dropped if the window closes
+  first.
 
 ## Security audit checklist
 
