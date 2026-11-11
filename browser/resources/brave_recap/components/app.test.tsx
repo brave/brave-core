@@ -81,7 +81,7 @@ function mockMatchMedia(reducedMotion: boolean) {
 describe('brave recap app', () => {
   beforeEach(() => {
     mockMatchMedia(false)
-    mockRenderShareCard.mockResolvedValue(new Blob())
+    mockRenderShareCard.mockReturnValue(new Promise(() => {}))
     // jsdom has no canvas; the dot matrix background draws nothing without one.
     jest.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null)
   })
