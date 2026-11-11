@@ -4091,6 +4091,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
           "0x983110309620D911731Ac0932219af06091b6744"));  // checksum address
   ASSERT_TRUE(base::test::RunUntil([&] { return callback_called; }));
 
+  callback_called = false;
   SetHTTPRequestTimeoutInterceptor();
   json_rpc_service_->GetERC721OwnerOf(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
@@ -4100,6 +4101,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
   ASSERT_TRUE(base::test::RunUntil([&] { return callback_called; }));
 
+  callback_called = false;
   SetInvalidJsonInterceptor();
   json_rpc_service_->GetERC721OwnerOf(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
@@ -4109,6 +4111,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
   ASSERT_TRUE(base::test::RunUntil([&] { return callback_called; }));
 
+  callback_called = false;
   SetLimitExceededJsonErrorResponse();
   json_rpc_service_->GetERC721OwnerOf(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
@@ -4195,6 +4198,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
                      mojom::ProviderError::kSuccess, "", "0x0"));
   ASSERT_TRUE(base::test::RunUntil([&] { return callback_called; }));
 
+  callback_called = false;
   SetHTTPRequestTimeoutInterceptor();
   json_rpc_service_->GetERC721TokenBalance(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
@@ -4204,6 +4208,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
   ASSERT_TRUE(base::test::RunUntil([&] { return callback_called; }));
 
+  callback_called = false;
   SetInvalidJsonInterceptor();
   json_rpc_service_->GetERC721TokenBalance(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
@@ -4213,6 +4218,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
   ASSERT_TRUE(base::test::RunUntil([&] { return callback_called; }));
 
+  callback_called = false;
   SetLimitExceededJsonErrorResponse();
   json_rpc_service_->GetERC721TokenBalance(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
