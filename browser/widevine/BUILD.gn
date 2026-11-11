@@ -98,6 +98,7 @@ source_set("widevine_permission_android_unittest") {
   deps = [
     ":widevine",
     "//base",
+    "//base/test:test_support",
     "//brave/common",
     "//chrome/browser",
     "//chrome/browser/profiles:profile",
