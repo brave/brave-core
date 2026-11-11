@@ -63,8 +63,8 @@ void OnDeviceSpeechModelPermissionRequest::PermissionDecided(
   }
 
   if (decision.overall_decision == PermissionDecision::kAllow) {
-    local_state_->SetBoolean(local_ai::prefs::kOnDeviceSpeechModelEnabled,
-                             true);
+    local_state_->SetBoolean(
+        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled, true);
   } else if (decision.overall_decision == PermissionDecision::kDeny) {
     profile_prefs_->SetBoolean(local_ai::prefs::kAskEnableOnDeviceSpeechModel,
                                !get_dont_ask_again());

@@ -71,8 +71,8 @@ class BraveSodaInstallerUnitTest : public testing::Test {
     ON_CALL(cus_, RegisterComponent).WillByDefault(testing::Return(true));
     // An enabled model, so the registrar registers it and the installer's
     // requests reach the download.
-    local_state()->SetBoolean(local_ai::prefs::kOnDeviceSpeechModelEnabled,
-                              true);
+    local_state()->SetBoolean(
+        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled, true);
 
     // Starting the registrar asks for a download of its own. Waiting for it
     // means a test's own request starts a registration rather than joining
@@ -80,7 +80,8 @@ class BraveSodaInstallerUnitTest : public testing::Test {
     base::test::TestFuture<void> started;
     EXPECT_CALL(
         on_demand_updater_,
-        EnsureInstalled(local_ai::kOnDeviceSpeechModelsComponentId, testing::_))
+        EnsureInstalled(local_ai::kOnDeviceSpeechEnglishModelComponentId,
+                        testing::_))
         .WillOnce([&started](const std::string& id,
                              component_updater::Callback callback) {
           std::move(callback).Run(update_client::Error::UPDATE_CHECK_ERROR);
@@ -129,7 +130,8 @@ class BraveSodaInstallerUnitTest : public testing::Test {
   void AnswerDownloadWith(update_client::Error error) {
     EXPECT_CALL(
         on_demand_updater_,
-        EnsureInstalled(local_ai::kOnDeviceSpeechModelsComponentId, testing::_))
+        EnsureInstalled(local_ai::kOnDeviceSpeechEnglishModelComponentId,
+                        testing::_))
         .WillOnce([this, error](const std::string& id,
                                 component_updater::Callback callback) {
           if (error == update_client::Error::NONE) {
@@ -222,7 +224,8 @@ TEST_F(BraveSodaInstallerUnitTest, InstallLanguageIgnoresOtherLanguages) {
 
   AnswerDownloadWith(update_client::Error::UPDATE_CHECK_ERROR);
   base::test::TestFuture<bool> answered;
-  local_ai::MaybeRegisterOnDeviceSpeechModelsComponent(answered.GetCallback());
+  local_ai::MaybeRegisterOnDeviceSpeechModelsComponent(kEnglish,
+                                                       answered.GetCallback());
   EXPECT_FALSE(answered.Get());
 }
 
@@ -245,7 +248,8 @@ TEST_F(BraveSodaInstallerUnitTest, InstallLanguageWithAModelDoesNothing) {
   // is a failure only because a success would publish the model again.
   AnswerDownloadWith(update_client::Error::UPDATE_CHECK_ERROR);
   base::test::TestFuture<bool> answered;
-  local_ai::MaybeRegisterOnDeviceSpeechModelsComponent(answered.GetCallback());
+  local_ai::MaybeRegisterOnDeviceSpeechModelsComponent(kEnglish,
+                                                       answered.GetCallback());
   EXPECT_FALSE(answered.Get());
 }
 
@@ -279,7 +283,8 @@ TEST_F(BraveSodaInstallerUnitTest, InstallLanguageReportsInstalledOnce) {
   // the registrar answers them in order, so once this one is answered
   // `OnSpeechModelInstallFinished` has run too.
   base::test::TestFuture<bool> answered;
-  local_ai::MaybeRegisterOnDeviceSpeechModelsComponent(answered.GetCallback());
+  local_ai::MaybeRegisterOnDeviceSpeechModelsComponent(kEnglish,
+                                                       answered.GetCallback());
   EXPECT_TRUE(answered.Get());
 }
 

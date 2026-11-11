@@ -336,7 +336,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   // On-device AI pref
   (*s_brave_allowlist)[local_ai::prefs::kBraveHistoryEmbeddingsEnabled] =
       settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[local_ai::prefs::kOnDeviceSpeechModelEnabled] =
+  (*s_brave_allowlist)[local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled] =
       settings_api::PrefType::kBoolean;
 #endif
 

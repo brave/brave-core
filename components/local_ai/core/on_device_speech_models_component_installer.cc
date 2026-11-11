@@ -5,10 +5,11 @@
 
 #include "brave/components/local_ai/core/on_device_speech_models_component_installer.h"
 
+#include <array>
 #include <cstdint>
-#include <iterator>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -20,6 +21,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/no_destructor.h"
+#include "base/notreached.h"
 #include "base/scoped_observation.h"
 #include "base/task/bind_post_task.h"
 #include "base/values.h"
@@ -41,38 +43,58 @@ namespace local_ai {
 
 namespace {
 
-constexpr base::FilePath::CharType kComponentInstallDir[] =
-    FILE_PATH_LITERAL("BraveOnDeviceSpeechModels");
-constexpr char kComponentName[] = "Brave On-Device Speech Models";
+struct ComponentConfig {
+  std::string_view id;
+  // SHA256 of the component's public key.
+  std::array<uint8_t, crypto::hash::kSha256Size> public_key_sha256;
+  base::FilePath::StringViewType install_dir;
+  std::string_view name;
+};
 
-// SHA256 of the provisioned component's public key.
-constexpr uint8_t kPublicKeySHA256[32] = {
-    0xd7, 0xa4, 0xa2, 0x24, 0x53, 0xff, 0xef, 0x1b, 0x3e, 0xa8, 0x1a,
-    0xe4, 0x6f, 0xf0, 0xd1, 0x10, 0xac, 0xaa, 0x39, 0x3b, 0x03, 0xcd,
-    0xf1, 0x10, 0x04, 0x5e, 0xf9, 0x33, 0xf5, 0xe9, 0x6c, 0x4d};
-static_assert(std::size(kPublicKeySHA256) == crypto::hash::kSha256Size,
-              "Wrong hash length");
+const ComponentConfig& GetComponentConfig(OnDeviceSpeechModel model) {
+  static constexpr ComponentConfig kEnglishConfig = {
+      .id = kOnDeviceSpeechEnglishModelComponentId,
+      .public_key_sha256 = {0xd7, 0xa4, 0xa2, 0x24, 0x53, 0xff, 0xef, 0x1b,
+                            0x3e, 0xa8, 0x1a, 0xe4, 0x6f, 0xf0, 0xd1, 0x10,
+                            0xac, 0xaa, 0x39, 0x3b, 0x03, 0xcd, 0xf1, 0x10,
+                            0x04, 0x5e, 0xf9, 0x33, 0xf5, 0xe9, 0x6c, 0x4d},
+      .install_dir = FILE_PATH_LITERAL("BraveOnDeviceSpeechModels"),
+      .name = "Brave On-Device Speech Models",
+  };
+  static constexpr ComponentConfig kMultilingualConfig = {
+      .id = kOnDeviceSpeechMultilingualModelComponentId,
+      .public_key_sha256 = {0x62, 0x0d, 0xcf, 0x66, 0x7b, 0xde, 0x3d, 0x93,
+                            0xc8, 0x0b, 0x29, 0x33, 0x2d, 0xbe, 0x43, 0x89,
+                            0x49, 0xe0, 0xcc, 0xf8, 0x75, 0x76, 0x26, 0x41,
+                            0xcd, 0xaf, 0xbf, 0x64, 0xfb, 0x20, 0xfe, 0x70},
+      .install_dir = FILE_PATH_LITERAL("BraveOnDeviceSpeechMultilingualModels"),
+      .name = "Brave On-Device Speech Multilingual Models",
+  };
+  switch (model) {
+    case OnDeviceSpeechModel::kEnglish:
+      return kEnglishConfig;
+    case OnDeviceSpeechModel::kMultilingual:
+      return kMultilingualConfig;
+  }
+  NOTREACHED();
+}
 
-// Owns the component registration for the whole session and follows the master
-// switch and `kOnDeviceSpeechModelEnabled`, so the model is on disk only
-// while both allow it. It is also the one place that decides when an install
-// request is over, and answers it with whether a model is installed.
+// Owns one model's component registration for the whole session and follows
+// the master switch and the model's own enabled pref, so the model is on disk
+// only while `ShouldInstallOnDeviceSpeechModel` is true for it. It is also the
+// one place that decides when an install request for the model is over, and
+// answers it with whether the model is installed.
 //
 // Registering and removing the model both go through the one
 // `ComponentInstaller` this holds, which is what orders a removal against an
 // install rather than racing it on an unrelated sequence.
-class OnDeviceSpeechModelsComponentRegistrar
-    : public component_updater::ServiceObserver {
+class ModelComponentRegistrar : public component_updater::ServiceObserver {
  public:
-  static OnDeviceSpeechModelsComponentRegistrar* GetInstance() {
-    static base::NoDestructor<OnDeviceSpeechModelsComponentRegistrar> instance;
-    return instance.get();
-  }
+  explicit ModelComponentRegistrar(OnDeviceSpeechModel model) : model_(model) {}
+  ~ModelComponentRegistrar() override = default;
 
-  OnDeviceSpeechModelsComponentRegistrar(
-      const OnDeviceSpeechModelsComponentRegistrar&) = delete;
-  OnDeviceSpeechModelsComponentRegistrar& operator=(
-      const OnDeviceSpeechModelsComponentRegistrar&) = delete;
+  ModelComponentRegistrar(const ModelComponentRegistrar&) = delete;
+  ModelComponentRegistrar& operator=(const ModelComponentRegistrar&) = delete;
 
   // Once per process, or once per `Shutdown`.
   void Start(component_updater::ComponentUpdateService* cus,
@@ -83,11 +105,11 @@ class OnDeviceSpeechModelsComponentRegistrar
     pref_change_registrar_.Init(local_state);
     pref_change_registrar_.Add(
         prefs::kBraveLocalAIEnabled,
-        base::BindRepeating(&OnDeviceSpeechModelsComponentRegistrar::Sync,
+        base::BindRepeating(&ModelComponentRegistrar::Sync,
                             base::Unretained(this)));
     pref_change_registrar_.Add(
-        prefs::kOnDeviceSpeechModelEnabled,
-        base::BindRepeating(&OnDeviceSpeechModelsComponentRegistrar::Sync,
+        GetOnDeviceSpeechModelEnabledPref(model_),
+        base::BindRepeating(&ModelComponentRegistrar::Sync,
                             base::Unretained(this)));
     Sync();
   }
@@ -109,8 +131,8 @@ class OnDeviceSpeechModelsComponentRegistrar
     // caller's own call.
     callback = base::BindPostTaskToCurrentDefault(std::move(callback));
 
-    if (!cus_ ||
-        !ShouldInstallOnDeviceSpeechModel(pref_change_registrar_.prefs())) {
+    if (!cus_ || !ShouldInstallOnDeviceSpeechModel(
+                     pref_change_registrar_.prefs(), model_)) {
       std::move(callback).Run(false);
       return;
     }
@@ -121,29 +143,27 @@ class OnDeviceSpeechModelsComponentRegistrar
     }
     registration_pending_ = true;
     EnsureInstaller();
-    installer_->Register(
-        cus_,
-        base::BindOnce(&OnDeviceSpeechModelsComponentRegistrar::OnRegistered,
-                       base::Unretained(this)));
+    installer_->Register(cus_,
+                         base::BindOnce(&ModelComponentRegistrar::OnRegistered,
+                                        base::Unretained(this)));
   }
 
  private:
-  friend base::NoDestructor<OnDeviceSpeechModelsComponentRegistrar>;
-
-  OnDeviceSpeechModelsComponentRegistrar() = default;
-  ~OnDeviceSpeechModelsComponentRegistrar() override = default;
+  const ComponentConfig& config() const { return GetComponentConfig(model_); }
 
   void Sync() {
     PrefService* local_state = pref_change_registrar_.prefs();
-    // Enabling the model does not outlive the switch, so turning it back on
-    // asks again rather than downloading. Clearing it runs `Sync` again, and
-    // that run removes the model.
-    if (!CanOfferOnDeviceSpeech(local_state) &&
-        local_state->GetBoolean(prefs::kOnDeviceSpeechModelEnabled)) {
-      local_state->ClearPref(prefs::kOnDeviceSpeechModelEnabled);
-      return;
-    }
-    if (!ShouldInstallOnDeviceSpeechModel(local_state)) {
+    if (!ShouldInstallOnDeviceSpeechModel(local_state, model_)) {
+      const std::string_view enabled_pref =
+          GetOnDeviceSpeechModelEnabledPref(model_);
+      // The switch or a feature took the model away. Enabling the model does
+      // not outlive them, so turning them back on asks again rather than
+      // downloading. Clearing it runs `Sync` again, and that run removes the
+      // model.
+      if (local_state->GetBoolean(enabled_pref)) {
+        local_state->ClearPref(enabled_pref);
+        return;
+      }
       Unregister();
       return;
     }
@@ -161,7 +181,8 @@ class OnDeviceSpeechModelsComponentRegistrar
     // The switch turned off, or the model was disabled, while this was in
     // flight, so the unregister it ran found nothing to remove. Nothing else
     // will try again, so finish the removal here.
-    if (!ShouldInstallOnDeviceSpeechModel(pref_change_registrar_.prefs())) {
+    if (!ShouldInstallOnDeviceSpeechModel(pref_change_registrar_.prefs(),
+                                          model_)) {
       Unregister();
       return;
     }
@@ -182,10 +203,9 @@ class OnDeviceSpeechModelsComponentRegistrar
     }
     brave_component_updater::BraveOnDemandUpdater::GetInstance()
         ->EnsureInstalled(
-            kOnDeviceSpeechModelsComponentId,
-            base::BindOnce(
-                &OnDeviceSpeechModelsComponentRegistrar::OnEnsureInstalled,
-                base::Unretained(this)));
+            std::string(config().id),
+            base::BindOnce(&ModelComponentRegistrar::OnEnsureInstalled,
+                           base::Unretained(this)));
   }
 
   void OnEnsureInstalled(update_client::Error error) {
@@ -202,7 +222,7 @@ class OnDeviceSpeechModelsComponentRegistrar
   // Only ever watched for a request waiting on a download, and every drain
   // stops watching, so there is always one waiting here.
   void OnEvent(const update_client::CrxUpdateItem& item) override {
-    if (item.id != kOnDeviceSpeechModelsComponentId) {
+    if (item.id != config().id) {
       return;
     }
     // The first state an update cannot leave settles what is waiting. Which
@@ -220,11 +240,11 @@ class OnDeviceSpeechModelsComponentRegistrar
     // what it had registered) and no registration in flight may still install
     // them.
     const bool was_registered =
-        cus_ && cus_->UnregisterComponent(kOnDeviceSpeechModelsComponentId);
+        cus_ && cus_->UnregisterComponent(std::string(config().id));
     // Published before the files go, so nothing acts on a model whose files
     // are on their way out.
-    OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
-        OnDeviceSpeechModel::kEnglish, base::FilePath());
+    OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(model_,
+                                                            base::FilePath());
     if (!was_registered && !registration_pending_) {
       EnsureInstaller();
       installer_->Uninstall();
@@ -246,8 +266,7 @@ class OnDeviceSpeechModelsComponentRegistrar
       return;
     }
     const bool success =
-        OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled(
-            OnDeviceSpeechModel::kEnglish);
+        OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled(model_);
     std::vector<base::OnceCallback<void(bool)>> callbacks;
     callbacks.swap(pending_callbacks_);
     for (auto& callback : callbacks) {
@@ -259,10 +278,11 @@ class OnDeviceSpeechModelsComponentRegistrar
     if (!installer_) {
       installer_ = base::MakeRefCounted<component_updater::ComponentInstaller>(
           std::make_unique<OnDeviceSpeechModelsComponentInstallerPolicy>(
-              pref_change_registrar_.prefs()));
+              model_, pref_change_registrar_.prefs()));
     }
   }
 
+  const OnDeviceSpeechModel model_;
   // Held from `Start` until `Shutdown`, which is also what tells an in-flight
   // registration that it landed too late to be finished.
   raw_ptr<component_updater::ComponentUpdateService> cus_ = nullptr;
@@ -283,11 +303,63 @@ class OnDeviceSpeechModelsComponentRegistrar
   scoped_refptr<component_updater::ComponentInstaller> installer_;
 };
 
+// Singleton holding the registrar of each of Brave's on-device speech
+// recognition models.
+class OnDeviceSpeechModelsComponentRegistrar {
+ public:
+  static OnDeviceSpeechModelsComponentRegistrar* GetInstance() {
+    static base::NoDestructor<OnDeviceSpeechModelsComponentRegistrar> instance;
+    return instance.get();
+  }
+
+  OnDeviceSpeechModelsComponentRegistrar(
+      const OnDeviceSpeechModelsComponentRegistrar&) = delete;
+  OnDeviceSpeechModelsComponentRegistrar& operator=(
+      const OnDeviceSpeechModelsComponentRegistrar&) = delete;
+
+  // Once per process, or once per `Shutdown`.
+  void Start(component_updater::ComponentUpdateService* cus,
+             PrefService* local_state) {
+    english_.Start(cus, local_state);
+    multilingual_.Start(cus, local_state);
+  }
+
+  void Shutdown() {
+    english_.Shutdown();
+    multilingual_.Shutdown();
+  }
+
+  void Register(OnDeviceSpeechModel model,
+                base::OnceCallback<void(bool)> callback) {
+    GetRegistrar(model).Register(std::move(callback));
+  }
+
+ private:
+  friend base::NoDestructor<OnDeviceSpeechModelsComponentRegistrar>;
+
+  OnDeviceSpeechModelsComponentRegistrar() = default;
+  ~OnDeviceSpeechModelsComponentRegistrar() = default;
+
+  ModelComponentRegistrar& GetRegistrar(OnDeviceSpeechModel model) {
+    switch (model) {
+      case OnDeviceSpeechModel::kEnglish:
+        return english_;
+      case OnDeviceSpeechModel::kMultilingual:
+        return multilingual_;
+    }
+    NOTREACHED();
+  }
+
+  ModelComponentRegistrar english_{OnDeviceSpeechModel::kEnglish};
+  ModelComponentRegistrar multilingual_{OnDeviceSpeechModel::kMultilingual};
+};
+
 }  // namespace
 
 OnDeviceSpeechModelsComponentInstallerPolicy::
-    OnDeviceSpeechModelsComponentInstallerPolicy(PrefService* local_state)
-    : local_state_(local_state) {}
+    OnDeviceSpeechModelsComponentInstallerPolicy(OnDeviceSpeechModel model,
+                                                 PrefService* local_state)
+    : model_(model), local_state_(local_state) {}
 OnDeviceSpeechModelsComponentInstallerPolicy::
     ~OnDeviceSpeechModelsComponentInstallerPolicy() = default;
 
@@ -295,7 +367,7 @@ bool OnDeviceSpeechModelsComponentInstallerPolicy::VerifyInstallation(
     const base::DictValue& manifest,
     const base::FilePath& install_dir) const {
   return base::DirectoryExists(
-      install_dir.AppendASCII(GetModelDirName(OnDeviceSpeechModel::kEnglish)));
+      install_dir.AppendASCII(GetModelDirName(model_)));
 }
 
 bool OnDeviceSpeechModelsComponentInstallerPolicy::
@@ -327,25 +399,25 @@ void OnDeviceSpeechModelsComponentInstallerPolicy::ComponentReady(
   // Unregistration is deferred behind an in-flight update, so this still fires
   // for a download that started before the switch turned off or the model was
   // disabled.
-  if (!ShouldInstallOnDeviceSpeechModel(local_state_)) {
+  if (!ShouldInstallOnDeviceSpeechModel(local_state_, model_)) {
     return;
   }
-  OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
-      OnDeviceSpeechModel::kEnglish, install_dir);
+  OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(model_, install_dir);
 }
 
 base::FilePath
 OnDeviceSpeechModelsComponentInstallerPolicy::GetRelativeInstallDir() const {
-  return base::FilePath(kComponentInstallDir);
+  return base::FilePath(GetComponentConfig(model_).install_dir);
 }
 
 void OnDeviceSpeechModelsComponentInstallerPolicy::GetHash(
     std::vector<uint8_t>* hash) const {
-  hash->assign(std::begin(kPublicKeySHA256), std::end(kPublicKeySHA256));
+  const auto& public_key_sha256 = GetComponentConfig(model_).public_key_sha256;
+  hash->assign(public_key_sha256.begin(), public_key_sha256.end());
 }
 
 std::string OnDeviceSpeechModelsComponentInstallerPolicy::GetName() const {
-  return kComponentName;
+  return std::string(GetComponentConfig(model_).name);
 }
 
 update_client::InstallerAttributes
@@ -369,9 +441,10 @@ void ShutdownOnDeviceSpeechModelsComponentRegistration() {
 }
 
 void MaybeRegisterOnDeviceSpeechModelsComponent(
+    OnDeviceSpeechModel model,
     base::OnceCallback<void(bool)> callback) {
   OnDeviceSpeechModelsComponentRegistrar::GetInstance()->Register(
-      std::move(callback));
+      model, std::move(callback));
 }
 
 }  // namespace local_ai

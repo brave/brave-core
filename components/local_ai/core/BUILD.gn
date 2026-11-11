@@ -112,6 +112,7 @@ source_set("unit_tests") {
     "//brave/components/brave_component_updater/browser:public",
     "//brave/components/brave_component_updater/browser:test_support",
     "//components/component_updater:test_support",
+    "//components/crx_file",
     "//components/history_embeddings/core",
     "//components/prefs:test_support",
     "//components/update_client",

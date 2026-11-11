@@ -21,6 +21,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/speech/on_device_speech_model_permission_request.h"
+#include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "brave/components/local_ai/core/utils.h"
 #include "chrome/browser/browser_process.h"
@@ -49,7 +50,8 @@ bool ShouldPromptForBraveOnDeviceSpeechModel(
     base::span<const std::string> languages,
     media::mojom::SpeechRecognitionQuality quality) {
   if (languages.empty() || local_ai::ShouldInstallOnDeviceSpeechModel(
-                               g_browser_process->local_state())) {
+                               g_browser_process->local_state(),
+                               local_ai::OnDeviceSpeechModel::kEnglish)) {
     return false;
   }
   return std::ranges::all_of(

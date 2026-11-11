@@ -37,6 +37,7 @@ void BraveSodaInstaller::InstallLanguage(std::string_view language,
   }
 
   local_ai::MaybeRegisterOnDeviceSpeechModelsComponent(
+      local_ai::OnDeviceSpeechModel::kEnglish,
       base::BindOnce(&BraveSodaInstaller::OnSpeechModelInstallFinished,
                      weak_factory_.GetWeakPtr()));
 }
