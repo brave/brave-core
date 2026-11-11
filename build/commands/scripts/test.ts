@@ -98,6 +98,9 @@ async function runTests(
         braveArgs.push('--test-launcher-jobs=' + options.test_launcher_jobs)
       }
       braveArgs = braveArgs.concat(passthroughArgs)
+      if (config.isAsan()) {
+        braveArgs.push('--test-launcher-jobs=4')
+      }
     } else {
       // Retain --json-results-file for junit tests.
       const jsonResultsArg = passthroughArgs.find((arg) =>
