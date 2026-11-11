@@ -30,8 +30,8 @@ function heading(level: number) {
   return screen.getByRole('heading', { level })
 }
 
-function pressKey(key: string) {
-  fireEvent.keyDown(window, { key })
+function pressKey(key: string, init: KeyboardEventInit = {}) {
+  fireEvent.keyDown(window, { key, ...init })
 }
 
 // Leo buttons ignore fireEvent's synthetic clicks, so use a native one.
@@ -131,6 +131,26 @@ describe('brave recap app', () => {
     pressKey('ArrowLeft')
     click(screen.getByTestId('recap-back'))
     expect(heading(2)).toHaveTextContent('BRAVE_RECAP_BLOCKED_HEADING')
+  })
+
+  it('swaps the arrow keys in right-to-left layouts', () => {
+    renderApp(100)
+    jest
+      .spyOn(window, 'getComputedStyle')
+      .mockReturnValue({ direction: 'rtl' } as CSSStyleDeclaration)
+    pressKey('ArrowLeft')
+    pressKey('ArrowLeft')
+    expect(progress()).toHaveAttribute('aria-valuenow', '3')
+    pressKey('ArrowRight')
+    expect(progress()).toHaveAttribute('aria-valuenow', '2')
+  })
+
+  it('leaves arrow keys with modifiers to the browser', () => {
+    renderApp(100)
+    for (const modifier of ['altKey', 'ctrlKey', 'metaKey']) {
+      pressKey('ArrowRight', { [modifier]: true })
+    }
+    expect(progress()).toHaveAttribute('aria-valuenow', '1')
   })
 
   it('advances when the slide is tapped', () => {

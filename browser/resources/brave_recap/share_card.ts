@@ -156,22 +156,39 @@ export async function renderShareCard(
     )
   }
 
+  // Laid out left to right; `x` mirrors a box's left edge for right to left.
+  const rtl = getComputedStyle(document.documentElement).direction === 'rtl'
+  const x = (left: number, width = 0) => (rtl ? WIDTH - left - width : left)
+  ctx.direction = rtl ? 'rtl' : 'ltr'
+
   const family = getFontFamily()
   const white = getToken('color-white')
   const black = getToken('color-black')
   // Closest token to the design's #f01c00 shadow.
   const shadow = getToken('color-primitive-brands-rorange-3')
   ctx.textBaseline = 'middle'
-  ctx.textAlign = 'left'
+  ctx.textAlign = 'start'
 
   // Header: logo tile, title and subtitle.
   ctx.fillStyle = white
   ctx.beginPath()
-  ctx.roundRect(PADDING, PADDING, TILE_SIZE, TILE_SIZE, TILE_RADIUS)
+  ctx.roundRect(
+    x(PADDING, TILE_SIZE),
+    PADDING,
+    TILE_SIZE,
+    TILE_SIZE,
+    TILE_RADIUS,
+  )
   ctx.fill()
   if (logo) {
     const inset = (TILE_SIZE - LOGO_SIZE) / 2
-    ctx.drawImage(logo, PADDING + inset, PADDING + inset, LOGO_SIZE, LOGO_SIZE)
+    ctx.drawImage(
+      logo,
+      x(PADDING + inset, LOGO_SIZE),
+      PADDING + inset,
+      LOGO_SIZE,
+      LOGO_SIZE,
+    )
   }
 
   setTextShadow(ctx, shadow)
@@ -180,19 +197,19 @@ export async function renderShareCard(
   // Title (28) and subtitle (24) lines, centered against the tile.
   const headerTop = PADDING + (TILE_SIZE - 52) / 2
   setFont(ctx, content.title, 600, 22, family, headerWidth)
-  drawLine(ctx, content.title, headerX, headerTop, 28)
+  drawLine(ctx, content.title, x(headerX), headerTop, 28)
   if (content.subtitle) {
     setFont(ctx, content.subtitle, 600, 16, family, headerWidth)
-    drawLine(ctx, content.subtitle, headerX, headerTop + 28, 24)
+    drawLine(ctx, content.subtitle, x(headerX), headerTop + 28, 24)
   }
 
   // Stats: a heavy value with a label below.
   let y = PADDING + TILE_SIZE + SECTION_GAP
   for (const stat of content.stats) {
     setFont(ctx, stat.value, 800, STAT_VALUE_SIZE, family, CONTENT_WIDTH)
-    drawLine(ctx, stat.value, PADDING, y, STAT_VALUE_SIZE)
+    drawLine(ctx, stat.value, x(PADDING), y, STAT_VALUE_SIZE)
     setFont(ctx, stat.label, 600, STAT_LABEL_SIZE, family, CONTENT_WIDTH)
-    drawLine(ctx, stat.label, PADDING, y + STAT_VALUE_SIZE, STAT_LABEL_LINE)
+    drawLine(ctx, stat.label, x(PADDING), y + STAT_VALUE_SIZE, STAT_LABEL_LINE)
     y += STAT_VALUE_SIZE + STAT_LABEL_LINE + SECTION_GAP
   }
 
@@ -200,11 +217,11 @@ export async function renderShareCard(
   const footerTop = HEIGHT - PADDING - BUTTON_HEIGHT
   ctx.font = `400 14px ${family}`
   const urlWidth = ctx.measureText(content.url).width
-  ctx.textAlign = 'right'
-  drawLine(ctx, content.url, WIDTH - PADDING, footerTop, BUTTON_HEIGHT)
+  ctx.textAlign = 'end'
+  drawLine(ctx, content.url, x(WIDTH - PADDING), footerTop, BUTTON_HEIGHT)
 
   clearShadow(ctx)
-  ctx.textAlign = 'left'
+  ctx.textAlign = 'start'
   setFont(
     ctx,
     content.cta,
@@ -217,7 +234,7 @@ export async function renderShareCard(
   ctx.fillStyle = black
   ctx.beginPath()
   ctx.roundRect(
-    PADDING,
+    x(PADDING, buttonWidth),
     footerTop,
     buttonWidth,
     BUTTON_HEIGHT,
@@ -225,7 +242,13 @@ export async function renderShareCard(
   )
   ctx.fill()
   ctx.fillStyle = white
-  drawLine(ctx, content.cta, PADDING + BUTTON_PADDING, footerTop, BUTTON_HEIGHT)
+  drawLine(
+    ctx,
+    content.cta,
+    x(PADDING + BUTTON_PADDING),
+    footerTop,
+    BUTTON_HEIGHT,
+  )
 
   return new Promise<Blob>((resolve, reject) => {
     canvas.toBlob(
