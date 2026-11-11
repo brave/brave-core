@@ -468,7 +468,10 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
     auto body = base::test::ParseJsonDict(request.content);
     auto* method = body.FindString("method");
-    EXPECT_TRUE(method);
+    if (!method) {
+      ADD_FAILURE() << "JSON-RPC request without method";
+      return nullptr;
+    }
     if (*method == "isBlockhashValid") {
       std::string reply = R"({
       "jsonrpc": "2.0",
@@ -612,9 +615,9 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
   void LockWallet() {
     keyring_service()->Lock();
-    // Needed so KeyringServiceObserver::Locked handler can be hit
-    // which the provider object listens to for the accountsChanged event.
-    base::RunLoop().RunUntilIdle();
+    // Locking is synchronous and the provider only reads the lock state
+    // synchronously (it does not handle KeyringServiceObserver::Locked).
+    EXPECT_TRUE(keyring_service()->IsLockedSync());
   }
 
   mojom::AccountInfoPtr AddAccount(const std::string& name) {
@@ -641,47 +644,36 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
   std::vector<mojom::TransactionInfoPtr> GetAllTransactionInfo(
       const mojom::AccountIdPtr& account_id) {
-    std::vector<mojom::TransactionInfoPtr> transaction_infos;
-    base::RunLoop run_loop;
+    base::test::TestFuture<std::vector<mojom::TransactionInfoPtr>> future;
     tx_service()->GetAllTransactionInfo(
         mojom::CoinType::SOL, mojom::kSolanaMainnet, account_id.Clone(),
-        base::BindLambdaForTesting(
-            [&](std::vector<mojom::TransactionInfoPtr> v) {
-              transaction_infos = std::move(v);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
-    return transaction_infos;
+        future.GetCallback());
+    return future.Take();
   }
 
   void ApproveTransaction(const std::string& tx_meta_id) {
-    base::RunLoop run_loop;
+    base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, std::string>
+        future;
     tx_service()->ApproveTransaction(
         mojom::CoinType::SOL, mojom::kSolanaMainnet, tx_meta_id,
-        base::BindLambdaForTesting([&](bool success,
-                                       mojom::ProviderErrorUnionPtr error_union,
-                                       const std::string& error_message) {
-          EXPECT_TRUE(success);
-          ASSERT_TRUE(error_union->is_solana_provider_error());
-          EXPECT_EQ(error_union->get_solana_provider_error(),
-                    mojom::SolanaProviderError::kSuccess);
-          EXPECT_TRUE(error_message.empty());
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+        future.GetCallback<bool, mojom::ProviderErrorUnionPtr,
+                           const std::string&>());
+    auto [success, error_union, error_message] = future.Take();
+    EXPECT_TRUE(success);
+    ASSERT_TRUE(error_union);
+    ASSERT_TRUE(error_union->is_solana_provider_error());
+    EXPECT_EQ(error_union->get_solana_provider_error(),
+              mojom::SolanaProviderError::kSuccess);
+    EXPECT_TRUE(error_message.empty());
   }
 
   void RejectTransaction(const std::string& tx_meta_id) {
     auto observer = CreateObserver();
-    base::RunLoop run_loop;
-    tx_service()->RejectTransaction(
-        mojom::CoinType::SOL, mojom::kSolanaMainnet, tx_meta_id,
-        base::BindLambdaForTesting([&](bool success) {
-          EXPECT_TRUE(success);
-          observer->WaitForRejectedStatus();
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    base::test::TestFuture<bool> future;
+    tx_service()->RejectTransaction(mojom::CoinType::SOL, mojom::kSolanaMainnet,
+                                    tx_meta_id, future.GetCallback());
+    EXPECT_TRUE(future.Get());
+    observer->WaitForRejectedStatus();
   }
 
   void RegisterSolAccountChanged() {
@@ -697,8 +689,11 @@ class SolanaProviderTest : public InProcessBrowserTest {
     ASSERT_TRUE(ExecJs(execution_target, "solanaConnect()"));
     if (is_expect_bubble) {
       WaitForWalletBubble(web_contents());
+    } else {
+      // No prompt is expected, so wait for the connect() reply to be handled
+      // in the renderer (getConnectedAccount() awaits the connect promise).
+      ASSERT_TRUE(EvalJs(execution_target, "getConnectedAccount()").is_ok());
     }
-    base::RunLoop().RunUntilIdle();
   }
 
   void CallSolanaDisconnect(
@@ -870,8 +865,9 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectRequestInProgress) {
   ASSERT_TRUE(result.is_ok());
   ASSERT_TRUE(result.is_dict());
   const base::DictValue& dict = result.ExtractDict();
-  EXPECT_EQ(*dict.FindInt("code"),
+  EXPECT_EQ(dict.FindInt("code"),
             static_cast<int>(mojom::SolanaProviderError::kResourceUnavailable));
+  ASSERT_TRUE(dict.FindString("message"));
   EXPECT_EQ(*dict.FindString("message"),
             l10n_util::GetStringUTF8(
                 IDS_WALLET_REQUESTED_RESOURCE_NOT_AVAILABLE_ERROR));
@@ -997,6 +993,9 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusInIframes) {
   permissions::BraveWalletPermissionContext::AcceptOrCancel(
       std::vector<std::string>{account_0->address},
       mojom::PermissionLifetimeOption::kForever, web_contents());
+  // Wait for the connect() reply to be handled in the first iframe.
+  ASSERT_TRUE(
+      EvalJs(ChildFrameAt(main_frame, 0), "getConnectedAccount()").is_ok());
   // First iframe is now connected.
   EXPECT_TRUE(IsSolanaConnected(ChildFrameAt(main_frame, 0)));
   // Second iframe is still disconnected
@@ -1144,7 +1143,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
 
   auto infos = GetAllTransactionInfo(account_0->account_id);
-  EXPECT_EQ(1UL, infos.size());
+  ASSERT_EQ(1UL, infos.size());
   EXPECT_EQ(account_0->account_id, infos[0]->from_account_id);
   EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[0]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
@@ -1154,7 +1153,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   RejectTransaction(tx1_id);
 
   infos = GetAllTransactionInfo(account_0->account_id);
-  EXPECT_EQ(1UL, infos.size());
+  ASSERT_EQ(1UL, infos.size());
   EXPECT_EQ(account_0->account_id, infos[0]->from_account_id);
   EXPECT_EQ(mojom::TransactionStatus::Rejected, infos[0]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
@@ -1173,7 +1172,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
 
   infos = GetAllTransactionInfo(account_0->account_id);
-  EXPECT_EQ(2UL, infos.size());
+  ASSERT_EQ(2UL, infos.size());
   size_t tx2_index = 0;
   for (size_t i = 0; i < infos.size(); i++) {
     if (infos[i]->id != tx1_id) {
@@ -1191,7 +1190,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   ApproveTransaction(infos[tx2_index]->id);
 
   infos = GetAllTransactionInfo(account_0->account_id);
-  EXPECT_EQ(2UL, infos.size());
+  ASSERT_EQ(2UL, infos.size());
   EXPECT_EQ(account_0->account_id, infos[tx2_index]->from_account_id);
   EXPECT_EQ(mojom::TransactionStatus::Submitted, infos[tx2_index]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
@@ -1215,7 +1214,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
 
   // Test transaction.signatures.
   infos = GetAllTransactionInfo(account_0->account_id);
-  EXPECT_EQ(3UL, infos.size());
+  ASSERT_EQ(3UL, infos.size());
   size_t tx3_index = 0;
   for (size_t i = 0; i < infos.size(); i++) {
     if (infos[i]->id != tx1_id && infos[i]->id != tx2_id) {
@@ -1233,7 +1232,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   ApproveTransaction(tx3_id);
 
   infos = GetAllTransactionInfo(account_0->account_id);
-  EXPECT_EQ(3UL, infos.size());
+  ASSERT_EQ(3UL, infos.size());
   EXPECT_EQ(tx3_id, infos[tx3_index]->id);
   EXPECT_EQ(account_0->account_id, infos[tx3_index]->from_account_id);
   EXPECT_EQ(mojom::TransactionStatus::Submitted, infos[tx3_index]->tx_status);
@@ -1269,7 +1268,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
 
   infos = GetAllTransactionInfo(account_0->account_id);
-  EXPECT_EQ(4UL, infos.size());
+  ASSERT_EQ(4UL, infos.size());
   size_t tx4_index = 0;
   for (size_t i = 0; i < infos.size(); i++) {
     if (infos[i]->id != tx1_id && infos[i]->id != tx2_id &&
@@ -1321,7 +1320,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, AccountChangedEventAndReload) {
   // SelectedDappAccountChanged fires before Init(), the event is silently
   // dropped because events_listener_ is not bound. Since mojo processes
   // messages in order, completing this sync call guarantees Init() ran.
-  std::ignore = EvalJs(web_contents(), "window.braveSolana.isConnected");
+  EXPECT_EQ(false, EvalJs(web_contents(), "window.braveSolana.isConnected"));
 
   content::DOMMessageQueue message_queue;
   RegisterSolAccountChanged();
