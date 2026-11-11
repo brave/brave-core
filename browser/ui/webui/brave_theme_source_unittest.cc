@@ -64,8 +64,8 @@ class BraveThemeSourceTest : public testing::Test {
 
 #if !BUILDFLAG(IS_ANDROID)
 // Brave loads the ThemeSource in the system profile, which has no
-// ThemeService, so colors.css is served empty there instead of crashing.
-TEST_F(BraveThemeSourceTest, SystemProfileServesNoColorsCss) {
+// ThemeService. colors.css doesn't need one, so it is still served there.
+TEST_F(BraveThemeSourceTest, SystemProfileServesColorsCss) {
   Profile* system_profile = profile_manager_->CreateSystemProfile();
   ASSERT_FALSE(
       ThemeServiceFactory::GetForProfile(system_profile->GetOriginalProfile()));
@@ -74,8 +74,10 @@ TEST_F(BraveThemeSourceTest, SystemProfileServesNoColorsCss) {
                                                         /*instance=*/nullptr);
   ThemeSource source(system_profile);
 
-  EXPECT_EQ(GetData(source, "colors.css?sets=ui", web_contents.get()),
-            std::nullopt);
+  std::optional<std::string> css =
+      GetData(source, "colors.css?sets=ui", web_contents.get());
+  ASSERT_TRUE(css);
+  EXPECT_FALSE(css->empty());
 }
 #endif  // !BUILDFLAG(IS_ANDROID)
 
