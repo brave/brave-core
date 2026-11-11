@@ -148,7 +148,7 @@ IN_PROC_BROWSER_TEST_F(BraveRecapUIBrowserTest, LoadsAllImages) {
   NavigateToRecap();
   EXPECT_EQ("6 images, failed: []", content::EvalJs(web_contents(), R"js(
     (async () => {
-      const urls = new Set(['/images/card_pattern.png'])
+      const urls = new Set(['/images/card_pattern.webp'])
       for (const sheet of document.styleSheets) {
         if (!sheet.href?.endsWith('/components/app.css')) {
           continue

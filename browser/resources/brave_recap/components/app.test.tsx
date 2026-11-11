@@ -443,7 +443,7 @@ describe('brave recap share slide', () => {
         title: 'BRAVE_RECAP_CARD_TITLE',
         url: 'brave://recap',
       }),
-      { logo: '/brave-icon.svg', pattern: '/images/card_pattern.png' },
+      { logo: '/brave-icon.svg', pattern: '/images/card_pattern.webp' },
     )
   })
 

@@ -20,7 +20,7 @@ import {
   joinValue,
   formatTimeSaved,
 } from '../format'
-import cardPattern from '../images/card_pattern.png'
+import cardPattern from '../images/card_pattern.webp'
 import '../components/app.css'
 
 const DAY_MS = 24 * 60 * 60 * 1000
