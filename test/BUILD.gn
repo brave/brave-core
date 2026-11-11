@@ -1373,7 +1373,11 @@ test("brave_browser_tests") {
       "//brave/components/brave_wallet/renderer",
       "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
       "//brave/ui/base/clipboard/test:test_support",
+      "//chrome/browser/hid",
       "//chrome/browser/ui/dialogs:browser_dialogs",
+      "//mojo/public/cpp/bindings",
+      "//services/device/public/cpp:test_support",
+      "//services/device/public/mojom",
     ]
     sources += [
       "//brave/browser/brave_wallet/brave_wallet_ethereum_chain_browsertest.cc",
