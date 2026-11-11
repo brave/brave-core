@@ -23,7 +23,7 @@ bool IsPeekableInitiator(const url::Origin& origin) {
 }
 
 bool IsShiftClickOpen(const content::OpenURLParams& params) {
-  return params.disposition == WindowOpenDisposition::NEW_WINDOW &&
+  return params.disposition == WindowOpenDisposition::kNewWindow &&
          params.is_renderer_initiated && params.user_gesture &&
          IsPeekableURL(params.url);
 }
