@@ -91,7 +91,7 @@ class ZCashVerifyChainStateTaskTest : public testing::Test {
     sync_state_ = OrchardSyncState::SequenceBound(
         OrchardSyncState::CreateSyncStateSequence(),
         std::move(mocked_sync_state));
-    InitSyncState();
+    ASSERT_NO_FATAL_FAILURE(InitSyncState());
   }
 
   void InitSyncState() {
