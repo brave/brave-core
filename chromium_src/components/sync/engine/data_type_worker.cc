@@ -5,4 +5,4 @@
 
 #include "brave/components/sync/engine/brave_commit_encryption_check.h"
 
-#include <components/sync/engine/commit_contribution_impl.cc>
+#include <components/sync/engine/data_type_worker.cc>

@@ -5,9 +5,11 @@
 
 #include "brave/components/sync/engine/brave_commit_encryption_check.h"
 
-#include "base/check.h"
+#include <vector>
+
+#include "base/notreached.h"
+#include "components/sync/protocol/entity_data.h"
 #include "components/sync/protocol/entity_specifics.pb.h"
-#include "components/sync/protocol/sync_entity.pb.h"
 
 namespace syncer {
 
@@ -21,9 +23,10 @@ constexpr DataTypeSet kPlainTextCommitAllowedTypes = {
     NIGORI,
     // Meant to be read by the server, which holds no key material, so it
     // cannot be encrypted. go-sync does not apply the directives yet and only
-    // stores and relays them. The payload is visit ids and a time range;
-    // UrlDirective, the only variant carrying a URL, is stubbed out in Brave's
-    // DeleteDirectiveHandler.
+    // stores and relays them; https://github.com/brave/go-sync/issues/178
+    // tracks it. The payload is visit ids and a time range; UrlDirective, the
+    // only variant carrying a URL, is stubbed out in Brave's
+    // DeleteDirectiveHandler, at chromium_src/.../delete_directive_handler.cc.
     HISTORY_DELETE_DIRECTIVES,
     // Encrypted by its own scheme into its own specifics fields, so
     // `specifics.encrypted` stays unset. See
@@ -38,27 +41,31 @@ constexpr DataTypeSet kPlainTextCommitAllowedTypes = {
 
 }  // namespace
 
-bool IsUnexpectedPlainTextCommit(DataType type,
-                                 const sync_pb::SyncEntity& entity) {
-  // A deletion carries no specifics beyond the default field that identifies
-  // the type, so there is nothing to encrypt.
-  if (entity.deleted() || entity.specifics().has_encrypted()) {
+bool IsUnexpectedPlainTextCommit(DataType type, const EntityData& entity) {
+  // A deletion carries no specifics, so there is nothing to encrypt.
+  if (entity.is_deleted() || entity.specifics.has_encrypted()) {
     return false;
   }
   return !kPlainTextCommitAllowedTypes.Has(type);
 }
 
-void CheckCommitEntityEncryption(DataType type,
-                                 PassphraseType passphrase_type,
-                                 const sync_pb::SyncEntity& entity) {
+size_t DropUnencryptedCommitRequests(DataType type,
+                                     PassphraseType passphrase_type,
+                                     CommitRequestDataList* commit_requests) {
   // Without an explicit passphrase the chain is not in encrypt-everything
   // mode, and a type whose EncryptionPolicy is kNeverEncrypted is expected to
   // commit in plain text.
   if (!IsExplicitPassphrase(passphrase_type)) {
-    return;
+    return 0;
   }
-  DUMP_WILL_BE_CHECK(!IsUnexpectedPlainTextCommit(type, entity))
-      << "Committing unencrypted sync specifics for "
+  return std::erase_if(*commit_requests, [type](const auto& commit_request) {
+    return IsUnexpectedPlainTextCommit(type, *commit_request->entity);
+  });
+}
+
+void ReportDroppedUnencryptedCommits(DataType type) {
+  DUMP_WILL_BE_NOTREACHED()
+      << "Dropped a commit of unencrypted sync specifics for "
       << DataTypeToDebugString(type);
 }
 
