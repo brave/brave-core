@@ -13,5 +13,5 @@ substitutions:
       chrome://extensions uses this component, and Brave compiles the
       extensions core on mobile Android, not just on desktop Android.
     regex:
-      pattern: 'assert((!is_android && !is_ios) || is_desktop_android)'
-      replace: 'assert((!is_android && !is_ios) || enable_extensions_core)'
+      pattern: 'assert((!is_android && !is_ios) || is_desktop_android ||'
+      replace: 'assert((!is_android && !is_ios) || enable_extensions_core ||'
