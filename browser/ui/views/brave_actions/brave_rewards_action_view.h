@@ -29,7 +29,6 @@
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_REWARDS));
 
-class BraveActionsContainerTest;
 class Profile;
 class TabStripModel;
 class WebUIBubbleManager;
@@ -61,6 +60,10 @@ class BraveRewardsActionView
   void Update();
 
   void ClosePanelForTesting();
+
+  const std::string& GetPublisherIdForTesting() const {
+    return publisher_registered_.first;
+  }
 
   // views::View:
   gfx::Rect GetAnchorBoundsInScreen() const override;
@@ -102,8 +105,6 @@ class BraveRewardsActionView
           notification) override;
 
  private:
-  friend class ::BraveActionsContainerTest;
-
   void OnButtonPressed();
   void OnPreferencesChanged(const std::string& key);
   content::WebContents* GetActiveWebContents();
