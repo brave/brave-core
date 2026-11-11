@@ -470,6 +470,11 @@ void SharedPinnedTabService::OnTabBlockedStateChanged(tabs::TabInterface* tab) {
   OnTabChangedAt(tab, TabChangeType::kAll);
 }
 
+void SharedPinnedTabService::OnTabAudioChanged(tabs::TabInterface* tab) {
+  // Like blocked state, audio used to be reported as a kind of tab change.
+  OnTabChangedAt(tab, TabChangeType::kAll);
+}
+
 void SharedPinnedTabService::OnTabStripModelDestroyed(
     TabStripModel* tab_strip_model) {
   // The posted OnTabUnpinned() may never see this model, so don't keep a
