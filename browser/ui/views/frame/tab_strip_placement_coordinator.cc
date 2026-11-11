@@ -83,13 +83,6 @@ void TabStripPlacementCoordinator::UpdatePlacement() {
   }
 
   if (parent != tab_strip_region_view_->parent()) {
-    // The following remove-then-add sequence is required in order to trigger
-    // AddedToWidget in BraveTabStrip, which calls SetAvailableWidthCallback as
-    // appropriate for the current tab strip orientation.
-    if (tab_strip_region_view_->parent()) {
-      tab_strip_region_view_->parent()->RemoveChildView(
-          base::to_address(tab_strip_region_view_));
-    }
     size_t max_index = parent->children().size();
     size_t add_at = std::min(placement.index.value_or(max_index), max_index);
     parent->AddChildViewAt(base::to_address(tab_strip_region_view_), add_at);
