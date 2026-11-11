@@ -9,7 +9,7 @@
  * variables there by copying `variables.css` to `nala.css`. */
 
 @import "//theme/colors.css?sets=ui";
-@import "//resources/brave/nala/css/variables.css";
+@import "//resources/brave/leo/css/variables.css";
 
 html:not(#z) {
   --leo-color-primitive-neutral-0: var(--color-ref-neutral0);
