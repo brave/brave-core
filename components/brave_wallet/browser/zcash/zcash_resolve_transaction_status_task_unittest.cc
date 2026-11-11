@@ -6,12 +6,13 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_resolve_transaction_status_task.h"
 
 #include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
-#include "base/test/mock_callback.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -22,6 +23,7 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_test_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_tx_meta.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -62,6 +64,10 @@ class ZCashResolveTransactionStatusTaskTest : public testing::Test {
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   void SetUp() override {
+    feature_list_.InitAndEnableFeatureWithParameters(
+        features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "true"}});
+
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
 
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
@@ -109,7 +115,23 @@ class ZCashResolveTransactionStatusTaskTest : public testing::Test {
     return base::PassKey<class ZCashResolveTransactionStatusTaskTest>();
   }
 
+  // Runs the task for `tx_meta` and waits for its result.
+  base::expected<ZCashWalletService::ResolveTransactionStatusResult,
+                 std::string>
+  ResolveTransactionStatus(std::unique_ptr<ZCashTxMeta> tx_meta) {
+    auto task = std::make_unique<ZCashResolveTransactionStatusTask>(
+        CreatePassKey(), CreateContext(), zcash_wallet_service(),
+        std::move(tx_meta));
+    base::test::TestFuture<base::expected<
+        ZCashWalletService::ResolveTransactionStatusResult, std::string>>
+        tx_result_future;
+    task->Start(tx_result_future.GetCallback());
+    return tx_result_future.Take();
+  }
+
  private:
+  // Must be declared before `task_environment_`.
+  base::test::ScopedFeatureList feature_list_;
   base::test::TaskEnvironment task_environment_;
 
   base::ScopedTempDir temp_dir_;
@@ -145,22 +167,8 @@ TEST_F(ZCashResolveTransactionStatusTaskTest, Confirmed) {
             std::vector<uint8_t>(), kTransactionHeight));
       });
 
-  base::MockCallback<ZCashResolveTransactionStatusTask::
-                         ZCashResolveTransactionStatusTaskCallback>
-      callback;
-
-  auto task = std::make_unique<ZCashResolveTransactionStatusTask>(
-      CreatePassKey(), CreateContext(), zcash_wallet_service(),
-      std::move(tx_meta));
-  base::expected<ZCashWalletService::ResolveTransactionStatusResult,
-                 std::string>
-      tx_result;
-  EXPECT_CALL(callback, Run(_)).WillOnce(SaveArg<0>(&tx_result));
-
-  task->Start(callback.Get());
-
-  task_environment().RunUntilIdle();
-
+  auto tx_result = ResolveTransactionStatus(std::move(tx_meta));
+  ASSERT_TRUE(tx_result.has_value());
   EXPECT_EQ(tx_result.value(),
             ZCashWalletService::ResolveTransactionStatusResult::kCompleted);
 }
@@ -185,22 +193,8 @@ TEST_F(ZCashResolveTransactionStatusTaskTest, Expired_ExpiryHeight) {
             zcash::mojom::RawTransaction::New(std::vector<uint8_t>(), 0));
       });
 
-  base::MockCallback<ZCashResolveTransactionStatusTask::
-                         ZCashResolveTransactionStatusTaskCallback>
-      callback;
-
-  auto task = std::make_unique<ZCashResolveTransactionStatusTask>(
-      CreatePassKey(), CreateContext(), zcash_wallet_service(),
-      std::move(tx_meta));
-  base::expected<ZCashWalletService::ResolveTransactionStatusResult,
-                 std::string>
-      tx_result;
-  EXPECT_CALL(callback, Run(_)).WillOnce(SaveArg<0>(&tx_result));
-
-  task->Start(callback.Get());
-
-  task_environment().RunUntilIdle();
-
+  auto tx_result = ResolveTransactionStatus(std::move(tx_meta));
+  ASSERT_TRUE(tx_result.has_value());
   EXPECT_EQ(tx_result.value(),
             ZCashWalletService::ResolveTransactionStatusResult::kExpired);
 }
@@ -225,16 +219,9 @@ TEST_F(ZCashResolveTransactionStatusTaskTest,
         std::move(callback).Run(base::unexpected("error"));
       });
 
-  auto task = std::make_unique<ZCashResolveTransactionStatusTask>(
-      CreatePassKey(), CreateContext(), zcash_wallet_service(),
-      std::move(tx_meta));
-  base::test::TestFuture<base::expected<
-      ZCashWalletService::ResolveTransactionStatusResult, std::string>>
-      tx_result_future;
-
-  task->Start(tx_result_future.GetCallback());
-
-  EXPECT_EQ(tx_result_future.Get().value(),
+  auto tx_result = ResolveTransactionStatus(std::move(tx_meta));
+  ASSERT_TRUE(tx_result.has_value());
+  EXPECT_EQ(tx_result.value(),
             ZCashWalletService::ResolveTransactionStatusResult::kExpired);
 }
 
@@ -259,22 +246,8 @@ TEST_F(ZCashResolveTransactionStatusTaskTest, Expired_Time) {
             zcash::mojom::RawTransaction::New(std::vector<uint8_t>(), 0));
       });
 
-  base::MockCallback<ZCashResolveTransactionStatusTask::
-                         ZCashResolveTransactionStatusTaskCallback>
-      callback;
-
-  auto task = std::make_unique<ZCashResolveTransactionStatusTask>(
-      CreatePassKey(), CreateContext(), zcash_wallet_service(),
-      std::move(tx_meta));
-  base::expected<ZCashWalletService::ResolveTransactionStatusResult,
-                 std::string>
-      tx_result;
-  EXPECT_CALL(callback, Run(_)).WillOnce(SaveArg<0>(&tx_result));
-
-  task->Start(callback.Get());
-
-  task_environment().RunUntilIdle();
-
+  auto tx_result = ResolveTransactionStatus(std::move(tx_meta));
+  ASSERT_TRUE(tx_result.has_value());
   EXPECT_EQ(tx_result.value(),
             ZCashWalletService::ResolveTransactionStatusResult::kExpired);
 }
@@ -299,16 +272,9 @@ TEST_F(ZCashResolveTransactionStatusTaskTest, Expired_Time_TransactionError) {
         std::move(callback).Run(base::unexpected("error"));
       });
 
-  auto task = std::make_unique<ZCashResolveTransactionStatusTask>(
-      CreatePassKey(), CreateContext(), zcash_wallet_service(),
-      std::move(tx_meta));
-  base::test::TestFuture<base::expected<
-      ZCashWalletService::ResolveTransactionStatusResult, std::string>>
-      tx_result_future;
-
-  task->Start(tx_result_future.GetCallback());
-
-  EXPECT_EQ(tx_result_future.Get().value(),
+  auto tx_result = ResolveTransactionStatus(std::move(tx_meta));
+  ASSERT_TRUE(tx_result.has_value());
+  EXPECT_EQ(tx_result.value(),
             ZCashWalletService::ResolveTransactionStatusResult::kExpired);
 }
 
@@ -332,22 +298,8 @@ TEST_F(ZCashResolveTransactionStatusTaskTest, InProgress_ExpiryHeight) {
             zcash::mojom::RawTransaction::New(std::vector<uint8_t>(), 0));
       });
 
-  base::MockCallback<ZCashResolveTransactionStatusTask::
-                         ZCashResolveTransactionStatusTaskCallback>
-      callback;
-
-  auto task = std::make_unique<ZCashResolveTransactionStatusTask>(
-      CreatePassKey(), CreateContext(), zcash_wallet_service(),
-      std::move(tx_meta));
-  base::expected<ZCashWalletService::ResolveTransactionStatusResult,
-                 std::string>
-      tx_result;
-  EXPECT_CALL(callback, Run(_)).WillOnce(SaveArg<0>(&tx_result));
-
-  task->Start(callback.Get());
-
-  task_environment().RunUntilIdle();
-
+  auto tx_result = ResolveTransactionStatus(std::move(tx_meta));
+  ASSERT_TRUE(tx_result.has_value());
   EXPECT_EQ(tx_result.value(),
             ZCashWalletService::ResolveTransactionStatusResult::kInProgress);
 }
@@ -373,22 +325,8 @@ TEST_F(ZCashResolveTransactionStatusTaskTest, InProgress_Time) {
             zcash::mojom::RawTransaction::New(std::vector<uint8_t>(), 0));
       });
 
-  base::MockCallback<ZCashResolveTransactionStatusTask::
-                         ZCashResolveTransactionStatusTaskCallback>
-      callback;
-
-  auto task = std::make_unique<ZCashResolveTransactionStatusTask>(
-      CreatePassKey(), CreateContext(), zcash_wallet_service(),
-      std::move(tx_meta));
-  base::expected<ZCashWalletService::ResolveTransactionStatusResult,
-                 std::string>
-      tx_result;
-  EXPECT_CALL(callback, Run(_)).WillOnce(SaveArg<0>(&tx_result));
-
-  task->Start(callback.Get());
-
-  task_environment().RunUntilIdle();
-
+  auto tx_result = ResolveTransactionStatus(std::move(tx_meta));
+  ASSERT_TRUE(tx_result.has_value());
   EXPECT_EQ(tx_result.value(),
             ZCashWalletService::ResolveTransactionStatusResult::kInProgress);
 }
@@ -414,22 +352,8 @@ TEST_F(ZCashResolveTransactionStatusTaskTest,
             zcash::mojom::RawTransaction::New(std::vector<uint8_t>(), 0));
       });
 
-  base::MockCallback<ZCashResolveTransactionStatusTask::
-                         ZCashResolveTransactionStatusTaskCallback>
-      callback;
-
-  auto task = std::make_unique<ZCashResolveTransactionStatusTask>(
-      CreatePassKey(), CreateContext(), zcash_wallet_service(),
-      std::move(tx_meta));
-  base::expected<ZCashWalletService::ResolveTransactionStatusResult,
-                 std::string>
-      tx_result;
-  EXPECT_CALL(callback, Run(_)).WillOnce(SaveArg<0>(&tx_result));
-
-  task->Start(callback.Get());
-
-  task_environment().RunUntilIdle();
-
+  auto tx_result = ResolveTransactionStatus(std::move(tx_meta));
+  ASSERT_TRUE(tx_result.has_value());
   EXPECT_EQ(tx_result.value(),
             ZCashWalletService::ResolveTransactionStatusResult::kInProgress);
 }
@@ -452,23 +376,7 @@ TEST_F(ZCashResolveTransactionStatusTaskTest, Error_Transaction) {
         std::move(callback).Run(base::unexpected("error"));
       });
 
-  base::MockCallback<ZCashResolveTransactionStatusTask::
-                         ZCashResolveTransactionStatusTaskCallback>
-      callback;
-
-  auto task = std::make_unique<ZCashResolveTransactionStatusTask>(
-      CreatePassKey(), CreateContext(), zcash_wallet_service(),
-      std::move(tx_meta));
-  base::expected<ZCashWalletService::ResolveTransactionStatusResult,
-                 std::string>
-      tx_result;
-  EXPECT_CALL(callback, Run(_)).WillOnce(SaveArg<0>(&tx_result));
-
-  task->Start(callback.Get());
-
-  task_environment().RunUntilIdle();
-
-  EXPECT_FALSE(tx_result.has_value());
+  EXPECT_FALSE(ResolveTransactionStatus(std::move(tx_meta)).has_value());
 }
 
 TEST_F(ZCashResolveTransactionStatusTaskTest, Error_LatestBlock) {
@@ -489,23 +397,7 @@ TEST_F(ZCashResolveTransactionStatusTaskTest, Error_LatestBlock) {
             zcash::mojom::RawTransaction::New(std::vector<uint8_t>(), 0));
       });
 
-  base::MockCallback<ZCashResolveTransactionStatusTask::
-                         ZCashResolveTransactionStatusTaskCallback>
-      callback;
-
-  auto task = std::make_unique<ZCashResolveTransactionStatusTask>(
-      CreatePassKey(), CreateContext(), zcash_wallet_service(),
-      std::move(tx_meta));
-  base::expected<ZCashWalletService::ResolveTransactionStatusResult,
-                 std::string>
-      tx_result;
-  EXPECT_CALL(callback, Run(_)).WillOnce(SaveArg<0>(&tx_result));
-
-  task->Start(callback.Get());
-
-  task_environment().RunUntilIdle();
-
-  EXPECT_FALSE(tx_result.has_value());
+  EXPECT_FALSE(ResolveTransactionStatus(std::move(tx_meta)).has_value());
 }
 
 }  // namespace brave_wallet
