@@ -32,6 +32,8 @@ class BraveHistoryEmbeddingsProvider : public HistoryProvider {
   void Stop(AutocompleteStopReason stop_reason) override;
 
  private:
+  friend class FakeBraveHistoryEmbeddingsProvider;
+
   ~BraveHistoryEmbeddingsProvider() override;
 
   // Callback for querying `HistoryEmbeddingsService::Search()`.
