@@ -220,7 +220,7 @@
     "@ledgerhq/hw-transport-webhid": "6.36.0",
     "@mozilla/readability": "0.6.0",
     "@polkadot/types": "17.0.1",
-    "@reduxjs/toolkit": "1.9.0",
+    "@reduxjs/toolkit": "1.9.7",
     "@solana/web3.js": "1.98.2",
     "@tanstack/react-query": "5.90.20",
     "@trezor/connect": "9.6.4",
