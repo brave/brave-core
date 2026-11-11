@@ -47,8 +47,13 @@ bool BraveDownloadManagerDelegate::IsDownloadReadyForCompletion(
         item, std::move(internal_complete_callback));
   }
 
+  // On Android the target path is a MediaStore content URI
+  // (content://media/...) with no extension. The .jpg/.jpeg name is the
+  // display name. Desktop falls back to the target basename, so this is the
+  // same check there. The bytes stay at GetFullPath() — the pending URI —
+  // until completion publishes them.
   if (!image_metadata_stripper::IsSupportedImagePath(
-          item->GetTargetFilePath())) {
+          item->GetFileNameToReportUser())) {
     return ChromeDownloadManagerDelegate::IsDownloadReadyForCompletion(
         item, std::move(internal_complete_callback));
   }
