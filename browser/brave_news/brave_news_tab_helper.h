@@ -122,7 +122,7 @@ class BraveNewsTabHelper
 
   bool ShouldFindFeeds();
   void OnRssLinksFetched(const GURL& site_url, std::vector<GURL> feed_urls);
-  void NotifyDetectionFinishedForTesting(bool fetched);
+  void NotifyDetectionFinished(bool fetched);
   void OnReceivedNewPublishers(brave_news::MojomPublishers publishers);
   void AvailableFeedsChanged();
   void UpdatePageFeed();

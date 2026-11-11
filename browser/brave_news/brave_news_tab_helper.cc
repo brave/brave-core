@@ -374,7 +374,7 @@ void BraveNewsTabHelper::DOMContentLoaded(content::RenderFrameHost* rfh) {
   }
 
   if (!ShouldFindFeeds()) {
-    NotifyDetectionFinishedForTesting(false);
+    NotifyDetectionFinished(false);
     return;
   }
 
@@ -388,7 +388,7 @@ void BraveNewsTabHelper::DOMContentLoaded(content::RenderFrameHost* rfh) {
 void BraveNewsTabHelper::OnRssLinksFetched(const GURL& site_url,
                                            std::vector<GURL> feed_urls) {
   OnReceivedRssUrls(site_url, std::move(feed_urls));
-  NotifyDetectionFinishedForTesting(true);
+  NotifyDetectionFinished(true);
 }
 
 void BraveNewsTabHelper::SetDetectionFinishedCallbackForTesting(
@@ -396,7 +396,7 @@ void BraveNewsTabHelper::SetDetectionFinishedCallbackForTesting(
   detection_finished_callback_for_testing_ = std::move(callback);
 }
 
-void BraveNewsTabHelper::NotifyDetectionFinishedForTesting(bool fetched) {
+void BraveNewsTabHelper::NotifyDetectionFinished(bool fetched) {
   if (detection_finished_callback_for_testing_) {
     std::move(detection_finished_callback_for_testing_).Run(fetched);
   }
