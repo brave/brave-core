@@ -9,6 +9,7 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
+#include "base/test/run_until.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_helper.h"
@@ -375,7 +376,7 @@ TEST_F(SystemVPNConnectionAPIUnitTest, RegionDataTest) {
   // Test valid region data parsing.
   OnFetchRegionList(GetRegionsData(), true);
   const size_t kRegionCount = 6;
-  EXPECT_EQ(kRegionCount, regions().size());
+  ASSERT_EQ(kRegionCount, regions().size());
 
   // First region in region list is set as a device region when fetch is failed.
   OnFetchTimezones(std::string(), false);
@@ -387,7 +388,9 @@ TEST_F(SystemVPNConnectionAPIUnitTest, RegionDataTest) {
   SetFallbackDeviceRegion();
   SetTestTimezone("Asia/Seoul");
   OnFetchTimezones(GetTimeZonesData(), true);
-  EXPECT_EQ("asia-sg", device_region()->name);
+  auto region = device_region();
+  ASSERT_TRUE(region);
+  EXPECT_EQ("asia-sg", region->name);
 
   // Test device region is not changed when invalid timezone is set.
   SetFallbackDeviceRegion();
@@ -415,10 +418,10 @@ TEST_F(SystemVPNConnectionAPIUnitTest,
   test_api->OnGetProfileCredentials(kProfileCredentialData, true);
   EXPECT_TRUE(connection_info().IsValid());
   test_api->Connect();
-  base::RunLoop().RunUntilIdle();
   // With cached connection info, connect process starts with
   // os vpn entry creation.
-
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return test_api->IsConnectionCreated(); }));
   EXPECT_TRUE(test_api->IsConnectionCreated());
 }
 
@@ -479,6 +482,9 @@ TEST_F(SystemVPNConnectionAPIUnitTest, NeedsConnectTest) {
   test_api->SetNetworkAvailableForTesting(false);
   GetSystemVPNConnectionAPI()->OnDisconnected();
   EXPECT_TRUE(test_api->needs_connect_);
+  // Reconnect is postponed while the network is down.
+  EXPECT_EQ(mojom::ConnectionState::DISCONNECTED,
+            test_api->GetConnectionState());
   test_api->SetNetworkAvailableForTesting(true);
   test_api->OnNetworkChanged(net::NetworkChangeNotifier::CONNECTION_ETHERNET);
   EXPECT_FALSE(test_api->needs_connect_);
@@ -496,15 +502,15 @@ TEST_F(SystemVPNConnectionAPIUnitTest,
 TEST_F(SystemVPNConnectionAPIUnitTest, HostnamesTest) {
   auto* test_api = GetConnectionAPI();
   // Set valid hostnames list
-  test_api->hostname_.reset();
+  test_api->ResetHostname();
   test_api->OnFetchHostnames("eu-be", kHostNamesTestData, true);
   // Check best one is picked from fetched hostname list.
-  EXPECT_EQ("host-2.brave.com", test_api->hostname_->hostname);
+  EXPECT_EQ("host-2.brave.com", test_api->GetHostname());
 
   // Can't get hostname from invalid hostnames list
-  test_api->hostname_.reset();
+  test_api->ResetHostname();
   test_api->OnFetchHostnames("eu-be", "", false);
-  EXPECT_FALSE(test_api->hostname_);
+  EXPECT_TRUE(test_api->GetHostname().empty());
 }
 
 TEST_F(SystemVPNConnectionAPIUnitTest, ConnectionInfoTest) {
@@ -517,7 +523,7 @@ TEST_F(SystemVPNConnectionAPIUnitTest, ConnectionInfoTest) {
   EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
 
   // To prevent real os vpn entry creation.
-  test_api->prevent_creation_ = true;
+  test_api->SetPreventCreationForTesting(true);
   test_api->OnGetProfileCredentials(kProfileCredentialData, true);
   EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
   EXPECT_TRUE(connection_info().IsValid());
@@ -581,7 +587,8 @@ TEST_F(SystemVPNConnectionAPIUnitTest, CancelConnectingTest) {
   test_api->cancel_connecting_ = true;
   test_api->CreateVPNConnection();
   EXPECT_FALSE(test_api->cancel_connecting_);
-  EXPECT_EQ(mojom::ConnectionState::DISCONNECTED, test_api->connection_state_);
+  EXPECT_EQ(mojom::ConnectionState::DISCONNECTED,
+            test_api->GetConnectionState());
 }
 
 // Ignore disconnected state change while connected. See the comment at
