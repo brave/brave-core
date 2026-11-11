@@ -15,6 +15,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/time/time.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/p3a/metric_config.h"
@@ -107,6 +108,8 @@ class P3AConstellationHelperTest : public testing::Test {
           } else if (request.url.spec().ends_with("/randomness")) {
             response = HandleRandomnessRequest(request, GetTestEpoch(log_type));
             points_request_made_[log_type] = true;
+          } else {
+            NOTREACHED() << "Unhandled request: " << request.url.spec();
           }
           if (!response.empty()) {
             if (interceptor_send_bad_response_) {
@@ -119,6 +122,7 @@ class P3AConstellationHelperTest : public testing::Test {
 
   void SetUpHelper() {
     server_info_from_callback_ = nullptr;
+    message_callback_called_ = false;
 
     helper_ = std::make_unique<ConstellationHelper>(
         &local_state_, shared_url_loader_factory_,
@@ -130,13 +134,13 @@ class P3AConstellationHelperTest : public testing::Test {
               epoch_from_callback_ = epoch;
               serialized_message_from_callback_ = std::move(serialized_message);
               is_success_from_callback_ = is_success;
+              message_callback_called_ = true;
             }),
         base::BindLambdaForTesting(
             [this](MetricLogType log_type, RandomnessServerInfo* server_info) {
               server_info_from_callback_ = server_info;
             }),
         &p3a_config_);
-    task_environment_.RunUntilIdle();
   }
 
   uint8_t GetTestEpoch(MetricLogType log_type) {
@@ -194,6 +198,7 @@ class P3AConstellationHelperTest : public testing::Test {
   raw_ptr<RandomnessServerInfo> server_info_from_callback_ = nullptr;
   std::unique_ptr<std::string> serialized_message_from_callback_;
   bool is_success_from_callback_ = false;
+  bool message_callback_called_ = false;
 
   std::string histogram_name_from_callback_;
   uint8_t epoch_from_callback_;
@@ -213,11 +218,11 @@ TEST_F(P3AConstellationHelperTest, CanRetrieveServerInfo) {
                                        &exp_next_epoch_time));
 
     helper_->UpdateRandomnessServerInfo(log_type);
-    task_environment_.RunUntilIdle();
+    ASSERT_TRUE(base::test::RunUntil(
+        [&] { return server_info_from_callback_ != nullptr; }));
 
     CheckInfoRequestMade(log_type);
 
-    EXPECT_NE(server_info_from_callback_, nullptr);
     EXPECT_EQ(server_info_from_callback_->current_epoch, test_epoch);
 
     EXPECT_EQ(server_info_from_callback_->next_epoch_time, exp_next_epoch_time);
@@ -227,11 +232,11 @@ TEST_F(P3AConstellationHelperTest, CanRetrieveServerInfo) {
     server_info_from_callback_ = nullptr;
 
     SetUpHelper();
+    // Cached server info is reported synchronously.
     helper_->UpdateRandomnessServerInfo(log_type);
-    task_environment_.RunUntilIdle();
 
     ASSERT_FALSE(info_request_made_[log_type]);
-    EXPECT_NE(server_info_from_callback_, nullptr);
+    ASSERT_NE(server_info_from_callback_, nullptr);
     EXPECT_EQ(server_info_from_callback_->current_epoch, test_epoch);
     EXPECT_EQ(server_info_from_callback_->next_epoch_time, exp_next_epoch_time);
     server_info_from_callback_ = nullptr;
@@ -270,22 +275,25 @@ TEST_F(P3AConstellationHelperTest, GenerateBasicMessage) {
   for (MetricLogType log_type : kAllMetricLogTypes) {
     uint8_t test_epoch = GetTestEpoch(log_type);
 
+    server_info_from_callback_ = nullptr;
     helper_->UpdateRandomnessServerInfo(log_type);
-    task_environment_.RunUntilIdle();
+    ASSERT_TRUE(base::test::RunUntil(
+        [&] { return server_info_from_callback_ != nullptr; }));
 
     MessageMetainfo meta_info;
     meta_info.Init(&local_state_, "release", install_time_);
 
-    helper_->StartMessagePreparation(
+    message_callback_called_ = false;
+    ASSERT_TRUE(helper_->StartMessagePreparation(
         kTestHistogramName, log_type,
         GenerateP3AConstellationMessage(kTestHistogramName, test_epoch,
                                         meta_info, kP3AUploadType, nullptr),
-        false);
-    task_environment_.RunUntilIdle();
+        false));
+    ASSERT_TRUE(base::test::RunUntil([&] { return message_callback_called_; }));
 
     CheckPointsRequestMade(log_type);
 
-    EXPECT_NE(serialized_message_from_callback_, nullptr);
+    ASSERT_NE(serialized_message_from_callback_, nullptr);
     EXPECT_NE(serialized_message_from_callback_->size(), 0U);
 
     EXPECT_EQ(histogram_name_from_callback_, kTestHistogramName);
@@ -395,23 +403,24 @@ TEST_F(P3AConstellationHelperTest, NebulaSample) {
     SetUpHelper();
 
     helper_->UpdateRandomnessServerInfo(MetricLogType::kTypical);
-    task_environment_.RunUntilIdle();
+    ASSERT_TRUE(base::test::RunUntil(
+        [&] { return server_info_from_callback_ != nullptr; }));
 
     MessageMetainfo meta_info;
     meta_info.Init(&local_state_, "release", install_time_);
 
-    helper_->StartMessagePreparation(
+    ASSERT_TRUE(helper_->StartMessagePreparation(
         kTestNebulaHistogramName, MetricLogType::kTypical,
         GenerateP3AConstellationMessage(kTestNebulaHistogramName,
                                         kTestTypicalEpoch, meta_info,
                                         kP3AUploadType, nullptr),
-        true);
-    task_environment_.RunUntilIdle();
+        true));
+    ASSERT_TRUE(base::test::RunUntil([&] { return message_callback_called_; }));
 
     if (points_request_made_[MetricLogType::kTypical]) {
       points_request_made_[MetricLogType::kTypical] = false;
       points_request_count++;
-      EXPECT_NE(serialized_message_from_callback_, nullptr);
+      ASSERT_NE(serialized_message_from_callback_, nullptr);
       EXPECT_NE(serialized_message_from_callback_->size(), 0U);
     } else {
       EXPECT_EQ(serialized_message_from_callback_, nullptr);
