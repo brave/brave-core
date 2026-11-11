@@ -5,9 +5,9 @@
 
 import * as React from 'react'
 import { createPortal } from 'react-dom'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
-import Tooltip from '@brave/leo/react/tooltip'
+import Button from '@brave/nala/react/button'
+import Icon from '@brave/nala/react/icon'
+import Tooltip from '@brave/nala/react/tooltip'
 import { getLocale, formatLocale } from '$web-common/locale'
 import {
   RecapStats,
