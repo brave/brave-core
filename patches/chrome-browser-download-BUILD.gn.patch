@@ -1,8 +1,16 @@
 diff --git a/chrome/browser/download/BUILD.gn b/chrome/browser/download/BUILD.gn
-index 6f9c54ba8b703bb3980db184c362004fcfd7ee49..46bee648ddd8a962e80d46d330b0dd1037af4816 100644
+index 6f9c54ba8b703bb3980db184c362004fcfd7ee49..6d4352f611ff019993f7f8380ccc201ab669ea51 100644
 --- a/chrome/browser/download/BUILD.gn
 +++ b/chrome/browser/download/BUILD.gn
-@@ -378,7 +378,7 @@ source_set("impl") {
+@@ -237,6 +237,7 @@ source_set("impl") {
+     "//ui/base/unowned_user_data",
+     "//url",
+   ]
++  deps += [ "//brave/components/brave_shields/core/browser" ]
+ 
+   if (is_android) {
+     sources += [
+@@ -378,7 +379,7 @@ source_set("impl") {
      sources += [ "drag_download_item_aura.cc" ]
    }
  
