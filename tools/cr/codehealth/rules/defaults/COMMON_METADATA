@@ -19,6 +19,15 @@ agentic_review {
     required_diff_patterns: "^\\+.*FEATURE_(?:EN|DIS)ABLED_(?:BY_DEFAULT|FOR_COUNTRIES)"
     rules: "tools/cr/codehealth/rules/defaults/feature-flips.md"
   }
+  # Bool `BASE_FEATURE_PARAM` defaults, on the macro's line or wrapped onto
+  # their own.
+  capability_groups {
+    path_expression: ".*\\.(?:cc|h|mm)"
+    path_expression_exclusion: ".*(?:_unittest|_browsertest|_test|_uitest|_test_util|_test_utils|_fuzzer|_perftest)\\.(?:cc|h|mm)|.*/test/.*|.*/testing/.*|.*about_flags\\.cc"
+    diff_patterns: "^-(?:\\s*|.*BASE_FEATURE_PARAM\\(bool,.*)(?:true|false)\\);"
+    required_diff_patterns: "^\\+(?:\\s*|.*BASE_FEATURE_PARAM\\(bool,.*)(?:true|false)\\);"
+    rules: "tools/cr/codehealth/rules/defaults/feature-flips.md"
+  }
   # New IPHs that ship enabled: Brave pins IPHs one by one, and a new feature
   # only adds a default, which the flips group above requires to be removed too.
   capability_groups {
