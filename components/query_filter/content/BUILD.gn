@@ -23,3 +23,25 @@ source_set("content") {
     "//url",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "query_filter_navigation_throttle_unittest.cc" ]
+
+  deps = [
+    ":content",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_shields/core/browser",
+    "//brave/components/query_filter/browser/test_support",
+    "//brave/components/query_filter/common",
+    "//components/content_settings/core/browser",
+    "//components/prefs:test_support",
+    "//components/sync_preferences:test_support",
+    "//components/user_prefs",
+    "//content/test:test_support",
+    "//testing/gtest",
+    "//url",
+  ]
+}

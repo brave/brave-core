@@ -2,3 +2,13 @@ include_rules = [
   "+components/user_prefs",
   "+content/public/browser",
 ]
+
+specific_include_rules = {
+  ".*_unittest\.cc": [
+    "+brave/components/brave_shields/core/browser",
+    "+components/content_settings/core/browser/host_content_settings_map.h",
+    "+components/prefs",
+    "+components/sync_preferences/testing_pref_service_syncable.h",
+    "+content/public/test",
+  ],
+}

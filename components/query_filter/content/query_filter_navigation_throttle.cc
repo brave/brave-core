@@ -8,6 +8,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <utility>
 
 #include "brave/components/brave_shields/content/browser/restart_navigation.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
@@ -102,6 +103,11 @@ QueryFilterNavigationThrottle::WillStartRequest() {
     return NavigationThrottle::PROCEED;
   }
 
+  if (redirect_callback_for_testing_) {
+    redirect_callback_for_testing_.Run(*filtered_url);  // IN-TEST
+    return NavigationThrottle::CANCEL;
+  }
+
   // Redirect internally with the |new_url|.
   if (brave_shields::RestartNavigationWithURL(
           *navigation_handle(), *filtered_url,
@@ -114,5 +120,10 @@ QueryFilterNavigationThrottle::WillStartRequest() {
 
 const char* QueryFilterNavigationThrottle::GetNameForLogging() {
   return "QueryFilterNavigationThrottle";
+}
+
+void QueryFilterNavigationThrottle::SetRedirectCallbackForTesting(  // IN-TEST
+    base::RepeatingCallback<void(const GURL&)> callback) {
+  redirect_callback_for_testing_ = std::move(callback);
 }
 }  // namespace query_filter
