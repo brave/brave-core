@@ -53,8 +53,27 @@ const HOLD_MS = 300
 // How much of the slide, from the start side, goes back when tapped.
 const BACK_ZONE = 1 / 3
 
+// Desktops and landscape tablets get the wide card. Keep in sync with the
+// landscape media query in app.css.
+const LANDSCAPE_QUERY =
+  '(orientation: landscape) and (min-width: 768px) and (min-height: 540px)'
+
 function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = React.useState(
+    () => window.matchMedia(query).matches,
+  )
+  React.useEffect(() => {
+    const list = window.matchMedia(query)
+    const onChange = () => setMatches(list.matches)
+    onChange()
+    list.addEventListener('change', onChange)
+    return () => list.removeEventListener('change', onChange)
+  }, [query])
+  return matches
 }
 
 function useCountUp(target: number) {
@@ -495,6 +514,11 @@ async function copyImage(card: ShareCard) {
 
 function ShareSlide({ stats, nav, card }: SlideProps) {
   const [imageCopied, setImageCopied] = React.useState(false)
+  // On the wide card the post buttons sit beside the image, off the glass, so
+  // they're filled instead of outlined.
+  const landscape = useMediaQuery(LANDSCAPE_QUERY)
+  const postKind = landscape ? 'filled' : 'outline'
+  const postSize = landscape ? 'large' : 'medium'
 
   const download = () => {
     if (!card) {
@@ -541,18 +565,20 @@ function ShareSlide({ stats, nav, card }: SlideProps) {
       }
     >
       <div className='share'>
-        <div className='card-preview'>
-          {card && (
-            <img
-              src={card.url}
-              alt={getLocale(S.BRAVE_RECAP_CARD_TITLE)}
-            />
-          )}
+        <div className='share-frame'>
+          <div className='card-preview'>
+            {card && (
+              <img
+                src={card.url}
+                alt={getLocale(S.BRAVE_RECAP_CARD_TITLE)}
+              />
+            )}
+          </div>
         </div>
         <div className='share-actions'>
           <Button
-            kind='outline'
-            size='medium'
+            kind={postKind}
+            size={postSize}
             onClick={() => share(`https://x.com/intent/post?text=${shareText}`)}
           >
             <Icon
@@ -562,8 +588,8 @@ function ShareSlide({ stats, nav, card }: SlideProps) {
             {getLocale(S.BRAVE_RECAP_POST_ON_X)}
           </Button>
           <Button
-            kind='outline'
-            size='medium'
+            kind={postKind}
+            size={postSize}
             onClick={() =>
               // A text post, so the image can be pasted next to the same text
               // as on X.

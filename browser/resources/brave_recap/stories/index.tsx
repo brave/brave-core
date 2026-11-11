@@ -43,6 +43,10 @@ const VIEWPORTS = {
     name: 'Recap tablet',
     styles: { width: '800px', height: '1172px' },
   },
+  recapTabletLandscape: {
+    name: 'Recap tablet landscape',
+    styles: { width: '1180px', height: '820px' },
+  },
   recapPhone: {
     name: 'Recap phone',
     styles: { width: '412px', height: '780px' },
@@ -117,6 +121,10 @@ export const Desktop: Story = {}
 
 export const Tablet: Story = {
   parameters: { viewport: { defaultViewport: 'recapTablet' } },
+}
+
+export const TabletLandscape: Story = {
+  parameters: { viewport: { defaultViewport: 'recapTabletLandscape' } },
 }
 
 export const Phone: Story = {

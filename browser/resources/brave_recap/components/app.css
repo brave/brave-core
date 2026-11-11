@@ -23,6 +23,9 @@
   --recap-hero-size: 85px;
   --recap-card-max-height: 800px;
   --recap-card-min-height: 600px;
+  /* The wide card on desktops and landscape tablets, at the design's 16:10. */
+  --recap-landscape-max-width: 800px;
+  --recap-landscape-action-width: 200px;
   /* Time each slide stays up before advancing. */
   --recap-slide-duration: 8s;
   /* The background photos drift slowly for as long as their slide is up. */
@@ -73,6 +76,8 @@ body {
   );
   height: var(--recap-card-height);
   width: calc(var(--recap-card-height) * 450 / 800);
+  /* The width a slide's content column gets. */
+  --recap-column-width: 100cqi;
   overflow: hidden;
   border-radius: var(--leo-radius-m);
   background: var(--recap-card-background);
@@ -428,7 +433,8 @@ body {
   /* Shrinks long numbers to fit; the factor is roughly a digit's width. */
   font-size: min(
     var(--recap-hero-size),
-    (100cqi - 2 * var(--leo-spacing-2xl)) / (var(--chars) * 0.6)
+    (var(--recap-column-width) - 2 * var(--leo-spacing-2xl)) /
+      (var(--chars) * 0.6)
   );
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -635,6 +641,118 @@ body {
     width: 100%;
     height: 100dvh;
     border-radius: 0;
+  }
+}
+
+/* Desktops and landscape tablets: a wide card, with each slide split into two
+ * columns. Keep in sync with LANDSCAPE_QUERY in app.tsx. */
+@media (orientation: landscape) and (min-width: 768px) and (min-height: 540px) {
+  .recap-card {
+    --recap-card-width: min(
+      var(--recap-landscape-max-width),
+      100vw - 2 * var(--leo-spacing-3xl),
+      (100dvh - 2 * var(--leo-spacing-3xl)) * 16 / 10
+    );
+    --recap-column-width: 50cqi;
+    width: var(--recap-card-width);
+    height: calc(var(--recap-card-width) * 10 / 16);
+  }
+
+  .recap-card .slide {
+    flex-direction: row;
+    align-items: safe center;
+    justify-content: normal;
+    gap: 0;
+  }
+
+  .slide > * {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .intro {
+    padding-inline: var(--leo-spacing-2xl);
+  }
+
+  /* The intro messages become a pair of panels, like the stat slides'. */
+  .messages {
+    gap: var(--leo-spacing-s);
+    padding-inline-end: var(--leo-spacing-2xl);
+  }
+
+  .message {
+    animation-name: recap-panel-in;
+  }
+
+  .message.start {
+    --recap-panel-from: calc(-1 * var(--leo-spacing-l));
+    margin-inline: 0;
+    padding: var(--leo-spacing-2xl);
+    border-radius: var(--leo-radius-xxl) var(--leo-radius-xxl)
+      var(--leo-radius-m) var(--leo-radius-m);
+  }
+
+  .message.end {
+    --recap-panel-from: var(--leo-spacing-l);
+    margin-inline: 0;
+    padding: var(--leo-spacing-xl) var(--leo-spacing-2xl);
+    border-radius: var(--leo-radius-m) var(--leo-radius-m) var(--leo-radius-xxl)
+      var(--leo-radius-xxl);
+    text-align: start;
+  }
+
+  .panels {
+    padding-inline: 0 var(--leo-spacing-2xl);
+  }
+
+  .panel {
+    padding-inline: var(--leo-spacing-2xl);
+    text-align: start;
+  }
+
+  /* The image fills the height of its column, with the post buttons beside
+   * it. Only the image sits on glass. */
+  .share {
+    align-self: stretch;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: minmax(0, 1fr);
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    background: none;
+    backdrop-filter: none;
+  }
+
+  .share-frame {
+    /* Content-box, so the ratio is the image's and the glass goes around it. */
+    box-sizing: content-box;
+    justify-self: center;
+    height: calc(100% - 2 * var(--leo-spacing-m));
+    aspect-ratio: 336 / 408;
+    padding: var(--leo-spacing-m);
+    border-radius: var(--leo-radius-xxl);
+    background: var(--recap-glass-thick);
+    backdrop-filter: var(--recap-glass-blur);
+  }
+
+  .share-actions {
+    gap: var(--leo-spacing-xl);
+    padding: 0;
+    padding-inline-end: var(--leo-spacing-2xl);
+    /* Filled black, like the card's own call to action. Leo's filled kind
+     * keeps its content white whenever the button color is set. */
+    --leo-button-color: var(--leo-color-black);
+  }
+
+  .bottom-bar {
+    justify-content: space-between;
+  }
+
+  .bottom-bar > leo-button {
+    flex: 0 1 auto;
+    min-width: var(--recap-landscape-action-width);
   }
 }
 
