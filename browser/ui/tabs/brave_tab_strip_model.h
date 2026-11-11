@@ -98,6 +98,7 @@ class BraveTabStripModel : public TabStripModel {
   std::optional<tabs::TabHandle> TakeTreeTabSubtreeSelectedOnPress();
 
   // TabStripModel:
+  using TabStripModel::DetachTabsAndCollectionsForInsertion;
   std::vector<std::variant<std::unique_ptr<DetachedTab>,
                            std::unique_ptr<DetachedTabCollection>>>
   DetachTabsAndCollectionsForInsertion(
