@@ -3,273 +3,273 @@
      user's stat reaches the milestone in its description. -->
 <grit-part>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_50" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 50 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s every ad in a Super Bowl broadcast, all skipped
+    That's every ad in a Super Bowl broadcast, all skipped
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_100" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 100 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s more ads than keys on a piano
+    That's more ads than keys on a piano
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_500" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 500 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s a full ream of paper, one ad per sheet
+    That's a full ream of paper, one ad per sheet
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_1000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 1,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s a thousand paper cranes, enough for a wish in Japan, yours was fewer ads
+    That's a thousand paper cranes, enough for a wish in Japan, yours was fewer ads
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_10000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 10,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s more than every star you can see in the night sky
+    That's more than every star you can see in the night sky
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_25000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 25,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s one for every day of a 68-year life
+    That's one for every day of a 68-year life
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_100000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 100,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s one for every hair on your head
+    That's one for every hair on your head
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_125000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 125,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s almost every seat in the world’s biggest stadium
+    That's almost every seat in the world's biggest stadium
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_150000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 150,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s about a week’s worth of breaths
+    That's about a week's worth of breaths
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_175000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 175,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s one for every hour of the last 20 years
+    That's one for every hour of the last 20 years
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_200000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 200,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s more than all of Finland’s lakes, and Finland has a lot of lakes
+    That's more than all of Finland's lakes, and Finland has a lot of lakes
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_250000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 250,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s every grain of rice in a 5 kg bag
+    That's every grain of rice in a 5 kg bag
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_270000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 270,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s more than all of Sweden’s islands, the most of any country on Earth
+    That's more than all of Sweden's islands, the most of any country on Earth
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_300000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 300,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s the whole crowd at the Indy 500, the biggest one-day sporting event in the world
+    That's the whole crowd at the Indy 500, the biggest one-day sporting event in the world
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_350000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 350,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s one for every known plant species on Earth
+    That's one for every known plant species on Earth
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_400000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 400,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s a kilometer per ad, all the way to the Moon
+    That's a kilometer per ad, all the way to the Moon
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_450000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 450,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s a kilo per ad, heavier than the International Space Station
+    That's a kilo per ad, heavier than the International Space Station
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_500000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 500,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s almost one for every word of War and Peace
+    That's almost one for every word of War and Peace
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_600000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 600,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s as many as the words in the Oxford English Dictionary
+    That's as many as the words in the Oxford English Dictionary
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_700000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 700,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s one for every heartbeat in a week
+    That's one for every heartbeat in a week
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_770000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 770,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s a kilometer per ad, to the Moon and back
+    That's a kilometer per ad, to the Moon and back
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_850000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 850,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s nearly one for every word Shakespeare ever wrote
+    That's nearly one for every word Shakespeare ever wrote
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_900000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 900,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s almost one for every pixel on an HD screen
+    That's almost one for every pixel on an HD screen
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_1000000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 1,000,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s 11 straight days of counting, one ad per second
+    That's 11 straight days of counting, one ad per second
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_1100000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 1,100,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s more than every tile on the Sydney Opera House sails
+    That's more than every tile on the Sydney Opera House sails
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_1200000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 1,200,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s every rivet in both Golden Gate Bridge towers
+    That's every rivet in both Golden Gate Bridge towers
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_1300000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 1,300,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s every word of In Search of Lost Time, the longest novel ever written
+    That's every word of In Search of Lost Time, the longest novel ever written
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_1500000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 1,500,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s every wildebeest in the Great Migration across the Serengeti
+    That's every wildebeest in the Great Migration across the Serengeti
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_1750000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 1,750,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s one for every person living in Barcelona
+    That's one for every person living in Barcelona
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_2000000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 2,000,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That’s nearly as many as the stones in the Great Pyramid of Giza
+    That's nearly as many as the stones in the Great Pyramid of Giza
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_30S" desc="Fun comparison on the time saved slide of Brave Recap, shown from 30 seconds of waiting saved." formatter_data="webui=BraveRecap">
-    That’s exactly one TV commercial you didn’t have to sit through
+    That's exactly one TV commercial you didn't have to sit through
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_2M" desc="Fun comparison on the time saved slide of Brave Recap, shown from 2 minutes of waiting saved." formatter_data="webui=BraveRecap">
-    That’s enough to brush your teeth properly, for once
+    That's enough to brush your teeth properly, for once
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_5M" desc="Fun comparison on the time saved slide of Brave Recap, shown from 5 minutes of waiting saved." formatter_data="webui=BraveRecap">
-    That’s a French press, start to finish
+    That's a French press, start to finish
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_10M" desc="Fun comparison on the time saved slide of Brave Recap, shown from 10 minutes of waiting saved." formatter_data="webui=BraveRecap">
-    That’s a power nap, go take it
+    That's a power nap, go take it
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_25M" desc="Fun comparison on the time saved slide of Brave Recap, shown from 25 minutes of waiting saved." formatter_data="webui=BraveRecap">
-    That’s a full Pomodoro of focus
+    That's a full Pomodoro of focus
   </message>
-  <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_1H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 1 hours of waiting saved." formatter_data="webui=BraveRecap">
-    That’s an hour-long yoga class, namaste
+  <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_1H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 1 hour of waiting saved." formatter_data="webui=BraveRecap">
+    That's an hour-long yoga class, namaste
   </message>
-  <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_1H30M" desc="Fun comparison on the time saved slide of Brave Recap, shown from 1 hours 30 minutes of waiting saved." formatter_data="webui=BraveRecap">
-    That’s a whole football match, minus stoppage time
+  <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_1H30M" desc="Fun comparison on the time saved slide of Brave Recap, shown from 1 hour 30 minutes of waiting saved." formatter_data="webui=BraveRecap">
+    That's a whole football match, minus stoppage time
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_2H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 2 hours of waiting saved." formatter_data="webui=BraveRecap">
-    That’s a whole movie, credits included
+    That's a whole movie, credits included
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_2H30M" desc="Fun comparison on the time saved slide of Brave Recap, shown from 2 hours 30 minutes of waiting saved." formatter_data="webui=BraveRecap">
-    That’s a short-haul flight, gate to gate
+    That's a short-haul flight, gate to gate
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_3H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 3 hours of waiting saved." formatter_data="webui=BraveRecap">
-    That’s a proper asado
+    That's a proper asado
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_3H30M" desc="Fun comparison on the time saved slide of Brave Recap, shown from 3 hours 30 minutes of waiting saved." formatter_data="webui=BraveRecap">
-    That’s bread from scratch, rising time included
+    That's bread from scratch, rising time included
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_4H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 4 hours of waiting saved." formatter_data="webui=BraveRecap">
-    That’s a full 18 holes of golf
+    That's a full 18 holes of golf
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_4H30M" desc="Fun comparison on the time saved slide of Brave Recap, shown from 4 hours 30 minutes of waiting saved." formatter_data="webui=BraveRecap">
-    That’s a marathon at an average pace
+    That's a marathon at an average pace
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_5H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 5 hours of waiting saved." formatter_data="webui=BraveRecap">
-    That’s longer than the longest Wimbledon final ever
+    That's longer than the longest Wimbledon final ever
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_6H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 6 hours of waiting saved." formatter_data="webui=BraveRecap">
-    That’s a climb to the summit of Mount Fuji
+    That's a climb to the summit of Mount Fuji
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_7H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 7 hours of waiting saved." formatter_data="webui=BraveRecap">
-    That’s a flight from New York to London
+    That's a flight from New York to London
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_8H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 8 hours of waiting saved." formatter_data="webui=BraveRecap">
-    That’s a full night’s sleep
+    That's a full night's sleep
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_9H30M" desc="Fun comparison on the time saved slide of Brave Recap, shown from 9 hours 30 minutes of waiting saved." formatter_data="webui=BraveRecap">
-    That’s the entire Lord of the Rings film trilogy
+    That's the entire Lord of the Rings film trilogy
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_10H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 10 hours of waiting saved." formatter_data="webui=BraveRecap">
-    That’s a full 10-episode season, no skipping intros
+    That's a full 10-episode season, no skipping intros
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_12H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 12 hours of waiting saved." formatter_data="webui=BraveRecap">
-    That’s a Texas brisket, smoked low and slow
+    That's a Texas brisket, smoked low and slow
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_13H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 13 hours of waiting saved." formatter_data="webui=BraveRecap">
-    That’s an Ironman triathlon at an average pace
+    That's an Ironman triathlon at an average pace
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_15H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 15 hours of waiting saved." formatter_data="webui=BraveRecap">
-    That’s a cat’s daily nap schedule
+    That's a cat's daily nap schedule
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_16H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 16 hours of waiting saved." formatter_data="webui=BraveRecap">
-    That’s all four operas of Wagner’s Ring Cycle
+    That's all four operas of Wagner's Ring Cycle
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_18H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 18 hours of waiting saved." formatter_data="webui=BraveRecap">
-    That’s the world’s longest nonstop flight
+    That's the world's longest nonstop flight
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_20H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 20 hours of waiting saved." formatter_data="webui=BraveRecap">
-    That’s enough to learn the basics of a new skill
+    That's enough to learn the basics of a new skill
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_22H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 22 hours of waiting saved." formatter_data="webui=BraveRecap">
-    That’s how long a koala sleeps in a day
+    That's how long a koala sleeps in a day
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_24H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 24 hours of waiting saved." formatter_data="webui=BraveRecap">
-    That’s how long a radio signal takes to reach Voyager 1
+    That's how long a radio signal takes to reach Voyager 1
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_25H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 25 hours of waiting saved." formatter_data="webui=BraveRecap">
-    That’s a full day on Mars
+    That's a full day on Mars
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_27H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 27 hours of waiting saved." formatter_data="webui=BraveRecap">
-    That’s the last 100 km of the Camino de Santiago, on foot
+    That's the last 100 km of the Camino de Santiago, on foot
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_30H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 30 hours of waiting saved." formatter_data="webui=BraveRecap">
-    That’s all of The Lord of the Rings, cover to cover
+    That's all of The Lord of the Rings, cover to cover
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_100KB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 100 KB of data saved." formatter_data="webui=BraveRecap">
-    That’s more memory than the computer that landed humans on the Moon
+    That's more memory than the computer that landed humans on the Moon
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_1_5MB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 1.5 MB of data saved." formatter_data="webui=BraveRecap">
-    That’s a full floppy disk (ask your parents)
+    That's a full floppy disk (ask your parents)
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_5MB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 5 MB of data saved." formatter_data="webui=BraveRecap">
-    That’s a whole song
+    That's a whole song
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_50MB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 50 MB of data saved." formatter_data="webui=BraveRecap">
-    That’s a full album, no skips
+    That's a full album, no skips
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_700MB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 700 MB of data saved." formatter_data="webui=BraveRecap">
-    That’s a full CD-ROM, remember burning those?
+    That's a full CD-ROM, remember burning those?
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_1GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 1 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s an hour of streaming video
+    That's an hour of streaming video
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_1_5GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 1.5 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s enough to install Windows XP
+    That's enough to install Windows XP
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_2GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 2 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s a full day of Hubble Space Telescope data
+    That's a full day of Hubble Space Telescope data
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_2_5GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 2.5 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s an hour-long HD video call that could’ve been an email
+    That's an hour-long HD video call that could've been an email
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_3GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 3 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s your entire genome, spelled out letter by letter
+    That's your entire genome, spelled out letter by letter
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_4GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 4 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s about 1,000 phone photos, one very thorough vacation
+    That's about 1,000 phone photos, one very thorough vacation
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_4_7GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 4.7 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s an entire movie, popcorn’s on you
+    That's an entire movie, popcorn's on you
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_5GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 5 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s the whole first iPod: 1,000 songs in your pocket
+    That's the whole first iPod: 1,000 songs in your pocket
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_6GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 6 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s a whole Linux install image
+    That's a whole Linux install image
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_7GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 7 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s an hour of 4K streaming
+    That's an hour of 4K streaming
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_8GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 8 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s all the storage in the original iPhone
+    That's all the storage in the original iPhone
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_10GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 10 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s a full 10-episode season in SD
+    That's a full 10-episode season in SD
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_12GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 12 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s a week of music without a single repeat
+    That's a week of music without a single repeat
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_14GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 14 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s a two-hour movie in 4K
+    That's a two-hour movie in 4K
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_15GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 15 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s everything a free Google account can hold
+    That's everything a free Google account can hold
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_16GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 16 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s a full Kindle: thousands of books
+    That's a full Kindle: thousands of books
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_22GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 22 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s a month of mobile data for the average smartphone
+    That's a month of mobile data for the average smartphone
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_25GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 25 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s roughly all of English Wikipedia’s text
+    That's roughly all of English Wikipedia's text
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_28GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 28 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s the entire Lord of the Rings film trilogy, streamed in HD
+    That's the entire Lord of the Rings film trilogy, streamed in HD
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_30GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 30 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s a single modern video game update, seriously
+    That's a single modern video game update, seriously
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_32GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 32 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s all the storage in the original Nintendo Switch
+    That's all the storage in the original Nintendo Switch
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_36GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 36 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s a 12-hour HD binge! weekend sorted
+    That's a 12-hour HD binge, weekend sorted
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_40GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 40 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s about 10,000 phone photos, years of camera roll
+    That's about 10,000 phone photos, years of camera roll
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_45GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 45 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s an hour of 4K footage straight off an action cam
+    That's an hour of 4K footage straight off an action cam
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_COMPARISON_50GB" desc="Fun comparison on the data saved slide of Brave Recap, shown from 50 GB of data saved." formatter_data="webui=BraveRecap">
-    That’s almost a full day of data from the James Webb Space Telescope
+    That's almost a full day of data from the James Webb Space Telescope
   </message>
 </grit-part>
