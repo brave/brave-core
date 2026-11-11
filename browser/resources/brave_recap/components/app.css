@@ -163,7 +163,7 @@ body {
 }
 
 .background[data-slide='intro'] .background-image {
-  background-image: url(../images/intro.jpg);
+  background-image: url(../images/intro.webp);
 }
 
 .background[data-slide='blocked'] {
@@ -172,7 +172,7 @@ body {
 }
 
 .background[data-slide='blocked'] .background-image {
-  background-image: url(../images/blocked.jpg);
+  background-image: url(../images/blocked.webp);
 }
 
 .background[data-slide='time'] {
@@ -181,7 +181,7 @@ body {
 }
 
 .background[data-slide='time'] .background-image {
-  background-image: url(../images/time.jpg);
+  background-image: url(../images/time.webp);
 }
 
 .background[data-slide='data'] {
@@ -190,7 +190,7 @@ body {
 }
 
 .background[data-slide='data'] .background-image {
-  background-image: url(../images/data.jpg);
+  background-image: url(../images/data.webp);
 }
 
 .background[data-slide='share'] {
@@ -199,7 +199,7 @@ body {
 }
 
 .background[data-slide='share'] .background-image {
-  background-image: url(../images/share.jpg);
+  background-image: url(../images/share.webp);
 }
 
 /* Progress */

@@ -39,7 +39,7 @@ const RECAP_URL = 'brave://recap'
 // Same-origin so they don't taint the share card canvas.
 const CARD_IMAGES: ShareCardImages = {
   logo: '/brave-icon.svg',
-  pattern: '/images/card_pattern.png',
+  pattern: '/images/card_pattern.webp',
 }
 
 export const SLIDES = ['intro', 'blocked', 'time', 'data', 'share'] as const
