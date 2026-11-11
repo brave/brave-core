@@ -16,8 +16,8 @@ export const LANDSCAPE_QUERY =
   '(orientation: landscape) and (min-width: 768px) and (min-height: 540px)'
 
 export const style = scoped.css`
-  /* The recap has one, dark, look regardless of the browser theme; the page
-   * sets data-theme="dark" so Leo's semantic tokens resolve to dark values. */
+  /* Always dark: the page sets data-theme="dark" so Leo's semantic tokens
+   * resolve to dark values. */
   & {
     --recap-stage-background: var(--leo-color-primitive-neutral-5);
     /* Read by the dot matrix canvas, which can't take CSS tokens directly. */
@@ -28,20 +28,17 @@ export const style = scoped.css`
     --recap-glass-thick: var(--leo-color-material-thick);
     /* Leo's material blur tokens have no usable web value yet. */
     --recap-glass-blur: blur(50px);
-    /* Brave release stops, top to bottom, as in the design. */
     --recap-card-background: linear-gradient(
       var(--leo-color-primitive-brands-rorange-1),
       var(--leo-color-primitive-brands-rorange-2),
       var(--leo-color-primitive-brands-rorange-3)
     );
-    /* No Leo type role is this large; matches the design's heavy display. */
+    /* No Leo type role is this large. */
     --recap-hero-size: 85px;
     --recap-card-max-height: 800px;
     --recap-card-min-height: 600px;
-    /* The wide card on desktops and landscape tablets, at the design's 16:10. */
     --recap-landscape-max-width: 800px;
     --recap-landscape-action-width: 200px;
-    /* Time each slide stays up before advancing. */
     --recap-slide-duration: 8s;
     /* The background photos drift slowly for as long as their slide is up. */
     --recap-drift-duration: calc(
@@ -96,10 +93,8 @@ export const style = scoped.css`
     -webkit-touch-callout: none;
   }
 
-  /* Taps navigate, so a double tap or pinch mustn't zoom the page. Set on the
-   * scrolling slide too, where gestures start; scrolling still works. */
-  &,
-  .slide {
+  /* Taps navigate, so a double tap or pinch mustn't zoom the page. */
+  & {
     touch-action: pan-x pan-y;
   }
 
@@ -128,10 +123,8 @@ export const style = scoped.css`
     transition: opacity var(--leo-duration-l) var(--leo-easing-out);
   }
 
-  /* A slow zoom with a small drift while the slide is up. It restarts each time
-   * the slide is shown, and freezes in place while the photo fades out or the
-   * slide is paused. The scale leaves more room than the drift uses, so the
-   * photo always covers the card. */
+  /* The scale leaves more room than the drift uses, so the photo always
+   * covers the card. */
   .background-image {
     background: center / cover no-repeat;
     animation: recap-drift var(--recap-drift-duration) var(--leo-easing-linear)
@@ -201,8 +194,6 @@ export const style = scoped.css`
     background-image: url(${shareImage});
   }
 
-  /* Progress */
-
   .progress {
     display: flex;
     gap: var(--leo-spacing-s);
@@ -252,19 +243,15 @@ export const style = scoped.css`
     }
   }
 
-  /* Slides */
-
   .slides {
     flex: 1;
     min-height: 0;
     display: grid;
   }
 
-  /* The current slide and any leaving one share the same cell. Going forward,
-   * the new slide pushes in from the end side; going back, from the start. They
-   * move together with the same timing, so they stay edge to edge. Transform
-   * only: fading would make it a backdrop root and drop the glass blur until the
-   * animation ends. */
+  /* The current and leaving slides share a cell and push together. Transform
+   * only: fading would make the frame a backdrop root and drop the glass blur
+   * until the animation ends. */
   .slide-frame {
     --recap-inline: 1;
     grid-area: 1 / 1;
@@ -288,7 +275,6 @@ export const style = scoped.css`
     --recap-slide-offset: calc(-100% * var(--recap-inline));
   }
 
-  /* Where a newly shown slide starts from. */
   @starting-style {
     .slide-frame[data-motion='enter'] {
       transform: translateX(var(--recap-slide-offset));
@@ -346,8 +332,6 @@ export const style = scoped.css`
     margin: 0;
   }
 
-  /* Intro */
-
   .intro {
     display: flex;
     flex-direction: column;
@@ -385,7 +369,6 @@ export const style = scoped.css`
     font: var(--leo-font-heading-h2);
     background: var(--recap-glass);
     backdrop-filter: var(--recap-glass-blur);
-    /* Each message slides in from the edge it sits against. */
     animation: recap-message-in var(--leo-duration-l) var(--leo-easing-out) both;
   }
 
@@ -422,8 +405,6 @@ export const style = scoped.css`
     max-width: 240px;
     font: var(--leo-font-default-regular);
   }
-
-  /* Stats */
 
   .stat {
     display: flex;
@@ -474,8 +455,7 @@ export const style = scoped.css`
     background: var(--recap-glass);
     backdrop-filter: var(--recap-glass-blur);
     text-align: center;
-    /* The panels fade in from either side of the gap between them, just after
-     * the slide arrives. Fading the panel itself keeps its own blur. */
+    /* Fading the panel itself, not a parent, keeps its blur. */
     --recap-panel-from: var(--leo-spacing-l);
     animation: recap-panel-in var(--leo-duration-l) var(--leo-easing-out)
       var(--leo-duration-s) both;
@@ -522,7 +502,6 @@ export const style = scoped.css`
     }
   }
 
-  /* The note follows the comparison above it a beat later. */
   @media (prefers-reduced-motion: no-preference) {
     .panel.comparison + .panel.note {
       animation-delay: calc(2 * var(--leo-duration-s));
@@ -532,8 +511,6 @@ export const style = scoped.css`
       animation-delay: calc(var(--leo-duration-l) + var(--leo-duration-s));
     }
   }
-
-  /* Share */
 
   .share {
     margin-inline: var(--leo-spacing-2xl);
@@ -555,7 +532,6 @@ export const style = scoped.css`
     display: block;
     width: 100%;
     height: 100%;
-    /* The payoff: the card settles into place as it appears. */
     animation: recap-preview-in var(--leo-duration-m) var(--leo-easing-out);
   }
 
@@ -604,8 +580,6 @@ export const style = scoped.css`
     }
   }
 
-  /* Bottom bar */
-
   .bottom-bar {
     display: flex;
     align-items: flex-end;
@@ -627,8 +601,7 @@ export const style = scoped.css`
     flex: 0 0 auto;
   }
 
-  /* A held slide hides its controls and slide indicators, only once the press
-   * is clearly a hold, and shows them again the moment it's released. */
+  /* Hidden once a press is clearly a hold, shown again as soon as it ends. */
   .progress,
   .bottom-bar {
     transition: opacity var(--leo-duration-s) var(--leo-easing-out);

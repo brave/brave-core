@@ -18,14 +18,13 @@ const SHIMMER_CYCLE_MS = 9000
 const SHIMMER_SWEEP = 0.55
 // Half the shimmer's width, as a fraction of the canvas width.
 const SHIMMER_HALF_WIDTH = 0.35
-// The band leans slightly, matching the old 100deg gradient.
+// How far the band leans.
 const SHIMMER_SLANT = 0.17
 // Frame rate cap; the motion is slow so there's no need for more.
 const FRAME_MS = 1000 / 30
 // Orange is drawn in this many opacity steps so dots can share a path.
 const SHIMMER_STEPS = 12
-// A time that gives an arrangement of dots with some variety, for when motion
-// is reduced and only one frame is ever drawn.
+// The one frame drawn when motion is reduced, picked for a varied arrangement.
 const STATIC_TIME_MS = 4000
 
 const FALLBACK_DOT_COLOR = '#000'

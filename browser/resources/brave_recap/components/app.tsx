@@ -114,9 +114,8 @@ function usePageHidden() {
 interface Nav {
   next: () => void
   back: () => void
-  // A tap on the start third of the slide goes back and anywhere else
-  // advances, like stories elsewhere. Nothing happens at the end of a long
-  // press.
+  // Goes back from the start third and advances elsewhere. Ignored after a
+  // hold.
   tap: (e: React.MouseEvent<HTMLElement>) => void
   setHelpOpen: (open: boolean) => void
 }
@@ -856,7 +855,8 @@ function Recap({
     setHoldingContent(false)
   }
 
-  // Kept in slide order so each slide keeps its React state while it leaves.
+  // Kept in slide order so React never moves a frame, which would cancel its
+  // transition.
   const frames = SLIDES.flatMap((frameSlide) => {
     if (frameSlide === slide) {
       return [
