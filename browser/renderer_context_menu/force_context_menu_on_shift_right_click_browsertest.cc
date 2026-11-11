@@ -6,6 +6,7 @@
 #include <string_view>
 
 #include "base/test/scoped_feature_list.h"
+#include "build/build_config.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -77,7 +78,9 @@ class ForceContextMenuOnShiftRightClickBrowserTest
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  gfx::Point ShiftRightClickOn(std::string_view id) {
+  gfx::Point ClickOn(std::string_view id,
+                     int modifiers,
+                     blink::WebMouseEvent::Button button) {
     // GetCenterCoordinatesOfElementWithId() CHECK-fails on a missing element,
     // which reads as a browser crash rather than a test failure. A truncated
     // test page is the likely cause, so say so.
@@ -92,10 +95,13 @@ class ForceContextMenuOnShiftRightClickBrowserTest
     const gfx::PointF center =
         content::GetCenterCoordinatesOfElementWithId(web_contents(), id);
     const gfx::Point point(center.x(), center.y());
-    content::SimulateMouseClickAt(web_contents(),
-                                  blink::WebInputEvent::kShiftKey,
-                                  blink::WebMouseEvent::Button::kRight, point);
+    content::SimulateMouseClickAt(web_contents(), modifiers, button, point);
     return point;
+  }
+
+  gfx::Point ShiftRightClickOn(std::string_view id) {
+    return ClickOn(id, blink::WebInputEvent::kShiftKey,
+                   blink::WebMouseEvent::Button::kRight);
   }
 
   // media_type can't identify which element a menu came from on a page with a
@@ -178,3 +184,28 @@ IN_PROC_BROWSER_TEST_F(ForceContextMenuOnShiftRightClickBrowserTest,
   EXPECT_EQ(blink::mojom::ContextMenuDataMediaType::kCanvas,
             interceptor.get_params().media_type);
 }
+
+#if BUILDFLAG(IS_MAC)
+// Control + click is a primary-button context menu on macOS, so
+// Control + Shift + click isn't Shift + Right Click and preventDefault() is
+// honored. See https://github.com/brave/brave-browser/issues/60208.
+IN_PROC_BROWSER_TEST_F(ForceContextMenuOnShiftRightClickBrowserTest,
+                       HonorsPreventDefaultOnControlShiftClick) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kTestPage)));
+
+  content::ContextMenuInterceptor interceptor(
+      web_contents()->GetPrimaryMainFrame(),
+      content::ContextMenuInterceptor::ShowBehavior::kPreventShow);
+  ClickOn("plain",
+          blink::WebInputEvent::kControlKey | blink::WebInputEvent::kShiftKey,
+          blink::WebMouseEvent::Button::kLeft);
+
+  // The Control + Shift click must raise nothing, so the menu we wait for is
+  // the one from #opaque. If the override leaked through, the #plain menu
+  // arrives first and this sees its position instead.
+  const gfx::Point opaque = ShiftRightClickOn("opaque");
+  interceptor.Wait();
+
+  ExpectMenuRaisedAt(opaque, interceptor);
+}
+#endif  // BUILDFLAG(IS_MAC)

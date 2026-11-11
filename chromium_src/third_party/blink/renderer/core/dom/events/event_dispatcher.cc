@@ -6,6 +6,7 @@
 #include "base/feature_list.h"
 #include "build/build_config.h"
 #include "third_party/blink/public/common/features.h"
+#include "third_party/blink/public/common/input/web_pointer_properties.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/events/event.h"
 #include "third_party/blink/renderer/core/dom/events/event_target.h"
@@ -83,6 +84,16 @@ bool ShouldBypassDefaultPreventedForContextMenu(Event* event) {
     return false;
   }
   if (auto* context_mouse_event = DynamicTo<MouseEvent>(event)) {
+#if BUILDFLAG(IS_MAC)
+    // Control + click opens the context menu on macOS with the primary button,
+    // so Control + Shift + click arrives here looking like Shift + Right Click.
+    // It's an ordinary page shortcut, so only a secondary-button press counts.
+    // See https://github.com/brave/brave-browser/issues/60208.
+    if (context_mouse_event->button() !=
+        static_cast<int16_t>(WebPointerProperties::Button::kRight)) {
+      return false;
+    }
+#endif  // BUILDFLAG(IS_MAC)
     return context_mouse_event->shiftKey() &&
            !IsOverCanvas(context_mouse_event);
   }
