@@ -59,7 +59,8 @@ class PeekContents : public content::WebContentsDelegate,
   ~PeekContents() override;
 
   // Creates contents for a link to `url` in `source`, in the same storage
-  // partition, e.g. the same container.
+  // partition, e.g. the same container. Returns nullptr if the partition
+  // can't be matched.
   static std::unique_ptr<content::WebContents> CreateWebContents(
       Profile* profile,
       const GURL& url,

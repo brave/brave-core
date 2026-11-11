@@ -27,7 +27,9 @@
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/security_principal.h"
 #include "content/public/browser/site_instance.h"
+#include "content/public/browser/storage_partition_config.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/common/input/web_input_event.h"
 #include "third_party/blink/public/mojom/frame/fullscreen.mojom.h"
@@ -39,8 +41,6 @@
 #include "base/feature_list.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/common/features.h"
-#include "content/public/browser/security_principal.h"
-#include "content/public/browser/storage_partition_config.h"
 #endif
 
 namespace {
@@ -66,6 +66,13 @@ void AttachHelpersFromTabFeatures(content::WebContents& web_contents) {
   }
 }
 
+const content::StoragePartitionConfig& GetStoragePartitionConfig(
+    content::WebContents& web_contents) {
+  return web_contents.GetSiteInstance()
+      ->GetSecurityPrincipal()
+      .GetStoragePartitionConfig();
+}
+
 #if BUILDFLAG(ENABLE_CONTAINERS)
 // Peek must load in the source tab's container, like a link opened in a new
 // tab would.
@@ -75,10 +82,7 @@ std::optional<content::StoragePartitionConfig> GetStoragePartitionToInherit(
     return std::nullopt;
   }
   return containers::MaybeInheritStoragePartition(
-      source.GetPrimaryMainFrame()
-          ->GetSiteInstance()
-          ->GetSecurityPrincipal()
-          .GetStoragePartitionConfig());
+      GetStoragePartitionConfig(source));
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -138,7 +142,15 @@ std::unique_ptr<content::WebContents> PeekContents::CreateWebContents(
                                          GetStoragePartitionToInherit(source)
 #endif
                                              ));
-  return content::WebContents::Create(params);
+  std::unique_ptr<content::WebContents> contents =
+      content::WebContents::Create(params);
+  // Fail closed rather than load the page with another partition's cookies
+  // and storage, e.g. a container tab's link in the default partition.
+  if (GetStoragePartitionConfig(*contents) !=
+      GetStoragePartitionConfig(source)) {
+    return nullptr;
+  }
+  return contents;
 }
 
 // static
