@@ -186,7 +186,7 @@ void BraveMultiContentsView::OnWebPanelResize(int resize_amount,
 
   const int proposed_width =
       *web_panel_width_on_resize_start_ +
-      (web_panel_on_left_ ? resize_amount : -resize_amount);
+      (IsWebPanelLeading() ? resize_amount : -resize_amount);
   SetWebPanelWidth(ClampWebPanelWidth(proposed_width, width()));
 
   if (done_resizing) {
@@ -244,22 +244,24 @@ views::ProposedLayout BraveMultiContentsView::CalculateProposedLayout(
   views::ProposedLayout layouts =
       MultiContentsView::CalculateProposedLayout(new_size_bounds);
 
-  if (web_panel_on_left_) {
+  const bool leading = IsWebPanelLeading();
+  if (leading) {
     for (auto& layout : layouts.child_layouts) {
-      // Move all other views to right to put web panel on left side.
+      // Move all other views toward the trailing edge to free up the leading
+      // edge for the web panel.
       layout.bounds.Offset(reserved_width_for_web_panel_area, 0);
     }
   }
 
-  const int web_panel_x = web_panel_on_left_ ? 0 : host_width - web_panel_width;
+  const int web_panel_x = leading ? 0 : host_width - web_panel_width;
   gfx::Rect web_panel_rect(web_panel_x, 0, web_panel_width, host_height);
   layouts.child_layouts.emplace_back(
       contents_container_view_for_web_panel_.get(),
       contents_container_view_for_web_panel_->GetVisible(), web_panel_rect);
 
   const int resize_area_x =
-      web_panel_on_left_ ? web_panel_width
-                         : host_width - reserved_width_for_web_panel_area;
+      leading ? web_panel_width
+              : host_width - reserved_width_for_web_panel_area;
   layouts.child_layouts.emplace_back(
       web_panel_resize_area_.get(), IsWebPanelVisible(),
       gfx::Rect(resize_area_x, 0, resize_area_width, host_height));
@@ -359,6 +361,10 @@ int BraveMultiContentsView::GetWebPanelWidth() const {
 
 int BraveMultiContentsView::GetWebPanelResizeAreaWidth() const {
   return IsWebPanelVisible() ? kWebPanelResizeAreaWidth : 0;
+}
+
+bool BraveMultiContentsView::IsWebPanelLeading() const {
+  return web_panel_on_left_ != base::i18n::IsRTL();
 }
 
 int BraveMultiContentsView::ClampWebPanelWidth(int requested_width,
