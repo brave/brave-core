@@ -22,6 +22,8 @@ interface Props {
   className?: string
   children: React.ReactNode
   onClick?: (event: React.UIEvent) => void
+  onPointerEnter?: (event: React.PointerEvent) => void
+  onPointerLeave?: (event: React.PointerEvent) => void
 }
 
 export function NewTabLink (props: Props) {
@@ -50,6 +52,8 @@ export function NewTabLink (props: Props) {
     <a
       href={props.href}
       onClick={onClick}
+      onPointerEnter={props.onPointerEnter}
+      onPointerLeave={props.onPointerLeave}
       className={props.className}
       target='_blank'
       rel='noopener noreferrer'

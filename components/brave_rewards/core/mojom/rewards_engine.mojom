@@ -31,6 +31,8 @@ interface RewardsEngine {
 
   FetchUICards() => (array<UICard>? cards);
 
+  RecordOfferEvent(string offer_id, string event_type);
+
   GetPublisherMinVisitTime() => (int32 min_visit_time);
 
   GetPublisherMinVisits() => (int32 min_visits);

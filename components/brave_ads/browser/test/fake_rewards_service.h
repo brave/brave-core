@@ -48,6 +48,8 @@ class FakeRewardsService : public brave_rewards::RewardsService {
   void GetRewardsParameters(
       brave_rewards::GetRewardsParametersCallback callback) override;
   void FetchUICards(FetchUICardsCallback callback) override;
+  void RecordOfferEvent(const std::string& offer_id,
+                        const std::string& event_type) override;
   void GetActivityInfoList(
       uint32_t start,
       uint32_t limit,

@@ -245,6 +245,8 @@ static_library("engine") {
     "migrations/pref_migration_manager.cc",
     "migrations/pref_migration_manager.h",
     "notifications/notification_keys.h",
+    "offer_events/offer_events.cc",
+    "offer_events/offer_events.h",
     "parameters/rewards_parameters_provider.cc",
     "parameters/rewards_parameters_provider.h",
     "publisher/media/helper.cc",

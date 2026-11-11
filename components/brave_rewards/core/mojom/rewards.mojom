@@ -355,16 +355,37 @@ struct SolanaAccountBalance {
   uint8 decimals;
 };
 
+enum OfferEventTrigger {
+  kHover,
+  kClick
+};
+
+// An offer wall event the server asks the page to report.
+struct OfferEventSpec {
+  // Token type. The server defines the types and maps each one to a CBP
+  // issuer, so this is a string rather than an enum.
+  string type;
+  OfferEventTrigger trigger;
+  // For hovers, how long the pointer must stay on the offer.
+  int32 dwell_ms;
+  // Report at most once per offer per page load.
+  bool once_per_load;
+};
+
 struct UICardItem {
   string title;
   string description;
   string url;
   string thumbnail;
+  string offer_id;
+  array<OfferEventSpec> events;
 };
 
 struct UICardBanner {
   string url;
   string image;
+  string offer_id;
+  array<OfferEventSpec> events;
 };
 
 struct UICard {

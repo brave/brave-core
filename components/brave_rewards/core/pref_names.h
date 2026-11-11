@@ -25,6 +25,8 @@ inline constexpr char kShowButton[] =
 inline constexpr char kShowLocationBarButton[] =
     "brave.rewards.show_brave_rewards_button_in_location_bar";
 inline constexpr char kEnabled[] = "brave.rewards.enabled";
+inline constexpr char kOfferEventTokens[] =
+    "brave.rewards.offer_event_tokens";
 inline constexpr char kDeclaredGeo[] = "brave.rewards.declared_geo";
 inline constexpr char kNotifications[] = "brave.rewards.notifications";
 inline constexpr char kNotificationTimerInterval[] =

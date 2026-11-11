@@ -8,6 +8,7 @@ import * as React from 'react'
 import { UICard } from '../../lib/app_store'
 import { useAppActions } from '../../lib/app_context'
 import { CardItemView } from './card_item_view'
+import { useOfferEvents } from './offer_events'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
 import { sanitizeURL, externalImageURL } from '../../lib/external_url'
 
@@ -21,6 +22,10 @@ export function CardView(props: Props) {
   const { getString } = useAppActions()
   const { card } = props
   const actions = useAppActions()
+  const bannerEvents = useOfferEvents(
+    card.banner?.offerId ?? '',
+    card.banner?.events ?? [],
+  )
 
   function cardTitle() {
     if (card.title) {
@@ -51,7 +56,12 @@ export function CardView(props: Props) {
         <NewTabLink
           className='banner'
           href={sanitizeURL(card.banner.url)}
-          onClick={() => actions.recordOfferClick()}
+          onPointerEnter={bannerEvents.onPointerEnter}
+          onPointerLeave={bannerEvents.onPointerLeave}
+          onClick={() => {
+            actions.recordOfferClick()
+            bannerEvents.reportClick()
+          }}
         >
           <img src={externalImageURL(card.banner.image)} />
         </NewTabLink>

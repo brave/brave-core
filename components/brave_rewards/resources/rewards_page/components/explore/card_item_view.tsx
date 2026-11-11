@@ -8,6 +8,7 @@ import * as React from 'react'
 import { UICardItem } from '../../lib/app_store'
 import { useAppActions } from '../../lib/app_context'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
+import { useOfferEvents } from './offer_events'
 import {
   sanitizeURL,
   faviconURL,
@@ -22,10 +23,16 @@ export function CardItemView(props: Props) {
   const { item } = props
   const actions = useAppActions()
   const thumbnail = externalImageURL(item.thumbnail)
+  const offerEvents = useOfferEvents(item.offerId, item.events)
   return (
     <NewTabLink
       href={sanitizeURL(item.url)}
-      onClick={() => actions.recordOfferClick()}
+      onPointerEnter={offerEvents.onPointerEnter}
+      onPointerLeave={offerEvents.onPointerLeave}
+      onClick={() => {
+        actions.recordOfferClick()
+        offerEvents.reportClick()
+      }}
     >
       <span className='thumbnail'>
         {thumbnail ? (

@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/core/engine/endpoints/brave/get_ui_cards.h"
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "brave/components/brave_rewards/core/engine/initialization_manager.h"
+#include "brave/components/brave_rewards/core/engine/offer_events/offer_events.h"
 #include "brave/components/brave_rewards/core/engine/parameters/rewards_parameters_provider.h"
 #include "brave/components/brave_rewards/core/engine/publisher/media/media.h"
 #include "brave/components/brave_rewards/core/engine/publisher/publisher.h"
@@ -77,7 +78,25 @@ void RewardsEngine::GetRewardsParameters(
 
 void RewardsEngine::FetchUICards(FetchUICardsCallback callback) {
   WhenReady([this, callback = std::move(callback)]() mutable {
-    Get<endpoints::GetUICards>().Request(std::move(callback));
+    Get<endpoints::GetUICards>().Request(
+        base::BindOnce(&RewardsEngine::OnUICardsFetched,
+                       weak_factory_.GetWeakPtr(), std::move(callback)));
+  });
+}
+
+void RewardsEngine::OnUICardsFetched(
+    FetchUICardsCallback callback,
+    std::optional<std::vector<mojom::UICardPtr>> cards) {
+  if (cards) {
+    Get<OfferEvents>().SetOffers(*cards);
+  }
+  std::move(callback).Run(std::move(cards));
+}
+
+void RewardsEngine::RecordOfferEvent(const std::string& offer_id,
+                                     const std::string& event_type) {
+  WhenReady([this, offer_id, event_type]() {
+    Get<OfferEvents>().RecordEvent(offer_id, event_type);
   });
 }
 
