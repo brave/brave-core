@@ -24,6 +24,7 @@ source_set("browser_tests") {
       "//brave/browser/ui/tabs:tab_strip",
       "//brave/browser/ui/tabs:tree_tab",
       "//brave/components/tabs",
+      "//brave/components/v8/buildflags",
       "//chrome/browser",
       "//chrome/browser/prefs:util",
       "//chrome/browser/profiles:profile",

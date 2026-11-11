@@ -135,6 +135,7 @@ source_set("ui") {
     "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_wallet/common/buildflags",
+    "//brave/components/v8/buildflags",
     "//brave/components/webcompat/core/common",
     "//brave/ui/webui/custom_profile_image/buildflags",
     "//chrome/browser:command_updater_impl",

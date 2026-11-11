@@ -68,6 +68,7 @@ source_set("browser_tests") {
     "//brave/browser/ui/views/frame",
     "//brave/browser/ui/views/sidebar",
     "//brave/components/sidebar/browser",
+    "//brave/components/v8/buildflags",
     "//cc/paint",
     "//chrome/browser",
     "//chrome/browser/tab_group_sync:factories",

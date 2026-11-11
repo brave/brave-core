@@ -1,8 +1,16 @@
 diff --git a/chrome/browser/download/BUILD.gn b/chrome/browser/download/BUILD.gn
-index 6f9c54ba8b703bb3980db184c362004fcfd7ee49..46bee648ddd8a962e80d46d330b0dd1037af4816 100644
+index 6f9c54ba8b703bb3980db184c362004fcfd7ee49..8392c5ba0923139c2809f1d834c5f03a7afde0b5 100644
 --- a/chrome/browser/download/BUILD.gn
 +++ b/chrome/browser/download/BUILD.gn
-@@ -378,7 +378,7 @@ source_set("impl") {
+@@ -184,6 +184,7 @@ source_set("impl") {
+ 
+   deps = [
+     ":status_text_builder_utils",
++    "//brave/components/v8/buildflags",
+     "//chrome/browser:browser_process",
+     "//chrome/browser:primitives",
+     "//chrome/browser/actor",
+@@ -378,7 +379,7 @@ source_set("impl") {
      sources += [ "drag_download_item_aura.cc" ]
    }
  

@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/webapps/BUILD.gn b/chrome/browser/webapps/BUILD.gn
+index b563ba7eb1ffa69e54f0913df787a92d08adac02..f9d23af663e724a632dd33c69c70ba3f7dcd6944 100644
+--- a/chrome/browser/webapps/BUILD.gn
++++ b/chrome/browser/webapps/BUILD.gn
+@@ -59,6 +59,7 @@ if (is_android) {
+       ":android",
+       ":webapps",
+       "//base",
++      "//brave/components/v8/buildflags",
+       "//chrome/android:jni_headers",
+       "//chrome/browser/android:shortcut_helper",
+       "//chrome/browser/android:tabs_public",

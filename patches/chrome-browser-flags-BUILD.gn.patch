@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/flags/BUILD.gn b/chrome/browser/flags/BUILD.gn
+index 4cc5ebbe590212f0c01198ef85f3bc0741c46ff0..4f268fc2400b77aae9b6f32bc646a2184d9a12e1 100644
+--- a/chrome/browser/flags/BUILD.gn
++++ b/chrome/browser/flags/BUILD.gn
+@@ -39,7 +39,10 @@ java_flag_generator("java_flags") {
+   class_name = "org.chromium.chrome.browser.flags.ChromeFeatures"
+ 
+   # Generates a FEATURE_DEFINITION_FILE of chrome_feature_list.cc.
+-  deps = [ "//third_party/blink/common:make_generated_features" ]
++  deps = [
++    "//brave/components/v8/buildflags",
++    "//third_party/blink/common:make_generated_features",
++  ]
+ }
+ 
+ generate_jni("jni_headers") {
+@@ -73,6 +76,7 @@ static_library("flags_android_impl") {
+     ":flags_android",
+     ":jni_headers",
+     "//base",
++    "//brave/components/v8/buildflags",
+     "//build:android_buildflags",
+     "//chrome/browser:browser_features",
+     "//chrome/browser/android/webapk:webapk_sources",

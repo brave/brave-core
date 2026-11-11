@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/profiles/BUILD.gn b/chrome/browser/profiles/BUILD.gn
+index a85eb865e50f1951ddc82e60c614d455de44bfc0..fc734cea5011b4fb10b8ff6a105ba6e9137d9b91 100644
+--- a/chrome/browser/profiles/BUILD.gn
++++ b/chrome/browser/profiles/BUILD.gn
+@@ -66,6 +66,7 @@ source_set("misc") {
+     ":profile_manager",
+     ":profile_util",
+     "//base",
++    "//brave/components/v8/buildflags",
+     "//chrome/app:branded_strings",
+     "//chrome/app:generated_resources",
+     "//chrome/browser:after_startup_task_utils",

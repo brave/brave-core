@@ -8,3 +8,16 @@ substitutions:
     regex:
       pattern: 'if (is_android && !enable_desktop_android_extensions) {'
       replace: 'if (is_android && !enable_extensions_core) {'
+
+  - description: |
+      Make :impl depend on the V8 buildflags.
+
+      The download_target_determiner.cc override includes
+      brave_browser_features.h, which includes the generated
+      brave/components/v8/buildflags/buildflags.h. Without this dependency a
+      remote compile can run before that header exists.
+    insert_into_list:
+      target: impl
+      list_name: deps
+      values:
+        - //brave/components/v8/buildflags

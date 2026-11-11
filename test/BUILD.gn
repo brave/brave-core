@@ -1189,6 +1189,7 @@ test("brave_browser_tests") {
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/tor/buildflags",
     "//brave/components/url_sanitizer/core/browser",
+    "//brave/components/v8/buildflags",
     "//brave/components/web_discovery/buildflags",
     "//brave/components/webcompat/core/common",
     "//brave/renderer/skus:browser_tests",
