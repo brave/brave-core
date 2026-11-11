@@ -305,6 +305,22 @@ source_set("extensions") {
   }
 }
 
+if (enable_extensions_core && !enable_extensions) {
+  source_set("unit_tests") {
+    testonly = true
+
+    sources = [ "android/brave_extension_management_unittest.cc" ]
+
+    deps = [
+      ":extensions",
+      "//brave/browser:brave_browser_features",
+      "//chrome/browser/flags:flags_android",
+      "//chrome/test:test_support",
+      "//extensions:test_support",
+    ]
+  }
+}
+
 source_set("test_support") {
   testonly = true
 

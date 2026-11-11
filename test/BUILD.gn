@@ -699,9 +699,7 @@ test("brave_unit_tests") {
   }
 
   if (enable_extensions_core && !enable_extensions) {
-    # Android's extension management policy only compiles in this
-    # configuration; see browser/extensions/BUILD.gn.
-    sources += [ "//brave/browser/extensions/android/brave_extension_management_unittest.cc" ]
+    deps += [ "//brave/browser/extensions:unit_tests" ]
   }
 
   if (enable_extensions) {
