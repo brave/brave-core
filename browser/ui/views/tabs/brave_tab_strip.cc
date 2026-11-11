@@ -19,8 +19,6 @@
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
-#include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/tabs/accent_color/brave_tab_accent_color_palette.h"
 #include "brave/browser/ui/views/tabs/accent_color/brave_tab_accent_types.h"
@@ -43,6 +41,7 @@
 #include "chrome/browser/ui/views/tabs/tab_slot_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
 #include "chrome/common/pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "components/tab_groups/tab_group_id.h"
 #include "components/tabs/public/tab_group.h"
 #include "content/public/browser/web_contents.h"
@@ -107,51 +106,28 @@ BraveTabStrip::BraveTabStrip(
 
 BraveTabStrip::~BraveTabStrip() = default;
 
-BraveVerticalTabStripRegionView* BraveTabStrip::GetVerticalTabStripRegionView()
-    const {
-  if (!ShouldShowVerticalTabs()) {
-    // Can happen when switching the orientation
-    return nullptr;
-  }
-
-  auto* browser = GetBrowserWindowInterface();
-  DCHECK(browser);
-  auto* browser_view = BraveBrowserView::GetBrowserViewForBrowser(browser);
-  if (!browser_view) {
-    // Could be null during the start-up.
-    return nullptr;
-  }
-
-  // The container and its region view could be null while closing a window.
-  auto* container_view = browser_view->vertical_tab_strip_container_view();
-  return container_view ? container_view->vertical_tab_strip_region_view()
-                        : nullptr;
-}
-
 bool BraveTabStrip::IsVerticalTabsFloating() const {
-  auto* vertical_region_view = GetVerticalTabStripRegionView();
-  if (!vertical_region_view) {
+  if (!vertical_region_view_) {
     return false;
   }
 
-  return vertical_region_view->state() ==
+  return vertical_region_view_->state() ==
              BraveVerticalTabStripRegionView::State::kFloating ||
-         (vertical_region_view->is_animating() &&
-          vertical_region_view->last_state() ==
+         (vertical_region_view_->is_animating() &&
+          vertical_region_view_->last_state() ==
               BraveVerticalTabStripRegionView::State::kFloating &&
-          vertical_region_view->state() ==
+          vertical_region_view_->state() ==
               BraveVerticalTabStripRegionView::State::kCollapsed);
 }
 
 bool BraveTabStrip::IsVerticalTabsAnimatingButNotFinalState() const {
-  auto* vertical_region_view = GetVerticalTabStripRegionView();
-  if (!vertical_region_view) {
+  if (!vertical_region_view_) {
     return false;
   }
 
-  return (vertical_region_view->width_animation().is_animating() &&
-          vertical_region_view->width_animation().GetCurrentValue() != 0 &&
-          vertical_region_view->width_animation().GetCurrentValue() != 1);
+  return (vertical_region_view_->width_animation().is_animating() &&
+          vertical_region_view_->width_animation().GetCurrentValue() != 0 &&
+          vertical_region_view_->width_animation().GetCurrentValue() != 1);
 }
 
 bool BraveTabStrip::CanPaintThrobberToLayer() const {
@@ -252,29 +228,6 @@ void BraveTabStrip::MaybeStartDrag(TabSlotView* source,
   TabStrip::MaybeStartDrag(source, event, original_selection);
 }
 
-void BraveTabStrip::ViewHierarchyChanged(
-    const views::ViewHierarchyChangedDetails& details) {
-  TabStrip::ViewHierarchyChanged(details);
-
-  // When entering and exiting Focus Mode, the tab strip can be reparented
-  // without AddedToWidget() invoked. In order to call UpdateOrientation() in
-  // these cases, we use `ViewHierarchyChanged` to observe the reparenting.
-  // Additions to an unattached hierarchy are ignored because the tab container
-  // isn't created until the tab strip is initialized, which can happen after
-  // the tab strip is added.
-  if (!details.is_add || !details.child->Contains(this) || !GetWidget()) {
-    return;
-  }
-
-  if (BrowserView::GetBrowserViewForBrowser(GetBrowserWindowInterface())) {
-    UpdateOrientation();
-  } else {
-    // BrowserView may not be bound to the browser yet during window creation.
-    orientation_update_timer_.Start(FROM_HERE, base::TimeDelta(), this,
-                                    &BraveTabStrip::UpdateOrientation);
-  }
-}
-
 bool BraveTabStrip::ShouldAlwaysHideCloseButton() const {
   return *always_hide_close_button_;
 }
@@ -324,23 +277,23 @@ bool BraveTabStrip::ShouldShowPinnedTabsInGrid() const {
   return should_layout_pinned_tabs_in_grid;
 }
 
-void BraveTabStrip::UpdateOrientation() {
-  // When upstream's vertical tabs feature is active, TabStrip::Initialize() is
-  // never called and `tab_container_` remains null. SetAvailableWidthCallback
-  // requires a non-null `tab_container_`.
-  if (auto* vtc = VerticalTabController::From(GetBrowserWindowInterface());
-      !vtc || !vtc->SupportsBraveVerticalTabs()) {
+void BraveTabStrip::SetVerticalTabStripRegionView(
+    BraveVerticalTabStripRegionView* region_view) {
+  if (vertical_region_view_ == region_view) {
+    return;
+  }
+  vertical_region_view_ = region_view;
+
+  // Upstream's vertical tabs feature can reset `tab_container_` to null, and
+  // SetAvailableWidthCallback() requires a non-null `tab_container_`.
+  if (!tab_container_) {
     return;
   }
 
-  if (!BrowserView::GetBrowserViewForBrowser(GetBrowserWindowInterface())) {
-    return;
-  }
-
-  if (auto* vertical_region_view = GetVerticalTabStripRegionView()) {
+  if (region_view) {
     SetAvailableWidthCallback(base::BindRepeating(
         &BraveVerticalTabStripRegionView::GetAvailableWidthForTabContainer,
-        base::Unretained(vertical_region_view)));
+        base::Unretained(region_view)));
   } else {
     SetAvailableWidthCallback(base::NullCallback());
   }

@@ -2494,7 +2494,7 @@ class UpstreamVerticalTabsTest : public InProcessBrowserTest {
 
 // Regression test: When Chromium's upstream vertical tabs are active,
 // TabStrip::Initialize() is never called so tab_container_ remains null.
-// BraveTabStrip::UpdateOrientation() was crashing by accessing the null
+// BraveTabStrip's orientation update was crashing by accessing the null
 // tab_container_ via SetAvailableWidthCallback() during startup.
 IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsTest, NoCrashOnStartup) {
   // Simulate the user choosing "Side" in Tab strip position settings,

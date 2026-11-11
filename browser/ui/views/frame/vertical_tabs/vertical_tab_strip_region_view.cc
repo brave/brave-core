@@ -31,6 +31,7 @@
 #include "brave/browser/ui/views/frame/tab_strip_placement_coordinator.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
+#include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -408,6 +409,10 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
   // Note: This should happen after all the PrefMembers have been initialized.
   OnShowToggleButtonPrefChanged();
 
+  // The tab strip lays out immediately and queries this view's width, so this
+  // must also happen after all the PrefMembers have been initialized.
+  UpdateTabStripOrientation();
+
   set_context_menu_controller(this);
 }
 
@@ -427,6 +432,10 @@ BraveVerticalTabStripRegionView::~BraveVerticalTabStripRegionView() {
     coordinator->ClearPlacement(TabStripPlacementKind::kVerticalTabStrip);
   }
   UpdateLayout();
+
+  if (auto* brave_tab_strip = views::AsViewClass<BraveTabStrip>(tab_strip())) {
+    brave_tab_strip->SetVerticalTabStripRegionView(nullptr);
+  }
 }
 
 void BraveVerticalTabStripRegionView::AddedToWidget() {
@@ -550,9 +559,6 @@ void BraveVerticalTabStripRegionView::SetState(State state) {
   }
 
   auto tab_strip = original_region_view_->tab_strip_;
-  tab_strip->SetAvailableWidthCallback(base::BindRepeating(
-      &BraveVerticalTabStripRegionView::GetAvailableWidthForTabContainer,
-      base::Unretained(this)));
 
   if (gfx::Animation::ShouldRenderRichAnimation()) {
     state_ == State::kCollapsed ? width_animation_.Hide()
@@ -731,6 +737,7 @@ void BraveVerticalTabStripRegionView::Layout(PassKey) {
 
 void BraveVerticalTabStripRegionView::OnShowVerticalTabsPrefChanged() {
   UpdateFloatingStateForBrowserMode();
+  UpdateTabStripOrientation();
   UpdateLayout();
 
   if (!VerticalTabController::From(browser_)->ShouldShowBraveVerticalTabs() &&
@@ -769,6 +776,15 @@ void BraveVerticalTabStripRegionView::UpdateLayout() {
 
   PreferredSizeChanged();
   DeprecatedLayoutImmediately();
+}
+
+void BraveVerticalTabStripRegionView::UpdateTabStripOrientation() {
+  if (auto* brave_tab_strip = views::AsViewClass<BraveTabStrip>(tab_strip())) {
+    brave_tab_strip->SetVerticalTabStripRegionView(
+        VerticalTabController::From(browser_)->ShouldShowBraveVerticalTabs()
+            ? this
+            : nullptr);
+  }
 }
 
 void BraveVerticalTabStripRegionView::OnThemeChanged() {

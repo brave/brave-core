@@ -10,7 +10,7 @@
 #include <optional>
 
 #include "base/gtest_prod_util.h"
-#include "base/timer/timer.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/ui/tabs/tab_data.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -41,6 +41,11 @@ class BraveTabStrip : public TabStrip {
 
   void InvalidateTabContainerLayout();
 
+  // Sets the region view that provides the available width for vertical tabs,
+  // or null when the tab strip is laid out horizontally.
+  void SetVerticalTabStripRegionView(
+      BraveVerticalTabStripRegionView* region_view);
+
   // TabStrip:
   void ShowHover(Tab* tab, TabStyle::ShowHoverStyle style) override;
   void HideHover(Tab* tab, TabStyle::HideHoverStyle style) override;
@@ -49,8 +54,6 @@ class BraveTabStrip : public TabStrip {
   void MaybeStartDrag(TabSlotView* source,
                       const ui::LocatedEvent& event,
                       ui::ListSelectionModel original_selection) override;
-  void ViewHierarchyChanged(
-      const views::ViewHierarchyChangedDetails& details) override;
   bool ShouldAlwaysHideCloseButton() const override;
   int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const override;
   const tabs::TreeTabNode* GetTreeTabNode(
@@ -106,15 +109,7 @@ class BraveTabStrip : public TabStrip {
       const Tab* tab) const;
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
-  // Updates the available-width callback and tab layout for the current tab
-  // strip orientation.
-  void UpdateOrientation();
   bool ShouldShowVerticalTabs() const;
-
-  // Helper method to get the vertical tab strip region view if available.
-  // Returns nullptr if vertical tabs are not shown or the view is not
-  // available (e.g., during startup or window closing).
-  BraveVerticalTabStripRegionView* GetVerticalTabStripRegionView() const;
 
   void OnAlwaysHideCloseButtonPrefChanged();
   void OnTabMinWidthModePrefChanged();
@@ -136,7 +131,8 @@ class BraveTabStrip : public TabStrip {
   BooleanPrefMember always_use_mini_accent_icon_;
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
   IntegerPrefMember tab_min_width_mode_;
-  base::OneShotTimer orientation_update_timer_;
+
+  raw_ptr<BraveVerticalTabStripRegionView> vertical_region_view_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_STRIP_H_

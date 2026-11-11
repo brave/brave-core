@@ -169,6 +169,9 @@ class BraveVerticalTabStripRegionView : public views::View,
 
   void UpdateLayout();
 
+  // Tells the tab strip whether it is hosted by this view for vertical tabs.
+  void UpdateTabStripOrientation();
+
   void OnCollapsedPrefChanged();
   void OnFloatingModePrefChanged();
   void OnExpandedStatePerWindowPrefChanged();
