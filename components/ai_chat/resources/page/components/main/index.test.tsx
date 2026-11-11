@@ -6,11 +6,59 @@
 import '$test-utils/disable_custom_elements'
 
 import * as React from 'react'
-import { render, screen, act, fireEvent, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, waitFor } from '@testing-library/react'
 import { clearAllDataForTesting } from '$web-common/api'
 import { MockContext } from '../../state/mock_context'
 import * as Mojom from '../../../common/mojom'
 import Main from './index'
+
+// The real header opens the conversations list from a menu; a plain button is
+// enough here.
+jest.mock('../header', () => ({
+  ConversationHeader: (props: {
+    setIsConversationsListOpen: (open: boolean) => void
+  }) => (
+    <button onClick={() => props.setIsConversationsListOpen(true)}>
+      open list
+    </button>
+  ),
+}))
+
+jest.mock('../conversations_list', () => ({
+  __esModule: true,
+  default: (props: { setIsConversationsListOpen: (open: boolean) => void }) => (
+    <button onClick={() => props.setIsConversationsListOpen(false)}>
+      close list
+    </button>
+  ),
+}))
+
+async function renderMain(isStandalone: boolean) {
+  const setClientVisible = jest.fn()
+  const conversationUIObserverRef: {
+    current?: Mojom.ConversationUIInterface
+  } = {}
+  let result: ReturnType<typeof render>
+  await act(async () => {
+    result = render(
+      <MockContext
+        initialState={{
+          isStandalone,
+          serviceState: { hasAcceptedAgreement: true },
+        }}
+        conversationHandler={{ setClientVisible }}
+        conversationUIObserverRef={conversationUIObserverRef}
+      >
+        <Main />
+      </MockContext>,
+    )
+  })
+  const click = (text: string) =>
+    act(async () => {
+      fireEvent.click(result.getByText(text))
+    })
+  return { result: result!, setClientVisible, click, conversationUIObserverRef }
+}
 
 describe('Main', () => {
   beforeEach(() => {
@@ -18,31 +66,30 @@ describe('Main', () => {
   })
 
   it('closes the conversation list when the open conversation is deleted', async () => {
-    const conversationUIObserverRef: {
-      current?: Mojom.ConversationUIInterface
-    } = {}
-    await act(async () => {
-      render(
-        <MockContext
-          conversationUIObserverRef={conversationUIObserverRef}
-          initialState={{ serviceState: { hasAcceptedAgreement: true } }}
-        >
-          <Main />
-        </MockContext>,
-      )
-    })
-
-    fireEvent.click(screen.getByText('CHAT_UI_MENU_CONVERSATION_HISTORY'))
-    await waitFor(() => {
-      expect(screen.getByTestId('conversations-list')).toBeInTheDocument()
-    })
+    const { result, click, conversationUIObserverRef } = await renderMain(false)
+    await click('open list')
+    expect(result.getByTestId('conversations-list')).toBeInTheDocument()
 
     act(() => {
       conversationUIObserverRef.current!.onConversationDeleted()
     })
 
     await waitFor(() => {
-      expect(screen.queryByTestId('conversations-list')).not.toBeInTheDocument()
+      expect(result.queryByTestId('conversations-list')).not.toBeInTheDocument()
     })
+  })
+
+  it('reports not visible while the side panel list covers it', async () => {
+    const { setClientVisible, click } = await renderMain(false)
+    await click('open list')
+    await click('close list')
+    expect(setClientVisible.mock.calls).toEqual([[true], [false], [true]])
+  })
+
+  it('stays visible in the full page, where the list is beside it', async () => {
+    const { result, setClientVisible, click } = await renderMain(true)
+    await click('open list')
+    expect(result.queryByText('close list')).toBeNull()
+    expect(setClientVisible.mock.calls).toEqual([[true]])
   })
 })
