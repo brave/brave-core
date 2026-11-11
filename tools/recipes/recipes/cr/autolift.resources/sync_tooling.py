@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env vpython3
 # Copyright (c) 2026 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -34,7 +34,7 @@ It ships with the `cr/autolift` recipe, rather than being read from a cr
 branch, so that CI only runs code from master. It uses only the standard
 library and git, and works on the brave-core checkout it runs in:
 
-    python3 sync_tooling.py --milestone 158
+    vpython3 sync_tooling.py --milestone 158
 """
 
 from __future__ import annotations
@@ -528,7 +528,7 @@ def main() -> int:
     run_dir.mkdir(parents=True, exist_ok=True)
     rerun = ' '.join(
         [
-            'python3',
+            'vpython3',
             str(Path(__file__).resolve()),
             '--milestone',
             str(args.milestone),

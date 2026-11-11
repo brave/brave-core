@@ -258,7 +258,7 @@
   },
   {
     "cmd": [
-      "vpython3",
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "tools/cr/autolift/autolift.py",
       "advise",
       "158",
@@ -320,7 +320,7 @@
   },
   {
     "cmd": [
-      "python3",
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "RECIPE[cr/autolift].resources/sync_tooling.py",
       "--milestone",
       "158",

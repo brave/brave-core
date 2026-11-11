@@ -17,6 +17,7 @@ from recipe_modules import (
     brave_core_checkout,
     chromium_checkout,
     claude_cli,
+    depot_tools,
     file,
     git,
     json,
@@ -53,6 +54,7 @@ _NOTHING_PENDING = {'pending': 0, 'prompt': None, 'report': 'sync-tooling.md'}
 class DEPS(RecipeScriptApi):
     brave_core_checkout: brave_core_checkout.API
     claude_cli: claude_cli.API
+    depot_tools: depot_tools.API
     file: file.API
     git: git.API
     json: json.API
@@ -108,7 +110,7 @@ def _advise(
 ) -> dict:
     """What the run does, and what its agent is told, as `autolift.py advise`
     decides it: no prompt for a run with nothing to do."""
-    cmd = ['vpython3', script, 'advise', target]
+    cmd = [api.depot_tools.vpython3(), script, 'advise', target]
     if properties.autofix:
         cmd.append('--autofix')
     if properties.resume:
@@ -134,7 +136,7 @@ def _sync_tooling(
     agent reconciling what the script leaves for judgement, before the lift
     reads its skill. Runs in the checkout, from the brave-core layout."""
     cmd = [
-        'python3',
+        api.depot_tools.vpython3(),
         api.resource('sync_tooling.py'),
         '--milestone',
         str(milestone),
