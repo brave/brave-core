@@ -595,7 +595,7 @@ function ShareSlide({ stats, nav, card }: SlideProps) {
               // A text post, so the image can be pasted next to the same text
               // as on X.
               share(
-                `https://www.reddit.com/submit?selftext=true&title=${redditTitle}&text=${shareText}`,
+                `https://www.reddit.com/r/brave_browser/submit?selftext=true&title=${redditTitle}&text=${shareText}`,
               )
             }
           >

@@ -532,10 +532,12 @@ describe('brave recap share slide', () => {
       )
     })
 
-    it('opens a Reddit text post with the same text as X', async () => {
+    it('opens a Reddit text post on r/brave_browser with the same text as X', async () => {
       await post('BRAVE_RECAP_POST_ON_REDDIT')
       const url = new URL(open.mock.calls[0][0] as string)
-      expect(url.origin + url.pathname).toBe('https://www.reddit.com/submit')
+      expect(url.origin + url.pathname).toBe(
+        'https://www.reddit.com/r/brave_browser/submit',
+      )
       expect(url.searchParams.get('selftext')).toBe('true')
       expect(url.searchParams.get('title')).toBe('BRAVE_RECAP_SHARE_POST_TITLE')
       expect(url.searchParams.get('text')).toBe(SHARE_TEXT)
