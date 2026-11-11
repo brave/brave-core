@@ -2,7 +2,7 @@ Name: futures-retry
 URL: https://crates.io/crates/futures-retry
 Version: 0.5.0
 License: Apache-2.0
-License File:
+License File: //brave/third_party/rust/futures_retry/v0_5/crate/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 
