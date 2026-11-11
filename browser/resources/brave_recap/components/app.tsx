@@ -937,6 +937,10 @@ function Recap({
 export function App(props: Props) {
   return (
     <div className='stage'>
+      <div
+        className='stage-shimmer'
+        aria-hidden='true'
+      />
       {hasEnoughData(props.stats) ? (
         <Recap
           stats={props.stats}
