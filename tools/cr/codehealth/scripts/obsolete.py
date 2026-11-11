@@ -17,6 +17,8 @@ These are the mechanical checks of code health sweep g:
                      that Brave still uses or overrides
     lift-overrides   the overrides the lift's commits added, and the patches
                      whose added lines they changed, that the range touches
+    shadowed-tests   `chromium_src` tests on an upstream test's path that don't
+                     include it, so upstream's tests there never run
 
 Each prints one finding per line, for `sweep.py`'s `tool:` field. Findings that
 predate the range are counted; `--debt` lists them, for a fresh tracker.
@@ -1335,10 +1337,55 @@ class LiftOverrides:
         return out.splitlines()[: self._TOUCHING]
 
 
+class ShadowedTests:
+    """`chromium_src` tests on an upstream test's path that don't include it.
+
+    The build compiles a `chromium_src` file in place of its upstream
+    namesake, so one that doesn't include the upstream file drops every
+    upstream test in it."""
+
+    _TEST = re.compile(r'(?:_unittest|_browsertest|_uitest|_test)\.(?:cc|mm)$')
+    _TOUCHING = 5
+
+    def __init__(self, range_: Range):
+        self._range = range_
+
+    def run(self) -> list[str]:
+        """The shadowing tests whose upstream file the range changed, each
+        with those commits; the others are counted, or listed with
+        `--debt`."""
+        brave, chromium = self._range.brave, self._range.chromium
+        changed, debt = [], []
+        for path in brave.files('chromium_src'):
+            if not self._TEST.search(path):
+                continue
+            upstream = path[len('chromium_src/') :]
+            if chromium.show(upstream, self._range.new) is None:
+                continue
+            if f'#include <{upstream}>' in (brave.show(path) or ''):
+                continue
+            line = f'shadowed\t{path}'
+            commits = chromium.run(
+                'log',
+                '--format=%h %s',
+                f'{self._range.old}..{self._range.new}',
+                '--',
+                upstream,
+            ).splitlines()[: self._TOUCHING]
+            if commits:
+                changed.append(line + ''.join(f'\n    {c}' for c in commits))
+            else:
+                debt.append(line)
+        return changed + _debt_lines(
+            self._range, debt, "shadowed upstream tests the range didn't change"
+        )
+
+
 _CHECKS = {
     'cited-bugs': CitedBugs,
     'lift-overrides': LiftOverrides,
     'patch-adoptions': PatchAdoptions,
+    'shadowed-tests': ShadowedTests,
     'test-filters': TestFilters,
     'removed-names': RemovedNames,
 }

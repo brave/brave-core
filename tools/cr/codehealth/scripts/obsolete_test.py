@@ -24,6 +24,7 @@ from obsolete import (
     PatchAdoptions,
     RangeCommit,
     RemovedNames,
+    ShadowedTests,
     TestFilters,
     TestIndex,
 )
@@ -938,6 +939,76 @@ class LiftOverridesTest(unittest.TestCase):
             LiftOverrides(FakeRange(brave)).run()
             self.start.assert_called_with('HEAD', base)
             self.assertEqual([f'start-on-{base}..HEAD'] * 2, brave.spans)
+
+
+class ShadowedTestsTest(unittest.TestCase):
+    _UPSTREAM = 'components/omnibox/browser/autocomplete_match_unittest.cc'
+
+    def _run(self, brave_files, chromium_files, log='', debt=False):
+        brave = FakeGit({(None, p): text for p, text in brave_files.items()})
+        chromium = FakeGit(
+            {('new', p): text for p, text in chromium_files.items()}, log=log
+        )
+        return ShadowedTests(FakeRange(brave, chromium, debt=debt)).run()
+
+    def test_a_test_not_including_its_upstream_namesake_is_listed(self):
+        self.assertEqual(
+            [
+                f'shadowed\tchromium_src/{self._UPSTREAM}\n'
+                '    ebb1d796c461 [AIM] Translate notes_spark_old.icon',
+                "0 shadowed upstream tests the range didn't change",
+            ],
+            self._run(
+                {f'chromium_src/{self._UPSTREAM}': 'TEST(BraveFoo, Bar) {}\n'},
+                {self._UPSTREAM: 'TEST(AutocompleteMatchTest, X) {}\n'},
+                log='ebb1d796c461 [AIM] Translate notes_spark_old.icon\n',
+            ),
+        )
+
+    def test_a_test_including_its_upstream_namesake_is_not_listed(self):
+        self.assertEqual(
+            ["0 shadowed upstream tests the range didn't change"],
+            self._run(
+                {
+                    f'chromium_src/{self._UPSTREAM}': (
+                        f'#include <{self._UPSTREAM}>\n'
+                    )
+                },
+                {self._UPSTREAM: ''},
+                log='ebb1d796c461 [AIM] Translate notes_spark_old.icon\n',
+            ),
+        )
+
+    def test_brave_only_tests_and_non_tests_are_not_listed(self):
+        self.assertEqual(
+            ["0 shadowed upstream tests the range didn't change"],
+            self._run(
+                {
+                    'chromium_src/components/foo/brave_foo_unittest.cc': '',
+                    'chromium_src/components/foo/foo.cc': '',
+                },
+                {'components/foo/foo.cc': ''},
+                log='0123456789ab Touch foo\n',
+            ),
+        )
+
+    def test_a_shadowed_test_the_range_left_alone_is_debt(self):
+        files = {f'chromium_src/{self._UPSTREAM}': ''}
+        chromium = {self._UPSTREAM: ''}
+        self.assertEqual(
+            [
+                "1 shadowed upstream tests the range didn't change",
+                '    (list them with --debt)',
+            ],
+            self._run(files, chromium),
+        )
+        self.assertEqual(
+            [
+                "1 shadowed upstream tests the range didn't change",
+                f'shadowed\tchromium_src/{self._UPSTREAM}',
+            ],
+            self._run(files, chromium, debt=True),
+        )
 
 
 if __name__ == '__main__':
