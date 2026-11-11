@@ -8,12 +8,14 @@
 #include <map>
 #include <memory>
 #include <optional>
+#include <string>
 #include <utility>
 
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -33,6 +35,7 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "services/network/test/test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -115,12 +118,15 @@ class SimulationServiceUnitTest : public testing::Test {
         [&, responses](const network::ResourceRequest& request) {
           // If the request url is in responses, add that response
           auto it = responses.find(request.url);
-          if (it != responses.end()) {
-            // Get the response string
-            std::string response = it->second;
-            url_loader_factory_.ClearResponses();
-            url_loader_factory_.AddResponse(request.url.spec(), response);
+          if (it == responses.end()) {
+            ADD_FAILURE() << "Unexpected request: " << request.url
+                          << " body: " << network::GetUploadData(request);
+            return;
           }
+          // Get the response string
+          std::string response = it->second;
+          url_loader_factory_.ClearResponses();
+          url_loader_factory_.AddResponse(request.url.spec(), response);
         }));
   }
 
@@ -415,66 +421,65 @@ TEST_F(SimulationServiceUnitTest, ScanEvmTransactionValidResponse) {
   EXPECT_EQ(EthAccount(0)->address,
             "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
 
-  base::RunLoop run_loop;
+  base::test::TestFuture<mojom::EVMSimulationResponsePtr, std::string,
+                         std::string>
+      future;
   ScanEVMTransaction(
       GetCannedScanEVMTransactionParams(false, mojom::kMainnetChainId), "en-US",
-      base::BindLambdaForTesting([&](mojom::EVMSimulationResponsePtr response,
-                                     const std::string& error_response,
-                                     const std::string& error_string) {
-        ASSERT_TRUE(response);
+      future.GetCallback<mojom::EVMSimulationResponsePtr, const std::string&,
+                         const std::string&>());
+  auto [response, error_response, error_string] = future.Take();
 
-        EXPECT_EQ(response->action, mojom::BlowfishSuggestedAction::kNone);
-        EXPECT_EQ(response->warnings.size(), 0u);
-        EXPECT_FALSE(response->error);
-        ASSERT_EQ(response->expected_state_changes.size(), 1u);
-        const auto& state_change_0 = response->expected_state_changes.at(0);
-        EXPECT_EQ(state_change_0->human_readable_diff, "Send 0.033 ETH");
-        EXPECT_EQ(state_change_0->raw_info->kind,
-                  mojom::BlowfishEVMRawInfoKind::kNativeAssetTransfer);
-        ASSERT_TRUE(
-            state_change_0->raw_info->data->is_native_asset_transfer_data());
-        const auto& state_change_0_raw_info =
-            state_change_0->raw_info->data->get_native_asset_transfer_data();
+  ASSERT_TRUE(response);
 
-        EXPECT_EQ(state_change_0_raw_info->amount->after, "71057321770366572");
-        EXPECT_EQ(state_change_0_raw_info->amount->before,
-                  "104057321770366572");
-        EXPECT_EQ(state_change_0_raw_info->asset->address,
-                  "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-        EXPECT_EQ(state_change_0_raw_info->asset->decimals, 18);
-        EXPECT_EQ(state_change_0_raw_info->asset->image_url, "https://eth.png");
-        EXPECT_EQ(state_change_0_raw_info->asset->name, "Ether");
-        EXPECT_EQ(state_change_0_raw_info->asset->symbol, "ETH");
-        EXPECT_TRUE(state_change_0_raw_info->asset->verified);
-        EXPECT_EQ(state_change_0_raw_info->asset->lists.size(), 0u);
-        EXPECT_EQ(state_change_0_raw_info->asset->price->dollar_value_per_token,
-                  "1945.92");
-        EXPECT_EQ(state_change_0_raw_info->asset->price->source,
-                  mojom::BlowfishAssetPriceSource::kCoingecko);
-        EXPECT_EQ(state_change_0_raw_info->asset->price->last_updated_at,
-                  "1681958792");
+  EXPECT_EQ(response->action, mojom::BlowfishSuggestedAction::kNone);
+  EXPECT_EQ(response->warnings.size(), 0u);
+  EXPECT_FALSE(response->error);
+  ASSERT_EQ(response->expected_state_changes.size(), 1u);
+  const auto& state_change_0 = response->expected_state_changes.at(0);
+  EXPECT_EQ(state_change_0->human_readable_diff, "Send 0.033 ETH");
+  EXPECT_EQ(state_change_0->raw_info->kind,
+            mojom::BlowfishEVMRawInfoKind::kNativeAssetTransfer);
+  ASSERT_TRUE(state_change_0->raw_info->data->is_native_asset_transfer_data());
+  const auto& state_change_0_raw_info =
+      state_change_0->raw_info->data->get_native_asset_transfer_data();
 
-        EXPECT_EQ(error_response, "");
-        EXPECT_EQ(error_string, "");
-        run_loop.Quit();
-      }));
-  run_loop.Run();
+  EXPECT_EQ(state_change_0_raw_info->amount->after, "71057321770366572");
+  EXPECT_EQ(state_change_0_raw_info->amount->before, "104057321770366572");
+  EXPECT_EQ(state_change_0_raw_info->asset->address,
+            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+  EXPECT_EQ(state_change_0_raw_info->asset->decimals, 18);
+  EXPECT_EQ(state_change_0_raw_info->asset->image_url, "https://eth.png");
+  EXPECT_EQ(state_change_0_raw_info->asset->name, "Ether");
+  EXPECT_EQ(state_change_0_raw_info->asset->symbol, "ETH");
+  EXPECT_TRUE(state_change_0_raw_info->asset->verified);
+  EXPECT_EQ(state_change_0_raw_info->asset->lists.size(), 0u);
+  EXPECT_EQ(state_change_0_raw_info->asset->price->dollar_value_per_token,
+            "1945.92");
+  EXPECT_EQ(state_change_0_raw_info->asset->price->source,
+            mojom::BlowfishAssetPriceSource::kCoingecko);
+  EXPECT_EQ(state_change_0_raw_info->asset->price->last_updated_at,
+            "1681958792");
+
+  EXPECT_EQ(error_response, "");
+  EXPECT_EQ(error_string, "");
 }
 
 TEST_F(SimulationServiceUnitTest, ScanEVMTransactionUnsupportedNetwork) {
-  base::MockCallback<mojom::SimulationService::ScanEVMTransactionCallback>
-      callback;
-  EXPECT_CALL(
-      callback,
-      Run(EqualsMojo(mojom::EVMSimulationResponsePtr()), "",
-          l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK)));
-
+  base::test::TestFuture<mojom::EVMSimulationResponsePtr, std::string,
+                         std::string>
+      future;
   ScanEVMTransaction(
       GetCannedScanEVMTransactionParams(false, mojom::kNeonEVMMainnetChainId),
-      "en-US", callback.Get());
+      "en-US",
+      future.GetCallback<mojom::EVMSimulationResponsePtr, const std::string&,
+                         const std::string&>());
+  auto [response, error_response, error_string] = future.Take();
 
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  EXPECT_FALSE(response);
+  EXPECT_EQ(error_response, "");
+  EXPECT_EQ(error_string,
+            l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK));
 }
 
 TEST_F(SimulationServiceUnitTest, ScanTransactionBlockedWhenOptInDenied) {
@@ -504,48 +509,53 @@ TEST_F(SimulationServiceUnitTest, ScanEVMTransactionValidErrorResponse) {
   )";
   SetErrorInterceptor(error);
 
-  base::MockCallback<mojom::SimulationService::ScanEVMTransactionCallback>
-      callback;
-  EXPECT_CALL(callback, Run(EqualsMojo(mojom::EVMSimulationResponsePtr()),
-                            "No transactions to simulate", ""));
-
+  base::test::TestFuture<mojom::EVMSimulationResponsePtr, std::string,
+                         std::string>
+      future;
   ScanEVMTransaction(
       GetCannedScanEVMTransactionParams(false, mojom::kPolygonMainnetChainId),
-      "en-US", callback.Get());
+      "en-US",
+      future.GetCallback<mojom::EVMSimulationResponsePtr, const std::string&,
+                         const std::string&>());
+  auto [response, error_response, error_string] = future.Take();
 
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  EXPECT_FALSE(response);
+  EXPECT_EQ(error_response, "No transactions to simulate");
+  EXPECT_EQ(error_string, "");
 }
 
 TEST_F(SimulationServiceUnitTest, ScanEVMTransactionUnexpectedErrorResponse) {
   std::string error = "Woot";
   SetErrorInterceptor(error);
 
-  base::MockCallback<mojom::SimulationService::ScanEVMTransactionCallback>
-      callback;
-  EXPECT_CALL(callback,
-              Run(EqualsMojo(mojom::EVMSimulationResponsePtr()), "",
-                  l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
-
+  base::test::TestFuture<mojom::EVMSimulationResponsePtr, std::string,
+                         std::string>
+      future;
   ScanEVMTransaction(
       GetCannedScanEVMTransactionParams(false, mojom::kPolygonMainnetChainId),
-      "en-US", callback.Get());
+      "en-US",
+      future.GetCallback<mojom::EVMSimulationResponsePtr, const std::string&,
+                         const std::string&>());
+  auto [response, error_response, error_string] = future.Take();
 
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  EXPECT_FALSE(response);
+  EXPECT_EQ(error_response, "");
+  EXPECT_EQ(error_string, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 }
 
 TEST_F(SimulationServiceUnitTest, ScanEVMTransactionNullParams) {
-  base::MockCallback<mojom::SimulationService::ScanEVMTransactionCallback>
-      callback;
-  EXPECT_CALL(callback,
-              Run(EqualsMojo(mojom::EVMSimulationResponsePtr()), "",
-                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  base::test::TestFuture<mojom::EVMSimulationResponsePtr, std::string,
+                         std::string>
+      future;
+  simulation_service_->ScanEVMTransaction(
+      "bad_id", "en-US",
+      future.GetCallback<mojom::EVMSimulationResponsePtr, const std::string&,
+                         const std::string&>());
+  auto [response, error_response, error_string] = future.Take();
 
-  simulation_service_->ScanEVMTransaction("bad_id", "en-US", callback.Get());
-
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  EXPECT_FALSE(response);
+  EXPECT_EQ(error_response, "");
+  EXPECT_EQ(error_string, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
 TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionValid) {
@@ -594,58 +604,54 @@ TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionValid) {
   EXPECT_EQ(SolAccount(0)->address,
             "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
 
-  base::RunLoop run_loop;
   auto tx_info =
       GetCannedScanSolanaTransactionParams(std::nullopt, mojom::kSolanaMainnet);
 
+  base::test::TestFuture<mojom::SolanaSimulationResponsePtr, std::string,
+                         std::string>
+      future;
   ScanSolanaTransaction(
       std::move(tx_info), "en-US",
-      base::BindLambdaForTesting(
-          [&](mojom::SolanaSimulationResponsePtr response,
-              const std::string& error_response,
-              const std::string& error_string) {
-            ASSERT_TRUE(response);
+      future.GetCallback<mojom::SolanaSimulationResponsePtr, const std::string&,
+                         const std::string&>());
+  auto [response, error_response, error_string] = future.Take();
 
-            EXPECT_EQ(response->action, mojom::BlowfishSuggestedAction::kNone);
-            EXPECT_EQ(response->warnings.size(), 0u);
-            EXPECT_FALSE(response->error);
-            ASSERT_EQ(response->expected_state_changes.size(), 1u);
+  ASSERT_TRUE(response);
 
-            const auto& state_change = response->expected_state_changes.at(0);
-            EXPECT_EQ(state_change->human_readable_diff, "Send 2 USDT");
-            EXPECT_EQ(state_change->suggested_color,
-                      mojom::BlowfishSuggestedColor::kDebit);
-            EXPECT_EQ(state_change->raw_info->kind,
-                      mojom::BlowfishSolanaRawInfoKind::kSplTransfer);
-            ASSERT_TRUE(state_change->raw_info->data->is_spl_transfer_data());
-            const auto& state_change_raw_info =
-                state_change->raw_info->data->get_spl_transfer_data();
-            EXPECT_EQ(state_change_raw_info->asset->symbol, "USDT");
-            EXPECT_EQ(state_change_raw_info->asset->name, "USDT");
-            EXPECT_EQ(state_change_raw_info->asset->mint,
-                      "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB");
-            EXPECT_EQ(state_change_raw_info->asset->decimals, 6);
-            EXPECT_EQ(state_change_raw_info->asset->metaplex_token_standard,
-                      mojom::BlowfishMetaplexTokenStandardKind::kUnknown);
-            ASSERT_TRUE(state_change_raw_info->asset->price);
-            EXPECT_EQ(state_change_raw_info->asset->price->source,
-                      mojom::BlowfishAssetPriceSource::kCoingecko);
-            EXPECT_EQ(state_change_raw_info->asset->price->last_updated_at,
-                      "1679331222");
-            EXPECT_EQ(
-                state_change_raw_info->asset->price->dollar_value_per_token,
-                "0.99");
-            EXPECT_EQ(state_change_raw_info->diff->sign,
-                      mojom::BlowfishDiffSign::kMinus);
-            EXPECT_EQ(state_change_raw_info->diff->digits, "2000000");
-            EXPECT_EQ(state_change_raw_info->counterparty,
-                      "5wytVPbjLb2VCXbynhUQabEZZD2B6Wxrkvwm6v6Cuy5X");
+  EXPECT_EQ(response->action, mojom::BlowfishSuggestedAction::kNone);
+  EXPECT_EQ(response->warnings.size(), 0u);
+  EXPECT_FALSE(response->error);
+  ASSERT_EQ(response->expected_state_changes.size(), 1u);
 
-            EXPECT_EQ(error_response, "");
-            EXPECT_EQ(error_string, "");
-            run_loop.Quit();
-          }));
-  run_loop.Run();
+  const auto& state_change = response->expected_state_changes.at(0);
+  EXPECT_EQ(state_change->human_readable_diff, "Send 2 USDT");
+  EXPECT_EQ(state_change->suggested_color,
+            mojom::BlowfishSuggestedColor::kDebit);
+  EXPECT_EQ(state_change->raw_info->kind,
+            mojom::BlowfishSolanaRawInfoKind::kSplTransfer);
+  ASSERT_TRUE(state_change->raw_info->data->is_spl_transfer_data());
+  const auto& state_change_raw_info =
+      state_change->raw_info->data->get_spl_transfer_data();
+  EXPECT_EQ(state_change_raw_info->asset->symbol, "USDT");
+  EXPECT_EQ(state_change_raw_info->asset->name, "USDT");
+  EXPECT_EQ(state_change_raw_info->asset->mint,
+            "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB");
+  EXPECT_EQ(state_change_raw_info->asset->decimals, 6);
+  EXPECT_EQ(state_change_raw_info->asset->metaplex_token_standard,
+            mojom::BlowfishMetaplexTokenStandardKind::kUnknown);
+  ASSERT_TRUE(state_change_raw_info->asset->price);
+  EXPECT_EQ(state_change_raw_info->asset->price->source,
+            mojom::BlowfishAssetPriceSource::kCoingecko);
+  EXPECT_EQ(state_change_raw_info->asset->price->last_updated_at, "1679331222");
+  EXPECT_EQ(state_change_raw_info->asset->price->dollar_value_per_token,
+            "0.99");
+  EXPECT_EQ(state_change_raw_info->diff->sign, mojom::BlowfishDiffSign::kMinus);
+  EXPECT_EQ(state_change_raw_info->diff->digits, "2000000");
+  EXPECT_EQ(state_change_raw_info->counterparty,
+            "5wytVPbjLb2VCXbynhUQabEZZD2B6Wxrkvwm6v6Cuy5X");
+
+  EXPECT_EQ(error_response, "");
+  EXPECT_EQ(error_string, "");
 }
 
 TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionEmptyLatestBlockhash) {
@@ -712,7 +718,6 @@ TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionEmptyLatestBlockhash) {
 
   SetInterceptors(responses);
 
-  base::RunLoop run_loop;
   auto tx_info =
       GetCannedScanSolanaTransactionParams(std::nullopt, mojom::kSolanaMainnet);
 
@@ -720,17 +725,19 @@ TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionEmptyLatestBlockhash) {
   // trigger fetching of the latest blockhash from the network.
   tx_info->tx_data_union->get_solana_tx_data()->recent_blockhash = "";
 
-  ScanSolanaTransaction(tx_info->Clone(), "en-US",
-                        base::BindLambdaForTesting(
-                            [&](mojom::SolanaSimulationResponsePtr response,
-                                const std::string& error_response,
-                                const std::string& error_string) {
-                              EXPECT_TRUE(response);
-                              EXPECT_EQ(error_response, "");
-                              EXPECT_EQ(error_string, "");
-                              run_loop.Quit();
-                            }));
-  run_loop.Run();
+  {
+    base::test::TestFuture<mojom::SolanaSimulationResponsePtr, std::string,
+                           std::string>
+        future;
+    ScanSolanaTransaction(
+        tx_info->Clone(), "en-US",
+        future.GetCallback<mojom::SolanaSimulationResponsePtr,
+                           const std::string&, const std::string&>());
+    auto [response, error_response, error_string] = future.Take();
+    EXPECT_TRUE(response);
+    EXPECT_EQ(error_response, "");
+    EXPECT_EQ(error_string, "");
+  }
 
   // KO: Simulation should fail if the latest blockhash is empty both in the
   // transaction and in the RPC response.
@@ -750,36 +757,35 @@ TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionEmptyLatestBlockhash) {
     }
   )";
   SetInterceptors(responses);
-  base::RunLoop run_loop_2;
+  base::test::TestFuture<mojom::SolanaSimulationResponsePtr, std::string,
+                         std::string>
+      future;
   ScanSolanaTransaction(
       std::move(tx_info), "en-US",
-      base::BindLambdaForTesting(
-          [&](mojom::SolanaSimulationResponsePtr response,
-              const std::string& error_response,
-              const std::string& error_string) {
-            EXPECT_FALSE(response);
-            EXPECT_EQ(error_response, "");
-            EXPECT_EQ(error_string,
-                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-            run_loop_2.Quit();
-          }));
-  run_loop_2.Run();
+      future.GetCallback<mojom::SolanaSimulationResponsePtr, const std::string&,
+                         const std::string&>());
+  auto [response, error_response, error_string] = future.Take();
+  EXPECT_FALSE(response);
+  EXPECT_EQ(error_response, "");
+  EXPECT_EQ(error_string, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
 TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionEmptyNetwork) {
   auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt, "");
 
-  base::MockCallback<mojom::SimulationService::ScanSolanaTransactionCallback>
-      callback;
-  EXPECT_CALL(
-      callback,
-      Run(EqualsMojo(mojom::SolanaSimulationResponsePtr()), "",
-          l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK)));
+  base::test::TestFuture<mojom::SolanaSimulationResponsePtr, std::string,
+                         std::string>
+      future;
+  ScanSolanaTransaction(
+      std::move(tx_info), "en-US",
+      future.GetCallback<mojom::SolanaSimulationResponsePtr, const std::string&,
+                         const std::string&>());
+  auto [response, error_response, error_string] = future.Take();
 
-  ScanSolanaTransaction(std::move(tx_info), "en-US", callback.Get());
-
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  EXPECT_FALSE(response);
+  EXPECT_EQ(error_response, "");
+  EXPECT_EQ(error_string,
+            l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK));
 }
 
 TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionValidErrorResponse) {
@@ -793,15 +799,18 @@ TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionValidErrorResponse) {
   auto tx_info =
       GetCannedScanSolanaTransactionParams(std::nullopt, mojom::kSolanaMainnet);
 
-  base::MockCallback<mojom::SimulationService::ScanSolanaTransactionCallback>
-      callback;
-  EXPECT_CALL(callback, Run(EqualsMojo(mojom::SolanaSimulationResponsePtr()),
-                            "No transactions to simulate", ""));
+  base::test::TestFuture<mojom::SolanaSimulationResponsePtr, std::string,
+                         std::string>
+      future;
+  ScanSolanaTransaction(
+      std::move(tx_info), "en-US",
+      future.GetCallback<mojom::SolanaSimulationResponsePtr, const std::string&,
+                         const std::string&>());
+  auto [response, error_response, error_string] = future.Take();
 
-  ScanSolanaTransaction(std::move(tx_info), "en-US", callback.Get());
-
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  EXPECT_FALSE(response);
+  EXPECT_EQ(error_response, "No transactions to simulate");
+  EXPECT_EQ(error_string, "");
 }
 
 TEST_F(SimulationServiceUnitTest,
@@ -812,29 +821,33 @@ TEST_F(SimulationServiceUnitTest,
   auto tx_info =
       GetCannedScanSolanaTransactionParams(std::nullopt, mojom::kSolanaMainnet);
 
-  base::MockCallback<mojom::SimulationService::ScanSolanaTransactionCallback>
-      callback;
-  EXPECT_CALL(callback,
-              Run(EqualsMojo(mojom::SolanaSimulationResponsePtr()), "",
-                  l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
+  base::test::TestFuture<mojom::SolanaSimulationResponsePtr, std::string,
+                         std::string>
+      future;
+  ScanSolanaTransaction(
+      std::move(tx_info), "en-US",
+      future.GetCallback<mojom::SolanaSimulationResponsePtr, const std::string&,
+                         const std::string&>());
+  auto [response, error_response, error_string] = future.Take();
 
-  ScanSolanaTransaction(std::move(tx_info), "en-US", callback.Get());
-
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  EXPECT_FALSE(response);
+  EXPECT_EQ(error_response, "");
+  EXPECT_EQ(error_string, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 }
 
 TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionNullParams) {
-  base::MockCallback<mojom::SimulationService::ScanSolanaTransactionCallback>
-      callback;
-  EXPECT_CALL(callback,
-              Run(EqualsMojo(mojom::SolanaSimulationResponsePtr()), "",
-                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  base::test::TestFuture<mojom::SolanaSimulationResponsePtr, std::string,
+                         std::string>
+      future;
+  simulation_service_->ScanSolanaTransaction(
+      "bad_id", "en-US",
+      future.GetCallback<mojom::SolanaSimulationResponsePtr, const std::string&,
+                         const std::string&>());
+  auto [response, error_response, error_string] = future.Take();
 
-  simulation_service_->ScanSolanaTransaction("bad_id", "en-US", callback.Get());
-
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  EXPECT_FALSE(response);
+  EXPECT_EQ(error_response, "");
+  EXPECT_EQ(error_string, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
 }  // namespace brave_wallet
