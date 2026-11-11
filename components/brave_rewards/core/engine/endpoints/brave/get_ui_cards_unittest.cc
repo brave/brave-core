@@ -44,13 +44,20 @@ TEST_F(RewardsGetUICardsTest, ExpectedResponse) {
       "order": 1,
       "banner": {
         "image": "$banner-image",
-        "url": "$banner-url"
+        "url": "$banner-url",
+        "offer_id": "$banner-offer"
       },
       "items": [{
         "title": "$title",
         "description": "$description",
         "url": "$url",
-        "thumbnail": "$thumbnail"
+        "thumbnail": "$thumbnail",
+        "offer_id": "$offer",
+        "events": [
+          {"type": "hover", "trigger": "hover", "dwell_ms": 500,
+           "once_per_load": true},
+          {"type": "click", "trigger": "click"}
+        ]
       }]
     }
   })";
@@ -82,6 +89,48 @@ TEST_F(RewardsGetUICardsTest, ExpectedResponse) {
   EXPECT_EQ(promo_card->items[0]->description, "$description");
   EXPECT_EQ(promo_card->items[0]->url, "$url");
   EXPECT_EQ(promo_card->items[0]->thumbnail, "$thumbnail");
+
+  EXPECT_EQ(community_card->items[0]->offer_id, "");
+  EXPECT_TRUE(community_card->items[0]->events.empty());
+  EXPECT_EQ(promo_card->banner->offer_id, "$banner-offer");
+  EXPECT_TRUE(promo_card->banner->events.empty());
+  auto& events = promo_card->items[0]->events;
+  EXPECT_EQ(promo_card->items[0]->offer_id, "$offer");
+  ASSERT_EQ(events.size(), static_cast<size_t>(2));
+  EXPECT_EQ(events[0]->type, "hover");
+  EXPECT_EQ(events[0]->trigger, mojom::OfferEventTrigger::kHover);
+  EXPECT_EQ(events[0]->dwell_ms, 500);
+  EXPECT_TRUE(events[0]->once_per_load);
+  EXPECT_EQ(events[1]->type, "click");
+  EXPECT_EQ(events[1]->trigger, mojom::OfferEventTrigger::kClick);
+  EXPECT_EQ(events[1]->dwell_ms, 0);
+  EXPECT_FALSE(events[1]->once_per_load);
+}
+
+TEST_F(RewardsGetUICardsTest, ReadsOnlyValidOfferEvents) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = net::HttpStatusCode::HTTP_OK;
+  response->body = R"({
+    "community-card": [{
+      "url": "$url",
+      "offer_id": "$offer",
+      "events": [
+        "not-a-dict",
+        {"type": "no-trigger"},
+        {"trigger": "click"},
+        {"type": "view", "trigger": "view"},
+        {"type": "click", "trigger": "click", "dwell_ms": -5}
+      ]
+    }]
+  })";
+
+  auto result = SendRequest(std::move(response));
+  ASSERT_EQ(result->size(), static_cast<size_t>(1));
+  auto& events = result->at(0)->items[0]->events;
+  ASSERT_EQ(events.size(), static_cast<size_t>(1));
+  EXPECT_EQ(events[0]->type, "click");
+  EXPECT_EQ(events[0]->trigger, mojom::OfferEventTrigger::kClick);
+  EXPECT_EQ(events[0]->dwell_ms, 0);
 }
 
 TEST_F(RewardsGetUICardsTest, ErrorStatus) {

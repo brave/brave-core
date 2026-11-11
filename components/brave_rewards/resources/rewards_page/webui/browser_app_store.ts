@@ -17,6 +17,8 @@ import {
   AppActions,
   AppStore,
   Notification,
+  OfferEventSpec,
+  UICard,
   defaultAppStore,
 } from '../lib/app_store'
 
@@ -339,9 +341,33 @@ export function createAppStore(): AppStore {
     store.update({ notifications: list })
   }
 
+  function mapOfferEvents(events: mojom.OfferEventSpec[]): OfferEventSpec[] {
+    return events.map((event) => ({
+      type: event.type,
+      trigger:
+        event.trigger === mojom.OfferEventTrigger.kHover ? 'hover' : 'click',
+      dwellMs: event.dwellMs,
+      oncePerLoad: event.oncePerLoad,
+    }))
+  }
+
+  function mapCard(card: mojom.UICard): UICard {
+    return {
+      ...card,
+      banner: card.banner && {
+        ...card.banner,
+        events: mapOfferEvents(card.banner.events),
+      },
+      items: card.items.map((item) => ({
+        ...item,
+        events: mapOfferEvents(item.events),
+      })),
+    }
+  }
+
   async function updateCards() {
     const { cards } = await pageHandler.fetchUICards()
-    store.update({ cards: cards || null })
+    store.update({ cards: cards ? cards.map(mapCard) : null })
   }
 
   async function loadData() {
@@ -605,6 +631,7 @@ export function createAppStore(): AppStore {
     async recordOfferView() {
       await pageHandler.recordOfferView()
     },
+
   }
 
   store.update({ actions })
