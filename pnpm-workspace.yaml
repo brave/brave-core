@@ -7,7 +7,6 @@
 
 # Packages allowed to run install/build lifecycle scripts.
 allowBuilds:
-  '@brave/leo-sf-symbols@https://codeload.github.com/brave/leo-sf-symbols/tar.gz/b5a6139df7ebd3f7d55aa8d6af60a524edab87b0': true
   # No-op unless npm_config_build_from_source is set; prebuilt binaries ship as optionalDependencies.
   '@parcel/watcher': false
   # Falls back to pure-JS hashing (lib/js.js) if the native binding is unavailable.
