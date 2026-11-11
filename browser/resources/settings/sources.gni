@@ -117,6 +117,8 @@ brave_settings_ts_files = [
   "brave_window.ts",
   "default_brave_shields_page/brave_adblock_browser_proxy.ts",
   "default_brave_shields_page/default_brave_shields_browser_proxy.ts",
+  "getting_started_page/brave_account_page.html.ts",
+  "getting_started_page/brave_account_page.ts",
   "shortcuts_page/shortcuts_page.ts",
 ]
 

@@ -253,6 +253,8 @@ interface DialogOpener {
 // A settings page a link row can point to.
 enum SettingsPage {
   kBraveAccount,
+  [EnableIf=is_desktop]
+  kGetStarted,
 };
 
 // Interface for opening settings pages from a page that only links to them.

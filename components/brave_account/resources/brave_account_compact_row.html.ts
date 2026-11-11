@@ -19,6 +19,7 @@ export function getHtml(this: BraveAccountCompactRowElement) {
           BraveAccountSettingsStrings.BRAVE_ACCOUNT_TITLE,
         )}
         .description=${this.description}
+        .page=${this.page}
       >
       </brave-account-link-row>`
     : nothing}`
