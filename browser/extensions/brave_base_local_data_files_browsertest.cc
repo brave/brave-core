@@ -6,18 +6,14 @@
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 
 #include "base/path_service.h"
-#include "base/task/thread_pool.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 
 using brave_component_updater::LocalDataFilesObserver;
-using content::BrowserThread;
 using extensions::ExtensionBrowserTest;
 
 void BaseLocalDataFilesBrowserTest::SetUpOnMainThread() {
