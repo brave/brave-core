@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Declare `GetPermissionResultForEmbeddedRequester()`.
+
+      Brave Wallet reads its account permissions for a per-account origin
+      derived from the frame's, with the frame's own checks (permissions
+      policy, document state). Only `permissions::PermissionManager`
+      implements it; the default, in the `chromium_src` override, denies.
+    regex:
+      re_pattern:
+        '(virtual PermissionResult GetPermissionResultForWorker\([^;]*\) = 0;\n)'
+      replace: |
+        \1
+          // Returns the permission result for `requesting_origin` in
+          // `render_frame_host`, for a `requesting_origin` that isn't the frame's
+          // last committed origin.
+          virtual PermissionResult GetPermissionResultForEmbeddedRequester(
+              const blink::mojom::PermissionDescriptorPtr& permission_descriptor,
+              RenderFrameHost* render_frame_host,
+              const url::Origin& requesting_origin);
