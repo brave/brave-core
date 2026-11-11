@@ -41,6 +41,15 @@ source_set("unit_tests") {
     "//content/test:test_support",
     "//testing/gtest",
   ]
+  if (is_win) {
+    sources += [ "profile_image_unittest_win.cc" ]
+    deps += [
+      "//chrome/browser/profiles:misc",
+      "//chrome/browser/profiles:profile_manager",
+      "//chrome/browser/profiles:profile_util",
+      "//skia",
+    ]
+  }
 }
 
 source_set("custom_profile_image") {
