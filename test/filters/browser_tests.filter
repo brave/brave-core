@@ -9,20 +9,24 @@
 # always fails, so Glic's keyed service and entry points never exist, and these
 # tests, which expect Glic enabled once `kGlic` is, fail or crash. The password
 # change tests drive their flow through Glic too, as do the tests of Glic's tab
-# underline, selection overlay, hotkeys and Gemini Enterprise paste policy,
-# whose names don't say Glic. Skills need Glic enabled for the profile, and the
-# tab strip's action container test runs on a Glic test environment.
+# underline, selection overlay, hotkeys, zero-state suggestions, smart selection
+# toolbar action and Gemini Enterprise paste policy, whose names don't say Glic.
+# Skills need Glic enabled for the profile, and the tab strip's action
+# container test runs on a Glic test environment.
 -*Glic*
 -*HotkeyManager*BrowserTest.*
+-All/CustomizeToolbarHandlerSmartSelectionBrowserTest.ListedInToolsOnlyWithSmartSelection/1
 -ExplainSuggestionBrowserTest.*
 -GeicPastePolicyBrowserTest.*
 -HorizontalTabStripRegionViewNewTest.TabStripActionContainerIsNotInWindowCaption
+-PanelFocusDependentPrintHotkey*BrowserTest.*
 -PasswordChangeFromCheckupDelegateBrowserTest.*
 -SelectionOverlay*BrowserTest.*
 -SkillsAndExtensionsMenuModelTest.SkillsAndExtensionsMenuStandalone
 -SkillsApiFunctionalBrowserTestV2.*
 -SkillsGeicBrowserTest.*
 -TabUnderlineView*BrowserTest.*
+-ZeroStateSuggestionsRecentPages*BrowserTest.*
 
 # References menu items by explicit index, which doesn't match our menu since we
 # insert an additional "Clear browsing data" item ahead of them.
@@ -212,6 +216,7 @@
 -SegmentationPlatformTest.ReceiveNullModelUpdateFromOptimizationGuide
 -SelectionOverlayPromptBrowserTest.*
 -SelectionOverlayQuickAnswers*SuggestionsBrowserTest.*
+-TtcPageContextProtocolBrowserTest.*
 -TtcProtocolBrowserTest.*
 -TtcSpeakerStateBrowserTest.*
 -ZeroStateSuggestionsBFCacheConfusionBrowserTest.BFCacheRegressionTest
@@ -248,6 +253,7 @@
 # for refresh tokens: Brave doesn't load OAuth2 credentials without accounts.
 -OrganizerPanelUIBrowserTest.GetProfileLoadTimeData
 -ProfileMenuViewAiSubscriptionTierOverrideTest.*
+-RecentTabsSubMenuModelWithoutOtherDeviceTabsInAppMenuTest.OtherDevicesAvailability
 -SendTabToSelfBubbleDialogTest.InvokeUi_ShowVerifyPromo
 -SendTabToSelfBubbleParameterizedTest.BubbleTriggersCorrectlyWhenNotPinned/4
 -SendTabToSelfBubbleParameterizedTest.BubbleTriggersCorrectlyWhenNotPinned/5
@@ -503,6 +509,7 @@
 -NotificationPermissionBrowserTest.DisablePermissionRecordsUkms
 -NotificationPermissionBrowserTest.NonPersistentNotificationRecordsUkms
 -OriginKeyedProcessByDefaultBrowserTest.AdTagDuringProcessSelection
+-PaymentHandlerWebFlowViewUseInitiatorInUrlLoadEnabledTest.CrossOriginIframeInitiatorOriginSet
 -PaymentHandlerWebFlowViewUseInitiatorInUrlLoadEnabledTest.InitiatorOriginSet
 -ReadabilityDistillerTest.*
 -UnifiedAutoplayBrowserTest.*
@@ -543,6 +550,7 @@
 -CapturableToBrowserTabApp/NavCaptureTestWithAppBLaunched.VerifyNavCapture/*
 -ClientMode/WebAppNavigationCapturingAuxContentFocusBrowserTest.NoFocusForAuxContent/*
 -ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
+-CustomTabBarViewBrowserTest.WindowOpenDocumentWriteCrossOriginShowsOriginBar
 -DisplayBrowser_*Click/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
 -DisplayModeBrowser/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
 -FormPostSubmissions/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
@@ -635,7 +643,7 @@
 -All/GeolocationPrerenderBrowserTest.*/*
 -All/IntentPickerIconPrerenderingBrowserTest.PrerenderingShouldNotShowIntentPicker/*
 -All/LoginPromptPrerenderBrowserTest.*
--All/PDFExtensionPrerenderTest.*
+-PDFExtensionPrerenderTest.*
 -All/PrerenderingChangePasswordNavigationThrottleBrowserTest.*
 -All/PrintPrerenderBrowserTest.*
 -All/SSLPrerenderTest.*
@@ -708,7 +716,7 @@
 -SadTabHelperBrowserTest.NoStatePrefetchEvictedForMemory_DoesNotCrash
 -SafetyTipPageInfoBubbleViewBrowserTest.MetricsOnlyHeuristicDoesntShowInPageInfo
 -SafetyTipPageInfoBubbleViewPrerenderBrowserTest.*
--SearchEngineTabHelperPrerenderingFormSubmissionBrowserTest.GenerateKeywordAfterPrerenderActivation
+-SearchEngineTabHelperPrerenderingBrowserTest.GenerateKeywordAfterPrerenderActivation
 -SecurityStatePageLoadMetricsPrerenderBrowserTest.*
 -SecurityStateTabHelperPrerenderTest.*
 -ServiceWorker/DeclarativeNetRequestApiPrerenderingTest.*
@@ -914,6 +922,8 @@
 -All/OidcAuthenticationSigninInterceptorTest.PolicyRecoveryFromPref/1
 -All/OidcAuthenticationSigninInterceptorTest.ProfileCreationThenSwitch/1
 -All/SigninUiUtilExtensionsTest_ReplaceSyncPromosWithSignInPromos.ShowExtensionSigninPrompt/*
+-SigninUiUtilExtensionsTest.NavigatedAwaySigninTabIsNotReused
+-SigninUiUtilExtensionsTest.ReusedSigninTabInOtherWindow
 -SigninUiUtilExtensionsTest.ShowExtensionSigninPrompt*
 -SigninViewControllerSignInBanner*.*
 
@@ -1065,6 +1075,7 @@
 # IsLoadingPredictorEnabled() always returns false.
 -All/SearchEnginePreconnectorInitialRttBrowserTest.*
 -All/SearchEnginePreconnectorInvalidKeepAliveTimeoutsBrowserTest.*
+-All/SearchEnginePreconnectorPriorityBoostBrowserTest.*
 -All/SearchEnginePreconnectorWithAdjustPreconnectRetryIntervalFeatureBrowserTest.CalculateBackoffMultiplier/*
 -AnchorElementSetIsNavigationInDomainBrowserTest.TestPointerDownOnAnchor
 -Flags/LCPPTimingPredictorBrowserFlagTest.WithKCriticalPathFlag/*
@@ -1143,7 +1154,7 @@
 -All/DownloadFramePolicyBrowserTest_UpdateIframeSandboxFlags.*
 -All/DownloadReferrerPolicyTest.DownloadCrossDomainReferrerPolicy/0
 -All/DownloadReferrerPolicyTest.DownloadCrossDomainReferrerPolicy/2
--All/PDFExtensionTest.SandboxedPdfIframeNavigationDownloads/*
+-PDFExtensionTest.SandboxedPdfIframeNavigationDownloads
 -All/PolicyUILogsPageTest.DownloadLogs/*
 -AutomaticDownloadsPolicyTest.*
 -DownloadFramePolicyBrowserTest.AdScriptUseCounter*
@@ -1294,12 +1305,16 @@
 # These tests fail because of the following CHECK in identity_test_utils.cc:
 # identity_manager->AreRefreshTokensLoaded()
 -AccountSettingsPagePixelBrowserTest.*
+-ActionAppMenuWithOtherDeviceTabsBrowserTest.*
+-ActionAppMenuWithoutOtherDeviceTabsBrowserTest.*
 -All/AvatarToolbarButtonAsyncPromoRaceRegressionTest.*/*
 -All/AvatarToolbarButtonBrowserTest.*
 -All/AvatarToolbarButtonEnterpriseIsolatedBrowserTest.*/*
 -All/AvatarToolbarButtonGradientRingBrowserTest.*/*
 -All/AvatarToolbarButtonPasskeyUnlockErrorBrowserTest.PasskeyUnlockError/*
+-All/AvatarToolbarButtonPasskeyUnlockIdentityErrorBrowserTest.*/*
 -All/AvatarToolbarButtonSignInBenefitsNewSigninIphParameterizedTest.NotShownIfLegacyWasShown/*
+-All/AvatarToolbarButtonWebAppBrowserTest.*
 -All/AvatarToolbarButtonWithSyncBrowserTest.*
 -All/BrowserCommandControllerBrowserTestShowSigninWhenPaused.ExecuteShowSigninWhenPaused/ReplaceSyncPromosDisabled
 -All/BrowserCommandControllerBrowserTestShowSigninWhenPaused.ExecuteShowSigninWhenPaused/ReplaceSyncPromosEnabled
@@ -1327,6 +1342,7 @@
 -AvatarToolbarButtonSignedOutPromoBrowserTest.SignedOutPromoTriggeredOnStartup
 -AvatarToolbarButtonSignedOutPromoOverriddenIdentityManagerBrowserTest.SignedOutPromoTrigger*
 -AvatarToolbarButtonSignInBenefits*BrowserTest.*
+-AvatarToolbarButtonViewsOverflowBrowserTest.*
 -BookmarkBubbleViewMigrationBrowserTest.SyncPromoSignedIn
 -BookmarkBubbleViewShoppingCollectionBrowserTest.*
 -BookmarkEditorViewBrowserTestWithAccountBookmarks.InvokeUi_AccountAndLocalNodes
@@ -1357,7 +1373,9 @@
 -EnterpriseSigninServiceTest.DoesNothingIfPolicyNotSet
 -EnterpriseSigninServiceTest.OpensNewTabOnSyncPaused
 -ForceSigninProfilePickerCreationFlowBrowserTest.ForceSignin*
--ForeignTabsPageHandlerPromoBrowserTest.ShowCrossDeviceSignInPromo
+-ForeignTabsPageHandlerCloseMetricsBrowserTest.ShowCrossDeviceSignInPromoRecordsOrganizerCloseAction
+-ForeignTabsPageHandlerPreloadPromoBrowserTest.*
+-ForeignTabsPageHandlerPromoBrowserTest.*
 -GaiaRemoteConsentFlowParamBrowserTest.*
 -GlicActuationOnWebPolicyTest.*
 -GlicApiTest*.*
@@ -1386,6 +1404,8 @@
 -MultistepFilterBrowserTest.*
 -MultistepFilterDisabledBrowserTest.ServiceNotCreatedWhenFeatureDisabled
 -MultistepFilterOptimizationGuideBrowserTest.*
+-OtherDeviceTabsSubMenuModelFlagOffTest.*
+-OtherDeviceTabsSubMenuModelPolicyTest.*
 -OtherDeviceTabsSubMenuModelTest.*
 -PdfViewerPrivateBrowserTestGlicEnabled.GlicSummarize
 -PlusAddressServiceBrowserTest.VerifyShouldShowManualFallback
@@ -1532,9 +1552,10 @@
 -ClientSideDetectionHostGeminiAntiscamProtectionTest.*
 -ClientSideDetectionHostPrerenderExclusiveAccessBrowserTest.*
 -ClientSideDetectionHostVibrateTest.*
+-All/ClientSideDetectionServiceBrowserTest.*
 -ClientSideDetectionServiceBaseTest.*
--ClientSideDetectionServiceBrowserTest.*
 -ExtensionTelemetryServiceBrowserTest.*
+-ExtensionTelemetryServiceIsolatedModeBrowserTest.*
 -GeminiAntiscamProtectionServiceBrowserTest.*
 -NoStatePrefetchBrowserTestWithEsbBlockV8.ServiceWorkerInterceptWithEsb
 -ProfileNetworkContextServiceCacheResetSameBackendBrowserTest.TestCacheResetOnUpgradeMultiPartition
@@ -1703,9 +1724,9 @@
 
 # Flaky upstream.
 -All/MediaEngagementAutoplayBrowserTest.*
--All/PDFExtensionScrollTest.WithArrowLeftRightScrollToPage/*
--All/PDFExtensionScrollTest.WithPageDownUp/*
--All/PDFExtensionScrollTest.WithSpace/*
+-PDFExtensionScrollTest.WithArrowLeftRightScrollToPage
+-PDFExtensionScrollTest.WithPageDownUp
+-PDFExtensionScrollTest.WithSpace
 -AppSessionRestoreTest.RestoreAppMinimized
 -AppSessionRestoreTest.RestoreMaximizedApp
 -ExtensionFrameHostBrowserTest.InvalidNameRequest
@@ -1874,6 +1895,7 @@
 # This test fails because we set prefs::kSigninAllowed to false.
 -AccountPreviewDataServiceBrowserTest.LogMetrics
 -AccountPreviewDataServiceBrowserTest.LogMetricsProfileOverflow
+-AddressBubblesControllerSignInPromoBrowserTest.SignInPromoAsyncWidgetCloseDoesNotClobberSubsequentBubble
 -TurnSyncOnHelperBrowserTest.PrimaryAccountResetAfterSyncOptInFlowAbortedForNewAccount
 -TurnSyncOnHelperBrowserTest.PrimaryAccountResetAfterSyncOptInFlowAbortedForSecondaryAccount
 -TurnSyncOnHelperBrowserTest.WebOnlyAccountResetAfterSyncOptInFlowAborted
@@ -1989,7 +2011,7 @@
 -UnframedTest.*
 -WebAppInternalsIwaInstallationBrowserTest.*
 -WebAppManagedConfigurationPolicyUITest.IwaManagedConfigurationTable*
--WebAppMenuBrowserTest.InvokeUi_main_isolated
+-All/WebAppMenuBrowserTest.InvokeUi_main_isolated/*
 -WebAppTagIsolatedWebApp*.*
 -WebAppUninstallDialogViewIwaBrowserTest.*
 -WebAuthnAffiliationCheck/WebAuthnIWARemoteDesktopOverrideBrowserTest.IWAsPolicyAndPrefsSetDifferentRp_id/Affiliated
@@ -2007,7 +2029,7 @@
 -ChromeFileSystemAccessPermissionContextParentWriteRequiredBrowserTest.Rename_NoParentWriteAccessFails
 -ChromeFileSystemAccessPermissionContextRevokeAndRestoreBrowserTest.*
 -All/DocumentPipTuckingBrowserTest.FilePickerTucksAndRestoresWindow/*
--DocumentPictureInPictureWindowControllerTuckingBrowserTest.TuckOnOpenFilePicker
+-All/DocumentPictureInPictureWindowControllerTuckingBrowserTest.TuckOnOpenFilePicker/*
 -FileSystemAccessBrowserSlowLoadTest.*
 -FileSystemAccessBrowserTest.SafeBrowsing
 -FileSystemAccessBrowserTestForWebUI.*
@@ -2036,7 +2058,10 @@
 -PageContentCacheBrowserTest.*
 -PageContentCacheSessionRestoreTest.*
 -PageContextMonitorBrowserTest.*
+-SessionControllerImplGetPointerBrowserTest.*
+-ToolControllerBatchBrowserTest.*
 -ToolControllerBrowserTest.*
+-ToolControllerGetPointerBrowserTest.*
 -ToolControllerNavigationGatingBrowserTest.*
 -ToolControllerSkipObservationDelayBrowserTest.*
 -ToolControllerWindowToolsBrowserTest.*
@@ -2236,7 +2261,9 @@
 -PreloadingModelKeyedServiceTest.Score
 
 # These tests fail because they hardcode "Incognito" in the expected window
-# title whereas we use "Private"
+# title or menu search synonym whereas we use "Private"
+-ActionAppMenuIsolatedModeSynonymSearchBrowserTest.SearchMatchesIsolatedWindowSynonym
+-All/ActionAppMenuSynonymSearchBrowserTest.SearchMatchesActionSynonym/8
 -All/WebInstallNotSupportedDialogBrowserTest.NotSupportedDialogInIncognito_BackgroundDocument/*
 -All/WebInstallNotSupportedDialogBrowserTest.NotSupportedDialogInIncognito_CurrentDocument/*
 -BrowserViewTest.AccessibleWindowTitleIncognito
@@ -2262,6 +2289,7 @@
 -OmniboxContextMenuControllerBrowserTest.SortTabsWithCheckedFirst
 -OmniboxContextMenuControllerContextManagementBrowserTest.SharedTabsSubmenuDynamicLabel
 -OmniboxContextMenuControllerPecBrowserTest.ExecuteCommand*
+-OmniboxAimPopupAiModeButtonBrowserTest.*
 -OmniboxContextMenuControllerPecBrowserTestWithFlagsDisabled.Verify*_FlagOff
 -OmniboxContextMenuControllerPecBrowserTest.ModelPickerCheckmark
 -OmniboxContextMenuControllerPecBrowserTest.RecordHistogramOnCanvasCommand
@@ -2408,7 +2436,7 @@
 # https://issues.chromium.org/issues/476255536 is resolved.
 -ProcessesApiTest.OnUpdatedWithMemoryRefreshTypes
 
-# This test fails because we don't currently include the GLIC sidepanel where
+# These tests fail because we don't currently include the GLIC sidepanel where
 # this functionality appears or is tested
 -All/GlicActorContextFetchFunctionalBrowserTest.*/*
 -All/GlicActorPageContextMetricsFunctionalBrowserTest.*/*
@@ -2432,6 +2460,8 @@
 -GlicZoomBrowserTest.ZoomScroll*
 -NewGlicApi*.*
 -PdfViewerPrivateBrowserTestGlicEnabled.GlicSummarize
+-SelectionOverlayBrowserTest.ClosesLensWhenOpened
+-SelectionOverlayBrowserTest.ClosesWhenLensOpened
 -SelectionOverlayBrowserTest.SelectionUsedFromController
 -SharedGlicBrowserTest.FocusTrappingGuestPanel
 -SkillsApiFunctionalBrowserTest.*
@@ -2445,6 +2475,12 @@
 # PDF Viewer vs Chrome PDF Viewer).
 -All/SubframeTaskPDFBrowserTest.TaskManagerShowsIncognitoPDFSubframeTask/1
 -All/SubframeTaskPDFBrowserTest.TaskManagerShowsPDFSubframeTask/1
+
+# These tests fail because we disable kPdfSaveToDrive, so the PDF viewer has no
+# Save to Drive bubble.
+-All/SaveToDriveEventDispatcherBrowserTest.GetFileMetadataStringForUploadInProgress/*
+-All/SaveToDriveEventDispatcherBrowserTest.GetFileMetadataStringForUploadNotStarted/*
+-All/SaveToDriveEventDispatcherBrowserTest.Notify/*
 
 # These tests fail because they override search engines list and when our code
 # attempts to set Brave Search as the engine for the private window it can't
@@ -2469,6 +2505,7 @@
 
 # These tests fail because they try to toggle Glic UI via toolbar button which
 # we don't have.
+-All/ToolbarViewGlicAvatarCrashTest.ShowAndHideGlicSecondaryButton/*
 -GlicActor*BrowserTest*.*
 
 # Flaky: the simulated mouse-down that starts the drag times out (Windows CI,
@@ -2769,6 +2806,7 @@
 -All/SplitTabViewTest.AdjacentTabsTargetableInHorizontalOverlapRegion/Horizontal
 -HorizontalTabGroupViewBrowserTest.TabAfterGroupIsTargetableInOverlapRegion
 -HorizontalTabStripViewLayoutBrowserTest.NewTabButtonSpacingMatchesTabStripPadding
+-HorizontalTabStripViewLayoutBrowserTest.ScrollToFitViewsAccountsForPostScrollOverflowIndicator
 -HorizontalTabViewTest.DiscardIndicatorResponsiveness
 -HorizontalTabViewTest.ExtraAlertPaddingNotShownOnSmallActiveTab
 -HorizontalTabViewTest.HitTest
@@ -2999,12 +3037,11 @@
 -All/NonIsolatedReportingBrowserTest.*
 -All/OtherFrameNavigationDownloadBrowserTest_AdFrame.*
 -All/PDFExtensionJSInk2SaveTest.Ink2Save/*
--All/PDFExtensionJSInk2SaveToDriveBeforeUnloadTest.UploadFinished/*
--All/PDFExtensionJSInk2Test.Ink2*/*
--All/PDFExtensionJSInk2TextTest.Ink2*/*
--All/PDFExtensionJSTest.ViewerFilePicker/*
+-PDFExtensionJSInk2SaveToDriveBeforeUnloadTest.UploadFinished
+-PDFExtensionJSInk2Test.Ink2*
+-PDFExtensionJSInk2TextTest.Ink2*
+-PDFExtensionJSTest.ViewerFilePicker
 -All/PDFExtensionTest.FullPagePdfHasFocus/0
--All/PDFExtensionTest.SandboxedPdfIframeNavigationDownloads/*
 -All/ProfileMenuViewExtensionsIphDismissTest.CloseIPH/_ProfileSwitch
 -All/ProfileMenuViewExtensionsIphDismissTest.CloseIPH/_SupervisedUser
 -All/ReportingBrowserTest.*

@@ -26,7 +26,7 @@
 -*ExtensionWebRequestMockedClockTest.*
 
 # These PDF JS tests time out (32 s) on x86.
--All/PDFExtensionJSTest.*/*
+-PDFExtensionJSTest.*
 -All/PDFExtensionPacificTimeZoneJSTest.*
 -*PDFExtension*SaveToDrive*.*
 
