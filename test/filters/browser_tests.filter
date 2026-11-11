@@ -27,38 +27,16 @@
 # history clusters aren't enabled, but the test doesn't check for it.
 -RecentTabsSubMenuModelTest.LogMenuMetricsForShowGroupedHistory
 
-# These width/height/sizing tests fail because we reparent the upstream
-# SidePanel into SidebarContainerView, which manages its width independently of
-# upstream's BrowserView layout and SidePanel::UpdateWidthOnEntryChanged.
--SidePanelCoordinatorTest.ChangeSidePanelAlignment
--SidePanelCoordinatorTest.ChangeSidePanelAlignmentRTL
--SidePanelCoordinatorTest.ChangeSidePanelWidth*
+# These tests fail because we customize panel's header/width/title.
+-SidePanelCoordinatorTest.ChangeSidePanelWidthMaxMin
+-SidePanelCoordinatorTest.ChangeSidePanelWidthMaxMinWithSplitView
 -SidePanelCoordinatorTest.ChangesTitleWhenActionItemChanges
 -SidePanelCoordinatorTest.ExtensionSidePanelHasPinButton
 -SidePanelCoordinatorTest.ShowOpensSidePanel
--SidePanelCoordinatorTest.SidePanelAlignmentOverrides
 -SidePanelCoordinatorTest.SidePanelPinButtonsHideInGuestMode
--SidePanelCoordinatorTest.SidePanelPrefOverridesEntryDefaultWidth
 -SidePanelCoordinatorTest.SidePanelTitleUpdates
 -SidePanelCoordinatorTest.SidePanelUsesEntryDefaultWidth
--SidePanelCoordinatorTest.SidePanelUsesMinimumWidthIfNoPrefOrDefault
--SidePanelCoordinatorTest.SidePanelWidthPreference
--SidePanelCoordinatorTest.ToolbarHeightSidePanelClampsToToolbar
-
-# This test fails because our SidePanel doesn't set State::kClosing
--SidePanelCoordinatorTest.OpenWhileClosing
-
-# This test fails because our SidePanel doesn't have header view/resize area
-# but it checks these views focus ordern in the panel.
 -SidePanelCoordinatorTest.VerifyFocusOrder
-
-# This test fails because our SidePanel doesn't use animation but it checks
-# animation state. SidebarContainerView controls panel's animation.
--SidePanelCoordinatorTest.ClosingMidShowFromAnimationReparentsContentView
--SidePanelCoordinatorTest.ShowFromAnimationAnimatesContentViewInTheCorrectDirection_LeftAligned
--SidePanelCoordinatorTest.ShowFromAnimationAnimatesContentViewInTheCorrectDirection_RightAligned
--SidePanelCoordinatorTest.ShowFromAnimationReparentsContentView
--SidePanelCoordinatorTest.ShowFromAnimationReparentsContentViewIfInterruptedByADifferentShowAnimation
 
 # These crash due to what looks like an upstream bug of
 # AccessibilityLabelsServiceFactory missing the dependency on
