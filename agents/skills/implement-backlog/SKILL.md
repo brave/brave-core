@@ -91,7 +91,8 @@ routine implementation choices already authorized by the request.
 - Commit each completed issue immediately with a succinct subject and an issue
   URL in the body. Use a closing keyword only for full coverage. Mark partial
   work explicitly and retain unmet acceptance criteria in the ledger; do not
-  present it as resolved. Do not create empty commits for skipped issues.
+  present it as resolved. Do not create empty commits for skipped issues. The PR
+  description repeats this syntax per issue (see section 6).
 - Record the owning SHA and planned validation. Defer expensive builds/tests
   until all implementations and source reviews are ready. Cheap focused checks
   may run earlier when essential to establish feasibility or diagnose a fix.
@@ -283,13 +284,21 @@ Honor any no-push/no-PR instruction instead.
 
 The concise PR body must include:
 
-- Summary and full issue links, with closing keywords only for completed fixes.
+- Summary and full issue links. Put the closing syntax in the PR description
+  itself, not only in the commit bodies, one issue per line with its full URL:
+  `Resolves <issue-url>` for completed fixes and `Partial for <issue-url>` for
+  partial work. Use no closing keyword for partial work, skipped issues or
+  issues only mentioned for context. The description must agree with the commit
+  bodies and the ledger.
 - Partial/skipped issues and reasons (summarize long skip lists in the report).
 - For test disables, a table of test, filter file, flake rate and lookback,
   whether Chromium also disabled it, and related Brave modifications.
 - Actual format, GN, presubmit, build and filtered-test results; justified
   skips, unavailable platforms, incomplete independent reviews, and known
   failures.
+
+Before creating or editing the PR, check that every `Resolves` line names an
+issue whose commit uses a closing keyword and that no partial issue has one.
 
 Do not claim runtime validation from source review or tests run at an older,
 different tree. Do not close issues manually, dispatch CI, or post extra GitHub
