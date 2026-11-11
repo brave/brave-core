@@ -72,6 +72,8 @@ class BraveInfoBarContainerViewTest : public ChromeViewsTestBase {
   }
 
   void TearDown() override {
+    // Clear the raw_ptr before the widget destroys the view
+    container_ = nullptr;
     // The container detaches from the manager while being destroyed, so it has
     // to go away before `manager_` does.
     widget_.reset();
