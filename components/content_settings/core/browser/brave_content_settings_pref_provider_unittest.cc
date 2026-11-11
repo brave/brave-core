@@ -14,6 +14,7 @@
 #include "base/json/values_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/test/run_until.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
@@ -117,8 +118,9 @@ void CheckMigrationFromResourceIdentifierForDictionary(
     std::string_view patterns_string,
     const std::optional<base::Time> expected_last_modified,
     std::optional<int> expected_setting_value) {
+  SCOPED_TRACE(patterns_string);
   const base::DictValue* settings_dict = dict.FindDict(patterns_string);
-  EXPECT_NE(settings_dict, nullptr);
+  ASSERT_NE(settings_dict, nullptr);
 
   auto actual_value = settings_dict->FindInt(kSettingPath);
   EXPECT_EQ(base::ValueToTime(settings_dict->Find(kLastModifiedPath)),
@@ -658,23 +660,24 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromResourceIDs) {
     const auto& brave_shields_dict = pref_service->GetDict(
         GetShieldsSettingUserPrefsPath(content_type_name));
 
+    SCOPED_TRACE(content_type_name);
     if (content_type == ContentSettingsType::BRAVE_SHIELDS) {
       // We only changed the value of BRAVE_SHIELDS in www.brave.com.
-      CheckMigrationFromResourceIdentifierForDictionary(
+      ASSERT_NO_FATAL_FAILURE(CheckMigrationFromResourceIdentifierForDictionary(
           brave_shields_dict, "www.brave.com,*", expected_last_modified,
-          expected_brave_com_settings_value);
+          expected_brave_com_settings_value));
     } else if (content_type == ContentSettingsType::BRAVE_AUTO_SHRED) {
       // BRAVE_AUTO_SHRED was added after the ResourceIdentifier migration
       // and never existed in that old format, so we can skip validating it.
       EXPECT_TRUE(brave_shields_dict.empty());
     } else {
       // All the other settings we changed them globally and in www.example.com.
-      CheckMigrationFromResourceIdentifierForDictionary(
+      ASSERT_NO_FATAL_FAILURE(CheckMigrationFromResourceIdentifierForDictionary(
           brave_shields_dict, "*,*", expected_last_modified,
-          expected_global_settings_value);
-      CheckMigrationFromResourceIdentifierForDictionary(
+          expected_global_settings_value));
+      ASSERT_NO_FATAL_FAILURE(CheckMigrationFromResourceIdentifierForDictionary(
           brave_shields_dict, "www.example.com,*", expected_last_modified,
-          expected_example_com_settings_value);
+          expected_example_com_settings_value));
     }
   }
 
@@ -806,7 +809,12 @@ TEST_F(BravePrefProviderTest, EnsureNoWildcardEntries) {
                  ContentSettingsPattern::Wildcard(), CONTENT_SETTING_BLOCK);
   update.Write();
 
-  base::RunLoop().RunUntilIdle();
+  // The provider resets the wildcard entry in a posted task.
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return TestUtils::GetContentSetting(&provider, example_url, GURL(),
+                                        ContentSettingsType::BRAVE_SHIELDS,
+                                        false) == CONTENT_SETTING_DEFAULT;
+  }));
   // Verify global has reset
   shields_enabled_settings.CheckSettingsAreDefault(example_url);
   provider.ShutdownOnUIThread();
