@@ -7,8 +7,8 @@
 #define BRAVE_IOS_BROWSER_API_WEB_VIEW_AUTOFILL_BRAVE_WEB_VIEW_AUTOFILL_CLIENT_H_
 
 #include <memory>
-#include <string>
 
+#include "base/i18n/language_tag.h"
 #include "components/autofill/ios/browser/autofill_client_ios.h"
 #include "ios/web_view/internal/autofill/web_view_autofill_client_ios.h"
 
@@ -28,7 +28,7 @@ class BraveWebViewAutofillClientIOS : public WebViewAutofillClientIOS {
 
   using WebViewAutofillClientIOS::WebViewAutofillClientIOS;
 
-  const std::string& GetAppLocale() const override;
+  const base::i18n::LanguageTag& GetAppLocale() const override;
 };
 }  // namespace autofill
 
