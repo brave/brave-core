@@ -144,6 +144,33 @@ IN_PROC_BROWSER_TEST_F(BraveRecapUIBrowserTest, LogoDoesNotTaintCanvas) {
   )"));
 }
 
+IN_PROC_BROWSER_TEST_F(BraveRecapUIBrowserTest, LoadsAllImages) {
+  NavigateToRecap();
+  EXPECT_EQ("6 images, failed: []", content::EvalJs(web_contents(), R"js(
+    (async () => {
+      const urls = new Set(['/images/card_pattern.png'])
+      for (const sheet of document.styleSheets) {
+        if (!sheet.href?.endsWith('/components/app.css')) {
+          continue
+        }
+        for (const rule of sheet.cssRules) {
+          for (const [, url] of rule.cssText.matchAll(/url\("?([^")]+)"?\)/g)) {
+            urls.add(new URL(url, sheet.href).pathname)
+          }
+        }
+      }
+      const failed = (await Promise.all([...urls].map((url) =>
+        new Promise((resolve) => {
+          const img = new Image()
+          img.onload = () => resolve(null)
+          img.onerror = () => resolve(url)
+          img.src = url
+        })))).filter(Boolean)
+      return `${urls.size} images, failed: ${JSON.stringify(failed)}`
+    })()
+  )js"));
+}
+
 class BraveRecapUIDisabledBrowserTest : public InProcessBrowserTest {
  public:
   BraveRecapUIDisabledBrowserTest() {
