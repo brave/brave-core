@@ -9,7 +9,6 @@
 
 #include "base/functional/callback_helpers.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
