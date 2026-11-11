@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
-import { setIconBasePath } from '@brave/leo/react/icon'
+import { setIconBasePath } from '@brave/nala/react/icon'
 import { loadTimeData } from '$web-common/loadTimeData'
 import { App } from './components/app'
 import { RecapStats } from './stats'
