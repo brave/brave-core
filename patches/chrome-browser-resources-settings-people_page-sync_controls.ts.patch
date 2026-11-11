@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/resources/settings/people_page/sync_controls.ts b/chrome/browser/resources/settings/people_page/sync_controls.ts
-index 92ecdf08dc486d871f854e41dc5f2ab23bf44984..300632289e096c49f7efeb38ba35aa8bb844539d 100644
+index 44d1a465b4aa4ed69c047d04019d177057c81168..ebc2121cde36db92402fb34e333a32c27bcb2a49 100644
 --- a/chrome/browser/resources/settings/people_page/sync_controls.ts
 +++ b/chrome/browser/resources/settings/people_page/sync_controls.ts
-@@ -102,6 +102,9 @@ export class SettingsSyncControlsElement extends
-       showBatchUploadPromo_: {type: Boolean},
+@@ -99,6 +99,9 @@ export class SettingsSyncControlsElement extends
+       isAccountSettingsPage_: {type: Boolean},
  
        batchUploadPromoHTML_: {type: String},
 +
@@ -12,7 +12,7 @@ index 92ecdf08dc486d871f854e41dc5f2ab23bf44984..300632289e096c49f7efeb38ba35aa8b
      };
    }
  
-@@ -122,6 +125,14 @@ export class SettingsSyncControlsElement extends
+@@ -120,6 +123,14 @@ export class SettingsSyncControlsElement extends
    protected accessor batchUploadPromoHTML_: TrustedHTML =
        window.trustedTypes!.emptyHTML;
  
@@ -27,7 +27,7 @@ index 92ecdf08dc486d871f854e41dc5f2ab23bf44984..300632289e096c49f7efeb38ba35aa8b
    override connectedCallback() {
      super.connectedCallback();
  
-@@ -147,7 +158,7 @@ export class SettingsSyncControlsElement extends
+@@ -141,7 +152,7 @@ export class SettingsSyncControlsElement extends
  
      const router = Router.getInstance();
      const currentRoute = router.getCurrentRoute();
@@ -36,7 +36,7 @@ index 92ecdf08dc486d871f854e41dc5f2ab23bf44984..300632289e096c49f7efeb38ba35aa8b
        this.syncBrowserProxy_.didNavigateToSyncPage();
      }
      if (currentRoute === routes.ACCOUNT) {
-@@ -361,6 +372,12 @@ export class SettingsSyncControlsElement extends
+@@ -343,6 +354,12 @@ export class SettingsSyncControlsElement extends
  
    protected disableTypeCheckBox_(dataTypeManaged: boolean|undefined|null):
        boolean {
@@ -49,7 +49,7 @@ index 92ecdf08dc486d871f854e41dc5f2ab23bf44984..300632289e096c49f7efeb38ba35aa8b
      if (!this.syncStatus) {
        return true;
      }
-@@ -370,7 +387,7 @@ export class SettingsSyncControlsElement extends
+@@ -352,7 +369,7 @@ export class SettingsSyncControlsElement extends
      }
  
      if (this.syncStatus.signedInState === SignedInState.SYNCING) {

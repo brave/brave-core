@@ -1,5 +1,5 @@
 diff --git a/components/tabs/impl/tab_strip_collection.cc b/components/tabs/impl/tab_strip_collection.cc
-index bfb0b512753a58c0486b3a82669c17c024076e54..78337102bd33c849452d9db6f9924af0b7b49674 100644
+index f586465c0dd4bc525f76282f809197547de580ba..3ca0bddc7f6dcf92c2adb4dc0ebead27797fe02a 100644
 --- a/components/tabs/impl/tab_strip_collection.cc
 +++ b/components/tabs/impl/tab_strip_collection.cc
 @@ -314,6 +314,24 @@ ChildrenPtrs TabStripCollection::GetTabsAndCollectionsForMove(
@@ -25,5 +25,5 @@ index bfb0b512753a58c0486b3a82669c17c024076e54..78337102bd33c849452d9db6f9924af0
 +  }
 +  #endif  // BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
    TabInterface* tab_to_be_removed = GetTabAtIndexRecursive(index);
-   TabCollection* parent_collection =
-       tab_to_be_removed->GetParentCollection(GetPassKey());
+   return RemoveTabImpl(tab_to_be_removed);
+ }

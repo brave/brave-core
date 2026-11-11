@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/net/proxy_config_monitor.cc b/chrome/browser/net/proxy_config_monitor.cc
-index 387102abd88a010459ef3a5ba4880c5621a96fa3..6d0159f37f05dea67324cd436cf502380a7c513a 100644
+index 606a0cd81b813055910b60a2f55421f0debadd75..a44edc35043d008ad8a0f94dac598a8cbd572f4e 100644
 --- a/chrome/browser/net/proxy_config_monitor.cc
 +++ b/chrome/browser/net/proxy_config_monitor.cc
-@@ -67,6 +67,11 @@ ProxyConfigMonitor::ProxyConfigMonitor(Profile* profile) {
-             enterprise_proxy_service);
+@@ -68,6 +68,11 @@ ProxyConfigMonitor::ProxyConfigMonitor(Profile* profile,
+             enterprise_proxy_service, record_affiliation_metrics);
    }
  
 +#if BUILDFLAG(ENABLE_TOR)

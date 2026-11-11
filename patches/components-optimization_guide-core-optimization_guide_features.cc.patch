@@ -1,5 +1,5 @@
 diff --git a/components/optimization_guide/core/optimization_guide_features.cc b/components/optimization_guide/core/optimization_guide_features.cc
-index d9cc43fb19b2790569f1e101aa35fcce5ff50ab1..cd017e9f94c1ef3ed08a08a344bac27d3a1e2634 100644
+index 66f1075dad12d89a917524974a45c33d700e2cfe..b805e2b962c1be039ca833ae6dafec03c9b53cd7 100644
 --- a/components/optimization_guide/core/optimization_guide_features.cc
 +++ b/components/optimization_guide/core/optimization_guide_features.cc
 @@ -47,7 +47,7 @@ constexpr auto enabled_by_default_mobile_only =
@@ -32,5 +32,5 @@ index d9cc43fb19b2790569f1e101aa35fcce5ff50ab1..cd017e9f94c1ef3ed08a08a344bac27d
 +BASE_OVERRIDDEN_FEATURE(kOptimizationGuideModelExecution,
 +             base::FEATURE_DISABLED_BY_DEFAULT);
  
- // Whether the on device service is launched after a delay on startup to log
- // metrics.
+ // Force show the AI page and all AI feature sub-pages in settings, even if they
+ // would be unavailable otherwise. This is meant for development and test

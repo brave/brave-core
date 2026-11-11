@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/common/tab_group_style.cc b/chrome/browser/ui/views/tabs/common/tab_group_style.cc
-index d1da139046c12d61ab53de2dc643eee450759d32..11d63c996a87d55b375c84383b415913fe32c3f1 100644
+index c3bad1d1baedbeff2c4f0a22c8a8dfffefcb7f1f..1cfb760a10b412fbd7493b1a70eba994bbb53cc6 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_group_style.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_group_style.cc
 @@ -8,6 +8,7 @@
@@ -8,9 +8,9 @@ index d1da139046c12d61ab53de2dc643eee450759d32..11d63c996a87d55b375c84383b415913
  #include "chrome/browser/ui/layout_constants.h"
 +#include "chrome/browser/ui/tabs/features.h"
  #include "chrome/browser/ui/tabs/tab_style.h"
- #include "chrome/browser/ui/views/tabs/shared/tab_strip_types.h"
- #include "ui/gfx/animation/tween.h"
-@@ -108,11 +109,17 @@ int TabGroupStyle::GetFocusedChipHeight() {
+ #include "chrome/browser/ui/ui_features.h"
+ #include "chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.h"
+@@ -111,11 +112,17 @@ int TabGroupStyle::GetFocusedChipHeight() {
  
  // static
  gfx::Point TabGroupStyle::GetTitleChipOffset(std::optional<int> chip_height) {

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/browser_widget.h b/chrome/browser/ui/views/frame/browser_widget.h
-index 9305b87522ecbd56b675aa3b92746c96ba3f2725..5e06740560be6fe4374eb2883716f0528c4975b4 100644
+index cf068d54791a65c05975e04de1382dd0f124b4e4..6599ab7082f5cc265b31a1d27134e5a5e9b19b3a 100644
 --- a/chrome/browser/ui/views/frame/browser_widget.h
 +++ b/chrome/browser/ui/views/frame/browser_widget.h
-@@ -129,7 +129,7 @@ class BrowserWidget : public views::Widget,
+@@ -128,7 +128,7 @@ class BrowserWidget : public views::Widget,
      return browser_native_widget_;
    }
  
@@ -10,8 +10,8 @@ index 9305b87522ecbd56b675aa3b92746c96ba3f2725..5e06740560be6fe4374eb2883716f052
 +  virtual void SetTabDragKind(TabDragKind tab_drag_kind);
    TabDragKind tab_drag_kind() const { return tab_drag_kind_; }
  
-  protected:
-@@ -138,6 +138,7 @@ class BrowserWidget : public views::Widget,
+   // Returns the insets of the parts of the widget that the platform does not
+@@ -152,6 +152,7 @@ class BrowserWidget : public views::Widget,
    ui::ColorProviderKey GetColorProviderKey() const override;
  
   private:

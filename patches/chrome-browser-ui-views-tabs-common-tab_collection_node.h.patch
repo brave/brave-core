@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/common/tab_collection_node.h b/chrome/browser/ui/views/tabs/common/tab_collection_node.h
-index 7e6fadc75cf970cabeb01c5087e825080d357769..3750667b2c87ae3fc7ee425bc4c833c38de32d9f 100644
+index da03c3bc990e4cf211430b25d8bd77e3a3169ca1..1354a0f5c1f97191a1d40ebf682d3b588db81ac8 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_collection_node.h
 +++ b/chrome/browser/ui/views/tabs/common/tab_collection_node.h
 @@ -34,7 +34,8 @@ class TabCollectionNode {
@@ -11,4 +11,4 @@ index 7e6fadc75cf970cabeb01c5087e825080d357769..3750667b2c87ae3fc7ee425bc4c833c3
 +  TREE_NODE, };
    // LINT.ThenChange(components/tabs/public/tab_collection.h:TYPE)
  
-   // Helper type for creating CustomAddChildViewCallbacks with
+   enum class RemoveChildReason {

@@ -1,13 +1,13 @@
 diff --git a/components/browser_actuator/public/features.cc b/components/browser_actuator/public/features.cc
-index 5973c5b1a425bceea3deddc14b79316ede7faef4..f826634c6adcd01644166d8a5139e583fa8fed9a 100644
+index 645e571b1406581dcaa461c28308c4e2ab81db91..b8ea5652576325756f2573676258ac633c6cc11f 100644
 --- a/components/browser_actuator/public/features.cc
 +++ b/components/browser_actuator/public/features.cc
-@@ -27,7 +27,7 @@ const base::FeatureParam<std::string> kWatchSessionsPathParam{
+@@ -28,7 +28,7 @@ const base::FeatureParam<std::string> kWatchSessionsPathParam{
  
  }  // namespace
  
 -BASE_FEATURE(kBrowserActuator, base::FEATURE_DISABLED_BY_DEFAULT);
 +BASE_OVERRIDDEN_FEATURE(kBrowserActuator, base::FEATURE_DISABLED_BY_DEFAULT);
  BASE_FEATURE(kBrowserActuatorInternals, base::FEATURE_DISABLED_BY_DEFAULT);
- BASE_FEATURE(kEnableBrowserActuatorForGlicExperimentalTriggering,
-              base::FEATURE_DISABLED_BY_DEFAULT);
+ #if BUILDFLAG(IS_MAC)
+ BASE_FEATURE(kBrowserActuatorProfileRegistry,

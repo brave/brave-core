@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.h b/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.h
-index 53a1a6db370d51303100bea2af7d8ba9de736038..855d9c87040b08ac08fb76557b165ca44986c79f 100644
+index ff8d64502b2de2c78ed2bc93274abc96a232fdd1..67fe49c96414bf6a2fa05d0f92480008853a0bb2 100644
 --- a/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.h
 +++ b/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.h
-@@ -98,6 +98,7 @@ class ExtensionsMenuMainPageView : public views::View {
-       const extensions::ExtensionId& extension_id);
+@@ -109,6 +109,7 @@ class ExtensionsMenuMainPageView : public views::View {
+   views::ScrollView* scroll_view_for_testing() { return scroll_view_; }
  
   private:
 +  friend class BraveExtensionsMenuMainPageView;
