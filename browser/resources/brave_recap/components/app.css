@@ -7,6 +7,8 @@
  * sets data-theme="dark" so Leo's semantic tokens resolve to dark values. */
 .stage {
   --recap-stage-background: var(--leo-color-primitive-neutral-5);
+  /* Read by the dot matrix canvas, which can't take CSS tokens directly. */
+  --recap-dot-color: var(--leo-color-black);
   --recap-text: var(--leo-color-white);
   --recap-highlight: var(--leo-color-primitive-brands-rorange-2);
   --recap-glass: var(--leo-color-material-thin);
@@ -36,9 +38,6 @@
   /* Slides that wait for the person drift for longer and ease into a stop. */
   --recap-settle-duration: 20s;
 
-  /* How long the orange highlight takes to cross the dots, rest included. */
-  --recap-shimmer-duration: 9s;
-
   position: relative;
   isolation: isolate;
   box-sizing: border-box;
@@ -47,60 +46,18 @@
   align-items: center;
   justify-content: center;
   padding: var(--leo-spacing-3xl);
-  background: var(--recap-stage-background) url(../images/stage_pattern.png)
-    center / cover no-repeat;
+  background: var(--recap-stage-background);
   color: var(--recap-text);
   font: var(--leo-font-default-regular);
 }
 
-/* The dots turn orange as a soft highlight passes over them. The pattern is
- * the mask, so only the dots are tinted, and it must match the stage's
- * background sizing above. The highlight inside is moved with a transform so
- * the mask never has to be repainted. */
-.stage-shimmer {
+.dot-matrix {
   position: absolute;
   inset: 0;
   z-index: -1;
-  overflow: hidden;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
-  opacity: 0.85;
-  mask: url(../images/stage_pattern.png) center / cover no-repeat;
-}
-
-.stage-shimmer::before {
-  content: '';
-  position: absolute;
-  inset-block: 0;
-  inset-inline-start: 0;
-  width: 70%;
-  /* A smoothstep falloff rather than a straight ramp: the intensity eases in
-   * and out, so there's no hard edge where the highlight starts or ends. */
-  background: linear-gradient(
-    100deg,
-    transparent 0%,
-    color-mix(in srgb, var(--recap-highlight) 4%, transparent) 12.5%,
-    color-mix(in srgb, var(--recap-highlight) 16%, transparent) 25%,
-    color-mix(in srgb, var(--recap-highlight) 32%, transparent) 37.5%,
-    var(--recap-highlight) 50%,
-    color-mix(in srgb, var(--recap-highlight) 32%, transparent) 62.5%,
-    color-mix(in srgb, var(--recap-highlight) 16%, transparent) 75%,
-    color-mix(in srgb, var(--recap-highlight) 4%, transparent) 87.5%,
-    transparent 100%
-  );
-  filter: blur(24px);
-  transform: translateX(-110%);
-  animation: recap-shimmer var(--recap-shimmer-duration) ease-in-out infinite;
-}
-
-/* Sweeps across, then rests off-screen before the next pass. */
-@keyframes recap-shimmer {
-  0% {
-    transform: translateX(-110%);
-  }
-  55%,
-  100% {
-    transform: translateX(150%);
-  }
 }
 
 * {
@@ -828,10 +785,6 @@ body {
 
   .background-image {
     animation: none;
-  }
-
-  .stage-shimmer {
-    display: none;
   }
 
   .card-preview img {
