@@ -21,6 +21,7 @@ source_set("autofill") {
     "brave_web_view_autofill_client.mm",
   ]
   deps = [
+    "//base/i18n:language_tag",
     "//components/application_locale_storage",
     "//ios/chrome/browser/affiliations/model",
     "//ios/chrome/browser/autofill/model",

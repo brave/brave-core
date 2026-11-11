@@ -40,8 +40,9 @@ std::unique_ptr<WebViewAutofillClientIOS> BraveWebViewAutofillClientIOS::Create(
           autofill::AutofillLogRouterFactory::GetForProfile(profile)));
 }
 
-const std::string& BraveWebViewAutofillClientIOS::GetAppLocale() const {
-  return GetApplicationContext()->GetApplicationLocaleStorage()->Get();
+const base::i18n::LanguageTag& BraveWebViewAutofillClientIOS::GetAppLocale()
+    const {
+  return GetApplicationContext()->GetApplicationLocaleStorage()->GetTag();
 }
 
 }  // namespace autofill
