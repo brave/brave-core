@@ -264,13 +264,11 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
   BrowserWindowInterface* new_browser = browser_created_observer.Wait();
   ASSERT_EQ(1, tab_strip->count());
 
+  // MoveTabsToNewWindow moves the tab synchronously, so no wait is needed.
   ASSERT_TRUE(new_browser);
-  ASSERT_TRUE(base::test::RunUntil(
-      [new_browser] { return new_browser->tab_strip_model()->count() == 1; }));
-
-  // Check new browser by detaching a tab from another window has
-  // one tab.
-  EXPECT_EQ(1, new_browser->tab_strip_model()->count());
+  ASSERT_EQ(1, new_browser->tab_strip_model()->count());
+  EXPECT_EQ(GURL("https://www.brave.com/"),
+            new_browser->tab_strip_model()->GetWebContentsAt(0)->GetURL());
 }
 
 class BraveBrowserBrowserTestWithBringAllTabsFeature
