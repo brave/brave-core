@@ -6,50 +6,41 @@
 substitutions:
   - description: Count Brave's avatar icons.
     regex:
-      pattern: 'constexpr size_t kDefaultAvatarIconsCount = 56;'
-      replace:
-        'constexpr size_t kDefaultAvatarIconsCount = 56 +
-        kBraveDefaultAvatarIconsCount;'
+      re_pattern: '(kDefaultAvatarIconsCount = 56);'
+      replace: '\1 + kBraveDefaultAvatarIconsCount;'
 
   - description: Let Brave adjust where the modern avatar icons start.
-    regex:
-      re_pattern:
-        '(size_t GetModernAvatarIconStartIndex\(\) \{\n#if
-        !BUILDFLAG\(IS_CHROMEOS\) && !BUILDFLAG\(IS_ANDROID\)\n)'
-      replace: '\1  BRAVE_GET_MODERN_AVATAR_ICON_START_INDEX\n'
+    add_before_line:
+      line: 'return GetPlaceholderAvatarIndex() + 1;'
+      code: |2-
+          BRAVE_GET_MODERN_AVATAR_ICON_START_INDEX
 
   - description: Let Brave supply its avatar icon resources.
-    regex:
-      re_pattern:
-        '(const IconResourceInfo\* GetDefaultAvatarIconResourceInfo\(size_t
-        index\) \{\n  CHECK_LT\(index, kDefaultAvatarIconsCount\);\n)'
-      replace: '\1  BRAVE_GET_DEFAULT_AVATAR_ICON_RESOURCE_INFO\n'
+    add_after_line:
+      line: 'CHECK_LT(index, kDefaultAvatarIconsCount);'
+      code: |2-
+          BRAVE_GET_DEFAULT_AVATAR_ICON_RESOURCE_INFO
 
   - description:
       Let Brave adjust the avatar list for profiles without an account.
-    regex:
-      re_pattern:
-        '(                   base::Value\(std::move\(generic_avatar_info\)\)\);\n)(    return
-        avatars;)'
-      replace:
-        '\1    BRAVE_GET_ICONS_AND_LABELS_FOR_PROFILE_AVATAR_SELECTOR_NOT_SIGNED_IN\n\2'
+    add_after_line:
+      line: 'base::Value(std::move(generic_avatar_info)));'
+      code: |2-
+            BRAVE_GET_ICONS_AND_LABELS_FOR_PROFILE_AVATAR_SELECTOR_NOT_SIGNED_IN
 
   - description: |-
-      Select nothing in the avatar list while a custom image is selected.
+      Select neither the account picture nor a preset while a custom image is
+      selected.
 
       The custom image replaces the stored preset and the account picture
       without clearing them.
-    regex:
-      pattern: |2-
-          bool using_gaia = entry->IsUsingGAIAPicture();
-          size_t selected_avatar_idx =
-              using_gaia ? SIZE_MAX : entry->GetAvatarIconIndex();
-      replace: |2-
-          const bool using_custom_image = BraveIsCustomProfileImageSelected(*entry);
-          bool using_gaia = !using_custom_image && entry->IsUsingGAIAPicture();
-          size_t selected_avatar_idx = using_gaia || using_custom_image
-                                           ? SIZE_MAX
-                                           : entry->GetAvatarIconIndex();
+    add_after_line:
+      line: 'using_gaia ? SIZE_MAX : entry->GetAvatarIconIndex();'
+      code: |2-
+          if (BraveIsCustomProfileImageSelected(*entry)) {
+            using_gaia = false;
+            selected_avatar_idx = SIZE_MAX;
+          }
 
   - description: |-
       Choosing a preset avatar replaces a custom profile image.

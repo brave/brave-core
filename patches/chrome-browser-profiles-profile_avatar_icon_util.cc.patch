@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_avatar_icon_util.cc b/chrome/browser/profiles/profile_avatar_icon_util.cc
-index 90e331de4f562654e670bfca733e1f79b5eadc1b..5bc6a9fc96925415e52666c7482505db7f8d3ac6 100644
+index 90e331de4f562654e670bfca733e1f79b5eadc1b..9ff882e2f8a008afed36cff660ce6df7300088ec 100644
 --- a/chrome/browser/profiles/profile_avatar_icon_util.cc
 +++ b/chrome/browser/profiles/profile_avatar_icon_util.cc
 @@ -567,7 +567,7 @@ constexpr size_t kDefaultAvatarIconsCount = 1;
@@ -27,22 +27,18 @@ index 90e331de4f562654e670bfca733e1f79b5eadc1b..5bc6a9fc96925415e52666c7482505db
    static const std::array<IconResourceInfo, kDefaultAvatarIconsCount>
        resource_info = {{
    // Old avatar icons:
-@@ -1080,9 +1082,11 @@ base::ListValue GetIconsAndLabelsForProfileAvatarSelector(
-           .GetProfileAttributesWithPath(profile_path);
-   CHECK(entry, base::NotFatalUntil::M162);
- 
--  bool using_gaia = entry->IsUsingGAIAPicture();
--  size_t selected_avatar_idx =
--      using_gaia ? SIZE_MAX : entry->GetAvatarIconIndex();
-+  const bool using_custom_image = BraveIsCustomProfileImageSelected(*entry);
-+  bool using_gaia = !using_custom_image && entry->IsUsingGAIAPicture();
-+  size_t selected_avatar_idx = using_gaia || using_custom_image
-+                                   ? SIZE_MAX
-+                                   : entry->GetAvatarIconIndex();
+@@ -1083,6 +1085,10 @@ base::ListValue GetIconsAndLabelsForProfileAvatarSelector(
+   bool using_gaia = entry->IsUsingGAIAPicture();
+   size_t selected_avatar_idx =
+       using_gaia ? SIZE_MAX : entry->GetAvatarIconIndex();
++  if (BraveIsCustomProfileImageSelected(*entry)) {
++    using_gaia = false;
++    selected_avatar_idx = SIZE_MAX;
++  }
  
    // Obtain a list of the modern avatar icons.
    base::ListValue avatars(
-@@ -1095,6 +1099,7 @@ base::ListValue GetIconsAndLabelsForProfileAvatarSelector(
+@@ -1095,6 +1101,7 @@ base::ListValue GetIconsAndLabelsForProfileAvatarSelector(
          selected_avatar_idx == GetPlaceholderAvatarIndex());
      avatars.Insert(avatars.begin(),
                     base::Value(std::move(generic_avatar_info)));
@@ -50,7 +46,7 @@ index 90e331de4f562654e670bfca733e1f79b5eadc1b..5bc6a9fc96925415e52666c7482505db
      return avatars;
    }
  
-@@ -1123,6 +1128,13 @@ void SetDefaultProfileAvatarIndex(Profile* profile, size_t avatar_icon_index) {
+@@ -1123,6 +1130,13 @@ void SetDefaultProfileAvatarIndex(Profile* profile, size_t avatar_icon_index) {
                             avatar_icon_index == GetPlaceholderAvatarIndex());
    pref_service->SetBoolean(prefs::kProfileUsingGAIAAvatar, false);
  
