@@ -53,7 +53,7 @@ def main():
 
     for icon in icons:
         plain_name = os.path.splitext(icon)[0]  # without .svg extension
-        svg_path = os.path.join(nala_sf_symbols_directory, "symbols", icon)
+        svg_path = os.path.join(nala_sf_symbols_directory, icon)
 
         if not os.path.exists(svg_path):
             print(f"Could not find Nala SF symbol named {icon}")
