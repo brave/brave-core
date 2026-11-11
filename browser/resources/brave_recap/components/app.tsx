@@ -30,6 +30,7 @@ import {
   joinValue,
 } from '../format'
 import { ShareCardImages, renderShareCard } from '../share_card'
+import { DotMatrix } from './dot_matrix'
 import '../strings'
 
 // TODO: replace with an attributed download link once growth provides one.
@@ -937,10 +938,7 @@ function Recap({
 export function App(props: Props) {
   return (
     <div className='stage'>
-      <div
-        className='stage-shimmer'
-        aria-hidden='true'
-      />
+      <DotMatrix />
       {hasEnoughData(props.stats) ? (
         <Recap
           stats={props.stats}
