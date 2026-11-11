@@ -15,6 +15,7 @@
 #include "brave/browser/ui/views/frame/brave_opaque_browser_frame_view.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/themes/chrome_linux_ui_getter.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -122,11 +123,11 @@ class ScopedLinuxUiGetter {
 };
 
 // LinuxUiGetter that returns a fixed LinuxUiTheme for every window/profile.
-class FakeLinuxUiGetter : public ui::LinuxUiGetter {
+class FakeLinuxUiGetter : public ChromeLinuxUiGetter {
  public:
   explicit FakeLinuxUiGetter(ui::LinuxUiTheme& theme) : theme_(theme) {}
   ui::LinuxUiTheme* GetForWindow(aura::Window*) override { return &*theme_; }
-  ui::LinuxUiTheme* GetForProfile(Profile*) override { return &*theme_; }
+  ui::LinuxUiTheme* GetForProfile(const Profile*) override { return &*theme_; }
 
  private:
   const raw_ref<ui::LinuxUiTheme> theme_;
