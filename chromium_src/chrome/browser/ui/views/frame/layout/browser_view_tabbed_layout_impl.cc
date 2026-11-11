@@ -61,13 +61,6 @@ BraveBrowserViewTabbedLayoutImpl::CalculateSeparatorInfo() const {
   }
 #endif
 
-  // Suppress upstream's top-container separator when an infobar is visible and
-  // uses Brave rounded corners.
-  if (delegate().IsInfobarVisible() &&
-      delegate().ShouldUseBraveWebViewRoundedCornersForContents()) {
-    info.top_container_separator = false;
-  }
-
   return info;
 }
 
