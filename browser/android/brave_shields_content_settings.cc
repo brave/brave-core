@@ -328,6 +328,21 @@ jboolean JNI_BraveShieldsContentSettings_GetForgetFirstPartyStorageEnabled(
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));
 }
 
+void JNI_BraveShieldsContentSettings_ResetSiteToDefaults(
+    JNIEnv* env,
+    const base::android::JavaRef<jstring>& url,
+    const base::android::JavaRef<jobject>& j_profile) {
+  Profile* profile = Profile::FromJavaObject(j_profile);
+  GURL site_url(base::android::ConvertJavaStringToUTF8(env, url));
+
+  brave_shields::ResetShieldsSettingsForSite(
+      HostContentSettingsMapFactory::GetForProfile(profile), site_url,
+      g_browser_process->local_state());
+
+  BraveShieldsSettingsServiceFactory::GetForProfile(profile)
+      ->ResetForgetFirstPartyStorageEnabled(site_url);
+}
+
 jboolean
 JNI_BraveShieldsContentSettings_GetAllowElementBlockerInPrivateModeEnabled(
     JNIEnv* env) {

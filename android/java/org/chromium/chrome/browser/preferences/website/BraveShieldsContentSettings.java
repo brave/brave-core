@@ -177,47 +177,12 @@ public class BraveShieldsContentSettings {
     }
 
     /**
-     * Resets all per-site shields settings for the given URL to the global defaults. Calls each JNI
-     * getter/setter pair directly to avoid broken value conversions in the setShieldsValue
-     * abstraction.
+     * Resets all per-site shields settings for the given URL, so the site follows the global
+     * defaults from this point on -- including any changed later -- rather than freezing in
+     * whatever the defaults happened to be at the moment of the reset.
      */
     public static void resetSiteToDefaults(Profile profile, String siteUrl) {
-        boolean defaultShieldsEnabled =
-                BraveShieldsContentSettingsJni.get().isBraveShieldsEnabled("", profile);
-        BraveShieldsContentSettingsJni.get()
-                .setBraveShieldsEnabled(defaultShieldsEnabled, siteUrl, profile);
-
-        String defaultScripts =
-                BraveShieldsContentSettingsJni.get().getNoScriptControlType("", profile);
-        BraveShieldsContentSettingsJni.get()
-                .setNoScriptControlType(defaultScripts, siteUrl, profile);
-
-        boolean defaultForgetMe =
-                BraveShieldsContentSettingsJni.get().getForgetFirstPartyStorageEnabled("", profile);
-        BraveShieldsContentSettingsJni.get()
-                .setForgetFirstPartyStorageEnabled(defaultForgetMe, siteUrl, profile);
-
-        String defaultFingerprinting =
-                BraveShieldsContentSettingsJni.get().getFingerprintingControlType("", profile);
-        BraveShieldsContentSettingsJni.get()
-                .setFingerprintingControlType(defaultFingerprinting, siteUrl, profile);
-
-        String defaultHttpsUpgrade =
-                BraveShieldsContentSettingsJni.get().getHttpsUpgradeControlType("", profile);
-        BraveShieldsContentSettingsJni.get()
-                .setHttpsUpgradeControlType(defaultHttpsUpgrade, siteUrl, profile);
-
-        String defaultCookies =
-                BraveShieldsContentSettingsJni.get().getCookieControlType("", profile);
-        BraveShieldsContentSettingsJni.get().setCookieControlType(defaultCookies, siteUrl, profile);
-
-        String defaultCosmeticFiltering =
-                BraveShieldsContentSettingsJni.get().getCosmeticFilteringControlType("", profile);
-        String defaultAdControl =
-                BraveShieldsContentSettingsJni.get().getAdControlType("", profile);
-        BraveShieldsContentSettingsJni.get()
-                .setCosmeticFilteringControlType(defaultCosmeticFiltering, siteUrl, profile);
-        BraveShieldsContentSettingsJni.get().setAdControlType(defaultAdControl, siteUrl, profile);
+        BraveShieldsContentSettingsJni.get().resetSiteToDefaults(siteUrl, profile);
     }
 
     public static void setShieldsValue(
@@ -453,6 +418,8 @@ public class BraveShieldsContentSettings {
         void setBraveShieldsEnabled(boolean enabled, String url, Profile profile);
 
         boolean isBraveShieldsEnabled(String url, Profile profile);
+
+        void resetSiteToDefaults(String url, Profile profile);
 
         void setAdControlType(String type, String url, Profile profile);
 
