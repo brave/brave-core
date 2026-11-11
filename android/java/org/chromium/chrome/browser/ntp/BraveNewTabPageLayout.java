@@ -485,6 +485,28 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
         if (mNtpAdapter == null) return;
 
+        // The height read above can be stale, e.g. when the activity is recreated behind Settings
+        // for a bottom bar toggle, and it sets how far down the news feed starts.
+        mRecyclerView.addOnLayoutChangeListener(
+                (View view,
+                        int left,
+                        int top,
+                        int right,
+                        int bottom,
+                        int oldLeft,
+                        int oldTop,
+                        int oldRight,
+                        int oldBottom) -> {
+                    int newHeight = bottom - top;
+                    if (newHeight <= 0 || newHeight == oldBottom - oldTop) return;
+                    view.post(
+                            () -> {
+                                if (mNtpAdapter != null) {
+                                    mNtpAdapter.setRecyclerViewHeight(newHeight);
+                                }
+                            });
+                });
+
         if (mIsDisplayNewsFeed) {
             try {
                 boolean isFeedLoaded = BraveActivity.getBraveActivity().isLoadedFeed();
