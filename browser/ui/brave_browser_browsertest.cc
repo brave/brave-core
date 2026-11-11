@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/memory/weak_ptr.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/brave_browser_window.h"
@@ -34,6 +35,7 @@
 #include "components/optimization_guide/optimization_guide_internals/webui/url_constants.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
@@ -141,8 +143,13 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, OpenNewTabWhenTabStripIsEmpty) {
   EXPECT_EQ(chrome::GetNewTabURL(new_browser),
             tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
   // No reentrancy for Ctrl+W
+  base::WeakPtr<content::WebContents> closed_contents =
+      tab_strip->GetActiveWebContents()->GetWeakPtr();
   tab_strip->CloseSelectedTabs();
-  base::RunLoop().RunUntilIdle();
+  // Wait for the closed tab to be replaced by a new one.
+  ASSERT_TRUE(base::test::RunUntil([&closed_contents, tab_strip] {
+    return !closed_contents && tab_strip->count() == 1;
+  }));
   // Expecting a new tab is opened.
   EXPECT_EQ(chrome::GetNewTabURL(new_browser),
             tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
@@ -154,7 +161,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, OpenNewTabWhenTabStripIsEmpty) {
   EXPECT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 2u);
   // Close the browser window.
   BrowserWindow::FromBrowser(new_browser)->Close();
-  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil(
+      [] { return GlobalBrowserCollection::GetInstance()->GetSize() == 1u; }));
   EXPECT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 1u);
 }
 
@@ -175,7 +183,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
   EXPECT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 2u);
   // Close the last tab.
   tab_strip->GetActiveWebContents()->Close();
-  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil(
+      [] { return GlobalBrowserCollection::GetInstance()->GetSize() == 1u; }));
   EXPECT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 1u);
 }
 
@@ -193,7 +202,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
   brave::BringAllTabs(browser());
 
   // Then other windows should be closed
-  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil(
+      [] { return GlobalBrowserCollection::GetInstance()->GetSize() == 1u; }));
   EXPECT_EQ(browser()->tab_strip_model()->count(), 2);
   EXPECT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 1u);
 }
@@ -210,7 +220,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
 
   // New browser has one tab and it'll be attached to browser() and |browser2|
   // should be gone.
-  EXPECT_EQ(1, tab_strip2->count());
+  ASSERT_EQ(1, tab_strip2->count());
   auto detached_tab = tab_strip2->DetachTabAtForInsertion(0);
   tab_strip->InsertDetachedTabAt(0, std::move(detached_tab),
                                  AddTabTypes::ADD_ACTIVE);
@@ -237,7 +247,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
   ASSERT_EQ(0, tab_strip->count());
 
   // Wait till another new tab is opened.
-  EXPECT_TRUE(
+  ASSERT_TRUE(
       base::test::RunUntil([tab_strip] { return tab_strip->count() == 1; }));
   EXPECT_EQ(chrome::GetNewTabURL(browser()),
             tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
@@ -255,7 +265,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
   ASSERT_EQ(1, tab_strip->count());
 
   ASSERT_TRUE(new_browser);
-  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil(
+      [new_browser] { return new_browser->tab_strip_model()->count() == 1; }));
 
   // Check new browser by detaching a tab from another window has
   // one tab.
@@ -267,9 +278,8 @@ class BraveBrowserBrowserTestWithBringAllTabsFeature
       public ::testing::WithParamInterface<bool> {
  public:
   BraveBrowserBrowserTestWithBringAllTabsFeature() {
-    if (!GetParam()) {
-      feature_list_.InitAndDisableFeature(tabs::kBraveBringAllTabsToThisWindow);
-    }
+    feature_list_.InitWithFeatureState(tabs::kBraveBringAllTabsToThisWindow,
+                                       GetParam());
   }
 
  private:
