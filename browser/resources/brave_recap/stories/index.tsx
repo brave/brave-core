@@ -21,7 +21,6 @@ import {
   formatTimeSaved,
 } from '../format'
 import cardPattern from '../images/card_pattern.webp'
-import '../components/app.css'
 
 const DAY_MS = 24 * 60 * 60 * 1000
 const GB = 1024 * 1024 * 1024
