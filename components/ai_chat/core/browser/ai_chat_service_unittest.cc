@@ -1001,15 +1001,11 @@ TEST_P(AIChatServiceUnitTest, SyncBackendSurvivesStorageToggle) {
   prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, true);
   WaitForSyncBridgeReady();
 
-  // A delegate created after the toggle still resolves to the bridge.
-  std::unique_ptr<syncer::DataTypeControllerDelegate> new_delegate =
-      ai_chat_service_->CreateSyncControllerDelegate();
-  ASSERT_TRUE(new_delegate);
-  base::test::TestFuture<void> new_future;
-  new_delegate->GetTypeEntitiesCountForDebugging(
-      base::IgnoreArgs<const syncer::TypeEntitiesCount&>(
-          new_future.GetCallback()));
-  ASSERT_TRUE(new_future.Wait());
+  // The sync engine retains the original delegate across storage toggles.
+  base::test::TestFuture<void> future;
+  delegate->GetTypeEntitiesCountForDebugging(
+      base::IgnoreArgs<const syncer::TypeEntitiesCount&>(future.GetCallback()));
+  ASSERT_TRUE(future.Wait());
 
   EXPECT_TRUE(ai_chat_service_->CreateConversation());
 }
