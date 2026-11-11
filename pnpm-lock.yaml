@@ -57,8 +57,8 @@ importers:
         specifier: github:brave/leo-sf-symbols#b5a6139df7ebd3f7d55aa8d6af60a524edab87b0
         version: https://codeload.github.com/brave/leo-sf-symbols/tar.gz/b5a6139df7ebd3f7d55aa8d6af60a524edab87b0
       '@brave/nala':
-        specifier: 2.0.0
-        version: 2.0.0(react@19.2.7)(svelte@5.57.1(@typescript-eslint/types@8.65.0))(tailwindcss@3.4.19(tsx@4.19.2))(typescript@5.9.3)
+        specifier: 4.0.0
+        version: 4.0.0(react@19.2.7)(svelte@5.57.1(@typescript-eslint/types@8.65.0))(tailwindcss@3.4.19(tsx@4.19.2))(typescript@5.9.3)
       '@brave/wallet-standard-brave':
         specifier: 0.0.16
         version: 0.0.16(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)
@@ -720,8 +720,8 @@ packages:
     resolution: {gitHosted: true, integrity: sha512-tq9Nyc0kd7dlV/1a2/WSn9xRwH38FY+F8VfsH/LvBpphLdDBC/+oAqKyPuF+tVfnS5fAuBesZOqZXdPWklGV+A==, tarball: https://codeload.github.com/brave/leo-sf-symbols/tar.gz/b5a6139df7ebd3f7d55aa8d6af60a524edab87b0}
     version: 1.0.103
 
-  '@brave/nala@2.0.0':
-    resolution: {integrity: sha512-wbkXM/5DFjhiXuIRE+AMLqWI4Kg0tSXrpJtkWxW+gOuniONW9rQ55zzxmUSGyRa/eIY+LypRgMfiDN2mly2slQ==}
+  '@brave/nala@4.0.0':
+    resolution: {integrity: sha512-40BkR1kmjh4RsHCukm7NzqzeuL07szMQBtaQGGLoVUWggu02MBuOeWtfv0mgpzADSuGHfXW7grnKER09uUz9Hw==}
     hasBin: true
     peerDependencies:
       '@material/material-color-utilities': '>= 0.2.7'
@@ -8349,7 +8349,7 @@ snapshots:
 
   '@brave/leo-sf-symbols@https://codeload.github.com/brave/leo-sf-symbols/tar.gz/b5a6139df7ebd3f7d55aa8d6af60a524edab87b0': {}
 
-  '@brave/nala@2.0.0(react@19.2.7)(svelte@5.57.1(@typescript-eslint/types@8.65.0))(tailwindcss@3.4.19(tsx@4.19.2))(typescript@5.9.3)':
+  '@brave/nala@4.0.0(react@19.2.7)(svelte@5.57.1(@typescript-eslint/types@8.65.0))(tailwindcss@3.4.19(tsx@4.19.2))(typescript@5.9.3)':
     optionalDependencies:
       react: 19.2.7
       svelte: 5.57.1(@typescript-eslint/types@8.65.0)
