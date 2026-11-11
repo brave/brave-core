@@ -49,6 +49,7 @@ class PeekControllerImpl : public PeekController,
   bool Open(content::WebContents& source,
             const content::OpenURLParams& params) override;
   void OpenAsTab() override;
+  void ShowCookiesDialogInTab() override;
   void Close() override;
   bool IsShowing() const override;
   content::WebContents* GetWebContents() override;
@@ -83,6 +84,8 @@ class PeekControllerImpl : public PeekController,
   void Show(std::unique_ptr<content::WebContents> contents);
   void OpenAsTabOrClose();
   void OpenAsTabAndShowShields();
+  void OpenAsTabAndShowCookiesDialog(
+      base::WeakPtr<content::WebContents> contents);
   void CreateWidget();
   void UpdateWidgetBounds();
   gfx::Rect GetTargetBoundsInScreen() const;

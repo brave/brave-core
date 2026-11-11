@@ -15,6 +15,7 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/tab_dialogs.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -103,6 +104,17 @@ void PeekControllerImpl::OpenAsTab() {
       tab_strip_model->active_index() + 1, std::move(contents),
       AddTabTypes::ADD_ACTIVE | AddTabTypes::ADD_INHERIT_OPENER);
   PeekContents::OnMovedToTab(*raw_contents);
+}
+
+void PeekControllerImpl::ShowCookiesDialogInTab() {
+  content::WebContents* contents = GetWebContents();
+  if (!contents) {
+    return;
+  }
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&PeekControllerImpl::OpenAsTabAndShowCookiesDialog,
+                     weak_factory_.GetWeakPtr(), contents->GetWeakPtr()));
 }
 
 void PeekControllerImpl::Close() {
@@ -224,6 +236,19 @@ void PeekControllerImpl::OpenAsTabAndShowShields() {
   // tab, with the panel the tab's own Shields button opens.
   OpenAsTab();
   shields_panel_provider_->ShowShieldsPanelForActiveTab();
+}
+
+void PeekControllerImpl::OpenAsTabAndShowCookiesDialog(
+    base::WeakPtr<content::WebContents> contents) {
+  // Peek may have closed or shown another page since it was requested.
+  if (!contents || contents.get() != GetWebContents()) {
+    return;
+  }
+  // The dialog is tab-modal and `TabDialogs` only exists for tabs.
+  OpenAsTab();
+  if (auto* tab_dialogs = TabDialogs::FromWebContents(contents.get())) {
+    tab_dialogs->ShowCollectedCookies();
+  }
 }
 
 void PeekControllerImpl::CreateWidget() {

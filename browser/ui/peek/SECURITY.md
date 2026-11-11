@@ -127,6 +127,11 @@ Tests: `PopupWithoutGestureIsBlocked`, `PopupWithGestureMovesToTab`,
 - Tab-modal dialogs (HTTP auth, print, and anything else using
   `WebContentsModalDialogManager`) move Peek to a tab before the dialog is
   shown.
+- The cookies and site data dialog from page info is opened through
+  `TabDialogs`, which only tabs have. The chromium_src override of
+  `ChromePageInfoDelegate::OpenCookiesDialog` asks Peek to move to a tab, after
+  the page info bubble (which belongs to the Peek card) returns, and the dialog
+  is shown there.
 - JavaScript dialogs (`alert`, `confirm`, `prompt`, `beforeunload`) are
   suppressed in Peek, because the Peek delegate has no
   `JavaScriptDialogManager`.
@@ -139,7 +144,8 @@ Tests: `PopupWithoutGestureIsBlocked`, `PopupWithGestureMovesToTab`,
   tab. Directory enumeration only follows a chooser, so it already runs in the
   tab; the Peek delegate's default cancels it.
 
-Tests: `HttpAuthMovesToTab`, `FileChooserMovesToTabAndCancels`,
+Tests: `HttpAuthMovesToTab`, `PageInfoCookiesDialogMovesToTabAndShowsDialog`,
+`FileChooserMovesToTabAndCancels`,
 `FileChooserInCrossSiteFrameMovesToTabAndCancels`.
 
 ### Initiator origin and SameSite cookies

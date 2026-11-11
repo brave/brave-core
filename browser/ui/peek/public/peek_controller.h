@@ -59,6 +59,11 @@ class PeekController {
   // Moves the Peek contents into a tab right after the active tab.
   virtual void OpenAsTab() = 0;
 
+  // Moves the Peek contents into a tab and shows the tab's cookies and site
+  // data dialog there. Runs asynchronously, because it's requested from the
+  // page info bubble, which is destroyed with the Peek card.
+  virtual void ShowCookiesDialogInTab() = 0;
+
   virtual void Close() = 0;
   virtual bool IsShowing() const = 0;
   virtual content::WebContents* GetWebContents() = 0;

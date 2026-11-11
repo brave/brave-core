@@ -150,6 +150,7 @@ panels cannot open Peek.
 | Page opens a popup with a user gesture                                               | Peek moves to a tab, then the popup opens                                                                                  |
 | Page opens a popup without a gesture                                                 | Blocked                                                                                                                    |
 | HTTP auth or another tab-modal dialog                                                | Peek moves to a tab, then the dialog shows                                                                                 |
+| The cookies and site data dialog is opened from page info                            | Peek moves to a tab, then the dialog shows                                                                                 |
 | `alert`, `confirm`, `prompt`, `beforeunload`                                         | Suppressed while in Peek                                                                                                   |
 | The peeked link is a download                                                        | Peek closes and the download proceeds                                                                                      |
 | The page starts a download                                                           | Peek moves to a tab                                                                                                        |

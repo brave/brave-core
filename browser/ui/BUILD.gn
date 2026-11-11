@@ -527,6 +527,7 @@ source_set("ui") {
       "//brave/browser/ui/omnibox:clean_link",
       "//brave/browser/ui/peek",
       "//brave/browser/ui/peek:context_menu",
+      "//brave/browser/ui/peek:page_info",
       "//brave/browser/ui/peek:public",
       "//brave/browser/ui/sidebar:sidebar_impl",
       "//brave/browser/ui/split_view",

@@ -31,10 +31,13 @@
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/page_info/page_info_bubble_view.h"
 #include "chrome/browser/ui/views/page_info/page_info_bubble_view_base.h"
+#include "chrome/browser/ui/views/site_data/page_specific_site_data_dialog_controller.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/page_info/page_info.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/security_interstitial_tab_helper.h"
@@ -471,12 +474,32 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, SiteInfoButtonShowsPageInfoForPeek) {
       controller()->peek_view_for_testing()->site_info_button_for_testing())
       .NotifyDefaultMouseClick();
 
-  ASSERT_EQ(PageInfoBubbleViewBase::BUBBLE_PAGE_INFO,
-            PageInfoBubbleViewBase::GetShownBubbleType());
+  ASSERT_EQ(
+      PageInfoBubbleViewBase::BUBBLE_PAGE_INFO,
+      PageInfoBubbleViewBase::GetShownBubbleTypeForTesting(peek_contents()));
   auto* bubble = views::AsViewClass<PageInfoBubbleViewBase>(
-      PageInfoBubbleViewBase::GetPageInfoBubbleForTesting());
+      PageInfoBubbleViewBase::GetPageInfoBubbleForTesting(peek_contents()));
   ASSERT_TRUE(bubble);
   EXPECT_EQ(peek_contents(), bubble->web_contents());
+}
+
+// The cookies dialog is tab-modal and `TabDialogs` only exists for tabs, so
+// Peek moves to a tab and shows it there.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest,
+                       PageInfoCookiesDialogMovesToTabAndShowsDialog) {
+  OpenPeek(GetURL("b.com", "/title2.html"));
+  content::WebContents* contents = peek_contents();
+
+  views::test::ButtonTestApi(
+      controller()->peek_view_for_testing()->site_info_button_for_testing())
+      .NotifyDefaultMouseClick();
+  auto* bubble = views::AsViewClass<PageInfoBubbleView>(
+      PageInfoBubbleViewBase::GetPageInfoBubbleForTesting(contents));
+  ASSERT_TRUE(bubble);
+  bubble->presenter_for_testing()->OpenCookiesDialog();
+
+  WaitForMovedToTab(contents);
+  EXPECT_TRUE(PageSpecificSiteDataDialogController::FromWebContents(contents));
 }
 
 // Only tabs get Brave's helpers from `BraveTabFeatures`, so Peek attaches the
