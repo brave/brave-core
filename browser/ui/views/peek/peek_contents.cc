@@ -175,7 +175,7 @@ content::WebContents* PeekContents::OpenURLFromTab(
     const content::OpenURLParams& params,
     base::OnceCallback<void(content::NavigationHandle&)>
         navigation_handle_callback) {
-  if (params.disposition != WindowOpenDisposition::CURRENT_TAB) {
+  if (params.disposition != WindowOpenDisposition::kCurrentTab) {
     return browser_->OpenURL(params, std::move(navigation_handle_callback));
   }
 

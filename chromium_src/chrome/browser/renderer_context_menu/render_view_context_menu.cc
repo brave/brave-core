@@ -448,7 +448,7 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
           params_.frame_origin,
           GetOpenURLParamsWithExtraHeaders(
               params_.link_url, params_.frame_url, params_.frame_origin,
-              WindowOpenDisposition::NEW_FOREGROUND_TAB,
+              WindowOpenDisposition::kNewForegroundTab,
               ui::PAGE_TRANSITION_LINK,
               /*extra_headers=*/std::string(),
               /*started_from_context_menu=*/true));

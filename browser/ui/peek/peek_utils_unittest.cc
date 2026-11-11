@@ -46,21 +46,21 @@ TEST(PeekUtilsTest, IsShiftClickOpen) {
     return params;
   };
 
-  EXPECT_TRUE(IsShiftClickOpen(make_params(WindowOpenDisposition::NEW_WINDOW,
+  EXPECT_TRUE(IsShiftClickOpen(make_params(WindowOpenDisposition::kNewWindow,
                                            /*renderer_initiated=*/true)));
   // "Open link in new window" from the context menu is browser-initiated.
-  EXPECT_FALSE(IsShiftClickOpen(make_params(WindowOpenDisposition::NEW_WINDOW,
+  EXPECT_FALSE(IsShiftClickOpen(make_params(WindowOpenDisposition::kNewWindow,
                                             /*renderer_initiated=*/false)));
   EXPECT_FALSE(
-      IsShiftClickOpen(make_params(WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      IsShiftClickOpen(make_params(WindowOpenDisposition::kNewForegroundTab,
                                    /*renderer_initiated=*/true)));
 
-  auto no_gesture = make_params(WindowOpenDisposition::NEW_WINDOW,
+  auto no_gesture = make_params(WindowOpenDisposition::kNewWindow,
                                 /*renderer_initiated=*/true);
   no_gesture.user_gesture = false;
   EXPECT_FALSE(IsShiftClickOpen(no_gesture));
 
-  auto non_http = make_params(WindowOpenDisposition::NEW_WINDOW,
+  auto non_http = make_params(WindowOpenDisposition::kNewWindow,
                               /*renderer_initiated=*/true);
   non_http.url = GURL("chrome://settings");
   EXPECT_FALSE(IsShiftClickOpen(non_http));
@@ -82,7 +82,7 @@ TEST(PeekUtilsTest, IsPeekableInitiator) {
 
 TEST(PeekUtilsTest, CanOpenInPeek) {
   content::OpenURLParams params(GURL("https://b.com/"), content::Referrer(),
-                                WindowOpenDisposition::NEW_FOREGROUND_TAB,
+                                WindowOpenDisposition::kNewForegroundTab,
                                 ui::PAGE_TRANSITION_LINK,
                                 /*is_renderer_initiated=*/true);
   params.initiator_navigation_state =
