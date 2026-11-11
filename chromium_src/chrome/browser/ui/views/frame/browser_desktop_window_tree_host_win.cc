@@ -14,15 +14,7 @@
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "skia/ext/skia_utils_win.h"
 
-#define BrowserDesktopWindowTreeHostWin \
-  BrowserDesktopWindowTreeHostWin_ChromiumImpl
-#define CreateBrowserDesktopWindowTreeHost \
-  CreateBrowserDesktopWindowTreeHost_Unused
-
 #include <chrome/browser/ui/views/frame/browser_desktop_window_tree_host_win.cc>
-
-#undef BrowserDesktopWindowTreeHostWin
-#undef CreateBrowserDesktopWindowTreeHost
 
 bool BrowserDesktopWindowTreeHostWin::PreHandleMSG(UINT message,
                                                    WPARAM w_param,
@@ -83,16 +75,4 @@ SkColor BrowserDesktopWindowTreeHostWin::GetBackgroundColor(
 SkColor BrowserDesktopWindowTreeHostWin::GetToolbarColor() const {
   CHECK(base::FeatureList::IsEnabled(features::kBraveWorkaroundNewWindowFlash));
   return GetWidget()->GetColorProvider()->GetColor(kColorToolbar);
-}
-
-// static
-BrowserDesktopWindowTreeHost*
-BrowserDesktopWindowTreeHost::CreateBrowserDesktopWindowTreeHost(
-    views::internal::NativeWidgetDelegate* native_widget_delegate,
-    views::DesktopNativeWidgetAura* desktop_native_widget_aura,
-    BrowserView* browser_view,
-    BrowserWidget* browser_widget) {
-  return new BrowserDesktopWindowTreeHostWin(native_widget_delegate,
-                                             desktop_native_widget_aura,
-                                             browser_view, browser_widget);
 }

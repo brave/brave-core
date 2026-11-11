@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Rename BrowserDesktopWindowTreeHostWin to _ChromiumImpl
+
+      The chromium_src shadow defines a Brave subclass that takes the original
+      name so that all other users get the Brave implementation.
+    rename_class:
+      class_name: BrowserDesktopWindowTreeHostWin
+      rename: BrowserDesktopWindowTreeHostWin_ChromiumImpl
+
+  - description: |-
+      Allow the Brave BrowserDesktopWindowTreeHostWin to access private members
+
+      The Brave subclass calls private members such as UpdateWorkspace().
+    add_friend:
+      class_name: BrowserDesktopWindowTreeHostWin_ChromiumImpl
+      friend_type: class BrowserDesktopWindowTreeHostWin
