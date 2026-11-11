@@ -14,14 +14,14 @@ if (is_brave_origin_branded) {
 common_packaging_files_sources = [
   "//brave/LICENSE",
   "//brave/chromium_src/chrome/app/resources/manpage.1.in",
-  "//brave/chromium_src/chrome/installer/linux/common/$_linux_branding_dir/appdata.xml.template",
   "//brave/chromium_src/chrome/installer/linux/common/$_linux_branding_dir/chromium-browser.info",
+  "//brave/chromium_src/chrome/installer/linux/common/$_linux_branding_dir/metainfo.xml.template",
 ]
 
 common_packaging_files_excluded_sources = [
   "//chrome/app/resources/manpage.1.in",
-  "common/appdata.xml.template",
   "common/chromium-browser.info",
+  "common/metainfo.xml.template",
 ]
 
 brave_packaging_files_executables = [
