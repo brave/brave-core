@@ -85,6 +85,9 @@ public class BrowsingModeBottomToolbarCoordinator {
     private final BookmarksButton mBookmarkButton;
     private final MenuButton mMenuButton;
     @Nullable private ThemeColorProvider mThemeColorProvider;
+    @Nullable private MonotonicObservableSupplier<Integer> mTabCountSupplier;
+    private final Callback<Integer> mTabCountDescriptionObserver =
+            this::updateTabSwitcherDescription;
 
     BrowsingModeBottomToolbarCoordinator(
             View root,
@@ -221,8 +224,9 @@ public class BrowsingModeBottomToolbarCoordinator {
         if (BottomToolbarVariationManager.isTabSwitcherOnBottomControls()) {
             mTabSwitcherButtonCoordinator.setTabSwitcherListener(tabSwitcherListener);
             mTabSwitcherButtonCoordinator.setThemeColorProvider(themeColorProvider);
-            mTabSwitcherButtonCoordinator.setTabCountSupplier(
-                    tabModelSelector.getCurrentModelTabCountSupplier());
+            mTabCountSupplier = tabModelSelector.getCurrentModelTabCountSupplier();
+            mTabSwitcherButtonCoordinator.setTabCountSupplier(mTabCountSupplier);
+            mTabCountSupplier.addSyncObserverAndPostIfNonNull(mTabCountDescriptionObserver);
         }
 
         mBookmarkButton.setThemeColorProvider(themeColorProvider);
@@ -308,10 +312,24 @@ public class BrowsingModeBottomToolbarCoordinator {
         mBraveHomeButton.destroy();
         mSearchAccelerator.destroy();
         mTabSwitcherButtonCoordinator.destroy();
+        if (mTabCountSupplier != null) {
+            mTabCountSupplier.removeObserver(mTabCountDescriptionObserver);
+            mTabCountSupplier = null;
+        }
         mBookmarkButton.destroy();
         if (mThemeColorProvider != null) {
             mThemeColorProvider.removeTintObserver(mMenuButton);
         }
+    }
+
+    private void updateTabSwitcherDescription(int tabCount) {
+        mTabSwitcherButtonView.setContentDescription(
+                mTabSwitcherButtonView
+                        .getResources()
+                        .getQuantityString(
+                                R.plurals.accessibility_toolbar_btn_tabswitcher_toggle_default,
+                                tabCount,
+                                tabCount));
     }
 
     public void updateBookmarkButton(boolean isBookmarked, boolean editingAllowed) {
