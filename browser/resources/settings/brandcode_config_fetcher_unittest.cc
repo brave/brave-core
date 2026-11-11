@@ -5,13 +5,16 @@
 
 #include "chrome/browser/profile_resetter/brandcode_config_fetcher.h"
 
+#include <memory>
+
 #include "base/memory/scoped_refptr.h"
-#include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 class BrandcodeConfigFetcherTest : public testing::Test {
  public:
@@ -36,17 +39,15 @@ class BrandcodeConfigFetcherTest : public testing::Test {
 
 TEST_F(BrandcodeConfigFetcherTest, NoFetch) {
   bool network_access_occurred = false;
-  bool callback_called = false;
+  base::test::TestFuture<void> future;
   test_url_loader_factory()->SetInterceptor(
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
         network_access_occurred = true;
       }));
   auto uploader = std::make_unique<BrandcodeConfigFetcher>(
-      test_url_loader_factory(),
-      base::BindLambdaForTesting([&]() { callback_called = true; }),
+      test_url_loader_factory(), future.GetCallback(),
       GURL("https://www.brave.com/"), "BRAV");
-  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(future.Wait());
   EXPECT_FALSE(uploader->IsActive());
   EXPECT_FALSE(network_access_occurred);
-  EXPECT_TRUE(callback_called);
 }
