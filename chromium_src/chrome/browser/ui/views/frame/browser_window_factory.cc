@@ -7,8 +7,4 @@
 #include "brave/browser/ui/views/frame/brave_browser_widget.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
-#define BrowserWidget BraveBrowserWidget
-#define BrowserView BraveBrowserView
 #include <chrome/browser/ui/views/frame/browser_window_factory.cc>
-#undef BrowserView
-#undef BrowserWidget

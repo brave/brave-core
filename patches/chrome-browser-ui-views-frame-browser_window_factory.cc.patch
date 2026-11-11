@@ -1,0 +1,30 @@
+diff --git a/chrome/browser/ui/views/frame/browser_window_factory.cc b/chrome/browser/ui/views/frame/browser_window_factory.cc
+index ad579aa818666d92ca6f5446c8251b4e841c0b1b..2bf4545693f477455f6335e1756188b1a5d8042e 100644
+--- a/chrome/browser/ui/views/frame/browser_window_factory.cc
++++ b/chrome/browser/ui/views/frame/browser_window_factory.cc
+@@ -47,13 +47,13 @@ BrowserWindow::CreateBrowserWindow(BrowserWindowInterface* browser,
+ #endif
+   // Create the view and the frame. The frame will attach itself via the view
+   // so we don't need to do anything with the pointer.
+-  BrowserView* view = nullptr;
++  BraveBrowserView* view = nullptr;
+ #if BUILDFLAG(IS_CHROMEOS)
+   view = new BrowserViewAsh(browser);
+ #else
+-  view = new BrowserView(browser);
++  view = new BraveBrowserView(browser);
+ #endif
+-  auto browser_widget = std::make_unique<BrowserWidget>(view);
++  auto browser_widget = std::make_unique<BraveBrowserWidget>(view);
+   view->set_browser_widget(std::move(browser_widget));
+   if (in_tab_dragging) {
+     view->browser_widget()->SetTabDragKind(TabDragKind::kAllTabs);
+@@ -95,7 +95,7 @@ const BrowserWindow* BrowserWindow::FromBrowser(
+   // The two production subclasses (BrowserView, WebUIBrowserWindow) each
+   // register themselves under the BrowserWidget's NativeWindow properties, so
+   // for any given Browser at most one of these lookups will succeed.
+-  if (auto* view = BrowserView::GetBrowserViewForBrowser(browser)) {
++  if (auto* view = BraveBrowserView::GetBrowserViewForBrowser(browser)) {
+     return view;
+   }
+   if (auto* webui = WebUIBrowserWindow::FromBrowser(browser)) {

@@ -1,0 +1,35 @@
+diff --git a/chrome/browser/ui/views/frame/browser_frame_view_factory_views.cc b/chrome/browser/ui/views/frame/browser_frame_view_factory_views.cc
+index 7752581d8c64779278829b5a263d9c5cee5ee914..10abe335bfde9df61c9650dd2366e82e99138ee1 100644
+--- a/chrome/browser/ui/views/frame/browser_frame_view_factory_views.cc
++++ b/chrome/browser/ui/views/frame/browser_frame_view_factory_views.cc
+@@ -32,7 +32,7 @@ namespace chrome {
+ namespace {
+ 
+ #if BUILDFLAG(IS_LINUX)
+-std::unique_ptr<OpaqueBrowserFrameView> CreateOpaqueBrowserFrameViewLinux(
++std::unique_ptr<BraveOpaqueBrowserFrameView> CreateOpaqueBrowserFrameViewLinux(
+     BrowserWidget* widget,
+     BrowserView* browser_view) {
+   auto* profile = browser_view->browser()->GetProfile();
+@@ -68,7 +68,7 @@ std::unique_ptr<OpaqueBrowserFrameView> CreateOpaqueBrowserFrameViewLinux(
+                     ui::FrameType::kBrowser, solid_frame, tiled, maximized);
+               },
+               native_widget, linux_ui_theme));
+-      return std::make_unique<BrowserFrameViewLinuxNative>(
++      return std::make_unique<BraveBrowserFrameViewLinuxNative>(
+           widget, browser_view, layout, std::move(nav_button_provider));
+     }
+   }
+@@ -104,10 +104,10 @@ std::unique_ptr<BrowserFrameView> CreateBrowserFrameViewWin(
+   }
+ 
+   if (widget->ShouldUseNativeFrame()) {
+-    return std::make_unique<BrowserFrameViewWin>(widget, browser_view);
++    return std::make_unique<BraveBrowserFrameViewWin>(widget, browser_view);
+   }
+ 
+-  auto opaque_browser_view = std::make_unique<OpaqueBrowserFrameView>(
++  auto opaque_browser_view = std::make_unique<BraveOpaqueBrowserFrameView>(
+       widget, browser_view, new OpaqueBrowserFrameViewLayout());
+   opaque_browser_view->InitViews();
+ 

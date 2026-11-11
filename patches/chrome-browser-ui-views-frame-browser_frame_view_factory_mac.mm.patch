@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/frame/browser_frame_view_factory_mac.mm b/chrome/browser/ui/views/frame/browser_frame_view_factory_mac.mm
+index b7b4c5486b8847e78cc9a27a08a6c8b363faf4ff..196a06dd6e1056a5ee0ac1e3b248608e0e83acce 100644
+--- a/chrome/browser/ui/views/frame/browser_frame_view_factory_mac.mm
++++ b/chrome/browser/ui/views/frame/browser_frame_view_factory_mac.mm
+@@ -15,7 +15,7 @@ std::unique_ptr<BrowserFrameView> CreateBrowserFrameView(
+     return std::make_unique<PictureInPictureBrowserFrameView>(frame,
+                                                               browser_view);
+   }
+-  return std::make_unique<BrowserFrameViewMac>(frame, browser_view);
++  return std::make_unique<BraveBrowserFrameViewMac>(frame, browser_view);
+ }
+ 
+ }  // namespace chrome
