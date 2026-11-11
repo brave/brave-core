@@ -137,32 +137,27 @@ void BraveBrowserWindowFeatures::Init() {
 }
 
 void BraveBrowserWindowFeatures::InitPostWindowConstruction() {
-  // The fullscreen controller only exists once the window is constructed.
-  if (auto* brave_browser_window =
-          BraveBrowserWindow::FromBrowser(base::to_address(browser_))) {
-    brave_browser_window->ReadyToListenFullscreenChanges();
+  // WebUI browser windows have none of the views UI these features drive.
+  auto* brave_browser_window =
+      BraveBrowserWindow::FromBrowser(base::to_address(browser_));
+  if (!brave_browser_window) {
+    return;
   }
-}
 
-void BraveBrowserWindowFeatures::InitPostBrowserViewConstruction(
-    BrowserView* browser_view) {
+  // The fullscreen controller only exists once the window is constructed.
+  brave_browser_window->ReadyToListenFullscreenChanges();
+
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   if (email_aliases::features::IsEmailAliasesEnabled()) {
     if (auto* email_aliases_service =
             email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
-                browser_view->GetProfile())) {
+                browser_->GetProfile())) {
       email_aliases_controller_ =
           GetUserDataFactory()
               .CreateInstance<email_aliases::EmailAliasesController>(
-                  *browser_, browser_view, email_aliases_service);
+                  *browser_, *browser_, email_aliases_service);
     }
   }
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  brave_vpn_controller_ =
-      GetUserDataFactory().CreateInstance<BraveVPNController>(*browser_,
-                                                              browser_view);
 #endif
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
@@ -175,25 +170,24 @@ void BraveBrowserWindowFeatures::InitPostBrowserViewConstruction(
     screenshot_controller_ =
         GetUserDataFactory().CreateInstance<screenshot::ScreenshotController>(
             *browser_, browser_->GetUnownedUserDataHost(),
-            browser_view->GetProfile(),
+            browser_->GetProfile(),
             base::BindRepeating(
-                [](BrowserView* bv) -> gfx::NativeWindow {
-                  return bv->GetNativeWindow();
+                [](BrowserWindowInterface* browser) -> gfx::NativeWindow {
+                  return browser->GetWindow()->GetNativeWindow();
                 },
-                browser_view),
+                base::to_address(browser_)),
             base::BindRepeating(&screenshot::ShowScreenshotPreviewDialog),
             std::move(extractor));
   }
 #else
   screenshot_controller_ =
       GetUserDataFactory().CreateInstance<screenshot::ScreenshotController>(
-          *browser_, browser_->GetUnownedUserDataHost(),
-          browser_view->GetProfile(),
+          *browser_, browser_->GetUnownedUserDataHost(), browser_->GetProfile(),
           base::BindRepeating(
-              [](BrowserView* bv) -> gfx::NativeWindow {
-                return bv->GetNativeWindow();
+              [](BrowserWindowInterface* browser) -> gfx::NativeWindow {
+                return browser->GetWindow()->GetNativeWindow();
               },
-              browser_view),
+              base::to_address(browser_)),
           base::BindRepeating(&screenshot::ShowScreenshotPreviewDialog));
 #endif
 
@@ -214,6 +208,15 @@ void BraveBrowserWindowFeatures::InitPostBrowserViewConstruction(
         GetUserDataFactory().CreateInstance<AIChatSidePanelTabTransferBridge>(
             *browser_, base::to_address(browser_));
   }
+#endif
+}
+
+void BraveBrowserWindowFeatures::InitPostBrowserViewConstruction(
+    BrowserView* browser_view) {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  brave_vpn_controller_ =
+      GetUserDataFactory().CreateInstance<BraveVPNController>(*browser_,
+                                                              browser_view);
 #endif
 }
 
