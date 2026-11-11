@@ -2821,21 +2821,13 @@ extension Strings {
       comment:
         "The title on top of a separater, and the transaction details will be displayed below the separater."
     )
-    public static let signMessageRequestUnknownUnicodeWarning = NSLocalizedString(
-      "wallet.signMessageRequestUnknownUnicodeWarning",
+    public static let signMessageUnexpectedCharactersWarning = NSLocalizedString(
+      "wallet.signMessageUnexpectedCharactersWarning",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Non-ASCII characters detected!",
+      value: "Unexpected characters detected",
       comment:
-        "A warning message to tell users that the sign request message contains non-ascii characters."
-    )
-    public static let signMessageConsecutiveNewlineWarning = NSLocalizedString(
-      "wallet.signMessageConsecutiveNewlineWarning",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Consecutive newline characters detected!",
-      comment:
-        "A warning message to tell users that the sign request message contains consecutive new-line characters."
+        "A warning message to tell users that the sign request message contains null bytes, newlines, or non-ascii characters."
     )
     public static let signMessageShowUnknownUnicode = NSLocalizedString(
       "wallet.signMessageShowUnknownUnicode",
