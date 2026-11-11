@@ -6,14 +6,14 @@
 #include "brave/components/brave_wallet/browser/eth_pending_tx_tracker.h"
 
 #include <memory>
-#include <utility>
+#include <set>
+#include <string>
 
 #include "base/files/scoped_temp_dir.h"
-#include "base/functional/bind.h"
-#include "base/memory/scoped_refptr.h"
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
+#include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
@@ -21,6 +21,7 @@
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_storage.h"
@@ -28,11 +29,9 @@
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
-#include "chrome/browser/prefs/browser_prefs.h"
-#include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "content/public/test/browser_task_environment.h"
+#include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -44,12 +43,9 @@ class EthPendingTxTrackerUnitTest : public testing::Test {
   EthPendingTxTrackerUnitTest() = default;
 
   void SetUp() override {
-    TestingProfile::Builder builder;
-    auto prefs =
-        std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
-    RegisterUserProfilePrefs(prefs->registry());
-    builder.SetPrefService(std::move(prefs));
-    profile_ = builder.Build();
+    RegisterProfilePrefs(prefs_.registry());
+    RegisterProfilePrefsForMigration(prefs_.registry());
+
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     tx_storage_ = CreateTxStorageForTest(temp_dir_.GetPath());
     account_resolver_delegate_ =
@@ -74,20 +70,19 @@ class EthPendingTxTrackerUnitTest : public testing::Test {
 
   JsonRpcService* json_rpc_service() { return json_rpc_service_.get(); }
 
-  PrefService* GetPrefs() { return profile_->GetPrefs(); }
+  PrefService* GetPrefs() { return &prefs_; }
 
   network::TestURLLoaderFactory* test_url_loader_factory() {
     return &url_loader_factory_;
   }
 
  private:
+  base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
-  content::BrowserTaskEnvironment task_environment_;
-  std::unique_ptr<TestingProfile> profile_;
+  sync_preferences::TestingPrefServiceSyncable prefs_;
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   base::ScopedTempDir temp_dir_;
-  std::unique_ptr<value_store::ValueStoreFrontend> storage_;
   std::unique_ptr<TxStorage> tx_storage_;
   std::unique_ptr<AccountResolverDelegateForTest> account_resolver_delegate_;
 
