@@ -17,6 +17,9 @@ import {
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 import { SUPPORT_LINKS } from '../common/constants/support_links'
 
+// Proxy
+import getWalletPageApiProxy from '../page/wallet_page_api_proxy'
+
 /**
  * Returns the pathname portion of a wallet location string built as
  * `pathname + search + hash` (see `useLocation` in the page container).
@@ -410,8 +413,8 @@ export function openTab(url: string) {
       }
     })
   } else {
-    // Tabs.create is desktop specific. Using window.open for android.
-    window.open(url, '_blank', 'noopener noreferrer')
+    // Tabs.create is desktop specific.
+    getWalletPageApiProxy().pageHandler.openTab({ url })
   }
 }
 

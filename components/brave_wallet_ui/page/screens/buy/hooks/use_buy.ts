@@ -55,6 +55,9 @@ import {
 } from '../../../../utils/pricing-utils'
 import { getLocale } from '../../../../../common/locale'
 
+// Proxy
+import getWalletPageApiProxy from '../../../../page/wallet_page_api_proxy'
+
 export type BuyParamOverrides = {
   country?: string
   paymentMethod?: MeldPaymentMethod
@@ -543,8 +546,10 @@ export const useBuy = () => {
             }
           })
         } else {
-          // Tabs.create is desktop specific. Using window.open for android.
-          window.open(widgetUrl, '_blank', 'noopener noreferrer')
+          // Tabs.create is desktop specific.
+          getWalletPageApiProxy().pageHandler.openTab({
+            url: widgetUrl,
+          })
         }
       } catch (error) {
         console.error('createMeldBuyWidget failed', error)
