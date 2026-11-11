@@ -9,7 +9,7 @@
 #include "brave/components/endpoint_client/has_to_value.h"
 #include "brave/components/endpoint_client/is_protobuf_message.h"
 
-namespace endpoint_client::detail {
+namespace endpoint_client::internal {
 
 // A JSON request body is a type that HasToValue.
 template <typename RequestBody>
@@ -24,6 +24,6 @@ template <typename RequestBody>
 concept IsRequestBody =
     IsJSONRequestBody<RequestBody> || IsProtobufRequestBody<RequestBody>;
 
-}  // namespace endpoint_client::detail
+}  // namespace endpoint_client::internal
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_IS_REQUEST_BODY_H_

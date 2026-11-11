@@ -24,8 +24,8 @@ namespace endpoint_client {
 
 // A response contains the network result, HTTP status code, and the
 // deserialized response body, if any.
-template <detail::IsResponseBody SuccessResponseBody,
-          detail::IsResponseBody ErrorResponseBody>
+template <internal::IsResponseBody SuccessResponseBody,
+          internal::IsResponseBody ErrorResponseBody>
 struct Response {
   using SuccessBody = SuccessResponseBody;
   using ErrorBody = ErrorResponseBody;
@@ -66,7 +66,7 @@ struct Response {
 
  private:
   // Deserializes a JSON response body into ResponseBody.
-  template <detail::IsJSONResponseBody ResponseBody>
+  template <internal::IsJSONResponseBody ResponseBody>
   static std::optional<ResponseBody> Deserialize(
       std::string_view response_body) {
     return base::JSONReader::Read(response_body, base::JSON_PARSE_RFC)
@@ -75,7 +75,7 @@ struct Response {
   }
 
   // Deserializes a Protobuf response body into ResponseBody.
-  template <detail::IsProtobufResponseBody ResponseBody>
+  template <internal::IsProtobufResponseBody ResponseBody>
   static std::optional<ResponseBody> Deserialize(
       std::string_view response_body) {
     if (ResponseBody body; body.ParseFromString(response_body)) {

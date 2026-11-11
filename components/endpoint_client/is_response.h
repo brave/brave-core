@@ -9,7 +9,7 @@
 #include "brave/components/endpoint_client/is_response_body.h"
 #include "brave/components/endpoint_client/response.h"
 
-namespace endpoint_client::detail {
+namespace endpoint_client::internal {
 
 template <typename>
 inline constexpr bool kIsJSONResponse = false;
@@ -37,6 +37,6 @@ concept IsProtobufResponse = kIsProtobufResponse<Response>;
 template <typename Response>
 concept IsResponse = IsJSONResponse<Response> || IsProtobufResponse<Response>;
 
-}  // namespace endpoint_client::detail
+}  // namespace endpoint_client::internal
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_IS_RESPONSE_H_

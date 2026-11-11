@@ -15,22 +15,22 @@
 
 namespace endpoint_client {
 
-namespace detail {
+namespace internal {
 
 GURL MakeBraveServiceURL(std::string_view prefix, std::string_view path);
 
-}  // namespace detail
+}  // namespace internal
 
-template <detail::StaticString Prefix,
-          detail::StaticString Path,
-          detail::IsRequest RequestT,
-          detail::IsResponse ResponseT>
+template <internal::StaticString Prefix,
+          internal::StaticString Path,
+          internal::IsRequest RequestT,
+          internal::IsResponse ResponseT>
 struct BraveEndpoint {
   using Request = RequestT;
   using Response = ResponseT;
 
   static GURL URL() {
-    return detail::MakeBraveServiceURL(Prefix.value, Path.value);
+    return internal::MakeBraveServiceURL(Prefix.value, Path.value);
   }
 };
 

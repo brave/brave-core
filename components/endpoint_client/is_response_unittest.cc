@@ -10,7 +10,7 @@
 #include "brave/components/endpoint_client/response.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace endpoint_client::detail {
+namespace endpoint_client::internal {
 
 namespace {
 
@@ -40,4 +40,4 @@ TYPED_TEST(IsResponseTest, SatisfyConcept) {
   EXPECT_EQ(IsResponse<typename TypeParam::Type>, TypeParam::kSatisfiesConcept);
 }
 
-}  // namespace endpoint_client::detail
+}  // namespace endpoint_client::internal

@@ -8,7 +8,7 @@
 #include "base/check.h"
 #include "base/strings/strcat.h"
 
-namespace endpoint_client::detail {
+namespace endpoint_client::internal {
 
 void SetBearerToken(net::HttpRequestHeaders& headers,
                     std::string_view bearer_token) {
@@ -17,4 +17,4 @@ void SetBearerToken(net::HttpRequestHeaders& headers,
                     base::StrCat({"Bearer ", bearer_token}));
 }
 
-}  // namespace endpoint_client::detail
+}  // namespace endpoint_client::internal

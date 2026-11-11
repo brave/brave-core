@@ -16,7 +16,7 @@ namespace base {
 class Value;
 }  // namespace base
 
-namespace endpoint_client::detail {
+namespace endpoint_client::internal {
 
 namespace {
 
@@ -92,4 +92,4 @@ TYPED_TEST(IsResponseBodyTest, SatisfyConcept) {
             TypeParam::kSatisfiesConcept);
 }
 
-}  // namespace endpoint_client::detail
+}  // namespace endpoint_client::internal

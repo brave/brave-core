@@ -14,7 +14,7 @@ namespace base {
 class DictValue;
 }  // namespace base
 
-namespace endpoint_client::detail {
+namespace endpoint_client::internal {
 
 namespace {
 
@@ -88,4 +88,4 @@ TYPED_TEST(HasToValueTest, SatisfyConcept) {
   EXPECT_EQ(HasToValue<typename TypeParam::Type>, TypeParam::kSatisfiesConcept);
 }
 
-}  // namespace endpoint_client::detail
+}  // namespace endpoint_client::internal

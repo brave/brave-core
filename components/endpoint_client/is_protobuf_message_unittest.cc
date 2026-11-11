@@ -11,7 +11,7 @@
 #include "google/protobuf/message_lite.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace endpoint_client::detail {
+namespace endpoint_client::internal {
 
 namespace {
 
@@ -62,4 +62,4 @@ TYPED_TEST(IsProtobufMessageTest, SatisfyConcept) {
             TypeParam::kSatisfiesConcept);
 }
 
-}  // namespace endpoint_client::detail
+}  // namespace endpoint_client::internal

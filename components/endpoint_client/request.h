@@ -19,7 +19,7 @@ namespace google::protobuf {
 class MessageLite;
 }  // namespace google::protobuf
 
-namespace endpoint_client::detail {
+namespace endpoint_client::internal {
 
 std::optional<std::string> SerializeJSONRequestBody(
     const base::DictValue& request_body);
@@ -109,6 +109,6 @@ struct Request : RequestOptions {
   }
 };
 
-}  // namespace endpoint_client::detail
+}  // namespace endpoint_client::internal
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_REQUEST_H_

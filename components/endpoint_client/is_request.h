@@ -9,7 +9,7 @@
 #include "brave/components/endpoint_client/is_request_body.h"
 #include "brave/components/endpoint_client/request.h"
 
-namespace endpoint_client::detail {
+namespace endpoint_client::internal {
 
 template <typename>
 inline constexpr bool kIsJSONRequest = false;
@@ -35,6 +35,6 @@ concept IsProtobufRequest = kIsProtobufRequest<Request>;
 template <typename Request>
 concept IsRequest = IsJSONRequest<Request> || IsProtobufRequest<Request>;
 
-}  // namespace endpoint_client::detail
+}  // namespace endpoint_client::internal
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_IS_REQUEST_H_

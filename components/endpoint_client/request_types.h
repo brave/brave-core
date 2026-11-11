@@ -11,35 +11,35 @@
 
 namespace endpoint_client {
 
-template <detail::IsRequestBody T>
-using Connect = detail::Request<T, detail::Method::kConnect>;
+template <internal::IsRequestBody T>
+using Connect = internal::Request<T, internal::Method::kConnect>;
 
-template <detail::IsRequestBody T>
-using Delete = detail::Request<T, detail::Method::kDelete>;
+template <internal::IsRequestBody T>
+using Delete = internal::Request<T, internal::Method::kDelete>;
 
-template <detail::IsRequestBody T>
-using Get = detail::Request<T, detail::Method::kGet>;
+template <internal::IsRequestBody T>
+using Get = internal::Request<T, internal::Method::kGet>;
 
-template <detail::IsRequestBody T>
-using Head = detail::Request<T, detail::Method::kHead>;
+template <internal::IsRequestBody T>
+using Head = internal::Request<T, internal::Method::kHead>;
 
-template <detail::IsRequestBody T>
-using Options = detail::Request<T, detail::Method::kOptions>;
+template <internal::IsRequestBody T>
+using Options = internal::Request<T, internal::Method::kOptions>;
 
-template <detail::IsRequestBody T>
-using Patch = detail::Request<T, detail::Method::kPatch>;
+template <internal::IsRequestBody T>
+using Patch = internal::Request<T, internal::Method::kPatch>;
 
-template <detail::IsRequestBody T>
-using Post = detail::Request<T, detail::Method::kPost>;
+template <internal::IsRequestBody T>
+using Post = internal::Request<T, internal::Method::kPost>;
 
-template <detail::IsRequestBody T>
-using Put = detail::Request<T, detail::Method::kPut>;
+template <internal::IsRequestBody T>
+using Put = internal::Request<T, internal::Method::kPut>;
 
-template <detail::IsRequestBody T>
-using Trace = detail::Request<T, detail::Method::kTrace>;
+template <internal::IsRequestBody T>
+using Trace = internal::Request<T, internal::Method::kTrace>;
 
-template <detail::IsRequestBody T>
-using Track = detail::Request<T, detail::Method::kTrack>;
+template <internal::IsRequestBody T>
+using Track = internal::Request<T, internal::Method::kTrack>;
 
 }  // namespace endpoint_client
 

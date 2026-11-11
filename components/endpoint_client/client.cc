@@ -14,7 +14,7 @@
 #include "services/network/public/mojom/fetch_api.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 
-namespace endpoint_client::detail {
+namespace endpoint_client::internal {
 
 namespace {
 
@@ -97,4 +97,4 @@ std::unique_ptr<network::SimpleURLLoader> StartSimpleURLLoader(
   return simple_url_loader;
 }
 
-}  // namespace endpoint_client::detail
+}  // namespace endpoint_client::internal
