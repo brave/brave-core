@@ -73,8 +73,9 @@ bool WaitForWalletBubble(content::WebContents* web_contents) {
 // not prove the sign request was queued. Notify...Processed() is a silent
 // no-op for a missing request, so wait for the request itself.
 bool WaitForPendingSignMessageRequest(BraveWalletService* service) {
-  return base::test::RunUntil(
-      [&] { return service->GetPendingSignMessageRequestsSync().size() == 1u; });
+  return base::test::RunUntil([&] {
+    return service->GetPendingSignMessageRequestsSync().size() == 1u;
+  });
 }
 
 }  // namespace
