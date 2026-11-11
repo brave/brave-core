@@ -176,7 +176,7 @@ class PeekBrowserTest : public InProcessBrowserTest {
                                                const GURL& url) {
     content::OpenURLParams params =
         content::OpenURLParams::CreateRendererInitiated(
-            url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+            url, WindowOpenDisposition::kNewForegroundTab,
             ui::PAGE_TRANSITION_LINK, content::Referrer(),
             frame.GetCurrentInitiatorNavigationState());
     params.initiator_origin = frame.GetLastCommittedOrigin();
@@ -425,7 +425,7 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpenAsTabKeepsWebContents) {
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, SwitchingTabsClosesPeek) {
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), GetURL("a.com", "/title1.html"),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   OpenPeek(GetURL("b.com", "/title2.html"));
 
@@ -851,7 +851,7 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest,
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpensFromSplitViewAsStandaloneTab) {
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), GetURL("a.com", "/title1.html"),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   tab_strip_model()->ActivateTabAt(0);
   tab_strip_model()->AddToNewSplit(
@@ -911,7 +911,7 @@ class PeekContainersBrowserTest : public PeekBrowserTest {
 IN_PROC_BROWSER_TEST_F(PeekContainersBrowserTest, InheritsContainerPartition) {
   NavigateParams params(browser(), GetURL("a.com", "/title1.html"),
                         ui::PAGE_TRANSITION_LINK);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
       browser()->GetProfile(), containers::kContainersStoragePartitionDomain,
       "peek-test-container", /*in_memory=*/false);
