@@ -390,5 +390,3 @@ Containers, Shields and Brave Wallet, and the interactions are described above.
 7. Device choosers (WebUSB, WebHID, WebSerial, Web Bluetooth), WebAuthn, Payment
    Request, FedCM, and autofill or password manager bubbles are not verified in
    Peek. Do they need explicit handling?
-8. `PeekBrowserTest.EscapeClosesPeek` fails locally. Escape does not reach the
-   Peek page's keyboard handler. The cause is not known yet.

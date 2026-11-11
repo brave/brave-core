@@ -23,6 +23,7 @@
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
 #include "content/public/browser/download_item_utils.h"
 #include "content/public/browser/file_select_listener.h"
+#include "content/public/browser/keyboard_event_processing_result.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/page_navigator.h"
@@ -245,15 +246,24 @@ bool PeekContents::TakeFocus(content::WebContents* source, bool reverse) {
   return delegate_->OnPeekTakeFocus(reverse);
 }
 
-bool PeekContents::HandleKeyboardEvent(
+content::KeyboardEventProcessingResult PeekContents::PreHandleKeyboardEvent(
     content::WebContents* source,
     const input::NativeWebKeyboardEvent& event) {
+  // Escape is handled before the page sees it, so the page can't keep the user
+  // in Peek by consuming it. Unconsumed events also never come back from a
+  // hidden renderer, e.g. an occluded window.
   if (event.GetType() == blink::WebInputEvent::Type::kRawKeyDown &&
       event.windows_key_code == ui::VKEY_ESCAPE &&
       !(event.GetModifiers() & blink::WebInputEvent::kKeyModifiers)) {
     delegate_->OnPeekCloseRequested();
-    return true;
+    return content::KeyboardEventProcessingResult::HANDLED;
   }
+  return content::KeyboardEventProcessingResult::NOT_HANDLED;
+}
+
+bool PeekContents::HandleKeyboardEvent(
+    content::WebContents* source,
+    const input::NativeWebKeyboardEvent& event) {
   return browser_delegate_->HandleKeyboardEvent(source, event);
 }
 

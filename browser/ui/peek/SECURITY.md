@@ -46,6 +46,8 @@ matches the iOS Quick Views review.
   part.
 - Only the content area below the toolbar is dimmed; the real omnibox stays
   visible and keeps showing the tab the user is on.
+- Escape closes Peek before the page receives the key, so a page can't keep the
+  user in Peek by consuming it. Test: `EscapeClosesPeek`.
 
 This is a mitigation, not a full fix: a page can still draw a fake card inside
 its own content. The toolbar attachment and the omnibox staying visible are what
