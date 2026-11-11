@@ -194,6 +194,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserApprovedRequest) {
                              " '0xdeadbeef')"})));
     ASSERT_TRUE(WaitForPendingSignMessageRequest(brave_wallet_service(),
                                                  request_index));
+    ASSERT_TRUE(WaitForWalletBubble(web_contents()));
     brave_wallet_service()->NotifySignMessageRequestProcessed(
         true, request_index++, nullptr, std::nullopt);
     EXPECT_EQ(EvalJs(web_contents(), kWaitForSignMessageResult).ExtractString(),
@@ -221,6 +222,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserRejectedRequest) {
                              " '0xdeadbeef')"})));
     ASSERT_TRUE(WaitForPendingSignMessageRequest(brave_wallet_service(),
                                                  request_index));
+    ASSERT_TRUE(WaitForWalletBubble(web_contents()));
     brave_wallet_service()->NotifySignMessageRequestProcessed(
         false, request_index++, nullptr, std::nullopt);
     EXPECT_EQ(EvalJs(web_contents(), kWaitForSignMessageResult).ExtractString(),
@@ -359,6 +361,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, SIWE) {
               ToHex(GetSIWEMessage(valid_case.msg_account, "www.a.com")))));
       ASSERT_TRUE(WaitForPendingSignMessageRequest(brave_wallet_service(),
                                                    request_index));
+      ASSERT_TRUE(WaitForWalletBubble(web_contents()));
       brave_wallet_service()->NotifySignMessageRequestProcessed(
           true, request_index++, nullptr, std::nullopt);
       // The second sign message (wrong origin) is rejected immediately,
