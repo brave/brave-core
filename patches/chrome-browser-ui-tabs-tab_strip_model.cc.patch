@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.cc b/chrome/browser/ui/tabs/tab_strip_model.cc
-index 7babb378878e39aec613229a663ec32824031236..4d7ab2a9be26f1a21820108d6d6122b4f944dc60 100644
+index 7babb378878e39aec613229a663ec32824031236..2f80fa8bbc8a05c017f677c6e6deb026e79e6c80 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.cc
 +++ b/chrome/browser/ui/tabs/tab_strip_model.cc
 @@ -198,6 +198,15 @@ void RecordToggleFocusGroupMetrics(bool is_unfocus,
@@ -33,10 +33,10 @@ index 7babb378878e39aec613229a663ec32824031236..4d7ab2a9be26f1a21820108d6d6122b4
      } else {
 +      if (tab_interface->GetParentCollection()->type() ==
 +          tabs::TabCollection::Type::TREE_NODE &&
-+      contents_data_->ShouldDetachAsTreeSubtreeRoot(GetTabAtIndex(index),
++      contents_data_->ShouldDetachAsTreeSubtreeRoot(tab_interface,
 +                                                    tab_interfaces)) {
 +        owned_tabs_and_collections.emplace_back(DetachTreeTabNodeForInsertion(
-+            GetTabAtIndex(index), tab_interfaces));
++            tab_interface, tab_interfaces));
 +        continue;
 +      }
        owned_tabs_and_collections.emplace_back(DetachTabWithReasonAt(
