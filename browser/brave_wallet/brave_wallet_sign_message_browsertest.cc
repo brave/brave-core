@@ -6,6 +6,7 @@
 #include <optional>
 
 #include "base/command_line.h"
+#include "base/test/run_until.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -66,6 +67,14 @@ bool WaitForWalletBubble(content::WebContents* web_contents) {
   }
 
   return tab_helper->IsShowingBubble();
+}
+
+// The bubble may already be open from an earlier step, so waiting for it does
+// not prove the sign request was queued. Notify...Processed() is a silent
+// no-op for a missing request, so wait for the request itself.
+bool WaitForPendingSignMessageRequest(BraveWalletService* service) {
+  return base::test::RunUntil(
+      [&] { return service->GetPendingSignMessageRequestsSync().size() == 1u; });
 }
 
 }  // namespace
@@ -179,7 +188,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserApprovedRequest) {
                base::StrCat({method,
                              "('0x084DCb94038af1715963F149079cE011C4B22961',"
                              " '0xdeadbeef')"})));
-    EXPECT_TRUE(WaitForWalletBubble(web_contents()));
+    ASSERT_TRUE(WaitForPendingSignMessageRequest(brave_wallet_service()));
     brave_wallet_service()->NotifySignMessageRequestProcessed(
         true, request_index++, nullptr, std::nullopt);
     EXPECT_EQ(EvalJs(web_contents(), kWaitForSignMessageResult).ExtractString(),
@@ -205,7 +214,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserRejectedRequest) {
                base::StrCat({method,
                              "('0x084DCb94038af1715963F149079cE011C4B22961',"
                              " '0xdeadbeef')"})));
-    EXPECT_TRUE(WaitForWalletBubble(web_contents()));
+    ASSERT_TRUE(WaitForPendingSignMessageRequest(brave_wallet_service()));
     brave_wallet_service()->NotifySignMessageRequestProcessed(
         false, request_index++, nullptr, std::nullopt);
     EXPECT_EQ(EvalJs(web_contents(), kWaitForSignMessageResult).ExtractString(),
@@ -342,7 +351,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, SIWE) {
           absl::StrFormat(
               "%s('%s', '%s')", method, valid_case.api_account,
               ToHex(GetSIWEMessage(valid_case.msg_account, "www.a.com")))));
-      EXPECT_TRUE(WaitForWalletBubble(web_contents()));
+      ASSERT_TRUE(WaitForPendingSignMessageRequest(brave_wallet_service()));
       brave_wallet_service()->NotifySignMessageRequestProcessed(
           true, request_index++, nullptr, std::nullopt);
       // The second sign message (wrong origin) is rejected immediately,
