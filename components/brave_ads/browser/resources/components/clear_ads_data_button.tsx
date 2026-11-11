@@ -5,8 +5,8 @@
 
 import * as React from 'react'
 import { createPortal } from 'react-dom'
-import Alert from '@brave/leo/react/alert'
-import Button from '@brave/leo/react/button'
+import Alert from '@brave/nala/react/alert'
+import Button from '@brave/nala/react/button'
 
 import { useAppState, useAppActions } from '../lib/app_context'
 

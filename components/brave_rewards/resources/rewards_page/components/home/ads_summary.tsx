@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Label from '@brave/leo/react/label'
+import Label from '@brave/nala/react/label'
 
 import { AdType } from '../../lib/app_store'
 import { useAppState, useAppActions } from '../../lib/app_context'

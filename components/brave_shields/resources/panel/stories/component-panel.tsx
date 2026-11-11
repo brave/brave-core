@@ -23,7 +23,7 @@ import {
 } from '../state/component_types'
 import { getLocale } from '../../../../common/locale'
 
-import '@brave/leo/tokens/css/variables.css'
+import '@brave/nala/tokens/css/variables.css'
 import {
   ContentSetting
 } from 'gen/components/content_settings/core/common/content_settings.mojom.m'

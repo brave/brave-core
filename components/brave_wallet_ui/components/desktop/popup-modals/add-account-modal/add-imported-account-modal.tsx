@@ -6,12 +6,12 @@
 import { assert, assertNotReached } from 'chrome://resources/js/assert.js'
 import * as React from 'react'
 import { useHistory, useParams } from 'react-router'
-import { InputEventDetail } from '@brave/leo/react/input'
-import Button from '@brave/leo/react/button'
-import SegmentedControl from '@brave/leo/react/segmentedControl'
-import SegmentedControlItem from '@brave/leo/react/segmentedControlItem'
-import Alert from '@brave/leo/react/alert'
-import { showAlert } from '@brave/leo/react/alertCenter'
+import { InputEventDetail } from '@brave/nala/react/input'
+import Button from '@brave/nala/react/button'
+import SegmentedControl from '@brave/nala/react/segmentedControl'
+import SegmentedControlItem from '@brave/nala/react/segmentedControlItem'
+import Alert from '@brave/nala/react/alert'
+import { showAlert } from '@brave/nala/react/alertCenter'
 
 // utils
 import { FILECOIN_FORMAT_DESCRIPTION_URL } from '../../../../common/constants/urls'

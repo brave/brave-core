@@ -2,7 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import { color } from '@brave/leo/tokens/css/variables';
+import { color } from '@brave/nala/tokens/css/variables';
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 import styled, { keyframes } from 'styled-components';

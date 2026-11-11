@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import LeoAlert from '@brave/leo/react/alert'
-import LeoButton from '@brave/leo/react/button'
+import LeoAlert from '@brave/nala/react/alert'
+import LeoButton from '@brave/nala/react/button'
 
 // Shared Styles
 import { Row } from '$wallet/components/shared/style'

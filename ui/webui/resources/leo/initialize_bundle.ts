@@ -5,28 +5,28 @@
 
 // Import web components here. They will be available on the page
 // as <leo-{component}></leo-{component}>.
-import '@brave/leo/web-components/alert'
-import '@brave/leo/web-components/alertCenter'
-import '@brave/leo/web-components/button'
-import '@brave/leo/web-components/buttonMenu'
-import '@brave/leo/web-components/checkbox'
-import '@brave/leo/web-components/dialog'
-import '@brave/leo/web-components/dropdown'
-import '@brave/leo/web-components/icon'
-import '@brave/leo/web-components/input'
-import '@brave/leo/web-components/label'
-import '@brave/leo/web-components/link'
-import '@brave/leo/web-components/progressRing'
-import '@brave/leo/web-components/textarea'
-import '@brave/leo/web-components/toggle'
-import '@brave/leo/web-components/tooltip'
-import '@brave/leo/web-components/radioButton'
-import { setIconBasePath } from '@brave/leo/web-components/icon'
-import iconsMeta from '@brave/leo/icons/meta'
+import '@brave/nala/web-components/alert'
+import '@brave/nala/web-components/alertCenter'
+import '@brave/nala/web-components/button'
+import '@brave/nala/web-components/buttonMenu'
+import '@brave/nala/web-components/checkbox'
+import '@brave/nala/web-components/dialog'
+import '@brave/nala/web-components/dropdown'
+import '@brave/nala/web-components/icon'
+import '@brave/nala/web-components/input'
+import '@brave/nala/web-components/label'
+import '@brave/nala/web-components/link'
+import '@brave/nala/web-components/progressRing'
+import '@brave/nala/web-components/textarea'
+import '@brave/nala/web-components/toggle'
+import '@brave/nala/web-components/tooltip'
+import '@brave/nala/web-components/radioButton'
+import { setIconBasePath } from '@brave/nala/web-components/icon'
+import iconsMeta from '@brave/nala/icons/meta'
 
 export {
   showAlert as leoShowAlert
-} from '@brave/leo/web-components/alertCenter'
+} from '@brave/nala/web-components/alertCenter'
 
 // Note: This file is loaded for some extensions, and on those pages we fall back
 // to loading icons from the `chrome://` scheme.

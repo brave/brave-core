@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import * as S from './style'
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 import classnames from '$web-common/classnames'
 import DataContext from '../../state/context'
 import { ViewType } from '../../state/component_types'

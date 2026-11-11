@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 
 // Feature-specific components
 import {

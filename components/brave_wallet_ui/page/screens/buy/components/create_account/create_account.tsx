@@ -5,9 +5,9 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query'
-import { DialogProps } from '@brave/leo/react/dialog'
-import { InputEventDetail } from '@brave/leo/react/input'
-import Button from '@brave/leo/react/button'
+import { DialogProps } from '@brave/nala/react/dialog'
+import { InputEventDetail } from '@brave/nala/react/input'
+import Button from '@brave/nala/react/button'
 
 // Queries
 import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'

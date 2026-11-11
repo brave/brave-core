@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import Input from '@brave/leo/react/input'
+import Input from '@brave/nala/react/input'
 
 export const MemoInput = styled(Input)`
   display: flex;

@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import ProgressRing from '@brave/leo/react/progressRing'
+import ProgressRing from '@brave/nala/react/progressRing'
 
 import { useAppState, useAppActions } from '../lib/app_context'
 import { EventHubContext } from '../lib/event_hub'

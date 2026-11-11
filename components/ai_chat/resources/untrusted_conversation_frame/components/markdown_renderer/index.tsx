@@ -10,7 +10,7 @@ import remarkDirective from 'remark-directive'
 import remarkMath from 'remark-math'
 import type { Root, Element as HastElement } from 'hast'
 import type { PluggableList } from 'unified'
-import Label from '@brave/leo/react/label'
+import Label from '@brave/nala/react/label'
 import { visit } from 'unist-util-visit'
 
 import styles from './style.module.scss'

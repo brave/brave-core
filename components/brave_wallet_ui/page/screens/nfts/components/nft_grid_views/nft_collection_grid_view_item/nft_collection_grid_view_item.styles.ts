@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled, { CSSProperties } from 'styled-components'
-import { color } from '@brave/leo/tokens/css/variables'
+import { color } from '@brave/nala/tokens/css/variables'
 
 export const CollectionGrid = styled.div`
   display: grid;

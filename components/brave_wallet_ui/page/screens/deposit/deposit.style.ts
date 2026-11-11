@@ -5,9 +5,9 @@
 import styled from 'styled-components'
 import LeoSegmentedControl, {
   SegmentedControlProps,
-} from '@brave/leo/react/segmentedControl'
-import * as leo from '@brave/leo/tokens/css/variables'
-import Icon from '@brave/leo/react/icon'
+} from '@brave/nala/react/segmentedControl'
+import * as leo from '@brave/nala/tokens/css/variables'
+import Icon from '@brave/nala/react/icon'
 
 // Shared Styles
 import { Title } from '../onboarding/onboarding.style'

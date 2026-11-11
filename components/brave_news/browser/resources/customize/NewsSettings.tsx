@@ -4,9 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import DropDown from '@brave/leo/react/dropdown'
-import Toggle from '@brave/leo/react/toggle'
-import { color, icon, spacing } from '@brave/leo/tokens/css/variables'
+import DropDown from '@brave/nala/react/dropdown'
+import Toggle from '@brave/nala/react/toggle'
+import { color, icon, spacing } from '@brave/nala/tokens/css/variables'
 import { getLocale } from '$web-common/locale'
 import { loadTimeData } from '$web-common/loadTimeData'
 import styled from 'styled-components'

@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Dialog from '@brave/leo/react/dialog'
-import { color } from '@brave/leo/tokens/css/variables'
+import Dialog from '@brave/nala/react/dialog'
+import { color } from '@brave/nala/tokens/css/variables'
 import styled from 'styled-components'
 import { useBraveNews } from '../shared/Context'
 

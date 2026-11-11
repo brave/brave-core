@@ -13,7 +13,7 @@ import { loadTimeData } from '../../../common/loadTimeData'
 import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
 import Toolbar from './components/toolbar'
 
-import { setIconBasePath } from '@brave/leo/react/icon'
+import { setIconBasePath } from '@brave/nala/react/icon'
 
 setIconBasePath('//resources/brave-icons')
 

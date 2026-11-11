@@ -8,7 +8,7 @@ import { render, fireEvent, waitFor, act } from '@testing-library/react'
 import { requestWorkspaceZip } from '../../../leo_workspace/download'
 import WorkspaceFileLightbox, { hyphenateTitle, WorkspaceFileInfo } from '.'
 
-jest.mock('@brave/leo/react/dialog', () => {
+jest.mock('@brave/nala/react/dialog', () => {
   return function MockDialog(
     props: React.PropsWithChildren<{ isOpen?: boolean }>,
   ) {

@@ -8,7 +8,7 @@ import styled, { css } from 'styled-components'
 import Flex from '$web-common/Flex'
 import PublisherCard from '../shared/PublisherCard'
 import { ArrowRight } from '../shared/Icons'
-import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css/variables'
+import { color, effect, font, radius, spacing } from '@brave/nala/tokens/css/variables'
 
 const CARD_SIZE = 208
 const CARD_SIZE_PX = `${CARD_SIZE}px`

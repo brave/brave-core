@@ -49,7 +49,7 @@ def CheckLeoVariables(input_api, output_api):
     try:
         parts = [
             brave_chromium_utils.wspath(
-                '//brave/node_modules/@brave/leo/src/scripts/audit-tokens.js'
+                '//brave/node_modules/@brave/nala/src/scripts/audit-tokens.js'
             ),
             '--ignore',
             '.storybook-out',

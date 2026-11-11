@@ -35,7 +35,7 @@ import walletDarkTheme from '../theme/wallet-dark'
 import walletLightTheme from '../theme/wallet-light'
 import 'emptykit.css'
 
-import { setIconBasePath } from '@brave/leo/react/icon'
+import { setIconBasePath } from '@brave/nala/react/icon'
 setIconBasePath('chrome://resources/brave-icons')
 
 function App() {

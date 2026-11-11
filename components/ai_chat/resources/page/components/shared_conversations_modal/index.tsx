@@ -4,11 +4,11 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
-import Dialog from '@brave/leo/react/dialog'
-import Icon from '@brave/leo/react/icon'
-import ProgressRing from '@brave/leo/react/progressRing'
-import { showAlert } from '@brave/leo/react/alertCenter'
+import Button from '@brave/nala/react/button'
+import Dialog from '@brave/nala/react/dialog'
+import Icon from '@brave/nala/react/icon'
+import ProgressRing from '@brave/nala/react/progressRing'
+import { showAlert } from '@brave/nala/react/alertCenter'
 import { getLocale } from '$web-common/locale'
 import { mojoTimeToJSDate } from '$web-common/mojomUtils'
 import { useAIChat } from '../../state/ai_chat_context'

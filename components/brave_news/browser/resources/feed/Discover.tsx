@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import { getLocale } from '$web-common/locale';
-import Icon from '@brave/leo/react/icon';
-import { icon, spacing } from '@brave/leo/tokens/css/variables';
+import Icon from '@brave/nala/react/icon';
+import { icon, spacing } from '@brave/nala/tokens/css/variables';
 import { Discover as Info } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 import * as React from 'react';
 import styled from 'styled-components';

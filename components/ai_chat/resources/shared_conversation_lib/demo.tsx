@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 import { renderConversation } from './render_conversation'
 import styles from './demo.css'
 

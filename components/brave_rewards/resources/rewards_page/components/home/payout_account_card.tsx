@@ -4,10 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
-import Label from '@brave/leo/react/label'
-import Tooltip from '@brave/leo/react/tooltip'
+import Button from '@brave/nala/react/button'
+import Icon from '@brave/nala/react/icon'
+import Label from '@brave/nala/react/label'
+import Tooltip from '@brave/nala/react/tooltip'
 
 import { useAppState, useAppActions } from '../../lib/app_context'
 import { formatString } from '$web-common/formatString'

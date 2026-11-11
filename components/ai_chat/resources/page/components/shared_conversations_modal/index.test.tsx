@@ -13,7 +13,7 @@ import SharedConversationsModal from './index'
 import * as Mojom from '../../../common/mojom'
 
 const showAlert = jest.fn()
-jest.mock('@brave/leo/react/alertCenter', () => ({
+jest.mock('@brave/nala/react/alertCenter', () => ({
   __esModule: true,
   default: () => null,
   showAlert: (...args: unknown[]) => showAlert(...args),

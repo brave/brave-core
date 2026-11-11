@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 import { StyledDiv } from '../../shared-swap.styles'
-import * as leo from '@brave/leo/tokens/css/variables'
+import * as leo from '@brave/nala/tokens/css/variables'
 
 export const Wrapper = styled(StyledDiv)`
   /* This RGBA value does not exist in the design system */

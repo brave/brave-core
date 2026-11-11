@@ -6,7 +6,7 @@ import * as React from 'react'
 import { VariableSizeList as List } from 'react-window'
 import { useLocation } from 'react-router-dom'
 import AutoSizer from 'react-virtualized-auto-sizer'
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 
 // utils
 import { getLocale } from '../../../../../common/locale'

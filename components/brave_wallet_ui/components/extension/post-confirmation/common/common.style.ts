@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css/variables'
-import ProgressRing from '@brave/leo/react/progressRing'
-import LeoIcon from '@brave/leo/react/icon'
-import LeoAlert from '@brave/leo/react/alert'
+import * as leo from '@brave/nala/tokens/css/variables'
+import ProgressRing from '@brave/nala/react/progressRing'
+import LeoIcon from '@brave/nala/react/icon'
+import LeoAlert from '@brave/nala/react/alert'
 import LinkSvg from '../../../../assets/svg-icons/link-icon.svg'
 import LoadingIcon from '../../../../assets/svg-icons/loading-slow.svg'
 import { WalletButton, Column, Text } from '../../../shared/style'

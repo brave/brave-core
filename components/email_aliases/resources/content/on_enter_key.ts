@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { InputEventDetail } from '@brave/leo/react/input'
+import { InputEventDetail } from '@brave/nala/react/input'
 import { KeyboardEvent } from 'react'
 
 const onEnterKeyForDiv = (onSubmit: () => void) => (e: KeyboardEvent) => {

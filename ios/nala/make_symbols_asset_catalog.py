@@ -19,9 +19,9 @@ def main():
     )
     parser.add_argument(
         "-l",
-        "--leo_sf_symbols_directory",
+        "--nala_sf_symbols_directory",
         required=True,
-        help="Directory of Leo SF symbols",
+        help="Directory of Nala SF symbols",
     )
     parser.add_argument(
         "-i",
@@ -32,10 +32,10 @@ def main():
 
     args = parser.parse_args()
     output_directory = args.output
-    leo_sf_symbols_directory = args.leo_sf_symbols_directory
+    nala_sf_symbols_directory = args.nala_sf_symbols_directory
     icons = args.icons.split(",")
 
-    if not output_directory or not leo_sf_symbols_directory or not icons:
+    if not output_directory or not nala_sf_symbols_directory or not icons:
         print("Missing required arguments")
         sys.exit(1)
 
@@ -53,10 +53,10 @@ def main():
 
     for icon in icons:
         plain_name = os.path.splitext(icon)[0]  # without .svg extension
-        svg_path = os.path.join(leo_sf_symbols_directory, "symbols", icon)
+        svg_path = os.path.join(nala_sf_symbols_directory, icon)
 
         if not os.path.exists(svg_path):
-            print(f"Could not find Leo SF symbol named {icon}")
+            print(f"Could not find Nala SF symbol named {icon}")
             sys.exit(1)
 
         symbolset = os.path.join(output_directory, f"{plain_name}.symbolset")

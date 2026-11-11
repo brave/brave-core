@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { VariableSizeList as List } from 'react-window'
 import AutoSizer from 'react-virtualized-auto-sizer'
-import { DialogProps } from '@brave/leo/react/dialog'
+import { DialogProps } from '@brave/nala/react/dialog'
 
 // Selectors
 import {

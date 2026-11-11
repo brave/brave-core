@@ -8,7 +8,7 @@ import { render, screen, waitFor, fireEvent, act } from '@testing-library/react'
 import * as Mojom from '../../../common/mojom'
 import ImageLightbox from '.'
 
-jest.mock('@brave/leo/react/dialog', () => {
+jest.mock('@brave/nala/react/dialog', () => {
   return function MockDialog(
     props: React.PropsWithChildren<{
       isOpen?: boolean

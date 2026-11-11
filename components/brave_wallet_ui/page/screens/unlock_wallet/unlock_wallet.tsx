@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { useHistory } from 'react-router'
 
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 
 // Constants
 import {

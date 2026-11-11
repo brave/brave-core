@@ -8,7 +8,7 @@ import { createRoot } from 'react-dom/client'
 import { initLocale } from 'brave-ui'
 import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 
-import { setIconBasePath } from '@brave/leo/react/icon'
+import { setIconBasePath } from '@brave/nala/react/icon'
 
 import { loadTimeData } from '$web-common/loadTimeData'
 import BraveCoreThemeProvider from '$web-common/BraveCoreThemeProvider'

@@ -7,7 +7,7 @@ import * as React from 'react'
 import styled, { createGlobalStyle, css } from 'styled-components'
 import { requestAnimationFrameThrottle } from '../../../../common/throttle'
 import { defaultState } from '../../../storage/new_tab_storage'
-import { font, spacing } from '@brave/leo/tokens/css/variables'
+import { font, spacing } from '@brave/nala/tokens/css/variables'
 
 const breakpointLargeBlocks = '980px'
 const breakpointEveryBlock = '870px'

@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Tooltip from '@brave/leo/react/tooltip'
+import Tooltip from '@brave/nala/react/tooltip'
 
 // Types
 import { BraveWallet } from '../../../constants/types'

@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 
 // Flags an ad/segment/creative set elsewhere in the UI that the user has
 // already reacted to (see reactions.tsx), so the reaction isn't only

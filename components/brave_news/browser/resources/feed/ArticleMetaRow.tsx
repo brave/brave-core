@@ -3,15 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { font, spacing } from "@brave/leo/tokens/css/variables"
+import { font, spacing } from "@brave/nala/tokens/css/variables"
 import getBraveNewsController, { FeedItemMetadata, UserEnabled } from "../shared/api"
 import { channelIcons } from "../shared/Icons"
 import styled from "styled-components";
 import * as React from "react";
 import Flex from '$web-common/Flex'
-import ButtonMenu from "@brave/leo/react/buttonMenu";
-import Button from "@brave/leo/react/button";
-import Icon from "@brave/leo/react/icon";
+import ButtonMenu from "@brave/nala/react/buttonMenu";
+import Button from "@brave/nala/react/button";
+import Icon from "@brave/nala/react/icon";
 import { formatLocale } from '$web-common/locale';
 import { getTranslatedChannelName } from "../shared/channel";
 import useRelativeTime from '$web-common/useRelativeTime'

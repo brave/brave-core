@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { scoped } from '$web-common/scoped_css'
-import { color, effect, font } from '@brave/leo/tokens/css/variables'
+import { color, effect, font } from '@brave/nala/tokens/css/variables'
 
 export const style = scoped.css`
   & {

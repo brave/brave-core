@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import Progress from '@brave/leo/react/progressRing'
+import Progress from '@brave/nala/react/progressRing'
 
 // Constants
 import { layoutPanelWidth } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'

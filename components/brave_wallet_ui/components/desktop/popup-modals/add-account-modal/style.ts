@@ -4,9 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css/variables'
-import LeoInput from '@brave/leo/react/input'
-import LeoButton from '@brave/leo/react/button'
+import * as leo from '@brave/nala/tokens/css/variables'
+import LeoInput from '@brave/nala/react/input'
+import LeoButton from '@brave/nala/react/button'
 
 // Assets
 import InfoLogo from '../../../../assets/svg-icons/info-icon.svg'

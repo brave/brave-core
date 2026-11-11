@@ -8,7 +8,7 @@ import '../../common/strings'
 import * as React from 'react'
 import { useArgs } from '@storybook/preview-api'
 import { Meta, StoryObj } from '@storybook/react'
-import '@brave/leo/tokens/css/variables.css'
+import '@brave/nala/tokens/css/variables.css'
 import { getKeysForMojomEnum, jsDateToMojoTime } from '$web-common/mojomUtils'
 import { InferControlsFromArgs } from '$storybook/utils'
 import {

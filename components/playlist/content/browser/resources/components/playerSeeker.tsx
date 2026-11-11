@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import styled, { css } from 'styled-components'
-import { color } from '@brave/leo/tokens/css/variables'
+import { color } from '@brave/nala/tokens/css/variables'
 
 interface Props {
   videoElement: HTMLVideoElement | null

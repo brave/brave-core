@@ -9,16 +9,16 @@ import {
   radius,
   spacing,
   typography,
-} from '@brave/leo/tokens/css/variables'
+} from '@brave/nala/tokens/css/variables'
 import { formatLocale, getLocale } from '$web-common/locale'
 import { onEnterKeyForInput } from './on_enter_key'
 import * as React from 'react'
-import Alert from '@brave/leo/react/alert'
-import Button from '@brave/leo/react/button'
+import Alert from '@brave/nala/react/alert'
+import Button from '@brave/nala/react/button'
 import Col from './styles/Col'
-import Icon from '@brave/leo/react/icon'
-import Input from '@brave/leo/react/input'
-import ProgressRing from '@brave/leo/react/progressRing'
+import Icon from '@brave/nala/react/icon'
+import Input from '@brave/nala/react/input'
+import ProgressRing from '@brave/nala/react/progressRing'
 import Row from './styles/Row'
 import styled from 'styled-components'
 import {

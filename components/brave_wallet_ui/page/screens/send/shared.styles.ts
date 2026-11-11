@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 
 // Leo styles
-import * as leo from '@brave/leo/tokens/css/variables'
+import * as leo from '@brave/nala/tokens/css/variables'
 
 import {
   legacyTextSizeToVariant,

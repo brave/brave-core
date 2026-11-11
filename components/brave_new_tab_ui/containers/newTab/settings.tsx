@@ -11,14 +11,14 @@ import {
   SettingsTitle,
 } from '../../components/default'
 
-import Navigation from '@brave/leo/react/navigation'
-import NavigationItem from '@brave/leo/react/navigationItem'
-import NavigationMenu from '@brave/leo/react/navigationMenu'
+import Navigation from '@brave/nala/react/navigation'
+import NavigationItem from '@brave/nala/react/navigationItem'
+import NavigationMenu from '@brave/nala/react/navigationMenu'
 
 import { getLocale } from '$web-common/locale'
 import { useBraveNews } from '../../../brave_news/browser/resources/shared/Context'
 import { loadTimeData } from '$web-common/loadTimeData'
-import Dialog from '@brave/leo/react/dialog'
+import Dialog from '@brave/nala/react/dialog'
 
 import styled from 'styled-components'
 

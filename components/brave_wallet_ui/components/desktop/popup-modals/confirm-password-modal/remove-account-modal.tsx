@@ -5,14 +5,14 @@
 
 import * as React from 'react'
 import { useSelector } from 'react-redux'
-import * as leo from '@brave/leo/tokens/css/variables'
-import Button from '@brave/leo/react/button'
+import * as leo from '@brave/nala/tokens/css/variables'
+import Button from '@brave/nala/react/button'
 
 // redux
 import { useAppDispatch } from '../../../../common/hooks/use-redux'
 
 // types
-import { type InputEventDetail } from '@brave/leo/react/input'
+import { type InputEventDetail } from '@brave/nala/react/input'
 
 // actions
 import {

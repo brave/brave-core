@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import * as S from './style'
 import { getLocale } from '$web-common/locale'
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 
 interface ReaderModeControlProps {
   onClose?: Function

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
+import Button from '@brave/nala/react/button'
+import Icon from '@brave/nala/react/icon'
 import * as React from 'react'
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter'
 import cpp from 'react-syntax-highlighter/dist/esm/languages/hljs/cpp'

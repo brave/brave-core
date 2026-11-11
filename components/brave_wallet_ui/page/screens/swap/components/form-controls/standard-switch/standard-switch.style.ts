@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 import { StyledInput, StyledDiv, StyledLabel } from '../../shared-swap.styles'
-import * as leo from '@brave/leo/tokens/css/variables'
+import * as leo from '@brave/nala/tokens/css/variables'
 
 export const Label = styled(StyledLabel)`
   display: flex;

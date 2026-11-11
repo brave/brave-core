@@ -4,9 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
-import Dialog from '@brave/leo/react/dialog'
-import Icon from '@brave/leo/react/icon'
+import Button from '@brave/nala/react/button'
+import Dialog from '@brave/nala/react/dialog'
+import Icon from '@brave/nala/react/icon'
 import { formatLocale, getLocale } from '$web-common/locale'
 import { serializeConversationForSharing } from '../../../common/conversation_serialization'
 import { encryptForSharing } from '../../../common/conversation_share_encryption'

@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from "styled-components";
 import Card from "./Card";
-import ProgressRing from '@brave/leo/react/progressRing'
+import ProgressRing from '@brave/nala/react/progressRing'
 import * as React from "react";
 
 const Container = styled(Card)`
