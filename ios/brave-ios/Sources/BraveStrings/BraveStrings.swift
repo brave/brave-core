@@ -1001,6 +1001,48 @@ extension Strings {
       value: "Close Tabs",
       comment: "Label for a close button that when tapped closes the associated tabs"
     )
+    public static let addTabToGroupMenuTitle = NSLocalizedString(
+      "tabGrid.addTabToGroupMenuTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Add Tab to Group",
+      comment: "A menu item title that opens a submenu of tab groups the selected tab can be added to"
+    )
+    public static let createNewGroupMenuTitle = NSLocalizedString(
+      "tabGrid.createNewGroupMenuTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Create New Group",
+      comment: "A menu item title that when tapped prompts the user to create a new tab group containing the selected tab"
+    )
+    public static let newGroupAlertTitle = NSLocalizedString(
+      "tabGrid.newGroupAlertTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "New Tab Group",
+      comment: "The title of an alert asking the user to name a new tab group"
+    )
+    public static let defaultGroupTitleFormat = NSLocalizedString(
+      "tabGrid.defaultGroupTitleFormat",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Group %lld",
+      comment: "The name given to a new tab group when the user doesn't provide one e.g. 'Group 2'"
+    )
+    public static let createGroupButtonTitle = NSLocalizedString(
+      "tabGrid.createGroupButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Create",
+      comment: "A button title that when tapped creates a new tab group with the entered name"
+    )
+    public static let ungroupMenuTitle = NSLocalizedString(
+      "tabGrid.ungroupMenuTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Ungroup",
+      comment: "A menu item title that when tapped dissolves a tab group, keeping its tabs open"
+    )
     public static let shredTabsAccessibilityLabel = NSLocalizedString(
       "tabGrid.shredTabsAccessibilityLabel",
       tableName: "BraveShared",

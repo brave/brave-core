@@ -4,10 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveStrings
 import Combine
 import Data
 import LocalAuthentication
 import Preferences
+import Shared
 import SwiftUI
 import Web
 
@@ -16,6 +18,7 @@ import Web
 class TabGridViewModel {
   private var _isPrivateBrowsing: Bool = false
   private(set) var tabs: [any TabState] = []
+  private(set) var items: [TabGridItem] = []
   private(set) var isPrivateTabsLocked: Bool = false
   var onModeSwitchComplete: (() -> Void)?
   private(set) var isSceneActive: Bool = true
@@ -86,6 +89,7 @@ class TabGridViewModel {
     self.windowProtection = windowProtection
     self.tabs = tabManager.tabsForCurrentMode
     self._isPrivateBrowsing = tabManager.privateBrowsingManager.isPrivateBrowsing
+    self.items = TabGridItem.items(for: tabs, using: tabManager)
 
     setUpObservations()
   }
@@ -195,9 +199,62 @@ class TabGridViewModel {
     }
   }
 
-  func moveTabs(_ tabs: [TabState.ID], to index: Int) {
-    tabManager.moveTabs(tabs, toIndex: index)
+  /// Moves tabs to where the item at `itemIndex` is. Dropping on a group moves the tabs before the group's first tab.
+  func moveTabs(_ tabs: [TabState.ID], toItemIndex itemIndex: Int) {
+    let tabIndex: Int
+    if let item = items[safe: itemIndex], let firstTab = item.tabs.first {
+      tabIndex = self.tabs.firstIndex(where: { $0 === firstTab }) ?? self.tabs.count
+    } else {
+      tabIndex = self.tabs.count
+    }
+    tabManager.moveTabs(tabs, toIndex: tabIndex)
     updateTabs()
+  }
+
+  // MARK: - Tab Groups
+
+  /// Whether tabs can be added to groups in the current browsing mode
+  var canGroupTabs: Bool {
+    tabManager.canGroupTabsForCurrentMode
+  }
+
+  var tabGroups: [TabGroup] {
+    tabManager.tabGroups
+  }
+
+  func addTabs(_ tabIDs: Set<TabState.ID>, to group: TabGroup) {
+    withAnimation {
+      tabManager.addTabs(currentModeTabs(with: tabIDs), to: group)
+    }
+  }
+
+  func createGroup(title: String, adding tabIDs: Set<TabState.ID>) {
+    let title = title.trimmingCharacters(in: .whitespacesAndNewlines)
+    withAnimation {
+      _ = tabManager.createTabGroup(
+        title: title.isEmpty ? defaultGroupTitle : title,
+        adding: currentModeTabs(with: tabIDs)
+      )
+    }
+  }
+
+  func ungroup(_ group: TabGroup) {
+    withAnimation {
+      tabManager.ungroupTabs(in: group)
+    }
+  }
+
+  /// The name given to a new group when the user doesn't provide one
+  var defaultGroupTitle: String {
+    String.localizedStringWithFormat(
+      Strings.TabGrid.defaultGroupTitleFormat,
+      tabManager.tabGroups.count + 1
+    )
+  }
+
+  /// The given tabs in tab order
+  private func currentModeTabs(with tabIDs: Set<TabState.ID>) -> [any TabState] {
+    tabManager.tabsForCurrentMode.filter { tabIDs.contains($0.id) }
   }
 
   func presentPrivateModeUnlock() {
@@ -233,6 +290,10 @@ class TabGridViewModel {
   private func updateTabs() {
     let query = isSearching && !searchQuery.isEmpty ? searchQuery : nil
     tabs = tabManager.tabsForCurrentMode(for: query)
+    // Search results are shown flat so that matches inside a group remain visible
+    items =
+      query != nil
+      ? tabs.map { TabGridItem.tab($0) } : TabGridItem.items(for: tabs, using: tabManager)
   }
 
   private func handleAuthenticationResult(success: Bool, error: LAError.Code?) {
@@ -275,6 +336,7 @@ class TabGridViewModel {
     tabManager.privateBrowsingManager.isPrivateBrowsing = isPrivateBrowsing
     if isPrivateTabsLocked {
       tabs = []
+      items = []
       return
     }
 
@@ -404,6 +466,10 @@ class TabGridViewModel {
     }
 
     func tabManagerDidRestoreTabs(_ tabManager: TabManager) {
+      notify()
+    }
+
+    func tabManagerDidChangeTabGroups(_ tabManager: TabManager) {
       notify()
     }
   }
