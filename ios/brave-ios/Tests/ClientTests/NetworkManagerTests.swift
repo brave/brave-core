@@ -32,9 +32,13 @@ class NetworkManagerTests: XCTestCase {
 
     let exp = XCTestExpectation(description: "testDataRequestUrl")
     Task {
-      let (data, response) = try await self.manager.dataRequest(with: self.url)
-      XCTAssertEqual(self.data, data)
-      XCTAssertEqual(testResponse, response)
+      do {
+        let (data, response) = try await self.manager.dataRequest(with: self.url)
+        XCTAssertEqual(self.data, data)
+        XCTAssertEqual(testResponse, response)
+      } catch {
+        XCTFail(error.localizedDescription)
+      }
       exp.fulfill()
     }
 
