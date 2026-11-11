@@ -7,7 +7,7 @@
 
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
-#include "base/run_loop.h"
+#include "base/test/run_until.h"
 #include "base/test/simple_test_tick_clock.h"
 #include "base/time/time.h"
 #include "components/captive_portal/content/captive_portal_service.h"
@@ -156,9 +156,10 @@ class CaptivePortalServiceTest : public testing::Test,
     EXPECT_FALSE(FetchingURL());
     ASSERT_TRUE(TimerRunning());
 
-    base::RunLoop().RunUntilIdle();
-    EXPECT_EQ(CaptivePortalService::STATE_CHECKING_FOR_PORTAL,
-              service()->state());
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      return service()->state() ==
+             CaptivePortalService::STATE_CHECKING_FOR_PORTAL;
+    }));
     ASSERT_TRUE(FetchingURL());
     EXPECT_FALSE(TimerRunning());
 
