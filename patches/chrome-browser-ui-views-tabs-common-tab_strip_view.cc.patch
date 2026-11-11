@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/common/tab_strip_view.cc b/chrome/browser/ui/views/tabs/common/tab_strip_view.cc
-index 1d9433d570defd35c52f9b9c57b1b300af887bcd..fb8887e4bfd3669d7dd4942379049039a529f329 100644
+index 1d2fd1a1735eb90773e7a24488f87e9dab300cc5..135ce6638fcce4020d2fc593d56bf723cb68a85f 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_strip_view.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_strip_view.cc
-@@ -469,6 +469,8 @@ void TabStripView::OnChildMoved(TabCollectionNode* moved_node) {
+@@ -451,6 +451,8 @@ void TabStripView::OnChildMoved(TabCollectionNode* moved_node) {
  
    if (is_active_tab || has_focus) {
      switch (moved_node->type()) {
@@ -11,7 +11,7 @@ index 1d9433d570defd35c52f9b9c57b1b300af887bcd..fb8887e4bfd3669d7dd4942379049039
        case TabCollectionNode::Type::TAB: {
          const tabs::TabInterface* tab =
              std::get<tabs::ConstDanglingUntriagedTabInterface>(
-@@ -781,8 +783,14 @@ void TabStripView::SetScrollViewProperties(views::ScrollView* scroll_view) {
+@@ -779,8 +781,14 @@ void TabStripView::SetScrollViewProperties(views::ScrollView* scroll_view) {
      scroll_view->SetOverflowGradientMask(
          views::ScrollView::GradientDirection::kVertical);
      scroll_view->SetVerticalScrollBar(
@@ -28,7 +28,7 @@ index 1d9433d570defd35c52f9b9c57b1b300af887bcd..fb8887e4bfd3669d7dd4942379049039
    } else {
      scroll_view->SetHorizontalScrollBarMode(
          views::ScrollView::ScrollBarMode::kHiddenButEnabled);
-@@ -991,7 +999,7 @@ void TabStripView::EnableOverflowVisuals(views::ScrollView* scroll_view) {
+@@ -979,7 +987,7 @@ void TabStripView::EnableOverflowVisuals(views::ScrollView* scroll_view) {
    if (orientation_ == TabStripOrientation::kVertical) {
      scroll_view->SetDrawOverflowIndicator(true);
      scroll_view->SetVerticalScrollBarMode(

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/common/root_tab_collection_node.h b/chrome/browser/ui/views/tabs/common/root_tab_collection_node.h
-index 2935d9e5552e5b838497f0a7b5ca8f942911070f..ea863323958d4f60f6dd7a6c1bec6ca8b1bb693c 100644
+index 5df6ed5ca33e9c097eda69d2f72f6b9131ef570c..01abcad6fbc73412b66337e0b848771fd20e950b 100644
 --- a/chrome/browser/ui/views/tabs/common/root_tab_collection_node.h
 +++ b/chrome/browser/ui/views/tabs/common/root_tab_collection_node.h
-@@ -53,6 +53,8 @@ class RootTabCollectionNode : public TabCollectionNode,
+@@ -65,6 +65,8 @@ class RootTabCollectionNode : public TabCollectionNode,
    base::CallbackListSubscription RegisterOnActiveTabChangedCallback(
        ActiveTabChangedCallback callback);
  
@@ -10,4 +10,4 @@ index 2935d9e5552e5b838497f0a7b5ca8f942911070f..ea863323958d4f60f6dd7a6c1bec6ca8
 +
   private:
    using SelectionHandles = base::flat_set<tabs::TabHandle>;
- 
+   using HandleToNodeMap = absl::flat_hash_map<tabs::TabCollectionNodeHandle,

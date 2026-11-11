@@ -1,5 +1,5 @@
 diff --git a/.gn b/.gn
-index 3f592ba2d538eecf63afff59f6cea44c6f84ca8c..adf68377814448e4fa20a05bfd2592746e092a28 100644
+index d8e367dbdfd63d4bc4d4e02a8f1ecdbfafa6fcd4..fe8f8f2a68069534129f484b877cc7a866f118cc 100644
 --- a/.gn
 +++ b/.gn
 @@ -2,11 +2,14 @@
@@ -10,19 +10,15 @@ index 3f592ba2d538eecf63afff59f6cea44c6f84ca8c..adf68377814448e4fa20a05bfd259274
 +import("//brave/build/circular_includes_brave.gni")
  import("//build/circular_includes_bedrock.gni")
  import("//build/circular_includes_untriaged.gni")
- import("//build/strict_deps_failures.gni")
  import("//build/dotfile_settings.gni")
+ import("//build/strict_deps_failures.gni")
  import("//third_party/angle/dotfile_settings.gni")
 +check_includes_strict_exceptions += brave_check_includes_strict_exceptions
  
  # The location of the build configuration file.
  buildconfig = "//build/config/BUILDCONFIG.gn"
-@@ -478,4 +481,5 @@ expand_directory_allowlist =
- # entries in this list should be reviewed by a member of the chrome build team.
+@@ -502,3 +505,4 @@ expand_directory_allowlist =
  allow_circular_includes_from_allowlist =
      allow_circular_includes_from_untriaged + project_bedrock_circular_includes +
--    []
-\ No newline at end of file
-+    []
+     []
 +allow_circular_includes_from_allowlist += allow_circular_includes_from_brave
-\ No newline at end of file

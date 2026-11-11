@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.cc b/chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.cc
-index 67ac9c76b0343010c607ab11dff01e9154543f1b..2e54779a02f6c5941d340deeede9eefcea29a744 100644
+index bee4947bcdc13466619f2be8e250384a4afe4846..ab8e6d8d08f2cf066409dfd9fb1ca8e43f16399a 100644
 --- a/chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.cc
 +++ b/chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.cc
-@@ -267,6 +267,17 @@ content::WebContents* WebUIContentsWrapper::AddNewContents(
+@@ -255,6 +255,17 @@ content::WebContents* WebUIContentsWrapper::AddNewContents(
      const blink::mojom::WindowFeatures& window_features,
      bool user_gesture,
      bool* was_blocked) {

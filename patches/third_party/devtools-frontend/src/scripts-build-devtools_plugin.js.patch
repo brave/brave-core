@@ -1,5 +1,5 @@
 diff --git a/scripts/build/devtools_plugin.js b/scripts/build/devtools_plugin.js
-index c1b7e4e1ae9832972857b97faf66a233fa014b7d..4fb090f540bd18abf5a8a4098ef6194a9a9da9d8 100644
+index 1dd3d347b4b488a149af45587d22af1901b8a128..937b52a7093fe107294e9e591b3134dfb2219426 100644
 --- a/scripts/build/devtools_plugin.js
 +++ b/scripts/build/devtools_plugin.js
 @@ -6,6 +6,7 @@
@@ -10,7 +10,7 @@ index c1b7e4e1ae9832972857b97faf66a233fa014b7d..4fb090f540bd18abf5a8a4098ef6194a
  
  /**
   * `path.dirname` does not include trailing slashes. If we would always
-@@ -179,6 +180,11 @@ export function esbuildPlugin(outdir, genRoot, rootDir, externalFiles, bundleAll
+@@ -375,6 +376,11 @@ export function esbuildPlugin(outdir, genRoot, rootDir, externalFiles, bundleAll
        }
      }
  

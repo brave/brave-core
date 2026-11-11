@@ -1,8 +1,8 @@
 diff --git a/front_end/panels/application/ReportingApiView.ts b/front_end/panels/application/ReportingApiView.ts
-index 21bf7420180fcf9ab3462bff43e7dfe9b79a0e01..66a3fea1cdc8df3847b4705d9c3c0671ad712099 100644
+index 8ac15344db1ea9a9e9ec0ced378fa3e6930e883f..aecf70b53a9fb152f0f72afc40a81bb2b2b17fb6 100644
 --- a/front_end/panels/application/ReportingApiView.ts
 +++ b/front_end/panels/application/ReportingApiView.ts
-@@ -180,3 +180,4 @@ export class ReportingApiView extends UI.Widget.VBox implements
+@@ -179,3 +179,4 @@ export class ReportingApiView extends UI.Widget.VBox implements
      }
    }
  }

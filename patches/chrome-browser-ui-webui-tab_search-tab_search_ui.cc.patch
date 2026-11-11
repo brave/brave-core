@@ -1,17 +1,17 @@
 diff --git a/chrome/browser/ui/webui/tab_search/tab_search_ui.cc b/chrome/browser/ui/webui/tab_search/tab_search_ui.cc
-index ee7a3475dc71925a26ee8824f134d81f4b73d9ec..883ca25767b2eba984662c6b8a18ff72f9f5156c 100644
+index 1f63a2f3775e2abf0f0aeea107799454d81e4857..0b6c4c090b40b8859afaafa7480b266c0dd62526 100644
 --- a/chrome/browser/ui/webui/tab_search/tab_search_ui.cc
 +++ b/chrome/browser/ui/webui/tab_search/tab_search_ui.cc
-@@ -56,7 +56,7 @@ std::optional<int> TabSearchUIConfig::GetCommandIdForTesting() {
+@@ -55,7 +55,7 @@ std::optional<int> TabSearchUIConfig::GetCommandIdForTesting() {
    return IDC_TAB_SEARCH;
  }
  
 -TabSearchUI::TabSearchUI(content::WebUI* web_ui)
 +TabSearchUI_ChromiumImpl::TabSearchUI_ChromiumImpl(content::WebUI* web_ui)
-     : TopChromeWebUIController(
-           web_ui,
-           /*enable_chrome_send=*/true /* Needed for webui browser tests */,
-@@ -153,22 +153,22 @@ TabSearchUI::TabSearchUI(content::WebUI* web_ui)
+     : TopChromeWebUIController(web_ui,
+                                true /* Needed for webui browser tests */),
+       webui_load_timer_(web_ui->GetWebContents(),
+@@ -148,22 +148,22 @@ TabSearchUI::TabSearchUI(content::WebUI* web_ui)
                      perfetto::Track::FromPointer(this));
  }
  
@@ -39,7 +39,7 @@ index ee7a3475dc71925a26ee8824f134d81f4b73d9ec..883ca25767b2eba984662c6b8a18ff72
    if (page_handler_) {
      // Notify the page handler that tab search bubble widget is shown.
      // This allows it to force a refresh of the tabs.
-@@ -176,7 +176,7 @@ void TabSearchUI::BeforeBubbleWidgetShowed() {
+@@ -171,7 +171,7 @@ void TabSearchUI::BeforeBubbleWidgetShowed() {
    }
  }
  

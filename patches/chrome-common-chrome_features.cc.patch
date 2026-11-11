@@ -1,17 +1,24 @@
 diff --git a/chrome/common/chrome_features.cc b/chrome/common/chrome_features.cc
-index 108c56d407856f659ce6a4f87568bd5a79f85457..907d5c4322cb6155d11d7a6856fa182928cf3ab6 100644
+index d1611db4bd0e792d631841c1253c7da1074a64e7..12c5692da7d3c7c48fe30ed5704d9c87edcd223a 100644
 --- a/chrome/common/chrome_features.cc
 +++ b/chrome/common/chrome_features.cc
-@@ -181,7 +181,7 @@ BASE_FEATURE(kPreinstalledWebAppAlwaysMigrateForTesting,
- #endif
- 
- // Controls the enablement of structured metrics on Windows, Linux, and Mac.
--BASE_FEATURE(kChromeStructuredMetrics, base::FEATURE_ENABLED_BY_DEFAULT);
-+BASE_OVERRIDDEN_FEATURE(kChromeStructuredMetrics, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -189,13 +189,8 @@ BASE_FEATURE(kPreinstalledWebAppAlwaysMigrateForTesting,
+ // Controls the enablement of structured metrics on Windows, Linux, Mac, and
+ // Android. Disabled by default on Android while it is being rolled out there;
+ // enabled everywhere else.
+-BASE_FEATURE(kChromeStructuredMetrics,
+-#if BUILDFLAG(IS_ANDROID)
+-             base::FEATURE_DISABLED_BY_DEFAULT
+-#else
+-             base::FEATURE_ENABLED_BY_DEFAULT
+-#endif
+-);
++BASE_OVERRIDDEN_FEATURE(kChromeStructuredMetrics,
++base::FEATURE_DISABLED_BY_DEFAULT);
  
  #if !BUILDFLAG(IS_ANDROID)
  // Enables the chrome://craft page.
-@@ -214,7 +214,7 @@ BASE_FEATURE(kDesktopPWAsPreventClose,
+@@ -228,7 +223,7 @@ BASE_FEATURE(kDesktopPWAsPreventClose,
  );
  
  // Adds a user settings that allows PWAs to be opened with a tab strip.
@@ -20,7 +27,7 @@ index 108c56d407856f659ce6a4f87568bd5a79f85457..907d5c4322cb6155d11d7a6856fa1829
  
  // Removes the Window Controls Overlay toggle button from the PWA toolbar
  // and auto-enables WCO when the app developer specifies it in the manifest.
-@@ -383,7 +383,7 @@ const char kGlicActorUiDebounceTimerName[] = "glic-actor-ui-debounce-timer";
+@@ -392,7 +387,7 @@ const char kGlicActorUiDebounceTimerName[] = "glic-actor-ui-debounce-timer";
  
  // Controls whether the task icon in the actor ui is enabled.
  const base::FeatureParam<bool> kGlicActorUiTaskIcon{
@@ -29,7 +36,7 @@ index 108c56d407856f659ce6a4f87568bd5a79f85457..907d5c4322cb6155d11d7a6856fa1829
  // Controls whether the Actor Overlay in the actor ui is enabled.
  const base::FeatureParam<bool> kGlicActorUiOverlay{
      &kGlicActorUi, kGlicActorUiOverlayName, true};
-@@ -1211,7 +1211,7 @@ BASE_FEATURE(kHappinessTrackingSurveysForDesktopScheduledRestart,
+@@ -1231,7 +1226,7 @@ BASE_FEATURE(kHappinessTrackingSurveysForDesktopDefaultBrowser,
  
  // Enables HTTPS-First Mode in a balanced configuration that doesn't warn on
  // HTTP when HTTPS can't be reasonably expected.
@@ -38,7 +45,7 @@ index 108c56d407856f659ce6a4f87568bd5a79f85457..907d5c4322cb6155d11d7a6856fa1829
  
  // Automatically enables HTTPS-First Mode in a balanced configuration when
  // possible.
-@@ -1268,7 +1268,7 @@ BASE_FEATURE(kIncomingCallNotifications,
+@@ -1288,7 +1283,7 @@ BASE_FEATURE(kIncomingCallNotifications,
  #endif  // BUILDFLAG(IS_WIN)
  
  // Experimental image replacement feature. b/482792874
@@ -47,7 +54,7 @@ index 108c56d407856f659ce6a4f87568bd5a79f85457..907d5c4322cb6155d11d7a6856fa1829
  BASE_FEATURE(kIndigoContextMenu, base::FEATURE_ENABLED_BY_DEFAULT);
  BASE_FEATURE(kIndigoContextualCueingV2, base::FEATURE_DISABLED_BY_DEFAULT);
  BASE_FEATURE(kIndigoWatermark, base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -1665,7 +1665,7 @@ BASE_FEATURE(kSafetyHubTrustSafetySentimentSurvey,
+@@ -1680,7 +1675,7 @@ BASE_FEATURE(kSafetyHubTrustSafetySentimentSurvey,
  // Safe Browsing Reporting to perform a k-anonymous query to see if Google knows
  // about an SCT seen in the wild. If it hasn't been seen, then it is considered
  // a security incident and uploaded to Google.
@@ -56,7 +63,7 @@ index 108c56d407856f659ce6a4f87568bd5a79f85457..907d5c4322cb6155d11d7a6856fa1829
  
  // An estimated high bound for the time it takes Google to ingest updates to an
  // SCT log. Chrome will wait for at least this time plus the Log's Maximum Merge
-@@ -1752,7 +1752,7 @@ BASE_FEATURE(kTreatUnsafeDownloadsAsActive, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -1767,7 +1762,7 @@ BASE_FEATURE(kTreatUnsafeDownloadsAsActive, base::FEATURE_ENABLED_BY_DEFAULT);
  // TrustSafetySentimentSurvey
  #if !BUILDFLAG(IS_ANDROID)
  // Enables surveying of users of Trust & Safety features with HaTS.
@@ -65,7 +72,7 @@ index 108c56d407856f659ce6a4f87568bd5a79f85457..907d5c4322cb6155d11d7a6856fa1829
  // The minimum and maximum time after a user has interacted with a Trust and
  // Safety they are eligible to be surveyed.
  const base::FeatureParam<base::TimeDelta>
-@@ -1815,7 +1815,7 @@ const base::FeatureParam<base::TimeDelta>
+@@ -1830,7 +1825,7 @@ const base::FeatureParam<base::TimeDelta>
  #if !BUILDFLAG(IS_ANDROID)
  // Enables the second version of the sentiment survey for users of Trust &
  // Safety features, using HaTS.

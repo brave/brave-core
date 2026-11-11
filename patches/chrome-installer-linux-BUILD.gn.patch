@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index 71b0e79cb00db9e1497a5613668fb68b0726e05c..e23ef272912b142885db3acd761ab2561e226334 100644
+index 2af5f1ea4090028e0ef91526d993653fb2f6eb64..7f6a824362fd5fa1f8292d8a476eb3f2ad7293f2 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -9,8 +9,8 @@ index 71b0e79cb00db9e1497a5613668fb68b0726e05c..e23ef272912b142885db3acd761ab256
 +import("//brave/build/config.gni")
  import("//build/config/c++/c++.gni")
  import("//build/config/chrome_build.gni")
- import("//build/config/sanitizers/sanitizers.gni")
-@@ -108,6 +109,9 @@ if (build_with_internal_optimization_guide) {
+ import("//build/config/gclient_args.gni")
+@@ -117,6 +118,9 @@ if (build_with_internal_optimization_guide) {
    }
  }
  
@@ -20,7 +20,7 @@ index 71b0e79cb00db9e1497a5613668fb68b0726e05c..e23ef272912b142885db3acd761ab256
  packaging_files_binaries = packaging_files_executables + packaging_files_shlibs
  
  # TODO(mmoss) Any convenient way to get all the relevant build files?
-@@ -213,6 +217,10 @@ action("merge_rpm_dependencies") {
+@@ -222,6 +226,10 @@ action("merge_rpm_dependencies") {
  strip_binary("strip_chrome_binary") {
    binary_input = "$root_out_dir/chrome"
    deps = [ "//chrome" ]
@@ -31,7 +31,7 @@ index 71b0e79cb00db9e1497a5613668fb68b0726e05c..e23ef272912b142885db3acd761ab256
  }
  
  strip_binary("strip_chrome_crashpad_handler") {
-@@ -228,6 +236,10 @@ strip_binary("strip_chrome_management_service") {
+@@ -237,6 +245,10 @@ strip_binary("strip_chrome_management_service") {
  strip_binary("strip_chrome_sandbox") {
    binary_input = "$root_out_dir/chrome_sandbox"
    deps = [ "//sandbox/linux:chrome_sandbox" ]
@@ -42,7 +42,7 @@ index 71b0e79cb00db9e1497a5613668fb68b0726e05c..e23ef272912b142885db3acd761ab256
  }
  
  # On ChromeOS, system services depend on real ANGLE libraries rather than dummy
-@@ -381,6 +393,8 @@ copy("common_packaging_files") {
+@@ -400,6 +412,8 @@ copy("common_packaging_files") {
    }
  
    outputs = [ "$root_out_dir/installer/common/{{source_file_part}}" ]
@@ -51,7 +51,7 @@ index 71b0e79cb00db9e1497a5613668fb68b0726e05c..e23ef272912b142885db3acd761ab256
  }
  
  copy("deb_packaging_files") {
-@@ -487,6 +501,7 @@ group("installer_deps") {
+@@ -506,6 +520,7 @@ group("installer_deps") {
      ":theme_files",
      "//chrome",
    ]
@@ -59,7 +59,7 @@ index 71b0e79cb00db9e1497a5613668fb68b0726e05c..e23ef272912b142885db3acd761ab256
    public_deps += [
      "//chrome:packed_resources",
      "//chrome/browser/enterprise/connectors/device_trust/key_management/installer/management_service:chrome_management_service",
-@@ -564,11 +579,16 @@ group("installer_deps") {
+@@ -592,11 +607,16 @@ group("installer_deps") {
  template("linux_package") {
    assert(defined(invoker.channel))
    channel = invoker.channel
@@ -76,31 +76,31 @@ index 71b0e79cb00db9e1497a5613668fb68b0726e05c..e23ef272912b142885db3acd761ab256
    }
  
    deb_target_name = "${target_name}_deb"
-@@ -579,6 +599,12 @@ template("linux_package") {
- 
+@@ -608,6 +628,12 @@ template("linux_package") {
      inputs = packaging_files
-     outputs = [ "$root_out_dir/${package}-${channel}_${chrome_version_full}-1_${deb_arch}.deb" ]
+     if (is_official_build) {
+       outputs = [ "$root_out_dir/${package}-${channel}_${chrome_version_full}-1_${deb_arch}.deb" ]
 +    outputs = []
 +    if (channel == "stable") {
 +      outputs = [ "$root_out_dir/${package}_${chrome_version_full}_${deb_arch}.deb" ]
 +    } else {
 +      outputs = [ "$root_out_dir/${package}-${channel}_${chrome_version_full}_${deb_arch}.deb" ]
 +    }
- 
-     args = [
-       "-a",
-@@ -617,6 +643,10 @@ template("linux_package") {
- 
+     } else {
+       outputs = [ "$root_out_dir/${package}-${channel}_${deb_arch}.deb" ]
+     }
+@@ -650,6 +676,10 @@ template("linux_package") {
        inputs = packaging_files
-       outputs = [ "$root_out_dir/${package}-${channel}-${chrome_version_full}-1.${rpm_arch}.rpm" ]
+       if (is_official_build) {
+         outputs = [ "$root_out_dir/${package}-${channel}-${chrome_version_full}-1.${rpm_arch}.rpm" ]
 +      if (channel == "stable") {
 +        outputs = []
 +        outputs = [ "$root_out_dir/${package}-${chrome_version_full}-1.${rpm_arch}.rpm" ]
 +      }
- 
-       args = [
-         "-a",
-@@ -779,3 +809,6 @@ if (!is_chromeos) {
+       } else {
+         outputs = [ "$root_out_dir/${package}-${channel}.${rpm_arch}.rpm" ]
+       }
+@@ -834,3 +864,6 @@ if (!is_chromeos) {
      }
    }
  }

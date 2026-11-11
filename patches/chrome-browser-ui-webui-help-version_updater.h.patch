@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/help/version_updater.h b/chrome/browser/ui/webui/help/version_updater.h
-index 4181d4e0d567f7aedebe29d2d2df7c3e2b04c874..418e180788d05c29716d4835cab627a67005f5ec 100644
+index cbf580ef3bc30b4bdd144da5b799f3fd05acab60..72f28b094e1d3705ea80300ef54d26421afe5aba 100644
 --- a/chrome/browser/ui/webui/help/version_updater.h
 +++ b/chrome/browser/ui/webui/help/version_updater.h
 @@ -135,6 +135,9 @@ class VersionUpdater {

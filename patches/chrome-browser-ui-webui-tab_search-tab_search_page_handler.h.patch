@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/tab_search/tab_search_page_handler.h b/chrome/browser/ui/webui/tab_search/tab_search_page_handler.h
-index f2155600ed7ec83d774e3b93d1c04bc9f191d31f..36e26c3fe84c527bc0f49b6484cc11e4872300b4 100644
+index 60fd38d507c9660c0c48c3273df93d89744e486d..1e012d91f47f13539e8892980cb3daf322978dda 100644
 --- a/chrome/browser/ui/webui/tab_search/tab_search_page_handler.h
 +++ b/chrome/browser/ui/webui/tab_search/tab_search_page_handler.h
-@@ -66,21 +66,21 @@ enum class TabSearchRecentlyClosedToggleAction {
+@@ -71,22 +71,22 @@ enum class TabSearchRecentlyClosedToggleAction {
    kMaxValue = kCollapse,
  };
  
@@ -10,6 +10,7 @@ index f2155600ed7ec83d774e3b93d1c04bc9f191d31f..36e26c3fe84c527bc0f49b6484cc11e4
 +class TabSearchPageHandler_ChromiumImpl
      : public tab_search::mojom::PageHandler,
        public tabs_api::observation::TabStripApiBatchedObserver,
+       public sessions::TabRestoreServiceObserver,
        public content::WebContentsObserver {
   public:
 -  TabSearchPageHandler(
@@ -29,7 +30,7 @@ index f2155600ed7ec83d774e3b93d1c04bc9f191d31f..36e26c3fe84c527bc0f49b6484cc11e4
  
    // tab_search::mojom::PageHandler:
    void CloseTab(int32_t tab_id) override;
-@@ -119,6 +119,7 @@ class TabSearchPageHandler
+@@ -130,6 +130,7 @@ class TabSearchPageHandler
    void SetTimerForTesting(std::unique_ptr<base::RetainingOneShotTimer> timer);
  
   private:

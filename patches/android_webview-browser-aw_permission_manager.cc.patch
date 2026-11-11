@@ -1,10 +1,10 @@
 diff --git a/android_webview/browser/aw_permission_manager.cc b/android_webview/browser/aw_permission_manager.cc
-index 5f721a88482564baa95133fe37e1c2f3a594b5d7..211d22fd161931407037fceadae40aed7ff17c05 100644
+index bbf277b77505d035efef1146a7fb6f3eb1f22aac..210a4eaaea38b698fe154e81986f43d294bc012c 100644
 --- a/android_webview/browser/aw_permission_manager.cc
 +++ b/android_webview/browser/aw_permission_manager.cc
-@@ -446,6 +446,22 @@ void AwPermissionManager::RequestPermissionsFromCurrentDocument(
+@@ -454,6 +454,22 @@ void AwPermissionManager::RequestPermissionsFromCurrentDocument(
              permissions[i],
-             content::PermissionResult(PermissionStatus::GRANTED));
+             content::PermissionResult(PermissionStatus::DENIED));
          break;
 +      case PermissionType::BRAVE_ADS:
 +      case PermissionType::BRAVE_TRACKERS:
@@ -25,7 +25,7 @@ index 5f721a88482564baa95133fe37e1c2f3a594b5d7..211d22fd161931407037fceadae40aed
        case PermissionType::NUM:
          NOTREACHED() << "PermissionType::NUM was not expected here.";
      }
-@@ -583,6 +599,22 @@ PermissionStatus AwPermissionManager::GetPermissionStatusInternal(
+@@ -591,6 +607,22 @@ PermissionStatus AwPermissionManager::GetPermissionStatusInternal(
      case blink::PermissionType::LOCAL_FONTS:
      case blink::PermissionType::NFC:
      case blink::PermissionType::NOTIFICATIONS:
@@ -48,7 +48,7 @@ index 5f721a88482564baa95133fe37e1c2f3a594b5d7..211d22fd161931407037fceadae40aed
      case blink::PermissionType::NUM:
      case blink::PermissionType::PAYMENT_HANDLER:
      case blink::PermissionType::PERIODIC_BACKGROUND_SYNC:
-@@ -756,6 +788,22 @@ void AwPermissionManager::CancelPermissionRequest(int request_id) {
+@@ -766,6 +798,22 @@ void AwPermissionManager::CancelPermissionRequest(int request_id) {
        case PermissionType::LOOPBACK_NETWORK:
          // There is nothing to cancel so this is simply ignored.
          break;
@@ -71,7 +71,7 @@ index 5f721a88482564baa95133fe37e1c2f3a594b5d7..211d22fd161931407037fceadae40aed
        case PermissionType::NUM:
          NOTREACHED() << "PermissionType::NUM was not expected here.";
      }
-@@ -784,6 +832,9 @@ void AwPermissionManager::CancelPermissionRequests() {
+@@ -794,6 +842,9 @@ void AwPermissionManager::CancelPermissionRequests() {
  void AwPermissionManager::SetOriginCanReadEnumerateDevicesAudioLabels(
      const url::Origin& origin,
      bool audio) {
@@ -81,7 +81,7 @@ index 5f721a88482564baa95133fe37e1c2f3a594b5d7..211d22fd161931407037fceadae40aed
    auto it = enumerate_devices_labels_cache_.find(origin);
    if (it == enumerate_devices_labels_cache_.end()) {
      enumerate_devices_labels_cache_[origin] = std::make_pair(audio, false);
-@@ -795,6 +846,9 @@ void AwPermissionManager::SetOriginCanReadEnumerateDevicesAudioLabels(
+@@ -805,6 +856,9 @@ void AwPermissionManager::SetOriginCanReadEnumerateDevicesAudioLabels(
  void AwPermissionManager::SetOriginCanReadEnumerateDevicesVideoLabels(
      const url::Origin& origin,
      bool video) {

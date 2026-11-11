@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h b/chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h
-index 21ab66fc6388d7c0bb6bc548c2197f182da47f6b..b1f5d7ea9b3e7941579fb4fce1bb91ba3e68d432 100644
+index 6a0dd274a61252299ce06fc4de37fae908a2bc1b..9b6b4bf23615cc74933f975b39ba708990838822 100644
 --- a/chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h
 +++ b/chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h
 @@ -13,6 +13,7 @@
@@ -10,7 +10,7 @@ index 21ab66fc6388d7c0bb6bc548c2197f182da47f6b..b1f5d7ea9b3e7941579fb4fce1bb91ba
  #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
  #include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
  #include "chrome/browser/ui/webui_name_variants.h"
-@@ -185,6 +186,14 @@ class WebUIContentsWrapper
+@@ -187,6 +188,14 @@ class WebUIContentsWrapper
    void SetWebContentsForTesting(
        std::unique_ptr<content::WebContents> web_contents);
  

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler.cc b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler.cc
-index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205eb6247c1 100644
+index ee5a9faa6ed662db5c36956196fe393bdd94c1f0..13419c44fb3ec1fd290bd28bc9f1c9e56f4f5196 100644
 --- a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler.cc
 +++ b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler.cc
 @@ -83,7 +83,7 @@ void OpenWebPage(Profile* profile, const GURL& url) {
@@ -103,7 +103,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
      CustomizeChromeSection section) {
    last_requested_section_ = section;
    if (section == CustomizeChromeSection::kUnspecified) {
-@@ -209,28 +209,28 @@ void CustomizeChromePageHandler::ScrollToSection(
+@@ -209,27 +209,27 @@ void CustomizeChromePageHandler::ScrollToSection(
    page_->ScrollToSection(section);
  }
  
@@ -123,7 +123,6 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
  
 -void CustomizeChromePageHandler::SetDefaultColor() {
 +void CustomizeChromePageHandler_ChromiumImpl::SetDefaultColor() {
-   theme_service_->UseDeviceTheme(false);
    theme_service_->UseDefaultTheme();
  }
  
@@ -137,7 +136,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
      const std::string& attribution_1,
      const std::string& attribution_2,
      const GURL& attribution_url,
-@@ -243,7 +243,7 @@ void CustomizeChromePageHandler::SetBackgroundImage(
+@@ -242,7 +242,7 @@ void CustomizeChromePageHandler::SetBackgroundImage(
    MaybeDisableExtensionOverridingNtp();
  }
  
@@ -146,7 +145,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
      const std::string& collection_id) {
    // Only populating the |collection_id| turns on refresh daily which overrides
    // the the selected image.
-@@ -254,7 +254,7 @@ void CustomizeChromePageHandler::SetDailyRefreshCollectionId(
+@@ -253,7 +253,7 @@ void CustomizeChromePageHandler::SetDailyRefreshCollectionId(
    MaybeDisableExtensionOverridingNtp();
  }
  
@@ -155,7 +154,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
      GetBackgroundCollectionsCallback callback) {
    if (!ntp_background_service_ || background_collections_callback_) {
      std::move(callback).Run(
-@@ -266,7 +266,7 @@ void CustomizeChromePageHandler::GetBackgroundCollections(
+@@ -265,7 +265,7 @@ void CustomizeChromePageHandler::GetBackgroundCollections(
    ntp_background_service_->FetchCollectionInfo();
  }
  
@@ -164,7 +163,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
      const std::string& collection_id,
      GetReplacementCollectionPreviewImageCallback callback) {
    callback = mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
-@@ -279,7 +279,7 @@ void CustomizeChromePageHandler::GetReplacementCollectionPreviewImage(
+@@ -278,7 +278,7 @@ void CustomizeChromePageHandler::GetReplacementCollectionPreviewImage(
        collection_id, std::move(callback));
  }
  
@@ -173,7 +172,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
      const std::string& collection_id,
      GetBackgroundImagesCallback callback) {
    if (background_images_callback_) {
-@@ -297,7 +297,7 @@ void CustomizeChromePageHandler::GetBackgroundImages(
+@@ -296,7 +296,7 @@ void CustomizeChromePageHandler::GetBackgroundImages(
    ntp_background_service_->FetchCollectionImageInfo(collection_id);
  }
  
@@ -182,7 +181,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
      ChooseLocalCustomBackgroundCallback callback) {
    // Early return if the select file dialog is already active.
    if (select_file_dialog_) {
-@@ -325,14 +325,14 @@ void CustomizeChromePageHandler::ChooseLocalCustomBackground(
+@@ -324,14 +324,14 @@ void CustomizeChromePageHandler::ChooseLocalCustomBackground(
        nullptr);
  }
  
@@ -199,7 +198,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
    if (ntp_custom_background_service_) {
      ntp_custom_background_service_->RefreshBackgroundIfNeeded();
    }
-@@ -404,18 +404,18 @@ void CustomizeChromePageHandler::UpdateTheme() {
+@@ -403,18 +403,18 @@ void CustomizeChromePageHandler::UpdateTheme() {
    page_->SetTheme(std::move(theme));
  }
  
@@ -221,7 +220,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
      const std::string& theme_id) {
    open_url_callback_.Run(GURL("https://chromewebstore.google.com/detail/" +
                                base::EscapePath(theme_id)));
-@@ -423,7 +423,7 @@ void CustomizeChromePageHandler::OpenThirdPartyThemePage(
+@@ -422,7 +422,7 @@ void CustomizeChromePageHandler::OpenThirdPartyThemePage(
                              NtpChromeWebStoreOpen::kCollections);
  }
  
@@ -230,7 +229,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
      side_panel::mojom::ChromeWebStoreCategory category) {
    std::string path;
    NtpChromeWebStoreOpen page;
-@@ -444,7 +444,7 @@ void CustomizeChromePageHandler::OpenChromeWebStoreCategoryPage(
+@@ -443,7 +443,7 @@ void CustomizeChromePageHandler::OpenChromeWebStoreCategoryPage(
    UMA_HISTOGRAM_ENUMERATION("NewTabPage.ChromeWebStoreOpen", page);
  }
  
@@ -239,7 +238,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
      side_panel::mojom::ChromeWebStoreCollection collection) {
    std::string path;
    NtpChromeWebStoreOpen page;
-@@ -461,7 +461,7 @@ void CustomizeChromePageHandler::OpenChromeWebStoreCollectionPage(
+@@ -460,7 +460,7 @@ void CustomizeChromePageHandler::OpenChromeWebStoreCollectionPage(
    UMA_HISTOGRAM_ENUMERATION("NewTabPage.ChromeWebStoreOpen", page);
  }
  
@@ -248,7 +247,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
    open_url_callback_.Run(
        GURL("https://chromewebstore.google.com/"
             "?utm_source=chromeSidebarExtensionCards"));
-@@ -469,7 +469,7 @@ void CustomizeChromePageHandler::OpenChromeWebStoreHomePage() {
+@@ -468,7 +468,7 @@ void CustomizeChromePageHandler::OpenChromeWebStoreHomePage() {
                              NtpChromeWebStoreOpen::kHomePage);
  }
  
@@ -257,7 +256,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
    const extensions::Extension* extension_managing_ntp =
        extensions::GetExtensionOverridingNewTabPage(profile_);
    if (extension_managing_ntp) {
-@@ -482,7 +482,7 @@ void CustomizeChromePageHandler::OpenNtpManagedByPage() {
+@@ -481,7 +481,7 @@ void CustomizeChromePageHandler::OpenNtpManagedByPage() {
    open_url_callback_.Run(GURL(chrome::kBrowserSettingsSearchEngineURL));
  }
  
@@ -266,7 +265,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
      const std::vector<ntp_tiles::TileType>& types,
      bool visible,
      bool personal_shortcuts_visible) {
-@@ -523,7 +523,7 @@ void CustomizeChromePageHandler::SetMostVisitedSettings(
+@@ -522,7 +522,7 @@ void CustomizeChromePageHandler::SetMostVisitedSettings(
    }
  }
  
@@ -275,7 +274,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
    std::vector<ntp_tiles::TileType> disabled_shortcuts;
    // If no enterprise shortcuts are set by policy, hide the enterprise shortcuts
    // option, but leave the preference as is.
-@@ -536,7 +536,7 @@ void CustomizeChromePageHandler::UpdateMostVisitedSettings() {
+@@ -535,7 +535,7 @@ void CustomizeChromePageHandler::UpdateMostVisitedSettings() {
        IsPersonalShortcutsVisible(), std::move(disabled_shortcuts));
  }
  
@@ -284,7 +283,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
  #if !BUILDFLAG(IS_ANDROID)
    if (!base::FeatureList::IsEnabled(ntp_features::kNtpFooter)) {
      return;
-@@ -564,20 +564,20 @@ void CustomizeChromePageHandler::OnBrowserWindowInterfaceChanged() {
+@@ -563,20 +563,20 @@ void CustomizeChromePageHandler::OnBrowserWindowInterfaceChanged() {
  #endif
  }
  
@@ -309,7 +308,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
  #if !BUILDFLAG(IS_ANDROID)
    auto management_notice_state =
        side_panel::mojom::ManagementNoticeState::New();
-@@ -608,12 +608,12 @@ void CustomizeChromePageHandler::UpdateFooterSettings() {
+@@ -607,12 +607,12 @@ void CustomizeChromePageHandler::UpdateFooterSettings() {
  #endif
  }
  
@@ -324,7 +323,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
                                                     bool disabled) {
    DisableModuleAutoRemoval(profile_, module_id);
    ScopedListPrefUpdate update(profile_->GetPrefs(), prefs::kNtpDisabledModules);
-@@ -627,7 +627,7 @@ void CustomizeChromePageHandler::SetModuleDisabled(const std::string& module_id,
+@@ -626,7 +626,7 @@ void CustomizeChromePageHandler::SetModuleDisabled(const std::string& module_id,
    }
  }
  
@@ -333,7 +332,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
    std::vector<std::string> disabled_module_ids;
    for (const auto& id :
         profile_->GetPrefs()->GetList(prefs::kNtpDisabledModules)) {
-@@ -663,15 +663,15 @@ void CustomizeChromePageHandler::UpdateModulesSettings() {
+@@ -662,15 +662,15 @@ void CustomizeChromePageHandler::UpdateModulesSettings() {
        profile_->GetPrefs()->GetBoolean(prefs::kNtpModulesVisible));
  }
  
@@ -352,7 +351,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
    std::string name;
    std::string description;
  
-@@ -690,13 +690,13 @@ void CustomizeChromePageHandler::UpdateNtpManagedByName() {
+@@ -689,13 +689,13 @@ void CustomizeChromePageHandler::UpdateNtpManagedByName() {
    page_->NtpManagedByNameUpdated(name, description);
  }
  
@@ -368,7 +367,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
    switch (event) {
      case NTP_BACKGROUND_UPLOAD_CANCEL:
        base::RecordAction(base::UserMetricsAction(
-@@ -733,7 +733,7 @@ void CustomizeChromePageHandler::LogEvent(NTPLoggingEventType event) {
+@@ -732,7 +732,7 @@ void CustomizeChromePageHandler::LogEvent(NTPLoggingEventType event) {
    }
  }
  
@@ -377,7 +376,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
      const char* pref_name,
      bool new_value,
      NTPLoggingEventType event) {
-@@ -741,7 +741,7 @@ void CustomizeChromePageHandler::UpdatePrefAndLogEvent(
+@@ -740,7 +740,7 @@ void CustomizeChromePageHandler::UpdatePrefAndLogEvent(
    LogEvent(event);
  }
  
@@ -386,7 +385,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
    std::set<ntp_tiles::TileType> tile_types;
    if (IsEnterpriseShortcutsVisible()) {
      tile_types.insert(ntp_tiles::TileType::kEnterpriseShortcuts);
-@@ -755,11 +755,11 @@ std::set<ntp_tiles::TileType> CustomizeChromePageHandler::GetTileTypes() const {
+@@ -754,11 +754,11 @@ std::set<ntp_tiles::TileType> CustomizeChromePageHandler::GetTileTypes() const {
    return tile_types;
  }
  
@@ -400,7 +399,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
    // Always return true if no enterprise shortcuts are set by policy.
    if (IsEnterpriseShortcutsEmpty()) {
      return true;
-@@ -768,30 +768,30 @@ bool CustomizeChromePageHandler::IsPersonalShortcutsVisible() const {
+@@ -767,30 +767,30 @@ bool CustomizeChromePageHandler::IsPersonalShortcutsVisible() const {
        ntp_prefs::kNtpPersonalShortcutsVisible);
  }
  
@@ -437,7 +436,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
    if (!background_collections_callback_) {
      return;
    }
-@@ -822,7 +822,7 @@ void CustomizeChromePageHandler::OnCollectionInfoAvailable() {
+@@ -821,7 +821,7 @@ void CustomizeChromePageHandler::OnCollectionInfoAvailable() {
    std::move(background_collections_callback_).Run(std::move(collections));
  }
  
@@ -446,7 +445,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
    if (!background_images_callback_) {
      return;
    }
-@@ -862,25 +862,25 @@ void CustomizeChromePageHandler::OnCollectionImagesAvailable() {
+@@ -861,25 +861,25 @@ void CustomizeChromePageHandler::OnCollectionImagesAvailable() {
    std::move(background_images_callback_).Run(std::move(images));
  }
  
@@ -477,7 +476,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
    if (!base::FeatureList::IsEnabled(ntp_features::kNtpFooter)) {
      return;
    }
-@@ -888,7 +888,7 @@ void CustomizeChromePageHandler::OnFooterVisibilityUpdated(bool visible) {
+@@ -887,7 +887,7 @@ void CustomizeChromePageHandler::OnFooterVisibilityUpdated(bool visible) {
  }
  #endif
  
@@ -486,7 +485,7 @@ index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205
                                                int index) {
    CHECK(choose_local_custom_background_callback_, base::NotFatalUntil::M162);
    if (ntp_custom_background_service_) {
-@@ -911,14 +911,14 @@ void CustomizeChromePageHandler::FileSelected(const ui::SelectedFileInfo& file,
+@@ -910,14 +910,14 @@ void CustomizeChromePageHandler::FileSelected(const ui::SelectedFileInfo& file,
    std::move(choose_local_custom_background_callback_).Run(true);
  }
  

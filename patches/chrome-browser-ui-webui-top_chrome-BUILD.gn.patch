@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/top_chrome/BUILD.gn b/chrome/browser/ui/webui/top_chrome/BUILD.gn
-index 0414f58898f2a693726d3ed4fcc0e32bb03f15d2..d47f04965c972b26af1c7518055a861a75f5f0b5 100644
+index 3bdf845bbdd539778df54f592d179a5d4c220c1d..7d9ea9c5ad70dcb24f87fc428ea60c4524dce3fa 100644
 --- a/chrome/browser/ui/webui/top_chrome/BUILD.gn
 +++ b/chrome/browser/ui/webui/top_chrome/BUILD.gn
-@@ -45,6 +45,7 @@ source_set("top_chrome") {
+@@ -38,6 +38,7 @@ source_set("top_chrome") {
        "//components/site_engagement/content",
        "//components/web_modal",
      ]
