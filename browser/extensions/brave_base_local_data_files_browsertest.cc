@@ -5,11 +5,9 @@
 
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 
-#include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
-#include "base/run_loop.h"
 #include "base/task/thread_pool.h"
-#include "base/test/thread_test_helper.h"
+#include "base/threading/thread_restrictions.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
@@ -47,16 +45,6 @@ void BaseLocalDataFilesBrowserTest::MaybeInitEmbeddedTestServer() {
   embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
   ASSERT_TRUE(embedded_test_server()->Start());
   host_resolver()->AddRule("*", "127.0.0.1");
-}
-
-void BaseLocalDataFilesBrowserTest::WaitForService() {
-  scoped_refptr<base::ThreadTestHelper> tr_helper(new base::ThreadTestHelper(
-      g_brave_browser_process->local_data_files_service()->GetTaskRunner()));
-  ASSERT_TRUE(tr_helper->Run());
-  scoped_refptr<base::ThreadTestHelper> io_helper(
-      new base::ThreadTestHelper(content::GetIOThreadTaskRunner({}).get()));
-  ASSERT_TRUE(io_helper->Run());
-  base::RunLoop().RunUntilIdle();
 }
 
 bool BaseLocalDataFilesBrowserTest::InstallMockExtension() {
