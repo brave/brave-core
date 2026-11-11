@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Show the spark icon in the @history scope for Brave's semantic history
+      search.
+
+      Upstream's history embeddings never run in Brave, so its profile check
+      is always false.
+    regex:
+      pattern: 'history_embeddings::IsHistoryEmbeddingsEnabledForProfile('
+      replace: 'BraveIsHistoryEmbeddingsEnabledForProfile('

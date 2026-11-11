@@ -8,6 +8,11 @@
 
 #include "ui/gfx/vector_icon_types.h"
 
+class Profile;
+
 const gfx::VectorIcon& GetAskBraveSearchStarterPackIcon();
+
+// Whether Brave's semantic history search is enabled for `profile`.
+bool BraveIsHistoryEmbeddingsEnabledForProfile(Profile* profile);
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_SELECTED_KEYWORD_VIEW_UTIL_H_

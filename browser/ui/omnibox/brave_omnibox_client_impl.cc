@@ -18,6 +18,7 @@
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_search_conversion/utils.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/misc_metrics/page_metrics.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/omnibox/browser/promotion_utils.h"
@@ -45,6 +46,10 @@
 #include "brave/components/email_aliases/email_aliases_metrics.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
 #include "brave/components/email_aliases/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/browser/history_embeddings/history_embeddings_utils.h"
 #endif
 
 namespace {
@@ -191,6 +196,15 @@ void BraveOmniboxClientImpl::OnURLOpenedFromOmnibox(OmniboxLog* log) {
     brave_search_conversion::p3a::RecordPromoTrigger(
         g_browser_process->local_state(), GetConversionTypeFromMatch(match));
   }
+}
+
+bool BraveOmniboxClientImpl::IsHistoryEmbeddingsEnabled() const {
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  return brave_history_embeddings::IsHistoryEmbeddingsEnabledForProfile(
+      profile_);
+#else
+  return false;
+#endif
 }
 
 void BraveOmniboxClientImpl::OnAutocompleteAccept(
