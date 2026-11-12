@@ -28,6 +28,7 @@ constexpr auto kBraveDisabledTrialNames =
         "AISemanticEmbedderAPI",
         "DeviceAttributes",
         "DigitalGoodsV2",
+        "ExtendedTextMetrics",
         "InterestCohortAPI",
         "FencedFrames",
         "Fledge",
