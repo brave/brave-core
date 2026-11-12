@@ -177,6 +177,7 @@ class PolkadotProviderRendererTest : public InProcessBrowserTest {
 
   void TearDownOnMainThread() override {
     content::SetBrowserClientForTesting(old_client_);
+    InProcessBrowserTest::TearDownOnMainThread();
   }
 
   content::WebContents* web_contents(BrowserWindowInterface* browser) const {
