@@ -389,6 +389,7 @@ TEST(FeatureDefaultsTest, EnabledBlinkRuntimeEnabledFeatures) {
   // Please, keep alphabetized.
   const base::Feature* enabled_features[] = {
       &blink::features::kReduceUserAgentMinorVersion,
+      &blink::features::kWebMCP,
   };
 
   for (const auto* feature : enabled_features) {

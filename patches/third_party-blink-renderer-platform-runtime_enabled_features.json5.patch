@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfcaff81e26 100644
+index e627f2be2491665c9b9c1a262a8283859ec5bb60..01c4f953e8919929df76f6ec9533afb3120a64ef 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -185,6 +185,14 @@
@@ -210,7 +210,24 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfc
        status: "stable",
        public: true,
      },
-@@ -8053,7 +8093,7 @@
+@@ -7633,6 +7673,7 @@
+       origin_trial_feature_name: "WebMCP",
+       origin_trial_allows_third_party: true,
+       public: true,
++      brave_base_feature_overridden: true,
+       base_feature_status: "enabled",
+       copied_from_base_feature_if: "overridden",
+       // Note that `depends_on` isn't supported by origin trials.
+@@ -7641,7 +7682,7 @@
+         "WebMCPDeclarativeFileInput",
+         "WebMCPFormAssociatedCustomElements"
+       ],
+-      status: "experimental",
++      status: "stable",
+     },
+     {
+       name: "WebMCPContinuations",
+@@ -8053,7 +8094,7 @@
        // with its responseXML document.
        // https://crbug.com/466303347
        name: "XMLRustForNonXslt",
@@ -219,7 +236,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfc
      },
      {
        name: "XMLSerializerConsistentDefaultNsDeclMatching",
-@@ -8085,5 +8125,10 @@
+@@ -8085,5 +8126,10 @@
        // crbug.com/435623334.
        name: "XSLTSpecialTrial",
      },
