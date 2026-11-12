@@ -1206,11 +1206,6 @@ void BraveVerticalTabStripRegionView::UpdateFloatingStateForBrowserMode() {
 }
 
 void BraveVerticalTabStripRegionView::ScheduleFloatingModeTimer() {
-  if (mouse_events_for_test_) {
-    SetState(State::kFloating);
-    return;
-  }
-
   if (mouse_enter_timer_.IsRunning()) {
     return;
   }
