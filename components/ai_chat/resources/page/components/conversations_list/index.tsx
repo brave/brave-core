@@ -81,7 +81,9 @@ interface ItemState {
   editingItemKey: string | undefined
   setEditingItemKey: (key: string | undefined) => void
   activeUuid: string | undefined
-  generationStateMap: Map<string, Mojom.ConversationGenerationState>
+  generationStates:
+    | { [uuid: string]: Mojom.ConversationGenerationState }
+    | undefined
 }
 
 interface ConversationsListProps {
@@ -140,7 +142,7 @@ function ConversationItem(props: ConversationItemProps) {
     aiChatContext.editingConversationId === uuid
     && (itemState.editingItemKey ?? uuid) === itemKey
 
-  const generationState = itemState.generationStateMap.get(uuid)
+  const generationState = itemState.generationStates?.[uuid]
 
   const isGenerating =
     generationState === Mojom.ConversationGenerationState.kGenerating
@@ -430,8 +432,7 @@ export default function ConversationsList(props: ConversationsListProps) {
   const [openOptionsMenuKey, setOpenOptionsMenuKey] = React.useState<string>()
   const [editingItemKey, setEditingItemKey] = React.useState<string>()
 
-  const generationStateMap =
-    aiChatContext.api.useConversationGenerationStateData()
+  const generationStates = aiChatContext.conversationGenerationStates
   // The route id can be the tab-associated placeholder, so use the conversation
   // that is actually bound.
   const { conversationUuid: activeUuid } =
@@ -443,7 +444,7 @@ export default function ConversationsList(props: ConversationsListProps) {
     editingItemKey,
     setEditingItemKey,
     activeUuid,
-    generationStateMap,
+    generationStates,
   }
 
   const startedNonTemporaryConversations = aiChatContext.conversations.filter(

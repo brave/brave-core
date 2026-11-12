@@ -122,7 +122,7 @@ class MockServiceClient : public mojom::ServiceObserver {
 
   MOCK_METHOD(void,
               OnConversationGenerationStateChanged,
-              (const std::string&, mojom::ConversationGenerationState),
+              (const GenerationStates&),
               (override));
 
  private:
@@ -278,17 +278,38 @@ class MockAIChatDatabase : public AIChatDatabase {
               (override));
 };
 
+// Matches generation states in which |uuid| is in |state|. Idle conversations
+// are left out.
+MATCHER_P2(HasGenerationState, uuid, state, "") {
+  auto it = arg.find(uuid);
+  return it == arg.end() ? state == mojom::ConversationGenerationState::kIdle
+                         : it->second == state;
+}
+
 // Runs |action|, then waits until |observer| is told |uuid| is in |state|.
 void ExpectGenerationState(MockServiceClient& observer,
                            const std::string& uuid,
                            mojom::ConversationGenerationState state,
                            base::OnceClosure action) {
   base::test::TestFuture<void> received;
-  EXPECT_CALL(observer, OnConversationGenerationStateChanged(uuid, state))
+  EXPECT_CALL(observer, OnConversationGenerationStateChanged(
+                            HasGenerationState(uuid, state)))
       .WillOnce(base::test::RunOnceClosure(received.GetCallback()));
   std::move(action).Run();
   ASSERT_TRUE(received.Wait());
   testing::Mock::VerifyAndClearExpectations(&observer);
+}
+
+// Binds a new observer and returns the generation states BindObserver replies
+// with.
+GenerationStates GetGenerationStatesOnBind(AIChatService* service) {
+  mojo::PendingRemote<mojom::ServiceObserver> observer;
+  auto observer_receiver = observer.InitWithNewPipeAndPassReceiver();
+  base::test::TestFuture<mojom::ServiceStatePtr, GenerationStates> future;
+  service->BindObserver(
+      std::move(observer),
+      future.GetCallback<mojom::ServiceStatePtr, const GenerationStates&>());
+  return future.Get<1>();
 }
 
 // Gives |handler| a mock engine, submits a turn and waits for it to start
@@ -1961,9 +1982,7 @@ TEST_P(AIChatServiceUnitTest, GenerationState_CompletionWhileViewed_StaysIdle) {
 
 TEST_P(AIChatServiceUnitTest, GenerationState_StopWhileIdle_StaysIdle) {
   ConversationHandler* idle = CreateConversation();
-  EXPECT_CALL(*client_, OnConversationGenerationStateChanged(
-                            idle->get_conversation_uuid(), _))
-      .Times(0);
+  EXPECT_CALL(*client_, OnConversationGenerationStateChanged).Times(0);
   ai_chat_service_->OnRequestInProgressChanged(idle, false);
 
   // Observer messages arrive in order, so once a later change arrives, any
@@ -1980,9 +1999,7 @@ TEST_P(AIChatServiceUnitTest, GenerationState_RepeatedInProgressNotifiesOnce) {
   ConversationHandler* handler = CreateConversation();
   auto resolve = StartGeneration(handler, *client_);
 
-  EXPECT_CALL(*client_, OnConversationGenerationStateChanged(
-                            handler->get_conversation_uuid(), _))
-      .Times(0);
+  EXPECT_CALL(*client_, OnConversationGenerationStateChanged).Times(0);
   ai_chat_service_->OnRequestInProgressChanged(handler, true);
 
   // Observer messages arrive in order, so once a later change arrives, a
@@ -2001,13 +2018,7 @@ TEST_P(AIChatServiceUnitTest,
   ConversationHandler* handler = CreateConversation();
   auto resolve = StartGeneration(handler, *client_);
 
-  mojo::PendingRemote<mojom::ServiceObserver> observer;
-  auto observer_receiver = observer.InitWithNewPipeAndPassReceiver();
-  base::test::TestFuture<mojom::ServiceStatePtr, GenerationStates> future;
-  ai_chat_service_->BindObserver(
-      std::move(observer),
-      future.GetCallback<mojom::ServiceStatePtr, const GenerationStates&>());
-  EXPECT_THAT(future.Get<1>(),
+  EXPECT_THAT(GetGenerationStatesOnBind(ai_chat_service_.get()),
               testing::ElementsAre(testing::Pair(
                   handler->get_conversation_uuid(),
                   mojom::ConversationGenerationState::kGenerating)));
@@ -2027,13 +2038,7 @@ TEST_P(AIChatServiceUnitTest,
       FROM_HERE, run_loop.QuitClosure());
   run_loop.Run();
 
-  mojo::PendingRemote<mojom::ServiceObserver> observer;
-  auto observer_receiver = observer.InitWithNewPipeAndPassReceiver();
-  base::test::TestFuture<mojom::ServiceStatePtr, GenerationStates> future;
-  ai_chat_service_->BindObserver(
-      std::move(observer),
-      future.GetCallback<mojom::ServiceStatePtr, const GenerationStates&>());
-  EXPECT_THAT(future.Get<1>(),
+  EXPECT_THAT(GetGenerationStatesOnBind(ai_chat_service_.get()),
               testing::ElementsAre(testing::Pair(
                   uuid, mojom::ConversationGenerationState::kGenerating)));
 
@@ -2084,14 +2089,8 @@ TEST_P(AIChatServiceUnitTest,
   task_environment_.FastForwardBy(base::Seconds(10));
   ASSERT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
 
-  mojo::PendingRemote<mojom::ServiceObserver> observer;
-  auto observer_receiver = observer.InitWithNewPipeAndPassReceiver();
-  base::test::TestFuture<mojom::ServiceStatePtr, GenerationStates> future;
-  ai_chat_service_->BindObserver(
-      std::move(observer),
-      future.GetCallback<mojom::ServiceStatePtr, const GenerationStates&>());
   EXPECT_THAT(
-      future.Get<1>(),
+      GetGenerationStatesOnBind(ai_chat_service_.get()),
       testing::ElementsAre(testing::Pair(
           uuid, mojom::ConversationGenerationState::kCompletedNotViewed)));
 }
@@ -2184,16 +2183,12 @@ TEST_P(AIChatServiceUnitTest, GenerationState_BulkDeleteClears) {
         base::BindOnce(&CompleteGeneration, std::move(resolve)));
   }
 
-  int idle_count = 0;
-  EXPECT_CALL(*client_, OnConversationGenerationStateChanged(
-                            _, mojom::ConversationGenerationState::kIdle))
-      .Times(2)
-      .WillRepeatedly(
-          [&](const std::string&, mojom::ConversationGenerationState) {
-            ++idle_count;
-          });
+  base::test::TestFuture<void> cleared;
+  EXPECT_CALL(*client_,
+              OnConversationGenerationStateChanged(testing::IsEmpty()))
+      .WillOnce(base::test::RunOnceClosure(cleared.GetCallback()));
   ai_chat_service_->DeleteConversations();
-  ASSERT_TRUE(base::test::RunUntil([&] { return idle_count == 2; }));
+  ASSERT_TRUE(cleared.Wait());
 }
 
 }  // namespace ai_chat

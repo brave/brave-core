@@ -438,9 +438,8 @@ class AIChatService : public KeyedService,
       base::expected<std::vector<std::string>, mojom::APIError> result);
   // Creates the tool providers for |conversation| and adds them to it.
   void AddToolProvidersToConversation(ConversationHandler* conversation);
-  // Sends |uuid|'s stored state, or kIdle if there is no entry, to all
-  // |observer_remotes_|.
-  void NotifyConversationGenerationState(const std::string& uuid);
+  // Sends |conversation_generation_state_| to all |observer_remotes_|.
+  void NotifyConversationGenerationStateChanged();
   // Whether |uuid| has a loaded ConversationHandler with a connected client.
   // This doesn't mean the conversation is on screen.
   bool IsConversationClientConnected(const std::string& uuid) const;

@@ -575,19 +575,15 @@ async function getConversationContent(
   return []
 }
 
-function getGenerationStateMap(args: CustomArgs) {
-  const states = new Map<string, Mojom.ConversationGenerationState>()
+function getGenerationStates(args: CustomArgs) {
+  const states: { [uuid: string]: Mojom.ConversationGenerationState } = {}
   if (args.generatingConversationId) {
-    states.set(
-      args.generatingConversationId,
-      Mojom.ConversationGenerationState.kGenerating,
-    )
+    states[args.generatingConversationId] =
+      Mojom.ConversationGenerationState.kGenerating
   }
   if (args.completedNotViewedConversationId) {
-    states.set(
-      args.completedNotViewedConversationId,
-      Mojom.ConversationGenerationState.kCompletedNotViewed,
-    )
+    states[args.completedNotViewedConversationId] =
+      Mojom.ConversationGenerationState.kCompletedNotViewed
   }
   return states
 }
@@ -675,7 +671,7 @@ function StoryContext(
       initialState={React.useMemo(
         () => ({
           tabs: SAMPLE_TABS,
-          conversationGenerationState: getGenerationStateMap(args),
+          conversationGenerationState: getGenerationStates(args),
           isStandalone: args.isStandalone,
           serviceState: {
             hasAcceptedAgreement: args.hasAcceptedAgreement,

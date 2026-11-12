@@ -566,7 +566,7 @@ describe('ConversationsList', () => {
           initialState={{
             serviceState: { isStoragePrefEnabled: true },
             conversationState: { conversationUuid: 'uuid-2' },
-            conversationGenerationState: new Map([['uuid-1', CG.kGenerating]]),
+            conversationGenerationState: { 'uuid-1': CG.kGenerating },
           }}
         >
           <ConversationsList />
@@ -592,7 +592,7 @@ describe('ConversationsList', () => {
           initialState={{
             serviceState: { isStoragePrefEnabled: true },
             conversationState: { conversationUuid: 'uuid-1' },
-            conversationGenerationState: new Map([['uuid-1', CG.kGenerating]]),
+            conversationGenerationState: { 'uuid-1': CG.kGenerating },
           }}
         >
           <ConversationsList />
@@ -618,9 +618,7 @@ describe('ConversationsList', () => {
           initialState={{
             serviceState: { isStoragePrefEnabled: true },
             conversationState: { conversationUuid: 'uuid-2' },
-            conversationGenerationState: new Map([
-              ['uuid-1', CG.kCompletedNotViewed],
-            ]),
+            conversationGenerationState: { 'uuid-1': CG.kCompletedNotViewed },
           }}
         >
           <ConversationsList />
@@ -646,9 +644,7 @@ describe('ConversationsList', () => {
           initialState={{
             serviceState: { isStoragePrefEnabled: true },
             conversationState: { conversationUuid: 'uuid-1' },
-            conversationGenerationState: new Map([
-              ['uuid-1', CG.kCompletedNotViewed],
-            ]),
+            conversationGenerationState: { 'uuid-1': CG.kCompletedNotViewed },
           }}
         >
           <ConversationsList />
@@ -674,7 +670,7 @@ describe('ConversationsList', () => {
           initialState={{
             serviceState: { isStoragePrefEnabled: true },
             conversationState: { conversationUuid: 'uuid-99' },
-            conversationGenerationState: new Map([]),
+            conversationGenerationState: {},
           }}
         >
           <ConversationsList />
@@ -700,10 +696,10 @@ describe('ConversationsList', () => {
           initialState={{
             serviceState: { isStoragePrefEnabled: true },
             conversationState: { conversationUuid: 'other' },
-            conversationGenerationState: new Map([
-              ['uuid-1', CG.kGenerating],
-              ['uuid-3', CG.kCompletedNotViewed],
-            ]),
+            conversationGenerationState: {
+              'uuid-1': CG.kGenerating,
+              'uuid-3': CG.kCompletedNotViewed,
+            },
           }}
         >
           <ConversationsList />
@@ -729,7 +725,7 @@ describe('ConversationsList', () => {
           initialState={{
             serviceState: { isStoragePrefEnabled: true },
             conversationState: { conversationUuid: 'uuid-1' },
-            conversationGenerationState: new Map([['uuid-1', CG.kGenerating]]),
+            conversationGenerationState: { 'uuid-1': CG.kGenerating },
           }}
         >
           <ActiveChatContext.Provider

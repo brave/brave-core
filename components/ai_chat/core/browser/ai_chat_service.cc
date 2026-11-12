@@ -455,9 +455,8 @@ void AIChatService::DeleteConversations(std::optional<base::Time> begin_time,
     conversation_handlers_.clear();
     conversations_.clear();
     content_conversations_.clear();
-    for (const auto& [id, state] :
-         std::exchange(conversation_generation_state_, {})) {
-      NotifyConversationGenerationState(id);
+    if (!std::exchange(conversation_generation_state_, {}).empty()) {
+      NotifyConversationGenerationStateChanged();
     }
 
     // Delete database data
@@ -870,7 +869,7 @@ void AIChatService::DeleteConversationWithoutNotifyingList(
            << conversation_handlers_.size()
            << " ConversationHandler instances.";
   if (conversation_generation_state_.erase(id) > 0) {
-    NotifyConversationGenerationState(id);
+    NotifyConversationGenerationStateChanged();
   }
 
   // Update database
@@ -1122,7 +1121,7 @@ void AIChatService::MaybeUnloadConversation(
     std::erase_if(content_conversations_,
                   [&uuid](const auto& kv) { return kv.second == uuid; });
     if (conversation_generation_state_.erase(uuid) > 0) {
-      NotifyConversationGenerationState(uuid);
+      NotifyConversationGenerationStateChanged();
     }
     DVLOG(1) << "Erased conversation (" << uuid << "). Now have "
              << conversations_.size() << " Conversation metadata items and "
@@ -1205,7 +1204,7 @@ void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,
     if (std::exchange(conversation_generation_state_[uuid],
                       mojom::ConversationGenerationState::kGenerating) !=
         mojom::ConversationGenerationState::kGenerating) {
-      NotifyConversationGenerationState(uuid);
+      NotifyConversationGenerationStateChanged();
     }
   } else if (const auto* state =
                  base::FindOrNull(conversation_generation_state_, uuid);
@@ -1415,7 +1414,7 @@ void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
     if (it != conversation_generation_state_.end() &&
         it->second == mojom::ConversationGenerationState::kCompletedNotViewed) {
       conversation_generation_state_.erase(it);
-      NotifyConversationGenerationState(uuid);
+      NotifyConversationGenerationStateChanged();
     }
   }
   QueueMaybeUnloadConversation(handler);
@@ -1602,11 +1601,10 @@ void AIChatService::OnConversationListChanged() {
   }
 }
 
-void AIChatService::NotifyConversationGenerationState(const std::string& uuid) {
-  const auto* state = base::FindOrNull(conversation_generation_state_, uuid);
+void AIChatService::NotifyConversationGenerationStateChanged() {
   for (auto& remote : observer_remotes_) {
     remote->OnConversationGenerationStateChanged(
-        uuid, state ? *state : mojom::ConversationGenerationState::kIdle);
+        conversation_generation_state_);
   }
 }
 
@@ -1634,7 +1632,7 @@ void AIChatService::MaybeMarkGenerationComplete(
   } else {
     it->second = mojom::ConversationGenerationState::kCompletedNotViewed;
   }
-  NotifyConversationGenerationState(conversation_uuid);
+  NotifyConversationGenerationStateChanged();
 }
 
 void AIChatService::OpenConversationWithStagedEntries(

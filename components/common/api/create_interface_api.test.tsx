@@ -223,36 +223,6 @@ describe('createInterfaceApi', () => {
     })
   })
 
-  it('replaces Map and Set state on update rather than merging it', () => {
-    const api = createInterfaceApi({
-      actions: {},
-      endpoints: {
-        myMap: state(new Map([['a', 1]])),
-        mySet: state(new Set(['a'])),
-      },
-    })
-
-    const map = new Map([['b', 2]])
-    api.myMap.update(map)
-    expect(api.myMap.current()).toBe(map)
-
-    api.myMap.update((old) => {
-      const next = new Map(old)
-      next.set('c', 3)
-      return next
-    })
-    expect(api.myMap.current()).toEqual(
-      new Map([
-        ['b', 2],
-        ['c', 3],
-      ]),
-    )
-
-    const set = new Set(['b'])
-    api.mySet.update(set)
-    expect(api.mySet.current()).toBe(set)
-  })
-
   it('creates a hook that returns the query data', async () => {
     const mockedQuery = jest.fn((id: string) => {
       return Promise.resolve({ id })

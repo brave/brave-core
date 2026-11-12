@@ -258,9 +258,10 @@ interface ServiceObserver {
   OnConversationListChanged(array<Conversation> conversations);
   OnStateChanged(ServiceState state);
   OnSkillsChanged(array<Skill> skills);
+  // The generation state of every conversation that isn't idle, keyed by
+  // conversation uuid. Sent whenever any of them changes.
   OnConversationGenerationStateChanged(
-    string conversation_uuid,
-    ConversationGenerationState state);
+    map<string, ConversationGenerationState> generation_states);
 };
 
 // Browser-side handler for general AI Chat UI functions, implemented

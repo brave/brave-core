@@ -45,7 +45,9 @@ export interface MockContextProps {
     isStandalone?: boolean
     serviceState?: Partial<Mojom.ServiceState>
     conversationState?: Partial<Mojom.ConversationState>
-    conversationGenerationState?: Map<string, Mojom.ConversationGenerationState>
+    conversationGenerationState?: {
+      [uuid: string]: Mojom.ConversationGenerationState
+    }
   }
 
   // Context-level overrides (for things computed in the provider hooks)
@@ -192,9 +194,9 @@ export function MockContext(props: MockContextProps) {
     }
 
     if (initialState.conversationGenerationState) {
-      aiChatApi.api.conversationGenerationState.update(
+      aiChatApi.api.emitEvent('onConversationGenerationStateChanged', [
         initialState.conversationGenerationState,
-      )
+      ])
     }
 
     if (initialState.conversationState) {
