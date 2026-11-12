@@ -1458,13 +1458,20 @@ test("brave_browser_tests") {
   }
 
   if (enable_brave_wayback_machine) {
-    sources += [ "//brave/browser/ui/views/page_action/wayback_machine_page_action_browsertest.cc" ]
+    sources += [
+      "//brave/browser/ui/views/infobars/wayback_machine_infobar_browsertest.cc",
+      "//brave/browser/ui/views/page_action/wayback_machine_page_action_browsertest.cc",
+    ]
     deps += [
+      "//brave/browser/infobars",
       "//brave/browser/ui/views/page_action",
       "//brave/components/brave_wayback_machine",
       "//chrome/browser/ui/actions",
       "//chrome/browser/ui/views/frame:browser_view_header",
       "//chrome/browser/ui/views/page_action:page_action_test_support",
+      "//components/infobars/content",
+      "//components/infobars/core",
+      "//ui/gfx:test_support",
       "//ui/views:test_support",
     ]
   }
