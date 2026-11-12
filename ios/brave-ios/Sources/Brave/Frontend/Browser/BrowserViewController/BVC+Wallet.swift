@@ -166,7 +166,7 @@ extension BrowserViewController: BraveWalletDelegate {
       // dismiss to show the new tab
       self.dismiss(animated: true)
     }
-    if let url = tabManager.selectedTab?.visibleURL {
+    if let url = tabManager.selectedTab?.lastCommittedURL {
       if InternalURL.isValid(url: url) {
         select(url: destinationURL, isUserDefinedURLNavigation: false)
       } else {
