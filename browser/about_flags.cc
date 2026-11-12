@@ -554,6 +554,17 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
       FEATURE_VALUE_TYPE(                                                    \
           preferences::features::kBraveYoutubeFullscreenVideoFitWorkaround), \
   })
+#define BRAVE_YOUTUBE_PLAYLIST_MEDIA_CONTROLS_WORKAROUND_ANDROID            \
+  EXPAND_FEATURE_ENTRIES({                                                  \
+      "brave-youtube-playlist-media-controls-workaround",                   \
+      "YouTube playlist media controls workaround",                         \
+      "Make the media notification and lock screen Next and Previous "      \
+      "controls follow the m.youtube.com playlist instead of playing a "    \
+      "recommendation or going back in history.",                           \
+      kOsAndroid,                                                           \
+      FEATURE_VALUE_TYPE(preferences::features::                            \
+                             kBraveYoutubePlaylistMediaControlsWorkaround), \
+  })
 #define BRAVE_SAFE_BROWSING_ANDROID                                           \
   EXPAND_FEATURE_ENTRIES({                                                    \
       "brave-safe-browsing",                                                  \
@@ -594,6 +605,7 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
 #define BRAVE_YOUTUBE_FULLSCREEN_SETTINGS_WORKAROUND_ANDROID
 #define BRAVE_YOUTUBE_FULLSCREEN_VIDEO_FIT_WORKAROUND_ANDROID
+#define BRAVE_YOUTUBE_PLAYLIST_MEDIA_CONTROLS_WORKAROUND_ANDROID
 #define BRAVE_SAFE_BROWSING_ANDROID
 #define BRAVE_CUSTOM_SEARCH_ENGINES
 #define BRAVE_ANDROID_TAB_GROUPS_SETTINGS
@@ -1765,6 +1777,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
   BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
   BRAVE_YOUTUBE_FULLSCREEN_SETTINGS_WORKAROUND_ANDROID                         \
   BRAVE_YOUTUBE_FULLSCREEN_VIDEO_FIT_WORKAROUND_ANDROID                        \
+  BRAVE_YOUTUBE_PLAYLIST_MEDIA_CONTROLS_WORKAROUND_ANDROID                     \
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_ANDROID_TAB_GROUPS_SETTINGS                                            \
   BRAVE_ANDROID_MERGE_INSTALL_PWA_AND_CREATE_SHORTCUT                          \
