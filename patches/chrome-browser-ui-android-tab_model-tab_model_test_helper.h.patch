@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/ui/android/tab_model/tab_model_test_helper.h b/chrome/browser/ui/android/tab_model/tab_model_test_helper.h
+index 0e78ba0f354cb550dd6f4b05cec478506eb9a82a..f4ccae1f97f81140b576f50f9b1f5922c1e180eb 100644
+--- a/chrome/browser/ui/android/tab_model/tab_model_test_helper.h
++++ b/chrome/browser/ui/android/tab_model/tab_model_test_helper.h
+@@ -18,6 +18,7 @@
+ #include "components/split_tabs/split_tab_id.h"
+ #include "components/tabs/public/tab_interface.h"
+ #include "content/public/test/browser_test_utils.h"
++#include "extensions/buildflags/buildflags.h"
+ #include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
+ #include "url/gurl.h"
+ 
+@@ -147,9 +148,8 @@ class TestTabModel : public TabModel {
+   bool IsThisTabListEditable() override;
+   bool IsClosingAllTabs() override;
+ 
+-// BrowserWindowInterface is available on desktop Android, but not other Android
+-// builds.
+-#if BUILDFLAG(IS_DESKTOP_ANDROID)
++// Only windowing/internal's extensions unit test needs this.
++#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+   void AssociateWithBrowserWindow(BrowserWindowInterface* browser_window);
+ #endif
+ 

@@ -13,3 +13,19 @@ substitutions:
       function_name: ChromeContentBrowserClient::ShouldUseFirstPartyStorageKey
       return_if: 'BraveShouldUseFirstPartyStorageKey(origin)'
       return_value: 'true'
+
+  - description: |-
+      `profile` is only used under ENABLE_WEBUI_NTP. On Android with
+      enable_extensions_core, this function is compiled while
+      ENABLE_WEBUI_NTP is off, so the unconditional declaration is an
+      unused-variable error.
+    regex:
+      re_pattern:
+        '(ChromeContentBrowserClient::AddChromeSchemeFactories\([^)]*\)\s*\{\n)\s*Profile\*
+        profile
+        =\s*Profile::FromBrowserContext\(web_contents->GetBrowserContext\(\)\);'
+      replace: |-
+        \1#if BUILDFLAG(ENABLE_WEBUI_NTP)
+          Profile* profile =
+              Profile::FromBrowserContext(web_contents->GetBrowserContext());
+        #endif  // BUILDFLAG(ENABLE_WEBUI_NTP)

@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Gate the "profile" source_set's `//extensions/browser` dep on
+      enable_extensions_core, not enable_extensions.
+
+      profile.cc includes extensions/browser/extension_pref_store.h behind
+      BUILDFLAG(ENABLE_EXTENSIONS_CORE), but this target only pulled in
+      //extensions/browser behind the narrower enable_extensions. Brave
+      forces enable_extensions_core=true on Android while enable_extensions
+      stays false there.
+    regex:
+      re_pattern: '(source_set\("profile"\).*?if \()enable_extensions(\))'
+      re_flags: [DOTALL]
+      replace: '\1enable_extensions_core\2'

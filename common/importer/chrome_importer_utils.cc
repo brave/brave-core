@@ -18,18 +18,18 @@
 #include "components/user_data_importer/common/importer_data_types.h"
 #include "components/webdata/common/webdata_constants.h"
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
 #include "extensions/common/extension.h"
 #include "extensions/common/manifest.h"
 #endif
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
 using extensions::Extension;
 using extensions::Manifest;
 #endif
 
 namespace {
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
 
 std::optional<base::DictValue> GetChromeExtensionsListFromFile(
     const base::FilePath& preference_path) {
@@ -257,7 +257,7 @@ bool ChromeImporterCanImport(const base::FilePath& profile,
   if (HasPaymentMethods(profile.Append(kWebDataFilename)))
     *services_supported |= user_data_importer::PAYMENTS;
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
   if (HasImportableExtensions(profile))
     *services_supported |= user_data_importer::EXTENSIONS;
 #endif
@@ -265,7 +265,7 @@ bool ChromeImporterCanImport(const base::FilePath& profile,
   return *services_supported != user_data_importer::NONE;
 }
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
 std::optional<std::vector<std::string>> GetImportableChromeExtensionsList(
     const base::FilePath& profile_path) {
   if (auto extensions = GetChromeExtensionsList(profile_path)) {
