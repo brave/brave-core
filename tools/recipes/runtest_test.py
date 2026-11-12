@@ -72,16 +72,25 @@ class _FakeParser:
 
 
 class _GeneratedConfigTest(unittest.TestCase):
-    """Runs against a fake `infra/config/generated` tree."""
+    """Runs against a fake `src/`: its `infra/config/generated` tree and an
+    `out/Component` build dir."""
 
     def setUp(self):
         stack = contextlib.ExitStack()
         self.addCleanup(stack.close)
-        self.generated = Path(
-            stack.enter_context(tempfile.TemporaryDirectory())
-        )
+        self.root = Path(stack.enter_context(tempfile.TemporaryDirectory()))
+        self.generated = self.root / 'infra' / 'config' / 'generated'
+        self.generated.mkdir(parents=True)
+        self.build_dir = self.root / 'out' / 'Component'
+        self.build_dir.mkdir(parents=True)
+        stack.enter_context(mock.patch.object(m, 'SRC_DIR', self.root))
         stack.enter_context(
             mock.patch.object(m, '_GENERATED_DIR', self.generated)
+        )
+        stack.enter_context(
+            mock.patch.object(
+                m, '_BRAVE_FILTER_DIRS', (self.root / 'no_filters',)
+            )
         )
         for cached in (m._isolate_map, m._emulator_suite_args):
             cached.cache_clear()
@@ -110,6 +119,7 @@ class DesktopCommandTest(_GeneratedConfigTest):
     def _command(
         self, suite, platform='linux', args=('--gtest_filter=A.*',), **options
     ):
+        options.setdefault('build_dir', self.build_dir)
         with mock.patch.object(m.sys, 'platform', platform):
             return m.build_desktop_command(
                 _options(**options), suite, list(args)
@@ -186,6 +196,166 @@ class DesktopCommandTest(_GeneratedConfigTest):
         self.assertEqual(
             command[9:],
             ['--test-launcher-filter-file=../../up.filter;../../brave.filter'],
+        )
+
+    def _write_asan_specs(self):
+        self.write_spec(
+            'Linux Tests', [{'name': 'browser_tests', 'args': ['--plain']}]
+        )
+        self.write_spec(
+            'Linux ASan LSan Tests (1)',
+            [
+                {
+                    'name': 'browser_tests',
+                    'args': [
+                        '--test-launcher-print-test-stdio=always',
+                        '--test-launcher-filter-file=../../testing/buildbot/'
+                        'filters/linux.asan.browser_tests.filter',
+                    ],
+                }
+            ],
+        )
+
+    def test_a_sanitizer_build_mirrors_upstream_s_sanitizer_builder(self):
+        self._write_asan_specs()
+        upstream_filter = (
+            self.root
+            / 'testing/buildbot/filters/linux.asan.browser_tests.filter'
+        )
+        upstream_filter.parent.mkdir(parents=True)
+        upstream_filter.touch()
+        command = self._command('browser_tests', args=(), enable_asan=True)
+        self.assertIn('--asan=1', command)
+        self.assertNotIn('--plain', command)
+        # The spec's filter is also the one `pnpm run test` names: once.
+        self.assertEqual(
+            command[9:],
+            [
+                '--test-launcher-print-test-stdio=always',
+                '--test-launcher-filter-file=../../testing/buildbot/filters/'
+                'linux.asan.browser_tests.filter',
+            ],
+        )
+
+    def test_sanitizers_come_from_the_gn_args_too(self):
+        self._write_asan_specs()
+        (self.build_dir / 'args.gn').write_text(
+            'is_asan = true\nis_lsan = true\n', encoding='utf-8'
+        )
+        command = self._command('browser_tests', args=())
+        self.assertIn('--asan=1', command)
+        self.assertIn('--lsan=1', command)
+        self.assertIn('--test-launcher-print-test-stdio=always', command)
+
+    def test_hosts_without_a_sanitizer_builder_mirror_the_plain_one(self):
+        self.write_spec(
+            'Win10 Tests x64', [{'name': 'browser_tests', 'args': ['--plain']}]
+        )
+        command = self._command(
+            'browser_tests', platform='win32', args=(), enable_asan=True
+        )
+        self.assertIn('--asan=1', command)
+        self.assertIn('--plain', command)
+
+
+class BraveFilterFilesTest(unittest.TestCase):
+    def setUp(self):
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self.root = Path(stack.enter_context(tempfile.TemporaryDirectory()))
+        self.filters = self.root / 'brave' / 'test' / 'filters'
+        (self.filters / 'generated').mkdir(parents=True)
+        (self.root / 'testing' / 'buildbot' / 'filters').mkdir(parents=True)
+        self.build_dir = self.root / 'out' / 'Asan'
+        self.build_dir.mkdir(parents=True)
+        stack.enter_context(mock.patch.object(m, 'SRC_DIR', self.root))
+        stack.enter_context(
+            mock.patch.object(
+                m,
+                '_BRAVE_FILTER_DIRS',
+                (self.filters, self.filters / 'generated'),
+            )
+        )
+
+    def _touch(self, *paths):
+        for path in paths:
+            (self.root / path).touch()
+
+    def _files(self, suite, **options):
+        return [
+            str(Path(path).relative_to(self.root))
+            for path in m.brave_filter_files(
+                _options(build_dir=self.build_dir, **options), suite
+            )
+        ]
+
+    def test_picks_suite_os_arch_and_sanitizer_filters(self):
+        (self.build_dir / 'args.gn').write_text(
+            'import("//out/Asan/args_generated.gni")\nis_asan = true\n',
+            encoding='utf-8',
+        )
+        (self.build_dir / 'args_generated.gni').write_text(
+            'target_os="win"\ntarget_cpu="x86"\nis_asan=false\n',
+            encoding='utf-8',
+        )
+        self._touch(
+            'brave/test/filters/unit_tests.filter',
+            'brave/test/filters/generated/unit_tests-win.filter',
+            'brave/test/filters/unit_tests-win-x86.filter',
+            'brave/test/filters/unit_tests-win-asan.filter',
+            'brave/test/filters/unit_tests-win-msan.filter',
+            'brave/test/filters/unit_tests-linux.filter',
+            'testing/buildbot/filters/win.asan.unit_tests.filter',
+        )
+        self.assertEqual(
+            self._files('unit_tests'),
+            [
+                'brave/test/filters/unit_tests.filter',
+                'brave/test/filters/generated/unit_tests-win.filter',
+                'brave/test/filters/unit_tests-win-x86.filter',
+                'brave/test/filters/unit_tests-win-asan.filter',
+                'testing/buildbot/filters/win.asan.unit_tests.filter',
+            ],
+        )
+
+    def test_a_suite_takes_the_filters_of_the_suite_it_runs(self):
+        (self.build_dir / 'args.gn').write_text(
+            'target_os = "win"\n', encoding='utf-8'
+        )
+        self._touch(
+            'brave/test/filters/updater_tests.filter',
+            'brave/test/filters/updater_tests_system-win.filter',
+        )
+        self.assertEqual(
+            self._files('updater_tests_system'),
+            [
+                'brave/test/filters/updater_tests.filter',
+                'brave/test/filters/updater_tests_system-win.filter',
+            ],
+        )
+
+    def test_no_test_filters_drops_the_upstream_ones_too(self):
+        self._touch('brave/test/filters/unit_tests.filter')
+        self.assertEqual(
+            m.suite_filters(
+                _options(build_dir=self.build_dir, test_filters=False),
+                'unit_tests',
+                ['--a', '--test-launcher-filter-file=up.filter'],
+            ),
+            ['--a'],
+        )
+        self.assertEqual(
+            m.suite_filters(
+                _options(build_dir=self.build_dir),
+                'unit_tests',
+                ['--test-launcher-filter-file=up.filter'],
+            ),
+            [
+                '--test-launcher-filter-file=up.filter',
+                # Relative to the build dir, as upstream's specs name theirs.
+                '--test-launcher-filter-file='
+                '../../brave/test/filters/unit_tests.filter',
+            ],
         )
 
 

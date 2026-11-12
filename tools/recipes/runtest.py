@@ -61,6 +61,16 @@ _DESKTOP_REFERENCE_BUILDERS = {
     'darwin-x86_64': 'mac15-x64-rel-tests',
 }
 
+# The upstream builders that run a sanitizer build's tests, by host and
+# sanitizer. Windows has none.
+_SANITIZER_REFERENCE_BUILDERS = {
+    ('linux', 'asan'): 'Linux ASan LSan Tests (1)',
+    ('linux', 'lsan'): 'Linux ASan LSan Tests (1)',
+    ('linux', 'msan'): 'Linux MSan Tests',
+    ('linux', 'tsan'): 'Linux TSan Tests',
+    ('darwin', 'asan'): 'Mac ASan 64 Tests (1)',
+}
+
 # The soft open-file limit upstream's Mac bots run tests with.
 MAC_OPEN_FILE_LIMIT = 8000
 
@@ -69,6 +79,18 @@ MAC_OPEN_FILE_LIMIT = 8000
 _BOT_ONLY_ARG = re.compile(r'\$\{|^--gs-results-bucket=')
 
 _FILTER_FILE_FLAG = '--test-launcher-filter-file='
+
+# Brave's own test exclusions, as `pnpm run test` applies them.
+_BRAVE_FILTER_DIRS = (
+    Path(__file__).resolve().parents[2] / 'test' / 'filters',
+    Path(__file__).resolve().parents[2] / 'test' / 'filters' / 'generated',
+)
+
+# Suites that run another suite's tests, and so take its filters too.
+_ADDITIONAL_SUITE_FILTERS = {'updater_tests_system': ['updater_tests']}
+
+_GN_ASSIGNMENT = re.compile(r'^\s*(\w+)\s*=\s*(.+?)\s*$', re.MULTILINE)
+_GN_IMPORT = re.compile(r'^\s*import\("//([^"]+)"\)', re.MULTILINE)
 
 
 @dataclass(frozen=True)
@@ -108,6 +130,9 @@ class Options:
 
     # Name of the AVD config Android suites that need a device run on.
     avd_config: str = DEFAULT_AVD_CONFIG
+
+    # Apply Brave's test/filters and the reference builder's filter files.
+    test_filters: bool = True
 
 
 # -- Running the test -------------------------------------------------------
@@ -278,8 +303,15 @@ def suite_args(suite: str, builder: str) -> list[str]:
     return []
 
 
-def desktop_reference_builder() -> str:
-    """The upstream builder whose suites a run on this host mirrors."""
+def desktop_reference_builder(sanitizers: Sanitizers) -> str:
+    """The upstream builder whose suites a run on this host mirrors: the one
+    running a sanitizer build's tests, if upstream has one."""
+    host = 'linux' if sys.platform.startswith('linux') else sys.platform
+    for sanitizer in ('asan', 'lsan', 'msan', 'tsan'):
+        if getattr(sanitizers, sanitizer) and (
+            builder := _SANITIZER_REFERENCE_BUILDERS.get((host, sanitizer))
+        ):
+            return builder
     if sys.platform == 'darwin':
         machine = 'arm64' if platform.machine() == 'arm64' else 'x86_64'
         return _DESKTOP_REFERENCE_BUILDERS[f'darwin-{machine}']
@@ -310,6 +342,127 @@ def merge_filter_files(args: list[str]) -> list[str]:
     return merged + [_FILTER_FILE_FLAG + ';'.join(files)]
 
 
+def gn_args(build_dir: Path) -> dict[str, str]:
+    """The build's gn args, from `args.gn` and the files it imports."""
+
+    def read(path: Path) -> dict[str, str]:
+        if not path.exists():
+            return {}
+        text = path.read_text(encoding='utf-8')
+        values: dict[str, str] = {}
+        for imported in _GN_IMPORT.findall(text):
+            values.update(read(SRC_DIR / imported))
+        for name, value in _GN_ASSIGNMENT.findall(text):
+            values[name] = value.strip('"')
+        return values
+
+    return read(build_dir / 'args.gn')
+
+
+def _host_os() -> str:
+    if sys.platform == 'darwin':
+        return 'mac'
+    if sys.platform == 'win32':
+        return 'win'
+    return 'linux'
+
+
+def _host_cpu() -> str:
+    machine = platform.machine().lower()
+    return 'arm64' if machine in ('arm64', 'aarch64') else 'x64'
+
+
+@dataclass(frozen=True)
+class Sanitizers:
+    """The sanitizers a build has."""
+
+    asan: bool
+    lsan: bool
+    msan: bool
+    tsan: bool
+    ubsan: bool
+
+
+def build_sanitizers(options: Options) -> Sanitizers:
+    """The build's sanitizers: those asked for, and those its gn args set."""
+    args = gn_args(options.build_dir)
+
+    def gn_true(name: str) -> bool:
+        return args.get(name) == 'true'
+
+    return Sanitizers(
+        asan=options.enable_asan or gn_true('is_asan'),
+        lsan=options.enable_lsan or gn_true('is_lsan'),
+        msan=options.enable_msan or gn_true('is_msan'),
+        tsan=options.enable_tsan or gn_true('is_tsan'),
+        ubsan=gn_true('is_ubsan'),
+    )
+
+
+def brave_filter_files(options: Options, suite: str) -> list[str]:
+    """The filter files in Brave's test/filters that apply to `suite`, as
+    `pnpm run test` (`getApplicableFilters()` in testUtils.ts) picks them:
+    by suite, OS, CPU and sanitizer, with upstream's ASan filter too."""
+    args = gn_args(options.build_dir)
+    target_os = args.get('target_os', _host_os())
+    target_cpu = args.get('target_cpu', _host_cpu())
+    sanitizers = build_sanitizers(options)
+    is_asan = sanitizers.asan
+    is_msan = sanitizers.msan
+    is_ubsan = sanitizers.ubsan
+
+    files = []
+    for name in [*_ADDITIONAL_SUITE_FILTERS.get(suite, []), suite]:
+        names = [
+            name,
+            f'{name}-{target_os}',
+            f'{name}-{target_os}-{target_cpu}',
+        ]
+        if is_ubsan:
+            names.append(f'{name}-{target_os}-ubsan')
+        if is_asan:
+            names.append(f'{name}-{target_os}-asan')
+        if is_msan:
+            names.append(f'{name}-{target_os}-msan')
+        for filter_name in names:
+            for directory in _BRAVE_FILTER_DIRS:
+                path = directory / f'{filter_name}.filter'
+                if path.exists():
+                    files.append(str(path))
+        if is_asan:
+            upstream = (
+                SRC_DIR
+                / 'testing'
+                / 'buildbot'
+                / 'filters'
+                / f'{target_os}.asan.{name}.filter'
+            )
+            if upstream.exists():
+                files.append(str(upstream))
+    return files
+
+
+def without_filter_files(args: list[str]) -> list[str]:
+    return [arg for arg in args if not arg.startswith(_FILTER_FILE_FLAG)]
+
+
+def suite_filters(
+    options: Options, suite: str, upstream_args: list[str]
+) -> list[str]:
+    """`upstream_args` with Brave's filter files for `suite` added, or with
+    every filter file dropped when the run ignores test filters.
+
+    The files are relative to the build dir the suite runs from, as upstream's
+    specs name theirs, so that a file both name is merged once.
+    """
+    if not options.test_filters:
+        return without_filter_files(upstream_args)
+    return upstream_args + [
+        _FILTER_FILE_FLAG + os.path.relpath(path, options.build_dir)
+        for path in brave_filter_files(options, suite)
+    ]
+
+
 # -- Desktop -----------------------------------------------------------------
 
 
@@ -337,20 +490,22 @@ def build_desktop_command(
     executable = suite
     if sys.platform == 'win32' and not executable.endswith('.exe'):
         executable += '.exe'
+    sanitizers = build_sanitizers(options)
     command = [
         _vpython3(),
         os.path.relpath(SRC_DIR / 'testing' / wrapper, options.build_dir),
         f'./{executable}',
         '--test-launcher-bot-mode',
-        f'--asan={int(options.enable_asan)}',
-        f'--lsan={int(options.enable_lsan)}',
-        f'--msan={int(options.enable_msan)}',
-        f'--tsan={int(options.enable_tsan)}',
+        f'--asan={int(sanitizers.asan)}',
+        f'--lsan={int(sanitizers.lsan)}',
+        f'--msan={int(sanitizers.msan)}',
+        f'--tsan={int(sanitizers.tsan)}',
         '--cfi-diag=0',
     ]
+    name = suite.removesuffix('.exe')
+    upstream = suite_args(name, desktop_reference_builder(sanitizers))
     return command + merge_filter_files(
-        suite_args(suite.removesuffix('.exe'), desktop_reference_builder())
-        + args
+        suite_filters(options, name, upstream) + args
     )
 
 
@@ -611,7 +766,12 @@ def run_android_test(options: Options, args: list[str]) -> int:
         return INFRA_FAILURE_EXIT_CODE
 
     command = merge_filter_files(
-        build_android_test_command(suite, mode, options.avd_config) + args[1:]
+        suite_filters(
+            options,
+            suite,
+            build_android_test_command(suite, mode, options.avd_config),
+        )
+        + args[1:]
     )
 
     json_parser = (
@@ -720,6 +880,14 @@ def main() -> int:
         'emulator for Android suites runs (default: %(default)s).',
     )
     parser.add_argument(
+        '--no-test-filters',
+        dest='test_filters',
+        action='store_false',
+        help="Ignore Brave's test/filters and the upstream reference "
+        "builder's filter files; filter files passed to the suite still "
+        'apply.',
+    )
+    parser.add_argument(
         'test_command',
         nargs=argparse.REMAINDER,
         help='The test executable (or python script) and its arguments.',
@@ -747,6 +915,7 @@ def main() -> int:
         ),
         test_platform=parsed.test_platform,
         avd_config=parsed.avd_config,
+        test_filters=parsed.test_filters,
     )
     args = list(parsed.test_command)
 
