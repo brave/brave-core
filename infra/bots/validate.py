@@ -20,8 +20,13 @@ import dotenv
 
 _CHROMIUM_SRC_DIR = gen_paths.BOTS_DIR.parents[2]
 
-# The three files `bots.py snapshot` writes for every builder.
-_REQUIRED_FILES = ('gn-args.json', 'sync.json', 'targets.json')
+# The files `bots.py snapshot` writes for every builder.
+_REQUIRED_FILES = (
+    'gn-args.json',
+    'properties.json',
+    'sync.json',
+    'targets.json',
+)
 
 # The placeholder value an unset secret carries.
 _UNSET_SECRET_PLACEHOLDER = 'dummy'
@@ -85,6 +90,15 @@ class _Validator:
             self._check_gn_args_schema(gn_args_path, gn_args_json)
             self._check_args_file_exists(gn_args_path, gn_args_json)
             self._check_secrets_not_leaked(gn_args_path, gn_args_json)
+
+        properties_path = builder_dir / 'properties.json'
+        properties_json = (
+            self._parse_json(properties_path, raw['properties.json'])
+            if 'properties.json' in raw
+            else None
+        )
+        if properties_json is not None:
+            self._check_properties_schema(properties_path, properties_json)
 
         sync_path = builder_dir / 'sync.json'
         sync_json = (
@@ -202,6 +216,43 @@ class _Validator:
                         )
                     )
 
+    def _check_properties_schema(
+        self, properties_path: Path, properties_json: dict
+    ) -> None:
+        """Checks `properties.json` carries the `builder_spec` consumers
+        read."""
+        builder_spec = properties_json.get('builder_spec')
+        if not isinstance(builder_spec, dict):
+            self._errs.append(
+                '%s: "builder_spec" is missing or not an object'
+                % properties_path
+            )
+            return
+        chromium_config = builder_spec.get('chromium_config')
+        if not isinstance(chromium_config, dict) or not isinstance(
+            chromium_config.get('target_platform'), str
+        ):
+            self._errs.append(
+                '%s: "builder_spec.chromium_config" has no target_platform'
+                % properties_path
+            )
+        gclient_config = builder_spec.get('gclient_config')
+        if not isinstance(gclient_config, dict):
+            self._errs.append(
+                '%s: "builder_spec.gclient_config" is missing or not an '
+                'object' % properties_path
+            )
+            return
+        for field in ('target_os', 'target_cpu'):
+            value = gclient_config.get(field)
+            if not isinstance(value, list) or not all(
+                isinstance(name, str) for name in value
+            ):
+                self._errs.append(
+                    '%s: "builder_spec.gclient_config.%s" is not a list of '
+                    'strings' % (properties_path, field)
+                )
+
     def _check_sync_schema(self, sync_path: Path, sync_json: dict) -> None:
         for required in ('target_os', 'target_cpu'):
             value = sync_json.get(required)
@@ -239,9 +290,13 @@ class _Validator:
                 seen[key] = builder_dir.name
             else:
                 self._errs.append(
-                    'builders %r and %r are exact duplicates (identical '
-                    'gn-args.json, sync.json and targets.json); consolidate '
-                    'them into one' % (first_seen_as, builder_dir.name)
+                    'builders %r and %r are exact duplicates (identical %s); '
+                    'consolidate them into one'
+                    % (
+                        first_seen_as,
+                        builder_dir.name,
+                        ', '.join(_REQUIRED_FILES),
+                    )
                 )
 
 

@@ -1,0 +1,15 @@
+{
+  "builder_spec": {
+    "chromium_config": {
+      "build_config": "Release",
+      "host_platform": "linux",
+      "target_arch": "intel",
+      "target_bits": 64,
+      "target_platform": "linux"
+    },
+    "gclient_config": {
+      "target_cpu": [],
+      "target_os": []
+    }
+  }
+}
