@@ -19,6 +19,7 @@
 #include "brave/browser/ui/commander/commander_service_factory.h"
 #include "brave/components/commander/common/constants.h"
 #include "brave/components/commander/common/features.h"
+#include "brave/components/containers/core/common/features.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/location_bar/location_bar.h"
@@ -36,7 +37,9 @@
 class CommanderServiceBrowserTest : public InProcessBrowserTest {
  public:
   CommanderServiceBrowserTest() {
-    features_.InitAndEnableFeature(features::kBraveCommander);
+    features_.InitWithFeatures(
+        /*enabled_features=*/{features::kBraveCommander},
+        /*disabled_features=*/{containers::features::kContainers});
   }
 
   ~CommanderServiceBrowserTest() override = default;
@@ -138,11 +141,11 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest, CommandsCanBeSelected) {
   // Wait for commander to process the input and update results
   WaitUntil(base::BindLambdaForTesting([&]() {
     return commander()->GetResultSetId() >= 1 &&
-           commander()->GetItems().size() == 8u;
+           commander()->GetItems().size() == 5u;
   }));
 
   auto items = commander()->GetItems();
-  ASSERT_EQ(8u, items.size());
+  ASSERT_EQ(5u, items.size());
   // For localized IDS_NEW_TAB string, remove & accelerator
   std::u16string expected_new_tab = l10n_util::GetStringUTF16(IDS_NEW_TAB);
   std::u16string::size_type pos = expected_new_tab.find(u"&");

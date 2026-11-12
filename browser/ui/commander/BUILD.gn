@@ -15,6 +15,7 @@ source_set("browser_tests") {
     "//base",
     "//brave/browser/ui",
     "//brave/components/commander/browser",
+    "//brave/components/containers/core/common:features",
     "//brave/components/resources:strings_grit",
     "//chrome/browser/profiles",
     "//chrome/browser/profiles:profile",

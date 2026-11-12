@@ -923,18 +923,18 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_NEW_TAB_IN_CONTAINER_7:
     case IDC_NEW_TAB_IN_CONTAINER_8:
     case IDC_NEW_TAB_IN_CONTAINER_9: {
-      int index = id - IDC_NEW_TAB_IN_CONTAINER_1;
-
       auto* containers_service =
           ContainersServiceFactory::GetForProfile(browser_->GetProfile());
 
-      if (!containers_service) {
+      if (!containers_service ||
+          !containers_service->ShouldShowContainerControls()) {
         break;
       }
 
+      const size_t index = static_cast<size_t>(id - IDC_NEW_TAB_IN_CONTAINER_1);
       auto containers = containers_service->GetContainers();
 
-      if (index >= static_cast<int>(containers.size())) {
+      if (index >= containers.size()) {
         break;
       }
 
