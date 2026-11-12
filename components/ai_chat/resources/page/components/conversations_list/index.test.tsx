@@ -106,6 +106,44 @@ function renderWithConversations(
   )
 }
 
+// Renders |list| with |activeUuid| bound and the given generation states, and
+// waits for the conversations to show.
+async function renderWithGeneration(
+  activeUuid: string,
+  generationStates: { [uuid: string]: Mojom.ConversationGenerationState },
+  list: React.ReactNode = <ConversationsList />,
+) {
+  await renderConversationsList(
+    <MockContext
+      service={{
+        getConversations: () =>
+          Promise.resolve({ conversations: mockConversations }),
+      }}
+      initialState={{
+        serviceState: { isStoragePrefEnabled: true },
+        conversationState: { conversationUuid: activeUuid },
+        conversationGenerationState: generationStates,
+      }}
+    >
+      {list}
+    </MockContext>,
+  )
+  await waitFor(() => {
+    expect(screen.getByText('How to use TypeScript')).toBeInTheDocument()
+  })
+}
+
+async function expectIndicators(generating: number, completed: number) {
+  await waitFor(() => {
+    expect(document.querySelectorAll('.generatingIndicator').length).toBe(
+      generating,
+    )
+    expect(document.querySelectorAll('.completedIndicator').length).toBe(
+      completed,
+    )
+  })
+}
+
 describe('ConversationsList', () => {
   beforeEach(() => {
     clearAllDataForTesting()
@@ -557,200 +595,64 @@ describe('ConversationsList', () => {
 
   describe('Generation indicators', () => {
     it('shows ProgressRing when generating and not active', async () => {
-      await renderConversationsList(
-        <MockContext
-          service={{
-            getConversations: () =>
-              Promise.resolve({ conversations: mockConversations }),
-          }}
-          initialState={{
-            serviceState: { isStoragePrefEnabled: true },
-            conversationState: { conversationUuid: 'uuid-2' },
-            conversationGenerationState: { 'uuid-1': CG.kGenerating },
-          }}
-        >
-          <ConversationsList />
-        </MockContext>,
-      )
-
-      await waitFor(() => {
-        expect(screen.getByText('How to use TypeScript')).toBeInTheDocument()
-      })
-      await waitFor(() => {
-        expect(document.querySelectorAll('.generatingIndicator').length).toBe(1)
-        expect(document.querySelectorAll('.completedIndicator').length).toBe(0)
-      })
+      await renderWithGeneration('uuid-2', { 'uuid-1': CG.kGenerating })
+      await expectIndicators(1, 0)
     })
 
     it('hides ProgressRing when generating but active', async () => {
-      await renderConversationsList(
-        <MockContext
-          service={{
-            getConversations: () =>
-              Promise.resolve({ conversations: mockConversations }),
-          }}
-          initialState={{
-            serviceState: { isStoragePrefEnabled: true },
-            conversationState: { conversationUuid: 'uuid-1' },
-            conversationGenerationState: { 'uuid-1': CG.kGenerating },
-          }}
-        >
-          <ConversationsList />
-        </MockContext>,
-      )
-
-      await waitFor(() => {
-        expect(screen.getByText('How to use TypeScript')).toBeInTheDocument()
-      })
-      await waitFor(() => {
-        expect(document.querySelectorAll('.generatingIndicator').length).toBe(0)
-        expect(document.querySelectorAll('.completedIndicator').length).toBe(0)
-      })
+      await renderWithGeneration('uuid-1', { 'uuid-1': CG.kGenerating })
+      await expectIndicators(0, 0)
     })
 
     it('shows completed dot when completedNotViewed and not active', async () => {
-      await renderConversationsList(
-        <MockContext
-          service={{
-            getConversations: () =>
-              Promise.resolve({ conversations: mockConversations }),
-          }}
-          initialState={{
-            serviceState: { isStoragePrefEnabled: true },
-            conversationState: { conversationUuid: 'uuid-2' },
-            conversationGenerationState: { 'uuid-1': CG.kCompletedNotViewed },
-          }}
-        >
-          <ConversationsList />
-        </MockContext>,
-      )
-
-      await waitFor(() => {
-        expect(screen.getByText('How to use TypeScript')).toBeInTheDocument()
+      await renderWithGeneration('uuid-2', {
+        'uuid-1': CG.kCompletedNotViewed,
       })
-      await waitFor(() => {
-        expect(document.querySelectorAll('.generatingIndicator').length).toBe(0)
-        expect(document.querySelectorAll('.completedIndicator').length).toBe(1)
-      })
+      await expectIndicators(0, 1)
     })
 
     it('hides completed dot when completedNotViewed but active', async () => {
-      await renderConversationsList(
-        <MockContext
-          service={{
-            getConversations: () =>
-              Promise.resolve({ conversations: mockConversations }),
-          }}
-          initialState={{
-            serviceState: { isStoragePrefEnabled: true },
-            conversationState: { conversationUuid: 'uuid-1' },
-            conversationGenerationState: { 'uuid-1': CG.kCompletedNotViewed },
-          }}
-        >
-          <ConversationsList />
-        </MockContext>,
-      )
-
-      await waitFor(() => {
-        expect(screen.getByText('How to use TypeScript')).toBeInTheDocument()
+      await renderWithGeneration('uuid-1', {
+        'uuid-1': CG.kCompletedNotViewed,
       })
-      await waitFor(() => {
-        expect(document.querySelectorAll('.generatingIndicator').length).toBe(0)
-        expect(document.querySelectorAll('.completedIndicator').length).toBe(0)
-      })
+      await expectIndicators(0, 0)
     })
 
     it('shows nothing when idle (no entry)', async () => {
-      await renderConversationsList(
-        <MockContext
-          service={{
-            getConversations: () =>
-              Promise.resolve({ conversations: mockConversations }),
-          }}
-          initialState={{
-            serviceState: { isStoragePrefEnabled: true },
-            conversationState: { conversationUuid: 'uuid-99' },
-            conversationGenerationState: {},
-          }}
-        >
-          <ConversationsList />
-        </MockContext>,
-      )
-
-      await waitFor(() => {
-        expect(screen.getByText('How to use TypeScript')).toBeInTheDocument()
-      })
-      await waitFor(() => {
-        expect(document.querySelectorAll('.generatingIndicator').length).toBe(0)
-        expect(document.querySelectorAll('.completedIndicator').length).toBe(0)
-      })
+      await renderWithGeneration('uuid-99', {})
+      await expectIndicators(0, 0)
     })
 
     it('shows each conversation its own indicator', async () => {
-      await renderConversationsList(
-        <MockContext
-          service={{
-            getConversations: () =>
-              Promise.resolve({ conversations: mockConversations }),
-          }}
-          initialState={{
-            serviceState: { isStoragePrefEnabled: true },
-            conversationState: { conversationUuid: 'other' },
-            conversationGenerationState: {
-              'uuid-1': CG.kGenerating,
-              'uuid-3': CG.kCompletedNotViewed,
-            },
-          }}
-        >
-          <ConversationsList />
-        </MockContext>,
-      )
-
-      await waitFor(() => {
-        expect(screen.getByText('How to use TypeScript')).toBeInTheDocument()
+      await renderWithGeneration('other', {
+        'uuid-1': CG.kGenerating,
+        'uuid-3': CG.kCompletedNotViewed,
       })
-      await waitFor(() => {
-        expect(document.querySelectorAll('.generatingIndicator').length).toBe(1)
-        expect(document.querySelectorAll('.completedIndicator').length).toBe(1)
-      })
+      await expectIndicators(1, 1)
     })
 
     it('treats the bound conversation as active on the tab route', async () => {
-      await renderConversationsList(
-        <MockContext
-          service={{
-            getConversations: () =>
-              Promise.resolve({ conversations: mockConversations }),
-          }}
-          initialState={{
-            serviceState: { isStoragePrefEnabled: true },
-            conversationState: { conversationUuid: 'uuid-1' },
-            conversationGenerationState: { 'uuid-1': CG.kGenerating },
+      await renderWithGeneration(
+        'uuid-1',
+        { 'uuid-1': CG.kGenerating },
+        <ActiveChatContext.Provider
+          value={{
+            api: undefined!,
+            selectedConversationId: 'tab',
+            updateSelectedConversationId: () => {},
+            createNewConversation: () => {},
+            createNewConversationWithWorkspace: () => {},
+            isMainConversation: false,
+            openMainConversation: () => {},
           }}
         >
-          <ActiveChatContext.Provider
-            value={{
-              api: undefined!,
-              selectedConversationId: 'tab',
-              updateSelectedConversationId: () => {},
-              createNewConversation: () => {},
-              createNewConversationWithWorkspace: () => {},
-              isMainConversation: false,
-              openMainConversation: () => {},
-            }}
-          >
-            <ConversationsList />
-          </ActiveChatContext.Provider>
-        </MockContext>,
+          <ConversationsList />
+        </ActiveChatContext.Provider>,
       )
-
-      await waitFor(() => {
-        expect(screen.getByText('How to use TypeScript')).toBeInTheDocument()
-      })
       await waitFor(() => {
         expect(document.querySelectorAll('.navItemActive').length).toBe(1)
-        expect(document.querySelectorAll('.generatingIndicator').length).toBe(0)
       })
+      await expectIndicators(0, 0)
     })
   })
 })
