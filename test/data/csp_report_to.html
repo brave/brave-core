@@ -1,0 +1,15 @@
+<html>
+<body>
+<script>
+  function triggerViolation() {
+    return new Promise(resolve => {
+      document.addEventListener('securitypolicyviolation', () => resolve(true),
+                                {once: true});
+      const img = document.createElement('img');
+      img.src = '/blocked.png';
+      document.body.appendChild(img);
+    });
+  }
+</script>
+</body>
+</html>
