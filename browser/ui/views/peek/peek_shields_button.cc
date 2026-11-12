@@ -8,16 +8,14 @@
 #include <utility>
 
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_controller.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/size.h"
-#include "ui/views/animation/ink_drop.h"
-#include "ui/views/animation/ink_drop_host.h"
 #include "ui/views/border.h"
-#include "ui/views/controls/highlight_path_generator.h"
 
 namespace {
 
@@ -34,9 +32,8 @@ PeekShieldsButton::PeekShieldsButton(PrefService& prefs,
   SetHorizontalAlignment(gfx::ALIGN_CENTER);
   SetPreferredSize(kButtonSize);
   SetBorder(views::CreateEmptyBorder(gfx::Insets()));
-  views::InstallCircleHighlightPathGenerator(this);
-  views::InkDrop::Get(this)->SetMode(views::InkDropHost::InkDropMode::ON);
-  SetHasInkDropActionOnClick(true);
+  // Highlights like the main toolbar's buttons.
+  ConfigureInkDrop(this);
 }
 
 PeekShieldsButton::~PeekShieldsButton() = default;
