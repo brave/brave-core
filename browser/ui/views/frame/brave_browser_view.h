@@ -21,7 +21,6 @@
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
-#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
 #include "build/build_config.h"
@@ -36,10 +35,6 @@
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/browser/ui/views/toolbar/brave_vpn_panel_controller.h"
-#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
@@ -119,11 +114,8 @@ class BraveBrowserView : public BrowserView,
   // off, the strip overlays the contents, or it's floated open over them.
   std::optional<int> GetVerticalTabStripWidthAtWindowEdge() const;
 
-  void ShowBraveVPNBubble(bool show_select = false);
-
   // BrowserView overrides:
   void StartTabCycling() override;
-  views::View* GetAnchorViewForBraveVPNPanel();
   gfx::Rect GetShieldsBubbleRect() override;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // Give active tab's reader mode toolbar.
@@ -354,10 +346,6 @@ class BraveBrowserView : public BrowserView,
 
 #if defined(USE_AURA)
   raw_ptr<views::View> sidebar_host_view_ = nullptr;
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  BraveVPNPanelController vpn_panel_controller_{this};
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)

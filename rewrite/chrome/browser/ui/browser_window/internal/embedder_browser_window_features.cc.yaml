@@ -22,13 +22,6 @@ substitutions:
       function_name: EmbedderBrowserWindowFeatures::InitPostWindowConstruction
       code: 'brave_browser_window_features_->InitPostWindowConstruction();'
 
-  - description: 'Forward InitPostBrowserViewConstruction().'
-    preempt_function_impl:
-      function_name: EmbedderBrowserWindowFeatures::InitPostBrowserViewConstruction
-      code: |-
-        brave_browser_window_features_->InitPostBrowserViewConstruction(
-            browser_view);
-
   - description: 'Forward TearDownPreBrowserWindowDestruction().'
     preempt_function_impl:
       function_name: >-
