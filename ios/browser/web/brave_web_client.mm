@@ -204,7 +204,8 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
     features.push_back(CosmeticFilteringJavaScriptFeature::GetInstance());
     features.push_back(ScriptletsJavaScriptFeature::GetInstance());
     if (base::FeatureList::IsEnabled(
-            brave_shields::features::kBraveShieldsElementPicker)) {
+            brave_shields::features::kBraveShieldsElementPicker) &&
+        !browser_state->IsOffTheRecord()) {
       features.push_back(ElementPickerJavaScriptFeature::GetInstance());
     }
     if (!base::FeatureList::IsEnabled(
