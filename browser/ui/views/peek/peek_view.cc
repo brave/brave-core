@@ -11,7 +11,6 @@
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
-#include "brave/browser/ui/views/brave_layout_provider.h"
 #include "brave/browser/ui/views/peek/peek_shields_button.h"
 #include "brave/browser/ui/views/view_shadow.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -60,7 +59,6 @@
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/layout/flex_layout_types.h"
 #include "ui/views/layout/flex_layout_view.h"
-#include "ui/views/layout/layout_provider.h"
 #include "ui/views/style/typography.h"
 #include "ui/views/view_class_properties.h"
 #include "ui/views/widget/widget.h"
@@ -86,16 +84,20 @@ constexpr float kCardShadowOpacity = 0.24f;
 
 constexpr int kDividerThickness = 1;
 
-// The card sits inside the contents area, away from the window corners, so it
-// uses the same radius as the browser's rounded contents area.
-float GetCardCornerRadius() {
-  return views::LayoutProvider::Get()->GetCornerRadiusMetric(
-      ExtendedShapeContextTokens::kRoundedCornersBorderRadius);
-}
+// The top corners stay small so the card still reads as hanging from the
+// browser toolbar.
+constexpr float kCardTopCornerRadius = 4.f;
+constexpr float kCardBottomCornerRadius = 16.f;
 
 gfx::RoundedCornersF GetCardCorners() {
-  const float radius = GetCardCornerRadius();
-  return gfx::RoundedCornersF(0, 0, radius, radius);
+  return gfx::RoundedCornersF(kCardTopCornerRadius, kCardTopCornerRadius,
+                              kCardBottomCornerRadius, kCardBottomCornerRadius);
+}
+
+// The page sits below the card toolbar, so only its bottom corners are rounded.
+gfx::RoundedCornersF GetWebViewCorners() {
+  return gfx::RoundedCornersF(0, 0, kCardBottomCornerRadius,
+                              kCardBottomCornerRadius);
 }
 
 // Styled like the main toolbar's buttons: the same corner radius, icon colors
@@ -120,6 +122,7 @@ DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kCardElementId);
 DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kSiteInfoButtonElementId);
 DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kShieldsButtonElementId);
 DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kOpenAsTabButtonElementId);
+DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kSplitViewButtonElementId);
 DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kCloseButtonElementId);
 
 PeekView::PeekView(Delegate& delegate, BrowserWindowInterface& browser)
@@ -136,8 +139,7 @@ PeekView::PeekView(Delegate& delegate, BrowserWindowInterface& browser)
   card_ = AddChildView(std::make_unique<views::View>());
   card_->SetProperty(views::kElementIdentifierKey, kCardElementId);
   card_->SetBackground(views::CreateRoundedRectBackground(
-      nala::kColorContainerBackground, /*top_radius=*/0.f,
-      /*bottom_radius=*/GetCardCornerRadius()));
+      nala::kColorContainerBackground, GetCardCorners()));
   auto* card_layout =
       card_->SetLayoutManager(std::make_unique<views::BoxLayout>(
           views::BoxLayout::Orientation::kVertical));
@@ -154,7 +156,9 @@ PeekView::PeekView(Delegate& delegate, BrowserWindowInterface& browser)
   toolbar->SetDefault(views::kMarginsKey,
                       gfx::Insets::TLBR(0, 0, 0, kToolbarSpacing));
   toolbar->SetPreferredSize(gfx::Size(0, kToolbarHeight));
-  toolbar->SetBackground(views::CreateSolidBackground(kColorToolbar));
+  toolbar->SetBackground(views::CreateRoundedRectBackground(
+      kColorToolbar, /*top_radius=*/kCardTopCornerRadius,
+      /*bottom_radius=*/0.f));
 
   site_info_button_ = toolbar->AddChildView(CreateToolbarButton(
       base::BindRepeating(&PeekView::ShowPageInfo, base::Unretained(this)),
@@ -215,6 +219,13 @@ PeekView::PeekView(Delegate& delegate, BrowserWindowInterface& browser)
       kLeoFullscreenOnIcon, IDS_PEEK_OPEN_AS_TAB));
   open_as_tab_button_->SetProperty(views::kElementIdentifierKey,
                                    kOpenAsTabButtonElementId);
+  // The same icon as the split view button in the browser toolbar.
+  split_view_button_ = toolbar->AddChildView(CreateToolbarButton(
+      base::BindRepeating(&Delegate::OnPeekViewOpenInSplitViewRequested,
+                          base::Unretained(&delegate)),
+      kLeoBrowserSplitViewVerticalIcon, IDS_PEEK_OPEN_IN_SPLIT_VIEW));
+  split_view_button_->SetProperty(views::kElementIdentifierKey,
+                                  kSplitViewButtonElementId);
   close_button_ = toolbar->AddChildView(CreateToolbarButton(
       base::BindRepeating(&Delegate::OnPeekViewCloseRequested,
                           base::Unretained(&delegate)),
@@ -242,7 +253,7 @@ void PeekView::SetWebContents(content::WebContents* contents) {
   shields_button_->SetWebContents(contents);
   web_view_->SetWebContents(contents);
   if (contents) {
-    web_view_->holder()->SetNativeViewCornerRadii(GetCardCorners());
+    web_view_->holder()->SetNativeViewCornerRadii(GetWebViewCorners());
   }
   UpdateToolbar();
 }
@@ -290,6 +301,10 @@ void PeekView::UpdateToolbar() {
 
 void PeekView::FocusContents() {
   web_view_->RequestFocus();
+}
+
+void PeekView::SetCanOpenInSplitView(bool can_open) {
+  split_view_button_->SetVisible(can_open);
 }
 
 void PeekView::AnimateOpen() {

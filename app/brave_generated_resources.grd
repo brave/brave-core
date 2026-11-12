@@ -848,6 +848,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_PEEK_OPEN_AS_TAB" desc="Tooltip and accessible name of the button that moves the floating preview into a regular tab">
           Open as tab
         </message>
+        <message name="IDS_PEEK_OPEN_IN_SPLIT_VIEW" desc="Tooltip and accessible name of the button that moves the floating preview into a regular tab shown in split view next to the current tab">
+          Open in split view
+        </message>
       </if>
 
       <!-- Brave Ads -->

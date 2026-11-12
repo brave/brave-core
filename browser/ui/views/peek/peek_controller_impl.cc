@@ -17,9 +17,11 @@
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tab_dialogs.h"
+#include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "components/split_tabs/split_tab_visual_data.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/frame_tree_node_id.h"
 #include "content/public/browser/navigation_controller.h"
@@ -107,6 +109,31 @@ void PeekControllerImpl::OpenAsTab() {
   PeekContents::OnMovedToTab(*raw_contents);
 }
 
+void PeekControllerImpl::OpenInSplitView() {
+  content::WebContents* contents = GetWebContents();
+  if (!contents) {
+    return;
+  }
+  if (!CanOpenInSplitView()) {
+    OpenAsTab();
+    return;
+  }
+
+  TabStripModel* tab_strip_model = browser_->GetTabStripModel();
+  const int source_index = tab_strip_model->active_index();
+  OpenAsTab();
+  const int peek_index = tab_strip_model->GetIndexOfWebContents(contents);
+  if (peek_index == TabStripModel::kNoTab) {
+    return;
+  }
+  // The source tab is the pivot, so the new tab joins its pinned state and
+  // group, as with "Open link in split view".
+  tab_strip_model->AddToNewSplit(
+      {source_index, peek_index},
+      split_tabs::SplitTabVisualData(split_tabs::SplitTabLayout::kSideBySide),
+      split_tabs::SplitTabCreatedSource::kLinkClick);
+}
+
 void PeekControllerImpl::ShowCookiesDialogInTab() {
   content::WebContents* contents = GetWebContents();
   if (!contents) {
@@ -175,6 +202,10 @@ void PeekControllerImpl::OnPeekViewOpenAsTabRequested() {
   PostTask(&PeekControllerImpl::OpenAsTab);
 }
 
+void PeekControllerImpl::OnPeekViewOpenInSplitViewRequested() {
+  PostTask(&PeekControllerImpl::OpenInSplitView);
+}
+
 void PeekControllerImpl::OnPeekViewShieldsRequested() {
   PostTask(&PeekControllerImpl::OpenAsTabAndShowShields);
 }
@@ -209,9 +240,17 @@ void PeekControllerImpl::Show(std::unique_ptr<content::WebContents> contents) {
       std::make_unique<PeekContents>(*browser_, *this, std::move(contents));
   CreateWidget();
   peek_view_->SetWebContents(contents_->web_contents());
+  peek_view_->SetCanOpenInSplitView(CanOpenInSplitView());
   peek_view_->AnimateOpen();
   widget_->Show();
   peek_view_->FocusContents();
+}
+
+bool PeekControllerImpl::CanOpenInSplitView() const {
+  // Joining an existing split would replace one of its tabs.
+  const tabs::TabInterface* source_tab =
+      browser_->GetTabStripModel()->GetActiveTab();
+  return source_tab && !source_tab->IsSplit();
 }
 
 void PeekControllerImpl::OpenAsTabOrClose() {

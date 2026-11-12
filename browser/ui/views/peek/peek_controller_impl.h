@@ -42,6 +42,11 @@ class PeekControllerImpl : public PeekController,
   ~PeekControllerImpl() override;
 
   PeekView* peek_view_for_testing() { return peek_view_; }
+
+  // Moves the Peek contents into a tab shown in split view with the active
+  // tab, the one Peek was opened from. Opens a standalone tab instead if the
+  // active tab is already in a split.
+  void OpenInSplitView();
   views::Widget* widget_for_testing() { return widget_.get(); }
 
   // PeekController:
@@ -64,6 +69,7 @@ class PeekControllerImpl : public PeekController,
   // PeekView::Delegate:
   void OnPeekViewCloseRequested() override;
   void OnPeekViewOpenAsTabRequested() override;
+  void OnPeekViewOpenInSplitViewRequested() override;
   void OnPeekViewShieldsRequested() override;
 
   // TabStripModelObserver:
@@ -82,6 +88,7 @@ class PeekControllerImpl : public PeekController,
 
  private:
   void Show(std::unique_ptr<content::WebContents> contents);
+  bool CanOpenInSplitView() const;
   void OpenAsTabOrClose();
   void OpenAsTabAndShowShields();
   void OpenAsTabAndShowCookiesDialog(
