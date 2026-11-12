@@ -280,7 +280,7 @@ extension WalletTabHelper: BraveWalletProviderDelegate {
     // For Ethereum, locked status is checked in `EthereumProviderImpl::GetAllowedAccounts`
     // For Solana, locked status is checked in `SolanaProviderImpl::Connect` before
     // calling `IsAccountAllowed` delegate method.
-    guard let originURL = tab?.visibleURL?.origin.url,
+    guard let originURL = tab?.lastCommittedURL?.origin.url,
       let permittedAccountAddresses = Domain.walletPermissions(forUrl: originURL, coin: type)
     else {
       return []
@@ -432,7 +432,7 @@ extension WalletTabHelper: BraveWalletEventsListener {
       emitEthereumEvent(.ethereumChainChanged(chainId: chainId))
       await updateEthereumProperties()
       // don't need to reload if it's a brave wallet webui
-      if tab.visibleURL?.isWalletWebUIURL == true { return }
+      if tab.lastCommittedURL?.isWalletWebUIURL == true { return }
       tab.reload()
     }
   }
@@ -638,7 +638,7 @@ extension WalletTabHelper: BraveWalletKeyringServiceObserver {
   }
 
   func unlocked() {
-    guard let origin = tab?.visibleURL?.origin,
+    guard let origin = tab?.lastCommittedURL?.origin,
       let keyringService = walletKeyringService
     else { return }
     Task { @MainActor in

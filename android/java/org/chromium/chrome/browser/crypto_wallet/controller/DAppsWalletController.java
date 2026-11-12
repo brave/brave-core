@@ -54,7 +54,7 @@ public class DAppsWalletController implements ConnectionErrorHandler {
     // good (the host drops its reference to this controller). See refreshVisibleWalletPopup.
     private boolean mRebuildingPopup;
     private final AppCompatActivity mActivity;
-    @Nullable private final GURL mVisibleUrl;
+    @Nullable private final GURL mLastCommittedUrl;
 
     @NonNull private final DefaultLifecycleObserver mDefaultLifecycleObserver;
 
@@ -100,9 +100,9 @@ public class DAppsWalletController implements ConnectionErrorHandler {
         }
 
         if (webContents != null) {
-            mVisibleUrl = webContents.getVisibleUrl();
+            mLastCommittedUrl = webContents.getLastCommittedUrl();
         } else {
-            mVisibleUrl = null;
+            mLastCommittedUrl = null;
         }
     }
 
@@ -166,7 +166,7 @@ public class DAppsWalletController implements ConnectionErrorHandler {
 
     private void createAndShowWalletPanel() {
         boolean showExpandButton =
-                mVisibleUrl != null && !mVisibleUrl.getHost().equals(BRAVE_WALLET_HOST);
+                mLastCommittedUrl != null && !mLastCommittedUrl.getHost().equals(BRAVE_WALLET_HOST);
         mBraveWalletPanel =
                 new BraveWalletPanel(
                         mAnchorViewHost, mDialogOrPanelDismissListener, showExpandButton);
