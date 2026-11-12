@@ -7,11 +7,10 @@ substitutions:
   - description: |-
       Delete the custom profile image with its profile.
 
-      The deletion runs on the image file sequence after any accepted write.
-    preempt_function_impl:
-      function_name: ProfileAttributesStorage::RemoveProfile
-      code: |-
-        if (ProfileAttributesEntry* entry =
-                GetProfileAttributesWithPath(profile_path)) {
-          BraveRemoveCustomProfileImage(*entry);
-        }
+      This runs once the entry is gone, so observers notified during removal
+      cannot recreate its image state. The deletion runs on the image file
+      sequence after any accepted write.
+    add_after_line:
+      line: 'profile_attributes_entries_.erase(profile_path.value());'
+      code: |2-
+          BraveRemoveCustomProfileImage(*this, profile_path);

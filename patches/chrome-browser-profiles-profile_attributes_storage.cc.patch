@@ -1,15 +1,12 @@
 diff --git a/chrome/browser/profiles/profile_attributes_storage.cc b/chrome/browser/profiles/profile_attributes_storage.cc
-index 56fba018ce7c4120ca551ef5d7918e639e3c468c..5fedfe28bb608de5d0ba60f19383abc4a3c76abb 100644
+index 56fba018ce7c4120ca551ef5d7918e639e3c468c..926b166c7ab7587a1055a7f81db88937606a57c7 100644
 --- a/chrome/browser/profiles/profile_attributes_storage.cc
 +++ b/chrome/browser/profiles/profile_attributes_storage.cc
-@@ -447,6 +447,10 @@ void ProfileAttributesStorage::RemoveProfileByAccountId(
+@@ -462,6 +462,7 @@ void ProfileAttributesStorage::RemoveProfile(
+   std::string key = StorageKeyFromProfilePath(profile_path);
+   attributes.Remove(key);
+   profile_attributes_entries_.erase(profile_path.value());
++  BraveRemoveCustomProfileImage(*this, profile_path);
  
- void ProfileAttributesStorage::RemoveProfile(
-     const base::FilePath& profile_path) {
-+  if (ProfileAttributesEntry* entry =
-+          GetProfileAttributesWithPath(profile_path)) {
-+    BraveRemoveCustomProfileImage(*entry);
-+  }
-   ProfileAttributesEntry* entry = GetProfileAttributesWithPath(profile_path);
-   if (!entry) {
-     NOTREACHED();
+   ScopedListPrefUpdate ordered_list_update(prefs_, prefs::kProfilesOrder);
+   base::ListValue& ordered_list = ordered_list_update.Get();

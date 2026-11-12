@@ -11,7 +11,8 @@
 
 // Defined in //brave/browser/profiles/custom_profile_image, or as a no-op
 // in //brave/browser/profiles:chromium_impl.
-void BraveRemoveCustomProfileImage(ProfileAttributesEntry& entry);
+void BraveRemoveCustomProfileImage(ProfileAttributesStorage& storage,
+                                   const base::FilePath& profile_path);
 
 // We want to use our own default profile name "Personal" instead of upstream's
 // branded default profile name "Your Brave".

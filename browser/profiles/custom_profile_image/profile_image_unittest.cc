@@ -136,7 +136,8 @@ TEST_F(CustomProfileImageTest, EarlyResultsAreAsynchronous) {
                  image().Select(std::move(callback));
                }),
                Result::kUnavailable);
-  image().ProfileRemoved();
+  base::test::ScopedFeatureList disabled;
+  disabled.InitAndDisableFeature(features::kBraveCustomProfileImage);
   expect_async(base::BindLambdaForTesting([&](ProfileImage::Callback callback) {
                  image().Remove(std::move(callback));
                }),

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_attributes_storage.h b/chrome/browser/profiles/profile_attributes_storage.h
-index d685de8514ad6ece5fdeb59588be0433d5febd88..f112d2f6b5d67484105dbd1f1dba28ce2b9e4e98 100644
+index d685de8514ad6ece5fdeb59588be0433d5febd88..43e1e9112651a7099f6945f7a2460630973ac132 100644
 --- a/chrome/browser/profiles/profile_attributes_storage.h
 +++ b/chrome/browser/profiles/profile_attributes_storage.h
 @@ -220,7 +220,11 @@ class ProfileAttributesStorage {
@@ -7,7 +7,7 @@ index d685de8514ad6ece5fdeb59588be0433d5febd88..f112d2f6b5d67484105dbd1f1dba28ce
    }
  
 + protected:
-+  scoped_refptr<base::SequencedTaskRunner> custom_profile_image_file_runner_;
++  std::unique_ptr<base::SupportsUserData::Data> custom_profile_images_;
 +
   private:
 +  friend class custom_profile_image::ProfileImage;

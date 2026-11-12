@@ -67,7 +67,4 @@ void ProfileAttributesEntry::SetSerpMetrics(base::DictValue serp_metrics) {
 
 #include <chrome/browser/profiles/profile_attributes_entry.cc>
 
-// Out of line because the entry owns the custom image state.
-ProfileAttributesEntry::~ProfileAttributesEntry() = default;
-
 #undef BRAVE_PROFILE_ATTRIBUTES_ENTRY_MIGRATE_OBSOLETE_PROFILE_ATTRIBUTES

@@ -4,17 +4,19 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: Let the custom profile image share the storage file sequence.
+  - description: Let the custom profile image keep its state on the storage.
     add_friend:
       class_name: ProfileAttributesStorage
       friend_type: class custom_profile_image::ProfileImage
 
   - description: |-
-      Hold the custom profile image file sequence.
+      Hold the custom profile image state for every entry.
 
       Profile removal and a later profile at the same path must use the same
-      sequence, so it outlives each entry.
+      file sequence, so the state outlives each entry. The base type gives it a
+      virtual destructor without including profile_image.h, which is desktop
+      only.
     add_to_protected:
       class_name: ProfileAttributesStorage
       code: |-
-        scoped_refptr<base::SequencedTaskRunner> custom_profile_image_file_runner_;
+        std::unique_ptr<base::SupportsUserData::Data> custom_profile_images_;
