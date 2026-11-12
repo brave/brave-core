@@ -45,10 +45,9 @@ static const float animated_image_frame_delay = 2.0;
 }
 
 - (instancetype)initWithURLLoaderFactory:
-    (scoped_refptr<network::SharedURLLoaderFactory>)url_loader_factory {
+    (scoped_refptr<network::SharedURLLoaderFactory>)urlLoaderFactory {
   if ((self = [super init])) {
-    image_fetcher_ =
-        std::make_unique<brave::ImageDownloader>(url_loader_factory);
+    image_fetcher_ = std::make_unique<brave::ImageDownloader>(urlLoaderFactory);
   }
   return self;
 }

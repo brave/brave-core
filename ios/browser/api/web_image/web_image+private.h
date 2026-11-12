@@ -16,7 +16,7 @@ class ProfileIOS;
 @interface WebImageDownloader (Private)
 - (instancetype)initWithBrowserState:(ProfileIOS*)profile;
 - (instancetype)initWithURLLoaderFactory:
-    (scoped_refptr<network::SharedURLLoaderFactory>)url_loader_factory;
+    (scoped_refptr<network::SharedURLLoaderFactory>)urlLoaderFactory;
 @end
 
 #endif  // BRAVE_IOS_BROWSER_API_WEB_IMAGE_WEB_IMAGE_PRIVATE_H_

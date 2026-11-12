@@ -16,7 +16,7 @@ class BraveSanitizedImageSourceNetworkTest : public SanitizedImageSourceTest {
     sanitized_image_source_->StartDataRequest(
         GURL(base::StrCat({chrome::kChromeUIImageURL, "?", image_url_spec})),
         content::WebContents::Getter(), future.GetCallback());
-    EXPECT_TRUE(future.Wait());
+    ASSERT_TRUE(future.Wait());
     EXPECT_FALSE(future.Get());
     EXPECT_EQ(0, test_url_loader_factory_.NumPending());
   }
@@ -65,6 +65,6 @@ TEST_F(BraveSanitizedImageSourceNetworkTest, BraveLoaderOptionsApplied) {
   EXPECT_TRUE(block_local_requested);
 
   test_url_loader_factory_.AddResponse(kImageUrl, "abc");
-  EXPECT_TRUE(future.Wait());
+  ASSERT_TRUE(future.Wait());
   EXPECT_TRUE(future.Get());
 }

@@ -43,7 +43,7 @@ TEST_F(WebImageDownloaderTest, LocalNetworkUrlsNotFetched) {
     network::TestURLLoaderFactory test_factory;
     WebImageDownloader* downloader = MakeDownloader(&test_factory);
 
-    base::RunLoop run_loop;
+    __block base::RunLoop run_loop;
     __block BOOL called = NO;
     __block UIImage* image = nil;
     [downloader downloadImage:[NSURL URLWithString:url_string]
@@ -66,7 +66,7 @@ TEST_F(WebImageDownloaderTest, PublicUrlIsFetched) {
   network::TestURLLoaderFactory test_factory;
   WebImageDownloader* downloader = MakeDownloader(&test_factory);
 
-  base::RunLoop run_loop;
+  __block base::RunLoop run_loop;
   __block BOOL called = NO;
   [downloader
       downloadImage:[NSURL URLWithString:@"https://example.com/icon.png"]

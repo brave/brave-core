@@ -14,7 +14,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
-#include "base/test/mock_callback.h"
 #include "base/test/test_future.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/constants/brave_paths.h"
@@ -114,7 +113,7 @@ class BraveSanitizedImageSourceTest : public testing::Test {
     source_.StartDataRequest(
         GURL("chrome://brave-image/?url=" + EncodeQuery(image_url_spec)),
         content::WebContents::Getter(), future.GetCallback());
-    EXPECT_TRUE(future.Wait());
+    ASSERT_TRUE(future.Wait());
     EXPECT_FALSE(future.Get());
     EXPECT_EQ(0, test_url_loader_factory_.NumPending());
   }
