@@ -8,6 +8,10 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+import("//brave/components/local_ai/buildflags/buildflags.gni")
+
+assert(enable_local_ai)
+
 static_library("core") {
   sources = [
     "history_embeddings_features.cc",
