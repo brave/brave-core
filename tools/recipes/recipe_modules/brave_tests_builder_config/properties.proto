@@ -1,0 +1,73 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+package recipe_modules.brave.brave_tests_builder_config;
+
+// Mirrors upstream's `$build/chromium_tests_builder_config` properties, which
+// `bots.py snapshot` generates into each builder's `properties.json`, as
+// lucicfg does upstream. Trimmed to the fields our builders set.
+
+// The details configuring execution for a single builder
+message BuilderSpec {
+  // Required, the builder group that the builder is a part of
+  string builder_group = 1;
+
+  // Required, the platform the builder builds for, and how.
+  //
+  // Upstream's `legacy_chromium_config` names a recipe config item and passes
+  // these fields as its keyword arguments. Ours carries the fields alone,
+  // which upstream's TODO asks for: the recipe picks the config item.
+  message ChromiumConfig {
+    optional string build_config = 1;
+    optional string host_platform = 2;
+    optional string target_arch = 3;
+    optional int32 target_bits = 4;
+    optional string target_platform = 5;
+  }
+  ChromiumConfig chromium_config = 2;
+}
+
+// The identity of a builder.
+//
+// Upstream uses buildbucket's BuilderID, whose project and bucket we have no
+// equivalent of.
+message BuilderID {
+  string builder = 1;
+}
+
+// A database of builder specs that can be used during a build
+message BuilderDatabase {
+  // Required, the builders stored in the database
+  message Entry {
+    // Required, ID of the builder
+    BuilderID builder_id = 1;
+    // Required, the builder spec for the builder
+    BuilderSpec builder_spec = 2;
+  }
+  repeated Entry entries = 1;
+}
+
+// The combined details of 1 or more builders
+message BuilderConfig {
+  // Required, the database of builders that can be accessed via the builder
+  // config
+  //
+  // The database must contain entries for each builder ID in builder_ids.
+  BuilderDatabase builder_db = 1;
+
+  // Required, IDs of builders that configuration will be applied for
+  //
+  // At runtime, many of the values read from BuilderSpecs will be checked for
+  // consistency among the specs for the builders identified by this field.
+  repeated BuilderID builder_ids = 2;
+}
+
+// Module properties
+message InputProperties {
+  // The builder config for the current build
+  BuilderConfig builder_config = 1;
+}
