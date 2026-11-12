@@ -37,7 +37,7 @@ TEST_F(ContainersIconGeneratorUnitTest, GetVectorIconFromIconType_BasicIcons) {
        i <= std::to_underlying(mojom::Icon::kMaxValue); ++i) {
     mojom::Icon icon = static_cast<mojom::Icon>(i);
     auto it = icon_to_vector_icon_map.find(icon);
-    EXPECT_NE(it, icon_to_vector_icon_map.end());
+    ASSERT_NE(it, icon_to_vector_icon_map.end()) << "missing icon " << i;
     EXPECT_EQ(&GetVectorIconFromIconType(icon), &it->second);
   }
 }
