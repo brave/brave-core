@@ -75,8 +75,8 @@ OBJC_EXPORT
 
 - (nullable IOSBookmarkNode*)childAtIndex:(NSUInteger)index;
 - (NSArray<BookmarkFolder*>*)nestedChildFoldersFiltered:
-                                          (BOOL(^)(BookmarkFolder*))included
-                                  NS_SWIFT_NAME(nestedChildFolders(where:));
+    (BOOL (^)(BookmarkFolder*))included
+    NS_SWIFT_NAME(nestedChildFolders(where:));
 
 - (void)setTitle:(NSString*)title;
 - (bool)getMetaInfo:(NSString*)key value:(NSString* _Nonnull* _Nullable)value;
@@ -85,7 +85,7 @@ OBJC_EXPORT
 
 - (nullable IOSBookmarkNode*)addChildFolderWithTitle:(NSString*)title;
 - (nullable IOSBookmarkNode*)addChildBookmarkWithTitle:(NSString*)title
-                                                url:(NSURL*)url;
+                                                   url:(NSURL*)url;
 
 - (void)moveToParent:(nonnull IOSBookmarkNode*)parent;
 - (void)moveToParent:(nonnull IOSBookmarkNode*)parent index:(NSUInteger)index;
@@ -98,8 +98,7 @@ OBJC_EXPORT
                           url:(NSURL* _Nullable)url
                     dateAdded:(NSDate* _Nullable)dateAdded
                  dateModified:(NSDate* _Nullable)dateModified
-                     children:
-                         (NSArray<IOSBookmarkNode*>* _Nullable)children;
+                     children:(NSArray<IOSBookmarkNode*>* _Nullable)children;
 @end
 
 NS_SWIFT_NAME(BraveBookmarksAPI)
@@ -111,7 +110,6 @@ OBJC_EXPORT
 @property(nonatomic, nullable, readonly) IOSBookmarkNode* mobileNode;
 @property(nonatomic, nullable, readonly) IOSBookmarkNode* desktopNode;
 @property(nonatomic, readonly) bool isLoaded;
-@property(nonatomic, readonly) bool editingEnabled;
 
 - (id<BookmarkModelListener>)addObserver:(id<BookmarkModelObserver>)observer;
 - (void)removeObserver:(id<BookmarkModelListener>)observer;
