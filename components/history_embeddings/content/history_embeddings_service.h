@@ -264,7 +264,7 @@ class HistoryEmbeddingsService
 
   // Metadata about the embedder; Set when valid metadata is received from
   // `embedder_metadata_provider`.
-  passage_embeddings::EmbedderMetadata embedder_metadata_{0, 0};
+  passage_embeddings::EmbedderMetadata embedder_metadata_{0, 0, 0};
 
   // Storage is bound to a separate sequence.
   // This will be null if the feature flag is disabled.
