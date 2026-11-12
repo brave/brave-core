@@ -12,6 +12,7 @@ source_set("unit_tests") {
     "decentralized_dns/constants_unittest.cc",
     "http/partitioned_host_state_map_unittest.cc",
     "http/transport_security_state_unittest.cc",
+    "socket/brave_socks5_client_socket_unittest.cc",
   ]
 
   if (enable_tor) {
@@ -29,6 +30,7 @@ source_set("unit_tests") {
     "//net:test_support",
     "//net/http:transport_security_state_unittest_data_default",
     "//net/tools/huffman_trie:huffman_trie_generator_sources",
+    "//testing/gmock",
     "//testing/gtest",
     "//url",
   ]
