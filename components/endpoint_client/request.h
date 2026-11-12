@@ -41,12 +41,18 @@ enum class Method {
   kTrack
 };
 
-// A request binds a request body type to a specific HTTP method and
-// provides access to the method, Content-Type, and serialized body.
-template <IsRequestBody RequestBody, Method M>
-struct Request : RequestOptions {
-  using Body = RequestBody;
+constexpr bool MethodAllowsBody(Method method) {
+  return method != Method::kGet && method != Method::kHead;
+}
 
+template <Method M, typename...>
+struct Request {
+  static_assert(false, "Request<> takes at most one body type!");
+};
+
+// A body-less request has a fixed HTTP method and provides access to it.
+template <Method M>
+struct Request<M> : RequestOptions {
   static constexpr std::string_view Method() {
     if constexpr (M == Method::kConnect) {
       return net::HttpRequestHeaders::kConnectMethod;
@@ -72,6 +78,21 @@ struct Request : RequestOptions {
       static_assert(false, "Unhandled Method enumerator!");
     }
   }
+};
+
+template <Method M, typename T>
+struct Request<M, T> {
+  static_assert(false,
+                "MethodAllowsBody(M) must be true, and T must satisfy "
+                "IsRequestBody!");
+};
+
+// A request with a body extends the body-less request with a request body
+// type, and provides access to the Content-Type and serialized body.
+template <Method M, IsRequestBody RequestBody>
+  requires(MethodAllowsBody(M))
+struct Request<M, RequestBody> : Request<M> {
+  using Body = RequestBody;
 
   static constexpr std::string_view ContentType() {
     return ContentType<Body>();

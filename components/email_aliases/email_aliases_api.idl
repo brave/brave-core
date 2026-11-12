@@ -58,10 +58,6 @@ dictionary AliasListEntry {
   DOMString status;
 };
 
-// Request to GET /manage?status=active (alias list result)
-dictionary AliasListRequest {
-};
-
 dictionary AliasesAccountInfo {
   long max_aliases_count;
 };

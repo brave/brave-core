@@ -11,7 +11,6 @@
 
 #include "base/strings/strcat.h"
 #include "base/values.h"
-#include "brave/components/brave_vpn/browser/v2/api/empty_request_body.h"
 #include "brave/components/brave_vpn/browser/v2/api/endpoint_constants.h"
 #include "brave/components/brave_vpn/browser/v2/api/error_body.h"
 #include "brave/components/brave_vpn/browser/v2/api/raw_json_response_body.h"
@@ -72,7 +71,7 @@ struct GetProfileCredentials {
 // VerifyCredentials API confirms a VPN credential (identified by a client-id
 // path segment and an api auth token) has not been invalidated.
 struct VerifyCredentials {
-  using Request = endpoint_client::Get<EmptyRequestBody>;
+  using Request = endpoint_client::Get;
   using Response = endpoint_client::Response<RawJsonResponseBody, VpnErrorBody>;
 
   static GURL URL() {
@@ -112,7 +111,7 @@ struct InvalidateCredentials {
 // client-id path segment and an api auth token). Response is forwarded
 // verbatim.
 struct GetAvailableMultihopExitRegions {
-  using Request = endpoint_client::Get<EmptyRequestBody>;
+  using Request = endpoint_client::Get;
   using Response = endpoint_client::Response<RawJsonResponseBody, VpnErrorBody>;
 
   static GURL URL() {

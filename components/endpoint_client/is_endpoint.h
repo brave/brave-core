@@ -24,17 +24,20 @@ concept IsEndpointLike = requires {
   { Endpoint::URL() } -> std::same_as<GURL>;
 };
 
-// A JSON endpoint has a JSON request and response type.
+// A JSON endpoint has a body-less or JSON request and a JSON response.
 template <typename Endpoint>
-concept IsJSONEndpoint =
-    IsEndpointLike<Endpoint> && IsJSONRequest<typename Endpoint::Request> &&
-    IsJSONResponse<typename Endpoint::Response>;
+concept IsJSONEndpoint = IsEndpointLike<Endpoint> &&
+                         (IsBodylessRequest<typename Endpoint::Request> ||
+                          IsJSONRequest<typename Endpoint::Request>) &&
+                         IsJSONResponse<typename Endpoint::Response>;
 
-// A Protobuf endpoint has a Protobuf request and response type.
+// A Protobuf endpoint has a body-less or Protobuf request and a Protobuf
+// response.
 template <typename Endpoint>
-concept IsProtobufEndpoint =
-    IsEndpointLike<Endpoint> && IsProtobufRequest<typename Endpoint::Request> &&
-    IsProtobufResponse<typename Endpoint::Response>;
+concept IsProtobufEndpoint = IsEndpointLike<Endpoint> &&
+                             (IsBodylessRequest<typename Endpoint::Request> ||
+                              IsProtobufRequest<typename Endpoint::Request>) &&
+                             IsProtobufResponse<typename Endpoint::Response>;
 
 }  // namespace internal
 

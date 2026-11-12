@@ -10,7 +10,6 @@
 
 #include "base/strings/strcat.h"
 #include "base/values.h"
-#include "brave/components/brave_vpn/browser/v2/api/empty_request_body.h"
 #include "brave/components/brave_vpn/browser/v2/api/endpoint_constants.h"
 #include "brave/components/brave_vpn/browser/v2/api/error_body.h"
 #include "brave/components/brave_vpn/browser/v2/api/raw_json_response_body.h"
@@ -29,7 +28,7 @@ namespace brave_vpn::v2::endpoints {
 // GetServerRegions API returns all regions at a given precision which is a URL
 // path segment and is appended by callers.
 struct GetServerRegions {
-  using Request = endpoint_client::Get<EmptyRequestBody>;
+  using Request = endpoint_client::Get;
   using Response = endpoint_client::Response<RawJsonResponseBody, VpnErrorBody>;
 
   static GURL URL() {
@@ -41,7 +40,7 @@ struct GetServerRegions {
 
 // GetTimezonesForRegions API returns timezone metadata for all regions.
 struct GetTimezonesForRegions {
-  using Request = endpoint_client::Get<EmptyRequestBody>;
+  using Request = endpoint_client::Get;
   using Response = endpoint_client::Response<RawJsonResponseBody, VpnErrorBody>;
 
   static GURL URL() {
