@@ -317,6 +317,7 @@ IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
   ASSERT_TRUE(WaitForOverlayActive(true));
   overlay->RevealTemporarily(base::Minutes(1));
   ASSERT_TRUE(WaitForOverlayRevealed());
+  tab_strip->StopAnimating();
   RunScheduledLayouts();
 
   Tab* insecure_tab = tab_strip->tab_at(1);
