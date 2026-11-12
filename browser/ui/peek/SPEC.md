@@ -208,18 +208,20 @@ separate widget is used.
 
 ### Colors
 
-All Nala tokens, so light and dark themes follow the browser.
+Nala tokens, and the browser toolbar's own colors for the toolbar buttons, so
+light and dark themes follow the browser.
 
-| Part            | Token                                                              |
-| --------------- | ------------------------------------------------------------------ |
-| Card background | `nala::kColorContainerBackground`                                  |
-| Card toolbar    | `kColorToolbar`                                                    |
-| Divider         | `nala::kColorDividerSubtle`                                        |
-| Title           | `nala::kColorTextPrimary`                                          |
-| Host            | `nala::kColorTextTertiary`                                         |
-| Icons           | `nala::kColorIconDefault`, `nala::kColorIconDisabled`              |
-| Backdrop        | `nala::kColorDialogsScrimBackground`, scaled by animation progress |
-| Shadow          | `nala::kColorSchemesShadow` at 24%                                 |
+| Part            | Token                                                                                          |
+| --------------- | ---------------------------------------------------------------------------------------------- |
+| Card background | `nala::kColorContainerBackground`                                                              |
+| Card toolbar    | `kColorToolbar`                                                                                |
+| Divider         | `nala::kColorDividerSubtle`                                                                    |
+| Title           | `nala::kColorTextPrimary`                                                                      |
+| Host            | `nala::kColorTextTertiary`                                                                     |
+| Button icons    | `kColorToolbarButtonIcon`, `kColorToolbarButtonIconHovered`, `kColorToolbarButtonIconInactive` |
+| Button states   | `kColorToolbarInkDropHover`, `kColorToolbarInkDropRipple`, toolbar corner radius               |
+| Backdrop        | `nala::kColorDialogsScrimBackground`, scaled by animation progress                             |
+| Shadow          | `nala::kColorSchemesShadow` at 24%                                                             |
 
 `nala::kColorDividerFaint` was too close to white in the light theme to be seen
 against the toolbar and page, so the divider uses subtle.

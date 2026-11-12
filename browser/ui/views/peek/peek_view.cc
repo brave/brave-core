@@ -23,6 +23,7 @@
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/page_info/page_info_bubble_specification.h"
 #include "chrome/browser/ui/views/page_info/page_info_bubble_view.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/favicon/content/content_favicon_driver.h"
 #include "components/omnibox/browser/location_bar_model_util.h"
@@ -97,12 +98,16 @@ gfx::RoundedCornersF GetCardCorners() {
   return gfx::RoundedCornersF(0, 0, radius, radius);
 }
 
+// Styled like the main toolbar's buttons: the same corner radius, icon colors
+// and hover and pressed highlights.
 std::unique_ptr<views::ImageButton> CreateToolbarButton(
     views::Button::PressedCallback callback,
     const gfx::VectorIcon& icon,
     int message_id) {
   auto button = views::CreateVectorImageButtonWithNativeTheme(
-      std::move(callback), icon, kButtonIconSize, nala::kColorIconDefault);
+      std::move(callback), icon, kButtonIconSize, kColorToolbarButtonIcon,
+      kColorToolbarButtonIconInactive, kColorToolbarButtonIconHovered);
+  ConfigureInkDrop(button.get());
   const std::u16string text = l10n_util::GetStringUTF16(message_id);
   button->SetTooltipText(text);
   button->GetViewAccessibility().SetName(text);
@@ -263,7 +268,9 @@ void PeekView::UpdateToolbar() {
           : location_bar_model::GetSecurityVectorIcon(security_level,
                                                       security_state.get()),
       kButtonIconSize,
-      views::IconColors(nala::kColorIconDefault, nala::kColorIconDisabled));
+      views::IconColors(kColorToolbarButtonIcon,
+                        kColorToolbarButtonIconInactive,
+                        kColorToolbarButtonIconHovered));
 
   const GURL& url = contents->GetVisibleURL();
   title_->SetText(contents->GetTitle());
