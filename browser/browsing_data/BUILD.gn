@@ -3,6 +3,38 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/containers/buildflags/buildflags.gni")
+
+source_set("clear_browsing_data") {
+  sources = [
+    "brave_clear_browsing_data.cc",
+    "brave_clear_browsing_data.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/containers/buildflags",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/browsing_data:constants",
+    "//chrome/browser/lifetime",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/profiles:profile_manager",
+    "//components/browsing_data/core",
+    "//components/history/core/common",
+    "//components/prefs",
+    "//content/public/browser",
+  ]
+
+  if (enable_containers) {
+    deps += [
+      "//brave/browser/containers",
+      "//brave/components/containers/core/common",
+    ]
+  }
+}
+
 source_set("browser_tests") {
   testonly = true
 
@@ -15,6 +47,7 @@ source_set("browser_tests") {
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
     deps = [
+      ":clear_browsing_data",
       "//base",
       "//base/test:test_support",
       "//chrome/app:command_ids",

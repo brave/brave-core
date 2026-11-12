@@ -9,10 +9,9 @@ source_set("upgrade_when_idle") {
     "upgrade_when_idle.h",
   ]
 
-  # We also depend on several sources from //chrome/browser but can't list it
-  # here because it would create a dependency cycle.
   deps = [
     "//base",
+    "//brave/browser/browsing_data:clear_browsing_data",
     "//chrome/browser/first_run",
     "//chrome/browser/lifetime",
     "//chrome/browser/profiles:profile_manager",
