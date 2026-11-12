@@ -641,8 +641,11 @@ void AIChatService::OnDataDeletedForDisabledStorage(bool success) {
   bool generation_state_changed = false;
   for (auto it = conversations_.begin(); it != conversations_.end();) {
     if (!conversation_handlers_.contains(it->first)) {
-      generation_state_changed |=
-          conversation_generation_state_.erase(it->first) > 0;
+      // Only a conversation with a generation state can have a notification.
+      if (conversation_generation_state_.erase(it->first) > 0) {
+        generation_state_changed = true;
+        MaybeCloseCompletionNotification(it->first);
+      }
       it = conversations_.erase(it);
     } else {
       ++it;
@@ -1664,8 +1667,8 @@ void AIChatService::MaybeShowCompletionNotification(const std::string& uuid) {
     return;
   }
   std::u16string title_u16;
-  if (auto it = conversations_.find(uuid); it != conversations_.end()) {
-    title_u16 = base::UTF8ToUTF16(it->second->title);
+  if (auto* conversation = base::FindPtrOrNull(conversations_, uuid)) {
+    title_u16 = base::UTF8ToUTF16(conversation->title);
   }
   show_completion_notification_callback_.Run(uuid, title_u16);
 }

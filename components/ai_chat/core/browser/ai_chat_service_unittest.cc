@@ -2254,6 +2254,33 @@ TEST_P(AIChatServiceUnitTest, Notification_NotTriggeredWhenViewed) {
   EXPECT_FALSE(notified);
 }
 
+TEST_P(AIChatServiceUnitTest, Notification_CloseWhenDisablingStorageDropsIt) {
+  // Without history the conversation is removed on unload.
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+  std::string closed_uuid;
+  ai_chat_service_->SetCloseCompletionNotificationCallbackForTesting(
+      base::BindLambdaForTesting(
+          [&](const std::string& uuid) { closed_uuid = uuid; }));
+
+  ConversationHandler* handler = CreateConversation();
+  const std::string uuid = handler->get_conversation_uuid();
+  auto resolve = StartGeneration(handler, *client_);
+  ExpectGenerationState(
+      *client_, uuid, mojom::ConversationGenerationState::kCompletedNotViewed,
+      base::BindOnce(&CompleteGeneration, std::move(resolve)));
+  task_environment_.FastForwardBy(base::Seconds(10));
+  ASSERT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
+  ASSERT_TRUE(closed_uuid.empty());
+
+  ExpectGenerationState(
+      *client_, uuid, mojom::ConversationGenerationState::kIdle,
+      base::BindLambdaForTesting(
+          [&] { prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false); }));
+  EXPECT_EQ(closed_uuid, uuid);
+}
+
 TEST_P(AIChatServiceUnitTest, Notification_CloseOnBind) {
   bool close_notified = false;
   std::string closed_uuid;

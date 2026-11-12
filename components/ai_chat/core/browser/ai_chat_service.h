@@ -280,6 +280,12 @@ class AIChatService : public KeyedService,
                                    const std::u16string& title)>;
   using CloseCompletionNotificationCallback =
       base::RepeatingCallback<void(const std::string& uuid)>;
+  // Lets the embedder notify the user when a response finishes in the
+  // background. |show| runs when a conversation's response finishes while no
+  // client is connected to it, with the conversation's title, which is empty
+  // if it has none. |close| runs when the conversation is viewed, deleted, or
+  // unloaded and dropped from the list, whether or not a notification is
+  // showing. Either callback can be null.
   void SetCompletionNotificationCallbacks(
       ShowCompletionNotificationCallback show,
       CloseCompletionNotificationCallback close);
