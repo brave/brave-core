@@ -1,0 +1,19 @@
+diff --git a/chrome/browser/resources/side_panel/bookmarks/power_bookmark_row_item.ts b/chrome/browser/resources/side_panel/bookmarks/power_bookmark_row_item.ts
+index 52b5c588c7..a4a65feda9 100644
+--- a/chrome/browser/resources/side_panel/bookmarks/power_bookmark_row_item.ts
++++ b/chrome/browser/resources/side_panel/bookmarks/power_bookmark_row_item.ts
+@@ -154,7 +154,13 @@ export class PowerBookmarkRowItemElement extends CrLitElement {
+   protected showTrailingIcon_(): boolean {
+     return !this.isRenamingItem_() && !this.hasCheckbox;
+   }
+-
++  protected onMousedown_(event: MouseEvent) {
++    if (event.button === 1 && this.bookmark?.url &&
++        !this.isRenamingItem_() && !this.hasCheckbox &&
++        !this.hasActiveDrag) {
++      event.preventDefault();
++    }
++  }
+   protected onClick_(event: MouseEvent) {
+     this.onRowClicked_(event);
+   }
