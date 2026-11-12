@@ -17,7 +17,7 @@ namespace brave_account::endpoints {
 using AuthValidate = endpoint_client::BraveEndpoint<
     "accounts.bsg",
     "/v2/auth/validate",
-    endpoint_client::Get<AuthValidateRequestBody>,
+    endpoint_client::Get,
     endpoint_client::Response<AuthValidateSuccessBody, ErrorBody>>;
 
 }  // namespace brave_account::endpoints

@@ -19,6 +19,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/types/is_instantiation.h"
 #include "brave/components/endpoint_client/is_endpoint.h"
+#include "brave/components/endpoint_client/is_request.h"
 #include "brave/components/endpoint_client/maybe_strip_with_headers.h"
 #include "brave/components/endpoint_client/request_handle.h"
 #include "brave/components/endpoint_client/request_options.h"
@@ -85,7 +86,6 @@ class Client {
       network::mojom::URLLoaderFactory& url_loader_factory,
       Request request,
       base::OnceCallback<void(Response)> callback) {
-    auto upload_data = request.Serialize();
     auto headers = [&] {
       if constexpr (base::is_instantiation<Request, WithHeaders>) {
         return std::move(request.headers);
@@ -94,9 +94,28 @@ class Client {
       }
     }();
 
+    constexpr bool kIsBodylessRequest =
+        internal::IsBodylessRequest<typename Endpoint::Request>;
+
+    auto upload_data = [&]() -> std::optional<std::string> {
+      if constexpr (kIsBodylessRequest) {
+        return std::nullopt;
+      } else {
+        return request.Serialize();
+      }
+    }();
+
+    constexpr auto kContentType = [] {
+      if constexpr (kIsBodylessRequest) {
+        return std::string_view();
+      } else {
+        return Request::ContentType();
+      }
+    }();
+
     auto simple_url_loader = internal::StartSimpleURLLoader(
         url_loader_factory, Request::Method(), Endpoint::URL(),
-        std::move(headers), std::move(upload_data), Request::ContentType(),
+        std::move(headers), std::move(upload_data), kContentType,
         std::move(static_cast<internal::RequestOptions&>(request)), C,
         base::BindOnce(MakeResponse<Response>).Then(std::move(callback)));
 

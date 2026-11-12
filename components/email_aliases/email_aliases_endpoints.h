@@ -16,7 +16,7 @@ namespace email_aliases::endpoints {
 using AliasList = endpoint_client::BraveEndpoint<
     "aliases",
     "/manage?status=active",
-    endpoint_client::Get<AliasListRequest>,
+    endpoint_client::Get,
     endpoint_client::Response<AliasListResponse, ErrorMessage>>;
 
 using GenerateAlias = endpoint_client::BraveEndpoint<
