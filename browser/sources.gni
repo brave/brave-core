@@ -170,6 +170,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/ui:brave_tab_prefs",
   "//brave/browser/ui:ui_features",
   "//brave/browser/ui/webui/brave_account",
+  "//brave/browser/ui/webui/history_embeddings:mojo_bindings",
   "//brave/browser/updater:buildflags",
   "//brave/common",
   "//brave/common:mojo_bindings",

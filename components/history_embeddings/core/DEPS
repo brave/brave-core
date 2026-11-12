@@ -1,0 +1,14 @@
+include_rules = [
+  "+components/history/core",
+  "+brave/components/history_embeddings/proto",
+  "+components/history_embeddings/core/history_embeddings_features.h",
+  "+components/keyed_service/core",
+  "+components/os_crypt/async",
+  "+components/passage_embeddings",
+  "+mojo/public/cpp/bindings",
+  "+services/passage_embeddings",
+  "+sql",
+  "+third_party/farmhash",
+  "+third_party/zlib",
+  "+url",
+]
