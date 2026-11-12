@@ -45,6 +45,8 @@
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
+#include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
+#include "brave/components/ai_chat/core/browser/tools/mock_tool_provider.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -1894,24 +1896,30 @@ void ExpectGenerationState(MockServiceClient& observer,
 }
 
 // Gives |handler| a mock engine, submits a turn and waits for it to start
-// generating. Returns the callback that completes the response.
+// generating. Returns the callback that completes the response. If
+// |data_event| is set, it is streamed into the response first.
 EngineConsumer::GenerationCompletedCallback StartGeneration(
     ConversationHandler* handler,
-    MockServiceClient& observer) {
+    MockServiceClient& observer,
+    mojom::ConversationEntryEventPtr data_event = nullptr) {
   handler->SetEngineForTesting(std::make_unique<MockEngineConsumer>());
   auto* engine =
       static_cast<MockEngineConsumer*>(handler->GetEngineForTesting());
   base::test::TestFuture<EngineConsumer::GenerationCompletedCallback> done;
   EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _, _, _))
-      .WillOnce([&done](PageContentsMap&&,
-                        const EngineConsumer::ConversationHistoryView&, bool,
-                        const std::vector<base::WeakPtr<Tool>>&,
-                        std::optional<std::string_view>,
-                        const ConversationCapabilitySet&,
-                        EngineConsumer::GenerationDataCallback,
-                        EngineConsumer::GenerationCompletedCallback callback) {
-        done.SetValue(std::move(callback));
-      });
+      .WillOnce(
+          [&done, &data_event](
+              PageContentsMap&&, const EngineConsumer::ConversationHistoryView&,
+              bool, const std::vector<base::WeakPtr<Tool>>&,
+              std::optional<std::string_view>, const ConversationCapabilitySet&,
+              EngineConsumer::GenerationDataCallback data_callback,
+              EngineConsumer::GenerationCompletedCallback callback) {
+            if (data_event) {
+              data_callback.Run(EngineConsumer::GenerationResultData(
+                  std::move(data_event), std::nullopt));
+            }
+            done.SetValue(std::move(callback));
+          });
   ExpectGenerationState(
       observer, handler->get_conversation_uuid(),
       mojom::ConversationGenerationState::kGenerating,
@@ -2112,6 +2120,48 @@ TEST_P(AIChatServiceUnitTest, GenerationState_BindClearsNotViewed) {
   // Binding finishes asynchronously; wait so it doesn't outlive the test.
   ASSERT_TRUE(
       base::test::RunUntil([&] { return handler->IsAnyClientConnected(); }));
+}
+
+TEST_P(AIChatServiceUnitTest, GenerationState_ToolUseKeepsConversationLoaded) {
+  ConversationHandler* handler = CreateConversation();
+  auto* provider =
+      handler->AddToolProviderForTesting(std::make_unique<MockToolProvider>());
+  auto* tool = provider->AddToolForTesting(
+      std::make_unique<testing::NiceMock<MockTool>>("test_tool"));
+  Tool::UseToolCallback tool_callback;
+  EXPECT_CALL(*tool, UseTool)
+      .WillOnce([&](const std::string&, Tool::UseToolCallback callback) {
+        tool_callback = std::move(callback);
+      });
+  auto resolve = StartGeneration(
+      handler, *client_,
+      mojom::ConversationEntryEvent::NewToolUseEvent(
+          mojom::ToolUseEvent::New("test_tool", "tool_id_1", "{}", std::nullopt,
+                                   std::nullopt, nullptr, false)));
+
+  // No client is connected, so only the running tool keeps it loaded. An
+  // unloaded handler would never report the response finishing.
+  CompleteGeneration(std::move(resolve));
+  ASSERT_TRUE(handler->IsToolUseInProgress());
+  task_environment_.FastForwardBy(base::Seconds(10));
+  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
+
+  // Once the response after the tool finishes, it unloads as usual.
+  base::test::TestFuture<EngineConsumer::GenerationCompletedCallback>
+      post_tool_generation;
+  EXPECT_CALL(*static_cast<MockEngineConsumer*>(handler->GetEngineForTesting()),
+              GenerateAssistantResponse)
+      .WillOnce(testing::WithArg<7>(
+          [&](EngineConsumer::GenerationCompletedCallback callback) {
+            post_tool_generation.SetValue(std::move(callback));
+          }));
+  std::vector<mojom::ContentBlockPtr> result;
+  result.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New("Result")));
+  std::move(tool_callback).Run(std::move(result), {});
+  CompleteGeneration(post_tool_generation.Take());
+  task_environment_.FastForwardBy(base::Seconds(10));
+  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
 }
 
 TEST_P(AIChatServiceUnitTest, GenerationState_DeleteClears) {
