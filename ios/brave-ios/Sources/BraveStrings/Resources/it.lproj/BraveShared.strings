@@ -742,6 +742,15 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Continua su %@ (non sicuro)";
 
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "Rimozione";
+
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "Questo sito non apparirà nel tuo elenco dei più visitati, ma non verrà rimosso dalla cronologia.";
+
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "Rimuovere dai più visitati?";
+
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ avvierà un’applicazione esterna";
 
@@ -864,6 +873,9 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Dati non validi nella richiesta di pagamento";
+
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "Una pagina incorporata in questa pagina";
 
 /* History tableview section header */
 "LastMonth" = "Ultimo mese";
@@ -2482,6 +2494,18 @@
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Quando guardi dei video su questo sito web, gli annunci sono bloccati.";
 
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Portafoglio Brave";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "Scheda privata";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "Codice QR";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "Ricerca";
+
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Nuova scheda privata";
 
@@ -3077,7 +3101,7 @@
 "TabPrivateModeToggleAccessibilityValueOff" = "Off";
 
 /* Toggled ON accessibility value */
-"TabPrivateModeToggleAccessibilityValueOn" = "Attivato";
+"TabPrivateModeToggleAccessibilityValueOn" = "On";
 
 /* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardDescription" = "Metti automaticamente a fuoco la barra degli indirizzi quando crei una nuova scheda";
@@ -3533,7 +3557,7 @@
 "YoutubeMediaQualityOff" = "Off";
 
 /* Setting that enables high quality playback always */
-"YoutubeMediaQualityOn" = "Attivato";
+"YoutubeMediaQualityOn" = "On";
 
 /* Title for youtube playback quality settings */
 "YoutubeMediaQualitySettingsTitle" = "Qualità di riproduzione su YouTube";

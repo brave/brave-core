@@ -13,6 +13,9 @@
 /* The title of the screen that requests user to set Brave as default */
 "focusOnboarding.defaultBrowserScreenTitle" = "Блокирайте рекламите на всеки сайт, който посещавате";
 
+/* The title of the button that dismisses the add-to-dock explainer opened from Settings */
+"focusOnboarding.gotItButtonTitle" = "Разбрах";
+
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "Не сега";
 

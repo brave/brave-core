@@ -13,6 +13,9 @@
 /* The title of the screen that requests user to set Brave as default */
 "focusOnboarding.defaultBrowserScreenTitle" = "讓您前往的每個網站都有廣告攔截功能";
 
+/* The title of the button that dismisses the add-to-dock explainer opened from Settings */
+"focusOnboarding.gotItButtonTitle" = "我瞭解了";
+
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "現在不要";
 

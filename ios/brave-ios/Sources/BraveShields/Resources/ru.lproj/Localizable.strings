@@ -122,13 +122,13 @@
 "BraveShieldsSiteBroken" = "Проблемы с сайтом? Попробуйте выключить щиты.";
 
 /* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Щиты Brave";
+"BraveShieldsStatusTitle" = "Защита Brave";
 
 /* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "выключены";
+"BraveShieldsStatusValueDown" = "выкл";
 
 /* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "включены";
+"BraveShieldsStatusValueUp" = "вкл";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Brave Shields: чтобы переключить, нажмите дважды";
