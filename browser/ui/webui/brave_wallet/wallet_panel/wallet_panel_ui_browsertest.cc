@@ -14,8 +14,10 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/polkadot/polkadot_ui.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -32,6 +34,8 @@
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/browser/web_ui.h"
+#include "content/public/browser/web_ui_controller.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -482,7 +486,24 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, SelectRpcEndpoint) {
   WaitForNeonEVMNetworkUrl(known_neon_evm_rpc);
 }
 
-IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, NoPolkadotIframeBridge) {
+class PolkadotDisabledWalletPanelUIBrowserTest
+    : public WalletPanelUIBrowserTest {
+ public:
+  void SetUp() override {
+    scoped_feature_list_.InitWithFeaturesAndParameters(
+        {{features::kBraveWalletPolkadotFeature,
+          {{"polkadot_dapp_support", "false"}}}},
+        {});
+
+    WalletPanelUIBrowserTest::SetUp();
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(PolkadotDisabledWalletPanelUIBrowserTest,
+                       NoPolkadotIframeBridge) {
   // Prove that when Polkadot dapp support is not enabled that the panel does
   // not have the <iframe/> appended to its DOM. Because of lag, probing the
   // FrameTree may yield false negatives so we use a normal JS selector call
@@ -532,11 +553,17 @@ IN_PROC_BROWSER_TEST_F(PolkadotWalletPanelUIBrowserTest, IframeBridge) {
   EXPECT_EQ(url::Origin::Create(GURL(kUntrustedPolkadotURL)),
             bridge->GetLastCommittedOrigin());
   // Prove both RenderFrameHosts live in separate processes.
-  EXPECT_NE(wallet()->GetPrimaryMainFrame()->GetSiteInstance(),
-            bridge->GetSiteInstance());
+  EXPECT_TRUE(bridge->IsCrossProcessSubframe());
 
-  // The Polkadot HTML at least contains loadTimeData we can probe for.
-  EXPECT_EQ(true, EvalJs(bridge, "!!window.loadTimeData").ExtractBool());
+  // Prove that our iframe loaded the bundle and we were able to bind the
+  // mojom::Receiver in the browser process.
+  auto* bridge_web_ui = bridge->GetWebUI();
+  ASSERT_TRUE(bridge_web_ui);
+  auto* polkadot_ui =
+      bridge_web_ui->GetController()->GetAs<polkadot::UntrustedPolkadotUI>();
+  ASSERT_TRUE(polkadot_ui);
+  EXPECT_TRUE(
+      base::test::RunUntil([&]() { return polkadot_ui->IsBoundForTesting(); }));
 
   // Prove we didn't destroy the main wallet panel.
   EXPECT_EQ(true, EvalJs(wallet(), "!!document.getElementById('mountPoint')")
@@ -557,10 +584,18 @@ IN_PROC_BROWSER_TEST_F(PolkadotWalletPanelUIBrowserTest,
   auto* bridge = FindPolkadotBridgeFrame(wallet());
   ASSERT_TRUE(bridge);
 
-  EXPECT_EQ("blocked", EvalJs(bridge, R"(
-      fetch('https://rpc.polkadot.io/').then(() => 'fetched', () => 'blocked')
-  )")
-                           .ExtractString());
+  EXPECT_EQ("connect-src", EvalJs(bridge, R"(
+       new Promise((resolve) => {
+         document.addEventListener('securitypolicyviolation', (event) => {
+           if (event.disposition === 'enforce' &&
+               event.blockedURI.startsWith('https://rpc.polkadot.io')) {
+             resolve(event.effectiveDirective);
+           }
+         });
+         fetch('https://rpc.polkadot.io/').catch(() => {});
+       })
+   )")
+                               .ExtractString());
 }
 
 }  // namespace brave_wallet
