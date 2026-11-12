@@ -4,12 +4,14 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "third_party/blink/public/common/features.h"
 
 namespace {
 
@@ -38,4 +40,23 @@ IN_PROC_BROWSER_TEST_F(ReportingObserverTest, IsNoop) {
       browser()->tab_strip_model()->GetActiveWebContents();
 
   EXPECT_EQ(true, EvalJs(contents, "isReportingObserverNoop();"));
+}
+
+class ReportingObserverEnabledTest : public ReportingObserverTest {
+ public:
+  ReportingObserverEnabledTest() {
+    feature_list_.InitAndEnableFeature(blink::features::kBraveReportingAPI);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(ReportingObserverEnabledTest, ReceivesReports) {
+  GURL url = embedded_test_server()->GetURL(kReportingObserver);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  EXPECT_EQ(false, EvalJs(contents, "isReportingObserverNoop();"));
 }
