@@ -12,6 +12,7 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/callback_list.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/location.h"
 #include "base/run_loop.h"
@@ -19,8 +20,8 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
-#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -265,6 +266,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
                                         "}");
           } else if (*method == "sendTransaction") {
             send_transaction_calls_++;
+            rpc_request_callbacks_.Notify();
             url_loader_factory_.AddResponse(
                 request.url.spec(),
                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"" + tx_hash +
@@ -296,6 +298,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
             url_loader_factory_.AddResponse(request.url.spec(), content);
           } else if (*method == "getSignatureStatuses") {
             signature_statuses_calls_++;
+            rpc_request_callbacks_.Notify();
             if (!get_signature_statuses) {
               url_loader_factory_.AddResponse(request.url.spec(), "",
                                               net::HTTP_REQUEST_TIMEOUT);
@@ -443,25 +446,53 @@ class SolanaTxManagerUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  // Idle polling can fast-forward the block tracker while requests are in
+  // flight.
+  [[nodiscard]] bool WaitForRpcCalls(const size_t& calls, size_t count) {
+    if (calls >= count) {
+      return true;
+    }
+
+    base::test::TestFuture<void> request_received;
+    auto subscription =
+        rpc_request_callbacks_.Add(base::BindLambdaForTesting([&] {
+          if (calls >= count && !request_received.IsReady()) {
+            request_received.SetValue();
+          }
+        }));
+    return request_received.Wait();
+  }
+
   // Waits until a getSignatureStatuses request has been served after
   // `calls_before` was sampled.
   [[nodiscard]] bool WaitForSignatureStatusesRequest(size_t calls_before) {
-    return base::test::RunUntil(
-        [&] { return signature_statuses_calls_ > calls_before; });
+    return WaitForRpcCalls(signature_statuses_calls_, calls_before + 1);
   }
 
   // Waits until at least `count` sendTransaction requests have been served.
   [[nodiscard]] bool WaitForSendTransactionCalls(size_t count) {
-    return base::test::RunUntil(
-        [&] { return send_transaction_calls_ >= count; });
+    return WaitForRpcCalls(send_transaction_calls_, count);
   }
 
   [[nodiscard]] bool WaitForTxStatus(const std::string& meta_id,
                                      mojom::TransactionStatus status) {
-    return base::test::RunUntil([&] {
-      auto meta = solana_tx_manager()->GetTxForTesting(meta_id);
-      return meta && meta->status() == status;
-    });
+    auto meta = solana_tx_manager()->GetTxForTesting(meta_id);
+    if (meta && meta->status() == status) {
+      return true;
+    }
+
+    // Idle polling can advance mock time past the transaction's drop deadline.
+    base::test::TestFuture<void> status_changed;
+    testing::NiceMock<MockTxStateManagerObserver> observer(
+        &solana_tx_manager()->GetSolanaTxStateManager());
+    ON_CALL(observer, OnTransactionStatusChanged(testing::_))
+        .WillByDefault([&](mojom::TransactionInfoPtr tx_info) {
+          if (tx_info->id == meta_id && tx_info->tx_status == status &&
+              !status_changed.IsReady()) {
+            status_changed.SetValue();
+          }
+        });
+    return status_changed.Wait();
   }
 
   // Approves the tx and waits for the getSignatureStatuses request that the
@@ -724,6 +755,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
   uint64_t last_valid_block_height3_ = 0;
   size_t send_transaction_calls_ = 0;
   size_t signature_statuses_calls_ = 0;
+  base::RepeatingClosureList rpc_request_callbacks_;
   mojom::SolanaFeeEstimationPtr fee_estimation1_;
 };
 
