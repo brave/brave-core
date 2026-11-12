@@ -17,6 +17,7 @@ source_set("browser_tests") {
     "//brave/browser/ui/webui/custom_profile_image",
     "//chrome/common",
     "//chrome/test:test_support",
+    "//chrome/test/base:web_ui_mocha_browser_test",
     "//content/test:test_support",
   ]
   data_deps = [ "//chrome:browser_tests_pak" ]

@@ -17,8 +17,9 @@ source_set("browser_test") {
     "//chrome/browser",
     "//chrome/browser:browser_process",
     "//chrome/browser/profiles:profile",
-    "//chrome/test:test_support_ui",
+    "//chrome/test/base:in_process_browser_test",
     "//components/prefs",
+    "//content/test:test_support",
   ]
 }
 

@@ -34,7 +34,7 @@ source_set("browser_tests") {
     "//brave/browser/ui",
     "//chrome/browser/ui/color:mixers",
     "//chrome/browser/ui/views/frame:browser_view_header",
-    "//chrome/test:test_support_ui",
+    "//chrome/test/base:in_process_browser_test",
     "//content/test:test_support",
     "//testing/gtest",
   ]

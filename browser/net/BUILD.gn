@@ -64,7 +64,11 @@ source_set("browser_tests") {
     "//testing/gmock",
   ]
   if (!is_android) {
-    deps += [ "//chrome/test:test_support_ui" ]
+    deps += [
+      "//chrome/test/base:in_process_browser_test",
+      "//chrome/test/base:platform_browser_test",
+      "//chrome/test/base:ui_test_utils",
+    ]
   }
   if (is_android) {
     deps += [

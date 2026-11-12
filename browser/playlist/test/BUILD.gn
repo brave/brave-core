@@ -61,7 +61,8 @@ source_set("browser_tests") {
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/side_panel",
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
-      "//chrome/test:test_support_ui",
+      "//chrome/test/base:in_process_browser_test",
+      "//chrome/test/base:platform_browser_test",
     ]
   }
 
@@ -106,9 +107,6 @@ source_set("unit_tests") {
     deps += [ "//chrome/test:test_support_ui_android" ]
   } else {
     sources += [ "playlist_data_source_unittest.cc" ]
-    deps += [
-      "//chrome/browser",
-      "//chrome/test:test_support_ui",
-    ]
+    deps += [ "//chrome/browser" ]
   }
 }
