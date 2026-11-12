@@ -5,11 +5,10 @@
 
 substitutions:
   - description: |-
-      Enable static key pins by default.
+      Enable static key pins by default in official builds of any branding.
 
-      Upstream only enables them for Google Chrome branded builds, but Brave
-      ships and updates the pins list too.
+      Upstream gates them on Google Chrome branding, but Brave ships and
+      updates the pins list too.
     regex:
-      re_pattern: '(constexpr bool kDefaultEnableStaticPins =).*?#endif'
-      replace: '\1 true;'
-      re_flags: [DOTALL]
+      pattern: '#if !BUILDFLAG(GOOGLE_CHROME_BRANDING)'
+      replace: '#if !defined(OFFICIAL_BUILD)'
