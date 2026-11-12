@@ -108,10 +108,7 @@ class BraveBrowserView : public BrowserView,
   std::optional<int> GetVerticalTabStripWidthAtWindowEdge() const;
 
   // BrowserView overrides:
-
-  // Opens the Shields panel for the active tab, as the window's Shields
-  // button does. Returns false if the window has no Shields button.
-  bool ShowShieldsPanelForActiveTab();
+  bool ShowShieldsPanelForActiveTab() override;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // Give active tab's reader mode toolbar.
   ReaderModeToolbarView* reader_mode_toolbar();

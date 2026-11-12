@@ -252,18 +252,14 @@ questions.
 
 ### Strings
 
-| ID                                 | Text                                            | Use                                                     |
-| ---------------------------------- | ----------------------------------------------- | ------------------------------------------------------- |
-| `IDS_PEEK_ACCESSIBLE_NAME`         | Peek                                            | Accessible name of the card. "Peek" is the feature name |
-| `IDS_PEEK_OPEN_AS_TAB`             | Open as tab                                     | Tooltip and accessible name of the button               |
-| `IDS_CONTENT_CONTEXT_OPENLINKPEEK` | Open Link in Peek (title case variant on macOS) | Context menu item                                       |
-| `IDS_APP_CLOSE`                    | Close                                           | Existing string, reused for the close button            |
-| Flag name                          | Brave Peek                                      | `brave://flags`                                         |
-| Flag description                   | See below                                       | `brave://flags`                                         |
-
-The flag description in `about_flags.cc` still says Peek is triggered by
-"cross-site links in pinned tabs", which Peek no longer does. The description
-needs updating before this lands.
+| ID                                 | Text                                                                                                        | Use                                                     |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| `IDS_PEEK_ACCESSIBLE_NAME`         | Peek                                                                                                        | Accessible name of the card. "Peek" is the feature name |
+| `IDS_PEEK_OPEN_AS_TAB`             | Open as tab                                                                                                 | Tooltip and accessible name of the button               |
+| `IDS_CONTENT_CONTEXT_OPENLINKPEEK` | Open Link in Peek (title case variant on macOS)                                                             | Context menu item                                       |
+| `IDS_APP_CLOSE`                    | Close                                                                                                       | Existing string, reused for the close button            |
+| Flag name                          | Brave Peek                                                                                                  | `brave://flags`                                         |
+| Flag description                   | Opens links in a floating preview over the current tab. Triggered by Shift+click and the link context menu. | `brave://flags`                                         |
 
 Strings need another pass once the feature is in a real build, and must be in by
 the time it reaches the Dev channel.
@@ -276,7 +272,8 @@ Screenshots are added to the PR. Nala tokens above stand in for color values.
 
 - `//brave/browser/ui/peek:public` has `PeekController`, a per-window interface
   owned by `BraveBrowserWindowFeatures`, and `PeekShieldsPanelProvider`, which
-  `BraveBrowserView` implements to open the window's own Shields panel.
+  `BraveBrowserWindowFeatures` passes to the controller to open the window's own
+  Shields panel through `BraveBrowserWindow::ShowShieldsPanelForActiveTab()`.
 - `//brave/browser/ui/peek` has the shared logic: URL and initiator checks
   (`peek_utils`) and `PeekNavigationThrottle`.
 - `//brave/browser/ui/peek:context_menu` has two small hooks that the
@@ -386,9 +383,7 @@ Containers, Shields and Brave Wallet, and the interactions are described above.
 3. What should Peek show if its renderer crashes?
 4. Where should focus go when Peek closes, and should screen readers announce it
    when it opens?
-5. The flag description still mentions pinned-tab links. Should it just list
-   Shift+click and the context menu?
-6. Should Peek be available in Tor windows, or only normal and private ones?
-7. Device choosers (WebUSB, WebHID, WebSerial, Web Bluetooth), WebAuthn, Payment
+5. Should Peek be available in Tor windows, or only normal and private ones?
+6. Device choosers (WebUSB, WebHID, WebSerial, Web Bluetooth), WebAuthn, Payment
    Request, FedCM, and autofill or password manager bubbles are not verified in
    Peek. Do they need explicit handling?

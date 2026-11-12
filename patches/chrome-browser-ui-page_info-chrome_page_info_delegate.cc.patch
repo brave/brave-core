@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/ui/page_info/chrome_page_info_delegate.cc b/chrome/browser/ui/page_info/chrome_page_info_delegate.cc
+index 8a6bf17d66cc32f01fef35983cd15fa731039584..4495d603919601bf74ab77983500e2b70c84a21e 100644
+--- a/chrome/browser/ui/page_info/chrome_page_info_delegate.cc
++++ b/chrome/browser/ui/page_info/chrome_page_info_delegate.cc
+@@ -391,6 +391,10 @@ void ChromePageInfoDelegate::ShowSyncSettings() {
+ }
+ 
+ void ChromePageInfoDelegate::OpenCookiesDialog() {
++  if (!TabDialogs::FromWebContents(web_contents_)) {
++    peek::ShowCookiesDialogInTab(web_contents_);
++    return;
++  }
+   FocusWebContents();
+   TabDialogs::FromWebContents(web_contents_)->ShowCollectedCookies();
+ }

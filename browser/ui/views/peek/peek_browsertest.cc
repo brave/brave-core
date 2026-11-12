@@ -3,14 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <map>
+#include <memory>
 #include <optional>
 #include <string>
 
+#include "base/callback_list.h"
+#include "base/containers/flat_map.h"
+#include "base/containers/map_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
+#include "base/location.h"
 #include "base/run_loop.h"
 #include "base/synchronization/lock.h"
+#include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/threading/thread_restrictions.h"
@@ -28,6 +33,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ssl/chrome_security_state_util.h"
+#include "chrome/browser/ui/navigator/browser_navigator.h"
+#include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -62,6 +69,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/download_test_observer.h"
 #include "content/public/test/test_navigation_observer.h"
+#include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
@@ -99,8 +107,6 @@
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/common/features.h"
-#include "chrome/browser/ui/navigator/browser_navigator.h"
-#include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #endif
 
 // Records what the navigation to `url` knows about its initiator.
@@ -219,7 +225,10 @@ class PeekBrowserTest : public InProcessBrowserTest {
   }
 
   // Waits until Peek closes and `contents` becomes the active tab.
-  void WaitForMovedToTab(content::WebContents* contents) {
+  void WaitForMovedToTab(
+      content::WebContents* contents,
+      const base::Location& location = base::Location::Current()) {
+    SCOPED_TRACE(location.ToString());
     WaitForPeekClosed();
     EXPECT_EQ(contents, active_contents());
   }
@@ -279,21 +288,21 @@ class PeekBrowserTest : public InProcessBrowserTest {
   std::optional<net::test_server::HttpRequest::HeaderMap> GetRequestHeaders(
       const std::string& relative_url) {
     base::AutoLock lock(lock_);
-    auto it = request_headers_.find(relative_url);
-    if (it == request_headers_.end()) {
-      return std::nullopt;
-    }
-    return it->second;
+    const auto* headers = base::FindOrNull(request_headers_, relative_url);
+    return headers ? std::make_optional(*headers) : std::nullopt;
   }
 
   static std::string GetHeader(
       const net::test_server::HttpRequest::HeaderMap& headers,
       const std::string& name) {
-    auto it = headers.find(name);
-    return it == headers.end() ? std::string() : it->second;
+    const auto* value = base::FindOrNull(headers, name);
+    return value ? *value : std::string();
   }
 
-  void ExpectCrossSiteRequestMetadata(const std::string& path) {
+  void ExpectCrossSiteRequestMetadata(
+      const std::string& path,
+      const base::Location& location = base::Location::Current()) {
+    SCOPED_TRACE(location.ToString());
     std::optional<net::test_server::HttpRequest::HeaderMap> headers;
     ASSERT_TRUE(base::test::RunUntil([&] {
       headers = GetRequestHeaders(path);
@@ -337,7 +346,7 @@ class PeekBrowserTest : public InProcessBrowserTest {
   }
 
   base::Lock lock_;
-  std::map<std::string, net::test_server::HttpRequest::HeaderMap>
+  base::flat_map<std::string, net::test_server::HttpRequest::HeaderMap>
       request_headers_ GUARDED_BY(lock_);
 };
 
@@ -748,16 +757,24 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, PopupWithoutGestureIsBlocked) {
   content::WebContents* contents = peek_contents();
   const int tab_count = tab_strip_model()->count();
 
+  std::unique_ptr<content::WebContentsDestroyedWatcher> popup_watcher;
+  base::CallbackListSubscription subscription =
+      content::RegisterWebContentsCreationCallback(
+          base::BindLambdaForTesting([&](content::WebContents* popup) {
+            popup_watcher =
+                std::make_unique<content::WebContentsDestroyedWatcher>(popup);
+          }));
   ASSERT_TRUE(
       content::ExecJs(contents,
                       content::JsReplace("window.popup = window.open($1);",
                                          GetURL("b.com", "/title2.html")),
                       content::EXECUTE_SCRIPT_NO_USER_GESTURE));
-  ASSERT_TRUE(base::test::RunUntil([&] {
-    return content::EvalJs(contents, "!window.popup || window.popup.closed",
-                           content::EXECUTE_SCRIPT_NO_USER_GESTURE)
-        .ExtractBool();
-  }));
+  if (popup_watcher) {
+    popup_watcher->Wait();
+  }
+  EXPECT_EQ(true,
+            content::EvalJs(contents, "!window.popup || window.popup.closed",
+                            content::EXECUTE_SCRIPT_NO_USER_GESTURE));
   EXPECT_TRUE(controller()->IsShowing());
   EXPECT_EQ(contents, peek_contents());
   EXPECT_EQ(tab_count, tab_strip_model()->count());

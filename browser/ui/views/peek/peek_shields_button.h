@@ -11,7 +11,7 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/button/label_button.h"
 
-class BrowserWindowInterface;
+class PrefService;
 
 namespace content {
 class WebContents;
@@ -24,7 +24,7 @@ class PeekShieldsButton : public views::LabelButton {
   METADATA_HEADER(PeekShieldsButton, views::LabelButton)
 
  public:
-  PeekShieldsButton(BrowserWindowInterface& browser,
+  PeekShieldsButton(PrefService& prefs,
                     views::Button::PressedCallback callback);
   PeekShieldsButton(const PeekShieldsButton&) = delete;
   PeekShieldsButton& operator=(const PeekShieldsButton&) = delete;
@@ -37,7 +37,7 @@ class PeekShieldsButton : public views::LabelButton {
   void OnThemeChanged() override;
 
  private:
-  const raw_ref<BrowserWindowInterface> browser_;
+  const raw_ref<PrefService> prefs_;
   base::WeakPtr<content::WebContents> web_contents_;
 };
 
