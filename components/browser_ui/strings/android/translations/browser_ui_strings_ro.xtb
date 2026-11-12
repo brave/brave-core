@@ -181,9 +181,7 @@
 <translation id="2710883118091822664">Conectează-te pentru a continua cu ușurință pe toate dispozitivele</translation>
 <translation id="2713106313042589954">Dezactivează camera foto</translation>
 <translation id="2717722538473713889">Adrese de e-mail</translation>
-<translation id="8181634240306014548">Lansează Brave cu caseta polivalentă focalizată, reducând timpul de pornire pe dispozitivele de nivel inferior.</translation>
 <translation id="2750481671343847896">Site-urile pot afișa solicitări de conectare de la servicii de identitate.</translation>
-<translation id="2787357173144933081">Pornește direct în caseta polivalentă</translation>
 <translation id="2789132527330338807">Site-urile pot solicita permisiunea de a crea o hartă 3D a lucrurilor din jur sau de a urmări poziția camerei video</translation>
 <translation id="2790501146643349491">Când opțiunea este activată, site-urile închise recent pot să finalizeze trimiterea și primirea datelor. Când opțiunea este dezactivată, site-urile închise recent nu pot finaliza trimiterea sau primirea datelor.</translation>
 <translation id="2795716239552913152">Site-urile folosesc de obicei locația pentru funcții sau informații relevante, cum ar fi știri locale sau magazine din apropiere</translation>
@@ -291,7 +289,6 @@
 <translation id="9046306654872718870">Personalizează Brave cu culori și imagini personalizate pentru pagina de pornire</translation>
 <translation id="389521680295183045">Site-urile pot solicita permisiunea de a afla când folosești activ dispozitivul</translation>
 <translation id="3895926599014793903">Forțează activarea zoomului</translation>
-<translation id="3905475044299942653">Oprește numărul mare de notificări</translation>
 <translation id="3922092564198021702">Pe telefon, deschide Setări</translation>
 <translation id="3924858949939391676">Afișează linkurile după activarea modului de lectură</translation>
 <translation id="3933121352599513978">Restrânge solicitările nedorite (recomandat)</translation>
@@ -385,7 +382,6 @@
 <translation id="4936863036653376783">Vei găsi grupurile în secțiunea Grup de file de pe toate dispozitivele</translation>
 <translation id="4945443401464700059"><ph name="SITE"/> nu are permisiunea de a folosi informațiile tale pe</translation>
 <translation id="4953688446973710931">Când opțiunea este activată, site-urile pot solicita permisiunea de a descărca automat mai multe fișiere. Când opțiunea este dezactivată, site-urile nu pot descărca automat mai multe fișiere.</translation>
-<translation id="4962975101802056554">Revocă toate permisiunile pentru dispozitiv</translation>
 <translation id="4972737347717125191">Site-urile pot solicita permisiunea de a folosi dispozitive de realitate virtuală și date conexe</translation>
 <translation id="1275242979020712923">Foaia din partea de jos Culori Brave</translation>
 <translation id="497421865427891073">Înainte</translation>
@@ -525,6 +521,7 @@
 <translation id="6439114592976064011">Împiedică site-urile să folosească dispozitivul de realitate virtuală și datele conexe</translation>
 <translation id="6447842834002726250">Cookie-uri</translation>
 <translation id="6452138246455930388">Scădere de preț în fila deschisă, de la <ph name="OLD_PRICE"/> la <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
+<translation id="6495608040096939405">Revocă permisiunea pentru dispozitiv pentru <ph name="NAME"/></translation>
 <translation id="6500423977866688905">Când fereastra este îngustă, solicită afișarea pe mobil</translation>
 <translation id="6527303717912515753">Trimite</translation>
 <translation id="6530703012083415527">Când opțiunea este activată, site-urile pot folosi ferestre pop-up și redirecționări. Când opțiunea este dezactivată, site-urile nu pot folosi ferestre pop-up și redirecționări.</translation>
@@ -590,6 +587,7 @@
 <translation id="7188508872042490670">Date privind site-urile pe dispozitiv</translation>
 <translation id="7201549776650881587">Această acțiune va șterge toate datele și cookie-urile stocate de toate site-urile subordonate <ph name="ORIGIN"/> sau de aplicația asociată de pe ecranul de pornire</translation>
 <translation id="7219254577985949841">Ștergi datele privind site-ul?</translation>
+<translation id="7225256190577194089">Revocă toate permisiunile pentru dispozitivul <ph name="DEVICE_NAME"/></translation>
 <translation id="723171743924126238">Selectează imagini</translation>
 <translation id="7243246278722455312">Foaia de jos a paginii Personalizează Fila nouă</translation>
 <translation id="7243308994586599757">Opțiuni disponibile în partea de jos a ecranului</translation>
@@ -702,7 +700,6 @@ Protecția avansată gestionează următoarele setări Brave:</translation>
 <translation id="8428213095426709021">Setări</translation>
 <translation id="8441146129660941386">Derulează înapoi</translation>
 <translation id="8444433999583714703">Pentru a permite aplicației <ph name="APP_NAME"/> să acceseze locația, activează locația și în <ph name="BEGIN_LINK"/>Setările Android<ph name="END_LINK"/>.</translation>
-<translation id="8447861592752582886">Revocă permisiunea de accesare a dispozitivului</translation>
 <translation id="8463843545738141778">Această setare este dezactivată deoarece ai activat Protecția avansată în Setările Android.</translation>
 <translation id="8467359479529706065">Foaia din partea de jos cu aspectul paginii Filă nouă deschisă la jumătate din înălțime</translation>
 <translation id="8471525937465764768">Site-urile se conectează de obicei la dispozitive USB pentru funcții cum ar fi imprimarea unui document sau salvarea pe un dispozitiv de stocare</translation>

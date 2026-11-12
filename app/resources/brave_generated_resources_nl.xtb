@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Lees meer over Widevine</translation>
+<translation id="3318169548229684688">Een spraakherkenningsmodel downloaden (<ph name="DOWNLOAD_SIZE"/>) om spraak op dit apparaat te verwerken</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> vraagt u om</translation>
 <translation id="3218385319396786393">Automatisch afspelen is op deze pagina geblokkeerd</translation>
 <translation id="4988333904713528597">Automatisch afspelen altijd toestaan in <ph name="HOST"/></translation>
@@ -610,6 +611,8 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="3540231253392253941">Gebruik Google-diensten voor pushberichten</translation>
 <translation id="2224032129673914306">Semantisch zoeken in geschiedenis</translation>
 <translation id="6045998903985162478">Indexeer pagina's die je bezoekt, zodat je ze gemakkelijk kunt terugvinden in je geschiedenis, geopende tabbladen en Leo.</translation>
+<translation id="3962946446120925966">Spraakherkenning op apparaat</translation>
+<translation id="6408242130028978631">Download een spraakherkenningsmodel (<ph name="DOWNLOAD_SIZE"/>) zodat sites spraak op dit apparaat kunnen verwerken. Schakel dit uit om het model te verwijderen.</translation>
 <translation id="5813105074916486721">Lokale bewaartermijn van geschiedenis</translation>
 <translation id="5671611745062206644">Hoe lang Brave je browsegeschiedenis lokaal bewaart</translation>
 <translation id="7184510058087008090">1 dag</translation>

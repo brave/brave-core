@@ -947,6 +947,11 @@
 <translation id="4362717653795263052">Възстановяване на основни криптоакаунти</translation>
 <translation id="3038077262567136741">Въведете фразата за възстановяване, за да възстановите криптоакаунта си в портфейла в Brave.</translation>
 <translation id="955918646509748368">Въведената фраза за възстановяване е невалидна.</translation>
+<translation id="7496330898672236908">Тази фраза за възстановяване не съвпада с вашия портфейл. Проверете фразата и опитайте отново.</translation>
+<translation id="3798792138617904098">Премахване на импортираните акаунти?</translation>
+<translation id="2960631345291747230">Импортираните акаунти не са архивирани с вашата фраза за възстановяване. Те ще бъдат премахнати от Brave Wallet и може да загубите завинаги достъп до средствата в тях, освен ако не сте архивирали техните частни ключове.</translation>
+<translation id="8898583604592472741">Премахване на акаунтите</translation>
+<translation id="1577629163207045190">Въведете „<ph name="CONFIRMATION_PHRASE"/>“, за да потвърдите.</translation>
 <translation id="8107437138787377150">Поставете фразата за възстановяване от клипборда</translation>
 <translation id="4811736040444856406">Показване на фразата за възстановяване</translation>
 <translation id="4359319875297001084">Искате ли да импортирате от наследени криптопортфейли в Brave?</translation>
@@ -2241,13 +2246,12 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="3934503473603661122">Здравей, аз съм Лио, асистентът на Brave с изкуствен интелект. Задвижен съм от Grok 4.7 – граничния разсъждаващ модел на xAI в Amazon Bedrock. Grok 4.7 се предоставя чрез защитената AWS инфраструктура на Brave.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Здравей, аз съм Лио, асистентът на Brave с изкуствен интелект. Задвижен съм от GPT Luna – бързия модел с ниска латентност на OpenAI в Amazon Bedrock. GPT Luna се предоставя чрез защитената AWS инфраструктура на Brave.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от GPT 5.6 Terra – балансирания производствен модел на OpenAI в Amazon Bedrock Mantle. GPT 5.6 Terra се предоставя чрез защитената AWS инфраструктура на Brave.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Mistral Large – модел, създаден от Mistral с цел ефективност и широко приложение. Mistral Large се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Здравей, аз съм Лио. Проксиран съм от Brave и съм задвижван от Claude Haiku – модел, създаден от Anthropic с цел да захранва разговорни задачи и задачи за обработка на текст. Claude Haiku се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Qwen 3.8 Flash Next – модел, създаден от Alibaba Cloud с цел ефективност и широко приложение. Qwen 3.8 Flash Next се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Deepseek V3.2 – модел, създаден от Deepseek с цел ефективност и широко приложение. Deepseek V3.2 се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от GLM 5.3 – модел, създаден от Z.ai с цел ефективност и широко приложение. GLM 5.3 се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Здравей, аз съм Лио. Проксиран съм от Brave и съм задвижван от Claude Opus – модел, създаден от Anthropic с цел да захранва разговорни задачи и задачи за обработка на текст. Claude Opus се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Здравей, аз съм Лио, асистентът на Brave с изкуствен интелект. Задвижен съм от GLM-4-7-Flash – модел, създаден от Zhipu AI с цел ефективност и широк обхват. GLM-4-7-Flash се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Здравей, аз съм Лио, асистентът на Brave с изкуствен интелект. Задвижен съм от Kimi K2.5 – модел, създаден от Moonshot AI с цел ефективност и широк обхват. Kimi K2.5 се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Nemotron Nano 3 30B – модел, създаден от NVIDIA с цел ефективност и широко приложение. Nemotron Nano 3 30B се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Здравей, аз съм Лио, асистентът на Brave с изкуствен интелект. Задвижен съм от Brave Ocelot – модел, създаден от Brave за обобщаване на уеб страници. Brave Ocelot се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Локален</translation>
@@ -2387,8 +2391,8 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="7465032796278724624">Проверимо поверителен чрез NEAR AI TEE</translation>
 <translation id="8782867266498869301">Моделът се променя динамично, за да се използва най-добрият за задачата</translation>
 <translation id="7348809809749151120">Бързо • Търсене</translation>
+<translation id="7711013627639951065">Бърз • Търсене • Визия • Инструменти</translation>
 <translation id="3213834013136637671">Търсене • Визия</translation>
-<translation id="2793458212460902934">Бързо • Търсене • Инструменти</translation>
 <translation id="5276681919620506371">Търсене • Инструменти</translation>
 <translation id="7434375176361995333">Обобщения • Бързо</translation>
 <translation id="3965507912994218570">Настройки на Leo</translation>
@@ -2461,6 +2465,8 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="6287023598025162715">Нов разговор</translation>
 <translation id="7230502562132448519">Филтриране на разговори</translation>
 <translation id="821070843380699990">Опитайте с другу заявка</translation>
+<translation id="241415280196701326">Скорошни работни области</translation>
+<translation id="5388053981690151266">Нов разговор в тази работна област</translation>
 <translation id="7097822247923237815">Временен чат</translation>
 <translation id="7481750859362986254">Този чат няма да се запази в историята ти, нито ще използва някоя от персонализациите или спомените на Лио.</translation>
 <translation id="4238305333951712482">Паметта е актуализирана: <ph name="MEMORY_CONTENT"/></translation>
@@ -2486,6 +2492,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="5103625298494362646">Режимът на AI сърфиране работи с модели, които поддържат инструменти. Несъвместими модели са скрити от този списък.</translation>
 <translation id="3397808797783614750">Разрешаването на AI да сърфира автоматично вместо вас може да доведе до вредни, непреднамерени последици за вашата поверителност, финанси и онлайн комуникация. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Предупреждение за сигурност</translation>
+<translation id="717245811623757038">Заявка за разрешение за инструмент</translation>
 <translation id="6077070599873946984">Brave AI изисква вашето разрешение за: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI би искал да изпълни **<ph name="TOOL_NAME"/>** на **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Операцията е разпозната като потенциално неотговаряща на вашето запитване:</translation>

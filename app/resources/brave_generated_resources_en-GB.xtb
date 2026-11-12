@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Learn more about Widevine</translation>
+<translation id="3318169548229684688">Download a speech recognition model (<ph name="DOWNLOAD_SIZE"/>) to process speech on this device</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> is asking you to</translation>
 <translation id="3218385319396786393">Autoplay was blocked on this page</translation>
 <translation id="4988333904713528597">Always allow autoplay on <ph name="HOST"/></translation>
@@ -610,6 +611,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3540231253392253941">Use Google services for push messaging</translation>
 <translation id="2224032129673914306">Semantic history search</translation>
 <translation id="6045998903985162478">Index pages you visit so you can find them easily in history, open tabs and Leo.</translation>
+<translation id="3962946446120925966">On-device speech recognition</translation>
+<translation id="6408242130028978631">Download a speech recognition model (<ph name="DOWNLOAD_SIZE"/>) so sites can process speech on this device. Turn this off to remove the model.</translation>
 <translation id="5813105074916486721">Local history retention</translation>
 <translation id="5671611745062206644">How long Brave stores your browsing history locally</translation>
 <translation id="7184510058087008090">1 day</translation>

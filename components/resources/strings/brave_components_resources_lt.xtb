@@ -949,6 +949,11 @@
 <translation id="4362717653795263052">Atkurkite pagrindines kriptovaliutų sąskaitas</translation>
 <translation id="3038077262567136741">Įveskite atkūrimo frazę ir atkurkite „Brave“ piniginės kriptovaliutos sąskaitą.</translation>
 <translation id="955918646509748368">Įvesta atkūrimo frazė yra neteisinga.</translation>
+<translation id="7496330898672236908">Ši atkūrimo frazė neatitinka jūsų piniginės. Patikrinkite frazę ir bandykite dar kartą.</translation>
+<translation id="3798792138617904098">Pašalinti importuotas paskyras?</translation>
+<translation id="2960631345291747230">Importuotų paskyrų atsarginė kopija nekuriama naudojant jūsų atkūrimo frazę. Jos bus pašalintos iš „Brave“ piniginės, o jūs galite visam laikui prarasti prieigą prie jų lėšų, nebent būsite sukūrę atsargines jų privačiųjų raktų kopijas.</translation>
+<translation id="8898583604592472741">Pašalinti paskyras</translation>
+<translation id="1577629163207045190">Įveskite „<ph name="CONFIRMATION_PHRASE"/>“, kad patvirtintumėte.</translation>
 <translation id="8107437138787377150">Įklijuoti atkūrimo frazę iš iškarpinės</translation>
 <translation id="4811736040444856406">Rodyti atkūrimo frazę</translation>
 <translation id="4359319875297001084">Importuoti iš senesnių „Brave“ kriptovaliutos piniginių?</translation>
@@ -2245,13 +2250,12 @@
 <translation id="3934503473603661122">Sveiki! Mano vardas Leo. Esu „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Grok 4.7“ – „xAI“ pažangiu samprotavimo modeliu „Amazon Bedrock“. „Grok 4.7“ pateikiamas per saugią „Brave“ AWS infrastruktūrą.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Sveiki! Mano vardas Leo. Esu „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „GPT Luna“ – „OpenAI“ greitu, mažo delsos laiko modeliu „Amazon Bedrock“. „GPT Luna“ pateikiamas per saugią „Brave“ AWS infrastruktūrą.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Sveiki! Mano vardas Leo. Esu „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „GPT 5.6 Terra“ – „OpenAI“ subalansuotu gamybiniu modeliu „Amazon Bedrock Mantle“. „GPT 5.6 Terra“ pateikiamas per saugią „Brave“ AWS infrastruktūrą.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Mistral“ sukurtu „Mistral Large“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „Mistral Large“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Anthropic“ sukurtu „Claude Haiku“ modeliu, skirtu pokalbių ir tekstų apdorojimo užduotims atlikti. „Brave“ naudoja „Claude Haiku“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Sveiki! Mano vardas Leo. Esu „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Alibaba Cloud“ sukurtu „Qwen 3.8 Flash Next“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „Qwen 3.8 Flash Next“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Deepseek“ sukurtu „Deepseek V3.2“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „Deepseek V3.2“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Sveiki! Mano vardas Leo. Esu „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Z.ai“ sukurtu „GLM 5.3“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „GLM 5.3“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Anthropic“ sukurtu „Claude Opus“ modeliu, skirtu pokalbių ir tekstų apdorojimo užduotims atlikti. „Brave“ naudoja „Claude Opus“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Sveiki, esu Leo. Esu „Brave“ DI asistentas. Mane palaiko GLM-4-7-Flash – modelis, sukurtas „Zhipu AI“, kad būtų našus ir pritaikomas daugeliui naudojimo atvejų. GLM-4-7-Flash talpinamas „Brave“ per mūsų pačių saugią infrastruktūrą.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Sveiki, esu Leo. Esu „Brave“ DI asistentas. Mane palaiko Kimi K2.5 – modelis, sukurtas „Moonshot AI“, kad būtų našus ir pritaikomas daugeliui naudojimo atvejų. Kimi K2.5 talpinamas „Brave“ per mūsų pačių saugią infrastruktūrą.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Sveiki! Mano vardas Leo. Esu „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „NVIDIA“ sukurtu „Nemotron Nano 3 30B“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „Nemotron Nano 3 30B“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Sveiki, esu Leo. Esu „Brave“ DI asistentas. Mane palaiko Brave Ocelot – modelis, sukurtas „Brave“ tinklalapiams apibendrinti. Brave Ocelot talpinamas „Brave“ per mūsų pačių saugią infrastruktūrą.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">„Premium“</translation>
 <translation id="5807427080183870259">Vietinis</translation>
@@ -2391,8 +2395,8 @@
 <translation id="7465032796278724624">Patikimai privatu naudojant NEAR AI TEE</translation>
 <translation id="8782867266498869301">Modelis dinamiškai keičiasi, kad būtų naudojamas geriausias užduočiai atlikti</translation>
 <translation id="7348809809749151120">Greita • Paieška</translation>
+<translation id="7711013627639951065">Greitis • Paieška • Vizija • Įrankiai</translation>
 <translation id="3213834013136637671">Paieška • Vizija</translation>
-<translation id="2793458212460902934">Greita • Paieška • Įrankiai</translation>
 <translation id="5276681919620506371">Paieška • Įrankiai</translation>
 <translation id="7434375176361995333">Santraukos • Greita</translation>
 <translation id="3965507912994218570">"Leo" nustatymai</translation>
@@ -2465,6 +2469,8 @@
 <translation id="6287023598025162715">Naujas pokalbis</translation>
 <translation id="7230502562132448519">Filtruoti pokalbius</translation>
 <translation id="821070843380699990">Pabandykite kitą paieškos užklausą</translation>
+<translation id="241415280196701326">Naujausios darbo sritys</translation>
+<translation id="5388053981690151266">Naujas pokalbis šioje darbo srityje</translation>
 <translation id="7097822247923237815">Laikinas pokalbis</translation>
 <translation id="7481750859362986254">Šis pokalbis nebus išsaugotas jūsų istorijoje ir jame nebus naudojamas joks „Leo“ tinkinimas ar prisiminimai.</translation>
 <translation id="4238305333951712482">Atmintis atnaujinta: <ph name="MEMORY_CONTENT"/></translation>
@@ -2490,6 +2496,7 @@
 <translation id="5103625298494362646">AI naršymo režimas veikia su modeliais, palaikančiais įrankius. Nesuderinami modeliai nematomi šiame sąraše.</translation>
 <translation id="3397808797783614750">Leidžiant AI automatiškai naršyti už jus gali kilti nepageidaujamų padarinių jūsų privatumui, finansams ir internetinei komunikacijai.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Saugumo įspėjimas</translation>
+<translation id="717245811623757038">Įrankio leidimo užklausa</translation>
 <translation id="6077070599873946984">„Brave AI“ reikia jūsų leidimo: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI norėtų įvykdyti **<ph name="TOOL_NAME"/>** svetainėje **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Veiksmas aptiktas kaip galimai nesutampantis su jūsų užklausa:</translation>

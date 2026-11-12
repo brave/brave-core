@@ -952,6 +952,11 @@
 <translation id="4362717653795263052">Obnovení primárních účtů kryptoměn</translation>
 <translation id="3038077262567136741">Zadejte frázi pro obnovení a obnovte svůj účet s kryptoměnami v peněžence Brave Wallet.</translation>
 <translation id="955918646509748368">Zadaná fráze pro obnovení je neplatná.</translation>
+<translation id="7496330898672236908">Tato obnovovací fráze neodpovídá vaší peněžence. Zkontrolujte frázi a zkuste to znovu.</translation>
+<translation id="3798792138617904098">Odebrat importované účty?</translation>
+<translation id="2960631345291747230">Importované účty nejsou zálohovány vaší obnovovací frází. Budou odebrány z Peněženky Brave a pokud jste nezálohovali jejich soukromé klíče, můžete trvale ztratit přístup k jejich prostředkům.</translation>
+<translation id="8898583604592472741">Odebrat účty</translation>
+<translation id="1577629163207045190">Pro potvrzení napište „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
 <translation id="8107437138787377150">Vložit frázi pro obnovení ze schránky</translation>
 <translation id="4811736040444856406">Zobrazit frázi pro obnovení</translation>
 <translation id="4359319875297001084">Chcete provést import ze starších kryptopeněženek Brave?</translation>
@@ -2254,13 +2259,12 @@ other {# zdrojů}
 <translation id="3934503473603661122">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Grok 4.7, špičkový uvažovací model společnosti xAI na službě Amazon Bedrock. Model Grok 4.7 je poskytován prostřednictvím zabezpečené infrastruktury AWS společnosti Brave.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model GPT Luna, rychlý model společnosti OpenAI s nízkou latencí na službě Amazon Bedrock. Model GPT Luna je poskytován prostřednictvím zabezpečené infrastruktury AWS společnosti Brave.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model GPT 5.6 Terra, vyvážený produkční model společnosti OpenAI na službě Amazon Bedrock Mantle. Model GPT 5.6 Terra je poskytován prostřednictvím zabezpečené infrastruktury AWS společnosti Brave.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Mistral Large, který vytvořila společnost Mistral, aby byl výkonný a použitelný v mnoha případech. Model Mistral Large je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Claude Haiku, který vytvořila společnost Anthropic ke zpracování úloh konverzace a zpracování textu. Model Claude Haiku je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Qwen 3.8 Flash Next, který vytvořila společnost Alibaba Cloud, aby byl výkonný a použitelný v mnoha případech. Model Qwen 3.8 Flash Next je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Deepseek V3.2, který vytvořila společnost Deepseek, aby byl výkonný a použitelný v mnoha případech. Model Deepseek V3.2 je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model GLM 5.3, který vytvořila společnost Z.ai, aby byl výkonný a použitelný v mnoha případech. Model GLM 5.3 je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Claude Opus, který vytvořila společnost Anthropic ke zpracování úloh konverzace a zpracování textu. Model Claude Opus je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model GLM-4-7-Flash, který vytvořila společnost Zhipu AI, aby byl výkonný a použitelný v mnoha případech. Model GLM-4-7-Flash je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Kimi K2.5, který vytvořila společnost Moonshot AI, aby byl výkonný a použitelný v mnoha případech. Model Kimi K2.5 je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Nemotron Nano 3 30B, který vytvořila společnost NVIDIA, aby byl výkonný a použitelný v mnoha případech. Model Nemotron Nano 3 30B je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Brave Ocelot, který vytvořila společnost Brave pro shrnutí webových stránek. Model Brave Ocelot je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Místní</translation>
@@ -2400,8 +2404,8 @@ other {# zdrojů}
 <translation id="7465032796278724624">Ověřitelný soukromý režim s NEAR AI TEE</translation>
 <translation id="8782867266498869301">Model se dynamicky mění, aby použil ten nejlepší pro danou úlohu</translation>
 <translation id="7348809809749151120">Rychlý • Vyhledávač</translation>
+<translation id="7711013627639951065">Rychlý • Vyhledávač • Vize • Nástroje</translation>
 <translation id="3213834013136637671">Vyhledávač • Vize</translation>
-<translation id="2793458212460902934">Rychlý • Vyhledávač • Nástroje</translation>
 <translation id="5276681919620506371">Vyhledávač • Nástroje</translation>
 <translation id="7434375176361995333">Shrnutí • Rychlý</translation>
 <translation id="3965507912994218570">Nastavení asistenta Leo</translation>
@@ -2474,6 +2478,8 @@ other {# zdrojů}
 <translation id="6287023598025162715">Nová konverzace</translation>
 <translation id="7230502562132448519">Filtrovat konverzace</translation>
 <translation id="821070843380699990">Zkuste jiný dotaz</translation>
+<translation id="241415280196701326">Nedávné pracovní prostory</translation>
+<translation id="5388053981690151266">Nová konverzace v tomto pracovním prostoru</translation>
 <translation id="7097822247923237815">Dočasný chat</translation>
 <translation id="7481750859362986254">Tento chat nebude uložen do vaší historie ani nebude používat Leova přizpůsobení či paměti.</translation>
 <translation id="4238305333951712482">Paměť aktualizována: <ph name="MEMORY_CONTENT"/></translation>
@@ -2499,6 +2505,7 @@ other {# zdrojů}
 <translation id="5103625298494362646">Režim AI procházení funguje s modely, které podporují nástroje. Nepodporované modely jsou v tomto seznamu skryty.</translation>
 <translation id="3397808797783614750">Povolení AI, aby pro vás automaticky prohledávala web, může mít škodlivé a nechtěné důsledky pro vaše soukromí, finanční prostředky a online komunikaci. <ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Bezpečnostní varování</translation>
+<translation id="717245811623757038">Žádost o oprávnění pro nástroj</translation>
 <translation id="6077070599873946984">Brave AI potřebuje vaše oprávnění k: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI by chtěla spustit **<ph name="TOOL_NAME"/>** na **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Operace byla vyhodnocena jako potenciálně neodpovídající vašemu požadavku:</translation>

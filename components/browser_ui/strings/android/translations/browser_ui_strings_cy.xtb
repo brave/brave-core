@@ -181,9 +181,7 @@
 <translation id="2710883118091822664">Mewngofnodwch i barhau'n hawdd ar eich holl ddyfeisiau</translation>
 <translation id="2713106313042589954">Diffodd y camera</translation>
 <translation id="2717722538473713889">Cyfeiriadau e-bost</translation>
-<translation id="8181634240306014548">Lansio Brave gyda ffocws ar yr Omniflwch, gan leihau amser cychwyn ar ddyfeisiau llai datblygedig.</translation>
 <translation id="2750481671343847896">Gall gwefannau ddangos anogwyr mewngofnodi o wasanaethau hunaniaeth.</translation>
-<translation id="2787357173144933081">Cychwyn Cyflym Omniflwch</translation>
 <translation id="2789132527330338807">Gall gwefannau ofyn i greu map 3D o'ch amgylchoedd neu olrhain lleoliad camera</translation>
 <translation id="2790501146643349491">Pan fydd wedi'i droi ymlaen, gall gwefannau a gaewyd yn ddiweddar orffen anfon a derbyn data. Pan fydd wedi'i ddiffodd, ni all gwefannau a gaewyd yn ddiweddar orffen anfon a derbyn data.</translation>
 <translation id="2795716239552913152">Mae gwefannau fel arfer yn defnyddio'ch lleoliad ar gyfer nodweddion neu wybodaeth berthnasol, fel newyddion lleol neu siopau cyfagos</translation>
@@ -293,7 +291,6 @@
 <translation id="9046306654872718870">Gwnewch Brave yn unigryw i chi gyda lliwiau a lluniau personol ar gyfer eich hafan</translation>
 <translation id="389521680295183045">Gall gwefannau ofyn am wybod pan fyddwch wrthi'n defnyddio'ch dyfais</translation>
 <translation id="3895926599014793903">Gorfodi galluogi chwyddo</translation>
-<translation id="3905475044299942653">Atal llawer o hysbysiadau</translation>
 <translation id="3922092564198021702">Ar eich ffôn, agorwch y Gosodiadau</translation>
 <translation id="3924858949939391676">Dangos dolenni unwaith y bydd y Modd Darllen ymlaen</translation>
 <translation id="3933121352599513978">Crebachu ceisiadau digroeso (argymhellir)</translation>
@@ -387,7 +384,6 @@
 <translation id="4936863036653376783">Byddwch yn gweld eich grwpiau yn yr adran grwpiau tab ar draws eich holl ddyfeisiau</translation>
 <translation id="4945443401464700059">Mae <ph name="SITE"/> wedi'i rhwystro rhag defnyddio eich gwybodaeth ar</translation>
 <translation id="4953688446973710931">Pan fydd wedi'i droi ymlaen, gall gwefannau ofyn am lawrlwytho mwy nag un ffeil yn awtomatig. Pan fydd wedi'i ddiffodd, ni all gwefannau lawrlwytho mwy nag un ffeil yn awtomatig.</translation>
-<translation id="4962975101802056554">Dirymu pob caniatâd ar gyfer y ddyfais</translation>
 <translation id="4972737347717125191">Gall gwefannau ofyn am gael defnyddio dyfeisiau rhithwirionedd a'u data</translation>
 <translation id="1275242979020712923">Dalen waelod Lliwiau Brave</translation>
 <translation id="497421865427891073">Mynd ymlaen</translation>
@@ -529,6 +525,7 @@
 <translation id="6439114592976064011">Rhwystro gwefannau rhag defnyddio eich dyfais rhithwrionedd a'i data</translation>
 <translation id="6447842834002726250">Cwcis</translation>
 <translation id="6452138246455930388">Gostyngiad pris ar eich tab agored, o <ph name="OLD_PRICE"/> i <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
+<translation id="6495608040096939405">Dirymu caniatâd dyfais ar gyfer <ph name="NAME"/></translation>
 <translation id="6500423977866688905">Pan fo'r ffenestr yn gul, gofynnwch am wedd dyfais symudol</translation>
 <translation id="6527303717912515753">Rhannu</translation>
 <translation id="6530703012083415527">Pan fydd wedi'i droi ymlaen, gall gwefannau ddefnyddio ffenestri naid ac ailgyfeiriadau. Pan fydd wedi'i ddiffodd, ni all gwefannau ddefnyddio ffenestri naid ac ailgyfeiriadau.</translation>
@@ -594,6 +591,7 @@
 <translation id="7188508872042490670">Data gwefan ar y ddyfais</translation>
 <translation id="7201549776650881587">Bydd y weithred hon yn dileu'r holl ddata a chwcis sy'n cael eu storio gan bob gwefan o dan <ph name="ORIGIN"/> neu gan ei ap ar eich sgrîn Hafan</translation>
 <translation id="7219254577985949841">Dileu data gwefan?</translation>
+<translation id="7225256190577194089">Dirymu pob caniatâd ar gyfer dyfais <ph name="DEVICE_NAME"/></translation>
 <translation id="723171743924126238">Dewis lluniau</translation>
 <translation id="7243246278722455312">Dalen waelod addasu eich tudalen tab newydd</translation>
 <translation id="7243308994586599757">Mae opsiynau ar gael yn agos at waelod y sgrîn</translation>
@@ -706,7 +704,6 @@ Mae Advanced Protection yn rheoli'r gosodiadau Brave hyn:</translation>
 <translation id="8428213095426709021">Gosodiadau</translation>
 <translation id="8441146129660941386">Mynd yn ôl</translation>
 <translation id="8444433999583714703">I ganiatáu i <ph name="APP_NAME"/> gael mynediad at eich lleoliad, trowch leoliad ymlaen yn <ph name="BEGIN_LINK"/>Gosodiadau Android<ph name="END_LINK"/> hefyd.</translation>
-<translation id="8447861592752582886">Dirymu caniatâd dyfais</translation>
 <translation id="8463843545738141778">Mae'r gosodiad hwn wedi'i analluogi oherwydd i chi droi Advanced Protection ymlaen yng Ngosodiadau Android.</translation>
 <translation id="8467359479529706065">Ymddangosiad dalen waelod tudalen tab newydd wedi'i hagor ar hanner uchder</translation>
 <translation id="8471525937465764768">Mae gwefannau fel arfer yn cysylltu â dyfeisiau USB ar gyfer nodweddion megis argraffu dogfen neu gynilo i ddyfais storio</translation>

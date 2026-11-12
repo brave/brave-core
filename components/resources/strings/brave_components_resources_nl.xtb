@@ -947,6 +947,11 @@
 <translation id="4362717653795263052">Primaire cryptoaccounts herstellen</translation>
 <translation id="3038077262567136741">Voer je herstelzin in om je Brave-wallet-cryptoaccount te herstellen.</translation>
 <translation id="955918646509748368">De ingevoerde herstelzin is ongeldig.</translation>
+<translation id="7496330898672236908">Deze herstelzin komt niet overeen met je wallet. Controleer de zin en probeer het opnieuw.</translation>
+<translation id="3798792138617904098">Geïmporteerde accounts verwijderen?</translation>
+<translation id="2960631345291747230">Geïmporteerde accounts worden niet door je herstelzin beveiligd. Ze worden verwijderd uit Brave Wallet en je kunt permanent de toegang tot de bijbehorende tegoeden verliezen, tenzij je een back-up van hun privésleutels hebt gemaakt.</translation>
+<translation id="8898583604592472741">Accounts verwijderen</translation>
+<translation id="1577629163207045190">Typ "<ph name="CONFIRMATION_PHRASE"/>" om te bevestigen.</translation>
 <translation id="8107437138787377150">Herstelzin plakken van klembord</translation>
 <translation id="4811736040444856406">Herstelwoorden tonen</translation>
 <translation id="4359319875297001084">Importeren vanuit verouderde Brave-cryptowallets?</translation>
@@ -2241,13 +2246,12 @@
 <translation id="3934503473603661122">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Grok 4.7, het grensverleggende redeneermodel van xAI op Amazon Bedrock. Grok 4.7 wordt aangeboden via de veilige AWS-infrastructuur van Brave.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van GPT Luna, het snelle model met lage latentie van OpenAI op Amazon Bedrock. GPT Luna wordt aangeboden via de veilige AWS-infrastructuur van Brave.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van GPT 5.6 Terra, het uitgebalanceerde productiemodel van OpenAI op Amazon Bedrock Mantle. GPT 5.6 Terra wordt aangeboden via de veilige AWS-infrastructuur van Brave.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Mistral Large, een model ontwikkeld door Mistral om in vele gebruikssituaties efficiënt te zijn. Mistral Large wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Claude Haiku, een model gecreëerd door Anthropic om gesprekstaken en tekstverwerking aan te sturen. Claude Haiku wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Qwen 3.8 Flash Next, een model ontwikkeld door Alibaba Cloud om in vele gebruikssituaties efficiënt te zijn. Qwen 3.8 Flash Next wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Deepseek V3.2, een model ontwikkeld door Deepseek om in vele gebruikssituaties efficiënt te zijn. Deepseek V3.2 wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Hallo, ik ben Leo. Ik ben een AI-assistent van Brave. Ik maak gebruik van GLM 5.3, een model ontwikkeld door Z.ai om goed te presteren en in veel gebruikssituaties toepasbaar te zijn. GLM 5.3 wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Claude Opus, een model gecreëerd door Anthropic om gesprekstaken en tekstverwerking aan te sturen. Claude Opus wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van GLM-4-7-Flash, een model ontwikkeld door Zhipu AI om in vele gebruikssituaties efficiënt te zijn. GLM-4-7-Flash wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Kimi K2.5, een model ontwikkeld door Moonshot AI om in vele gebruikssituaties efficiënt te zijn. Kimi K2.5 wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Nemotron Nano 3 30B, een model ontwikkeld door NVIDIA om in vele gebruikssituaties efficiënt te zijn. Nemotron Nano 3 30B wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Hallo, ik ben Leo. Ik ben een AI-assistent door Brave. Ik maak gebruik van Brave Ocelot, een model ontwikkeld door Brave om webpagina's samen te vatten. Brave Ocelot wordt door Brave gehost via onze eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Lokaal</translation>
@@ -2387,8 +2391,8 @@
 <translation id="7465032796278724624">Verifieerbaar privé met NEAR AI TEE</translation>
 <translation id="8782867266498869301">Het model wordt dynamisch gewijzigd, zodat het beste model voor de taak wordt gebruikt</translation>
 <translation id="7348809809749151120">Snel • Zoek</translation>
+<translation id="7711013627639951065">Snel • Zoeken • Beeld • Tools</translation>
 <translation id="3213834013136637671">Zoek • Beeld</translation>
-<translation id="2793458212460902934">Snel • Zoek • Tools</translation>
 <translation id="5276681919620506371">Zoeken • Tools</translation>
 <translation id="7434375176361995333">Samenvattingen • Snel</translation>
 <translation id="3965507912994218570">Leo-instellingen</translation>
@@ -2461,6 +2465,8 @@
 <translation id="6287023598025162715">Nieuw gesprek</translation>
 <translation id="7230502562132448519">Gesprekken filteren</translation>
 <translation id="821070843380699990">Probeer een ander zoekopdracht</translation>
+<translation id="241415280196701326">Recente werkruimtes</translation>
+<translation id="5388053981690151266">Nieuw gesprek in deze werkruimte</translation>
 <translation id="7097822247923237815">Tijdelijke chat</translation>
 <translation id="7481750859362986254">Deze chat wordt niet opgeslagen in je geschiedenis en maakt geen gebruik van Leo's aanpassingen of herinneringen.</translation>
 <translation id="4238305333951712482">Geheugen bijgewerkt: <ph name="MEMORY_CONTENT"/></translation>
@@ -2486,6 +2492,7 @@
 <translation id="5103625298494362646">Agentmodus werkt met modellen die ondersteuning voor tools bieden. Niet-compatibele modellen zijn verborgen in deze lijst.</translation>
 <translation id="3397808797783614750">AI automatisch voor jou laten browsen kan schadelijke, onbedoelde gevolgen hebben voor je privacy, financiën en online communicatie. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Beveiligingswaarschuwing</translation>
+<translation id="717245811623757038">Toestemmingsverzoek voor tool</translation>
 <translation id="6077070599873946984">Brave AI heeft jouw toestemming nodig voor: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI wil **<ph name="TOOL_NAME"/>** uitvoeren op **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Er is vastgesteld dat de bewerking mogelijk niet overeenkomt met jouw verzoek:</translation>

@@ -947,6 +947,11 @@
 <translation id="4362717653795263052">Pulihkan akaun kripto utama</translation>
 <translation id="3038077262567136741">Masukkan frasa pemulihan anda untuk memulihkan akaun kripto dompet Brave anda.</translation>
 <translation id="955918646509748368">Frasa pemulihan yang anda masukkan tidak sah.</translation>
+<translation id="7496330898672236908">Frasa pemulihan ini tidak sepadan dengan dompet anda. Semak frasa tersebut dan cuba lagi.</translation>
+<translation id="3798792138617904098">Alih keluar akaun yang diimport?</translation>
+<translation id="2960631345291747230">Akaun yang diimport tidak disandarkan oleh frasa pemulihan anda. Akaun tersebut akan dialih keluar daripada Brave Wallet, dan anda mungkin kehilangan akses kepada dana di dalamnya secara kekal melainkan anda telah menyandarkan kunci peribadinya.</translation>
+<translation id="8898583604592472741">Alih keluar akaun</translation>
+<translation id="1577629163207045190">Taip "<ph name="CONFIRMATION_PHRASE"/>" untuk mengesahkan.</translation>
 <translation id="8107437138787377150">Tampal frasa pemulihan daripada papan klip</translation>
 <translation id="4811736040444856406">Tunjukkan frasa pemulihan</translation>
 <translation id="4359319875297001084">Import daripada legasi dompet kripto Brave?</translation>
@@ -2241,13 +2246,12 @@
 <translation id="3934503473603661122">Hai, saya Leo. Saya pembantu AI oleh Brave. Saya dikuasakan oleh Grok 4.7, model penaakulan terkini xAI pada Amazon Bedrock. Grok 4.7 disediakan melalui infrastruktur AWS selamat Brave.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Hai, saya Leo. Saya pembantu AI oleh Brave. Saya dikuasakan oleh GPT Luna, model pantas dan rendah-latensi OpenAI pada Amazon Bedrock. GPT Luna disediakan melalui infrastruktur AWS selamat Brave.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Hai, saya Leo. Saya pembantu AI oleh Brave. Saya dikuasakan oleh GPT 5.6 Terra, model pengeluaran seimbang OpenAI pada Amazon Bedrock Mantle. GPT 5.6 Terra disediakan melalui infrastruktur AWS selamat Brave.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Mistral Large, model ciptaan Mistral yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. Mistral Large dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Claude Haiku, model ciptaan Anthropic untuk menjalankan tugasan perbualan dan pemprosesan teks. Claude Haiku dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Hai, saya Leo. Saya pembantu AI oleh Brave. Saya dikuasakan oleh Qwen 3.8 Flash Next, model ciptaan Alibaba Cloud yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. Qwen 3.8 Flash Next dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Deepseek V3.2, model ciptaan Deepseek yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. Deepseek V3.2 dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Hai, saya Leo. Saya pembantu AI daripada Brave. Saya dikuasakan oleh GLM 5.3, model ciptaan Z.ai yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. GLM 5.3 dihoskan oleh Brave melalui infrastruktur selamat kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Claude Opus, model ciptaan Anthropic untuk menjalankan tugasan perbualan dan pemprosesan teks. Claude Opus dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh GLM-4-7-Flash, model ciptaan Zhipu AI yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. GLM-4-7-Flash dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Kimi K2.5, model ciptaan Moonshot AI yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. Kimi K2.5 dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Nemotron Nano 3 30B, model ciptaan NVIDIA yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. Nemotron Nano 3 30B dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Brave Ocelot, model ciptaan Brave untuk meringkaskan halaman web. Brave Ocelot dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Tempatan</translation>
@@ -2387,8 +2391,8 @@
 <translation id="7465032796278724624">Disahkan Secara Peribadi Dengan NEAR AI TEE</translation>
 <translation id="8782867266498869301">Model berubah secara dinamik untuk menggunakan yang terbaik bagi tugasan tersebut</translation>
 <translation id="7348809809749151120">Pantas • Carian</translation>
+<translation id="7711013627639951065">Pantas • Carian • Visi • Alat</translation>
 <translation id="3213834013136637671">Carian • Visi</translation>
-<translation id="2793458212460902934">Pantas • Carian • Alat</translation>
 <translation id="5276681919620506371">Carian • Alat</translation>
 <translation id="7434375176361995333">Ringkasan • Pantas</translation>
 <translation id="3965507912994218570">Tetapan Leo</translation>
@@ -2461,6 +2465,8 @@
 <translation id="6287023598025162715">Perbualan baru</translation>
 <translation id="7230502562132448519">Tapisan perbualan</translation>
 <translation id="821070843380699990">Sila cuba pertanyaan lain</translation>
+<translation id="241415280196701326">Ruang kerja terkini</translation>
+<translation id="5388053981690151266">Perbualan baharu dalam ruang kerja ini</translation>
 <translation id="7097822247923237815">Perbualan sementara</translation>
 <translation id="7481750859362986254">Sembang ini tidak akan disimpan dalam sejarah anda dan tidak akan menggunakan sebarang penyesuaian atau ingatan Leo.</translation>
 <translation id="4238305333951712482">Memori dikemas kini: <ph name="MEMORY_CONTENT"/></translation>
@@ -2486,6 +2492,7 @@
 <translation id="5103625298494362646">Mod penyemakan imbas AI berfungsi dengan model yang menyokong alat. Model yang tidak serasi akan tersembunyi daripada senarai ini.</translation>
 <translation id="3397808797783614750">Membenarkan AI melayari secara automatik untuk anda boleh menyebabkan akibat berbahaya dan tidak diingini terhadap privasi anda, kewangan anda dan komunikasi dalam talian anda. <ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Amaran keselamatan</translation>
+<translation id="717245811623757038">Permintaan kebenaran alat</translation>
 <translation id="6077070599873946984">Brave AI memerlukan kebenaran anda untuk: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI ingin melaksanakan **<ph name="TOOL_NAME"/>** pada **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Operasi ini dikesan berkemungkinan tidak sejajar dengan permintaan anda:</translation>

@@ -950,6 +950,11 @@
 <translation id="4362717653795263052">プライマリ暗号資産アカウントを復元</translation>
 <translation id="3038077262567136741">リカバリフレーズを入力して Brave ウォレットの暗号資産アカウントを復元します。</translation>
 <translation id="955918646509748368">入力したリカバリフレーズが無効です。</translation>
+<translation id="7496330898672236908">このリカバリーフレーズはお使いのウォレットと一致しません。フレーズを確認して、もう一度お試しください。</translation>
+<translation id="3798792138617904098">インポート済みのアカウントを削除しますか?</translation>
+<translation id="2960631345291747230">インポート済みのアカウントは、リカバリーフレーズではバックアップされません。これらのアカウントはBraveウォレットから削除されます。秘密鍵をバックアップしていない場合、アカウント内の資金に永久にアクセスできなくなる可能性があります。</translation>
+<translation id="8898583604592472741">アカウントを削除する</translation>
+<translation id="1577629163207045190">確認のため「<ph name="CONFIRMATION_PHRASE"/>」と入力してください。</translation>
 <translation id="8107437138787377150">クリップボードからリカバリフレーズを貼り付ける</translation>
 <translation id="4811736040444856406">リカバリーフレーズを表示</translation>
 <translation id="4359319875297001084">従来の Brave 暗号資産ウォレットからインポートしますか？</translation>
@@ -2244,13 +2249,12 @@
 <translation id="3934503473603661122">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Grok 4.7を搭載しています。これはxAIのAmazon Bedrock上で動作するフロンティア推論モデルです。Grok 4.7はBraveの安全なAWSインフラを通じて提供されています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、GPT Lunaを搭載しています。これはOpenAIのAmazon Bedrock上で動作する高速・低遅延モデルです。GPT LunaはBraveの安全なAWSインフラを通じて提供されています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、GPT 5.6 Terraを搭載しています。これはOpenAIのAmazon Bedrock Mantle上で動作するバランスの取れたプロダクションモデルです。GPT 5.6 TerraはBraveの安全なAWSインフラを通じて提供されています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Mistral Largeを搭載しています。このモデルはMistralによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。Mistral LargeはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Claude Haikuを搭載しています。このモデルはAnthropicによって作成されたもので、会話・テキスト処理タスクをパワーアップさせます。Claude HaikuはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Qwen 3.8 Flash Nextを搭載しています。このモデルはAlibaba Cloudによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。Qwen 3.8 Flash NextはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Deepseek V3.2を搭載しています。このモデルはDeepseekによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。Deepseek V3.2はBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">こんにちは、Leoです。私はBraveが提供するAIアシスタントで、Z.aiが開発したGLM 5.3を搭載しています。このモデルはパフォーマンスが高く、多くのユースケースに適用可能です。GLM 5.3はBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Claude Opusを搭載しています。このモデルはAnthropicによって作成されたもので、会話・テキスト処理タスクをパワーアップさせます。Claude OpusはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、GLM-4-7-Flashを搭載しています。このモデルはZhipu AIによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。GLM-4-7-FlashはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Kimi K2.5を搭載しています。このモデルはMoonshot AIによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。Kimi K2.5はBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Nemotron Nano 3 30Bを搭載しています。このモデルはNVIDIAによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。Nemotron Nano 3 30BはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Brave Ocelotを搭載しています。このモデルはBraveによって作成されたもので、ウェブページを要約するために設計されています。Brave OcelotはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">プレミアム</translation>
 <translation id="5807427080183870259">ローカル</translation>
@@ -2390,8 +2394,8 @@
 <translation id="7465032796278724624">NEAR AI TEEで検証されたプライバシー</translation>
 <translation id="8782867266498869301">モデルはタスクに最適なものに動的に変わります</translation>
 <translation id="7348809809749151120">高速 • Search</translation>
+<translation id="7711013627639951065">高速 • Search • ビジョン • ツール</translation>
 <translation id="3213834013136637671">検索 - Vision</translation>
-<translation id="2793458212460902934">高速 • Search • ツール</translation>
 <translation id="5276681919620506371">検索 • ツール</translation>
 <translation id="7434375176361995333">要約 • 高速</translation>
 <translation id="3965507912994218570">Leoの設定</translation>
@@ -2464,6 +2468,8 @@
 <translation id="6287023598025162715">新規の会話</translation>
 <translation id="7230502562132448519">会話をフィルタリング</translation>
 <translation id="821070843380699990">別のクエリをお試しください</translation>
+<translation id="241415280196701326">最近のワークスペース</translation>
+<translation id="5388053981690151266">このワークスペースで新しい会話を開始</translation>
 <translation id="7097822247923237815">一時チャット</translation>
 <translation id="7481750859362986254">このチャットは履歴に残りません。また、Leoのカスタマイゼーションやメモリを一切使用しません。</translation>
 <translation id="4238305333951712482">メモリ更新: <ph name="MEMORY_CONTENT"/></translation>
@@ -2489,6 +2495,7 @@
 <translation id="5103625298494362646">エージェントモードはツールに対応したモデルで動作します。非対応のモデルは一覧に表示されません。</translation>
 <translation id="3397808797783614750">AIによる自動ブラウジングを有効にすると、プライバシー、財務、またはオンライン通信に対して有害な意図しない影響を及ぼす可能性があります。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">セキュリティ警告</translation>
+<translation id="717245811623757038">ツールの権限リクエスト</translation>
 <translation id="6077070599873946984">Brave AIは、次の操作について許可を求めています: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AIが **<ph name="SITE_ORIGIN"/>** で **<ph name="TOOL_NAME"/>** を実行しようとしています</translation>
 <translation id="4163837693685963037">この操作は、リクエストと一致していない可能性があると検出されました:</translation>

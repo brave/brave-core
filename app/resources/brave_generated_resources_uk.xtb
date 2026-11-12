@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Або змініть пізніше на <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Докладніше про Widevine</translation>
+<translation id="3318169548229684688">завантажити модель розпізнавання мовлення (<ph name="DOWNLOAD_SIZE"/>), щоб обробляти мовлення на цьому пристрої</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> запитує вас</translation>
 <translation id="3218385319396786393">Автовідтворення заблоковано на цій сторінці</translation>
 <translation id="4988333904713528597">Завжди дозволяти автовідтворення на <ph name="HOST"/></translation>
@@ -610,6 +611,8 @@
 <translation id="3540231253392253941">Використовувати сервіси Google для push-сповіщень</translation>
 <translation id="2224032129673914306">Семантичний пошук в історії</translation>
 <translation id="6045998903985162478">Індексуйте сторінки, які ви відвідуєте, щоб легко знаходити їх в історії, відкритих вкладках і Лео.</translation>
+<translation id="3962946446120925966">Розпізнавання мовлення на пристрої</translation>
+<translation id="6408242130028978631">Завантажте модель розпізнавання мовлення (<ph name="DOWNLOAD_SIZE"/>), щоб сайти могли обробляти мовлення на цьому пристрої. Вимкніть цей параметр, щоб видалити модель.</translation>
 <translation id="5813105074916486721">Зберігання локальної історії</translation>
 <translation id="5671611745062206644">Як довго Brave зберігає вашу історію перегляду локально</translation>
 <translation id="7184510058087008090">1 день</translation>

@@ -181,9 +181,7 @@
 <translation id="2710883118091822664">Identifikohu për të vazhduar me lehtësi në të gjitha pajisjet e tua</translation>
 <translation id="2713106313042589954">Çaktivizo kamerën</translation>
 <translation id="2717722538473713889">Adresat e email-it</translation>
-<translation id="8181634240306014548">Hap Brave me fokusin tek omnibox-i, duke zvogëluar kohën e nisjes në pajisjet e nivelit të ulët.</translation>
 <translation id="2750481671343847896">Sajtet mund të shfaqin kërkesat për identifikim nga shërbimet e identitetit.</translation>
-<translation id="2787357173144933081">Nis me shpejti omnibox-in</translation>
 <translation id="2789132527330338807">Sajtet mund të kërkojnë të krijojnë një hartë 3D të ambientit tënd rrethues ose të monitorojnë pozicionin e kamerës</translation>
 <translation id="2790501146643349491">Kur cilësimi është aktiv, sajtet e mbyllura së fundi mund të përfundojnë dërgimin dhe marrjen e të dhënave. Kur cilësimi është joaktiv, sajtet e mbyllura së fundi nuk mund të përfundojnë dërgimin ose marrjen e të dhënave.</translation>
 <translation id="2795716239552913152">Sajtet përdorin zakonisht vendndodhjen tënde për veçori ose informacione përkatëse, si p.sh. lajmet lokale ose dyqanet në afërsi</translation>
@@ -291,7 +289,6 @@
 <translation id="9046306654872718870">Bëje Brave tëndin me ngjyra dhe imazhe të personalizuara për faqen tënde kryesore</translation>
 <translation id="389521680295183045">Sajtet mund të kërkojnë të dinë kur e përdor pajisjen tënde në mënyrë aktive</translation>
 <translation id="3895926599014793903">Aktivizo me detyrim zmadhimin</translation>
-<translation id="3905475044299942653">Ndalo shumë njoftime</translation>
 <translation id="3922092564198021702">Në telefon, hap "Cilësimet"</translation>
 <translation id="3924858949939391676">Shfaq lidhjet pasi të jetë aktivizuar "Modaliteti i leximit"</translation>
 <translation id="3933121352599513978">Palos kërkesat e padëshiruara (rekomandohet)</translation>
@@ -385,7 +382,6 @@
 <translation id="4936863036653376783">Grupet e tua do t'i gjesh te seksioni i grupeve të skedave në të gjitha pajisjet e tua</translation>
 <translation id="4945443401464700059"><ph name="SITE"/> është bllokuar që të mos përdorë informacionet e tua në</translation>
 <translation id="4953688446973710931">Kur cilësimi është aktiv, sajtet mund të kërkojnë që të shkarkojnë automatikisht shumë skedarë. Kur cilësimi është joaktiv, sajtet nuk mund të shkarkojnë automatikisht shumë skedarë.</translation>
-<translation id="4962975101802056554">Anulo të gjitha lejet për pajisjen</translation>
 <translation id="4972737347717125191">Sajtet mund të kërkojnë të përdorin të dhënat dhe pajisjet e realitetit virtual</translation>
 <translation id="1275242979020712923">Fleta e poshtme e ngjyrave të Brave</translation>
 <translation id="497421865427891073">Vazhdo përpara</translation>
@@ -525,6 +521,7 @@
 <translation id="6439114592976064011">Blloko sajtet që të mos përdorin pajisjen e realitetit virtual dhe të dhënat e tua</translation>
 <translation id="6447842834002726250">Kukit</translation>
 <translation id="6452138246455930388">Ulje çmimi në skedën tënde të hapur, nga <ph name="OLD_PRICE"/> deri në <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
+<translation id="6495608040096939405">Revoko lejen e pajisjes për <ph name="NAME"/></translation>
 <translation id="6500423977866688905">Kur dritarja është e ngushtë, kërko pamjen për celular</translation>
 <translation id="6527303717912515753">Ndaj</translation>
 <translation id="6530703012083415527">Kur cilësimi është aktiv, sajtet mund të përdorin dritaret kërcyese dhe ridrejtimet. Kur cilësimi është joaktiv, sajtet nuk mund të përdorin dritaret kërcyese dhe ridrejtimet.</translation>
@@ -590,6 +587,7 @@
 <translation id="7188508872042490670">Të dhënat e sajteve në pajisje</translation>
 <translation id="7201549776650881587">Ky veprim do të fshijë të gjitha të dhënat dhe kukit e ruajtura nga të gjitha sajtet nën <ph name="ORIGIN"/> ose nga aplikacioni përkatës në ekranin bazë</translation>
 <translation id="7219254577985949841">Të fshihen të dhënat e sajtit?</translation>
+<translation id="7225256190577194089">Revoko të gjitha lejet për <ph name="DEVICE_NAME"/></translation>
 <translation id="723171743924126238">Zgjidh imazhet</translation>
 <translation id="7243246278722455312">Fleta e poshtme "Personalizo faqen e skedës së re"</translation>
 <translation id="7243308994586599757">Opsionet janë të disponueshme pranë fundit të ekranit</translation>
@@ -702,7 +700,6 @@
 <translation id="8428213095426709021">Cilësimet</translation>
 <translation id="8441146129660941386">Kërko prapa</translation>
 <translation id="8444433999583714703">Për të lejuar që <ph name="APP_NAME"/> të ketë qasje te vendndodhja jote, aktivizo gjithashtu vendndodhjen në <ph name="BEGIN_LINK"/>Cilësimet e Android<ph name="END_LINK"/>.</translation>
-<translation id="8447861592752582886">Revoko lejen e pajisjes</translation>
 <translation id="8463843545738141778">Ky cilësim është i çaktivizuar sepse ke aktivizuar "Mbrojtjen e përparuar" te "Cilësimet" e Android.</translation>
 <translation id="8467359479529706065">Fleta e poshtme e pamjes së faqeve të skedave të reja u hap në gjysmë lartësi</translation>
 <translation id="8471525937465764768">Sajtet lidhen zakonisht me pajisjet me USB për veçoritë si printimi i një dokumenti ose ruajtja te një pajisje e hapësirës ruajtëse</translation>

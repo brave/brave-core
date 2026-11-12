@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Lue lisää Widevinestä</translation>
+<translation id="3318169548229684688">Ladata puheentunnistusmallin (<ph name="DOWNLOAD_SIZE"/>) puheen käsittelemiseksi tällä laitteella</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> pyytää sinua</translation>
 <translation id="3218385319396786393">Automaattinen toisto on estetty tällä sivulla</translation>
 <translation id="4988333904713528597">Salli aina automaattinen toisto <ph name="HOST"/></translation>
@@ -610,6 +611,8 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="3540231253392253941">Käytä Google-palveluja push-viesteille</translation>
 <translation id="2224032129673914306">Semanttinen historiahaku</translation>
 <translation id="6045998903985162478">Indeksoi vierailemasi sivut, jotta löydät ne helposti historiasta, avoimista välilehdistä ja Leosta.</translation>
+<translation id="3962946446120925966">Laitteessa suoritettava puheentunnistus</translation>
+<translation id="6408242130028978631">Lataa puheentunnistusmalli (<ph name="DOWNLOAD_SIZE"/>), jotta sivustot voivat käsitellä puhetta tällä laitteella. Poista malli poistamalla tämä asetus käytöstä.</translation>
 <translation id="5813105074916486721">Paikallisen historian säilytys</translation>
 <translation id="5671611745062206644">Kuinka kauan Brave tallentaa selaushistoriasi paikallisesti</translation>
 <translation id="7184510058087008090">1 päivä</translation>
