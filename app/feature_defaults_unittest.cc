@@ -283,6 +283,8 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &optimization_guide::features::kOptimizationGuideModelExecution,
       &optimization_guide::features::kOptimizationHints,
       &passage_embeddings::kPassageEmbedder,
+      &password_manager::features::
+          kPasswordManagerOnDeviceEncryptionMetricsReporter,
       &permissions::features::kCpssUseTfliteSignatureRunner,
       &permissions::features::kPermissionsPromptSurvey,
       &permissions::features::kPermissionPredictionsV2,
