@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Report the installed version as its version code.
+
+      Brave feeds the latest version from Play, which only reports a version
+      code (see BraveUpdateStatusHelper), so both sides must use codes. The
+      "0.0.0." prefix is there because VersionNumber.fromString() only parses
+      four dot-separated numbers.
+    regex:
+      pattern: 'return ApkInfo.getPackageVersionName();'
+      replace: 'return "0.0.0." + ApkInfo.getPackageVersionCode();'

@@ -165,6 +165,7 @@ import org.chromium.chrome.browser.notifications.permissions.NotificationPermiss
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.ntp.BraveFreshNtpHelper;
 import org.chromium.chrome.browser.ntp.NewTabPageManager;
+import org.chromium.chrome.browser.omaha.BraveUpdateStatusHelper;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
 import org.chromium.chrome.browser.playlist.PlaylistHostActivity;
@@ -441,17 +442,19 @@ public abstract class BraveActivity extends ChromeActivity
 
         executeInitSafeBrowsing(0);
 
-        if (mAppUpdateManager == null) {
-            mAppUpdateManager = AppUpdateManagerFactory.create(BraveActivity.this);
+        if (!isUpstreamInAppUpdateFlowEnabled()) {
+            if (mAppUpdateManager == null) {
+                mAppUpdateManager = AppUpdateManagerFactory.create(BraveActivity.this);
+            }
+            mAppUpdateManager
+                    .getAppUpdateInfo()
+                    .addOnSuccessListener(
+                            appUpdateInfo -> {
+                                if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                                    completeUpdateSnackbar();
+                                }
+                            });
         }
-        mAppUpdateManager
-                .getAppUpdateInfo()
-                .addOnSuccessListener(
-                        appUpdateInfo -> {
-                            if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-                                completeUpdateSnackbar();
-                            }
-                        });
         // Executes Leo voice prompt if it was triggered from quick search app widget
         maybeExecuteLeoVoicePrompt();
 
@@ -1553,7 +1556,9 @@ public abstract class BraveActivity extends ChromeActivity
             BraveMultiWindowUtils.setCheckUpgradeEnableMultiWindows(true);
         }
 
-        if (System.currentTimeMillis()
+        if (isUpstreamInAppUpdateFlowEnabled()) {
+            checkAppUpdateForUpstreamFlow();
+        } else if (System.currentTimeMillis()
                 > ChromeSharedPreferences.getInstance()
                         .readLong(BravePreferenceKeys.BRAVE_IN_APP_UPDATE_TIMING, 0)) {
             checkAppUpdate();
@@ -1722,6 +1727,10 @@ public abstract class BraveActivity extends ChromeActivity
                         BravePreferenceKeys.BRAVE_IN_APP_UPDATE_TIMING, calendar.getTimeInMillis());
     }
 
+    private static boolean isUpstreamInAppUpdateFlowEnabled() {
+        return ChromeFeatureList.isEnabled(ChromeFeatureList.IN_APP_UPDATE_FLOW);
+    }
+
     private void completeUpdateSnackbar() {
         Snackbar snackbar =
                 Snackbar.make(
@@ -1776,6 +1785,35 @@ public abstract class BraveActivity extends ChromeActivity
                         }
                     }
                 });
+    }
+
+    // Flexible updates are handled by upstream's InAppUpdateController.
+    private void checkAppUpdateForUpstreamFlow() {
+        mAppUpdateManager = AppUpdateManagerFactory.create(BraveActivity.this);
+        mAppUpdateManager
+                .getAppUpdateInfo()
+                .addOnSuccessListener(
+                        appUpdateInfo -> {
+                            int availability = appUpdateInfo.updateAvailability();
+                            if (availability == UpdateAvailability.UPDATE_NOT_AVAILABLE) {
+                                BraveUpdateStatusHelper.clearLatestVersion();
+                                return;
+                            }
+                            if (availability != UpdateAvailability.UPDATE_AVAILABLE) return;
+
+                            BraveUpdateStatusHelper.setLatestVersionCode(
+                                    appUpdateInfo.availableVersionCode());
+                            if (appUpdateInfo.updatePriority() >= 4 /* high priority */
+                                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+                                    && System.currentTimeMillis()
+                                            > ChromeSharedPreferences.getInstance()
+                                                    .readLong(
+                                                            BravePreferenceKeys
+                                                                    .BRAVE_IN_APP_UPDATE_TIMING,
+                                                            0)) {
+                                startAppUpdateFlow(appUpdateInfo, AppUpdateType.IMMEDIATE);
+                            }
+                        });
     }
 
     private void startAppUpdateFlow(AppUpdateInfo appUpdateInfo, int appUpdateType) {

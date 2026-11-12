@@ -252,6 +252,20 @@ if (is_android) {
     ]
   }
 
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.omaha") {
+    sources = [
+      "src/org/chromium/chrome/browser/omaha/BraveUpdateStatusHelperTest.java",
+    ]
+
+    deps = [
+      "//base:base_java",
+      "//base:base_junit_test_support",
+      "//brave/browser/omaha/android:java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/omaha/android:java",
+    ]
+  }
+
   robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.suggestions") {
     sources = [ "src/org/chromium/chrome/browser/suggestions/BraveSuggestionsConfigTest.java" ]
