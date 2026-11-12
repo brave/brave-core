@@ -11,13 +11,14 @@
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/instant_service.h"
 #include "chrome/browser/search/instant_service_factory.h"
-#include "chrome/browser/ui/browser_command_controller.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
@@ -28,11 +29,7 @@
 
 BraveAppearanceHandler::BraveAppearanceHandler() = default;
 
-BraveAppearanceHandler::~BraveAppearanceHandler() {
-  if (command_updater_) {
-    command_updater_->RemoveCommandObserver(IDC_TOGGLE_VERTICAL_TABS, this);
-  }
-}
+BraveAppearanceHandler::~BraveAppearanceHandler() = default;
 
 // TODO(simonhong): Use separate handler for NTP settings.
 void BraveAppearanceHandler::RegisterMessages() {
@@ -64,40 +61,40 @@ void BraveAppearanceHandler::RegisterMessages() {
       base::BindRepeating(
           &BraveAppearanceHandler::GetIsVerticalTabsToggleEnabled,
           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "toggleVerticalTabs",
+      base::BindRepeating(&BraveAppearanceHandler::ToggleVerticalTabs,
+                          base::Unretained(this)));
 
-  if (auto* tab = tabs::TabInterface::MaybeGetFromContents(
-          web_ui()->GetWebContents())) {
-    auto* browser_window_interface = tab->GetBrowserWindowInterface();
-    command_updater_ =
-        chrome::BrowserCommandController::From(browser_window_interface);
-    command_updater_->AddCommandObserver(IDC_TOGGLE_VERTICAL_TABS, this);
+  auto* tab =
+      tabs::TabInterface::MaybeGetFromContents(web_ui()->GetWebContents());
+  if (!tab) {
+    return;
+  }
 
-    web_ui()->RegisterMessageCallback(
-        "getIsCompactModeToggleEnabled",
-        base::BindRepeating(
-            &BraveAppearanceHandler::GetIsCompactModeToggleEnabled,
-            base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getIsCompactModeToggleEnabled",
+      base::BindRepeating(
+          &BraveAppearanceHandler::GetIsCompactModeToggleEnabled,
+          base::Unretained(this)));
 
 #if BUILDFLAG(IS_MAC)
-    // Unretained() is safe: |fullscreen_subscription_| is a member, so it
-    // unsubscribes this callback on our destruction, before |this| dangles.
-    fullscreen_subscription_ =
-        ExclusiveAccessManager::From(browser_window_interface)
-            ->fullscreen_controller()
-            ->RegisterOnFullscreenStateChanged(base::BindRepeating(
-                &BraveAppearanceHandler::OnFullscreenStateChanged,
-                base::Unretained(this)));
+  // Unretained() is safe: |fullscreen_subscription_| is a member, so it
+  // unsubscribes this callback on our destruction, before |this| dangles.
+  fullscreen_subscription_ =
+      ExclusiveAccessManager::From(tab->GetBrowserWindowInterface())
+          ->fullscreen_controller()
+          ->RegisterOnFullscreenStateChanged(base::BindRepeating(
+              &BraveAppearanceHandler::OnFullscreenStateChanged,
+              base::Unretained(this)));
 #endif
-  }
 }
 
-void BraveAppearanceHandler::EnabledStateChangedForCommand(int id,
-                                                           bool enabled) {
-  DCHECK_EQ(id, IDC_TOGGLE_VERTICAL_TABS);
-  if (IsJavascriptAllowed()) {
-    FireWebUIListener("vertical-tabs-toggle-enabled-changed",
-                      base::Value(enabled));
-  }
+bool BraveAppearanceHandler::IsVerticalTabsToggleEnabled() {
+  auto* tab =
+      tabs::TabInterface::MaybeGetFromContents(web_ui()->GetWebContents());
+  return !tab || tabs::utils::IsVerticalTabToggleEnabled(
+                     tab->GetBrowserWindowInterface());
 }
 
 bool BraveAppearanceHandler::IsCompactModeToggleEnabled() {
@@ -130,6 +127,8 @@ bool BraveAppearanceHandler::IsCompactModeToggleEnabled() {
 
 void BraveAppearanceHandler::OnFullscreenStateChanged() {
   if (IsJavascriptAllowed()) {
+    FireWebUIListener("vertical-tabs-toggle-enabled-changed",
+                      base::Value(IsVerticalTabsToggleEnabled()));
     FireWebUIListener("compact-mode-toggle-enabled-changed",
                       base::Value(IsCompactModeToggleEnabled()));
   }
@@ -174,7 +173,15 @@ void BraveAppearanceHandler::GetIsVerticalTabsToggleEnabled(
     const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
-  const bool enabled = !command_updater_ || command_updater_->IsCommandEnabled(
-                                                IDC_TOGGLE_VERTICAL_TABS);
-  ResolveJavascriptCallback(args[0], base::Value(enabled));
+  ResolveJavascriptCallback(args[0],
+                            base::Value(IsVerticalTabsToggleEnabled()));
+}
+
+void BraveAppearanceHandler::ToggleVerticalTabs(const base::ListValue& args) {
+  CHECK(args.empty());
+  if (auto* tab = tabs::TabInterface::MaybeGetFromContents(
+          web_ui()->GetWebContents())) {
+    chrome::ExecuteCommand(tab->GetBrowserWindowInterface(),
+                           IDC_TOGGLE_VERTICAL_TABS);
+  }
 }

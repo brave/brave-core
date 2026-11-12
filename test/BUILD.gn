@@ -1117,8 +1117,10 @@ test("brave_browser_tests") {
     "//chrome/browser/profiles/keep_alive:test_support",
     "//chrome/browser/ui:incognito_allowed_url",
     "//chrome/browser/ui/views/translate",
+    "//chrome/common",
     "//chrome/test/base:chrome_test_utils",
     "//chrome/test/base:testing_browser_process",
+    "//chrome/test/base:web_ui_mocha_browser_test",
   ]
 
   if (enable_web_discovery) {
@@ -1324,8 +1326,11 @@ test("brave_browser_tests") {
       "//chrome/browser/ui:browser_tabstrip",
       "//chrome/browser/ui:browser_window_header",
       "//chrome/browser/ui/frame",
+      "//chrome/browser/ui/immersive:immersive_mode_controller",
       "//chrome/browser/ui/side_panel",
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
+      "//chrome/browser/ui/toasts",
+      "//chrome/browser/ui/toasts/api:toasts",
       "//chrome/browser/ui/webui/bookmarks",
     ]
   }

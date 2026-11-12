@@ -12,7 +12,9 @@ import {WebUiListenerMixin, WebUiListenerMixinInterface} from '/shared/settings/
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {OpenWindowProxyImpl} from 'chrome://resources/js/open_window_proxy.js';
 import {sendWithPromise} from 'chrome://resources/js/cr.js'
+import {assert} from 'chrome://resources/js/assert.js'
 
+import {SettingsToggleButtonElement} from '../controls/settings_toggle_button.js'
 import {loadTimeData} from '../i18n_setup.js'
 
 import {getTemplate} from './tabs.html.js'
@@ -161,6 +163,20 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
       'brave.tabs.scrollable_horizontal_tab_strip':
           'scrollableHorizontalTabStripPref_',
     })
+  }
+
+  // On macOS the tab strip can't be switched while the window is fullscreen,
+  // so run the toggle command instead of setting the pref. Like the tab
+  // context menu, it shows a toast and switches once fullscreen is exited.
+  private onVerticalTabsToggleChange_(e: Event) {
+    const toggle = e.target
+    assert(toggle instanceof SettingsToggleButtonElement)
+    if (this.verticalTabsToggleEnabled_) {
+      toggle.sendPrefChange()
+      return
+    }
+    chrome.send('toggleVerticalTabs')
+    toggle.resetToPrefValue()
   }
 
   private isSharedPinnedTabsEnabled_() {
