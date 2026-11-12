@@ -84,7 +84,7 @@ TEST_F(BraveVPNMenuModelUnitTest, TrayIconEnabled) {
   {
     auto tray_index =
         menu_model.GetIndexOfCommandId(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON);
-    EXPECT_TRUE(tray_index);
+    ASSERT_TRUE(tray_index.has_value());
     EXPECT_EQ(
         menu_model.GetLabelAt(tray_index.value()),
         l10n_util::GetStringUTF16(IDS_BRAVE_VPN_SHOW_VPN_TRAY_ICON_MENU_ITEM));
@@ -119,7 +119,7 @@ TEST_F(BraveVPNMenuModelUnitTest, ToolbarVPNButton) {
   {
     auto toolbar_index =
         menu_model.GetIndexOfCommandId(IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON);
-    EXPECT_TRUE(toolbar_index);
+    ASSERT_TRUE(toolbar_index.has_value());
     EXPECT_EQ(
         menu_model.GetLabelAt(toolbar_index.value()),
         l10n_util::GetStringUTF16(IDS_BRAVE_VPN_SHOW_VPN_BUTTON_MENU_ITEM));
