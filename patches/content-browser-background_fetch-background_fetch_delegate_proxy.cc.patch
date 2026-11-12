@@ -1,5 +1,5 @@
 diff --git a/content/browser/background_fetch/background_fetch_delegate_proxy.cc b/content/browser/background_fetch/background_fetch_delegate_proxy.cc
-index 2495a91429fa25089d0c1ffb3c1bbea2db51760a..6214a39203f8c011b04050533404e1eddb5b1546 100644
+index 2495a91429fa25089d0c1ffb3c1bbea2db51760a..684c0e8eccba7411318010dec5adfc5c1c058baf 100644
 --- a/content/browser/background_fetch/background_fetch_delegate_proxy.cc
 +++ b/content/browser/background_fetch/background_fetch_delegate_proxy.cc
 @@ -61,6 +61,11 @@ void BackgroundFetchDelegateProxy::GetPermissionForOrigin(
@@ -7,7 +7,7 @@ index 2495a91429fa25089d0c1ffb3c1bbea2db51760a..6214a39203f8c011b04050533404e1ed
      RenderFrameHostImpl* rfh,
      GetPermissionForOriginCallback callback) {
 +  if (auto* browser_context = GetBrowserContext();
-+      browser_context && browser_context->IsOffTheRecord()) {
++      browser_context && browser_context->IsTor()) {
 +    std::move(callback).Run(BackgroundFetchPermission::BLOCKED);
 +    return;
 +  }
