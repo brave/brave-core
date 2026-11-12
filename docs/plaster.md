@@ -148,6 +148,8 @@ introduce more rewriters. These are the ones we have supported for now.
 | `add_to_protected`                        | `cxx`     | AST   | Adds a member to a class `protected:` section.        |
 | `add_to_public`                           | `cxx`     | AST   | Appends a member to a class `public:` section.        |
 | `add_enum_entries`                        | `cxx`     | AST   | Appends entries to the end of a C++ enum.             |
+| `add_include`                             | `cxx`     | AST   | Adds `#include`(s), sorted as clang-format would.     |
+| `add_after_includes`                      | `cxx`     | AST   | Inserts code after the includes, e.g. forward decls.  |
 | `set_feature_flag_default_state`          | `cxx`     | macro | Sets a `BASE_FEATURE`'s default state.                |
 | `insert_into_list`                        | `gn`      | gn    | Inserts value(s) into a target's list attribute.      |
 | `set_attribute`                           | `gn`      | gn    | Sets a target's attribute, creating it if absent.     |

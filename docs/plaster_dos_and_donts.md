@@ -305,7 +305,11 @@ Do:
 #include "brave/bar/bar.h"
 
 namespace {
-constexpr int kFooMax = 42;
+
+bool IsBraveFoo(const Foo& foo) {
+  return bar::IsBraveUrl(foo.url());
+}
+
 }  // namespace
 
 #include <foo/foo.cc>
@@ -316,15 +320,37 @@ Don't:
 ```yaml
 # rewrite/foo/foo.cc.yaml
 substitutions:
-  - description: 'Add bar header'
-    regex:
-      re_pattern: '(#include "foo/foo.h"\n)'
-      replace: '\1#include "brave/bar/bar.h"\n'
+  - description: Add the Brave check for Foo.
+    add_after_includes:
+      code: |-
+        namespace {
 
-  - description: 'Add kFooMax constant'
-    regex:
-      re_pattern: '(constexpr int kBaz = 1;\n)'
-      replace: '\1constexpr int kFooMax = 42;\n'
+        bool IsBraveFoo(const Foo& foo) {
+          return bar::IsBraveUrl(foo.url());
+        }
+
+        }  // namespace
+```
+
+The exception is a header inclusion or a forward declaration that only the
+plaster's own code in the upstream file needs. A `chromium_src` shadow file
+would have no use for it, and would exist merely to carry it. Add it with
+`add_include` or `add_after_includes` instead, which place it where it belongs
+without anchoring on neighbouring lines.
+
+Do:
+
+```yaml
+# rewrite/foo/foo.h.yaml
+substitutions:
+  - description: Forward declare the Brave delegate the hook below takes.
+    add_after_includes:
+      code: class BraveFooDelegate;
+
+  - description: Let the Brave delegate observe Foo.
+    add_to_public:
+      class_name: Foo
+      code: void SetBraveDelegate(BraveFooDelegate* delegate);
 ```
 
 ## Use `chromium_src` to host substantive C++
