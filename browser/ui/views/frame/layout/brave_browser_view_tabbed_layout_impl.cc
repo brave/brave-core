@@ -355,8 +355,15 @@ void BraveBrowserViewTabbedLayoutImpl::AdjustInfobarLayout(
 
   if (delegate().ShouldUseBraveWebViewRoundedCornersForContents()) {
     // Float the infobar as its own card, the same margin on every side as
-    // the contents view uses.
-    infobar_layout->bounds.Inset(kRoundedCornersContentsViewMargin);
+    // the contents view uses. The specific left distance should be used, when
+    // vertical tabs mode is enabled and tabs are on the left side.
+    const auto bottom = (delegate().ShouldShowVerticalTabs() &&
+                         !delegate().IsVerticalTabOnRight())
+                            ? 0
+                            : kRoundedCornersContentsViewMargin;
+    infobar_layout->bounds.Inset(gfx::Insets::TLBR(
+        kRoundedCornersContentsViewMargin, bottom,
+        kRoundedCornersContentsViewMargin, kRoundedCornersContentsViewMargin));
   }
 }
 
@@ -366,43 +373,9 @@ BraveBrowserViewTabbedLayoutImpl::CalculateInfobarCornerRadii() const {
     return {};
   }
 
-  auto* layout_provider = views::LayoutProvider::Get();
-  const float window_corner_radius = layout_provider->GetCornerRadiusMetric(
-      ExtendedShapeContextTokens::kRoundedCornersBorderRadiusAtWindowCorner);
-  const float border_corner_radius = layout_provider->GetCornerRadiusMetric(
-      ExtendedShapeContextTokens::kRoundedCornersBorderRadius);
-
-  bool has_left_ui = false;
-  bool has_right_ui = false;
-
-  if (IsVerticalTabStripAtContentsEdge()) {
-    if (delegate().IsVerticalTabOnRight()) {
-      has_right_ui = true;
-    } else {
-      has_left_ui = true;
-    }
-  }
-
-  if (IsSidebarAtContentsEdge()) {
-    bool on_left = false;
-    if (views().sidebar_container) {
-      on_left = views().sidebar_container->sidebar_on_left();
-    } else if (views().side_panel) {
-      on_left = !views().side_panel->IsRightAligned();
-    }
-    if (on_left) {
-      has_left_ui = true;
-    } else {
-      has_right_ui = true;
-    }
-  }
-
-  gfx::RoundedCornersF corner_radii(border_corner_radius);
-  corner_radii.set_upper_left(has_left_ui ? border_corner_radius
-                                          : window_corner_radius);
-  corner_radii.set_upper_right(has_right_ui ? border_corner_radius
-                                            : window_corner_radius);
-  return corner_radii;
+  return gfx::RoundedCornersF(
+      views::LayoutProvider::Get()->GetCornerRadiusMetric(
+          ExtendedShapeContextTokens::kRoundedCornersBorderRadius));
 }
 
 gfx::Rect BraveBrowserViewTabbedLayoutImpl::CalculateTopContainerLayout(
