@@ -1,6 +1,9 @@
 include_rules = [
+  "+brave/components/brave_shields/core/browser/brave_shields_settings_service.h",
   "+components/user_prefs",
   "+content/public/browser",
+  "+services/network/public/cpp",
+  "+third_party/blink/public/common",
 ]
 
 specific_include_rules = {

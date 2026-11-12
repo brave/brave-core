@@ -90,7 +90,7 @@
 #include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
-#include "brave/components/query_filter/content/query_filter_navigation_throttle.h"
+#include "brave/components/query_filter/content/query_filter_throttle.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/common/skus_internals.mojom.h"
@@ -1222,6 +1222,18 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       request, browser_context, wc_getter, navigation_ui_data,
       frame_tree_node_id, navigation_id);
 
+  // Intercept navigations only. Subresource query filtering stays in
+  // brave_site_hacks_network_delegate_helper.
+  if (navigation_id.has_value()) {
+    if (auto query_filter_throttle =
+            query_filter::QueryFilterThrottle::MaybeCreateThrottle(
+                browser_context,
+                BraveShieldsSettingsServiceFactory::GetForProfile(
+                    Profile::FromBrowserContext(browser_context)))) {
+      result.push_back(std::move(query_filter_throttle));
+    }
+  }
+
 #if BUILDFLAG(ENABLE_LOCAL_AI)
   // Not in the `contents` check: worker scripts load with no WebContents.
   if (auto throttle = local_ai::NoNetworkConnectionAllowlistThrottle::
@@ -1702,12 +1714,6 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
 #endif
 
   brave_search::BackupResultsNavigationThrottle::MaybeCreateAndAdd(registry);
-
-  auto* shields_settings_service =
-      BraveShieldsSettingsServiceFactory::GetForProfile(
-          Profile::FromBrowserContext(context));
-  query_filter::QueryFilterNavigationThrottle::MaybeCreateAndAdd(
-      registry, shields_settings_service);
 }
 
 // Updates the global privacy control web preference and returns true if it is
