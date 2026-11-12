@@ -69,7 +69,8 @@ class LargeFaviconView: UIView {
   func loadFavicon(
     siteURL: URL,
     isPrivateBrowsing: Bool,
-    monogramFallbackCharacter: Character? = nil
+    monogramFallbackCharacter: Character? = nil,
+    allowsNetworkRequests: Bool = true
   ) {
     faviconTask?.cancel()
     faviconTask = Task { @MainActor in
@@ -90,6 +91,10 @@ class LargeFaviconView: UIView {
         return
       }
 
+      guard allowsNetworkRequests else {
+        self.imageView.image = Favicon.defaultImage
+        return
+      }
       let isPersistent = !isPrivateBrowsing
       do {
         let favicon = try await FaviconFetcher.loadIcon(

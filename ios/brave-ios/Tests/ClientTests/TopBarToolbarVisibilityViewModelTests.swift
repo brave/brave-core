@@ -3,11 +3,37 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import UIKit
 import XCTest
 
 @testable import Brave
 
 @MainActor class TopBarToolbarVisibilityViewModelTests: XCTestCase {
+
+  func testStatusBarTapExpandsAndAllowsScrollOnFirstTap() {
+    let viewModel = ToolbarVisibilityViewModel(estimatedTransitionDistance: 32)
+    let scrollView = UIScrollView()
+    viewModel.beginObservingScrollView(scrollView)
+    viewModel.toolbarState = .collapsed
+
+    XCTAssertEqual(scrollView.delegate?.scrollViewShouldScrollToTop?(scrollView), true)
+    XCTAssertEqual(viewModel.toolbarState, .expanded)
+    viewModel.endScrollViewObservation(scrollView)
+  }
+
+  func testOnlyObservedPageParticipatesInStatusBarScrolling() {
+    let viewModel = ToolbarVisibilityViewModel(estimatedTransitionDistance: 32)
+    let previous = UIScrollView()
+    let selected = UIScrollView()
+    selected.scrollsToTop = false
+    viewModel.beginObservingScrollView(previous)
+    viewModel.endScrollViewObservation(previous)
+    viewModel.beginObservingScrollView(selected)
+
+    XCTAssertFalse(previous.scrollsToTop)
+    XCTAssertTrue(selected.scrollsToTop)
+    viewModel.endScrollViewObservation(selected)
+  }
 
   func testDefaultState() {
     let viewModel = ToolbarVisibilityViewModel(estimatedTransitionDistance: 32)
@@ -15,6 +41,36 @@ import XCTest
     XCTAssertNil(viewModel.interactiveTransitionProgress)
     XCTAssertEqual(viewModel.transitionDistance, 32)
     XCTAssertTrue(viewModel.isEnabled)
+  }
+
+  func testReplacingScrollViewDetachesOldAndIgnoresItsLateDeletion() {
+    let viewModel = ToolbarVisibilityViewModel(estimatedTransitionDistance: 32)
+    let old = UIScrollView()
+    let replacement = UIScrollView()
+    viewModel.beginObservingScrollView(old)
+    viewModel.beginObservingScrollView(replacement)
+    let delegate = replacement.delegate
+    viewModel.endScrollViewObservation(old)
+
+    XCTAssertFalse(old.scrollsToTop)
+    XCTAssertNil(old.delegate)
+    XCTAssertTrue(replacement.scrollsToTop)
+    XCTAssertTrue(replacement.delegate === delegate)
+    viewModel.toolbarState = .collapsed
+    XCTAssertEqual(replacement.delegate?.scrollViewShouldScrollToTop?(replacement), true)
+    XCTAssertEqual(viewModel.toolbarState, .expanded)
+    viewModel.endScrollViewObservation(replacement)
+  }
+
+  func testDeletingUnobservedBackgroundViewKeepsSelectedViewAttached() {
+    let viewModel = ToolbarVisibilityViewModel(estimatedTransitionDistance: 32)
+    let selected = UIScrollView()
+    let background = UIScrollView()
+    viewModel.beginObservingScrollView(selected)
+    viewModel.endScrollViewObservation(background)
+    XCTAssertTrue(selected.scrollsToTop)
+    XCTAssertNotNil(selected.delegate)
+    viewModel.endScrollViewObservation(selected)
   }
 
   func testDisablingActions() {

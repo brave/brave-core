@@ -41,8 +41,28 @@ enum BlockingStrength: String {
   static let allOptions: [BlockingStrength] = [.basic, .strict]
 }
 
+extension TabDataValues {
+  private struct TorContentBlockerKey: TabDataKey {
+    static var defaultValue: ContentBlockerHelper?
+  }
+
+  var torContentBlocker: ContentBlockerHelper? {
+    get { self[TorContentBlockerKey.self] }
+    set { self[TorContentBlockerKey.self] = newValue }
+  }
+}
+
+extension TabState {
+  var contentBlocker: ContentBlockerHelper? {
+    isTor ? data.torContentBlocker : data.browserData?.contentBlocker
+  }
+}
+
 class ContentBlockerHelper: ObservableObject {
   private(set) weak var tab: (any TabState)?
+
+  var adBlockService: AdblockService?
+  private weak var ruleListController: WKUserContentController?
 
   /// The rule lists that are loaded into the current tab
   private var setRuleLists: Set<WKContentRuleList> = []
@@ -60,6 +80,11 @@ class ContentBlockerHelper: ObservableObject {
   }
 
   @MainActor func set(ruleLists: Set<WKContentRuleList>) {
+    guard let controller = tab?.configuration?.userContentController else { return }
+    if ruleListController !== controller {
+      ruleListController = controller
+      setRuleLists.removeAll()
+    }
     guard ruleLists != setRuleLists else { return }
     var addedIds: [String] = []
     var removedIds: [String] = []
@@ -67,14 +92,14 @@ class ContentBlockerHelper: ObservableObject {
     // Remove unwanted rule lists
     for ruleList in setRuleLists.subtracting(ruleLists) {
       // It's added but we don't want it. So we remove it.
-      tab?.configuration?.userContentController.remove(ruleList)
+      controller.remove(ruleList)
       setRuleLists.remove(ruleList)
       removedIds.append(ruleList.identifier)
     }
 
     // Add missing rule lists
     for ruleList in ruleLists.subtracting(setRuleLists) {
-      tab?.configuration?.userContentController.add(ruleList)
+      controller.add(ruleList)
       setRuleLists.insert(ruleList)
       addedIds.append(ruleList.identifier)
     }

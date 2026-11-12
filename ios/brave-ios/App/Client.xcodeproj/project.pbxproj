@@ -1073,6 +1073,7 @@
 				F84B22531A0920C600AAB793 /* Embed App Extensions */,
 				2F93A98729C8EB3300C7C158 /* Embed Frameworks */,
 				274497892B8E8BD5001F0B9B /* Lint */,
+				7A0F00000000000000000001 /* Remove static Tor bundle */,
 			);
 			buildRules = (
 			);
@@ -1331,6 +1332,19 @@
 			shellScript = "sh \"${PROJECT_DIR}/../scripts/swift-format-lint.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		7A0F00000000000000000001 /* Remove static Tor bundle */ = {
+            isa = PBXShellScriptBuildPhase;
+            alwaysOutOfDate = 1;
+            buildActionMask = 2147483647;
+            files = ();
+            inputPaths = ("$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)", "$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)", "$(PROJECT_DIR)/../scripts/strip_static_tor_bundle.py");
+            name = "Remove static Tor bundle";
+            outputPaths = ();
+            runOnlyForDeploymentPostprocessing = 0;
+            shellPath = /bin/sh;
+            shellScript = "python3 \"${PROJECT_DIR}/../scripts/strip_static_tor_bundle.py\" \"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\n";
+            showEnvVarsInLog = 0;
+        };
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */

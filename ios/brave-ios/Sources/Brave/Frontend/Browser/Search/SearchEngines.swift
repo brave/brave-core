@@ -26,11 +26,17 @@ enum SearchEngineError: Error {
 enum DefaultEngineType: String {
   case standard = "search.default.name"
   case privateMode = "search.defaultprivate.name"
+  case tor = "search.defaulttor.name"
+
+  init(isPrivate: Bool, isTor: Bool) {
+    self = isTor ? .tor : (isPrivate ? .privateMode : .standard)
+  }
 
   var option: Preferences.Option<String?> {
     switch self {
     case .standard: return Preferences.Search.defaultEngineName
     case .privateMode: return Preferences.Search.defaultPrivateEngineName
+    case .tor: return Preferences.Search.defaultTorEngineName
     }
   }
 }
@@ -153,6 +159,11 @@ public class SearchEngines {
     let defaultEngine = orderedEngines.first(where: {
       $0.engineID?.caseInsensitiveCompare(defaultEngineName) == .orderedSame
     })
+    if engineType == .tor {
+      return defaultEngine ?? orderedEngines.first {
+        $0.engineID == InitialSearchEngines.SearchEngineID.braveSearch.rawValue
+      } ?? orderedEngines.first
+    }
     return defaultEngine ?? orderedEngines.first
   }
 
@@ -188,7 +199,7 @@ public class SearchEngines {
     type.option.value = engine
     if type == .standard {
       Preferences.Search.userPickedDSEName.value = engine
-    } else {
+    } else if type == .privateMode {
       Preferences.Search.userPickedPrivateDSEName.value = engine
     }
 
@@ -465,6 +476,7 @@ public class SearchEngines {
   fileprivate func getOrderedEngines() async -> [OpenSearchEngine] {
     let selectedSearchEngines = [
       Preferences.Search.defaultEngineName, Preferences.Search.defaultPrivateEngineName,
+      Preferences.Search.defaultTorEngineName,
     ].compactMap { $0.value }
     let unorderedEngines =
       await SearchEngines.getUnorderedBundledEngines(

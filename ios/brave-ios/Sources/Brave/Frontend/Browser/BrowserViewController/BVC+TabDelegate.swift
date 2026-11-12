@@ -4,10 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveTor
 import BraveShared
 import Data
 import DesignSystem
 import Foundation
+import LinkPresentation
 import Preferences
 import Shared
 import Strings
@@ -31,6 +33,12 @@ extension BrowserViewController: TabDelegate {
     _ tab: some TabState,
     contextMenuConfigurationForLinkURL linkURL: URL?
   ) async -> UIContextMenuConfiguration? {
+    if let tor = tab as? TorTabState {
+      guard let url = linkURL, TorDestination.isAllowed(url) else {
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: nil)
+      }
+      return torLinkContextMenu(for: tor, url: url)
+    }
     // Only show context menu for valid links such as `http`, `https`, `data`. Safari does not show it for anything else.
     // This is because you cannot open `javascript:something` URLs in a new page, or share it, or anything else.
     guard let url = linkURL, url.isWebPage() else {
@@ -457,7 +465,7 @@ extension BrowserViewController: TabDelegate {
 extension BrowserViewController {
   private func didSelectSearchWithBrave(_ selectedText: String, tab: some TabState) {
     let engine = profile.searchEngines.defaultEngine(
-      forType: tab.isPrivate ? .privateMode : .standard
+      forType: .init(isPrivate: tab.isPrivate, isTor: tab.isTor)
     )
 
     guard let url = engine?.searchURLForQuery(selectedText) else {
@@ -731,5 +739,113 @@ extension BrowserViewController {
   public func tab(_ tab: some TabState, defaultUserAgentTypeForURL url: URL) -> UserAgentType {
     return profileController.defaultHostContentSettings.defaultPageMode == .desktop
       ? .desktop : .mobile
+  }
+}
+
+extension BrowserViewController {
+  @MainActor
+  private func torLinkContextMenu(for tab: TorTabState, url: URL) -> UIContextMenuConfiguration {
+    let previewProvider: UIContextMenuContentPreviewProvider = { [weak self, weak tab] in
+      guard let self, let tab, self.tabManager.allTabs.contains(where: { $0 === tab }) else {
+        return nil
+      }
+      return tab.makeLinkPreview(for: url)
+    }
+    // Always supply a provider, including when previews are disabled.
+    let noPreview: UIContextMenuContentPreviewProvider = { nil }
+    let preview = Preferences.General.enableLinkPreview.value ? previewProvider : noPreview
+    return UIContextMenuConfiguration(identifier: nil, previewProvider: preview) { [weak self, weak tab] _ in
+      guard let self, let tab, self.tabManager.allTabs.contains(where: { $0 === tab }) else {
+        return nil
+      }
+      let open = UIAction(
+        title: Strings.Tor.openLinkInNewTab,
+        image: UIImage(braveSystemNamed: "leo.product.private-window")
+      ) { [weak self, weak tab] _ in
+        guard let self, let tab, self.tabManager.allTabs.contains(where: { $0 === tab }) else { return }
+        let newTab = self.tabManager.addTorTab(URLRequest(url: url), afterTab: tab)
+        let toast = ButtonToast(
+          labelText: Strings.contextMenuButtonToastNewTabOpenedLabelText,
+          buttonText: Strings.contextMenuButtonToastNewTabOpenedButtonText,
+          completion: { [weak self, weak newTab] pressed in
+            guard pressed, let self, let newTab,
+              self.tabManager.allTabs.contains(where: { $0 === newTab }) else { return }
+            self.tabManager.selectTab(newTab)
+          }
+        )
+        self.show(toast: toast)
+      }
+      open.accessibilityLabel = "linkContextMenu.openInNewTorTab"
+      let copy = UIAction(
+        title: Strings.copyLinkActionTitle, image: UIImage(braveSystemNamed: "leo.copy")
+      ) { _ in UIPasteboard.general.url = url }
+      copy.accessibilityLabel = "linkContextMenu.copyLink"
+      let copyClean = UIAction(
+        title: Strings.copyCleanLink, image: UIImage(braveSystemNamed: "leo.copy.clean")
+      ) { _ in
+        let service = URLSanitizerServiceFactory.get(privateMode: true)
+        UIPasteboard.general.url = service?.sanitize(url: url) ?? url
+      }
+      copyClean.accessibilityLabel = "linkContextMenu.copyCleanLink"
+      let share = UIAction(
+        title: Strings.shareLinkActionTitle, image: UIImage(braveSystemNamed: "leo.share.macos")
+      ) { [weak self, weak tab] _ in
+        guard let self, let tab, self.tabManager.allTabs.contains(where: { $0 === tab }) else { return }
+        // Share text with supplied metadata so the sheet has no URL preview to fetch.
+        let controller = UIActivityViewController(
+          activityItems: [TorLinkShareItem(url: url)], applicationActivities: nil
+        )
+        controller.popoverPresentationController?.sourceView = tab.view
+        controller.popoverPresentationController?.sourceRect = CGRect(
+          x: tab.view.bounds.midX, y: tab.view.bounds.midY, width: 1, height: 1
+        )
+        self.present(controller, animated: true)
+      }
+      share.accessibilityLabel = "linkContextMenu.share"
+      let showPreview = Preferences.General.enableLinkPreview.value
+      let toggle = UIAction(
+        title: showPreview ? Strings.hideLinkPreviewsActionTitle : Strings.showLinkPreviewsActionTitle,
+        image: UIImage(braveSystemNamed: showPreview ? "leo.eye.off" : "leo.eye.on")
+      ) { _ in Preferences.General.enableLinkPreview.value.toggle() }
+      let formattedURL = URLFormatter.formatURL(
+        url.absoluteString,
+        formatTypes: [.omitDefaults, .omitTrivialSubdomains],
+        unescapeOptions: .normal
+      )
+      let download = UIAction(title: Strings.download, image: UIImage(braveSystemNamed: "leo.folder.download")) {
+        [weak self, weak tab] _ in
+        guard let self, let tab, self.tabManager.allTabs.contains(where: { $0 === tab }) else { return }
+        tab.downloadLink(url)
+      }
+      download.accessibilityLabel = "linkContextMenu.downloadInTor"
+      return UIMenu(title: formattedURL, children: [open, download, copy, copyClean, share, toggle])
+    }
+  }
+}
+
+@MainActor
+private final class TorLinkShareItem: NSObject, UIActivityItemSource {
+  private let text: String
+
+  init(url: URL) {
+    text = url.absoluteString
+    super.init()
+  }
+
+  func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+    text
+  }
+
+  func activityViewController(
+    _ activityViewController: UIActivityViewController,
+    itemForActivityType activityType: UIActivity.ActivityType?
+  ) -> Any? {
+    text
+  }
+
+  func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
+    let metadata = LPLinkMetadata()
+    metadata.title = text
+    return metadata
   }
 }

@@ -43,7 +43,7 @@ extension BrowserViewController: TabDownloadDelegate {
     ]
 
     // SFSafariViewController only supports http/https links
-    if let url = download.originalURL,
+    if !tab.isTor, let url = download.originalURL,
       url.isWebPage(includeDataURIs: false),
       tab === tabManager.selectedTab,
       let mimeType = UTType(mimeType: download.mimeType),
@@ -77,7 +77,7 @@ extension BrowserViewController: TabDownloadDelegate {
 
     Task {
       let suggestedFilename = download.filename
-      if ![MIMEType.passbook, MIMEType.passbookBundle].contains(download.mimeType)
+      if tab.isTor || ![MIMEType.passbook, MIMEType.passbookBundle].contains(download.mimeType)
         && !MIMEType.isVCard(download.mimeType)
       {
         let shouldDownload = await downloadAlert(
@@ -86,12 +86,16 @@ extension BrowserViewController: TabDownloadDelegate {
           suggestedFileName: suggestedFilename
         )
         if !shouldDownload {
+          download.cancel()
           return
         }
       }
 
+      guard !download.isComplete else { return }
       let temporaryDir = NSTemporaryDirectory()
-      let fileName = temporaryDir + "/" + suggestedFilename
+      // Tor transfers must not overwrite another download or an existing temporary file.
+      let temporaryName = tab.isTor ? UUID().uuidString : suggestedFilename
+      let fileName = temporaryDir + "/" + temporaryName
       let url = URL(fileURLWithPath: fileName)
 
       // WKDownload will fail with a -3000 error code if the file already exists at the given path
@@ -104,14 +108,14 @@ extension BrowserViewController: TabDownloadDelegate {
 
       download.startDownloadToLocalFileAtPath(url.path)
 
-      if #available(iOS 26.0, *) {
+      if !tab.isTor, #available(iOS 26.0, *) {
         downloadBackgroundTaskModel?.addDownload(download)
       }
     }
   }
 
   public func tab(_ tab: some TabState, didFinishDownload download: Download, error: (any Error)?) {
-    if #available(iOS 26.0, *) {
+    if !tab.isTor, #available(iOS 26.0, *) {
       downloadBackgroundTaskModel?.removeDownload(download)
     }
 
@@ -135,7 +139,7 @@ extension BrowserViewController: TabDownloadDelegate {
       return
     }
 
-    if [MIMEType.passbook, MIMEType.passbookBundle].contains(download.mimeType) {
+    if !tab.isTor, [MIMEType.passbook, MIMEType.passbookBundle].contains(download.mimeType) {
       downloadQueue.download(download, didFinishDownloadingTo: destinationURL)
       if let passbookHelper = OpenPassBookHelper(
         request: nil,
@@ -154,7 +158,7 @@ extension BrowserViewController: TabDownloadDelegate {
     }
 
     // Handle VCard files - display in contact modal instead of downloading to Files
-    if MIMEType.isVCard(download.mimeType) {
+    if !tab.isTor, MIMEType.isVCard(download.mimeType) {
       downloadQueue.download(download, didFinishDownloadingTo: destinationURL)
       Task {
         do {
@@ -222,6 +226,9 @@ extension BrowserViewController: TabDownloadDelegate {
     else {
       return false
     }
+
+    // A second Tor transfer must not leave a destination callback waiting behind another modal.
+    if tab.isTor, presentedViewController != nil { return false }
 
     // Only show the origin displayed on the download alert on 18.2+
     var host = ""

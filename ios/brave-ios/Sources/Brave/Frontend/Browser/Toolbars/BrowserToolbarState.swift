@@ -9,6 +9,7 @@ import Combine
 import Data
 import Foundation
 import Observation
+import Preferences
 import Shared
 import Web
 
@@ -25,9 +26,14 @@ import Web
 final class BrowserToolbarState {
   @ObservationIgnored private let tabManager: TabManager
   @ObservationIgnored private weak var observedTab: (any TabState)?
+  @ObservationIgnored private var torPreferenceObserver: AnyCancellable?
+  private(set) var torAvailable = Preferences.Privacy.torEnabled.value
 
   init(tabManager: TabManager) {
     self.tabManager = tabManager
+    torPreferenceObserver = Preferences.Privacy.torEnabled.$value
+      .receive(on: RunLoop.main)
+      .sink { [weak self] value in self?.torAvailable = value }
 
     tabManager.addDelegate(self)
     observeSelectedTab(tabManager.selectedTab, previous: nil)
@@ -57,6 +63,7 @@ final class BrowserToolbarState {
   /// This isn't actually used directly by toolbar UI, and instead `displayedURL` is exposed, but
   /// we still need a observation tracked version that the read-only var derives from
   private var visibleURL: URL?
+  private(set) var onionLocation: URL?
   /// The security state of the selected tab
   private(set) var secureContentState: SecureContentState = .unknown
   /// Whether or not the tab is loading
@@ -112,12 +119,12 @@ final class BrowserToolbarState {
 
   /// Whether or not the selected tab can be bookmarked
   var canBookmarkTab: Bool {
-    visibleURL?.isWebPage() == true
+    observedTab?.isTor != true && visibleURL?.isWebPage() == true
   }
 
   /// The number of open tabs in the current browsing mode that can be bookmarked
   var bookmarkableTabCount: Int {
-    tabManager.openedWebsitesCount
+    tabManager.privateBrowsingManager.isTorBrowsing ? 0 : tabManager.openedWebsitesCount
   }
 
   /// Whether or not the selected tab can be duplicated
@@ -133,7 +140,7 @@ final class BrowserToolbarState {
 
   /// Whether or not the selected tab's site data can be shredded
   var canShredSiteData: Bool {
-    FeatureList.kBraveShredFeature.enabled
+    observedTab?.isTor != true && FeatureList.kBraveShredFeature.enabled
       && visibleURL?.isShredAvailable == true
   }
 
@@ -148,6 +155,7 @@ final class BrowserToolbarState {
 
     guard let tab else {
       visibleURL = nil
+      onionLocation = nil
       secureContentState = .unknown
       isLoading = false
       loadingProgress = nil
@@ -183,6 +191,7 @@ final class BrowserToolbarState {
   }
 
   private func updateNavigationState(from tab: some TabState) {
+    onionLocation = tab.onionLocation
     visibleURL = tab.visibleURL
     secureContentState = tab.visibleSecureContentState
     let isForwardItemReaderMode =
@@ -231,6 +240,7 @@ extension BrowserToolbarState: TabManagerDelegate {
 
 extension BrowserToolbarState: TabObserver {
   func tabDidStartNavigation(_ tab: some TabState) {
+    updateNavigationState(from: tab)
     // Hide the reader mode button until the new page has been checked for readability, unless
     // navigating to a reader mode page
     if let url = tab.visibleURL, !url.isInternalURL(for: .readermode) {

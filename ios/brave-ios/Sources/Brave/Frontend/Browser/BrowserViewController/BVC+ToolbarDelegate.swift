@@ -9,6 +9,7 @@ import BraveNews
 import BraveShared
 import BraveShields
 import BraveStrings
+import BraveTor
 import BraveUI
 import BraveWallet
 import BraveWidgetsModels
@@ -102,6 +103,27 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
       }
     } else {
       tabManager.selectedTab?.reload()
+    }
+  }
+
+  func topToolbarDidPressOnionLocation(_ topToolbar: TopToolbarView) {
+    guard Preferences.Privacy.torEnabled.value else { return }
+    guard let tab = tabManager.selectedTab,
+      let url = tab.onionLocation
+    else { return }
+    let open = { [weak self, weak tab] in
+      guard let self, let tab, self.tabManager.selectedTab === tab,
+        tab.onionLocation == url, Preferences.Privacy.torEnabled.value
+      else { return }
+      let onionTab = self.tabManager.addTorTab(URLRequest(url: url), afterTab: tab)
+      self.tabManager.selectTab(onionTab)
+    }
+    if !tab.isPrivate, Preferences.Privacy.privateBrowsingLock.value {
+      askForLocalAuthentication { success, _ in
+        if success { open() }
+      }
+    } else {
+      open()
     }
   }
 
@@ -202,7 +224,8 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
   func topToolbarDisplayTextForURL(_ topToolbar: URL?) -> (String?, Bool) {
     // use the initial value for the URL so we can do proper pattern matching with search URLs
     let searchURL = self.tabManager.selectedTab?.currentInitialURL
-    if FeatureList.kUseChromiumSearchEngines.enabled {
+    // Tor keeps its independent engine preference in both search architectures.
+    if FeatureList.kUseChromiumSearchEngines.enabled && !privateBrowsingManager.isTorBrowsing {
       if let searchURL, let query = templateURLSearchTerms(from: searchURL) {
         return (query, true)
       }
@@ -210,7 +233,10 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
     }
     if let query = profile.searchEngines.queryForSearchURL(
       searchURL as URL?,
-      forType: privateBrowsingManager.isPrivateBrowsing ? .privateMode : .standard
+      forType: .init(
+        isPrivate: privateBrowsingManager.isPrivateBrowsing,
+        isTor: privateBrowsingManager.isTorBrowsing
+      )
     ) {
       return (query, true)
     } else {
@@ -219,10 +245,19 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
   }
 
   func topToolbarDidPressScrollToTop(_ topToolbar: TopToolbarView) {
-    if let selectedTab = tabManager.selectedTab, searchContainer == nil {
-      // Only scroll to top if we are not showing the home view controller
-      selectedTab.webViewProxy?.scrollView?.setContentOffset(CGPoint.zero, animated: true)
-    }
+    scrollSelectedTabToTop()
+  }
+
+  func scrollSelectedTabToTop() {
+    guard searchContainer == nil,
+      let scrollView = tabManager.selectedTab?.webViewProxy?.scrollView
+    else { return }
+    toolbarVisibilityViewModel.toolbarState = .expanded
+    view.layoutIfNeeded()
+    scrollView.setContentOffset(
+      CGPoint(x: scrollView.contentOffset.x, y: -scrollView.adjustedContentInset.top),
+      animated: true
+    )
   }
 
   func topToolbarDidRequestSearchInput(
@@ -291,8 +326,17 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
       return true
     }
 
+    if tabManager.selectedTab?.isTor == true, let onionURL = TorDestination.onionURL(from: text) {
+      finishEditingAndSubmit(onionURL, isUserDefinedURLNavigation: isUserDefinedURLNavigation)
+      return true
+    }
+
     guard let fixupURL = URIFixup.getURL(text) else {
       return false
+    }
+    if tabManager.selectedTab?.isTor == true {
+      finishEditingAndSubmit(fixupURL, isUserDefinedURLNavigation: isUserDefinedURLNavigation)
+      return true
     }
 
     // check text is decentralized DNS supported domain
@@ -729,6 +773,7 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
   }
 
   func topToolbarDidPressVoiceSearchButton(_ urlBar: TopToolbarView) {
+    guard tabManager.selectedTab?.isTor != true else { return }
     Task { @MainActor [self] in
       onPendingRequestUpdatedCancellable = speechRecognizer.$finalizedRecognition.sink {
         [weak self] finalizedRecognition in
@@ -937,6 +982,10 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
   }
 
   func presentMenu(from tabToolbar: ToolbarProtocol) {
+    if tabManager.selectedTab?.isTor == true {
+      presentTorMenu(from: tabToolbar.menuButton)
+      return
+    }
     /// The selected tab's url, or the extracted url from
     /// error page or reader mode page
     let selectedTabURL: URL? = {
@@ -1121,6 +1170,15 @@ extension BrowserViewController: ToolbarDelegate {
   }
 
   func tabToolbarDidPressShare() {
+    if let tab = tabManager.selectedTab, tab.isTor, let url = tab.visibleURL {
+      presentActivityViewController(
+        url, tab: tab,
+        source: .init(view: toolbar?.menuButton ?? topToolbar.menuButton,
+                      rect: (toolbar?.menuButton ?? topToolbar.menuButton).bounds,
+                      arrowDirection: [.up, .down])
+      )
+      return
+    }
     navigationHelper.openShareSheet()
   }
 

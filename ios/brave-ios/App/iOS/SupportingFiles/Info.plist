@@ -86,6 +86,7 @@
 	<string>This permission is used to enable Apple Advanced Speech Recognition. If not allowed `on device` recognition will be used and searches will be totally private. Brave does not store or share your voice searches.</string>
 	<key>NSUserActivityTypes</key>
 	<array>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER).NewPrivateTorTab</string>
 		<string>LockScreenFavoriteConfigurationIntent</string>
 		<string>LockScreenShortcutConfigurationIntent</string>
 		<string>OpenBookmarkWebsiteIntent</string>
