@@ -56,6 +56,8 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
   private var bookmarksFRC: BookmarksV2FetchResultsController?
   private let bookmarkManager: BookmarkManager
   private let bookmarkImporter: (any BookmarkImporter)?
+  private let bookmarkExporter: BraveBookmarksExporter
+
   /// Called when the bookmarks are updated via some user input (i.e. Delete, edit, etc.)
   private var bookmarksDidChange: (() -> Void)?
 
@@ -68,7 +70,6 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     return self.currentFolder == nil
   }
 
-  private let exportUtility = BookmarksExportUtility()
   private var documentInteractionController: UIDocumentInteractionController?
 
   private var searchBookmarksTimer: Timer?
@@ -85,11 +86,13 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     folder: Bookmarkv2?,
     bookmarkManager: BookmarkManager,
     bookmarkImporter: (any BookmarkImporter)?,
+    bookmarkExporter: BraveBookmarksExporter,
     isPrivateBrowsing: Bool
   ) {
     self.isPrivateBrowsing = isPrivateBrowsing
     self.bookmarkManager = bookmarkManager
     self.bookmarkImporter = bookmarkImporter
+    self.bookmarkExporter = bookmarkExporter
     super.init(nibName: nil, bundle: nil)
 
     self.currentFolder = folder
@@ -213,6 +216,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
           folder: self.currentFolder?.parent,
           bookmarkManager: self.bookmarkManager,
           bookmarkImporter: self.bookmarkImporter,
+          bookmarkExporter: self.bookmarkExporter,
           isPrivateBrowsing: self.isPrivateBrowsing
         )
         nextController.profile = self.profile
@@ -538,6 +542,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
           folder: bookmark,
           bookmarkManager: bookmarkManager,
           bookmarkImporter: bookmarkImporter,
+          bookmarkExporter: bookmarkExporter,
           isPrivateBrowsing: isPrivateBrowsing
         )
         nextController.profile = profile
@@ -977,7 +982,7 @@ extension BookmarksViewController {
   @MainActor
   func exportBookmarks(to url: URL) async {
     isLoading = true
-    let success = await self.exportUtility.exportBookmarks(to: url)
+    let success = await self.bookmarkExporter.export(to: url)
     isLoading = false
 
     if success {
@@ -1056,5 +1061,31 @@ extension BookmarksViewController: UISearchControllerDelegate {
 
     // Re-enable bottom var options when search is done
     navigationController?.setToolbarHidden(false, animated: true)
+  }
+}
+
+// MARK: -
+
+extension BraveBookmarksExporter {
+  public func export(to path: URL) async -> Bool {
+    return await withCheckedContinuation { continuation in
+      self.export(toFile: path.path) { state in
+        switch state {
+        case .started:
+          Logger.module.debug("Bookmarks Export - Export Started")
+        case .errorCreatingFile, .errorWritingHeader, .errorWritingNodes:
+          Logger.module.debug("Bookmarks Export - Export Error")
+          continuation.resume(returning: false)
+        case .cancelled:
+          Logger.module.debug("Bookmarks Export - Export Cancelled")
+          continuation.resume(returning: false)
+        case .completed:
+          Logger.module.debug("Bookmarks Export - Export Completed")
+          continuation.resume(returning: true)
+        @unknown default:
+          fatalError()
+        }
+      }
+    }
   }
 }
