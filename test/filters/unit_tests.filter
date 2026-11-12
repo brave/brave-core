@@ -17,6 +17,9 @@
 # Tests assume kPdfInfoBar is enabled; we disable it.
 -PdfInfoBarControllerTest.*
 
+# Test assumes kGeic is enabled by default; we disable it.
+-GeicEnablingTest.DefaultState
+
 # These tests won't work without TPM hardware
 -TPMMetricsProviderTest.GetMetricsFullName
 -TpmIdentifierTest.TpmTest
