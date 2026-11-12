@@ -15,7 +15,6 @@
 #include "brave/components/extension_malware_blocklist/browser/extension_malware_blocklist_component_installer.h"
 #include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/p3a/component_installer.h"
-#include "brave/components/p3a/p3a_service.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/query_filter/browser/query_filter_component_installer.h"
 #include "chrome/browser/browser_process.h"

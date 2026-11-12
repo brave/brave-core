@@ -17,8 +17,10 @@
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/core/browser/network/oblivious_http_feature.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_ads/core/public/history/site_history.h"
@@ -81,6 +83,10 @@
 class BraveAdsTest : public PlatformTest {
  public:
   BraveAdsTest() {
+    // `HttpClient` starts an OHTTP key config request on construction, which
+    // can race with the profile's network context teardown.
+    scoped_feature_list_.InitAndDisableFeature(
+        brave_ads::kAdsObliviousHttpFeature);
     CHECK(temp_dir_.CreateUniqueTempDir());
     profile_ =
         profile_manager_.AddProfileWithBuilder(TestProfileIOS::Builder());
@@ -100,6 +106,7 @@ class BraveAdsTest : public PlatformTest {
   }
 
  protected:
+  base::test::ScopedFeatureList scoped_feature_list_;
   web::WebTaskEnvironment task_environment_;
   IOSChromeScopedTestingLocalState scoped_testing_local_state_;
   TestProfileManagerIOS profile_manager_;

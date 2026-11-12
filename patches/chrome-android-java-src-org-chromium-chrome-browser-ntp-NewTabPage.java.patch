@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPage.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPage.java
-index ce184206971cad39d624ca5176c7f393c65a8bde..54613fcd68cf921f24fad818b1c4397c80410d51 100644
+index a08c5880ba6c2239406650444cc78de868940477..36225681fc4db80d7e656f4da4409df1d5a7af8d 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPage.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPage.java
 @@ -842,7 +842,7 @@ public class NewTabPage

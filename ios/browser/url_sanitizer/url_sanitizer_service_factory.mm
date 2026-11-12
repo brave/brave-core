@@ -5,7 +5,6 @@
 
 #include "brave/ios/browser/url_sanitizer/url_sanitizer_service_factory.h"
 
-#include "base/no_destructor.h"
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_component_installer.h"
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
 #include "brave/components/url_sanitizer/ios/browser/url_sanitizer_service_bridge_impl.h"
@@ -36,23 +35,16 @@ namespace brave {
 // static
 brave::URLSanitizerService* URLSanitizerServiceFactory::GetServiceForState(
     ProfileIOS* profile) {
-  return GetInstance()->GetServiceForProfileAs<brave::URLSanitizerService>(
-      profile, true);
+  return GetForProfile(profile);
 }
 
-// static
-URLSanitizerServiceFactory* URLSanitizerServiceFactory::GetInstance() {
-  static base::NoDestructor<URLSanitizerServiceFactory> instance;
-  return instance.get();
-}
-
-URLSanitizerServiceFactory::URLSanitizerServiceFactory()
-    : ProfileKeyedServiceFactoryIOS("URLSanitizerService",
-                                    ProfileSelection::kRedirectedInIncognito,
-                                    ServiceCreation::kCreateWithProfile,
-                                    TestingCreation::kNoServiceForTests) {}
-
-URLSanitizerServiceFactory::~URLSanitizerServiceFactory() = default;
+URLSanitizerServiceFactory::URLSanitizerServiceFactory(PassKey key)
+    : TypedProfileKeyedServiceFactoryIOS(
+          std::move(key),
+          "URLSanitizerService",
+          ProfileSelection::kRedirectedInIncognito,
+          ServiceCreation::kCreateWithProfile,
+          TestingCreation::kNoServiceForTests) {}
 
 std::unique_ptr<KeyedService>
 URLSanitizerServiceFactory::BuildServiceInstanceFor(ProfileIOS* profile) const {

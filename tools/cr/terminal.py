@@ -367,11 +367,14 @@ class Terminal:
             self.run_pnpm_command('init')
         """
         cmd = ['pnpm', 'run'] + list(cmd)
-        if self.infra_mode and len(cmd) == 3 and cmd[-1] == 'init':
-            # Checks out Chromium directly rather than through `gclient sync
-            # --revision`, which hangs in jenkins. For more details see:
+        if len(cmd) == 3 and cmd[-1] == 'init':
+            # Reset every project to its ref, and delete the dependencies DEPS
+            # no longer lists, so that a checkout left on another version
+            # can't leak into the one being synced. `--lean_sync` checks out
+            # Chromium directly rather than through `gclient sync --revision`,
+            # which hangs in jenkins. For more details see:
             # https://github.com/brave/brave-browser/issues/44921
-            cmd.append('--lean_sync')
+            cmd += ['--force', '-D', '--lean_sync']
         return self.run(cmd)
 
 

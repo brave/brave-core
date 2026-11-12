@@ -20,7 +20,6 @@ public struct BraveSyncDevice: Codable {
   let lastUpdatedTimestamp: TimeInterval
   let name: String?
   let os: String
-  let sendTabToSelfReceivingEnabled: Bool
   let type: String
 }
 

@@ -16,7 +16,7 @@ substitutions:
       match is meant to fail and be looked at again.
     add_before_line:
       line: 'ProfileManager::ShutdownSessionServices();'
-      code: '  sidebar::CloseAllWebPanels();'
+      code: '  sidebar::CloseAllWebPanelsForShutdown();'
   - description: |-
       Mark closing all browsers as started
 

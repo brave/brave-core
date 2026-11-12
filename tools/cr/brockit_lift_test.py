@@ -520,8 +520,9 @@ class LiftEnvironment:
 
     def upstream_source(self, source: str, repo: str = '') -> str:
         """The contents of a Chromium source at the synced commit."""
-        return self.git(
-            'show', f'HEAD:{source}', repo=self.repo.chromium / repo
+        # pylint: disable=protected-access
+        return self.repo._run_git_command(
+            ['show', f'HEAD:{source}'], self.repo.chromium / repo, strip=False
         )
 
     def resolve_conflict(
@@ -743,16 +744,20 @@ class LiftCleanRunTest(LiftTestCase):
         """The continuation file belongs at the brave root: `--continue` and
         `pnpm run update_patches` both look for it there, whatever directory
         brockit was invoked from."""
-        with self.env.upstream_release(MINOR_TARGET):
-            pass
-
-        self.env.run_lift(f'--to={MINOR_TARGET}')
-
         self.assertEqual(
             brockit.VERSION_UPGRADE_FILE.resolve(),
             (self.env.repo.brave / VERSION_UPGRADE_NAME).resolve(),
         )
-        self.assertTrue((self.env.repo.brave / VERSION_UPGRADE_NAME).exists())
+
+    def test_finished_lift_leaves_no_continuation_file(self):
+        """A leftover file reads as a lift in progress to
+        `update_patches`."""
+        with self.env.upstream_release(MINOR_TARGET):
+            pass
+
+        self.assert_succeeded(self.env.run_lift(f'--to={MINOR_TARGET}'))
+
+        self.assertFalse(self.env.has_continuation())
 
     def test_regenerated_files_land_in_their_own_commits(self):
         with self.env.upstream_release(MINOR_TARGET) as upstream:
@@ -851,13 +856,7 @@ class LiftCleanRunTest(LiftTestCase):
 
         self.env.run_lift(f'--to={MINOR_TARGET}')
 
-        # `.version_upgrade` aside, the branch is clean once a lift finishes.
-        status = [
-            line
-            for line in self.env.git('status', '--porcelain').splitlines()
-            if '.version_upgrade' not in line
-        ]
-        self.assertEqual(status, [])
+        self.assertEqual(self.env.git('status', '--porcelain'), '')
 
 
 class LiftOutputRenderingTest(LiftTestCase):
@@ -962,27 +961,21 @@ class LiftArgumentTest(LiftTestCase):
         self.assertIn(message, run.stderr)
         self.assert_commit_subjects([])
 
-    def test_from_ref_is_rejected_with_continue(self):
-        run = self.env.run_lift(
-            f'--to={MINOR_TARGET}', '--continue', '--from-ref=origin/master'
-        )
-        self._assert_usage_error(
-            run, 'Switch --from-ref not supported with --continue.'
-        )
-
-    def test_restart_is_rejected_with_continue(self):
-        run = self.env.run_lift(
-            f'--to={MINOR_TARGET}', '--restart', '--continue'
-        )
-        self._assert_usage_error(run, '--restart does not support --continue')
-
-    def test_ack_advisory_is_rejected_with_continue(self):
-        run = self.env.run_lift(
-            f'--to={MINOR_TARGET}', '--ack-advisory', '--continue'
-        )
-        self._assert_usage_error(
-            run, '--ack-advisory does not support --continue'
-        )
+    def test_switches_are_rejected_with_continue(self):
+        for switch in (
+            f'--to={MINOR_TARGET}',
+            '--from-ref=origin/master',
+            '--with-github',
+            '--restart',
+            '--ack-advisory',
+        ):
+            with self.subTest(switch=switch):
+                run = self.env.run_lift(switch, '--continue')
+                self._assert_usage_error(
+                    run,
+                    f'Switch {switch.split("=")[0]} not supported with '
+                    '--continue.',
+                )
 
     def test_to_is_required(self):
         run = self.env.run_lift()
@@ -1226,7 +1219,7 @@ class LiftConflictResolutionTest(LiftTestCase):
         self.env.run_lift(f'--to={MAJOR_TARGET}')
 
         self.env.resolve_conflict(FOO)
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+        run = self.env.run_lift('--continue')
 
         self.assert_succeeded(run)
         self.assert_commit_subjects(
@@ -1250,13 +1243,24 @@ class LiftConflictResolutionTest(LiftTestCase):
         # And the continuation file is gone once the lift is through.
         self.assertFalse(self.env.has_continuation())
 
+    def test_continue_keeps_with_github_from_the_first_run(self):
+        self._release_with_conflict()
+        self.env.run_lift(f'--to={MAJOR_TARGET}', '--with-github')
+        self.assertIsNone(self.env.gh.issue_create_cmd())
+
+        self.env.resolve_conflict(FOO)
+        run = self.env.run_lift('--continue')
+
+        self.assert_succeeded(run)
+        self.assertIsNotNone(self.env.gh.issue_create_cmd())
+
     def test_resolved_patches_apply_to_the_new_version(self):
         """The committed patches are the resolution, not the conflict: a fresh
         `init` reproduces the resolved tree from them."""
         self._release_with_conflict()
         self.env.run_lift(f'--to={MAJOR_TARGET}')
         self.env.resolve_conflict(FOO)
-        self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+        self.env.run_lift('--continue')
 
         self.env.repo.sync_chromium()
         self.assertEqual(self.env.repo.run_apply_patches(), [])
@@ -1271,7 +1275,7 @@ class LiftConflictResolutionTest(LiftTestCase):
         # A branch already on the target version, but with no lift in progress.
         self.env.repo.update_brave_version(MAJOR_TARGET)
 
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+        run = self.env.run_lift('--continue')
 
         self.assert_failed(
             run,
@@ -1280,7 +1284,13 @@ class LiftConflictResolutionTest(LiftTestCase):
         )
 
     def test_continue_on_a_branch_at_another_version_is_rejected(self):
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+        brockit.ContinuationFile(
+            target_version=brockit.Version(MAJOR_TARGET),
+            working_version=brockit.Version(BASE_VERSION),
+            base_version=brockit.Version(BASE_VERSION),
+        ).save()
+
+        run = self.env.run_lift('--continue')
 
         self.assert_failed(
             run,
@@ -1296,7 +1306,7 @@ class LiftConflictResolutionTest(LiftTestCase):
         # interrupted or reverted by hand.
         self.env.repo.sync_chromium(BASE_VERSION)
 
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+        run = self.env.run_lift('--continue')
 
         self.assert_failed(
             run,
@@ -1313,7 +1323,7 @@ class LiftConflictResolutionTest(LiftTestCase):
         self.env.resolve_conflict(FOO)
         self.env.commit_patch_changes('Update patches by hand')
 
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+        run = self.env.run_lift('--continue')
 
         self.assert_succeeded(run)
         self.assert_commit_subjects(
@@ -1331,7 +1341,7 @@ class LiftConflictResolutionTest(LiftTestCase):
         self.env.resolve_conflict(FOO)
         self.env.stage_file('some_file.txt', 'left staged by accident')
 
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+        run = self.env.run_lift('--continue')
 
         self.assert_failed(
             run,
@@ -1357,7 +1367,7 @@ class LiftConflictResolutionTest(LiftTestCase):
             self.env.repo.chromium,
         )
 
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+        run = self.env.run_lift('--continue')
 
         self.assert_failed(
             run,
@@ -1385,7 +1395,7 @@ class LiftConflictResolutionTest(LiftTestCase):
         )
 
         self.env.resolve_conflict(BAZ, V8)
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+        run = self.env.run_lift('--continue')
 
         self.assert_succeeded(run)
         self.assertEqual(
@@ -1468,7 +1478,7 @@ class LiftDeletedSourceTest(LiftTestCase):
         self._release_deleting_bar()
         self.env.run_lift(f'--to={MAJOR_TARGET}')
 
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+        run = self.env.run_lift('--continue')
 
         self.assert_failed(
             run,
@@ -1483,7 +1493,7 @@ class LiftDeletedSourceTest(LiftTestCase):
         # not needed anymore.
         self.env.commit_patch_changes(f'Remove patch for deleted {BAR}')
 
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+        run = self.env.run_lift('--continue')
 
         self.assert_succeeded(run)
         self.assert_commit_subjects(
@@ -1548,7 +1558,7 @@ class LiftRenamedSourceTest(LiftTestCase):
             self.env.repo.chromium,
         )
 
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+        run = self.env.run_lift('--continue')
 
         # The list is every untracked path rather than just the patch files,
         # which is why `.version_upgrade` shows up in it as well.
@@ -1571,7 +1581,7 @@ class LiftRenamedSourceTest(LiftTestCase):
         )
         self.env.commit_patch_changes(f'Follow the rename of {BAR}')
 
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+        run = self.env.run_lift('--continue')
 
         self.assert_succeeded(run)
         self.assertFalse((self.env.repo.brave / BAR_PATCH).exists())
@@ -1654,7 +1664,7 @@ class LiftFixupRoutingTest(LiftTestCase):
 
         self.env.run_lift(f'--to={MAJOR_FOLLOW_UP}')
         self.env.resolve_conflict(FOO, symbol=self.DEV_SYMBOL)
-        run = self.env.run_lift(f'--to={MAJOR_FOLLOW_UP}', '--continue')
+        run = self.env.run_lift('--continue')
 
         self.assert_succeeded(run)
         self.assertEqual(
@@ -1685,7 +1695,7 @@ class LiftFixupRoutingTest(LiftTestCase):
 
         self.env.run_lift(f'--to={MAJOR_FOLLOW_UP}')
         self.env.resolve_conflict(BAR)
-        run = self.env.run_lift(f'--to={MAJOR_FOLLOW_UP}', '--continue')
+        run = self.env.run_lift('--continue')
 
         self.assert_succeeded(run)
         self.assertEqual(
@@ -1790,7 +1800,7 @@ class LiftPlasterTest(LiftTestCase):
         )
 
         self.env.resolve_conflict(BAR)
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+        run = self.env.run_lift('--continue')
 
         self.assert_succeeded(run)
         self.assertEqual(
@@ -1830,7 +1840,7 @@ class LiftPlasterTest(LiftTestCase):
         )
         self.env.run_lift(f'--to={MAJOR_TARGET}')
 
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+        run = self.env.run_lift('--continue')
 
         self.assert_failed(
             run,
@@ -1849,7 +1859,7 @@ class LiftPlasterTest(LiftTestCase):
         self.env.run_lift(f'--to={MAJOR_TARGET}')
 
         (self.env.repo.brave / FOO_PLASTER).unlink()
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+        run = self.env.run_lift('--continue')
 
         self.assert_failed(
             run,
@@ -1866,7 +1876,7 @@ class LiftPlasterTest(LiftTestCase):
 
         # The user points the plaster at the renamed symbol and reapplies it.
         self.env.reapply_plaster_for_foo(self.FIXED_PLASTER_BODY)
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+        run = self.env.run_lift('--continue')
 
         self.assert_succeeded(run)
         self.assertIn(
@@ -1924,7 +1934,7 @@ class LiftPlasterTest(LiftTestCase):
         # patch (now one hunk) without committing it, exactly like
         # `test_continue_after_fixing_the_plaster_finishes`.
         self.env.reapply_plaster_for_foo(self.FIXED_TWO_HUNK_PLASTER_BODY)
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+        run = self.env.run_lift('--continue')
 
         self.assert_succeeded(run)
 
@@ -1996,7 +2006,7 @@ class LiftOrphanedPlasterTest(LiftTestCase):
         self._release_deleting_foo()
         self.env.run_lift(f'--to={MAJOR_TARGET}')
 
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+        run = self.env.run_lift('--continue')
 
         self.assert_failed(
             run,
@@ -2022,7 +2032,7 @@ class LiftOrphanedPlasterTest(LiftTestCase):
             f'Remove patch and plaster for deleted {FOO}'
         )
 
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+        run = self.env.run_lift('--continue')
 
         self.assert_succeeded(run)
         self.assertFalse((self.env.repo.brave / FOO_PATCH).exists())
@@ -2161,6 +2171,24 @@ class LiftGitHubTest(LiftTestCase):
             f'already created and up-to-date. {ISSUE_URL}',
         )
         self.assertIsNone(self.env.gh.issue_edit_cmd())
+
+    def test_with_github_issue_failure_still_runs_the_checks(self):
+        self.env.gh.issue_list_error = subprocess.CalledProcessError(
+            1, ['gh', 'issue', 'list'], stderr='HTTP 502'
+        )
+        self.env.terminal.fail(PLASTER)
+        with self.env.upstream_release(MAJOR_TARGET):
+            pass
+
+        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--with-github')
+
+        self.assert_succeeded(run)
+        self.assert_output_has(
+            run,
+            '* ❌ GitHub issue update. Run brockit update-version-issue to '
+            'retry it.',
+            '* ❌ Plaster check. Please investigate it.',
+        )
 
     def test_with_github_without_a_login_stops_before_any_work(self):
         self.env.gh.logged_in = False
@@ -2496,7 +2524,7 @@ class LiftRoughEdgesTest(LiftTestCase):
             )
         self.env.run_lift(f'--to={MAJOR_TARGET}')
 
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+        run = self.env.run_lift('--continue')
 
         self.assert_succeeded(run)
         self.assertIn(
@@ -2521,7 +2549,7 @@ class LiftRoughEdgesTest(LiftTestCase):
         self.env.terminal.fail(INIT, stderr='gclient blew up')
 
         with self.assertRaises(subprocess.CalledProcessError):
-            self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+            self.env.run_lift('--continue')
 
         # The conflict-resolved commit did land before the failure.
         self.assertNotEqual(

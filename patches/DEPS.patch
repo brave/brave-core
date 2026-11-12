@@ -1,8 +1,8 @@
 diff --git a/DEPS b/DEPS
-index fdd4568ad38d92b8884ed1cd2d3d8532c3cec050..4bf7374823ce94d38d15339d4f3d2c2ae91b199e 100644
+index dab2eb47d146b3d96264951672caab0c7706d575..f1babe1f6281a76698eb48cde5123c393dfe1824 100644
 --- a/DEPS
 +++ b/DEPS
-@@ -4316,7 +4316,7 @@ hooks = [
+@@ -4342,7 +4342,7 @@ hooks = [
      # Update the Mac toolchain if necessary.
      'name': 'mac_toolchain',
      'pattern': '.',

@@ -79,3 +79,16 @@ substitutions:
     regex:
       re_pattern: '\bprivate\s+final\s+(@ColorInt\s+int\s+mLocationBarBackgroundColorForNtp\b)'
       replace: '\1'
+  - description: |
+      Use Brave's value for mToolbarSidePaddingForNtp.
+
+      Brave's NTP needs 8dp of toolbar edge padding against upstream's 16dp. This
+      replaces the `BraveOmniboxResourceProvider` bytecode adapter, which
+      redirected the static `OmniboxResourceProvider.getToolbarSidePaddingForNtp()`
+      that upstream deleted; the dimension is now resolved inline here.
+
+      Only the non-Aurora branch is rewritten. With `kNtpAurora` on, upstream
+      reuses `mToolbarSidePadding` and there is no dimension to substitute.
+    regex:
+      pattern: 'R.dimen.toolbar_edge_padding_ntp'
+      replace: 'R.dimen.brave_toolbar_edge_padding_ntp'

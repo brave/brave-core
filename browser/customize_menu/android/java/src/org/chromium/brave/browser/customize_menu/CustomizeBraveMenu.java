@@ -64,11 +64,14 @@ import java.util.Locale;
  * menu. The customization settings are persisted in shared preferences and applied whenever the
  * menu is displayed.
  *
- * <p><strong>Note:</strong> Two menu items cannot be hidden and will always remain visible:
+ * <p><strong>Note:</strong> Three menu items cannot be hidden and will always remain visible:
  *
  * <ul>
  *   <li>The "Customize menu" item itself ({@link #BRAVE_CUSTOMIZE_ITEM_ID})
  *   <li>The main "Settings" item ({@code R.id.preferences_id})
+ *   <li>The "Site controls" item ({@code R.id.info_menu_id}), which upstream moved out of the
+ *       address bar into the app menu, making it the only way to reach a site's permissions and
+ *       connection details
  * </ul>
  *
  * <p>These items are essential for menu navigation and configuration access.
@@ -172,8 +175,11 @@ public class CustomizeBraveMenu {
         for (Iterator<MVCListAdapter.ListItem> it = modelList.iterator(); it.hasNext(); ) {
             MVCListAdapter.ListItem item = it.next();
             final int menuItemId = item.model.get(AppMenuItemProperties.MENU_ITEM_ID);
-            // Skip current item if it matches the customize menu id or settings menu id.
-            if (BRAVE_CUSTOMIZE_ITEM_ID == menuItemId || R.id.preferences_id == menuItemId) {
+            // Skip current item if it matches the customize menu id, the settings menu id or the
+            // site controls menu id.
+            if (BRAVE_CUSTOMIZE_ITEM_ID == menuItemId
+                    || R.id.preferences_id == menuItemId
+                    || R.id.info_menu_id == menuItemId) {
                 continue;
             }
             if (!isVisible(resources, menuItemId)) {

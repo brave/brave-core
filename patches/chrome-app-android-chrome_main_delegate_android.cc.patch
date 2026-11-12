@@ -1,8 +1,8 @@
 diff --git a/chrome/app/android/chrome_main_delegate_android.cc b/chrome/app/android/chrome_main_delegate_android.cc
-index 512d1b54ffc20a7996c79a648e912ceb714bee22..c4c734541bcff93250bab5614cde796330cef933 100644
+index 8d3548d5d2ca7bb48aa2e4cbc72501b7b674acb7..f53c3880b770dd768da17d9b077ee4b3f5455284 100644
 --- a/chrome/app/android/chrome_main_delegate_android.cc
 +++ b/chrome/app/android/chrome_main_delegate_android.cc
-@@ -55,11 +55,11 @@ std::optional<int> ChromeMainDelegateAndroid::BasicStartupComplete() {
+@@ -51,11 +51,11 @@ std::optional<int> ChromeMainDelegateAndroid::BasicStartupComplete() {
    base::android::PreFreezeBackgroundMemoryTrimmer::SetDelegate(
        std::make_unique<ChromePreFreezeDelegate>());
  

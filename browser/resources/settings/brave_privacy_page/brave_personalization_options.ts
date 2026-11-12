@@ -12,7 +12,7 @@ import {
 import {
   WebUiListenerMixin,
   WebUiListenerMixinInterface,
-} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+} from '/shared/settings/web_ui_listener_mixin.js'
 import { loadTimeData } from '../i18n_setup.js'
 
 import { getTemplate } from './brave_personalization_options.html.js'
@@ -24,6 +24,7 @@ import {
 import { assert } from 'chrome://resources/js/assert.js'
 import { SettingsToggleButtonElement } from '../controls/settings_toggle_button.js'
 
+import '/shared/settings/md_select.css.js'
 import 'chrome://resources/cr_elements/cr_icon/cr_icon.js'
 import '../controls/settings_dropdown_menu.js'
 import '../privacy_page/do_not_track_toggle.js'
@@ -164,12 +165,7 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
           return loadTimeData.getBoolean('isWindowsRecallAvailable')
         },
       },
-      windowsRecallDisabledPref_: {
-        type: Object,
-        value: () => {
-          return {}
-        },
-      },
+      windowsRecallDisabled_: Boolean,
     }
   }
 
@@ -188,7 +184,7 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   declare private requestOTRAction_: String
   declare private pushMessagingPref_: chrome.settingsPrivate.PrefObject<boolean>
   declare private isWindowsRecallAvailable_: boolean
-  declare private windowsRecallDisabledPref_: chrome.settingsPrivate.PrefObject
+  declare private windowsRecallDisabled_: boolean
 
   browserProxy_: BravePrivacyBrowserProxy =
     BravePrivacyBrowserProxyImpl.getInstance()
@@ -221,12 +217,7 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   }
 
   setWindowsRecallDisabled_(disabled: boolean) {
-    const pref = {
-      key: '',
-      type: chrome.settingsPrivate.PrefType.BOOLEAN,
-      value: disabled,
-    }
-    this.windowsRecallDisabledPref_ = pref
+    this.windowsRecallDisabled_ = disabled
   }
 
   restartBrowser_(e: Event) {

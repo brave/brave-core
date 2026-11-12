@@ -67,15 +67,24 @@ SidebarService::ShowSidebarOption GetDefaultShowSidebarOption(
 // Returns RIGHT_TOP if sidebar is on right.
 views::BubbleBorder::Arrow GetBubbleArrowForSidebar(PrefService* prefs);
 
+// Both of these close synchronously, so the panel's tab is gone before the
+// caller's next statement - the shutdown paths snapshot the session there, and
+// would otherwise persist the panel as an ordinary pinned tab. Only valid once
+// a close can no longer be cancelled, hence shutdown-only.
+
 // Closes the open web panel of every browser window, across all profiles.
-// Called on shutdown, before session services are shut down, so that panels
-// aren't restored as ordinary pinned tabs on the next launch.
-void CloseAllWebPanels();
+// Called when quitting, before session services are shut down.
+void CloseAllWebPanelsForShutdown();
 
 // Closes `browser`'s web panel. No-op when `browser` has no sidebar controller
 // or no open web panel. Called when a single window is closing, before the
 // session and tab restore services snapshot it.
-void MaybeCloseWebPanel(BrowserWindowInterface* browser);
+void MaybeCloseWebPanelForShutdown(BrowserWindowInterface* browser);
+
+// True when `contents` is `browser`'s open web panel. The panel is backed by a
+// pinned tab, so pinned tab persistence has to skip it.
+bool IsWebPanelTab(BrowserWindowInterface* browser,
+                   const content::WebContents* contents);
 
 }  // namespace sidebar
 

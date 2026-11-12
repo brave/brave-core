@@ -1,8 +1,8 @@
 diff --git a/components/sync/base/user_selectable_type.cc b/components/sync/base/user_selectable_type.cc
-index f0b7fb20c009381ed4d2963038adf06185081898..3faccc055d6375e9d7cde6135f656659a999761c 100644
+index 6d6d315ac6197985b044536094261235f06ba793..0dc6e9d0a0eec3c8f462d28c92c7b03a88410791 100644
 --- a/components/sync/base/user_selectable_type.cc
 +++ b/components/sync/base/user_selectable_type.cc
-@@ -51,7 +51,7 @@ UserSelectableTypeInfo GetUserSelectableTypeInfo(
+@@ -52,7 +52,7 @@ UserSelectableTypeInfo GetUserSelectableTypeInfo(
    // TODO(crbug.com/445840788): In CL #3, map CONTEXTUAL_TASK to an existing
    // selectable type or to a new one. The first option should be trivial, the
    // second requires touching UI code across platforms.
@@ -11,7 +11,7 @@ index f0b7fb20c009381ed4d2963038adf06185081898..3faccc055d6375e9d7cde6135f656659
                  "Almost always when adding a new Data, you must tie it to "
                  "a UserSelectableType below (new or existing) so the user can "
                  "disable syncing of that data. Today you must also update the "
-@@ -142,6 +142,8 @@ UserSelectableTypeInfo GetUserSelectableTypeInfo(
+@@ -139,6 +139,8 @@ UserSelectableTypeInfo GetUserSelectableTypeInfo(
            kProductComparisonTypeName, PRODUCT_COMPARISON, {PRODUCT_COMPARISON}};
      case UserSelectableType::kCookies:
        return {kCookiesTypeName, COOKIES, {COOKIES}};
@@ -20,7 +20,7 @@ index f0b7fb20c009381ed4d2963038adf06185081898..3faccc055d6375e9d7cde6135f656659
    }
    NOTREACHED();
  }
-@@ -197,6 +199,7 @@ std::optional<UserSelectableType> GetUserSelectableTypeFromString(
+@@ -194,6 +196,7 @@ std::optional<UserSelectableType> GetUserSelectableTypeFromString(
            {kSavedTabGroupsTypeName, UserSelectableType::kSavedTabGroups},
            {kProductComparisonTypeName, UserSelectableType::kProductComparison},
            {kCookiesTypeName, UserSelectableType::kCookies},

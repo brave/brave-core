@@ -92,7 +92,6 @@
       <message name="IDS_CLOSE_ALL_TABS_DIALOG_MESSAGE_INCOGNITO" desc="When users click the menu item 'Close all tabs' in Private tab switcher, a dialog will pop up and this text is the message of the dialog.">
         Your activity in these Private tabs will be removed from this device
       </message>
-
       <message name="IDS_CLOSE_ALL_TABS_AND_GROUPS_DIALOG_MESSAGE_WITH_INCOGNITO_TABS" desc="Description of the action of closing all tabs and group, shown in a confirmation dialog. If there are any Private tabs opened this message would warn users that those Private tabs would be lost.">
       {INCOGNITO_TABS_COUNT, plural,
         =1 {Your closed tabs and groups can be reopened from the Recent tabs section and the Tab groups section. Your Private tab won't be available.}

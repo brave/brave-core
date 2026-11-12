@@ -7,6 +7,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import argparse
+import fnmatch
 import os
 import shutil
 import sys
@@ -34,12 +35,18 @@ def copy_other_arch(src_path, dest_path):
     # any two independent builds (even of the same architecture).
     # TODO(https://github.com/brave/brave-browser/issues/57254): Make .pak file
     # builds reproducible and remove the *.pak ignore pattern below.
-    shutil.copytree(
-        src_path,
-        dest_path,
-        symlinks=True,
-        ignore=shutil.ignore_patterns('Sparkle.framework', '*.pak'),
-    )
+    # webui_code_cache.<arch>.pak is the exception: each architecture has its
+    # own, and the universalizer keeps files only one half has.
+    ignore_by_pattern = shutil.ignore_patterns('Sparkle.framework', '*.pak')
+
+    def ignore(directory, names):
+        return {
+            name
+            for name in ignore_by_pattern(directory, names)
+            if not fnmatch.fnmatch(name, 'webui_code_cache.*.pak')
+        }
+
+    shutil.copytree(src_path, dest_path, symlinks=True, ignore=ignore)
 
 
 def main(args):

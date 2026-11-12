@@ -509,7 +509,7 @@ IN_PROC_BROWSER_TEST_F(AIChatGlobalSidePanelPageHandlerBrowserTest,
   // URL and skip observation — the subsequent navigation then goes unnoticed.
   GURL url2 = https_server_.GetURL("b.test", "/simple.html");
   ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url2, WindowOpenDisposition::NEW_BACKGROUND_TAB,
+      browser(), url2, WindowOpenDisposition::kNewBackgroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_EQ(tab_strip->count(), 2);
   // Explicitly wait for the background tab to finish loading.
@@ -582,7 +582,7 @@ IN_PROC_BROWSER_TEST_F(AIChatGlobalSidePanelPageHandlerBrowserTest,
   // as in TabSwitchNotifiesFrontend.
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL("chrome://version"),
-      WindowOpenDisposition::NEW_BACKGROUND_TAB,
+      WindowOpenDisposition::kNewBackgroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_EQ(tab_strip->count(), 2);
   content::WaitForLoadStop(tab_strip->GetWebContentsAt(1));

@@ -18,7 +18,6 @@
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/brave_browser_features.h"
-#include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/translate/brave_translate_utils.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
@@ -28,7 +27,6 @@
 #include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
@@ -123,10 +121,6 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_SPARKLE)
-#include "brave/browser/ui/views/update_recommended_message_box_mac.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -649,15 +643,6 @@ void BraveBrowserView::UpdateReaderModeToolbar() {
 }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
-void BraveBrowserView::ShowUpdateChromeDialog() {
-#if BUILDFLAG(ENABLE_SPARKLE)
-  // On mac, sparkle frameworks's relaunch api is used.
-  UpdateRecommendedMessageBoxMac::Show(GetNativeWindow());
-#else
-  BrowserView::ShowUpdateChromeDialog();
-#endif
-}
-
 gfx::Rect BraveBrowserView::GetBoundingBoxInScreenForMouseOverHandling() const {
   gfx::Rect browser_bounds = GetBoundsInScreen();
   gfx::Rect top_container_bounds = top_container_->GetBoundsInScreen();
@@ -925,7 +910,7 @@ bool BraveBrowserView::MaybeUpdateDevtools(content::WebContents* web_contents) {
   // split tab is active when MultiContentsView shows split view now.
   // But, it could not when web panel is active and split view is opened
   // together. Early return to avoid crash from that.
-  if (IsWebPanelContents(web_contents) && IsInSplitView()) {
+  if (sidebar::IsWebPanelTab(browser_, web_contents) && IsInSplitView()) {
     return DevtoolsUIController::From(browser_)->UpdateDevtools(web_contents,
                                                                 false);
   }
@@ -946,7 +931,7 @@ bool BraveBrowserView::MaybeUpdateSplitView(
   // But, it could not when web panel is active and split view is opened
   // together. Early return to avoid crash from that. If |web_contents| is not
   // related with split tab, don't need to call base class' method.
-  if (IsWebPanelContents(web_contents) &&
+  if (sidebar::IsWebPanelTab(browser_, web_contents) &&
       multi_contents_view_->IsInSplitView()) {
     return false;
   }
@@ -1296,21 +1281,6 @@ void BraveBrowserView::HandleBrowserWindowMouseEvent(
     // handle mouse move events accordingly.
     region_view->HandleMouseMoveEvent(point_in_screen);
   }
-}
-
-bool BraveBrowserView::IsWebPanelContents(content::WebContents* contents) {
-  if (!sidebar::IsWebPanelFeatureEnabled() || !contents) {
-    return false;
-  }
-
-  if (auto* sidebar_controller = sidebar::SidebarController::From(browser_)) {
-    if (auto* web_panel_controller =
-            sidebar_controller->GetWebPanelController()) {
-      return web_panel_controller->panel_contents() == contents;
-    }
-  }
-
-  return false;
 }
 
 ClientFrameElementInfo BraveBrowserView::GetFrameElementInfo() const {

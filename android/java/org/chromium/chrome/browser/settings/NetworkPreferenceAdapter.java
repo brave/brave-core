@@ -476,17 +476,22 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
         public NetworkPreferenceItem(final int type) {
             mType = type;
             mNetworkInfo = null;
-            if (mType == LABEL_ETHEREUM_ITEM) {
-                mNetworkNameRes = R.string.brave_ethereum_networks;
-            } else if (mType == LABEL_FILECOIN_ITEM) {
-                mNetworkNameRes = R.string.brave_filecoin_networks;
-            } else if (mType == LABEL_SOLANA_ITEM) {
-                mNetworkNameRes = R.string.brave_solana_networks;
-            } else if (mType == LABEL_BITCOIN_ITEM) {
-                mNetworkNameRes = R.string.brave_bitcoin_networks;
-            } else {
-                throw new IllegalStateException(
-                        String.format("Network name not found for label type %d.", mType));
+            switch (mType) {
+                case LABEL_ETHEREUM_ITEM:
+                    mNetworkNameRes = R.string.brave_ethereum_networks;
+                    break;
+                case LABEL_FILECOIN_ITEM:
+                    mNetworkNameRes = R.string.brave_filecoin_networks;
+                    break;
+                case LABEL_SOLANA_ITEM:
+                    mNetworkNameRes = R.string.brave_solana_networks;
+                    break;
+                case LABEL_BITCOIN_ITEM:
+                    mNetworkNameRes = R.string.brave_bitcoin_networks;
+                    break;
+                default:
+                    throw new IllegalStateException(
+                            String.format("Network name not found for label type %d.", mType));
             }
         }
 

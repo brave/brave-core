@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Skip browser layout while the frame view is still placing the browser.
+
+      During the Mac fullscreen exit animation, a layout with vertical tabs and
+      the window title would use browser bounds outside the client area.
+    preempt_function_impl:
+      function_name: BrowserViewLayoutDelegateImpl::GetBrowserLayoutParams
+      code: |-
+        if (ShouldWaitForFrameToPlaceBrowserView(
+                *this, GetFrameView(), browser_view(), use_browser_bounds)) {
+          return BrowserLayoutParams();
+        }

@@ -19,6 +19,7 @@ from PB.recipe_modules.brave.brave_core_checkout.properties import (
     InputProperties,
 )
 from recipe_api import RecipeApi
+from recipe_modules.git.api import RefKind
 
 if TYPE_CHECKING:
     from recipe_modules import brave_core_checkout
@@ -96,6 +97,15 @@ class BraveCoreCheckoutApi(RecipeApi):
         # The brave-core root of the standard job layout, resolved once.
         self._root = self.m.path.abs(self.m.path.brave_core)
 
+    def set_brave_core_ref(self, ref: str) -> None:
+        """Check out *ref* instead of the `brave_core_ref` property, e.g. a ref
+        the recipe only resolves at run time.
+
+        Args:
+            ref: A fully-qualified ref, such as `refs/heads/cr159`.
+        """
+        self._brave_core_ref = ref
+
     @property
     def _git_ref(self) -> GitRef:
         """The `brave_core_ref`, checked to be safe to pass to git."""
@@ -112,9 +122,14 @@ class BraveCoreCheckoutApi(RecipeApi):
         """Write the `.env` config, if one was set, to the checkout."""
         if self.c is None:
             return
-        entries = {
-            k: v for k, v in sorted(self.c.dotenv.items()) if v is not None
-        }
+        dotenv = dict(self.c.dotenv)
+        if self.c.target_os:
+            # Overrides the list a `--target_os` gives `.gclient`, so that every
+            # sync, the run's own included, checks the same OSes out.
+            dotenv['gclient_global_vars_target_os'] = json.dumps(
+                self.c.target_os.as_jsonish()
+            )
+        entries = {k: v for k, v in sorted(dotenv.items()) if v is not None}
         # A line break would start another entry.
         for k, v in entries.items():
             if any(c in f'{k}{v}' for c in '\r\n'):
@@ -124,17 +139,24 @@ class BraveCoreCheckoutApi(RecipeApi):
         logging.info('Writing %s:\n%s', self._root / '.env', text)
         self.m.file.write_text('write .env', self._root / '.env', text)
 
-    def _with_brave_core_layout(fn):
-        """A decorator for functions that run in the brave-core layout: its
-        `bootstrap` dir on $PATH, and the Chromium environment.
+    @contextlib.contextmanager
+    def brave_core_layout(self):
+        """Run the steps in the block in the brave-core layout: from its root,
+        with its `bootstrap` dir on $PATH, and the Chromium environment.
         """
+        with (
+            self.m.context(cwd=self._root),
+            self._bootstrap_layout(),
+            self.m.chromium_checkout.chromium_layout(),
+        ):
+            yield
+
+    def _with_brave_core_layout(fn):
+        """A decorator for functions that run in the `brave_core_layout`."""
 
         @functools.wraps(fn)
         def inner(self, *args, **kwargs):
-            with (
-                self._bootstrap_layout(),
-                self.m.chromium_checkout.chromium_layout(),
-            ):
+            with self.brave_core_layout():
                 return fn(self, *args, **kwargs)
 
         return inner
@@ -180,17 +202,45 @@ class BraveCoreCheckoutApi(RecipeApi):
             self.m.git_cache.clone_checkout(
                 CACHE_REPO_URL, dest, mirror_dir, ref, step_prefix=STEP_PREFIX
             )
+        if ref.kind == RefKind.HEAD:
+            self._attach_branch(ref.branch)
+
+    def _attach_branch(self, branch: str) -> None:
+        """Put the checkout on its local *branch*, at the commit checked out.
+
+        Whatever an earlier job left on that branch, or a rebase it left
+        stopped, is dropped, so the branch is always at its latest.
+        """
+        git_dir = self._root / '.git'
+        if self.m.path.exists(git_dir / 'rebase-merge') or self.m.path.exists(
+            git_dir / 'rebase-apply'
+        ):
+            # `--quit` keeps HEAD and the tree, which the checkout replaces.
+            self.m.git(
+                'rebase',
+                '--quit',
+                name=f'{STEP_PREFIX} drop stopped rebase',
+                cwd=self._root,
+            )
+        self.m.git(
+            'checkout',
+            '--force',
+            '-B',
+            branch,
+            name=f'{STEP_PREFIX} checkout branch',
+            cwd=self._root,
+        )
 
     def ensure_checkout(
         self, *, chromium_src: str | Path | None = None
     ) -> Path:
-        """Check out brave-core on `brave_core_ref` and Chromium, then sync if
-        needed.
+        """Check out brave-core on `brave_core_ref` and Chromium, then sync.
 
         Chromium is deployed first: brave-core lives inside Chromium's `src/`,
         and a Chromium clone cannot go into a directory that already holds
-        brave-core. If Chromium had to be deployed, `pnpm run sync` then brings
-        it to the version brave-core pins.
+        brave-core. `pnpm run sync` then brings Chromium to the version
+        brave-core pins, whether it was just deployed (without a sync of its
+        own) or left by an earlier job on another version.
 
         Args:
             chromium_src: Chromium `src/` directory. Defaults to the `path`
@@ -203,17 +253,16 @@ class BraveCoreCheckoutApi(RecipeApi):
         mirror_dir = self._populate_mirror(ref)
         # The Chromium tag is read straight from the mirror, as brave-core
         # cannot be checked out ahead of Chromium.
-        deployed = self._deploy_chromium(chromium_src, mirror_dir, ref.name)
+        self._deploy_chromium(chromium_src, mirror_dir, ref.name)
         self._checkout_from_mirror(ref, mirror_dir)
         # Before `pnpm run sync`, which already needs the RBE settings.
         self._write_dotenv()
-        if deployed:
-            self._pnpm_sync()
+        self._pnpm_sync()
         return self._root
 
     def _deploy_chromium(
         self, chromium_src: str | Path | None, mirror_dir: str, rev: str
-    ) -> bool:
+    ) -> None:
         """Deploy Chromium through `chromium_checkout`, unless present.
 
         Cloned from git cache at the tag brave-core pins, without `gclient
@@ -224,9 +273,6 @@ class BraveCoreCheckoutApi(RecipeApi):
             mirror_dir: The brave-core git cache mirror to read the pinned tag
                 from.
             rev: The brave-core revision, in the mirror, to read it at.
-
-        Returns:
-            Whether Chromium was deployed (`chrome/VERSION` was absent).
         """
         chromium_src = self.m.path.abs(
             chromium_src
@@ -234,12 +280,11 @@ class BraveCoreCheckoutApi(RecipeApi):
             else self.m.path.chromium_src
         )
         if self.m.path.exists(chromium_src / CHROME_VERSION_FILE):
-            return False
+            return
         tag = self._chromium_tag(mirror_dir, rev)
         self.m.chromium_checkout.ensure_checkout(
             chromium_src=chromium_src, ref=f'refs/tags/{tag}', run_sync=False
         )
-        return True
 
     def _chromium_tag(self, mirror_dir: str, rev: str) -> str:
         """The Chromium tag `package.json` pins at *rev*, read with `git show`."""
@@ -259,7 +304,17 @@ class BraveCoreCheckoutApi(RecipeApi):
     @_with_brave_core_layout
     def _pnpm_sync(self) -> None:
         """Bring Chromium to the version brave-core pins, with `pnpm run sync`."""
-        self.m.step('pnpm run sync', ['pnpm', 'run', 'sync'], cwd=self._root)
+        self.m.step('pnpm run sync', ['pnpm', 'run', 'sync'])
+
+    @_with_brave_core_layout
+    def install_commit_hook(self) -> None:
+        """Install `git cr`'s commit-msg hook in an existing checkout.
+
+        Only for recipes that commit to brave-core: `git cr commit` refuses to
+        run without the hook, which writes the `[cr<N>]` prefix and culprit
+        links. `git cr` is the `bootstrap` shim the layout puts on $PATH.
+        """
+        self.m.git('cr', 'install-hook', name='install commit-msg hook')
 
     @_with_brave_core_layout
     def compile(self, *, target: str = 'brave:all') -> None:
@@ -268,11 +323,7 @@ class BraveCoreCheckoutApi(RecipeApi):
         Args:
             target: The build target; `brave:all` by default.
         """
-        self.m.step(
-            'build',
-            ['pnpm', 'run', 'build', f'--target={target}'],
-            cwd=self._root,
-        )
+        self.m.step('build', ['pnpm', 'run', 'build', f'--target={target}'])
 
     @_with_brave_core_layout
     def run_tests(self, suites: Iterable[str] = TEST_SUITES) -> None:
@@ -306,9 +357,7 @@ class BraveCoreCheckoutApi(RecipeApi):
                 '--test-launcher-bot-mode',
                 f'--test-launcher-jobs={self.m.platform.cpu_count}',
             ]
-            result = self.m.step(
-                f'test {suite}', cmd, cwd=self._root, check=False
-            )
+            result = self.m.step(f'test {suite}', cmd, check=False)
             if result.retcode != 0:
                 failed.append(suite)
         if failed:

@@ -972,7 +972,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewReloadTest) {
     LoadObserver observer_0(GetWebContentsAt(0));
     LoadObserver observer_1(GetWebContentsAt(1));
 
-    chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+    chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
     content::WaitForLoadStop(GetWebContentsAt(0));
     content::WaitForLoadStop(GetWebContentsAt(1));
 
@@ -993,7 +993,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewReloadTest) {
     LoadObserver observer_1(GetWebContentsAt(1));
     LoadObserver observer_2(GetWebContentsAt(2));
 
-    chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+    chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
     content::WaitForLoadStop(GetWebContentsAt(0));
     content::WaitForLoadStop(GetWebContentsAt(1));
     content::WaitForLoadStop(GetWebContentsAt(2));
@@ -1010,7 +1010,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewReloadTest) {
     LoadObserver observer_1(GetWebContentsAt(1));
     LoadObserver observer_2(GetWebContentsAt(2));
 
-    chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+    chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
     content::WaitForLoadStop(GetWebContentsAt(0));
     content::WaitForLoadStop(GetWebContentsAt(1));
     content::WaitForLoadStop(GetWebContentsAt(2));
@@ -1029,7 +1029,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewReloadTest) {
     LoadObserver observer_1(GetWebContentsAt(1));
     LoadObserver observer_2(GetWebContentsAt(2));
 
-    chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+    chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
     content::WaitForLoadStop(GetWebContentsAt(0));
     content::WaitForLoadStop(GetWebContentsAt(1));
     content::WaitForLoadStop(GetWebContentsAt(2));

@@ -163,7 +163,7 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
     ui_test_utils::NavigateToURLWithDisposition(
         browser(),
         GURL(std::string(kBraveUIWalletPanelURL) + "crypto/connections"),
-        WindowOpenDisposition::NEW_FOREGROUND_TAB,
+        WindowOpenDisposition::kNewForegroundTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     wallet_index_ = browser()->tab_strip_model()->active_index();
   }
@@ -171,7 +171,7 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
   void CreateSettingsTab() {
     ui_test_utils::NavigateToURLWithDisposition(
         browser(), GURL(std::string(kWalletSettingsURL) + "/networks"),
-        WindowOpenDisposition::NEW_FOREGROUND_TAB,
+        WindowOpenDisposition::kNewForegroundTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     settings_index_ = browser()->tab_strip_model()->active_index();
     // Overriding native confirmation dialog so it always confirms.

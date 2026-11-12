@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/download/download_commands.h b/chrome/browser/download/download_commands.h
+index b214fa8c67c0803ccb05a508e9fd431d0d92ee70..2659358b6f593022fc7a2538379909cac2d6e1c9 100644
+--- a/chrome/browser/download/download_commands.h
++++ b/chrome/browser/download/download_commands.h
+@@ -50,7 +50,10 @@ class DownloadCommands {
+                                // an editing hint.
+     OPEN_WITH = 23,  // Open the system "Open with" dialog. Windows only.
+ 
+-    kMaxValue = OPEN_WITH,  // Keep last.
++    REMOVE_FROM_LIST = 24,
++    DELETE_LOCAL_FILE = 25,
++    COPY_DOWNLOAD_LINK = 26,
++    kMaxValue = COPY_DOWNLOAD_LINK,  // Keep last.
+   };
+   // LINT.ThenChange(//tools/metrics/histograms/metadata/download/enums.xml:DownloadCommand)
+ 

@@ -5,9 +5,10 @@
 
 #include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
 
+#include <utility>
+
 #include "base/check.h"
 #include "base/check_deref.h"
-#include "base/no_destructor.h"
 #include "brave/ios/browser/brave_ads/ads_factory_impl.h"
 #include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -17,23 +18,11 @@
 
 namespace brave_ads {
 
-// static
-AdsServiceImplIOS* AdsServiceFactoryIOS::GetForProfile(ProfileIOS* profile) {
-  return GetInstance()->GetServiceForProfileAs<AdsServiceImplIOS>(profile,
-                                                                  true);
-}
-
-// static
-AdsServiceFactoryIOS* AdsServiceFactoryIOS::GetInstance() {
-  static base::NoDestructor<AdsServiceFactoryIOS> instance;
-  return instance.get();
-}
-
-AdsServiceFactoryIOS::AdsServiceFactoryIOS()
-    : ProfileKeyedServiceFactoryIOS("AdsService",
-                                    ProfileSelection::kNoInstanceInIncognito) {}
-
-AdsServiceFactoryIOS::~AdsServiceFactoryIOS() = default;
+AdsServiceFactoryIOS::AdsServiceFactoryIOS(PassKey key)
+    : TypedProfileKeyedServiceFactoryIOS(
+          std::move(key),
+          "AdsService",
+          ProfileSelection::kNoInstanceInIncognito) {}
 
 std::unique_ptr<KeyedService> AdsServiceFactoryIOS::BuildServiceInstanceFor(
     ProfileIOS* profile) const {
