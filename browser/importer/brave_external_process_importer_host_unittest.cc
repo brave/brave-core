@@ -133,8 +133,8 @@ class BraveExternalProcessImporterHostUnitTest : public testing::Test {
   BraveExternalProcessImporterHostUnitTest() = default;
 
   void SetUp() override {
+    ASSERT_TRUE(brave_profile_dir_.CreateUniqueTempDir());
     TestingProfile::Builder profile_builder;
-    EXPECT_TRUE(brave_profile_dir_.CreateUniqueTempDir());
     profile_builder.SetPath(GetProductProfilePath("Brave"));
     profile_ = profile_builder.Build();
     base::CreateDirectory(profile_->GetPath().AppendASCII("IndexedDB"));
