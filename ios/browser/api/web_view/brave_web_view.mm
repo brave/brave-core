@@ -498,9 +498,11 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
     CosmeticFilteringTabHelper::FromWebState(self.webState)
         ->SetBridge(self.cosmeticFilteringTabHelperBridge);
 
-    ElementPickerTabHelper::CreateForWebState(self.webState);
-    ElementPickerTabHelper::FromWebState(self.webState)
-        ->SetBridge(self.elementPickerTabHelperBridge);
+    if (!profile->IsOffTheRecord()) {
+      ElementPickerTabHelper::CreateForWebState(self.webState);
+      ElementPickerTabHelper::FromWebState(self.webState)
+          ->SetBridge(self.elementPickerTabHelperBridge);
+    }
 
     ScriptletsTabHelper::CreateForWebState(self.webState);
     ScriptletsTabHelper::FromWebState(self.webState)
