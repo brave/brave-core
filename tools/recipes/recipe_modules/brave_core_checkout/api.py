@@ -21,8 +21,14 @@ from PB.recipe_modules.brave.brave_core_checkout.properties import (
 from recipe_api import RecipeApi
 from recipe_modules.git.api import RefKind
 
+from .config import validate_config
+
 if TYPE_CHECKING:
     from recipe_modules import brave_core_checkout
+    from recipe_modules.brave_tests_builder_config import (
+        BuilderConfig,
+        BuilderId,
+    )
     from recipe_modules.git.api import GitRef
 
 # Default SSH remote for the brave-core repository.
@@ -44,14 +50,18 @@ BOOTSTRAP_PATH = f'{CR_PATH}/bootstrap'
 # Put before the step names of the brave-core checkout, which has a sibling.
 STEP_PREFIX = 'brave-core'
 
-# The suites the asan CI jobs run for brave-core: unit, browser and interactive
-# UI tests, plus the network audit.
-TEST_SUITES = (
+# Deprecated: the suites the asan CI jobs run for brave-core: unit, browser and
+# interactive UI tests, plus the network audit. A builder declares its own.
+DEPRECATED_TEST_SUITES = (
     'brave_all_unit_tests',
     'brave_browser_tests',
     'brave_interactive_ui_tests',
     'brave_network_tests',
 )
+
+# Deprecated: what a build without a builder compiles. A builder declares its
+# own.
+DEPRECATED_COMPILE_TARGET = 'brave:all'
 
 # Fingerprint of a deployed Chromium `src/`.
 CHROME_VERSION_FILE = 'chrome/VERSION'
@@ -112,22 +122,77 @@ class BraveCoreCheckoutApi(RecipeApi):
         return self.m.git.parse_ref(self._brave_core_ref)
 
     def get_config_defaults(self) -> dict:
-        # The module's properties are the defaults of the `.env` config.
+        # The platform's, as upstream's `chromium` module defaults them, then
+        # the module's properties, for the `.env`.
         return {
+            'HOST_PLATFORM': None,
+            'DEFAULT_HOST_PLATFORM': self.m.platform.name,
+            'HOST_ARCH': self.m.platform.arch,
+            'HOST_BITS': self.m.platform.bits,
+            'TARGET_PLATFORM': self.m.platform.name,
+            'TARGET_ARCH': self.m.platform.arch,
+            'TARGET_BITS': self.m.platform.bits,
+            'BUILD_CONFIG': 'Release',
+            'BUILDER': '',
             'USE_REMOTEEXEC': self._properties.use_remoteexec,
             'SISO_CACHE_DIR': self._properties.siso_cache_dir,
+            'DISABLE_DEPRECATED_DOTENV': (
+                self._properties.disable_deprecated_dotenv
+            ),
         }
+
+    def make_config_params(self, *args, **kwargs):
+        config_object, params = super().make_config_params(*args, **kwargs)
+        if config_object is not None:
+            validate_config(config_object, self.m.platform.name)
+        return config_object, params
+
+    def apply_config(self, config_name, config_object=None, optional=False):
+        super().apply_config(config_name, config_object, optional)
+        validate_config(config_object or self.c, self.m.platform.name)
+
+    def configure_build(
+        self, builder_id: BuilderId, builder_config: BuilderConfig
+    ) -> None:
+        """Configure the module to build as *builder_id*.
+
+        As upstream's `chromium_tests.configure_build()` sets the `chromium`
+        config, with the keyword arguments of the builder's spec: here the
+        `brave` one, which also names the builder for `pnpm` to run as.
+
+        Args:
+            builder_id: The builder the build runs as.
+            builder_config: Its config, as `brave_tests_builder_config`'s
+                `lookup_builder()` returns it.
+        """
+        self.set_config(
+            'brave',
+            BUILDER=builder_id.builder,
+            **builder_config.chromium_config_kwargs,
+        )
+
+    @property
+    def _builder_args(self) -> list[str]:
+        """The `pnpm` arguments that make it run as the configured builder,
+        none for the deprecated mode."""
+        if self.c is None or not self.c.BUILDER:
+            return []
+        return ['--builder', self.c.BUILDER]
 
     def _write_dotenv(self) -> None:
         """Write the `.env` config, if one was set, to the checkout."""
         if self.c is None:
             return
         dotenv = dict(self.c.dotenv)
-        if self.c.target_os:
+        if not self.c.BUILDER:
+            logging.warning(
+                'Deprecated: composing the whole .env without a builder.'
+            )
+        if self.c.deprecated_target_os:
             # Overrides the list a `--target_os` gives `.gclient`, so that every
             # sync, the run's own included, checks the same OSes out.
             dotenv['gclient_global_vars_target_os'] = json.dumps(
-                self.c.target_os.as_jsonish()
+                self.c.deprecated_target_os.as_jsonish()
             )
         entries = {k: v for k, v in sorted(dotenv.items()) if v is not None}
         # A line break would start another entry.
@@ -304,7 +369,9 @@ class BraveCoreCheckoutApi(RecipeApi):
     @_with_brave_core_layout
     def _pnpm_sync(self) -> None:
         """Bring Chromium to the version brave-core pins, with `pnpm run sync`."""
-        self.m.step('pnpm run sync', ['pnpm', 'run', 'sync'])
+        self.m.step(
+            'pnpm run sync', ['pnpm', 'run', 'sync', *self._builder_args]
+        )
 
     @_with_brave_core_layout
     def install_commit_hook(self) -> None:
@@ -317,28 +384,49 @@ class BraveCoreCheckoutApi(RecipeApi):
         self.m.git('cr', 'install-hook', name='install commit-msg hook')
 
     @_with_brave_core_layout
-    def compile(self, *, target: str = 'brave:all') -> None:
-        """Build *target* with `pnpm run build`, in an existing checkout.
+    def compile(self, *, deprecated_target: str | None = None) -> None:
+        """Build with `pnpm run build`, in an existing checkout.
+
+        A build running as a builder compiles the builder's own targets.
 
         Args:
-            target: The build target; `brave:all` by default.
+            deprecated_target: The build target without a builder;
+                `brave:all` by default.
+
+        Raises:
+            ValueError: A *deprecated_target* for a build running as a
+                builder.
         """
+        if self._builder_args:
+            if deprecated_target is not None:
+                raise ValueError('a builder compiles its own targets')
+            self.m.step('build', ['pnpm', 'run', 'build', *self._builder_args])
+            return
+        target = deprecated_target or DEPRECATED_COMPILE_TARGET
         self.m.step('build', ['pnpm', 'run', 'build', f'--target={target}'])
 
     @_with_brave_core_layout
-    def run_tests(self, suites: Iterable[str] = TEST_SUITES) -> None:
+    def run_tests(self, suites: Iterable[str] = DEPRECATED_TEST_SUITES) -> None:
         """Run each of *suites* with `pnpm run test`, in an existing checkout.
 
         Every suite runs even if an earlier one fails; the failures are raised
         together at the end. On Linux the tests run under Xvfb.
+
+        Deprecated: a build running as a builder runs the builder's own tests,
+        which `pnpm run test` cannot do yet.
 
         Args:
             suites: The test suites to run; by default those of the asan CI
                 jobs.
 
         Raises:
+            NotImplementedError: For a build running as a builder.
             RuntimeError: If any suite failed.
         """
+        if self._builder_args:
+            raise NotImplementedError(
+                'the tests of a builder do not run through pnpm run test'
+            )
         xvfb = []
         if self.m.platform.is_linux:
             xvfb = [

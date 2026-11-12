@@ -164,12 +164,12 @@ def RunSteps(api: DEPS, properties: InputProperties) -> None:
         root = api.path.abs(api.path.brave_core)
     else:
         api.brave_core_checkout.set_brave_core_ref(f'refs/heads/cr{milestone}')
-        # The `.env` for the builds, with RBE when the module's
+        # Deprecated: the `.env` for the builds, with RBE when the module's
         # `use_remoteexec` property asks for it.
-        api.brave_core_checkout.set_config('brave')
+        api.brave_core_checkout.set_config('deprecated_brave')
         # A lift builds Android too: every sync checks its deps out.
-        api.brave_core_checkout.apply_config('linux')
-        api.brave_core_checkout.apply_config('android')
+        api.brave_core_checkout.apply_config('deprecated_linux')
+        api.brave_core_checkout.apply_config('deprecated_android')
         root = api.brave_core_checkout.ensure_checkout()
         # The agent commits with `git cr commit`. A resumed run keeps the
         # checkout, hook included.
