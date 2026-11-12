@@ -11,14 +11,13 @@ if (!is_android) {
   brave_browser_themes_sources += [
     "//brave/browser/themes/brave_private_window_theme_supplier.cc",
     "//brave/browser/themes/brave_private_window_theme_supplier.h",
-    "//brave/browser/themes/brave_theme_service.cc",
-    "//brave/browser/themes/brave_theme_service.h",
   ]
 
   brave_browser_themes_deps += [
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/themes",
+    "//brave/browser/themes:theme_service",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/constants",
     "//chrome/browser:browser_process",
