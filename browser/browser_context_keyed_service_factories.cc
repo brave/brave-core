@@ -15,6 +15,7 @@
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
+#include "brave/browser/net/storage_partition_proxy_service_factory.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
@@ -211,6 +212,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #endif
 
   BraveSyncAlertsServiceFactory::GetInstance();
+  brave::StoragePartitionProxyServiceFactory::GetInstance();
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   ContainersServiceFactory::GetInstance();

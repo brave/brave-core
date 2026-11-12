@@ -103,6 +103,7 @@ source_set("core") {
   sources = brave_chrome_browser_sources
   deps = brave_chrome_browser_deps + [
            "//brave/browser/download:chromium_impl",
+           "//brave/browser/net:storage_partition_proxy",
            "//brave/browser/profiles:chromium_impl",
            "//brave/browser/ssl:chromium_impl",
            "//brave/browser/ui/webui:favicon_source_chromium_impl",

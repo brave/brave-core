@@ -17,6 +17,29 @@ source_set("features") {
   deps = [ "//base" ]
 }
 
+source_set("storage_partition_proxy") {
+  sources = [
+    "storage_partition_proxy_context.cc",
+    "storage_partition_proxy_context.h",
+    "storage_partition_proxy_service.cc",
+    "storage_partition_proxy_service.h",
+    "storage_partition_proxy_service_factory.cc",
+    "storage_partition_proxy_service_factory.h",
+  ]
+  deps = [
+    "//base",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//components/proxy_config",
+    "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+    "//net",
+    "//services/network/public/mojom",
+  ]
+}
+
 source_set("browser_tests") {
   testonly = true
 
@@ -32,6 +55,7 @@ source_set("browser_tests") {
     "brave_user_agent_network_delegate_helper_browsertest.cc",
   ]
   deps = [
+    ":storage_partition_proxy",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_shields/core/common",
     "//brave/components/brave_user_agent/browser",
@@ -56,6 +80,7 @@ source_set("browser_tests") {
     "//components/embedder_support",
     "//components/error_page/common",
     "//components/prefs",
+    "//components/proxy_config",
     "//components/tabs:public",
     "//content/test:test_support",
     "//net",
@@ -64,6 +89,7 @@ source_set("browser_tests") {
     "//testing/gmock",
   ]
   if (!is_android) {
+    sources += [ "storage_partition_proxy_browsertest.cc" ]
     deps += [ "//chrome/test:test_support_ui" ]
   }
   if (is_android) {
@@ -104,11 +130,13 @@ source_set("unit_tests") {
     "brave_system_request_handler_unittest.cc",
     "brave_user_agent_network_delegate_helper_unittest.cc",
     "fake_brave_request_handler.h",
+    "storage_partition_proxy_service_unittest.cc",
     "url_context_unittest.cc",
   ]
 
   deps = [
     ":features",
+    ":storage_partition_proxy",
     "//base/test:test_support",
     "//brave/browser:browser_process",
     "//brave/components/brave_ads/buildflags",
@@ -131,6 +159,9 @@ source_set("unit_tests") {
     "//chrome/test:test_support",
     "//chrome/test/base:chrome_render_view_host_test_harness",
     "//chrome/test/base:testing_browser_process",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//components/proxy_config",
     "//components/sync_preferences:test_support",
     "//content/test:test_support",
     "//crypto",
