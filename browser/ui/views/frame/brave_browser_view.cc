@@ -196,74 +196,6 @@ class BraveBrowserView::BrowserWindowMouseEventHandler
   std::vector<std::unique_ptr<views::EventMonitor>> overlay_monitors_;
 };
 
-class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
-                                                 public views::WidgetObserver {
- public:
-  explicit TabCyclingEventHandler(BraveBrowserView* browser_view)
-      : browser_view_(browser_view) {
-    Start();
-  }
-
-  ~TabCyclingEventHandler() override { Stop(); }
-
-  TabCyclingEventHandler(const TabCyclingEventHandler&) = delete;
-  TabCyclingEventHandler& operator=(const TabCyclingEventHandler&) = delete;
-
- private:
-  // ui::EventObserver overrides:
-  void OnEvent(const ui::Event& event) override {
-    if (event.type() == ui::EventType::kKeyReleased &&
-        event.AsKeyEvent()->key_code() == ui::VKEY_CONTROL) {
-      // Ctrl key was released, stop the tab cycling
-      Stop();
-      return;
-    }
-
-    if (event.type() == ui::EventType::kMousePressed) {
-      Stop();
-    }
-  }
-
-  // views::WidgetObserver overrides:
-  void OnWidgetActivationChanged(views::Widget* widget, bool active) override {
-    // We should stop cycling if other application gets active state.
-    if (!active) {
-      Stop();
-    }
-  }
-
-  // Handle Browser widget closing while tab Cycling is in-progress.
-  void OnWidgetClosing(views::Widget* widget) override { Stop(); }
-
-  void Start() {
-    // Add the event handler
-    auto* widget = browser_view_->GetWidget();
-    if (widget->GetNativeWindow()) {
-      monitor_ = views::EventMonitor::CreateWindowMonitor(
-          this, widget->GetNativeWindow(),
-          {ui::EventType::kMousePressed, ui::EventType::kKeyReleased});
-    }
-
-    widget->AddObserver(this);
-  }
-
-  void Stop() {
-    if (!monitor_.get()) {
-      // We already stopped
-      return;
-    }
-
-    // Remove event handler
-    auto* widget = browser_view_->GetWidget();
-    monitor_.reset();
-    widget->RemoveObserver(this);
-    browser_view_->StopTabCycling();
-  }
-
-  raw_ptr<BraveBrowserView> browser_view_ = nullptr;
-  std::unique_ptr<views::EventMonitor> monitor_;
-};
-
 // static
 BraveBrowserView* BraveBrowserView::From(BrowserView* view) {
   return views::AsViewClass<BraveBrowserView>(view);
@@ -471,8 +403,6 @@ void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
 }
 
 BraveBrowserView::~BraveBrowserView() {
-  tab_cycling_event_handler_.reset();
-
   // Destroying delegate view to clear vertical tab state. See its dtor.
   if (vertical_tab_strip_container_view_) {
     auto container_view = RemoveChildViewT(vertical_tab_strip_container_view_);
@@ -809,13 +739,6 @@ void BraveBrowserView::OnTabStripModelChanged(
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
   BrowserView::OnTabStripModelChanged(tab_strip_model, change, selection);
-
-  if (change.type() != TabStripModelChange::kSelectionOnly) {
-    // Stop tab cycling if tab is closed dusing the cycle.
-    // This can happen when tab is closed by shortcut (ex, ctrl + F4).
-    // After stopping, current tab cycling, new tab cycling will be started.
-    StopTabCycling();
-  }
 
   if (selection.active_tab_changed() && brave_help_bubble_host_view_ &&
       brave_help_bubble_host_view_->GetVisible()) {
@@ -1337,16 +1260,6 @@ bool BraveBrowserView::ShouldDisableFocusModeForActiveTab() const {
   }
   auto level = model->GetSecurityLevel();
   return level != security_state::SecurityLevel::SECURE;
-}
-
-void BraveBrowserView::StartTabCycling() {
-  tab_cycling_event_handler_ = std::make_unique<TabCyclingEventHandler>(this);
-}
-
-void BraveBrowserView::StopTabCycling() {
-  tab_cycling_event_handler_.reset();
-  static_cast<BraveTabStripModel*>(browser()->tab_strip_model())
-      ->StopMRUCycling();
 }
 
 BEGIN_METADATA(BraveBrowserView)

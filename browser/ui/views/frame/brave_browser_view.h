@@ -115,7 +115,6 @@ class BraveBrowserView : public BrowserView,
   std::optional<int> GetVerticalTabStripWidthAtWindowEdge() const;
 
   // BrowserView overrides:
-  void StartTabCycling() override;
   gfx::Rect GetShieldsBubbleRect() override;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // Give active tab's reader mode toolbar.
@@ -229,7 +228,6 @@ class BraveBrowserView : public BrowserView,
 #endif
 
  private:
-  class TabCyclingEventHandler;
   class BrowserWindowMouseEventHandler;
   friend class WindowClosingConfirmBrowserTest;
   friend class sidebar::SidebarBrowserTest;
@@ -287,7 +285,6 @@ class BraveBrowserView : public BrowserView,
   void UpdateTabSearchBubbleHost() override;
 
   void HandleBrowserWindowMouseEvent(const ui::MouseEvent& event);
-  void StopTabCycling();
   void OnCompactModePrefChanged();
   void OnPreferenceChanged(const std::string& pref_name);
 
@@ -352,7 +349,6 @@ class BraveBrowserView : public BrowserView,
   raw_ptr<ReaderModeToolbarView> reader_mode_toolbar_;
 #endif
 
-  std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;
   std::unique_ptr<BrowserWindowMouseEventHandler>
       browser_window_mouse_event_handler_;
 

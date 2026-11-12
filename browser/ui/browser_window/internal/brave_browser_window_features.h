@@ -24,6 +24,7 @@ class BraveVPNController;
 class BrowserWindowInterface;
 class ClosingLastTabController;
 class PlaylistSidePanelCoordinator;
+class TabCyclingController;
 class TreeTabSessionManager;
 class WindowClosingConfirmController;
 class WorkspacesBubbleController;
@@ -98,6 +99,8 @@ class BraveBrowserWindowFeatures {
       brave_non_client_hit_test_helper_;
 
   std::unique_ptr<TreeTabSessionManager> tree_tab_session_manager_;
+
+  std::unique_ptr<TabCyclingController> tab_cycling_controller_;
 
   std::unique_ptr<screenshot::ScreenshotController> screenshot_controller_;
 

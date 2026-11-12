@@ -16,6 +16,7 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/public/before_unload_ignore_controller.h"
 #include "brave/browser/ui/tabs/public/closing_last_tab_controller.h"
+#include "brave/browser/ui/tabs/public/tab_cycling_controller.h"
 #include "brave/browser/ui/tabs/tree_tab_session_manager.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/page_info/brave_shields_ui_contents_cache.h"
@@ -146,6 +147,10 @@ void BraveBrowserWindowFeatures::InitPostWindowConstruction() {
   // The fullscreen controller only exists once the window is constructed.
   brave_browser_window->ReadyToListenFullscreenChanges();
 
+  tab_cycling_controller_ =
+      GetUserDataFactory().CreateInstance<TabCyclingController>(*browser_,
+                                                                *browser_);
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn_controller_ =
       GetUserDataFactory().CreateInstance<BraveVPNController>(*browser_,
@@ -217,6 +222,7 @@ void BraveBrowserWindowFeatures::InitPostWindowConstruction() {
 }
 
 void BraveBrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
+  tab_cycling_controller_.reset();
   screenshot_controller_.reset();
 #if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat_side_panel_tab_transfer_bridge_.reset();
