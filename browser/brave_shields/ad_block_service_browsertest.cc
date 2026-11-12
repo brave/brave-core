@@ -692,8 +692,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrame) {
                              document.head.appendChild(s);
                            })
                          )"));
-  ASSERT_TRUE(base::test::RunUntil(
-      [&] { return profile()->GetPrefs()->GetUint64(kAdsBlocked) >= 2ULL; }));
+  // The count is updated before the blocked request fails, so it is final once
+  // `onerror` has resolved the promise.
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
 }
 
