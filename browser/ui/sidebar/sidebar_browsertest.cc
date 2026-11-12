@@ -274,7 +274,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, WebTypePanelTest) {
   auto items = model()->GetAllSidebarItems();
   auto iter =
       std::ranges::find(items, GURL("chrome://settings/"), &SidebarItem::url);
-  EXPECT_NE(items.end(), iter);
+  ASSERT_NE(items.end(), iter);
   controller()->OnItemPressed(std::distance(items.begin(), iter));
   EXPECT_EQ(0, tab_model()->active_index());
   EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL(), iter->url);
@@ -283,7 +283,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, WebTypePanelTest) {
   // Activate second sidebar item(wallet) and check it's loaded at current tab.
   iter = std::ranges::find(items, SidebarItem::BuiltInItemType::kWallet,
                            &SidebarItem::built_in_item_type);
-  EXPECT_NE(items.end(), iter);
+  ASSERT_NE(items.end(), iter);
   controller()->OnItemPressed(std::distance(items.begin(), iter));
   EXPECT_EQ(0, tab_model()->active_index());
   EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL(), iter->url);
@@ -311,12 +311,14 @@ class SidebarBrowserTestWalletSidePanel : public SidebarBrowserTest {
     EXPECT_TRUE(index.has_value());
 
     auto* panel_ui = SidePanelUI::From(browser());
-    EXPECT_TRUE(panel_ui);
+    if (!panel_ui) {
+      ADD_FAILURE() << "No SidePanelUI";
+      return std::nullopt;
+    }
     panel_ui->Show(SidePanelEntryId::kWallet);
 
     EXPECT_TRUE(base::test::RunUntil([&]() {
-      return panel_ui &&
-             panel_ui->GetCurrentEntryId() == SidePanelEntryId::kWallet;
+      return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kWallet;
     }));
     return index;
   }
@@ -422,6 +424,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DefaultEntryTest) {
   auto* panel_ui = SidePanelUI::From(browser());
   auto bookmark_item_index =
       model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks);
+  ASSERT_TRUE(bookmark_item_index.has_value());
   panel_ui->Show(SidePanelEntryId::kBookmarks);
 
   // Wait till bookmark panel is activated.
@@ -795,10 +798,8 @@ class SidebarBrowserWithWebPanelTest
       public testing::WithParamInterface<bool> {
  public:
   SidebarBrowserWithWebPanelTest() {
-    if (GetParam()) {
-      scoped_features_.InitAndEnableFeature(
-          sidebar::features::kSidebarWebPanel);
-    }
+    scoped_features_.InitWithFeatureState(sidebar::features::kSidebarWebPanel,
+                                          GetParam());
   }
   ~SidebarBrowserWithWebPanelTest() override = default;
 
@@ -857,7 +858,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
       GetBraveMultiContentsView()->contents_container_view_for_web_panel_;
   ASSERT_TRUE(contents_container_view_for_web_panel);
   EXPECT_FALSE(contents_container_view_for_web_panel->GetVisible());
-  EXPECT_GT(GetBraveMultiContentsView()->web_panel_width_, 0);
+  EXPECT_GT(GetBraveMultiContentsView()->web_panel_width_for_testing(), 0);
   EXPECT_EQ(GetBraveMultiContentsView()->GetWebPanelWidth(), 0);
   EXPECT_EQ(contents_container_view_for_web_panel->width(), 0);
   EXPECT_FALSE(GetBraveMultiContentsView()->web_panel_on_left_);
@@ -870,7 +871,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
   GetBraveMultiContentsView()->InvalidateLayout();
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return contents_container_view_for_web_panel->width() ==
-           GetBraveMultiContentsView()->web_panel_width_;
+           GetBraveMultiContentsView()->web_panel_width_for_testing();
   }));
   // The resize area sits between the contents area and the panel.
   const int resize_area_width =
@@ -970,7 +971,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
   EXPECT_EQ(2, tab_strip_model->active_index());
   EXPECT_TRUE(tab_strip_model->GetTabAtIndex(1)->IsSplit());
   EXPECT_TRUE(tab_strip_model->GetTabAtIndex(2)->IsSplit());
-  EXPECT_FALSE(GetBraveMultiContentsView()->is_web_panel_active_);
+  EXPECT_FALSE(GetBraveMultiContentsView()->is_web_panel_active_for_testing());
 
   // Cache current inactive split tab contents and check it's not changed for
   // inactive contents view when web panel is activated. Only active contents
@@ -979,7 +980,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
   auto* inactive_split_tab_contents =
       GetBraveMultiContentsView()->GetInactiveContentsView()->GetWebContents();
   tab_strip_model->ActivateTabAt(0);
-  EXPECT_TRUE(GetBraveMultiContentsView()->is_web_panel_active_);
+  EXPECT_TRUE(GetBraveMultiContentsView()->is_web_panel_active_for_testing());
   EXPECT_EQ(0, tab_strip_model->active_index());
   EXPECT_EQ(
       web_panel_controller()->panel_contents(),
@@ -2496,7 +2497,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarItemHighlightState) {
   RunScheduledLayouts();
   EXPECT_FALSE(sidebar->IsSidebarVisible());
   const auto active_index = model()->active_index();
-  EXPECT_TRUE(active_index);
+  ASSERT_TRUE(active_index);
 
   // Show the sidebar and verify the active item's ink drop is highlighted.
   // This was broken: ShowSidebar() didn't re-sync item state, and

@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
@@ -93,6 +94,13 @@ class BraveNewsTabHelper
 
   void SetDefaultFeedForTesting(brave_news::mojom::PublisherPtr publisher);
 
+  // Runs `callback` once the next DOMContentLoaded() of the primary main frame
+  // has finished feed detection. The argument is whether a fetch was issued:
+  // false when detection is skipped (the opt-in gate), otherwise true after
+  // the feed URLs were received.
+  void SetDetectionFinishedCallbackForTesting(
+      base::OnceCallback<void(bool)> callback);
+
   void AddObserver(PageFeedsObserver* observer);
   void RemoveObserver(PageFeedsObserver* observer);
 
@@ -113,6 +121,8 @@ class BraveNewsTabHelper
   void ResetPageFeeds();
 
   bool ShouldFindFeeds();
+  void OnRssLinksFetched(const GURL& site_url, std::vector<GURL> feed_urls);
+  void NotifyDetectionFinished(bool fetched);
   void OnReceivedNewPublishers(brave_news::MojomPublishers publishers);
   void AvailableFeedsChanged();
   void UpdatePageFeed();
@@ -120,6 +130,8 @@ class BraveNewsTabHelper
   raw_ptr<brave_news::BraveNewsController> controller_;
 
   std::vector<FeedDetails> rss_page_feeds_;
+
+  base::OnceCallback<void(bool)> detection_finished_callback_for_testing_;
 
   // The (optional) publisher associated with this page from our
   // PublishersController. This may be duplicated by one of the

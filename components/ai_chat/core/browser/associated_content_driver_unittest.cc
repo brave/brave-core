@@ -8,14 +8,13 @@
 #include <optional>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 #include "base/functional/bind.h"
 #include "base/location.h"
-#include "base/run_loop.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
 #include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
@@ -92,22 +91,11 @@ class AssociatedContentDriverUnitTest : public ::testing::Test {
 };
 
 TEST_F(AssociatedContentDriverUnitTest, GetContent) {
-  base::MockCallback<GetPageContentCallback> callback1;
-  base::MockCallback<GetPageContentCallback> callback2;
-  base::MockCallback<GetPageContentCallback> callback3;
-
-  EXPECT_CALL(callback1,
-              Run(PageContent("content", mojom::ContentType::PageContent)))
-      .Times(1);
-  EXPECT_CALL(callback2,
-              Run(PageContent("content", mojom::ContentType::PageContent)))
-      .Times(1);
-  EXPECT_CALL(callback3,
-              Run(PageContent("content", mojom::ContentType::PageContent)))
-      .Times(1);
+  base::test::TestFuture<PageContent> future1;
+  base::test::TestFuture<PageContent> future2;
+  base::test::TestFuture<PageContent> future3;
 
   // Should only ask content once
-  base::RunLoop run_loop;
   EXPECT_CALL(*associated_content_driver_, GetPageContent(_, _))
       .WillOnce([&](AssociatedContentDriver::FetchPageContentCallback callback,
                     std::string_view invalidation_token) {
@@ -122,14 +110,15 @@ TEST_F(AssociatedContentDriverUnitTest, GetContent) {
       });
 
   // Test
-  associated_content_driver_->GetContent(callback1.Get());
-  associated_content_driver_->GetContent(callback2.Get());
-  associated_content_driver_->GetContent(callback3.Get());
+  associated_content_driver_->GetContent(future1.GetCallback());
+  associated_content_driver_->GetContent(future2.GetCallback());
+  associated_content_driver_->GetContent(future3.GetCallback());
 
   // Block until content is "fetched"
-  run_loop.RunUntilIdle();
-
-  task_environment_.RunUntilIdle();
+  const PageContent expected("content", mojom::ContentType::PageContent);
+  EXPECT_EQ(future1.Get(), expected);
+  EXPECT_EQ(future2.Get(), expected);
+  EXPECT_EQ(future3.Get(), expected);
   testing::Mock::VerifyAndClearExpectations(associated_content_driver_.get());
 }
 
@@ -142,17 +131,16 @@ TEST_F(AssociatedContentDriverUnitTest, GetStagedEntriesFromContent) {
   EXPECT_CALL(*associated_content_driver_, GetSearchSummarizerKey)
       .WillOnce(base::test::RunOnceCallback<0>("key"));
 
-  // Expect a result
-  base::MockCallback<GetStagedEntriesCallback> callback;
-  EXPECT_CALL(
-      callback,
-      Run(Optional(ElementsAre(Eq(SearchQuerySummary("query", "summary"))))))
-      .Times(1);
-
   // Test
-  associated_content_driver_->GetStagedEntriesFromContent(callback.Get());
+  base::test::TestFuture<std::optional<std::vector<SearchQuerySummary>>> future;
+  associated_content_driver_->GetStagedEntriesFromContent(
+      future.GetCallback<
+          const std::optional<std::vector<SearchQuerySummary>>&>());
 
-  task_environment_.RunUntilIdle();
+  // Expect a result
+  EXPECT_THAT(
+      future.Get(),
+      Optional(ElementsAre(Eq(SearchQuerySummary("query", "summary")))));
   testing::Mock::VerifyAndClearExpectations(associated_content_driver_.get());
 }
 
@@ -164,12 +152,12 @@ TEST_F(AssociatedContentDriverUnitTest,
   associated_content_driver_->SetUrl(GURL("https://search.brave.com"));
   EXPECT_CALL(*associated_content_driver_, GetSearchSummarizerKey).Times(0);
 
-  base::MockCallback<GetStagedEntriesCallback> callback;
-  EXPECT_CALL(callback, Run(Eq(std::nullopt))).Times(1);
+  base::test::TestFuture<std::optional<std::vector<SearchQuerySummary>>> future;
+  associated_content_driver_->GetStagedEntriesFromContent(
+      future.GetCallback<
+          const std::optional<std::vector<SearchQuerySummary>>&>());
 
-  associated_content_driver_->GetStagedEntriesFromContent(callback.Get());
-
-  task_environment_.RunUntilIdle();
+  EXPECT_EQ(future.Get(), std::nullopt);
   testing::Mock::VerifyAndClearExpectations(associated_content_driver_.get());
 }
 
@@ -179,12 +167,12 @@ TEST_F(AssociatedContentDriverUnitTest, GetStagedEntriesFromContent_NoKey) {
   EXPECT_CALL(*associated_content_driver_, GetSearchSummarizerKey)
       .WillOnce(base::test::RunOnceCallback<0>(std::nullopt));
 
-  base::MockCallback<GetStagedEntriesCallback> callback;
-  EXPECT_CALL(callback, Run(Eq(std::nullopt))).Times(1);
+  base::test::TestFuture<std::optional<std::vector<SearchQuerySummary>>> future;
+  associated_content_driver_->GetStagedEntriesFromContent(
+      future.GetCallback<
+          const std::optional<std::vector<SearchQuerySummary>>&>());
 
-  associated_content_driver_->GetStagedEntriesFromContent(callback.Get());
-
-  task_environment_.RunUntilIdle();
+  EXPECT_EQ(future.Get(), std::nullopt);
   testing::Mock::VerifyAndClearExpectations(associated_content_driver_.get());
 }
 
@@ -195,12 +183,12 @@ TEST_F(AssociatedContentDriverUnitTest, GetStagedEntriesFromContent_NoResult) {
   EXPECT_CALL(*associated_content_driver_, GetSearchSummarizerKey)
       .WillOnce(base::test::RunOnceCallback<0>("key"));
 
-  base::MockCallback<GetStagedEntriesCallback> callback;
-  EXPECT_CALL(callback, Run(Eq(std::nullopt))).Times(1);
+  base::test::TestFuture<std::optional<std::vector<SearchQuerySummary>>> future;
+  associated_content_driver_->GetStagedEntriesFromContent(
+      future.GetCallback<
+          const std::optional<std::vector<SearchQuerySummary>>&>());
 
-  associated_content_driver_->GetStagedEntriesFromContent(callback.Get());
-
-  task_environment_.RunUntilIdle();
+  EXPECT_EQ(future.Get(), std::nullopt);
   testing::Mock::VerifyAndClearExpectations(associated_content_driver_.get());
 }
 

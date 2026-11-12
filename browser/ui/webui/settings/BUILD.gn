@@ -80,6 +80,7 @@ source_set("browser_tests") {
     ]
 
     deps = [
+      "//base/test:test_support",
       "//brave/ui/webui/custom_profile_image/buildflags",
       "//chrome/browser/ui/webui/settings",
       "//chrome/test:test_support",

@@ -310,14 +310,19 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreNotFoundWhenNotOptedIn) {
   auto* tab_helper = BraveNewsTabHelper::From(
       tabs::TabInterface::MaybeGetFromContents(contents()));
 
+  // We can't use WaitForFeedsChanged here because empty results are never
+  // notified. Wait on the tab helper's own signal, raised when it finishes (or
+  // skips) detection for the page. The page does have feeds, so a broken opt-in
+  // gate would issue a fetch.
+  base::test::TestFuture<bool> detection_future;
+  tab_helper->SetDetectionFinishedCallbackForTesting(
+      detection_future.GetCallback());
+
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), rss_page_url, WindowOpenDisposition::kCurrentTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
-  // We run until idle here rather than using the Waiter because we want the
-  // load to complete before notifying, and we don't notify empty results.
-  base::RunLoop().RunUntilIdle();
-
+  EXPECT_FALSE(detection_future.Get()) << "Feed detection ran while opted out";
   ASSERT_EQ(0u, tab_helper->GetAvailableFeedUrls().size());
 }
 

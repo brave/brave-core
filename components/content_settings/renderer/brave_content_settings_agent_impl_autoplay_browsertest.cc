@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/memory/raw_ptr.h"
+#include "base/test/run_until.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
@@ -135,7 +136,8 @@ TEST_F(BraveContentSettingsAgentImplAutoplayBrowserTest,
   MockContentSettingsAgentImpl agent(GetMainRenderFrame());
   agent.SetRendererContentSettingRulesForTest(content_setting_rules);
   EXPECT_FALSE(agent.AllowAutoplay(true));
-  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return agent.on_content_blocked_count() == 1; }));
   EXPECT_EQ(1, agent.on_content_blocked_count());
   EXPECT_EQ(ContentSettingsType::AUTOPLAY, agent.on_content_blocked_type());
 
@@ -178,7 +180,8 @@ TEST_F(BraveContentSettingsAgentImplAutoplayBrowserTest,
           content_settings::ProviderType::kNone, false));
   agent.SetRendererContentSettingRulesForTest(content_setting_rules);
   EXPECT_FALSE(agent.AllowAutoplay(true));
-  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return agent.on_content_blocked_count() == 1; }));
   EXPECT_EQ(1, agent.on_content_blocked_count());
   EXPECT_EQ(ContentSettingsType::AUTOPLAY, agent.on_content_blocked_type());
 }

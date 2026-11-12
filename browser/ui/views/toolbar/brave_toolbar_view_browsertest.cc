@@ -434,7 +434,6 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
   EXPECT_EQ(1U, GlobalBrowserCollection::GetInstance()->GetSize());
   ui_test_utils::BrowserCreatedObserver browser_creation_observer;
   profiles::SwitchToGuestProfile(base::DoNothing());
-  base::RunLoop().RunUntilIdle();
   browser_creation_observer.Wait();
   EXPECT_EQ(2U, GlobalBrowserCollection::GetInstance()->GetSize());
 
@@ -444,7 +443,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
 
   // Access the browser with the Guest profile and re-init test for it.
   BrowserWindowInterface* browser = ui_test_utils::FindAnyBrowser(guest, true);
-  EXPECT_TRUE(browser);
+  ASSERT_TRUE(browser);
   Init(browser);
   EXPECT_EQ(false, is_ai_chat_button_shown(browser));
 }
@@ -565,7 +564,6 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, AvatarButtonIsShownGuestProfile) {
   EXPECT_EQ(1U, GlobalBrowserCollection::GetInstance()->GetSize());
   ui_test_utils::BrowserCreatedObserver browser_creation_observer;
   profiles::SwitchToGuestProfile(base::DoNothing());
-  base::RunLoop().RunUntilIdle();
   browser_creation_observer.Wait();
   EXPECT_EQ(2U, GlobalBrowserCollection::GetInstance()->GetSize());
 
@@ -575,7 +573,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, AvatarButtonIsShownGuestProfile) {
 
   // Access the browser with the Guest profile and re-init test for it.
   BrowserWindowInterface* browser = ui_test_utils::FindAnyBrowser(guest, true);
-  EXPECT_TRUE(browser);
+  ASSERT_TRUE(browser);
   Init(browser);
   EXPECT_EQ(true, is_avatar_button_shown());
 }
@@ -605,14 +603,13 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
       base::DoNothing(),
       /*always_create=*/false,
       /*is_new_profile=*/true, /*open_command_line_urls=*/false, &new_profile);
-  base::RunLoop().RunUntilIdle();
   browser_creation_observer.Wait();
   EXPECT_EQ(2U, GlobalBrowserCollection::GetInstance()->GetSize());
 
   // Check it's shown in second profile
   BrowserWindowInterface* browser =
       ui_test_utils::FindAnyBrowser(&new_profile, true);
-  EXPECT_TRUE(browser);
+  ASSERT_TRUE(browser);
   Init(browser);
   EXPECT_EQ(true, is_avatar_button_shown());
 
@@ -622,8 +619,11 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   ASSERT_TRUE(!!avatar);
   views::View* app_menu = toolbar_view_->app_menu_button();
   ASSERT_TRUE(!!app_menu);
-  EXPECT_EQ(toolbar_view_->GetIndexOf(avatar).value(),
-            toolbar_view_->GetIndexOf(app_menu).value() - 1ul);
+  const auto avatar_index = toolbar_view_->GetIndexOf(avatar);
+  const auto app_menu_index = toolbar_view_->GetIndexOf(app_menu);
+  ASSERT_TRUE(avatar_index.has_value());
+  ASSERT_TRUE(app_menu_index.has_value());
+  EXPECT_EQ(*avatar_index + 1, *app_menu_index);
 
   // Check avatar button's size.
   const int avatar_size =
@@ -920,8 +920,18 @@ class BraveToolbarViewTest_WorkspacesEnabled : public BraveToolbarViewTest {
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
+class BraveToolbarViewTest_WorkspacesDisabled : public BraveToolbarViewTest {
+ public:
+  BraveToolbarViewTest_WorkspacesDisabled() {
+    scoped_feature_list_.InitAndDisableFeature(features::kWorkspaces);
+  }
+
+ protected:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
 // Without kWorkspaces the button is never created.
-IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_WorkspacesDisabled,
                        WorkspacesButtonAbsentWhenFeatureDisabled) {
   EXPECT_EQ(toolbar_view_->workspaces_button_for_testing(), nullptr);
 }

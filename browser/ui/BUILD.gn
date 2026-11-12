@@ -1682,6 +1682,7 @@ source_set("unit_tests") {
       sources += [ "views/toolbar/brave_vpn_button_unittest.cc" ]
       deps += [
         "//base",
+        "//brave/app/vector_icons",
         "//brave/browser/brave_vpn",
         "//brave/components/brave_vpn/browser",
         "//brave/components/skus/browser",

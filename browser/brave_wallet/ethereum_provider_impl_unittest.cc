@@ -165,23 +165,13 @@ class TestEventsListener : public brave_wallet::mojom::EventsListener {
     last_message_ = std::move(result);
   }
 
-  bool AccountsChangedFired() const {
-    base::RunLoop().RunUntilIdle();
-    return accounts_changed_fired_;
-  }
+  bool AccountsChangedFired() const { return accounts_changed_fired_; }
 
-  bool MessageEventFired() const {
-    base::RunLoop().RunUntilIdle();
-    return message_event_fired_;
-  }
+  bool MessageEventFired() const { return message_event_fired_; }
 
-  base::Value GetLastMessage() const {
-    base::RunLoop().RunUntilIdle();
-    return last_message_.Clone();
-  }
+  base::Value GetLastMessage() const { return last_message_.Clone(); }
 
   std::vector<std::string> GetLowercaseAccounts() const {
-    base::RunLoop().RunUntilIdle();
     return lowercase_accounts_;
   }
 
@@ -193,8 +183,6 @@ class TestEventsListener : public brave_wallet::mojom::EventsListener {
     lowercase_accounts_.clear();
     accounts_changed_fired_ = false;
     message_event_fired_ = false;
-    EXPECT_FALSE(AccountsChangedFired());
-    EXPECT_FALSE(MessageEventFired());
   }
 
   bool accounts_changed_fired_ = false;
@@ -344,6 +332,10 @@ class EthereumProviderImplUnitTest : public testing::Test {
 
     auto added_accounts =
         keyring_service()->AddHardwareAccountsSync(std::move(hw_accounts));
+    if (added_accounts.empty()) {
+      ADD_FAILURE() << "AddHardwareAccountsSync returned no accounts";
+      return nullptr;
+    }
     return std::move(added_accounts[0]);
   }
 
@@ -353,9 +345,16 @@ class EthereumProviderImplUnitTest : public testing::Test {
     EXPECT_TRUE(future.Get());
   }
 
-  void Lock() {
-    keyring_service()->Lock();
-    browser_task_environment_.RunUntilIdle();
+  void Lock() { keyring_service()->Lock(); }
+
+  // Events reach the listener over mojo; wait for them explicitly.
+  bool WaitForAccountsChanged() {
+    return base::test::RunUntil(
+        [&] { return observer_->AccountsChangedFired(); });
+  }
+
+  bool WaitForMessageEvent() {
+    return base::test::RunUntil([&] { return observer_->MessageEventFired(); });
   }
 
   void SetSelectedAccount(const mojom::AccountIdPtr& account_id) {
@@ -1195,8 +1194,6 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionNoChainId) {
   GURL url("https://brave.com");
   Navigate(url);
   SetNetwork(mojom::kSepoliaChainId, GetOrigin());
-  // Wait for EthTxStateManager::ChainChangedEvent to be called.
-  browser_task_environment_.RunUntilIdle();
 
   AddEthereumPermission(account_0->account_id);
   auto json_request = ParseJson(absl::StrFormat(
@@ -1317,7 +1314,6 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionNoPermission) {
 }
 
 TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoPermission) {
-  bool permission_callback_called = false;
   CreateWallet();
   GetAccountUtils().EnsureEthAccount(0);
 
@@ -1329,21 +1325,18 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoPermission) {
   host_content_settings_map()->SetContentSettingDefaultScope(
       url, url, ContentSettingsType::BRAVE_ETHEREUM, CONTENT_SETTING_BLOCK);
 
-  provider()->RequestEthereumPermissions(
-      base::BindLambdaForTesting(
-          [&](mojom::EthereumProviderResponsePtr response) {
-            mojom::ProviderError error = mojom::ProviderError::kUnknown;
-            std::string error_message;
-            GetErrorCodeMessage(std::move(response->formed_response), &error,
-                                &error_message);
-            EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
-            EXPECT_EQ(error_message, l10n_util::GetStringUTF8(
-                                         IDS_WALLET_USER_REJECTED_REQUEST));
-            permission_callback_called = true;
-          }),
-      base::Value(), "");
-  browser_task_environment_.RunUntilIdle();
-  EXPECT_TRUE(permission_callback_called);
+  base::test::TestFuture<mojom::EthereumProviderResponsePtr> permission_future;
+  provider()->RequestEthereumPermissions(permission_future.GetCallback(),
+                                         base::Value(), "");
+  auto permission_response = permission_future.Take();
+  ASSERT_TRUE(permission_response);
+  mojom::ProviderError error = mojom::ProviderError::kUnknown;
+  std::string error_message;
+  GetErrorCodeMessage(std::move(permission_response->formed_response), &error,
+                      &error_message);
+  EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
 }
 
 // The provider isn't injected without a wallet, but the request must still fail
@@ -1440,30 +1433,21 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsLocked) {
   // Allowed accounts are empty when locked
   EXPECT_THAT(GetAllowedAccounts(false), IsEmpty());
   EXPECT_THAT(GetAllowedAccounts(true), ElementsAre(address_0));
-  std::vector<std::string> allowed_accounts;
-  base::RunLoop run_loop;
-  provider()->RequestEthereumPermissions(
-      base::BindLambdaForTesting(
-          [&](mojom::EthereumProviderResponsePtr response) {
-            if (response->formed_response.GetList().size() != 0) {
-              std::string stylesheet = "";
-              for (auto& account : response->formed_response.GetList()) {
-                allowed_accounts.push_back(account.GetString());
-              }
-            }
-            run_loop.Quit();
-          }),
-      base::Value(), "");
-  // Wait for KeyringService::GetSelectedAccount called by
-  // BraveWalletProviderDelegateImpl::GetAllowedAccounts
-  browser_task_environment_.RunUntilIdle();
-
-  EXPECT_TRUE(keyring_service()->HasPendingUnlockRequest());
+  base::test::TestFuture<mojom::EthereumProviderResponsePtr> permission_future;
+  provider()->RequestEthereumPermissions(permission_future.GetCallback(),
+                                         base::Value(), "");
+  ASSERT_TRUE(keyring_service()->HasPendingUnlockRequest());
   // Allowed accounts are still empty when locked
   EXPECT_THAT(GetAllowedAccounts(false), IsEmpty());
   EXPECT_THAT(GetAllowedAccounts(true), ElementsAre(address_0));
   Unlock();
-  run_loop.Run();
+  auto permission_response = permission_future.Take();
+  ASSERT_TRUE(permission_response);
+  ASSERT_TRUE(permission_response->formed_response.is_list());
+  std::vector<std::string> allowed_accounts;
+  for (const auto& account : permission_response->formed_response.GetList()) {
+    allowed_accounts.push_back(account.GetString());
+  }
 
   EXPECT_FALSE(keyring_service()->HasPendingUnlockRequest());
   EXPECT_THAT(allowed_accounts, ElementsAre(address_0));
@@ -1971,6 +1955,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
   std::string hardware = "0xA99D71De40D67394eBe68e4D0265cA6C9D421029";
   auto account_hw = AddHardwareAccount(hardware);
+  ASSERT_TRUE(account_hw);
 
   GURL url("https://brave.com");
   Navigate(url);
@@ -2003,7 +1988,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
   const std::string message2_in_queue = "A unicode Ǝ string ñ";
   const std::string message3_in_queue = "0xbeef03";
 
-  EXPECT_EQ(GetSignMessageQueueSize(), 3u);
+  ASSERT_EQ(GetSignMessageQueueSize(), 3u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id1);
   EXPECT_EQ(GetSignMessageQueueFront()
                 ->sign_data->get_eth_standard_sign_data()
@@ -2026,7 +2011,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
   // wrong order
   brave_wallet_service_->NotifySignMessageRequestProcessed(true, id2, nullptr,
                                                            std::nullopt);
-  EXPECT_EQ(GetSignMessageQueueSize(), 3u);
+  ASSERT_EQ(GetSignMessageQueueSize(), 3u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id1);
   EXPECT_EQ(GetSignMessageQueueFront()
                 ->sign_data->get_eth_standard_sign_data()
@@ -2035,7 +2020,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
 
   brave_wallet_service_->NotifySignMessageRequestProcessed(true, id3, nullptr,
                                                            std::nullopt);
-  EXPECT_EQ(GetSignMessageQueueSize(), 3u);
+  ASSERT_EQ(GetSignMessageQueueSize(), 3u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id1);
   EXPECT_EQ(GetSignMessageQueueFront()
                 ->sign_data->get_eth_standard_sign_data()
@@ -2044,7 +2029,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
 
   brave_wallet_service_->NotifySignMessageRequestProcessed(true, id1, nullptr,
                                                            std::nullopt);
-  EXPECT_EQ(GetSignMessageQueueSize(), 2u);
+  ASSERT_EQ(GetSignMessageQueueSize(), 2u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id2);
   EXPECT_EQ(GetSignMessageQueueFront()
                 ->sign_data->get_eth_standard_sign_data()
@@ -2064,7 +2049,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
   // old id
   brave_wallet_service_->NotifySignMessageRequestProcessed(true, id1, nullptr,
                                                            std::nullopt);
-  EXPECT_EQ(GetSignMessageQueueSize(), 2u);
+  ASSERT_EQ(GetSignMessageQueueSize(), 2u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id2);
   EXPECT_EQ(GetSignMessageQueueFront()
                 ->sign_data->get_eth_standard_sign_data()
@@ -2073,7 +2058,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
 
   brave_wallet_service_->NotifySignMessageRequestProcessed(true, id2, nullptr,
                                                            std::nullopt);
-  EXPECT_EQ(GetSignMessageQueueSize(), 1u);
+  ASSERT_EQ(GetSignMessageQueueSize(), 1u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id3);
   EXPECT_EQ(GetSignMessageQueueFront()
                 ->sign_data->get_eth_standard_sign_data()
@@ -2097,26 +2082,34 @@ TEST_F(EthereumProviderImplUnitTest, ChainChangedEvent) {
   GURL url("https://brave.com");
   Navigate(url);
 
-  EXPECT_CALL(*observer_, ChainChangedEvent(mojom::kSepoliaChainId)).Times(1);
+  base::test::TestFuture<void> sepolia_changed;
+  EXPECT_CALL(*observer_, ChainChangedEvent(mojom::kSepoliaChainId))
+      .WillOnce([&] { sepolia_changed.SetValue(); });
   SetNetwork(mojom::kSepoliaChainId, std::nullopt);
-  browser_task_environment_.RunUntilIdle();
+  ASSERT_TRUE(sepolia_changed.Wait());
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(observer_.get()));
 
   // Works a second time
-  EXPECT_CALL(*observer_, ChainChangedEvent(mojom::kMainnetChainId)).Times(1);
+  base::test::TestFuture<void> mainnet_changed;
+  EXPECT_CALL(*observer_, ChainChangedEvent(mojom::kMainnetChainId))
+      .WillOnce([&] { mainnet_changed.SetValue(); });
   SetNetwork(mojom::kMainnetChainId, std::nullopt);
-  browser_task_environment_.RunUntilIdle();
+  ASSERT_TRUE(mainnet_changed.Wait());
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(observer_.get()));
 
-  EXPECT_CALL(*observer_, ChainChangedEvent(mojom::kSepoliaChainId)).Times(1);
+  base::test::TestFuture<void> origin_sepolia_changed;
+  EXPECT_CALL(*observer_, ChainChangedEvent(mojom::kSepoliaChainId))
+      .WillOnce([&] { origin_sepolia_changed.SetValue(); });
   SetNetwork(mojom::kSepoliaChainId, GetOrigin());
-  browser_task_environment_.RunUntilIdle();
+  ASSERT_TRUE(origin_sepolia_changed.Wait());
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(observer_.get()));
 
   // SetNetwork for other origin will be ignored.
   EXPECT_CALL(*observer_, ChainChangedEvent(testing::_)).Times(0);
   SetNetwork(mojom::kBnbSmartChainMainnetChainId,
              url::Origin::Create(GURL("https://a.com")));
+  // Proves a negative (no event is delivered), so there is no completion
+  // signal to wait on; drain the queue.
   browser_task_environment_.RunUntilIdle();
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(observer_.get()));
 }
@@ -2131,28 +2124,31 @@ TEST_F(EthereumProviderImplUnitTest, AccountsChangedEvent) {
   Navigate(url);
   EXPECT_FALSE(observer_->AccountsChangedFired());
   AddEthereumPermission(account_0->account_id);
-  EXPECT_TRUE(observer_->AccountsChangedFired());
+  ASSERT_TRUE(WaitForAccountsChanged());
   EXPECT_THAT(observer_->GetLowercaseAccounts(), ElementsAre(address_0));
   observer_->Reset();
 
   // Locking the account fires an event change with no accounts
   Lock();
-  EXPECT_TRUE(observer_->AccountsChangedFired());
+  ASSERT_TRUE(WaitForAccountsChanged());
   EXPECT_EQ(std::vector<std::string>(), observer_->GetLowercaseAccounts());
   observer_->Reset();
 
   // Unlocking also fires an event wit the same account list as before
   Unlock();
-  EXPECT_TRUE(observer_->AccountsChangedFired());
+  ASSERT_TRUE(WaitForAccountsChanged());
   EXPECT_THAT(observer_->GetLowercaseAccounts(), ElementsAre(address_0));
   observer_->Reset();
 
   // Does not fire for a different origin that has no permissions
   Navigate(GURL("https://bravesoftware.com"));
   AddEthereumPermission(account_1->account_id);
-  EXPECT_TRUE(observer_->AccountsChangedFired());
+  ASSERT_TRUE(WaitForAccountsChanged());
   observer_->Reset();
   SetSelectedAccount(account_0->account_id);
+  // Proves a negative (no event is delivered), so there is no completion
+  // signal to wait on; drain the queue.
+  browser_task_environment_.RunUntilIdle();
   EXPECT_FALSE(observer_->AccountsChangedFired());
 }
 
@@ -2206,7 +2202,7 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribe) {
   std::string first_subscription = *response.second.GetIfString();
   browser_task_environment_.FastForwardBy(
       base::Seconds(kBlockTrackerDefaultTimeInSeconds));
-  EXPECT_TRUE(observer_->MessageEventFired());
+  ASSERT_TRUE(WaitForMessageEvent());
   base::Value rv = observer_->GetLastMessage();
   ASSERT_TRUE(rv.is_dict());
   auto& dict = rv.GetDict();
@@ -2296,7 +2292,7 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogs) {
   std::string first_subscription = *response.second.GetIfString();
   browser_task_environment_.FastForwardBy(
       base::Seconds(kLogTrackerDefaultTimeInSeconds));
-  EXPECT_TRUE(observer_->MessageEventFired());
+  ASSERT_TRUE(WaitForMessageEvent());
   base::Value rv = observer_->GetLastMessage();
   ASSERT_TRUE(rv.is_dict());
 
@@ -2377,7 +2373,7 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogsFiltered) {
   std::string subscription = *response.second.GetIfString();
   browser_task_environment_.FastForwardBy(
       base::Seconds(kLogTrackerDefaultTimeInSeconds));
-  EXPECT_TRUE(observer_->MessageEventFired());
+  ASSERT_TRUE(WaitForMessageEvent());
   base::Value rv = observer_->GetLastMessage();
   ASSERT_TRUE(rv.is_dict());
 
@@ -2422,40 +2418,37 @@ TEST_F(EthereumProviderImplUnitTest, AccountsChangedEventSelectedAccount) {
 
   // Multiple accounts can be returned
   AddEthereumPermission(account_0->account_id);
-  // Wait for KeyringService::GetSelectedAccount called by
-  // BraveWalletProviderDelegateImpl::GetAllowedAccounts
-  browser_task_environment_.RunUntilIdle();
   AddEthereumPermission(account_1->account_id);
-  // Wait for KeyringService::GetSelectedAccount called by
-  // BraveWalletProviderDelegateImpl::GetAllowedAccounts
-  browser_task_environment_.RunUntilIdle();
-  EXPECT_TRUE(observer_->AccountsChangedFired());
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return observer_->AccountsChangedFired() &&
+           observer_->GetLowercaseAccounts().size() == 2u;
+  }));
   EXPECT_THAT(observer_->GetLowercaseAccounts(),
               ElementsAre(address_0, address_1));
   observer_->Reset();
 
   // Changing the selected account only returns that account
   SetSelectedAccount(account_0->account_id);
-  EXPECT_TRUE(observer_->AccountsChangedFired());
+  ASSERT_TRUE(WaitForAccountsChanged());
   EXPECT_THAT(observer_->GetLowercaseAccounts(), ElementsAre(address_0));
   observer_->Reset();
 
   // Changing to a different allowed account only returns that account
   SetSelectedAccount(account_1->account_id);
-  EXPECT_TRUE(observer_->AccountsChangedFired());
+  ASSERT_TRUE(WaitForAccountsChanged());
   EXPECT_THAT(observer_->GetLowercaseAccounts(), ElementsAre(address_1));
   observer_->Reset();
 
   // Changing gto a not allowed account returns all allowed accounts
   SetSelectedAccount(account_2->account_id);
-  EXPECT_TRUE(observer_->AccountsChangedFired());
+  ASSERT_TRUE(WaitForAccountsChanged());
   EXPECT_THAT(observer_->GetLowercaseAccounts(),
               ElementsAre(address_0, address_1));
   observer_->Reset();
 
   // Resetting with multiple accounts works
   ResetEthereumPermission(account_1->account_id);
-  EXPECT_TRUE(observer_->AccountsChangedFired());
+  ASSERT_TRUE(WaitForAccountsChanged());
   EXPECT_THAT(observer_->GetLowercaseAccounts(), ElementsAre(address_0));
   observer_->Reset();
 }
@@ -2524,6 +2517,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageHardware) {
   CreateWallet();
   std::string address = "0xA99D71De40D67394eBe68e4D0265cA6C9D421029";
   auto added_hw_account = AddHardwareAccount(address);
+  ASSERT_TRUE(added_hw_account);
   mojom::EthereumSignatureBytesPtr signature;
   const mojom::EthereumSignatureBytesPtr expected_signature =
       mojom::EthereumSignatureBytes::New(
@@ -2766,32 +2760,18 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthCoinbase) {
   EXPECT_EQ(response.first, false);
   EXPECT_EQ(response.second, base::Value());
 
-  std::vector<std::string> allowed_accounts;
-  base::RunLoop run_loop;
-  provider()->RequestEthereumPermissions(
-      base::BindLambdaForTesting(
-          [&](mojom::EthereumProviderResponsePtr response) {
-            if (response->formed_response.GetList().size() != 0) {
-              std::string stylesheet = "";
-              for (auto& account : response->formed_response.GetList()) {
-                allowed_accounts.push_back(account.GetString());
-              }
-            }
-            run_loop.Quit();
-          }),
-      base::Value(), "");
-  // Wait for KeyringService::GetSelectedAccount called by
-  // BraveWalletProviderDelegateImpl::GetAllowedAccounts
-  browser_task_environment_.RunUntilIdle();
-
-  EXPECT_TRUE(keyring_service()->HasPendingUnlockRequest());
+  base::test::TestFuture<mojom::EthereumProviderResponsePtr> permission_future;
+  provider()->RequestEthereumPermissions(permission_future.GetCallback(),
+                                         base::Value(), "");
+  ASSERT_TRUE(keyring_service()->HasPendingUnlockRequest());
   // eth_coinbase account is still empty when locked
   response = CommonRequestOrSendAsync(ParseJson(request_payload_json));
   EXPECT_EQ(response.first, false);
   EXPECT_EQ(response.second, base::Value());
 
   Unlock();
-  run_loop.Run();
+  auto permission_response = permission_future.Take();
+  ASSERT_TRUE(permission_response);
 
   // eth_coinbase should now return the account since the account is
   // allowed and the wallet is unlocked

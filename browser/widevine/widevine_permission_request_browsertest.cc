@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "base/check.h"
+#include "base/auto_reset.h"
 #include "base/path_service.h"
 #include "base/test/run_until.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -18,6 +18,7 @@
 #include "brave/components/permissions/permission_widevine_utils.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/widevine/constants.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/resource_coordinator/lifecycle_unit_state.mojom.h"
@@ -42,9 +43,13 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
-#include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
+#include "ui/views/controls/button/checkbox.h"
+#include "ui/views/controls/label.h"
+#include "ui/views/view.h"
+#include "ui/views/view_utils.h"
 #include "ui/views/widget/widget.h"
 #include "url/gurl.h"
 
@@ -105,6 +110,15 @@ class WidevinePermissionRequestBrowserTest : public InProcessBrowserTest {
         GetActiveWebContents()->GetPrimaryMainFrame());
   }
 
+  // A request that is accepted is queued synchronously by AddRequest() and
+  // only shown from a posted task, so an empty queue right after the call means
+  // that no prompt can ever follow from it.
+  void ExpectNoPermissionRequestQueued() {
+    EXPECT_FALSE(GetPermissionRequestManager()->has_pending_requests());
+    EXPECT_FALSE(GetPermissionRequestManager()->IsRequestInProgress());
+    EXPECT_FALSE(observer.bubble_added_);
+  }
+
   TestObserver observer;
   std::unique_ptr<test::PermissionRequestManagerTestApi> test_api_;
 };
@@ -115,22 +129,20 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
 
   // Check permission bubble is visible.
   SimulateWidevineKeySystemAccessRequest();
-  content::RunAllTasksUntilIdle();
-  EXPECT_TRUE(observer.bubble_added_);
+  ASSERT_TRUE(base::test::RunUntil([&] { return observer.bubble_added_; }));
 
-  // Check permission is not requested again for same site.
+  // Check permission is not requested again for same site. The request is
+  // queued synchronously if it is accepted at all, so nothing is pending.
   observer.bubble_added_ = false;
   SimulateWidevineKeySystemAccessRequest();
-  content::RunAllTasksUntilIdle();
-  EXPECT_FALSE(observer.bubble_added_);
+  ExpectNoPermissionRequestQueued();
 
   // Check permission is requested again after new navigation.
   observer.bubble_added_ = false;
   EXPECT_TRUE(
       content::NavigateToURL(GetActiveWebContents(), GURL("chrome://newtab/")));
   SimulateWidevineKeySystemAccessRequest();
-  content::RunAllTasksUntilIdle();
-  EXPECT_TRUE(observer.bubble_added_);
+  ASSERT_TRUE(base::test::RunUntil([&] { return observer.bubble_added_; }));
 
   // Check permission bubble is not visible when user turns it off.
   observer.bubble_added_ = false;
@@ -140,8 +152,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
   EXPECT_TRUE(
       content::NavigateToURL(GetActiveWebContents(), GURL("chrome://newtab/")));
   SimulateWidevineKeySystemAccessRequest();
-  content::RunAllTasksUntilIdle();
-  EXPECT_FALSE(observer.bubble_added_);
+  ExpectNoPermissionRequestQueued();
 
   // Check permission bubble is visible when user turns it on.
   observer.bubble_added_ = false;
@@ -151,8 +162,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
   EXPECT_TRUE(
       content::NavigateToURL(GetActiveWebContents(), GURL("chrome://newtab/")));
   SimulateWidevineKeySystemAccessRequest();
-  content::RunAllTasksUntilIdle();
-  EXPECT_TRUE(observer.bubble_added_);
+  ASSERT_TRUE(base::test::RunUntil([&] { return observer.bubble_added_; }));
 }
 
 // Check extra text is added.
@@ -160,20 +170,35 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, BubbleTest) {
   auto* permission_request_manager = GetPermissionRequestManager();
   EXPECT_FALSE(permission_request_manager->IsRequestInProgress());
   SimulateWidevineKeySystemAccessRequest();
-  content::RunAllTasksUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil([&] { return observer.bubble_added_; }));
   EXPECT_TRUE(permission_request_manager->IsRequestInProgress());
 
   views::Widget* widget = test_api_->GetPromptWindow();
-  DCHECK(widget);
+  ASSERT_TRUE(widget);
 
   auto* delegate_view =
       static_cast<views::BubbleDialogDelegateView*>(widget->widget_delegate());
-  DCHECK(delegate_view);
-  // Original PermissionsBubbleDialogDelegateView has one child.
-  // It's label that includes icon and fragment test.
-  // For widevine permission requests, two more child views are added.
-  // one for extra label and the other one is do not ask checkbox.
-  EXPECT_EQ(3ul, delegate_view->children().size());
+  ASSERT_TRUE(delegate_view);
+  // For widevine permission requests, an extra explanatory label and a do not
+  // ask checkbox are added to the bubble.
+  const auto& requests = permission_request_manager->Requests();
+  ASSERT_EQ(1u, requests.size());
+  const std::u16string explanatory_text =
+      static_cast<WidevinePermissionRequest*>(requests[0].get())
+          ->GetExplanatoryMessageText();
+  const std::u16string dont_ask_text =
+      l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_DONT_ASK_AGAIN_CHECKBOX);
+  bool found_label = false;
+  bool found_checkbox = false;
+  for (views::View* child : delegate_view->children()) {
+    if (auto* label = views::AsViewClass<views::Label>(child)) {
+      found_label |= std::u16string(label->GetText()) == explanatory_text;
+    } else if (auto* checkbox = views::AsViewClass<views::Checkbox>(child)) {
+      found_checkbox |= std::u16string(checkbox->GetText()) == dont_ask_text;
+    }
+  }
+  EXPECT_TRUE(found_label);
+  EXPECT_TRUE(found_checkbox);
 }
 
 IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
@@ -184,42 +209,38 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
   GetPermissionRequestManager()->set_auto_response_for_test(
       permissions::PermissionRequestManager::ACCEPT_ALL);
   SimulateWidevineKeySystemAccessRequest();
-  content::RunAllTasksUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil([&] { return observer.bubble_added_; }));
 
   // After we allow, opted in pref should be true
   EXPECT_TRUE(IsWidevineEnabled());
-  EXPECT_TRUE(observer.bubble_added_);
 
   // Reset observer and check permission bubble isn't created again.
   observer.bubble_added_ = false;
   SimulateWidevineKeySystemAccessRequest();
-  content::RunAllTasksUntilIdle();
-  EXPECT_FALSE(observer.bubble_added_);
+  ExpectNoPermissionRequestQueued();
 }
 
 #if BUILDFLAG(IS_LINUX)
 // On linux, additional permission request is used to ask restarting.
 IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
                        TriggerTwoPermissionTest) {
-  TestObserver observer;
   auto* permission_request_manager = GetPermissionRequestManager();
-  permission_request_manager->AddObserver(&observer);
   permission_request_manager->set_auto_response_for_test(
       permissions::PermissionRequestManager::ACCEPT_ALL);
+  // Suppress the relaunch that accepting the restart prompt would trigger.
+  base::AutoReset<bool> is_test_reset(&WidevinePermissionRequest::is_test_,
+                                      true);
 
   SimulateWidevineKeySystemAccessRequest();
-  content::RunAllTasksUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil([&] { return observer.added_count_ == 1; }));
 
-  WidevinePermissionRequest::is_test_ = true;
   update_client::CrxUpdateItem item;
   item.id = kWidevineComponentId;
   item.state = update_client::ComponentState::kUpdated;
   GetBraveDrmTabHelper()->OnEvent(item);
-  content::RunAllTasksUntilIdle();
 
   // Check two permission bubble are created.
-  EXPECT_EQ(2, observer.added_count_);
-  permission_request_manager->RemoveObserver(&observer);
+  ASSERT_TRUE(base::test::RunUntil([&] { return observer.added_count_ == 2; }));
 }
 #endif  // OS_LINUX
 
@@ -236,8 +257,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
   GetPermissionRequestManager()->set_auto_response_for_test(
       permissions::PermissionRequestManager::DISMISS);
   SimulateWidevineKeySystemAccessRequest();
-  content::RunAllTasksUntilIdle();
-  ASSERT_TRUE(observer.bubble_added_);
+  ASSERT_TRUE(base::test::RunUntil([&] { return observer.bubble_added_; }));
 
   ui_test_utils::BrowserCreatedObserver tor_browser_creation_observer;
   brave::NewOffTheRecordWindowTor(browser());
@@ -255,9 +275,10 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
   auto* tor_drm_tab_helper =
       BraveDrmTabHelper::From(tor_browser->GetActiveTabInterface());
   ASSERT_TRUE(tor_drm_tab_helper);
+  // Both the Tor check and the queueing in AddRequest() are synchronous, so
+  // the manager's state can be asserted right away.
   tor_drm_tab_helper->OnWidevineKeySystemAccessRequestForFrame(
       tor_contents->GetPrimaryMainFrame());
-  content::RunAllTasksUntilIdle();
 
   EXPECT_FALSE(tor_observer.bubble_added_);
   EXPECT_FALSE(tor_permission_request_manager->has_pending_requests());
@@ -272,7 +293,6 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
   item.id = kWidevineComponentId;
   item.state = update_client::ComponentState::kUpdated;
   tor_drm_tab_helper->OnEvent(item);
-  content::RunAllTasksUntilIdle();
 
   EXPECT_FALSE(tor_observer.bubble_added_);
   EXPECT_FALSE(tor_permission_request_manager->has_pending_requests());
@@ -342,6 +362,9 @@ class ScriptTriggerWidevinePermissionRequestBrowserTest
 IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
                        MAYBE_SuggestPermissionIfWidevineDetected) {
   // In this test, we just want to know whether permission bubble is shown.
+  // The negative checks below are best-effort: the renderer's DRM message and
+  // the posted show task are not ordered against the navigation or EvalJs
+  // reply, and there is no signal to wait on for an event that must not fire.
   GURL url = https_server_.GetURL("a.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_FALSE(IsPermissionBubbleShown());
@@ -358,22 +381,19 @@ IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
 
   EXPECT_THAT(content::EvalJs(active_contents(), widevine_js),
               content::EvalJsResult::ErrorIs(testing::Eq(js_error)));
-  content::RunAllTasksUntilIdle();
-  EXPECT_TRUE(IsPermissionBubbleShown());
+  ASSERT_TRUE(base::test::RunUntil([&] { return IsPermissionBubbleShown(); }));
   ResetBubbleState();
 
   // The bubble should be disappeared after reload.
   content::TestNavigationObserver observer(active_contents());
   chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
   observer.Wait();
-  content::RunAllTasksUntilIdle();
   EXPECT_FALSE(IsPermissionBubbleShown());
   ResetBubbleState();
 
   // Navigate to a page with some videos.
   url = https_server_.GetURL("a.com", "/media/youtube.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  content::RunAllTasksUntilIdle();
   EXPECT_FALSE(IsPermissionBubbleShown());
   ResetBubbleState();
 
@@ -381,15 +401,13 @@ IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
   EXPECT_THAT(content::EvalJs(active_contents(),
                               content::JsReplace(drm_js, "org.w3.clearkey")),
               content::EvalJsResult::ErrorIs(testing::Eq(js_error)));
-  content::RunAllTasksUntilIdle();
   EXPECT_FALSE(IsPermissionBubbleShown());
   ResetBubbleState();
 
   // Finally check the widevine request.
   EXPECT_THAT(content::EvalJs(active_contents(), widevine_js),
               content::EvalJsResult::ErrorIs(testing::Eq(js_error)));
-  content::RunAllTasksUntilIdle();
-  EXPECT_TRUE(IsPermissionBubbleShown());
+  EXPECT_TRUE(base::test::RunUntil([&] { return IsPermissionBubbleShown(); }));
 }
 
 // A request from a cross-origin subframe must be attributed to that subframe's
@@ -431,9 +449,8 @@ IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
       var config = [{initDataTypes: ['cenc']}];
       navigator.requestMediaKeySystemAccess('com.widevine.alpha', config)
           .catch(() => {});)"));
-  content::RunAllTasksUntilIdle();
 
-  ASSERT_TRUE(IsPermissionBubbleShown());
+  ASSERT_TRUE(base::test::RunUntil([&] { return IsPermissionBubbleShown(); }));
   const auto& requests = GetPermissionRequestManager()->Requests();
   ASSERT_EQ(1u, requests.size());
   EXPECT_EQ(permissions::RequestType::kWidevine, requests[0]->request_type());

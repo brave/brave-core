@@ -9,6 +9,7 @@
 
 #include "base/byte_size.h"
 #include "base/containers/flat_map.h"
+#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "chrome/browser/predictors/loading_test_util.h"
@@ -21,13 +22,17 @@ namespace brave_perf_predictor {
 
 class BandwidthSavingsPredictorTest : public ::testing::Test {
  public:
-  BandwidthSavingsPredictorTest() {
+  void SetUp() override {
     tp_registry_ = std::make_unique<NamedThirdPartyRegistry>();
     tp_registry_->InitializeDefault();
     predictor_ =
         std::make_unique<BandwidthSavingsPredictor>(tp_registry_.get());
-    // Allow the third party registry to initialize
-    env_.RunUntilIdle();
+    // The registry loads its mappings asynchronously on the thread pool; wait
+    // until they are available.
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      return tp_registry_->GetThirdParty("https://google-analytics.com")
+          .has_value();
+    }));
   }
 
  protected:

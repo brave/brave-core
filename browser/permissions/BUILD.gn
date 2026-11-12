@@ -63,6 +63,7 @@ source_set("unit_tests") {
   sources = [ "permission_lifetime_manager_unittest.cc" ]
 
   deps = [
+    "//base/test:test_support",
     "//chrome/browser",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/permissions",

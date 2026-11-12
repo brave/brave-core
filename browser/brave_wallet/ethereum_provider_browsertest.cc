@@ -3,8 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <string>
+#include <utility>
+#include <vector>
+
 #include "base/command_line.h"
+#include "base/test/bind.h"
+#include "base/test/test_future.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+#include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -14,6 +23,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -91,6 +101,18 @@ class EthereumProviderBrowserTest : public InProcessBrowserTest {
     https_server_.ServeFilesFromDirectory(BraveWalletTestDataFolder());
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
     ASSERT_TRUE(https_server()->Start());
+    // Unknown contracts wait on eth_call before the panel opens. Register
+    // the address so the test stays on the synchronous path.
+    EnsureSuggestedTokensAreKnown();
+  }
+
+  void TearDownOnMainThread() override {
+    if (restore_mainnet_token_list_) {
+      BlockchainRegistry::GetInstance()->UpdateTokenList(
+          GetTokenListKey(mojom::CoinType::ETH, mojom::kMainnetChainId),
+          std::move(original_mainnet_tokens_));
+    }
+    InProcessBrowserTest::TearDownOnMainThread();
   }
 
   content::WebContents* web_contents() {
@@ -105,6 +127,38 @@ class EthereumProviderBrowserTest : public InProcessBrowserTest {
         ->keyring_service();
   }
 
+  void EnsureSuggestedTokensAreKnown() {
+    auto* registry = BlockchainRegistry::GetInstance();
+    bool called = false;
+    registry->GetAllTokens(
+        mojom::kMainnetChainId, mojom::CoinType::ETH,
+        base::BindLambdaForTesting(
+            [&](std::vector<mojom::BlockchainTokenPtr> tokens) {
+              original_mainnet_tokens_ = std::move(tokens);
+              called = true;
+            }));
+    ASSERT_TRUE(called);
+
+    if (registry->GetTokenByAddress(mojom::kMainnetChainId,
+                                    mojom::CoinType::ETH, kSuggestedAddress)) {
+      return;
+    }
+    std::vector<mojom::BlockchainTokenPtr> updated;
+    updated.reserve(original_mainnet_tokens_.size() + 1);
+    for (const auto& token : original_mainnet_tokens_) {
+      updated.push_back(token.Clone());
+    }
+    updated.push_back(mojom::BlockchainToken::New(
+        kSuggestedAddress, "USDC", "", false, true, false, false,
+        mojom::SPLTokenProgram::kUnsupported, false, false, "USDC", 6, true, "",
+        "", mojom::kMainnetChainId, mojom::CoinType::ETH,
+        mojom::ZCashTokenType::kNone));
+    restore_mainnet_token_list_ = true;
+    registry->UpdateTokenList(
+        GetTokenListKey(mojom::CoinType::ETH, mojom::kMainnetChainId),
+        std::move(updated));
+  }
+
   void RestoreWallet() {
     ASSERT_TRUE(keyring_service()->RestoreWalletSync(
         kMnemonicDripCaution, kTestWalletPassword, false));
@@ -116,8 +170,13 @@ class EthereumProviderBrowserTest : public InProcessBrowserTest {
   }
 
  private:
+  static constexpr char kSuggestedAddress[] =
+      "0x6B175474E89094C44Da98b954EedeAC495271d0F";
+
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
+  bool restore_mainnet_token_list_ = false;
+  std::vector<mojom::BlockchainTokenPtr> original_mainnet_tokens_;
 };
 
 IN_PROC_BROWSER_TEST_F(EthereumProviderBrowserTest, InactiveTabRequest) {
@@ -136,7 +195,6 @@ IN_PROC_BROWSER_TEST_F(EthereumProviderBrowserTest, InactiveTabRequest) {
       ExecJs(first_tab_web_contents,
              "wallet_watchAsset('ERC20', "
              "'0x6B175474E89094C44Da98b954EedeAC495271d0F', 'USDC', 6)"));
-  base::RunLoop().RunUntilIdle();
 
   auto result_first =
       EvalJs(first_tab_web_contents, CheckForEventScript("inactiveTabError"));
@@ -163,16 +221,24 @@ IN_PROC_BROWSER_TEST_F(EthereumProviderBrowserTest, MAYBE_ActiveTabRequest) {
   browser()->tab_strip_model()->ActivateTabAt(0);
   ASSERT_EQ(browser()->tab_strip_model()->active_index(), 0);
 
+  auto* tab_helper = BraveWalletTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents()));
+  ASSERT_TRUE(tab_helper);
+  base::test::TestFuture<void> shown;
+  tab_helper->SetShowBubbleCallbackForTesting(shown.GetCallback());
+
   // Add an asset using the first page web contents
   ASSERT_TRUE(
       ExecJs(web_contents(),
              "wallet_watchAsset('ERC20', "
              "'0x6B175474E89094C44Da98b954EedeAC495271d0F', 'USDC', 6)"));
-  base::RunLoop().RunUntilIdle();
 
-  auto result_first =
-      EvalJs(web_contents(), CheckForEventScript("!inactiveTabError"));
-  EXPECT_EQ(base::Value(true), result_first);
+  // The request from the active tab is handled by showing the wallet panel.
+  ASSERT_TRUE(shown.Wait());
+
+  // The request is still pending and was not rejected as an inactive tab.
+  EXPECT_EQ(base::Value(true),
+            EvalJs(web_contents(), "inactiveTabError === undefined"));
 }
 
 IN_PROC_BROWSER_TEST_F(EthereumProviderBrowserTest,

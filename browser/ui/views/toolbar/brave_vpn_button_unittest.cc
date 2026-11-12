@@ -6,11 +6,14 @@
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
 
 #include <memory>
+#include <string>
 #include <utility>
 
 #include "base/functional/callback_helpers.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
+#include "base/test/run_until.h"
+#include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/skus/browser/skus_utils.h"
@@ -103,27 +106,35 @@ class BraveVpnButtonUnitTest : public testing::Test {
     base::RunLoop().RunUntilIdle();
   }
 
-  bool IsErrorState() { return button_->IsErrorState(); }
+  BraveVpnService* service() {
+    return BraveVpnServiceFactory::GetForProfile(profile());
+  }
+
+  // The badge icon is what the button shows for its error state.
+  bool IsErrorState() const {
+    return &button_->GetBadgeIcon() == &kVpnIndicatorErrorIcon;
+  }
 
   void FireVpnState(mojom::ConnectionState state) {
     button_->SetVpnConnectionStateForTesting(state);
     button_->OnConnectionStateChanged(state);
   }
 
-  // Give button's visual connection state.
-  bool DoesButtonHaveConnectedState() const { return button_->is_connected_; }
+  // Give button's visual connection state, which is shown by its badge icon.
+  bool DoesButtonHaveConnectedState() const {
+    return &button_->GetBadgeIcon() == &kVpnIndicatorOnIcon;
+  }
 
   void SetPurchasedState(const std::string& env, mojom::PurchasedState state) {
-    button_->service_->SetPurchasedStateForTesting(env, state);
+    service()->SetPurchasedStateForTesting(env, state);
   }
 
   void SetConnectionState(mojom::ConnectionState state) {
-    button_->service_->SetConnectionStateForTesting(state);
+    service()->SetConnectionStateForTesting(state);
   }
 
-  bool IsOsVpnConnected() const {
-    return button_->service_->GetConnectionState() ==
-           mojom::ConnectionState::CONNECTED;
+  bool IsOsVpnConnected() {
+    return service()->GetConnectionState() == mojom::ConnectionState::CONNECTED;
   }
 
   content::BrowserTaskEnvironment task_environment_;
@@ -160,20 +171,21 @@ TEST_F(BraveVpnButtonUnitTest, ButtonStateTestWithPurchasedState) {
   EXPECT_TRUE(IsOsVpnConnected());
 
   // Button should have not connected state when not purchased.
+  // The button starts without the connected state and it doesn't change here,
+  // so there is nothing to wait for.
   SetPurchasedState(env, mojom::PurchasedState::NOT_PURCHASED);
-  base::RunLoop().RunUntilIdle();
   EXPECT_FALSE(DoesButtonHaveConnectedState());
   EXPECT_TRUE(IsOsVpnConnected());
 
   // Button should have connected state when changed to purchased.
   SetPurchasedState(env, mojom::PurchasedState::PURCHASED);
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(DoesButtonHaveConnectedState());
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return DoesButtonHaveConnectedState(); }));
   EXPECT_TRUE(IsOsVpnConnected());
 
   SetPurchasedState(env, mojom::PurchasedState::NOT_PURCHASED);
-  base::RunLoop().RunUntilIdle();
-  EXPECT_FALSE(DoesButtonHaveConnectedState());
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return !DoesButtonHaveConnectedState(); }));
   EXPECT_TRUE(IsOsVpnConnected());
 }
 

@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/test_utils.h"
 
+#include <algorithm>
 #include <string>
 #include <utility>
 
@@ -89,6 +90,9 @@ void ExpectAssociatedContentEquals(
     bool compare_non_persisted_fields) {
   SCOPED_TRACE(testing::Message() << location.ToString());
   EXPECT_EQ(a.size(), b.size());
+  if (a.size() != b.size()) {
+    return;
+  }
 
   for (size_t i = 0; i < a.size(); ++i) {
     SCOPED_TRACE(testing::Message()
@@ -120,6 +124,9 @@ void ExpectConversationHistoryEquals(
     bool compare_uuid) {
   SCOPED_TRACE(testing::Message() << location.ToString());
   EXPECT_EQ(a.size(), b.size());
+  if (a.size() != b.size()) {
+    return;
+  }
   for (auto i = 0u; i < a.size(); i++) {
     SCOPED_TRACE(testing::Message() << "Comparing entries at index " << i);
     ExpectConversationEntryEquals(FROM_HERE, a.at(i), b.at(i), compare_uuid);
@@ -146,7 +153,10 @@ mojom::Conversation* GetConversation(
                          [&uuid](const mojom::ConversationPtr& conversation) {
                            return conversation->uuid == uuid;
                          });
-  EXPECT_NE(it, conversations.end());
+  if (it == conversations.end()) {
+    ADD_FAILURE() << "No conversation with uuid " << uuid;
+    return nullptr;
+  }
   return it->get();
 }
 

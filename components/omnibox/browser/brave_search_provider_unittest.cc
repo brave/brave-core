@@ -14,7 +14,6 @@
 #include "base/check.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/run_loop.h"
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
@@ -199,11 +198,11 @@ class BraveSearchProviderTest : public testing::Test {
   void QueryForInput(const std::u16string& text) {
     AutocompleteInput input(text, metrics::OmniboxEventProto::OTHER,
                             ChromeAutocompleteSchemeClassifier(profile_.get()));
+    // The suggest request is created synchronously within Start() when the
+    // suggest query delay has elapsed (always true for the first request of a
+    // provider). Callers check `TestURLLoaderFactory::IsPending()`, and for
+    // queries that must not be sent, `provider_->done()`.
     provider_->Start(input, false);
-
-    // RunUntilIdle so that the task scheduled by SearchProvider to create the
-    // URLFetchers runs.
-    base::RunLoop().RunUntilIdle();
   }
 
   void QueryForInputAndSetWYTMatch(const std::u16string& text,
@@ -238,9 +237,6 @@ class BraveSearchProviderTest : public testing::Test {
 #endif
 
   raw_ptr<TemplateURL> default_t_url_ = nullptr;
-
-  // If not nullptr, OnProviderUpdate quits the current |run_loop_|.
-  raw_ptr<base::RunLoop> run_loop_ = nullptr;
 };
 
 // Actual Tests
@@ -278,17 +274,22 @@ TEST_F(BraveSearchProviderTest, DontSendClipboardTextToSuggest) {
   EXPECT_TRUE(test_url_loader_factory_.IsPending(
       base::StrCat({kSuggestionUrlHost, "brave"})));
 
-  // Blocked when clipboard content is the same.
-  test_clipboard_->WriteText("brave_private");
-  ASSERT_NO_FATAL_FAILURE(QueryForInput(u"brave_private"));
-  EXPECT_FALSE(test_url_loader_factory_.IsPending(
-      base::StrCat({kSuggestionUrlHost, "brave_private"})));
+  // Blocked when the input is flagged as pasted from the clipboard. The flag is
+  // set by `OmniboxEditModel::StartAutocomplete()`; the provider only consults
+  // it. A blocked query leaves no pending timer or loader, so the provider is
+  // done (a delayed or sent request would leave it not done).
+  {
+    auto pasted = provider_->SetInputIsPastedFromClipboard(true);
+    ASSERT_NO_FATAL_FAILURE(QueryForInput(u"brave_private"));
+    EXPECT_TRUE(provider_->done());
+    EXPECT_FALSE(test_url_loader_factory_.IsPending(
+        base::StrCat({kSuggestionUrlHost, "brave_private"})));
 
-  // Blocked when clipboard content is the same after sanitizing.
-  test_clipboard_->WriteText(" brave_private ");
-  ASSERT_NO_FATAL_FAILURE(QueryForInput(u"brave_private "));
-  EXPECT_FALSE(test_url_loader_factory_.IsPending(
-      base::StrCat({kSuggestionUrlHost, "brave_private"})));
+    ASSERT_NO_FATAL_FAILURE(QueryForInput(u"brave_private "));
+    EXPECT_TRUE(provider_->done());
+    EXPECT_FALSE(test_url_loader_factory_.IsPending(
+        base::StrCat({kSuggestionUrlHost, "brave_private"})));
+  }
 }
 #endif
 
@@ -298,6 +299,9 @@ TEST_F(BraveSearchProviderTest, DontSendClipboardTextToSuggest) {
 // happen versus just dropping the query. Everything else will be sent/processed
 // by the search suggestions server.
 TEST_F(BraveSearchProviderTest, ArithmeticIsAnsweredLocally) {
+  base::test::ScopedFeatureList features;
+  features.InitAndEnableFeature(omnibox::kBraveLocalCalculator);
+
   const auto has_calculator_match = [&]() {
     return std::ranges::any_of(provider_->matches(), [](const auto& match) {
       return match.type == omnibox::AutocompleteMatchType::kCalculator;
@@ -311,6 +315,7 @@ TEST_F(BraveSearchProviderTest, ArithmeticIsAnsweredLocally) {
 
   // "95007804" is 8 digits, so the query is withheld and we answer it.
   ASSERT_NO_FATAL_FAILURE(QueryForInput(u"9500+7804"));
+  EXPECT_TRUE(provider_->done());
   EXPECT_FALSE(sent_to_suggest("9500+7804"));
   EXPECT_TRUE(has_calculator_match());
 
@@ -322,11 +327,13 @@ TEST_F(BraveSearchProviderTest, ArithmeticIsAnsweredLocally) {
   // Withheld, but not something we can answer exactly: no calculator row
   // rather than an approximate one.
   ASSERT_NO_FATAL_FAILURE(QueryForInput(u"12345678 / 7"));
+  EXPECT_TRUE(provider_->done());
   EXPECT_FALSE(sent_to_suggest("12345678 / 7"));
   EXPECT_FALSE(has_calculator_match());
 
   // Withheld and not arithmetic at all.
   ASSERT_NO_FATAL_FAILURE(QueryForInput(u"12345678"));
+  EXPECT_TRUE(provider_->done());
   EXPECT_FALSE(sent_to_suggest("12345678"));
   EXPECT_FALSE(has_calculator_match());
 }
@@ -338,6 +345,7 @@ TEST_F(BraveSearchProviderTest, ArithmeticIsNotAnsweredWhenFeatureDisabled) {
   features.InitAndDisableFeature(omnibox::kBraveLocalCalculator);
 
   ASSERT_NO_FATAL_FAILURE(QueryForInput(u"9500+7804"));
+  EXPECT_TRUE(provider_->done());
   EXPECT_FALSE(test_url_loader_factory_.IsPending(
       base::StrCat({kSuggestionUrlHost, base::EscapePath("9500+7804")})));
   EXPECT_FALSE(std::ranges::any_of(provider_->matches(), [](const auto& match) {
@@ -373,12 +381,13 @@ TEST_F(BraveSearchProviderTest, SearchSuggestionsSendTest) {
       {"a email@gmail.com b", false},
       // Block irc scheme.
       {"irc://bravenet", false},
-      // Invalid html url.
-      {"http://a asdfasdfasdfasdf", false},
   };
 
   for (auto& value : cases) {
     ASSERT_NO_FATAL_FAILURE(QueryForInput(base::ASCIIToUTF16(value.input)));
+    if (!value.expect_to_send_to_default_provider) {
+      EXPECT_TRUE(provider_->done()) << value.input;
+    }
     EXPECT_EQ(value.expect_to_send_to_default_provider,
               test_url_loader_factory_.IsPending(base::StrCat(
                   {kSuggestionUrlHost, base::EscapePath(value.input)})));

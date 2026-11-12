@@ -237,6 +237,7 @@ source_set("unit_tests") {
     "//brave/components/constants",
     "//brave/components/l10n/common:test_support",
     "//brave/components/resources:strings_grit",
+    "//brave/components/sidebar/common",
     "//brave/components/skus/browser",
     "//brave/components/skus/common",
     "//brave/components/skus/common:mojom",

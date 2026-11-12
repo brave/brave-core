@@ -11,19 +11,21 @@
 #include <utility>
 
 #include "base/containers/span.h"
-#include "base/functional/callback_helpers.h"
+#include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/scoped_path_override.h"
+#include "base/test/test_future.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/features.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_download_manager.h"
+#include "brave/components/brave_shields/content/test/ad_block_service_test_observer.h"
 #include "brave/components/brave_shields/content/test/ad_block_unit_test_helper.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/test/base/testing_brave_browser_process.h"
@@ -146,20 +148,39 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
         base::WeakPtr<brave::BraveRequestInfo>>;
     scoped_feature_list_.InitWithFeatureState(
         features::kBraveRequestInfoUniquePtr, enable_flag);
+
+    // Let the posted catalog load finish with an empty rule set, so no task
+    // outlives the service and every test starts from a loaded engine.
+    ResetAdblockInstance("");
   }
 
   void TearDown() override {
     filters_provider_.reset();
+    // Don't leave dangling pointers to fixture-owned objects in the globals.
+    brave::SetAdblockCnameHostResolverForTesting(nullptr);
+    SystemNetworkContextManager::set_stub_resolver_config_reader_for_testing(
+        nullptr);
     // The AdBlockBaseService destructor must be called before the task runner
     // is destroyed.
     TestingBraveBrowserProcess::DeleteInstance();
   }
 
   void ResetAdblockInstance(std::string rules) {
+    auto* ad_block_service = g_brave_browser_process->ad_block_service();
+    if (filters_provider_) {
+      // Removing the previous provider triggers an engine reload. Wait for it
+      // so it can't be mistaken for the load of the new provider's rules.
+      brave_shields::AdBlockServiceTestObserver removal_observer(
+          ad_block_service);
+      filters_provider_.reset();
+      removal_observer.WaitForDefault();
+    }
+
+    // Observe before registering so the load can't be missed.
+    brave_shields::AdBlockServiceTestObserver observer(ad_block_service);
     filters_provider_ = std::make_unique<TestFiltersProvider>(rules);
-    filters_provider_->RegisterAsSourceProvider(
-        g_brave_browser_process->ad_block_service());
-    task_environment_.RunUntilIdle();
+    filters_provider_->RegisterAsSourceProvider(ad_block_service);
+    observer.WaitForDefault();
   }
 
   typename PtrStrategy::template Ptr<brave::BraveRequestInfo> MakeRequest(
@@ -181,10 +202,14 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
     // `request_identifier` must be nonzero, or else nothing will be tested.
     request_info->set_request_identifier(1);
 
-    int rc =
-        OnBeforeURLRequest_AdBlockTPPreWork(base::DoNothing(), request_info);
+    base::test::TestFuture<void> request_checked;
+    int rc = OnBeforeURLRequest_AdBlockTPPreWork(
+        request_checked.GetRepeatingCallback(), request_info);
     EXPECT_TRUE(rc == net::OK || rc == net::ERR_IO_PENDING);
-    task_environment_.RunUntilIdle();
+    if (rc == net::ERR_IO_PENDING) {
+      // The callback is only run when the check completes asynchronously.
+      EXPECT_TRUE(request_checked.Wait());
+    }
 
     return rc == net::ERR_IO_PENDING;
   }

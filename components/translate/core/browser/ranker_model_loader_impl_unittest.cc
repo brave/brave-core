@@ -36,7 +36,7 @@ class RankerModelLoaderImplTest : public ::testing::Test {
   void SetUp() override;
 
   // Helper method to drive the loader for |model_path| and |model_url|.
-  bool DoLoaderTest(const base::FilePath& model_path, const GURL& model_url);
+  void DoLoaderTest(const base::FilePath& model_path, const GURL& model_url);
 
   // Initialize the "remote" model data used for testing.
   void InitRemoteModels();
@@ -81,8 +81,7 @@ void RankerModelLoaderImplTest::SetUp() {
   ASSERT_NO_FATAL_FAILURE(InitRemoteModels());
 }
 
-// static
-bool RankerModelLoaderImplTest::DoLoaderTest(const base::FilePath& model_path,
+void RankerModelLoaderImplTest::DoLoaderTest(const base::FilePath& model_path,
                                              const GURL& model_url) {
   auto loader = std::make_unique<RankerModelLoaderImpl>(
       base::BindRepeating(&RankerModelLoaderImplTest::ValidateModel,
@@ -91,10 +90,8 @@ bool RankerModelLoaderImplTest::DoLoaderTest(const base::FilePath& model_path,
                           base::Unretained(this)),
       test_shared_loader_factory_, model_path, model_url,
       "RankerModelLoaderImplTest");
+  // Any download would reach the interceptor synchronously from here.
   loader->NotifyOfRankerActivity();
-  task_environment_.RunUntilIdle();
-
-  return true;
 }
 
 void RankerModelLoaderImplTest::InitRemoteModels() {
@@ -148,6 +145,6 @@ TEST_F(RankerModelLoaderImplTest, LoadRemoteRankerNoFetch) {
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
         network_access_occurred = true;
       }));
-  ASSERT_TRUE(DoLoaderTest(base::FilePath(), remote_model_url_));
+  DoLoaderTest(base::FilePath(), remote_model_url_);
   EXPECT_FALSE(network_access_occurred);
 }

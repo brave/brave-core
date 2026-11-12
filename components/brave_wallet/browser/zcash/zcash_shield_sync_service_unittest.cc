@@ -145,7 +145,7 @@ class ZCashShieldSyncServiceTest : public testing::Test {
         fvk, observer_->GetWeakPtr());
 
     // Ensure previous OrchardStorage is destroyed on background thread
-    task_environment_.RunUntilIdle();
+    zcash_wallet_service().sync_state().FlushPostedTasksForTesting();
   }
 
   ZCashShieldSyncService* sync_service() { return sync_service_.get(); }
@@ -229,6 +229,10 @@ class ZCashShieldSyncServiceTest : public testing::Test {
 };
 
 TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature, {{"zcash_ironwood_enabled", "true"}});
+
   auto mock_block_scanner = CreateMockOrchardBlockScannerProxy();
 
   sync_service()->SetOrchardBlockScannerProxyForTesting(
@@ -272,11 +276,14 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
       });
 
   {
-    EXPECT_CALL(zcash_wallet_service(), OnSyncFinished(EqualsMojo(account())));
+    base::test::TestFuture<void> sync_finished;
+    EXPECT_CALL(zcash_wallet_service(), OnSyncFinished(EqualsMojo(account())))
+        .WillOnce([&] { sync_finished.SetValue(); });
     sync_service()->StartSyncing(std::nullopt);
-    task_environment_.RunUntilIdle();
+    ASSERT_TRUE(sync_finished.Wait());
 
     auto sync_status = sync_service()->GetSyncStatus();
+    ASSERT_TRUE(sync_status);
     EXPECT_EQ(sync_status->spendable_balance, 30u);
   }
 
@@ -284,7 +291,6 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
 
   // Resume scanning
   ResetSyncService();
-  task_environment_.RunUntilIdle();
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([](const std::string& chain_id,
@@ -344,11 +350,14 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
 
   // Continue scanning
   {
-    EXPECT_CALL(zcash_wallet_service(), OnSyncFinished(EqualsMojo(account())));
+    base::test::TestFuture<void> sync_finished;
+    EXPECT_CALL(zcash_wallet_service(), OnSyncFinished(EqualsMojo(account())))
+        .WillOnce([&] { sync_finished.SetValue(); });
     sync_service()->StartSyncing(std::nullopt);
-    task_environment_.RunUntilIdle();
+    ASSERT_TRUE(sync_finished.Wait());
 
     auto sync_status = sync_service()->GetSyncStatus();
+    ASSERT_TRUE(sync_status);
     EXPECT_EQ(sync_status->spendable_balance, 180u);
   }
 
@@ -412,11 +421,14 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
           })));
 
   {
-    EXPECT_CALL(zcash_wallet_service(), OnSyncFinished(EqualsMojo(account())));
+    base::test::TestFuture<void> sync_finished;
+    EXPECT_CALL(zcash_wallet_service(), OnSyncFinished(EqualsMojo(account())))
+        .WillOnce([&] { sync_finished.SetValue(); });
     sync_service()->StartSyncing(std::nullopt);
-    task_environment_.RunUntilIdle();
+    ASSERT_TRUE(sync_finished.Wait());
 
     auto sync_status = sync_service()->GetSyncStatus();
+    ASSERT_TRUE(sync_status);
     EXPECT_EQ(sync_status->spendable_balance, 200u);
   }
 
@@ -484,12 +496,14 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
           })));
 
   {
-    EXPECT_CALL(zcash_wallet_service(), OnSyncFinished(EqualsMojo(account())));
+    base::test::TestFuture<void> sync_finished;
+    EXPECT_CALL(zcash_wallet_service(), OnSyncFinished(EqualsMojo(account())))
+        .WillOnce([&] { sync_finished.SetValue(); });
     sync_service()->StartSyncing(std::nullopt);
-    task_environment_.RunUntilIdle();
+    ASSERT_TRUE(sync_finished.Wait());
 
     auto sync_status = sync_service()->GetSyncStatus();
-    EXPECT_TRUE(sync_status);
+    ASSERT_TRUE(sync_status);
     EXPECT_EQ(sync_status->spendable_balance, 160u);
   }
   testing::Mock::VerifyAndClearExpectations(&zcash_wallet_service());
@@ -821,7 +835,10 @@ TEST_F(ZCashShieldSyncServiceTest, GetSpendableBalance_IronwoodDisabled) {
   EXPECT_EQ(sync_service()->GetSpendableBalance().ValueOrDie(), 100u);
 }
 
-TEST_F(ZCashShieldSyncServiceTest, GetSpendableBalance_IronwoodMissingBundle) {
+using ZCashShieldSyncServiceDeathTest = ZCashShieldSyncServiceTest;
+
+TEST_F(ZCashShieldSyncServiceDeathTest,
+       GetSpendableBalance_IronwoodMissingBundle) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeatureWithParameters(
       features::kBraveWalletZCashFeature, {{"zcash_ironwood_enabled", "true"}});
