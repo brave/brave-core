@@ -66,7 +66,9 @@ source_set("browser_tests") {
       "//chrome/browser/themes",
       "//chrome/browser/ui/views/frame:browser_view_header",
       "//chrome/test:test_support",
-      "//chrome/test:test_support_ui",
+      "//chrome/test/base:chrome_test_utils",
+      "//chrome/test/base:in_process_browser_test",
+      "//chrome/test/base:ui_test_utils",
     ]
 
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
