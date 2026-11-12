@@ -19,6 +19,8 @@ class TabGridViewModel {
   private var _isPrivateBrowsing: Bool = false
   private(set) var tabs: [any TabState] = []
   private(set) var items: [TabGridItem] = []
+  private(set) var openGroup: TabGroup?
+  private(set) var openGroupItems: [TabGridItem] = []
   private(set) var isPrivateTabsLocked: Bool = false
   var onModeSwitchComplete: (() -> Void)?
   private(set) var isSceneActive: Bool = true
@@ -244,6 +246,35 @@ class TabGridViewModel {
     }
   }
 
+  func tabCount(in group: TabGroup) -> Int {
+    tabManager.tabs(in: group).count
+  }
+
+  /// Closes every tab in the group, which removes the group
+  func closeTabs(in group: TabGroup) {
+    closeTabs(Set(tabManager.tabs(in: group).map(\.id)))
+  }
+
+  func showGroup(_ group: TabGroup) {
+    openGroup = group
+    updateOpenGroupItems()
+  }
+
+  func closeOpenGroup() {
+    openGroup = nil
+    openGroupItems = []
+  }
+
+  private func updateOpenGroupItems() {
+    guard let group = openGroup else { return }
+    guard tabManager.tabGroups.contains(group) else {
+      // The group is gone, e.g. its last tab was closed or it was ungrouped
+      closeOpenGroup()
+      return
+    }
+    openGroupItems = tabManager.tabs(in: group).map { TabGridItem.tab($0) }
+  }
+
   /// The name given to a new group when the user doesn't provide one
   var defaultGroupTitle: String {
     String.localizedStringWithFormat(
@@ -294,6 +325,7 @@ class TabGridViewModel {
     items =
       query != nil
       ? tabs.map { TabGridItem.tab($0) } : TabGridItem.items(for: tabs, using: tabManager)
+    updateOpenGroupItems()
   }
 
   private func handleAuthenticationResult(success: Bool, error: LAError.Code?) {

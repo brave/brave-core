@@ -23,6 +23,9 @@ protocol TabCollectionViewDelegate: AnyObject {
   func selectedTabListChanged(_ tabs: Set<TabState.ID>)
   func contextMenuForTabs(_ tabs: [any TabState]) -> UIMenu?
   func contextMenuForGroup(_ group: TabGroup) -> UIMenu?
+  func didSelectGroup(_ group: TabGroup)
+  func didRequestUngroup(_ group: TabGroup)
+  func didRequestCloseTabs(in group: TabGroup)
 }
 
 /// A view that can display tabs in a grid formation
@@ -76,6 +79,9 @@ class TabGridContainerView: UIView {
       UICollectionView.CellRegistration<TabGridGroupCell, (TabGroup, [any TabState])> =
         .init { [unowned self] cell, _, item in
           cell.isPrivateBrowsing = self.isPrivateBrowsing
+          cell.actionHandler = { [unowned self] action in
+            handleGroupAction(action, for: item.0)
+          }
           cell.configure(with: item.0, tabs: item.1)
         }
     self.dataSource = UICollectionViewDiffableDataSource<Int, TabGridItem.ID>(
@@ -294,6 +300,15 @@ class TabGridContainerView: UIView {
     }
   }
 
+  private func handleGroupAction(_ action: TabGridGroupItemView.Action, for group: TabGroup) {
+    switch action {
+    case .ungroup:
+      delegate?.didRequestUngroup(group)
+    case .closeAllTabs:
+      delegate?.didRequestCloseTabs(in: group)
+    }
+  }
+
   @objc private func handleArrowKeyCommand(_ sender: UIKeyCommand) {
     guard let currentSelectedItemIndex = items.firstIndex(where: \.containsVisibleTab) else {
       return
@@ -332,8 +347,14 @@ extension TabGridContainerView: UICollectionViewDelegate {
     _ collectionView: UICollectionView,
     performPrimaryActionForItemAt indexPath: IndexPath
   ) {
-    guard let tab = items[safe: indexPath.item]?.representativeTab else { return }
-    delegate?.didSelectTab(tab, source: .tappedCell)
+    switch items[safe: indexPath.item] {
+    case .tab(let tab):
+      delegate?.didSelectTab(tab, source: .tappedCell)
+    case .group(let group, _):
+      delegate?.didSelectGroup(group)
+    case nil:
+      break
+    }
   }
 
   func collectionView(
@@ -517,6 +538,7 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
   var insets: EdgeInsets
   var contextMenuForTabs: ([any TabState]) -> UIMenu?
   var contextMenuForGroup: (TabGroup) -> UIMenu?
+  var scrollsOnModeSwitch: Bool = true
   @Binding var selectedTabList: Set<TabState.ID>
 
   func makeUIView(context: Context) -> TabGridContainerView {
@@ -557,6 +579,7 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
       viewModel: viewModel,
       contextMenu: contextMenuForTabs,
       groupContextMenu: contextMenuForGroup,
+      scrollsOnModeSwitch: scrollsOnModeSwitch,
       selectedTabList: $selectedTabList
     )
   }
@@ -574,6 +597,7 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
       viewModel: TabGridViewModel,
       contextMenu: @escaping ([any TabState]) -> UIMenu?,
       groupContextMenu: @escaping (TabGroup) -> UIMenu?,
+      scrollsOnModeSwitch: Bool,
       selectedTabList: Binding<Set<TabState.ID>>
     ) {
       self.viewModel = viewModel
@@ -582,10 +606,12 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
       self._selectedTabList = selectedTabList
 
       // Set up scroll handler to be called after mode switch completes
-      viewModel.onModeSwitchComplete = { [weak self] in
-        guard let self, let containerView = self.containerView else { return }
-        containerView.collectionView.layoutIfNeeded()
-        containerView.scrollToSelectedItem(animated: false)
+      if scrollsOnModeSwitch {
+        viewModel.onModeSwitchComplete = { [weak self] in
+          guard let self, let containerView = self.containerView else { return }
+          containerView.collectionView.layoutIfNeeded()
+          containerView.scrollToSelectedItem(animated: false)
+        }
       }
     }
 
@@ -622,6 +648,24 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
 
     func contextMenuForGroup(_ group: TabGroup) -> UIMenu? {
       self.groupContextMenu(group)
+    }
+
+    func didSelectGroup(_ group: TabGroup) {
+      withAnimation {
+        viewModel.showGroup(group)
+      }
+    }
+
+    func didRequestUngroup(_ group: TabGroup) {
+      viewModel.ungroup(group)
+    }
+
+    func didRequestCloseTabs(in group: TabGroup) {
+      let shouldDismissAfterClose = viewModel.tabCount(in: group) == viewModel.tabs.count
+      viewModel.closeTabs(in: group)
+      if shouldDismissAfterClose {
+        dismissAction?()
+      }
     }
   }
 }

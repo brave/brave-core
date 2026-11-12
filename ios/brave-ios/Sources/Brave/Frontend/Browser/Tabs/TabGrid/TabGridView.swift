@@ -308,6 +308,12 @@ struct TabGridView: View {
       Button(Strings.CancelString, role: .cancel) {}
     }
     .overlay {
+      if let group = viewModel.openGroup {
+        TabGroupDetailView(viewModel: viewModel, group: group)
+          .transition(.move(edge: .trailing))
+      }
+    }
+    .overlay {
       if isShredAnimationVisible, let shredMode = activeShredMode {
         LottieView(animation: .named("shred", bundle: .module))
           .configure { view in
@@ -723,7 +729,18 @@ struct TabGridView: View {
     UIMenu(children: [
       UIAction(title: Strings.TabGrid.ungroupMenuTitle) { _ in
         viewModel.ungroup(group)
-      }
+      },
+      UIAction(
+        title: Strings.TabGrid.closeGroupTabsMenuTitle,
+        image: UIImage(braveSystemNamed: "leo.close"),
+        attributes: .destructive
+      ) { _ in
+        let dismissAfterClose = viewModel.tabCount(in: group) == viewModel.tabs.count
+        viewModel.closeTabs(in: group)
+        if dismissAfterClose {
+          dismiss()
+        }
+      },
     ])
   }
 

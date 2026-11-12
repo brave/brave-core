@@ -37,7 +37,13 @@ class TabGridGroupItemViewModel {
 }
 
 struct TabGridGroupItemView: View {
+  enum Action {
+    case ungroup
+    case closeAllTabs
+  }
+
   var viewModel: TabGridGroupItemViewModel
+  var actionHandler: (Action) -> Void
 
   var browserColors: BrowserColors {
     viewModel.isPrivateBrowsing ? .privateMode : .standard
@@ -46,21 +52,18 @@ struct TabGridGroupItemView: View {
   var body: some View {
     VStack(spacing: 0) {
       HStack(spacing: 6) {
-        Image(braveSystemName: "leo.window.tabs")
-          .foregroundStyle(Color(braveSystemName: .iconDefault))
         Text(viewModel.title)
           .foregroundStyle(Color(braveSystemName: .textPrimary))
           .lineLimit(1)
-        Spacer()
-        Text(viewModel.tabCount, format: .number)
-          .foregroundStyle(Color(braveSystemName: .textSecondary))
-          .accessibilityLabel(
+          .accessibilityValue(
             String.localizedStringWithFormat(Strings.TabGrid.tabsCountFormat, viewModel.tabCount)
           )
+        Spacer()
+        optionsMenu
       }
       .padding(8)
       .font(.caption2.weight(.semibold))
-      thumbnailGrid
+      thumbnailContainer
     }
     .padding(4)
     .overlay {
@@ -78,33 +81,68 @@ struct TabGridGroupItemView: View {
       in: .containerRelative
     )
     .containerShape(.rect(cornerRadius: 16, style: .continuous))
-    .accessibilityElement(children: .combine)
     .dynamicTypeSize(.xSmall..<DynamicTypeSize.accessibility1)
   }
 
-  private var thumbnailGrid: some View {
-    let columns = Array(repeating: GridItem(.flexible(), spacing: 4), count: 2)
-    return LazyVGrid(columns: columns, spacing: 4) {
-      ForEach(0..<TabGridGroupItemViewModel.thumbnailCount, id: \.self) { index in
-        Color(braveSystemName: .containerDisabled)
-          .aspectRatio(1, contentMode: .fit)
-          .overlay(alignment: .top) {
-            if let screenshot = viewModel.thumbnails[safe: index] ?? nil {
-              Image(uiImage: screenshot)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-            }
-          }
-          .clipShape(.rect(cornerRadius: 6, style: .continuous))
+  private var optionsMenu: some View {
+    Menu {
+      Button {
+        actionHandler(.ungroup)
+      } label: {
+        Text(Strings.TabGrid.ungroupMenuTitle)
+      }
+      Button(role: .destructive) {
+        actionHandler(.closeAllTabs)
+      } label: {
+        Text(Strings.TabGrid.closeGroupTabsMenuTitle)
+      }
+    } label: {
+      Label(Strings.TabGrid.groupOptionsAccessibilityLabel, braveSystemImage: "leo.close")
+        .labelStyle(.iconOnly)
+        .imageScale(.large)
+        .foregroundStyle(Color(braveSystemName: .iconDefault))
+    }
+  }
+
+  /// Previews of the group's first tabs, two on top and one below, in a rounded container
+  private var thumbnailContainer: some View {
+    VStack(spacing: 4) {
+      HStack(spacing: 4) {
+        thumbnail(at: 0)
+        thumbnail(at: 1)
+      }
+      HStack(spacing: 4) {
+        thumbnail(at: 2)
+        Color.clear
       }
     }
-    .frame(maxHeight: .infinity, alignment: .top)
+    .padding(4)
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .background(Color(braveSystemName: .containerDisabled))
     .clipShape(.rect(cornerRadius: 12, style: .continuous))
+  }
+
+  @ViewBuilder
+  private func thumbnail(at index: Int) -> some View {
+    if index < viewModel.tabCount {
+      Color(braveSystemName: .containerBackground)
+        .overlay(alignment: .top) {
+          if let screenshot = viewModel.thumbnails[safe: index] ?? nil {
+            Image(uiImage: screenshot)
+              .resizable()
+              .aspectRatio(contentMode: .fill)
+          }
+        }
+        .clipShape(.rect(cornerRadius: 6, style: .continuous))
+    } else {
+      Color.clear
+    }
   }
 }
 
 class TabGridGroupCell: UICollectionViewCell {
   let model: TabGridGroupItemViewModel = .init()
+  var actionHandler: ((TabGridGroupItemView.Action) -> Void)?
   var isPrivateBrowsing: Bool = false {
     didSet {
       model.isPrivateBrowsing = isPrivateBrowsing
@@ -115,7 +153,12 @@ class TabGridGroupCell: UICollectionViewCell {
     super.init(frame: .zero)
 
     contentConfiguration = UIHostingConfiguration {
-      TabGridGroupItemView(viewModel: model)
+      TabGridGroupItemView(
+        viewModel: model,
+        actionHandler: { [unowned self] in
+          actionHandler?($0)
+        }
+      )
     }
     .margins(.all, 0)
   }

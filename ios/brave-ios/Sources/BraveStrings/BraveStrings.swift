@@ -1043,6 +1043,27 @@ extension Strings {
       value: "Ungroup",
       comment: "A menu item title that when tapped dissolves a tab group, keeping its tabs open"
     )
+    public static let closeGroupTabsMenuTitle = NSLocalizedString(
+      "tabGrid.closeGroupTabsMenuTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Close All Tabs",
+      comment: "A menu item title that when tapped closes every tab in a tab group"
+    )
+    public static let groupOptionsAccessibilityLabel = NSLocalizedString(
+      "tabGrid.groupOptionsAccessibilityLabel",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Group Options",
+      comment: "Accessibility label for a button that opens a menu of actions for a tab group"
+    )
+    public static let backToTabsAccessibilityLabel = NSLocalizedString(
+      "tabGrid.backToTabsAccessibilityLabel",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Back to Tabs",
+      comment: "Accessibility label for a button in a tab group that returns to the full list of tabs"
+    )
     public static let shredTabsAccessibilityLabel = NSLocalizedString(
       "tabGrid.shredTabsAccessibilityLabel",
       tableName: "BraveShared",
