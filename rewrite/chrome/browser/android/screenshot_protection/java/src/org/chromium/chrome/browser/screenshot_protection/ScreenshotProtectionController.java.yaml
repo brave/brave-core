@@ -13,13 +13,27 @@ substitutions:
         \1
         import org.chromium.chrome.browser.privacy.BraveBrowserLockManager;
   - description: |-
-      Defer to BraveBrowserLockManager's own FLAG_SECURE decision for the
-      "Entire application" lock + "Prevent capture" combination — otherwise
-      this method unconditionally clears FLAG_SECURE whenever its own
-      tab/policy-based decision doesn't require it, fighting with the lock.
+      Re-evaluate FLAG_SECURE immediately whenever BraveBrowserLockManager's
+      own screenshot mode changes — otherwise a window this class last forced
+      secure for enterprise/policy reasons can be left non-secure after the
+      "Entire application" lock + "Prevent capture" combination is turned
+      off, until this class's own (unrelated) triggers happen to fire next.
     regex:
       re_pattern: |-
-        ( +)(private void updateScreenshotProtectionState\(\) \{)
+        ( +)mTabModelSelector\.addObserver\(this\);
       replace: |-
-        \1\2
-        \1    if (BraveBrowserLockManager.shouldForceSecureWindow()) return;
+        \1mTabModelSelector.addObserver(this);
+        \1BraveBrowserLockManager.addScreenshotModeObserver(
+        \1        activity, this::updateScreenshotProtectionState);
+  - description: |-
+      Also require FLAG_SECURE for BraveBrowserLockManager's own "Entire
+      application" lock + "Prevent capture" combination, instead of only the
+      tab/policy-based decision. Done by widening the condition rather than
+      an early return, so this method's own tracking (recents-screenshot
+      visibility, FLAG_SECURE) always runs and is never skipped by it.
+    regex:
+      re_pattern: |-
+        ( +)boolean expectedSecureState = isScreenshotBlocked\(\);
+      replace: |-
+        \1boolean expectedSecureState =
+        \1        isScreenshotBlocked() || BraveBrowserLockManager.shouldForceSecureWindow();

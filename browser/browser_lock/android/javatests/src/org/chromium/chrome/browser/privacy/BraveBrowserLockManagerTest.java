@@ -723,6 +723,27 @@ public class BraveBrowserLockManagerTest {
         verify(observer, never()).onScreenshotModeChanged();
     }
 
+    @Test
+    public void setScreenshotMode_notifiesAllObserversRegisteredForTheSameActivity() {
+        // Regression coverage: e.g. a tabbed activity's own incognito screenshot controller and
+        // its ScreenshotProtectionController both observe the same activity independently — the
+        // second registration must not silently replace the first.
+        BraveBrowserLockManager manager = createManager();
+        BraveBrowserLockManager.setInstanceForTesting(manager);
+        BraveBrowserLockManager.ScreenshotModeObserver observer1 =
+                mock(BraveBrowserLockManager.ScreenshotModeObserver.class);
+        BraveBrowserLockManager.ScreenshotModeObserver observer2 =
+                mock(BraveBrowserLockManager.ScreenshotModeObserver.class);
+        BraveBrowserLockManager.addScreenshotModeObserver(mActivity, observer1);
+        BraveBrowserLockManager.addScreenshotModeObserver(mActivity, observer2);
+
+        BraveBrowserLockManager.setScreenshotMode(
+                BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_EVERYTHING);
+
+        verify(observer1).onScreenshotModeChanged();
+        verify(observer2).onScreenshotModeChanged();
+    }
+
     // --- getScreenshotMode / shouldForceSecureWindow ---
 
     @Test

@@ -40,8 +40,10 @@ import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.ui.modaldialog.DialogDismissalCause;
 import org.chromium.ui.modaldialog.ModalDialogManagerHolder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -102,11 +104,11 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
     private static @Nullable BraveBrowserLockManager sInstance;
 
     /**
-     * Notified whenever the screenshot-protection mode changes, so a live per-activity incognito
-     * screenshot controller (e.g. {@link
-     * org.chromium.chrome.browser.incognito.BraveIncognitoTabbedSnapshotController}) can recompute
-     * immediately instead of waiting for its own unrelated trigger (a tab-model switch or Hub
-     * show/hide for the tabbed case; nothing at all, post-construction, for Custom Tabs).
+     * Notified whenever the screenshot-protection mode changes, so a live per-activity consumer
+     * (e.g. {@link org.chromium.chrome.browser.incognito.BraveIncognitoTabbedSnapshotController},
+     * or upstream's own {@code ScreenshotProtectionController} for the enterprise/policy case) can
+     * recompute immediately instead of waiting for its own unrelated trigger (a tab-model switch or
+     * Hub show/hide for the tabbed case; nothing at all, post-construction, for Custom Tabs).
      */
     public interface ScreenshotModeObserver {
         void onScreenshotModeChanged();
@@ -135,10 +137,12 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
     // controller (e.g. BraveIncognitoTabbedSnapshotController) is independently managing.
     private final Set<Activity> mForcedSecureActivities = new HashSet<>();
 
-    // At most one per activity — ChromeTabbedActivity and CustomTabActivity each wire up their
-    // own single incognito screenshot controller. Removed in onActivityDestroyed so this never
-    // leaks a reference to a destroyed activity's controller.
-    private final Map<Activity, ScreenshotModeObserver> mScreenshotModeObservers = new HashMap<>();
+    // Multiple observers can share one activity — e.g. ChromeTabbedActivity's own incognito
+    // screenshot controller and its ScreenshotProtectionController both observe the same
+    // activity independently. Removed in onActivityDestroyed so this never leaks a reference to
+    // a destroyed activity's controllers.
+    private final Map<Activity, List<ScreenshotModeObserver>> mScreenshotModeObservers =
+            new HashMap<>();
 
     // Lazily created per activity the first time a lock (pre-native or real) needs to block the
     // system Back button; reused (via setEnabled) thereafter. Removed in onActivityDestroyed.
@@ -408,8 +412,11 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
                 .writeInt(BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE, mode);
         BraveBrowserLockManager instance = sInstance;
         if (instance != null) {
-            for (ScreenshotModeObserver observer : instance.mScreenshotModeObservers.values()) {
-                observer.onScreenshotModeChanged();
+            for (List<ScreenshotModeObserver> observers :
+                    instance.mScreenshotModeObservers.values()) {
+                for (ScreenshotModeObserver observer : observers) {
+                    observer.onScreenshotModeChanged();
+                }
             }
         }
         if (sScreenshotModeChangeHandler != null) {
@@ -420,13 +427,16 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
     /**
      * Registers {@code observer} to be notified of future {@link #setScreenshotMode} calls, until
      * {@code activity} is destroyed (at which point it is automatically unregistered — callers do
-     * not need their own unregister path).
+     * not need their own unregister path). Multiple observers may be registered for the same
+     * activity.
      */
     public static void addScreenshotModeObserver(
             Activity activity, ScreenshotModeObserver observer) {
         BraveBrowserLockManager instance = sInstance;
         if (instance == null) return;
-        instance.mScreenshotModeObservers.put(activity, observer);
+        instance.mScreenshotModeObservers
+                .computeIfAbsent(activity, unused -> new ArrayList<>())
+                .add(observer);
     }
 
     /**
