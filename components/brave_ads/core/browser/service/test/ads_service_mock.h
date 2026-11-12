@@ -117,6 +117,21 @@ class AdsServiceMock : public AdsService {
   MOCK_METHOD(void, NotifyTabDidLoad, (int32_t, int));
   MOCK_METHOD(void, NotifyTabDidFailToLoad, (int32_t));
   MOCK_METHOD(void, NotifyDidCloseTab, (int32_t));
+  MOCK_METHOD(void,
+              MaybeGetOrderPatterns,
+              (int32_t,
+               const std::vector<GURL>&,
+               std::optional<std::string>,
+               MaybeGetOrderPatternsCallback));
+  MOCK_METHOD(void,
+              NotifyOrderIdExtracted,
+              (int32_t, const GURL&, std::optional<std::string>));
+  MOCK_METHOD(void,
+              NotifyOrderValueExtracted,
+              (int32_t,
+               const GURL&,
+               std::optional<std::string>,
+               std::optional<std::string>));
   MOCK_METHOD(void, NotifyUserGestureEventTriggered, (int32_t));
   MOCK_METHOD(void, NotifyBrowserDidBecomeActive, ());
   MOCK_METHOD(void, NotifyBrowserDidResignActive, ());

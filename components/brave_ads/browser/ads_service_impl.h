@@ -297,6 +297,11 @@ class AdsServiceImpl : public AdsService,
       mojom::SearchResultAdEventType mojom_ad_event_type,
       ResultCallback callback) override;
 
+  void MaybeGetOrderPatterns(int32_t tab_id,
+                             const std::vector<GURL>& redirect_chain,
+                             std::optional<std::string> detected_language,
+                             MaybeGetOrderPatternsCallback callback) override;
+
   void PurgeOrphanedAdEventsForType(mojom::AdType mojom_ad_type,
                                     ResultCallback callback) override;
 
@@ -330,6 +335,13 @@ class AdsServiceImpl : public AdsService,
   void NotifyTabDidLoad(int32_t tab_id, int http_status_code) override;
   void NotifyTabDidFailToLoad(int32_t tab_id) override;
   void NotifyDidCloseTab(int32_t tab_id) override;
+  void NotifyOrderIdExtracted(int32_t tab_id,
+                              const GURL& extracted_for_url,
+                              std::optional<std::string> id) override;
+  void NotifyOrderValueExtracted(int32_t tab_id,
+                                 const GURL& extracted_for_url,
+                                 std::optional<std::string> value,
+                                 std::optional<std::string> currency) override;
 
   void NotifyUserGestureEventTriggered(int32_t page_transition) override;
 

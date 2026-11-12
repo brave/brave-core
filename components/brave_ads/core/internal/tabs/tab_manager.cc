@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
+#include "brave/components/brave_ads/core/public/common/url/url_util.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -63,6 +64,18 @@ bool TabManager::IsPlayingMedia(int32_t tab_id) const {
   }
 
   return false;
+}
+
+std::vector<TabInfo> TabManager::GetOrderExtractions() const {
+  std::vector<TabInfo> order_extractions;
+
+  for (const auto& [tab_id, tab] : tabs_) {
+    if (tab.order_id || tab.order_value) {
+      order_extractions.push_back(tab);
+    }
+  }
+
+  return order_extractions;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -198,6 +211,15 @@ void TabManager::OnNotifyTabDidChange(int32_t tab_id,
   // Check if the tab changed focus.
   const bool did_change_focus = !does_exist || tab.is_visible != is_visible;
 
+  if (did_change && !tab.redirect_chain.empty() &&
+      !SameDomainOrHost(tab.redirect_chain.back(), redirect_chain.back())) {
+    // Navigating to a different registrable domain must not let an order
+    // value/ID seen earlier in this tab leak into an unrelated conversion.
+    tab.order_value.reset();
+    tab.order_currency.reset();
+    tab.order_id.reset();
+  }
+
   // Update the tab.
   tab.is_visible = is_visible;
   tab.redirect_chain = redirect_chain;
@@ -253,6 +275,46 @@ void TabManager::OnNotifyDidCloseTab(int32_t tab_id) {
   RemoveForId(tab_id);
 
   NotifyDidCloseTab(tab_id);
+}
+
+void TabManager::OnNotifyOrderIdExtracted(
+    int32_t tab_id,
+    const GURL& extracted_for_url,
+    const std::optional<std::string>& id) {
+  if (!DoesExistForId(tab_id)) {
+    return;
+  }
+
+  TabInfo& tab = GetOrCreateForId(tab_id);
+  if (tab.redirect_chain.empty() ||
+      !SameDomainOrHost(extracted_for_url, tab.redirect_chain.back())) {
+    // Stale result for a page this tab has since navigated away from, or a
+    // tab with no known page yet.
+    return;
+  }
+
+  tab.order_id = id;
+}
+
+void TabManager::OnNotifyOrderValueExtracted(
+    int32_t tab_id,
+    const GURL& extracted_for_url,
+    const std::optional<std::string>& value,
+    const std::optional<std::string>& currency) {
+  if (!DoesExistForId(tab_id)) {
+    return;
+  }
+
+  TabInfo& tab = GetOrCreateForId(tab_id);
+  if (tab.redirect_chain.empty() ||
+      !SameDomainOrHost(extracted_for_url, tab.redirect_chain.back())) {
+    // Stale result for a page this tab has since navigated away from, or a
+    // tab with no known page yet.
+    return;
+  }
+
+  tab.order_value = value;
+  tab.order_currency = currency;
 }
 
 }  // namespace brave_ads

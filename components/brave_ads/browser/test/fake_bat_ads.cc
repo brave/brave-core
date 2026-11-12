@@ -112,6 +112,14 @@ void FakeBatAds::MaybeGetSearchResultAd(
   std::move(callback).Run(/*search_result_ad=*/nullptr);
 }
 
+void FakeBatAds::MaybeGetOrderPatterns(
+    int32_t /*tab_id*/,
+    const std::vector<GURL>& /*redirect_chain*/,
+    const std::optional<std::string>& /*detected_language*/,
+    MaybeGetOrderPatternsCallback callback) {
+  std::move(callback).Run(/*order_patterns=*/nullptr);
+}
+
 void FakeBatAds::TriggerSearchResultAdEvent(
     brave_ads::mojom::CreativeSearchResultAdInfoPtr /*mojom_creative_ad*/,
     brave_ads::mojom::SearchResultAdEventType /*mojom_ad_event_type*/,

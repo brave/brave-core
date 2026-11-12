@@ -114,7 +114,7 @@ TEST_F(BraveAdsDiagnosticManagerTest, GetDiagnostics) {
             "storageEntries": [
               {
                 "name": "Schema version",
-                "value": "61"
+                "value": "62"
               },
               {
                 "name": "Last migration failure reason",

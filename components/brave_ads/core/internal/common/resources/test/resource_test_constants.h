@@ -15,6 +15,9 @@ inline constexpr char kUnsupportedVersionAntiTargetingResourceId[] =
     "resources/components/unsupported_version_anti_targeting_resource_component";
 inline constexpr char kUnsupportedVersionPurchaseIntentResourceId[] =
     "resources/components/unsupported_version_purchase_intent_resource_component";
+inline constexpr char kUnsupportedVersionOrderExtractionPatternsResourceId[] =
+    "resources/components/"
+    "unsupported_version_order_extraction_patterns_resource_component";
 
 }  // namespace brave_ads::test
 

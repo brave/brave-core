@@ -16,15 +16,26 @@ namespace brave_ads::database::table {
 CampaignConversionInfo CampaignConversionFromMojomRow(
     const mojom::DBRowInfoPtr& mojom_db_row) {
   CHECK(mojom_db_row);
-  CHECK_EQ(4U, mojom_db_row->column_values_union.size());
+  CHECK_EQ(7U, mojom_db_row->column_values_union.size());
 
   CampaignConversionInfo campaign_conversion;
 
   campaign_conversion.id = ColumnString(mojom_db_row, 0);
-  campaign_conversion.url_pattern = ColumnString(mojom_db_row, 1);
+
+  // `DBColumnValueUnion` has no NULL variant, so, as with `expire_at` below,
+  // "unset" is round-tripped through a sentinel rather than SQL NULL.
+  const std::string checkout_url_pattern = ColumnString(mojom_db_row, 1);
+  if (!checkout_url_pattern.empty()) {
+    campaign_conversion.checkout_url_pattern = checkout_url_pattern;
+  }
+
+  campaign_conversion.thank_you_url_pattern = ColumnString(mojom_db_row, 2);
+
+  campaign_conversion.extract_id = ColumnBool(mojom_db_row, 3);
+  campaign_conversion.extract_value = ColumnBool(mojom_db_row, 4);
   campaign_conversion.observation_window =
-      base::Days(ColumnInt(mojom_db_row, 2));
-  const base::Time expire_at = ColumnTime(mojom_db_row, 3);
+      base::Days(ColumnInt(mojom_db_row, 5));
+  const base::Time expire_at = ColumnTime(mojom_db_row, 6);
   if (!expire_at.is_null()) {
     campaign_conversion.expire_at = expire_at;
   }

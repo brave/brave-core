@@ -7,6 +7,8 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TABS_TAB_INFO_H_
 
 #include <cstdint>
+#include <optional>
+#include <string>
 #include <vector>
 
 #include "url/gurl.h"
@@ -34,6 +36,16 @@ struct TabInfo final {
   bool is_visible = false;
   std::vector<GURL> redirect_chain;
   bool is_playing_media = false;
+
+  // Carried forward to the later navigation where the conversion is
+  // actually attributed, see `TabManager`.
+  std::optional<std::string> order_id;
+  std::optional<std::string> order_value;
+
+  // The currency code (e.g. "EUR") whose regex matched `order_value`, or
+  // unset if none did (e.g. a bare total with no currency marker nearby)
+  // or `order_value` itself is unset.
+  std::optional<std::string> order_currency;
 };
 
 }  // namespace brave_ads

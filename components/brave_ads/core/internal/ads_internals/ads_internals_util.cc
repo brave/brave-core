@@ -28,6 +28,8 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_constants.h"
+#include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
+#include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
@@ -38,9 +40,8 @@ namespace brave_ads {
 
 namespace {
 
-// A campaign conversion isn't itself tied to a specific ad format, unlike
-// an ad event; there's no local database table for search result ads to look
-// up, so that format is inferred by elimination: present in neither set.
+// A campaign conversion isn't tied to one ad format like an ad event is;
+// search result ads are inferred by elimination, absent from both sets.
 std::string_view GetAdType(
     const std::string& campaign_id,
     const base::flat_set<std::string>& notification_ad_campaign_ids,
@@ -73,12 +74,35 @@ base::ListValue BuildCampaignConversions(
             .Set("Ad Type",
                  GetAdType(campaign_conversion.id, notification_ad_campaign_ids,
                            new_tab_page_ad_campaign_ids))
-            .Set("URL Pattern", campaign_conversion.url_pattern)
+            .Set("Checkout URL Pattern",
+                 campaign_conversion.checkout_url_pattern.value_or(""))
+            .Set("Thank You URL Pattern",
+                 campaign_conversion.thank_you_url_pattern)
             .Set("Expires At",
                  campaign_conversion.expire_at->InSecondsFSinceUnixEpoch())
             .Set("Observation Window",
                  static_cast<int>(
                      campaign_conversion.observation_window.InDays())));
+  }
+
+  return list;
+}
+
+base::ListValue BuildOrderExtractions(
+    const std::vector<TabInfo>& order_extractions) {
+  base::ListValue list;
+  list.reserve(order_extractions.size());
+
+  for (const auto& tab : order_extractions) {
+    list.Append(
+        base::DictValue()
+            .Set("Tab ID", tab.id)
+            .Set("URL", tab.redirect_chain.empty()
+                            ? ""
+                            : tab.redirect_chain.back().spec())
+            .Set("Order ID", tab.order_id.value_or("Not found"))
+            .Set("Order Value", tab.order_value.value_or("Not found"))
+            .Set("Order Currency", tab.order_currency.value_or("Not found")));
   }
 
   return list;
@@ -168,6 +192,8 @@ void Successful(GetInternalsCallback callback, AdsInternalsInfo ads_internals) {
                    ads_internals.notification_ad_campaign_ids,
                    ads_internals.new_tab_page_ad_campaign_ids))
           .Set("adEvents", BuildAdEvents(ads_internals.ad_events))
+          .Set("orderExtractions",
+               BuildOrderExtractions(ads_internals.order_extractions))
           .Set("confirmationQueue", std::move(ads_internals.confirmation_queue))
           .Set("paymentTokens", std::move(ads_internals.payment_tokens))
           .Set("activeNotificationAdCount",
@@ -402,6 +428,8 @@ void GetCampaignConversionsCallback(
 
   AdsInternalsInfo ads_internals;
   ads_internals.campaign_conversions = campaign_conversions;
+  ads_internals.order_extractions =
+      TabManager::GetInstance().GetOrderExtractions();
 
   database::table::CreativeNotificationAds database_table;
   database_table.GetAll(base::BindOnce(&GetNotificationAdCreativeSetIdsCallback,

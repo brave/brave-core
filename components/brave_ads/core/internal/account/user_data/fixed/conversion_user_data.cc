@@ -18,6 +18,11 @@ base::DictValue BuildConversionUserData(const ConversionInfo& conversion) {
   // Conversion.
   list.Append(BuildConversionActionTypeUserData(conversion));
 
+  if (std::optional<base::DictValue> order_user_data =
+          MaybeBuildConversionOrderUserData(conversion)) {
+    list.Append(std::move(*order_user_data));
+  }
+
   return base::DictValue().Set(kConversionKey, std::move(list));
 }
 

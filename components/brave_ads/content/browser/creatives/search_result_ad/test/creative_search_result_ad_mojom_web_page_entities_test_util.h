@@ -29,6 +29,12 @@ blink::mojom::WebPagePtr CreativeSearchResultAdMojomWebPageWithProperty(
     std::string_view name,
     std::string_view value);
 
+// Returns the property named `name` directly under `mojom_entity`, or null if
+// not present.
+schema_org::mojom::PropertyPtr* FindMojomPropertyByName(
+    schema_org::mojom::EntityPtr& mojom_entity,
+    std::string_view name);
+
 }  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CONTENT_BROWSER_CREATIVES_SEARCH_RESULT_AD_TEST_CREATIVE_SEARCH_RESULT_AD_MOJOM_WEB_PAGE_ENTITIES_TEST_UTIL_H_

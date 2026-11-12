@@ -1,0 +1,64 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("renderer") {
+  sources = [
+    "order_extractor.cc",
+    "order_extractor.h",
+    "order_extractor_dom_util.cc",
+    "order_extractor_dom_util.h",
+    "order_id_extractor_util.cc",
+    "order_id_extractor_util.h",
+    "order_value_extractor_util.cc",
+    "order_value_extractor_util.h",
+    "order_value_match_info.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_ads/content/common/mojom",
+    "//content/public/renderer",
+    "//mojo/public/cpp/bindings",
+    "//services/service_manager/public/cpp",
+    "//third_party/blink/public:blink",
+    "//third_party/re2",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "order_value_extractor_util_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_ads/content/renderer",
+    "//testing/gtest",
+    "//third_party/re2",
+  ]
+}
+
+if (!is_ios) {
+  source_set("browser_tests") {
+    testonly = true
+    sources = [
+      "order_extractor_browsertest.cc",
+      "order_extractor_real_site_fixtures_browsertest.cc",
+      "test/order_id_extraction_patterns_test_constants.h",
+      "test/order_value_extraction_patterns_test_constants.h",
+    ]
+
+    deps = [
+      "//base/test:test_support",
+      "//brave/components/brave_ads/content/common/mojom",
+      "//brave/components/brave_ads/content/renderer",
+      "//content/public/renderer",
+      "//content/test:test_support",
+      "//mojo/public/cpp/bindings",
+      "//services/service_manager/public/cpp",
+      "//testing/gmock",
+      "//testing/gtest",
+    ]
+  }
+}

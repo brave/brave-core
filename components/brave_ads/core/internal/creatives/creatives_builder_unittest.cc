@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/creatives_builder.h"
 
+#include <optional>
+
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_campaign_info.h"
@@ -170,16 +172,16 @@ TEST_F(BraveAdsCreativesBuilderTest,
   CatalogSegmentInfo segment;
   segment.name = test::kSegment;
 
-  CatalogConversionInfo conversion;
-  conversion.creative_set_id = test::kCreativeSetId;
-  conversion.url_pattern = "https://example.com/*";
-  conversion.observation_window = base::Days(7);
-  conversion.expire_at = test::Now() + base::Days(7);
+  CatalogConversionInfo catalog_conversion;
+  catalog_conversion.creative_set_id = test::kCreativeSetId;
+  catalog_conversion.thank_you_url_pattern = "https://example.com/*";
+  catalog_conversion.observation_window = base::Days(7);
+  catalog_conversion.expire_at = test::Now() + base::Days(7);
 
   CatalogCreativeSetInfo creative_set;
   creative_set.id = test::kCreativeSetId;
   creative_set.segments = {segment};
-  creative_set.conversions = {conversion};
+  creative_set.conversions = {catalog_conversion};
 
   CatalogCampaignInfo campaign;
   campaign.id = test::kCampaignId;
@@ -205,17 +207,17 @@ TEST_F(BraveAdsCreativesBuilderTest, BuildCreativesIncludesValidConversion) {
   CatalogSegmentInfo segment;
   segment.name = test::kSegment;
 
-  CatalogConversionInfo conversion;
-  conversion.creative_set_id = test::kCreativeSetId;
-  conversion.url_pattern = "https://example.com/*";
-  conversion.observation_window = base::Days(7);
-  conversion.expire_at = test::Now() + base::Days(7);
+  CatalogConversionInfo catalog_conversion;
+  catalog_conversion.creative_set_id = test::kCreativeSetId;
+  catalog_conversion.thank_you_url_pattern = "https://example.com/*";
+  catalog_conversion.observation_window = base::Days(7);
+  catalog_conversion.expire_at = test::Now() + base::Days(7);
 
   CatalogCreativeSetInfo creative_set;
   creative_set.id = test::kCreativeSetId;
   creative_set.segments = {segment};
   creative_set.creative_notification_ads = {creative};
-  creative_set.conversions = {conversion};
+  creative_set.conversions = {catalog_conversion};
 
   CatalogCampaignInfo campaign;
   campaign.id = test::kCampaignId;
@@ -233,7 +235,10 @@ TEST_F(BraveAdsCreativesBuilderTest, BuildCreativesIncludesValidConversion) {
       creatives.conversions,
       ::testing::ElementsAre(::testing::FieldsAre(
           /*id=*/test::kCampaignId,
-          /*url_pattern=*/"https://example.com/*",
+          /*checkout_url_pattern=*/std::nullopt,
+          /*thank_you_url_pattern=*/"https://example.com/*",
+          /*extract_id=*/false,
+          /*extract_value=*/false,
           /*observation_window=*/base::Days(7),
           /*expire_at=*/::testing::Optional(test::Now() + base::Days(7)))));
 }
@@ -247,17 +252,17 @@ TEST_F(BraveAdsCreativesBuilderTest,
   CatalogSegmentInfo segment;
   segment.name = test::kSegment;
 
-  CatalogConversionInfo invalid_conversion;
-  invalid_conversion.creative_set_id = test::kCreativeSetId;
-  invalid_conversion.url_pattern = "";  // Empty pattern makes it invalid.
-  invalid_conversion.observation_window = base::Days(7);
-  invalid_conversion.expire_at = test::Now() + base::Days(7);
+  CatalogConversionInfo invalid_catalog_conversion;
+  invalid_catalog_conversion.creative_set_id = test::kCreativeSetId;
+  invalid_catalog_conversion.thank_you_url_pattern = "";
+  invalid_catalog_conversion.observation_window = base::Days(7);
+  invalid_catalog_conversion.expire_at = test::Now() + base::Days(7);
 
   CatalogCreativeSetInfo creative_set;
   creative_set.id = test::kCreativeSetId;
   creative_set.segments = {segment};
   creative_set.creative_notification_ads = {creative};
-  creative_set.conversions = {invalid_conversion};
+  creative_set.conversions = {invalid_catalog_conversion};
 
   CatalogCampaignInfo campaign;
   campaign.id = test::kCampaignId;

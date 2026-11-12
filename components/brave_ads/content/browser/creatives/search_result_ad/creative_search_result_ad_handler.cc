@@ -85,7 +85,7 @@ void CreativeSearchResultAdHandler::
     return std::move(callback).Run(/*placement_ids=*/{});
   }
 
-  std::vector<mojom::CreativeSearchResultAdInfoPtr> creative_search_result_ads =
+  CreativeSearchResultAdList creative_search_result_ads =
       ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
           mojom_web_page->entities);
 

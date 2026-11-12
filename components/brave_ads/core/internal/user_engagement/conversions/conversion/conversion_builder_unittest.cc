@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_builder.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
@@ -37,7 +39,9 @@ TEST(BraveAdsConversionBuilderTest, BuildConversion) {
               ::testing::FieldsAre(
                   mojom::AdType::kNotificationAd, test::kCreativeInstanceId,
                   test::kCreativeSetId, test::kCampaignId, test::kAdvertiserId,
-                  test::kSegment, ConversionActionType::kViewThrough));
+                  test::kSegment, ConversionActionType::kViewThrough,
+                  /*order_id=*/std::nullopt, /*order_value=*/std::nullopt,
+                  /*order_currency=*/std::nullopt));
 }
 
 }  // namespace brave_ads

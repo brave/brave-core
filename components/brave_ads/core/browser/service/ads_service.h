@@ -174,6 +174,14 @@ class AdsService : public KeyedService {
       mojom::SearchResultAdEventType mojom_ad_event_type,
       ResultCallback callback) = 0;
 
+  // `detected_language` unset tries every language in schema order. Null in
+  // the callback means no pending ad event's campaign requests extraction.
+  virtual void MaybeGetOrderPatterns(
+      int32_t tab_id,
+      const std::vector<GURL>& redirect_chain,
+      std::optional<std::string> detected_language,
+      MaybeGetOrderPatternsCallback callback) = 0;
+
   // Called to purge orphaned served ad events for the specified `mojom_ad_type`
   // before calling `MaybeServe*Ad`. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
@@ -264,6 +272,22 @@ class AdsService : public KeyedService {
 
   // Called when a browser tab with the specified `tab_id` is closed.
   virtual void NotifyDidCloseTab(int32_t tab_id) = 0;
+
+  // Called when ID extraction was requested; `id` is unset if not found.
+  virtual void NotifyOrderIdExtracted(int32_t tab_id,
+                                      const GURL& extracted_for_url,
+                                      std::optional<std::string> id) = 0;
+
+  // Called when value extraction was requested; `value` is unset if not
+  // found. `currency` is the currency code (e.g. "EUR") whose regex
+  // matched `value`, or unset if no configured currency regex matched
+  // the resolved text (e.g. a bare total with no currency marker nearby)
+  // or `value` itself is unset.
+  virtual void NotifyOrderValueExtracted(
+      int32_t tab_id,
+      const GURL& extracted_for_url,
+      std::optional<std::string> value,
+      std::optional<std::string> currency) = 0;
 
   // Called when a page navigation was initiated by a user gesture.
   // `page_transition` containing the page transition type, see enums for

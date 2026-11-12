@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_CONVERSION_CONVERSION_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_CONVERSION_CONVERSION_INFO_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -36,6 +37,16 @@ struct ConversionInfo final {
   std::string advertiser_id;
   std::string segment;
   ConversionActionType action_type = ConversionActionType::kUndefined;
+
+  // Unset when the campaign's conversion settings do not request extraction,
+  // or no pattern/selector matched the checkout page.
+  std::optional<std::string> order_id;
+  std::optional<std::string> order_value;
+
+  // The currency code (e.g. "EUR") whose regex matched `order_value`, or
+  // unset if none did (e.g. a bare total with no currency marker nearby)
+  // or `order_value` itself is unset.
+  std::optional<std::string> order_currency;
 };
 
 using ConversionList = std::vector<ConversionInfo>;

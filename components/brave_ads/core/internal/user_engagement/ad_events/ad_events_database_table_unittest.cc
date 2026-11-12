@@ -228,7 +228,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest,
   const CampaignConversionInfo campaign_conversion =
       test::BuildCampaignConversion(
           ad.campaign_id,
-          /*url_pattern=*/"https://www.brave.com/signup/*",
+          /*thank_you_url_pattern=*/"https://www.brave.com/signup/*",
           /*observation_window=*/base::Days(30));
   database::SaveCampaignConversions({campaign_conversion});
 
@@ -420,7 +420,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest,
   const CampaignConversionInfo campaign_conversion =
       test::BuildCampaignConversion(
           ad_1.campaign_id,
-          /*url_pattern=*/"https://www.brave.com/signup/*",
+          /*thank_you_url_pattern=*/"https://www.brave.com/signup/*",
           /*observation_window=*/base::Days(30));
   database::SaveCampaignConversions({campaign_conversion});
 
@@ -538,7 +538,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest,
   const CampaignConversionInfo campaign_conversion =
       test::BuildCampaignConversion(
           ad.campaign_id,
-          /*url_pattern=*/"https://www.brave.com/signup/*",
+          /*thank_you_url_pattern=*/"https://www.brave.com/signup/*",
           /*observation_window=*/base::Days(30));
   database::SaveCampaignConversions({campaign_conversion});
 

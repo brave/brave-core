@@ -121,7 +121,9 @@ function downloadAdEvents(rows: AdEvent[]) {
   document.body.removeChild(element)
 }
 
-function AdEventTable({ data, allRows }: { data: AdEvent[], allRows: AdEvent[] }) {
+export function AdEventTable(
+  { data, allRows }: { data: AdEvent[], allRows: AdEvent[] },
+) {
   const copy = useCopyToClipboard()
   const placementEventsMap = React.useMemo(
     () => buildPlacementEventsMap(allRows),

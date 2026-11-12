@@ -96,6 +96,16 @@ void AdHandler::TriggerSearchResultAdEvent(
       std::move(mojom_creative_ad), mojom_ad_event_type, std::move(callback));
 }
 
+void AdHandler::MaybeGetOrderPatterns(
+    int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    std::optional<std::string> detected_language,
+    Conversions::MaybeGetOrderPatternsCallback callback) {
+  conversions_.MaybeGetOrderPatterns(tab_id, redirect_chain,
+                                     std::move(detected_language),
+                                     std::move(callback));
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 void AdHandler::OnDidConvertAd(const ConversionInfo& conversion) {

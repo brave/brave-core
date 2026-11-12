@@ -127,7 +127,7 @@ mojom::CreativeSearchResultAdInfoPtr GenerateCreativeSearchResultAd(
   mojom_creative_ad->value = 0.5 + static_cast<double>(ad_index);
 
   auto mojom_conversion = mojom::CampaignConversionInfo::New();
-  mojom_conversion->url_pattern =
+  mojom_conversion->thank_you_url_pattern =
       base::StrCat({"data-conversion-url-pattern-value", index});
   mojom_conversion->observation_window = base::Days(ad_index);
   mojom_creative_ad->campaign_conversion = std::move(mojom_conversion);

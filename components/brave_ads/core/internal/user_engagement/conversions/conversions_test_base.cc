@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_base.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/test/gmock_callback_support.h"
@@ -40,7 +41,9 @@ void BraveAdsConversionsTestBase::VerifyOnDidConvertAdExpectation(
   EXPECT_CALL(conversions_observer_mock_,
               OnDidConvertAd(/*conversion=*/::testing::FieldsAre(
                   ad.type, ad.creative_instance_id, ad.creative_set_id,
-                  ad.campaign_id, ad.advertiser_id, ad.segment, action_type)))
+                  ad.campaign_id, ad.advertiser_id, ad.segment, action_type,
+                  /*order_id=*/std::nullopt, /*order_value=*/std::nullopt,
+                  /*order_currency=*/std::nullopt)))
       .WillOnce(base::test::RunOnceClosure(std::move(did_convert_ad_closure)));
 }
 

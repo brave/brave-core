@@ -36,7 +36,7 @@ TEST_F(BraveAdsCampaignConversionUrlPatternUtilTest,
   // Arrange
   const CampaignConversionInfo campaign_conversion =
       test::BuildCampaignConversion(test::kCampaignId,
-                                    /*url_pattern=*/"",
+                                    /*thank_you_url_pattern=*/"",
                                     /*observation_window=*/base::Days(3));
 
   // Act & Assert

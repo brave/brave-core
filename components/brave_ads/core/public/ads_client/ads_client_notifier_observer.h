@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_CLIENT_ADS_CLIENT_NOTIFIER_OBSERVER_H_
 
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -82,6 +83,23 @@ class AdsClientNotifierObserver : public base::CheckedObserver {
 
   // Invoked when a browser tab with the specified `tab_id` is closed.
   virtual void OnNotifyDidCloseTab(int32_t tab_id) {}
+
+  // Invoked when ID extraction was requested; `id` is unset if not found.
+  // `extracted_for_url` lets an observer discard a stale post-navigation
+  // result.
+  virtual void OnNotifyOrderIdExtracted(int32_t tab_id,
+                                        const GURL& extracted_for_url,
+                                        const std::optional<std::string>& id) {}
+
+  // Invoked when value extraction was requested; `value` is unset if not
+  // found. `currency` is the currency code (e.g. "EUR") whose regex
+  // matched `value`, or unset if none did or `value` itself is unset. See
+  // `OnNotifyOrderIdExtracted` for `extracted_for_url`.
+  virtual void OnNotifyOrderValueExtracted(
+      int32_t tab_id,
+      const GURL& extracted_for_url,
+      const std::optional<std::string>& value,
+      const std::optional<std::string>& currency) {}
 
   // Called when a page navigation was initiated by a user gesture.
   // `page_transition` containing the page transition type, see enums for

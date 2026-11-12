@@ -37,7 +37,10 @@ void BindColumnTypes(const mojom::DBActionInfoPtr& mojom_db_action) {
 
   mojom_db_action->bind_column_types = {
       mojom::DBBindColumnType::kString,  // campaign_id
-      mojom::DBBindColumnType::kString,  // url_pattern
+      mojom::DBBindColumnType::kString,  // checkout_url_pattern
+      mojom::DBBindColumnType::kString,  // thank_you_url_pattern
+      mojom::DBBindColumnType::kBool,    // extract_id
+      mojom::DBBindColumnType::kBool,    // extract_value
       mojom::DBBindColumnType::kInt,     // observation_window
       mojom::DBBindColumnType::kTime     // expire_at
   };
@@ -55,7 +58,12 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
     CHECK(campaign_conversion.IsValid());
 
     BindColumnString(mojom_db_action, index++, campaign_conversion.id);
-    BindColumnString(mojom_db_action, index++, campaign_conversion.url_pattern);
+    BindColumnString(mojom_db_action, index++,
+                     campaign_conversion.checkout_url_pattern.value_or(""));
+    BindColumnString(mojom_db_action, index++,
+                     campaign_conversion.thank_you_url_pattern);
+    BindColumnBool(mojom_db_action, index++, campaign_conversion.extract_id);
+    BindColumnBool(mojom_db_action, index++, campaign_conversion.extract_value);
     BindColumnInt(mojom_db_action, index++,
                   campaign_conversion.observation_window.InDays());
     BindColumnTime(mojom_db_action, index++,
@@ -106,11 +114,14 @@ std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
       R"(
           INSERT INTO $1 (
             campaign_id,
-            url_pattern,
+            checkout_url_pattern,
+            thank_you_url_pattern,
+            extract_id,
+            extract_value,
             observation_window,
             expire_at
           ) VALUES $2)",
-      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/4, row_count)},
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/7, row_count)},
       nullptr);
 }
 
@@ -187,6 +198,45 @@ void MigrateToV61(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   // already maintains an index for it.
 }
 
+void MigrateToV62(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
+
+  // Rebuilt rather than altered in place, so the column order matches
+  // `Create()`'s for both migrated and fresh installs.
+  RenameTable(mojom_db_transaction,
+              /*from=*/"campaign_conversions",
+              /*to=*/"campaign_conversions_temp");
+
+  Execute(mojom_db_transaction, R"(
+      CREATE TABLE campaign_conversions (
+        campaign_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+        checkout_url_pattern TEXT NOT NULL DEFAULT '',
+        thank_you_url_pattern TEXT NOT NULL,
+        extract_id INTEGER NOT NULL DEFAULT 0,
+        extract_value INTEGER NOT NULL DEFAULT 0,
+        observation_window INTEGER NOT NULL,
+        expire_at TIMESTAMP NOT NULL
+      ))");
+
+  CopyTableColumns(
+      mojom_db_transaction,
+      /*from=*/"campaign_conversions_temp",
+      /*to=*/"campaign_conversions",
+      /*from_columns=*/
+      {"campaign_id", "url_pattern", "observation_window", "expire_at"},
+      /*to_columns=*/
+      {"campaign_id", "thank_you_url_pattern", "observation_window",
+       "expire_at"},
+      /*should_drop=*/true);
+
+  CreateTableIndex(mojom_db_transaction,
+                   /*table_name=*/"campaign_conversions",
+                   /*columns=*/{"expire_at"});
+
+  // No index needed on `campaign_id`; it is the primary key, so SQLite
+  // already maintains an index for it.
+}
+
 }  // namespace
 
 void CampaignConversions::Save(
@@ -225,7 +275,10 @@ void CampaignConversions::GetUnexpired(
       R"(
           SELECT
             campaign_id,
-            url_pattern,
+            checkout_url_pattern,
+            thank_you_url_pattern,
+            extract_id,
+            extract_value,
             observation_window,
             expire_at
           FROM
@@ -250,7 +303,10 @@ void CampaignConversions::GetActive(
       R"(
           SELECT DISTINCT
             campaign_conversion.campaign_id,
-            campaign_conversion.url_pattern,
+            campaign_conversion.checkout_url_pattern,
+            campaign_conversion.thank_you_url_pattern,
+            campaign_conversion.extract_id,
+            campaign_conversion.extract_value,
             campaign_conversion.observation_window,
             campaign_conversion.expire_at
           FROM
@@ -292,7 +348,10 @@ void CampaignConversions::Create(
   Execute(mojom_db_transaction, R"(
       CREATE TABLE campaign_conversions (
         campaign_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
-        url_pattern TEXT NOT NULL,
+        checkout_url_pattern TEXT NOT NULL DEFAULT '',
+        thank_you_url_pattern TEXT NOT NULL,
+        extract_id INTEGER NOT NULL DEFAULT 0,
+        extract_value INTEGER NOT NULL DEFAULT 0,
         observation_window INTEGER NOT NULL,
         expire_at TIMESTAMP NOT NULL
       ))");
@@ -318,6 +377,11 @@ void CampaignConversions::Migrate(
 
     case 61: {
       MigrateToV61(mojom_db_transaction);
+      break;
+    }
+
+    case 62: {
+      MigrateToV62(mojom_db_transaction);
       break;
     }
 

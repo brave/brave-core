@@ -90,9 +90,13 @@ CampaignConversionList BuildConversionsFromCreativeSet(
   for (const auto& conversion : creative_set.conversions) {
     CampaignConversionInfo campaign_conversion;
     campaign_conversion.id = campaign.id;
-    campaign_conversion.url_pattern = conversion.url_pattern;
+    campaign_conversion.thank_you_url_pattern =
+        conversion.thank_you_url_pattern;
     campaign_conversion.observation_window = conversion.observation_window;
     campaign_conversion.expire_at = conversion.expire_at;
+    campaign_conversion.extract_id = conversion.extract_id;
+    campaign_conversion.extract_value = conversion.extract_value;
+    campaign_conversion.checkout_url_pattern = conversion.checkout_url_pattern;
     if (!campaign_conversion.IsValid()) {
       BLOG(1, "Campaign id " << campaign.id << " has an invalid conversion");
       continue;

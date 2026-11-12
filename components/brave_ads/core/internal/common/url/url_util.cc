@@ -26,6 +26,13 @@ GURL GetUrlExcludingQuery(const GURL& url) {
   return url.ReplaceComponents(replacements);
 }
 
+std::string GetRegistrableDomainOrHost(const GURL& url) {
+  const std::string domain =
+      net::registry_controlled_domains::GetDomainAndRegistry(
+          url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  return domain.empty() ? std::string(url.host()) : domain;
+}
+
 bool ShouldSupportUrl(const GURL& url) {
   if (!url.is_valid()) {
     return false;

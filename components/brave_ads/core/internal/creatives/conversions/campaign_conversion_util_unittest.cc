@@ -26,27 +26,31 @@ TEST_F(BraveAdsCampaignConversionUtilTest, GetMatchingCampaignConversions) {
   CampaignConversionList campaign_conversions;
 
   const CampaignConversionInfo campaign_conversion_1 =
-      test::BuildCampaignConversion(test::kCampaignId,
-                                    /*url_pattern=*/"https://foo.com/*",
-                                    /*observation_window=*/base::Days(3));
+      test::BuildCampaignConversion(
+          test::kCampaignId,
+          /*thank_you_url_pattern=*/"https://foo.com/*",
+          /*observation_window=*/base::Days(3));
   campaign_conversions.push_back(campaign_conversion_1);
 
   const CampaignConversionInfo campaign_conversion_2 =
-      test::BuildCampaignConversion(test::kCampaignId,
-                                    /*url_pattern=*/"https://*.qux.com/fred",
-                                    /*observation_window=*/base::Days(7));
+      test::BuildCampaignConversion(
+          test::kCampaignId,
+          /*thank_you_url_pattern=*/"https://*.qux.com/fred",
+          /*observation_window=*/base::Days(7));
   campaign_conversions.push_back(campaign_conversion_2);
 
   const CampaignConversionInfo campaign_conversion_3 =
-      test::BuildCampaignConversion(test::kCampaignId,
-                                    /*url_pattern=*/"https://bar.com/foo",
-                                    /*observation_window=*/base::Days(30));
+      test::BuildCampaignConversion(
+          test::kCampaignId,
+          /*thank_you_url_pattern=*/"https://bar.com/foo",
+          /*observation_window=*/base::Days(30));
   campaign_conversions.push_back(campaign_conversion_3);
 
   const CampaignConversionInfo campaign_conversion_4 =
-      test::BuildCampaignConversion(test::kCampaignId,
-                                    /*url_pattern=*/"https://baz.com/",
-                                    /*observation_window=*/base::Days(1));
+      test::BuildCampaignConversion(
+          test::kCampaignId,
+          /*thank_you_url_pattern=*/"https://baz.com/",
+          /*observation_window=*/base::Days(1));
   campaign_conversions.push_back(campaign_conversion_4);
 
   const std::vector<GURL> redirect_chain = {
@@ -112,20 +116,21 @@ TEST_F(BraveAdsCampaignConversionUtilTest, SortCampaignConversionsIntoBuckets) {
   const CampaignConversionInfo campaign_conversion_1 =
       test::BuildCampaignConversion(
           test::kCampaignId,
-          /*url_pattern=*/"https://foo.com/*",
+          /*thank_you_url_pattern=*/"https://foo.com/*",
           /*observation_window=*/base::Days(3));  // Bucket #1
   campaign_conversions.push_back(campaign_conversion_1);
 
   const CampaignConversionInfo campaign_conversion_2 =
       test::BuildCampaignConversion(
-          test::kAnotherCampaignId, /*url_pattern=*/"https://www.qux.com/",
+          test::kAnotherCampaignId,
+          /*thank_you_url_pattern=*/"https://www.qux.com/",
           /*observation_window=*/base::Days(7));  // Bucket #2
   campaign_conversions.push_back(campaign_conversion_2);
 
   const CampaignConversionInfo campaign_conversion_3 =
       test::BuildCampaignConversion(
           test::kCampaignId,
-          /*url_pattern=*/"https://baz.com/",
+          /*thank_you_url_pattern=*/"https://baz.com/",
           /*observation_window=*/base::Days(30));  // Bucket #1
   campaign_conversions.push_back(campaign_conversion_3);
 
@@ -157,14 +162,15 @@ TEST_F(BraveAdsCampaignConversionUtilTest,
   const CampaignConversionInfo campaign_conversion_1 =
       test::BuildCampaignConversion(
           test::kCampaignId,
-          /*url_pattern=*/"https://foo.com/*",
+          /*thank_you_url_pattern=*/"https://foo.com/*",
           /*observation_window=*/base::Days(3));  // Bucket #1
   campaign_conversions.push_back(campaign_conversion_1);
   campaign_conversions.push_back(campaign_conversion_1);
 
   const CampaignConversionInfo campaign_conversion_2 =
       test::BuildCampaignConversion(
-          test::kAnotherCampaignId, /*url_pattern=*/"https://baz.com/",
+          test::kAnotherCampaignId,
+          /*thank_you_url_pattern=*/"https://baz.com/",
           /*observation_window=*/base::Days(30));  // Bucket #1
   campaign_conversions.push_back(campaign_conversion_2);
   campaign_conversions.push_back(campaign_conversion_2);
@@ -196,14 +202,15 @@ TEST_F(BraveAdsCampaignConversionUtilTest,
   const CampaignConversionInfo campaign_conversion_1 =
       test::BuildCampaignConversion(
           test::kCampaignId,
-          /*url_pattern=*/"https://foo.com/*",
+          /*thank_you_url_pattern=*/"https://foo.com/*",
           /*observation_window=*/base::Days(3));  // Bucket #1
   campaign_conversions.push_back(campaign_conversion_1);
   campaign_conversions.push_back(campaign_conversion_1);
 
   const CampaignConversionInfo campaign_conversion_2 =
       test::BuildCampaignConversion(
-          test::kAnotherCampaignId, /*url_pattern=*/"https://baz.com/",
+          test::kAnotherCampaignId,
+          /*thank_you_url_pattern=*/"https://baz.com/",
           /*observation_window=*/base::Days(30));  // Bucket #2
   campaign_conversions.push_back(campaign_conversion_2);
   campaign_conversions.push_back(campaign_conversion_2);
@@ -241,9 +248,10 @@ TEST_F(BraveAdsCampaignConversionUtilTest,
   AdvanceClockBy(base::Days(3) + base::Milliseconds(1));
 
   const CampaignConversionList campaign_conversions = {
-      test::BuildCampaignConversion(test::kCampaignId,
-                                    /*url_pattern=*/"https://foo.com/*",
-                                    /*observation_window=*/base::Days(7))};
+      test::BuildCampaignConversion(
+          test::kCampaignId,
+          /*thank_you_url_pattern=*/"https://foo.com/*",
+          /*observation_window=*/base::Days(7))};
 
   // Act & Assert
   EXPECT_TRUE(HasCampaignConversionWithinObservationWindow(campaign_conversions,
@@ -262,9 +270,10 @@ TEST_F(BraveAdsCampaignConversionUtilTest,
   AdvanceClockBy(base::Days(3) + base::Milliseconds(1));
 
   const CampaignConversionList campaign_conversions = {
-      test::BuildCampaignConversion(test::kAnotherCampaignId,
-                                    /*url_pattern=*/"https://www.qux.com/",
-                                    /*observation_window=*/base::Days(3))};
+      test::BuildCampaignConversion(
+          test::kAnotherCampaignId,
+          /*thank_you_url_pattern=*/"https://www.qux.com/",
+          /*observation_window=*/base::Days(3))};
 
   // Act & Assert
   EXPECT_FALSE(HasCampaignConversionWithinObservationWindow(

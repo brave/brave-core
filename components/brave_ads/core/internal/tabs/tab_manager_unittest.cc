@@ -333,4 +333,170 @@ TEST_F(BraveAdsTabManagerTest, DoNotGetIfNoTabs) {
   EXPECT_FALSE(TabManager::GetInstance().MaybeGetForId(1));
 }
 
+TEST_F(BraveAdsTabManagerTest, SetOrderIdExtractedForTab) {
+  // Arrange
+  EXPECT_CALL(tab_manager_observer_mock_, OnDidOpenNewTab);
+  EXPECT_CALL(tab_manager_observer_mock_, OnTabDidChangeFocus);
+  ads_client_notifier_.NotifyTabDidChange(
+      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
+      /*is_new_navigation=*/true, /*is_restoring=*/false, /*is_visible=*/true);
+
+  // Act
+  ads_client_notifier_.NotifyOrderIdExtracted(
+      /*tab_id=*/1, /*extracted_for_url=*/GURL("https://brave.com"),
+      /*id=*/"336121537");
+
+  // Assert
+  EXPECT_EQ("336121537", TabManager::GetInstance().MaybeGetForId(1)->order_id);
+}
+
+TEST_F(BraveAdsTabManagerTest, SetOrderValueExtractedForTab) {
+  // Arrange
+  EXPECT_CALL(tab_manager_observer_mock_, OnDidOpenNewTab);
+  EXPECT_CALL(tab_manager_observer_mock_, OnTabDidChangeFocus);
+  ads_client_notifier_.NotifyTabDidChange(
+      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
+      /*is_new_navigation=*/true, /*is_restoring=*/false, /*is_visible=*/true);
+
+  // Act
+  ads_client_notifier_.NotifyOrderValueExtracted(
+      /*tab_id=*/1, /*extracted_for_url=*/GURL("https://brave.com"),
+      /*value=*/"4.98", /*currency=*/"EUR");
+
+  // Assert
+  EXPECT_EQ("4.98", TabManager::GetInstance().MaybeGetForId(1)->order_value);
+  EXPECT_EQ("EUR", TabManager::GetInstance().MaybeGetForId(1)->order_currency);
+}
+
+TEST_F(BraveAdsTabManagerTest, ClearOrderIdExtractedForTabIfNotFound) {
+  // Arrange
+  EXPECT_CALL(tab_manager_observer_mock_, OnDidOpenNewTab);
+  EXPECT_CALL(tab_manager_observer_mock_, OnTabDidChangeFocus);
+  ads_client_notifier_.NotifyTabDidChange(
+      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
+      /*is_new_navigation=*/true, /*is_restoring=*/false, /*is_visible=*/true);
+  ads_client_notifier_.NotifyOrderIdExtracted(
+      /*tab_id=*/1, /*extracted_for_url=*/GURL("https://brave.com"),
+      /*id=*/"336121537");
+
+  // Act
+  ads_client_notifier_.NotifyOrderIdExtracted(
+      /*tab_id=*/1, /*extracted_for_url=*/GURL("https://brave.com"),
+      /*id=*/std::nullopt);
+
+  // Assert
+  EXPECT_FALSE(TabManager::GetInstance().MaybeGetForId(1)->order_id);
+}
+
+TEST_F(BraveAdsTabManagerTest,
+       SettingOrderIdExtractedForTabDoesNotClearOrderValue) {
+  // Arrange
+  EXPECT_CALL(tab_manager_observer_mock_, OnDidOpenNewTab);
+  EXPECT_CALL(tab_manager_observer_mock_, OnTabDidChangeFocus);
+  ads_client_notifier_.NotifyTabDidChange(
+      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
+      /*is_new_navigation=*/true, /*is_restoring=*/false, /*is_visible=*/true);
+  ads_client_notifier_.NotifyOrderValueExtracted(
+      /*tab_id=*/1, /*extracted_for_url=*/GURL("https://brave.com"),
+      /*value=*/"4.98", /*currency=*/"EUR");
+
+  // Act
+  ads_client_notifier_.NotifyOrderIdExtracted(
+      /*tab_id=*/1, /*extracted_for_url=*/GURL("https://brave.com"),
+      /*id=*/"336121537");
+
+  // Assert
+  EXPECT_EQ("4.98", TabManager::GetInstance().MaybeGetForId(1)->order_value);
+}
+
+TEST_F(BraveAdsTabManagerTest,
+       DoNotSetOrderIdExtractedForTabIfNavigatedToDifferentDomain) {
+  // Arrange
+  EXPECT_CALL(tab_manager_observer_mock_, OnDidOpenNewTab);
+  EXPECT_CALL(tab_manager_observer_mock_, OnTabDidChangeFocus);
+  ads_client_notifier_.NotifyTabDidChange(
+      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
+      /*is_new_navigation=*/true, /*is_restoring=*/false, /*is_visible=*/true);
+
+  EXPECT_CALL(tab_manager_observer_mock_, OnTabDidChange);
+  ads_client_notifier_.NotifyTabDidChange(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
+      /*is_new_navigation=*/true, /*is_restoring=*/false, /*is_visible=*/true);
+
+  // Act
+  ads_client_notifier_.NotifyOrderIdExtracted(
+      /*tab_id=*/1, /*extracted_for_url=*/GURL("https://brave.com"),
+      /*id=*/"336121537");
+
+  // Assert
+  EXPECT_FALSE(TabManager::GetInstance().MaybeGetForId(1)->order_id);
+}
+
+TEST_F(BraveAdsTabManagerTest,
+       SetOrderIdExtractedForTabIfExtractedForEarlierPageOnSameDomain) {
+  // Arrange
+  EXPECT_CALL(tab_manager_observer_mock_, OnDidOpenNewTab);
+  EXPECT_CALL(tab_manager_observer_mock_, OnTabDidChangeFocus);
+  ads_client_notifier_.NotifyTabDidChange(
+      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com/checkout")},
+      /*is_new_navigation=*/true, /*is_restoring=*/false, /*is_visible=*/true);
+
+  EXPECT_CALL(tab_manager_observer_mock_, OnTabDidChange);
+  ads_client_notifier_.NotifyTabDidChange(
+      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com/thank-you")},
+      /*is_new_navigation=*/true, /*is_restoring=*/false, /*is_visible=*/true);
+
+  // Act
+  ads_client_notifier_.NotifyOrderIdExtracted(
+      /*tab_id=*/1, /*extracted_for_url=*/GURL("https://brave.com/checkout"),
+      /*id=*/"336121537");
+
+  // Assert
+  EXPECT_EQ("336121537", TabManager::GetInstance().MaybeGetForId(1)->order_id);
+}
+
+TEST_F(BraveAdsTabManagerTest, DoNotSetOrderIdExtractedForUnknownTab) {
+  // Act
+  ads_client_notifier_.NotifyOrderIdExtracted(
+      /*tab_id=*/1, /*extracted_for_url=*/GURL("https://brave.com"),
+      /*id=*/"336121537");
+
+  // Assert
+  EXPECT_FALSE(TabManager::GetInstance().MaybeGetForId(1));
+}
+
+TEST_F(BraveAdsTabManagerTest,
+       DoNotSetOrderIdExtractedForTabWithNoKnownRedirectChain) {
+  // Arrange
+  EXPECT_CALL(tab_manager_observer_mock_, OnTabDidStartPlayingMedia(
+                                              /*tab_id=*/1));
+  ads_client_notifier_.NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
+
+  // Act
+  ads_client_notifier_.NotifyOrderIdExtracted(
+      /*tab_id=*/1, /*extracted_for_url=*/GURL("https://brave.com"),
+      /*id=*/"336121537");
+
+  // Assert
+  EXPECT_FALSE(TabManager::GetInstance().MaybeGetForId(1)->order_id);
+}
+
+TEST_F(BraveAdsTabManagerTest,
+       DoNotCrashOnFirstNavigationAfterMediaStartedPlayingForUnknownTab) {
+  // Arrange
+  EXPECT_CALL(tab_manager_observer_mock_, OnTabDidStartPlayingMedia(
+                                              /*tab_id=*/1));
+  ads_client_notifier_.NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
+
+  // Act & Assert
+  //
+  // The tab already exists, so this is a change, not a new tab.
+  EXPECT_CALL(tab_manager_observer_mock_, OnTabDidChange);
+  EXPECT_CALL(tab_manager_observer_mock_, OnTabDidChangeFocus);
+  ads_client_notifier_.NotifyTabDidChange(
+      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
+      /*is_new_navigation=*/true, /*is_restoring=*/false, /*is_visible=*/true);
+}
+
 }  // namespace brave_ads

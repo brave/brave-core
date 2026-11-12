@@ -1,0 +1,15 @@
+include_rules = [
+  "+content/public/browser",
+  "+mojo/public/cpp/bindings",
+  "+services/service_manager/public/cpp",
+]
+
+specific_include_rules = {
+  ".*unittest\.cc": [
+    "+content/public/test",
+    # `brave_unit_tests` links the real `BraveWebUIControllerFactory`, which
+    # DCHECKs on a plain `content::TestBrowserContext` during a real
+    # navigation; this harness is the only one that satisfies it.
+    "+chrome/test/base/chrome_render_view_host_test_harness.h",
+  ]
+}

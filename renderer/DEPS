@@ -10,6 +10,8 @@ include_rules += [
   "+chrome/renderer",
   "+brave/components/ai_chat/core/common",
   "+brave/components/ai_chat/renderer",
+  "+brave/components/brave_ads/buildflags",
+  "+brave/components/brave_ads/content/renderer",
   "+brave/components/brave_news/renderer",
   "+brave/components/brave_search/common",
   "+brave/components/brave_search/renderer",

@@ -34,11 +34,21 @@ inline constexpr char kCreativeAdDescriptionPropertyName[] = "data-description";
 inline constexpr char kCreativeAdRewardsValuePropertyName[] =
     "data-rewards-value";
 
-// Campaign conversion.
-inline constexpr char kCampaignConversionUrlPatternPropertyName[] =
-    "data-conversion-url-pattern-value";
-inline constexpr char kCampaignConversionObservationWindowPropertyName[] =
-    "data-conversion-observation-window-value";
+// Nested campaign conversion object; a legacy flat property pair also
+// exists for older browsers, but only this is read.
+inline constexpr char kCampaignConversionDataPropertyName[] = "data-conversion";
+inline constexpr char kCampaignConversionDataUrlPatternPropertyName[] =
+    "urlPattern";
+inline constexpr char kCampaignConversionDataObservationWindowPropertyName[] =
+    "observationWindow";
+inline constexpr char kCampaignConversionDataOrderPropertyName[] = "order";
+inline constexpr char kCampaignConversionDataOrderExtractIdPropertyName[] =
+    "extractId";
+inline constexpr char kCampaignConversionDataOrderExtractValuePropertyName[] =
+    "extractValue";
+inline constexpr char
+    kCampaignConversionDataOrderCheckoutUrlPatternPropertyName[] =
+        "checkoutUrlPattern";
 
 }  // namespace brave_ads
 

@@ -302,6 +302,10 @@ export function createAppStore(): AppStore {
         store.update({ transactionsDateRangeFilter: filter })
       },
 
+      setConversionsDateRangeFilter(filter) {
+        store.update({ conversionsDateRangeFilter: filter })
+      },
+
       setTestConditionMatcherForm(form) {
         store.update({ testConditionMatcherForm: form })
       },

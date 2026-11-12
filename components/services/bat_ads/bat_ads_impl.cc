@@ -179,6 +179,18 @@ void BatAdsImpl::MaybeGetSearchResultAd(
                             mojom::CreativeSearchResultAdInfoPtr()));
 }
 
+void BatAdsImpl::MaybeGetOrderPatterns(
+    int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    const std::optional<std::string>& detected_language,
+    MaybeGetOrderPatternsCallback callback) {
+  GetAds()->MaybeGetOrderPatterns(tab_id, redirect_chain, detected_language,
+                                  mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+                                      std::move(callback),
+                                      /*order_patterns=*/brave_ads::mojom::
+                                          OrderExtractionPatternsInfoPtr()));
+}
+
 void BatAdsImpl::TriggerSearchResultAdEvent(
     brave_ads::mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     brave_ads::mojom::SearchResultAdEventType mojom_ad_event_type,

@@ -8,6 +8,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -57,6 +58,13 @@ class AdsClientNotifier final {
   void NotifyTabDidLoad(int32_t tab_id, int http_status_code);
   void NotifyTabDidFailToLoad(int32_t tab_id);
   void NotifyDidCloseTab(int32_t tab_id);
+  void NotifyOrderIdExtracted(int32_t tab_id,
+                              const GURL& extracted_for_url,
+                              std::optional<std::string> id);
+  void NotifyOrderValueExtracted(int32_t tab_id,
+                                 const GURL& extracted_for_url,
+                                 std::optional<std::string> value,
+                                 std::optional<std::string> currency);
   void NotifyUserGestureEventTriggered(ui::PageTransition page_transition);
   void NotifyUserDidBecomeIdle();
   void NotifyUserDidBecomeActive(base::TimeDelta idle_time,

@@ -48,6 +48,13 @@ interface BatAdsClientNotifier {
                    int32 http_status_code);
   NotifyTabDidFailToLoad(int32 tab_id);
   NotifyDidCloseTab(int32 tab_id);
+  NotifyOrderIdExtracted(int32 tab_id,
+                         url.mojom.Url extracted_for_url,
+                         string? id);
+  NotifyOrderValueExtracted(int32 tab_id,
+                            url.mojom.Url extracted_for_url,
+                            string? value,
+                            string? currency);
 
   NotifyUserGestureEventTriggered(int32 page_transition);
 
@@ -179,6 +186,11 @@ interface BatAds {
       brave_ads.mojom.CreativeSearchResultAdInfo? mojom_creative_ad,
       brave_ads.mojom.SearchResultAdEventType mojom_ad_event_type) =>
           (bool success);
+
+  MaybeGetOrderPatterns(int32 tab_id,
+                        array<url.mojom.Url> redirect_chain,
+                        string? detected_language) =>
+      (brave_ads.mojom.OrderExtractionPatternsInfo? order_patterns);
 
   PurgeOrphanedAdEventsForType(brave_ads.mojom.AdType mojom_ad_type) =>
       (bool success);

@@ -80,7 +80,7 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
 
   CatalogConversionInfo catalog_conversion;
   catalog_conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
-  catalog_conversion.url_pattern = "https://www.brave.com/1/*";
+  catalog_conversion.thank_you_url_pattern = "https://www.brave.com/1/*";
   catalog_conversion.observation_window = base::Days(30);
   catalog_conversion.expire_at =
       test::DistantFuture() + catalog_conversion.observation_window;
@@ -190,7 +190,7 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
 
   CatalogConversionInfo catalog_conversion;
   catalog_conversion.creative_set_id = "741cd2ba-3100-45f2-be1e-acedd24e0067";
-  catalog_conversion.url_pattern = "https://www.brave.com/2/*";
+  catalog_conversion.thank_you_url_pattern = "https://www.brave.com/2/*";
   catalog_conversion.observation_window = base::Days(7);
   catalog_conversion.expire_at =
       test::DistantFuture() + catalog_conversion.observation_window;

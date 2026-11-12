@@ -6,9 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_H_
 
+#include <cstdint>
 #include <memory>
 #include <optional>
 #include <string>
+#include <vector>
 
 #include "base/values.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
@@ -17,6 +19,8 @@
 #include "brave/components/brave_ads/core/public/ads_observer.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
+
+class GURL;
 
 namespace base {
 class Time;
@@ -149,6 +153,14 @@ class Ads {
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       mojom::SearchResultAdEventType mojom_ad_event_type,
       ResultCallback callback) = 0;
+
+  // `detected_language` unset tries every language in schema order. Null in
+  // the callback means no pending ad event's campaign requests extraction.
+  virtual void MaybeGetOrderPatterns(
+      int32_t tab_id,
+      const std::vector<GURL>& redirect_chain,
+      std::optional<std::string> detected_language,
+      MaybeGetOrderPatternsCallback callback) = 0;
 
   // Called to purge orphaned served ad events for the specified `mojom_ad_type`
   // before calling `MaybeServe*Ad`. The callback takes one argument - `bool` is

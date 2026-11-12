@@ -40,4 +40,64 @@ TEST_F(BraveAdsConversionUserDataUtilTest, BuildConversionActionTypeUserData) {
             BuildConversionActionTypeUserData(conversion));
 }
 
+TEST_F(BraveAdsConversionUserDataUtilTest,
+       BuildConversionOrderUserDataWithIdValueAndCurrency) {
+  // Arrange
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/false);
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
+  ConversionInfo conversion = BuildConversion(ad_event);
+  conversion.order_id = "336121537";
+  conversion.order_value = "4,98";
+  conversion.order_currency = "EUR";
+
+  // Act & Assert
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"JSON(
+                    {
+                      "orderId": "336121537",
+                      "orderValue": "4,98",
+                      "orderCurrency": "EUR"
+                    })JSON"),
+            MaybeBuildConversionOrderUserData(conversion));
+}
+
+// A value selector can resolve to a bare total with no currency marker
+// nearby, leaving `order_currency` unset despite a found `order_value`.
+TEST_F(BraveAdsConversionUserDataUtilTest,
+       BuildConversionOrderUserDataWithValueButNoCurrency) {
+  // Arrange
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/false);
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
+  ConversionInfo conversion = BuildConversion(ad_event);
+  conversion.order_value = "42,42";
+
+  // Act & Assert
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"JSON(
+                    {
+                      "orderValue": "42,42"
+                    })JSON"),
+            MaybeBuildConversionOrderUserData(conversion));
+}
+
+TEST_F(BraveAdsConversionUserDataUtilTest,
+       DoNotBuildConversionOrderUserDataIfNeitherIdNorValueSet) {
+  // Arrange
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/false);
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
+  const ConversionInfo conversion = BuildConversion(ad_event);
+
+  // Act & Assert
+  EXPECT_FALSE(MaybeBuildConversionOrderUserData(conversion));
+}
+
 }  // namespace brave_ads

@@ -53,6 +53,7 @@ namespace {
 constexpr char kNTPManifestFile[] = "photo.json";
 constexpr char kNTPSponsoredManifestFile[] = "campaigns.json";
 constexpr char kNTPSponsoredSitesManifestFile[] = "tiles.json";
+constexpr char kConversionConfigManifestFile[] = "conversion-config.json";
 
 constexpr char kNewTabPageCachedSuperReferralComponentInfo[] =
     "brave.new_tab_page.cached_super_referral_component_info";
@@ -508,6 +509,15 @@ void NTPBackgroundImagesService::OnSponsoredComponentReady(
                      installed_dir),
       base::BindOnce(&NTPBackgroundImagesService::OnHandledSponsoredSitesData,
                      sponsored_images_weak_factory_.GetWeakPtr()));
+
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(
+          &NTPBackgroundImagesService::HandleSponsoredConversionConfigData,
+          installed_dir),
+      base::BindOnce(
+          &NTPBackgroundImagesService::OnHandledSponsoredConversionConfigData,
+          sponsored_images_weak_factory_.GetWeakPtr()));
 }
 
 void NTPBackgroundImagesService::OnHandledSponsoredComponentData(
@@ -592,6 +602,41 @@ void NTPBackgroundImagesService::OnHandledSponsoredSitesData(
   }
 
   observers_.Notify(&Observer::OnSponsoredSitesDataDidUpdate);
+}
+
+// static
+std::optional<base::DictValue>
+NTPBackgroundImagesService::HandleSponsoredConversionConfigData(
+    const base::FilePath& installed_dir) {
+  // Optional, like `HandleSponsoredSitesData`; not every sponsored images
+  // component ships `kConversionConfigManifestFile`.
+  if (!base::PathExists(
+          installed_dir.AppendASCII(kConversionConfigManifestFile))) {
+    return std::nullopt;
+  }
+
+  const std::string json =
+      HandleComponentData(installed_dir, kConversionConfigManifestFile);
+  if (json.empty()) {
+    return std::nullopt;
+  }
+
+  return base::JSONReader::ReadDict(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
+}
+
+void NTPBackgroundImagesService::OnHandledSponsoredConversionConfigData(
+    std::optional<base::DictValue> dict) {
+  if (!dict) {
+    return;
+  }
+
+  NotifySponsoredConversionConfigContent(*dict);
+}
+
+void NTPBackgroundImagesService::NotifySponsoredConversionConfigContent(
+    const base::DictValue& data) {
+  observers_.Notify(&Observer::OnSponsoredConversionConfigContentDidUpdate,
+                    data);
 }
 
 }  // namespace ntp_background_images

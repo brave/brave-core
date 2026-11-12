@@ -18,6 +18,10 @@ namespace brave_ads {
 
 GURL GetUrlExcludingQuery(const GURL& url);
 
+// Returns the eTLD+1, or `url`'s host if it has no registry-controlled
+// domain (e.g. an IP address or `localhost`).
+std::string GetRegistrableDomainOrHost(const GURL& url);
+
 // Returns `true` if the `url` is valid, does not have a port, username, or
 // password, is not an IP address, the eTLD+1 does not contain an asterisk
 // wildcard, and the host is either on the public suffix list or is a supported

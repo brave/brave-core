@@ -410,7 +410,7 @@ void ParseAndSaveNewTabPageAds(base::DictValue dict, ResultCallback callback) {
             BLOG(0, "URL pattern is required, skipping campaign conversion");
             continue;
           }
-          campaign_conversion.url_pattern = *url_pattern;
+          campaign_conversion.thank_you_url_pattern = *url_pattern;
 
           const int observation_window =
               conversion_dict->FindInt(kCampaignConversionObservationWindowKey)
@@ -420,6 +420,19 @@ void ParseAndSaveNewTabPageAds(base::DictValue dict, ResultCallback callback) {
 
           campaign_conversion.expire_at =
               creative_ad.end_at + campaign_conversion.observation_window;
+
+          if (const base::DictValue* const order_dict =
+                  conversion_dict->FindDict("order")) {
+            campaign_conversion.extract_id =
+                order_dict->FindBool("extractId").value_or(false);
+            campaign_conversion.extract_value =
+                order_dict->FindBool("extractValue").value_or(false);
+
+            if (const std::string* const checkout_url_pattern =
+                    order_dict->FindString("checkoutUrlPattern")) {
+              campaign_conversion.checkout_url_pattern = *checkout_url_pattern;
+            }
+          }
 
           campaign_conversions.push_back(campaign_conversion);
         }

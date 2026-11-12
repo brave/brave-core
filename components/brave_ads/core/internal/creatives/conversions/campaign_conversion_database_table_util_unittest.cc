@@ -18,15 +18,25 @@ namespace brave_ads::database::table {
 
 namespace {
 
-mojom::DBRowInfoPtr BuildCampaignConversionRow(const std::string& id,
-                                               const std::string& url_pattern,
-                                               int observation_window_days,
-                                               base::Time expire_at) {
+mojom::DBRowInfoPtr BuildCampaignConversionRow(
+    const std::string& id,
+    const std::string& checkout_url_pattern,
+    const std::string& thank_you_url_pattern,
+    bool extract_id,
+    bool extract_value,
+    int observation_window_days,
+    base::Time expire_at) {
   auto mojom_db_row = mojom::DBRowInfo::New();
   mojom_db_row->column_values_union.push_back(
       mojom::DBColumnValueUnion::NewStringValue(id));
   mojom_db_row->column_values_union.push_back(
-      mojom::DBColumnValueUnion::NewStringValue(url_pattern));
+      mojom::DBColumnValueUnion::NewStringValue(checkout_url_pattern));
+  mojom_db_row->column_values_union.push_back(
+      mojom::DBColumnValueUnion::NewStringValue(thank_you_url_pattern));
+  mojom_db_row->column_values_union.push_back(
+      mojom::DBColumnValueUnion::NewBoolValue(extract_id));
+  mojom_db_row->column_values_union.push_back(
+      mojom::DBColumnValueUnion::NewBoolValue(extract_value));
   mojom_db_row->column_values_union.push_back(
       mojom::DBColumnValueUnion::NewIntValue(observation_window_days));
   mojom_db_row->column_values_union.push_back(
@@ -44,9 +54,10 @@ TEST_F(BraveAdsCampaignConversionDatabaseTableUtilTest,
   // Arrange
   const base::Time expire_at =
       base::Time::FromSecondsSinceUnixEpoch(1'000'000.0);
-  mojom::DBRowInfoPtr mojom_db_row =
-      BuildCampaignConversionRow("campaign-id", "https://example.com/*",
-                                 /*observation_window_days=*/7, expire_at);
+  mojom::DBRowInfoPtr mojom_db_row = BuildCampaignConversionRow(
+      "campaign-id", "https://example.com/checkout/*",
+      "https://example.com/thank-you/*", /*extract_id=*/true,
+      /*extract_value=*/true, /*observation_window_days=*/7, expire_at);
 
   // Act
   const CampaignConversionInfo campaign_conversion =
@@ -54,14 +65,20 @@ TEST_F(BraveAdsCampaignConversionDatabaseTableUtilTest,
 
   // Assert
   EXPECT_THAT(campaign_conversion,
-              ::testing::FieldsAre("campaign-id", "https://example.com/*",
-                                   base::Days(7), expire_at));
+              ::testing::FieldsAre(
+                  "campaign-id",
+                  ::testing::Optional(std::string("https://example.com/"
+                                                  "checkout/*")),
+                  "https://example.com/thank-you/*", true, true, base::Days(7),
+                  expire_at));
 }
 
 TEST_F(BraveAdsCampaignConversionDatabaseTableUtilTest, NoExpireAtWhenNull) {
   // Arrange
   mojom::DBRowInfoPtr mojom_db_row = BuildCampaignConversionRow(
-      "campaign-id", "https://example.com/*",
+      "campaign-id", /*checkout_url_pattern=*/"",
+      "https://example.com/thank-you/*", /*extract_id=*/false,
+      /*extract_value=*/false,
       /*observation_window_days=*/14, /*expire_at=*/base::Time());
 
   // Act
@@ -69,9 +86,11 @@ TEST_F(BraveAdsCampaignConversionDatabaseTableUtilTest, NoExpireAtWhenNull) {
       CampaignConversionFromMojomRow(mojom_db_row);
 
   // Assert
-  EXPECT_THAT(campaign_conversion,
-              ::testing::FieldsAre("campaign-id", "https://example.com/*",
-                                   base::Days(14), /*expire_at=*/std::nullopt));
+  EXPECT_THAT(
+      campaign_conversion,
+      ::testing::FieldsAre("campaign-id", /*checkout_url_pattern=*/std::nullopt,
+                           "https://example.com/thank-you/*", false, false,
+                           base::Days(14), /*expire_at=*/std::nullopt));
 }
 
 }  // namespace brave_ads::database::table

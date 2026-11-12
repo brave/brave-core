@@ -89,6 +89,12 @@ class BatAdsImpl final : public mojom::BatAds {
       brave_ads::mojom::SearchResultAdEventType mojom_ad_event_type,
       TriggerSearchResultAdEventCallback callback) override;
 
+  void MaybeGetOrderPatterns(
+      int32_t tab_id,
+      const std::vector<GURL>& redirect_chain,
+      const std::optional<std::string>& detected_language,
+      MaybeGetOrderPatternsCallback callback) override;
+
   void PurgeOrphanedAdEventsForType(
       brave_ads::mojom::AdType mojom_ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) override;

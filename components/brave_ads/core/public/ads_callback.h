@@ -53,6 +53,9 @@ using MaybeGetNotificationAdCallback =
 using MaybeGetSearchResultAdCallback = base::OnceCallback<void(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad)>;
 
+using MaybeGetOrderPatternsCallback = base::OnceCallback<void(
+    mojom::OrderExtractionPatternsInfoPtr mojom_order_patterns)>;
+
 using GetAdHistoryForUICallback = base::OnceCallback<void(
     std::optional<std::vector<mojom::AdHistoryItemInfoPtr>> mojom_ad_history)>;
 

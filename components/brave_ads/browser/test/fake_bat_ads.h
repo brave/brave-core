@@ -9,6 +9,7 @@
 #include <cstddef>
 #include <optional>
 #include <string>
+#include <vector>
 
 #include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -16,6 +17,7 @@
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "url/gurl.h"
 
 namespace mojo {
 template <typename T>
@@ -89,6 +91,11 @@ class FakeBatAds : public bat_ads::mojom::BatAds {
       TriggerNotificationAdEventCallback callback) override;
   void MaybeGetSearchResultAd(const std::string& /*placement_id*/,
                               MaybeGetSearchResultAdCallback callback) override;
+  void MaybeGetOrderPatterns(
+      int32_t /*tab_id*/,
+      const std::vector<GURL>& /*redirect_chain*/,
+      const std::optional<std::string>& /*detected_language*/,
+      MaybeGetOrderPatternsCallback callback) override;
   void TriggerSearchResultAdEvent(
       brave_ads::mojom::CreativeSearchResultAdInfoPtr /*mojom_creative_ad*/,
       brave_ads::mojom::SearchResultAdEventType /*mojom_ad_event_type*/,

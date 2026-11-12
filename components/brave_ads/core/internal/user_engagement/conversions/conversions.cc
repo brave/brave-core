@@ -15,6 +15,11 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/order/order_extraction_patterns_flattener.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/order/order_extraction_patterns_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/order/order_extraction_patterns_matcher.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/order/order_id_extraction_patterns_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/order/order_value_extraction_patterns_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
@@ -26,6 +31,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
+#include "brave/components/brave_ads/core/public/common/url/url_util.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -53,20 +59,22 @@ void Conversions::MaybeConvert(const std::vector<GURL>& redirect_chain) {
 
   BLOG(1, "Checking for campaign conversions");
 
-  GetCampaignConversions(redirect_chain);
+  GetCampaignConversions(redirect_chain, /*tab_id=*/std::nullopt);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 void Conversions::GetCampaignConversions(
-    const std::vector<GURL>& redirect_chain) {
+    const std::vector<GURL>& redirect_chain,
+    std::optional<int32_t> tab_id) {
   campaign_conversions_database_table_.GetUnexpired(
       base::BindOnce(&Conversions::GetCampaignConversionsCallback,
-                     weak_factory_.GetWeakPtr(), redirect_chain));
+                     weak_factory_.GetWeakPtr(), redirect_chain, tab_id));
 }
 
 void Conversions::GetCampaignConversionsCallback(
     const std::vector<GURL>& redirect_chain,
+    std::optional<int32_t> tab_id,
     bool success,
     const CampaignConversionList& campaign_conversions) {
   if (!success) {
@@ -77,21 +85,23 @@ void Conversions::GetCampaignConversionsCallback(
     return BLOG(1, "There are no campaign conversions");
   }
 
-  GetAdEvents(redirect_chain, campaign_conversions);
+  GetAdEvents(redirect_chain, tab_id, campaign_conversions);
 }
 
 void Conversions::GetAdEvents(
     const std::vector<GURL>& redirect_chain,
+    std::optional<int32_t> tab_id,
     const CampaignConversionList& campaign_conversions) {
   ad_events_database_table_.GetUnexpired(
       kAdEventsTimeWindow.Get(),
       base::BindOnce(&Conversions::GetAdEventsCallback,
-                     weak_factory_.GetWeakPtr(), redirect_chain,
+                     weak_factory_.GetWeakPtr(), redirect_chain, tab_id,
                      campaign_conversions));
 }
 
 void Conversions::GetAdEventsCallback(
     const std::vector<GURL>& redirect_chain,
+    std::optional<int32_t> tab_id,
     const CampaignConversionList& campaign_conversions,
     bool success,
     const AdEventList& ad_events) {
@@ -99,11 +109,12 @@ void Conversions::GetAdEventsCallback(
     return BLOG(0, "Failed to get ad events");
   }
 
-  CheckForConversions(redirect_chain, campaign_conversions, ad_events);
+  CheckForConversions(redirect_chain, tab_id, campaign_conversions, ad_events);
 }
 
 void Conversions::CheckForConversions(
     const std::vector<GURL>& redirect_chain,
+    std::optional<int32_t> tab_id,
     const CampaignConversionList& campaign_conversions,
     const AdEventList& ad_events) {
   TRACE_EVENT(kTraceEventCategory, "Conversions::CheckForConversions",
@@ -167,7 +178,7 @@ void Conversions::CheckForConversions(
       continue;
     }
 
-    Convert(ad_event);
+    Convert(ad_event, tab_id);
 
     did_convert = true;
 
@@ -186,20 +197,35 @@ void Conversions::CheckForConversions(
   }
 }
 
-void Conversions::Convert(const AdEventInfo& ad_event) {
+void Conversions::Convert(const AdEventInfo& ad_event,
+                          std::optional<int32_t> tab_id) {
   RecordAdEvent(RebuildAdEvent(ad_event, mojom::ConfirmationType::kConversion,
                                /*created_at=*/base::Time::Now()),
                 base::BindOnce(&Conversions::ConvertCallback,
-                               weak_factory_.GetWeakPtr(), ad_event));
+                               weak_factory_.GetWeakPtr(), ad_event, tab_id));
 }
 
-void Conversions::ConvertCallback(const AdEventInfo& ad_event, bool success) {
+void Conversions::ConvertCallback(const AdEventInfo& ad_event,
+                                  std::optional<int32_t> tab_id,
+                                  bool success) {
   if (!success) {
     BLOG(0, "Failed to record ad conversion event");
     return NotifyFailedToConvertAd(ad_event.creative_instance_id);
   }
 
-  const ConversionInfo conversion = BuildConversion(ad_event);
+  ConversionInfo conversion = BuildConversion(ad_event);
+
+  // Some checkout flows only show the order ID/value on an earlier page
+  // than the one that matches the conversion URL pattern.
+  if (tab_id) {
+    if (std::optional<TabInfo> tab =
+            TabManager::GetInstance().MaybeGetForId(*tab_id)) {
+      conversion.order_id = tab->order_id;
+      conversion.order_value = tab->order_value;
+      conversion.order_currency = tab->order_currency;
+    }
+  }
+
   NotifyDidConvertAd(conversion);
 }
 
@@ -213,8 +239,90 @@ void Conversions::NotifyFailedToConvertAd(
                     creative_instance_id);
 }
 
+void Conversions::MaybeGetOrderPatterns(
+    int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    std::optional<std::string> detected_language,
+    MaybeGetOrderPatternsCallback callback) {
+  CHECK(!redirect_chain.empty());
+
+  campaign_conversions_database_table_.GetUnexpired(base::BindOnce(
+      &Conversions::MaybeGetOrderPatternsForCampaignConversionsCallback,
+      weak_factory_.GetWeakPtr(), redirect_chain, std::move(detected_language),
+      std::move(callback)));
+}
+
+void Conversions::MaybeGetOrderPatternsForCampaignConversionsCallback(
+    const std::vector<GURL>& redirect_chain,
+    std::optional<std::string> detected_language,
+    MaybeGetOrderPatternsCallback callback,
+    bool success,
+    const CampaignConversionList& campaign_conversions) {
+  if (!success || campaign_conversions.empty()) {
+    return std::move(callback).Run(/*id=*/std::nullopt, /*value=*/std::nullopt);
+  }
+
+  ad_events_database_table_.GetUnexpired(
+      kAdEventsTimeWindow.Get(),
+      base::BindOnce(&Conversions::MaybeGetOrderPatternsForAdEventsCallback,
+                     weak_factory_.GetWeakPtr(), redirect_chain,
+                     std::move(detected_language), std::move(callback),
+                     campaign_conversions));
+}
+
+void Conversions::MaybeGetOrderPatternsForAdEventsCallback(
+    const std::vector<GURL>& redirect_chain,
+    std::optional<std::string> detected_language,
+    MaybeGetOrderPatternsCallback callback,
+    const CampaignConversionList& campaign_conversions,
+    bool success,
+    const AdEventList& ad_events) {
+  if (!success) {
+    return std::move(callback).Run(/*id=*/std::nullopt, /*value=*/std::nullopt);
+  }
+
+  const std::optional<CampaignConversionInfo> campaign_conversion =
+      MaybeGetCampaignConversionForOrderExtraction(campaign_conversions,
+                                                   ad_events, redirect_chain);
+  if (!campaign_conversion) {
+    return std::move(callback).Run(/*id=*/std::nullopt, /*value=*/std::nullopt);
+  }
+
+  // Never null; falls back to the compiled-in default patterns until the
+  // component delivers a real set, see `OrderExtractionPatternsResource`.
+  const OrderExtractionPatternsInfo& order_extraction_patterns =
+      *order_extraction_patterns_resource_.GetPatterns();
+
+  const GURL& url = redirect_chain.back();
+  const std::vector<std::string> domain_candidates = {
+      std::string(url.host()), GetRegistrableDomainOrHost(url)};
+
+  // Unset tries every language in schema order; see `MaybeGetOrderPatterns`.
+  const std::string& language = detected_language.value_or("");
+
+  std::optional<OrderIdExtractionPatternsInfo> order_id_extraction_patterns;
+  if (campaign_conversion->extract_id) {
+    order_id_extraction_patterns = FlattenOrderIdExtractionPatterns(
+        order_extraction_patterns.id, domain_candidates, language);
+  }
+
+  std::optional<OrderValueExtractionPatternsInfo>
+      order_value_extraction_patterns;
+  if (campaign_conversion->extract_value) {
+    order_value_extraction_patterns = FlattenOrderValueExtractionPatterns(
+        order_extraction_patterns.value, domain_candidates, language);
+  }
+
+  std::move(callback).Run(std::move(order_id_extraction_patterns),
+                          std::move(order_value_extraction_patterns));
+}
+
 void Conversions::OnTabDidChange(const TabInfo& tab) {
-  MaybeConvert(tab.redirect_chain);
+  CHECK(!tab.redirect_chain.empty());
+
+  BLOG(1, "Checking for campaign conversions");
+
+  GetCampaignConversions(tab.redirect_chain, tab.id);
 }
 
 }  // namespace brave_ads

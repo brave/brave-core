@@ -141,8 +141,47 @@ struct AdHistoryItemInfo {
 };
 
 struct CampaignConversionInfo {
-  string? url_pattern;
+  // Matches an earlier checkout page to read from, since the page matching
+  // `thank_you_url_pattern` does not always still show the order value.
+  string? checkout_url_pattern;
+
+  string? thank_you_url_pattern;
+
+  bool extract_id;
+  bool extract_value;
+
   mojo_base.mojom.TimeDelta observation_window;
+};
+
+struct OrderExtractionSelectorInfo {
+  string selector;
+  string? attribute_name;
+
+  // Applied to the resolved text/attribute value. Uses the first capture
+  // group if the regex has one, otherwise the whole match. The resolved
+  // value is used as-is when unset.
+  string? pattern;
+};
+
+struct OrderIdExtractionPatternsInfo {
+  array<OrderExtractionSelectorInfo> selectors;
+  array<string> regexes;
+};
+
+struct OrderValueExtractionPatternsInfo {
+  array<OrderExtractionSelectorInfo> selectors;
+
+  // Keyed by currency code (e.g. "EUR"), so a matching currency's
+  // identity survives into `OrderInfo`.
+  map<string, string> currency_regexes;
+
+  array<string> keyword_regexes;
+  uint32 number_of_ancestor_levels_to_search;
+};
+
+struct OrderExtractionPatternsInfo {
+  OrderIdExtractionPatternsInfo? id;
+  OrderValueExtractionPatternsInfo? value;
 };
 
 enum NotificationAdEventType {

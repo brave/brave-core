@@ -33,7 +33,8 @@ export interface TestConditionMatcherFormState {
 export interface ConversionUrlPattern {
   'Campaign ID': string
   'Ad Type': string
-  'URL Pattern': string
+  'Checkout URL Pattern': string
+  'Thank You URL Pattern': string
   'Expires At': number
   'Observation Window': number
 }
@@ -196,6 +197,7 @@ export interface AppState {
   errorsOnlyEnabled: boolean
   eventsDateRangeFilter: DateRangeFilterState
   transactionsDateRangeFilter: DateRangeFilterState
+  conversionsDateRangeFilter: DateRangeFilterState
   testConditionMatcherForm: TestConditionMatcherFormState
   actions: {
     loadAdsInternals: () => void
@@ -210,6 +212,7 @@ export interface AppState {
     setErrorsOnlyEnabled: (enabled: boolean) => void
     setEventsDateRangeFilter: (filter: DateRangeFilterState) => void
     setTransactionsDateRangeFilter: (filter: DateRangeFilterState) => void
+    setConversionsDateRangeFilter: (filter: DateRangeFilterState) => void
     setTestConditionMatcherForm: (form: TestConditionMatcherFormState) => void
     testConditionMatcher: (
       prefPath: string, condition: string, testValue: string | null) =>
@@ -265,6 +268,7 @@ export function defaultAppStore() {
     errorsOnlyEnabled: true,
     eventsDateRangeFilter: { preset: 'day', fromDate: '', toDate: '' },
     transactionsDateRangeFilter: { preset: 'day', fromDate: '', toDate: '' },
+    conversionsDateRangeFilter: { preset: 'day', fromDate: '', toDate: '' },
     testConditionMatcherForm: { prefPath: '', condition: '', testValue: '' },
     actions: {
       loadAdsInternals() {},
@@ -283,6 +287,7 @@ export function defaultAppStore() {
       setErrorsOnlyEnabled(enabled) {},
       setEventsDateRangeFilter(filter) {},
       setTransactionsDateRangeFilter(filter) {},
+      setConversionsDateRangeFilter(filter) {},
       setTestConditionMatcherForm(form) {},
       async testConditionMatcher() {
         return { currentValue: 'Unknown', matches: 'N/A' }

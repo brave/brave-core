@@ -244,8 +244,6 @@ void AdsServiceImpl::Shutdown() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 void AdsServiceImpl::Migrate() {
   // Added 10/2025.
   if (!local_state_->HasPrefPath(prefs::kFirstRunAt)) {
@@ -804,9 +802,8 @@ void AdsServiceImpl::OnAdsPrefChanged(const std::string& path) {
     // `ClearAdsPrefs`, which mutates `pref_change_registrar_` and must not do
     // so re-entrantly from within this pref's own change notification.
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE,
-        base::BindOnce(&AdsServiceImpl::MaybeClearAdsData,
-                       weak_ptr_factory_.GetWeakPtr(), path));
+        FROM_HERE, base::BindOnce(&AdsServiceImpl::MaybeClearAdsData,
+                                  weak_ptr_factory_.GetWeakPtr(), path));
   }
 
   if (path == prefs::kNotificationsEnabled) {
@@ -1322,6 +1319,21 @@ void AdsServiceImpl::MaybeGetSearchResultAd(
                         std::move(callback), nullptr));
 }
 
+void AdsServiceImpl::MaybeGetOrderPatterns(
+    int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    std::optional<std::string> detected_language,
+    MaybeGetOrderPatternsCallback callback) {
+  if (!bat_ads_associated_remote_.is_bound()) {
+    return std::move(callback).Run(/*mojom_order_patterns=*/{});
+  }
+
+  bat_ads_associated_remote_->MaybeGetOrderPatterns(
+      tab_id, redirect_chain, std::move(detected_language),
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                  nullptr));
+}
+
 void AdsServiceImpl::TriggerSearchResultAdEvent(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     mojom::SearchResultAdEventType mojom_ad_event_type,
@@ -1485,6 +1497,26 @@ void AdsServiceImpl::NotifyTabDidFailToLoad(int32_t tab_id) {
 void AdsServiceImpl::NotifyDidCloseTab(int32_t tab_id) {
   if (bat_ads_client_notifier_remote_.is_bound()) {
     bat_ads_client_notifier_remote_->NotifyDidCloseTab(tab_id);
+  }
+}
+
+void AdsServiceImpl::NotifyOrderIdExtracted(int32_t tab_id,
+                                            const GURL& extracted_for_url,
+                                            std::optional<std::string> id) {
+  if (bat_ads_client_notifier_remote_.is_bound()) {
+    bat_ads_client_notifier_remote_->NotifyOrderIdExtracted(
+        tab_id, extracted_for_url, std::move(id));
+  }
+}
+
+void AdsServiceImpl::NotifyOrderValueExtracted(
+    int32_t tab_id,
+    const GURL& extracted_for_url,
+    std::optional<std::string> value,
+    std::optional<std::string> currency) {
+  if (bat_ads_client_notifier_remote_.is_bound()) {
+    bat_ads_client_notifier_remote_->NotifyOrderValueExtracted(
+        tab_id, extracted_for_url, std::move(value), std::move(currency));
   }
 }
 

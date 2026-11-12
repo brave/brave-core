@@ -58,6 +58,12 @@ class NTPBackgroundImagesService {
     // Called when the sponsored sites component is updated.
     virtual void OnSponsoredSitesDataDidUpdate() {}
 
+    // Called when the sponsored conversion config component is updated.
+    // Independent of `OnSponsoredContentDidUpdate`, since conversion
+    // extraction applies to every ad format, not just New Tab Page ads.
+    virtual void OnSponsoredConversionConfigContentDidUpdate(
+        const base::DictValue& data) {}
+
    protected:
     virtual ~Observer() = default;
   };
@@ -161,6 +167,13 @@ class NTPBackgroundImagesService {
       const base::FilePath& installed_dir);
   void OnHandledSponsoredSitesData(
       std::optional<NTPSponsoredSitesData> sites_data);
+  // Optional, like `HandleSponsoredSitesData`; not every sponsored images
+  // component ships `kConversionConfigManifestFile`.
+  static std::optional<base::DictValue> HandleSponsoredConversionConfigData(
+      const base::FilePath& installed_dir);
+  void OnHandledSponsoredConversionConfigData(
+      std::optional<base::DictValue> dict);
+  void NotifySponsoredConversionConfigContent(const base::DictValue& data);
   void OnComponentReady(const base::FilePath& installed_dir);
   void OnGetComponentJsonData(const std::string& json_string);
   void OnVariationsCountryPrefChanged();

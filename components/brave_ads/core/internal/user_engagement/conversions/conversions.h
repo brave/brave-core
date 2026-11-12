@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_CONVERSIONS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_CONVERSIONS_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -14,6 +15,7 @@
 #include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/order/order_extraction_patterns_resource.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
@@ -25,6 +27,8 @@ namespace brave_ads {
 class ConversionsObserver;
 class TabManager;
 struct ConversionInfo;
+struct OrderIdExtractionPatternsInfo;
+struct OrderValueExtractionPatternsInfo;
 
 class Conversions final : public TabManagerObserver {
  public:
@@ -42,25 +46,61 @@ class Conversions final : public TabManagerObserver {
   // URL patterns in the redirect chain against known campaign conversions.
   void MaybeConvert(const std::vector<GURL>& redirect_chain);
 
+  // `id`/`value` are independently null when no pending ad event's
+  // campaign requests that field's extraction on this page.
+  using MaybeGetOrderPatternsCallback = base::OnceCallback<void(
+      std::optional<OrderIdExtractionPatternsInfo> id,
+      std::optional<OrderValueExtractionPatternsInfo> value)>;
+
+  // `detected_language` comes from Translate's page detection, supplied by
+  // the caller; unset tries every language in schema order.
+  void MaybeGetOrderPatterns(int32_t tab_id,
+                             const std::vector<GURL>& redirect_chain,
+                             std::optional<std::string> detected_language,
+                             MaybeGetOrderPatternsCallback callback);
+
  private:
-  void GetCampaignConversions(const std::vector<GURL>& redirect_chain);
+  void MaybeGetOrderPatternsForCampaignConversionsCallback(
+      const std::vector<GURL>& redirect_chain,
+      std::optional<std::string> detected_language,
+      MaybeGetOrderPatternsCallback callback,
+      bool success,
+      const CampaignConversionList& campaign_conversions);
+  void MaybeGetOrderPatternsForAdEventsCallback(
+      const std::vector<GURL>& redirect_chain,
+      std::optional<std::string> detected_language,
+      MaybeGetOrderPatternsCallback callback,
+      const CampaignConversionList& campaign_conversions,
+      bool success,
+      const AdEventList& ad_events);
+
+  // Unset when called from the public `MaybeConvert`, e.g. in tests, so
+  // `Convert` has no tab to carry forward cached order ID/value from.
+  void GetCampaignConversions(const std::vector<GURL>& redirect_chain,
+                              std::optional<int32_t> tab_id);
   void GetCampaignConversionsCallback(
       const std::vector<GURL>& redirect_chain,
+      std::optional<int32_t> tab_id,
       bool success,
       const CampaignConversionList& campaign_conversions);
 
   void GetAdEvents(const std::vector<GURL>& redirect_chain,
+                   std::optional<int32_t> tab_id,
                    const CampaignConversionList& campaign_conversions);
   void GetAdEventsCallback(const std::vector<GURL>& redirect_chain,
+                           std::optional<int32_t> tab_id,
                            const CampaignConversionList& campaign_conversions,
                            bool success,
                            const AdEventList& ad_events);
 
   void CheckForConversions(const std::vector<GURL>& redirect_chain,
+                           std::optional<int32_t> tab_id,
                            const CampaignConversionList& campaign_conversions,
                            const AdEventList& ad_events);
-  void Convert(const AdEventInfo& ad_event);
-  void ConvertCallback(const AdEventInfo& ad_event, bool success);
+  void Convert(const AdEventInfo& ad_event, std::optional<int32_t> tab_id);
+  void ConvertCallback(const AdEventInfo& ad_event,
+                       std::optional<int32_t> tab_id,
+                       bool success);
 
   void NotifyDidConvertAd(const ConversionInfo& conversion);
   void NotifyFailedToConvertAd(const std::string& creative_instance_id);
@@ -74,6 +114,8 @@ class Conversions final : public TabManagerObserver {
       campaign_conversions_database_table_;
 
   const database::table::AdEvents ad_events_database_table_;
+
+  const OrderExtractionPatternsResource order_extraction_patterns_resource_;
 
   base::ScopedObservation<TabManager, TabManagerObserver>
       tab_manager_observation_{this};

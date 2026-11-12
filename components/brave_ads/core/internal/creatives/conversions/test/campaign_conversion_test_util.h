@@ -20,10 +20,10 @@ namespace test {
 
 CampaignConversionInfo BuildCampaignConversion(
     const std::string& campaign_id,
-    const std::string& url_pattern,
+    const std::string& thank_you_url_pattern,
     base::TimeDelta observation_window);
 void BuildAndSaveCampaignConversion(const std::string& campaign_id,
-                                    const std::string& url_pattern,
+                                    const std::string& thank_you_url_pattern,
                                     base::TimeDelta observation_window);
 
 }  // namespace test

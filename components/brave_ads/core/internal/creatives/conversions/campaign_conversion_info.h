@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CONVERSIONS_CAMPAIGN_CONVERSION_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CONVERSIONS_CAMPAIGN_CONVERSION_INFO_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -29,7 +30,16 @@ struct CampaignConversionInfo final {
   [[nodiscard]] bool IsValid() const;
 
   std::string id;
-  std::string url_pattern;
+
+  // Matches an earlier checkout page to read from, since the page matching
+  // `thank_you_url_pattern` does not always still show the order value.
+  std::optional<std::string> checkout_url_pattern;
+
+  std::string thank_you_url_pattern;
+
+  bool extract_id = false;
+  bool extract_value = false;
+
   base::TimeDelta observation_window;
   std::optional<base::Time> expire_at;
 };

@@ -13,6 +13,9 @@
 #include "brave/components/brave_ads/core/internal/ads_internals/ads_internals_util.h"
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/order/order_extraction_patterns_mojom_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/order/order_id_extraction_patterns_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/order/order_value_extraction_patterns_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "brave/components/brave_ads/core/internal/database/database_maintenance.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
@@ -242,6 +245,29 @@ void AdsImpl::TriggerSearchResultAdEvent(
 
   GetAdHandler().TriggerSearchResultAdEvent(
       std::move(mojom_creative_ad), mojom_ad_event_type, std::move(callback));
+}
+
+void AdsImpl::MaybeGetOrderPatterns(
+    int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    std::optional<std::string> detected_language,
+    MaybeGetOrderPatternsCallback callback) {
+  if (task_queue_.should_queue()) {
+    return task_queue_.Add(base::BindOnce(
+        &AdsImpl::MaybeGetOrderPatterns, weak_factory_.GetWeakPtr(), tab_id,
+        redirect_chain, std::move(detected_language), std::move(callback)));
+  }
+
+  GetAdHandler().MaybeGetOrderPatterns(
+      tab_id, redirect_chain, std::move(detected_language),
+      base::BindOnce(
+          [](MaybeGetOrderPatternsCallback callback,
+             std::optional<OrderIdExtractionPatternsInfo> id,
+             std::optional<OrderValueExtractionPatternsInfo> value) {
+            std::move(callback).Run(ToMojomOrderExtractionPatterns(
+                std::move(id), std::move(value)));
+          },
+          std::move(callback)));
 }
 
 void AdsImpl::PurgeOrphanedAdEventsForType(mojom::AdType mojom_ad_type,

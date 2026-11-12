@@ -1,0 +1,66 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_ads.mojom;
+
+// A domain/page-specific selector fast path for one field, tried before its
+// generic regex heuristic. Mirrors `conversions.order.{id,value}.selectors`.
+struct OrderSelectorInfo {
+  // CSS selector resolved against the live DOM.
+  string selector;
+
+  // Read this attribute's value from the matched element, or its
+  // `textContent` when unset.
+  string? attribute_name;
+
+  // Applied to the resolved text/attribute value. Uses the first capture
+  // group if the regex has one, otherwise the whole match. The resolved
+  // value is used as-is when unset.
+  string? pattern;
+};
+
+// Patterns resolved browser-side from the `conversions` schema for the
+// current domain and detected language.
+struct OrderPatternsInfo {
+  // Order ID's selector fast path for the current domain, tried before
+  // `id_regexes`.
+  array<OrderSelectorInfo> id_selectors;
+
+  // Order ID's single-step label+value regexes, detected-language first.
+  array<string> id_regexes;
+
+  // Order value's selector fast path for the current domain, tried before
+  // the regexes below.
+  array<OrderSelectorInfo> value_selectors;
+
+  // Order value's currency regexes, keyed by currency code (e.g. "EUR")
+  // so a matching currency's identity survives into `OrderInfo.currency`.
+  map<string, string> value_currency_regexes;
+
+  // Order value's keyword label regexes, detected-language first.
+  array<string> value_keyword_regexes;
+
+  // Ancestor levels above a matched keyword label to search for a sibling
+  // matching `value_currency_regexes`.
+  uint32 number_of_ancestor_levels_to_search;
+};
+
+// Extracted order ID/value, already final either way.
+struct OrderInfo {
+  string? id;
+  string? value;
+
+  // The currency code (e.g. "EUR") whose regex matched `value`, or unset
+  // if `value` was found via a selector with no currency marker nearby
+  // (e.g. a bare total with the currency only in a separate column
+  // header) or wasn't found at all.
+  string? currency;
+};
+
+// Implemented in the renderer process. Extracts order ID/value from a
+// checkout or thank-you page's document for conversion reporting.
+interface OrderExtractor {
+  ExtractOrderInfo(OrderPatternsInfo patterns) => (OrderInfo order);
+};

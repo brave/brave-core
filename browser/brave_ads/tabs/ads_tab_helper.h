@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_TABS_ADS_TAB_HELPER_H_
 #define BRAVE_BROWSER_BRAVE_ADS_TABS_ADS_TAB_HELPER_H_
 
+#include <memory>
 #include <optional>
 #include <vector>
 
@@ -13,6 +14,8 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/content/common/mojom/order_extractor.mojom-forward.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
 #include "components/sessions/core/session_id.h"
@@ -35,6 +38,8 @@ class TabInterface;
 namespace brave_ads {
 
 class AdsService;
+class CreditCardFieldFocusObserver;
+class OrderFetcher;
 
 // Notifies the ads service of tab events. Owned by BraveTabFeatures.
 class AdsTabHelper final :
@@ -83,11 +88,22 @@ class AdsTabHelper final :
   void MaybeNotifyTabDidLoad();
   void MaybeNotifyTabDidFailToLoad();
 
-  bool ShouldNotifyTabContentDidChange() const;
+  bool ShouldProcessNavigation() const;
+  bool ShouldProcessOrderExtraction() const;
   void MaybeNotifyTabTextContentDidChange();
   void OnMaybeNotifyTabTextContentDidChange(
       const std::vector<GURL>& redirect_chain,
       base::Value value);
+
+  void MaybeExtractOrderPatterns();
+  void MaybeWatchForPaymentFieldFocus();
+  void MaybeGetOrderPatternsCallback(
+      const GURL& extracted_for_url,
+      mojom::OrderExtractionPatternsInfoPtr mojom_order_patterns);
+  void FetchOrderCallback(const GURL& extracted_for_url,
+                          bool should_extract_id,
+                          bool should_extract_value,
+                          mojom::OrderInfoPtr mojom_order);
 
   bool IsPlayingMediaWithAudio(const content::MediaPlayerId& id);
   void PlayerStartedPlayingWithAudio(const content::MediaPlayerId& id);
@@ -134,6 +150,15 @@ class AdsTabHelper final :
   bool is_new_navigation_ = false;
   std::vector<GURL> redirect_chain_;
   std::optional<int> http_status_code_;
+
+  // Created lazily since it is only needed once a page is found to have a
+  // pending ad event requesting order extraction.
+  std::unique_ptr<OrderFetcher> order_fetcher_;
+
+  // Recreated per document, so order extraction gets a second chance once
+  // the checkout form is in use, not only at `load`.
+  std::unique_ptr<CreditCardFieldFocusObserver>
+      credit_card_field_focus_observer_;
 
   // Tracks media players that have started to guard against spurious
   // `MediaMutedStatusChanged` events for players that never actually started.

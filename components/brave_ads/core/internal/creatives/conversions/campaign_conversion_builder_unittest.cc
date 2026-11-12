@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_builder.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
@@ -31,11 +33,15 @@ TEST_F(BraveAdsCampaignConversionBuilderTest,
   ASSERT_TRUE(campaign_conversion);
 
   // Assert
-  EXPECT_THAT(*campaign_conversion,
-              ::testing::FieldsAre(test::kCampaignId,
-                                   /*url_pattern*/ "https://brave.com/*",
-                                   /*observation_window*/ base::Days(3),
-                                   /*expire_at*/ test::Now() + base::Days(3)));
+  EXPECT_THAT(
+      *campaign_conversion,
+      ::testing::FieldsAre(test::kCampaignId,
+                           /*checkout_url_pattern=*/std::nullopt,
+                           /*thank_you_url_pattern=*/"https://brave.com/*",
+                           /*extract_id=*/false,
+                           /*extract_value=*/false,
+                           /*observation_window=*/base::Days(3),
+                           /*expire_at=*/test::Now() + base::Days(3)));
 }
 
 TEST_F(BraveAdsCampaignConversionBuilderTest,
@@ -44,7 +50,7 @@ TEST_F(BraveAdsCampaignConversionBuilderTest,
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
           /*use_random_uuids=*/false);
-  mojom_creative_ad->campaign_conversion->url_pattern.reset();
+  mojom_creative_ad->campaign_conversion->thank_you_url_pattern.reset();
 
   // Act & Assert
   EXPECT_FALSE(FromMojomMaybeBuildCampaignConversion(mojom_creative_ad));

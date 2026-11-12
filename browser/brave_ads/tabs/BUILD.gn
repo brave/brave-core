@@ -11,6 +11,8 @@ source_set("tabs") {
   sources = [
     "ads_tab_helper.cc",
     "ads_tab_helper.h",
+    "credit_card_field_focus_observer.cc",
+    "credit_card_field_focus_observer.h",
   ]
 
   public_deps = [
@@ -24,14 +26,21 @@ source_set("tabs") {
   deps = [
     "//brave/browser/brave_ads",
     "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/content/browser",
+    "//brave/components/brave_ads/content/common/mojom",
+    "//brave/components/brave_ads/core/mojom",
     "//brave/components/brave_ads/core/public:headers",
     "//brave/components/brave_rewards/core",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/translate",
     "//chrome/browser/ui/browser_window",
     "//chrome/common",
+    "//components/autofill/content/browser",
+    "//components/autofill/core/browser",
     "//components/prefs",
     "//components/sessions",
     "//components/tabs:public",
+    "//components/translate/core/browser",
     "//ui/base",
   ]
 }
@@ -40,7 +49,10 @@ source_set("browser_tests") {
   testonly = true
 
   if (!is_android) {
-    sources = [ "ads_tab_helper_browsertest.cc" ]
+    sources = [
+      "ads_tab_helper_browsertest.cc",
+      "credit_card_field_focus_observer_browsertest.cc",
+    ]
 
     deps = [
       ":tabs",

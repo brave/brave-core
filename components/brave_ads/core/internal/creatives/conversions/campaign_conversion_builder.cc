@@ -17,7 +17,7 @@ std::optional<CampaignConversionInfo> FromMojomMaybeBuildCampaignConversion(
     return std::nullopt;
   }
 
-  if (!mojom_creative_ad->campaign_conversion->url_pattern) {
+  if (!mojom_creative_ad->campaign_conversion->thank_you_url_pattern) {
     return std::nullopt;
   }
 
@@ -25,11 +25,18 @@ std::optional<CampaignConversionInfo> FromMojomMaybeBuildCampaignConversion(
 
   campaign_conversion.id = mojom_creative_ad->campaign_id;
 
-  campaign_conversion.url_pattern =
-      *mojom_creative_ad->campaign_conversion->url_pattern;
+  campaign_conversion.thank_you_url_pattern =
+      *mojom_creative_ad->campaign_conversion->thank_you_url_pattern;
 
   campaign_conversion.observation_window =
       mojom_creative_ad->campaign_conversion->observation_window;
+
+  campaign_conversion.extract_id =
+      mojom_creative_ad->campaign_conversion->extract_id;
+  campaign_conversion.extract_value =
+      mojom_creative_ad->campaign_conversion->extract_value;
+  campaign_conversion.checkout_url_pattern =
+      mojom_creative_ad->campaign_conversion->checkout_url_pattern;
 
   // Campaign conversions are built and saved when a search result ad is
   // viewed by Rewards users or clicked by non-Rewards users, so the observation

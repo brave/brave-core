@@ -46,6 +46,10 @@ class TabManager final : public AdsClientNotifierObserver {
 
   bool IsPlayingMedia(int32_t tab_id) const;
 
+  // Only tabs with an extracted order ID or order value, surfaced on
+  // `brave://ads-internals` to confirm extraction without a real purchase.
+  std::vector<TabInfo> GetOrderExtractions() const;
+
  private:
   bool DoesExistForId(int32_t tab_id) const;
   TabInfo& GetOrCreateForId(int32_t tab_id);
@@ -77,6 +81,14 @@ class TabManager final : public AdsClientNotifierObserver {
   void OnNotifyTabDidLoad(int32_t tab_id, int http_status_code) override;
   void OnNotifyTabDidFailToLoad(int32_t tab_id) override;
   void OnNotifyDidCloseTab(int32_t tab_id) override;
+  void OnNotifyOrderIdExtracted(int32_t tab_id,
+                                const GURL& extracted_for_url,
+                                const std::optional<std::string>& id) override;
+  void OnNotifyOrderValueExtracted(
+      int32_t tab_id,
+      const GURL& extracted_for_url,
+      const std::optional<std::string>& value,
+      const std::optional<std::string>& currency) override;
 
   base::ObserverList<TabManagerObserver> observers_;
 

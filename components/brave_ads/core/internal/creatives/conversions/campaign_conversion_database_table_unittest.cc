@@ -40,14 +40,15 @@ TEST_F(BraveAdsCampaignConversionDatabaseTableTest, EmptySave) {
 TEST_F(BraveAdsCampaignConversionDatabaseTableTest, SaveCampaignConversions) {
   // Arrange
   const CampaignConversionInfo campaign_conversion_1 =
-      test::BuildCampaignConversion(test::kCampaignId,
-                                    /*url_pattern=*/"https://www.brave.com/*",
-                                    /*observation_window=*/base::Days(3));
+      test::BuildCampaignConversion(
+          test::kCampaignId,
+          /*thank_you_url_pattern=*/"https://www.brave.com/*",
+          /*observation_window=*/base::Days(3));
 
   const CampaignConversionInfo campaign_conversion_2 =
       test::BuildCampaignConversion(
           test::kAnotherCampaignId,
-          /*url_pattern=*/"https://www.brave.com/signup/*",
+          /*thank_you_url_pattern=*/"https://www.brave.com/signup/*",
           /*observation_window=*/base::Days(30));
 
   // Act
@@ -69,9 +70,10 @@ TEST_F(BraveAdsCampaignConversionDatabaseTableTest,
        DoNotSaveDuplicateConversion) {
   // Arrange
   const CampaignConversionInfo campaign_conversion =
-      test::BuildCampaignConversion(test::kCampaignId,
-                                    /*url_pattern=*/"https://www.brave.com/*",
-                                    /*observation_window=*/base::Days(3));
+      test::BuildCampaignConversion(
+          test::kCampaignId,
+          /*thank_you_url_pattern=*/"https://www.brave.com/*",
+          /*observation_window=*/base::Days(3));
 
   database::SaveCampaignConversions({campaign_conversion});
 
@@ -91,14 +93,15 @@ TEST_F(BraveAdsCampaignConversionDatabaseTableTest,
 TEST_F(BraveAdsCampaignConversionDatabaseTableTest, PurgeExpiredConversions) {
   // Arrange
   const CampaignConversionInfo campaign_conversion_1 =
-      test::BuildCampaignConversion(test::kCampaignId,
-                                    /*url_pattern=*/"https://www.brave.com/*",
-                                    /*observation_window=*/base::Days(7));
+      test::BuildCampaignConversion(
+          test::kCampaignId,
+          /*thank_you_url_pattern=*/"https://www.brave.com/*",
+          /*observation_window=*/base::Days(7));
 
   const CampaignConversionInfo campaign_conversion_2 =
       test::BuildCampaignConversion(
           test::kAnotherCampaignId,
-          /*url_pattern=*/"https://www.brave.com/signup/*",
+          /*thank_you_url_pattern=*/"https://www.brave.com/signup/*",
           /*observation_window=*/base::Days(3));  // Should be purged
 
   database::SaveCampaignConversions(
@@ -123,16 +126,18 @@ TEST_F(BraveAdsCampaignConversionDatabaseTableTest,
        SaveConversionWithMatchingCampaignIdAndType) {
   // Arrange
   const CampaignConversionInfo campaign_conversion_1 =
-      test::BuildCampaignConversion(test::kCampaignId,
-                                    /*url_pattern=*/"https://www.brave.com/1",
-                                    /*observation_window=*/base::Days(3));
+      test::BuildCampaignConversion(
+          test::kCampaignId,
+          /*thank_you_url_pattern=*/"https://www.brave.com/1",
+          /*observation_window=*/base::Days(3));
 
   database::SaveCampaignConversions({campaign_conversion_1});
 
   const CampaignConversionInfo campaign_conversion_2 =
-      test::BuildCampaignConversion(test::kCampaignId,
-                                    /*url_pattern=*/"https://www.brave.com/2",
-                                    /*observation_window=*/base::Days(30));
+      test::BuildCampaignConversion(
+          test::kCampaignId,
+          /*thank_you_url_pattern=*/"https://www.brave.com/2",
+          /*observation_window=*/base::Days(30));
 
   // Act
   database::SaveCampaignConversions({campaign_conversion_2});
@@ -151,7 +156,7 @@ TEST_F(BraveAdsCampaignConversionDatabaseTableTest,
        GetActiveDoesNotReturnDuplicatesWhenMultipleAdEventsMatch) {
   // Arrange
   test::BuildAndSaveCampaignConversion(
-      test::kCampaignId, /*url_pattern=*/"https://www.brave.com/*",
+      test::kCampaignId, /*thank_you_url_pattern=*/"https://www.brave.com/*",
       /*observation_window=*/base::Days(3));
 
   const AdInfo ad =

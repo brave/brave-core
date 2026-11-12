@@ -13,7 +13,10 @@
 
 namespace brave_ads {
 
-std::vector<mojom::CreativeSearchResultAdInfoPtr>
+using CreativeSearchResultAdList =
+    std::vector<mojom::CreativeSearchResultAdInfoPtr>;
+
+CreativeSearchResultAdList
 ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
     const std::vector<schema_org::mojom::EntityPtr>& mojom_entities);
 

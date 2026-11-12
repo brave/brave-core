@@ -11,6 +11,7 @@
 
 #include "base/feature_list.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/renderer/rss_link_reader.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
@@ -42,6 +43,10 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/renderer/page_content_extractor.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/content/renderer/order_extractor.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/common/features.h"
@@ -272,6 +277,12 @@ void BraveContentRendererClient::RenderFrameCreated(
                                       ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  if (!process_state::IsIncognitoProcess()) {
+    new brave_ads::OrderExtractor(render_frame, registry);
+  }
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   if (base::FeatureList::IsEnabled(

@@ -26,6 +26,7 @@
 #include "base/test/test_future.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/components/brave_ads/core/browser/service/test/ads_service_mock.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
@@ -84,6 +85,12 @@ namespace brave_ads {
 namespace {
 
 constexpr std::string_view kHostName = "brave.com";
+
+// `kHostName` is HSTS-preloaded, so a plain-HTTP navigation to it gets
+// silently force-upgraded to HTTPS before the embedded HTTP test server ever
+// sees it, hanging the navigation. `.test` is an IANA special-use TLD with no
+// real registrations, so it is never HSTS-preloaded.
+constexpr std::string_view kNonCryptographicHostName = "brave.test";
 
 constexpr char kHandleRequestUrlPath[] = "/handle_request";
 constexpr char kHttpStatusCodeQueryKey[] = "http_status_code";
@@ -298,6 +305,10 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
     test_server_.RegisterRequestHandler(base::BindRepeating(&HandleRequest));
     test_server_handle_ = test_server_.StartAndReturnHandle();
     EXPECT_TRUE(test_server_handle_);
+
+    // Plain HTTP, to test behavior specific to a non-cryptographic scheme.
+    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
+    EXPECT_TRUE(embedded_test_server()->Start());
   }
 
   content::WebContents* GetActiveWebContents() {
@@ -340,6 +351,17 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
     }
 
     EXPECT_TRUE(NavigateToURLFromRendererWithoutUserGesture(web_contents, url));
+  }
+
+  void NavigateToRelativeHttpURL(std::string_view relative_url) {
+    content::WebContents* const web_contents = GetActiveWebContents();
+    EXPECT_TRUE(web_contents);
+
+    const GURL url =
+        embedded_test_server()->GetURL(kNonCryptographicHostName, relative_url);
+    content::NavigateToURLBlockUntilNavigationsComplete(
+        web_contents, url, /*number_of_navigations=*/1,
+        /*ignore_uncommitted_navigations=*/true);
   }
 
   void SimulateHttpStatusCodePage(int http_status_code) {
@@ -921,6 +943,90 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
   RestoreBrowser(profile);
 
   EXPECT_TRUE(WaitForActiveWebContentsToLoad());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, MaybeGetOrderPatterns) {
+  // Unlike `NotifyTabTextContentDidChange`, order extraction is not gated
+  // behind Brave Rewards or notification ads, so no prefs are set here.
+  EXPECT_CALL(
+      GetAdsServiceMock(),
+      MaybeGetOrderPatterns(
+          TabId(), RedirectChainExpectation(kMultiPageApplicationWebpage),
+          /*detected_language=*/::testing::_, /*callback=*/::testing::_))
+      .Times(::testing::AtLeast(1));
+  NavigateToRelativeURL(kMultiPageApplicationWebpage,
+                        /*has_user_gesture=*/true);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
+                       CallMaybeGetOrderPatternsIfTabWasRestored) {
+  EXPECT_CALL(GetAdsServiceMock(), MaybeGetOrderPatterns)
+      .Times(::testing::AnyNumber());
+  NavigateToRelativeURL(kMultiPageApplicationWebpage,
+                        /*has_user_gesture=*/true);
+  ::testing::Mock::VerifyAndClearExpectations(&GetAdsServiceMock());
+
+  // Must occur before the browser is closed.
+  Profile* const profile = GetProfile();
+  AdsServiceMock& ads_service_mock = GetAdsServiceMock();
+
+  const ScopedKeepAlive scoped_keep_alive(KeepAliveOrigin::SESSION_RESTORE,
+                                          KeepAliveRestartOption::DISABLED);
+  const ScopedProfileKeepAlive scoped_profile_keep_alive(
+      profile, ProfileKeepAliveOrigin::kSessionRestore);
+  CloseBrowserSynchronously(browser());
+
+  // Unlike text content notification, order extraction is not skipped on
+  // restore, since the pre-restore in-memory cache is gone by then.
+  base::RunLoop run_loop;
+  EXPECT_CALL(ads_service_mock, MaybeGetOrderPatterns)
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  RestoreBrowser(profile);
+
+  // A restored tab is lazy, navigation commits immediately but the page
+  // loads later, so `run_loop.Run()` below must come after the load wait.
+  EXPECT_TRUE(WaitForActiveWebContentsToLoad());
+
+  run_loop.Run();
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
+                       DoNotCallMaybeGetOrderPatternsForHttpErrorResponsePage) {
+  EXPECT_CALL(GetAdsServiceMock(), MaybeGetOrderPatterns).Times(0);
+  SimulateHttpStatusCodePage(net::HTTP_NOT_FOUND);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
+                       DoNotCallMaybeGetOrderPatternsForNonCryptographicPage) {
+  EXPECT_CALL(GetAdsServiceMock(), MaybeGetOrderPatterns).Times(0);
+  NavigateToRelativeHttpURL(kMultiPageApplicationWebpage);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
+                       NotifyOrderIdAndValueExtractedForRequestedFieldsOnly) {
+  // Arrange, a campaign only requested order value extraction.
+  mojom::OrderExtractionPatternsInfoPtr mojom_order_patterns =
+      mojom::OrderExtractionPatternsInfo::New();
+  mojom_order_patterns->value = mojom::OrderValueExtractionPatternsInfo::New();
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(GetAdsServiceMock(), MaybeGetOrderPatterns)
+      .WillOnce(
+          base::test::RunOnceCallback<3>(std::move(mojom_order_patterns)));
+  EXPECT_CALL(GetAdsServiceMock(), NotifyOrderIdExtracted).Times(0);
+  EXPECT_CALL(
+      GetAdsServiceMock(),
+      NotifyOrderValueExtracted(
+          TabId(),
+          RedirectChainExpectation(kMultiPageApplicationWebpage).front(),
+          /*value=*/std::optional<std::string>(std::nullopt),
+          /*currency=*/std::optional<std::string>(std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+
+  // Act & Assert
+  NavigateToRelativeURL(kMultiPageApplicationWebpage,
+                        /*has_user_gesture=*/true);
+  run_loop.Run();
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,

@@ -9,6 +9,7 @@ assert(enable_brave_ads)
 
 static_library("browser") {
   sources = [
+    "creatives/search_result_ad/creative_search_result_ad_campaign_conversion_parse_result_type.h",
     "creatives/search_result_ad/creative_search_result_ad_constants.h",
     "creatives/search_result_ad/creative_search_result_ad_handler.cc",
     "creatives/search_result_ad/creative_search_result_ad_handler.h",
@@ -16,6 +17,10 @@ static_library("browser") {
     "creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_extractor.h",
     "creatives/search_result_ad/creative_search_result_ad_url_placement_id_extractor.cc",
     "creatives/search_result_ad/creative_search_result_ad_url_placement_id_extractor.h",
+    "order_fetcher.cc",
+    "order_fetcher.h",
+    "order_patterns_mojom_util.cc",
+    "order_patterns_mojom_util.h",
   ]
 
   deps = [
@@ -31,6 +36,7 @@ static_library("browser") {
   ]
 
   public_deps = [
+    "//brave/components/brave_ads/content/common/mojom",
     "//brave/components/brave_ads/core/mojom",
     "//third_party/blink/public/mojom:mojom_platform_headers",
   ]
@@ -48,6 +54,8 @@ source_set("unit_tests") {
     "creatives/search_result_ad/test/creative_search_result_ad_mojom_test_util.h",
     "creatives/search_result_ad/test/creative_search_result_ad_mojom_web_page_entities_test_util.cc",
     "creatives/search_result_ad/test/creative_search_result_ad_mojom_web_page_entities_test_util.h",
+    "order_fetcher_unittest.cc",
+    "order_patterns_mojom_util_unittest.cc",
   ]
 
   deps = [
@@ -56,7 +64,10 @@ source_set("unit_tests") {
     "//brave/components/brave_ads/content/browser",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_ads/core/browser/service:test_support",
+    "//chrome/test:test_support",
+    "//chrome/test/base:chrome_render_view_host_test_harness",
     "//content/test:test_support",
+    "//services/service_manager/public/cpp",
     "//testing/gmock",
     "//testing/gtest",
   ]

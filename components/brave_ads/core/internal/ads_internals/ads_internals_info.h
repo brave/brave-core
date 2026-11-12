@@ -8,10 +8,12 @@
 
 #include <cstddef>
 #include <string>
+#include <vector>
 
 #include "base/containers/flat_set.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 
 namespace brave_ads {
@@ -29,6 +31,9 @@ struct AdsInternalsInfo final {
   base::flat_set<std::string> notification_ad_campaign_ids;
   base::flat_set<std::string> new_tab_page_ad_campaign_ids;
   AdEventList ad_events;
+  // Tabs with an extracted order ID or order value, read synchronously from
+  // `TabManager`, not fetched as part of the async chain above.
+  std::vector<TabInfo> order_extractions;
   base::ListValue confirmation_queue;
   base::ListValue payment_tokens;
   size_t active_notification_ad_count = 0;
