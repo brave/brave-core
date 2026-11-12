@@ -9,6 +9,7 @@ substitutions:
 
       Brave is not Chrome branded, which upstream otherwise requires.
     regex:
-      re_pattern: '(boolean isBrandedOfficialBuild\(\).*?)BuildConfig\.IS_CHROME_BRANDED'
+      re_pattern: |-
+        (boolean isBrandedOfficialBuild\(\).*?)BuildConfig\.IS_CHROME_BRANDED
       re_flags: [DOTALL]
       replace: '\1true'
