@@ -25,6 +25,7 @@ if (!is_android) {
       "//brave/browser",
       "//brave/browser:browser_process",
       "//brave/browser/brave_shields:test_support",
+      "//brave/browser/ephemeral_storage",
       "//brave/components/brave_component_updater/browser",
       "//brave/components/brave_shields/content/browser",
       "//brave/components/brave_shields/core/browser",
