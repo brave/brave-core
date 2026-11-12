@@ -742,6 +742,15 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Συνέχεια στο %@ (μη ασφαλές)";
 
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "Κατάργηση";
+
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "Αυτός ο ιστότοπος δεν θα εμφανίζεται στη λίστα με τους ιστότοπους που επισκέπτεστε συχνότερα, αλλά δεν θα καταργηθεί από το ιστορικό σας.";
+
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "Κατάργηση από τους ιστότοπους που επισκέπτεστε συχνότερα;";
+
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "Το %@ θα εκκινήσει μια εξωτερική εφαρμογή";
 
@@ -864,6 +873,9 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Μη έγκυρα στοιχεία στο αίτημα πληρωμής";
+
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "Μια ενσωματωμένη σελίδα σε αυτήν τη σελίδα";
 
 /* History tableview section header */
 "LastMonth" = "Προηγούμενος μήνας";
@@ -2481,6 +2493,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Οι διαφημίσεις αποκλείονται κατά την παρακολούθηση βίντεο σ' αυτόν τον ιστότοπο.";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Πορτοφόλι Brave";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "Ιδιωτική καρτέλα";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "Κωδικός QR";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "Αναζήτηση";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Νέα Ιδιωτική καρτέλα";

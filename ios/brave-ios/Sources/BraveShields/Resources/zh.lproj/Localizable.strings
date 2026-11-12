@@ -113,7 +113,7 @@
 "BraveShieldsGlobalControls" = "全域控制項";
 
 /* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "存储联系信息，用于日后报告站点故障";
+"BraveShieldsSaveContactInfo" = "存储联系信息，用于日后的站点故障报告";
 
 /* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
 "BraveShieldsSaveContactInfoDescription" = "如果您提供联系信息，这些信息将会被储存起来，在日后的报告中使用";
@@ -422,7 +422,7 @@
 "UpdatingLists" = "正在更新列表";
 
 /* The option the user can select for the type of https upgrading */
-"UpgradeConnectionsToHTTPS" = "將連線升級為 HTTPS";
+"UpgradeConnectionsToHTTPS" = "将连接升级为 HTTPS";
 
 /* A description shown an a page where the http page was blocked */
 "YourConnectionIsNotPrivate" = "您当前看到警告提示，是由于该网站不支持 HTTPS。";
