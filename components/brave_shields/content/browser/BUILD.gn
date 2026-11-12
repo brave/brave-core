@@ -47,7 +47,6 @@ static_library("browser") {
   ]
 
   deps = [
-    ":restart_navigation",
     "//base",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_shields/core/browser",
@@ -74,21 +73,6 @@ static_library("browser") {
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
     "//third_party/blink/public/mojom:mojom_platform_headers",
-    "//url",
-  ]
-}
-
-source_set("restart_navigation") {
-  sources = [
-    "restart_navigation.cc",
-    "restart_navigation.h",
-  ]
-
-  public_deps = [ "//ui/base" ]
-
-  deps = [
-    "//base",
-    "//content/public/browser",
     "//url",
   ]
 }
