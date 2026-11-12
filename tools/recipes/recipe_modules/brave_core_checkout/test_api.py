@@ -65,6 +65,13 @@ class BraveCoreCheckoutTestApi(RecipeTestApi):
             }
         )
 
+    def disable_deprecated_dotenv(self) -> TestData:
+        """Disable the deprecated `.env` mode through the module's
+        properties."""
+        return self.properties(
+            **{'$brave_core_checkout': {'disable_deprecated_dotenv': True}}
+        )
+
     def brave_core_ref(self, ref: str) -> TestData:
         """Set the module's default brave-core ref (its `brave_core_ref`
         property)."""
