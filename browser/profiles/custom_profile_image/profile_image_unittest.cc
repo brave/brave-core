@@ -10,8 +10,9 @@
 #include <utility>
 
 #include "base/files/file_util.h"
-#include "base/functional/callback_helpers.h"
+#include "base/run_loop.h"
 #include "base/scoped_observation.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
@@ -269,7 +270,11 @@ TEST_F(CustomProfileImageTest, NewProfileAtSamePathHasNoImage) {
   params.profile_name = u"Reused";
   storage.AddProfile(std::move(params));
   base::ThreadPoolInstance::Get()->FlushForTesting();
-  task_environment_.RunUntilIdle();
+  // Any reply was posted before this, so it would run first.
+  base::RunLoop run_loop;
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, run_loop.QuitClosure());
+  run_loop.Run();
   EXPECT_FALSE(replied);
   EXPECT_FALSE(image().HasSavedImage());
   EXPECT_FALSE(image().IsActive());
