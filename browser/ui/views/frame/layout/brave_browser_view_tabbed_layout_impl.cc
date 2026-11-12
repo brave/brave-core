@@ -147,6 +147,8 @@ gfx::Rect BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedInfobarBounds(
     const gfx::Rect& visual_client_area,
     std::optional<gfx::Insets> vtab_insets) {
   gfx::Rect bounds = current_bounds;
+  // A leading side panel shifts |current_bounds.x()| right (not just narrows
+  // it), so width alone isn't enough to undo it.
   bounds.set_x(visual_client_area.x());
   bounds.set_width(visual_client_area.width());
   if (vtab_insets) {
