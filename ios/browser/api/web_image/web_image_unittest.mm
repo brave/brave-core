@@ -10,6 +10,7 @@
 #include "base/test/task_environment.h"
 #import "brave/ios/browser/api/web_image/web_image+private.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/public/mojom/url_loader_factory.mojom.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "testing/platform_test.h"
@@ -63,7 +64,6 @@ TEST_F(WebImageDownloaderTest, LocalNetworkUrlsNotFetched) {
 TEST_F(WebImageDownloaderTest, PublicUrlIsFetched) {
   base::test::TaskEnvironment task_environment;
   network::TestURLLoaderFactory test_factory;
-  test_factory.AddResponse("https://example.com/icon.png", "not-an-image");
   WebImageDownloader* downloader = MakeDownloader(&test_factory);
 
   base::RunLoop run_loop;
@@ -75,6 +75,13 @@ TEST_F(WebImageDownloaderTest, PublicUrlIsFetched) {
            called = YES;
            run_loop.Quit();
          }];
+
+  test_factory.WaitForRequest(GURL("https://example.com/icon.png"));
+  for (const auto& pending_request : test_factory.pending_requests()) {
+    EXPECT_TRUE(pending_request.options &
+                network::mojom::kURLLoadOptionBlockLocalRequest);
+  }
+  test_factory.AddResponse("https://example.com/icon.png", "not-an-image");
   run_loop.Run();
 
   EXPECT_TRUE(called);
