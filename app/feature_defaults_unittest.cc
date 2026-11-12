@@ -369,11 +369,13 @@ TEST(FeatureDefaultsTest, DisabledBlinkRuntimeEnabledFeatures) {
       &blink::features::kControlledFrame,
       &blink::features::kExtensionScriptTagging,
       &blink::features::kFencedFramesRuntime,
+      &blink::features::kInstallElement,
       &blink::features::kLanguageDetectionAPI,
       &blink::features::kPrerender2,
       &blink::features::kProfilerAPI,
       &blink::features::kTranslationAPI,
       &blink::features::kUserMediaElement,
+      &blink::features::kWebAppInstallation,
   };
 
   for (const auto* feature : disabled_features) {

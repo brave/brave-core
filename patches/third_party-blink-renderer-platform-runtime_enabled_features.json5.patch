@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..b955b6e60c7aeff2a14799be2d04c1b651ae261d 100644
+index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..093cee7134153d72931768d29facc723f7fb7687 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -185,6 +185,14 @@
@@ -165,7 +165,16 @@ index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..b955b6e60c7aeff2a14799be2d04c1b6
        status: {"default": "stable"},
      },
      {
-@@ -4149,7 +4181,8 @@
+@@ -4050,6 +4082,8 @@
+     {
+       // https://chromestatus.com/feature/5152834368700416
+       name: "InstallElement",
++      brave_base_feature_overridden: true,
++      base_feature_status: "disabled",
+       status: {
+         "Android": "",
+         "iOS": "",
+@@ -4149,7 +4183,8 @@
          "Android": "stable",
          "default": "",
        },
@@ -175,7 +184,7 @@ index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..b955b6e60c7aeff2a14799be2d04c1b6
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -5302,6 +5335,8 @@
+@@ -5302,6 +5337,8 @@
        //
        // It also has some feature params defined throughout the codebase.
        name: "Prerender2",
@@ -184,7 +193,7 @@ index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..b955b6e60c7aeff2a14799be2d04c1b6
        status: "stable",
      },
      {
-@@ -5376,6 +5411,8 @@
+@@ -5376,6 +5413,8 @@
      },
      {
        name: "ProfilerAPI",
@@ -193,7 +202,7 @@ index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..b955b6e60c7aeff2a14799be2d04c1b6
        status: "stable",
      },
      {
-@@ -5518,6 +5555,8 @@
+@@ -5518,6 +5557,8 @@
      // but we still keep this flag for future phase tests.
      {
        name: "ReduceUserAgentMinorVersion",
@@ -202,7 +211,7 @@ index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..b955b6e60c7aeff2a14799be2d04c1b6
        status: "stable",
      },
      {
-@@ -7110,7 +7149,8 @@
+@@ -7110,7 +7151,8 @@
          "ChromeOS": "stable",
          "default": "",
        },
@@ -212,7 +221,7 @@ index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..b955b6e60c7aeff2a14799be2d04c1b6
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -7298,6 +7338,8 @@
+@@ -7298,6 +7340,8 @@
      },
      {
        name: "UserMediaElement",
@@ -221,7 +230,16 @@ index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..b955b6e60c7aeff2a14799be2d04c1b6
        status: "stable",
        public: true,
      },
-@@ -7761,6 +7803,7 @@
+@@ -7440,6 +7484,8 @@
+     {
+       // https://chromestatus.com/feature/5183481574850560
+       name: "WebAppInstallation",
++      brave_base_feature_overridden: true,
++      base_feature_status: "disabled",
+       status: {
+         "Android": "",
+         "iOS": "",
+@@ -7761,6 +7807,7 @@
        origin_trial_feature_name: "WebMCP",
        origin_trial_allows_third_party: true,
        public: true,
@@ -229,7 +247,7 @@ index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..b955b6e60c7aeff2a14799be2d04c1b6
        base_feature_status: "enabled",
        copied_from_base_feature_if: "overridden",
        // Note that `depends_on` isn't supported by origin trials.
-@@ -7770,7 +7813,7 @@
+@@ -7770,7 +7817,7 @@
          "WebMCPFormAssociatedCustomElements",
          "WebMCPWaitForToolsUntil"
        ],
@@ -238,7 +256,7 @@ index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..b955b6e60c7aeff2a14799be2d04c1b6
      },
      {
        name: "WebMCPContinuations",
-@@ -8224,5 +8267,10 @@
+@@ -8224,5 +8271,10 @@
        // crbug.com/435623334.
        name: "XSLTSpecialTrial",
      },
