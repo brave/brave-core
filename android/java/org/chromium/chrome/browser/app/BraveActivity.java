@@ -1817,6 +1817,7 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     private void startAppUpdateFlow(AppUpdateInfo appUpdateInfo, int appUpdateType) {
+        if (isActivityFinishingOrDestroyed()) return;
         try {
             mAppUpdateManager.startUpdateFlowForResult(
                     appUpdateInfo, appUpdateType, BraveActivity.this, 1);
