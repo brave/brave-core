@@ -14,6 +14,7 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "testing/platform_test.h"
+#include "url/gurl.h"
 
 namespace {
 
@@ -43,7 +44,8 @@ TEST_F(WebImageDownloaderTest, LocalNetworkUrlsNotFetched) {
     network::TestURLLoaderFactory test_factory;
     WebImageDownloader* downloader = MakeDownloader(&test_factory);
 
-    __block base::RunLoop run_loop;
+    base::RunLoop run_loop;
+    base::RunLoop* run_loop_ptr = &run_loop;
     __block BOOL called = NO;
     __block UIImage* image = nil;
     [downloader downloadImage:[NSURL URLWithString:url_string]
@@ -51,7 +53,7 @@ TEST_F(WebImageDownloaderTest, LocalNetworkUrlsNotFetched) {
                                 NSURL* response_url) {
                      called = YES;
                      image = result;
-                     run_loop.Quit();
+                     run_loop_ptr->Quit();
                    }];
     run_loop.Run();
 
@@ -66,18 +68,19 @@ TEST_F(WebImageDownloaderTest, PublicUrlIsFetched) {
   network::TestURLLoaderFactory test_factory;
   WebImageDownloader* downloader = MakeDownloader(&test_factory);
 
-  __block base::RunLoop run_loop;
+  base::RunLoop run_loop;
+  base::RunLoop* run_loop_ptr = &run_loop;
   __block BOOL called = NO;
   [downloader
       downloadImage:[NSURL URLWithString:@"https://example.com/icon.png"]
          completion:^(UIImage* result, NSInteger http_response_code,
                       NSURL* response_url) {
            called = YES;
-           run_loop.Quit();
+           run_loop_ptr->Quit();
          }];
 
   test_factory.WaitForRequest(GURL("https://example.com/icon.png"));
-  for (const auto& pending_request : test_factory.pending_requests()) {
+  for (const auto& pending_request : *test_factory.pending_requests()) {
     EXPECT_TRUE(pending_request.options &
                 network::mojom::kURLLoadOptionBlockLocalRequest);
   }
