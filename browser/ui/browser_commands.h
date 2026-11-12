@@ -81,6 +81,7 @@ void ToggleVerticalTabStripFloatingMode(BrowserWindowInterface* browser);
 void ToggleVerticalTabStripExpanded(BrowserWindowInterface* browser);
 
 void ToggleActiveTabAudioMute(BrowserWindowInterface* browser);
+void TogglePictureInPicture(BrowserWindowInterface* browser);
 void ToggleSidebarPosition(BrowserWindowInterface* browser);
 void ToggleSidebar(BrowserWindowInterface* browser);
 

@@ -16,6 +16,7 @@
 #include "base/check.h"
 #include "base/check_deref.h"
 #include "base/check_op.h"
+#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/functional/callback_helpers.h"
 #include "base/i18n/file_util_icu.h"
@@ -50,6 +51,7 @@
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
 #include "chrome/browser/bookmarks/bookmark_html_writer.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/picture_in_picture/picture_in_picture_window_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_metrics.h"
@@ -81,6 +83,7 @@
 #include "components/tabs/public/tab_group.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/media_session.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/clipboard/clipboard_buffer.h"
@@ -496,6 +499,49 @@ void ToggleActiveTabAudioMute(BrowserWindowInterface* browser) {
   bool mute_tab = !contents->IsAudioMuted();
   SetTabAudioMuted(contents, mute_tab, TabMutedReason::kAudioIndicator,
                    std::string());
+}
+
+void TogglePictureInPicture(BrowserWindowInterface* browser) {
+  WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();
+  if (!contents) {
+    return;
+  }
+
+  // Only close PiP owned by the active tab, including document PiP.
+  if (contents->HasPictureInPictureVideo() ||
+      contents->HasPictureInPictureDocument()) {
+    auto* pip_manager = PictureInPictureWindowManager::GetInstance();
+    if (pip_manager->GetWebContents() == contents) {
+      pip_manager->ExitPictureInPicture();
+    }
+    return;
+  }
+
+  // Do not create a media session for an empty tab. Chromium's PiP fallback
+  // expects exactly one video player when it has no page action handler.
+  auto* media_session = content::MediaSession::GetIfExists(contents);
+  if (!media_session) {
+    return;
+  }
+
+  const auto info = media_session->GetMediaSessionInfoSync();
+  if (!info || !info->audio_video_states ||
+      info->audio_video_states->size() != 1) {
+    return;
+  }
+  const auto state = info->audio_video_states->front();
+  if (state != media_session::mojom::MediaAudioVideoState::kAudioVideo &&
+      state != media_session::mojom::MediaAudioVideoState::kVideoOnly) {
+    return;
+  }
+
+  const auto actions = media_session->GetMediaSessionActionsSync();
+  if (!base::Contains(
+          actions,
+          media_session::mojom::MediaSessionAction::kEnterPictureInPicture)) {
+    return;
+  }
+  media_session->EnterPictureInPicture();
 }
 
 void ToggleSidebarPosition(BrowserWindowInterface* browser) {
