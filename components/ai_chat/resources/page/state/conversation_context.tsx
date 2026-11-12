@@ -267,6 +267,11 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     if (!inputText) return
     if (shouldDisableUserInput) return
 
+    const trimmedText = stringifyContent(inputText).trim()
+    if (!selectedActionType && !trimmedText && pendingMessageFiles.length === 0) {
+      return
+    }
+
     if (!aiChat.isStorageNoticeDismissed && aiChat.hasAcceptedAgreement) {
       // Submitting a conversation entry manually, after opt-in,
       // means the storage notice can be dismissed.
