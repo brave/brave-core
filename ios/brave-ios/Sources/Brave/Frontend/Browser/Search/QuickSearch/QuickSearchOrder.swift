@@ -3,22 +3,53 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Preferences
 
 extension QuickSearchItem {
-  /// The engines eligible for the quick search row — every ordered engine except
-  /// `defaultEngine`, which consumers pin to the front themselves — in the user's stored
-  /// quick search order.
+  /// Whether the Brave Search verticals are part of the catalog. They ship to new installs only.
+  private static var includesBraveSearchVerticals: Bool {
+    FeatureList.kBraveSearchVerticalsEnabled.enabled
+      && Preferences.BraveSearch.braveSearchVerticalsEligible.value
+  }
+
+  /// Whether the stored order has placed the verticals, which only happens once the user has
+  /// reordered the row.
+  private static var hasStoredBraveSearchVerticals: Bool {
+    (Preferences.Search.quickSearchOrder.value ?? [])
+      .lazy
+      .compactMap(QuickSearchItemID.init(rawValue:))
+      .contains(where: \.isBraveVertical)
+  }
+
+  /// The items eligible for the quick search row — every ordered engine except `defaultEngine`,
+  /// which consumers pin to the front themselves, plus the Brave Search verticals — in the
+  /// user's stored quick search order.
   static func quickSearchCatalog(
     from engines: [OpenSearchEngine],
     excludingDefault defaultEngine: OpenSearchEngine?
   ) -> [QuickSearchItem] {
     let defaultEngineID = defaultEngine.map(QuickSearchItemID.init(engine:))
-    let items =
+    let engineItems =
       engines
       .filter { QuickSearchItemID(engine: $0) != defaultEngineID }
       .map { QuickSearchItem(source: .engine($0)) }
-    return items.applyingQuickSearchOrder()
+
+    guard includesBraveSearchVerticals else { return engineItems.applyingQuickSearchOrder() }
+
+    let verticals = BraveSearchVertical.Kind.allCases.map {
+      QuickSearchItem(source: .braveVertical(.init(kind: $0)))
+    }
+
+    if hasStoredBraveSearchVerticals {
+      return (engineItems + verticals).applyingQuickSearchOrder()
+    }
+
+    // The verticals have never been placed, so introduce them directly behind Brave Search
+    var items = engineItems.applyingQuickSearchOrder()
+    let braveSearchIndex = items.firstIndex { $0.id == .braveSearchEngine }
+    items.insert(contentsOf: verticals, at: braveSearchIndex.map { $0 + 1 } ?? 0)
+    return items
   }
 }
 

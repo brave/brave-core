@@ -522,9 +522,8 @@ public class SearchViewController: UIViewController, LoaderListener {
           self?.didClickLeoButton()
         case .engine(let engine):
           self?.didSelectEngine(engine)
-        case .braveVertical:
-          // Not yet available
-          break
+        case .braveVertical(let vertical):
+          self?.didSelectBraveSearchVertical(vertical)
         }
       },
       onOpenMore: { [weak self] in
@@ -716,22 +715,46 @@ public class SearchViewController: UIViewController, LoaderListener {
     recordQuickSearchActionP3A(option: .leo)
   }
 
+  private var hasPendingWidgetSearchAttribution: Bool {
+    searchDelegate?.searchViewControllerHasPendingWidgetSearchAttribution(self) ?? false
+  }
+
   private func didSelectEngine(_ engine: OpenSearchEngine) {
     let localSearchQuery = dataSource.searchQuery.lowercased()
-    let widgetAttr =
-      searchDelegate?.searchViewControllerHasPendingWidgetSearchAttribution(self) ?? false
     guard
-      let url = engine.searchURLForQuery(localSearchQuery, isWidgetSearchAttribution: widgetAttr)
+      let url = engine.searchURLForQuery(
+        localSearchQuery,
+        isWidgetSearchAttribution: hasPendingWidgetSearchAttribution
+      )
     else {
       assertionFailure()
       return
     }
 
+    submitQuickSearch(url: url, query: localSearchQuery, p3aOption: .searchEngine(engine))
+  }
+
+  private func didSelectBraveSearchVertical(_ vertical: BraveSearchVertical) {
+    let localSearchQuery = dataSource.searchQuery.lowercased()
+    guard
+      let url = vertical.searchURL(
+        for: localSearchQuery,
+        isWidgetSearchAttribution: hasPendingWidgetSearchAttribution
+      )
+    else {
+      assertionFailure()
+      return
+    }
+
+    submitQuickSearch(url: url, query: localSearchQuery, p3aOption: .braveVertical)
+  }
+
+  private func submitQuickSearch(url: URL, query: String, p3aOption: P3AQuickSearchOption) {
     if !dataSource.isPrivate {
-      RecentSearch.addItem(type: .website, text: localSearchQuery, websiteUrl: url.absoluteString)
+      RecentSearch.addItem(type: .website, text: query, websiteUrl: url.absoluteString)
     }
     searchDelegate?.searchViewController(self, didSelectURL: url)
-    recordQuickSearchActionP3A(option: .searchEngine(engine))
+    recordQuickSearchActionP3A(option: p3aOption)
   }
 
   @objc func onShowMorePressed() {
@@ -1136,6 +1159,7 @@ private enum QuickSearchP3AAnswer: Int, CaseIterable {
 private enum P3AQuickSearchOption {
   case leo
   case searchEngine(OpenSearchEngine)
+  case braveVertical
 }
 
 extension SearchViewController {
@@ -1144,6 +1168,9 @@ extension SearchViewController {
     switch option {
     case .leo:
       answer = .leo
+    case .braveVertical:
+      // Verticals are Brave Search with a different path, so they count as Brave Search.
+      answer = .brave
     case .searchEngine(let engine):
       if let engineID = engine.engineID, !engine.isCustomEngine {
         let isDefaultEngine =

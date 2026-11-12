@@ -99,6 +99,7 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kBrowserToolbarRefactorEnabled;
 @property(class, nonatomic, readonly) Feature* kUseChromiumSearchEngines;
 @property(class, nonatomic, readonly) Feature* kTabGroupsEnabled;
+@property(class, nonatomic, readonly) Feature* kBraveSearchVerticalsEnabled;
 @end
 
 NS_ASSUME_NONNULL_END

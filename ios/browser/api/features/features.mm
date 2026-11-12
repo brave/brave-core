@@ -32,6 +32,7 @@
 #include "brave/ios/browser/search_engines/features.h"
 #include "brave/ios/browser/toolbar/features.h"
 #include "brave/ios/browser/ui/commerce/features.h"
+#include "brave/ios/browser/ui/quick_search/features.h"
 #include "brave/ios/browser/ui/quick_view/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #import "build/blink_buildflags.h"
@@ -426,6 +427,11 @@
 
 + (Feature*)kTabGroupsEnabled {
   return [[Feature alloc] initWithFeature:&brave::features::kTabGroupsEnabled];
+}
+
++ (Feature*)kBraveSearchVerticalsEnabled {
+  return [[Feature alloc]
+      initWithFeature:&brave::features::kBraveSearchVerticalsEnabled];
 }
 
 @end

@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Preferences
-import SwiftUI
 import UIKit
 import XCTest
 
@@ -38,12 +37,8 @@ class QuickSearchOrderTests: XCTestCase {
     )
   }
 
-  private func makeVerticalItem(id: String) -> QuickSearchItem {
-    QuickSearchItem(
-      source: .braveVertical(
-        BraveSearchVertical(id: id, accessibilityTitle: id, icon: Image(systemName: "photo"))
-      )
-    )
+  private func makeVerticalItem(kind: BraveSearchVertical.Kind) -> QuickSearchItem {
+    QuickSearchItem(source: .braveVertical(BraveSearchVertical(kind: kind)))
   }
 
   private func setStoredOrder(_ ids: [QuickSearchItemID]) {
@@ -120,9 +115,9 @@ class QuickSearchOrderTests: XCTestCase {
     let catalog = [
       makeItem(engineID: "google"),
       makeItem(engineID: "bing"),
-      makeVerticalItem(id: "images"),
+      makeVerticalItem(kind: .images),
     ]
-    setDisabled([.engine("bing"), .braveVertical("images")])
+    setDisabled([.engine("bing"), .braveVertical("brave-search-images")])
 
     XCTAssertEqual(catalog.filteringQuickSearchDisabled().map(\.id), [.engine("google")])
   }
