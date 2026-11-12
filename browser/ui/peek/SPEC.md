@@ -80,15 +80,15 @@ Shift+click behaves as it did.
 
 ### States
 
-| State          | What the user sees                                                                                            | Leaves the state when                 |
-| -------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
-| Closed         | Nothing                                                                                                       | A Peek is opened                      |
-| Opening        | Card grows from 90% to full size and the dim backdrop fades in over 200 ms. Skipped when reduced motion is on | The animation ends, or the user acts  |
-| Loading        | Card with toolbar. The page loads inside it                                                                   | The page commits or fails             |
-| Open           | The loaded page. Toolbar shows security state, favicon, title, host, Shields state, "Open as tab", close      | Any of the exits below                |
-| Open, error    | The browser's error page or certificate interstitial, inside the card                                         | The user leaves, or moves it to a tab |
-| Moving to tab  | The page moves to a new tab next to the current one and the card goes away                                    | Done                                  |
-| Closed by user | The card and its page are discarded                                                                           | Done                                  |
+| State          | What the user sees                                                                                                   | Leaves the state when                 |
+| -------------- | -------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| Closed         | Nothing                                                                                                              | A Peek is opened                      |
+| Opening        | Card grows from 90% to full size and the dim backdrop fades in over 200 ms. Skipped when reduced motion is on        | The animation ends, or the user acts  |
+| Loading        | Card with toolbar. The page loads inside it                                                                          | The page commits or fails             |
+| Open           | The loaded page. Toolbar shows security state, favicon, title, host, Shields state, "Open as tab", split view, close | Any of the exits below                |
+| Open, error    | The browser's error page or certificate interstitial, inside the card                                                | The user leaves, or moves it to a tab |
+| Moving to tab  | The page moves to a new tab next to the current one and the card goes away                                           | Done                                  |
+| Closed by user | The card and its page are discarded                                                                                  | Done                                  |
 
 Exits from Open:
 
@@ -96,6 +96,10 @@ Exits from Open:
   the page. All close Peek and discard the page.
 - "Open as tab". Moves the loaded page into a new active tab next to the current
   one. No reload.
+- "Open in split view". Moves the loaded page into a new active tab, as "Open as
+  tab" does, and puts it in a side-by-side split with the tab Peek was opened
+  from. The source tab is the pivot, so the new tab takes its pinned state and
+  group. Hidden when the source tab is already in a split.
 - Switching tabs. Closes Peek.
 - Opening another Peek. Replaces the current one.
 - The page asks for something that needs a normal tab (see
@@ -131,8 +135,9 @@ because Peek pages use the normal tab helpers and storage.
 
 Container tabs: the Peek page loads in the same container storage as the tab it
 was opened from. Split view: the card covers the whole contents area, both
-panes, and "Open as tab" adds a standalone tab after the split. Sidebar web
-panels cannot open Peek.
+panes, and "Open as tab" adds a standalone tab after the split. The split view
+button is hidden there, since joining the split would replace one of its tabs.
+Sidebar web panels cannot open Peek.
 
 ### Errors and edge cases
 
@@ -169,21 +174,20 @@ The card is a frameless child widget over the contents area of the browser
 window. Views cannot paint above the native web view on every platform, so a
 separate widget is used.
 
-- Top: flush with the bottom of the browser toolbar. No gap and no rounded top
-  corners, so it looks like it hangs from the toolbar. This makes it harder for
-  a page to draw a convincing fake. It does not prevent a page from drawing a
-  fake card inside its own content.
+- Top: flush with the bottom of the browser toolbar, with no gap, so it looks
+  like it hangs from the toolbar. This makes it harder for a page to draw a
+  convincing fake. It does not prevent a page from drawing a fake card inside
+  its own content.
 - Left, right, bottom: inset by the larger of 24 px or 7.5% of the covered width
   (left and right) or height (bottom).
-- Bottom corners: the browser's contents radius (`kRoundedCornersBorderRadius`,
-  6 px), so the card matches the rounded page area around it. Top corners: 0,
+- Corners: 16 px at the bottom and 4 px at the top. The top corners stay small
   because the card is attached to the toolbar.
 - Backdrop: only the contents area is dimmed. The browser toolbar and omnibox
   are not.
 - Toolbar inside the card: 40 px high, 12 px horizontal padding, 8 px between
   items. The title and host shrink (and elide) when space runs out, so the site
-  info, Shields, Open as tab and Close buttons always stay visible. Uses the
-  browser toolbar color.
+  info, Shields, Open as tab, split view and Close buttons always stay visible.
+  Uses the browser toolbar color.
 - Divider: 1 px, full card width, between the card toolbar and the page.
 - Icons and favicon: 16 px.
 - Shadow: offset y 4 px, blur 24 px, 24% opacity.
@@ -204,7 +208,8 @@ separate widget is used.
    Shields button, or Page Info when Shields is shown there), because changing
    Shields is a decision about the site.
 6. "Open as tab" button.
-7. Close button.
+7. "Open in split view" button, with the browser toolbar's split view icon.
+8. Close button.
 
 ### Colors
 
@@ -258,6 +263,7 @@ questions.
 | ---------------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
 | `IDS_PEEK_ACCESSIBLE_NAME`         | Peek                                                                                                        | Accessible name of the card. "Peek" is the feature name |
 | `IDS_PEEK_OPEN_AS_TAB`             | Open as tab                                                                                                 | Tooltip and accessible name of the button               |
+| `IDS_PEEK_OPEN_IN_SPLIT_VIEW`      | Open in split view                                                                                          | Tooltip and accessible name of the button               |
 | `IDS_CONTENT_CONTEXT_OPENLINKPEEK` | Open Link in Peek (title case variant on macOS)                                                             | Context menu item                                       |
 | `IDS_APP_CLOSE`                    | Close                                                                                                       | Existing string, reused for the close button            |
 | Flag name                          | Brave Peek                                                                                                  | `brave://flags`                                         |
@@ -344,6 +350,7 @@ None added. Whether to measure Peek usage is an open question.
   - Shift+click a link and use "Open Link in Peek", in a normal tab.
   - Dismiss with Escape, the close button, a click outside, and switching tabs.
   - "Open as tab" keeps the page without reloading.
+  - "Open in split view" keeps the page and splits it with the source tab.
   - Site info acts on the Peek page. Shields moves it into a tab and opens the
     Shields panel there.
   - Open https://permission.site/ and https://badssl.com/ pages in Peek.

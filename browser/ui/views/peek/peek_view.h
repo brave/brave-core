@@ -42,12 +42,15 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kSiteInfoButtonElementId);
   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kShieldsButtonElementId);
   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kOpenAsTabButtonElementId);
+  DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kSplitViewButtonElementId);
   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kCloseButtonElementId);
 
   class Delegate {
    public:
     virtual void OnPeekViewCloseRequested() = 0;
     virtual void OnPeekViewOpenAsTabRequested() = 0;
+    // Moves the page into a tab shown in split view with the source tab.
+    virtual void OnPeekViewOpenInSplitViewRequested() = 0;
     // Moves the page into a tab and opens the Shields panel for it.
     virtual void OnPeekViewShieldsRequested() = 0;
 
@@ -64,6 +67,10 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
   void UpdateToolbar();
   void FocusContents();
 
+  // Shows the split view button. Hidden while the source tab is already in a
+  // split.
+  void SetCanOpenInSplitView(bool can_open);
+
   // Grows the card from the center and fades in the scrim. Call before the
   // widget is shown.
   void AnimateOpen();
@@ -73,6 +80,9 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
   views::ImageButton* close_button_for_testing() { return close_button_; }
   views::ImageButton* open_as_tab_button_for_testing() {
     return open_as_tab_button_;
+  }
+  views::ImageButton* split_view_button_for_testing() {
+    return split_view_button_;
   }
   views::ImageButton* site_info_button_for_testing() {
     return site_info_button_;
@@ -102,6 +112,7 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
   raw_ptr<views::Label> host_ = nullptr;
   raw_ptr<PeekShieldsButton> shields_button_ = nullptr;
   raw_ptr<views::ImageButton> open_as_tab_button_ = nullptr;
+  raw_ptr<views::ImageButton> split_view_button_ = nullptr;
   raw_ptr<views::ImageButton> close_button_ = nullptr;
   raw_ptr<views::WebView> web_view_ = nullptr;
 

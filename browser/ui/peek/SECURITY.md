@@ -34,11 +34,11 @@ matches the iOS Quick Views review.
 ### Looking like browser UI
 
 - The card hangs directly from the toolbar (its top edge is flush with the
-  bottom of the toolbar, with no rounded top corners or gap) and its own toolbar
-  uses the browser toolbar color. A page can't draw over the browser toolbar, so
-  it can't fake that attachment.
+  bottom of the toolbar, with no gap and only 4 px top corners) and its own
+  toolbar uses the browser toolbar color. A page can't draw over the browser
+  toolbar, so it can't fake that attachment.
 - The card toolbar has the site info (security) button, the Shields button,
-  "Open as tab" and close.
+  "Open as tab", "Open in split view" and close.
 - The host shown in the card toolbar is
   `url_formatter::FormatUrlForSecurityDisplay(GetVisibleURL())`, the same
   formatting used for security-sensitive URL display elsewhere. The page title
@@ -205,6 +205,11 @@ and the `peek_utils` unit tests.
 - Split view: Peek covers the whole contents area (both panes). "Open as tab"
   inserts the tab after the split, not inside it. Switching panes changes the
   active tab, which closes Peek. Test: `OpensFromSplitViewAsStandaloneTab`.
+  "Open in split view" moves the same contents into a tab, like "Open as tab",
+  then splits it with the source tab. It's hidden, and falls back to a
+  standalone tab, when the source tab is already in a split, so it never
+  replaces a tab. Tests: `OpenInSplitViewSplitsWithSourceTab`,
+  `OpenInSplitViewFromSplitOpensTab`.
 - Nested Peek: a Peek can't be opened from inside Peek; links there open in the
   Peek itself or, for new-tab dispositions, through the browser. Test:
   `NoNestedPeek`.

@@ -9,6 +9,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/interaction/interactive_browser_test.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
@@ -99,4 +100,26 @@ IN_PROC_BROWSER_TEST_F(PeekInteractiveBrowserTest, Close) {
                   InAnyContext(WaitForHide(PeekView::kCardElementId)),
                   CheckResult([this] { return tab_count(); }, 1),
                   CheckResult([this] { return active_index(); }, 0));
+}
+
+IN_PROC_BROWSER_TEST_F(PeekInteractiveBrowserTest, OpenInSplitView) {
+  const GURL source_url =
+      embedded_test_server()->GetURL("a.com", "/title1.html");
+  const GURL peek_url = embedded_test_server()->GetURL("b.com", "/title2.html");
+
+  RunTestSequence(
+      InstrumentTab(kSourceTabId),
+      NavigateWebContents(kSourceTabId, source_url), ShiftClickLink(peek_url),
+      InAnyContext(WaitForShow(PeekView::kCardElementId)),
+      InstrumentNextTab(kPeekTabId),
+      InAnyContext(PressButton(PeekView::kSplitViewButtonElementId)),
+      InAnyContext(WaitForHide(PeekView::kCardElementId)),
+      WaitForWebContentsReady(kPeekTabId, peek_url),
+      CheckResult([this] { return tab_count(); }, 2),
+      CheckResult([this] { return active_index(); }, 1),
+      CheckResult(
+          [this] {
+            return browser()->GetTabStripModel()->GetActiveTab()->IsSplit();
+          },
+          true));
 }
