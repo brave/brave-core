@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/local_ai/buildflags/buildflags.gni")
 
 # Curerntly this target is desktop only because chromium's
 # tab_search_page_handler is desktop only.
@@ -24,10 +25,7 @@ source_set("browser_tests") {
     "//brave/components/ai_chat/core/browser:test_support",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/mojom",
-    "//brave/components/history_embeddings:test_support",
-    "//brave/components/history_embeddings/core",
     "//brave/components/local_ai/buildflags",
-    "//brave/components/local_ai/core",
     "//brave/components/resources:strings_grit",
     "//chrome/browser/history",
     "//chrome/browser/ui:browser_tabstrip",
@@ -42,4 +40,12 @@ source_set("browser_tests") {
     "//testing/gtest",
     "//ui/base",
   ]
+
+  if (enable_local_ai) {
+    deps += [
+      "//brave/components/history_embeddings:test_support",
+      "//brave/components/history_embeddings/core",
+      "//brave/components/local_ai/core",
+    ]
+  }
 }
