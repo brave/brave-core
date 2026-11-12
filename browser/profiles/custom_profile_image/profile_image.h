@@ -45,10 +45,14 @@ class ProfileImage {
   ProfileImage& operator=(const ProfileImage&) = delete;
   ~ProfileImage();
   bool HasSavedImage() const;
+  // Saved, chosen over the presets and the feature is on, whether or not the
+  // file can be read.
   bool IsActive() const;
   // Active and not known to be unreadable. Stays true while the image loads so
   // the stored preset is not shown as selected in the meantime.
   bool IsSelected() const;
+  // Empty until the saved file has loaded. The first call starts the load;
+  // storage observers get OnProfileAvatarChanged when it finishes.
   const gfx::Image& GetImage();
   // Saves `bitmap` (square, at most kMaxImageSide px) and makes it the
   // profile's selection. `callback` receives kInvalidImage for an unusable
