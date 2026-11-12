@@ -2097,8 +2097,9 @@ TEST_P(AIChatServiceUnitTest,
 
 TEST_P(AIChatServiceUnitTest,
        GenerationState_DisablingStorageClearsUnloadedNotViewed) {
+  // Without history the conversation is removed on unload.
   if (!IsAIChatHistoryEnabled()) {
-    GTEST_SKIP() << "Without history the conversation is removed on unload";
+    return;
   }
   ConversationHandler* handler = CreateConversation();
   const std::string uuid = handler->get_conversation_uuid();
