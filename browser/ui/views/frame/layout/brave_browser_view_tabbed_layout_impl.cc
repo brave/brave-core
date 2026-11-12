@@ -356,16 +356,16 @@ void BraveBrowserViewTabbedLayoutImpl::AdjustInfobarLayout(
           : std::nullopt);
 
   if (delegate().ShouldUseBraveWebViewRoundedCornersForContents()) {
-    // Float the infobar as its own card, the same margin on every side as
-    // the contents view uses. The specific left distance should be used, when
-    // vertical tabs mode is enabled and tabs are on the left side.
-    const auto bottom = (delegate().ShouldShowVerticalTabs() &&
-                         !delegate().IsVerticalTabOnRight())
-                            ? 0
-                            : kRoundedCornersContentsViewMargin;
+    // Float the infobar as its own card, using the same margins on every side
+    // as the contents view. When vertical tabs mode is enabled and tabs are
+    // on the left side, apply the specific left and right distances.
+    const bool vertical_tabs_on_left = delegate().ShouldShowVerticalTabs() &&
+                                       !delegate().IsVerticalTabOnRight();
     infobar_layout->bounds.Inset(gfx::Insets::TLBR(
-        kRoundedCornersContentsViewMargin, bottom,
-        kRoundedCornersContentsViewMargin, kRoundedCornersContentsViewMargin));
+        kRoundedCornersContentsViewMargin,
+        vertical_tabs_on_left ? 0 : kRoundedCornersContentsViewMargin,
+        kRoundedCornersContentsViewMargin,
+        vertical_tabs_on_left ? kRoundedCornersContentsViewMargin : 0));
   }
 }
 
