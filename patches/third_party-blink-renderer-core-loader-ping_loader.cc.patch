@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/loader/ping_loader.cc b/third_party/blink/renderer/core/loader/ping_loader.cc
+index baacf84ba9db4201662168836237291d18e3049a..687b536d97214dfbcb3453296ad51f2f6dbf2780 100644
+--- a/third_party/blink/renderer/core/loader/ping_loader.cc
++++ b/third_party/blink/renderer/core/loader/ping_loader.cc
+@@ -155,6 +155,7 @@ void PingLoader::SendViolationReport(ExecutionContext* execution_context,
+                                      const KURL& report_url,
+                                      scoped_refptr<EncodedFormData> report,
+                                      bool is_frame_ancestors_violation) {
++  if (!base::FeatureList::IsEnabled(features::kBraveReportingAPI)) return;
+   ResourceRequest request(report_url);
+   request.SetHttpMethod(http_names::kPOST);
+   request.SetHTTPContentType(AtomicString("application/csp-report"));

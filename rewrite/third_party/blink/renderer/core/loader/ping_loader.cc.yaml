@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Drop CSP report-uri reports as part of disabling the Reporting API.
+
+      This is conditional on kBraveReportingAPI, a flag available to re-enable
+      the Chromium Reporting API.
+    preempt_function_impl:
+      function_name: PingLoader::SendViolationReport
+      return_if: '!base::FeatureList::IsEnabled(features::kBraveReportingAPI)'
