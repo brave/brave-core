@@ -18,6 +18,7 @@
 #include "brave/browser/ui/webui/custom_profile_image/features.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
+#include "third_party/skia/include/core/SkImageInfo.h"
 
 namespace custom_profile_image {
 namespace {
@@ -155,10 +156,11 @@ void ProfileImage::Replace(const SkBitmap& bitmap, Callback callback) {
     ReplyLater(std::move(callback), Result::kInvalidImage);
     return;
   }
-  // The file sequence gets its own immutable copy. Copying fails if the pixels
-  // cannot be read.
+  // The file sequence gets its own immutable copy, converted to the format a
+  // later read decodes to. Copying fails if the pixels cannot be read.
   SkBitmap copy;
-  if (!copy.tryAllocPixels(bitmap.info()) ||
+  if (!copy.tryAllocPixels(
+          SkImageInfo::MakeN32Premul(bitmap.width(), bitmap.height())) ||
       !bitmap.readPixels(copy.pixmap(), 0, 0)) {
     ReplyLater(std::move(callback), Result::kInvalidImage);
     return;

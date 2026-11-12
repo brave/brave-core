@@ -29,6 +29,7 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/skia/include/core/SkImageInfo.h"
 
 namespace custom_profile_image {
 namespace {
@@ -186,6 +187,26 @@ TEST_F(CustomProfileImageTest, UnusableBitmapIsRejected) {
     EXPECT_EQ(result.Get(), Result::kInvalidImage);
   }
   EXPECT_FALSE(image().HasSavedImage());
+}
+
+TEST_F(CustomProfileImageTest, OtherColorTypesAreSavedAsN32) {
+  SkBitmap wide;
+  wide.allocPixels(
+      SkImageInfo::Make(16, 16, kRGBA_F16_SkColorType, kPremul_SkAlphaType));
+  wide.eraseColor(SK_ColorRED);
+  base::test::TestFuture<Result> result;
+  image().Replace(wide, result.GetCallback());
+  ASSERT_EQ(result.Get(), Result::kSuccess);
+  const SkBitmap saved = image().GetImage().AsBitmap();
+  EXPECT_EQ(saved.colorType(), kN32_SkColorType);
+  EXPECT_EQ(saved.getColor(8, 8), SK_ColorRED);
+  auto reloaded = Reload();
+  auto* reopened = reloaded->GetProfileAttributesWithPath(path_);
+  ASSERT_TRUE(reopened);
+  auto& restored = ProfileImage::Get(*reopened);
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return !restored.GetImage().IsEmpty(); }));
+  EXPECT_EQ(restored.GetImage().AsBitmap().getColor(8, 8), SK_ColorRED);
 }
 
 TEST_F(CustomProfileImageTest, SamePresetDeactivatesWithoutDeletingSavedImage) {
