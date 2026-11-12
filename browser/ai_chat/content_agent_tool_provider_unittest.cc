@@ -135,7 +135,8 @@ TEST_F(ContentAgentToolProviderTest, CreateTools) {
 // Test that StopAllTasks stops the task
 TEST_F(ContentAgentToolProviderTest, StopAllTasks) {
   actor::TaskId task_id = tool_provider_->GetTaskId();
-  EXPECT_FALSE(task_id.is_null());
+  ASSERT_FALSE(task_id.is_null());
+  ASSERT_TRUE(actor_service_->GetTask(task_id));
 
   base::WeakPtr<actor::ActorTask> task =
       actor_service_->GetTask(task_id)->GetWeakPtr();
@@ -144,7 +145,7 @@ TEST_F(ContentAgentToolProviderTest, StopAllTasks) {
   tool_provider_->StopAllTasks();
 
   // Tasks are deleted asynchronously.
-  EXPECT_TRUE(task);
+  ASSERT_TRUE(task);
   EXPECT_EQ(task->GetState(), actor::ActorTask::State::kFinished);
   actor::WaitForPostedTask();
 
@@ -173,7 +174,7 @@ TEST_F(ContentAgentToolProviderTest, ExecuteActions_EmptyActionSequence) {
   EXPECT_TRUE(artifacts.empty());
 
   ASSERT_GT(result.size(), 0u);
-  EXPECT_TRUE(result[0]->is_text_content_block());
+  ASSERT_TRUE(result[0]->is_text_content_block());
   EXPECT_THAT(result[0]->get_text_content_block()->text,
               testing::HasSubstr("action failed - no actions specified"));
 }
@@ -197,7 +198,7 @@ TEST_F(ContentAgentToolProviderTest, ExecuteActions_InvalidAction) {
   EXPECT_TRUE(artifacts.empty());
 
   ASSERT_GT(result.size(), 0u);
-  EXPECT_TRUE(result[0]->is_text_content_block());
+  ASSERT_TRUE(result[0]->is_text_content_block());
   EXPECT_THAT(result[0]->get_text_content_block()->text,
               testing::HasSubstr("action failed - incorrect parameters"));
 }
