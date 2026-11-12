@@ -9425,7 +9425,8 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_TRUE(conversation_handler_->IsAwaitingUserInput());
 }
 
-TEST_F(ConversationHandlerUnitTest, ClientVisibility) {
+TEST_F(ConversationHandlerUnitTest,
+       ClientVisibility_NotifiesOnlyWhenFirstShownOrLastHidden) {
   NiceMock<MockConversationHandlerObserver> observer;
   observer.Observe(conversation_handler_.get());
   ConversationHandler* handler = conversation_handler_.get();
