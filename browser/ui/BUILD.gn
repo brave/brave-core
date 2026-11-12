@@ -309,17 +309,10 @@ source_set("ui") {
   }
 
   if (enable_ai_chat) {
-    # Compiled on all platforms: the desktop side panel implementations live in
-    # //brave/browser/ui/views/side_panel/ai_chat, while these files provide the
-    # non-views (e.g. Android) fallbacks, so callers stay platform-agnostic.
-    sources += [
-      "side_panel/ai_chat/ai_chat_full_page_link_observer.cc",
-      "side_panel/ai_chat/ai_chat_full_page_link_observer.h",
-      "side_panel/ai_chat/ai_chat_side_panel_utils.cc",
-      "side_panel/ai_chat/ai_chat_side_panel_utils.h",
+    deps += [
+      "//brave/browser/ui/side_panel/ai_chat",
+      "//brave/components/ai_chat/core/common",
     ]
-
-    deps += [ "//brave/components/ai_chat/core/common" ]
 
     if (!is_android) {
       sources += [
@@ -329,9 +322,14 @@ source_set("ui") {
       deps += [
         "//brave/browser/ai_chat",
         "//brave/browser/ai_chat/ollama",
+        "//brave/browser/ui/webui/ai_chat",
         "//brave/components/ai_chat/core/browser",
         "//brave/components/ai_chat/core/browser/ollama",
       ]
+    }
+
+    if (toolkit_views) {
+      deps += [ "//brave/browser/ui/views/side_panel/ai_chat" ]
     }
   }
 
@@ -357,12 +355,8 @@ source_set("ui") {
   }
 
   if (is_android) {
-    sources += [
-      "android/ai_chat/brave_leo_settings_launcher_helper.cc",
-      "android/ai_chat/brave_leo_settings_launcher_helper.h",
-    ]
-
     deps += [
+      "//brave/browser/ui/android/ai_chat",
       "//brave/browser/ui/webui/new_tab_takeover/android:new_tab_takeover",
       "//brave/build/android:jni_headers",
       "//chrome/browser/ui/android/tab_model",

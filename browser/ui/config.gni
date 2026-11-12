@@ -13,11 +13,6 @@ import("//build/config/ui.gni")
 
 brave_ui_allow_circular_includes_from = []
 
-if (enable_ai_chat) {
-  brave_ui_allow_circular_includes_from +=
-      [ "//brave/browser/ui/webui/ai_chat" ]
-}
-
 if (!is_android) {
   brave_ui_allow_circular_includes_from += [
     "//brave/browser/ui/browser_window/internal",
@@ -46,11 +41,6 @@ if (toolkit_views) {
     "//brave/browser/ui/views/page_info",
     "//brave/browser/ui/views/side_panel:side_panel_impl",
   ]
-
-  if (enable_ai_chat) {
-    brave_ui_allow_circular_includes_from +=
-        [ "//brave/browser/ui/views/side_panel/ai_chat" ]
-  }
 
   if (enable_containers) {
     brave_ui_allow_circular_includes_from += [ "//brave/browser/ui/containers" ]
