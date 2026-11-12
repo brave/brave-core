@@ -6,9 +6,7 @@
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 
 #include "base/check_op.h"
-#include "base/types/to_address.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -45,10 +43,6 @@ void SidebarWebPanelController::ToggleWebPanel(const SidebarItem& item) {
   }
 
   OpenWebPanel(item);
-
-  // browser view could have different UI per web panel state.
-  BraveBrowserView::From(base::to_address(browser_view_))
-      ->UpdateRoundedCornersUI();
 }
 
 bool SidebarWebPanelController::HasOpenPanel() const {

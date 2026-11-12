@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.h b/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.h
-index 801ef978b2a2372b351d86c642618b14fe12423e..03d81de0d1ecf13f691a1aadabc58f5dae75ca3a 100644
+index 801ef978b2a2372b351d86c642618b14fe12423e..e0d3f2cf81c950880954950d4041bd0f15fadda9 100644
 --- a/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.h
 +++ b/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.h
-@@ -55,6 +55,19 @@ class BrowserViewLayoutDelegateImpl : public BrowserViewLayoutDelegate {
+@@ -55,6 +55,22 @@ class BrowserViewLayoutDelegateImpl : public BrowserViewLayoutDelegate {
        bool* current_state_out) override;
    int GetRestoredWindowCornerRadius() const override;
  
@@ -15,8 +15,11 @@ index 801ef978b2a2372b351d86c642618b14fe12423e..03d81de0d1ecf13f691a1aadabc58f5d
 +  bool IsContentTypeSidePanelVisible() const override;
 +  bool IsFullscreenForBrowser() const override;
 +  bool IsFullscreenForTab() const override;
++  bool IsWebPanelVisible() const override;
++  bool IsWebPanelOnLeft() const override;
 +  void UpdateContentsCornerRadii(
-+      const gfx::RoundedCornersF& corner_radii) override;
++      const gfx::RoundedCornersF& corner_radii,
++      const gfx::RoundedCornersF& web_panel_corner_radii) override;
 +  bool IsFullscreen() const override;
 +
   protected:

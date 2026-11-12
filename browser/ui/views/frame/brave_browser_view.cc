@@ -310,8 +310,16 @@ bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
     return true;
   }
 
+  auto* multi_contents_view =
+      BraveMultiContentsView::From(browser_view->multi_contents_view());
+
+  // Use rounded corners while the web panel opens.
+  if (multi_contents_view->IsWebPanelVisible()) {
+    return true;
+  }
+
   // Use rounded corners when browser view shows split view.
-  return browser_view->multi_contents_view()->IsInSplitView();
+  return multi_contents_view->IsInSplitView();
 }
 
 BraveBrowserView::BraveBrowserView(BrowserWindowInterface* browser)
@@ -342,9 +350,9 @@ BraveBrowserView::BraveBrowserView(BrowserWindowInterface* browser)
       base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
                           base::Unretained(this)));
 
-  side_panel_visible_subscription_ = side_panel_->AddVisibleChangedCallback(
-      base::BindRepeating(&BraveBrowserView::OnSidePanelVisibilityChanged,
-                          base::Unretained(this)));
+  side_panel_visible_subscription_ =
+      side_panel_->AddVisibleChangedCallback(base::BindRepeating(
+          &BraveBrowserView::OnPanelVisibilityChanged, base::Unretained(this)));
 
   pref_change_registrar_.Add(
       brave_tabs::kVerticalTabsEnabled,
@@ -1037,10 +1045,11 @@ void BraveBrowserView::UpdateVerticalTabStripBorder() {
   }
 }
 
-void BraveBrowserView::OnSidePanelVisibilityChanged() {
-  // The side panel is also closed while the browser widget is being destroyed
-  // (see SidePanelCoordinator::TearDownPreBrowserWindowDestruction()), and by
-  // then the widget can no longer answer queries such as IsFullscreen().
+void BraveBrowserView::OnPanelVisibilityChanged() {
+  // Either panel is also closed while the browser widget is being destroyed
+  // (see SidePanelCoordinator::TearDownPreBrowserWindowDestruction() and
+  // SidebarWebPanelController::CloseWebPanelForShutdown()), and by then the
+  // widget can no longer answer queries such as IsFullscreen().
   auto* widget = GetWidget();
   if (!widget || widget->IsClosed()) {
     return;
@@ -1277,9 +1286,19 @@ bool BraveBrowserView::IsSidebarVisible() const {
   return sidebar_container_view_ && sidebar_container_view_->IsSidebarVisible();
 }
 
+bool BraveBrowserView::IsWebPanelVisible() const {
+  return GetBraveMultiContentsView()->IsWebPanelVisible();
+}
+
+bool BraveBrowserView::IsWebPanelOnLeft() const {
+  return GetBraveMultiContentsView()->web_panel_on_left();
+}
+
 void BraveBrowserView::UpdateContentsCornerRadii(
-    const gfx::RoundedCornersF& corner_radii) {
-  GetBraveMultiContentsView()->UpdateContentsCornerRadii(corner_radii);
+    const gfx::RoundedCornersF& corner_radii,
+    const gfx::RoundedCornersF& web_panel_corner_radii) {
+  GetBraveMultiContentsView()->UpdateContentsCornerRadii(
+      corner_radii, web_panel_corner_radii);
 }
 
 void BraveBrowserView::UpdateFocusModeState() {
