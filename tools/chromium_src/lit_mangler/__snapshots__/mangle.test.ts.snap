@@ -223,7 +223,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/history/app.html.ts
 +++ gen/chrome/browser/resources/history/preprocessed/app.html.ts
-@@ -4,55 +4,25 @@
+@@ -5,55 +5,25 @@
  
  export function getHtml(this: HistoryAppElement) {
    // clang-format off
@@ -288,7 +288,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
            </a>
          </div>
        </div>
-@@ -78,22 +48,20 @@
+@@ -79,22 +49,20 @@
          </history-filter-chips>
        \` : ''}
        <div id="tabsScrollContainer" class="cr-scrollable">
@@ -315,7 +315,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
            <div id="historyEmbeddingsContainer" class="history-cards">
              <history-embeddings-promo></history-embeddings-promo>
              <cr-history-embeddings-filter-chips
-@@ -127,18 +95,11 @@
+@@ -128,18 +96,13 @@
                </cr-history-embeddings>
              \` : ''}
            </div>
@@ -330,14 +330,16 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -              @pending-delete-changed="\${this.onListPendingDeleteChanged_}"
 -              path="history" .scrollTarget="\${this.scrollTarget_}"
 -              .scrollOffset="\${this.tabContentScrollOffset_}">
-+        <brave-history-embeddings class="history-cards" .searchQuery="\${this.queryState_.searchTerm}">
-+      </brave-history-embeddings><cr-page-selector id="tabsContent" attr-for-selected="path" selected="\${this.tabsContentPage_}" @iron-select="\${this.onTabsContentIronSelect_}">
++        \${loadTimeData.getBoolean('enableBraveHistoryEmbeddings') ? html\`
++        <brave-history-embeddings class="history-cards" search-query="\${this.queryState_.searchTerm}">
++        </brave-history-embeddings>
++      \` : ''}<cr-page-selector id="tabsContent" attr-for-selected="path" selected="\${this.tabsContentPage_}" @iron-select="\${this.onTabsContentIronSelect_}">
 +          <history-list id="history" .queryState="\${this.queryState_}" ?is-active="\${this.getShowHistoryList_()}" searched-term="\${this.queryResult_.info?.term}" ?pending-delete="\${this.pendingDelete_}" @pending-delete-changed="\${this.onListPendingDeleteChanged_}" path="history" .scrollTarget="\${this.scrollTarget_}" .scrollOffset="\${this.tabContentScrollOffset_}">
            </history-list>
            \${this.historyClustersSelected_() ? html\`
              <history-clusters id="history-clusters"
                  ?is-active="\${this.getShowResultsByGroup_()}"
-@@ -162,10 +123,9 @@
+@@ -163,10 +126,9 @@
      \` : ''}
    </cr-page-selector>
  </div>

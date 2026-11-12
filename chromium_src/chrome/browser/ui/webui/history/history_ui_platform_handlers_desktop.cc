@@ -29,6 +29,8 @@ class BraveHistoryUIInitializer {
     ManagedUIHandler::Initialize(web_ui, source);
 #if BUILDFLAG(ENABLE_LOCAL_AI)
     BravePopulateHistoryEmbeddingsSource(web_ui, source);
+#else
+    source->AddBoolean("enableBraveHistoryEmbeddings", false);
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
   }
 };
