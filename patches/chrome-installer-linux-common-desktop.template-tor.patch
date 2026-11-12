@@ -1,0 +1,18 @@
+diff --git a/chrome/installer/linux/common/desktop.template b/chrome/installer/linux/common/desktop.template
+index 9322d65c5be2eeb9d8c692a45ec0cdb64db7689c..b5435847db7883260857f87b2f1b3d0696d194f8 100644
+--- a/chrome/installer/linux/common/desktop.template
++++ b/chrome/installer/linux/common/desktop.template
+@@ -113,7 +113,7 @@ Type=Application
+ Categories=Network;WebBrowser;
+ MimeType=application/pdf;application/rdf+xml;application/rss+xml;application/xhtml+xml;application/xhtml_xml;application/xml;image/gif;image/jpeg;image/png;image/webp;text/html;text/xml;x-scheme-handler/http;x-scheme-handler/https;@@uri_scheme
+-Actions=new-window;new-private-window;
++Actions=new-window;new-private-window;new-tor-window;
+ @@extra_desktop_entries
+ 
+ [Desktop Action new-window]
+@@ -221,3 +221,6 @@ Name[zh_CN]=新建隐身窗口
+ Name[zh_TW]=新增無痕式視窗
+ Exec=/usr/bin/@@usr_bin_symlink_name --incognito
++[Desktop Action new-tor-window]
++Name=New Private Window with Tor
++Exec=/usr/bin/@@usr_bin_symlink_name --tor
