@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Allow the in-app update flow in official Brave builds.
+
+      Brave is not Chrome branded, which upstream otherwise requires.
+    regex:
+      re_pattern: |-
+        (boolean isBrandedOfficialBuild\(\).*?)BuildConfig\.IS_CHROME_BRANDED
+      re_flags: [DOTALL]
+      replace: '\1true'

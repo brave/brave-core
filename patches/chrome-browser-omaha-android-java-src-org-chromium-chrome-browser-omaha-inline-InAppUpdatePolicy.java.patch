@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/omaha/android/java/src/org/chromium/chrome/browser/omaha/inline/InAppUpdatePolicy.java b/chrome/browser/omaha/android/java/src/org/chromium/chrome/browser/omaha/inline/InAppUpdatePolicy.java
+index ab091d604e887bc5fdd70bc0abcedd90431eede6..393afbd92b56bfea37655755726384ecc61c45ee 100644
+--- a/chrome/browser/omaha/android/java/src/org/chromium/chrome/browser/omaha/inline/InAppUpdatePolicy.java
++++ b/chrome/browser/omaha/android/java/src/org/chromium/chrome/browser/omaha/inline/InAppUpdatePolicy.java
+@@ -207,7 +207,7 @@ public final class InAppUpdatePolicy {
+         if (sIsOfficialBuildForTesting != null) {
+             return sIsOfficialBuildForTesting;
+         }
+-        return BuildConfig.IS_CHROME_BRANDED && VersionInfo.isOfficialBuild();
++        return true && VersionInfo.isOfficialBuild();
+     }
+ 
+     /**
