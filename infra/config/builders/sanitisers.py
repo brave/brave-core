@@ -8,6 +8,7 @@ from lib.config import builder_config, builders, gn_args
 
 builders.defaults.set(
     builder_group='brave.sanitisers',
+    recipe='brave_builder',
     execution_timeout_mins=270,
     channel='nightly',
     notifies=[

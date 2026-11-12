@@ -50,11 +50,13 @@ def _print_text(name: str, description: dict) -> None:
     print('%s:' % name)
     print('  target_os:  %s' % gn_args.get('target_os', '?'))
     print('  target_cpu: %s' % gn_args.get('target_cpu', '?'))
-    chromium_config = (
-        description.get('properties', {})
-        .get('builder_spec', {})
-        .get('chromium_config', {})
-    )
+    try:
+        builder_spec = generated_output.OutputGenerator(
+            name
+        ).read_generated_builder_spec()
+    except generated_output.BotsError:
+        builder_spec = {}
+    chromium_config = builder_spec.get('chromium_config', {})
     if 'build_config' in chromium_config:
         print('  build_config: %s' % chromium_config['build_config'])
     if sync:

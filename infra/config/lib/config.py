@@ -686,6 +686,7 @@ class Builder:
         *,
         name: str,
         builder_group: str | None,
+        recipe: str | None,
         execution_timeout_mins: int | None,
         channel: str | None,
         notifies: Sequence[str],
@@ -697,6 +698,9 @@ class Builder:
 
         # The builder group it belongs to, e.g. "brave.sanitisers".
         self.builder_group = builder_group
+
+        # The recipe its builds run, e.g. "brave_builder".
+        self.recipe = recipe
 
         # How long the pipeline may run before it's killed.
         self.execution_timeout_mins = execution_timeout_mins
@@ -732,6 +736,7 @@ class BuildersRegistry:
         # Module-level fallbacks for builder(), settable via `defaults.set()`.
         self.defaults = Defaults(
             builder_group=None,
+            recipe=None,
             execution_timeout_mins=None,
             channel=None,
             notifies=(),
@@ -780,6 +785,7 @@ class BuildersRegistry:
         gn_args: Any,  # pylint: disable=redefined-outer-name
         targets: Targets,
         builder_group: str | None = _UNSET,
+        recipe: str | None = _UNSET,
         execution_timeout_mins: int | None = _UNSET,
         channel: str | None = _UNSET,
         notifies: Sequence[str] = _UNSET,
@@ -793,8 +799,8 @@ class BuildersRegistry:
             gn_args: The config name, or `gn_args.config()` called without
                 `name`, describing this builder's GN args.
             targets: This builder's `targets()`.
-            builder_group, execution_timeout_mins, channel, notifies: Fall
-                back to `defaults` when omitted.
+            builder_group, recipe, execution_timeout_mins, channel, notifies:
+                Fall back to `defaults` when omitted.
 
         Returns:
             The registered `Builder`.
@@ -812,6 +818,7 @@ class BuildersRegistry:
         builder = Builder(
             name=name,
             builder_group=self.defaults.get('builder_group', builder_group),
+            recipe=self.defaults.get('recipe', recipe),
             execution_timeout_mins=self.defaults.get(
                 'execution_timeout_mins', execution_timeout_mins
             ),

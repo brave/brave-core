@@ -98,7 +98,7 @@ class _Validator:
             else None
         )
         if properties_json is not None:
-            self._check_properties_schema(properties_path, properties_json)
+            self._check_properties_schema(builder_dir.name)
 
         sync_path = builder_dir / 'sync.json'
         sync_json = (
@@ -216,42 +216,15 @@ class _Validator:
                         )
                     )
 
-    def _check_properties_schema(
-        self, properties_path: Path, properties_json: dict
-    ) -> None:
-        """Checks `properties.json` carries the `builder_spec` consumers
-        read."""
-        builder_spec = properties_json.get('builder_spec')
-        if not isinstance(builder_spec, dict):
-            self._errs.append(
-                '%s: "builder_spec" is missing or not an object'
-                % properties_path
-            )
-            return
-        chromium_config = builder_spec.get('chromium_config')
-        if not isinstance(chromium_config, dict) or not isinstance(
-            chromium_config.get('target_platform'), str
-        ):
-            self._errs.append(
-                '%s: "builder_spec.chromium_config" has no target_platform'
-                % properties_path
-            )
-        gclient_config = builder_spec.get('gclient_config')
-        if not isinstance(gclient_config, dict):
-            self._errs.append(
-                '%s: "builder_spec.gclient_config" is missing or not an '
-                'object' % properties_path
-            )
-            return
-        for field in ('target_os', 'target_cpu'):
-            value = gclient_config.get(field)
-            if not isinstance(value, list) or not all(
-                isinstance(name, str) for name in value
-            ):
-                self._errs.append(
-                    '%s: "builder_spec.gclient_config.%s" is not a list of '
-                    'strings' % (properties_path, field)
-                )
+    def _check_properties_schema(self, builder_name: str) -> None:
+        """Checks `properties.json` carries the builder's spec, as consumers
+        read it."""
+        try:
+            generated_output.OutputGenerator(
+                builder_name
+            ).read_generated_builder_spec()
+        except generated_output.BotsError as e:
+            self._errs.append(str(e))
 
     def _check_sync_schema(self, sync_path: Path, sync_json: dict) -> None:
         for required in ('target_os', 'target_cpu'):
@@ -277,6 +250,20 @@ class _Validator:
                     '%s: %r is not a list' % (targets_path, required)
                 )
 
+    @staticmethod
+    def _comparable(builder_name: str, filename: str, text: str) -> str:
+        """A generated file's content, less the builder's own name: its spec
+        in `properties.json`, which names the builder too."""
+        if filename != 'properties.json':
+            return text
+        try:
+            builder_spec = generated_output.OutputGenerator(
+                builder_name
+            ).read_generated_builder_spec()
+        except generated_output.BotsError:
+            return text
+        return json.dumps(builder_spec, sort_keys=True)
+
     def _check_no_duplicate_builders(self, builder_dirs: list[Path]) -> None:
         """Flags duplicate builders that are identical."""
         seen: dict[tuple[str, ...], str] = {}
@@ -284,7 +271,10 @@ class _Validator:
             raw = self._raw_by_dir[builder_dir]
             if len(raw) != len(_REQUIRED_FILES):
                 continue  # Already reported as missing/unreadable above.
-            key = tuple(raw[name] for name in _REQUIRED_FILES)
+            key = tuple(
+                self._comparable(builder_dir.name, name, raw[name])
+                for name in _REQUIRED_FILES
+            )
             first_seen_as = seen.get(key)
             if first_seen_as is None:
                 seen[key] = builder_dir.name
