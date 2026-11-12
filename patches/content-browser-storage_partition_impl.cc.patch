@@ -1,0 +1,33 @@
+diff --git a/content/browser/storage_partition_impl.cc b/content/browser/storage_partition_impl.cc
+index 5866d697034d2a2ac2c4d50ca3fd06ea9a6ac92a..054f45e330a70c36be0c532e2f8ce8b27a627166 100644
+--- a/content/browser/storage_partition_impl.cc
++++ b/content/browser/storage_partition_impl.cc
+@@ -2748,24 +2748,10 @@ void StoragePartitionImpl::OnCanSendReportingReports(
+     const std::vector<url::Origin>& origins,
+     OnCanSendReportingReportsCallback callback) {
+   CHECK(initialized_, base::NotFatalUntil::M159);
+-  PermissionController& permission_controller =
+-      CHECK_DEREF(browser_context_->GetPermissionController());
+-
+-  std::vector<url::Origin> origins_out;
+-  for (auto& origin : origins) {
+-    bool allowed = permission_controller
+-                       .GetPermissionResultForOriginWithoutContext(
+-                           content::PermissionDescriptorUtil::
+-                               CreatePermissionDescriptorForPermissionType(
+-                                   blink::PermissionType::BACKGROUND_SYNC),
+-                           origin)
+-                       .status == blink::mojom::PermissionStatus::GRANTED;
+-    if (allowed) {
+-      origins_out.push_back(origin);
+-    }
+-  }
+-
+-  std::move(callback).Run(origins_out);
++  std::move(callback).Run(
++      base::FeatureList::IsEnabled(blink::features::kBraveReportingAPI)
++          ? origins
++          : std::vector<url::Origin>());
+ }
+ 
+ void StoragePartitionImpl::OnCanSendDomainReliabilityUpload(

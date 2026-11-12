@@ -1,0 +1,4 @@
+HTTP/1.1 200 OK
+Content-Type: text/html
+Reporting-Endpoints: default="/report-to-upload"
+Content-Security-Policy: img-src 'none'; report-to default
