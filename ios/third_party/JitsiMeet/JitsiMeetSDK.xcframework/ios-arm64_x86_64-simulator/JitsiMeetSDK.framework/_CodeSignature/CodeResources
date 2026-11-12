@@ -34,7 +34,7 @@
 		</data>
 		<key>Headers/JitsiMeetConferenceOptions.h</key>
 		<data>
-		rXLHCsVID9nMg1Gg/fxQpnTtQuU=
+		hfemVnu4QFCH68MCbRXSMhkqJJA=
 		</data>
 		<key>Headers/JitsiMeetLogger.h</key>
 		<data>
@@ -62,7 +62,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		TsZGTZYavHjptue+69oiv0JCKGc=
+		PxDisPusD6sSARZ+lLXgxbZd5bs=
 		</data>
 		<key>Modules/JitsiMeetSDK.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -82,7 +82,7 @@
 		</data>
 		<key>Modules/JitsiMeetSDK.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		6Uut0uvUAFCjvP5oRpOBnl3xDdw=
+		a/ZvVBo4iWfvghsnzUHs0QyjYQw=
 		</data>
 		<key>Modules/JitsiMeetSDK.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -102,7 +102,7 @@
 		</data>
 		<key>Modules/JitsiMeetSDK.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		AvHDm7SEfc+a1q1C+eP43WnrgqQ=
+		Z7Q1xDRxvUkqADuHUNCGyrg3wXM=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -184,18 +184,6 @@
 		<data>
 		vDLJVTKYDrduPRKle4QHleywrhY=
 		</data>
-		<key>assets/images/downloadLocalRecording.png</key>
-		<data>
-		IILPKDzitBOrc+/oMU+rsAckMKk=
-		</data>
-		<key>assets/images/dropboxLogo_square.png</key>
-		<data>
-		963TSklylFlSHuQZSvBcFw8eDEg=
-		</data>
-		<key>assets/images/icon-cloud.png</key>
-		<data>
-		Xj55zLA5UpTv8DjsooTmpDxUPss=
-		</data>
 		<key>assets/images/icon-info.png</key>
 		<data>
 		rgd/naxY8tHJs3iyto5+0nctDbw=
@@ -204,21 +192,57 @@
 		<data>
 		i5KKHxhNhQ39jzaLKQTpiyBHp48=
 		</data>
-		<key>assets/node_modules/@react-navigation/elements/src/assets/back-icon-mask.png</key>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/back-icon-mask.png</key>
 		<data>
-		/9xO1HOyvigG6Z0PaA0dLp/gDlY=
+		oXRLOaDtoCXkyLVyxv0Bnhhge7g=
 		</data>
-		<key>assets/node_modules/@react-navigation/elements/src/assets/back-icon.png</key>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/back-icon.png</key>
 		<data>
 		keLOi1inJdXs0IRSKnXqyhW57Aw=
 		</data>
-		<key>assets/node_modules/@react-navigation/elements/src/assets/back-icon@2x.png</key>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/back-icon@2x.png</key>
 		<data>
 		rSvG8m4uPMSItIcsIF+N2tDJD8U=
 		</data>
-		<key>assets/node_modules/@react-navigation/elements/src/assets/back-icon@3x.png</key>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/back-icon@3x.png</key>
 		<data>
 		8kFG8Vv7Hfrw4yVcFrhUhbHieBA=
+		</data>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/clear-icon.png</key>
+		<data>
+		KVjGQ0gvB0dk+dPJRT+65cRtV4o=
+		</data>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/clear-icon@2x.png</key>
+		<data>
+		LVA9WPb5s0hORE57VICjYvFcTRo=
+		</data>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/clear-icon@3x.png</key>
+		<data>
+		tXGAgsXpaHq1EEXBa7tS4uE8Be8=
+		</data>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/close-icon.png</key>
+		<data>
+		8StFkK7WZiZYwDqHbrrAfzrehAc=
+		</data>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/close-icon@2x.png</key>
+		<data>
+		PH7HPXR0KDKrEAENyCe/jEDjEFA=
+		</data>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/close-icon@3x.png</key>
+		<data>
+		zFhQJXJYalsDJT1VNj4rcYnWSI8=
+		</data>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/search-icon.png</key>
+		<data>
+		p9iT3jAHN6NwNwDtirHpcHclkEs=
+		</data>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/search-icon@2x.png</key>
+		<data>
+		RLZ2utF6sj19WG9qYEFJXbTdf8U=
+		</data>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/search-icon@3x.png</key>
+		<data>
+		A8OyQiY1hMwClPihBngjAWwgdLA=
 		</data>
 		<key>boost_privacy.bundle/Info.plist</key>
 		<data>
@@ -378,7 +402,7 @@
 		</data>
 		<key>main.jsbundle</key>
 		<data>
-		9Pp+U59xM+yXmS4R3Ph7SEP7B/Q=
+		tT5fYEP40Ve3uGk40644pqE/g1Q=
 		</data>
 		<key>noAudioSignal.mp3</key>
 		<data>
@@ -716,7 +740,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			WotOLli1OtoTEMSMODJidNhRfOIF1ReytZZ8WlItUBo=
+			ZXyKAkGfvpasWjPSwD9MfcDoYHOlVTfbcPSZ7RuiyZg=
 			</data>
 		</dict>
 		<key>Headers/JitsiMeetLogger.h</key>
@@ -793,7 +817,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			9OYJoCaMRpCj3EoSvTX8ZyrtpE2YYBl+1raio2GXpDw=
+			hOGH8RJzSnD0CWWzMvnVJjcLX7ztaFxxqGX6+xLGTa0=
 			</data>
 		</dict>
 		<key>Modules/JitsiMeetSDK.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
@@ -828,7 +852,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			wWJhfwggbnt4DIiqn1grrqB2pdFmROctAIpnUz0ACJQ=
+			LXufAoLVJ5H1dwc4m+JP+678ReXqzh0gZ1SW3eknV9Y=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -971,27 +995,6 @@
 			3Q+a7AKeU9OvJLLc3xnL+8q0ax8aZxHGFivTsZL/y0I=
 			</data>
 		</dict>
-		<key>assets/images/downloadLocalRecording.png</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			tPU+yDUzC3hSKNpZoz0DT91eoyF2lg1215P+2DilB7Q=
-			</data>
-		</dict>
-		<key>assets/images/dropboxLogo_square.png</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			ddO0dckyW06cKOo1+01VeakgleVraFrRv3dbalArIFQ=
-			</data>
-		</dict>
-		<key>assets/images/icon-cloud.png</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			QK+XYtg7g/FSwmIKLsY7ak62+8X8AAFeRtTFaBWmBHI=
-			</data>
-		</dict>
 		<key>assets/images/icon-info.png</key>
 		<dict>
 			<key>hash2</key>
@@ -1006,32 +1009,95 @@
 			u+XQsDMSOwXb8FGalnlx4IUbKhloeln1bNi6KIkrMmA=
 			</data>
 		</dict>
-		<key>assets/node_modules/@react-navigation/elements/src/assets/back-icon-mask.png</key>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/back-icon-mask.png</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			LJXowmdeeZM1/QBGuwfb2gbLfs/1HtN5IsYwnWGcxNM=
+			mtuMXvypMuK3MrKT2oE70uMZUiYwVrzp4lF/7A8LanY=
 			</data>
 		</dict>
-		<key>assets/node_modules/@react-navigation/elements/src/assets/back-icon.png</key>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/back-icon.png</key>
 		<dict>
 			<key>hash2</key>
 			<data>
 			LN/rjlzN55dvcBL7jM5zryIpAp7iHU8VCf7RFIccbNg=
 			</data>
 		</dict>
-		<key>assets/node_modules/@react-navigation/elements/src/assets/back-icon@2x.png</key>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/back-icon@2x.png</key>
 		<dict>
 			<key>hash2</key>
 			<data>
 			K3RDqaWOksoRpXW9wRWYYVpX3eMFzYznDWAmBrMCzZg=
 			</data>
 		</dict>
-		<key>assets/node_modules/@react-navigation/elements/src/assets/back-icon@3x.png</key>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/back-icon@3x.png</key>
 		<dict>
 			<key>hash2</key>
 			<data>
 			Pd0Hc+0n4j0leJ8wFzGzrEVa2L5aonoKG4OPicbSciU=
+			</data>
+		</dict>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/clear-icon.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			0Dpc16Zu8QxRR5FvnVh4stCgpa1G9AWjHNmWfvqlWv0=
+			</data>
+		</dict>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/clear-icon@2x.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			q1YT0s5w+mfFkm6DE1NmSUUZn8GV+m/nbF/jzsRS4xo=
+			</data>
+		</dict>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/clear-icon@3x.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			xOVOagp95jaqFTN4+8YupKQWlb/t+Af5Dfexj/1zP2c=
+			</data>
+		</dict>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/close-icon.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			sbwYEMoj4sOM12lxxDWR1yYWEGEkDYt5KwV1cZbdtSg=
+			</data>
+		</dict>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/close-icon@2x.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			y9+SE+VfZcSNB2rNhCO3ya7k8bgRAf9slaOMTNioZGE=
+			</data>
+		</dict>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/close-icon@3x.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			0FydMNefRaeOVYWi5+xnxqBqiD3ZE34dUFnoyHszznY=
+			</data>
+		</dict>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/search-icon.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			3Fa5dr1FY44RJfZol0NSXmiGrgvvLI9GUZlIM2hagx8=
+			</data>
+		</dict>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/search-icon@2x.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			7xP8DfxS7COBdYX9fhCfvfWTo7JUnEDOcaybDtoSzCw=
+			</data>
+		</dict>
+		<key>assets/node_modules/@react-navigation/elements/lib/module/assets/search-icon@3x.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			tDSnzxjC1M50fHCULqL+4tRBLZOWftkrNy+BC7kmHqU=
 			</data>
 		</dict>
 		<key>boost_privacy.bundle/Info.plist</key>
@@ -1311,7 +1377,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			R+ALqjOalfCRKkVWHAkkPeWZw0yQl3UrO6Qdykud7SM=
+			FvXoVq2lyp0ACZdN8w3tgJrpaAEINqZ3s3IlGucM1RI=
 			</data>
 		</dict>
 		<key>noAudioSignal.mp3</key>
