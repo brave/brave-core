@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 
 if (enable_psst) {
@@ -27,6 +28,35 @@ if (enable_psst) {
       "//chrome/browser/ui/color:color_headers",
       "//ui/base",
       "//ui/events",
+      "//ui/gfx",
+      "//ui/views",
+    ]
+  }
+}
+
+if (enable_brave_wayback_machine) {
+  source_set("wayback_machine_infobar") {
+    visibility = [
+      ":browser_tests",
+      ":unit_tests",
+      "//brave/browser:core",
+    ]
+
+    sources = [
+      "wayback_machine_infobar.cc",
+      "wayback_machine_infobar.h",
+    ]
+
+    public_deps = [
+      "//base",
+      "//chrome/browser/ui/views/infobars",
+      "//ui/base",
+    ]
+
+    deps = [
+      "//brave/browser/infobars",
+      "//brave/components/vector_icons",
+      "//brave/ui/color:nala_color_id",
       "//ui/gfx",
       "//ui/views",
     ]
@@ -64,6 +94,53 @@ source_set("unit_tests") {
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser/psst",
       "//brave/components/psst/core/common",
+    ]
+  }
+
+  if (enable_brave_wayback_machine) {
+    sources += [ "wayback_machine_infobar_unittest.cc" ]
+    deps += [
+      ":wayback_machine_infobar",
+      "//base:i18n",
+      "//base/test:test_support",
+      "//brave/app:brave_generated_resources_grit",
+      "//brave/browser/infobars",
+      "//brave/components/brave_wayback_machine",
+      "//chrome/test/base:chrome_render_view_host_test_harness",
+      "//components/infobars/content",
+      "//ui/gfx:test_support",
+      "//url",
+    ]
+  }
+}
+
+if (enable_brave_wayback_machine) {
+  source_set("browser_tests") {
+    testonly = true
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+    sources = [ "wayback_machine_infobar_browsertest.cc" ]
+
+    deps = [
+      ":wayback_machine_infobar",
+      "//base",
+      "//base/test:test_support",
+      "//brave/browser/infobars",
+      "//brave/components/brave_wayback_machine",
+      "//chrome/browser/ui/tabs:tab_strip",
+      "//chrome/test:test_support",
+      "//chrome/test:test_support_ui",
+      "//components/infobars/content",
+      "//components/infobars/core",
+      "//components/tabs:public",
+      "//content/public/browser",
+      "//content/test:test_support",
+      "//ui/events",
+      "//ui/gfx",
+      "//ui/gfx:test_support",
+      "//ui/views",
+      "//ui/views:test_support",
+      "//url",
     ]
   }
 }

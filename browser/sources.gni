@@ -719,6 +719,14 @@ if (enable_extensions_core) {
 
 if (enable_brave_wayback_machine) {
   brave_chrome_browser_deps += [ "//brave/components/brave_wayback_machine" ]
+
+  if (toolkit_views) {
+    # Pulls in the WaybackMachineInfoBar definition of
+    # CreateWaybackMachineInfoBar(), which is only forward-declared (and called)
+    # from //brave/browser/infobars.
+    brave_chrome_browser_deps +=
+        [ "//brave/browser/ui/views/infobars:wayback_machine_infobar" ]
+  }
 }
 
 if (enable_tor) {
