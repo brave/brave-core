@@ -3,12 +3,13 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Tests for the logic in `runtest` (sanitizers, outcome report, Android)."""
+"""Tests for `runtest`: upstream's commands, the outcome report, Android."""
 
 from __future__ import annotations
 
 import contextlib
 import io
+import json
 import os
 from pathlib import Path
 import sys
@@ -23,17 +24,16 @@ import runtest as m
 
 def _options(**overrides) -> m.Options:
     defaults = {
-        'build_dir': Path('out/Component'),
+        'build_dir': m.SRC_DIR / 'out' / 'Component',
         'test_type': 'brave_unit_tests',
         'builder_name': None,
         'run_python_script': False,
-        'xvfb': True,
+        'xvfb': None,
         'parse_gtest_output': False,
         'enable_asan': False,
         'enable_lsan': False,
         'enable_msan': False,
         'enable_tsan': False,
-        'strip_path_prefix': 'build/src/out/Release/../../',
         'test_launcher_summary_output': None,
     }
     defaults.update(overrides)
@@ -71,38 +71,228 @@ class _FakeParser:
         return self._running
 
 
-class ConfigureSanitizerToolsTest(unittest.TestCase):
-    def test_no_sanitizer_is_empty(self):
-        setup = m.configure_sanitizer_tools(_options())
-        self.assertEqual(setup.env, {})
-        self.assertEqual(setup.extra_args, [])
-        self.assertFalse(setup.use_symbolization_script)
+class _GeneratedConfigTest(unittest.TestCase):
+    """Runs against a fake `infra/config/generated` tree."""
 
-    def test_asan_uses_offline_symbolization(self):
-        # `configure_sanitizer_tools` deliberately leaves it to the
-        # in-process symbolizer on Windows.
-        with mock.patch.object(m.sys, 'platform', 'linux'):
-            setup = m.configure_sanitizer_tools(_options(enable_asan=True))
-        self.assertTrue(setup.use_symbolization_script)
-        self.assertEqual(setup.env['G_SLICE'], 'always-malloc')
-        self.assertIn('symbolize=0', setup.env['ASAN_OPTIONS'])
-        self.assertIn('LLVM_SYMBOLIZER_PATH', setup.env)
-
-    def test_tsan_uses_online_symbolization_and_no_sandbox(self):
-        # See test_asan_uses_offline_symbolization: online symbolization is
-        # likewise only wired up off Windows.
-        with mock.patch.object(m.sys, 'platform', 'linux'):
-            setup = m.configure_sanitizer_tools(_options(enable_tsan=True))
-        self.assertFalse(setup.use_symbolization_script)
-        self.assertIn('--no-sandbox', setup.extra_args)
-        self.assertIn('symbolize=1', setup.env['TSAN_OPTIONS'])
-
-    def test_asan_with_lsan_enables_leak_detection(self):
-        setup = m.configure_sanitizer_tools(
-            _options(enable_asan=True, enable_lsan=True)
+    def setUp(self):
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self.generated = Path(
+            stack.enter_context(tempfile.TemporaryDirectory())
         )
-        self.assertIn('detect_leaks=1', setup.env['ASAN_OPTIONS'])
-        self.assertIn('--no-sandbox', setup.extra_args)
+        stack.enter_context(
+            mock.patch.object(m, '_GENERATED_DIR', self.generated)
+        )
+        for cached in (m._isolate_map, m._emulator_suite_args):
+            cached.cache_clear()
+            self.addCleanup(cached.cache_clear)
+        testing = self.generated / 'testing'
+        testing.mkdir()
+        (testing / 'gn_isolate_map.pyl').write_text(
+            repr(
+                {
+                    'base_unittests': {'type': 'console_test_launcher'},
+                    'browser_tests': {'type': 'windowed_test_launcher'},
+                }
+            ),
+            encoding='utf-8',
+        )
+
+    def write_spec(self, builder: str, tests: list[dict]) -> None:
+        targets = self.generated / 'builders' / 'ci' / builder / 'targets'
+        targets.mkdir(parents=True)
+        (targets / 'chromium.json').write_text(
+            json.dumps({builder: {'gtest_tests': tests}}), encoding='utf-8'
+        )
+
+
+class DesktopCommandTest(_GeneratedConfigTest):
+    def _command(
+        self, suite, platform='linux', args=('--gtest_filter=A.*',), **options
+    ):
+        with mock.patch.object(m.sys, 'platform', platform):
+            return m.build_desktop_command(
+                _options(**options), suite, list(args)
+            )
+
+    def test_windowed_suites_run_under_xvfb_on_linux(self):
+        command = self._command('browser_tests')
+        self.assertEqual(command[1], '../../testing/xvfb.py')
+        self.assertEqual(
+            command[2:],
+            [
+                './browser_tests',
+                '--test-launcher-bot-mode',
+                '--asan=0',
+                '--lsan=0',
+                '--msan=0',
+                '--tsan=0',
+                '--cfi-diag=0',
+                '--gtest_filter=A.*',
+            ],
+        )
+
+    def test_console_suites_run_under_test_env(self):
+        self.assertEqual(
+            self._command('base_unittests')[1], '../../testing/test_env.py'
+        )
+
+    def test_suites_upstream_does_not_list_are_windowed(self):
+        self.assertEqual(
+            self._command('brave_unit_tests')[1], '../../testing/xvfb.py'
+        )
+
+    def test_xvfb_flags_override_the_suite_type(self):
+        self.assertEqual(
+            self._command('browser_tests', xvfb=False)[1],
+            '../../testing/test_env.py',
+        )
+        self.assertEqual(
+            self._command('base_unittests', xvfb=True)[1],
+            '../../testing/xvfb.py',
+        )
+
+    def test_mac_and_windows_run_under_test_env(self):
+        self.assertEqual(
+            self._command('browser_tests', 'darwin')[1],
+            '../../testing/test_env.py',
+        )
+        command = self._command('browser_tests', 'win32')
+        self.assertEqual(command[1], '../../testing/test_env.py')
+        self.assertEqual(command[2], './browser_tests.exe')
+
+    def test_sanitizers_are_flags_for_test_env(self):
+        command = self._command('browser_tests', enable_asan=True)
+        self.assertIn('--asan=1', command)
+        self.assertIn('--lsan=0', command)
+
+    def test_the_reference_builder_s_suite_args_come_first(self):
+        self.write_spec(
+            'Linux Tests',
+            [
+                {
+                    'name': 'browser_tests',
+                    'args': [
+                        '--test-launcher-filter-file=../../up.filter',
+                        '--git-revision=${got_revision}',
+                    ],
+                }
+            ],
+        )
+        command = self._command(
+            'browser_tests',
+            args=['--test-launcher-filter-file=../../brave.filter'],
+        )
+        self.assertEqual(
+            command[9:],
+            ['--test-launcher-filter-file=../../up.filter;../../brave.filter'],
+        )
+
+
+class MergeFilterFilesTest(unittest.TestCase):
+    def test_one_flag_is_left_alone(self):
+        args = ['--a', '--test-launcher-filter-file=x']
+        self.assertEqual(m.merge_filter_files(args), args)
+
+    def test_each_file_is_kept_once(self):
+        self.assertEqual(
+            m.merge_filter_files(
+                [
+                    '--test-launcher-filter-file=x;y',
+                    '--test-launcher-filter-file=y',
+                    '--test-launcher-filter-file=x;z',
+                ]
+            ),
+            ['--test-launcher-filter-file=x;y;z'],
+        )
+
+    def test_several_flags_become_one(self):
+        self.assertEqual(
+            m.merge_filter_files(
+                [
+                    '--test-launcher-filter-file=x',
+                    '--a',
+                    '--test-launcher-filter-file=y;z',
+                ]
+            ),
+            ['--a', '--test-launcher-filter-file=x;y;z'],
+        )
+
+
+class TaskTempDirTest(unittest.TestCase):
+    def test_is_fresh_set_everywhere_and_removed(self):
+        with mock.patch.object(m.sys, 'platform', 'darwin'):
+            with m.task_temp_dir() as env:
+                temp_dir = Path(env['TMPDIR'])
+                self.assertTrue(temp_dir.is_dir())
+                self.assertEqual(list(temp_dir.iterdir()), [])
+                self.assertEqual({env[name] for name in env}, {str(temp_dir)})
+                self.assertIn('MAC_CHROMIUM_TMPDIR', env)
+        self.assertFalse(temp_dir.exists())
+
+
+class LinuxSandboxProblemTest(unittest.TestCase):
+    def _problem(self, restricted, args=(), env=None):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            setting = Path(temp_dir, 'restrict')
+            if restricted is not None:
+                setting.write_text(f'{restricted}\n', encoding='utf-8')
+            with (
+                mock.patch.object(m, '_USERNS_RESTRICTION', setting),
+                mock.patch.dict(m.os.environ, env or {}, clear=False),
+            ):
+                if not env:
+                    m.os.environ.pop('CHROME_DEVEL_SANDBOX', None)
+                return m.linux_sandbox_problem(list(args))
+
+    def test_restricted_user_namespaces_are_reported(self):
+        self.assertIn('--no-sandbox', self._problem(1))
+
+    def test_unrestricted_or_unknown_hosts_are_fine(self):
+        self.assertIsNone(self._problem(0))
+        self.assertIsNone(self._problem(None))
+
+    def test_no_sandbox_or_a_suid_sandbox_avoids_it(self):
+        self.assertIsNone(self._problem(1, args=['--no-sandbox']))
+        self.assertIsNone(
+            self._problem(1, env={'CHROME_DEVEL_SANDBOX': '/opt/sandbox'})
+        )
+
+
+class RunTestTest(_GeneratedConfigTest):
+    def test_runs_from_the_build_dir_with_a_task_temp_dir(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            build_dir = Path(temp_dir)
+            (build_dir / 'browser_tests').touch()
+            summary = build_dir / 'summary.json'
+            with (
+                mock.patch.object(m.sys, 'platform', 'linux'),
+                mock.patch.object(m, 'run_command', return_value=0) as run,
+                contextlib.redirect_stdout(io.StringIO()),
+            ):
+                result = m.run_test(
+                    _options(
+                        build_dir=build_dir,
+                        test_launcher_summary_output=summary,
+                    ),
+                    ['browser_tests', '--gtest_filter=A.*'],
+                )
+        self.assertEqual(result, 0)
+        command = run.call_args.args[0]
+        kwargs = run.call_args.kwargs
+        self.assertEqual(kwargs['cwd'], build_dir)
+        self.assertEqual(
+            command[-1], f'--test-launcher-summary-output={summary}'
+        )
+        self.assertIn('--gtest_filter=A.*', command)
+        self.assertTrue(
+            kwargs['env']['TMPDIR'].startswith(tempfile.gettempdir())
+        )
+
+    def test_missing_binary_is_an_error(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            with self.assertRaises(FileNotFoundError):
+                m.run_test(_options(build_dir=Path(temp_dir)), ['nope'])
 
 
 class ReportOutcomeTest(unittest.TestCase):
@@ -178,15 +368,47 @@ class AndroidTestModeTest(unittest.TestCase):
                 m.android_test_mode(wrapper)
 
 
-class BuildAndroidTestCommandTest(unittest.TestCase):
+_AVD = '--avd-config=../../tools/android/avd/proto/android_33_x64.textpb'
+
+
+class BuildAndroidTestCommandTest(_GeneratedConfigTest):
     _WRAPPER_PREFIX = [
         'vpython3',
         '../../build/android/test_wrapper/logdog_wrapper.py',
         '--target',
-        'brave_java_unit_tests',
     ]
 
-    def test_device_suites_get_the_emulator_mixin(self):
+    def test_upstream_suites_take_the_emulator_builder_s_args(self):
+        emulator_args = [_AVD, '--test-launcher-filter-file=emu.filter']
+        self.write_spec(
+            'android-cronet-x64-dbg',
+            [{'name': 'content_browsertests', 'args': [_AVD]}],
+        )
+        self.write_spec(
+            'android-13-x64-rel',
+            [
+                {
+                    'name': 'content_browsertests',
+                    'args': emulator_args
+                    + [
+                        '--gs-results-bucket=chromium-result-details',
+                        '--git-revision=${got_revision}',
+                    ],
+                }
+            ],
+        )
+        command = m.build_android_test_command(
+            'content_browsertests', 'gtest', 'android_33_x64'
+        )
+        self.assertEqual(
+            command,
+            self._WRAPPER_PREFIX
+            + ['content_browsertests', '--store-tombstones']
+            + emulator_args,
+        )
+
+    def test_suites_upstream_does_not_run_get_the_emulator_mixin(self):
+        (self.generated / 'builders' / 'ci').mkdir(parents=True)
         command = m.build_android_test_command(
             'brave_java_unit_tests', 'instrumentation', 'android_33_x64'
         )
@@ -194,24 +416,25 @@ class BuildAndroidTestCommandTest(unittest.TestCase):
             command,
             self._WRAPPER_PREFIX
             + [
+                'brave_java_unit_tests',
                 '--store-tombstones',
-                '--avd-config=../../tools/android/avd/proto/'
-                'android_33_x64.textpb',
+                _AVD,
                 '--recover-devices',
             ],
         )
 
-    def test_junit_suites_run_on_the_host(self):
-        command = m.build_android_test_command(
-            'brave_junit_tests', 'junit', 'android_33_x64'
+    def test_junit_suites_run_their_wrapper_on_the_host(self):
+        self.assertEqual(
+            m.build_android_test_command(
+                'brave_junit_tests', 'junit', 'android_33_x64'
+            ),
+            ['bin/run_brave_junit_tests'],
         )
-        self.assertEqual(command[-1], 'brave_junit_tests')
-        self.assertFalse(any('avd' in arg for arg in command))
-        self.assertNotIn('--store-tombstones', command)
 
 
-class RunAndroidTestTest(unittest.TestCase):
+class RunAndroidTestTest(_GeneratedConfigTest):
     def _run(self, temp_dir, mode, kvm_problem=None, **option_overrides):
+        (self.generated / 'builders' / 'ci').mkdir(parents=True, exist_ok=True)
         _write_wrapper(Path(temp_dir), 'suite', mode)
         options = _options(
             build_dir=Path(temp_dir),
@@ -243,6 +466,7 @@ class RunAndroidTestTest(unittest.TestCase):
             kwargs['env']['PYTHONPATH'].split(os.pathsep)[0],
             str(m._BRAVE_SCRIPT_DIR),
         )
+        self.assertIn('TMPDIR', kwargs['env'])
 
     def test_passes_the_summary_output(self):
         with tempfile.TemporaryDirectory() as temp_dir:
