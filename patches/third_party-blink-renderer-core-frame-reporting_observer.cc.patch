@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/frame/reporting_observer.cc b/third_party/blink/renderer/core/frame/reporting_observer.cc
+index 75b0124a538e1bd113917ef04c90dc9d69a34e59..6b251281685aefba169530e90bd90d78e8341e44 100644
+--- a/third_party/blink/renderer/core/frame/reporting_observer.cc
++++ b/third_party/blink/renderer/core/frame/reporting_observer.cc
+@@ -46,6 +46,7 @@ void ReportingObserver::ReportToCallback() {
+ }
+ 
+ void ReportingObserver::QueueReport(Report* report) {
++  if (!base::FeatureList::IsEnabled(features::kBraveReportingAPI)) return;
+   if (!ObservedType(report->type()))
+     return;
+ 
