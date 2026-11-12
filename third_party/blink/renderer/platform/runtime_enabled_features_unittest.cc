@@ -61,11 +61,13 @@ TEST(BraveRuntimeEnabledFeaturesTest, DisabledFlags) {
           RUNTIME_FLAG(ControlledFrame),
           RUNTIME_FLAG(ExtensionScriptTagging),
           RUNTIME_FLAG(FencedFrames),
+          RUNTIME_FLAG(InstallElement),
           RUNTIME_FLAG(LanguageDetectionAPI),
           RUNTIME_FLAG(Prerender2),
           RUNTIME_FLAG(ProfilerAPI),
           RUNTIME_FLAG(TranslationAPI),
           RUNTIME_FLAG(UserMediaElement),
+          RUNTIME_FLAG(WebAppInstallation),
       },
       false);
 }

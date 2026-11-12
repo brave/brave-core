@@ -158,6 +158,11 @@ substitutions:
       feature_name: FencedFrames
       value: disabled
 
+  - description: 'Ship the <install> element disabled.'
+    set_blink_runtime_enabled_feature_state:
+      feature_name: InstallElement
+      value: disabled
+
   - description: "Ship the Language Detection API's base feature disabled."
     set_blink_runtime_enabled_feature_state:
       feature_name: LanguageDetectionAPI
@@ -191,6 +196,11 @@ substitutions:
   - description: 'Ship the user media element base feature disabled.'
     set_blink_runtime_enabled_feature_state:
       feature_name: UserMediaElement
+      value: disabled
+
+  - description: 'Ship the Web Install API (navigator.install()) disabled.'
+    set_blink_runtime_enabled_feature_state:
+      feature_name: WebAppInstallation
       value: disabled
 
   - description: 'Ship the WebMCP API base feature enabled.'
