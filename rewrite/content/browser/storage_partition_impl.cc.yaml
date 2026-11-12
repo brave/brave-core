@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Allow Reporting API uploads based on kBraveReportingAPI, rather than the
+      Background Sync permission, as part of disabling the Reporting API.
+
+      kBraveReportingAPI is a flag available to re-enable the Chromium Reporting
+      API.
+    regex:
+      re_pattern: '(StoragePartitionImpl::OnCanSendReportingReports\([^)]*\)\s*\{\s*CHECK\(initialized_[^;]*;\n).*?(?=\n\}\n)'
+      replace: |-
+        \1  std::move(callback).Run(
+              base::FeatureList::IsEnabled(blink::features::kBraveReportingAPI)
+                  ? origins
+                  : std::vector<url::Origin>());
+      re_flags: [DOTALL]
