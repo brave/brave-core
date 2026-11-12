@@ -31,7 +31,7 @@ struct TabGroupDetailView: View {
       scrollsOnModeSwitch: false,
       selectedTabList: .constant([])
     )
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .edgesIgnoringSafeArea(.vertical)
     .background(Color(uiColor: browserColors.tabSwitcherBackground).ignoresSafeArea())
     .overlay(alignment: .top) {
       header
