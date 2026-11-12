@@ -17,11 +17,12 @@ if (enable_psst) {
       "psst_infobar.h",
     ]
 
+    public_deps = [ "//brave/browser/ui" ]
+
     deps = [
       "//base",
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser/psst",
-      "//brave/browser/ui",
       "//brave/ui/color:nala_color_id",
       "//chrome/browser/ui/color:color_headers",
       "//ui/base",
