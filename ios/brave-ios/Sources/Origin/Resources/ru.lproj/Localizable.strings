@@ -32,7 +32,7 @@
 "linkPurchase" = "Привязать покупку к аккаунту Brave";
 
 /* A toggle label for Brave News feature */
-"newsLabel" = "Brave Новости";
+"newsLabel" = "Новости";
 
 /* A label indicating this is a one-time purchase product */
 "oneTimePurchaseLabel" = "Единовременная покупка";

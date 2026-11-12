@@ -742,6 +742,15 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Continuer vers le site %@ (dangereux)";
 
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "Retirer";
+
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "Ce site n'apparaîtra pas dans votre liste des sites les plus visités, mais il ne sera pas supprimé de votre historique.";
+
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "Supprimer des sites les plus visités ?";
+
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ va lancer une application externe";
 
@@ -865,6 +874,9 @@
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Détails non valides dans la demande de paiement";
 
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "Une page intégrée à celle-ci";
+
 /* History tableview section header */
 "LastMonth" = "Le mois dernier";
 
@@ -893,7 +905,7 @@
 "login.loginInfoDetailsPasswordFieldTitle" = "Mot de passe";
 
 /* Title for the username field in password detail page */
-"login.loginInfoDetailsUsernameFieldTitle" = "Nom d’utilisateur";
+"login.loginInfoDetailsUsernameFieldTitle" = "Nom d'utilisateur";
 
 /* Title for the website field in password detail page */
 "login.loginInfoDetailsWebsiteFieldTitle" = "Site Web";
@@ -2481,6 +2493,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Les publicités sont bloquées pendant le visionnage de vidéos sur ce site Web.";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Portefeuille Brave";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "Onglet privé";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "Code QR";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "Recherche";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Nouvel onglet de navigation privée";

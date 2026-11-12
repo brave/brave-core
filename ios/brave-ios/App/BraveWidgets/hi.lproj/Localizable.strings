@@ -1,20 +1,8 @@
-/* Title for Ask Brave shortcut. Brave is the company name and should not be translated */
-"widgets.askBrave" = "Brave से पूछें";
-
 /* Description for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.askBraveWidgetDescription" = "Brave से कोई प्रश्न पूछें।";
 
 /* Title for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.askBraveWidgetTitle" = "Brave से पूछें";
-
-/* Title for bookmarks menu item */
-"widgets.BookmarksMenuItem" = "बुकमार्क";
-
-/* The name of the feature */
-"widgets.braveLeo" = "लियो AI";
-
-/* Title for the Leo AI voice input shortcut. Leo is the name of a product and should not be translated */
-"widgets.braveLeoVoiceInput" = "Leo वॉइस इनपुट";
 
 /* The name of the feature */
 "widgets.braveNews" = "Brave News";
@@ -28,14 +16,8 @@
 /* Title for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.braveSearchWidgetTitle" = "Brave सर्च";
 
-/* Title for downloads menu item */
-"widgets.DownloadsMenuItem" = "डाउनलोड";
-
 /* Description for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetDescription" = "अपनी पसंदीदा वेबसाइटें तुरंत ऐक्सेस करें।";
-
-/* Title for history menu item */
-"widgets.HistoryMenuItem" = "इतिहास";
 
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "बाद में कोशिश करें";
@@ -58,12 +40,6 @@
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "यहाँ अपने पसंदीदा देखने के लिए, कृपया Brave खोलें";
 
-/* QR Code section title */
-"widgets.QRCode" = "QR कोड";
-
-/* Description for the search option on the 'shortcuts' widget. */
-"widgets.searchShortcutTitle" = "खोज";
-
 /* Description for Brave Shields widget on 'add widget' screen. */
 "widgets.shieldStatsDescription" = "इस बात का सारांश कि Brave आपका समय कैसे बचाता है और आपको ऑनलाइन कैसे सुरक्षित रखता है।";
 
@@ -79,15 +55,6 @@
 /* Button to the browser and enter URL or make a search query there. */
 "widgets.shortcutsEnterURLButton" = "सर्च करें या URL टाइप करें";
 
-/* Button to open new browser tab. */
-"widgets.shortcutsNewTabButton" = "नया टैब";
-
-/* Button to open video playlist window. */
-"widgets.shortcutsPlaylistButton" = "प्लेलिस्ट";
-
-/* Button to open new private browser tab. */
-"widgets.shortcutsPrivateTabButton" = "प्राइवेट टैब";
-
 /* Description for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetDescription" = "वेब सर्च करने या Brave में वेब पेज खोलने के लिए तुरंत ऐक्सेस।";
 
@@ -99,7 +66,4 @@
 
 /* Title for Brave Shields single stat widget on 'add widget' screen. */
 "widgets.singleStatTitle" = "प्राइवेसी से जुड़े आँकड़े";
-
-/* Description for the Brave Wallet option on the 'shortcuts' widget. */
-"widgets.walletShortcutTitle" = "Brave वॉलेट";
 

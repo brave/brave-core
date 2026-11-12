@@ -742,6 +742,15 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "%@ पर जाएँ (असुरक्षित)";
 
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "हटाएँ";
+
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "यह साइट आपकी सबसे अधिक देखी गई सूची में नहीं दिखाई देगी, लेकिन इसे आपके इतिहास से नहीं हटाया जाएगा।";
+
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "सबसे अधिक देखी गई सूची से हटाएँ?";
+
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ एक बाहरी ऐप्लिकेशन लॉन्च करेगा";
 
@@ -864,6 +873,9 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "पेमेंट अनुरोध में अमान्य जानकारी";
+
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "इस पेज पर एक एम्बेडेड पेज";
 
 /* History tableview section header */
 "LastMonth" = "पिछले महीने";
@@ -1547,7 +1559,7 @@
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "फ़ाइल की प्लेबैक की स्थिति को याद रखें";
 
 /* Title for removing cached media from the playlist */
-"playList.removeActionButtonTitle" = "हटाएं";
+"playList.removeActionButtonTitle" = "हटाएँ";
 
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
 "playList.removedFromPlaylistMessage" = "%@ से हटाया गया";
@@ -2482,6 +2494,18 @@
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "इस वेबसाइट पर वीडियो देखने के दौरान विज्ञापन ब्लॉक किए गए हैं।";
 
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Brave वॉलेट";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "निजी टैब";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "QR कोड";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "खोज";
+
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "नया प्राइवेट टैब";
 
@@ -3023,13 +3047,13 @@
 "tabGrid.privateBrowsingInfoBulletTwoTitle" = "ब्राउज़ करने की विज़िबिलिटी";
 
 /* A title shown when in private browsing mode with no tabs open */
-"tabGrid.privateBrowsingInfoTitle" = "प्राइवेट टैब";
+"tabGrid.privateBrowsingInfoTitle" = "निजी टैब";
 
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "प्राइवेट ब्राउज़िंग";
 
 /* A label in the tab tray mode switcher for private browsing mode */
-"tabGrid.privateBrowsingModeTitle" = "निजी";
+"tabGrid.privateBrowsingModeTitle" = "प्राइवेट";
 
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "प्राइवेट टैब की सेटिंग";

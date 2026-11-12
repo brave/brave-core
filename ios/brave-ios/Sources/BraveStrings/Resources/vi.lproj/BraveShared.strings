@@ -742,6 +742,15 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Tiếp tục truy cập %@ (không an toàn)";
 
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "Xóa";
+
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "Trang web này sẽ không xuất hiện trong danh sách Truy cập nhiều nhất của bạn, nhưng sẽ không bị xóa khỏi lịch sử của bạn.";
+
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "Xóa khỏi Truy cập nhiều nhất?";
+
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ sẽ khởi động một ứng dụng bên ngoài";
 
@@ -864,6 +873,9 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Thông tin không hợp lệ trong yêu cầu thanh toán";
+
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "Một trang nhúng trên trang này";
 
 /* History tableview section header */
 "LastMonth" = "Tháng trước";
@@ -2481,6 +2493,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Các quảng cáo đã bị chặn trong khi bạn xem video trên trang web này.";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Ví Brave";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "Thẻ Riêng tư";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "Mã QR";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "Tìm kiếm";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Thẻ riêng tư mới";

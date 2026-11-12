@@ -1,20 +1,8 @@
-/* Title for Ask Brave shortcut. Brave is the company name and should not be translated */
-"widgets.askBrave" = "詢問 Brave";
-
 /* Description for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.askBraveWidgetDescription" = "向 Brave 提問。";
 
 /* Title for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.askBraveWidgetTitle" = "詢問 Brave";
-
-/* Title for bookmarks menu item */
-"widgets.BookmarksMenuItem" = "書籤";
-
-/* The name of the feature */
-"widgets.braveLeo" = "Leo 人工智能";
-
-/* Title for the Leo AI voice input shortcut. Leo is the name of a product and should not be translated */
-"widgets.braveLeoVoiceInput" = "Leo 語音輸入";
 
 /* The name of the feature */
 "widgets.braveNews" = "Brave News";
@@ -28,14 +16,8 @@
 /* Title for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.braveSearchWidgetTitle" = "Brave 搜尋";
 
-/* Title for downloads menu item */
-"widgets.DownloadsMenuItem" = "下載";
-
 /* Description for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetDescription" = "快速存取您喜愛的網站。";
-
-/* Title for history menu item */
-"widgets.HistoryMenuItem" = "歷史記錄";
 
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "請稍後再試";
@@ -58,12 +40,6 @@
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "請開啟 Brave，以在此瀏覽您的最愛";
 
-/* QR Code section title */
-"widgets.QRCode" = "QR 碼";
-
-/* Description for the search option on the 'shortcuts' widget. */
-"widgets.searchShortcutTitle" = "搜尋";
-
 /* Description for Brave Shields widget on 'add widget' screen. */
 "widgets.shieldStatsDescription" = "Brave 在線上為您節省時間和保護隱私的方法摘要。";
 
@@ -79,15 +55,6 @@
 /* Button to the browser and enter URL or make a search query there. */
 "widgets.shortcutsEnterURLButton" = "搜尋或輸入 URL";
 
-/* Button to open new browser tab. */
-"widgets.shortcutsNewTabButton" = "新建標籤頁";
-
-/* Button to open video playlist window. */
-"widgets.shortcutsPlaylistButton" = "Playlist";
-
-/* Button to open new private browser tab. */
-"widgets.shortcutsPrivateTabButton" = "隱私分頁";
-
 /* Description for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetDescription" = "在 Brave 中快速搜尋網頁或開啟新網頁。";
 
@@ -99,7 +66,4 @@
 
 /* Title for Brave Shields single stat widget on 'add widget' screen. */
 "widgets.singleStatTitle" = "隱私統計資料";
-
-/* Description for the Brave Wallet option on the 'shortcuts' widget. */
-"widgets.walletShortcutTitle" = "Brave 錢包";
 

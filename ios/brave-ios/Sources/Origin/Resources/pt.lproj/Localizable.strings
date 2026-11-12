@@ -2,7 +2,7 @@
 "adsHeader" = "Anúncios";
 
 /* A title asking if the user already purchased on brave.com */
-"alreadyPurchasedTitle" = "Já fez uma compra em brave.com?";
+"alreadyPurchasedTitle" = "Já comprou em Brave.com?";
 
 /* A section header title for analytics-related settings */
 "analyticsHeader" = "Análises";
@@ -20,7 +20,7 @@
 "featuresFooter" = "**Personalize o seu navegador enquanto ainda apoia o Brave**\n\nO Brave Origin é uma versão paga do navegador para usuários que não precisam de todos os recursos que sustentam o Brave como um negócio, mas que ainda desejam a privacidade que apenas o Brave oferece. Os usuários do Origin continuarão a se beneficiar da nossa privacidade líder do setor, bloqueador de anúncios e velocidade (via Escudos), bem como atualizações regulares de software, patches do Chromium e melhorias de segurança e privacidade. O Origin removerá a maioria dos outros recursos do navegador.";
 
 /* A section header title that is shown over a list of Brave specific features */
-"featuresHeader" = "Funcionalidades";
+"featuresHeader" = "Recursos";
 
 /* A button label to get a login code for users who purchased on brave.com */
 "getLoginCodeButton" = "Verificar compra do Brave Origin";
@@ -95,5 +95,5 @@
 "vpnLabel" = "VPN";
 
 /* A toggle label for Brave Wallet feature */
-"walletLabel" = "Carteira";
+"walletLabel" = "Wallet";
 

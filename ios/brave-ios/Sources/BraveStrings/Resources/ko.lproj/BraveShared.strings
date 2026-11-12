@@ -689,7 +689,7 @@
 "EnableCrashReporterAlertTitle" = "자동 충돌 보고서 사용";
 
 /* The confirmation button title on an alert presented to the user after the app crashes which will enable crash reporting */
-"EnableCrashReporterConfirmButtonTitle" = "사용";
+"EnableCrashReporterConfirmButtonTitle" = "허용";
 
 /* The button title on an alert presented to the user after the app crashes that ignores the alert */
 "EnableCrashReporterDenyButtonTitle" = "나중에";
@@ -741,6 +741,15 @@
 
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "%@ 계속(안전하지 않음)";
+
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "제거";
+
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "이 사이트는 자주 방문한 사이트 목록에 표시되지 않지만 기록에서는 제거되지 않습니다.";
+
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "자주 방문한 사이트에서 제거하시겠습니까?";
 
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@에서 외부 프로그램을 실행합니다.";
@@ -864,6 +873,9 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "결제 요청 내 세부정보가 유효하지 않음";
+
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "이 페이지에 임베드된 페이지";
 
 /* History tableview section header */
 "LastMonth" = "지난달";
@@ -1493,7 +1505,7 @@
 "playlist.playlistAutoPlaySettingsOptionTitle" = "자동 재생";
 
 /* Auto Cache turn Off Option */
-"playlist.playlistAutoSaveOptionOff" = "끔";
+"playlist.playlistAutoSaveOptionOff" = "끄기";
 
 /* Auto Save turn On Option */
 "playlist.playlistAutoSaveOptionOn" = "켬";
@@ -1547,7 +1559,7 @@
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "파일 재생 위치 기억";
 
 /* Title for removing cached media from the playlist */
-"playList.removeActionButtonTitle" = "삭제";
+"playList.removeActionButtonTitle" = "제거";
 
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
 "playList.removedFromPlaylistMessage" = "%@에서 제거됨";
@@ -2354,7 +2366,7 @@
 "settings.blockYouTubeDistractingElementsDesc" = "유튜브의 방해 요소를 차단합니다";
 
 /* Title beside the toggle for blocking YouTube distracting elements */
-"settings.blockYouTubeDistractingElementsTitle" = "유튜브의 방해 요소를 차단합니다";
+"settings.blockYouTubeDistractingElementsTitle" = "유튜브 방해 요소 차단";
 
 /* Description beside the toggle for blocking YouTube recommendations */
 "settings.blockYoutubeRecommendationsDesc" = "Youtube.com에서 다음 동영상과 엔드카드 요소를 차단합니다";
@@ -2481,6 +2493,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "이 웹사이트에서 동영상을 시청하는 동안 광고가 차단되었습니다.";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Brave 월렛";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "비공개 탭";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "QR 코드";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "검색";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "새 비공개 탭";
@@ -3059,7 +3083,7 @@
 "tabGrid.viewHistoryAccessibilityLabel" = "방문 기록 보기";
 
 /* Label for history menu item button that when tapped presents the users history & recently closed tabs */
-"tabGrid.viewHistoryMenuItemLabel" = "방문 기록";
+"tabGrid.viewHistoryMenuItemLabel" = "방문기록";
 
 /* Accessibility label for a button that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsAccessibilityLabel" = "동기화된 탭 보기";

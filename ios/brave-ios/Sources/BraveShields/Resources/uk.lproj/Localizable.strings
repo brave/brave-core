@@ -209,10 +209,10 @@
 "FilterListsAdd" = "Додати";
 
 /* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Додаткові популярні списки спільноти. Зауважте, що через увімкнення надто багатьох фільтрів може зменшитися швидкість завантаження даних.";
+"FilterListsDescription" = "Додаткові популярні списки від спільнот. Зауважте, що увімкнення великої кількості фільтрів може вплинути на швидкість завантаження вебсторінок.";
 
 /* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "Не вдалося завантажити";
+"FilterListsDownloadFailed" = "Збій завантаження";
 
 /* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
 "FilterListsDownloadPending" = "Очікує на завантаження";

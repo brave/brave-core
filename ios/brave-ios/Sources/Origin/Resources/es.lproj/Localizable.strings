@@ -38,7 +38,7 @@
 "oneTimePurchaseLabel" = "Compra única";
 
 /* A toggle label for Brave Playlist feature */
-"playlistLabel" = "Playlist";
+"playlistLabel" = "Lista de reproducción";
 
 /* A toggle label for privacy preserving analytics feature */
 "privacyPreservingAnalyticsLabel" = "Análisis con preservación de la privacidad";

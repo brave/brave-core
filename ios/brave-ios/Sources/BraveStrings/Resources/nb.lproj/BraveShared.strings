@@ -742,6 +742,15 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Gå videre til %@ (kan være farlig)";
 
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "Fjern";
+
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "Dette nettstedet vil ikke vises i listen over mest besøkte, men det vil ikke bli fjernet fra historikken din.";
+
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "Fjern fra Mest besøkte?";
+
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ vil starte en ekstern app";
 
@@ -864,6 +873,9 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Ugyldige detaljer i betalingsforespørsel";
+
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "En innebygd side på denne siden";
 
 /* History tableview section header */
 "LastMonth" = "Siste måned";
@@ -1868,7 +1880,7 @@
 "ReaderModeSmallerFontButtonAccessibilityLabel" = "Reduser tekststørrelse";
 
 /* Button for smaller reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
-"ReaderModeSmallerFontButtonTitle" = "–";
+"ReaderModeSmallerFontButtonTitle" = "-";
 
 /* Accessibility hint for the color theme setting buttons in reader mode display settings */
 "ReaderModeThemeButtonAccessibilityHint" = "Endrer fargetema.";
@@ -2481,6 +2493,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Annonser blokkeres mens du ser på videoer på dette nettstedet.";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Brave-lommebok";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "Privat fane";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "QR-kode";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "Søk";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Ny privat fane";
