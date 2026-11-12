@@ -24,6 +24,7 @@ if (!is_android) {
 
     deps = [
       "//base",
+      "//base/test:test_support",
       "//brave/browser",
       "//brave/common",
       "//chrome/browser",
@@ -35,6 +36,7 @@ if (!is_android) {
       "//chrome/test:test_support_ui",
       "//content/public/browser",
       "//content/test:test_support",
+      "//third_party/blink/public/common",
       "//ui/webui",
       "//ui/webui:test_support",
     ]
