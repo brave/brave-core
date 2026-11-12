@@ -81,6 +81,10 @@ BrowserWindowInterface* SwitchToTorProfile(Profile* parent_profile,
                                            const GURL& url = GURL()) {
   BrowserWindowInterface* tor_browser = TorProfileManager::SwitchToTorProfile(
       parent_profile, url, url::Origin::Create(url));
+  if (!tor_browser) {
+    ADD_FAILURE() << "SwitchToTorProfile returned no browser";
+    return nullptr;
+  }
   tor::TorProfileService* service =
       TorProfileServiceFactory::GetForContext(tor_browser->GetProfile());
   service->SetTorLauncherFactoryForTest(factory);
@@ -428,9 +432,9 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, NavigateToNTP) {
         .WillRepeatedly(testing::Return(connected));
     BrowserWindowInterface* tor_browser =
         SwitchToTorProfile(browser()->GetProfile(), GetTorLauncherFactory());
-    Profile* tor_profile = tor_browser->GetProfile();
     ASSERT_TRUE(tor_browser);
-    EXPECT_EQ(1, tor_browser->tab_strip_model()->count());
+    Profile* tor_profile = tor_browser->GetProfile();
+    ASSERT_EQ(1, tor_browser->tab_strip_model()->count());
     content::WaitForLoadStop(
         tor_browser->tab_strip_model()->GetActiveWebContents());
     EXPECT_EQ(tor_browser->tab_strip_model()->GetActiveWebContents()->GetURL(),
@@ -451,9 +455,9 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, NavigateToURL) {
     const GURL url("https://brave.com");
     BrowserWindowInterface* tor_browser = SwitchToTorProfile(
         browser()->GetProfile(), GetTorLauncherFactory(), 1, url);
-    Profile* tor_profile = tor_browser->GetProfile();
     ASSERT_TRUE(tor_browser);
-    EXPECT_EQ(1, tor_browser->tab_strip_model()->count());
+    Profile* tor_profile = tor_browser->GetProfile();
+    ASSERT_EQ(1, tor_browser->tab_strip_model()->count());
     content::WaitForLoadStop(
         tor_browser->tab_strip_model()->GetActiveWebContents());
     EXPECT_EQ(tor_browser->tab_strip_model()->GetActiveWebContents()->GetURL(),
@@ -474,9 +478,9 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, NavigateToURLEvents) {
   const GURL url("https://brave.com");
   BrowserWindowInterface* tor_browser = SwitchToTorProfile(
       browser()->GetProfile(), GetTorLauncherFactory(), 1, url);
-  Profile* tor_profile = tor_browser->GetProfile();
   ASSERT_TRUE(tor_browser);
-  EXPECT_EQ(1, tor_browser->tab_strip_model()->count());
+  Profile* tor_profile = tor_browser->GetProfile();
+  ASSERT_EQ(1, tor_browser->tab_strip_model()->count());
   auto* web_contents = tor_browser->tab_strip_model()->GetActiveWebContents();
   testing::NiceMock<MockWebContentsDelegate> delegate;
   EXPECT_CALL(delegate, NavigationStateChanged(testing::_, testing::_))
