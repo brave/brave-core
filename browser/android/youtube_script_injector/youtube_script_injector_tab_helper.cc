@@ -155,6 +155,9 @@ constexpr char16_t kYoutubeFullscreenVideoFitWorkaround[] =
 // playlist panel isn't used because it renders only some items. On the last
 // item YouTube disables that button, so do nothing, as the page's Next does.
 // Otherwise (no playlist, or no button data), call YouTube's handler unchanged.
+// YouTube registers its handler only after an in-page navigation, so the first
+// playlist item played has no Next control. Register the handler whenever the
+// playlist has a next item, rechecking each time a video starts playing.
 // See https://github.com/brave/brave-browser/issues/61748.
 constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
     uR"(
@@ -173,30 +176,44 @@ constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
     }
     return playlist.nextButtonVideo?.buttonRenderer ?? null;
   }
+  function nextUrl(button) {
+    if (!button || button.isDisabled) {
+      return null;
+    }
+    return button.command?.commandMetadata?.webCommandMetadata?.url ?? null;
+  }
+  let youtubeHandler = null;
+  function handleNextTrack(details) {
+    const button = playlistNextButton();
+    if (button?.isDisabled) {
+      return;
+    }
+    const url = nextUrl(button);
+    if (url) {
+      const link = document.createElement('a');
+      link.href = url;
+      link.hidden = true;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      return;
+    }
+    return youtubeHandler?.call(this, details);
+  }
   const setActionHandler = mediaSession.setActionHandler.bind(mediaSession);
+  function updateNextTrackHandler() {
+    const enabled = youtubeHandler || nextUrl(playlistNextButton());
+    setActionHandler('nexttrack', enabled ? handleNextTrack : null);
+  }
   mediaSession.setActionHandler = function(action, handler) {
-    if (action === 'nexttrack' && handler) {
-      const youtubeHandler = handler;
-      handler = function(details) {
-        const button = playlistNextButton();
-        if (button?.isDisabled) {
-          return;
-        }
-        const url = button?.command?.commandMetadata?.webCommandMetadata?.url;
-        if (url) {
-          const link = document.createElement('a');
-          link.href = url;
-          link.hidden = true;
-          document.body.appendChild(link);
-          link.click();
-          link.remove();
-          return;
-        }
-        return youtubeHandler.call(this, details);
-      };
+    if (action === 'nexttrack') {
+      youtubeHandler = handler;
+      updateNextTrackHandler();
+      return;
     }
     return setActionHandler(action, handler);
   };
+  document.addEventListener('playing', updateNextTrackHandler, true);
 }());
 )";
 
