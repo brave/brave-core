@@ -11,8 +11,8 @@ import org.jni_zero.CalledByNative;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @JNINamespace("chrome::android")
 public class BraveVpnNativeWorker {
@@ -33,7 +33,7 @@ public class BraveVpnNativeWorker {
     }
 
     private BraveVpnNativeWorker() {
-        mObservers = new ArrayList<BraveVpnObserver>();
+        mObservers = new CopyOnWriteArrayList<BraveVpnObserver>();
     }
 
     private void init() {
