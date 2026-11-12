@@ -188,13 +188,31 @@ def _make_valid_builder_dir(tmp_dir, name):
         ),
         encoding='utf-8',
     )
+    builder_id = {'builder': name}
     (builder_dir / 'properties.json').write_text(
         json.dumps(
             {
-                'builder_spec': {
-                    'chromium_config': {'target_platform': 'linux'},
-                    'gclient_config': {'target_os': [], 'target_cpu': []},
-                },
+                '$brave_tests_builder_config': {
+                    'builder_config': {
+                        'builder_db': {
+                            'entries': [
+                                {
+                                    'builder_id': builder_id,
+                                    'builder_spec': {
+                                        'chromium_config': {
+                                            'target_platform': 'linux'
+                                        },
+                                        'gclient_config': {
+                                            'target_os': [],
+                                            'target_cpu': [],
+                                        },
+                                    },
+                                }
+                            ]
+                        },
+                        'builder_ids': [builder_id],
+                    }
+                }
             }
         ),
         encoding='utf-8',
