@@ -631,6 +631,45 @@ describe('ConversationsList', () => {
       await expectIndicators(1, 1)
     })
 
+    it('keeps the states it was sent while the list is closed', async () => {
+      jest.useFakeTimers()
+      try {
+        function OpenLater() {
+          const [isOpen, setIsOpen] = React.useState(false)
+          return isOpen ? (
+            <ConversationsList />
+          ) : (
+            <button onClick={() => setIsOpen(true)}>open list</button>
+          )
+        }
+        await renderConversationsList(
+          <MockContext
+            service={{
+              getConversations: () =>
+                Promise.resolve({ conversations: mockConversations }),
+            }}
+            initialState={{
+              serviceState: { isStoragePrefEnabled: true },
+              conversationState: { conversationUuid: 'uuid-2' },
+              conversationGenerationState: { 'uuid-1': CG.kCompletedNotViewed },
+            }}
+          >
+            <OpenLater />
+          </MockContext>,
+        )
+        // Long past the query cache's default garbage collection time.
+        await act(async () => {
+          jest.advanceTimersByTime(60 * 60 * 1000)
+        })
+        await act(async () => {
+          screen.getByText('open list').click()
+        })
+        await expectIndicators(0, 1)
+      } finally {
+        jest.useRealTimers()
+      }
+    })
+
     it('treats the bound conversation as active on the tab route', async () => {
       await renderWithGeneration(
         'uuid-1',
