@@ -81,8 +81,23 @@ TEST_F(BraveNetworkDelegateBaseTest, RemoveTrackableSecurityHeadersMixedCase) {
   GURL request_url(kThirdPartyDomain);
   GURL tab_url(kFirstPartyDomain);
 
-  scoped_refptr<HttpResponseHeaders> headers(
-      new HttpResponseHeaders(net::HttpUtil::AssembleRawHeaders(kRawHeaders)));
+  constexpr char kMixedCaseRawHeaders[] =
+      "HTTP/1.0 200 OK\n"
+      "strict-transport-security: max-age=31557600\n"
+      "EXPECT-CT: max-age=86400, enforce\n"
+      "public-key-pins: pin-sha256=\"cUPcTAZWKaASuYWhhBAkE3h2+soZS7sWs=\"; "
+      "max-age=5184000\n"
+      "Public-Key-PINS-Report-Only: "
+      "pin-sha256=\"cUPcTAZWKaASuYWhhBAkE3h2+soZS7sWs=\"; "
+      "max-age=5184000\n"
+      "Accept-Language: *\n"
+      "X-XSS-Protection: 0";
+  scoped_refptr<HttpResponseHeaders> headers(new HttpResponseHeaders(
+      net::HttpUtil::AssembleRawHeaders(kMixedCaseRawHeaders)));
+
+  for (auto header : kTrackableSecurityHeaders) {
+    ASSERT_TRUE(headers->HasHeader(std::string(header)));
+  }
 
   RemoveTrackableSecurityHeadersForThirdParty(request_url,
                                               url::Origin::Create(tab_url),
