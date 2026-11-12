@@ -223,10 +223,9 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
   Errors errors;
 
   const auto url = MeldIntegrationService::GetServiceProviderURL();
-  EXPECT_EQ(url.path(), "/service-providers");
+  EXPECT_EQ(url.path(), "/network-partner/supported/partners");
   EXPECT_THAT(net::UrlSearchParams(url).params(),
-              ElementsAre(Pair("accountFilter", "false"),
-                          Pair("statuses", "LIVE,RECENTLY_ADDED")));
+              ElementsAre(Pair("category", "CRYPTO_ONRAMP")));
   std::tie(sps, errors) = TestGetServiceProvider(R"([
   {
     "serviceProvider": "BANXA",
@@ -235,12 +234,16 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
     "categories": [
       "CRYPTO_ONRAMP"
     ],
-    "categoryStatuses": {
-      "CRYPTO_ONRAMP": "LIVE"
-    },
-    "websiteUrl": "http://www.banxa.com",
-    "logos": {
-      "darkShort": "https://images-serviceprovider.meld.io/BANXA/short_logo_dark.png",
+    "capabilities": [
+      {
+        "category": "CRYPTO_ONRAMP",
+        "domains": ["PAYMENT"],
+        "status": "LIVE"
+      }
+    ],
+    "url": "https://www.banxa.com",
+    "logo": {
+      "darkShort": "https://cdn.meld.io/images-serviceprovider/BANXA/short_logo_dark.png",
       "lightShort": null
     }
   },
@@ -251,21 +254,25 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
     "categories": [
       "CRYPTO_ONRAMP"
     ],
-    "categoryStatuses": {
-      "CRYPTO_ONRAMP": "LIVE"
-    },
-    "websiteUrl": "https://www.blockchain.com",
-    "logos": null
+    "capabilities": [
+      {
+        "category": "CRYPTO_ONRAMP",
+        "domains": ["PAYMENT"],
+        "status": "LIVE"
+      }
+    ],
+    "url": "https://www.blockchain.com",
+    "logo": null
   }])");
   EXPECT_FALSE(errors.has_value());
   ASSERT_TRUE(sps);
 
   std::vector<mojom::MeldServiceProviderPtr> expected;
   expected.push_back(mojom::MeldServiceProvider::New(
-      "Banxa", "BANXA", "LIVE", "http://www.banxa.com",
+      "Banxa", "BANXA", "LIVE", "https://www.banxa.com",
       std::vector<std::string>{"CRYPTO_ONRAMP"},
       base::flat_map<std::string, std::string>{{"CRYPTO_ONRAMP", "LIVE"}},
-      "https://images-serviceprovider.meld.io/BANXA/short_logo_dark.png",
+      "https://cdn.meld.io/images-serviceprovider/BANXA/short_logo_dark.png",
       std::nullopt));
   expected.push_back(mojom::MeldServiceProvider::New(
       "Blockchain.com", "BLOCKCHAINDOTCOM", "LIVE",
@@ -279,9 +286,12 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
     "categories": [
       "CRYPTO_ONRAMP"
     ],
-    "categoryStatuses": {
-      "CRYPTO_ONRAMP": "LIVE"
-    }
+    "capabilities": [
+      {
+        "category": "CRYPTO_ONRAMP",
+        "status": "LIVE"
+      }
+    ]
   }])");
   EXPECT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{
