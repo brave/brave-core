@@ -114,7 +114,7 @@ TEST_F(BraveNewsSuggestionsControllerTest, VisitedSourcesAreSuggested) {
 
   // Publisher 1 & publisher 3 have been visited. However, P1 was visited more
   // times, so we should suggest it first.
-  EXPECT_EQ(2u, suggestions.size());
+  ASSERT_EQ(2u, suggestions.size());
   EXPECT_EQ("1", suggestions[0]);
   EXPECT_EQ("3", suggestions[1]);
 }
@@ -133,7 +133,7 @@ TEST_F(BraveNewsSuggestionsControllerTest,
 
   // Publisher 1 is subscribed, so we shouldn't suggest it. However, we've
   // visited publisher 3, so we should suggest that.
-  EXPECT_EQ(1u, suggestions.size());
+  ASSERT_EQ(1u, suggestions.size());
   EXPECT_EQ("3", suggestions[0]);
 }
 
@@ -151,7 +151,7 @@ TEST_F(BraveNewsSuggestionsControllerTest,
 
   // P1 was disabled, so we shouldn't suggest it. P3 was visited so it should be
   // suggested.
-  EXPECT_EQ(1u, suggestions.size());
+  ASSERT_EQ(1u, suggestions.size());
   EXPECT_EQ("3", suggestions[0]);
 }
 
@@ -172,7 +172,7 @@ TEST_F(BraveNewsSuggestionsControllerTest, SimilarSourcesAreSuggested) {
 
   // P1 is enabled so we should suggest sources similar to it. P4 is more
   // similar to it than P2, so we should suggest it first.
-  EXPECT_EQ(2u, suggestions.size());
+  ASSERT_EQ(2u, suggestions.size());
   EXPECT_EQ("4", suggestions[0]);
   EXPECT_EQ("2", suggestions[1]);
 }
@@ -196,7 +196,7 @@ TEST_F(BraveNewsSuggestionsControllerTest,
   // P1 has been visited and is not subscribed, so we should suggest it first.
   // P4 and P2 are similar to P1 so they should be suggested too (P4 is more
   // similar to P1, so suggest it first.)
-  EXPECT_EQ(3u, suggestions.size());
+  ASSERT_EQ(3u, suggestions.size());
   EXPECT_EQ("1", suggestions[0]);
   EXPECT_EQ("4", suggestions[1]);
   EXPECT_EQ("2", suggestions[2]);
@@ -220,7 +220,7 @@ TEST_F(BraveNewsSuggestionsControllerTest,
 
   // P1 has been visited many times, so sources similar to it should be ranked
   // higher than sources similar to P2.
-  EXPECT_EQ(4u, suggestions.size());
+  ASSERT_EQ(4u, suggestions.size());
   EXPECT_EQ("1", suggestions[0]);  // Visited many times
   EXPECT_EQ("2", suggestions[1]);  // Visited, but just once
   EXPECT_EQ("3",
