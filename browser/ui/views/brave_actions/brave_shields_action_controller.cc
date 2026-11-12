@@ -161,7 +161,7 @@ gfx::ImageSkia BraveShieldsActionController::GetIconImage(
 // static
 std::unique_ptr<IconWithBadgeImageSource>
 BraveShieldsActionController::GetImageSource(content::WebContents* web_contents,
-                                             Profile& profile,
+                                             PrefService& prefs,
                                              const gfx::Size& preferred_size,
                                              int icon_size) {
   auto get_color_provider_callback = base::BindRepeating(
@@ -216,7 +216,7 @@ BraveShieldsActionController::GetImageSource(content::WebContents* web_contents,
   image_source->SetIcon(
       gfx::Image(GetIconImage(web_contents, is_enabled, icon_size)));
 
-  if (is_enabled && profile.GetPrefs()->GetBoolean(kShieldsStatsBadgeVisible)) {
+  if (is_enabled && prefs.GetBoolean(kShieldsStatsBadgeVisible)) {
     image_source->SetBadge(std::move(badge));
   }
 
@@ -226,18 +226,18 @@ BraveShieldsActionController::GetImageSource(content::WebContents* web_contents,
 // static
 ui::ImageModel BraveShieldsActionController::GetImageModelForWebContents(
     content::WebContents* web_contents,
-    Profile& profile,
+    PrefService& prefs,
     const gfx::Size& preferred_size,
     int icon_size) {
   return ui::ImageModel::FromImageSkia(gfx::ImageSkia(
-      GetImageSource(web_contents, profile, preferred_size, icon_size),
+      GetImageSource(web_contents, prefs, preferred_size, icon_size),
       preferred_size));
 }
 
 ui::ImageModel BraveShieldsActionController::GetImageModel(
     const gfx::Size& preferred_size) const {
   return GetImageModelForWebContents(tab_strip_model_->GetActiveWebContents(),
-                                     *profile_, preferred_size,
+                                     *profile_->GetPrefs(), preferred_size,
                                      IconDimensionForLayout());
 }
 

@@ -22,6 +22,7 @@
 #include "ui/views/controls/button/label_button.h"
 
 class IconWithBadgeImageSource;
+class PrefService;
 class TabStripModel;
 
 namespace content {
@@ -72,7 +73,7 @@ class BraveShieldsActionController
   // helper, so they get the icon for the site's Shields setting and no badge.
   static ui::ImageModel GetImageModelForWebContents(
       content::WebContents* web_contents,
-      Profile& profile,
+      PrefService& prefs,
       const gfx::Size& preferred_size,
       int icon_size);
 
@@ -107,7 +108,7 @@ class BraveShieldsActionController
                                      int icon_size);
   static std::unique_ptr<IconWithBadgeImageSource> GetImageSource(
       content::WebContents* web_contents,
-      Profile& profile,
+      PrefService& prefs,
       const gfx::Size& preferred_size,
       int icon_size);
 

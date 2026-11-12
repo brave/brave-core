@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/check_deref.h"
+#include "base/feature_list.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/brave_tab_helpers.h"
 #include "brave/components/containers/buildflags/buildflags.h"
@@ -39,7 +40,6 @@
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-#include "base/feature_list.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/common/features.h"
 #endif
@@ -170,19 +170,6 @@ std::unique_ptr<content::WebContents> PeekContents::ReleaseWebContents() {
     web_contents_->SetDelegate(nullptr);
   }
   return std::move(web_contents_);
-}
-
-void PeekContents::StopObserving() {
-  permission_request_manager_observation_.Reset();
-  download_manager_observation_.Reset();
-  if (web_contents_) {
-    if (auto* manager =
-            web_modal::WebContentsModalDialogManager::FromWebContents(
-                web_contents_.get());
-        manager && manager->delegate() == this) {
-      manager->SetDelegate(nullptr);
-    }
-  }
 }
 
 content::WebContents* PeekContents::OpenURLFromTab(
@@ -373,4 +360,17 @@ void PeekContents::OnDownloadCreated(content::DownloadManager* manager,
 
 void PeekContents::ManagerGoingDown(content::DownloadManager* manager) {
   download_manager_observation_.Reset();
+}
+
+void PeekContents::StopObserving() {
+  permission_request_manager_observation_.Reset();
+  download_manager_observation_.Reset();
+  if (web_contents_) {
+    if (auto* manager =
+            web_modal::WebContentsModalDialogManager::FromWebContents(
+                web_contents_.get());
+        manager && manager->delegate() == this) {
+      manager->SetDelegate(nullptr);
+    }
+  }
 }

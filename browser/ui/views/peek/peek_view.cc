@@ -111,6 +111,12 @@ std::unique_ptr<views::ImageButton> CreateToolbarButton(
 
 }  // namespace
 
+DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kCardElementId);
+DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kSiteInfoButtonElementId);
+DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kShieldsButtonElementId);
+DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kOpenAsTabButtonElementId);
+DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kCloseButtonElementId);
+
 PeekView::PeekView(Delegate& delegate, BrowserWindowInterface& browser)
     : AnimationDelegateViews(this), delegate_(delegate), browser_(browser) {
   open_animation_.SetSlideDuration(kOpenDuration);
@@ -123,6 +129,7 @@ PeekView::PeekView(Delegate& delegate, BrowserWindowInterface& browser)
   AddAccelerator(ui::Accelerator(ui::VKEY_ESCAPE, ui::EF_NONE));
 
   card_ = AddChildView(std::make_unique<views::View>());
+  card_->SetProperty(views::kElementIdentifierKey, kCardElementId);
   card_->SetBackground(views::CreateRoundedRectBackground(
       nala::kColorContainerBackground, /*top_radius=*/0.f,
       /*bottom_radius=*/GetCardCornerRadius()));
@@ -147,6 +154,8 @@ PeekView::PeekView(Delegate& delegate, BrowserWindowInterface& browser)
   site_info_button_ = toolbar->AddChildView(CreateToolbarButton(
       base::BindRepeating(&PeekView::ShowPageInfo, base::Unretained(this)),
       kLeoTuneSmallIcon, IDS_TOOLTIP_LOCATION_ICON));
+  site_info_button_->SetProperty(views::kElementIdentifierKey,
+                                 kSiteInfoButtonElementId);
 
   favicon_ = toolbar->AddChildView(std::make_unique<views::ImageView>());
   favicon_->SetImageSize(gfx::Size(kFaviconSize, kFaviconSize));
@@ -189,18 +198,25 @@ PeekView::PeekView(Delegate& delegate, BrowserWindowInterface& browser)
   spacer->SetProperty(views::kMarginsKey, gfx::Insets());
 
   shields_button_ = toolbar->AddChildView(std::make_unique<PeekShieldsButton>(
-      browser, base::BindRepeating(&Delegate::OnPeekViewShieldsRequested,
-                                   base::Unretained(&delegate))));
+      *browser.GetProfile()->GetPrefs(),
+      base::BindRepeating(&Delegate::OnPeekViewShieldsRequested,
+                          base::Unretained(&delegate))));
+  shields_button_->SetProperty(views::kElementIdentifierKey,
+                               kShieldsButtonElementId);
 
   open_as_tab_button_ = toolbar->AddChildView(CreateToolbarButton(
       base::BindRepeating(&Delegate::OnPeekViewOpenAsTabRequested,
                           base::Unretained(&delegate)),
       kLeoFullscreenOnIcon, IDS_PEEK_OPEN_AS_TAB));
+  open_as_tab_button_->SetProperty(views::kElementIdentifierKey,
+                                   kOpenAsTabButtonElementId);
   close_button_ = toolbar->AddChildView(CreateToolbarButton(
       base::BindRepeating(&Delegate::OnPeekViewCloseRequested,
                           base::Unretained(&delegate)),
       kLeoCloseIcon, IDS_APP_CLOSE));
   close_button_->SetProperty(views::kMarginsKey, gfx::Insets());
+  close_button_->SetProperty(views::kElementIdentifierKey,
+                             kCloseButtonElementId);
 
   // Spans the full width of the card, between the toolbar and the page. Faint
   // is almost white in the light theme, so it can't be seen against the toolbar
@@ -216,22 +232,6 @@ PeekView::PeekView(Delegate& delegate, BrowserWindowInterface& browser)
 }
 
 PeekView::~PeekView() = default;
-
-void PeekView::OnThemeChanged() {
-  views::View::OnThemeChanged();
-
-  // `ViewShadow` takes its color at construction, so rebuild it.
-  card_shadow_.reset();
-  card_shadow_ = std::make_unique<ViewShadow>(
-      card_, GetCardCorners(),
-      ViewShadow::ShadowParameters{
-          .offset_x = 0,
-          .offset_y = kCardShadowOffsetY,
-          .blur_radius = kCardShadowBlurRadius,
-          .shadow_color = SkColorSetA(
-              GetColorProvider()->GetColor(nala::kColorSchemesShadow),
-              kCardShadowOpacity * SK_AlphaOPAQUE)});
-}
 
 void PeekView::SetWebContents(content::WebContents* contents) {
   shields_button_->SetWebContents(contents);
@@ -293,6 +293,65 @@ void PeekView::AnimateOpen() {
   open_animation_.Show();
 }
 
+void PeekView::Layout(PassKey) {
+  const gfx::Rect bounds = GetLocalBounds();
+  const int inset_x = std::max(
+      kMinCardInset, static_cast<int>(bounds.width() * kCardInsetRatio));
+  const int inset_y = std::max(
+      kMinCardInset, static_cast<int>(bounds.height() * kCardInsetRatio));
+  gfx::Rect card_bounds = bounds;
+  card_bounds.Inset(gfx::Insets::TLBR(0, inset_x, inset_y, inset_x));
+
+  // Grow down from the toolbar, keeping the top edge attached to it.
+  gfx::Rect initial_bounds = card_bounds;
+  initial_bounds.ClampToCenteredSize(
+      gfx::ScaleToRoundedSize(card_bounds.size(), kOpenInitialScale));
+  initial_bounds.set_y(card_bounds.y());
+  card_->SetBoundsRect(gfx::Tween::RectValueBetween(
+      open_animation_.GetCurrentValue(), initial_bounds, card_bounds));
+}
+
+bool PeekView::OnMousePressed(const ui::MouseEvent& event) {
+  if (!card_->bounds().Contains(event.location())) {
+    delegate_->OnPeekViewCloseRequested();
+  }
+  return true;
+}
+
+bool PeekView::AcceleratorPressed(const ui::Accelerator& accelerator) {
+  CHECK_EQ(accelerator.key_code(), ui::VKEY_ESCAPE);
+  delegate_->OnPeekViewCloseRequested();
+  return true;
+}
+
+void PeekView::OnPaintBackground(gfx::Canvas* canvas) {
+  const SkColor scrim =
+      GetColorProvider()->GetColor(nala::kColorDialogsScrimBackground);
+  canvas->DrawColor(SkColorSetA(
+      scrim, SkColorGetA(scrim) * open_animation_.GetCurrentValue()));
+}
+
+void PeekView::OnThemeChanged() {
+  views::View::OnThemeChanged();
+
+  // `ViewShadow` takes its color at construction, so rebuild it.
+  card_shadow_.reset();
+  card_shadow_ = std::make_unique<ViewShadow>(
+      card_, GetCardCorners(),
+      ViewShadow::ShadowParameters{
+          .offset_x = 0,
+          .offset_y = kCardShadowOffsetY,
+          .blur_radius = kCardShadowBlurRadius,
+          .shadow_color = SkColorSetA(
+              GetColorProvider()->GetColor(nala::kColorSchemesShadow),
+              kCardShadowOpacity * SK_AlphaOPAQUE)});
+}
+
+void PeekView::AnimationProgressed(const gfx::Animation* animation) {
+  InvalidateLayout();
+  SchedulePaint();
+}
+
 void PeekView::ShowPageInfo() {
   content::WebContents* contents = web_view_->web_contents();
   if (!contents) {
@@ -316,49 +375,6 @@ void PeekView::ShowPageInfo() {
   views::BubbleDialogDelegateView* bubble =
       PageInfoBubbleView::CreatePageInfoBubble(std::move(specification));
   bubble->GetWidget()->Show();
-}
-
-void PeekView::Layout(PassKey) {
-  const gfx::Rect bounds = GetLocalBounds();
-  const int inset_x = std::max(
-      kMinCardInset, static_cast<int>(bounds.width() * kCardInsetRatio));
-  const int inset_y = std::max(
-      kMinCardInset, static_cast<int>(bounds.height() * kCardInsetRatio));
-  gfx::Rect card_bounds = bounds;
-  card_bounds.Inset(gfx::Insets::TLBR(0, inset_x, inset_y, inset_x));
-
-  // Grow down from the toolbar, keeping the top edge attached to it.
-  gfx::Rect initial_bounds = card_bounds;
-  initial_bounds.ClampToCenteredSize(
-      gfx::ScaleToRoundedSize(card_bounds.size(), kOpenInitialScale));
-  initial_bounds.set_y(card_bounds.y());
-  card_->SetBoundsRect(gfx::Tween::RectValueBetween(
-      open_animation_.GetCurrentValue(), initial_bounds, card_bounds));
-}
-
-void PeekView::OnPaintBackground(gfx::Canvas* canvas) {
-  const SkColor scrim =
-      GetColorProvider()->GetColor(nala::kColorDialogsScrimBackground);
-  canvas->DrawColor(SkColorSetA(
-      scrim, SkColorGetA(scrim) * open_animation_.GetCurrentValue()));
-}
-
-void PeekView::AnimationProgressed(const gfx::Animation* animation) {
-  InvalidateLayout();
-  SchedulePaint();
-}
-
-bool PeekView::OnMousePressed(const ui::MouseEvent& event) {
-  if (!card_->bounds().Contains(event.location())) {
-    delegate_->OnPeekViewCloseRequested();
-  }
-  return true;
-}
-
-bool PeekView::AcceleratorPressed(const ui::Accelerator& accelerator) {
-  CHECK_EQ(accelerator.key_code(), ui::VKEY_ESCAPE);
-  delegate_->OnPeekViewCloseRequested();
-  return true;
 }
 
 BEGIN_METADATA(PeekView)

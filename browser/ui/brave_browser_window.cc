@@ -26,6 +26,10 @@ gfx::Rect BraveBrowserWindow::GetShieldsBubbleRect() {
   return gfx::Rect();
 }
 
+bool BraveBrowserWindow::ShowShieldsPanelForActiveTab() {
+  return false;
+}
+
 // static
 BraveBrowserWindow* BraveBrowserWindow::From(BrowserWindow* window) {
   // BrowserView derives from BraveBrowserWindow, other BrowserWindow

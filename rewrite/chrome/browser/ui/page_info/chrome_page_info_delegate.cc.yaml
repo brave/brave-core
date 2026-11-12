@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Show the cookies dialog for contents that aren't tabs.
+
+      Only tabs have `TabDialogs`. Page info can also be shown for contents
+      that aren't tabs, e.g. Peek, which shows the dialog after moving into a
+      tab. `peek::ShowCookiesDialogInTab` is declared in the chromium_src
+      override of this file.
+    preempt_function_impl:
+      function_name: ChromePageInfoDelegate::OpenCookiesDialog
+      code: |-
+        if (!TabDialogs::FromWebContents(web_contents_)) {
+          peek::ShowCookiesDialogInTab(web_contents_);
+          return;
+        }

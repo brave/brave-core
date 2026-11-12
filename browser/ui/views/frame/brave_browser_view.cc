@@ -16,7 +16,6 @@
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
-#include "base/memory/raw_ref.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/translate/brave_translate_utils.h"
@@ -26,8 +25,6 @@
 #include "brave/browser/ui/focus_mode/focus_mode_features.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/page_info/features.h"
-#include "brave/browser/ui/peek/public/peek_controller.h"
-#include "brave/browser/ui/peek/public/peek_shields_panel_provider.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -139,24 +136,6 @@ bool IsUnsupportedCommand(int command_id, BrowserWindowInterface* browser) {
              command_id,
              browser->GetType() == BrowserWindowInterface::Type::TYPE_POPUP);
 }
-
-class PeekShieldsPanelProviderImpl : public PeekShieldsPanelProvider {
- public:
-  explicit PeekShieldsPanelProviderImpl(BraveBrowserView& browser_view)
-      : browser_view_(browser_view) {}
-  PeekShieldsPanelProviderImpl(const PeekShieldsPanelProviderImpl&) = delete;
-  PeekShieldsPanelProviderImpl& operator=(const PeekShieldsPanelProviderImpl&) =
-      delete;
-  ~PeekShieldsPanelProviderImpl() override = default;
-
-  // PeekShieldsPanelProvider:
-  bool ShowShieldsPanelForActiveTab() override {
-    return browser_view_->ShowShieldsPanelForActiveTab();
-  }
-
- private:
-  const raw_ref<BraveBrowserView> browser_view_;
-};
 
 }  // namespace
 
@@ -278,11 +257,6 @@ BraveBrowserView::BraveBrowserView(BrowserWindowInterface* browser)
   // vertical tab mode. Set to false as we don't want to icon in title bar.
   if (browser_->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
     SetShowIcon(false);
-  }
-
-  if (auto* peek_controller = PeekController::From(browser_)) {
-    peek_controller->SetShieldsPanelProvider(
-        std::make_unique<PeekShieldsPanelProviderImpl>(*this));
   }
 
   tab_strip_placement_ = std::make_unique<TabStripPlacementCoordinator>(
@@ -491,8 +465,8 @@ bool BraveBrowserView::ShowShieldsPanelForActiveTab() {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
     shields_button = GetPwaShieldsToolbarButton();
 #endif
-  } else if (auto* location_bar =
-                 static_cast<BraveLocationBarView*>(GetLocationBarView())) {
+  } else if (auto* location_bar = views::AsViewClass<BraveLocationBarView>(
+                 GetLocationBarView())) {
     if (auto* actions = location_bar->brave_actions_contatiner_view()) {
       shields_button = actions->GetShieldsActionView();
     }

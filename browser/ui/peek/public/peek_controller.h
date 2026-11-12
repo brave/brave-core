@@ -6,12 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_PEEK_PUBLIC_PEEK_CONTROLLER_H_
 #define BRAVE_BROWSER_UI_PEEK_PUBLIC_PEEK_CONTROLLER_H_
 
-#include <memory>
-
 #include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
 class BrowserWindowInterface;
-class PeekShieldsPanelProvider;
 
 namespace content {
 struct OpenURLParams;
@@ -41,11 +38,6 @@ class PeekController {
   PeekController& operator=(const PeekController&) = delete;
   virtual ~PeekController();
 
-  // Sets how the Shields button of the Peek card opens the Shields panel. Must
-  // be called before the first `Open()`.
-  virtual void SetShieldsPanelProvider(
-      std::unique_ptr<PeekShieldsPanelProvider> provider) = 0;
-
   // Whether a link in `source` can be opened in Peek: it must be a tab of this
   // window, other than a sidebar web panel.
   virtual bool CanOpenFrom(content::WebContents* source) = 0;
@@ -64,8 +56,16 @@ class PeekController {
   // page info bubble, which is destroyed with the Peek card.
   virtual void ShowCookiesDialogInTab() = 0;
 
+  // Closes the Peek and destroys its contents. Unlike `OpenAsTab()`, the page
+  // is discarded. Does nothing if no Peek is shown.
   virtual void Close() = 0;
+
+  // Whether a Peek is shown in this window.
   virtual bool IsShowing() const = 0;
+
+  // Returns the contents shown in Peek, or nullptr if no Peek is shown. The
+  // controller owns the contents until `Close()` destroys them or
+  // `OpenAsTab()` hands them to the tab strip.
   virtual content::WebContents* GetWebContents() = 0;
 
  protected:

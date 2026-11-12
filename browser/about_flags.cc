@@ -1171,8 +1171,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
       "brave-peek",                                                           \
       "Brave Peek",                                                           \
       "Opens links in a floating preview over the current tab. Triggered by " \
-      "cross-site links in pinned tabs, Shift+click, and the link context "   \
-      "menu.",                                                                \
+      "Shift+click and the link context menu.",                               \
       kOsDesktop,                                                             \
       FEATURE_VALUE_TYPE(peek::features::kBravePeek),                         \
   })

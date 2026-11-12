@@ -10,6 +10,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
+#include "ui/base/interaction/element_identifier.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/animation/slide_animation.h"
 #include "ui/views/animation/animation_delegate_views.h"
@@ -37,6 +38,12 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
   METADATA_HEADER(PeekView, views::View)
 
  public:
+  DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kCardElementId);
+  DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kSiteInfoButtonElementId);
+  DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kShieldsButtonElementId);
+  DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kOpenAsTabButtonElementId);
+  DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kCloseButtonElementId);
+
   class Delegate {
    public:
     virtual void OnPeekViewCloseRequested() = 0;

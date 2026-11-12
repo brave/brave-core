@@ -5,14 +5,18 @@
 
 #include "brave/browser/ui/browser_window/internal/brave_browser_window_features.h"
 
+#include <memory>
+
 #include "base/containers/flat_map.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "base/memory/raw_ref.h"
 #include "base/types/to_address.h"
 #include "base/unguessable_token.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/peek/peek_features.h"
 #include "brave/browser/ui/peek/public/peek_controller.h"
+#include "brave/browser/ui/peek/public/peek_shields_panel_provider.h"
 #include "brave/browser/ui/screenshot/screenshot_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
@@ -70,6 +74,28 @@
 #include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_tab_transfer_bridge.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
+
+namespace {
+
+class PeekShieldsPanelProviderImpl : public PeekShieldsPanelProvider {
+ public:
+  explicit PeekShieldsPanelProviderImpl(BraveBrowserWindow& window)
+      : window_(window) {}
+  PeekShieldsPanelProviderImpl(const PeekShieldsPanelProviderImpl&) = delete;
+  PeekShieldsPanelProviderImpl& operator=(const PeekShieldsPanelProviderImpl&) =
+      delete;
+  ~PeekShieldsPanelProviderImpl() override = default;
+
+  // PeekShieldsPanelProvider:
+  bool ShowShieldsPanelForActiveTab() override {
+    return window_->ShowShieldsPanelForActiveTab();
+  }
+
+ private:
+  const raw_ref<BraveBrowserWindow> window_;
+};
+
+}  // namespace
 
 BraveBrowserWindowFeatures::BraveBrowserWindowFeatures(
     BrowserWindowInterface& browser)
@@ -214,7 +240,8 @@ void BraveBrowserWindowFeatures::InitPostWindowConstruction() {
   if (base::FeatureList::IsEnabled(peek::features::kBravePeek) &&
       browser_->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
     peek_controller_ = GetUserDataFactory().CreateInstance<PeekControllerImpl>(
-        *browser_, *browser_, *browser_view);
+        *browser_, *browser_, *browser_view,
+        std::make_unique<PeekShieldsPanelProviderImpl>(*browser_view));
   }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
