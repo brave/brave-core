@@ -40,7 +40,6 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
-#include "brave/browser/ui/views/side_panel/brave_side_panel_resize_area.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
@@ -111,6 +110,7 @@
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/view_class_properties.h"
 #include "ui/views/view_utils.h"
+#include "ui/views/widget/widget.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
@@ -296,6 +296,11 @@ bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
     return true;
   }
 
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+  if (!browser_view) {
+    return false;
+  }
+
   auto* model = browser->GetTabStripModel();
   if (model->empty()) {
     return false;
@@ -305,9 +310,14 @@ bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
     return false;
   }
 
+  // Use rounded corners while the side panel opens.
+  if (auto* side_panel = browser_view->side_panel();
+      side_panel && side_panel->GetVisible()) {
+    return true;
+  }
+
   // Use rounded corners when browser view shows split view.
-  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
-  return browser_view && browser_view->multi_contents_view()->IsInSplitView();
+  return browser_view->multi_contents_view()->IsInSplitView();
 }
 
 BraveBrowserView::BraveBrowserView(BrowserWindowInterface* browser)
@@ -336,6 +346,10 @@ BraveBrowserView::BraveBrowserView(BrowserWindowInterface* browser)
   pref_change_registrar_.Add(
       kWebViewRoundedCorners,
       base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
+                          base::Unretained(this)));
+
+  side_panel_visible_subscription_ = side_panel_->AddVisibleChangedCallback(
+      base::BindRepeating(&BraveBrowserView::OnSidePanelVisibilityChanged,
                           base::Unretained(this)));
 
   pref_change_registrar_.Add(
@@ -374,9 +388,6 @@ BraveBrowserView::BraveBrowserView(BrowserWindowInterface* browser)
                 &BraveBrowserView::OnSidebarControlViewVisibilityChanged,
                 base::Unretained(this))),
         sidebar_index.value_or(children().size()));
-
-    side_panel_->SetResizeArea(
-        std::make_unique<views::BraveSidePanelResizeArea>(side_panel_));
 
 #if defined(USE_AURA)
     sidebar_host_view_ =
@@ -1074,7 +1085,6 @@ void BraveBrowserView::UpdateRoundedCornersUI() {
   // Update various UI that can be affected by rounded corners. The contents
   // corner radii themselves are applied by the layout.
   UpdateVerticalTabStripBorder();
-  UpdateSidePanelBorder();
   InvalidateLayout();
 }
 
@@ -1086,11 +1096,16 @@ void BraveBrowserView::UpdateVerticalTabStripBorder() {
   }
 }
 
-void BraveBrowserView::UpdateSidePanelBorder() {
-  if (side_panel_) {
-    side_panel_->SetRoundedBorderEnabled(
-        ShouldUseBraveWebViewRoundedCornersForContents(browser_));
+void BraveBrowserView::OnSidePanelVisibilityChanged() {
+  // The side panel is also closed while the browser widget is being destroyed
+  // (see SidePanelCoordinator::TearDownPreBrowserWindowDestruction()), and by
+  // then the widget can no longer answer queries such as IsFullscreen().
+  auto* widget = GetWidget();
+  if (!widget || widget->IsClosed()) {
+    return;
   }
+
+  UpdateRoundedCornersUI();
 }
 
 void BraveBrowserView::OnSidebarControlViewVisibilityChanged() {
