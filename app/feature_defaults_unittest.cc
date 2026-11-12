@@ -201,6 +201,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kDigitalGoodsApi,
       &features::kEmailVerificationProtocol,
       &features::kFedCm,
+      &features::kGeic,
       &features::kGlicTextSelectionContextMenu,
       &features::kHttpsFirstBalancedMode,
       &features::kIndigo,
