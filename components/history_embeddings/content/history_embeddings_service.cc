@@ -211,8 +211,9 @@ SearchResult HistoryEmbeddingsService::Search(
       GetFeatureParameters().erase_non_ascii_characters;
   result.search_params.word_match_search_non_ascii_passages =
       GetFeatureParameters().word_match_search_non_ascii_passages;
-  // TODO(crbug.com/390241271): Move this inside Embedder implementations once
-  //  they are no longer wrapped inside the SchedulingEmbedder.
+  // TODO(https://github.com/brave/brave-browser/issues/61789): Move this inside
+  // Embedder implementations once they are no longer wrapped inside the
+  // SchedulingEmbedder.
   //  Note that removing the non-ascii characters in the Embedder could result
   //  in a query that contains a non-ascii character to be rejected in
   //  `QueryIsFiltered()` below reducing the chances of the user getting
@@ -349,8 +350,9 @@ void HistoryEmbeddingsService::OnPageEmbeddingsAvailable(content::Page& page) {
 void HistoryEmbeddingsService::EmbedderMetadataUpdated(
     passage_embeddings::EmbedderMetadata metadata) {
   if (embedder_metadata_.IsValid()) {
-    // TODO(crbug.com/396684224): Handle runtime model changes. For now the
-    //  code expects them to remain constant and only processes metadata once.
+    // TODO(https://github.com/brave/brave-browser/issues/61789): Handle runtime
+    // model changes. For now the code expects them to remain constant and only
+    // processes metadata once.
     return;
   }
   embedder_metadata_ = metadata;
@@ -682,8 +684,9 @@ void HistoryEmbeddingsService::RebuildAbsentEmbeddings(
         std::vector<std::optional<PassageEmbedding>>(
             url_passages.passages.passages_size(), std::nullopt);
 
-    // TODO(crbug.com/390241271): Move this inside Embedder implementations once
-    //  they are no longer wrapped inside the SchedulingEmbedder.
+    // TODO(https://github.com/brave/brave-browser/issues/61789): Move this
+    // inside Embedder implementations once they are no longer wrapped inside
+    // the SchedulingEmbedder.
     if (GetFeatureParameters().erase_non_ascii_characters) {
       EraseNonAsciiCharacters(passages);
     }

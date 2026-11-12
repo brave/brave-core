@@ -23,8 +23,9 @@ namespace brave_history_embeddings {
 std::vector<uint8_t> PassagesProtoToBlob(
     const proto::PassagesValue& passages_value,
     const os_crypt_async::Encryptor& encryptor) {
-  // TODO(b/325524013): Add metrics to determine if this needs to be sent to a
-  // separate sequence. Whole process for 1.2MB takes about 68ms on a Desktop.
+  // TODO(https://github.com/brave/brave-browser/issues/61789): Add metrics to
+  // determine if this needs to be sent to a separate sequence. Whole process
+  // for 1.2MB takes about 68ms on a Desktop.
   std::string serialized_proto = passages_value.SerializeAsString();
   if (serialized_proto.empty()) {
     return {};
@@ -57,8 +58,8 @@ PassagesBlobToProto(base::span<const uint8_t> passages_blob,
     return std::nullopt;
   }
 
-  // TODO(b/325524013): Add metrics to determine if this needs to be sent to a
-  // separate sequence.
+  // TODO(https://github.com/brave/brave-browser/issues/61789): Add metrics to
+  // determine if this needs to be sent to a separate sequence.
   std::string passages_blob_as_string(passages_blob.begin(),
                                       passages_blob.end());
 

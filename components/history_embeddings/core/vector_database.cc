@@ -313,7 +313,8 @@ SearchInfo VectorDatabase::FindNearest(
   }
   search_info.total_search_time = total_timer.Elapsed();
 
-  // TODO(b/363083815): Log histograms and rework caller time histogram.
+  // TODO(https://github.com/brave/brave-browser/issues/61789): Log histograms
+  // and rework caller time histogram.
   if (search_info.total_search_time.is_zero()) {
     VLOG(1) << "Inner search total (μs): "
             << search_info.total_search_time.InMicroseconds();

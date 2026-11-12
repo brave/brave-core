@@ -201,8 +201,9 @@ sql::InitStatus SqlDatabase::InitInternal(const base::FilePath& storage_dir,
         model_version != embedder_metadata_->model_version ||
         delete_embeddings_;
 
-    // TODO(crbug.com/375502129): Remove this guard and the related guard below
-    //  for more complete data version handling.
+    // TODO(https://github.com/brave/brave-browser/issues/61789): Remove this
+    // guard and the related guard below for more complete data version
+    // handling.
     if (erase_non_ascii_characters_) {
       int embeddings_data_version = 0;
       meta_table.GetValue(kKeyEmbeddingsDataVersion, &embeddings_data_version);
@@ -221,7 +222,8 @@ sql::InitStatus SqlDatabase::InitInternal(const base::FilePath& storage_dir,
       // Only write the meta table with this first data version change if
       // doing so will result in the embeddings being rebuilt with the
       // non-ASCII character changes.
-      // TODO(crbug.com/375502129): See above TODO comment; remove this guard.
+      // TODO(https://github.com/brave/brave-browser/issues/61789): See above
+      // TODO comment; remove this guard.
       if (erase_non_ascii_characters_ &&
           !meta_table.SetValue(kKeyEmbeddingsDataVersion,
                                kEmbeddingsDataVersion)) {
@@ -669,8 +671,8 @@ void SqlDatabase::DatabaseErrorCallback(int extended_error,
                                         sql::Statement* statement) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  // TODO(crbug.com/325524013): Handle razing the database on catastrophic
-  // error.
+  // TODO(https://github.com/brave/brave-browser/issues/61789): Handle razing
+  // the database on catastrophic error.
 
   // The default handling is to assert on debug and to ignore on release.
   // This is because database errors happen in the wild due to faulty hardware,
