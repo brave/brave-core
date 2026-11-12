@@ -33,7 +33,7 @@ bool ShouldAddCopyCleanLinkItem(content::BrowserContext* context) {
   return contents->GetLastCommittedURL().SchemeIsHTTPOrHTTPS();
 }
 
-int MaybeAddCopyCleanLinkItem(
+void MaybeAddCopyCleanLinkItem(
     content::BrowserContext* context,
     std::vector<sharing_hub::SharingHubAction>* first_party_action_list) {
   if (ShouldAddCopyCleanLinkItem(context)) {
@@ -42,7 +42,6 @@ int MaybeAddCopyCleanLinkItem(
         l10n_util::GetStringUTF16(IDS_COPY_CLEAN_LINK_SHARING_HUB),
         &kCopyOldIcon, "SharingHubDesktop.CopyURLSelected", IDS_LINK_COPIED);
   }
-  return IDS_SHARING_HUB_COPY_LINK_LABEL;
 }
 
 }  // namespace
