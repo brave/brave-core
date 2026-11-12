@@ -2095,6 +2095,27 @@ TEST_P(AIChatServiceUnitTest,
           uuid, mojom::ConversationGenerationState::kCompletedNotViewed)));
 }
 
+TEST_P(AIChatServiceUnitTest,
+       GenerationState_DisablingStorageClearsUnloadedNotViewed) {
+  if (!IsAIChatHistoryEnabled()) {
+    GTEST_SKIP() << "Without history the conversation is removed on unload";
+  }
+  ConversationHandler* handler = CreateConversation();
+  const std::string uuid = handler->get_conversation_uuid();
+  auto resolve = StartGeneration(handler, *client_);
+  ExpectGenerationState(
+      *client_, uuid, mojom::ConversationGenerationState::kCompletedNotViewed,
+      base::BindOnce(&CompleteGeneration, std::move(resolve)));
+  task_environment_.FastForwardBy(base::Seconds(10));
+  ASSERT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
+
+  // Turning history off drops the unloaded conversation, and its state with it.
+  ExpectGenerationState(
+      *client_, uuid, mojom::ConversationGenerationState::kIdle,
+      base::BindLambdaForTesting(
+          [&] { prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false); }));
+}
+
 TEST_P(AIChatServiceUnitTest, GenerationState_BindClearsNotViewed) {
   ConversationHandler* handler = CreateConversation();
   const std::string uuid = handler->get_conversation_uuid();

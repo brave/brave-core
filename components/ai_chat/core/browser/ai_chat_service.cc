@@ -634,12 +634,18 @@ void AIChatService::OnDataDeletedForDisabledStorage(bool success) {
   }
   // Remove any conversation metadata that isn't connected to a still-alive
   // handler.
+  bool generation_state_changed = false;
   for (auto it = conversations_.begin(); it != conversations_.end();) {
     if (!conversation_handlers_.contains(it->first)) {
+      generation_state_changed |=
+          conversation_generation_state_.erase(it->first) > 0;
       it = conversations_.erase(it);
     } else {
       ++it;
     }
+  }
+  if (generation_state_changed) {
+    NotifyConversationGenerationStateChanged();
   }
   OnConversationListChanged();
   // Re-check the preference since it could have been re-enabled
