@@ -146,6 +146,60 @@ constexpr char16_t kYoutubeFullscreenVideoFitWorkaround[] =
 }());
 )";
 
+// On m.youtube.com, Next in the media notification or on the lock screen plays
+// a recommended video and drops the playlist, while the page's own Next works.
+// Those controls call the page's navigator.mediaSession 'nexttrack' handler, so
+// wrap the handler YouTube registers: when a playlist is playing, follow the
+// URL of the page's own Next video button, taken from YouTube's watch data,
+// through a link click so YouTube navigates in-page as it would for a tap. The
+// playlist panel isn't used because it renders only some items. On the last
+// item YouTube disables that button, so do nothing, as the page's Next does.
+// Otherwise (no playlist, or no button data), call YouTube's handler unchanged.
+// See https://github.com/brave/brave-browser/issues/61748.
+constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
+    uR"(
+(function() {
+  const mediaSession = navigator.mediaSession;
+  if (!mediaSession) {
+    return;
+  }
+  function playlistNextButton() {
+    const playlist = document.getElementById('movie_player')
+        ?.getWatchNextResponse?.()
+        ?.contents?.singleColumnWatchNextResults?.playlist?.playlist;
+    const list = new URLSearchParams(location.search).get('list');
+    if (!list || playlist?.playlistId !== list) {
+      return null;
+    }
+    return playlist.nextButtonVideo?.buttonRenderer ?? null;
+  }
+  const setActionHandler = mediaSession.setActionHandler.bind(mediaSession);
+  mediaSession.setActionHandler = function(action, handler) {
+    if (action === 'nexttrack' && handler) {
+      const youtubeHandler = handler;
+      handler = function(details) {
+        const button = playlistNextButton();
+        if (button?.isDisabled) {
+          return;
+        }
+        const url = button?.command?.commandMetadata?.webCommandMetadata?.url;
+        if (url) {
+          const link = document.createElement('a');
+          link.href = url;
+          link.hidden = true;
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          return;
+        }
+        return youtubeHandler.call(this, details);
+      };
+    }
+    return setActionHandler(action, handler);
+  };
+}());
+)";
+
 // m.youtube.com has no manifest, so Add to Home screen would generate a
 // monogram icon. Declare one mirroring www.youtube.com's; that one can't be
 // linked directly as it isn't served with CORS headers.
@@ -500,6 +554,13 @@ void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
           preferences::features::kBraveYoutubeFullscreenVideoFitWorkaround)) {
     contents->GetPrimaryMainFrame()->ExecuteJavaScript(
         kYoutubeFullscreenVideoFitWorkaround, base::NullCallback());
+  }
+  if (IsYouTubeDomain(/*mobileOnly=*/true) &&
+      base::FeatureList::IsEnabled(
+          preferences::features::
+              kBraveYoutubePlaylistMediaControlsWorkaround)) {
+    contents->GetPrimaryMainFrame()->ExecuteJavaScript(
+        kYoutubePlaylistMediaControlsWorkaround, base::NullCallback());
   }
   if (IsYouTubeDomain(/*mobileOnly=*/true)) {
     contents->GetPrimaryMainFrame()->ExecuteJavaScript(kYoutubeManifest,
