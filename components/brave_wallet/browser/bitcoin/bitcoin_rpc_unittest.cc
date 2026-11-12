@@ -549,7 +549,7 @@ TEST_F(BitcoinRpcUnitTest, PostTransaction) {
   bitcoin_rpc_->PostTransaction(mojom::kBitcoinMainnet, {1, 2, 3},
                                 future.GetCallback());
   ASSERT_TRUE(base::test::RunUntil(
-      [&] { return url_loader_factory_.NumPending() == 1; }));
+      [&] { return url_loader_factory_.pending_requests()->size() == 1u; }));
   auto request = url_loader_factory_.GetPendingRequest(0)->request;
   EXPECT_EQ(request.url, req_url);
   EXPECT_EQ(request.request_body->elements()
@@ -565,7 +565,7 @@ TEST_F(BitcoinRpcUnitTest, PostTransaction) {
   bitcoin_rpc_->PostTransaction(mojom::kBitcoinMainnet, {1, 2, 3},
                                 future.GetCallback());
   ASSERT_TRUE(base::test::RunUntil(
-      [&] { return url_loader_factory_.NumPending() == 1; }));
+      [&] { return url_loader_factory_.pending_requests()->size() == 1u; }));
   request = url_loader_factory_.GetPendingRequest(0)->request;
   EXPECT_EQ(request.url, req_url);
   url_loader_factory_.AddResponse(req_url, "not valid txid");
@@ -576,7 +576,7 @@ TEST_F(BitcoinRpcUnitTest, PostTransaction) {
   bitcoin_rpc_->PostTransaction(mojom::kBitcoinMainnet, {1, 2, 3},
                                 future.GetCallback());
   ASSERT_TRUE(base::test::RunUntil(
-      [&] { return url_loader_factory_.NumPending() == 1; }));
+      [&] { return url_loader_factory_.pending_requests()->size() == 1u; }));
   request = url_loader_factory_.GetPendingRequest(0)->request;
   EXPECT_EQ(request.url, req_url);
   url_loader_factory_.AddResponse(req_url, txid,
@@ -588,7 +588,7 @@ TEST_F(BitcoinRpcUnitTest, PostTransaction) {
   bitcoin_rpc_->PostTransaction(mojom::kBitcoinTestnet, {1, 2, 3},
                                 future.GetCallback());
   ASSERT_TRUE(base::test::RunUntil(
-      [&] { return url_loader_factory_.NumPending() == 1; }));
+      [&] { return url_loader_factory_.pending_requests()->size() == 1u; }));
   request = url_loader_factory_.GetPendingRequest(0)->request;
   EXPECT_EQ(request.url, testnet_rpc_url_ + "tx");
   EXPECT_EQ(request.request_body->elements()
