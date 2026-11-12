@@ -31,7 +31,6 @@ class DictValue;
                                                      \
  private:                                            \
   friend class ProfileAttributeMigrationTest;        \
-  friend class custom_profile_image::ProfileImage;   \
   void MigrateObsoleteProfileAttributes
 
 #include <chrome/browser/profiles/profile_attributes_entry.h>  // IWYU pragma: export

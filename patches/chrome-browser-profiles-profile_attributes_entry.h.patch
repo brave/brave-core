@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/profiles/profile_attributes_entry.h b/chrome/browser/profiles/profile_attributes_entry.h
+index c260d92ba4e7c0863514fcdd8025d066e881312a..c474ea9546bce1a9c93527ca6bc50cc64eb27aec 100644
+--- a/chrome/browser/profiles/profile_attributes_entry.h
++++ b/chrome/browser/profiles/profile_attributes_entry.h
+@@ -310,6 +310,7 @@ class ProfileAttributesEntry {
+   static const char kAiSubscriptionKey[];
+ 
+  private:
++  friend class custom_profile_image::ProfileImage;
+   friend class ProfileAttributesStorage;
+   FRIEND_TEST_ALL_PREFIXES(ProfileAttributesStorageTest,
+                            EntryInternalAccessors);
