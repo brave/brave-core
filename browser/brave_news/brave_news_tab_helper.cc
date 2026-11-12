@@ -398,6 +398,7 @@ void BraveNewsTabHelper::SetDetectionFinishedCallbackForTesting(
 
 void BraveNewsTabHelper::NotifyDetectionFinished(bool fetched) {
   if (detection_finished_callback_for_testing_) {
+    CHECK_IS_TEST();
     std::move(detection_finished_callback_for_testing_).Run(fetched);
   }
 }
