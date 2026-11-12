@@ -90,6 +90,7 @@ if (toolkit_views) {
       "//chrome/browser/ui/autofill",
       "//chrome/browser/ui/views/bubble",
       "//chrome/test:test_support",
+      "//components/autofill/content/browser:test_support",
       "//components/keyed_service/core",
       "//components/os_crypt/async/browser:test_support",
       "//services/network:test_support",

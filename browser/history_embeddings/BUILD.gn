@@ -180,6 +180,7 @@ source_set("browser_tests") {
     "//chrome/browser/ui/views/location_bar",
     "//chrome/common:constants",
     "//chrome/test:test_support",
+    "//chrome/test/base:browser_test_waiters",
     "//components/history/core/browser",
     "//components/keyed_service/core",
     "//components/omnibox/browser",
