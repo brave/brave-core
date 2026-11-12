@@ -119,13 +119,55 @@ export const ENGLISH_LANGUAGE_SUBTAG = 'en'
 // Tags the multilingual model has a prompt for, mapped to that prompt's ID.
 // Keep in sync with `kMultilingualLanguages` in
 // brave/chromium_src/components/soda/constants.cc.
+// add all tier 1 languages except English
+// from https://huggingface.co/nvidia/nemotron-3.5-asr-streaming-0.6b
 export const MULTILINGUAL_SUPPORTED_LANGUAGES = {
-  'es-ES': 2,
-  'es-US': 3,
+  // Arabic
+  'ar': 7,
+  'ar-AR': 7,
+  // Dutch
+  'nl': 16,
+  'nl-NL': 16,
+  // French
+  'fr': 8,
+  'fr-CA': 100,
+  'fr-FR': 8,
+  // German
+  'de': 9,
+  'de-DE': 9,
+  // Hindi
+  'hi': 6,
+  'hi-IN': 6,
+  'hi-HI': 6,
+  // Italian
+  'it': 15,
   'it-IT': 15,
+  // Japanese
+  'ja-JA': 10,
+  'ja-JP': 10,
+  // Korean
+  'ko': 14,
+  'ko-KR': 14,
+  'ko-KO': 14,
+  // Portuguese
+  'pt': 13,
   'pt-BR': 12,
   'pt-PT': 13,
-  'hi-IN': 6,
+  // Russian
+  'ru': 11,
+  'ru-RU': 11,
+  // Spanish
+  'es': 3,
+  'es-ES': 2,
+  'es-US': 3,
+  // Turkish
+  'tr': 18,
+  'tr-TR': 18,
+  // Ukrainian
+  'uk': 19,
+  'uk-UA': 19,
+  // Vietnamese
+  'vi-VN': 33,
 } as const
 
 export const MULTILINGUAL_LANGUAGE_TAG_TOKENS = new Set(
