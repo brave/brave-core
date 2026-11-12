@@ -9,11 +9,11 @@
 #include <optional>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/email_aliases/email_aliases_metrics.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
 #include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
-class BrowserView;
 class BrowserWindowInterface;
 
 namespace content {
@@ -30,7 +30,7 @@ class EmailAliasesController {
  public:
   DECLARE_USER_DATA(EmailAliasesController);
 
-  EmailAliasesController(BrowserView* browser_view,
+  EmailAliasesController(BrowserWindowInterface& browser,
                          EmailAliasesService* email_aliases_service);
   ~EmailAliasesController();
   EmailAliasesController(const EmailAliasesController&) = delete;
@@ -58,7 +58,7 @@ class EmailAliasesController {
   void ShowPromoBubble(content::WebContents* initiator);
   void OnPromoBubbleClosed(const std::string&);
 
-  raw_ptr<BrowserView> browser_view_ = nullptr;
+  const raw_ref<BrowserWindowInterface> browser_;
   raw_ptr<EmailAliasesService> email_aliases_service_ = nullptr;
 
   raw_ptr<ConstrainedWebDialogDelegate> bubble_ = nullptr;
