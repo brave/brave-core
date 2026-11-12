@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/task/single_thread_task_runner.h"
@@ -28,20 +29,20 @@
 #include "ui/gfx/geometry/rect.h"
 #include "ui/views/focus/focus_manager.h"
 
-PeekControllerImpl::PeekControllerImpl(BrowserWindowInterface& browser,
-                                       BrowserView& browser_view)
-    : PeekController(browser), browser_(browser), browser_view_(browser_view) {
+PeekControllerImpl::PeekControllerImpl(
+    BrowserWindowInterface& browser,
+    BrowserView& browser_view,
+    std::unique_ptr<PeekShieldsPanelProvider> shields_panel_provider)
+    : PeekController(browser),
+      shields_panel_provider_(std::move(shields_panel_provider)),
+      browser_(browser),
+      browser_view_(browser_view) {
+  CHECK(shields_panel_provider_);
   browser_->GetTabStripModel()->AddObserver(this);
 }
 
 PeekControllerImpl::~PeekControllerImpl() {
   Close();
-}
-
-void PeekControllerImpl::SetShieldsPanelProvider(
-    std::unique_ptr<PeekShieldsPanelProvider> provider) {
-  CHECK(!IsShowing());
-  shields_panel_provider_ = std::move(provider);
 }
 
 bool PeekControllerImpl::CanOpenFrom(content::WebContents* source) {
@@ -252,7 +253,6 @@ void PeekControllerImpl::OpenAsTabAndShowCookiesDialog(
 }
 
 void PeekControllerImpl::CreateWidget() {
-  CHECK(shields_panel_provider_);
   views::Widget::InitParams params(
       views::Widget::InitParams::CLIENT_OWNS_WIDGET,
       views::Widget::InitParams::TYPE_WINDOW_FRAMELESS);

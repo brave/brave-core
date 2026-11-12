@@ -33,8 +33,10 @@ class PeekControllerImpl : public PeekController,
                            public views::ViewObserver,
                            public views::WidgetObserver {
  public:
-  PeekControllerImpl(BrowserWindowInterface& browser,
-                     BrowserView& browser_view);
+  PeekControllerImpl(
+      BrowserWindowInterface& browser,
+      BrowserView& browser_view,
+      std::unique_ptr<PeekShieldsPanelProvider> shields_panel_provider);
   PeekControllerImpl(const PeekControllerImpl&) = delete;
   PeekControllerImpl& operator=(const PeekControllerImpl&) = delete;
   ~PeekControllerImpl() override;
@@ -43,8 +45,6 @@ class PeekControllerImpl : public PeekController,
   views::Widget* widget_for_testing() { return widget_.get(); }
 
   // PeekController:
-  void SetShieldsPanelProvider(
-      std::unique_ptr<PeekShieldsPanelProvider> provider) override;
   bool CanOpenFrom(content::WebContents* source) override;
   bool Open(content::WebContents& source,
             const content::OpenURLParams& params) override;
@@ -97,7 +97,7 @@ class PeekControllerImpl : public PeekController,
   void OnWidgetCloseRequested(views::Widget::ClosedReason reason);
 
   // `contents_` must outlive `widget_`, which shows it.
-  std::unique_ptr<PeekShieldsPanelProvider> shields_panel_provider_;
+  const std::unique_ptr<PeekShieldsPanelProvider> shields_panel_provider_;
   std::unique_ptr<PeekContents> contents_;
   std::unique_ptr<views::Widget> widget_;
   base::ScopedObservation<views::View, views::ViewObserver>

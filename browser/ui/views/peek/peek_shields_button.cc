@@ -8,8 +8,6 @@
 #include <utility>
 
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_controller.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -28,9 +26,9 @@ constexpr gfx::Size kButtonSize(24, 24);
 
 }  // namespace
 
-PeekShieldsButton::PeekShieldsButton(BrowserWindowInterface& browser,
+PeekShieldsButton::PeekShieldsButton(PrefService& prefs,
                                      views::Button::PressedCallback callback)
-    : LabelButton(std::move(callback), std::u16string()), browser_(browser) {
+    : LabelButton(std::move(callback), std::u16string()), prefs_(prefs) {
   SetAccessibleName(l10n_util::GetStringUTF16(IDS_BRAVE_SHIELDS));
   SetTooltipText(l10n_util::GetStringUTF16(IDS_BRAVE_SHIELDS));
   SetHorizontalAlignment(gfx::ALIGN_CENTER);
@@ -51,8 +49,7 @@ void PeekShieldsButton::SetWebContents(content::WebContents* contents) {
 void PeekShieldsButton::UpdateImage() {
   SetImageModel(views::Button::STATE_NORMAL,
                 BraveShieldsActionController::GetImageModelForWebContents(
-                    web_contents_.get(), *browser_->GetProfile(), kButtonSize,
-                    kIconSize));
+                    web_contents_.get(), *prefs_, kButtonSize, kIconSize));
 }
 
 void PeekShieldsButton::OnThemeChanged() {

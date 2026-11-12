@@ -36,6 +36,7 @@ source_set("peek") {
     "//components/permissions",
     "//components/web_modal",
     "//content/public/browser",
+    "//ui/base/interaction",
     "//ui/views",
   ]
 
@@ -92,7 +93,10 @@ source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [ "peek_browsertest.cc" ]
+  sources = [
+    "peek_browsertest.cc",
+    "peek_interactive_browsertest.cc",
+  ]
 
   deps = [
     ":peek",
@@ -116,6 +120,7 @@ source_set("browser_tests") {
     "//chrome/common:constants",
     "//chrome/test:test_support",
     "//chrome/test:test_support_ui",
+    "//chrome/test/interaction",
     "//components/input",
     "//components/page_info",
     "//components/permissions",
@@ -131,6 +136,7 @@ source_set("browser_tests") {
     "//testing/gtest",
     "//third_party/blink/public/common",
     "//ui/base",
+    "//ui/base/interaction",
     "//ui/events",
     "//ui/gfx",
     "//ui/gfx:test_support",

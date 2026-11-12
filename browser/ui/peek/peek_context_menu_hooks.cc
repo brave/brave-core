@@ -50,6 +50,7 @@ void OpenLinkInPeek(BrowserWindowInterface* browser,
   }
   scoped_refptr<content::InitiatorNavigationState> initiator_state =
       initiator_frame->GetCurrentInitiatorNavigationState();
+  // Fail closed: don't fall back to a load with only the initiator's origin.
   if (!initiator_state) {
     return;
   }
