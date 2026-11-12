@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/files/file_util.h"
+#include "base/functional/callback_helpers.h"
 #include "base/scoped_observation.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "base/test/bind.h"
@@ -19,6 +20,7 @@
 #include "brave/browser/profiles/custom_profile_image/image_file.h"
 #include "brave/browser/ui/webui/custom_profile_image/features.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
+#include "chrome/browser/profiles/profile_attributes_init_params.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -230,6 +232,24 @@ TEST_F(CustomProfileImageTest, RemovalRunsAfterPendingWrite) {
   EXPECT_EQ(removed.Get(), Result::kSuccess);
   EXPECT_FALSE(image().HasSavedImage());
   EXPECT_FALSE(base::PathExists(ImagePath()));
+}
+
+TEST_F(CustomProfileImageTest, NewProfileAtSamePathHasNoImage) {
+  Save(SK_ColorRED);
+  // A write still pending at removal must not reach the new profile.
+  image().Replace(Bitmap(SK_ColorBLUE), base::DoNothing());
+  auto& storage = manager_.profile_manager()->GetProfileAttributesStorage();
+  storage.RemoveProfile(path_);
+  ProfileAttributesInitParams params;
+  params.profile_path = path_;
+  params.profile_name = u"Reused";
+  storage.AddProfile(std::move(params));
+  base::ThreadPoolInstance::Get()->FlushForTesting();
+  EXPECT_FALSE(image().HasSavedImage());
+  EXPECT_FALSE(image().IsActive());
+  EXPECT_TRUE(image().GetImage().IsEmpty());
+  EXPECT_FALSE(base::PathExists(ImagePath()));
+  EXPECT_FALSE(base::PathExists(PendingPath()));
 }
 
 TEST_F(CustomProfileImageTest, ReloadShowsPresetUntilSavedImageLoads) {
