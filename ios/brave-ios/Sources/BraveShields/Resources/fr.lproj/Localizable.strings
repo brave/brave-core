@@ -2,7 +2,7 @@
 "AboutBraveShields" = "À propos des boucliers Brave";
 
 /* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "Les sites comprennent souvent des cookies et des scripts qui tentent de vous identifier et d'identifier votre appareil. Ils cherchent à savoir qui vous êtes et vous suivent sur le Web, traquant vos actions sur chaque site.\n\nBrave bloque cela pour que vous puissiez naviguer sans vous sentir épié.";
+"AboutBraveShieldsBody" = "Les sites comprennent souvent des cookies et des scripts qui tentent de vous identifier et d’identifier votre appareil. Ils cherchent à savoir qui vous êtes et vous suivent sur le Web, traquant vos actions sur chaque site.\n\nBrave bloque cela pour que vous puissiez naviguer sans vous sentir épié.";
 
 /* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
 "AddCustomFilterListDescription" = "Ajoutez des listes supplémentaires créées et maintenues par une communauté de confiance.";
@@ -44,10 +44,10 @@
 "AutoRedirectAMPPagesDescription" = "Toujours visiter les URL des pages originales (non AMP), au lieu des versions accélérées des pages mobiles de Google.";
 
 /* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
-"AutoRedirectTrackingURLs" = "Rediriger automatiquement les URL de suivi";
+"AutoRedirectTrackingURLs" = "Redirection automatique des URL de suivi";
 
 /* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
-"AutoRedirectTrackingURLsDescription" = "Activer la prise en charge du contournement des URL de suivi de redirection de niveau supérieur";
+"AutoRedirectTrackingURLsDescription" = "Active la prise en charge du contournement des URL de suivi de redirection de niveau supérieur.";
 
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "Suppression automatique";
@@ -56,7 +56,7 @@
 "AutoShredSectionTitle" = "Effacer automatiquement les données de navigation";
 
 /* Text for a button in a blocked page or a page not secure info screen that takes you back where you came from or back to home screen */
-"BackToSafetyButtonTitle" = "Retour à la sécurité";
+"BackToSafetyButtonTitle" = "Retour en sécurité";
 
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Agressif";
@@ -71,13 +71,13 @@
 "BlockAdsAndTrackingStandard" = "Standard";
 
 /* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "Blocage des demandes d’installation d’applications";
+"blockMobileAnnoyances" = "Bloquer les avis « Changer d'app »";
 
 /* No comment provided by engineer. */
-"BlockScripts" = "Bloquer les scripts";
+"BlockScripts" = "Blocage des scripts";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "Bloque JavaScript (certains sites risquent de ne pas fonctionner correctement).";
+"BlockScriptsDescription" = "Bloque JavaScript (certains sites risquent de ne pas fonctionner correctement)";
 
 /* Title for the brave player feature */
 "BravePlayer" = "Lecteur Brave";
@@ -110,13 +110,13 @@
 "BraveShieldsGlobalChangeButton" = "Modifier les paramètres généraux par défaut des Boucliers";
 
 /* No comment provided by engineer. */
-"BraveShieldsGlobalControls" = "Contrôles globaux";
+"BraveShieldsGlobalControls" = "Paramètres généraux";
 
 /* Shields panel toggle label that would save webcompat report contact info data when enabled. */
 "BraveShieldsSaveContactInfo" = "Enregistrement des informations de contact pour les rapports";
 
 /* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfoDescription" = "Si vous fournissez des coordonnées, elles seront enregistrées pour de futurs rapports.";
+"BraveShieldsSaveContactInfoDescription" = "Si vous fournissez vos informations de contact, celles-ci seront conservées pour d’éventuels futurs rapports.";
 
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "Si ce site semble ne pas fonctionner correctement, essayez de désactiver les boucliers.";
@@ -191,7 +191,7 @@
 "EnableGPCDescription" = "Demande aux sites de ne pas vendre ni de partager vos données. [En savoir plus](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
 
 /* A label of the GPC toggle */
-"EnableGPCLabel" = "Activer Global Privacy Control";
+"EnableGPCLabel" = "Activer le contrôle global de la confidentialité";
 
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "Temps gagné \nestimé";
@@ -209,7 +209,7 @@
 "FilterListsAdd" = "Ajouter";
 
 /* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Listes les plus populaires créées par la communauté. Notez que l’activation d’un trop grand nombre de filtres risque de ralentir le chargement des pages.";
+"FilterListsDescription" = "Listes les plus populaires créées par la communauté. Notez que l'activation d'un trop grand nombre de filtres risque de ralentir le chargement des pages.";
 
 /* This is a generic error message when downloading a filter list fails. */
 "FilterListsDownloadFailed" = "Échec du téléchargement";
@@ -218,10 +218,10 @@
 "FilterListsDownloadPending" = "Téléchargement en attente";
 
 /* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Modifier";
+"FilterListsEdit" = "Édition";
 
 /* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Saisissez l’URL de la liste de filtres";
+"FilterListsEnterFilterListURL" = "Saisissez l'URL de la liste de filtres";
 
 /* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
 "FilterListsLastUpdatedLabel" = "Dernière mise à jour %@";
@@ -368,7 +368,7 @@
 "ShredNeverDescription" = "Les données de navigation ne sont jamais broyées automatiquement";
 
 /* An option setting for automatically shredding only when the app is closed */
-"ShredOnAppClose" = "Fermeture de l’application";
+"ShredOnAppClose" = "Fermeture de l'application";
 
 /* The description for shredding when the app is closed */
 "ShredOnAppCloseDescription" = "Les données de navigation sont automatiquement broyées lorsque l'application Brave est fermée / redémarrée";
@@ -398,7 +398,7 @@
 "shredSiteSelectedTabsConfirmationMessage" = "La suppression fermera les onglets sélectionnés et effacera toutes les données du site. Cette action est irréversible.";
 
 /* A page title for the warning page that appears when http was blocked */
-"SiteIsNotSecure" = "Le site n’est pas sécurisé";
+"SiteIsNotSecure" = "Le site n'est pas sécurisé";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Merci d'avoir signalé aux développeurs de Brave que ce site ne fonctionne pas correctement. Nous allons faire de notre mieux pour corriger le problème !";
@@ -407,7 +407,7 @@
 "SiteReportedTitle" = "Merci";
 
 /* A page title for the warning page that appears when http was blocked */
-"TheConnectionIsNotSecure" = "La connexion à %@ n’est pas sécurisée";
+"TheConnectionIsNotSecure" = "La connexion à %@ n'est pas sécurisée";
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Blocage des traqueurs et annonces";
@@ -422,7 +422,7 @@
 "UpdatingLists" = "Mise à jour des listes en cours…";
 
 /* The option the user can select for the type of https upgrading */
-"UpgradeConnectionsToHTTPS" = "Mise à niveau des connexions vers HTTPS";
+"UpgradeConnectionsToHTTPS" = "Mettre à niveau les connexions vers HTTPS";
 
 /* A description shown an a page where the http page was blocked */
 "YourConnectionIsNotPrivate" = "Vous voyez cet avertissement parce que ce site ne prend pas en charge le protocole HTTPS.";
