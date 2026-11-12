@@ -445,10 +445,14 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   auto* containers_service =
       ContainersServiceFactory::GetForProfile(browser_->GetProfile());
 
-  UpdateCommandEnabled(IDC_NEW_TEMPORARY_CONTAINER, containers_service);
+  const bool enable_containers_commands =
+      containers_service && containers_service->ShouldShowContainerControls();
+
+  UpdateCommandEnabled(IDC_NEW_TEMPORARY_CONTAINER, enable_containers_commands);
 
   const size_t container_count =
-      containers_service ? containers_service->GetContainers().size() : 0;
+      enable_containers_commands ? containers_service->GetContainers().size()
+                                 : 0;
 
   for (int id = IDC_NEW_TAB_IN_CONTAINER_1; id <= IDC_NEW_TAB_IN_CONTAINER_9;
        ++id) {
