@@ -68,6 +68,7 @@ MATCHER_P(YieldsUrlData, expected_rows_matcher, "") {
 
 constexpr int64_t kEmbeddingsVersion = 1;
 constexpr size_t kEmbeddingsSize = 3ul;
+constexpr uint32_t kInputWindowSize = 512;
 
 PassageEmbedding FakeEmbedding() {
   return {Embedding({1.0f, 0.0f, 0.0f}), 10};
@@ -162,8 +163,9 @@ class HistoryEmbeddingsSqlDatabaseTest : public testing::Test {
 
 TEST_F(HistoryEmbeddingsSqlDatabaseTest, WriteCloseAndThenReadPassages) {
   auto sql_database = MakeDatabase();
-  sql_database->SetEmbedderMetadata({kEmbeddingsVersion, kEmbeddingsSize},
-                                    GetEncryptorInstance());
+  sql_database->SetEmbedderMetadata(
+      {kEmbeddingsVersion, kEmbeddingsSize, kInputWindowSize},
+      GetEncryptorInstance());
 
   // Write passages
   UrlData url_passages(1, 1, base::Time::Now());
@@ -176,8 +178,9 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, WriteCloseAndThenReadPassages) {
   // Reset and reload.
   sql_database.reset();
   sql_database = MakeDatabase();
-  sql_database->SetEmbedderMetadata({kEmbeddingsVersion, kEmbeddingsSize},
-                                    GetEncryptorInstance());
+  sql_database->SetEmbedderMetadata(
+      {kEmbeddingsVersion, kEmbeddingsSize, kInputWindowSize},
+      GetEncryptorInstance());
 
   // Read passages
   auto read_proto = sql_database->GetPassages(1);
@@ -194,8 +197,9 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, WriteCloseAndThenReadPassages) {
 
 TEST_F(HistoryEmbeddingsSqlDatabaseTest, WriteCloseAndThenReadUrlData) {
   auto sql_database = MakeDatabase();
-  sql_database->SetEmbedderMetadata({kEmbeddingsVersion, kEmbeddingsSize},
-                                    GetEncryptorInstance());
+  sql_database->SetEmbedderMetadata(
+      {kEmbeddingsVersion, kEmbeddingsSize, kInputWindowSize},
+      GetEncryptorInstance());
 
   // Write embeddings.
   auto url_datas = std::to_array<UrlData>({
@@ -214,8 +218,9 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, WriteCloseAndThenReadUrlData) {
   // Reset and reload.
   sql_database.reset();
   sql_database = MakeDatabase();
-  sql_database->SetEmbedderMetadata({kEmbeddingsVersion, kEmbeddingsSize},
-                                    GetEncryptorInstance());
+  sql_database->SetEmbedderMetadata(
+      {kEmbeddingsVersion, kEmbeddingsSize, kInputWindowSize},
+      GetEncryptorInstance());
 
   // Read embeddings.
   {
@@ -239,8 +244,9 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, WriteCloseAndThenReadUrlData) {
 
 TEST_F(HistoryEmbeddingsSqlDatabaseTest, TimeRangeNarrowsSearchResult) {
   auto sql_database = MakeDatabase();
-  sql_database->SetEmbedderMetadata({kEmbeddingsVersion, kEmbeddingsSize},
-                                    GetEncryptorInstance());
+  sql_database->SetEmbedderMetadata(
+      {kEmbeddingsVersion, kEmbeddingsSize, kInputWindowSize},
+      GetEncryptorInstance());
 
   // Write embeddings.
   const base::Time now = base::Time::Now();
@@ -310,8 +316,9 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, TimeRangeNarrowsSearchResult) {
 
 TEST_F(HistoryEmbeddingsSqlDatabaseTest, InsertOrReplacePassages) {
   auto sql_database = MakeDatabase();
-  sql_database->SetEmbedderMetadata({kEmbeddingsVersion, kEmbeddingsSize},
-                                    GetEncryptorInstance());
+  sql_database->SetEmbedderMetadata(
+      {kEmbeddingsVersion, kEmbeddingsSize, kInputWindowSize},
+      GetEncryptorInstance());
 
   UrlData url_data(1, 1, base::Time::Now());
   url_data.passages.add_passages("fake passage 1");
@@ -337,8 +344,9 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, InsertOrReplacePassages) {
 
 TEST_F(HistoryEmbeddingsSqlDatabaseTest, IteratorMaySafelyOutliveDatabase) {
   auto sql_database = MakeDatabase();
-  sql_database->SetEmbedderMetadata({kEmbeddingsVersion, kEmbeddingsSize},
-                                    GetEncryptorInstance());
+  sql_database->SetEmbedderMetadata(
+      {kEmbeddingsVersion, kEmbeddingsSize, kInputWindowSize},
+      GetEncryptorInstance());
   AddBasicMockData(sql_database.get());
 
   // Without database reset, iteration reads data.
@@ -366,8 +374,9 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, IteratorMaySafelyOutliveDatabase) {
 TEST_F(HistoryEmbeddingsSqlDatabaseTest,
        MakeUrlDataIteratorWithUrlIdFilterReturnsOnlyMatching) {
   auto sql_database = MakeDatabase();
-  sql_database->SetEmbedderMetadata({kEmbeddingsVersion, kEmbeddingsSize},
-                                    GetEncryptorInstance());
+  sql_database->SetEmbedderMetadata(
+      {kEmbeddingsVersion, kEmbeddingsSize, kInputWindowSize},
+      GetEncryptorInstance());
   AddBasicMockData(sql_database.get());
 
   std::vector<history::URLID> filter = {2};
@@ -378,8 +387,9 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest,
 TEST_F(HistoryEmbeddingsSqlDatabaseTest,
        MakeUrlDataIteratorWithUrlIdFilterSkipsUnknownIds) {
   auto sql_database = MakeDatabase();
-  sql_database->SetEmbedderMetadata({kEmbeddingsVersion, kEmbeddingsSize},
-                                    GetEncryptorInstance());
+  sql_database->SetEmbedderMetadata(
+      {kEmbeddingsVersion, kEmbeddingsSize, kInputWindowSize},
+      GetEncryptorInstance());
   AddBasicMockData(sql_database.get());
 
   std::vector<history::URLID> filter = {1, 999};
@@ -390,8 +400,9 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest,
 TEST_F(HistoryEmbeddingsSqlDatabaseTest,
        MakeUrlDataIteratorWithEmptyUrlIdFilterFallsBackToUnfiltered) {
   auto sql_database = MakeDatabase();
-  sql_database->SetEmbedderMetadata({kEmbeddingsVersion, kEmbeddingsSize},
-                                    GetEncryptorInstance());
+  sql_database->SetEmbedderMetadata(
+      {kEmbeddingsVersion, kEmbeddingsSize, kInputWindowSize},
+      GetEncryptorInstance());
   AddBasicMockData(sql_database.get());
 
   EXPECT_THAT(sql_database->MakeUrlDataIterator({}, {}),
@@ -402,8 +413,9 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest,
 TEST_F(HistoryEmbeddingsSqlDatabaseTest,
        MakeUrlDataIteratorWithUrlIdFilterSkipsRowsWithoutEmbeddings) {
   auto sql_database = MakeDatabase();
-  sql_database->SetEmbedderMetadata({kEmbeddingsVersion, kEmbeddingsSize},
-                                    GetEncryptorInstance());
+  sql_database->SetEmbedderMetadata(
+      {kEmbeddingsVersion, kEmbeddingsSize, kInputWindowSize},
+      GetEncryptorInstance());
   AddBasicMockData(sql_database.get());
 
   // Drop embeddings while keeping passages. The filter should still resolve
@@ -419,8 +431,9 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest,
 TEST_F(HistoryEmbeddingsSqlDatabaseTest,
        MakeUrlDataIteratorWithUrlIdFilterAppliesTimeRange) {
   auto sql_database = MakeDatabase();
-  sql_database->SetEmbedderMetadata({kEmbeddingsVersion, kEmbeddingsSize},
-                                    GetEncryptorInstance());
+  sql_database->SetEmbedderMetadata(
+      {kEmbeddingsVersion, kEmbeddingsSize, kInputWindowSize},
+      GetEncryptorInstance());
 
   const base::Time t_old = base::Time::Now() - base::Days(2);
   const base::Time t_new = base::Time::Now();
@@ -446,8 +459,9 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest,
 
 TEST_F(HistoryEmbeddingsSqlDatabaseTest, DeleteDataForUrlId) {
   auto sql_database = MakeDatabase();
-  sql_database->SetEmbedderMetadata({kEmbeddingsVersion, kEmbeddingsSize},
-                                    GetEncryptorInstance());
+  sql_database->SetEmbedderMetadata(
+      {kEmbeddingsVersion, kEmbeddingsSize, kInputWindowSize},
+      GetEncryptorInstance());
   AddBasicMockData(sql_database.get());
 
   EXPECT_TRUE(sql_database->DeleteDataForUrlId(3))
@@ -466,8 +480,9 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, DeleteDataForUrlId) {
 
 TEST_F(HistoryEmbeddingsSqlDatabaseTest, DeleteDataForVisitId) {
   auto sql_database = MakeDatabase();
-  sql_database->SetEmbedderMetadata({kEmbeddingsVersion, kEmbeddingsSize},
-                                    GetEncryptorInstance());
+  sql_database->SetEmbedderMetadata(
+      {kEmbeddingsVersion, kEmbeddingsSize, kInputWindowSize},
+      GetEncryptorInstance());
   AddBasicMockData(sql_database.get());
 
   EXPECT_TRUE(sql_database->DeleteDataForVisitId(40))
@@ -486,8 +501,9 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, DeleteDataForVisitId) {
 
 TEST_F(HistoryEmbeddingsSqlDatabaseTest, DeleteAllData) {
   auto sql_database = MakeDatabase();
-  sql_database->SetEmbedderMetadata({kEmbeddingsVersion, kEmbeddingsSize},
-                                    GetEncryptorInstance());
+  sql_database->SetEmbedderMetadata(
+      {kEmbeddingsVersion, kEmbeddingsSize, kInputWindowSize},
+      GetEncryptorInstance());
   AddBasicMockData(sql_database.get());
 
   EXPECT_TRUE(sql_database->DeleteAllData(true, true));
@@ -509,8 +525,9 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, DeleteDataWithoutEmbedderMetadata) {
     ASSERT_FALSE(sql_database->AddUrlData(url_data));
 
     // With metadata set, now adding the data succeeds.
-    sql_database->SetEmbedderMetadata({kEmbeddingsVersion, kEmbeddingsSize},
-                                      GetEncryptorInstance());
+    sql_database->SetEmbedderMetadata(
+        {kEmbeddingsVersion, kEmbeddingsSize, kInputWindowSize},
+        GetEncryptorInstance());
     ASSERT_TRUE(sql_database->AddUrlData(url_data));
 
     // Don't delete yet. That would succeed as normal. Close with data resident.
@@ -521,8 +538,9 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, DeleteDataWithoutEmbedderMetadata) {
     // metadata is provided.
     auto sql_database = MakeDatabase();
     EXPECT_FALSE(sql_database->GetPassages(1));
-    sql_database->SetEmbedderMetadata({kEmbeddingsVersion, kEmbeddingsSize},
-                                      GetEncryptorInstance());
+    sql_database->SetEmbedderMetadata(
+        {kEmbeddingsVersion, kEmbeddingsSize, kInputWindowSize},
+        GetEncryptorInstance());
     EXPECT_TRUE(sql_database->GetPassages(1));
     EXPECT_EQ(GetEmbeddingCount(sql_database.get()), 1U);
     // Again deletion would work as normal here.
@@ -536,8 +554,9 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, DeleteDataWithoutEmbedderMetadata) {
     EXPECT_TRUE(sql_database->DeleteAllData(true, true));
 
     // Now there's no data to retrieve, even after metadata is provided.
-    sql_database->SetEmbedderMetadata({kEmbeddingsVersion, kEmbeddingsSize},
-                                      GetEncryptorInstance());
+    sql_database->SetEmbedderMetadata(
+        {kEmbeddingsVersion, kEmbeddingsSize, kInputWindowSize},
+        GetEncryptorInstance());
     EXPECT_FALSE(sql_database->GetPassages(1));
     EXPECT_EQ(GetEmbeddingCount(sql_database.get()), 0U);
   }
@@ -545,8 +564,9 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, DeleteDataWithoutEmbedderMetadata) {
 
 TEST_F(HistoryEmbeddingsSqlDatabaseTest, GetUrlData) {
   auto sql_database = MakeDatabase();
-  sql_database->SetEmbedderMetadata({kEmbeddingsVersion, kEmbeddingsSize},
-                                    GetEncryptorInstance());
+  sql_database->SetEmbedderMetadata(
+      {kEmbeddingsVersion, kEmbeddingsSize, kInputWindowSize},
+      GetEncryptorInstance());
   {
     UrlData url_data(1, 1, base::Time::Now());
     url_data.passages.add_passages("fake passage 1");
@@ -589,8 +609,9 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, GetUrlData) {
 
 TEST_F(HistoryEmbeddingsSqlDatabaseTest, IterationSkipsAndReportsMismatches) {
   auto sql_database = MakeDatabase();
-  sql_database->SetEmbedderMetadata({kEmbeddingsVersion, kEmbeddingsSize},
-                                    GetEncryptorInstance());
+  sql_database->SetEmbedderMetadata(
+      {kEmbeddingsVersion, kEmbeddingsSize, kInputWindowSize},
+      GetEncryptorInstance());
 
   // Write embeddings.
   auto url_datas = std::to_array<UrlData>({
@@ -628,8 +649,9 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, IterationSkipsAndReportsMismatches) {
 
 TEST_F(HistoryEmbeddingsSqlDatabaseTest, OldVisitsAreExpired) {
   auto sql_database = MakeDatabase();
-  sql_database->SetEmbedderMetadata({kEmbeddingsVersion, kEmbeddingsSize},
-                                    GetEncryptorInstance());
+  sql_database->SetEmbedderMetadata(
+      {kEmbeddingsVersion, kEmbeddingsSize, kInputWindowSize},
+      GetEncryptorInstance());
 
   // Write embeddings; one for an old visit, one for a new visit.
   auto url_datas = std::to_array<UrlData>({
@@ -647,8 +669,9 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, OldVisitsAreExpired) {
   // Reset and reload.
   sql_database.reset();
   sql_database = MakeDatabase();
-  sql_database->SetEmbedderMetadata({kEmbeddingsVersion, kEmbeddingsSize},
-                                    GetEncryptorInstance());
+  sql_database->SetEmbedderMetadata(
+      {kEmbeddingsVersion, kEmbeddingsSize, kInputWindowSize},
+      GetEncryptorInstance());
 
   // Read embeddings; only last visit will be found because first expired.
   EXPECT_FALSE(sql_database->GetUrlData(/*url_id=*/1).has_value());
