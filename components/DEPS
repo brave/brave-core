@@ -33,29 +33,29 @@ specific_include_rules = {
   # This is an exclusion list for browser tests written before proper dependency
   # checking was implemented. These tests should be migrated out of
   # //brave/components into //brave/browser eventually.
-  "brave_content_settings_agent_impl_browsertest\.cc": [
+  "brave_content_settings_agent_impl_browsertest\\.cc": [
     "+chrome",
     "+content",
   ],
-  "brave_wayback_machine_browsertest\.cc": [
+  "brave_wayback_machine_browsertest\\.cc": [
     "+brave/browser",
     "+chrome",
   ],
-  "de_amp_browsertest\.cc": [
+  "de_amp_browsertest\\.cc": [
     "+chrome",
     "+content",
   ],
-  "perf_predictor_tab_helper_browsertest\.cc": [
+  "perf_predictor_tab_helper_browsertest\\.cc": [
     "+brave/browser",
     "+chrome",
   ],
-  "webcompat_exceptions_unittest\.cc": [
+  "webcompat_exceptions_unittest\\.cc": [
     "+chrome",
     "+content",
     "!brave/components/constants/brave_paths.h",
   ],
   # brave_paths.h overrides
-  ".*browsertest.*\.cc": [
+  ".*browsertest.*\\.cc": [
     # browser tests that are still in components can use brave_paths because
     # they belong in brave/browser
     "+brave/components/constants/brave_paths.h",

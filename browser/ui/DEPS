@@ -11,7 +11,7 @@ include_rules += [
 ]
 
 specific_include_rules = {
-  "brave_file_select_utils_unittest\.cc": [
+  "brave_file_select_utils_unittest\\.cc": [
     "+brave/components/l10n/common/test/scoped_default_locale.h",
   ],
 }
