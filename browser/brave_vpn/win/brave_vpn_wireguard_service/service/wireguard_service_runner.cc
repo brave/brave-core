@@ -13,7 +13,6 @@
 
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/wireguard_service_runner.h"
 
-#include <atlsecurity.h>
 #include <sddl.h>
 #include <wrl/module.h>
 
@@ -26,6 +25,7 @@
 #include "base/run_loop.h"
 #include "base/task/single_thread_task_executor.h"
 #include "base/threading/thread_restrictions.h"
+#include "base/win/atl.h"
 #include "base/win/scoped_com_initializer.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/brave_wireguard_manager.h"
 #include "brave/browser/brave_vpn/win/service_details.h"
