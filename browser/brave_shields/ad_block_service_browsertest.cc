@@ -1377,6 +1377,56 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CnameCloakedRequestsCanBeExcepted) {
   ASSERT_EQ(5ULL, inner_resolver->num_resolve());
 }
 
+// Uses the browser test host resolver instead of
+// `SetAdblockCnameHostResolverForTesting`, which bypasses the network context
+// lookup that worker requests depend on.
+class CnameUncloakingWorkerTest : public AdBlockServiceTest {
+ public:
+  void SetUpOnMainThread() override {
+    host_resolver()->AddIPLiteralRuleWithDnsAliases(
+        "a83idbka2e.a.com", "127.0.0.1", {"cname-cloak-endpoint.tracking.com"});
+    host_resolver()->AddIPLiteralRuleWithDnsAliases("a.com", "127.0.0.1",
+                                                    {"assets.cdn.net"});
+    AdBlockServiceTest::SetUpOnMainThread();
+  }
+
+ protected:
+  // Returns whether a fetch of `host` from the worker that `helper` creates
+  // loaded.
+  content::EvalJsResult WorkerFetch(const std::string& helper,
+                                    std::string_view host) {
+    return EvalJs(
+        web_contents(),
+        content::JsReplace(helper + "($1)",
+                           embedded_test_server()->GetURL(host, "/logo.png")));
+  }
+
+  void ExpectCloakedFetchBlocked(const std::string& helper) {
+    UpdateAdBlockInstanceWithRules("||cname-cloak-endpoint.tracking.com^");
+    NavigateToURL(embedded_test_server()->GetURL(kAdBlockTestPage));
+    // Positive control: this host's canonical name doesn't match the rule.
+    EXPECT_EQ(true, WorkerFetch(helper, "a.com"));
+    EXPECT_EQ(false, WorkerFetch(helper, "a83idbka2e.a.com"));
+  }
+};
+
+// CNAME uncloaking should apply to requests from shared and service workers,
+// which have no frame.
+// Regression test for https://github.com/brave/brave-browser/issues/61766.
+IN_PROC_BROWSER_TEST_F(CnameUncloakingWorkerTest, SharedWorkerRequest) {
+  ExpectCloakedFetchBlocked("checkSharedWorkerFetch");
+}
+
+IN_PROC_BROWSER_TEST_F(CnameUncloakingWorkerTest, ServiceWorkerRequest) {
+  ExpectCloakedFetchBlocked("checkServiceWorkerFetch");
+}
+
+// Dedicated worker requests were already uncloaked; this test acts as a
+// control.
+IN_PROC_BROWSER_TEST_F(CnameUncloakingWorkerTest, DedicatedWorkerRequest) {
+  ExpectCloakedFetchBlocked("checkDedicatedWorkerFetch");
+}
+
 // `$removeparam` should happen for the original URL, not the CNAME-uncloaked
 // one
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NoRemoveparamOnCnameUncloakedUrl) {
