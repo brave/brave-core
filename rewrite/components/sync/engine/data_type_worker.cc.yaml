@@ -1,0 +1,33 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Drop any entity about to be committed with unencrypted specifics.
+
+      Brave's sync chain is always in encrypt-everything mode, so an upstream
+      type whose EncryptionPolicy is kNeverEncrypted commits plain text
+      silently. This is the last point where the list is still mutable: the
+      worker has just encrypted it, and CommitContributionImpl maps its entries
+      to commit responses by position, so entities cannot be skipped later.
+      Dropping leaves them unsynced in the processor rather than failing the
+      whole type. If only some entities are dropped, they are offered again
+      next cycle. If all of them are, the empty response returns nullptr and
+      skips OnCommitCompleted, so they are not offered again until something
+      else of that type commits, they are edited, sync reconnects or the
+      browser restarts. No leak either way.
+
+      The dump lives in ReportDroppedUnencryptedCommits rather than in the drop
+      itself, so that a unit test can exercise the drop without being killed by
+      it.
+    add_before_line:
+      line: 'return std::make_unique<CommitContributionImpl>('
+      code: |2-
+          if (DropUnencryptedCommitRequests(type_, passphrase_type_, &response) > 0) {
+            ReportDroppedUnencryptedCommits(type_);
+          }
+          if (response.empty()) {
+            return nullptr;
+          }
