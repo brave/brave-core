@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/devtools/devtools_ui_bindings.cc b/chrome/browser/devtools/devtools_ui_bindings.cc
+index 7ab3e80be5b760e15a06157eededcc32ccfd0f56..db9268009ed1ed359709158b7ec6deb2d2182c95 100644
+--- a/chrome/browser/devtools/devtools_ui_bindings.cc
++++ b/chrome/browser/devtools/devtools_ui_bindings.cc
+@@ -2355,6 +2355,12 @@ base::DictValue DevToolsUIBindings::GetHostConfigDictionary(Profile* profile) {
+           "enabled", base::FeatureList::IsEnabled(
+                          ::features::kDevToolsAiNaturalLanguageInterface)));
+ 
++  response_dict.Set(
++      "braveReportingApi",
++      base::DictValue().Set("enabled",
++                            base::FeatureList::IsEnabled(
++                                blink::features::kBraveReportingAPI)));
++
+   return response_dict;
+ }
+ 
