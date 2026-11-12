@@ -13,8 +13,6 @@ source_set("resources") {
 
   deps = [
     "//base",
-    "//base:i18n",
-    "//third_party/icu",
     "//ui/base",
   ]
   if (!enable_resource_allowlist_generation) {
@@ -29,8 +27,11 @@ source_set("unit_tests") {
   deps = [
     ":resources",
     "//base",
+    "//base:i18n",
+    "//base/i18n:test_support",
+    "//base/test:test_support",
     "//brave/components/constants",
     "//testing/gtest",
-    "//third_party/icu",
+    "//ui/base",
   ]
 }

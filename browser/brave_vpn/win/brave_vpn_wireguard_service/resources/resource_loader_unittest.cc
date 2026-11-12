@@ -5,47 +5,45 @@
 
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/resources/resource_loader.h"
 
-#include <memory>
-#include <utility>
-
 #include "base/files/file_path.h"
+#include "base/i18n/icubridge/default_icu_locale.h"
+#include "base/i18n/language_tag.h"
+#include "base/i18n/test/scoped_icu_locale.h"
 #include "base/path_service.h"
+#include "base/test/scoped_path_override.h"
 #include "brave/components/constants/brave_paths.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/icu/source/common/unicode/locid.h"
+#include "ui/base/ui_base_paths.h"
 
 namespace brave_vpn {
 
-TEST(ResourceLoaderTest, FindPakPath) {
+namespace {
+
+base::FilePath GetWireguardTestDataDir() {
   base::FilePath test_data_dir;
   base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-  base::FilePath wireguard = test_data_dir.Append(L"wireguard");
-  // Looking to upper directory.
-  EXPECT_EQ(
-      FindPakFilePath(wireguard.Append(L"BraveVpnWireguardService"), "en-US"),
-      base::FilePath(wireguard.Append(L"Locales").Append(L"en-US.pak")));
-  // Looking to current directory.
-  EXPECT_EQ(FindPakFilePath(wireguard, "en-US"),
-            base::FilePath(wireguard.Append(L"Locales").Append(L"en-US.pak")));
-  // Fallback to english locale.
-  EXPECT_EQ(FindPakFilePath(wireguard, "de-DE"),
-            base::FilePath(wireguard.Append(L"Locales").Append(L"en-US.pak")));
+  return test_data_dir.Append(L"wireguard");
 }
 
-TEST(ResourceLoaderTest, GetSystemLocale) {
-  const icu::Locale original = icu::Locale::getDefault();
-  for (const auto [icu_name, expected] :
-       {std::pair{"en_US", "en-US"}, std::pair{"de", "de"},
-        std::pair{"es_419", "es-419"}, std::pair{"pt_BR", "pt-BR"},
-        std::pair{"zh_CN", "zh-CN"}, std::pair{"zh_TW", "zh-TW"}}) {
-    SCOPED_TRACE(icu_name);
-    UErrorCode status = U_ZERO_ERROR;
-    icu::Locale::setDefault(icu::Locale(icu_name), status);
-    ASSERT_TRUE(U_SUCCESS(status));
-    EXPECT_EQ(GetSystemLocale(), expected);
-  }
-  UErrorCode status = U_ZERO_ERROR;
-  icu::Locale::setDefault(original, status);
+}  // namespace
+
+TEST(ResourceLoaderTest, FindLocalesDir) {
+  const base::FilePath wireguard = GetWireguardTestDataDir();
+  // Looking to upper directory.
+  EXPECT_EQ(FindLocalesDir(wireguard.Append(L"BraveVpnWireguardService")),
+            wireguard.Append(L"Locales"));
+  // Looking to current directory.
+  EXPECT_EQ(FindLocalesDir(wireguard), wireguard.Append(L"Locales"));
+}
+
+TEST(ResourceLoaderTest, SelectLocaleFallsBackToEnglishAndSetsIcu) {
+  base::ScopedPathOverride locales_dir(ui::DIR_LOCALES);
+  base::i18n::ScopedDefaultIcuLocale icu_locale(
+      base::i18n::GetKnownLanguageTag("fr"));
+
+  // The test data has only an "en-US" pak, whatever the OS prefers.
+  EXPECT_EQ(SelectLocale(GetWireguardTestDataDir()), "en-US");
+  EXPECT_EQ(base::i18n::GetDefaultIcuLocale().tag_string(), "en-US");
 }
 
 }  // namespace brave_vpn
