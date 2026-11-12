@@ -238,7 +238,9 @@ TEST_F(CustomProfileImageTest, RemovalRunsAfterPendingWrite) {
 TEST_F(CustomProfileImageTest, NewProfileAtSamePathHasNoImage) {
   Save(SK_ColorRED);
   // A write still pending at removal must not reach the new profile.
-  image().Replace(Bitmap(SK_ColorBLUE), base::DoNothing());
+  bool replied = false;
+  image().Replace(Bitmap(SK_ColorBLUE),
+                  base::BindLambdaForTesting([&](Result) { replied = true; }));
   auto& storage = manager_.profile_manager()->GetProfileAttributesStorage();
   storage.RemoveProfile(path_);
   ProfileAttributesInitParams params;
@@ -246,6 +248,8 @@ TEST_F(CustomProfileImageTest, NewProfileAtSamePathHasNoImage) {
   params.profile_name = u"Reused";
   storage.AddProfile(std::move(params));
   base::ThreadPoolInstance::Get()->FlushForTesting();
+  task_environment_.RunUntilIdle();
+  EXPECT_FALSE(replied);
   EXPECT_FALSE(image().HasSavedImage());
   EXPECT_FALSE(image().IsActive());
   EXPECT_TRUE(image().GetImage().IsEmpty());
