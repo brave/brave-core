@@ -471,6 +471,50 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpenAsTabKeepsWebContents) {
   EXPECT_EQ(target_url, active_contents()->GetLastCommittedURL());
 }
 
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpenInSplitViewSplitsWithSourceTab) {
+  const GURL target_url = GetURL("b.com", "/title2.html");
+  content::WebContents* source = active_contents();
+  OpenPeek(target_url);
+  content::WebContents* contents = peek_contents();
+  views::ImageButton* split_view_button =
+      controller()->peek_view_for_testing()->split_view_button_for_testing();
+  ASSERT_TRUE(split_view_button->GetVisible());
+
+  views::test::ButtonTestApi(split_view_button).NotifyDefaultMouseClick();
+  WaitForMovedToTab(contents);
+
+  // Moved without a reload, next to the source tab and in a split with it.
+  EXPECT_EQ(target_url, contents->GetLastCommittedURL());
+  EXPECT_EQ(2, tab_strip_model()->count());
+  tabs::TabInterface* tab = tab_strip_model()->GetActiveTab();
+  ASSERT_TRUE(tab->IsSplit());
+  EXPECT_EQ(tab->GetSplit(),
+            tabs::TabInterface::GetFromContents(source)->GetSplit());
+}
+
+// Joining the source tab's split would replace one of its tabs.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpenInSplitViewFromSplitOpensTab) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GetURL("a.com", "/title1.html"),
+      WindowOpenDisposition::kNewForegroundTab,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  tab_strip_model()->ActivateTabAt(0);
+  tab_strip_model()->AddToNewSplit(
+      {1}, split_tabs::SplitTabVisualData(),
+      split_tabs::SplitTabCreatedSource::kTabContextMenu);
+  OpenPeek(GetURL("b.com", "/title2.html"));
+  EXPECT_FALSE(controller()
+                   ->peek_view_for_testing()
+                   ->split_view_button_for_testing()
+                   ->GetVisible());
+
+  content::WebContents* contents = peek_contents();
+  controller()->OpenInSplitView();
+  EXPECT_EQ(contents, active_contents());
+  EXPECT_EQ(3, tab_strip_model()->count());
+  EXPECT_FALSE(tab_strip_model()->GetActiveTab()->IsSplit());
+}
+
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, SwitchingTabsClosesPeek) {
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), GetURL("a.com", "/title1.html"),
