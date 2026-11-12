@@ -6,7 +6,9 @@
 import {injectStyle} from '//resources/brave/lit_overriding.js'
 import {css} from '//resources/lit/v3_0/lit.rollup.js'
 
+// <if expr="enable_local_ai">
 import './history_embeddings/history_embeddings.js'
+// </if>
 
 import {HistoryAppElement} from './app-chromium.js'
 

@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/history/app.html.ts b/chrome/browser/resources/history/app.html.ts
+index 273d97db7826909b9cd87db5e4182a119fe542e4..3231acc96b2db83fd558650866f819480a56c89d 100644
+--- a/chrome/browser/resources/history/app.html.ts
++++ b/chrome/browser/resources/history/app.html.ts
+@@ -2,6 +2,7 @@
+ // Use of this source code is governed by a BSD-style license that can be
+ // found in the LICENSE file.
+ 
++import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
+ import {html} from '//resources/lit/v3_0/lit.rollup.js';
+ 
+ import type {HistoryAppElement} from './app.js';

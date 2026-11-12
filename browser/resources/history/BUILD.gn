@@ -3,8 +3,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/local_ai/buildflags/buildflags.gni")
 import("//tools/grit/preprocess_if_expr.gni")
 import("sources.gni")
+
+assert(enable_local_ai)
 
 preprocess_if_expr("preprocess") {
   out_folder = "$root_gen_dir/chrome/browser/resources/history/preprocessed"
