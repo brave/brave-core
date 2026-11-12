@@ -34,6 +34,7 @@ source_set("ai_chat") {
     "//brave/browser/ai_chat",
     "//brave/browser/ai_chat/ollama",
     "//brave/browser/misc_metrics",
+    "//brave/browser/ui/side_panel/ai_chat",
     "//brave/browser/ui/webui:brave_webui_source",
     "//brave/browser/ui/webui:untrusted_sanitized_image_source",
     "//brave/common:webui_url_constants",
@@ -91,6 +92,7 @@ source_set("ai_chat") {
     ]
   } else {
     deps += [
+      "//brave/browser/ui/android/ai_chat",
       "//chrome/browser/android:tabs_public",
       "//chrome/browser/ui/android/tab_model",
     ]
