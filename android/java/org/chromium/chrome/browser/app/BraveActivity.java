@@ -29,7 +29,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -3165,25 +3165,20 @@ public abstract class BraveActivity extends ChromeActivity
                 new QuickSearchEnginesViewAdapter(searchEngines, this);
         recyclerView.setAdapter(adapter);
         if (mQuickSearchEnginesView.getParent() == null) {
-            WindowManager.LayoutParams params =
-                    new WindowManager.LayoutParams(
-                            WindowManager.LayoutParams.MATCH_PARENT,
-                            WindowManager.LayoutParams.WRAP_CONTENT,
-                            WindowManager.LayoutParams.TYPE_APPLICATION_PANEL,
-                            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                            WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            ViewGroup rootView = findViewById(android.R.id.content);
+            FrameLayout.LayoutParams params =
+                    new FrameLayout.LayoutParams(
+                            FrameLayout.LayoutParams.MATCH_PARENT,
+                            FrameLayout.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.BOTTOM;
-            params.y = keypadHeight; // Position the view above the keyboard
-
-            WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-            windowManager.addView(mQuickSearchEnginesView, params);
+            params.bottomMargin = keypadHeight; // Position the view above the keyboard
+            rootView.addView(mQuickSearchEnginesView, params);
         }
     }
 
     public void removeQuickActionSearchEnginesView() {
         if (mQuickSearchEnginesView != null && mQuickSearchEnginesView.getParent() != null) {
-            WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-            windowManager.removeView(mQuickSearchEnginesView);
+            ((ViewGroup) mQuickSearchEnginesView.getParent()).removeView(mQuickSearchEnginesView);
             mQuickSearchEnginesView = null;
         }
     }
