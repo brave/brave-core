@@ -1218,7 +1218,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
   EXPECT_EQ(progress, progress_future.Take());
 
   const auto& applied_tasks = applied_tasks_future.Take();
-  EXPECT_EQ(1u, applied_tasks.size());
+  ASSERT_EQ(1u, applied_tasks.size());
   EXPECT_EQ(url_.spec(), applied_tasks[0].url);
   EXPECT_EQ(task_description, applied_tasks[0].description);
 }
