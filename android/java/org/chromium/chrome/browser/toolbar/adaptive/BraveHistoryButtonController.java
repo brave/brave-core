@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.toolbar.adaptive;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.View;
@@ -25,7 +24,6 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 /** Handles displaying history button on toolbar. */
 @NullMarked
 public class BraveHistoryButtonController extends BaseButtonDataProvider {
-    private final Context mContext;
     private final MonotonicObservableSupplier<Profile> mProfileSupplier;
 
     public BraveHistoryButtonController(
@@ -45,7 +43,6 @@ public class BraveHistoryButtonController extends BaseButtonDataProvider {
                         .setHoverTooltipTextId(R.string.menu_history)
                         .build());
 
-        mContext = context;
         mProfileSupplier = profileSupplier;
     }
 
@@ -54,13 +51,10 @@ public class BraveHistoryButtonController extends BaseButtonDataProvider {
         Profile profile = mProfileSupplier.get();
         if (profile == null) return;
 
-        assert mContext instanceof Activity : "Context is not an Activity";
-        if (!(mContext instanceof Activity)) return;
-
         Tab activeTab = mActiveTabSupplier.get();
         if (activeTab == null) return;
 
-        HistoryManagerUtils.showHistoryManager((Activity) mContext, activeTab, profile);
+        HistoryManagerUtils.showHistoryManager(activeTab.getWindowAndroid(), activeTab, profile);
     }
 
     @Override
