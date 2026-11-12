@@ -43,7 +43,7 @@ BraveConfirmInfoBar* AsBraveConfirmInfoBar(const infobars::InfoBar* infobar,
   return nullptr;
 }
 
-constexpr int kContentSeparatorHeightDip = 1;
+constexpr int kContentSeparatorHeightDip = 2;
 
 std::unique_ptr<views::Border> CreateOutlineBorder(
     const ui::ColorProvider* color_provider,
@@ -63,10 +63,7 @@ class ContentSeparator : public views::View {
   METADATA_HEADER(ContentSeparator, views::View)
 
  public:
-  ContentSeparator() {
-    SetPaintToLayer();
-    layer()->SetFillsBoundsOpaquely(false);
-  }
+  ContentSeparator() = default;
 
   // views::View:
   gfx::Size CalculatePreferredSize(
@@ -77,13 +74,6 @@ class ContentSeparator : public views::View {
   void OnPaint(gfx::Canvas* canvas) override {
     canvas->FillRect(GetLocalBounds(), GetColorProvider()->GetColor(
                                            kColorInfoBarContentAreaSeparator));
-  }
-
-  void OnThemeChanged() override {
-    views::View::OnThemeChanged();
-    // ContentSeparator is a layer, it needs to be manually marked for
-    // redraw when the theme changes.
-    SchedulePaint();
   }
 };
 
@@ -142,16 +132,23 @@ void BraveInfoBarContainerView::Layout(PassKey) {
 gfx::Size BraveInfoBarContainerView::CalculatePreferredSize(
     const views::SizeBounds& available_size) const {
   gfx::Size size = InfoBarContainerView::CalculatePreferredSize(available_size);
-
   // A zero height is how IsEmpty() reports "no infobars"; never pad that.
-  if (!rounded_border_enabled_ || size.height() == 0) {
+  if (size.height() == 0) {
+    return size;
+  }
+
+  if (!rounded_border_enabled_) {
+    // Upstream lays `content_shadow_` out below the height it reports here, so
+    // it paints outside these bounds, over whatever the browser view starts
+    // below the container. Reserve the divider's row so it stays inside.
+    size.Enlarge(0, kContentSeparatorHeightDip);
     return size;
   }
 
   // Reserve extra height for card margins and outline so layout insets don't
   // reduce infobar space.
-  size.Enlarge(0, 2 * (kRoundedCornersContentsViewMargin +
-                       kRoundedCornersContentsOutlineThickness));
+  size.Enlarge(
+      0, 2 * (kRoundedCornersContentsViewMargin + kContentSeparatorHeightDip));
   return size;
 }
 
