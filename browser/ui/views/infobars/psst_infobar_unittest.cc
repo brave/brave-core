@@ -5,10 +5,12 @@
 
 #include "brave/browser/ui/views/infobars/psst_infobar.h"
 
+#include <optional>
 #include <string>
 
 #include "base/check_op.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "brave/browser/psst/psst_infobar_delegate.h"
 #include "brave/components/psst/core/common/constants.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -44,7 +46,14 @@ class FakeInfoBarManager : public infobars::InfoBarManager {
   int GetActiveEntryID() override { return 0; }
   void OpenURL(const GURL& url,
                WindowOpenDisposition disposition,
-               const std::string& text_fragment) override {}
+               const std::string& text_fragment) override {
+    opened_url_ = url;
+  }
+
+  const std::optional<GURL>& opened_url() const { return opened_url_; }
+
+ private:
+  std::optional<GURL> opened_url_;
 };
 
 }  // namespace
@@ -52,7 +61,7 @@ class FakeInfoBarManager : public infobars::InfoBarManager {
 class PsstInfoBarTest : public ChromeViewsTestBase {
  public:
   PsstInfoBar* CreateInfoBar(FakeInfoBarManager* manager) {
-    PsstInfoBarDelegate::Create(manager, base::BindOnce([](bool) {}));
+    PsstInfoBarDelegate::Create(manager, base::DoNothing());
     CHECK_EQ(1u, manager->infobars().size());
     return static_cast<PsstInfoBar*>(manager->infobars()[0].get());
   }
@@ -96,14 +105,20 @@ TEST_F(PsstInfoBarTest, HidesBaseLinkInFavorOfInlineSubtitleLink) {
   EXPECT_EQ(expected_text, infobar->subtitle_for_testing()->GetText());
 }
 
-TEST_F(PsstInfoBarTest, LearnMoreLinkTargetsPsstReportDialogUrl) {
+TEST_F(PsstInfoBarTest, ClickingLearnMoreOpensPsstReportDialogUrl) {
   FakeInfoBarManager manager;
   auto* infobar = CreateInfoBar(&manager);
+  // Link child views are only materialized once the StyledLabel has laid
+  // out; ClickFirstLinkForTesting() needs one to exist.
+  LayOut(infobar);
 
-  // Verifies the URL wired into the subtitle's "Learn more" range (clicking
-  // it funnels through InfoBarDelegate::LinkClicked(), which reads this).
-  EXPECT_EQ(GURL(kPsstReportDialogLearnMoreUrl),
-            infobar->delegate()->GetLinkURL());
+  EXPECT_FALSE(manager.opened_url().has_value());
+
+  ASSERT_TRUE(infobar->subtitle_for_testing());
+  infobar->subtitle_for_testing()->ClickFirstLinkForTesting();
+
+  ASSERT_TRUE(manager.opened_url().has_value());
+  EXPECT_EQ(GURL(kPsstReportDialogLearnMoreUrl), *manager.opened_url());
 }
 
 TEST_F(PsstInfoBarTest, GrowsTargetHeightToFitSubtitleRow) {
