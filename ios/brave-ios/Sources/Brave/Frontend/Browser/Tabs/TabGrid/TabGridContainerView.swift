@@ -175,6 +175,14 @@ class TabGridContainerView: UIView {
     return dataSource.indexPath(for: item.id)
   }
 
+  /// The frame of the group's item in window coordinates, if it's in the grid
+  func windowFrame(of group: TabGroup) -> CGRect? {
+    guard let indexPath = dataSource.indexPath(for: .group(group.id)),
+      let attributes = collectionView.layoutAttributesForItem(at: indexPath)
+    else { return nil }
+    return collectionView.convert(attributes.frame, to: nil)
+  }
+
   fileprivate func scrollToSelectedItem(animated: Bool) {
     guard let item = items.first(where: \.containsVisibleTab),
       let indexPath = dataSource.indexPath(for: item.id)
@@ -651,9 +659,8 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
     }
 
     func didSelectGroup(_ group: TabGroup) {
-      withAnimation {
-        viewModel.showGroup(group)
-      }
+      // The group view grows out of the group's item
+      viewModel.showGroup(group, from: containerView?.windowFrame(of: group))
     }
 
     func didRequestUngroup(_ group: TabGroup) {
