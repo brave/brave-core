@@ -21,7 +21,6 @@ class BeforeUnloadIgnoreController;
 class BraveNonClientHitTestHelper;
 class BraveShieldsUIContentsCache;
 class BraveVPNController;
-class BrowserView;
 class BrowserWindowInterface;
 class ClosingLastTabController;
 class PlaylistSidePanelCoordinator;
@@ -57,7 +56,6 @@ class BraveBrowserWindowFeatures {
 
   void Init();
   void InitPostWindowConstruction();
-  void InitPostBrowserViewConstruction(BrowserView* browser_view);
   void TearDownPreBrowserWindowDestruction();
 
  private:

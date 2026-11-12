@@ -33,7 +33,6 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "printing/buildflags/buildflags.h"
 #include "ui/gfx/native_ui_types.h"
 
@@ -147,6 +146,12 @@ void BraveBrowserWindowFeatures::InitPostWindowConstruction() {
   // The fullscreen controller only exists once the window is constructed.
   brave_browser_window->ReadyToListenFullscreenChanges();
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  brave_vpn_controller_ =
+      GetUserDataFactory().CreateInstance<BraveVPNController>(*browser_,
+                                                              *browser_);
+#endif
+
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   if (email_aliases::features::IsEmailAliasesEnabled()) {
     if (auto* email_aliases_service =
@@ -208,15 +213,6 @@ void BraveBrowserWindowFeatures::InitPostWindowConstruction() {
         GetUserDataFactory().CreateInstance<AIChatSidePanelTabTransferBridge>(
             *browser_, base::to_address(browser_));
   }
-#endif
-}
-
-void BraveBrowserWindowFeatures::InitPostBrowserViewConstruction(
-    BrowserView* browser_view) {
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  brave_vpn_controller_ =
-      GetUserDataFactory().CreateInstance<BraveVPNController>(*browser_,
-                                                              browser_view);
 #endif
 }
 

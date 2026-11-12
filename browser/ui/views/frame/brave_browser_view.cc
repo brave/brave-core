@@ -45,7 +45,6 @@
 #include "brave/browser/ui/views/toolbar/screenshot_button.h"
 #include "brave/browser/ui/window_closing_confirm/window_closing_confirm_controller.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
@@ -115,11 +114,6 @@
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_toolbar_button.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
-#include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -357,13 +351,6 @@ BraveBrowserView::BraveBrowserView(BrowserWindowInterface* browser)
       base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
                           base::Unretained(this)));
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  pref_change_registrar_.Add(
-      brave_vpn::prefs::kBraveVPNShowButton,
-      base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
-                          base::Unretained(this)));
-#endif
-
   // Only normal window (tabbed) should have sidebar.
   const bool can_have_sidebar = sidebar::CanUseSidebar(browser_);
   if (can_have_sidebar) {
@@ -463,12 +450,6 @@ void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
     return;
   }
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  if (pref_name == brave_vpn::prefs::kBraveVPNShowButton) {
-    vpn_panel_controller_.ResetBubbleManager();
-    return;
-  }
-#endif
 }
 
 void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
@@ -497,25 +478,6 @@ BraveBrowserView::~BraveBrowserView() {
     auto container_view = RemoveChildViewT(vertical_tab_strip_container_view_);
     vertical_tab_strip_container_view_ = nullptr;
   }
-}
-
-void BraveBrowserView::ShowBraveVPNBubble(bool show_select) {
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  vpn_panel_controller_.ShowBraveVPNPanel(show_select);
-#endif
-}
-
-views::View* BraveBrowserView::GetAnchorViewForBraveVPNPanel() {
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  auto* vpn_button =
-      static_cast<BraveToolbarView*>(toolbar())->brave_vpn_button();
-  if (vpn_button->GetVisible()) {
-    return vpn_button;
-  }
-  return toolbar()->app_menu_button();
-#else
-  return nullptr;
-#endif
 }
 
 gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {

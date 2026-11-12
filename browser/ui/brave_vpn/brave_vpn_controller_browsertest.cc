@@ -1,7 +1,7 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
@@ -11,14 +11,14 @@
 #include "chrome/browser/ui/test/test_browser_dialog.h"
 #include "content/public/test/browser_test.h"
 
-class BraveVPNPanelControllerTest : public DialogBrowserTest {
+class BraveVPNControllerTest : public DialogBrowserTest {
  public:
-  BraveVPNPanelControllerTest() {
+  BraveVPNControllerTest() {
     scoped_feature_list_.InitWithFeatures(
         {skus::features::kSkusFeature, brave_vpn::features::kBraveVPN}, {});
   }
 
-  ~BraveVPNPanelControllerTest() override = default;
+  ~BraveVPNControllerTest() override = default;
 
   // TestBrowserUi:
   void ShowUi(const std::string& name) override {
@@ -29,6 +29,6 @@ class BraveVPNPanelControllerTest : public DialogBrowserTest {
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveVPNPanelControllerTest, InvokeUi_Dialog) {
+IN_PROC_BROWSER_TEST_F(BraveVPNControllerTest, InvokeUi_Dialog) {
   ShowAndVerifyUi();
 }

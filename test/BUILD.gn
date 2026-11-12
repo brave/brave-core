@@ -1574,7 +1574,9 @@ test("brave_browser_tests") {
     }
 
     if (enable_brave_vpn) {
-      sources += [ "//brave/browser/ui/views/toolbar/brave_vpn_panel_controller_browsertest.cc" ]
+      sources +=
+          [ "//brave/browser/ui/brave_vpn/brave_vpn_controller_browsertest.cc" ]
+      deps += [ "//brave/browser/ui/brave_vpn" ]
     }
 
     if (enable_containers) {
