@@ -1981,3 +1981,89 @@ void FooTabHelper::WillDiscardContents(tabs::TabInterface* tab,
   Observe(new_contents);
 }
 ```
+
+---
+
+<a id="ARCH-076"></a>
+
+## ✅ Use the Last Committed URL for Feature Logic, Not the Visible URL
+
+**Feature logic, permission checks, and security decisions should read the last
+committed URL or origin, with the error-document check below. Use the visible
+URL only when the feature is explicitly tied to what the address bar displays,
+such as the toolbar URL or a padlock icon.**
+
+The visible URL is usually the last committed URL. It differs while a
+browser-initiated navigation, such as a typed URL or a bookmark, is pending
+(back and forward navigations excluded), because the pending URL is shown. A
+renderer-initiated pending URL is shown only in a new unmodified tab, and it
+reverts to `about:blank` once another document accesses that tab's initial
+document. Neither case is the page loaded in the frame. The last committed URL
+is that page and its security context.
+
+Visible-URL names (do not use for feature or permission state):
+
+- C++ / ObjC++: `WebContents::GetVisibleURL()`,
+  `web::WebState::GetVisibleURL()`, `NavigationController::GetVisibleEntry()`.
+  For the displayed URL of an entry, use `NavigationEntry::GetVirtualURL()`, not
+  `GetURL()`.
+- Swift (iOS): `visibleURL` on `TabState`, and `url` on `ChromiumTabState` and
+  `FakeTabState` (aliases for `visibleURL`). Other types' `url` properties are
+  not tab-state aliases. `SessionTab.url` stores a copy of `visibleURL`, so
+  review its reads case by case.
+- Java (Android): `WebContents.getVisibleUrl()`
+
+Deprecated, never use: `WebContents::GetURL()`,
+`NavigationController::GetActiveEntry()`.
+
+Last-committed names (use these):
+
+- `WebContents::GetLastCommittedURL()`, `RenderFrameHost::GetLastCommittedURL()`
+- `RenderFrameHost::GetLastCommittedOrigin()`
+- `NavigationController::GetLastCommittedEntry()`
+- `web::WebState::GetLastCommittedURL()`
+- `web::WebState::GetLastCommittedURLIfTrusted()` (iOS only, returns
+  `std::optional<GURL>`)
+- `TabState.lastCommittedURL`, `WebContents.getLastCommittedUrl()`
+
+```swift
+// ❌ WRONG - a pending URL that has not loaded can become the origin
+guard let origin = tab?.visibleURL?.origin else { return }
+
+// ✅ CORRECT - the origin of the document that is loaded in the tab
+guard let origin = tab?.lastCommittedURL?.origin else { return }
+```
+
+```java
+// ❌ WRONG - the visible URL can differ from the loaded page
+GURL url = webContents.getVisibleUrl();
+
+// ✅ CORRECT
+GURL url = webContents.getLastCommittedUrl();
+```
+
+```cpp
+// ❌ WRONG - the visible URL can differ from the loaded page
+const GURL& url = web_contents->GetVisibleURL();
+
+// ✅ CORRECT
+const GURL& url = web_contents->GetLastCommittedURL();
+```
+
+Do not fall back to the visible URL when the last committed URL is empty or nil.
+`GetLastCommittedURL()` can be empty if no navigation has committed, and
+`lastCommittedURL ?? visibleURL` reintroduces the bug.
+
+For security decisions, Chromium's guidance is that in many cases Origin should
+be preferred. Use `RenderFrameHost::GetLastCommittedOrigin()`, or
+`GetPrimaryMainFrame()->GetLastCommittedOrigin()` on a `WebContents`.
+`GetLastCommittedURL()` still returns the failed destination URL after an error
+page commits, so also verify that the primary main frame is not an error
+document (`!GetPrimaryMainFrame()->IsErrorDocument()` on a `WebContents`,
+`!IsErrorDocument()` on a `RenderFrameHost`). Extension permission checks should
+use `extensions::util::GetURLForExtensionPermissionCheck(rfh)`, which takes a
+`RenderFrameHost`.
+
+Browser tests that assert toolbar or omnibox state are an example of the
+address-bar exception. A test that asserts `GetVisibleURL()` for feature
+behavior is not an address-bar use, so the exception does not cover it.
