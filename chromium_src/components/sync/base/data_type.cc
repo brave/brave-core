@@ -14,11 +14,16 @@
 namespace syncer {
 
 DataTypeSet EncryptableUserTypes() {
-  DataTypeSet encryptable_user_types = EncryptableUserTypes_ChromiumImpl();
-  // Brave sync has encryption setup ready when sync chain created.
-  encryptable_user_types.Put(DEVICE_INFO);
-  encryptable_user_types.Put(HISTORY);
-  encryptable_user_types.Put(AI_CHAT_CONVERSATION);
+  // Brave's sync chain is always in encrypt-everything mode, so subtract from
+  // every user type instead of following upstream's EncryptionPolicy. Its
+  // kNeverEncrypted rationales are written for a server that reads and writes
+  // the data, which Brave's never does, so a type upstream adds or switches to
+  // kNeverEncrypted stays encrypted here by default.
+  DataTypeSet encryptable_user_types =
+      base::Difference(UserTypes(), CommitOnlyTypes());
+  // Meant to be read by the server, which holds no key material.
+  // https://github.com/brave/go-sync/issues/178
+  encryptable_user_types.Remove(HISTORY_DELETE_DIRECTIVES);
   return encryptable_user_types;
 }
 
