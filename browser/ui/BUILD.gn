@@ -1401,6 +1401,7 @@ source_set("ui") {
         "views/brave_actions/brave_rewards_action_view.cc",
         "views/brave_actions/brave_rewards_action_view.h",
       ]
+      public_deps += [ "//brave/browser/ui/brave_rewards" ]
     }
 
     if (enable_extensions) {
@@ -1508,8 +1509,6 @@ source_set("ui") {
 
     if (enable_brave_rewards) {
       sources += [
-        "brave_rewards/rewards_panel_coordinator.cc",
-        "brave_rewards/rewards_panel_coordinator.h",
         "webui/brave_rewards/rewards_page_top_ui.cc",
         "webui/brave_rewards/rewards_page_top_ui.h",
       ]
