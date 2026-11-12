@@ -1261,8 +1261,6 @@ struct ContentSite {
 
 ---
 
----
-
 <a id="CSA-062"></a>
 
 ## ❌ Don't Introduce New Uses of Deprecated APIs
@@ -1695,5 +1693,159 @@ std::u16string bullet_escaped = u"\u2022";
 
 Convert at the boundary with `base::UTF8ToUTF16`/`base::UTF16ToUTF8`
 (`base/strings/utf_string_conversions.h`) rather than storing both forms.
+
+---
+
+<a id="CSA-072"></a>
+
+## ✅ Use `mojo_base.mojom.JSTime` for Epoch Timestamps in Mojom
+
+**NEVER encode an absolute point in time in a mojom as `TimeDelta` (or a raw
+integer in the wrong unit) — use `mojo_base.mojom.JSTime` so every binding gets
+a real epoch-milliseconds timestamp.** A timestamp field typed as a delta leaks
+unit conversion into every binding language and invites µs/ms bugs. `JSTime`
+maps to `base::Time` in C++, `{ msec: number }` in TypeScript, and `NSDate*` in
+ObjC/Swift. When migrating, audit consumers that check for "0": `JSTime` traits
+map a null `base::Time` to year-1601 milliseconds, not zero.
+
+```mojo
+// ❌ WRONG - "duration since epoch" fake delta
+struct TransactionInfo {
+  mojo_base.mojom.TimeDelta created_time;
+};
+
+// ✅ CORRECT - real epoch timestamp in every binding
+struct TransactionInfo {
+  mojo_base.mojom.JSTime created_time;
+};
+```
+
+---
+
+<a id="CSA-073"></a>
+
+## ❌ Parsers Must Fail Closed on Type Violations
+
+**When deserializing attacker-controlled structured data (signing payloads, RPC
+params), a value that violates the declared type MUST invalidate the whole parse
+— never truncate, coerce, or accept it.** Silent coercion can change the meaning
+of what the user is asked to sign.
+
+```cpp
+// ❌ WRONG - "1.5" in an integer field gets truncated and signed
+if (!value->GetIntIfAvailable(&int_value)) int_value = value->GetDouble();
+
+// ✅ CORRECT - type violation fails the entire parse
+if (!value->GetIntIfAvailable(&int_value))
+  return base::unexpected("integer field has non-integer value");
+```
+
+---
+
+<a id="CSA-074"></a>
+
+## ✅ Validate User Input Before Firing Remote Lookups
+
+**NEVER send user-typed strings to a backend API until they pass the
+corresponding format validation (address, URL, pubkey) — especially not on every
+keystroke.** Gate remote lookups on a per-coin/per-type format check so nothing
+goes out until the input parses. For batch requests built from persisted data,
+skip invalid entries rather than letting one stale entry poison the whole batch.
+
+```ts
+// ❌ WRONG - fires getNftMetadata("solana.<raw text>") on every keystroke
+onChange={(v) => { fetchNftMetadata(v); setValue(v); }}
+
+// ✅ CORRECT - validate before the lookup
+onChange={(v) => { setValue(v); if (isValidSolanaAddress(v)) fetchNftMetadata(v); }}
+```
+
+---
+
+<a id="CSA-075"></a>
+
+## ✅ Push Filtering to the Service Side; Keep Client Filters Only as a Safety Net
+
+**When a backend can filter server-side, request exactly what you need — do not
+fetch a superset and discard results client-side.** Client-side post-filtering
+after an expensive remote call wastes per-item lookups on results about to be
+dropped. Express intent in the API request; keep local filtering only to protect
+against stale or incorrect server behavior.
+
+```cpp
+// ❌ WRONG - fetches the superset, then discards spam after per-item lookups
+ParseNFTs(response, /*skip_spam=*/true);
+
+// ✅ CORRECT - intent expressed in the request itself
+url += "&spam=exclude";
+```
+
+---
+
+<a id="CSA-076"></a>
+
+## ✅ Handle Each `base::expected` Failure Mode with Its Own Distinct Error
+
+**MUST NOT collapse distinct failure modes (`!result.has_value()`,
+`result.value()` empty, non-success status) into one branch — each returns its
+own descriptive, typed error.** A fused condition produces error messages that
+describe the wrong failure (e.g. an empty message for an empty result), and
+reading `.error()` on the value path of a `base::expected` yields garbage.
+Unit-test the empty and partial-result cases, not just the error case.
+
+```cpp
+// ❌ WRONG - one branch for "errored" and "returned empty"
+if (!result.has_value() || result.value().empty())
+  return base::unexpected(result.error());  // empty result -> empty message
+
+// ✅ CORRECT - distinct, descriptive errors per failure mode
+if (!result.has_value())
+  return base::unexpected(result.error());
+if (result.value().empty())
+  return base::unexpected(Error{kInternalError, "empty tree state"});
+```
+
+---
+
+<a id="CSA-077"></a>
+
+## ✅ Validate the Scheme Before Navigating to an Externally-Derived URL
+
+**A redirect or navigation URL produced from external data (DNS records, content
+hashes, wallet providers) MUST be checked for an allowlisted scheme — not merely
+`is_valid()` — before it becomes a navigation target.** `GURL::is_valid()`
+accepts `file:`, `javascript:`, and custom schemes. Content derived from
+off-chain or attacker-influencable data may only produce HTTP(S) navigations.
+
+```cpp
+// ❌ WRONG - is_valid() accepts file:, javascript:, custom schemes
+if (resolved_uri.is_valid())
+  ctx->set_new_url_spec(resolved_uri.spec());
+
+// ✅ CORRECT - allowlist the scheme before redirecting
+if (resolved_uri.is_valid() && resolved_uri.SchemeIsHTTPOrHTTPS())
+  ctx->set_new_url_spec(resolved_uri.spec());
+```
+
+---
+
+<a id="CSA-078"></a>
+
+## ✅ Prefer One Consolidated Query Over Families of Single-Purpose Queries
+
+**When multiple consumers need overlapping data, expose one consolidated API
+call rather than accumulating per-purpose query endpoints that drift and
+duplicate state.** Each extra endpoint is another cache slice to keep
+consistent. Consolidate when callers overlap, and migrate all callers in the
+same change.
+
+```cpp
+// ❌ WRONG - N parallel queries, N cache slices to keep consistent
+GetCustomNetworks(callback);
+GetAllNetworksBasic(callback);
+
+// ✅ CORRECT - one consolidated call, all callers migrated together
+GetAllNetworks(callback);  // returns AllNetworks struct
+```
 
 ---

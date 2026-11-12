@@ -1309,3 +1309,73 @@ struct ContentView: View {
   }
 }
 ```
+
+---
+
+<a id="IOS-084"></a>
+
+## ✅ Drop Injected JavaScript When the OS Handles the Behavior Natively
+
+**When a newer OS provides a native implementation of an injected user script
+(e.g. WebKit handling GPC), MUST gate the injection behind an availability +
+feature-flag check instead of shipping both.** Duplicated native + injected
+implementations cause double side effects and drift. Apply the same
+availability + feature-flag check at every injection site (user script registry
+and JavaScript feature list alike).
+
+```swift
+// ❌ WRONG - script ships even where WebKit handles GPC natively
+userScriptRegistry.register(gpcScript)
+
+// ✅ CORRECT - same availability + flag check at every injection site
+if #unavailable(iOS 27.0) || !webKitHandlesGPC {
+  userScriptRegistry.register(gpcScript)
+}
+```
+
+---
+
+<a id="IOS-085"></a>
+
+## ✅ ObjC Service Bridges Return Scoped-Observation Tokens Owning Add/Remove
+
+**An ObjC bridge over a C++ observer API MUST return a scoped-observation token
+whose lifetime performs the `Add*Observer`/`Remove*Observer` pair — never
+register the raw observer and hand back a token that only drops a reference.**
+Tie C++ observer registration to the RAII lifetime of the bridging object
+(register in the observer's constructor, deregister in its destructor), so
+`invalidate`/dealloc always removes the observer exactly once and prevents
+leaking observers into destroyed services.
+
+```objc
+// ❌ WRONG - token only releases a ref; Add/RemoveObserver never paired
+service.AddMostVisitedURLsObserver(observer);
+observer = nil;  // observer leaks into a destroyed service
+
+// ✅ CORRECT - registration tied to the token's RAII lifetime
+self.scopedObservation = service.scopedObserverForObserver(observer);
+// RemoveMostVisitedURLsObserver runs in the token's dealloc/invalidate
+```
+
+---
+
+<a id="IOS-086"></a>
+
+## ✅ Mutate the Instance the UI Observes, Not a Fresh One
+
+**When rejecting/cancelling pending state in response to a settings change, MUST
+operate on the store instance the live UI already observes — constructing a new
+instance silently no-ops the update.** Stores observed via reactive bindings
+only propagate changes made on the same instance. Before "resetting" shared
+state, find the singleton/live instance the UI subscribes to and mutate that;
+calling mutation methods on a throwaway instance is a silent no-op.
+
+```swift
+// ❌ WRONG - fresh store nobody observes; open panel keeps stale state
+CryptoStore(from: store).rejectAllPendingRequests()
+
+// ✅ CORRECT - mutate the live instance the UI subscribes to
+walletStore.cryptoStore?.rejectAllPendingRequests()
+```
+
+---

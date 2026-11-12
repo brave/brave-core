@@ -1881,8 +1881,6 @@ FooFeature(Profile& profile) : profile_(profile) {}
 
 ---
 
----
-
 <a id="ARCH-074"></a>
 
 ## ✅ Own Tab-Scoped Features in `BraveTabFeatures`
@@ -1981,3 +1979,27 @@ void FooTabHelper::WillDiscardContents(tabs::TabInterface* tab,
   Observe(new_contents);
 }
 ```
+
+---
+
+<a id="ARCH-076"></a>
+
+## ✅ Shared Browser Features Surface Behind a Capability Interface
+
+**MUST define platform-neutral interfaces (mojo / `//components` API) when a
+browser feature must be shared across desktop and mobile — NEVER call the
+desktop implementation directly from platform shims or duplicate logic in the
+mobile layer.** When a second platform needs an existing feature, extract the
+shared contract into a component-level interface with per-platform
+implementations, rather than `#ifdef` and copy-paste drift.
+
+```cpp
+// ❌ WRONG - platform shim calls the desktop implementation directly
+#include "chrome/browser/ui/element_picker_desktop.h"  // layering violation
+
+// ✅ CORRECT - component-level interface, per-platform implementations
+element_picker::ElementPickerAPI picker;  // takes the platform impl
+picker.Show(web_contents, callbacks);
+```
+
+---

@@ -256,3 +256,31 @@ records the `privacy_types` passed to
 negative case).
 
 ---
+
+<a id="UV-008"></a>
+
+## ✅ Feature-Gated UI Commands Must Track Their Enabling Pref, Not Evaluate Once
+
+**NEVER initialize a command's enabled state from a one-time
+`IsAllowed()`/`IsSupported()` check at controller init; gate the update on the
+buildflag and observe the pref for changes.** Commands, menu items, and toolbar
+controls disabled by policy (or prefs) must re-evaluate when that pref changes.
+Pattern: wrap the update function in `#if BUILDFLAG(...)`, read `IsAllowed()`
+inside it, and register a `pref_change_registrar_.Add(...)` observer on the
+policy prefs.
+
+```cpp
+// ❌ WRONG - evaluated once at controller init
+UpdateCommandForBraveWallet(/*allowed=*/IsAllowed());
+
+// ✅ CORRECT - re-evaluated on pref change
+void AppMenuModel::UpdateCommandForBraveWallet() {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  SetCommandEnabled(IDC_BRAVE_WALLET, IsAllowed());
+#endif
+}
+pref_change_registrar_.Add(kWalletDisabledByPolicy,
+    base::BindRepeating(&AppMenuModel::UpdateCommandForBraveWallet, weak_ptr_));
+```
+
+---

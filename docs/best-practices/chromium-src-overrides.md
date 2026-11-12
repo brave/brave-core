@@ -541,3 +541,54 @@ SkColor BraveProvider::GetColor(int id) {
   return ChromiumImpl::GetColor(id);  // correct fallback
 }
 ```
+
+---
+
+<a id="CSRC-027"></a>
+
+## ✅ Prefer a Supported Mojom/Service API Over Forking Upstream Utility Code
+
+**NEVER add a `chromium_src` override of upstream utility code to work around a
+missing capability when a supported in-repo API can provide it.** Forking
+upstream files couples Brave to upstream churn and can silently drop upstream
+security fixes when the fork blocks inheriting them. Route the capability
+through a dedicated handler instead.
+
+```js
+// ❌ WRONG - window.open() in WebUI requires a chromium_src fork of the
+// content-rule-list util to permit it; the fork blocks upstream security fixes
+window.open(url)
+```
+
+```cpp
+// ✅ CORRECT - dedicated mojom handler, no override, no fork
+page_handler->OpenTab(url);
+```
+
+---
+
+<a id="CSRC-028"></a>
+
+## ✅ Injected-Behavior Decisions Use the Committed Document URL and One Shared Predicate
+
+**Injected providers MUST gate all page-visible behavior (script injection,
+native state pushes, property writes) on the same conditions as the injection
+itself — keyed on the committed document URL, NEVER a provisional or per-frame
+URL.** Divergence between the injection predicate and the write paths produces
+site-visible exceptions on the non-injected path (e.g. uncaught `TypeError`s on
+every page load when the flag is off), and keying injection off the wrong URL
+injects into sites that were never approved.
+
+```cpp
+// ❌ WRONG - injection conditional, native writes unconditional
+if (feature_enabled) RegisterScript(render_frame);
+tab_helper->PushState(web_state);  // writes into a page with no provider
+
+// ✅ CORRECT - one shared predicate for both
+if (CanExposeProvider(web_state, /*url=*/committed_document_url)) {
+  RegisterScript(render_frame);
+  tab_helper->PushState(web_state);
+}
+```
+
+---

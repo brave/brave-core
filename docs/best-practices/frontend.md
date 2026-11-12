@@ -535,3 +535,94 @@ useEffect(() => {
 ```
 
 ---
+
+<a id="FE-031"></a>
+
+## ✅ Type Redux Selectors with `Pick<State, ...>`, Never `Omit`
+
+**Selector module `State` types MUST be `Pick<WalletPageState, 'slice'>` for the
+slice they read — NEVER `Omit<FullState, 'everythingElse'>`.** `Pick` states
+what a selector needs and stays correct as the store grows; `Omit` couples the
+selector to the entire shape of the store and silently widens as slices are
+added.
+
+```ts
+// ❌ WRONG - widens silently as slices are added
+type State = Omit<WalletPageState, 'page'>
+
+// ✅ CORRECT - names exactly the slice consumed
+type State = Pick<WalletPageState, 'wallet'>
+```
+
+---
+
+<a id="FE-032"></a>
+
+## ❌ Keep Relative Compiler-Option Paths Out of Base tsconfigs That Get Extended
+
+**NEVER put relative paths like `typeRoots` in a base `tsconfig.json` that
+nested configs extend — TypeScript resolves them against the config file they
+originated in (the base config's directory), which rarely matches where the
+extending package's `node_modules`/types live, so `@types` packages silently
+fail to resolve.** Declare relative `typeRoots`/`outDir`/`include` only in the
+leaf config where the compile actually runs.
+
+```jsonc
+// ❌ WRONG - base config; resolves from the base config's own directory,
+// which is not where child packages' node_modules live
+{ "typeRoots": ["node_modules/@types"] }
+
+// ✅ CORRECT - declared only where the compile runs
+{ "typeRoots": ["../../node_modules/@types", "components/definitions"] }
+```
+
+---
+
+<a id="FE-033"></a>
+
+## ✅ Validate User-Entered Numeric Input at the Change Site Against a Shared Helper
+
+**Every entry point that accepts an amount string MUST reject invalid forms
+(`-`, leading-zero padding) via the shared helper at the single onChange/setter
+boundary — NEVER rely on `type='number'` or downstream display to enforce it.**
+Guard at the setter, not the component render: all call sites flow through one
+validation predicate so no path can set an invalid amount. Validate-then-set
+beats validate-on-submit.
+
+```ts
+// ❌ WRONG - enforced only by type='number' or validate-on-submit
+onChange={(v) => setAmount(v)}
+
+// ✅ CORRECT - shared predicate guards the single setter boundary
+onChange={(v) => {
+  if (Amount.isNegativeOrPaddedZeroAmount(v)) return
+  setAmount(v)
+}}
+```
+
+---
+
+<a id="FE-034"></a>
+
+## ✅ Persist Query-String-Derived WebUI State Across SPA Navigation and Reloads
+
+**MUST persist launch-query state (e.g. `?isSidePanel=true`) in `sessionStorage`
+at boot; NEVER rely on the query string surviving SPA navigation or a reload.**
+Router rewrites and reloads drop the query string, so state that exists only in
+`URLSearchParams` at boot silently reverts. Mirror it into `sessionStorage` and
+restore it on later loads — and choose the storage scope deliberately when
+multiple hosts share a URL (`sessionStorage` keeps a bubble from picking up a
+side-panel flag).
+
+```ts
+// ❌ WRONG - dropped by BrowserRouter rewrites and reloads
+const isSidePanel = new URLSearchParams(location.search).has('isSidePanel')
+
+// ✅ CORRECT - mirrored at boot into sessionStorage, restored on later loads
+const isSidePanel =
+  new URLSearchParams(location.search).has('isSidePanel')
+  || sessionStorage.getItem('isSidePanel') === 'true'
+sessionStorage.setItem('isSidePanel', String(isSidePanel))
+```
+
+---
