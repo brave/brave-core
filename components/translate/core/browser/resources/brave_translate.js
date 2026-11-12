@@ -8,9 +8,25 @@
 // securityOrigin is predefined by translate_script.cc.
 const securityOriginHost = new URL(securityOrigin).host
 
+// Chromium uses BCP 47 language codes, but the Brave translate backend expects
+// the legacy Google codes.
+const legacyLanguageCodes = {
+  'he': 'iw',
+  'jv': 'jw',
+  'fil': 'tl',
+}
+
+const toLegacyLanguageCode = (searchParams, param) => {
+  const code = searchParams.get(param)
+  if (code && legacyLanguageCodes[code]) {
+    searchParams.set(param, legacyLanguageCodes[code])
+  }
+}
+
 // A method to rewrite URL in the scripts:
 // 1. change the domain to translate.brave.com;
-// 2. adjust static paths to use braveTranslateStaticPath.
+// 2. adjust static paths to use braveTranslateStaticPath;
+// 3. convert sl/tl language codes for the backend.
 const rewriteUrl = (url) => {
   try {
     let newUrl = new URL(url)
@@ -25,6 +41,8 @@ const rewriteUrl = (url) => {
         // Leave the domain unchanged (translate.googleapis.com).
         return newUrl.toString()
       }
+      toLegacyLanguageCode(newUrl.searchParams, 'sl')
+      toLegacyLanguageCode(newUrl.searchParams, 'tl')
     } else {
       // braveTranslateStaticPath is predefined by translate_script.cc.
       newUrl.pathname = newUrl.pathname.replace(
