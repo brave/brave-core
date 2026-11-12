@@ -519,6 +519,7 @@ source_set("ui") {
       "//brave/browser/sessions",
       "//brave/browser/ui/omnibox:clean_link",
       "//brave/browser/ui/sidebar:sidebar_impl",
+      "//brave/browser/ui/split_view",
       "//brave/browser/ui/tabs:tab_menu",
       "//brave/browser/ui/tabs:tab_model",
       "//brave/browser/ui/tabs:tab_strip",
@@ -1606,6 +1607,7 @@ source_set("ui") {
   if (enable_email_aliases) {
     deps += [
       "//brave/browser/email_aliases",
+      "//brave/browser/ui/email_aliases",
       "//brave/browser/ui/webui/email_aliases",
       "//brave/components/email_aliases:features",
       "//brave/components/email_aliases:mojom",
