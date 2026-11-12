@@ -7,7 +7,9 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
 #include "chrome/browser/devtools/devtools_window_testing.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/search.h"
@@ -80,6 +82,11 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserWebUIBrowserTest,
                        BraveBrowserWindowFromWebUIBrowserWindow) {
   ASSERT_TRUE(WebUIBrowserWindow::FromBrowser(browser()));
   EXPECT_FALSE(BraveBrowserWindow::FromBrowser(browser()));
+
+  // The sidebar has no UI to follow the show option in this window.
+  sidebar::SidebarServiceFactory::GetForProfile(browser()->GetProfile())
+      ->SetSidebarShowOption(
+          sidebar::SidebarService::ShowSidebarOption::kShowNever);
 
   // Commands backed by views-only features do nothing for this window.
   EXPECT_FALSE(brave::HasSelectedURL(browser()));

@@ -119,6 +119,21 @@ void BraveBrowserWindowFeatures::Init() {
             *browser_, browser_->GetUnownedUserDataHost(), profile,
             browser_->GetTabStripModel(), browser_->GetSessionID());
   }
+
+  // Created before the window, as `BraveBrowserView` hands the sidebar its view
+  // and the side panel registers the Playlist entry while they are built.
+  if (sidebar::CanUseSidebar(base::to_address(browser_))) {
+    sidebar_controller_ =
+        GetUserDataFactory().CreateInstance<sidebar::SidebarController>(
+            *browser_, base::to_address(browser_), profile);
+#if BUILDFLAG(ENABLE_PLAYLIST)
+    if (playlist::IsPlaylistAllowed(profile->GetPrefs())) {
+      playlist_side_panel_coordinator_ =
+          GetUserDataFactory().CreateInstance<PlaylistSidePanelCoordinator>(
+              *browser_, base::to_address(browser_), profile);
+    }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
+  }
 }
 
 void BraveBrowserWindowFeatures::InitPostWindowConstruction() {
@@ -131,19 +146,6 @@ void BraveBrowserWindowFeatures::InitPostWindowConstruction() {
 
 void BraveBrowserWindowFeatures::InitPostBrowserViewConstruction(
     BrowserView* browser_view) {
-  if (sidebar::CanUseSidebar(browser_view->browser())) {
-    sidebar_controller_ =
-        GetUserDataFactory().CreateInstance<sidebar::SidebarController>(
-            *browser_, browser_view->browser(), browser_view->GetProfile());
-#if BUILDFLAG(ENABLE_PLAYLIST)
-    if (playlist::IsPlaylistAllowed(browser_view->GetProfile()->GetPrefs())) {
-      playlist_side_panel_coordinator_ =
-          GetUserDataFactory().CreateInstance<PlaylistSidePanelCoordinator>(
-              *browser_, browser_view->browser(), browser_view->GetProfile());
-    }
-#endif  // BUILDFLAG(ENABLE_PLAYLIST)
-  }
-
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   if (email_aliases::features::IsEmailAliasesEnabled()) {
     if (auto* email_aliases_service =
