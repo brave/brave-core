@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/glic/public/features.cc b/chrome/browser/glic/public/features.cc
-index 6b1d9e9b1b3ce95202210705edbc5aa3abbeddbc..800b92a03fe56b61807b8441056b3cb3a40ca5b3 100644
+index 6b1d9e9b1b3ce95202210705edbc5aa3abbeddbc..65adbcfbfe81c0f266ad7a7360d0aa38980b026f 100644
 --- a/chrome/browser/glic/public/features.cc
 +++ b/chrome/browser/glic/public/features.cc
 @@ -85,8 +85,8 @@ const base::FeatureParam<bool> kGlicContextMenuWithOnboarding{
@@ -13,3 +13,12 @@ index 6b1d9e9b1b3ce95202210705edbc5aa3abbeddbc..800b92a03fe56b61807b8441056b3cb3
  const base::FeatureParam<bool> kGlicTextSelectionContextMenuMessageFirstFre{
      &kGlicTextSelectionContextMenu, "message_first_fre", false};
  const base::FeatureParam<bool> kGlicTextSelectionContextMenuAutoSubmit{
+@@ -247,7 +247,7 @@ bool IsGlicNativeLoadingPlaceholderEnabled() {
+          !base::FeatureList::IsEnabled(kGlicNoWebUiLoader);
+ }
+ 
+-BASE_FEATURE(kGeic, FEATURE_ENABLED_BY_DEFAULT_NON_ANDROID);
++BASE_OVERRIDDEN_FEATURE(kGeic, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ const base::FeatureParam<bool> kGeicEnabledParam{&kGeic, "enabled", true};
+ 
