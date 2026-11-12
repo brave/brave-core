@@ -13,6 +13,12 @@ struct TabGroupDetailView: View {
   var viewModel: TabGridViewModel
   var group: TabGroup
 
+  init(viewModel: TabGridViewModel, group: TabGroup) {
+    self.viewModel = viewModel
+    self.group = group
+    _isExpanded = State(initialValue: viewModel.isOpenGroupRestored)
+  }
+
   @Environment(\.dismiss) private var dismiss
   @State private var insets: EdgeInsets = .zero
   @State private var title = ""
@@ -35,6 +41,7 @@ struct TabGroupDetailView: View {
       contextMenuForTabs: { _ in nil },
       contextMenuForGroup: { _ in nil },
       scrollsOnModeSwitch: false,
+      isGroupDetail: true,
       selectedTabList: .constant([])
     )
     .background {
@@ -46,6 +53,7 @@ struct TabGroupDetailView: View {
         } action: { frame in
           guard expandedFrame == nil, !frame.isEmpty else { return }
           expandedFrame = frame
+          guard !isExpanded else { return }
           DispatchQueue.main.async {
             withAnimation(.growAnimation) {
               isExpanded = true

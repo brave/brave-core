@@ -22,6 +22,9 @@ class TabGridViewModel {
   private(set) var openGroup: TabGroup?
   private(set) var openGroupItems: [TabGridItem] = []
   private(set) var openGroupSourceFrame: CGRect?
+  @ObservationIgnored
+  weak var openGroupContainerView: TabGridContainerView?
+  private(set) var isOpenGroupRestored = false
   private var isNamingOpenGroup = false
   private(set) var isPrivateTabsLocked: Bool = false
   var onModeSwitchComplete: (() -> Void)?
@@ -96,6 +99,7 @@ class TabGridViewModel {
     self.items = TabGridItem.items(for: tabs, using: tabManager)
 
     setUpObservations()
+    restoreOpenGroup()
   }
 
   deinit {
@@ -279,6 +283,7 @@ class TabGridViewModel {
   }
 
   func showGroup(_ group: TabGroup, from sourceFrame: CGRect? = nil) {
+    isOpenGroupRestored = false
     openGroupSourceFrame = sourceFrame
     openGroup = group
     updateOpenGroupItems()
@@ -287,8 +292,22 @@ class TabGridViewModel {
   func closeOpenGroup() {
     isNamingOpenGroup = false
     openGroupSourceFrame = nil
+    isOpenGroupRestored = false
     openGroup = nil
     openGroupItems = []
+  }
+
+  /// Opens the group of the selected tab. A tab in a group is reached through its group, so the
+  /// tray shows it there, also when the tab was selected before the tray was first opened, such as
+  /// on launch.
+  private func restoreOpenGroup() {
+    guard !isPrivateBrowsing,
+      let selectedTab = tabManager.selectedTab,
+      let group = tabManager.tabGroup(for: selectedTab)
+    else { return }
+    isOpenGroupRestored = true
+    openGroup = group
+    updateOpenGroupItems()
   }
 
   private func updateOpenGroupItems() {

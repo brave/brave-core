@@ -80,9 +80,9 @@ class TabManager: NSObject {
   }
 
   private(set) var allTabs = [any TabState]()
-  /// Groups of regular tabs in this window, in display order
   private(set) var tabGroups: [TabGroup] = []
   private var groupIDsByTabID: [TabState.ID: TabGroup.ID] = [:]
+
   private var _selectedIndex = -1
   private(set) var isRestoring = false
   private(set) var isBulkDeleting = false

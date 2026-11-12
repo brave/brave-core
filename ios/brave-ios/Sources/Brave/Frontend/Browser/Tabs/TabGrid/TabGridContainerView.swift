@@ -547,6 +547,7 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
   var contextMenuForTabs: ([any TabState]) -> UIMenu?
   var contextMenuForGroup: (TabGroup) -> UIMenu?
   var scrollsOnModeSwitch: Bool = true
+  var isGroupDetail: Bool = false
   @Binding var selectedTabList: Set<TabState.ID>
 
   func makeUIView(context: Context) -> TabGridContainerView {
@@ -560,6 +561,9 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
     let isEditing = context.environment.editMode?.wrappedValue == .active
     context.coordinator.dismissAction = context.environment.dismiss
     context.coordinator.containerView = uiView
+    if isGroupDetail {
+      viewModel.openGroupContainerView = uiView
+    }
     uiView.isPrivateBrowsing = isPrivateBrowsing
     uiView.isEditing = isEditing
     uiView.updateItems(items, transaction: context.transaction)
