@@ -137,7 +137,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_MeldErrorResponse) {
   })");
 
   auto errors = ParseMeldErrorResponse(ParseJson(json));
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(errors->size(), static_cast<size_t>(2));
 
   errors = ParseMeldErrorResponse(base::Value());
@@ -154,7 +154,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_MeldErrorResponse) {
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })");
   errors = ParseMeldErrorResponse(ParseJson(json_only_msg));
-  EXPECT_TRUE(errors);
+  ASSERT_TRUE(errors);
   EXPECT_EQ(errors->size(), static_cast<size_t>(1));
 
   // Malformed success responses are not Meld errors.
@@ -201,7 +201,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
   "error": "No Valid Quote Combinations Found For Provided Quote Request."})");
 
   quotes_result = ParseCryptoQuotes(ParseJson(json_null_quotes));
-  EXPECT_FALSE(quotes_result.has_value());
+  ASSERT_FALSE(quotes_result.has_value());
   EXPECT_EQ(quotes_result.error(),
             "No Valid Quote Combinations Found For Provided Quote Request.");
 
@@ -210,7 +210,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
 
   json = R"({})";
   quotes_result = ParseCryptoQuotes(ParseJson(json));
-  EXPECT_TRUE(quotes_result.has_value());
+  ASSERT_TRUE(quotes_result.has_value());
   EXPECT_TRUE(quotes_result.value().empty());
 }
 
@@ -501,7 +501,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoWidgetCreate) {
     "token": "tknvalue"
   })");
   auto result = ParseCryptoWidgetCreate(ParseJson(json));
-  EXPECT_TRUE(result);
+  ASSERT_TRUE(result);
   EXPECT_EQ("WXDpzmm2cNmtJWLDHgu1GT", result->id);
   EXPECT_EQ("test_session_id", result->external_session_id);
   EXPECT_EQ("test_session_customer_id", result->external_customer_id);
@@ -516,7 +516,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoWidgetCreate) {
     "token": "tknvalue"
   })";
   result = ParseCryptoWidgetCreate(ParseJson(json));
-  EXPECT_TRUE(result);
+  ASSERT_TRUE(result);
   EXPECT_EQ("WXDpzmm2cNmtJWLDHgu1GT", result->id);
   EXPECT_FALSE(result->external_session_id);
   EXPECT_FALSE(result->external_customer_id);
