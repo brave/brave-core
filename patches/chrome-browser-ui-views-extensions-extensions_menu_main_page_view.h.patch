@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.h b/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.h
-index 4c949b172a72c04b1d31542e3158e692156cf70d..ad8fc55921495b99b9f2712ec43e57058db77a29 100644
+index 53a1a6db370d51303100bea2af7d8ba9de736038..855d9c87040b08ac08fb76557b165ca44986c79f 100644
 --- a/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.h
 +++ b/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.h
-@@ -95,6 +95,7 @@ class ExtensionsMenuMainPageView : public views::View {
+@@ -98,6 +98,7 @@ class ExtensionsMenuMainPageView : public views::View {
        const extensions::ExtensionId& extension_id);
  
   private:
