@@ -742,6 +742,15 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Продължи към %@ (опасно)";
 
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "Премахване";
+
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "Този сайт няма да се показва в списъка ви с най-посещавани, но няма да бъде премахнат от хронологията ви.";
+
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "Премахване от Най-посещавани?";
+
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ ще стартира външно приложение";
 
@@ -864,6 +873,9 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Невалидни данни в заявката за плащане";
+
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "Вградена страница в тази страница";
 
 /* History tableview section header */
 "LastMonth" = "Последния месец";
@@ -2481,6 +2493,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Рекламите са блокирани, докато гледаш видеоклипове в този уебсайт.";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Портфейл в Brave";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "Поверителен раздел";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "QR код";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "Търсене";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Нов поверителен раздел";

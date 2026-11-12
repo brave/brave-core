@@ -742,6 +742,15 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Passeu a %@ (no segur)";
 
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "Suprimeix";
+
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "Aquest lloc no apareixerà a la teva llista dels més visitats, però no se suprimirà de l'historial.";
+
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "Voleu suprimir-lo dels més visitats?";
+
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ activarà una aplicació externa";
 
@@ -864,6 +873,9 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Les dades de la sol·licitud de pagament no són vàlides";
+
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "Una pàgina incrustada en aquesta pàgina";
 
 /* History tableview section header */
 "LastMonth" = "Darrer mes";
@@ -2481,6 +2493,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Els anuncis es bloquegen mentre es visualitzen els vídeos d'aquest lloc web.";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Cartera de Brave";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "Pestanya d'incògnit";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "Codi QR";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "Cerca";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Nova pestanya d'incògnit";

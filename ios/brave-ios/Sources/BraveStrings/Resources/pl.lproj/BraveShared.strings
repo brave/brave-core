@@ -742,6 +742,15 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Przejdź do %@ (niebezpieczne)";
 
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "Usuń";
+
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "Ta witryna nie będzie widoczna na liście najczęściej odwiedzanych, ale nie zostanie usunięta z historii.";
+
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "Usunąć z najczęściej odwiedzanych?";
+
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ uruchomi zewnętrzną aplikację";
 
@@ -864,6 +873,9 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Nieprawidłowe dane w żądaniu płatności";
+
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "Strona osadzona na tej stronie";
 
 /* History tableview section header */
 "LastMonth" = "W zeszłym miesiącu";
@@ -2354,7 +2366,7 @@
 "settings.blockYouTubeDistractingElementsDesc" = "Blokuje rozpraszające elementy YouTube";
 
 /* Title beside the toggle for blocking YouTube distracting elements */
-"settings.blockYouTubeDistractingElementsTitle" = "Blokuje rozpraszające elementy YouTube";
+"settings.blockYouTubeDistractingElementsTitle" = "Blokuj rozpraszające elementy YouTube";
 
 /* Description beside the toggle for blocking YouTube recommendations */
 "settings.blockYoutubeRecommendationsDesc" = "Blokuje ekrany końcowe i polecane jako następne w serwisie youtube.com";
@@ -2481,6 +2493,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Reklamy są blokowane podczas oglądania filmów w tej witrynie.";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Brave Wallet";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "Karta w trybie prywatnym";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "Kod QR";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "Szukaj";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Nowa karta w trybie prywatnym";
@@ -2828,7 +2852,7 @@
 "sync.expiredError" = "Ten kod synchronizacji wygasł. Wygeneruj nowy kod synchronizacji i spróbuj ponownie.";
 
 /* Generic Sync Error Description */
-"sync.genericError" = "Przepraszamy, coś poszło nie tak";
+"sync.genericError" = "Niestety, coś poszło nie tak";
 
 /* Grand camera access */
 "sync.grantCameraAccess" = "Włącz aparat";

@@ -1,20 +1,8 @@
-/* Title for Ask Brave shortcut. Brave is the company name and should not be translated */
-"widgets.askBrave" = "Braveに質問";
-
 /* Description for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.askBraveWidgetDescription" = "Braveに質問する。";
 
 /* Title for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.askBraveWidgetTitle" = "Braveに質問";
-
-/* Title for bookmarks menu item */
-"widgets.BookmarksMenuItem" = "ブックマーク";
-
-/* The name of the feature */
-"widgets.braveLeo" = "Leo AI";
-
-/* Title for the Leo AI voice input shortcut. Leo is the name of a product and should not be translated */
-"widgets.braveLeoVoiceInput" = "Leo 音声入力";
 
 /* The name of the feature */
 "widgets.braveNews" = "Braveニュース";
@@ -28,14 +16,8 @@
 /* Title for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.braveSearchWidgetTitle" = "Brave Search";
 
-/* Title for downloads menu item */
-"widgets.DownloadsMenuItem" = "ダウンロード";
-
 /* Description for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetDescription" = "お気にいりのウェブサイトに素早くアクセス";
-
-/* Title for history menu item */
-"widgets.HistoryMenuItem" = "履歴";
 
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "後でもう一度お試しください";
@@ -58,12 +40,6 @@
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "Braveを開いてお気に入りのサイトを追加してください";
 
-/* QR Code section title */
-"widgets.QRCode" = "QRコード";
-
-/* Description for the search option on the 'shortcuts' widget. */
-"widgets.searchShortcutTitle" = "検索";
-
 /* Description for Brave Shields widget on 'add widget' screen. */
 "widgets.shieldStatsDescription" = "Braveによって時間がどれだけ節約され、オンライン上でプライバシーが保護されたかのまとめです。";
 
@@ -79,15 +55,6 @@
 /* Button to the browser and enter URL or make a search query there. */
 "widgets.shortcutsEnterURLButton" = "検索するか、URLを入力";
 
-/* Button to open new browser tab. */
-"widgets.shortcutsNewTabButton" = "新しいタブ";
-
-/* Button to open video playlist window. */
-"widgets.shortcutsPlaylistButton" = "Playlist";
-
-/* Button to open new private browser tab. */
-"widgets.shortcutsPrivateTabButton" = "プライベートタブ";
-
 /* Description for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetDescription" = "簡単に素早くBraveでウェブを検索したりウェブページを開く";
 
@@ -99,7 +66,4 @@
 
 /* Title for Brave Shields single stat widget on 'add widget' screen. */
 "widgets.singleStatTitle" = "プライバシー統計";
-
-/* Description for the Brave Wallet option on the 'shortcuts' widget. */
-"widgets.walletShortcutTitle" = "Braveウォレット";
 

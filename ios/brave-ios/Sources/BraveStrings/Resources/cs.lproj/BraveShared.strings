@@ -742,6 +742,15 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Pokračovat na %@ (nezabezpečené)";
 
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "Odstranit";
+
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "Tato stránka se nezobrazí ve vašem seznamu Nejnavštěvovanější, ale nebude odstraněna z vaší historie.";
+
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "Odebrat z Nejnavštěvovanějších?";
+
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ spustí externí aplikaci";
 
@@ -864,6 +873,9 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Neplatné detaily v žádosti o platbu";
+
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "Vložená stránka na této stránce";
 
 /* History tableview section header */
 "LastMonth" = "Minulý měsíc";
@@ -2481,6 +2493,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Při sledování videí na tomto webu jsou reklamy blokovány.";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Peněženka Brave";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "Soukromá karta";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "QR kód";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "Search";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Nová soukromá karta";

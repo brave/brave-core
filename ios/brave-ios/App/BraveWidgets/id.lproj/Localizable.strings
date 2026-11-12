@@ -1,20 +1,8 @@
-/* Title for Ask Brave shortcut. Brave is the company name and should not be translated */
-"widgets.askBrave" = "Tanya Brave";
-
 /* Description for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.askBraveWidgetDescription" = "Ajukan pertanyaan kepada Brave.";
 
 /* Title for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.askBraveWidgetTitle" = "Tanya Brave";
-
-/* Title for bookmarks menu item */
-"widgets.BookmarksMenuItem" = "Markah";
-
-/* The name of the feature */
-"widgets.braveLeo" = "AI Leo";
-
-/* Title for the Leo AI voice input shortcut. Leo is the name of a product and should not be translated */
-"widgets.braveLeoVoiceInput" = "Input Suara Leo";
 
 /* The name of the feature */
 "widgets.braveNews" = "Brave News";
@@ -28,14 +16,8 @@
 /* Title for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.braveSearchWidgetTitle" = "Pencarian Brave";
 
-/* Title for downloads menu item */
-"widgets.DownloadsMenuItem" = "Unduhan";
-
 /* Description for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetDescription" = "Mengakses situs web favorit Anda dengan cepat.";
-
-/* Title for history menu item */
-"widgets.HistoryMenuItem" = "Histori";
 
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "Coba lagi nanti";
@@ -58,12 +40,6 @@
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "Silakan buka Brave untuk melihat favorit Anda di sini";
 
-/* QR Code section title */
-"widgets.QRCode" = "Kode QR";
-
-/* Description for the search option on the 'shortcuts' widget. */
-"widgets.searchShortcutTitle" = "Cari";
-
 /* Description for Brave Shields widget on 'add widget' screen. */
 "widgets.shieldStatsDescription" = "Rangkuman cara Brave menghemat waktu Anda dan melindungi Anda secara daring.";
 
@@ -79,15 +55,6 @@
 /* Button to the browser and enter URL or make a search query there. */
 "widgets.shortcutsEnterURLButton" = "Cari atau ketikkan URL";
 
-/* Button to open new browser tab. */
-"widgets.shortcutsNewTabButton" = "Tab baru";
-
-/* Button to open video playlist window. */
-"widgets.shortcutsPlaylistButton" = "Daftar Putar";
-
-/* Button to open new private browser tab. */
-"widgets.shortcutsPrivateTabButton" = "Tab Pribadi";
-
 /* Description for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetDescription" = "Akses cepat untuk mencari situs web atau membuka halaman web di Brave.";
 
@@ -99,7 +66,4 @@
 
 /* Title for Brave Shields single stat widget on 'add widget' screen. */
 "widgets.singleStatTitle" = "Statistik Kerahasiaan";
-
-/* Description for the Brave Wallet option on the 'shortcuts' widget. */
-"widgets.walletShortcutTitle" = "Dompet Brave";
 

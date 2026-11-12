@@ -742,6 +742,15 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "ไปยัง %@ (ไม่ปลอดภัย)";
 
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "นำออก";
+
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "เว็บไซต์นี้จะไม่ปรากฏในรายการที่เข้าชมบ่อยที่สุดของคุณ แต่จะไม่ถูกลบออกจากประวัติของคุณ";
+
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "ลบออกจากที่เข้าชมบ่อยที่สุด?";
+
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ จะเปิดแอปพลิเคชันภายนอก";
 
@@ -864,6 +873,9 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "รายละเอียดในคำขอชำระเงินไม่ถูกต้อง";
+
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "หน้าที่ฝังตัวอยู่ในหน้านี้";
 
 /* History tableview section header */
 "LastMonth" = "เดือนที่แล้ว";
@@ -2481,6 +2493,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "โฆษณาถูกบล็อกขณะดูวิดีโอบนเว็บไซต์นี้";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Brave Wallet";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "แท็บส่วนตัว";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "QR Code";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "ค้นหา";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "แท็บส่วนตัวใหม่";

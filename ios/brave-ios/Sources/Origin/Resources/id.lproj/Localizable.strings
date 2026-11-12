@@ -2,7 +2,7 @@
 "adsHeader" = "Ads";
 
 /* A title asking if the user already purchased on brave.com */
-"alreadyPurchasedTitle" = "Sudah membeli di brave.com?";
+"alreadyPurchasedTitle" = "Sudah pernah membeli di brave.com?";
 
 /* A section header title for analytics-related settings */
 "analyticsHeader" = "Analisis";
@@ -68,7 +68,7 @@
 "restoreButton" = "Pulihkan";
 
 /* A toggle label for Brave Rewards feature */
-"rewardsLabel" = "Imbalan";
+"rewardsLabel" = "Rewards";
 
 /* A toggle label for statistics reporting feature */
 "statisticsReportingLabel" = "Pelaporan statistik";

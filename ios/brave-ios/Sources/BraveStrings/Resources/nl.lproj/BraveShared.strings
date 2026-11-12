@@ -742,6 +742,15 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Ga verder naar %@ (onveilig)";
 
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "Verwijder";
+
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "Deze site verschijnt niet in je lijst met meest bezochte sites, maar wordt niet uit je geschiedenis verwijderd.";
+
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "Verwijderen uit Meest bezocht?";
+
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ start een andere app";
 
@@ -864,6 +873,9 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Ongeldige gegevens in betalingsverzoek";
+
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "Een ingesloten pagina op deze pagina";
 
 /* History tableview section header */
 "LastMonth" = "Afgelopen maand";
@@ -2481,6 +2493,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Advertenties worden geblokkeerd wanneer je video's op deze website bekijkt.";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Brave-wallet";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "Privétabblad";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "QR-code";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "Zoeken";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Nieuw privétabblad";

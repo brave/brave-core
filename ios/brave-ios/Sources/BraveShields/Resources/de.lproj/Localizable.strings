@@ -1,8 +1,8 @@
 /* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "Über Brave Schutz";
+"AboutBraveShields" = "Über Brave Shields";
 
 /* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "Websites nutzen häufig Cookies und Skripte, mit denen man Sie und Ihr Gerät erkennen kann. Das Ziel ist dabei, Ihre Identität zu ermitteln und Ihre Aktivitäten im Internet auf jeder der von Ihnen besuchten Websites zu verfolgen.\n\nBrave blockiert dieses Tracking, damit Sie surfen können, ohne im Web beobachtet zu werden.";
+"AboutBraveShieldsBody" = "Websites nutzen häufig Cookies und Skripte, mit denen man dich und dein Gerät erkennen kann. Das Ziel ist dabei, deine Identität zu ermitteln und deine Aktivitäten im Internet auf jeder der von deiner besuchten Websites zu tracken.\n\nBrave blockiert dieses Tracking, damit du surfen kannst, ohne im Web getrackt zu werden.";
 
 /* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
 "AddCustomFilterListDescription" = "Füge zusätzliche Listen hinzu, die von deiner vertrauenswürdigen Community erstellt und gepflegt werden.";
@@ -119,10 +119,10 @@
 "BraveShieldsSaveContactInfoDescription" = "Wenn du Kontaktinformationen angibst, werden diese für zukünftige Berichte gespeichert.";
 
 /* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "Wenn diese Website defekt erscheint, versuchen Sie es mit Shields down";
+"BraveShieldsSiteBroken" = "Wenn diese Website defekt erscheint, versuche es mit Shields down";
 
 /* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Brave Schutz";
+"BraveShieldsStatusTitle" = "Brave Shields";
 
 /* Context: The 'Down' in 'Brave Shields Down' */
 "BraveShieldsStatusValueDown" = "Down";
@@ -209,7 +209,7 @@
 "FilterListsAdd" = "Hinzufügen";
 
 /* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Weitere beliebte Community-Listen. Bitte beachte, dass die Aktivierung von zu vielen Filtern die Surfgeschwindigkeit verringert.";
+"FilterListsDescription" = "Weitere beliebte Community-Listen. Bitte beachten Sie, dass die Aktivierung von zu vielen Filtern die Surfgeschwindigkeit verringert.";
 
 /* This is a generic error message when downloading a filter list fails. */
 "FilterListsDownloadFailed" = "Downloadfehler";
@@ -233,7 +233,7 @@
 "FingerprintingProtection" = "Fingerabdruck blockieren";
 
 /* No comment provided by engineer. */
-"FingerprintingProtectionDescription" = "Erschwert es Seiten, die charakteristischen Merkmale deines Geräts zu erkennen.";
+"FingerprintingProtectionDescription" = "Erschwert es Seiten, die charakteristischen Merkmale Ihres Geräts zu erkennen.";
 
 /* No comment provided by engineer. */
 "httpsEverywhereDescription" = "Website werden mittels sicherem HTTPS statt HTTP geöffnet, falls möglich.";
@@ -245,7 +245,7 @@
 "ListsUpdated" = "Listen aktualisiert";
 
 /* No comment provided by engineer. */
-"ReportABrokenSite" = "Melde eine fehlerhafte Website";
+"ReportABrokenSite" = "Melden Sie eine fehlerhafte Website";
 
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "ReportBrokenAdditionalDetails" = "Zusätzliche Details (optional)";
@@ -257,13 +257,13 @@
 "reportBrokenCategory" = "Was ist das Hauptproblem, das dir auffällt?";
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
-"ReportBrokenContactMe" = "Kontaktiere mich unter: (optional)";
+"ReportBrokenContactMe" = "Kontaktieren Sie mich unter: (optional)";
 
 /* Contact info storing description */
 "ReportBrokenContactMeDescription" = "Wenn du deine Kontaktdaten angibst, werden diese gespeichert, damit du in Zukunft defekte Seiten melden kannst.";
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
-"ReportBrokenContactMeSuggestions" = "E-Mail, X usw.";
+"ReportBrokenContactMeSuggestions" = "E-Mail, Twitter usw.";
 
 /* A placeholder for a drop down where the user provides a category for a web-compatibility report */
 "ReportBrokenPlaceholder" = "Wähle aus";
@@ -272,7 +272,7 @@
 "ReportBrokenSiteBody1" = "Teile den Brave-Developern mit, dass diese Seite nicht richtig funktioniert:";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Hinweis: Der an Brave Server gesendete Bericht wird die Website-Adresse, die Brave Versionsnummer, die Schutzeinstellungen, den VPN-Status und die Spracheinstellungen enthalten.";
+"ReportBrokenSiteBody2" = "Hinweis: Der an Brave-Server gesendete Bericht wird die Website-Adresse, die Brave-Versionsnummer, die Schutzeinstellungen, den VPN-Status und die Spracheinstellungen enthalten.";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Absenden";
@@ -341,10 +341,10 @@
 "ShieldsDefaults" = "Globale Brave Shields-Standardeinstellungen";
 
 /* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "Dies sind die Standardeinstellungen für Schutz für neue Seiten. Wenn du die folgenden Einstellungen änderst, hat dies keine Auswirkung auf die Einstellungen, die du für bestimmte Websites gemacht hast.";
+"ShieldsDefaultsFooter" = "Dies sind die Standardeinstellungen für Schutz für neue Seiten. Wenn Sie die folgenden Einstellungen ändern, hat dies keine Auswirkung auf die Einstellungen, die Sie für bestimmte Websites gemacht haben";
 
 /* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Du surfst auf dieser Seite ohne die Datenschutzvorkehrungen von Brave. Funktioniert sie nicht richtig, wenn Shields aktiviert ist?";
+"ShieldsDownDisclaimer" = "Sie browsen diese Seite ohne die Datenschutzvorkehrungen von Brave. Funktioniert sie nicht richtig, wenn Schutz an ist?";
 
 /* Time Saved Days */
 "ShieldsTimeStatsDays" = "Tage";
@@ -401,7 +401,7 @@
 "SiteIsNotSecure" = "Website ist nicht sicher";
 
 /* No comment provided by engineer. */
-"SiteReportedBody" = "Danke, dass du den Developern von Brave mitgeteilt hast, dass mit dieser Seite etwas nicht stimmt. Wir bemühen uns, das zu reparieren!";
+"SiteReportedBody" = "Danke, dass Sie den Entwicklern von Brave mitgeteilt haben, dass mit dieser Seite etwas nicht stimmt. Wir bemühen uns, das zu reparieren!";
 
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Vielen Dank";
@@ -425,5 +425,5 @@
 "UpgradeConnectionsToHTTPS" = "Verbindungen auf HTTPS erweitern";
 
 /* A description shown an a page where the http page was blocked */
-"YourConnectionIsNotPrivate" = "Du siehst diese Warnmeldung, weil diese Website HTTPS nicht unterstützt.";
+"YourConnectionIsNotPrivate" = "Sie sehen diese Warnmeldung, weil diese Website HTTPS nicht unterstützt.";
 

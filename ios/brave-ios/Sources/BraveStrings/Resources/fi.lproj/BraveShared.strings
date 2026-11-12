@@ -742,6 +742,15 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Jatka kohteeseen %@ (vaarallinen)";
 
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "Poista";
+
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "Tämä sivusto ei näy Useimmin vieraillut -luettelossasi, mutta sitä ei poisteta historiastasi.";
+
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "Poista Useimmin vieraillut -luettelosta?";
+
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ käynnistää ulkoisen sovelluksen";
 
@@ -864,6 +873,9 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Virheelliset tiedot maksupyynnössä";
+
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "Tämän sivun upotettu sivu";
 
 /* History tableview section header */
 "LastMonth" = "Viime kuukausi";
@@ -2481,6 +2493,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Mainokset on estetty, kun katsot videoita tällä sivulla.";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Brave-lompakko";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "Yksityinen välilehti";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "Viivakoodi";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "Haku";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Uusi yksityinen välilehti";

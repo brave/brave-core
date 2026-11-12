@@ -1,20 +1,8 @@
-/* Title for Ask Brave shortcut. Brave is the company name and should not be translated */
-"widgets.askBrave" = "Kérdezz a Brave-tól";
-
 /* Description for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.askBraveWidgetDescription" = "Tegyen fel egy kérdést a Brave-nek.";
 
 /* Title for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.askBraveWidgetTitle" = "Kérdezz a Brave-tól";
-
-/* Title for bookmarks menu item */
-"widgets.BookmarksMenuItem" = "Könyvjelzők";
-
-/* The name of the feature */
-"widgets.braveLeo" = "Leo MI";
-
-/* Title for the Leo AI voice input shortcut. Leo is the name of a product and should not be translated */
-"widgets.braveLeoVoiceInput" = "Leo Hangbemenet";
 
 /* The name of the feature */
 "widgets.braveNews" = "Brave News";
@@ -28,14 +16,8 @@
 /* Title for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.braveSearchWidgetTitle" = "Brave kereső";
 
-/* Title for downloads menu item */
-"widgets.DownloadsMenuItem" = "Letöltések";
-
 /* Description for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetDescription" = "Gyorsan elérheti kedvenc webhelyeit.";
-
-/* Title for history menu item */
-"widgets.HistoryMenuItem" = "Előzmények";
 
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "Próbálja újra később";
@@ -58,12 +40,6 @@
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "Az itteni kedvenceinek megtekintéséhez nyissa meg a Brave-et";
 
-/* QR Code section title */
-"widgets.QRCode" = "QR-kód";
-
-/* Description for the search option on the 'shortcuts' widget. */
-"widgets.searchShortcutTitle" = "Keresés ";
-
 /* Description for Brave Shields widget on 'add widget' screen. */
 "widgets.shieldStatsDescription" = "Összefoglaló arról, hogy a Brave hogyan takarít meg időt és védi meg Önt online tevékenysége során.";
 
@@ -79,15 +55,6 @@
 /* Button to the browser and enter URL or make a search query there. */
 "widgets.shortcutsEnterURLButton" = "Keressen vagy írjon be egy URL-t";
 
-/* Button to open new browser tab. */
-"widgets.shortcutsNewTabButton" = "Új lap";
-
-/* Button to open video playlist window. */
-"widgets.shortcutsPlaylistButton" = "Lejátszási lista";
-
-/* Button to open new private browser tab. */
-"widgets.shortcutsPrivateTabButton" = "Privát fül";
-
 /* Description for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetDescription" = "Gyors hozzáférés az interneten való kereséshez vagy weboldalak megnyitásához a Brave alkalmazásban.";
 
@@ -99,7 +66,4 @@
 
 /* Title for Brave Shields single stat widget on 'add widget' screen. */
 "widgets.singleStatTitle" = "Adatvédelmi statisztika";
-
-/* Description for the Brave Wallet option on the 'shortcuts' widget. */
-"widgets.walletShortcutTitle" = "Brave Wallet";
 

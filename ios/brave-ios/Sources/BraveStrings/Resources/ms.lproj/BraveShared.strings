@@ -742,6 +742,15 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Teruskan ke %@ (tidak selamat)";
 
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "Alih keluar";
+
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "Laman web ini tidak akan muncul dalam senarai Paling Kerap Dilawati anda, tetapi ia tidak akan dialih keluar daripada sejarah anda.";
+
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "Alih keluar daripada Paling Kerap Dilawati?";
+
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ akan melancarkan sebuah aplikasi luaran";
 
@@ -864,6 +873,9 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Butiran tidak sah dalam permintaan pembayaran";
+
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "Halaman terbenam pada halaman ini";
 
 /* History tableview section header */
 "LastMonth" = "Bulan lepas";
@@ -1814,7 +1826,7 @@
 "quickview.refresh.accessibility.label" = "Segar semula";
 
 /* Accessibility text for an icon button which will share the current page in QuickView mode. */
-"quickview.share.accessibility.label" = "Kongsi";
+"quickview.share.accessibility.label" = "Kongsikan";
 
 /* Accessibility text for an icon button which will open shield screen in QuickView mode. */
 "quickview.shield.accessibility.label" = "Perisai";
@@ -2354,7 +2366,7 @@
 "settings.blockYouTubeDistractingElementsDesc" = "Sekat Elemen YouTube yang Mengganggu";
 
 /* Title beside the toggle for blocking YouTube distracting elements */
-"settings.blockYouTubeDistractingElementsTitle" = "Sekat Elemen YouTube yang Mengganggu";
+"settings.blockYouTubeDistractingElementsTitle" = "Sekat Elemen YouTube yang Mengganggu ";
 
 /* Description beside the toggle for blocking YouTube recommendations */
 "settings.blockYoutubeRecommendationsDesc" = "Menyekat elemen seterusnya dan tamatkan kad di youtube.com";
@@ -2481,6 +2493,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Iklan disekat apabila menonton video pada laman web ini. ";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Brave Wallet";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "Tab Peribadi";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "Kod QR";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "Cari";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Tab Peribadi Baharu";

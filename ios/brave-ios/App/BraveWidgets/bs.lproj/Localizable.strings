@@ -1,20 +1,8 @@
-/* Title for Ask Brave shortcut. Brave is the company name and should not be translated */
-"widgets.askBrave" = "Pitajte Brave";
-
 /* Description for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.askBraveWidgetDescription" = "Postavite Brave-u pitanje.";
 
 /* Title for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.askBraveWidgetTitle" = "Pitajte Brave";
-
-/* Title for bookmarks menu item */
-"widgets.BookmarksMenuItem" = "Knjižne oznake";
-
-/* The name of the feature */
-"widgets.braveLeo" = "Pomoćnik Leo potpomognut umjetnom inteligencijom (AI)";
-
-/* Title for the Leo AI voice input shortcut. Leo is the name of a product and should not be translated */
-"widgets.braveLeoVoiceInput" = "Leo glasovni upis";
 
 /* The name of the feature */
 "widgets.braveNews" = "Novosti Brave";
@@ -28,14 +16,8 @@
 /* Title for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.braveSearchWidgetTitle" = "Brave Search";
 
-/* Title for downloads menu item */
-"widgets.DownloadsMenuItem" = "Preuzimanje";
-
 /* Description for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetDescription" = "Brzo pristupite svojim omiljenim mrežnim mjestima.";
-
-/* Title for history menu item */
-"widgets.HistoryMenuItem" = "Povijest";
 
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "Pokušajte ponovno poslije";
@@ -58,12 +40,6 @@
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "Otvorite preglednik Brave kako biste ovdje vidjeli svoje omiljene stavke";
 
-/* QR Code section title */
-"widgets.QRCode" = "QR kȏd";
-
-/* Description for the search option on the 'shortcuts' widget. */
-"widgets.searchShortcutTitle" = "Pretraži";
-
 /* Description for Brave Shields widget on 'add widget' screen. */
 "widgets.shieldStatsDescription" = "Sažetak o tome kako upotrebom preglednika Brave štedite vrijeme i dobivate zaštitu na mreži.";
 
@@ -79,15 +55,6 @@
 /* Button to the browser and enter URL or make a search query there. */
 "widgets.shortcutsEnterURLButton" = "Pretraži ili upiši URL";
 
-/* Button to open new browser tab. */
-"widgets.shortcutsNewTabButton" = "Nova kartica";
-
-/* Button to open video playlist window. */
-"widgets.shortcutsPlaylistButton" = "Popis za reprodukciju";
-
-/* Button to open new private browser tab. */
-"widgets.shortcutsPrivateTabButton" = "Kartica Privatno";
-
 /* Description for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetDescription" = "Brzo pristupite za pretraživanje mreže ili otvaranje mrežnih stranica u pregledniku Brave.";
 
@@ -99,7 +66,4 @@
 
 /* Title for Brave Shields single stat widget on 'add widget' screen. */
 "widgets.singleStatTitle" = "Statistika privatnosti";
-
-/* Description for the Brave Wallet option on the 'shortcuts' widget. */
-"widgets.walletShortcutTitle" = "Novčanik Brave";
 
