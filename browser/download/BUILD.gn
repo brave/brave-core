@@ -61,4 +61,8 @@ source_set("browser_tests") {
   data = [ "//brave/test/data/image_metadata_stripper/" ]
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  if (is_mac || is_win) {
+    sources += [ "brave_download_origin_metadata_browsertest.cc" ]
+  }
 }
