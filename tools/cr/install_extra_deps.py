@@ -272,9 +272,16 @@ class ExtraDepsRunner:
             raise RuntimeError(
                 f'Could not find a .gclient root from {_SRC_DIR.parent}'
             )
+        config_file = Path(root) / options.config_filename
+        config = gclient_eval.ParseLocalConfig(
+            gclient_utils.FileRead(config_file), str(config_file)
+        )
+        # Nothing here fetches through the git cache, so its location doesn't
+        # matter, and `SetConfig()` rejects one inside the gclient root.
+        config.pop('cache_dir', None)
         client = gclient.GClient(root, options)
         client.SetConfig(
-            gclient_utils.FileRead(Path(root) / options.config_filename)
+            ''.join(f'{name} = {value!r}\n' for name, value in config.items())
         )
         return cls(client)
 
