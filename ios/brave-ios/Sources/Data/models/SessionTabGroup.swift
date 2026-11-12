@@ -106,10 +106,19 @@ extension SessionTabGroup {
     }
   }
 
-  /// Deletes groups in the given window that no longer contain any tabs
-  public static func deleteEmpty(windowId: UUID) {
+  /// Changes the title of the group
+  public static func rename(groupId: UUID, title: String) {
     DataController.perform { context in
-      all(where: predicate(windowId: windowId), context: context)?.forEach {
+      from(groupId: groupId, in: context)?.title = title
+    }
+  }
+
+  /// Deletes groups, in every window, that no longer contain any tabs. A group can't outlive its
+  /// last tab, but deleting tabs in bulk doesn't remove their group as the relationship's delete
+  /// rule only nullifies it.
+  public static func deleteAllEmpty() {
+    DataController.perform { context in
+      all(context: context)?.forEach {
         deleteIfEmpty($0, in: context)
       }
     }

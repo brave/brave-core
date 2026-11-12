@@ -148,11 +148,13 @@ extension SessionTab {
 
   public static func deleteAll() {
     deleteAll(context: .new(inMemory: false))
+    SessionTabGroup.deleteAllEmpty()
   }
 
   public static func deleteAll(tabIds: [UUID]) {
     let predicate = NSPredicate(format: "\(#keyPath(SessionTab.tabId)) IN %@", tabIds)
     deleteAll(predicate: predicate, context: .new(inMemory: false))
+    SessionTabGroup.deleteAllEmpty()
   }
 
   /// Deletes the persisted tabs belonging to the given windows whose URL matches `shouldDelete`
@@ -184,6 +186,7 @@ extension SessionTab {
       date
     )
     self.deleteAll(predicate: predicate)
+    SessionTabGroup.deleteAllEmpty()
   }
 
   /// Marks the specified tab as selected

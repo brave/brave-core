@@ -92,9 +92,6 @@ struct TabGridView: View {
   @State private var isShredAlertPresented: Bool = false
   @State private var activeShredMode: ActiveShredMode?
   @State private var isShredAnimationVisible: Bool = false
-  @State private var tabsToGroup: Set<TabState.ID> = []
-  @State private var newGroupName: String = ""
-  @State private var isNewGroupAlertPresented: Bool = false
 
   var browserColors: BrowserColors {
     viewModel.isPrivateBrowsing ? .privateMode : .standard
@@ -293,20 +290,6 @@ struct TabGridView: View {
         Text(message)
       }
     )
-    .alert(
-      Strings.TabGrid.newGroupAlertTitle,
-      isPresented: $isNewGroupAlertPresented
-    ) {
-      // Leaving the name empty falls back to the default title shown as the placeholder
-      TextField(viewModel.defaultGroupTitle, text: $newGroupName)
-      Button(Strings.TabGrid.createGroupButtonTitle) {
-        let tabIDs = tabsToGroup
-        let name = newGroupName
-        resetEditMode()
-        viewModel.createGroup(title: name, adding: tabIDs)
-      }
-      Button(Strings.CancelString, role: .cancel) {}
-    }
     .overlay {
       if let group = viewModel.openGroup {
         TabGroupDetailView(viewModel: viewModel, group: group)
@@ -700,7 +683,7 @@ struct TabGridView: View {
     ])
   }
 
-  /// A submenu listing the existing groups, with an option to create a new one, which adds the tabs to the chosen group
+  /// A submenu listing the existing groups, with an option to create a new one, which adds the tabs to the chosen group, or to a new group that is then named
   private func addToGroupMenu(for tabIDs: Set<TabState.ID>) -> UIMenu {
     let existingGroups = viewModel.tabGroups.map { group in
       UIAction(title: group.title) { _ in
@@ -711,10 +694,12 @@ struct TabGridView: View {
     let createGroup = UIMenu(
       options: .displayInline,
       children: [
-        UIAction(title: Strings.TabGrid.createNewGroupMenuTitle) { _ in
-          tabsToGroup = tabIDs
-          newGroupName = ""
-          isNewGroupAlertPresented = true
+        UIAction(
+          title: Strings.TabGrid.createNewGroupMenuTitle,
+          image: UIImage(braveSystemNamed: "leo.group.new-tab")
+        ) { _ in
+          resetEditMode()
+          viewModel.createGroup(adding: tabIDs)
         }
       ]
     )
@@ -727,7 +712,10 @@ struct TabGridView: View {
 
   private func contextMenu(for group: TabGroup) -> UIMenu? {
     UIMenu(children: [
-      UIAction(title: Strings.TabGrid.ungroupMenuTitle) { _ in
+      UIAction(
+        title: Strings.TabGrid.ungroupMenuTitle,
+        image: UIImage(braveSystemNamed: "leo.group.ungroup")
+      ) { _ in
         viewModel.ungroup(group)
       },
       UIAction(

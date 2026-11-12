@@ -9,4 +9,13 @@ import Foundation
 struct TabGroup: Identifiable, Hashable {
   let id: UUID
   var title: String
+
+  // A group is the same group when renamed
+  static func == (lhs: Self, rhs: Self) -> Bool {
+    lhs.id == rhs.id
+  }
+
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+  }
 }

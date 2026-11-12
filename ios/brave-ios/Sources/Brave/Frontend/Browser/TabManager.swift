@@ -1837,6 +1837,33 @@ extension TabManager {
     delegates.forEach { $0.get()?.tabManagerDidChangeTabGroups(self) }
   }
 
+  /// Changes the title of the group. An empty title is ignored.
+  func renameTabGroup(_ group: TabGroup, to title: String) {
+    let title = title.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !title.isEmpty, let index = tabGroups.firstIndex(of: group),
+      tabGroups[index].title != title
+    else { return }
+
+    tabGroups[index].title = title
+    SessionTabGroup.rename(groupId: group.id, title: title)
+    delegates.forEach { $0.get()?.tabManagerDidChangeTabGroups(self) }
+  }
+
+  /// Adds a new tab right after the last tab of the group, and selects it. The tab joins the group
+  /// as it's created, so it is never seen outside of it.
+  @discardableResult
+  @MainActor func addTabAndSelect(in group: TabGroup) -> (any TabState)? {
+    guard canGroupTabsForCurrentMode, tabGroups.contains(group) else { return nil }
+
+    let tabID = UUID()
+    groupIDsByTabID[tabID] = group.id
+    let tab = addTab(afterTab: tabs(in: group).last, id: tabID, isPrivate: false)
+    SessionTabGroup.add(tabIds: [tab.id], toGroup: group.id)
+    selectTab(tab)
+    delegates.forEach { $0.get()?.tabManagerDidChangeTabGroups(self) }
+    return tab
+  }
+
   /// Dissolves the group. Its tabs are kept.
   func ungroupTabs(in group: TabGroup) {
     guard tabGroups.contains(group) else { return }
@@ -1874,8 +1901,8 @@ extension TabManager {
       groupIDsByTabID[savedTab.tabId] = sessionGroup.groupId
     }
     tabGroups = restoredGroups.sorted(by: { $0.index < $1.index }).map(\.group)
-    // Groups whose tabs were all discarded (e.g. by auto close) shouldn't linger
-    SessionTabGroup.deleteEmpty(windowId: windowId)
+    // Groups whose tabs were all discarded (e.g. by auto close) shouldn't linger, in any window
+    SessionTabGroup.deleteAllEmpty()
   }
 
   private func groupableTabs(from tabs: [any TabState]) -> [any TabState] {

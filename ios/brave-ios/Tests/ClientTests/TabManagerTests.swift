@@ -1143,4 +1143,81 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     )
     wait(for: [isDeleted], timeout: 5)
   }
+
+  func testRenameTabGroup() {
+    let tab = manager.addTestTab(isPrivate: false)
+    let group = manager.createTabGroup(title: "Group", adding: [tab])!
+
+    manager.renameTabGroup(group, to: "  Renamed ")
+    XCTAssertEqual(manager.tabGroups.map(\.title), ["Renamed"])
+    // A stale copy is still the same group
+    XCTAssertTrue(manager.tabGroups.contains(group))
+
+    // An empty name keeps the current one
+    manager.renameTabGroup(group, to: "   ")
+    XCTAssertEqual(manager.tabGroups.map(\.title), ["Renamed"])
+  }
+
+  func testAddTabToGroupCreatesAndSelectsTabInGroup() {
+    let firstTab = manager.addTestTab(isPrivate: false)
+    let secondTab = manager.addTestTab(isPrivate: false)
+    let thirdTab = manager.addTestTab(isPrivate: false)
+    let group = manager.createTabGroup(title: "Group", adding: [firstTab, secondTab])!
+
+    let newTab = manager.addTabAndSelect(in: group)
+
+    XCTAssertNotNil(newTab)
+    XCTAssertEqual(manager.tabs(in: group).map(\.id), [firstTab.id, secondTab.id, newTab!.id])
+    XCTAssertEqual(manager.tabGroup(for: newTab!), group)
+    XCTAssertEqual(manager.selectedTab?.id, newTab?.id)
+    // The new tab goes right after the last tab of the group
+    XCTAssertEqual(
+      manager.allTabs.map(\.id),
+      [firstTab.id, secondTab.id, newTab!.id, thirdTab.id]
+    )
+  }
+
+  func testCannotAddTabToUnknownGroup() {
+    XCTAssertNil(manager.addTabAndSelect(in: TabGroup(id: UUID(), title: "Unknown")))
+  }
+
+  func testBulkDeletingTabsDeletesPersistedGroupOnceEmpty() {
+    DataController.shared = InMemoryDataController()
+    DataController.shared.initializeOnce()
+
+    let windowCreated = expectation(forNotification: .NSManagedObjectContextDidSave, object: nil)
+    SessionWindow.createWindow(isSelected: true, uuid: testWindowId)
+    wait(for: [windowCreated], timeout: 5)
+
+    let firstTab = manager.addTestTab(isPrivate: false)
+    let secondTab = manager.addTestTab(isPrivate: false)
+    manager.createTabGroup(title: "Group", adding: [firstTab, secondTab])
+    let isCreated = XCTNSPredicateExpectation(
+      predicate: NSPredicate { _, _ in
+        SessionTabGroup.all(windowId: self.testWindowId).first?.sessionTabs?.count == 2
+      },
+      object: nil
+    )
+    wait(for: [isCreated], timeout: 5)
+
+    // The group lives on while it has a tab
+    SessionTab.deleteAll(tabIds: [firstTab.id])
+    let isSecondTabOnly = XCTNSPredicateExpectation(
+      predicate: NSPredicate { _, _ in
+        SessionTab.from(tabId: firstTab.id) == nil
+          && SessionTabGroup.all(windowId: self.testWindowId).first?.sessionTabs?.count == 1
+      },
+      object: nil
+    )
+    wait(for: [isSecondTabOnly], timeout: 5)
+
+    SessionTab.deleteAll(tabIds: [secondTab.id])
+    let isDeleted = XCTNSPredicateExpectation(
+      predicate: NSPredicate { _, _ in
+        SessionTabGroup.all(windowId: self.testWindowId).isEmpty
+      },
+      object: nil
+    )
+    wait(for: [isDeleted], timeout: 5)
+  }
 }

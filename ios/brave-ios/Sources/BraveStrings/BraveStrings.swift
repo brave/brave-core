@@ -1013,14 +1013,14 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value: "Create New Group",
-      comment: "A menu item title that when tapped prompts the user to create a new tab group containing the selected tab"
+      comment: "A menu item title that when tapped creates a new tab group containing the selected tab"
     )
-    public static let newGroupAlertTitle = NSLocalizedString(
-      "tabGrid.newGroupAlertTitle",
+    public static let groupNamePlaceholder = NSLocalizedString(
+      "tabGrid.groupNamePlaceholder",
       tableName: "BraveShared",
       bundle: .module,
-      value: "New Tab Group",
-      comment: "The title of an alert asking the user to name a new tab group"
+      value: "Enter group name",
+      comment: "The placeholder of the text field used to name a new tab group"
     )
     public static let defaultGroupTitleFormat = NSLocalizedString(
       "tabGrid.defaultGroupTitleFormat",
@@ -1028,13 +1028,6 @@ extension Strings {
       bundle: .module,
       value: "Group %lld",
       comment: "The name given to a new tab group when the user doesn't provide one e.g. 'Group 2'"
-    )
-    public static let createGroupButtonTitle = NSLocalizedString(
-      "tabGrid.createGroupButtonTitle",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Create",
-      comment: "A button title that when tapped creates a new tab group with the entered name"
     )
     public static let ungroupMenuTitle = NSLocalizedString(
       "tabGrid.ungroupMenuTitle",
@@ -1049,6 +1042,14 @@ extension Strings {
       bundle: .module,
       value: "Close All Tabs",
       comment: "A menu item title that when tapped closes every tab in a tab group"
+    )
+    public static let editGroupNameMenuTitle = NSLocalizedString(
+      "tabGrid.editGroupNameMenuTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Edit Group Name",
+      comment:
+        "A menu item and alert title for changing the name of a tab group"
     )
     public static let groupOptionsAccessibilityLabel = NSLocalizedString(
       "tabGrid.groupOptionsAccessibilityLabel",

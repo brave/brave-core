@@ -21,6 +21,7 @@ class TabGridViewModel {
   private(set) var items: [TabGridItem] = []
   private(set) var openGroup: TabGroup?
   private(set) var openGroupItems: [TabGridItem] = []
+  private var isNamingOpenGroup = false
   private(set) var isPrivateTabsLocked: Bool = false
   var onModeSwitchComplete: (() -> Void)?
   private(set) var isSceneActive: Bool = true
@@ -230,19 +231,40 @@ class TabGridViewModel {
     }
   }
 
-  func createGroup(title: String, adding tabIDs: Set<TabState.ID>) {
-    let title = title.trimmingCharacters(in: .whitespacesAndNewlines)
+  /// Creates a group with a default name out of the tabs and opens it, ready for the user to give it a name
+  func createGroup(adding tabIDs: Set<TabState.ID>) {
     withAnimation {
-      _ = tabManager.createTabGroup(
-        title: title.isEmpty ? defaultGroupTitle : title,
-        adding: currentModeTabs(with: tabIDs)
-      )
+      guard
+        let group = tabManager.createTabGroup(
+          title: defaultGroupTitle,
+          adding: currentModeTabs(with: tabIDs)
+        )
+      else { return }
+      isNamingOpenGroup = true
+      showGroup(group)
     }
+  }
+
+  /// Whether the open group was just created and should be named. Reading this resets it.
+  func consumeNamingRequest() -> Bool {
+    defer { isNamingOpenGroup = false }
+    return isNamingOpenGroup
   }
 
   func ungroup(_ group: TabGroup) {
     withAnimation {
       tabManager.ungroupTabs(in: group)
+    }
+  }
+
+  func renameGroup(_ group: TabGroup, to title: String) {
+    tabManager.renameTabGroup(group, to: title)
+  }
+
+  /// Adds a new tab to the end of the group and selects it
+  func addTab(in group: TabGroup) {
+    withAnimation {
+      _ = tabManager.addTabAndSelect(in: group)
     }
   }
 
@@ -261,18 +283,21 @@ class TabGridViewModel {
   }
 
   func closeOpenGroup() {
+    isNamingOpenGroup = false
     openGroup = nil
     openGroupItems = []
   }
 
   private func updateOpenGroupItems() {
     guard let group = openGroup else { return }
-    guard tabManager.tabGroups.contains(group) else {
+    guard let currentGroup = tabManager.tabGroups.first(where: { $0 == group }) else {
       // The group is gone, e.g. its last tab was closed or it was ungrouped
       closeOpenGroup()
       return
     }
-    openGroupItems = tabManager.tabs(in: group).map { TabGridItem.tab($0) }
+    // Pick up a new title
+    openGroup = currentGroup
+    openGroupItems = tabManager.tabs(in: currentGroup).map { TabGridItem.tab($0) }
   }
 
   /// The name given to a new group when the user doesn't provide one

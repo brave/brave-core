@@ -94,7 +94,7 @@ struct TabGridGroupItemView: View {
       Button(role: .destructive) {
         actionHandler(.closeAllTabs)
       } label: {
-        Text(Strings.TabGrid.closeGroupTabsMenuTitle)
+        Label(Strings.TabGrid.closeGroupTabsMenuTitle, braveSystemImage: "leo.close")
       }
     } label: {
       Label(Strings.TabGrid.groupOptionsAccessibilityLabel, braveSystemImage: "leo.close")
@@ -104,7 +104,6 @@ struct TabGridGroupItemView: View {
     }
   }
 
-  /// Previews of the group's first tabs, two on top and one below, in a rounded container
   private var thumbnailContainer: some View {
     VStack(spacing: 4) {
       HStack(spacing: 4) {
@@ -113,7 +112,7 @@ struct TabGridGroupItemView: View {
       }
       HStack(spacing: 4) {
         thumbnail(at: 2)
-        Color.clear
+        thumbnail(at: 3)
       }
     }
     .padding(4)
