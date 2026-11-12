@@ -17,6 +17,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
@@ -443,12 +444,13 @@ class AIChatService : public KeyedService,
   // Whether |uuid| has a loaded ConversationHandler with a connected client.
   // This doesn't mean the conversation is on screen.
   bool IsConversationClientConnected(const std::string& uuid) const;
-  // Moves |uuid| out of kGenerating once its handler is neither generating nor
-  // running tools: to kCompletedNotViewed, or to kIdle if a client is
-  // connected.
-  void MaybeCompleteGeneration(const std::string& uuid);
-  // Deletes a conversation without notifying the conversation list.
-  void EraseConversation(const std::string& id);
+  // Marks |conversation_uuid| as no longer generating once its handler is
+  // neither generating nor running tools: kCompletedNotViewed, or kIdle if a
+  // client is connected.
+  void MaybeMarkGenerationComplete(const std::string& conversation_uuid);
+  // DeleteConversation() without OnConversationListChanged(), for callers that
+  // delete several conversations and then send the list once.
+  void DeleteConversationWithoutNotifyingList(const std::string& id);
 
   raw_ptr<ModelService> model_service_;
   raw_ptr<TabTrackerService> tab_tracker_service_;
@@ -527,7 +529,7 @@ class AIChatService : public KeyedService,
 
   // Session-only generation state per conversation uuid. A missing entry means
   // kIdle; kIdle is never stored.
-  std::map<std::string, mojom::ConversationGenerationState>
+  base::flat_map<std::string, mojom::ConversationGenerationState>
       conversation_generation_state_;
 
   mojo::Receiver<mojom::TabDataObserver> tab_data_observer_receiver_{this};

@@ -278,6 +278,60 @@ class MockAIChatDatabase : public AIChatDatabase {
               (override));
 };
 
+// Runs |action|, then waits until |observer| is told |uuid| is in |state|.
+void ExpectGenerationState(MockServiceClient& observer,
+                           const std::string& uuid,
+                           mojom::ConversationGenerationState state,
+                           base::OnceClosure action) {
+  base::test::TestFuture<void> received;
+  EXPECT_CALL(observer, OnConversationGenerationStateChanged(uuid, state))
+      .WillOnce(base::test::RunOnceClosure(received.GetCallback()));
+  std::move(action).Run();
+  ASSERT_TRUE(received.Wait());
+  testing::Mock::VerifyAndClearExpectations(&observer);
+}
+
+// Gives |handler| a mock engine, submits a turn and waits for it to start
+// generating. Returns the callback that completes the response. If
+// |data_event| is set, it is streamed into the response first.
+EngineConsumer::GenerationCompletedCallback StartGeneration(
+    ConversationHandler* handler,
+    MockServiceClient& observer,
+    mojom::ConversationEntryEventPtr data_event = nullptr) {
+  handler->SetEngineForTesting(std::make_unique<MockEngineConsumer>());
+  auto* engine =
+      static_cast<MockEngineConsumer*>(handler->GetEngineForTesting());
+  base::test::TestFuture<EngineConsumer::GenerationCompletedCallback> done;
+  EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _, _, _))
+      .WillOnce(
+          [&done, &data_event](
+              PageContentsMap&&, const EngineConsumer::ConversationHistoryView&,
+              bool, const std::vector<base::WeakPtr<Tool>>&,
+              std::optional<std::string_view>, const ConversationCapabilitySet&,
+              EngineConsumer::GenerationDataCallback data_callback,
+              EngineConsumer::GenerationCompletedCallback callback) {
+            if (data_event) {
+              data_callback.Run(EngineConsumer::GenerationResultData(
+                  std::move(data_event), std::nullopt));
+            }
+            done.SetValue(std::move(callback));
+          });
+  ExpectGenerationState(
+      observer, handler->get_conversation_uuid(),
+      mojom::ConversationGenerationState::kGenerating,
+      base::BindLambdaForTesting([&] {
+        handler->SubmitHumanConversationEntry(mojom::ConversationTurn::New());
+      }));
+  return done.Take();
+}
+
+void CompleteGeneration(EngineConsumer::GenerationCompletedCallback resolve) {
+  std::move(resolve).Run(base::ok(EngineConsumer::GenerationResultData(
+      mojom::ConversationEntryEvent::NewCompletionEvent(
+          mojom::CompletionEvent::New("")),
+      std::nullopt)));
+}
+
 }  // namespace
 
 class AIChatServiceUnitTest : public testing::Test,
@@ -1879,64 +1933,6 @@ TEST_P(AIChatServiceUnitTest, DeleteSkill) {
   auto all_skills = prefs::GetSkillsFromPrefs(prefs_);
   EXPECT_TRUE(all_skills.empty());
 }
-
-namespace {
-
-// Runs |action|, then waits until |observer| is told |uuid| is in |state|.
-void ExpectGenerationState(MockServiceClient& observer,
-                           const std::string& uuid,
-                           mojom::ConversationGenerationState state,
-                           base::OnceClosure action) {
-  base::test::TestFuture<void> received;
-  EXPECT_CALL(observer, OnConversationGenerationStateChanged(uuid, state))
-      .WillOnce(base::test::RunOnceClosure(received.GetCallback()));
-  std::move(action).Run();
-  ASSERT_TRUE(received.Wait());
-  testing::Mock::VerifyAndClearExpectations(&observer);
-}
-
-// Gives |handler| a mock engine, submits a turn and waits for it to start
-// generating. Returns the callback that completes the response. If
-// |data_event| is set, it is streamed into the response first.
-EngineConsumer::GenerationCompletedCallback StartGeneration(
-    ConversationHandler* handler,
-    MockServiceClient& observer,
-    mojom::ConversationEntryEventPtr data_event = nullptr) {
-  handler->SetEngineForTesting(std::make_unique<MockEngineConsumer>());
-  auto* engine =
-      static_cast<MockEngineConsumer*>(handler->GetEngineForTesting());
-  base::test::TestFuture<EngineConsumer::GenerationCompletedCallback> done;
-  EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _, _, _))
-      .WillOnce(
-          [&done, &data_event](
-              PageContentsMap&&, const EngineConsumer::ConversationHistoryView&,
-              bool, const std::vector<base::WeakPtr<Tool>>&,
-              std::optional<std::string_view>, const ConversationCapabilitySet&,
-              EngineConsumer::GenerationDataCallback data_callback,
-              EngineConsumer::GenerationCompletedCallback callback) {
-            if (data_event) {
-              data_callback.Run(EngineConsumer::GenerationResultData(
-                  std::move(data_event), std::nullopt));
-            }
-            done.SetValue(std::move(callback));
-          });
-  ExpectGenerationState(
-      observer, handler->get_conversation_uuid(),
-      mojom::ConversationGenerationState::kGenerating,
-      base::BindLambdaForTesting([&] {
-        handler->SubmitHumanConversationEntry(mojom::ConversationTurn::New());
-      }));
-  return done.Take();
-}
-
-void CompleteGeneration(EngineConsumer::GenerationCompletedCallback resolve) {
-  std::move(resolve).Run(base::ok(EngineConsumer::GenerationResultData(
-      mojom::ConversationEntryEvent::NewCompletionEvent(
-          mojom::CompletionEvent::New("")),
-      std::nullopt)));
-}
-
-}  // namespace
 
 TEST_P(AIChatServiceUnitTest, GenerationState_SetsGenerating) {
   ConversationHandler* handler = CreateConversation();
