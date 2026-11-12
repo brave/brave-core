@@ -39,7 +39,6 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
-#include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
@@ -103,6 +102,7 @@
 #include "ui/display/screen.h"
 #include "ui/events/event.h"
 #include "ui/events/event_observer.h"
+#include "ui/gfx/color_utils.h"
 #include "ui/views/border.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/controls/native/native_view_host.h"
@@ -695,27 +695,6 @@ std::optional<int> BraveBrowserView::GetVerticalTabStripWidthAtWindowEdge()
   // The rendered width rather than the occupied one: with rounded contents the
   // strip draws a few pixels past the width the layout insets them by.
   return vertical_tab_strip_container_view_->width();
-}
-
-bool BraveBrowserView::HasSelectedURL() const {
-  if (!GetLocationBarView() || !GetLocationBarView()->HasFocus()) {
-    return false;
-  }
-  auto* brave_omnibox_view =
-      static_cast<BraveOmniboxViewViews*>(GetLocationBarView()->omnibox_view());
-  return brave_omnibox_view && brave_omnibox_view->SelectedTextIsURL();
-}
-
-void BraveBrowserView::CleanAndCopySelectedURL() {
-  if (!GetLocationBarView()) {
-    return;
-  }
-  auto* brave_omnibox_view =
-      static_cast<BraveOmniboxViewViews*>(GetLocationBarView()->omnibox_view());
-  if (!brave_omnibox_view) {
-    return;
-  }
-  brave_omnibox_view->CleanAndCopySelectedURL();
 }
 
 void BraveBrowserView::OnAcceleratorsChanged(

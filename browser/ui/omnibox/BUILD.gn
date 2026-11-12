@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+assert(!is_android)
+
+source_set("clean_link") {
+  sources = [
+    "clean_link_utils.cc",
+    "clean_link_utils.h",
+  ]
+
+  public_deps = [ "//url" ]
+
+  deps = [
+    "//chrome/browser/ui/omnibox",
+    "//ui/gfx/range",
+  ]
+}

@@ -21,6 +21,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -98,7 +99,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerCleanLinkFeatureDisabledBrowserTest,
   omnibox_view->SetFocus(true);
   omnibox_view->SelectAll(false);
   EXPECT_TRUE(omnibox_view->IsSelectAll());
-  EXPECT_TRUE(BraveBrowserWindow::FromBrowser(browser())->HasSelectedURL());
+  EXPECT_TRUE(brave::HasSelectedURL(browser()));
 
   BraveAppController* ac = base::apple::ObjCCastStrict<BraveAppController>(
       [[NSApplication sharedApplication] delegate]);
@@ -129,7 +130,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemVisible) {
   omnibox_view->SetFocus(true);
   omnibox_view->SelectAll(false);
   EXPECT_TRUE(omnibox_view->IsSelectAll());
-  EXPECT_TRUE(BraveBrowserWindow::FromBrowser(browser())->HasSelectedURL());
+  EXPECT_TRUE(brave::HasSelectedURL(browser()));
 
   BraveAppController* ac = base::apple::ObjCCastStrict<BraveAppController>(
       [[NSApplication sharedApplication] delegate]);
@@ -189,7 +190,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
       BraveBrowserView::GetBrowserViewForBrowser(browser());
   OmniboxView* omnibox_view = browser_view->GetLocationBar()->GetOmniboxView();
   EXPECT_FALSE(omnibox_view->IsSelectAll());
-  EXPECT_FALSE(BraveBrowserWindow::FromBrowser(browser())->HasSelectedURL());
+  EXPECT_FALSE(brave::HasSelectedURL(browser()));
 
   BraveAppController* ac = base::apple::ObjCCastStrict<BraveAppController>(
       [[NSApplication sharedApplication] delegate]);

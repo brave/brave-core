@@ -40,12 +40,6 @@ BraveBrowserWindow* BraveBrowserWindow::FromBrowser(
 }
 
 #if defined(TOOLKIT_VIEWS)
-bool BraveBrowserWindow::HasSelectedURL() const {
-  return false;
-}
-
-void BraveBrowserWindow::CleanAndCopySelectedURL() {}
-
 bool BraveBrowserWindow::ShowBraveHelpBubbleView(const std::string& text) {
   return false;
 }

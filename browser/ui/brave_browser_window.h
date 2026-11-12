@@ -47,9 +47,6 @@ class BraveBrowserWindow : public BrowserWindow {
 #endif
 
 #if defined(TOOLKIT_VIEWS)
-  virtual bool HasSelectedURL() const;
-  virtual void CleanAndCopySelectedURL();
-
   // Returns true when bubble is shown.
   virtual bool ShowBraveHelpBubbleView(const std::string& text);
 #endif
