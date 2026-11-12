@@ -37,7 +37,6 @@ if (toolkit_views) {
   brave_ui_allow_circular_includes_from += [
     "//brave/browser/ui/tabs:tab_menu",
     "//brave/browser/ui/sidebar:sidebar_impl",
-    "//brave/browser/ui/split_view",
     "//brave/browser/ui/views/frame",
     "//brave/browser/ui/views/frame:frame_impl",
     "//brave/browser/ui/views/frame/split_view",
@@ -58,8 +57,6 @@ if (toolkit_views) {
 }
 
 if (enable_email_aliases) {
-  brave_ui_allow_circular_includes_from += [
-    "//brave/browser/ui/email_aliases",
-    "//brave/browser/ui/webui/email_aliases",
-  ]
+  brave_ui_allow_circular_includes_from +=
+      [ "//brave/browser/ui/webui/email_aliases" ]
 }
