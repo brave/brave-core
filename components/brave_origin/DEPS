@@ -8,7 +8,7 @@ include_rules = [
 ]
 
 specific_include_rules = {
-  "origin_activation_limit_impl_unittest\.cc": [
+  "origin_activation_limit_impl_unittest\\.cc": [
     "+services/data_decoder/public/cpp/test_support",
     "+services/network/test",
   ],

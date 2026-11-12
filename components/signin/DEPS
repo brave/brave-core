@@ -3,7 +3,7 @@ include_rules = [
 ]
 
 specific_include_rules = {
-  "brave_identity_manager_unittest\.cc": [ 
+  "brave_identity_manager_unittest\\.cc": [ 
     "+components/signin/internal/identity_manager"
   ],
 }

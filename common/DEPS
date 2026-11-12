@@ -12,14 +12,14 @@ include_rules += [
 ]
 
 specific_include_rules = {
-  ".*browsertest\.cc": [
+  ".*browsertest\\.cc": [
     "+chrome/test",
     "+content/public/test",
   ],
-  "brave_content_client_unittest\.cc": [
+  "brave_content_client_unittest\\.cc": [
     "+content/common/url_schemes.h",
   ],
-  "brave_channel_info_unittest\.cc": [
+  "brave_channel_info_unittest\\.cc": [
     "+brave/components/brave_origin/buildflags",
   ],
 }

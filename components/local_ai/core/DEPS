@@ -10,7 +10,7 @@ include_rules = [
 ]
 
 specific_include_rules = {
-  "on_device_speech_models_component_installer_unittest\.cc": [
+  "on_device_speech_models_component_installer_unittest\\.cc": [
     "+components/crx_file/id_util.h",
   ],
 }

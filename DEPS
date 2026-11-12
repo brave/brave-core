@@ -189,7 +189,7 @@ hooks = [
     'action': ['python3', '../build/util/lastchange.py',
                '--output', '../build/util/LASTCHANGE',
                '--source-dir', '.',
-               '--filter', '^[0-9]\{{1,\}}\.[0-9]\{{1,\}}\.[0-9]\{{1,\}}$'],
+               '--filter', r'^[0-9]\{{1,\}}\.[0-9]\{{1,\}}\.[0-9]\{{1,\}}$'],
   },
   {
     # Generate //brave/build/version.gni from chrome/VERSION.

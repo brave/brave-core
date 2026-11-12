@@ -14,19 +14,19 @@ include_rules = [
 ]
 
 specific_include_rules = {
-  "background_credential_helper\.cc": [
+  "background_credential_helper\\.cc": [
     "+third_party/rust/cxx/v1/cxx.h",
   ],
-  "content_scraper\.cc": [
+  "content_scraper\\.cc": [
     "+third_party/rust/cxx/v1/cxx.h",
   ],
-  "credential_manager_unittest\.cc": [
+  "credential_manager_unittest\\.cc": [
     "!brave/components/constants/brave_paths.h",
   ],
-  "patterns_unittest\.cc": [
+  "patterns_unittest\\.cc": [
     "!brave/components/constants/brave_paths.h",
   ],
-  "server_config_loader_unittest\.cc": [
+  "server_config_loader_unittest\\.cc": [
     "!brave/components/constants/brave_paths.h",
   ],
 }

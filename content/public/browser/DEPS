@@ -4,7 +4,7 @@ include_rules = [
 ]
 
 specific_include_rules = {
-  "webui_config_map_unittest\.cc": [
+  "webui_config_map_unittest\\.cc": [
     "+content/public/common",
     "+content/public/test",
   ],
