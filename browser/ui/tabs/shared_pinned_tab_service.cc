@@ -764,7 +764,13 @@ void SharedPinnedTabService::SynchronizeNewBrowser(
     // |model| has just unpinned a tab, but OnTabUnpinned() hasn't updated
     // |pinned_tab_data_| yet. Comparing them now would treat the browser as out
     // of sync and add a stray dummy pinned tab.
-    DVLOG(2) << __FUNCTION__ << " Skipped: unpin is pending";
+    DVLOG(2) << __FUNCTION__ << " Deferred: unpin is pending";
+    // Synchronize once the pending OnTabUnpinned() has run. Tasks run in the
+    // order they were posted, so this one runs after it.
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE,
+        base::BindOnce(&SharedPinnedTabService::SynchronizeDeferredBrowser,
+                       weak_ptr_factory_.GetWeakPtr(), browser->GetWeakPtr()));
     return;
   }
 
@@ -822,6 +828,17 @@ void SharedPinnedTabService::SynchronizeNewBrowser(
     pinned_tab_data_.push_back(std::move(new_pinned_tabs.at(i)));
     SynchronizeNewPinnedTab(offset + i);
   }
+}
+
+void SharedPinnedTabService::SynchronizeDeferredBrowser(
+    base::WeakPtr<BrowserWindowInterface> browser) {
+  if (!browser || !browsers_.contains(browser.get()) ||
+      closing_browsers_.contains(browser.get()) ||
+      browser->IsDeleteScheduled()) {
+    return;
+  }
+
+  SynchronizeNewBrowser(browser.get());
 }
 
 void SharedPinnedTabService::MoveSharedWebContentsToActiveBrowser(int index) {
