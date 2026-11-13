@@ -145,6 +145,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
         return tab
       }
     )
+    manager.isTabGroupsEnabled = true
     privateBrowsingManager.isPrivateBrowsing = false
     Preferences.Privacy.persistentPrivateBrowsing.reset()
     Preferences.Privacy.privateBrowsingOnly.reset()
@@ -1052,6 +1053,15 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     XCTAssertTrue(manager.allTabs.contains(where: { $0.id == firstTab.id }))
   }
 
+  func testTabGroupsAreNotAvailableWhenFeatureIsDisabled() {
+    let tab = manager.addTestTab(isPrivate: false)
+    manager.isTabGroupsEnabled = false
+
+    XCTAssertFalse(manager.canGroupTabsForCurrentMode)
+    XCTAssertNil(manager.createTabGroup(title: "Group", adding: [tab]))
+    XCTAssertTrue(manager.tabGroups.isEmpty)
+  }
+
   func testTabGroupsAreNotAvailableInPrivateBrowsing() {
     let tab = manager.addTestTab(isPrivate: false)
     privateBrowsingManager.isPrivateBrowsing = true
@@ -1105,6 +1115,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
         return tab
       }
     )
+    restoredManager.isTabGroupsEnabled = true
     _ = restoredManager.restoreAllTabs
 
     XCTAssertEqual(restoredManager.tabGroups, [group])
@@ -1112,6 +1123,26 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       Set(restoredManager.tabs(in: group).map(\.id)),
       [firstTab.id, thirdTab.id]
     )
+
+    // With tab groups disabled the tabs are restored ungrouped, and the persisted group is kept
+    let disabledManager = TabManager(
+      windowId: testWindowId,
+      rewards: nil,
+      braveCore: nil,
+      profile: FakeProfile(),
+      privateBrowsingManager: PrivateBrowsingManager(),
+      tabCreationFactory: { params in
+        let tab = FakeTabState()
+        tab.profile = params.profile
+        return tab
+      }
+    )
+    disabledManager.isTabGroupsEnabled = false
+    _ = disabledManager.restoreAllTabs
+
+    XCTAssertTrue(disabledManager.tabGroups.isEmpty)
+    XCTAssertEqual(disabledManager.allTabs.count, 3)
+    XCTAssertEqual(SessionTabGroup.all(windowId: testWindowId).count, 1)
   }
 
   func testClosingLastTabDeletesPersistedGroup() {

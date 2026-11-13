@@ -81,6 +81,9 @@ class TabManager: NSObject {
 
   private(set) var allTabs = [any TabState]()
   private(set) var tabGroups: [TabGroup] = []
+  /// Whether tab groups are available. Until they are, no group is created or restored, and any
+  /// persisted group is left untouched, so tabs are shown ungrouped.
+  var isTabGroupsEnabled = FeatureList.kBraveTabGroups.enabled
   private var groupIDsByTabID: [TabState.ID: TabGroup.ID] = [:]
 
   private var _selectedIndex = -1
@@ -712,7 +715,7 @@ class TabManager: NSObject {
       }
       allTabs.insert(tab, at: insertIndex)
     }
-    
+
     if let selectedTabBeforeInsert, selectedTab !== selectedTabBeforeInsert {
       _selectedIndex = allTabs.firstIndex(where: { $0 === selectedTabBeforeInsert }) ?? -1
     }
@@ -1809,7 +1812,8 @@ extension TabManager {
   /// Whether tabs of the current browsing mode can be grouped. Only regular tabs can be, as they
   /// are the only ones persisted.
   var canGroupTabsForCurrentMode: Bool {
-    !privateBrowsingManager.isPrivateBrowsing && !Preferences.Privacy.privateBrowsingOnly.value
+    isTabGroupsEnabled && !privateBrowsingManager.isPrivateBrowsing
+      && !Preferences.Privacy.privateBrowsingOnly.value
   }
 
   /// Creates a group out of the given tabs, moving them out of any group they are in.
@@ -1890,6 +1894,7 @@ extension TabManager {
 
   /// Rebuilds groups from persisted state. Must be called once the saved tabs are restored.
   func restoreTabGroups(from savedTabs: [SessionTab]) {
+    guard isTabGroupsEnabled else { return }
     let restoredTabIDs = Set(allTabs.map(\.id))
     var restoredGroups: [(group: TabGroup, index: Int32)] = []
     for savedTab in savedTabs {
