@@ -154,14 +154,15 @@ constexpr char16_t kYoutubeFullscreenVideoFitWorkaround[] =
 // playlist is playing, follow the URL of the page's own Next or Previous video
 // button, taken from YouTube's watch data, through a link click so YouTube
 // navigates in-page as it would for a tap. The playlist panel isn't used
-// because it renders only some items. On the last item (Next) or first item
-// (Previous) YouTube disables that button, so do nothing, as the page does.
-// Also do nothing while the watch data still describes the previous video.
-// Otherwise (no playlist, or no button data), call YouTube's handler unchanged.
-// YouTube registers its handlers only after an in-page navigation, so the first
-// playlist item played has no Next control. Register each handler whenever the
-// playlist has an item in that direction, rechecking each time a video starts
-// playing.
+// because it renders only some items. As in music players, Previous first
+// restarts the item if it's more than a few seconds in, and on the first item
+// always restarts it. On the last item YouTube disables the Next button, so
+// Next does nothing, as the page's does. Ignore both while the watch data still
+// describes the previous video. Otherwise (no playlist, or no button data),
+// call YouTube's handler unchanged. YouTube registers its handlers only after
+// an in-page navigation, so the first playlist item played had no controls.
+// Register Next whenever the playlist has a next item, and Previous whenever a
+// playlist is playing, rechecking each time a video starts playing.
 // See https://github.com/brave/brave-browser/issues/61748.
 constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
     uR"(
@@ -199,11 +200,22 @@ constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
     }
     return button.command?.commandMetadata?.webCommandMetadata?.url ?? null;
   }
+  const restartThresholdSeconds = 3;
   const youtubeHandlers = {};
   const setActionHandler = mediaSession.setActionHandler.bind(mediaSession);
   function handleTrack(details) {
     const button = playlistButton(details.action);
-    if (button && (button.isDisabled || !isWatchDataCurrent())) {
+    if (button && !isWatchDataCurrent()) {
+      return;
+    }
+    const player = document.getElementById('movie_player');
+    if (button && details.action === 'previoustrack' &&
+        (button.isDisabled ||
+         player?.getCurrentTime?.() > restartThresholdSeconds)) {
+      player?.seekTo?.(0);
+      return;
+    }
+    if (button?.isDisabled) {
       return;
     }
     const url = buttonUrl(button);
@@ -219,8 +231,10 @@ constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
     return youtubeHandlers[details.action]?.call(this, details);
   }
   function updateTrackHandler(action) {
-    const enabled =
-        youtubeHandlers[action] || buttonUrl(playlistButton(action));
+    const button = playlistButton(action);
+    // Previous can always restart the current item.
+    const enabled = youtubeHandlers[action] ||
+        (action === 'previoustrack' ? button : buttonUrl(button));
     setActionHandler(action, enabled ? handleTrack : null);
   }
   function updateTrackHandlers() {
