@@ -63,8 +63,17 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
   PeekView& operator=(const PeekView&) = delete;
   ~PeekView() override;
 
+  // Shows `contents` in the card. Does not take ownership, so the caller must
+  // keep `contents` alive while it is shown. Pass nullptr to detach the page
+  // before destroying it.
   void SetWebContents(content::WebContents* contents);
+
+  // Refreshes the security icon, favicon, title and host from the current
+  // contents. The toolbar does not observe the page, so call this whenever the
+  // contents change.
   void UpdateToolbar();
+
+  // Moves keyboard focus into the page.
   void FocusContents();
 
   // Shows the split view button. Hidden while the source tab is already in a
@@ -105,6 +114,9 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
   const raw_ref<Delegate> delegate_;
   const raw_ref<BrowserWindowInterface> browser_;
 
+  std::unique_ptr<ViewShadow> card_shadow_;
+  gfx::SlideAnimation open_animation_{this};
+
   raw_ptr<views::View> card_ = nullptr;
   raw_ptr<views::ImageButton> site_info_button_ = nullptr;
   raw_ptr<views::ImageView> favicon_ = nullptr;
@@ -115,9 +127,6 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
   raw_ptr<views::ImageButton> split_view_button_ = nullptr;
   raw_ptr<views::ImageButton> close_button_ = nullptr;
   raw_ptr<views::WebView> web_view_ = nullptr;
-
-  std::unique_ptr<ViewShadow> card_shadow_;
-  gfx::SlideAnimation open_animation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_PEEK_PEEK_VIEW_H_

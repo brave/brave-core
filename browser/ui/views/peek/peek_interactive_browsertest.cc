@@ -69,7 +69,8 @@ class PeekInteractiveBrowserTest : public InteractiveBrowserTest {
   base::test::ScopedFeatureList scoped_features_;
 };
 
-IN_PROC_BROWSER_TEST_F(PeekInteractiveBrowserTest, OpenAsTab) {
+IN_PROC_BROWSER_TEST_F(PeekInteractiveBrowserTest,
+                       OpenAsTabButtonMovesPageToNewActiveTab) {
   const GURL source_url =
       embedded_test_server()->GetURL("a.com", "/title1.html");
   const GURL peek_url = embedded_test_server()->GetURL("b.com", "/title2.html");
@@ -87,7 +88,8 @@ IN_PROC_BROWSER_TEST_F(PeekInteractiveBrowserTest, OpenAsTab) {
       CheckResult([this] { return active_index(); }, 1));
 }
 
-IN_PROC_BROWSER_TEST_F(PeekInteractiveBrowserTest, Close) {
+IN_PROC_BROWSER_TEST_F(PeekInteractiveBrowserTest,
+                       CloseButtonClosesPeekAndKeepsSourceTabActive) {
   const GURL source_url =
       embedded_test_server()->GetURL("a.com", "/title1.html");
   const GURL peek_url = embedded_test_server()->GetURL("b.com", "/title2.html");
@@ -102,7 +104,8 @@ IN_PROC_BROWSER_TEST_F(PeekInteractiveBrowserTest, Close) {
                   CheckResult([this] { return active_index(); }, 0));
 }
 
-IN_PROC_BROWSER_TEST_F(PeekInteractiveBrowserTest, OpenInSplitView) {
+IN_PROC_BROWSER_TEST_F(PeekInteractiveBrowserTest,
+                       SplitViewButtonOpensPageInSplitWithSourceTab) {
   const GURL source_url =
       embedded_test_server()->GetURL("a.com", "/title1.html");
   const GURL peek_url = embedded_test_server()->GetURL("b.com", "/title2.html");

@@ -47,6 +47,31 @@ PeekControllerImpl::~PeekControllerImpl() {
   Close();
 }
 
+void PeekControllerImpl::OpenInSplitView() {
+  content::WebContents* contents = GetWebContents();
+  if (!contents) {
+    return;
+  }
+  if (!CanOpenInSplitView()) {
+    OpenAsTab();
+    return;
+  }
+
+  TabStripModel* tab_strip_model = browser_->GetTabStripModel();
+  const int source_index = tab_strip_model->active_index();
+  OpenAsTab();
+  const int peek_index = tab_strip_model->GetIndexOfWebContents(contents);
+  if (peek_index == TabStripModel::kNoTab) {
+    return;
+  }
+  // The source tab is the pivot, so the new tab joins its pinned state and
+  // group, as with "Open link in split view".
+  tab_strip_model->AddToNewSplit(
+      {source_index, peek_index},
+      split_tabs::SplitTabVisualData(split_tabs::SplitTabLayout::kSideBySide),
+      split_tabs::SplitTabCreatedSource::kLinkClick);
+}
+
 bool PeekControllerImpl::CanOpenFrom(content::WebContents* source) {
   // This also rules out the Peek contents itself, so Peeks don't nest.
   tabs::TabInterface* tab = tabs::TabInterface::MaybeGetFromContents(source);
@@ -107,31 +132,6 @@ void PeekControllerImpl::OpenAsTab() {
       tab_strip_model->active_index() + 1, std::move(contents),
       AddTabTypes::ADD_ACTIVE | AddTabTypes::ADD_INHERIT_OPENER);
   PeekContents::OnMovedToTab(*raw_contents);
-}
-
-void PeekControllerImpl::OpenInSplitView() {
-  content::WebContents* contents = GetWebContents();
-  if (!contents) {
-    return;
-  }
-  if (!CanOpenInSplitView()) {
-    OpenAsTab();
-    return;
-  }
-
-  TabStripModel* tab_strip_model = browser_->GetTabStripModel();
-  const int source_index = tab_strip_model->active_index();
-  OpenAsTab();
-  const int peek_index = tab_strip_model->GetIndexOfWebContents(contents);
-  if (peek_index == TabStripModel::kNoTab) {
-    return;
-  }
-  // The source tab is the pivot, so the new tab joins its pinned state and
-  // group, as with "Open link in split view".
-  tab_strip_model->AddToNewSplit(
-      {source_index, peek_index},
-      split_tabs::SplitTabVisualData(split_tabs::SplitTabLayout::kSideBySide),
-      split_tabs::SplitTabCreatedSource::kLinkClick);
 }
 
 void PeekControllerImpl::ShowCookiesDialogInTab() {
@@ -312,11 +312,6 @@ void PeekControllerImpl::CreateWidget() {
   browser_widget_observation_.Observe(browser_view_->GetWidget());
 }
 
-void PeekControllerImpl::OnWidgetCloseRequested(
-    views::Widget::ClosedReason reason) {
-  PostTask(&PeekControllerImpl::Close);
-}
-
 void PeekControllerImpl::UpdateWidgetBounds() {
   if (widget_) {
     widget_->SetBounds(GetTargetBoundsInScreen());
@@ -332,4 +327,9 @@ gfx::Rect PeekControllerImpl::GetTargetBoundsInScreen() const {
 void PeekControllerImpl::PostTask(void (PeekControllerImpl::*method)()) {
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(method, weak_factory_.GetWeakPtr()));
+}
+
+void PeekControllerImpl::OnWidgetCloseRequested(
+    views::Widget::ClosedReason reason) {
+  PostTask(&PeekControllerImpl::Close);
 }
