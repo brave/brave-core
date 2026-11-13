@@ -62,6 +62,7 @@ import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_news.BraveNewsControllerFactory;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
@@ -141,7 +142,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private @Nullable Bitmap mSponsoredLogo;
     private @Nullable Wallpaper mWallpaper;
 
-    private @Nullable BraveNewTabTakeoverInfobar mNewTabTakeoverInfobar;
+    private @Nullable NewTabTakeoverDisclosureTooltipController mDisclosureTooltipController;
 
     private @Nullable PopupWindowTooltip mTopSitesTooltip;
     private boolean mTopSitesTooltipScrolledAway;
@@ -459,13 +460,28 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
         if (mNtpAdapter == null) {
             if (mActivity != null && !mActivity.isDestroyed() && !mActivity.isFinishing()) {
-                mNtpAdapter = new BraveNtpAdapter(mActivity, this, Glide.with(mActivity),
-                        mNewsItemsFeedCard, mBraveNewsController, mMvTilesContainerLayout,
-                        mNtpImageGlobal, mSponsoredTab, mWallpaper, mSponsoredLogo,
-                        mNTPBackgroundImagesBridge, false, mRecyclerView.getHeight(),
-                        mIsTopSitesEnabled, mIsBraveStatsEnabled, mIsDisplayNewsFeed,
-                        mIsDisplayNewsOptin);
-
+                mNtpAdapter =
+                        new BraveNtpAdapter(
+                                mActivity,
+                                this,
+                                Glide.with(mActivity),
+                                mNewsItemsFeedCard,
+                                mBraveNewsController,
+                                mMvTilesContainerLayout,
+                                mNtpImageGlobal,
+                                mSponsoredTab,
+                                mWallpaper,
+                                mSponsoredLogo,
+                                mNTPBackgroundImagesBridge,
+                                false,
+                                mRecyclerView.getHeight(),
+                                mIsTopSitesEnabled,
+                                mIsBraveStatsEnabled,
+                                mIsDisplayNewsFeed,
+                                mIsDisplayNewsOptin);
+                if (mDisclosureTooltipController != null) {
+                    mNtpAdapter.setNewTabTakeoverDisclosureVisible(true);
+                }
                 mRecyclerView.setAdapter(mNtpAdapter);
 
                 if (mRecyclerView.getItemAnimator() != null) {
@@ -752,6 +768,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                         // jumps like keepPosition()'s scrollToPositionWithOffset() never enter
                         // the dragging state, so they correctly don't trigger this.
                         if (newState != RecyclerView.SCROLL_STATE_DRAGGING) return;
+                        if (mDisclosureTooltipController != null) {
+                            mDisclosureTooltipController.dismiss();
+                        }
                         mTopSitesTooltipScrolledAway = true;
                         if (mTopSitesTooltip != null && mTopSitesTooltip.isShowing()) {
                             mTopSitesTooltip.fadeOutAndDismiss(TOOLTIP_FADE_OUT_DURATION_MS);
@@ -908,6 +927,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             mTopSitesTooltipCheckListener = null;
         }
 
+        if (mDisclosureTooltipController != null) {
+            mDisclosureTooltipController.dismiss();
+        }
+
         if (mWorkerTask != null && mWorkerTask.getStatus() == AsyncTask.Status.RUNNING) {
             mWorkerTask.cancel(true);
             mWorkerTask = null;
@@ -957,6 +980,11 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+
+        if (mDisclosureTooltipController != null) {
+            mDisclosureTooltipController.dismiss();
+        }
+
         if (mActivity != null && (mActivity.isFinishing() || mActivity.isDestroyed())) {
             return;
         }
@@ -1292,14 +1320,34 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             }
         }
 
-        assertNonNull(mProfile);
-        if (wasWallpaperShown
-                && mNtpImageGlobal instanceof Wallpaper
-                && getTab() != null
-                && mNewTabTakeoverInfobar == null) {
-            mNewTabTakeoverInfobar = new BraveNewTabTakeoverInfobar(mProfile);
-            mNewTabTakeoverInfobar.maybeDisplayAndIncrementCounter(mActivity, getTab());
+        updateNewTabTakeoverDisclosure(wasWallpaperShown);
+    }
+
+    private void updateNewTabTakeoverDisclosure(boolean wasWallpaperShown) {
+        boolean isNewTabTakeoverShown = wasWallpaperShown && mNtpImageGlobal instanceof Wallpaper;
+        if (mNtpAdapter != null) {
+            mNtpAdapter.setNewTabTakeoverDisclosureVisible(isNewTabTakeoverShown);
         }
+        if (isNewTabTakeoverShown && mDisclosureTooltipController == null) {
+            assertNonNull(mProfile);
+            mDisclosureTooltipController =
+                    new NewTabTakeoverDisclosureTooltipController(
+                            this,
+                            UserPrefs.get(mProfile),
+                            BraveRewardsHelper::isRewardsEnabled,
+                            NewTabTakeoverDisclosureTooltip::new);
+        } else if (!isNewTabTakeoverShown && mDisclosureTooltipController != null) {
+            mDisclosureTooltipController.dismiss();
+            mDisclosureTooltipController = null;
+        }
+    }
+
+    @Override
+    public void onDisclosureLabelClicked(View disclosureLabel) {
+        if (mDisclosureTooltipController == null) {
+            return;
+        }
+        mDisclosureTooltipController.onDisclosureLabelClicked(disclosureLabel);
     }
 
     private void setupSponsoredBackgroundContent(Wallpaper wallpaper) {

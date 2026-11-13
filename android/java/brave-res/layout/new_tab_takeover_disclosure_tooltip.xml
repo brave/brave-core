@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this
+     file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/new_tab_takeover_disclosure_tooltip_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/new_tab_takeover_disclosure_tooltip_background"
+    android:elevation="15dp"
+    android:textColor="@color/text_primary"
+    android:textColorLink="@color/text_primary"
+    android:textSize="12sp"
+    android:lineHeight="18sp"/>
