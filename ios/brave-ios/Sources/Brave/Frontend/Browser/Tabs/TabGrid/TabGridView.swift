@@ -626,6 +626,52 @@ struct TabGridView: View {
     .dynamicTypeSize(.xSmall..<DynamicTypeSize.accessibility2)
   }
 
+  /// A menu in the footer for adding the selected tabs to an existing group or a new one
+  private var addToGroupFooterMenu: some View {
+    Menu {
+      if viewModel.tabGroups.isEmpty {
+        Section(Strings.TabGrid.addToGroupButtonTitle) {
+          createNewGroupButton
+        }
+      } else {
+        Section(Strings.TabGrid.addToGroupButtonTitle) {
+          ForEach(viewModel.tabGroups) { group in
+            Button(group.title) {
+              addTabs(selectedTabs, to: group)
+            }
+          }
+        }
+        Section {
+          createNewGroupButton
+        }
+      }
+    } label: {
+      Label(Strings.TabGrid.addToGroupButtonTitle, braveSystemImage: "leo.plus.add")
+        .lineLimit(1)
+        .minimumScaleFactor(0.75)
+    }
+    .menuOrder(.fixed)
+    .plainToolbarIconButtonStyle()
+    .disabled(selectedTabs.isEmpty || !selectedGroups.isEmpty)
+  }
+
+  private var createNewGroupButton: some View {
+    Button(Strings.TabGrid.createNewGroupMenuTitle) {
+      createGroup(adding: selectedTabs)
+    }
+  }
+
+  private func addTabs(_ tabIDs: Set<TabState.ID>, to group: TabGroup) {
+    clearSelection()
+    viewModel.addTabs(tabIDs, to: group)
+  }
+
+  /// Creates a group of the tabs, which is then opened for the user to name
+  private func createGroup(adding tabIDs: Set<TabState.ID>) {
+    clearSelection()
+    viewModel.createGroup(adding: tabIDs)
+  }
+
   private func contextMenu(for tabs: [any TabState]) -> UIMenu? {
     let tabIDs = Set(tabs.map(\.id))
     let isShredAvailable = viewModel.isShredAvailableForSelectedTabs(tabIDs)
@@ -705,58 +751,11 @@ struct TabGridView: View {
     ])
   }
 
-  /// A menu in the footer for adding the selected tabs to an existing group or a new one
-  private var addToGroupFooterMenu: some View {
-    Menu {
-      if viewModel.tabGroups.isEmpty {
-        Section(Strings.TabGrid.addTabToGroupMenuTitle) {
-          createNewGroupButton
-        }
-      } else {
-        Section(Strings.TabGrid.addTabToGroupMenuTitle) {
-          ForEach(viewModel.tabGroups) { group in
-            Button(group.title) {
-              addTabs(selectedTabs, to: group)
-            }
-          }
-        }
-        Section {
-          createNewGroupButton
-        }
-      }
-    } label: {
-      Label(Strings.TabGrid.addTabToGroupMenuTitle, braveSystemImage: "leo.plus.add")
-        .lineLimit(1)
-        .minimumScaleFactor(0.75)
-    }
-    .menuOrder(.fixed)
-    .plainToolbarIconButtonStyle()
-    .disabled(selectedTabs.isEmpty || !selectedGroups.isEmpty)
-  }
-
-  private var createNewGroupButton: some View {
-    Button(Strings.TabGrid.createNewGroupMenuTitle) {
-      createGroup(adding: selectedTabs)
-    }
-  }
-
-  private func addTabs(_ tabIDs: Set<TabState.ID>, to group: TabGroup) {
-    clearSelection()
-    viewModel.addTabs(tabIDs, to: group)
-  }
-
-  /// Creates a group of the tabs, which is then opened for the user to name
-  private func createGroup(adding tabIDs: Set<TabState.ID>) {
-    clearSelection()
-    viewModel.createGroup(adding: tabIDs)
-  }
-
   /// A submenu listing the existing groups, with an option to create a new one, which adds the tabs to the chosen group, or to a new group that is then named
   private func addToGroupMenu(for tabIDs: Set<TabState.ID>) -> UIMenu {
     let existingGroups = viewModel.tabGroups.map { group in
       UIAction(title: group.title) { _ in
-        clearSelection()
-        viewModel.addTabs(tabIDs, to: group)
+        addTabs(tabIDs, to: group)
       }
     }
     let createGroup = UIMenu(
@@ -766,8 +765,7 @@ struct TabGridView: View {
           title: Strings.TabGrid.createNewGroupMenuTitle,
           image: UIImage(braveSystemNamed: "leo.group.new-tab")
         ) { _ in
-          clearSelection()
-          viewModel.createGroup(adding: tabIDs)
+          createGroup(adding: tabIDs)
         }
       ]
     )
