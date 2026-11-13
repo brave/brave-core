@@ -95,6 +95,8 @@ class BraveVerticalTabStripRegionView : public views::View,
   int GetTabStripViewportMaxHeight() const;
   void UpdateBorder();
 
+  BraveNewTabButton* new_tab_button_for_testing() { return new_tab_button_; }
+
   void ResetExpandedWidth();
   bool IsMenuShowing() const;
 
