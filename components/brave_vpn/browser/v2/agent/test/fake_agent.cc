@@ -72,6 +72,12 @@ void FakeAgent::DropSessionHandles() {
   parked_hosts_.clear();
 }
 
+mojom::BrowserEndpoint* FakeAgent::browser_endpoint() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(!browser_endpoints_.empty()) << "No session to call the browser on";
+  return browser_endpoints_.back().get();
+}
+
 void FakeAgent::CloseAllConnections() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DropSessionHandles();
