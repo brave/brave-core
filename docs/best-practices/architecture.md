@@ -1981,3 +1981,138 @@ void FooTabHelper::WillDiscardContents(tabs::TabInterface* tab,
   Observe(new_contents);
 }
 ```
+
+---
+
+<a id="ARCH-076"></a>
+
+## ✅ Use the Last Committed URL for Feature Logic, Not the Visible URL
+
+**Feature logic should read the last committed URL. Use the visible URL only
+when the feature is explicitly tied to what the address bar displays, such as
+the toolbar URL or a padlock icon.**
+
+The visible URL is usually the last committed URL. It differs while a
+browser-initiated navigation, such as a typed URL or a bookmark, is pending
+(back and forward navigations excluded), because the pending URL is shown. A
+renderer-initiated pending URL is shown only in a new unmodified tab, and it
+reverts to `about:blank` once another document accesses that tab's initial
+document. Neither case is the page loaded in the frame. The last committed URL
+is that page and its security context.
+
+Visible-URL names (do not use for feature state):
+
+- C++ / ObjC++: `WebContents::GetVisibleURL()`,
+  `web::WebState::GetVisibleURL()`, `NavigationController::GetVisibleEntry()`.
+  For the displayed URL of an entry, use `NavigationEntry::GetVirtualURL()`, not
+  `GetURL()`.
+- Swift (iOS): `visibleURL` on `TabState`, and `url` on `ChromiumTabState` and
+  `FakeTabState` (aliases for `visibleURL`). Other types' `url` properties are
+  not tab-state aliases. `SessionTab.url` stores a copy of `visibleURL`, so
+  review its reads case by case.
+- Java (Android): `WebContents.getVisibleUrl()`
+
+Deprecated, never use: `WebContents::GetURL()`,
+`NavigationController::GetActiveEntry()`.
+
+Last-committed names (use these):
+
+- `WebContents::GetLastCommittedURL()`, `RenderFrameHost::GetLastCommittedURL()`
+- `NavigationController::GetLastCommittedEntry()`
+- `web::WebState::GetLastCommittedURL()`
+- `web::WebState::GetLastCommittedURLIfTrusted()` (iOS only, returns
+  `std::optional<GURL>`)
+- `TabState.lastCommittedURL`, `WebContents.getLastCommittedUrl()`
+
+```swift
+// ❌ WRONG - a pending URL can decide a feature before it commits
+let isSupported = tab.visibleURL?.isPlaylistSupportedSiteURL == true
+
+// ✅ CORRECT - the page that is loaded in the tab
+let isSupported = tab.lastCommittedURL?.isPlaylistSupportedSiteURL == true
+```
+
+```java
+// ❌ WRONG - the visible URL can differ from the loaded page
+GURL url = webContents.getVisibleUrl();
+
+// ✅ CORRECT
+GURL url = webContents.getLastCommittedUrl();
+```
+
+```cpp
+// ❌ WRONG - the visible URL can differ from the loaded page
+const GURL& url = web_contents->GetVisibleURL();
+
+// ✅ CORRECT
+const GURL& url = web_contents->GetLastCommittedURL();
+```
+
+Do not fall back to the visible URL when the last committed URL is empty or nil.
+`GetLastCommittedURL()` can be empty if no navigation has committed, and
+`lastCommittedURL ?? visibleURL` reintroduces the bug.
+
+Use the visible URL only when the feature is explicitly tied to what the address
+bar displays. Browser tests that assert toolbar or omnibox state are an example
+of this exception. A test that asserts `GetVisibleURL()` for feature behavior is
+not an address-bar use, so the exception does not cover it.
+
+---
+
+<a id="ARCH-077"></a>
+
+## ✅ Use the Frame's Origin for Security Decisions, Not the URL
+
+**Security and permission decisions should use
+`RenderFrameHost::GetLastCommittedOrigin()` for the frame being decided on, and
+default to restricted for opaque origins. Do not decide from a raw `GURL`,
+except the permission-check URL that
+`extensions::util::GetURLForExtensionPermissionCheck(rfh)` returns for extension
+code.**
+
+A URL is often not enough for a security decision, because the origin can differ
+from the URL in these cases:
+
+- Error pages: the URL is the failed destination, but the origin is opaque. Its
+  precursor is usually the destination, but it is empty when the error page
+  commits in the current process, such as an unrecoverable error in a subframe.
+- `about:blank`, `about:srcdoc`, and `blob:` frames: they inherit the embedder
+  frame's origin.
+- Sandboxed, `data:`, and `file:` frames: they have opaque origins.
+
+```cpp
+// ❌ WRONG - a URL-derived origin is the destination for an error page
+url::Origin origin = url::Origin::Create(frame_host->GetLastCommittedURL());
+if (!IsValidDappOrigin(origin)) {
+  return;
+}
+BindProvider(frame_host);
+
+// ✅ CORRECT - the origin of the frame that requested the provider
+url::Origin origin = frame_host->GetLastCommittedOrigin();
+if (!IsValidDappOrigin(origin)) {
+  return;
+}
+BindProvider(frame_host);
+```
+
+`IsValidDappOrigin()` rejects opaque origins and any scheme other than http or
+https, so error pages and sandboxed frames never receive the provider.
+
+An error page commits in an opaque origin, so an origin-based check does not see
+the failed destination URL. Check the frame the decision applies to, not only
+the main frame, because error pages can commit in subframes.
+
+`GetTupleOrPrecursorTupleIfOpaque()` returns the precursor of an opaque origin.
+Use it only with great caution, because opaque origins should generally not
+inherit privileges from their precursor.
+
+Opaque frames default to restricted. If a decision is still required, a network
+request uses the request's `initiator_origin`. Otherwise, if applicable, walk up
+to the nearest ancestor frame with a non-opaque origin, and verify that it is
+the origin the decision is based on.
+
+Extension code should use
+`extensions::util::GetURLForExtensionPermissionCheck(rfh)`, the permission-check
+URL helper that Chromium directs higher-level layers, such as extensions, to
+use. It takes a `RenderFrameHost`.
