@@ -66,7 +66,6 @@ class Widget;
 }  // namespace views
 
 class BraveShieldsToolbarButton;
-class BraveHelpBubbleHostView;
 class BraveMultiContentsView;
 class BrowserWindowInterface;
 class FocusModeTitleBarView;
@@ -150,7 +149,6 @@ class BraveBrowserView : public BrowserView,
   BraveVerticalTabStripContainerView* vertical_tab_strip_container_view() {
     return vertical_tab_strip_container_view_;
   }
-  bool ShowBraveHelpBubbleView(const std::string& text) override;
 
   // BookmarkTabHelperObserver:
   void URLStarredChanged(content::WebContents* web_contents,
@@ -326,7 +324,6 @@ class BraveBrowserView : public BrowserView,
   std::unique_ptr<views::Widget> vertical_tab_strip_widget_;
 
   bool show_active_contents_domain_ = false;
-  raw_ptr<BraveHelpBubbleHostView> brave_help_bubble_host_view_ = nullptr;
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
   raw_ptr<views::View> vertical_tab_strip_host_view_ = nullptr;
   raw_ptr<BraveVerticalTabStripContainerView>

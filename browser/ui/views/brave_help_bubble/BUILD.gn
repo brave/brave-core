@@ -1,0 +1,51 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/ui.gni")
+
+assert(toolkit_views)
+
+source_set("brave_help_bubble") {
+  sources = [ "shields_help_bubble_controller.h" ]
+
+  public_deps = [
+    "//base",
+    "//chrome/browser/ui/tabs:tab_strip_model_observer",
+    "//ui/base/unowned_user_data",
+  ]
+}
+
+source_set("impl") {
+  visibility = [ "//brave/browser:core" ]
+
+  sources = [
+    "brave_help_bubble_delegate_view.cc",
+    "brave_help_bubble_delegate_view.h",
+    "brave_help_bubble_host_view.cc",
+    "brave_help_bubble_host_view.h",
+    "shields_help_bubble_controller.cc",
+  ]
+
+  deps = [
+    ":brave_help_bubble",
+    "//base",
+    "//brave/browser/ui/page_info",
+    "//brave/browser/ui/views/brave_actions",
+    "//brave/components/resources:strings",
+    "//brave/ui/color:nala_color_id",
+    "//cc/paint",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/browser/ui/views/frame:browser_view_header",
+    "//chrome/browser/ui/views/interaction",
+    "//chrome/browser/ui/web_applications",
+    "//extensions/common:common_constants",
+    "//skia",
+    "//ui/base",
+    "//ui/compositor",
+    "//ui/gfx",
+    "//ui/views",
+  ]
+}

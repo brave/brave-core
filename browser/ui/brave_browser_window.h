@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_
 
-#include <string>
-
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_window.h"
 
@@ -43,11 +41,6 @@ class BraveBrowserWindow : public BrowserWindow {
       speedreader::SpeedreaderTabHelper* tab_helper,
       speedreader::SpeedreaderBubbleLocation location);
   virtual void UpdateReaderModeToolbar() {}
-#endif
-
-#if defined(TOOLKIT_VIEWS)
-  // Returns true when bubble is shown.
-  virtual bool ShowBraveHelpBubbleView(const std::string& text);
 #endif
 
   // Returns true if all tabs in this window is being dragged.

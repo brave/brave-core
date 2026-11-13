@@ -1372,10 +1372,6 @@ source_set("ui") {
     sources += [
       "views/brave_actions/brave_actions_container.cc",
       "views/brave_actions/brave_actions_container.h",
-      "views/brave_help_bubble/brave_help_bubble_delegate_view.cc",
-      "views/brave_help_bubble/brave_help_bubble_delegate_view.h",
-      "views/brave_help_bubble/brave_help_bubble_host_view.cc",
-      "views/brave_help_bubble/brave_help_bubble_host_view.h",
       "views/profiles/brave_avatar_toolbar_button.cc",
       "views/profiles/brave_avatar_toolbar_button.h",
       "views/tabs/brave_new_tab_button.cc",

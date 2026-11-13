@@ -732,6 +732,7 @@ if (toolkit_views) {
     "//brave/browser/onboarding",
     "//brave/browser/onboarding:impl",
     "//brave/browser/ui/darker_theme",
+    "//brave/browser/ui/views/brave_help_bubble:impl",
     "//brave/components/sidebar/browser",
   ]
 }
