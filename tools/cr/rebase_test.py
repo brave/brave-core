@@ -364,6 +364,39 @@ class RewritePlanTest(unittest.TestCase):
             'exec carry zzz,eee\n',
         )
 
+    def test_pinned_and_recyclable_commits_are_followed_by_a_carry(self):
+        """For the branch's derived Change-Id, which a commit picked from
+        another branch lacks, even with no squash to give it one."""
+        path = self._todo(
+            'pick aaa # [cr148] Feature A\n'
+            'pick bbb # Version lift updates\n'
+            'pick ccc # Update patches from Chromium 1.0.0.0 to '
+            'Chromium 1.0.0.1.\n'
+            'fixup ddd # fixup! Update patches from Chromium 1.0.0.0 to '
+            'Chromium 1.0.0.1.\n'
+            'pick eee # IWYU fixes.\n'
+            'pick fff # IWYU fixes.\n'
+        )
+
+        rebase.rewrite_plan(
+            todo_file=path, pinned_squashed=True, carry_change_id=self._carry
+        )
+
+        self.assertEqual(
+            path.read_text(),
+            'pick eee # IWYU fixes.\n'
+            'squash fff # IWYU fixes.\n'
+            'exec carry eee,fff\n'
+            'pick bbb # Version lift updates\n'
+            'exec carry bbb\n'
+            'pick aaa # [cr148] Feature A\n'
+            'pick ccc # Update patches from Chromium 1.0.0.0 to '
+            'Chromium 1.0.0.1.\n'
+            'fixup ddd # fixup! Update patches from Chromium 1.0.0.0 to '
+            'Chromium 1.0.0.1.\n'
+            'exec carry ccc\n',
+        )
+
     def test_exec_lines_name_no_commit(self):
         self.assertIsNone(rebase.EntryLine.parse('exec carry aaa'))
 
@@ -2406,6 +2439,28 @@ class RebaseStopTest(unittest.TestCase):
             f'{pinned_commits.derived_change_id("cr150", subject)}',
         )
         self.assertEqual('x\ny\nz\n', self.committed('tool'))
+
+    def test_a_pinned_commit_picked_from_another_branch_takes_this_ones(
+        self,
+    ):
+        """A pick keeps the other branch's derived Change-Id, and a group of
+        one has no squash to give it the right one."""
+        subject = 'Version lift updates'
+        theirs = pinned_commits.derived_change_id('cr151', subject)
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={'other': 'o\n'},
+            commits=[(f'{subject}\n\nChange-Id: {theirs}', {'tool': 'x\n'})],
+            branch='cr150',
+        )
+
+        self.rebase(fork, squash_minor_bumps=True)
+
+        self.assertEqual(
+            self.git('log', '-1', '--format=%B'),
+            f'{subject}\n\nChange-Id: '
+            f'{pinned_commits.derived_change_id("cr150", subject)}',
+        )
 
     def test_an_amend_keeps_the_change_id_of_its_target(self):
         fork = self.build(

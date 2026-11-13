@@ -515,9 +515,11 @@ def rewrite_plan(
         discard_recyclable: When `True`, drop recyclable commits from
             the plan entirely. Defaults to `False`.
         carry_change_id: Makes the todo line that gives HEAD the first
-            Change-Id of the commits it is given. When set, one follows
+            Change-Id of the commits it is given, or the branch's derived
+            one for a pinned or recyclable commit. When set, one follows
             each `fixup -C`/`fixup -c`, whose `amend!` message would
-            otherwise replace the Change-Id of what it folds into.
+            otherwise replace the Change-Id of what it folds into, and each
+            pinned group and recyclable commit.
 
     Raises:
         EditorRecoverableFailure: Any TODO line that doesn't parse
@@ -665,21 +667,36 @@ def rewrite_plan(
 
     new_plan = []
     # The commits folded into the one the plan is building, which keeps the
-    # first Change-Id among them.
+    # first Change-Id among them, and whether that commit is pinned or
+    # recyclable, whose Change-Id is derived from the branch.
     folded: list[str] = []
+    derived = False
+
+    def carry_derived() -> None:
+        # Also corrects a commit picked from another branch with that
+        # branch's derived Change-Id, which no squash may come to fix.
+        if derived and not new_plan[-1].startswith('exec '):
+            new_plan.append(carry_change_id(folded))
+
     for entry in [
         *(c for group in pinned_groups.values() for c in group),
         *all_others,
     ]:
-        new_plan.append(entry.out)
         if entry.command not in _FOLDING_COMMANDS:
+            carry_derived()
             folded = [entry.hash]
-        elif entry.command in _REPLACING_COMMANDS:
+            derived = carry_change_id is not None and (
+                entry.is_pinned or entry.is_recyclable
+            )
+        new_plan.append(entry.out)
+        if entry.command in _REPLACING_COMMANDS:
             # An `amend!` replaces the message, Change-Id included.
             if carry_change_id is not None:
                 new_plan.append(carry_change_id(folded))
         elif entry.command == 'squash':
             folded.append(entry.hash)
+    if new_plan:
+        carry_derived()
 
     todo_file.write_text(
         '\n'.join(new_plan) + '\n', encoding='utf-8', newline=''
