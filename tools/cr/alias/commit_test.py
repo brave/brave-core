@@ -22,6 +22,7 @@ from pathlib import Path
 import _boot  # noqa: F401
 from cmd_test import CMD_SCRIPT, _GIT_ENV_OVERRIDES, _Sandbox
 from alias.commit import _MarkChangeShortcut
+import pinned_commits
 
 # ---------------------------------------------------------------------------
 # Tests: flag pass-through
@@ -553,6 +554,7 @@ class TestChangeId(unittest.TestCase):
     def setUp(self) -> None:
         self._sandbox = self.enterContext(_Sandbox())
         self._sandbox.install_hook()
+        self._commits = 0
         repo = self._sandbox.repo
         repo._run_git_command(
             [
@@ -575,7 +577,8 @@ class TestChangeId(unittest.TestCase):
         ).stdout
 
     def _commit(self, *args: str, env: dict[str, str] | None = None) -> str:
-        self._sandbox.stage_change(f'{args}\n')
+        self._commits += 1
+        self._sandbox.stage_change(f'{self._commits} {args}\n')
         result = self._sandbox.run_gc(['commit', *args], env=env)
         self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
         return self._sandbox.last_commit_message()
@@ -649,6 +652,24 @@ class TestChangeId(unittest.TestCase):
         self.assertRegex(lines[0], self._CHANGE_ID)
         self.assertTrue(lines[1].startswith('Signed-off-by: '), msg=msg)
         self.assertEqual(len(lines), 2, msg=msg)
+
+    def test_pinned_commits_share_a_change_id_per_cr_branch(self) -> None:
+        change_ids = {}
+        for branch in ('cr160', 'cr161'):
+            self._git('checkout', '-q', '-b', branch)
+            change_ids[branch] = [
+                self._CHANGE_ID.findall(
+                    self._commit('-m', 'Version lift updates')
+                )
+                for _ in range(2)
+            ]
+        self.assertEqual(change_ids['cr160'][0], change_ids['cr160'][1])
+        self.assertEqual(change_ids['cr161'][0], change_ids['cr161'][1])
+        self.assertNotEqual(change_ids['cr160'], change_ids['cr161'])
+        self.assertEqual(
+            change_ids['cr160'][0],
+            [pinned_commits.derived_change_id('cr160', 'Version lift updates')],
+        )
 
     def test_directives_get_no_change_id(self) -> None:
         for args in (

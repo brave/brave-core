@@ -31,10 +31,15 @@ This module has no dependencies outside the standard library, as the
 
     - Update patches from Chromium * to Chromium *.
     - Updated strings for Chromium *.
+
+On a `cr<N>` branch, both kinds take a Gerrit Change-Id derived from the
+branch and the kind of commit (see `derived_change_id`), so it survives
+their bumps, squashes and regeneration.
 """
 
 from __future__ import annotations
 
+import hashlib
 import re
 
 # Strips one or more leading bracketed tags whose first token starts with
@@ -128,14 +133,21 @@ PINNED_GROUPS = [
     ('flake_tests', re.compile(r'Update lists for upstream flake tests\.?')),
 ]
 
-# Subjects produced by `pnpm run update_patches` and string generation --
-# evicted when `discard_recyclable=True`.
+# `(recyclable-kind, regex)` entries for the subjects produced by `pnpm run
+# update_patches` and string generation -- evicted when
+# `discard_recyclable=True`.
 RECYCLABLE_PATTERNS = [
-    re.compile(
-        rf'Update patches from Chromium {_CR_VERSION} to '
-        rf'Chromium {_CR_VERSION}\.?'
+    (
+        'update_patches',
+        re.compile(
+            rf'Update patches from Chromium {_CR_VERSION} to '
+            rf'Chromium {_CR_VERSION}\.?'
+        ),
     ),
-    re.compile(rf'Updated strings for Chromium {_CR_VERSION}\.?'),
+    (
+        'updated_strings',
+        re.compile(rf'Updated strings for Chromium {_CR_VERSION}\.?'),
+    ),
 ]
 
 
@@ -154,4 +166,44 @@ def is_recyclable(subject: str) -> bool:
     """Returns True when `subject` matches any `RECYCLABLE_PATTERNS`
     entry -- i.e. the commit is auto-generated and can be regenerated
     from the current source tree."""
-    return any(_match(subject, p) for p in RECYCLABLE_PATTERNS)
+    return _recyclable_kind(subject) is not None
+
+
+def _recyclable_kind(subject: str) -> str | None:
+    """The `RECYCLABLE_PATTERNS` kind `subject` matches, if any."""
+    return next(
+        (
+            kind
+            for kind, pattern in RECYCLABLE_PATTERNS
+            if _match(subject, pattern)
+        ),
+        None,
+    )
+
+
+_CR_BRANCH_RE = re.compile(r'cr\d+')
+# A subject that tells a rebase what to do with another commit.
+_DIRECTIVE_RE = re.compile(r'[a-z]+!')
+
+
+def derived_change_id(branch: str, subject: str) -> str | None:
+    """The Change-Id a pinned or recyclable commit takes on a `cr<N>`
+    branch, or None for any other commit or branch.
+
+    It follows the kind of commit (its pinned group, or its recyclable
+    kind) rather than its subject, which names the versions of each bump: a
+    branch's bumps, squashes and regenerations all keep the same change.
+    Other branches get none: `master` collects one such commit per
+    milestone, and channel bumps (`cr<N>.x`, `cr<N>.x-on-<channel>`) reuse
+    their branch names from one bump to the next.
+    """
+    if not _CR_BRANCH_RE.fullmatch(branch) or _DIRECTIVE_RE.match(subject):
+        return None
+    if (group := get_pinned_group_for_subject(subject)) is not None:
+        key = f'pinned {group}'
+    elif (kind := _recyclable_kind(subject)) is not None:
+        key = f'recyclable {kind}'
+    else:
+        return None
+    digest = hashlib.sha1(f'{branch}\n{key}'.encode('utf-8')).hexdigest()
+    return f'I{digest}'
