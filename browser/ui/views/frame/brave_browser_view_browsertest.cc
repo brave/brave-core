@@ -376,9 +376,9 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, TopSeparatorWithPanelTest) {
   // Check separator is hidden after panel opens.
   auto* panel_ui = SidePanelUI::From(browser());
   panel_ui->Toggle();
+  auto* side_panel = browser_view()->side_panel();
+  ASSERT_TRUE(base::test::RunUntil([&]() { return side_panel->GetVisible(); }));
   RunScheduledLayouts();
-  ASSERT_TRUE(
-      base::test::RunUntil([&]() { return panel_ui->IsSidePanelShowing(); }));
   EXPECT_FALSE(brave_browser_view()
                    ->top_container_separator_for_testing()
                    ->GetVisible());
@@ -507,7 +507,9 @@ class BraveBrowserViewWithRoundedCornersTest
  protected:
   // Helper methods for common assertions
   void ExpectContentsContainerMargins(views::View* contents_container,
-                                      int expected_margin) {
+                                      int expected_margin,
+                                      const base::Location& loc = FROM_HERE) {
+    SCOPED_TRACE(loc.ToString());
     EXPECT_EQ(contents_container->bounds().x() - expected_margin,
               browser_view()->GetLocalBounds().x());
     EXPECT_EQ(contents_container->bounds().bottom() + expected_margin,
@@ -517,7 +519,9 @@ class BraveBrowserViewWithRoundedCornersTest
   void ExpectContentsViewRadii(float upper_left,
                                float upper_right,
                                float lower_left,
-                               float lower_right) {
+                               float lower_right,
+                               const base::Location& loc = FROM_HERE) {
+    SCOPED_TRACE(loc.ToString());
     auto radii = browser_view()
                      ->GetActiveContentsContainerView()
                      ->contents_view()
@@ -629,14 +633,12 @@ IN_PROC_BROWSER_TEST_P(
   }
 
   auto* panel_ui = SidePanelUI::From(browser());
+  auto* side_panel = browser_view()->side_panel();
 
   // --- Right-aligned panel (default: kSidePanelHorizontalAlignment = true) ---
   panel_ui->Toggle();
+  ASSERT_TRUE(base::test::RunUntil([&]() { return side_panel->GetVisible(); }));
   RunScheduledLayouts();
-
-  ASSERT_TRUE(
-      base::test::RunUntil([&]() { return panel_ui->IsSidePanelShowing(); }));
-  ASSERT_TRUE(browser_view()->side_panel()->GetVisible());
   EXPECT_FALSE(brave_browser_view()->IsSidebarVisible());
 
   // Panel is on the right -> lower-right rounded, lower-left at window edge.
@@ -645,17 +647,15 @@ IN_PROC_BROWSER_TEST_P(
                           border_radius);
 
   panel_ui->Toggle();
-  RunScheduledLayouts();
   ASSERT_TRUE(
-      base::test::RunUntil([&]() { return !panel_ui->IsSidePanelShowing(); }));
+      base::test::RunUntil([&]() { return !side_panel->GetVisible(); }));
+  RunScheduledLayouts();
 
   // --- Left-aligned panel (kSidePanelHorizontalAlignment = false) ---
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
   panel_ui->Toggle();
+  ASSERT_TRUE(base::test::RunUntil([&]() { return side_panel->GetVisible(); }));
   RunScheduledLayouts();
-
-  ASSERT_TRUE(
-      base::test::RunUntil([&]() { return panel_ui->IsSidePanelShowing(); }));
   EXPECT_FALSE(brave_browser_view()->IsSidebarVisible());
 
   // Panel is on the left -> lower-left rounded, lower-right at window edge.
