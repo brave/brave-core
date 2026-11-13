@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/common/omnibox_features.cc b/components/omnibox/common/omnibox_features.cc
-index ffb7de3335b1c1728171367494b23aecf968d218..828e6cca5fd707eb4ed9f783c8aa7e9a069907a8 100644
+index ffb7de3335b1c1728171367494b23aecf968d218..04614a1754608e5b94c500a717cf20b8faf0d720 100644
 --- a/components/omnibox/common/omnibox_features.cc
 +++ b/components/omnibox/common/omnibox_features.cc
 @@ -176,7 +176,7 @@ BASE_FEATURE(kMostVisitedTilesHorizontalRenderGroup,
@@ -53,3 +53,12 @@ index ffb7de3335b1c1728171367494b23aecf968d218..828e6cca5fd707eb4ed9f783c8aa7e9a
  
  // Kill switch. If enabled, the Android X-Geo header is dropped when the device
  // hands back a precise fix for a site that only holds approximate location
+@@ -791,7 +797,7 @@ static int64_t JNI_OmniboxFeatureMap_GetNativeMap(JNIEnv* env) {
+ // If enabled, X-Geo headers are sent using the platform-agnostic C++
+ // implementation. On Android, enabling this flag will disable the legacy Java
+ // implementation.
+-BASE_FEATURE(kPlatformAgnosticXGeo, ENABLED);
++BASE_OVERRIDDEN_FEATURE(kPlatformAgnosticXGeo, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // If enabled, URL-what-you-typed matches are made the default match instead of
+ // matches for the same URL with different casing, so verbatim input casing is
