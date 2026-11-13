@@ -228,7 +228,10 @@ TEST_F(ZCashDecoderUnitTest, ParseGetAddressUtxos) {
         callback,
         Run(testing::Truly(
             [&](const zcash::mojom::GetAddressUtxosResponsePtr& result) {
-              EXPECT_TRUE(result);
+              if (!result || result->address_utxos.size() != 2u) {
+                ADD_FAILURE() << "Expected a result with 2 utxos";
+                return false;
+              }
               EXPECT_EQ(result->address_utxos[0]->address, "addr1");
               EXPECT_EQ(result->address_utxos[0]->tx_id, ToBytes("txid1"));
               EXPECT_EQ(result->address_utxos[0]->value_zat, 1u);
@@ -491,7 +494,8 @@ TEST_F(ZCashDecoderUnitTest, ParseCompactBlock_IronwoodEnabled) {
   EXPECT_CALL(callback, Run(testing::_))
       .WillOnce([&](std::optional<std::vector<zcash::mojom::CompactBlockPtr>>
                         blocks) {
-        EXPECT_EQ(expected_blocks.size(), blocks->size());
+        ASSERT_TRUE(blocks.has_value());
+        ASSERT_EQ(expected_blocks.size(), blocks->size());
         for (size_t i = 0; i < expected_blocks.size(); i++) {
           EXPECT_TRUE(mojo::Equals(expected_blocks[i], blocks.value()[i]));
         }
@@ -578,7 +582,10 @@ TEST_F(ZCashDecoderUnitTest, ParseCompactBlock) {
     base::MockCallback<ZCashDecoder::ParseCompactBlocksCallback> callback;
     EXPECT_CALL(callback, Run(testing::_))
         .WillOnce([&](std::optional<std::vector<zcash::mojom::CompactBlockPtr>>
-                          blocks) { EXPECT_EQ(0u, blocks->size()); });
+                          blocks) {
+          ASSERT_TRUE(blocks.has_value());
+          EXPECT_EQ(0u, blocks->size());
+        });
     decoder()->ParseCompactBlocks({}, callback.Get());
   }
   // v5 block: no ironwood_actions and no ironwoodcommitmenttreesize defaults to
