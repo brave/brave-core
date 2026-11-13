@@ -220,7 +220,9 @@ SyncDeviceFormFactor const SyncDeviceFormFactorTablet =
     // display to the user.
     std::vector<raw_ptr<const sync_sessions::SyncedSession, VectorExperimental>>
         sessions;
-    open_tabs_delegate->GetAllForeignSessions(&sessions);
+    open_tabs_delegate->GetAllForeignSessions(
+        &sessions,
+        sync_sessions::OpenTabsUIDelegate::ForeignSessionFilter::kPresentable);
 
     for (const sync_sessions::SyncedSession* session : sessions) {
       // Create a distant session
