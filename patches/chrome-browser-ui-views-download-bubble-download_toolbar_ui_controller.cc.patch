@@ -1,8 +1,27 @@
 diff --git a/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc b/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc
-index 10b7682418b0d6084a65a5fa40b7f96ad3191557..b551a439f7165565bce8cab88b6722520f87f12b 100644
+index ba8dd0ec01d255b26b707d4b5024e31b48117c9b..e0854d5fdf27017bb71753a3ebe1bcc6403c8613 100644
 --- a/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc
 +++ b/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc
-@@ -408,6 +408,7 @@ void DownloadToolbarUIController::UpdateIcon() {
+@@ -135,6 +135,7 @@ DownloadToolbarUIController::DownloadToolbarUIController(
+       scoped_unowned_user_data_(
+           browser_view->browser()->GetUnownedUserDataHost(),
+           *this) {
++  [&]() -> void {
+   BrowserWindowInterface* const browser = browser_view_->browser();
+   action_item_ = actions::ActionManager::Get().FindAction(
+       kActionShowDownloads, BrowserActions::From(browser)->root_action_item());
+@@ -149,6 +150,10 @@ DownloadToolbarUIController::DownloadToolbarUIController(
+ 
+   browser_collection_observation_.Observe(
+       ProfileBrowserCollection::GetForProfile(browser->GetProfile()));
++  }();
++  ObserveDownloadButtonShown_BraveImpl(
++      weak_factory_.GetWeakPtr(), browser_view_,
++      brave_download_button_shown_subscription_);
+ }
+ 
+ DownloadToolbarUIController::~DownloadToolbarUIController() = default;
+@@ -425,6 +430,7 @@ void DownloadToolbarUIController::UpdateIcon() {
    button->UpdateProgressRing(ring_status, progress_info_.progress_percentage);
    button->UpdateBadge(is_active, progress_download_count, badge_text_color,
                        badge_background_color);
