@@ -13,12 +13,14 @@
 
 #include "base/command_line.h"
 #include "base/location.h"
+#include "base/memory/weak_ptr.h"
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/test_timeouts.h"
 #include "base/types/expected.h"
 #include "brave/browser/ai_chat/ai_chat_conversation_ui_browsertest_base.h"
+#include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
@@ -31,10 +33,13 @@
 #include "chrome/browser/notifications/notification_handler.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/visibility.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/content_switches.h"
 #include "content/public/test/browser_test.h"
@@ -188,6 +193,17 @@ class AIChatGenerationStatusBrowserTest
     ReleaseResponse(std::move(response),
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         CreateToolUseEvent(kPermissionToolName, "tool_use")));
+  }
+
+  // Content ignores hidden updates for a WebContents until it has first been
+  // shown for real, which can fail to happen when the test's window isn't on
+  // screen, as on some bots; a tab switch there hides nothing. Call this while
+  // |contents| shows. The test then sets the visibility a switch would give it
+  // with UpdateWebContentsVisibility(). Only hide contents that aren't in the
+  // window, such as a background tab or an inactive side panel entry, so that
+  // no update from the window can show them again.
+  static void MarkShown(content::WebContents* contents) {
+    contents->UpdateWebContentsVisibility(content::Visibility::VISIBLE);
   }
 
   // Closes the page NavigateToConversationUI() last opened and waits until the
@@ -482,6 +498,142 @@ IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
   CompleteResponse(std::move(other_response));
   ASSERT_TRUE(WaitForRowIndicator(other_page, other_uuid, kCompletedIndicator));
   EXPECT_TRUE(WaitForRowIndicator(other_page, uuid, kNoIndicator));
+}
+
+// A full page left open on the conversation in a background tab stays
+// connected but doesn't count as viewing it: the conversation finishes with the
+// dot and one notification, and activating that tab again clears both.
+IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
+                       HiddenFullPageDoesNotViewConversation) {
+  MockGenerateCallbacks response = StartBackgroundGeneration();
+  ConversationHandler* handler = conversation_handler_;
+  const std::string uuid = handler->get_conversation_uuid();
+
+  NavigateToConversationUI(uuid);
+  content::WebContents* conversation_contents =
+      content::WebContents::FromRenderFrameHost(conversation_rfh_);
+  MarkShown(conversation_contents);
+  const int conversation_tab = browser()->GetTabStripModel()->active_index();
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return handler->IsAnyClientVisible(); }));
+
+  // Opening another tab hides the conversation's tab.
+  content::RenderFrameHost* other_page = OpenFullPageOnNewChat();
+  conversation_contents->UpdateWebContentsVisibility(
+      content::Visibility::HIDDEN);
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return !handler->IsAnyClientVisible(); }));
+  EXPECT_TRUE(handler->IsAnyClientConnected());
+  EXPECT_TRUE(WaitForRowIndicator(other_page, uuid, kGeneratingIndicator));
+
+  CompleteResponse(std::move(response));
+  // The service shows the notification as it sends the state that adds the
+  // dot, so it is there once the dot is.
+  ASSERT_TRUE(WaitForRowIndicator(other_page, uuid, kCompletedIndicator));
+  EXPECT_EQ(notifications_shown_, 1);
+  const auto notifications = GetNotifications();
+  ASSERT_EQ(notifications.size(), 1u);
+  EXPECT_EQ(notifications[0].id(), base::StrCat({"ai_chat.", uuid}));
+
+  browser()->GetTabStripModel()->ActivateTabAt(conversation_tab);
+  conversation_contents->UpdateWebContentsVisibility(
+      content::Visibility::VISIBLE);
+  // Likewise it closes the notification as it sends the state that clears it.
+  EXPECT_TRUE(WaitForRowIndicator(other_page, uuid, kNoIndicator));
+  EXPECT_TRUE(GetNotifications().empty());
+  EXPECT_EQ(notifications_shown_, 1);
+}
+
+// The same for the side panel. Showing another entry in it keeps the
+// conversation's contents loaded but out of the window, so they are hidden
+// while still connected; showing the conversation again brings them back.
+IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
+                       HiddenSidePanelDoesNotViewConversation) {
+  MockGenerateCallbacks response = StartBackgroundGeneration();
+  ConversationHandler* handler = conversation_handler_;
+  const std::string uuid = handler->get_conversation_uuid();
+  content::RenderFrameHost* page = OpenFullPageOnNewChat();
+
+  OpenConversationInSidePanel(browser()->GetProfile(), uuid);
+  content::WebContents* side_panel_contents =
+      GetSidePanelWebContents(browser());
+  ASSERT_TRUE(side_panel_contents);
+  base::WeakPtr<content::WebContents> side_panel =
+      side_panel_contents->GetWeakPtr();
+  MarkShown(side_panel.get());
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return handler->IsAnyClientVisible(); }));
+
+  SidePanelUI* side_panel_ui = SidePanelUI::From(browser());
+  side_panel_ui->Show(SidePanelEntryId::kBookmarks);
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return GetSidePanelWebContents(browser()) != side_panel.get(); }));
+  // The side panel keeps the conversation's view while another entry shows.
+  ASSERT_TRUE(side_panel);
+  side_panel->UpdateWebContentsVisibility(content::Visibility::HIDDEN);
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return !handler->IsAnyClientVisible(); }));
+  EXPECT_TRUE(handler->IsAnyClientConnected());
+
+  CompleteResponse(std::move(response));
+  ASSERT_TRUE(WaitForRowIndicator(page, uuid, kCompletedIndicator));
+  EXPECT_EQ(notifications_shown_, 1);
+  EXPECT_EQ(GetNotifications().size(), 1u);
+
+  side_panel_ui->Show(SidePanelEntryId::kChatUI);
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return side_panel && GetSidePanelWebContents(browser()) == side_panel.get();
+  }));
+  side_panel->UpdateWebContentsVisibility(content::Visibility::VISIBLE);
+  EXPECT_TRUE(WaitForRowIndicator(page, uuid, kNoIndicator));
+  EXPECT_TRUE(GetNotifications().empty());
+  EXPECT_EQ(notifications_shown_, 1);
+}
+
+// Switching away from a conversation's tab without answering its challenge
+// brings the warning back while the page stays connected, and switching back
+// clears it again. A challenge that arrives while viewed shows no notification.
+IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
+                       HidingUnansweredChallengeShowsAwaitingIndicator) {
+  MockGenerateCallbacks response = StartBackgroundGeneration();
+  ConversationHandler* handler = conversation_handler_;
+  const std::string uuid = handler->get_conversation_uuid();
+  MockTool* tool = AddPermissionTool();
+  EXPECT_CALL(*tool, UseTool).Times(0);
+
+  content::RenderFrameHost* other_page = OpenFullPageOnNewChat();
+  ASSERT_TRUE(WaitForRowIndicator(other_page, uuid, kGeneratingIndicator));
+  TabStripModel* tab_strip = browser()->GetTabStripModel();
+  const int other_tab = tab_strip->GetIndexOfWebContents(
+      content::WebContents::FromRenderFrameHost(other_page));
+
+  NavigateToConversationUI(uuid);
+  content::WebContents* conversation_contents =
+      content::WebContents::FromRenderFrameHost(conversation_rfh_);
+  MarkShown(conversation_contents);
+  const int conversation_tab = tab_strip->active_index();
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return handler->IsAnyClientVisible(); }));
+
+  // The ring goes once the service has decided the response stopped on the
+  // challenge while viewed.
+  RequestPermissionToolUse(std::move(response));
+  ASSERT_TRUE(WaitForRowIndicator(other_page, uuid, kNoIndicator));
+  ASSERT_TRUE(
+      VerifyConversationFrameElementState("permission-allow-once-button"));
+
+  tab_strip->ActivateTabAt(other_tab);
+  conversation_contents->UpdateWebContentsVisibility(
+      content::Visibility::HIDDEN);
+  EXPECT_TRUE(
+      WaitForRowIndicator(other_page, uuid, kAwaitingUserInputIndicator));
+  EXPECT_TRUE(handler->IsAnyClientConnected());
+
+  tab_strip->ActivateTabAt(conversation_tab);
+  conversation_contents->UpdateWebContentsVisibility(
+      content::Visibility::VISIBLE);
+  EXPECT_TRUE(WaitForRowIndicator(other_page, uuid, kNoIndicator));
+  EXPECT_EQ(notifications_shown_, 0);
 }
 
 }  // namespace ai_chat

@@ -134,6 +134,7 @@ class AIChatService : public KeyedService,
                             size_t event_order,
                             mojom::ToolUseEventPtr tool_use) override;
   void OnClientConnectionChanged(ConversationHandler* handler) override;
+  void OnClientVisibilityChanged(ConversationHandler* handler) override;
   void OnConversationTitleChanged(const std::string& conversation_uuid,
                                   const std::string& title) override;
   void OnConversationTokenInfoChanged(
@@ -282,9 +283,9 @@ class AIChatService : public KeyedService,
   using CloseCompletionNotificationCallback =
       base::RepeatingCallback<void(const std::string& uuid)>;
   // Lets the embedder notify the user when a response finishes in the
-  // background. |show| runs when a conversation's response finishes while no
-  // client is connected to it, with the conversation's title, which is empty
-  // if it has none, and |needs_approval| set if it stopped on a permission
+  // background. |show| runs when a conversation's response finishes while it
+  // isn't on screen, with the conversation's title, which is empty if it has
+  // none, and |needs_approval| set if it stopped on a permission
   // request rather than finishing. |close| runs when the conversation is
   // viewed, deleted, or unloaded and dropped from the list, whether or not a
   // notification is showing. Either callback can be null.
@@ -466,13 +467,13 @@ class AIChatService : public KeyedService,
   void AddToolProvidersToConversation(ConversationHandler* conversation);
   // Sends |conversation_generation_state_| to all |observer_remotes_|.
   void NotifyConversationGenerationStateChanged();
-  // Whether |uuid| has a loaded ConversationHandler with a connected client.
-  // This doesn't mean the conversation is on screen.
-  bool IsConversationClientConnected(const std::string& uuid) const;
+  // Whether |uuid| has a loaded ConversationHandler with a visible client, i.e.
+  // the conversation is on screen.
+  bool IsConversationViewed(const std::string& uuid) const;
   // Marks |conversation_uuid| as no longer generating once its handler is
-  // neither generating nor running tools: idle if a client is connected,
-  // otherwise kAwaitingUserInput if it stopped on a permission challenge, or
-  // else kCompletedNotViewed.
+  // neither generating nor running tools: idle if it is viewed, otherwise
+  // kAwaitingUserInput if it stopped on a permission challenge, or else
+  // kCompletedNotViewed.
   void MaybeMarkGenerationComplete(const std::string& conversation_uuid);
   // DeleteConversation() without OnConversationListChanged(), for callers that
   // delete several conversations and then send the list once.

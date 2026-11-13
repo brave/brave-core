@@ -287,7 +287,7 @@ ConversationHandler::ConversationHandler(
 
   // When a client disconnects, let observers know
   receivers_.set_disconnect_handler(
-      base::BindRepeating(&ConversationHandler::OnClientConnectionChanged,
+      base::BindRepeating(&ConversationHandler::OnReceiverDisconnected,
                           weak_ptr_factory_.GetWeakPtr()));
   conversation_ui_handlers_.set_disconnect_handler(base::BindRepeating(
       &ConversationHandler::OnConversationUIConnectionChanged,
@@ -355,7 +355,13 @@ void ConversationHandler::Bind(
 void ConversationHandler::Bind(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
-  receivers_.Add(this, std::move(receiver));
+  const mojo::ReceiverId id = receivers_.Add(this, std::move(receiver));
+  // Until it reports, a new client takes the conversation's current
+  // visibility. A UI rebinding to the conversation it shows then doesn't hide
+  // it in the gap before its report arrives on the new pipe.
+  if (IsAnyClientVisible()) {
+    visible_receivers_.insert(id);
+  }
   Bind(std::move(conversation_ui_handler));
 }
 
@@ -475,6 +481,10 @@ void ConversationHandler::RemoveContentAssociatedWithAssistantEntries(
 
 bool ConversationHandler::IsAnyClientConnected() {
   return !receivers_.empty() || !conversation_ui_handlers_.empty();
+}
+
+bool ConversationHandler::IsAnyClientVisible() const {
+  return !visible_receivers_.empty();
 }
 
 bool ConversationHandler::HasAnyHistory() {
@@ -2797,6 +2807,29 @@ void ConversationHandler::OnClientConnectionChanged() {
   for (auto& observer : observers_) {
     observer.OnClientConnectionChanged(this);
   }
+}
+
+void ConversationHandler::OnReceiverDisconnected() {
+  SetReceiverVisible(receivers_.current_receiver(), false);
+  OnClientConnectionChanged();
+}
+
+void ConversationHandler::SetClientVisible(bool visible) {
+  SetReceiverVisible(receivers_.current_receiver(), visible);
+}
+
+void ConversationHandler::SetReceiverVisible(mojo::ReceiverId id,
+                                             bool visible) {
+  const bool was_visible = IsAnyClientVisible();
+  if (visible) {
+    visible_receivers_.insert(id);
+  } else {
+    visible_receivers_.erase(id);
+  }
+  if (IsAnyClientVisible() == was_visible) {
+    return;
+  }
+  observers_.Notify(&Observer::OnClientVisibilityChanged, this);
 }
 
 void ConversationHandler::OnConversationTitleChanged(std::string_view title) {

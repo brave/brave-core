@@ -1430,10 +1430,15 @@ void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
     ai_chat_metrics_->RecordConversationUnload(
         handler->get_conversation_uuid());
   }
-  // A connected client, whichever path bound it, counts as viewing the
-  // conversation.
+  QueueMaybeUnloadConversation(handler);
+}
+
+void AIChatService::OnClientVisibilityChanged(ConversationHandler* handler) {
+  // Only a visible client counts as viewing the conversation, whichever path
+  // bound it. A hidden one, such as a tab's side panel while another tab is
+  // active, still keeps the conversation loaded.
   const std::string& uuid = handler->get_conversation_uuid();
-  if (handler->IsAnyClientConnected()) {
+  if (handler->IsAnyClientVisible()) {
     auto it = conversation_generation_state_.find(uuid);
     if (it != conversation_generation_state_.end() &&
         it->second != mojom::ConversationGenerationState::kGenerating) {
@@ -1443,12 +1448,12 @@ void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
     }
   } else if (handler->IsAwaitingUserInput() &&
              !conversation_generation_state_.contains(uuid)) {
-    // Left without answering the challenge, so it still needs the user.
+    // Hidden or left without answering the challenge, so it still needs the
+    // user.
     conversation_generation_state_[uuid] =
         mojom::ConversationGenerationState::kAwaitingUserInput;
     NotifyConversationGenerationStateChanged();
   }
-  QueueMaybeUnloadConversation(handler);
 }
 
 void AIChatService::OnConversationTitleChanged(
@@ -1646,10 +1651,9 @@ void AIChatService::SetCompletionNotificationCallbacks(
   close_completion_notification_callback_ = std::move(close);
 }
 
-bool AIChatService::IsConversationClientConnected(
-    const std::string& uuid) const {
+bool AIChatService::IsConversationViewed(const std::string& uuid) const {
   auto* handler = base::FindPtrOrNull(conversation_handlers_, uuid);
-  return handler && handler->IsAnyClientConnected();
+  return handler && handler->IsAnyClientVisible();
 }
 
 void AIChatService::MaybeMarkGenerationComplete(
@@ -1665,7 +1669,7 @@ void AIChatService::MaybeMarkGenerationComplete(
       (handler->IsRequestInProgress() || handler->IsToolUseInProgress())) {
     return;
   }
-  if (IsConversationClientConnected(conversation_uuid)) {
+  if (IsConversationViewed(conversation_uuid)) {
     conversation_generation_state_.erase(it);
     NotifyConversationGenerationStateChanged();
     return;

@@ -143,6 +143,7 @@ export function createMockConversationHandler(
     setContentToolPermission: () => {},
     respondToVisionModelSwitch: () => {},
     setContentAgentChosen: () => {},
+    setClientVisible: () => {},
 
     // Apply overrides - these will replace defaults
     ...overrides,

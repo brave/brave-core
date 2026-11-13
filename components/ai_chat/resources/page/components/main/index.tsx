@@ -36,6 +36,7 @@ import WelcomeGuide from '../welcome_guide'
 import styles from './style.module.scss'
 import Attachments from '../attachments'
 import useHasConversationStarted from '../../hooks/useHasConversationStarted'
+import useReportClientVisibility from '../../hooks/useReportClientVisibility'
 import { useExtractedQuery } from '../filter_menu/query'
 import TabsMenu from '../filter_menu/attachments_menu'
 import { stringifyContent } from '../input_box/editable_content'
@@ -49,6 +50,15 @@ function Main() {
   const [isSharedConversationsDialogOpen, setIsSharedConversationsDialogOpen] =
     React.useState(false)
   const { isDragActive, isDragOver } = conversationContext
+
+  // In the side panel the conversations list covers the whole conversation.
+  const isConversationListShown =
+    isConversationListOpen && !aiChatContext.isStandalone
+
+  useReportClientVisibility(
+    conversationContext.api.conversationHandler.setClientVisible,
+    !isConversationListShown,
+  )
 
   const showAttachments = !!conversationContext.attachmentsDialog
 
@@ -169,7 +179,7 @@ function Main() {
       })}
     >
       <DragOverlay />
-      {isConversationListOpen && !aiChatContext.isStandalone && (
+      {isConversationListShown && (
         <div className={styles.conversationsList}>
           <div
             className={classnames({

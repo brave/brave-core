@@ -520,6 +520,12 @@ interface ConversationHandler {
   // choice lasts as long as the conversation is loaded and is not persisted,
   // and takes effect from the next turn, not the one in progress.
   SetContentAgentChosen(bool chosen);
+
+  // Reports whether this client's UI is visible, when it binds and whenever
+  // that changes. The conversation counts as viewed only while a client
+  // reports it is visible. Until a client reports, it counts as visible only
+  // if another client already is.
+  SetClientVisible(bool visible);
 };
 
 interface ConversationUI {

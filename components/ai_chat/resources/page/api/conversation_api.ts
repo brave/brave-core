@@ -39,6 +39,7 @@ export default function createConversationApi(
         'setContentToolPermission',
         'respondToVisionModelSwitch',
         'setContentAgentChosen',
+        'setClientVisible',
       ]),
     },
 
