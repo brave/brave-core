@@ -1,8 +1,8 @@
 diff --git a/chrome/common/webui_url_constants.cc b/chrome/common/webui_url_constants.cc
-index 6c6f8ffdf781850cb15b038d2e780147527392a9..bf65a3fe9a1b9441ab9c1bfbeed15b599b093ccf 100644
+index 6c6f8ffdf781850cb15b038d2e780147527392a9..ba04efdc5735df392ff7a096e062e62765ee512c 100644
 --- a/chrome/common/webui_url_constants.cc
 +++ b/chrome/common/webui_url_constants.cc
-@@ -289,6 +289,18 @@ base::span<const base::cstring_view> ChromeURLHosts() {
+@@ -289,6 +289,21 @@ base::span<const base::cstring_view> ChromeURLHosts() {
        kChromeUIOrganizerPanelHost,
        kChromeUIWebuiBrowserHost,
  #endif  // !BUILDFLAG(IS_ANDROID)
