@@ -3,326 +3,114 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Thin integration tests for `bots.py`'s CLI wiring: dispatch to the
-`snapshot`/`lookup`/`gen` subcommands and their error paths. Each
-subcommand's own logic is covered by its own <name>_test.py; `gen`'s
-dispatch test stubs out `gen.BuildDirGenerator.run_gn_gen()` so it never
-shells out to a real `gn` binary."""
+"""Thin integration tests for `bots.py`'s CLI wiring: dispatch to each
+subcommand and their error paths. Each subcommand's own logic is covered by
+its own <name>_test.py; `gen`'s dispatch test stubs out `gn gen` so that it
+never shells out to a real `gn` binary."""
 
 import contextlib
 import io
 import json
 import os
 import sys
-import tempfile
 import unittest
-from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(
-    0,
-    os.path.join(
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'config'
-    ),
-)
 
 import bots
-import describe
 import gen
-import gen_paths
-import lookup
-import validate
+import testing_support
+from testing_support import write_builder
+
+# How `testing_support.GN_ARGS` render in an `args.gn`.
+_ARGS_GN = 'target_cpu = "x64"\ntarget_os = "linux"\n'
 
 
-def _make_generated_output_dir(tmp_dir, builder_names):
-    """Writes a minimal `gn-args.json` for each name under `tmp_dir`."""
-    for name in builder_names:
-        builder_dir = Path(tmp_dir) / name
-        builder_dir.mkdir()
-        (builder_dir / 'gn-args.json').write_text(
-            json.dumps({'gn_args': {'is_asan': True}}), encoding='utf-8'
-        )
+class _BotsTestCase(unittest.TestCase):
+    def setUp(self):
+        self.output_dir = testing_support.use_output_dir(self)
 
-
-class LookupDispatchTest(unittest.TestCase):
-    """`bots.py lookup`'s CLI wiring: dispatch to `lookup.cmd_lookup()` and
-    the missing-positional/unknown-builder error paths. See lookup_test.py
-    for `lookup.py`'s own logic."""
-
-    def test_dispatches_to_lookup_cmd(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            _make_generated_output_dir(tmp, ['b'])
-
-            original = gen_paths.BUILDERS_OUTPUT_DIR
-            gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
+    def _main(self, *argv):
+        """Runs `bots.py` with *argv*, returning its exit code, stdout and
+        stderr."""
+        out, err = io.StringIO(), io.StringIO()
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
             try:
-                buf = io.StringIO()
-                with contextlib.redirect_stdout(buf):
-                    ret = bots.main(['lookup', 'b', '--quiet'])
-            finally:
-                gen_paths.BUILDERS_OUTPUT_DIR = original
+                ret = bots.main(list(argv))
+            except SystemExit as e:
+                ret = e.code
+        return ret, out.getvalue(), err.getvalue()
 
-            self.assertEqual(ret, 0)
-            self.assertEqual(buf.getvalue(), 'is_asan = true\n')
+
+class BuilderArgumentTest(_BotsTestCase):
+    """The subcommands taking a builder: unknown and missing builders."""
 
     def test_unknown_builder_returns_1(self):
-        buf = io.StringIO()
-        with contextlib.redirect_stderr(buf):
-            ret = bots.main(['lookup', 'does-not-exist', '--quiet'])
-        self.assertEqual(ret, 1)
-        self.assertIn('does-not-exist', buf.getvalue())
+        for command in ('lookup', 'gen', 'describe'):
+            with self.subTest(command=command):
+                ret, _, err = self._main(command, 'does-not-exist')
+                self.assertEqual(ret, 1)
+                self.assertIn('does-not-exist', err)
 
-    def test_missing_positional_lists_available_builders(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            _make_generated_output_dir(tmp, ['a-builder', 'b-builder'])
+    def test_missing_builder_lists_available_builders(self):
+        write_builder(self.output_dir, 'a-builder')
+        write_builder(self.output_dir, 'b-builder')
+        for command in ('lookup', 'gen'):
+            with self.subTest(command=command):
+                ret, _, err = self._main(command)
+                self.assertEqual(ret, 2)
+                self.assertIn('available builders:\n  a-builder\n', err)
 
-            original = gen_paths.BUILDERS_OUTPUT_DIR
-            gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
-            try:
-                buf = io.StringIO()
-                with contextlib.redirect_stderr(buf):
-                    with self.assertRaises(SystemExit) as ctx:
-                        bots.main(['lookup'])
-            finally:
-                gen_paths.BUILDERS_OUTPUT_DIR = original
-
-            self.assertEqual(ctx.exception.code, 2)
-            self.assertIn('a-builder', buf.getvalue())
-            self.assertIn('b-builder', buf.getvalue())
-
-
-class SnapshotDispatchTest(unittest.TestCase):
-    def test_usage_error_does_not_list_builders(self):
+    def test_snapshot_usage_error_does_not_list_builders(self):
         # `snapshot` has nothing to do with a builder name, so its usage
         # errors should not carry `lookup`'s builder-listing behaviour.
-        with tempfile.TemporaryDirectory() as tmp:
-            _make_generated_output_dir(tmp, ['a-builder'])
-
-            original = gen_paths.BUILDERS_OUTPUT_DIR
-            gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
-            try:
-                buf = io.StringIO()
-                with contextlib.redirect_stderr(buf):
-                    with self.assertRaises(SystemExit) as ctx:
-                        bots.main(['snapshot', 'unexpected-positional'])
-            finally:
-                gen_paths.BUILDERS_OUTPUT_DIR = original
-
-            self.assertEqual(ctx.exception.code, 2)
-            self.assertNotIn('a-builder', buf.getvalue())
-            self.assertNotIn('available builders', buf.getvalue())
+        write_builder(self.output_dir, 'a-builder')
+        ret, _, err = self._main('snapshot', 'unexpected-positional')
+        self.assertEqual(ret, 2)
+        self.assertNotIn('available builders', err)
 
 
-class GenDispatchTest(unittest.TestCase):
-    """`bots.py gen`'s CLI wiring: dispatch to `gen.cmd_gen()` and the
-    missing-positional/unknown-builder error paths. See gen_test.py for
-    `gen.py`'s own logic (writing args.gn, the secrets stub)."""
+class DispatchTest(_BotsTestCase):
+    def setUp(self):
+        super().setUp()
+        write_builder(self.output_dir, 'b')
 
-    def test_dispatches_to_gen_cmd(self):
-        with contextlib.ExitStack() as stack:
-            generated_tmp = stack.enter_context(tempfile.TemporaryDirectory())
-            _make_generated_output_dir(generated_tmp, ['b'])
-            fake_src_root = stack.enter_context(tempfile.TemporaryDirectory())
-            fake_src_root_path = Path(fake_src_root).resolve()
-            out_dir = fake_src_root_path / 'out' / 'b'
+    def test_lookup(self):
+        self.assertEqual(
+            self._main('lookup', 'b', '--quiet'), (0, _ARGS_GN, '')
+        )
 
-            original_output_dir = gen_paths.BUILDERS_OUTPUT_DIR
-            gen_paths.BUILDERS_OUTPUT_DIR = Path(generated_tmp)
-            original_src_dir = gen._CHROMIUM_SRC_DIR
-            gen._CHROMIUM_SRC_DIR = fake_src_root_path
-            original_run_gn_gen = gen.BuildDirGenerator.run_gn_gen
-            gen.BuildDirGenerator.run_gn_gen = lambda self: 0
-            try:
-                ret = bots.main(['gen', 'b', '--out-dir', str(out_dir)])
-            finally:
-                gen_paths.BUILDERS_OUTPUT_DIR = original_output_dir
-                gen._CHROMIUM_SRC_DIR = original_src_dir
-                gen.BuildDirGenerator.run_gn_gen = original_run_gn_gen
+    def test_gen(self):
+        src_dir = testing_support.use_src_dir(self)
+        original = gen.BuildDir._run_gn_gen
+        gen.BuildDir._run_gn_gen = lambda build_dir: 0
+        self.addCleanup(setattr, gen.BuildDir, '_run_gn_gen', original)
+        self.assertEqual(self._main('gen', 'b')[0], 0)
+        self.assertEqual(
+            (src_dir / 'out' / 'b' / 'args.gn').read_text(), _ARGS_GN
+        )
 
-            self.assertEqual(ret, 0)
-            self.assertEqual(
-                (out_dir / 'args.gn').read_text(encoding='utf-8'),
-                'is_asan = true\n',
-            )
+    def test_validate(self):
+        ret, out, _ = self._main('validate')
+        self.assertEqual(ret, 0)
+        self.assertIn('looks ok', out)
 
-    def test_unknown_builder_returns_1(self):
-        buf = io.StringIO()
-        with contextlib.redirect_stderr(buf):
-            ret = bots.main(['gen', 'does-not-exist'])
+    def test_validate_problems_return_1(self):
+        write_builder(self.output_dir, 'c', omit=('targets.json',))
+        ret, _, err = self._main('validate')
         self.assertEqual(ret, 1)
-        self.assertIn('does-not-exist', buf.getvalue())
+        self.assertIn('targets.json: missing', err)
 
-    def test_missing_positional_lists_available_builders(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            _make_generated_output_dir(tmp, ['a-builder', 'b-builder'])
+    def test_describe_one_builder(self):
+        ret, out, _ = self._main('describe', 'b', '--json')
+        self.assertEqual(ret, 0)
+        self.assertEqual(list(json.loads(out)), ['b'])
 
-            original = gen_paths.BUILDERS_OUTPUT_DIR
-            gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
-            try:
-                buf = io.StringIO()
-                with contextlib.redirect_stderr(buf):
-                    with self.assertRaises(SystemExit) as ctx:
-                        bots.main(['gen'])
-            finally:
-                gen_paths.BUILDERS_OUTPUT_DIR = original
-
-            self.assertEqual(ctx.exception.code, 2)
-            self.assertIn('a-builder', buf.getvalue())
-            self.assertIn('b-builder', buf.getvalue())
-
-
-def _make_valid_builder_dir(tmp_dir, name):
-    """Writes a builder's full, valid set of generated files under
-    `tmp_dir`, unlike `_make_generated_output_dir()`'s `gn-args.json`-only
-    fixture: `validate` reports the other files as missing otherwise."""
-    builder_dir = Path(tmp_dir) / name
-    builder_dir.mkdir()
-    (builder_dir / 'gn-args.json').write_text(
-        json.dumps(
-            {
-                'gn_args': {
-                    'target_os': 'linux',
-                    'target_cpu': 'x64',
-                }
-            }
-        ),
-        encoding='utf-8',
-    )
-    builder_id = {'builder': name}
-    (builder_dir / 'properties.json').write_text(
-        json.dumps(
-            {
-                '$brave_tests_builder_config': {
-                    'builder_config': {
-                        'builder_db': {
-                            'entries': [
-                                {
-                                    'builder_id': builder_id,
-                                    'builder_spec': {
-                                        'chromium_config': {
-                                            'target_platform': 'linux'
-                                        },
-                                        'gclient_config': {
-                                            'target_os': [],
-                                            'target_cpu': [],
-                                        },
-                                    },
-                                }
-                            ]
-                        },
-                        'builder_ids': [builder_id],
-                    }
-                }
-            }
-        ),
-        encoding='utf-8',
-    )
-    (builder_dir / 'sync.json').write_text(
-        json.dumps(
-            {
-                'target_os': [],
-                'target_cpu': [],
-            }
-        ),
-        encoding='utf-8',
-    )
-    (builder_dir / 'targets.json').write_text(
-        json.dumps(
-            {
-                'compile': ['brave:all'],
-                'tests': [],
-            }
-        ),
-        encoding='utf-8',
-    )
-
-
-class ValidateDispatchTest(unittest.TestCase):
-    """`bots.py validate`'s CLI wiring: dispatch to `validate.cmd_validate()`
-    and its success/failure exit codes. See validate_test.py for
-    `validate.py`'s own checks."""
-
-    def test_dispatches_to_validate_cmd(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            _make_valid_builder_dir(tmp, 'b')
-
-            original = gen_paths.BUILDERS_OUTPUT_DIR
-            gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
-            try:
-                buf = io.StringIO()
-                with contextlib.redirect_stdout(buf):
-                    ret = bots.main(['validate'])
-            finally:
-                gen_paths.BUILDERS_OUTPUT_DIR = original
-
-            self.assertEqual(ret, 0)
-            self.assertIn('looks ok', buf.getvalue())
-
-    def test_problems_return_1(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            _make_generated_output_dir(tmp, ['b'])  # gn-args.json only.
-
-            original = gen_paths.BUILDERS_OUTPUT_DIR
-            gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
-            try:
-                buf = io.StringIO()
-                with contextlib.redirect_stderr(buf):
-                    ret = bots.main(['validate'])
-            finally:
-                gen_paths.BUILDERS_OUTPUT_DIR = original
-
-            self.assertEqual(ret, 1)
-            self.assertIn('missing', buf.getvalue())
-
-
-class DescribeDispatchTest(unittest.TestCase):
-    """`bots.py describe`'s CLI wiring: dispatch to `describe.cmd_describe()`,
-    for one builder and for every builder. See describe_test.py for
-    `describe.py`'s own logic."""
-
-    def test_dispatches_to_describe_cmd_for_one_builder(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            _make_generated_output_dir(tmp, ['b'])
-
-            original = gen_paths.BUILDERS_OUTPUT_DIR
-            gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
-            try:
-                buf = io.StringIO()
-                with contextlib.redirect_stdout(buf):
-                    ret = bots.main(['describe', 'b', '--json'])
-            finally:
-                gen_paths.BUILDERS_OUTPUT_DIR = original
-
-            self.assertEqual(ret, 0)
-            self.assertEqual(
-                json.loads(buf.getvalue()),
-                {'b': {'gn_args': {'gn_args': {'is_asan': True}}}},
-            )
-
-    def test_omitting_builder_describes_everything(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            _make_generated_output_dir(tmp, ['a-builder', 'b-builder'])
-
-            original = gen_paths.BUILDERS_OUTPUT_DIR
-            gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
-            try:
-                buf = io.StringIO()
-                with contextlib.redirect_stdout(buf):
-                    ret = bots.main(['describe', '--json'])
-            finally:
-                gen_paths.BUILDERS_OUTPUT_DIR = original
-
-            self.assertEqual(ret, 0)
-            self.assertEqual(
-                set(json.loads(buf.getvalue())), {'a-builder', 'b-builder'}
-            )
-
-    def test_unknown_builder_returns_1(self):
-        buf = io.StringIO()
-        with contextlib.redirect_stderr(buf):
-            ret = bots.main(['describe', 'does-not-exist', '--json'])
-        self.assertEqual(ret, 1)
-        self.assertIn('does-not-exist', buf.getvalue())
+    def test_describe_every_builder(self):
+        write_builder(self.output_dir, 'a')
+        ret, out, _ = self._main('describe', '--json')
+        self.assertEqual(ret, 0)
+        self.assertEqual(sorted(json.loads(out)), ['a', 'b'])
 
 
 if __name__ == '__main__':

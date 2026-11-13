@@ -10,8 +10,7 @@ from pathlib import Path
 
 import gen_paths
 
-_CHROMIUM_SRC_DIR = gen_paths.BOTS_DIR.parents[2]
-DEFAULT_PATH = _CHROMIUM_SRC_DIR / 'brave' / '.env'
+DEFAULT_PATH = gen_paths.CHROMIUM_SRC_DIR / 'brave' / '.env'
 
 
 def parse(text: str) -> dict[str, str]:
