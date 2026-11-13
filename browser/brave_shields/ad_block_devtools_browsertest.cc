@@ -12,6 +12,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_devtools_protocol_client.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -51,8 +52,8 @@ IN_PROC_BROWSER_TEST_F(AdblockDevtoolsTest, NoFilterSourceInfoByDefault) {
       WaitForNotification("Network.requestAdblockInfoReceived", true);
   const auto* info = notification.FindDict("info");
   ASSERT_TRUE(info);
-  EXPECT_TRUE(*info->FindBool("blocked"));
-  EXPECT_TRUE(*info->FindBool("didMatchRule"));
+  EXPECT_THAT(info->FindBool("blocked"), testing::Optional(true));
+  EXPECT_THAT(info->FindBool("didMatchRule"), testing::Optional(true));
   EXPECT_FALSE(info->FindDict("filter"));
   EXPECT_FALSE(info->FindDict("exception"));
 }
@@ -80,15 +81,16 @@ IN_PROC_BROWSER_TEST_F(AdblockDevtoolsDebugModeTest, DomainBlock) {
       WaitForNotification("Network.requestAdblockInfoReceived", true);
   const auto* info = notification.FindDict("info");
   ASSERT_TRUE(info);
-  EXPECT_EQ(url.spec(), *info->FindString("requestUrl"));
-  EXPECT_EQ("Document", *info->FindString("resourceType"));
-  EXPECT_TRUE(*info->FindBool("blocked"));
-  EXPECT_TRUE(*info->FindBool("didMatchRule"));
+  EXPECT_THAT(info->FindString("requestUrl"), testing::Pointee(url.spec()));
+  EXPECT_THAT(info->FindString("resourceType"),
+              testing::Pointee(testing::StrEq("Document")));
+  EXPECT_THAT(info->FindBool("blocked"), testing::Optional(true));
+  EXPECT_THAT(info->FindBool("didMatchRule"), testing::Optional(true));
 
   const auto* filter = info->FindDict("filter");
   ASSERT_TRUE(filter);
-  EXPECT_EQ(rule, *filter->FindString("rawLine"));
-  EXPECT_EQ(0, *filter->FindInt("lineNumber"));
+  EXPECT_THAT(filter->FindString("rawLine"), testing::Pointee(rule));
+  EXPECT_THAT(filter->FindInt("lineNumber"), testing::Optional(0));
   // The test list declares no `! Title:` line.
   EXPECT_FALSE(filter->FindString("sourceTitle"));
   EXPECT_FALSE(info->FindDict("exception"));
@@ -112,17 +114,20 @@ IN_PROC_BROWSER_TEST_F(AdblockDevtoolsDebugModeTest, ResourceBlock) {
   const auto* info = notification.FindDict("info");
   ASSERT_TRUE(info);
   const GURL& image_url = embedded_test_server()->GetURL("/resource.png");
-  EXPECT_EQ(image_url.spec(), *info->FindString("requestUrl"));
-  EXPECT_EQ("Image", *info->FindString("resourceType"));
-  EXPECT_TRUE(*info->FindBool("blocked"));
-  EXPECT_TRUE(*info->FindBool("didMatchRule"));
+  EXPECT_THAT(info->FindString("requestUrl"),
+              testing::Pointee(image_url.spec()));
+  EXPECT_THAT(info->FindString("resourceType"),
+              testing::Pointee(testing::StrEq("Image")));
+  EXPECT_THAT(info->FindBool("blocked"), testing::Optional(true));
+  EXPECT_THAT(info->FindBool("didMatchRule"), testing::Optional(true));
 
   const auto* filter = info->FindDict("filter");
   ASSERT_TRUE(filter);
-  EXPECT_EQ(rule, *filter->FindString("rawLine"));
+  EXPECT_THAT(filter->FindString("rawLine"), testing::Pointee(rule));
   // Custom filters are prefixed with a title comment line.
-  EXPECT_EQ(1, *filter->FindInt("lineNumber"));
-  EXPECT_EQ("User-defined custom filters", *filter->FindString("sourceTitle"));
+  EXPECT_THAT(filter->FindInt("lineNumber"), testing::Optional(1));
+  EXPECT_THAT(filter->FindString("sourceTitle"),
+              testing::Pointee(testing::StrEq("User-defined custom filters")));
   EXPECT_FALSE(info->FindDict("exception"));
 }
 
@@ -147,25 +152,29 @@ IN_PROC_BROWSER_TEST_F(AdblockDevtoolsDebugModeTest, Exception) {
   const auto* info = notification.FindDict("info");
   ASSERT_TRUE(info);
   const GURL& image_url = embedded_test_server()->GetURL("/ad_banner.png");
-  EXPECT_EQ(image_url.spec(), *info->FindString("requestUrl"));
-  EXPECT_EQ("Image", *info->FindString("resourceType"));
-  EXPECT_FALSE(*info->FindBool("blocked"));
-  EXPECT_TRUE(*info->FindBool("didMatchRule"));
-  EXPECT_TRUE(*info->FindBool("didMatchException"));
+  EXPECT_THAT(info->FindString("requestUrl"),
+              testing::Pointee(image_url.spec()));
+  EXPECT_THAT(info->FindString("resourceType"),
+              testing::Pointee(testing::StrEq("Image")));
+  EXPECT_THAT(info->FindBool("blocked"), testing::Optional(false));
+  EXPECT_THAT(info->FindBool("didMatchRule"), testing::Optional(true));
+  EXPECT_THAT(info->FindBool("didMatchException"), testing::Optional(true));
 
   const auto* filter = info->FindDict("filter");
   ASSERT_TRUE(filter);
-  EXPECT_EQ(filter_rule, *filter->FindString("rawLine"));
-  EXPECT_EQ(1, *filter->FindInt("lineNumber"));
-  EXPECT_EQ("Test default filters", *filter->FindString("sourceTitle"));
+  EXPECT_THAT(filter->FindString("rawLine"), testing::Pointee(filter_rule));
+  EXPECT_THAT(filter->FindInt("lineNumber"), testing::Optional(1));
+  EXPECT_THAT(filter->FindString("sourceTitle"),
+              testing::Pointee(testing::StrEq("Test default filters")));
 
   const auto* exception = info->FindDict("exception");
   ASSERT_TRUE(exception);
-  EXPECT_EQ(exception_rule, *exception->FindString("rawLine"));
+  EXPECT_THAT(exception->FindString("rawLine"),
+              testing::Pointee(exception_rule));
   // Custom filters are prefixed with a title comment line.
-  EXPECT_EQ(1, *exception->FindInt("lineNumber"));
-  EXPECT_EQ("User-defined custom filters",
-            *exception->FindString("sourceTitle"));
+  EXPECT_THAT(exception->FindInt("lineNumber"), testing::Optional(1));
+  EXPECT_THAT(exception->FindString("sourceTitle"),
+              testing::Pointee(testing::StrEq("User-defined custom filters")));
 }
 
 IN_PROC_BROWSER_TEST_F(AdblockDevtoolsDebugModeTest, TwoClientsNoCrash) {
