@@ -2003,30 +2003,11 @@ def _solve_brave_ref(from_ref: str | None) -> str:
             )
         return upstream_branch
 
-    def find_previous_version_hash(is_major: bool = False) -> str:
-        starting_version = Version.from_git('HEAD')
-        base_version = starting_version
-        last_changed = repository.brave.last_changed(versioning.PACKAGE_FILE)
-        while True:
-            base_version = Version.from_git(f'{last_changed}~1')
-            if is_major and base_version.major != starting_version.major:
-                break
-            if not is_major and base_version != starting_version:
-                break
-            # Prefer to look for the PACKAGE_FILE here, because this has to
-            # resolve even when the upgrade was done manually, so don't assume
-            # the presence of pinslist timestamp changes.
-            last_changed = repository.brave.last_changed(
-                versioning.PACKAGE_FILE, f'{last_changed}~1'
-            )
-
-        return f'{last_changed}~1'
-
     if from_ref == "@previous":
-        return find_previous_version_hash()
+        return versioning.previous_version_commit()
 
     if from_ref == "@previous-major":
-        return find_previous_version_hash(is_major=True)
+        return versioning.previous_version_commit(major=True)
 
     raise NotImplementedError(
         f'Unknown value for [bold cyan]--from-ref[/]: {from_ref}. '
@@ -2406,14 +2387,7 @@ class Rebase(Task):
         to_ref = _solve_brave_ref(to_ref)
 
         if from_ref is None:
-            if Version.from_git(to_ref).major != Version.from_git('HEAD').major:
-                # If the major version is different, we default to the
-                # previous major version.
-                from_ref = _solve_brave_ref(from_ref or '@previous-major')
-            else:
-                # If the major version is the same, we default to the
-                # previous version.
-                from_ref = _solve_brave_ref(from_ref or '@previous')
+            from_ref = versioning.branch_start('HEAD', to_ref)
 
         from_ref = _solve_brave_ref(from_ref)
 
@@ -3260,6 +3234,12 @@ def show(args: argparse.Namespace):
         if from_ref_value is not None:
             console.print(f'base version: {from_ref_value}')
 
+    if args.from_ref_hash is not None:
+        solved = _solve_brave_ref(args.from_ref_hash)
+        console.print(
+            f'base commit: {repository.brave.run_git("rev-parse", solved)}'
+        )
+
     if args.log_link:
         console.print(
             'googlesource link: %s'
@@ -3464,6 +3444,13 @@ def main():
         help='Shows the Chromium version from a git reference.',
         default=None,
         dest='from_ref_value',
+    )
+    show_parser.add_argument(
+        '--from-ref-hash',
+        help='Shows the full hash a git reference or label such as '
+        '@previous-major resolves to.',
+        default=None,
+        dest='from_ref_hash',
     )
     show_parser.add_argument(
         '--log-link',

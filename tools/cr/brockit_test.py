@@ -2126,6 +2126,7 @@ class ShowTest(unittest.TestCase):
         args = argparse.Namespace(
             package_version=None,
             from_ref_value=None,
+            from_ref_hash=None,
             log_link=False,
             chromium_version_label=None,
         )
@@ -2155,6 +2156,13 @@ class ShowTest(unittest.TestCase):
 
     def test_package_version_not_requested(self):
         self.assertEqual(self._show(), [])
+
+    def test_from_ref_hash_prints_the_full_hash(self):
+        brave = MagicMock(run_git=lambda *args: f'full-{args[-1]}')
+        with patch.object(brockit.repository, 'brave', brave):
+            lines = self._show(from_ref_hash='@previous-major')
+        self.assertEqual(['base commit: full-@previous-major'], lines)
+        self.assertEqual(self.solved_refs, ['@previous-major'])
 
 
 if __name__ == '__main__':
