@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Collapse from '@brave/leo/react/collapse'
-import Icon from '@brave/leo/react/icon'
+import Collapse from '@brave/nala/react/collapse'
+import Icon from '@brave/nala/react/icon'
 
 import * as Mojom from '../api/psst_internals_api'
 import {
