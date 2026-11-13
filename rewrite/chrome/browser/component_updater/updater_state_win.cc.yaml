@@ -41,4 +41,5 @@ substitutions:
   - description: |-
       Include what the substitutions above use
     add_include:
-      header: '"brave/components/brave_origin/buildflags/buildflags.h"'
+      header:
+        - brave/components/brave_origin/buildflags/buildflags.h

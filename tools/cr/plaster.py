@@ -2624,6 +2624,10 @@ class CxxAddEnumEntriesRewriter(_AstGrepRewriter):
 # carries after it.
 _CXX_DECORATED_HEADER_RE: Final = re.compile(r'<[^<>"\s]+>|"[^<>"\s]+"')
 
+# A header as `add_include` takes it: a system header in angle brackets, or the
+# path of any other, which is included in quotes.
+_CXX_HEADER_ARG_RE: Final = re.compile(r'<[^<>"\s]+>|[^<>"\s]+')
+
 # `selector`s for `cxx.find_preamble_directive`, picking out every directive,
 # or every include.
 _CXX_ANY_DIRECTIVE: Final = '^#'
@@ -2698,34 +2702,19 @@ class _CxxInclude:
 
 
 class CxxAddIncludeRewriter(_AstGrepRewriter):
-    """Include one or more headers in a C++ source, sorted as clang-format
-    would."""
+    """Include one or more headers in a C++ source, in order."""
 
     NAME: Final = 'add_include'
     OP_ID: Final = 'cxx.insert_before_preamble_directive'
-    SUMMARY: Final = 'Add `#include`(s), sorted into the include groups.'
+    SUMMARY: Final = 'Add `#include`(s), in order.'
     # Authored in Markdown; `Help` renders it with rich.
     HELP: Final = r"""
-        Adds an `#include` for each header, placed where Chromium's
-        `.clang-format` sorts it: alphabetically into the group of its kind
-        (C system, C++ standard library, other libraries, and the Windows
-        headers that need ordering of their own), or as a new group, ordered
-        among the others, when the file has none of its kind yet. The main
-        include of a `.cc` file keeps its group to itself, and the includes
-        already there are never reordered.
-
-        Includes inside conditional blocks are left alone; a header is added
-        among the unconditional ones.
+        Adds an `#include` for each header, in order among the file's own.
+        A header the file already includes fails the substitution.
 
         Fields:
 
-        - `header` — the header as it is included, quotes or angle brackets
-          and all, e.g. `'"brave/browser/brave_browser_process.h"'` or
-          `<vector>`. Quote the value, since YAML would otherwise strip the
-          double quotes. May be a single string, or a list of them.
-
-        A header the file already includes fails the substitution, as there
-        is nothing left for it to do.
+        - `header` — a list of the headers to include.
 
         Example:
 
@@ -2733,10 +2722,16 @@ class CxxAddIncludeRewriter(_AstGrepRewriter):
         substitutions:
           - description: Make the Brave browser process available.
             add_include:
-              header: '"brave/browser/brave_browser_process.h"'
+              header:
+                - brave/browser/brave_browser_process.h
+                - <vector>
         ```
 
         ```diff
+         #include "chrome/browser/browser_process_impl.h"
+
+        +#include <vector>
+        +
          #include "base/memory/ptr_util.h"
         +#include "brave/browser/brave_browser_process.h"
          #include "chrome/browser/browser_process.h"
@@ -2940,7 +2935,7 @@ class CxxAddIncludeRewriter(_AstGrepRewriter):
 
     @classmethod
     def parse(cls, body: object, *, description: str) -> CxxAddIncludeRewriter:
-        """Validate an `add_include:` body, accepting one header or a list."""
+        """Validate an `add_include:` body and its list of headers."""
         if not isinstance(body, dict):
             raise ValueError(
                 f'"{cls.NAME}" must be a mapping (in "{description}")'
@@ -2951,30 +2946,31 @@ class CxxAddIncludeRewriter(_AstGrepRewriter):
                 f'Unrecognised {cls.NAME} arg(s): '
                 f'{", ".join(repr(k) for k in unknown)} (in "{description}")'
             )
-        value = body.get('header')
-        headers = [value] if isinstance(value, str) else value
+        headers = body.get('header')
         if not (
             isinstance(headers, list)
             and headers
             and all(isinstance(header, str) for header in headers)
         ):
             raise ValueError(
-                f'{cls.NAME} `header` must be a string or a non-empty list of '
-                f'strings (in "{description}")'
+                f'{cls.NAME} `header` must be a non-empty list of strings '
+                f'(in "{description}")'
             )
         for header in headers:
-            if not _CXX_DECORATED_HEADER_RE.fullmatch(header):
+            if not _CXX_HEADER_ARG_RE.fullmatch(header):
                 raise ValueError(
-                    f'{cls.NAME} `header` items must be quoted or in angle '
-                    f'brackets, as included, e.g. \'"base/check.h"\' or '
-                    f'<vector>: {header!r} (in "{description}")'
+                    f'{cls.NAME} `header` items must be a path, e.g. '
+                    f'base/check.h, or a system header in angle brackets, '
+                    f'e.g. <vector>: {header!r} (in "{description}")'
                 )
         if len(set(headers)) != len(headers):
             raise ValueError(
                 f'{cls.NAME} `header` lists a header more than once '
                 f'(in "{description}")'
             )
-        return cls(headers=list(headers))
+        return cls(
+            headers=[h if h.startswith('<') else f'"{h}"' for h in headers]
+        )
 
 
 class CxxAddAfterIncludesRewriter(_AstGrepRewriter):
@@ -2985,17 +2981,8 @@ class CxxAddAfterIncludesRewriter(_AstGrepRewriter):
     SUMMARY: Final = 'Insert code after the includes, before any declaration.'
     # Authored in Markdown; `Help` renders it with rich.
     HELP: Final = r"""
-        Inserts code after the run of preprocessor directives a C++ file opens
-        with, and before its first declaration: the place for forward
-        declarations. The run takes in the include guard, the includes, and
-        conditional blocks holding only directives, such as platform includes
-        or an `#error` for an unsupported build, so the code lands below all
-        of them. A conditional block holding code is a declaration, and the
-        code lands above it.
-
-        `code` is inserted as a paragraph of its own, separated by a blank
-        line from what is above and below it. It is inserted as is, so it
-        carries its own namespaces.
+        Inserts code after a file's includes and before its first
+        declaration, e.g. forward declarations.
 
         Fields:
 

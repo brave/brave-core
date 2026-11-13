@@ -16,4 +16,5 @@ substitutions:
   - description: |-
       Include what the substitutions above use
     add_include:
-      header: '"brave/browser/ui/color/material_brave_color_mixer.h"'
+      header:
+        - brave/browser/ui/color/material_brave_color_mixer.h

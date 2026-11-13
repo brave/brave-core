@@ -35,4 +35,5 @@ substitutions:
   - description: |-
       Include what the substitutions above use
     add_include:
-      header: '"brave/components/sync/engine/brave_commit_encryption_check.h"'
+      header:
+        - brave/components/sync/engine/brave_commit_encryption_check.h

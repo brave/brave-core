@@ -29,4 +29,5 @@ substitutions:
 
       For the `base::flat_map` member added above.
     add_include:
-      header: '"base/containers/flat_map.h"'
+      header:
+        - base/containers/flat_map.h

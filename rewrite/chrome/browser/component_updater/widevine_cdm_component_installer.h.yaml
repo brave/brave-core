@@ -13,4 +13,5 @@ substitutions:
 
   - description: Include what the substitution above uses
     add_include:
-      header: '"base/functional/callback.h"'
+      header:
+        - base/functional/callback.h

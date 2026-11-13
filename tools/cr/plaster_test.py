@@ -7431,31 +7431,25 @@ class CxxAddIncludeTest(unittest.TestCase):
             plaster.CxxAddIncludeRewriter.parse(body, description='test')
         return str(ctx.exception)
 
-    def test_parse_accepts_a_header_or_a_list(self):
+    def test_parse_includes_a_path_in_quotes(self):
+        # System headers keep their angle brackets; any other header is its
+        # bare path, which YAML leaves bare even when written in quotes.
         self.assertEqual(
             plaster.CxxAddIncludeRewriter.parse(
-                {'header': '<vector>'}, description='test'
-            )._headers,
-            ['<vector>'],
-        )
-        self.assertEqual(
-            plaster.CxxAddIncludeRewriter.parse(
-                {'header': ['<vector>', '"base/check.h"']}, description='test'
+                {'header': ['<vector>', 'base/check.h']}, description='test'
             )._headers,
             ['<vector>', '"base/check.h"'],
         )
 
-    def test_parse_rejects_an_undecorated_header(self):
-        # YAML strips an unquoted value's double quotes, which is the mistake
-        # this catches.
+    def test_parse_rejects_a_decorated_or_malformed_header(self):
+        message = 'must be a path, e.g. base/check.h, or a system header'
         self.assertIn(
-            'must be quoted or in angle brackets',
-            self._parse_error({'header': 'base/check.h'}),
+            message, self._parse_error({'header': ['"base/check.h"']})
         )
         self.assertIn(
-            'must be quoted or in angle brackets',
-            self._parse_error({'header': '#include "base/check.h"'}),
+            message, self._parse_error({'header': ['#include "base/check.h"']})
         )
+        self.assertIn(message, self._parse_error({'header': ['<vector']}))
 
     def test_parse_rejects_a_header_listed_twice(self):
         self.assertIn(
@@ -7463,16 +7457,17 @@ class CxxAddIncludeTest(unittest.TestCase):
             self._parse_error({'header': ['<vector>', '<vector>']}),
         )
 
-    def test_parse_rejects_a_missing_or_empty_header(self):
-        message = 'must be a string or a non-empty list of strings'
+    def test_parse_rejects_anything_but_a_non_empty_list(self):
+        message = 'must be a non-empty list of strings'
         self.assertIn(message, self._parse_error({}))
         self.assertIn(message, self._parse_error({'header': []}))
-        self.assertIn(message, self._parse_error({'header': 42}))
+        self.assertIn(message, self._parse_error({'header': '<vector>'}))
+        self.assertIn(message, self._parse_error({'header': [42]}))
 
     def test_parse_rejects_unknown_args(self):
         self.assertIn(
             "Unrecognised add_include arg(s): 'include'",
-            self._parse_error({'header': '<vector>', 'include': '<map>'}),
+            self._parse_error({'header': ['<vector>'], 'include': '<map>'}),
         )
 
     def test_count_other_than_one_rejected(self):
@@ -7482,7 +7477,8 @@ class CxxAddIncludeTest(unittest.TestCase):
                 '  - description: bogus count\n'
                 '    count: 2\n'
                 '    add_include:\n'
-                '      header: <vector>\n',
+                '      header:\n'
+                '        - <vector>\n',
                 namespace='cxx',
             )
         self.assertIn(
@@ -7495,7 +7491,8 @@ class CxxAddIncludeTest(unittest.TestCase):
                 'substitutions:\n'
                 '  - description: wrong language\n'
                 '    add_include:\n'
-                '      header: <vector>\n',
+                '      header:\n'
+                '        - <vector>\n',
                 namespace='gn',
             )
         self.assertIn('not available for this source', str(ctx.exception))
@@ -7505,12 +7502,14 @@ class CxxAddIncludeTest(unittest.TestCase):
             'substitutions:\n'
             '  - description: include Brave\n'
             '    add_include:\n'
-            "      header: '\"brave/foo.h\"'\n",
+            '      header:\n'
+            '        - "brave/foo.h"\n'
+            '        - <vector>\n',
             namespace='cxx',
         )
         rewriter = spec.substitutions[0].rewriter
         self.assertIsInstance(rewriter, plaster.CxxAddIncludeRewriter)
-        self.assertEqual(rewriter._headers, ['"brave/foo.h"'])
+        self.assertEqual(rewriter._headers, ['"brave/foo.h"', '<vector>'])
 
 
 class CxxAddAfterIncludesTest(unittest.TestCase):

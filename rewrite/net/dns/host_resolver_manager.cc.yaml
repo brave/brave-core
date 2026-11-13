@@ -36,4 +36,5 @@ substitutions:
       `IsOnionHostnameResolutionBlocked()` is called from
       `HostResolverManager::ResolveLocally()` and `StartBootstrapFollowup()`.
     add_include:
-      header: '"brave/net/dns/onion_hostname_resolution.h"'
+      header:
+        - brave/net/dns/onion_hostname_resolution.h

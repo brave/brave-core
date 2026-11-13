@@ -26,4 +26,5 @@ substitutions:
   - description: |-
       Include what the substitutions above use
     add_include:
-      header: '"components/user_data_importer/common/importer_type.h"'
+      header:
+        - components/user_data_importer/common/importer_type.h

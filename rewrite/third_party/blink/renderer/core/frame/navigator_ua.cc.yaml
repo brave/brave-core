@@ -23,4 +23,5 @@ substitutions:
   - description: |-
       Include what the substitutions above use
     add_include:
-      header: '"brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"'
+      header:
+        - brave/third_party/blink/renderer/core/farbling/brave_session_cache.h
