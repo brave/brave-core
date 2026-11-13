@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_REQUEST_H_
 #define BRAVE_COMPONENTS_ENDPOINT_CLIENT_REQUEST_H_
 
-#include <optional>
 #include <string>
 #include <string_view>
 
@@ -21,10 +20,9 @@ class MessageLite;
 
 namespace endpoint_client::internal {
 
-std::optional<std::string> SerializeJSONRequestBody(
-    const base::DictValue& request_body);
+std::string SerializeJSONRequestBody(const base::DictValue& request_body);
 
-std::optional<std::string> SerializeProtobufRequestBody(
+std::string SerializeProtobufRequestBody(
     const google::protobuf::MessageLite& request_body);
 
 // HTTP methods
@@ -98,7 +96,7 @@ struct Request<M, RequestBody> : Request<M> {
     return ContentType<Body>();
   }
 
-  std::optional<std::string> Serialize() const { return Serialize(body); }
+  std::string Serialize() const { return Serialize(body); }
 
   Body body;
 
@@ -116,16 +114,12 @@ struct Request<M, RequestBody> : Request<M> {
   }
 
   // Serializes a JSON request body to a JSON string.
-  // Returns std::nullopt if the request body produces an empty dictionary.
-  static std::optional<std::string> Serialize(
-      const IsJSONRequestBody auto& request_body) {
+  static std::string Serialize(const IsJSONRequestBody auto& request_body) {
     return SerializeJSONRequestBody(request_body.ToValue());
   }
 
   // Serializes a Protobuf request body to a binary string.
-  // Returns std::nullopt if the request body is empty (ByteSizeLong() == 0).
-  static std::optional<std::string> Serialize(
-      const IsProtobufRequestBody auto& request_body) {
+  static std::string Serialize(const IsProtobufRequestBody auto& request_body) {
     return SerializeProtobufRequestBody(request_body);
   }
 };

@@ -11,9 +11,11 @@ package endpoint_client;
 
 // Schemas for Protobuf bodies used by test endpoints.
 
-message ProtobufRequestBody {
+message ProtobufNonEmptyRequestBody {
   string request = 1;
 }
+
+message ProtobufEmptyRequestBody {}
 
 message ProtobufSuccessBody {
   string success = 1;

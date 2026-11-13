@@ -12,21 +12,12 @@
 
 namespace endpoint_client::internal {
 
-std::optional<std::string> SerializeJSONRequestBody(
-    const base::DictValue& request_body) {
-  if (request_body.empty()) {
-    return std::nullopt;
-  }
-
+std::string SerializeJSONRequestBody(const base::DictValue& request_body) {
   return CHECK_DEREF(base::WriteJson(request_body));
 }
 
-std::optional<std::string> SerializeProtobufRequestBody(
+std::string SerializeProtobufRequestBody(
     const google::protobuf::MessageLite& request_body) {
-  if (!request_body.ByteSizeLong()) {
-    return std::nullopt;
-  }
-
   std::string serialized;
   CHECK(request_body.SerializeToString(&serialized));
   return serialized;
