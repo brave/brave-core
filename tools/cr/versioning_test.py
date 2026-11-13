@@ -7,7 +7,9 @@
 import unittest
 
 from versioning import (
+    branch_start,
     load_package_file,
+    previous_version_commit,
     read_chromium_version_file,
     get_uplift_branch_name_from_package,
 )
@@ -196,6 +198,63 @@ class VersioningTest(unittest.TestCase):
         # Assert the uplift branch name is generated correctly
         uplift_branch_name = get_uplift_branch_name_from_package()
         self.assertEqual(uplift_branch_name, '1.2.x')
+
+    def _commit_file(self, name: str) -> str:
+        repo = self.fake_chromium_src
+        repo.write_and_stage_file(name, f'{name}\n', repo.brave)
+        return repo.commit(f'Add {name}', repo.brave)
+
+    def _git(self, *args: str) -> str:
+        repo = self.fake_chromium_src
+        return repo._run_git_command(list(args), repo.brave)
+
+    def test_previous_version_commit(self):
+        repo = self.fake_chromium_src
+        repo.update_brave_version('1.0.0.0')
+        base = self._commit_file('base.txt')
+        self._git('checkout', '-q', '-b', 'feature')
+        major_bump = repo.update_brave_version('2.0.0.0')
+        self._commit_file('fix.txt')
+        repo.update_brave_version('2.0.0.5')
+        self._commit_file('own.txt')
+        self._git('checkout', '-q', 'master')
+
+        # From a ref other than HEAD, past the branch's own commits.
+        self.assertEqual(base, previous_version_commit('feature', major=True))
+        self.assertEqual(
+            self._git('rev-parse', 'feature~2'),
+            previous_version_commit('feature'),
+        )
+        self.assertEqual(major_bump, self._git('rev-parse', 'feature~3'))
+
+    def test_branch_start_holds_when_the_base_is_rewritten(self):
+        repo = self.fake_chromium_src
+        repo.update_brave_version('1.0.0.0')
+        base = self._commit_file('base.txt')
+        self._git('checkout', '-q', '-b', 'feature')
+        repo.update_brave_version('2.0.0.0')
+        self._commit_file('own.txt')
+        # The base drops its last commit and moves on: the merge-base falls
+        # behind where the branch's own commits start.
+        self._git('checkout', '-q', 'master')
+        self._git('reset', '-q', '--hard', 'HEAD~1')
+        self._commit_file('rewritten.txt')
+        self.assertNotEqual(base, self._git('merge-base', 'master', 'feature'))
+
+        self.assertEqual(base, branch_start('feature', 'master'))
+
+    def test_branch_start_on_a_base_of_the_same_major(self):
+        repo = self.fake_chromium_src
+        repo.update_brave_version('2.0.0.0')
+        self._git('checkout', '-q', '-b', 'feature')
+        minor_bump = repo.update_brave_version('2.0.0.5')
+        self._commit_file('own.txt')
+
+        # Only the commits since the last bump are the branch's own.
+        self.assertEqual(
+            self._git('rev-parse', f'{minor_bump}~1'),
+            branch_start('feature', 'master'),
+        )
 
 
 if __name__ == "__main__":
