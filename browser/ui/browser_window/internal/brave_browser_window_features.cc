@@ -41,6 +41,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "printing/buildflags/buildflags.h"
 #include "ui/gfx/native_ui_types.h"
 
@@ -239,9 +240,12 @@ void BraveBrowserWindowFeatures::InitPostWindowConstruction() {
 
   if (base::FeatureList::IsEnabled(peek::features::kBravePeek) &&
       browser_->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
+    auto* browser_view =
+        BrowserView::GetBrowserViewForBrowser(base::to_address(browser_));
+    CHECK(browser_view);
     peek_controller_ = GetUserDataFactory().CreateInstance<PeekControllerImpl>(
         *browser_, *browser_, *browser_view,
-        std::make_unique<PeekShieldsPanelProviderImpl>(*browser_view));
+        std::make_unique<PeekShieldsPanelProviderImpl>(*brave_browser_window));
   }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
