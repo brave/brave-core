@@ -18,6 +18,7 @@
 #include "brave/browser/ui/tabs/public/closing_last_tab_controller.h"
 #include "brave/browser/ui/tabs/public/tab_cycling_controller.h"
 #include "brave/browser/ui/tabs/tree_tab_session_manager.h"
+#include "brave/browser/ui/views/brave_help_bubble/shields_help_bubble_controller.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/page_info/brave_shields_ui_contents_cache.h"
 #include "brave/browser/ui/views/toolbar/screenshot_preview_dialog.h"
@@ -147,6 +148,10 @@ void BraveBrowserWindowFeatures::InitPostWindowConstruction() {
   // The fullscreen controller only exists once the window is constructed.
   brave_browser_window->ReadyToListenFullscreenChanges();
 
+  shields_help_bubble_controller_ =
+      GetUserDataFactory().CreateInstance<ShieldsHelpBubbleController>(
+          *browser_, *browser_);
+
   tab_cycling_controller_ =
       GetUserDataFactory().CreateInstance<TabCyclingController>(*browser_,
                                                                 *browser_);
@@ -222,6 +227,7 @@ void BraveBrowserWindowFeatures::InitPostWindowConstruction() {
 }
 
 void BraveBrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
+  shields_help_bubble_controller_.reset();
   tab_cycling_controller_.reset();
   screenshot_controller_.reset();
 #if BUILDFLAG(ENABLE_AI_CHAT)
