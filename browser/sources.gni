@@ -9,7 +9,6 @@ import("//brave/browser/brave_vpn/sources.gni")
 import("//brave/browser/browsing_data/sources.gni")
 import("//brave/browser/cosmetic_filters/sources.gni")
 import("//brave/browser/gcm_driver/sources.gni")
-import("//brave/browser/misc_metrics/sources.gni")
 import("//brave/browser/net/sources.gni")
 import("//brave/browser/perf/sources.gni")
 import("//brave/browser/permissions/sources.gni")
@@ -173,6 +172,8 @@ brave_chrome_browser_deps = [
   "//brave/common:mojo_bindings",
   "//brave/components/ai_chat/core/common/buildflags",
   "//brave/components/debounce/core/browser",
+  "//brave/components/misc_metrics",
+  "//components/bookmarks/common",
 
   # Unconditional for gn check as the NTP WebUI always needs the mojom
   # types since typescript cannnot yet conditionally import during typecheck.
@@ -663,8 +664,6 @@ if (is_android) {
     "//chrome/browser/importer/profile_writer.h",
   ]
 
-  brave_chrome_browser_sources += brave_browser_misc_metrics_android_sources
-
   if (enable_brave_rewards) {
     brave_chrome_browser_sources += brave_browser_brave_rewards_android_sources
     brave_chrome_browser_deps += brave_browser_brave_rewards_android_deps
@@ -691,9 +690,12 @@ if (is_android) {
     "//brave/components/brave_sync:sync_service_impl_helper",
     "//chrome/android:jni_headers",
     "//chrome/browser/affiliations",
+    "//chrome/browser/bookmarks",
+    "//chrome/browser/history",
     "//chrome/browser/password_manager/android:password_manager_android",
     "//chrome/browser/password_manager/factories",
     "//chrome/browser/webdata_services",
+    "//components/bookmarks/browser",
     "//components/password_manager/core/browser/export",
     "//components/password_manager/core/browser/form_parsing",
     "//components/password_manager/core/browser/import:importer",
@@ -828,7 +830,6 @@ brave_chrome_browser_sources += brave_browser_brave_vpn_sources
 brave_chrome_browser_sources += brave_browser_browsing_data_sources
 brave_chrome_browser_sources += brave_browser_cosmetic_filters_sources
 brave_chrome_browser_sources += brave_browser_gcm_driver_sources
-brave_chrome_browser_sources += brave_browser_misc_metrics_sources
 brave_chrome_browser_sources += brave_browser_net_sources
 brave_chrome_browser_sources += brave_browser_perf_sources
 brave_chrome_browser_sources += brave_browser_permissions_sources
@@ -842,7 +843,6 @@ brave_chrome_browser_deps += brave_browser_brave_vpn_deps
 brave_chrome_browser_deps += brave_browser_browsing_data_deps
 brave_chrome_browser_deps += brave_browser_cosmetic_filters_deps
 brave_chrome_browser_deps += brave_browser_gcm_driver_deps
-brave_chrome_browser_deps += brave_browser_misc_metrics_deps
 brave_chrome_browser_deps += brave_browser_net_deps
 brave_chrome_browser_deps += brave_browser_perf_deps
 brave_chrome_browser_deps += brave_browser_permissions_deps
