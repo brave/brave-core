@@ -63,7 +63,10 @@ class ContentSeparator : public views::View {
   METADATA_HEADER(ContentSeparator, views::View)
 
  public:
-  ContentSeparator() = default;
+  ContentSeparator() {
+    SetPaintToLayer();
+    layer()->SetFillsBoundsOpaquely(false);
+  }
 
   // views::View:
   gfx::Size CalculatePreferredSize(
@@ -74,6 +77,11 @@ class ContentSeparator : public views::View {
   void OnPaint(gfx::Canvas* canvas) override {
     canvas->FillRect(GetLocalBounds(), GetColorProvider()->GetColor(
                                            kColorInfoBarContentAreaSeparator));
+  }
+
+  void OnThemeChanged() override {
+    views::View::OnThemeChanged();
+    SchedulePaint();
   }
 };
 
@@ -141,7 +149,7 @@ gfx::Size BraveInfoBarContainerView::CalculatePreferredSize(
     // Upstream lays `content_shadow_` out below the height it reports here, so
     // it paints outside these bounds, over whatever the browser view starts
     // below the container. Reserve the divider's row so it stays inside.
-    size.Enlarge(0, kContentSeparatorHeightDip + 1);
+    size.Enlarge(0, kContentSeparatorHeightDip);
     return size;
   }
 
