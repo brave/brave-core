@@ -1451,6 +1451,7 @@ test("brave_browser_tests") {
 
   if (enable_crash_dialog) {
     sources += [ "//brave/browser/ui/views/crash_report_permission_ask_dialog_browsertest.cc" ]
+    deps += [ "//brave/browser/metrics" ]
   }
 
   if (is_brave_origin_branded) {
