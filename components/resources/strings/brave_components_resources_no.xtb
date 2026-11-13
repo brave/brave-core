@@ -948,6 +948,11 @@
 <translation id="4362717653795263052">Gjenopprett primære kryptokontoer</translation>
 <translation id="3038077262567136741">Skriv inn sikkerhetsfrasen din for å gjenopprette kryptokontoen for Brave-lommeboken din</translation>
 <translation id="955918646509748368">Sikkerhetsfrasen er ugyldig.</translation>
+<translation id="7496330898672236908">Denne gjenopprettingsfrasen samsvarer ikke med lommeboken din. Kontroller frasen og prøv igjen.</translation>
+<translation id="3798792138617904098">Fjerne importerte kontoer?</translation>
+<translation id="2960631345291747230">Importerte kontoer er ikke sikkerhetskopiert av gjenopprettingsfrasen din. De fjernes fra Brave Wallet, og du kan miste tilgangen til midlene deres permanent med mindre du har sikkerhetskopiert de private nøklene.</translation>
+<translation id="8898583604592472741">Fjern kontoer</translation>
+<translation id="1577629163207045190">Skriv inn «<ph name="CONFIRMATION_PHRASE"/>» for å bekrefte.</translation>
 <translation id="8107437138787377150">Lim inn sikkerhetsfrasen fra utklippstavlen</translation>
 <translation id="4811736040444856406">Vis gjenopprettingsfrase</translation>
 <translation id="4359319875297001084">Vil du importere fra utrangerte Brave-kryptolommebøker?</translation>
@@ -2242,13 +2247,12 @@
 <translation id="3934503473603661122">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Grok 4.7, xAIs ledende resonneringsmodell på Amazon Bedrock. Grok 4.7 leveres via Braves sikre AWS-infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av GPT Luna, OpenAIs raske modell med lav ventetid på Amazon Bedrock. GPT Luna leveres via Braves sikre AWS-infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av GPT 5.6 Terra, OpenAIs balanserte produksjonsmodell på Amazon Bedrock Mantle. GPT 5.6 Terra leveres via Braves sikre AWS-infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Mistral Large, som er en ytelsesdyktig modell fra Mistral med mange ulike bruksområder. Brave er vert for Mistral Large via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
+<translation id="3789772321824682783">Hei, jeg heter Leo. Jeg er en KI-assistent fra Brave. Jeg driftes av Claude Haiku, en modell skapt av Anthropic for å drive samtale- og tekstbehandlingsoppgaver. Brave er vert for Claude Haiku via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
 <translation id="5475035333915581972">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Qwen 3.8 Flash Next, som er en ytelsesdyktig modell fra Alibaba Cloud med mange ulike bruksområder. Brave er vert for Qwen 3.8 Flash Next via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Deepseek V3.2, som er en ytelsesdyktig modell fra Deepseek med mange ulike bruksområder. Brave er vert for Deepseek V3.2 via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
+<translation id="4193502496998779919">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av GLM 5.3, som er en ytelsesdyktig modell fra Z.ai med mange ulike bruksområder. Brave er vert for GLM 5.3 via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Hei, jeg heter Leo. Jeg er en KI-assistent fra Brave. Jeg driftes av Claude Opus, en modell skapt av Anthropic for å drive samtale- og tekstbehandlingsoppgaver. Brave er vert for Claude Opus via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
 <translation id="7238858567393403597">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av GLM-4-7-Flash, som er en ytelsesdyktig modell fra Zhipu AI med mange ulike bruksområder. GLM-4-7-Flash er vert for Brave via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Kimi K2.5, som er en ytelsesdyktig modell fra Moonshot AI med mange ulike bruksområder. Kimi K2.5 er vert for Brave via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Nemotron Nano 3 30B, som er en ytelsesdyktig modell fra NVIDIA med mange ulike bruksområder. Brave er vert for Nemotron Nano 3 30B via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
 <translation id="2965634373697869601">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Brave Ocelot, som er en modell skapt av Brave for å oppsummere nettsider. Brave Ocelot er vert for Brave via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Lokal</translation>
@@ -2388,8 +2392,8 @@
 <translation id="7465032796278724624">Verifiserbart privat med NEAR AI TEE</translation>
 <translation id="8782867266498869301">Modellen endres dynamisk for å bruke den beste for oppgaven</translation>
 <translation id="7348809809749151120">Rask • Søk</translation>
+<translation id="7711013627639951065">Rask • Søk • Visjon • Verktøy</translation>
 <translation id="3213834013136637671">Søk • Visjon</translation>
-<translation id="2793458212460902934">Rask • Søk • Verktøy</translation>
 <translation id="5276681919620506371">Søk • Verktøy</translation>
 <translation id="7434375176361995333">Oppsummeringer • Rask</translation>
 <translation id="3965507912994218570">Innstillinger for Leo</translation>
@@ -2462,6 +2466,8 @@
 <translation id="6287023598025162715">Ny samtale</translation>
 <translation id="7230502562132448519">Filtrer samtaler</translation>
 <translation id="821070843380699990">Prøv en annen spørring</translation>
+<translation id="241415280196701326">Nylige arbeidsområder</translation>
+<translation id="5388053981690151266">Ny samtale i dette arbeidsområdet</translation>
 <translation id="7097822247923237815">Midlertidig chat</translation>
 <translation id="7481750859362986254">Denne chatten lagres ikke i loggen din, og tar ikke i bruk tilpasningene og minnet til Leo.</translation>
 <translation id="4238305333951712482">Minne oppdatert: <ph name="MEMORY_CONTENT"/></translation>
@@ -2487,6 +2493,7 @@
 <translation id="5103625298494362646">Agentmodus fungerer med modeller som har verktøystøtte. Ikke-kompatible modeller er skjult fra denne listen.</translation>
 <translation id="3397808797783614750">Å aktivere KI for å bla automatisk for deg kan føre til skadelige, utilsiktede konsekvenser for personvernet ditt, økonomien din og kommunikasjon på nett. <ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Sikkerhetsadvarsel</translation>
+<translation id="717245811623757038">Forespørsel om verktøytillatelse</translation>
 <translation id="6077070599873946984">Brave KI trenger tillatelse for: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI ønsker å utføre **<ph name="TOOL_NAME"/>** på **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Handlingene ble vurdert som potensielt ikke i tråd med forespørselen din:</translation>

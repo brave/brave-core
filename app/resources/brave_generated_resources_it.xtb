@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Scopri di più su Widevine</translation>
+<translation id="3318169548229684688">Scaricare un modello di riconoscimento vocale (<ph name="DOWNLOAD_SIZE"/>) per elaborare il parlato su questo dispositivo</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> ti chiede di</translation>
 <translation id="3218385319396786393">La riproduzione automatica è stata bloccata su questa pagina</translation>
 <translation id="4988333904713528597">Permetti la riproduzione automatica su <ph name="HOST"/></translation>
@@ -610,6 +611,8 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="3540231253392253941">Utilizza i servizi Google per la messaggistica push</translation>
 <translation id="2224032129673914306">Ricerca semantica nella cronologia</translation>
 <translation id="6045998903985162478">Indicizza le pagine che visiti così da ritrovarle facilmente nella cronologia, nelle schede aperte e in Leo.</translation>
+<translation id="3962946446120925966">Riconoscimento vocale sul dispositivo</translation>
+<translation id="6408242130028978631">Scarica un modello di riconoscimento vocale (<ph name="DOWNLOAD_SIZE"/>) in modo che i siti possano elaborare la voce su questo dispositivo. Disattiva questa opzione per rimuovere il modello.</translation>
 <translation id="5813105074916486721">Conservazione della cronologia locale</translation>
 <translation id="5671611745062206644">Per quanto tempo Brave memorizza localmente la tua cronologia di navigazione</translation>
 <translation id="7184510058087008090">1 giorno</translation>

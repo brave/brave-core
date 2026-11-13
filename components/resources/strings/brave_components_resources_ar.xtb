@@ -949,6 +949,11 @@
 <translation id="4362717653795263052">استعادة حسابات التشفير الأساسية</translation>
 <translation id="3038077262567136741">أدخل عبارة الاسترداد الخاصة بك لاستعادة حساب تشفير محفظة Brave الخاص بك.</translation>
 <translation id="955918646509748368">عبارة الاسترداد التي تم إدخالها غير صالحة.</translation>
+<translation id="7496330898672236908">عبارة الاسترداد هذه لا تطابق محفظتك. تحقق من العبارة وحاول مرة أخرى.</translation>
+<translation id="3798792138617904098">هل تريد إزالة الحسابات المستوردة؟</translation>
+<translation id="2960631345291747230">الحسابات المستوردة غير مشمولة بالنسخة الاحتياطية لعبارة الاسترداد الخاصة بك. ستتم إزالتها من محفظة Brave، وقد تفقد إمكانية الوصول إلى أموالها نهائيًا ما لم تكن قد أنشأت نسخة احتياطية من مفاتيحها الخاصة.</translation>
+<translation id="8898583604592472741">إزالة الحسابات</translation>
+<translation id="1577629163207045190">اكتب "<ph name="CONFIRMATION_PHRASE"/>" للتأكيد.</translation>
 <translation id="8107437138787377150">لصق عبارة الاسترداد من الحافظة</translation>
 <translation id="4811736040444856406">عرض عبارة الاسترداد</translation>
 <translation id="4359319875297001084">هل ترغب في توريد محافظ التفشير القديمة الخاصة بـ Brave؟</translation>
@@ -2244,13 +2249,12 @@
 <translation id="3934503473603661122">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Grok 4.7، نموذج التفكير المتطور من xAI على Amazon Bedrock. يتم تقديم Grok 4.7 من خلال البنية التحتية الآمنة لـ AWS الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة GPT Luna، نموذج OpenAI السريع ومنخفض زمن الاستجابة على Amazon Bedrock. يتم تقديم GPT Luna من خلال البنية التحتية الآمنة لـ AWS الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة GPT 5.6 Terra، نموذج OpenAI المتوازن للإنتاج على Amazon Bedrock Mantle. يتم تقديم GPT 5.6 Terra من خلال البنية التحتية الآمنة لـ AWS الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Mistral Large، وهو نموذج تم إنشاؤه من طرف Mistral ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Mistral Large من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Claude Haiku، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Haiku من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Qwen 3.8 Flash Next، وهو نموذج تم إنشاؤه من طرف Alibaba Cloud ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Qwen 3.8 Flash Next من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Deepseek V3.2، وهو نموذج تم إنشاؤه من طرف Deepseek ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Deepseek V3.2 من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة GLM 5.3، وهو نموذج أنشأته Z.ai ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة GLM 5.3 من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Claude Opus، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Opus من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة GLM-4-7-Flash، وهو نموذج تم إنشاؤه من طرف Zhipu AI ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة GLM-4-7-Flash من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Kimi K2.5، وهو نموذج تم إنشاؤه من طرف Moonshot AI ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Kimi K2.5 من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Nemotron Nano 3 30B، وهو نموذج تم إنشاؤه من طرف NVIDIA ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Nemotron Nano 3 30B من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Brave Ocelot، وهو نموذج تم إنشاؤه من طرف Brave لتلخيص صفحات الويب. يتم استضافة Brave Ocelot من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">محلي</translation>
@@ -2390,9 +2394,9 @@
 <translation id="7465032796278724624">خاص يمكن التحقق منه باستخدام NEAR AI TEE</translation>
 <translation id="8782867266498869301">يتغير النموذج ديناميكيًا لاستخدام الأفضل للمهمة</translation>
 <translation id="7348809809749151120">سريع • Search</translation>
+<translation id="7711013627639951065">سريع • Search • الرؤية • الأدوات</translation>
 <translation id="3213834013136637671">Search • رؤى</translation>
-<translation id="2793458212460902934">سريع • Search • أدوات</translation>
-<translation id="5276681919620506371">بحث • أدوات</translation>
+<translation id="5276681919620506371">Search • الأدوات</translation>
 <translation id="7434375176361995333">ملخصات • سريع</translation>
 <translation id="3965507912994218570">إعدادات Leo</translation>
 <translation id="3754337604877048671">تعرف على Leo AI</translation>
@@ -2464,6 +2468,8 @@
 <translation id="6287023598025162715">محادثة جديدة</translation>
 <translation id="7230502562132448519">تصفية المحادثات</translation>
 <translation id="821070843380699990">يرجى تجربة استعلام مختلف</translation>
+<translation id="241415280196701326">مساحات العمل الأخيرة</translation>
+<translation id="5388053981690151266">محادثة جديدة في مساحة العمل هذه</translation>
 <translation id="7097822247923237815">دردشة مؤقتة</translation>
 <translation id="7481750859362986254">لن يتم حفظ هذه الدردشة في سجلك أو استخدام أي من تخصيصات أو ذكريات Leo.</translation>
 <translation id="4238305333951712482">تم تحديث الذاكرة: <ph name="MEMORY_CONTENT"/></translation>
@@ -2489,6 +2495,7 @@
 <translation id="5103625298494362646">يعمل وضع الوكيل مع النماذج التي تدعم الأدوات. النماذج غير المتوافقة مخفية من هذه القائمة.</translation>
 <translation id="3397808797783614750">قد تؤدي تمكين الذكاء الاصطناعي للتصفح تلقائيًا نيابةً عنك إلى عواقب ضارة وغير مقصودة تتعلق بالخصوصية والشؤون المالية والتواصل عبر الإنترنت. <ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">تحذير أمني</translation>
+<translation id="717245811623757038">طلب إذن الأداة</translation>
 <translation id="6077070599873946984">يحتاج ذكاء Brave الاصطناعي إلى إذنك بشأن: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">يرغب Brave AI في تنفيذ **<ph name="TOOL_NAME"/>** على **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">تم اعتبار العملية غير متوافقة مع طلبك المحتمل:</translation>

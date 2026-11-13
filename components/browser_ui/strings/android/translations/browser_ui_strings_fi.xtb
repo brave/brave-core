@@ -181,9 +181,7 @@
 <translation id="2710883118091822664">Kirjautumalla sisään voit jatkaa helposti kaikilla laitteilla</translation>
 <translation id="2713106313042589954">Sammuta kamera</translation>
 <translation id="2717722538473713889">Sähköpostiosoitteet</translation>
-<translation id="8181634240306014548">Käynnistä Brave niin, että omniboxi on tarkennettuna, jolloin käynnistysaika on lyhyempi edullisemmilla laitteilla.</translation>
 <translation id="2750481671343847896">Sivustot voivat näyttää identiteettipalveluiden sisäänkirjautumiskehotteita.</translation>
-<translation id="2787357173144933081">Omniboxin pikakäynnistys</translation>
 <translation id="2789132527330338807">Sivustot voivat pyytää lupaa luoda 3D-kartan ympäristöstäsi tai seurata kameran asentoa</translation>
 <translation id="2790501146643349491">Kun tämä on päällä, äskettäin suljetut sivustot voivat viimeistellä datan lähettämistä tai vastaanottamista. Kun tämä ei ole päällä, äskettäin suljetut sivustot eivät voi viimeistellä datan lähettämistä tai vastaanottamista.</translation>
 <translation id="2795716239552913152">Sivustot käyttävät yleensä sijaintia tarjotakseen siihen liittyviä ominaisuuksia tai tietoja (esim. paikallisuutisia tai tietoja lähellä olevista kaupoista)</translation>
@@ -291,7 +289,6 @@
 <translation id="9046306654872718870">Tee Bravesta itsesi näköinen lisäämällä etusivulle omia värejä ja kuvia</translation>
 <translation id="389521680295183045">Sivustot saavat pyytää luvan tietää, milloin käytät laitetta aktiivisesti</translation>
 <translation id="3895926599014793903">Ota zoomaus käyttöön</translation>
-<translation id="3905475044299942653">Estä useat ilmoitukset</translation>
 <translation id="3922092564198021702">Avaa puhelimella Asetukset</translation>
 <translation id="3924858949939391676">Näytä linkit, kun lukutila on päällä</translation>
 <translation id="3933121352599513978">Tiivistä ei-toivotut pyynnöt (suositus)</translation>
@@ -385,7 +382,6 @@
 <translation id="4936863036653376783">Löydät ryhmäsi välilehtiryhmäosiosta kaikilla laitteillasi</translation>
 <translation id="4945443401464700059"><ph name="SITE"/> ei saa käyttää tietojasi näillä sivustoilla:</translation>
 <translation id="4953688446973710931">Kun tämä on päällä, sivustot voivat pyytää lupaa ladata useita tiedostoja automaattisesti. Kun tämä on pois päältä, sivustot eivät voi ladata useita tiedostoja automaattisesti.</translation>
-<translation id="4962975101802056554">Peru kaikki laitteen käyttöoikeudet</translation>
 <translation id="4972737347717125191">Sivustot saavat pyytää virtuaalitodellisuuslaitteiden ja ‑datan käyttölupaa</translation>
 <translation id="1275242979020712923">Brave-värien alapaneeli</translation>
 <translation id="497421865427891073">Siirry eteenpäin</translation>
@@ -525,6 +521,7 @@
 <translation id="6439114592976064011">Estä sivustoja käyttämästä virtuaalitodellisuuslaitteitasi ja ‑dataasi</translation>
 <translation id="6447842834002726250">Evästeet</translation>
 <translation id="6452138246455930388">Hinnanalennus avoimella välilehdellä, vanha hinta <ph name="OLD_PRICE"/>, nyt <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
+<translation id="6495608040096939405">Peruuta laitelupa: <ph name="NAME"/></translation>
 <translation id="6500423977866688905">Kun ikkuna on kapea, pyydä mobiilinäkymää</translation>
 <translation id="6527303717912515753">Jaa</translation>
 <translation id="6530703012083415527">Kun tämä on päällä, sivustot voivat käyttää ponnahdusikkunoita ja uudelleenohjauksia. Kun tämä on pois päältä, sivustot eivät voi käyttää ponnahdusikkunoita tai uudelleenohjauksia.</translation>
@@ -590,6 +587,7 @@
 <translation id="7188508872042490670">Laitepohjainen sivustodata</translation>
 <translation id="7201549776650881587">Tämä toiminto poistaa kaiken datan ja kaikki evästeet sivuston <ph name="ORIGIN"/> alla olevilta sivustoilta tai sen sovelluksesta aloitusnäytöllä</translation>
 <translation id="7219254577985949841">Poistetaanko sivustodata?</translation>
+<translation id="7225256190577194089">Peruuta kaikki luvat laitteelta <ph name="DEVICE_NAME"/></translation>
 <translation id="723171743924126238">Valitse kuvat</translation>
 <translation id="7243246278722455312">"Muuta Uusi välilehti ‑sivua" -alapaneeli</translation>
 <translation id="7243308994586599757">Asetukset löytyvät näytön alalaidasta.</translation>
@@ -702,7 +700,6 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:</translation>
 <translation id="8428213095426709021">Asetukset</translation>
 <translation id="8441146129660941386">Kelaa taaksepäin</translation>
 <translation id="8444433999583714703">Ota sijaintitiedot käyttöön myös <ph name="BEGIN_LINK"/>Androidin asetuksista<ph name="END_LINK"/>, jotta <ph name="APP_NAME"/> saa pääsyn sijaintiisi.</translation>
-<translation id="8447861592752582886">Peru laitteen käyttöoikeus</translation>
 <translation id="8463843545738141778">Tämä asetus on poistettu käytöstä, koska laitoit Lisäsuojaus-asetuksen päälle Android-asetuksissa.</translation>
 <translation id="8467359479529706065">Uusi välilehti ‐sivun ulkoasun alapaneeli avattu puoliksi</translation>
 <translation id="8471525937465764768">Sivustot yhdistävät yleensä USB-laitteisiin tulostaakseen dokumentteja tai lisätäkseen niitä tallennustilaan</translation>

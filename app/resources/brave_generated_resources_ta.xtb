@@ -42,7 +42,7 @@
 <translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> சாளரங்கள்</translation>
 <translation id="3326655241685890930">இடங்கள்</translation>
 <translation id="1990886731975529483">Google Widevine-ஐ நிறுவி இயக்கவும்</translation>
-<translation id="8926389886865778422">மீண்டும் கேட்காதே</translation>
+<translation id="8926389886865778422">மீண்டும் கேட்கவேண்டாம்</translation>
 <translation id="4900351245762303149">Google Widevine-ஐ நிறுவவும்</translation>
 <translation id="2313383941300459392">Google Widevine ஐ இயக்கு உலாவியை மறுதொடக்கம் செய்க</translation>
 <translation id="8342816622062204340"><ph name="URL"/> பாதுகாக்கப்பட்ட Google Widevine உள்ளடக்கத்தை இயக்க விரும்புகிறார், இதற்கு Widevine-க்கான Android சிஸ்டம் ஆதரவை நீங்கள் அனுமதிக்க வேண்டும். அதை அனுமதிப்பதன் மூலம், Google-இன் பயன்பாட்டு விதிமுறைகளை நீங்கள் ஒப்புக்கொள்கிறீர்கள்.</translation>
@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 அல்லது பின்னர் <ph name="SETTINGS_EXTENIONS_LINK"/> இல் மாற்றவும்.</translation>
 <translation id="6229752134959014186">Widevine பற்றி மேலும் கற்றுக்கொள்ளவும்</translation>
+<translation id="3318169548229684688">இந்தச் சாதனத்திலேயே பேச்சைச் செயலாக்க, பேச்சு அறிதல் மாதிரியைப் (<ph name="DOWNLOAD_SIZE"/>) பதிவிறக்க</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> உங்களுக்கு கேட்கிறது</translation>
 <translation id="3218385319396786393">தானாக-இயங்குதல் இப்பக்கத்தில் தடுக்கப்பட்டது</translation>
 <translation id="4988333904713528597">எப்போதும் <ph name="HOST"/> இல் autoplay ஐ அனுமதிக்கவும்</translation>
@@ -609,6 +610,8 @@
 <translation id="3540231253392253941">புஷ் செய்திகளுக்காக Google சேவைகளைப் பயன்படுத்தவும்</translation>
 <translation id="2224032129673914306">பொருள்சார் வரலாறு தேடல்</translation>
 <translation id="6045998903985162478">நீங்கள் பார்வையிடும் பக்கங்களை அட்டவணைப்படுத்துங்கள், இதனால் அவற்றை வரலாற்றில், திறந்த தாவல்களில் மற்றும் லியோவில் எளிதாகக் கண்டறியலாம்.</translation>
+<translation id="3962946446120925966">சாதனத்திலேயே பேச்சு அறிதல்</translation>
+<translation id="6408242130028978631">தளங்கள் இந்தச் சாதனத்திலேயே பேச்சைச் செயலாக்கும் வகையில், பேச்சு அறிதல் மாதிரியைப் (<ph name="DOWNLOAD_SIZE"/>) பதிவிறக்கவும். மாதிரியை அகற்ற இதை முடக்கவும்.</translation>
 <translation id="5813105074916486721">உள்ளூர் வரலாறு தக்கவைப்பு</translation>
 <translation id="5671611745062206644">உங்கள் உலாவல் வரலாற்றை Brave உள்ளூரில் எவ்வளவு காலம் சேமிக்கிறது</translation>
 <translation id="7184510058087008090">1 நாள்</translation>

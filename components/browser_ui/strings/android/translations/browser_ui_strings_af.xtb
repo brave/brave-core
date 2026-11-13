@@ -181,9 +181,7 @@
 <translation id="2710883118091822664">Meld aan om maklik op al jou toestelle voort te gaan</translation>
 <translation id="2713106313042589954">Skakel kamera af</translation>
 <translation id="2717722538473713889">E-posadresse</translation>
-<translation id="8181634240306014548">Begin Brave met die Omnibox gefokus, wat aanskakelingtyd op goedkoper toestelle verminder.</translation>
 <translation id="2750481671343847896">Werwe kan vir jou aanmeldporboodskappe van identiteitsdienste af wys.</translation>
-<translation id="2787357173144933081">Kitsaktiveer Omnibox</translation>
 <translation id="2789132527330338807">Werwe kan vra om ’n 3D-kaart van jou omgewing te skep of jou kameraposisie na te spoor</translation>
 <translation id="2790501146643349491">Wanneer dit aan is, kan werwe wat onlangs toegemaak is data klaar stuur en ontvang. Wanneer dit af is, kan werwe wat onlangs toegemaak is nie data klaar stuur en ontvang nie.</translation>
 <translation id="2795716239552913152">Werwe gebruik gewoonlik jou ligging vir relevante kenmerke, soos plaaslike nuus of nabygeleë winkels</translation>
@@ -291,7 +289,6 @@
 <translation id="9046306654872718870">Maak Brave jou eie met gepasmaakte kleure en prente vir jou tuisblad</translation>
 <translation id="389521680295183045">Werwe kan vra om te weet wanneer jy jou toestel aktief gebruik</translation>
 <translation id="3895926599014793903">Dwing aktivering van zoem</translation>
-<translation id="3905475044299942653">Stop baie kennisgewings</translation>
 <translation id="3922092564198021702">Maak Instellings op jou foon oop</translation>
 <translation id="3924858949939391676">Wys skakels sodra Leesmodus aan is</translation>
 <translation id="3933121352599513978">Vou ongewenste versoeke in (aanbeveel)</translation>
@@ -385,7 +382,6 @@
 <translation id="4936863036653376783">Jy sal jou groepe in die oortjiegroep-afdeling op al jou toestelle kry</translation>
 <translation id="4945443401464700059"><ph name="SITE"/> is geblokkeer om jou inligting te gebruik op</translation>
 <translation id="4953688446973710931">Wanneer dit aan is, kan werwe vra om outomaties veelvuldige lêers af te laai. Wanneer dit af is, kan werwe nie outomaties veelvuldige lêers aflaai nie.</translation>
-<translation id="4962975101802056554">Herroep alle toestemmings vir toestel</translation>
 <translation id="4972737347717125191">Werwe kan vra om virtuelerealiteittoestelle en -data te gebruik</translation>
 <translation id="1275242979020712923">Onderste blad van Brave-kleure</translation>
 <translation id="497421865427891073">Gaan vorentoe</translation>
@@ -525,6 +521,7 @@
 <translation id="6439114592976064011">Keer werwe om jou virtuelerealiteittoestel en -data te gebruik</translation>
 <translation id="6447842834002726250">Webkoekies</translation>
 <translation id="6452138246455930388">Prysdaling op jou oop oortjie, van<ph name="OLD_PRICE"/> tot <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
+<translation id="6495608040096939405">Herroep toesteltoestemming vir <ph name="NAME"/></translation>
 <translation id="6500423977866688905">Versoek mobiele aansig wanneer die venster smal is</translation>
 <translation id="6527303717912515753">Deel</translation>
 <translation id="6530703012083415527">Wanneer dit aan is, kan werwe opspringers en herleidings gebruik. Wanneer dit af is, kan werwe nie opspringers en herleidings gebruik nie.</translation>
@@ -590,6 +587,7 @@
 <translation id="7188508872042490670">Werfdata op toestel</translation>
 <translation id="7201549776650881587">Hierdie handeling sal alle data en webkoekies uitvee wat deur alle werwe onder <ph name="ORIGIN"/> of deur sy app op jou Tuisskerm geberg is</translation>
 <translation id="7219254577985949841">Vee werfdata uit?</translation>
+<translation id="7225256190577194089">Herroep alle toestemmings vir toestel <ph name="DEVICE_NAME"/></translation>
 <translation id="723171743924126238">Kies prente</translation>
 <translation id="7243246278722455312">Pasmaak die onderste blad van jou Nuwe Oortjie-bladsy</translation>
 <translation id="7243308994586599757">Opsies is naby die onderkant van die skerm beskikbaar</translation>
@@ -702,7 +700,6 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:</translation>
 <translation id="8428213095426709021">Instellings</translation>
 <translation id="8441146129660941386">Soek agtertoe</translation>
 <translation id="8444433999583714703">Om <ph name="APP_NAME"/> toegang tot jou ligging te gee, moet jy ligging ook in <ph name="BEGIN_LINK"/>Android-instellings<ph name="END_LINK"/> aanskakel.</translation>
-<translation id="8447861592752582886">Herroep toesteltoestemming</translation>
 <translation id="8463843545738141778">Hierdie instelling is gedeaktiveer omdat jy Gevorderde Beskerming in Android-instellings aangeskakel het</translation>
 <translation id="8467359479529706065">Voorkoms van Nuwe Oortjie-bladsy se onderste blad is teen halwe hoogte oopgemaak</translation>
 <translation id="8471525937465764768">Werwe koppel gewoonlik aan USB-toestelle vir kenmerke soos om 'n dokument te druk of om op 'n bergingtoestel te stoor</translation>

@@ -51,6 +51,7 @@
 .
 O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="6229752134959014186">Más información sobre Widevine</translation>
+<translation id="3318169548229684688">descargar un modelo de reconocimiento de voz (<ph name="DOWNLOAD_SIZE"/>) para procesar la voz en este dispositivo</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> quiere</translation>
 <translation id="3218385319396786393">La reproducción automática está bloqueada en esta página</translation>
 <translation id="4988333904713528597">Siempre permitir la reproducción automática en <ph name="HOST"/></translation>
@@ -611,6 +612,8 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="3540231253392253941">Usar servicios de Google para mensajes de inserción</translation>
 <translation id="2224032129673914306">Búsqueda semántica en el historial</translation>
 <translation id="6045998903985162478">Indexa las páginas que visitas para que puedas encontrarlas fácilmente en el historial, las pestañas abiertas y Leo.</translation>
+<translation id="3962946446120925966">Reconocimiento de voz en el dispositivo</translation>
+<translation id="6408242130028978631">Descarga un modelo de reconocimiento de voz (<ph name="DOWNLOAD_SIZE"/>) para que los sitios puedan procesar la voz en este dispositivo. Desactiva esta opción para eliminar el modelo.</translation>
 <translation id="5813105074916486721">Retención del historial local</translation>
 <translation id="5671611745062206644">Cuánto tiempo almacena Brave tu historial de navegación localmente</translation>
 <translation id="7184510058087008090">1 día</translation>
