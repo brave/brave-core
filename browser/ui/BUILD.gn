@@ -41,10 +41,7 @@ if (!is_android) {
   # is in :ui.
   source_set("brave_browser_window_header") {
     public = [ "brave_browser_window.h" ]
-    public_deps = [
-      "//brave/components/speedreader/common/buildflags",
-      "//chrome/browser/ui:browser_window_header",
-    ]
+    public_deps = [ "//chrome/browser/ui:browser_window_header" ]
   }
 }
 

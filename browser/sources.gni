@@ -614,8 +614,10 @@ if (enable_speedreader) {
   ]
 
   if (toolkit_views) {
-    brave_chrome_browser_deps +=
-        [ "//brave/browser/ui/views/speedreader:bubble_impl" ]
+    brave_chrome_browser_deps += [
+      "//brave/browser/ui/views/speedreader:bubble_impl",
+      "//brave/browser/ui/views/speedreader:toolbars_impl",
+    ]
   }
 }
 
