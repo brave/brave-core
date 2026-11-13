@@ -69,19 +69,24 @@ namespace brave_wallet::eth_abi {
 TEST(EthAbiUtilsTest, OffchainLookup) {
   auto bytes = ToBytes(kOffchainLookupResponse);
 
-  auto [selector, args] = *ExtractFunctionSelectorAndArgsFromCall(bytes);
+  auto call = ExtractFunctionSelectorAndArgsFromCall(bytes);
+  ASSERT_TRUE(call);
+  auto [selector, args] = *call;
 
   EXPECT_EQ("0x556f1830", ToHex(selector));
 
-  EXPECT_EQ(ExtractAddressFromTuple(args, 0)->ToHex(),
-            "0xc1735677a60884abbcf72295e88d47764beda282");
+  auto address = ExtractAddressFromTuple(args, 0);
+  ASSERT_TRUE(address);
+  EXPECT_EQ(address->ToHex(), "0xc1735677a60884abbcf72295e88d47764beda282");
 
-  EXPECT_THAT(
-      *ExtractStringArrayFromTuple(args, 1),
-      ElementsAreArray({"https://offchain-resolver-example.uc.r.appspot.com/"
-                        "{sender}/{data}.json"}));
+  EXPECT_THAT(ExtractStringArrayFromTuple(args, 1),
+              testing::Optional(ElementsAreArray(
+                  {"https://offchain-resolver-example.uc.r.appspot.com/"
+                   "{sender}/{data}.json"})));
 
-  EXPECT_EQ(ToHex(*ExtractBytesFromTuple(args, 2)),
+  auto call_data = ExtractBytesFromTuple(args, 2);
+  ASSERT_TRUE(call_data);
+  EXPECT_EQ(ToHex(*call_data),
             "0x9061b92300000000000000000000000000000000000000000000000000000000"
             "000000400000000000000000000000000000000000000000000000000000000000"
             "000080000000000000000000000000000000000000000000000000000000000000"
@@ -90,9 +95,13 @@ TEST(EthAbiUtilsTest, OffchainLookup) {
             "3b3b57de42041b0018edd29d7c17154b0c671acc0502ea0b3693cafbeadf58e6be"
             "aaa16c00000000000000000000000000000000000000000000000000000000");
 
-  EXPECT_EQ(ToHex(*ExtractFixedBytesFromTuple<4>(args, 3)), "0xf4d4d2f8");
+  auto callback_function = ExtractFixedBytesFromTuple<4>(args, 3);
+  ASSERT_TRUE(callback_function);
+  EXPECT_EQ(ToHex(*callback_function), "0xf4d4d2f8");
 
-  EXPECT_EQ(ToHex(*ExtractBytesFromTuple(args, 4)),
+  auto extra_data = ExtractBytesFromTuple(args, 4);
+  ASSERT_TRUE(extra_data);
+  EXPECT_EQ(ToHex(*extra_data),
             "0x9061b92300000000000000000000000000000000000000000000000000000000"
             "000000400000000000000000000000000000000000000000000000000000000000"
             "000080000000000000000000000000000000000000000000000000000000000000"
@@ -111,7 +120,9 @@ TEST(EthAbiUtilsTest, OffchainLookupBy1Test) {
       auto bytes = bytes_base;
       bytes[i] += d;
 
-      auto [_, args] = *ExtractFunctionSelectorAndArgsFromCall(bytes);
+      auto call = ExtractFunctionSelectorAndArgsFromCall(bytes);
+      ASSERT_TRUE(call);
+      auto [_, args] = *call;
 
       ExtractAddressFromTuple(args, 0);
       ExtractStringArrayFromTuple(args, 1);
@@ -125,7 +136,9 @@ TEST(EthAbiUtilsTest, OffchainLookupBy1Test) {
 TEST(EthAbiUtilsTest, ExtractFunctionSelectorAndArgsFromCall) {
   {
     std::vector<uint8_t> bytes = ToBytes(kOffchainLookupResponse);
-    auto [selector, args] = *ExtractFunctionSelectorAndArgsFromCall(bytes);
+    auto call = ExtractFunctionSelectorAndArgsFromCall(bytes);
+    ASSERT_TRUE(call);
+    auto [selector, args] = *call;
     EXPECT_EQ(kOffchainLookupResponse.substr(0, 8), ToHex(selector).substr(2));
     EXPECT_EQ(kOffchainLookupResponse.substr(8), ToHex(args).substr(2));
   }
@@ -133,7 +146,9 @@ TEST(EthAbiUtilsTest, ExtractFunctionSelectorAndArgsFromCall) {
   {
     // Only selector.
     std::vector<uint8_t> bytes = {0x01, 0x02, 0x03, 0x04};
-    auto [selector, args] = *ExtractFunctionSelectorAndArgsFromCall(bytes);
+    auto call = ExtractFunctionSelectorAndArgsFromCall(bytes);
+    ASSERT_TRUE(call);
+    auto [selector, args] = *call;
     EXPECT_TRUE(std::ranges::equal(bytes, selector));
     EXPECT_TRUE(args.empty());
   }
@@ -161,8 +176,9 @@ TEST(EthAbiUtilsTest, ExtractAddress) {
   {
     auto bytes = ToBytes(
         "000000000000000000000000c1735677a60884abbcf72295e88d47764beda282");
-    EXPECT_EQ(ExtractAddress(bytes)->ToHex(),
-              "0xc1735677a60884abbcf72295e88d47764beda282");
+    auto address = ExtractAddress(bytes);
+    ASSERT_TRUE(address);
+    EXPECT_EQ(address->ToHex(), "0xc1735677a60884abbcf72295e88d47764beda282");
   }
 
   {
@@ -183,8 +199,9 @@ TEST(EthAbiUtilsTest, ExtractAddress) {
     // Zero address.
     auto bytes = ToBytes(
         "0000000000000000000000000000000000000000000000000000000000000000");
-    EXPECT_EQ(ExtractAddress(bytes)->ToHex(),
-              "0x0000000000000000000000000000000000000000");
+    auto address = ExtractAddress(bytes);
+    ASSERT_TRUE(address);
+    EXPECT_EQ(address->ToHex(), "0x0000000000000000000000000000000000000000");
   }
 
   {  // Empty.
@@ -197,10 +214,12 @@ TEST(EthAbiUtilsTest, ExtractAddressFromTuple) {
   auto bytes = ToBytes(
       "000000000000000000000000c1735677a60884abbcf72295e88d47764beda282"
       "00000000000000000000000000000000000000000000000000000000000000a0");
-  EXPECT_EQ(ExtractAddressFromTuple(bytes, 0)->ToHex(),
-            "0xc1735677a60884abbcf72295e88d47764beda282");
-  EXPECT_EQ(ExtractAddressFromTuple(bytes, 1)->ToHex(),
-            "0x00000000000000000000000000000000000000a0");
+  auto address = ExtractAddressFromTuple(bytes, 0);
+  ASSERT_TRUE(address);
+  EXPECT_EQ(address->ToHex(), "0xc1735677a60884abbcf72295e88d47764beda282");
+  address = ExtractAddressFromTuple(bytes, 1);
+  ASSERT_TRUE(address);
+  EXPECT_EQ(address->ToHex(), "0x00000000000000000000000000000000000000a0");
   EXPECT_FALSE(ExtractAddressFromTuple(bytes, 2));
 
   // Bad alignment.
@@ -222,6 +241,7 @@ TEST(EthAbiUtilsTest, ExtractBytes) {
       "652e75632e722e61707073706f742e636f6d2f7b73656e6465727d2f7b646174"
       "617d2e6a736f6e00000000000000000000000000000000000000000000000000");
   auto extracted_bytes = ExtractBytes(bytes);
+  ASSERT_TRUE(extracted_bytes);
   EXPECT_EQ(size_t(0x47), extracted_bytes->size());
   EXPECT_EQ(
       "68747470733a2f2f6f6666636861696e2d7265736f6c7665722d6578616d706c"
@@ -244,7 +264,9 @@ TEST(EthAbiUtilsTest, ExtractBytes) {
   {
     auto empty = ToBytes(
         "0000000000000000000000000000000000000000000000000000000000000000");
-    EXPECT_TRUE(ExtractBytes(empty)->empty());
+    auto extracted_empty = ExtractBytes(empty);
+    ASSERT_TRUE(extracted_empty);
+    EXPECT_TRUE(extracted_empty->empty());
   }
 
   // One-byte array.
@@ -253,7 +275,7 @@ TEST(EthAbiUtilsTest, ExtractBytes) {
         "0000000000000000000000000000000000000000000000000000000000000001"
         "0100000000000000000000000000000000000000000000000000000000000000");
 
-    EXPECT_EQ(std::vector<uint8_t>{1}, *ExtractBytes(one_byte));
+    EXPECT_EQ(ExtractBytes(one_byte), std::vector<uint8_t>{1});
   }
 }
 
@@ -264,6 +286,7 @@ TEST(EthAbiUtilsTest, ExtractString) {
       "652e75632e722e61707073706f742e636f6d2f7b73656e6465727d2f7b646174"
       "617d2e6a736f6e00000000000000000000000000000000000000000000000000");
   auto extracted_string = ExtractString(bytes);
+  ASSERT_TRUE(extracted_string);
   EXPECT_EQ(
       "https://offchain-resolver-example.uc.r.appspot.com/"
       "{sender}/{data}.json",
@@ -284,7 +307,9 @@ TEST(EthAbiUtilsTest, ExtractString) {
   {
     auto empty = ToBytes(
         "0000000000000000000000000000000000000000000000000000000000000000");
-    EXPECT_TRUE(ExtractString(empty)->empty());
+    auto extracted_empty = ExtractString(empty);
+    ASSERT_TRUE(extracted_empty);
+    EXPECT_TRUE(extracted_empty->empty());
   }
 
   // One-char string.
@@ -293,14 +318,14 @@ TEST(EthAbiUtilsTest, ExtractString) {
         "0000000000000000000000000000000000000000000000000000000000000001"
         "4100000000000000000000000000000000000000000000000000000000000000");
 
-    EXPECT_EQ("A", *ExtractString(one_byte));
+    EXPECT_EQ(ExtractString(one_byte), "A");
   }
 }
 
 TEST(EthAbiUtilsTest, ExtractStringArray) {
   std::vector<std::string> output;
   EXPECT_THAT(
-      *ExtractStringArray(ToBytes(
+      ExtractStringArray(ToBytes(
           // count of elements in input array
           "0000000000000000000000000000000000000000000000000000000000000003"
           // offsets to array elements
@@ -319,10 +344,10 @@ TEST(EthAbiUtilsTest, ExtractStringArray) {
           "0000000000000000000000000000000000000000000000000000000000000005"
           // encoding for "three"
           "7468726565000000000000000000000000000000000000000000000000000000")),
-      ElementsAreArray({"one", "two", "three"}));
+      testing::Optional(ElementsAreArray({"one", "two", "three"})));
 
   EXPECT_THAT(
-      *ExtractStringArray(ToBytes(
+      ExtractStringArray(ToBytes(
           "0000000000000000000000000000000000000000000000000000000000000005"
           // offsets to array elements
           "00000000000000000000000000000000000000000000000000000000000000a0"
@@ -352,12 +377,12 @@ TEST(EthAbiUtilsTest, ExtractStringArray) {
           "0000000000000000000000000000000000000000000000000000000000000005"
           // encoding for "three"
           "7468726565000000000000000000000000000000000000000000000000000000")),
-      ElementsAreArray(
+      testing::Optional(ElementsAreArray(
           {"one", "one two three four five six seven eight nine", "two",
-           "one two three four five six seven eight nine ten", "three"}));
+           "one two three four five six seven eight nine ten", "three"})));
 
   EXPECT_THAT(
-      *ExtractStringArray(ToBytes(
+      ExtractStringArray(ToBytes(
           "0000000000000000000000000000000000000000000000000000000000000006"
           // offsets to array elements
           "00000000000000000000000000000000000000000000000000000000000000c0"
@@ -384,7 +409,7 @@ TEST(EthAbiUtilsTest, ExtractStringArray) {
           "0000000000000000000000000000000000000000000000000000000000000005"
           // encoding for "three"
           "7468726565000000000000000000000000000000000000000000000000000000")),
-      ElementsAreArray({"", "one", "", "two", "", "three"}));
+      testing::Optional(ElementsAreArray({"", "one", "", "two", "", "three"})));
 
   // Test invalid input.
   EXPECT_FALSE(ExtractStringArray(ToBytes(
@@ -463,12 +488,14 @@ TEST(EthAbiUtilsTest, ExtractStringArray) {
 TEST(EthAbiUtilsTest, ExtractStringArrayFromTuple) {
   auto bytes = ToBytes(kOffchainLookupResponse);
 
-  auto [_, args] = *ExtractFunctionSelectorAndArgsFromCall(bytes);
+  auto call = ExtractFunctionSelectorAndArgsFromCall(bytes);
+  ASSERT_TRUE(call);
+  auto [_, args] = *call;
 
-  EXPECT_THAT(
-      *ExtractStringArrayFromTuple(args, 1),
-      ElementsAreArray({"https://offchain-resolver-example.uc.r.appspot.com/"
-                        "{sender}/{data}.json"}));
+  EXPECT_THAT(ExtractStringArrayFromTuple(args, 1),
+              testing::Optional(ElementsAreArray(
+                  {"https://offchain-resolver-example.uc.r.appspot.com/"
+                   "{sender}/{data}.json"})));
 
   // Bad tuple pos.
   EXPECT_FALSE(ExtractStringArrayFromTuple(args, 0));
@@ -489,9 +516,13 @@ TEST(EthAbiUtilsTest, ExtractStringArrayFromTuple) {
 TEST(EthAbiUtilsTest, ExtractBytesFromTuple) {
   auto bytes = ToBytes(kOffchainLookupResponse);
 
-  auto [_, args] = *ExtractFunctionSelectorAndArgsFromCall(bytes);
+  auto call = ExtractFunctionSelectorAndArgsFromCall(bytes);
+  ASSERT_TRUE(call);
+  auto [_, args] = *call;
 
-  EXPECT_EQ(ToHex(*ExtractBytesFromTuple(args, 2)).substr(2),
+  auto call_data = ExtractBytesFromTuple(args, 2);
+  ASSERT_TRUE(call_data);
+  EXPECT_EQ(ToHex(*call_data).substr(2),
             "9061b92300000000000000000000000000000000000000000000000000000000"
             "0000004000000000000000000000000000000000000000000000000000000000"
             "0000008000000000000000000000000000000000000000000000000000000000"
@@ -501,7 +532,9 @@ TEST(EthAbiUtilsTest, ExtractBytesFromTuple) {
             "eadf58e6beaaa16c000000000000000000000000000000000000000000000000"
             "00000000");
 
-  EXPECT_EQ(ToHex(*ExtractBytesFromTuple(args, 4)).substr(2),
+  auto extra_data = ExtractBytesFromTuple(args, 4);
+  ASSERT_TRUE(extra_data);
+  EXPECT_EQ(ToHex(*extra_data).substr(2),
             "9061b92300000000000000000000000000000000000000000000000000000000"
             "0000004000000000000000000000000000000000000000000000000000000000"
             "0000008000000000000000000000000000000000000000000000000000000000"
@@ -519,15 +552,16 @@ TEST(EthAbiUtilsTest, ExtractBytesFromTuple) {
   // Empty data.
   EXPECT_FALSE(ExtractBytesFromTuple({}, 0));
 
-  EXPECT_EQ(
-      ToHex(*ExtractBytesFromTuple(
-          ToBytes(
-              "0000000000000000000000000000000000000000000000000000000000000001"
+  auto tuple_bytes = ExtractBytesFromTuple(
+      ToBytes("0000000000000000000000000000000000000000000000000000000000000001"
               "0000000000000000000000000000000000000000000000000000000000000040"
               "0000000000000000000000000000000000000000000000000000000000000020"
               "000000000000000000000000000000000000000000000006e83695ab1f893c0"
               "0"),
-          1)),
+      1);
+  ASSERT_TRUE(tuple_bytes);
+  EXPECT_EQ(
+      ToHex(*tuple_bytes),
       "0x000000000000000000000000000000000000000000000006e83695ab1f893c00");
 }
 
@@ -589,7 +623,7 @@ TEST(EthAbiUtilsTest, ExtractBoolBytesTupleArray) {
               "0"),
           0);
   ASSERT_TRUE(result);
-  EXPECT_EQ(result.value().size(), 1UL);
+  ASSERT_EQ(result.value().size(), 1UL);
   EXPECT_EQ(result.value()[0].first, true);
   EXPECT_EQ(ToHex(result.value()[0].second).substr(2),
             "000000000000000000000000000000000000000000000006e83695ab1f893c00");
@@ -624,7 +658,7 @@ TEST(EthAbiUtilsTest, ExtractBoolBytesTupleArray) {
           "0000000000000000000000000000000000000000000000000000000000000000"),
       0);
   ASSERT_TRUE(result);
-  EXPECT_EQ(result.value().size(), 3UL);
+  ASSERT_EQ(result.value().size(), 3UL);
   EXPECT_EQ(result.value()[0].first, true);
   EXPECT_EQ(ToHex(result.value()[0].second).substr(2),
             "0000000000000000000000000000000000000000000000000000000000000000");
@@ -664,7 +698,7 @@ TEST(EthAbiUtilsTest, ExtractBoolBytesTupleArray) {
           "0000000000000000000000000000000000000000000000000000000000000000"),
       0);
   ASSERT_TRUE(result);
-  EXPECT_EQ(result.value().size(), 3UL);
+  ASSERT_EQ(result.value().size(), 3UL);
   EXPECT_EQ(result.value()[0].first, true);
   EXPECT_EQ(ToHex(result.value()[0].second).substr(2),
             "000000000000000000000000000000000000000000000006e83695ab1f893c00");
@@ -679,9 +713,13 @@ TEST(EthAbiUtilsTest, ExtractBoolBytesTupleArray) {
 TEST(EthAbiUtilsTest, ExtractFixedBytesFromTuple) {
   auto bytes = ToBytes(kOffchainLookupResponse);
 
-  auto [_, args] = *ExtractFunctionSelectorAndArgsFromCall(bytes);
+  auto call = ExtractFunctionSelectorAndArgsFromCall(bytes);
+  ASSERT_TRUE(call);
+  auto [_, args] = *call;
 
-  EXPECT_EQ(ToHex(*ExtractFixedBytesFromTuple<4>(args, 3)), "0xf4d4d2f8");
+  auto fixed_bytes = ExtractFixedBytesFromTuple<4>(args, 3);
+  ASSERT_TRUE(fixed_bytes);
+  EXPECT_EQ(ToHex(*fixed_bytes), "0xf4d4d2f8");
 
   // Bad tuple pos.
   EXPECT_FALSE(ExtractFixedBytesFromTuple<4>(args, 0));
@@ -691,7 +729,9 @@ TEST(EthAbiUtilsTest, ExtractFixedBytesFromTuple) {
   EXPECT_FALSE(ExtractFixedBytesFromTuple<4>({}, 0));
 
   bytes[101] = 0;
-  EXPECT_EQ(ToHex(*ExtractFixedBytesFromTuple<4>(args, 3)), "0xf400d2f8");
+  fixed_bytes = ExtractFixedBytesFromTuple<4>(args, 3);
+  ASSERT_TRUE(fixed_bytes);
+  EXPECT_EQ(ToHex(*fixed_bytes), "0xf400d2f8");
 
   // Bad padding.
   bytes[111] = 1;
