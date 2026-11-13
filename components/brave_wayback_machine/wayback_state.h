@@ -12,7 +12,7 @@ enum class WaybackState {
   kFetching,      // Asked to wayback machine.
   kFound,         // Wayback url is found but not loaded yet.
   kLoaded,        // Wayback url is loaded.
-  kNotAvailable,  // wayback url is not available.
+  kNotAvailable,  // Wayback url is not available.
 };
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_WAYBACK_STATE_H_

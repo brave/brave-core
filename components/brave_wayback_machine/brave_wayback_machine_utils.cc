@@ -15,7 +15,7 @@
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #include "brave/components/brave_wayback_machine/url_constants.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/common/url_constants.h"
+#include "net/base/ip_address.h"
 #include "net/base/url_util.h"
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
@@ -23,22 +23,36 @@
 #include "url/url_util.h"
 
 bool IsWaybackMachineEnabledFor(const GURL& url) {
-  if (net::IsLocalhost(url))
-    return false;
-
-  if (url.host().ends_with(".local")) {
+  if (!url.SchemeIsHTTPOrHTTPS()) {
     return false;
   }
 
-  if (url.host().ends_with(".onion")) {
+  if (net::IsLocalhost(url)) {
+    return false;
+  }
+
+  const std::string_view host = url.host();
+  net::IPAddress ip_address;
+  if (net::ParseURLHostnameToAddress(host, &ip_address)) {
+    return ip_address.IsPubliclyRoutable();
+  }
+
+  const std::string_view normalized_host =
+      base::TrimString(host, ".", base::TRIM_TRAILING);
+  if (normalized_host.empty() ||
+      normalized_host.find('.') == std::string_view::npos) {
+    return false;
+  }
+
+  if (normalized_host == "home.arpa" || normalized_host.ends_with(".local") ||
+      normalized_host.ends_with(".internal") ||
+      normalized_host.ends_with(".home.arpa") ||
+      normalized_host.ends_with(".onion")) {
     return false;
   }
 
   // Disable on web.archive.org
-  if (url.host() == kWaybackHost)
-    return false;
-
-  if (url.SchemeIs(content::kViewSourceScheme)) {
+  if (normalized_host == kWaybackHost) {
     return false;
   }
 

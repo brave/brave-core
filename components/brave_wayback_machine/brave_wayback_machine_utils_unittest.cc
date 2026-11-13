@@ -16,20 +16,47 @@
 TEST(BraveWaybackMachineUtilsTest, DisabledURLTest) {
   EXPECT_FALSE(
       IsWaybackMachineEnabledFor(GURL("https://web.archive.org/foobar.html")));
+  EXPECT_FALSE(
+      IsWaybackMachineEnabledFor(GURL("https://web.archive.org./foobar.html")));
   EXPECT_FALSE(IsWaybackMachineEnabledFor(GURL("http://localhost/index.html")));
   EXPECT_FALSE(IsWaybackMachineEnabledFor(GURL("http://abcd.local")));
+  EXPECT_FALSE(IsWaybackMachineEnabledFor(GURL("http://abcd.local.")));
+  EXPECT_FALSE(IsWaybackMachineEnabledFor(GURL("http://abcd.internal")));
+  EXPECT_FALSE(
+      IsWaybackMachineEnabledFor(GURL("http://home.arpa/private-path")));
+  EXPECT_FALSE(IsWaybackMachineEnabledFor(GURL("http://home.arpa.")));
+  EXPECT_FALSE(IsWaybackMachineEnabledFor(GURL("http://nas.home.arpa")));
   EXPECT_FALSE(IsWaybackMachineEnabledFor(GURL("http://abcd.onion")));
+  EXPECT_FALSE(IsWaybackMachineEnabledFor(GURL("http://intranet/index.html")));
   EXPECT_FALSE(IsWaybackMachineEnabledFor(GURL("http://127.0.0.1")));
   EXPECT_FALSE(IsWaybackMachineEnabledFor(GURL("http://[::1]")));
   EXPECT_FALSE(
       IsWaybackMachineEnabledFor(GURL("http://127.0045.1.2:8080/index.html")));
+  EXPECT_FALSE(IsWaybackMachineEnabledFor(GURL("http://10.0.0.1/index.html")));
+  EXPECT_FALSE(
+      IsWaybackMachineEnabledFor(GURL("http://172.16.0.1/index.html")));
+  EXPECT_FALSE(
+      IsWaybackMachineEnabledFor(GURL("http://192.168.1.1/index.html")));
+  EXPECT_FALSE(
+      IsWaybackMachineEnabledFor(GURL("http://169.254.169.254/latest/")));
+  EXPECT_FALSE(
+      IsWaybackMachineEnabledFor(GURL("http://100.64.0.1/index.html")));
+  EXPECT_FALSE(IsWaybackMachineEnabledFor(GURL("http://[fc00::1]/")));
+  EXPECT_FALSE(IsWaybackMachineEnabledFor(GURL("http://[fe80::1]/")));
   EXPECT_FALSE(
       IsWaybackMachineEnabledFor(GURL("view-source:https://www.brave.com")));
+  EXPECT_FALSE(IsWaybackMachineEnabledFor(GURL("about:blank")));
+  EXPECT_FALSE(IsWaybackMachineEnabledFor(GURL("file:///etc/hosts")));
+  EXPECT_FALSE(IsWaybackMachineEnabledFor(GURL("chrome://settings")));
+  EXPECT_FALSE(IsWaybackMachineEnabledFor(GURL("data:text/html,hi")));
   EXPECT_TRUE(IsWaybackMachineEnabledFor(GURL("http://www.local-news.com")));
   EXPECT_TRUE(IsWaybackMachineEnabledFor(GURL("http://www.onion-news.com")));
   EXPECT_TRUE(IsWaybackMachineEnabledFor(GURL("http://www.brave.com")));
   EXPECT_TRUE(
       IsWaybackMachineEnabledFor(GURL("https://archive.org/foobar.html")));
+  EXPECT_TRUE(IsWaybackMachineEnabledFor(GURL("https://1.1.1.1/")));
+  EXPECT_TRUE(
+      IsWaybackMachineEnabledFor(GURL("https://[2606:4700:4700::1111]/")));
 }
 
 TEST(BraveWaybackMachineUtilsTest, ShouldCheckWaybackMachineTest) {
