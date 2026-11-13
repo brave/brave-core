@@ -82,6 +82,17 @@
 #    upstream and range come from the branch being rebased. A `fixup!` or
 #    `amend!` subject gets no tags, so autosquash still finds its target.
 #
+# 9. Gerrit `Change-Id` trailer
+#
+#    Every commit gets a `Change-Id: I<sha1>` trailer, made and placed as
+#    Gerrit's own commit-msg hook does (`gerrit.createChangeId` and
+#    `gerrit.reviewUrl` included), so that a re-upload of a rebased commit
+#    becomes a new patch set of the same change. A Change-Id trailer the
+#    message already has is never replaced: its trailers move below the links
+#    the hook adds. Those in quoted culprit messages don't count. Commits whose
+#    subject is a directive (`fixup!`, `amend!`, `squash!`, `reassign!<hash>!`,
+#    `drop!<hash>!`, ...) get none, as they fold into another commit.
+#
 # This script can be set up either as a commit-msg hook, or as a
 # prepare-commit-msg hook. The difference is that the commit-msg hook will run
 # after the commit message is created, while the prepare-commit-msg hook will
@@ -113,6 +124,11 @@ except ImportError:
     sys.exit(1)
 
 _SQUASH_MARKERS = ('fixup!', 'amend!', 'squash!')
+
+# A subject that tells a rebase what to do with another commit, as Gerrit's
+# hook recognises them, plus brockit's `reassign!<hash>!` and `drop!<hash>!`.
+_DIRECTIVE = re.compile(r'[a-z]+!')
+_SCISSORS = '------------------------ >8 ------------------------'
 
 
 def pinned_squash_problem(first_line: str) -> str | None:
@@ -270,13 +286,150 @@ def culprit_range_problem(
     )
 
 
+def operation_in_progress() -> bool:
+    """Whether a rebase or cherry-pick is in progress, in this worktree."""
+    for state in ('rebase-merge', 'rebase-apply', 'CHERRY_PICK_HEAD'):
+        path = _git('rev-parse', '--git-path', state).stdout.strip()
+        if path and os.path.exists(path):
+            return True
+    return False
+
+
+def split_editor_tail(message: str) -> tuple[str, str]:
+    """Splits off what git strips after the hook: everything from the
+    scissors line, and the comment lines the message ends with."""
+    comment = _git('config', 'core.commentChar').stdout.strip()
+    if len(comment) != 1:
+        comment = '#'
+    lines = message.splitlines(keepends=True)
+    end = next(
+        (
+            i
+            for i, line in enumerate(lines)
+            if line.rstrip('\r\n') == f'{comment} {_SCISSORS}'
+        ),
+        len(lines),
+    )
+    while end and (not lines[end - 1].strip() or lines[end - 1][0] == comment):
+        end -= 1
+    return ''.join(lines[:end]), ''.join(lines[end:])
+
+
+def _git_filter(args: list[str], text: str) -> str:
+    """Runs git over `text` on stdin, in bytes so newlines stay as they are
+    on Windows, and returns its output."""
+    return subprocess.run(
+        ['git', *args],
+        input=text.encode('utf-8'),
+        capture_output=True,
+        check=True,
+    ).stdout.decode('utf-8')
+
+
+class GerritTrailer:
+    """The trailer that names a commit's Gerrit change, made and placed as
+    Gerrit's own commit-msg hook does (`tools/hooks/commit-msg` on any Gerrit
+    server), whose checks it keeps."""
+
+    def __init__(self, message: str):
+        head = _git('rev-parse', '--verify', '--quiet', 'HEAD').stdout.strip()
+        if not head:
+            head = _git_filter(['hash-object', '-t', 'tree', '--stdin'], '')
+        ident = _git('var', 'GIT_COMMITTER_IDENT').stdout.strip()
+        random = _git_filter(
+            ['hash-object', '--stdin'], f'{ident}\n{head.strip()}\n{message}'
+        ).strip()
+        review_url = _git('config', '--get', 'gerrit.reviewUrl').stdout.strip()
+        if review_url:
+            self.token = 'Link'
+            self.value = f'{review_url.rstrip("/")}/id/I{random}'
+            self._pattern = re.compile(r'Link: .*/id/I[0-9a-f]{40}')
+        else:
+            self.token = 'Change-Id'
+            self.value = f'I{random}'
+            self._pattern = re.compile(r'Change-Id: .*')
+
+    @staticmethod
+    def wanted(first_line: str) -> bool:
+        """Whether `gerrit.createChangeId` and the subject call for one: not
+        for a directive, which folds into another commit, unless `always`."""
+        setting = _git('config', '--get', 'gerrit.createChangeId').stdout
+        if setting.strip() == 'false':
+            return False
+        return setting.strip() == 'always' or not _DIRECTIVE.match(first_line)
+
+    @staticmethod
+    def is_empty(message: str) -> bool:
+        """Whether nothing is left once comments and the scissors part go."""
+        lines = message.splitlines(keepends=True)
+        cut = next((i for i, line in enumerate(lines) if '>8' in line), None)
+        if cut is not None:
+            lines = lines[: cut + 1]
+        stripped = _git_filter(
+            ['stripspace', '--strip-comments'], ''.join(lines)
+        )
+        return not stripped
+
+    def is_in(self, message: str) -> bool:
+        """Whether the message's trailers already name a change. Indented
+        lines, as in quoted culprit messages, aren't trailers."""
+        trailers = _git_filter(
+            [
+                '-c',
+                'trailer.separators=:=',
+                'interpret-trailers',
+                '--no-divider',
+                '--parse',
+            ],
+            message,
+        )
+        return any(map(self._pattern.fullmatch, trailers.splitlines()))
+
+    def add_to(self, message: str) -> str:
+        """Adds the trailer to the message's trailers, before any
+        `Signed-off-by`, through a sentinel as Gerrit's hook does."""
+        with_sentinel = _git_filter(
+            [
+                'interpret-trailers',
+                '--no-divider',
+                '--trailer',
+                'Signed-off-by: SENTINEL',
+            ],
+            message,
+        )
+        added = _git_filter(
+            [
+                '-c',
+                'trailer.where=before',
+                'interpret-trailers',
+                '--no-divider',
+                '--trailer',
+                f'Signed-off-by: {self.token}: {self.value}',
+            ],
+            with_sentinel,
+        )
+        added = re.sub(
+            rf'^Signed-off-by: ({re.escape(self.token)}: )',
+            r'\1',
+            added,
+            flags=re.M,
+        )
+        return re.sub(r'^Signed-off-by: SENTINEL.*\n?', '', added, flags=re.M)
+
+
+def split_trailers(body: str) -> tuple[str, str]:
+    """Splits the last paragraph off the body, where git looks for its
+    trailers. The subject is never one."""
+    body = body.rstrip()
+    breaks = list(re.finditer(r'\n[ \t]*\n', body))
+    if not breaks:
+        return body, ''
+    return body[: breaks[-1].start()], body[breaks[-1].end() :]
+
+
 def main():
     forced = os.getenv('force_commit_hook') == '1'
-    if not forced and (
-        os.path.exists('.git/rebase-merge')
-        or os.path.exists('.git/rebase-apply')
-        or os.path.exists('.git/CHERRY_PICK_HEAD')
-    ):
+    if not forced and operation_in_progress():
         # There should be no changes to commit messages during a rebase or
         # cherry-pick.
         return 0
@@ -302,6 +455,20 @@ def main():
         return 0
 
     first_line = commit_message.split('\n', 1)[0]
+
+    gerrit_trailer = None
+    if GerritTrailer.wanted(first_line):
+        if GerritTrailer.is_empty(commit_message):
+            print(f'file is empty: {commit_msg_file}', file=sys.stderr)
+            return 1
+        gerrit_trailer = GerritTrailer(commit_message)
+    # An existing trailer is kept as it is, with the trailers around it,
+    # below what the hook adds, where Gerrit looks for it.
+    kept_trailers = ''
+    commit_message, editor_tail = split_editor_tail(commit_message)
+    if gerrit_trailer and gerrit_trailer.is_in(commit_message):
+        commit_message, kept_trailers = split_trailers(commit_message)
+        gerrit_trailer = None
 
     # Getting the branch name to see if there's any tags that can be deduced
     # from it.
@@ -428,6 +595,14 @@ def main():
                 culprits="\n\n".join(culprit_output),
             )
         )
+
+    commit_message = commit_message.rstrip('\n') + '\n'
+    if kept_trailers:
+        commit_message += f'\n{kept_trailers}\n'
+    if gerrit_trailer:
+        commit_message = gerrit_trailer.add_to(commit_message)
+    if editor_tail:
+        commit_message += f'\n{editor_tail}'
 
     with commit_msg_file.open('w', encoding='utf-8', newline='') as f:
         f.write(commit_message)

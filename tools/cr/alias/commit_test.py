@@ -12,6 +12,7 @@ sandbox/runner infrastructure is imported from cmd_test.
 
 import os
 import platform
+import re
 import stat
 import subprocess
 import sys
@@ -198,7 +199,8 @@ class TestCommitIntegration(unittest.TestCase):
                     "git commit -m 'Version lift updates'", result.stderr
                 )
                 self.assertEqual(
-                    'Version lift updates', self._sandbox.last_commit_message()
+                    'Version lift updates',
+                    self._sandbox.last_commit_message().split('\n', 1)[0],
                 )
 
     def test_fixup_flag_of_a_pinned_commit_is_refused(self) -> None:
@@ -534,6 +536,202 @@ class TestCulpritLinks(unittest.TestCase):
         result = self._commit_with_culprit(commits['after'])
         self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
         self.assertIn("tag 158.0.8127.4 isn't in", result.stderr)
+
+
+# ---------------------------------------------------------------------------
+# Tests: Gerrit Change-Id trailer
+# ---------------------------------------------------------------------------
+
+
+class TestChangeId(unittest.TestCase):
+    """The hook adds a Change-Id trailer with the checks of Gerrit's own
+    commit-msg hook, and never replaces one the message has."""
+
+    _CHANGE_ID = re.compile(r'^Change-Id: (I[0-9a-f]{40})$', re.M)
+    _KEPT_ID = 'I' + 'a' * 40
+
+    def setUp(self) -> None:
+        self._sandbox = self.enterContext(_Sandbox())
+        self._sandbox.install_hook()
+        repo = self._sandbox.repo
+        repo._run_git_command(
+            [
+                'remote',
+                'add',
+                'origin',
+                'https://chromium.googlesource.com/chromium/src.git',
+            ],
+            repo.chromium,
+        )
+
+    def _git(self, *args: str, cwd: Path | None = None) -> str:
+        return subprocess.run(
+            ['git', *args],
+            cwd=cwd or self._sandbox.root,
+            check=True,
+            capture_output=True,
+            text=True,
+            env={**os.environ, **_GIT_ENV_OVERRIDES},
+        ).stdout
+
+    def _commit(self, *args: str, env: dict[str, str] | None = None) -> str:
+        self._sandbox.stage_change(f'{args}\n')
+        result = self._sandbox.run_gc(['commit', *args], env=env)
+        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
+        return self._sandbox.last_commit_message()
+
+    def _last_paragraph(self, message: str) -> str:
+        return message.rsplit('\n\n', 1)[-1]
+
+    def test_commit_ends_with_a_change_id(self) -> None:
+        msg = self._commit('-m', 'Fix')
+        self.assertRegex(
+            self._last_paragraph(msg), r'^Change-Id: I[0-9a-f]{40}$'
+        )
+
+    def test_quoted_culprit_change_id_is_not_the_commits(self) -> None:
+        repo = self._sandbox.repo
+        culprit = repo.commit_empty(
+            f'Upstream change\n\nChange-Id: {self._KEPT_ID}', repo.chromium
+        )
+        msg = self._commit('--culprit', culprit, '-m', 'Fix')
+        self.assertIn(f'    Change-Id: {self._KEPT_ID}', msg)
+        ids = self._CHANGE_ID.findall(msg)
+        self.assertEqual(len(ids), 1, msg=msg)
+        self.assertNotEqual(ids[0], self._KEPT_ID)
+        self.assertEqual(self._last_paragraph(msg), f'Change-Id: {ids[0]}')
+
+    def test_reverted_change_id_is_not_the_reverts(self) -> None:
+        msg = self._commit(
+            '-m',
+            'Revert "Fix"',
+            '-m',
+            'This reverts commit 1234567.',
+            '-m',
+            f"Original change's description:\n> Fix\n>\n"
+            f'> Change-Id: {self._KEPT_ID}',
+        )
+        self.assertIn(f'> Change-Id: {self._KEPT_ID}', msg)
+        ids = self._CHANGE_ID.findall(msg)
+        self.assertEqual(len(ids), 1, msg=msg)
+        self.assertNotEqual(ids[0], self._KEPT_ID)
+        self.assertEqual(self._last_paragraph(msg), f'Change-Id: {ids[0]}')
+
+    def test_existing_change_id_is_kept_below_the_links(self) -> None:
+        repo = self._sandbox.repo
+        culprit = repo.commit_empty('Upstream change', repo.chromium)
+        trailers = f'Bug: 1\nChange-Id: {self._KEPT_ID}'
+        msg = self._commit(
+            '--culprit', culprit, '--issue', '7', '-m', 'Fix', '-m', trailers
+        )
+        self.assertIn('Chromium changes:', msg)
+        self.assertEqual(self._last_paragraph(msg), trailers)
+        self.assertEqual(self._CHANGE_ID.findall(msg), [self._KEPT_ID])
+
+    def test_existing_change_id_of_any_value_is_not_replaced(self) -> None:
+        msg = self._commit('-m', 'Fix', '-m', 'Change-Id: custom')
+        self.assertEqual(self._last_paragraph(msg), 'Change-Id: custom')
+        self.assertEqual(self._CHANGE_ID.findall(msg), [])
+
+    def test_amend_keeps_the_change_id(self) -> None:
+        change_id = self._CHANGE_ID.findall(self._commit('-m', 'Fix'))
+        self._sandbox.stage_change('amended\n')
+        result = self._sandbox.run_gc(['commit', '--amend', '--no-edit'])
+        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
+        self.assertEqual(
+            self._CHANGE_ID.findall(self._sandbox.last_commit_message()),
+            change_id,
+        )
+
+    def test_change_id_goes_before_signed_off_by(self) -> None:
+        msg = self._commit('-s', '-m', 'Fix')
+        lines = self._last_paragraph(msg).split('\n')
+        self.assertRegex(lines[0], self._CHANGE_ID)
+        self.assertTrue(lines[1].startswith('Signed-off-by: '), msg=msg)
+        self.assertEqual(len(lines), 2, msg=msg)
+
+    def test_directives_get_no_change_id(self) -> None:
+        for args in (
+            ['-m', 'squash! Add file.txt'],
+            ['-m', 'reassign!abc123! Add file.txt'],
+            ['-m', 'drop!abc123! Add file.txt'],
+            ['--force-commit-hook', '-m', 'fixup! Add file.txt'],
+        ):
+            with self.subTest(args[-1]):
+                self.assertNotIn('Change-Id:', self._commit(*args))
+
+    def test_create_change_id_setting(self) -> None:
+        self._git('config', 'gerrit.createChangeId', 'false')
+        self.assertNotIn('Change-Id:', self._commit('-m', 'Fix'))
+        self._git('config', 'gerrit.createChangeId', 'always')
+        msg = self._commit('-m', 'squash! Add file.txt')
+        self.assertRegex(self._last_paragraph(msg), self._CHANGE_ID)
+
+    def test_review_url_gives_a_link_trailer(self) -> None:
+        self._git('config', 'gerrit.reviewUrl', 'https://gerrit.example.com/')
+        msg = self._commit('-m', 'Fix')
+        self.assertRegex(
+            self._last_paragraph(msg),
+            r'^Link: https://gerrit\.example\.com/id/I[0-9a-f]{40}$',
+        )
+        msg = self._commit(
+            '-m', 'Fix', '-m', f'Link: https://x/id/{self._KEPT_ID}'
+        )
+        self.assertEqual(
+            self._last_paragraph(msg), f'Link: https://x/id/{self._KEPT_ID}'
+        )
+
+    def test_scissors_part_stays_after_what_the_hook_adds(self) -> None:
+        repo = self._sandbox.repo
+        culprit = repo.commit_empty('Upstream change', repo.chromium)
+        message_file = self._sandbox.root.parent / 'message.txt'
+        message_file.write_text(
+            'Fix\n\n'
+            '# ------------------------ >8 ------------------------\n'
+            'diff --git a/file.txt b/file.txt\n',
+            encoding='utf-8',
+            newline='',
+        )
+        msg = self._commit(
+            '--culprit',
+            culprit,
+            '--cleanup=scissors',
+            '-e',
+            '-F',
+            str(message_file),
+            env={'GIT_EDITOR': 'true'},
+        )
+        self.assertIn(f'chromium/src/+/{culprit}', msg)
+        self.assertNotIn('diff --git', msg)
+        self.assertRegex(self._last_paragraph(msg), self._CHANGE_ID)
+
+    def test_message_of_only_comments_is_refused(self) -> None:
+        message_file = self._sandbox.root.parent / 'message.txt'
+        message_file.write_text('# Nothing.\n', encoding='utf-8', newline='')
+        self._sandbox.stage_change()
+        result = self._sandbox.run_gc(
+            ['commit', '--cleanup=strip', '-F', str(message_file)]
+        )
+        self.assertNotEqual(result.returncode, 0)
+
+    def test_cherry_pick_in_a_worktree_is_left_alone(self) -> None:
+        worktree = self._sandbox.root.parent / 'brave-worktree'
+        self._git('worktree', 'add', '-q', '--detach', str(worktree))
+        cherry_pick_head = Path(
+            self._git(
+                'rev-parse', '--git-path', 'CHERRY_PICK_HEAD', cwd=worktree
+            ).strip()
+        )
+        if not cherry_pick_head.is_absolute():
+            cherry_pick_head = worktree / cherry_pick_head
+        cherry_pick_head.write_text(
+            self._git('rev-parse', 'HEAD'), encoding='utf-8', newline=''
+        )
+        self._git('commit', '-q', '--allow-empty', '-m', 'Picked', cwd=worktree)
+        self.assertEqual(
+            self._git('log', '-1', '--format=%B', cwd=worktree).strip(),
+            'Picked',
+        )
 
 
 # ---------------------------------------------------------------------------
