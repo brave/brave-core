@@ -43,9 +43,11 @@
 #    against the Chromium checkout at `../`.
 #
 #    Each culprit is written as its full hash, however short the one given, and
-#    one that isn't a commit stops the commit. On a `cr<N>` branch, a Chromium
-#    culprit must also be in the branch's range: after the Chromium tag its
-#    upstream's `package.json` pins, up to the one HEAD's pins.
+#    one that isn't a commit stops the commit. With `culprit_in_range=1` (what
+#    `git cr commit --culprit-in-range` sets), a Chromium culprit on a `cr<N>`
+#    branch must also be in the branch's range: after the Chromium tag its
+#    upstream's `package.json` pins, up to the one HEAD's pins. Without it, a
+#    culprit from before the range is fine, e.g. for a fix of a latent issue.
 #
 # 5. `issue` environment variable for "Resolves" links
 #
@@ -222,8 +224,8 @@ def culprit_range_problem(
         return None
     return (
         f'Culprit {full_hash} is not in the branch\'s Chromium range, '
-        f'{old}..{new}. Commit without --culprit if no upstream change is to '
-        'blame.'
+        f'{old}..{new}. Commit without --culprit-in-range to cite it anyway, '
+        'or without --culprit if no upstream change is to blame.'
     )
 
 
@@ -315,7 +317,11 @@ def main():
                 file=sys.stderr,
             )
             return 1
-        if not repo and re.fullmatch(cr_branch_pattern, branch_name):
+        if (
+            os.getenv('culprit_in_range') == '1'
+            and not repo
+            and re.fullmatch(cr_branch_pattern, branch_name)
+        ):
             if problem := culprit_range_problem(
                 git_dir, full_hash, branch_name
             ):

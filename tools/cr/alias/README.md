@@ -48,6 +48,17 @@ git cr commit --culprit abc123,def456 -m "Adjust to upstream API change"
 [commit-msg hook behaviour](#commit-msg-hook-behaviour) section below for more
 details.
 
+#### `--culprit-in-range`
+
+On a `cr<N>` branch, refuses a Chromium culprit outside the branch's range:
+after the Chromium tag its upstream pins, up to the one HEAD pins. Without it,
+any commit is accepted as a culprit, such as one from before the range for a
+latent issue that only now shows up.
+
+```sh
+git cr commit --culprit-in-range --culprit abc123 -m "Adjust to the new API"
+```
+
 #### `--fixup=reassign:<ref>`
 
 Git understands `--fixup=<ref>`, `--fixup=amend:<ref>`, and
