@@ -5,6 +5,25 @@
 ## why the filter is required and create an associated tracking issue if needed.
 ##
 
+# Brave doesn't ship Glic: `GlicGlobalEnabling::IsEnabledByGlobalCriteria()`
+# always fails, so Glic's keyed service and entry points never exist, and these
+# tests, which expect Glic enabled once `kGlic` is, fail or crash. The password
+# change tests drive their flow through Glic too, as do the tests of Glic's tab
+# underline, selection overlay, hotkeys and Gemini Enterprise paste policy,
+# whose names don't say Glic. Skills need Glic enabled for the profile, and the
+# tab strip's action container test runs on a Glic test environment.
+-*Glic*
+-*HotkeyManager*BrowserTest.*
+-ExplainSuggestionBrowserTest.*
+-GeicPastePolicyBrowserTest.*
+-HorizontalTabStripRegionViewNewTest.TabStripActionContainerIsNotInWindowCaption
+-PasswordChangeFromCheckupDelegateBrowserTest.*
+-SelectionOverlay*BrowserTest.*
+-SkillsAndExtensionsMenuModelTest.SkillsAndExtensionsMenuStandalone
+-SkillsApiFunctionalBrowserTestV2.*
+-SkillsGeicBrowserTest.*
+-TabUnderlineView*BrowserTest.*
+
 # References menu items by explicit index, which doesn't match our menu since we
 # insert an additional "Clear browsing data" item ahead of them.
 -RecentTabsSubMenuModelTest.MaxSessionsAndRecency
