@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
-import { setIconBasePath } from '@brave/leo/react/icon'
+import { setIconBasePath } from '@brave/nala/react/icon'
 
 import { createPsstInternalsApi } from './api/psst_internals_api'
 import { App } from './internals/app'
