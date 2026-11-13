@@ -23,6 +23,7 @@
 #include "components/sessions/core/session_id.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/base_window.h"
 #include "url/gurl.h"
@@ -270,6 +271,39 @@ IN_PROC_BROWSER_TEST_F(WorkspaceServiceBrowserTest,
       });
   EXPECT_TRUE(has_tracked_window)
       << "Deleting a space should leave a window that session restore saves";
+}
+
+// Confirming a deletion answers anything closing the window would ask, so a
+// page that would normally hold the window open does not get to refuse. This
+// matters most for a space that is off screen, where the prompt would be
+// about a page nobody can see -- but both paths behave the same way.
+IN_PROC_BROWSER_TEST_F(WorkspaceServiceBrowserTest,
+                       DeletingASpaceIsNotBlockedByBeforeUnload) {
+  ASSERT_TRUE(service());
+
+  WorkspaceMetadata workspace =
+      service()->CreateWorkspaceInWindow("Work", browser());
+  BrowserWindowInterface* workspace_window = WindowFor(workspace.id);
+  ASSERT_TRUE(workspace_window);
+
+  // A page that would otherwise prompt before being closed.
+  content::WebContents* contents =
+      workspace_window->GetTabStripModel()->GetWebContentsAt(0);
+  ASSERT_TRUE(contents);
+  ASSERT_TRUE(content::NavigateToURL(
+      contents,
+      GURL("data:text/html,<html><body><script>window.onbeforeunload = "
+           "function() { return 'stay'; };</script></body></html>")));
+  // Without this the handler is skipped as not having been interacted with.
+  content::PrepContentsForBeforeUnloadTest(contents);
+
+  service()->DeleteWorkspace(workspace.id);
+
+  // If a dialog were raised the close would stall here and the workspace
+  // would outlive this wait.
+  EXPECT_TRUE(base::test::RunUntil([&] {
+    return !service()->GetWorkspace(workspace.id).has_value();
+  })) << "A beforeunload handler should not keep a deleted space alive";
 }
 
 // Workspaces persist themselves. Letting Chromium record their windows too

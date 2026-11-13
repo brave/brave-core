@@ -118,29 +118,69 @@ void WorkspaceService::RemoveWorkspaceMetadata(const base::Uuid& id) {
 }
 
 void WorkspaceService::DeleteWorkspace(const base::Uuid& id) {
-  // A deleted workspace always takes its window with it. Left behind, that
-  // window is saved by nobody: it is excluded from Chromium's session restore,
-  // and unbinding drops this service as its saver. A put-away one would also
-  // linger off screen with no row in any bubble to bring it back.
-  if (std::optional<SessionID> window_id = GetWindowForWorkspace(id)) {
-    BrowserWindowInterface* window =
-        BrowserWindowInterface::FromSessionID(*window_id);
-    // Unbinding first is what stops the close from saving the workspace back
-    // out through WillCloseAllTabs.
-    UnbindWindow(*window_id);
-
-    if (window) {
-      if (!put_away_windows_.contains(*window_id)) {
-        // Someone is looking at this window, so they need somewhere to land
-        // before it goes.
-        ShowUnmanagedWindowFor(window);
-      }
-      put_away_windows_.erase(*window_id);
-      UnloadController::From(window)->set_confirmed_to_close(true);
-      window->GetWindow()->Close();
-    }
+  std::optional<SessionID> window_id = GetWindowForWorkspace(id);
+  BrowserWindowInterface* window =
+      window_id ? BrowserWindowInterface::FromSessionID(*window_id) : nullptr;
+  if (!window) {
+    FinishDeletingWorkspace(id);
+    return;
   }
 
+  // A deleted workspace always takes its window with it. Left behind, that
+  // window is saved by nobody: it is excluded from Chromium's session restore,
+  // and it is no longer ours to save. A put-away one would also linger off
+  // screen with no row in any bubble to bring it back.
+  //
+  // Nothing is torn down until the window has actually gone. Close() is
+  // asynchronous, so removing the metadata and directory here would do it
+  // while the window is still holding those tabs; the subscription covers the
+  // close being refused, which the flags below make unlikely but not
+  // impossible.
+  workspaces_pending_delete_.insert_or_assign(
+      id, window->RegisterBrowserCloseCancelled(base::BindRepeating(
+              &WorkspaceService::OnWorkspaceWindowCloseCancelled, GetWeakPtr(),
+              id)));
+
+  if (!put_away_windows_.contains(*window_id)) {
+    // Someone is looking at this window, so they need somewhere to land
+    // before it goes.
+    ShowUnmanagedWindowFor(window);
+  }
+  put_away_windows_.erase(*window_id);
+
+  // Confirming the deletion already answered anything closing would ask, so
+  // the window goes without consulting its pages. The two flags cover
+  // different prompts: set_confirmed_to_close() skips Brave's own "close all
+  // tabs?" confirmation, and set_force_skip_warning_user_on_close() skips a
+  // page's beforeunload handler along with the in-progress-download warning.
+  //
+  // Both paths are treated alike deliberately. A put-away window would
+  // otherwise prompt about a page nobody can see, and a visible one would
+  // offer to cancel a deletion the person has already confirmed.
+  auto* unload_controller = UnloadController::From(window);
+  unload_controller->set_confirmed_to_close(true);
+  unload_controller->set_force_skip_warning_user_on_close(true);
+  window->GetWindow()->Close();
+}
+
+void WorkspaceService::OnWorkspaceWindowCloseCancelled(
+    base::Uuid id,
+    BrowserWindowInterface* window,
+    BrowserWindowInterface::ClosingStatus status) {
+  // Unload handlers still running is not a refusal; the close may yet go
+  // through.
+  if (status ==
+      BrowserWindowInterface::ClosingStatus::kDeniedUnloadHandlersNeedTime) {
+    return;
+  }
+
+  // Something refused the close even though beforeunload and the download
+  // warning were skipped. The window is staying, so the workspace stays with
+  // it: still listed, still bound, still saved. The person can delete again.
+  workspaces_pending_delete_.erase(id);
+}
+
+void WorkspaceService::FinishDeletingWorkspace(const base::Uuid& id) {
   RemoveWorkspaceMetadata(id);
   io_task_runner_->PostTask(FROM_HERE, base::BindOnce(
                                            [](base::FilePath dir) {
@@ -532,7 +572,9 @@ void WorkspaceService::WillCloseAllTabs(TabStripModel* tab_strip_model) {
   }
 
   const SessionID window_id = window->GetSessionID();
-  if (std::optional<base::Uuid> id = GetWorkspaceForWindow(window_id)) {
+  std::optional<base::Uuid> id = GetWorkspaceForWindow(window_id);
+  // A workspace on its way out is not worth writing back first.
+  if (id && !workspaces_pending_delete_.contains(*id)) {
     SaveWorkspaceFromWindow(*id, window);
   }
 }
@@ -569,14 +611,21 @@ void WorkspaceService::OnBrowserClosed(BrowserWindowInterface* browser) {
   // tabs.
   const SessionID window_id = browser->GetSessionID();
 
-  // Read before the lineage entry is dropped below.
+  // Both read before the bindings are dropped below.
   const std::optional<SessionID> origin = GetUnmanagedWindowFor(window_id);
+  const std::optional<base::Uuid> held = GetWorkspaceForWindow(window_id);
 
   UnbindWindow(window_id);
   put_away_windows_.erase(window_id);
   std::erase_if(window_to_unmanaged_window_, [window_id](const auto& entry) {
     return entry.first == window_id || entry.second == window_id;
   });
+
+  // The window holding a workspace queued for deletion has gone, so there is
+  // nothing left that the removal could strand.
+  if (held && workspaces_pending_delete_.erase(*held) > 0) {
+    FinishDeletingWorkspace(*held);
+  }
 
   // A workspace window going away on its own -- the person closed its last
   // tab -- is not a request to quit. Hand the screen back to the window it
