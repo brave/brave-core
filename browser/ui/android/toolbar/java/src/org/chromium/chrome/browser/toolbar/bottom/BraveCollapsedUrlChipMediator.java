@@ -14,9 +14,8 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
+import org.chromium.url.GURL;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -143,20 +142,16 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
 
     /**
      * Chip-eligible = http/https with a non-empty host; everything else carries no spoofable
-     * web identity. Parses the canonical GURL spec with java.net.URI, whose getHost() is the
-     * real host (userinfo stripped), so "http://example.com@evil.com/" resolves to evil.com.
+     * web identity. Parses the canonical GURL spec with GURL, whose getHost() is the real
+     * host (userinfo stripped), so "http://example.com@evil.com/" resolves to evil.com.
      */
     static boolean isEligibleUrlSpec(@Nullable String spec) {
         if (spec == null || spec.isEmpty()) return false;
-        URI uri;
-        try {
-            uri = new URI(spec);
-        } catch (URISyntaxException e) {
-            return false;
-        }
-        String scheme = uri.getScheme();
+        GURL url = new GURL(spec);
+        if (GURL.isEmptyOrInvalid(url)) return false;
+        String scheme = url.getScheme();
         if (!"http".equals(scheme) && !"https".equals(scheme)) return false;
-        String host = uri.getHost();
+        String host = url.getHost();
         return host != null && !host.isEmpty();
     }
 

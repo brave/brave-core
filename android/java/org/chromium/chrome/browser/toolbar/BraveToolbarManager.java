@@ -416,12 +416,14 @@ public class BraveToolbarManager extends ToolbarManager
         BrowserStateBrowserControlsVisibilityDelegate controlsVisibilityDelegate =
                 mBrowserControlsSizer.getBrowserVisibilityDelegate();
         assert controlsVisibilityDelegate != null;
+        Supplier<Boolean> chipEnabled =
+                () -> ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_COLLAPSED_URL_CHIP);
         mBraveCollapsedUrlChipCoordinator =
                 new BraveCollapsedUrlChipCoordinator(
                         mActivity,
                         mBrowserControlsSizer,
                         mActivityTabProvider.asObservable(),
-                        () -> ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_COLLAPSED_URL_CHIP),
+                        chipEnabled,
                         mFullscreenManager.getPersistentFullscreenModeSupplier(),
                         controlsVisibilityDelegate);
     }

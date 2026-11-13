@@ -302,7 +302,8 @@ public class BraveCollapsedUrlChipCoordinator {
 
     /** Inverted styling matching the system gesture bar: content-driven, not theme-driven. */
     private void applyChipColors() {
-        boolean darkChip = BraveCollapsedUrlChipMediator.isLightContentBackground(mLastContentColor);
+        boolean darkChip =
+                BraveCollapsedUrlChipMediator.isLightContentBackground(mLastContentColor);
         applyChipColorsForSample(darkChip);
     }
 
@@ -361,7 +362,9 @@ public class BraveCollapsedUrlChipCoordinator {
         if (mSampleBitmap == null
                 || mSampleBitmap.getWidth() != strip.width()
                 || mSampleBitmap.getHeight() != strip.height()) {
-            mSampleBitmap = Bitmap.createBitmap(strip.width(), strip.height(), Bitmap.Config.ARGB_8888);
+            mSampleBitmap =
+                    Bitmap.createBitmap(
+                            strip.width(), strip.height(), Bitmap.Config.ARGB_8888);
         }
         try {
             PixelCopy.request(
