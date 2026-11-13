@@ -326,11 +326,4 @@
     <color name="address_bar_preference_header_background_dark">#000B89</color>
     <color name="address_bar_preference_header_primary_light">#4551D1</color>
     <color name="address_bar_preference_header_primary_dark">#828CFF</color>
-
-    <color name="brave_collapsed_url_chip_background">#F2FFFFFF</color>
-    <color name="brave_collapsed_url_chip_text">#DE202124</color>
-    <!-- Inverted pair applied when the page background is light (content-driven, not
-         theme-driven; see BraveCollapsedUrlChipCoordinator#applyChipColors). -->
-    <color name="brave_collapsed_url_chip_background_dark">#F21F2026</color>
-    <color name="brave_collapsed_url_chip_text_dark">#DEEBEDF2</color>
 </resources>

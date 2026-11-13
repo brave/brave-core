@@ -26,9 +26,9 @@ import java.util.function.Supplier;
  *
  * <p>Chromium's browser controls hide the toolbar (and with it the URL) completely while the user
  * scrolls down. This mediator shows a small "collapsed chip" whenever the toolbar is not on
- * screen, so that the site origin (eTLD+1) remains visible at all times, matching Safari /
- * Brave iOS behavior. The chip is display-only: tapping it scrolls the page to the top, which
- * re-shows the toolbar, so the chip never becomes a navigation or spoofing surface.
+ * screen, so that the page's host (minus trivial subdomains, e.g. "search.brave.com") remains
+ * visible at all times, matching Safari / Brave iOS behavior. The chip is display-only: tapping
+ * it re-shows the browser controls, so the chip never becomes a navigation or spoofing surface.
  */
 @NullMarked
 class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Observer {
