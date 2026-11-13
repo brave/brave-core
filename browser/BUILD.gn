@@ -119,6 +119,7 @@ source_set("core") {
   }
   public_deps = [
     ":tab_helpers_header",
+    "//brave/components/debounce/core/common",
     "//brave/components/ephemeral_storage",
     "//brave/components/psst/buildflags",
     "//brave/components/url_sanitizer/core/browser",
