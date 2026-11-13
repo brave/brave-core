@@ -19,8 +19,6 @@
 #include "brave/components/query_filter/browser/query_filter_data.h"
 #include "brave/components/query_filter/common/features.h"
 #include "brave/components/query_filter/common/internal/schema_utils.h"
-#include "brave/components/query_filter/common/pref_names.h"
-#include "components/prefs/pref_service.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/re2/src/re2/re2.h"
 
@@ -120,17 +118,6 @@ std::optional<std::string> StripQueryParameter(std::string_view query,
 }  // namespace
 
 namespace query_filter {
-
-bool IsQueryFilteringDisabledByPolicy(const PrefService* prefs) {
-  // By default query filter should be enabled.
-  if (!prefs) {
-    return false;
-  }
-
-  // Filtering is enabled by default and can only be disabled via policy.
-  return prefs->IsManagedPreference(kTrackingQueryParametersFilteringEnabled) &&
-         !prefs->GetBoolean(kTrackingQueryParametersFilteringEnabled);
-}
 
 std::optional<GURL> ApplyQueryFilter(const GURL& original_url) {
   std::string_view query = original_url.query();

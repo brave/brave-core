@@ -13,7 +13,9 @@
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/query_filter/browser/utils.h"
+#include "brave/components/query_filter/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/common/referrer.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/url_request/url_request.h"
@@ -54,7 +56,8 @@ bool IsTrackingQueryParametersFilteringEnabled(T<BraveRequestInfo> ctx) {
 
   Profile* profile = Profile::FromBrowserContext(ctx->browser_context());
   CHECK(profile);
-  return !query_filter::IsQueryFilteringDisabledByPolicy(profile->GetPrefs());
+  return profile->GetPrefs()->GetBoolean(
+      query_filter::kTrackingQueryParametersFilteringEnabled);
 }
 
 }  // namespace

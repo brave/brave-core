@@ -8,12 +8,10 @@
 
 #include <memory>
 
-#include "base/memory/raw_ptr.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 
-namespace content {
-class BrowserContext;
-}  // namespace content
+class GURL;
+class PrefService;
 
 namespace brave_shields {
 class BraveShieldsSettingsService;
@@ -21,10 +19,12 @@ class BraveShieldsSettingsService;
 
 namespace query_filter {
 
-// Strips tracking query parameters from navigations. This ensure a service
-// always receives a clean URL. Subresource filtering stays in
-// the network delegate. See
-// https://github.com/brave/brave-browser/issues/23742 for more details on sw.
+// Strips tracking query parameters from non-renderer side navigations. This
+// also ensure a service worker always receives a clean URL. Subresource
+// filtering stays in the network delegate. See
+// https://github.com/brave/brave-browser/issues/23742 for more details.
+// TODO(https://github.com/brave/brave-browser/issues/61817): Follow-up on this
+// with a renderer side throttler.
 class QueryFilterThrottle : public blink::URLLoaderThrottle {
  public:
   ~QueryFilterThrottle() override;
@@ -32,21 +32,20 @@ class QueryFilterThrottle : public blink::URLLoaderThrottle {
   QueryFilterThrottle(const QueryFilterThrottle&) = delete;
   QueryFilterThrottle& operator=(const QueryFilterThrottle&) = delete;
 
-  // Returns a throttle when query filtering is enabled for `browser_context`.
+  // Returns a throttle when query filtering is enabled for a request to `url`.
+  // Throttles are created per request, so the settings at request start apply
+  // for the lifetime of the request.
   static std::unique_ptr<blink::URLLoaderThrottle> MaybeCreateThrottle(
-      content::BrowserContext* browser_context,
-      brave_shields::BraveShieldsSettingsService* shields_settings_service);
+      const PrefService* prefs,
+      brave_shields::BraveShieldsSettingsService* shields_settings_service,
+      const GURL& url);
 
   // blink::URLLoaderThrottle:
   void WillStartRequest(network::ResourceRequest* request,
                         bool* defer) override;
 
  private:
-  explicit QueryFilterThrottle(
-      brave_shields::BraveShieldsSettingsService* shields_settings_service);
-
-  raw_ptr<brave_shields::BraveShieldsSettingsService>
-      shields_settings_service_ = nullptr;
+  QueryFilterThrottle();
 };
 
 }  // namespace query_filter

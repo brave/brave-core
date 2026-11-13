@@ -1222,16 +1222,19 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       request, browser_context, wc_getter, navigation_ui_data,
       frame_tree_node_id, navigation_id);
 
-  // Intercept navigations only. Subresource query filtering stays in
+  // Intercept navigations only. We don't yet have a renderer side throttler for
+  // the same, which would encompass a wider array for n/w requests like
+  // sub-resources, fetch etc. Currently, those requests are handled via
   // brave_site_hacks_network_delegate_helper.
-  if (navigation_id.has_value()) {
-    if (auto query_filter_throttle =
-            query_filter::QueryFilterThrottle::MaybeCreateThrottle(
-                browser_context,
-                BraveShieldsSettingsServiceFactory::GetForProfile(
-                    Profile::FromBrowserContext(browser_context)))) {
-      result.push_back(std::move(query_filter_throttle));
-    }
+  // TODO(https://github.com/brave/brave-browser/issues/61817): Add a renderer
+  // side throttler.
+  Profile* profile = Profile::FromBrowserContext(browser_context);
+  if (auto query_filter_throttle =
+          query_filter::QueryFilterThrottle::MaybeCreateThrottle(
+              profile->GetPrefs(),
+              BraveShieldsSettingsServiceFactory::GetForProfile(profile),
+              request.url)) {
+    result.push_back(std::move(query_filter_throttle));
   }
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)

@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
 #include <memory>
 #include <optional>
 #include <string>
@@ -147,8 +148,6 @@ class QueryFilterServiceWorkerBrowserTest : public InProcessBrowserTest {
         chrome_test_utils::GetProfile(this));
   }
 
-  // Turns Brave Shields off for `url`'s origin, which disables query filtering
-  // for navigations to it (see `ShouldInterceptNavigation`).
   void ShieldsDown(const GURL& url) {
     brave_shields::SetBraveShieldsEnabled(content_settings(), false, url);
   }
@@ -186,23 +185,16 @@ class QueryFilterServiceWorkerBrowserTest : public InProcessBrowserTest {
 
   bool RequestedPath(std::string_view path) {
     base::AutoLock lock(requests_lock_);
-    for (const GURL& url : requests_) {
-      if (url.path() == path) {
-        return true;
-      }
-    }
-    return false;
+    return std::ranges::any_of(
+        requests_, [&](const GURL& url) { return url.path() == path; });
   }
 
   bool AnyRequestHasTrackingQuery() {
     base::AutoLock lock(requests_lock_);
-    for (const GURL& url : requests_) {
-      if (url.query().find("fbclid") != std::string::npos ||
-          url.query().find("gclid") != std::string::npos) {
-        return true;
-      }
-    }
-    return false;
+    return std::ranges::any_of(requests_, [](const GURL& url) {
+      return url.query().find("fbclid") != std::string::npos ||
+             url.query().find("gclid") != std::string::npos;
+    });
   }
 
   void ExpectNoTrackingQueryInRequests(
@@ -302,10 +294,11 @@ IN_PROC_BROWSER_TEST_F(QueryFilterServiceWorkerBrowserTest,
   ExpectNoTrackingQueryInRequests();
 }
 
-// Counterfactual for the test above: with query filtering disabled (Brave
-// Shields off) nothing restarts the navigation, so the tracking parameters
-// survive all the way to the service worker and its beacon. This proves the
-// stripping above is caused by the query filter, not the test setup.
+// Counterfactual for the test ServiceWorkerDoesNotObserveTrackingQuery: with
+// query filtering disabled (Brave Shields off) nothing restarts the navigation,
+// so the tracking parameters survive all the way to the service worker and its
+// beacon. This proves the stripping in ServiceWorkerDoesNotObserveTrackingQuery
+// is caused by the query filter, not the test setup.
 IN_PROC_BROWSER_TEST_F(
     QueryFilterServiceWorkerBrowserTest,
     ServiceWorkerObservesTrackingQueryWhenFilteringDisabled) {
