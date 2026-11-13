@@ -8,7 +8,7 @@ substitutions:
       Declare Brave overrides in BrowserViewLayoutDelegateImpl
 
       Implements the methods added to BrowserViewLayoutDelegate for
-      BraveBrowserViewLayout (see the matching rewrite for
+      BraveBrowserViewTabbedLayoutImpl (see the matching rewrite for
       browser_view_layout_delegate.h).
     add_to_public:
       class_name: BrowserViewLayoutDelegateImpl
