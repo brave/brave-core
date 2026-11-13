@@ -7,6 +7,7 @@
 
 #include "base/check.h"
 #include "base/no_destructor.h"
+#include "third_party/blink/renderer/platform/fonts/font_family.h"
 #include "third_party/blink/renderer/platform/fonts/font_selector.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 
@@ -19,6 +20,17 @@ AllowFontFamilyCallback* GetAllowFontFamilyCallback() {
   return callback.get();
 }
 
+// Only asked of system fonts the font selector (CSS or offscreen) didn't
+// match, so that web fonts are always allowed.
+bool IsFontFamilyAllowed(const blink::FontSelector& font_selector,
+                         const blink::FontFamily& family) {
+  if (family.FamilyIsGeneric()) {
+    return true;
+  }
+  return GetAllowFontFamilyCallback()->Run(font_selector.GetExecutionContext(),
+                                           family.FamilyName());
+}
+
 }  // namespace
 
 void RegisterAllowFontFamilyCallback(AllowFontFamilyCallback callback) {
@@ -28,16 +40,4 @@ void RegisterAllowFontFamilyCallback(AllowFontFamilyCallback callback) {
 
 }  // namespace brave
 
-// This only runs if the relevant font selector (CSS or offscreen)
-// does NOT find a matching font, because we want to allow web fonts
-// unconditionally.
-#define BRAVE_GET_FONT_DATA                         \
-  if ((!curr_family->FamilyIsGeneric()) &&          \
-      brave::GetAllowFontFamilyCallback() &&        \
-      !brave::GetAllowFontFamilyCallback()->Run(    \
-          GetFontSelector()->GetExecutionContext(), \
-          curr_family->FamilyName()))               \
-    result = nullptr;
-
 #include <third_party/blink/renderer/platform/fonts/font_fallback_list.cc>
-#undef BRAVE_GET_FONT_DATA
