@@ -188,7 +188,9 @@ constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
     return playlist[buttonKeys[action]]?.buttonRenderer ?? null;
   }
   // After a navigation the URL names the new video a second or two before the
-  // watch data does; following the old data's button would replay that video.
+  // watch data does; following the old data's button would replay that video,
+  // and if the old video wasn't in this playlist, YouTube's handler would leave
+  // it.
   function isWatchDataCurrent() {
     const videoId =
         watchNextResponse()?.currentVideoEndpoint?.watchEndpoint?.videoId;
@@ -205,7 +207,8 @@ constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
   const setActionHandler = mediaSession.setActionHandler.bind(mediaSession);
   function handleTrack(details) {
     const button = playlistButton(details.action);
-    if (button && !isWatchDataCurrent()) {
+    const params = new URLSearchParams(location.search);
+    if (params.has('list') && params.has('v') && !isWatchDataCurrent()) {
       return;
     }
     const player = document.getElementById('movie_player');
