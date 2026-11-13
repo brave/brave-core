@@ -432,7 +432,8 @@ export default function ConversationsList(props: ConversationsListProps) {
   const [openOptionsMenuKey, setOpenOptionsMenuKey] = React.useState<string>()
   const [editingItemKey, setEditingItemKey] = React.useState<string>()
 
-  const generationStates = aiChatContext.conversationGenerationStates
+  const generationStates =
+    aiChatContext.api.useCurrentOnConversationGenerationStateChanged().data?.[0]
   // The route id can be the tab-associated placeholder, so use the conversation
   // that is actually bound.
   const { conversationUuid: activeUuid } =

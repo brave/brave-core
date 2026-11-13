@@ -264,6 +264,13 @@ export default function createAIChatApi(
     },
   })
 
+  // The conversation list reads the generation states only while it's open,
+  // and the query cache drops data that nothing has read for a few minutes.
+  // They're only sent again when they change, so keep them subscribed for as
+  // long as the API lives.
+  const unsubscribeGenerationStates =
+    api.subscribeToOnConversationGenerationStateChanged(() => {})
+
   return {
     api,
 
@@ -273,6 +280,7 @@ export default function createAIChatApi(
     tabDataObserver: tabDataObserver!,
 
     close: () => {
+      unsubscribeGenerationStates()
       api.close()
     },
   }

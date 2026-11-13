@@ -173,11 +173,6 @@ export default function useProvideAIChatContext(props: AIChatContextProps) {
     openURL: api.uiHandler.openURL,
 
     defaultTabContentId: api.useCurrentOnNewDefaultConversation().data?.[0],
-    // Read here, where it's always mounted, rather than in the conversation
-    // list, so the latest states stay cached while the list is closed. They're
-    // only sent again when they change.
-    conversationGenerationStates:
-      api.useCurrentOnConversationGenerationStateChanged().data?.[0],
     editingConversationId,
     setEditingConversationId,
     deletingConversationId,
