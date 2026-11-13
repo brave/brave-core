@@ -89,6 +89,10 @@ class BraveToolbarView : public ToolbarView,
   void CreateWorkspaceButtonIfNeeded();
   void OnWorkspacesButtonPressed();
   void UpdateWorkspaceButtonVisibility();
+
+  // Shows the name of the workspace this window has open beside the icon.
+  // Unmanaged windows show the icon alone.
+  void UpdateWorkspaceButtonLabel();
   void UpdateWorkspaceButtonPlacement();
   void OnCompactModePrefChanged();
   void UpdateComboButtonState();
@@ -110,6 +114,7 @@ class BraveToolbarView : public ToolbarView,
 
   raw_ptr<ToolbarButton> vertical_tab_toggle_ = nullptr;
   raw_ptr<ToolbarButton> workspaces_button_ = nullptr;
+  base::CallbackListSubscription workspaces_changed_subscription_;
   raw_ptr<BraveBookmarkButton> bookmark_ = nullptr;
   // Tracks the preference to determine whether bookmark editing is allowed.
   BooleanPrefMember edit_bookmarks_enabled_;
