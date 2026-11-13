@@ -1008,6 +1008,14 @@ extension Strings {
       value: "Add Tab to Group",
       comment: "A menu item title that opens a submenu of tab groups the selected tab can be added to"
     )
+    public static let addToGroupButtonTitle = NSLocalizedString(
+      "tabGrid.addToGroupButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Add to Group",
+      comment:
+        "A button title, also the title of the menu it opens, that adds the selected tabs to a tab group"
+    )
     public static let createNewGroupMenuTitle = NSLocalizedString(
       "tabGrid.createNewGroupMenuTitle",
       tableName: "BraveShared",
