@@ -206,9 +206,7 @@ TEST_F(AssociatedContentManagerUnitTest,
   auto associated_content = conversation_handler_->associated_content_manager()
                                 ->GetAssociatedContent();
   ASSERT_EQ(1u, associated_content.size());
-  EXPECT_TRUE(associated_content[0]->conversation_turn_uuid.has_value());
-  EXPECT_EQ("test-turn-uuid",
-            associated_content[0]->conversation_turn_uuid.value());
+  EXPECT_EQ("test-turn-uuid", associated_content[0]->conversation_turn_uuid);
   EXPECT_EQ(content.uuid(), associated_content[0]->uuid);
 
   // GetCachedContentsMap should work without crashing and include the turn UUID
@@ -407,12 +405,8 @@ TEST_F(AssociatedContentManagerUnitTest,
   ASSERT_EQ(2u, associated_content.size());
 
   // Both should have the same conversation_turn_uuid
-  EXPECT_TRUE(associated_content[0]->conversation_turn_uuid.has_value());
-  EXPECT_TRUE(associated_content[1]->conversation_turn_uuid.has_value());
-  EXPECT_EQ("test-turn-uuid",
-            associated_content[0]->conversation_turn_uuid.value());
-  EXPECT_EQ("test-turn-uuid",
-            associated_content[1]->conversation_turn_uuid.value());
+  EXPECT_EQ("test-turn-uuid", associated_content[0]->conversation_turn_uuid);
+  EXPECT_EQ("test-turn-uuid", associated_content[1]->conversation_turn_uuid);
 
   // UUIDs should be match
   EXPECT_EQ(first_content.uuid(), associated_content[0]->uuid);
@@ -518,8 +512,7 @@ TEST_F(AssociatedContentManagerUnitTest,
   auto content_after_first = conversation_handler_->associated_content_manager()
                                  ->GetAssociatedContent();
   ASSERT_EQ(1u, content_after_first.size());
-  EXPECT_EQ("test-turn-uuid-1",
-            content_after_first[0]->conversation_turn_uuid.value());
+  EXPECT_EQ("test-turn-uuid-1", content_after_first[0]->conversation_turn_uuid);
 
   // Try to associate the same content with second turn - should be skipped
   conversation_handler_->associated_content_manager()
@@ -531,10 +524,12 @@ TEST_F(AssociatedContentManagerUnitTest,
           ->GetAssociatedContent();
   ASSERT_EQ(1u, content_after_second.size());
   EXPECT_EQ("test-turn-uuid-1",
-            content_after_second[0]->conversation_turn_uuid.value());
+            content_after_second[0]->conversation_turn_uuid);
 }
 
-TEST_F(AssociatedContentManagerUnitTest,
+using AssociatedContentManagerDeathTest = AssociatedContentManagerUnitTest;
+
+TEST_F(AssociatedContentManagerDeathTest,
        AssociateUnsentContentWithTurn_RequiresUuid) {
   // Create turn without UUID - should crash
   auto turn_without_uuid = mojom::ConversationTurn::New(
