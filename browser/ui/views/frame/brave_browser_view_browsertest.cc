@@ -376,9 +376,9 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, TopSeparatorWithPanelTest) {
   // Check separator is hidden after panel opens.
   auto* panel_ui = SidePanelUI::From(browser());
   panel_ui->Toggle();
-  RunScheduledLayouts();
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return panel_ui->IsSidePanelShowing(); }));
+  RunScheduledLayouts();
   EXPECT_FALSE(brave_browser_view()
                    ->top_container_separator_for_testing()
                    ->GetVisible());
