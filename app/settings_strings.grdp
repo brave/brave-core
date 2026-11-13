@@ -353,9 +353,6 @@
       Auto expand tabs on hover
     </message>
     <message name="IDS_SETTINGS_ALLOW_SPLIT_VIEW_DRAG_AND_DROP" desc="Label for the checkbox which enables or disables drag and drop for split view.">
-      Allow split view drag-and-drop on left or right edge of window
-    </message>
-    <message name="IDS_SETTINGS_ALLOW_SPLIT_VIEW_DRAG_AND_DROP_HORIZONTAL" desc="Label for the checkbox which enables or disables drag and drop for split view when top/bottom splits is enabled.">
       Allow split view drag-and-drop on left, right, or bottom edge of window
     </message>
     <message name="IDS_SETTINGS_SHOW_TAB_GROUPS_IN_BOOKMARKS_BAR" desc="Label for the checkbox which enables or disables showing saved tab groups in bookmarks bar.">
@@ -382,23 +379,8 @@
     <message name="IDS_SETTINGS_SIDE_PANEL_ALIGNMENT_GLIC" desc="Label for configuring Gemini side panel alignment.">
       Gemini
     </message>
-    <message name="IDS_SETTINGS_SIDE_PANEL_ALIGNMENT_CONTEXTUAL_TASKS" desc="Label for configuring Brave Search AI Mode side panel alignment.">
-      Brave Search AI Mode
-    </message>
     <message name="IDS_SETTINGS_SIDE_PANEL_ALIGNMENT_CONTEXTUAL_TASKS_GOOGLE_SEARCH" desc="Label for configuring Brave Search side panel alignment.">
       Brave Search
-    </message>
-    <message name="IDS_SETTINGS_SIDE_PANEL_ALIGNMENT_CONTEXTUAL_TASKS_SIDE_PANEL" desc="Label for configuring Brave Search side panel alignment.">
-      Brave Search side panel
-    </message>
-    <message name="IDS_SETTINGS_SIDE_PANEL_ALIGNMENT_CONTEXTUAL_TASKS_IN_SIDE_PANEL" desc="Label for configuring Brave Search side panel alignment.">
-      Brave Search in side panel
-    </message>
-    <message name="IDS_SETTINGS_SIDE_PANEL_ALIGNMENT_CONTEXTUAL_TASKS_IN_CHROME" desc="Label for configuring Brave Search side panel alignment.">
-      Brave Search in Brave
-    </message>
-    <message name="IDS_SETTINGS_SIDE_PANEL_ALIGNMENT_CONTEXTUAL_TASKS_PANEL" desc="Label for configuring Brave Search side panel alignment.">
-      Brave Search panel
     </message>
     <message name="IDS_SETTINGS_SIDE_PANEL_ALIGNMENT_CHROME_PANELS" desc="Label for the default Brave Panels alignment setting.">
       Brave Panels
@@ -597,6 +579,21 @@
     <message name="IDS_SETTINGS_RELATED_SERVICES_TITLE" desc="Title of the section allowing the user to access any related google services from the 'Your saved info' page.">
       Related Brave services
     </message>
+    <message name="IDS_SETTINGS_YOUR_SAVED_INFO_PASSWORD_MANAGER_SUBLABEL" desc="Sublabel for the Brave Password Manager link row on the 'Your saved info' page.">
+      View in Brave Password Manager
+    </message>
+    <message name="IDS_SETTINGS_YOUR_SAVED_INFO_PAYMENTS_SUBLABEL" desc="Sublabel for the Payments link row on the 'Your saved info' page.">
+      Credit and debit cards, IBANs, and loyalty cards
+    </message>
+    <message name="IDS_SETTINGS_YOUR_SAVED_INFO_CONTACT_INFO_SUBLABEL" desc="Sublabel for the Contact info link row on the 'Your saved info' page.">
+      Home, work, and more
+    </message>
+    <message name="IDS_SETTINGS_YOUR_SAVED_INFO_IDENTITY_DOCS_SUBLABEL" desc="Sublabel for the Identity docs link row on the 'Your saved info' page.">
+      IDs, passports, and driver’s licenses
+    </message>
+    <message name="IDS_SETTINGS_YOUR_SAVED_INFO_TRAVEL_SUBLABEL" desc="Sublabel for the Travel link row on the 'Your saved info' page.">
+      Flight info, known traveller and redress numbers, vehicles
+    </message>
     <message name="IDS_PASSWORDS_PAGE_IMPORT_AUTHENTICATION_PROMPT_BIOMETRIC_SUFFIX" desc="Shown after 'Brave is trying to ' (or in some languages, 'Brave wants to ') in a dialog message. Text for the dialog box that prompts the user for the biometric authentication before replacing passwords during Import.">
       replace existing passwords
     </message>
@@ -704,6 +701,12 @@
     </message>
     <message name="IDS_SETTINGS_PAYMENTS_MANAGE_WALLET_DATA_WITH_OFFERS" desc="Shown in the payments section of settings. Descriptive text to inform the user that data and privacy preferences, payment methods, passes, and offers can be accessed via link. Google Wallet should not be translated because it is the product name. Has three links that open different pages on Google Wallet.">
       Visit Google Wallet to control <ph name="BEGIN_LINK1">&lt;a href="$1" target="_blank"&gt;</ph>data and privacy preferences<ph name="END_LINK1">&lt;/a&gt;</ph> or manage <ph name="BEGIN_LINK2">&lt;a href="$2" target="_blank"&gt;</ph>payment methods<ph name="END_LINK2">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK3">&lt;a href="$3" target="_blank"&gt;</ph>passes<ph name="END_LINK3">&lt;/a&gt;</ph> like loyalty cards, IDs, and offers
+    </message>
+    <message name="IDS_SETTINGS_PAYMENTS_MANAGE_PAYMENT_METHODS_AND_PASSES" desc="Shown in the payments section of settings. Descriptive text to inform the user that payment methods and passes can be accessed via link. Google Wallet should not be translated because it is the product name. Has two links that open different pages on Google Wallet.">
+      Visit Google Wallet to add or manage <ph name="BEGIN_LINK_PAYMENT_METHODS">&lt;a href="$1" target="_blank"&gt;</ph>payment methods<ph name="END_LINK_PAYMENT_METHODS">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK_PASSES">&lt;a href="$2" target="_blank"&gt;</ph>passes<ph name="END_LINK_PASSES">&lt;/a&gt;</ph>
+    </message>
+    <message name="IDS_SETTINGS_PAYMENTS_MANAGE_WALLET_DATA_AND_PASSES" desc="Shown in the payments section of settings. Descriptive text to inform the user that data and privacy preferences, payment methods, and passes can be accessed via link. Google Wallet should not be translated because it is the product name. Has three links that open different pages on Google Wallet.">
+      Visit Google Wallet to control <ph name="BEGIN_LINK1">&lt;a href="$1" target="_blank"&gt;</ph>data and privacy preferences<ph name="END_LINK1">&lt;/a&gt;</ph> or manage <ph name="BEGIN_LINK2">&lt;a href="$2" target="_blank"&gt;</ph>payment methods<ph name="END_LINK2">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK3">&lt;a href="$3" target="_blank"&gt;</ph>passes<ph name="END_LINK3">&lt;/a&gt;</ph>
     </message>
     <message name="IDS_SETTINGS_REMOTE_WALLET_PASSES_LINK_LABEL" desc="The title and ARIA (accessibility) label for a link in Brave settings that opens the payment methods settings on https://wallet.google.com/wallet/passes. Note that the ARIA role and the link icon already convey that this is a link that will be opened when you click on it. Therefore, the message does not contain a verb.">
       Your Google Wallet passes
@@ -1089,6 +1092,11 @@
     </message>
     <message name="IDS_SETTINGS_DOWNLOADS_SHOW_WHEN_FINISHED" desc="Label for the setting which enables the automatic showing of downloads when the downloads finish.">
       Show downloads when they're done
+    </message>
+
+    <!-- General Page -->
+    <message name="IDS_SETTINGS_GENERAL" desc="Name of the settings page which displays general preferences.">
+      General
     </message>
 
     <!-- On Startup Page -->
@@ -1653,11 +1661,6 @@
        =1 {Permissions removed from 1 site}
        other {Permissions removed from {NUM_SITES} sites}}
     </message>
-    <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_SECONDARY_LABEL" desc="'Unused Site Permissions' shows unused websites for which permissions have been revoked. This label is the description of the module in the site settings page.">
-      {NUM_SITES, plural,
-       =1 {To protect your data, permissions were removed from a site you haven't visited recently}
-       other {To protect your data, permissions were removed from sites you haven't visited recently}}
-    </message>
     <message name="IDS_SETTINGS_SAFETY_HUB_REVOKED_PERMISSIONS_SECONDARY_LABEL" desc="'Revoked Permissions' shows websites for which permissions have been revoked. This label is the description of the module in the site settings page.">
       {NUM_SITES, plural,
        =1 {To protect your privacy, permissions were removed from a site}
@@ -1990,6 +1993,9 @@
     <message name="IDS_SETTINGS_RESET" desc="Title for an item in the 'Reset and clean up' section of Brave Settings. If the user clicks this option, browser settings will be returned to their default values, after a confirmation by the user." meaning="Chrome Cleanup feature. Try to use the same translation for 'Reset' in 'Reset and cleanup' string.">
       Reset settings
     </message>
+    <message name="IDS_SETTINGS_RESET_ALL_SETTINGS" desc="Text of the button on the General settings page that opens a dialog to reset browser settings back to their default values.">
+      Reset all settings
+    </message>
     <message name="IDS_SETTINGS_RESET_SETTINGS_TRIGGER" desc="The label describing the 'reset profile setting' feature">
       Restore settings to their original defaults
     </message>
@@ -2168,10 +2174,10 @@
     <message name="IDS_SETTINGS_SEARCH_ENGINES_PICKER_TITLE" desc="Title of the dialog, opened from the Search engine settings page, that lets the user pick their default search engine from a list of search engines that are popular in their region.">
       Default search engine
     </message>
-    <message name="IDS_SETTINGS_SEARCH_ENGINES_PICKER_SUBTITLE" desc="Subtitle of the default search engine picker dialog, shown below the dialog title, for users in countries where the list of search engines is displayed in random order (EEA). Explains that the listed search engines are popular in the user's region and are shown in random order.">
+    <message name="IDS_SETTINGS_SEARCH_ENGINES_PICKER_SUBTITLE_RANDOM_ORDER" desc="Subtitle of the default search engine picker dialog, shown below the dialog title, for users in countries where the list of search engines is displayed in random order. Explains that the listed search engines are popular in the user's region and are shown in random order.">
       Popular in your region (in random order)
     </message>
-    <message name="IDS_SETTINGS_SEARCH_ENGINES_PICKER_SUBTITLE_NON_EEA" desc="Subtitle of the default search engine picker dialog, shown below the dialog title, for users in countries where the list of search engines is not shown in random order (outside the EEA). Explains that the listed search engines are popular in the user's region.">
+    <message name="IDS_SETTINGS_SEARCH_ENGINES_PICKER_SUBTITLE_REGIONAL_ORDER" desc="Subtitle of the default search engine picker dialog, shown below the dialog title, for users in countries where the list of search engines is not shown in random order. Explains that the listed search engines are popular in the user's region.">
       Popular in your region
     </message>
     <message name="IDS_SETTINGS_SEARCH_ENGINES_MORE_OPTIONS" desc="Label of a button in the header of the default search engine picker dialog. Clicking it replaces the dialog with another dialog listing all the search engines the user can pick as their default search engine." meaning="Choices of search engines to pick from, not settings.">
@@ -2185,6 +2191,9 @@
     </message>
     <message name="IDS_SETTINGS_SEARCH_ENGINES_NO_SEARCH_RESULTS" desc="Message shown in the 'More search engines' dialog in place of the list of search engines when no search engine matches the text that the user typed in the search field.">
       No results found
+    </message>
+    <message name="IDS_SETTINGS_SEARCH_ENGINES_BACK_BUTTON" desc="Label of a button in the 'More search engines' dialog, opened from the default search engine picker dialog. Clicking it replaces the 'More search engines' dialog with the default search engine picker dialog again, without changing the default search engine." meaning="Navigation. Return to the previous step of the dialog.">
+      Back
     </message>
     <message name="IDS_SETTINGS_SEARCH_ENGINES_MAKE_DEFAULT" desc="Text of the button that makes the selected engine the default search engine">
       Make default
@@ -2527,27 +2536,29 @@
     <message name="IDS_SETTINGS_SITE_SETTINGS_HID_DEVICES_BLOCKED" desc="Label for the disabled option of the hid devices site setting.">
       Don't allow sites to connect to HID devices
     </message>
-    <message name="IDS_SITE_SETTINGS_SMART_CARD_READERS" desc="Main heading for the Smart Card Readers section in settings.">
-      Smart card readers
-    </message>
-    <message name="IDS_SITE_SETTINGS_SMART_CARD_READERS_DESCRIPTION" desc="Description of how isolated web apps interact with smart card readers.">
-      Isolated web apps control authentication devices and smart cards accessible to them. Smart cards usually contain identifiers used to authenticate you.
-    </message>
-    <message name="IDS_SITE_SETTINGS_SMART_CARDS_DEFAULT_DESCRIPTION" desc="Label indicating the default behavior for smart card access.">
-      Isolated web apps automatically follow this setting
-    </message>
-    <message name="IDS_SITE_SETTINGS_SMART_CARDS_ASK" desc="Option to allow isolated web apps to control smart card readers.">
-      Isolated web apps can ask to control smart card readers
-    </message>
-    <message name="IDS_SITE_SETTINGS_SMART_CARDS_BLOCKED" desc="Option to block isolated web apps from controlling smart card readers.">
-      Isolated web apps can’t control smart card readers
-    </message>
-    <message name="IDS_SITE_SETTINGS_NO_SMART_CARD_READERS_FOUND" desc="No smart card readers were found.">
-      No smart card readers found
-    </message>
-    <message name="IDS_SITE_SETTINGS_RESET_SMART_CARD_CONFIRMATION" desc="Confirmation for resetting smart card reader permissions.">
-      Reset all smart card reader permissions?
-    </message>
+    <if expr="enable_smart_card">
+      <message name="IDS_SITE_SETTINGS_SMART_CARD_READERS" desc="Main heading for the Smart Card Readers section in settings.">
+        Smart card readers
+      </message>
+      <message name="IDS_SITE_SETTINGS_SMART_CARD_READERS_DESCRIPTION" desc="Description of how isolated web apps interact with smart card readers.">
+        Isolated web apps control authentication devices and smart cards accessible to them. Smart cards usually contain identifiers used to authenticate you.
+      </message>
+      <message name="IDS_SITE_SETTINGS_SMART_CARDS_DEFAULT_DESCRIPTION" desc="Label indicating the default behavior for smart card access.">
+        Isolated web apps automatically follow this setting
+      </message>
+      <message name="IDS_SITE_SETTINGS_SMART_CARDS_ASK" desc="Option to allow isolated web apps to control smart card readers.">
+        Isolated web apps can ask to control smart card readers
+      </message>
+      <message name="IDS_SITE_SETTINGS_SMART_CARDS_BLOCKED" desc="Option to block isolated web apps from controlling smart card readers.">
+        Isolated web apps can’t control smart card readers
+      </message>
+      <message name="IDS_SITE_SETTINGS_NO_SMART_CARD_READERS_FOUND" desc="No smart card readers were found.">
+        No smart card readers found
+      </message>
+      <message name="IDS_SITE_SETTINGS_RESET_SMART_CARD_CONFIRMATION" desc="Confirmation for resetting smart card reader permissions.">
+        Reset all smart card reader permissions?
+      </message>
+    </if>
     <message name="IDS_SETTINGS_SITE_SETTINGS_IMAGES_DESCRIPTION" desc="Description of the images content setting.">
       Sites usually show images to provide illustration, like photos for online stores or news articles
     </message>
@@ -3537,17 +3548,11 @@
     <message name="IDS_SETTINGS_PEOPLE_VERIFY_ACCOUNT_BUTTON" desc="This button is shown in Brave's Settings, in the 'You and Brave' section. It appears when the user needs to sign back in to Brave in order to continue saving and using data (like bookmarks, passwords, or payment methods) in their Brave sync chain. When the user clicks this button, they will be prompted to enter their Brave sync chain credentials.">
       Verify it's you
     </message>
-    <message name="IDS_SETTINGS_TURN_OFF_SYNC_MANAGED_PROFILE_EXPLANATION" desc="The text to display in the 'Turn Sync off' dialog to stop syncing for managed profiles.">
-      Because this account is managed by <ph name="DOMAIN">$1<ex>example.com</ex></ph> you will not be signed out of your Brave sync chain. Your bookmarks, history, passwords, and other settings will no longer be synced. However, your previously synced data will remain stored in your Brave sync chain and can be managed on <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank"&gt;<ex>&lt;a href="$2" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
-    </message>
     <message name="IDS_SETTINGS_TURN_OFF_SYNC_AND_SIGN_OUT_DIALOG_TITLE" desc="The text to display on the title of the dialog to turn off sync and sign out.">
       Turn off sync and personalization?
     </message>
     <message name="IDS_SETTINGS_TURN_OFF_SYNC_AND_SIGN_OUT_DIALOG_TITLE_SUPERVISED_PROFILE" desc="The text to display on the title of the dialog to turn off sync and sign out of a supervised profile." translateable="false">
       Turn off sync and personalization?
-    </message>
-    <message name="IDS_SETTINGS_TURN_OFF_SYNC_DIALOG_MANAGED_CONFIRM" desc="The text to display on the confirm button of the dialog to turn off sync, when the profile is managed by admin.">
-      Delete and continue
     </message>
     <message name="IDS_SETTINGS_TURN_OFF_SYNC_DIALOG_CHECKBOX" desc="The text to display next to the checkbox of the dialog to turn off sync, asking users if they want to delete these data from the device.">
       Remove bookmarks, history, passwords, and more from this device
@@ -3635,6 +3640,19 @@
     </message>
     <message name="IDS_SETTINGS_PASSPHRASE_RECOVER" desc="Message about how to recover from a lost passphrase.">
       If you forgot your passphrase or want to change this setting, <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+    </message>
+    <!-- TODO(crbug.com/570417844): Remove translateable="false" once the strings are finalized. -->
+    <message name="IDS_SETTINGS_DEVICE_TAB_VISIBILITY_TITLE" translateable="false" desc="Title of the Device tab visibility setting row and subpage in Brave Settings.">
+      Device tab visibility
+    </message>
+    <message name="IDS_SETTINGS_DEVICE_TAB_VISIBILITY_SUBLABEL" translateable="false" desc="Sublabel for the Device tab visibility setting row in Brave Settings.">
+      Choose which device tabs appear in your tab list
+    </message>
+    <message name="IDS_SETTINGS_DEVICE_TAB_VISIBILITY_DESCRIPTION" translateable="false" desc="Description text on the Device tab visibility subpage in Brave Settings, explaining how to choose which devices appear in the tab list and linking to Brave sync chain device activity to remotely sign out of a device.">
+      Choose which devices appear in your tab list. To remotely sign out of a device, manage them <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>here<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+    </message>
+    <message name="IDS_SETTINGS_DEVICE_TAB_VISIBILITY_NO_DEVICES" translateable="false" desc="Message shown on the Device tab visibility subpage when no synced devices are available.">
+      No synced devices found
     </message>
     <message name="IDS_SETTINGS_PERSONALIZE_GOOGLE_SERVICES_TITLE" desc="Title of the personalize Brave services section. When clicked, takes the user to the Brave Activity Controls.">
       Control how your browsing history is used to personalize Search and more
@@ -3724,59 +3742,6 @@
         No supported browser found
       </message>
     </if>
-
-    <!-- History search -->
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_SETTING_LABEL" desc="Title of the page of the settings that enables history search.">
-      History search, powered by AI
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_SETTING_SUBLABEL_V2" desc="This string is the subheading of a setting for ‘History search, powered by AI’. This subheading summarizes the user benefit of the History Search feature. This is an AI (artificial intelligence) feature that improves the search functionality so that users can write queries in natural language and search their Brave browsing history. The tone should be motivating.">
-      Use everyday language to search your browsing history and find sites you visited
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_LEARN_MORE_A11Y_LABEL" desc="Label for the 'Learn more' link in the toggle for the setting that enables history search.">
-      Learn more about history searches
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_WHEN_ON_PAGE_CONTENT" desc="This string is a bullet point in the ‘When on’ column, which describes the behavior of this feature. This string explains how users can write queries in natural language and search their Brave browsing history. The tone should be motivating.">
-      You can search your browsing history based on general page content, not only page title and URL, and see improved results
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_WHEN_ON_SEARCH_FROM" desc="This string is a bullet point in the ‘When on’ column, which describes the behavior of this feature. This string explains how users search their Brave browsing history from the address bar (always shown on the top of Brave). They can also search from the History page itself. The tone should be motivating.">
-      You can search in the address bar using "@history", as well as from the History page
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_WHEN_ON_LOG_START" desc="This string is a bullet point in the ‘When on’ column, which describes the behavior of this feature. This string explains that the AI-powered history search results will only use data about sites the user visits after they turn on this feature. Earlier history data, from when the feature setting was turned off, won’t appear in the search results. The tone should be informative.">
-      Only sites you visit after turning on this feature are shown in AI-powered history results
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_CONSIDER_DATA" desc="This is a bullet point in the ‘Things to consider’ column, which describes things users should consider about a feature. This string explains that AI features will send data to Brave servers in order to provide the feature’s respective benefit. The tone should be informative.">
-      When you search browsing history, your history searches, the page content of best matches, and generated model outputs are sent to Brave
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_CONSIDER_DATA_ENCRYPTED" desc="This is a bullet point in the ‘Things to consider’ column, which describes things users should consider about a feature. This string explains that AI features will save data to the user’s device in order to provide the feature’s respective benefit. The data will be appropriately encrypted for security. The tone should be informative.">
-      As you browse sites, their page contents are encrypted and saved to your device
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_SUBLABEL_ON" desc="This string is the subheading of a setting for ‘History search, powered by AI’. This subheading notes that the setting is currently turned on. Then, it summarizes the user benefit of the History Search feature. This is an AI (artificial intelligence) feature that improves the search functionality so that users can write queries in natural language and search their Brave browsing history. The tone should be motivating.">
-      Use everyday language to search your browsing history and find sites you visited. This setting is on.
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_SUBLABEL_OFF" desc="This string is the subheading of a setting for ‘History search, powered by AI’. This subheading notes that the setting is currently turned on. Then, it summarizes the user benefit of the History Search feature. This is an AI (artificial intelligence) feature that improves the search functionality so that users can write queries in natural language and search their Brave browsing history. The tone should be motivating.">
-      Use everyday language to search your browsing history and find sites you visited. This setting is off.
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_WITH_ANSWERS_SETTING_SUBLABEL_V2" desc="Sublabel of the setting that enables history search, powered by AI, with answers enabled.">
-      Use everyday language to search your browsing history and find sites you visited. You can also ask questions and get answers based on your browsing history
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_WITH_ANSWERS_WHEN_ON_PAGE_CONTENT" desc="This string is a bullet point in the ‘When on’ column, which describes the behavior of this feature. This string explains how users can write queries in natural language and search their Brave browsing history to get answers. The tone should be motivating.">
-      When you search your browsing history, answers and search results are based on the content of a page. This gives you improved results
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_WITH_ANSWERS_WHEN_ON_RECALL_INFO" desc="This string is a bullet point in the ‘When on’ column, which describes the behavior of this feature. This string explains how users can write questions (using question words like ‘what’, ‘who’, ‘where’) and get answer summaries based on their Brave browsing history. The tone should be motivating.">
-      When you ask questions about your history, you can get answers about specific information from a page you visited
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_WITH_ANSWERS_CONSIDER_DATA_ENCRYPTED" desc="This is a bullet point in the ‘Things to consider’ column, which describes things users should consider about a feature. This string explains that AI features will save data to the user’s device in order to provide the feature’s respective benefit. The data will be appropriately encrypted for security. The tone should be informative.">
-      As you browse sites, their page contents are encrypted and saved to your device. This may affect Brave's performance
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_WITH_ANSWERS_CONSIDER_OUTDATED" desc="This is a bullet point in the ‘Things to consider’ column, which describes things users should consider about a feature. This string explains that history search results and answers powered by AI may become outdated since they are dependent on the user's last visit to the page contents.">
-      AI-powered history search results and answers may become outdated if site content has changed since your last visit
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_WITH_ANSWERS_SUBLABEL_ON" desc="This string is the subheading of a setting for ‘History search, powered by AI’ when answers are available. This subheading notes that the setting is currently turned on. Then, it summarizes the user benefit of the History Search feature. This is an AI (artificial intelligence) feature that improves the search functionality so that users can write queries in natural language and search their Brave browsing history. The tone should be motivating.">
-      Use everyday language to search your browsing history and find sites you visited. You can also ask questions and get answers based on your browsing history. This setting is on.
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_WITH_ANSWERS_SUBLABEL_OFF" desc="This string is the subheading of a setting for ‘History search, powered by AI’ when answers are available. This subheading notes that the setting is currently turned on. Then, it summarizes the user benefit of the History Search feature. This is an AI (artificial intelligence) feature that improves the search functionality so that users can write queries in natural language and search their Brave browsing history. The tone should be motivating.">
-      Use everyday language to search your browsing history and find sites you visited. You can also ask questions and get answers based on your browsing history. The setting is off.
-    </message>
 
     <!-- Brave Search AI Mode and connected apps (AIM Workspace) -->
     <message name="IDS_SETTINGS_GOOGLE_SEARCH_AI_MODE_WORKSPACE_LABEL" desc="Label of the setting row that opens connection settings for Brave Search AI Mode and Workspace connected apps.">
@@ -3874,14 +3839,11 @@
         Browser proxy settings are controlled by multiple sources
       </message>
     </if>
-    <if expr="_google_chrome">
-      <message name="IDS_SETTINGS_SYSTEM_FEATURE_ON_DEVICE_AI_ENABLED_LABEL" desc="Label for the toggle that allows or prevents chrome to download on device GenAI models to local disk.">
-        On-device AI
-      </message>
-      <message name="IDS_SETTINGS_SYSTEM_FEATURE_ON_DEVICE_AI_ENABLED_SUB_LABEL" desc="This string describes what turning off the toggle implies.">
-        To power features like scam detection, Brave can use AI models that run directly on your device. When this is off, these features might not work. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" aria-description="$2"&gt;</ph>Learn more about on-device AI<ph name="END_LINK">&lt;/a&gt;</ph>
-      </message>
-    </if>
+
+    <!-- On-device AI Settings Page -->
+    <message name="IDS_SETTINGS_SYSTEM_FEATURE_ON_DEVICE_AI_ENABLED_LABEL" desc="Label for the toggle that allows or prevents chrome to download on device GenAI models to local disk.">
+      On-device AI
+    </message>
 
     <message name="IDS_PAGE_NOT_AVAILABLE_FOR_GUEST_HEADING" desc="This is the heading for the page not available for guest.">
       <ph name="PAGE_NAME">$1<ex>Bookmarks</ex></ph> is not available to Guest users.
@@ -4216,11 +4178,6 @@
         =1 {Removed permissions for 1 site}
         other {Removed permissions for {NUM_SITES} sites}}
     </message>
-    <message name="IDS_SETTINGS_SAFETY_HUB_REVIEW_NOTIFICATION_PERMISSIONS_MENU_NOTIFICATION" desc="The review notification permissions module of Safety Hub marks sites that send a lot of notifications for review by the user. This label is for the notification in Brave's three-dot menu indicating how many sites should be reviewed.">
-      {NUM_SITES, plural,
-        =1 {Found 1 site with lots of notifications}
-        other {Found {NUM_SITES} sites with lots of notifications}}
-    </message>
     <message name="IDS_SETTINGS_SAFETY_HUB_COMPROMISED_PASSWORDS_MENU_NOTIFICATION" desc="The password check module of Safety Hub warns users if there is any insecure credential. This label is for the notification in Brave's three-dot menu indicating how many passwords are compromised.">
       {NUM_SITES, plural,
         =1 {Found 1 compromised password}
@@ -4245,12 +4202,6 @@
     </message>
     <message name="IDS_SETTINGS_SAFETY_HUB_EXTENSIONS_MODULE_LOWERCASE_NAME" desc="The entry point shown on the screenshot leads to Safety Check settings page (chrome://settings/safetyCheck) when at least on of the Safety Check modules have recommendations. The subheader of the entry point lists the modules with recommendations. This string is the lower case version (i.e. version that comes in the middle of the sentence) for the name of extensions module.">
       extensions
-    </message>
-    <message name="IDS_SETTINGS_SAFETY_HUB_NOTIFICATIONS_MODULE_UPPERCASE_NAME" desc="The entry point shown on the screenshot leads to Safety Check settings page (chrome://settings/safetyCheck) when at least on of the Safety Check modules have recommendations. The subheader of the entry point lists the modules with recommendations. This string is the upper case version (i.e. version that comes first in the sentence) for the name of notifications module.">
-      Notifications
-    </message>
-    <message name="IDS_SETTINGS_SAFETY_HUB_NOTIFICATIONS_MODULE_LOWERCASE_NAME" desc="The entry point shown on the screenshot leads to Safety Check settings page (chrome://settings/safetyCheck) when at least on of the Safety Check modules have recommendations. The subheader of the entry point lists the modules with recommendations. This string is the lower case version (i.e. version that comes in the middle of the sentence) for the name of notifications module.">
-      notifications
     </message>
     <message name="IDS_SETTINGS_SAFETY_HUB_PERMISSIONS_MODULE_UPPERCASE_NAME" desc="The entry point shown on the screenshot leads to Safety Check settings page (chrome://settings/safetyCheck) when at least on of the Safety Check modules have recommendations. The subheader of the entry point lists the modules with recommendations. This string is the upper case version (i.e. version that comes first in the sentence) for the name of permissions module.">
       Permissions
@@ -4394,9 +4345,6 @@
   </message>
   <message name="IDS_SETTINGS_SKILLS_GALLERY_LABEL" desc="Label for the link row that opens the Skills Gallery.">
     View and manage your skills
-  </message>
-  <message name="IDS_SETTINGS_SYNC_GO_TO_SKILLS_BUTTON" desc="Label for the button on the Sync page that redirects the user to the Skills settings page.">
-    Go to AI Innovations
   </message>
   <message name="IDS_SETTINGS_SKILLS_WHEN_ON_BULLET_ONE" desc="First bullet point under the 'When on' column in the Skills settings page.">
     Build your own or add from the skills library

@@ -78,9 +78,6 @@
   <message name="IDS_OS_SETTINGS_TAG_CELLULAR_SIM_LOCK_ALT1" desc="Text for search result item which, when clicked, navigates the user to Cellular network settings, with the option to set up SIM lock with a PIN. Alternate phrase for: 'Cellular SIM lock'">
     Cellular SIM PIN
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_CELLULAR_APN" desc="Text for search result item which, when clicked, navigates the user to Cellular network settings, with the option to set up APNs. Alternate phrase for: 'Wi-Fi networks', 'Wireless'">
-    Cellular APN
-  </message>
   <message name="IDS_OS_SETTINGS_TAG_CELLULAR_APN_SETTINGS" desc="Text for search result item which, when clicked, navigates the user to the 'Access Point name (APN)' settings subpage of the currently active cellular network. Alternate phrase for 'Access point name (APN)'">
     Cellular APN settings
   </message>
@@ -155,27 +152,6 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_VPN" desc="Text for search result item which, when clicked, navigates the user to VPN settings.">
     VPN
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_AUDIO_SETTINGS" desc="Text for search result item which, when clicked, navigates the user to Audio settings.">
-    Audio
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_AUDIO_SETTINGS_ALT1" desc="Text for search result item which, when clicked, navigates the user to Audio settings. Alternative phrase for: 'Audio'.">
-    Volume
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_AUDIO_SETTINGS_ALT2" desc="Text for search result item which, when clicked, navigates the user to Audio settings. Alternative phrase for: 'Audio'.">
-    Sound
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_AUDIO_SETTINGS_ALT3" desc="Text for search result item which, when clicked, navigates the user to Audio settings. Alternative phrase for: 'Audio'.">
-    Speakers
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_AUDIO_SETTINGS_ALT4" desc="Text for search result item which, when clicked, navigates the user to Audio settings. Alternative phrase for: 'Audio'.">
-    Microphone
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_CHARGING_SOUNDS" desc="Text for search result item which, when clicked, navigates the user to settings to toggle whether the device plays charging sounds.">
-    Charging sounds
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_LOW_BATTERY_SOUND" desc="Text for search result item which, when clicked, navigates the user to settings to toggle whether the device plays the low battery warning sound.">
-    Low battery sound
   </message>
   <message name="IDS_OS_SETTINGS_TAG_AUTO_CONNECT_NETWORK" desc="Text for search result item which, when clicked, navigates the user to settings to toggle whether the device auto-connects to a network. Alternate phrase for: 'Auto connect to network'">
     Automatically connect to network
@@ -350,7 +326,6 @@
     Wi-Fi Sync
   </message>
 
-
   <!-- People section. -->
   <message name="IDS_OS_SETTINGS_TAG_PEOPLE" desc="Text for search result item which, when clicked, navigates the user to people settings.">
     People
@@ -455,66 +430,6 @@
   </message>
 
   <!-- Device section. -->
-  <message name="IDS_OS_SETTINGS_TAG_DEVICE" desc="Text for search result item which, when clicked, navigates the user to device settings.">
-    Device
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_KEYBOARD" desc="Text for search result item which, when clicked, navigates the user to keyboard settings.">
-    Keyboard
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_KEYBOARD_FUNCTION_KEYS" desc="Text for search result item which, when clicked, navigates the user to keyboard settings, with a toggle to enable/disable treating the top row as function keys.">
-    Keyboard function keys
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_KEYBOARD_BLOCK_META_FKEY_COMBO_REWRITES" translateable="false" desc="Text for search result item which, when clicked, navigates the user to keyboard settings, with a toggle to enable/disable system/launcher keys to switch the top row between function keys and chromeos actions.">
-    Block meta F-key combo rewrites
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_KEYBOARD_REMAP_KEYS" translateable="false" desc="Text for search result item which, when clicked, navigates the user to keyboard settings, with a button leading the user to remap keyboard keys page.">
-    Remap keyboard keys
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_KEYBOARD_AUTO_REPEAT" desc="Text for search result item which, when clicked, navigates the user to keyboard settings, with toggles/sliders to set the auto-repeat state. Alternate phrase for: 'Keyboard repeat latency'">
-    Keyboard auto-repeat
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_KEYBOARD_AUTO_REPEAT_ALT1" desc="Text for search result item which, when clicked, navigates the user to keyboard settings, with toggles/sliders to set the auto-repeat state. Alternate phrase for: 'Keyboard auto-repeat'">
-    Keyboard repeat latency
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_KEYBOARD_SHORTCUTS" desc="Text for search result item which, when clicked, navigates the user to keyboard shortcut settings.">
-    Keyboard shortcuts
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY" desc="Text for search result item which, when clicked, navigates the user to display settings. Alternate phrase for: 'Monitor', 'Screen'">
-    Display
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_ALT1" desc="Text for search result item which, when clicked, navigates the user to display settings. Alternate phrase for: 'Display settings', 'Screen'">
-    Monitor
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_ALT2" desc="Text for search result item which, when clicked, navigates the user to display settings. Alternate phrase for: 'Display settings', 'Monitor'">
-    Screen
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_SIZE" desc="Text for search result item which, when clicked, navigates the user to display settings, with a slider to change how small or large items appear on screen. Alternate phrase for: 'Monitor size', 'Screen size', 'Text size', 'Icon size', 'Zoom'">
-    Display size
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_SIZE_ALT1" desc="Text for search result item which, when clicked, navigates the user to display settings, with a slider to change how small or large items appear on screen. Alternate phrase for: 'Display size', 'Screen size', 'Text size', 'Icon size', 'Zoom'">
-    Monitor size
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_SIZE_ALT2" desc="Text for search result item which, when clicked, navigates the user to display settings, with a slider to change how small or large items appear on screen. Alternate phrase for: 'Display size', 'Monitor size', 'Text size', 'Icon size', 'Zoom'">
-    Screen size
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_SIZE_ALT3" desc="Text for search result item which, when clicked, navigates the user to display settings, with a slider to change how small or large items appear on screen. Alternate phrase for: 'Display size', 'Monitor size', 'Screen size', 'Icon size', 'Zoom'">
-    Text size
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_SIZE_ALT4" desc="Text for search result item which, when clicked, navigates the user to display settings, with a slider to change how small or large items appear on screen. Alternate phrase for: 'Display size', 'Monitor size', 'Screen size', 'Text size', 'Zoom'">
-    Icon size
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_SIZE_ALT5" desc="Text for search result item which, when clicked, navigates the user to display settings, with a slider to change how small or large items appear on screen. Alternate phrase for: 'Display size', 'Monitor size', 'Screen size', 'Text size', 'Icon size'">
-    Zoom
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_NIGHT_LIGHT" desc="Text for search result item which, when clicked, navigates the user to display settings, with a section for Night Light (adjusts brightness in dim light). Alternate phrase for: 'Dim light', 'Blue light reduction'">
-    Night Light
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_NIGHT_LIGHT_ALT1" desc="Text for search result item which, when clicked, navigates the user to display settings, with a section for Night Light (adjusts brightness in dim light). Alternate phrase for: 'Night Light', 'Blue light reduction'">
-    Dim light
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_NIGHT_LIGHT_ALT2" desc="Text for search result item which, when clicked, navigates the user to display settings, with a section for Night Light (adjusts brightness in dim light). Alternate phrase for: 'Night Light', 'Dim light'">
-    Blue light reduction
-  </message>
   <message name="IDS_OS_SETTINGS_TAG_STORAGE" desc="Text for search result item which, when clicked, navigates the user to storage settings, which display how much space is being used on the hard drive. Alternate phrase for: 'Disk space', 'Hard drive', 'User data encryption'">
     Storage management
   </message>
@@ -551,111 +466,6 @@
   <message name="IDS_OS_SETTINGS_TAG_POWER_CHARGE_LIMIT" desc="Text for search result item which, when clicked, navigates the user to power settings, with an option to enable a charge limit.">
     Charge limit
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_TOUCHPAD" desc="Text for search result item which, when clicked, navigates the user to touchpad settings. Alternate phrase for: 'Trackpad'">
-    Touchpad
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_TOUCHPAD_ALT1" desc="Text for search result item which, when clicked, navigates the user to touchpad settings. Alternate phrase for: 'Touchpad settings'">
-    Trackpad
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_TOUCHPAD_TAP_TO_CLICK" desc="Text for search result item which, when clicked, navigates the user to touchpad settings, with a toggle to enable/disable tap-to-click.">
-    Touchpad tap-to-click
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_TOUCHPAD_TAP_DRAGGING" desc="Text for search result item which, when clicked, navigates the user to touchpad settings, with a toggle to enable/disable tap dragging.">
-    Touchpad tap dragging
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_TOUCHPAD_REVERSE_SCROLLING" desc="Text for search result item which, when clicked, navigates the user to touchpad settings, with a toggle to enable/disable reverse scrolling.">
-    Touchpad reverse scrolling
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_TOUCHPAD_ACCELERATION" desc="Text for search result item which, when clicked, navigates the user to touchpad settings, with a toggle to enable/disable acceleration.">
-    Touchpad acceleration
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_TOUCHPAD_SPEED" desc="Text for search result item which, when clicked, navigates the user to touchpad settings, with a slider to set speed.">
-    Touchpad speed
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_TOUCHPAD_HAPTIC_FEEDBACK" desc="Text for search result item which, when clicked, navigates the user to touchpad settings, with a toggle to enable/disable haptic feedback.">
-    Touchpad haptic feedback
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_TOUCHPAD_HAPTIC_CLICK_SENSITIVITY" translateable="false" desc="Text for search result item which, when clicked, navigates the user to touchpad settings, with a slider to adjust the haptic touchpad click sensitivity.">
-    Touchpad haptic click sensitivity
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_MOUSE" desc="Text for search result item which, when clicked, navigates the user to mouse settings.">
-    Mouse
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_MOUSE_SWAP_BUTTON" desc="Text for search result item which, when clicked, navigates the user to mouse settings, with a toggle to enable/disable swapping the primary buttons.">
-    Swap primary mouse button
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_MOUSE_REVERSE_SCROLLING" desc="Text for search result item which, when clicked, navigates the user to mouse settings, with a toggle to enable/disable reverse scrolling.">
-    Mouse reverse scrolling
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_MOUSE_ACCELERATION" desc="Text for search result item which, when clicked, navigates the user to mouse settings, with a toggle to enable/disable acceleration.">
-    Mouse acceleration
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_MOUSE_SCROLL_ACCELERATION" desc="Text for search result item which, when clicked, navigates the user to mouse settings, with a toggle to enable/disable scroll acceleration.">
-    Mouse scroll acceleration
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_MOUSE_SPEED" desc="Text for search result item which, when clicked, navigates the user to mouse settings, with a slider to set speed.">
-    Mouse speed
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_POINTING_STICK_PRIMARY_BUTTON" desc="Text for search result item which, when clicked, navigates the user to pointing stick (TrackPoint) settings, with a dropdown to choose the primary button. (TrackPoint is a trademark that's not translated.)">
-    Primary TrackPoint button
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_POINTING_STICK_ACCELERATION" desc="Text for search result item which, when clicked, navigates the user to pointing stick (TrackPoint) settings, with a toggle to enable/disable acceleration. (TrackPoint is a trademark that's not translated.)">
-    TrackPoint acceleration
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_POINTING_STICK_SPEED" desc="Text for search result item which, when clicked, navigates the user to pointing stick settings (normally known as TrackPoint settings), with a slider to set speed.">
-    TrackPoint speed
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_STYLUS" desc="Text for search result item which, when clicked, navigates the user to stylus settings.">
-    Stylus
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_STYLUS_SHELF_TOOLS" desc="Text for search result item which, when clicked, navigates the user to stylus settings, with a toggle to enable/disable showing stylus tools in the shelf. Alternate phrase for: 'Stylus tools in toolbar', 'Stylus tools in dock'">
-    Show stylus tools in shelf
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_STYLUS_SHELF_TOOLS_ALT1" desc="Text for search result item which, when clicked, navigates the user to stylus settings, with a toggle to enable/disable showing stylus tools in the shelf. Alternate phrase for: 'Show stylus tools in shelf', 'Stylus tools in dock'">
-    Stylus tools in toolbar
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_STYLUS_SHELF_TOOLS_ALT2" desc="Text for search result item which, when clicked, navigates the user to stylus settings, with a toggle to enable/disable showing stylus tools in the shelf. Alternate phrase for: 'Show stylus tools in shelf', 'Stylus tools in toolbar'">
-    Stylus tools in dock
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_STYLUS_NOTE_APP" desc="Text for search result item which, when clicked, navigates the user to stylus settings, with a dropdown to select the note-taking app. Alternate phrase for: 'Stylus writing app', 'Stylus drawing app'">
-    Stylus note-taking app
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_STYLUS_NOTE_APP_ALT1" desc="Text for search result item which, when clicked, navigates the user to stylus settings, with a dropdown to select the note-taking app. Alternate phrase for: 'Stylus note-taking app', 'Stylus drawing app'">
-    Stylus writing app
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_STYLUS_NOTE_APP_ALT2" desc="Text for search result item which, when clicked, navigates the user to stylus settings, with a dropdown to select the note-taking app. Alternate phrase for: 'Stylus note-taking app', 'Stylus writing app'">
-    Stylus drawing app
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_ARRANGEMENT" desc="Text for search result item which, when clicked, navigates the user to display settings, with the ability to rearrange screen positioning. Alternate phrase for: 'Monitor arrangement', 'Screen arrangement'">
-    Display arrangement
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_ARRANGEMENT_ALT1" desc="Text for search result item which, when clicked, navigates the user to display settings, with the ability to rearrange screen positioning. Alternate phrase for: 'Display arrangement', 'Screen arrangement'">
-    Monitor arrangement
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_ARRANGEMENT_ALT2" desc="Text for search result item which, when clicked, navigates the user to display settings, with the ability to rearrange screen positioning. Alternate phrase for: 'Display arrangement', 'Monitor arrangement'">
-    Screen arrangement
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_MIRRORING" desc="Text for search result item which, when clicked, navigates the user to display settings, with a checkbox to enable/disable display mirroring.">
-    Display mirroring
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_UNIFIED_DESKTOP" desc="Text for search result item which, when clicked, navigates the user to display settings, with a toggle to enable/disable Unified Desktop mode, which allows windows to span multiple displays.">
-    Allow windows to span displays
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_ORIENTATION" desc="Text for search result item which, when clicked, navigates the user to display settings, with a dropdown to select display orientation (normal, or rotated 90/180/270 degrees). Alternate phrase for 'Display rotation'">
-    Display orientation
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_ORIENTATION_ALT1" desc="Text for search result item which, when clicked, navigates the user to display settings, with a dropdown to select display orientation (normal, or rotated 90/180/270 degrees). Alternate phrase for 'Display orientation'">
-    Display rotation
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_AMBIENT_COLORS" desc="Text for search result item which, when clicked, navigates the user to display settings, with a toggle to enable/disable ambient colors, which adapts the screen color to match the environment.">
-    Ambient colors
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_TOUCHSCREEN_CALIBRATION" desc="Text for search result item which, when clicked, navigates the user to display settings, with a link to open the touchscreen calibration UI.">
-    Touchscreen calibration
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_NIGHT_LIGHT_COLOR_TEMPERATURE" desc="Text for search result item which, when clicked, navigates the user to display settings, with a slider to increase/decrease the 'color temperature' for Night Light, which makes it easier to look at the screen in dim light.">
-    Night Light color temperature
-  </message>
   <message name="IDS_OS_SETTINGS_TAG_EXTERNAL_STORAGE" desc="Text for search result item which, when clicked, navigates the user to external storage preferences.">
     External storage preferences
   </message>
@@ -676,27 +486,6 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_POWER_SLEEP_COVER_CLOSED_ALT2" desc="Text for search result item which, when clicked, navigates the user to power settings, with an option to set whether the device sleeps when the lid is closed. Alternate phrase for: 'Sleep when cover is closed', 'Sleep when laptop is closed'">
     Sleep when lid is closed
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_RESOLUTION" desc="Text for search result item which, when clicked, navigates the user to display settings, with a dropdown to select screen resolution. Alternate phrase for: 'Monitor resolution', 'Screen resolution'">
-    Display resolution
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_RESOLUTION_ALT1" desc="Text for search result item which, when clicked, navigates the user to display settings, with a dropdown to select screen resolution. Alternate phrase for: 'Display resolution', 'Screen resolution'">
-    Monitor resolution
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_RESOLUTION_ALT2" desc="Text for search result item which, when clicked, navigates the user to display settings, with a dropdown to select screen resolution. Alternate phrase for: 'Display resolution', 'Monitor resolution'">
-    Screen resolution
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_REFRESH_RATE" desc="Text for search result item which, when clicked, navigates the user to display settings, with a dropdown to select screen refresh rate. Alternate phrase for: 'Monitor refresh rate', 'Screen refresh rate'">
-    Display refresh rate
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_REFRESH_RATE_ALT1" desc="Text for search result item which, when clicked, navigates the user to display settings, with a dropdown to select screen refresh rate. Alternate phrase for: 'Display refresh rate', 'Screen refresh rate'">
-    Monitor refresh rate
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_REFRESH_RATE_ALT2" desc="Text for search result item which, when clicked, navigates the user to display settings, with a dropdown to select screen refresh rate. Alternate phrase for: 'Display refresh rate', 'Monitor refresh rate'">
-    Screen refresh rate
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_OVERSCAN" desc="Text for search result item which, when clicked, navigates the user to display settings, with an option to adjust monitor overscan.">
-    Overscan
   </message>
   <message name="IDS_OS_SETTINGS_TAG_POWER_BATTERY_SAVER" desc="Text for search result item which, when clicked, navigates the user to power settings, with an option to enable battery saver.">
     Battery Saver
@@ -989,9 +778,6 @@
   <message name="IDS_OS_SETTINGS_TAG_LANGUAGES" desc="Text for search result item which, when clicked, navigates the user to languages settings.">
     Languages
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_INPUT" desc="Text for search result item which, when clicked, navigates the user to input settings.">
-    Inputs
-  </message>
   <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_CHANGE_DEVICE_LANGUAGE" desc="Text for search result item which, when clicked, navigates the user to languages and input settings, with allows users to change device language.">
     Change device language
   </message>
@@ -1001,24 +787,6 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_INPUT_ADD_LANGUAGE" desc="Text for search result item which, when clicked, navigates the user to languages and input settings, with an option to add a new language.">
     Add languages
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_ADD_INPUT_METHOD" desc="Text for search result item which, when clicked, navigates the user to input settings, with the option to add input methods (keyboard layouts and input method editors).">
-    Add input methods
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_SPELL_CHECK" desc="Text for search result item which, when clicked, navigates the user to input settings, with all the options for spell check settings">
-    Spell check
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_EDIT_DICTIONARY" desc="Text for search result item which, when clicked, navigates the user to edit dictionary page.">
-    Customize spell check
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_INPUT_INPUT_OPTIONS_SHELF" desc="Text for search result item which, when clicked, navigates the user to languages and input settings, with a toggle to enable/disable showing input options in the shelf. Alternate phrase for: 'Input options in toolbar'">
-    Show input options in the shelf
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_INPUT_INPUT_OPTIONS_SHELF_ALT1" desc="Text for search result item which, when clicked, navigates the user to languages and input settings, with a toggle to enable/disable showing input options in the shelf. Alternate phrase for: 'Show input options in the shelf'">
-    Input options in toolbar
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_AUTO_CORRECTION" desc="Text for search result item which, when clicked, navigates the user to the settings page for the current input method, with a section having a toggle to enable/disable performing auto-corrections after an user types a word.">
-    Auto-correction
   </message>
   <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_APP_LANGUAGES" desc="Text for search result item which, when clicked, navigates the user to app language settings, with a list of apps which language can be customized.">
     App languages
@@ -1056,75 +824,7 @@
     Microsoft OneDrive settings
   </message>
 
-  <!-- Printing section. -->
-  <message name="IDS_OS_SETTINGS_TAG_PRINTING" desc="Text for search result item which, when clicked, navigates the user to printer settings for CUPS printers (a.k.a. those that can use the Unix protocol). Alternate phrase for: 'Printers', 'CUPS'">
-    Printing
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_PRINTING_ALT1" desc="Text for search result item which, when clicked, navigates the user to printer settings for CUPS printers (a.k.a. those that can use the Unix protocol). Alternate phrase for: 'Printing', 'CUPS'">
-    Printers
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_PRINTING_ALT2" desc="Text for search result item which, when clicked, navigates the user to printer settings for CUPS printers (a.k.a. those that can use the Unix protocol). Alternate phrase for: 'Printers', 'Printing'">
-    CUPS
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_PRINTING_ADD_PRINTER" desc="Text for search result item which, when clicked, navigates the user to printer settings, with the option to add a printer.">
-    Add printer
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_PRINTING_SAVED_PRINTERS" desc="Text for search result item which, when clicked, navigates the user to printer settings, with the option to edit saved printers.">
-    Saved printers
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_PRINT_MANAGEMENT" desc="text for search result item which, when clicked, naviagets the user to the printing section to open the print jobs app. alternate phrase for: 'Print Management', 'Print History'">
-    Print jobs
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_PRINT_MANAGEMENT_ALT1" desc="text for search result item which, when clicked, naviagets the user to the printing section to open the print jobs app. alternate phrase for: 'Print Jobs', 'Print History'">
-    Print management
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_PRINT_MANAGEMENT_ALT2" desc="text for search result item which, when clicked, naviagets the user to the printing section to open the print jobs app. alternate phrase for: 'Print Management', 'Print Jobs'">
-    Print history
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_SCANNING_APP" desc="text for search result item which, when clicked, navigates the user to the printing section to open the scanning app.">
-    Scan
-  </message>
-
   <!-- Accessibility section. -->
-  <message name="IDS_OS_SETTINGS_TAG_A11Y" desc="Text for search result item which, when clicked, navigates the user to accessibility (a.k.a. a11y) settings. Alternate phrase for: 'A11y'">
-    Accessibility
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_ALT1" desc="Text for search result item which, when clicked, navigates the user to accessibility (a.k.a. a11y) settings. Alternate phrase for: 'Accessibility settings'">
-    A11y
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_ALT2" desc="Text for search result item which, when clicked, navigates the user to accessibility (a.k.a. a11y) settings. Alternate phrase for: 'Accessibility settings'">
-    Assistive technology
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_ALWAYS_SHOW_OPTIONS" desc="Text for search result item which, when clicked, navigates the user to accessibility (a.k.a. a11y) settings, with a toggle to enable/disable always showing accessibility options in the system menu. Alternate phrase for: 'Always show a11y options'">
-    Always show accessibility options
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_ALWAYS_SHOW_OPTIONS_ALT1" desc="Text for search result item which, when clicked, navigates the user to accessibility (a.k.a. a11y) settings, with a toggle to enable/disable always showing accessibility options in the system menu. Alternate phrase for: 'Always show accessibility options'">
-    Always show a11y options
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_MANAGE" desc="Text for search result item which, when clicked, navigates the user to manage accessibility (a.k.a. a11y) settings. Alternate phrase for: 'Manage a11y'">
-    Manage accessibility features
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_MANAGE_ALT1" desc="Text for search result item which, when clicked, navigates the user to manage accessibility (a.k.a. a11y) settings. Alternate phrase for: 'Manage accessibility features'">
-    Manage a11y
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_TEXT_TO_SPEECH_PAGE" desc="Text for search result item which, when clicked, navigates the user to text-to-speech accessibility settings. Alternate phrase for: 'TTS'">
-    Text-to-speech
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_TEXT_TO_SPEECH_PAGE_ALT1" desc="Text for search result item which, when clicked, navigates the user to text-to-speech accessibility settings. Alternate phrase for: 'Text-to-speech'">
-    Automatic reading
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_TEXT_TO_SPEECH_PAGE_ALT2" desc="Text for search result item which, when clicked, navigates the user to text-to-speech accessibility settings. Alternate phrase for: 'Text-to-speech'">
-    Read aloud
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_TEXT_TO_SPEECH_PAGE_ALT3" desc="Text for search result item which, when clicked, navigates the user to text-to-speech accessibility settings. Alternate phrase for: 'Text-to-speech'">
-    Low vision speech tools
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_TEXT_TO_SPEECH_PAGE_ALT4" desc="Text for search result item which, when clicked, navigates the user to text-to-speech accessibility settings. Alternate phrase for: 'Text-to-speech'">
-    Speech synthesis
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_TEXT_TO_SPEECH_PAGE_ALT5" desc="Text for search result item which, when clicked, navigates the user to text-to-speech accessibility settings. Alternate phrase for: 'Text-to-speech'">
-    TTS
-  </message>
   <message name="IDS_OS_SETTINGS_TAG_A11y_CHROMEVOX" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable ChromeVox (spoken feedback).">
     ChromeVox (spoken feedback)
   </message>
@@ -1133,310 +833,6 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_A11y_CHROMEVOX_ALT2" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable ChromeVox (spoken feedback). Alternate phrase for: 'ChromeVox (spoken feedback)'">
     Braille
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_CURSOR_COLOR" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable custom cursor colors.">
-    Cursor color
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_CURSOR_COLOR_ALT1" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable custom cursor colors. Alternate phrase for: 'Cursor color'">
-    Mouse color
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_CURSOR_COLOR_ALT2" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable custom cursor colors. Alternate phrase for: 'Cursor color'">
-    Pointer color
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_SELECT_TO_SPEAK" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable select-to-speak (hearing text read aloud after it is selected).">
-    Select-to-speak
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_TEXT_TO_SPEECH" desc="Text for search result item which, when clicked, navigates the user to text-to-speech voice accessibility settings. Alternate phrase for 'TTS'">
-    Text-to-speech voice settings
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_TEXT_TO_SPEECH_ALT1" desc="Text for search result item which, when clicked, navigates the user to text-to-speech voice accessibility settings. Alternate phrase for 'Text-to-speech'">
-    Spoken language
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_TEXT_TO_SPEECH_ALT2" desc="Text for search result item which, when clicked, navigates the user to text-to-speech voice accessibility settings. Alternate phrase for 'Text-to-speech'">
-    Speech engines
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_TEXT_TO_SPEECH_ALT3" desc="Text for search result item which, when clicked, navigates the user to text-to-speech voice accessibility settings. Alternate phrase for 'Text-to-speech'">
-    eSpeak
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_TEXT_TO_SPEECH_ALT4" desc="Text for search result item which, when clicked, navigates the user to text-to-speech voice accessibility settings. Alternate phrase for 'Text-to-speech'">
-    Preferred voice
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_SPEECH_RATE" desc="Text for search result item which, when clicked, navigates the user to text-to-speech voice accessibility settings, with a slider to set the speech rate.">
-    Text-to-speech rate
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_SPEECH_RATE_ALT1" desc="Text for search result item which, when clicked, navigates the user to text-to-speech voice accessibility settings, with a slider to set the speech rate.">
-    Speech speed
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_SPEECH_PITCH" desc="Text for search result item which, when clicked, navigates the user to text-to-speech voice accessibility settings, with a slider to set the speech pitch.">
-    Text-to-speech pitch
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_SPEECH_VOLUME" desc="Text for search result item which, when clicked, navigates the user to text-to-speech voice accessibility settings, with a slider to set the speech volume.">
-    Text-to-speech volume
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_SPEECH_VOICE_PREVIEW" desc="Text for search result item which, when clicked, navigates the user to text-to-speech voice accessibility settings, with the ability to set preferred voices and preview the spoken voice.">
-    Text-to-speech voice
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_SPEECH_ENGINES" desc="Text for search result item which, when clicked, navigates the user to text-to-speech voice accessibility settings, with the ability to view installed speech engine extensions.">
-    Text-to-speech engines
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_DISPLAY_AND_MAGNIFICATION_PAGE" desc="Text for search result item which, when clicked, navigates the user to display and magnification accessibility settings. Alternate phrase for: 'Low vision display tools'">
-    Display and magnification
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_DISPLAY_AND_MAGNIFICATION_PAGE_ALT1" desc="Text for search result item which, when clicked, navigates the user to display and magnification accessibility settings. Alternate phrase for: 'Display and magnification'">
-    Low vision display tools
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_HIGH_CONTRAST" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable color-inversion mode (formerly known as high-contrast mode).">
-    High contrast mode
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_HIGH_CONTRAST_ALT1" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable color-inversion mode (formerly known as high-contrast mode). Alternate phrase for: 'High contrast mode'">
-    Invert colors
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_FULLSCREEN_MAGNIFIER" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable full-screen magnification.">
-    Fullscreen magnifier
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_FULLSCREEN_MAGNIFIER_ALT1" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable full-screen magnification. Alternate phrase for: 'Fullscreen magnifier'">
-    Zoom
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_FULLSCREEN_MAGNIFIER_ALT2" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable full-screen magnification. Alternate phrase for: 'Fullscreen magnifier'">
-    Magnify screen
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_FULLSCREEN_MAGNIFIER_FOCUS_FOLLOWING" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable full-screen magnification keyboard focus-following.">
-    Magnifier follows keyboard focus
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_MAGNIFIER_SELECT_TO_SPEAK_FOLLOWING" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable full-screen or docked magnification select to speak highlight following.">
-    Magnifier follows the word being read by select-to-speak
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_MAGNIFIER_CHROMEVOX_FOLLOWING" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable full-screen or docked magnification ChromeVox focus following.">
-    Magnifier follows ChromeVox focus
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_DOCKED_MAGNIFIER" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable docked screen magnification.">
-    Docked magnifier
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_DOCKED_MAGNIFIER_ALT1" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable docked screen magnification. Alternate phrase for: 'Docked magnifier'">
-    Partial magnifier
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_REDUCED_ANIMATIONS" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable reduced animations.">
-    Reduced animations
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_REDUCED_ANIMATIONS_ALT1" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable reduced animations. Alternate phrase for: 'Reduced animations'">
-    Reduced motion
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_REDUCED_ANIMATIONS_ALT2" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable reduced animations. Alternate phrase for: 'Reduced animations'">
-    Reduced movement on the screen
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_ALWAYS_SHOW_SCROLLBARS" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable always show scrollbars.">
-    Always show scrollbars
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_KEYBOARD_AND_TEXT_INPUT_PAGE" desc="Text for search result item which, when clicked, navigates the user to display and magnification accessibility settings. Alternate phrase for: 'Low vision display tools'">
-    Keyboard and text input
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_STICKY_KEYS" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable sticky keys.">
-    Sticky keys
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_ON_SCREEN_KEYBOARD" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable on-screen keyboard.">
-    On-screen keyboard
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_DICTATION" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable dictation (speak-to-type). Alternate phrase for: 'Speak-to-type'">
-    Dictation
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_DICTATION_ALT1" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable dictation (speak-to-type). Alternate phrase for: 'Dictation'">
-    Speak-to-type
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_DICTATION_ALT2" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable dictation (speak-to-type). Alternate phrase for: 'Dictation'">
-    Speech-to-text
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_DICTATION_ALT3" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable dictation (speak-to-type). Alternate phrase for: 'Dictation'">
-    Speech recognition
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_DICTATION_ALT4" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable dictation (speak-to-type). Alternate phrase for: 'Dictation'">
-    Voice typing
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_HIGHLIGHT_KEYBOARD_FOCUS" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable highlighting the object with keyboard focus when it changes.">
-    Highlight keyboard focus
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_HIGHLIGHT_KEYBOARD_FOCUS_ALT1" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable highlighting the object with keyboard focus when it changes. Alternate phrase for: 'Highlight keyboard focus'">
-    Focus ring
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_HIGHLIGHT_TEXT_CARET" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable highlighting the text caret when it appears or moves.">
-    Highlight text caret
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_HIGHLIGHT_TEXT_CARET_ALT1" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable highlighting the text caret when it appears or moves. Alternate phrase for: 'Highlight text caret'">
-    Text cursor highlighter
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_CARET_BROWSING" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable browsing using the text caret.">
-    Caret browsing
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_CARET_BROWSING_ALT1" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable browsing using the text caret. Alternate phrase for 'Caret browsing'">
-    Navigate with text cursor
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_CURSOR_AND_TOUCHPAD_PAGE" desc="Text for search result item which, when clicked, navigates the user to cursor and touchpad accessibility settings. Alternate phrase for: 'Mouse accessibility settings'">
-    Cursor and touchpad
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_CURSOR_AND_TOUCHPAD_PAGE_ALT1" desc="Text for search result item which, when clicked, navigates the user to cursor and touchpad accessibility settings. Alternate phrase for: 'Cursor and touchpad'">
-    Mouse accessibility settings
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_CURSOR_AND_TOUCHPAD_PAGE_ALT2" desc="Text for search result item which, when clicked, navigates the user to cursor and touchpad accessibility settings. Alternate phrase for: 'Cursor and touchpad'">
-    Pointer accessibility settings
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_AUTOMATICALLY_CLICK" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable automatically clicking when the cursor stops.">
-    Automatically click when cursor stops
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_AUTOMATICALLY_CLICK_ALT1" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable automatically clicking when the cursor stops. Alternate phrase for: 'Automatically click when cursor stops'">
-    Auto clicks
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_MOUSE_KEYS" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable controlling the mouse via the keyboard">
-    Mouse keys
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_FACEGAZE" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable controlling the computer via facial gestures and movement.">
-    Face control
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_FACEGAZE_ALT1" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable controlling the computer via facial gestures and movement. Alternate phrase for: 'Face control'">
-    Facial control
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_FACEGAZE_ALT2" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable controlling the computer via facial gestures and movement. Alternate phrase for: 'Face control'">
-    Facial gestures
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_FACEGAZE_ALT3" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable controlling the computer via facial gestures and movement. Alternate phrase for: 'Face control'">
-    Head pointer
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_FACEGAZE_ALT4" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable controlling the computer via facial gestures and movement. Alternate phrase for: 'Face control'">
-    Head tracking
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_LARGE_CURSOR" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable a large mouse cursor.">
-    Large cursor
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_LARGE_CURSOR_ALT1" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable a large mouse cursor. Alternate phrase for: 'Large cursor'">
-    Show large mouse cursor
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_LARGE_CURSOR_ALT2" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable a large mouse cursor. Alternate phrase for: 'Large cursor'">
-    Big mouse cursor
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_LARGE_CURSOR_ALT3" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable a large mouse cursor. Alternate phrase for: 'Large cursor'">
-    Big pointer
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_LARGE_CURSOR_ALT4" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable a large mouse cursor. Alternate phrase for: 'Large cursor'">
-    Mouse size
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_HIGHLIGHT_CURSOR" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable highlighting the mouse cursor when it is moving.">
-    Highlight mouse cursor when moving
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_HIGHLIGHT_CURSOR_ALT1" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable highlighting the mouse cursor when it is moving. Alternate phrase for: 'Highlight mouse cursor when moving'">
-    Highlight pointer
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_HIGHLIGHT_CURSOR_ALT2" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable highlighting the mouse cursor when it is moving. Alternate phrase for: 'Highlight mouse cursor when moving'">
-    Circle pointer
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_HIGHLIGHT_CURSOR_ALT3" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable highlighting the mouse cursor when it is moving. Alternate phrase for: 'Highlight mouse cursor when moving'">
-    Circle cursor
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_SHAKE_TO_LOCATE_CURSOR" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable enlarging the mouse cursor when it is shaken.">
-    Shake to locate cursor
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_SHAKE_TO_LOCATE_CURSOR_ALT1" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable enlarging the mouse cursor when it is shaken. Alternate phrase for: 'Shake to locate cursor'">
-    Find mouse pointer
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_SHAKE_TO_LOCATE_CURSOR_ALT2" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable enlarging the mouse cursor when it is shaken. Alternate phrase for: 'Shake to locate cursor'">
-    Lost mouse cursor
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_SHAKE_TO_LOCATE_CURSOR_ALT3" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable enlarging the mouse cursor when it is shaken. Alternate phrase for: 'Shake to locate cursor'">
-    Find mouse cursor
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_TABLET_NAVIGATION_BUTTONS" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable showing navigation buttons (launcher, back, overview) in the shelf when the device is in tablet mode.">
-    Tablet navigation buttons
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_AUDIO_AND_CAPTIONS_PAGE" desc="Text for search result item which, when clicked, navigates the user to audio and captions accessibility settings. Alternate phrase for: 'Subtitles'">
-    Audio and captions
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_AUDIO_AND_CAPTIONS_PAGE_ALT1" desc="Text for search result item which, when clicked, navigates the user to audio and captions accessibility settings. Alternate phrase for: 'Audio and captions'">
-    Subtitles
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_AUDIO_AND_CAPTIONS_PAGE_ALT2" desc="Text for search result item which, when clicked, navigates the user to audio and captions accessibility settings. Alternate phrase for: 'Audio and captions'">
-    Closed captions
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_AUDIO_AND_CAPTIONS_PAGE_ALT3" desc="Text for search result item which, when clicked, navigates the user to audio and captions accessibility settings. Alternate phrase for: 'Audio and captions'">
-    Text for audio
-  </message>
-
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_MONO_AUDIO" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable mono audio (the same sound with all speakers). Alternate phrase for: 'Same audio with all speakers'">
-    Mono audio
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_MONO_AUDIO_ALT1" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable mono audio (the same sound with all speakers). Alternate phrase for: 'Mono audio'">
-    Same audio with all speakers
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_STARTUP_SOUND" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable playing a sound upon device startup.">
-    Startup sound
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_STARTUP_SOUND_ALT1" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable playing a sound upon device startup. Alternate phrase for: 'Startup sound'">
-    Play sound on device startup
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_CAPTIONS" desc="Text for search result item which, when clicked, navigates the user to accessibility caption preferences.">
-    Caption preferences
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_LIVE_CAPTION" desc="Text for a search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable Live Caption.">
-    Live Caption
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_LIVE_CAPTION_ALT1" desc="Text for a search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable Live Caption. Alternate phrase for: 'Live Caption'">
-    Auto captions
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_ENABLE_SWITCH_ACCESS" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable switch access, which allows users to control the computer with just one or two switches.">
-    Switch access
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_SWITCH_ACCESS" desc="Text for search result item which, when clicked, navigates the user to accessibility switch access settings, which allow users to control the computer with just one or two switches.">
-    Switch access settings
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_SWITCH_ACCESS_ASSIGNMENT" desc="Text for search result item which, when clicked, navigates the user to accessibility switch access settings, with controls to set which key(s) are used as switches.">
-    Switch action assignment
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_SWITCH_ACCESS_AUTO_SCAN" desc="Text for search result item which, when clicked, navigates the user to accessibility switch access settings, with a toggle to enable/disable switch auto-scan.">
-    Switch access auto-scan
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_SWITCH_ACCESS_AUTO_SCAN_KEYBOARD" desc="Text for search result item which, when clicked, navigates the user to accessibility switch access settings, with a slider to set the auto-scan repeat rate.">
-    Switch access keyboard auto-scan
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_OVERSCROLL_ENABLED" desc="Text for search result item which, when clicked, navigates the user to an accessibility setting to turn on or off overscroll navigation.">
-    Swipe to navigate between pages
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_OVERSCROLL_ENABLED_ALT1" desc="Text for search result item which, when clicked, navigates the user to an accessibility setting to turn on or off overscroll navigation.">
-    Overscroll to navigate between pages
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_FLASH_NOTIFICATIONS" desc="Text for search result item which, when clicked, navigates the user to an accessibility setting to turn on or off a feature that flashes the screen when a notification appears.">
-    Flash notifications
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_FLASH_NOTIFICATIONS_ALT1" desc="Text for search result item which, when clicked, navigates the user to an accessibility setting to turn on or off a feature that flashes the screen when a notification appears.">
-    Screen flash
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_LABELS_FROM_GOOGLE" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable getting image descriptions from Brave.">
-    Get image descriptions from Brave
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_COLOR_CORRECTION" desc="Text for search result item which, when clicked, navigates the user to the accessibility settings, with a toggle to enable/disable color correction.">
-    Color correction
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_COLOR_CORRECTION_ALT1" desc="Text for search result item which, when clicked, navigates the user to the accessibility settings, with a toggle to enable/disable color correction.">
-    Color filters
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_COLOR_CORRECTION_ALT2" desc="Text for search result item which, when clicked, navigates the user to the accessibility settings, with a toggle to enable/disable color correction.">
-    Color blindness
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_COLOR_CORRECTION_ALT3" desc="Text for search result item which, when clicked, navigates the user to the accessibility settings, with a toggle to enable/disable color correction. One common type of color vision deficiency that can be helped by color correction is protanopia, and color correction filters include a protanopia filter.">
-    Protanomaly
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_COLOR_CORRECTION_ALT4" desc="Text for search result item which, when clicked, navigates the user to the accessibility settings, with a toggle to enable/disable color correction. One common type of color vision deficiency that can be helped by color correction is deuteranopia, and color correction filters include a deuteranopia filter.">
-    Deuteranomaly
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_COLOR_CORRECTION_ALT5" desc="Text for search result item which, when clicked, navigates the user to the accessibility settings, with a toggle to enable/disable color correction. One common type of color vision deficiency that can be helped by color correction is tritanopia, and color correction filters include a tritanopia filter.">
-    Tritanomaly
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_BOUNCE_KEYS" desc="Text for search result item which, when clicked, navigates the user to the accessibility settings, with a toggle to enable/disable bounce keys.">
-    Bounce keys
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_SLOW_KEYS" desc="Text for search result item which, when clicked, navigates the user to the accessibility settings, with a toggle to enable/disable slow keys.">
-    Slow keys
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_DISABLE_TOUCHPAD" desc="Text for search result item which, when clicked, navigates the user to the accessibility settings, with a dropdown to enable/disable the internal touchpad">
-    Disable Touchpad
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_DISABLE_TOUCHPAD_ALT1" desc="Text for search result item which, when clicked, navigates the user to the accessibility settings, with a dropdown to enable/disable the internal touchpad">
-    Disable Trackpad
   </message>
 
   <!-- Reset section. -->
