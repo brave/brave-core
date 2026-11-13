@@ -16,6 +16,9 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.provider.Settings;
 import android.view.View;
+
+import androidx.test.core.app.ApplicationProvider;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,8 +27,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
-import androidx.test.core.app.ApplicationProvider;
 
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.build.annotations.Nullable;
@@ -219,7 +220,8 @@ public class BraveCollapsedUrlChipMediatorTest {
         assertTrue(BraveCollapsedUrlChipMediator.isEligibleUrlSpec("https://example.com/page"));
         assertTrue(BraveCollapsedUrlChipMediator.isEligibleUrlSpec("http://example.com/"));
         // The host component (after the userinfo delimiter) is what counts.
-        assertTrue(BraveCollapsedUrlChipMediator.isEligibleUrlSpec("https://example.com@evil.com/"));
+        assertTrue(
+                BraveCollapsedUrlChipMediator.isEligibleUrlSpec("https://example.com@evil.com/"));
         assertFalse(BraveCollapsedUrlChipMediator.isEligibleUrlSpec("chrome://version/"));
         assertFalse(BraveCollapsedUrlChipMediator.isEligibleUrlSpec("about:blank"));
         assertFalse(BraveCollapsedUrlChipMediator.isEligibleUrlSpec("file:///tmp/x"));
