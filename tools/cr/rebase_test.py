@@ -952,6 +952,141 @@ class MessageWriterTest(unittest.TestCase):
 
         self.assertIsNone(rebase.MessageWriter.parse(path))
 
+    _FIRST_ID = 'I' + '1' * 40
+    _LAST_ID = 'I' + '2' * 40
+
+    def _rewritten(self, content: str) -> str:
+        writer = rebase.MessageWriter.parse(self._file(content))
+        writer.rewrite_with_last_message()
+        return (self._tmp_root / 'COMMIT_EDITMSG').read_text()
+
+    def test_pinned_squash_keeps_the_first_change_id(self):
+        """The last message wins, but the squash stays the Gerrit change its
+        first commit started."""
+        self.assertEqual(
+            self._rewritten(
+                '# This is the 1st commit message:\n'
+                '\n'
+                'Version lift updates\n'
+                '\n'
+                f'Change-Id: {self._FIRST_ID}\n'
+                '\n'
+                '# This is the commit message #2:\n'
+                '\n'
+                'Version lift updates\n'
+                '\n'
+                'Last body.\n'
+                '\n'
+                'Bug: 1\n'
+                f'Change-Id: {self._LAST_ID}\n'
+                f'Change-Id: {self._LAST_ID}\n'
+            ),
+            'Version lift updates\n\nLast body.\n\n'
+            f'Bug: 1\nChange-Id: {self._FIRST_ID}\n',
+        )
+
+    def test_pinned_squash_adds_the_first_change_id_to_the_last_message(self):
+        self.assertEqual(
+            self._rewritten(
+                '# This is the 1st commit message:\n'
+                '\n'
+                'IWYU fixes.\n'
+                '\n'
+                f'Change-Id: {self._FIRST_ID}\n'
+                '\n'
+                '# This is the commit message #2:\n'
+                '\n'
+                'IWYU fixes.\n'
+            ),
+            f'IWYU fixes.\n\nChange-Id: {self._FIRST_ID}\n',
+        )
+
+    def test_pinned_squash_takes_the_first_change_id_there_is(self):
+        """Commits from before the hook added Change-Ids have none."""
+        self.assertEqual(
+            self._rewritten(
+                '# This is the 1st commit message:\n'
+                '\n'
+                'IWYU fixes.\n'
+                '\n'
+                '# This is the commit message #2:\n'
+                '\n'
+                'IWYU fixes.\n'
+                '\n'
+                f'Change-Id: {self._LAST_ID}\n'
+            ),
+            f'IWYU fixes.\n\nChange-Id: {self._LAST_ID}\n',
+        )
+
+    def test_reassignment_keeps_the_target_change_id(self):
+        self.assertEqual(
+            self._rewritten(
+                '# This is the 1st commit message:\n'
+                '\n'
+                'reassign!bbb! [cr148] Feature B\n'
+                '\n'
+                '# This is the commit message #2:\n'
+                '\n'
+                '[cr148] Feature B\n'
+                '\n'
+                f'Change-Id: {self._LAST_ID}\n'
+            ),
+            f'[cr148] Feature B\n\nChange-Id: {self._LAST_ID}\n',
+        )
+
+    def test_squash_after_a_conflict_keeps_the_change_id_above_comments(self):
+        """`--continue` after a stop on a squash adds git's `# Conflicts:`
+        lines below the message."""
+        self.assertEqual(
+            self._rewritten(
+                '# This is a combination of 2 commits.\n'
+                '# This is the 1st commit message:\n'
+                '\n'
+                'Version lift updates\n'
+                '\n'
+                f'Change-Id: {self._FIRST_ID}\n'
+                '\n'
+                '# This is the commit message #2:\n'
+                '\n'
+                'Version lift updates\n'
+                '\n'
+                f'Change-Id: {self._LAST_ID}\n'
+                '\n'
+                '# Conflicts:\n'
+                '#\tdata.txt\n'
+                '\n'
+                '# Please enter the commit message for your changes.\n'
+            ),
+            'Version lift updates\n\n'
+            f'Change-Id: {self._FIRST_ID}\n\n'
+            '# Conflicts:\n#\tdata.txt\n',
+        )
+
+    def test_quoted_change_ids_stay_quoted(self):
+        """A culprit's quoted message keeps its indentation, and its
+        Change-Id isn't taken for the commit's own."""
+        self.assertEqual(
+            self._rewritten(
+                '# This is the 1st commit message:\n'
+                '\n'
+                'reassign!bbb! [cr148] Feature B\n'
+                '\n'
+                '# This is the commit message #2:\n'
+                '\n'
+                '[cr148] Feature B\n'
+                '\n'
+                'Chromium changes:\n'
+                'https://example.com/+/abc\n'
+                '\n'
+                '    Upstream change\n'
+                '\n'
+                f'    Change-Id: {self._FIRST_ID}\n'
+            ),
+            '[cr148] Feature B\n\nChromium changes:\nhttps://example.com/+/abc'
+            '\n\n    Upstream change\n\n'
+            f'    Change-Id: {self._FIRST_ID}\n',
+        )
+
     def test_squash_marker_merges_into_previous_block(self):
         """A block whose autosquash note is `# squash! ...` is merged
         into the previous block's `full_message` rather than becoming a
@@ -2168,6 +2303,94 @@ class RebaseStopTest(unittest.TestCase):
 
         self.assertEqual(self.git('log', '-1', '--format=%B'), last)
         self.assertEqual(self.committed('pinned.txt'), 'pinned\n')
+
+    _FIRST_ID = 'I' + '1' * 40
+    _LAST_ID = 'I' + '2' * 40
+
+    def test_continue_keeps_the_first_change_id_of_a_squash(self):
+        self.use_editor('false')
+        subject = 'Version lift updates'
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={DATA: 'base\n'},
+            commits=[
+                (
+                    f'{subject}\n\nChange-Id: {self._FIRST_ID}',
+                    {'pinned.txt': 'pinned\n'},
+                ),
+                (
+                    f'{subject}\n\nLast.\n\nChange-Id: {self._LAST_ID}',
+                    {DATA: 'commit\n'},
+                ),
+            ],
+        )
+        with self.assertRaises(brockit.ActionNeededException):
+            self.rebase(fork, squash_minor_bumps=True)
+        self.resolve_data()
+
+        brockit.Rebase().execute(is_continuation=True)
+
+        self.assertEqual(
+            self.git('log', '-1', '--format=%B'),
+            f'{subject}\n\nLast.\n\nChange-Id: {self._FIRST_ID}',
+        )
+
+    def test_a_pinned_group_whose_pick_is_on_the_base_keeps_its_change_id(
+        self,
+    ):
+        """The group's next commit starts it in place of its empty first
+        one, and takes over the group's Gerrit change."""
+        subject = 'Version lift updates'
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={'tool': 'x\n', 'other': 'o\n'},
+            commits=[
+                (
+                    f'{subject}\n\nChange-Id: {self._FIRST_ID}',
+                    {'tool': 'x\n'},
+                ),
+                (
+                    f'{subject}\n\nChange-Id: {self._LAST_ID}',
+                    {'tool': 'x\ny\n'},
+                ),
+            ],
+        )
+
+        self.rebase(fork, squash_minor_bumps=True)
+
+        self.assertEqual([subject], self.subjects())
+        self.assertEqual(
+            self.git('log', '-1', '--format=%B'),
+            f'{subject}\n\nChange-Id: {self._FIRST_ID}',
+        )
+        self.assertEqual('x\ny\n', self.committed('tool'))
+
+    def test_a_pinned_group_that_empties_midway_keeps_its_change_id(self):
+        subject = 'Update Lit mangler snapshot'
+        fork = self.build(
+            ancestor={'snap': 'a\n'},
+            base={'other': 'o\n'},
+            commits=[
+                (
+                    f'{subject}\n\nChange-Id: {self._FIRST_ID}',
+                    {'snap': 'b\n'},
+                ),
+                (f'{subject}\n\nChange-Id: {"I" + "3" * 40}', {'snap': 'a\n'}),
+                (
+                    f'{subject}\n\nChange-Id: {self._LAST_ID}',
+                    {'snap': 'c\n'},
+                ),
+            ],
+        )
+
+        self.rebase(fork, squash_minor_bumps=True)
+
+        self.assertEqual([subject], self.subjects())
+        self.assertEqual(
+            self.git('log', '-1', '--format=%B'),
+            f'{subject}\n\nChange-Id: {self._FIRST_ID}',
+        )
+        self.assertEqual('c\n', self.committed('snap'))
 
     def test_skip_drops_the_commit_and_carries_on(self):
         """Skipping goes on with brockit's own handling of the rebase: the
