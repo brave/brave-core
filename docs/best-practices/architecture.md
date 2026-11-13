@@ -1981,3 +1981,38 @@ void FooTabHelper::WillDiscardContents(tabs::TabInterface* tab,
   Observe(new_contents);
 }
 ```
+
+---
+
+<a id="ARCH-076"></a>
+
+## ✅ Guard Test-Only Hooks in Production Code with `CHECK_IS_TEST`
+
+**When production code runs a branch only because a test installed a hook, such
+as a `*ForTesting()` callback or override, call `CHECK_IS_TEST()` at the start
+of that branch.** It documents that the branch is test-only and crashes if
+non-test code ever starts using the hook. NEVER leave such a branch unguarded.
+
+```cpp
+// ❌ WRONG - nothing says this branch only runs in tests
+void FooTabHelper::NotifyDone(bool result) {
+  if (done_callback_for_testing_) {
+    std::move(done_callback_for_testing_).Run(result);
+  }
+}
+
+// ✅ CORRECT - the test-only branch is guarded
+void FooTabHelper::NotifyDone(bool result) {
+  if (done_callback_for_testing_) {
+    CHECK_IS_TEST();
+    std::move(done_callback_for_testing_).Run(result);
+  }
+}
+```
+
+Put `CHECK_IS_TEST()` in the branch the hook enables, where test-only behavior
+diverges from production. `base/check_is_test.h` says it should not be used
+within trivial accessors such as `member_name_for_testing()`, but may be used in
+`*ForTesting()` functions to ensure correctness at runtime. `CHECK_IS_TEST()` is
+a `CHECK`, so it is fatal in release builds too, unless given a
+`base::NotFatalUntil` argument. Include `base/check_is_test.h`.
