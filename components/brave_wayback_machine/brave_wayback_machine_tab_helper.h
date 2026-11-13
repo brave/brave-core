@@ -63,6 +63,10 @@ class BraveWaybackMachineTabHelper : public content::WebContentsObserver,
   // Returns the current WaybackState.
   WaybackState wayback_state() const { return wayback_state_; }
 
+  // Returns whether an automatic Wayback Machine lookup is currently allowed
+  // for this tab.
+  bool CanAutoCheck() const;
+
   // Returns the snapshot info found by the last lookup. Set only in the kFound
   // and kLoaded states.
   const std::optional<WaybackSnapshotInfo>& snapshot_info() const {
@@ -73,6 +77,12 @@ class BraveWaybackMachineTabHelper : public content::WebContentsObserver,
   // bypassing navigation and the real wayback-machine lookup.
   void SetWaybackStateForTesting(WaybackState state) { SetWaybackState(state); }
 
+  // Sets whether the last failed navigation had a publicly routable remote
+  // endpoint.
+  void SetHasPublicRemoteEndpointForTesting(bool has_public_remote_endpoint) {
+    has_public_remote_endpoint_ = has_public_remote_endpoint;
+  }
+
   // Looks up the latest snapshot of the current page.
   void FetchSnapshotInfo();
 
@@ -82,6 +92,8 @@ class BraveWaybackMachineTabHelper : public content::WebContentsObserver,
 
  private:
   // content::WebContentsObserver:
+  void DidStartNavigation(
+      content::NavigationHandle* navigation_handle) override;
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 
@@ -103,12 +115,15 @@ class BraveWaybackMachineTabHelper : public content::WebContentsObserver,
   // If it's wayback url loading from previous navigation,
   // we should not touch wayback state.
   std::optional<int64_t> wayback_url_navigation_id_;
+  bool loading_wayback_url_ = false;
+  bool has_public_remote_endpoint_ = false;
 
   std::optional<WaybackSnapshotInfo> snapshot_info_;
   WaybackState wayback_state_ = WaybackState::kInitial;
   WaybackStateChangedCallbackList wayback_state_changed_callbacks_;
   base::queue<WaybackState> pending_state_notifications_;
   bool notifying_state_changed_ = false;
+  const raw_ref<tabs::TabInterface> tab_;
   raw_ref<PrefService> pref_service_;
   WaybackMachineURLFetcher wayback_machine_url_fetcher_;
   BooleanPrefMember wayback_enabled_;
