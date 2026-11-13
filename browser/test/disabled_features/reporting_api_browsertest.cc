@@ -19,8 +19,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -66,7 +65,7 @@ class ReportingApiBrowserTest : public InProcessBrowserTest {
 
  protected:
   content::WebContents* web_contents() {
-    return browser()->tab_strip_model()->GetActiveWebContents();
+    return chrome_test_utils::GetActiveWebContents(this);
   }
 
   void WaitForRequest(const std::string& path) {
@@ -100,7 +99,8 @@ class ReportingApiBrowserTest : public InProcessBrowserTest {
 
   void AllowBackgroundSync() {
     const GURL url = https_server_.GetURL("/");
-    HostContentSettingsMapFactory::GetForProfile(browser()->GetProfile())
+    HostContentSettingsMapFactory::GetForProfile(
+        chrome_test_utils::GetProfile(this))
         ->SetContentSettingDefaultScope(url, url,
                                         ContentSettingsType::BACKGROUND_SYNC,
                                         CONTENT_SETTING_ALLOW);
