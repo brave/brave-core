@@ -14,5 +14,7 @@ public enum ShieldsPanelAction {
   case navigate(NavigationTarget, dismiss: Bool)
   case changedShieldSettings
   case shredSiteData
+  case blockElement
+  case clearBlockedElements
   case openURLInNewTab(URL)
 }
