@@ -5,7 +5,7 @@
 
 import("//brave/build/config.gni")
 
-source_set("content") {
+static_library("content") {
   sources = [
     "query_filter_throttle.cc",
     "query_filter_throttle.h",
@@ -16,8 +16,7 @@ source_set("content") {
     "//brave/components/brave_shields/core/browser",
     "//brave/components/query_filter/browser",
     "//brave/components/query_filter/common",
-    "//components/user_prefs",
-    "//content/public/browser",
+    "//components/prefs",
     "//services/network/public/cpp",
     "//third_party/blink/public/common",
     "//url",
@@ -39,7 +38,6 @@ source_set("unit_tests") {
     "//components/content_settings/core/browser",
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",
-    "//components/user_prefs",
     "//content/test:test_support",
     "//services/network/public/cpp",
     "//testing/gtest",

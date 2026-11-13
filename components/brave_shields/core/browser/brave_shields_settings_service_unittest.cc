@@ -101,6 +101,15 @@ TEST_F(BraveShieldsSettingsServiceTest, BraveShieldsEnabled) {
       GetHostContentSettingsMap(), GURL("https://example.com")));
 }
 
+TEST_F(BraveShieldsSettingsServiceTest, IsQueryFilteringEnabled) {
+  EXPECT_TRUE(brave_shields_settings()->IsQueryFilteringEnabled(kTestUrl));
+
+  brave_shields_settings()->SetBraveShieldsEnabled(false, kTestUrl);
+  EXPECT_FALSE(brave_shields_settings()->IsQueryFilteringEnabled(kTestUrl));
+  EXPECT_TRUE(brave_shields_settings()->IsQueryFilteringEnabled(
+      GURL("https://example.com")));
+}
+
 TEST_F(BraveShieldsSettingsServiceTest, IsBraveShieldsManaged) {
   const GURL host("http://host.com");
 

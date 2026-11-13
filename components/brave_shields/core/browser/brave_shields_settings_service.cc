@@ -104,6 +104,10 @@ bool BraveShieldsSettingsService::IsBraveShieldsEnabled(const GURL& url) {
                                               url);
 }
 
+bool BraveShieldsSettingsService::IsQueryFilteringEnabled(const GURL& url) {
+  return IsBraveShieldsEnabled(url);
+}
+
 bool BraveShieldsSettingsService::IsBraveShieldsManaged(const GURL& url) {
   content_settings::SettingInfo info;
   host_content_settings_map_->GetWebsiteSetting(

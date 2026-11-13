@@ -132,6 +132,7 @@ test("brave_components_unittests") {
   }
 
   if (use_blink) {
+    deps += [ "//brave/components/query_filter/content:unit_tests" ]
     if (enable_local_ai) {
       deps += [
         "//brave/components/history_embeddings:unit_tests",

@@ -18,9 +18,7 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "components/user_prefs/user_prefs.h"
 #include "content/public/test/browser_task_environment.h"
-#include "content/public/test/test_browser_context.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -45,7 +43,6 @@ class QueryFilterThrottleTest : public testing::Test {
     brave_shields::RegisterShieldsP3ALocalPrefs(local_state_.registry());
     prefs_.registry()->RegisterBooleanPref(
         kTrackingQueryParametersFilteringEnabled, true);
-    user_prefs::UserPrefs::Set(&browser_context_, &prefs_);
 
     host_content_settings_map_ = base::MakeRefCounted<HostContentSettingsMap>(
         &prefs_, /*is_off_the_record=*/false, /*store_last_modified=*/false,
@@ -62,14 +59,14 @@ class QueryFilterThrottleTest : public testing::Test {
     rules_.reset();
   }
 
-  std::unique_ptr<blink::URLLoaderThrottle> CreateThrottle() {
+  std::unique_ptr<blink::URLLoaderThrottle> CreateThrottle(const GURL& url) {
     return QueryFilterThrottle::MaybeCreateThrottle(
-        &browser_context_, shields_settings_service_.get());
+        &prefs_, shields_settings_service_.get(), url);
   }
 
   // Runs `WillStartRequest` and returns the URL the loader would start.
   GURL FilterRequest(const GURL& url) {
-    auto throttle = CreateThrottle();
+    auto throttle = CreateThrottle(url);
     CHECK(throttle);
     network::ResourceRequest request;
     request.url = url;
@@ -90,7 +87,6 @@ class QueryFilterThrottleTest : public testing::Test {
   base::test::ScopedFeatureList feature_list_;
   TestingPrefServiceSimple local_state_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
-  content::TestBrowserContext browser_context_;
   scoped_refptr<HostContentSettingsMap> host_content_settings_map_;
   std::unique_ptr<brave_shields::BraveShieldsSettingsService>
       shields_settings_service_;
@@ -101,14 +97,26 @@ TEST_F(QueryFilterThrottleTest, NoThrottleWhenFeatureDisabled) {
   base::test::ScopedFeatureList disabled;
   disabled.InitAndDisableFeature(features::kQueryFilterComponent);
 
-  EXPECT_FALSE(CreateThrottle());
+  EXPECT_FALSE(CreateThrottle(GURL(kUrlWithTrackers)));
 }
 
 TEST_F(QueryFilterThrottleTest, NoThrottleWhenDisabledByPolicy) {
   prefs()->SetManagedPref(kTrackingQueryParametersFilteringEnabled,
                           base::Value(false));
 
-  EXPECT_FALSE(CreateThrottle());
+  EXPECT_FALSE(CreateThrottle(GURL(kUrlWithTrackers)));
+}
+
+TEST_F(QueryFilterThrottleTest, NoThrottleWhenBraveShieldsDisabled) {
+  shields_settings_service()->SetBraveShieldsEnabled(false,
+                                                     GURL(kUrlWithTrackers));
+
+  EXPECT_FALSE(CreateThrottle(GURL(kUrlWithTrackers)));
+}
+
+TEST_F(QueryFilterThrottleTest, NoThrottleWithoutShieldsSettingsService) {
+  EXPECT_FALSE(QueryFilterThrottle::MaybeCreateThrottle(
+      prefs(), /*shields_settings_service=*/nullptr, GURL(kUrlWithTrackers)));
 }
 
 TEST_F(QueryFilterThrottleTest, StripsTrackersFromRequestURL) {
@@ -118,12 +126,4 @@ TEST_F(QueryFilterThrottleTest, StripsTrackersFromRequestURL) {
 TEST_F(QueryFilterThrottleTest, LeavesURLWithoutTrackersUnchanged) {
   EXPECT_EQ(GURL(kFilteredURL), FilterRequest(GURL(kFilteredURL)));
 }
-
-TEST_F(QueryFilterThrottleTest, LeavesURLUnchangedWhenBraveShieldsDisabled) {
-  shields_settings_service()->SetBraveShieldsEnabled(false,
-                                                     GURL(kUrlWithTrackers));
-
-  EXPECT_EQ(GURL(kUrlWithTrackers), FilterRequest(GURL(kUrlWithTrackers)));
-}
-
 }  // namespace query_filter
