@@ -39,6 +39,20 @@ base::DictValue CreatePsstSettingsObject(PsstWebsiteSettings psst_metadata) {
   return object;
 }
 
+void NotifyPsstPrefsChange(
+    PrefService* prefs,
+    base::ObserverList<PsstSettingsService::PrefObserver>& observers,
+    PsstSettingsService* service) {
+  const int infobar_decline_count =
+      prefs->GetInteger(prefs::kPsstInfobarDeclineCounter);
+  const int infobar_shown_count =
+      prefs->GetInteger(prefs::kPsstInfobarShownCounter);
+  const auto websites_settings = service->GetAllPsstWebsitesSettings();
+  observers.Notify(&PsstSettingsService::PrefObserver::OnPsstPrefsChange,
+                   infobar_shown_count, infobar_decline_count,
+                   websites_settings);
+}
+
 }  // namespace
 
 PsstSettingsService::PsstSettingsService(
@@ -50,6 +64,14 @@ PsstSettingsService::PsstSettingsService(
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
       prefs::kPsstEnabled,
+      base::BindRepeating(&PsstSettingsService::OnPreferenceChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      prefs::kPsstInfobarShownCounter,
+      base::BindRepeating(&PsstSettingsService::OnPreferenceChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      prefs::kPsstInfobarDeclineCounter,
       base::BindRepeating(&PsstSettingsService::OnPreferenceChanged,
                           weak_ptr_factory_.GetWeakPtr()));
 }
@@ -80,6 +102,39 @@ std::optional<PsstWebsiteSettings> PsstSettingsService::GetPsstWebsiteSettings(
   }
 
   return PsstWebsiteSettings::FromValue(*user_id_metadata_dict);
+}
+
+base::flat_map<std::string, PsstWebsiteSettings>
+PsstSettingsService::GetAllPsstWebsitesSettings() {
+  ContentSettingsForOneType settings =
+      host_content_settings_map_->GetSettingsForOneType(
+          ContentSettingsType::BRAVE_PSST);
+
+  base::flat_map<std::string, PsstWebsiteSettings> result;
+  for (const auto& setting : settings) {
+    const auto url = GURL(setting.primary_pattern.ToString());
+    if (!url.is_valid()) {
+      continue;
+    }
+
+    const auto* user_id_dicts = setting.setting_value.GetIfDict();
+    if (!user_id_dicts) {
+      continue;
+    }
+
+    for (const auto [key, value] : *user_id_dicts) {
+      const auto* user_id_metadata_dict = value.GetIfDict();
+      if (!user_id_metadata_dict) {
+        continue;
+      }
+
+      if (auto psst_metadata =
+              PsstWebsiteSettings::FromValue(*user_id_metadata_dict)) {
+        result.emplace(url.host(), std::move(*psst_metadata));
+      }
+    }
+  }
+  return result;
 }
 
 void PsstSettingsService::SetPsstWebsiteSettings(
@@ -125,6 +180,7 @@ void PsstSettingsService::SetPsstWebsiteSettings(
         base::Value(base::DictValue().Set(
             user_id, CreatePsstSettingsObject(std::move(psst_metadata)))));
   }
+  NotifyPsstPrefsChange(prefs_, observers_, this);
 }
 
 bool PsstSettingsService::IsPsstEnabled() const {
@@ -138,6 +194,10 @@ void PsstSettingsService::SetPsstEnabled(bool enabled) {
 void PsstSettingsService::OnPreferenceChanged(const std::string& pref_name) {
   if (pref_name == prefs::kPsstEnabled) {
     observers_.Notify(&PrefObserver::OnPsstEnableChange, IsPsstEnabled());
+    return;
+  } else if (pref_name == prefs::kPsstInfobarShownCounter ||
+             pref_name == prefs::kPsstInfobarDeclineCounter) {
+    NotifyPsstPrefsChange(prefs_, observers_, this);
     return;
   }
 }
