@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+assert(!is_android)
+
+source_set("brave_shields") {
+  sources = [
+    "shields_panel_data_handler.h",
+    "shields_panel_handler.h",
+    "shields_panel_ui.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/browser/brave_shields",
+    "//brave/components/brave_shields/core/common:mojom",
+    "//chrome/browser/ui/tabs:tab_strip_model_observer",
+    "//chrome/browser/ui/webui/top_chrome",
+    "//mojo/public/cpp/bindings",
+  ]
+}
