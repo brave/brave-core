@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Binds the UI's close callback in CreateCustomizeChromeView()
+
+    after_function_impl:
+      function_name: SidePanelControllerViews::CreateCustomizeChromeView
+      result_var: customize_chrome_web_view
+      code: |-
+        CHECK(customize_chrome_ui_);
+        customize_chrome_ui_->SetClosePanelCallback(
+            base::BindRepeating(&SidePanelControllerViews::CloseSidePanel,
+                                weak_ptr_factory_.GetWeakPtr()));
+        return customize_chrome_web_view;
