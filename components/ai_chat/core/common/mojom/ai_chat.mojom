@@ -71,6 +71,9 @@ const uint32 MAX_DOCUMENT_SIZE_BYTES = 4718592; // 4.5MB
 enum ConversationGenerationState {
   kGenerating,
   kCompletedNotViewed,
+  // Stopped on a permission challenge that needs the user before generation
+  // can continue.
+  kAwaitingUserInput,
 };
 
 

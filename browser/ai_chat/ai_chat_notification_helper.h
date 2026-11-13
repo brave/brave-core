@@ -12,10 +12,12 @@ class Profile;
 
 namespace ai_chat {
 
-// Shows a notification for a completed background generation.
+// Shows a notification for a background generation that finished, or that
+// stopped because it |needs_approval| for a tool use request.
 void ShowAIChatCompletionNotification(Profile* profile,
                                       const std::string& conversation_uuid,
-                                      const std::u16string& conversation_title);
+                                      const std::u16string& conversation_title,
+                                      bool needs_approval);
 
 // Closes the notification for |conversation_uuid|.
 void CloseAIChatCompletionNotification(Profile* profile,
