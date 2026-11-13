@@ -1207,9 +1207,11 @@ void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,
   const std::string uuid = handler->get_conversation_uuid();
   if (in_progress) {
     // Follow-up requests (e.g. tool use) report true again while generating.
-    if (std::exchange(conversation_generation_state_[uuid],
-                      mojom::ConversationGenerationState::kGenerating) !=
-        mojom::ConversationGenerationState::kGenerating) {
+    auto [it, inserted] = conversation_generation_state_.try_emplace(
+        uuid, mojom::ConversationGenerationState::kGenerating);
+    if (inserted ||
+        it->second != mojom::ConversationGenerationState::kGenerating) {
+      it->second = mojom::ConversationGenerationState::kGenerating;
       NotifyConversationGenerationStateChanged();
     }
   } else if (const auto* state =

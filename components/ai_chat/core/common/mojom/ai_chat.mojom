@@ -66,8 +66,9 @@ const uint32 MAX_IMAGES = 20;
 const uint32 MAX_DOCUMENTS = 5;
 const uint32 MAX_DOCUMENT_SIZE_BYTES = 4718592; // 4.5MB
 
+// The state of a conversation that isn't idle. Idle conversations are left out
+// of the generation state maps.
 enum ConversationGenerationState {
-  kIdle,
   kGenerating,
   kCompletedNotViewed,
 };

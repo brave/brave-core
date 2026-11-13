@@ -16,6 +16,7 @@
 
 #include "base/check.h"
 #include "base/containers/flat_map.h"
+#include "base/containers/map_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
@@ -278,12 +279,30 @@ class MockAIChatDatabase : public AIChatDatabase {
               (override));
 };
 
-// Matches generation states in which |uuid| is in |state|. Idle conversations
-// are left out.
+// Matches generation states in which |uuid| is in |state|.
 MATCHER_P2(HasGenerationState, uuid, state, "") {
-  auto it = arg.find(uuid);
-  return it == arg.end() ? state == mojom::ConversationGenerationState::kIdle
-                         : it->second == state;
+  const auto* found = base::FindOrNull(arg, uuid);
+  return found && *found == state;
+}
+
+// Matches generation states in which |uuid| is idle: idle conversations are
+// left out.
+MATCHER_P(HasNoGenerationState, uuid, "") {
+  return !arg.contains(uuid);
+}
+
+// Runs |action|, then waits until |observer| is sent generation states that
+// match |matcher|.
+template <typename Matcher>
+void ExpectGenerationStates(MockServiceClient& observer,
+                            Matcher matcher,
+                            base::OnceClosure action) {
+  base::test::TestFuture<void> received;
+  EXPECT_CALL(observer, OnConversationGenerationStateChanged(matcher))
+      .WillOnce(base::test::RunOnceClosure(received.GetCallback()));
+  std::move(action).Run();
+  ASSERT_TRUE(received.Wait());
+  testing::Mock::VerifyAndClearExpectations(&observer);
 }
 
 // Runs |action|, then waits until |observer| is told |uuid| is in |state|.
@@ -291,13 +310,16 @@ void ExpectGenerationState(MockServiceClient& observer,
                            const std::string& uuid,
                            mojom::ConversationGenerationState state,
                            base::OnceClosure action) {
-  base::test::TestFuture<void> received;
-  EXPECT_CALL(observer, OnConversationGenerationStateChanged(
-                            HasGenerationState(uuid, state)))
-      .WillOnce(base::test::RunOnceClosure(received.GetCallback()));
-  std::move(action).Run();
-  ASSERT_TRUE(received.Wait());
-  testing::Mock::VerifyAndClearExpectations(&observer);
+  ExpectGenerationStates(observer, HasGenerationState(uuid, state),
+                         std::move(action));
+}
+
+// Runs |action|, then waits until |observer| is told |uuid| is idle.
+void ExpectGenerationIdle(MockServiceClient& observer,
+                          const std::string& uuid,
+                          base::OnceClosure action) {
+  ExpectGenerationStates(observer, HasNoGenerationState(uuid),
+                         std::move(action));
 }
 
 // Binds a new observer and returns the generation states BindObserver replies
@@ -1974,10 +1996,8 @@ TEST_P(AIChatServiceUnitTest, GenerationState_CompletionWhileViewed_StaysIdle) {
   ConversationHandler* handler = CreateConversation();
   auto client = CreateConversationClient(handler);
   auto resolve = StartGeneration(handler, *client_);
-  ExpectGenerationState(
-      *client_, handler->get_conversation_uuid(),
-      mojom::ConversationGenerationState::kIdle,
-      base::BindOnce(&CompleteGeneration, std::move(resolve)));
+  ExpectGenerationIdle(*client_, handler->get_conversation_uuid(),
+                       base::BindOnce(&CompleteGeneration, std::move(resolve)));
 }
 
 TEST_P(AIChatServiceUnitTest, GenerationState_StopWhileIdle_StaysIdle) {
@@ -2059,11 +2079,9 @@ TEST_P(AIChatServiceUnitTest,
   // Binding straight to the handler, as the tab-associated route does,
   // bypasses AIChatService::BindConversation.
   std::unique_ptr<MockConversationHandlerClient> client;
-  ExpectGenerationState(*client_, uuid,
-                        mojom::ConversationGenerationState::kIdle,
-                        base::BindLambdaForTesting([&] {
-                          client = CreateConversationClient(handler);
-                        }));
+  ExpectGenerationIdle(*client_, uuid, base::BindLambdaForTesting([&] {
+    client = CreateConversationClient(handler);
+  }));
 }
 
 TEST_P(AIChatServiceUnitTest,
@@ -2078,11 +2096,9 @@ TEST_P(AIChatServiceUnitTest,
 
   if (!IsAIChatHistoryEnabled()) {
     // Without history the conversation itself is removed on unload.
-    ExpectGenerationState(*client_, uuid,
-                          mojom::ConversationGenerationState::kIdle,
-                          base::BindLambdaForTesting([&] {
-                            task_environment_.FastForwardBy(base::Seconds(10));
-                          }));
+    ExpectGenerationIdle(*client_, uuid, base::BindLambdaForTesting([&] {
+      task_environment_.FastForwardBy(base::Seconds(10));
+    }));
     return;
   }
 
@@ -2111,10 +2127,9 @@ TEST_P(AIChatServiceUnitTest,
   ASSERT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
 
   // Turning history off drops the unloaded conversation, and its state with it.
-  ExpectGenerationState(
-      *client_, uuid, mojom::ConversationGenerationState::kIdle,
-      base::BindLambdaForTesting(
-          [&] { prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false); }));
+  ExpectGenerationIdle(*client_, uuid, base::BindLambdaForTesting([&] {
+    prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false);
+  }));
 }
 
 TEST_P(AIChatServiceUnitTest, GenerationState_BindClearsNotViewed) {
@@ -2127,13 +2142,11 @@ TEST_P(AIChatServiceUnitTest, GenerationState_BindClearsNotViewed) {
 
   mojo::Remote<mojom::ConversationHandler> handler_remote;
   mojo::PendingReceiver<mojom::ConversationUI> ui_receiver;
-  ExpectGenerationState(*client_, uuid,
-                        mojom::ConversationGenerationState::kIdle,
-                        base::BindLambdaForTesting([&] {
-                          ai_chat_service_->BindConversation(
-                              uuid, handler_remote.BindNewPipeAndPassReceiver(),
-                              ui_receiver.InitWithNewPipeAndPassRemote());
-                        }));
+  ExpectGenerationIdle(*client_, uuid, base::BindLambdaForTesting([&] {
+    ai_chat_service_->BindConversation(
+        uuid, handler_remote.BindNewPipeAndPassReceiver(),
+        ui_receiver.InitWithNewPipeAndPassRemote());
+  }));
   // Binding finishes asynchronously; wait so it doesn't outlive the test.
   ASSERT_TRUE(
       base::test::RunUntil([&] { return handler->IsAnyClientConnected(); }));
@@ -2188,11 +2201,9 @@ TEST_P(AIChatServiceUnitTest, GenerationState_DeleteClears) {
   ExpectGenerationState(
       *client_, uuid, mojom::ConversationGenerationState::kCompletedNotViewed,
       base::BindOnce(&CompleteGeneration, std::move(resolve)));
-  ExpectGenerationState(*client_, uuid,
-                        mojom::ConversationGenerationState::kIdle,
-                        base::BindLambdaForTesting([&] {
-                          ai_chat_service_->DeleteConversation(uuid);
-                        }));
+  ExpectGenerationIdle(*client_, uuid, base::BindLambdaForTesting([&] {
+    ai_chat_service_->DeleteConversation(uuid);
+  }));
 }
 
 TEST_P(AIChatServiceUnitTest, GenerationState_BulkDeleteClears) {

@@ -444,7 +444,7 @@ class AIChatService : public KeyedService,
   // This doesn't mean the conversation is on screen.
   bool IsConversationClientConnected(const std::string& uuid) const;
   // Marks |conversation_uuid| as no longer generating once its handler is
-  // neither generating nor running tools: kCompletedNotViewed, or kIdle if a
+  // neither generating nor running tools: kCompletedNotViewed, or idle if a
   // client is connected.
   void MaybeMarkGenerationComplete(const std::string& conversation_uuid);
   // DeleteConversation() without OnConversationListChanged(), for callers that
@@ -526,8 +526,8 @@ class AIChatService : public KeyedService,
   mojo::RemoteSet<mojom::UntrustedServiceObserver>
       untrusted_service_observer_remotes_;
 
-  // Session-only generation state per conversation uuid. A missing entry means
-  // kIdle; kIdle is never stored.
+  // Session-only generation state per conversation uuid. A conversation with
+  // no entry is idle.
   base::flat_map<std::string, mojom::ConversationGenerationState>
       conversation_generation_state_;
 
