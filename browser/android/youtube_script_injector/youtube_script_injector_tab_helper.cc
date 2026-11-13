@@ -148,17 +148,20 @@ constexpr char16_t kYoutubeFullscreenVideoFitWorkaround[] =
 
 // On m.youtube.com, Next in the media notification or on the lock screen plays
 // a recommended video and drops the playlist, while the page's own Next works.
-// Those controls call the page's navigator.mediaSession 'nexttrack' handler, so
-// wrap the handler YouTube registers: when a playlist is playing, follow the
-// URL of the page's own Next video button, taken from YouTube's watch data,
-// through a link click so YouTube navigates in-page as it would for a tap. The
-// playlist panel isn't used because it renders only some items. On the last
-// item YouTube disables that button, so do nothing, as the page's Next does.
+// Previous goes back in history, so repeated presses can leave the playlist.
+// Those controls call the page's navigator.mediaSession 'nexttrack' and
+// 'previoustrack' handlers, so wrap the handlers YouTube registers: when a
+// playlist is playing, follow the URL of the page's own Next or Previous video
+// button, taken from YouTube's watch data, through a link click so YouTube
+// navigates in-page as it would for a tap. The playlist panel isn't used
+// because it renders only some items. On the last item (Next) or first item
+// (Previous) YouTube disables that button, so do nothing, as the page does.
 // Also do nothing while the watch data still describes the previous video.
 // Otherwise (no playlist, or no button data), call YouTube's handler unchanged.
-// YouTube registers its handler only after an in-page navigation, so the first
-// playlist item played has no Next control. Register the handler whenever the
-// playlist has a next item, rechecking each time a video starts playing.
+// YouTube registers its handlers only after an in-page navigation, so the first
+// playlist item played has no Next control. Register each handler whenever the
+// playlist has an item in that direction, rechecking each time a video starts
+// playing.
 // See https://github.com/brave/brave-browser/issues/61748.
 constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
     uR"(
@@ -170,35 +173,40 @@ constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
   function watchNextResponse() {
     return document.getElementById('movie_player')?.getWatchNextResponse?.();
   }
-  function playlistNextButton() {
+  const buttonKeys = {
+    nexttrack: 'nextButtonVideo',
+    previoustrack: 'previousButtonVideo',
+  };
+  function playlistButton(action) {
     const playlist = watchNextResponse()
         ?.contents?.singleColumnWatchNextResults?.playlist?.playlist;
     const list = new URLSearchParams(location.search).get('list');
     if (!list || playlist?.playlistId !== list) {
       return null;
     }
-    return playlist.nextButtonVideo?.buttonRenderer ?? null;
+    return playlist[buttonKeys[action]]?.buttonRenderer ?? null;
   }
   // After a navigation the URL names the new video a second or two before the
-  // watch data does; following the old data's Next would replay that video.
+  // watch data does; following the old data's button would replay that video.
   function isWatchDataCurrent() {
     const videoId =
         watchNextResponse()?.currentVideoEndpoint?.watchEndpoint?.videoId;
     return videoId === new URLSearchParams(location.search).get('v');
   }
-  function nextUrl(button) {
+  function buttonUrl(button) {
     if (!button || button.isDisabled) {
       return null;
     }
     return button.command?.commandMetadata?.webCommandMetadata?.url ?? null;
   }
-  let youtubeHandler = null;
-  function handleNextTrack(details) {
-    const button = playlistNextButton();
+  const youtubeHandlers = {};
+  const setActionHandler = mediaSession.setActionHandler.bind(mediaSession);
+  function handleTrack(details) {
+    const button = playlistButton(details.action);
     if (button && (button.isDisabled || !isWatchDataCurrent())) {
       return;
     }
-    const url = nextUrl(button);
+    const url = buttonUrl(button);
     if (url) {
       const link = document.createElement('a');
       link.href = url;
@@ -208,22 +216,25 @@ constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
       link.remove();
       return;
     }
-    return youtubeHandler?.call(this, details);
+    return youtubeHandlers[details.action]?.call(this, details);
   }
-  const setActionHandler = mediaSession.setActionHandler.bind(mediaSession);
-  function updateNextTrackHandler() {
-    const enabled = youtubeHandler || nextUrl(playlistNextButton());
-    setActionHandler('nexttrack', enabled ? handleNextTrack : null);
+  function updateTrackHandler(action) {
+    const enabled =
+        youtubeHandlers[action] || buttonUrl(playlistButton(action));
+    setActionHandler(action, enabled ? handleTrack : null);
+  }
+  function updateTrackHandlers() {
+    Object.keys(buttonKeys).forEach(updateTrackHandler);
   }
   mediaSession.setActionHandler = function(action, handler) {
-    if (action === 'nexttrack') {
-      youtubeHandler = handler;
-      updateNextTrackHandler();
+    if (Object.hasOwn(buttonKeys, action)) {
+      youtubeHandlers[action] = handler;
+      updateTrackHandler(action);
       return;
     }
     return setActionHandler(action, handler);
   };
-  document.addEventListener('playing', updateNextTrackHandler, true);
+  document.addEventListener('playing', updateTrackHandlers, true);
 }());
 )";
 
