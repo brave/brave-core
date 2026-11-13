@@ -947,6 +947,11 @@
 <translation id="4362717653795263052">Restore primary crypto accounts</translation>
 <translation id="3038077262567136741">Enter your recovery phrase to restore your Brave wallet crypto account.</translation>
 <translation id="955918646509748368">The recovery phrase entered is invalid.</translation>
+<translation id="7496330898672236908">This recovery phrase doesn't match your wallet. Check the phrase and try again.</translation>
+<translation id="3798792138617904098">Remove imported accounts?</translation>
+<translation id="2960631345291747230">Imported accounts are not backed up by your recovery phrase. They will be removed from Brave Wallet, and you may permanently lose access to their funds unless you have backed up their private keys.</translation>
+<translation id="8898583604592472741">Remove accounts</translation>
+<translation id="1577629163207045190">Type "<ph name="CONFIRMATION_PHRASE"/>" to confirm.</translation>
 <translation id="8107437138787377150">Paste recovery phrase from clipboard</translation>
 <translation id="4811736040444856406">Show recovery phrase</translation>
 <translation id="4359319875297001084">Import from legacy Brave crypto wallets?</translation>
@@ -2241,13 +2246,12 @@
 <translation id="3934503473603661122">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Grok 4.7, xAI's frontier reasoning model on Amazon Bedrock. Grok 4.7 is served through Brave's secure AWS infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GPT Luna, OpenAI's fast, low-latency model on Amazon Bedrock. GPT Luna is served through Brave's secure AWS infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GPT 5.6 Terra, OpenAI's balanced production model on Amazon Bedrock Mantle. GPT 5.6 Terra is served through Brave's secure AWS infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Mistral Large, a model created by Mistral to be performant and applicable to many use cases. Mistral Large is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Haiku, a model created by Anthropic to power conversational and text processing tasks. Claude Haiku is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Qwen 3.8 Flash Next, a model created by Alibaba Cloud to be performant and applicable to many use cases. Qwen 3.8 Flash Next is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Deepseek V3.2, a model created by Deepseek to be performant and applicable to many use cases. Deepseek V3.2 is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GLM 5.3, a model created by Z.ai to be performant and applicable to many use cases. GLM 5.3 is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Opus, a model created by Anthropic to power conversational and text processing tasks. Claude Opus is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GLM-4-7-Flash, a model created by Zhipu AI to be performant and applicable to many use cases. GLM-4-7-Flash is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Kimi K2.5, a model created by Moonshot AI to be performant and applicable to many use cases. Kimi K2.5 is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Nemotron Nano 3 30B, a model created by NVIDIA to be performant and applicable to many use cases. Nemotron Nano 3 30B is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Brave Ocelot, a model created by Brave to summarise web pages. Brave Ocelot is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Local</translation>
@@ -2387,8 +2391,8 @@
 <translation id="7465032796278724624">Verifiably Private With NEAR AI TEE</translation>
 <translation id="8782867266498869301">Model changes dynamically to use the best one for the task</translation>
 <translation id="7348809809749151120">Fast • Search</translation>
+<translation id="7711013627639951065">Fast • Search • Vision • Tools</translation>
 <translation id="3213834013136637671">Search • Vision</translation>
-<translation id="2793458212460902934">Fast • Search • Tools</translation>
 <translation id="5276681919620506371">Search • Tools</translation>
 <translation id="7434375176361995333">Summaries • Fast</translation>
 <translation id="3965507912994218570">Leo settings</translation>
@@ -2461,6 +2465,8 @@
 <translation id="6287023598025162715">New conversation</translation>
 <translation id="7230502562132448519">Filter conversations</translation>
 <translation id="821070843380699990">Please try a different query</translation>
+<translation id="241415280196701326">Recent workspaces</translation>
+<translation id="5388053981690151266">New conversation in this workspace</translation>
 <translation id="7097822247923237815">Temporary chat</translation>
 <translation id="7481750859362986254">This chat won't be saved into your history or use any of Leo's customisation or memories.</translation>
 <translation id="4238305333951712482">Memory updated: <ph name="MEMORY_CONTENT"/></translation>
@@ -2486,6 +2492,7 @@
 <translation id="5103625298494362646">AI browsing mode works with models with tool support. Non-compatible models are hidden from this list.</translation>
 <translation id="3397808797783614750">Enabling AI to browse automatically for you may cause harmful, unintended consequences for your privacy, finances, and online communications. <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Security warning</translation>
+<translation id="717245811623757038">Tool permission request</translation>
 <translation id="6077070599873946984">Brave AI needs your permission for: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI would like to execute **<ph name="TOOL_NAME"/>** on **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">The operation was detected as potentially misaligned with your request:</translation>

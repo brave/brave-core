@@ -49,6 +49,7 @@
 <translation id="2200626478572277092">Widevine dažkārt ir vajadzīgs, lai atskaņotu mediju failus tīmekļa vietnē. Tas ir Google paplašinājums, ko ielādē no Google serveriem, bet ko Brave nevar pārbaudīt. Instalējot jūs piekrītat Google lietošanas noteikumiem.</translation>
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/> vai mainīt vēlāk <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="6229752134959014186">Uzzināt vairāk par Widevine</translation>
+<translation id="3318169548229684688">lejupielādēt runas atpazīšanas modeli (<ph name="DOWNLOAD_SIZE"/>), lai apstrādātu runu šajā ierīcē</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> vēlas, lai jūs</translation>
 <translation id="3218385319396786393">Automātiskā atskaņošana šajā lapā tika bloķēta</translation>
 <translation id="4988333904713528597">Vienmēr atļaut automātisku ieslēgšanu vietnē <ph name="HOST"/></translation>
@@ -609,6 +610,8 @@
 <translation id="3540231253392253941">Informatīvajiem paziņojumiem lietot Google pakalpojumus</translation>
 <translation id="2224032129673914306">Semantiskā vēstures meklēšana</translation>
 <translation id="6045998903985162478">Indeksējiet apmeklētās lapas, lai tās viegli atrastu vēsturē, atvērtajās cilnēs un Leo.</translation>
+<translation id="3962946446120925966">Ierīcē veikta runas atpazīšana</translation>
+<translation id="6408242130028978631">Lejupielādējiet runas atpazīšanas modeli (<ph name="DOWNLOAD_SIZE"/>), lai vietnes varētu apstrādāt runu šajā ierīcē. Izslēdziet šo opciju, lai noņemtu modeli.</translation>
 <translation id="5813105074916486721">Lokālās vēstures saglabāšana</translation>
 <translation id="5671611745062206644">Cik ilgi Brave lokāli glabā jūsu pārlūkošanas vēsturi</translation>
 <translation id="7184510058087008090">1 diena</translation>

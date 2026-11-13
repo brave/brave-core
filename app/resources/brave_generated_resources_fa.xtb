@@ -49,6 +49,7 @@
 <translation id="2200626478572277092">گاهی برای پخش رسانه در صفحه وب، به Widevine نیاز است. Widevine یک افزونه Google است که از سرورهای Google بارگذاری می‌شود و Brave نمی‌تواند آن را بررسی کند. نصب کردن آن به منزله موافقت شما با شرایط استفاده Google می‌باشد.</translation>
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>. یا بعداً در <ph name="SETTINGS_EXTENIONS_LINK"/> تغییر دهید.</translation>
 <translation id="6229752134959014186">درباره Widevine بیشتر بدانید</translation>
+<translation id="3318169548229684688">یک مدل تشخیص گفتار (<ph name="DOWNLOAD_SIZE"/>) دانلود کند تا گفتار روی این دستگاه پردازش شود</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> از شما می‌خواهد که</translation>
 <translation id="3218385319396786393">پخش خودکار در این صفحه مسدود شد</translation>
 <translation id="4988333904713528597">همیشه در <ph name="HOST"/> به پخش خودکار اجازه داده شود</translation>
@@ -609,6 +610,8 @@
 <translation id="3540231253392253941">استفاده از سرویس‌های Google برای پیام‌رسانی فشاری</translation>
 <translation id="2224032129673914306">جستجوی معنایی تاریخچه</translation>
 <translation id="6045998903985162478">صفحاتی را که بازدید می‌کنید فهرست‌بندی کنید تا بتوانید به‌راحتی آن‌ها را در تاریخچه، زبانه‌های باز و Leo پیدا کنید.</translation>
+<translation id="3962946446120925966">تشخیص گفتار روی دستگاه</translation>
+<translation id="6408242130028978631">یک مدل تشخیص گفتار (<ph name="DOWNLOAD_SIZE"/>) دانلود کنید تا سایت‌ها بتوانند گفتار را روی این دستگاه پردازش کنند. برای حذف مدل، این گزینه را خاموش کنید.</translation>
 <translation id="5813105074916486721">نگهداری تاریخچه محلی</translation>
 <translation id="5671611745062206644">مدت زمانی که Brave تاریخچه مرور شما را به صورت محلی ذخیره می‌کند</translation>
 <translation id="7184510058087008090">1 روز</translation>

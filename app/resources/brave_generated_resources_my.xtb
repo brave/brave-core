@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 သို့မဟုတ် <ph name="SETTINGS_EXTENIONS_LINK"/> တွင် ပြောင်းလိုက်ပါ။</translation>
 <translation id="6229752134959014186">Widevine အကြောင်း ပိုမိုလေ့လာပါ</translation>
+<translation id="3318169548229684688">ဤစက်ပေါ်တွင် စကားသံကို လုပ်ဆောင်နိုင်ရန် စကားပြောအသိအမှတ်ပြုမော်ဒယ် (<ph name="DOWNLOAD_SIZE"/>) ကို ဒေါင်းလုဒ်လုပ်ရန်</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> သင်ကို</translation>
 <translation id="3218385319396786393">ဤစာမျက်နှာတွင် Autoplay ပိတ်ထားသည်</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> တွင် Autoplay ခွင့်ပြုသည်</translation>
@@ -610,6 +611,8 @@
 <translation id="3540231253392253941">Push အချက်အလက်များအတွက် Google ဝန်ဆောင်မှုများကို အသုံးပြုရန်</translation>
 <translation id="2224032129673914306">အဓိပ္ပာယ်ဆိုင်ရာ မှတ်တမ်း ရှာဖွေမှု</translation>
 <translation id="6045998903985162478">သင်ဝင်ကြည့်သည့် စာမျက်နှာများကို အညွှန်းချိတ်ထားခြင်းဖြင့် ၎င်းတို့ကို မှတ်တမ်း၊ ဖွင့်ထားသည့် တက်ဘ်များနှင့် Leo တွင် လွယ်ကူစွာ ရှာဖွေနိုင်ပါသည်။</translation>
+<translation id="3962946446120925966">စက်ပေါ်ရှိ စကားပြောသိမြင်ခြင်း</translation>
+<translation id="6408242130028978631">ဤစက်ပေါ်တွင် ဝဘ်ဆိုက်များက စကားပြောကို စီမံဆောင်ရွက်နိုင်စေရန် စကားပြောသိမြင်ခြင်း မော်ဒယ် (<ph name="DOWNLOAD_SIZE"/>) ကို ဒေါင်းလုဒ်လုပ်ပါ။ မော်ဒယ်ကို ဖယ်ရှားရန် ဤဆက်တင်ကို ပိတ်ပါ။</translation>
 <translation id="5813105074916486721">စက်တွင်း မှတ်တမ်း သိမ်းဆည်းခြင်း</translation>
 <translation id="5671611745062206644">Brave သည် သင့်လည်ပတ်မှုမှတ်တမ်းကို စက်တွင်း မည်မျှကြာအောင် သိမ်းဆည်းမည်နည်း</translation>
 <translation id="7184510058087008090">၁ ရက်</translation>

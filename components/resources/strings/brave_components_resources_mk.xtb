@@ -937,6 +937,11 @@
 <translation id="4362717653795263052">Врати ги примарните крипто сметки</translation>
 <translation id="3038077262567136741">Внесете ја вашата фраза за обновување за да го вратите вашиот Brave паричник крипто сметка.</translation>
 <translation id="955918646509748368">Фразата за обновување што сте ја внесле е невалидна.</translation>
+<translation id="7496330898672236908">Оваа фраза за обновување не одговара на вашиот паричник. Проверете ја фразата и обидете се повторно.</translation>
+<translation id="3798792138617904098">Да се отстранат импортираните сметки?</translation>
+<translation id="2960631345291747230">Импортираните сметки не се зачувани со вашата фраза за обновување. Тие ќе бидат отстранети од Brave паричникот и може трајно да го изгубите пристапот до нивните средства, освен ако не сте ги зачувале нивните приватни клучеви.</translation>
+<translation id="8898583604592472741">Отстрани сметки</translation>
+<translation id="1577629163207045190">Напишете „<ph name="CONFIRMATION_PHRASE"/>“ за да потврдите.</translation>
 <translation id="8107437138787377150">Залепете ја фразата за обновување од таблата за копирање</translation>
 <translation id="4811736040444856406">Покажи фраза за обнова</translation>
 <translation id="4359319875297001084">Увезете од наследни Brave крипто паричници?</translation>
@@ -2231,13 +2236,12 @@
 <translation id="3934503473603661122">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Grok 4.7, пограничниот модел за расудување на xAI на Amazon Bedrock. Grok 4.7 се опслужува преку сигурната AWS инфраструктура на Brave.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува GPT Luna, брзиот модел со мала латентност на OpenAI на Amazon Bedrock. GPT Luna се опслужува преку сигурната AWS инфраструктура на Brave.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува GPT 5.6 Terra, балансираниот продукциски модел на OpenAI на Amazon Bedrock Mantle. GPT 5.6 Terra се опслужува преку сигурната AWS инфраструктура на Brave.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Mistral Large, модел создаден од Mistral да биде ефикасен и применлив за многу случаи. Mistral Large е хостиран од Brave преку нашата сопствена сигурна инфраструктура.&amp;<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Claude Haiku, модел создаден од Anthropic за поддршка на разговорни и задачи за обработка на текст. Claude Haiku е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Qwen 3.8 Flash Next, модел создаден од Alibaba Cloud да биде ефикасен и применлив за многу случаи. Qwen 3.8 Flash Next е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Deepseek V3.2, модел создаден од Deepseek да биде ефикасен и применлив за многу случаи. Deepseek V3.2 е хостиран од Brave преку нашата сопствена сигурна инфраструктура.&amp;<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува GLM 5.3, модел создаден од Z.ai да биде ефикасен и применлив за многу случаи. GLM 5.3 е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Claude Opus, модел создаден од Anthropic за поддршка на разговорни и задачи за обработка на текст. Claude Opus е хостиран од Brave преку нашата сопствена сигурна инфраструктура.&amp;<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува GLM-4-7-Flash, модел создаден од Zhipu AI да биде ефикасен и применлив за многу случаи. GLM-4-7-Flash е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Kimi K2.5, модел создаден од Moonshot AI да биде ефикасен и применлив за многу случаи. Kimi K2.5 е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Nemotron Nano 3 30B, модел создаден од NVIDIA да биде ефикасен и применлив за многу случаи. Nemotron Nano 3 30B е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Brave Ocelot, модел создаден од Brave за резимирање на веб страницы. Brave Ocelot е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Локален</translation>
@@ -2377,8 +2381,8 @@
 <translation id="7465032796278724624">Проверено приватно со NEAR AI TEE</translation>
 <translation id="8782867266498869301">Моделот се менува динамички за да го користи најдобриот за задачата</translation>
 <translation id="7348809809749151120">Брзо • Пребарување</translation>
+<translation id="7711013627639951065">Брз • Пребарување • Визија • Алатки</translation>
 <translation id="3213834013136637671">Пребарување • Визија</translation>
-<translation id="2793458212460902934">Брзо • Пребарување • Алатки</translation>
 <translation id="5276681919620506371">Пребарување • Алатки</translation>
 <translation id="7434375176361995333">Резимирања • Брзо</translation>
 <translation id="3965507912994218570">Leo поставки</translation>
@@ -2451,6 +2455,8 @@
 <translation id="6287023598025162715">Нов разговор</translation>
 <translation id="7230502562132448519">Филтрирај разговори</translation>
 <translation id="821070843380699990">Обиди се со поинаква бара</translation>
+<translation id="241415280196701326">Неодамнешни работни простори</translation>
+<translation id="5388053981690151266">Нов разговор во овој работен простор</translation>
 <translation id="7097822247923237815">Привремен разговор</translation>
 <translation id="7481750859362986254">Овој разговор нема да биде зачуван во вашата историја, ниту ќе користи персонализации или спомени на Лео.</translation>
 <translation id="4238305333951712482">Меморијата е ажурирана: <ph name="MEMORY_CONTENT"/></translation>
@@ -2476,6 +2482,7 @@
 <translation id="5103625298494362646">Режимот за пребарување со AI работи со модели кои поддржуваат алатки. Несоодветните модели се скриени од оваа листа.</translation>
 <translation id="3397808797783614750">Овозможување на AI автоматски да прелистува за вас може да предизвика штетни, непосакувани последици за вашата приватност, финансии и онлајн комуникации. <ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Безбедносно предупредување</translation>
+<translation id="717245811623757038">Барање за дозвола за алатка</translation>
 <translation id="6077070599873946984">Brave AI има потреба од ваша дозвола за: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI би сакал да изврши **<ph name="TOOL_NAME"/>** на **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Операцијата е детектирана како потенцијално несоодветна со вашето барање:</translation>

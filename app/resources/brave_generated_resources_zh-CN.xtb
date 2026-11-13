@@ -49,6 +49,7 @@
 <translation id="2200626478572277092">有时需要 Widevine 才能在网页上播放媒体。这是一个从 Google 服务器加载的 Google 扩展程序，Brave 无法进行检查。安装即表示您同意 Google 的使用条款。</translation>
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>。若稍后需更改选项，请前往 <ph name="SETTINGS_EXTENIONS_LINK"/>。</translation>
 <translation id="6229752134959014186">详细了解 Widevine</translation>
+<translation id="3318169548229684688">下载语音识别模型(<ph name="DOWNLOAD_SIZE"/>),以在此设备上处理语音</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/>正请求您</translation>
 <translation id="3218385319396786393">已禁止在此网页上运行自动播放</translation>
 <translation id="4988333904713528597">始终允许自动播放<ph name="HOST"/></translation>
@@ -609,6 +610,8 @@
 <translation id="3540231253392253941">使用 Google 服务进行推送消息传递</translation>
 <translation id="2224032129673914306">语义历史记录搜索</translation>
 <translation id="6045998903985162478">为您访问的页面建立索引，以便您可以在历史记录、打开的标签页和 Leo 中轻松找到它们。</translation>
+<translation id="3962946446120925966">设备端语音识别</translation>
+<translation id="6408242130028978631">下载语音识别模型 (<ph name="DOWNLOAD_SIZE"/>),以便网站在此设备上处理语音。关闭此选项即可移除该模型。</translation>
 <translation id="5813105074916486721">本地历史记录保留时间</translation>
 <translation id="5671611745062206644">Brave 在本地存储您浏览历史记录的时长</translation>
 <translation id="7184510058087008090">1 天</translation>

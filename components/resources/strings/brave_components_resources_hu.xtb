@@ -943,6 +943,11 @@
 <translation id="4362717653795263052">Elsődleges kriptoszámlák visszaállítása</translation>
 <translation id="3038077262567136741">Adja meg a helyreállítási kifejezést Brave pénztárca kriptoszámlájának visszaállításához.</translation>
 <translation id="955918646509748368">A megadott helyreállítási kifejezés érvénytelen.</translation>
+<translation id="7496330898672236908">Ez a helyreállítási kifejezés nem egyezik a pénztárcáddal. Ellenőrizd a kifejezést, és próbáld újra.</translation>
+<translation id="3798792138617904098">Eltávolítod az importált fiókokat?</translation>
+<translation id="2960631345291747230">Az importált fiókokról nem készül biztonsági mentés a helyreállítási kifejezéssel. El lesznek távolítva a Brave Walletből, és véglegesen elveszítheted a hozzáférést a bennük lévő összegekhez, hacsak nem mentetted el a privát kulcsaikat.</translation>
+<translation id="8898583604592472741">Fiókok eltávolítása</translation>
+<translation id="1577629163207045190">A megerősítéshez írd be: „<ph name="CONFIRMATION_PHRASE"/>”.</translation>
 <translation id="8107437138787377150">Illessze be a helyreállítási kifejezést a vágólapról</translation>
 <translation id="4811736040444856406">Helyreállítási kifejezés megjelenítése</translation>
 <translation id="4359319875297001084">Importál régebbi Brave kriptotárcákból?</translation>
@@ -2237,13 +2242,12 @@
 <translation id="3934503473603661122">Üdv, Leo vagyok, a Brave AI-asszisztense. A működésem a Grok 4.7-on alapul, az xAI élvonalbeli gondolkodási modelljén az Amazon Bedrock-on. A Grok 4.7 a Brave biztonságos AWS-infrastruktúráján keresztül érhető el.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Üdv, Leo vagyok, a Brave AI-asszisztense. A működésem a GPT Luna-n alapul, az OpenAI gyors, alacsony késleltetésű modelljén az Amazon Bedrock-on. A GPT Luna a Brave biztonságos AWS-infrastruktúráján keresztül érhető el.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Üdv, Leo vagyok, a Brave AI-asszisztense. A működésem a GPT 5.6 Terra-n alapul, az OpenAI kiegyensúlyozott éles modelljén az Amazon Bedrock Mantle-en. A GPT 5.6 Terra a Brave biztonságos AWS-infrastruktúráján keresztül érhető el.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Mistral Large modellen alapul, amelyet a Mistral fejlesztett ki, amely számos esetben használható. A Mistral Large a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem a Claude Haiku modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetésre és szövegfeldolgozási feladatok elvégzésére. A Claude Haiku a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>Tudjon meg többet<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Üdv, Leo vagyok, a Brave AI-asszisztense. A működésem a Qwen 3.8 Flash Next-en alapul, amelyet az Alibaba Cloud fejlesztett ki annak érdekében, hogy teljesítményorientált és sokféle felhasználási területre alkalmas legyen. A Qwen 3.8 Flash Next a Brave saját, biztonságos infrastruktúráján keresztül működik.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Deepseek V3.2 modellen alapul, amelyet a Deepseek fejlesztett ki annak érdekében, hogy teljesítményorientált és sokféle felhasználási területre alkalmas legyen. A Deepseek V3.2 modellt a Brave egy ellenőrizhetően privát, biztonságos infrastruktúráján keresztül üzemelteti.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Üdv, Leo vagyok, a Brave AI-asszisztense. A működésemet a GLM 5.3 modell biztosítja, amelyet a Z.ai fejlesztett ki, hogy nagy teljesítményű és számos felhasználási esetben alkalmazható legyen. A GLM 5.3 a Brave által biztosított, saját biztonságos infrastruktúránkon fut. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem a Claude Opus modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetésre és szövegfeldolgozási feladatok elvégzésére. A Claude Opus a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>Tudjon meg többet<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a GLM-4-7-Flash modellen alapul, amelyet a Zhipu AI fejlesztett ki, amely számos esetben használható. A GLM-4-7-Flash a Brave által biztosított, saját biztonságos infrastruktúrán fut. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Kimi K2.5 modellen alapul, amelyet a Moonshot AI fejlesztett ki, amely számos esetben használható. A Kimi K2.5 a Brave által biztosított, saját biztonságos infrastruktúrán fut. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Nemotron Nano 3 30B modellen alapul, amelyet az NVIDIA fejlesztett ki, amely számos esetben használható. A Nemotron Nano 3 30B a Brave által biztosított, saját biztonságos infrastruktúrán fut. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Brave Ocelot modellen alapul, amelyet a Brave fejlesztett ki weboldalak összegzésére. A Brave Ocelot a Brave által biztosított, saját biztonságos infrastruktúrán fut. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Helyi</translation>
@@ -2383,8 +2387,8 @@
 <translation id="7465032796278724624">Ellenőrizhetően privát a NEAR AI TEE-vel</translation>
 <translation id="8782867266498869301">A modell dinamikusan változik a legjobb feladatellátás érdekében</translation>
 <translation id="7348809809749151120">Gyors • Keresés</translation>
+<translation id="7711013627639951065">Gyors • Keresés • Látás • Eszközök</translation>
 <translation id="3213834013136637671">Keresés • Látás</translation>
-<translation id="2793458212460902934">Gyors • Keresés • Eszközök</translation>
 <translation id="5276681919620506371">Keresés • Eszközök</translation>
 <translation id="7434375176361995333">Összegzések • Gyors</translation>
 <translation id="3965507912994218570">Leo-beállítások</translation>
@@ -2457,6 +2461,8 @@
 <translation id="6287023598025162715">Új beszélgetés</translation>
 <translation id="7230502562132448519">Beszélgetések szűrése</translation>
 <translation id="821070843380699990">Kérjük, próbáljon ki egy másik lekérdezést</translation>
+<translation id="241415280196701326">Legutóbbi munkaterületek</translation>
+<translation id="5388053981690151266">Új beszélgetés ezen a munkaterületen</translation>
 <translation id="7097822247923237815">Ideiglenes csevegés</translation>
 <translation id="7481750859362986254">Ez a beszélgetés nem lesz elmentve, és nem használja Leo testreszabását vagy memóriáját.</translation>
 <translation id="4238305333951712482">Memória frissítve: <ph name="MEMORY_CONTENT"/></translation>
@@ -2482,6 +2488,7 @@
 <translation id="5103625298494362646">Az ügynök mód azokkal a modellekkel működik, amelyek támogatják az eszközöket. A nem kompatibilis modellek el vannak rejtve ebből a listából.</translation>
 <translation id="3397808797783614750">Ha engedélyezi az AI számára, hogy automatikusan böngésszen az Ön nevében, az veszélyeztetheti az Ön adatvédelmét, pénzügyeit és online kommunikációját. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Biztonsági figyelmeztetés</translation>
+<translation id="717245811623757038">Eszközengedély-kérelem</translation>
 <translation id="6077070599873946984">A Brave AI engedélyt kér a következőre: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">A Brave AI szeretné végrehajtani a következőt: **<ph name="TOOL_NAME"/>** ezen: **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Megállapítottuk, hogy ez a művelet esetleg eltérhet a kérésétől:</translation>

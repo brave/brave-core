@@ -49,6 +49,7 @@
 <translation id="2200626478572277092">වයිඩ්වයින් සඳහා ඇතැම් විට පිටු වල මාධ්‍ය වාදනයට වුවමනා වේ. එය ගූගල් සේවාදායක වලින් පූරණය වන ගූගල් දිගුවක් නිසා Brave මගින් සෝදිසි කිරීමට නොහැකිය. ස්ථාපනයෙන්, ඔබ ගූගල් භාවිත නියම වලට එකඟ වේ.</translation>
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>. හෝ <ph name="SETTINGS_EXTENIONS_LINK"/> හි පසුව වෙනස් කරන්න.</translation>
 <translation id="6229752134959014186">වයිඩ්වයින් ගැන තව දැනගන්න</translation>
+<translation id="3318169548229684688">මෙම උපාංගයේම කථනය සැකසීමට කථන හඳුනාගැනීමේ ආකෘතියක් (<ph name="DOWNLOAD_SIZE"/>) බාගන්න</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> මෙය ඔබගෙන් අසයි:</translation>
 <translation id="3218385319396786393">මෙම පිටුවෙන් ස්වයං වාදනය අවහිරයි</translation>
 <translation id="4988333904713528597">සැමවිට <ph name="HOST"/> වෙත ස්වයං වාදනයට ඉඩ දෙන්න</translation>
@@ -609,6 +610,8 @@
 <translation id="3540231253392253941">තල්ලු පණිවිඩ සඳහා ගූගල් සේවා භාවිතා කරන්න</translation>
 <translation id="2224032129673914306">අර්ථමය ඉතිහාස සෙවීම</translation>
 <translation id="6045998903985162478">ඔබ පිවිසෙන පිටු සුචිගත කරන්න, එවිට ඔබට ඒවා ඉතිහාසයේ, විවෘත ටැබ් සහ Leo හි පහසුවෙන් සොයාගත හැක.</translation>
+<translation id="3962946446120925966">උපාංගය මත කථන හඳුනාගැනීම</translation>
+<translation id="6408242130028978631">අඩවිවලට මෙම උපාංගයේම කථනය සැකසීමට හැකි වන පරිදි කථන හඳුනාගැනීමේ ආකෘතියක් (<ph name="DOWNLOAD_SIZE"/>) බාගන්න. ආකෘතිය ඉවත් කිරීමට මෙය ක්‍රියාවිරහිත කරන්න.</translation>
 <translation id="5813105074916486721">ප්‍රාදේශීය ඉතිහාස රඳවා තබා ගැනීම</translation>
 <translation id="5671611745062206644">Brave ඔබේ බ්‍රවුසින් ඉතිහාසය ප්‍රාදේශීයව ගබඩා කරන කාලය</translation>
 <translation id="7184510058087008090">දවස් 1</translation>

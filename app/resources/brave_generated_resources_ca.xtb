@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Més informació sobre Widevine</translation>
+<translation id="3318169548229684688">Baixar un model de reconeixement de veu (<ph name="DOWNLOAD_SIZE"/>) per processar la parla en aquest aparell</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> et demana que</translation>
 <translation id="3218385319396786393">Reproducció automàtica bloquejada en aquesta pàgina</translation>
 <translation id="4988333904713528597">Permet sempre la reproducció automàtica a <ph name="HOST"/></translation>
@@ -610,6 +611,8 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="3540231253392253941">Utilitza els serveis de Google per a la missatgeria push</translation>
 <translation id="2224032129673914306">Cerca semàntica a l'historial</translation>
 <translation id="6045998903985162478">Indexa les pàgines que visites perquè les puguis trobar fàcilment a l'historial, a les pestanyes obertes i a Leo.</translation>
+<translation id="3962946446120925966">Reconeixement de veu a l'aparell</translation>
+<translation id="6408242130028978631">Baixeu un model de reconeixement de veu (<ph name="DOWNLOAD_SIZE"/>) perquè els llocs puguin processar la veu en aquest aparell. Desactiveu aquesta opció per eliminar el model.</translation>
 <translation id="5813105074916486721">Retenció de l'historial local</translation>
 <translation id="5671611745062206644">Durant quant de temps Brave emmagatzema el teu historial de navegació localment</translation>
 <translation id="7184510058087008090">1 dia</translation>

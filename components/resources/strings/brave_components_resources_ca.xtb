@@ -948,6 +948,11 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="4362717653795263052">Restaura els principals comptes de criptomoneda</translation>
 <translation id="3038077262567136741">Introdueix la frase de recuperació per restaurar el teu compte de criptomonedes de la cartera de Brave.</translation>
 <translation id="955918646509748368">La frase de recuperació que has introduït no és vàlida.</translation>
+<translation id="7496330898672236908">Aquesta frase de recuperació no coincideix amb la teva cartera. Comprova la frase i torna-ho a provar.</translation>
+<translation id="3798792138617904098">Vols suprimir els comptes importats?</translation>
+<translation id="2960631345291747230">Els comptes importats no tenen cap còpia de seguretat amb la teva frase de recuperació. S'eliminaran de Brave Wallet i és possible que perdis l'accés als seus fons de manera permanent, tret que hagis fet una còpia de seguretat de les seves claus privades.</translation>
+<translation id="8898583604592472741">Suprimeix els comptes</translation>
+<translation id="1577629163207045190">Escriu "<ph name="CONFIRMATION_PHRASE"/>" per confirmar.</translation>
 <translation id="8107437138787377150">Enganxa la frase de recuperació del porta-retalls</translation>
 <translation id="4811736040444856406">Mostra la frase de recuperació</translation>
 <translation id="4359319875297001084">Vols importar del llegat de carteres de criptomoneda de Brave?</translation>
@@ -2241,13 +2246,12 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="3934503473603661122">Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia Grok 4.7, el model de raonament d'avantguarda de xAI a Amazon Bedrock. Grok 4.7 es proporciona mitjançant la infraestructura segura d'AWS de Brave.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia GPT Luna, el model ràpid i de baixa latència d'OpenAI a Amazon Bedrock. GPT Luna es proporciona mitjançant la infraestructura segura d'AWS de Brave.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia GPT 5.6 Terra, el model de producció equilibrat d'OpenAI a Amazon Bedrock Mantle. GPT 5.6 Terra es proporciona mitjançant la infraestructura segura d'AWS de Brave.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia Mistral Large, un model creat per Mistral per ser eficient i aplicable a molts casos d'ús. Mistral Large s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Hola, soc en Leo. Estic en un servidor intermedi de Brave i funciono amb Claude Haiku, un model creat per Anthropic per permetre tasques de conversa i de processament de textos. Claude Haiku s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.<ph name="LINK_BEFORE"/>Per a més informació<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia Qwen 3.8 Flash Next, un model creat per Alibaba Cloud per ser eficient i aplicable a molts casos d'ús. Qwen 3.8 Flash Next s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia Deepseek V3.2, un model creat per Deepseek per ser eficient i aplicable a molts casos d'ús. Deepseek V3.2 s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia GLM 5.3, un model creat per Z.ai per ser eficient i aplicable a molts casos d'ús. GLM 5.3 s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Hola, soc en Leo. Estic en un servidor intermedi de Brave i funciono amb Claude Opus, un model creat per Anthropic per permetre tasques de conversa i de processament de textos. Claude Opus s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.<ph name="LINK_BEFORE"/>Per a més informació<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia GPT OSS 120B, un model creat per OpenAI per ser eficient i aplicable a molts casos d'ús. GPT OSS 120B s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia Kimi K2.5, un model creat per Moonshot AI per ser eficient i aplicable a molts casos d'ús. Kimi K2.5 s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia Nemotron Nano 3 30B, un model creat per NVIDIA per ser eficient i aplicable a molts casos d'ús. Nemotron Nano 3 30B s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia Brave Ocelot, un model creat per Brave per resumir pàgines web. Brave Ocelot s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Local</translation>
@@ -2387,8 +2391,8 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="7465032796278724624">Verificadament privat amb NEAR AI TEE</translation>
 <translation id="8782867266498869301">El model canvia dinàmicament per utilitzar el més adequat per a la tasca</translation>
 <translation id="7348809809749151120">Ràpid • Cercador</translation>
+<translation id="7711013627639951065">Ràpid • Cercador • Visió • Eines</translation>
 <translation id="3213834013136637671">Cercador • Visió</translation>
-<translation id="2793458212460902934">Ràpid • Cercador • Eines</translation>
 <translation id="5276681919620506371">Cercador • Eines</translation>
 <translation id="7434375176361995333">Resums • Ràpid</translation>
 <translation id="3965507912994218570">Configuració de Leo</translation>
@@ -2461,6 +2465,8 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="6287023598025162715">Nova conversa</translation>
 <translation id="7230502562132448519">Filtra les converses</translation>
 <translation id="821070843380699990">Prova una altra consulta</translation>
+<translation id="241415280196701326">Espais de treball recents</translation>
+<translation id="5388053981690151266">Nova conversa en aquest espai de treball</translation>
 <translation id="7097822247923237815">Xat temporal</translation>
 <translation id="7481750859362986254">Aquest xat no es guardarà al teu historial ni utilitzarà cap de les personalitzacions o records de Leo.</translation>
 <translation id="4238305333951712482">Memòria actualitzada: <ph name="MEMORY_CONTENT"/></translation>
@@ -2486,6 +2492,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="5103625298494362646">El mode agent funciona amb models que admeten eines. Els models no compatibles s’amaguen d’aquesta llista.</translation>
 <translation id="3397808797783614750">Habilitar la navegació automàtica mitjançant IA pot causar conseqüències perjudicials i no desitjades per a la vostra privadesa, finances i comunicacions en línia. <ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Avís de seguretat</translation>
+<translation id="717245811623757038">Sol·licitud de permís per a l'eina</translation>
 <translation id="6077070599873946984">Brave IA necessita el teu permís per a: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI vol executar **<ph name="TOOL_NAME"/>** a **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">S'ha detectat que l'operació podria no coincidir amb la vostra sol·licitud:</translation>

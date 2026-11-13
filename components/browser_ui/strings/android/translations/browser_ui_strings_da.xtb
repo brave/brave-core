@@ -181,9 +181,7 @@
 <translation id="2710883118091822664">Log ind for nemt at fortsætte på alle dine enheder</translation>
 <translation id="2713106313042589954">Slå kamera fra</translation>
 <translation id="2717722538473713889">Mailadresser</translation>
-<translation id="8181634240306014548">Åbn Brave med omnifeltet i fokus, hvilket reducerer opstartstiden på mindre avancerede enheder.</translation>
 <translation id="2750481671343847896">Websites kan vise loginmeddelelser fra identitetstjenester.</translation>
-<translation id="2787357173144933081">Åbn omnifeltet</translation>
 <translation id="2789132527330338807">Websites kan anmode om at oprette et 3D-kort over dine omgivelser eller registrere kamerapositionen</translation>
 <translation id="2790501146643349491">Når dette er slået til, kan nyligt lukkede websites gennemføre afsendelse og modtagelse af data. Når dette er slået fra, kan nyligt lukkede websites ikke sende eller modtage data.</translation>
 <translation id="2795716239552913152">Websites bruger normalt din lokation til relevante formål eller oplysninger om lokale nyheder eller butikker i nærheden</translation>
@@ -291,7 +289,6 @@
 <translation id="9046306654872718870">Gør Brave personlig med tilpassede farver og billeder på din startside</translation>
 <translation id="389521680295183045">Websites kan anmode om at få at vide, hvornår du aktivt bruger din enhed</translation>
 <translation id="3895926599014793903">Tving aktivering af zoom</translation>
-<translation id="3905475044299942653">Sæt en stopper for mange notifikationer</translation>
 <translation id="3922092564198021702">Åbn Indstillinger på din telefon</translation>
 <translation id="3924858949939391676">Vis links, når Læsetilstand er aktiveret</translation>
 <translation id="3933121352599513978">Skjul uønskede anmodninger (anbefales)</translation>
@@ -385,7 +382,6 @@
 <translation id="4936863036653376783">Du finder dine grupper i sektionen for fanegrupper på alle dine enheder</translation>
 <translation id="4945443401464700059"><ph name="SITE"/> er blokeret, så det ikke kan bruge dine oplysninger på</translation>
 <translation id="4953688446973710931">Når dette er slået til, kan websites anmode om tilladelse til automatisk at downloade flere filer. Når dette er slået fra, kan websites ikke downloade flere filer automatisk.</translation>
-<translation id="4962975101802056554">Tilbagekald alle tilladelser for enheden</translation>
 <translation id="4972737347717125191">Websites kan anmode om tilladelse til at bruge virtual reality-enheder og -data</translation>
 <translation id="1275242979020712923">Felt i bunden med Brave-farver</translation>
 <translation id="497421865427891073">Gå fremad</translation>
@@ -525,6 +521,7 @@
 <translation id="6439114592976064011">Bloker websites fra at benytte dine virtual reality-enheder og -data</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6452138246455930388">Prisfald på din åbne fane fra <ph name="OLD_PRICE"/> til <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
+<translation id="6495608040096939405">Tilbagekald enhedstilladelse for <ph name="NAME"/></translation>
 <translation id="6500423977866688905">Når vinduet er smalt, kan du anmode om mobilvenlig visning</translation>
 <translation id="6527303717912515753">Del</translation>
 <translation id="6530703012083415527">Når dette er slået til, kan websites anvende pop op-vinduer og omdirigeringer. Når dette er slået fra, kan websites ikke anvende pop op-vinduer og omdirigeringer.</translation>
@@ -590,6 +587,7 @@
 <translation id="7188508872042490670">Websitedata på enheden</translation>
 <translation id="7201549776650881587">Denne handling sletter alle data og cookies, som er gemt af alle websites i gruppen <ph name="ORIGIN"/> eller den tilhørende app på din startside</translation>
 <translation id="7219254577985949841">Vil du slette websitedata?</translation>
+<translation id="7225256190577194089">Tilbagekald alle tilladelser for enheden <ph name="DEVICE_NAME"/></translation>
 <translation id="723171743924126238">Vælg billeder</translation>
 <translation id="7243246278722455312">Feltet i bunden med tilpasning af siden Ny fane</translation>
 <translation id="7243308994586599757">Du finder indstillingerne nederst på skærmen</translation>
@@ -702,7 +700,6 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:</translation>
 <translation id="8428213095426709021">Indstillinger</translation>
 <translation id="8441146129660941386">Spol tilbage</translation>
 <translation id="8444433999583714703">Aktivér også lokation i <ph name="BEGIN_LINK"/>Android-indstillingerne<ph name="END_LINK"/> for at give <ph name="APP_NAME"/> adgang til din lokation.</translation>
-<translation id="8447861592752582886">Tilbagekald adgangstilladelsen til enheden</translation>
 <translation id="8463843545738141778">Denne indstilling er deaktiveret, fordi du har aktiveret Avanceret beskyttelse i Android-indstillingerne.</translation>
 <translation id="8467359479529706065">Feltet i bunden, der viser udseendet af siden Ny fane, er åbnet i halv højde</translation>
 <translation id="8471525937465764768">Websites opretter normalt forbindelse til USB-enheder for at kunne udskrive dokumenter eller gemme filer på en lagerenhed</translation>
