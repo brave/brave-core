@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc b/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc
-index 3b4dc782e2ce318fcc14a90d80e7f266a28b9dd5..446a6d723bbafe9ce278ac270e8adb60f376f92e 100644
+index eb6dc01caf2d5bcb4cc904d5c9c256633e98a5ae..58b49c7dda8f2abecff80a8ad9f9286af1c901cc 100644
 --- a/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc
 +++ b/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc
-@@ -89,6 +89,7 @@ PermissionPromptBubbleBaseView::~PermissionPromptBubbleBaseView() = default;
+@@ -90,6 +90,7 @@ PermissionPromptBubbleBaseView::~PermissionPromptBubbleBaseView() = default;
  void PermissionPromptBubbleBaseView::CreatePermissionButtons(
      const std::u16string& allow_always_text,
      const std::u16string& block_text) {
@@ -10,7 +10,7 @@ index 3b4dc782e2ce318fcc14a90d80e7f266a28b9dd5..446a6d723bbafe9ce278ac270e8adb60
    if (delegate_) {
      if (std::optional<std::u16string> explanation =
              GetSubAppsPermissionExplanation(
-@@ -180,6 +181,20 @@ void PermissionPromptBubbleBaseView::CreatePermissionButtons(
+@@ -181,6 +182,20 @@ void PermissionPromptBubbleBaseView::CreatePermissionButtons(
      SetButtonStyle(ui::mojom::DialogButton::kOk, ui::ButtonStyle::kTonal);
      SetButtonStyle(ui::mojom::DialogButton::kCancel, ui::ButtonStyle::kTonal);
    }
@@ -31,7 +31,7 @@ index 3b4dc782e2ce318fcc14a90d80e7f266a28b9dd5..446a6d723bbafe9ce278ac270e8adb60
  }
  
  void PermissionPromptBubbleBaseView::CreateExtraTextLabel(
-@@ -202,6 +217,7 @@ void PermissionPromptBubbleBaseView::Show() {
+@@ -203,6 +218,7 @@ void PermissionPromptBubbleBaseView::Show() {
  }
  
  void PermissionPromptBubbleBaseView::CreateWidget() {
@@ -39,7 +39,7 @@ index 3b4dc782e2ce318fcc14a90d80e7f266a28b9dd5..446a6d723bbafe9ce278ac270e8adb60
    CHECK(GetNativeWindow());
  
    UpdateAnchorPosition();
-@@ -216,6 +232,8 @@ void PermissionPromptBubbleBaseView::CreateWidget() {
+@@ -217,6 +233,8 @@ void PermissionPromptBubbleBaseView::CreateWidget() {
    }
  
    widget->SetZOrderSublevel(ChromeWidgetSublevel::kSublevelSecurity);

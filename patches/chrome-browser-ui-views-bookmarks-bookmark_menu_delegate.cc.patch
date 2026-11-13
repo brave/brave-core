@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/bookmarks/bookmark_menu_delegate.cc b/chrome/browser/ui/views/bookmarks/bookmark_menu_delegate.cc
-index f9cd6f6ed0ff79e5909d260c82acbf14c063e6d9..5786d596d98293642f435e454c2e6ec96c7eba74 100644
+index cc36829c8c9e8a0dbbb47506b6c015318bed1fcc..83177a70750a369387c273a2316b869a0ca1a860 100644
 --- a/chrome/browser/ui/views/bookmarks/bookmark_menu_delegate.cc
 +++ b/chrome/browser/ui/views/bookmarks/bookmark_menu_delegate.cc
-@@ -77,7 +77,7 @@ namespace {
+@@ -78,7 +78,7 @@ namespace {
  
  // Max width of a menu. There does not appear to be an OS value for this, yet
  // both IE and FF restrict the max width of a menu.

@@ -1,5 +1,5 @@
 diff --git a/testing/xvfb.py b/testing/xvfb.py
-index c22b5802bfcb658bcd943f8506119b445cefb81a..cbcffd38cdce4c59e5fb03a051ca88f4a3491e68 100755
+index 4fa8ff7b992e3a7a5c3f788038470521fdf2f5bb..397dbe037d732ea115b98c9f3c152cc7c398c581 100755
 --- a/testing/xvfb.py
 +++ b/testing/xvfb.py
 @@ -119,7 +119,7 @@ def run_executable(

@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/sync/model/sync_service_factory_unittest.mm b/ios/chrome/browser/sync/model/sync_service_factory_unittest.mm
-index c2d433d20a2c57796a940f019bef97f54a3ea1ac..0944204404c6ced424b17e20d752dc8b16491680 100644
+index aa37b5bdc81d66562b7da0fb91ba74c931f8880e..0be38f50d0745ca0adc288c13e885a85daab1230 100644
 --- a/ios/chrome/browser/sync/model/sync_service_factory_unittest.mm
 +++ b/ios/chrome/browser/sync/model/sync_service_factory_unittest.mm
 @@ -57,7 +57,7 @@ class SyncServiceFactoryTest : public PlatformTest {

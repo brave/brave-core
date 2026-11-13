@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tabs/split_tab_menu_model.h b/chrome/browser/ui/tabs/split_tab_menu_model.h
-index 6d8db4344e032892fc34624aa23efae3f7165bd2..68787ca3aaeee4eb95bba86bad589ea58a303565 100644
+index 51a7e83841f9369516db41abf36718d37323efd3..3ee714d1d35836977afeab8e7d55af6a7111f10e 100644
 --- a/chrome/browser/ui/tabs/split_tab_menu_model.h
 +++ b/chrome/browser/ui/tabs/split_tab_menu_model.h
 @@ -9,6 +9,7 @@
@@ -10,7 +10,7 @@ index 6d8db4344e032892fc34624aa23efae3f7165bd2..68787ca3aaeee4eb95bba86bad589ea5
  #include "chrome/browser/ui/tabs/existing_base_sub_menu_model.h"
  #include "ui/base/interaction/element_identifier.h"
  #include "ui/menus/simple_menu_model.h"
-@@ -54,7 +55,8 @@ class SplitTabMenuModel : public ui::SimpleMenuModel,
+@@ -56,7 +57,8 @@ class SplitTabMenuModel : public ui::SimpleMenuModel,
      kExitSplit,
      kSendFeedback,
      kToggleOrientation,
@@ -20,7 +20,7 @@ index 6d8db4344e032892fc34624aa23efae3f7165bd2..68787ca3aaeee4eb95bba86bad589ea5
    };
    // LINT.ThenChange(//tools/metrics/histograms/metadata/tab/enums.xml:SplitViewMenuEntry)
  
-@@ -77,10 +79,17 @@ class SplitTabMenuModel : public ui::SimpleMenuModel,
+@@ -83,10 +85,17 @@ class SplitTabMenuModel : public ui::SimpleMenuModel,
    ui::ImageModel GetIconForCommandId(int command_id) const override;
    void ExecuteCommand(int command_id, int event_flags) override;
  

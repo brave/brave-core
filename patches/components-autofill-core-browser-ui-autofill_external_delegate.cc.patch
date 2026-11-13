@@ -1,5 +1,5 @@
 diff --git a/components/autofill/core/browser/ui/autofill_external_delegate.cc b/components/autofill/core/browser/ui/autofill_external_delegate.cc
-index e714442c9cc1988cae0384086647ad62cf62bc34..090a75205085d20069668565ecc5ea629059abc1 100644
+index ca3200dad9f9574ccf5580dc6f150ffebe12216a..1018cee7f8c3d92e2e33a773dab95f6dd49978f8 100644
 --- a/components/autofill/core/browser/ui/autofill_external_delegate.cc
 +++ b/components/autofill/core/browser/ui/autofill_external_delegate.cc
 @@ -33,6 +33,7 @@
@@ -10,7 +10,7 @@ index e714442c9cc1988cae0384086647ad62cf62bc34..090a75205085d20069668565ecc5ea62
  #if BUILDFLAG(IS_ANDROID)
  #include "base/android/device_info.h"
  #endif
-@@ -524,6 +525,13 @@ void AutofillExternalDelegate::AttemptToDisplayAutofillSuggestions(
+@@ -527,6 +528,13 @@ void AutofillExternalDelegate::AttemptToDisplayAutofillSuggestions(
    // updated to match.
    InsertDataListValues(last_query_.field_datalist_options, suggestions);
  
@@ -24,7 +24,7 @@ index e714442c9cc1988cae0384086647ad62cf62bc34..090a75205085d20069668565ecc5ea62
    // TODO(crbug.com/362630793): Try to eliminate this state. The controller
    // should be the one that knows about what suggestions were shown and passes
    // it on, not AED.
-@@ -933,6 +941,9 @@ void AutofillExternalDelegate::DidAcceptSuggestion(
+@@ -937,6 +945,9 @@ void AutofillExternalDelegate::DidAcceptSuggestion(
      const SuggestionMetadata& metadata,
      const FormGlobalId& form_id,
      const FieldGlobalId& field_id) {

@@ -1,8 +1,8 @@
 diff --git a/components/crash/core/app/crashpad.cc b/components/crash/core/app/crashpad.cc
-index db68eaa22030aca74f31a9d8612b4952a3b25642..3cef6ec2b84702000bbd51d77ca8e4c8f60e4805 100644
+index 900b474c08649b09f492a0c22a27e7046cdcf6ee..3750f3f2067b6d089fc4a09ca68410642b5584e4 100644
 --- a/components/crash/core/app/crashpad.cc
 +++ b/components/crash/core/app/crashpad.cc
-@@ -85,6 +85,7 @@ bool InitializeCrashpadImpl(bool initial_client,
+@@ -87,6 +87,7 @@ bool InitializeCrashpadImpl(bool initial_client,
      // component can't see Chrome's switches. This is only used for argument
      // sanitization.
      DCHECK(browser_process || process_type == "relauncher" ||
@@ -10,7 +10,7 @@ index db68eaa22030aca74f31a9d8612b4952a3b25642..3cef6ec2b84702000bbd51d77ca8e4c8
             process_type == "app_shim");
  #elif BUILDFLAG(IS_WIN)
      // "Chrome Installer" is the name historically used for installer binaries
-@@ -95,8 +96,11 @@ bool InitializeCrashpadImpl(bool initial_client,
+@@ -97,8 +98,11 @@ bool InitializeCrashpadImpl(bool initial_client,
             process_type == "os-update-handler" ||
             process_type == "platform-experience-helper" ||
  #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)

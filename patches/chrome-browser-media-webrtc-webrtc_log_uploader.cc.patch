@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/media/webrtc/webrtc_log_uploader.cc b/chrome/browser/media/webrtc/webrtc_log_uploader.cc
-index a6887b09db4104ea29907d64dcb0f57635d6d9bf..d9d3be76771c557086cbb68cef553da4e50cf093 100644
+index bd1dfd2fb54018550613f44f0c4c7de252b71d10..8154be8d3ceb24bf9f879c5b1ad7c8cbab417289 100644
 --- a/chrome/browser/media/webrtc/webrtc_log_uploader.cc
 +++ b/chrome/browser/media/webrtc/webrtc_log_uploader.cc
 @@ -176,6 +176,12 @@ void WebRtcLogUploader::OnLoggingStopped(

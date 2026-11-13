@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 88668a0b3e98099a62afc4cd0e9858ed7f4676e4..02d477ba671e9daeb0cf6ed2ae9ba527165b6e3d 100644
+index 3aa99d37ed8b0de084b9c2acfb832b48ef2a39dd..3260cc2d881950b5a6d8f9f80e7991bd344928f6 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -1104,6 +1104,7 @@ source_set("accelerator_table") {
+@@ -1091,6 +1091,7 @@ source_set("accelerator_table") {
    sources = [ "accelerator_table.cc" ]
    public_deps = [ "//ui/actions:actions_headers" ]
    deps = [
@@ -10,7 +10,7 @@ index 88668a0b3e98099a62afc4cd0e9858ed7f4676e4..02d477ba671e9daeb0cf6ed2ae9ba527
      "//build:branding_buildflags",
      "//chrome/app:command_ids",
      "//chrome/browser/ui/actions:command_id_to_action_id",
-@@ -1516,9 +1517,12 @@ source_set("layout_constants") {
+@@ -1498,9 +1499,12 @@ source_set("layout_constants") {
  
    deps = [
      "//base",

@@ -1,8 +1,8 @@
 diff --git a/chrome/updater/util/win_util.cc b/chrome/updater/util/win_util.cc
-index 4a5bf43e663a9321e7c54b506a674b650873b9e5..62b7cfb6ce050ff0281f07e1b35d89ae182515a9 100644
+index 0a0f57fe9d2648d3cce88697783a4c85003b4341..3a0df885f589b306109a36b82a6285f7e12ccdbe 100644
 --- a/chrome/updater/util/win_util.cc
 +++ b/chrome/updater/util/win_util.cc
-@@ -972,6 +972,7 @@ std::optional<base::ScopedTempDir> CreateSecureTempDir() {
+@@ -985,6 +985,7 @@ std::optional<base::ScopedTempDir> CreateSecureTempDir() {
  
  base::ScopedClosureRunner SignalShutdownEvent(UpdaterScope scope) {
    NamedObjectAttributes attr = GetNamedObjectAttributes(kShutdownEvent, scope);
@@ -10,7 +10,7 @@ index 4a5bf43e663a9321e7c54b506a674b650873b9e5..62b7cfb6ce050ff0281f07e1b35d89ae
  
    base::win::ScopedHandle shutdown_event_handle(
        ::CreateEvent(&attr.sa, true, false, attr.name.c_str()));
-@@ -989,6 +990,7 @@ base::ScopedClosureRunner SignalShutdownEvent(UpdaterScope scope) {
+@@ -1002,6 +1003,7 @@ base::ScopedClosureRunner SignalShutdownEvent(UpdaterScope scope) {
  
  bool IsShutdownEventSignaled(UpdaterScope scope) {
    NamedObjectAttributes attr = GetNamedObjectAttributes(kShutdownEvent, scope);

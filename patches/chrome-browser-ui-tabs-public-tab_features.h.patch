@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/public/tab_features.h b/chrome/browser/ui/tabs/public/tab_features.h
-index 335c3fd25dcaf249504a2a448dc5129b13440bfe..e1abb10c93f01d6b67c8c6410e9b49aa7eb26ca7 100644
+index 308cdc4209b65e4dee1a44053fb760e6e2b1f3e4..a3883721e896aa641949772ee63249647c093637 100644
 --- a/chrome/browser/ui/tabs/public/tab_features.h
 +++ b/chrome/browser/ui/tabs/public/tab_features.h
-@@ -422,7 +422,7 @@ class TabInterface;
+@@ -419,7 +419,7 @@ class TabInterface;
  class TabFeatures {
   public:
    TabFeatures();
@@ -11,7 +11,7 @@ index 335c3fd25dcaf249504a2a448dc5129b13440bfe..e1abb10c93f01d6b67c8c6410e9b49aa
  
    TabFeatures(const TabFeatures&) = delete;
    TabFeatures& operator=(const TabFeatures&) = delete;
-@@ -471,12 +471,13 @@ class TabFeatures {
+@@ -443,12 +443,13 @@ class TabFeatures {
        std::unique_ptr<TabAlertController> tab_alert_controller);
  
    // Called exactly once to initialize features.

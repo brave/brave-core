@@ -1,5 +1,5 @@
 diff --git a/components/strings/BUILD.gn b/components/strings/BUILD.gn
-index 54ca0dcb00c0c3abe77c16c12f6b387073a787c1..3e71f505f3bd1463322f5d88fb6896b303122563 100644
+index c43c4e1867f4d8ad8ffde907985d2b2bd49b43c5..5876e1f5fc63439bfa96f414fb3ff7976b0907f8 100644
 --- a/components/strings/BUILD.gn
 +++ b/components/strings/BUILD.gn
 @@ -116,7 +116,7 @@ grit_strings("components_branded_strings") {

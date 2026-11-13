@@ -1,5 +1,5 @@
 diff --git a/services/network/public/cpp/network_param_mojom_traits.cc b/services/network/public/cpp/network_param_mojom_traits.cc
-index 6ca2b026304318466950f4f411c26d1b252d7026..807fb488496f891d9820e0b18d80babde1e0e05f 100644
+index 5dd435139d84fbc04bc86b1a558d6c4d3859b147..55454786efb2ea15f8a3ad59a3f392371f23b6f1 100644
 --- a/services/network/public/cpp/network_param_mojom_traits.cc
 +++ b/services/network/public/cpp/network_param_mojom_traits.cc
 @@ -55,6 +55,7 @@ bool StructTraits<network::mojom::HostPortPairDataView, net::HostPortPair>::

@@ -1,8 +1,8 @@
 diff --git a/content/browser/web_contents/web_contents_impl.h b/content/browser/web_contents/web_contents_impl.h
-index 928d746f122ef71ab26f31881aabb55c5fa72307..6ec169a78aed6e04d831172bbe3f4873bafc2d47 100644
+index 31c5a06b2260892af90c4f65b2f03f0617394a5a..1d8f4ae780d49879adb3e064e9a76cb39e2075a2 100644
 --- a/content/browser/web_contents/web_contents_impl.h
 +++ b/content/browser/web_contents/web_contents_impl.h
-@@ -1718,6 +1718,8 @@ class CONTENT_EXPORT WebContentsImpl
+@@ -1722,6 +1722,8 @@ class CONTENT_EXPORT WebContentsImpl
    // base::trace_event::TraceSessionObserver implementation:
    void OnStart(const perfetto::DataSourceBase::StartArgs&) override;
  

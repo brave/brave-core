@@ -1,8 +1,8 @@
 diff --git a/net/base/features.cc b/net/base/features.cc
-index 7ea61dc9a5f3fbd8a57e31417c821835a471a47c..c7ca8f097f9022808cf7fa88a9f113f2d47a4a91 100644
+index b38ed8ffee7d947cec8f4832d03bc7c2871f280c..918ce1f2a2aeedb78ba67d9f6d6c229a891beb7e 100644
 --- a/net/base/features.cc
 +++ b/net/base/features.cc
-@@ -222,8 +222,8 @@ BASE_FEATURE(kSplitCacheByNetworkIsolationKey,
+@@ -233,8 +233,8 @@ BASE_FEATURE(kSplitCacheByNetworkIsolationKey,
  BASE_FEATURE(kSplitCodeCacheByNetworkIsolationKey,
               base::FEATURE_DISABLED_BY_DEFAULT);
  
@@ -13,7 +13,7 @@ index 7ea61dc9a5f3fbd8a57e31417c821835a471a47c..c7ca8f097f9022808cf7fa88a9f113f2
  
  BASE_FEATURE(kSplitHostCacheByNetworkAnonymizationKey,
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -456,7 +456,7 @@ BASE_FEATURE(kForceThirdPartyCookieBlocking,
+@@ -471,7 +471,7 @@ BASE_FEATURE(kForceThirdPartyCookieBlocking,
  
  BASE_FEATURE(kEnableEarlyHintsOnHttp11, base::FEATURE_DISABLED_BY_DEFAULT);
  
@@ -22,7 +22,7 @@ index 7ea61dc9a5f3fbd8a57e31417c821835a471a47c..c7ca8f097f9022808cf7fa88a9f113f2
  
  BASE_FEATURE(kWebTransportFineGrainedThrottling,
               base::FEATURE_DISABLED_BY_DEFAULT);
-@@ -767,7 +767,7 @@ BASE_FEATURE(kRestrictAbusePorts, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -786,7 +786,7 @@ BASE_FEATURE(kRestrictAbusePorts, base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE(kRestrictAbusePortsOnLocalhost, base::FEATURE_ENABLED_BY_DEFAULT);
  
