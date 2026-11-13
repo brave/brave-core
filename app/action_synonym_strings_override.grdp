@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Search synonyms for actions. Result titles reuse the existing action
+     strings, so this file only holds alternate search terms.
+
+     Each action has a single message holding a comma-separated list of
+     synonyms, split at runtime in browser_actions.cc.
+
+     The messages are marked is_accessibility_with_no_ui because they are never
+     rendered; they are only used as indexing terms for menu search, so no
+     screenshots are required. -->
+<grit-part>
+  <message name="IDS_ACTION_SYNONYMS_OPEN_GUEST_PROFILE" is_accessibility_with_no_ui="true" desc="Comma-separated list of search terms (other than the title 'Open Guest profile') that users might type in the Brave menu search bar to find the 'Open Guest profile' action. Do not translate the list 1:1; list the terms users typing in the target language might search for, delimited by commas.">
+    private, anonymous, temporary, share, computer, friend
+  </message>
+  </grit-part>
