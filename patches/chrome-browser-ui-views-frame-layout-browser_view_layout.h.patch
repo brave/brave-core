@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/layout/browser_view_layout.h b/chrome/browser/ui/views/frame/layout/browser_view_layout.h
-index c84c47a1190f9acd9602e6cc06badcbf81cf00a2..7a734a7555208c7d5cd2f082930262c8d7dca812 100644
+index c84c47a1190f9acd9602e6cc06badcbf81cf00a2..216e637c5f14df42a9eeb1a161f69506e3f58354 100644
 --- a/chrome/browser/ui/views/frame/layout/browser_view_layout.h
 +++ b/chrome/browser/ui/views/frame/layout/browser_view_layout.h
 @@ -15,6 +15,8 @@
@@ -38,11 +38,3 @@ index c84c47a1190f9acd9602e6cc06badcbf81cf00a2..7a734a7555208c7d5cd2f082930262c8
   protected:
    // |browser| may be null in tests.
    BrowserViewLayout(std::unique_ptr<BrowserViewLayoutDelegate> delegate,
-@@ -163,6 +178,7 @@ class BrowserViewLayout : public views::LayoutManager {
-   void UpdateBubbles();
- 
-  private:
-+  friend class BraveBrowserViewLayout;
-   class BrowserModalDialogHostViews;
- 
-   // The delegate interface. May be a mock or replaced in tests.
