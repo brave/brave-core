@@ -820,9 +820,21 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, PopupWithoutGestureIsBlocked) {
   if (popup_watcher) {
     popup_watcher->Wait();
   }
-  EXPECT_EQ(true,
-            content::EvalJs(contents, "!window.popup || window.popup.closed",
-                            content::EXECUTE_SCRIPT_NO_USER_GESTURE));
+  // The renderer only learns that the popup is gone after the browser destroys
+  // it, so wait for `closed` to flip instead of reading it once.
+  EXPECT_EQ(true, content::EvalJs(contents,
+                                  R"(new Promise((resolve) => {
+                                       const check = () => {
+                                         if (!window.popup ||
+                                             window.popup.closed) {
+                                           resolve(true);
+                                         } else {
+                                           setTimeout(check, 10);
+                                         }
+                                       };
+                                       check();
+                                     }))",
+                                  content::EXECUTE_SCRIPT_NO_USER_GESTURE));
   EXPECT_TRUE(controller()->IsShowing());
   EXPECT_EQ(contents, peek_contents());
   EXPECT_EQ(tab_count, tab_strip_model()->count());
