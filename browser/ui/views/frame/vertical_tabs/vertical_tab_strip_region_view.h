@@ -146,7 +146,6 @@ class BraveVerticalTabStripRegionView : public views::View,
       ui::mojom::MenuSourceType source_type) override;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ExpandedState);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ExpandedWidth);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
@@ -256,8 +255,6 @@ class BraveVerticalTabStripRegionView : public views::View,
 
   base::OneShotTimer mouse_enter_timer_;
   base::OneShotTimer mouse_exit_timer_;
-
-  bool mouse_events_for_test_ = false;
 
   gfx::SlideAnimation width_animation_{this};
 

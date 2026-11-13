@@ -100,7 +100,6 @@
 
 #if defined(USE_AURA)
 #include "chrome/browser/ui/views/frame/opaque_browser_frame_view.h"
-#include "ui/aura/client/cursor_client.h"
 #include "ui/aura/test/ui_controls_aurawin.h"
 #include "ui/aura/window.h"
 #endif
@@ -138,16 +137,6 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
   void ToggleVerticalTabStrip() {
     brave::ToggleVerticalTabStrip(browser());
     browser_non_client_frame_view()->DeprecatedLayoutImmediately();
-  }
-
-  // Makes View::IsMouseHovered() return false regardless of where the real
-  // cursor is, so hover-dependent state changes are deterministic.
-  void DisableRealMouseHover() {
-#if defined(USE_AURA)
-    aura::client::GetCursorClient(
-        browser_view()->GetWidget()->GetNativeWindow()->GetRootWindow())
-        ->DisableMouseEvents();
-#endif
   }
 
   void AppendTab(BrowserWindowInterface* browser) {
@@ -426,63 +415,60 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
   using State = BraveVerticalTabStripRegionView::State;
   ASSERT_TRUE(
       VerticalTabController::From(browser())->IsFloatingVerticalTabsEnabled());
-  auto* container_view =
-      browser_view()->vertical_tab_strip_container_view_.get();
+  auto* container_view = browser_view()->vertical_tab_strip_container_view();
   ASSERT_TRUE(container_view);
 
   auto* region_view = container_view->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view);
   ASSERT_EQ(State::kExpanded, region_view->state());
 
-  // When rounded corners is on(it's default now),
-  // region view's border inset is changed during the floating: the separator is
-  // only drawn while floating, and otherwise the strip needs no inset because
-  // its tabs' own padding spaces them from the contents.
-  // See BraveVerticalTabStripRegionView::UpdateBorder() for
-  // border inset calculation.
+  // The strip needs no border inset unless floating (covered by
+  // VerticalTabStripInteractiveUITest), because its tabs' own padding spaces
+  // them from the contents. See
+  // BraveVerticalTabStripRegionView::UpdateBorder().
   const int inset_for_expanded_collapsed = 0;
-  const int inset_for_floating = 1;
   EXPECT_EQ(inset_for_expanded_collapsed, region_view->GetInsets().width());
 
   // Try Expanding / collapsing
   auto* prefs = browser()->GetProfile()->GetOriginalProfile()->GetPrefs();
   prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, true);
   EXPECT_EQ(State::kCollapsed, region_view->state());
+  EXPECT_EQ(inset_for_expanded_collapsed, region_view->GetInsets().width());
   prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, false);
   EXPECT_EQ(State::kExpanded, region_view->state());
-  prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, true);
+  EXPECT_EQ(inset_for_expanded_collapsed, region_view->GetInsets().width());
+}
 
-  DisableRealMouseHover();
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       HidingToggleButtonCollapsesAndForcesFloating) {
+  ToggleVerticalTabStrip();
 
-  // Check if mouse hover triggers floating mode.
-  {
-    base::AutoReset resetter(&region_view->mouse_events_for_test_, true);
-    ui::MouseEvent event(ui::EventType::kMouseEntered, gfx::PointF(),
-                         gfx::PointF(), {}, {}, {});
-    region_view->OnMouseEntered(event);
-    EXPECT_EQ(State::kFloating, region_view->state());
-    EXPECT_EQ(inset_for_floating, region_view->GetInsets().width());
-  }
+  auto* prefs = browser()->GetProfile()->GetPrefs();
+  auto* container_view = browser_view()->vertical_tab_strip_container_view();
+  ASSERT_TRUE(container_view);
+  auto* region_view = container_view->vertical_tab_strip_region_view();
+  ASSERT_TRUE(region_view);
 
-  // Check if mouse exiting make tab strip collapsed.
-  {
-    base::AutoReset resetter(&region_view->mouse_events_for_test_, true);
-    ui::MouseEvent event(ui::EventType::kMouseExited, gfx::PointF(),
-                         gfx::PointF(), {}, {}, {});
-    region_view->OnMouseExited(event);
-    EXPECT_EQ(State::kCollapsed, region_view->state());
-    EXPECT_EQ(inset_for_expanded_collapsed, region_view->GetInsets().width());
-  }
-
-  // When floating mode is disabled, it shouldn't be triggered.
+  // Vertical tabs default to expanded. Explicitly turn off floating mode.
   prefs->SetBoolean(brave_tabs::kVerticalTabsFloatingEnabled, false);
-  {
-    base::AutoReset resetter(&region_view->mouse_events_for_test_, true);
-    ui::MouseEvent event(ui::EventType::kMouseEntered, gfx::PointF(),
-                         gfx::PointF(), {}, {}, {});
-    region_view->OnMouseEntered(event);
-    EXPECT_NE(State::kFloating, region_view->state());
-  }
+  ASSERT_EQ(BraveVerticalTabStripRegionView::State::kExpanded,
+            region_view->state());
+
+  // Hiding the toggle button should force the tab strip to collapse, since
+  // there is no other way to expand/collapse it, and should force floating
+  // mode on regardless of kVerticalTabsFloatingEnabled.
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowToggleButton, false);
+  // A hovered cursor may float the strip, so only check it isn't expanded.
+  EXPECT_NE(BraveVerticalTabStripRegionView::State::kExpanded,
+            region_view->state());
+  EXPECT_TRUE(prefs->GetBoolean(brave_tabs::kVerticalTabsCollapsed));
+  EXPECT_TRUE(
+      VerticalTabController::From(browser())->IsFloatingVerticalTabsEnabled());
+
+  // Re-showing the toggle button should restore normal floating behavior.
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowToggleButton, true);
+  EXPECT_FALSE(
+      VerticalTabController::From(browser())->IsFloatingVerticalTabsEnabled());
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, LayoutSanity) {
@@ -2347,40 +2333,6 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest,
   screen->SetCursorScreenPointForTesting(mouse_position);
   browser_view()->HandleBrowserWindowMouseEvent(GetDummyEvent());
   EXPECT_FALSE(region_view->GetVisible());
-}
-
-IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
-                       HidingToggleButtonCollapsesAndForcesFloating) {
-  ToggleVerticalTabStrip();
-
-  auto* prefs = browser()->GetProfile()->GetPrefs();
-  auto* container_view =
-      browser_view()->vertical_tab_strip_container_view_.get();
-  ASSERT_TRUE(container_view);
-  auto* region_view = container_view->vertical_tab_strip_region_view();
-  ASSERT_TRUE(region_view);
-
-  // Vertical tabs default to expanded. Explicitly turn off floating mode.
-  prefs->SetBoolean(brave_tabs::kVerticalTabsFloatingEnabled, false);
-  ASSERT_EQ(BraveVerticalTabStripRegionView::State::kExpanded,
-            region_view->state());
-
-  DisableRealMouseHover();
-
-  // Hiding the toggle button should force the tab strip to collapse, since
-  // there is no other way to expand/collapse it, and should force floating
-  // mode on regardless of kVerticalTabsFloatingEnabled.
-  prefs->SetBoolean(brave_tabs::kVerticalTabsShowToggleButton, false);
-  EXPECT_EQ(BraveVerticalTabStripRegionView::State::kCollapsed,
-            region_view->state());
-  EXPECT_TRUE(prefs->GetBoolean(brave_tabs::kVerticalTabsCollapsed));
-  EXPECT_TRUE(
-      VerticalTabController::From(browser())->IsFloatingVerticalTabsEnabled());
-
-  // Re-showing the toggle button should restore normal floating behavior.
-  prefs->SetBoolean(brave_tabs::kVerticalTabsShowToggleButton, true);
-  EXPECT_FALSE(
-      VerticalTabController::From(browser())->IsFloatingVerticalTabsEnabled());
 }
 
 // Verifies that the vertical tab strip host view and the web contents are
