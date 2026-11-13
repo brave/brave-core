@@ -6,46 +6,26 @@
 import { SiteListElement } from '../site_settings/site_list.js'
 import { ContentSettingsTypes } from '../site_settings/constants.js'
 
-import {
-  RegisterPolymerComponentReplacement,
-  RegisterPolymerTemplateModifications,
-} from 'chrome://resources/brave/polymer_overriding.js'
-
-RegisterPolymerTemplateModifications({
-  'site-list': (templateContent) => {
-    const allowButton = templateContent.querySelector('#allow')
-    if (!allowButton) {
-      console.error('[Settings] Could not find #allow button in site-list')
-      return
-    }
-    allowButton.textContent = '[[getAllowButtonLabel_(category)]]'
-
-    const blockButton = templateContent.querySelector('#block')
-    if (!blockButton) {
-      console.error('[Settings] Could not find #block button in site-list')
-      return
-    }
-    blockButton.textContent = '[[getBlockButtonLabel_(category)]]'
+// The lit_mangler override of this element's template binds to these.
+declare module '../site_settings/site_list.js' {
+  interface SiteListElement {
+    getAllowButtonLabel_(): string
+    getBlockButtonLabel_(): string
   }
-})
+}
 
-RegisterPolymerComponentReplacement(
-  'site-list',
-  class BraveSiteListElement extends SiteListElement {
-    private getAllowButtonLabel_() {
-      if (this.category === ContentSettingsTypes.BRAVE_SHIELDS) {
-        return this.i18n('siteSettingsShieldsUp')
-      }
-      // Default
-      return this.i18n('siteSettingsActionAllow')
-    }
-
-    private getBlockButtonLabel_() {
-      if (this.category === ContentSettingsTypes.BRAVE_SHIELDS) {
-        return this.i18n('siteSettingsShieldsDown')
-      }
-      // Default
-      return this.i18n('siteSettingsActionBlock')
-    }
+SiteListElement.prototype.getAllowButtonLabel_ = function(
+    this: SiteListElement) {
+  if (this.category === ContentSettingsTypes.BRAVE_SHIELDS) {
+    return this.i18n('siteSettingsShieldsUp')
   }
-)
+  return this.i18n('siteSettingsActionAllow')
+}
+
+SiteListElement.prototype.getBlockButtonLabel_ = function(
+    this: SiteListElement) {
+  if (this.category === ContentSettingsTypes.BRAVE_SHIELDS) {
+    return this.i18n('siteSettingsShieldsDown')
+  }
+  return this.i18n('siteSettingsActionBlock')
+}
