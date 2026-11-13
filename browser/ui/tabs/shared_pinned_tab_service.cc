@@ -16,7 +16,6 @@
 #include "base/logging.h"
 #include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
-#include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_dummy_view.h"
 #include "chrome/browser/profiles/profile.h"
@@ -29,6 +28,8 @@
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_delegate.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/browser_widget.h"
 #include "chrome/browser/ui/webui/webui_embedding_context.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
@@ -966,6 +967,8 @@ SharedPinnedTabService::CreateDummyWebContents(
 bool SharedPinnedTabService::IsBrowserInTabDragging(
     BrowserWindowInterface* browser) const {
   CHECK(browser);
-  auto* brave_browser_window = BraveBrowserWindow::FromBrowser(browser);
-  return brave_browser_window && brave_browser_window->IsInTabDragging();
+  // WebUI browser windows have no tab dragging.
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+  return browser_view && browser_view->browser_widget()->tab_drag_kind() ==
+                             TabDragKind::kAllTabs;
 }
