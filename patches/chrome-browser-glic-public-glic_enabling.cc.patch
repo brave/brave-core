@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/glic/public/glic_enabling.cc b/chrome/browser/glic/public/glic_enabling.cc
+index 18b994354ad90f55b20aa490e73db23da287fcb6..b1dc394f431d0f0fc127cecf0ef5dd742853488d 100644
+--- a/chrome/browser/glic/public/glic_enabling.cc
++++ b/chrome/browser/glic/public/glic_enabling.cc
+@@ -943,6 +943,7 @@ bool GlicGlobalEnabling::IsOsVersionSupported() {
+ }
+ 
+ bool GlicGlobalEnabling::IsEnabledByGlobalCriteria() const {
++  if ((true)) return false;
+   if (g_bypass_enablement_checks_for_testing) {
+     return true;
+   }

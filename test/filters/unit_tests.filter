@@ -20,6 +20,10 @@
 # Test assumes kGeic is enabled by default; we disable it.
 -GeicEnablingTest.DefaultState
 
+# Brave doesn't ship Glic: `GlicGlobalEnabling::IsEnabledByGlobalCriteria()`
+# always fails, so these tests, which expect Glic enabled once `kGlic` is, fail.
+-*Glic*
+
 # These tests won't work without TPM hardware
 -TPMMetricsProviderTest.GetMetricsFullName
 -TpmIdentifierTest.TpmTest
