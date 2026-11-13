@@ -154,6 +154,7 @@ source_set("browser_tests") {
     "history_embeddings_omnibox_browsertest.cc",
     "history_embeddings_service_factory_browsertest.cc",
     "open_tab_search_browsertest.cc",
+    "page_content_services_browsertest.cc",
   ]
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
@@ -169,6 +170,8 @@ source_set("browser_tests") {
     "//brave/components/local_ai/core",
     "//chrome/browser/autocomplete",
     "//chrome/browser/history",
+    "//chrome/browser/page_content_annotations",
+    "//chrome/browser/page_content_annotations:extraction_service",
     "//chrome/browser/profiles",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/tabs:tab_strip",

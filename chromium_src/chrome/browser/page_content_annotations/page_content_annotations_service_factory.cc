@@ -3,9 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// Override ShouldEnablePageContentAnnotations to check kHistoryEmbeddings
-// instead of the upstream feature flags, enabling the upstream page content
-// extraction pipeline when history embeddings is active.
+// The feature check that the plaster puts in place of upstream's: it enables
+// the page content extraction pipeline when history embeddings is active.
 
 #include "brave/components/local_ai/buildflags/buildflags.h"
 #include "components/page_content_annotations/core/page_content_annotations_features.h"
@@ -26,9 +25,4 @@ inline bool ShouldEnablePageContentAnnotations_Brave() {
 
 }  // namespace page_content_annotations::features
 
-#define ShouldEnablePageContentAnnotations \
-  ShouldEnablePageContentAnnotations_Brave
-
 #include <chrome/browser/page_content_annotations/page_content_annotations_service_factory.cc>
-
-#undef ShouldEnablePageContentAnnotations
