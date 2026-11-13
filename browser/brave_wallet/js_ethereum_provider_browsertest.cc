@@ -71,23 +71,33 @@ std::string NonWriteableScriptProperty(const std::string& property) {
 
 // Resolves with the provider's chain id once it equals `chain_id`. The check
 // and the listener registration run in one JS task, so a change cannot slip
-// between them. The event argument is used because the provider updates its
-// cached chainId after firing the event.
+// between them. The event arguments are used because the provider updates its
+// cached chainId after firing the events. `connect` is needed too: until the
+// provider's first chain id lookup returns, chainId is empty, and that lookup
+// may already see the new chain, which fires `connect` and suppresses the
+// following `chainChanged`.
 std::string WaitForChainIdScript(const std::string& provider,
                                  const std::string& chain_id) {
   return absl::StrFormat(
       R"(new Promise((resolve) => {
-           if (window.%s.chainId === '%s') {
-             resolve(window.%s.chainId);
+           const expected = '%s';
+           const provider = window.%s;
+           if (provider.chainId === expected) {
+             resolve(expected);
              return;
            }
-           window.%s.on('chainChanged', (id) => {
-             if (id === '%s') {
+           provider.on('chainChanged', (id) => {
+             if (id === expected) {
                resolve(id);
              }
            });
+           provider.on('connect', (info) => {
+             if (info.chainId === expected) {
+               resolve(info.chainId);
+             }
+           });
          }))",
-      provider, chain_id, provider, provider, chain_id);
+      chain_id, provider);
 }
 
 std::string NonWriteableScriptMethod(const std::string& provider,
@@ -546,7 +556,8 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, OnlyWriteOwnProperty) {
 
   const std::string get_chain_id = "window.ethereum.chainId";
 
-  ASSERT_EQ(content::EvalJs(primary_main_frame(), get_chain_id).ExtractString(),
+  ASSERT_EQ(content::EvalJs(primary_main_frame(),
+                            WaitForChainIdScript("ethereum", "0x1")),
             "0x1");
 
   ASSERT_TRUE(GetJsonRpcService()->SetNetwork(
