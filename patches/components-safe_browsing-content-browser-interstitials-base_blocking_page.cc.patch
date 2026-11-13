@@ -1,0 +1,13 @@
+diff --git a/components/safe_browsing/content/browser/interstitials/base_blocking_page.cc b/components/safe_browsing/content/browser/interstitials/base_blocking_page.cc
+index 444f9b1f268332ebb9581ae58606c566c74712ec..5d9181fb92e996c6a3bbc308b72be2d63c21c3aa 100644
+--- a/components/safe_browsing/content/browser/interstitials/base_blocking_page.cc
++++ b/components/safe_browsing/content/browser/interstitials/base_blocking_page.cc
+@@ -60,7 +60,7 @@ BaseBlockingPage::BaseBlockingPage(
+       unsafe_resources_(unsafe_resources),
+       proceeded_(false),
+       threat_details_proceed_delay_ms_(kThreatDetailsProceedDelayMilliSeconds),
+-      sb_error_ui_(std::make_unique<SafeBrowsingLoudErrorUI>(
++      sb_error_ui_(std::make_unique<security_interstitials::BraveSafeBrowsingLoudErrorUI>(
+           unsafe_resources_[0].url,
+           GetInterstitialReason(unsafe_resources_),
+           display_options,
