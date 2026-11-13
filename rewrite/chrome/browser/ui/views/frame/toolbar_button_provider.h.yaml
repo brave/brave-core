@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Give Brave the Views download button.
+
+      Brave's download icon override recolours the button and swaps its vector
+      icon, which the `DownloadButton` interface hides. Only the Views and web
+      app toolbars implement it; other providers have no such button, and
+      return null.
+    add_to_public:
+      class_name: ToolbarButtonProvider
+      code: 'virtual ToolbarButton* GetDownloadButton();'

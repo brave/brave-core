@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/frame/toolbar_button_provider.h b/chrome/browser/ui/views/frame/toolbar_button_provider.h
+index fd5308e6e106e3b12d1a27bb084421721ec55f36..14e32613e25f9cf0563405d67cdae749e29da32b 100644
+--- a/chrome/browser/ui/views/frame/toolbar_button_provider.h
++++ b/chrome/browser/ui/views/frame/toolbar_button_provider.h
+@@ -104,6 +104,8 @@ class ToolbarButtonProvider {
+   virtual WebUIToolbarWebView* GetWebUIToolbarViewForTesting() = 0;
+ 
+   // TODO(calamity): Move other buttons and button actions into here.
++  virtual ToolbarButton* GetDownloadButton();
++
+  protected:
+   virtual ~ToolbarButtonProvider() = default;
+ };
