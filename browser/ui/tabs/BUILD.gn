@@ -60,8 +60,13 @@ source_set("tabs_public") {
     sources += [
       "public/before_unload_ignore_controller.h",
       "public/closing_last_tab_controller.h",
+      "public/tab_cycling_controller.h",
     ]
-    public_deps += [ "//chrome/browser/ui/tabs:tab_strip_model_observer" ]
+    public_deps += [
+      "//chrome/browser/ui/tabs:tab_strip_model_observer",
+      "//ui/events",
+      "//ui/views",
+    ]
   }
 }
 
@@ -74,10 +79,12 @@ if (!is_android) {
       "brave_tab_features.cc",
       "closing_last_tab_controller.cc",
       "shared_pinned_tab_utils.cc",
+      "tab_cycling_controller.cc",
       "vertical_tab_controller.cc",
     ]
 
     deps = [
+      ":tab_strip",
       ":tabs_public",
       "//brave/browser:tab_helpers_header",
       "//brave/browser/brave_shields",
@@ -227,7 +234,7 @@ if (!is_android) {
     ]
 
     deps = [
-      "//brave/browser/ui:brave_browser_window_header",
+      ":tabs_public",
       "//brave/browser/ui:brave_tab_prefs",
       "//brave/components/tabs",
       "//chrome/browser/ui:browser_window_header",

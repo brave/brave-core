@@ -12,20 +12,20 @@
 #include <vector>
 
 #include "base/containers/span.h"
-#include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tree_tab_strip_collection_delegate.h"
+#include "brave/browser/ui/tabs/public/tab_cycling_controller.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/components/tabs/public/brave_tab_strip_collection.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_delegate.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "components/tabs/public/tab_strip_collection.h"
 #include "components/tabs/public/unpinned_tab_collection.h"
 #include "content/public/browser/web_contents.h"
@@ -149,14 +149,6 @@ void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
   }
 
   if (mru_cycle_list_.empty()) {
-    // Start cycling
-
-    BrowserWindow* browser_window =
-        BrowserWindow::FindBrowserWindowWithWebContents(GetWebContentsAt(0));
-    if (!browser_window) {
-      return;
-    }
-
     // Create a list of tab indexes sorted by time of last activation
     for (int i = 0; i < count(); ++i) {
       mru_cycle_list_.push_back(i);
@@ -168,9 +160,10 @@ void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
                        GetWebContentsAt(b)->GetLastActiveTimeTicks();
               });
 
-    // Tell the cycling controller that we start cycling to handle tabs keys
-    if (auto* brave_browser_window = BraveBrowserWindow::From(browser_window)) {
-      brave_browser_window->StartTabCycling();
+    // WebUI browser windows have no tab cycling controller.
+    if (auto* controller = TabCyclingController::From(
+            GetTabAtIndex(0)->GetBrowserWindowInterface())) {
+      controller->Start();
     }
   }
 

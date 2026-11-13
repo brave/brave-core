@@ -891,7 +891,10 @@ if (!is_android) {
     }
 
     if (use_aura) {
-      deps += [ "//ui/aura:test_support" ]
+      deps += [
+        "//brave/browser/ui/tabs/test:interactive_ui_tests",
+        "//ui/aura:test_support",
+      ]
     }
 
     if (use_ozone) {
