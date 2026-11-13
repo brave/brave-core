@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Copy the notarised app to the output dir when packaging is disabled.
+
+      `sign_all()` otherwise leaves it in the notarisation work dir, where
+      the caller doesn't expect it.
+    regex:
+      re_pattern: '(\n( +)if not disable_packaging:\n.*?\n\2    \)\n)'
+      re_flags: [DOTALL]
+      replace: |
+        \1\2elif 'dest_dir' in locals():
+        \2    # Copy the notarized app to the orig_paths.output dir where the user expects it.
+        \2    commands.copy_files(dest_dir, orig_paths.output)
+
+  - description: 'Load the Brave chromium_src override.'
+    add_at_end_of_the_file:
+      code:
+        "\nfrom brave_chromium_utils import inline_file;
+        inline_file(\"//brave/chromium_src/chrome/installer/mac/signing/pipeline.py\",
+        globals(), locals())"
