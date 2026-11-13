@@ -345,8 +345,8 @@
 # CaptionButtonsFitTopAreaAndUpdateOnThemeChange, GetCustomFramePrefDefault()
 # turns custom frames off with no known WM, so there are no caption buttons
 # whose exclusion the test measures; it passes with openbox running.
--LinuxNativeBrowserFrameViewTest.CaptionButtonsFitTopAreaAndUpdateOnThemeChange
--ScheduledRestartHatsBrowserTest.HatsSurveyNotTriggeredOnBrowserClose
+#-LinuxNativeBrowserFrameViewTest.CaptionButtonsFitTopAreaAndUpdateOnThemeChange
+#-ScheduledRestartHatsBrowserTest.HatsSurveyNotTriggeredOnBrowserClose
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*
