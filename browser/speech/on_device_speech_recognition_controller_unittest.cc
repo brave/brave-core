@@ -23,6 +23,7 @@
 #include "base/run_loop.h"
 #include "base/strings/string_view_util.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/task/thread_pool/thread_pool_instance.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/task_environment.h"
@@ -126,6 +127,9 @@ class FakeBackgroundWebContents : public local_ai::BackgroundWebContents {
   raw_ptr<Delegate> delegate_;
   base::OnceClosure on_destroyed_;
 };
+
+// The same value as the private `kIdleTimeout` of the controller.
+constexpr base::TimeDelta kIdleTimeout = base::Seconds(60);
 
 }  // namespace
 
@@ -438,8 +442,62 @@ TEST_F(OnDeviceSpeechRecognitionControllerTest,
                   local_ai::OnDeviceSpeechModel::kMultilingual, "es-ES");
 
   multilingual.Reset();
-  task_environment_.FastForwardBy(base::Seconds(61));
+  task_environment_.FastForwardBy(kIdleTimeout + base::Seconds(1));
   EXPECT_EQ(nullptr, last_bwc_.get());
+}
+
+// An English session ends while the controller waits for the read of the
+// English model files. Then a Spanish session stops worker 1 and gets worker 2.
+// The English `OnOrtFilesRead()` is dropped, so worker 2 loads only the
+// multilingual model.
+TEST_F(OnDeviceSpeechRecognitionControllerTest,
+       SessionForTheOtherModelStopsTheWorkerBeforeTheReadResult) {
+  SetInstalled(true);
+  SetInstalled(true, local_ai::OnDeviceSpeechModel::kMultilingual);
+
+  // Worker 1 starts. The English session ends before worker 1 is ready.
+  Session english = StartSession();
+  english.Reset();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return controller_->asr_session_count_for_testing() == 0; }));
+
+  // Worker 1 registers its factory, and the controller posts the English read.
+  // From here until worker 2's factory is bound, the test runs no loop, because
+  // a loop can run the English `OnOrtFilesRead()`. Thus it calls the controller
+  // directly.
+  controller_->RegisterFactory(fake_factory_.BindRemote());
+
+  // Start the Spanish session directly, not with StartSession(). It is the only
+  // connected session, so Start() stops worker 1, and StopWorker() makes the
+  // weak pointer of the English `OnOrtFilesRead()` invalid.
+  Session spanish;
+  spanish.session.Bind(controller_->GetAsrSession());
+  mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder> responder;
+  spanish.responder_receiver = responder.InitWithNewPipeAndPassReceiver();
+  auto options = on_device_model::mojom::AsrStreamOptions::New();
+  options->language = "es-ES";
+  controller_->Start(std::move(options),
+                     spanish.input.BindNewPipeAndPassReceiver(),
+                     std::move(responder));
+  ASSERT_EQ(1, bwc_destroyed_count_)
+      << "Start() for the other model must stop worker 1 while the controller "
+         "waits for the English read result.";
+
+  // Let the English read end on the thread pool. FlushForTesting() only waits
+  // for the thread pool, so the English `OnOrtFilesRead()` stays first in the
+  // main-thread queue. Then bind worker 2's factory, so that the
+  // `factory_.is_bound()` check in `OnOrtFilesRead()` passes. The loop then
+  // runs the English `OnOrtFilesRead()` before worker 2 gets the Spanish
+  // stream, and only the invalid weak pointer can drop it.
+  base::ThreadPoolInstance::Get()->FlushForTesting();
+  FakeSpeechRecognitionFactory multilingual_factory;
+  controller_->RegisterFactory(multilingual_factory.BindRemote());
+  WaitForCreatedAsrStreams(multilingual_factory, 1);
+  EXPECT_EQ(1, multilingual_factory.init_count());
+  EXPECT_EQ(
+      local_ai::GetModelDirName(local_ai::OnDeviceSpeechModel::kMultilingual),
+      multilingual_factory.last_tokens());
+  EXPECT_THAT(multilingual_factory.languages(), testing::ElementsAre("es-ES"));
 }
 
 // ---------- Error and edge handling ----------
@@ -787,10 +845,12 @@ TEST_F(OnDeviceSpeechRecognitionControllerTest,
 
   // Dropping the last AsrSession arms the idle timer. FastForwardBy runs the
   // immediate disconnect task first, arming the timer. The worker stays up
-  // until the 60s idle timeout fires.
+  // until the idle timeout fires.
   s.session.reset();
-  task_environment_.FastForwardBy(base::Seconds(59));
+  // At kIdleTimeout - 1s, the worker is still up.
+  task_environment_.FastForwardBy(kIdleTimeout - base::Seconds(1));
   EXPECT_NE(nullptr, last_bwc_.get());
+  // At kIdleTimeout + 1s, the worker is gone.
   task_environment_.FastForwardBy(base::Seconds(2));
   EXPECT_EQ(nullptr, last_bwc_.get());
 }
@@ -808,7 +868,7 @@ TEST_F(OnDeviceSpeechRecognitionControllerTest, NewSessionCancelsIdleTimeout) {
   mojo::Remote<local_ai::mojom::AsrSession> reconnect(
       controller_->GetAsrSession());
 
-  task_environment_.FastForwardBy(base::Seconds(61));
+  task_environment_.FastForwardBy(kIdleTimeout + base::Seconds(1));
   EXPECT_NE(nullptr, last_bwc_.get());
 }
 
@@ -823,12 +883,12 @@ TEST_F(OnDeviceSpeechRecognitionControllerTest,
 
   // Dropping one of two sessions does not arm the timer.
   s1.session.reset();
-  task_environment_.FastForwardBy(base::Seconds(61));
+  task_environment_.FastForwardBy(kIdleTimeout + base::Seconds(1));
   EXPECT_NE(nullptr, last_bwc_.get());
 
   // Dropping the last session arms it, and the worker tears down.
   s2.session.reset();
-  task_environment_.FastForwardBy(base::Seconds(61));
+  task_environment_.FastForwardBy(kIdleTimeout + base::Seconds(1));
   EXPECT_EQ(nullptr, last_bwc_.get());
 }
 
