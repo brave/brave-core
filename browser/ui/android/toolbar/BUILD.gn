@@ -35,7 +35,15 @@ android_library("java") {
 }
 
 android_resources("java_resources") {
-  sources = [ "java/brave-res/layout/brave_adaptive_preference_buttons.xml" ]
+  sources = [
+    "java/brave-res/color/brave_collapsed_url_chip_background.xml",
+    "java/brave-res/color/brave_collapsed_url_chip_background_dark.xml",
+    "java/brave-res/color/brave_collapsed_url_chip_text.xml",
+    "java/brave-res/color/brave_collapsed_url_chip_text_dark.xml",
+    "java/brave-res/drawable/brave_collapsed_url_chip_background.xml",
+    "java/brave-res/layout/brave_adaptive_preference_buttons.xml",
+    "java/brave-res/layout/brave_collapsed_url_chip.xml",
+  ]
 
   deps = [ "//brave/build/android:android_brave_strings_grd" ]
 }
