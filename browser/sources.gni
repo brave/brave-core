@@ -9,7 +9,6 @@ import("//brave/browser/browsing_data/sources.gni")
 import("//brave/browser/cosmetic_filters/sources.gni")
 import("//brave/browser/gcm_driver/sources.gni")
 import("//brave/browser/net/sources.gni")
-import("//brave/browser/perf/sources.gni")
 import("//brave/browser/permissions/sources.gni")
 import("//brave/browser/profiles/sources.gni")
 import("//brave/browser/sync/sources.gni")
@@ -147,6 +146,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/misc_metrics:misc_metrics_impl",
   "//brave/browser/net:features",
   "//brave/browser/ntp_background",
+  "//brave/browser/perf",
   "//brave/browser/policy/handlers",
   "//brave/browser/renderer_context_menu",
   "//brave/browser/search_engines",
@@ -355,6 +355,7 @@ if (enable_brave_rewards) {
   brave_chrome_browser_deps += [
     "//brave/browser/brave_rewards:brave_rewards_impl",
     "//brave/browser/brave_rewards:util",
+    "//brave/components/brave_rewards/content",
   ]
 }
 
@@ -829,7 +830,6 @@ brave_chrome_browser_sources += brave_browser_browsing_data_sources
 brave_chrome_browser_sources += brave_browser_cosmetic_filters_sources
 brave_chrome_browser_sources += brave_browser_gcm_driver_sources
 brave_chrome_browser_sources += brave_browser_net_sources
-brave_chrome_browser_sources += brave_browser_perf_sources
 brave_chrome_browser_sources += brave_browser_permissions_sources
 brave_chrome_browser_sources += brave_browser_sync_sources
 brave_chrome_browser_sources += brave_browser_themes_sources
@@ -839,7 +839,6 @@ brave_chrome_browser_deps += brave_browser_browsing_data_deps
 brave_chrome_browser_deps += brave_browser_cosmetic_filters_deps
 brave_chrome_browser_deps += brave_browser_gcm_driver_deps
 brave_chrome_browser_deps += brave_browser_net_deps
-brave_chrome_browser_deps += brave_browser_perf_deps
 brave_chrome_browser_deps += brave_browser_permissions_deps
 brave_chrome_browser_deps += brave_browser_sync_deps
 brave_chrome_browser_deps += brave_browser_themes_deps
