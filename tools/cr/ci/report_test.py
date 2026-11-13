@@ -160,6 +160,32 @@ class MarkdownTest(unittest.TestCase):
             text,
         )
 
+    def test_lists_dependencies_and_the_previous_build(self):
+        text = _markdown(
+            CheckFailures(
+                check='PR browser (ios)',
+                url='https://tc/agg',
+                system='teamcity',
+                builds=(
+                    FailedBuild(
+                        name='Ios_Test',
+                        url='https://tc/2',
+                        summary='Exit code 2',
+                        problems=('Process exited with code 2',),
+                        dependencies=('`Ios_Build` 1: SUCCESS (https://tc/1)',),
+                        previous='`Ios_Test` 0 on `cr159`: SUCCESS (https://tc/0)',
+                    ),
+                ),
+            )
+        )
+        self.assertIn(
+            '- Problem: Process exited with code 2\n'
+            '- Depends on `Ios_Build` 1: SUCCESS (https://tc/1)\n'
+            '- Previous build: `Ios_Test` 0 on `cr159`: SUCCESS '
+            '(https://tc/0)\n',
+            text,
+        )
+
 
 if __name__ == '__main__':
     unittest.main()

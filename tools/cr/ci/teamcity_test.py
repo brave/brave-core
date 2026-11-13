@@ -327,6 +327,97 @@ class FailedBuildsTest(unittest.TestCase):
         ]
         self.assertIn('branch:(name:($base64:Y3IxNTg%3D))', history_path)
 
+    def test_names_dependencies_and_the_previous_build(self):
+        cli = FakeCli(
+            {
+                '/app/rest/builds?locator=snapshotDependency:': {},
+                '/app/rest/builds/id:41': {
+                    'id': 41,
+                    'buildTypeId': 'Ios_Test',
+                    'branchName': 'cr159',
+                    'statusText': 'Exit code 2',
+                    'snapshot-dependencies': {
+                        'build': [
+                            {
+                                'id': 40,
+                                'buildTypeId': 'Ios_Build',
+                                'status': 'SUCCESS',
+                                'state': 'finished',
+                                'webUrl': 'https://tc/40',
+                            },
+                            {
+                                'id': 39,
+                                'buildTypeId': 'Ios_Lint',
+                                'status': 'SUCCESS',
+                                'state': 'running',
+                                'webUrl': 'https://tc/39',
+                            },
+                        ]
+                    },
+                },
+                '/app/rest/problemOccurrences': {
+                    'problemOccurrence': [{'type': 'TC_EXIT_CODE'}]
+                },
+                '/app/rest/testOccurrences': {},
+                '/downloadBuildLog.html?buildId=41': _LOG,
+                '/app/rest/builds?locator=buildType:(id:Ios_Test)': _builds(
+                    {'id': 41, 'status': 'FAILURE'},
+                    {
+                        'id': 30,
+                        'status': 'SUCCESS',
+                        'statusText': 'Tests passed: 4600',
+                        'webUrl': 'https://tc/30',
+                        'revisions': {
+                            'revision': [
+                                {
+                                    'version': '91c8e6a12f' + '0' * 30,
+                                    'vcs-root-instance': {
+                                        'name': 'https://github.com/brave/brave-core'
+                                    },
+                                }
+                            ]
+                        },
+                    },
+                ),
+            }
+        )
+        (build,) = teamcity.TeamCityCi(run=cli).failed_builds(_url(41))
+        self.assertEqual(
+            build.dependencies,
+            (
+                '`Ios_Build` 40: SUCCESS (https://tc/40)',
+                '`Ios_Lint` 39: running (https://tc/39)',
+            ),
+        )
+        self.assertEqual(
+            build.previous,
+            '`Ios_Test` 30 on `cr159`: SUCCESS, Tests passed: 4600, at '
+            '`91c8e6a12f` (https://tc/30)',
+        )
+        (previous_path,) = [
+            cmd[-1] for cmd, _ in cli.calls if 'buildType:' in cmd[-1]
+        ]
+        self.assertIn('branch:(name:($base64:Y3IxNTk%3D))', previous_path)
+        self.assertIn('untilBuild:(id:41)', previous_path)
+
+    def test_no_previous_build_on_the_branch(self):
+        cli = FakeCli(
+            {
+                '/app/rest/builds?locator=snapshotDependency:': {},
+                '/app/rest/builds/id:41': {
+                    'id': 41,
+                    'buildTypeId': 'Ios_Test',
+                    'branchName': 'cr159',
+                },
+                '/app/rest/problemOccurrences': {},
+                '/app/rest/testOccurrences': {},
+                '/app/rest/builds?locator=buildType:': _builds({'id': 41}),
+            }
+        )
+        (build,) = teamcity.TeamCityCi(run=cli).failed_builds(_url(41))
+        self.assertEqual(build.previous, '')
+        self.assertEqual(build.dependencies, ())
+
 
 class RerunTest(unittest.TestCase):
     def test_restarts_with_writes_allowed(self):

@@ -78,6 +78,10 @@ class FailedBuild:
     log_tail: str = ''
     # Whether the CI system stopped it (a timeout, a newer run).
     aborted: bool = False
+    # The builds it depends on, a line each with their result.
+    dependencies: tuple[str, ...] = ()
+    # The same job's previous build on the branch: its result and commit.
+    previous: str = ''
 
     @property
     def kind(self) -> Kind:
