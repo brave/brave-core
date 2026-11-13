@@ -12,10 +12,12 @@ import Web
 struct TabGroupDetailView: View {
   var viewModel: TabGridViewModel
   var group: TabGroup
+  var didAddTab: () -> Void
 
-  init(viewModel: TabGridViewModel, group: TabGroup) {
+  init(viewModel: TabGridViewModel, group: TabGroup, didAddTab: @escaping () -> Void) {
     self.viewModel = viewModel
     self.group = group
+    self.didAddTab = didAddTab
     _isExpanded = State(initialValue: viewModel.isOpenGroupRestored)
   }
 
@@ -180,7 +182,10 @@ struct TabGroupDetailView: View {
         Spacer()
         Button {
           viewModel.addTab(in: group)
-          dismiss()
+          DispatchQueue.main.async {
+            dismiss()
+            didAddTab()
+          }
         } label: {
           Label(Strings.TabGrid.newTabAccessibilityLabel, braveSystemImage: "leo.plus.add")
             .labelStyle(.buttonIconOnly)

@@ -697,6 +697,7 @@ class TabManager: NSObject {
 
     delegates.forEach { $0.get()?.tabManager(self, willAddTab: tab) }
 
+    let selectedTabBeforeInsert = selectedTab
     if parent == nil || parent?.isPrivate != tab.isPrivate {
       allTabs.append(tab)
     } else if let parent = parent, var insertIndex = allTabs.firstIndex(where: { $0 === parent }) {
@@ -710,6 +711,10 @@ class TabManager: NSObject {
         tab.orderingParent = parent
       }
       allTabs.insert(tab, at: insertIndex)
+    }
+    
+    if let selectedTabBeforeInsert, selectedTab !== selectedTabBeforeInsert {
+      _selectedIndex = allTabs.firstIndex(where: { $0 === selectedTabBeforeInsert }) ?? -1
     }
 
     delegates.forEach { $0.get()?.tabManager(self, didAddTab: tab) }

@@ -292,7 +292,7 @@ struct TabGridView: View {
     )
     .overlay {
       if let group = viewModel.openGroup {
-        TabGroupDetailView(viewModel: viewModel, group: group)
+        TabGroupDetailView(viewModel: viewModel, group: group, didAddTab: didAddTab)
       }
     }
     .overlay {
