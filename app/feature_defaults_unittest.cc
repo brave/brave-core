@@ -275,6 +275,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if BUILDFLAG(IS_ANDROID)
       &omnibox::kOmniboxMobileParityUpdateV2,
 #endif
+      &omnibox::kPlatformAgnosticXGeo,
       &omnibox::kRichAutocompletion,
       &omnibox::kStarterPackExpansion,
       &one_time_tokens::features::kGmailOtpRetrievalService,
