@@ -43,7 +43,7 @@ BraveConfirmInfoBar* AsBraveConfirmInfoBar(const infobars::InfoBar* infobar,
   return nullptr;
 }
 
-constexpr int kContentSeparatorHeightDip = 2;
+constexpr int kContentSeparatorHeightDip = 1;
 
 std::unique_ptr<views::Border> CreateOutlineBorder(
     const ui::ColorProvider* color_provider,
@@ -141,14 +141,14 @@ gfx::Size BraveInfoBarContainerView::CalculatePreferredSize(
     // Upstream lays `content_shadow_` out below the height it reports here, so
     // it paints outside these bounds, over whatever the browser view starts
     // below the container. Reserve the divider's row so it stays inside.
-    size.Enlarge(0, kContentSeparatorHeightDip);
+    size.Enlarge(0, kContentSeparatorHeightDip + 1);
     return size;
   }
 
   // Reserve extra height for card margins and outline so layout insets don't
   // reduce infobar space.
-  size.Enlarge(
-      0, 2 * (kRoundedCornersContentsViewMargin + kContentSeparatorHeightDip));
+  size.Enlarge(0, 2 * (kRoundedCornersContentsViewMargin +
+                       kContentSeparatorHeightDip + 1));
   return size;
 }
 
