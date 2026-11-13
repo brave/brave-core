@@ -25,13 +25,13 @@
 #include "brave/browser/workspaces/pref_names.h"
 #include "brave/browser/workspaces/workspace_metadata.h"
 #include "chrome/browser/ui/browser_window/public/browser_collection_observer.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_command.h"
 #include "components/sessions/core/session_id.h"
 
-class BrowserWindowInterface;
 class PrefService;
 class Profile;
 
@@ -214,11 +214,23 @@ class WorkspaceService : public KeyedService,
   BrowserWindowInterface* CreateWindowOver(BrowserWindowInterface* from_window,
                                            WindowKind kind);
 
+  // Forgets |id|'s metadata and removes its directory. Only called once no
+  // window is left holding the workspace.
+  void FinishDeletingWorkspace(const base::Uuid& id);
+
   // Called when a close the person asked for was refused, so the window is
   // no longer on its way out and losing its last tab later means what it
   // normally means.
   void OnWindowCloseRequestCancelled(
       SessionID window_id,
+      BrowserWindowInterface* window,
+      BrowserWindowInterface::ClosingStatus status);
+
+  // Called when the window holding a workspace queued for deletion refused to
+  // close, so the deletion is abandoned rather than leaving the window with
+  // nothing to save it.
+  void OnWorkspaceWindowCloseCancelled(
+      base::Uuid id,
       BrowserWindowInterface* window,
       BrowserWindowInterface::ClosingStatus status);
 
@@ -286,6 +298,14 @@ class WorkspaceService : public KeyedService,
   // subscription hears about the close being refused, since a window that
   // stays is no longer one the person is closing.
   std::map<SessionID, base::CallbackListSubscription> windows_closed_by_person_;
+
+  // Workspaces whose window has been asked to close so they can be deleted.
+  // Nothing is destroyed until that window is actually gone, because Close()
+  // is asynchronous and tearing down the storage of a workspace whose window
+  // still holds its tabs would leave them saved by nobody. The subscription
+  // hears about the close being refused.
+  std::map<base::Uuid, base::CallbackListSubscription>
+      workspaces_pending_delete_;
 
   base::RepeatingClosureList workspaces_changed_callbacks_;
 
