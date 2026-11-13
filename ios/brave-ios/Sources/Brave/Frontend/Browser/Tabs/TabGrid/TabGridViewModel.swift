@@ -20,6 +20,7 @@ class TabGridViewModel {
   private(set) var tabs: [any TabState] = []
   private(set) var items: [TabGridItem] = []
   private(set) var openGroup: TabGroup?
+  private(set) var openGroupTitle = ""
   private(set) var openGroupItems: [TabGridItem] = []
   private(set) var openGroupSourceFrame: CGRect?
   @ObservationIgnored
@@ -294,6 +295,7 @@ class TabGridViewModel {
     openGroupSourceFrame = nil
     isOpenGroupRestored = false
     openGroup = nil
+    openGroupTitle = ""
     openGroupItems = []
   }
 
@@ -319,6 +321,7 @@ class TabGridViewModel {
     }
     // Pick up a new title
     openGroup = currentGroup
+    openGroupTitle = currentGroup.title
     openGroupItems = tabManager.tabs(in: currentGroup).map { TabGridItem.tab($0) }
   }
 

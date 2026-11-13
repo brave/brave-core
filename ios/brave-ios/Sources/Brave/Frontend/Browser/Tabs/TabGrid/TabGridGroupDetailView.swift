@@ -79,15 +79,15 @@ struct TabGroupDetailView: View {
     .opacity(isExpanded ? 1 : 0)
     .allowsHitTesting(isExpanded)
     .onAppear {
-      title = group.title
+      title = viewModel.openGroupTitle
       if viewModel.consumeNamingRequest() {
         title = ""
         isEditingTitle = true
       }
     }
-    .onChange(of: group.title) {
+    .onChange(of: viewModel.openGroupTitle) {
       if !isTitleFocused {
-        title = group.title
+        title = viewModel.openGroupTitle
       }
     }
     .onChange(of: isTitleFocused) {
@@ -131,7 +131,7 @@ struct TabGroupDetailView: View {
   private func commitTitle() {
     let newTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
     if newTitle.isEmpty {
-      title = group.title
+      title = viewModel.openGroupTitle
     } else {
       viewModel.renameGroup(group, to: newTitle)
       title = newTitle
@@ -141,7 +141,7 @@ struct TabGroupDetailView: View {
   private var optionsMenu: some View {
     Menu {
       Button {
-        title = group.title
+        title = viewModel.openGroupTitle
         isEditingTitle = true
       } label: {
         Label(Strings.TabGrid.editGroupNameMenuTitle, braveSystemImage: "leo.edit.pencil")
@@ -208,7 +208,7 @@ struct TabGroupDetailView: View {
               }
             }
         } else {
-          Text(group.title)
+          Text(viewModel.openGroupTitle)
             .lineLimit(1)
             .accessibilityAddTraits(.isHeader)
         }
