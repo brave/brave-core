@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 
-#include <algorithm>
-#include <optional>
 #include <string>
 #include <vector>
 
@@ -300,30 +298,22 @@ TEST(ValueConversionUtilsUnitTest,
 TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
   mojom::NetworkInfo chain = GetTestNetworkInfo1();
   base::DictValue value = NetworkInfoToValue(chain);
-  EXPECT_EQ(*value.FindString("chainId"), chain.chain_id);
-  EXPECT_EQ(*value.FindString("chainName"), chain.chain_name);
-  EXPECT_EQ(*value.FindStringByDottedPath("nativeCurrency.name"),
-            chain.symbol_name);
-  EXPECT_EQ(*value.FindStringByDottedPath("nativeCurrency.symbol"),
-            chain.symbol);
-  EXPECT_EQ(*value.FindIntByDottedPath("nativeCurrency.decimals"),
-            chain.decimals);
-  auto* rpc_urls = value.FindList("rpcUrls");
-  for (const auto& entry : *rpc_urls) {
-    ASSERT_TRUE(
-        std::ranges::contains(chain.rpc_endpoints, GURL(entry.GetString())));
-  }
-
-  for (const auto& entry : *value.FindList("iconUrls")) {
-    ASSERT_TRUE(std::ranges::contains(chain.icon_urls, entry.GetString()));
-  }
-  auto* blocked_urls = value.FindList("blockExplorerUrls");
-  for (const auto& entry : *blocked_urls) {
-    ASSERT_TRUE(
-        std::ranges::contains(chain.block_explorer_urls, entry.GetString()));
-  }
+  EXPECT_THAT(value, base::test::DictionaryHasValues(base::test::ParseJsonDict(
+                         R"({
+        "chainId": "chain_id",
+        "chainName": "chain_name",
+        "nativeCurrency": {
+          "name": "symbol_name",
+          "symbol": "symbol",
+          "decimals": 11
+        },
+        "rpcUrls": ["https://url1.com/"],
+        "iconUrls": ["https://url1.com"],
+        "blockExplorerUrls": ["https://url1.com"]
+      })")));
 
   auto result = ValueToNetworkInfo(base::Value(value.Clone()));
+  ASSERT_TRUE(result);
   ASSERT_TRUE(result->Equals(chain));
 
   {
@@ -340,30 +330,35 @@ TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
   {
     auto data_value = base::test::ParseJson(kNetworkDataValue);
     auto value_network = ValueToNetworkInfo(data_value);
+    ASSERT_TRUE(value_network);
     EXPECT_EQ(value_network->coin, mojom::CoinType::ETH);
     EXPECT_THAT(value_network->supported_keyrings,
                 ElementsAreArray({mojom::KeyringId::kDefault}));
 
     data_value.GetDict().Set("coin", static_cast<int>(mojom::CoinType::ETH));
     value_network = ValueToNetworkInfo(data_value);
+    ASSERT_TRUE(value_network);
     EXPECT_EQ(value_network->coin, mojom::CoinType::ETH);
     EXPECT_THAT(value_network->supported_keyrings,
                 ElementsAreArray({mojom::KeyringId::kDefault}));
 
     data_value.GetDict().Set("coin", static_cast<int>(mojom::CoinType::SOL));
     value_network = ValueToNetworkInfo(data_value);
+    ASSERT_TRUE(value_network);
     EXPECT_EQ(value_network->coin, mojom::CoinType::SOL);
     EXPECT_THAT(value_network->supported_keyrings,
                 ElementsAreArray({mojom::KeyringId::kSolana}));
 
     data_value.GetDict().Set("coin", static_cast<int>(mojom::CoinType::FIL));
     value_network = ValueToNetworkInfo(data_value);
+    ASSERT_TRUE(value_network);
     EXPECT_EQ(value_network->coin, mojom::CoinType::FIL);
     EXPECT_THAT(value_network->supported_keyrings,
                 ElementsAreArray({mojom::KeyringId::kFilecoinTestnet}));
 
     data_value.GetDict().Set("coin", static_cast<int>(mojom::CoinType::BTC));
     value_network = ValueToNetworkInfo(data_value);
+    ASSERT_TRUE(value_network);
     EXPECT_EQ(value_network->coin, mojom::CoinType::BTC);
     EXPECT_THAT(value_network->supported_keyrings,
                 ElementsAreArray({mojom::KeyringId::kBitcoin84Testnet,
@@ -372,12 +367,14 @@ TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
 
     data_value.GetDict().Set("coin", static_cast<int>(mojom::CoinType::ZEC));
     value_network = ValueToNetworkInfo(data_value);
+    ASSERT_TRUE(value_network);
     EXPECT_EQ(value_network->coin, mojom::CoinType::ZEC);
     EXPECT_THAT(value_network->supported_keyrings,
                 ElementsAreArray({mojom::KeyringId::kZCashTestnet}));
 
     data_value.GetDict().Set("coin", static_cast<int>(mojom::CoinType::ADA));
     value_network = ValueToNetworkInfo(data_value);
+    ASSERT_TRUE(value_network);
     EXPECT_EQ(value_network->coin, mojom::CoinType::ADA);
     EXPECT_THAT(value_network->supported_keyrings,
                 ElementsAreArray({mojom::KeyringId::kCardanoTestnet}));
@@ -385,6 +382,7 @@ TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
     data_value.GetDict().Set("coin", static_cast<int>(mojom::CoinType::DOT));
     data_value.GetDict().Set("chainId", mojom::kPolkadotTestnet);
     value_network = ValueToNetworkInfo(data_value);
+    ASSERT_TRUE(value_network);
     EXPECT_EQ(value_network->coin, mojom::CoinType::DOT);
     EXPECT_THAT(value_network->supported_keyrings,
                 ElementsAreArray({mojom::KeyringId::kPolkadotTestnet,
@@ -676,54 +674,28 @@ TEST(ValueConversionUtilsUnitTest, PermissionRequestResponseToValue) {
   // }]"
 
   ASSERT_EQ(value.size(), 1UL);
+  ASSERT_TRUE(value[0].is_dict());
 
-  auto& param0 = value[0].GetDict();
-  auto* caveats = param0.FindList("caveats");
-  ASSERT_NE(caveats, nullptr);
-  ASSERT_EQ(caveats->size(), 2UL);
+  const auto& param0 = value[0].GetDict();
+  EXPECT_THAT(param0, base::test::DictionaryHasValues(base::test::ParseJsonDict(
+                          R"({
+        "caveats": [{
+          "name": "primaryAccountOnly",
+          "type": "limitResponseLength",
+          "value": 1
+        }, {
+          "name": "exposedAccounts",
+          "type": "filterResponse",
+          "value": ["0xa99d71de40d67394ebe68e4d0265ca6c9d421029"]
+        }],
+        "context": ["https://github.com/MetaMask/rpc-cap"],
+        "invoker": "https://brave.com",
+        "parentCapability": "eth_accounts"
+      })")));
 
-  auto& caveats0 = (*caveats)[0].GetDict();
-  std::string* name = caveats0.FindString("name");
-  ASSERT_NE(name, nullptr);
-  EXPECT_EQ(*name, "primaryAccountOnly");
-  std::string* type = caveats0.FindString("type");
-  ASSERT_NE(type, nullptr);
-  EXPECT_EQ(*type, "limitResponseLength");
-  std::optional<int> primary_accounts_only_value = caveats0.FindInt("value");
-  ASSERT_NE(primary_accounts_only_value, std::nullopt);
-  EXPECT_EQ(*primary_accounts_only_value, 1);
-
-  auto& caveats1 = (*caveats)[1].GetDict();
-  name = caveats1.FindString("name");
-  ASSERT_NE(name, nullptr);
-  EXPECT_EQ(*name, "exposedAccounts");
-  type = caveats1.FindString("type");
-  ASSERT_NE(type, nullptr);
-  EXPECT_EQ(*type, "filterResponse");
-  auto* exposed_accounts = caveats1.FindList("value");
-  ASSERT_NE(exposed_accounts, nullptr);
-  ASSERT_EQ(exposed_accounts->size(), 1UL);
-  EXPECT_EQ((*exposed_accounts)[0],
-            base::Value("0xa99d71de40d67394ebe68e4d0265ca6c9d421029"));
-
-  auto* context = param0.FindList("context");
-  ASSERT_NE(context, nullptr);
-  ASSERT_EQ(context->size(), 1UL);
-  EXPECT_EQ((*context)[0], base::Value("https://github.com/MetaMask/rpc-cap"));
-
-  std::optional<double> date = param0.FindDouble("date");
-  ASSERT_NE(date, std::nullopt);
-
-  std::string* id = param0.FindString("id");
-  ASSERT_NE(id, nullptr);
-
-  std::string* invoker = param0.FindString("invoker");
-  ASSERT_NE(invoker, nullptr);
-  EXPECT_EQ(*invoker, "https://brave.com");
-
-  std::string* parent_capability = param0.FindString("parentCapability");
-  ASSERT_NE(parent_capability, nullptr);
-  EXPECT_EQ(*parent_capability, "eth_accounts");
+  // date and id vary per call, so only check they are present.
+  EXPECT_TRUE(param0.FindDouble("date"));
+  EXPECT_TRUE(param0.FindString("id"));
 }
 
 TEST(ValueConversionUtilsUnitTest, GetFirstValidChainURL) {
