@@ -1038,3 +1038,38 @@ target back in; edit `.env`/`package.json` if you need the branding to match.
 
 The same "matches nothing, still succeeds" failure mode applies to parameterized
 suites; see [TI-042](#TI-042).
+
+---
+
+<a id="TI-044"></a>
+
+## ✅ Initialize the Test HTTPS Server Before Building the Command Line
+
+**When browser-test command lines need the embedded test server's URL (e.g.
+`HostMappingRules`), the server MUST be `InitializeAndListen()`-ed before
+`SetUpCommandLine()` runs — `Start()` in `SetUpOnMainThread()` is too late.**
+The failure is silent: the guessed `MAP * :65535` rule (from the original bug)
+is discarded and requests fall through to the wrong host or real endpoints while
+tests still "pass". Follow the established pattern:
+`ASSERT_TRUE(server.InitializeAndListen())` in `SetUp()`, rule built from the
+live port in `SetUpCommandLine()`, `StartAcceptingConnections()` in
+`SetUpOnMainThread()`.
+
+```cpp
+// ❌ WRONG - port not yet known when the rule is built
+void SetUpCommandLine(base::CommandLine* cl) override {
+  cl->AppendSwitchASCII(switches::kHostResolverRules,
+      "MAP * " + https_server_.host_port_pair().ToString());
+}
+void SetUpOnMainThread() override { ASSERT_TRUE(https_server_.Start()); }
+
+// ✅ CORRECT - listen first, then build the rule from the live port
+void SetUp() override { ASSERT_TRUE(https_server_.InitializeAndListen()); }
+void SetUpCommandLine(base::CommandLine* cl) override {
+  cl->AppendSwitchASCII(switches::kHostResolverRules,
+      "MAP * " + https_server_.host_port_pair().ToString());
+}
+void SetUpOnMainThread() override { https_server_.StartAcceptingConnections(); }
+```
+
+---
