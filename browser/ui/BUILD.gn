@@ -538,6 +538,7 @@ source_set("ui") {
       "//brave/browser/ui/webui/brave_welcome_page",
       "//brave/browser/ui/webui/settings/brave_account",
       "//brave/browser/url_sanitizer",
+      "//brave/browser/webcompat_reporter",
       "//brave/browser/workspaces",
       "//brave/common",
       "//brave/components/brave_account",

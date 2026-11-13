@@ -16,7 +16,6 @@ import("//brave/browser/sync/sources.gni")
 import("//brave/browser/themes/sources.gni")
 import("//brave/browser/ui/config.gni")
 import("//brave/browser/updater/buildflags.gni")
-import("//brave/browser/webcompat_reporter/sources.gni")
 import("//brave/build/config.gni")
 import("//brave/chromium_src/chrome/browser/prefs/sources.gni")
 import("//brave/chromium_src/chrome/browser/sources.gni")
@@ -165,6 +164,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/ui/webui/history_embeddings:mojo_bindings",
   "//brave/browser/updater:buildflags",
   "//brave/browser/url_sanitizer",
+  "//brave/browser/webcompat_reporter",
   "//brave/common",
   "//brave/common:mojo_bindings",
   "//brave/components/ai_chat/core/common/buildflags",
@@ -263,6 +263,7 @@ brave_chrome_browser_deps = [
   "//brave/components/web_discovery/buildflags",
   "//brave/components/webcompat/content/browser",
   "//brave/components/webcompat/core/common",
+  "//brave/components/webcompat_reporter/common",
   "//brave/extensions:common",
   "//brave/services/network/public/cpp",
   "//brave/third_party/blink/renderer",
@@ -832,7 +833,6 @@ brave_chrome_browser_sources += brave_browser_perf_sources
 brave_chrome_browser_sources += brave_browser_permissions_sources
 brave_chrome_browser_sources += brave_browser_sync_sources
 brave_chrome_browser_sources += brave_browser_themes_sources
-brave_chrome_browser_sources += brave_browser_webcompat_reporter_sources
 
 brave_chrome_browser_deps += brave_browser_brave_vpn_deps
 brave_chrome_browser_deps += brave_browser_browsing_data_deps
@@ -843,7 +843,6 @@ brave_chrome_browser_deps += brave_browser_perf_deps
 brave_chrome_browser_deps += brave_browser_permissions_deps
 brave_chrome_browser_deps += brave_browser_sync_deps
 brave_chrome_browser_deps += brave_browser_themes_deps
-brave_chrome_browser_deps += brave_browser_webcompat_reporter_deps
 brave_chrome_browser_deps += brave_chromium_src_chrome_browser_deps
 brave_chrome_browser_deps += brave_chromium_src_chrome_browser_prefs_deps
 
