@@ -154,6 +154,7 @@ constexpr char16_t kYoutubeFullscreenVideoFitWorkaround[] =
 // through a link click so YouTube navigates in-page as it would for a tap. The
 // playlist panel isn't used because it renders only some items. On the last
 // item YouTube disables that button, so do nothing, as the page's Next does.
+// Also do nothing while the watch data still describes the previous video.
 // Otherwise (no playlist, or no button data), call YouTube's handler unchanged.
 // YouTube registers its handler only after an in-page navigation, so the first
 // playlist item played has no Next control. Register the handler whenever the
@@ -166,15 +167,24 @@ constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
   if (!mediaSession) {
     return;
   }
+  function watchNextResponse() {
+    return document.getElementById('movie_player')?.getWatchNextResponse?.();
+  }
   function playlistNextButton() {
-    const playlist = document.getElementById('movie_player')
-        ?.getWatchNextResponse?.()
+    const playlist = watchNextResponse()
         ?.contents?.singleColumnWatchNextResults?.playlist?.playlist;
     const list = new URLSearchParams(location.search).get('list');
     if (!list || playlist?.playlistId !== list) {
       return null;
     }
     return playlist.nextButtonVideo?.buttonRenderer ?? null;
+  }
+  // After a navigation the URL names the new video a second or two before the
+  // watch data does; following the old data's Next would replay that video.
+  function isWatchDataCurrent() {
+    const videoId =
+        watchNextResponse()?.currentVideoEndpoint?.watchEndpoint?.videoId;
+    return videoId === new URLSearchParams(location.search).get('v');
   }
   function nextUrl(button) {
     if (!button || button.isDisabled) {
@@ -185,7 +195,7 @@ constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
   let youtubeHandler = null;
   function handleNextTrack(details) {
     const button = playlistNextButton();
-    if (button?.isDisabled) {
+    if (button && (button.isDisabled || !isWatchDataCurrent())) {
       return;
     }
     const url = nextUrl(button);
