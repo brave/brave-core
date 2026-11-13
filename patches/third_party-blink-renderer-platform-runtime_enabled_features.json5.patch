@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index e627f2be2491665c9b9c1a262a8283859ec5bb60..a46e27d8a77eaea11b905ff8c48431df0dc9c719 100644
+index 5730001e65b1fcdd345bd1f5220ab6ba36b2d15c..a1a94743c2040912cb918f77d747c5a1051a8c98 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -319,6 +319,7 @@
@@ -78,7 +78,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..a46e27d8a77eaea11b905ff8c48431df
        public: true,
        status: "stable",
      },
-@@ -2947,6 +2952,7 @@
+@@ -2954,6 +2959,7 @@
      },
      {
        name: "ExtensionScriptTagging",
@@ -86,7 +86,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..a46e27d8a77eaea11b905ff8c48431df
        public: true,
        status: "stable",
        base_feature: "ExtensionScriptTagging",
-@@ -3068,7 +3074,8 @@
+@@ -3075,7 +3081,8 @@
      },
      {
        name: "FencedFrames",
@@ -96,7 +96,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..a46e27d8a77eaea11b905ff8c48431df
        // This helps enable and expose the <fencedframe> element, but note that
        // blink::features::kFencedFrames must be enabled as well, as we require
        // the support of the browser process to fully enable the feature.
-@@ -3157,6 +3164,7 @@
+@@ -3164,6 +3171,7 @@
      {
        // In-development features for the File System Access API.
        name: "FileSystemAccessAPIExperimental",
@@ -104,7 +104,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..a46e27d8a77eaea11b905ff8c48431df
        status: "experimental",
      },
      {
-@@ -3171,6 +3179,7 @@
+@@ -3178,6 +3186,7 @@
      {
        // Non-OPFS File System Access API.
        name: "FileSystemAccessLocal",
@@ -112,7 +112,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..a46e27d8a77eaea11b905ff8c48431df
        status: {"default": "stable"},
      },
      {
-@@ -3298,6 +3307,7 @@
+@@ -3305,6 +3314,7 @@
      },
      {
        name: "Fledge",
@@ -120,7 +120,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..a46e27d8a77eaea11b905ff8c48431df
        public: true,
      },
      {
-@@ -4096,7 +4106,7 @@
+@@ -4103,7 +4113,7 @@
          "Android": "stable",
          "default": "",
        },
@@ -129,7 +129,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..a46e27d8a77eaea11b905ff8c48431df
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -4487,6 +4497,7 @@
+@@ -4494,6 +4504,7 @@
      // "experimental" is the support on other platforms.
      {
        name: "MiddleClickAutoscroll",
@@ -137,7 +137,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..a46e27d8a77eaea11b905ff8c48431df
        status: "test",
      },
      // Killswitch for crbug.com/40062462 fix.
-@@ -5014,6 +5025,7 @@
+@@ -5021,6 +5032,7 @@
      {
        // PARAKEET ad serving runtime flag/JS API.
        name: "Parakeet",
@@ -145,7 +145,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..a46e27d8a77eaea11b905ff8c48431df
        origin_trial_feature_name: "Parakeet",
      },
      {
-@@ -5234,6 +5246,7 @@
+@@ -5241,6 +5253,7 @@
        //
        // It also has some feature params defined throughout the codebase.
        name: "Prerender2",
@@ -153,7 +153,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..a46e27d8a77eaea11b905ff8c48431df
        status: "stable",
      },
      {
-@@ -5441,6 +5454,7 @@
+@@ -5448,6 +5461,7 @@
      // but we still keep this flag for future phase tests.
      {
        name: "ReduceUserAgentMinorVersion",
@@ -161,7 +161,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..a46e27d8a77eaea11b905ff8c48431df
        status: "stable",
      },
      {
-@@ -7004,7 +7018,7 @@
+@@ -7017,7 +7031,7 @@
          "ChromeOS": "stable",
          "default": "",
        },
@@ -170,7 +170,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..a46e27d8a77eaea11b905ff8c48431df
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -7181,6 +7195,7 @@
+@@ -7194,6 +7208,7 @@
      },
      {
        name: "UserMediaElement",
@@ -178,7 +178,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..a46e27d8a77eaea11b905ff8c48431df
        status: "stable",
        public: true,
      },
-@@ -8053,7 +8068,7 @@
+@@ -8066,7 +8081,7 @@
        // with its responseXML document.
        // https://crbug.com/466303347
        name: "XMLRustForNonXslt",
@@ -187,7 +187,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..a46e27d8a77eaea11b905ff8c48431df
      },
      {
        name: "XMLSerializerConsistentDefaultNsDeclMatching",
-@@ -8085,5 +8100,10 @@
+@@ -8098,5 +8113,10 @@
        // crbug.com/435623334.
        name: "XSLTSpecialTrial",
      },
