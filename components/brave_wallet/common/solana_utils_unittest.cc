@@ -73,7 +73,7 @@ TEST(SolanaUtilsUnitTest, CompactU16Decode) {
   for (const auto& kv : valid_cases) {
     base::SpanReader<const uint8_t> reader(kv.payload);
     auto out = CompactU16Decode(reader);
-    EXPECT_EQ(*out, kv.expected_value);
+    EXPECT_EQ(out, kv.expected_value);
     EXPECT_EQ(reader.remaining(), 0u);
   }
 
@@ -139,7 +139,10 @@ TEST(SolanaUtilsUnitTest, Base58Decode) {
 
   // Len would be treated as max_len when strict is false.
   EXPECT_TRUE(Base58Decode(two_bytes_encoded, &bytes, 3, false));
+}
 
+TEST(SolanaUtilsDeathTest, Base58DecodeNullOutput) {
+  std::string program = mojom::kSolanaSystemProgramId;
   EXPECT_DCHECK_DEATH(Base58Decode(program, nullptr, kSolanaPubkeySize));
 }
 
@@ -210,7 +213,7 @@ TEST(SolanaUtilsUnitTest, GetUint8FromStringDict) {
   dict.Set("valid", base::NumberToString(UINT8_MAX));
   dict.Set("too_big", base::NumberToString(UINT8_MAX + 1));
   dict.Set("not_a_number", "HELLO");
-  EXPECT_EQ(GetUint8FromStringDict(dict, "valid").value(), UINT8_MAX);
+  EXPECT_EQ(GetUint8FromStringDict(dict, "valid"), UINT8_MAX);
   EXPECT_FALSE(GetUint8FromStringDict(dict, "too_big"));
   EXPECT_FALSE(GetUint8FromStringDict(dict, "not_a_number"));
 }
