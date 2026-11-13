@@ -65,7 +65,7 @@ public abstract class BraveCommandLineInitUtil {
                     Log.w(TAG, "Variations server file appears to be empty");
                 }
             } catch (IOException e) {
-                Log.e(TAG, "Failed to read variations server file: " + e.getMessage());
+                Log.e(TAG, "Failed to read variations server file", e);
             }
         }
 
@@ -74,13 +74,13 @@ public abstract class BraveCommandLineInitUtil {
             try (BufferedReader reader = new BufferedReader(new FileReader(dayZeroExptFile))) {
                 String testDayZeroExpt = reader.readLine();
                 if (testDayZeroExpt != null && !testDayZeroExpt.isEmpty()) {
-                    Log.w(TAG, "Day zero expt applied: " + testDayZeroExpt);
+                    Log.w(TAG, "Day zero expt applied: %s", testDayZeroExpt);
                     qaCommandLine += testDayZeroExpt;
                 } else {
                     Log.w(TAG, "Day zero expt file appears to be empty");
                 }
             } catch (IOException e) {
-                Log.e(TAG, "Failed to read Day zero expt file: " + e.getMessage());
+                Log.e(TAG, "Failed to read Day zero expt file", e);
             }
         }
 

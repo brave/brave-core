@@ -656,14 +656,17 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         // We have to use PostTask otherwise it's possible to get IllegalStateException
         // during a call to notifyItemChanged when scrolling is in progress, see details
         // here https://github.com/brave/brave-browser/issues/29343
-        PostTask.postTask(TaskTraits.UI_DEFAULT, () -> {
-            mImageCreditAlpha = alpha;
-            try {
-                notifyItemChanged(getStatsCount() + getTopSitesCount() + getNewContentCount());
-            } catch (IllegalStateException e) {
-                Log.e(TAG, "setImageCreditAlpha: " + e.getMessage());
-            }
-        });
+        PostTask.postTask(
+                TaskTraits.UI_DEFAULT,
+                () -> {
+                    mImageCreditAlpha = alpha;
+                    try {
+                        notifyItemChanged(
+                                getStatsCount() + getTopSitesCount() + getNewContentCount());
+                    } catch (IllegalStateException e) {
+                        Log.e(TAG, "setImageCreditAlpha", e);
+                    }
+                });
     }
 
     public void setRecyclerViewHeight(int recyclerViewHeight) {

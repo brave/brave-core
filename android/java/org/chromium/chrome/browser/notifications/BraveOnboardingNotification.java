@@ -88,7 +88,7 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
                 braveActivity.hideRewardsOnboardingIcon();
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "onReceive " + e);
+            Log.e(TAG, "onReceive", e);
 
             if (action != null && action.equals(DEEP_LINK)) {
                 intent.putExtra(RetentionNotificationUtil.NOTIFICATION_TYPE,

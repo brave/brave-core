@@ -513,7 +513,7 @@ public class Utils {
                                     }
                                 });
                     } catch (Exception exc) {
-                        Log.e(TAG, "Error while setting Bitmap resource exc=" + exc.getMessage());
+                        Log.e(TAG, "Error while setting Bitmap resource", exc);
                         if (textView != null) {
                             Drawable iconDrawable = AppCompatResources.getDrawable(context, iconId);
                             Bitmap bitmap =
@@ -1034,7 +1034,7 @@ public class Utils {
         try {
             chromeActivity = BraveActivity.getBraveActivity();
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "getProfile " + e);
+            Log.e(TAG, "getProfile", e);
         }
         if (chromeActivity == null) {
             chromeActivity = BraveActivity.getChromeTabbedActivity();
@@ -1342,7 +1342,7 @@ public class Utils {
             try {
                 return Double.parseDouble(assetPrice.price);
             } catch (NumberFormatException ex) {
-                Log.e(TAG, "Cannot parse price: " + assetPrice.price, ex);
+                Log.e(TAG, "Cannot parse price: %s", assetPrice.price, ex);
             }
         }
         return 0.0d;

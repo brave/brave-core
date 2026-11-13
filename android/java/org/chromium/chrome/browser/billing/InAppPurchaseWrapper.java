@@ -246,7 +246,7 @@ public class InAppPurchaseWrapper {
                 // https://github.com/brave/brave-browser/issues/27751.
                 // It's unknown what causes it, we tried to add retries, but it
                 // didn't help.
-                Log.e(TAG, "startBillingServiceConnection " + exc.getMessage());
+                Log.e(TAG, "startBillingServiceConnection", exc);
             }
         } else {
             if (billingClientConnectionState != null) {
@@ -662,7 +662,7 @@ public class InAppPurchaseWrapper {
         try {
             activity = BraveActivity.getBraveActivity();
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "acknowledgePurchase " + e.getMessage());
+            Log.e(TAG, "acknowledgePurchase", e);
         }
         if (isVPNProduct) {
             BraveVpnPrefUtils.setSubscriptionPurchase(true);
@@ -870,7 +870,7 @@ public class InAppPurchaseWrapper {
                             }
                         });
             } catch (Exception ex) {
-                Log.e(TAG, "retryBillingServiceConnection " + ex.getMessage());
+                Log.e(TAG, "retryBillingServiceConnection", ex);
             } finally {
                 mTries++;
             }

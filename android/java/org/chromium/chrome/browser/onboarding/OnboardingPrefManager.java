@@ -122,7 +122,7 @@ public class OnboardingPrefManager {
                 miscAndroidMetrics.recordPrivacyHubEnabledStatus(enabled);
             }
         } catch (BraveActivityNotFoundException e) {
-            Log.e(TAG, "Could not report privacy hub enabled change to P3A: " + e);
+            Log.e(TAG, "Could not report privacy hub enabled change to P3A", e);
         }
     }
 

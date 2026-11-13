@@ -70,10 +70,11 @@ public class BraveBookmarkUtils extends BookmarkUtils {
             BraveBookmarkImportExportDialogFragment dialogFragment =
                     BraveBookmarkImportExportDialogFragment.newInstance(
                             isImport, isSuccess, exportFilePath);
-            dialogFragment.show(appCompatActivity.getSupportFragmentManager(),
+            dialogFragment.show(
+                    appCompatActivity.getSupportFragmentManager(),
                     "BraveBookmarkImportExportDialogFragment");
         } catch (IllegalStateException e) {
-            Log.e(TAG, "showBookmarkImportExportDialog:" + e.getMessage());
+            Log.e(TAG, "showBookmarkImportExportDialog", e);
         }
     }
 

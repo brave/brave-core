@@ -93,11 +93,11 @@ public class NTPImageUtil {
                 mContext.getContentResolver().openInputStream(imageFileUri)) {
             imageBitmap = BitmapFactory.decodeStream(inputStream, null, options);
         } catch (IOException exc) {
-            Log.e(TAG, "getBitmapFromImagePath: IOException: " + exc.getMessage());
+            Log.e(TAG, "getBitmapFromImagePath: IOException", exc);
         } catch (IllegalArgumentException exc) {
-            Log.e(TAG, "getBitmapFromImagePath: IllegalArgumentException: " + exc.getMessage());
+            Log.e(TAG, "getBitmapFromImagePath: IllegalArgumentException", exc);
         } catch (OutOfMemoryError exc) {
-            Log.e(TAG, "getBitmapFromImagePath: OutOfMemoryError: " + exc.getMessage());
+            Log.e(TAG, "getBitmapFromImagePath: OutOfMemoryError", exc);
         }
         return imageBitmap;
     }
@@ -172,7 +172,7 @@ public class NTPImageUtil {
             return bitmapWithGradient;
         } catch (Exception exc) {
             exc.printStackTrace();
-            Log.e(TAG, "getCalculatedBitmap: " + exc.getMessage());
+            Log.e(TAG, "getCalculatedBitmap", exc);
             return null;
         } finally {
             if (imageBitmap != null && !imageBitmap.isRecycled()) imageBitmap.recycle();
@@ -191,7 +191,7 @@ public class NTPImageUtil {
             inputStream.close();
         } catch (IOException exc) {
             exc.printStackTrace();
-            Log.e(TAG, "getTopSiteBitmap IOException: " + exc.getMessage());
+            Log.e(TAG, "getTopSiteBitmap IOException", exc);
             topSiteIcon = null;
         } finally {
             try {
@@ -200,7 +200,7 @@ public class NTPImageUtil {
                 }
             } catch (IOException exception) {
                 exception.printStackTrace();
-                Log.e(TAG, "getTopSiteBitmap IOException in finally: " + exception.getMessage());
+                Log.e(TAG, "getTopSiteBitmap IOException in finally", exception);
                 topSiteIcon = null;
             }
         }

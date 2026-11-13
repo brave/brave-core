@@ -126,7 +126,7 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
                             TabUtils.bringChromeTabbedActivityToTheTop(
                                     BraveActivity.getBraveActivity());
                         } catch (BraveActivity.BraveActivityNotFoundException e) {
-                            Log.e(TAG, "sponsored_images_learn_more" + e);
+                            Log.e(TAG, "sponsored_images_learn_more", e);
                         }
                         return true;
                     });
@@ -272,7 +272,7 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
             }
             metrics.recordOpeningScreenSettingSwitch(switchType);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "recordOpeningScreenSwitch " + e);
+            Log.e(TAG, "recordOpeningScreenSwitch", e);
         }
     }
 

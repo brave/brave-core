@@ -173,7 +173,7 @@ public class BraveVpnUtils {
                 }
             }
         } catch (JSONException e) {
-            Log.e(TAG, "BraveVpnUtils -> getRegionForTimeZone JSONException error " + e);
+            Log.e(TAG, "BraveVpnUtils -> getRegionForTimeZone JSONException error", e);
         }
         return null;
     }
@@ -200,7 +200,7 @@ public class BraveVpnUtils {
             }
             return new Pair<>(hostname.getString("hostname"), hostname.getString("display-name"));
         } catch (JSONException e) {
-            Log.e(TAG, "BraveVpnUtils -> getHostnameForRegion JSONException error " + e);
+            Log.e(TAG, "BraveVpnUtils -> getHostnameForRegion JSONException error", e);
         }
         return new Pair<String, String>("", "");
     }
@@ -219,7 +219,7 @@ public class BraveVpnUtils {
                             wireguardProfileCredentials.getString("server-public-key"));
             return braveVpnWireguardProfileCredentials;
         } catch (JSONException e) {
-            Log.e(TAG, "BraveVpnUtils -> getWireguardProfileCredentials JSONException error " + e);
+            Log.e(TAG, "BraveVpnUtils -> getWireguardProfileCredentials JSONException error", e);
         }
         return null;
     }
@@ -245,7 +245,7 @@ public class BraveVpnUtils {
             int paymentState = purchase.getInt("paymentState");
             return paymentState;
         } catch (JSONException e) {
-            Log.e(TAG, "BraveVpnUtils -> getPaymentState JSONException error " + e);
+            Log.e(TAG, "BraveVpnUtils -> getPaymentState JSONException error", e);
         }
         return 0;
     }
@@ -257,7 +257,7 @@ public class BraveVpnUtils {
         try {
             WireguardConfigUtils.deleteConfig(activity);
         } catch (Exception ex) {
-            Log.e(TAG, "resetProfileConfiguration : " + ex.getMessage());
+            Log.e(TAG, "resetProfileConfiguration", ex);
         }
         BraveVpnPrefUtils.setResetConfiguration(true);
         dismissProgressDialog();
@@ -269,7 +269,7 @@ public class BraveVpnUtils {
             WireguardConfigUtils.deleteConfig(activity);
             WireguardConfigUtils.createConfig(activity, existingConfig);
         } catch (Exception ex) {
-            Log.e(TAG, "updateProfileConfiguration : " + ex.getMessage());
+            Log.e(TAG, "updateProfileConfiguration", ex);
         }
         if (BraveVpnProfileUtils.getInstance().isBraveVPNConnected(activity)) {
             BraveVpnProfileUtils.getInstance().stopVpn(activity);
