@@ -81,6 +81,7 @@ interface ItemState {
   editingItemKey: string | undefined
   setEditingItemKey: (key: string | undefined) => void
   activeUuid: string | undefined
+  coversConversation: boolean
   generationStates:
     | { [uuid: string]: Mojom.ConversationGenerationState }
     | undefined
@@ -144,10 +145,12 @@ function ConversationItem(props: ConversationItemProps) {
 
   const isActive = uuid === itemState.activeUuid
 
-  // The open conversation shows its own progress, so it gets no indicator.
-  const shownGenerationState = isActive
-    ? undefined
-    : itemState.generationStates?.[uuid]
+  // The open conversation shows its own progress, so it gets no indicator
+  // unless the list is covering it.
+  const shownGenerationState =
+    isActive && !itemState.coversConversation
+      ? undefined
+      : itemState.generationStates?.[uuid]
 
   return (
     <li>
@@ -435,7 +438,12 @@ function RecentWorkspaces(props: RecentWorkspacesProps) {
   )
 }
 
-export default function ConversationsList(props: ConversationsListProps) {
+export default function ConversationsList(
+  props: ConversationsListProps & {
+    // Set when the list covers the open conversation, as in the side panel.
+    coversConversation?: boolean
+  },
+) {
   const aiChatContext = useAIChat()
   const [filterText, setFilterText] = React.useState('')
   const [openOptionsMenuKey, setOpenOptionsMenuKey] = React.useState<string>()
@@ -454,6 +462,7 @@ export default function ConversationsList(props: ConversationsListProps) {
     editingItemKey,
     setEditingItemKey,
     activeUuid,
+    coversConversation: !!props.coversConversation,
     generationStates,
   }
 

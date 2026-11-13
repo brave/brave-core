@@ -25,8 +25,14 @@ jest.mock('../header', () => ({
 
 jest.mock('../conversations_list', () => ({
   __esModule: true,
-  default: (props: { setIsConversationsListOpen: (open: boolean) => void }) => (
-    <button onClick={() => props.setIsConversationsListOpen(false)}>
+  default: (props: {
+    coversConversation?: boolean
+    setIsConversationsListOpen: (open: boolean) => void
+  }) => (
+    <button
+      data-covers-conversation={props.coversConversation}
+      onClick={() => props.setIsConversationsListOpen(false)}
+    >
       close list
     </button>
   ),
@@ -65,6 +71,15 @@ describe('Main', () => {
     await click('open list')
     await click('close list')
     expect(setClientVisible.mock.calls).toEqual([[true], [false], [true]])
+  })
+
+  it('tells the side panel list that it covers the conversation', async () => {
+    const { result, click } = await renderMain(false)
+    await click('open list')
+    expect(result.getByText('close list')).toHaveAttribute(
+      'data-covers-conversation',
+      'true',
+    )
   })
 
   it('stays visible in the full page, where the list is beside it', async () => {
