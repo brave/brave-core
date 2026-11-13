@@ -5,9 +5,11 @@
 
 // Schemas for JSON bodies used by test endpoints.
 namespace endpoint_client {
-  dictionary JSONRequestBody {
+  dictionary JSONNonEmptyRequestBody {
     DOMString request;
   };
+
+  dictionary JSONEmptyRequestBody {};
 
   dictionary JSONSuccessBody {
     DOMString success;

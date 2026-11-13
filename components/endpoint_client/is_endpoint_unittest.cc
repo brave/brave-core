@@ -24,10 +24,10 @@ struct InvalidResponse {};
 
 using ValidBodylessRequest = Get;
 
-using ValidJSONRequest = Post<JSONRequestBody>;
+using ValidJSONRequest = Post<JSONNonEmptyRequestBody>;
 using ValidJSONResponse = Response<JSONSuccessBody, JSONErrorBody>;
 
-using ValidProtobufRequest = Post<ProtobufRequestBody>;
+using ValidProtobufRequest = Post<ProtobufNonEmptyRequestBody>;
 using ValidProtobufResponse = Response<ProtobufSuccessBody, ProtobufErrorBody>;
 
 enum class RequestTypeAliasState {

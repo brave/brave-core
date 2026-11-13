@@ -32,7 +32,8 @@ namespace brave_account {
 namespace {
 
 struct TestEndpoint {
-  using Request = endpoint_client::Post<endpoint_client::JSONRequestBody>;
+  using Request =
+      endpoint_client::Post<endpoint_client::JSONNonEmptyRequestBody>;
   using Response = endpoint_client::Response<endpoint_client::JSONSuccessBody,
                                              endpoint_client::JSONErrorBody>;
   static GURL URL() { return GURL("https://example.com/api/query"); }

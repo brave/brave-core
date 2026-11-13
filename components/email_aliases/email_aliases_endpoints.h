@@ -22,7 +22,7 @@ using AliasList = endpoint_client::BraveEndpoint<
 using GenerateAlias = endpoint_client::BraveEndpoint<
     "aliases",
     "/manage",
-    endpoint_client::Post<GenerateAliasRequest>,
+    endpoint_client::Post<>,
     endpoint_client::Response<GenerateAliasResponse, ErrorMessage>>;
 
 using UpdateAlias = endpoint_client::BraveEndpoint<
