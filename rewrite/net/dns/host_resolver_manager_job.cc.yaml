@@ -1,0 +1,13 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Count secure DNS tasks for Brave's P3A, as a job's requests complete.
+
+      `BRAVE_RECORD_DNS_COUNTS` is defined in the `chromium_src` override.
+    add_after_line:
+      line: 'RecordJobHistograms(results, task_type);'
+      code: '    BRAVE_RECORD_DNS_COUNTS'
