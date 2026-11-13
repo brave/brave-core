@@ -12,9 +12,9 @@
 
 TEST(PlaylistMimeUtilUnitTest, GetFileExtensionForMimetype) {
   auto compare_result = [](const auto& mimetype, const auto& extension) {
-    EXPECT_EQ(
-        playlist::mime_util::GetFileExtensionForMimetype(mimetype).value(),
-        extension);
+    auto result = playlist::mime_util::GetFileExtensionForMimetype(mimetype);
+    ASSERT_TRUE(result.has_value()) << mimetype;
+    EXPECT_EQ(*result, extension);
   };
 
   compare_result("application/ogg", FILE_PATH_LITERAL("ogx"));
@@ -47,9 +47,9 @@ TEST(PlaylistMimeUtilUnitTest, GetFileExtensionForMimetype) {
 
 TEST(PlaylistMimeUtilUnitTest, GetMimeTypeForFileExtension) {
   auto compare_result = [](const auto& extension, const auto& mimetype) {
-    EXPECT_EQ(
-        playlist::mime_util::GetMimeTypeForFileExtension(extension).value(),
-        mimetype);
+    auto result = playlist::mime_util::GetMimeTypeForFileExtension(extension);
+    ASSERT_TRUE(result.has_value()) << extension;
+    EXPECT_EQ(*result, mimetype);
   };
 
   compare_result(FILE_PATH_LITERAL("m3u8"), "application/x-mpegurl");
@@ -89,7 +89,7 @@ TEST(PlaylistMimeUtilUnitTest, BothMapsShouldBeInSync) {
 
   for (const auto& [extension, mimes] : extension_to_mimes) {
     auto mimetype = playlist::mime_util::GetMimeTypeForFileExtension(extension);
-    EXPECT_TRUE(mimetype.has_value());
+    ASSERT_TRUE(mimetype.has_value());
     EXPECT_THAT(mimes, testing::Contains(mimetype.value()));
   }
 }
