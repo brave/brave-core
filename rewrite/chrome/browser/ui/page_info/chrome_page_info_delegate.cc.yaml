@@ -5,16 +5,15 @@
 
 substitutions:
   - description: |
-      Show the cookies dialog for contents that aren't tabs.
+      Show the cookies dialog for contents shown in Peek.
 
-      Only tabs have `TabDialogs`. Page info can also be shown for contents
-      that aren't tabs, e.g. Peek, which shows the dialog after moving into a
-      tab. `peek::ShowCookiesDialogInTab` is declared in the chromium_src
-      override of this file.
+      Page info can be shown for Peek contents, which aren't tabs. Peek shows
+      the dialog after moving into a tab. `peek::ShowCookiesDialogInTab` is
+      declared in the chromium_src override of this file and returns true if
+      it handled the request.
     preempt_function_impl:
       function_name: ChromePageInfoDelegate::OpenCookiesDialog
       code: |-
-        if (!TabDialogs::FromWebContents(web_contents_)) {
-          peek::ShowCookiesDialogInTab(web_contents_);
+        if (peek::ShowCookiesDialogInTab(web_contents_)) {
           return;
         }
