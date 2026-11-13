@@ -1,29 +1,32 @@
 diff --git a/components/tabs/impl/tab_strip_collection.cc b/components/tabs/impl/tab_strip_collection.cc
-index f586465c0dd4bc525f76282f809197547de580ba..3ca0bddc7f6dcf92c2adb4dc0ebead27797fe02a 100644
+index f586465c0dd4bc525f76282f809197547de580ba..fcf515bf2636488f3d8d477d7d3dc749cec82b76 100644
 --- a/components/tabs/impl/tab_strip_collection.cc
 +++ b/components/tabs/impl/tab_strip_collection.cc
-@@ -314,6 +314,24 @@ ChildrenPtrs TabStripCollection::GetTabsAndCollectionsForMove(
- }
+@@ -606,6 +606,9 @@ ScopedTab TabStripCollection::RemoveTabImpl(TabInterface* tab,
+   // If it is the only tab in the group remove the collection.
+   if (parent_collection != unpinned_collection_ &&
+       parent_collection != pinned_collection_ &&
++#if BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
++      parent_collection->type() != TabCollection::Type::TREE_NODE &&
++#endif  // BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
+       parent_collection->TabCountRecursive() == 1) {
+     RemoveTabCollectionImpl(parent_collection);
+     return parent_collection->MaybeRemoveTab(tab);
+@@ -625,6 +628,17 @@ ScopedTab TabStripCollection::RemoveTabImpl(TabInterface* tab,
+           removed_tab->GetHandle()}},
+       nullptr, remove_for_detach);
  
- ScopedTab TabStripCollection::RemoveTabAtIndexRecursive(size_t index) {
-+  #if BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
-+  {
-+    TabInterface* tab_to_be_removed = GetTabAtIndexRecursive(index);
-+    TabCollection* parent_collection =
-+        tab_to_be_removed->GetParentCollection(GetPassKey());
-+    CHECK(parent_collection);
-+    if (parent_collection->type() == TabCollection::Type::TREE_NODE) {
-+      auto tab = RemoveTabImpl(tab_to_be_removed);
-+      if (auto* grand_parent = parent_collection->GetParentCollection();
-+          grand_parent &&
-+          grand_parent->type() == TabCollection::Type::GROUP &&
-+          grand_parent->TabCountRecursive() == 0) {
-+        RemoveTabCollectionImpl(grand_parent);
-+      }
-+      return tab;
++#if BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
++  if (parent_collection->type() == TabCollection::Type::TREE_NODE) {
++    if (auto* grand_parent = parent_collection->GetParentCollection();
++        grand_parent &&
++        grand_parent->type() == TabCollection::Type::GROUP &&
++        grand_parent->TabCountRecursive() == 0) {
++      RemoveTabCollectionImpl(grand_parent);
 +    }
 +  }
-+  #endif  // BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
-   TabInterface* tab_to_be_removed = GetTabAtIndexRecursive(index);
-   return RemoveTabImpl(tab_to_be_removed);
++#endif  // BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
++
+   return removed_tab;
  }
+ 
