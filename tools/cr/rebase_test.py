@@ -2197,6 +2197,66 @@ class RebaseStopTest(unittest.TestCase):
 
         self.assertEqual(['Add a feature'], self.subjects())
 
+    def test_a_commit_the_base_picked_with_its_fixup_is_skipped(self):
+        """The base's squash of the two isn't patch-identical to either, so
+        the pick conflicts rather than come out empty."""
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={DATA: 'tracked\nticked\n', 'other': 'o\n'},
+            commits=[
+                ('Track an item', {DATA: 'tracked\n'}),
+                ('fixup! Track an item', {DATA: 'tracked\nticked\n'}),
+                ('Add a feature', {'feature': 'f\n'}),
+            ],
+        )
+
+        self.rebase(fork)
+
+        self.assertFalse(repository.brave.is_rebase_in_progress())
+        self.assertEqual(['Add a feature'], self.subjects())
+        self.assertEqual('tracked\nticked\n', self.committed(DATA))
+        self.assertIn(
+            f'{conflict_resolution.Rule.PICKED_BY_BASE.value}:\n    ✔ {DATA}',
+            self.console.text,
+        )
+        self.assertIn('✘ fixup ', self.console.text)
+
+    def test_a_pinned_group_the_base_picked_is_skipped(self):
+        fork = self.build(
+            ancestor={'tool': 'a\n'},
+            base={'tool': 'b\nc\n', 'other': 'o\n'},
+            commits=[
+                ('Version lift updates', {'tool': 'b\n'}),
+                ('Version lift updates', {'tool': 'b\nc\n'}),
+                ('Add a feature', {'feature': 'f\n'}),
+            ],
+        )
+
+        self.rebase(fork, squash_minor_bumps=True)
+
+        self.assertFalse(repository.brave.is_rebase_in_progress())
+        self.assertEqual(['Add a feature'], self.subjects())
+        self.assertEqual('b\nc\n', self.committed('tool'))
+        self.assertIn(
+            f'{conflict_resolution.Rule.PICKED_BY_BASE.value}:\n    ✔ tool',
+            self.console.text,
+        )
+
+    def test_a_commit_whose_fixup_the_base_lacks_still_stops(self):
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={DATA: 'tracked\n', 'other': 'o\n'},
+            commits=[
+                ('Track an item', {DATA: 'tracked\nmore\n'}),
+                ('fixup! Track an item', {'feature': 'f\n'}),
+            ],
+        )
+
+        with self.assertRaises(brockit.ActionNeededException):
+            self.rebase(fork)
+
+        self.assertEqual([DATA], self.conflicted())
+
     def test_resolves_the_conflicts_with_a_fixed_answer(self):
         fork = self.build(
             ancestor={RAW_PATCH: _raw_patch('// ancestor')},

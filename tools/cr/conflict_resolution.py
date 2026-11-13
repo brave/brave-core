@@ -20,10 +20,14 @@ these answers:
   pinslist timestamp, when the base moved on to a newer minor version.
 * `CONTEXT_ONLY_PATCH` -- a raw patch that the base changed only in its context
   takes the commit's version.
+* `PICKED_BY_BASE` -- a commit the base picked with what folds into it, so that
+  the base has every file they touch as the branch ends it, is skipped along
+  with them.
 
-`ConflictedStep.resolve` runs the rules over the conflicted files of a stop,
-and writes each answer into the working tree. Staging the answers and continuing
-the rebase is left to the caller (`brockit.Rebase`).
+`ConflictedStep.resolve` runs the file rules over the conflicted files of a
+stop, and writes each answer into the working tree. Staging the answers and
+continuing the rebase is left to the caller (`brockit.Rebase`), which checks
+`ConflictedStep.base_has` for `PICKED_BY_BASE` first.
 """
 
 from __future__ import annotations
@@ -89,7 +93,8 @@ class Stage(enum.IntEnum):
 
 
 class Rule(enum.Enum):
-    """The fixed answers, in the order they are tried on a conflicted file.
+    """The fixed answers, in the order they are tried on a conflicted file,
+    after `PICKED_BY_BASE`, which is tried on the whole commit.
 
     Each value heads the files the rule resolved in the rebase report.
     """
@@ -106,6 +111,10 @@ class Rule(enum.Enum):
     CONTEXT_ONLY_PATCH = (
         'Raw patches taken from the commit, as the base only moved their '
         'context (candidates for conversion to plaster)'
+    )
+    PICKED_BY_BASE = (
+        'Commits skipped with what folds into them, as the base has their '
+        'files as the branch ends them'
     )
 
 
@@ -210,10 +219,42 @@ class ConflictedStep:
         }
         resolutions = []
         for path in self.paths:
-            rule = next((rule for rule in Rule if resolvers[rule](path)), None)
+            rule = next(
+                (
+                    rule
+                    for rule, resolver in resolvers.items()
+                    if resolver(path)
+                ),
+                None,
+            )
             if rule is not None:
                 resolutions.append(Resolution(path=path, rule=rule))
         return resolutions
+
+    def base_has(self, commits: list[str]) -> bool:
+        """Whether the base has every file `commits` touch as the branch ends
+        it.
+
+        Then the base picked those commits, squashed into one: it has their
+        change, though not as a patch git can match to any of them.
+        """
+        brave = repository.brave
+        touched = {
+            path
+            for commit in commits
+            for path in brave.run_git(
+                'diff-tree',
+                '--no-commit-id',
+                '--name-only',
+                '--no-renames',
+                '-r',
+                commit,
+            ).splitlines()
+        }
+        differing = brave.run_git(
+            'diff', '--name-only', '--no-renames', self.onto, self.orig_head
+        ).splitlines()
+        return bool(touched) and touched.isdisjoint(differing)
 
     def _regenerate_from_plaster(self, path: str) -> bool:
         """Regenerates a conflicted patch by rerunning its plaster.
