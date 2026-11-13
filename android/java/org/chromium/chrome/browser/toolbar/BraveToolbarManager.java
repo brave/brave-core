@@ -17,6 +17,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.Callback;
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.CallbackController;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.supplier.LazyOneshotSupplier;
@@ -42,6 +43,7 @@ import org.chromium.chrome.browser.browser_controls.BottomControlsStacker.LayerT
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.browser_controls.TopControlsStacker;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.compositor.overlays.strip.StripLayoutHelperManager;
@@ -419,7 +421,7 @@ public class BraveToolbarManager extends ToolbarManager
                         mActivity,
                         mBrowserControlsSizer,
                         mActivityTabProvider.asObservable(),
-                        () -> true,
+                        () -> ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_COLLAPSED_URL_CHIP),
                         mFullscreenManager.getPersistentFullscreenModeSupplier(),
                         controlsVisibilityDelegate);
     }

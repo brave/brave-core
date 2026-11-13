@@ -29,7 +29,7 @@ import org.chromium.base.Callback;
 import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
-import org.chromium.chrome.R;
+import org.chromium.chrome.browser.toolbar.R;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.tab.Tab;
@@ -47,8 +47,8 @@ import java.util.function.Supplier;
  *
  * <p>The chip is an overlay on the activity content: as the bottom toolbar (with the URL bar /
  * search pill) slides off screen, a small translucent pill fades in at the bottom of the screen
- * showing the site's eTLD+1. Tapping it re-shows the browser controls. The chip is never a
- * navigation surface, so it cannot be used to spoof or open URLs.
+ * showing the page's host minus trivial subdomains. Tapping it re-shows the browser controls. The
+ * chip is never a navigation surface, so it cannot be used to spoof or open URLs.
  */
 @NullMarked
 public class BraveCollapsedUrlChipCoordinator {
