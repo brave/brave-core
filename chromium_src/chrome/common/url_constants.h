@@ -88,9 +88,6 @@ inline constexpr char kChromeHelpViaMenuURL[] = "https://support.brave.app/";
 
 inline constexpr char kChromeHelpViaWebUIURL[] = "https://support.brave.app/";
 
-inline constexpr char kRelatedWebsiteSetsLearnMoreURL[] =
-    "https://support.brave.app/";
-
 // The isolated-app: scheme is used for Isolated Web Apps. A public explainer
 // can be found here: https://github.com/reillyeon/isolated-web-apps
 inline constexpr char kIsolatedAppScheme[] = "isolated-app";
@@ -545,10 +542,6 @@ inline constexpr char kGlicKeyboardShortcutLearnMoreURL[] =
 inline constexpr char kGlicKeyboardShortcutLearnMoreManagedURL[] =
     "https://support.brave.app/";
 
-// The URL for the Settings page to enable history search.
-inline constexpr char16_t kHistorySearchSettingURL[] =
-    u"chrome://settings/historySearch";
-
 // The URL for the "Learn more" page for Wallpaper Search.
 inline constexpr char kWallpaperSearchLearnMorePageURL[] =
     "https://support.brave.app/";
@@ -614,21 +607,8 @@ inline constexpr char kPrivacyPolicyURL[] = "https://support.brave.app/";
 // The URL path to Google's Privacy Policy page for users in China.
 inline constexpr char kPrivacyPolicyURLChina[] = "https://support.brave.app/";
 
-// The URL path to Google's Embedded Privacy Policy page.
-inline constexpr char kPrivacyPolicyOnlineURLPath[] =
-    "https://support.brave.app/";
-
-// The URL path to Google's Embedded Privacy Policy page - Dark Mode.
-inline constexpr char kPrivacyPolicyOnlineDarkModeURLPath[] =
-    "https://support.brave.app/";
-
 // The URL path to Google's Embedded Privacy Policy page for users in China.
 inline constexpr char kPrivacyPolicyEmbeddedURLPathChina[] =
-    "https://support.brave.app/";
-
-// The URL path to Google's Embedded Privacy Policy page for users in China -
-// Dark Mode.
-inline constexpr char kPrivacyPolicyEmbeddedDarkModeURLPathChina[] =
     "https://support.brave.app/";
 
 #if BUILDFLAG(IS_ANDROID)
