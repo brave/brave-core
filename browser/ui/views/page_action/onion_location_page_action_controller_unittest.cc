@@ -58,6 +58,9 @@ class OnionLocationPageActionControllerTest : public testing::Test {
         std::make_unique<tor::OnionLocationTabHelper>(*tab_interface_);
 
     // Upstream actions competing with the onion chip for the chip selector.
+    // Namely, the tests will verify that the Memory Saver chip, which is lower
+    // in priority, gives up the spot to the Onion chip, while the Cookie
+    // Controls chip and Onion chip are both shown at the same time.
     page_action_controller_ = std::make_unique<PageActionControllerImpl>(
         *tab_interface_,
         std::vector<actions::ActionId>{kActionShowOnionLocation,
