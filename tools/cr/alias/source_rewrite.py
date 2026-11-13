@@ -241,7 +241,7 @@ def update_references(old_path: Path, new_path: Path) -> None:
 
     java_rename = _JavaClassRename.from_paths(old_path, new_path)
 
-    for fpath in _walk_brave_core():
+    for fpath in walk_brave_core():
         ext = fpath.suffix.lower()
         # ProGuard `.flags` name classes by their dotted name too.
         if ext in ('.java', '.flags'):
@@ -299,7 +299,7 @@ def patch_name_for(chromium_path: Path | str) -> str:
 # ---------------------------------------------------------------------------
 
 
-def _walk_brave_core() -> Iterator[Path]:
+def walk_brave_core() -> Iterator[Path]:
     """Yields every non-excluded file path under brave-core.
 
     Honours SEARCH_EXCLUDE_DIRS and SEARCH_EXCLUDE_EXTENSIONS via
@@ -458,7 +458,7 @@ def _update_gn_references(old_path: Path, new_path: Path) -> None:
         root_sub = '"' + new_root
         old_abs_dir = repository.chromium.root / old_dir
         new_abs_dir = repository.chromium.root / new_dir
-        for fpath in _walk_brave_core():
+        for fpath in walk_brave_core():
             if fpath.suffix not in _GN_EXTENSIONS:
                 continue
             content = fpath.read_bytes().decode('utf-8')
@@ -510,7 +510,7 @@ def _update_gn_references(old_path: Path, new_path: Path) -> None:
         if suffix == '.java'
         else None
     )
-    for fpath in _walk_brave_core():
+    for fpath in walk_brave_core():
         if fpath.suffix not in _GN_EXTENSIONS:
             continue
         content = fpath.read_bytes().decode('utf-8')
