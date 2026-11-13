@@ -1,0 +1,58 @@
+diff --git a/chrome/browser/pwc/pwc_content_settings_policy.cc b/chrome/browser/pwc/pwc_content_settings_policy.cc
+index 02596fffe903d6b2243ac6304872049722cf671d..528104c4974145b8a328c77d5095b4324e8aaf51 100644
+--- a/chrome/browser/pwc/pwc_content_settings_policy.cc
++++ b/chrome/browser/pwc/pwc_content_settings_policy.cc
+@@ -55,6 +55,12 @@ PwcContentSettingPolicy GetPwcContentSettingPolicy(ContentSettingsType type) {
+     case ContentSettingsType::LOCAL_NETWORK_ACCESS:
+     case ContentSettingsType::LOCAL_NETWORK:
+     case ContentSettingsType::LOOPBACK_NETWORK:
++    case ContentSettingsType::BRAVE_ETHEREUM:
++    case ContentSettingsType::BRAVE_SOLANA:
++    case ContentSettingsType::BRAVE_CARDANO:
++    case ContentSettingsType::BRAVE_POLKADOT:
++    case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
++    case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
+       return PwcContentSettingPolicy::kDelegated;
+ 
+     // Site settings that are not web permissions and are never queried through
+@@ -154,6 +160,40 @@ PwcContentSettingPolicy GetPwcContentSettingPolicy(ContentSettingsType type) {
+     case ContentSettingsType::SUSPICIOUS_NOTIFICATION_SHOW_ORIGINAL:
+     case ContentSettingsType::SUSPICIOUS_SITE_WARNING_DATA:
+     case ContentSettingsType::WEBAUTHN_AMBIENT_SIGNIN_DATA:
++    case ContentSettingsType::BRAVE_ADS:
++    case ContentSettingsType::BRAVE_COSMETIC_FILTERING:
++    case ContentSettingsType::BRAVE_TRACKERS:
++    case ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES:
++    case ContentSettingsType::BRAVE_FINGERPRINTING_V2:
++    case ContentSettingsType::BRAVE_SHIELDS:
++    case ContentSettingsType::BRAVE_REFERRERS:
++    case ContentSettingsType::BRAVE_COOKIES:
++    case ContentSettingsType::BRAVE_SPEEDREADER:
++    case ContentSettingsType::BRAVE_HTTPS_UPGRADE:
++    case ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE:
++    case ContentSettingsType::BRAVE_AUTO_SHRED:
++    case ContentSettingsType::BRAVE_WEBCOMPAT_NONE:
++    case ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO:
++    case ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS:
++    case ContentSettingsType::BRAVE_WEBCOMPAT_DEVICE_MEMORY:
++    case ContentSettingsType::BRAVE_WEBCOMPAT_EVENT_SOURCE_POOL:
++    case ContentSettingsType::BRAVE_WEBCOMPAT_FONT:
++    case ContentSettingsType::BRAVE_WEBCOMPAT_HARDWARE_CONCURRENCY:
++    case ContentSettingsType::BRAVE_WEBCOMPAT_KEYBOARD:
++    case ContentSettingsType::BRAVE_WEBCOMPAT_LANGUAGE:
++    case ContentSettingsType::BRAVE_WEBCOMPAT_MEDIA_DEVICES:
++    case ContentSettingsType::BRAVE_WEBCOMPAT_PLUGINS:
++    case ContentSettingsType::BRAVE_WEBCOMPAT_SCREEN:
++    case ContentSettingsType::BRAVE_WEBCOMPAT_SPEECH_SYNTHESIS:
++    case ContentSettingsType::BRAVE_WEBCOMPAT_USB_DEVICE_SERIAL_NUMBER:
++    case ContentSettingsType::BRAVE_WEBCOMPAT_USER_AGENT:
++    case ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL:
++    case ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2:
++    case ContentSettingsType::BRAVE_WEBCOMPAT_WEBGPU:
++    case ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL:
++    case ContentSettingsType::BRAVE_WEBCOMPAT_ALL:
++    case ContentSettingsType::BRAVE_SHIELDS_METADATA:
++    case ContentSettingsType::BRAVE_PSST:
+       return PwcContentSettingPolicy::kBlocked;
+   }
+ }
