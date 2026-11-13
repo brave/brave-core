@@ -102,6 +102,9 @@ def _sections(failed: tuple[CheckFailures, ...]) -> str:
                 '',
             ]
             lines += [f'- Problem: {problem}' for problem in build.problems]
+            lines += [f'- Depends on {dep}' for dep in build.dependencies]
+            if build.previous:
+                lines.append(f'- Previous build: {build.previous}')
             for test in build.tests:
                 known = f' ({test.known})' if test.known else ''
                 lines.append(f'- Test `{test.name}`: {test.status}{known}')
@@ -110,7 +113,12 @@ def _sections(failed: tuple[CheckFailures, ...]) -> str:
                     for failure in test.mocha
                 ]
                 lines += [f'  - History: {line}' for line in test.history]
-            if build.problems or build.tests:
+            if (
+                build.problems
+                or build.tests
+                or build.dependencies
+                or build.previous
+            ):
                 lines.append('')
             for test in build.tests:
                 if test.mocha:
