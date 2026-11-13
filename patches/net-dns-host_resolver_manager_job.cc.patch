@@ -1,12 +1,23 @@
 diff --git a/net/dns/host_resolver_manager_job.cc b/net/dns/host_resolver_manager_job.cc
-index dd120333c1e08f9d283b767fbcfe34a08076f67f..1c79f0ffd033c5d5ad3fc54e0fb99683f8f1cfd5 100644
+index 0ca0098681c894772a4c58b47412e5cddf8a6ac4..80826ca3eb9da7c24f2f84f8d2836ddf13fe0704 100644
 --- a/net/dns/host_resolver_manager_job.cc
 +++ b/net/dns/host_resolver_manager_job.cc
-@@ -1530,6 +1530,7 @@ void HostResolverManager::Job::CompleteRequests(
+@@ -24,6 +24,7 @@
+ #include "base/strings/strcat.h"
+ #include "base/task/sequenced_task_runner.h"
+ #include "base/time/time.h"
++#include "brave/net/dns/secure_dns_counter.h"
+ #include "net/base/address_family.h"
+ #include "net/base/ech_mode.h"
+ #include "net/base/features.h"
+@@ -1544,6 +1545,10 @@ void HostResolverManager::Job::CompleteRequests(
  
    if (!was_kept_alive_for_cache) {
      RecordJobHistograms(results, task_type);
-+    BRAVE_RECORD_DNS_COUNTS
++    if (task_type.has_value()) {
++      SecureDnsCounter::GetInstance()->RecordAutoSecureTaskCount(
++          static_cast<int>(*task_type), key_.query_types);
++    }
      if (results.error() == OK && had_non_speculative_request_ &&
          key_.source == HostResolverSource::ANY) {
        RecordJobHttpsHistograms();
