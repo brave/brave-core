@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Drop the system font data of font families Brave doesn't allow.
+
+      Reduces font fingerprinting. Only the system font lookup is filtered, so
+      web fonts matched by the font selector are always allowed.
+    regex:
+      re_pattern:
+        '(\n( *)result =
+        FontCache::Get\(\)\.GetFontData\(font_description,\s*curr_family->FamilyName\(\)\);\n)'
+      replace: |
+        \1\2if (!brave::IsFontFamilyAllowed(*font_selector_, *curr_family)) {
+        \2  result = nullptr;
+        \2}
