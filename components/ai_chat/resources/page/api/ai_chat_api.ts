@@ -183,7 +183,7 @@ export default function createAIChatApi(
       >,
     },
 
-    // Events are subscribable data and offers an easy hook to wrap the subscription
+    // Events are subscribable data and offer an easy hook to wrap the subscription
     events: {
       // Provide a partial implementation of a receiver,
       // and eventsFor will optionally generate events
@@ -194,6 +194,11 @@ export default function createAIChatApi(
           onConversationListChanged: (conversations) => {
             api.getConversations.update(conversations)
           },
+          // Every conversation that isn't idle, read with
+          // useCurrentOnConversationGenerationStateChanged().
+          onConversationGenerationStateChanged(generationStates: {
+            [uuid: string]: Mojom.ConversationGenerationState
+          }) {},
           onStateChanged: (state) => {
             api.state.update(state)
           },
@@ -259,6 +264,13 @@ export default function createAIChatApi(
     },
   })
 
+  // The conversation list reads the generation states only while it's open,
+  // and the query cache drops data that nothing has read for a few minutes.
+  // They're only sent again when they change, so keep them subscribed for as
+  // long as the API lives.
+  const unsubscribeGenerationStates =
+    api.subscribeToOnConversationGenerationStateChanged(() => {})
+
   return {
     api,
 
@@ -268,6 +280,7 @@ export default function createAIChatApi(
     tabDataObserver: tabDataObserver!,
 
     close: () => {
+      unsubscribeGenerationStates()
       api.close()
     },
   }
