@@ -10,10 +10,8 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/notreached.h"
 #include "base/test/test_future.h"
-#include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "components/paint_preview/common/mock_paint_preview_recorder.h"
 #include "components/paint_preview/common/mojom/paint_preview_recorder.mojom.h"
-#include "components/services/paint_preview_compositor/public/mojom/paint_preview_compositor.mojom.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
 #include "content/test/test_render_view_host.h"
@@ -217,7 +215,7 @@ MockPaintPreviewCompositorClient* AsMockClient(
 
 }  // namespace
 
-class FullScreenshotterTest : public ChromeRenderViewHostTestHarness {
+class FullScreenshotterTest : public content::RenderViewHostTestHarness {
  public:
   FullScreenshotterTest() = default;
   ~FullScreenshotterTest() override = default;
@@ -227,7 +225,7 @@ class FullScreenshotterTest : public ChromeRenderViewHostTestHarness {
 
  protected:
   void SetUp() override {
-    ChromeRenderViewHostTestHarness::SetUp();
+    content::RenderViewHostTestHarness::SetUp();
     NavigateAndCommit(GURL("https://brave.com/"),
                       ui::PageTransition::PAGE_TRANSITION_FIRST);
     // Store the original RenderWidgetHost, allowing it to be injected back from
@@ -245,7 +243,7 @@ class FullScreenshotterTest : public ChromeRenderViewHostTestHarness {
     original_rwhv_ = nullptr;
     full_screenshotter_.reset();
     rwhv_.reset();
-    ChromeRenderViewHostTestHarness::TearDown();
+    content::RenderViewHostTestHarness::TearDown();
   }
 
   base::expected<std::vector<std::vector<uint8_t>>, std::string>
