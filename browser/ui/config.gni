@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
-import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
@@ -15,13 +14,8 @@ brave_ui_allow_circular_includes_from = []
 if (!is_android) {
   brave_ui_allow_circular_includes_from += [
     "//brave/browser/ui/browser_window/internal",
-    "//brave/browser/ui/webui/brave_new_tab_page_refresh",
     "//brave/browser/ui/webui/brave_welcome_page",
   ]
-  if (enable_brave_news) {
-    brave_ui_allow_circular_includes_from +=
-        [ "//brave/browser/ui/webui/brave_news_internals" ]
-  }
 }
 if (toolkit_views) {
   brave_ui_allow_circular_includes_from += [
