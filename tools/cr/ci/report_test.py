@@ -160,6 +160,29 @@ class MarkdownTest(unittest.TestCase):
             text,
         )
 
+    def test_cuts_the_middle_of_long_log_lines(self):
+        command = 'lld-link ' + 'x.obj ' * 400_000 + '/out:brave.exe'
+        error = 'lld-link: error: undefined symbol: Foo'
+        text = _markdown(
+            CheckFailures(
+                check='PR browser windows (x64)',
+                url='https://tc/agg',
+                system='teamcity',
+                builds=(
+                    FailedBuild(
+                        'Win_Build',
+                        'https://tc/1',
+                        'Exit code 1',
+                        problems=('Process exited with code 1',),
+                        log_tail=f'{command}\n{error}',
+                    ),
+                ),
+            )
+        )
+        self.assertLess(len(text), 5000)
+        self.assertIn('lld-link x.obj', text)
+        self.assertIn(f'characters cut ...] {command[-1500:]}\n{error}\n', text)
+
     def test_lists_dependencies_and_the_previous_build(self):
         text = _markdown(
             CheckFailures(

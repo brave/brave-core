@@ -81,7 +81,25 @@ def _collect(checks: github.PullRequestChecks) -> list[CheckFailures]:
     return result
 
 
+# Longer log lines (a link step's whole command line runs to megabytes) keep
+# only their start, naming the tool, and their end, naming the output.
+_MAX_LINE = 2000
+_LINE_START = 200
+_LINE_END = 1500
+
+
+def _shorten(line: str) -> str:
+    if len(line) <= _MAX_LINE:
+        return line
+    cut = len(line) - _LINE_START - _LINE_END
+    return (
+        f'{line[:_LINE_START]} [... {cut} characters cut ...] '
+        f'{line[-_LINE_END:]}'
+    )
+
+
 def _fence(text: str) -> str:
+    text = '\n'.join(_shorten(line) for line in text.split('\n'))
     fence = '````' if '```' in text else '```'
     return f'{fence}\n{text}\n{fence}'
 
