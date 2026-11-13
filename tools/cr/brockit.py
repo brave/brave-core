@@ -2507,18 +2507,87 @@ class Rebase(Task):
             if step is None and self._settle_empty_stop():
                 self._run_git_rebase('--skip', env)
                 continue
+            skipped = False
+            left = []
             try:
-                left = self._resolve(step, state) if step is not None else []
+                if step is not None:
+                    skipped = self._drop_picked_by_base(step, state)
+                    if not skipped:
+                        left = self._resolve(step, state)
             finally:
                 # Saved on every stop, even one a rule failed on, so that
                 # `--continue` can carry on from any of them.
                 state.save()
+            if skipped:
+                self._run_git_rebase('--skip', env)
+                continue
             if left:
                 self._stop(step, left)
             self._run_git_rebase('--continue', env)
 
     # The todo commands that fold a commit into the one before it.
     _FOLDING = frozenset({'squash', 'fixup', 'fixup -C', 'fixup -c'})
+
+    @staticmethod
+    def _entries(name: str) -> list[tuple[int, rebase.EntryLine]]:
+        """The entries of the rebase's `done` or `git-rebase-todo` file, with
+        their line indices."""
+        file = repository.brave.rebase_merge_dir() / name
+        if not file.is_file():
+            return []
+        return [
+            (index, entry)
+            for index, line in enumerate(
+                file.read_text(encoding='utf-8').splitlines()
+            )
+            if (entry := rebase.EntryLine.parse(line)) is not None
+        ]
+
+    @classmethod
+    def _drop_picked_by_base(
+        cls, step: conflict_resolution.ConflictedStep, state: RebaseState
+    ) -> bool:
+        """Readies a stop on a commit the base picked for a `--skip`, and
+        returns whether it was one.
+
+        That is a `pick` which, with the `squash`/`fixup` lines folding into
+        it, touches only files the base has as the branch ends them. Those
+        lines are dropped from the todo, as there is nothing left for them to
+        fold into.
+        """
+        done = cls._entries('done')
+        if not done or done[-1][1].command != 'pick':
+            return False
+        folding = []
+        for index, entry in cls._entries('git-rebase-todo'):
+            if entry.command not in cls._FOLDING:
+                break
+            folding.append((index, entry))
+        if not step.base_has([step.commit, *(e.hash for _, e in folding)]):
+            return False
+
+        todo = repository.brave.rebase_merge_dir() / 'git-rebase-todo'
+        lines = todo.read_text(encoding='utf-8').splitlines(keepends=True)
+        dropped = {index for index, _ in folding}
+        todo.write_text(
+            ''.join(
+                line for index, line in enumerate(lines) if index not in dropped
+            ),
+            encoding='utf-8',
+            newline='',
+        )
+        state.resolutions.extend(
+            conflict_resolution.Resolution(
+                path=path, rule=conflict_resolution.Rule.PICKED_BY_BASE
+            )
+            for path in step.paths
+        )
+        terminal.log_task(
+            f'{cls._describe(step)} is on the base already, with what folds '
+            'into it: skipped.'
+            + ''.join(f'\n    ✘ {escape(e.out)}' for _, e in folding)
+        )
+        return True
 
     @classmethod
     def _empty_stop(cls) -> rebase.EntryLine | None:
@@ -2527,14 +2596,7 @@ class Rebase(Task):
         a `squash`/`fixup` that leaves HEAD changing nothing. A commit that
         was empty to begin with doesn't stop, and isn't one."""
         brave = repository.brave
-        done = brave.rebase_merge_dir() / 'done'
-        if not done.is_file():
-            return None
-        lines = [
-            entry
-            for line in done.read_text(encoding='utf-8').splitlines()
-            if (entry := rebase.EntryLine.parse(line)) is not None
-        ]
+        lines = [entry for _, entry in cls._entries('done')]
         if not lines:
             return None
 
