@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Include what the hook below needs.
+    add_include:
+      header:
+        - brave/net/dns/secure_dns_counter.h
+
+  - description: |-
+      Count secure DNS tasks for Brave's P3A, as a job's requests complete.
+
+      The counts are read by `misc_metrics::DohMetrics`, through the network
+      service.
+    add_after_line:
+      line: 'RecordJobHistograms(results, task_type);'
+      code: |2-
+            if (task_type.has_value()) {
+              SecureDnsCounter::GetInstance()->RecordAutoSecureTaskCount(
+                  static_cast<int>(*task_type), key_.query_types);
+            }
