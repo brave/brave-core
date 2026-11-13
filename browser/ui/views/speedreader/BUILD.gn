@@ -38,3 +38,22 @@ source_set("speedreader") {
     "//ui/views/controls/webview",
   ]
 }
+
+source_set("toolbars_impl") {
+  visibility = [ "//brave/browser:core" ]
+
+  sources = [ "reader_mode_toolbars.cc" ]
+
+  deps = [
+    ":speedreader",
+    "//base",
+    "//brave/browser/ui/speedreader",
+    "//brave/browser/ui/views/frame/split_view",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/browser/ui/views/frame:browser_view_header",
+    "//chrome/browser/ui/views/frame:multi_contents_view",
+    "//components/tabs:public",
+    "//content/public/browser",
+  ]
+}

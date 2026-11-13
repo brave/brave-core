@@ -122,7 +122,6 @@ class BraveBrowserView : public BrowserView,
   speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
       speedreader::SpeedreaderTabHelper* tab_helper,
       speedreader::SpeedreaderBubbleLocation location) override;
-  void UpdateReaderModeToolbar() override;
 #endif
   bool GetTabStripVisible() const override;
   bool ShouldShowWindowTitle() const override;

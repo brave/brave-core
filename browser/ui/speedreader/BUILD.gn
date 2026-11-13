@@ -9,6 +9,7 @@ assert(enable_speedreader)
 
 source_set("speedreader") {
   sources = [
+    "reader_mode_toolbars.h",
     "speedreader_bubble_view.h",
     "speedreader_tab_helper.cc",
     "speedreader_tab_helper.h",
