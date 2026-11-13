@@ -160,6 +160,7 @@ source_set("ui") {
 
   if (toolkit_views) {
     deps += [
+      "//brave/browser/translate",
       "//chrome/browser/ui/views/extensions:extensions_menu_button",
       "//chrome/browser/ui/views/frame:browser_frame_view",
       "//chrome/browser/ui/views/frame:opaque_browser_frame_view_layout",
