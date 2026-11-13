@@ -11,10 +11,13 @@
 
 namespace peek {
 
-void ShowCookiesDialogInTab(content::WebContents* web_contents) {
-  if (auto* controller = PeekController::FromPeekContents(web_contents)) {
-    controller->ShowCookiesDialogInTab();
+bool ShowCookiesDialogInTab(content::WebContents* web_contents) {
+  auto* controller = PeekController::FromPeekContents(web_contents);
+  if (!controller) {
+    return false;
   }
+  controller->ShowCookiesDialogInTab();
+  return true;
 }
 
 }  // namespace peek
