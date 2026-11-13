@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/bookmarks/BUILD.gn b/chrome/browser/ui/bookmarks/BUILD.gn
+index 4f044b94a517e526b1a88e125f0d3f8ecc656312..7249c8a444018b98efd92a3fe02dbd34530775a7 100644
+--- a/chrome/browser/ui/bookmarks/BUILD.gn
++++ b/chrome/browser/ui/bookmarks/BUILD.gn
+@@ -70,6 +70,7 @@ source_set("impl") {
+ 
+   deps = [
+     ":bookmarks",
++    "//brave/browser/resources/bookmark_icon:bookmark_icon_resources",
+     "//chrome/app:command_ids",
+     "//chrome/browser:browser_features",
+     "//chrome/browser:defaults",
