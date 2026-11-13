@@ -283,7 +283,7 @@ class BraveFilterFilesTest(unittest.TestCase):
 
     def _files(self, suite, **options):
         return [
-            str(Path(path).relative_to(self.root))
+            Path(path).relative_to(self.root).as_posix()
             for path in m.brave_filter_files(
                 _options(build_dir=self.build_dir, **options), suite
             )
