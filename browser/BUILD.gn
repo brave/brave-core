@@ -107,6 +107,7 @@ source_set("core") {
            "//brave/browser/ssl:chromium_impl",
            "//brave/browser/ui/webui:favicon_source_chromium_impl",
            "//brave/browser/ui/window_feature_controller:chromium_impl",
+           "//brave/components/brave_search_conversion",
            "//brave/components/variations",
            "//brave/ui/webui/custom_profile_image/buildflags",
          ]
