@@ -26,6 +26,7 @@ TEST(Secp256k1Signature, CreateFromPayload) {
   EXPECT_TRUE(Secp256k1Signature::CreateFromPayload(rs_bytes, 3));
 
   auto sig = Secp256k1Signature::CreateFromPayload(rs_bytes, 3);
+  ASSERT_TRUE(sig.has_value());
   EXPECT_EQ(sig->rs_bytes(), base::span(rs_bytes));
 
   auto bytes = base::ToVector(rs_bytes);
