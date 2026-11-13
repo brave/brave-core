@@ -7,5 +7,5 @@ substitutions:
   - description: Include the Brave classifier and the containers it needs.
     add_include:
       header:
-        - '"brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"'
+        - brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h
         - <vector>

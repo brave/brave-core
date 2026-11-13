@@ -46,4 +46,5 @@ substitutions:
   - description: |-
       Include what the substitutions above use
     add_include:
-      header: '"base/gtest_prod_util.h"'
+      header:
+        - base/gtest_prod_util.h

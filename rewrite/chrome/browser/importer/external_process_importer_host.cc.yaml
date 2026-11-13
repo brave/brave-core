@@ -26,5 +26,5 @@ substitutions:
       Include what the substitutions above use
     add_include:
       header:
-        - '"brave/browser/importer/brave_external_process_importer_client.h"'
-        - '"brave/browser/importer/brave_in_process_importer_bridge.h"'
+        - brave/browser/importer/brave_external_process_importer_client.h
+        - brave/browser/importer/brave_in_process_importer_bridge.h

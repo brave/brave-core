@@ -18,4 +18,5 @@ substitutions:
   - description: |-
       Include what the substitutions above use
     add_include:
-      header: '"build/android_buildflags.h"'
+      header:
+        - build/android_buildflags.h

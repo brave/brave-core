@@ -55,4 +55,5 @@ substitutions:
       `FRIEND_TEST_ALL_PREFIXES()` needs it for the friend declaration added
       above.
     add_include:
-      header: '"base/gtest_prod_util.h"'
+      header:
+        - base/gtest_prod_util.h

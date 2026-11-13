@@ -29,8 +29,8 @@ substitutions:
       Include what the substitutions above use
     add_include:
       header:
-        - '"brave/components/ai_chat/core/common/buildflags/buildflags.h"'
-        - '"brave/components/commander/common/buildflags/buildflags.h"'
+        - brave/components/ai_chat/core/common/buildflags/buildflags.h
+        - brave/components/commander/common/buildflags/buildflags.h
 
   - description: |-
       Include what the substitutions above use in `ENABLE_COMMANDER` builds

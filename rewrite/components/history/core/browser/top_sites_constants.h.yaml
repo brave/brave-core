@@ -26,4 +26,5 @@ substitutions:
 
       For the `BUILDFLAG(IS_ANDROID)` check added above.
     add_include:
-      header: '"build/build_config.h"'
+      header:
+        - build/build_config.h

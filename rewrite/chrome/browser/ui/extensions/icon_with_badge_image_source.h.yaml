@@ -51,7 +51,8 @@ substitutions:
   - description: |-
       Include what the substitutions above use
     add_include:
-      header: <optional>
+      header:
+        - <optional>
 
   - description: |-
       Forward declare the types the substitutions above use

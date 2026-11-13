@@ -15,4 +15,5 @@ substitutions:
   - description: |-
       Include what the substitutions above use
     add_include:
-      header: '"brave/browser/brave_content_browser_client.h"'
+      header:
+        - brave/browser/brave_content_browser_client.h

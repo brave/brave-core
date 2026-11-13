@@ -343,6 +343,11 @@ Do:
 ```yaml
 # rewrite/foo/foo.h.yaml
 substitutions:
+  - description: Include what the hook below needs.
+    add_include:
+      header:
+        - <memory>
+
   - description: Forward declare the Brave delegate the hook below takes.
     add_after_includes:
       code: class BraveFooDelegate;
@@ -350,7 +355,7 @@ substitutions:
   - description: Let the Brave delegate observe Foo.
     add_to_public:
       class_name: Foo
-      code: void SetBraveDelegate(BraveFooDelegate* delegate);
+      code: void SetBraveDelegate(std::unique_ptr<BraveFooDelegate> delegate);
 ```
 
 ## Use `chromium_src` to host substantive C++

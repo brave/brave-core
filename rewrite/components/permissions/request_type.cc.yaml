@@ -131,4 +131,5 @@ substitutions:
   - description: |-
       Include what the substitutions above use
     add_include:
-      header: '"brave/components/brave_wallet/common/buildflags/buildflags.h"'
+      header:
+        - brave/components/brave_wallet/common/buildflags/buildflags.h

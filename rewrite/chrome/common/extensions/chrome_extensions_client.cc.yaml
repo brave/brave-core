@@ -17,4 +17,5 @@ substitutions:
   - description: |-
       Include what the substitutions above use
     add_include:
-      header: '"brave/common/extensions/brave_extensions_api_provider.h"'
+      header:
+        - brave/common/extensions/brave_extensions_api_provider.h

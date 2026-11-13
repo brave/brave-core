@@ -17,5 +17,5 @@ substitutions:
       Include what the substitutions above use
     add_include:
       header:
-        - '"brave/components/containers/buildflags/buildflags.h"'
-        - '"content/public/browser/storage_partition_config.h"'
+        - brave/components/containers/buildflags/buildflags.h
+        - content/public/browser/storage_partition_config.h

@@ -31,4 +31,5 @@ substitutions:
   - description: |-
       Include what the substitutions above use
     add_include:
-      header: '"brave/browser/ui/browser_window/internal/brave_browser_window_features.h"'
+      header:
+        - brave/browser/ui/browser_window/internal/brave_browser_window_features.h

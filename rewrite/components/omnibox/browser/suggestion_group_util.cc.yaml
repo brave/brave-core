@@ -27,5 +27,5 @@ substitutions:
       Include what the substitutions above use
     add_include:
       header:
-        - '"brave/components/commander/common/buildflags/buildflags.h"'
-        - '"components/grit/brave_components_strings.h"'
+        - brave/components/commander/common/buildflags/buildflags.h
+        - components/grit/brave_components_strings.h
