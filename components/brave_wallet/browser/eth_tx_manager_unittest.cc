@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "base/files/scoped_temp_dir.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
@@ -680,9 +681,10 @@ TEST_F(EthTxManagerUnitTest, RestrictedRecipientInCalldata) {
   constexpr char kTokenContract[] =
       "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
 
-  // Every token transfer flavor that names its recipient in the calldata.
+  // Every call flavor that names a counterparty in the calldata, whether it is
+  // paid directly or authorized as a spender/operator.
   auto calldata_paying = [kAllowed](const std::string& recipient) {
-    std::vector<TestData> test_data(5);
+    std::vector<TestData> test_data(6);
 
     test_data[0].label = "erc20::Transfer";
     EXPECT_TRUE(erc20::Transfer(recipient, 10, &test_data[0].encoded_tx));
@@ -711,6 +713,16 @@ TEST_F(EthTxManagerUnitTest, RestrictedRecipientInCalldata) {
                                           &test_data[4].encoded_tx));
     EXPECT_TRUE(
         PrefixedHexStringToBytes(test_data[4].encoded_tx, &test_data[4].tx));
+
+    // There is no setApprovalForAll data builder, so encode the call here:
+    // selector + address operator + bool approved.
+    test_data[5].label = "erc721::SetApprovalForAll";
+    test_data[5].encoded_tx = base::StrCat(
+        {"0xa22cb465", "000000000000000000000000",
+         std::string_view(recipient).substr(2),
+         "0000000000000000000000000000000000000000000000000000000000000001"});
+    EXPECT_TRUE(
+        PrefixedHexStringToBytes(test_data[5].encoded_tx, &test_data[5].tx));
 
     return test_data;
   };
