@@ -452,15 +452,20 @@ def suite_filters(
     """`upstream_args` with Brave's filter files for `suite` added, or with
     every filter file dropped when the run ignores test filters.
 
-    The files are relative to the build dir the suite runs from, as upstream's
-    specs name theirs, so that a file both name is merged once.
+    The files are relative to the build dir the suite runs from, with `/`
+    separators on every platform, as upstream's specs name theirs, so that a
+    file both name is merged once.
     """
     if not options.test_filters:
         return without_filter_files(upstream_args)
     return upstream_args + [
-        _FILTER_FILE_FLAG + os.path.relpath(path, options.build_dir)
+        _FILTER_FILE_FLAG + _relative_to_build_dir(path, options)
         for path in brave_filter_files(options, suite)
     ]
+
+
+def _relative_to_build_dir(path: str | Path, options: Options) -> str:
+    return Path(os.path.relpath(path, options.build_dir)).as_posix()
 
 
 # -- Desktop -----------------------------------------------------------------
@@ -493,7 +498,7 @@ def build_desktop_command(
     sanitizers = build_sanitizers(options)
     command = [
         _vpython3(),
-        os.path.relpath(SRC_DIR / 'testing' / wrapper, options.build_dir),
+        _relative_to_build_dir(SRC_DIR / 'testing' / wrapper, options),
         f'./{executable}',
         '--test-launcher-bot-mode',
         f'--asan={int(sanitizers.asan)}',
