@@ -86,7 +86,7 @@ void MigrateSkusSettings(PrefService* profile_prefs, PrefService* local_prefs) {
   if (local_prefs->GetBoolean(prefs::kSkusStateMigratedToLocalState)) {
     return;
   }
-  local_prefs->Set(prefs::kSkusState, base::Value(std::move(obsolete_pref)));
+  local_prefs->SetDict(prefs::kSkusState, std::move(obsolete_pref));
   local_prefs->SetBoolean(prefs::kSkusStateMigratedToLocalState, true);
   profile_prefs->ClearPref(prefs::kSkusState);
 }

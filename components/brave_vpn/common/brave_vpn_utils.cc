@@ -193,7 +193,7 @@ void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs) {
   if (result.FindBool(tokens.back())) {
     result.Remove(tokens.back());
   }
-  local_prefs->Set(prefs::kBraveVPNRootPref, base::Value(std::move(result)));
+  local_prefs->SetDict(prefs::kBraveVPNRootPref, std::move(result));
   local_prefs->SetBoolean(prefs::kBraveVPNLocalStateMigrated, true);
 
   bool show_button =
