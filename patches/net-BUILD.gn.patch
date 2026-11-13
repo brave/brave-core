@@ -1,8 +1,8 @@
 diff --git a/net/BUILD.gn b/net/BUILD.gn
-index a7353c1507d807387bebf4c532a6afcb793ae012..d2d786eb476ebda63786a4617dce6de6b48c840c 100644
+index 67db0dea153d1b0344de2f2b6b1a663f207ea136..1b5ff26f9db7f09eca6ba52d21ea5535b891ce6f 100644
 --- a/net/BUILD.gn
 +++ b/net/BUILD.gn
-@@ -1249,6 +1249,7 @@ component("net") {
+@@ -1253,6 +1253,7 @@ component("net") {
      "url_request/websocket_handshake_userdata_key.cc",
      "url_request/websocket_handshake_userdata_key.h",
    ]
@@ -10,7 +10,7 @@ index a7353c1507d807387bebf4c532a6afcb793ae012..d2d786eb476ebda63786a4617dce6de6
  
    if (is_posix || is_fuchsia) {
      sources += [ "base/net_errors_posix.cc" ]
-@@ -1277,6 +1278,7 @@ component("net") {
+@@ -1281,6 +1282,7 @@ component("net") {
      "//third_party/rust/sfv/v0_15/wrapper",
      "//third_party/simdutf",
    ]

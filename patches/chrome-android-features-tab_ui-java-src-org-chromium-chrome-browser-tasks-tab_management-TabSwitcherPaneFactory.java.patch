@@ -1,5 +1,5 @@
 diff --git a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabSwitcherPaneFactory.java b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabSwitcherPaneFactory.java
-index fecaaea7cb78297d87dabcd9ced2611bbdb18667..85abf0cf3e791d39908ddf7ab952c48e125c7c17 100644
+index 7f2b28a73ea1a9ffbe7763dc12e575fe9e34a27a..5411bd28112c0c032f41bbdff3030d010a2c760a 100644
 --- a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabSwitcherPaneFactory.java
 +++ b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabSwitcherPaneFactory.java
 @@ -201,7 +201,7 @@ public class TabSwitcherPaneFactory {

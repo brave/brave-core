@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/notifications/notification_handler.h b/chrome/browser/notifications/notification_handler.h
-index 38b83380f64c2ae323fb3aceedd5f64ca506cf5b..c05323befae12f7453812c50f5b88b3b839a0837 100644
+index d754bc5dec668393edc6f88b0d65dfd82f0e5fa3..e65e83d9055eff3de30b2cbe1cc357b79bd8f53c 100644
 --- a/chrome/browser/notifications/notification_handler.h
 +++ b/chrome/browser/notifications/notification_handler.h
 @@ -42,7 +42,9 @@ class NotificationHandler {

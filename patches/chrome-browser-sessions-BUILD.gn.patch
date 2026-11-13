@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/sessions/BUILD.gn b/chrome/browser/sessions/BUILD.gn
-index f69c5d5cebce4a21b90acf4d76e609e50ede9046..5f370bf111f0d0513f608c8e32a826e59b6ec1dc 100644
+index 632a2c262b01ffc7a5a5bc16decad72bbf3dbaab..f458554a004ee19694ef615b9a881a5a6e567b6d 100644
 --- a/chrome/browser/sessions/BUILD.gn
 +++ b/chrome/browser/sessions/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index f69c5d5cebce4a21b90acf4d76e609e50ede9046..5f370bf111f0d0513f608c8e32a826e5
  import("//build/config/features.gni")
  import("//build/config/ozone.gni")
  import("//chrome/common/features.gni")
-@@ -192,6 +193,7 @@ source_set("impl") {
+@@ -194,6 +195,7 @@ source_set("impl") {
      } else {
        sources += [ "profile_diff_after_restart_recorder.cc" ]
      }

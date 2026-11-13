@@ -1,5 +1,5 @@
 diff --git a/components/network_time/network_time_tracker.cc b/components/network_time/network_time_tracker.cc
-index 3bb0f02378021fc2703be508d95af77c65bdaa23..e38cefb0ceb43549e7e1989dd3244edb6b6bf9ef 100644
+index f3db3a0334e37da7082c5c713c27290b5a29557c..1c534ec550f93630532d33442b6ebd78e17d768e 100644
 --- a/components/network_time/network_time_tracker.cc
 +++ b/components/network_time/network_time_tracker.cc
 @@ -72,9 +72,9 @@ namespace network_time {

@@ -1,5 +1,5 @@
 diff --git a/third_party/polymer/v3_0/BUILD.gn b/third_party/polymer/v3_0/BUILD.gn
-index 60b5036186d7fa7010a5b3c754aaa8535427b756..57c335aa409d288d3604fcc50588c2c9d43d3425 100644
+index 86609c53ec63f86fd96f002b6a73d7589d5fe13b..9cd2b12b7e382fe27f99f40c976367d1a4f1c16b 100644
 --- a/third_party/polymer/v3_0/BUILD.gn
 +++ b/third_party/polymer/v3_0/BUILD.gn
 @@ -2,6 +2,7 @@

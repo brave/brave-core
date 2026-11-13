@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/app_menu_button.cc b/chrome/browser/ui/views/frame/app_menu_button.cc
-index 0b93b7416104b077ccb4f5e8e3d86285830f5590..25254ebe1f49b0928194bcb1957f0930a536d195 100644
+index 47c1558ad81df5cf6124f18dccd1fa0247e4a3cf..f0d4b4c97a020cf19a1c6ccd5ebcda9835d3e4e0 100644
 --- a/chrome/browser/ui/views/frame/app_menu_button.cc
 +++ b/chrome/browser/ui/views/frame/app_menu_button.cc
-@@ -143,7 +143,7 @@ void AppMenuButton::RunMenu(std::unique_ptr<AppMenuModel> menu_model,
+@@ -153,7 +153,7 @@ void AppMenuButton::RunMenu(std::unique_ptr<AppMenuModel> menu_model,
    highlighter_.MaybeHighlight(browser, this, menu_model_.get());
    menu_model_->Init();
  

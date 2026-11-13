@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index f08d6306f153f55a2de6e186d62451fe24189172..a5bc2b109b5db2b06c8b0486213fc66e0149f77f 100644
+index 4d70dcc51931db85172aa7c2d0f196eec5c1cec1..f85786e4f364cde8abe07ed8faf68658719c3dbe 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
 @@ -1228,6 +1228,7 @@ inline constexpr char kSuggestedContentEnabled[] =
@@ -18,7 +18,7 @@ index f08d6306f153f55a2de6e186d62451fe24189172..a5bc2b109b5db2b06c8b0486213fc66e
    TRACE_EVENT0("browser", "chrome::RegisterProfilePrefs");
    // User prefs. Please keep this list alphabetized.
    AccessibilityLabelsService::RegisterProfilePrefs(registry);
-@@ -2649,6 +2651,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -2650,6 +2652,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
  #endif  // BUILDFLAG(IS_ANDROID)
  
    registry->RegisterBooleanPref(prefs::kStaticStorageQuotaEnabled, false);
@@ -27,7 +27,7 @@ index f08d6306f153f55a2de6e186d62451fe24189172..a5bc2b109b5db2b06c8b0486213fc66e
  }
  
  void RegisterUserProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -2688,6 +2692,7 @@ void RegisterSigninProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -2689,6 +2693,7 @@ void RegisterSigninProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
  // This method should be periodically pruned of year+ old migrations.
  // See chrome/browser/prefs/README.md for details.
  void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
@@ -35,7 +35,7 @@ index f08d6306f153f55a2de6e186d62451fe24189172..a5bc2b109b5db2b06c8b0486213fc66e
    // IMPORTANT NOTE: This code is *not* run on iOS Chrome. If a pref is migrated
    // or cleared here, and that pref is also used in iOS Chrome, it may also need
    // to be migrated or cleared specifically for iOS as well. This could be by
-@@ -2823,12 +2828,16 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
+@@ -2824,12 +2829,16 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
    // doing the migration in feature code that's called by all platforms instead
    // of here, or by calling migration code in the appropriate place for iOS
    // specifically, e.g. ios/chrome/browser/shared/model/prefs/browser_prefs.mm.
@@ -52,7 +52,7 @@ index f08d6306f153f55a2de6e186d62451fe24189172..a5bc2b109b5db2b06c8b0486213fc66e
    // IMPORTANT NOTE: This code is *not* run on iOS Chrome. If a pref is migrated
    // or cleared here, and that pref is also used in iOS Chrome, it may also need
    // to be migrated or cleared specifically for iOS as well. This could be by
-@@ -2864,6 +2873,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
+@@ -2865,6 +2874,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
    profile_prefs->ClearPref(kObsoletePasswordsUseUPMLocalAndSeparateStores);
    profile_prefs->ClearPref(kObsoleteEmptyProfileStoreLoginDatabase);
    profile_prefs->ClearPref(kObsoleteUpmAutoExportCsvNeedsDeletion);
@@ -60,7 +60,7 @@ index f08d6306f153f55a2de6e186d62451fe24189172..a5bc2b109b5db2b06c8b0486213fc66e
    // Blocking is disallowed on the UI thread after browser startup, and a
    // profile can be loaded after that (e.g. a second profile), so delete the
    // obsolete files in the background.
-@@ -2883,6 +2893,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
+@@ -2884,6 +2894,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
                  FILE_PATH_LITERAL("Login Data For Account-journal")));
            },
            profile_path));
@@ -68,7 +68,7 @@ index f08d6306f153f55a2de6e186d62451fe24189172..a5bc2b109b5db2b06c8b0486213fc66e
  #endif  // BUILDFLAG(IS_ANDROID)
  
    // Added 09/2025.
-@@ -3270,4 +3281,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
+@@ -3271,4 +3282,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
    // doing the migration in feature code that's called by all platforms instead
    // of here, or by calling migration code in the appropriate place for iOS
    // specifically, e.g. ios/chrome/browser/shared/model/prefs/browser_prefs.mm.

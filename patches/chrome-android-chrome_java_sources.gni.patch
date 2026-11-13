@@ -1,8 +1,8 @@
 diff --git a/chrome/android/chrome_java_sources.gni b/chrome/android/chrome_java_sources.gni
-index 21b0b69ba1b23156944085f767603c6ec30b0d62..a393bafb68c00fefc6e570c573b77705e1414947 100644
+index d93b36d8005a3cd35873f00b5bd614014e97f395..e98357639cc1c111e473e1b78bd8818af60beebc 100644
 --- a/chrome/android/chrome_java_sources.gni
 +++ b/chrome/android/chrome_java_sources.gni
-@@ -1401,3 +1401,5 @@ if (enable_screen_capture) {
+@@ -1398,3 +1398,5 @@ if (enable_screen_capture) {
      "java/src/org/chromium/chrome/browser/media/TabSharingUiManager.java",
    ]
  }

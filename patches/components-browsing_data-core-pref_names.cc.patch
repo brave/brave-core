@@ -1,5 +1,5 @@
 diff --git a/components/browsing_data/core/pref_names.cc b/components/browsing_data/core/pref_names.cc
-index 680510bebdc9d9942d8108513dacdafd2f2d5ff2..5e94d486d6770b77988db8a7ea3e229c91a751aa 100644
+index 7a288f5df4f5ef7baa6389bc8c1b6ebce9442b77..66a711c9a45c0c1201909083858f29dc0e435f45 100644
 --- a/components/browsing_data/core/pref_names.cc
 +++ b/components/browsing_data/core/pref_names.cc
 @@ -12,6 +12,7 @@

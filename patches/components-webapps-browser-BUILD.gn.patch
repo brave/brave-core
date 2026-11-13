@@ -1,5 +1,5 @@
 diff --git a/components/webapps/browser/BUILD.gn b/components/webapps/browser/BUILD.gn
-index aef66c7b1ce4c34f8b4a2d00ecc5d2197cd93423..9962531c190230421ecc153d15f882087c558c0b 100644
+index c7bb7e4c4857d0434afc36a3b0e57a9b6ac86965..49a9ebbd2ecf531c857b9ab002d888f39f01452e 100644
 --- a/components/webapps/browser/BUILD.gn
 +++ b/components/webapps/browser/BUILD.gn
 @@ -2,6 +2,7 @@

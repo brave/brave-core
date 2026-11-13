@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc b/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc
-index 199b252f46501d07ff17018f87d215a88b88b2aa..844503353db873fdb9b99ee4bf287b0d1bc7bd06 100644
+index 164e363c2a5efa7a90f7b03aec65409b74287d9f..5ccdfb2ed4cf5c5e5c3bffbcaad4ac8eaefb6abe 100644
 --- a/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc
 +++ b/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc
-@@ -236,7 +236,7 @@ RoundedOmniboxResultsFrame::RoundedOmniboxResultsFrame(
+@@ -238,7 +238,7 @@ RoundedOmniboxResultsFrame::RoundedOmniboxResultsFrame(
      bool forward_mouse_events)
      : contents_(contents), forward_mouse_events_(forward_mouse_events) {
    const int corner_radius = views::LayoutProvider::Get()->GetCornerRadiusMetric(
@@ -11,7 +11,7 @@ index 199b252f46501d07ff17018f87d215a88b88b2aa..844503353db873fdb9b99ee4bf287b0d
    auto* webui_content = GetOmniboxPopupWebUIBaseContent();
    // When the page paints the popup's shadow, this frame must not paint a
    // background, rounded corners or a shadow: the renderer draws all of them,
-@@ -364,7 +364,7 @@ void RoundedOmniboxResultsFrame::SetCutoutVisibility(bool visible) {
+@@ -365,7 +365,7 @@ void RoundedOmniboxResultsFrame::SetCutoutVisibility(bool visible) {
  
  void RoundedOmniboxResultsFrame::SetElevation(int elevation) {
    const int corner_radius = views::LayoutProvider::Get()->GetCornerRadiusMetric(

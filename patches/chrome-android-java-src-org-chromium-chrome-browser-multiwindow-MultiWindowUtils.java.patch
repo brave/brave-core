@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiWindowUtils.java b/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiWindowUtils.java
-index 3519e4dfa5ad1cf8b1fcf8aa40717a16b75397bb..ab4ec3353aacfa7aa0ec71b86ac8a8c54a053f1e 100644
+index 9cc1cfc626147af6d125f6f98babcd6d3f03298f..68097d4dc70b6806355cda3dda4a18141104400e 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiWindowUtils.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiWindowUtils.java
 @@ -263,6 +263,7 @@ public class MultiWindowUtils implements ActivityStateListener {

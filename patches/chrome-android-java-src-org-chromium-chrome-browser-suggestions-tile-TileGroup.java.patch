@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGroup.java b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGroup.java
-index bfd336f98f222d71ad16015dfd502e6f201f8b26..8bca599f3b1ca66f1bffa836e332569f2fbc07ba 100644
+index 6e48bf29edb0c23ba62c6c0e48717150583b4816..fb391f631172c064da3d1122559c74f7bbfa900c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGroup.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGroup.java
-@@ -50,6 +50,8 @@ public class TileGroup implements MostVisitedSites.Observer {
+@@ -51,6 +51,8 @@ public class TileGroup implements MostVisitedSites.Observer {
       * avoid useless rendering (e.g., when an NTP is not visible).
       */
      public static class PendingChanges {
@@ -11,7 +11,7 @@ index bfd336f98f222d71ad16015dfd502e6f201f8b26..8bca599f3b1ca66f1bffa836e332569f
          /** Most recently received tile data pending displayed (eager or deferred). */
          public @Nullable List<SiteSuggestion> siteSuggestions;
  
-@@ -343,7 +345,7 @@ public class TileGroup implements MostVisitedSites.Observer {
+@@ -350,7 +352,7 @@ public class TileGroup implements MostVisitedSites.Observer {
              new TileSetupDelegate() {
                  @Override
                  public TileInteractionDelegate createInteractionDelegate(Tile tile, View view) {
@@ -20,7 +20,7 @@ index bfd336f98f222d71ad16015dfd502e6f201f8b26..8bca599f3b1ca66f1bffa836e332569f
                              mContextMenuManager,
                              mTileGroupDelegate,
                              mTileDragDelegate,
-@@ -414,6 +416,7 @@ public class TileGroup implements MostVisitedSites.Observer {
+@@ -421,6 +423,7 @@ public class TileGroup implements MostVisitedSites.Observer {
          // Store incoming suggestions for later usage by loadTiles(). This may happen eagerly below
          // if conditions are met, or deferred to onSwitchToForeground().
          mPendingChanges.siteSuggestions = new ArrayList<>(siteSuggestions);
@@ -28,7 +28,7 @@ index bfd336f98f222d71ad16015dfd502e6f201f8b26..8bca599f3b1ca66f1bffa836e332569f
          if (!mHasReceivedData || !mUiDelegate.isVisible() || isUserTriggered) {
              loadTiles(); // Eager update.
          }
-@@ -534,7 +537,9 @@ public class TileGroup implements MostVisitedSites.Observer {
+@@ -561,7 +564,9 @@ public class TileGroup implements MostVisitedSites.Observer {
          List<Tile> newPersonalizedTiles = mTileSections.get(TileSectionType.PERSONALIZED);
          assumeNonNull(newPersonalizedTiles);
          boolean dataChanged =

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/signin/BUILD.gn b/chrome/browser/resources/signin/BUILD.gn
-index 1c66077e51611b949d84dcbc65632062efa031ca..54eacb5fb4557bfcc13e1fdd037a3c3e71bba8a1 100644
+index 7e88cbee486873133c81fd6f54925e2a3de43753..28b71668817d8a38e1598670c7c6085476df3df4 100644
 --- a/chrome/browser/resources/signin/BUILD.gn
 +++ b/chrome/browser/resources/signin/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 1c66077e51611b949d84dcbc65632062efa031ca..54eacb5fb4557bfcc13e1fdd037a3c3e
  import("//ui/webui/resources/tools/build_webui.gni")
  
  assert(!is_android)
-@@ -155,4 +156,5 @@ build_webui("build") {
+@@ -158,4 +159,5 @@ build_webui("build") {
    }
  
    webui_context_type = "trusted"

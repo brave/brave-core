@@ -1,5 +1,5 @@
 diff --git a/components/critical_actions/core/browser/features.cc b/components/critical_actions/core/browser/features.cc
-index f6b3ad6d233d44a8988aaeb6183286f3ce13043c..1c2dd2799d2e496116677f54b5f990a0d1744540 100644
+index 8ac293712cd92eb35725e87a3e9034ab2ca89abb..5853c66b4ccfa5eb086972adbf44b748749e7bc7 100644
 --- a/components/critical_actions/core/browser/features.cc
 +++ b/components/critical_actions/core/browser/features.cc
 @@ -8,7 +8,7 @@

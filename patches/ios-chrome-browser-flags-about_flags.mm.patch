@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index 1433a89b099e54cb087b67a4fbcb4e979639f48a..8487134c044ffe04e52431282a1c2a6a59876b64 100644
+index 36c19cc396dc21991dd96ef48aaa0e540acb74f7..910e4707d58feb962c4d78b88f4ad79a9da97e76 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
 @@ -1553,6 +1553,7 @@ constexpr FeatureEntry::FeatureVariation

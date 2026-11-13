@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/split_tab_menu_model.cc b/chrome/browser/ui/tabs/split_tab_menu_model.cc
-index f994e8162e301766737604bfa310461449e511c8..6542af8a36d697004f324b64cfc9bc61bb1f1e23 100644
+index dec4bf8a82a60e67da8010c6db37aee5adda36df..82d6fd2ad84e1700fcd13233b584222c8533697a 100644
 --- a/chrome/browser/ui/tabs/split_tab_menu_model.cc
 +++ b/chrome/browser/ui/tabs/split_tab_menu_model.cc
-@@ -55,13 +55,13 @@ std::string_view GetMetricsSuffixForSource(
+@@ -54,13 +54,13 @@ std::string_view GetMetricsSuffixForSource(
    }
  }
  
@@ -18,7 +18,7 @@ index f994e8162e301766737604bfa310461449e511c8..6542af8a36d697004f324b64cfc9bc61
    return static_cast<SplitTabMenuModel::CommandId>(
        command_id - ExistingBaseSubMenuModel::kMinSplitTabMenuModelCommandId);
  }
-@@ -70,6 +70,8 @@ std::string_view GetMetricsSuffixForCommand(
+@@ -69,6 +69,8 @@ std::string_view GetMetricsSuffixForCommand(
      SplitTabMenuModel::CommandId command_id) {
    // These strings are persisted to logs. Entries should not be changed.
    switch (command_id) {
@@ -27,7 +27,7 @@ index f994e8162e301766737604bfa310461449e511c8..6542af8a36d697004f324b64cfc9bc61
      case SplitTabMenuModel::CommandId::kReversePosition:
        return "ReversePosition";
      case SplitTabMenuModel::CommandId::kCloseSpecifiedTab:
-@@ -261,6 +263,10 @@ void SplitTabMenuModel::ExecuteCommand(int command_id, int event_flags) {
+@@ -270,6 +272,10 @@ void SplitTabMenuModel::ExecuteCommand(int command_id, int event_flags) {
    CHECK_EQ(tabs_in_split.size(), 2U);
    CommandId split_command_id = GetCommandIdEnum(command_id);
    switch (split_command_id) {

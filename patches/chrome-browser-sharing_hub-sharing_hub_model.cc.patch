@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/sharing_hub/sharing_hub_model.cc b/chrome/browser/sharing_hub/sharing_hub_model.cc
-index cf13237c7ea622fa00a49122c011fcb5cd7870fa..3c981cdde2fbdca28f1eefcf6b66b11d1b225e8b 100644
+index 6644db0fa762a85157cfb0fc2aad6c5c4550c848..dc140bc4c6dad589af8543198be72dc3b8dd7b2c 100644
 --- a/chrome/browser/sharing_hub/sharing_hub_model.cc
 +++ b/chrome/browser/sharing_hub/sharing_hub_model.cc
 @@ -97,7 +97,7 @@ void SharingHubModel::PopulateFirstPartyActions() {

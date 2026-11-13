@@ -1,8 +1,8 @@
 diff --git a/components/feed/feed_feature_list.cc b/components/feed/feed_feature_list.cc
-index e23c7886f2351028743fbc73960b259b9b7615da..bbef32bb11b5ecd3ab37328bb52f085225b90bab 100644
+index 556a5f64ccf320fa6f9e5c67752830134d201f14..de73fb24602d451d8423a53a13fb580d437b4216 100644
 --- a/components/feed/feed_feature_list.cc
 +++ b/components/feed/feed_feature_list.cc
-@@ -21,7 +21,13 @@ namespace feed {
+@@ -17,7 +17,13 @@ namespace feed {
  // InterestFeedV2 takes precedence over InterestFeedContentSuggestions.
  // InterestFeedV2 is cached in ChromeCachedFlags. If the default value here is
  // changed, please update the cached one's default value in CachedFeatureFlags.
@@ -17,7 +17,7 @@ index e23c7886f2351028743fbc73960b259b9b7615da..bbef32bb11b5ecd3ab37328bb52f0852
  
  BASE_FEATURE(kDiscoFeedEndpoint, base::FEATURE_ENABLED_BY_DEFAULT);
  BASE_FEATURE(kXsurfaceMetricsReporting, base::FEATURE_DISABLED_BY_DEFAULT);
-@@ -48,7 +54,13 @@ BASE_FEATURE(kFeedSignedOutViewDemotion, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -44,7 +50,13 @@ BASE_FEATURE(kFeedSignedOutViewDemotion, base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE(kRefreshFeedOnRestart, base::FEATURE_DISABLED_BY_DEFAULT);
  
@@ -32,7 +32,7 @@ index e23c7886f2351028743fbc73960b259b9b7615da..bbef32bb11b5ecd3ab37328bb52f0852
  
  // See b/577835384.
  BASE_FEATURE(kFeedContainmentClipFirstCard, base::FEATURE_DISABLED_BY_DEFAULT);
-@@ -60,7 +72,13 @@ BASE_FEATURE(kFeedStreaming, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -56,7 +68,13 @@ BASE_FEATURE(kFeedStreaming, base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE(kFeedAudioOverviews, base::FEATURE_DISABLED_BY_DEFAULT);
  
