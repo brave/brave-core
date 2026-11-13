@@ -84,6 +84,7 @@ import org.chromium.chrome.browser.toolbar.bottom.BottomControlsContentDelegate;
 import org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsCoordinator;
+import org.chromium.chrome.browser.toolbar.bottom.BraveCollapsedUrlChipCoordinator;
 import org.chromium.chrome.browser.toolbar.bottom.BraveScrollingBottomViewResourceFrameLayout;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
@@ -188,6 +189,7 @@ public class BraveToolbarManager extends ToolbarManager
     private final Supplier<ShareDelegate> mShareDelegateSupplier;
     private final @Nullable ActionRegistry mBraveActionRegistry;
     private @Nullable BraveBottomBarActionCoordinator mBraveBottomBarActionCoordinator;
+    private @Nullable BraveCollapsedUrlChipCoordinator mBraveCollapsedUrlChipCoordinator;
 
     // Hub layout state provider and observer for hiding the toolbar when the hub is shown.
     // See https://github.com/brave/brave-browser/issues/57997.
@@ -358,6 +360,13 @@ public class BraveToolbarManager extends ToolbarManager
         mShareDelegateSupplier = shareDelegateSupplier;
         mBraveActionRegistry = actionRegistry;
 
+        // The collapsed URL chip is device-independent (chip on phones and tablets alike), so
+        // create it unconditionally here rather than from enableBottomControls(), which
+        // upstream skips on tablets. Upstream ctor dependencies are all assigned by now.
+        PostTask.postTask(
+                TaskTraits.UI_DEFAULT,
+                mCallbackController.makeCancelable(this::initBraveCollapsedUrlChip));
+
         if (isToolbarPhone()) {
             updateBraveBottomControlsVisibility();
         }
@@ -385,18 +394,34 @@ public class BraveToolbarManager extends ToolbarManager
             mBottomControlsEnabled = true;
             if (!BottomToolbarConfiguration.isBraveBottomControlsEnabled()) {
                 super.enableBottomControls();
-                return;
+            } else {
+                // Defer bottom controls inflation to avoid ANR from GPU contention
+                // during startup. All consumers null-check the coordinator supplier.
+                // The bottom toolbar starts with visibility="gone", so the one-frame
+                // delay is imperceptible to the user. Using makeCancelable ensures
+                // the task is auto-cancelled when mCallbackController.destroy() is
+                // called during Activity teardown, preventing use-after-destroy.
+                PostTask.postTask(
+                        TaskTraits.UI_DEFAULT,
+                        mCallbackController.makeCancelable(this::initBraveBottomControls));
             }
         }
-        // Defer bottom controls inflation to avoid ANR from GPU contention
-        // during startup. All consumers null-check the coordinator supplier.
-        // The bottom toolbar starts with visibility="gone", so the one-frame
-        // delay is imperceptible to the user. Using makeCancelable ensures
-        // the task is auto-cancelled when mCallbackController.destroy() is
-        // called during Activity teardown, preventing use-after-destroy.
-        PostTask.postTask(
-                TaskTraits.UI_DEFAULT,
-                mCallbackController.makeCancelable(this::initBraveBottomControls));
+    }
+
+    /** Creates the collapsed URL chip on every device, regardless of bottom toolbar config. */
+    private void initBraveCollapsedUrlChip() {
+        if (mBraveCollapsedUrlChipCoordinator != null) return;
+        BrowserStateBrowserControlsVisibilityDelegate controlsVisibilityDelegate =
+                mBrowserControlsSizer.getBrowserVisibilityDelegate();
+        assert controlsVisibilityDelegate != null;
+        mBraveCollapsedUrlChipCoordinator =
+                new BraveCollapsedUrlChipCoordinator(
+                        mActivity,
+                        mBrowserControlsSizer,
+                        mActivityTabProvider.asObservable(),
+                        () -> true,
+                        mFullscreenManager.getPersistentFullscreenModeSupplier(),
+                        controlsVisibilityDelegate);
     }
 
     private void initBraveBottomControls() {
@@ -654,6 +679,10 @@ public class BraveToolbarManager extends ToolbarManager
         if (mBraveBottomBarActionCoordinator != null) {
             mBraveBottomBarActionCoordinator.destroy();
             mBraveBottomBarActionCoordinator = null;
+        }
+        if (mBraveCollapsedUrlChipCoordinator != null) {
+            mBraveCollapsedUrlChipCoordinator.destroy();
+            mBraveCollapsedUrlChipCoordinator = null;
         }
     }
 

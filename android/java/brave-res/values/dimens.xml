@@ -16,4 +16,10 @@
     <dimen name="onboarding_subtitle_margin_top">8dp</dimen>
     <dimen name="mvt_container_top_margin">23dp</dimen>
     <dimen name="brave_bottom_toolbar_height">@dimen/min_touch_target_size</dimen>
+    <dimen name="brave_collapsed_url_chip_height">28dp</dimen>
+    <dimen name="brave_collapsed_url_chip_margin_bottom">8dp</dimen>
+    <dimen name="brave_collapsed_url_chip_margin_horizontal">24dp</dimen>
+    <dimen name="brave_collapsed_url_chip_padding_horizontal">14dp</dimen>
+    <dimen name="brave_collapsed_url_chip_max_width">280dp</dimen>
+    <dimen name="brave_collapsed_url_chip_text_size">12sp</dimen>
 </resources>
