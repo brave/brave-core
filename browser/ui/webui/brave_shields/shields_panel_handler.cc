@@ -9,16 +9,24 @@
 #include <utility>
 
 #include "base/check.h"
-#include "brave/browser/ui/brave_browser_window.h"
+#include "base/check_deref.h"
+#include "brave/browser/ui/page_info/features.h"
+#include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
+#include "brave/browser/ui/views/brave_actions/brave_shields_toolbar_button.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/views/interaction/browser_elements_views.h"
+#include "chrome/browser/ui/web_applications/app_browser_controller.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "chrome/browser/ui/webui/webui_embedding_context.h"
 #include "components/prefs/pref_service.h"
+#include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/vector2d.h"
+#include "ui/views/view_utils.h"
+#include "ui/views/widget/widget.h"
 
 ShieldsPanelHandler::ShieldsPanelHandler(
     mojo::PendingReceiver<brave_shields::mojom::PanelHandler> receiver,
@@ -32,6 +40,32 @@ ShieldsPanelHandler::ShieldsPanelHandler(
 }
 
 ShieldsPanelHandler::~ShieldsPanelHandler() = default;
+
+// static
+views::Widget* ShieldsPanelHandler::GetShieldsBubbleWidget(
+    BrowserWindowInterface& browser) {
+  auto& elements = CHECK_DEREF(BrowserElementsViews::From(&browser));
+  const bool is_web_app = web_app::AppBrowserController::IsWebApp(&browser);
+  // Page Info hosts Shields there, so web app windows have no button.
+  if (is_web_app &&
+      page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
+    return nullptr;
+  }
+
+  // Web app windows have both views, which share the identifier.
+  for (views::View* view :
+       elements.GetAllViews(BraveShieldsActionView::kShieldsActionIcon)) {
+    if (is_web_app) {
+      if (auto* button = views::AsViewClass<BraveShieldsToolbarButton>(view)) {
+        return button->GetBubbleWidget();
+      }
+    } else if (auto* action_view =
+                   views::AsViewClass<BraveShieldsActionView>(view)) {
+      return action_view->GetBubbleWidget();
+    }
+  }
+  return nullptr;
+}
 
 void ShieldsPanelHandler::ShowUI() {
   auto embedder = webui_controller_->embedder();
@@ -57,13 +91,16 @@ void ShieldsPanelHandler::GetPosition(GetPositionCallback callback) {
     std::move(callback).Run(std::nullopt);
     return;
   }
-  auto* brave_browser_window =
-      BraveBrowserWindow::FromBrowser(browser_window_interface);
-  if (!brave_browser_window) {
+  // WebUI browser windows have no Shields views.
+  if (!BrowserElementsViews::From(browser_window_interface)) {
     std::move(callback).Run(std::nullopt);
     return;
   }
-  auto rect = brave_browser_window->GetShieldsBubbleRect();
+  views::Widget* bubble_widget =
+      GetShieldsBubbleWidget(*browser_window_interface);
+  const gfx::Rect rect = bubble_widget
+                             ? bubble_widget->GetClientAreaBoundsInScreen()
+                             : gfx::Rect();
   if (rect.IsEmpty()) {
     // If the browser cannot determine the location of the Shields bubble
     // (e.g. the WebUI is being displayed in the page info bubble), then use

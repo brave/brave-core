@@ -410,48 +410,6 @@ BraveBrowserView::~BraveBrowserView() {
   }
 }
 
-gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
-  if (web_app::AppBrowserController::IsWebApp(browser())) {
-    if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
-      // No PWA title-bar Shields anchor; the Page Info surface owns Shields, so
-      // we do not add a second Shields toolbar button or bubble anchor here.
-      return gfx::Rect();
-    }
-
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-    if (BraveShieldsToolbarButton* pwa = GetPwaShieldsToolbarButton()) {
-      if (views::Widget* bubble = pwa->GetBubbleWidget()) {
-        return bubble->GetClientAreaBoundsInScreen();
-      }
-    }
-#endif
-
-    // PWA window without a visible title-bar Shields control (e.g. bubble not
-    // created yet, or install path did not add the button).
-    return gfx::Rect();
-  }
-
-  auto* brave_location_bar_view =
-      static_cast<BraveLocationBarView*>(GetLocationBarView());
-  if (!brave_location_bar_view) {
-    return gfx::Rect();
-  }
-
-  auto* shields_action_view =
-      brave_location_bar_view->brave_actions_contatiner_view()
-          ->GetShieldsActionView();
-  if (!shields_action_view) {
-    return gfx::Rect();
-  }
-
-  auto* bubble_widget = shields_action_view->GetBubbleWidget();
-  if (!bubble_widget) {
-    return gfx::Rect();
-  }
-
-  return bubble_widget->GetClientAreaBoundsInScreen();
-}
-
 bool BraveBrowserView::GetTabStripVisible() const {
   if (auto* vtc = VerticalTabController::From(browser());
       vtc->ShouldShowBraveVerticalTabs()) {

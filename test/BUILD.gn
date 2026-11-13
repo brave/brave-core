@@ -1645,7 +1645,10 @@ test("brave_browser_tests") {
   if (toolkit_views && enable_extensions) {
     sources +=
         [ "//brave/browser/ui/views/brave_actions/pwa_shields_browsertest.cc" ]
-    deps += [ "//brave/browser/ui/views/brave_actions" ]
+    deps += [
+      "//brave/browser/ui/views/brave_actions",
+      "//brave/browser/ui/webui/brave_shields:browser_tests",
+    ]
   }
 
   if (enable_commander) {
