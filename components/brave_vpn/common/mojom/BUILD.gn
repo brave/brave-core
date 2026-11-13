@@ -5,18 +5,6 @@
 
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
-import("//tools/grit/preprocess_if_expr.gni")
-
-preprocess_folder = "preprocessed"
-preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
-
-preprocess_if_expr("preprocess_mojo") {
-  deps = [ ":mojom_js" ]
-  in_folder = "$target_gen_dir"
-  out_folder = "$target_gen_dir/$preprocess_folder"
-  out_manifest = "$target_gen_dir/$preprocess_mojo_manifest"
-  in_files = [ "brave_vpn.mojom-lite.js" ]
-}
 
 mojom("mojom") {
   generate_java = true
@@ -26,6 +14,11 @@ mojom("mojom") {
     "//mojo/public/mojom/base",
     "//url/mojom:url_mojom_gurl",
   ]
+
+  webui_module_path = "/brave/components/brave_vpn/common/mojom"
+
+  # The New Tab Page still uses the legacy bindings.
+  generate_legacy_js = true
 }
 
 mojom("agent") {

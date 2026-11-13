@@ -33,7 +33,18 @@ const defaultState: RootState = {
   isReconnectingToAgent: false,
   connectionStatus: ConnectionState.DISCONNECTED,
   regions: [],
-  currentRegion: new Region(),
+  currentRegion: {
+    name: '',
+    namePretty: '',
+    country: '',
+    continent: '',
+    countryIsoCode: '',
+    regionPrecision: '',
+    cities: [],
+    serverCount: 0,
+    isAutomatic: false,
+    smartRoutingProxyState: '',
+  },
   currentView: ViewType.Loading
 }
 
