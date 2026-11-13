@@ -389,6 +389,8 @@ source_set("ui") {
   deps += [ "//brave/browser/ui/brave_origin" ]
 
   if (!is_android) {
+    public_deps += [ "//brave/browser/autocomplete" ]
+
     sources += [
       "bookmark/bookmark_helper.cc",
       "bookmark/bookmark_helper.h",
