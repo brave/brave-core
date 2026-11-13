@@ -121,6 +121,7 @@ source_set("core") {
     ":tab_helpers_header",
     "//brave/components/ephemeral_storage",
     "//brave/components/psst/buildflags",
+    "//brave/components/url_sanitizer/core/browser",
     "//chrome/browser:shell_integration",
   ]
   allow_circular_includes_from =
