@@ -1157,4 +1157,46 @@ describe('createInterfaceApi', () => {
     expect(secondHookResult.result.current.data).toEqual(['5', 5])
     expect(secondHookResult.result.current.hasEmitted).toBe(true)
   })
+
+  it('keeps event data with no subscribers past the default gcTime', () => {
+    jest.useFakeTimers()
+    try {
+      const api = createInterfaceApi({
+        actions: {},
+        endpoints: {},
+        events: {
+          myEvent: event<[], [string]>(() => {}),
+          myKeyedEvent: event<[id: string], [number]>(() => {}),
+        },
+      })
+
+      // Emitted with no observer.
+      api.emitEvent('myEvent', ['payload'])
+
+      // Observed by subscribeTo, then unsubscribed.
+      const unsubscribe = api.subscribeToMyKeyedEvent(() => {}, 'a')
+      api.emitEvent('myKeyedEvent', 'a', [1])
+      unsubscribe()
+
+      // Observed by useCurrent, then unmounted.
+      const mounted = renderHook(() => api.useCurrentMyKeyedEvent('b'))
+      api.emitEvent('myKeyedEvent', 'b', [2])
+      mounted.unmount()
+
+      // TanStack's default gcTime is 5 minutes.
+      jest.advanceTimersByTime(10 * 60 * 1000)
+
+      const current = renderHook(() => api.useCurrentMyEvent())
+      expect(current.result.current.hasEmitted).toBe(true)
+      expect(current.result.current.data).toEqual(['payload'])
+
+      const keyedA = renderHook(() => api.useCurrentMyKeyedEvent('a'))
+      expect(keyedA.result.current.data).toEqual([1])
+
+      const keyedB = renderHook(() => api.useCurrentMyKeyedEvent('b'))
+      expect(keyedB.result.current.data).toEqual([2])
+    } finally {
+      jest.useRealTimers()
+    }
+  })
 })
