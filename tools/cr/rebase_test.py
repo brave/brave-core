@@ -33,6 +33,7 @@ from unittest.mock import patch
 
 import brockit
 import conflict_resolution
+import pinned_commits
 import rebase
 import repository
 from test.fake_chromium_repo import DEFAULT_BRANCH, FakeChromiumRepo
@@ -320,6 +321,51 @@ class RewritePlanTest(unittest.TestCase):
             'pick bbb # [cr148] Feature A\n'
             'pick zzz # reassign!bbb! [cr148] Feature A\n',
         )
+
+    # ----- carry_change_id ---------------------------------------------------
+
+    @staticmethod
+    def _carry(commits: list[str]) -> str:
+        return f'exec carry {",".join(commits)}'
+
+    def test_an_amend_is_followed_by_what_carries_the_change_id(self):
+        """`fixup -C` takes the `amend!` message whole, so a line after it
+        gives back the Change-Id of the commits folded so far: a pinned
+        group's, or a reassignment's target, whose `reassign!` has none."""
+        path = self._todo(
+            'pick aaa # [cr148] Feature A\n'
+            'fixup bbb # fixup! [cr148] Feature A\n'
+            'fixup -C ccc # amend! [cr148] Feature A\n'
+            'pick ddd # Version lift updates\n'
+            'pick eee # [cr148] Feature E\n'
+            'fixup -C fff # amend! [cr148] Feature E\n'
+            'pick ggg # Version lift updates\n'
+            'fixup -C hhh # amend! Version lift updates\n'
+            'pick zzz # reassign!eee! [cr148] Feature E\n'
+        )
+
+        rebase.rewrite_plan(
+            todo_file=path, pinned_squashed=True, carry_change_id=self._carry
+        )
+
+        self.assertEqual(
+            path.read_text(),
+            'pick ddd # Version lift updates\n'
+            'squash ggg # Version lift updates\n'
+            'fixup -C hhh # amend! Version lift updates\n'
+            'exec carry ddd,ggg\n'
+            'pick aaa # [cr148] Feature A\n'
+            'fixup bbb # fixup! [cr148] Feature A\n'
+            'fixup -C ccc # amend! [cr148] Feature A\n'
+            'exec carry aaa\n'
+            'pick zzz # reassign!eee! [cr148] Feature E\n'
+            'squash eee # [cr148] Feature E\n'
+            'fixup -C fff # amend! [cr148] Feature E\n'
+            'exec carry zzz,eee\n',
+        )
+
+    def test_exec_lines_name_no_commit(self):
+        self.assertIsNone(rebase.EntryLine.parse('exec carry aaa'))
 
     # ----- pinned_squashed=True, discard_recyclable=False -------------------
 
@@ -2014,19 +2060,20 @@ class RebaseStopTest(unittest.TestCase):
         ancestor: dict[str, str],
         base: dict[str, str],
         commits: list[tuple[str, dict[str, str]]],
+        branch: str = 'feature',
     ) -> str:
-        """Builds `feature` with `commits`, and moves the default branch on.
+        """Builds `branch` with `commits`, and moves the default branch on.
 
         Both start from `ancestor`, and the default branch then changes `base`.
         Returns the commit they fork from.
         """
         fork = self.commit('Add the files', ancestor)
-        self.git('checkout', '--quiet', '-b', 'feature')
+        self.git('checkout', '--quiet', '-b', branch)
         for subject, files in commits:
             self.commit(subject, files)
         self.git('checkout', '--quiet', DEFAULT_BRANCH)
         self.commit('Change the files upstream', base)
-        self.git('checkout', '--quiet', 'feature')
+        self.git('checkout', '--quiet', branch)
         return fork
 
     def rebase(self, fork: str, *, squash_minor_bumps: bool = False) -> None:
@@ -2335,22 +2382,43 @@ class RebaseStopTest(unittest.TestCase):
             f'{subject}\n\nLast.\n\nChange-Id: {self._FIRST_ID}',
         )
 
-    def test_a_pinned_group_whose_pick_is_on_the_base_keeps_its_change_id(
-        self,
-    ):
-        """The group's next commit starts it in place of its empty first
-        one, and takes over the group's Gerrit change."""
+    def test_a_pinned_group_on_a_cr_branch_takes_its_derived_change_id(self):
+        """Even when its first commit came out empty, and none of its
+        commits had a Change-Id."""
         subject = 'Version lift updates'
         fork = self.build(
             ancestor={DATA: 'ancestor\n'},
             base={'tool': 'x\n', 'other': 'o\n'},
             commits=[
+                (subject, {'tool': 'x\n'}),
+                (subject, {'tool': 'x\ny\n'}),
+                (subject, {'tool': 'x\ny\nz\n'}),
+            ],
+            branch='cr150',
+        )
+
+        self.rebase(fork, squash_minor_bumps=True)
+
+        self.assertEqual([subject], self.subjects())
+        self.assertEqual(
+            self.git('log', '-1', '--format=%B'),
+            f'{subject}\n\nChange-Id: '
+            f'{pinned_commits.derived_change_id("cr150", subject)}',
+        )
+        self.assertEqual('x\ny\nz\n', self.committed('tool'))
+
+    def test_an_amend_keeps_the_change_id_of_its_target(self):
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={'other': 'o\n'},
+            commits=[
                 (
-                    f'{subject}\n\nChange-Id: {self._FIRST_ID}',
+                    f'Add the tool\n\nChange-Id: {self._FIRST_ID}',
                     {'tool': 'x\n'},
                 ),
                 (
-                    f'{subject}\n\nChange-Id: {self._LAST_ID}',
+                    'amend! Add the tool\n\nAdd the tool, reworded\n\n'
+                    f'Change-Id: {self._LAST_ID}',
                     {'tool': 'x\ny\n'},
                 ),
             ],
@@ -2358,39 +2426,38 @@ class RebaseStopTest(unittest.TestCase):
 
         self.rebase(fork, squash_minor_bumps=True)
 
-        self.assertEqual([subject], self.subjects())
         self.assertEqual(
             self.git('log', '-1', '--format=%B'),
-            f'{subject}\n\nChange-Id: {self._FIRST_ID}',
+            f'Add the tool, reworded\n\nChange-Id: {self._FIRST_ID}',
         )
         self.assertEqual('x\ny\n', self.committed('tool'))
 
-    def test_a_pinned_group_that_empties_midway_keeps_its_change_id(self):
-        subject = 'Update Lit mangler snapshot'
+    def test_an_amend_that_stopped_on_a_conflict_keeps_the_change_id(self):
         fork = self.build(
-            ancestor={'snap': 'a\n'},
-            base={'other': 'o\n'},
+            ancestor={DATA: 'ancestor\n'},
+            base={DATA: 'base\n'},
             commits=[
                 (
-                    f'{subject}\n\nChange-Id: {self._FIRST_ID}',
-                    {'snap': 'b\n'},
+                    f'Add the tool\n\nChange-Id: {self._FIRST_ID}',
+                    {'tool': 'x\n'},
                 ),
-                (f'{subject}\n\nChange-Id: {"I" + "3" * 40}', {'snap': 'a\n'}),
                 (
-                    f'{subject}\n\nChange-Id: {self._LAST_ID}',
-                    {'snap': 'c\n'},
+                    'amend! Add the tool\n\nAdd the tool, reworded',
+                    {DATA: 'commit\n'},
                 ),
             ],
         )
+        with self.assertRaises(brockit.ActionNeededException):
+            self.rebase(fork, squash_minor_bumps=True)
+        self.resolve_data()
 
-        self.rebase(fork, squash_minor_bumps=True)
+        brockit.Rebase().execute(is_continuation=True)
 
-        self.assertEqual([subject], self.subjects())
+        self.assertFalse(repository.brave.is_rebase_in_progress())
         self.assertEqual(
             self.git('log', '-1', '--format=%B'),
-            f'{subject}\n\nChange-Id: {self._FIRST_ID}',
+            f'Add the tool, reworded\n\nChange-Id: {self._FIRST_ID}',
         )
-        self.assertEqual('c\n', self.committed('snap'))
 
     def test_skip_drops_the_commit_and_carries_on(self):
         """Skipping goes on with brockit's own handling of the rebase: the

@@ -42,11 +42,13 @@ import logging
 import os
 import re
 import shlex
+from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
 
 from pinned_commits import (
     PINNED_GROUPS,
+    derived_change_id,
     get_pinned_group_for_subject,
     is_recyclable,
 )
@@ -56,6 +58,11 @@ from terminal import terminal
 # marks an empty `<prefix><hash>!` commit that `brockit rebase` acts on.
 REASSIGN_COMMIT_MSG_PREFIX = 'reassign!'
 DROP_COMMIT_MSG_PREFIX = 'drop!'
+
+# The todo commands that fold a commit into the one before it, and those of
+# them that replace its message.
+_FOLDING_COMMANDS = frozenset({'squash', 'fixup', 'fixup -C', 'fixup -c'})
+_REPLACING_COMMANDS = frozenset({'fixup -C', 'fixup -c'})
 
 # Git-naitve subcommands that brockit treats as autosquash markers.
 _AUTOSQUASH_SUBCOMMANDS = frozenset({'fixup', 'amend', 'reword', 'squash'})
@@ -410,6 +417,9 @@ class EntryLine:
         """
         if not line.strip() or line.lstrip().startswith('#'):
             return None
+        if line.split(maxsplit=1)[0] in ('exec', 'x'):
+            # Runs a command, rather than naming a commit.
+            return None
 
         # Split into at most three sections: command-part, comment, and an
         # optional trailing ` # <note>` marker (e.g. ` # empty`). Capping
@@ -483,6 +493,7 @@ def rewrite_plan(
     todo_file: Path,
     pinned_squashed: bool = False,
     discard_recyclable: bool = False,
+    carry_change_id: Callable[[list[str]], str] | None = None,
 ) -> None:
     """Rewrites a `git rebase --interactive` TODO file in place.
 
@@ -503,6 +514,10 @@ def rewrite_plan(
             their target. Defaults to `False`.
         discard_recyclable: When `True`, drop recyclable commits from
             the plan entirely. Defaults to `False`.
+        carry_change_id: Makes the todo line that gives HEAD the first
+            Change-Id of the commits it is given. When set, one follows
+            each `fixup -C`/`fixup -c`, whose `amend!` message would
+            otherwise replace the Change-Id of what it folds into.
 
     Raises:
         EditorRecoverableFailure: Any TODO line that doesn't parse
@@ -648,10 +663,23 @@ def rewrite_plan(
 
         all_others.append(entry_line)
 
-    new_plan = [
-        *(c.out for group in pinned_groups.values() for c in group),
-        *(c.out for c in all_others),
-    ]
+    new_plan = []
+    # The commits folded into the one the plan is building, which keeps the
+    # first Change-Id among them.
+    folded: list[str] = []
+    for entry in [
+        *(c for group in pinned_groups.values() for c in group),
+        *all_others,
+    ]:
+        new_plan.append(entry.out)
+        if entry.command not in _FOLDING_COMMANDS:
+            folded = [entry.hash]
+        elif entry.command in _REPLACING_COMMANDS:
+            # An `amend!` replaces the message, Change-Id included.
+            if carry_change_id is not None:
+                new_plan.append(carry_change_id(folded))
+        elif entry.command == 'squash':
+            folded.append(entry.hash)
 
     todo_file.write_text(
         '\n'.join(new_plan) + '\n', encoding='utf-8', newline=''
@@ -894,19 +922,24 @@ class MessageWriter:
     # classifications (RECYCLABLE, DEFAULT) are punted to the editor.
     _HANDLED_ENTRY_TYPES = frozenset({EntryType.PINNED, EntryType.REASSIGNMENT})
 
-    def rewrite_with_last_message(self) -> None:
+    def rewrite_with_last_message(self, branch: str = '') -> None:
         """Writes the trailing block's `full_message` (with a trailing
         newline) back to `todo_file`. Always valid:
         `MessageWriter.parse` only returns instances with at least one
         block whose first-block content classifies as PINNED or
         REASSIGNMENT.
 
-        The message keeps the first Change-Id of the blocks, so the squashed
-        commit stays the Gerrit change its first commit started. A
-        `reassign!` block has none, so a reassignment keeps its target's.
+        On a `cr<N>` `branch`, a pinned squash takes the group's derived
+        Change-Id, which also gives one to commits made before there were
+        any. Otherwise the message keeps the first Change-Id of the blocks,
+        so the squashed commit stays the Gerrit change its first commit
+        started. A `reassign!` block has none, so a reassignment keeps its
+        target's.
         """
         message = self.blocks[-1].full_message
-        change_id = next(
+        change_id = derived_change_id(
+            branch, self.blocks[0].full_message.split('\n', 1)[0]
+        ) or next(
             filter(None, (change_id_of(b.full_message) for b in self.blocks)),
             None,
         )
