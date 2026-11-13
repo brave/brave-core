@@ -132,7 +132,7 @@ class SimulationServiceUnitTest : public testing::Test {
 
   void SetErrorInterceptor(const std::string& content) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&](const network::ResourceRequest& request) {
+        [&, content](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
           url_loader_factory_.AddResponse(request.url.spec(), content,
                                           net::HTTP_REQUEST_TIMEOUT);
