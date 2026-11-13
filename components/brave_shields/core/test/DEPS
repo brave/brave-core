@@ -7,6 +7,9 @@ include_rules = [
 ]
 
 specific_include_rules = {
+  "test_filters_provider\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
   "brave_shields_p3a_unittest\.cc": [
     # component unit tests should not have chrome deps
     "!chrome/browser/content_settings/host_content_settings_map_factory.h",

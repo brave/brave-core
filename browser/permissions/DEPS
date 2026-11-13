@@ -1,6 +1,6 @@
 include_rules = [
   "+brave/components/permissions",
-  "+brave/components/brave_shields/content/test",
+  "+brave/components/brave_shields/core/test",
   "+brave/components/ephemeral_storage",
 ]
 

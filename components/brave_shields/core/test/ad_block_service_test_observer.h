@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_TEST_AD_BLOCK_SERVICE_TEST_OBSERVER_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_TEST_AD_BLOCK_SERVICE_TEST_OBSERVER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_TEST_AD_BLOCK_SERVICE_TEST_OBSERVER_H_
+#define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_TEST_AD_BLOCK_SERVICE_TEST_OBSERVER_H_
 
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
@@ -46,4 +46,4 @@ class AdBlockServiceTestObserver : public AdBlockService::Observer {
 
 }  // namespace brave_shields
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_TEST_AD_BLOCK_SERVICE_TEST_OBSERVER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_TEST_AD_BLOCK_SERVICE_TEST_OBSERVER_H_

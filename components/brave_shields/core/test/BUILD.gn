@@ -5,21 +5,48 @@
 
 import("//testing/test.gni")
 
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "ad_block_service_test_observer.cc",
+    "ad_block_service_test_observer.h",
+    "ad_block_unit_test_helper.cc",
+    "ad_block_unit_test_helper.h",
+    "test_filters_provider.cc",
+    "test_filters_provider.h",
+  ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_shields/core/browser",
+    "//brave/components/brave_shields/core/common/adblock",
+    "//url",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
 
   sources = [
     "ad_block_component_service_manager_unittest.cc",
     "ad_block_component_service_unittest.cc",
+    "ad_block_custom_filter_reset_util_unittest.cc",
     "ad_block_filters_provider_manager_unittest.cc",
     "ad_block_list_p3a_unittest.cc",
+    "ad_block_service_unittest.cc",
     "brave_shields_p3a_unittest.cc",
+    "cosmetic_merge_unittest.cc",
+    "csp_merge_unittest.cc",
+    "strip_procedural_filters_unittest.cc",
   ]
   deps = [
-    "//brave/components/brave_shields/content/browser",
-    "//brave/components/brave_shields/content/test:test_support",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_shields/core/common",
+    "//brave/components/brave_shields/core/common/adblock",
+    "//brave/components/brave_shields/core/test:test_support",
     "//brave/components/content_settings/core/common",
     "//chrome/browser",
     "//chrome/browser/content_settings:content_settings_factory",
@@ -27,7 +54,9 @@ source_set("unit_tests") {
     "//chrome/test/base:testing_browser_process",
     "//components/prefs:test_support",
     "//crypto",
+    "//testing/gmock",
     "//testing/gtest",
+    "//third_party/abseil-cpp:absl",
   ]
 
   if (!is_android) {
