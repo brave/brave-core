@@ -120,6 +120,8 @@
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/containers_service_factory.h"
+#include "brave/components/containers/core/browser/containers_service.h"
+#include "brave/components/containers/core/mojom/containers.mojom.h"
 #endif
 
 namespace {
@@ -440,9 +442,23 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-  UpdateCommandEnabled(
-      IDC_NEW_TEMPORARY_CONTAINER,
-      ContainersServiceFactory::GetForProfile(browser_->GetProfile()));
+  auto* containers_service =
+      ContainersServiceFactory::GetForProfile(browser_->GetProfile());
+
+  const bool enable_containers_commands =
+      containers_service && containers_service->ShouldShowContainerControls();
+
+  UpdateCommandEnabled(IDC_NEW_TEMPORARY_CONTAINER, enable_containers_commands);
+
+  const size_t container_count =
+      enable_containers_commands ? containers_service->GetContainers().size()
+                                 : 0;
+
+  for (int id = IDC_NEW_TAB_IN_CONTAINER_1; id <= IDC_NEW_TAB_IN_CONTAINER_9;
+       ++id) {
+    const int index = id - IDC_NEW_TAB_IN_CONTAINER_1;
+    UpdateCommandEnabled(id, index < static_cast<int>(container_count));
+  }
 #endif
 
   if (browser_->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
@@ -898,6 +914,38 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
 #endif
 #if BUILDFLAG(ENABLE_CONTAINERS)
+    case IDC_NEW_TAB_IN_CONTAINER_1:
+    case IDC_NEW_TAB_IN_CONTAINER_2:
+    case IDC_NEW_TAB_IN_CONTAINER_3:
+    case IDC_NEW_TAB_IN_CONTAINER_4:
+    case IDC_NEW_TAB_IN_CONTAINER_5:
+    case IDC_NEW_TAB_IN_CONTAINER_6:
+    case IDC_NEW_TAB_IN_CONTAINER_7:
+    case IDC_NEW_TAB_IN_CONTAINER_8:
+    case IDC_NEW_TAB_IN_CONTAINER_9: {
+      auto* containers_service =
+          ContainersServiceFactory::GetForProfile(browser_->GetProfile());
+
+      if (!containers_service ||
+          !containers_service->ShouldShowContainerControls()) {
+        break;
+      }
+
+      const size_t index = static_cast<size_t>(id - IDC_NEW_TAB_IN_CONTAINER_1);
+      auto containers = containers_service->GetContainers();
+
+      if (index >= containers.size()) {
+        break;
+      }
+
+      brave::OpenUrlInContainer(base::to_address(browser_),
+                                chrome::GetNewTabURL(&*browser_),
+                                containers[index],
+                                /*is_link=*/false);
+
+      break;
+    }
+
     case IDC_NEW_TEMPORARY_CONTAINER:
       brave::CreateTemporaryContainerAndOpenUrl(
           base::to_address(browser_), chrome::GetNewTabURL(&*browser_),
