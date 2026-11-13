@@ -8,13 +8,14 @@
 #include "base/callback_list.h"
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
+#include "base/test/run_until.h"
 #include "chrome/browser/download/bubble/download_bubble_update_service.h"
 #include "chrome/browser/download/bubble/download_bubble_update_service_factory.h"
 #include "chrome/browser/download/download_item_model.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_element_identifiers.h"
 #include "chrome/browser/ui/download/download_display.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/toolbar/pinned_action_toolbar_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -29,6 +30,7 @@
 #include "ui/base/models/image_model.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
+#include "ui/views/interaction/element_tracker_views.h"
 #include "ui/views/view_utils.h"
 
 using ::testing::NiceMock;
@@ -95,17 +97,24 @@ class DownloadToolbarInsecureIconTest : public InProcessBrowserTest {
   }
 
   ToolbarButton* download_button() {
-    return BrowserView::GetBrowserViewForBrowser(browser())
-        ->toolbar_button_provider()
-        ->GetDownloadButton();
+    return views::ElementTrackerViews::GetInstance()
+        ->GetFirstMatchingViewAs<ToolbarButton>(
+            kToolbarDownloadButtonElementId,
+            views::ElementTrackerViews::GetContextForView(
+                BrowserView::GetBrowserViewForBrowser(browser())));
   }
 
   DownloadToolbarUIController* controller() {
     return DownloadToolbarUIController::From(browser());
   }
 
+  // Outlives the test body: icon updates the controller posts can still read
+  // it through the fake service.
+  NiceMock<download::MockDownloadItem>& download_item() { return item_; }
+
  private:
   base::CallbackListSubscription subscription_;
+  NiceMock<download::MockDownloadItem> item_;
 };
 
 // Verifies that UpdateIcon_BraveImpl sets / clears the toolbar button colour
@@ -119,7 +128,7 @@ IN_PROC_BROWSER_TEST_F(DownloadToolbarInsecureIconTest, InsecureDownloadIcon) {
   auto* btn = download_button();
   ASSERT_NE(nullptr, btn) << "download button should be present after Show()";
 
-  NiceMock<download::MockDownloadItem> item;
+  NiceMock<download::MockDownloadItem>& item = download_item();
 
   // No insecure downloads — colour override must be absent.
   ctrl->UpdateDownloadIcon(
@@ -151,6 +160,29 @@ IN_PROC_BROWSER_TEST_F(DownloadToolbarInsecureIconTest, InsecureDownloadIcon) {
       << "state: BLOCK";
 }
 
+// A button that shows once there's an insecure download takes the warning
+// icon too, without another download update.
+IN_PROC_BROWSER_TEST_F(DownloadToolbarInsecureIconTest,
+                       InsecureDownloadIconOnButtonShown) {
+  auto* ctrl = controller();
+  ASSERT_NE(nullptr, ctrl);
+  ctrl->Hide();
+  ASSERT_EQ(nullptr, download_button());
+
+  NiceMock<download::MockDownloadItem>& item = download_item();
+  ON_CALL(item, GetInsecureDownloadStatus())
+      .WillByDefault(
+          Return(download::DownloadItem::InsecureDownloadStatus::WARN));
+  fake_service()->AddItem(&item);
+
+  ctrl->Show();
+  auto* btn = download_button();
+  ASSERT_NE(nullptr, btn);
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return btn->HasIconEnabledColorsOverride(); }));
+  EXPECT_EQ(&btn->GetVectorIcon(), &vector_icons::kNotSecureWarningOldIcon);
+}
+
 // Upstream's own icon refreshes, such as the one `SetEngagedIndicatorStyle()`
 // makes, keep the insecure-download colour while the action is engaged.
 IN_PROC_BROWSER_TEST_F(DownloadToolbarInsecureIconTest,
@@ -161,7 +193,7 @@ IN_PROC_BROWSER_TEST_F(DownloadToolbarInsecureIconTest,
   auto* btn = views::AsViewClass<PinnedActionToolbarButton>(download_button());
   ASSERT_NE(nullptr, btn);
 
-  NiceMock<download::MockDownloadItem> item;
+  NiceMock<download::MockDownloadItem>& item = download_item();
   ON_CALL(item, GetInsecureDownloadStatus())
       .WillByDefault(
           Return(download::DownloadItem::InsecureDownloadStatus::WARN));

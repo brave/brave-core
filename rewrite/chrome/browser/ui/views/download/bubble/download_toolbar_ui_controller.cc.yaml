@@ -16,3 +16,15 @@ substitutions:
       replace: |-
         \1
           UpdateIcon_BraveImpl(browser_view_, *new_icon, state_, active_, action_item_);
+
+  - description: |-
+      Update the icon whenever the download button shows.
+
+      Brave's insecure download icon is applied to the button itself, which a
+      newly shown button doesn't have yet.
+    after_function_impl:
+      function_name: DownloadToolbarUIController::DownloadToolbarUIController
+      code: |-
+        ObserveDownloadButtonShown_BraveImpl(
+            weak_factory_.GetWeakPtr(), browser_view_,
+            brave_download_button_shown_subscription_);
