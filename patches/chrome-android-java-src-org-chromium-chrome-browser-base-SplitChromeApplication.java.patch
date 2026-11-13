@@ -1,13 +1,16 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/base/SplitChromeApplication.java b/chrome/android/java/src/org/chromium/chrome/browser/base/SplitChromeApplication.java
-index 15990ba41ebd8dc94ebc4733bfb1a73cc89067c5..44155364492e78c399ba532724dc519319a98408 100644
+index 15990ba41ebd8dc94ebc4733bfb1a73cc89067c5..1ed0c23a4bd4267590bde3971e796c55f3fcb1dd 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/base/SplitChromeApplication.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/base/SplitChromeApplication.java
-@@ -230,7 +230,7 @@ public class SplitChromeApplication extends SplitCompatApplication {
+@@ -230,10 +230,7 @@ public class SplitChromeApplication extends SplitCompatApplication {
                              InitializeFeatureList.initializeFeatureList();
                          }
                      };
 -        } else if ((BuildConfig.IS_CHROME_BRANDED
-+        } else if ((true /* BuildConfig.IS_CHROME_BRANDED override for Brave */
-                         || CommandLine.getInstance()
-                                 .hasSwitch(VariationsSwitches.VARIATIONS_SERVER_URL))
-                 && VariationsSeedFetcher.shouldFetchSeed()) {
+-                        || CommandLine.getInstance()
+-                                .hasSwitch(VariationsSwitches.VARIATIONS_SERVER_URL))
+-                && VariationsSeedFetcher.shouldFetchSeed()) {
++        } else if (VariationsSeedFetcher.shouldFetchSeed()) {
+             // The FeatureList must wait for the first run variations seed, but Local State does
+             // not depend on it.
+             InitializeFeatureList.initializeLocalState();
