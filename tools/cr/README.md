@@ -47,6 +47,8 @@ Shared abstractions used by the entry points and tests:
 - `patchfile.py` — Patch file abstraction handling patches that failed to apply.
 - `conflict_resolution.py` — The fixed answers `brockit rebase` gives to the
   conflicts it stops on.
+- `pinned_commits.py` — The commit subjects `brockit rebase` groups or discards.
+  Standard library only, as the `commit-msg` hook imports it.
 - `git_status.py` — Parser for `git status --porcelain` output.
 - `versioning.py` — Chromium version number parsing.
 - `vscode.py` — IPC for opening files in VS Code in the integrated terminal.

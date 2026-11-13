@@ -28,7 +28,6 @@ Layers:
 
 from __future__ import annotations
 
-import shutil
 import stat
 import unittest
 from pathlib import Path
@@ -38,7 +37,7 @@ import toolchain
 from test.fake_chromium_repo import FakeChromiumRepo
 from versioning import Version
 
-# Source of the commit-msg hook, copied into the fake brave repo so the
+# Source of the commit-msg hook, run from the fake brave repo so the
 # `tags` / `culprit` env wiring is exercised exactly as in production.
 HOOK_SOURCE: Path = Path(__file__).resolve().parent / 'alias' / 'commit-msg.py'
 
@@ -340,7 +339,13 @@ class _FakeRepoTest(unittest.TestCase):
         dest = hooks_dir / 'commit-msg'
         if dest.exists() or dest.is_symlink():
             dest.unlink()
-        shutil.copy2(HOOK_SOURCE, dest)
+        # A shim, as `git cr install-hook` writes on Windows: the hook imports
+        # its `tools/cr` neighbours through its own path, which a copy loses.
+        dest.write_text(
+            f'#!/bin/sh\nexec python3 "{HOOK_SOURCE.as_posix()}" "$@"\n',
+            encoding='utf-8',
+            newline='\n',
+        )
         dest.chmod(
             dest.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH
         )

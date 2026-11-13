@@ -177,6 +177,49 @@ class TestCommitIntegration(unittest.TestCase):
             'fixup! Base commit', self._sandbox.last_commit_message()
         )
 
+    def test_squash_marker_of_a_pinned_commit_is_refused(self) -> None:
+        """brockit squashes and moves pinned groups, so a fixup! can't be
+        replayed onto one: the hook refuses it and names the subject to
+        commit with instead."""
+        self._sandbox.stage_change('v1\n')
+        self._sandbox.run_gc(['commit', '-m', 'Version lift updates'])
+        for subject in (
+            'fixup! Version lift updates',
+            'amend! Version lift updates',
+            'squash! Version lift updates',
+            'fixup! [cr160] Version lift updates',
+        ):
+            with self.subTest(subject):
+                self._sandbox.stage_change(f'{subject}\n')
+                result = self._sandbox.run_gc(['commit', '-m', subject])
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn('pinned commit', result.stderr)
+                self.assertIn(
+                    "git commit -m 'Version lift updates'", result.stderr
+                )
+                self.assertEqual(
+                    'Version lift updates', self._sandbox.last_commit_message()
+                )
+
+    def test_fixup_flag_of_a_pinned_commit_is_refused(self) -> None:
+        self._sandbox.stage_change('v1\n')
+        self._sandbox.run_gc(['commit', '-m', 'IWYU fixes.'])
+        self._sandbox.stage_change('v2\n')
+        result = self._sandbox.run_gc(['commit', '--fixup=HEAD'])
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("git commit -m 'IWYU fixes.'", result.stderr)
+
+    @unittest.skipIf(
+        platform.system() == 'Windows', 'Windows installs a shim, not a copy'
+    )
+    def test_copied_hook_asks_for_a_reinstall(self) -> None:
+        """A hook copied into .git/hooks can't import `pinned_commits`."""
+        self._sandbox.install_hook(as_copy=True)
+        self._sandbox.stage_change()
+        result = self._sandbox.run_gc(['commit', '-m', 'Plain commit'])
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('git cr install-hook', result.stderr)
+
     def test_empty_message_rejected(self) -> None:
         """A commit with only whitespace in the message is rejected."""
         self._sandbox.stage_change()

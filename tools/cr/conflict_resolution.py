@@ -42,8 +42,8 @@ import subprocess
 from typing import Callable
 
 import patchfile
+import pinned_commits
 import plaster
-import rebase
 import repository
 import versioning
 from versioning import Version
@@ -306,7 +306,10 @@ class ConflictedStep:
         timestamps. A file is only settled when that is its single conflicting
         hunk, as anything else conflicting in it needs a look.
         """
-        if rebase.get_pinned_group_for_subject(self.subject) != 'version':
+        if (
+            pinned_commits.get_pinned_group_for_subject(self.subject)
+            != 'version'
+        ):
             return False
         choose = _VERSION_BUMP_CHOICES.get(path)
         if choose is None:

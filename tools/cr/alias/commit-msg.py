@@ -4,8 +4,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-# Notice: Keep this script as *standalone*, with no deps to `tools/cr` code, so
-# users can install it with little effort and no deps surprises.
+# Notice: Keep this script free of dependencies outside the standard library,
+# so users can install it with little effort and no deps surprises. The one
+# `tools/cr` module it uses, `pinned_commits`, keeps to the standard library
+# too.
 
 # This script has several convenience features when committing changes to
 # brave-core.
@@ -58,7 +60,11 @@
 # 6. `fixup!` commits are ignored
 #
 #    If the commit message starts with "fixup!", the script will not add any
-#    tags or links to the commit message.
+#    tags or links to the commit message. A `fixup!`, `amend!` or `squash!` of
+#    a pinned commit (see `tools/cr/pinned_commits.py`) is refused:
+#    `brockit rebase` squashes a pinned group and moves it, so the fixup can't
+#    be replayed reliably. Such a change is a commit of its own with the same
+#    subject, which the rebase squashes into the group.
 #
 # 7. Issue numbers in the branch name
 #
@@ -82,8 +88,8 @@
 # run before the commit message is created, which allows you to inspect the
 # insertions.
 #
-# To install this script as a commit-msg hook, run the following command:
-#   cp tools/cr/commit-msg.py .git/hooks/commit-msg
+# To install this script as a commit-msg hook, run `git cr install-hook`,
+# which links the hook to this file rather than copying it.
 #
 
 import json
@@ -92,6 +98,41 @@ import sys
 import subprocess
 import re
 from pathlib import Path
+
+# `tools/cr`, found through this file even when git runs it via the hook's
+# symlink.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+try:
+    import pinned_commits
+except ImportError:
+    print(
+        "The commit-msg hook can't find `tools/cr/pinned_commits.py`: it is "
+        'probably a copy. Reinstall it with `git cr install-hook`.',
+        file=sys.stderr,
+    )
+    sys.exit(1)
+
+_SQUASH_MARKERS = ('fixup!', 'amend!', 'squash!')
+
+
+def pinned_squash_problem(first_line: str) -> str | None:
+    """Says why a `fixup!`/`amend!`/`squash!` commit can't target the commit
+    its subject names, if that commit is pinned."""
+    if not first_line.startswith(_SQUASH_MARKERS):
+        return None
+    if pinned_commits.get_pinned_group_for_subject(first_line) is None:
+        return None
+    target = pinned_commits.strip_autosquash_prefixes(first_line).strip()
+    subject = pinned_commits.strip_cr_tag(target)
+    return (
+        f'"{first_line.split("!", 1)[0]}!" can\'t target the pinned commit '
+        f'"{target}": `brockit rebase` squashes every commit with a pinned '
+        'subject into one and moves the group, so the fixup has nothing '
+        'stable to replay onto. Commit the change on its own, with the same '
+        f'subject, and the rebase squashes it into the group:\n'
+        f"    git commit -m '{subject}'"
+    )
+
 
 PREFIXES_FOR_UPGRADE_COMMITS = [
     'Update from Chromium ',
@@ -249,6 +290,10 @@ def main():
     if not commit_message or not commit_message.split('\n', 1)[0].strip():
         # We should not commmit if the commit message first line is empty as
         # this will cause any tags to become the effective message.
+        return 1
+
+    if problem := pinned_squash_problem(commit_message.split('\n', 1)[0]):
+        print(problem, file=sys.stderr)
         return 1
 
     # Skip fixup! changes.
