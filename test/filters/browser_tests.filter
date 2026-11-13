@@ -773,17 +773,8 @@
 
 # These tests fail because we've already implemented similar changes to prevent
 # language fingerprinting, regardless of the feature flag state
--All/ReduceAcceptLanguageEnterprisePolicyBrowserTest.PolicyIsFollowed/False
--All/ReduceAcceptLanguageEnterprisePolicyBrowserTest.PolicyIsFollowedIframe/False
--All/ReduceAcceptLanguageEnterprisePolicyBrowserTest.PolicyIsFollowedImgSubresource/False
--All/SameOriginReduceAcceptLanguageBrowserTest.*
--CrossOriginRedirectReduceAcceptLanguageOTBrowserTest.*
--DisableFeatureReduceAcceptLanguageBrowserTest.*
 -FeatureFlag/ReduceAcceptLanguageCountBrowserTest.Iframe/*
 -FeatureFlag/ReduceAcceptLanguageCountBrowserTest.RegularRequest/*
--SameOriginRedirectReduceAcceptLanguageOTBrowserTest.*
--SameOriginReduceAcceptLanguageDeprecationOTBrowserTest.*
--ThirdPartyReduceAcceptLanguageDeprecationOTBrowserTest.IframeRequests
 
 # These tests fail because the primary account consent level is null instead of
 # signin::ConsentLevel::kSignin
@@ -3041,7 +3032,6 @@
 -PDFExtensionJSInk2Test.Ink2*
 -PDFExtensionJSInk2TextTest.Ink2*
 -PDFExtensionJSTest.ViewerFilePicker
--All/PDFExtensionTest.FullPagePdfHasFocus/0
 -All/ProfileMenuViewExtensionsIphDismissTest.CloseIPH/_ProfileSwitch
 -All/ProfileMenuViewExtensionsIphDismissTest.CloseIPH/_SupervisedUser
 -All/ReportingBrowserTest.*
