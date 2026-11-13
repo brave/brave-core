@@ -7,9 +7,12 @@
 
 #include <memory>
 #include <optional>
+#include <string>
 #include <utility>
+#include <vector>
 
 #include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
@@ -103,11 +106,62 @@ class TestObserver : public AgentClient::Observer {
   std::optional<AgentClient::Error> last_connection_error_;
   base::RepeatingClosure on_notification_;
 };
+
+// Stands in for the service on the receiving end of the agent's calls. Records
+// what arrived, and whether |observer| knew of a live session at that moment,
+// which is the guarantee the client gives the endpoint it is constructed with.
+class TestBrowserEndpoint : public mojom::BrowserEndpoint {
+ public:
+  explicit TestBrowserEndpoint(const TestObserver* observer)
+      : observer_(observer) {}
+
+  int call_count() const { return call_count_; }
+
+  // Calls that arrived before OnAgentConnected() or after
+  // OnAgentDisconnected().
+  int calls_outside_session() const { return calls_outside_session_; }
+
+  const std::vector<mojom::VpnConnectionState>& connection_states() const {
+    return connection_states_;
+  }
+
+  // mojom::BrowserEndpoint:
+  void OnConnectionStateChanged(
+      mojom::VpnConnectionState state,
+      const std::optional<std::string>& error_message) override {
+    connection_states_.push_back(state);
+    RecordCall();
+  }
+  void OnSelectedRegionChanged(mojom::VpnRegionPtr region) override {
+    RecordCall();
+  }
+  void OnAutoReconnectStateChanged(bool enabled) override { RecordCall(); }
+  void OnSmartProxyRoutingStateChanged(bool enabled) override { RecordCall(); }
+  void OnAllowLanTrafficStateChanged(bool available, bool enabled) override {
+    RecordCall();
+  }
+  void OnLastHostnameChanged(const std::string& hostname) override {
+    RecordCall();
+  }
+
+ private:
+  void RecordCall() {
+    ++call_count_;
+    if (observer_->connected_count() == observer_->disconnected_count()) {
+      ++calls_outside_session_;
+    }
+  }
+
+  const raw_ptr<const TestObserver> observer_;
+  int call_count_ = 0;
+  int calls_outside_session_ = 0;
+  std::vector<mojom::VpnConnectionState> connection_states_;
+};
 }  // namespace
 
 class AgentClientTest : public testing::Test {
  public:
-  void SetUp() override { client_ = CreateClient(&observer_); }
+  void SetUp() override { client_ = CreateClient(&observer_, &endpoint_); }
 
   void TearDown() override {
     if (client_) {
@@ -124,9 +178,10 @@ class AgentClientTest : public testing::Test {
   }
 
  protected:
-  std::unique_ptr<AgentClient> CreateClient(TestObserver* observer) {
+  std::unique_ptr<AgentClient> CreateClient(TestObserver* observer,
+                                            mojom::BrowserEndpoint* endpoint) {
     auto client = AgentClient::CreateForTesting(
-        agent_.GetServerNameProvider(), agent_.GetConnector(),
+        endpoint, agent_.GetServerNameProvider(), agent_.GetConnector(),
         task_environment_.GetMockTickClock());
     client->AddObserver(observer);
     return client;
@@ -142,6 +197,12 @@ class AgentClientTest : public testing::Test {
   void ConnectAndWait() {
     client_->EnsureConnected();
     WaitForNotification();
+  }
+
+  // Calls the browser the way the agent reports the tunnel's state, on the
+  // newest session the agent holds.
+  void AgentReportsConnectionState(mojom::VpnConnectionState state) {
+    agent_.browser_endpoint()->OnConnectionStateChanged(state, std::nullopt);
   }
 
   // Advances just far enough for the scheduled retry to run and the connect it
@@ -194,6 +255,7 @@ class AgentClientTest : public testing::Test {
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   FakeAgent agent_;
   TestObserver observer_;
+  TestBrowserEndpoint endpoint_{&observer_};
   std::unique_ptr<AgentClient> client_;
 };
 
@@ -806,7 +868,8 @@ TEST_F(AgentClientTest, SuccessfulBindOnDeadSessionIsNotPublished) {
   task_environment_.FastForwardBy(kTimeBriefly);
   ASSERT_TRUE(agent_.has_held_bind_browser_host_request());
 
-  // The client sees the pipes close first.
+  // The client sees the host pipe close first. The endpoint's is not watched
+  // until the handshake is over, so the host's is the one that reports.
   agent_.DropSessionHandles();
   task_environment_.FastForwardBy(kTimeBriefly);
   agent_.AnswerHeldBindBrowserHostRequest(
@@ -854,6 +917,103 @@ TEST_F(AgentClientTest, RepeatedBindOnDeadSessionIsReportedAsUnstable) {
   // No host was ever published, so there was nothing to lose either.
   EXPECT_EQ(observer_.connected_count(), 0);
   EXPECT_EQ(observer_.disconnected_count(), 0);
+}
+
+// What the agent sends over a live session reaches the endpoint the client was
+// constructed with, in the order it was sent.
+TEST_F(AgentClientTest, AgentCallsReachTheEndpoint) {
+  ConnectAndWait();
+  ASSERT_EQ(client_->state(), AgentClient::State::kConnected);
+
+  AgentReportsConnectionState(mojom::VpnConnectionState::kConnecting);
+  AgentReportsConnectionState(mojom::VpnConnectionState::kConnected);
+  task_environment_.FastForwardBy(kTimeBriefly);
+
+  EXPECT_EQ(endpoint_.connection_states(),
+            (std::vector<mojom::VpnConnectionState>{
+                mojom::VpnConnectionState::kConnecting,
+                mojom::VpnConnectionState::kConnected}));
+  EXPECT_EQ(endpoint_.calls_outside_session(), 0);
+}
+
+// The real agent sends its current state before it answers BindBrowserHost(),
+// and nothing orders the endpoint's pipe against the reply's anyway. The
+// endpoint must hear none of it until observers know there is a session, and
+// all of it afterwards.
+TEST_F(AgentClientTest, AgentCallsSentBeforeBindReplyAreHeldUntilConnected) {
+  agent_.set_bind_browser_host_result(std::nullopt);
+  client_->EnsureConnected();
+  task_environment_.FastForwardBy(kTimeBriefly);
+  ASSERT_TRUE(agent_.has_held_bind_browser_host_request());
+
+  AgentReportsConnectionState(mojom::VpnConnectionState::kConnecting);
+  AgentReportsConnectionState(mojom::VpnConnectionState::kConnected);
+  task_environment_.FastForwardBy(kTimeBriefly);
+  ASSERT_EQ(client_->state(), AgentClient::State::kConnecting);
+  EXPECT_EQ(endpoint_.call_count(), 0);
+
+  agent_.AnswerHeldBindBrowserHostRequest(
+      mojom::BindBrowserHostResult::kSuccess);
+  task_environment_.FastForwardBy(kTimeBriefly);
+
+  ASSERT_EQ(observer_.connected_count(), 1);
+  EXPECT_EQ(endpoint_.connection_states(),
+            (std::vector<mojom::VpnConnectionState>{
+                mojom::VpnConnectionState::kConnecting,
+                mojom::VpnConnectionState::kConnected}));
+  EXPECT_EQ(endpoint_.calls_outside_session(), 0);
+}
+
+// A session that never finishes its handshake was never announced, so nothing
+// it sent may surface, then or later.
+TEST_F(AgentClientTest, AgentCallsOnSessionThatNeverCompletesAreDropped) {
+  agent_.set_bind_browser_host_result(std::nullopt);
+  client_->EnsureConnected();
+  task_environment_.FastForwardBy(kTimeBriefly);
+  ASSERT_TRUE(agent_.has_held_bind_browser_host_request());
+
+  AgentReportsConnectionState(mojom::VpnConnectionState::kConnected);
+
+  // The agent exits before answering, and does not come back.
+  agent_.set_transport_fails(true);
+  agent_.CloseAllConnections();
+  task_environment_.FastForwardBy(kTimePastEveryRetry);
+
+  EXPECT_EQ(observer_.connected_count(), 0);
+  EXPECT_EQ(endpoint_.call_count(), 0);
+}
+
+// Reset() ends the session on the spot: a call the agent has already sent, but
+// the client has not dispatched yet, is not delivered afterwards.
+TEST_F(AgentClientTest, AgentCallsAreNotDeliveredAfterReset) {
+  ConnectAndWait();
+  ASSERT_EQ(client_->state(), AgentClient::State::kConnected);
+
+  AgentReportsConnectionState(mojom::VpnConnectionState::kConnected);
+  client_->Reset();
+  ASSERT_EQ(observer_.disconnected_count(), 1);
+
+  task_environment_.FastForwardBy(kTimeBriefly);
+  EXPECT_EQ(endpoint_.call_count(), 0);
+}
+
+// The endpoint is bound once per session, so a session that follows a lost one
+// has to be served like the first.
+TEST_F(AgentClientTest, EndpointIsServedAgainAfterReconnect) {
+  ConnectAndWait();
+  ASSERT_EQ(client_->state(), AgentClient::State::kConnected);
+
+  agent_.CloseAllConnections();
+  WaitForNotification();
+  ASSERT_EQ(observer_.disconnected_count(), 1);
+  RunNextScheduledRetry();
+  ASSERT_EQ(client_->state(), AgentClient::State::kConnected);
+
+  AgentReportsConnectionState(mojom::VpnConnectionState::kConnected);
+  task_environment_.FastForwardBy(kTimeBriefly);
+
+  EXPECT_EQ(endpoint_.call_count(), 1);
+  EXPECT_EQ(endpoint_.calls_outside_session(), 0);
 }
 
 TEST_F(AgentClientTest, ResetWhileConnectingIsSafe) {
@@ -909,7 +1069,9 @@ TEST_F(AgentClientTest, ResetWhileInitializePendingIsSafe) {
 // agent keys sessions by connection.
 TEST_F(AgentClientTest, TwoClientsGetIndependentSessions) {
   TestObserver second_observer;
-  std::unique_ptr<AgentClient> second_client = CreateClient(&second_observer);
+  TestBrowserEndpoint second_endpoint(&second_observer);
+  std::unique_ptr<AgentClient> second_client =
+      CreateClient(&second_observer, &second_endpoint);
 
   ConnectAndWait();
   second_client->EnsureConnected();
@@ -920,6 +1082,13 @@ TEST_F(AgentClientTest, TwoClientsGetIndependentSessions) {
   EXPECT_EQ(agent_.connection_count(), 2u);
   EXPECT_EQ(agent_.session_count(), 2u);
   EXPECT_EQ(agent_.bind_browser_host_calls(), 2);
+
+  // Each session calls back into its own client's endpoint. The newest one
+  // the agent holds is the second client's.
+  AgentReportsConnectionState(mojom::VpnConnectionState::kConnected);
+  task_environment_.FastForwardBy(kTimeBriefly);
+  EXPECT_EQ(second_endpoint.call_count(), 1);
+  EXPECT_EQ(endpoint_.call_count(), 0);
 
   // One going away leaves the other alone.
   second_client->Reset();
