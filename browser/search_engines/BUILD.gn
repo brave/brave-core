@@ -1,0 +1,83 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
+import("//extensions/buildflags/buildflags.gni")
+
+source_set("search_engines") {
+  sources = [
+    "search_engine_provider_service_factory.cc",
+    "search_engine_provider_service_factory.h",
+    "search_engine_tracker.cc",
+    "search_engine_tracker.h",
+  ]
+  public_deps = [
+    "//brave/components/brave_ads/buildflags",
+    "//brave/components/web_discovery/buildflags",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_search_conversion",
+    "//brave/components/constants",
+    "//brave/components/p3a_utils",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/search_engines",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//components/pref_registry",
+    "//components/prefs",
+    "//components/search_engines",
+    "//url",
+  ]
+
+  if (is_android) {
+    sources += [
+      "brave_search_engine_pref_helper_android.cc",
+      "normal_window_search_engine_provider_service_android.cc",
+      "normal_window_search_engine_provider_service_android.h",
+      "private_window_search_engine_provider_service_android.cc",
+      "private_window_search_engine_provider_service_android.h",
+    ]
+
+    deps += [
+      "//brave/android/java/org/chromium/chrome/browser/search_engines:jni_headers",
+      "//brave/components/brave_search/browser",
+    ]
+  } else {
+    sources += [
+      "normal_window_search_engine_provider_service.cc",
+      "normal_window_search_engine_provider_service.h",
+      "pref_names.h",
+      "private_window_search_engine_provider_service.cc",
+      "private_window_search_engine_provider_service.h",
+      "private_window_search_engine_provider_service_base.cc",
+      "private_window_search_engine_provider_service_base.h",
+      "search_engine_provider_util.cc",
+      "search_engine_provider_util.h",
+      "tor_window_search_engine_provider_service.cc",
+      "tor_window_search_engine_provider_service.h",
+    ]
+
+    deps += [
+      "//brave/browser/profiles:util",
+      "//brave/components/l10n/common",
+      "//brave/components/search_engines",
+      "//chrome/common:constants",
+      "//components/country_codes",
+      "//extensions/buildflags",
+    ]
+  }
+
+  if (enable_brave_ads) {
+    deps += [ "//brave/components/brave_ads/core/public:headers" ]
+  }
+
+  if (enable_extensions) {
+    deps += [ "//extensions/browser" ]
+  }
+}

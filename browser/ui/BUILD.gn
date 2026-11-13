@@ -514,6 +514,7 @@ source_set("ui") {
       "//brave/browser/new_tab",
       "//brave/browser/ntp_background",
       "//brave/browser/profiles:util",
+      "//brave/browser/search_engines",
       "//brave/browser/sessions",
       "//brave/browser/ui/omnibox:clean_link",
       "//brave/browser/ui/sidebar:sidebar_impl",
