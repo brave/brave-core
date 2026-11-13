@@ -1,12 +1,36 @@
 diff --git a/third_party/blink/renderer/core/loader/modulescript/module_script_loader.cc b/third_party/blink/renderer/core/loader/modulescript/module_script_loader.cc
-index 48c2e9f9c40144987a724379770b2fd4a3553135..45c40681a83630f6a822453ec57908940ea7ee81 100644
+index 48c2e9f9c40144987a724379770b2fd4a3553135..a46c23f5ab86fd6bd8a61f326686b62aed54525a 100644
 --- a/third_party/blink/renderer/core/loader/modulescript/module_script_loader.cc
 +++ b/third_party/blink/renderer/core/loader/modulescript/module_script_loader.cc
-@@ -249,6 +249,7 @@ void ModuleScriptLoader::FetchInternal(
-     options.initiator_info.referrer = module_request.ReferrerString();
+@@ -4,6 +4,7 @@
+ 
+ #include "third_party/blink/renderer/core/loader/modulescript/module_script_loader.h"
+ 
++#include "brave/components/brave_page_graph/common/buildflags.h"
+ #include "third_party/blink/public/common/features.h"
+ #include "third_party/blink/renderer/bindings/core/v8/referrer_script_info.h"
+ #include "third_party/blink/renderer/bindings/core/v8/script_cache_consumer.h"
+@@ -14,6 +15,7 @@
+ #include "third_party/blink/renderer/core/loader/modulescript/module_script_fetcher.h"
+ #include "third_party/blink/renderer/core/loader/modulescript/module_script_loader_client.h"
+ #include "third_party/blink/renderer/core/loader/modulescript/module_script_loader_registry.h"
++#include "third_party/blink/renderer/core/probe/core_probes.h"
+ #include "third_party/blink/renderer/core/script/js_module_script.h"
+ #include "third_party/blink/renderer/core/script/modulator.h"
+ #include "third_party/blink/renderer/core/script/value_wrapper_synthetic_module_script.h"
+@@ -250,6 +252,15 @@ void ModuleScriptLoader::FetchInternal(
      options.initiator_info.position = module_request.GetReferrerPosition();
    }
-+  BRAVE_MODULE_SCRIPT_LOADER_FETCH_INTERNAL
  
++#if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
++  if (CoreProbeSink::HasAgentsGlobal(CoreProbeSink::kPageGraph)) {
++    options.initiator_info.dom_node_id =
++        module_request.Options().GetDOMNodeId();
++    options.initiator_info.parent_script_id =
++        module_request.Options().GetParentScriptId();
++  }
++#endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
++
    async_task_context_.Schedule(
        ExecutionContext::From(modulator_->GetScriptState()),
+       "ModuleScriptLoader", probe::AsyncTaskContext::StackOptions::kScan);
