@@ -2247,10 +2247,8 @@ TEST_P(AIChatServiceUnitTest, Notification_NotTriggeredWhenViewed) {
   ConversationHandler* handler = CreateConversation();
   auto client = CreateConversationClient(handler);
   auto resolve = StartGeneration(handler, *client_);
-  ExpectGenerationState(
-      *client_, handler->get_conversation_uuid(),
-      mojom::ConversationGenerationState::kIdle,
-      base::BindOnce(&CompleteGeneration, std::move(resolve)));
+  ExpectGenerationIdle(*client_, handler->get_conversation_uuid(),
+                       base::BindOnce(&CompleteGeneration, std::move(resolve)));
   EXPECT_FALSE(notified);
 }
 
@@ -2274,10 +2272,9 @@ TEST_P(AIChatServiceUnitTest, Notification_CloseWhenDisablingStorageDropsIt) {
   ASSERT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
   ASSERT_TRUE(closed_uuid.empty());
 
-  ExpectGenerationState(
-      *client_, uuid, mojom::ConversationGenerationState::kIdle,
-      base::BindLambdaForTesting(
-          [&] { prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false); }));
+  ExpectGenerationIdle(*client_, uuid, base::BindLambdaForTesting([&] {
+    prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false);
+  }));
   EXPECT_EQ(closed_uuid, uuid);
 }
 
@@ -2299,13 +2296,11 @@ TEST_P(AIChatServiceUnitTest, Notification_CloseOnBind) {
 
   mojo::Remote<mojom::ConversationHandler> handler_remote;
   mojo::PendingReceiver<mojom::ConversationUI> ui_receiver;
-  ExpectGenerationState(*client_, uuid,
-                        mojom::ConversationGenerationState::kIdle,
-                        base::BindLambdaForTesting([&] {
-                          ai_chat_service_->BindConversation(
-                              uuid, handler_remote.BindNewPipeAndPassReceiver(),
-                              ui_receiver.InitWithNewPipeAndPassRemote());
-                        }));
+  ExpectGenerationIdle(*client_, uuid, base::BindLambdaForTesting([&] {
+    ai_chat_service_->BindConversation(
+        uuid, handler_remote.BindNewPipeAndPassReceiver(),
+        ui_receiver.InitWithNewPipeAndPassRemote());
+  }));
   ASSERT_TRUE(
       base::test::RunUntil([&] { return handler->IsAnyClientConnected(); }));
 
@@ -2352,11 +2347,9 @@ TEST_P(AIChatServiceUnitTest, Notification_CloseOnDirectHandlerBind) {
 
   // Binding straight to the handler, as the tab-associated route does.
   std::unique_ptr<MockConversationHandlerClient> client;
-  ExpectGenerationState(*client_, uuid,
-                        mojom::ConversationGenerationState::kIdle,
-                        base::BindLambdaForTesting([&] {
-                          client = CreateConversationClient(handler);
-                        }));
+  ExpectGenerationIdle(*client_, uuid, base::BindLambdaForTesting([&] {
+    client = CreateConversationClient(handler);
+  }));
   EXPECT_EQ(closed_uuid, uuid);
 }
 
