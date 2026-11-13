@@ -2139,11 +2139,9 @@ TEST_P(AIChatServiceUnitTest, GenerationState_ViewingClearsAwaitingUserInput) {
       base::BindOnce(&CompleteGeneration, std::move(resolve)));
 
   std::unique_ptr<MockConversationHandlerClient> client;
-  ExpectGenerationState(*client_, uuid,
-                        mojom::ConversationGenerationState::kIdle,
-                        base::BindLambdaForTesting([&] {
-                          client = CreateConversationClient(handler);
-                        }));
+  ExpectGenerationIdle(*client_, uuid, base::BindLambdaForTesting([&] {
+    client = CreateConversationClient(handler);
+  }));
 }
 
 TEST_P(AIChatServiceUnitTest,
@@ -2153,9 +2151,8 @@ TEST_P(AIChatServiceUnitTest,
   auto client = CreateConversationClient(handler);
   auto resolve = StartGeneration(handler, *client_, ToolUseNeedingPermission());
   // Stopping on the challenge while open needs no indicator.
-  ExpectGenerationState(
-      *client_, uuid, mojom::ConversationGenerationState::kIdle,
-      base::BindOnce(&CompleteGeneration, std::move(resolve)));
+  ExpectGenerationIdle(*client_, uuid,
+                       base::BindOnce(&CompleteGeneration, std::move(resolve)));
 
   // Leaving without answering it does.
   ExpectGenerationState(*client_, uuid,
@@ -2183,11 +2180,9 @@ TEST_P(AIChatServiceUnitTest,
       *client_, uuid, mojom::ConversationGenerationState::kAwaitingUserInput,
       base::BindOnce(&CompleteGeneration, std::move(resolve)));
   std::unique_ptr<MockConversationHandlerClient> client;
-  ExpectGenerationState(*client_, uuid,
-                        mojom::ConversationGenerationState::kIdle,
-                        base::BindLambdaForTesting([&] {
-                          client = CreateConversationClient(handler);
-                        }));
+  ExpectGenerationIdle(*client_, uuid, base::BindLambdaForTesting([&] {
+    client = CreateConversationClient(handler);
+  }));
 
   // The approved tool runs without a generation request in progress.
   ExpectGenerationState(
