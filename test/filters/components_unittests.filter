@@ -396,6 +396,11 @@
 -DocumentProviderTest.ProductDescriptionStringsAndAccessibleLabels
 -DocumentSuggestionsServiceTest.EnsureVariationHeaders
 -DownloadItemTest.AnnotationWithEmptyURLInIncognito
+# Brave never passes the request initiator to RenameAndAnnotate, so downloads
+# don't record the page that started them. Covered instead by
+# BraveDownloadOriginMetadataBrowserTest.DownloadsDoNotRecordWhereTheyCameFrom.
+# https://github.com/brave/brave-browser/issues/61737
+-DownloadItemTest.AnnotationWithRequestInitiator
 -EntryPointDisplayReasonTest.ShouldShowPromoIfHasNoValidTargetDevice
 -EntryPointDisplayReasonTest.ShouldShowPromoIfSignedOut
 -FeedbackUploaderDispatchTest.VariationHeaders
