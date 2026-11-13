@@ -113,66 +113,40 @@ export const MULTILINGUAL_NEMOTRON_CONFIG = {
 
 // supported languages
 
-// The English model takes any English tag, such as en-AU.
-export const ENGLISH_LANGUAGE_SUBTAG = 'en'
+// The locales that the worker serves, with the model and the prompt ID of
+// each. One row for each row of `kLocales` in
+// brave/chromium_src/components/soda/constants.cc, in the same order. The
+// browser resolves each page tag to one of these tags, so the worker gets no
+// other tag. The prompt IDs come from `prompt_dictionary` in the multilingual
+// model's config.json.
+export const LOCALES = {
+  'en-US': { model: 'english', promptId: null },
+  'ar': { model: 'multilingual', promptId: 7 },
+  'de-DE': { model: 'multilingual', promptId: 9 },
+  'es-ES': { model: 'multilingual', promptId: 2 },
+  'es-US': { model: 'multilingual', promptId: 3 },
+  'fr-FR': { model: 'multilingual', promptId: 8 },
+  'fr-CA': { model: 'multilingual', promptId: 100 },
+  'hi-IN': { model: 'multilingual', promptId: 6 },
+  'it-IT': { model: 'multilingual', promptId: 15 },
+  'ja-JP': { model: 'multilingual', promptId: 10 },
+  'ko-KR': { model: 'multilingual', promptId: 14 },
+  'nl-NL': { model: 'multilingual', promptId: 16 },
+  'pt-BR': { model: 'multilingual', promptId: 12 },
+  'pt-PT': { model: 'multilingual', promptId: 13 },
+  'ru-RU': { model: 'multilingual', promptId: 11 },
+  'tr-TR': { model: 'multilingual', promptId: 18 },
+  'uk-UA': { model: 'multilingual', promptId: 19 },
+  'vi-VN': { model: 'multilingual', promptId: 33 },
+} as const satisfies Record<
+  string,
+  | { model: 'english'; promptId: null }
+  | { model: 'multilingual'; promptId: number }
+>
 
-// Tags the multilingual model has a prompt for, mapped to that prompt's ID.
-// Keep in sync with `kMultilingualLanguages` in
-// brave/chromium_src/components/soda/constants.cc.
-// add all tier 1 languages except English
-// from https://huggingface.co/nvidia/nemotron-3.5-asr-streaming-0.6b
-export const MULTILINGUAL_SUPPORTED_LANGUAGES = {
-  // Arabic
-  'ar': 7,
-  'ar-AR': 7,
-  // Dutch
-  'nl': 16,
-  'nl-NL': 16,
-  // French
-  'fr': 8,
-  'fr-CA': 100,
-  'fr-FR': 8,
-  // German
-  'de': 9,
-  'de-DE': 9,
-  // Hindi
-  'hi': 6,
-  'hi-IN': 6,
-  'hi-HI': 6,
-  // Italian
-  'it': 15,
-  'it-IT': 15,
-  // Japanese
-  'ja-JA': 10,
-  'ja-JP': 10,
-  // Korean
-  'ko': 14,
-  'ko-KR': 14,
-  'ko-KO': 14,
-  // Portuguese
-  'pt': 13,
-  'pt-BR': 12,
-  'pt-PT': 13,
-  // Russian
-  'ru': 11,
-  'ru-RU': 11,
-  // Spanish
-  'es': 3,
-  'es-ES': 2,
-  'es-US': 3,
-  // Turkish
-  'tr': 18,
-  'tr-TR': 18,
-  // Ukrainian
-  'uk': 19,
-  'uk-UA': 19,
-  // Vietnamese
-  'vi-VN': 33,
-} as const
-
-export const MULTILINGUAL_LANGUAGE_TAG_TOKENS = new Set(
-  Object.keys(MULTILINGUAL_SUPPORTED_LANGUAGES).map((lang) => `<${lang}>`),
-)
+// A language tag token, such as <es-ES>. The multilingual model can emit one
+// after the terminal punctuation. The English vocab has no such tokens.
+export const LANGUAGE_TAG_TOKEN = /^<[a-z]{2}-[A-Z]{2}>$/
 
 // Silence fed before the first real sample. The exported ONNX encoder graph
 // drops the first 2 time frames of its pre-encode output. This happens inside

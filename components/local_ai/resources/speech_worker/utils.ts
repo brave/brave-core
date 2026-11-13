@@ -5,10 +5,7 @@
 
 import { BigBuffer } from 'gen/mojo/public/mojom/base/big_buffer.mojom-webui.js'
 
-import {
-  ENGLISH_LANGUAGE_SUBTAG,
-  MULTILINGUAL_SUPPORTED_LANGUAGES,
-} from './configs'
+import { LANGUAGE_TAG_TOKEN, LOCALES } from './configs'
 
 import type { NemotronModelType } from './configs'
 
@@ -69,28 +66,26 @@ export function argmax(a: Float32Array): number {
   return best
 }
 
-// Picks the model and prompt for a BCP 47 tag, ignoring case. Accepts the same
-// tags as `IsBraveOnDeviceSpeechLanguageSupported` in
-// brave/chromium_src/components/soda/constants.cc.
+// The model and the prompt ID for a locale tag. The tag must be a key of
+// `LOCALES`, with the same case, because the browser sends only those tags.
 export function getNemotronModelType(lang: string): {
   modelType: NemotronModelType
   promptId: number | null
 } {
-  const tag = lang.toLowerCase()
-  if (
-    tag === ENGLISH_LANGUAGE_SUBTAG
-    || tag.startsWith(`${ENGLISH_LANGUAGE_SUBTAG}-`)
-  ) {
-    return { modelType: 'english', promptId: null }
+  if (!Object.hasOwn(LOCALES, lang)) {
+    throw new Error(`Unsupported ASR language: ${lang}`)
   }
+  const locale = LOCALES[lang as keyof typeof LOCALES]
+  return { modelType: locale.model, promptId: locale.promptId }
+}
 
-  for (const [supported, promptId] of Object.entries(
-    MULTILINGUAL_SUPPORTED_LANGUAGES,
-  )) {
-    if (supported.toLowerCase() === tag) {
-      return { modelType: 'multilingual', promptId }
+// The IDs of the language tag tokens in a vocab.
+export function findLanguageTagTokenIds(tokens: string[]): Set<number> {
+  const ids = new Set<number>()
+  tokens.forEach((token, id) => {
+    if (LANGUAGE_TAG_TOKEN.test(token)) {
+      ids.add(id)
     }
-  }
-
-  throw new Error(`Unsupported ASR language: ${lang}`)
+  })
+  return ids
 }
