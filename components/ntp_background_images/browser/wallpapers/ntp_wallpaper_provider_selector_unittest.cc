@@ -16,6 +16,7 @@
 #include "brave/components/ntp_background_images/browser/wallpapers/ntp_use_your_own_wallpaper_provider.h"
 #include "brave/components/ntp_background_images/browser/wallpapers/test/fake_ntp_custom_background_delegate.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
+#include "brave/components/sponsored_content/test/fake_sponsored_content_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -27,10 +28,12 @@ class NTPWallpaperProviderSelectorTest : public testing::Test {
 
   void SetUp() override {
     RegisterProfilePrefs(prefs_.registry());
+    sponsored_content_service_ = std::make_unique<
+        sponsored_content::test::FakeSponsoredContentService>();
     background_images_service_ =
         std::make_unique<FakeNTPBackgroundImagesService>(
-            /*variations_service=*/nullptr,
-            /*component_updater_service=*/nullptr, &prefs_);
+            /*component_update_service=*/nullptr,
+            sponsored_content_service_.get(), &prefs_);
     view_counter_model_ = std::make_unique<ViewCounterModel>(&prefs_);
 
     use_your_own_wallpaper_provider_ =
@@ -57,6 +60,8 @@ class NTPWallpaperProviderSelectorTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   test::FakeNTPCustomBackgroundDelegate custom_background_delegate_;
+  std::unique_ptr<sponsored_content::test::FakeSponsoredContentService>
+      sponsored_content_service_;
   std::unique_ptr<FakeNTPBackgroundImagesService> background_images_service_;
   std::unique_ptr<ViewCounterModel> view_counter_model_;
   std::unique_ptr<NTPUseYourOwnWallpaperProvider>

@@ -8,6 +8,7 @@
 #include <optional>
 
 #include "base/test/test_future.h"
+#include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
@@ -32,6 +33,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/test/ad_event_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
+#include "url/gurl.h"
 
 // pnpm test brave_unit_tests --filter=BraveAdsAdsInternalsUtil*
 
@@ -44,7 +46,7 @@ TEST_F(BraveAdsAdsInternalsUtilTest,
   // Arrange
   test::BuildAndSaveCampaignConversion(
       /*campaign_id=*/"campaign-id",
-      /*url_pattern=*/"https://www.brave.com/*",
+      /*thank_you_url_pattern=*/"https://www.brave.com/*",
       /*observation_window=*/base::Days(7));
 
   AdInfo ad =
@@ -65,8 +67,44 @@ TEST_F(BraveAdsAdsInternalsUtilTest,
   ASSERT_EQ(1u, conversions->size());
   const base::DictValue* const conversion = (*conversions)[0].GetIfDict();
   ASSERT_TRUE(conversion);
-  EXPECT_TRUE(conversion->Find("URL Pattern"));
+  EXPECT_TRUE(conversion->Find("Thank You URL Pattern"));
   EXPECT_TRUE(conversion->Find("Expires At"));
+}
+
+TEST_F(BraveAdsAdsInternalsUtilTest,
+       BuildAdsInternalsContainsOrderExtractionJsonKeys) {
+  // Arrange
+  ads_client_notifier_.NotifyTabDidChange(
+      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://www.brave.com")},
+      /*is_new_navigation=*/true, /*is_restoring=*/false, /*is_visible=*/true);
+  ads_client_notifier_.NotifyOrderIdResolved(
+      /*tab_id=*/1, /*extracted_for_url=*/GURL("https://www.brave.com"),
+      /*id=*/"336121537");
+  ads_client_notifier_.NotifyOrderValueResolved(
+      /*tab_id=*/1, /*extracted_for_url=*/GURL("https://www.brave.com"),
+      /*value=*/"4.98", /*currency=*/"EUR");
+
+  // Act
+  base::test::TestFuture<std::optional<base::DictValue>> test_future;
+  BuildAdsInternals(test_future.GetCallback());
+  const auto& internals = test_future.Get();
+
+  // Assert
+  ASSERT_TRUE(internals);
+  const base::ListValue* const order_extractions =
+      internals->FindList("orderExtractions");
+  ASSERT_TRUE(order_extractions);
+  ASSERT_EQ(1u, order_extractions->size());
+  const base::DictValue* const order_extraction =
+      (*order_extractions)[0].GetIfDict();
+  ASSERT_TRUE(order_extraction);
+  EXPECT_THAT(*order_extraction,
+              base::test::DictionaryHasValues(base::test::ParseJsonDict(R"JSON(
+                  {
+                    "Order ID": "336121537",
+                    "Order Value": "4.98",
+                    "Order Currency": "EUR"
+                  })JSON")));
 }
 
 TEST_F(BraveAdsAdsInternalsUtilTest, BuildAdsInternalsContainsAdEventJsonKeys) {

@@ -14,6 +14,7 @@
 #include "base/containers/span.h"
 #include "base/observer_list.h"
 #include "base/scoped_observation.h"
+#include "brave/components/brave_ads/core/internal/tabs/extracted_order_field_type.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
@@ -46,6 +47,10 @@ class TabManager final : public AdsClientNotifierObserver {
 
   bool IsPlayingMedia(int32_t tab_id) const;
 
+  // Only tabs with an extracted order ID or order value, surfaced on
+  // `brave://ads-internals` to confirm extraction without a real purchase.
+  std::vector<TabInfo> GetOrderExtractions() const;
+
  private:
   bool DoesExistForId(int32_t tab_id) const;
   TabInfo& GetOrCreateForId(int32_t tab_id);
@@ -53,6 +58,9 @@ class TabManager final : public AdsClientNotifierObserver {
 
   void NotifyTabDidChangeFocus(int32_t tab_id);
   void NotifyTabDidChange(const TabInfo& tab);
+  void NotifyTabExtractedOrder(
+      const TabInfo& tab,
+      ExtractedOrderFieldType extracted_order_field_type);
   void NotifyTabDidLoad(const TabInfo& tab, int http_status_code);
   void NotifyTabDidFailToLoad(const TabInfo& tab);
   void NotifyDidOpenNewTab(const TabInfo& tab);
@@ -77,6 +85,14 @@ class TabManager final : public AdsClientNotifierObserver {
   void OnNotifyTabDidLoad(int32_t tab_id, int http_status_code) override;
   void OnNotifyTabDidFailToLoad(int32_t tab_id) override;
   void OnNotifyDidCloseTab(int32_t tab_id) override;
+  void OnNotifyOrderIdResolved(int32_t tab_id,
+                               const GURL& extracted_for_url,
+                               const std::optional<std::string>& id) override;
+  void OnNotifyOrderValueResolved(
+      int32_t tab_id,
+      const GURL& extracted_for_url,
+      const std::optional<std::string>& value,
+      const std::optional<std::string>& currency) override;
 
   base::ObserverList<TabManagerObserver> observers_;
 

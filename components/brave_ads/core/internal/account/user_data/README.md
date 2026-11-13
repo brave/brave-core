@@ -15,6 +15,9 @@ Included as part of the "confirmation" payload. See [non-Brave Rewards user conf
 |---|---|---|
 | buildChannel  | {"buildChannel": "beta"}  | Browser build channel.  |
 | conversion.action[^2]  | {"conversion":[{"action":"click"}]}  | Conversion attribution to determine which advertising efforts led a user to view or click on an ad and subsequently complete a desired action. Also, see [reporting metrics](https://ads-help.brave.com/campaign-performance/reporting/#available-reporting-metrics-in-brave-ads-manager).<br><br> Supported types:<br><br>Brave Search ads:<br>- click-through  |
+| conversion.orderCurrency[^2]  | {"conversion":[{"orderCurrency":"USD"}]}  | Currency of the order value read from the checkout or thank you page. Only included alongside `conversion.orderValue` when a currency was identified.  |
+| conversion.orderId[^2]  | {"conversion":[{"orderId":"ABC123456"}]}  | Order ID read from the checkout or thank you page. Only included when order ID extraction is enabled for the campaign and an ID was found.  |
+| conversion.orderValue[^2]  | {"conversion":[{"orderValue":"29.85"}]}  | Order value read from the checkout or thank you page. Only included when order value extraction is enabled for the campaign and a value was found.  |
 | countryCode  | {"countryCode":"US"}  | Two-letter [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code representing the user's current country. Uses the variations country code, which is determined by IP geolocation, when available; otherwise, falls back to the device's country code.  |
 | platform  | {"platform":"windows"}  | Operating system.  |
 | versionNumber  | {"versionNumber":"1.2.0.0"}  | Browser version number with fixed values for build and patch.  |
@@ -30,6 +33,9 @@ Included as part of the "confirmation token" payload. See [Brave Rewards user co
 | buildChannel  | {"buildChannel": "beta"}  | Browser build channel.  |
 | catalog  | {"catalog":[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}]}  |  Refers to the catalog that the ad was pulled from.  |
 | conversion.action[^2]  | {"conversion":[{"action":"view"}]}  | View-through or click-through conversion attribution to determine which advertising efforts led a user to view or click on an ad and subsequently complete a desired action. Also, see [reporting metrics](https://ads-help.brave.com/campaign-performance/reporting/#available-reporting-metrics-in-brave-ads-manager).  |
+| conversion.orderCurrency[^2]  | {"conversion":[{"orderCurrency":"USD"}]}  | Currency of the order value read from the checkout or thank you page. Only included alongside `conversion.orderValue` when a currency was identified.  |
+| conversion.orderId[^2]  | {"conversion":[{"orderId":"ABC123456"}]}  | Order ID read from the checkout or thank you page. Only included when order ID extraction is enabled for the campaign and an ID was found.  |
+| conversion.orderValue[^2]  | {"conversion":[{"orderValue":"29.85"}]}  | Order value read from the checkout or thank you page. Only included when order value extraction is enabled for the campaign and a value was found.  |
 | countryCode  | {"countryCode":"US"}  | Two-letter [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code representing the user's current country. Uses the variations country code, which is determined by IP geolocation, when available; otherwise, falls back to the device's country code.  |
 | createdAtTimestamp  | {"createdAtTimestamp":"2020-11-18T12:00:00.000Z"}  | Transaction creation time as an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) UTC timestamp, rounded down to the hour.  |
 | diagnosticId[^1][^2]  | {"diagnosticId":"c1298fde-7fdb-401f-a3ce-0b58fe86e6e2"}  | Diagnostic id from `brave://ads-internals` to assist in troubleshooting issues. This is only included if it has been set manually by the user, for example, at the request of Brave Support in order to troubleshoot a problem.  |

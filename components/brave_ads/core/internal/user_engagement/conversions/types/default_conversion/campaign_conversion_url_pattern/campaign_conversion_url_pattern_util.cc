@@ -15,7 +15,8 @@ namespace brave_ads {
 bool DoesCampaignConversionUrlPatternMatchRedirectChain(
     const CampaignConversionInfo& campaign_conversion,
     base::span<const GURL> redirect_chain) {
-  return MatchUrlPattern(redirect_chain, campaign_conversion.url_pattern);
+  return MatchUrlPattern(redirect_chain,
+                         campaign_conversion.thank_you_url_pattern);
 }
 
 }  // namespace brave_ads

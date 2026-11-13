@@ -10,6 +10,7 @@
 
 #include "base/test/task_environment.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
+#include "brave/components/sponsored_content/test/fake_sponsored_content_service.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -25,8 +26,10 @@ class NTPBackgroundImagesSourceTest : public testing::Test {
     NTPBackgroundImagesService::RegisterLocalStatePrefsForMigration(
         pref_registry);
 
+    sponsored_content_service_ = std::make_unique<
+        sponsored_content::test::FakeSponsoredContentService>();
     background_images_service_ = std::make_unique<NTPBackgroundImagesService>(
-        /*variations_service=*/nullptr, /*component_update_service=*/nullptr,
+        /*component_update_service=*/nullptr, sponsored_content_service_.get(),
         &pref_service_);
     background_images_source_ = std::make_unique<NTPBackgroundImagesSource>(
         background_images_service_.get());
@@ -35,6 +38,8 @@ class NTPBackgroundImagesSourceTest : public testing::Test {
  protected:
   base::test::SingleThreadTaskEnvironment task_environment_;
   TestingPrefServiceSimple pref_service_;
+  std::unique_ptr<sponsored_content::test::FakeSponsoredContentService>
+      sponsored_content_service_;
   std::unique_ptr<NTPBackgroundImagesService> background_images_service_;
   std::unique_ptr<NTPBackgroundImagesSource> background_images_source_;
 };

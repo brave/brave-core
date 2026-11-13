@@ -7,9 +7,11 @@
 
 #include <cstdint>
 #include <memory>
+#include <utility>
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/public/common/functional/once_closure_task_queue.h"
 #include "ui/base/page_transition_types.h"
@@ -84,6 +86,30 @@ void AdsClientNotifier::NotifyResourceComponentDidChange(
   observers_.Notify(
       &AdsClientNotifierObserver::OnNotifyResourceComponentDidChange,
       manifest_version, id);
+}
+
+void AdsClientNotifier::NotifySponsoredContentComponentDidChange(
+    std::optional<base::DictValue> value) {
+  if (task_queue_->should_queue()) {
+    return task_queue_->Add(base::BindOnce(
+        &AdsClientNotifier::NotifySponsoredContentComponentDidChange,
+        weak_factory_.GetWeakPtr(), std::move(value)));
+  }
+
+  observers_.Notify(
+      &AdsClientNotifierObserver::OnNotifySponsoredContentComponentDidChange,
+      value);
+}
+
+void AdsClientNotifier::NotifyDidUnregisterSponsoredContentComponent() {
+  if (task_queue_->should_queue()) {
+    return task_queue_->Add(base::BindOnce(
+        &AdsClientNotifier::NotifyDidUnregisterSponsoredContentComponent,
+        weak_factory_.GetWeakPtr()));
+  }
+
+  observers_.Notify(&AdsClientNotifierObserver::
+                        OnNotifyDidUnregisterSponsoredContentComponent);
 }
 
 void AdsClientNotifier::NotifyDidUnregisterResourceComponent(
@@ -181,6 +207,35 @@ void AdsClientNotifier::NotifyDidCloseTab(int32_t tab_id) {
   }
 
   observers_.Notify(&AdsClientNotifierObserver::OnNotifyDidCloseTab, tab_id);
+}
+
+void AdsClientNotifier::NotifyOrderIdResolved(int32_t tab_id,
+                                              const GURL& extracted_for_url,
+                                              std::optional<std::string> id) {
+  if (task_queue_->should_queue()) {
+    return task_queue_->Add(base::BindOnce(
+        &AdsClientNotifier::NotifyOrderIdResolved, weak_factory_.GetWeakPtr(),
+        tab_id, extracted_for_url, std::move(id)));
+  }
+
+  observers_.Notify(&AdsClientNotifierObserver::OnNotifyOrderIdResolved, tab_id,
+                    extracted_for_url, id);
+}
+
+void AdsClientNotifier::NotifyOrderValueResolved(
+    int32_t tab_id,
+    const GURL& extracted_for_url,
+    std::optional<std::string> value,
+    std::optional<std::string> currency) {
+  if (task_queue_->should_queue()) {
+    return task_queue_->Add(
+        base::BindOnce(&AdsClientNotifier::NotifyOrderValueResolved,
+                       weak_factory_.GetWeakPtr(), tab_id, extracted_for_url,
+                       std::move(value), std::move(currency)));
+  }
+
+  observers_.Notify(&AdsClientNotifierObserver::OnNotifyOrderValueResolved,
+                    tab_id, extracted_for_url, value, currency);
 }
 
 void AdsClientNotifier::NotifyUserGestureEventTriggered(

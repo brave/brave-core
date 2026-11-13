@@ -150,8 +150,10 @@ class SponsoredSitesFacadeTest : public testing::Test {
   // fail-closed default.
   bool GetHasGenuineVisit(SponsoredSitesFacade& facade,
                           const std::string& target_url) {
-    background_images_service_->OnGetSponsoredSitesData(
-        CreateSponsoredSitesData(installed_dir_.GetPath(), "foo", target_url));
+    background_images_service_->SetSponsoredSitesData(
+        std::make_unique<ntp_background_images::NTPSponsoredSitesData>(
+            CreateSponsoredSitesData(installed_dir_.GetPath(), "foo",
+                                     target_url)));
     GetSites(facade);
     EXPECT_TRUE(base::test::RunUntil(
         [&] { return !facade.HasPendingGenuineVisitQueriesForTesting(); }));
@@ -176,8 +178,10 @@ TEST_F(SponsoredSitesFacadeTest, ReturnsNoSitesWhenSponsoredSitesDisabled) {
   profile_prefs_.SetBoolean(brave_ads::prefs::kSponsoredEnabled, false);
 
   auto facade = CreateFacade();
-  background_images_service_->OnGetSponsoredSitesData(CreateSponsoredSitesData(
-      installed_dir_.GetPath(), "foo", "https://foo.com"));
+  background_images_service_->SetSponsoredSitesData(
+      std::make_unique<ntp_background_images::NTPSponsoredSitesData>(
+          CreateSponsoredSitesData(installed_dir_.GetPath(), "foo",
+                                   "https://foo.com")));
 
   EXPECT_THAT(GetSites(*facade), testing::IsEmpty());
 }
@@ -190,10 +194,12 @@ TEST_F(SponsoredSitesFacadeTest, ReturnsNoSitesWhenNoSponsoredSitesData) {
 
 TEST_F(SponsoredSitesFacadeTest, ReturnsEligibleSites) {
   auto facade = CreateFacade();
-  background_images_service_->OnGetSponsoredSitesData(CreateSponsoredSitesData(
-      installed_dir_.GetPath(),
-      {SponsoredSiteTileSpec{"foo", "https://foo.com"},
-       SponsoredSiteTileSpec{"bar", "https://bar.com"}}));
+  background_images_service_->SetSponsoredSitesData(
+      std::make_unique<ntp_background_images::NTPSponsoredSitesData>(
+          CreateSponsoredSitesData(
+              installed_dir_.GetPath(),
+              {SponsoredSiteTileSpec{"foo", "https://foo.com"},
+               SponsoredSiteTileSpec{"bar", "https://bar.com"}})));
 
   EXPECT_THAT(GetSites(*facade),
               testing::ElementsAre(testing::Pointee(testing::Field(
@@ -207,8 +213,10 @@ TEST_F(SponsoredSitesFacadeTest, ReturnsNoSitesWhenRewardsWalletConnected) {
   profile_prefs_.SetString(brave_rewards::prefs::kExternalWalletType, "uphold");
 
   auto facade = CreateFacade();
-  background_images_service_->OnGetSponsoredSitesData(CreateSponsoredSitesData(
-      installed_dir_.GetPath(), "foo", "https://foo.com"));
+  background_images_service_->SetSponsoredSitesData(
+      std::make_unique<ntp_background_images::NTPSponsoredSitesData>(
+          CreateSponsoredSitesData(installed_dir_.GetPath(), "foo",
+                                   "https://foo.com")));
 
   EXPECT_THAT(GetSites(*facade), testing::IsEmpty());
 }
@@ -221,8 +229,10 @@ TEST_F(SponsoredSitesFacadeTest, InvokesCallbackWhenSponsoredSitesDataUpdates) {
   facade->SetSitesUpdatedCallback(base::BindLambdaForTesting(
       [&callback_invoked] { callback_invoked = true; }));
 
-  background_images_service_->OnGetSponsoredSitesData(CreateSponsoredSitesData(
-      installed_dir_.GetPath(), "foo", "https://foo.com"));
+  background_images_service_->SetSponsoredSitesData(
+      std::make_unique<ntp_background_images::NTPSponsoredSitesData>(
+          CreateSponsoredSitesData(installed_dir_.GetPath(), "foo",
+                                   "https://foo.com")));
 
   EXPECT_TRUE(callback_invoked);
 }
@@ -265,8 +275,10 @@ TEST_F(SponsoredSitesFacadeTest, PreservesGenuineVisitAcrossRoutineRefresh) {
   ASSERT_TRUE(GetHasGenuineVisit(*facade, "https://foo.com"));
 
   // A routine refresh re-fetches the same sponsored sites data.
-  background_images_service_->OnGetSponsoredSitesData(CreateSponsoredSitesData(
-      installed_dir_.GetPath(), "foo", "https://foo.com"));
+  background_images_service_->SetSponsoredSitesData(
+      std::make_unique<ntp_background_images::NTPSponsoredSitesData>(
+          CreateSponsoredSitesData(installed_dir_.GetPath(), "foo",
+                                   "https://foo.com")));
 
   auto sites = GetSites(*facade);
   ASSERT_EQ(sites.size(), 1u);

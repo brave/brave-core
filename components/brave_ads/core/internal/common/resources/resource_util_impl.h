@@ -10,9 +10,8 @@
 #include <string>
 #include <utility>
 
-#include "base/files/file_util.h"
+#include "base/files/file.h"
 #include "base/functional/bind.h"
-#include "base/json/json_reader.h"
 #include "base/location.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
@@ -20,34 +19,19 @@
 #include "brave/components/brave_ads/core/internal/common/resources/resource_util.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
-namespace base {
-class File;
-}  // namespace base
-
 namespace brave_ads {
+
+// Not templated on `T`; reading and parsing the file does not depend on
+// which resource type is loading it.
+std::optional<base::DictValue> ReadResourceComponentFileToDict(base::File file);
 
 template <typename T>
 std::optional<T> LoadAndParseResourceComponentOnBackgroundThread(
     base::File file) {
-  if (!file.IsValid()) {
+  std::optional<base::DictValue> dict =
+      ReadResourceComponentFileToDict(std::move(file));
+  if (!dict) {
     return std::nullopt;
-  }
-
-  std::optional<base::DictValue> dict;
-  {
-    // `content` can be up to 10 MB, so we keep the scope of this object to this
-    // block to release its memory as soon as possible.
-
-    std::string content;
-    const base::ScopedFILE scoped_file(base::FileToFILE(std::move(file), "rb"));
-    if (!base::ReadStreamToString(scoped_file.get(), &content)) {
-      return std::nullopt;
-    }
-
-    dict = base::JSONReader::ReadDict(content, base::JSON_PARSE_RFC);
-    if (!dict) {
-      return std::nullopt;
-    }
   }
 
   return T::MaybeFromDict(std::move(*dict));

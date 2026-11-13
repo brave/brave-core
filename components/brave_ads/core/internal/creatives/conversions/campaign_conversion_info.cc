@@ -24,7 +24,7 @@ CampaignConversionInfo& CampaignConversionInfo::operator=(
 CampaignConversionInfo::~CampaignConversionInfo() = default;
 
 bool CampaignConversionInfo::IsValid() const {
-  return !id.empty() && !url_pattern.empty() &&
+  return !id.empty() && !thank_you_url_pattern.empty() &&
          !observation_window.is_negative() && expire_at;
 }
 

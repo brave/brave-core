@@ -118,6 +118,16 @@ std::optional<std::string> GetAntiTargetingResourceManifestVersion() {
   return GetAdHandler().GetAntiTargetingResource().GetManifestVersion();
 }
 
+ResourceLoadStateType GetOrderExtractionPatternsResourceState() {
+  return GetAdHandler().GetOrderExtractionPatternsResource().GetLoadState();
+}
+
+std::optional<std::string> GetOrderExtractionPatternsResourceManifestVersion() {
+  return GetAdHandler()
+      .GetOrderExtractionPatternsResource()
+      .GetManifestVersion();
+}
+
 struct ResourceTableEntry final {
   DiagnosticEntryType type;
   const char* name;
@@ -133,8 +143,11 @@ constexpr ResourceTableEntry kResourceTable[] = {
      &GetPurchaseIntentResourceState,
      &GetPurchaseIntentResourceManifestVersion},
     {DiagnosticEntryType::kAntiTargetingResource, "Anti targeting resource",
-     &GetAntiTargetingResourceState,
-     &GetAntiTargetingResourceManifestVersion}};
+     &GetAntiTargetingResourceState, &GetAntiTargetingResourceManifestVersion},
+    {DiagnosticEntryType::kOrderExtractionPatternsResource,
+     "Order extraction patterns resource",
+     &GetOrderExtractionPatternsResourceState,
+     &GetOrderExtractionPatternsResourceManifestVersion}};
 
 bool HasApplicableCatalogPermission() {
   if (!IsNotificationAdsEnabled()) {
@@ -202,7 +215,8 @@ constexpr auto kResourcesDiagnosticEntryTypes =
          DiagnosticEntryType::kNewTabPageAdsSchemaVersion,
          DiagnosticEntryType::kTextClassificationResource,
          DiagnosticEntryType::kPurchaseIntentResource,
-         DiagnosticEntryType::kAntiTargetingResource});
+         DiagnosticEntryType::kAntiTargetingResource,
+         DiagnosticEntryType::kOrderExtractionPatternsResource});
 
 constexpr auto kPermissionRulesDiagnosticEntryTypes =
     base::MakeFixedFlatSet<DiagnosticEntryType>(

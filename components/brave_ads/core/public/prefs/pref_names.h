@@ -43,6 +43,9 @@ inline constexpr char kCatalogPing[] = "brave.brave_ads.catalog_ping";
 inline constexpr char kCatalogLastUpdated[] =
     "brave.brave_ads.catalog_last_updated";
 
+inline constexpr char kOrderExtractionPatternsConfig[] =
+    "brave.brave_ads.conversions.config";
+
 inline constexpr char kIssuerPing[] = "brave.brave_ads.issuer_ping";
 inline constexpr char kIssuers[] = "brave.brave_ads.issuers";
 

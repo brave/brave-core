@@ -303,6 +303,17 @@ TEST(NTPSponsoredContentDataTest,
 #endif  // defined(OFFICIAL_BUILD) && !DCHECK_IS_ON()
 
 TEST(NTPSponsoredContentDataTest,
+     FilterCampaignsRemovesImageCreativeIfInstalledDirNoLongerExists) {
+  // The installed directory itself is gone, as if the component was
+  // superseded or uninstalled mid-filter, not merely missing one file.
+  base::DictValue dict =
+      base::test::ParseJsonDict(kTestSponsoredImagesCampaign);
+  FilterCampaigns(
+      dict, base::FilePath(FILE_PATH_LITERAL("nonexistent_installed_dir")));
+  EXPECT_THAT(dict.FindList("campaigns"), testing::Pointee(testing::IsEmpty()));
+}
+
+TEST(NTPSponsoredContentDataTest,
      FilterCampaignsKeepsImageCreativeIfCreativeFilesExist) {
   base::ScopedTempDir installed_dir;
   ASSERT_TRUE(installed_dir.CreateUniqueTempDir());

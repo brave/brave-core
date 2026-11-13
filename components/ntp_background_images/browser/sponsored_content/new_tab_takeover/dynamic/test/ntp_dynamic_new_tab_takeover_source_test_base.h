@@ -18,6 +18,10 @@ namespace base {
 class FilePath;
 }  // namespace base
 
+namespace sponsored_content {
+class SponsoredContentService;
+}  // namespace sponsored_content
+
 namespace ntp_background_images {
 
 class NTPBackgroundImagesService;
@@ -49,6 +53,8 @@ class NTPDynamicNewTabTakeoverSourceTestBase : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
 
   TestingPrefServiceSimple pref_service_;
+  std::unique_ptr<sponsored_content::SponsoredContentService>
+      sponsored_content_service_;
   std::unique_ptr<NTPBackgroundImagesService> background_images_service_;
   std::unique_ptr<NTPDynamicNewTabTakeoverSource> url_data_source_;
 

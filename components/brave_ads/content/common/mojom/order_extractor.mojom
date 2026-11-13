@@ -1,0 +1,66 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_ads.mojom;
+
+struct OrderSelectorInfo {
+  // CSS selector for the order field.
+  string selector;
+
+  // Attribute name to read from the matched element, or `textContent` if unset.
+  string? attribute_name;
+
+  // Pattern to apply to the resolved text/attribute value; uses the first
+  // capture group if present, otherwise the whole match.
+  string? pattern;
+
+  // Validation pattern to apply to the resolved text/attribute value after
+  // `pattern`.
+  string? validation_pattern;
+};
+
+struct OrderPatternsInfo {
+  // Order ID selectors to try before falling back to regexes.
+  array<OrderSelectorInfo> id_selectors;
+
+  // Order ID regexes to try if selectors fail.
+  array<string> id_regexes;
+
+  // Maximum combined text length to search for an order ID.
+  uint32 id_max_combined_text_length_to_search;
+
+  // Number of descendant levels to search for an order ID.
+  uint32 id_number_of_descendant_levels_to_search;
+
+  // Validation pattern to apply to the resolved order ID after any other
+  // patterns.
+  string? id_validation_pattern;
+
+  // Order value selectors to try before falling back to regexes.
+  array<OrderSelectorInfo> value_selectors;
+
+  // Order value's currency regexes, keyed by currency code (e.g. "EUR") so a
+  // matching currency's identity survives into `ExtractedOrderInfo.currency`.
+  map<string, string> value_currency_regexes;
+
+  // Order value's keyword label regexes, detected-language first.
+  array<string> value_keyword_regexes;
+
+  // Number of ancestor levels above a matched keyword label to search for a
+  // sibling matching `value_currency_regexes`.
+  uint32 number_of_ancestor_levels_to_search;
+};
+
+struct ExtractedOrderInfo {
+  string? id;
+  string? value;
+  string? currency;
+};
+
+// Interface for extracting order ID and value from a page's document.
+interface OrderExtractor {
+  ExtractOrder(OrderPatternsInfo order_patterns)
+      => (ExtractedOrderInfo extracted_order);
+};

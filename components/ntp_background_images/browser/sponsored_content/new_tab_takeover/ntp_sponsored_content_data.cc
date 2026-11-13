@@ -336,6 +336,12 @@ bool CreativeFileByRelativeUrlExists(const std::string& relative_url,
     return false;
   }
 
+  if (!base::PathExists(installed_dir)) {
+    // The component was superseded or uninstalled mid-filter, so its files
+    // are legitimately gone, not a packaging bug.
+    return false;
+  }
+
   if (base::PathExists(installed_dir.Append(*relative_file_path))) {
     return true;
   }

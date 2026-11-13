@@ -7,16 +7,25 @@
 
 #include "base/check.h"
 #include "base/check_is_test.h"
+#include "base/functional/bind.h"
+#include "base/numerics/clamped_math.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/components/brave_ads/content/browser/credit_card_field_focus_observer.h"
+#include "brave/components/brave_ads/content/browser/order_fetcher.h"
+#include "brave/components/brave_ads/content/browser/order_fetcher_feature.h"
+#include "brave/components/brave_ads/content/common/mojom/order_extractor.mojom.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/translate/chrome_translate_client.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/prefs/pref_service.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "components/sessions/core/session_id.h"
 #include "components/tabs/public/tab_interface.h"
+#include "components/translate/core/browser/language_state.h"
 #include "content/public/browser/media_player_id.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
@@ -164,6 +173,8 @@ void AdsTabHelper::MaybeSetBrowserIsNoLongerActive() {
 
 void AdsTabHelper::ProcessNavigation() {
   MaybeNotifyTabTextContentDidChange();
+  MaybeExtractOrderPatterns();
+  MaybeWatchForPaymentFieldFocus();
 }
 
 void AdsTabHelper::ResetNavigationState() {
@@ -171,6 +182,11 @@ void AdsTabHelper::ResetNavigationState() {
   redirect_chain_.shrink_to_fit();
 
   http_status_code_.reset();
+
+  last_extract_order_patterns_url_.reset();
+  order_patterns_retry_count_ = 0;
+  order_patterns_retry_timer_.Stop();
+  mojom_extracted_order_.reset();
 
   // Clear player tracking on navigation because all players from the previous
   // document are torn down and their IDs become invalid.
@@ -249,20 +265,24 @@ void AdsTabHelper::MaybeNotifyTabDidFailToLoad() {
   }
 }
 
-bool AdsTabHelper::ShouldNotifyTabContentDidChange() const {
-  // Don't notify about content changes if the ads service is not available, the
-  // tab was restored, was a previously committed navigation, the web contents
-  // are still loading, or an error page was displayed. `http_status_code_` can
-  // be `std::nullopt` if the navigation never finishes, which can occur if the
-  // user constantly refreshes the page, or if the committed navigation was a
-  // network error page.
+bool AdsTabHelper::ShouldProcessNavigation() const {
+  // `http_status_code_` can have no value if the navigation never finishes,
+  // e.g. the user constantly refreshes the page.
   return ads_service_ && !was_restored_ && is_new_navigation_ &&
          !redirect_chain_.empty() && http_status_code_ &&
          !IsHttpErrorStatusCode(*http_status_code_);
 }
 
+bool AdsTabHelper::ShouldProcessOrderExtraction() const {
+  // Unlike `ShouldProcessNavigation`, a restored tab is not skipped since
+  // its order cache is gone, so this is the only chance to re-extract it.
+  return ads_service_ && (is_new_navigation_ || was_restored_) &&
+         !redirect_chain_.empty() && http_status_code_ &&
+         !IsHttpErrorStatusCode(*http_status_code_);
+}
+
 void AdsTabHelper::MaybeNotifyTabTextContentDidChange() {
-  if (!ShouldNotifyTabContentDidChange()) {
+  if (!ShouldProcessNavigation()) {
     return;
   }
 
@@ -285,6 +305,145 @@ void AdsTabHelper::OnMaybeNotifyTabTextContentDidChange(
                                                 redirect_chain,
                                                 /*text=*/value.GetString());
   }
+}
+
+void AdsTabHelper::MaybeExtractOrderPatterns() {
+  if (!ShouldProcessOrderExtraction()) {
+    return;
+  }
+
+  ExtractOrderPatterns();
+}
+
+void AdsTabHelper::ExtractOrderPatterns() {
+  if (redirect_chain_.empty()) {
+    // The tab navigated away while a retry was pending.
+    return;
+  }
+
+  if (!redirect_chain_.back().SchemeIsCryptographic()) {
+    // Never extract from a page an on-path attacker could tamper with, since
+    // the result could carry forward into a later, trusted conversion.
+    return;
+  }
+
+  if (last_extract_order_patterns_url_ == redirect_chain_.back()) {
+    // Already requested for this page; avoid a redundant round trip and DOM
+    // walk for every subsequent credit card field focus.
+    return;
+  }
+  last_extract_order_patterns_url_ = redirect_chain_.back();
+
+  std::optional<std::string> detected_language;
+  if (ChromeTranslateClient* const translate_client =
+          ChromeTranslateClient::FromWebContents(web_contents())) {
+    const std::string& source_language =
+        translate_client->GetLanguageState().source_language();
+    if (!source_language.empty()) {
+      detected_language = source_language;
+    }
+  }
+
+  ads_service_->MaybeGetOrderPatterns(
+      /*tab_id=*/session_id_.id(), redirect_chain_, detected_language,
+      base::BindOnce(&AdsTabHelper::MaybeGetOrderPatternsCallback,
+                     weak_factory_.GetWeakPtr(), redirect_chain_.back()));
+}
+
+void AdsTabHelper::MaybeWatchForPaymentFieldFocus() {
+  if (!ShouldProcessOrderExtraction()) {
+    return;
+  }
+
+  credit_card_field_focus_observer_ =
+      std::make_unique<CreditCardFieldFocusObserver>(
+          *web_contents(),
+          base::BindRepeating(&AdsTabHelper::MaybeExtractOrderPatterns,
+                              weak_factory_.GetWeakPtr()));
+}
+
+void AdsTabHelper::MaybeGetOrderPatternsCallback(
+    const GURL& extracted_for_url,
+    mojom::OrderExtractionPatternsInfoPtr mojom_order_patterns) {
+  if (!mojom_order_patterns) {
+    return;
+  }
+
+  if (redirect_chain_.empty() || redirect_chain_.back() != extracted_for_url) {
+    // The tab navigated away while these patterns were in flight; they were
+    // matched against the old page and must not run against this one.
+    return;
+  }
+
+  if (!order_fetcher_) {
+    order_fetcher_ = std::make_unique<OrderFetcher>(*web_contents());
+  }
+
+  order_fetcher_->FetchOrder(
+      *mojom_order_patterns,
+      base::BindOnce(&AdsTabHelper::FetchOrderCallback,
+                     weak_factory_.GetWeakPtr(), extracted_for_url));
+}
+
+void AdsTabHelper::FetchOrderCallback(
+    const GURL& extracted_for_url,
+    bool should_extract_id,
+    bool should_extract_value,
+    mojom::ExtractedOrderInfoPtr mojom_extracted_order) {
+  CHECK(mojom_extracted_order);
+
+  if (!ads_service_) {
+    return;
+  }
+
+  if (!mojom_extracted_order_) {
+    mojom_extracted_order_ = mojom::ExtractedOrderInfo::New();
+  }
+  // Merged rather than overwritten outright, so a retry re-extracting both
+  // fields can never downgrade one a prior attempt already found.
+  if (mojom_extracted_order->id) {
+    mojom_extracted_order_->id = std::move(mojom_extracted_order->id);
+  }
+  if (mojom_extracted_order->value) {
+    mojom_extracted_order_->value = std::move(mojom_extracted_order->value);
+    mojom_extracted_order_->currency =
+        std::move(mojom_extracted_order->currency);
+  }
+
+  const bool found_nothing =
+      (should_extract_id && !mojom_extracted_order_->id) ||
+      (should_extract_value && !mojom_extracted_order_->value);
+  if (found_nothing &&
+      order_patterns_retry_count_ < kOrderPatternsMaxRetries.Get() &&
+      !redirect_chain_.empty() && redirect_chain_.back() == extracted_for_url) {
+    // A single-page app can still be rendering the order asynchronously
+    // after its own `load` event, so retry with backoff before giving up.
+    const base::TimeDelta retry_delay =
+        kOrderPatternsRetryInitialDelay.Get() *
+        base::ClampLsh(1, order_patterns_retry_count_);
+    ++order_patterns_retry_count_;
+    last_extract_order_patterns_url_.reset();
+    order_patterns_retry_timer_.Start(
+        FROM_HERE, retry_delay,
+        base::BindOnce(&AdsTabHelper::ExtractOrderPatterns,
+                       weak_factory_.GetWeakPtr()));
+    return;
+  }
+
+  if (should_extract_id) {
+    ads_service_->NotifyOrderIdResolved(/*tab_id=*/session_id_.id(),
+                                        extracted_for_url,
+                                        std::move(mojom_extracted_order_->id));
+  }
+
+  if (should_extract_value) {
+    ads_service_->NotifyOrderValueResolved(
+        /*tab_id=*/session_id_.id(), extracted_for_url,
+        std::move(mojom_extracted_order_->value),
+        std::move(mojom_extracted_order_->currency));
+  }
+
+  mojom_extracted_order_.reset();
 }
 
 bool AdsTabHelper::IsPlayingMediaWithAudio(const content::MediaPlayerId& id) {
@@ -355,9 +514,12 @@ void AdsTabHelper::OnDiscardContents(tabs::TabInterface* tab,
   is_new_navigation_ = false;
   redirect_chain_.clear();
   http_status_code_.reset();
+  last_extract_order_patterns_url_.reset();
   started_media_players_.clear();
   media_players_with_audio_.clear();
   is_browser_active_.reset();
+  // Wraps `old_contents`, about to be destroyed.
+  order_fetcher_.reset();
 
   tabs::ContentsObservingTabFeature::OnDiscardContents(tab, old_contents,
                                                        new_contents);
@@ -441,6 +603,10 @@ void AdsTabHelper::DidFinishNavigation(
     // Set `was_restored_` to `false` so that listeners are notified of tab
     // changes after the tab is restored.
     was_restored_ = false;
+
+    // A single-page app can swap to a checkout/thank-you view without a new
+    // document load, so extraction must also run from this same-document path.
+    MaybeExtractOrderPatterns();
   }
 }
 

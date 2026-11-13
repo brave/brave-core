@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_CLIENT_ADS_CLIENT_NOTIFIER_OBSERVER_H_
 
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -17,6 +18,10 @@
 #include "url/gurl.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
+
+namespace base {
+class DictValue;
+}  // namespace base
 
 namespace brave_ads {
 
@@ -36,6 +41,14 @@ class AdsClientNotifierObserver : public base::CheckedObserver {
 
   // Invoked when a resource component with `id` has been unregistered.
   virtual void OnNotifyDidUnregisterResourceComponent(const std::string& id) {}
+
+  // Invoked when the sponsored content component delivers an updated, or
+  // no longer available, conversion config.
+  virtual void OnNotifySponsoredContentComponentDidChange(
+      const std::optional<base::DictValue>& value) {}
+
+  // Invoked when the sponsored content component is unregistered.
+  virtual void OnNotifyDidUnregisterSponsoredContentComponent() {}
 
   // Called when the Brave Rewards wallet did update.
   virtual void OnNotifyRewardsWalletDidUpdate(
@@ -82,6 +95,20 @@ class AdsClientNotifierObserver : public base::CheckedObserver {
 
   // Invoked when a browser tab with the specified `tab_id` is closed.
   virtual void OnNotifyDidCloseTab(int32_t tab_id) {}
+
+  // `extracted_for_url` lets an observer discard a stale post-navigation
+  // result.
+  virtual void OnNotifyOrderIdResolved(int32_t tab_id,
+                                       const GURL& extracted_for_url,
+                                       const std::optional<std::string>& id) {}
+
+  // `value` and `currency` each independently have no value if not
+  // found/matched; see `OnNotifyOrderIdResolved` for `extracted_for_url`.
+  virtual void OnNotifyOrderValueResolved(
+      int32_t tab_id,
+      const GURL& extracted_for_url,
+      const std::optional<std::string>& value,
+      const std::optional<std::string>& currency) {}
 
   // Called when a page navigation was initiated by a user gesture.
   // `page_transition` containing the page transition type, see enums for

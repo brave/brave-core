@@ -45,6 +45,7 @@ A place to define all specific terms and vocabulary for the Brave Ads component.
 | New tab page ad  | An ad unit displayed as a branded background image on a user's new tab page. Also known as a sponsored image.  |
 | Non-Brave Rewards user  | Refers to a user who has not joined Brave Rewards and will not be rewarded BAT for viewing ads.  |
 | Notification ad  | An ad unit delivered as a native browser notification, shown at opportune moments based on user attention.  |
+| Order extraction  | Reads the order ID and order value from a checkout or thank-you page's DOM to attribute a conversion, using the `conversions.order` patterns delivered to the client.  |
 | Pacing  | Rate at which an ad campaign uses up its pre-set number of impressions.  |
 | Page land  | A user's arrival on the advertiser's website, i.e., the pages after the user clicks on an ad, also known as a site visit.  |
 | Payment token  | A blinded token issued by the payment server and held by the client, redeemed for Brave Rewards without linking payment to the user's identity.  |

@@ -25,7 +25,10 @@
 #include "base/test/gmock_callback_support.h"
 #include "base/test/test_future.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/components/brave_ads/content/browser/order_fetcher_feature.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service_callback.h"
 #include "brave/components/brave_ads/core/browser/service/test/ads_service_mock.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
@@ -85,6 +88,10 @@ namespace {
 
 constexpr std::string_view kHostName = "brave.com";
 
+// `kHostName` is HSTS-preloaded, so a plain-HTTP navigation to it hangs.
+// `.test` is never HSTS-preloaded.
+constexpr std::string_view kNonCryptographicHostName = "brave.test";
+
 constexpr char kHandleRequestUrlPath[] = "/handle_request";
 constexpr char kHttpStatusCodeQueryKey[] = "http_status_code";
 
@@ -135,9 +142,9 @@ class MediaWaiter final : public content::WebContentsObserver {
       --muted_status_changed_count_;
       return;
     }
-    base::test::TestFuture<void> future;
-    muted_status_changed_callback_ = future.GetCallback();
-    ASSERT_TRUE(future.Wait());
+    base::test::TestFuture<void> test_future;
+    muted_status_changed_callback_ = test_future.GetCallback();
+    ASSERT_TRUE(test_future.Wait());
   }
 
   // content::WebContentsObserver:
@@ -300,6 +307,10 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
     test_server_.RegisterRequestHandler(base::BindRepeating(&HandleRequest));
     test_server_handle_ = test_server_.StartAndReturnHandle();
     EXPECT_TRUE(test_server_handle_);
+
+    // Plain HTTP, to test behavior specific to a non-cryptographic scheme.
+    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
+    EXPECT_TRUE(embedded_test_server()->Start());
   }
 
   content::WebContents* GetActiveWebContents() {
@@ -342,6 +353,17 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
     }
 
     EXPECT_TRUE(NavigateToURLFromRendererWithoutUserGesture(web_contents, url));
+  }
+
+  void NavigateToRelativeHttpURL(std::string_view relative_url) {
+    content::WebContents* const web_contents = GetActiveWebContents();
+    EXPECT_TRUE(web_contents);
+
+    const GURL url =
+        embedded_test_server()->GetURL(kNonCryptographicHostName, relative_url);
+    content::NavigateToURLBlockUntilNavigationsComplete(
+        web_contents, url, /*number_of_navigations=*/1,
+        /*ignore_uncommitted_navigations=*/true);
   }
 
   void SimulateHttpStatusCodePage(int http_status_code) {
@@ -952,6 +974,274 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
   RestoreBrowser(profile);
 
   EXPECT_TRUE(WaitForActiveWebContentsToLoad());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, MaybeGetOrderPatterns) {
+  // Unlike `NotifyTabTextContentDidChange`, order extraction is not gated
+  // behind Brave Rewards or notification ads, so no prefs are set here.
+  EXPECT_CALL(
+      GetAdsServiceMock(),
+      MaybeGetOrderPatterns(
+          TabId(), RedirectChainExpectation(kMultiPageApplicationWebpage),
+          /*detected_language=*/::testing::_, /*callback=*/::testing::_))
+      .Times(::testing::AtLeast(1));
+  NavigateToRelativeURL(kMultiPageApplicationWebpage,
+                        /*has_user_gesture=*/true);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
+                       DoesNotRunOrderPatternsStillInFlightAfterNavigation) {
+  // Arrange
+  MaybeGetOrderPatternsCallback first_page_callback;
+  EXPECT_CALL(
+      GetAdsServiceMock(),
+      MaybeGetOrderPatterns(
+          TabId(), RedirectChainExpectation(kMultiPageApplicationWebpage),
+          /*detected_language=*/::testing::_, /*callback=*/::testing::_))
+      .WillOnce(::testing::WithArg<3>(
+          [&first_page_callback](MaybeGetOrderPatternsCallback callback) {
+            first_page_callback = std::move(callback);
+          }));
+  NavigateToRelativeURL(kMultiPageApplicationWebpage,
+                        /*has_user_gesture=*/true);
+  ASSERT_TRUE(first_page_callback);
+
+  EXPECT_CALL(GetAdsServiceMock(), MaybeGetOrderPatterns)
+      .Times(::testing::AnyNumber());
+  NavigateToRelativeURL(kSinglePageApplicationWebpage,
+                        /*has_user_gesture=*/true);
+
+  // Act & Assert
+  EXPECT_CALL(GetAdsServiceMock(), NotifyOrderIdResolved).Times(0);
+  EXPECT_CALL(GetAdsServiceMock(), NotifyOrderValueResolved).Times(0);
+  mojom::OrderExtractionPatternsInfoPtr mojom_order_patterns =
+      mojom::OrderExtractionPatternsInfo::New();
+  mojom_order_patterns->should_extract_id = true;
+  std::move(first_page_callback).Run(std::move(mojom_order_patterns));
+
+  // Confirms the task runner has pumped enough for the discarded patterns to
+  // have run and replied, had the staleness guard not caught them first.
+  base::RunLoop run_loop;
+  EXPECT_CALL(GetAdsServiceMock(), MaybeGetOrderPatterns)
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  NavigateToRelativeURL(kSinglePageApplicationWebpage,
+                        /*has_user_gesture=*/true);
+  run_loop.Run();
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
+                       CallMaybeGetOrderPatternsIfTabWasRestored) {
+  EXPECT_CALL(GetAdsServiceMock(), MaybeGetOrderPatterns)
+      .Times(::testing::AnyNumber());
+  NavigateToRelativeURL(kMultiPageApplicationWebpage,
+                        /*has_user_gesture=*/true);
+  ::testing::Mock::VerifyAndClearExpectations(&GetAdsServiceMock());
+
+  // Must occur before the browser is closed.
+  Profile* const profile = GetProfile();
+  AdsServiceMock& ads_service_mock = GetAdsServiceMock();
+
+  const ScopedKeepAlive scoped_keep_alive(KeepAliveOrigin::SESSION_RESTORE,
+                                          KeepAliveRestartOption::DISABLED);
+  const ScopedProfileKeepAlive scoped_profile_keep_alive(
+      profile, ProfileKeepAliveOrigin::kSessionRestore);
+  CloseBrowserSynchronously(browser());
+
+  // Unlike text content notification, order extraction is not skipped on
+  // restore, since the pre-restore in-memory cache is gone by then.
+  base::RunLoop run_loop;
+  EXPECT_CALL(ads_service_mock, MaybeGetOrderPatterns)
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  RestoreBrowser(profile);
+
+  // A restored tab is lazy, navigation commits immediately but the page
+  // loads later, so `run_loop.Run()` below must come after the load wait.
+  EXPECT_TRUE(WaitForActiveWebContentsToLoad());
+
+  run_loop.Run();
+}
+
+IN_PROC_BROWSER_TEST_F(
+    BraveAdsTabHelperTest,
+    DoesNotCallMaybeGetOrderPatternsForHttpErrorResponsePage) {
+  EXPECT_CALL(GetAdsServiceMock(), MaybeGetOrderPatterns).Times(0);
+  SimulateHttpStatusCodePage(net::HTTP_NOT_FOUND);
+}
+
+IN_PROC_BROWSER_TEST_F(
+    BraveAdsTabHelperTest,
+    DoesNotCallMaybeGetOrderPatternsForNonCryptographicPage) {
+  EXPECT_CALL(GetAdsServiceMock(), MaybeGetOrderPatterns).Times(0);
+  NavigateToRelativeHttpURL(kMultiPageApplicationWebpage);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
+                       NotifyOrderIdAndValueExtractedForRequestedFieldsOnly) {
+  // Arrange
+  base::RunLoop run_loop;
+
+  // Act & Assert
+  // No `value.selectors`, so every attempt finds nothing until retries
+  // exhaust and the tab gives up.
+  EXPECT_CALL(GetAdsServiceMock(), MaybeGetOrderPatterns)
+      .Times(static_cast<int>(kOrderPatternsMaxRetries.Get()) + 1)
+      .WillRepeatedly(
+          ::testing::WithArg<3>([](MaybeGetOrderPatternsCallback callback) {
+            auto mojom_order_patterns =
+                mojom::OrderExtractionPatternsInfo::New();
+            mojom_order_patterns->value =
+                mojom::OrderValueExtractionPatternsInfo::New();
+            mojom_order_patterns->should_extract_value = true;
+            std::move(callback).Run(std::move(mojom_order_patterns));
+          }));
+  EXPECT_CALL(GetAdsServiceMock(), NotifyOrderIdResolved).Times(0);
+  EXPECT_CALL(
+      GetAdsServiceMock(),
+      NotifyOrderValueResolved(
+          TabId(),
+          RedirectChainExpectation(kMultiPageApplicationWebpage).front(),
+          /*value=*/std::optional<std::string>(std::nullopt),
+          /*currency=*/std::optional<std::string>(std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  NavigateToRelativeURL(kMultiPageApplicationWebpage,
+                        /*has_user_gesture=*/true);
+  run_loop.Run();
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
+                       RetriesOrderPatternsExtractionUntilFound) {
+  // Arrange
+
+  // No `id.selectors`, so the first attempt finds nothing on this fixture
+  // page, which has no matching text either.
+  mojom::OrderExtractionPatternsInfoPtr first_mojom_order_patterns =
+      mojom::OrderExtractionPatternsInfo::New();
+  first_mojom_order_patterns->should_extract_id = true;
+
+  mojom::OrderExtractionSelectorInfoPtr mojom_selector =
+      mojom::OrderExtractionSelectorInfo::New();
+  mojom_selector->selector = "h1";
+  mojom::OrderExtractionPatternsInfoPtr second_mojom_order_patterns =
+      mojom::OrderExtractionPatternsInfo::New();
+  second_mojom_order_patterns->should_extract_id = true;
+  second_mojom_order_patterns->id = mojom::OrderIdExtractionPatternsInfo::New();
+  second_mojom_order_patterns->id->selectors.push_back(
+      std::move(mojom_selector));
+
+  base::RunLoop run_loop;
+
+  // Act & Assert
+  ::testing::InSequence in_sequence;
+  EXPECT_CALL(GetAdsServiceMock(), MaybeGetOrderPatterns)
+      .WillOnce(base::test::RunOnceCallback<3>(
+          std::move(first_mojom_order_patterns)));
+  EXPECT_CALL(GetAdsServiceMock(), MaybeGetOrderPatterns)
+      .WillOnce(base::test::RunOnceCallback<3>(
+          std::move(second_mojom_order_patterns)));
+  EXPECT_CALL(
+      GetAdsServiceMock(),
+      NotifyOrderIdResolved(
+          TabId(),
+          RedirectChainExpectation(kMultiPageApplicationWebpage).front(),
+          /*id=*/std::optional<std::string>("Welcome to Your Adventure")))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  NavigateToRelativeURL(kMultiPageApplicationWebpage,
+                        /*has_user_gesture=*/true);
+  run_loop.Run();
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
+                       GivesUpOrderPatternsExtractionAfterMaxRetries) {
+  // Arrange
+
+  // Returns patterns with no selectors/regexes on every call, so extraction
+  // never finds anything on this fixture page.
+  base::RunLoop run_loop;
+  EXPECT_CALL(GetAdsServiceMock(), MaybeGetOrderPatterns)
+      // The initial attempt plus every retry the real production default
+      // allows before giving up.
+      .Times(static_cast<int>(kOrderPatternsMaxRetries.Get()) + 1)
+      .WillRepeatedly(
+          ::testing::WithArg<3>([](MaybeGetOrderPatternsCallback callback) {
+            auto mojom_order_patterns =
+                mojom::OrderExtractionPatternsInfo::New();
+            mojom_order_patterns->should_extract_id = true;
+            mojom_order_patterns->should_extract_value = true;
+            std::move(callback).Run(std::move(mojom_order_patterns));
+          }));
+
+  // Act & Assert
+  EXPECT_CALL(
+      GetAdsServiceMock(),
+      NotifyOrderIdResolved(
+          TabId(),
+          RedirectChainExpectation(kMultiPageApplicationWebpage).front(),
+          /*id=*/std::optional<std::string>(std::nullopt)));
+  EXPECT_CALL(
+      GetAdsServiceMock(),
+      NotifyOrderValueResolved(
+          TabId(),
+          RedirectChainExpectation(kMultiPageApplicationWebpage).front(),
+          /*value=*/std::optional<std::string>(std::nullopt),
+          /*currency=*/std::optional<std::string>(std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  NavigateToRelativeURL(kMultiPageApplicationWebpage,
+                        /*has_user_gesture=*/true);
+  run_loop.Run();
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
+                       DoesNotDowngradeOrderIdResolvedOnAnEarlierRetry) {
+  // Arrange
+
+  // The first attempt finds the order ID but not the value, so it retries.
+  mojom::OrderExtractionSelectorInfoPtr mojom_selector =
+      mojom::OrderExtractionSelectorInfo::New();
+  mojom_selector->selector = "h1";
+  mojom::OrderExtractionPatternsInfoPtr first_mojom_order_patterns =
+      mojom::OrderExtractionPatternsInfo::New();
+  first_mojom_order_patterns->should_extract_id = true;
+  first_mojom_order_patterns->should_extract_value = true;
+  first_mojom_order_patterns->id = mojom::OrderIdExtractionPatternsInfo::New();
+  first_mojom_order_patterns->id->selectors.push_back(
+      std::move(mojom_selector));
+
+  base::RunLoop run_loop;
+
+  // Act & Assert
+  ::testing::InSequence in_sequence;
+  EXPECT_CALL(GetAdsServiceMock(), MaybeGetOrderPatterns)
+      .WillOnce(base::test::RunOnceCallback<3>(
+          std::move(first_mojom_order_patterns)));
+  // Every retry has no `id.selectors`, simulating a page that no longer
+  // exposes the ID element, and still finds no value.
+  EXPECT_CALL(GetAdsServiceMock(), MaybeGetOrderPatterns)
+      .Times(static_cast<int>(kOrderPatternsMaxRetries.Get()))
+      .WillRepeatedly(
+          ::testing::WithArg<3>([](MaybeGetOrderPatternsCallback callback) {
+            auto mojom_order_patterns =
+                mojom::OrderExtractionPatternsInfo::New();
+            mojom_order_patterns->should_extract_id = true;
+            mojom_order_patterns->should_extract_value = true;
+            std::move(callback).Run(std::move(mojom_order_patterns));
+          }));
+  EXPECT_CALL(
+      GetAdsServiceMock(),
+      NotifyOrderIdResolved(
+          TabId(),
+          RedirectChainExpectation(kMultiPageApplicationWebpage).front(),
+          /*id=*/std::optional<std::string>("Welcome to Your Adventure")));
+  EXPECT_CALL(
+      GetAdsServiceMock(),
+      NotifyOrderValueResolved(
+          TabId(),
+          RedirectChainExpectation(kMultiPageApplicationWebpage).front(),
+          /*value=*/std::optional<std::string>(std::nullopt),
+          /*currency=*/std::optional<std::string>(std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  NavigateToRelativeURL(kMultiPageApplicationWebpage,
+                        /*has_user_gesture=*/true);
+  run_loop.Run();
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,

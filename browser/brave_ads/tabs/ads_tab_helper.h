@@ -6,13 +6,17 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_TABS_ADS_TAB_HELPER_H_
 #define BRAVE_BROWSER_BRAVE_ADS_TABS_ADS_TAB_HELPER_H_
 
+#include <memory>
 #include <optional>
 #include <vector>
 
 #include "base/containers/flat_set.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/timer/timer.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/content/common/mojom/order_extractor.mojom.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
 #include "components/sessions/core/session_id.h"
@@ -35,6 +39,8 @@ class TabInterface;
 namespace brave_ads {
 
 class AdsService;
+class CreditCardFieldFocusObserver;
+class OrderFetcher;
 
 // Notifies the ads service of tab events. Owned by BraveTabFeatures.
 class AdsTabHelper final :
@@ -83,11 +89,23 @@ class AdsTabHelper final :
   void MaybeNotifyTabDidLoad();
   void MaybeNotifyTabDidFailToLoad();
 
-  bool ShouldNotifyTabContentDidChange() const;
+  bool ShouldProcessNavigation() const;
+  bool ShouldProcessOrderExtraction() const;
   void MaybeNotifyTabTextContentDidChange();
   void OnMaybeNotifyTabTextContentDidChange(
       const std::vector<GURL>& redirect_chain,
       base::Value value);
+
+  void MaybeExtractOrderPatterns();
+  void ExtractOrderPatterns();
+  void MaybeWatchForPaymentFieldFocus();
+  void MaybeGetOrderPatternsCallback(
+      const GURL& extracted_for_url,
+      mojom::OrderExtractionPatternsInfoPtr mojom_order_patterns);
+  void FetchOrderCallback(const GURL& extracted_for_url,
+                          bool should_extract_id,
+                          bool should_extract_value,
+                          mojom::ExtractedOrderInfoPtr mojom_extracted_order);
 
   bool IsPlayingMediaWithAudio(const content::MediaPlayerId& id);
   void PlayerStartedPlayingWithAudio(const content::MediaPlayerId& id);
@@ -134,6 +152,28 @@ class AdsTabHelper final :
   bool is_new_navigation_ = false;
   std::vector<GURL> redirect_chain_;
   std::optional<int> http_status_code_;
+
+  // Guards against a redundant round trip and DOM walk for every credit
+  // card field focus on a page already requested once.
+  std::optional<GURL> last_extract_order_patterns_url_;
+
+  // Retries a failed extraction with backoff, in case a single-page app had
+  // not yet rendered the order; capped by `kOrderPatternsMaxRetries`.
+  size_t order_patterns_retry_count_ = 0;
+  base::OneShotTimer order_patterns_retry_timer_;
+
+  // Best result seen across retries, so a later retry that re-extracts both
+  // fields can never downgrade one a prior attempt already found.
+  mojom::ExtractedOrderInfoPtr mojom_extracted_order_;
+
+  // Created lazily since it is only needed once a page is found to have a
+  // pending ad event requesting order extraction.
+  std::unique_ptr<OrderFetcher> order_fetcher_;
+
+  // Recreated per document, so order extraction gets a second chance once
+  // the checkout form is in use, not only at `load`.
+  std::unique_ptr<CreditCardFieldFocusObserver>
+      credit_card_field_focus_observer_;
 
   // Tracks media players that have started to guard against spurious
   // `MediaMutedStatusChanged` events for players that never actually started.

@@ -12,6 +12,10 @@ inline constexpr char kConversionKey[] = "conversion";
 
 inline constexpr char kConversionActionTypeKey[] = "action";
 
+inline constexpr char kConversionOrderKey[] = "order";
+inline constexpr char kConversionOrderIdKey[] = "id";
+inline constexpr char kConversionOrderValueKey[] = "value";
+inline constexpr char kConversionOrderCurrencyKey[] = "currency";
 
 }  // namespace brave_ads
 

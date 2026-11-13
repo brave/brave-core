@@ -161,6 +161,11 @@ TestingBraveBrowserProcess::ntp_background_images_service() {
   return nullptr;
 }
 
+sponsored_content::SponsoredContentService*
+TestingBraveBrowserProcess::sponsored_content_service() {
+  return nullptr;
+}
+
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 speedreader::SpeedreaderRewriterService*
 TestingBraveBrowserProcess::speedreader_rewriter_service() {

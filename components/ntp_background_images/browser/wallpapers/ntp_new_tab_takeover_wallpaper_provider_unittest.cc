@@ -6,18 +6,25 @@
 #include "brave/components/ntp_background_images/browser/wallpapers/ntp_new_tab_takeover_wallpaper_provider.h"
 
 #include <memory>
+#include <string_view>
 
+#include "base/files/file_path.h"
+#include "base/files/file_util.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/browser/service/test/ads_service_mock.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_service_waiter.h"
 #include "brave/components/ntp_background_images/browser/test/fake_ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
+#include "brave/components/sponsored_content/test/fake_sponsored_content_service.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -101,10 +108,12 @@ class NTPNewTabTakeoverWallpaperProviderTest : public testing::Test {
         &prefs_, /*is_off_the_record=*/false, /*store_last_modified=*/false,
         /*restore_session=*/false, /*should_record_metrics=*/false);
 
+    sponsored_content_service_ = std::make_unique<
+        sponsored_content::test::FakeSponsoredContentService>();
     background_images_service_ =
         std::make_unique<FakeNTPBackgroundImagesService>(
-            /*variations_service=*/nullptr,
-            /*component_updater_service=*/nullptr, &prefs_);
+            /*component_update_service=*/nullptr,
+            sponsored_content_service_.get(), &prefs_);
 
     view_counter_model_ = std::make_unique<ViewCounterModel>(&prefs_);
   }
@@ -121,9 +130,31 @@ class NTPNewTabTakeoverWallpaperProviderTest : public testing::Test {
         is_supported_locale);
   }
 
+  void SimulateSponsoredContentData(std::string_view json) {
+    // Sponsored content only loads once something has subscribed to it.
+    background_images_service_->RegisterSponsoredImagesComponent();
+
+    // Filtering campaigns checks referenced creative files exist on disk, so
+    // `json`'s referenced files must exist here too.
+    CHECK(installed_dir_.IsValid() || installed_dir_.CreateUniqueTempDir());
+    for (const char* relative_path :
+         {"foo/background-1.jpg", "foo/button-1.png"}) {
+      const base::FilePath file_path =
+          installed_dir_.GetPath().AppendASCII(relative_path);
+      CHECK(base::CreateDirectory(file_path.DirName()));
+      CHECK(base::WriteFile(file_path, ""));
+    }
+
+    // Filtering campaigns checks referenced creative files on disk, so it
+    // runs on the `ThreadPool`; wait for it to reply.
+    NTPBackgroundImagesServiceWaiter waiter(*background_images_service_);
+    sponsored_content_service_->NotifySponsoredNewTabTakeoverContent(
+        installed_dir_.GetPath(), base::test::ParseJsonDict(json));
+    waiter.WaitForOnSponsoredContentDidUpdate();
+  }
+
   void MakeEligible() {
-    background_images_service_->OnGetSponsoredComponentJsonData(
-        kSponsoredImageCampaignsJson);
+    SimulateSponsoredContentData(kSponsoredImageCampaignsJson);
     prefs_.SetBoolean(brave_ads::prefs::kSponsoredEnabled, true);
     prefs_.SetBoolean(prefs::kNewTabPageShowBackgroundImage, true);
     view_counter_model_->SetCampaignsTotalNewTabTakeoverCreativeCount({1});
@@ -133,7 +164,10 @@ class NTPNewTabTakeoverWallpaperProviderTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  base::ScopedTempDir installed_dir_;
   scoped_refptr<HostContentSettingsMap> host_content_settings_map_;
+  std::unique_ptr<sponsored_content::test::FakeSponsoredContentService>
+      sponsored_content_service_;
   std::unique_ptr<FakeNTPBackgroundImagesService> background_images_service_;
   std::unique_ptr<ViewCounterModel> view_counter_model_;
   brave_ads::AdsServiceMock ads_service_mock_;
@@ -147,8 +181,7 @@ TEST_F(NTPNewTabTakeoverWallpaperProviderTest,
 }
 
 TEST_F(NTPNewTabTakeoverWallpaperProviderTest, NotEligibleWhenOptedOut) {
-  background_images_service_->OnGetSponsoredComponentJsonData(
-      kSponsoredImageCampaignsJson);
+  SimulateSponsoredContentData(kSponsoredImageCampaignsJson);
   prefs_.SetBoolean(brave_ads::prefs::kSponsoredEnabled, false);
   auto wallpaper_provider = CreateWallpaperProvider();
 
@@ -157,8 +190,7 @@ TEST_F(NTPNewTabTakeoverWallpaperProviderTest, NotEligibleWhenOptedOut) {
 
 TEST_F(NTPNewTabTakeoverWallpaperProviderTest,
        NotEligibleWhenBackgroundImagesOptedOut) {
-  background_images_service_->OnGetSponsoredComponentJsonData(
-      kSponsoredImageCampaignsJson);
+  SimulateSponsoredContentData(kSponsoredImageCampaignsJson);
   prefs_.SetBoolean(brave_ads::prefs::kSponsoredEnabled, true);
   prefs_.SetBoolean(prefs::kNewTabPageShowBackgroundImage, false);
   auto wallpaper_provider = CreateWallpaperProvider();
@@ -175,8 +207,7 @@ TEST_F(NTPNewTabTakeoverWallpaperProviderTest, EligibleWhenOptedInWithData) {
 
 TEST_F(NTPNewTabTakeoverWallpaperProviderTest,
        NotEligibleForUnsupportedLocale) {
-  background_images_service_->OnGetSponsoredComponentJsonData(
-      kSponsoredImageCampaignsJson);
+  SimulateSponsoredContentData(kSponsoredImageCampaignsJson);
   prefs_.SetBoolean(brave_ads::prefs::kSponsoredEnabled, true);
   prefs_.SetBoolean(prefs::kNewTabPageShowBackgroundImage, true);
   auto wallpaper_provider =
@@ -198,8 +229,7 @@ TEST_F(NTPNewTabTakeoverWallpaperProviderTest,
 
 TEST_F(NTPNewTabTakeoverWallpaperProviderTest,
        NoWallpaperOrAdRequestWhenOptedOut) {
-  background_images_service_->OnGetSponsoredComponentJsonData(
-      kSponsoredImageCampaignsJson);
+  SimulateSponsoredContentData(kSponsoredImageCampaignsJson);
   prefs_.SetBoolean(brave_ads::prefs::kSponsoredEnabled, false);
   auto wallpaper_provider = CreateWallpaperProvider();
 

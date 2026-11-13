@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
+#include "brave/components/sponsored_content/sponsored_content_service.h"
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_component_installer.h"
 #include "components/application_locale_storage/application_locale_storage.h"
 #include "ios/chrome/browser/application_context/model/application_context_impl.h"
@@ -109,6 +110,16 @@ BraveApplicationContextImpl::https_upgrade_exceptions_service() {
             local_data_files_service());
   }
   return https_upgrade_exceptions_service_.get();
+}
+
+sponsored_content::SponsoredContentService*
+BraveApplicationContextImpl::sponsored_content_service() {
+  if (!sponsored_content_service_) {
+    sponsored_content_service_ =
+        std::make_unique<sponsored_content::SponsoredContentService>(
+            GetVariationsService(), GetComponentUpdateService());
+  }
+  return sponsored_content_service_.get();
 }
 
 void BraveApplicationContextImpl::StartBraveServices() {

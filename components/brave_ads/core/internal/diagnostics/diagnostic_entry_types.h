@@ -42,7 +42,8 @@ enum class DiagnosticEntryType {
   kCanShowNotificationsPermission,
   kTextClassificationResource,
   kPurchaseIntentResource,
-  kAntiTargetingResource
+  kAntiTargetingResource,
+  kOrderExtractionPatternsResource
 };
 
 }  // namespace brave_ads

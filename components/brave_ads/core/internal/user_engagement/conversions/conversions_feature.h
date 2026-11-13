@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_CONVERSIONS_FEATURE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_CONVERSIONS_FEATURE_H_
 
-#include <string>
-
 #include "base/feature.h"
 #include "base/metrics/field_trial_params.h"
 
@@ -21,11 +19,6 @@ BASE_DECLARE_FEATURE(kConversionsFeature);
 
 inline constexpr base::FeatureParam<int> kConversionResourceVersion{
     &kConversionsFeature, "resource_version", 1};
-
-inline constexpr base::FeatureParam<std::string>
-    kHtmlMetaTagConversionIdPattern{
-        &kConversionsFeature, "html_meta_tag_id_pattern",
-        R"~(<meta.*name="ad-conversion-id".*content="([-a-zA-Z0-9]*)".*>)~"};
 
 // Set to 0 to never cap campaign conversions.
 inline constexpr base::FeatureParam<size_t> kCampaignConversionCap{

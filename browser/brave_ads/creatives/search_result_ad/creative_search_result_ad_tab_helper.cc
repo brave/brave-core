@@ -139,8 +139,7 @@ void CreativeSearchResultAdTabHelper::
 }
 
 void CreativeSearchResultAdTabHelper::MaybeHandleCreativeAdViewedEvents(
-    std::vector<mojom::CreativeSearchResultAdInfoPtr>
-        creative_search_result_ads) {
+    CreativeSearchResultAdList creative_search_result_ads) {
   for (auto& creative_search_result_ad : creative_search_result_ads) {
     MaybeHandleCreativeAdViewedEvent(std::move(creative_search_result_ad));
   }

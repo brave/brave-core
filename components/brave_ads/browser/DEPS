@@ -1,6 +1,7 @@
 
 include_rules = [
   "+brave/components/constants",
+  "+brave/components/sponsored_content",
   "+components/content_settings",
   "+components/crx_file",
   "+components/metrics",

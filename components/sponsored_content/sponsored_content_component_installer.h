@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SPONSORED_CONTENT_NTP_SPONSORED_IMAGES_COMPONENT_INSTALLER_H_
-#define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SPONSORED_CONTENT_NTP_SPONSORED_IMAGES_COMPONENT_INSTALLER_H_
+#ifndef BRAVE_COMPONENTS_SPONSORED_CONTENT_SPONSORED_CONTENT_COMPONENT_INSTALLER_H_
+#define BRAVE_COMPONENTS_SPONSORED_CONTENT_SPONSORED_CONTENT_COMPONENT_INSTALLER_H_
 
 #include <array>
 #include <cstdint>
@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "base/containers/span.h"
-#include "brave/components/ntp_background_images/browser/component_ready_callback.h"
+#include "brave/components/sponsored_content/sponsored_content_component_callback.h"
 #include "components/component_updater/component_installer.h"
 #include "crypto/hash.h"
 
@@ -24,24 +24,24 @@ namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
 
-namespace ntp_background_images {
+namespace sponsored_content {
 
-class NTPSponsoredImagesComponentInstallerPolicy
+class SponsoredContentComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
-  NTPSponsoredImagesComponentInstallerPolicy(
+  SponsoredContentComponentInstallerPolicy(
       base::span<const uint8_t, crypto::hash::kSha256Size> public_key_sha256,
       const std::string& component_name,
-      ComponentReadyCallback callback);
+      ComponentCallback callback);
 
-  NTPSponsoredImagesComponentInstallerPolicy(
-      const NTPSponsoredImagesComponentInstallerPolicy&) = delete;
-  NTPSponsoredImagesComponentInstallerPolicy& operator=(
-      const NTPSponsoredImagesComponentInstallerPolicy&) = delete;
+  SponsoredContentComponentInstallerPolicy(
+      const SponsoredContentComponentInstallerPolicy&) = delete;
+  SponsoredContentComponentInstallerPolicy& operator=(
+      const SponsoredContentComponentInstallerPolicy&) = delete;
 
-  ~NTPSponsoredImagesComponentInstallerPolicy() override;
+  ~SponsoredContentComponentInstallerPolicy() override;
 
-  // component_updater::ComponentInstallerPolicy
+  // component_updater::ComponentInstallerPolicy:
   bool SupportsGroupPolicyEnabledComponentUpdates() const override;
   bool RequiresNetworkEncryption() const override;
   update_client::CrxInstaller::Result OnCustomInstall(
@@ -61,16 +61,16 @@ class NTPSponsoredImagesComponentInstallerPolicy
 
  private:
   const std::string component_name_;
-  ComponentReadyCallback ready_callback_;
-  std::array<uint8_t, crypto::hash::kSha256Size> component_hash_;
+  ComponentCallback component_callback_;
+  std::array<uint8_t, crypto::hash::kSha256Size> public_key_sha256_;
 };
 
-void RegisterNTPSponsoredImagesComponent(
+void RegisterSponsoredContentComponentInstaller(
     component_updater::ComponentUpdateService* component_update_service,
     base::span<const uint8_t, crypto::hash::kSha256Size> public_key_sha256,
     const std::string& component_name,
-    ComponentReadyCallback callback);
+    ComponentCallback callback);
 
-}  // namespace ntp_background_images
+}  // namespace sponsored_content
 
-#endif  // BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SPONSORED_CONTENT_NTP_SPONSORED_IMAGES_COMPONENT_INSTALLER_H_
+#endif  // BRAVE_COMPONENTS_SPONSORED_CONTENT_SPONSORED_CONTENT_COMPONENT_INSTALLER_H_

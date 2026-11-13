@@ -148,6 +148,7 @@ AdsServiceImpl::AdsServiceImpl(
     std::unique_ptr<ApplicationStateMonitor> application_state_monitor,
     std::unique_ptr<ShutdownMonitor> shutdown_monitor,
     ResourceComponent& resource_component,
+    sponsored_content::SponsoredContentService& sponsored_content_service,
     history::HistoryService* history_service,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
     brave_rewards::RewardsService* rewards_service,
@@ -163,6 +164,7 @@ AdsServiceImpl::AdsServiceImpl(
       http_client_(std::move(http_client)),
       channel_name_(channel_name),
       resource_component_(resource_component),
+      sponsored_content_service_(sponsored_content_service),
       history_service_(history_service),
       host_content_settings_map_(host_content_settings_map),
       ads_tooltips_delegate_(std::move(ads_tooltips_delegate)),
@@ -243,8 +245,6 @@ void AdsServiceImpl::Shutdown() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-
 
 void AdsServiceImpl::Migrate() {
   // Added 10/2025.
@@ -485,6 +485,9 @@ void AdsServiceImpl::InitializeBatAdsCallback(bool success) {
 
   resource_component_observation_.Observe(
       base::to_address(resource_component_));
+
+  sponsored_content_service_observation_.Observe(
+      base::to_address(sponsored_content_service_));
 
   if (host_content_settings_map_) {
     host_content_settings_map_observation_.Observe(
@@ -804,9 +807,8 @@ void AdsServiceImpl::OnAdsPrefChanged(const std::string& path) {
     // `ClearAdsPrefs`, which mutates `pref_change_registrar_` and must not do
     // so re-entrantly from within this pref's own change notification.
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE,
-        base::BindOnce(&AdsServiceImpl::MaybeClearAdsData,
-                       weak_ptr_factory_.GetWeakPtr(), path));
+        FROM_HERE, base::BindOnce(&AdsServiceImpl::MaybeClearAdsData,
+                                  weak_ptr_factory_.GetWeakPtr(), path));
   }
 
   if (path == prefs::kNotificationsEnabled) {
@@ -1116,6 +1118,8 @@ void AdsServiceImpl::ShutdownAdsService() {
 
   resource_component_observation_.Reset();
 
+  sponsored_content_service_observation_.Reset();
+
   host_content_settings_map_observation_.Reset();
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -1328,6 +1332,21 @@ void AdsServiceImpl::MaybeGetSearchResultAd(
                         std::move(callback), nullptr));
 }
 
+void AdsServiceImpl::MaybeGetOrderPatterns(
+    int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    std::optional<std::string> detected_language,
+    MaybeGetOrderPatternsCallback callback) {
+  if (!bat_ads_associated_remote_.is_bound()) {
+    return std::move(callback).Run(/*mojom_order_patterns=*/{});
+  }
+
+  bat_ads_associated_remote_->MaybeGetOrderPatterns(
+      tab_id, redirect_chain, detected_language,
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                  nullptr));
+}
+
 void AdsServiceImpl::TriggerSearchResultAdEvent(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     mojom::SearchResultAdEventType mojom_ad_event_type,
@@ -1491,6 +1510,26 @@ void AdsServiceImpl::NotifyTabDidFailToLoad(int32_t tab_id) {
 void AdsServiceImpl::NotifyDidCloseTab(int32_t tab_id) {
   if (bat_ads_client_notifier_remote_.is_bound()) {
     bat_ads_client_notifier_remote_->NotifyDidCloseTab(tab_id);
+  }
+}
+
+void AdsServiceImpl::NotifyOrderIdResolved(int32_t tab_id,
+                                           const GURL& extracted_for_url,
+                                           std::optional<std::string> id) {
+  if (bat_ads_client_notifier_remote_.is_bound()) {
+    bat_ads_client_notifier_remote_->NotifyOrderIdResolved(
+        tab_id, extracted_for_url, id);
+  }
+}
+
+void AdsServiceImpl::NotifyOrderValueResolved(
+    int32_t tab_id,
+    const GURL& extracted_for_url,
+    std::optional<std::string> value,
+    std::optional<std::string> currency) {
+  if (bat_ads_client_notifier_remote_.is_bound()) {
+    bat_ads_client_notifier_remote_->NotifyOrderValueResolved(
+        tab_id, extracted_for_url, value, currency);
   }
 }
 
@@ -1800,6 +1839,24 @@ void AdsServiceImpl::OnResourceComponentDidChange(
 void AdsServiceImpl::OnDidUnregisterResourceComponent(const std::string& id) {
   if (bat_ads_client_notifier_remote_.is_bound()) {
     bat_ads_client_notifier_remote_->NotifyDidUnregisterResourceComponent(id);
+  }
+}
+
+void AdsServiceImpl::OnSponsoredConversionConfigContentDidUpdate(
+    const base::FilePath& /*installed_dir*/,
+    const std::optional<base::DictValue>& dict) {
+  if (!bat_ads_client_notifier_remote_.is_bound()) {
+    return;
+  }
+
+  bat_ads_client_notifier_remote_->NotifySponsoredContentComponentDidChange(
+      dict ? std::make_optional(dict->Clone()) : std::nullopt);
+}
+
+void AdsServiceImpl::OnSponsoredContentComponentDidUnregister() {
+  if (bat_ads_client_notifier_remote_.is_bound()) {
+    bat_ads_client_notifier_remote_
+        ->NotifyDidUnregisterSponsoredContentComponent();
   }
 }
 

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/static/sponsored_images_component_data.h"
+#include "brave/components/sponsored_content/sponsored_content_component_public_keys.h"
 
 #include <array>
 #include <cstdint>
@@ -16,7 +16,7 @@
 #include "build/build_config.h"
 #include "crypto/sha2.h"
 
-namespace ntp_background_images {
+namespace sponsored_content {
 
 namespace {
 
@@ -2232,4 +2232,4 @@ GetComponentPublicKeySHA256(std::string_view country_code) {
   return base::OptionalFromPtr(base::FindOrNull(kComponents, country_code));
 }
 
-}  // namespace ntp_background_images
+}  // namespace sponsored_content

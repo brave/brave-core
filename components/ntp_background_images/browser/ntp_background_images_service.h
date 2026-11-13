@@ -15,7 +15,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
-#include "base/timer/wall_clock_timer.h"
+#include "brave/components/sponsored_content/sponsored_content_service_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 
 namespace base {
@@ -26,9 +26,9 @@ namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
 
-namespace variations {
-class VariationsService;
-}  // namespace variations
+namespace sponsored_content {
+class SponsoredContentService;
+}  // namespace sponsored_content
 
 class PrefRegistrySimple;
 class PrefService;
@@ -39,7 +39,8 @@ struct NTPBackgroundImagesData;
 struct NTPSponsoredContentData;
 struct NTPSponsoredSitesData;
 
-class NTPBackgroundImagesService {
+class NTPBackgroundImagesService
+    : public sponsored_content::SponsoredContentServiceObserver {
  public:
   class Observer {
    public:
@@ -58,6 +59,11 @@ class NTPBackgroundImagesService {
     // Called when the sponsored sites component is updated.
     virtual void OnSponsoredSitesDataDidUpdate() {}
 
+    // Independent of `OnSponsoredContentDidUpdate`, since conversion
+    // extraction applies to every ad format, not just New Tab Page ads.
+    virtual void OnSponsoredConversionConfigContentDidUpdate(
+        const base::DictValue& data) {}
+
    protected:
     virtual ~Observer() = default;
   };
@@ -66,14 +72,15 @@ class NTPBackgroundImagesService {
   static void MigrateObsoleteLocalStatePrefs(PrefService* local_state);
 
   NTPBackgroundImagesService(
-      variations::VariationsService* variations_service,
       component_updater::ComponentUpdateService* component_update_service,
+      sponsored_content::SponsoredContentService* sponsored_content_service,
       PrefService* pref_service);
-  virtual ~NTPBackgroundImagesService();
 
   NTPBackgroundImagesService(const NTPBackgroundImagesService&) = delete;
   NTPBackgroundImagesService& operator=(const NTPBackgroundImagesService&) =
       delete;
+
+  ~NTPBackgroundImagesService() override;
 
   void Init();
   void StartTearDown();
@@ -154,46 +161,57 @@ class NTPBackgroundImagesService {
       AllowNewTabTakeoverWithImageIfJavaScriptContentSettingIsSetToBlocked);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, ModelTest);
 
-  static std::optional<base::DictValue> HandleSponsoredComponentData(
-      const base::FilePath& installed_dir,
-      const std::string& variations_country_code);
-  static std::optional<NTPSponsoredSitesData> HandleSponsoredSitesData(
-      const base::FilePath& installed_dir);
-  void OnHandledSponsoredSitesData(
-      std::optional<NTPSponsoredSitesData> sites_data);
   void OnComponentReady(const base::FilePath& installed_dir);
   void OnGetComponentJsonData(const std::string& json_string);
   void OnVariationsCountryPrefChanged();
 
-  void ScheduleNextSponsoredImagesComponentUpdate();
-  void CheckSponsoredContentComponentUpdate(const std::string& component_id);
   void ResetSponsoredContentData();
+
+  // SponsoredContentServiceObserver:
+  void OnSponsoredNewTabTakeoverContentDidUpdate(
+      const base::FilePath& installed_dir,
+      const std::optional<base::DictValue>& dict) override;
+  void OnSponsoredSiteContentDidUpdate(
+      const base::FilePath& installed_dir,
+      const std::optional<base::DictValue>& dict) override;
+  void OnSponsoredConversionConfigContentDidUpdate(
+      const base::FilePath& installed_dir,
+      const std::optional<base::DictValue>& dict) override;
+
+  // `FilterCampaigns` checks whether each creative's referenced files exist
+  // on disk, so it must run off the UI thread.
+  static base::DictValue FilterNewTabTakeoverCampaigns(
+      base::DictValue dict,
+      const base::FilePath& installed_dir);
+  void FilterNewTabTakeoverCampaignsCallback(
+      const base::FilePath& installed_dir,
+      base::DictValue dict);
+
+  // `NTPSponsoredSitesData`'s parsing checks whether each tile's image file
+  // exists on disk, so it must run off the UI thread.
+  static std::optional<NTPSponsoredSitesData> MaybeParseSponsoredSiteContent(
+      base::DictValue dict,
+      const base::FilePath& installed_dir,
+      const std::string& url_prefix);
+  void ParseSponsoredSiteContentCallback(
+      std::optional<NTPSponsoredSitesData> sites_data);
 
   // virtual for test.
   virtual void RegisterBackgroundImagesComponent();
-  virtual std::string GetCountryCode() const;
-  virtual void OnSponsoredComponentReady(const base::FilePath& installed_dir);
-  virtual void OnHandledSponsoredComponentData(
-      std::optional<base::DictValue> dict);
-
-  std::optional<base::Time> last_updated_at_;
-
-  // `variations` can be null in test.
-  raw_ptr<variations::VariationsService> variations_service_ =
-      nullptr;  // Not owned.
 
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_ =
-      nullptr;
+      nullptr;  // Not owned.
 
-  raw_ptr<PrefService> pref_service_ = nullptr;
+  // `StartTearDown` clears this on shutdown, so every use must null-check it.
+  raw_ptr<sponsored_content::SponsoredContentService>
+      sponsored_content_service_ = nullptr;  // Not owned.
+
+  raw_ptr<PrefService> pref_service_ = nullptr;  // Not owned.
   PrefChangeRegistrar pref_change_registrar_;
 
   base::FilePath background_images_installed_dir_;
   std::unique_ptr<NTPBackgroundImagesData> background_images_data_;
 
-  base::WallClockTimer sponsored_images_update_check_timer_;
-  base::RepeatingClosure sponsored_images_update_check_callback_;
-  std::optional<std::string> sponsored_images_component_id_;
   std::optional<base::FilePath> sponsored_content_installed_dir_;
   std::unique_ptr<NTPSponsoredContentData> sponsored_content_data_;
   std::unique_ptr<NTPSponsoredContentData>
@@ -205,8 +223,6 @@ class NTPBackgroundImagesService {
   base::ObserverList<Observer>::Unchecked observers_;
 
   base::WeakPtrFactory<NTPBackgroundImagesService> weak_factory_{this};
-  base::WeakPtrFactory<NTPBackgroundImagesService>
-      sponsored_images_weak_factory_{this};
 };
 
 }  // namespace ntp_background_images

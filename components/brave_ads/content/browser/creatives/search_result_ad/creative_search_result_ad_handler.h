@@ -7,11 +7,11 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CONTENT_BROWSER_CREATIVES_SEARCH_RESULT_AD_CREATIVE_SEARCH_RESULT_AD_HANDLER_H_
 
 #include <memory>
-#include <vector>
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_extractor.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom-forward.h"
@@ -25,8 +25,8 @@ class RenderFrameHost;
 namespace brave_ads {
 
 using ExtractCreativeAdPlacementIdsFromWebPageCallback =
-    base::OnceCallback<void(std::vector<mojom::CreativeSearchResultAdInfoPtr>
-                                creative_search_result_ads)>;
+    base::OnceCallback<void(
+        CreativeSearchResultAdList creative_search_result_ads)>;
 
 class AdsService;
 

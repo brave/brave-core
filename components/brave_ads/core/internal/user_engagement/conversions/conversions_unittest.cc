@@ -5,14 +5,22 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions.h"
 
+#include <tuple>
+
 #include "base/run_loop.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_database_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/order/resource/order_id_extraction_patterns_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/order/resource/order_value_extraction_patterns_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/test/campaign_conversion_test_util.h"
+#include "brave/components/brave_ads/core/internal/tabs/extracted_order_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/test/ad_event_test_util.h"
@@ -22,6 +30,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/test/conversions_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "url/gurl.h"
 
 // pnpm test brave_unit_tests --filter=BraveAds*
@@ -82,6 +91,29 @@ TEST_F(BraveAdsConversionsTest, ConvertAdForMatchingCampaignConversion) {
                                   run_loop.QuitClosure());
   conversions_->MaybeConvert(test::kTabId,
                              test::BuildDefaultConversionRedirectChain());
+  run_loop.Run();
+}
+
+TEST_F(BraveAdsConversionsTest, ConvertAdOnNewTabsFirstNavigation) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/false);
+  test::BuildAndSaveCampaignConversion(ad.campaign_id,
+                                       test::kMatchingUrlPattern,
+                                       /*observation_window=*/base::Days(3));
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kViewedImpression});
+
+  // Act & Assert
+  base::RunLoop run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
+                                  run_loop.QuitClosure());
+  ads_client_notifier_.NotifyTabDidChange(
+      test::kTabId, test::BuildDefaultConversionRedirectChain(),
+      /*is_new_navigation=*/true, /*is_restoring=*/false,
+      /*is_visible=*/true);
   run_loop.Run();
 }
 
@@ -640,6 +672,39 @@ TEST_F(BraveAdsConversionsTest, ConvertTheSameAdEventAgainAfterTabCloses) {
 }
 
 TEST_F(BraveAdsConversionsTest,
+       DoesNotNotifyDeferredConversionAfterTabClosesBeforeOrderResolves) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/true);
+  CampaignConversionInfo campaign_conversion =
+      test::BuildCampaignConversion(ad.campaign_id, test::kMatchingUrlPattern,
+                                    /*observation_window=*/base::Days(30));
+  campaign_conversion.should_extract_id = true;
+  campaign_conversion.should_extract_value = true;
+  database::SaveCampaignConversions({campaign_conversion});
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kClicked});
+
+  base::test::TestFuture<bool, OrderIdExtractionPatternsInfo, bool,
+                         OrderValueExtractionPatternsInfo>
+      order_patterns_test_future;
+  conversions_->MaybeGetOrderPatterns(
+      test::kTabId, test::BuildDefaultConversionRedirectChain(),
+      /*detected_language=*/std::nullopt,
+      order_patterns_test_future.GetCallback());
+  ASSERT_TRUE(order_patterns_test_future.Wait());
+
+  // Act & Assert
+  VerifyOnDidNotConvertAdExpectation();
+  EXPECT_CALL(conversions_observer_mock_, OnFailedToConvertAd).Times(0);
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
+  ads_client_notifier_.NotifyDidCloseTab(test::kTabId);
+}
+
+TEST_F(BraveAdsConversionsTest,
        ConvertTheSameClickedAdEventAgainAfterNavigatingToADifferentCampaign) {
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
@@ -711,6 +776,129 @@ TEST_F(
   VerifyOnDidNotConvertAdExpectation();
   conversions_->MaybeConvert(test::kTabId,
                              test::BuildDefaultConversionRedirectChain());
+}
+
+TEST_F(BraveAdsConversionsTest,
+       DoesNotResolveOrderPatternsWithoutMatchingCampaignConversion) {
+  // Act
+  base::test::TestFuture<bool, OrderIdExtractionPatternsInfo, bool,
+                         OrderValueExtractionPatternsInfo>
+      test_future;
+  conversions_->MaybeGetOrderPatterns(
+      test::kTabId, test::BuildDefaultConversionRedirectChain(),
+      /*detected_language=*/std::nullopt, test_future.GetCallback());
+  const auto [should_extract_id, id_patterns, should_extract_value,
+              value_patterns] = test_future.Take();
+
+  // Assert
+  EXPECT_FALSE(should_extract_id);
+  EXPECT_TRUE(id_patterns.regexes.empty());
+  EXPECT_FALSE(should_extract_value);
+  EXPECT_TRUE(value_patterns.currency_regexes.empty());
+}
+
+TEST_F(BraveAdsConversionsTest,
+       DoesNotResolveOrderPatternsWithoutPendingAdEvent) {
+  // Arrange
+  CampaignConversionInfo campaign_conversion = test::BuildCampaignConversion(
+      /*campaign_id=*/"6ee347cb-6b51-4e44-a0e5-c8fc21bca9bf",
+      test::kMatchingUrlPattern, /*observation_window=*/base::Days(3));
+  campaign_conversion.should_extract_value = true;
+  database::SaveCampaignConversions({campaign_conversion});
+
+  // Act
+  base::test::TestFuture<bool, OrderIdExtractionPatternsInfo, bool,
+                         OrderValueExtractionPatternsInfo>
+      test_future;
+  conversions_->MaybeGetOrderPatterns(
+      test::kTabId, test::BuildDefaultConversionRedirectChain(),
+      /*detected_language=*/std::nullopt, test_future.GetCallback());
+  const auto [should_extract_id, id_patterns, should_extract_value,
+              value_patterns] = test_future.Take();
+
+  // Assert
+  EXPECT_FALSE(should_extract_id);
+  EXPECT_TRUE(id_patterns.regexes.empty());
+  EXPECT_FALSE(should_extract_value);
+  EXPECT_TRUE(value_patterns.currency_regexes.empty());
+}
+
+TEST_F(BraveAdsConversionsTest,
+       ResolveOrderPatternsUsingDefaultsIfResourceNotLoaded) {
+  // Arrange
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/false);
+  CampaignConversionInfo campaign_conversion =
+      test::BuildCampaignConversion(ad.campaign_id, test::kMatchingUrlPattern,
+                                    /*observation_window=*/base::Days(3));
+  campaign_conversion.should_extract_id = true;
+  campaign_conversion.should_extract_value = true;
+  database::SaveCampaignConversions({campaign_conversion});
+  test::RecordAdEvent(ad, mojom::ConfirmationType::kViewedImpression);
+
+  // Act
+  base::test::TestFuture<bool, OrderIdExtractionPatternsInfo, bool,
+                         OrderValueExtractionPatternsInfo>
+      test_future;
+  conversions_->MaybeGetOrderPatterns(
+      test::kTabId, test::BuildDefaultConversionRedirectChain(),
+      /*detected_language=*/std::nullopt, test_future.GetCallback());
+  const auto [should_extract_id, id_patterns, should_extract_value,
+              value_patterns] = test_future.Take();
+
+  // Assert
+  EXPECT_TRUE(should_extract_id);
+  EXPECT_FALSE(id_patterns.regexes.empty());
+  EXPECT_TRUE(should_extract_value);
+  EXPECT_FALSE(value_patterns.currency_regexes.empty());
+}
+
+TEST_F(BraveAdsConversionsTest,
+       DeferConversionUntilPendingOrderIdExtractionResolves) {
+  // Arrange
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/true);
+  CampaignConversionInfo campaign_conversion =
+      test::BuildCampaignConversion(ad.campaign_id, test::kMatchingUrlPattern,
+                                    /*observation_window=*/base::Days(3));
+  campaign_conversion.should_extract_id = true;
+  database::SaveCampaignConversions({campaign_conversion});
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kViewedImpression});
+
+  const std::vector<GURL> redirect_chain =
+      test::BuildDefaultConversionRedirectChain();
+  ads_client_notifier_.NotifyTabDidChange(test::kTabId, redirect_chain,
+                                          /*is_new_navigation=*/true,
+                                          /*is_restoring=*/false,
+                                          /*is_visible=*/true);
+
+  base::test::TestFuture<bool, OrderIdExtractionPatternsInfo, bool,
+                         OrderValueExtractionPatternsInfo>
+      get_order_patterns_test_future;
+  conversions_->MaybeGetOrderPatterns(
+      test::kTabId, redirect_chain, /*detected_language=*/std::nullopt,
+      get_order_patterns_test_future.GetCallback());
+  ASSERT_TRUE(std::get<0>(get_order_patterns_test_future.Take()));
+
+  // Act & Assert
+  VerifyOnDidNotConvertAdExpectation();
+  conversions_->MaybeConvert(test::kTabId, redirect_chain);
+
+  // The ad event itself is not recorded until order extraction resolves, so
+  // there is nothing externally observable to wait on here beforehand.
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(
+      conversions_observer_mock_,
+      OnDidConvertAd(/*conversion=*/::testing::FieldsAre(
+          ad.type, ad.creative_instance_id, ad.creative_set_id, ad.campaign_id,
+          ad.advertiser_id, ad.segment, ConversionActionType::kViewThrough,
+          ExtractedOrderInfo{.id = "order-id-123"})))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  ads_client_notifier_.NotifyOrderIdResolved(
+      test::kTabId, redirect_chain.back(), "order-id-123");
+  run_loop.Run();
 }
 
 }  // namespace brave_ads

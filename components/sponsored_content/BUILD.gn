@@ -1,0 +1,89 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("sponsored_content") {
+  sources = [
+    "sponsored_content_component_callback.h",
+    "sponsored_content_component_installer.cc",
+    "sponsored_content_component_installer.h",
+    "sponsored_content_component_public_keys.cc",
+    "sponsored_content_component_public_keys.h",
+    "sponsored_content_country_code.cc",
+    "sponsored_content_country_code.h",
+    "sponsored_content_features.cc",
+    "sponsored_content_features.h",
+    "sponsored_content_on_demand_update.cc",
+    "sponsored_content_on_demand_update.h",
+    "sponsored_content_service.cc",
+    "sponsored_content_service.h",
+    "sponsored_content_service_observer.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_component_updater/browser:public",
+    "//components/component_updater",
+    "//components/crx_file",
+    "//components/update_client",
+    "//components/variations",
+    "//components/variations/service",
+  ]
+
+  # `crypto::hash::kSha256Size` appears in public method signatures (e.g.
+  # `GetComponentPublicKeySHA256`), so a dependent target including those
+  # headers needs it too.
+  public_deps = [ "//crypto" ]
+}
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "test/fake_sponsored_content_service.cc",
+    "test/fake_sponsored_content_service.h",
+    "test/mock_sponsored_content_service_observer.cc",
+    "test/mock_sponsored_content_service_observer.h",
+    "test/sponsored_content_service_waiter.cc",
+    "test/sponsored_content_service_waiter.h",
+  ]
+
+  deps = [
+    ":sponsored_content",
+    "//base",
+    "//testing/gmock",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "sponsored_content_component_installer_unittest.cc",
+    "sponsored_content_country_code_unittest.cc",
+    "sponsored_content_on_demand_update_unittest.cc",
+    "sponsored_content_service_unittest.cc",
+  ]
+
+  deps = [
+    ":sponsored_content",
+    ":test_support",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_component_updater/browser:public",
+    "//brave/components/brave_component_updater/browser:test_support",
+    "//components/component_updater:test_support",
+    "//components/country_codes",
+    "//components/crx_file",
+    "//components/metrics",
+    "//components/metrics:test_support",
+    "//components/prefs:test_support",
+    "//components/update_client",
+    "//components/variations:test_support",
+    "//components/variations/service",
+    "//crypto",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}

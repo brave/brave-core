@@ -33,7 +33,8 @@ export interface TestConditionMatcherFormState {
 export interface ConversionUrlPattern {
   'Campaign ID': string
   'Ad Type': string
-  'URL Pattern': string
+  'Checkout URL Pattern': string
+  'Thank You URL Pattern': string
   'Expires At': number
   'Observation Window': number
 }
@@ -45,6 +46,19 @@ export interface AdEvent {
   'Ad Type': string
   'Event Type': string
   'Created At': number
+}
+
+// Live per-tab order extraction state, not tied to a recorded conversion;
+// cleared when the tab closes or navigates to an unrelated page.
+// Order ID/Value/Currency are omitted (rather than present as an empty
+// string) when the matching campaign never asked this tab to extract that
+// field; an empty string means it was asked for but not found yet.
+export interface OrderExtraction {
+  'Tab ID': number
+  'URL': string
+  'Order ID'?: string
+  'Order Value'?: string
+  'Order Currency'?: string
 }
 
 export interface ConfirmationQueueItem {
@@ -150,6 +164,7 @@ export interface AppState {
   rewardsEnabled: boolean
   conversionUrlPatterns: ConversionUrlPattern[]
   adEvents: AdEvent[]
+  orderExtractions: OrderExtraction[]
   confirmationQueue: ConfirmationQueueItem[]
   paymentTokens: PaymentToken[]
   nextPaymentTokenRedemptionAt: number | null
@@ -197,6 +212,7 @@ export interface AppState {
   errorsOnlyEnabled: boolean
   eventsDateRangeFilter: DateRangeFilterState
   transactionsDateRangeFilter: DateRangeFilterState
+  conversionsDateRangeFilter: DateRangeFilterState
   testConditionMatcherForm: TestConditionMatcherFormState
   actions: {
     loadAdsInternals: () => void
@@ -211,6 +227,7 @@ export interface AppState {
     setErrorsOnlyEnabled: (enabled: boolean) => void
     setEventsDateRangeFilter: (filter: DateRangeFilterState) => void
     setTransactionsDateRangeFilter: (filter: DateRangeFilterState) => void
+    setConversionsDateRangeFilter: (filter: DateRangeFilterState) => void
     setTestConditionMatcherForm: (form: TestConditionMatcherFormState) => void
     testConditionMatcher: (
       prefPath: string, condition: string, testValue: string | null) =>
@@ -225,6 +242,7 @@ export function defaultAppStore() {
     rewardsEnabled: false,
     conversionUrlPatterns: [],
     adEvents: [],
+    orderExtractions: [],
     confirmationQueue: [],
     paymentTokens: [],
     nextPaymentTokenRedemptionAt: null,
@@ -266,6 +284,7 @@ export function defaultAppStore() {
     errorsOnlyEnabled: true,
     eventsDateRangeFilter: { preset: 'day', fromDate: '', toDate: '' },
     transactionsDateRangeFilter: { preset: 'day', fromDate: '', toDate: '' },
+    conversionsDateRangeFilter: { preset: 'day', fromDate: '', toDate: '' },
     testConditionMatcherForm: { prefPath: '', condition: '', testValue: '' },
     actions: {
       loadAdsInternals() {},
@@ -284,6 +303,7 @@ export function defaultAppStore() {
       setErrorsOnlyEnabled(enabled) {},
       setEventsDateRangeFilter(filter) {},
       setTransactionsDateRangeFilter(filter) {},
+      setConversionsDateRangeFilter(filter) {},
       setTestConditionMatcherForm(form) {},
       async testConditionMatcher() {
         return { currentValue: 'Unknown', matches: 'N/A' }

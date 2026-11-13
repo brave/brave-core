@@ -174,6 +174,14 @@ class AdsService : public KeyedService {
       mojom::SearchResultAdEventType mojom_ad_event_type,
       ResultCallback callback) = 0;
 
+  // Called when a checkout or thank you page is eligible for order
+  // extraction, passing the page's detected source language, if known.
+  virtual void MaybeGetOrderPatterns(
+      int32_t tab_id,
+      const std::vector<GURL>& redirect_chain,
+      std::optional<std::string> detected_language,
+      MaybeGetOrderPatternsCallback callback) = 0;
+
   // Called to purge orphaned served ad events for the specified `mojom_ad_type`
   // before calling `MaybeServe*Ad`. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
@@ -264,6 +272,19 @@ class AdsService : public KeyedService {
 
   // Called when a browser tab with the specified `tab_id` is closed.
   virtual void NotifyDidCloseTab(int32_t tab_id) = 0;
+
+  // Called when ID extraction was requested; `id` has no value if not found.
+  virtual void NotifyOrderIdResolved(int32_t tab_id,
+                                     const GURL& extracted_for_url,
+                                     std::optional<std::string> id) = 0;
+
+  // Called when value extraction was requested; `value` and `currency` each
+  // independently have no value if not found/matched.
+  virtual void NotifyOrderValueResolved(
+      int32_t tab_id,
+      const GURL& extracted_for_url,
+      std::optional<std::string> value,
+      std::optional<std::string> currency) = 0;
 
   // Called when a page navigation was initiated by a user gesture.
   // `page_transition` containing the page transition type, see enums for

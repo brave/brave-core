@@ -23,12 +23,6 @@ TEST(BraveAdsConversionsFeatureTest, ConversionResourceVersion) {
   EXPECT_EQ(1, kConversionResourceVersion.Get());
 }
 
-TEST(BraveAdsConversionsFeatureTest, HtmlMetaTagConversionIdPattern) {
-  // Act & Assert
-  EXPECT_EQ(R"~(<meta.*name="ad-conversion-id".*content="([-a-zA-Z0-9]*)".*>)~",
-            kHtmlMetaTagConversionIdPattern.Get());
-}
-
 TEST(BraveAdsConversionsFeatureTest, AdEventsTimeWindow) {
   // Act & Assert
   EXPECT_EQ(base::Days(30), kAdEventsTimeWindow.Get());

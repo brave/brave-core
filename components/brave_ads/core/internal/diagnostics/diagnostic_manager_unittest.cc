@@ -114,7 +114,7 @@ TEST_F(BraveAdsDiagnosticManagerTest, GetDiagnostics) {
             "storageEntries": [
               {
                 "name": "Schema version",
-                "value": "62"
+                "value": "63"
               },
               {
                 "name": "Last migration failure reason",
@@ -144,6 +144,10 @@ TEST_F(BraveAdsDiagnosticManagerTest, GetDiagnostics) {
               },
               {
                 "name": "Anti targeting resource",
+                "value": "Not loaded"
+              },
+              {
+                "name": "Order extraction patterns resource",
                 "value": "Not loaded"
               }
             ],
@@ -206,9 +210,9 @@ TEST_F(BraveAdsDiagnosticManagerTest,
   test::DisableNotificationAds();
 
   // Act
-  base::test::TestFuture<std::optional<base::DictValue>> future;
-  DiagnosticManager::GetInstance().GetDiagnostics(future.GetCallback());
-  const std::optional<base::DictValue>& diagnostics = future.Get();
+  base::test::TestFuture<std::optional<base::DictValue>> test_future;
+  DiagnosticManager::GetInstance().GetDiagnostics(test_future.GetCallback());
+  const std::optional<base::DictValue>& diagnostics = test_future.Get();
   ASSERT_TRUE(diagnostics);
 
   const base::ListValue* const permission_rules_entries =

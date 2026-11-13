@@ -88,14 +88,32 @@ class CreativeAdMojomWebPageEntitiesConstructor final {
         &mojom_entity->properties, kCreativeAdRewardsValuePropertyName,
         base::NumberToString(kCreativeAdRewardsValue));
 
-    // Campaign conversion.
-    MaybeAddCreativeAdMojomProperty<std::string>(
-        &mojom_entity->properties, kCampaignConversionUrlPatternPropertyName,
-        kCampaignConversionUrlPattern);
-    MaybeAddCreativeAdMojomProperty<int64_t>(
-        &mojom_entity->properties,
-        kCampaignConversionObservationWindowPropertyName,
-        kCampaignConversionObservationWindow.InDays());
+    // Campaign conversion, nested under `data-conversion`.
+    if (!std::ranges::contains(
+            excluded_property_names_,
+            std::string_view(kCampaignConversionDataPropertyName))) {
+      schema_org::mojom::EntityPtr mojom_data_entity =
+          schema_org::mojom::Entity::New();
+
+      MaybeAddCreativeAdMojomProperty<std::string>(
+          &mojom_data_entity->properties,
+          kCampaignConversionDataUrlPatternPropertyName,
+          kCampaignConversionUrlPattern);
+      MaybeAddCreativeAdMojomProperty<int64_t>(
+          &mojom_data_entity->properties,
+          kCampaignConversionDataObservationWindowPropertyName,
+          kCampaignConversionObservationWindow.InDays());
+
+      std::vector<schema_org::mojom::EntityPtr> mojom_data_entities;
+      mojom_data_entities.push_back(std::move(mojom_data_entity));
+
+      schema_org::mojom::PropertyPtr mojom_data_property =
+          schema_org::mojom::Property::New();
+      mojom_data_property->name = kCampaignConversionDataPropertyName;
+      mojom_data_property->values = schema_org::mojom::Values::NewEntityValues(
+          std::move(mojom_data_entities));
+      mojom_entity->properties.push_back(std::move(mojom_data_property));
+    }
 
     return mojom_entity;
   }
@@ -140,8 +158,9 @@ CreativeSearchResultAdMojomWebPageEntitiesWithProperty(std::string_view name,
       /*excluded_property_names=*/{name});
   std::vector<schema_org::mojom::EntityPtr> mojom_web_page_entities =
       constructor.GetMojomWebPageEntities();
-  const auto& mojom_property = mojom_web_page_entities[0]->properties[0];
-  auto& mojom_entity = mojom_property->values->get_entity_values()[0];
+  const auto& mojom_property =
+      mojom_web_page_entities.front()->properties.front();
+  auto& mojom_entity = mojom_property->values->get_entity_values().front();
   AddMojomProperty<std::string>(&mojom_entity->properties,
                                 /*name=*/std::string(name),
                                 /*value=*/std::string(value));
@@ -155,6 +174,17 @@ blink::mojom::WebPagePtr CreativeSearchResultAdMojomWebPageWithProperty(
   mojom_web_page->entities =
       CreativeSearchResultAdMojomWebPageEntitiesWithProperty(name, value);
   return mojom_web_page;
+}
+
+schema_org::mojom::PropertyPtr* FindMojomPropertyByName(
+    schema_org::mojom::EntityPtr& mojom_entity,
+    std::string_view name) {
+  for (auto& mojom_property : mojom_entity->properties) {
+    if (mojom_property && mojom_property->name == name) {
+      return &mojom_property;
+    }
+  }
+  return nullptr;
 }
 
 }  // namespace brave_ads::test

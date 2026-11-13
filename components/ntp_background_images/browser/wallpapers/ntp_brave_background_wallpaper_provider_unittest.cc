@@ -15,10 +15,11 @@
 #include "base/test/values_test_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/test/fake_ntp_background_images_service.h"
-#include "brave/components/ntp_background_images/browser/wallpapers/test/fake_ntp_custom_background_delegate.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
+#include "brave/components/ntp_background_images/browser/wallpapers/test/fake_ntp_custom_background_delegate.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
+#include "brave/components/sponsored_content/test/fake_sponsored_content_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -31,10 +32,12 @@ class NTPBraveBackgroundWallpaperProviderTest : public testing::Test {
 
   void SetUp() override {
     RegisterProfilePrefs(prefs_.registry());
+    sponsored_content_service_ = std::make_unique<
+        sponsored_content::test::FakeSponsoredContentService>();
     background_images_service_ =
         std::make_unique<FakeNTPBackgroundImagesService>(
-            /*variations_service=*/nullptr,
-            /*component_updater_service=*/nullptr, &prefs_);
+            /*component_update_service=*/nullptr,
+            sponsored_content_service_.get(), &prefs_);
     view_counter_model_ = std::make_unique<ViewCounterModel>(&prefs_);
   }
 
@@ -59,6 +62,8 @@ class NTPBraveBackgroundWallpaperProviderTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   test::FakeNTPCustomBackgroundDelegate custom_background_delegate_;
+  std::unique_ptr<sponsored_content::test::FakeSponsoredContentService>
+      sponsored_content_service_;
   std::unique_ptr<FakeNTPBackgroundImagesService> background_images_service_;
   std::unique_ptr<ViewCounterModel> view_counter_model_;
 };
@@ -115,7 +120,7 @@ TEST_F(NTPBraveBackgroundWallpaperProviderTest,
 TEST_F(NTPBraveBackgroundWallpaperProviderTest,
        NoWallpaperWhenIndexIsOutOfRangeForCurrentBackgrounds) {
   InstallBackgroundImagesData();
-  // Simulate the component data shrinking after the index was chosen: the
+  // Simulate the component data shrinking after the index was chosen. The
   // model believes there are 2 backgrounds and rotates to index 1, but only
   // 1 is actually available now.
   view_counter_model_->set_rand_int_inclusive_callback_for_testing(

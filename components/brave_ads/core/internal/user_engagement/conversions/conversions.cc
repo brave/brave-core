@@ -17,6 +17,11 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/order/order_extraction_patterns_matcher.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/order/order_extraction_patterns_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/order/resource/order_extraction_patterns_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/order/resource/order_id_extraction_patterns_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/order/resource/order_value_extraction_patterns_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
@@ -28,6 +33,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
+#include "brave/components/brave_ads/core/public/common/url/url_util.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -187,7 +193,15 @@ void Conversions::CheckForConversions(
         attempted_ad_event_keys_by_tab_id_[tab_id][campaign_id].insert(
             ad_event_key);
     if (did_insert) {
-      Convert(tab_id, ad_event, ad_event_key);
+      if (ShouldDeferConversionForOrderExtraction(tab_id,
+                                                  campaign_conversion_bucket)) {
+        // Hold the ad event back rather than convert it incomplete; flushed
+        // once `OnTabExtractedOrder` reports the order is ready.
+        deferred_ad_events_by_tab_id_[tab_id].emplace_back(ad_event,
+                                                           ad_event_key);
+      } else {
+        Convert(tab_id, ad_event, ad_event_key);
+      }
 
       did_convert = true;
 
@@ -264,8 +278,37 @@ void Conversions::ConvertCallback(int32_t tab_id,
     return NotifyFailedToConvertAd(ad_event.creative_instance_id);
   }
 
-  const ConversionInfo conversion = BuildConversion(ad_event);
+  ConversionInfo conversion = BuildConversion(ad_event);
+
+  // Some checkout flows only show the order ID/value on an earlier page than
+  // the one that matches the conversion URL pattern. By this point order
+  // extraction, if requested, has already resolved, so this is final.
+  if (std::optional<TabInfo> tab =
+          TabManager::GetInstance().MaybeGetForId(tab_id)) {
+    conversion.extracted_order = tab->extracted_order;
+  }
+
   NotifyDidConvertAd(conversion);
+}
+
+bool Conversions::IsOrderExtractionPendingForTab(int32_t tab_id) const {
+  return tab_ids_awaiting_extracted_order_id_.contains(tab_id) ||
+         tab_ids_awaiting_extracted_order_value_.contains(tab_id);
+}
+
+bool Conversions::ShouldDeferConversionForOrderExtraction(
+    int32_t tab_id,
+    const CampaignConversionList& campaign_conversion_bucket) {
+  const bool should_extract_id = std::ranges::any_of(
+      campaign_conversion_bucket, &CampaignConversionInfo::should_extract_id);
+  const bool should_extract_value =
+      std::ranges::any_of(campaign_conversion_bucket,
+                          &CampaignConversionInfo::should_extract_value);
+  if (should_extract_id || should_extract_value) {
+    MarkOrderExtractionPending(tab_id, should_extract_id, should_extract_value);
+  }
+
+  return IsOrderExtractionPendingForTab(tab_id);
 }
 
 void Conversions::NotifyDidConvertAd(const ConversionInfo& conversion) {
@@ -278,14 +321,171 @@ void Conversions::NotifyFailedToConvertAd(
                     creative_instance_id);
 }
 
+void Conversions::MaybeGetOrderPatterns(
+    int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    std::optional<std::string> detected_language,
+    MaybeGetOrderPatternsCallback callback) {
+  CHECK(!redirect_chain.empty());
+
+  campaign_conversions_database_table_.GetUnexpired(base::BindOnce(
+      &Conversions::MaybeGetOrderPatternsForCampaignConversionsCallback,
+      weak_factory_.GetWeakPtr(), tab_id, redirect_chain,
+      std::move(detected_language), std::move(callback)));
+}
+
+void Conversions::MaybeGetOrderPatternsForCampaignConversionsCallback(
+    int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    std::optional<std::string> detected_language,
+    MaybeGetOrderPatternsCallback callback,
+    bool success,
+    const CampaignConversionList& campaign_conversions) {
+  if (!success || campaign_conversions.empty()) {
+    return std::move(callback).Run(
+        /*should_extract_id=*/false, /*id_extraction_patterns=*/{},
+        /*should_extract_value=*/false, /*value_extraction_patterns=*/{});
+  }
+
+  ad_events_database_table_.GetUnexpired(
+      kAdEventsTimeWindow.Get(),
+      base::BindOnce(&Conversions::MaybeGetOrderPatternsForAdEventsCallback,
+                     weak_factory_.GetWeakPtr(), tab_id, redirect_chain,
+                     std::move(detected_language), std::move(callback),
+                     campaign_conversions));
+}
+
+void Conversions::MaybeGetOrderPatternsForAdEventsCallback(
+    int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    std::optional<std::string> detected_language,
+    MaybeGetOrderPatternsCallback callback,
+    const CampaignConversionList& campaign_conversions,
+    bool success,
+    const AdEventList& ad_events) {
+  if (!success) {
+    return std::move(callback).Run(
+        /*should_extract_id=*/false, /*id_extraction_patterns=*/{},
+        /*should_extract_value=*/false, /*value_extraction_patterns=*/{});
+  }
+
+  std::optional<CampaignConversionInfo> campaign_conversion =
+      MaybeGetCampaignConversionForOrderExtraction(campaign_conversions,
+                                                   ad_events, redirect_chain);
+  if (!campaign_conversion) {
+    return std::move(callback).Run(
+        /*should_extract_id=*/false, /*id_extraction_patterns=*/{},
+        /*should_extract_value=*/false, /*value_extraction_patterns=*/{});
+  }
+
+  // Falls back to the compiled-in default patterns until the component
+  // delivers a real set, see `OrderExtractionPatternsResource`.
+  const OrderExtractionPatternsInfo& order_extraction_patterns =
+      order_extraction_patterns_resource_.GetPatterns();
+
+  const GURL& url = redirect_chain.back();
+  const std::vector<std::string> site_candidates = {
+      std::string(url.host()), GetRegistrableDomainOrHost(url)};
+
+  // With no value, tries every language in schema order; see
+  // `MaybeGetOrderPatterns`.
+  const std::string language = std::move(detected_language).value_or("");
+
+  // Flattening only runs for a requested field, so the renderer gets empty
+  // patterns, and so skips real extraction work, for the other one.
+  OrderIdExtractionPatternsInfo order_id_extraction_patterns;
+  if (campaign_conversion->should_extract_id) {
+    order_id_extraction_patterns = ToOrderIdExtractionPatterns(
+        order_extraction_patterns.id, site_candidates, language);
+  }
+
+  OrderValueExtractionPatternsInfo order_value_extraction_patterns;
+  if (campaign_conversion->should_extract_value) {
+    order_value_extraction_patterns = ToOrderValueExtractionPatterns(
+        order_extraction_patterns.value, site_candidates, language);
+  }
+
+  MarkOrderExtractionPending(tab_id, campaign_conversion->should_extract_id,
+                             campaign_conversion->should_extract_value);
+
+  std::move(callback).Run(campaign_conversion->should_extract_id,
+                          std::move(order_id_extraction_patterns),
+                          campaign_conversion->should_extract_value,
+                          std::move(order_value_extraction_patterns));
+}
+
+void Conversions::MarkOrderExtractionPending(int32_t tab_id,
+                                             bool should_extract_id,
+                                             bool should_extract_value) {
+  if (should_extract_id) {
+    tab_ids_awaiting_extracted_order_id_.insert(tab_id);
+  }
+  if (should_extract_value) {
+    tab_ids_awaiting_extracted_order_value_.insert(tab_id);
+  }
+}
+
+void Conversions::FlushDeferredConversionsForTab(int32_t tab_id) {
+  tab_ids_awaiting_extracted_order_id_.erase(tab_id);
+  tab_ids_awaiting_extracted_order_value_.erase(tab_id);
+
+  auto iter = deferred_ad_events_by_tab_id_.find(tab_id);
+  if (iter == deferred_ad_events_by_tab_id_.cend()) {
+    return;
+  }
+
+  std::vector<std::pair<AdEventInfo, AttemptedAdEventKey>> deferred_ad_events =
+      std::move(iter->second);
+  deferred_ad_events_by_tab_id_.erase(iter);
+
+  // Converts now that order extraction, if requested, has resolved, so the
+  // confirmation payload carries it from the start.
+  for (const auto& [ad_event, ad_event_key] : deferred_ad_events) {
+    Convert(tab_id, ad_event, ad_event_key);
+  }
+}
+
+void Conversions::OnDidOpenNewTab(const TabInfo& tab) {
+  // `TabManager` fires this, not `OnTabDidChange`, for a tab's very first
+  // navigation, e.g. an ad opening straight into a new tab.
+  MaybeConvert(tab.id, tab.redirect_chain);
+}
+
 void Conversions::OnTabDidChange(const TabInfo& tab) {
   // `TabManager` only calls this for a genuine new navigation, never a
   // reload, back/forward, or restored tab, so those can never reconvert.
   MaybeConvert(tab.id, tab.redirect_chain);
 }
 
+void Conversions::OnTabExtractedOrder(
+    const TabInfo& tab,
+    ExtractedOrderFieldType extracted_order_field_type) {
+  switch (extracted_order_field_type) {
+    case ExtractedOrderFieldType::kId: {
+      tab_ids_awaiting_extracted_order_id_.erase(tab.id);
+      break;
+    }
+    case ExtractedOrderFieldType::kValue: {
+      tab_ids_awaiting_extracted_order_value_.erase(tab.id);
+      break;
+    }
+  }
+
+  if (IsOrderExtractionPendingForTab(tab.id)) {
+    // Still waiting on the other field.
+    return;
+  }
+
+  FlushDeferredConversionsForTab(tab.id);
+}
+
 void Conversions::OnDidCloseTab(int32_t tab_id) {
   attempted_ad_event_keys_by_tab_id_.erase(tab_id);
+
+  tab_ids_awaiting_extracted_order_id_.erase(tab_id);
+  tab_ids_awaiting_extracted_order_value_.erase(tab_id);
+
+  deferred_ad_events_by_tab_id_.erase(tab_id);
 }
 
 }  // namespace brave_ads
