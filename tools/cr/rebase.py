@@ -75,6 +75,50 @@ _SUBCOMMAND_RE = re.compile(r'^[A-Za-z]\w*!(?:\w+!)*')
 # the line as the commit-subject suffix.
 _AUTOSQUASH_NOTE_RE = re.compile(r'#\s*(\w+!)\s*(.+)')
 
+# A Gerrit Change-Id trailer. Quoted ones (indented culprit messages, `> `
+# lines of a revert) don't match.
+_CHANGE_ID_RE = re.compile(r'Change-Id: (I[0-9a-f]{40})')
+
+
+def _change_id_lines(lines: list[str]) -> tuple[list[int], int]:
+    """The indices of the Change-Id trailers in the last paragraph of
+    `lines`, where git looks for trailers, and the index the paragraph ends
+    at, before the comment lines git strips. The subject is never one."""
+    end = len(lines)
+    while end and (not lines[end - 1].strip() or lines[end - 1][0] == '#'):
+        end -= 1
+    start = next(
+        (i + 1 for i in range(end - 1, 0, -1) if not lines[i].strip()), end
+    )
+    return [
+        i
+        for i in range(start, end)
+        if _CHANGE_ID_RE.fullmatch(lines[i].rstrip())
+    ], end
+
+
+def change_id_of(message: str) -> str | None:
+    """The Change-Id trailer of a commit message, if it has one."""
+    lines = message.split('\n')
+    found, _ = _change_id_lines(lines)
+    if not found:
+        return None
+    return _CHANGE_ID_RE.fullmatch(lines[found[0]].rstrip()).group(1)
+
+
+def with_change_id(message: str, change_id: str) -> str:
+    """The message with `change_id` as its only Change-Id trailer: in place
+    of the first one it has, or as a paragraph of its own."""
+    lines = message.split('\n')
+    found, end = _change_id_lines(lines)
+    if not found:
+        lines[end:end] = ['', f'Change-Id: {change_id}']
+        return '\n'.join(lines)
+    lines[found[0]] = f'Change-Id: {change_id}'
+    for index in reversed(found[1:]):
+        del lines[index]
+    return '\n'.join(lines)
+
 
 def get_entry_type_for_subject(subject: str) -> 'EntryType':
     """Classifies a bare commit subject (no TODO command/hash prefix)
@@ -785,7 +829,9 @@ class MsgBlock:
                 # header and empty line.
                 message_lines = block_lines[2:]
 
-            msg = "\n".join(line.strip() for line in message_lines).strip()
+            # Only trailing whitespace goes: quoted culprit messages are
+            # indented, and must not read as the commit's own trailers.
+            msg = "\n".join(line.rstrip() for line in message_lines).strip()
             if note is not None and note.command == "fixup!":
                 # Git discards a `fixup!` commit's message, body included
                 # (stacked `# fixup! fixup! …` markers too). Treat it the
@@ -853,10 +899,20 @@ class MessageWriter:
         newline) back to `todo_file`. Always valid:
         `MessageWriter.parse` only returns instances with at least one
         block whose first-block content classifies as PINNED or
-        REASSIGNMENT."""
-        self.todo_file.write_text(
-            self.blocks[-1].full_message + '\n', encoding='utf-8', newline=''
+        REASSIGNMENT.
+
+        The message keeps the first Change-Id of the blocks, so the squashed
+        commit stays the Gerrit change its first commit started. A
+        `reassign!` block has none, so a reassignment keeps its target's.
+        """
+        message = self.blocks[-1].full_message
+        change_id = next(
+            filter(None, (change_id_of(b.full_message) for b in self.blocks)),
+            None,
         )
+        if change_id:
+            message = with_change_id(message, change_id)
+        self.todo_file.write_text(message + '\n', encoding='utf-8', newline='')
 
     @staticmethod
     def parse(todo_file: Path) -> 'MessageWriter | None':

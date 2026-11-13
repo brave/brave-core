@@ -2632,6 +2632,12 @@ class Rebase(Task):
         if last is None:
             return False
         brave = repository.brave
+        # The commit going away: the empty `pick`, or the one a `squash` or
+        # `fixup` emptied, whose message is the group's so far.
+        dropped = last.hash if last.command == 'pick' else 'HEAD'
+        change_id = rebase.change_id_of(
+            brave.run_git('log', '-1', '--format=%B', dropped)
+        )
         if last.command != 'pick':
             brave.run_git('reset', '--soft', 'HEAD~1')
         todo = brave.rebase_merge_dir() / 'git-rebase-todo'
@@ -2643,6 +2649,14 @@ class Rebase(Task):
             if entry.command in cls._FOLDING:
                 entry.command = 'pick'
                 lines[index] = entry.out + '\n'
+                if (
+                    change_id
+                    and last.pinned_group is not None
+                    and entry.pinned_group == last.pinned_group
+                ):
+                    # The next commit starts the group in its place, and
+                    # keeps the group's Gerrit change.
+                    lines.insert(index + 1, cls._carry_change_id(change_id))
                 todo.write_text(''.join(lines), encoding='utf-8', newline='')
                 terminal.log_task(
                     f'{escape(last.out)} came out empty: picking '
@@ -2652,6 +2666,31 @@ class Rebase(Task):
             break
         terminal.log_task(f'{escape(last.out)} came out empty: dropped.')
         return True
+
+    @staticmethod
+    def _carry_change_id(change_id: str) -> str:
+        """The todo line that gives HEAD's message `change_id`. Quoted with
+        `shlex.join`, as git runs `exec` lines through its `sh -c`."""
+        command = shlex.join(
+            [
+                str(VPYTHON3_PATH),
+                __file__,
+                f'--internal-rebase-carry-change-id={change_id}',
+            ]
+        )
+        return f'exec {command}\n'
+
+    @staticmethod
+    def carry_change_id(change_id: str) -> None:
+        """Amends HEAD to carry `change_id` as its Change-Id trailer."""
+        brave = repository.brave
+        message = brave.run_git('log', '-1', '--format=%B', 'HEAD')
+        amended = rebase.with_change_id(message, change_id)
+        if amended == message:
+            return
+        brave.run_git(
+            'commit', '--amend', '--no-verify', '--allow-empty', '-m', amended
+        )
 
     @classmethod
     def _run_git_rebase(cls, action: str, env: dict[str, str]) -> None:
@@ -3838,6 +3877,11 @@ if __name__ == '__main__':
         # during rebase --interactive mode.
         if '--internal-rebase-recommit' in sys.argv:
             Rebase.recommit_in_rebase_plan(Path(sys.argv[-1]))
+
+        _carry_prefix = '--internal-rebase-carry-change-id='
+        for _arg in sys.argv:
+            if _arg.startswith(_carry_prefix):
+                Rebase.carry_change_id(_arg[len(_carry_prefix) :])
 
         if '--internal-rebase-capture-plan' in sys.argv:
             # This flag copies the TOOD plan into the destination path.
