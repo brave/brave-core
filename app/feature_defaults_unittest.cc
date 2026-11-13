@@ -312,7 +312,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &switches::kFirstRunDesktopRefresh,
 #endif
 #if BUILDFLAG(IS_ANDROID)
-      &switches::kProfileDiscOnAllPages,
       &switches::kSigninLevelUpButton,
 #endif
       &switches::kSyncEnableBookmarksInTransportMode,
