@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.bookmarks;
 
 import android.app.Activity;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -39,7 +40,8 @@ public class BraveBookmarkUtils extends BookmarkUtils {
             boolean fromExplicitTrackUi,
             BookmarkManagerOpener bookmarkManagerOpener,
             PriceDropNotificationManager priceDropNotificationManager,
-            boolean isBookmarkBarVisible) {
+            boolean isBookmarkBarVisible,
+            @Nullable View anchorView) {
         assert bookmarkModel.isBookmarkModelLoaded();
         if (existingBookmarkItem != null) {
             bookmarkModel.deleteBookmark(existingBookmarkItem.getId());
@@ -58,7 +60,8 @@ public class BraveBookmarkUtils extends BookmarkUtils {
                 fromExplicitTrackUi,
                 bookmarkManagerOpener,
                 priceDropNotificationManager,
-                isBookmarkBarVisible);
+                isBookmarkBarVisible,
+                anchorView);
     }
 
     public static void showBookmarkImportExportDialog(
