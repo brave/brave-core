@@ -12,9 +12,10 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 // Called from the plastered ChromePageInfoDelegate::OpenCookiesDialog().
-// Implemented in //brave/browser/ui/peek:page_info.
+// Implemented in //brave/browser/ui/peek:page_info. Returns true if
+// `web_contents` is shown in Peek and the request was handled.
 namespace peek {
-void ShowCookiesDialogInTab(content::WebContents* web_contents);
+bool ShowCookiesDialogInTab(content::WebContents* web_contents);
 }  // namespace peek
 #endif  // !BUILDFLAG(IS_ANDROID)
 
