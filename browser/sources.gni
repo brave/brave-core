@@ -9,7 +9,6 @@ import("//brave/browser/brave_referrals/sources.gni")
 import("//brave/browser/brave_vpn/sources.gni")
 import("//brave/browser/browsing_data/sources.gni")
 import("//brave/browser/cosmetic_filters/sources.gni")
-import("//brave/browser/debounce/sources.gni")
 import("//brave/browser/gcm_driver/sources.gni")
 import("//brave/browser/misc_metrics/sources.gni")
 import("//brave/browser/net/sources.gni")
@@ -149,6 +148,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/brave_shields:brave_shields_impl",
   "//brave/browser/brave_stats",
   "//brave/browser/component_updater",
+  "//brave/browser/debounce",
   "//brave/browser/download",
   "//brave/browser/drag_drop",
   "//brave/browser/ephemeral_storage",
@@ -175,6 +175,7 @@ brave_chrome_browser_deps = [
   "//brave/common",
   "//brave/common:mojo_bindings",
   "//brave/components/ai_chat/core/common/buildflags",
+  "//brave/components/debounce/core/browser",
 
   # Unconditional for gn check as the NTP WebUI always needs the mojom
   # types since typescript cannnot yet conditionally import during typecheck.
@@ -830,7 +831,6 @@ brave_chrome_browser_sources += brave_browser_brave_referrals_sources
 brave_chrome_browser_sources += brave_browser_brave_vpn_sources
 brave_chrome_browser_sources += brave_browser_browsing_data_sources
 brave_chrome_browser_sources += brave_browser_cosmetic_filters_sources
-brave_chrome_browser_sources += brave_browser_debounce_sources
 brave_chrome_browser_sources += brave_browser_gcm_driver_sources
 brave_chrome_browser_sources += brave_browser_misc_metrics_sources
 brave_chrome_browser_sources += brave_browser_net_sources
@@ -848,7 +848,6 @@ brave_chrome_browser_deps += brave_browser_brave_referrals_deps
 brave_chrome_browser_deps += brave_browser_brave_vpn_deps
 brave_chrome_browser_deps += brave_browser_browsing_data_deps
 brave_chrome_browser_deps += brave_browser_cosmetic_filters_deps
-brave_chrome_browser_deps += brave_browser_debounce_deps
 brave_chrome_browser_deps += brave_browser_gcm_driver_deps
 brave_chrome_browser_deps += brave_browser_misc_metrics_deps
 brave_chrome_browser_deps += brave_browser_net_deps

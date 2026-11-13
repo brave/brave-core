@@ -510,6 +510,7 @@ source_set("ui") {
       ":brave_browser_window_header",
       "//base",
       "//brave/browser/brave_account",
+      "//brave/browser/debounce",
       "//brave/browser/new_tab",
       "//brave/browser/ntp_background",
       "//brave/browser/profiles:util",
