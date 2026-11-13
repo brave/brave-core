@@ -14,3 +14,8 @@ substitutions:
       code: |-
         BraveRemoveSiteSettingsData(delete_begin, delete_end,
                                      host_content_settings_map);
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header: '"brave/components/content_settings/core/browser/brave_content_settings_browsing_data_utils.h"'

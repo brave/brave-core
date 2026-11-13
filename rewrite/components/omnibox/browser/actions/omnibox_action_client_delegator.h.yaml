@@ -24,3 +24,18 @@ substitutions:
           void OpenLeo(const std::u16string& query) override;
           bool IsLeoProviderEnabled() override;
         #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header:
+        - '"brave/components/ai_chat/core/common/buildflags/buildflags.h"'
+        - '"brave/components/commander/common/buildflags/buildflags.h"'
+
+  - description: |-
+      Include what the substitutions above use in `ENABLE_COMMANDER` builds
+    add_after_includes:
+      code: |-
+        #if BUILDFLAG(ENABLE_COMMANDER)
+        #include "brave/components/commander/browser/commander_frontend_delegate.h"
+        #endif  // BUILDFLAG(ENABLE_COMMANDER)

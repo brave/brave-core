@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_USER_DATA_IMPORTER_COMMON_IMPORTER_TYPE_H_
 
 // When updating this macro, also update the max value in
-// chromium_src/chrome/common/importer/profile_import_process_param_traits_macros.h
+// rewrite/chrome/common/importer/profile_import_process_param_traits_macros.h.yaml
 #define TYPE_FIREFOX                                                   \
   TYPE_CHROME = 1, TYPE_EDGE_CHROMIUM = 10, TYPE_VIVALDI = 11,         \
   TYPE_OPERA = 12, TYPE_YANDEX = 13, TYPE_WHALE = 14, TYPE_BRAVE = 15, \

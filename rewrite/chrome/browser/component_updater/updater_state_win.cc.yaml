@@ -37,3 +37,8 @@ substitutions:
       replace: |-
         \1L"Software\\\\BraveSoftware\\\\Update\\\\Clients\\\\"
             L"{B131C935-9BE6-41DA-9599-1F776BEB8019}";
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header: '"brave/components/brave_origin/buildflags/buildflags.h"'

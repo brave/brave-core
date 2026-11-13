@@ -12,3 +12,8 @@ substitutions:
     rename_class:
       class_name: ChromeExtensionsClient
       rename: BraveExtensionsClient
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header: '"brave/common/extensions/brave_extensions_client.h"'

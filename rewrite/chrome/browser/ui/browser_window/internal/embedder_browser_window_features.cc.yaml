@@ -27,3 +27,8 @@ substitutions:
       function_name: >-
         EmbedderBrowserWindowFeatures::TearDownPreBrowserWindowDestruction
       code: 'brave_browser_window_features_->TearDownPreBrowserWindowDestruction();'
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header: '"brave/browser/ui/browser_window/internal/brave_browser_window_features.h"'

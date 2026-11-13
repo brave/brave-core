@@ -16,3 +16,8 @@ substitutions:
           }
 
     count: 1
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header: '"extensions/common/constants.h"'

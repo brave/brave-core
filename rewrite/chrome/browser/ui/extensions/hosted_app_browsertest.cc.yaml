@@ -11,3 +11,8 @@ substitutions:
     rename_class:
       class_name: ChromeContentBrowserClient
       rename: BraveContentBrowserClient
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header: '"brave/browser/brave_content_browser_client.h"'

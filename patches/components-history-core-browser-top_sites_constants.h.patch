@@ -1,9 +1,13 @@
 diff --git a/components/history/core/browser/top_sites_constants.h b/components/history/core/browser/top_sites_constants.h
-index 686772a4cfdb4ccd4dcafe9e35837e22bbafcfb2..f5d5512f323906821677adf98d397550e5d79cab 100644
+index 686772a4cfdb4ccd4dcafe9e35837e22bbafcfb2..27d253e47c9b5988bedcba21a0d94ebbae71d997 100644
 --- a/components/history/core/browser/top_sites_constants.h
 +++ b/components/history/core/browser/top_sites_constants.h
-@@ -9,7 +9,15 @@
+@@ -7,9 +7,19 @@
  
+ #include <stddef.h>
+ 
++#include "build/build_config.h"
++
  namespace history {
  // How many top sites to store in the cache.
 -static constexpr size_t kTopSitesNumber = 10;

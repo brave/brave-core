@@ -15,3 +15,13 @@ substitutions:
       code: |-
         WebUIIOS* GetMainFrameWebUI();
         size_t GetWebUICountForTesting();
+
+  - description: |-
+      Forward declare the types the substitutions above use
+
+      For the main frame WebUI accessor added above.
+    add_after_includes:
+      code: |-
+        namespace web {
+        class WebUIIOS;
+        }

@@ -42,3 +42,8 @@ substitutions:
     make_virtual:
       class_name: HorizontalTabStripRegionViewOld
       method_name: UpdateTabStripMargin
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header: '"base/gtest_prod_util.h"'

@@ -14,3 +14,12 @@ substitutions:
       friend_type:
         - class ::BraveBrowsingDataRemoverDelegate
         - class brave::ProcessLauncher
+
+  - description: |-
+      Forward declare the types the substitutions above use
+    add_after_includes:
+      code: |-
+        class BraveBrowsingDataRemoverDelegate;
+        namespace brave {
+        class ProcessLauncher;
+        }

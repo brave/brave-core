@@ -1,8 +1,17 @@
 diff --git a/chrome/browser/importer/external_process_importer_host.cc b/chrome/browser/importer/external_process_importer_host.cc
-index 051ffd1259dd1373470c56e8a49dd21ad8e57170..3bf03180a127188a6ec159a9c118a906e1aa0d79 100644
+index 051ffd1259dd1373470c56e8a49dd21ad8e57170..8ab3b992c3a47ee3d5e5a1f4cfcaf0cced3cf70f 100644
 --- a/chrome/browser/importer/external_process_importer_host.cc
 +++ b/chrome/browser/importer/external_process_importer_host.cc
-@@ -102,10 +102,10 @@ void ExternalProcessImporterHost::LaunchImportIfReady() {
+@@ -7,6 +7,8 @@
+ #include <memory>
+ 
+ #include "base/functional/bind.h"
++#include "brave/browser/importer/brave_external_process_importer_client.h"
++#include "brave/browser/importer/brave_in_process_importer_bridge.h"
+ #include "chrome/browser/bookmarks/bookmark_model_factory.h"
+ #include "chrome/browser/importer/external_process_importer_client.h"
+ #include "chrome/browser/importer/firefox_profile_lock.h"
+@@ -102,10 +104,10 @@ void ExternalProcessImporterHost::LaunchImportIfReady() {
    // bridge lives in the external process (see ProfileImportThread).
    // The ExternalProcessImporterClient created in the next line owns the bridge,
    // and will delete it.

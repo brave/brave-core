@@ -25,3 +25,8 @@ substitutions:
         virtual void UpdateContentsCornerRadii(
             const gfx::RoundedCornersF& corner_radii) = 0;
         virtual bool IsFullscreen() const = 0;
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header: '"ui/gfx/geometry/rounded_corners_f.h"'
