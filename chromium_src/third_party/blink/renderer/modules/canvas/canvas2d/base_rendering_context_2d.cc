@@ -5,75 +5,31 @@
 
 #include "third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h"
 
-#include "base/compiler_specific.h"
-#include "base/notreached.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
-#include "third_party/blink/renderer/platform/graphics/image_data_buffer.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
+#include "third_party/blink/renderer/core/html/canvas/image_data.h"
+#include "third_party/blink/renderer/platform/bindings/script_state.h"
 #include "ui/gfx/skia_span_util.h"
 
-// SAFETY: writable_addr() returns a valid pointer to a contiguous buffer
-// of exactly computeByteSize() bytes owned by the SkPixmap.
-#define BRAVE_GET_IMAGE_DATA                                              \
-  if (ExecutionContext* context = ExecutionContext::From(script_state)) { \
-    SkPixmap image_data_pixmap = image_data->GetSkPixmap();               \
-    brave::BraveSessionCache::From(*context).PerturbPixels(               \
-        gfx::SkPixmapToWritableSpan(image_data_pixmap));                  \
-  }
-
-#define BRAVE_BASE_RENDERING_CONTEXT_2D_MEASURE_TEXT      \
-  if (brave::IsStrictFingerprintingEnabled(               \
-          GetTopExecutionContext(),                       \
-          ContentSettingsType::BRAVE_WEBCOMPAT_LANGUAGE)) \
-    return MakeGarbageCollected<ShapedText>();
-
-#define BRAVE_GET_IMAGE_DATA_PARAMS ScriptState *script_state,
-#define getImageData getImageData_Unused
 #include <third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc>
-#undef getImageData
-#undef BRAVE_GET_IMAGE_DATA_PARAMS
-#undef BRAVE_GET_IMAGE_DATA
-#undef BRAVE_BASE_RENDERING_CONTEXT_2D_MEASURE_TEXT
 
 namespace blink {
 
-ImageData* BaseRenderingContext2D::getImageData(
-    int sx,
-    int sy,
-    int sw,
-    int sh,
-    ExceptionState& exception_state) {
-  NOTREACHED();
+namespace {
+
+ImageData* FarbleImageData(ScriptState* script_state, ImageData* image_data) {
+  if (!image_data) {
+    return nullptr;
+  }
+  if (ExecutionContext* context = ExecutionContext::From(script_state)) {
+    SkPixmap image_data_pixmap = image_data->GetSkPixmap();
+    brave::BraveSessionCache::From(*context).PerturbPixels(
+        gfx::SkPixmapToWritableSpan(image_data_pixmap));
+  }
+  return image_data;
 }
 
-ImageData* BaseRenderingContext2D::getImageData(
-    int sx,
-    int sy,
-    int sw,
-    int sh,
-    ImageDataSettings* image_data_settings,
-    ExceptionState& exception_state) {
-  NOTREACHED();
-}
-
-ImageData* BaseRenderingContext2D::getImageDataInternal(
-    int sx,
-    int sy,
-    int sw,
-    int sh,
-    ImageDataSettings* image_data_settings,
-    ExceptionState& exception_state) {
-  NOTREACHED();
-}
-
-ImageData* BaseRenderingContext2D::getImageDataInternal_Unused(
-    int sx,
-    int sy,
-    int sw,
-    int sh,
-    ImageDataSettings* image_data_settings,
-    ExceptionState& exception_state) {
-  NOTREACHED();
-}
+}  // namespace
 
 ImageData* BaseRenderingContext2D::getImageData(
     ScriptState* script_state,
@@ -82,8 +38,8 @@ ImageData* BaseRenderingContext2D::getImageData(
     int sw,
     int sh,
     ExceptionState& exception_state) {
-  return getImageDataInternal(script_state, sx, sy, sw, sh,
-                              /*image_data_settings=*/nullptr, exception_state);
+  return FarbleImageData(script_state,
+                         getImageData(sx, sy, sw, sh, exception_state));
 }
 
 ImageData* BaseRenderingContext2D::getImageData(
@@ -94,8 +50,9 @@ ImageData* BaseRenderingContext2D::getImageData(
     int sh,
     ImageDataSettings* image_data_settings,
     ExceptionState& exception_state) {
-  return getImageDataInternal(script_state, sx, sy, sw, sh, image_data_settings,
-                              exception_state);
+  return FarbleImageData(
+      script_state,
+      getImageData(sx, sy, sw, sh, image_data_settings, exception_state));
 }
 
 }  // namespace blink

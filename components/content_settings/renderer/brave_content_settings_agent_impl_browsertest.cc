@@ -53,6 +53,23 @@ constexpr char kGetImageDataScript[] =
     "ctx.putImageData(data, 0, 0);"
     "ctx.getImageData(0, 0, canvas.width, canvas.height).data.reduce(adder);";
 
+constexpr char kGetImageDataWithSettingsScript[] =
+    "var adder = (a, x) => a + x;"
+    "var canvas = document.createElement('canvas');"
+    "canvas.width = 16;"
+    "canvas.height = 16;"
+    "var ctx = canvas.getContext('2d');"
+    "var data = ctx.createImageData(canvas.width, canvas.height);"
+    "ctx.putImageData(data, 0, 0);"
+    "ctx.getImageData(0, 0, canvas.width, canvas.height, {colorSpace: 'srgb'})"
+    "    .data.reduce(adder);";
+
+constexpr char kMeasureTextHasWidthScript[] = R"(
+  var ctx = document.createElement('canvas').getContext('2d');
+  ctx.font = '16px sans-serif';
+  ctx.measureText('Brave').width > 0;
+)";
+
 constexpr char kImageScript[] = R"(
   let frame = document.createElement('img');
   frame.src = $1;
@@ -419,6 +436,28 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   NavigateToPageWithIframe();
   EXPECT_EQ(kExpectedImageDataHashFarblingOff,
             content::EvalJs(contents(), kGetImageDataScript));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
+                       FarbleGetImageDataWithSettings) {
+  NavigateToPageWithIframe();
+  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced,
+            content::EvalJs(contents(), kGetImageDataWithSettingsScript));
+
+  AllowFingerprinting();
+  NavigateToPageWithIframe();
+  EXPECT_EQ(kExpectedImageDataHashFarblingOff,
+            content::EvalJs(contents(), kGetImageDataWithSettingsScript));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
+                       MeasureTextStrictFingerprinting) {
+  NavigateToPageWithIframe();
+  EXPECT_EQ(true, content::EvalJs(contents(), kMeasureTextHasWidthScript));
+
+  BlockFingerprinting();
+  NavigateToPageWithIframe();
+  EXPECT_EQ(false, content::EvalJs(contents(), kMeasureTextHasWidthScript));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
