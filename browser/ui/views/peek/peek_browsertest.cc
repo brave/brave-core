@@ -109,6 +109,8 @@
 #include "brave/components/containers/core/common/features.h"
 #endif
 
+namespace {
+
 // Records what the navigation to `url` knows about its initiator.
 class NavigationInitiatorObserver : public content::WebContentsObserver {
  public:
@@ -143,6 +145,8 @@ class NavigationInitiatorObserver : public content::WebContentsObserver {
   bool is_renderer_initiated_ = false;
   std::optional<url::Origin> initiator_origin_;
 };
+
+}  // namespace
 
 class PeekBrowserTest : public InProcessBrowserTest {
  public:
