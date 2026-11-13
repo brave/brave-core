@@ -20,10 +20,11 @@ typedef NS_ENUM(NSUInteger, BraveBookmarksExporterState) {
 };
 
 @class IOSBookmarkNode;
+@protocol ProfileBridge;
 
 OBJC_EXPORT
 @interface BraveBookmarksExporter : NSObject
-- (instancetype)init;
+- (instancetype)initWithProfile:(id<ProfileBridge>)profile;
 
 - (void)exportToFile:(NSString*)filePath
         withListener:(void (^)(BraveBookmarksExporterState))listener;
