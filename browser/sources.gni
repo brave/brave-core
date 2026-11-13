@@ -4,7 +4,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/browser/ai_chat/android/sources.gni")
-import("//brave/browser/brave_referrals/sources.gni")
 import("//brave/browser/brave_vpn/sources.gni")
 import("//brave/browser/browsing_data/sources.gni")
 import("//brave/browser/cosmetic_filters/sources.gni")
@@ -137,6 +136,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/brave_adaptive_captcha",
   "//brave/browser/brave_adaptive_captcha:impl",
   "//brave/browser/brave_origin",
+  "//brave/browser/brave_referrals",
   "//brave/browser/brave_search",
   "//brave/browser/brave_shields",
   "//brave/browser/brave_shields:brave_shields_impl",
@@ -823,7 +823,6 @@ if (is_mac) {
 }
 
 brave_chrome_browser_sources += brave_browser_profiles_sources
-brave_chrome_browser_sources += brave_browser_brave_referrals_sources
 brave_chrome_browser_sources += brave_browser_brave_vpn_sources
 brave_chrome_browser_sources += brave_browser_browsing_data_sources
 brave_chrome_browser_sources += brave_browser_cosmetic_filters_sources
@@ -837,7 +836,6 @@ brave_chrome_browser_sources += brave_browser_sync_sources
 brave_chrome_browser_sources += brave_browser_themes_sources
 brave_chrome_browser_sources += brave_browser_webcompat_reporter_sources
 
-brave_chrome_browser_deps += brave_browser_brave_referrals_deps
 brave_chrome_browser_deps += brave_browser_brave_vpn_deps
 brave_chrome_browser_deps += brave_browser_browsing_data_deps
 brave_chrome_browser_deps += brave_browser_cosmetic_filters_deps
