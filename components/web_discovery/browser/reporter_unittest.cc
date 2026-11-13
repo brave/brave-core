@@ -132,6 +132,9 @@ class WebDiscoveryReporterTest : public testing::Test {
     auto key_date = request.headers.GetHeader("Key-Date");
     auto encryption = request.headers.GetHeader("Encryption");
     auto version = request.headers.GetHeader(kVersionHeader);
+    ASSERT_TRUE(key_date);
+    ASSERT_TRUE(encryption);
+    ASSERT_TRUE(version);
     EXPECT_EQ(*key_date, FormatServerDate(base::Time::Now()));
     auto decoded_pubkey_and_iv = base::Base64Decode(*encryption);
     ASSERT_TRUE(decoded_pubkey_and_iv);
@@ -139,7 +142,9 @@ class WebDiscoveryReporterTest : public testing::Test {
     EXPECT_EQ(*version, base::NumberToString(kCurrentVersion));
 
     std::string response;
+    ASSERT_TRUE(request.request_body);
     const auto* elements = request.request_body->elements();
+    ASSERT_TRUE(elements);
     ASSERT_EQ(elements->size(), 1u);
     ASSERT_EQ(elements->at(0).type(), network::DataElement::Tag::kBytes);
     auto body = elements->at(0).As<network::DataElementBytes>().bytes();
