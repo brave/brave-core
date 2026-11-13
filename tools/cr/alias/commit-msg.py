@@ -87,7 +87,9 @@
 #    Every commit gets a `Change-Id: I<sha1>` trailer, made and placed as
 #    Gerrit's own commit-msg hook does (`gerrit.createChangeId` and
 #    `gerrit.reviewUrl` included), so that a re-upload of a rebased commit
-#    becomes a new patch set of the same change. A Change-Id trailer the
+#    becomes a new patch set of the same change. On a `cr<N>` branch, pinned
+#    and recyclable commits take one derived from the branch and their kind
+#    instead (see `pinned_commits.derived_change_id`). A Change-Id trailer the
 #    message already has is never replaced: its trailers move below the links
 #    the hook adds. Those in quoted culprit messages don't count. Commits whose
 #    subject is a directive (`fixup!`, `amend!`, `squash!`, `reassign!<hash>!`,
@@ -331,14 +333,22 @@ class GerritTrailer:
     Gerrit's own commit-msg hook does (`tools/hooks/commit-msg` on any Gerrit
     server), whose checks it keeps."""
 
-    def __init__(self, message: str):
-        head = _git('rev-parse', '--verify', '--quiet', 'HEAD').stdout.strip()
-        if not head:
-            head = _git_filter(['hash-object', '-t', 'tree', '--stdin'], '')
-        ident = _git('var', 'GIT_COMMITTER_IDENT').stdout.strip()
-        random = _git_filter(
-            ['hash-object', '--stdin'], f'{ident}\n{head.strip()}\n{message}'
-        ).strip()
+    def __init__(self, message: str, derived: str | None = None):
+        """`derived` is the Change-Id a pinned or recyclable commit takes
+        (see `pinned_commits.derived_change_id`), in place of Gerrit's
+        random one."""
+        if derived:
+            random = derived.removeprefix('I')
+        else:
+            head = _git('rev-parse', '--verify', '--quiet', 'HEAD')
+            head = head.stdout.strip() or _git_filter(
+                ['hash-object', '-t', 'tree', '--stdin'], ''
+            )
+            ident = _git('var', 'GIT_COMMITTER_IDENT').stdout.strip()
+            random = _git_filter(
+                ['hash-object', '--stdin'],
+                f'{ident}\n{head.strip()}\n{message}',
+            ).strip()
         review_url = _git('config', '--get', 'gerrit.reviewUrl').stdout.strip()
         if review_url:
             self.token = 'Link'
@@ -456,12 +466,19 @@ def main():
 
     first_line = commit_message.split('\n', 1)[0]
 
+    # Getting the branch name to see if there's any tags that can be deduced
+    # from it.
+    branch_name = current_branch()
+
     gerrit_trailer = None
     if GerritTrailer.wanted(first_line):
         if GerritTrailer.is_empty(commit_message):
             print(f'file is empty: {commit_msg_file}', file=sys.stderr)
             return 1
-        gerrit_trailer = GerritTrailer(commit_message)
+        gerrit_trailer = GerritTrailer(
+            commit_message,
+            pinned_commits.derived_change_id(branch_name, first_line),
+        )
     # An existing trailer is kept as it is, with the trailers around it,
     # below what the hook adds, where Gerrit looks for it.
     kept_trailers = ''
@@ -469,10 +486,6 @@ def main():
     if gerrit_trailer and gerrit_trailer.is_in(commit_message):
         commit_message, kept_trailers = split_trailers(commit_message)
         gerrit_trailer = None
-
-    # Getting the branch name to see if there's any tags that can be deduced
-    # from it.
-    branch_name = current_branch()
 
     tags = set()
     # Checking for chromium upgrade branches

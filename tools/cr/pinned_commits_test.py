@@ -198,5 +198,66 @@ class PatternMatchTest(unittest.TestCase):
         self.assertFalse(pinned_commits.is_recyclable('[cr149] Feature work'))
 
 
+class DerivedChangeIdTest(unittest.TestCase):
+    """A pinned or recyclable commit's Change-Id follows its branch and its
+    kind, not the versions its subject names."""
+
+    _derive = staticmethod(pinned_commits.derived_change_id)
+
+    def test_a_kind_keeps_one_change_id_per_branch(self):
+        for first, second in (
+            ('Version lift updates', '[cr160] Version lift updates.'),
+            (
+                '`gnrt` run for Chromium 160.0.8200.1.',
+                '[cr160] `gnrt` run for Chromium 160.0.8210.3',
+            ),
+            (
+                'Update from Chromium 159.0.8190.1 to Chromium 160.0.8200.1.',
+                'Update from Chromium 160.0.8200.1 to Chromium 160.0.8210.3.',
+            ),
+            (
+                'Update patches from Chromium 159.0.8190.1 to Chromium '
+                '160.0.8200.1.',
+                'Update patches from Chromium 160.0.8200.1 to Chromium '
+                '160.0.8210.3.',
+            ),
+            (
+                'Updated strings for Chromium 160.0.8200.1.',
+                'Updated strings for Chromium 160.0.8210.3.',
+            ),
+        ):
+            with self.subTest(first):
+                change_id = self._derive('cr160', first)
+                self.assertRegex(change_id, r'^I[0-9a-f]{40}$')
+                self.assertEqual(change_id, self._derive('cr160', second))
+                self.assertNotEqual(change_id, self._derive('cr161', first))
+
+    def test_kinds_have_change_ids_of_their_own(self):
+        subjects = (
+            'Version lift updates',
+            'IWYU fixes.',
+            '`gnrt` run for Chromium 160.0.8200.1.',
+            'Update patches from Chromium 159.0.8190.1 to Chromium '
+            '160.0.8200.1.',
+            'Updated strings for Chromium 160.0.8200.1.',
+        )
+        change_ids = {self._derive('cr160', subject) for subject in subjects}
+        self.assertEqual(len(change_ids), len(subjects))
+
+    def test_none_for_other_commits_or_branches(self):
+        for branch, subject in (
+            ('master', 'Version lift updates'),
+            ('cr160+fix', 'Version lift updates'),
+            # Channel bumps, whose branch names a later bump reuses.
+            ('cr160.x', 'Disable failing upstream tests.'),
+            ('cr160.x-on-1.100.x', 'Disable failing upstream tests.'),
+            ('cr160', '[cr160] Feature work'),
+            ('cr160', 'fixup! Version lift updates'),
+            ('cr160', 'reassign!abc123! Version lift updates'),
+        ):
+            with self.subTest(branch=branch, subject=subject):
+                self.assertIsNone(self._derive(branch, subject))
+
+
 if __name__ == '__main__':
     unittest.main()
