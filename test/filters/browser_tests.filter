@@ -85,17 +85,12 @@
 
 # These tests fail because the default search engine is Brave instead of Google.
 -All/OmniboxAimPopupKeepOpenBrowserTest.FileChooserCancellationReleasesDeactivationBlocker/*
--All/SearchOverriddenParamsProvidersBrowserTest.GetExtensionControllingSearch/ExplicitChoice
--All/SearchOverriddenParamsProvidersBrowserTest.GetExtensionControllingSearch/KeepOrBack
 -ClearBrowsingDataHandlerBrowserTest.UpdateSyncState_GoogleDse
 -ClearBrowsingDataHandlerBrowserTest.UpdateSyncState_NonGoogleDseNotPrepopulated
 -ClearBrowsingDataHandlerBrowserTest.UpdateSyncState_NonGoogleDsePrepopulated
 -ContextualTasksExtensionMessagingAbaSearchJourneysTest.RegisterAimThreadForPromo
 -ContextualTasksExtensionMessagingAbaSearchJourneysTest.RegisterAimThreadForPromoWithoutJourney
 -DevToolsTest.TestOpenSearchResultsInNewTab
--ExtensionControllingSearchExplicitChoiceParamsBrowserTest.PrimaryAndSecondarySearchesFetchDistinctIcons
--ExtensionControllingSearchExplicitChoiceParamsBrowserTest.PrimarySearchIsExtensionInPrepopulatedList
--ExtensionControllingSearchExplicitChoiceParamsBrowserTest.SecondarySearchIsPrepopulatedNonExtension
 -OmniboxAimPopupAiModeButtonBrowserTest.*
 -OmniboxAimPopupDeferCreationPendingBrowserTest.LocationBarActionCreatesAimContent
 -OmniboxMetricsTest.LogSearchEngineUsed
@@ -790,17 +785,8 @@
 
 # These tests fail because we've already implemented similar changes to prevent
 # language fingerprinting, regardless of the feature flag state
--All/ReduceAcceptLanguageEnterprisePolicyBrowserTest.PolicyIsFollowed/False
--All/ReduceAcceptLanguageEnterprisePolicyBrowserTest.PolicyIsFollowedIframe/False
--All/ReduceAcceptLanguageEnterprisePolicyBrowserTest.PolicyIsFollowedImgSubresource/False
--All/SameOriginReduceAcceptLanguageBrowserTest.*
--CrossOriginRedirectReduceAcceptLanguageOTBrowserTest.*
--DisableFeatureReduceAcceptLanguageBrowserTest.*
 -ReduceAcceptLanguageCountBrowserTest.Iframe
 -ReduceAcceptLanguageCountBrowserTest.RegularRequest
--SameOriginRedirectReduceAcceptLanguageOTBrowserTest.*
--SameOriginReduceAcceptLanguageDeprecationOTBrowserTest.*
--ThirdPartyReduceAcceptLanguageDeprecationOTBrowserTest.IframeRequests
 
 # These tests fail because the primary account consent level is null instead of
 # signin::ConsentLevel::kSignin
@@ -829,8 +815,6 @@
 -AvatarToolbarButtonAsyncPromoRaceRegressionTest.PromoShowingAsyncPromoResultResolvesToNoPromoRegressionTest
 -AvatarToolbarButtonGradientRingBrowserTest.*
 -AvatarToolbarButtonPasskeyUnlockErrorBrowserTest.*
--AvatarToolbarButtonReplaceSyncPromosWithSignInPromosBrowserTest.*
--AvatarToolbarButtonReplaceSyncPromosWithSignInPromosOffBrowserTest.*
 -AvatarToolbarButtonWithSyncBrowserTest.*
 -BatchUploadBrowserTest.ClosingBrowserWithBatchUploadShouldStillAlowYouToOpenANewOne
 -BatchUploadBrowserTest.OpenBatchUpload
@@ -939,7 +923,6 @@
 -All/OidcAuthenticationSigninInterceptorTest.MultipleProfileCreationSameSubject/1
 -All/OidcAuthenticationSigninInterceptorTest.PolicyRecoveryFromPref/1
 -All/OidcAuthenticationSigninInterceptorTest.ProfileCreationThenSwitch/1
--All/SigninUiUtilExtensionsTest_ReplaceSyncPromosWithSignInPromos.ShowExtensionSigninPrompt/*
 -SigninUiUtilExtensionsTest.NavigatedAwaySigninTabIsNotReused
 -SigninUiUtilExtensionsTest.ReusedSigninTabInOtherWindow
 -SigninUiUtilExtensionsTest.ShowExtensionSigninPrompt*
@@ -1295,7 +1278,6 @@
 -DiceBrowserTestWithSyncOptinScreen.NoHistorySyncOptinForNonPrimaryAccount
 -DiceBrowserTestWithSyncOptinScreen.SignInAndEnableHistorySyncWhenSignedOut
 -DiceBrowserTestWithSyncOptinScreen.SkipsHistorySyncScreenOnUnexpectedEntryPoint
--DiceBrowserTestWithoutReplaceSyncPromosWithSignInPromos.*
 -DiceBrowsingDataRemoverBrowserTest.*
 -DiceLinkedAccountsBrowserTest.*
 -DiceManageAccountBrowserTest.*
@@ -1338,8 +1320,6 @@
 -All/AvatarToolbarButtonSignInBenefitsNewSigninIphParameterizedTest.NotShownIfLegacyWasShown/*
 -All/AvatarToolbarButtonWebAppBrowserTest.*
 -All/AvatarToolbarButtonWithSyncBrowserTest.*
--All/BrowserCommandControllerBrowserTestShowSigninWhenPaused.ExecuteShowSigninWhenPaused/ReplaceSyncPromosDisabled
--All/BrowserCommandControllerBrowserTestShowSigninWhenPaused.ExecuteShowSigninWhenPaused/ReplaceSyncPromosEnabled
 -All/GlicEnablingGeminiEntBrowserTest.VerifySettings/*
 -All/GlicProfileManagerDidSelectProfileTest.DidSelectProfile_Consented/*
 -All/GlicProfileManagerDidSelectProfileTest.DidSelectProfile_NoConsent/*
@@ -3108,7 +3088,6 @@
 -PDFExtensionJSInk2Test.Ink2*
 -PDFExtensionJSInk2TextTest.Ink2*
 -PDFExtensionJSTest.ViewerFilePicker
--All/PDFExtensionTest.FullPagePdfHasFocus/0
 -All/ProfileMenuViewExtensionsIphDismissTest.CloseIPH/_ProfileSwitch
 -All/ProfileMenuViewExtensionsIphDismissTest.CloseIPH/_SupervisedUser
 -All/ReportingBrowserTest.*
@@ -3521,7 +3500,6 @@
 -SessionRestoreSilentLaunchTest.*
 -SessionRestoreTest.*
 -SessionServiceLogTest.*
--SettingsOverriddenParamsProvidersBrowserTest.*
 -SettingsUITestDisableSync.CreateBatchUploadPromoHandlerWithoutSyncServiceDoesNotCrash
 -SharedClipboardUIFeatureDisabledBrowserTest.*
 -ShortcutLaunchTestFoundProfile.SpecifiedProfileUsed
@@ -3591,7 +3569,6 @@
 -UpdateServiceTest.*
 -UseCounterPageLoadMetricsObserverBrowserTest.*
 -UserPolicySigninServiceTest.*
--UserPolicySigninServiceTestWithReplaceSyncPromosWithSignInPromosDisabled.*
 -UserScriptListenerTest.*
 -VariationsHttpHeadersBrowserTest.*
 -VariationsHttpHeadersBrowserTestWithOptimizationGuide.*

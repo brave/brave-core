@@ -1115,7 +1115,6 @@
 # These tests assert the sign-in-promo behavior that Brave unconditionally
 # disables (some enable kReplaceSyncPromos* via ScopedFeatureList, others
 # expect it on by default), brave-browser#58511
--All/AppMenuModelSigninPromoTest.SignedOut/1
 -All/HistorySyncOptinServiceTest.*
 -All/ManagedDataTypeErrorScreenServiceTest.*
 -All/ProcessDiceHeaderDelegateImplTestEnableSync.EnableSync/1
@@ -1137,11 +1136,8 @@
 -HistorySignInStateWatcherTest.SyncingWithoutTabsSyncIsSyncDisabled
 -HistorySignInStateWatcherTest.TabsSyncDisabled
 -HistorySyncStateWhenTypeDisabledByUserTest.DisablingHistoryRelatedTypeDisablesHistorySync/*
--PeopleHandlerWithReplaceSyncWithSigninUI.*
 -ProcessDiceHeaderDelegateImplTest.EnableSyncHeaderForPrimaryAccount
 -ProcessDiceHeaderDelegateImplTest.UnsupportedAccessPointForHistorySync
--ProfileReportGeneratorTest.SignedInProfileReplaceSyncPromosWithSigninPromos
--SigninPromoUrlTest.SigninURLForDice*
 
 # Brave forces IsReplaceSyncPromosWithSignInPromosEnabled() to false, so this
 # test takes the legacy TurnSyncOnHelper path, which creates a real BrowserView
