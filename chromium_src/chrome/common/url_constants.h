@@ -614,21 +614,8 @@ inline constexpr char kPrivacyPolicyURL[] = "https://support.brave.app/";
 // The URL path to Google's Privacy Policy page for users in China.
 inline constexpr char kPrivacyPolicyURLChina[] = "https://support.brave.app/";
 
-// The URL path to Google's Embedded Privacy Policy page.
-inline constexpr char kPrivacyPolicyOnlineURLPath[] =
-    "https://support.brave.app/";
-
-// The URL path to Google's Embedded Privacy Policy page - Dark Mode.
-inline constexpr char kPrivacyPolicyOnlineDarkModeURLPath[] =
-    "https://support.brave.app/";
-
 // The URL path to Google's Embedded Privacy Policy page for users in China.
 inline constexpr char kPrivacyPolicyEmbeddedURLPathChina[] =
-    "https://support.brave.app/";
-
-// The URL path to Google's Embedded Privacy Policy page for users in China -
-// Dark Mode.
-inline constexpr char kPrivacyPolicyEmbeddedDarkModeURLPathChina[] =
     "https://support.brave.app/";
 
 #if BUILDFLAG(IS_ANDROID)
