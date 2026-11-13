@@ -93,6 +93,7 @@ source_set("brave_shields_impl") {
     deps += [
       "//brave/browser/android:android_browser_process",
       "//brave/browser/brave_shields/android:jni_headers",
+      "//brave/browser/ephemeral_storage",
       "//brave/build/android:jni_headers",
       "//chrome/browser/android:tabs_public",
     ]
