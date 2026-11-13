@@ -8,6 +8,7 @@
 #include <string_view>
 #include <utility>
 
+#include "base/command_line.h"
 #include "base/location.h"
 #include "base/strings/strcat.h"
 #include "base/test/run_until.h"
@@ -18,6 +19,7 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "content/public/browser/render_frame_host.h"
+#include "content/public/common/content_switches.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -84,6 +86,14 @@ constexpr char kWaitForRowIndicatorScript[] = R"(
 // engine's responses stay in progress until the test releases them.
 class AIChatGenerationStatusBrowserTest
     : public AIChatConversationUIBrowserTestBase {
+ public:
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    AIChatConversationUIBrowserTestBase::SetUpCommandLine(command_line);
+    // The tests wait on pages in background tabs, whose renderers run at a
+    // lower priority. On Mac CI that timed those waits out.
+    command_line->AppendSwitch(switches::kDisableRendererBackgrounding);
+  }
+
  protected:
   // Opens the full page on a new chat in a new foreground tab and returns its
   // frame. Every other conversation in its list is then a background one.
