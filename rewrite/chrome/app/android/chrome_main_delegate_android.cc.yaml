@@ -13,3 +13,8 @@ substitutions:
     rename_class:
       class_name: ChromeMainDelegate
       rename: BraveMainDelegate
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header: '"brave/app/brave_main_delegate.h"'

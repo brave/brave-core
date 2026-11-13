@@ -19,3 +19,16 @@ substitutions:
           StartupTab& operator=(const StartupTab&);
           StartupTab(StartupTab&&) noexcept;
           StartupTab& operator=(StartupTab&&) noexcept;\2
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header: '"brave/components/containers/buildflags/buildflags.h"'
+
+  - description: |-
+      Include what the substitutions above use in `ENABLE_CONTAINERS` builds
+    add_after_includes:
+      code: |-
+        #if BUILDFLAG(ENABLE_CONTAINERS)
+        #include "brave/components/containers/core/browser/container_specifier.h"
+        #endif

@@ -14,3 +14,8 @@ substitutions:
       replace: |-
         #if BUILDFLAG(ENABLE_SERVICE_DISCOVERY) && \
             (!BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_DESKTOP_ANDROID))
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header: '"build/android_buildflags.h"'

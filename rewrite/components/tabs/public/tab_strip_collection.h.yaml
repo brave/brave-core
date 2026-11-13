@@ -116,3 +116,14 @@ substitutions:
     make_virtual:
       class_name: TabStripCollection
       method_name: RemoveCollectionMapping
+
+  - description: |-
+      Forward declare the types the substitutions above use
+    add_after_includes:
+      code: |-
+        namespace tree_tab {
+        class TreeTabNodeId;
+        }  // namespace tree_tab
+        namespace tabs {
+        class TreeTabNodeTabCollection;
+        }  // namespace tabs

@@ -55,3 +55,8 @@ substitutions:
       function_name: ChromeContentRendererClient::~ChromeContentRendererClient
       code: |
         chrome_observer_.release();
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header: '"brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"'

@@ -1,8 +1,20 @@
 diff --git a/base/threading/thread_restrictions.h b/base/threading/thread_restrictions.h
-index 95bafac63e471e57579c8296f16bd34bf547c839..e6b088e7170b016ec3cf7c78a11c6fa1174c6742 100644
+index 95bafac63e471e57579c8296f16bd34bf547c839..e1c41450a7b0755db0c088e8ede4761a5cae3d36 100644
 --- a/base/threading/thread_restrictions.h
 +++ b/base/threading/thread_restrictions.h
-@@ -752,6 +752,8 @@ class BASE_EXPORT ScopedAllowBaseSyncPrimitives {
+@@ -15,6 +15,11 @@
+ #include "base/location.h"
+ #include "build/build_config.h"
+ 
++class BraveBrowsingDataRemoverDelegate;
++namespace brave {
++class ProcessLauncher;
++}
++
+ // -----------------------------------------------------------------------------
+ // Usage documentation
+ // -----------------------------------------------------------------------------
+@@ -752,6 +757,8 @@ class BASE_EXPORT ScopedAllowBaseSyncPrimitives {
        const ScopedAllowBaseSyncPrimitives&) = delete;
  
   private:

@@ -47,3 +47,16 @@ substitutions:
     make_virtual:
       class_name: IconWithBadgeImageSource
       method_name: GetIconAreaRect
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header: <optional>
+
+  - description: |-
+      Forward declare the types the substitutions above use
+    add_after_includes:
+      code: |-
+        namespace brave {
+        class BraveIconWithBadgeImageSource;
+        }

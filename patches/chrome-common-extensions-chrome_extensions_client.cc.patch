@@ -1,8 +1,16 @@
 diff --git a/chrome/common/extensions/chrome_extensions_client.cc b/chrome/common/extensions/chrome_extensions_client.cc
-index e94ba34f9a9090591ee5f466d04c5df10e294c8f..26d6f7d304dfce7d543612cb5fb8fd85fcb714fa 100644
+index e94ba34f9a9090591ee5f466d04c5df10e294c8f..85b4bfe5728243526bd7d79a82e6afd70972b913 100644
 --- a/chrome/common/extensions/chrome_extensions_client.cc
 +++ b/chrome/common/extensions/chrome_extensions_client.cc
-@@ -61,6 +61,7 @@ const char kExtensionBlocklistHttpsUrlPrefix[] =
+@@ -13,6 +13,7 @@
+ #include "base/files/file_path.h"
+ #include "base/strings/string_util.h"
+ #include "base/values.h"
++#include "brave/common/extensions/brave_extensions_api_provider.h"
+ #include "build/build_config.h"
+ #include "chrome/common/chrome_resource_request_blocked_reason.h"
+ #include "chrome/common/chrome_switches.h"
+@@ -61,6 +62,7 @@ const char kExtensionBlocklistHttpsUrlPrefix[] =
  ChromeExtensionsClient::ChromeExtensionsClient() {
    AddAPIProvider(std::make_unique<CoreExtensionsAPIProvider>());
    AddAPIProvider(std::make_unique<ChromeExtensionsAPIProvider>());

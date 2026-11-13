@@ -41,3 +41,9 @@ substitutions:
         void set_sidebar_container(SidebarContainerView* sidebar_container) {
           views_.sidebar_container = sidebar_container;
         }
+
+  - description: |-
+      Forward declare the types the substitutions above use
+    add_after_includes:
+      code: |-
+        class SidebarContainerView;

@@ -127,3 +127,8 @@ substitutions:
               return "brave_on_device_speech_model";
             case permissions::RequestType::kBraveOpenAIChat:
               return "brave_ai_chat";\2
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header: '"brave/components/brave_wallet/common/buildflags/buildflags.h"'

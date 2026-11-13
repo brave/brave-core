@@ -15,3 +15,8 @@ substitutions:
         if (auto* web_frame = WebLocalFrameImpl::FromFrame(document_->GetFrame())) {
           web_frame->NotifyScriptToolsChanged();
         }
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header: '"third_party/blink/renderer/core/frame/web_local_frame_impl.h"'

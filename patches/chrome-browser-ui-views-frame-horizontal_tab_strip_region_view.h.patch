@@ -1,8 +1,16 @@
 diff --git a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h
-index 4b5fedc04f20b727c84e26f00c5947be7cd91f42..0e1e4bb8b4f491d757dfcdd79ad918ebfafabc8c 100644
+index 4b5fedc04f20b727c84e26f00c5947be7cd91f42..d845120504570e8ec4da4d5aef7f7dc2413a0259 100644
 --- a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h
 +++ b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h
-@@ -108,13 +108,20 @@ class HorizontalTabStripRegionViewOld : public TabStripRegionView {
+@@ -7,6 +7,7 @@
+ 
+ #include <memory>
+ 
++#include "base/gtest_prod_util.h"
+ #include "base/memory/raw_ptr.h"
+ #include "build/buildflag.h"
+ #include "chrome/browser/ui/tabs/tab_data.h"
+@@ -108,13 +109,20 @@ class HorizontalTabStripRegionViewOld : public TabStripRegionView {
  
    bool HasLeadingButtons() const;
  

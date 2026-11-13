@@ -1,8 +1,16 @@
 diff --git a/components/sync/engine/data_type_worker.cc b/components/sync/engine/data_type_worker.cc
-index 78cb21347a19944e8ea97c06b2158dc51a813bea..7834761f0097bba5c7d88ec616e19d1151b96190 100644
+index 78cb21347a19944e8ea97c06b2158dc51a813bea..ec77553ae730fd465128a627f1b82aed0928cc86 100644
 --- a/components/sync/engine/data_type_worker.cc
 +++ b/components/sync/engine/data_type_worker.cc
-@@ -965,6 +965,12 @@ std::unique_ptr<CommitContribution> DataTypeWorker::GetContribution(
+@@ -28,6 +28,7 @@
+ #include "base/time/time.h"
+ #include "base/trace_event/memory_usage_estimator.h"
+ #include "base/uuid.h"
++#include "brave/components/sync/engine/brave_commit_encryption_check.h"
+ #include "components/autofill/core/browser/webdata/payments/payments_sync_util.h"
+ #include "components/sync/base/client_tag_hash.h"
+ #include "components/sync/base/data_type.h"
+@@ -965,6 +966,12 @@ std::unique_ptr<CommitContribution> DataTypeWorker::GetContribution(
           (data_type_state_.encryption_key_name() ==
            cryptographer_->GetDefaultEncryptionKeyName()));
  

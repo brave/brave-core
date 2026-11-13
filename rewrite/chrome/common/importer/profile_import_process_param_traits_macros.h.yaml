@@ -22,3 +22,8 @@ substitutions:
     regex:
       re_pattern: 'user_data_importer::TYPE_BOOKMARKS_FILE\)'
       replace: 'user_data_importer::TYPE_BRAVE)'
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header: '"components/user_data_importer/common/importer_type.h"'

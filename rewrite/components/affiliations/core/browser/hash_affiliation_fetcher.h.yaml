@@ -27,3 +27,8 @@ substitutions:
       replace:
         '\1\n\n  base::WeakPtrFactory<HashAffiliationFetcher>
         weak_ptr_factory_{this};\2'
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header: '"base/memory/weak_ptr.h"'

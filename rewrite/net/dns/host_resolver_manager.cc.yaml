@@ -29,3 +29,11 @@ substitutions:
                                              key.host.GetHostname())) {
           return;
         }
+
+  - description: |-
+      Include what the substitutions above use
+
+      `IsOnionHostnameResolutionBlocked()` is called from
+      `HostResolverManager::ResolveLocally()` and `StartBootstrapFollowup()`.
+    add_include:
+      header: '"brave/net/dns/onion_hostname_resolution.h"'
