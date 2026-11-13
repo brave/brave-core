@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Never meet Glic's global criteria.
+
+      Brave doesn't ship Glic. Every Glic entry point, on desktop and Android
+      alike, and Glic's keyed service, require these criteria, so failing them
+      here turns Glic off on every platform, including where field trial
+      overrides enable `kGlic`. The actor framework, which AI Chat builds on,
+      is gated on `kGlicActor` instead, and is unaffected. Tests that bypass
+      the enablement checks still see Glic as enabled.
+    preempt_function_impl:
+      function_name: GlicGlobalEnabling::IsEnabledByGlobalCriteria
+      code: |-
+        if (!g_bypass_enablement_checks_for_testing) {
+          return false;
+        }
