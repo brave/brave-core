@@ -3036,15 +3036,20 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/settings/site_settings/site_list.html
 +++ gen/chrome/browser/resources/settings/preprocessed/site_settings/site_list.html
-@@ -6,33 +6,21 @@
+@@ -3,36 +3,24 @@
+ #html_wrapper_imports_end -->
+ 
+     <div id="category" ?hidden="\${this.shouldHideCategory_()}">
        <div class="cr-row first">
-         <h3 id="listHeader" class="flex secondary" tabindex="-1">
+-        <h3 id="listHeader" class="flex secondary" tabindex="-1">
++        <div><h3 id="listHeader" class="flex secondary" tabindex="-1">
            \${this.categoryHeader}
-         </h3>
+-        </h3>
 -        <cr-button id="addSite" class="header-aligned-button"
 -            ?hidden="\${!this.shouldShowAddSiteButton_()}"
 -            @click="\${this.onAddSiteClick_}"
 -            aria-label="\${this.getAddButtonLabel_()}">
++        </h3>\${this.cookiesExceptionType === 'third-party' ? html\`<b>$i18n{cookieControlledByShieldsHeader}</b>\` : ''}</div>
 +        <cr-button id="addSite" class="header-aligned-button" ?hidden="\${!this.shouldShowAddSiteButton_()}" @click="\${this.onAddSiteClick_}" aria-label="\${this.getAddButtonLabel_()}">
            $i18n{add}
          </cr-button>
