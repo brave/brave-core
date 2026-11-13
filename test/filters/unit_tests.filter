@@ -439,6 +439,7 @@
 -ChromePingManagerFactoryTest.ShouldSendPersistedReport_Yes
 -ChromeTailoredSecurityServiceTest.*
 -ClientSideDetectionHostCreditCardFormTest.*
+-ClientSideDetectionHostKeyboardLockUniformImageDelayTest.*
 -ClientSideDetectionHostNewObserversForceRequestTest.*
 -ClientSideDetectionHostNotificationTest.*
 -ClientSideDetectionHostPriorityTest.*
@@ -446,6 +447,7 @@
 -ClientSideDetectionHostTest.*
 -ClientSideDetectionIntelligentScanDelegateDesktopTest*
 -ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTracker*
+-ClientSideDetectionRTLookupResponseForceRequestTest.NavigationBeforeDelayElapsesCancelsSecondForceRequestPing
 -DeveloperPrivateApiUnitTest.ExtensionUpdatedEventOnAllowlistWarningChange
 -DownloadProtectionUtilTest.ShouldSendDangerousDownloadReport
 -DownloadRequestMakerTest.PopulateAntivirusProduct*
