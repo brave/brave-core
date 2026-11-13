@@ -17,15 +17,7 @@
 #include "ui/views/border.h"
 #include "ui/views/painter.h"
 
-// Rename upstream methods so we can provide thin wrappers that reapply
-// rounded-corner and border state.
-#define AddHeaderView AddHeaderView_ChromiumImpl
-#define RemoveHeaderView RemoveHeaderView_ChromiumImpl
-
 #include <chrome/browser/ui/views/side_panel/side_panel.cc>
-
-#undef RemoveHeaderView
-#undef AddHeaderView
 
 namespace {
 
@@ -184,14 +176,4 @@ void SidePanel::UpdateBorder() {
       brave::GetPanelContentsRoundedCorners(browser_view_,
                                             /*flatten_top_for_header=*/false),
       GetColorProvider()));
-}
-
-void SidePanel::AddHeaderView(std::unique_ptr<views::View> view) {
-  AddHeaderView_ChromiumImpl(std::move(view));
-  UpdateBorder();
-}
-
-void SidePanel::RemoveHeaderView() {
-  RemoveHeaderView_ChromiumImpl();
-  UpdateBorder();
 }

@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Skip updating the active state when there is no pinned toolbar actions
+      container.
+
+      Brave may not have a pinned actions container, which upstream assumes
+      always exists.
+    preempt_function_impl:
+      function_name: SidePanelToolbarPinningController::UpdateActiveState
+      return_if: |-
+        auto* toolbar_button_provider = ToolbarButtonProvider::From(&*browser_);
+            !toolbar_button_provider ||
+            !toolbar_button_provider->GetPinnedToolbarActions()

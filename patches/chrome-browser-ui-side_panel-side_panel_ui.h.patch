@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/side_panel/side_panel_ui.h b/chrome/browser/ui/side_panel/side_panel_ui.h
+index 8c261b6120103a0aa6bc5e59527df498275d0d97..149feaac5c440d93aceb1b025689983d68c9f142 100644
+--- a/chrome/browser/ui/side_panel/side_panel_ui.h
++++ b/chrome/browser/ui/side_panel/side_panel_ui.h
+@@ -114,6 +114,7 @@ class SidePanelUI {
+   // Prevent content swapping delays from happening for testing.
+   // This should be called before the side panel is first shown.
+   virtual void SetNoDelaysForTesting(bool no_delays_for_testing) = 0;
++  virtual void Toggle() {}
+ };
+ 
+ #endif  // CHROME_BROWSER_UI_SIDE_PANEL_SIDE_PANEL_UI_H_

@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let BraveSidePanelCoordinator reach SidePanelUIBase internals.
+
+      BraveSidePanelCoordinator overrides some of its protected and private
+      methods and needs access to the private current_key_ member. Inheritance:
+      BraveSidePanelCoordinator -> SidePanelCoordinator -> SidePanelUIBase.
+    add_friend:
+      class_name: SidePanelUIBase
+      friend_type: class BraveSidePanelCoordinator
