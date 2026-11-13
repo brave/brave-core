@@ -1024,6 +1024,8 @@
 
 # These tests expect a LoadingPredictor, which never exists now that
 # IsLoadingPredictorEnabled() always returns false.
+-All/SearchEnginePreconnectorInitialRttBrowserTest.*
+-All/SearchEnginePreconnectorInvalidKeepAliveTimeoutsBrowserTest.*
 -All/SearchEnginePreconnectorWithAdjustPreconnectRetryIntervalFeatureBrowserTest.CalculateBackoffMultiplier/*
 -AnchorElementSetIsNavigationInDomainBrowserTest.TestPointerDownOnAnchor
 -Flags/LCPPTimingPredictorBrowserFlagTest.WithKCriticalPathFlag/*
@@ -1691,6 +1693,12 @@
 -LensOverlayController*.*
 -LensSearchController*.*
 -SidePanelCoordinatorLensOverlayTest.*
+
+# This test loads a Google page in the contextual task side panel, which Brave
+# ships disabled (kContextualTasks). Brave Shields never sends its settings to
+# that panel's frames, so the renderer fails a DCHECK in
+# BraveContentSettingsAgentImpl::GetBraveShieldsSettings() in DCHECK builds.
+-ContextualTasksUiServiceRearchitectureEnabledTest.SidePanelWebViewOpenURLFromTab_ActivatedLinkClick_KeepsSidePanelOpen
 
 # These tests fail since upstream transitioned to ChromeRefresh2023 by default;
 # some of them may require further investigation, while some we may continue to
