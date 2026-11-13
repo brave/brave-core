@@ -24,10 +24,10 @@ import java.util.function.Supplier;
  * Drives the collapsed URL chip shown while the Brave bottom toolbar is scrolled away.
  *
  * <p>Chromium's browser controls hide the toolbar (and with it the URL) completely while the user
- * scrolls down. This mediator shows a small "collapsed chip" whenever the toolbar is not on
- * screen, so that the page's host (minus trivial subdomains, e.g. "search.brave.com") remains
- * visible at all times, matching Safari / Brave iOS behavior. The chip is display-only: tapping
- * it re-shows the browser controls, so the chip never becomes a navigation or spoofing surface.
+ * scrolls down. This mediator shows a small "collapsed chip" whenever the toolbar is not on screen,
+ * so that the page's host (minus trivial subdomains, e.g. "search.brave.com") remains visible at
+ * all times, matching Safari / Brave iOS behavior. The chip is display-only: tapping it re-shows
+ * the browser controls, so the chip never becomes a navigation or spoofing surface.
  */
 @NullMarked
 class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Observer {
@@ -141,9 +141,9 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
     }
 
     /**
-     * Chip-eligible = http/https with a non-empty host; everything else carries no spoofable
-     * web identity. Parses the canonical GURL spec with GURL, whose getHost() is the real
-     * host (userinfo stripped), so "http://example.com@evil.com/" resolves to evil.com.
+     * Chip-eligible = http/https with a non-empty host; everything else carries no spoofable web
+     * identity. Parses the canonical GURL spec with GURL, whose getHost() is the real host
+     * (userinfo stripped), so "http://example.com@evil.com/" resolves to evil.com.
      */
     static boolean isEligibleUrlSpec(@Nullable String spec) {
         if (spec == null || spec.isEmpty()) return false;
@@ -156,9 +156,9 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
     }
 
     /**
-     * True when the background behind the chip is light: dark pill on light content, light pill
-     * on dark content, like the system gesture bar. Translucent colors compose over white, so
-     * fully transparent reads as light.
+     * True when the background behind the chip is light: dark pill on light content, light pill on
+     * dark content, like the system gesture bar. Translucent colors compose over white, so fully
+     * transparent reads as light.
      */
     static boolean isLightContentBackground(int color) {
         float alpha = Color.alpha(color) / 255f;

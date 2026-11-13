@@ -29,11 +29,11 @@ import org.chromium.base.Callback;
 import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
-import org.chromium.chrome.browser.toolbar.R;
+import org.chromium.cc.input.BrowserControlsState;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.tab.Tab;
-import org.chromium.cc.input.BrowserControlsState;
+import org.chromium.chrome.browser.toolbar.R;
 import org.chromium.components.url_formatter.UrlFormatter;
 import org.chromium.content_public.browser.NavigationHandle;
 import org.chromium.content_public.browser.WebContents;
@@ -60,26 +60,33 @@ public class BraveCollapsedUrlChipCoordinator {
     private final NullableObservableSupplier<Tab> mTabSupplier;
     private final Callback<Tab> mTabObserverCallback = this::onTabChanged;
     private final BrowserStateBrowserControlsVisibilityDelegate mVisibilityDelegate;
+
     /**
-     * Not final: re-read before each consumer decision, nav mode can change while the
-     * process is alive.
+     * Not final: re-read before each consumer decision, nav mode can change while the process is
+     * alive.
      */
     private boolean mHasGestureNavigation;
 
     private @Nullable WebContentsObserver mWebContentsObserver;
+
     /** The current page background color; drives the chip's inverted styling. */
     private int mLastContentColor = Color.TRANSPARENT;
+
     private boolean mChipShowing;
     private boolean mPillHidden;
+
     /** Whether the chip is currently painted with the dark-on-light-content palette. */
     private boolean mAppliedDarkChip = true;
 
     /** Cadence of content-color samples while the chip is showing, in ms. */
     private static final long CONTENT_SAMPLE_INTERVAL_MS = 150;
+
     /** Height of the content strip sampled below the chip, in px. */
     private static final int CONTENT_SAMPLE_HEIGHT_PX = 40;
+
     /** Gap between the chip's bottom edge and the sampled strip, in px. */
     private static final int CONTENT_SAMPLE_GAP_PX = 8;
+
     private final Handler mSamplerHandler = new Handler(Looper.getMainLooper());
     private final Runnable mSampleRunnable = this::sampleContentUnderChip;
     private @Nullable Bitmap mSampleBitmap;
@@ -254,8 +261,8 @@ public class BraveCollapsedUrlChipCoordinator {
     }
 
     /**
-     * Lifts the chip above an opaque 3-button nav bar (inset + minimum gap); no-op with
-     * gesture navigation. Re-reads nav mode so mid-session switches are handled.
+     * Lifts the chip above an opaque 3-button nav bar (inset + minimum gap); no-op with gesture
+     * navigation. Re-reads nav mode so mid-session switches are handled.
      */
     private void applyNavigationBarInset() {
         mHasGestureNavigation = isGestureNavigation(mActivity);
@@ -280,8 +287,8 @@ public class BraveCollapsedUrlChipCoordinator {
     }
 
     /**
-     * Hides the system gesture pill while the chip shows (only one bottom indicator on
-     * screen) and restores it after; no-op on 3-button nav.
+     * Hides the system gesture pill while the chip shows (only one bottom indicator on screen) and
+     * restores it after; no-op on 3-button nav.
      */
     private void setGesturePillHidden(boolean hidden) {
         mHasGestureNavigation = isGestureNavigation(mActivity);
@@ -317,15 +324,14 @@ public class BraveCollapsedUrlChipCoordinator {
                 darkChip
                         ? R.color.brave_collapsed_url_chip_text_dark
                         : R.color.brave_collapsed_url_chip_text;
-        mChipView.setBackgroundTintList(
-                ColorStateList.valueOf(mActivity.getColor(backgroundRes)));
+        mChipView.setBackgroundTintList(ColorStateList.valueOf(mActivity.getColor(backgroundRes)));
         mChipTextView.setTextColor(mActivity.getColor(textRes));
     }
 
     /**
-     * Samples the rendered content directly below the chip while it shows and flips its
-     * inverted styling to keep contrast, mirroring the Android 15 gesture-pill contrast
-     * behavior; nothing in Chromium exposes that decision, so it is re-implemented locally.
+     * Samples the rendered content directly below the chip while it shows and flips its inverted
+     * styling to keep contrast, mirroring the Android 15 gesture-pill contrast behavior; nothing in
+     * Chromium exposes that decision, so it is re-implemented locally.
      */
     private void startContentSampling() {
         mHasGestureNavigation = isGestureNavigation(mActivity);
@@ -363,8 +369,7 @@ public class BraveCollapsedUrlChipCoordinator {
                 || mSampleBitmap.getWidth() != strip.width()
                 || mSampleBitmap.getHeight() != strip.height()) {
             mSampleBitmap =
-                    Bitmap.createBitmap(
-                            strip.width(), strip.height(), Bitmap.Config.ARGB_8888);
+                    Bitmap.createBitmap(strip.width(), strip.height(), Bitmap.Config.ARGB_8888);
         }
         try {
             PixelCopy.request(
@@ -400,11 +405,7 @@ public class BraveCollapsedUrlChipCoordinator {
             }
         }
         if (counted == 0) return;
-        int avg =
-                Color.rgb(
-                        (int) (r / counted),
-                        (int) (g / counted),
-                        (int) (b / counted));
+        int avg = Color.rgb((int) (r / counted), (int) (g / counted), (int) (b / counted));
         boolean darkChip = BraveCollapsedUrlChipMediator.isLightContentBackground(avg);
         if (darkChip != mAppliedDarkChip) applyChipColorsForSample(darkChip);
     }
