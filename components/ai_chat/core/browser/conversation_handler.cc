@@ -13,6 +13,7 @@
 #include <optional>
 #include <ranges>
 #include <string_view>
+#include <utility>
 #include <variant>
 #include <vector>
 
@@ -63,6 +64,7 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using api_request_helper::APIRequestResult;
@@ -2378,7 +2380,6 @@ void ConversationHandler::CompleteGeneration(
     bool success) {
   is_request_in_progress_ = false;
   thread_uuid_in_progress_ = std::nullopt;
-  OnAPIRequestInProgressChanged();
 
   if (success) {
     // Trigger title generation in background after request completes but
@@ -2393,6 +2394,9 @@ void ConversationHandler::CompleteGeneration(
                          weak_ptr_factory_.GetWeakPtr()));
     }
 
+    // The finished request isn't reported yet: a queued request or the next
+    // tool reports its own start, and MaybeRespondToNextToolUseRequest reports
+    // the conversation idle if neither starts.
     MaybePopPendingRequests();
     if (!MaybeRespondToNextToolUseRequest(thread_uuid)) {
       // Inform tool providers that there are no more tool use requests to
@@ -2407,8 +2411,11 @@ void ConversationHandler::CompleteGeneration(
     }
   } else {
     // Failure should stop any tool handling, and relay to ToolProviders because
-    // we can't resume. User will have to resubmit.
+    // we can't resume. User will have to resubmit. Stop before reporting idle
+    // so observers don't count a challenge on the stopped task as awaiting
+    // input.
     StopTask();
+    OnAPIRequestInProgressChanged();
   }
 }
 
@@ -2431,8 +2438,15 @@ bool ConversationHandler::MaybeAutoRetry(
 
 void ConversationHandler::RetryAfterConnectionIssue(
     const std::optional<std::string>& thread_uuid) {
-  CompleteGeneration(thread_uuid, false);
+  // The retry continues the same request, so the conversation is only reported
+  // idle if it isn't resubmitted.
+  is_request_in_progress_ = false;
+  thread_uuid_in_progress_ = std::nullopt;
+  StopTask();
   RetryAPIRequest(thread_uuid);
+  if (!is_request_in_progress_) {
+    OnAPIRequestInProgressChanged();
+  }
 }
 
 void ConversationHandler::OnSuggestedQuestionsResponse(
@@ -2939,8 +2953,35 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest(
   // - Any tool use requests require user interaction (permission challenge
   //   or providing output via UI)
 
-  is_tool_use_in_progress_ = false;
-  OnAPIRequestInProgressChanged();
+  // The flag is cleared without notifying, so the conversation isn't reported
+  // idle between steps. The next tool or generation reports its own start, and
+  // if neither starts, the loop has stopped and that is reported on the way
+  // out. If a request started while the tool ran, the conversation isn't idle,
+  // so the UI is told the tool finished now.
+  if (std::exchange(is_tool_use_in_progress_, false) &&
+      is_request_in_progress_) {
+    OnStateForConversationEntriesChanged();
+  }
+  bool task_state_changed = false;
+  absl::Cleanup report_outcome = [this, &task_state_changed] {
+    if (task_state_changed) {
+      OnToolUseTaskStateChanged();
+    }
+    if (!is_request_in_progress_ && !is_tool_use_in_progress_) {
+      thread_uuid_in_progress_ = std::nullopt;
+      OnAPIRequestInProgressChanged();
+    }
+  };
+  // Reports a tool starting, with any task state change first so that no
+  // client sees the request finished while the task still looks unstarted.
+  auto start_tool_use = [&] {
+    is_tool_use_in_progress_ = true;
+    thread_uuid_in_progress_ = thread_uuid;
+    if (std::exchange(task_state_changed, false)) {
+      OnToolUseTaskStateChanged();
+    }
+    OnAPIRequestInProgressChanged();
+  };
 
   auto& history = GetMutableConversationHistory(thread_uuid);
   if (history.empty()) {
@@ -2981,10 +3022,12 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest(
       // before the user-interaction checks below - UI that must not change
       // mid-loop (e.g. the website tools dialog's permission pickers) relies
       // on the task state to know that. The cost is that a tool which only
-      // needs user interaction also puts the Task pause/stop UI up.
+      // needs user interaction also puts the Task pause/stop UI up. The change
+      // is reported once a tool starts or on the way out: before then it would
+      // show the conversation idle.
       if (tool_use_task_state_ == mojom::TaskState::kNone) {
         tool_use_task_state_ = mojom::TaskState::kRunning;
-        OnToolUseTaskStateChanged();
+        task_state_changed = true;
       }
 
       // Now check if we're allowed to execute tools.
@@ -3042,9 +3085,7 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest(
         DVLOG(1) << "Tool not found or unavailable: "
                  << tool_use_event->tool_name;
 
-        is_tool_use_in_progress_ = true;
-        thread_uuid_in_progress_ = thread_uuid;
-        OnAPIRequestInProgressChanged();
+        start_tool_use();
 
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
@@ -3086,9 +3127,7 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest(
 
       // No user interaction needed - execute tool
 
-      is_tool_use_in_progress_ = true;
-      thread_uuid_in_progress_ = thread_uuid;
-      OnAPIRequestInProgressChanged();
+      start_tool_use();
       DVLOG(0) << __func__ << " calling UseTool for tool: " << tool_ptr->Name();
 
       tool_ptr->UseTool(
@@ -3108,12 +3147,6 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest(
   if (has_only_completed_tool_use_events && !is_request_in_progress_ &&
       has_non_server_tool_results) {
     PerformPostToolAssistantGeneration(thread_uuid);
-  }
-
-  // If neither generation nor tool execution is now in progress, clear the
-  // in-progress thread uuid.
-  if (!is_request_in_progress_ && !is_tool_use_in_progress_) {
-    thread_uuid_in_progress_ = std::nullopt;
   }
 
   return has_pending_tool_use_request;

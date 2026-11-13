@@ -85,7 +85,9 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   class Observer : public base::CheckedObserver {
    public:
-    // Called when the conversation history changess
+    // Called when a generation request or tool use starts or stops.
+    // |in_progress| and IsToolUseInProgress() are both false only once the
+    // tool loop has stopped, not between its steps.
     virtual void OnRequestInProgressChanged(ConversationHandler* handler,
                                             bool in_progress) {}
     virtual void OnConversationEntryAdded(
@@ -613,7 +615,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   ToolUseEventAndThreadUUID FindLatestToolUseEvent(
       std::optional<std::string_view> tool_id = std::nullopt);
 
-  // Returns true if there are any more tool use requests to handle
+  // Returns true if there are any more tool use requests to handle. Reports
+  // the conversation idle if neither a tool nor a generation is left running.
   bool MaybeRespondToNextToolUseRequest(
       const std::optional<std::string>& thread_uuid);
 
