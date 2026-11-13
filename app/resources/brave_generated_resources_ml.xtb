@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 'ബബ് ബപ്പ്-ൽ <ph name="SETTINGS_EXTENIONS_LINK"/> ന് ശേഷം മാറ്റണം.</translation>
 <translation id="6229752134959014186">Widevine നെ കുറിച്ച് കൂടുതലറിയുക</translation>
+<translation id="3318169548229684688">ഈ ഉപകരണത്തിൽ സംഭാഷണം പ്രോസസ് ചെയ്യുന്നതിനായി ഒരു സ്പീച്ച് റെക്കഗ്നിഷൻ മോഡൽ (<ph name="DOWNLOAD_SIZE"/>) ഡൗൺലോഡ് ചെയ്യുക</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> നിങ്ങളെ ചോദിക്കുകയാണ്</translation>
 <translation id="3218385319396786393">ഈ പേജിൽ autoplay തടയപ്പെട്ടിരിക്കുന്നു</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> ൽ എപ്പോഴും autoplay അനുവദിക്കുക</translation>
@@ -610,6 +611,8 @@
 <translation id="3540231253392253941">പുഷ് സന്ദേശങ്ങൾക്കായി Google സേവനങ്ങൾ ഉപയോഗിക്കുക</translation>
 <translation id="2224032129673914306">സെമാന്റിക് ഹിസ്റ്ററി സെർച്ച്</translation>
 <translation id="6045998903985162478">നിങ്ങൾ സന്ദർശിക്കുന്ന പേജുകൾ ഇൻഡെക്സ് ചെയ്യുക, അങ്ങനെ ഹിസ്റ്ററി, തുറന്ന ടാബുകൾ, Leo എന്നിവയിൽ നിങ്ങൾക്ക് അവ എളുപ്പത്തിൽ കണ്ടെത്താനാകും.</translation>
+<translation id="3962946446120925966">ഉപകരണത്തിലെ സംഭാഷണ തിരിച്ചറിയൽ</translation>
+<translation id="6408242130028978631">സൈറ്റുകൾക്ക് ഈ ഉപകരണത്തിൽ സംഭാഷണം പ്രോസസ്സ് ചെയ്യാൻ കഴിയുന്നതിനായി ഒരു സംഭാഷണ തിരിച്ചറിയൽ മോഡൽ (<ph name="DOWNLOAD_SIZE"/>) ഡൗൺലോഡ് ചെയ്യുക. മോഡൽ നീക്കം ചെയ്യാൻ ഇത് ഓഫാക്കുക.</translation>
 <translation id="5813105074916486721">പ്രാദേശിക history നിലനിർത്തൽ</translation>
 <translation id="5671611745062206644">Brave നിങ്ങളുടെ browsing history പ്രാദേശികമായി എത്ര കാലം സംഭരിക്കുന്നു</translation>
 <translation id="7184510058087008090">1 ദിവസം</translation>

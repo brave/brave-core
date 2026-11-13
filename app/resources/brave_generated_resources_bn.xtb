@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>।
 অথবা <ph name="SETTINGS_EXTENIONS_LINK"/>-এ পরে পরিবর্তন করুন।</translation>
 <translation id="6229752134959014186">Widevine সম্পর্কে আরও জানুন</translation>
+<translation id="3318169548229684688">এই ডিভাইসে কথা প্রক্রিয়া করার জন্য একটি স্পিচ রিকগনিশন মডেল (<ph name="DOWNLOAD_SIZE"/>) ডাউনলোড করতে</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> আপনাকে অ্যাড্রেস বারে</translation>
 <translation id="3218385319396786393">এই পৃষ্ঠাতে স্বয়ংক্রিয়ভাবে চালানো  ব্লক করা হয়েছে</translation>
 <translation id="4988333904713528597">সর্বদা <ph name="HOST"/> এ স্বতঃ চলার অনুমতি দিন</translation>
@@ -610,6 +611,8 @@
 <translation id="3540231253392253941">পুশ মেসেজিংয়ের জন্য Google পরিষেবাগুলি ব্যবহার করুন</translation>
 <translation id="2224032129673914306">শব্দার্থিক ইতিহাস অনুসন্ধান</translation>
 <translation id="6045998903985162478">আপনি যেসব পৃষ্ঠা পরিদর্শন করেন তা সূচিবদ্ধ করুন যাতে আপনি সেগুলো ইতিহাস, খোলা ট্যাব এবং Leo-তে সহজে খুঁজে পেতে পারেন।</translation>
+<translation id="3962946446120925966">ডিভাইসে স্পিচ রিকগনিশন</translation>
+<translation id="6408242130028978631">একটি স্পিচ রিকগনিশন মডেল (<ph name="DOWNLOAD_SIZE"/>) ডাউনলোড করুন, যাতে সাইটগুলো এই ডিভাইসে স্পিচ প্রসেস করতে পারে। মডেলটি সরাতে এটি বন্ধ করুন।</translation>
 <translation id="5813105074916486721">স্থানীয় ইতিহাস ধারণ</translation>
 <translation id="5671611745062206644">Brave আপনার ব্রাউজিং ইতিহাস স্থানীয়ভাবে কতক্ষণ সংরক্ষণ করে</translation>
 <translation id="7184510058087008090">1 দিন</translation>

@@ -947,6 +947,11 @@
 <translation id="4362717653795263052">恢复主加密账户</translation>
 <translation id="3038077262567136741">输入恢复短语，恢复您的 Brave 钱包加密账户。</translation>
 <translation id="955918646509748368">输入的恢复短语无效。</translation>
+<translation id="7496330898672236908">此恢复短语与您的钱包不匹配。请检查短语后重试。</translation>
+<translation id="3798792138617904098">要移除导入的账户吗？</translation>
+<translation id="2960631345291747230">导入的账户未通过您的恢复短语备份。它们将从 Brave 钱包中移除，除非您已备份其私钥，否则您可能会永久失去对其中资金的访问权限。</translation>
+<translation id="8898583604592472741">移除账户</translation>
+<translation id="1577629163207045190">输入“<ph name="CONFIRMATION_PHRASE"/>”以确认。</translation>
 <translation id="8107437138787377150">从剪贴板粘贴恢复短语</translation>
 <translation id="4811736040444856406">显示恢复密语</translation>
 <translation id="4359319875297001084">从旧的 Brave 加密钱包导入？</translation>
@@ -2241,13 +2246,12 @@ other {# 个来源}
 <translation id="3934503473603661122">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Grok 4.7 提供支持，这是 xAI 在 Amazon Bedrock 上的前沿推理模型。Grok 4.7 通过 Brave 的安全 AWS 基础设施提供服务。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 GPT Luna 提供支持，这是 OpenAI 在 Amazon Bedrock 上的快速、低延迟模型。GPT Luna 通过 Brave 的安全 AWS 基础设施提供服务。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 GPT 5.6 Terra 提供支持，这是 OpenAI 在 Amazon Bedrock Mantle 上的均衡生产模型。GPT 5.6 Terra 通过 Brave 安全的 AWS 基础设施提供服务。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Mistral Large 提供支持，这是一个由 Mistral 创建的模型，性能卓越，适用于多种用例。Mistral Large 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Claude Haiku 提供支持，这是一个由 Anthropic 创建的模型，用于支持对话和文本处理任务。Claude Haiku 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Qwen 3.8 Flash Next 提供支持，这是一个由阿里巴巴云创建的模型，性能卓越，适用于多种用例。Qwen 3.8 Flash Next 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Deepseek V3.2 提供支持，这是一个由 Deepseek 创建的模型，性能卓越，适用于多种用例。Deepseek V3.2 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">嗨，我是 Leo。我是由 Brave 提供的 AI 助手。我由 GLM 5.3 提供支持，这是一个由 Z.ai 创建的模型，性能卓越，适用于多种用例。GLM 5.3 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Claude Opus 提供支持，这是一个由 Anthropic 创建的模型，用于支持对话和文本处理任务。Claude Opus 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 GLM-4-7-Flash 提供支持，这是一个由 Zhipu AI 创建的模型，性能卓越，适用于多种用例。GLM-4-7-Flash 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Kimi K2.5 提供支持，这是一个由 Moonshot AI 创建的模型，性能卓越，适用于多种用例。Kimi K2.5 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Nemotron Nano 3 30B 提供支持，这是一个由 NVIDIA 创建的模型，性能卓越，适用于多种用例。Nemotron Nano 3 30B 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Brave Ocelot 提供支持，这是一个由 Brave 创建的模型，用于总结网页。Brave Ocelot 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">高级</translation>
 <translation id="5807427080183870259">本地</translation>
@@ -2387,8 +2391,8 @@ other {# 个来源}
 <translation id="7465032796278724624">通过 NEAR AI TEE 实现可验证的隐私保护</translation>
 <translation id="8782867266498869301">模型会动态变化以使用最适合任务的模型</translation>
 <translation id="7348809809749151120">快速 • 搜索</translation>
+<translation id="7711013627639951065">快速 • 搜索 • 视觉 • 工具</translation>
 <translation id="3213834013136637671">搜索 • 视觉</translation>
-<translation id="2793458212460902934">快速 • 搜索 • 工具</translation>
 <translation id="5276681919620506371">搜索 • 工具</translation>
 <translation id="7434375176361995333">总结 • 快速</translation>
 <translation id="3965507912994218570">Leo 设置</translation>
@@ -2461,6 +2465,8 @@ other {# 个来源}
 <translation id="6287023598025162715">新对话</translation>
 <translation id="7230502562132448519">筛选对话</translation>
 <translation id="821070843380699990">请尝试其他查询</translation>
+<translation id="241415280196701326">最近的工作区</translation>
+<translation id="5388053981690151266">在此工作区中新建对话</translation>
 <translation id="7097822247923237815">临时聊天</translation>
 <translation id="7481750859362986254">该聊天不会保存到您的历史记录中，也不会使用 Leo 的任何自定义功能或记忆。</translation>
 <translation id="4238305333951712482">记忆已更新：<ph name="MEMORY_CONTENT"/></translation>
@@ -2486,6 +2492,7 @@ other {# 个来源}
 <translation id="5103625298494362646">代理模式适用于支持工具的模型。不兼容的模型将从此列表中隐藏。</translation>
 <translation id="3397808797783614750">启用 AI 为您自动浏览可能会对您的隐私、财务和在线通信造成有害且非预期的影响。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">安全警告</translation>
+<translation id="717245811623757038">工具权限请求</translation>
 <translation id="6077070599873946984">Brave AI 需要您的权限执行操作：<ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI 希望在 **<ph name="SITE_ORIGIN"/>** 上执行 **<ph name="TOOL_NAME"/>**</translation>
 <translation id="4163837693685963037">该操作被检测为可能与您的请求不一致：</translation>

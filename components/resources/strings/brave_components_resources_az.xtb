@@ -944,6 +944,11 @@
 <translation id="4362717653795263052">Əsas kripto hesablarını bərpa edin.</translation>
 <translation id="3038077262567136741">Brave balans kripto hesabınızı bərpa etmək üçün bərpa ifadənizi daxil edin.</translation>
 <translation id="955918646509748368">Daxil edilmiş bərpa ifadəsi yanlışdır.</translation>
+<translation id="7496330898672236908">Bu bərpa ifadəsi cüzdanınızla uyğun gəlmir. İfadəni yoxlayın və yenidən cəhd edin.</translation>
+<translation id="3798792138617904098">İdxal edilmiş hesablar çıxarılsın?</translation>
+<translation id="2960631345291747230">İdxal edilmiş hesablar bərpa ifadəniz tərəfindən ehtiyat nüsxəyə alınmır. Onlar Brave Cüzdandan çıxarılacaq və şəxsi açarlarının ehtiyat nüsxəsini çıxarmamısınızsa, vəsaitlərinə həmişəlik çıxışı itirə bilərsiniz.</translation>
+<translation id="8898583604592472741">Hesabları çıxarın</translation>
+<translation id="1577629163207045190">Təsdiq etmək üçün "<ph name="CONFIRMATION_PHRASE"/>" yazın.</translation>
 <translation id="8107437138787377150">Bərpa ifadəsini panodan yapışdırın.</translation>
 <translation id="4811736040444856406">Bərpa ifadəsini göstər</translation>
 <translation id="4359319875297001084">Köhnə Brave kripto cüzdanlarından idxal etmək?</translation>
@@ -2238,13 +2243,12 @@
 <translation id="3934503473603661122">Salam, mən Leo. Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən Amazon Bedrock üzərində xAI-nin qabaqcıl əsaslandırma modeli olan Grok 4.7 ilə işləyirəm. Grok 4.7 Brave-in təhlükəsiz AWS infrastrukturu vasitəsilə təqdim edilir.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Salam, mən Leo. Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən Amazon Bedrock üzərində OpenAI-nin sürətli, aşağı gecikməli modeli olan GPT Luna ilə işləyirəm. GPT Luna Brave-in təhlükəsiz AWS infrastrukturu vasitəsilə təqdim edilir.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Salam, mən Leo. Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən Amazon Bedrock Mantle üzərində OpenAI-nin balanslaşdırılmış istehsal modeli olan GPT 5.6 Terra ilə işləyirəm. GPT 5.6 Terra Brave-in təhlükəsiz AWS infrastrukturu vasitəsilə təqdim edilir.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Salam, mən Leo. Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən Mistral tərəfindən performant olmaq və bir çox istifadə hallarına tətbiq olunmaq üçün yaradılmış Mistral Large modeli ilə işləyirəm. Mistral Large modeli Brave-in öz təhlükəsiz infrastrukturu vasitəsilə host edilir.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Salam, mən Leo. Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən Anthropic tərəfindən söhbət və mətn emalı vəzifələrini yerinə yetirmək üçün yaradılmış Claude Haiku modeli ilə işləyirəm. Claude Haiku modeli Brave-in öz təhlükəsiz infrastrukturu vasitəsilə host edilir.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Salam, mən Leo. Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən Alibaba Cloud tərəfindən performant olmaq və bir çox istifadə hallarına tətbiq olunmaq üçün yaradılmış Qwen 3.8 Flash Next modeli ilə işləyirəm. Qwen 3.8 Flash Next modeli Brave-in öz təhlükəsiz infrastrukturu vasitəsilə host edilir.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Salam, mən Leo. Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən Deepseek tərəfindən performant olmaq və bir çox istifadə hallarına tətbiq olunmaq üçün yaradılmış Deepseek V3.2 modeli ilə işləyirəm. Deepseek V3.2 modeli Brave-in öz təhlükəsiz infrastrukturu vasitəsilə host edilir.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Salam, mən Leo. Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən Z.ai tərəfindən performanslı olmaq və bir çox istifadə hallarına tətbiq olunmaq üçün yaradılmış GLM 5.3 modeli ilə işləyirəm. GLM 5.3 modeli Brave-in öz təhlükəsiz infrastrukturu vasitəsilə host edilir.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Salam, mən Leo. Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən Anthropic tərəfindən söhbət və mətn emalı vəzifələrini yerinə yetirmək üçün yaradılmış Claude Opus modeli ilə işləyirəm. Claude Opus modeli Brave-in öz təhlükəsiz infrastrukturu vasitəsilə host edilir.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Salam, mən Leo. Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən GLM-4-7-Flash modeli ilə işləyirəm, Zhipu AI tərəfindən performant olmaq və bir çox istifadə hallarına tətbiq olunmaq üçün yaradılmışdır. GLM-4-7-Flash modeli Brave-in öz təhlükəsiz infrastrukturu vasitəsilə host edilir.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Salam, mən Leo. Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən Kimi K2.5 modeli ilə işləyirəm, Moonshot AI tərəfindən performant olmaq və bir çox istifadə hallarına tətbiq olunmaq üçün yaradılmışdır. Kimi K2.5 modeli Brave-in öz təhlükəsiz infrastrukturu vasitəsilə host edilir.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Salam, mən Leo. Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən NVIDIA tərəfindən performant olmaq və bir çox istifadə hallarına tətbiq olunmaq üçün yaradılmış Nemotron Nano 3 30B modeli ilə işləyirəm. Nemotron Nano 3 30B modeli Brave-in öz təhlükəsiz infrastrukturu vasitəsilə host edilir.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Salam, mən Leo. Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən Brave Ocelot modeli ilə işləyirəm, Brave tərəfindən veb səhifələri xülasə etmək üçün yaradılmışdır. Brave Ocelot modeli Brave-in öz təhlükəsiz infrastrukturu vasitəsilə host edilir.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Yerli</translation>
@@ -2384,8 +2388,8 @@
 <translation id="7465032796278724624">NEAR AI TEE ilə Təstiqlənmiş Məxfilik</translation>
 <translation id="8782867266498869301">Model vəzifəni ən yaxşı yerinə yetirmək üçün dinamik olaraq dəyişir</translation>
 <translation id="7348809809749151120">Sürətli • Axtarış</translation>
+<translation id="7711013627639951065">Sürətli • Axtarış • Görmə • Alətlər</translation>
 <translation id="3213834013136637671">Axtarış • Görmə</translation>
-<translation id="2793458212460902934">Sürətli • Axtarış • Alətlər</translation>
 <translation id="5276681919620506371">Axtarış • Alətlər</translation>
 <translation id="7434375176361995333">Xülasələr • Sürətli</translation>
 <translation id="3965507912994218570">Leo parametrləri</translation>
@@ -2458,6 +2462,8 @@
 <translation id="6287023598025162715">Yeni söhbət</translation>
 <translation id="7230502562132448519">Söhbətləri filter edin</translation>
 <translation id="821070843380699990">Zəhmət olmasa fərqli sorğu cəhd edin</translation>
+<translation id="241415280196701326">Son iş sahələri</translation>
+<translation id="5388053981690151266">Bu iş sahəsində yeni söhbət</translation>
 <translation id="7097822247923237815">Müvəqqəti söhbət</translation>
 <translation id="7481750859362986254">Bu söhbət tarixçənin yaddaşında saxlanılmayacaq və ya Leo-nun hər hansı xüsusi mesaj və ya yaddaşından istifadə edilməyəcək.</translation>
 <translation id="4238305333951712482">Yaddaş yeniləndi: <ph name="MEMORY_CONTENT"/></translation>
@@ -2483,6 +2489,7 @@
 <translation id="5103625298494362646">Agent rejimi alətlə dəstəklənən modellərlə işləyir. Uyğun olmayan modellər bu siyahıda gizlədilib.</translation>
 <translation id="3397808797783614750">Leo-nun sizin əvəzinizə avtomatik olaraq vebi nəzərdən keçirməsi məxfiliyiniz, maliyyə vəziyyətiniz və onlayn ünsiyyətiniz üçün zərərli, arzuolunmaz nəticələrə səbəb ola bilər. <ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Təhlükəsizlik xəbərdarlığı</translation>
+<translation id="717245811623757038">Alət icazəsi sorğusu</translation>
 <translation id="6077070599873946984">Brave AI icazə istəyir: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI **<ph name="SITE_ORIGIN"/>** üzərində **<ph name="TOOL_NAME"/>** icra etmək istəyir</translation>
 <translation id="4163837693685963037">Əməliyyatınızla uyğun olmayan bir fəaliyyət aşkarlandı:</translation>

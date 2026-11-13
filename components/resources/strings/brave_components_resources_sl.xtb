@@ -948,6 +948,11 @@
 <translation id="4362717653795263052">Obnovite primarne kripto račune</translation>
 <translation id="3038077262567136741">Vnesite svojo frazo za obnovitev, da obnovite kripto račun za Brave denarnico.</translation>
 <translation id="955918646509748368">Vnesena fraza za obnovitev ni veljavna.</translation>
+<translation id="7496330898672236908">Ta obnovitvena fraza se ne ujema z vašo denarnico. Preverite frazo in poskusite znova.</translation>
+<translation id="3798792138617904098">Želite odstraniti uvožene račune?</translation>
+<translation id="2960631345291747230">Uvoženi računi niso varnostno kopirani z vašo obnovitveno frazo. Odstranjeni bodo iz denarnice Brave Wallet, dostop do njihovih sredstev pa lahko trajno izgubite, razen če ste varnostno kopirali njihove zasebne ključe.</translation>
+<translation id="8898583604592472741">Odstrani račune</translation>
+<translation id="1577629163207045190">Za potrditev vnesite »<ph name="CONFIRMATION_PHRASE"/>«.</translation>
 <translation id="8107437138787377150">Prilepite frazo za obnovitev iz odložišča</translation>
 <translation id="4811736040444856406">Oglejte si fazo obnovitve</translation>
 <translation id="4359319875297001084">Uvozim iz starejših Brave kripto denarnic?</translation>
@@ -2248,13 +2253,12 @@
 <translation id="3934503473603661122">Živjo, jaz sem Leo. Sem Braveov pomočnik z umetno inteligenco. Poganja me Grok 4.7, xAI-jev vrhunski model za sklepanje na platformi Amazon Bedrock. Grok 4.7 je na voljo prek Braveove varne infrastrukture AWS.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Živjo, jaz sem Leo. Sem Braveov pomočnik z umetno inteligenco. Poganja me GPT Luna, OpenAI-jev hiter model z nizko zakasnitvijo na platformi Amazon Bedrock. GPT Luna je na voljo prek Braveove varne infrastrukture AWS.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Živjo, jaz sem Leo. Sem Braveov pomočnik z umetno inteligenco. Poganja me GPT 5.6 Terra, OpenAI-jev uravnotežen produkcijski model na platformi Amazon Bedrock Mantle. GPT 5.6 Terra je na voljo prek Braveove varne infrastrukture AWS.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Mistral Large, model, ki ga je ustvaril Mistral za zmogljivost in uporabnost za številne primere uporabe. Mistral Large gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Živjo, jaz sem Leo. Delujem prek brskalnika Brave in poganja me Claude Haiku – model, ki ga je ustvaril Anthropic za pogovorne in besedilne naloge. Claude Haiku gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Živjo, jaz sem Leo. Sem Braveov pomočnik z umetno inteligenco. Poganja me Qwen 3.8 Flash Next, model, ki ga je ustvaril Alibaba Cloud za zmogljivost in uporabnost za številne primere uporabe. Qwen 3.8 Flash Next gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Deepseek V3.2, model, ki ga je ustvaril Deepseek za zmogljivost in uporabnost za številne primere uporabe. Deepseek V3.2 gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Živjo, jaz sem Leo. Sem Braveov pomočnik z umetno inteligenco. Poganja me GLM 5.3, model, ki ga je družba Z.ai ustvarila za zmogljivost in uporabnost za številne primere uporabe. GLM 5.3 gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Živjo, jaz sem Leo. Delujem prek brskalnika Brave in poganja me Claude Opus – model, ki ga je ustvaril Anthropic za pogovorne in besedilne naloge. Claude Opus gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me GLM-4-7-Flash, model, ki ga je ustvaril Zhipu AI za zmogljivost in uporabnost za številne primere uporabe. GLM-4-7-Flash gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Kimi K2.5, model, ki ga je ustvarilo podjetje Moonshot AI za zmogljivost in uporabnost za številne primere uporabe. Kimi K2.5 gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Nemotron Nano 3 30B, model, ki ga je ustvaril NVIDIA za zmogljivost in uporabnost za številne primere uporabe. Nemotron Nano 3 30B gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Brave Ocelot, model, ki ga je ustvaril Brave za povzemanje spletnih strani. Brave Ocelot gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Lokalno</translation>
@@ -2394,8 +2398,8 @@
 <translation id="7465032796278724624">Z jamstvom zasebnosti z NEAR AI TEE</translation>
 <translation id="8782867266498869301">Model se dinamično spreminja, da uporabi najboljšega za določen opravek</translation>
 <translation id="7348809809749151120">Hitro • Iskanje</translation>
+<translation id="7711013627639951065">Hitro • Iskanje • Vizija • Orodja</translation>
 <translation id="3213834013136637671">Iskanje • Vizija</translation>
-<translation id="2793458212460902934">Hitro • Iskanje • Orodja</translation>
 <translation id="5276681919620506371">Iskanje • Orodja</translation>
 <translation id="7434375176361995333">Povzetki • Hitro</translation>
 <translation id="3965507912994218570">Nastavitve Lea</translation>
@@ -2468,6 +2472,8 @@
 <translation id="6287023598025162715">Nov pogovor</translation>
 <translation id="7230502562132448519">Filtrirajte pogovore</translation>
 <translation id="821070843380699990">Poskusite z drugačno poizvedbo</translation>
+<translation id="241415280196701326">Nedavni delovni prostori</translation>
+<translation id="5388053981690151266">Nov pogovor v tem delovnem prostoru</translation>
 <translation id="7097822247923237815">Začasni klepet</translation>
 <translation id="7481750859362986254">Ta klepet se ne bo shranil v vašo zgodovino in ne bo uporabljal nobenih Leovih prilagoditev ali spominov.</translation>
 <translation id="4238305333951712482">Pomnilnik je posodobljen: <ph name="MEMORY_CONTENT"/></translation>
@@ -2493,6 +2499,7 @@
 <translation id="5103625298494362646">Način agenta umetne inteligence deluje z modeli, ki podpirajo orodja. Nezdružljivi modeli so skriti s tega seznama.</translation>
 <translation id="3397808797783614750">Omogočanje samodejnega brskanja z umetno inteligenco lahko povzroči škodljive in neželene posledice za vašo zasebnost, finance in spletno komunikacijo. <ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Varnostno opozorilo</translation>
+<translation id="717245811623757038">Zahteva za dovoljenje za orodje</translation>
 <translation id="6077070599873946984">Brave AI potrebuje vaše dovoljenje za: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI želi izvesti **<ph name="TOOL_NAME"/>** na **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Dejanje je bilo zaznano kot morebiti neusklajeno z vašo zahtevo:</translation>

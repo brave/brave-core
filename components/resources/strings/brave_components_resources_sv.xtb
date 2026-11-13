@@ -947,6 +947,11 @@
 <translation id="4362717653795263052">Återställ primära kryptokonton</translation>
 <translation id="3038077262567136741">Ange din återställningsfras för att återställa ditt Brave wallet-kryptokonto.</translation>
 <translation id="955918646509748368">Den angivna återställningsfrasen är ogiltig.</translation>
+<translation id="7496330898672236908">Den här återställningsfrasen matchar inte din plånbok. Kontrollera frasen och försök igen.</translation>
+<translation id="3798792138617904098">Ta bort importerade konton?</translation>
+<translation id="2960631345291747230">Importerade konton säkerhetskopieras inte av din återställningsfras. De tas bort från Brave Wallet och du kan förlora åtkomsten till deras tillgångar permanent om du inte har säkerhetskopierat deras privata nycklar.</translation>
+<translation id="8898583604592472741">Ta bort konton</translation>
+<translation id="1577629163207045190">Skriv "<ph name="CONFIRMATION_PHRASE"/>" för att bekräfta.</translation>
 <translation id="8107437138787377150">Klistra in återställningsfrasen från Urklipp</translation>
 <translation id="4811736040444856406">Visa återställningsfras</translation>
 <translation id="4359319875297001084">Importera från äldre Brave krypto-plånböcker?</translation>
@@ -2241,13 +2246,12 @@
 <translation id="3934503473603661122">Hej, jag heter Leo. Jag är en AI-assistent från Brave. Jag drivs av Grok 4.7, xAI:s avancerade resonemangsmodell på Amazon Bedrock. Grok 4.7 tillhandahålls genom Braves säkra AWS-infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Hej, jag heter Leo. Jag är en AI-assistent från Brave. Jag drivs av GPT Luna, OpenAI:s snabba modell med låg latens på Amazon Bedrock. GPT Luna tillhandahålls genom Braves säkra AWS-infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Hej, jag heter Leo. Jag är en AI-assistent från Brave. Jag drivs av GPT 5.6 Terra, OpenAI:s balanserade produktionsmodell på Amazon Bedrock Mantle. GPT 5.6 Terra tillhandahålls genom Braves säkra AWS-infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Mistral Large, en modell skapad av Mistral för att vara effektiv och mångsidig. Mistral Large arrangeras av Brave genom vår egna säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Hej! Jag heter Leo. Jag är en proxybaserad AI-assistent från Brave. Jag drivs av Claude Haiku, en modell skapad av Anthropic med förmåga att klara konversations- och textbehandlingsuppgifter. Claude Haiku arrangeras av Brave genom vår egna säkra infrastruktur. <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Hej, jag heter Leo. Jag är en AI-assistent från Brave. Jag drivs av Qwen 3.8 Flash Next, en modell skapad av Alibaba Cloud för att vara effektiv och mångsidig. Qwen 3.8 Flash Next är värdhostad av Brave genom vår egen säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Deepseek V3.2, en modell skapad av Deepseek för att vara effektiv och mångsidig. Deepseek V3.2 arrangeras av Brave genom vår egna säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Hej, jag heter Leo. Jag är en AI-assistent från Brave. Jag drivs av GLM 5.3, en modell skapad av Z.ai för att vara effektiv och mångsidig. GLM 5.3 arrangeras av Brave genom vår egen säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Hej, jag heter Leo. Jag är en proxybaserad AI-assistent från Brave. Jag drivs av Claude Opus, en modell skapad av Anthropic med förmåga att klara konversations- och textbehandlingsuppgifter. Claude Opus arrangeras av Brave genom vår egna säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av GLM-4-7-Flash, en modell skapad av Zhipu AI för att vara effektiv och mångsidig. GLM-4-7-Flash är värdhostad av Brave genom vår egen säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Kimi K2.5, en modell skapad av Moonshot AI för att vara effektiv och mångsidig. Kimi K2.5 är värdhostad av Brave genom vår egen säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Nemotron Nano 3 30B, en modell skapad av NVIDIA för att vara effektiv och mångsidig. Nemotron Nano 3 30B arrangeras av Brave genom vår egna säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Brave Ocelot, en modell skapad av Brave för att sammanfatta webbsidor. Brave Ocelot är värdhostad av Brave genom vår egen säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Lokal</translation>
@@ -2387,8 +2391,8 @@
 <translation id="7465032796278724624">Verifierbart privat med NEAR AI TEE</translation>
 <translation id="8782867266498869301">Modellen ändras dynamiskt för att använda den bästa för uppgiften</translation>
 <translation id="7348809809749151120">Snabbt • Sök</translation>
+<translation id="7711013627639951065">Snabb • Sök • Vision • Verktyg</translation>
 <translation id="3213834013136637671">Sök • Vision</translation>
-<translation id="2793458212460902934">Snabbt • Sök • Verktyg</translation>
 <translation id="5276681919620506371">Sök • Verktyg</translation>
 <translation id="7434375176361995333">Sammanfattningar • Snabbt</translation>
 <translation id="3965507912994218570">Leo-inställningar</translation>
@@ -2461,6 +2465,8 @@
 <translation id="6287023598025162715">Ny konversation</translation>
 <translation id="7230502562132448519">Filtrera konversationer</translation>
 <translation id="821070843380699990">Försök med en annan fråga</translation>
+<translation id="241415280196701326">Senaste arbetsytor</translation>
+<translation id="5388053981690151266">Ny konversation i den här arbetsytan</translation>
 <translation id="7097822247923237815">Tillfällig chatt</translation>
 <translation id="7481750859362986254">Denna chatt kommer inte att sparas i din historik eller använda någon av Leos anpassningar eller minnen.</translation>
 <translation id="4238305333951712482">Minne uppdaterat: <ph name="MEMORY_CONTENT"/></translation>
@@ -2486,6 +2492,7 @@
 <translation id="5103625298494362646">Agentläget fungerar med modeller som har verktygsstöd. Ej kompatibla modeller är dolda från denna lista.</translation>
 <translation id="3397808797783614750">Att låta AI surfa automatiskt åt dig kan leda till skadliga, oavsiktliga konsekvenser för din integritet, ekonomi och onlinekommunikation. <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Säkerhetsvarning</translation>
+<translation id="717245811623757038">Begäran om verktygsbehörighet</translation>
 <translation id="6077070599873946984">Brave AI behöver din tillåtelse för: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI vill köra **<ph name="TOOL_NAME"/>** på **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Åtgärden upptäcktes som potentiellt oförenlig med din begäran:</translation>

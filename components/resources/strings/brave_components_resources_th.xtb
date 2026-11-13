@@ -948,6 +948,11 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="4362717653795263052">กู้คืนบัญชีคริปโตหลัก</translation>
 <translation id="3038077262567136741">ป้อนกลุ่มคำสำหรับการกู้คืนเพื่อกู้คืนบัญชีคริปโตสำหรับ Brave Wallet ของคุณ</translation>
 <translation id="955918646509748368">กลุ่มคำสำหรับการกู้คืนที่ป้อนไม่ถูกต้อง</translation>
+<translation id="7496330898672236908">วลีกู้คืนรหัสนี้ไม่ตรงกับวอลเล็ทของคุณ ตรวจสอบวลีแล้วลองอีกครั้ง</translation>
+<translation id="3798792138617904098">ลบบัญชีที่นำเข้าหรือไม่?</translation>
+<translation id="2960631345291747230">บัญชีที่นำเข้าไม่ได้ถูกสำรองไว้ด้วยวลีกู้คืนรหัสของคุณ บัญชีเหล่านี้จะถูกลบออกจากกระเป๋าเงิน Brave และคุณอาจสูญเสียการเข้าถึงเงินในบัญชีเหล่านั้นอย่างถาวร เว้นแต่คุณจะสำรองคีย์ส่วนตัวของบัญชีไว้แล้ว</translation>
+<translation id="8898583604592472741">ลบบัญชี</translation>
+<translation id="1577629163207045190">พิมพ์ "<ph name="CONFIRMATION_PHRASE"/>" เพื่อยืนยัน</translation>
 <translation id="8107437138787377150">วางกลุ่มคำสำหรับการกู้คืนจากคลิปบอร์ด</translation>
 <translation id="4811736040444856406">แสดงวลีกูคืน</translation>
 <translation id="4359319875297001084">นำเข้าจากคริปโตวอลเล็ตของ Brave ที่มีอยู่เดิมหรือไม่</translation>
@@ -2242,13 +2247,12 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3934503473603661122">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI โดย Brave ผมได้รับการสนับสนุนจาก Grok 4.7 ซึ่งเป็นโมเดลการให้เหตุผลล้ำสมัยของ xAI บน Amazon Bedrock Grok 4.7 ให้บริการผ่านโครงสร้างพื้นฐาน AWS ที่ปลอดภัยของ Brave <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI โดย Brave ผมได้รับการสนับสนุนจาก GPT Luna ซึ่งเป็นโมเดลที่รวดเร็วและมีความหน่วงต่ำของ OpenAI บน Amazon Bedrock GPT Luna ให้บริการผ่านโครงสร้างพื้นฐาน AWS ที่ปลอดภัยของ Brave <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI โดย Brave ผมได้รับการสนับสนุนจาก GPT 5.6 Terra ซึ่งเป็นโมเดลการผลิตที่สมดุลของ OpenAI บน Amazon Bedrock Mantle GPT 5.6 Terra ให้บริการผ่านโครงสร้างพื้นฐาน AWS ที่ปลอดภัยของ Brave <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Mistral Large ซึ่งเป็นโมเดลที่สร้างโดย Mistral เพื่อให้มีประสิทธิภาพและใช้งานได้กับทุกกรณีที่ต้องการใช้ Mistral Large โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Claude Haiku ซึ่งเป็นโมเดลที่สร้างโดย Anthropic เพื่อขับเคลื่อนงานด้านการสนทนาและการประมวลผลข้อความ Claude Haiku โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI โดย Brave ผมได้รับการสนับสนุนจาก Qwen 3.8 Flash Next ซึ่งเป็นโมเดลที่สร้างโดย Alibaba Cloud เพื่อให้มีประสิทธิภาพและใช้งานได้กับทุกกรณีที่ต้องการใช้ Qwen 3.8 Flash Next โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Deepseek V3.2 ซึ่งเป็นโมเดลที่สร้างโดย Deepseek เพื่อให้มีประสิทธิภาพและใช้งานได้กับทุกกรณีที่ต้องการใช้ Deepseek V3.2 โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก GLM 5.3 ซึ่งเป็นโมเดลที่สร้างโดย Z.ai เพื่อให้มีประสิทธิภาพและใช้งานได้กับทุกกรณีที่ต้องการใช้ GLM 5.3 โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Claude Opus ซึ่งเป็นโมเดลที่สร้างโดย Anthropic เพื่อขับเคลื่อนงานด้านการสนทนาและการประมวลผลข้อความ Claude Opus โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก GLM-4-7-Flash ซึ่งเป็นโมเดลที่สร้างโดย Zhipu AI เพื่อให้มีประสิทธิภาพและใช้งานได้กับทุกกรณีที่ต้องการใช้ GLM-4-7-Flash โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Kimi K2.5 ซึ่งเป็นโมเดลที่สร้างโดย Moonshot AI เพื่อให้มีประสิทธิภาพและใช้งานได้กับทุกกรณีที่ต้องการใช้ Kimi K2.5 โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Nemotron Nano 3 30B ซึ่งเป็นโมเดลที่สร้างโดย NVIDIA เพื่อให้มีประสิทธิภาพและใช้งานได้กับทุกกรณีที่ต้องการใช้ Nemotron Nano 3 30B โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Brave Ocelot ซึ่งเป็นโมเดลที่สร้างโดย Brave เพื่อสรุปเว็บเพจ Brave Ocelot โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">ภายในเครื่อง</translation>
@@ -2388,8 +2392,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7465032796278724624">ตรวจสอบได้อย่างเป็นส่วนตัวด้วย NEAR AI TEE</translation>
 <translation id="8782867266498869301">โมเดลเปลี่ยนเองอย่างไดนามิกเพื่อใช้ที่ดีที่สุดในงานนั้นๆ</translation>
 <translation id="7348809809749151120">เร็ว • Search</translation>
+<translation id="7711013627639951065">เร็ว • Search • วิสัยทัศน์ • เครื่องมือ</translation>
 <translation id="3213834013136637671">Search • วิสัยทัศน์</translation>
-<translation id="2793458212460902934">เร็ว • Search • เครื่องมือ</translation>
 <translation id="5276681919620506371">Search • เครื่องมือ</translation>
 <translation id="7434375176361995333">สรุป • เร็ว</translation>
 <translation id="3965507912994218570">การตั้งค่า Leo</translation>
@@ -2462,6 +2466,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6287023598025162715">การสนทนาใหม่</translation>
 <translation id="7230502562132448519">กรองการสนทนา</translation>
 <translation id="821070843380699990">โปรดลองค้นหาอื่น</translation>
+<translation id="241415280196701326">พื้นที่ทำงานล่าสุด</translation>
+<translation id="5388053981690151266">การสนทนาใหม่ในพื้นที่ทำงานนี้</translation>
 <translation id="7097822247923237815">แชทชั่วคราว</translation>
 <translation id="7481750859362986254">การแชทนี้จะไม่ถูกบันทึกลงในประวัติของคุณ และจะไม่ใช้การปรับแต่งหรือความจำใด ๆ</translation>
 <translation id="4238305333951712482">อัปเดตหน่วยความจำ: <ph name="MEMORY_CONTENT"/></translation>
@@ -2487,6 +2493,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5103625298494362646">โหมด Agent ทำงานร่วมกับโมเดลที่รองรับเครื่องมือ โมเดลที่ไม่รองรับจะไม่แสดงในรายการนี้</translation>
 <translation id="3397808797783614750">การเปิดใช้งาน AI เพื่อให้สามารถเรียกดูเว็บโดยอัตโนมัติแทนคุณ อาจก่อให้เกิดผลที่ไม่พึงประสงค์หรือเป็นอันตรายต่อความเป็นส่วนตัว การเงิน และการสื่อสารออนไลน์ของคุณ <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">คำเตือนด้านความปลอดภัย</translation>
+<translation id="717245811623757038">คำขออนุญาตใช้เครื่องมือ</translation>
 <translation id="6077070599873946984">Brave AI ต้องการการอนุญาตจากคุณสำหรับ: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI ต้องการดำเนินการ **<ph name="TOOL_NAME"/>** บน **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">ตรวจพบว่าการดำเนินการนี้อาจไม่สอดคล้องกับคำขอของคุณ:</translation>

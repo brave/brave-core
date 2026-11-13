@@ -4,8 +4,8 @@
 <translation id="7630214457764713113">Копіювати чисте посилання</translation>
 <translation id="721490496276866468">Імпортувати паролі</translation>
 <translation id="8178175542325151321">Виберіть файл .csv з вашими паролями, щоб імпортувати їх у Менеджер паролів Brave.</translation>
-<translation id="6112331814131703370">Блокувати сповіщення «Відкрити в застосунку»</translation>
-<translation id="4744921452903670666">Поділіться своїми враженнями!</translation>
+<translation id="6112331814131703370">Блокувати сповіщення «Перемкнути програму»</translation>
+<translation id="4744921452903670666">Поділіться з нами своїми думками!</translation>
 <translation id="2524310205387880526">Оцінити Brave</translation>
 <translation id="4104400246019119780">Дякуємо!</translation>
 <translation id="5202255382948179481">Додайте свої пропозиції</translation>
@@ -80,6 +80,7 @@
 <translation id="8982438328166986164">Показ рекомендованих вебсайтів на основі ваших закладок та історії перегляду.</translation>
 <translation id="924029461438529367">Показувати пошукові підказки</translation>
 <translation id="9148058034647219655">Вийти</translation>
+<translation id="2139186145475833000">Додати на головний екран</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6486983549008741930">Фільтрування контенту</translation>
 <translation id="2398817776566547893">Увімкніть користувацькі фільтри, які блокують стеження й надокучливі елементи для певного регіону чи мови</translation>

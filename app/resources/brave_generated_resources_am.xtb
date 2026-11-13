@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>።
 ወይም በኋላ ይቀይሩ በ <ph name="SETTINGS_EXTENIONS_LINK"/>።</translation>
 <translation id="6229752134959014186">ስለ Widevine የበለጠ ይወቁ</translation>
+<translation id="3318169548229684688">በዚህ መሣሪያ ላይ ንግግርን ለማስኬድ የንግግር ማወቂያ ሞዴል (<ph name="DOWNLOAD_SIZE"/>) ማውረድ</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> እየጠየቀዎት ነው</translation>
 <translation id="3218385319396786393">በዚህ ገፅ ላይ አውቶፕለይ ይከላከሉ</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> ላይ በራስ መጫወቱን ሁልግዜም ይፍቀዱ;</translation>
@@ -613,6 +614,8 @@
 <translation id="3540231253392253941">ለሚላክ መልእክት የ Google አገልግሎቶችን ይጠቀሙ</translation>
 <translation id="2224032129673914306">የፍቺ ታሪክ ፍለጋ</translation>
 <translation id="6045998903985162478">የሚጎበኟቸውን ገጾች በመረጃ ጠቋሚ ያድርጉ፣ ስለዚህም በታሪክ፣ በክፍት ትሮች እና በLeo ውስጥ በቀላሉ ማግኘት ይችላሉ።</translation>
+<translation id="3962946446120925966">በመሣሪያ ላይ ያለ የንግግር ማወቂያ</translation>
+<translation id="6408242130028978631">ድር ጣቢያዎች በዚህ መሣሪያ ላይ ንግግርን እንዲያስኬዱ የንግግር ማወቂያ ሞዴል (<ph name="DOWNLOAD_SIZE"/>) ያውርዱ። ሞዴሉን ለማስወገድ ይህን ያጥፉት።</translation>
 <translation id="5813105074916486721">የአካባቢ ታሪክ ማቆያ</translation>
 <translation id="5671611745062206644">Brave የእርስዎን የአሰሳ ታሪክ በአካባቢው ለምን ያህል ጊዜ እንደሚያከማች</translation>
 <translation id="7184510058087008090">1 ቀን</translation>

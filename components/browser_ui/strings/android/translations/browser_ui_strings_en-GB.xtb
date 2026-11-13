@@ -181,9 +181,7 @@
 <translation id="2710883118091822664">Sign in to easily continue on all your devices</translation>
 <translation id="2713106313042589954">Turn off camera</translation>
 <translation id="2717722538473713889">Email addresses</translation>
-<translation id="8181634240306014548">Launch Brave with the omnibox focused, reducing start-up time on low-end devices.</translation>
 <translation id="2750481671343847896">Sites can show sign-in prompts from identity services.</translation>
-<translation id="2787357173144933081">Jump-start omnibox</translation>
 <translation id="2789132527330338807">Sites can ask to create a 3D map of your surroundings or track camera position</translation>
 <translation id="2790501146643349491">When on, recently closed sites can finish sending and receiving data. When off, recently closed sites can't finish sending or receiving data.</translation>
 <translation id="2795716239552913152">Sites usually use your location for relevant features or info, like local news or nearby shops</translation>
@@ -291,7 +289,6 @@
 <translation id="9046306654872718870">Make Brave your own with custom colours and images for your homepage</translation>
 <translation id="389521680295183045">Sites can ask to know when you're actively using your device</translation>
 <translation id="3895926599014793903">Force enable zoom</translation>
-<translation id="3905475044299942653">Stop lots of notifications</translation>
 <translation id="3922092564198021702">On your phone, open Settings</translation>
 <translation id="3924858949939391676">Show links once Reading mode is on</translation>
 <translation id="3933121352599513978">Collapse unwanted requests (recommended)</translation>
@@ -385,7 +382,6 @@
 <translation id="4936863036653376783">You'll find your groups in the tab group section across all your devices</translation>
 <translation id="4945443401464700059"><ph name="SITE"/> is blocked from using your information on</translation>
 <translation id="4953688446973710931">When on, sites can ask to download multiple files automatically. When off, sites can't download multiple files automatically.</translation>
-<translation id="4962975101802056554">Revoke all permissions for device</translation>
 <translation id="4972737347717125191">Sites can ask to use virtual reality devices and data</translation>
 <translation id="1275242979020712923">Brave colours bottom sheet</translation>
 <translation id="497421865427891073">go forward</translation>
@@ -525,6 +521,7 @@
 <translation id="6439114592976064011">Block sites from using your virtual reality device and data</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6452138246455930388">Price drop on your open tab, from <ph name="OLD_PRICE"/> to <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
+<translation id="6495608040096939405">Revoke device permission for <ph name="NAME"/></translation>
 <translation id="6500423977866688905">When the window is narrow, request mobile view</translation>
 <translation id="6527303717912515753">Share</translation>
 <translation id="6530703012083415527">When on, sites can use pop-ups and redirects. When off, sites can't use pop-ups and redirects.</translation>
@@ -590,6 +587,7 @@
 <translation id="7188508872042490670">On-device site data</translation>
 <translation id="7201549776650881587">This action will clear all data and cookies stored by all sites under <ph name="ORIGIN"/> or by its app on your Home screen</translation>
 <translation id="7219254577985949841">Delete site data?</translation>
+<translation id="7225256190577194089">Revoke all permissions for device <ph name="DEVICE_NAME"/></translation>
 <translation id="723171743924126238">Select images</translation>
 <translation id="7243246278722455312">Customise your new tab page bottom sheet</translation>
 <translation id="7243308994586599757">Options available near bottom of the screen</translation>
@@ -702,7 +700,6 @@ Advanced Protection controls these Brave settings:</translation>
 <translation id="8428213095426709021">Settings</translation>
 <translation id="8441146129660941386">Seek backward</translation>
 <translation id="8444433999583714703">To let <ph name="APP_NAME"/> access your location, also turn on location in <ph name="BEGIN_LINK"/>Android settings<ph name="END_LINK"/>.</translation>
-<translation id="8447861592752582886">Revoke device permission</translation>
 <translation id="8463843545738141778">This setting is disabled because you turned on Advanced Protection in Android settings.</translation>
 <translation id="8467359479529706065">New tab page appearance bottom sheet opened at half height</translation>
 <translation id="8471525937465764768">Sites usually connect to USB devices for features such as printing a document or saving to a storage device</translation>
