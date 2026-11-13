@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Allow offering the same clipboard data twice.
+
+      The url_sanitizer `JSApi` browser tests offer the same MIME type twice,
+      which the check rejects.
+    regex:
+      re_pattern:
+        '^( *)(CHECK_EQ\(data_to_offer_\.count\(mime_type\), 0U[^;]*;)'
+      re_flags: [MULTILINE]
+      replace: '\1// \2'
