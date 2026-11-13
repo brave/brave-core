@@ -7,12 +7,11 @@ substitutions:
   - description: |-
       Let ScreenshotProtectionController defer to BraveBrowserLockManager's
       own FLAG_SECURE decision.
-    regex:
-      re_flags: [MULTILINE, DOTALL]
-      re_pattern: |-
-        (ScreenshotProtectionController.java.+?)
-        ( +)("//base:tasks_java",)
-      replace: |-
-        \1
-        \2\3
-        \2"//brave/browser/browser_lock/android:java",
+
+      Part of Brave's Browser Lock feature — see this target's java/
+      plaster for why.
+    insert_into_list:
+      target: java
+      list_name: deps
+      values:
+        - //brave/browser/browser_lock/android:java

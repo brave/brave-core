@@ -6,7 +6,12 @@
 substitutions:
   - description: |-
       Instantiate Brave's incognito Custom Tab snapshot controller instead of
-      upstream's — same package, so no import is needed.
+      upstream's.
+
+      Part of Brave's Browser Lock feature: lets the "Entire application"
+      lock force FLAG_SECURE on this Custom Tab window regardless of whether
+      an incognito tab is showing, which is all upstream's own controller
+      considers. Same package as the call site, so no import is needed.
     regex:
       re_pattern: |-
         new (IncognitoCustomTabSnapshotController\()

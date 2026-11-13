@@ -4,8 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description:
-      'Add Brave browser-lock import beneath the package declaration.'
+  - description: |-
+      Add Brave browser-lock import beneath the package declaration.
+
+      Needed by the two Browser Lock substitutions below.
     regex:
       re_pattern: '^(package [^;]+;\n)'
       re_flags: [MULTILINE]
@@ -14,23 +16,27 @@ substitutions:
         import org.chromium.chrome.browser.privacy.BraveBrowserLockManager;
   - description: |-
       Re-evaluate FLAG_SECURE immediately whenever BraveBrowserLockManager's
-      own screenshot mode changes — otherwise a window this class last forced
-      secure for enterprise/policy reasons can be left non-secure after the
-      "Entire application" lock + "Prevent capture" combination is turned
-      off, until this class's own (unrelated) triggers happen to fire next.
-    regex:
-      re_pattern: |-
-        ( +)mTabModelSelector\.addObserver\(this\);
-      replace: |-
-        \1mTabModelSelector.addObserver(this);
-        \1BraveBrowserLockManager.addScreenshotModeObserver(
-        \1        activity, this::updateScreenshotProtectionState);
+      own screenshot mode changes.
+
+      Part of Brave's Browser Lock feature's "Entire application" lock +
+      "Prevent capture" combination. Without this, a window this class last
+      forced secure for enterprise/policy reasons can be left non-secure
+      after that combination is turned off, until this class's own
+      (unrelated) triggers happen to fire next.
+    add_after_line:
+      line: 'mTabModelSelector.addObserver(this);'
+      code: |2-
+                BraveBrowserLockManager.addScreenshotModeObserver(
+                        activity, this::updateScreenshotProtectionState);
   - description: |-
       Also require FLAG_SECURE for BraveBrowserLockManager's own "Entire
       application" lock + "Prevent capture" combination, instead of only the
-      tab/policy-based decision. Done by widening the condition rather than
-      an early return, so this method's own tracking (recents-screenshot
-      visibility, FLAG_SECURE) always runs and is never skipped by it.
+      tab/policy-based decision.
+
+      Part of Brave's Browser Lock feature. Done by widening the condition
+      rather than an early return, so this method's own tracking
+      (recents-screenshot visibility, FLAG_SECURE) always runs and is never
+      skipped by it.
     regex:
       re_pattern: |-
         ( +)boolean expectedSecureState = isScreenshotBlocked\(\);
