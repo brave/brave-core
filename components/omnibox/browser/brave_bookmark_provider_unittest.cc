@@ -73,32 +73,32 @@ TEST_F(BraveBookmarkProviderTest, SuggestionsEnabledHasResults) {
 TEST_F(BraveBookmarkProviderTest, TitleContainsQueryCanBeDefaultMatch) {
   prefs()->SetBoolean(omnibox::kBookmarkSuggestionsEnabled, true);
   provider_->Start(CreateAutocompleteInput("Hello"), true);
-  EXPECT_FALSE(provider_->matches().empty());
+  ASSERT_FALSE(provider_->matches().empty());
   EXPECT_TRUE(provider_->matches()[0].allowed_to_be_default_match);
 }
 
 TEST_F(BraveBookmarkProviderTest, URLContainsQueryCanBeDefaultMatch) {
   prefs()->SetBoolean(omnibox::kBookmarkSuggestionsEnabled, true);
   provider_->Start(CreateAutocompleteInput("example"), true);
-  EXPECT_FALSE(provider_->matches().empty());
+  ASSERT_FALSE(provider_->matches().empty());
   EXPECT_TRUE(provider_->matches()[0].allowed_to_be_default_match);
 }
 
 TEST_F(BraveBookmarkProviderTest, ContainsIsCaseInsensitive) {
   prefs()->SetBoolean(omnibox::kBookmarkSuggestionsEnabled, true);
   provider_->Start(CreateAutocompleteInput("EXAMPLE"), true);
-  EXPECT_FALSE(provider_->matches().empty());
+  ASSERT_FALSE(provider_->matches().empty());
   EXPECT_TRUE(provider_->matches()[0].allowed_to_be_default_match);
 
   provider_->Start(CreateAutocompleteInput("HELLO"), true);
-  EXPECT_FALSE(provider_->matches().empty());
+  ASSERT_FALSE(provider_->matches().empty());
   EXPECT_TRUE(provider_->matches()[0].allowed_to_be_default_match);
 }
 
 TEST_F(BraveBookmarkProviderTest, QueryIsNotExactCannotBeDefaultMatch) {
   prefs()->SetBoolean(omnibox::kBookmarkSuggestionsEnabled, true);
   provider_->Start(CreateAutocompleteInput("Hello example"), true);
-  EXPECT_FALSE(provider_->matches().empty());
+  ASSERT_FALSE(provider_->matches().empty());
   EXPECT_FALSE(provider_->matches()[0].allowed_to_be_default_match);
 }
 
@@ -109,14 +109,14 @@ TEST_F(BraveBookmarkProviderTest, DontBumpContainsQueryIfKeywordIsUsed) {
   input.set_allow_exact_keyword_match(true);
   provider_->Start(input, true);
 
-  EXPECT_FALSE(provider_->matches().empty());
+  ASSERT_FALSE(provider_->matches().empty());
   EXPECT_FALSE(provider_->matches()[0].allowed_to_be_default_match);
 }
 
 TEST_F(BraveBookmarkProviderTest, ContainsQueryBumpsRelevance) {
   prefs()->SetBoolean(omnibox::kBookmarkSuggestionsEnabled, true);
   provider_->Start(CreateAutocompleteInput("Hello"), true);
-  EXPECT_FALSE(provider_->matches().empty());
+  ASSERT_FALSE(provider_->matches().empty());
   EXPECT_TRUE(provider_->matches()[0].allowed_to_be_default_match);
   // Note: 1199 is the max relevance score for a bookmark upstream.
   EXPECT_GT(provider_->matches()[0].relevance, 1199);
@@ -125,7 +125,7 @@ TEST_F(BraveBookmarkProviderTest, ContainsQueryBumpsRelevance) {
 TEST_F(BraveBookmarkProviderTest, TitleOnlyMatchSetsURL) {
   prefs()->SetBoolean(omnibox::kBookmarkSuggestionsEnabled, true);
   provider_->Start(CreateAutocompleteInput("Hello"), true);
-  EXPECT_EQ(provider_->matches().size(), 1u);
+  ASSERT_EQ(provider_->matches().size(), 1u);
   EXPECT_TRUE(provider_->matches()[0].allowed_to_be_default_match);
   EXPECT_EQ(provider_->matches()[0].contents, u"example.com");
 }

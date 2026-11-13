@@ -244,7 +244,9 @@ TEST_F(OrchardSyncStateTest, InsertWithFrontier) {
 
   auto witness_result = sync_state()->CalculateWitnessForCheckpoint(
       OrchardPool::kOrchard, account_id(), {input}, 1);
-  EXPECT_TRUE(witness_result.has_value());
+  ASSERT_TRUE(witness_result.has_value());
+  ASSERT_EQ(1u, witness_result.value().size());
+  ASSERT_TRUE(witness_result.value()[0].witness.has_value());
   EXPECT_EQ(
       witness_result.value()[0].witness.value(),
       CreateWitness(
@@ -288,8 +290,10 @@ TEST_F(OrchardSyncStateTest, Checkpoint_WithMarked) {
   input.note.orchard_commitment_tree_position = 3;
   auto witness_result = sync_state()->CalculateWitnessForCheckpoint(
       OrchardPool::kOrchard, account_id(), {input}, 1);
-  EXPECT_TRUE(witness_result.has_value());
+  ASSERT_TRUE(witness_result.has_value());
 
+  ASSERT_EQ(1u, witness_result.value().size());
+  ASSERT_TRUE(witness_result.value()[0].witness.has_value());
   EXPECT_EQ(
       witness_result.value()[0].witness.value(),
       CreateWitness(
@@ -415,7 +419,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_NoRegisteredAccount) {
   internal_addr.fill(3);
   auto get_spendable_notes_result = sync_state()->GetSpendableNotes(
       OrchardPool::kOrchard, account_id(), internal_addr);
-  EXPECT_TRUE(get_spendable_notes_result.has_value());
+  ASSERT_TRUE(get_spendable_notes_result.has_value());
   EXPECT_FALSE(get_spendable_notes_result.value().has_value());
 }
 
@@ -457,8 +461,8 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_FilterByAddress_And_Anchor) {
 
   auto get_spendable_notes_result = sync_state()->GetSpendableNotes(
       OrchardPool::kOrchard, account_id(), internal_addr);
-  EXPECT_TRUE(get_spendable_notes_result.has_value());
-  EXPECT_TRUE(get_spendable_notes_result.value().has_value());
+  ASSERT_TRUE(get_spendable_notes_result.has_value());
+  ASSERT_TRUE(get_spendable_notes_result.value().has_value());
   EXPECT_EQ(get_spendable_notes_result.value()->spendable_notes.size(), 26u);
   EXPECT_EQ(get_spendable_notes_result.value()->all_notes.size(), 50u);
 }
@@ -496,8 +500,8 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_FilterByAddress_External) {
 
   auto get_spendable_notes_result = sync_state()->GetSpendableNotes(
       OrchardPool::kOrchard, account_id(), internal_addr);
-  EXPECT_TRUE(get_spendable_notes_result.has_value());
-  EXPECT_TRUE(get_spendable_notes_result.value().has_value());
+  ASSERT_TRUE(get_spendable_notes_result.has_value());
+  ASSERT_TRUE(get_spendable_notes_result.value().has_value());
   EXPECT_EQ(get_spendable_notes_result.value()->spendable_notes.size(), 40u);
   EXPECT_EQ(get_spendable_notes_result.value()->all_notes.size(), 50u);
 }
@@ -535,8 +539,8 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_FilterByAddress_Internal) {
 
   auto get_spendable_notes_result = sync_state()->GetSpendableNotes(
       OrchardPool::kOrchard, account_id(), internal_addr);
-  EXPECT_TRUE(get_spendable_notes_result.has_value());
-  EXPECT_TRUE(get_spendable_notes_result.value().has_value());
+  ASSERT_TRUE(get_spendable_notes_result.has_value());
+  ASSERT_TRUE(get_spendable_notes_result.value().has_value());
   EXPECT_EQ(get_spendable_notes_result.value()->spendable_notes.size(), 46u);
   EXPECT_EQ(get_spendable_notes_result.value()->all_notes.size(), 50u);
 }
@@ -568,8 +572,8 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_NoAnchor) {
 
   auto get_spendable_notes_result = sync_state()->GetSpendableNotes(
       OrchardPool::kOrchard, account_id(), internal_addr);
-  EXPECT_TRUE(get_spendable_notes_result.has_value());
-  EXPECT_TRUE(get_spendable_notes_result.value().has_value());
+  ASSERT_TRUE(get_spendable_notes_result.has_value());
+  ASSERT_TRUE(get_spendable_notes_result.value().has_value());
   // Since no checkpoints were added we drop all notes we have.
   EXPECT_EQ(get_spendable_notes_result.value()->spendable_notes.size(), 0u);
   EXPECT_EQ(get_spendable_notes_result.value()->all_notes.size(), 50u);
@@ -884,7 +888,9 @@ TEST_F(OrchardSyncStateRewindTest, Rewind_IronwoodDisabled) {
 
   auto witness_result = sync_state()->CalculateWitnessForCheckpoint(
       OrchardPool::kOrchard, account_id(), {input}, 1);
-  EXPECT_TRUE(witness_result.has_value());
+  ASSERT_TRUE(witness_result.has_value());
+  ASSERT_EQ(1u, witness_result.value().size());
+  ASSERT_TRUE(witness_result.value()[0].witness.has_value());
   EXPECT_EQ(
       witness_result.value()[0].witness.value(),
       CreateWitness(
@@ -993,7 +999,9 @@ TEST_F(OrchardSyncStateRewindTest, Rewind_IronwoodEnabled) {
 
   auto witness_result = sync_state()->CalculateWitnessForCheckpoint(
       OrchardPool::kOrchard, account_id(), {input}, 1);
-  EXPECT_TRUE(witness_result.has_value());
+  ASSERT_TRUE(witness_result.has_value());
+  ASSERT_EQ(1u, witness_result.value().size());
+  ASSERT_TRUE(witness_result.value()[0].witness.has_value());
   EXPECT_EQ(
       witness_result.value()[0].witness.value(),
       CreateWitness(
@@ -1074,7 +1082,9 @@ TEST_F(OrchardSyncStateTest, SimpleInsert) {
   input.note.orchard_commitment_tree_position = 2;
   auto witness_result = sync_state()->CalculateWitnessForCheckpoint(
       OrchardPool::kOrchard, account_id(), {input}, 1);
-  EXPECT_TRUE(witness_result.has_value());
+  ASSERT_TRUE(witness_result.has_value());
+  ASSERT_EQ(1u, witness_result.value().size());
+  ASSERT_TRUE(witness_result.value()[0].witness.has_value());
   EXPECT_EQ(
       witness_result.value()[0].witness.value(),
       CreateWitness(
@@ -1136,14 +1146,14 @@ TEST_F(OrchardSyncStateTest,
   // Orchard pool is untouched by an ironwood-only scan result.
   auto orchard_result = sync_state()->GetSpendableNotes(
       OrchardPool::kOrchard, account_id(), internal_addr);
-  EXPECT_TRUE(orchard_result.has_value());
-  EXPECT_TRUE(orchard_result.value().has_value());
+  ASSERT_TRUE(orchard_result.has_value());
+  ASSERT_TRUE(orchard_result.value().has_value());
   EXPECT_EQ(orchard_result.value()->all_notes.size(), 0u);
 
   auto get_spendable_notes_result = sync_state()->GetSpendableNotes(
       OrchardPool::kIronwood, account_id(), internal_addr);
-  EXPECT_TRUE(get_spendable_notes_result.has_value());
-  EXPECT_TRUE(get_spendable_notes_result.value().has_value());
+  ASSERT_TRUE(get_spendable_notes_result.has_value());
+  ASSERT_TRUE(get_spendable_notes_result.value().has_value());
   EXPECT_EQ(get_spendable_notes_result.value()->spendable_notes.size(), 26u);
   EXPECT_EQ(get_spendable_notes_result.value()->all_notes.size(), 50u);
 }
@@ -1258,9 +1268,11 @@ TEST_F(OrchardSyncStateTest, IronwoodPool_SimpleInsertWitness) {
 
   auto witness_result = sync_state()->CalculateWitnessForCheckpoint(
       OrchardPool::kIronwood, account_id(), {input}, 1);
-  EXPECT_TRUE(witness_result.has_value());
+  ASSERT_TRUE(witness_result.has_value());
   // Same commitments/positions/tree height as the orchard SimpleInsert case,
   // applied to the independent ironwood shard tree: identical witness.
+  ASSERT_EQ(1u, witness_result.value().size());
+  ASSERT_TRUE(witness_result.value()[0].witness.has_value());
   EXPECT_EQ(
       witness_result.value()[0].witness.value(),
       CreateWitness(
@@ -1471,7 +1483,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_IronwoodPool_FeatureDisabled) {
   internal_addr.fill(3);
   auto ironwood_result = sync_state()->GetSpendableNotes(
       OrchardPool::kIronwood, account_id(), internal_addr);
-  EXPECT_TRUE(ironwood_result.has_value());
+  ASSERT_TRUE(ironwood_result.has_value());
   EXPECT_FALSE(ironwood_result.value().has_value());
 }
 
@@ -1501,7 +1513,7 @@ TEST_F(OrchardSyncStateTest, GetNullifiers_IronwoodPool_FeatureDisabled) {
 
   auto nullifiers_result =
       sync_state()->GetNullifiers(OrchardPool::kIronwood, account_id());
-  EXPECT_TRUE(nullifiers_result.has_value());
+  ASSERT_TRUE(nullifiers_result.has_value());
   EXPECT_TRUE(nullifiers_result.value().empty());
 }
 
@@ -1548,7 +1560,7 @@ TEST_F(OrchardSyncStateTest,
   input.note.orchard_commitment_tree_position = 2;
   auto witness_result = sync_state()->CalculateWitnessForCheckpoint(
       OrchardPool::kIronwood, account_id(), {input}, 1);
-  EXPECT_TRUE(witness_result.has_value());
+  ASSERT_TRUE(witness_result.has_value());
   EXPECT_TRUE(witness_result.value().empty());
 }
 
@@ -1577,7 +1589,7 @@ TEST_F(OrchardSyncStateTest, GetLatestShardIndex_IronwoodPool_FeatureDisabled) {
 
   auto shard_index_result =
       sync_state()->GetLatestShardIndex(OrchardPool::kIronwood, account_id());
-  EXPECT_TRUE(shard_index_result.has_value());
+  ASSERT_TRUE(shard_index_result.has_value());
   EXPECT_FALSE(shard_index_result.value().has_value());
 }
 
@@ -1603,7 +1615,7 @@ TEST_F(OrchardSyncStateTest, GetMinCheckpointId_IronwoodPool_FeatureDisabled) {
 
   auto min_checkpoint_result =
       sync_state()->GetMinCheckpointId(OrchardPool::kIronwood, account_id());
-  EXPECT_TRUE(min_checkpoint_result.has_value());
+  ASSERT_TRUE(min_checkpoint_result.has_value());
   EXPECT_FALSE(min_checkpoint_result.value().has_value());
 }
 

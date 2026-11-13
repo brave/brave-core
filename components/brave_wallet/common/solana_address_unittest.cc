@@ -27,7 +27,7 @@ TEST(SolanaAddressUnitTest, FromBytes) {
   EXPECT_FALSE(SolanaAddress::FromBytes(std::vector<uint8_t>()));
 
   auto address = SolanaAddress::FromBytes(kAccountBytes);
-  EXPECT_TRUE(address);
+  ASSERT_TRUE(address);
   EXPECT_EQ(GetAccountString(), address->ToBase58());
 }
 
@@ -37,7 +37,7 @@ TEST(SolanaAddressUnitTest, ReadFrom) {
 
   reader = base::SpanReader(base::span(kAccountBytes));
   auto address = SolanaAddress::ReadFrom(reader);
-  EXPECT_TRUE(address);
+  ASSERT_TRUE(address);
   EXPECT_EQ(GetAccountString(), address->ToBase58());
   EXPECT_EQ(0u, reader.remaining());
 }
@@ -47,7 +47,7 @@ TEST(SolanaAddressUnitTest, FromBase58) {
   EXPECT_FALSE(SolanaAddress::FromBase58("123"));
 
   auto address = SolanaAddress::FromBase58(GetAccountString());
-  EXPECT_TRUE(address);
+  ASSERT_TRUE(address);
   EXPECT_EQ(base::span(kAccountBytes), address->bytes());
 }
 

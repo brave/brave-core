@@ -26,7 +26,7 @@ TEST_P(RequestSenderTest, UsesBraveCUPKey) {
                      base::Unretained(this)));
   RunThreads();
 
-  EXPECT_EQ(1, post_interceptor_->GetHitCount())
+  ASSERT_EQ(1, post_interceptor_->GetHitCount())
       << post_interceptor_->GetRequestsAsString();
 
   // It's hard to check the key contents. But it is easy to check the key
@@ -54,6 +54,8 @@ TEST_P(RequestSenderTest, BraveKeyIgnoresPqcCupSigningFlag) {
                      base::Unretained(this)));
   RunThreads();
 
+  ASSERT_EQ(1, post_interceptor_->GetHitCount())
+      << post_interceptor_->GetRequestsAsString();
   const std::string query(
       std::get<2>(post_interceptor_->GetRequests()[0]).query());
   EXPECT_TRUE(base::StartsWith(query, "cup2key=ML-DSA-44-1:")) << query;

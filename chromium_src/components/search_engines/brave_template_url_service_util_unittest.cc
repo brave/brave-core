@@ -56,7 +56,7 @@ class BraveTemplateURLServiceUtilTest : public testing::Test {
 
 void TestDefaultOrder(const TemplateURL::OwnedTemplateURLVector& template_urls,
                       const std::vector<std::string>& keywords) {
-  EXPECT_EQ(template_urls.size(), keywords.size());
+  ASSERT_EQ(template_urls.size(), keywords.size());
 
   for (size_t i = 0; i < template_urls.size(); i++) {
     EXPECT_EQ(template_urls[i]->keyword(), base::ASCIIToUTF16(keywords[i]));

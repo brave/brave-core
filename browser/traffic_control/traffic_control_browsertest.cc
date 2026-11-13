@@ -107,18 +107,25 @@ class TrafficControlBrowserTest : public InProcessBrowserTest {
                                   ui::PAGE_TRANSITION_TYPED, false);
     browser()->OpenURL(params, /*navigation_handle_callback=*/{});
 
-    EXPECT_TRUE(base::test::RunUntil([&]() {
+    const bool rerouted = base::test::RunUntil([&]() {
       // Either a new tab was added, or the source empty tab was replaced
       // (close + open keeps count stable / decreases).
       content::WebContents* active =
           browser()->tab_strip_model()->GetActiveWebContents();
       return active && active->GetLastCommittedURL().host() == url.host() &&
              !active->IsLoading();
-    }));
+    });
+    if (!rerouted) {
+      ADD_FAILURE() << "Timed out waiting for reroute to " << url;
+      return nullptr;
+    }
 
     content::WebContents* active =
         browser()->tab_strip_model()->GetActiveWebContents();
-    EXPECT_TRUE(active);
+    if (!active) {
+      ADD_FAILURE() << "No active WebContents after reroute";
+      return nullptr;
+    }
     EXPECT_NE(active->GetLastCommittedURL().host(), "");
     // Silence unused in non-assert builds.
     EXPECT_GE(browser()->tab_strip_model()->count() + 1, initial_count);

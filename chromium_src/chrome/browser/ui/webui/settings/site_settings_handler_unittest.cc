@@ -50,7 +50,7 @@ TEST_F(SiteSettingsHandlerTest, ClearBraveShieldMetadata) {
   ContentSettingsForOneType shields_metadata_settings =
       host_content_settings_map->GetSettingsForOneType(
           ContentSettingsType::BRAVE_SHIELDS_METADATA);
-  EXPECT_EQ(1U, shields_metadata_settings.size());
+  ASSERT_EQ(1U, shields_metadata_settings.size());
 
   // Expect www.google.com to be the remaining entry.
   EXPECT_EQ(ContentSettingsPattern::FromURLToSchemefulSitePattern(urls[3]),

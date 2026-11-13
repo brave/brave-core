@@ -393,7 +393,7 @@ TEST_F(AdBlockServiceTest, EmptyFilterSetDoesNotCrash) {
   if (base::PathExists(dat_file)) {
     // File was written — verify it's non-empty.
     std::optional<int64_t> size = base::GetFileSize(dat_file);
-    EXPECT_TRUE(size.has_value());
+    ASSERT_TRUE(size.has_value());
     EXPECT_GT(*size, 0);
   }
 }

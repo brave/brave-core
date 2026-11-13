@@ -26,7 +26,7 @@ class BraveVisitDatabaseTest : public PlatformTest,
   void SetUp() override {
     PlatformTest::SetUp();
 
-    EXPECT_TRUE(db_.OpenInMemory());
+    ASSERT_TRUE(db_.OpenInMemory());
 
     // Initialize the tables for this test.
     CreateURLTable(false);

@@ -61,7 +61,7 @@ IN_PROC_BROWSER_TEST_F(DarkerThemeBrowserTest, EnableDarkerMode) {
   // Enable the darker theme.
   prefs->SetBoolean(darker_theme::prefs::kBraveDarkerMode, true);
   color_provider_key = browser_widget->GetColorProviderKey();
-  EXPECT_TRUE(color_provider_key.scheme_variant.has_value());
+  ASSERT_TRUE(color_provider_key.scheme_variant.has_value());
   EXPECT_EQ(*color_provider_key.scheme_variant,
             ui::ColorProviderKey::SchemeVariant::kDarker);
 
