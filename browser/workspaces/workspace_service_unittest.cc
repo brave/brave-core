@@ -208,6 +208,64 @@ TEST_F(WorkspaceServiceTest, RenameWorkspace_UnknownIdIsNoOp) {
   EXPECT_TRUE(service_->ListWorkspaces().empty());
 }
 
+// A failed write must not undo a rename that landed while it was in flight.
+// Renaming deliberately leaves modified_at alone so the list does not
+// reorder, which means the timestamp alone cannot tell a rename happened.
+TEST_F(WorkspaceServiceTest, RollBack_DroppedAfterARename) {
+  WorkspaceMetadata created = service_->CreateWorkspace("Work");
+
+  // What a save does: record the new state and remember what it replaced.
+  WorkspaceMetadata previous = *service_->GetWorkspace(created.id);
+  WorkspaceMetadata written = previous;
+  written.modified_at = base::Time::FromSecondsSinceUnixEpoch(1700000000.0);
+  written.number_of_tabs = 4;
+  service_->SaveWorkspaceMetadata(written);
+
+  service_->RenameWorkspace(created.id, "Research");
+
+  // The write now reports failure.
+  service_->RollBackWorkspaceMetadata(previous, written.modified_at);
+
+  auto workspace = service_->GetWorkspace(created.id);
+  ASSERT_TRUE(workspace.has_value());
+  EXPECT_EQ(workspace->name, "Research")
+      << "Rolling back a failed write undid a rename made after it started";
+}
+
+// The ordinary case: nothing changed in between, so the rollback applies.
+TEST_F(WorkspaceServiceTest, RollBack_RestoresWhenNothingElseChanged) {
+  WorkspaceMetadata created = service_->CreateWorkspace("Work");
+
+  WorkspaceMetadata previous = *service_->GetWorkspace(created.id);
+  WorkspaceMetadata written = previous;
+  written.modified_at = base::Time::FromSecondsSinceUnixEpoch(1700000000.0);
+  written.number_of_tabs = 4;
+  service_->SaveWorkspaceMetadata(written);
+
+  service_->RollBackWorkspaceMetadata(previous, written.modified_at);
+
+  auto workspace = service_->GetWorkspace(created.id);
+  ASSERT_TRUE(workspace.has_value());
+  EXPECT_EQ(workspace->number_of_tabs, previous.number_of_tabs)
+      << "A failed write should leave behind the tab count it replaced";
+}
+
+// A deleted workspace must not come back because a write failed.
+TEST_F(WorkspaceServiceTest, RollBack_DoesNotResurrectADeletedWorkspace) {
+  WorkspaceMetadata created = service_->CreateWorkspace("Work");
+
+  WorkspaceMetadata previous = *service_->GetWorkspace(created.id);
+  WorkspaceMetadata written = previous;
+  written.modified_at = base::Time::FromSecondsSinceUnixEpoch(1700000000.0);
+  service_->SaveWorkspaceMetadata(written);
+
+  service_->RemoveWorkspaceMetadata(created.id);
+  service_->RollBackWorkspaceMetadata(previous, written.modified_at);
+
+  EXPECT_FALSE(service_->GetWorkspace(created.id).has_value())
+      << "Rolling back a failed write put a deleted workspace back";
+}
+
 // ---- Window binding ---------------------------------------------------------
 
 TEST_F(WorkspaceServiceTest, Binding_UnloadedWorkspaceHasNoWindow) {

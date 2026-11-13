@@ -99,8 +99,14 @@ void WorkspaceService::RollBackWorkspaceMetadata(
   // been renamed, saved again or deleted in the meantime. Only undo the entry
   // this write put there, so a rollback never overwrites a newer change or
   // puts a deleted workspace back in the list.
+  //
+  // Both mutable fields have to be checked. A later save moves modified_at
+  // (carrying number_of_tabs with it), but a rename deliberately leaves
+  // modified_at alone so the list does not reorder -- so the timestamp alone
+  // would not notice one, and rolling back would put the old name back.
   std::optional<WorkspaceMetadata> current = GetWorkspace(previous.id);
-  if (!current || current->modified_at != written_at) {
+  if (!current || current->modified_at != written_at ||
+      current->name != previous.name) {
     return;
   }
   SaveWorkspaceMetadata(previous);

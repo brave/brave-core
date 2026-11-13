@@ -89,9 +89,9 @@ class WorkspaceService : public KeyedService,
   void SaveWorkspaceMetadata(const WorkspaceMetadata& meta);
 
   // Undoes the metadata written optimistically by a save whose disk write
-  // then failed.  |written_at| identifies that write: if the workspace has
-  // since been renamed, saved again or deleted, the rollback is dropped
-  // rather than clobbering the newer state.
+  // then failed.  |written_at| and |previous.name| together identify that
+  // write: if the workspace has since been renamed, saved again or deleted,
+  // the rollback is dropped rather than clobbering the newer state.
   void RollBackWorkspaceMetadata(const WorkspaceMetadata& previous,
                                  base::Time written_at);
 
