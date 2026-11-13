@@ -52,7 +52,6 @@ source_set("chromium_impl") {
 
     deps += [
       ":speech",
-      "//base/i18n:language_tag",
       "//brave/components/local_ai/core",
       "//chrome/browser:browser_process",
       "//chrome/browser/profiles:profile",
@@ -147,6 +146,7 @@ if (enable_local_ai) {
     testonly = true
 
     sources = [
+      "brave_soda_constants_unittest.cc",
       "brave_soda_installer_unittest.cc",
       "on_device_speech_model_permission_request_unittest.cc",
       "on_device_speech_recognition_controller_unittest.cc",

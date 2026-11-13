@@ -25,14 +25,20 @@ enum class OnDeviceSpeechModel;
 // speech recognition. A null `local_state` reads as the switch's default, on.
 bool CanOfferOnDeviceSpeech(const PrefService* local_state);
 
+// Whether Brave can offer `model`. True when `CanOfferOnDeviceSpeech` is true
+// and, for the multilingual model, `kBraveOnDeviceSpeechMultilingual` is
+// enabled. A null `local_state` reads as the switch's default, on.
+bool CanOfferOnDeviceSpeechModel(const PrefService* local_state,
+                                 OnDeviceSpeechModel model);
+
 // The local-state pref that says whether the user enabled `model`:
 // `prefs::kOnDeviceSpeechEnglishModelEnabled` for English and
 // `prefs::kOnDeviceSpeechMultilingualModelEnabled` for multilingual.
 std::string_view GetOnDeviceSpeechModelEnabledPref(OnDeviceSpeechModel model);
 
-// Whether `model` is to be on disk. True when `CanOfferOnDeviceSpeech` is true,
-// `kBraveOnDeviceSpeechMultilingual` is enabled for the multilingual model, and
-// the user enabled `model`. A null `local_state` reads as not enabled.
+// Whether `model` is to be on disk. True when `CanOfferOnDeviceSpeechModel` is
+// true for `model` and the user enabled `model`. A null `local_state` reads as
+// not enabled.
 bool ShouldInstallOnDeviceSpeechModel(const PrefService* local_state,
                                       OnDeviceSpeechModel model);
 

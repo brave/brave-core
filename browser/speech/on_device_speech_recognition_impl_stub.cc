@@ -17,18 +17,23 @@
 
 namespace speech {
 
-// With no Brave model, there is no upstream branch to send `kDictation` down.
-media::mojom::SpeechRecognitionQuality ToBraveOnDeviceSpeechQuality(
-    media::mojom::SpeechRecognitionQuality quality) {
-  return quality;
+// With no Brave model, just fall through to upstream, with the quality as it
+// is.
+bool MaybeHandleBraveOnDeviceSpeechAvailable(
+    base::WeakPtr<OnDeviceSpeechRecognitionImpl> impl,
+    const std::vector<std::string>& languages,
+    media::mojom::SpeechRecognitionQuality& quality,
+    OnDeviceSpeechRecognitionImpl::AvailableCallback& callback) {
+  return false;
 }
 
-// With no Brave model, just fall through to upstream.
-bool MaybePromptOrCancelBraveOnDeviceSpeechInstall(
+// With no Brave model, just fall through to upstream, with the quality as it
+// is.
+bool MaybeHandleBraveOnDeviceSpeechInstall(
     bool frame_can_use_on_device_speech,
     base::WeakPtr<OnDeviceSpeechRecognitionImpl> impl,
     const std::vector<std::string>& languages,
-    media::mojom::SpeechRecognitionQuality quality,
+    media::mojom::SpeechRecognitionQuality& quality,
     OnDeviceSpeechRecognitionImpl::InstallCallback& callback) {
   return false;
 }

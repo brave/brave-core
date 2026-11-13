@@ -1,0 +1,16 @@
+diff --git a/components/soda/constants.h b/components/soda/constants.h
+index b9ddaed64342f251e8697d7be2bf192bf579fa51..f81349b015aba085d8dde7c96c62991e6111776e 100644
+--- a/components/soda/constants.h
++++ b/components/soda/constants.h
+@@ -77,7 +77,10 @@ enum class LanguageCode {
+   kSvSe = 33,
+   kRuRu = 34,
+   kViVn = 35,
+-  kMaxValue = kViVn,
++  kAr,
++  kPtPt,
++  kUkUa,
++  kMaxValue = kUkUa,
+ };
+ // LINT.ThenChange(/tools/metrics/histograms/metadata/accessibility/enums.xml:SodaLanguageCode)
+ 

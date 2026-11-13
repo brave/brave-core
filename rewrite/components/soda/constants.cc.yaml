@@ -1,0 +1,50 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Give the config of a Brave locale that SODA has no config for.
+
+      Brave's hooks at the top of `available()` and `install()` change each
+      page's tag into the tag of a Brave locale before upstream calls this.
+      SODA's match on the language subtag alone would give "es-ES" for
+      "es-US", "fr-FR" for "fr-CA" and "pt-BR" for "pt-PT". It would give
+      nothing for "ar" and "uk-UA", and for "nl-NL" outside ChromeOS. Other
+      names still get SODA's match.
+
+      `GetBraveOnDeviceSpeechLanguageConfig` is defined in the chromium_src
+      override of this source.
+    preempt_function_impl:
+      function_name: GetLanguageComponentConfigMatchingLanguageSubtag
+      code: |-
+        if (auto config = GetBraveOnDeviceSpeechLanguageConfig(language_name)) {
+          return config;
+        }
+
+  - description: |-
+      Give the code of a Brave locale that SODA has no config for.
+
+      `install()` finds out from the code whether a locale is installed.
+      `FindBraveOnDeviceSpeechLocaleByName` is defined in the chromium_src
+      override of this source.
+    preempt_function_impl:
+      function_name: GetLanguageCode
+      code: |-
+        if (const auto* locale = FindBraveOnDeviceSpeechLocaleByName(language_name)) {
+          return locale->language_code;
+        }
+
+  - description: |-
+      Give the Brave locale of a code that SODA has no config for.
+
+      `install()` settles the reply for a locale from the code that the
+      installer reports. `FindBraveOnDeviceSpeechLocaleByCode` is defined in
+      the chromium_src override of this source.
+    preempt_function_impl:
+      function_name: GetLanguageName
+      code: |-
+        if (const auto* locale = FindBraveOnDeviceSpeechLocaleByCode(language_code)) {
+          return std::string(locale->tag);
+        }

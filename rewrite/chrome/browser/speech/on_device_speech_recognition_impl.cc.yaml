@@ -16,22 +16,16 @@ substitutions:
       also reads the same language names that `install()` records for the
       origin. The mapping only selects the branch: Brave's policy answers
       `kCommand` and `kDictation` alike.
+
+      Upstream matches each tag to the first SODA locale of the same language,
+      so "es-MX" would give "es-ES". The hook changes the tags to Brave's own
+      locale tags, such as "es-US" for "es-MX", and answers `kUnavailable`
+      when a tag has no Brave locale.
     preempt_function_impl:
       function_name: OnDeviceSpeechRecognitionImpl::Available
-      code: |-
-        quality = ToBraveOnDeviceSpeechQuality(quality);
-
-  - description: |-
-      Take upstream's SODA branch for `kDictation` in `install()`.
-
-      The SODA branch is where `BraveSodaInstaller` installs Brave's model.
-      Upstream otherwise uses the optimization guide branch, which asks for a
-      model Brave does not ship. The mapping only selects the branch: Brave's
-      model is the same for `kCommand` and `kDictation`.
-    preempt_function_impl:
-      function_name: OnDeviceSpeechRecognitionImpl::Install
-      code: |-
-        quality = ToBraveOnDeviceSpeechQuality(quality);
+      return_if: |-
+        MaybeHandleBraveOnDeviceSpeechAvailable(
+                weak_ptr_factory_.GetWeakPtr(), languages, quality, callback)
 
   - description: |-
       Cancel `install()` in Private, Tor and Guest profiles, and otherwise ask
@@ -41,13 +35,14 @@ substitutions:
       allows it, `Install` runs again from the top, so every upstream check
       runs again.
 
-      Each preempt lands at the top of the body, so this one runs before the
-      `ToBraveOnDeviceSpeechQuality` mapping. That is safe, because the mapping
-      only selects upstream's branch. The prompt asks Brave's policy directly,
-      and `Install` maps the quality again when it runs again.
+      As in `available()`, the hook changes the tags to Brave's own locale
+      tags, and cancels when a tag has no Brave locale. It also takes
+      upstream's SODA branch for `kDictation`. That branch is where
+      `BraveSodaInstaller` installs Brave's model. Upstream's other branch,
+      the optimization guide one, asks for a model that Brave does not ship.
     preempt_function_impl:
       function_name: OnDeviceSpeechRecognitionImpl::Install
       return_if: |-
-        MaybePromptOrCancelBraveOnDeviceSpeechInstall(
+        MaybeHandleBraveOnDeviceSpeechInstall(
                 CanRenderFrameHostUseOnDeviceSpeechRecognition(),
                 weak_ptr_factory_.GetWeakPtr(), languages, quality, callback)

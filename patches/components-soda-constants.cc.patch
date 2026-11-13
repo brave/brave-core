@@ -1,0 +1,34 @@
+diff --git a/components/soda/constants.cc b/components/soda/constants.cc
+index 7f48d5616c24ef6cf676386110241e4ed6261989..0c5f425f2c07fb76fed3b596519a70391b333767 100644
+--- a/components/soda/constants.cc
++++ b/components/soda/constants.cc
+@@ -239,6 +239,9 @@ std::optional<SodaLanguagePackComponentConfig> GetLanguageComponentConfig(
+ std::optional<SodaLanguagePackComponentConfig>
+ GetLanguageComponentConfigMatchingLanguageSubtag(
+     std::string_view language_name) {
++  if (auto config = GetBraveOnDeviceSpeechLanguageConfig(language_name)) {
++    return config;
++  }
+   // Use full locale to get Chinese variant config.
+   auto locale = MaybeMapToChineseLocale(language_name);
+   if (locale.substr(0, 3) == kChineseLocaleNoCountry) {
+@@ -271,6 +274,9 @@ LanguageCode GetLanguageCodeByComponentId(std::string_view component_id) {
+ }
+ 
+ std::string GetLanguageName(LanguageCode language_code) {
++  if (const auto* locale = FindBraveOnDeviceSpeechLocaleByCode(language_code)) {
++    return std::string(locale->tag);
++  }
+   std::string language_name;
+   if (language_code != LanguageCode::kNone) {
+     std::optional<SodaLanguagePackComponentConfig> language_config =
+@@ -284,6 +290,9 @@ std::string GetLanguageName(LanguageCode language_code) {
+ }
+ 
+ LanguageCode GetLanguageCode(std::string_view language_name) {
++  if (const auto* locale = FindBraveOnDeviceSpeechLocaleByName(language_name)) {
++    return locale->language_code;
++  }
+   std::optional<SodaLanguagePackComponentConfig> language_config =
+       GetLanguageComponentConfig(language_name);
+   if (language_config.has_value()) {

@@ -7,7 +7,9 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
+#include <vector>
 
 #include "base/files/file_path.h"
 #include "base/test/scoped_feature_list.h"
@@ -19,6 +21,7 @@
 #include "brave/components/local_ai/core/on_device_speech_models_component_installer.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/pref_names.h"
+#include "brave/components/local_ai/core/utils.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/component_updater_service.h"
@@ -40,6 +43,19 @@ constexpr OnDeviceSpeechModel kEnglish = OnDeviceSpeechModel::kEnglish;
 constexpr OnDeviceSpeechModel kMultilingual =
     OnDeviceSpeechModel::kMultilingual;
 
+std::string ComponentIdOf(OnDeviceSpeechModel model) {
+  return model == kEnglish
+             ? local_ai::kOnDeviceSpeechEnglishModelComponentId
+             : local_ai::kOnDeviceSpeechMultilingualModelComponentId;
+}
+
+// A model, and a locale that only this model serves.
+struct ModelCase {
+  OnDeviceSpeechModel model;
+  std::string_view locale;
+  LanguageCode language_code;
+};
+
 // OnDeviceSpeechRecognitionImpl is the real observer, and settles the reply
 // parked by SpeechRecognition.install() from exactly these notifications.
 class MockSodaObserver : public SodaInstaller::Observer {
@@ -57,11 +73,13 @@ class MockSodaObserver : public SodaInstaller::Observer {
 
 }  // namespace
 
-class BraveSodaInstallerUnitTest : public testing::Test {
+class BraveSodaInstallerTestBase : public testing::Test {
  public:
-  BraveSodaInstallerUnitTest() {
-    feature_list_.InitAndEnableFeature(
-        local_ai::kBraveOnDeviceSpeechRecognition);
+  explicit BraveSodaInstallerTestBase(OnDeviceSpeechModel enabled_model)
+      : enabled_model_(enabled_model) {
+    feature_list_.InitWithFeatures({local_ai::kBraveOnDeviceSpeechRecognition,
+                                    local_ai::kBraveOnDeviceSpeechMultilingual},
+                                   {});
   }
 
   // Starts the registrar the way startup does, so every test runs with one.
@@ -70,18 +88,16 @@ class BraveSodaInstallerUnitTest : public testing::Test {
   void SetUp() override {
     ON_CALL(cus_, RegisterComponent).WillByDefault(testing::Return(true));
     // An enabled model, so the registrar registers it and the installer's
-    // requests reach the download.
+    // requests for it reach the download.
     local_state()->SetBoolean(
-        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled, true);
+        local_ai::GetOnDeviceSpeechModelEnabledPref(enabled_model_), true);
 
     // Starting the registrar asks for a download of its own. Waiting for it
     // means a test's own request starts a registration rather than joining
     // this one.
     base::test::TestFuture<void> started;
-    EXPECT_CALL(
-        on_demand_updater_,
-        EnsureInstalled(local_ai::kOnDeviceSpeechEnglishModelComponentId,
-                        testing::_))
+    EXPECT_CALL(on_demand_updater_,
+                EnsureInstalled(ComponentIdOf(enabled_model_), testing::_))
         .WillOnce([&started](const std::string& id,
                              component_updater::Callback callback) {
           std::move(callback).Run(update_client::Error::UPDATE_CHECK_ERROR);
@@ -124,23 +140,23 @@ class BraveSodaInstallerUnitTest : public testing::Test {
         model, base::FilePath());
   }
 
-  // Answers the next download request, and expects to be asked once. A success
-  // publishes the model first, as a real download does before the request it
-  // answers is settled.
-  void AnswerDownloadWith(update_client::Error error) {
-    EXPECT_CALL(
-        on_demand_updater_,
-        EnsureInstalled(local_ai::kOnDeviceSpeechEnglishModelComponentId,
-                        testing::_))
-        .WillOnce([this, error](const std::string& id,
-                                component_updater::Callback callback) {
+  // Answers the next download request for `model`, and expects to be asked
+  // once. A success publishes the model first, as a real download does before
+  // the request it answers is settled.
+  void AnswerDownloadWith(OnDeviceSpeechModel model,
+                          update_client::Error error) {
+    EXPECT_CALL(on_demand_updater_,
+                EnsureInstalled(ComponentIdOf(model), testing::_))
+        .WillOnce([this, model, error](const std::string& id,
+                                       component_updater::Callback callback) {
           if (error == update_client::Error::NONE) {
-            InstallModel();
+            InstallModel(model);
           }
           std::move(callback).Run(error);
         });
   }
 
+  const OnDeviceSpeechModel enabled_model_;
   base::test::ScopedFeatureList feature_list_;
   // `ComponentInstaller::Register` creates the directory the component would
   // install into. Without this it creates one in the real component directory.
@@ -155,14 +171,37 @@ class BraveSodaInstallerUnitTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
 };
 
-// The list `IsLanguageInstallable` gates `install()` on, and that
-// `InstallLanguage` refuses anything outside.
-TEST_F(BraveSodaInstallerUnitTest, OffersEnglishOnly) {
+class BraveSodaInstallerUnitTest : public BraveSodaInstallerTestBase {
+ public:
+  BraveSodaInstallerUnitTest() : BraveSodaInstallerTestBase(kEnglish) {}
+};
+
+// Runs once for each model, with that model enabled.
+class BraveSodaInstallerModelUnitTest
+    : public BraveSodaInstallerTestBase,
+      public testing::WithParamInterface<ModelCase> {
+ public:
+  BraveSodaInstallerModelUnitTest()
+      : BraveSodaInstallerTestBase(GetParam().model) {}
+};
+
+// With the multilingual feature on, the locales of both models are offered.
+TEST_F(BraveSodaInstallerUnitTest, OffersSupportedLanguages) {
   CreateInstaller();
+  const std::vector<std::string> languages =
+      installer_->GetLiveCaptionEnabledLanguages();
+  EXPECT_THAT(languages, testing::IsSupersetOf({"en-US", "uk-UA"}));
+  EXPECT_EQ(languages, installer_->GetAvailableLanguages());
+}
+
+TEST_F(BraveSodaInstallerUnitTest,
+       OffersEnglishOnlyWithMultilingualFeatureOff) {
+  base::test::ScopedFeatureList disabled;
+  disabled.InitAndDisableFeature(local_ai::kBraveOnDeviceSpeechMultilingual);
+  CreateInstaller();
+
   EXPECT_THAT(installer_->GetLiveCaptionEnabledLanguages(),
-              testing::ElementsAre(GetLanguageName(LanguageCode::kEnUs)));
-  EXPECT_EQ(installer_->GetLiveCaptionEnabledLanguages(),
-            installer_->GetAvailableLanguages());
+              testing::ElementsAre("en-US"));
 }
 
 TEST_F(BraveSodaInstallerUnitTest, OffersNothingWithLocalAIOff) {
@@ -192,16 +231,6 @@ TEST_F(BraveSodaInstallerUnitTest, ModelArrivingReportsInstalled) {
   EXPECT_TRUE(installer_->IsSodaInstalled(LanguageCode::kEnUs));
 }
 
-// Only the English model serves a language for now, so the multilingual
-// model installs none.
-TEST_F(BraveSodaInstallerUnitTest, MultilingualModelInstallsNoLanguage) {
-  CreateInstaller();
-
-  InstallModel(kMultilingual);
-
-  EXPECT_FALSE(installer_->IsSodaInstalled(LanguageCode::kEnUs));
-}
-
 TEST_F(BraveSodaInstallerUnitTest, ModelRemovalClearsInstalled) {
   InstallModel();
   CreateInstaller();
@@ -212,6 +241,30 @@ TEST_F(BraveSodaInstallerUnitTest, ModelRemovalClearsInstalled) {
   EXPECT_FALSE(installer_->IsSodaInstalled(LanguageCode::kEnUs));
 }
 
+// Each model installs and removes only its own locales. Removing one model
+// leaves the locales of the other installed.
+TEST_F(BraveSodaInstallerUnitTest, EachModelInstallsOnlyItsOwnLocales) {
+  CreateInstaller();
+  EXPECT_CALL(observer_, OnSodaInstalled(LanguageCode::kEnUs));
+  InstallModel(kEnglish);
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+
+  // The multilingual model reports uk-UA once. It does not report en-US again.
+  EXPECT_CALL(observer_, OnSodaInstalled(testing::Ne(LanguageCode::kEnUs)))
+      .Times(testing::AnyNumber());
+  EXPECT_CALL(observer_, OnSodaInstalled(LanguageCode::kUkUa));
+  InstallModel(kMultilingual);
+  EXPECT_TRUE(installer_->IsSodaInstalled(LanguageCode::kEnUs));
+  EXPECT_TRUE(installer_->IsSodaInstalled(LanguageCode::kUkUa));
+
+  RemoveModel(kEnglish);
+  EXPECT_FALSE(installer_->IsSodaInstalled(LanguageCode::kEnUs));
+  EXPECT_TRUE(installer_->IsSodaInstalled(LanguageCode::kUkUa));
+
+  RemoveModel(kMultilingual);
+  EXPECT_FALSE(installer_->IsSodaInstalled(LanguageCode::kUkUa));
+}
+
 // `InstallLanguage` must not start a registration for a language Brave does
 // not serve. To see whether it did, the test waits on a request of its own,
 // which joins any registration still pending. That registration ends without
@@ -220,72 +273,90 @@ TEST_F(BraveSodaInstallerUnitTest, ModelRemovalClearsInstalled) {
 // and the test fails.
 TEST_F(BraveSodaInstallerUnitTest, InstallLanguageIgnoresOtherLanguages) {
   CreateInstaller();
-  installer_->InstallLanguage("fr-FR", local_state());
+  installer_->InstallLanguage("th-TH", local_state());
 
-  AnswerDownloadWith(update_client::Error::UPDATE_CHECK_ERROR);
+  AnswerDownloadWith(kEnglish, update_client::Error::UPDATE_CHECK_ERROR);
   base::test::TestFuture<bool> answered;
   local_ai::MaybeRegisterOnDeviceSpeechModelsComponent(kEnglish,
                                                        answered.GetCallback());
   EXPECT_FALSE(answered.Get());
 }
 
-// A model already on disk must stop `InstallLanguage` from starting a
-// registration for what is already installed. To see whether it did, the test
-// removes the model once `InstallLanguage` returns, since a registration that
-// ends with a model calls nothing on `observer_`. It then waits on a request
-// of its own, which joins any registration still pending. If `InstallLanguage`
-// started that registration, the installer calls `OnSodaInstallError` on
-// `observer_`, a strict mock that expects no calls, and the test fails.
-TEST_F(BraveSodaInstallerUnitTest, InstallLanguageWithAModelDoesNothing) {
-  InstallModel();
+// The model of the language already on disk must stop `InstallLanguage` from
+// starting a registration for what is already installed. The other model is
+// not on disk. To see whether `InstallLanguage` started a registration, the
+// test removes the model once `InstallLanguage` returns, since a registration
+// that ends with a model calls nothing on `observer_`. It then waits on a
+// request of its own, which joins any registration still pending. If
+// `InstallLanguage` started that registration, the installer calls
+// `OnSodaInstallError` on `observer_`, a strict mock that expects no calls,
+// and the test fails.
+TEST_P(BraveSodaInstallerModelUnitTest, InstallLanguageWithAModelDoesNothing) {
+  InstallModel(GetParam().model);
   CreateInstaller();
-  ASSERT_TRUE(installer_->IsSodaInstalled(LanguageCode::kEnUs));
-  installer_->InstallLanguage("en-US", local_state());
-  RemoveModel();
+  ASSERT_TRUE(installer_->IsSodaInstalled(GetParam().language_code));
+  installer_->InstallLanguage(GetParam().locale, local_state());
+  RemoveModel(GetParam().model);
 
   // Any answer but `UPDATE_IN_PROGRESS` settles the request, and the
   // `RemoveModel()` above is what makes it `false`, not the error. The answer
   // is a failure only because a success would publish the model again.
-  AnswerDownloadWith(update_client::Error::UPDATE_CHECK_ERROR);
+  AnswerDownloadWith(GetParam().model,
+                     update_client::Error::UPDATE_CHECK_ERROR);
   base::test::TestFuture<bool> answered;
-  local_ai::MaybeRegisterOnDeviceSpeechModelsComponent(kEnglish,
+  local_ai::MaybeRegisterOnDeviceSpeechModelsComponent(GetParam().model,
                                                        answered.GetCallback());
   EXPECT_FALSE(answered.Get());
 }
 
-// A request that ends without a model is reported as a failure rather than
-// left to hang, since install() has already parked its reply.
-TEST_F(BraveSodaInstallerUnitTest, InstallLanguageWithoutAModelReportsAnError) {
+// `InstallLanguage` asks for the model of the language. A request that ends
+// without a model is reported as a failure of the language rather than left to
+// hang, since install() has already parked its reply.
+TEST_P(BraveSodaInstallerModelUnitTest,
+       InstallLanguageWithoutAModelReportsAnError) {
   CreateInstaller();
-  AnswerDownloadWith(update_client::Error::UPDATE_CHECK_ERROR);
+  AnswerDownloadWith(GetParam().model,
+                     update_client::Error::UPDATE_CHECK_ERROR);
   base::test::TestFuture<void> reported;
   EXPECT_CALL(observer_,
-              OnSodaInstallError(LanguageCode::kEnUs,
+              OnSodaInstallError(GetParam().language_code,
                                  SodaInstaller::ErrorCode::kUnspecifiedError))
       .WillOnce([&] { reported.SetValue(); });
 
-  installer_->InstallLanguage("en-US", local_state());
+  installer_->InstallLanguage(GetParam().locale, local_state());
 
   EXPECT_TRUE(reported.Wait());
 }
 
 // Both `OnSpeechModelDirChanged` and `OnSpeechModelInstallFinished` run for one
 // successful install. Only the first calls `NotifyOnSodaInstalled`, and only
-// once, so `install()` is not told twice that the same model installed.
-TEST_F(BraveSodaInstallerUnitTest, InstallLanguageReportsInstalledOnce) {
+// once for the language, so `install()` is not told twice that the language
+// installed. The model can report its other locales too.
+TEST_P(BraveSodaInstallerModelUnitTest, InstallLanguageReportsInstalledOnce) {
   CreateInstaller();
-  EXPECT_CALL(observer_, OnSodaInstalled(LanguageCode::kEnUs));
-  AnswerDownloadWith(update_client::Error::NONE);
+  EXPECT_CALL(observer_, OnSodaInstalled(testing::_))
+      .Times(testing::AnyNumber());
+  EXPECT_CALL(observer_, OnSodaInstalled(GetParam().language_code));
+  AnswerDownloadWith(GetParam().model, update_client::Error::NONE);
 
-  installer_->InstallLanguage("en-US", local_state());
+  installer_->InstallLanguage(GetParam().locale, local_state());
 
   // A request of the test's own joins the one `InstallLanguage` started, and
   // the registrar answers them in order, so once this one is answered
   // `OnSpeechModelInstallFinished` has run too.
   base::test::TestFuture<bool> answered;
-  local_ai::MaybeRegisterOnDeviceSpeechModelsComponent(kEnglish,
+  local_ai::MaybeRegisterOnDeviceSpeechModelsComponent(GetParam().model,
                                                        answered.GetCallback());
   EXPECT_TRUE(answered.Get());
 }
+
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    BraveSodaInstallerModelUnitTest,
+    testing::Values(ModelCase{kEnglish, "en-US", LanguageCode::kEnUs},
+                    ModelCase{kMultilingual, "uk-UA", LanguageCode::kUkUa}),
+    [](const testing::TestParamInfo<ModelCase>& info) {
+      return info.param.model == kEnglish ? "English" : "Multilingual";
+    });
 
 }  // namespace speech
