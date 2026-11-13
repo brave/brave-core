@@ -583,6 +583,12 @@ struct TabGridView: View {
       .disabled(selectedTabs.isEmpty || !viewModel.isShredAvailableForSelectedTabs(selectedTabs))
       .frame(maxWidth: .infinity, alignment: .leading)
 
+      // Only regular tabs can be grouped
+      if viewModel.canGroupTabs {
+        addToGroupFooterMenu
+          .frame(maxWidth: .infinity, alignment: .center)
+      }
+
       Button {
         withAnimation {
           let dismissAfterClose = selectedTabs.count == viewModel.tabs.count
@@ -604,6 +610,52 @@ struct TabGridView: View {
     .padding(.horizontal, 16)
     .padding(.vertical, 8)
     .dynamicTypeSize(.xSmall..<DynamicTypeSize.accessibility2)
+  }
+
+  /// A menu in the footer for adding the selected tabs to an existing group or a new one
+  private var addToGroupFooterMenu: some View {
+    Menu {
+      if viewModel.tabGroups.isEmpty {
+        Section(Strings.TabGrid.addToGroupButtonTitle) {
+          createNewGroupButton
+        }
+      } else {
+        Section(Strings.TabGrid.addToGroupButtonTitle) {
+          ForEach(viewModel.tabGroups) { group in
+            Button(group.title) {
+              addTabs(selectedTabs, to: group)
+            }
+          }
+        }
+        Section {
+          createNewGroupButton
+        }
+      }
+    } label: {
+      Label(Strings.TabGrid.addToGroupButtonTitle, braveSystemImage: "leo.plus.add")
+        .lineLimit(1)
+        .minimumScaleFactor(0.75)
+    }
+    .menuOrder(.fixed)
+    .plainToolbarIconButtonStyle()
+    .disabled(selectedTabs.isEmpty)
+  }
+
+  private var createNewGroupButton: some View {
+    Button(Strings.TabGrid.createNewGroupMenuTitle) {
+      createGroup(adding: selectedTabs)
+    }
+  }
+
+  private func addTabs(_ tabIDs: Set<TabState.ID>, to group: TabGroup) {
+    resetEditMode()
+    viewModel.addTabs(tabIDs, to: group)
+  }
+
+  /// Creates a group of the tabs, which is then opened for the user to name
+  private func createGroup(adding tabIDs: Set<TabState.ID>) {
+    resetEditMode()
+    viewModel.createGroup(adding: tabIDs)
   }
 
   private func contextMenu(for tabs: [any TabState]) -> UIMenu? {
@@ -686,8 +738,7 @@ struct TabGridView: View {
   private func addToGroupMenu(for tabIDs: Set<TabState.ID>) -> UIMenu {
     let existingGroups = viewModel.tabGroups.map { group in
       UIAction(title: group.title) { _ in
-        resetEditMode()
-        viewModel.addTabs(tabIDs, to: group)
+        addTabs(tabIDs, to: group)
       }
     }
     let createGroup = UIMenu(
@@ -697,8 +748,7 @@ struct TabGridView: View {
           title: Strings.TabGrid.createNewGroupMenuTitle,
           image: UIImage(braveSystemNamed: "leo.group.new-tab")
         ) { _ in
-          resetEditMode()
-          viewModel.createGroup(adding: tabIDs)
+          createGroup(adding: tabIDs)
         }
       ]
     )
