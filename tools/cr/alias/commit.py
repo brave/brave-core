@@ -22,6 +22,9 @@ Usage
     --tagged    Comma-separated tags            → $tags
     --issue     Comma-separated issue numbers   → $issue
     --culprit   Comma-separated commit hashes   → $culprit
+    --culprit-in-range
+                Refuses a culprit outside the branch's Chromium range
+                                                → $culprit_in_range
     --force-commit-hook
                 Runs the hook where it would bail out → $force_commit_hook
 
@@ -140,6 +143,7 @@ def _run_commit(
     culprit: str | None,
     git_args: list[str],
     force_hook: bool = False,
+    culprit_in_range: bool = False,
 ) -> int:
     """Execute git commit with hook environment variables injected."""
     _check_hook_ready()
@@ -160,6 +164,8 @@ def _run_commit(
         env['issue'] = issue
     if culprit:
         env['culprit'] = culprit
+    if culprit_in_range:
+        env['culprit_in_range'] = '1'
     return subprocess.run(
         ['git', 'commit'] + git_args, check=False, env=env
     ).returncode
@@ -297,6 +303,12 @@ def cmd_commit(args: list[str]) -> int:
         help='Chromium commit hashes injected as $culprit',
     )
     parser.add_argument(
+        '--culprit-in-range',
+        action='store_true',
+        help="On a cr<N> branch, refuse a Chromium culprit outside the "
+        "branch's range: after the base's Chromium tag, up to HEAD's",
+    )
+    parser.add_argument(
         '--force-commit-hook',
         action='store_true',
         help='Run the commit-msg hook where it would leave the message alone: '
@@ -309,4 +321,5 @@ def cmd_commit(args: list[str]) -> int:
         parsed.culprit,
         extra,
         force_hook=parsed.force_commit_hook,
+        culprit_in_range=parsed.culprit_in_range,
     )
