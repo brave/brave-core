@@ -15,6 +15,7 @@ brave_chrome_common_deps = [
   "//base",
   "//brave/common:mojo_bindings",
   "//brave/components/brave_origin/buildflags",
+  "//brave/components/psst/buildflags",
   "//components/version_info:channel",
   "//extensions/buildflags",
   "//services/service_manager",
