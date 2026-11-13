@@ -1,5 +1,5 @@
 diff --git a/components/tabs/public/tab_strip_collection.h b/components/tabs/public/tab_strip_collection.h
-index b94bdcbf60febd807c1c85ef7b3288ea4a396c1b..4dba3b7598fe8cc9e383e3a3e5401b083076d396 100644
+index b94bdcbf60febd807c1c85ef7b3288ea4a396c1b..d8c1953abaad3b174b1daabe7c74b117c9ff5830 100644
 --- a/components/tabs/public/tab_strip_collection.h
 +++ b/components/tabs/public/tab_strip_collection.h
 @@ -16,6 +16,13 @@
@@ -30,15 +30,17 @@ index b94bdcbf60febd807c1c85ef7b3288ea4a396c1b..4dba3b7598fe8cc9e383e3a3e5401b08
        const std::vector<int>& tab_indices,
        size_t destination_index,
        std::optional<tab_groups::TabGroupId> new_group_id,
-@@ -69,7 +76,7 @@ class TabStripCollection : public TabCollection {
+@@ -69,8 +76,8 @@ class TabStripCollection : public TabCollection {
    // Removes the tab present at a recursive index in the collection and
    // returns the unique_ptr to the tab model. If there is no tab present
    // due to bad input then CHECK.
 -  ScopedTab RemoveTabAtIndexRecursive(size_t index);
+-  ScopedTab RemoveTab(TabInterface* tab, bool remove_for_detach);
 +  virtual ScopedTab RemoveTabAtIndexRecursive(size_t index);
-   ScopedTab RemoveTab(TabInterface* tab, bool remove_for_detach);
++  virtual ScopedTab RemoveTab(TabInterface* tab, bool remove_for_detach);
  
    // TabCollection:
+   // Tabs and Collections are not allowed to be removed from TabStripCollection.
 @@ -79,7 +86,7 @@ class TabStripCollection : public TabCollection {
    std::unique_ptr<TabCollection> MaybeRemoveCollection(
        TabCollection* collection) override;

@@ -396,6 +396,17 @@ ScopedTab BraveTabStripCollection::RemoveTabAtIndexRecursive(size_t index) {
   return TabStripCollection::RemoveTabAtIndexRecursive(index);
 }
 
+ScopedTab BraveTabStripCollection::RemoveTab(TabInterface* tab,
+                                             bool remove_for_detach) {
+  if (ShouldDelegate()) {
+    auto notifications = ScopeUnwrappedNotifications();
+    return delegate_->RemoveTabAtIndexRecursive(
+        GetIndexOfTabRecursive(tab).value());
+  }
+
+  return TabStripCollection::RemoveTab(tab, remove_for_detach);
+}
+
 void BraveTabStripCollection::InsertTabCollectionAt(
     std::unique_ptr<TabCollection> collection,
     int index,

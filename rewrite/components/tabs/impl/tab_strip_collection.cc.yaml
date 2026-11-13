@@ -5,32 +5,42 @@
 
 substitutions:
   - description: |-
-      Bypass upstream's tab removal for a tree-tab node.
+      Keep a tree-tab node when its only tab is removed.
 
-      Removing a tree-tab node through the upstream path can crash in
-      RemoveTabCollectionImpl(parent_collection), since the parent isn't a
-      plain group/pinned/unpinned collection. Handle that case directly and
-      return; otherwise fall through to the upstream body unchanged.
+      A tree-tab node isn't a plain group, pinned or unpinned collection: the
+      tree tabs delegate manages its lifetime, so it is never removed, and
+      freed, with its last tab.
       TODO(https://github.com/brave/brave-browser/issues/49789): revisit once
       tab removal is fully handled for tree tabs.
-    preempt_function_impl:
-      function_name: TabStripCollection::RemoveTabAtIndexRecursive
-      code: |-
+    regex:
+      re_pattern:
+        '(TabStripCollection::RemoveTabImpl\(.*?parent_collection !=
+        pinned_collection_ &&)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
         #if BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
-        {
-          TabInterface* tab_to_be_removed = GetTabAtIndexRecursive(index);
-          TabCollection* parent_collection =
-              tab_to_be_removed->GetParentCollection(GetPassKey());
-          CHECK(parent_collection);
+              parent_collection->type() != TabCollection::Type::TREE_NODE &&
+        #endif  // BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
+
+  - description: |-
+      Remove a group emptied by removing a tab from its tree-tab node.
+
+      As the node stays, the group holding it would otherwise be left empty.
+    regex:
+      re_pattern:
+        '(TabStripCollection::RemoveTabImpl\(.*?)(\n\s*return removed_tab;)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+
+        #if BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
           if (parent_collection->type() == TabCollection::Type::TREE_NODE) {
-            auto tab = RemoveTabImpl(tab_to_be_removed);
             if (auto* grand_parent = parent_collection->GetParentCollection();
                 grand_parent &&
                 grand_parent->type() == TabCollection::Type::GROUP &&
                 grand_parent->TabCountRecursive() == 0) {
               RemoveTabCollectionImpl(grand_parent);
             }
-            return tab;
           }
-        }
-        #endif  // BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
+        #endif  // BUILDFLAG(ENABLE_BRAVE_TREE_TABS)\2
