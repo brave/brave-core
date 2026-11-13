@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Keep the `PageContentExtractionService` off.
+
+      Brave only ran it for History Embeddings, which upstream removed, so
+      the upstream feature flags don't turn it on. The parentheses mark the
+      code after it as deliberately dead for `-Wunreachable-code`.
+    regex:
+      re_pattern: '!page_content_annotations::features::\s*ShouldEnablePageContentAnnotations\(\)'
+      replace: '(true)'
