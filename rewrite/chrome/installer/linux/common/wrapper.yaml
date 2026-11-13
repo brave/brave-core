@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Run the browser as a child of the wrapper, ignoring its exit status.
+
+      Replacing the wrapper with `exec -a` made the browser segfault on some
+      systems (brave/brave-browser#4142).
+    regex:
+      pattern: 'exec -a "$0" "$HERE/@@PROGNAME" "$@"'
+      replace: '"$HERE/@@PROGNAME" "$@" || true'
