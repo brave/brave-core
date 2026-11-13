@@ -17,7 +17,7 @@ import { disposeOrt, ensureOrt } from './ort_env'
 import type { Ort, OrtSession, OrtSessionOptions, OrtTensor } from './ort_env'
 import * as config from './configs'
 import type { FftSize } from './configs'
-import { releaseBytes, argmax } from './utils'
+import { releaseBytes, argmax, findLanguageTagTokenIds } from './utils'
 
 // Encoder outputs we consume. `encoded_lengths` is the count of valid encoder
 // frames; the input length is fixed every call so it normally equals the
@@ -144,6 +144,7 @@ export class NemotronStreamSession {
   private readonly modelConfig:
     | typeof config.ENGLISH_NEMOTRON_CONFIG
     | typeof config.MULTILINGUAL_NEMOTRON_CONFIG
+
   private readonly frontend: StreamingMelFrontend
 
   // Attention cache.
@@ -165,6 +166,9 @@ export class NemotronStreamSession {
 
   // Hypothesis token IDs.
   private readonly hyp: number[] = []
+
+  // Token IDs belonging to lang tags, non-null value only for multi-lingual model
+  private readonly langTagTokenIds: Set<number> | null
 
   // Audio is accepted only while streaming. The final flush runs in finishing
   // and can still fail. ended is terminal and fires onResult or onError once.
@@ -201,6 +205,12 @@ export class NemotronStreamSession {
 
     if (modelType === 'english' && promptId !== null) {
       throw new Error('English Nemotron must not receive a prompt ID')
+    }
+
+    if (modelType == 'multilingual') {
+      this.langTagTokenIds = findLanguageTagTokenIds(this.model.tokens)
+    } else {
+      this.langTagTokenIds = null
     }
 
     this.cacheCh = new Float32Array(
@@ -336,6 +346,7 @@ export class NemotronStreamSession {
 
   private async processAvailable(final: boolean): Promise<void> {
     const { ort, tokens } = this.model
+
     let atLeastOneChunkProcessed = false
 
     while (this.frontend.hasFullChunk()) {
@@ -509,24 +520,23 @@ export class NemotronStreamSession {
           const tok = argmax(dout.outputs.data as Float32Array)
 
           if (tok !== this.modelConfig.NEMO_BLANK) {
-            const tokenText = tokens[tok] ?? ''
-
             // Multilingual Nemotron can emit language-control tokens such as <es-ES>.
             // strip these tags out
-            const isLanguageTag =
-              config.MULTILINGUAL_LANGUAGE_TAG_TOKENS.has(tokenText)
-            if (!isLanguageTag) {
+            if (
+              this.modelType === 'english'
+              || (this.modelType === 'multilingual'
+                && this.langTagTokenIds != null
+                && !this.langTagTokenIds.has(tok))
+            ) {
               this.hyp.push(tok)
+              // <if expr="!is_official_build">
+              emittedTokensThisChunk++
+              // </if>
             }
 
             this.prevToken = tok
             this.st1 = (dout.output_states_1.data as Float32Array).slice()
             this.st2 = (dout.output_states_2.data as Float32Array).slice()
-            // <if expr="!is_official_build">
-            if (!isLanguageTag) {
-              emittedTokensThisChunk++
-            }
-            // </if>
           }
 
           disposeOrt([], dout as unknown as Record<string, OrtTensor>)
