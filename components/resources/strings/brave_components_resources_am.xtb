@@ -952,6 +952,11 @@
 <translation id="4362717653795263052">የመጀመሪያ ደረጃ crypto ሂሳቦችን(መለያዎችን) ወደነበሩበት ይመልሱ</translation>
 <translation id="3038077262567136741">የBrave ዋሌት የክሪፕቶ መለያን ዳግም ለመመለስ የዳግም መመለሻ ሀረግዎን ያስገቡ።</translation>
 <translation id="955918646509748368">የገባው የመልሶ ማግኛ ሐረግ ልክ ያልሆነ ነው።</translation>
+<translation id="7496330898672236908">ይህ የመልሶ ማግኛ ሐረግ ከቦርሳዎ ጋር አይዛመድም። ሐረጉን ያረጋግጡና እንደገና ይሞክሩ።</translation>
+<translation id="3798792138617904098">ከሌላ የመጡ መለያዎች ይወገዱ?</translation>
+<translation id="2960631345291747230">ከሌላ የመጡ መለያዎች በመልሶ ማግኛ ሐረግዎ አልተቀመጡም። ከBrave Wallet ይወገዳሉ፣ እና የግል ቁልፎቻቸውን ካላስቀመጡ በስተቀር ገንዘባቸውን ለዘለቄታው ሊያጡ ይችላሉ።</translation>
+<translation id="8898583604592472741">መለያዎችን ያስወግዱ</translation>
+<translation id="1577629163207045190">ለማረጋገጥ "<ph name="CONFIRMATION_PHRASE"/>" ብለው ይተይቡ።</translation>
 <translation id="8107437138787377150">የመልሶ ማግኛ ሐረግን ከቅንጥብ ሰሌዳ ይለጥፉ</translation>
 <translation id="4811736040444856406">የመልሶ ማግኛ ደረጃ ያሳዩ</translation>
 <translation id="4359319875297001084">ከነባር Brave Crypto wallets ይምጡ?</translation>
@@ -2240,13 +2245,12 @@
 <translation id="3934503473603661122">ሰላም ፣ እኔ ሊዮ ነኝ። እኔ የ Brave የ AI ረዳት ነኝ። በ Grok 4.7 እገዛ ነኝ የሚሰራው፣ የ xAI ዘመናዊ የማሰብ ሞዴል በ Amazon Bedrock ላይ። Grok 4.7 በ Brave አስተማማኝ የ AWS መሠረተ ልማት በኩል ይቀርባል።<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">ሰላም ፣ እኔ ሊዮ ነኝ። እኔ የ Brave የ AI ረዳት ነኝ። በ GPT Luna እገዛ ነኝ የሚሰራው፣ የ OpenAI ፈጣንና አነስተኛ ዘገምተኝነት ያለው ሞዴል በ Amazon Bedrock ላይ። GPT Luna በ Brave አስተማማኝ የ AWS መሠረተ ልማት በኩል ይቀርባል።<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">ሰላም ፣ እኔ ሊዮ ነኝ። እኔ የ Brave የ AI ረዳት ነኝ። በ GPT 5.6 Terra እገዛ ነኝ የሚሰራው፣ የ OpenAI ሚዛናዊ የምርት ሞዴል በ Amazon Bedrock Mantle ላይ። GPT 5.6 Terra በ Brave አስተማማኝ የ AWS መሠረተ ልማት በኩል ይቀርባል።<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">ሰላም ፣ እኔ ሊዮ ነኝ ። እኔ የአእምሮ ማስተማር ባህሪ የባልደረሰበት ብሬቭ ነኝ ። በMistral ተፈጥሮ ብዙ ችሎታዎችን ለመከናወን እጅግ የተሟላ እና አስተገባባቂ የሆነ Mistral Large ሞዴል ተጠቃሚ ነኝ። Mistral Large በራሳችን ደህንነታዊ መረብ እያለ በBrave ይጠቀማል።<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">ሰላም ፣ እኔ ሊዮ ነኝ ። እኔ የአእምሮ ማስተማር ባህሪ የባልደረሰበት ብሬቭ ነኝ ። በClaude Haiku ታውቆ በአንድ ልማድ እና በጽሁፍ ማስማር ተግባር እንዲሁም እንዲሁም በብቸኝነት እንዲሁም በፍላጎት እኛ ጊዜ እያደርገው አሥክ ነኝ ። <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">ሰላም ፣ እኔ ሊዮ ነኝ። እኔ የ Brave የ AI ረዳት ነኝ። በ Qwen 3.8 Flash Next እገዛ ነኝ የሚሰራው፣ በ Alibaba Cloud የተፈጠረ ሞዴል ሆኖ ለብዙ ጉዳዮች ተፈፃሚ እና ውጤታማ ነው። Qwen 3.8 Flash Next በ Brave በራሳችን አስተማማኝ መሠረተ ልማት በኩል ይስተናገዳል።<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">ሰላም ፣ እኔ ሊዮ ነኝ ። እኔ የAI 助手 በBrave ነኝ ። በDeepseek ታውቆ በብዙ ጉዳዮች ላይ ሥራ የሚያደርግ ባህሪ ሞዴል ነበር አሸንፊ የሆነው Deepseek V3.2 Label ነኝ ። Deepseek V3.2 በብቸኝነት በFbrave ጊዜ <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">ሰላም፣ እኔ ሊዮ ነኝ። በBrave የተሰራ የAI ረዳት ነኝ። በZ.ai የተፈጠረ፣ ጥሩ አፈጻጸም ያለውና ለብዙ አጠቃቀሞች የሚሆን ሞዴል በሆነው GLM 5.3 የተጎላበትኩ ነኝ። GLM 5.3 በራሳችን ደህንነቱ በተጠበቀ መሠረተ ልማት በBrave ይስተናገዳል።<ph name="LINK_BEFORE"/>ተጨማሪ ይወቁ<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">ሰላም ፣ እኔ ሊዮ ነኝ ። እኔ የአእምሮ ማስተማር ባህሪ የባልደረሰበት ብሬቭ ነኝ ። በClaude Opus ተፈጥሮ ፍቺ ተደርጎ ሚና እና ከጽሁፍ ከመረጃ እንዲሁም የንግግር ጉዳዮችን ማስተናገድ የሚችል ሞዴል ነው። Claude Opus በBrave በራሱ የሥራ መረብ እና ተመልከት ያለው ነው።<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">ሰላም ፣ እኔ ሊዮ ነኝ ። እኔ የአእምሮ ማስተማር ባህሪ የባልደረሰበት ብሬቭ ነኝ ። በMeta ታውቆ በብዙ ጉዳዮች ላይ ሥራ የሚያደርግ ባህሪ ሞዴል ነበር አሸንፊ የሆነው Llama  3.1 8B Label ነኝ ። Llama በብቸኝነት በፍላጎት እኛ ጊዜ <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">ሰላም ፣ እኔ ሊዮ ነኝ ። እኔ የአእምሮ ማስተማር ባህሪ የባልደረሰበት ብሬቭ ነኝ ። በDeepSeek ታውቆ በብዙ ጉዳዮች ላይ ሥራ የሚያደርግ ባህሪ ሞዴል ነበር አሸንፊ የሆነው DeepSeek R1 Label ነኝ ። DeepSeek በብቸኝነት በፍላጎት እኛ ጊዜ <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">ሰላም ፣ እኔ ሊዮ ነኝ ። እኔ የBrave አኤ አገዝ ነኝ ። በNVIDIA የተፈጠረ ፣ አፈጻጸም ያለው እና ለብዙ ጉዳዮች ተግባራዊ የሚሆን ሞዴል በሆነው Nemotron Nano 3 30B እሰራለሁ ። Nemotron Nano 3 30B በራሳችን ደህንነታዊ መሠረተ ልማት በኩል Brave-ተስተናጋጅ ነው ።<ph name="LINK_BEFORE"/>ተጨማሪ ይወቁ<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">ሰላም ፣ እኔ ሊዮ ነኝ ። እኔ የአእምሮ ማስተማር ባህሪ የባልደረሰበት ብሬቭ ነኝ ። በBrave ታውቆ ድረ-ገጾች ለማጠቃለል የተሰራ ባህሪ ሞዴል ነበር አሸንፊ የሆነው Brave Ocelot Label ነኝ ። Brave Ocelot በብቸኝነት በፍላጎት እኛ ጊዜ <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">አካባቢ</translation>
@@ -2386,9 +2390,9 @@
 <translation id="7465032796278724624">በNEAR AI TEE ወይ ተረጋግጠው የግል</translation>
 <translation id="8782867266498869301">ሞዴሉ ስለምልክት ተርጂውን እንዲጠብቅ ተቀይሯል።</translation>
 <translation id="7348809809749151120">ፈጣን • ፍለጋ</translation>
+<translation id="7711013627639951065">ፈጣን • ፍለጋ • እይታ • መሳሪያዎች</translation>
 <translation id="3213834013136637671">ፍለጋ • እይታ</translation>
-<translation id="2793458212460902934">ፈጣን • ፍለጋ • መሳሪያዎች</translation>
-<translation id="5276681919620506371">ፈጣን • ፍለጋ • መሳሪያዎች</translation>
+<translation id="5276681919620506371">ፍለጋ • መሳሪያዎች</translation>
 <translation id="7434375176361995333">ማጠቃለሎች • ፈጣን</translation>
 <translation id="3965507912994218570">Leo ቅንብሮች</translation>
 <translation id="3754337604877048671">Leo AI እንደ አዲስ ያቀርቡት</translation>
@@ -2460,6 +2464,8 @@
 <translation id="6287023598025162715">አዲስ ውይይት</translation>
 <translation id="7230502562132448519">ውይይቶችን ይጣሙ</translation>
 <translation id="821070843380699990">እባክዎን ሌላ ፍለጋ ይሞክሩ</translation>
+<translation id="241415280196701326">የቅርብ ጊዜ የስራ ቦታዎች</translation>
+<translation id="5388053981690151266">በዚህ የስራ ቦታ ውስጥ አዲስ ውይይት</translation>
 <translation id="7097822247923237815">ጊዜያዊ ውይይት</translation>
 <translation id="7481750859362986254">ይህ ውይይት በታሪክዎ ውስጥ አይቀርም ወይም በኩርክሮ ከፈጥመት ወይም ዅቅ በጣሪከ እንዲሁ አይገለምጥም።</translation>
 <translation id="4238305333951712482">የትውልድ ማሻሻያ: <ph name="MEMORY_CONTENT"/></translation>
@@ -2485,6 +2491,7 @@
 <translation id="5103625298494362646">የተለያዩ መሳሪያዎችን የሚደግፉ ሞዴሎች ከሆኑ ብቻ የAgent ሁነኛ ስር ይሰራል። የማይገባው ሞዴሎች ከዚሁ ዝርዝር ይሰወራሉ።</translation>
 <translation id="3397808797783614750">ለእርስዎ በራስዎ በራስዎ የሚፈፀሙ ንግዶችን በራስዎ መቃኘት ለቀደመው መተያየቢያ፣ ለውስጥ መረብ፣ እና ለመስመራዊ ውይይቶች የተከሰተ አደጋ፣ ያልተጋለጡ ወይም ያልተቃወመ ተጽእኖ ሊኖርቦት ይችላል። <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">የደህንነት ማስጠንቀቂያ</translation>
+<translation id="717245811623757038">የመሳሪያ ፈቃድ ጥያቄ</translation>
 <translation id="6077070599873946984">የBrave አእምሮ ማስተማሪ ለ: <ph name="TOOL_LABEL"/> ፈቃድዎን ይፈልጋል</translation>
 <translation id="908175046303050847">Brave AI በ **<ph name="SITE_ORIGIN"/>** ላይ **<ph name="TOOL_NAME"/>** ማስፈጸም ይፈልጋል</translation>
 <translation id="4163837693685963037">ይከናወነ የነበረው ተግባር ከተፈለገው ጥያቄዎ ጋር ምናልባት ሊልማድ ይችላል፡፡</translation>

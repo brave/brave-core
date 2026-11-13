@@ -181,9 +181,7 @@
 <translation id="2710883118091822664">Ingia katika akaunti ili uendelee kwa urahisi kwenye vifaa vyako vyote</translation>
 <translation id="2713106313042589954">Zima kamera</translation>
 <translation id="2717722538473713889">Anwani za barua pepe</translation>
-<translation id="8181634240306014548">Fungua Brave huku Sanduku kuu likiwa limeangaziwa, hivyo kupunguza muda wa kuwasha vifaa vya uwezo wa chini.</translation>
 <translation id="2750481671343847896">Tovuti inaweza kuonyesha vidokezo vya kuingia katika akaunti kutoka kwa huduma za utambulisho.</translation>
-<translation id="2787357173144933081">Anzisha Sanduku kuu</translation>
 <translation id="2789132527330338807">Tovuti zinaweza kuomba kutayarisha ramani ya 3D ya mazingira yako au kufuatilia mkao wa kamera</translation>
 <translation id="2790501146643349491">Kikiwashwa, tovuti zilizofungwa hivi karibuni zinaweza kumaliza kutuma na kupokea data. Kikizimwa, tovuti zilizofungwa hivi karibuni haziwezi kumaliza kutuma au kupokea data.</translation>
 <translation id="2795716239552913152">Tovuti hutumia maelezo ya mahali ulipo kwa ajili ya vipengele au taarifa zinazohusiana, kama vile habari za mahali ulipo au maduka yaliyo karibu nawe</translation>
@@ -291,7 +289,6 @@
 <translation id="9046306654872718870">Badilisha Brave upendavyo kwa kuweka mtindo wa rangi na picha maalum kwenye ukurasa wa kwanza</translation>
 <translation id="389521680295183045">Tovuti zinaweza kuomba ruhusa ya kujua wakati unatumia kifaa chako</translation>
 <translation id="3895926599014793903">Lazimisha kuwasha ukuzaji</translation>
-<translation id="3905475044299942653">Komesha arifa nyingi</translation>
 <translation id="3922092564198021702">Kwenye simu yako, fungua Mipangilio</translation>
 <translation id="3924858949939391676">Onyesha viungo baada ya kuwasha Hali ya Kusoma</translation>
 <translation id="3933121352599513978">Kunja maombi yasiyotakikana (inapendekezwa)</translation>
@@ -385,7 +382,6 @@
 <translation id="4936863036653376783">Utavipata vikundi vyako katika sehemu ya vikundi vya vichupo kwenye vifaa vyako vyote</translation>
 <translation id="4945443401464700059"><ph name="SITE"/> imezuiwa isitumie taarifa zako kwenye</translation>
 <translation id="4953688446973710931">Kikiwashwa, tovuti zinaweza kuomba ruhusa ya kupakua faili nyingi kiotomatiki. Kikizimwa, tovuti haziwezi kupakua faili nyingi kiotomatiki.</translation>
-<translation id="4962975101802056554">Batilisha ruhusa zote za kifaa</translation>
 <translation id="4972737347717125191">Tovuti zinaweza kuomba ruhusa ya kutumia data na vifaa vya uhalisia pepe</translation>
 <translation id="1275242979020712923">Safu ya chini ya Rangi za Brave</translation>
 <translation id="497421865427891073">Nenda mbele</translation>
@@ -525,6 +521,7 @@
 <translation id="6439114592976064011">Zuia tovuti zisitumie data na vifaa vyako vya uhalisia pepe</translation>
 <translation id="6447842834002726250">Vidakuzi</translation>
 <translation id="6452138246455930388">Punguzo la bei kwenye kichupo chako kilichofunguliwa, kutoka <ph name="OLD_PRICE"/> hadi <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
+<translation id="6495608040096939405">Batilisha ruhusa ya kifaa ya <ph name="NAME"/></translation>
 <translation id="6500423977866688905">Iwapo dirisha ni nyembamba, omba mwonekano wa kifaa cha mkononi</translation>
 <translation id="6527303717912515753">Shiriki</translation>
 <translation id="6530703012083415527">Kikiwashwa, tovuti zinaweza kutumia madirisha ibukizi na viungo vya kuelekeza kwingine. Kikizimwa, tovuti haziwezi kutumia madirisha ibukizi na viungo vya kuelekeza kwingine.</translation>
@@ -590,6 +587,7 @@
 <translation id="7188508872042490670">Data ya tovuti kwenye kifaa</translation>
 <translation id="7201549776650881587">Kitendo hiki kitafuta data na vidakuzi vyote vilivyohifadhiwa na tovuti zote zinazosimamiwa na <ph name="ORIGIN"/> au na programu yake kwenye Skrini yako ya kwanza</translation>
 <translation id="7219254577985949841">Je, ungependa kufuta data ya tovuti?</translation>
+<translation id="7225256190577194089">Batilisha ruhusa zote za kifaa cha <ph name="DEVICE_NAME"/></translation>
 <translation id="723171743924126238">Chagua picha</translation>
 <translation id="7243246278722455312">Badilisha upendavyo safu ya chini ya ukurasa wako mpya wa kichupo</translation>
 <translation id="7243308994586599757">Chaguo zinapatikana karibu na sehemu ya chini ya skrini</translation>
@@ -702,7 +700,6 @@ Ulinzi wa Hali ya Juu hudhibiti mipangilio hii ya Brave:</translation>
 <translation id="8428213095426709021">Mipangilio</translation>
 <translation id="8441146129660941386">Peleka nyuma</translation>
 <translation id="8444433999583714703">Ili uruhusu <ph name="APP_NAME"/> ifikie data ya mahali ulipo, washa pia huduma ya mahali katika <ph name="BEGIN_LINK"/>Mipangilio ya Android<ph name="END_LINK"/>.</translation>
-<translation id="8447861592752582886">Batilisha ruhusa ya kifaa</translation>
 <translation id="8463843545738141778">Mipangilio hii imezimwa kwa sababu umewasha Ulinzi wa Hali ya Juu kwenye Mipangilio ya Android.</translation>
 <translation id="8467359479529706065">Umefungua safu ya chini ya mwonekano wa ukurasa wa kichupo kipya katika skrini nusu</translation>
 <translation id="8471525937465764768">Tovuti huunganisha kwenye vifaa vya USB kwa ajili ya vipengele kama vile kuchapisha hati au kuweka faili kwenye kifaa cha kuhifadhi</translation>

@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 లేదా <ph name="SETTINGS_EXTENIONS_LINK"/> ఇంకా మార్పులు చేయండ.</translation>
 <translation id="6229752134959014186">Widevine గురించి మరింత తెలుసుకోండి</translation>
+<translation id="3318169548229684688">ఈ పరికరంలో ప్రసంగాన్ని ప్రాసెస్ చేయడానికి స్పీచ్ రికగ్నిషన్ మోడల్‌ను (<ph name="DOWNLOAD_SIZE"/>) డౌన్‌లోడ్ చేయడం</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> మీకు అడుగుతోంది</translation>
 <translation id="3218385319396786393">ఈ పేజీలో ఆటోప్లే నిరోధించబడింది</translation>
 <translation id="4988333904713528597">ఎల్లప్పుడూ ఆటోప్లేను అన్‌బ్లాక్ చేయండి <ph name="HOST"/></translation>
@@ -610,6 +611,8 @@
 <translation id="3540231253392253941">పుష్ సందేశాల కోసం Google సేవలను ఉపయోగించండి</translation>
 <translation id="2224032129673914306">సెమాంటిక్ హిస్టరీ సెర్చ్</translation>
 <translation id="6045998903985162478">మీరు సందర్శించే పేజీలను ఇండెక్స్ చేయండి, తద్వారా మీరు వాటిని హిస్టరీ, తెరిచిన ట్యాబ్‌లు మరియు Leoలో సులభంగా కనుగొనవచ్చు.</translation>
+<translation id="3962946446120925966">పరికరంలో స్పీచ్ రికగ్నిషన్</translation>
+<translation id="6408242130028978631">సైట్‌లు ఈ పరికరంలోనే స్పీచ్‌ను ప్రాసెస్ చేయడానికి వీలుగా స్పీచ్ రికగ్నిషన్ మోడల్‌ను (<ph name="DOWNLOAD_SIZE"/>) డౌన్‌లోడ్ చేయండి. మోడల్‌ను తీసివేయడానికి దీన్ని ఆఫ్ చేయండి.</translation>
 <translation id="5813105074916486721">స్థానిక హిస్టరీ నిలుపుదల</translation>
 <translation id="5671611745062206644">Brave మీ బ్రౌజింగ్ హిస్టరీని స్థానికంగా ఎంతకాలం నిల్వ చేస్తుంది</translation>
 <translation id="7184510058087008090">1 రోజు</translation>

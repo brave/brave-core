@@ -6,7 +6,6 @@
 <translation id="1014083013111769343">ค่ากำหนดโหมดการอ่านเปิดอยู่แบบเต็มความสูง</translation>
 <translation id="1014147525163127655">ไม่มีพาสคีย์สำหรับ <ph name="ORIGIN"/> บนอุปกรณ์นี้</translation>
 <translation id="1016498331642356377">ค้นหาด้วยเสียงอย่างรวดเร็ว หากต้องการแก้ไขทางลัดนี้ ให้แตะค้างไว้</translation>
-<translation id="1028699632127661925">กำลังส่งไปที่ <ph name="DEVICE_NAME"/>...</translation>
 <translation id="103269572468856066">ล้างข้อมูลเว็บไซต์และแอปเหล่านี้ด้วยไหม</translation>
 <translation id="1035113036584565771">ปิดการโปรโมตการแจ้งเตือนเคล็ดลับแล้ว</translation>
 <translation id="1036348656032585052">ปิด</translation>
@@ -48,6 +47,7 @@
 <translation id="1165109137568919258">ถ่ายรูปหรือเพิ่มรูปภาพจากแกลเลอรีรูปภาพเพื่อค้นหา</translation>
 <translation id="1173894706177603556">เปลี่ยนชื่อ</translation>
 <translation id="7947699437047020219">Brave จะขอเว็บไซต์เวอร์ชันมือถือเมื่อหน้าจอแคบ</translation>
+<translation id="4077881064206141073">ไปที่ Brave</translation>
 <translation id="3336989427111006280">ผู้ดูแลระบบสามารถเปลี่ยนแปลงโปรไฟล์และเบราว์เซอร์จากระยะไกล วิเคราะห์ข้อมูลเกี่ยวกับเบราว์เซอร์ผ่านการรายงาน รวมถึงดำเนินการอื่นๆ ที่จำเป็นได้ กิจกรรมในอุปกรณ์นี้อาจมีการจัดการภายนอก Brave ได้ด้วย</translation>
 <translation id="1177863135347784049">ที่กำหนดเอง</translation>
 <translation id="1181037720776840403">นำออก</translation>
@@ -60,6 +60,7 @@
 <translation id="1197761954713363183">ชีตการยืนยันพาสคีย์ปิดอยู่</translation>
 <translation id="1197933394627598677">แสดงโหมดการอ่าน</translation>
 <translation id="1197935538609051549">ปิดใช้งาน</translation>
+<translation id="119944043368869598">ล้างทั้งหมด</translation>
 <translation id="1201402288615127009">ถัดไป</translation>
 <translation id="1202892408424955784">สินค้าที่ติดตาม</translation>
 <translation id="1204037785786432551">ดาวน์โหลดลิงก์</translation>
@@ -88,7 +89,6 @@
 <translation id="6773423637732432200">อัปเดต Brave ไม่ได้ ตัวเลือกอื่นๆ</translation>
 <translation id="3169981355900570544">แป้นพิมพ์ลัดสำหรับฟีเจอร์ของ Brave</translation>
 <translation id="1333491156693005331">ตรวจสอบเมื่อเร็วๆ นี้</translation>
-<translation id="1336996151357442890">เลิกรับการแจ้งเตือนจาก <ph name="SITE_NAME"/> แล้ว ระบบจะถามคุณอีกครั้งเมื่อเข้าชมครั้งถัดไป</translation>
 <translation id="1340839264183302272">ออกจากกลุ่ม</translation>
 <translation id="873343310451048603">หากต้องการตรวจสอบรหัสผ่านที่ถูกละเมิด ให้ไปที่เครื่องมือจัดการรหัสผ่านบน Brave</translation>
 <translation id="4167284810587724062">ลงชื่อเข้าใช้ Brave</translation>
@@ -96,8 +96,8 @@
 <translation id="1355088659320425659">ประวัติการเข้าชมและแท็บ</translation>
 <translation id="1363028406613469049">ติดตาม</translation>
 <translation id="1366525380420346469">เมื่อเปิด</translation>
-<translation id="1372840539168747818">{NUM_SITES,plural, =1{คุณป้องกันไม่ให้เว็บไซต์นี้ส่งการแจ้งเตือนในอนาคตได้}other{คุณป้องกันไม่ให้เว็บไซต์เหล่านี้ส่งการแจ้งเตือนในอนาคตได้}}</translation>
 <translation id="137496472437646183">เลือก "การปกป้องที่ดียิ่งขึ้น"</translation>
+<translation id="1375217160772234287">เปลี่ยนกลับ</translation>
 <translation id="1376578503827013741">กำลังประมวลผล…</translation>
 <translation id="138181280295369883">ลงชื่อเข้าใช้เพื่อรับข้อมูลที่บันทึกไว้และอื่นๆ ในอุปกรณ์ทุกเครื่อง</translation>
 <translation id="1381838868249179644">ระบบได้นำสิทธิ์ออกจากบางเว็บไซต์เพื่อช่วยให้คุณปลอดภัย</translation>
@@ -149,6 +149,7 @@
 <translation id="1705567146636171298">อัปเดต Brave</translation>
 <translation id="1554352084785952638"><ph name="SEARCH_ENGINE"/> สำหรับ "<ph name="SEARCH_TERMS"/>"</translation>
 <translation id="2509230690562869141">ช่วยปรับปรุง Brave ให้ดีขึ้นสำหรับคนที่ใช้งานในลักษณะเดียวกับคุณ</translation>
+<translation id="1557806604681757705">คอมพิวเตอร์ของคุณ</translation>
 <translation id="1568636008098739136">ฟังหน้านี้ หากต้องการแก้ไขแป้นพิมพ์ลัดนี้ ให้แตะค้างไว้</translation>
 <translation id="1571041387761170095">ไม่มีรหัสผ่านที่ไม่รัดกุมหรือรหัสผ่านที่ใช้ซ้ำ</translation>
 <translation id="1574831985137643109">360°</translation>
@@ -178,7 +179,6 @@
 <translation id="6493900814829428590">คุณจะท่องเว็บและค้นหาได้เร็วขึ้นเมื่อ Brave โหลดหน้าเว็บที่คิดว่าคุณอาจจะเข้าชมไว้ล่วงหน้า</translation>
 <translation id="1732514748744806741">หากรหัสผ่านถูกละเมิด เราจะแจ้งให้คุณทราบ</translation>
 <translation id="2514812079175971391">รับความปลอดภัยที่เข้มงวดที่สุดของ Brave</translation>
-<translation id="1747593111377567311">{NUM_SITES,plural, =1{เว็บไซต์ 1 รายการส่งการแจ้งเตือนจำนวนมากเมื่อเร็วๆ นี้}other{เว็บไซต์ # รายการส่งการแจ้งเตือนจำนวนมากเมื่อเร็วๆ นี้}}</translation>
 <translation id="1749561566933687563">ซิงค์บุ๊กมาร์กของคุณ</translation>
 <translation id="12433225238423439">ใช้รหัสผ่านในบัญชี Brave ต่อไป</translation>
 <translation id="1753744496844366747">Aa</translation>
@@ -243,6 +243,7 @@
 <translation id="1984417487208496350">ไม่มีการปกป้อง (ไม่แนะนำ)</translation>
 <translation id="1986685561493779662">มีชื่อนี้อยู่แล้ว</translation>
 <translation id="1992244793717364584">ถอนการติดตั้งแอปแล้ว</translation>
+<translation id="1999115740519098545">เมื่อเริ่มต้นใช้งาน</translation>
 <translation id="6968892567705775281">รวมข้อความที่อยู่โดยรอบในการค้นหาบน Brave ไหม</translation>
 <translation id="2021896219286479412">ส่วนควบคุมเว็บไซต์แบบเต็มหน้าจอ</translation>
 <translation id="6412450189646164330">รับสิ่งที่ดีที่สุดจาก Gemini จากแถบเครื่องมือ Brave กดค้างเพื่อปรับแต่ง</translation>
@@ -255,7 +256,6 @@
 <translation id="2056878612599315956">เว็บไซต์หยุดชั่วคราว</translation>
 <translation id="2063047797624276601">องค์กรเปิด Google Safe Browsing พร้อมการปกป้องที่ดียิ่งขึ้นไว้</translation>
 <translation id="2065944887543506430">{FILE_COUNT,plural, =1{ดาวน์โหลด 1 รายการไม่สำเร็จ}other{ดาวน์โหลด # รายการไม่สำเร็จ}}</translation>
-<translation id="2066690553719545730">แสดงโหมด AI เสมอ</translation>
 <translation id="2067805253194386918">ข้อความ</translation>
 <translation id="2079545284768500474">เลิกทำ</translation>
 <translation id="2082238445998314030">ผลลัพธ์ <ph name="RESULT_NUMBER"/> จาก <ph name="TOTAL_RESULTS"/> รายการ</translation>
@@ -282,6 +282,7 @@
 <translation id="2172905120685242547">ปิดหน้าต่างใช่ไหม</translation>
 <translation id="2173302385160625112">ตรวจสอบการเชื่อมต่ออินเทอร์เน็ต</translation>
 <translation id="2175927920773552910">คิวอาร์โค้ด</translation>
+<translation id="21762520333561690">ดูแท็บทั้งหมด</translation>
 <translation id="2184272387334793084">ลงชื่อเข้าใช้เพื่อรับรหัสผ่านและอื่นๆ ในอุปกรณ์ทุกเครื่อง</translation>
 <translation id="218608176142494674">การแชร์</translation>
 <translation id="9047236051556228042">คุณเลือกข้อมูลที่จะบันทึกในบัญชี Brave ได้\nนอกจากนี้ คุณยังดูและจัดการรายการเหล่านี้ในบุ๊กมาร์ก เรื่องรออ่าน หรือเครื่องมือจัดการรหัสผ่านได้</translation>
@@ -293,6 +294,7 @@
 <translation id="22091350895006575">เพิ่มชื่อผู้ใช้</translation>
 <translation id="2211043920024403606">ข้อมูลโปรไฟล์</translation>
 <translation id="4075202346699640887">การเปิด Brave โดยไม่ใช้การล็อกโปรไฟล์จะนำรหัสผ่านและวิธีการชำระเงินที่บันทึกไว้ออกจากรถ การใช้การล็อกโปรไฟล์จะช่วยให้ข้อมูลนี้ปลอดภัย</translation>
+<translation id="2220529011494928058">รายงานปัญหา</translation>
 <translation id="2226826835915474236">ทางลัดที่ไม่ได้ใช้งาน</translation>
 <translation id="2227179592712503583">นำคำแนะนำออก</translation>
 <translation id="2227444325776770048">ดำเนินการต่อในชื่อ <ph name="USER_FULL_NAME"/></translation>
@@ -336,7 +338,6 @@
 <translation id="2367818124433749493">ทางลัดสําหรับนักพัฒนาซอฟต์แวร์</translation>
 <translation id="2369058545741334020">เปิดในโหมดการอ่าน</translation>
 <translation id="2235826960717515993">การปกป้องระดับสูงสุดของ Brave จากภัยคุกคามทางออนไลน์</translation>
-<translation id="2385605401818128172">คุณสามารถตรวจสอบเว็บไซต์ที่ส่งการแจ้งเตือนจำนวนมากและหยุดไม่ให้ส่งการแจ้งเตือนอีกในอนาคต</translation>
 <translation id="2386938421315164605">ซ่อนและเลิกซ่อนหัวข้อ</translation>
 <translation id="2390510615457643724">คุณต้องการดาวน์โหลด <ph name="FILE_NAME"/><ph name="FILE_SIZE"/> อีกครั้งใช่ไหม</translation>
 <translation id="2391579633712104609">180°</translation>
@@ -406,6 +407,7 @@
 <translation id="2650348088770008516">ปิดคำอธิบายคู่มือความเป็นส่วนตัวแล้ว</translation>
 <translation id="2650751991977523696">ดาวน์โหลดไฟล์อีกครั้งไหม</translation>
 <translation id="265156376773362237">การโหลดล่วงหน้าแบบมาตรฐาน</translation>
+<translation id="2651797114528729973">Gemini และสิ่งจำเป็นของคุณบนแถบเครื่องมือใหม่</translation>
 <translation id="2656405586795711023">เว็บแอป</translation>
 <translation id="2664252182805397291">ดูเว็บไซต์</translation>
 <translation id="2666092431469916601">ด้านบน</translation>
@@ -434,11 +436,11 @@
 <translation id="1708222144403389505">เปิดการแจ้งเตือนเพื่อรับเคล็ดลับที่เป็นประโยชน์ ซึ่งจะช่วยให้คุณใช้ Brave ได้อย่างเต็มประสิทธิภาพ</translation>
 <translation id="2798977804328097977">ดำเนินการต่อได้อย่างราบรื่นในทุกอุปกรณ์</translation>
 <translation id="2805210243313393104">รับบุ๊กมาร์กและข้อมูลอื่นๆ ในทุกอุปกรณ์</translation>
-<translation id="2819849308549746319">เลิกรับการแจ้งเตือนทั้งหมด</translation>
 <translation id="5702802474992520892">คุณเลือกข้อมูลที่จะบันทึกในบัญชี Brave ซึ่งก็คือ <ph name="ACCOUNT_EMAIL"/> ได้\nนอกจากนี้ คุณยังดูและจัดการรายการเหล่านี้ในบุ๊กมาร์ก เรื่องรออ่าน หรือเครื่องมือจัดการรหัสผ่านได้</translation>
 <translation id="2826576843404243001">สำหรับเว็บไซต์ที่ไม่รองรับการเชื่อมต่อที่ปลอดภัย โปรดรับคำเตือนก่อนเข้าชมเว็บไซต์ คุณเปลี่ยนการตั้งค่านี้ไม่ได้เนื่องจากเปิดใช้การปกป้องขั้นสูงอยู่</translation>
 <translation id="2827278682606527653">Feed card menu half height</translation>
 <translation id="2830783625999891985">ซ่อนเนื้อหาในคลิปบอร์ดแล้ว</translation>
+<translation id="2832220615205666541">รูปลักษณ์ใหม่ที่ช่วยให้เข้าถึงสิ่งจำเป็นได้ง่าย</translation>
 <translation id="9087158967432747643">การตั้งค่า ข้อผิดพลาดของบัญชี Brave</translation>
 <translation id="2838367486340230368">คำอธิบายคู่มือความเป็นส่วนตัวเปิดแบบครึ่งหน้า</translation>
 <translation id="2839604041336226596"><ph name="TAB_TITLE"/>, แท็บที่ปักหมุดซึ่งเลือกไว้หลายแท็บ</translation>
@@ -451,6 +453,7 @@
 <translation id="2876136027428473467"><ph name="CHILD_NAME"/> อยากให้คุณอนุมัติเว็บไซต์นี้</translation>
 <translation id="2876556152483133018">การค้นหาเว็บไซต์</translation>
 <translation id="6756656512757374876">ดูข้อมูลเพิ่มเติมเกี่ยวกับ<ph name="BEGIN_LINK"/>วิธีที่ Brave ช่วยรักษาข้อมูลของคุณให้เป็นส่วนตัว<ph name="END_LINK"/></translation>
+<translation id="2877922074420892347">ขอความช่วยเหลือจาก Gemini เกี่ยวกับสิ่งต่างๆ ในหน้าเว็บ</translation>
 <translation id="2885355868600171871">ข้ามไปยังแถบที่อยู่</translation>
 <translation id="8541922081612557424">เกี่ยวกับ Brave</translation>
 <translation id="2891154217021530873">หยุดการโหลดหน้า</translation>
@@ -535,6 +538,7 @@
 <translation id="3189635831478931757">กลุ่มแท็บ <ph name="GROUP_TITLE"/></translation>
 <translation id="3200536777393523575">ปิดหน้าต่างปัจจุบันใช่ไหม</translation>
 <translation id="3207960819495026254">บุ๊กมาร์กแล้ว</translation>
+<translation id="3208321278970793882">แอป</translation>
 <translation id="3208584281581115441">ตรวจสอบเลย</translation>
 <translation id="3211426585530211793">ลบ <ph name="ITEM_TITLE"/> แล้ว</translation>
 <translation id="3232293466644486101">ลบข้อมูลการท่องเว็บ…</translation>
@@ -586,6 +590,7 @@
 <translation id="7384339501748168186">Brave จะไม่ป้อนรหัสผ่านลงในช่องนี้โดยอัตโนมัติเพื่อปกป้องความเป็นส่วนตัวของคุณ</translation>
 <translation id="3474624961160222204">ดำเนินการต่อในชื่อ <ph name="NAME"/></translation>
 <translation id="3478363558367712427">คุณเลือกเครื่องมือค้นหาได้</translation>
+<translation id="3479552764303398839">ไม่ใช่ตอนนี้</translation>
 <translation id="6165882953768534820">คนอื่นๆ อาจเข้าถึงไฟล์ที่ส่งออกได้ รวมถึงแอปต่างๆ เมื่อส่งออกแล้ว ระบบจะลบรหัสผ่านออกจาก Brave</translation>
 <translation id="3488199663160411179">ชื่อ</translation>
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>ดูข้อมูลเพิ่มเติม<ph name="END_LINK"/>เกี่ยวกับเนื้อหาที่แนะนำ</translation>
@@ -730,7 +735,6 @@
 <translation id="405399507749852140">รับการแจ้งเตือนหากราคาลดลงในเว็บไซต์ใดก็ตาม</translation>
 <translation id="4056223980640387499">ซีเปีย</translation>
 <translation id="4062305924942672200">ข้อมูลทางกฎหมาย</translation>
-<translation id="4070897657850712662">{NUM_SITES,plural, =1{การแจ้งเตือนประมาณ 1 ครั้งต่อวัน}other{การแจ้งเตือนประมาณ # ครั้งต่อวัน}}</translation>
 <translation id="4072805772816336153">ลองอีกครั้งภายหลัง</translation>
 <translation id="4084682180776658562">บุ๊กมาร์ก</translation>
 <translation id="4521874409998847950">จาก <ph name="PUBLISHER_ORIGIN"/> - <ph name="BEGIN_DEEMPHASIZED"/>แสดงโดย Brave<ph name="END_DEEMPHASIZED"/></translation>
@@ -740,6 +744,7 @@
 <translation id="2967753255515860650">องค์กรของคุณจะดูหรือจัดการข้อมูลบางอย่างได้เพื่อรักษาความปลอดภัยให้กับการทำงานของคุณใน Brave เมื่อคุณลงชื่อเข้าใช้ Brave</translation>
 <translation id="1523634703470981382">การอัปเดตเครื่องมือจัดการรหัสผ่านบน Brave เปิดอยู่</translation>
 <translation id="4107207375883769436">องค์กรของคุณอาจต้องดูและจัดการข้อมูลการท่องเว็บในโปรไฟล์งาน เช่น ประวัติการท่องเว็บและรหัสผ่าน</translation>
+<translation id="1773869214902782076">ความยินยอมในการเชื่อมต่อ Brave Workspace กับบริการ Search</translation>
 <translation id="4113030288477039509">มีการจัดการโดยผู้ดูแลระบบ</translation>
 <translation id="4116038641877404294">ดาวน์โหลดหน้าเพื่อใช้งานแบบออฟไลน์</translation>
 <translation id="37459938731864814">คุณไม่ต้องจำรหัสผ่านนี้ เพราะระบบจะบันทึกไว้ในเครื่องมือจัดการรหัสผ่านบน Brave สำหรับ <ph name="USERNAME"/></translation>
@@ -748,6 +753,7 @@
 <translation id="4137746084635924146">ภาษาปัจจุบันของอุปกรณ์</translation>
 <translation id="414128724510021958">เว็บไซต์เวอร์ชันเดสก์ท็อปเปิดใช้งานโดยค่าเริ่มต้น</translation>
 <translation id="4150837143272125910">ดาวน์โหลดอัปเดตแล้ว</translation>
+<translation id="1420403815227361031">แสดงตัวอย่างรูปลักษณ์ใหม่ของ Brave ที่สร้างขึ้นเพื่อความสะดวก</translation>
 <translation id="4162867837470729563">รายการตัวเลือกการแชร์ที่ระดับเต็มความสูงของหน้าจอ</translation>
 <translation id="4164642020717536140">ท่องเว็บอย่างรวดเร็วและปลอดภัย</translation>
 <translation id="4165077084524712774">เครื่องมืออื่นๆ</translation>
@@ -763,6 +769,7 @@
 <translation id="4188638484665452040">เลิกปักหมุด Gemini แล้ว</translation>
 <translation id="6423270958351890725">{NUM_REVOKED_PERMISSIONS,plural, =1{Brave หยุดไม่ให้เว็บไซต์นี้ส่งการแจ้งเตือนเนื่องจากมีเนื้อหาสแปมหรือเนื้อหาหลอกลวง}other{Brave หยุดไม่ให้เว็บไซต์เหล่านี้ส่งการแจ้งเตือนเนื่องจากมีเนื้อหาสแปมหรือเนื้อหาหลอกลวง}}</translation>
 <translation id="4195643157523330669">เปิดในแท็บใหม่</translation>
+<translation id="4195814663415092787">ดำเนินการต่อจากที่ค้างอยู่</translation>
 <translation id="4197828496439691735">{NUM_TABS,plural, =1{1 แท็บในอุปกรณ์นี้}other{# แท็บในอุปกรณ์นี้}}</translation>
 <translation id="4198268995694216131">เว็บไซต์เพิ่มเติม</translation>
 <translation id="4198423547019359126">ไม่มีตำแหน่งการดาวน์โหลดที่ใช้ได้</translation>
@@ -771,8 +778,8 @@
 <translation id="421517251707893998">แตะปักหมุดทางลัดนี้</translation>
 <translation id="421590277191613555"><ph name="GROUP_DESCRIPTION"/> - <ph name="COLLAPSED_STATE"/></translation>
 <translation id="4216511743389425832">ฟังหน้านี้</translation>
+<translation id="421881184879612737">คุณปรับแต่งหน้าแรกได้ใน<ph name="BEGIN_LINK"/>การตั้งค่า<ph name="END_LINK"/> หากไม่ได้ตั้งค่าไว้ ระบบจะใช้หน้าแท็บใหม่เป็นค่าเริ่มต้น</translation>
 <translation id="4225895483398857530">ทางลัดแถบเครื่องมือ</translation>
-<translation id="4232376164796433044">รหัสผ่านและป้อนข้อความอัตโนมัติ</translation>
 <translation id="4242533952199664413">เปิดการตั้งค่า</translation>
 <translation id="7445061995866044926">ต้องการออกจากระบบ Brave ไหม</translation>
 <translation id="425582637250725228">ระบบอาจไม่ได้บันทึกการเปลี่ยนแปลงของคุณ</translation>
@@ -860,6 +867,7 @@
 <translation id="4578289292431526768">เริ่มเลย</translation>
 <translation id="4583164079174244168">{MINUTES,plural, =1{# นาทีที่ผ่านมา}other{# นาทีที่ผ่านมา}}</translation>
 <translation id="4585751637295612750">เปิดแท็บใหม่เพื่อเพิ่มลงในคำถาม</translation>
+<translation id="4585793705637313973">แก้ไขหน้า</translation>
 <translation id="4587589328781138893">เว็บไซต์</translation>
 <translation id="4594952190837476234">หน้าเว็บออฟไลน์นี้สร้างเมื่อวันที่ <ph name="CREATION_TIME"/> และอาจแตกต่างไปจากเวอร์ชันออนไลน์</translation>
 <translation id="4595237294768457124">เปิดหน้าแท็บใหม่</translation>
@@ -925,7 +933,9 @@
 <translation id="4807098396393229769">ชื่อบนบัตร</translation>
 <translation id="2417506209221736982">ลงชื่อเข้าใช้เว็บไซต์นี้และ Brave เพื่อรับข้อมูลที่บันทึกไว้และอื่นๆ ในอุปกรณ์ทุกเครื่อง</translation>
 <translation id="480990236307250886">เปิดหน้าแรก</translation>
+<translation id="4812684235631257312">โฮสต์</translation>
 <translation id="4816492930507672669">พอดีกับหน้า</translation>
+<translation id="4819558594335204796">เปิดหน้าแรก</translation>
 <translation id="4822710610088666676">ปิดและบันทึกกลุ่มแท็บ "<ph name="TAB_GROUP_TITLE"/>" แล้ว</translation>
 <translation id="2593289874938379417">Brave ไม่มีสิทธิ์เข้าถึงทรัพยากรที่ขอ</translation>
 <translation id="483742037940503070">{TAB_COUNT,plural, =1{คืนค่ากลุ่มแท็บ <ph name="TAB_COUNT_ONE"/> แท็บ สี<ph name="COLOR_NAME"/>เป็นกลุ่มแท็บใหม่ในเบื้องหลัง}other{คืนค่ากลุ่มแท็บ <ph name="TAB_COUNT_MANY"/> แท็บ สี<ph name="COLOR_NAME"/>เป็นกลุ่มแท็บใหม่ในเบื้องหลัง}}</translation>
@@ -1034,7 +1044,6 @@
 <translation id="5284295735376057059">คุณสมบัติของเอกสาร</translation>
 <translation id="5286907366254680517">ตรวจพบ</translation>
 <translation id="5290322819358431297">ป้อนรหัสผ่านของคุณโดยอัตโนมัติ</translation>
-<translation id="5292796745632149097">ส่งไปที่</translation>
 <translation id="1078957913029848404">คุณลงชื่อเข้าใช้ด้วย <ph name="EMAIL"/> คุณหยุดการซิงค์ได้ทุกเมื่อในการตั้งค่า Brave อาจปรับเปลี่ยน Search และบริการอื่นๆ ให้เหมาะกับคุณโดยอิงจากประวัติการเข้าชม</translation>
 <translation id="5304593522240415983">ต้องกรอกข้อมูลในช่องนี้</translation>
 <translation id="5306014156308790439">"เพิ่มไปยังคอลเลกชัน" ปิดใช้อยู่</translation>
@@ -1052,9 +1061,9 @@
 <translation id="5355191726083956201">การปกป้องที่ปรับปรุงแล้วเปิดอยู่</translation>
 <translation id="5375374982898812658">คุณจะเสียสิทธิ์เข้าถึงกลุ่มแท็บ "<ph name="GROUP_NAME"/>" ทันที และระบบจะลบกลุ่มออกจากอุปกรณ์ของคุณทุกเครื่อง</translation>
 <translation id="537865165090710757">บันทึกและแชร์</translation>
-<translation id="5385892579392932755">แล็ปท็อปของคุณ</translation>
 <translation id="5390367025924544771"><ph name="WEBSITE_ORIGIN"/> ต้องการใช้ข้อมูลส่วนบุคคลจากกระเป๋าเงินดิจิทัล ดำเนินการต่อในกรณีที่คุณเชื่อถือเว็บไซต์นี้เท่านั้น เว็บไซต์อันตรายอาจหลอกล่อให้คุณเปิดเผยข้อมูล เช่น ชื่อตามกฎหมายหรือหมายเลขบัตรประจำตัว</translation>
 <translation id="4799771635362945886">ตรวจสอบว่าคุณใช้ข้อมูล Brave ในบัญชี Brave ได้เสมอ</translation>
+<translation id="5397794290049113714">คุณ</translation>
 <translation id="539881862970320163">แนะนำรหัสผ่านที่รัดกุมแล้ว แป้นพิมพ์ซ่อนอยู่</translation>
 <translation id="5404274604891474619">แก้ไข PDF ไม่ได้</translation>
 <translation id="5409881200985013443">ส่ง <ph name="ONE_TIME_CODE"/> ใน <ph name="CLIENT_NAME"/> ไหม</translation>
@@ -1097,6 +1106,7 @@
 <translation id="5568069709869097550">ไม่สามารถลงชื่อเข้าใช้</translation>
 <translation id="557018954714092179">สร้างโฟลเดอร์ใหม่</translation>
 <translation id="5578795271662203820">ค้นหาภาพนี้ใน <ph name="SEARCH_ENGINE"/></translation>
+<translation id="558563010977877295">เปิดหน้าที่เฉพาะเจาะจงหรือชุดของหน้า</translation>
 <translation id="5596627076506792578">ตัวเลือกเพิ่มเติม</translation>
 <translation id="6894318537270274409">หากต้องการการตั้งค่าเพิ่มเติมที่ใช้ข้อมูลเพื่อปรับปรุงประสบการณ์การใช้งาน Brave ให้ไปที่<ph name="BEGIN_LINK"/>บริการของ Brave<ph name="END_LINK"/></translation>
 <translation id="5601924940067278327">รับแท็บและข้อมูลอื่นๆ ในอุปกรณ์ทุกเครื่อง</translation>
@@ -1126,6 +1136,7 @@
 <translation id="5715150588940290235">ลบรหัสความปลอดภัยที่บันทึกไว้ใช่ไหม</translation>
 <translation id="572328651809341494">แท็บล่าสุด</translation>
 <translation id="2628630689312565278">บริการของ Brave ที่ลิงก์ไว้</translation>
+<translation id="5733447028358645932">ผู้ที่เรียกดู</translation>
 <translation id="5744751019568455640">นี่คือเสียงที่คุณเลือกใช้ในการอ่านหน้าเว็บได้ หากชอบเสียงนี้และต้องการใช้ต่อ ก็เพียงแตะที่ชื่อของเสียง</translation>
 <translation id="574845902699630049">แชร์ในชื่อ <ph name="OWNER_FULL_NAME"/></translation>
 <translation id="3088191967551450609">Brave ต้องมีสิทธิ์เข้าถึงพื้นที่เก็บข้อมูลเพื่อดาวน์โหลดไฟล์</translation>
@@ -1228,14 +1239,12 @@
 <translation id="6140948187512243695">แสดงรายละเอียด</translation>
 <translation id="6142183503755612900">คุณเปลี่ยนค่าเริ่มต้นได้ทุกเมื่อในการตั้งค่า</translation>
 <translation id="6146563240635539929">วิดีโอ</translation>
-<translation id="614890671148262506">อนุญาตการแจ้งเตือนจากเว็บไซต์นี้เสมอ</translation>
 <translation id="6150320133806434356">บันทึกบุ๊กมาร์กแล้ว</translation>
 <translation id="1224606669200461217">โปรดอัปเดต Brave เพื่อใช้และบันทึกข้อมูล Brave ในบัญชี Brave</translation>
 <translation id="6154478581116148741">เปิดล็อกหน้าจอใน "การตั้งค่า" เพื่อส่งออกรหัสผ่านจากอุปกรณ์นี้</translation>
 <translation id="6156323911414505561">แสดงแถบบุ๊กมาร์ก</translation>
 <translation id="7087658909840709934">โหลดหน้าที่ Brave คิดว่าคุณอาจจะเข้าชมไว้ล่วงหน้า</translation>
 <translation id="6165508094623778733">ดูข้อมูลเพิ่มเติม</translation>
-<translation id="6170675927290506430">ไปที่การตั้งค่าการแจ้งเตือน</translation>
 <translation id="6186394685773237175">ไม่พบรหัสผ่านที่ไม่รัดกุม</translation>
 <translation id="6192907950379606605">รับคำอธิบายรูปภาพ</translation>
 <translation id="6193448654517602979">เลือกแท็บ</translation>
@@ -1253,10 +1262,12 @@
 <translation id="6246073558347462570">หน้าต่างป๊อปอัปบริบท</translation>
 <translation id="8883879481897424949">เครื่องมือจัดการรหัสผ่านบน Brave</translation>
 <translation id="6248988683584659830">ค้นหาการตั้งค่า</translation>
+<translation id="6250046936554288508">ทางลัดโหมด AI</translation>
 <translation id="2715956954609894918">ดูประวัติการเข้าชมใน Brave ที่นี่</translation>
 <translation id="6254139308321626268">คุณกำลังดูไฟล์ PDF</translation>
 <translation id="725280687245147974">เครื่องมือจาก Brave ช่วยให้คุณท่องเว็บได้อย่างปลอดภัยและควบคุมได้ตามต้องการ</translation>
 <translation id="6259107733340311168">Bottom Sheet ข้อจำกัดความรับผิดเกี่ยวกับสัญญาณ Enterprise เปิดอยู่แบบเต็มความสูง</translation>
+<translation id="6259539576554609209">สิ่งจำเป็นของคุณอยู่บนแถบเครื่องมือ คุณเปลี่ยนกลับได้ทุกเมื่อใน<ph name="BEGIN_LINK"/>การตั้งค่า<ph name="END_LINK"/></translation>
 <translation id="6260260490042862943">ตัวควบคุมเว็บไซต์</translation>
 <translation id="6264376385120300461">ดาวน์โหลดต่อไป</translation>
 <translation id="6264485186158353794">กลับสู่ความปลอดภัย</translation>
@@ -1385,6 +1396,7 @@
 <translation id="671481426037969117">ตัวจับเวลา <ph name="FQDN"/> หมดเวลาแล้ว และจะเริ่มอีกครั้งพรุ่งนี้</translation>
 <translation id="6716434912087331834">หากต้องการคืนค่าหน้าต่างใหม่ ให้ลดจำนวนหน้าต่างที่ใช้งานอยู่ทั้งหมดเหลือ <ph name="MAX_WINDOW_COUNT_MINUS_ONE"/> รายการหรือน้อยกว่านั้น ระบบจะลบหน้าต่างที่ไม่ได้ใช้งานออกหลังจาก 6 เดือน</translation>
 <translation id="7499197548870160669">ในบัญชี Brave</translation>
+<translation id="6725340821578440069">กรองตามอุปกรณ์</translation>
 <translation id="6734310707649923383">คุณดูหน้าเว็บที่เคยเข้าชมหรือลบหน้าเว็บดังกล่าวออกจากประวัติการเข้าชมได้</translation>
 <translation id="6738867403308150051">กำลังดาวน์โหลด…</translation>
 <translation id="6745063744988317486">Mono</translation>
@@ -1402,7 +1414,6 @@
 <translation id="679845623837196966">แสดงเรื่องรออ่าน</translation>
 <translation id="679956319013005046">หากต้องการตั้งค่าบริการที่ต้องการสำหรับการป้อนข้อความอัตโนมัติ ให้เพิ่มบริการนั้นใน<ph name="BEGIN_LINK"/>การตั้งค่า Android<ph name="END_LINK"/> ก่อน</translation>
 <translation id="6802555630140434547">ระบบจะปิดหน้าต่างดังกล่าว</translation>
-<translation id="6803791793483522764">ตรวจสอบการแจ้งเตือน</translation>
 <translation id="6811034713472274749">พร้อมดูหน้าเว็บแล้ว</translation>
 <translation id="6813359536773993594">{FILE_COUNT,plural, =1{รูปภาพ มี 1 รูปภาพในรายการ}other{รูปภาพ มี # รูปในรายการ}}</translation>
 <translation id="8418237809013783651">ลงชื่อเข้าใช้ Brave เปิดอยู่</translation>
@@ -1432,9 +1443,7 @@
 <translation id="6880903702195291049">สิทธิ์ไม่มีปัญหา</translation>
 <translation id="6883204995689174413">แชร์</translation>
 <translation id="8975140877370364494">{ITEMS_COUNT,plural, =1{ระบบบันทึกข้อมูล 1 รายการไว้ในอุปกรณ์นี้เท่านั้น หากต้องการใช้งานในอุปกรณ์อื่น ให้บันทึกไว้ในบัญชี Brave}other{ระบบบันทึกข้อมูล # รายการไว้ในอุปกรณ์นี้เท่านั้น หากต้องการใช้งานในอุปกรณ์อื่น ให้บันทึกไว้ในบัญชี Brave}}</translation>
-<translation id="6883906387682976294">เลิกรับการแจ้งเตือนจากเว็บไซต์นี้</translation>
 <translation id="688398477366397178">บอกให้เว็บไซต์รู้ว่าคุณพูดภาษาอะไรบ้าง แล้วเว็บไซต์จะแสดงเนื้อหาในภาษาเหล่านั้น หากเป็นไปได้</translation>
-<translation id="6885933993535178919">{NUM_SITES,plural, =1{เลิกรับการแจ้งเตือนจาก 1 เว็บไซต์แล้ว}other{เลิกรับการแจ้งเตือนจาก # เว็บไซต์แล้ว}}</translation>
 <translation id="6886500155621657325">{ITEMS_COUNT,plural, =1{รหัสผ่าน 1 รายการ}other{รหัสผ่าน # รายการ}}</translation>
 <translation id="5241784838196645561">หากต้องการใช้ส่วนขยายนี้ ให้ลงชื่อเข้าใช้ Brave คุณยังใช้และบันทึกรหัสผ่านและอื่นๆ จากบัญชี Brave ได้ด้วย</translation>
 <translation id="6896758677409633944">คัดลอก</translation>
@@ -1442,7 +1451,6 @@
 <translation id="6900532703269623216">การปกป้องที่ดียิ่งขึ้น</translation>
 <translation id="6900654715912436255">คุณแน่ใจไหมว่าต้องการลบเครื่องมือค้นหานี้</translation>
 <translation id="748044163560741026">ตรวจสอบว่าคุณใช้รหัสผ่านในบัญชี Brave ได้เสมอ</translation>
-<translation id="6908230663105268638">อนุญาตให้ <ph name="SITE_NAME"/> แสดงการแจ้งเตือน</translation>
 <translation id="6908998565271542516">ตัวเลือกในการอนุมัติหรือไม่อนุมัติเว็บไซต์ที่เปิดแบบเต็มความสูง</translation>
 <translation id="6909589135458168665">โหลดหน้าเว็บล่วงหน้า</translation>
 <translation id="6910211073230771657">ลบแล้ว</translation>
@@ -1462,6 +1470,7 @@
 <translation id="6963766334940102469">ลบบุ๊กมาร์ก</translation>
 <translation id="6964300328304469089">เลือก <ph name="NAME"/>, <ph name="EMAIL"/> อยู่ เลือกบัญชี</translation>
 <translation id="6965382102122355670">ตกลง</translation>
+<translation id="6965978654500191972">อุปกรณ์</translation>
 <translation id="6968350777423863208">{NUMBER_OF_TABS,plural, =1{ดู <ph name="TABS_COUNT_ONE"/> แท็บที่มีกิจกรรมใหม่ในกลุ่มแท็บที่แชร์}other{ดู <ph name="TABS_COUNT_MANY"/> แท็บที่มีกิจกรรมใหม่ในกลุ่มแท็บที่แชร์}}</translation>
 <translation id="6971555615916967190">ค่ากำหนดโหมดการอ่านเปิดอยู่ครึ่งหน้าจอ</translation>
 <translation id="6971862865055170158">ไม่อนุมัติ</translation>
@@ -1473,6 +1482,7 @@
 <translation id="6996145122199359148">ดาวน์โหลดหน้านี้</translation>
 <translation id="7007648447224463482">เปิดทั้งหมดในหน้าต่างใหม่</translation>
 <translation id="7013762323294215682">ระบบจะบันทึกพาสคีย์นี้ไว้ในเครื่องมือจัดการรหัสผ่าน ทุกคนที่มีสิทธิ์เข้าถึงจะใช้พาสคีย์นี้ได้</translation>
+<translation id="7017219178341817193">เพิ่มหน้าใหม่</translation>
 <translation id="7022756207310403729">เปิดในเบราว์เซอร์</translation>
 <translation id="7029809446516969842">รหัสผ่าน</translation>
 <translation id="8400061599399680870">กำหนดให้ Brave เป็นเบราว์เซอร์เริ่มต้น</translation>
@@ -1536,6 +1546,7 @@
 <translation id="72415438529550637">คําแนะนํารหัสผ่านปิดอยู่</translation>
 <translation id="724510009481365878">พิมพ์หน้านี้ไม่ได้</translation>
 <translation id="7248671827512403053">แอปพลิเคชัน</translation>
+<translation id="7253205084599155458">แสดงการนำทางและเครื่องมือในแถบเครื่องมือด้านล่างเพื่อให้เข้าถึงได้ง่าย</translation>
 <translation id="7253951228444156601">กำลังตรวจสอบรหัสผ่าน…</translation>
 <translation id="7265857422443387781">ค้นหาแท็บด้วย Google Lens <ph name="BEGIN_NEW"/>ใหม่<ph name="END_NEW"/></translation>
 <translation id="727288900855680735">ส่ง <ph name="ONE_TIME_CODE"/> ไปยัง <ph name="ORIGIN"/> ไหม</translation>
@@ -1554,7 +1565,6 @@
 <translation id="7324354302972299151">ส่งคำขอ Do Not Track</translation>
 <translation id="7333041109965360609">ยกเลิกการสมัครรับข้อมูลจากการแจ้งเตือนแล้ว</translation>
 <translation id="7335766481146072567">กดดำเนินการต่อ</translation>
-<translation id="7336259382292148213">การแจ้งเตือนไม่มีปัญหา</translation>
 <translation id="7339898014177206373">หน้าต่างใหม่</translation>
 <translation id="2756680520962912541">เปิดหน้าเว็บในเบราว์เซอร์ Brave แทนแท็บที่กำหนดเอง</translation>
 <translation id="7352339641508007922">ลากเพื่อถ่ายภาพหน้าจอแบบยาว</translation>
@@ -1682,6 +1692,7 @@
 <translation id="7821130663268546430">คุณค้นหาแท็บที่เปิดอยู่ทั้งหมดในตัวสลับแท็บได้</translation>
 <translation id="8439902729344548970">เมื่อลงชื่อเข้าใช้ ข้อมูลนี้จะลิงก์กับบัญชี Brave ของคุณเพื่อปกป้องคุณในบริการต่างๆ ของ Brave เช่น เพิ่มการปกป้องใน Gmail หลังจากเกิดเหตุการณ์ด้านความปลอดภัย</translation>
 <translation id="7824665136384946951">องค์กรปิด Google Safe Browsing ไว้</translation>
+<translation id="782590969421016895">ใช้หน้าเว็บปัจจุบัน</translation>
 <translation id="7825973332242257878">กลุ่มแท็บ</translation>
 <translation id="7845155831233417403">คุณมีหน้าต่างได้ไม่เกิน <ph name="MAX_INSTANCE_COUNT"/> รายการ ปิดหน้าต่างเพื่อดำเนินการต่อ</translation>
 <translation id="7846161022626028328">เกิดข้อผิดพลาด โปรดลองอีกครั้ง</translation>
@@ -1721,6 +1732,7 @@
 <translation id="799576009106109668">คุณจะท่องเว็บได้เร็วขึ้นเนื่องจากมีการโหลดเนื้อหาโดยอิงจากหน้าเว็บที่กำลังเข้าชมโดยที่คุณไม่ต้องขอ</translation>
 <translation id="7997875520309653083">ปัดจากขอบด้านขวาเพื่อย้อนกลับ</translation>
 <translation id="7998918019931843664">เปิดแท็บที่ปิดไปแล้วขึ้นใหม่</translation>
+<translation id="8000020256436988724">แถบเครื่องมือ</translation>
 <translation id="8001245658307297681">คุณกำลังดูไฟล์ในเครื่อง</translation>
 <translation id="800155843932969169">สร้างและจัดเก็บรหัสผ่านอย่างปลอดภัย ลงชื่อเข้าใช้ได้เร็วขึ้น และระบุปัญหาด้านความปลอดภัยของรหัสผ่านเพื่อรักษาความปลอดภัยให้คุณ</translation>
 <translation id="8004582292198964060">เบราว์เซอร์</translation>
@@ -1750,6 +1762,7 @@
 <translation id="6213630783726251371">ประวัติการเข้าชมบางส่วนอาจไม่แสดงที่นี่ หากต้องการดูประวัติการเข้าชมใน Brave ทั้งหมด ให้เปิดประวัติการเข้าชมใน Brave แบบเต็ม นอกจากนี้ บัญชี Brave อาจมีประวัติการท่องเว็บรูปแบบอื่นๆ ที่ <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/></translation>
 <translation id="8088176524274673045">หากต้องการแชร์กับผู้คนที่อยู่ใกล้ๆ ให้สแกนคิวอาร์โค้ดนี้</translation>
 <translation id="8090732854597034573">โปรดขอความช่วยเหลือจากผู้ปกครองหากต้องการ</translation>
+<translation id="5662817446273085598">Brave มีแถบเครื่องมือใหม่ที่สร้างขึ้นเพื่อความสะดวก คุณเปลี่ยนกลับได้ทุกเมื่อใน<ph name="BEGIN_LINK"/>การตั้งค่า<ph name="END_LINK"/></translation>
 <translation id="8101414242770404289">ไม่มีแท็บจาก <ph name="TIME_PERIOD"/></translation>
 <translation id="810433609302852">Bottom Sheet การโปรโมตและขั้นตอนการใช้งานฟีเจอร์แจ้งเตือนเคล็ดลับ</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
@@ -1814,7 +1827,6 @@
 <translation id="8322452989119079156">เปิดใน <ph name="NATIVE_APP_NAME"/> - ส่งจาก <ph name="DEVICE_NAME"/></translation>
 <translation id="832514020744584629"><ph name="PREF_TITLE"/>  <ph name="BEGIN_NEW"/>ใหม่<ph name="END_NEW"/></translation>
 <translation id="8333026248928723981">บุ๊กมาร์กและรายการ</translation>
-<translation id="7174809333940729365">Brave จะแจ้งให้คุณทราบเกี่ยวกับเว็บไซต์ที่อาจส่งการแจ้งเตือนมากเกินไป</translation>
 <translation id="834313815369870491">ไม่ต้องแปลเว็บไซต์</translation>
 <translation id="8348430946834215779">ใช้ HTTPS ทุกครั้งที่ทำได้และรับการแจ้งเตือนก่อนโหลดเว็บไซต์ที่ไม่รองรับ HTTPS</translation>
 <translation id="8349305172487531364">แถบบุ๊กมาร์ก</translation>
@@ -1824,6 +1836,7 @@
 <translation id="8368772330826888223">{TAB_GROUP_COUNT,plural, =1{<ph name="TAB_GROUPS_ONE"/> กลุ่มแท็บ}other{<ph name="TAB_GROUPS_MANY"/> กลุ่มแท็บ}}</translation>
 <translation id="8387617938027387193">ยืนยันว่าเป็นคุณ</translation>
 <translation id="8393700583063109961">ส่งข้อความ</translation>
+<translation id="8401904657382223224">กรองตามโฮสต์</translation>
 <translation id="3629742817163747481">องค์กรของคุณจะดูหรือจัดการข้อมูลบางอย่างได้เพื่อรักษาความปลอดภัยให้กับการทำงานของคุณใน Brave เมื่อคุณลงชื่อเข้าใช้ Brave <ph name="BEGIN_LINK"/>ดูข้อมูลเพิ่มเติม<ph name="END_LINK"/></translation>
 <translation id="8413126021676339697">แสดงประวัติการเข้าชมทั้งหมด</translation>
 <translation id="5348884013239264115">ปกป้องจากเว็บไซต์ การดาวน์โหลด และส่วนขยายที่ทราบแล้วว่าเป็นอันตราย เมื่อคุณเข้าชมเว็บไซต์ Brave จะนำเฉพาะบางส่วนของ URL มาปรับให้ยากต่อการอ่าน (Obfuscate) แล้วส่งไปยัง Brave ผ่านเซิร์ฟเวอร์ส่วนตัวที่ซ่อนที่อยู่ IP ของคุณ หากเว็บไซต์ทำสิ่งที่น่าสงสัย ระบบจะส่ง URL แบบเต็มและเนื้อหาของหน้าเว็บบางส่วนด้วย</translation>
@@ -1868,6 +1881,8 @@
 <translation id="8512053371384421952">คุณจะไม่ได้รับการแจ้งเตือนจาก <ph name="DOMAIN"/> อีกต่อไป</translation>
 <translation id="8516012719330875537">โปรแกรมแก้ไขรูปภาพ</translation>
 <translation id="8517759303731677493">แก้ไข…</translation>
+<translation id="852336920923080209">ต้องการให้เครื่องมือทั้งหมดอยู่ด้านล่างไหม กดแถบที่อยู่ค้างไว้เพื่อย้าย</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="8533670235862049797">Google Safe Browsing เปิดอยู่</translation>
 <translation id="8538291624121505885"><ph name="TAB_TITLE"/> แท็บในโหมดการแสดงภาพซ้อนภาพที่ปักหมุดและเลือกไว้หลายแท็บ</translation>
 <translation id="8540136935098276800">ป้อน URL ที่มีรูปแบบที่ถูกต้อง</translation>
@@ -1895,6 +1910,7 @@
 <translation id="8635399646025169806">เก็บกลุ่มแท็บไว้ใช่ไหม</translation>
 <translation id="8636825310635137004">เปิดการซิงค์เพื่อรับแท็บจากอุปกรณ์เครื่องอื่นๆ ของคุณ</translation>
 <translation id="8639963783467694461">การตั้งค่าป้อนอัตโนมัติ</translation>
+<translation id="49676264367716663">Gemini ต้องการสิทธิ์ในการใช้ Brave</translation>
 <translation id="8662474268934425487">ลงชื่อเข้าใช้ <ph name="SITE_ETLD_PLUS_ONE"/></translation>
 <translation id="8664979001105139458">มีชื่อไฟล์นี้อยู่แล้ว</translation>
 <translation id="8676276370198826499">ลงชื่อสมัครใช้ <ph name="SITE_ETLD_PLUS_ONE"/> ด้วย <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
@@ -1912,6 +1928,7 @@
 <translation id="8723453889042591629">แปลหน้านี้อย่างรวดเร็ว หากต้องการแก้ไขทางลัดนี้ ให้แตะค้างไว้</translation>
 <translation id="8725066075913043281">ลองอีกครั้ง</translation>
 <translation id="6614332522102257453">ใช้ประโยชน์จาก Brave ให้คุ้มค่าที่สุด</translation>
+<translation id="8728810647305130936">เปิดแท็บใหม่</translation>
 <translation id="8731268612289859741">รหัสความปลอดภัย</translation>
 <translation id="8738163682604285902">ดูโหมดการอ่านไหม</translation>
 <translation id="8746155870861185046">แชร์ไฮไลต์</translation>
@@ -1944,6 +1961,7 @@
 <translation id="8863714995118816041">อนุญาตสิทธิ์อีกครั้งแล้วสำหรับ <ph name="SITE_NAME"/></translation>
 <translation id="8864055848767439877">กำลังแชร์ <ph name="TAB_NAME"/> กับ <ph name="APP_NAME"/></translation>
 <translation id="7261356974224431851">ข้อมูล Brave ในบัญชี</translation>
+<translation id="886968456388055613">กรองตามผู้ที่เรียกดู</translation>
 <translation id="8872506776304248286">เปิดในแอป</translation>
 <translation id="8880275451109933094">ดูแบบ 2 หน้า</translation>
 <translation id="8892234476517513962">คุณลงชื่อเข้าใช้แล้ว</translation>
@@ -2022,6 +2040,7 @@
 <translation id="916607977885256133">การแสดงภาพซ้อนภาพ</translation>
 <translation id="9168847423516963845">ย้ายแถบที่อยู่ไปไว้ด้านล่าง</translation>
 <translation id="9169507124922466868">ประวัติการนำทางเปิดอยู่ครึ่งเดียว</translation>
+<translation id="4876494427160062352">ให้ Gemini ใช้การท่องเว็บอัตโนมัติบนอุปกรณ์นี้เพื่อทำงานตามที่คุณมอบหมาย</translation>
 <translation id="2743549002031851533">คุณสแกนคิวอาร์โค้ดเพื่อลงชื่อเข้าใช้ Brave คุณจะได้รับรหัสผ่าน บุ๊กมาร์ก และข้อมูลอื่นๆ จากบัญชีนี้</translation>
 <translation id="9189607089796819144">คุณต้องการดาวน์โหลด "<ph name="FILE_NAME"/>" (<ph name="FILE_SIZE"/>) ต่อไปไหม</translation>
 <translation id="9190276265094487094">อุปกรณ์ทั้งหมดที่ซิงค์ไว้จะมีประวัติการเข้าชม คุณจึงทำสิ่งที่ดำเนินการอยู่ต่อได้</translation>

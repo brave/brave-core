@@ -6,7 +6,6 @@
 <translation id="1002085272681738789">ແຖບກັບມາເຮັດວຽກແລ້ວ</translation>
 <translation id="1003088604756913841">ເປີດລິ້ງໃນໜ້າຈໍ <ph name="APP"/> ໃໝ່</translation>
 <translation id="100323615638474026">ອຸປະກອນ USB (<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>)</translation>
-<translation id="1003355351496161312">Google Safe Browsing</translation>
 <translation id="1003917207516838287">ປະຫວັດການດາວໂຫຼດຫຼ້າສຸດ</translation>
 <translation id="1004218526896219317">ສິດເຂົ້າເຖິງເວັບໄຊ</translation>
 <translation id="1005230401424685968">ປປປປ</translation>
@@ -265,7 +264,6 @@
 <translation id="1177548198167638471">ບໍ່ຕ້ອງຖາມອີກ</translation>
 <translation id="1177863135347784049">ກໍານົດເອງ</translation>
 <translation id="1178093605842850860">ບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ອ່ານ ແລະ ປ່ຽນແປງເວັບໄຊນີ້</translation>
-<translation id="1178357842179817577">ປົກປ້ອງທ່ານຈາກເວັບໄຊອັນຕະລາຍ, ການດາວໂຫຼດ ແລະ ສ່ວນຂະຫຍາຍ</translation>
 <translation id="2130013283534074693"><ph name="BEGIN_BOLD"/>ລະບົບຈະແບ່ງປັນແຖບເພື່ອໃຫ້ໄດ້ຄຳຕອບທີ່ກ່ຽວຂ້ອງຫຼາຍຂຶ້ນ.<ph name="END_BOLD"/> Brave ຈະໃຊ້ເນື້ອຫາ ແລະ URL ຂອງແຖບທີ່ເປີດຢູ່ຂອງທ່ານເມື່ອທ່ານເລີ່ມການສົນທະນາໃໝ່. ທ່ານສາມາດປ່ຽນການຕັ້ງຄ່ານີ້ຕອນໃດກໍໄດ້.</translation>
 <translation id="1178581264944972037">ຢຸດຊົ່ວຄາວ</translation>
 <translation id="117916940443676133">ກະແຈຄວາມປອດໄພຂອງທ່ານບໍ່ໄດ້ຮັບການປົກປ້ອງດ້ວຍ PIN. ເພື່ອຈັດການຂໍ້ມູນການເຂົ້າສູ່ລະບົບ, ກ່ອນອື່ນໃຫ້ສ້າງ PIN.</translation>
@@ -288,6 +286,7 @@
 <translation id="1195210374336998651">ໄປຫາການຕັ້ງຄ່າແອັບ</translation>
 <translation id="1195447618553298278">ຄວາມຜິດພາດທີ່ບໍ່ຮູ້ຈັກ.</translation>
 <translation id="1195558154361252544">ການແຈ້ງເຕືອນຖືກບລັອກໄວ້ໂດຍອັດຕະໂນມັດສຳລັບເວັບໄຊທັງໝົດ ຍົກເວັ້ນເວັບໄຊທີ່ທ່ານອະນຸຍາດ</translation>
+<translation id="1196850329140740621">ຄລິກປຸ່ມຍົກເລີກການໂຟກັສເພື່ອນຳເອົາແຖບອື່ນໆຂອງທ່ານກັບຄືນມາ</translation>
 <translation id="1197088940767939838">ສີໝາກກ້ຽງ</translation>
 <translation id="11978075283960463">ຂໍ້ມູນທີ່ຈັດເກັບໄວ້ໃນແອັບ: <ph name="APP_SIZE"/></translation>
 <translation id="1198066799963193307">ເຄື່ອງມືຊ່ວຍອ່ານສໍາລັບຜູ້ມີບັນຫາດ້ານການເບິ່ງເຫັນ</translation>
@@ -434,7 +433,6 @@
 <translation id="8924889016671958409">ເພື່ອກວດສອບໃຫ້ແນ່ໃຈວ່າທ່ານສາມາດໃຊ້ລະຫັດຜ່ານໃນບັນຊີ Brave ຂອງທ່ານໄດ້ສະເໝີ, ກະລຸນາຢັ້ງຢືນວ່າແມ່ນທ່ານ</translation>
 <translation id="1308105352527684175">ທ່ານອາດບໍ່ສາມາດເຂົ້າເຖິງເນື້ອຫາບາງຢ່າງໄດ້</translation>
 <translation id="1311092170520822848">ເວັບໄຊນີ້ກຳລັງຄວບຄຸມຕົວອ່ານບັດອັດສະລິຍະທີ່ເຊື່ອມຕໍ່ກັບອຸປະກອນຂອງທ່ານ ແລະ ຕົວອ່ານບັດອັດສະລິຍະທີ່ເຊື່ອມຕໍ່ກັບບັດອັດສະລິຍະທີ່ອາດພ້ອມໃຫ້ຕົວອ່ານດຳເນີນການອ່ານ</translation>
-<translation id="131112175593356748">ສະແດງບາງສ່ວນ</translation>
 <translation id="131112695174432497">ລະບົບຈະລຶບຂໍ້ມູນທີ່ມີຜົນຕໍ່ການປັບແຕ່ງໂຄສະນາເປັນແບບສ່ວນຕົວ</translation>
 <translation id="1092870157695460112">ຄົ້ນພົບການປົກປ້ອງທີ່ປັບປຸງດີຂຶ້ນເພື່ອຮັບການຮັກສາຄວາມປອດໄພລະດັບສູງສຸດສຳລັບການດາວໂຫຼດຂອງ Brave</translation>
 <translation id="1312298796781107732">{NUM_TABS,plural, =1{ແກ້ໄຂແຖບທີ່ເຮັດໃຫ້ໂປຣແກຣມທ່ອງເວັບຂອງທ່ານເຮັດວຽກຊ້າລົງ}other{ແກ້ໄຂແຖບທີ່ເຮັດໃຫ້ໂປຣແກຣມທ່ອງເວັບຂອງທ່ານເຮັດວຽກຊ້າລົງ}}</translation>
@@ -470,7 +468,6 @@
 <translation id="1338802252451106843"><ph name="ORIGIN"/> ຕ້ອງການເປີດແອັບພລິເຄຊັນນີ້.</translation>
 <translation id="13392265090583506">A11y</translation>
 <translation id="1340839264183302272">ອອກຈາກກຸ່ມ</translation>
-<translation id="1341002693404468853">ເຊື່ອງຜູ້ຈັດງານ</translation>
 <translation id="1341701348342335220">ທ່ານເຮັດໄດ້ດີຫຼາຍ!</translation>
 <translation id="873343310451048603">ເພື່ອກວດເບິ່ງລະຫັດຜ່ານທີ່ຖືກລະເມີດ, ໃຫ້ໄປທີ່ຕົວຈັດການລະຫັດຜ່ານ Brave</translation>
 <translation id="1343920184519992513">ສືບຕໍ່ໜ້າເວັບທີ່ທ່ານເບິ່ງຄ້າງໄວ້ ແລະ ເປີດຊຸດໜ້າເວັບສະເພາະໃດໜຶ່ງ</translation>
@@ -570,7 +567,6 @@
 <translation id="1433478348197382180">ໂໝດການອ່ານ</translation>
 <translation id="1433980411933182122">ສະຕາດອັບ</translation>
 <translation id="1434659328474177625"><ph name="ISSUER"/> ໄດ້ຢັ້ງຢືນອີເມວຂອງທ່ານແລ້ວ</translation>
-<translation id="1434886155212424586">ໂຮມເພສແມ່ນໜ້າແຖບໃໝ່</translation>
 <translation id="1435940442311036198">ໃຊ້ກະແຈຜ່ານຢູ່ອຸປະກອນອື່ນ</translation>
 <translation id="1436390408194692385">ໃຊ້ໄດ້ສຳລັບ <ph name="TICKET_TIME_LEFT"/></translation>
 <translation id="1436671784520050284">ສືບຕໍ່ການຕັ້ງຄ່າ</translation>
@@ -686,6 +682,7 @@
 <translation id="1523279371236772909">ເບິ່ງແລ້ວໃນເດືອນທີ່ຜ່ານມາ</translation>
 <translation id="1523978563989812243">ເຄື່ອງມືການປ່ຽນຂໍ້ຄວາມເປັນສຽງເວົ້າ</translation>
 <translation id="1524563461097350801">ບໍ່, ຂອບໃຈ</translation>
+<translation id="1524903662136734524">ເພີ່ມຈາກ Drive</translation>
 <translation id="1525740877599838384">ໃຊ້ແຕ່ Wi-Fi ເພື່ອກຳນົດສະຖານທີ່</translation>
 <translation id="1526274304859009691">ເຂົ້າສູ່ລະບົບເພື່ອຮັບສ່ວນຂະຫຍາຍ ແລະ ຂໍ້ມູນອື່ນໆຂອງທ່ານຈາກ <ph name="DEVICE"/></translation>
 <translation id="1526560967942511387">ເອກະສານບໍ່ມີຫົວຂໍ້</translation>
@@ -771,6 +768,7 @@
 <translation id="491276955533054201">ທຳອິດ, ໃຫ້ເປີດການທ່ອງເວັບອັດຕະໂນມັດຂອງ Brave ສຳລັບອຸປະກອນນີ້</translation>
 <translation id="1587275751631642843">JavaScript console</translation>
 <translation id="1588438908519853928">ປົກ​ກະ​ຕິ</translation>
+<translation id="1588626416445753732">ໄດ້ຮັບຄວາມນິຍົມໃນພາກພື້ນຂອງທ່ານ (ສະແດງລຳດັບແບບສຸ່ມ)</translation>
 <translation id="1588772269240419305">ກວດສອບການອັບເດດໂລໂກ້ ແລະ ຊື່</translation>
 <translation id="1588870296199743671">ເປີດລິ້ງກັບ...</translation>
 <translation id="1588919647604819635">ບັດຄລິກຂວາ</translation>
@@ -828,6 +826,7 @@
 <translation id="1621984899599015181">ຕົວເລືອກສຳລັບການແບ່ງປັນແມ່ນຈັດການໂດຍອົງການຂອງທ່ານ. ບາງລາຍການອາດຖືກເຊື່ອງໄວ້.</translation>
 <translation id="1622054403950683339">ລືມເຄືອຂ່າຍ Wi-Fi</translation>
 <translation id="1623723619460186680">ການຫຼຸດແສງສີຟ້າ</translation>
+<translation id="1839293257978405339">ໜ້ານີ້ ແລະ ຂໍ້ຄວາມທີ່ໄຮໄລ້ແມ່ນຖືກແບ່ງປັນກັບ Brave</translation>
 <translation id="1626581272720526544">ທ່ານສາມາດດາວໂຫຼດແອັບ ແລະ ເກມ Android ຜ່ານ Play Store ໄດ້. <ph name="LINK_BEGIN"/>ສຶກສາເພີ່ມເຕີມ<ph name="LINK_END"/></translation>
 <translation id="1627276047960621195">ຕົວອະທິບາຍໄຟລ໌</translation>
 <translation id="1627408615528139100">ດາວໂຫຼດຮຽບຮ້ອຍແລ້ວ</translation>
@@ -1029,7 +1028,6 @@
 <translation id="178092663238929451">ຕັ້ງຄ່າການແບ່ງປັນໃກ້ຄຽງເພື່ອຮັບ ແລະ ສົ່ງໄຟລ໌ກັບຄົນອ້ອມຕົວທ່ານ</translation>
 <translation id="1781164264587898620">ນຳໃຊ້ການຕັດສຽງລົບກວນ ແລະ ການປັບປຸງສຽງ.</translation>
 <translation id="1781291988450150470">PIN ປັດຈຸບັນ</translation>
-<translation id="1781502536226964113">ເປີດໜ້າແຖບໃໝ່</translation>
 <translation id="1781553166608855614">ພາສາເວົ້າ</translation>
 <translation id="1781771911845953849">ບັນຊີ ແລະ ການຊິ້ງຂໍ້ມູນ</translation>
 <translation id="1782101999402987960">ອັບເດດຖືກບລັອກໄວ້ໂດຍຜູ້ເບິ່ງແຍງລະບົບຂອງທ່ານ</translation>
@@ -1109,6 +1107,7 @@
 <translation id="1842681835432895345">ຍົກເວັ້ນຈໍສະແດງຜົນນີ້ໃນໂໝດກະຈົກ</translation>
 <translation id="184273675144259287">ປ່ຽນແທນແອັບ ແລະ ໄຟລ໌ Linux ຂອງທ່ານດ້ວຍຂໍ້ມູນທີ່ສຳຮອງໄວ້ກ່ອນນີ້</translation>
 <translation id="1843048149176045210">ສຳເນົາລິ້ງດາວໂຫຼດ</translation>
+<translation id="1845498360590376126">ໜ້າຫຼັກແມ່ນໜ້າແຖບໃໝ່</translation>
 <translation id="1845727111305721124">ໄດ້ຮັບອະນຸຍາດໃຫ້ຫຼິ້ນສຽງ</translation>
 <translation id="1846100293138248204">ບັນທຶກໃສ່ໃນຄວາມຊົງຈຳ</translation>
 <translation id="1846308012215045257">ກົດ Control ແລ້ວຄລິກເພື່ອເປີດໃຊ້ <ph name="PLUGIN_NAME"/>.</translation>
@@ -1175,7 +1174,7 @@
 <translation id="1892453608039100484">1. ຄລິກ <ph name="BUTTON_LABEL"/> ທາງລຸ່ມ
 2. ຄລິກ <ph name="BUTTON_2"/> ໃນການຕັ້ງຄ່າ Windows ຂອງທ່ານ</translation>
 <translation id="1895658205118569222">ມອດ</translation>
-<translation id="1189523243806849236">ການສົນທະນາຈະໄດ້ຮັບການກວດສອບ ແລະ ນຳໄປໃຊ້ເພື່ອປັບປຸງ Brave AI. Gemini ເປັນ AI ແລະ ອາດເຮັດຜິດພາດໄດ້. ທ່ານສາມາດ <ph name="BEGIN_LINK_MANAGE_ACTIVITY"/>ຈັດການການເຄື່ອນໄຫວຂອງທ່ານ<ph name="END_LINK_MANAGE_ACTIVITY"/>, ເຊິ່ງຮວມທັງຂໍ້ມູນກ່ຽວກັບສະຖານທີ່ຂອງທ່ານໄດ້. <ph name="BEGIN_LINK_LEARN_MORE"/>ສຶກສາເພີ່ມເຕີມກ່ຽວກັບຕົວເລືອກຂອງທ່ານ<ph name="END_LINK_LEARN_MORE"/></translation>
+<translation id="1896353439080510710">ການສົນທະນາຈະໄດ້ຮັບການກວດສອບ ແລະ ນຳໄປໃຊ້ເພື່ອປັບປຸງ Brave AI. Gemini ເປັນ AI ແລະ ອາດເຮັດຜິດພາດໄດ້. ທ່ານສາມາດ <ph name="BEGIN_LINK_MANAGE_ACTIVITY"/>ຈັດການການເຄື່ອນໄຫວຂອງທ່ານ<ph name="END_LINK_MANAGE_ACTIVITY"/>, ເຊິ່ງຮວມທັງຂໍ້ມູນກ່ຽວກັບສະຖານທີ່ຂອງທ່ານໄດ້. <ph name="BEGIN_LINK_LEARN_MORE"/>ສຶກສາເພີ່ມເຕີມກ່ຽວກັບຕົວເລືອກຂອງທ່ານ<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="1897120393475391208">ໃຊ້ລະຫັດຜ່ານຍາກ</translation>
 <translation id="1897860317037652061">ສະແກນບໍ່ສຳເລັດ</translation>
 <translation id="1898804291554630487">ສອບຖາມກ່ຽວກັບໜ້ານີ້</translation>
@@ -1186,7 +1185,6 @@
 <translation id="1901760057081700494">ປັດຈຸບັນເຂດເວລາຖືກຕັ້ງຄ່າໄວ້ເປັນ <ph name="TIME_ZONE_ENTRY"/>. ເພື່ອອັບເດດເຂດເວລາໂດຍອັດຕະໂນມັດ, ໃຫ້ <ph name="BEGIN_LINK"/>ເປີດສິດເຂົ້າເຖິງສະຖານທີ່ຂອງລະບົບ<ph name="END_LINK"/>.</translation>
 <translation id="3930197956137872864">ທີ່ຢູ່ເຮືອນຂອງທ່ານສາມາດຊ່ວຍໃຫ້ທ່ານເຮັດສິ່ງຕ່າງໆໃຫ້ສຳເລັດດ້ວຍບໍລິການ Brave ໄດ້ ເຊັ່ນ: ຜົນການຊອກຫາທີ່ກ່ຽວຂ້ອງຫຼາຍຂຶ້ນ ແລະ ເສັ້ນທາງໃນ Brave ແຜນທີ່. ທ່ານສາມາດແກ້ໄຂ ຫຼື ລຶບທີ່ຢູ່ຂອງທ່ານໃນ <ph name="BEGIN_LINK"/>ບັນຊີ Brave<ph name="END_LINK"/> <ph name="USERNAME"/> ຂອງທ່ານໄດ້.</translation>
 <translation id="6893464351226208429">URL ທີ່ທ່ານເຂົ້ານັ້ນຖືກບັນທຶກໄປໃສ່ບັນຊີ Brave ທ່ານແລ້ວ</translation>
-<translation id="190530012637606145">ເຕືອນທ່ານກ່ຽວກັບການເຊື່ອມຕໍ່ທີ່ບໍ່ປອດໄພທັງໝົດ, ຮວມທັງອິນທຣາເນັດສ່ວນຕົວ</translation>
 <translation id="1906181697255754968">ໂດຍປົກກະຕິແລ້ວ ເວັບໄຊຈະເຂົ້າເຖິງໄຟລ໌ ແລະ ໂຟນເດີໃນອຸປະກອນຂອງທ່ານສຳລັບຄຸນສົມບັດ ເຊັ່ນ: ການບັນທຶກວຽກຂອງທ່ານໄວ້ໂດຍອັດຕະໂນມັດ</translation>
 <translation id="1907044622262489040">ພິມດ້ວຍສຽງຂອງທ່ານ. ໃຊ້ຊອກຫາ + D, ຈາກນັ້ນເລີ່ມເວົ້າ.</translation>
 <translation id="1907659324308286326">ອຸປະກອນເສີມ Thunderbolt ຫຼື USB4 ບາງຢ່າງຕ້ອງມີສິດເຂົ້າເຖິງໜ່ວຍຄວາມຈຳຈຶ່ງຈະເຮັດວຽກໄດ້ຢ່າງຖືກຕ້ອງ.</translation>
@@ -1252,6 +1250,7 @@
 <translation id="1944921356641260203">ພົບການອັບເດດແລ້ວ</translation>
 <translation id="1947136734041527201">ເຮັດໃຫ້ທ່ານສາມາດເຂົ້າສູ່ລະບົບຫາເວັບໄຊຕ່າງໆໂດຍໃຊ້ບັນຊີທີ່ທ່ານມີກັບບໍລິການຕົວຕົນໄດ້</translation>
 <translation id="1948528728718281125">ອະນຸຍາດໃຫ້ເຂົ້າເຖິງກ້ອງຖ່າຍຮູບສຳລັບແອັບ, ເວັບໄຊທີ່ມີການອະນຸຍາດກ້ອງຖ່າຍຮູບ ແລະ ບໍລິການລະບົບ</translation>
+<translation id="1949054568937504107">ໄດ້ຮັບຄວາມນິຍົມໃນພາກພື້ນຂອງທ່ານ</translation>
 <translation id="1949332606889020901">ID ຫລົ້ມ</translation>
 <translation id="1949584741547056205">ຄຳຕອບດ່ວນ</translation>
 <translation id="1949980990364952348">ຊື່ແອັບ</translation>
@@ -1313,7 +1312,6 @@
 <translation id="1994173015038366702">URL ​ເວັບ​ໄຊທ໌</translation>
 <translation id="1995916364271252349">ຄວບຄຸມວ່າເວັບໄຊສາມາດໃຊ້ ແລະ ສະແດງຂໍ້ມູນໃດໄດ້ (ສະຖານທີ່, ກ້ອງ, ປັອບອັບ ແລະ ອື່ນໆອີກ)</translation>
 <translation id="199610894463449797">{0,plural, =1{ປິດໂປຣໄຟລ໌ນີ້}other{ປິດໂປຣໄຟລ໌ນີ້ (# ໜ້າຈໍ)}}</translation>
-<translation id="1996557034791506430">ລຶບການອະນຸຍາດອອກບໍ?</translation>
 <translation id="5123795870522389058">Brave ຕ້ອງການການອະນຸຍາດເພື່ອໃຊ້ Bluetooth ເພື່ອເຊື່ອມຕໍ່ກັບອຸປະກອນຂອງທ່ານ</translation>
 <translation id="1997616988432401742">ໃບ​ຢັ້ງ​ຢືນ​ຂອງ​ທ່ານ</translation>
 <translation id="1998715278591719161">ໄດ້ຮັບອະນຸຍາດໃຫ້ຕິດຕາມມືຂອງທ່ານ</translation>
@@ -1375,7 +1373,6 @@
 <translation id="2044750031738659219">{0,plural, =1{ປິດໜ້າຈໍຜູ້ຢ້ຽມຢາມ}other{ປິດໜ້າຈໍຜູ້ຢ້ຽມຢາມ (# ໜ້າຈໍ)}}</translation>
 <translation id="204497730941176055">ຊື່​ແມ່​ແບບໃບຢັ້ງຢືນ Microsoft</translation>
 <translation id="2045211794962848221">ທ່ານຈະບໍ່ເຫັນຂໍ້ຄວາມສະເພາະນີ້ອີກ</translation>
-<translation id="2045482258469113155">ປ່ຽນເສັ້ນທາງໄປຫາ <ph name="URL"/> ແທນບໍ່?</translation>
 <translation id="2045540927991079503">ເປີດ​ລິ້ງ​ເປັນ</translation>
 <translation id="2045838962742066664">ການພິມແບບຫຍໍ້</translation>
 <translation id="2046702855113914483">ຣາເມັງ</translation>
@@ -1477,12 +1474,12 @@
 <translation id="2135456203358955318">ແວ່ນຂະຫຍາຍທີ່ຕັ້ງໄວ້ແລ້ວ</translation>
 <translation id="2135787500304447609">ເລີ່ມຕົ້ນອີກ</translation>
 <translation id="2136476978468204130">ວະລີຜ່ານທີ່ທ່ານປ້ອນເຂົ້າບໍ່ຖືກຕ້ອງ</translation>
-<translation id="2137128126782078222">ບໍ່ອະນຸຍາດການແຈ້ງເຕືອນຈາກ <ph name="WEBSITE"/></translation>
 <translation id="2137871148058020508">ຄວາມຊ່ວຍເຫຼືອພາຍໃນຜະລິດຕະພັນ: ການແປພາສາ PDF ຈະປາກົດໃນແຜງຄວບຄຸມດ້ານຂ້າງຂອງໂໝດການອ່ານ</translation>
 <translation id="2139919072249842737">ປຸ່ມຕັ້ງຄ່າ</translation>
 <translation id="2140788884185208305">ປະສິດທິພາບຂອງແບັດເຕີຣີ</translation>
 <translation id="2142328300403846845">ເປີດ​ລິ້ງ​ເປັນ</translation>
 <translation id="6699507173861768979">ເປີດ <ph name="LINK1_BEGIN"/>Brave Sync<ph name="LINK1_END"/> ເພື່ອເບິ່ງແຖບ Brave ຫຼ້າສຸດ. <ph name="LINK2_BEGIN"/>ສຶກສາເພີ່ມເຕີມ<ph name="LINK2_END"/></translation>
+<translation id="2142826581348795579">ເຊົາໂຟກັສກຸ່ມແຖບແລ້ວ</translation>
 <translation id="2143089736086572103">ສະແດງໃຫ້ລາຍຊື່ຜູ້ຕິດຕໍ່ບາງຄົນເບິ່ງເຫັນ</translation>
 <translation id="2143765403545170146">ສະແດງແຖບເຄື່ອງມືໃນແບບເຕັມຈໍສະເໝີ</translation>
 <translation id="2143778271340628265">ການປັບຕັ້ງພຣັອກຊີເອົາເອງ</translation>
@@ -1537,7 +1534,6 @@
 <translation id="2175773164573457310">ເລືອກຂໍ້ຄວາມ ຫຼື ຮູບໃດກໍໄດ້ເພື່ອຖາມ Gemini</translation>
 <translation id="2175927920773552910">ລະຫັດ QR</translation>
 <translation id="2178056538281447670">Microsoft 365</translation>
-<translation id="2178545675770638239">ເລືອກລະຫັດຜ່ານ</translation>
 <translation id="2178614541317717477">ຜ່ອນຜັນ CA</translation>
 <translation id="2180082148774168439">ເຂົ້າເຖິງເວັບໄຊນີ້ໃນໜ້າຈໍສະເພາະຢູ່ຄອມພິວເຕີຂອງທ່ານ</translation>
 <translation id="2180620921879609685">ບລັອກເນື້ອຫາຢູ່ໜ້າໃດກໍຕາມ</translation>
@@ -1548,7 +1544,6 @@
 <translation id="2184754597051264978">Gemini ຈະບໍ່ສາມາດເຂົ້າສູ່ລະບົບ <ph name="URL"/> ໃຫ້ທ່ານໄດ້ອີກຕໍ່ໄປ</translation>
 <translation id="2186206192313702726">Google Lens</translation>
 <translation id="2186539124645132614">ເລີ່ມການສົນທະນາໃໝ່ກັບ Gemini</translation>
-<translation id="2186711480981247270">ໜ້າທີ່ແບ່ງປັນມາຈາກອຸປະກອນອື່ນ</translation>
 <translation id="2187675480456493911">ຊິ້ງຂໍ້ມູນກັບອຸປະກອນອື່ນໃນບັນຊີຂອງທ່ານແລ້ວ. ລະບົບຈະບໍ່ຊິ້ງຂໍ້ມູນການຕັ້ງຄ່າທີ່ຜູ້ໃຊ້ອື່ນແກ້ໄຂ. <ph name="LINK_BEGIN"/>ສຶກສາເພີ່ມເຕີມ<ph name="LINK_END"/></translation>
 <translation id="2187906491731510095">ອັບເດດສ່ວນຂະຫຍາຍແລ້ວ</translation>
 <translation id="2188881192257509750">ເປີດ <ph name="APPLICATION"/></translation>
@@ -1710,7 +1705,6 @@
 <translation id="2300434721407965566">ຢຸດການສາກຢູ່ 80% ເພື່ອຊ່ວຍໃຫ້ແບັດເຕີຣີຂອງທ່ານໃຊ້ໄດ້ດົນຍິ່ງຂຶ້ນ.</translation>
 <translation id="2301382460326681002">ໄດເຣັກຕໍຣີພື້ນຖານສ່ວນຂະຫຍາຍໃຊ້ບໍ່ໄດ້.</translation>
 <translation id="2304820083631266885">ດາວເຄາະ</translation>
-<translation id="2305202347479035002">ມັນເຮັດວຽກແນວໃດ</translation>
 <translation id="2306794767168143227">ບັນທຶກໃສ່ <ph name="BRAND"/> ຢູ່ອຸປະກອນນີ້</translation>
 <translation id="2308798336967462263">ບໍ່ຮອງຮັບປຸ່ມຕໍ່ໄປນີ້: Tab, Shift, Control, Escape, Caps lock, ລະດັບສຽງ</translation>
 <translation id="2309620859903500144">ເວັບໄຊນີ້ໄດ້ຖືກບລັອກບໍ່ໃຫ້ເຂົ້າເຖິງເຊັນເຊີກວດຈັບການເຄື່ອນໄຫວ ຫຼື ແສງຂອງທ່ານ.</translation>
@@ -1744,7 +1738,6 @@
 <translation id="2333166365943957309">ລະດັບຊັ້ນຂອງສ່ວນຕິດຕໍ່ຜູ້ໃຊ້</translation>
 <translation id="233375395665273385">ລຶບ ແລະ ອອກຈາກລະບົບ</translation>
 <translation id="2333766266387181994">ໂໝດການອ່ານເປີດຢູ່, ມຸມມອງແບບເຕັມໜ້າ</translation>
-<translation id="2334384018887664164">ທ່ານສາມາດເພີ່ມເວັບໄຊທີ່ທ່ານເຊື່ອຖືໃສ່ໃນລາຍຊື່ອະນຸຍາດໄດ້ໃນການຕັ້ງຄ່າເນື້ອຫາ</translation>
 <translation id="233471714539944337">ເນື້ອຫາທີ່ລະອຽດອ່ອນ</translation>
 <translation id="2335758110242123814">ເປີດກຸ່ມ</translation>
 <translation id="2336228925368920074">ໃສ່ບຸກມາກຄ໌ທຸກແຖບ...</translation>
@@ -1784,7 +1777,6 @@
 <translation id="2363475280045770326">ເກີດຄວາມຜິດພາດໃນການບັນທຶກການຕັ້ງຄ່າ</translation>
 <translation id="2363744066037724557">&amp;ກູ້ໜ້າຈໍຄືນມາ</translation>
 <translation id="2365507699358342471">ເວັບໄຊນີ້ສາມາດເຫັນຂໍ້ຄວາມ ແລະ ຮູບພາບທີ່ສຳເນົາໄວ້ໃນຄລິບບອດ.</translation>
-<translation id="236588788378837122">ກົດ Ctrl + Shift + A ເພື່ອເປີດການຊອກຫາແຖບ. ຕັ້ງແຕ່ນີ້ເປັນຕົ້ນໄປ, ທ່ານສາມາດຊອກຫາ ແລະ ປິດແຖບຂອງທ່ານໄດ້ຢູ່ບ່ອນນີ້. ທ່ານສາມາດຖອນໝຸດແຖບນີ້ໄດ້ທຸກເວລາ.</translation>
 <translation id="2367972762794486313">ສະແດງແອັບ</translation>
 <translation id="2369058545741334020">ເປີດໃນໂໝດການອ່ານ</translation>
 <translation id="236939127352773362">ເມື່ອອຸປະກອນກຳລັງແບ່ງປັນໃກ້ຄຽງ</translation>
@@ -1825,7 +1817,6 @@
 <translation id="2407671304279211586">ເລືອກຜູ້ໃຫ້ບໍລິການ DNS</translation>
 <translation id="2408018932941436077">ກຳລັງບັນທຶກບັດ</translation>
 <translation id="2408601796549249241">ຊີດລຸ່ມສຸດຂອງ Gemini ແບບເຕັມໜ້າຈໍ</translation>
-<translation id="2408762424059547338">ປົກປ້ອງທ່ານຈາກການໂຈມຕີໄດ້ດີຍິ່ງຂຶ້ນໂດຍປິດການເພີ່ມປະສິດທິພາບ JavaScript</translation>
 <translation id="2408955596600435184">​ປ້ອນ​ລະ​ຫັດ PIN ຂອງ​ທ່ານ</translation>
 <translation id="2409378541210421746">ແກ້ໄຂການເລືອກພາສາ</translation>
 <translation id="2409709393952490731">ໃຊ້ໂທລະສັບ ຫຼື ແທັບເລັດ</translation>
@@ -1845,6 +1836,7 @@
 <translation id="2423506062824112361">ດາວໂຫຼດເນື້ອຫາບໍ່ສຳເລັດໂດຍບໍ່ຮູ້ສາເຫດ.</translation>
 <translation id="2423578206845792524">ບັນທຶກຮູບເປັນ...</translation>
 <translation id="2424424966051154874">{0,plural, =1{ແຂກ}other{ແຂກ (#)}}</translation>
+<translation id="2424762488607770568">ຄ່າເລີ່ມຕົ້ນ (ກົງກັບລະບົບ)</translation>
 <translation id="2426805022920575512">ເລືອກບັນຊີອື່ນ</translation>
 <translation id="2427507373259914951">ຄລິກຊ້າຍ</translation>
 <translation id="2428245692671442472">{NUM_PASSWORDS,plural, =1{<ph name="DOMAIN_LINK"/> 1 ບັນຊີ, ລະຫັດຜ່ານທີ່ບັນທຶກໄວ້ຢູ່ອຸປະກອນນີ້ເທົ່ານັ້ນ. ລາຍລະອຽດເພີ່ມເຕີມ}other{<ph name="DOMAIN_LINK"/> {NUM_PASSWORDS} ບັນຊີ, ລະຫັດຜ່ານທີ່ບັນທຶກໄວ້ຢູ່ອຸປະກອນນີ້ເທົ່ານັ້ນ. ລາຍລະອຽດເພີ່ມເຕີມ}}</translation>
@@ -1869,7 +1861,6 @@
 <translation id="2440604414813129000">ເບິ່ງແຫຼ່ງທີ່ມາ</translation>
 <translation id="244071666433939959">ແອັບເປີດໃນໜ້າຈໍ</translation>
 <translation id="2440823041667407902">ການ​ເຂົ້າ​ເຖິງ​ຂໍ້ມູນ​ສະຖານທີ່</translation>
-<translation id="2441719842399509963">ຣີເຊັດເປັນຄ່າເລີ່ມຕົ້ນ</translation>
 <translation id="244231003699905658">ທີ່ຢູ່ບໍ່ຖືກຕ້ອງ. ກະລຸນາກວດເບິ່ງທີ່ຢູ່ ແລ້ວລອງໃໝ່.</translation>
 <translation id="2442916515643169563">ເງົາຂໍ້ຄວາມ</translation>
 <translation id="2443487764245141020">ເວັບໄຊອາດຕ້ອງຈຳແນກອຸປະກອນຂອງທ່ານໂດຍໃຊ້ຕົວລະບຸນຳ</translation>
@@ -2033,7 +2024,6 @@
 <translation id="2544352060595557290">ແຖບນີ້</translation>
 <translation id="2546302722632337735">ບໍ່ອະນຸຍາດໃຫ້ເວັບໄຊໃຊ້ຕົວລະບຸເພື່ອຫຼິ້ນເນື້ອຫາທີ່ມີການປົກປ້ອງ</translation>
 <translation id="2546991196809436099">ຊູມເຂົ້າເພື່ອເຮັດໃຫ້ລາຍການຕ່າງໆຢູ່ໜ້າຈໍໃຫຍ່ຂຶ້ນ. ໃຊ້ຊອກຫາ + Ctrl + M ເພື່ອເປີດ ແລະ ປິດແວ່ນຂະຫຍາຍ.</translation>
-<translation id="5217716240700306445">ຫາກທ່ານເປັນນັກເຄື່ອນໄຫວ, ນັກຂ່າວ, ບຸກຄົນສາທາລະນະ, ເຈົ້າໜ້າທີ່ເລືອກຕັ້ງ ຫຼື ບຸກຄົນອື່ນໆທີ່ຢູ່ໃນບົດບາດທີ່ມີຄວາມສ່ຽງສູງເປັນພິເສດ, ທ່ານອາດສົນໃຈ <ph name="BEGIN_LINK"/>ໂປຣແກຣມການປົກປ້ອງຂັ້ນສູງ<ph name="END_LINK"/> ຂອງ Brave.</translation>
 <translation id="2548347166720081527">ອະນຸຍາດ <ph name="PERMISSION"/> ແລ້ວ</translation>
 <translation id="2548545707296594436">ຣີເຊັດແຄສໂປຣໄຟລ໌ eSIM</translation>
 <translation id="2549985041256363841">ເລີ່ມການບັນທຶກ</translation>
@@ -2052,7 +2042,6 @@
 <translation id="5340820700729903199">ID ບັນຊີ Brave</translation>
 <translation id="256517381556987641">ການຊິ້ງຂໍ້ມູນໄຟລ໌ພົບໄຟລ໌ <ph name="ITEMS_FOUND"/> ລາຍການ ແລະ ຍັງຄົງກວດສອບພື້ນທີ່ຈັດເກັບຂໍ້ມູນ. ລອງເປີດການຊິ້ງຂໍ້ມູນໄຟລ໌ອີກຄັ້ງໃນສອງສາມນາທີ.</translation>
 <translation id="2566146433999774844">ເຂົ້າຮ່ວມກຸ່ມແຖບກັບ <ph name="OWNER_FIRST_NAME"/> ແລະ ອີກ <ph name="NUM_OTHER_MEMBERS"/> ຄົນ</translation>
-<translation id="256726287944589768">ສະແດງສ່ວນທ້າຍຢູ່ໜ້າແຖບໃໝ່</translation>
 <translation id="2568774940984945469">ພາຊະນະບັນຈຸແຖບຂໍ້ມູນ</translation>
 <translation id="257088987046510401">ເທມ</translation>
 <translation id="2572032849266859634">​ການເຂົ້າ​ຫາ <ph name="VOLUME_NAME"/> ອ່ານ​ເທົ່າ​ນັ້ນໄດ້​ຮັບ​​ອະ​ນຸ​ຍາດແລ້ວ​.</translation>
@@ -2072,7 +2061,6 @@
 <translation id="2581992808349413349">ໃຊ້ການເຊື່ອມຕໍ່ທີ່ປອດໄພເພື່ອຊອກຫາທີ່ຢູ່ IP ຂອງເວັບໄຊໃນ DNS (ລະບົບຊື່ໂດເມນ). ການດຳເນີນການນີ້ຈະໃຊ້ຜູ້ໃຫ້ບໍລິການທີ່ມີການຈັດການຢູ່ <ph name="DNS_SERVER_TEMPLATE_WITH_IDENTIFIER"/></translation>
 <translation id="2583877283803564049">ປັກໝຸດໄວ້ຢູ່ແຖບເຄື່ອງມື</translation>
 <translation id="2583905535229480958">ຕົວອ່ານບັດອັດສະລິຍະຕ່າງໆ</translation>
-<translation id="2583949330716828639">ຈັດການຂໍ້ຍົກເວັ້ນຂອງເວັບໄຊ</translation>
 <translation id="2584109212074498965">ບໍ່ສາມາດຮັບປີ້ Kerberos ໄດ້. ລອງອີກຄັ້ງ ຫຼື ຕິດຕໍ່ຫາຜູ້ເບິ່ງແຍງລະບົບອຸປະກອນຂອງອົງການຂອງທ່ານ. (ລະຫັດຂໍ້ຜິດພາດ: <ph name="ERROR_CODE"/>).</translation>
 <translation id="431792236515719062">ຈັດການການອະນຸຍາດໄມໂຄຣໂຟນຂອງເວັບໄຊໃນ Brave</translation>
 <translation id="2586672484245266891">ກະລຸນາປ້ອນ URL ທີ່ສັ້ນລົງ</translation>
@@ -2158,7 +2146,6 @@
 <translation id="5262884162459552969">ບັນທຶກໃສ່ໂຟນເດີໃນບັນຊີ Brave ຂອງທ່ານບໍ?</translation>
 <translation id="264897126871533291">ຕາບອດສີແດງ</translation>
 <translation id="2649045351178520408">Base64-encoded ASCII, ຕ່ອງໂສ້ໃບຢັ້ງຢືນ</translation>
-<translation id="2649331484502514724">DNS ທີ່ປອດໄພ</translation>
 <translation id="2649508632465204949">ສອນທັກສະໃໝ່ໃຫ້ຂ້ອຍ</translation>
 <translation id="2651259505411913186">ແມ່ນ, ແຍກຂໍ້ມູນຂອງຂ້ອຍອອກຈາກຂໍ້ມູນໂຮງຮຽນ</translation>
 <translation id="265156376773362237">ການໂຫຼດກ່ອນລ່ວງໜ້າແບບມາດຕະຖານ</translation>
@@ -2218,7 +2205,6 @@
 <translation id="464171422718185043">ລະບົບຈະສົ່ງເນື້ອຫາຈາກເວັບໄຊນີ້, ຮວມທັງ URL ໄປຫາ Brave ແລະ ທີມງານກວດສອບອາດເຫັນເນື້ອຫາດັ່ງກ່າວເພື່ອນຳໄປໃຊ້ປັບປຸງຄຸນສົມບັດນີ້</translation>
 <translation id="269941332914175387">ເລີ່ມເປີດໃຊ້ໂປຣແກຣມທ່ອງເວັບໃໝ່ເພື່ອໂຫຼດຂໍ້ມູນໂປຣໄຟລ໌ຂອງທ່ານ ແລະ ເຂົ້າລະຫັດໄວ້</translation>
 <translation id="2699911226086014512">ການດຳເນີນ PIN ບໍ່ສຳເລັດໂດຍມີລະຫັດ <ph name="RETRIES"/>.</translation>
-<translation id="2701330563083355633">ແບ່ງປັນຈາກ <ph name="DEVICE_NAME"/></translation>
 <translation id="2701737434167469065">ເຂົ້າສູ່ລະບົບ, <ph name="EMAIL"/></translation>
 <translation id="2701960282717219666">ທີ່ຢູ່ MAC ເຄືອຂ່າຍ</translation>
 <translation id="2702720509009999256">ກວດສອບການເຊື່ອມຕໍ່ອິນເຕີເນັດຂອງທ່ານ ແລ້ວເລືອກ "ລອງໃໝ່" ຫຼື ເລືອກ "ເປີດໃນຕົວແກ້ໄຂພື້ນຖານ" ເພື່ອໃຊ້ຕົວເລືອກການເບິ່ງ ແລະ ການແກ້ໄຂແບບຈຳກັດ.</translation>
@@ -2479,6 +2465,7 @@
 <translation id="2878889940310164513">ເບີຊິມມືຖື...</translation>
 <translation id="288042212351694283">ເຂົ້າຫາອຸປະກອນປັດໃຈທີ 2 ທົ່ວໄປ​ຂອງ​ທ່ານ</translation>
 <translation id="2881076733170862447">ເມື່ອທ່ານຄລິກສ່ວນຂະຫຍາຍ</translation>
+<translation id="2881174510090437224">{NUM_TABS,plural, =1{ແຖບທີ່ບໍ່ໄດ້ໂຟກັສ}other{ແຖບທີ່ບໍ່ໄດ້ໂຟກັສ}}</translation>
 <translation id="2882301808122022326">ການຕອບກັບ Omaha</translation>
 <translation id="2884070497102362193">ທົດສອບແບັດເຕີຣີຂອງທ່ານ, CPU, ໜ່ວຍຄວາມຈຳ, ການເຊື່ອມຕໍ່ ແລະ ອື່ນໆ</translation>
 <translation id="2885129935310217435">ມີປຸ່ມທີ່ໃຊ້ຊື່ດຽວກັນຢູ່. ກະລຸນາເລືອກອັນອື່ນ.</translation>
@@ -2566,7 +2553,6 @@
 <translation id="2948300991547862301">ໄປທີ່ <ph name="PAGE_TITLE"/></translation>
 <translation id="29488703364906173">ເວັບ​ບຣາວ​ເຊີ​ທີ່ໄວ​, ງ່າຍ​ດາຍ​, ແລະປອດໄພ​, ສ້າງຂຶ້ນມາສໍາລັບເວັບສະໄໝໃໝ່.</translation>
 <translation id="2952552057375331929">ເປີດລິ້ງໃນໜ້າຈໍແຍກ</translation>
-<translation id="2953218713108551165">ບໍ່ອະນຸຍາດການແຈ້ງເຕືອນສຳລັບ <ph name="SITE"/>. ທ່ານຈະຖືກຖາມອີກເທື່ອໜຶ່ງໃນການເຂົ້າເບິ່ງເທື່ອຕໍ່ໄປຂອງທ່ານ.</translation>
 <translation id="2954777802959138493">ສອບຖາມສະຖານະຂອງຕົວອັບເດດບໍ່ສຳເລັດ.</translation>
 <translation id="6886938764284784777">ບໍລິການ Brave ທີ່ກ່ຽວຂ້ອງ</translation>
 <translation id="2956070239128776395">ສ່ວນທີ່ຝັງຢູ່ໃນກຸ່ມ: <ph name="ERROR_LINE"/></translation>
@@ -2614,15 +2600,14 @@
 <translation id="2989123969927553766">ການເລັ່ງຄວາມໄວການເລື່ອນເມົ້າ</translation>
 <translation id="2989177286941477290">{NUM_OF_FILES,plural, =1{ເພີ່ມພື້ນທີ່ຫວ່າງໃນ <ph name="CLOUD_PROVIDER"/> ເພື່ອຍ້າຍໄຟລ໌ນີ້}other{ເພີ່ມພື້ນທີ່ຫວ່າງໃນ <ph name="CLOUD_PROVIDER"/> ເພື່ອຍ້າຍໄຟລ໌ເຫຼົ່ານີ້}}</translation>
 <translation id="2989474696604907455">ບໍ່ໄດ້ຄັດຕິດ</translation>
+<translation id="2989523299700148168">ເຂົ້າເບິ່ງເມື່ອບໍ່ດົນມານີ້</translation>
 <translation id="2989786307324390836">DER-ສອງດ້ານໃສ່ລະຫັດແລ້ວ, ໃບຢັ້ງຢືນດ່ຽວ</translation>
-<translation id="2989805286512600854">ເປີດຢູ່ໃນແຖບໃໝ່</translation>
 <translation id="5313101428331898743">ເພີ່ມບັນຊີ Brave</translation>
 <translation id="2990375978470734995">ເພື່ອໃຫ້ການປ່ຽນແປງມີຜົນ, ໃຫ້ເຊື່ອມຕໍ່ອຸປະກອນເສີມພາຍນອກຂອງທ່ານຄືນໃໝ່.</translation>
 <translation id="2990500505358145117">ແກ້ໄຂທາງລັດສຳລັບການຕື່ມຂໍ້ມູນອັດຕະໂນມັດທີ່ປັບປຸງໃຫ້ດີຂຶ້ນ</translation>
 <translation id="2990583317361835189">ບໍ່ອະນຸຍາດໃຫ້ເວັບໄຊໃຊ້ເຊັນເຊີກວດຈັບການເຄື່ອນໄຫວ</translation>
 <translation id="2991182900092497283">ກະລຸນາລະບຸເຫດຜົນສຳລັບການວາງຂໍ້ມູນນີ້:</translation>
 <translation id="2992754757708650257">ອອກຈາກເວັບໄຊ ແລະ ສິ້ນສຸດໜ້າວຽກບໍ?</translation>
-<translation id="2992931425024192067">ສະແດງເນື້ອຫາການແຈ້ງເຕືອນທັງໝົດ</translation>
 <translation id="2993517869960930405">ຂໍ້​ມູນ​ແອັບ</translation>
 <translation id="814864682411040365">ເພື່ອໃຫ້ໄດ້ຄຳຕອບທີ່ກ່ຽວຂ້ອງຫຼາຍຂຶ້ນ, Brave ຈະໃຊ້ເນື້ອຫາ ແລະ URL ຂອງແຖບທີ່ແບ່ງປັນ. ລະບົບຈະແບ່ງປັນແຖບປັດຈຸບັນຂອງທ່ານໃນການສົນທະນາໃໝ່. ທ່ານສາມາດປ່ຽນການຕັ້ງຄ່ານີ້ໄດ້ທຸກເວລາ.</translation>
 <translation id="2994804273850542871">ລະດັບ 4: ULTRA</translation>
@@ -2695,6 +2680,7 @@
 <translation id="3032204772252313646">ຄຳບັນຍາຍອັດຕະໂນມັດ</translation>
 <translation id="3032272345862007156">ຮູບແບບສີສັນ AI ຫຼ້າສຸດທີ <ph name="INDEX"/></translation>
 <translation id="3033167916029856961">ເປີດການນຳໃຊ້ໂໝດຫ້າມລົບກວນແລ້ວ</translation>
+<translation id="2503604114553969437">Brave ຊອກຫາໃນ Brave</translation>
 <translation id="3036546437875325427">ເປີດໃຊ້ແຟລດ</translation>
 <translation id="3036602651971781493">ເວັບໄຊອາດໃຊ້ບໍລິການປົກປ້ອງເນື້ອຫາເພື່ອຫຼິ້ນເນື້ອຫາທີ່ໄດ້ຮັບການປົກປ້ອງໂດຍລິຂະສິດ ຫຼື ກວດສອບວ່າທ່ານກຳລັງໃຊ້ໂປຣແກຣມທ່ອງເວັບໃດ</translation>
 <translation id="3036907164806060573">ຄວາມຝັນ</translation>
@@ -2787,6 +2773,7 @@
 <translation id="3109206895301430738">ກຸ່ມແຖບທີ່ບັນທຶກໄວ້</translation>
 <translation id="3109724472072898302">ຫຍໍ້ລົງ</translation>
 <translation id="3112292765614504292">ຂະໜາດແອັບ: <ph name="APP_SIZE"/></translation>
+<translation id="3112378005171663295">ຍຸບລົງ</translation>
 <translation id="4539978296384383446">ເພື່ອເຂົ້າເຖິງແຖບຂອງທ່ານຈາກອຸປະກອນເຄື່ອງອື່ນໆຂອງທ່ານ, ໃຫ້ເຂົ້າສູ່ລະບົບ ແລະ ຊິ້ງປະຫວັດ. ນອກຈາກນີ້, ທ່ານຍັງຈະເຂົ້າເຖິງບຸກມາກ ແລະ ຂໍ້ມູນອື່ນໆຂອງທ່ານໃນອຸປະກອນທຸກເຄື່ອງຂອງທ່ານນຳ. ທ່ານສາມາດຢຸດການຊິ້ງໄດ້ທຸກເວລາໃນການຕັ້ງຄ່າ. Brave ອາດປັບແຕ່ງການຊອກຫາ ແລະ ບໍລິການອື່ນໆໃຫ້ເປັນແບບສ່ວນຕົວໂດຍອີງຕາມປະຫວັດຂອງທ່ານ.</translation>
 <translation id="311347022006935575">ເພີ່ມແຖບນີ້ແລ້ວ</translation>
 <translation id="311394601889664316">ບໍ່ອະນຸຍາດໃຫ້ເວັບໄຊແກ້ໄຂໄຟລ໌ ຫຼື ໂຟນເດີຢູ່ອຸປະກອນຂອງທ່ານ</translation>
@@ -2827,6 +2814,7 @@
 <translation id="3143515551205905069">ຍົກເລີກການຊິ້ງຂໍ້ມູນ</translation>
 <translation id="3143754809889689516">ຫຼິ້ນແຕ່ເລີ່ມຕົ້ນ</translation>
 <translation id="3144647712221361880">ເປີດ​ລິ້ງ​ເປັນ</translation>
+<translation id="3146436581677566946">ໂມເດວຢູ່ອຸປະກອນ</translation>
 <translation id="3147878021189006333">Omnibox</translation>
 <translation id="300669147395456190">ແອັບ Brave</translation>
 <translation id="3150927491400159470">ການໂຫຼດຄືນໃໝ່ຍາກ</translation>
@@ -3028,7 +3016,6 @@
 <translation id="329838636886466101">​ສ້ອມ​ແປງ</translation>
 <translation id="3298789223962368867">ປ້ອນ URL ໃຊ້ບໍ່ໄດ້ເຂົ້າໄປແລ້ວ.</translation>
 <translation id="32991397311664836">ອຸປະກອນ:</translation>
-<translation id="330140779027048024">ໃຊ້ສະເໝີກັບຜູ້ໃຫ້ບໍລິການ DNS ຜ່ານ HTTPS ທີ່ເລືອກ</translation>
 <translation id="3301554464236215299">ໄຟລ໌ນີ້ມັກຈະບໍ່ດາວໂຫຼດ ແລະ ມັນອາດເປັນອັນຕະລາຍໄດ້</translation>
 <translation id="3301996560342889673">ຊິ້ງປະຫວັດບໍ?</translation>
 <translation id="33022249435934718">ດ້າມຈັບ GDI</translation>
@@ -3058,7 +3045,6 @@
 <translation id="3319863571062685443">ບັນທຶກທີ່ຢູ່ຂອງທ່ານແລ້ວ</translation>
 <translation id="3320271870899888245">ບໍ່ສາມາດເຊື່ອມຕໍ່ກັບ OneDrive ໄດ້. ກະລຸນາລອງໃໝ່.</translation>
 <translation id="3320630259304269485">Safe Browsing (ການປົກປ້ອງຈາກເວັບໄຊອັນຕະລາຍ) ແລະ ການຕັ້ງຄ່າຄວາມປອດໄພອື່ນໆ</translation>
-<translation id="3320851950558287493">ອັບເກຣດການເຊື່ອມຕໍ່ເປັນ HTTPS ເມື່ອເປັນໄປໄດ້ ແລະ ແຈ້ງເຕືອນທ່ານກ່ອນດຳເນີນການເຊື່ອມຕໍ່ທີ່ບໍ່ປອດໄພ</translation>
 <translation id="3320957378743864387">ບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ສະເໜີຄວາມຊ່ວຍເຫຼືອໃນການຂຽນ</translation>
 <translation id="3321460131042519426">ເປີດ​ໃຊ້​ງານ​ການ​ຕັດຄໍາ</translation>
 <translation id="3321494112580110651">ບໍ່ພົບເຄື່ອງພິມຂອງທ່ານບໍ?</translation>
@@ -3080,7 +3066,6 @@
 <translation id="3336855445806447827">ບໍ່ແນ່ໃຈ</translation>
 <translation id="3337568642696914359">ບໍ່ອະນຸຍາດໃຫ້ເວັບໄຊຈັດການໂປຣໂຕຄໍ</translation>
 <translation id="333863344734218290">ເຕືອນທ່ານຫາກພົບເວັບໄຊສາທາລະນະ ແລະ ເວັບໄຊສ່ວນຕົວທີ່ບໍ່ປອດໄພ</translation>
-<translation id="3339789735267352349">ປົກປ້ອງທ່ານຈາກເວັບໄຊ, ການດາວໂຫຼດ ແລະ ສ່ວນຂະຫຍາຍທີ່ຮູ້ແລ້ວວ່າເປັນອັນຕະລາຍ</translation>
 <translation id="3340620525920140773">ດາວໂຫຼດສຳເລັດແລ້ວ: <ph name="FILE_NAME"/>.</translation>
 <translation id="3340978935015468852">ການຕັ້ງຄ່າ</translation>
 <translation id="2462927274144730162">Brave ສາມາດສ້າງ ແລະ ແປຄຳບັນຍາຍສຳລັບພາສາທີ່ສະແດງບ່ອນນີ້ໄດ້</translation>
@@ -3189,6 +3174,7 @@
 <translation id="3424969259347320884">ອະທິບາຍສິ່ງທີ່ທ່ານກຳລັງເຮັດໃນເວລາທີ່ແຖບນັ້ນຂັດຂ້ອງ</translation>
 <translation id="3426562492084153055">ເລືອກເບິ່ງທັກສະ</translation>
 <translation id="3427092606871434483">ອະນຸຍາດ (ຄ່າເລີ່ມຕົ້ນ)</translation>
+<translation id="3427822597374329810">ໂມເດວຜູ້ຊ່ຽວຊານຂະໜາດນ້ອຍ</translation>
 <translation id="3429086384982427336">ແອັບທີ່ມີລາຍຊື່ທາງລຸ່ມຈະບໍ່ຈັດການລິ້ງໂປຣໂຕຄໍຕ່າງໆ.</translation>
 <translation id="3429174588714165399">ສ້າງທາງລັດໄປຫາໜ້ານີ້</translation>
 <translation id="3429271624041785769">ພາສາຂອງເນື້ອຫາເວັບ</translation>
@@ -3210,6 +3196,7 @@
 <translation id="3437072258256045988">ຈັດການການເຄື່ອນໄຫວແອັບ Gemini ຂອງທ່ານ</translation>
 <translation id="3437397693214267762">ເບິ່ງປະຕິທິນ Outlook ແລະ ໄຟລ໌ SharePoint ແລະ OneDrive ຂອງທ່ານ</translation>
 <translation id="3437494162908353428">ບໍ່ອະນຸຍາດໃຫ້ໃຊ້ DevTools ກັບ URL ນີ້.</translation>
+<translation id="3437498061222607130">ທ່ານເຂົ້າສູ່ລະບົບເພື່ອຊອກຫາດ້ວຍບັນຊີ <ph name="USER_EMAIL"/> ຂອງທ່ານແລ້ວ</translation>
 <translation id="3438633801274389918">ນິນຈາ</translation>
 <translation id="3439153939049640737">​ອະ​ນຸ​ຍາດ​ໃຫ້ <ph name="HOST"/> ເຂົ້າຫາ​ໄມໂຄຣໂຟນ​ຂອງ​ທ່ານຢູ່ສະເໝີ</translation>
 <translation id="3439970425423980614">ການ​ເປີດ PDF ຢູ່ໃນເບິ່ງຕົວຢ່າງກ່ອນ</translation>
@@ -3334,6 +3321,7 @@
 <translation id="3527473647192919613">ໜ້າຈໍແຍກໃໝ່</translation>
 <translation id="3528498924003805721">ເປົ້າ​ຫມາຍ​ທາງລັດ</translation>
 <translation id="35296112145429559">ປັກໝຸດປຸ່ມເລື່ອນ</translation>
+<translation id="3530919970074558307">ຍົກເລີກການສົນທະນາກຸ່ມ</translation>
 <translation id="3531070080754387701">Microsoft 365 ບໍ່ສາມາດເປີດ <ph name="FILE_NAMES"/> ຈາກໂຟນເດີນີ້ໄດ້</translation>
 <translation id="3531883061432162622">ຊອກຫາລາຍຊື່ການອ່ານ ແລະ ບຸກມາກຂອງທ່ານໄດ້ໃນບຸກມາກ ແລະ ລາຍຊື່</translation>
 <translation id="3532521178906420528">ກຳລັງກຳນົດການເຊື່ອມຕໍ່ເຄືອຂ່າຍ ...</translation>
@@ -3347,7 +3335,6 @@
 <translation id="354068948465830244">ນີ້ສາມາດອ່ານ ແລະ ປ່ຽນຂໍ້ມູນເວັບໄຊໄດ້</translation>
 <translation id="3541823293333232175">ກຳນົດແລ້ວ</translation>
 <translation id="354323442562085715">ຂຽນ, ວາງແຜນ, ຂຽນໂຄດ ແລະ ອື່ນໆ</translation>
-<translation id="3543296862747913985">ສິ່ງທີ່ມັນເຮັດ</translation>
 <translation id="3543298914473315872">ຂະບວນການຂອງໂປຣແກຣມອັບເດດ</translation>
 <translation id="3543393733900874979">ອັບເດດບໍ່ສໍາເລັດ (ຜິດພາດ: <ph name="ERROR_NUMBER"/>)</translation>
 <translation id="3544879808695557954">ຊື່ຜູ້ໃຊ້ (ບໍ່ບັງຄັບ)</translation>
@@ -3362,6 +3349,7 @@
 <translation id="3553442438687311630">Microsoft Authentication</translation>
 <translation id="3554493885489666172">ອຸປະກອນຂອງທ່ານຖືກຈັດການໂດຍ <ph name="PROFILE_NAME"/>. ຜູ້ເບິ່ງແຍງລະບົບສາມາດເຂົ້າເຖິງຂໍ້ມູນໃນໂປຣໄຟລ໌ໃດກໍໄດ້ຢູ່ອຸປະກອນນີ້.</translation>
 <translation id="3555812735919707620">ເອົາສ່ວນຂະ​ຫຍາຍ​ອອກ</translation>
+<translation id="3556409966119759596">ສະແດງສ່ວນທ້າຍຢູ່ໜ້າແຖບໃໝ່</translation>
 <translation id="3557101512409028104">ຕັ້ງຄ່າການຈຳກັດເວັບໄຊ ແລະ ຂີດຈຳກັດເວລາໜ້າຈໍດ້ວຍ Family Link</translation>
 <translation id="3558579881215044733"><ph name="WINDOW_TITLE"/> - Gemini ກຳລັງເຮັດໜ້າວຽກຕາມທີ່ທ່ານຂໍ...</translation>
 <translation id="3559079791149580653">ຢຸດສົ່ງສັນຍານໜ້າຈໍໄປຫາ <ph name="DEVICE_NAME"/></translation>
@@ -3397,6 +3385,7 @@
 <translation id="3577178956237526436">ເຊົາປິດສຽງເວັບໄຊທາງຊ້າຍ</translation>
 <translation id="3577473026931028326">ມີບາງຢ່າງຜິດພາດເກີດຂຶ້ນ. ກະລຸນາລອງໃໝ່.</translation>
 <translation id="3577487026101678864">ເປີດຊິ້ງຂໍ້ມູນໄຟລ໌ແລ້ວ</translation>
+<translation id="3578100826941720337">ໂປຣແກຣມຊອກຫາເພີ່ມເຕີມ</translation>
 <translation id="3578230582111850125">ເລືອກຂໍ້ຄວາມເພື່ອຖາມ Gemini</translation>
 <translation id="3581605050355435601">ຕັ້ງຄ່າທີ່ຢູ່ IP ໂດຍອັດຕະໂນມັດ</translation>
 <translation id="3581861561942370740">ຊອກຫາປະຫວັດການດາວໂຫຼດ</translation>
@@ -3544,7 +3533,6 @@
 <translation id="3686108296937784939">ທາງລັດຂອງອົງກອນຂອງຂ້ອຍ</translation>
 <translation id="3687359570564207338">{NUM_SITES,plural, =1{ພົບລະຫັດຜ່ານທີ່ຖືກລະເມີດ 1 ລາຍການ}other{ພົບລະຫັດຜ່ານທີ່ຖືກລະເມີດ {NUM_SITES} ລາຍການ}}</translation>
 <translation id="3687463694814266645">ຈັດຮຽງຄືນໃໝ່</translation>
-<translation id="3687598459967813435">ອະນຸຍາດການແຈ້ງເຕືອນຈາກ <ph name="WEBSITE"/> ຢູ່ສະເໝີ</translation>
 <translation id="3688507211863392146">ຂຽນ​ໃສ່​ໄຟ​ລ ​ແລະ​​ໂຟ​ເດີ​ທີ່​ທ່ານ​ເປີດ​ໃນ​ແອ​ພພະລິ​ເຄຊັນ</translation>
 <translation id="3688526734140524629">ປ່ຽນຊ່ອງ</translation>
 <translation id="3688578402379768763">ອັບເດດແລ້ວ</translation>
@@ -3564,9 +3552,11 @@
 <translation id="3699920817649120894">ປິດການຊິ້ງຂໍ້ມູນ ແລະ ການປັບແຕ່ງເປັນແບບສ່ວນຕົວບໍ?</translation>
 <translation id="3700888195348409686">ກຳລັງນຳສະເໜີ (<ph name="PAGE_ORIGIN"/>)</translation>
 <translation id="3700993174159313525">ບໍ່ອະນຸຍາດໃຫ້ເວັບໄຊຕິດຕາມຕຳແໜ່ງກ້ອງຖ່າຍຮູບຂອງທ່ານ</translation>
+<translation id="3701028563242674350">ສັ່ນເຄີເຊີເມົ້າເພື່ອເຮັດໃຫ້ມີຂະໜາດໃຫຍ່ຂຶ້ນ</translation>
 <translation id="3701167022068948696">ແກ້ໄຂຕອນນີ້</translation>
 <translation id="3701515417135397388">ເຕືອນທ່ານຫາກລະຫັດຜ່ານຖືກລະເມີດໃນການລະເມີດຂໍ້ມູນ</translation>
 <translation id="3701778844313851487">ເຂົ້າໄປສ່ວນຂະຫຍາຍ</translation>
+<translation id="3701846426433416920">ລຶບໂມເດວ</translation>
 <translation id="3703166520839776970">ຫາກບັນຫານີ້ຍັງເກີດຂຶ້ນຢູ່, ໃຫ້ເລືອກ "ລາຍລະອຽດເພີ່ມເຕີມ" ຢູ່ລຸ່ມນີ້ເພື່ອເບິ່ງຂໍ້ມູນເພີ່ມເຕີມຈາກ <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>.</translation>
 <translation id="3703699162703116302">ໂຫຼດຂໍ້ມູນປີ້ໃໝ່ແລ້ວ</translation>
 <translation id="370415077757856453">ບລັອກ JavaScript ໄວ້ແລ້ວ</translation>
@@ -3878,7 +3868,6 @@
 <translation id="3909701002594999354">ສະແດງການ&amp;ຄວບຄຸມທັງໝົດ</translation>
 <translation id="3909791450649380159">ຕັດ</translation>
 <translation id="39103738135459590">ລະຫັດການເປີດນຳໃຊ້</translation>
-<translation id="3911824782900911339">ໜ້າແຖບໃໝ່</translation>
 <translation id="3913689539406883376">ເປີດເມື່ອຄອມພິວເຕີຂອງທ່ານຖອດປັກອອກແລ້ວ</translation>
 <translation id="3914173277599553213">ຕ້ອງມີ</translation>
 <translation id="3914568430265141791">ເປີດໂຟນເດີ <ph name="FOLDER_TITLE"/></translation>
@@ -3964,7 +3953,6 @@
 <translation id="3968739731834770921">Kana</translation>
 <translation id="3970114302595058915">ID</translation>
 <translation id="397105322502079400">ກໍາລັງຄິດ​ໄລ່...</translation>
-<translation id="3971154761614127188">ຄຸນສົມບັດບາງຢ່າງອາດເຮັດໃຫ້ເວັບໄຊທີ່ບໍ່ຄຸ້ນເຄີຍຊ້າລົງ</translation>
 <translation id="3971355433478412726">ຄຳແນະນຳສຳລັບ Gemini</translation>
 <translation id="3971764089670057203">ລາຍນິ້ວມືໃນກະແຈຄວາມປອດໄພນີ້</translation>
 <translation id="3974514184580396500">ໃຊ້ “ຕໍ່ໄປ” ເພື່ອຍ້າຍໂຟກັສຂອງທ່ານໄປທາງໜ້າຢູ່ໜ້າຈໍ</translation>
@@ -4163,7 +4151,6 @@
 <translation id="4132364317545104286">ປ່ຽນຊື່ໂປຣໄຟລ໌ eSIM</translation>
 <translation id="4132969033912447558">ສືບຕໍ່ <ph name="FILE_NAME"/></translation>
 <translation id="4133076602192971179">ເປີດແອັບເພື່ອປ່ຽນລະຫັດຜ່ານຂອງທ່ານ</translation>
-<translation id="4133265950310064865">ການປົກປ້ອງຂັ້ນສູງ</translation>
 <translation id="4134838386867070505">ຂັ້ນຕອນທີ 1 ຈາກທັງໝົດ 4 ຂັ້ນຕອນ: ອະທິບາຍບັນຫາ</translation>
 <translation id="413534985210133938">“<ph name="LOCAL_FOLDER"/>” ຈະບັນທຶກໄວ້ໃນອຸປະກອນນີ້ເທົ່ານັ້ນ. ຫາກທ່ານຍ້າຍບຸກມາກນີ້ໄປໃສ່ “<ph name="LOCAL_FOLDER"/>”, ທ່ານຈະບໍ່ເຫັນບຸກມາກນີ້ຢູ່ອຸປະກອນອື່ນໆຂອງທ່ານອີກຕໍ່ໄປ.</translation>
 <translation id="4135370802895537423">ເປີດລິ້ງໃນມຸມມອງທາງຂວາ</translation>
@@ -4196,7 +4183,6 @@
 <translation id="4168015872538332605">ການຕັ້ງຄ່າບາງອັນທີ່ເປັນຂອງ <ph name="PRIMARY_EMAIL"/> ກໍາລັງຖືກແຊຣ໌ກັບທ່ານ. ການຕັ້ງຄ່າເຫຼົ່ານີ້ມີຜົນກະທົບກັບບັນຊີຂອງທ່ານພຽງແຕ່ເມື່ອໃຊ້ການລົງຊື່ເຂົ້າ​ໃຊ້ຫຼາຍອັນເທົ່ານັ້ນ.</translation>
 <translation id="4168651806173792090"><ph name="NETWORK_NAME"/> ລົງທ້າຍດ້ວຍ <ph name="LAST_FOUR_DIGITS"/></translation>
 <translation id="4169275505426201952">ໃຫ້ຄະແນນ...</translation>
-<translation id="4169535189173047238">ບໍ່ອະນຸຍາດ</translation>
 <translation id="4170314459383239649">ລຶບລ້າງເມື່ອອອກ</translation>
 <translation id="4170685671197375581">ເປີດໃຊ້ທາງລັດ</translation>
 <translation id="417112242673828206">{NUM_TABS,plural, =1{ແບ່ງປັນແຖບກັບ Gemini}other{ແບ່ງປັນ # ແຖບກັບ Gemini}}</translation>
@@ -4238,7 +4224,6 @@
 <translation id="4206144641569145248">ມະນຸດຕ່າງດາວ</translation>
 <translation id="4206323443866416204">ລາຍງານຄຳຕິຊົມ</translation>
 <translation id="4206585797409671301">ໄດ້ຮັບອະນຸຍາດໃຫ້ສະແດງການຮ້ອງຂໍ</translation>
-<translation id="4207144975205749656">ເຂົ້າລະຫັດການ​ຮ້ອງ​ຂໍການນຳທາງເພື່ອບໍ່ໃຫ້ຜູ້ໂຈມຕີໃນເຄືອຂ່າຍດຽວກັນເຫັນການຮັບສົ່ງຂໍ້ມູນຂອງທ່ານ</translation>
 <translation id="4207638506590582629"><ph name="DEVICE_NAME"/> (<ph name="LAST_ACTIVE_TIME"/>)</translation>
 <translation id="4207932031282227921">ຂໍການອະນຸຍາດແລ້ວ, ກະລຸນາກົດ F6 ເພື່ອຕອບກັບ</translation>
 <translation id="4209092469652827314">​ໃຫຍ່</translation>
@@ -4360,12 +4345,14 @@
 <translation id="429312253194641664">ເວັບໄຊກຳລັງຫຼິ້ນສື່ຢູ່</translation>
 <translation id="4293154608148215505">ໂທລະສັບຂອງທ່ານ</translation>
 <translation id="4293219510510666933">ໃຊ້ພາສາທີ່ໃຊ້ໃນຊີວິດປະຈຳວັນເພື່ອຊອກຫາປະຫວັດການທ່ອງເວັບຂອງທ່ານ ແລະ ຫາເວັບໄຊທີ່ທ່ານເຄີຍເຂົ້າເບິ່ງ. ທ່ານຍັງສາມາດຖາມຄຳຖາມ ແລະ ຮັບຄຳຕອບຕາມປະຫວັດການທ່ອງເວັບຂອງທ່ານໄດ້ນຳ. ການຕັ້ງຄ່ານີ້ເປີດຢູ່.</translation>
+<translation id="429344752071832554">ຍົກເລີກການສົນທະນາກຸ່ມ</translation>
 <translation id="4294392694389031609">ລຶບ <ph name="FILE_NAME"/> ອອກຈາກປະຫວັດການດາວໂຫຼດແລ້ວ, ແຕ່ມັນຍັງຄົງຢູ່ໃນອຸປະກອນຂອງທ່ານ</translation>
 <translation id="429530814437327574">ສະແດງແບບວາງຊ້ອນກັນ</translation>
 <translation id="4295979599050707005">ກະລຸນາເຂົ້າສູ່ລະບົບອີກຄັ້ງເພື່ອຢືນຢັນວ່າບັນຊີຂອງທ່ານ <ph name="USER_EMAIL"/> ສາມາດໃຊ້ໄດ້ກັບເວັບໄຊ, ແອັບ ແລະ ສ່ວນຂະຫຍາຍໃນ Brave ແລະ Google Play. ທ່ານອາດຈະລຶບບັນຊີນີ້ອອກໄດ້ເຊັ່ນກັນ. <ph name="LINK_BEGIN"/>ສຶກສາເພີ່ມເຕີມ<ph name="LINK_END"/></translation>
 <translation id="4296632172536745000">ລະບົບພົບລະຫັດຜ່ານເກົ່າຂອງທ່ານສຳລັບເວັບໄຊນີ້ໃນການລະເມີດຂໍ້ມູນສາທາລະນະ. ເມື່ອວັນທີ <ph name="DATE"/> ທ່ານໄດ້ຂໍໃຫ້ <ph name="BRAND"/> ປ່ຽນລະຫັດຜ່ານໃຫ້ທ່ານໂດຍອັດຕະໂນມັດ.</translation>
 <translation id="4297219207642690536">ປິດເປີດຄືນໃໝ່ ແລະ ຣິເຊັດ</translation>
 <translation id="4297813521149011456">ການໝຸນຈໍສະແດງຜົນ</translation>
+<translation id="42981349822642051">ຂະ​ຫຍາຍ</translation>
 <translation id="4298660926525614540">ຊື່ບ່ອນຈັດເກັບຂໍ້ມູນທີ່ຖອດອອກໄດ້</translation>
 <translation id="4300272766492248925">ເປີດແອັບ</translation>
 <translation id="4301231341924904092">ປ່ຽນລະຫັດຜ່ານໃຫ້ຂ້ອຍ</translation>
@@ -4435,7 +4422,6 @@
 <translation id="4354344420232759511">ເວັບໄຊທີ່ທ່ານເຂົ້າເບິ່ງຈະປາກົດຢູ່ບ່ອນນີ້</translation>
 <translation id="4356100841225547054">ປິດລະດັບສຽງ</translation>
 <translation id="4357583358198801992">ສະແດງກຸ່ມແຖບ</translation>
-<translation id="4357812592970409234">ສຶກສາເພີ່ມເຕີມກ່ຽວກັບພາບພື້ນຫຼັງຂອງໜ້າແຖບໃໝ່ຂອງທ່ານ</translation>
 <translation id="4358361163731478742">ບໍ່ມີແອັບທີ່ຮອງຮັບການເລືອກພາສາຂອງແອັບ</translation>
 <translation id="4358995225307748864">ເລືອກແອັບເພື່ອເປີດ</translation>
 <translation id="4359408040881008151">ຕິດຕັ້ງແລ້ວ ເນື່ອງຈາກສ່ວນຂະຫຍາຍທີ່ຂຶ້ນກັບ.</translation>
@@ -4443,6 +4429,7 @@
 <translation id="4360738659108163902">ຄລິກຂວາໃສ່ເມົ້າ</translation>
 <translation id="4361745360460842907">ເປີດ​ເປັນ​ແຖບ</translation>
 <translation id="4362459470237309049">ໃຊ້ປຸ່ມ “.” ເພື່ອປ່ອຍປຸ່ມເມົ້າ</translation>
+<translation id="4362871358537270439">ສະແດງແຖບຈາກອຸປະກອນອື່ນໆໃນແຜງຄວບຄຸມດ້ານຂ້າງ</translation>
 <translation id="4363262124589131906">ໄຟລ໌ໃໝ່ໃນໄດຣຟ໌ຂອງຂ້ອຍຈະຢຸດຊິ້ງກັບ Chromebook ເຄື່ອງນີ້ໂດຍອັດຕະໂນມັດ</translation>
 <translation id="4364129298304269786">ເວັບໄຊອາດໃຊ້ບໍລິການປົກປ້ອງເນື້ອຫາເພື່ອຫຼິ້ນເນື້ອຫາທີ່ໄດ້ຮັບການປົກປ້ອງໂດຍລິຂະສິດ</translation>
 <translation id="4364327530094270451">ໝາກໂມ</translation>
@@ -4565,7 +4552,6 @@
 <translation id="4441928470323187829">ປັກໝຸດໂດຍຜູ້ເບິ່ງແຍງລະບົບຂອງທ່ານ</translation>
 <translation id="4442863809158514979">ເບິ່ງການອະນຸຍາດເວັບ</translation>
 <translation id="4442937638623063085">ບໍ່ພົບໂປຣໄຟລ໌. ກະລຸນາລະບຸລະຫັດການເປີດນຳໃຊ້ທີ່ໄດ້ຮັບຈາກຜູ້ໃຫ້ບໍລິການຂອງທ່ານ.</translation>
-<translation id="4443111948803895537">ການປົກປ້ອງບັນຊີ ແລະ ເຄືອຂ່າຍ</translation>
 <translation id="4443536555189480885">ຊ່ວຍ​ເຫຼືອ</translation>
 <translation id="4444304522807523469">ເຂົ້າ​ຫາ​ເຄື່ອງ​ສະ​ແກນ​ເອ​ກະ​ສານ​ຄັດ​ຕິດ​ຜ່ານ USB ຫຼື​ຢູ່​ເທິງ​ເຄືອ​ຂ່າຍ​ກັບ​ທີ່</translation>
 <translation id="4444512841222467874">ຖ້າບໍ່ສ້າງພື້ນທີ່ຫວ່າງ, ຜູ້ໃຊ້ ແລະ ຂໍ້ມູນອາດຈະຖືກລຶບອອກໂດຍອັດຕະໂນມັດ.</translation>
@@ -4664,7 +4650,6 @@
 <translation id="4542520061254486227">ອ່ານ​ຂໍ້​ມູນ​ຂອງ​ທ່ານ​ຢູ່​ເທິງ <ph name="WEBSITE_1"/> ແລະ <ph name="WEBSITE_2"/></translation>
 <translation id="4543778593405494224">ຜູ້​ຈັດ​ການ​ໃບ​ຢັ້ງ​ຢືນ</translation>
 <translation id="4544174279960331769">ຮູບແທນຕົວສີຟ້າຕາມຄ່າເລີ່ມຕົ້ນ</translation>
-<translation id="4544595896051435161">ມີການຍ້າຍການຊອກຫາແຖບ</translation>
 <translation id="4545028762441890696">ເພື່ອເປີດນຳໃຊ້ມັນ, ກະລຸນາຍອມຮັບການອະນຸຍາດໃໝ່:</translation>
 <translation id="4545759655004063573">ບໍ່ສາມາດບັນທຶກໄດ້ ເນື່ອງຈາກການອະນຸຍາດບໍ່ພຽງພໍ. ກະລຸນາບັນທຶກໄປໃສ່ທີ່ຕັ້ງອື່ນ.</translation>
 <translation id="4546345569117159016">ປຸ່ມຂວາ</translation>
@@ -4781,7 +4766,6 @@
 <translation id="4631637535315947773">ທາງລັດສຳລັບເວັບໄຊທີ່ທ່ານເຂົ້າເບິ່ງຫຼາຍທີ່ສຸດຖືກລຶບອອກແລ້ວເນື່ອງຈາກທ່ານບໍ່ໄດ້ໃຊ້ພວກມັນເມື່ອບໍ່ດົນມານີ້</translation>
 <translation id="4631955550884380853">ສຽງທີ່ໂຟກັສ</translation>
 <translation id="4632655012900268062">ປັບແຕ່ງບັດ</translation>
-<translation id="3924258127660962431">Gemini ສາມາດໃຊ້ຕົວຈັດການລະຫັດຜ່ານ Brave ເພື່ອເຂົ້າສູ່ລະບົບໃຫ້ທ່ານໄດ້. <ph name="BEGIN_LINK"/>ສຶກສາວິທີທີ່ Gemini ຈັດການຂໍ້ມູນຂອງທ່ານ<ph name="END_LINK"/></translation>
 <translation id="4635072447747973225">ຖອນການຕິດຕັ້ງ Crostini</translation>
 <translation id="4635398712689569051"><ph name="PAGE_NAME"/> ບໍ່ສາມາດໃຊ້ໄດ້ຕໍ່ກັບຜູ້ໃຊ້ທີ່ເປັນແຂກ.</translation>
 <translation id="4635975718422788482">{FILE_LIMIT,plural, =1{ອັບໂຫຼດຮູບພາບ 1 ຮູບເພື່ອໃຊ້ກັບຄຳຖາມຂອງທ່ານ}other{ອັບໂຫຼດຮູບພາບສູງສຸດ # ຮູບເພື່ອໃຊ້ກັບຄຳຖາມຂອງທ່ານ}}</translation>
@@ -4791,7 +4775,6 @@
 <translation id="4637252186848840278">{COUNT,plural, =1{ຂໍ້ຄວາມ}other{ຂໍ້ຄວາມ # ລາຍການ}}</translation>
 <translation id="4638568775382459156">ກິດຈະກຳໃນກຸ່ມແຖບທີ່ແບ່ງປັນ</translation>
 <translation id="4638930039313743000">ເປີດນຳໃຊ້ການດີບັກ ADB</translation>
-<translation id="4639390152280993480">ເພື່ອເບິ່ງມຸມມອງແບບຮຽບງ່າຍຂອງໜ້ານີ້, ໃຫ້ເຂົ້າໄປ ເຄື່ອງມືເພີ່ມເຕີມ &gt; ໂໝດການອ່ານ</translation>
 <translation id="4643612240819915418">ເປີດວິດີໂອຢູ່ໃນແຖບໃໝ່</translation>
 <translation id="4645322559577140968">{GROUP_COUNT,plural, =1{ລຶບກຸ່ມແຖບບໍ?}other{ລຶບກຸ່ມແຖບບໍ?}}</translation>
 <translation id="4645575059429386691">ຈັດ​ການ​ໂດຍ​ຜູ້​ປົກ​ຄອງ​ຂອງ​ທ່ານ</translation>
@@ -4824,6 +4807,7 @@
 <translation id="4663373278480897665">ອະນຸຍາດກ້ອງຖ່າຍຮູບແລ້ວ</translation>
 <translation id="4664375726751122009">ປ່ຽນເປັນມຸມມອງພາບ</translation>
 <translation id="4665014895760275686">ຜູ້​ຜະ​ລິດ</translation>
+<translation id="4665035764476941598">ຄລິກບ່ອນນີ້ເພື່ອນຳເອົາແຖບອື່ນໆຂອງທ່ານກັບຄືນມາ</translation>
 <translation id="4665446389743427678">ຂໍ້ມູນທັງໝົດທີ່ເກັບໄວ້ໂດຍ <ph name="SITE"/> ຈະຖືກລຶບ.</translation>
 <translation id="4666472247053585787">ເບິ່ງການແຈ້ງເຕືອນຈາກໂທລະສັບຂອງທ່ານໃນ <ph name="DEVICE_TYPE"/> ຂອງທ່ານ</translation>
 <translation id="4666911709726371538">ແອັບເພີ່ມເຕີມ</translation>
@@ -4912,7 +4896,6 @@
 <translation id="4728558894243024398">ເວທີ</translation>
 <translation id="4729379213940929490">ຮັບຂໍ້ມູນອັບເດດກ່ຽວກັບໜ້າວຽກຂອງທ່ານ</translation>
 <translation id="4870553660139015263">ເມື່ອເປີດໄວ້, ລະບົບຈະບັນທຶກຂໍ້ມູນໃນບັນຊີ Brave ຂອງທ່ານ ແລະ ສາມາດໃຊ້ໃນອຸປະກອນທຸກເຄື່ອງຂອງທ່ານໄດ້. ເມື່ອປິດໄວ້, ລະບົບຈະບັນທຶກຂໍ້ມູນໃສ່ໃນອຸປະກອນເຄື່ອງນີ້ເທົ່ານັ້ນ. ສຳລັບຕົວເລືອກການຊິ້ງຂອງ ChromeOS, ກະລຸນາເຂົ້າໄປ <ph name="LINK_BEGIN"/>ການຕັ້ງຄ່າ ChromeOS<ph name="LINK_END"/>.</translation>
-<translation id="4730888769809690665">ອະນຸຍາດການແຈ້ງເຕືອນສຳລັບ <ph name="SITE"/> ແລ້ວ</translation>
 <translation id="4732799736617504962">ໄມທີ່ເຊື່ອມຕໍ່ສາມາດຮອງຮັບການຕັດສຽງລົບກວນໄດ້ເທົ່ານັ້ນ</translation>
 <translation id="4733161265940833579"><ph name="BATTERY_PERCENTAGE"/>% (ຊ້າຍ)</translation>
 <translation id="4733793249294335256">ສະຖານທີ່</translation>
@@ -4947,7 +4930,6 @@
 <translation id="1498792489923809330">ເພື່ອເຂົ້າເຖິງປະຫວັດຂອງທ່ານຈາກ <ph name="DEVICE"/>, ໃຫ້ເຂົ້າສູ່ລະບົບ ຮວມທັງຊິ້ງປະຫວັດ ແລະ ແຖບຂອງທ່ານກັບ <ph name="EMAIL"/>. ນອກຈາກນີ້, ທ່ານຍັງຈະໄດ້ຮັບຂໍ້ມູນທີ່ບັນທຶກໄວ້ ແລະ ຂໍ້ມູນອື່ນໆຂອງທ່ານໃນອຸປະກອນທຸກເຄື່ອງຂອງທ່ານນຳ. ທ່ານສາມາດຢຸດການຊິ້ງໄດ້ທຸກເວລາໃນການຕັ້ງຄ່າ. Brave ອາດປັບແຕ່ງການຊອກຫາ ແລະ ບໍລິການອື່ນໆໃຫ້ເປັນແບບສ່ວນຕົວໂດຍອີງຕາມປະຫວັດຂອງທ່ານ.</translation>
 <translation id="4756378406049221019">ຢຸດ/ໂຫຼດຄືນໃໝ່</translation>
 <translation id="4756388243121344051">ປະຫວັດ</translation>
-<translation id="4756627014339714615">ປ່ຽນເສັ້ນທາງ</translation>
 <translation id="4756671452988984333">ຂໍ້ຄວາມສຳລັບສຽງ</translation>
 <translation id="4759202969060787081">ບໍ່ເປີດ</translation>
 <translation id="4759238208242260848">ດາວ​ໂຫຼດ</translation>
@@ -5034,6 +5016,7 @@
 <translation id="4823484602432206655">ອ່ານ ​ແລະ​ປ່ຽນ​ການຕັ້ງຄ່າຜູ້​ໃຊ້ ແລະ​ອຸ​ປະ​ກອນ</translation>
 <translation id="4824037980212326045">ການສຳຮອງ ແລະ ກູ້ຂໍ້ມູນ Linux</translation>
 <translation id="4824263260587281352">ປ່ຽນການປະສົມປຸ່ມ <ph name="KEY_COMBINATION"/></translation>
+<translation id="8721059978774585764">ບັນຊີ Brave: <ph name="USER_NAME"/> (<ph name="USER_EMAIL"/>)</translation>
 <translation id="4824958205181053313">ຍົກເລີກການຊິ້ງຂໍ້ມູນບໍ?</translation>
 <translation id="6979373432919661185">ສຶກສາເພີ່ມເຕີມກ່ຽວກັບ Brave Root Store ໃນແຖບໃໝ່.</translation>
 <translation id="4825532258163983651">ບໍ່ສາມາດລຶບກະແຈຜ່ານໄດ້</translation>
@@ -5062,6 +5045,7 @@
 <translation id="4841475798258477260">ອຸປະກອນນີ້ສາມາດເຊື່ອມຕໍ່ຫາເຄືອຂ່າຍມືຖືສະເພາະເທົ່ານັ້ນ. <ph name="BEGIN_LINK_LEARN_MORE"/>ສຶກສາເພີ່ມເຕີມ<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="4842976633412754305">ໜ້າ​ນີ້​ພະ​ຍາ​ຍາມ​ໂຫຼດ​ໜັງ​ສື​ຂຽນ​ຈາກ​ແຫຼ່ງ​ທີ່​ບໍ່​ໄດ້​ຮັບ​ຮອງ.</translation>
 <translation id="484462545196658690">ອັດຕະໂນມັດ</translation>
+<translation id="4844967571080002061">ສຶກສາເພີ່ມເຕີມກ່ຽວກັບພາບພື້ນຫຼັງຂອງໜ້າແຖບໃໝ່ຂອງທ່ານ</translation>
 <translation id="4846273627924459555">ຖາມກ່ຽວກັບ “<ph name="SEARCH_TERMS"/>”</translation>
 <translation id="4846628405149428620">ເລືອກບ່ອນທີ່ເວັບໄຊນີ້ສາມາດບັນທຶກການປ່ຽນແປງໄດ້</translation>
 <translation id="4846680374085650406">ທ່ານກໍາລັງປະຕິບັດຕາມຄໍາແນະນໍາຂອງຜູ້ຄວບຄຸມສໍາລັບການຕັ້ງຄ່າ.</translation>
@@ -5107,7 +5091,6 @@
 <translation id="4870995365819149457">ລິ້ງທີ່ຮອງຮັບບາງຢ່າງຈະຍັງຄົງເປີດໃນ <ph name="APP_NAME"/>, <ph name="APP_NAME_2"/>, <ph name="APP_NAME_3"/> ແລະ ອີກ 1 ແອັບ.</translation>
 <translation id="4871322859485617074">PIN ປະກອບມີຕົວອັກສອນທີ່ບໍ່ຖືກຕ້ອງ</translation>
 <translation id="4871370605780490696">ເພີ່ມບຸກມາກຄ໌</translation>
-<translation id="4871630917300912613">ກົນໄກປ້ອງກັນຂອງ JavaScript</translation>
 <translation id="4871719318659334896">ປິດກຸ່ມ</translation>
 <translation id="4872192066608821120">ເພື່ອນຳເຂົ້າລະຫັດຜ່ານ, ໃຫ້ເລືອກໄຟລ໌ CSV</translation>
 <translation id="4872212987539553601">ຕັ້ງຄ່າການເຂົ້າລະຫັດຢູ່ອຸປະກອນ</translation>
@@ -5119,6 +5102,7 @@
 <translation id="4877276003880815204">ກວດກາອົງປະກອບ</translation>
 <translation id="4878634973244289103">ບໍ່ສາມາດສົ່ງຄຳຕິຊົມໄດ້. ກະລຸນາລອງໃໝ່ໃນພາຍຫຼັງ.</translation>
 <translation id="4878718769565915065">ການເພີ່ມລາຍນິ້ວມືໃສ່ກະແຈຄວາມປອດໄພບໍ່ສຳເລັດ</translation>
+<translation id="4878870099449579538">{COUNT,plural, =1{+1}other{+#}}</translation>
 <translation id="4879491255372875719">ອັດຕະໂນມັດ (ຄ່າເລີ່ມຕົ້ນ)</translation>
 <translation id="4880827082731008257">ຄົ້ນຫາປະຫວັດ</translation>
 <translation id="4881685975363383806">ຢ່າແຈ້ງເຕືອນຂ້ອຍໃນເທື່ອຕໍ່ໄປ</translation>
@@ -5149,7 +5133,6 @@
 <translation id="4893073099212494043">ເປີດການນຳໃຊ້ການຄາດເດົາຄຳຕໍ່ໄປ</translation>
 <translation id="4893336867552636863">ອັນ​ນີ້​ຈະ​ລຶບ​ຂໍ້​ມູນ​ການ​ທ່ອງ​ເນັດ​ຂອງ​ທ່ານ​ໄປ​ຈາກ​ອຸ​ປະ​ກອນ​ນີ້​ຖາ​ວອນ.</translation>
 <translation id="4893454800196085005">ດີ - DVD</translation>
-<translation id="4893522937062257019">ໃນໜ້າຈໍລັອກ</translation>
 <translation id="4894055916816649664">ພຽງ 10 ນາທີເທົ່ານັ້ນ</translation>
 <translation id="4895799941222633551">ສ້າງ &amp;ທາງລັດ...</translation>
 <translation id="4898913189644355814">ເວັບໄຊອາດຈະບັນທຶກພາສາທີ່ຕ້ອງການ ຫຼື ລາຍການທີ່ທ່ານຕ້ອງການຊື້. ຂໍ້ມູນນີ້ມີໃຫ້ຢູ່ເວັບໄຊ ແລະ ໂດເມນຍ່ອຍຂອງມັນ.</translation>
@@ -5218,7 +5201,6 @@
 <translation id="495164417696120157">{COUNT,plural, =1{ໄຟລ໌}other{# ໄຟລ໌}}</translation>
 <translation id="495170559598752135">ການກະທໍາ</translation>
 <translation id="4951966678293618079">ບໍ່ບັນທຶກລະຫັດຜ່ານສຳລັບເວັບໄຊນີ້ເດັດຂາດ</translation>
-<translation id="4952580838083306838">ເຊື່ອງຜູ້ຈັດງານ</translation>
 <translation id="4952628481830269193">ສະແດງແຖບບຸກມາກ</translation>
 <translation id="4953808748584563296">ຮູບແທນຕົວສີສົ້ມຕາມຄ່າເລີ່ມຕົ້ນ</translation>
 <translation id="4954652437333037880">ໄຟລ໌</translation>
@@ -5320,6 +5302,7 @@
 <translation id="5031769842769721381">{SELECTED_ITEMS,plural, =0{ທີ່ຢູ່}=1{ທີ່ຢູ່ ({SELECTED_ITEMS})}other{ທີ່ຢູ່ ({SELECTED_ITEMS})}}</translation>
 <translation id="5032430150487044192">ບໍ່ສາມາດສ້າງລະຫັດ QR ໄດ້</translation>
 <translation id="5033137252639132982">ບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ໃຊ້ເຊັນເຊີກວດຈັບການເຄື່ອນໄຫວ</translation>
+<translation id="4823808348311910890"><ph name="ACTOR_NAME"/> ສາມາດໃຊ້ຕົວຈັດການລະຫັດຜ່ານ Brave ເພື່ອເຂົ້າສູ່ລະບົບໃຫ້ທ່ານໄດ້. <ph name="BEGIN_LINK"/>ສຶກສາວິທີທີ່ <ph name="ACTOR_NAME"/> ຈັດການຂໍ້ມູນຂອງທ່ານ<ph name="END_LINK"/></translation>
 <translation id="5035846135112863536">ເລືອກ "ລາຍລະອຽດເພີ່ມເຕີມ" ຢູ່ລຸ່ມນີ້ເພື່ອເບິ່ງຂໍ້ມູນເພີ່ມເຕີມຈາກ <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>.</translation>
 <translation id="5037676449506322593">ເລືອກ​ທັງ​ຫມົດ</translation>
 <translation id="5038621320029329200">ໃບຮັບຮອງທີ່ເຊື່ອຖືໄດ້</translation>
@@ -5434,6 +5417,7 @@
 <translation id="5119173345047096771">Mozilla Firefox</translation>
 <translation id="5120886753782992638">ຄລິກບ່ອນນີ້ເພື່ອເຂົ້າ <ph name="APPROVED_URL"/></translation>
 <translation id="5121130586824819730">ຮາດດິສກ໌ຂອງທ່ານເຕັມ. ກະລຸນາບັນທຶກໄປໃສ່ທີ່ຕັ້ງອື່ນ ຫຼືເຮັດໃຫ້ມີຫ້ອງເພີ່ມຂຶ້ນຢູ່ໃນຮາດດິສກ໌.</translation>
+<translation id="2995025030822668865">Brave ຊອກຫາໃນແຜງຄວບຄຸມດ້ານຂ້າງ</translation>
 <translation id="5123433949759960244">ບານບ້ວງ</translation>
 <translation id="5125714798187802869">ເປີດນຳໃຊ້</translation>
 <translation id="5125751979347152379">URL ໃຊ້ບໍ່ໄດ້.</translation>
@@ -5493,7 +5477,6 @@
 <translation id="5161251470972801814">ອຸປະກອນ USB ຈາກ <ph name="VENDOR_NAME"/></translation>
 <translation id="5161442190864186925">ເຂົ້າຮ່ວມການປະຊຸມ</translation>
 <translation id="5163910114647549394">ຍ້າຍແຖບໄປຢູ່ທ້າຍສຸດຂອງ tabstrip ແລ້ວ</translation>
-<translation id="5164530241085602114">ບໍ່ອະນຸຍາດການແຈ້ງເຕືອນສຳລັບ <ph name="SITE"/></translation>
 <translation id="5166614864040402649">ສະຫຼັບກັບໄປຫາໂໝດເບິ່ງແບບຂ້າງກັນໂດຍເປີດການຕັ້ງຄ່າ, ຈາກນັ້ນເປີດມຸມມອງ ແລ້ວເລືອກແຜງຄວບຄຸມດ້ານຂ້າງ.</translation>
 <translation id="516747639689914043">Hypertext Transport Protocol (HTTP)</translation>
 <translation id="5170568018924773124">ສະ​ແດງ​ຢູ່​ໃນ​ໂຟລ​ເດີ</translation>
@@ -5520,7 +5503,6 @@
 <translation id="5186362203408605578">ໃຊ້ອຸປະກອນອື່ນໂດຍສະແກນລະຫັດ QR</translation>
 <translation id="5186381005592669696">ປັບແຕ່ງພາສາສະແດງຜົນສຳລັບແອັບທີ່ຮອງຮັບ</translation>
 <translation id="3075701570150269201">ທ່ານສາມາດໃຊ້ກະແຈຜ່ານນີ້ເພື່ອເຂົ້າສູ່ລະບົບໃນອຸປະກອນຕ່າງໆຂອງທ່ານໄດ້ໄວຂຶ້ນ. ລະບົບຈະບັນທຶກໄວ້ໃນຕົວຈັດການລະຫັດຜ່ານ Brave ສຳລັບ <ph name="ACCOUNT_NAME"/>.</translation>
-<translation id="5186792064936776005">ໃຊ້ຄ່າເລີ່ມຕົ້ນຫາກມີ</translation>
 <translation id="5186931074173692059">ລະບົບຈະບັນທຶກລະຫັດຜ່ານຂອງທ່ານໄວ້ໃນ <ph name="GOOGLE_PASSWORD_MANAGER"/> ສຳລັບ <ph name="EMAIL"/>.</translation>
 <translation id="5187826826541650604"><ph name="KEY_NAME"/> (<ph name="DEVICE"/>)</translation>
 <translation id="5188242000716462162">ແບ່ງປັນໂດຍ <ph name="USER_NAME"/></translation>
@@ -5565,6 +5547,7 @@
 <translation id="5214639857958972833">ສ້າງບຸກມາກ '<ph name="BOOKMARK_TITLE"/>' ແລ້ວ.</translation>
 <translation id="5215450412607891876">ເປີດການອັບເດດການຮັກສາຄວາມປອດໄພເພີ່ມເຕີມ</translation>
 <translation id="6678492270788037697">ແປຄຳບັນຍາຍສົດໂດຍອັດຕະໂນມັດ. ລະບົບຈະສົ່ງຄຳບັນຍາຍໄປຫາ Brave ເພື່ອແປພາສາ.</translation>
+<translation id="5217925057416367138">ກຳລັງຫຼິ້ນ</translation>
 <translation id="5220011581825921581">ຊອກຫາ + ລູກສອນຂຶ້ນ</translation>
 <translation id="5221516927483787768">ບໍ່ສາມາດສົ່ງສັນຍານ <ph name="HOST_NAME"/> ໄດ້</translation>
 <translation id="5222403284441421673">ບລັອກການດາວໂຫຼດທີ່ບໍ່ປອດໄພໄວ້ແລ້ວ</translation>
@@ -5598,6 +5581,7 @@
 <translation id="5247051749037287028">ຊື່ສະແດງ (ເລືອກໄດ້)</translation>
 <translation id="5247243947166567755">ເລືອກ <ph name="BOOKMARK_TITLE"/></translation>
 <translation id="5020151688261063547">ຖາມຫຍັງກໍໄດ້, ຈາກບ່ອນທີ່ທ່ານຢູ່, ດ້ວຍ Gemini ໃນ Brave</translation>
+<translation id="5248708731547043632">{COUNT,plural, =1{ແຖບຂໍ້ມູນອີກ 1 ລາຍການຈະປາກົດຂຶ້ນເມື່ອປິດແຖບຂໍ້ມູນນີ້}other{ແຖບຂໍ້ມູນອີກ # ລາຍການຈະປາກົດຂຶ້ນເມື່ອປິດແຖບຂໍ້ມູນນີ້}}</translation>
 <translation id="5248934139541843042">ເບິ່ງຜູ້ຈັດງານ</translation>
 <translation id="5249624017678798539">ບຣາວເຊີ​ເກີດ​ຂັດຂ້ອງ ກ່ອນ​ທີ່​ການ​ດາວ​ໂຫລດ​​ຈະ​ສໍາ​ເລັດ.</translation>
 <translation id="5249818097095743806">ໃຊ້ກະແຈຄວາມປອດໄພຂອງທ່ານ</translation>
@@ -5635,12 +5619,12 @@
 <translation id="5276357196618041410">ບໍ່ສາມາດບັນທຶກການຕັ້ງຄ່າໂດຍບໍ່ມີການເຂົ້າສູ່ລະບົບກ່ອນ</translation>
 <translation id="5277127016695466621">ສະແດງແຜງຄວບຄຸມດ້ານຂ້າງ</translation>
 <translation id="5278823018825269962">ID ສະຖານະ</translation>
-<translation id="5279600392753459966">ບລັອກ​ທັງ​ຫມົດ</translation>
 <translation id="5280064835262749532">ອັບເດດຂໍ້ມູນປະຈຳຕົວສຳລັບ <ph name="SHARE_PATH"/></translation>
 <translation id="5280303168922585051">ການຕັ້ງຄ່ານີ້ຖືກຕັ້ງຄ່າໂດຍອົງກອນຂອງທ່ານ. ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບໂປຣແກຣມຊອກຫານີ້?</translation>
 <translation id="5280426389926346830">ສ້າງທາງລັດບໍ?</translation>
 <translation id="5280966903879030278">ໃຊ້ພາສາທີ່ໃຊ້ໃນຊີວິດປະຈຳວັນເພື່ອຊອກຫາປະຫວັດການທ່ອງເວັບຂອງທ່ານ ແລະ ຫາເວັບໄຊທີ່ທ່ານເຄີຍເຂົ້າເບິ່ງ. ການຕັ້ງຄ່ານີ້ປິດຢູ່.</translation>
 <translation id="5281013262333731149">ເປີດໃນ: <ph name="OPEN_BROWSER"/></translation>
+<translation id="5283747245540449968">ສີຂອງໜ້າເວັບ</translation>
 <translation id="5880831677103988141">ໃນລະຫວ່າງການປ່ຽນລະຫັດຜ່ານ, ລະບົບຈະສົ່ງເນື້ອຫາໃນໜ້າ ແລະ ຂໍ້ມູນທີ່ກ່ຽວຂ້ອງໄປຫາ Brave ແລະ ທີມງານອາດກວດສອບເນື້ອຫາດັ່ງກ່າວເພື່ອປັບປຸງຄຸນສົມບັດນີ້. ລະຫັດຜ່ານຂອງທ່ານໄດ້ຖືກເຂົ້າລະຫັດໄວ້ ແລະ ຈະບໍ່ມີໃຜເຫັນໄດ້.</translation>
 <translation id="5284445933715251131">ສືບຕໍ່ການດາວໂຫລດ</translation>
 <translation id="5285635972691565180">ຈໍສະແດງຜົນ <ph name="DISPLAY_ID"/></translation>
@@ -5667,7 +5651,7 @@
 <translation id="5298315677001348398">ທ່ານຕ້ອງການສືບຕໍ່ ແລະ ອະນຸຍາດໃຫ້ຊອບແວນີ້ດຳເນີນການປ່ຽນແປງກັບອຸປະກອນຂອງທ່ານບໍ?</translation>
 <translation id="5299109548848736476">ຢ່າຕິດຕາມ</translation>
 <translation id="5299558715747014286">ເບິ່ງ ແລະ ຈັດການກຸ່ມແຖບຂອງທ່ານ</translation>
-<translation id="8412911915618156816">ການສົນທະນາຂອງທ່ານກັບ Gemini ຫຼື <ph name="BEGIN_LINK_WORKSPACE_DATA_PRIVACY"/>ຂໍ້ມູນໃນ Brave Workspace<ph name="END_LINK_WORKSPACE_DATA_PRIVACY"/> ຂອງທ່ານຈະບໍ່ໄດ້ຮັບການກວດສອບ ຫຼື ນຳໄປໃຊ້ເພື່ອປັບປຸງໂມເດວ AI ສ້າງເນື້ອຫາ. Gemini ເປັນ AI ແລະ ອາດເຮັດຜິດພາດໄດ້.</translation>
+<translation id="5300667117276823109">ການສົນທະນາຂອງທ່ານກັບ Gemini ຫຼື <ph name="BEGIN_LINK_WORKSPACE_DATA_PRIVACY"/>ຂໍ້ມູນໃນ Brave Workspace<ph name="END_LINK_WORKSPACE_DATA_PRIVACY"/> ຂອງທ່ານຈະບໍ່ໄດ້ຮັບການກວດສອບ ຫຼື ນຳໄປໃຊ້ເພື່ອປັບປຸງໂມເດວ AI ສ້າງເນື້ອຫາ. Gemini ເປັນ AI ແລະ ອາດເຮັດຜິດພາດໄດ້.</translation>
 <translation id="5301398529256275325">ລອງຂໍໃຫ້ເຮັດວຽກຕ່າງໆ ເຊັ່ນ: "ສະຫຼຸບໜ້ານີ້" ຫຼື ໃຊ້ຄຳຖາມ ຫຼື ຄຳຂໍຂອງທ່ານເອງ.</translation>
 <translation id="5301954838959518834">ຕົກລົງ, ເຂົ້າໃຈແລ້ວ</translation>
 <translation id="5302032366299160685">ລໍຖ້າໃຫ້ໄຟລ໌ເປີດຂຶ້ນກ່ອນທີ່ຈະລອງໃໝ່</translation>
@@ -5680,6 +5664,7 @@
 <translation id="5307386115243749078">ຈັບຄູ່ປຸ່ມ Bluetooth</translation>
 <translation id="5308380583665731573">​ເຊື່ອມ​ຕໍ່</translation>
 <translation id="5308989548591363504">ກວດຫາເມົາແວ</translation>
+<translation id="5309562313526658209">ນຳທາງ</translation>
 <translation id="5309641450810523897">ID ກໍລະນີຊ່ວຍເຫຼືອ</translation>
 <translation id="5311304534597152726">ກຳລັງເຂົ້າສູ່ລະບົບເປັນ</translation>
 <translation id="5312746996236433535">ສະທ້ອນໜ້າຈໍ</translation>
@@ -5761,7 +5746,6 @@
 <translation id="5392864580775235956">ເພີ່ມ ແລະ ແກ້ໄຂຮູບ</translation>
 <translation id="5393330235977997602">ຕົວເລືອກ PIN</translation>
 <translation id="5393761864111565424">{COUNT,plural, =1{ລິ້ງ}other{# ລິ້ງ}}</translation>
-<translation id="5394400188854257119">5 ນາທີ</translation>
 <translation id="5394529681046491727">Wi-Fi Direct</translation>
 <translation id="5395353843367783642">ກຳລັງບັນທຶກໃນບັນຊີຂອງທ່ານ...</translation>
 <translation id="5397656531674854099">ໃຊ້ກຸ່ມແຖບຂອງທ່ານໃນໂທລະສັບຂອງທ່ານ</translation>
@@ -5804,6 +5788,7 @@
 <translation id="5425042808445046667">ສືບຕໍ່ການດາວໂຫລດ</translation>
 <translation id="542570217857307910">ຕອນນີ້ທ່ານສາມາດຂະຫຍາຍແຖບຂອງທ່ານໄດ້ໂດຍການວາງເມົ້າໃສ່ເທິງແຖບ. ເພື່ອປິດຕົວເລືອກນີ້, ໃຫ້ຄລິກຂວາຢູ່ບ່ອນນີ້.</translation>
 <translation id="5425863515030416387">ເຂົ້າສູ່ລະບົບໄດ້ຢ່າງງ່າຍດາຍໃນທົ່ວອຸປະກອນ</translation>
+<translation id="542606797693939821">ຊອກຫາຕົວຊີ້ເມົ້າ</translation>
 <translation id="5427278936122846523">ແປທຸກເທື່ອ</translation>
 <translation id="5427459444770871191">ໝຸນຕາມເຂັມໂມງ</translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (ມີອັບເດດໃຫ້ຢູ່)</translation>
@@ -5862,6 +5847,7 @@
 <translation id="5463856536939868464">ເມນູທີ່ມີບຸກມາກສ໌ເຊື່ອງໄວ້</translation>
 <translation id="5466374726908360271">ວາງໃສ່ ແລະ ຊອກຫາ “<ph name="SEARCH_TERMS"/>”</translation>
 <translation id="5466721587278161554">ລະບົບຈະບັນທຶກກຸ່ມແຖບຂອງທ່ານໄວ້ໃນແຖບບຸກມາກ, ເມນູແອັບ ແລະ ຈະອັບເດດກຸ່ມແຖບດັ່ງກ່າວໃນອຸປະກອນທີ່ເຂົ້າສູ່ລະບົບແລ້ວທຸກເຄື່ອງຂອງທ່ານຫາກເປີດການຊິ້ງໄວ້</translation>
+<translation id="5466743034850405734">ເປີດໜ້າແຖບໃໝ່</translation>
 <translation id="5467207440419968613">ບລັອກ <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> ໄວ້ແລ້ວ</translation>
 <translation id="5468173180030470402">ກຳລັງຊອກຫາການແບ່ງປັນໄຟລ໌</translation>
 <translation id="5468330507528805311">ສະຖານະການປ່ອຍສັນຍານ:</translation>
@@ -5892,7 +5878,6 @@
 <translation id="5487214759202665349">ໃຊ້ທີ່ຢູ່ນີ້ໃນ iPhone ຂອງທ່ານ</translation>
 <translation id="5487460042548760727">ປ່ຽນຊື່ໂປຣໄຟລ໌ເປັນ <ph name="PROFILE_NAME"/></translation>
 <translation id="5488093641312826914">ສຳເນົາ '<ph name="COPIED_ITEM_NAME"/>' ແລ້ວ</translation>
-<translation id="5489077378642700219">ບໍ່ອະນຸຍາດການແຈ້ງເຕືອນຈາກ <ph name="WEBSITE"/> ແຕ່ໃຫ້ຖາມຄືນໃນພາຍຫຼັງ</translation>
 <translation id="5490798133083738649">ອະນຸຍາດໃຫ້ Linux ເຂົ້າເຖິງໄມໂຄຣໂຟນຂອງທ່ານ</translation>
 <translation id="549211519852037402">ສີເທົາອ່ອນ ແລະ ສີຂາວ</translation>
 <translation id="5492637351392383067">ການເຂົ້າລະຫັດຢູ່ອຸປະກອນ</translation>
@@ -5901,6 +5886,7 @@
 <translation id="5493792505296048976">ໜ້າຈໍເປີດຢູ່</translation>
 <translation id="5494016731375030300">ແຖບທີ່ປິດຫຼ້າສຸດ</translation>
 <translation id="5494362494988149300">ເປີດເມື່ອສໍາເລັດ</translation>
+<translation id="5494439739088303974">ໃຊ້ Google Lens ເພື່ອຖາມກ່ຽວກັບຂໍ້ຄວາມ ຫຼື ຮູບພາບໃດກໍໄດ້ຢູ່ໜ້າເວັບ</translation>
 <translation id="8279045205539723323">ຢັ້ງຢືນວ່າແມ່ນທ່ານເພື່ອຮັບລະຫັດຜ່ານຢູ່ອຸປະກອນທຸກເຄື່ອງດ້ວຍບັນຊີ Brave ຂອງທ່ານ</translation>
 <translation id="5494920125229734069">ເລືອກ​ທັງ​ຫມົດ</translation>
 <translation id="5495466433285976480">ອັນນີ້ຈະເອົາຜູ້ໃຊ້ພາຍໃນ, ໄຟລ໌, ຂໍ້ມູນ ແລະການຕັ້ງຄ່າອື່ນໆທັງໝົດອອກໄປ ຫຼັງຈາກການປິດເປີດໃໝ່ຄັ້ງຕໍ່ໄປຂອງທ່ານ. ຜູ້ໃຊ້ທຸກຄົນຕ້ອງໄດ້ລົງຊື່ເຂົ້າ​ໃຊ້ອີກ.</translation>
@@ -5928,7 +5914,6 @@
 <translation id="5505307013568720083">ໝຶກໝົດ</translation>
 <translation id="5509693895992845810">ບັນທຶກເປັນ...</translation>
 <translation id="5509914365760201064">ຜູ້ອອກໃຫ້: <ph name="CERTIFICATE_AUTHORITY"/></translation>
-<translation id="5510283697605334093">{NUM_SITES,plural, =1{ບໍ່ອະນຸຍາດໃຫ້ມີການແຈ້ງເຕືອນສຳລັບ 1 ເວັບໄຊ}other{ບໍ່ອະນຸຍາດໃຫ້ມີການແຈ້ງເຕືອນສຳລັບ {NUM_SITES} ເວັບໄຊ}}</translation>
 <translation id="6849870115130610913">ຮັບລາຍລະອຽດຮູບພາບຈາກ Brave</translation>
 <translation id="5511379779384092781">ນ້ອຍພິເສດ</translation>
 <translation id="5512739112435045339">ກະລຸນາສ້າງພື້ນທີ່ຫວ່າງຢູ່ອຸປະກອນຂອງທ່ານ. ຈາກນັ້ນ, ໃຫ້ລອງດາວໂຫຼດໃໝ່</translation>
@@ -5986,6 +5971,7 @@
 <translation id="5558129378926964177">ຊູມເຂົ້າ</translation>
 <translation id="5558594314398017686">ຄ່າເລີ່ມຕົ້ນຂອງລະບົບປະຕິບັດການ (ຫາກມີ)</translation>
 <translation id="5559311991468302423">ລຶບທີ່ຢູ່</translation>
+<translation id="5559646482656763170">ອັບເດດເມື່ອບໍ່ໄດ້ນຳໃຊ້</translation>
 <translation id="555968128798542113">ເວັບໄຊນີ້ສາມາດຄວບຄຸມ ແລະ ຕັ້ງໂປຣແກຣມໃໝ່ໃນອຸປະກອນ MIDI ຂອງທ່ານໄດ້</translation>
 <translation id="5559768063688681413">ບໍ່ມີເຄື່ອງພິມທີ່ບັນທຶກໄວ້</translation>
 <translation id="55601339223879446">ປັບຂອບເຂດເດັສທັອບຂອງທ່ານຢູ່ພາຍໃນຈໍສະແດງຜົນ</translation>
@@ -6090,7 +6076,6 @@
 <translation id="563821631542362636">ອະນຸຍາດໃຫ້ເວັບໄຊບັນທຶກຂໍ້ມູນ</translation>
 <translation id="5639549361331209298">ໂຫຼດໜ້ານີ້ຄືນໃໝ່, ກົດຄ້າງໄວ້ ເພື່ອເບິ່ງທາງເລືອກເພີ່ມເຕີມ</translation>
 <translation id="5640133431808313291">ຈັດການກະແຈຄວາມປອດໄພ</translation>
-<translation id="5640322514952298438">ໃຫ້ຄວາມສຳຄັນກັບຄວາມໄວຂອງເວັບໄຊ</translation>
 <translation id="5641715878999557094">"<ph name="EXTENSION_NAME"/>" ໄດ້ປ່ຽນໜ້າທີ່ຈະສະແດງເມື່ອທ່ານຄລິກປຸ່ມໜ້າຫຼັກ.</translation>
 <translation id="5643191124441701136">ລະຫັດຄວາມປອດໄພຂອງທ່ານຢູ່ໜ້າບັດຂອງທ່ານ</translation>
 <translation id="5643321261065707929">ເຄືອຂ່າຍມີການວັດແທກປະລິມານອິນເຕີເນັດ</translation>
@@ -6158,7 +6143,6 @@
 <translation id="5701786609538182967">ແອັບອື່ນໆຖືກຕັ້ງໃຫ້ເປີດລິ້ງດຽວກັນເປັນ <ph name="APP_NAME"/>. ນີ້ຈະປິດການນຳໃຊ້ <ph name="APP_NAME_2"/>, <ph name="APP_NAME_3"/>, <ph name="APP_NAME_4"/> ແລະ ອີກ 1 ແອັບບໍ່ໃຫ້ເປີດລິ້ງທີ່ຮອງຮັບ.</translation>
 <translation id="5702161882524398150">ຖາມກ່ຽວກັບແຖບກ່ອນໜ້າ</translation>
 <translation id="5703716265115423771">ສຽງ​ລົງ</translation>
-<translation id="5703998022096520811">ການປົກປ້ອງເຊີງບຸກແບບສົດໆໂດຍການສົ່ງຂໍ້ມູນເພີ່ມເຕີມໄປຫາ Google Safe Browsing</translation>
 <translation id="5705005699929844214">ສະແດງຕົວເລືອກການຊ່ວຍເຂົ້າເຖິງທຸກເທື່ອ</translation>
 <translation id="5707079561391284762">ຕິດຕາມການເຄື່ອນໄຫວຂອງເຄີເຊີ</translation>
 <translation id="5707674184620508665">ອົງການຈັດຕັ້ງຂອງທ່ານ, <ph name="ACCOUNT_MANAGER"/>, ຈະບໍ່ສາມາດເຫັນ ຫຼື ຈັດການຂໍ້ມູນທີ່ມີຢູ່ຂອງທ່ານໄດ້. ໂດຍຂໍ້ມູນຈະຍັງຄົງຢູ່ໃນໂປຣໄຟລ໌ທີ່ມີຢູ່.</translation>
@@ -6248,7 +6232,6 @@
 <translation id="5789581866075720267">ເພື່ອນຳເຂົ້າລະຫັດຜ່ານໄປໃສ່ <ph name="BRAND"/> ຢູ່ອຸປະກອນນີ້, ໃຫ້ເລືອກໄຟລ໌ CSV.</translation>
 <translation id="5790085346892983794">ສໍາ​ເລັດ</translation>
 <translation id="5790651917470750848">ມີການສົ່ງຕໍ່ຜອດຢູ່ແລ້ວ</translation>
-<translation id="5792076233957036027">ໃນການເຊື່ອມຕໍ່ທັງໝົດ</translation>
 <translation id="5792295754950501287">ຄຳສັ່ງເພີ່ມເຕີມສຳລັບ <ph name="CARD_DESCRIPTION"/></translation>
 <translation id="5792728279623964091">ກະລຸນາແຕະປຸ່ມປິດເປີດເຄື່ອງຂອງທ່ານ</translation>
 <translation id="5792874008054171483">ຄຳສັ່ງເພີ່ມເຕີມສຳລັບ <ph name="SITE_NAME"/></translation>
@@ -6317,14 +6300,12 @@
 <translation id="583673505367439042">ເວັບໄຊສາມາດຂໍແກ້ໄຂໄຟລ໌ ແລະ ໂຟນເດີໃນອຸປະກອນຂອງທ່ານໄດ້</translation>
 <translation id="5836999627049108525">ພາສາທີ່ຕ້ອງການແປ</translation>
 <translation id="583756221537636748">ເຄສ</translation>
-<translation id="5840656138956959276">ປັບປຸງແລ້ວ: ເຂັ້ມງວດ</translation>
 <translation id="7230006500876504868">ຊອກຫາດ້ວຍ Brave</translation>
 <translation id="5840680448799937675">ໄຟລ໌ຈະຖືກແບ່ງປັນອອບລາຍຕະຫຼອດ</translation>
 <translation id="5841270259333717135">ຕັ້ງຄ່າອີເທີເນັດ</translation>
 <translation id="5841338463993781099">ບັນທຶກໃນບັນຊີບໍ?</translation>
 <translation id="5842497610951477805">ເປີດນຳໃຊ້ Bluetooth</translation>
 <translation id="940606602121164929">ເມື່ອທ່ານເຂົ້າສູ່ລະບົບ, ຂໍ້ມູນນີ້ຈະລິ້ງກັບບັນຊີ Brave ຂອງທ່ານເພື່ອປົກປ້ອງທ່ານໃນທົ່ວບໍລິການ Brave ຕົວຢ່າງ: ການເພີ່ມການປົກປ້ອງໃນ Gmail ຫຼັງຈາກເຫດການຄວາມປອດໄພ.</translation>
-<translation id="5844624110926956645">{NUM_NOTIFICATION,plural, =1{ການແຈ້ງເຕືອນປະມານ 1 ລາຍການຕໍ່ມື້}other{ການແຈ້ງເຕືອນປະມານ {NUM_NOTIFICATION} ລາຍການຕໍ່ມື້}}</translation>
 <translation id="5844685625984052392">hints</translation>
 <translation id="5846200638699387931">ຂໍ້ຜິດພາດທາງໄວຍະກອນທີ່ກ່ຽວຂ້ອງ: <ph name="ERROR_LINE"/></translation>
 <translation id="5846504156837627898">ຈັດການການອະນຸຍາດເວັບໄຊ</translation>
@@ -6359,7 +6340,6 @@
 <translation id="5863195274347579748">ອຸປະກອນເສີມພາຍນອກອາດຈະສາມາດເຂົ້າເຖິງ ຫຼື ແບ່ງປັນຂໍ້ມູນສ່ວນຕົວໄດ້.</translation>
 <translation id="5863263400083022538">ບໍລິການຂອງລະບົບ</translation>
 <translation id="5863515189965725638">ແກ້ໄຂ IBAN</translation>
-<translation id="4935202024092997829">ໃຊ້ຄ່າເລີ່ມຕົ້ນຫາກມີ ແລະ ໃຊ້ Brave DNS ເປັນຂໍ້ມູນສຳຮອງ</translation>
 <translation id="5864754048328252126">ການດຳເນີນການເວລາບໍ່ນຳໃຊ້ເຄື່ອງໃນຂະນະທີ່ສາກ</translation>
 <translation id="586567932979200359">ທ່ານ​ກໍາ​ລັງ​ແລ່ນ <ph name="PRODUCT_NAME"/> ຈາກ​ຮູບ​ແຜ່ນ​ດິສກ໌ຂອງມັນ. ການ​ຕິດ​ຕັ້ງ​ມັນ​ຢູ່ໃນ​ຄອມ​ພິວ​ເຕີ​ຂອງ​ທ່ານ​​ເຮັດ​ໃຫ້​ແລ່ນມັນໄດ້​ໂດຍ​ບໍ່ຕ້ອງ​ມີ​ຮູບ​​ແຜ່ນດິສກ໌ໄດ້​, ແລະ​ຮັບ​ປະ​ກັນ​ໃຫ້ມັນອັບເດດຢູ່.</translation>
 <translation id="6538479075382111079">ສົ່ງສະຖິຕິການໃຊ້ ແລະ ລາຍງານການຂັດຂ້ອງໃຫ້ Brave ໂດຍອັດຕະໂນມັດ</translation>
@@ -6487,6 +6467,7 @@
 <translation id="5964113968897211042">{COUNT,plural, =0{ເປີດທັງໝົດໃນ&amp;ໜ້າຈໍໃໝ່}=1{ເປີດໃນ&amp;ໜ້າຈໍໃໝ່}other{ເປີດທັງໝົດ ({COUNT}) ໃນ&amp;ໜ້າຈໍໃໝ່}}</translation>
 <translation id="5964247741333118902">ເນື້ອຫາທີ່ຝັງໄວ້</translation>
 <translation id="5965607173855879702">ກຳລັງລຶບຂໍ້ມູນ...</translation>
+<translation id="5966067139745999860">ຍ້າຍ <ph name="SHORTCUT_TITLE"/> ໄປຫາຕຳແໜ່ງທີ <ph name="SHORTCUT_POSITION"/> ຈາກທັງໝົດ <ph name="TOTAL_SHORTCUTS"/> ແລ້ວ.</translation>
 <translation id="5966511985653515929">ລະບົບຈະລຶບຂໍ້ມູນເວັບໄຊອອກຈາກອຸປະກອນຂອງທ່ານເມື່ອທ່ານປິດໜ້າຈໍທັງໝົດ</translation>
 <translation id="5968022600320704045">ບໍ່​ມີ​ຜົນ​​ການ​ຊອກຫາ​</translation>
 <translation id="5968400720580217226">ໂໝດ AI</translation>
@@ -6513,18 +6494,20 @@
 <translation id="5979421442488174909">ແປເປັນ <ph name="LANGUAGE"/></translation>
 <translation id="5979469435153841984">ເພື່ອໝາຍໜ້າຕ່າງໆໄວ້, ໃຫ້ຄລິກດາວໃນແຖບທີ່ຢູ່</translation>
 <translation id="5982578203375898585">ສະແດງລາຍການດາວໂຫຼດເມື່ອສຳເລັດການດາວໂຫຼດແລ້ວ</translation>
+<translation id="5982657619592274533">ເຊື່ອງສ່ວນທ້າຍຢູ່ໜ້າແຖບໃໝ່</translation>
 <translation id="5983716913605894570">ກຳລັງສ້າງ...</translation>
 <translation id="5984222099446776634">ເຂົ້າເບິ່ງບໍ່​ດົນ​ມາ​ນີ້</translation>
 <translation id="598426658342593742">ຍ້າຍແຖບຂອງທ່ານໄປທາງຂ້າງ</translation>
 <translation id="5985458664595100876">ຮູບແບບ URL ບໍ່ຖືກຕ້ອງ. ຮູບແບບທີ່ຮອງຮັບແມ່ນ \\server\share ແລະ smb://server/share.</translation>
 <translation id="7939939035456567166">ແອັບ Brave ທີ່ຜູ້ເບິ່ງແຍງລະບົບອຸປະກອນຂອງທ່ານຕິດຕັ້ງ.</translation>
-<translation id="5985899926376570122">ແບບປັບປຸງແລ້ວ</translation>
 <translation id="5986442691296752186">ໃຫ້ແອັບ Linux ຄວບຄຸມອຸປະກອນ USB.</translation>
+<translation id="5987624353990540124">{COUNT,plural, =1{ໜ້າຈໍແຍກຂອງທ່ານຈະບໍ່ເປີດຫຼັງຈາກທ່ານເລີ່ມເປີດໃຊ້ໃໝ່}other{ໜ້າຈໍແຍກ {COUNT} ໜ້າຈໍຂອງທ່ານຈະບໍ່ເປີດຄືນໃໝ່ຫຼັງຈາກທີ່ທ່ານເລີ່ມເປີດໃຊ້ໃໝ່}}</translation>
 <translation id="598810097218913399">ລຶບການກຳນົດອອກ</translation>
 <translation id="5988563937187882754">ເບິ່ງທາງຂວາ</translation>
 <translation id="1269111638239876694">ໃນຂະນະທີ່ທ່ານເລືອກເບິ່ງເວັບໄຊ, ເນື້ອຫາໜ້າຂອງພວກມັນແມ່ນໄດ້ຖືກເຂົ້າລະຫັດ ແລະ ໄດ້ບັນທຶກໃສ່ອຸປະກອນຂອງທ່ານ. ນີ້ອາດຈະສົ່ງຜົນກະທົບຕໍ່ປະສິດທິພາບຂອງ Brave</translation>
 <translation id="5990266201903445068">Wi-Fi ເທົ່ານັ້ນ</translation>
 <translation id="5990386583461751448">ແປແລ້ວ</translation>
+<translation id="5991039386730545918">ລະບົບຈະໃຊ້ຮູບແບບສີສັນຂອງສີຂອງໜ້າທີ່ທ່ານເລືອກສະເພາະໃນລະຫວ່າງທີ່ຄອນທຣາສສູງຂອງລະບົບເປີດຢູ່ເທົ່ານັ້ນ</translation>
 <translation id="5992225669837656567">ເມົ້າທັງໝົດຖືກຕັດການເຊື່ອມຕໍ່ແລ້ວ</translation>
 <translation id="5992652489368666106">ບໍ່ມີຂອບ</translation>
 <translation id="5996490984199062729">ຍັງບໍ່ໄດ້ຕັ້ງໂປຣໄຟລ໌ຂອງທ່ານ</translation>
@@ -6565,7 +6548,6 @@
 <translation id="296137235951584143">ເຮັດໃຫ້ Brave ເປັນຂອງທ່ານ</translation>
 <translation id="6024317249717725918">ຊອກຫາເຟຣມວິດີໂອດ້ວຍ <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="6025215716629925253">ຮ່ອງຮອຍການກອງ</translation>
-<translation id="6026436621921471553">ຍົກເລີກການໂຟກັສກຸ່ມແຖບ</translation>
 <translation id="6026819612896463875"><ph name="WINDOW_TITLE"/> - ເຊື່ອມຕໍ່ກັບອຸປະກອນ USB ແລ້ວ</translation>
 <translation id="6027143200498653403">ເມື່ອທ່ານຖາມຄໍາຖາມກ່ຽວກັບປະຫວັດຂອງທ່ານ, ທ່ານສາມາດໄດ້ຮັບຄໍາຕອບກ່ຽວກັບຂໍ້ມູນສະເພາະຈາກໜ້າທີ່ທ່ານໄດ້ເຂົ້າເບິ່ງ</translation>
 <translation id="6027945736510816438">ທ່ານໝາຍເຖິງ <ph name="WEBSITE"/> ບໍ?</translation>
@@ -6665,6 +6647,7 @@
 <translation id="6104929924898022309">ໃຊ້ປຸ່ມຊອກຫາເພື່ອປ່ຽນລັກສະນະການເຮັດວຽກຂອງປຸ່ມຟັງຊັນ</translation>
 <translation id="6108952804512516814">ສ້າງດ້ວຍ AI</translation>
 <translation id="6110794992500777605">ທາງລັດ ແລະ ເວັບໄຊຂອງຂ້ອຍ</translation>
+<translation id="611080676871930948">ສົ່ງຄຳຕິຊົມກ່ຽວກັບໂໝດການອ່ານ</translation>
 <translation id="6111718295497931251">ລຶບສິດເຂົ້າເຖິງ Google Drive ອອກ</translation>
 <translation id="934027498329250030">ຖາມ Brave ກ່ຽວກັບ “<ph name="SEARCH_TERMS"/>”</translation>
 <translation id="6112727384379533756">ເພີ່ມປີ້</translation>
@@ -6682,6 +6665,7 @@
 <translation id="6124698108608891449">ເວັບໄຊນີ້ຕ້ອງການມີການອະນຸຍາດເພີ່ມເຕີມ.</translation>
 <translation id="6125202119952209826">ເຂົ້າຮ່ວມກຸ່ມແຖບກັບ <ph name="OWNER_FIRST_NAME"/></translation>
 <translation id="6125639926370653692">ດວງເດືອນ</translation>
+<translation id="6125649408655762488">ໂຟກັສໃສ່ກຸ່ມ</translation>
 <translation id="6126601353087978360">ກະລຸນາລະບຸຄຳຕິຊົມຂອງທ່ານຢູ່ບ່ອນນີ້:</translation>
 <translation id="6127292407256937949">ເປີດລະດັບສຽງຢູ່. ປິດລະດັບສຽງ.</translation>
 <translation id="6127598727646973981">ການເຊື່ອມຕໍ່ທີ່ປອດໄພ</translation>
@@ -6694,7 +6678,6 @@
 <translation id="6130887916931372608">ປຸ່ມແປ້ນພິມ</translation>
 <translation id="6131511889181741773">ການສາດສີ</translation>
 <translation id="6132251717264923430">ປັກໝຸດປຸ່ມແລ້ວ</translation>
-<translation id="6134418895482326458">ເຊື່ອງສ່ວນທ້າຍຢູ່ໜ້າແຖບໃໝ່</translation>
 <translation id="6134428719487602109">ລຶບບັນຊີຜູ້ໃຊ້ທັງໝົດອອກແລ້ວຣີເຊັດ Chromebook ຂອງທ່ານເພື່ອໃຫ້ເປັນຄືອັນໃໝ່.</translation>
 <translation id="6135826623269483856">ບໍ່ອະນຸຍາດໃຫ້ຈັດການໜ້າຈໍຢູ່ການສະແດງຜົນທັງໝົດຂອງທ່ານ</translation>
 <translation id="6136285399872347291">ລຶບຖອຍຫຼັງ</translation>
@@ -6712,7 +6695,6 @@
 <translation id="6147253937684562370">ເພື່ອປົດລັອກການເຂົ້າສູ່ລະບົບໂປຣໄຟລ໌ດ້ວຍອີເມວບັນຊີຫຼັກຂອງທ່ານ: <ph name="EMAIL"/></translation>
 <translation id="6147279996212084542">ອະທິບາຍ</translation>
 <translation id="6148576794665275391">ເປີດດຽວນີ້</translation>
-<translation id="614890671148262506">ອະນຸຍາດການແຈ້ງເຕືອນຈາກເວັບໄຊນີ້ທຸກເທື່ອ</translation>
 <translation id="6149015141270619212">ບໍ່ສາມາດເຊື່ອມຕໍ່ກັບອິນເຕີເນັດໄດ້</translation>
 <translation id="6149061208933997199">ໃຊ້​ລະ​ຫັດ​ຜ່ານ</translation>
 <translation id="6149791593592044995">ໃຊ້ການເຮັດເຄື່ອງໝາຍໂທນສຽງສະໄໝໃໝ່</translation>
@@ -6748,7 +6730,6 @@
 <translation id="6169967265765719844">ການອະນຸຍາດສຳລັບເກມ ແລະ ແອັບທີ່ຕິດຕັ້ງຜ່ານ Steam ແມ່ນສາມາດຈັດການໄດ້ໃນ <ph name="LINK_BEGIN"/>ການຕັ້ງຄ່າແອັບ Steam<ph name="LINK_END"/>.</translation>
 <translation id="6170313103929479668">ຈັດຮຽງມຸມມອງແຍກ</translation>
 <translation id="6170470584681422115">ແຊນວິດ</translation>
-<translation id="6170675927290506430">ເຂົ້າໄປການຕັ້ງຄ່າການແຈ້ງເຕືອນ</translation>
 <translation id="6171779718418683144">ຖາມທຸກເທື່ອທີ່ເຂົ້າໄປເວັບໄຊ</translation>
 <translation id="617213288191670920">ບໍ່ໄດ້ເພີ່ມພາສາເທື່ອ</translation>
 <translation id="6174909075810107548">ໃຊ້ປຸ່ມ “5” ເພື່ອກົດປຸ່ມເມົ້າ</translation>
@@ -6844,6 +6825,7 @@
 <translation id="6242852299490624841">ໂຟກັສແຖບນີ້</translation>
 <translation id="6243774244933267674">ບໍ່ມີເຊີບເວີຢູ່</translation>
 <translation id="6244245036423700521">ນຳເຂົ້າໄຟລ໌ ONC</translation>
+<translation id="6244558433635108262">{COUNT,plural, =1{ໜ້າຈໍແຍກຂອງທ່ານຈະບໍ່ເປີດຄືນໃໝ່.}other{ໜ້າຈໍແຍກ # ລາຍການຂອງທ່ານຈະບໍ່ເປີດຄືນໃໝ່.}}</translation>
 <translation id="5455369595872837596">ທ່ານສາມາດເຂົ້າເຖິງມັນໄດ້ຢູ່ຕົວຈັດການລະຫັດຜ່ານ Brave.</translation>
 <translation id="8883879481897424949">ຕົວຈັດການລະຫັດຜ່ານ Brave</translation>
 <translation id="6247620186971210352">ບໍ່ພົບແອັບໃດໆ</translation>
@@ -6916,6 +6898,7 @@
 <translation id="6300478323573969040">ຕ້ອງມີຢ່າງໜ້ອຍ 12 ຕົວອັກສອນ ແລະ ມີຕົວພິມໃຫຍ່, ຕົວພິມນ້ອຍ, ຕົວເລກ ແລະ ສັນຍະລັກ. ຕ້ອງບໍ່ມີຕົວອັກສອນ ຫຼື ລຳດັບທີ່ຊ້ຳກັນ 4 ຕົວຂຶ້ນໄປ.</translation>
 <translation id="630065524203833229">ອອກ</translation>
 <translation id="6300718114348072351">ບໍ່ສາມາດຕັ້ງຄ່າ <ph name="PRINTER_NAME"/> ໂດຍອັດຕະໂນມັດໄດ້. ກະລຸນາລະບຸລາຍລະອຽດເຄື່ອງພິມຂັ້ນສູງ. <ph name="LINK_BEGIN"/>ສຶກສາເພີ່ມເຕີມ<ph name="LINK_END"/></translation>
+<translation id="6302411260734295784">ຕົວເລືອກເພີ່ມເຕີມ</translation>
 <translation id="6302661287897119265">ກັ່ນຕອງ</translation>
 <translation id="6303023592034094909">ມີແອັບເວີຊັນໃໝ່ໃຫ້</translation>
 <translation id="630308129961693966">ເລືອກຕຳແໜ່ງແຖບທີ່ຢູ່ຂອງທ່ານ</translation>
@@ -6960,7 +6943,6 @@
 <translation id="6341850831632289108">ກວດພົບຕຳແໜ່ງທີ່ທ່ານຢູ່</translation>
 <translation id="6342069812937806050">ເມື່ອກີ້ນີ້</translation>
 <translation id="6343003829431264373">ໜ້າຄູ່ເທົ່ານັ້ນ</translation>
-<translation id="6343932110790212017">ຕັ້ງແຕ່ນີ້ເປັນຕົ້ນໄປ, ທ່ານສາມາດຊອກຫາ ແລະ ປິດແຖບຂອງທ່ານໄດ້ຢູ່ບ່ອນນີ້. ທ່ານສາມາດຖອນໝຸດແຖບນີ້ໄດ້ທຸກເວລາ.</translation>
 <translation id="6343981313228733146">ໜ້າຈໍເລື່ອນຂຶ້ນ ແລະ ໄປທາງຂວາ</translation>
 <translation id="6344170822609224263">ເຂົ້າໃຊ້ລາຍຊື່ການເຊື່ອມຕໍ່​ເຄືອ​ຂ່າຍ</translation>
 <translation id="6344576354370880196">ເຄື່ອງພິມທີ່ບັນທຶກໄວ້</translation>
@@ -6992,7 +6974,6 @@
 <translation id="6362853299801475928">ລາຍ​ງານ​ບັນ​ຫາ...</translation>
 <translation id="6363990818884053551">ເພື່ອເລີ່ມການຊິ້ງຂໍ້ມູນ, ໃຫ້ຢັ້ງຢືນວ່າແມ່ນທ່ານແທ້</translation>
 <translation id="6365069501305898914">Facebook</translation>
-<translation id="6366190659675876144">ການປົກປ້ອງມາດຕະຖານ</translation>
 <translation id="6367196786591004737">ລຶບລາຍການ</translation>
 <translation id="6367396429435748845">ກົດ <ph name="ALT"/> + <ph name="LAUNCHER"/> + <ph name="NUM_4"/> ເພື່ອຢຸດຊົ່ວຄາວ ແລະ ສືບຕໍ່ໃຊ້ປຸ່ມເມົ້າ</translation>
 <translation id="6367853307713830174">Gemini ຈະສະແດງຂັ້ນຕອນຂອງຕົນເອງ ແລະ ພະຍາຍາມຢືນຢັນກ່ອນທີ່ຈະດຳເນີນການກັບຂັ້ນຕອນທີ່ລະອຽດອ່ອນ. ເຊິ່ງທ່ານສາມາດຢຸດ ຫຼື ຄວບຄຸມໄດ້ທຸກເວລາ.</translation>
@@ -7034,11 +7015,11 @@
 <translation id="6399675241776343019">ຖືກປະຕິເສດ</translation>
 <translation id="6399774419735315745">ສາຍລັບ</translation>
 <translation id="6400360390396538896">ເປີດຕະຫຼອດຢູ່ <ph name="ORIGIN"/></translation>
-<translation id="6400714103322134861">ຍົກເລີກການໂຟກັສກຸ່ມແຖບ</translation>
 <translation id="6401118106417399952">EID ຂອງອຸປະກອນຂອງທ່ານແມ່ນ <ph name="EID_NUMBER"/> ແລະ ໝາຍເລກຊີຣຽວອຸປະກອນແມ່ນ <ph name="SERIAL_NUMBER"/>. ໝາຍເລກເຫຼົ່ານີ້ສາມາດຖືກນຳໃຊ້ເພື່ອຊ່ວຍເປີດການນຳໃຊ້ບໍລິການໄດ້.</translation>
 <translation id="6402042774506839496">ເພື່ອສຶກສາເຫດຜົນ, ກະລຸນາຕິດຕໍ່ນັກພັດທະນາແອັບໄດ້</translation>
 <translation id="6402921224457714577">ເວັບໄຊສາມາດຂໍຄວບຄຸມ ແລະ ຕັ້ງໂປຣແກຣມໃໝ່ໃນອຸປະກອນ MIDI ຂອງທ່ານໄດ້</translation>
 <translation id="6404511346730675251">ແກ້​ໄຂບຸກມາກສ໌</translation>
+<translation id="6405999530973682789">ເຄີເຊີເມົ້າຫາຍໄປ</translation>
 <translation id="6406303162637086258">ຈໍາລອງການເລີ່ມປິດເປີດບຣາວ​ເຊີໃໝ່</translation>
 <translation id="6406506848690869874">ຊິງຄ໌</translation>
 <translation id="6406571339342621375">ບໍ່ຕ້ອງສະແດງ Gemini ໃນແຖບເມນູ</translation>
@@ -7051,7 +7032,6 @@
 <translation id="6410390304316730527">Safe Browsing ປົກປ້ອງທ່ານຈາກຜູ້ໂຈມຕີທີ່ອາດຈະຫຼອກໃຫ້ທ່ານເຮັດບາງຢ່າງທີ່ອັນຕະລາຍ ເຊັ່ນ: ຕິດຕັ້ງຊອບແວອັນຕະລາຍ ຫຼື ເປີດເຜີຍຂໍ້ມູນສ່ວນຕົວ ເຊັ່ນ: ລະຫັດຜ່ານ, ເບີໂທລະສັບ ຫຼື ບັດເຄຣດິດ. ຖ້າທ່ານປິດມັນ, ກະລຸນາລະມັດລະວັງໃນເວລາເຂົ້າເບິ່ງເວັບໄຊທີ່ບໍ່ຄຸ້ນເຄີຍ ຫຼື ບໍ່ເປັນທີ່ຮູ້ຈັກ.</translation>
 <translation id="6953547846348320454">ໃນລະຫວ່າງທີ່ທ່ານເຂົ້າສູ່ລະບົບ, ທ່ານສາມາດໃຊ້ຮູບແບບສີສັນ, ການຕັ້ງຄ່າ ແລະ ຂໍ້ມູນອື່ນໆທີ່ບັນທຶກໄວ້ໃນບັນຊີ Brave ຂອງທ່ານຢູ່ອຸປະກອນທຸກເຄື່ອງຂອງທ່ານໄດ້</translation>
 <translation id="6411135999030237579">ກົດຄ້າງໄວ້ເພື່ອກົດປຸ່ມຊ້ຳໂດຍອັດຕະໂນມັດ</translation>
-<translation id="6415434255504060856">ເຂັ້ມງວດສຳລັບທຸກເວັບໄຊ</translation>
 <translation id="6415757856498750027">ພິມ "w" ເພື່ອໃຊ້ "ư"</translation>
 <translation id="6415900369006735853">ເຊື່ອມຕໍ່ກັບອິນເຕີເນັດຜ່ານໂທລະສັບຂອງທ່ານ</translation>
 <translation id="6416743254476733475">ອະນຸຍາດ ຫຼື ບລັອກໄວ້ໃນຄອມພິວເຕີຂອງທ່ານ.</translation>
@@ -7133,6 +7113,7 @@
 <translation id="6472893788822429178">ສະແດງປຸ່ມໜ້າ​ຫຼັກ</translation>
 <translation id="6473315466413288899">ເລືອກຕົວເລືອກ</translation>
 <translation id="6199773995438617867">ເບິ່ງເພີ່ມເຕີມໃນ Brave ປະຕິທິນ</translation>
+<translation id="6474401088838630457">ຖາມ Gemini ເພີ່ມເຕີມກ່ຽວກັບສິ່ງນີ້</translation>
 <translation id="6474498546677193336">ບໍ່ສາມາດເຊົາແບ່ງປັນໄດ້ເພາະວ່າແອັບພລິເຄຊັນກຳລັງໃຊ້ໂຟນເດີນີ້ຢູ່. ລະບົບຈະເຊົາແບ່ງປັນໂຟນເດີເມື່ອປິດ Linux ໃນຄັ້ງຕໍ່ໄປ.</translation>
 <translation id="6474884162850599008">ຕັດ​ເຊື່ອມ​ຕໍ່​ບັນ​ຊີ Google Drive</translation>
 <translation id="6476482583633999078">ຄວາມໄວການເວົ້າ</translation>
@@ -7149,6 +7130,7 @@
 <translation id="6488266788670893993"><ph name="BRAND"/> ບໍ່ສາມາດກວດສອບລະຫັດຜ່ານຂອງທ່ານວ່າມີການຮົ່ວໄຫຼຂອງຂໍມູນຫຼືບໍ່ໄດ້. ລອງກວດເບິ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດຂອງທ່ານ.</translation>
 <translation id="648927581764831596">ບໍ່​ມີອັນໃດຢູ່</translation>
 <translation id="6490471652906364588">ອຸ​ປະ​ກອນ USB-C (ຊ່ອງ​ຂວາ)</translation>
+<translation id="6491890991754498129">ເປີດ &amp;ດ້ວຍ...</translation>
 <translation id="649396225532207613">ໄຟລ໌ນີ້ອາດເປັນອັນຕະລາຍກັບບັນຊີສ່ວນຕົວ ແລະ ບັນຊີເຄືອຂ່າຍສັງຄົມຂອງທ່ານ</translation>
 <translation id="6493991254603208962">ຄວາມສະຫວ່າງ​ລົງ</translation>
 <translation id="6494327278868541139">ສະແດງລາຍລະອຽດການປົກປ້ອງທີ່ປັບປຸງໃຫ້ດີຂຶ້ນ</translation>
@@ -7189,7 +7171,6 @@
 <translation id="6525767484449074555">ຄລິກ “ຕິດຕັ້ງ”</translation>
 <translation id="6527303717912515753">ແຊຣ໌</translation>
 <translation id="2975747320108516602">ບໍ່ມີອຸປະກອນທີ່ສາມາດໃຊ້ໄດ້. ເພີ່ມບັນຊີ Brave ຂອງທ່ານກັບໂທລະສັບຂອງທ່ານເພື່ອເຊື່ອມຕໍ່ກັບ <ph name="DEVICE_TYPE"/> ນີ້. <ph name="LINK_BEGIN"/>ສຶກສາເພີ່ມເຕີມ<ph name="LINK_END"/></translation>
-<translation id="652969759100732863">ກົດ ⌘ + Shift + A ເພື່ອເປີດການຊອກຫາແຖບ. ຕັ້ງແຕ່ນີ້ເປັນຕົ້ນໄປ, ທ່ານສາມາດຊອກຫາ ແລະ ປິດແຖບຂອງທ່ານໄດ້ຢູ່ບ່ອນນີ້. ທ່ານສາມາດຖອນໝຸດແຖບນີ້ໄດ້ທຸກເວລາ.</translation>
 <translation id="6529890283323814131">ເບິ່ງເຄັດລັບເພີ່ມເຕີມ</translation>
 <translation id="6530030995840538405">ສ້າງຮູບ <ph name="INDEX"/> ຂອງ <ph name="SUBJECT"/> ແລ້ວ</translation>
 <translation id="6530186581263215931">ການຕັ້ງຄ່າເຫຼົ່ານີ້ຖືກບັງຄັບໃຊ້ໂດຍຜູ້ເບິ່ງແຍງລະບົບຂອງທ່ານ</translation>
@@ -7333,6 +7314,7 @@
 <translation id="6628328486509726751">ອັບ​ໂຫຼດ <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
 <translation id="6629951648264770593"><ph name="MODIFIER"/> + <ph name="KEY"/></translation>
 <translation id="6630117778953264026">ການຮັກສາຄວາມປອດໄພທີ່ຮັດກຸມຂຶ້ນ</translation>
+<translation id="6630211688479622571">ສະແດງລາຍການຫຼ້າສຸດ</translation>
 <translation id="6630452975878488444">ທາງລັດການເລືອກ</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> ຕ້ອງການການເຂົ້າເຖິງໃບຢັ້ງຢືນແບບຖາວອນ ເພື່ອຮັບຮອງຄວາມຖືກຕ້ອງຂອງມັນເອງໃນນາມຕາງໜ້າໃຫ້ທ່ານ.</translation>
 <translation id="6633847349217844732">{NUM_GROUPS,plural, =1{ອອກຈາກກຸ່ມ}other{ອອກຈາກກຸ່ມ}}</translation>
@@ -7407,7 +7389,6 @@
 <translation id="6686665106869989887">ຍ້າຍແຖບໄປເບື້ອງຂວາແລ້ວ</translation>
 <translation id="6686676261102452995">ທ່ານເປີດມື້ນີ້</translation>
 <translation id="6686817083349815241">ບັນທຶກລະຫັດຜ່ານຂອງທ່ານ</translation>
-<translation id="6686878118106035853">ການປົກປ້ອງທີ່ປັບປຸງດີຂຶ້ນແບບກຳນົດເອງຈະປິດການເພີ່ມປະສິດທິພາບ JavaScript ສຳລັບທຸກເວັບໄຊ</translation>
 <translation id="8244419959467378067">ປ່ຽນ PIN ຂອງຕົວຈັດການລະຫັດຜ່ານ Brave</translation>
 <translation id="6687079240787935001">ເຊື່ອງ <ph name="MODULE_TITLE"/></translation>
 <translation id="6689092196793298127">ຜູ້ຈັດງານ</translation>
@@ -7564,7 +7545,6 @@
 <translation id="6805236548654699520">ລຶບປັອບອັບທີ່ບໍ່ຕ້ອງການອອກ, ແກ້ໄຂບັນຫາເຄືອຂ່າຍ ແລະ ອື່ນໆອີກຫຼາກຫຼາຍດ້ວຍການກູ້ຄືນການຕັ້ງຄ່າຂອງທ່ານໃຫ້ເປັນຄ່າເລີ່ມຕົ້ນທີ່ປອດໄພ.</translation>
 <translation id="6805478749741295868">ນີ້ແມ່ນຄຸນສົມບັດ AI ເວີຊັນທົດລອງ ແລະ ອາດເຮັດວຽກໄດ້ບໍ່ຖືກຕ້ອງສະເໝີໄປ.</translation>
 <translation id="6805817411033102703">ຄຳຕິຊົມກ່ຽວກັບກຸ່ມແຖບທີ່ແບ່ງປັນ</translation>
-<translation id="6806089545527108739">ບໍ່ອະນຸຍາດແຕ່ໃຫ້ຖາມຄືນໃນພາຍຫຼັງ</translation>
 <translation id="6806123901116522137">ເຂົ້າໄປນະວັດຕະກຳ AI</translation>
 <translation id="505292327770836846">ສະເພາະລາຍຊື່ຜູ້ຕິດຕໍ່ຂອງທ່ານທີ່ມີບັນຊີ Brave. <ph name="LINK_BEGIN"/>ເບິ່ງລາຍຊື່ຜູ້ຕິດຕໍ່<ph name="LINK_END"/></translation>
 <translation id="6807225474325352189">ຄລິກໃສ່ການຄວບຄຸມມີເດຍ</translation>
@@ -7616,7 +7596,6 @@
 <translation id="6840155290835956714">ຖາມກ່ອນສົ່ງ</translation>
 <translation id="6840184929775541289">ບໍ່​ແມ່ນໜ່ວຍງານອອກ​ໃບ​ຢັ້ງ​ຢືນ</translation>
 <translation id="6840214587087739194">ລຶບທີ່ຢູ່ອອກແລ້ວ</translation>
-<translation id="6840654149771416419">ໃນການເຊື່ອມຕໍ່ອິນເຕີເນັດແບບເປີດ</translation>
 <translation id="6841076158433142214">ທ່ານຈະບໍ່ໄດ້ຮັບການແຈ້ງເຕືອນເມື່ອມີການນຳໃຊ້ແອັບເຫຼົ່ານີ້ເພື່ອບັນທຶກໜ້າຈໍຂອງທ່ານ:</translation>
 <translation id="6841143363521180029">ເຂົ້າລະຫັດແລ້ວ</translation>
 <translation id="6841186874966388268">ຂໍ້​ຜິດ​ພາດ</translation>
@@ -7629,7 +7608,6 @@
 <translation id="6843264316370513305">ການດີບັກເຄືອຂ່າຍ</translation>
 <translation id="6843404741389995311">ເລືອກຊື້, ແປພາສາ ແລະ ລະບຸສິ່ງທີ່ທ່ານເຫັນດ້ວຍກ້ອງຖ່າຍຮູບ ແລະ ຄັງຮູບພາບຂອງທ່ານ</translation>
 <translation id="6843725295806269523">ປິດສຽງ</translation>
-<translation id="6843919992766261684">ຕໍ່ໄປນີ້, <ph name="ISSUER"/> ຈະຢຸດການຢືນຢັນອີເມວນີ້ໂດຍອັດຕະໂນມັດ</translation>
 <translation id="6844548824283407900">AES-256</translation>
 <translation id="6845038076637626672">ເປີດ​ທີ່ໄດ້ຂະຫຍາຍແລ້ວ</translation>
 <translation id="6845231585063669905">A ຫາ Z</translation>
@@ -7730,6 +7708,7 @@
 <translation id="6916676294509106572">ປະຕິທິນ Outlook ເຊື່ອງຢູ່</translation>
 <translation id="6916818963747321523">ຂະຫຍາຍທັງໝົດ</translation>
 <translation id="8995127535539248248">ເພື່ອແບ່ງປັນ, ເຂົ້າຮ່ວມ ແລະ ຮ່ວມມືໃນກຸ່ມແຖບ, ໃຫ້ເປີດການຕັ້ງຄ່າ ແລະ ເປີດ ອະນຸຍາດໃຫ້ເຂົ້າສູ່ລະບົບ Brave</translation>
+<translation id="6918598482167821721">ແຖບອຸປະກອນອື່ນໆ</translation>
 <translation id="6919354101107095996">ກະລຸນາລອງເຂົ້າສູ່ລະບົບຫາເວັບໄຊ. ຈາກນັ້ນ, ລອງດາວໂຫຼດໃໝ່</translation>
 <translation id="6919461818524183254">ເລືອກທາງລັດ</translation>
 <translation id="4194845302979409023">ເປີດໃຊ້ Safe Browsing ທີ່ປັບປຸງດີຂຶ້ນສຳລັບໂປຣໄຟລ໌ Brave ນີ້ນຳບໍ?</translation>
@@ -7877,6 +7856,7 @@
 <translation id="7030304022046916278">ສົ່ງ URL ໄປໃຫ້ Safe Browsing ກວດເບິ່ງພວກມັນ</translation>
 <translation id="7030695672997239647">ຄລິກຂວາໃສ່ແຖບໃດໜຶ່ງແລ້ວເລືອກ "ເພີ່ມແຖບໃສ່ກຸ່ມ" ແລະ ຫຼັງຈາກນັ້ນໃຫ້ເລືອກ "ກຸ່ມໃໝ່"</translation>
 <translation id="7031608529463141342"><ph name="WINDOW_TITLE"/> - ເຊື່ອມຕໍ່ຜອດອະນຸກຳແລ້ວ</translation>
+<translation id="7014059615108255384">ບັນຊີ Brave: <ph name="USER_EMAIL"/></translation>
 <translation id="7033616203784997570">ຕ້ອງລະບຸຂໍ້ມູນບໍ່ເກີນ 62 ຕົວອັກສອນ</translation>
 <translation id="7033731598469029604">ທ່ອງເວັບອັດຕະໂນມັດ</translation>
 <translation id="70356134210715500">ຮັບກະແຈຜ່ານຂອງທ່ານ</translation>
@@ -7922,6 +7902,7 @@
 <translation id="706949303827219454">ເປີດໜ້າການຕັ້ງຄ່າຄວາມປອດໄພໃນແຖບໃໝ່</translation>
 <translation id="7069750557362084654">{NUM_PASSWORDS,plural, =1{ລະຫັດຜ່ານໃໝ່ສຳລັບເວັບໄຊນີ້}other{ລະຫັດຜ່ານໃໝ່ສຳລັບເວັບໄຊນີ້}}</translation>
 <translation id="7070484045139057854">ນີ້ສາມາດອ່ານ ແລະ ປ່ຽນຂໍ້ມູນເວັບໄຊໄດ້</translation>
+<translation id="7071521146534760487">ຈັດການບັນຊີ</translation>
 <translation id="7072010813301522126">ຊື່​ທາງ​ລັດ</translation>
 <translation id="7072078320324181561">ແອັບ ແລະ ເວັບໄຊທີ່ມີການອະນຸຍາດສະຖານທີ່, ຕະຫຼອດຈົນຮອດບໍລິການລະບົບ, ສາມາດໃຊ້ສະຖານທີ່ຂອງທ່ານໄດ້ <ph name="LINK_BEGIN"/>ສຶກສາເພີ່ມເຕີມ<ph name="LINK_END"/></translation>
 <translation id="7072573590175540692">ທາງລັດຄຸນສົມບັດ ແລະ ສ່ວນຂະຫຍາຍທີ່ພ້ອມນຳໃຊ້</translation>
@@ -7973,6 +7954,7 @@
 <translation id="3052944975426153700">Gemini ໃນ Brave ກຳລັງຂະຫຍາຍໄປຫາສະຖານທີ່ຕ່າງໆ ແຕ່ຍັງບໍ່ພ້ອມນຳໃຊ້ຢູ່ທົ່ວທຸກບ່ອນ</translation>
 <translation id="7113502843173351041">ຮູ້​ທີ່​ຢູ່​ອີ​ເມວ​ຂອງ​ທ່ານ</translation>
 <translation id="7115361495406486998">ບໍ່ມີລາຍຊື່ຜູ້ຕິດຕໍ່ທີ່ຕິດຕໍ່ຫາໄດ້</translation>
+<translation id="7116931001458704701">ສັ່ນເພື່ອຊອກຫາເຄີເຊີ</translation>
 <translation id="7117228822971127758">ກະລຸນາລອງໃໝ່ໃນພາຍຫຼັງ</translation>
 <translation id="7118268675952955085">ຮູບໜ້າຈໍ</translation>
 <translation id="711840821796638741">ສະ​ແດງ​ບຸກມາກສ໌ທີ່​ຄຸ້ມ​ຄອງແລ້ວ</translation>
@@ -8016,6 +7998,7 @@
 <translation id="7148426638542880639">ເວັບໄຊອາດບໍ່ເຮັດວຽກຕາມທີ່ທ່ານຄາດໄວ້. ໃຫ້ເລືອກຕົວເລືອກນີ້ຫາກທ່ານບໍ່ຕ້ອງການເກັບຂໍ້ມູນໄວ້ຢູ່ອຸປະກອນຂອງທ່ານກ່ຽວກັບເວັບໄຊທີ່ທ່ານເຂົ້າເບິ່ງ.</translation>
 <translation id="7149893636342594995">24 ຊົ່ວໂມງຜ່ານມາ</translation>
 <translation id="7152478047064750137">ສ່ວນຂະຫຍາຍນີ້ບໍ່ຈຳເປັນຕ້ອງມີການອະນຸຍາດພິເສດໃດໆ</translation>
+<translation id="7152923486458597248">ໂຟກັສໃສ່ກຸ່ມ</translation>
 <translation id="7153101072880472645">ເປີດ/ປິດ ຄວາມຄົມຊັດສູງ</translation>
 <translation id="715396040729904728">Launcher + Shift + <ph name="TOP_ROW_KEY"/></translation>
 <translation id="7154130902455071009">ປ່ຽນໜ້າເລີ່ມຕົ້ນຂອງທ່ານເປັນ​: <ph name="START_PAGE"/></translation>
@@ -8065,6 +8048,7 @@
 <translation id="7188508872042490670">ຂໍ້ມູນເວັບໄຊຢູ່ອຸປະກອນ</translation>
 <translation id="7188755083797868960">ເປີດໂໝດການອ່ານໄດ້ໄວຂຶ້ນດ້ວຍທາງລັດ. ກົດ Alt + Shift + R ເພື່ອເປີດ/ປິດໂໝດການອ່ານ.</translation>
 <translation id="7189234443051076392">ກວດໃຫ້ແນ່ໃຈວ່າມີພື້ນທີ່ຫວ່າງພຽງພໍໃນອຸປະກອນຂອງທ່ານ</translation>
+<translation id="7189558282078169397">ແຖບຈາກອຸປະກອນອື່ນໆ</translation>
 <translation id="7189965711416741966">ເພີ່ມລາຍນິ້ວມືແລ້ວ.</translation>
 <translation id="7190921792980745354">ບລັອກ <ph name="MEMBER_FULL_NAME"/> ບໍ?</translation>
 <translation id="7191063546666816478">ລິ້ງທີ່ຮອງຮັບບາງຢ່າງຈະຍັງຄົງເປີດໃນ <ph name="APP_NAME"/>, <ph name="APP_NAME_2"/>, <ph name="APP_NAME_3"/> ແລະ ອີກ <ph name="NUMBER_OF_OTHER_APPS"/> ແອັບ.</translation>
@@ -8172,7 +8156,6 @@
 <translation id="7273110280511444812">ຄັດຕິດ​ຫຼ້າ​ສຸດ​ໃນ​ວັນ​ທີ <ph name="DATE"/></translation>
 <translation id="7273894023751806510">ບລັອກ <ph name="HOST"/> ບໍ່ໃຫ້ຄວບຄຸມ ແລະ ຕັ້ງໂປຣແກຣມໃໝ່ໃນອຸປະກອນ MIDI ຂອງທ່ານທຸກເທື່ອ</translation>
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% - <ph name="TIME"/> ຈົນ​ກ່​ວາ​ຈະ​ເຕັມ</translation>
-<translation id="7274453646377524248">ແຖບ ແລະ ໜ້າຈໍທີ່ເປີດຢູ່ທັງໝົດຂອງທ່ານຈະເປີດຄືນໃໝ່ໂດຍອັດຕະໂນມັດ.</translation>
 <translation id="7275950084263610253">ໄດ້ຮັບອະນຸຍາດໃຫ້ເຂົ້າເຖິງອຸປະກອນອື່ນໆໃນເຄືອຂ່າຍທ້ອງຖິ່ນຂອງທ່ານ</translation>
 <translation id="727595954130325265">ຊື້ດຽວນີ້</translation>
 <translation id="727952162645687754">ດາວ​ໂຫລດ​ຜິດພາດ</translation>
@@ -8311,7 +8294,6 @@
 <translation id="7377481913241237033">ເຊື່ອມຕໍ່ດ້ວຍລະຫັດ</translation>
 <translation id="7379178796923433598">{NUM_TASKS,plural, =0{<ph name="TASK_ROW"/>}=1{<ph name="TASK_ROW"/>. ໜ້າວຽກອື່ນໃນກຸ່ມໜ້າວຽກດຽວກັນ: <ph name="OTHER_TASKS"/>}other{<ph name="TASK_ROW"/>. ໜ້າວຽກອື່ນໆ # ລາຍການໃນກຸ່ມໜ້າວຽກດຽວກັນ: <ph name="OTHER_TASKS"/>}}</translation>
 <translation id="7380162005366861509"><ph name="ORIGIN"/> ຈະສາມາດເບິ່ງ ແລະ ເຮັດສຳເນົາ <ph name="FILENAME"/> ຂອງຕົນເອງໄດ້</translation>
-<translation id="7380253436337781870">{NUM_SITES,plural, =1{ກວດສອບ 1 ເວັບໄຊທີ່ສົ່ງການແຈ້ງເຕືອນຈຳນວນຫຼາຍເມື່ອບໍ່ດົນມານີ້}other{ກວດສອບ {NUM_SITES} ເວັບໄຊທີ່ສົ່ງການແຈ້ງເຕືອນຈຳນວນຫຼາຍເມື່ອບໍ່ດົນມານີ້}}</translation>
 <translation id="7380272457268061606">ປິດໃຊ້ການກູ້ຄືນຂໍ້ມູນໃນເຄື່ອງບໍ?</translation>
 <translation id="7380459290951585794">ກວດສອບໃຫ້ແນ່ໃຈວ່າໂທລະສັບຂອງທ່ານຢູ່ໃກ້ຄຽງ, ປົດລັອກໄວ້ ແລະ ເປີດ Bluetooth ແລະ Wi-Fi ແລ້ວ</translation>
 <translation id="7380622428988553498">ຊື່ອຸປະກອນປະກອບມີຕົວອັກສອນທີ່ບໍ່ຖືກຕ້ອງ</translation>
@@ -8339,7 +8321,7 @@
 <translation id="7395774987022469191">ທັງໜ້າຈໍ</translation>
 <translation id="7396017167185131589">ໂຟນເດີທີ່ໃຊ້ຮ່ວມກັນຈະປາກົດຢູ່ບ່ອນນີ້</translation>
 <translation id="7396845648024431313"><ph name="APP_NAME"/> ຈະເລີ່ມເປີດໃຊ້ຢູ່ທີ່ການເລີ່ມຕົ້ນລະບົບ ແລະສືບຕໍ່ແລ່ນຢູ່ໃນພື້ນຫຼັງ ແມ້ກະທັ້ງ​ໃນ​ເວລາ​ທີ່​ທ່ານປິດທຸກໜ້າ​ຕ່າງ​ <ph name="PRODUCT_NAME"/> ອື່ນແລ້ວກໍ່ຕາມ.</translation>
-<translation id="8572914900293297191">ການສົນທະນາຈະໄດ້ຮັບການກວດສອບ ແລະ ນຳໄປໃຊ້ເພື່ອປັບປຸງ Brave AI. Gemini ເປັນ AI ແລະ ອາດເຮັດຜິດພາດໄດ້. ເນື້ອຫາບາງຢ່າງອາດບໍ່ເໝາະສົມສຳລັບທຸກຄົນ. ທ່ານສາມາດ <ph name="BEGIN_LINK_MANAGE_ACTIVITY"/>ຈັດການການເຄື່ອນໄຫວຂອງທ່ານ<ph name="END_LINK_MANAGE_ACTIVITY"/>, ເຊິ່ງຮວມທັງຂໍ້ມູນກ່ຽວກັບສະຖານທີ່ຂອງທ່ານໄດ້. <ph name="BEGIN_LINK_LEARN_MORE"/>ສຶກສາເພີ່ມເຕີມກ່ຽວກັບຕົວເລືອກຂອງທ່ານ<ph name="END_LINK_LEARN_MORE"/></translation>
+<translation id="7398815534290329738">ການສົນທະນາຈະໄດ້ຮັບການກວດສອບ ແລະ ນຳໄປໃຊ້ເພື່ອປັບປຸງ Brave AI. Gemini ເປັນ AI ແລະ ອາດເຮັດຜິດພາດໄດ້. ເນື້ອຫາບາງຢ່າງອາດບໍ່ເໝາະສົມສຳລັບທຸກຄົນ. ທ່ານສາມາດ <ph name="BEGIN_LINK_MANAGE_ACTIVITY"/>ຈັດການການເຄື່ອນໄຫວຂອງທ່ານ<ph name="END_LINK_MANAGE_ACTIVITY"/>, ເຊິ່ງຮວມທັງຂໍ້ມູນກ່ຽວກັບສະຖານທີ່ຂອງທ່ານໄດ້. <ph name="BEGIN_LINK_LEARN_MORE"/>ສຶກສາເພີ່ມເຕີມກ່ຽວກັບຕົວເລືອກຂອງທ່ານ<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="7399045143794278225">ປັບແຕ່ງການຊິ້ງຂໍ້ມູນ</translation>
 <translation id="7399616692258236448">ຄຳຮ້ອງຂໍສະຖານທີ່ຖືກບລັອກໄວ້ໂດຍອັດຕະໂນມັດສຳລັບທຸກເວັບໄຊ ຍົກເວັ້ນເວັບໄຊທີ່ທ່ານອະນຸຍາດ</translation>
 <translation id="7399802613464275309">ກວດສອບຄວາມປອດໄພ</translation>
@@ -8408,6 +8390,7 @@
 <translation id="7434969625063495310">ບໍ່ສາມາດເພີ່ມເຊີບເວີການພິມໄດ້. ກະລຸນາກວດເບິ່ງການຕັ້ງຄ່າເຊີບເວີ ແລ້ວລອງໃໝ່.</translation>
 <translation id="7435500219604275502">ນຳໃຊ້ການອັບເດດ</translation>
 <translation id="7439519621174723623">ເພີ່ມຊື່ອຸປະກອນເພື່ອສືບຕໍ່</translation>
+<translation id="7404610376221341525">Brave ຊອກຫາ</translation>
 <translation id="7441736921018636843">ເພື່ອປ່ຽນການຕັ້ງຄ່ານີ້, ກະລຸນາ <ph name="BEGIN_LINK"/>ຣີເຊັດການຊິ້ງຂໍ້ມູນ<ph name="END_LINK"/> ເພື່ອລຶບລະຫັດຜ່ານການຊິ້ງຂໍ້ມູນຂອງທ່ານອອກ</translation>
 <translation id="7441830548568730290">ຜູ້ໃຊ້ອື່ນ</translation>
 <translation id="744341768939279100">ສ້າງໂປຣໄຟລ໌ໃຫມ່</translation>
@@ -8480,6 +8463,7 @@
 <translation id="7495149565104413027">ແອັບ Android</translation>
 <translation id="8178821080790541548">Brave AI</translation>
 <translation id="7497981768003291373">ທ່ານບໍ່ມີບັນທຶກຂໍ້ຄວາມ WebRTC ທີ່ບັນທຶກໄວ້ເມື່ອບໍ່ດົນມານີ້.</translation>
+<translation id="7499684925421947861">ອະນຸຍາດໃຫ້ <ph name="ACTOR_NAME"/> ເຂົ້າສູ່ລະບົບ <ph name="DOMAIN"/> ແທນທ່ານບໍ?</translation>
 <translation id="7501957181231305652">ຫຼື</translation>
 <translation id="7502220299952823578">ເພີ່ມໃສ່ລາຍຊື່ "ເປີດໃຊ້ເວັບໄຊເຫຼົ່ານີ້ໄວ້ຕະຫຼອດ"</translation>
 <translation id="7502528909759062987">ຢຸດສົ່ງສັນຍານແຖບໄປຫາ <ph name="DEVICE_NAME"/> ຊົ່ວຄາວ</translation>
@@ -8511,7 +8495,6 @@
 <translation id="9075033240840348521">ໃຊ້ການເຂົ້າລະຫັດເລີ່ມຕົ້ນຂອງ Brave ສຳລັບລະຫັດຜ່ານໃນບັນຊີ Brave ຂອງທ່ານ</translation>
 <translation id="385431757934284424">ສະມາຊິກຄອບຄົວຂອງທ່ານບໍ່ສາມາດຮັບລະຫັດຜ່ານໄດ້ໃນຕອນນີ້. ໃຫ້ຂໍໃຫ້ເຂົາເຈົ້າໃຫ້ອັບເດດ Brave ແລະ ຊິ້ງຂໍ້ມູນລະຫັດຜ່ານຂອງເຂົາເຈົ້າ.</translation>
 <translation id="7518079994230200553">ຕົວເລືອກນີ້ບໍ່ພ້ອມໃຫ້ນຳໃຊ້ໃນຕອນນີ້.</translation>
-<translation id="7519506357537394422">ອະນຸຍາດໃຫ້ Gemini ເຂົ້າສູ່ລະບົບ <ph name="DOMAIN"/> ໃຫ້ທ່ານບໍ?</translation>
 <translation id="752021853309481824">ເພື່ອຮັບຂໍ້ມູນທີ່ບັນທຶກໄວ້ ແລະ ຂໍ້ມູນອື່ນໆຂອງທ່ານໃນອຸປະກອນທຸກເຄື່ອງຂອງທ່ານ, ໃຫ້ເຂົ້າສູ່ລະບົບດ້ວຍ <ph name="EMAIL"/></translation>
 <translation id="752098910262610337">ສະແດງທາງລັດ</translation>
 <translation id="7521430434164837205">ໄຟລ໌ Microsoft 365</translation>
@@ -8553,6 +8536,7 @@
 <translation id="755472745191515939">ຜູ້ເບິ່ງແຍງລະບົບຂອງທ່ານບໍ່ອະນຸຍາດໃຫ້ໃຊ້ພາສານີ້</translation>
 <translation id="7554791636758816595">ແຖບ​ໃຫມ່</translation>
 <translation id="7557194624273628371">ການສົ່ງຕໍ່ຜອດ Linux</translation>
+<translation id="7557508262441527045">ອອກຈາກລະບົບແລ້ວ</translation>
 <translation id="7561196759112975576">ຢູ່ສະເໝີ</translation>
 <translation id="7561759921596375678">ເປີດລະດັບສຽງ</translation>
 <translation id="7563576896417108627">ປັບແຕ່ງ ແລະ ຄວບຄຸມ <ph name="APP_NAME"/>. ມີການອັບເດດພ້ອມໃຫ້ບໍລິການ.</translation>
@@ -8641,6 +8625,7 @@
 <translation id="7634337648687970851">ໃນປັດຈຸບັນການກູ້ຄືນຂໍ້ມູນໃນເຄື່ອງແມ່ນຍັງບໍ່ຖືກຮອງຮັບ.</translation>
 <translation id="7634566076839829401">ມີ​ບາງ​ອັນ​ຜິດ​ພາດ. ກະ​ລຸ​ນາ​ລອງ​ໃໝ່​ພາຍຫຼັງ.</translation>
 <translation id="7635048370253485243">ປັກໝຸດໂດຍຜູ້ເບິ່ງແຍງລະບົບຂອງທ່ານ</translation>
+<translation id="7636175154537919400">ຄລິກຂວາເພື່ອເຊື່ອງແຖບອື່ນໆຊົ່ວຄາວ</translation>
 <translation id="7636346903338549690">ເວັບໄຊທີ່ອະນຸຍາດໃຫ້ໃຊ້ຄຸກກີ້ພາກສ່ວນທີສາມ</translation>
 <translation id="7636919061354591437">ຕິດຕັ້ງໃນອຸປະກອນນີ້</translation>
 <translation id="7637593984496473097">ບ່ອນຈັດເກັບຂໍ້ມູນບໍ່ພຽງພໍ</translation>
@@ -8649,7 +8634,6 @@
 <translation id="7641513591566880111">ຊື່ໂປຣໄຟລ໌ໃໝ່</translation>
 <translation id="7641720519047586765">ລຶບກະແຈຜ່ານນີ້ອອກຈາກເວັບໄຊນີ້ແລ້ວ</translation>
 <translation id="764178579712141045">ເພີ່ມ <ph name="USER_EMAIL"/> ແລ້ວ</translation>
-<translation id="7642778300616172920">ເຊື່ອງເນື້ອຫາທີ່ລະອຽດອ່ອນ</translation>
 <translation id="7645176681409127223"><ph name="USER_NAME"/> (ເຈົ້າ​ຂອງ​)</translation>
 <translation id="7195740973702314115">ທ່ານສາມາດບັນທຶກລະຫັດຜ່ານດ້ວຍຕົວຈັດການລະຫັດຜ່ານ Brave ເມື່ອທ່ານເຂົ້າສູ່ລະບົບ Brave</translation>
 <translation id="7646499124171960488">ເຕືອນທ່ານຫາກພົບເວັບໄຊສາທາລະນະທີ່ບໍ່ປອດໄພ</translation>
@@ -8663,6 +8647,7 @@
 <translation id="7650178491875594325">ກູ້ຄືນຂໍ້ມູນໃນເຄື່ອງ</translation>
 <translation id="7650582458329409456">{COUNT,plural, =1{ຕັ້ງຄ່າ​ລາຍ​ນີ້ວ​ມືໄວ້ 1 ລາຍການ}other{ຕັ້ງຄ່າ​ລາຍ​ນີ້ວ​ມືໄວ້ {COUNT} ລາຍການ}}</translation>
 <translation id="7650677314924139716">ການຕັ້ງຄ່າການນຳໃຊ້ອິນເຕີເນັດປັດຈຸບັນແມ່ນ Wi-Fi ເທົ່ານັ້ນ</translation>
+<translation id="7650721582841150356">ເລີ່ມເປີດໃຊ້ໃໝ່ໃນພາຍຫຼັງ...</translation>
 <translation id="7651182181030187705">ເພື່ອຮັບບຸກມາກນີ້ຢູ່ອຸປະກອນທັງໝົດຂອງທ່ານ, ໃຫ້ຢັ້ງຢືນວ່າແມ່ນທ່ານ</translation>
 <translation id="7651400349472467012">ມີຮັອດສະປອດພ້ອມໃຊ້</translation>
 <translation id="7651754152638505879">ຢຸດໜ້າວຽກຊົ່ວຄາວແລ້ວ</translation>
@@ -8687,7 +8672,6 @@
 <translation id="7665445336029073980">ປະຫວັດການດາວໂຫຼດແບບເຕັມ</translation>
 <translation id="766560638707011986">ສະແດງໂດເມນ</translation>
 <translation id="766635563210446220">ບໍ່ສາມາດນຳເຂົ້າລະຫັດຜ່ານໄດ້. ກະລຸນາກວດສອບ <ph name="FILENAME"/> ແລະ ກວດໃຫ້ແນ່ໃຈວ່າຮູບແບບຂອງມັນຖືກຕ້ອງແລ້ວ. <ph name="BEGIN_LINK"/>ສຶກສາເພີ່ມເຕີມ<ph name="END_LINK"/></translation>
-<translation id="7666966001957552011">ເຕືອນທ່ານກ່ຽວກັບເວັບໄຊ, ການດາວໂຫຼດ ແລະ ສ່ວນຂະຫຍາຍທີ່ຮູ້ແລ້ວວ່າເປັນອັນຕະລາຍ. ທ່ານສາມາດປິດຄຳເຕືອນເຫຼົ່ານີ້ໄດ້ທຸກເວລາ. ຫາກທ່ານເຫັນຄຳເຕືອນສຳລັບເນື້ອຫາທີ່ຖືກຕ້ອງຕາມກົດໝາຍ, ທ່ານສາມາດ <ph name="BEGIN_LINK"/>ລາຍງານຂໍ້ຜິດພາດ<ph name="END_LINK"/> ໄດ້.</translation>
 <translation id="7668205084604701639">ການຕັ້ງຄ່າໄຟລ໌ Office</translation>
 <translation id="2190324512336800037">ໃນຕົວຈັດການລະຫັດຜ່ານ Brave ສຳລັບ <ph name="ACCOUNT"/></translation>
 <translation id="7668648754769651616">ຄຸນສົມບັດການຊ່ວຍເຂົ້າເຖິງເຮັດໃຫ້ໃຊ້ອຸປະກອນຂອງທ່ານໄດ້ງ່າຍຂຶ້ນ. ເພື່ອເຂົ້າເຖິງການຕັ້ງຄ່າດ່ວນ, ໃຫ້ເລືອກເວລາຢູ່ດ້ານລຸ່ມຂອງໜ້າຈໍທ່ານ.</translation>
@@ -8705,7 +8689,6 @@
 <translation id="7674537509496907005"><ph name="APP_COUNT"/> ແອັບ</translation>
 <translation id="7674542105240814168">ປະຕິເສດສິດເຂົ້າເຖິງສະຖານທີ່ແລ້ວ</translation>
 <translation id="7675175806582227035">ອະນຸຍາດໃຫ້ຄວບຄຸມ ແລະ ຕັ້ງໂປຣແກຣມໃໝ່ໃນອຸປະກອນ MIDI ຂອງທ່ານ</translation>
-<translation id="7676019765091965045">ການກວດຫາລະຫັດຜ່ານທີ່ຖືກລະເມີດ</translation>
 <translation id="7676119992609591770">ພົບ <ph name="NUM"/> ແຖບສຳລັບ '<ph name="SEARCH_TEXT"/>'</translation>
 <translation id="7678198209643823714">ລຶບ <ph name="SHORTCUT_TITLE"/> ອອກ</translation>
 <translation id="7678588695732963732">ຣີເຊັດການອະນຸຍາດຜອດ USB ທັງໝົດບໍ?</translation>
@@ -8722,7 +8705,6 @@
 <translation id="7684547908663093354">ເຂົ້າສູ່ລະບົບເພື່ອຮັບລະຫັດຜ່ານ ແລະ ຂໍ້ມູນອື່ນໆຂອງທ່ານຈາກ <ph name="DEVICE"/></translation>
 <translation id="1669729672557072907">ເພື່ອສ້າງ ແລະ ທົດສອບແອັບຂອງທ່ານ, ກະລຸນາເປີດນຳໃຊ້ຂົວຕໍ່ແກ້ໄຂບັນຫາ Android (ADB). ກະລຸນາຮັບຊາບວ່າການດຳເນີນການນີ້ອະນຸຍາດການຕິດຕັ້ງແອັບ Android ທີ່ບໍ່ໄດ້ຜ່ານການກວດຢັ້ງຢືນຈາກ Brave ແລະ ຈຳເປັນຕ້ອງຣີເຊັດເປັນຄ່າໂຮງງານເພື່ອປິດນຳໃຊ້.</translation>
 <translation id="7684803937028953000">ອົງກອນຂອງທ່ານບລັອກການດາວໂຫຼດໄຟລ໌ນີ້ລົງໃນເຄື່ອງ.</translation>
-<translation id="7684913007876670600">ເພື່ອສະແດງມຸມມອງແບບຮຽບງາຍຂອງໜ້ານີ້, ໃຫ້ເປີດແຜງຄວບຄຸມດ້ານຂ້າງ ແລ້ວເລືອກໂໝດການອ່ານ</translation>
 <translation id="7684957383619170952">ຮັບບຸກມາກ ແລະ ຂໍ້ມູນອື່ນໆຂອງທ່ານຈາກ <ph name="DEVICE"/></translation>
 <translation id="7685038817958445325">ບໍ່ສາມາດສົ່ງສັນຍານໄດ້</translation>
 <translation id="7685049629764448582">ຄວາມ​ຈໍາ JavaScript</translation>
@@ -8850,7 +8832,7 @@
 <translation id="7777624210360383048">ທາງລັດ <ph name="SHORTCUT"/> ສຳລັບ <ph name="EXTENSION_NAME"/></translation>
 <translation id="777852709704682967">&amp;ເປີດຕົວຈັດການບຸກມາກ</translation>
 <translation id="7779840061887151693">ຈໍສະແດງຜົນ</translation>
-<translation id="8986657556866941558">ການສົນທະນາຂອງທ່ານກັບ Gemini ຫຼື <ph name="BEGIN_LINK_WORKSPACE_DATA_PRIVACY"/>ຂໍ້ມູນໃນ Brave Workspace<ph name="END_LINK_WORKSPACE_DATA_PRIVACY"/> ຂອງທ່ານຈະບໍ່ໄດ້ຮັບການກວດສອບ ຫຼື ນຳໄປໃຊ້ເພື່ອປັບປຸງໂມເດວ AI ສ້າງເນື້ອຫາ. Gemini ເປັນ AI ແລະ ອາດເຮັດຜິດພາດໄດ້. ເນື້ອຫາບາງຢ່າງອາດບໍ່ເໝາະສົມສຳລັບທຸກຄົນ.</translation>
+<translation id="7780716468751073938">ການສົນທະນາຂອງທ່ານກັບ Gemini ຫຼື <ph name="BEGIN_LINK_WORKSPACE_DATA_PRIVACY"/>ຂໍ້ມູນໃນ Brave Workspace<ph name="END_LINK_WORKSPACE_DATA_PRIVACY"/> ຂອງທ່ານຈະບໍ່ໄດ້ຮັບການກວດສອບ ຫຼື ນຳໄປໃຊ້ເພື່ອປັບປຸງໂມເດວ AI ສ້າງເນື້ອຫາ. Gemini ເປັນ AI ແລະ ອາດເຮັດຜິດພາດໄດ້. ເນື້ອຫາບາງຢ່າງອາດບໍ່ເໝາະສົມສຳລັບທຸກຄົນ.</translation>
 <translation id="7780992949171378848">ສົ່ງຄຳຮ້ອງຂໍການຖອນຕົວໄປຫາເວັບໄຊກ່ຽວກັບການໃຊ້ຂໍ້ມູນຂອງທ່ານ</translation>
 <translation id="6191804255817539692">ບໍ່ມີການແນະນໍາເພີ່ມເຕີມຈາກ Brave</translation>
 <translation id="7782717250816686129">ບັນທຶກຂໍ້ມູນທີ່ໃຊ້ຕະຫຼອດໃນໜ້າຈໍເຂົ້າສູ່ລະບົບ ແລະ ແຊກຂໍ້ມູນເຂົ້າສູ່ລະບົບເຂົ້າໃນເຊດຊັນ.</translation>
@@ -8875,7 +8857,6 @@
 <translation id="7800518121066352902">ໝຸນທວນເຂັມໂມງ</translation>
 <translation id="780254490276923052">ລະດັບ 2: MID</translation>
 <translation id="780301667611848630">ບໍ່​, ​ຂອບ​ໃຈ</translation>
-<translation id="6489949827465793034">Brave ໃຊ້ຂໍ້ມູນໜ້ອຍລົງ (ຕົວຢ່າງ: URL ບາງສ່ວນ, ຂໍ້ມູນການດາວໂຫຼດ) ເພື່ອກວດຫາໄພຄຸກຄາມ</translation>
 <translation id="7804072833593604762">ປິດແຖບແລ້ວ</translation>
 <translation id="7805371082115476536">ເບົາ</translation>
 <translation id="7805768142964895445">ສະ​ຖາ​ນະ​</translation>
@@ -8900,7 +8881,6 @@
 <translation id="7820400255539998692">ກະລຸນາລຶບ <ph name="FILENAME"/> ອອກ, ເພື່ອໃຫ້ຄົນອື່ນທີ່ໃຊ້ອຸປະກອນນີ້ບໍ່ສາມາດເບິ່ງເຫັນລະຫັດຜ່ານຂອງທ່ານໄດ້</translation>
 <translation id="7820561748632634942">ມອບໝາຍສະວິດເພີ່ມເຕີມບໍ?</translation>
 <translation id="782057141565633384">ອັດ​ສຳ​ເນົາ​ທີ່​ຢູ່​ວິ​ດີ​ໂອ</translation>
-<translation id="7823975162954158194">ໃຫ້ການປົກປ້ອງທີ່ເຂັ້ມງວດ</translation>
 <translation id="7824665136384946951">ອົງກອນຂອງທ່ານໄດ້ປິດ Safe Browsing</translation>
 <translation id="7825289983414309119">ພູ</translation>
 <translation id="782590969421016895">ໃຊ້​ຫນ້າ​​ປະ​ຈຸ​ບັນ</translation>
@@ -8956,7 +8936,6 @@
 <translation id="7871691770940645922">ການສະແດງຜົນໜັງສືໂພງສະເໝືອນຈິງ</translation>
 <translation id="787268756490971083">ປິດ</translation>
 <translation id="7872758299142009420">ມີກຸ່ມຊ້ອນກັນຫຼາຍເກີນໄປ: <ph name="ERROR_LINE"/></translation>
-<translation id="7875512939198436953">ອັບເດດເມື່ອຂ້ອຍບໍ່ໄດ້ນຳໃຊ້</translation>
 <translation id="7876027585589532670">ບໍ່ສາມາດແກ້ໄຂທາງລັດໄດ້</translation>
 <translation id="7876243839304621966">ເອົາ​ອອກທັງ​ຫມົດ</translation>
 <translation id="7877126887274043657">ແກ້ໄຂບັນຫາ&amp;ການຊິ້ງ</translation>
@@ -9222,7 +9201,6 @@
 <translation id="8054517699425078995">ໄຟລ໌ປະເພດນີ້ສາມາດເປັນອັນຕະລາຍຕໍ່ອຸປະກອນຂອງທ່ານໄດ້. ແນວໃດທ່ານກໍ່ຕ້ອງການເກັບ <ph name="FILE_NAME"/> ໄວ້ບໍ?</translation>
 <translation id="8054609631325628928">ໝາຍເລກເຫຼົ່ານີ້ສາມາດຖືກນຳໃຊ້ເພື່ອຊ່ວຍເປີດການນຳໃຊ້ບໍລິການໄດ້</translation>
 <translation id="8054883179223321715">ມີໃຫ້ສຳລັບເວັບໄຊວິດີໂອສະເພາະ</translation>
-<translation id="8055975688427973864">ປຸ່ມສະແດງຜູ້ຈັດງານ</translation>
 <translation id="8058655154417507695">ປີໝົດອາຍຸ</translation>
 <translation id="8058986560951482265">ກະຕຸກ</translation>
 <translation id="8059417245945632445">​ກວດ​ກາ​ອຸ​ປະ​ກອນ</translation>
@@ -9265,7 +9243,6 @@
 <translation id="808894953321890993">ປ່ຽນລະຫັດຜ່ານ</translation>
 <translation id="735578346576443763">{BOOKMARK_COUNT,plural, =1{1 ບຸກມາກຖືກບັນທຶກໃສ່ອຸປະກອນນີ້ເທົ່ານັ້ນ. ເພື່ອໃຊ້ມັນຢູ່ອຸປະກອນອື່ນຂອງທ່ານ, ໃຫ້ບັນທຶກມັນໄວ້ໃນບັນຊີ Brave ຂອງທ່ານ. ສິ່ງນີ້ຍັງຈະອະນາໄມຂໍ້ມູນຕ່າງໆທີ່ຊ້ຳກັນນຳ.}other{ບຸກມາກ {BOOKMARK_COUNT} ລາຍການຖືກບັນທຶກໄວ້ໃນອຸປະກອນນີ້ເທົ່ານັ້ນ. ເພື່ອນຳໃຊ້ຢູ່ອຸປະກອນເຄື່ອງອື່ນຂອງທ່ານ, ໃຫ້ບັນທຶກໄວ້ໃນບັນຊີ Brave ຂອງທ່ານ. ສິ່ງນີ້ຍັງຈະອະນາໄມຂໍ້ມູນຕ່າງໆທີ່ຊ້ຳກັນນຳ.}}</translation>
 <translation id="8090234456044969073">ອ່ານລາຍຊື່ເວັບໄຊທ໌ທີ່ທ່ານເຂົ້າເບິ່ງເລື້ອຍທີ່ສຸດ</translation>
-<translation id="8090482108674923047">{NUM_SITES,plural, =1{ທ່ານສາມາດປ້ອງກັນບໍ່ໃຫ້ເວັບໄຊນີ້ສົ່ງການແຈ້ງເຕືອນໃນອະນາຄົດໄດ້.}other{ທ່ານສາມາດປ້ອງກັນບໍ່ໃຫ້ເວັບໄຊເຫຼົ່ານີ້ສົ່ງການແຈ້ງເຕືອນໃນອະນາຄົດໄດ້.}}</translation>
 <translation id="8090513782447872344">ທ່ານສາມາດກັບມາອ່ານໃໝ່ຕອນໃດກໍໄດ້</translation>
 <translation id="8090686009202681725">ສ້າງຮູບແບບສີສັນດ້ວຍ AI</translation>
 <translation id="8092792048365451089">ດຳເນີນການສຳເລັດແລ້ວໂດຍມີຜົນໄດ້ຮັບເປັນ: <ph name="OUTCOME"/></translation>
@@ -9304,6 +9281,7 @@
 <translation id="177808131755847449">ປິດໃຊ້ງານໂດຍ Brave. ສ່ວນຂະຫຍາຍນີ້ອາດຈະບໍ່ປອດໄພ.</translation>
 <translation id="8118448640060360549">{EXTENSIONS_COUNT,plural, =1{ບຸກມາກ # ລາຍການ}other{ບຸກມາກ # ລາຍການ}}</translation>
 <translation id="8118488170956489476"><ph name="BEGIN_LINK"/>ໂປຣແກຣມທ່ອງເວັບຂອງທ່ານຖືກຈັດການ<ph name="END_LINK"/> ໂດຍອົງການຈັດຕັ້ງຂອງທ່ານ</translation>
+<translation id="8118496140027032067">ຍົກເລີກສີຂອງໜ້າເວັບດ້ວຍຮູບແບບສີສັນທີ່ມີຄອນທຣາສສູງ ຫຼື ປິດສີທີ່ບັງຄັບໃຊ້</translation>
 <translation id="8118515372935001629">ອັດຕາໂຫຼດຂໍ້ມູນຄືນໃໝ່ຂອງຈໍສະແດງຜົນ</translation>
 <translation id="8118860139461251237">ຈັດການເລື່ອງ​ການ​ດາວ​ໂຫຼດ​ຂອງ​ທ່ານ</translation>
 <translation id="8119438628456698432">ກຳລັງສ້າງໄຟລ໌ບັນທຶກ...</translation>
@@ -9394,16 +9372,15 @@
 <translation id="8191230140820435481">ຈັດການແອັບ, ສ່ວນຂະຫຍາຍ, ແລະເທມຂອງທ່ານ</translation>
 <translation id="8192944472786724289"><ph name="APP_NAME"/> ຕ້ອງການແບ່ງປັນເນື້ອຫາໜ້າຈໍຂອງທ່ານ.</translation>
 <translation id="8193195501228940758">ລຶບ <ph name="WEBSITE"/> ອອກ</translation>
-<translation id="8193953846147532858"><ph name="BEGIN_LINK"/>ອຸປະກອນຂອງທ່ານ<ph name="END_LINK"/> · <ph name="EMAIL"/></translation>
 <translation id="8195265224453131880">ຄວາມເຂັ້ມ</translation>
 <translation id="8195920051450756553">ໜ່ວງເວລາກ່ອນເປີດໃຊ້ປຸ່ມດຽວກັນອີກຄັ້ງ</translation>
 <translation id="8197673340773315084">ເພີ່ມຊື່ ຫຼື ປ້າຍກຳກັບ, ເຊັ່ນ: ບ່ອນເຮັດວຽກ ຫຼື ສ່ວນຕົວ</translation>
 <translation id="8198181050118789419">ຮູບແບບສີສັນ: <ph name="THEME_NAME"/></translation>
 <translation id="8198456017687137612">ແຖບການສົ່ງສັນຍານ</translation>
 <translation id="8199300056570174101">ຄຸນລັກສະນະຂອງເຄືອຂ່າຍ (ການບໍລິການ) ແລະ ອຸປະກອນ</translation>
-<translation id="819953863048845575">ການປົກປ້ອງການເລືອກເບິ່ງ</translation>
 <translation id="8200772114523450471">ເລີ່ມຕົ້ນປິດເປີດໃໝ່</translation>
 <translation id="8202827109322349110">ເປີດໃນຕົວແກ້ໄຂພື້ນຖານ</translation>
+<translation id="912225951896594871">ແຜງ Brave ຊອກຫາ</translation>
 <translation id="8203152941016626022">ຊື່ອຸປະກອນຂອງການແບ່ງປັນໃກ້ຄຽງ</translation>
 <translation id="8203732864715032075">ສົ່ງການແຈ້ງເຕືອນໃຫ້ທ່ານ ແລະ ເຮັດໃຫ້ການຈື່ຄອມພິວເຕີນີ້ສຳລັບຂໍ້ຄວາມເປັນຄ່າເລີ່ມຕົ້ນ. <ph name="LINK_BEGIN"/>ສຶກສາເພີ່ມເຕີມ<ph name="LINK_END"/></translation>
 <translation id="8203795194971602413">ຄລິກຂວາ</translation>
@@ -9565,7 +9542,6 @@
 <translation id="8317671367883557781">ເພີ່ມການເຊື່ອມຕໍ່ເຄືອຂ່າຍ</translation>
 <translation id="8317965619823678157">ສຳເນົາລະຫັດຜ່ານ</translation>
 <translation id="8318266828739827371">ໃຊ້ມຸມມອງແບ່ງໜ້າຈໍເພື່ອເບິ່ງພື້ນທີ່ຂະຫຍາຍຂອງໜ້າຈໍທ່ານ. ໃຊ້ຊອກຫາ + Ctrl + D ເພື່ອເປີດ ແລະ ປິດແວ່ນຂະຫຍາຍທີ່ຕັ້ງໄວ້.</translation>
-<translation id="8319105959731007612">ການແຍກຂະບວນການຈະປ້ອງກັນບໍ່ໃຫ້ແອັບພລິເຄຊັນອື່ນໆມາແຊກແຊງກ່ຽວກັບ <ph name="IDS_SHORT_PRODUCT_NAME"/>.</translation>
 <translation id="8320212361750431956">ການເຄື່ອນໄຫວຫຼ້າສຸດ</translation>
 <translation id="8321476692217554900">ການແຈ້ງເຕືອນ</translation>
 <translation id="8322000044173139239">ຢັ້ງຢືນວ່າແມ່ນທ່ານເພື່ອໃຊ້ກະແຈຜ່ານຂອງທ່ານໃນອຸປະກອນນີ້</translation>
@@ -9603,6 +9579,7 @@
 <translation id="8345099007452202761"><ph name="APP_NAME"/> ເວີຊັນໃໝ່ (<ph name="VERSION"/>) ພ້ອມໃຫ້ບໍລິການແລ້ວ. ທ່ານຕ້ອງການນຳໃຊ້ເລີຍບໍ?</translation>
 <translation id="8345848587667658367">ຕອນນີ້ທ່ານສາມາດເບິ່ງຮູບພາບ, ມີເດຍ, ການແຈ້ງເຕືອນ ແລະ ແອັບຫຼ້າສຸດຂອງໂທລະສັບທ່ານໄດ້ແລ້ວ</translation>
 <translation id="8347227221149377169">ວຽກການພິມ</translation>
+<translation id="8347654878156675116">ຊອກຫາ</translation>
 <translation id="8347728744337089388">ສົ່ງໄປຫາອຸປະກອນຂອງທ່ານ</translation>
 <translation id="8348430946834215779">ໃຊ້ HTTPS ເມື່ອເປັນໄປໄດ້ ແລະ ຮັບຄຳເຕືອນກ່ອນການໂຫຼດເວັບໄຊທີ່ບໍ່ຮອງຮັບມັນ</translation>
 <translation id="8348896480272971199">ກວດສອບອິນເຕີເນັດຂອງທ່ານແລ້ວລອງໃໝ່.</translation>
@@ -9617,7 +9594,6 @@
 <translation id="8354125743472063725">ສິດທີ່ທ່ານອະນຸຍາດໃຫ້ກັບ <ph name="APP_NAME"/> ຈະມອບໃຫ້ແກ່ແອັບນີ້ນຳ. <ph name="BEGIN_LINK"/>ຈັດການການອະນຸຍາດສຳລັບແອັບຫຼັກ<ph name="END_LINK"/></translation>
 <translation id="8356197132883132838"><ph name="TITLE"/> - <ph name="COUNT"/></translation>
 <translation id="8356409598322585307">ທ່ານລົງທະບຽນອຸປະກອນນີ້ຮຽບຮ້ອຍແລ້ວ. ທ່ານບໍ່ຈຳເປັນຕ້ອງລົງທະບຽນມັນອີກຄັ້ງ.</translation>
-<translation id="8357883857705092796">ເວັບໄຊທີ່ບໍ່ຮູ້ຈັກ</translation>
 <translation id="8358685469073206162">ຮື້ຟື້ນໜ້າຄືນບໍ?</translation>
 <translation id="9029438584415578308">ຖາມ Brave</translation>
 <translation id="2921493528667739769">ບັນທຶກໄວ້ໃນບັນຊີ Brave ຂອງທ່ານ</translation>
@@ -9873,6 +9849,7 @@
 <translation id="8563043098557365232">ອະນຸຍາດສະເພາະບໍລິການລະບົບ</translation>
 <translation id="8563898784671745643">ປິດສຽງເວັບໄຊທາງລຸ່ມ</translation>
 <translation id="8564220755011656606">ບໍ່ສາມາດເຂົ້າເຖິງໄມໂຄຣໂຟນໄດ້</translation>
+<translation id="8564894539416715395">ໜ້າແຖບໃໝ່</translation>
 <translation id="8565021320663436446">ລຶບ <ph name="MEMBER_FULL_NAME"/> ອອກບໍ?</translation>
 <translation id="8566916288687510520">ຮັບລະຫັດຜ່ານໃໝ່ແລ້ວ</translation>
 <translation id="8567946600191652875">ຕ້ອງມີຢ່າງໜ້ອຍ 6 ຕົວອັກສອນ ແລະ ມີຕົວອັກສອນ ຫຼື ສັນຍາລັກຢ່າງໜ້ອຍ 1 ຕົວ</translation>
@@ -9901,7 +9878,6 @@
 <translation id="8588868914509452556"><ph name="WINDOW_TITLE"/> - ກຳລັງນໍາສະເໜີ VR ໄປຍັງຊຸດຫູຟັງ</translation>
 <translation id="8590375307970699841">ຕັ້ງການອັບເດດອັດຕະໂນມັດ</translation>
 <translation id="8591783563402255548">1 ວິນາທີ</translation>
-<translation id="8592141010104017453">ບໍ່ສະແດງການແຈ້ງເຕືອນເລີຍ</translation>
 <translation id="859246725979739260">ເວັບໄຊນີ້ໄດ້ຖືກບລັອກບໍ່ໃຫ້ເຂົ້າເຖິງສະຖານທີ່ຂອງທ່ານແລ້ວ.</translation>
 <translation id="8593450223647418235">ທ່ານຈະບໍ່ສາມາດເປີດໄຟລ໌ໃນ Microsoft 365 ໄດ້ຈົນກວ່າຈະຕັ້ງຄ່າສຳເລັດ.</translation>
 <translation id="8593686980889923154"><ph name="APP_NAME"/> ຖືກບລັອກໃນ <ph name="DEVICE_TYPE"/> ຂອງທ່ານ</translation>
@@ -9914,7 +9890,6 @@
 <translation id="8598249292448297523">ພິມ</translation>
 <translation id="8600362954032151088">ຈັດການລະຫັດຜ່ານ ແລະ ກະແຈຜ່ານຂອງທ່ານໃນ <ph name="GOOGLE_PASSWORD_MANAGER"/></translation>
 <translation id="6637045053447935202">ໂປຣແກຼມອື່ນຢູ່ໃນຄອມພິວເຕີຂອງທ່ານໄດ້ເພີ່ມແອັບທີ່ອາດຈະປ່ຽນແປງວິທີການເຮັດວຽກຂອງ Brave ແລ້ວ.</translation>
-<translation id="7765260303733194693">Brave ໃຊ້ຂໍ້ມູນຫຼາຍຂຶ້ນ (ເຊັ່ນ: URL, ຕົວຢ່າງເນື້ອຫາໃນໜ້າເວັບ, ຂໍ້ມູນລະບົບ) ເພື່ອກວດຫາໄພຄຸກຄາມໄດ້ໄວ ແລະ ຖືກຕ້ອງຍິ່ງຂຶ້ນ</translation>
 <translation id="860399903490378651">ປິດມຸມມອງນີ້</translation>
 <translation id="8605428685123651449">ຄວາມ​ຈໍາ SQLite</translation>
 <translation id="8606857385325125054">ແອັບນີ້ຕິດຕັ້ງໂດຍ <ph name="PARENT_APP_NAME"/>. ການຖອນການຕິດຕັ້ງ <ph name="APP_NAME"/> ຈະບໍ່ສົ່ງຜົນຕໍ່ <ph name="PARENT_APP_NAME"/> ຫຼື ແອັບອື່ນໆທີ່ຕິດຕັ້ງໄວ້.</translation>
@@ -9978,12 +9953,12 @@
 <translation id="8648408795949963811">ອຸນຫະພູມສີຂອງແສງກາງຄືນ</translation>
 <translation id="8648544143274677280"><ph name="SITE_NAME"/> ຕ້ອງການ: <ph name="FIRST_PERMISSION"/>, <ph name="SECOND_PERMISSION"/> ແລະ ອື່ນໆອີກ</translation>
 <translation id="8648889679430451455">ລຶບລ້າງຂໍ້ມູນການປັບແຕ່ງເປັນແບບສ່ວນຕົວ</translation>
+<translation id="8649290269169747916">ໃຊ້ສີໜ້າເວັບເລີ່ມຕົ້ນເມື່ອຄອນທຣາສສູງຂອງລະບົບປິດຢູ່</translation>
 <translation id="8651585100578802546">​ບັງຄັບໂຫຼດ​ຫນ້າ​ນີ້ຄືນອີກ</translation>
 <translation id="8651806635673244884">ທ່ານສາມາດຍ້າຍແຖບຂອງທ່ານກັບຄືນໄປໄວ້ເທິງສຸດໄດ້ໂດຍຄລິກຂວາໃສ່ແຖບໃດກໍໄດ້ແລ້ວເລືອກ “ສະແດງແຖບໃນແນວນອນ”</translation>
 <translation id="8652400352452647993">ສ່ວນຂະຫຍາຍແພັກຜິດພາດ</translation>
 <translation id="8654151524613148204">ໄຟລ໌ນີ້ໃຫຍ່ເກີນໄປທີ່ຄອມພິວເຕີຂອງທ່ານຈະຈັດການໄດ້. ຂໍອະໄພ.</translation>
 <translation id="8655295600908251630">ຊ່ອງ</translation>
-<translation id="8656101380279383244">ໂຟກັສໃສ່ກຸ່ມແຖບ</translation>
 <translation id="8656888282555543604">ເປີດນຳໃຊ້ການບັນທຶກອັກສອນນູນ</translation>
 <translation id="8657393004602556571">ທ່ານຕ້ອງການຍົກເລີກຄຳຕິຊົມບໍ?</translation>
 <translation id="8657542881463614516">ໃຊ້ທ່າທາງປັດເພື່ອນຳທາງລະຫວ່າງໜ້າ</translation>
@@ -10006,6 +9981,7 @@
 <translation id="8666268818656583275">ຕອນນີ້ປຸ່ມ F ຈະເຮັດວຽກເປັນປຸ່ມແຖວເທິງສຸດຂອງລະບົບ</translation>
 <translation id="8666321716757704924">ອະນຸຍາດສິດການອະນຸຍາດອີກຄັ້ງສຳລັບ <ph name="WEBSITE"/> ແລ້ວ</translation>
 <translation id="8667261224612332309">ທ່ານມີລະຫັດຜ່ານທີ່ຄວນປັບປຸງ</translation>
+<translation id="8667543835349994431">ເປີດ &amp;ດ້ວຍ...</translation>
 <translation id="8668378421690365723">ອຸປະກອນຂອງທ່ານອາດບໍ່ເຮັດວຽກໄດ້ຕາມປົກກະຕິອີກຕໍ່ໄປ ແລະ ອາດພົບບັນຫາກ່ຽວກັບຄວາມປອດໄພ ແລະ ປະສິດທິພາບ.</translation>
 <translation id="8669284339312441707">ອຸ່ນກວ່າ</translation>
 <translation id="8670537393737592796">ເພື່ອກັບຄືນບ່ອນນີ້ໄດ້ຢ່າງວ່ອງໄວ, ກະລຸນາຕິດຕັ້ງ <ph name="APP_NAME"/> ໂດຍຄລິກໃສ່ປຸ່ມຕິດຕັ້ງ</translation>
@@ -10044,7 +10020,6 @@
 <translation id="8690129572193755009">ເວັບໄຊສາມາດຂໍຈັດການໂປຣໂຕຄໍໄດ້</translation>
 <translation id="869144235543261764">ແຖບນີ້ກຳລັງຫຼິ້ນວິດີໂອໃນໂໝດການສະແດງຜົນຊ້ອນກັນ</translation>
 <translation id="869167754614449887">ລຶບ <ph name="FILE_NAME"/> ອອກຈາກປະຫວັດການດາວໂຫຼດແລ້ວ</translation>
-<translation id="8691990641861252959">ເຕືອນທ່ານກ່ຽວກັບການເຊື່ອມຕໍ່ທີ່ບໍ່ປອດໄພຢູ່ອິນເຕີເນັດແບບເປີດ</translation>
 <translation id="8692107307702113268">ລະຫັດຜ່ານມີຫຼາຍກວ່າ 1000 ຕົວອັກສອນ</translation>
 <translation id="8693862390730570097">ບໍ່ອະນຸຍາດໃຫ້ "ຊ່ວຍຂ້ອຍຂຽນ" ເປີດໂດຍອັດຕະໂນມັດ</translation>
 <translation id="8694596275649352090">ລັອກເມື່ອເຂົ້າສູ່ໂໝດນອນຫຼັບ ຫຼື ປິດໜ້າປົກໄວ້</translation>
@@ -10078,7 +10053,6 @@
 <translation id="8713761545374852805">ທ່ານສາມາດໄດ້ຮັບການຊ່ວຍເຫຼືອກ່ຽວກັບຄຳຕິຊົມ, ອີເມວ, ໂພສສື່ສັງຄົມ, ບົດຄວາມ ແລະ ອື່ນໆ</translation>
 <translation id="8714731224866194981">ເບິ່ງຮູບພາບ ແລະ ແອັບຂອງໂທລະສັບທ່ານ. ຕອບກັບແບບດ່ວນຫາການແຈ້ງເຕືອນການຮັບສົ່ງຂໍ້ຄວາມ.</translation>
 <translation id="8714838604780058252">ກຣາຟິກພື້ນຫຼັງ</translation>
-<translation id="5891814591156187199">ເລືອກອຸປະກອນ. ຈາກນັ້ນ, ເພື່ອເບິ່ງໜ້າ, ໃຫ້ເປີດ Brave ຢູ່ບ່ອນນັ້ນ.</translation>
 <translation id="8715480913140015283">ແຖບໃນພື້ນຫຼັງກຳລັງໃຊ້ກ້ອງຖ່າຍຮູບຂອງທ່ານຢູ່</translation>
 <translation id="8716050156658570300">ເວັບໄຊສາມາດຂໍໃຊ້ເຊັນເຊີກວດຈັບການເຄື່ອນໄຫວ ແລະ ແສງໄດ້</translation>
 <translation id="8716067129332848360">ເບິ່ງຜູ້ຈັດງານ</translation>
@@ -10115,6 +10089,7 @@
 <translation id="8738418093147087440">ຊອກຫາຕາມປະເທດ, ພາສາ ຫຼື ຊື່ການປ້ອນຂໍ້ມູນ</translation>
 <translation id="8741944563400125534">ການແນະນຳການຕັ້ງຄ່າການເຂົ້າເຖິງດ້ວຍປຸ່ມກົດ</translation>
 <translation id="8743357966416354615">ສະພາບແວດລ້ອມໃນການພັດທະນາຊອບແວທີ່ມີການຈັດການ (<ph name="GENERAL_NAME"/>)</translation>
+<translation id="8743685468297625220">ນຳທາງໄປຫາ <ph name="URL"/> ແທນບໍ?</translation>
 <translation id="8744641000906923997">Romaji</translation>
 <translation id="8744913471985800082">ກວດສອບການປ່ຽນແປງ URL ເພື່ອໃຫ້ໝັ້ນໃຈວ່າທ່ານສະບາຍໃຈກັບການປ່ຽນແປງດັ່ງກ່າວກ່ອນທີ່ຈະອັບເດດ.</translation>
 <translation id="8745034592125932220">ບໍ່ໄດ້ອະນຸຍາດໃຫ້ບັນທຶກຂໍ້ມູນໃສ່ອຸປະກອນຂອງທ່ານ</translation>
@@ -10210,6 +10185,7 @@
 <translation id="8818152010000655963">ພາບພື້ນຫຼັງ</translation>
 <translation id="8818988764764862764">ໜ້າຈໍເລື່ອນໄປທາງຊ້າຍ</translation>
 <translation id="8819510664278523111">EID ຂອງອຸປະກອນຂອງທ່ານແມ່ນ <ph name="EID_NUMBER"/> , IMEI ຂອງອຸປະກອນແມ່ນ <ph name="IMEI_NUMBER"/> ແລະ ໝາຍເລກຊີຣຽວຂອງອຸປະກອນແມ່ນ <ph name="SERIAL_NUMBER"/>. ໝາຍເລກເຫຼົ່ານີ້ສາມາດຖືກນຳໃຊ້ເພື່ອຊ່ວຍເປີດການນຳໃຊ້ບໍລິການໄດ້.</translation>
+<translation id="8819762137851963556">ຊອກຫາເຄີເຊີເມົ້າ</translation>
 <translation id="8820817407110198400">ບຸກມາກ</translation>
 <translation id="8821045908425223359">ກຳນົດຄ່າທີ່ຢູ່ IP ໂດຍອັດຕະໂນມັດ</translation>
 <translation id="2361985035137943119">ບັນຊີຂອງທ່ານບໍ່ມີສິດເຂົ້າເຖິງ Gemini ໃນ Brave</translation>
@@ -10341,7 +10317,6 @@
 <translation id="8920133120839850939">ເລືອກແຖບ ທ່າທາງເພີ່ມເຕີມ, ຈາກນັ້ນເປີດ ປັດໄປມາລະຫວ່າງໜ້າ ເພື່ອກັບຄືນ ແລະ ໄປໜ້າ</translation>
 <translation id="8922348435910470639">ຈອງເວລາຊ້ຳ</translation>
 <translation id="8922624386829239660">ຍ້າຍໜ້າຈໍເມື່ອເມົ້າສຳຜັດຂອບໜ້າຈໍ</translation>
-<translation id="8923670289674436542">ປັບປຸງແລ້ວ: ກຳນົດເອງ</translation>
 <translation id="8923880975836399332">ສີຂຽວອົມຟ້າເຂັ້ມ</translation>
 <translation id="8925124370124776087">ຕອນນີ້ເຊື່ອງແຖບຊື່ແລ້ວ</translation>
 <translation id="8925308599005372373">ອັບໂຫຼດ PDF</translation>
@@ -10393,6 +10368,7 @@
 <translation id="8963117664422609631">ໄປຫາການຕັ້ງຄ່າເວັບໄຊ</translation>
 <translation id="8964927371396953727">ຢັ້ງຢືນວ່າມັນແມ່ນທ່ານທີ່ຈະໃຊ້ ແລະ ບັນທຶກລະຫັດຜ່ານໄວ້ໃນບັນຊີຂອງທ່ານ, <ph name="ACCOUNT_EMAIL"/></translation>
 <translation id="8965037249707889821">ປ້ອນລະ​ຫັດ​ຜ່ານ​ເກົ່າ</translation>
+<translation id="3683930175091707015">ກຳລັງພັດທະນາສ່ວນຂະຫຍາຍຢູ່ບໍ? ບໍ່ພາດທຸກການອັບເດດກ່ຽວກັບ <ph name="BEGIN_LINK"/>ມີຫຍັງໃໝ່<ph name="END_LINK"/> ດ້ວຍເອກະສານນັກພັດທະນາສ່ວນຂະຫຍາຍ Brave.</translation>
 <translation id="8967427617812342790">ເພີ່ມໃສ່ລາຍການທີ່ຈະອ່ານ</translation>
 <translation id="8968527460726243404">ຕົວ​ຂຽນ​ພາບ​ຂອງລະ​ບົບ ChromeOS</translation>
 <translation id="8968766641738584599">ບັນທຶກບັດໄວ້</translation>
@@ -10699,7 +10675,6 @@
 <translation id="9185698642371842814">ຖາມໃນໂໝດ AI</translation>
 <translation id="9186743636216815027">{NUM_APPS,plural,offset:2 =1{ຜູ້ເບິ່ງແຍງລະບົບຂອງທ່ານສາມາດບັນທຶກໜ້າຈໍຂອງທ່ານດ້ວຍ <ph name="APP0_NAME"/>. ທ່ານຈະບໍ່ໄດ້ຮັບການແຈ້ງເຕືອນເມື່ອເລີ່ມການບັນທຶກ.}=2{ຜູ້ເບິ່ງແຍງລະບົບຂອງທ່ານສາມາດບັນທຶກໜ້າຈໍຂອງທ່ານດ້ວຍ <ph name="APP0_NAME"/> ແລະ <ph name="APP1_NAME"/>. ທ່ານຈະບໍ່ໄດ້ຮັບການແຈ້ງເຕືອນເມື່ອເລີ່ມການບັນທຶກ.}=3{ຜູ້ເບິ່ງແຍງລະບົບຂອງທ່ານສາມາດບັນທຶກໜ້າຈໍຂອງທ່ານດ້ວຍ <ph name="APP0_NAME"/>, <ph name="APP1_NAME"/> ແລະ ອີກ 1 ແອັບ. ທ່ານຈະບໍ່ໄດ້ຮັບການແຈ້ງເຕືອນເມື່ອເລີ່ມການບັນທຶກ.}other{ຜູ້ເບິ່ງແຍງລະບົບຂອງທ່ານສາມາດບັນທຶກໜ້າຈໍຂອງທ່ານດ້ວຍ <ph name="APP0_NAME"/>, <ph name="APP1_NAME"/> ແລະ ອີກ # ແອັບ. ທ່ານຈະບໍ່ໄດ້ຮັບການແຈ້ງເຕືອນເມື່ອເລີ່ມການບັນທຶກ.}}</translation>
 <translation id="9187967020623675250">ປຸ່ມບໍ່ກົງກັນ. ກົດປຸ່ມໃດກໍໄດ້ເພື່ອ <ph name="RESPONSE"/>.</translation>
-<translation id="9188142767272053574">ເປີດການນຳໃຊ້ການແຍກຂະບວນການ</translation>
 <translation id="9192019773545828776">ຟັງການຕອບສະໜອງແບບສຽງເວົ້າເພື່ອໃຫ້ທ່ານສາມາດໃຊ້ອຸປະກອນຂອງທ່ານໂດຍບໍ່ຕ້ອງເບິ່ງໜ້າຈໍ. ສາມາດສະແດງຄໍາຕິຊົມເປັນອັກສອນນູນໄດ້ກັບອຸປະກອນທີ່ເຊື່ອມຕໍ່ແລ້ວ. ໃຊ້ Ctrl + Alt + Z ເພື່ອເປີດ ແລະ ປິດ ChromeVox. ໃຊ້ຊອກຫາ + ລູກສອນຊ້າຍ ຫຼື ລູກສອນຂວາເພື່ອນໍາທາງ. ໃຊ້ຊອກຫາ + ຍະຫວ່າງເພື່ອເລືອກ (ເປີດນຳໃຊ້).</translation>
 <translation id="6436745840109002184">ເມື່ອອົງກອນຂອງທ່ານຈຳກັດການບັນທຶກໃສ່ໃນບັນຊີ Brave ຂອງທ່ານ, ທ່ານຈະບໍ່ສາມາດແບ່ງປັນ ຫຼື ເຂົ້າຮ່ວມກຸ່ມແຖບໄດ້</translation>
 <translation id="9197456336762295195">ສະແກນລະຫັດ QR ນີ້ດ້ວຍກ້ອງຢູ່ອຸປະກອນທີ່ມີກະແຈຜ່ານຂອງທ່ານສຳລັບ google.com</translation>
@@ -10862,6 +10837,9 @@
 <translation id="6945695820322143954">ການຂະຫຍາຍນີ້ລະເມີດຄົວມງານຮ້ານເວັບ.</translation>
 <translation id="1676595396635191120">ໜ້າສ່ວນຕົວໃໝ່</translation>
 <translation id="7880076834790511518">{COUNT, plural, =1 {ນ້ອງຟ້າສ່ວນຕົວຂອງທ່ານຈະບໍ່ໄດ້ເປີດອີກຄັ້ງ.} other {ນ້ອງຟ້າສ່ວນຕົວ {COUNT} ຟ້າຂອງທ່ານຈະບໍ່ໄດ້ເປີດອີກຄັ້ງ.}}</translation>
+<translation id="5121803700116253093">{COUNT, plural,
+          =1 {ມີປ່ອງສ່ວນຕົວ ຫຼື ປ່ອງແຍກຂາດເປີດຢູ່ 1 ອັນ. ມັນຈະບໍ່ເປີດຄືນໃໝ່.}
+          other {ມີປ່ອງສ່ວນຕົວ ແລະ ປ່ອງແຍກຂາດ # ອັນເປີດຢູ່ໃນທຸກໂປຣໄຟລ໌. ພວກມັນຈະບໍ່ເປີດຄືນໃໝ່.}}</translation>
 <translation id="5298187053819934487">ຂໍ້ມູນທີ່ໄດ້ໃຊ້ລົງເຊັນອອກຈາກນຳ່ຊ້າວທຫານຄົບໝາກສອງ. ທ່ານສາມາດລົງເຊັນເວັບໄຊນີ້ໂດຍໃຊ້ອຸກປະກອນຂອງທ່ານໃນຄັ້ງຕໍ່ໜ້າ.</translation>
 <translation id="7660227077779094198">ຫລັງຈາກທ່ານປິດໂປຣະໄພທັງໝົດສຸດໃຫ້ກັບການລົງຂໍ່ມູນ.</translation>
 <translation id="2579188629646253712">ອອກຈາກໂໝດສ່ວນຕົວ</translation>
@@ -10892,6 +10870,9 @@
 <translation id="5832813618714645810">ໂປຼຟິລ</translation>
 <translation id="3707212204259470604">ຈັດການໂປຼຟິລອື່ນໆ</translation>
 <translation id="9190752231623502208">{COUNT, plural, =1 {ປ່ອງສ່ວນຕົວຂອງທ່ານຈະບໍ່ໄດ້ເປີດຫຼັງຈາກທ່ານເປີດໃໝ່} other {ປ່ອງສ່ວນຕົວ {COUNT} ອັນຂອງທ່ານຈະບໍ່ໄດ້ເປີດຫຼັງຈາກທ່ານເປີດໃໝ່}}</translation>
+<translation id="11067762610839657">{COUNT, plural,
+        =1 {ມີປ່ອງສ່ວນຕົວ ຫຼື ປ່ອງແຍກຂາດເປີດຢູ່ {COUNT} ອັນ. ມັນຈະບໍ່ເປີດຄືນຫຼັງຈາກທ່ານເປີດໃໝ່}
+        other {ມີປ່ອງສ່ວນຕົວ ແລະ ປ່ອງແຍກຂາດ {COUNT} ອັນເປີດຢູ່ໃນທຸກໂປຣໄຟລ໌. ພວກມັນຈະບໍ່ເປີດຄືນຫຼັງຈາກທ່ານເປີດໃໝ່}}</translation>
 <translation id="5840822070878669614">ຂ່າຍ Web Store</translation>
 <translation id="3497049935870467874">ເຫັນຄຳເຕືອນກ່ອນທີ່ຈະໄປຫາເວັບໄຊທ໌ທີ່ບໍ່ປອດໄພໃນແຖບສ່ວນຕົວ</translation>
 <translation id="6710473112951410470">ແທັບພຽງແຕ່ຄັ້ງນີ້ເທົ່ານັ້ນ</translation>

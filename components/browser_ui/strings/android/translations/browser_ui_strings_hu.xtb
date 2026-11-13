@@ -181,9 +181,7 @@
 <translation id="2710883118091822664">Jelentkezzen be, hogy az összes eszközén könnyen folytathassa, amit elkezdett</translation>
 <translation id="2713106313042589954">Kamera kikapcsolása</translation>
 <translation id="2717722538473713889">E-mail-címek</translation>
-<translation id="8181634240306014548">A Brave elindítása a cím- és keresősávra fókuszálva, ami csökkenti az indulási időt alsóbb kategóriás eszközökön.</translation>
 <translation id="2750481671343847896">A webhelyek megjeleníthetnek identitásszolgáltatásoktól származó bejelentkezési értesítéseket.</translation>
-<translation id="2787357173144933081">Gyorsindítás a cím- és keresősávval</translation>
 <translation id="2789132527330338807">A webhelyek kérhetik az Ön környezetéről készített 3D-s térkép létrehozását, valamint a kamera pozíciójának nyomon követését</translation>
 <translation id="2790501146643349491">Ha be van kapcsolva, a nemrégiben bezárt webhelyek befejezhetik az adatok küldését és fogadását. Ha ki van kapcsolva, a nemrégiben bezárt webhelyek nem tudják befejezni az adatok küldését és fogadását.</translation>
 <translation id="2795716239552913152">A webhelyek általában arra használják az Ön helyadatait, hogy releváns szolgáltatásokat vagy információkat biztosítsanak (például helyi hírekről vagy közeli üzletekről)</translation>
@@ -291,7 +289,6 @@
 <translation id="9046306654872718870">Személyre szabhatja a Brave-ot egyéni színekkel és képekkel a kezdőlapon</translation>
 <translation id="389521680295183045">A webhelyek engedélyt kérhetnek arra, hogy észleljék, hogy Ön mikor használja aktívan az eszközt</translation>
 <translation id="3895926599014793903">A nagyítás mindig engedélyezett</translation>
-<translation id="3905475044299942653">Sok értesítés leállítása</translation>
 <translation id="3922092564198021702">A telefonján nyissa meg a Beállítások alkalmazást</translation>
 <translation id="3924858949939391676">Linkek megjelenítése az Olvasási mód bekapcsolása után</translation>
 <translation id="3933121352599513978">Nem kívánt kérelmek összecsukása (ajánlott)</translation>
@@ -385,7 +382,6 @@
 <translation id="4936863036653376783">A csoportokat megtalálja az összes eszközén a lapcsoportok szakaszban</translation>
 <translation id="4945443401464700059">A(z) <ph name="SITE"/> számára le van tiltva az Ön adatainak felhasználása itt:</translation>
 <translation id="4953688446973710931">Ha be van kapcsolva, a webhelyek engedélyt kérhetnek több fájl automatikus letöltésére. Ha ki van kapcsolva, a webhelyek nem tölthetnek le automatikusan több fájlt.</translation>
-<translation id="4962975101802056554">Az eszköz összes engedélyének visszavonása</translation>
 <translation id="4972737347717125191">A webhelyek hozzáférést kérhetnek a virtuálisvalóság-eszközökhöz és -adatokhoz</translation>
 <translation id="1275242979020712923">A Brave-színek alsó lapja</translation>
 <translation id="497421865427891073">Előrelépés</translation>
@@ -525,6 +521,7 @@
 <translation id="6439114592976064011">A virtuálisvalóság-eszközök és -adatok használatának letiltása a webhelyek számára</translation>
 <translation id="6447842834002726250">Cookie-k</translation>
 <translation id="6452138246455930388">Árcsökkenés a megnyitott lapon: <ph name="OLD_PRICE"/> helyett <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
+<translation id="6495608040096939405">Eszközengedély visszavonása a következőnél: <ph name="NAME"/></translation>
 <translation id="6500423977866688905">Ha az ablak keskeny, kérjen mobilnézetet</translation>
 <translation id="6527303717912515753">Megosztás</translation>
 <translation id="6530703012083415527">Ha be van kapcsolva, a webhelyek használhatnak előugró ablakokat és átirányításokat. Ha ki van kapcsolva, a webhelyek nem használhatnak előugró ablakokat és átirányításokat.</translation>
@@ -590,6 +587,7 @@
 <translation id="7188508872042490670">Eszközön tárolt webhelyadatok</translation>
 <translation id="7201549776650881587">A művelet törli a(z) <ph name="ORIGIN"/> alatti összes webhelyen tárolt és az eredetnek az Ön kezdőképernyőjén található alkalmazása által tárolt összes adatot és cookie-t.</translation>
 <translation id="7219254577985949841">Törli a webhelyadatokat?</translation>
+<translation id="7225256190577194089">A(z) <ph name="DEVICE_NAME"/> eszköz összes engedélyének visszavonása</translation>
 <translation id="723171743924126238">Képek kiválasztása</translation>
 <translation id="7243246278722455312">Az Új lap oldal alsó lapjának személyre szabása</translation>
 <translation id="7243308994586599757">A beállítások a képernyő alsó részén találhatók</translation>
@@ -702,7 +700,6 @@ A Speciális védelem a következő Brave-beállításokat vezérli:</translatio
 <translation id="8428213095426709021">Beállítások</translation>
 <translation id="8441146129660941386">Ugrás visszafelé</translation>
 <translation id="8444433999583714703">Ahhoz, hogy a(z) <ph name="APP_NAME"/> hozzáférhessen a helyadatokhoz, a helyadatokat az <ph name="BEGIN_LINK"/>Android-beállítások<ph name="END_LINK"/> között is be kell kapcsolni.</translation>
-<translation id="8447861592752582886">Eszközengedély visszavonása</translation>
 <translation id="8463843545738141778">Ez a beállítás le van tiltva, mert bekapcsolta a Speciális védelmet az Android-beállításokban.</translation>
 <translation id="8467359479529706065">Az Új lap oldal megjelenésének alsó lapja félmagasságban van megnyitva</translation>
 <translation id="8471525937465764768">A webhelyek általában bizonyos funkciók (például dokumentumok nyomtatásának vagy tárolóeszközön való mentésének) végrehajtása érdekében csatlakoznak USB-eszközökhöz</translation>

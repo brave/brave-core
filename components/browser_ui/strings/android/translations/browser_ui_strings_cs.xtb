@@ -181,9 +181,7 @@
 <translation id="2710883118091822664">Přihlaste se, ať můžete snadno pokračovat na všech svých zařízeních</translation>
 <translation id="2713106313042589954">Vypnout kameru</translation>
 <translation id="2717722538473713889">E‑mailové adresy</translation>
-<translation id="8181634240306014548">Spouštět Brave s vybraným omniboxem a zkrátit tak dobu spouštění na zařízeních nižší třídy.</translation>
 <translation id="2750481671343847896">Weby mohou zobrazovat výzvy k přihlášení od služeb zjišťujících identitu</translation>
-<translation id="2787357173144933081">Spouštět v omniboxu</translation>
 <translation id="2789132527330338807">Weby můžou žádat o vytvoření 3D mapy okolí nebo sledování polohy kamery</translation>
 <translation id="2790501146643349491">Když je tato možnost zapnutá, nedávno zavřené weby mohou dokončit odesílání a přijímání dat. Když je vypnutá, nedávno zavřené weby nemohou dokončit odesílání nebo přijímání dat.</translation>
 <translation id="2795716239552913152">Weby obvykle používají polohu pro související funkce nebo informace, jako jsou místní zprávy nebo obchody v okolí</translation>
@@ -291,7 +289,6 @@
 <translation id="9046306654872718870">Přizpůsobte si Brave pomocí vlastních barev a obrázků pro domovskou stránku</translation>
 <translation id="389521680295183045">Weby mohou požádat o to, aby mohly zjišťovat, zda aktivně používáte své zařízení</translation>
 <translation id="3895926599014793903">Vynutit aktivaci přiblížení</translation>
-<translation id="3905475044299942653">Zastavit spousty oznámení</translation>
 <translation id="3922092564198021702">V telefonu přejděte do Nastavení</translation>
 <translation id="3924858949939391676">Po zapnutí režimu čtení zobrazit odkazy</translation>
 <translation id="3933121352599513978">Sbalit nechtěné žádosti (doporučeno)</translation>
@@ -385,7 +382,6 @@
 <translation id="4936863036653376783">Skupiny najdete v sekci skupin karet an všech svých zařízeních</translation>
 <translation id="4945443401464700059"><ph name="SITE"/> má zablokováno používání vašich údajů na</translation>
 <translation id="4953688446973710931">Když je tato možnost zapnutá, weby mohou žádat o automatické stažení více souborů. Když je vypnutá, weby nemohou stahovat automaticky více souborů.</translation>
-<translation id="4962975101802056554">Zrušit všechna oprávnění pro zařízení</translation>
 <translation id="4972737347717125191">Weby mohou požádat o použití zařízení a dat pro virtuální realitu</translation>
 <translation id="1275242979020712923">Spodní panel barev Chromu</translation>
 <translation id="497421865427891073">Vpřed</translation>
@@ -525,6 +521,7 @@
 <translation id="6439114592976064011">Bránit webům v používání zařízení a dat pro virtuální realitu</translation>
 <translation id="6447842834002726250">Soubory cookie</translation>
 <translation id="6452138246455930388">Pokles ceny na otevřené kartě z <ph name="OLD_PRICE"/> na <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
+<translation id="6495608040096939405">Zrušit oprávnění k zařízení pro web <ph name="NAME"/></translation>
 <translation id="6500423977866688905">Když je okno úzké, požádejte o mobilní zobrazení</translation>
 <translation id="6527303717912515753">Sdílet</translation>
 <translation id="6530703012083415527">Když je tato možnost zapnutá, weby mohou používat vyskakovací okna a přesměrování. Když je vypnutá, weby vyskakovací okna ani přesměrování používat nemohou.</translation>
@@ -590,6 +587,7 @@
 <translation id="7188508872042490670">Data webu v zařízení</translation>
 <translation id="7201549776650881587">Touto akcí vymažete veškerá data a soubory cookie, které uložily weby v doméně <ph name="ORIGIN"/> nebo její aplikací na ploše</translation>
 <translation id="7219254577985949841">Vymazat data webu?</translation>
+<translation id="7225256190577194089">Zrušit všechna oprávnění pro zařízení <ph name="DEVICE_NAME"/></translation>
 <translation id="723171743924126238">Vyberte fotky</translation>
 <translation id="7243246278722455312">Spodní panel Přizpůsobení stránky Nová karta</translation>
 <translation id="7243308994586599757">Možnosti jsou k dispozici ve spodní části obrazovky</translation>
@@ -702,7 +700,6 @@ Pokročilá ochrana spravuje tato nastavení Chromu:</translation>
 <translation id="8428213095426709021">Nastavení</translation>
 <translation id="8441146129660941386">Přetočit dozadu</translation>
 <translation id="8444433999583714703">Pokud aplikaci <ph name="APP_NAME"/> chcete povolit přístup ke své poloze, zapněte polohu také v <ph name="BEGIN_LINK"/>Nastavení Android<ph name="END_LINK"/>.</translation>
-<translation id="8447861592752582886">Zrušit oprávnění zařízení</translation>
 <translation id="8463843545738141778">Tohle nastavení nejde zapnout, protože jste v nastavení Androidu zapnuli pokročilou ochranu.</translation>
 <translation id="8467359479529706065">Spodní panel vzhledu stránky Nová karta otevřený na polovinu výšky</translation>
 <translation id="8471525937465764768">Weby se obvykle připojují k zařízením USB kvůli funkcím, jako je tisk dokumentu nebo uložení obsahu na paměťové zařízení</translation>

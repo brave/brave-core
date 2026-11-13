@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Tìm hiểu thêm về Widevine</translation>
+<translation id="3318169548229684688">tải xuống mô hình nhận dạng giọng nói (<ph name="DOWNLOAD_SIZE"/>) để xử lý giọng nói trên thiết bị này</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> đang yêu cầu bạn</translation>
 <translation id="3218385319396786393">Tự động phát bị chặn trên trang này</translation>
 <translation id="4988333904713528597">Luôn cho phép tự động phát trên <ph name="HOST"/></translation>
@@ -610,6 +611,8 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3540231253392253941">Sử dụng các dịch vụ của Google để nhắn tin đẩy</translation>
 <translation id="2224032129673914306">Tìm kiếm lịch sử theo ngữ nghĩa</translation>
 <translation id="6045998903985162478">Lập chỉ mục các trang bạn truy cập để bạn có thể dễ dàng tìm thấy chúng trong lịch sử, các thẻ đang mở và Leo.</translation>
+<translation id="3962946446120925966">Nhận dạng giọng nói trên thiết bị</translation>
+<translation id="6408242130028978631">Tải xuống mô hình nhận dạng giọng nói (<ph name="DOWNLOAD_SIZE"/>) để các trang web có thể xử lý giọng nói trên thiết bị này. Tắt tùy chọn này để xóa mô hình.</translation>
 <translation id="5813105074916486721">Lưu giữ lịch sử tại chỗ</translation>
 <translation id="5671611745062206644">Brave lưu trữ lịch sử duyệt web của bạn tại chỗ trong bao lâu</translation>
 <translation id="7184510058087008090">1 ngày</translation>

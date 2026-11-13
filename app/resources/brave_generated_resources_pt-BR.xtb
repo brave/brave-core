@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Saiba mais sobre o Widevine</translation>
+<translation id="3318169548229684688">baixar um modelo de reconhecimento de fala (<ph name="DOWNLOAD_SIZE"/>) para processar a fala neste dispositivo</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> está solicitando permissão para</translation>
 <translation id="3218385319396786393">A reprodução automática foi bloqueada nesta página</translation>
 <translation id="4988333904713528597">Sempre permitir a reprodução automática em <ph name="HOST"/></translation>
@@ -610,6 +611,8 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3540231253392253941">Use os serviços do Google para receber mensagens push</translation>
 <translation id="2224032129673914306">Pesquisa semântica de histórico</translation>
 <translation id="6045998903985162478">Indexe as páginas que você visita para encontrá-las facilmente no histórico, nas abas abertas e no Leo.</translation>
+<translation id="3962946446120925966">Reconhecimento de fala no dispositivo</translation>
+<translation id="6408242130028978631">Baixe um modelo de reconhecimento de fala (<ph name="DOWNLOAD_SIZE"/>) para que os sites possam processar a fala neste dispositivo. Desative esta opção para remover o modelo.</translation>
 <translation id="5813105074916486721">Retenção de histórico local</translation>
 <translation id="5671611745062206644">Por quanto tempo o Brave armazena seu histórico de navegação localmente</translation>
 <translation id="7184510058087008090">1 dia</translation>
