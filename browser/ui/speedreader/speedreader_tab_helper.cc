@@ -220,9 +220,10 @@ void SpeedreaderTabHelper::RemoveObserver(Observer* observer) {
 void SpeedreaderTabHelper::ShowSpeedreaderBubble(
     SpeedreaderBubbleLocation location) {
 #if !BUILDFLAG(IS_ANDROID)
-  if (auto* browser_window = BraveBrowserWindow::From(
-          BrowserWindow::FindBrowserWindowWithWebContents(web_contents()))) {
-    speedreader_bubble_ = browser_window->ShowSpeedreaderBubble(this, location);
+  // A tab being moved between windows belongs to none.
+  if (auto* browser = tab().GetBrowserWindowInterface()) {
+    speedreader_bubble_ =
+        speedreader::ShowSpeedreaderBubble(*browser, *this, location);
   }
 #endif
 }
