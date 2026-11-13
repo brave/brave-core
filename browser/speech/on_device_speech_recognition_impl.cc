@@ -11,6 +11,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -21,6 +22,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/speech/on_device_speech_model_permission_request.h"
+#include "brave/components/local_ai/core/on_device_speech_locales.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "brave/components/local_ai/core/utils.h"
@@ -98,8 +100,6 @@ void PromptForBraveOnDeviceSpeechModel(
                                std::move(callback))));
 }
 
-}  // namespace
-
 // Sends `kDictation` down upstream's SODA branch, as `kCommand`, in both
 // `Available` and `Install`. That branch is where `BraveSodaInstaller` installs
 // Brave's model, and both functions must take it, so that `available()` reads
@@ -117,22 +117,70 @@ media::mojom::SpeechRecognitionQuality ToBraveOnDeviceSpeechQuality(
              : quality;
 }
 
-// Cancels `Install` in a Private, Tor or Guest profile. Otherwise prompts
+// Maps each tag that the page gives to the tag of the Brave locale that
+// serves it, such as "es-MX" to "es-US". Returns nothing when no Brave locale
+// serves one of the tags. The hooks give upstream only the mapped tags. Thus
+// upstream records and settles each locale by its own tag, and SODA's lookups
+// find an exact match.
+std::optional<std::vector<std::string>> MapPageTagsToBraveLocaleTags(
+    const std::vector<std::string>& page_tags) {
+  std::vector<std::string> locale_tags;
+  for (const std::string& page_tag : page_tags) {
+    const local_ai::OnDeviceSpeechLocale* locale =
+        local_ai::ResolveOnDeviceSpeechLocale(page_tag);
+    if (!locale) {
+      return std::nullopt;
+    }
+    locale_tags.emplace_back(locale->tag);
+  }
+  return locale_tags;
+}
+
+}  // namespace
+
+// Runs first in `Available`. Answers `kUnavailable` when no locale serves one
+// of `languages`. Runs `Available` again with Brave's locale tags when they
+// differ from `languages`, such as "de-DE" for "de-AT". Returns true in both
+// cases, and only then takes `callback`. Otherwise maps `quality` for
+// upstream's SODA branch, and lets upstream answer.
+bool MaybeHandleBraveOnDeviceSpeechAvailable(
+    base::WeakPtr<OnDeviceSpeechRecognitionImpl> impl,
+    const std::vector<std::string>& languages,
+    media::mojom::SpeechRecognitionQuality& quality,
+    OnDeviceSpeechRecognitionImpl::AvailableCallback& callback) {
+  std::optional<std::vector<std::string>> locale_tags =
+      MapPageTagsToBraveLocaleTags(languages);
+  if (!locale_tags) {
+    std::move(callback).Run(media::mojom::AvailabilityStatus::kUnavailable);
+    return true;
+  }
+  if (*locale_tags != languages) {
+    impl->Available(*locale_tags, quality, std::move(callback));
+    return true;
+  }
+  quality = ToBraveOnDeviceSpeechQuality(quality);
+  return false;
+}
+
+// Runs first in `Install`. Cancels `Install` in a Private, Tor or Guest
+// profile, or when no locale serves one of `languages`. Runs `Install` again
+// with Brave's locale tags when they differ from `languages`. Otherwise prompts
 // before `Install` starts a download of Brave's model, and runs `Install` again
-// once the user allows it. Returns true when it cancels or prompts, and only
-// then takes `callback`.
+// once the user allows it. Returns true when it cancels, runs `Install` again
+// or prompts, and only then takes `callback`. Otherwise maps `quality` for
+// upstream's SODA branch, and lets upstream answer.
 // `frame_can_use_on_device_speech` is what the private
 // `CanRenderFrameHostUseOnDeviceSpeechRecognition` says, so there is no prompt
 // for a frame that upstream refuses.
 //
-// `quality` comes before `ToBraveOnDeviceSpeechQuality`. That is fine, because
-// this asks Brave's policy, not upstream's branches, and `Install` maps the
-// quality again when it runs again.
-bool MaybePromptOrCancelBraveOnDeviceSpeechInstall(
+// The prompt reads `quality` before the mapping. That is fine, because it asks
+// Brave's policy, not upstream's branches, and `Install` maps the quality again
+// when it runs again.
+bool MaybeHandleBraveOnDeviceSpeechInstall(
     bool frame_can_use_on_device_speech,
     base::WeakPtr<OnDeviceSpeechRecognitionImpl> impl,
     const std::vector<std::string>& languages,
-    media::mojom::SpeechRecognitionQuality quality,
+    media::mojom::SpeechRecognitionQuality& quality,
     OnDeviceSpeechRecognitionImpl::InstallCallback& callback) {
   content::RenderFrameHost& rfh = impl->render_frame_host();
   content::BrowserContext* context = rfh.GetBrowserContext();
@@ -141,16 +189,27 @@ bool MaybePromptOrCancelBraveOnDeviceSpeechInstall(
     std::move(callback).Run(false);
     return true;
   }
-  if (!frame_can_use_on_device_speech ||
-      !ShouldPromptForBraveOnDeviceSpeechModel(context, languages, quality)) {
-    return false;
+  std::optional<std::vector<std::string>> locale_tags =
+      MapPageTagsToBraveLocaleTags(languages);
+  if (!locale_tags) {
+    std::move(callback).Run(false);
+    return true;
   }
-  PromptForBraveOnDeviceSpeechModel(
-      rfh,
-      base::BindOnce(&OnDeviceSpeechRecognitionImpl::Install, std::move(impl),
-                     languages, quality),
-      std::move(callback));
-  return true;
+  if (*locale_tags != languages) {
+    impl->Install(*locale_tags, quality, std::move(callback));
+    return true;
+  }
+  if (frame_can_use_on_device_speech &&
+      ShouldPromptForBraveOnDeviceSpeechModel(context, languages, quality)) {
+    PromptForBraveOnDeviceSpeechModel(
+        rfh,
+        base::BindOnce(&OnDeviceSpeechRecognitionImpl::Install, std::move(impl),
+                       languages, quality),
+        std::move(callback));
+    return true;
+  }
+  quality = ToBraveOnDeviceSpeechQuality(quality);
+  return false;
 }
 
 }  // namespace speech

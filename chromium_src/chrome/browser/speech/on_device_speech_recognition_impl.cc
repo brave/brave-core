@@ -15,13 +15,18 @@ namespace speech {
 
 // Forward declared to avoid adding a compile-time dependency.
 // Implementation is provided by //brave/browser/speech:chromium_impl.
-media::mojom::SpeechRecognitionQuality ToBraveOnDeviceSpeechQuality(
-    media::mojom::SpeechRecognitionQuality quality);
-bool MaybePromptOrCancelBraveOnDeviceSpeechInstall(
+// Each runs first in its function. It returns true when it took `callback`,
+// and the function then returns.
+bool MaybeHandleBraveOnDeviceSpeechAvailable(
+    base::WeakPtr<OnDeviceSpeechRecognitionImpl> impl,
+    const std::vector<std::string>& languages,
+    media::mojom::SpeechRecognitionQuality& quality,
+    OnDeviceSpeechRecognitionImpl::AvailableCallback& callback);
+bool MaybeHandleBraveOnDeviceSpeechInstall(
     bool frame_can_use_on_device_speech,
     base::WeakPtr<OnDeviceSpeechRecognitionImpl> impl,
     const std::vector<std::string>& languages,
-    media::mojom::SpeechRecognitionQuality quality,
+    media::mojom::SpeechRecognitionQuality& quality,
     OnDeviceSpeechRecognitionImpl::InstallCallback& callback);
 
 }  // namespace speech

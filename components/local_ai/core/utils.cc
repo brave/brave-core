@@ -23,6 +23,15 @@ bool CanOfferOnDeviceSpeech(const PrefService* local_state) {
          (!local_state || local_state->GetBoolean(prefs::kBraveLocalAIEnabled));
 }
 
+bool CanOfferOnDeviceSpeechModel(const PrefService* local_state,
+                                 OnDeviceSpeechModel model) {
+  if (!CanOfferOnDeviceSpeech(local_state)) {
+    return false;
+  }
+  return model != OnDeviceSpeechModel::kMultilingual ||
+         base::FeatureList::IsEnabled(kBraveOnDeviceSpeechMultilingual);
+}
+
 std::string_view GetOnDeviceSpeechModelEnabledPref(OnDeviceSpeechModel model) {
   switch (model) {
     case OnDeviceSpeechModel::kEnglish:
@@ -35,11 +44,7 @@ std::string_view GetOnDeviceSpeechModelEnabledPref(OnDeviceSpeechModel model) {
 
 bool ShouldInstallOnDeviceSpeechModel(const PrefService* local_state,
                                       OnDeviceSpeechModel model) {
-  if (!local_state || !CanOfferOnDeviceSpeech(local_state)) {
-    return false;
-  }
-  if (model == OnDeviceSpeechModel::kMultilingual &&
-      !base::FeatureList::IsEnabled(kBraveOnDeviceSpeechMultilingual)) {
+  if (!local_state || !CanOfferOnDeviceSpeechModel(local_state, model)) {
     return false;
   }
   return local_state->GetBoolean(GetOnDeviceSpeechModelEnabledPref(model));
