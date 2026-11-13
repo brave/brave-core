@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/page_action/page_action_properties_provider.cc b/chrome/browser/ui/page_action/page_action_properties_provider.cc
-index 127fbb81e61100fd95ce5423c92b4512dadb10d3..61cd5f4983fe7892c5b7ec32cf50dc309bd059b0 100644
+index 127fbb81e61100fd95ce5423c92b4512dadb10d3..4494285f6e0a8c21f9234dca2c7ef85d5dbd6b87 100644
 --- a/chrome/browser/ui/page_action/page_action_properties_provider.cc
 +++ b/chrome/browser/ui/page_action/page_action_properties_provider.cc
 @@ -230,6 +230,55 @@ constexpr auto kPageActionProperties = base::MakeFixedFlatMap<
@@ -10,49 +10,49 @@ index 127fbb81e61100fd95ce5423c92b4512dadb10d3..61cd5f4983fe7892c5b7ec32cf50dc30
 +        kActionShowPartitionedStorage,
 +        {
 +            .histogram_name = "PartitionedStorage",
-+            .type = brave::kPartitionedStorageActionIconType,
++            .type = PageActionIconType::kBravePartitionedStorage,
 +        },
 +    },
 +    {
 +        kActionShowPsstIcon,
 +        {
 +           .histogram_name = "PsstIcon",
-+           .type = brave::kPsstIconActionIconType,
++           .type = PageActionIconType::kBravePsst,
 +        },
 +    },
 +    {
 +        kActionShowSpeedreader,
 +        {
 +            .histogram_name = "Speedreader",
-+            .type = brave::kSpeedreaderPageActionIconType,
++            .type = PageActionIconType::kBraveSpeedreader,
 +        },
 +    },
 +    {
 +        kActionShowWaybackMachine,
 +        {
 +            .histogram_name = "WaybackMachine",
-+            .type = brave::kWaybackMachineActionIconType,
++            .type = PageActionIconType::kBraveWaybackMachine,
 +        },
 +    },
 +    {
 +        kActionShowPlaylistPageAction,
 +        {
 +            .histogram_name = "Playlist",
-+            .type = brave::kPlaylistPageActionIconType,
++            .type = PageActionIconType::kBravePlaylist,
 +        },
 +    },
 +    {
 +        kActionShowOnionLocation,
 +        {
 +            .histogram_name = "OnionLocation",
-+            .type = brave::kOnionLocationPageActionIconType,
++            .type = PageActionIconType::kBraveOnionLocation,
 +        },
 +    },
 +    {
 +        kActionShowBraveNews,
 +        {
 +            .histogram_name = "BraveNews",
-+            .type = brave::kBraveNewsPageActionIconType,
++            .type = PageActionIconType::kBraveNews,
 +        },
 +    },
      {

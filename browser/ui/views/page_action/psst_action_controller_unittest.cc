@@ -71,7 +71,7 @@ class PsstActionControllerTest : public testing::Test {
             kActionShowPsstIcon,
             PageActionProperties{
                 .histogram_name = "PsstIcon",
-                .type = brave::kPsstIconActionIconType,
+                .type = PageActionIconType::kBravePsst,
             },
         }}) {}
 

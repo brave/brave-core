@@ -42,7 +42,7 @@ class OnionLocationPageActionControllerTest : public testing::Test {
             kActionShowOnionLocation,
             PageActionProperties{
                 .histogram_name = "OnionLocation",
-                .type = brave::kOnionLocationPageActionIconType,
+                .type = PageActionIconType::kBraveOnionLocation,
             },
         }}) {}
 

@@ -48,7 +48,7 @@ class SpeedreaderPageActionControllerTest : public testing::Test {
             kActionShowSpeedreader,
             PageActionProperties{
                 .histogram_name = "Speedreader",
-                .type = brave::kSpeedreaderPageActionIconType,
+                .type = PageActionIconType::kBraveSpeedreader,
             },
         }}) {}
 
