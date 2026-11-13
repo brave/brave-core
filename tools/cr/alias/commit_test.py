@@ -442,10 +442,11 @@ class TestCulpritLinks(unittest.TestCase):
         repo.update_brave_version('158.0.8127.4')
         return commits
 
-    def _commit_with_culprit(self, culprit: str):
+    def _commit_with_culprit(self, culprit: str, in_range: bool = True):
         self._sandbox.stage_change(f'{culprit}\n')
         return self._sandbox.run_gc(
             ['commit', '--culprit', culprit, '-m', 'Fix']
+            + (['--culprit-in-range'] if in_range else [])
         )
 
     def test_cr_branch_accepts_a_culprit_in_its_range(self) -> None:
@@ -467,6 +468,22 @@ class TestCulpritLinks(unittest.TestCase):
                     "not in the branch's Chromium range, "
                     '158.0.8127.2..158.0.8127.4',
                     result.stderr,
+                )
+
+    def test_cr_branch_accepts_any_culprit_unless_asked(self) -> None:
+        """A fix of a latent issue cites a culprit from before the range."""
+        commits = self._cr_branch()
+        for name in ('before', 'old', 'after'):
+            with self.subTest(name):
+                result = self._commit_with_culprit(
+                    commits[name], in_range=False
+                )
+                self.assertEqual(
+                    result.returncode, 0, msg=f'stderr: {result.stderr}'
+                )
+                self.assertIn(
+                    f'chromium/src/+/{commits[name]}',
+                    self._sandbox.last_commit_message(),
                 )
 
     def test_range_is_not_checked_without_the_tags(self) -> None:
