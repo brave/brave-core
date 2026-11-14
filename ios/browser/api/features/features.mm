@@ -312,6 +312,11 @@
       initWithFeature:&brave_shields::features::kBlockAllCookiesToggle];
 }
 
++ (Feature*)kBraveShieldsElementPicker {
+  return [[Feature alloc]
+      initWithFeature:&brave_shields::features::kBraveShieldsElementPicker];
+}
+
 + (Feature*)kBraveTranslateEnabled {
   return [[Feature alloc]
       initWithFeature:&brave::features::kBraveTranslateEnabled];
