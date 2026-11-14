@@ -79,7 +79,7 @@ export class BraveAccountDeletionDialogElement extends CrLitElement {
     BraveAccountStrings.BRAVE_ACCOUNT_DELETION_CONFIRMATION_KEYWORD,
   )
 
-  protected accessor confirmation = ''
+  private accessor confirmation = ''
   protected accessor isSubmitting = false
 }
 

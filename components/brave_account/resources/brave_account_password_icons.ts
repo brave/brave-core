@@ -57,8 +57,8 @@ export class BraveAccountPasswordIconsElement extends CrLitElement {
     } satisfies ToggleVisibilityEventDetail)
   }
 
-  protected accessor isCapsLockOn: boolean = false
-  protected accessor isInputFocused: boolean = false
+  accessor isCapsLockOn: boolean = false
+  accessor isInputFocused: boolean = false
   protected accessor isPasswordVisible: boolean = false
 }
 

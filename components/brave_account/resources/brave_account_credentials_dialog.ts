@@ -185,7 +185,7 @@ export class BraveAccountCredentialsDialogElement extends CrLitElement {
   // and the dialog's title/description/button text.
   protected accessor verification: CredentialsVerification | undefined =
     undefined
-  protected registration = new Registration()
+  private registration = new Registration()
 }
 
 declare global {

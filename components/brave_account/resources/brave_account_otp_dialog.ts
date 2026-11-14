@@ -117,7 +117,7 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
   private browserProxy: BraveAccountBrowserProxy =
     BraveAccountBrowserProxyImpl.getInstance()
 
-  protected accessor intent!: VerificationIntent
+  accessor intent!: VerificationIntent
   protected accessor code = ''
   protected accessor isCodeValid = false
   protected accessor isConfirmingCode = false
