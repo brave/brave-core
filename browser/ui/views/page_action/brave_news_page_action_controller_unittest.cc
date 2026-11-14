@@ -63,7 +63,7 @@ class BraveNewsPageActionControllerTest : public testing::Test {
             kActionShowBraveNews,
             PageActionProperties{
                 .histogram_name = "BraveNews",
-                .type = brave::kBraveNewsPageActionIconType,
+                .type = PageActionIconType::kBraveNews,
             },
         }}) {}
 

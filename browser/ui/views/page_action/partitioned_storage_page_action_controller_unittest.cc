@@ -65,7 +65,7 @@ class PartitionedStoragePageActionControllerTest : public testing::Test {
             kActionShowPartitionedStorage,
             PageActionProperties{
                 .histogram_name = "PartitionedStorage",
-                .type = brave::kPartitionedStorageActionIconType,
+                .type = PageActionIconType::kBravePartitionedStorage,
             },
         }}) {}
 

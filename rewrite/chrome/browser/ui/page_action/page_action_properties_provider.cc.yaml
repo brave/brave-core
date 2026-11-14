@@ -13,49 +13,49 @@ substitutions:
         kActionShowPartitionedStorage,
                 {
                     .histogram_name = "PartitionedStorage",
-                    .type = brave::kPartitionedStorageActionIconType,
+                    .type = PageActionIconType::kBravePartitionedStorage,
                 },
             },
             {
                 kActionShowPsstIcon,
                 {
                    .histogram_name = "PsstIcon",
-                   .type = brave::kPsstIconActionIconType,
+                   .type = PageActionIconType::kBravePsst,
                 },
             },
             {
                 kActionShowSpeedreader,
                 {
                     .histogram_name = "Speedreader",
-                    .type = brave::kSpeedreaderPageActionIconType,
+                    .type = PageActionIconType::kBraveSpeedreader,
                 },
             },
             {
                 kActionShowWaybackMachine,
                 {
                     .histogram_name = "WaybackMachine",
-                    .type = brave::kWaybackMachineActionIconType,
+                    .type = PageActionIconType::kBraveWaybackMachine,
                 },
             },
             {
                 kActionShowPlaylistPageAction,
                 {
                     .histogram_name = "Playlist",
-                    .type = brave::kPlaylistPageActionIconType,
+                    .type = PageActionIconType::kBravePlaylist,
                 },
             },
             {
                 kActionShowOnionLocation,
                 {
                     .histogram_name = "OnionLocation",
-                    .type = brave::kOnionLocationPageActionIconType,
+                    .type = PageActionIconType::kBraveOnionLocation,
                 },
             },
             {
                 kActionShowBraveNews,
                 {
                     .histogram_name = "BraveNews",
-                    .type = brave::kBraveNewsPageActionIconType,
+                    .type = PageActionIconType::kBraveNews,
                 },
             },
             {

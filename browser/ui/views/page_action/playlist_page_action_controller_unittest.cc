@@ -54,7 +54,7 @@ class PlaylistPageActionControllerTest : public testing::Test {
             kActionShowPlaylistPageAction,
             PageActionProperties{
                 .histogram_name = "Playlist",
-                .type = brave::kPlaylistPageActionIconType,
+                .type = PageActionIconType::kBravePlaylist,
             },
         }}) {}
 
