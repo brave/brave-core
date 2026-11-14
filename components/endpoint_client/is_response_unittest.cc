@@ -5,14 +5,19 @@
 
 #include "brave/components/endpoint_client/is_response.h"
 
-#include "brave/components/endpoint_client/json_test_endpoint_bodies.h"
-#include "brave/components/endpoint_client/protobuf_test_endpoint_bodies.pb.h"
+#include <optional>
+
+#include "base/values.h"
 #include "brave/components/endpoint_client/response.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace endpoint_client::internal {
 
 namespace {
+
+struct ValidResponseBody {
+  static std::optional<ValidResponseBody> FromValue(const base::Value&);
+};
 
 template <typename T, bool SatisfiesConcept>
 struct IsResponseTestCase {
@@ -23,11 +28,8 @@ struct IsResponseTestCase {
 using IsResponseTestCases = testing::Types<
     IsResponseTestCase<void*, false>,
     IsResponseTestCase<volatile int, false>,
-    IsResponseTestCase<JSONSuccessBody, false>,
-    IsResponseTestCase<Response<JSONSuccessBody, JSONErrorBody>, true>,
-    IsResponseTestCase<ProtobufSuccessBody, false>,
-    IsResponseTestCase<Response<ProtobufSuccessBody, ProtobufErrorBody>, true>,
-    IsResponseTestCase<Response<JSONSuccessBody, ProtobufErrorBody>, false>>;
+    IsResponseTestCase<ValidResponseBody, false>,
+    IsResponseTestCase<Response<ValidResponseBody, ValidResponseBody>, true>>;
 
 template <typename>
 struct IsResponseTest : testing::Test {};
