@@ -36,7 +36,10 @@ static_grd_path = "$target_gen_dir/${resource_name}_static_resources.grd"
 generate_grd("static_resources_grd") {
   grd_prefix = resource_name + "_static"
   out_grd = static_grd_path
-  input_files = [ "brave_recap.html" ]
+  input_files = [
+    "brave_recap.html",
+    "images/card_pattern.webp",
+  ]
   input_files_base_dir = rebase_path(".", "//")
 }
 

@@ -24,6 +24,48 @@ namespace {
 
 constexpr char kRecapUrl[] = "chrome://recap/";
 
+constexpr char kGetHeading[] = R"(
+  new Promise((resolve) => {
+    const heading = document.querySelector('h1')
+    if (heading) {
+      resolve(heading.textContent)
+      return
+    }
+    const observer = new MutationObserver(() => {
+      const heading = document.querySelector('h1')
+      if (heading) {
+        observer.disconnect()
+        resolve(heading.textContent)
+      }
+    })
+    observer.observe(document.body, {childList: true, subtree: true})
+  })
+)";
+
+constexpr char kWaitForShareCard[] = R"(
+  new Promise((resolve) => {
+    for (let i = 0; i < 10; i++) {
+      window.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowRight'}))
+    }
+    const rendered = () => {
+      const img = document.querySelector('.card-preview img')
+      return img && img.src.startsWith('blob:')
+    }
+    if (rendered()) {
+      resolve(true)
+      return
+    }
+    const observer = new MutationObserver(() => {
+      if (rendered()) {
+        observer.disconnect()
+        resolve(true)
+      }
+    })
+    observer.observe(document.body,
+                     {childList: true, subtree: true, attributes: true})
+  })
+)";
+
 }  // namespace
 
 class BraveRecapUIBrowserTest : public InProcessBrowserTest {
@@ -63,6 +105,67 @@ IN_PROC_BROWSER_TEST_F(BraveRecapUIBrowserTest, ShowsLifetimeStats) {
 
   EXPECT_EQ("1234", GetLoadTimeString("adsBlocked"));
   EXPECT_EQ("5678", GetLoadTimeString("bandwidthSavedBytes"));
+  EXPECT_EQ("Your Brave Shields recap is here!",
+            content::EvalJs(web_contents(), kGetHeading));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRecapUIBrowserTest, ShowsEmptyStateWithoutStats) {
+  NavigateToRecap();
+  EXPECT_EQ("0", GetLoadTimeString("adsBlocked"));
+  EXPECT_EQ("Nothing to recap yet",
+            content::EvalJs(web_contents(), kGetHeading));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRecapUIBrowserTest, RendersShareCard) {
+  GetProfile()->GetPrefs()->SetUint64(brave_shields::prefs::kAdsBlocked, 1000);
+  NavigateToRecap();
+  EXPECT_EQ(true, content::EvalJs(web_contents(), kWaitForShareCard));
+}
+
+// A cross-origin logo would taint the canvas and break exporting the card.
+IN_PROC_BROWSER_TEST_F(BraveRecapUIBrowserTest, LogoDoesNotTaintCanvas) {
+  NavigateToRecap();
+  EXPECT_EQ(true, content::EvalJs(web_contents(), R"(
+    new Promise((resolve) => {
+      const img = new Image()
+      img.onload = () => {
+        const canvas = document.createElement('canvas')
+        canvas.getContext('2d').drawImage(img, 0, 0)
+        try {
+          canvas.toDataURL()
+          resolve(true)
+        } catch (e) {
+          resolve(e.name)
+        }
+      }
+      img.onerror = () => resolve('load failed')
+      img.src = '/brave-icon.svg'
+    })
+  )"));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRecapUIBrowserTest, LoadsAllImages) {
+  NavigateToRecap();
+  EXPECT_EQ("6 images, failed: []", content::EvalJs(web_contents(), R"js(
+    (async () => {
+      const urls = new Set(['/images/card_pattern.webp'])
+      for (const sheet of document.adoptedStyleSheets) {
+        for (const rule of sheet.cssRules) {
+          for (const [, url] of rule.cssText.matchAll(/url\("?([^")]+)"?\)/g)) {
+            urls.add(new URL(url, document.baseURI).pathname)
+          }
+        }
+      }
+      const failed = (await Promise.all([...urls].map((url) =>
+        new Promise((resolve) => {
+          const img = new Image()
+          img.onload = () => resolve(null)
+          img.onerror = () => resolve(url)
+          img.src = url
+        })))).filter(Boolean)
+      return `${urls.size} images, failed: ${JSON.stringify(failed)}`
+    })()
+  )js"));
 }
 
 class BraveRecapUIDisabledBrowserTest : public InProcessBrowserTest {
