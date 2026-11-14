@@ -783,7 +783,8 @@ bool FitEntryWithinSyncBudget(
 }
 
 sync_pb::AIChatConversationSpecifics ConversationMetadataToSpecifics(
-    const mojom::Conversation& conversation) {
+    const mojom::Conversation& conversation,
+    base::Time modified_time) {
   // Not synced: updated_time and has_content are inferred locally from the
   // entries; temporary conversations are excluded from sync entirely;
   // associated_content is carried by the per-entry records, not here.
@@ -796,17 +797,26 @@ sync_pb::AIChatConversationSpecifics ConversationMetadataToSpecifics(
   }
   meta->set_total_tokens(conversation.total_tokens);
   meta->set_trimmed_tokens(conversation.trimmed_tokens);
+  if (!modified_time.is_null()) {
+    meta->set_modified_time_windows_epoch_micros(
+        modified_time.ToDeltaSinceWindowsEpoch().InMicroseconds());
+  }
   return specifics;
 }
 
 sync_pb::AIChatConversationSpecifics EntryToSpecifics(
     const std::string& conversation_uuid,
     const mojom::ConversationTurn& entry,
+    base::Time modified_time,
     const std::vector<mojom::AssociatedContentPtr>& associated_content,
     const base::flat_map<std::string, std::string>& associated_content_texts) {
   sync_pb::AIChatConversationSpecifics specifics;
   auto* entry_proto = specifics.mutable_entry();
   entry_proto->set_conversation_uuid(conversation_uuid);
+  if (!modified_time.is_null()) {
+    entry_proto->set_modified_time_windows_epoch_micros(
+        modified_time.ToDeltaSinceWindowsEpoch().InMicroseconds());
+  }
 
   // A turn that has been edited keeps its original text in |entry.text| and
   // stores each revision in |entry.edits|, with the most recent edit last.
@@ -853,6 +863,22 @@ sync_pb::AIChatConversationSpecifics EntryToSpecifics(
   }
 
   return specifics;
+}
+
+base::Time GetModifiedTimeFromSpecifics(
+    const sync_pb::AIChatConversationSpecifics& specifics) {
+  int64_t micros = 0;
+  switch (specifics.kind_case()) {
+    case sync_pb::AIChatConversationSpecifics::kConversation:
+      micros = specifics.conversation().modified_time_windows_epoch_micros();
+      break;
+    case sync_pb::AIChatConversationSpecifics::kEntry:
+      micros = specifics.entry().modified_time_windows_epoch_micros();
+      break;
+    case sync_pb::AIChatConversationSpecifics::KIND_NOT_SET:
+      break;
+  }
+  return base::Time::FromDeltaSinceWindowsEpoch(base::Microseconds(micros));
 }
 
 mojom::ConversationPtr SpecificsToConversationMetadata(

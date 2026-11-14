@@ -5,11 +5,13 @@
 
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_bridge.h"
 
+#include <map>
 #include <memory>
 #include <string>
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/task_environment.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_conversions.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -28,6 +30,15 @@ namespace ai_chat {
 namespace {
 
 using testing::_;
+using testing::ElementsAre;
+using testing::Pair;
+
+// Matches the EntityData passed to Put() when its record carries |time| as its
+// modified time.
+MATCHER_P(HasModifiedTime, time, "") {
+  return GetModifiedTimeFromSpecifics(arg->specifics.ai_chat_conversation()) ==
+         time;
+}
 
 class AIChatSyncBridgeTest : public testing::Test {
  public:
@@ -418,6 +429,56 @@ TEST_F(AIChatSyncBridgeTest, MergeFullSyncDataSkipsEntryTooLargeToCommit) {
   EXPECT_CALL(*mock_processor_, Put("e:entry-1", _, _)).Times(0);
   EXPECT_FALSE(bridge_->MergeFullSyncData(bridge_->CreateMetadataChangeList(),
                                           syncer::EntityChangeList()));
+}
+
+// Each uploaded record carries the time its content last changed, so a device
+// receiving it can tell which of two copies is newer.
+TEST_F(AIChatSyncBridgeTest, PutSendsModifiedTime) {
+  const std::string entry_uuid = AddTestConversation("conv", "Title");
+  const base::Time added = base::Time::Now();
+  CreateBridge();
+
+  EXPECT_CALL(*mock_processor_, Put("c:conv", HasModifiedTime(added), _));
+  EXPECT_CALL(*mock_processor_,
+              Put("e:" + entry_uuid, HasModifiedTime(added), _));
+  EXPECT_FALSE(bridge_->MergeFullSyncData(bridge_->CreateMetadataChangeList(),
+                                          syncer::EntityChangeList()));
+  testing::Mock::VerifyAndClearExpectations(mock_processor_.get());
+
+  task_environment_.FastForwardBy(base::Minutes(1));
+  ASSERT_TRUE(db_->UpdateConversationTitle("conv", "Renamed"));
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-2";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->text = "Hello again";
+  entry->created_time = base::Time::Now();
+  ASSERT_TRUE(db_->AddConversationEntry("conv", std::move(entry)));
+
+  EXPECT_CALL(*mock_processor_,
+              Put("c:conv", HasModifiedTime(base::Time::Now()), _));
+  EXPECT_CALL(*mock_processor_,
+              Put("e:entry-2", HasModifiedTime(base::Time::Now()), _));
+  bridge_->OnConversationModified("conv");
+  bridge_->OnConversationEntryAdded("conv", "entry-2");
+}
+
+TEST_F(AIChatSyncBridgeTest, GetDataForCommitSendsModifiedTime) {
+  const std::string entry_uuid = AddTestConversation("conv", "Title");
+  const base::Time added = base::Time::Now();
+  task_environment_.FastForwardBy(base::Minutes(1));
+  ASSERT_TRUE(db_->UpdateConversationTitle("conv", "Renamed"));
+  CreateBridge();
+
+  auto batch = bridge_->GetDataForCommit({"c:conv", "e:" + entry_uuid});
+  std::map<std::string, base::Time> sent;
+  while (batch->HasNext()) {
+    auto [key, data] = batch->Next();
+    sent[key] =
+        GetModifiedTimeFromSpecifics(data->specifics.ai_chat_conversation());
+  }
+  EXPECT_THAT(sent, ElementsAre(Pair("c:conv", base::Time::Now()),
+                                Pair("e:" + entry_uuid, added)));
 }
 
 }  // namespace
