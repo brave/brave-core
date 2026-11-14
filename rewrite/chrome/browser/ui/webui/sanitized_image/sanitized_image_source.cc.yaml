@@ -1,0 +1,38 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Reject image URLs in loopback or local address space before any network
+      activity.
+
+      chrome://image fetches WebUI-supplied URLs in the browser process, so a
+      URL whose literal host is a local IP, localhost or a *.local name must
+      never reach the network (website-triggered local network requests via
+      suggested token icons). Hostnames that resolve to local IPs via DNS and
+      redirect hops are caught per connection by
+      SetSanitizedImageLoaderOptions, which applies
+      kURLLoadOptionBlockLocalRequest in the DownloadToString substitution.
+    preempt_function_impl:
+      function_name: SanitizedImageSource::StartImageDownload
+      code: |-
+        if (ShouldRejectLocalImageRequest(request_attributes.image_url)) {
+          std::move(callback).Run(nullptr);
+          return;
+        }
+
+  - description: |
+      Apply local-network and cookie blocking to the image download.
+
+      The network service checks the resolved endpoint on every redirect hop
+      when kURLLoadOptionBlockLocalRequest is set. Cookies are only blocked on
+      the non-Drive branch: the Drive path intentionally authenticates with
+      cookies (see its traffic annotation).
+    regex:
+      pattern: 'loader_ptr->DownloadToString('
+      replace: |-
+        SetSanitizedImageLoaderOptions(loader_ptr,
+              request_attributes.image_url);
+          loader_ptr->DownloadToString(
