@@ -13,6 +13,7 @@
 #include <string_view>
 #include <utility>
 
+#include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/memory/scoped_refptr.h"
@@ -20,10 +21,12 @@
 #include "base/types/is_instantiation.h"
 #include "brave/components/endpoint_client/is_endpoint.h"
 #include "brave/components/endpoint_client/is_request.h"
+#include "brave/components/endpoint_client/is_response.h"
 #include "brave/components/endpoint_client/maybe_strip_with_headers.h"
 #include "brave/components/endpoint_client/request_handle.h"
 #include "brave/components/endpoint_client/request_options.h"
 #include "brave/components/endpoint_client/with_headers.h"
+#include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -130,12 +133,22 @@ class Client {
   static Response MakeResponse(int net_error,
                                scoped_refptr<net::HttpResponseHeaders> headers,
                                std::optional<std::string> response_body) {
-    Response response(Response::Deserialize(net_error, headers.get(),
-                                            std::move(response_body)));
+    Response response;
+    response.net_error = net_error;
+    if (net_error != net::OK || !headers) {
+      return response;
+    }
+
+    response.status_code = headers->response_code();
+
+    if constexpr (internal::IsResponseWithBodies<typename Endpoint::Response>) {
+      // SimpleURLLoader returns std::nullopt only on failure.
+      response.body = Response::Deserialize(*response.status_code,
+                                            CHECK_DEREF(response_body));
+    }
+
     if constexpr (base::is_instantiation<Response, WithHeaders>) {
-      if (response.status_code) {
-        response.headers = std::move(headers);
-      }
+      response.headers = std::move(headers);
     }
 
     return response;

@@ -128,6 +128,12 @@ using ProtobufNonEmptyRequestBodyJSONResponseBodiesEndpoint =
 using BodylessRequestProtobufSuccessJSONErrorBodiesEndpoint =
     TestEndpoint<Post<>, Response<ProtobufSuccessBody, JSONErrorBody>>;
 
+// Request: POST https://example.com/api/query (no body)
+// Success: not parsed
+// Error:   not parsed
+using BodylessRequestBodylessResponseEndpoint =
+    TestEndpoint<Post<>, Response<>>;
+
 template <typename Response>
   requires internal::IsResponse<internal::MaybeStripWithHeaders<Response>>
 struct TestCase {
@@ -176,6 +182,9 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
   static constexpr bool kIsBodylessRequest =
       internal::IsBodylessRequest<typename Endpoint::Request>;
 
+  static constexpr bool kIsBodylessResponse =
+      internal::IsBodylessResponse<typename Endpoint::Response>;
+
   enum class BodyCase { kEmpty, kMalformed, kUnexpected, kValid };
 
   static const TestCase* NetError() {
@@ -206,8 +215,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
         .test_name = "success_empty_response",
         .net_error = net::OK,
         .status_code = net::HTTP_OK,
-        .body = MakeBody<typename Endpoint::Response::SuccessBody>(
-            BodyCase::kEmpty),
+        .body = MakeSuccessBody(BodyCase::kEmpty),
         .response = MakeResponse(net::OK, net::HTTP_OK, BodyCase::kEmpty),
     });
     return kSuccessEmptyResponse.get();
@@ -218,8 +226,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
         .test_name = "success_malformed_response",
         .net_error = net::OK,
         .status_code = net::HTTP_OK,
-        .body = MakeBody<typename Endpoint::Response::SuccessBody>(
-            BodyCase::kMalformed),
+        .body = MakeSuccessBody(BodyCase::kMalformed),
         .response = MakeResponse(net::OK, net::HTTP_OK, BodyCase::kMalformed),
     });
     return kSuccessMalformedResponse.get();
@@ -230,8 +237,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
         .test_name = "success_unexpected_response",
         .net_error = net::OK,
         .status_code = net::HTTP_OK,
-        .body = MakeBody<typename Endpoint::Response::SuccessBody>(
-            BodyCase::kUnexpected),
+        .body = MakeSuccessBody(BodyCase::kUnexpected),
         .response = MakeResponse(net::OK, net::HTTP_OK, BodyCase::kUnexpected),
     });
     return kSuccessUnexpectedResponse.get();
@@ -242,8 +248,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
         .test_name = "success_valid_response",
         .net_error = net::OK,
         .status_code = net::HTTP_OK,
-        .body = MakeBody<typename Endpoint::Response::SuccessBody>(
-            BodyCase::kValid),
+        .body = MakeSuccessBody(BodyCase::kValid),
         .response = MakeResponse(net::OK, net::HTTP_OK, BodyCase::kValid),
     });
     return kSuccessValidResponse.get();
@@ -254,8 +259,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
         .test_name = "error_empty_response",
         .net_error = net::OK,
         .status_code = net::HTTP_BAD_REQUEST,
-        .body =
-            MakeBody<typename Endpoint::Response::ErrorBody>(BodyCase::kEmpty),
+        .body = MakeErrorBody(BodyCase::kEmpty),
         .response =
             MakeResponse(net::OK, net::HTTP_BAD_REQUEST, BodyCase::kEmpty),
     });
@@ -267,8 +271,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
         .test_name = "error_malformed_response",
         .net_error = net::OK,
         .status_code = net::HTTP_BAD_REQUEST,
-        .body = MakeBody<typename Endpoint::Response::ErrorBody>(
-            BodyCase::kMalformed),
+        .body = MakeErrorBody(BodyCase::kMalformed),
         .response =
             MakeResponse(net::OK, net::HTTP_BAD_REQUEST, BodyCase::kMalformed),
     });
@@ -280,8 +283,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
         .test_name = "error_unexpected_response",
         .net_error = net::OK,
         .status_code = net::HTTP_BAD_REQUEST,
-        .body = MakeBody<typename Endpoint::Response::ErrorBody>(
-            BodyCase::kUnexpected),
+        .body = MakeErrorBody(BodyCase::kUnexpected),
         .response =
             MakeResponse(net::OK, net::HTTP_BAD_REQUEST, BodyCase::kUnexpected),
     });
@@ -293,8 +295,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
         .test_name = "error_valid_response",
         .net_error = net::OK,
         .status_code = net::HTTP_BAD_REQUEST,
-        .body =
-            MakeBody<typename Endpoint::Response::ErrorBody>(BodyCase::kValid),
+        .body = MakeErrorBody(BodyCase::kValid),
         .response =
             MakeResponse(net::OK, net::HTTP_BAD_REQUEST, BodyCase::kValid),
     });
@@ -400,16 +401,19 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
     response.status_code = status_code;
 
     if (net_error == net::OK && status_code) {
-      if (network::IsSuccessfulStatus(*status_code)) {  // 2xx
-        response.body =
-            MakeResponseBody<typename Endpoint::Response::SuccessBody>(
-                body_case);
-      } else {  // non-2xx
-        response.body =
-            MakeResponseBody<typename Endpoint::Response::ErrorBody>(body_case)
-                .transform([](auto error_body) {
-                  return base::unexpected(std::move(error_body));
-                });
+      if constexpr (!kIsBodylessResponse) {
+        if (network::IsSuccessfulStatus(*status_code)) {  // 2xx
+          response.body =
+              MakeResponseBody<typename Endpoint::Response::SuccessBody>(
+                  body_case);
+        } else {  // non-2xx
+          response.body =
+              MakeResponseBody<typename Endpoint::Response::ErrorBody>(
+                  body_case)
+                  .transform([](auto error_body) {
+                    return base::unexpected(std::move(error_body));
+                  });
+        }
       }
 
       if constexpr (base::is_instantiation<Response, WithHeaders>) {
@@ -423,6 +427,28 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
     }
 
     return response;
+  }
+
+  // The response body served for endpoints with a body-less Response<>. Its
+  // content doesn't matter: such responses never parse a body, so any bytes
+  // must be ignored, and the tests check that only the status reaches the
+  // response.
+  static constexpr char kIgnoredBody[] = "ignored";
+
+  static std::string MakeSuccessBody(BodyCase body_case) {
+    if constexpr (kIsBodylessResponse) {
+      return kIgnoredBody;
+    } else {
+      return MakeBody<typename Endpoint::Response::SuccessBody>(body_case);
+    }
+  }
+
+  static std::string MakeErrorBody(BodyCase body_case) {
+    if constexpr (kIsBodylessResponse) {
+      return kIgnoredBody;
+    } else {
+      return MakeBody<typename Endpoint::Response::ErrorBody>(body_case);
+    }
   }
 
   template <internal::IsJSONResponseBody ResponseBody>
@@ -699,6 +725,21 @@ using ClientTestBodylessRequestProtobufSuccessJSONErrorBodiesResponseWithHeaders
         BodylessRequestProtobufSuccessJSONErrorBodiesEndpoint::Request,
         WithHeaders<
             BodylessRequestProtobufSuccessJSONErrorBodiesEndpoint::Response>>;
+
+using ClientTestBodylessRequestBodylessResponseNoHeaders =
+    ClientTest<BodylessRequestBodylessResponseEndpoint,
+               BodylessRequestBodylessResponseEndpoint::Request,
+               BodylessRequestBodylessResponseEndpoint::Response>;
+
+using ClientTestBodylessRequestBodylessResponseRequestWithHeaders =
+    ClientTest<BodylessRequestBodylessResponseEndpoint,
+               WithHeaders<BodylessRequestBodylessResponseEndpoint::Request>,
+               BodylessRequestBodylessResponseEndpoint::Response>;
+
+using ClientTestBodylessRequestBodylessResponseResponseWithHeaders =
+    ClientTest<BodylessRequestBodylessResponseEndpoint,
+               BodylessRequestBodylessResponseEndpoint::Request,
+               WithHeaders<BodylessRequestBodylessResponseEndpoint::Response>>;
 
 class ClientTestCancelableRequest : public testing::Test {
  protected:
@@ -1076,6 +1117,40 @@ INSTANTIATE_TEST_SUITE_P(
     ClientTestBodylessRequestProtobufSuccessJSONErrorBodiesResponseWithHeaders::
         GenerateTestCases(),
     ClientTestBodylessRequestProtobufSuccessJSONErrorBodiesResponseWithHeaders::
+        kNameGenerator);
+
+TEST_P(ClientTestBodylessRequestBodylessResponseNoHeaders, Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    BodylessRequestBodylessResponseNoHeaders,
+    ClientTestBodylessRequestBodylessResponseNoHeaders,
+    ClientTestBodylessRequestBodylessResponseNoHeaders::GenerateTestCases(),
+    ClientTestBodylessRequestBodylessResponseNoHeaders::kNameGenerator);
+
+TEST_P(ClientTestBodylessRequestBodylessResponseRequestWithHeaders, Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    BodylessRequestBodylessResponseRequestWithHeaders,
+    ClientTestBodylessRequestBodylessResponseRequestWithHeaders,
+    ClientTestBodylessRequestBodylessResponseRequestWithHeaders::
+        GenerateTestCases(),
+    ClientTestBodylessRequestBodylessResponseRequestWithHeaders::
+        kNameGenerator);
+
+TEST_P(ClientTestBodylessRequestBodylessResponseResponseWithHeaders, Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    BodylessRequestBodylessResponseResponseWithHeaders,
+    ClientTestBodylessRequestBodylessResponseResponseWithHeaders,
+    ClientTestBodylessRequestBodylessResponseResponseWithHeaders::
+        GenerateTestCases(),
+    ClientTestBodylessRequestBodylessResponseResponseWithHeaders::
         kNameGenerator);
 
 TEST_F(ClientTestCancelableRequest, ResetPreventsCallback) {
