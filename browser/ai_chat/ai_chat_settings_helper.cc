@@ -130,8 +130,7 @@ void AIChatSettingsHelper::AddCustomModel(mojom::ModelPtr model,
     return;
   }
 
-  model_service_->AddCustomModel(std::move(model));
-  std::move(callback).Run(mojom::OperationResult::Success);
+  std::move(callback).Run(model_service_->AddCustomModel(std::move(model)));
 }
 
 void AIChatSettingsHelper::SaveCustomModel(uint32_t index,
@@ -154,8 +153,8 @@ void AIChatSettingsHelper::SaveCustomModel(uint32_t index,
     return;
   }
 
-  model_service_->SaveCustomModel(index, std::move(model));
-  std::move(callback).Run(mojom::OperationResult::Success);
+  std::move(callback).Run(
+      model_service_->SaveCustomModel(index, std::move(model)));
 }
 
 void AIChatSettingsHelper::DeleteCustomModel(uint32_t index) {

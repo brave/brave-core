@@ -178,6 +178,7 @@ const MODELS: Mojom.Model[] = [
           + 'associated with a character named Clippy.',
         endpoint: { url: 'https://example.com' },
         apiKey: '123456',
+        apiKeyUnavailable: false,
       },
     },
   },

@@ -26,6 +26,7 @@
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/grit/brave_components_webui_strings.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
@@ -307,7 +308,8 @@ TEST_F(ModelServiceTest, AddAndModifyCustomModel) {
     model->display_name = kDisplayName;
     model->options = mojom::ModelOptions::NewCustomModelOptions(
         mojom::CustomModelOptions::New(kRequestName, 0, 0, 0,
-                                       kModelSystemPrompt, endpoint, kAPIKey));
+                                       kModelSystemPrompt, endpoint, kAPIKey,
+                                       false));
 
     GetService()->AddCustomModel(std::move(model));
   }
@@ -519,19 +521,22 @@ TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint) {
     mojom::ModelPtr model1 = mojom::Model::New();
     model1->display_name = "Model 1";
     model1->options = mojom::ModelOptions::NewCustomModelOptions(
-        mojom::CustomModelOptions::New("model1", 0, 0, 0, "", endpoint1, ""));
+        mojom::CustomModelOptions::New("model1", 0, 0, 0, "", endpoint1, "",
+                                       false));
     GetService()->AddCustomModel(std::move(model1));
 
     mojom::ModelPtr model2 = mojom::Model::New();
     model2->display_name = "Model 2";
     model2->options = mojom::ModelOptions::NewCustomModelOptions(
-        mojom::CustomModelOptions::New("model2", 0, 0, 0, "", endpoint1, ""));
+        mojom::CustomModelOptions::New("model2", 0, 0, 0, "", endpoint1, "",
+                                       false));
     GetService()->AddCustomModel(std::move(model2));
 
     mojom::ModelPtr model3 = mojom::Model::New();
     model3->display_name = "Model 3";
     model3->options = mojom::ModelOptions::NewCustomModelOptions(
-        mojom::CustomModelOptions::New("model3", 0, 0, 0, "", endpoint2, ""));
+        mojom::CustomModelOptions::New("model3", 0, 0, 0, "", endpoint2, "",
+                                       false));
     GetService()->AddCustomModel(std::move(model3));
 
     auto custom_models = GetService()->GetCustomModels();
@@ -576,13 +581,15 @@ TEST_F(ModelServiceTest, DeleteCustomModelByNameAndEndpoint) {
     mojom::ModelPtr model1 = mojom::Model::New();
     model1->display_name = "Model 1";
     model1->options = mojom::ModelOptions::NewCustomModelOptions(
-        mojom::CustomModelOptions::New("model1", 0, 0, 0, "", endpoint, ""));
+        mojom::CustomModelOptions::New("model1", 0, 0, 0, "", endpoint, "",
+                                       false));
     GetService()->AddCustomModel(std::move(model1));
 
     mojom::ModelPtr model2 = mojom::Model::New();
     model2->display_name = "Model 2";
     model2->options = mojom::ModelOptions::NewCustomModelOptions(
-        mojom::CustomModelOptions::New("model2", 0, 0, 0, "", endpoint, ""));
+        mojom::CustomModelOptions::New("model2", 0, 0, 0, "", endpoint, "",
+                                       false));
     GetService()->AddCustomModel(std::move(model2));
 
     auto custom_models = GetService()->GetCustomModels();
@@ -629,7 +636,8 @@ TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint_WithDefaultModel) {
     mojom::ModelPtr model = mojom::Model::New();
     model->display_name = "Custom Model";
     model->options = mojom::ModelOptions::NewCustomModelOptions(
-        mojom::CustomModelOptions::New("model1", 0, 0, 0, "", endpoint, ""));
+        mojom::CustomModelOptions::New("model1", 0, 0, 0, "", endpoint, "",
+                                       false));
     GetService()->AddCustomModel(std::move(model));
 
     auto custom_models = GetService()->GetCustomModels();
@@ -716,7 +724,8 @@ TEST_F(ModelServiceTest, GetCustomModels) {
     mojom::ModelPtr model = mojom::Model::New();
     model->display_name = "Custom Model";
     model->options = mojom::ModelOptions::NewCustomModelOptions(
-        mojom::CustomModelOptions::New("model1", 0, 0, 0, "", endpoint, ""));
+        mojom::CustomModelOptions::New("model1", 0, 0, 0, "", endpoint, "",
+                                       false));
     GetService()->AddCustomModel(std::move(model));
   }
 
@@ -765,7 +774,7 @@ class ModelServiceAsyncEncryptorTest : public ::testing::Test {
       model->options = mojom::ModelOptions::NewCustomModelOptions(
           mojom::CustomModelOptions::New(request_name, 0, 0, 0, std::nullopt,
                                          GURL("https://test.example.com/api"),
-                                         api_key));
+                                         api_key, false));
       service->AddCustomModel(std::move(model));
     }
   }
@@ -977,6 +986,308 @@ TEST_F(ModelServiceTest, GetLeoModelKeyAndNameByKeyReflectMergedList) {
   EXPECT_FALSE(
       service->GetLeoModelNameByKey(kClaudeSonnetModelKey).has_value());
   EXPECT_FALSE(service->GetLeoModelKeyByName(*sonnet_name).has_value());
+}
+
+class ModelServiceCryptoTest : public ModelServiceTest {
+ protected:
+  mojom::ModelPtr MakeCustomModel(const std::string& api_key) {
+    auto model = mojom::Model::New();
+    model->display_name = "Synthetic crypto test model";
+    auto options = mojom::CustomModelOptions::New();
+    options->model_request_name = "test-model";
+    options->context_size = kDefaultCustomModelContextSize;
+    options->endpoint = GURL("https://example.com/v1/chat/completions");
+    options->api_key = api_key;
+    model->options =
+        mojom::ModelOptions::NewCustomModelOptions(std::move(options));
+    return model;
+  }
+
+  void MakeCryptoUnavailable() {
+    GetService()->SetEncryptorForTesting(
+        os_crypt_async::GetTestEncryptorWithoutKeysForTesting());
+  }
+};
+
+TEST_F(ModelServiceCryptoTest, FailedEncryptionDoesNotAddModel) {
+  MakeCryptoUnavailable();
+  const auto before =
+      pref_service_.GetList("brave.ai_chat.custom_models").Clone();
+  EXPECT_CALL(*observer_, OnModelListUpdated()).Times(0);
+
+  GetService()->AddCustomModel(MakeCustomModel("synthetic-api-key"));
+
+  EXPECT_EQ(pref_service_.GetList("brave.ai_chat.custom_models"), before);
+  EXPECT_TRUE(GetService()->GetCustomModels().empty());
+}
+
+TEST_F(ModelServiceCryptoTest, FailedEncryptionDoesNotReplaceSavedModel) {
+  GetService()->AddCustomModel(MakeCustomModel("synthetic-original-key"));
+  auto edited = GetService()->GetCustomModels().at(0)->Clone();
+  edited->display_name = "Changed label";
+  edited->options->get_custom_model_options()->api_key =
+      "synthetic-replacement-key";
+  const auto before =
+      pref_service_.GetList("brave.ai_chat.custom_models").Clone();
+  MakeCryptoUnavailable();
+  EXPECT_CALL(*observer_, OnModelListUpdated()).Times(0);
+
+  GetService()->SaveCustomModel(0, std::move(edited));
+
+  EXPECT_EQ(pref_service_.GetList("brave.ai_chat.custom_models"), before);
+}
+
+TEST_F(ModelServiceCryptoTest, EditingUnreadableKeyDoesNotEraseCiphertext) {
+  GetService()->AddCustomModel(MakeCustomModel("synthetic-original-key"));
+  const auto before =
+      pref_service_.GetList("brave.ai_chat.custom_models").Clone();
+  MakeCryptoUnavailable();
+  auto edited = GetService()->GetCustomModels().at(0)->Clone();
+  ASSERT_TRUE(edited->options->get_custom_model_options()->api_key.empty());
+  edited->display_name = "Changed label";
+  EXPECT_CALL(*observer_, OnModelListUpdated()).Times(0);
+
+  GetService()->SaveCustomModel(0, std::move(edited));
+
+  EXPECT_EQ(pref_service_.GetList("brave.ai_chat.custom_models"), before);
+}
+
+TEST_F(ModelServiceCryptoTest, EmptyKeyDoesNotRequireEncryption) {
+  MakeCryptoUnavailable();
+  GetService()->AddCustomModel(MakeCustomModel(""));
+
+  const auto models = GetService()->GetCustomModels();
+  ASSERT_EQ(models.size(), 1u);
+  EXPECT_TRUE(models[0]->options->get_custom_model_options()->api_key.empty());
+}
+
+TEST_F(ModelServiceCryptoTest, HealthyKeyCanBeExplicitlyCleared) {
+  GetService()->AddCustomModel(MakeCustomModel("synthetic-original-key"));
+  auto edited = GetService()->GetCustomModels().at(0)->Clone();
+  edited->options->get_custom_model_options()->api_key.clear();
+  GetService()->SaveCustomModel(0, std::move(edited));
+
+  const auto models = GetService()->GetCustomModels();
+  ASSERT_EQ(models.size(), 1u);
+  EXPECT_TRUE(models[0]->options->get_custom_model_options()->api_key.empty());
+}
+
+class ModelServiceCryptoErrorsTest : public ModelServiceCryptoTest {
+ protected:
+  scoped_refptr<os_crypt_async::Encryptor> GetReadyEncryptor() {
+    scoped_refptr<os_crypt_async::Encryptor> encryptor;
+    os_crypt_async_->GetInstance(base::BindLambdaForTesting(
+        [&](scoped_refptr<os_crypt_async::Encryptor> value) {
+          encryptor = std::move(value);
+        }));
+    return encryptor;
+  }
+
+  void SetStoredKey(const std::string& ciphertext) {
+    auto models = pref_service_.GetList("brave.ai_chat.custom_models").Clone();
+    models[0].GetDict().Set("api_key", ciphertext);
+    pref_service_.SetList("brave.ai_chat.custom_models", std::move(models));
+  }
+};
+
+TEST_F(ModelServiceCryptoErrorsTest, AddReturnsEncryptionFailure) {
+  MakeCryptoUnavailable();
+  EXPECT_EQ(GetService()->AddCustomModel(MakeCustomModel("synthetic-key")),
+            mojom::OperationResult::EncryptionFailed);
+}
+
+TEST_F(ModelServiceCryptoErrorsTest, SaveReturnsEncryptionFailure) {
+  GetService()->AddCustomModel(MakeCustomModel("synthetic-original-key"));
+  auto model = GetService()->GetCustomModels()[0]->Clone();
+  model->options->get_custom_model_options()->api_key = "synthetic-new-key";
+  MakeCryptoUnavailable();
+  EXPECT_EQ(GetService()->SaveCustomModel(0, std::move(model)),
+            mojom::OperationResult::EncryptionFailed);
+}
+
+TEST_F(ModelServiceCryptoErrorsTest, EmptyKeyIsAvailableWithoutCrypto) {
+  MakeCryptoUnavailable();
+  ASSERT_EQ(GetService()->AddCustomModel(MakeCustomModel("")),
+            mojom::OperationResult::Success);
+  auto models = GetService()->GetCustomModels();
+  ASSERT_EQ(models.size(), 1u);
+  EXPECT_FALSE(
+      models[0]->options->get_custom_model_options()->api_key_unavailable);
+}
+
+TEST_F(ModelServiceCryptoErrorsTest,
+       InvalidBase64IsReportedWithoutPrefMutation) {
+  GetService()->AddCustomModel(MakeCustomModel("synthetic-key"));
+  SetStoredKey("not valid base64!");
+  const auto before =
+      pref_service_.GetList("brave.ai_chat.custom_models").Clone();
+  auto models = GetService()->GetCustomModels();
+  ASSERT_EQ(models.size(), 1u);
+  EXPECT_TRUE(models[0]->options->get_custom_model_options()->api_key.empty());
+  EXPECT_TRUE(
+      models[0]->options->get_custom_model_options()->api_key_unavailable);
+  EXPECT_EQ(pref_service_.GetList("brave.ai_chat.custom_models"), before);
+}
+
+TEST_F(ModelServiceCryptoErrorsTest, CorruptCiphertextIsReported) {
+  GetService()->AddCustomModel(MakeCustomModel("synthetic-key"));
+  SetStoredKey("aW52YWxpZC1jaXBoZXJ0ZXh0");
+  auto models = GetService()->GetCustomModels();
+  ASSERT_EQ(models.size(), 1u);
+  EXPECT_TRUE(models[0]->options->get_custom_model_options()->api_key.empty());
+  EXPECT_TRUE(
+      models[0]->options->get_custom_model_options()->api_key_unavailable);
+}
+
+TEST_F(ModelServiceCryptoErrorsTest, RefreshPublishesUnavailableKeyState) {
+  GetService()->AddCustomModel(MakeCustomModel("synthetic-key"));
+  auto encryptor = GetReadyEncryptor();
+  ASSERT_TRUE(encryptor);
+  const auto key = GetService()->GetCustomModels()[0]->key;
+  MakeCryptoUnavailable();
+  EXPECT_TRUE(GetService()
+                  ->GetModel(key)
+                  ->options->get_custom_model_options()
+                  ->api_key_unavailable);
+
+  GetService()->SetEncryptorForTesting(std::move(encryptor));
+  const auto& options =
+      *GetService()->GetModel(key)->options->get_custom_model_options();
+  EXPECT_FALSE(options.api_key_unavailable);
+  EXPECT_EQ(options.api_key, "synthetic-key");
+}
+
+TEST_F(ModelServiceCryptoErrorsTest,
+       StaleUnavailableFormCannotClearRecoveredKey) {
+  GetService()->AddCustomModel(MakeCustomModel("synthetic-key"));
+  auto encryptor = GetReadyEncryptor();
+  ASSERT_TRUE(encryptor);
+  MakeCryptoUnavailable();
+  auto stale = GetService()->GetCustomModels()[0]->Clone();
+  ASSERT_TRUE(stale->options->get_custom_model_options()->api_key.empty());
+  ASSERT_TRUE(stale->options->get_custom_model_options()->api_key_unavailable);
+  GetService()->SetEncryptorForTesting(std::move(encryptor));
+  const auto before =
+      pref_service_.GetList("brave.ai_chat.custom_models").Clone();
+
+  EXPECT_EQ(GetService()->SaveCustomModel(0, std::move(stale)),
+            mojom::OperationResult::DecryptionFailed);
+  EXPECT_EQ(pref_service_.GetList("brave.ai_chat.custom_models"), before);
+}
+
+TEST_F(ModelServiceCryptoErrorsTest, ExplicitReplacementRecoversUnreadableKey) {
+  GetService()->AddCustomModel(MakeCustomModel("synthetic-original-key"));
+  SetStoredKey("not valid base64!");
+  auto model = GetService()->GetCustomModels()[0]->Clone();
+  ASSERT_TRUE(model->options->get_custom_model_options()->api_key_unavailable);
+  model->options->get_custom_model_options()->api_key = "synthetic-new-key";
+  EXPECT_EQ(GetService()->SaveCustomModel(0, std::move(model)),
+            mojom::OperationResult::Success);
+  auto models = GetService()->GetCustomModels();
+  ASSERT_EQ(models.size(), 1u);
+  EXPECT_FALSE(
+      models[0]->options->get_custom_model_options()->api_key_unavailable);
+  EXPECT_EQ(models[0]->options->get_custom_model_options()->api_key,
+            "synthetic-new-key");
+}
+
+TEST_F(ModelServiceCryptoErrorsTest, InvalidIndexLeavesPreferencesUnchanged) {
+  const auto before =
+      pref_service_.GetList("brave.ai_chat.custom_models").Clone();
+  EXPECT_EQ(GetService()->SaveCustomModel(0, MakeCustomModel("synthetic-key")),
+            mojom::OperationResult::InvalidModelIndex);
+  EXPECT_EQ(pref_service_.GetList("brave.ai_chat.custom_models"), before);
+}
+
+TEST_F(ModelServiceAsyncEncryptorTest, StoredKeyUnavailableUntilReady) {
+  PreloadCustomModelsInPrefs({{"test-model", "synthetic-key"}});
+  auto service = std::make_unique<ModelService>(
+      &pref_service_, os_crypt_async_.get(), network::NetworkContextGetter(),
+      /*url_loader_factory=*/nullptr, base::FilePath());
+  auto before = service->GetCustomModels();
+  ASSERT_EQ(before.size(), 1u);
+  EXPECT_TRUE(
+      before[0]->options->get_custom_model_options()->api_key_unavailable);
+
+  base::RunLoop run_loop;
+  ScopedModelListReadyObserver observer(*service, run_loop.QuitClosure());
+  run_loop.Run();
+  auto after = service->GetCustomModels();
+  ASSERT_EQ(after.size(), 1u);
+  EXPECT_FALSE(
+      after[0]->options->get_custom_model_options()->api_key_unavailable);
+  EXPECT_EQ(after[0]->options->get_custom_model_options()->api_key,
+            "synthetic-key");
+}
+
+class ModelServicePendingEncryptorTest : public ModelServiceAsyncEncryptorTest {
+ protected:
+  mojom::ModelPtr MakeModel(const std::string& key) {
+    auto model = mojom::Model::New();
+    model->display_name = "Synthetic pending model";
+    auto options = mojom::CustomModelOptions::New();
+    options->model_request_name = "test-model";
+    options->context_size = kDefaultCustomModelContextSize;
+    options->endpoint = GURL("https://example.com/v1/chat/completions");
+    options->api_key = key;
+    model->options =
+        mojom::ModelOptions::NewCustomModelOptions(std::move(options));
+    return model;
+  }
+
+  std::unique_ptr<ModelService> CreateService() {
+    return std::make_unique<ModelService>(
+        &pref_service_, os_crypt_async_.get(), network::NetworkContextGetter(),
+        /*url_loader_factory=*/nullptr, base::FilePath());
+  }
+
+  void WaitForReady(ModelService& service) {
+    base::RunLoop run_loop;
+    ScopedModelListReadyObserver observer(service, run_loop.QuitClosure());
+    run_loop.Run();
+  }
+};
+
+TEST_F(ModelServicePendingEncryptorTest, AddCanRetryAfterEncryptorReady) {
+  auto service = CreateService();
+  const auto before =
+      pref_service_.GetList("brave.ai_chat.custom_models").Clone();
+  const auto default_before = service->GetDefaultModelKey();
+  EXPECT_EQ(service->AddCustomModel(MakeModel("synthetic-key")),
+            mojom::OperationResult::EncryptionFailed);
+  EXPECT_EQ(pref_service_.GetList("brave.ai_chat.custom_models"), before);
+  EXPECT_EQ(service->GetDefaultModelKey(), default_before);
+
+  WaitForReady(*service);
+  EXPECT_EQ(service->AddCustomModel(MakeModel("synthetic-key")),
+            mojom::OperationResult::Success);
+  const auto models = service->GetCustomModels();
+  ASSERT_EQ(models.size(), 1u);
+  EXPECT_EQ(models[0]->options->get_custom_model_options()->api_key,
+            "synthetic-key");
+}
+
+TEST_F(ModelServicePendingEncryptorTest, SaveCanRetryAfterEncryptorReady) {
+  PreloadCustomModelsInPrefs({{"test-model", "synthetic-original-key"}});
+  auto service = CreateService();
+  auto edited = service->GetCustomModels()[0]->Clone();
+  ASSERT_TRUE(edited->options->get_custom_model_options()->api_key_unavailable);
+  edited->options->get_custom_model_options()->api_key = "synthetic-new-key";
+  const auto before =
+      pref_service_.GetList("brave.ai_chat.custom_models").Clone();
+  const auto default_before = service->GetDefaultModelKey();
+  EXPECT_EQ(service->SaveCustomModel(0, edited->Clone()),
+            mojom::OperationResult::EncryptionFailed);
+  EXPECT_EQ(pref_service_.GetList("brave.ai_chat.custom_models"), before);
+  EXPECT_EQ(service->GetDefaultModelKey(), default_before);
+
+  WaitForReady(*service);
+  EXPECT_EQ(service->SaveCustomModel(0, std::move(edited)),
+            mojom::OperationResult::Success);
+  const auto models = service->GetCustomModels();
+  ASSERT_EQ(models.size(), 1u);
+  EXPECT_EQ(models[0]->options->get_custom_model_options()->api_key,
+            "synthetic-new-key");
 }
 
 }  // namespace ai_chat

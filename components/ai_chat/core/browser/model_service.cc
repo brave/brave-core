@@ -43,6 +43,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
@@ -474,28 +475,20 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
 
 }  // namespace
 
-// TODO(nullhook): Handle encryption/decryption failures
-// https://github.com/brave/brave-browser/issues/55033
-std::string ModelService::EncryptAPIKey(const std::string& api_key) const {
+std::optional<std::string> ModelService::EncryptAPIKey(
+    const std::string& api_key) const {
   if (api_key.empty()) {
     return std::string();
   }
 
-  // Currently this is called upon adding new custom model, and the API key
-  // would not be stored into pref, hence the model can not be properly used
-  // unless user re-add or edit the model manually. We should surface this
-  // error to UI to fail adding a custom model instead of silently fail here.
-  // https://github.com/brave/brave-browser/issues/55033
   std::string encrypted_api_key;
   if (!encryptor_ || !encryptor_->EncryptString(api_key, &encrypted_api_key)) {
-    VLOG(1) << "Encrypt api key failure";
-    return std::string();
+    return std::nullopt;
   }
-
   return base::Base64Encode(encrypted_api_key);
 }
 
-std::string ModelService::DecryptAPIKey(
+std::optional<std::string> ModelService::DecryptAPIKey(
     const std::string& encoded_api_key) const {
   if (encoded_api_key.empty()) {
     return std::string();
@@ -503,33 +496,27 @@ std::string ModelService::DecryptAPIKey(
 
   std::string encrypted_api_key;
   if (!base::Base64Decode(encoded_api_key, &encrypted_api_key)) {
-    VLOG(1) << "base64 decode api key failure";
-    return std::string();
+    return std::nullopt;
   }
 
-  // `encryptor_` is unset between `ModelService` construction and
-  // `OnEncryptorReady()` firing; `InitModels()` runs synchronously in the
-  // constructor and reaches here, so we tolerate the missing-encryptor case
-  // and return an empty key. Once the encryptor arrives,
-  // `OnEncryptorReady()` refreshes keys in place via
-  // `RefreshCustomModelApiKeys()` so callers see the real value.
-  // We should consider surface these error to UI too rather than silently fail,
-  // see https://github.com/brave/brave-browser/issues/55033.
   std::string api_key;
   if (!encryptor_ || !encryptor_->DecryptString(encrypted_api_key, &api_key)) {
-    VLOG(1) << "Decrypt api key failure";
-    return std::string();
+    return std::nullopt;
   }
-
   return api_key;
 }
 
-base::DictValue ModelService::CustomModelToPrefDict(
+std::optional<base::DictValue> ModelService::CustomModelToPrefDict(
     mojom::ModelPtr model) const {
   base::DictValue model_dict = base::DictValue();
 
   mojom::CustomModelOptions options =
       *model->options->get_custom_model_options();
+
+  auto encrypted_api_key = EncryptAPIKey(options.api_key);
+  if (!encrypted_api_key) {
+    return std::nullopt;
+  }
 
   model_dict.Set(kCustomModelItemKey, model->key);
   model_dict.Set(kCustomModelItemLabelKey, model->display_name);
@@ -537,7 +524,7 @@ base::DictValue ModelService::CustomModelToPrefDict(
   model_dict.Set(kCustomModelSupportsTools, model->supports_tools);
   model_dict.Set(kCustomModelItemModelKey, options.model_request_name);
   model_dict.Set(kCustomModelItemEndpointUrlKey, options.endpoint.spec());
-  model_dict.Set(kCustomModelItemApiKey, EncryptAPIKey(options.api_key));
+  model_dict.Set(kCustomModelItemApiKey, std::move(*encrypted_api_key));
   model_dict.Set(kCustomModelContextSizeKey,
                  static_cast<int32_t>(options.context_size));
 
@@ -567,9 +554,9 @@ ModelService::ModelService(
   }
 
   // Load the model list synchronously so callers can resolve a default
-  // model immediately after construction. Custom-model API keys decrypt
-  // to empty strings until `OnEncryptorReady()` delivers the `Encryptor`;
-  // it then refreshes the keys in place and notifies observers via
+  // model immediately after construction. Stored API keys remain unavailable
+  // until `OnEncryptorReady()` delivers the `Encryptor`; it then refreshes
+  // the keys in place and notifies observers via
   // `OnModelListUpdated()` so engines refresh via `UpdateModelOptions()`.
   InitModels();
 
@@ -617,8 +604,10 @@ void ModelService::RefreshCustomModelApiKeys() {
       return m->key == *key && m->options->is_custom_model_options();
     });
     if (it != all_models_.end()) {
-      (*it)->options->get_custom_model_options()->api_key =
-          DecryptAPIKey(*encrypted);
+      auto api_key = DecryptAPIKey(*encrypted);
+      auto& options = *(*it)->options->get_custom_model_options();
+      options.api_key_unavailable = !api_key.has_value();
+      options.api_key = api_key.value_or(std::string());
     }
   }
 }
@@ -977,7 +966,7 @@ std::optional<std::string> ModelService::GetLeoModelNameByKey(
   return std::nullopt;
 }
 
-void ModelService::AddCustomModel(mojom::ModelPtr model) {
+mojom::OperationResult ModelService::AddCustomModel(mojom::ModelPtr model) {
   CHECK(model->key.empty()) << "Model key should be empty for new models.";
 
   model->key = base::StrCat(
@@ -997,14 +986,19 @@ void ModelService::AddCustomModel(mojom::ModelPtr model) {
 
   base::ListValue custom_models_pref =
       pref_service_->GetList(kCustomModelsList).Clone();
-  base::DictValue model_dict = CustomModelToPrefDict(std::move(model));
-  custom_models_pref.Append(std::move(model_dict));
+  auto model_dict = CustomModelToPrefDict(std::move(model));
+  if (!model_dict) {
+    return mojom::OperationResult::EncryptionFailed;
+  }
+  custom_models_pref.Append(std::move(*model_dict));
   pref_service_->SetList(kCustomModelsList, std::move(custom_models_pref));
 
   InitModels();
+  return mojom::OperationResult::Success;
 }
 
-void ModelService::SaveCustomModel(uint32_t index, mojom::ModelPtr model) {
+mojom::OperationResult ModelService::SaveCustomModel(uint32_t index,
+                                                     mojom::ModelPtr model) {
   // Validate the model
   ModelValidationResult result = ModelValidator::ValidateCustomModelOptions(
       *model->options->get_custom_model_options());
@@ -1022,8 +1016,8 @@ void ModelService::SaveCustomModel(uint32_t index, mojom::ModelPtr model) {
   base::ListValue custom_models_pref =
       pref_service_->GetList(kCustomModelsList).Clone();
 
-  if (index >= custom_models_pref.size() || index < 0) {
-    return;
+  if (index >= custom_models_pref.size()) {
+    return mojom::OperationResult::InvalidModelIndex;
   }
 
   auto model_iter = custom_models_pref.begin() + index;
@@ -1037,12 +1031,27 @@ void ModelService::SaveCustomModel(uint32_t index, mojom::ModelPtr model) {
       << "Model key mismatch. Existing key: " << existing_key
       << ", sent model key: " << model->key << ".";
 
-  base::DictValue model_dict = CustomModelToPrefDict(std::move(model));
-  model_iter->GetDict().Merge(std::move(model_dict));
+  const auto& options = *model->options->get_custom_model_options();
+  const std::string* stored_key =
+      model_iter->GetDict().FindString(kCustomModelItemApiKey);
+  // A failed read is not an instruction to clear the stored credential. The
+  // form may also have loaded before the encryptor became available.
+  if (options.api_key.empty() && stored_key && !stored_key->empty() &&
+      (options.api_key_unavailable ||
+       !DecryptAPIKey(*stored_key).has_value())) {
+    return mojom::OperationResult::DecryptionFailed;
+  }
+
+  auto model_dict = CustomModelToPrefDict(std::move(model));
+  if (!model_dict) {
+    return mojom::OperationResult::EncryptionFailed;
+  }
+  model_iter->GetDict().Merge(std::move(*model_dict));
 
   pref_service_->SetList(kCustomModelsList, std::move(custom_models_pref));
 
   InitModels();
+  return mojom::OperationResult::Success;
 }
 
 void ModelService::DeleteCustomModel(uint32_t index) {
@@ -1168,8 +1177,10 @@ const std::vector<mojom::ModelPtr> ModelService::GetCustomModels() {
     custom_model_opts->context_size =
         model_pref.FindInt(kCustomModelContextSizeKey)
             .value_or(kDefaultCustomModelContextSize);
-    custom_model_opts->api_key =
+    auto api_key =
         DecryptAPIKey(*model_pref.FindString(kCustomModelItemApiKey));
+    custom_model_opts->api_key_unavailable = !api_key.has_value();
+    custom_model_opts->api_key = api_key.value_or(std::string());
 
     // Populate system prompt (if it exists)
     if (const std::string* model_system_prompt =
