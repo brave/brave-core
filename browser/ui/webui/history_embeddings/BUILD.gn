@@ -6,8 +6,8 @@
 import("//brave/components/local_ai/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
-# The page's element is compiled into brave://history in every build, so the
-# bindings are too. The handler only exists with Local AI.
+assert(enable_local_ai)
+
 mojom("mojo_bindings") {
   sources = [ "history_embeddings.mojom" ]
   webui_module_path = "/"
@@ -15,31 +15,29 @@ mojom("mojo_bindings") {
 }
 
 # The brave://history semantic search handler.
-if (enable_local_ai) {
-  source_set("history_embeddings") {
-    sources = [
-      "history_embeddings_handler.cc",
-      "history_embeddings_handler.h",
-    ]
+source_set("history_embeddings") {
+  sources = [
+    "history_embeddings_handler.cc",
+    "history_embeddings_handler.h",
+  ]
 
-    public_deps = [
-      ":mojo_bindings",
-      "//base",
-      "//brave/components/history_embeddings/core",
-      "//content/public/browser",
-      "//mojo/public/cpp/bindings",
-    ]
+  public_deps = [
+    ":mojo_bindings",
+    "//base",
+    "//brave/components/history_embeddings/core",
+    "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+  ]
 
-    deps = [
-      "//base:i18n",
-      "//brave/app:brave_generated_resources_grit",
-      "//brave/browser/history_embeddings:service",
-      "//brave/components/history_embeddings/content",
-      "//chrome/browser/profiles:profile",
-      "//chrome/browser/ui/webui/history",
-      "//components/history_clusters/core",
-      "//ui/base",
-      "//url",
-    ]
-  }
+  deps = [
+    "//base:i18n",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/history_embeddings:service",
+    "//brave/components/history_embeddings/content",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/webui/history",
+    "//components/history_clusters/core",
+    "//ui/base",
+    "//url",
+  ]
 }

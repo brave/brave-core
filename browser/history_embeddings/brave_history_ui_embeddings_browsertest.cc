@@ -97,12 +97,12 @@ class BraveHistoryUIEmbeddingsBrowserTest : public InProcessBrowserTest {
 
   // The results card the element only renders once it decides to run an
   // embeddings search, which needs the search flag *and* a two-or-more-word
-  // query.
+  // query. The element itself is only rendered with the search flag.
   bool HasEmbeddingsSearchElement() {
     return content::EvalJs(web_contents(),
                            "!!document.querySelector('history-app').shadowRoot"
                            "    .querySelector('brave-history-embeddings')"
-                           "    .shadowRoot.querySelector('.card')")
+                           "    ?.shadowRoot.querySelector('.card')")
         .ExtractBool();
   }
 

@@ -32,9 +32,7 @@
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/history_embeddings/core/history_embeddings_features.h"
-#include "brave/components/history_embeddings/test/fake_history_embeddings_search.h"
-#include "brave/components/local_ai/core/pref_names.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -67,6 +65,12 @@
 #include "url/gurl.h"
 #include "url/origin.h"
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/history_embeddings/core/history_embeddings_features.h"
+#include "brave/components/history_embeddings/test/fake_history_embeddings_search.h"
+#include "brave/components/local_ai/core/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
 namespace {
 
 constexpr char kFooDotComUrl1[] = "https://foo.com/1";
@@ -82,7 +86,9 @@ constexpr char kBarDotComTitle2[] = "bar.com 2";
 constexpr char kTopic[] = "topic";
 constexpr char kTopic2[] = "topic2";
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
 constexpr char kPassage[] = "an excerpt of the page's text";
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 }  // namespace
 
@@ -446,6 +452,7 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerBrowserTest, GetFocusTabs) {
   run_loop2.Run();
 }
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
 // Turns on everything `IsHistoryEmbeddingsEnabledForProfile` needs except the
 // profile pref, which tests set themselves.
 class TabSearchPageHandlerHistoryEmbeddingsBrowserTest
@@ -713,3 +720,4 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerTabPassagesBrowserTest,
   EXPECT_TRUE(sent_tabs[0].passages.empty());
   EXPECT_FALSE(fetched);
 }
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
