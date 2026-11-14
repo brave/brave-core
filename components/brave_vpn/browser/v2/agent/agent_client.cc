@@ -18,7 +18,6 @@
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
-#include "brave/components/brave_vpn/browser/v2/agent/browser_endpoint_impl.h"
 #include "brave/components/brave_vpn/common/v2/agent_utils.h"
 #include "components/named_mojo_ipc_server/named_mojo_ipc_server_client_util.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -123,16 +122,20 @@ std::string_view AgentClient::ErrorToString(Error error) {
   }
 }
 
-AgentClient::AgentClient()
-    : AgentClient(base::BindRepeating(&GetAgentServerName),
+AgentClient::AgentClient(mojom::BrowserEndpoint* browser_endpoint)
+    : AgentClient(browser_endpoint,
+                  base::BindRepeating(&GetAgentServerName),
                   base::BindRepeating(&ConnectToAgentServer)) {}
 
-AgentClient::AgentClient(ServerNameProvider server_name_provider,
+AgentClient::AgentClient(mojom::BrowserEndpoint* browser_endpoint,
+                         ServerNameProvider server_name_provider,
                          Connector connector,
                          const base::TickClock* tick_clock)
     : server_name_provider_(std::move(server_name_provider)),
       connector_(std::move(connector)),
-      backoff_(&kBackoffPolicy, tick_clock) {
+      backoff_(&kBackoffPolicy, tick_clock),
+      endpoint_receiver_(browser_endpoint) {
+  CHECK(browser_endpoint);
   CHECK(server_name_provider_);
   CHECK(connector_);
 }
@@ -141,10 +144,12 @@ AgentClient::~AgentClient() = default;
 
 // static
 std::unique_ptr<AgentClient> AgentClient::CreateForTesting(  // IN-TEST
+    mojom::BrowserEndpoint* browser_endpoint,
     ServerNameProvider server_name_provider,
     Connector connector,
     const base::TickClock* tick_clock) {
-  return base::WrapUnique(new AgentClient(std::move(server_name_provider),
+  return base::WrapUnique(new AgentClient(browser_endpoint,
+                                          std::move(server_name_provider),
                                           std::move(connector), tick_clock));
 }
 
@@ -374,11 +379,20 @@ void AgentClient::OnAgentVerified(AgentIdentity::VerificationResult result) {
       return;
   }
 
-  browser_endpoint_ = std::make_unique<BrowserEndpointImpl>(
+  CHECK(!endpoint_receiver_.is_bound());
+  mojo::PendingRemote<mojom::BrowserEndpoint> endpoint_remote =
+      endpoint_receiver_.BindNewPipeAndPassRemote();
+  endpoint_receiver_.set_disconnect_handler(
       base::BindOnce(&AgentClient::OnSessionPipeDisconnected,
                      weak_factory_.GetWeakPtr(), "endpoint pipe closed"));
-  mojo::PendingRemote<mojom::BrowserEndpoint> endpoint_remote =
-      browser_endpoint_->BindNewPipeAndPassRemote();
+
+  // The endpoint has a pipe of its own, so Mojo does not order the agent's
+  // first calls on it against the BindBrowserHost() reply on the provider's.
+  // Hold them until that reply is in: the implementation then never hears from
+  // a session observers were not told about, which includes one that fails to
+  // finish the handshake. A paused receiver does not notice its pipe closing
+  // either; that surfaces when it is resumed.
+  endpoint_receiver_.Pause();
 
   mojo::PendingReceiver<mojom::BrowserHost> host_receiver =
       host_.BindNewPipeAndPassReceiver();
@@ -413,7 +427,16 @@ void AgentClient::OnBindBrowserHostResult(mojom::BindBrowserHostResult result) {
           FROM_HERE, kMinStableSession,
           base::BindOnce(&AgentClient::OnSessionBecameStable,
                          weak_factory_.GetWeakPtr()));
-      observers_.Notify(&Observer::OnAgentConnected);
+      {
+        base::WeakPtr<AgentClient> weak_this = weak_factory_.GetWeakPtr();
+        observers_.Notify(&Observer::OnAgentConnected);
+        // Observers know about the session now, so let the agent's calls
+        // through, unless one of them tore the client down from inside the
+        // notification.
+        if (weak_this) {
+          endpoint_receiver_.Resume();
+        }
+      }
       return;
 
     case mojom::BindBrowserHostResult::kUninitialized:
@@ -566,7 +589,7 @@ void AgentClient::ResetSession() {
   session_pipe_dropped_ = false;
   stable_session_timer_.Stop();
   host_.reset();
-  browser_endpoint_.reset();
+  endpoint_receiver_.reset();
 }
 
 void AgentClient::ResetConnection() {
