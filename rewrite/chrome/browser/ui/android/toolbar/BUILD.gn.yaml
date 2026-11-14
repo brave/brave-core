@@ -11,11 +11,9 @@ substitutions:
       literal: brave_browser_ui_android_toolbar_sources
 
   - description: Depend on the URL formatter for the collapsed URL chip.
-    insert_into_list:
+    append_to_target:
       target: core_java
-      list_name: deps
-      values:
-        - //components/url_formatter/android:url_formatter_java
+      code: deps += brave_browser_ui_android_toolbar_deps
 
   - description: Depend on the Brave toolbar java resources.
     insert_into_list:

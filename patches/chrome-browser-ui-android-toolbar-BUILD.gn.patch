@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/BUILD.gn b/chrome/browser/ui/android/toolbar/BUILD.gn
-index 363cfea029f741d55a5158f9e305fc03dea3e462..1114ee5d43dfc775449364c841c306c417e6a91c 100644
+index 363cfea029f741d55a5158f9e305fc03dea3e462..c298a5e3a97495ff57ead9f54d940ec01d78cc15 100644
 --- a/chrome/browser/ui/android/toolbar/BUILD.gn
 +++ b/chrome/browser/ui/android/toolbar/BUILD.gn
 @@ -234,6 +234,7 @@ android_library("core_java") {
@@ -10,14 +10,14 @@ index 363cfea029f741d55a5158f9e305fc03dea3e462..1114ee5d43dfc775449364c841c306c4
  
    deps = [
      ":adaptive_features_java",
-@@ -336,6 +337,7 @@ android_library("core_java") {
-     "//components/signin/public/android:java",
-     "//components/strings:components_strings_grd",
-     "//components/sync/android:sync_java",
-+    "//components/url_formatter/android:url_formatter_java",
-     "//components/user_prefs/android:java",
-     "//components/web_distiller/core/android:web_distiller_core_java",
-     "//content/public/android:content_java",
+@@ -365,6 +366,7 @@ android_library("core_java") {
+   srcjar_deps = [ ":jni_headers" ]
+ 
+   resources_package = "org.chromium.chrome.browser.toolbar"
++  deps += brave_browser_ui_android_toolbar_deps
+ }
+ 
+ java_group("java") {
 @@ -468,6 +470,7 @@ android_resources("java_resources") {
    ]
  
