@@ -7,18 +7,24 @@
 
 #include <memory>
 #include <optional>
+#include <string>
 #include <utility>
+#include <vector>
 
+#include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/location.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/run_loop.h"
+#include "base/strings/string_view_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
@@ -35,6 +41,7 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/on_device_model/public/mojom/on_device_model.mojom.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace speech {
@@ -54,6 +61,7 @@ class FakeSpeechRecognitionFactory
   void Init(local_ai::mojom::OrtModelFilesPtr files,
             InitCallback callback) override {
     ++init_count_;
+    last_tokens_ = std::string(base::as_string_view(base::span(files->tokens)));
     if (on_call_) {
       on_call_.Run();
     }
@@ -65,6 +73,7 @@ class FakeSpeechRecognitionFactory
       mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder> responder)
       override {
     ++created_asr_stream_count_;
+    languages_.push_back(options->language.value_or(""));
     if (on_call_) {
       on_call_.Run();
     }
@@ -78,6 +87,11 @@ class FakeSpeechRecognitionFactory
   void set_init_success(bool success) { init_success_ = success; }
   int init_count() const { return init_count_; }
   int created_asr_stream_count() const { return created_asr_stream_count_; }
+  // The tokens file of the last model loaded, which the fixture fills with the
+  // model's directory name.
+  const std::string& last_tokens() const { return last_tokens_; }
+  // The language of each stream, in order.
+  const std::vector<std::string>& languages() const { return languages_; }
 
   // Runs on every Init/CreateAsrStream so a test can quit a RunLoop once the
   // counts reach what it is waiting for.
@@ -89,6 +103,8 @@ class FakeSpeechRecognitionFactory
   bool init_success_ = true;
   int init_count_ = 0;
   int created_asr_stream_count_ = 0;
+  std::string last_tokens_;
+  std::vector<std::string> languages_;
   base::RepeatingClosure on_call_;
   mojo::Receiver<local_ai::mojom::SpeechRecognitionFactory> receiver_{this};
 };
@@ -125,6 +141,13 @@ class OnDeviceSpeechRecognitionControllerTest : public testing::Test {
     Session& operator=(Session&&) = default;
     ~Session() = default;
 
+    // Closes all the pipes, as the engine does at the end of a recognition.
+    void Reset() {
+      session.reset();
+      input.reset();
+      responder_receiver.reset();
+    }
+
     mojo::Remote<local_ai::mojom::AsrSession> session;
     mojo::Remote<on_device_model::mojom::AsrStreamInput> input;
     mojo::PendingReceiver<on_device_model::mojom::AsrStreamResponder>
@@ -147,8 +170,11 @@ class OnDeviceSpeechRecognitionControllerTest : public testing::Test {
     controller_.reset();
     // The models state is a process-wide singleton, so clear it to avoid
     // polluting other suites.
-    local_ai::OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
-        local_ai::OnDeviceSpeechModel::kEnglish, base::FilePath());
+    auto* state = local_ai::OnDeviceSpeechModelsState::GetInstance();
+    state->SetInstallDir(local_ai::OnDeviceSpeechModel::kEnglish,
+                         base::FilePath());
+    state->SetInstallDir(local_ai::OnDeviceSpeechModel::kMultilingual,
+                         base::FilePath());
   }
 
   // Injected BackgroundWebContents factory. Three modes drive the states the
@@ -187,31 +213,36 @@ class OnDeviceSpeechRecognitionControllerTest : public testing::Test {
     auto bwc = std::make_unique<FakeBackgroundWebContents>(
         delegate.get(),
         base::BindOnce(
-            [](raw_ptr<FakeBackgroundWebContents>* ref) { *ref = nullptr; },
-            tracker));
+            [](raw_ptr<FakeBackgroundWebContents>* ref, int* destroyed_count) {
+              *ref = nullptr;
+              ++*destroyed_count;
+            },
+            tracker, &bwc_destroyed_count_));
     *tracker = bwc.get();
     return bwc;
   }
 
-  void SetInstalled(bool installed) {
+  void SetInstalled(bool installed,
+                    local_ai::OnDeviceSpeechModel model =
+                        local_ai::OnDeviceSpeechModel::kEnglish) {
     auto* state = local_ai::OnDeviceSpeechModelsState::GetInstance();
     if (!installed) {
-      state->SetInstallDir(local_ai::OnDeviceSpeechModel::kEnglish,
-                           base::FilePath());
+      state->SetInstallDir(model, base::FilePath());
       return;
     }
-    state->SetInstallDir(local_ai::OnDeviceSpeechModel::kEnglish,
-                         temp_dir_.GetPath());
-    base::FilePath model_dir =
-        state->GetModelDir(local_ai::OnDeviceSpeechModel::kEnglish);
+    state->SetInstallDir(model, temp_dir_.GetPath());
+    base::FilePath model_dir = state->GetModelDir(model);
     ASSERT_TRUE(base::CreateDirectory(model_dir));
     // ReadNemotronOrtFiles only needs these to exist and be non-empty; the
     // contents are ignored by the fake factory's Init.
     for (const char* name :
          {"encoder.onnx", "encoder.onnx.data", "decoder_joint.onnx",
-          "decoder_joint.onnx.data", "filterbank.bin", "tokens.txt"}) {
+          "decoder_joint.onnx.data", "filterbank.bin"}) {
       ASSERT_TRUE(base::WriteFile(model_dir.AppendASCII(name), "x"));
     }
+    // Tells the fake factory which model it loaded.
+    ASSERT_TRUE(base::WriteFile(model_dir.AppendASCII("tokens.txt"),
+                                local_ai::GetModelDirName(model)));
   }
 
   // Acts as the worker WebUI: registers the given factory so the browser can
@@ -271,14 +302,28 @@ class OnDeviceSpeechRecognitionControllerTest : public testing::Test {
     return s;
   }
 
+  // Registers `factory` as the new worker. Expects it to load `model` and to
+  // get only the stream in `language`.
+  void ExpectNewWorker(FakeSpeechRecognitionFactory& factory,
+                       local_ai::OnDeviceSpeechModel model,
+                       const std::string& language,
+                       const base::Location& location = FROM_HERE) {
+    SCOPED_TRACE(location.ToString());
+    RegisterFactoryWith(factory);
+    WaitForCreatedAsrStreams(factory, 1);
+    EXPECT_EQ(local_ai::GetModelDirName(model), factory.last_tokens());
+    EXPECT_THAT(factory.languages(), testing::ElementsAre(language));
+  }
+
   // Acts as the engine: takes an AsrSession and starts one recognition.
-  Session StartSession() {
+  Session StartSession(std::optional<std::string> language = std::nullopt) {
     Session s;
     s.session.Bind(controller_->GetAsrSession());
     mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder> responder;
     s.responder_receiver = responder.InitWithNewPipeAndPassReceiver();
-    s.session->Start(on_device_model::mojom::AsrStreamOptions::New(),
-                     s.input.BindNewPipeAndPassReceiver(),
+    auto options = on_device_model::mojom::AsrStreamOptions::New();
+    options->language = std::move(language);
+    s.session->Start(std::move(options), s.input.BindNewPipeAndPassReceiver(),
                      std::move(responder));
     s.session.FlushForTesting();
     return s;
@@ -317,6 +362,7 @@ class OnDeviceSpeechRecognitionControllerTest : public testing::Test {
   base::WeakPtr<local_ai::BackgroundWebContents::Delegate> captured_delegate_;
   local_ai::BackgroundWebContentsCreatedCallback captured_created_;
   int bwc_created_count_ = 0;
+  int bwc_destroyed_count_ = 0;
   std::unique_ptr<OnDeviceSpeechRecognitionController> controller_;
 };
 
@@ -346,6 +392,56 @@ TEST_F(OnDeviceSpeechRecognitionControllerTest,
   EXPECT_EQ(1, bwc_created_count_);
 }
 
+// The worker starts with the model of the first session's locale, and gets the
+// locale's tag, not the page's tag.
+TEST_F(OnDeviceSpeechRecognitionControllerTest,
+       StartsWithTheModelAndTagOfTheSessionsLocale) {
+  SetInstalled(true, local_ai::OnDeviceSpeechModel::kMultilingual);
+  Session s = StartSession("de-AT");
+  ExpectNewWorker(fake_factory_, local_ai::OnDeviceSpeechModel::kMultilingual,
+                  "de-DE");
+}
+
+// While another session is connected, a session for the other model is
+// refused, and the worker keeps its model.
+TEST_F(OnDeviceSpeechRecognitionControllerTest,
+       SessionForTheOtherModelIsRefusedWhileAnotherIsConnected) {
+  Session english = DriveToReady();
+  SetInstalled(true, local_ai::OnDeviceSpeechModel::kMultilingual);
+
+  Session multilingual = StartSession("es-ES");
+  WaitForDisconnect(multilingual.input);
+  EXPECT_EQ(0, bwc_destroyed_count_);
+
+  // The worker still serves English: the next English session goes to it.
+  Session english_again = StartSession("en-GB");
+  WaitForCreatedAsrStreams(fake_factory_, 2);
+  EXPECT_THAT(fake_factory_.languages(),
+              testing::ElementsAre("en-US", "en-US"));
+}
+
+// Once the sessions of the first model ended, a session for the other model
+// stops the worker, so that its model leaves memory, and gets a new worker with
+// the other model. That worker idles out after the session ends.
+TEST_F(OnDeviceSpeechRecognitionControllerTest,
+       SessionForTheOtherModelGetsANewWorkerUntilItEnds) {
+  Session english = DriveToReady();
+  SetInstalled(true, local_ai::OnDeviceSpeechModel::kMultilingual);
+  english.Reset();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return controller_->asr_session_count_for_testing() == 0; }));
+
+  Session multilingual = StartSession("es-ES");
+  ASSERT_EQ(1, bwc_destroyed_count_);
+  FakeSpeechRecognitionFactory multilingual_factory;
+  ExpectNewWorker(multilingual_factory,
+                  local_ai::OnDeviceSpeechModel::kMultilingual, "es-ES");
+
+  multilingual.Reset();
+  task_environment_.FastForwardBy(base::Seconds(61));
+  EXPECT_EQ(nullptr, last_bwc_.get());
+}
+
 // ---------- Error and edge handling ----------
 
 TEST_F(OnDeviceSpeechRecognitionControllerTest,
@@ -358,6 +454,18 @@ TEST_F(OnDeviceSpeechRecognitionControllerTest,
   // The session's audio pipe is dropped, surfacing as a failure to the engine.
   WaitForDisconnect(s.input);
   EXPECT_FALSE(s.input.is_connected());
+}
+
+// A session in a language that no model serves, or whose model is not
+// installed, starts no worker, and its pipes are dropped.
+TEST_F(OnDeviceSpeechRecognitionControllerTest,
+       StartWithoutAModelForItsLanguageDropsSessionNoBoot) {
+  SetInstalled(true);
+  Session unserved = StartSession("pl-PL");
+  Session not_installed = StartSession("es-ES");
+  EXPECT_EQ(0, bwc_created_count_);
+  WaitForDisconnect(unserved.input);
+  WaitForDisconnect(not_installed.input);
 }
 
 // A worker whose environment fails to come up tears down, drops the queued
@@ -496,8 +604,8 @@ TEST_F(OnDeviceSpeechRecognitionControllerTest, StartupTimeoutTearsDown) {
 }
 
 // A creation reply from a torn-down cycle must not land in a later cycle and
-// adopt a stale worker. TearDown()'s InvalidateWeakPtrs() drops the reply; the
-// state check alone is insufficient because the later cycle is also
+// adopt a stale worker. StopWorker()'s InvalidateWeakPtrs() drops the reply;
+// the state check alone is insufficient because the later cycle is also
 // kRendererStarting.
 TEST_F(OnDeviceSpeechRecognitionControllerTest, StaleBwcCreationReplyDropped) {
   SetInstalled(true);
@@ -678,10 +786,12 @@ TEST_F(OnDeviceSpeechRecognitionControllerTest,
   ASSERT_NE(nullptr, last_bwc_.get());
 
   // Dropping the last AsrSession arms the idle timer. FastForwardBy runs the
-  // immediate disconnect task first, arming the timer, then advances past the
-  // 60s idle timeout so it fires.
+  // immediate disconnect task first, arming the timer. The worker stays up
+  // until the 60s idle timeout fires.
   s.session.reset();
-  task_environment_.FastForwardBy(base::Seconds(61));
+  task_environment_.FastForwardBy(base::Seconds(59));
+  EXPECT_NE(nullptr, last_bwc_.get());
+  task_environment_.FastForwardBy(base::Seconds(2));
   EXPECT_EQ(nullptr, last_bwc_.get());
 }
 
