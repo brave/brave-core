@@ -160,6 +160,25 @@ export function ActiveChatProvider({
     }
   }, [selectedConversationId, aiChat.api])
 
+  // A deleted conversation can't be used any more, so bind a new one. The
+  // check for a non-existent chat below doesn't cover the main conversation,
+  // which isn't selected by its id. Navigating to "/" alone wouldn't always
+  // rebind either: with the deleted conversation gone from the list, one that
+  // was new when bound passes for a new conversation, which "/" keeps.
+  React.useEffect(
+    () =>
+      conversationAPI?.api.subscribeToOnConversationDeleted(() => {
+        setConversationAPI(BindConversation.newConversation(aiChat.api))
+        if (
+          selectedConversationId
+          && selectedConversationId !== tabAssociatedChatId
+        ) {
+          updateSelectedConversation('')
+        }
+      }),
+    [conversationAPI, selectedConversationId, aiChat.api],
+  )
+
   const conversations = aiChat.api.useGetConversations().data
 
   // If the conversation ID changes explicitly to an ID or to blank,
