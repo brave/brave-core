@@ -22,6 +22,10 @@ protocol TabCollectionViewDelegate: AnyObject {
   func didMoveTab(_ tabIDs: [TabState.ID], to index: Int)
   func selectedTabListChanged(_ tabs: Set<TabState.ID>)
   func contextMenuForTabs(_ tabs: [any TabState]) -> UIMenu?
+  func contextMenuForGroup(_ group: TabGroup) -> UIMenu?
+  func didSelectGroup(_ group: TabGroup)
+  func didRequestUngroup(_ group: TabGroup)
+  func didRequestCloseTabs(in group: TabGroup)
 }
 
 /// A view that can display tabs in a grid formation
@@ -31,7 +35,14 @@ class TabGridContainerView: UIView {
   var isEditing: Bool = false {
     didSet {
       collectionView.isEditing = isEditing
-      collectionView.dragInteractionEnabled = !isEditing || supportsMultiSelectMoves
+      updateDragInteraction()
+    }
+  }
+  /// Whether tabs can be reordered by dragging them. The drop index is resolved against the
+  /// tab grid's items, so it is off for a grid that shows a subset of them, like a group's tabs.
+  var isReorderingEnabled: Bool = true {
+    didSet {
+      updateDragInteraction()
     }
   }
   var maskInsets: UIEdgeInsets = .zero {
@@ -39,16 +50,16 @@ class TabGridContainerView: UIView {
       updateContentInsets()
     }
   }
-  private var tabs: [any TabState] = []
+  private var items: [TabGridItem] = []
 
-  func updateTabs(_ tabs: [any TabState], transaction: Transaction) {
-    self.tabs = tabs
-    applyTabsSnapshot(animated: transaction.animation != nil)
+  func updateItems(_ items: [TabGridItem], transaction: Transaction) {
+    self.items = items
+    applyItemsSnapshot(animated: transaction.animation != nil)
   }
 
   weak var delegate: TabCollectionViewDelegate?
 
-  private(set) var dataSource: UICollectionViewDiffableDataSource<Int, TabState.ID>!
+  private(set) var dataSource: UICollectionViewDiffableDataSource<Int, TabGridItem.ID>!
 
   // At the moment there seems to be a bug in iOS/UICollectionView which prohibits multi-item drag
   // within from working correctly. It will stop live updating and then not call the drop delegate
@@ -62,7 +73,7 @@ class TabGridContainerView: UIView {
 
     super.init(frame: .zero)
 
-    let registration: UICollectionView.CellRegistration<TabGridItemCell, any TabState> =
+    let tabRegistration: UICollectionView.CellRegistration<TabGridItemCell, any TabState> =
       .init { [unowned self] cell, _, item in
         cell.isPrivateBrowsing = self.isPrivateBrowsing
         cell.actionHandler = { [unowned self, weak item] action in
@@ -71,19 +82,37 @@ class TabGridContainerView: UIView {
         }
         cell.configure(with: item)
       }
-    self.dataSource = UICollectionViewDiffableDataSource<Int, TabState.ID>(
+    let groupRegistration:
+      UICollectionView.CellRegistration<TabGridGroupCell, (TabGroup, [any TabState])> =
+        .init { [unowned self] cell, _, item in
+          cell.isPrivateBrowsing = self.isPrivateBrowsing
+          cell.actionHandler = { [unowned self] action in
+            handleGroupAction(action, for: item.0)
+          }
+          cell.configure(with: item.0, tabs: item.1)
+        }
+    self.dataSource = UICollectionViewDiffableDataSource<Int, TabGridItem.ID>(
       collectionView: collectionView,
       cellProvider: { [weak self] collectionView, indexPath, _ in
         guard let self,
-          let tab = tabs[safe: indexPath.item]
+          let item = items[safe: indexPath.item]
         else {
           return .init()
         }
-        return collectionView.dequeueConfiguredReusableCell(
-          using: registration,
-          for: indexPath,
-          item: tab
-        )
+        switch item {
+        case .tab(let tab):
+          return collectionView.dequeueConfiguredReusableCell(
+            using: tabRegistration,
+            for: indexPath,
+            item: tab
+          )
+        case .group(let group, let tabs):
+          return collectionView.dequeueConfiguredReusableCell(
+            using: groupRegistration,
+            for: indexPath,
+            item: (group, tabs)
+          )
+        }
       }
     )
 
@@ -145,9 +174,17 @@ class TabGridContainerView: UIView {
 
   // MARK: -
 
+  /// The index path of the cell standing for the tab: its own, or its group's
+  func indexPath(for tab: some TabState) -> IndexPath? {
+    guard let item = items.first(where: { $0.tabs.contains(where: { $0 === tab }) }) else {
+      return nil
+    }
+    return dataSource.indexPath(for: item.id)
+  }
+
   fileprivate func scrollToSelectedItem(animated: Bool) {
-    guard let tab = tabs.first(where: \.isVisible),
-      let indexPath = dataSource.indexPath(for: tab.id)
+    guard let item = items.first(where: \.containsVisibleTab),
+      let indexPath = dataSource.indexPath(for: item.id)
     else { return }
     collectionView.scrollToItem(
       at: indexPath,
@@ -160,12 +197,17 @@ class TabGridContainerView: UIView {
   private var topEdgeView: UIView?
   private var bottomEdgeView: UIView?
 
+  private func updateDragInteraction() {
+    collectionView.dragInteractionEnabled =
+      isReorderingEnabled && (!isEditing || supportsMultiSelectMoves)
+  }
+
   private func prepareCollectionView() {
     collectionView.alwaysBounceVertical = true
     collectionView.backgroundColor = .clear
     collectionView.dataSource = dataSource
     collectionView.delegate = self
-    collectionView.dragInteractionEnabled = true
+    updateDragInteraction()
     collectionView.dragDelegate = self
     collectionView.dropDelegate = self
     collectionView.allowsSelectionDuringEditing = true
@@ -253,10 +295,13 @@ class TabGridContainerView: UIView {
     animator.startAnimation()
   }
 
-  private func applyTabsSnapshot(animated: Bool) {
-    var snapshot: NSDiffableDataSourceSnapshot<Int, TabState.ID> = .init()
+  private func applyItemsSnapshot(animated: Bool) {
+    var snapshot: NSDiffableDataSourceSnapshot<Int, TabGridItem.ID> = .init()
     snapshot.appendSections([0])
-    snapshot.appendItems(tabs.map(\.id))
+    snapshot.appendItems(items.map(\.id))
+    // A group keeps its identity as its title and tabs change, so its cell must be refreshed
+    // explicitly. Tab cells observe their tab instead.
+    snapshot.reconfigureItems(items.filter(\.isGroup).map(\.id))
     dataSource.apply(snapshot, animatingDifferences: animated)
   }
 
@@ -267,8 +312,17 @@ class TabGridContainerView: UIView {
     }
   }
 
+  private func handleGroupAction(_ action: TabGridGroupItemView.Action, for group: TabGroup) {
+    switch action {
+    case .ungroup:
+      delegate?.didRequestUngroup(group)
+    case .closeAllTabs:
+      delegate?.didRequestCloseTabs(in: group)
+    }
+  }
+
   @objc private func handleArrowKeyCommand(_ sender: UIKeyCommand) {
-    guard let currentSelectedTabIndex = tabs.firstIndex(where: \.isVisible) else {
+    guard let currentSelectedItemIndex = items.firstIndex(where: \.containsVisibleTab) else {
       return
     }
     var step: Int = 0
@@ -280,13 +334,13 @@ class TabGridContainerView: UIView {
     default:
       break
     }
-    if let newSelectedTab = tabs[safe: currentSelectedTabIndex + step] {
+    if let newSelectedTab = items[safe: currentSelectedItemIndex + step]?.representativeTab {
       delegate?.didSelectTab(newSelectedTab, source: .keyboardShortcut)
     }
   }
 
   @objc private func tappedCollectionViewBackground() {
-    guard let selectedTab = tabs.first(where: \.isVisible),
+    guard let selectedTab = items.lazy.flatMap(\.tabs).first(where: \.isVisible),
       traitCollection.horizontalSizeClass == .compact
     else { return }
     delegate?.didSelectTab(selectedTab, source: .tappedBackground)
@@ -305,22 +359,39 @@ extension TabGridContainerView: UICollectionViewDelegate {
     _ collectionView: UICollectionView,
     performPrimaryActionForItemAt indexPath: IndexPath
   ) {
-    guard let tab = tabs[safe: indexPath.item] else { return }
-    delegate?.didSelectTab(tab, source: .tappedCell)
+    switch items[safe: indexPath.item] {
+    case .tab(let tab):
+      delegate?.didSelectTab(tab, source: .tappedCell)
+    case .group(let group, _):
+      delegate?.didSelectGroup(group)
+    case nil:
+      break
+    }
+  }
+
+  func collectionView(
+    _ collectionView: UICollectionView,
+    shouldSelectItemAt indexPath: IndexPath
+  ) -> Bool {
+    // Only tabs can be multi-selected
+    return items[safe: indexPath.item]?.isGroup == false
   }
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    let selectedIndexPaths = collectionView.indexPathsForSelectedItems ?? []
-    delegate?.selectedTabListChanged(
-      Set(selectedIndexPaths.compactMap(dataSource.itemIdentifier(for:)))
-    )
+    notifySelectedTabsChanged()
   }
 
   func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+    notifySelectedTabsChanged()
+  }
+
+  private func notifySelectedTabsChanged() {
     let selectedIndexPaths = collectionView.indexPathsForSelectedItems ?? []
-    delegate?.selectedTabListChanged(
-      Set(selectedIndexPaths.compactMap(dataSource.itemIdentifier(for:)))
-    )
+    let selectedTabIDs = selectedIndexPaths.compactMap { indexPath -> TabState.ID? in
+      guard case .tab(let id) = dataSource.itemIdentifier(for: indexPath) else { return nil }
+      return id
+    }
+    delegate?.selectedTabListChanged(Set(selectedTabIDs))
   }
 
   func collectionView(
@@ -328,7 +399,15 @@ extension TabGridContainerView: UICollectionViewDelegate {
     contextMenuConfigurationForItemsAt indexPaths: [IndexPath],
     point: CGPoint
   ) -> UIContextMenuConfiguration? {
-    let tabs = indexPaths.compactMap({ self.tabs[safe: $0.item] })
+    let items = indexPaths.compactMap({ self.items[safe: $0.item] })
+    if case .group(let group, _) = items.first, items.count == 1 {
+      return .init(actionProvider: { _ in
+        return self.delegate?.contextMenuForGroup(group)
+      })
+    }
+    let tabs = items.compactMap { item -> (any TabState)? in
+      if case .tab(let tab) = item { tab } else { nil }
+    }
     if tabs.isEmpty {
       return nil
     }
@@ -390,7 +469,8 @@ extension TabGridContainerView: UICollectionViewDragDelegate, UICollectionViewDr
     itemsForBeginning session: UIDragSession,
     at indexPath: IndexPath
   ) -> [UIDragItem] {
-    guard let tabID = dataSource.itemIdentifier(for: indexPath) else { return [] }
+    // Groups can't be dragged
+    guard case .tab(let tabID) = dataSource.itemIdentifier(for: indexPath) else { return [] }
     let dragItem = UIDragItem(itemProvider: NSItemProvider())
     dragItem.localObject = tabID
     return [dragItem]
@@ -405,7 +485,7 @@ extension TabGridContainerView: UICollectionViewDragDelegate, UICollectionViewDr
     if !supportsMultiSelectMoves {
       return []
     }
-    guard let tabID = dataSource.itemIdentifier(for: indexPath) else { return [] }
+    guard case .tab(let tabID) = dataSource.itemIdentifier(for: indexPath) else { return [] }
     let dragItem = UIDragItem(itemProvider: NSItemProvider())
     dragItem.localObject = tabID
     return [dragItem]
@@ -453,7 +533,7 @@ extension TabGridContainerView: UICollectionViewDragDelegate, UICollectionViewDr
       return .init(operation: .forbidden)
     }
 
-    let indexPaths = tabIDs.compactMap(dataSource.indexPath(for:))
+    let indexPaths = tabIDs.compactMap { dataSource.indexPath(for: .tab($0)) }
     if tabIDs.count != indexPaths.count {
       return .init(operation: .cancel)
     }
@@ -465,10 +545,13 @@ extension TabGridContainerView: UICollectionViewDragDelegate, UICollectionViewDr
 struct TabGridContainerViewRepresentable: UIViewRepresentable {
   var viewModel: TabGridViewModel
   var containerView: TabGridContainerView?
-  var tabs: [any TabState]
+  var items: [TabGridItem]
   var isPrivateBrowsing: Bool
   var insets: EdgeInsets
   var contextMenuForTabs: ([any TabState]) -> UIMenu?
+  var contextMenuForGroup: (TabGroup) -> UIMenu?
+  var scrollsOnModeSwitch: Bool = true
+  var isReorderingEnabled: Bool = true
   @Binding var selectedTabList: Set<TabState.ID>
 
   func makeUIView(context: Context) -> TabGridContainerView {
@@ -484,9 +567,10 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
     context.coordinator.containerView = uiView
     uiView.isPrivateBrowsing = isPrivateBrowsing
     uiView.isEditing = isEditing
-    uiView.updateTabs(tabs, transaction: context.transaction)
+    uiView.isReorderingEnabled = isReorderingEnabled
+    uiView.updateItems(items, transaction: context.transaction)
     if isEditing {
-      let indexPaths = selectedTabList.compactMap { uiView.dataSource.indexPath(for: $0) }
+      let indexPaths = selectedTabList.compactMap { uiView.dataSource.indexPath(for: .tab($0)) }
       let indexPathsToDeselect = Set(uiView.collectionView.indexPathsForSelectedItems ?? [])
         .subtracting(indexPaths)
       for indexPath in indexPaths {
@@ -508,6 +592,8 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
     .init(
       viewModel: viewModel,
       contextMenu: contextMenuForTabs,
+      groupContextMenu: contextMenuForGroup,
+      scrollsOnModeSwitch: scrollsOnModeSwitch,
       selectedTabList: $selectedTabList
     )
   }
@@ -518,22 +604,28 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
     var dismissAction: DismissAction?
     var containerView: TabGridContainerView?
     var contextMenu: ([any TabState]) -> UIMenu?
+    var groupContextMenu: (TabGroup) -> UIMenu?
     @Binding var selectedTabList: Set<TabState.ID>
 
     init(
       viewModel: TabGridViewModel,
       contextMenu: @escaping ([any TabState]) -> UIMenu?,
+      groupContextMenu: @escaping (TabGroup) -> UIMenu?,
+      scrollsOnModeSwitch: Bool,
       selectedTabList: Binding<Set<TabState.ID>>
     ) {
       self.viewModel = viewModel
       self.contextMenu = contextMenu
+      self.groupContextMenu = groupContextMenu
       self._selectedTabList = selectedTabList
 
       // Set up scroll handler to be called after mode switch completes
-      viewModel.onModeSwitchComplete = { [weak self] in
-        guard let self, let containerView = self.containerView else { return }
-        containerView.collectionView.layoutIfNeeded()
-        containerView.scrollToSelectedItem(animated: false)
+      if scrollsOnModeSwitch {
+        viewModel.onModeSwitchComplete = { [weak self] in
+          guard let self, let containerView = self.containerView else { return }
+          containerView.collectionView.layoutIfNeeded()
+          containerView.scrollToSelectedItem(animated: false)
+        }
       }
     }
 
@@ -556,8 +648,8 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
     }
 
     func didMoveTab(_ tabs: [TabState.ID], to index: Int) {
-      viewModel.moveTabs(tabs, to: index)
-      containerView?.updateTabs(viewModel.tabs, transaction: .init(animation: .default))
+      viewModel.moveTabs(tabs, toItemIndex: index)
+      containerView?.updateItems(viewModel.items, transaction: .init(animation: .default))
     }
 
     func selectedTabListChanged(_ tabs: Set<TabState.ID>) {
@@ -566,6 +658,28 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
 
     func contextMenuForTabs(_ tabs: [any TabState]) -> UIMenu? {
       self.contextMenu(tabs)
+    }
+
+    func contextMenuForGroup(_ group: TabGroup) -> UIMenu? {
+      self.groupContextMenu(group)
+    }
+
+    func didSelectGroup(_ group: TabGroup) {
+      withAnimation {
+        viewModel.showGroup(group)
+      }
+    }
+
+    func didRequestUngroup(_ group: TabGroup) {
+      viewModel.ungroup(group)
+    }
+
+    func didRequestCloseTabs(in group: TabGroup) {
+      let shouldDismissAfterClose = viewModel.closesAllTabs(in: group)
+      viewModel.closeTabs(in: group)
+      if shouldDismissAfterClose {
+        dismissAction?()
+      }
     }
   }
 }
