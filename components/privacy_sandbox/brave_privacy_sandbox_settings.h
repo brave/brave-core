@@ -33,9 +33,7 @@ class BravePrivacySandboxSettings
 
   // PrivacySandboxSettings:
   bool IsEventReportingDestinationAttested(
-      const url::Origin& destination_origin,
-      privacy_sandbox::PrivacySandboxAttestationsGatedAPI invoking_api)
-      const override;
+      const url::Origin& destination_origin) const override;
   void AddObserver(Observer* observer) override;
   void RemoveObserver(Observer* observer) override;
 

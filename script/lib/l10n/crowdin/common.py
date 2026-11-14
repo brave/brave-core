@@ -6,7 +6,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import json
-import re
 import os
 import lxml.etree  # pylint: disable=import-error
 

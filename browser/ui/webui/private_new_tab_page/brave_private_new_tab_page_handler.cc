@@ -23,6 +23,7 @@
 #include "components/search_engines/template_url_service.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
@@ -127,10 +128,11 @@ void BravePrivateNewTabPageHandler::GoToBraveSearch(const std::string& input,
       TemplateURLRef::SearchTermsArgs(base::UTF8ToUTF16(input)),
       search_terms_data));
 
-  auto window_open_disposition = WindowOpenDisposition::kCurrentTab;
+  auto window_open_disposition = ui::mojom::WindowOpenDisposition::kCurrentTab;
 
   if (open_new_tab) {
-    window_open_disposition = WindowOpenDisposition::kNewBackgroundTab;
+    window_open_disposition =
+        ui::mojom::WindowOpenDisposition::kNewBackgroundTab;
   }
 
   web_contents_->OpenURL(
@@ -158,10 +160,10 @@ void BravePrivateNewTabPageHandler::GoToBraveSupport() {
     web_contents = web_contents_;
 
   web_contents->OpenURL(
-      content::OpenURLParams(GURL("https://support.brave.app/"),
-                             content::Referrer(),
-                             WindowOpenDisposition::kNewForegroundTab,
-                             ui::PageTransition::PAGE_TRANSITION_LINK, false),
+      content::OpenURLParams(
+          GURL("https://support.brave.app/"), content::Referrer(),
+          ui::mojom::WindowOpenDisposition::kNewForegroundTab,
+          ui::PageTransition::PAGE_TRANSITION_LINK, false),
       /*navigation_handle_callback=*/{});
 }
 

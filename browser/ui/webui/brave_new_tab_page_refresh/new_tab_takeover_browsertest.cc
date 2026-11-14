@@ -48,6 +48,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/gurl.h"
 
 namespace {
@@ -353,7 +354,7 @@ IN_PROC_BROWSER_TEST_F(NewTabTakeoverBrowserTest,
 
   EXPECT_CALL(ads_service_mock, MaybeServeNewTabPageAd)
       .WillOnce(base::test::RunOnceCallback<0>(/*ad=*/nullptr));
-  chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
+  chrome::Reload(browser(), ui::mojom::WindowOpenDisposition::kCurrentTab);
   WaitForLoadStop();
   VerifyNewTabPageLoadedExpectation();
 }

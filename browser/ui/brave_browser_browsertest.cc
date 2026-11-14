@@ -42,6 +42,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "content/public/test/test_utils.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 using BraveBrowserBrowserTest = InProcessBrowserTest;
 
@@ -263,7 +264,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
 
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL("https://www.brave.com/"),
-      WindowOpenDisposition::kNewForegroundTab,
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_EQ(2, tab_strip->count());
 

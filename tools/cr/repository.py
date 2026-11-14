@@ -12,6 +12,7 @@ import subprocess
 import sys
 from rich.markup import escape
 
+import pinned_commits
 from terminal import terminal
 
 # The basename of the brave-core directory inside chromium/src. Used where we
@@ -233,7 +234,15 @@ class Repository:
                 Whether to skip pre-commit and commit-msg hooks.
             env:
                 Optional environment variables to be forwarded to `terminal.run`.
+
+        A pinned or recyclable commit on a `cr<N>` branch gets its derived
+        Change-Id here, as the commit-msg hook may not run.
         """
+        change_id = pinned_commits.derived_change_id(
+            self.current_branch(), message.split('\n', 1)[0]
+        )
+        if change_id and 'Change-Id: ' not in message:
+            message = f'{message.rstrip()}\n\nChange-Id: {change_id}'
         self._git_commit_internal(
             ['-m', message],
             allows_empty=allows_empty,
@@ -333,6 +342,18 @@ class Repository:
     def current_branch(self) -> str:
         """Gets the current branch name, or HEAD if not in any branch."""
         return self.run_git('rev-parse', '--abbrev-ref', 'HEAD')
+
+    def rebased_branch(self) -> str:
+        """The branch an interactive rebase in progress is rebasing, as HEAD
+        is detached then, or the current branch otherwise."""
+        head_name = self.rebase_merge_dir() / 'head-name'
+        if head_name.is_file():
+            return (
+                head_name.read_text(encoding='utf-8')
+                .strip()
+                .removeprefix('refs/heads/')
+            )
+        return self.current_branch()
 
 
 # An instance to the chromium repository.

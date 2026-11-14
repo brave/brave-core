@@ -1748,7 +1748,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
 
   // Action for a MockCallback expectation that signals WaitAndVerify().
   auto CallbackSignal() {
-    return testing::InvokeWithoutArgs([this] { callback_signal_.SetValue(); });
+    return [this] { callback_signal_.SetValue(); };
   }
 
   // Waits for the mock callback whose expectation uses CallbackSignal() to be
@@ -3364,13 +3364,13 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_ManyCalls) {
   int calls_3 = 0;
   base::MockCallback<GetWalletAddrCallback> callback1;
   EXPECT_CALL(callback1, Run(k0x3a2f3fAddr, mojom::ProviderError::kSuccess, ""))
-      .WillOnce(testing::InvokeWithoutArgs([&] { ++calls_1_2; }));
+      .WillOnce([&] { ++calls_1_2; });
   base::MockCallback<GetWalletAddrCallback> callback2;
   EXPECT_CALL(callback2, Run(k0x3a2f3fAddr, mojom::ProviderError::kSuccess, ""))
-      .WillOnce(testing::InvokeWithoutArgs([&] { ++calls_1_2; }));
+      .WillOnce([&] { ++calls_1_2; });
   base::MockCallback<GetWalletAddrCallback> callback3;
   EXPECT_CALL(callback3, Run(k0x8aaD44Addr, mojom::ProviderError::kSuccess, ""))
-      .WillOnce(testing::InvokeWithoutArgs([&] { ++calls_3; }));
+      .WillOnce([&] { ++calls_3; });
 
   // This will resolve javajobs.crypto requests.
   eth_mainnet_getmany_call_handler_->AddItem(
@@ -3620,11 +3620,11 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_ManyCalls) {
   base::MockCallback<ResolveDnsCallback> callback1;
   EXPECT_CALL(callback1, Run(std::optional<GURL>("https://brave.com"),
                              mojom::ProviderError::kSuccess, ""))
-      .WillOnce(testing::InvokeWithoutArgs([&] { ++calls_1_2; }));
+      .WillOnce([&] { ++calls_1_2; });
   base::MockCallback<ResolveDnsCallback> callback2;
   EXPECT_CALL(callback2, Run(std::optional<GURL>("https://brave.com"),
                              mojom::ProviderError::kSuccess, ""))
-      .WillOnce(testing::InvokeWithoutArgs([&] { ++calls_1_2; }));
+      .WillOnce([&] { ++calls_1_2; });
   base::MockCallback<ResolveDnsCallback> callback3;
   EXPECT_CALL(
       callback3,
@@ -3632,7 +3632,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_ManyCalls) {
                               "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3ocl"
                               "gtqy55fbzdi.ipfs.inbrowser.link/"),
           mojom::ProviderError::kSuccess, ""))
-      .WillOnce(testing::InvokeWithoutArgs([&] { ++calls_3; }));
+      .WillOnce([&] { ++calls_3; });
 
   ASSERT_EQ(6u, unstoppable_domains::kRecordKeys.size());
   // This will resolve brave.crypto requests.
@@ -3740,7 +3740,7 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559CustomChain) {
   bool chain_changed = false;
   EXPECT_CALL(observer, ChainChangedEvent(chain1.chain_id, mojom::CoinType::ETH,
                                           testing::Eq(std::nullopt)))
-      .WillOnce(testing::InvokeWithoutArgs([&] { chain_changed = true; }));
+      .WillOnce([&] { chain_changed = true; });
   EXPECT_TRUE(SetNetwork(chain1.chain_id, mojom::CoinType::ETH, std::nullopt));
   ASSERT_TRUE(base::test::RunUntil(
       [&] { return chain_changed && GetIsEip1559FromPrefs(chain1.chain_id); }));
@@ -3753,7 +3753,7 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559CustomChain) {
   chain_changed = false;
   EXPECT_CALL(observer, ChainChangedEvent(chain2.chain_id, mojom::CoinType::ETH,
                                           testing::Eq(std::nullopt)))
-      .WillOnce(testing::InvokeWithoutArgs([&] { chain_changed = true; }));
+      .WillOnce([&] { chain_changed = true; });
   EXPECT_TRUE(SetNetwork(chain2.chain_id, mojom::CoinType::ETH, std::nullopt));
   ASSERT_TRUE(base::test::RunUntil([&] {
     return chain_changed && !GetIsEip1559FromPrefs(chain2.chain_id);

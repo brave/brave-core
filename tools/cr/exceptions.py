@@ -39,6 +39,18 @@ class ActionNeededException(Exception):
         console.log(message)
 
 
+class ContinuationNeededException(Exception):
+    """A recoverable failure, after which the task resumes with `--continue`."""
+
+    def __init__(self, message: str):
+        super().__init__(message)
+        logging.error(message)
+        console.log(
+            '👋 (Address the error above, and then rerun '
+            '[italic]🚀Brockit![/] with [bold cyan]--continue[/])'
+        )
+
+
 class RebaseNeededException(ActionNeededException):
     """`rebase --dry-run` found that the rebase would change the branch.
 

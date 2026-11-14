@@ -39,6 +39,24 @@ _HISTORY_RUNS = 200
 _HISTORY_REVISIONS = 5
 
 
+def _branch_locator(branch: str) -> str:
+    """A `branch:` locator dimension matching `branch` exactly, whatever
+    characters it has."""
+    name = urllib.parse.quote(base64.b64encode(branch.encode()).decode())
+    return f'branch:(name:($base64:{name}))'
+
+
+def _dependency(build: dict) -> str:
+    """A line naming a snapshot dependency and its result."""
+    result = build.get('status', '')
+    if build.get('state', 'finished') != 'finished':
+        result = build['state']
+    return (
+        f'`{build.get("buildTypeId", "")}` {build.get("id")}: {result} '
+        f'({build.get("webUrl", "")})'
+    )
+
+
 def _brave_core_revision(build: dict) -> str:
     """The brave-core commit `build` ran on, shortened. Builds also check
     out the CI's own repository."""
@@ -50,7 +68,31 @@ def _brave_core_revision(build: dict) -> str:
     return revisions[-1].get('version', '')[:10] if revisions else ''
 
 
-def build_id(url: str) -> int:
+_EXIT_CODE = re.compile(r'Process exited with code (\d+)')
+
+# The time before each log line. The severity after it (`i:`, `W:`, `E:`) is
+# kept.
+_TIMESTAMP = re.compile(r'^\[\d\d:\d\d:\d\d\]', re.MULTILINE)
+
+
+def _failed_step_tail(log: str) -> str:
+    """The lines of a build log leading up to the first step that exited
+    non-zero, or the log's last lines when none did.
+
+    A build's last steps are usually cleanup, so its last lines rarely say
+    why it failed.
+    """
+    log_lines = log.splitlines()
+    end = len(log_lines)
+    for index, line in enumerate(log_lines):
+        match = _EXIT_CODE.search(line)
+        if match and match[1] != '0':
+            end = index + 1
+            break
+    return '\n'.join(log_lines[max(0, end - failures.LOG_TAIL_LINES) : end])
+
+
+def _build_id(url: str) -> int:
     """The id of the build at `url`."""
     match = _BUILD_ID.search(url)
     if not match:
@@ -81,14 +123,18 @@ class TeamCityCi:
     def _api(self, path: str) -> dict:
         return json.loads(self._cli('api', '--raw', path))
 
-    def failed_builds(self, aggregate: int) -> list[FailedBuild]:
-        """The builds that failed in `aggregate`'s chain, or `aggregate`
-        itself when it has no failed dependencies.
+    def failed_builds(self, url: str) -> list[FailedBuild]:
+        """The builds that failed in the chain of the aggregate at `url`, or
+        the aggregate itself when it has no failed dependencies.
 
         A build that failed only because one it depends on did is left out:
         the one it depends on says why.
         """
-        fields = 'id,buildTypeId,branchName,statusText,webUrl'
+        aggregate = _build_id(url)
+        fields = (
+            'id,buildTypeId,branchName,statusText,webUrl,'
+            'snapshot-dependencies(build(id,buildTypeId,status,state,webUrl))'
+        )
         builds = self._api(
             '/app/rest/builds?locator=snapshotDependency:'
             f'(to:(id:{aggregate}),includeInitial:false),status:FAILURE'
@@ -116,27 +162,53 @@ class TeamCityCi:
             for problem in problems
             if not problem.get('type', '').startswith('TC_FAILED_TESTS')
         )
-        tests = self._failed_tests(teamcity_id, build.get('branchName', ''))
+        branch = build.get('branchName', '')
+        tests = self._failed_tests(teamcity_id, branch)
         log_tail = ''
         if step_problems:
-            log_tail = failures.failed_step_tail(
-                self._cli(
-                    'api',
-                    '--raw',
-                    f'/downloadBuildLog.html?buildId={teamcity_id}&plain=true',
-                )
-            )
+            log = self._log(teamcity_id, timestamps=False)
+            log_tail = failures.with_fatal_line(log, _failed_step_tail(log))
+        dependencies = (build.get('snapshot-dependencies') or {}).get(
+            'build'
+        ) or []
+        previous = ''
+        if branch and build.get('buildTypeId'):
+            previous = self._previous(teamcity_id, build['buildTypeId'], branch)
         return FailedBuild(
             name=build.get('buildTypeId', str(teamcity_id)),
             url=build.get('webUrl', ''),
             summary=build.get('statusText', ''),
-            kind=failures.classify(
-                log_tail, tests, step_failed=bool(step_problems)
-            ),
             tests=tests,
             problems=step_problems,
             log_tail=log_tail,
+            dependencies=tuple(_dependency(d) for d in dependencies),
+            previous=previous,
         )
+
+    def _previous(self, teamcity_id: int, job: str, branch: str) -> str:
+        """The result of `job`'s last finished build on `branch` before
+        build `teamcity_id`, and the brave-core commit it built."""
+        # `untilBuild` includes the build itself.
+        builds = self._api(
+            f'/app/rest/builds?locator=buildType:(id:{job}),'
+            f'{_branch_locator(branch)},state:finished,'
+            f'untilBuild:(id:{teamcity_id}),count:2'
+            '&fields=build(id,status,statusText,webUrl,'
+            'revisions(revision(version,vcs-root-instance(name))))'
+        ).get('build', [])
+        build = next((b for b in builds if b.get('id') != teamcity_id), None)
+        if build is None:
+            return ''
+        line = (
+            f'`{job}` {build.get("id")} on `{branch}`: '
+            f'{build.get("status", "")}'
+        )
+        if build.get('statusText'):
+            line += f', {build["statusText"]}'
+        revision = _brave_core_revision(build)
+        if revision:
+            line += f', at `{revision}`'
+        return f'{line} ({build.get("webUrl", "")})'
 
     def _failed_tests(
         self, teamcity_id: int, branch: str
@@ -188,10 +260,9 @@ class TeamCityCi:
     def _history(self, test_id: str, branch: str) -> tuple[str, ...]:
         """The test's results in `branch`'s latest runs, a line per build
         configuration: how many failed, and on which revisions."""
-        name = urllib.parse.quote(base64.b64encode(branch.encode()).decode())
         occurrences = self._api(
             f'/app/rest/testOccurrences?locator=test:(id:{test_id}),'
-            f'branch:(name:($base64:{name})),count:{_HISTORY_RUNS}'
+            f'{_branch_locator(branch)},count:{_HISTORY_RUNS}'
             '&fields=testOccurrence(status,build(buildTypeId,'
             'revisions(revision(version,vcs-root-instance(name)))))'
         ).get('testOccurrence', [])
@@ -220,11 +291,22 @@ class TeamCityCi:
             lines.append(line)
         return tuple(lines)
 
-    def rerun(self, build: int) -> str:
-        """Queues `build` again, with the same job, branch, revision and
-        parameters, and returns the CLI's output.
+    def full_log(self, url: str, *, timestamps: bool = True) -> str:
+        """The whole build log of the build at `url`, without its lines'
+        timestamps if asked."""
+        return self._log(_build_id(url), timestamps=timestamps)
+
+    def _log(self, build: int, *, timestamps: bool) -> str:
+        log = self._cli(
+            'api', '--raw', f'/downloadBuildLog.html?buildId={build}&plain=true'
+        )
+        return log if timestamps else _TIMESTAMP.sub('', log)
+
+    def rerun(self, url: str) -> str:
+        """Queues the build at `url` again, with the same job, branch,
+        revision and parameters, and returns the CLI's output.
 
         For an aggregate, TeamCity reuses the dependencies that succeeded,
         and reruns those that failed.
         """
-        return self._cli('run', 'restart', str(build), write=True)
+        return self._cli('run', 'restart', str(_build_id(url)), write=True)

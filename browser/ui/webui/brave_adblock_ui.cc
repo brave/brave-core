@@ -26,6 +26,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui_message_handler.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/android/tab_web_contents_delegate_android.h"  // nogncheck crbug.com/40147906
@@ -288,9 +289,10 @@ void AdblockDOMHandler::HandleViewSubscriptionSource(
 #if BUILDFLAG(IS_ANDROID)
   web_ui()->GetWebContents()->GetDelegate()->OpenURLFromTab(
       web_ui()->GetWebContents(),
-      content::OpenURLParams(file_url, content::Referrer(),
-                             WindowOpenDisposition::kNewForegroundTab,
-                             ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false),
+      content::OpenURLParams(
+          file_url, content::Referrer(),
+          ui::mojom::WindowOpenDisposition::kNewForegroundTab,
+          ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false),
       /*navigation_handle_callback=*/{});
 #else
   auto* browser = GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(

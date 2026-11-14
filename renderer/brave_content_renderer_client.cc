@@ -126,7 +126,6 @@ void BraveContentRendererClient::
   ChromeContentRendererClient::
       SetRuntimeFeaturesDefaultsBeforeBlinkInitialization();
 
-  blink::WebRuntimeFeatures::EnableFledge(false);
   // Disable the fenced frames API; kFencedFrames is disabled browser-side.
   blink::WebRuntimeFeatures::EnableFencedFrames(false);
   // Disable topics APIs because kBrowsingTopics feature is disabled
@@ -146,12 +145,6 @@ void BraveContentRendererClient::
 
   // These features don't have dedicated WebRuntimeFeatures wrappers.
   blink::WebRuntimeFeatures::EnableFeatureFromString("AdTagging", false);
-  blink::WebRuntimeFeatures::EnableFeatureFromString("AIDecisionModelAPI",
-                                                     false);
-  blink::WebRuntimeFeatures::EnableFeatureFromString(
-      "AIDecisionModelAPIForWorkers", false);
-  blink::WebRuntimeFeatures::EnableFeatureFromString(
-      "ApproximateGeolocationPermissionAccuracyMode", true);
   blink::WebRuntimeFeatures::EnableFeatureFromString("DigitalGoods", false);
   if (!base::FeatureList::IsEnabled(blink::features::kFileSystemAccessAPI)) {
     blink::WebRuntimeFeatures::EnableFeatureFromString("FileSystemAccessLocal",
@@ -159,21 +152,8 @@ void BraveContentRendererClient::
     blink::WebRuntimeFeatures::EnableFeatureFromString(
         "FileSystemAccessAPIExperimental", false);
   }
-  blink::WebRuntimeFeatures::EnableFeatureFromString("FledgeMultiBid", false);
-  blink::WebRuntimeFeatures::EnableFeatureFromString("LanguageDetectionAPI",
-                                                     false);
   blink::WebRuntimeFeatures::EnableFeatureFromString("PrivateStateTokens",
                                                      false);
-  blink::WebRuntimeFeatures::EnableFeatureFromString("ProfilerAPI", false);
-  blink::WebRuntimeFeatures::EnableFeatureFromString("TranslationAPI", false);
-
-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-  if (base::FeatureList::IsEnabled(
-          blink::features::kMiddleButtonClickAutoscroll)) {
-    blink::WebRuntimeFeatures::EnableFeatureFromString("MiddleClickAutoscroll",
-                                                       true);
-  }
-#endif  // BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 }
 
 BraveContentRendererClient::~BraveContentRendererClient() = default;

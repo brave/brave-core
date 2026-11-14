@@ -29,6 +29,7 @@
 #include "extensions/buildflags/buildflags.h"
 #include "net/base/features.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -316,7 +317,7 @@ IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
       extension_loader.LoadExtension(test_extension_dir.UnpackedPath());
   const GURL url = extension->ResolveExtensionURL("/empty.html");
   auto* extension_rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::kNewForegroundTab,
+      browser(), url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(extension_rfh);
 

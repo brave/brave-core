@@ -5,35 +5,11 @@
 
 #include "third_party/blink/renderer/platform/loader/fetch/script_fetch_options.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
-#define CreateFetchParameters CreateFetchParameters_ChromiumImpl
-#endif
-
 #include <third_party/blink/renderer/platform/loader/fetch/script_fetch_options.cc>
-
-#if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
-#undef CreateFetchParameters
-#endif
 
 namespace blink {
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
-FetchParameters ScriptFetchOptions::CreateFetchParameters(
-    const KURL& url,
-    const SecurityOrigin* security_origin,
-    const DOMWrapperWorld* world_for_csp,
-    CrossOriginAttributeValue cross_origin,
-    const TextEncoding& encoding,
-    FetchParameters::DeferOption defer,
-    const FeatureContext* feature_context) const {
-  auto params = CreateFetchParameters_ChromiumImpl(
-      url, security_origin, world_for_csp, cross_origin, encoding, defer,
-      feature_context);
-  params.MutableOptions().initiator_info.dom_node_id = dom_node_id_;
-  params.MutableOptions().initiator_info.parent_script_id = parent_script_id_;
-  return params;
-}
-
 void ScriptFetchOptions::SetDOMNodeId(DOMNodeId dom_node_id) {
   dom_node_id_ = dom_node_id;
 }

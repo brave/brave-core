@@ -42,8 +42,6 @@ source_set("csv") {
   sources = [
     "csv_safari_password.cc",
     "csv_safari_password.h",
-    "csv_safari_password_iterator.cc",
-    "csv_safari_password_iterator.h",
     "csv_safari_password_sequence.cc",
     "csv_safari_password_sequence.h",
   ]

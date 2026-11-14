@@ -1,8 +1,8 @@
 diff --git a/ui/views/controls/button/md_text_button.h b/ui/views/controls/button/md_text_button.h
-index c098f2a19cfe9198751862487314043f334fd81b..3641b7b3fb5ea9de5d0a936baaa140898c93c362 100644
+index a1fc278a8c825076210500a9eee1583d98514876..8f8ca4f388365b44e3287891facebb302d8c83da 100644
 --- a/ui/views/controls/button/md_text_button.h
 +++ b/ui/views/controls/button/md_text_button.h
-@@ -29,11 +29,11 @@ namespace views {
+@@ -28,11 +28,11 @@ namespace views {
  enum class PropertyEffects;
  
  // A button class that implements the Material Design text button spec.
@@ -17,7 +17,7 @@ index c098f2a19cfe9198751862487314043f334fd81b..3641b7b3fb5ea9de5d0a936baaa14089
        PressedCallback callback = PressedCallback(),
        std::u16string_view text = {},
        int button_context = style::CONTEXT_BUTTON_MD,
-@@ -41,10 +41,10 @@ class VIEWS_EXPORT MdTextButton : public LabelButton {
+@@ -40,10 +40,10 @@ class VIEWS_EXPORT MdTextButton : public LabelButton {
        std::unique_ptr<LabelButtonImageContainer> image_container =
            std::make_unique<SingleImageContainer>());
  
@@ -31,7 +31,7 @@ index c098f2a19cfe9198751862487314043f334fd81b..3641b7b3fb5ea9de5d0a936baaa14089
  
    void SetStyle(ui::ButtonStyle button_style);
    ui::ButtonStyle GetStyle() const;
-@@ -104,10 +104,11 @@ class VIEWS_EXPORT MdTextButton : public LabelButton {
+@@ -88,10 +88,11 @@ class VIEWS_EXPORT MdTextButton : public LabelButton {
    virtual void UpdateColors();
  
   private:
@@ -44,7 +44,7 @@ index c098f2a19cfe9198751862487314043f334fd81b..3641b7b3fb5ea9de5d0a936baaa14089
    void UpdateBackgroundColor() override;
    void UpdateIconColor();
  
-@@ -141,17 +142,17 @@ class VIEWS_EXPORT MdTextButton : public LabelButton {
+@@ -122,17 +123,17 @@ class VIEWS_EXPORT MdTextButton : public LabelButton {
  class VIEWS_EXPORT MdTextButtonActionViewInterface
      : public LabelButtonActionViewInterface {
   public:
@@ -63,9 +63,9 @@ index c098f2a19cfe9198751862487314043f334fd81b..3641b7b3fb5ea9de5d0a936baaa14089
 -BEGIN_VIEW_BUILDER(VIEWS_EXPORT, MdTextButton, LabelButton)
 +BEGIN_VIEW_BUILDER(VIEWS_EXPORT, MdTextButton_ChromiumImpl, LabelButton)
  VIEW_BUILDER_PROPERTY(gfx::RoundedCornersF, CornerRadii)
- VIEW_BUILDER_PROPERTY(std::optional<SkColor>, BgColorOverrideDeprecated)
- VIEW_BUILDER_PROPERTY(std::optional<ui::ColorId>, BgColorIdOverride)
-@@ -161,6 +162,6 @@ END_VIEW_BUILDER
+ VIEW_BUILDER_PROPERTY(std::optional<ui::ColorVariant>, BgColorOverride)
+ VIEW_BUILDER_PROPERTY(std::optional<gfx::Insets>, CustomPadding)
+@@ -141,6 +142,6 @@ END_VIEW_BUILDER
  
  }  // namespace views
  

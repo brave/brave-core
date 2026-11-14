@@ -20,6 +20,7 @@
 #include "brave/browser/mac/keystone_glue.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/updater/buildflags.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/obsolete_system/obsolete_system.h"
 #include "chrome/grit/branded_strings.h"
 #include "chrome/grit/generated_resources.h"

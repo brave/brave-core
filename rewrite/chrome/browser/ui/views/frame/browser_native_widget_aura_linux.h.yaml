@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let the PiP window take its source window's identity.
+
+      BraveVideoOverlayWindowViews reads GetWindowClass() so a Picture-in-Picture
+      window gets the same WM_CLASS and Wayland app id as the browser or web app
+      window it came from, and the desktop groups the two together.
+    add_friend:
+      class_name: BrowserNativeWidgetAuraLinux
+      friend_type: class BraveVideoOverlayWindowViews

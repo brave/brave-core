@@ -30,7 +30,7 @@ class ProfileMiscMetricsServiceFactory
 
  private:
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
-      ProfileIOS* profile) const override;
+      ProfileIOS& profile) const override;
 };
 
 }  // namespace misc_metrics

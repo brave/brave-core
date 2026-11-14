@@ -15,7 +15,7 @@ import gen_paths
 
 _CHROMIUM_SRC_DIR = gen_paths.BOTS_DIR.parents[2]
 sys.path.insert(0, str(_CHROMIUM_SRC_DIR / 'build'))
-import gn_helpers
+import gn_helpers  # noqa: E402
 
 
 class BotsError(Exception):

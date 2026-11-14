@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/views/tabs/common/tab_group_style.cc b/chrome/browser/ui/views/tabs/common/tab_group_style.cc
-index 9edd4733056efa86f83583f2b47a99d40e4dbd59..00a86f4a05ac00662f22a55469b0f17367823cf2 100644
+index d1da139046c12d61ab53de2dc643eee450759d32..43c7dea3a275409cfeabf6de6e3df5eb9bec062c 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_group_style.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_group_style.cc
-@@ -7,6 +7,7 @@
- #include <optional>
+@@ -8,6 +8,7 @@
  
+ #include "base/i18n/rtl.h"
  #include "chrome/browser/ui/layout_constants.h"
 +#include "chrome/browser/ui/tabs/features.h"
  #include "chrome/browser/ui/tabs/tab_style.h"
  #include "chrome/browser/ui/views/tabs/shared/tab_strip_types.h"
- #include "ui/gfx/geometry/insets.h"
-@@ -36,6 +37,10 @@ int TabGroupStyle::GetTabGroupOverlapAdjustment() {
+ #include "ui/gfx/animation/tween.h"
+@@ -41,6 +42,10 @@ int TabGroupStyle::GetTabGroupOverlapAdjustment() {
  
  // static
  int TabGroupStyle::GetChipCornerRadius(TabStripOrientation orientation) {
@@ -21,7 +21,7 @@ index 9edd4733056efa86f83583f2b47a99d40e4dbd59..00a86f4a05ac00662f22a55469b0f173
    return orientation == TabStripOrientation::kHorizontal
               ? kCornerRadius
               : kVerticalCornerRadius;
-@@ -50,6 +55,9 @@ int TabGroupStyle::GetFocusedChipCornerRadius(TabStripOrientation orientation) {
+@@ -98,6 +103,9 @@ gfx::RoundedCornersF TabGroupStyle::GetUnfocusButtonCornerRadii(
  
  // static
  int TabGroupStyle::GetEmptyChipSize() {
@@ -31,7 +31,7 @@ index 9edd4733056efa86f83583f2b47a99d40e4dbd59..00a86f4a05ac00662f22a55469b0f173
    return kEmptyChipSize;
  }
  
-@@ -60,6 +68,10 @@ int TabGroupStyle::GetFocusedChipHeight() {
+@@ -108,6 +116,10 @@ int TabGroupStyle::GetFocusedChipHeight() {
  
  // static
  gfx::Point TabGroupStyle::GetTitleChipOffset(std::optional<int> chip_height) {
@@ -42,7 +42,7 @@ index 9edd4733056efa86f83583f2b47a99d40e4dbd59..00a86f4a05ac00662f22a55469b0f173
    const int total_space =
        GetLayoutConstant(LayoutConstant::kTabStripHeight) -
        chip_height.value_or(GetEmptyChipSize()) -
-@@ -70,6 +82,11 @@ gfx::Point TabGroupStyle::GetTitleChipOffset(std::optional<int> chip_height) {
+@@ -118,6 +130,11 @@ gfx::Point TabGroupStyle::GetTitleChipOffset(std::optional<int> chip_height) {
  // static
  gfx::Insets TabGroupStyle::GetInsetsForHeaderChip(
      TabStripOrientation orientation) {

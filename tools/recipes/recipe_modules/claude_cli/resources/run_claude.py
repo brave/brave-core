@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env vpython3
 # Copyright (c) 2026 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -151,10 +151,59 @@ def _tail(text: str) -> list[str]:
     return [line for line in lines if line][-TAIL_LINES:]
 
 
+def _count(number: int) -> str:
+    """`950`, `4.6k`, `3.27M`."""
+    if number >= 1_000_000:
+        return f'{number / 1_000_000:.3g}M'
+    if number >= 1_000:
+        return f'{number / 1_000:.3g}k'
+    return str(number)
+
+
+def _token_usage(model_usage: Any) -> str:
+    """The session's tokens, over every model it used: what went in, and how
+    much of that its cache served and stored, and what came out. '' without
+    any.
+
+    From `modelUsage`, which covers the whole session, as its cost does, rather
+    than `usage`, which covers only its last result."""
+    if not isinstance(model_usage, dict):
+        return ''
+    totals = collections.Counter()
+    for usage in model_usage.values():
+        if isinstance(usage, dict):
+            for key in (
+                'inputTokens',
+                'cacheReadInputTokens',
+                'cacheCreationInputTokens',
+                'outputTokens',
+            ):
+                if isinstance(usage.get(key), int):
+                    totals[key] += usage[key]
+    if not totals:
+        return ''
+    read = totals['cacheReadInputTokens']
+    written = totals['cacheCreationInputTokens']
+    tokens_in = totals['inputTokens'] + read + written
+    return (
+        f'{_count(tokens_in)} tokens in ({_count(read)} from cache, '
+        f'{_count(written)} to cache), {_count(totals["outputTokens"])} out'
+    )
+
+
 def _duration(milliseconds: int) -> str:
     minutes, seconds = divmod(round(milliseconds / 1000), 60)
     hours, minutes = divmod(minutes, 60)
     return f'{hours}h{minutes:02d}m' if hours else f'{minutes}m{seconds:02d}s'
+
+
+def _content(event: dict[str, Any]) -> list[Any]:
+    """The content blocks of *event*'s message. Some system events, such as
+    `permission_denied`, carry a plain-text `message` instead."""
+    message = event.get('message')
+    if not isinstance(message, dict):
+        return []
+    return message.get('content') or []
 
 
 def background_commands(event: dict[str, Any]) -> list[tuple[str, Path]]:
@@ -163,7 +212,7 @@ def background_commands(event: dict[str, Any]) -> list[tuple[str, Path]]:
     if event.get('type') != 'user':
         return []
     found = []
-    for block in (event.get('message') or {}).get('content') or []:
+    for block in _content(event):
         if isinstance(block, dict) and block.get('type') == 'tool_result':
             match = _BACKGROUND_RE.search(_result_text(block.get('content')))
             if match:
@@ -175,7 +224,6 @@ def format_event(event: dict[str, Any]) -> list[str]:
     """The console lines for one event of the stream; none for most."""
     kind = event.get('type')
     subtype = event.get('subtype')
-    message = event.get('message') or {}
     # Events of subagents name the tool call that started them.
     indent = '    ' if event.get('parent_tool_use_id') else ''
     lines: list[str] = []
@@ -186,8 +234,14 @@ def format_event(event: dict[str, Any]) -> list[str]:
         )
     elif kind == 'system' and subtype == 'task_notification':
         lines.append(f'  ⏹ {event.get("summary") or event.get("status")}')
+    elif kind == 'system' and subtype == 'permission_denied':
+        lines.append(
+            f'  ⛔ {event.get("tool_name", "?")} denied by '
+            f'{event.get("decision_reason_type", "?")}: '
+            f'{event.get("decision_reason", "")}'
+        )
     elif kind == 'assistant':
-        for block in message.get('content') or []:
+        for block in _content(event):
             if not isinstance(block, dict):
                 continue
             if block.get('type') == 'text' and block.get('text', '').strip():
@@ -199,7 +253,7 @@ def format_event(event: dict[str, Any]) -> list[str]:
                     block.get('name', '?'), block.get('input') or {}
                 )
     elif kind == 'user':
-        for block in message.get('content') or []:
+        for block in _content(event):
             if not isinstance(block, dict):
                 continue
             if block.get('type') != 'tool_result':
@@ -221,10 +275,114 @@ def format_event(event: dict[str, Any]) -> list[str]:
             parts.append(f'{event["num_turns"]} turns')
         if isinstance(event.get('total_cost_usd'), (int, float)):
             parts.append(f'${event["total_cost_usd"]:.2f}')
+        if tokens := _token_usage(event.get('modelUsage')):
+            parts.append(tokens)
         # Not `result`, which repeats Claude's last message.
         lines.append(', '.join(parts))
 
     return [f'{indent}{line}' if line else '' for line in lines]
+
+
+# A line of a Read result: its number, a tab, then the file's line.
+_READ_LINE_RE = re.compile(r'^\s*(\d+)\t', re.MULTILINE)
+
+
+def _ranges(numbers: list[int]) -> str:
+    """`3-5, 9` for [3, 4, 5, 9]."""
+    spans: list[list[int]] = []
+    for number in numbers:
+        if spans and number == spans[-1][1] + 1:
+            spans[-1][1] = number
+        else:
+            spans.append([number, number])
+    return ', '.join(f'{a}-{b}' if a != b else str(a) for a, b in spans)
+
+
+class RequiredReads:
+    """Which lines of each of *paths* Claude read itself, with the Read tool:
+    a subagent's reads, or a summary, don't count."""
+
+    def __init__(self, paths: list[Path]) -> None:
+        self._lines = {
+            path.resolve(): len(path.read_text(encoding='utf-8').splitlines())
+            for path in paths
+        }
+        self._seen: dict[Path, set[int]] = {path: set() for path in self._lines}
+        # Read calls awaiting their result: tool use id -> file.
+        self._pending: dict[str, Path] = {}
+
+    def handle(self, event: dict[str, Any]) -> None:
+        if event.get('parent_tool_use_id'):
+            return
+        for block in _content(event):
+            if not isinstance(block, dict):
+                continue
+            if block.get('type') == 'tool_use' and block.get('name') == 'Read':
+                path = (block.get('input') or {}).get('file_path')
+                if path and Path(path).resolve() in self._lines:
+                    self._pending[block.get('id')] = Path(path).resolve()
+            elif block.get('type') == 'tool_result':
+                path = self._pending.pop(block.get('tool_use_id'), None)
+                if path is not None and not block.get('is_error'):
+                    text = _result_text(block.get('content'))
+                    self._seen[path].update(
+                        int(n) for n in _READ_LINE_RE.findall(text)
+                    )
+
+    def missed(self) -> list[str]:
+        """A line for each file Claude didn't read all of, saying what it
+        missed."""
+        found = []
+        for path, count in self._lines.items():
+            missed = sorted(set(range(1, count + 1)) - self._seen[path])
+            if missed:
+                found.append(
+                    f'- `{path}`: {len(missed)} of {count} lines not read '
+                    f'({_ranges(missed)})'
+                )
+        return found
+
+
+class PermissionDenials:
+    """The tool calls the permission check denied, each with its input and
+    the reason the check gave, as the stream has them."""
+
+    def __init__(self) -> None:
+        # Tool calls by tool use id: (name, input, whether a subagent's).
+        self._calls: dict[str, tuple[str, dict[str, Any], bool]] = {}
+        self.denied: list[str] = []
+
+    def handle(self, event: dict[str, Any]) -> None:
+        for block in _content(event):
+            if isinstance(block, dict) and block.get('type') == 'tool_use':
+                self._calls[str(block.get('id'))] = (
+                    str(block.get('name', '?')),
+                    block.get('input') or {},
+                    bool(event.get('parent_tool_use_id')),
+                )
+        if event.get('subtype') != 'permission_denied':
+            return
+        name, tool_input, subagent = self._calls.get(
+            str(event.get('tool_use_id')),
+            (str(event.get('tool_name', '?')), {}, False),
+        )
+        lines = [
+            f'### `{name}`{" (subagent)" if subagent else ""}, denied by '
+            f'{event.get("decision_reason_type", "?")}',
+            '',
+            f'Reason: {event.get("decision_reason") or "none given"}',
+            '',
+        ]
+        if tool_input:
+            lines += [
+                '```json',
+                json.dumps(tool_input, indent=2, ensure_ascii=False),
+                '```',
+                '',
+            ]
+        if isinstance(event.get('message'), str):
+            lines += [f'> {line}' for line in event['message'].splitlines()]
+        self.denied.append('\n'.join(lines).rstrip())
 
 
 def parse_line(line: str) -> dict[str, Any] | None:
@@ -315,12 +473,17 @@ class Digest:
     the logs in *logs_dir*, if given."""
 
     def __init__(
-        self, emit: Callable[[str], None], logs_dir: Path | None = None
+        self,
+        emit: Callable[[str], None],
+        logs_dir: Path | None = None,
+        reads: RequiredReads | None = None,
     ) -> None:
         self._lock = threading.Lock()
         self._print = emit
         self._followers: dict[str, Follower] = {}
         self._logs = LogsFollower(logs_dir, self.emit) if logs_dir else None
+        self._reads = reads
+        self.denials = PermissionDenials()
         self.failed = False
         # Background work stopped with no turn of Claude's after it: Claude
         # stopped what it was waiting on, rather than the work finishing.
@@ -354,6 +517,9 @@ class Digest:
             self.abandoned.clear()
         if event.get('type') == 'result' and event.get('is_error'):
             self.failed = True
+        if self._reads is not None:
+            self._reads.handle(event)
+        self.denials.handle(event)
         for text in format_event(event):
             self.emit(text)
         for task_id, path in background_commands(event):
@@ -474,17 +640,25 @@ def _exit_on_signal(signum: int, _frame: Any) -> None:
     raise SystemExit(128 + signum)
 
 
-def run(cmd: list[str], log: Path, logs_dir: Path | None = None) -> int:
+def run(
+    cmd: list[str],
+    log: Path,
+    logs_dir: Path | None = None,
+    must_read: list[Path] | None = None,
+    report: Path | None = None,
+) -> int:
     """Runs *cmd*, logging its stream to *log* and printing the digest.
 
     Whatever *cmd* leaves running when it exits, or when this is stopped, is
-    stopped too.
+    stopped too. Each of *must_read* that Claude didn't read all of itself is
+    named at the end, and in *report*, if given.
 
     Returns the exit code: Claude's own, or 1 if it reported an error result
     while exiting 0.
     """
     log.parent.mkdir(parents=True, exist_ok=True)
-    digest = Digest(lambda text: print(text, flush=True), logs_dir)
+    reads = RequiredReads(must_read) if must_read else None
+    digest = Digest(lambda text: print(text, flush=True), logs_dir, reads)
 
     def pump(stream, log_file) -> None:
         for line in stream:
@@ -527,6 +701,34 @@ def run(cmd: list[str], log: Path, logs_dir: Path | None = None) -> int:
         )
         for task in digest.abandoned:
             digest.emit(f'  ⏹ {task}')
+    sections = []
+    if reads is not None and (missed := reads.missed()):
+        sections.append(
+            [
+                '## Instructions not read in full',
+                '',
+                'Claude did not read all of these itself, with the Read tool:',
+                '',
+                *missed,
+            ]
+        )
+    if digest.denials.denied:
+        sections.append(
+            [
+                '## Permission denials',
+                '',
+                'The permission check denied these tool calls, for the reason '
+                'it gave:',
+                '',
+                '\n\n'.join(digest.denials.denied),
+            ]
+        )
+    for section in sections:
+        for line in section:
+            digest.emit(line)
+        if report is not None:
+            with report.open('a', encoding='utf-8') as file:
+                file.write('\n' + '\n'.join(section) + '\n')
     return returncode or int(digest.failed or bool(digest.abandoned))
 
 
@@ -537,6 +739,17 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument(
         '--logs', type=Path, help='A directory whose `*.log` files to follow.'
+    )
+    parser.add_argument(
+        '--must-read',
+        type=Path,
+        action='append',
+        help='A file Claude must read in full itself (repeatable).',
+    )
+    parser.add_argument(
+        '--report',
+        type=Path,
+        help='Where to say which of `--must-read` Claude did not read.',
     )
     parser.add_argument('cmd', nargs='+', help='The claude command, after --.')
     args = parser.parse_args(argv)
@@ -554,7 +767,7 @@ def main(argv: list[str] | None = None) -> int:
     if os.getppid() != engine:
         # The engine was gone before the death signal was armed.
         return 1
-    return run(args.cmd, args.log, args.logs)
+    return run(args.cmd, args.log, args.logs, args.must_read, args.report)
 
 
 if __name__ == '__main__':

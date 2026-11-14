@@ -19,15 +19,15 @@ clusters that only turn `DCHECK`s into non-fatal `CHECK`s are skipped.
 from __future__ import annotations
 
 import argparse
-from collections import defaultdict
-from dataclasses import dataclass, field
 import functools
 import re
 import sys
+from collections import defaultdict
+from dataclasses import dataclass, field
 
 import _boot  # noqa: F401  -- adds tools/cr to sys.path
-import repository  # noqa: E402  -- after _boot
-from sweep import BraveTree  # noqa: E402  -- after _boot
+import repository
+from knowledge_base import BraveTree, brave_tree
 
 
 @dataclass
@@ -74,9 +74,9 @@ class CampaignIndex:
     _BUG_ID = re.compile(r'^(?:chromium:|b:|crbug\.com/|b/)?(\d{6,})$')
     _CAMPAIGN_VERB = re.compile(
         r'(?i)^(?:\[[^\]]+\]\s*)*(?:\w[\w ./-]*:\s*)?'
-        r'(?:automatic|migrate|replace|convert|'
+        r'(?:automatic|migrate|replace|convert|adopt|drop|'
         r'remove|use|switch|rename|deprecate|move|clean ?up|spanify|'
-        r'modernize|rewrite)\b'
+        r'modernize|rewrite|add\b[^:]*\boverloads?)\b'
     )
     _SCRIPTED = re.compile(
         r'(?i)\b(?:automatic|automated|mechanical|scripted|mass)\b|'
@@ -105,7 +105,7 @@ class CampaignIndex:
         self, old: str, new: str, brave: BraveTree | None = None
     ) -> None:
         self.old, self.new = old, new
-        self._brave = brave or BraveTree()
+        self._brave = brave or brave_tree()
 
     def commits(self) -> list[Commit]:
         """The range's commits, read from `git log`."""
@@ -331,10 +331,14 @@ class CampaignIndex:
                 )
             paths = cluster.overridden
             if paths:
-                shown = ', '.join(paths[: self._SHOWN])
+                # Every whole-file replacement needs a check of its own, while
+                # the rest are found by grepping for the campaign's idiom.
+                whole = sum(p.endswith(' *') for p in paths)
+                count = max(whole, self._SHOWN)
+                shown = ', '.join(paths[:count])
                 more = (
-                    f' (+{len(paths) - self._SHOWN})'
-                    if len(paths) > self._SHOWN
+                    f' (+{len(paths) - count}, none whole-file)'
+                    if len(paths) > count
                     else ''
                 )
                 lines.append(f'  Brave overrides: {shown}{more}')

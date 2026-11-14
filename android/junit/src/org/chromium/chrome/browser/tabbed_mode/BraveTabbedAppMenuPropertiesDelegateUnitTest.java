@@ -506,7 +506,6 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
 
     @Test
     @Config(qualifiers = "sw320dp")
-    @DisableFeatures(ChromeFeatureList.ENABLE_DOWNLOAD_SAVE_AS_CONTEXT_MENU)
     public void testBraveIconRowItems() {
         setUpMocksForPageMenu();
         setMenuOptions(new MenuOptions());

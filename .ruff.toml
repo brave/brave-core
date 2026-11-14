@@ -14,3 +14,16 @@ extend-exclude = [
 
 [format]
 quote-style = "preserve"
+
+[lint]
+# Match upstream's //.ruff.toml rule selection.
+select = ["E4", "E7", "E9", "F"]
+unfixable = ["F401"]
+
+[lint.per-file-ignores]
+# These inline upstream modules, which provide the names they use.
+"chromium_src/**/*.py" = ["F821"]
+"installer/util/prebuild/create_installer_string_rc.py" = ["F821"]
+"PRESUBMIT.py" = ["F821"]
+# The recipe engine reads `API`/`TEST_API` off each module package.
+"tools/recipes/recipe_modules/*/__init__.py" = ["F401"]

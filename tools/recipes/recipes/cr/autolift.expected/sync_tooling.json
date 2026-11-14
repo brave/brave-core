@@ -220,7 +220,7 @@
   },
   {
     "cmd": [
-      "vpython3",
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "tools/cr/autolift/autolift.py",
       "advise",
       "158",
@@ -282,7 +282,7 @@
   },
   {
     "cmd": [
-      "python3",
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "RECIPE[cr/autolift].resources/sync_tooling.py",
       "--milestone",
       "158",
@@ -308,6 +308,10 @@
       "[WORKSPACE]/b/src/brave/.autolift/cr158/claude.jsonl",
       "--logs",
       "[WORKSPACE]/b/src/brave/.autolift/cr158",
+      "--must-read",
+      "[WORKSPACE]/b/src/brave/tools/cr/autolift/SKILL.md",
+      "--report",
+      "[WORKSPACE]/b/src/brave/.autolift/cr158/report.md",
       "--",
       "claude",
       "--print",
@@ -326,7 +330,6 @@
       "Write(/[WORKSPACE]/b/**)",
       "Bash(vpython3 tools/cr/autolift/autolift.py publish *)",
       "Bash(vpython3 .autolift/tooling/cr/autolift/autolift.py publish *)",
-      "Bash(echo *)",
       "Edit(/[WORKSPACE]/rc/tmp/**)",
       "Write(/[WORKSPACE]/rc/tmp/**)"
     ],

@@ -47,7 +47,7 @@ URLSanitizerServiceFactory::URLSanitizerServiceFactory(PassKey key)
           TestingCreation::kNoServiceForTests) {}
 
 std::unique_ptr<KeyedService>
-URLSanitizerServiceFactory::BuildServiceInstanceFor(ProfileIOS* profile) const {
+URLSanitizerServiceFactory::BuildServiceInstanceFor(ProfileIOS& profile) const {
   std::unique_ptr<brave::URLSanitizerService> service =
       std::make_unique<brave::URLSanitizerService>();
   BraveApplicationContextImpl* braveContext =

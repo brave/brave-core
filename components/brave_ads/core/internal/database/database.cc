@@ -14,6 +14,7 @@
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
+#include "base/memory_coordinator/traits.h"
 #include "base/notreached.h"
 #include "base/sequence_checker.h"
 #include "base/trace_event/trace_event.h"
@@ -31,6 +32,16 @@
 namespace brave_ads {
 
 namespace {
+
+// `OnReleaseMemory()` trims SQLite's caches once per call, which the database
+// refills from disk as needed.
+constexpr base::MemoryConsumerTraits kMemoryConsumerTraits(
+    base::MemoryConsumerTraits::EstimatedMemoryUsage::kSmall,
+    base::MemoryConsumerTraits::ReleaseMemoryDataAccess::kNone,
+    base::MemoryConsumerTraits::InformationRetention::kLossless,
+    base::MemoryConsumerTraits::ExecutionType::kAsynchronous,
+    base::MemoryConsumerTraits::RecreateMemoryCost::kCheap,
+    base::MemoryConsumerTraits::IsStateful::kNo);
 
 // Returns true for OS/filesystem error families that reflect environmental
 // conditions rather than code bugs.
@@ -260,9 +271,9 @@ mojom::DBTransactionResultInfo::StatusCode Database::Initialize(
           kFailedToInitializeMetaTable;
     }
 
-    memory_pressure_listener_registration_ =
-        std::make_unique<base::AsyncMemoryPressureListenerRegistration>(
-            FROM_HERE, base::MemoryPressureListenerTag::kAdsDatabase, this);
+    memory_consumer_registration_ =
+        std::make_unique<base::AsyncMemoryConsumerRegistration>(
+            "AdsDatabase", kMemoryConsumerTraits, this);
 
     is_initialized_ = true;
   }
@@ -458,13 +469,10 @@ void Database::SetSqliteResult(
       result_code, db_.GetDiagnosticInfo(result_code, /*statement=*/nullptr));
 }
 
-void Database::OnMemoryPressure(base::MemoryPressureLevel level) {
+void Database::OnUpdateMemoryLimit() {}
+
+void Database::OnReleaseMemory() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  if (level == base::MEMORY_PRESSURE_LEVEL_NONE) {
-    return;
-  }
-
   db_.TrimMemory();
 }
 

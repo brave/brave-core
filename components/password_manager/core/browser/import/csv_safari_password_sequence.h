@@ -6,17 +6,22 @@
 #ifndef BRAVE_COMPONENTS_PASSWORD_MANAGER_CORE_BROWSER_IMPORT_CSV_SAFARI_PASSWORD_SEQUENCE_H_
 #define BRAVE_COMPONENTS_PASSWORD_MANAGER_CORE_BROWSER_IMPORT_CSV_SAFARI_PASSWORD_SEQUENCE_H_
 
-#include <string>
+#include <optional>
 #include <string_view>
 
+#include "base/compiler_specific.h"
+#include "base/types/expected.h"
 #include "brave/components/password_manager/core/browser/import/csv_safari_password.h"
-#include "brave/components/password_manager/core/browser/import/csv_safari_password_iterator.h"
 
 namespace password_manager {
 
 class CSVSafariPasswordSequence {
  public:
-  explicit CSVSafariPasswordSequence(std::string csv);
+  // Constructs a CSVSafariPasswordSequence over |csv|, or returns the header
+  // parse error status.
+  static base::expected<CSVSafariPasswordSequence, CSVSafariPassword::Status>
+  Create(std::string_view csv LIFETIME_BOUND);
+
   CSVSafariPasswordSequence(const CSVSafariPasswordSequence&) = delete;
   CSVSafariPasswordSequence& operator=(const CSVSafariPasswordSequence&) =
       delete;
@@ -26,16 +31,16 @@ class CSVSafariPasswordSequence {
 
   ~CSVSafariPasswordSequence();
 
-  CSVSafariPasswordIterator begin() const;
-  CSVSafariPasswordIterator end() const;
-
-  CSVSafariPassword::Status result() const { return result_; }
+  // Parses and returns the next non-empty credential row, or std::nullopt when
+  // the end of the CSV data is reached.
+  std::optional<CSVSafariPassword> NextPassword();
 
  private:
-  std::string csv_;
-  CSVSafariPassword::ColumnMap map_;
-  std::string_view data_rows_;
-  CSVSafariPassword::Status result_ = CSVSafariPassword::Status::kOK;
+  CSVSafariPasswordSequence(CSVSafariPassword::ColumnMap column_map,
+                            std::string_view remaining_rows LIFETIME_BOUND);
+
+  CSVSafariPassword::ColumnMap column_map_;
+  std::string_view remaining_rows_;
 };
 
 }  // namespace password_manager

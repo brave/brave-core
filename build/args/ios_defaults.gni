@@ -18,6 +18,9 @@ ios_enable_widget_kit_extension = false
 use_partition_alloc_as_malloc = false
 enable_backup_ref_ptr_support = false
 
+# AllocToken needs the allocator shim's PartitionAlloc-Everywhere support.
+use_alloc_token = false
+
 # Brave iOS relies on static key pinning, which upstream disables for iOS.
 chrome_key_pinning_supported = true
 

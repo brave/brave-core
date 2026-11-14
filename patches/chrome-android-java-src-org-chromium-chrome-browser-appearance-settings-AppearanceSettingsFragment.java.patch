@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/appearance/settings/AppearanceSettingsFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/appearance/settings/AppearanceSettingsFragment.java
-index b77b5de1b74e8460b71bf1ed56625effca918a31..816a670c88235dc2c1d713fcd21ec87b593d8748 100644
+index 32d47b979afa323b1e109a39c6b358c5049be9c9..4ac1aa15c63a42a770dc705ae7f8ffbf5a648ff2 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/appearance/settings/AppearanceSettingsFragment.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/appearance/settings/AppearanceSettingsFragment.java
-@@ -475,7 +475,7 @@ public class AppearanceSettingsFragment extends ChromeBaseSettingsFragment
+@@ -527,7 +527,7 @@ public class AppearanceSettingsFragment extends ChromeBaseSettingsFragment
          return mPrefObserver;
      }
  

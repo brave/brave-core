@@ -153,7 +153,7 @@ export function supportBuilder<
       }
       if (isCI) {
         thisCommand.error(
-          'error: --builder is experimental and not allowed on CI',
+          'error: --builder is experimental and not supported on CI without a recipe',
         )
       }
       Log.warn('--builder is experimental and may change without notice.')

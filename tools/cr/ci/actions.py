@@ -30,10 +30,6 @@ class ActionsCi:
         self._gh = gh or GhCli()
 
     @staticmethod
-    def is_job_url(url: str) -> bool:
-        return bool(_JOB.search(url))
-
-    @staticmethod
     def _job(url: str) -> tuple[str, int]:
         """The repository and job id of the job at `url`."""
         match = _JOB.search(url)
@@ -56,9 +52,8 @@ class ActionsCi:
             f'{step.get("conclusion")}'
             for step in steps
         )
-        log_tail = self._error_tail(
-            self._gh.api(f'repos/{repo}/actions/jobs/{job_id}/logs')
-        )
+        log = self.full_log(url, timestamps=False)
+        log_tail = failures.with_fatal_line(log, self._error_tail(log))
         summary = job.get('conclusion') or job.get('status') or ''
         if steps:
             summary += f' in {", ".join(step["name"] for step in steps)}'
@@ -67,17 +62,24 @@ class ActionsCi:
                 name=job.get('name', str(job_id)),
                 url=job.get('html_url', url),
                 summary=summary,
-                kind=failures.classify(log_tail, (), step_failed=True),
                 problems=problems,
                 log_tail=log_tail,
             )
         ]
 
+    def full_log(self, url: str, *, timestamps: bool = True) -> str:
+        """The whole log of the job at `url`, without the runner's timestamps
+        if asked."""
+        repo, job_id = self._job(url)
+        log = self._gh.api(f'repos/{repo}/actions/jobs/{job_id}/logs')
+        log = log.removeprefix(_BOM)
+        return log if timestamps else _TIMESTAMP.sub('', log)
+
     @staticmethod
     def _error_tail(log: str) -> str:
         """The log's lines up to its first `##[error]` one, or its last lines
         when it has none: the steps after a failed one are cleanup."""
-        lines = _TIMESTAMP.sub('', log.removeprefix(_BOM)).splitlines()
+        lines = log.splitlines()
         end = next(
             (i + 1 for i, line in enumerate(lines) if '##[error]' in line),
             len(lines),

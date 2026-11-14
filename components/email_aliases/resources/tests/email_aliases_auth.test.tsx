@@ -8,12 +8,12 @@ import { render, screen } from '@testing-library/react'
 import { EmailAliasesManagePage } from '../email_aliases'
 import { EmailAliasesPanel } from '../email_aliases_panel'
 import { useBraveAccountState } from '../content/use_email_aliases'
-import type { AccountState } from 'gen/brave/components/brave_account/mojom/brave_account.mojom.m'
+import type { AccountState } from 'gen/brave/components/brave_account/mojom/brave_account.mojom-webui.js'
 import {
   EmailAliasesServiceInterface,
   EmailAliasesPanelHandlerInterface,
   EmailAliasesServiceObserverInterface,
-} from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+} from 'gen/brave/components/email_aliases/email_aliases.mojom-webui.js'
 
 jest.mock('../content/use_email_aliases', () => ({
   ...jest.requireActual('../content/use_email_aliases'),

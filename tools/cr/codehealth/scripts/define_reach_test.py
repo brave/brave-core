@@ -83,6 +83,13 @@ class DefinesTest(unittest.TestCase):
             2, DefineReach.count('Foo', ['Foo FooBar', None, 'x.Foo()'])
         )
 
+    def test_count_skips_comments_and_strings(self) -> None:
+        text = (
+            'Foo();  // Foo\n/* Foo\n Foo */ Bar("Foo // x", \'"\');\n'
+            'const char* u = "http://a";  Foo();'
+        )
+        self.assertEqual(2, DefineReach.count('Foo', [text]))
+
 
 class RunTest(unittest.TestCase):
     """A Chromium repository with two tags, and a Brave override."""
@@ -141,6 +148,10 @@ class RunTest(unittest.TestCase):
         self.assertEqual(
             [Reach('a/b.h', 'Old', 2, 0)], DefineReach('old', 'new').run()
         )
+
+    def test_refuses_a_missing_tag(self) -> None:
+        with self.assertRaisesRegex(LookupError, 'unfetched'):
+            DefineReach('unfetched', 'new').run()
 
     def test_skips_dead_tokens_a_patch_adds(self) -> None:
         brave = define_reach.repository.brave.root

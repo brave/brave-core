@@ -19,8 +19,8 @@ via ContentAgentTaskProvider.
 Standalone, single-shot tools that expose a piece of browser data or
 functionality to the assistant without participating in the actor Task
 lifecycle. They typically wrap a single keyed service (history, bookmarks, etc.)
-and return a structured JSON payload as their tool output. Examples:
-`HistorySearchTool`, `CodeExecutionTool`.
+and return a structured JSON payload as their tool output. Example:
+`CodeExecutionTool`.
 
 These tools should be owned by the `BrowserToolProvider`, which creates them
 per-conversation gated on whatever feature/per-profile checks the underlying

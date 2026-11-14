@@ -395,12 +395,14 @@ import conflict_resolution
 from exceptions import (
     ActionNeededException,
     BadOutcomeException,
+    ContinuationNeededException,
     InvalidInputException,
     RebaseNeededException,
 )
 from gh_cli import GhCli
 from git_status import GitStatus
 from patchfile import Patchfile, patch_has_plaster
+import pinned_commits
 import plaster
 from plaster import PlasterError, PlasterFile
 import rebase
@@ -1523,18 +1525,18 @@ class Upgrade(Versioned):
 
         status = GitStatus()
         if status.has_deleted_patch_files():
-            raise InvalidInputException(
+            raise ContinuationNeededException(
                 'Deleted patches detected. These should be committed as their '
                 'own changes:\n%s'
                 % '\n'.join(status.staged.deleted + status.unstaged.deleted)
             )
         if status.has_untracked_patch_files():
-            raise InvalidInputException(
+            raise ContinuationNeededException(
                 'Untracked patch files detected. These should be committed as '
                 'their own changes:\n%s' % '\n'.join(status.unstaged.added)
             )
         if status.has_staged_files():
-            raise InvalidInputException(
+            raise ContinuationNeededException(
                 'Staged files detected after running update_patches. Please '
                 'make sure to commit or unstage any changes, to avoid '
                 'committing changes unintentionally.\n'
@@ -1582,7 +1584,7 @@ class Upgrade(Versioned):
                     for patch, b, a in patches_with_hunk_changes
                 ]
             )
-            raise InvalidInputException(
+            raise ContinuationNeededException(
                 'The following modified patches have changes in the number of '
                 'hunks, and are expected to be submitted separately as fixes '
                 'with Chromium culprits:\n'
@@ -2002,30 +2004,11 @@ def _solve_brave_ref(from_ref: str | None) -> str:
             )
         return upstream_branch
 
-    def find_previous_version_hash(is_major: bool = False) -> str:
-        starting_version = Version.from_git('HEAD')
-        base_version = starting_version
-        last_changed = repository.brave.last_changed(versioning.PACKAGE_FILE)
-        while True:
-            base_version = Version.from_git(f'{last_changed}~1')
-            if is_major and base_version.major != starting_version.major:
-                break
-            if not is_major and base_version != starting_version:
-                break
-            # Prefer to look for the PACKAGE_FILE here, because this has to
-            # resolve even when the upgrade was done manually, so don't assume
-            # the presence of pinslist timestamp changes.
-            last_changed = repository.brave.last_changed(
-                versioning.PACKAGE_FILE, f'{last_changed}~1'
-            )
-
-        return f'{last_changed}~1'
-
     if from_ref == "@previous":
-        return find_previous_version_hash()
+        return versioning.previous_version_commit()
 
     if from_ref == "@previous-major":
-        return find_previous_version_hash(is_major=True)
+        return versioning.previous_version_commit(major=True)
 
     raise NotImplementedError(
         f'Unknown value for [bold cyan]--from-ref[/]: {from_ref}. '
@@ -2405,14 +2388,7 @@ class Rebase(Task):
         to_ref = _solve_brave_ref(to_ref)
 
         if from_ref is None:
-            if Version.from_git(to_ref).major != Version.from_git('HEAD').major:
-                # If the major version is different, we default to the
-                # previous major version.
-                from_ref = _solve_brave_ref(from_ref or '@previous-major')
-            else:
-                # If the major version is the same, we default to the
-                # previous version.
-                from_ref = _solve_brave_ref(from_ref or '@previous')
+            from_ref = versioning.branch_start('HEAD', to_ref)
 
         from_ref = _solve_brave_ref(from_ref)
 
@@ -2532,18 +2508,95 @@ class Rebase(Task):
             if step is None and self._settle_empty_stop():
                 self._run_git_rebase('--skip', env)
                 continue
+            skipped = False
+            left = []
             try:
-                left = self._resolve(step, state) if step is not None else []
+                if step is not None:
+                    skipped = self._drop_picked_by_base(step, state)
+                    if not skipped:
+                        left = self._resolve(step, state)
             finally:
                 # Saved on every stop, even one a rule failed on, so that
                 # `--continue` can carry on from any of them.
                 state.save()
+            if skipped:
+                self._run_git_rebase('--skip', env)
+                continue
             if left:
                 self._stop(step, left)
             self._run_git_rebase('--continue', env)
 
     # The todo commands that fold a commit into the one before it.
     _FOLDING = frozenset({'squash', 'fixup', 'fixup -C', 'fixup -c'})
+
+    @staticmethod
+    def _entries(name: str) -> list[tuple[int, rebase.EntryLine]]:
+        """The entries of the rebase's `done` or `git-rebase-todo` file, with
+        their line indices."""
+        file = repository.brave.rebase_merge_dir() / name
+        if not file.is_file():
+            return []
+        return [
+            (index, entry)
+            for index, line in enumerate(
+                file.read_text(encoding='utf-8').splitlines()
+            )
+            if (entry := rebase.EntryLine.parse(line)) is not None
+        ]
+
+    @classmethod
+    def _drop_picked_by_base(
+        cls, step: conflict_resolution.ConflictedStep, state: RebaseState
+    ) -> bool:
+        """Readies a stop on a commit the base picked for a `--skip`, and
+        returns whether it was one.
+
+        That is a `pick` which, with the `squash`/`fixup` lines folding into
+        it, touches only files the base has as the branch ends them. Those
+        lines are dropped from the todo, as there is nothing left for them to
+        fold into.
+        """
+        done = cls._entries('done')
+        if not done or done[-1][1].command != 'pick':
+            return False
+        folding = []
+        end = None
+        for index, entry in cls._entries('git-rebase-todo'):
+            if entry.command not in cls._FOLDING:
+                end = index
+                break
+            folding.append((index, entry))
+        if not step.base_has([step.commit, *(e.hash for _, e in folding)]):
+            return False
+
+        todo = repository.brave.rebase_merge_dir() / 'git-rebase-todo'
+        lines = todo.read_text(encoding='utf-8').splitlines(keepends=True)
+        # The `exec` lines among them go too: they carry Change-Ids into the
+        # commit being skipped.
+        dropped = {
+            index
+            for index, line in enumerate(lines[:end])
+            if line.strip() and not line.lstrip().startswith('#')
+        }
+        todo.write_text(
+            ''.join(
+                line for index, line in enumerate(lines) if index not in dropped
+            ),
+            encoding='utf-8',
+            newline='',
+        )
+        state.resolutions.extend(
+            conflict_resolution.Resolution(
+                path=path, rule=conflict_resolution.Rule.PICKED_BY_BASE
+            )
+            for path in step.paths
+        )
+        terminal.log_task(
+            f'{cls._describe(step)} is on the base already, with what folds '
+            'into it: skipped.'
+            + ''.join(f'\n    ✘ {escape(e.out)}' for _, e in folding)
+        )
+        return True
 
     @classmethod
     def _empty_stop(cls) -> rebase.EntryLine | None:
@@ -2552,14 +2605,7 @@ class Rebase(Task):
         a `squash`/`fixup` that leaves HEAD changing nothing. A commit that
         was empty to begin with doesn't stop, and isn't one."""
         brave = repository.brave
-        done = brave.rebase_merge_dir() / 'done'
-        if not done.is_file():
-            return None
-        lines = [
-            entry
-            for line in done.read_text(encoding='utf-8').splitlines()
-            if (entry := rebase.EntryLine.parse(line)) is not None
-        ]
+        lines = [entry for _, entry in cls._entries('done')]
         if not lines:
             return None
 
@@ -2599,6 +2645,11 @@ class Rebase(Task):
             brave.run_git('reset', '--soft', 'HEAD~1')
         todo = brave.rebase_merge_dir() / 'git-rebase-todo'
         lines = todo.read_text(encoding='utf-8').splitlines(keepends=True)
+        # An `exec` right after the stop carries a Change-Id into the commit
+        # just dropped, not into the one before it.
+        while lines and lines[0].startswith('exec '):
+            del lines[0]
+        todo.write_text(''.join(lines), encoding='utf-8', newline='')
         for index, line in enumerate(lines):
             entry = rebase.EntryLine.parse(line)
             if entry is None:
@@ -2615,6 +2666,45 @@ class Rebase(Task):
             break
         terminal.log_task(f'{escape(last.out)} came out empty: dropped.')
         return True
+
+    @staticmethod
+    def carry_change_id_line(commits: list[str]) -> str:
+        """The todo line that gives HEAD the first Change-Id of `commits`.
+        Quoted with `shlex.join`, as git runs `exec` lines through its
+        `sh -c`."""
+        return 'exec ' + shlex.join(
+            [
+                str(VPYTHON3_PATH),
+                __file__,
+                f'--internal-rebase-carry-change-id={",".join(commits)}',
+            ]
+        )
+
+    @staticmethod
+    def carry_change_id(commits: list[str]) -> None:
+        """Amends HEAD to carry the first Change-Id of `commits`, the ones
+        folded into it, in place of whatever an `amend!` brought."""
+        brave = repository.brave
+        messages = [
+            brave.run_git('log', '-1', '--format=%B', commit)
+            for commit in commits
+        ]
+        change_id = pinned_commits.derived_change_id(
+            brave.rebased_branch(), messages[0].split('\n', 1)[0]
+        ) or next(filter(None, map(rebase.change_id_of, messages)), None)
+        if change_id is None:
+            return
+        message = brave.run_git('log', '-1', '--format=%B', 'HEAD')
+        amended = rebase.with_change_id(message, change_id)
+        if amended != message:
+            brave.run_git(
+                'commit',
+                '--amend',
+                '--no-verify',
+                '--allow-empty',
+                '-m',
+                amended,
+            )
 
     @classmethod
     def _run_git_rebase(cls, action: str, env: dict[str, str]) -> None:
@@ -3259,6 +3349,12 @@ def show(args: argparse.Namespace):
         if from_ref_value is not None:
             console.print(f'base version: {from_ref_value}')
 
+    if args.from_ref_hash is not None:
+        solved = _solve_brave_ref(args.from_ref_hash)
+        console.print(
+            f'base commit: {repository.brave.run_git("rev-parse", solved)}'
+        )
+
     if args.log_link:
         console.print(
             'googlesource link: %s'
@@ -3463,6 +3559,13 @@ def main():
         help='Shows the Chromium version from a git reference.',
         default=None,
         dest='from_ref_value',
+    )
+    show_parser.add_argument(
+        '--from-ref-hash',
+        help='Shows the full hash a git reference or label such as '
+        '@previous-major resolves to.',
+        default=None,
+        dest='from_ref_hash',
     )
     show_parser.add_argument(
         '--log-link',
@@ -3771,7 +3874,12 @@ def main():
             show(args)
     except RebaseNeededException:
         return RebaseNeededException.EXIT_CODE
-    except (InvalidInputException, BadOutcomeException, ActionNeededException):
+    except (
+        InvalidInputException,
+        BadOutcomeException,
+        ActionNeededException,
+        ContinuationNeededException,
+    ):
         return 1
 
     return 0
@@ -3783,6 +3891,11 @@ if __name__ == '__main__':
         # during rebase --interactive mode.
         if '--internal-rebase-recommit' in sys.argv:
             Rebase.recommit_in_rebase_plan(Path(sys.argv[-1]))
+
+        _carry_prefix = '--internal-rebase-carry-change-id='
+        for _arg in sys.argv:
+            if _arg.startswith(_carry_prefix):
+                Rebase.carry_change_id(_arg[len(_carry_prefix) :].split(','))
 
         if '--internal-rebase-capture-plan' in sys.argv:
             # This flag copies the TOOD plan into the destination path.
@@ -3842,6 +3955,7 @@ if __name__ == '__main__':
                     pinned_squashed=(
                         '--internal-rebase-plan-squash-pinned' in sys.argv
                     ),
+                    carry_change_id=Rebase.carry_change_id_line,
                 )
             except rebase.EditorRecoverableFailure as e:
                 rebase.hand_off_to_editor(
@@ -3855,7 +3969,9 @@ if __name__ == '__main__':
             try:
                 writer = rebase.MessageWriter.parse(editor_path)
                 if writer is not None:
-                    writer.rewrite_with_last_message()
+                    writer.rewrite_with_last_message(
+                        repository.brave.rebased_branch()
+                    )
             except rebase.EditorRecoverableFailure as e:
                 rebase.hand_off_to_editor(
                     editor_path, reason=str(e), editor=crash_editor

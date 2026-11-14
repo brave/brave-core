@@ -1,8 +1,8 @@
 diff --git a/components/infobars/core/infobar_delegate.h b/components/infobars/core/infobar_delegate.h
-index 5c0c180b10215c9f809b40d6e78e90ff2949021a..e672f8009ba71f0dfeb6bab94d88e0080f0a9482 100644
+index 1c9709d0e8be0a635e25e8821018c712362a7a8f..08c2b5301ee31c97dfc4bb78d5ad9dfa666cc02f 100644
 --- a/components/infobars/core/infobar_delegate.h
 +++ b/components/infobars/core/infobar_delegate.h
-@@ -213,6 +213,18 @@ class InfoBarDelegate {
+@@ -218,6 +218,18 @@ class InfoBarDelegate {
      FORMS_AI_PRIVATE_INFERENCE_INFOBAR_DELEGATE_IOS = 138,
      PASSWORD_SAVED_INFOBAR_DELEGATE_IOS = 139,
      CONTEXTUAL_CUE_INFOBAR_DELEGATE_IOS = 140,

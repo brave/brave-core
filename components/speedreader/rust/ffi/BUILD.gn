@@ -7,7 +7,6 @@ import("//build/rust/rust_static_library.gni")
 
 rust_static_library("lib") {
   visibility = [ ":*" ]
-  crate_name = "speedreader_ffi"
   crate_root = "lib.rs"
   edition = "2018"
   allow_unsafe = true

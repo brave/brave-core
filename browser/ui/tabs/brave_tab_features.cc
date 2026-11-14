@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
@@ -169,6 +170,8 @@ void BraveTabFeatures::OnWillDiscardContents(
 
 void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   TabFeatures::Init(tab, profile);
+  page_actions::PageActionController& page_action_controller =
+      CHECK_DEREF(page_actions::PageActionController::From(&tab));
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   // Created first, as other features may look it up through the tab.
@@ -212,10 +215,10 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   // ActionExists() to avoid operating on an unregistered page action model.
   if (!profile->IsOffTheRecord() &&
       base::FeatureList::IsEnabled(psst::features::kEnablePsst) &&
-      page_action_controller()->ActionExists(kActionShowPsstIcon)) {
+      page_action_controller.ActionExists(kActionShowPsstIcon)) {
     psst_action_controller_ =
         std::make_unique<page_actions::PsstActionController>(
-            tab, *page_action_controller());
+            tab, page_action_controller);
     auto* psst_settings_service =
         PsstSettingsServiceFactory::GetForProfile(profile);
     auto* variations_service = g_browser_process->variations_service();
@@ -239,10 +242,10 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
     // unit tests that don't register the browser's action items), so guard on
     // ActionExists() to avoid creating a controller that would operate on an
     // unregistered page action model.
-    if (page_action_controller()->ActionExists(kActionShowPartitionedStorage)) {
+    if (page_action_controller.ActionExists(kActionShowPartitionedStorage)) {
       partitioned_storage_page_action_controller_ = std::make_unique<
           page_actions::PartitionedStoragePageActionController>(
-          tab, *page_action_controller());
+          tab, page_action_controller);
       partitioned_storage_page_action_controller_->Init();
     }
   }
@@ -253,29 +256,29 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   speedreader_tab_helper_ = speedreader::SpeedreaderTabHelper::MaybeCreate(tab);
   if (base::FeatureList::IsEnabled(
           speedreader::features::kSpeedreaderFeature) &&
-      page_action_controller()->ActionExists(kActionShowSpeedreader)) {
+      page_action_controller.ActionExists(kActionShowSpeedreader)) {
     speedreader_page_action_controller_ =
         std::make_unique<page_actions::SpeedreaderPageActionController>(
-            tab, *page_action_controller());
+            tab, page_action_controller);
     speedreader_page_action_controller_->Init();
   }
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   wayback_machine_tab_helper_ = BraveWaybackMachineTabHelper::MaybeCreate(tab);
-  if (page_action_controller()->ActionExists(kActionShowWaybackMachine)) {
+  if (page_action_controller.ActionExists(kActionShowWaybackMachine)) {
     wayback_machine_page_action_controller_ =
         std::make_unique<page_actions::WaybackMachinePageActionController>(
-            tab, *page_action_controller());
+            tab, page_action_controller);
     wayback_machine_page_action_controller_->Init();
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-  if (page_action_controller()->ActionExists(kActionShowPlaylistPageAction)) {
+  if (page_action_controller.ActionExists(kActionShowPlaylistPageAction)) {
     playlist_page_action_controller_ =
         std::make_unique<page_actions::PlaylistPageActionController>(
-            tab, *page_action_controller());
+            tab, page_action_controller);
     playlist_page_action_controller_->Init();
   }
 #endif
@@ -284,10 +287,10 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   tor_tab_helper_ = tor::TorTabHelper::MaybeCreate(tab);
   onion_location_tab_helper_ =
       std::make_unique<tor::OnionLocationTabHelper>(tab);
-  if (page_action_controller()->ActionExists(kActionShowOnionLocation)) {
+  if (page_action_controller.ActionExists(kActionShowOnionLocation)) {
     onion_location_page_action_controller_ =
         std::make_unique<page_actions::OnionLocationPageActionController>(
-            tab, *page_action_controller());
+            tab, page_action_controller);
     onion_location_page_action_controller_->Init();
   }
 #endif
@@ -296,10 +299,10 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   // Created before the page action controller, which observes it.
   brave_news_tab_helper_ = BraveNewsTabHelper::MaybeCreate(tab);
   if (!profile->IsOffTheRecord() &&
-      page_action_controller()->ActionExists(kActionShowBraveNews)) {
+      page_action_controller.ActionExists(kActionShowBraveNews)) {
     brave_news_page_action_controller_ =
         std::make_unique<page_actions::BraveNewsPageActionController>(
-            tab, *page_action_controller());
+            tab, page_action_controller);
     brave_news_page_action_controller_->Init();
   }
 #endif

@@ -9,6 +9,7 @@
 #include "base/compiler_specific.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
+#include "ui/base/mojom/window_open_disposition.mojom-forward.h"
 
 class Profile;
 
@@ -42,7 +43,7 @@ class BraveSyncAccountDeletedInfoBarDelegate
   std::u16string GetLinkText() const override;
   std::u16string GetButtonLabel(InfoBarButton button) const override;
   bool Accept() override;
-  bool LinkClicked(WindowOpenDisposition disposition) override;
+  bool LinkClicked(ui::mojom::WindowOpenDisposition disposition) override;
   bool IsCloseable() const override;
 
   raw_ptr<Profile> profile_ = nullptr;

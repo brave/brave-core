@@ -373,6 +373,16 @@ class FromCheckoutIntegrationTest(unittest.TestCase):
             runner._solution_scope('src'), runner._solution_scope('src')
         )
 
+    def test_git_cache_inside_gclient_root(self):
+        """A `cache_dir` inside the gclient root, which gclient rejects for a
+        sync, doesn't stop the variables from resolving."""
+        gclient_file = self.repo.base_path / '.gclient'
+        gclient_file.write_text(
+            gclient_file.read_text() + 'cache_dir = "cache/git"\n'
+        )
+        runner = m.ExtraDepsRunner.from_checkout()
+        self.assertEqual(runner._solution_vars('src')['host_os'], 'linux')
+
     def test_unknown_solution_raises(self):
         """Asking for a solution the `.gclient` does not declare is an error."""
         runner = m.ExtraDepsRunner.from_checkout()

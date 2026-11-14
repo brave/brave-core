@@ -161,6 +161,7 @@
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/webui/resources/cr_components/color_change_listener/color_change_listener.mojom.h"
 #include "url/origin.h"
 
@@ -193,6 +194,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/components/brave_rewards/content/rewards_protocol_navigation_throttle.h"
 #if !BUILDFLAG(IS_ANDROID)
@@ -1006,7 +1008,7 @@ bool BraveContentBrowserClient::CanCreateWindow(
     const GURL& target_url,
     const content::Referrer& referrer,
     const std::string& frame_name,
-    WindowOpenDisposition disposition,
+    ui::mojom::WindowOpenDisposition disposition,
     const blink::mojom::WindowFeatures& features,
     bool user_gesture,
     bool opener_suppressed,
@@ -1625,7 +1627,11 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   // inserting the navigation throttle at the fist position before any java
   // navigation happens
-  brave_rewards::RewardsProtocolNavigationThrottle::MaybeCreateAndAdd(registry);
+  brave_rewards::RewardsProtocolNavigationThrottle::MaybeCreateAndAdd(
+      registry, brave_rewards::RewardsServiceFactory::GetForProfile(
+                    Profile::FromBrowserContext(registry.GetNavigationHandle()
+                                                    .GetWebContents()
+                                                    ->GetBrowserContext())));
 #endif
 
   ChromeContentBrowserClient::CreateThrottlesForNavigation(registry);

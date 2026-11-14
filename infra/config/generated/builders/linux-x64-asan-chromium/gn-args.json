@@ -35,7 +35,6 @@
     "translate_genders": false,
     "use_debug_fission": true,
     "use_libfuzzer": false,
-    "use_reclient": false,
     "use_remoteexec": true,
     "use_siso": true,
     "use_vaapi": true,

@@ -42,10 +42,6 @@ class ActionsCiTest(unittest.TestCase):
         )
         return ActionsCi(gh), gh
 
-    def test_recognises_job_urls(self):
-        self.assertTrue(ActionsCi.is_job_url(_URL))
-        self.assertFalse(ActionsCi.is_job_url('https://github.com/brave'))
-
     def test_reads_the_failed_steps_and_the_log_up_to_the_error(self):
         ci, gh = self._ci()
         [build] = ci.failed_builds(_URL)
@@ -63,8 +59,37 @@ class ActionsCiTest(unittest.TestCase):
         )
 
     def test_keeps_the_log_end_without_an_error_line(self):
+        self.assertEqual(ActionsCi._error_tail('a\nb\n'), 'a\nb')
+
+    def test_a_fatal_line_above_the_error_leads_the_tail(self):
+        fatal = (
+            'F1108 13:30:24.969724   11708 glog.go:261] log: exiting: '
+            'There is not enough space on the disk.'
+        )
+        log = '\n'.join(
+            [f'2026-11-03T13:27:00.00Z {fatal}']
+            + ['2026-11-03T13:27:01.00Z spew'] * 100
+            + ['2026-11-03T13:27:02.00Z ##[error]exit code 1.']
+        )
+        gh = mock.Mock()
+        gh.api.side_effect = lambda path, **_: (
+            log if path.endswith('/logs') else json.dumps(_JOB)
+        )
+        [build] = ActionsCi(gh).failed_builds(_URL)
+        self.assertTrue(build.log_tail.startswith(f'{fatal}\n[...]\nspew\n'))
+        self.assertEqual(build.kind, Kind.INFRA)
+
+    def test_full_log_drops_the_bom_and_timestamps_if_asked(self):
+        ci, _ = self._ci()
         self.assertEqual(
-            ActionsCi._error_tail('2026-11-03T13:27:01Z a\nb\n'), 'a\nb'
+            ci.full_log(_URL, timestamps=False),
+            'Set up\nChecking\nHttpError: 504 Gateway Timeout\n'
+            '##[error]Process completed with exit code 1.\n'
+            'Post job cleanup.\n',
+        )
+        self.assertEqual(
+            ci.full_log(_URL),
+            _LOG.removeprefix('\N{ZERO WIDTH NO-BREAK SPACE}'),
         )
 
     def test_reruns_the_job(self):

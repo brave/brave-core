@@ -446,6 +446,11 @@ class WorkspaceTest(unittest.TestCase):
             self.assertEqual(tempfile.gettempdir(), str(temp_dir))
             os.chdir(self._prev_cwd)
 
+    def test_steps_inherit_the_recipes_engine_marker(self):
+        with mock.patch.dict(os.environ, clear=True):
+            engine._Engine().mark_environ()
+            self.assertEqual(os.environ[engine.RECIPES_ENGINE_ENV_VAR], '1')
+
     def test_workspace_defaults_to_cwd(self):
         path = engine._Engine()._instantiate_module('path', [])
         self.assertEqual(path.workspace, Path.cwd())

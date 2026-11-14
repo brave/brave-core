@@ -33,6 +33,7 @@
 #include "extensions/buildflags/buildflags.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 #include "brave/components/brave_education/education_urls.h"
@@ -185,7 +186,7 @@ void WelcomeDOMHandler::HandleOpenSettingsPage(const base::ListValue& args) {
   if (browser) {
     content::OpenURLParams open_params(
         GURL("brave://settings/privacy"), content::Referrer(),
-        WindowOpenDisposition::kNewBackgroundTab,
+        ui::mojom::WindowOpenDisposition::kNewBackgroundTab,
         ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
     browser->OpenURL(open_params, /*navigation_handle_callback=*/{});
   }

@@ -7,7 +7,6 @@ import("//build/rust/rust_static_library.gni")
 
 rust_static_library("rust_lib") {
   visibility = [ "//brave/components/skus/browser/rs/cxx:*" ]
-  crate_name = "skus"
   crate_root = "src/lib.rs"
   sources = [
     "src/cache.rs",
@@ -26,6 +25,7 @@ rust_static_library("rust_lib") {
 
   deps = [
     "//brave/third_party/rust/async_trait/v0_1:lib",
+    "//brave/third_party/rust/base64/v0_22:lib",
     "//brave/third_party/rust/bigdecimal/v0_1:lib",
     "//brave/third_party/rust/challenge_bypass_ristretto/v2:lib",
     "//brave/third_party/rust/chrono/v0_4:lib",
@@ -39,7 +39,6 @@ rust_static_library("rust_lib") {
     "//brave/third_party/rust/tracing/v0_1:lib",
     "//brave/third_party/rust/urlencoding/v1:lib",
     "//brave/third_party/rust/uuid/v1:lib",
-    "//third_party/rust/base64/v0_22:lib",
     "//third_party/rust/serde/v1:lib",
   ]
 }

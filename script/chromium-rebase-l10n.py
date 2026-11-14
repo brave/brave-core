@@ -34,7 +34,7 @@ SRC_SOURCE_ROOT = os.path.abspath(os.path.dirname(BRAVE_SOURCE_ROOT))
 
 sys.path.insert(1, os.path.join(SRC_SOURCE_ROOT, 'tools/grit'))
 
-from grit.extern import tclib  # pylint: disable=import-error,wrong-import-position
+from grit.extern import tclib  # pylint: disable=import-error,wrong-import-position  # noqa: E402
 
 
 def write_xtb_content(xtb_tree, source_string_path):

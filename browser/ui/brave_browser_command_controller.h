@@ -20,6 +20,7 @@
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "ui/base/mojom/window_open_disposition.mojom-forward.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/browser/brave_vpn_service_observer.h"
@@ -77,7 +78,7 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
   bool IsCommandEnabled(int id) const override;
   bool ExecuteCommandWithDispositionAndContext(
       int id,
-      WindowOpenDisposition disposition,
+      ui::mojom::WindowOpenDisposition disposition,
       std::optional<actions::ActionInvocationContext> context,
       base::TimeTicks time_stamp) override;
   void AddCommandObserver(int id, CommandObserver* observer) override;
@@ -115,9 +116,10 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
   void UpdateCommandForFocusMode();
   void UpdateCommandForSplitView();
 
-  bool ExecuteBraveCommandWithDisposition(int id,
-                                          WindowOpenDisposition disposition,
-                                          base::TimeTicks time_stamp);
+  bool ExecuteBraveCommandWithDisposition(
+      int id,
+      ui::mojom::WindowOpenDisposition disposition,
+      base::TimeTicks time_stamp);
 
   PrefChangeRegistrar pref_change_registrar_;
   const raw_ref<BrowserWindowInterface> browser_;

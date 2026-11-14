@@ -104,12 +104,19 @@ class DefineReach:
                     words.update(cls._WORD.findall(line))
         return words
 
-    @staticmethod
-    def count(token: str, texts: list[str | None]) -> int:
-        """How often `token` occurs as a word in `texts`, missing ones left
-        out."""
+    # Comments and string literals, which the preprocessor doesn't rewrite.
+    _UNREACHED = re.compile(
+        r'//[^\n]*|/\*.*?\*/|"(?:\\.|[^"\\\n])*"|\'(?:\\.|[^\'\\\n])*\'', re.S
+    )
+
+    @classmethod
+    def count(cls, token: str, texts: list[str | None]) -> int:
+        """How often `token` occurs as a word in the code of `texts`, missing
+        ones left out."""
         word = re.compile(rf'\b{re.escape(token)}\b')
-        return sum(len(word.findall(t)) for t in texts if t)
+        return sum(
+            len(word.findall(cls._UNREACHED.sub(' ', t))) for t in texts if t
+        )
 
     @staticmethod
     def upstream_files(override: str) -> list[str]:
@@ -122,7 +129,23 @@ class DefineReach:
 
     def run(self) -> list[Reach]:
         """The defines whose reach changed, or that reach nothing; dead ones
-        first."""
+        first. Raises `LookupError` for a tag the checkout lacks, which would
+        otherwise read as every file missing."""
+        for tag in (self._old, self._new):
+            if subprocess.run(
+                [
+                    'git',
+                    '-C',
+                    str(repository.chromium.root),
+                    'rev-parse',
+                    '--verify',
+                    '--quiet',
+                    f'{tag}^{{commit}}',
+                ],
+                capture_output=True,
+                check=False,
+            ).returncode:
+                raise LookupError(f'{tag} is not in the Chromium checkout')
         brave = repository.brave.root
         chromium_src = brave / 'chromium_src'
         overrides = {}
@@ -208,7 +231,11 @@ def main() -> int:
     old, _, new = args.range.partition('..')
     if not old or not new:
         parser.error('expected OLD..NEW')
-    changed = DefineReach(old, new).run()
+    try:
+        changed = DefineReach(old, new).run()
+    except LookupError as e:
+        print(f'error: {e}', file=sys.stderr)
+        return 1
     print(f'old -> new token  override ({len(changed)} changed; 0 = dead)')
     for reach in changed:
         print(reach)

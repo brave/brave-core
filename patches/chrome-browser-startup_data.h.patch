@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/startup_data.h b/chrome/browser/startup_data.h
-index 6a5ce87dd23987d16b6fc098cb603e7510c506ed..f6a5052221923bec5adc09009a961da8cfee61da 100644
+index 67d536081566aef78913c152629d46b36062c432..9181e80bd1a7cab3045e87148093e06bccd18291 100644
 --- a/chrome/browser/startup_data.h
 +++ b/chrome/browser/startup_data.h
-@@ -15,7 +15,7 @@
+@@ -16,7 +16,7 @@
  #include "components/leveldb_proto/public/proto_database_provider.h"  // nogncheck
  #endif
  
@@ -11,7 +11,7 @@ index 6a5ce87dd23987d16b6fc098cb603e7510c506ed..f6a5052221923bec5adc09009a961da8
  namespace extensions {
  class ExtensionsBrowserClient;
  }
-@@ -95,7 +95,7 @@ class StartupData {
+@@ -112,7 +112,7 @@ class StartupData {
    TakeProtoDatabaseProvider();
  #endif
  
@@ -20,7 +20,7 @@ index 6a5ce87dd23987d16b6fc098cb603e7510c506ed..f6a5052221923bec5adc09009a961da8
    // Passes ownership of the `extensions_browser_client_` to the caller.
    std::unique_ptr<extensions::ExtensionsBrowserClient>
    TakeExtensionsBrowserClient();
-@@ -123,7 +123,7 @@ class StartupData {
+@@ -142,7 +142,7 @@ class StartupData {
    std::unique_ptr<leveldb_proto::ProtoDatabaseProvider> proto_db_provider_;
  #endif
  

@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="chrome://resources/brave/css/nala.css">
   <if expr="is_ios">
     <script src="chrome://resources/js/ios/web_ui.js"></script>
-    <script src="chrome://resources/js/ios/mojo_api.js"></script>
+    <script type="module" src="chrome://resources/js/ios/mojo_api.js"></script>
   </if>
   <script src="chrome://resources/js/load_time_data_deprecated.js"></script>
   <script src="/strings.js"></script>
@@ -45,7 +45,12 @@
   </style>
   </head>
   <body>
-    <script src="/brave_wallet_page.bundle.js"></script>
+    <if expr="is_ios">
+      <script src="/brave_wallet_page.bundle.js" defer></script>
+    </if>
+    <if expr="not is_ios">
+      <script src="/brave_wallet_page.bundle.js"></script>
+    </if>
     <cr-toolbar id="toolbar" no-search></cr-toolbar>
     <div id="root"></div>
   </body>

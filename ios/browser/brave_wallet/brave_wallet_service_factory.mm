@@ -150,11 +150,11 @@ BraveWalletServiceFactory::BraveWalletServiceFactory(PassKey key)
           TestingCreation::kNoServiceForTests) {}
 
 std::unique_ptr<KeyedService>
-BraveWalletServiceFactory::BuildServiceInstanceFor(ProfileIOS* profile) const {
+BraveWalletServiceFactory::BuildServiceInstanceFor(ProfileIOS& profile) const {
   std::unique_ptr<BraveWalletService> service(new BraveWalletService(
-      profile->GetSharedURLLoaderFactory(),
-      std::make_unique<BraveWalletServiceDelegateIos>(profile),
-      profile->GetPrefs(), GetApplicationContext()->GetLocalState()));
+      profile.GetSharedURLLoaderFactory(),
+      std::make_unique<BraveWalletServiceDelegateIos>(&profile),
+      profile.GetPrefs(), GetApplicationContext()->GetLocalState()));
   return service;
 }
 

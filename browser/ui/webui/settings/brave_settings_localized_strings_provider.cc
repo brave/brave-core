@@ -44,7 +44,6 @@
 #include "brave/ui/webui/custom_profile_image/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/media/router/media_router_feature.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
@@ -72,10 +71,8 @@
 #endif
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-#include "brave/browser/history_embeddings/brave_history_embeddings_status.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/utils.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "ui/base/text/bytes_formatting.h"
 #endif
 
@@ -157,20 +154,11 @@ constexpr char16_t kTabOrganizationLearnMoreURL[] =
     u"https://support.brave.app/hc/en-us/articles/"
     u"35200007195917-How-to-use-Tab-Focus-Mode";
 
-// The Semantic history search toggle lives in brave://settings/privacy.
-constexpr char16_t kSemanticHistorySearchSettingURL[] =
-    u"chrome://settings/privacy";
-
 constexpr char16_t kLeoMemoryLearnMoreURL[] =
     u"https://support.brave.app/hc/en-us/articles/38441287509261";
 
 constexpr char16_t kLeoPrivacyPolicyURL[] =
     u"https://brave.com/privacy/browser/#brave-leo";
-#endif
-
-#if BUILDFLAG(ENABLE_LOCAL_AI)
-constexpr char kSemanticHistorySearchLearnMoreURL[] =
-    "https://support.brave.app/hc/en-us/articles/49008428284301";
 #endif
 
 constexpr char16_t kAdBlockOnlyModeLearnMoreURL[] =
@@ -508,10 +496,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"webRTCDefault", IDS_SETTINGS_WEBRTC_POLICY_DEFAULT},
       {"pushMessagingLabel", IDS_SETTINGS_PUSH_MESSAGING},
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-      {"semanticHistorySearchLabel",
-       IDS_SETTINGS_SEMANTIC_HISTORY_SEARCH_LABEL},
-      {"semanticHistorySearchSubLabel",
-       IDS_SETTINGS_SEMANTIC_HISTORY_SEARCH_SUB_LABEL},
       {"onDeviceSpeechModelLabel", IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_LABEL},
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
       {"historyRetentionLabel", IDS_SETTINGS_HISTORY_RETENTION_LABEL},
@@ -655,8 +639,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_SHOW_IN_CONTEXT_MENU_DESC},
       {"braveLeoAssistantTabOrganizationLabel",
        IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_LABEL},
-      {"braveLeoAssistantTabOrganizationSendPageContentLabel",
-       IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_SEND_PAGE_CONTENT_LABEL},
       {"braveLeoAssistantTabOrganizationModelLabel",
        IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_MODEL_LABEL},
       {"braveLeoAssistantHistoryPreferenceLabel",
@@ -1187,20 +1169,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       "braveLeoAssistantInputDefaultContextSize",
       base::NumberToString16(ai_chat::kDefaultCustomModelContextSize));
 
-  html_source->AddString(
-      "braveLeoAssistantTabOrganizationSendPageContentDesc",
-      l10n_util::GetStringFUTF16(
-          IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_SEND_PAGE_CONTENT_DESC,
-          kSemanticHistorySearchSettingURL,
-          l10n_util::GetStringUTF16(
-              IDS_SETTINGS_SEMANTIC_HISTORY_SEARCH_LABEL)));
-
-  // The Local AI master switch lives in local state and only takes effect on
-  // relaunch, so the page reads it once here rather than binding a pref.
-  html_source->AddBoolean(
-      "isHistoryEmbeddingsFeatureEnabled",
-      history_embeddings::IsHistoryEmbeddingsFeatureEnabled());
-
   html_source->AddString("braveLeoAssistantTabOrganizationDesc",
                          l10n_util::GetStringFUTF16(
                              IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_DESC,
@@ -1222,20 +1190,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 #endif
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-  html_source->AddString("semanticHistorySearchLearnMoreURL",
-                         kSemanticHistorySearchLearnMoreURL);
-
-  html_source->AddBoolean(
-      "isSemanticHistorySearchAvailable",
-      history_embeddings::IsHistoryEmbeddingsFeatureEnabled());
-
-  // The value the embedding services were built with, so the page can tell
-  // whether the toggle is waiting on a relaunch.
-  html_source->AddBoolean(
-      "semanticHistorySearchEnabledAtStartup",
-      history_embeddings::BraveHistoryEmbeddingsStatus::GetForProfile(profile)
-          ->IsEnabled());
-
   html_source->AddString(
       "onDeviceSpeechModelSubLabel",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_SUB_LABEL,

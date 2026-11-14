@@ -17,7 +17,7 @@
 #include "content/public/test/test_navigation_observer.h"
 #include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
-#include "ui/base/window_open_disposition.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 BraveTabFeaturesDiscardBrowserTest::BraveTabFeaturesDiscardBrowserTest() =
     default;
@@ -58,7 +58,7 @@ tabs::TabInterface* BraveTabFeaturesDiscardBrowserTest::OpenBackgroundTab(
     base::Location location) {
   SCOPED_TRACE(location.ToString());
   EXPECT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::kNewBackgroundTab,
+      browser(), url, ui::mojom::WindowOpenDisposition::kNewBackgroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   TabStripModel* tab_strip_model = browser()->GetTabStripModel();
   return tab_strip_model->GetTabAtIndex(tab_strip_model->count() - 1);

@@ -129,13 +129,6 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
         },
       },
       // <if expr="enable_local_ai">
-      isSemanticHistorySearchAvailable_: {
-        readOnly: true,
-        type: Boolean,
-        value: function () {
-          return loadTimeData.getBoolean('isSemanticHistorySearchAvailable')
-        },
-      },
       isOnDeviceSpeechModelAvailable_: {
         readOnly: true,
         type: Boolean,
@@ -143,7 +136,6 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
           return loadTimeData.getBoolean('isOnDeviceSpeechModelAvailable')
         },
       },
-      semanticHistorySearchPref_: Object,
       // </if>
       requestOTRActions_: {
         readOnly: true,
@@ -176,9 +168,7 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   declare private isRequestOTRFeatureEnabled_: boolean
   declare private isPsstFeatureEnabled_: boolean
   // <if expr="enable_local_ai">
-  declare private isSemanticHistorySearchAvailable_: boolean
   declare private isOnDeviceSpeechModelAvailable_: boolean
-  declare private semanticHistorySearchPref_: chrome.settingsPrivate.PrefObject<boolean>
   // </if>
   declare private requestOTRActions_: Object[]
   declare private requestOTRAction_: String
@@ -196,19 +186,6 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   shouldShowRestartWindowsRecall_(disabled: boolean) {
     return disabled != this.browserProxy_.wasWindowsRecallDisabledAtStartup()
   }
-
-  // <if expr="enable_local_ai">
-  // The index is built at profile setup, so the toggle only takes effect on
-  // the next launch. `semanticHistorySearchEnabledAtStartup` is the value the
-  // embedding services were built with and is fixed for the session, so
-  // comparing against it survives a reload of this page.
-  shouldShowRestartSemanticHistorySearch_(enabled: boolean) {
-    return (
-      enabled !=
-      loadTimeData.getBoolean('semanticHistorySearchEnabledAtStartup')
-    )
-  }
-  // </if>
 
   windowsRecallDisabledChange_(event: Event) {
     const target = event.target
@@ -229,12 +206,6 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
     super.connectedCallback()
 
     this.mirrorPref('brave.gcm.channel_status', 'pushMessagingPref_')
-    // <if expr="enable_local_ai">
-    this.mirrorPref(
-      'brave.history_embeddings_enabled',
-      'semanticHistorySearchPref_',
-    )
-    // </if>
   }
 
   override ready() {

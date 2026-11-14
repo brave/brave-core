@@ -68,12 +68,14 @@
         android:key="qa_force_in_app_review"
         android:title="Force in-app review flow"
         android:summary="Rate from settings uses in-app review instead of Play Store"
-        android:defaultValue="false" />
+        android:defaultValue="false"
+        android:persistent="true" />
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="qa_force_rate_dialog"
         android:title="Force rating prompt"
         android:summary="Shows the rating prompt on every start, ignoring the usage criteria. Don't show again still suppresses it."
-        android:defaultValue="false" />
+        android:defaultValue="false"
+        android:persistent="true" />
 
 </PreferenceScreen>

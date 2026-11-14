@@ -56,13 +56,27 @@ _WFAPI_STATUS_TO_STATE = {
 # `testReport` statuses of tests that failed in this run.
 _FAILED_TEST_STATUSES = frozenset({'FAILED', 'REGRESSION'})
 
+# How many of a run's failed tests get their history read, and how many of
+# the job's earlier runs it looks back through for one that ran each.
+_HISTORY_TESTS = 10
+_HISTORY_RUNS = 10
+# Characters `hudson.tasks.test.TestObject.safe()` replaces in a test's URL.
+_UNSAFE_IN_TEST_URL = re.compile(r'[/\\:?#%<>]')
+
 # `wfapi/log` serves a step's log as HTML.
 _HTML_TAG = re.compile(r'<[^>]+>')
 
 # The console log's hidden annotations.
 _CONSOLE_NOTE = re.compile(r'\x1b\[8mha:.*?\x1b\[0m')
+# The timestamps before each log line: the Timestamper plugin's, and before it
+# in a step's log, the time `wfapi/log` adds.
+_TIMESTAMP = re.compile(
+    r'^(?:\d\d:\d\d:\d\d )?\[\d{4}-\d\d-\d\dT[\d:.]+Z\] ?', re.MULTILINE
+)
 # How much of the end of a console log to read: logs reach tens of MB.
 _CONSOLE_TAIL_BYTES = 32 * 1024
+# How much of it to search for a fatal line the stage log lacks.
+_FATAL_SCAN_BYTES = 512 * 1024
 
 # States meaning a pipeline has finished and no longer needs polling.
 _TERMINAL_WATCH_STATES = frozenset(
@@ -397,13 +411,21 @@ class JenkinsCi:
                 or {}
             )
             error = ((stage.get('error') or {}).get('message') or '').strip()
-            log_tail = self._stage_log(session, url, stage)
+            text = self._stage_text(session, url, stage)
+            stage_tail = failures.tail(text)
+            log_tail = failures.with_fatal_line(text, stage_tail)
+            if log_tail == stage_tail:
+                # The step's log can stop short of a fatal line the console
+                # has.
+                log_tail = failures.with_fatal_line(
+                    self._console_end(session, url, _FATAL_SCAN_BYTES),
+                    stage_tail,
+                )
             builds.append(
                 FailedBuild(
                     name=failed.get('name', ''),
                     url=url,
                     summary=error or f'Stage {failed.get("name")} failed',
-                    kind=failures.classify(log_tail, (), step_failed=True),
                     problems=(error,) if error else (),
                     log_tail=log_tail,
                 )
@@ -417,7 +439,6 @@ class JenkinsCi:
                     name=names,
                     url=f'{url}testReport/',
                     summary=f'{len(tests)} failed test(s) in {names}',
-                    kind=failures.Kind.TESTS,
                     tests=tests,
                 )
             )
@@ -455,35 +476,55 @@ class JenkinsCi:
             name=stage.get('name', 'pipeline'),
             url=url,
             summary='; '.join(causes) or 'Aborted',
-            kind=failures.Kind.INFRA,
+            aborted=True,
             problems=causes,
             log_tail=self._console_tail(session, url),
         )
 
+    @classmethod
+    def _console_tail(cls, session: requests.Session, url: str) -> str:
+        return failures.tail(
+            cls._console_end(session, url, _CONSOLE_TAIL_BYTES)
+        )
+
     @staticmethod
-    def _console_tail(session: requests.Session, url: str) -> str:
+    def _console_end(session: requests.Session, url: str, size: int) -> str:
+        """The last `size` bytes of the run's console log, from a line
+        start, or '' when it can't be read."""
         log = f'{url}logText/progressiveText'
         try:
             head = session.head(log, timeout=15)
             head.raise_for_status()
-            start = max(
-                0, int(head.headers.get('X-Text-Size', 0)) - _CONSOLE_TAIL_BYTES
-            )
+            start = max(0, int(head.headers.get('X-Text-Size', 0)) - size)
             response = session.get(f'{log}?start={start}', timeout=30)
             response.raise_for_status()
         except (requests.RequestException, ValueError):
             return ''
-        text = _CONSOLE_NOTE.sub('', response.text)
+        text = _TIMESTAMP.sub('', _CONSOLE_NOTE.sub('', response.text))
         if start:
             # The first line is cut.
             text = text.partition('\n')[2]
-        return failures.tail(text)
+        return text
 
-    def _stage_log(
+    def full_log(self, build_url: str, *, timestamps: bool = True) -> str:
+        """The whole console log of the run at `build_url`, or of the run
+        whose `testReport/` it is, without its lines' timestamps if asked."""
+        url = (build_url.rstrip('/') + '/').removesuffix('testReport/')
+        try:
+            response = self._session().get(f'{url}consoleText', timeout=120)
+            response.raise_for_status()
+        except requests.RequestException as e:
+            raise BadOutcomeException(
+                f'Could not read {url}consoleText: {e}'
+            ) from e
+        text = _CONSOLE_NOTE.sub('', response.text)
+        return text if timestamps else _TIMESTAMP.sub('', text)
+
+    def _stage_text(
         self, session: requests.Session, url: str, stage: dict
     ) -> str:
-        """The end of the log of a stage's failed step, or of its last step
-        when none is marked failed."""
+        """The log of a stage's failed step, or of its last step when none
+        is marked failed."""
         nodes = stage.get('stageFlowNodes') or []
         failed = [node for node in nodes if node.get('status') == 'FAILED']
         node = (failed or nodes or [None])[-1]
@@ -495,7 +536,7 @@ class JenkinsCi:
         if log is None:
             return ''
         text = html.unescape(_HTML_TAG.sub('', log.get('text') or ''))
-        return failures.tail(text)
+        return _TIMESTAMP.sub('', text)
 
     def _failed_tests(
         self, session: requests.Session, url: str
@@ -503,39 +544,141 @@ class JenkinsCi:
         report = self._get_json(
             session,
             f'{url}testReport/api/json?tree=suites[cases[className,name,'
-            'status,age,errorDetails,errorStackTrace]]',
+            'status,age,failedSince,errorDetails,errorStackTrace]]',
         )
+        cases = [
+            case
+            for suite in (report or {}).get('suites') or []
+            for case in suite.get('cases') or []
+            if case.get('status') in _FAILED_TEST_STATUSES
+        ]
+        job_url, _, number = url.rstrip('/').rpartition('/')
+        runs = (
+            self._earlier_runs(session, job_url, int(number))
+            if cases and number.isdigit()
+            else []
+        )
+        # Per earlier run and class URL: each case's status.
+        classes: dict[tuple[int, str], dict[str, str] | None] = {}
         tests = []
-        for suite in (report or {}).get('suites') or []:
-            for case in suite.get('cases') or []:
-                if case.get('status') not in _FAILED_TEST_STATUSES:
-                    continue
-                name = case.get('name', '')
-                class_name = case.get('className', '')
-                if class_name and class_name != name:
-                    name = f'{class_name}.{name}'
-                details = '\n'.join(
-                    part
-                    for part in (
-                        case.get('errorDetails'),
-                        case.get('errorStackTrace'),
-                    )
-                    if part
+        for index, case in enumerate(cases):
+            name = case.get('name', '')
+            class_name = case.get('className', '')
+            if class_name and class_name != name:
+                name = f'{class_name}.{name}'
+            details = '\n'.join(
+                part
+                for part in (
+                    case.get('errorDetails'),
+                    case.get('errorStackTrace'),
                 )
-                age = case.get('age') or 0
-                tests.append(
-                    FailedTest(
-                        name=name,
-                        status=case['status'],
-                        details=failures.tail(details, 40),
-                        known=f'failing for {age} builds' if age > 1 else '',
-                    )
+                if part
+            )
+            age = case.get('age') or 0
+            known = ''
+            if age > 1:
+                known = f'failing for {age} builds'
+                if case.get('failedSince'):
+                    known += f', since #{case["failedSince"]}'
+            history = ()
+            if index < _HISTORY_TESTS:
+                history = self._history(session, job_url, case, runs, classes)
+            tests.append(
+                FailedTest(
+                    name=name,
+                    status=case['status'],
+                    details=failures.tail(details, 40),
+                    known=known,
+                    history=history,
                 )
+            )
         return tuple(tests)
 
-    def rerun(self, build_url: str, *, wipe_workspace: bool = False) -> None:
+    def _earlier_runs(
+        self, session: requests.Session, job_url: str, number: int
+    ) -> list[tuple[int, str, str]]:
+        """The job's runs before run `number`, newest first, as
+        `(number, result, brave-core commit)`."""
+        job = (
+            self._get_json(
+                session,
+                f'{job_url}/api/json?tree=builds[number,result,'
+                'actions[remoteUrls,lastBuiltRevision[SHA1]]]'
+                f'{{0,{_HISTORY_RUNS * 3}}}',
+            )
+            or {}
+        )
+        runs = []
+        for build in job.get('builds') or []:
+            if build.get('number', 0) >= number:
+                continue
+            revision = next(
+                (
+                    action['lastBuiltRevision'].get('SHA1', '')[:10]
+                    for action in build.get('actions') or []
+                    if (action or {}).get('lastBuiltRevision')
+                    and any(
+                        'brave-core' in remote
+                        for remote in action.get('remoteUrls') or []
+                    )
+                ),
+                '',
+            )
+            runs.append((build['number'], build.get('result') or '', revision))
+        return runs[:_HISTORY_RUNS]
+
+    def _history(
+        self,
+        session: requests.Session,
+        job_url: str,
+        case: dict,
+        runs: list[tuple[int, str, str]],
+        classes: dict[tuple[int, str], dict[str, str] | None],
+    ) -> tuple[str, ...]:
+        """The newest of `runs` that reported `case`: its status there, and
+        the commit that run built."""
+        class_name = case.get('className', '')
+        package, _, simple = class_name.rpartition('.')
+        class_path = (
+            f'{_UNSAFE_IN_TEST_URL.sub("_", package or "(root)")}/'
+            f'{_UNSAFE_IN_TEST_URL.sub("_", simple)}'
+        )
+        skipped = []
+        for number, result, revision in runs:
+            key = (number, class_path)
+            if key not in classes:
+                report = self._get_json(
+                    session,
+                    f'{job_url}/{number}/testReport/{class_path}/api/json'
+                    '?tree=child[name,status]',
+                )
+                classes[key] = (
+                    None
+                    if report is None
+                    else {
+                        child.get('name', ''): child.get('status', '')
+                        for child in report.get('child') or []
+                    }
+                )
+            status = (classes[key] or {}).get(case.get('name', ''))
+            if status is None:
+                skipped.append(f'#{number} ({result or "running"})')
+                continue
+            line = f'last ran in #{number} ({result})'
+            if revision:
+                line += f' on `{revision}`'
+            line += f': {status}'
+            if skipped:
+                line += f'; not in {", ".join(skipped)}'
+            return (line,)
+        if not runs:
+            return ()
+        return (f'not in the job\'s {len(runs)} earlier runs',)
+
+    def rerun(self, build_url: str, *, wipe_workspace: bool = False) -> str:
         """Queues the job of the run at `build_url` again, from scratch when
-        `wipe_workspace` is set (a PR job's `WIPE_WORKSPACE` parameter)."""
+        `wipe_workspace` is set (a PR job's `WIPE_WORKSPACE` parameter), and
+        says so."""
         job_url = build_url.rstrip('/').rsplit('/', 1)[0] + '/'
         session = self._session()
         crumb = self._get_crumb(session, self._server_root((job_url,)))
@@ -547,6 +690,7 @@ class JenkinsCi:
             timeout=30,
         )
         response.raise_for_status()
+        return f'Queued {job_url.rstrip("/")} again.'
 
     def _resolve_display_name(
         self, session: requests.Session, job: _WatchedJob

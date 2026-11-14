@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/autofill/BUILD.gn b/chrome/browser/ui/autofill/BUILD.gn
-index e2fde6dfc89941608527dc87d68e064bd4096e82..a39b2530d854c007adc6f550ca03a1f9a5f46a59 100644
+index 745f3e010136de58048bc82029e4445d910820e1..63682dd58d1b62d1da31afc23c6b0d5df275dd3c 100644
 --- a/chrome/browser/ui/autofill/BUILD.gn
 +++ b/chrome/browser/ui/autofill/BUILD.gn
 @@ -2,6 +2,8 @@
@@ -11,7 +11,7 @@ index e2fde6dfc89941608527dc87d68e064bd4096e82..a39b2530d854c007adc6f550ca03a1f9
  import("//build/config/chrome_build.gni")
  import("//build/config/ui.gni")
  import("//components/compose/features.gni")
-@@ -238,6 +240,7 @@ source_set("impl") {
+@@ -215,6 +217,7 @@ source_set("impl") {
      "//components/variations/service",
      "//components/vector_icons",
    ]
@@ -19,9 +19,9 @@ index e2fde6dfc89941608527dc87d68e064bd4096e82..a39b2530d854c007adc6f550ca03a1f9
  
    if (safe_browsing_mode != 0) {
      deps += [ "//components/safe_browsing/content/browser/password_protection" ]
-@@ -265,6 +268,7 @@ source_set("impl") {
+@@ -231,6 +234,7 @@ source_set("impl") {
+       "//components/android_autofill/browser:android",
        "//components/messages/android:feature_flags",
-       "//components/password_manager/core/browser/features:password_features",
      ]
 +    deps += brave_chrome_browser_ui_autofill_deps
    } else {

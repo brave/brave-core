@@ -11,7 +11,7 @@ import unittest
 from unittest import mock
 
 import _boot  # noqa: F401  -- adds parent tools/cr to sys.path
-from ci import teamcity  # noqa: E402  -- after _boot
+from ci import failures, teamcity  # noqa: E402  -- after _boot
 from ci.failures import Kind  # noqa: E402  -- after _boot
 
 _LOG = '\n'.join(
@@ -51,10 +51,14 @@ def _builds(*builds):
     return {'build': list(builds)}
 
 
+def _url(build: int) -> str:
+    return f'https://teamcity.brave.com:443/buildConfiguration/X/{build}'
+
+
 class BuildIdTest(unittest.TestCase):
     def test_build_configuration_url(self):
         self.assertEqual(
-            teamcity.build_id(
+            teamcity._build_id(
                 'https://teamcity.brave.com:443/buildConfiguration/'
                 'BraveBrowser_Android_Aggregate/753605'
             ),
@@ -63,12 +67,35 @@ class BuildIdTest(unittest.TestCase):
 
     def test_view_log_url(self):
         self.assertEqual(
-            teamcity.build_id('https://tc/viewLog.html?buildId=12&tab=log'), 12
+            teamcity._build_id('https://tc/viewLog.html?buildId=12&tab=log'),
+            12,
         )
 
     def test_rejects_other_urls(self):
         with self.assertRaises(ValueError):
-            teamcity.build_id('https://ci.brave.com/job/x/1/')
+            teamcity._build_id('https://ci.brave.com/job/x/1/')
+
+
+class FailedStepTailTest(unittest.TestCase):
+    def test_stops_at_the_first_failed_step(self):
+        log = '\n'.join(
+            [f'[Step 1/3] spew {i}' for i in range(100)]
+            + [
+                '[Step 2/3] error: it broke',
+                '[Step 2/3] Process exited with code 1',
+                '[Step 3/3] cleanup',
+                '[Step 3/3] Process exited with code 0',
+            ]
+        )
+        tail = teamcity._failed_step_tail(log).splitlines()
+        self.assertEqual(len(tail), failures.LOG_TAIL_LINES)
+        self.assertEqual(tail[-1], '[Step 2/3] Process exited with code 1')
+
+    def test_without_a_failed_step_takes_the_end(self):
+        log = '\n'.join(f'line {i}' for i in range(100))
+        tail = teamcity._failed_step_tail(log).splitlines()
+        self.assertEqual(len(tail), failures.LOG_TAIL_LINES)
+        self.assertEqual(tail[-1], 'line 99')
 
 
 class FailedBuildsTest(unittest.TestCase):
@@ -136,7 +163,7 @@ class FailedBuildsTest(unittest.TestCase):
                 '/downloadBuildLog.html?buildId=11': _LOG,
             }
         )
-        builds = teamcity.TeamCityCi(run=cli).failed_builds(10)
+        builds = teamcity.TeamCityCi(run=cli).failed_builds(_url(10))
 
         self.assertEqual(
             [b.name for b in builds], ['Android_Build', 'Android_Test']
@@ -162,6 +189,52 @@ class FailedBuildsTest(unittest.TestCase):
         )
         self.assertTrue(all(env['TEAMCITY_RO'] == '1' for _, env in cli.calls))
 
+    def test_a_fatal_line_above_the_failed_step_leads_the_tail(self):
+        fatal = (
+            'F1108 13:30:24.969724   11708 glog.go:261] log: exiting: '
+            'There is not enough space on the disk.'
+        )
+        log = '\n'.join(
+            [f'[Step 1/2] {fatal}']
+            + ['[Step 1/2] I1108 spew'] * 100
+            + ['[Step 1/2] Process exited with code 1']
+        )
+        cli = FakeCli(
+            {
+                '/app/rest/builds?locator=': {},
+                '/app/rest/builds/id:30': {'id': 30, 'buildTypeId': 'Build'},
+                '/app/rest/problemOccurrences': {
+                    'problemOccurrence': [{'type': 'TC_EXIT_CODE'}]
+                },
+                '/app/rest/testOccurrences': {},
+                '/downloadBuildLog.html?buildId=30': log,
+            }
+        )
+        [build] = teamcity.TeamCityCi(run=cli).failed_builds(_url(30))
+        self.assertTrue(build.log_tail.startswith(f'{fatal}\n[...]\n'))
+        self.assertEqual(build.kind, Kind.INFRA)
+
+    def test_full_log(self):
+        cli = FakeCli({'/downloadBuildLog.html?buildId=7&plain=true': _LOG})
+        self.assertEqual(teamcity.TeamCityCi(run=cli).full_log(_url(7)), _LOG)
+        self.assertEqual(cli.calls[0][1]['TEAMCITY_RO'], '1')
+
+    def test_full_log_drops_the_times_but_keeps_the_severity(self):
+        log = (
+            "Build 'Brave Browser / android / test'\n"
+            '[15:13:02]i: Changed build status to failed\n'
+            '[15:24:21]W: Build was removed from the queue\n'
+        )
+        cli = FakeCli({'/downloadBuildLog.html?buildId=7&plain=true': log})
+        ci = teamcity.TeamCityCi(run=cli)
+        self.assertEqual(
+            ci.full_log(_url(7), timestamps=False),
+            "Build 'Brave Browser / android / test'\n"
+            'i: Changed build status to failed\n'
+            'W: Build was removed from the queue\n',
+        )
+        self.assertEqual(ci.full_log(_url(7)), log)
+
     def test_a_build_without_failed_dependencies_is_read_itself(self):
         cli = FakeCli(
             {
@@ -177,7 +250,7 @@ class FailedBuildsTest(unittest.TestCase):
                 },
             }
         )
-        (build,) = teamcity.TeamCityCi(run=cli).failed_builds(20)
+        (build,) = teamcity.TeamCityCi(run=cli).failed_builds(_url(20))
         self.assertEqual(build.name, 'Lint')
         self.assertEqual(build.kind, Kind.TESTS)
 
@@ -238,7 +311,7 @@ class FailedBuildsTest(unittest.TestCase):
                 },
             }
         )
-        (build,) = teamcity.TeamCityCi(run=cli).failed_builds(30)
+        (build,) = teamcity.TeamCityCi(run=cli).failed_builds(_url(30))
         (test,) = build.tests
         self.assertEqual(test.mocha, ('Page t\nAssertionError: no',))
         self.assertEqual(
@@ -254,13 +327,106 @@ class FailedBuildsTest(unittest.TestCase):
         ]
         self.assertIn('branch:(name:($base64:Y3IxNTg%3D))', history_path)
 
+    def test_names_dependencies_and_the_previous_build(self):
+        cli = FakeCli(
+            {
+                '/app/rest/builds?locator=snapshotDependency:': {},
+                '/app/rest/builds/id:41': {
+                    'id': 41,
+                    'buildTypeId': 'Ios_Test',
+                    'branchName': 'cr159',
+                    'statusText': 'Exit code 2',
+                    'snapshot-dependencies': {
+                        'build': [
+                            {
+                                'id': 40,
+                                'buildTypeId': 'Ios_Build',
+                                'status': 'SUCCESS',
+                                'state': 'finished',
+                                'webUrl': 'https://tc/40',
+                            },
+                            {
+                                'id': 39,
+                                'buildTypeId': 'Ios_Lint',
+                                'status': 'SUCCESS',
+                                'state': 'running',
+                                'webUrl': 'https://tc/39',
+                            },
+                        ]
+                    },
+                },
+                '/app/rest/problemOccurrences': {
+                    'problemOccurrence': [{'type': 'TC_EXIT_CODE'}]
+                },
+                '/app/rest/testOccurrences': {},
+                '/downloadBuildLog.html?buildId=41': _LOG,
+                '/app/rest/builds?locator=buildType:(id:Ios_Test)': _builds(
+                    {'id': 41, 'status': 'FAILURE'},
+                    {
+                        'id': 30,
+                        'status': 'SUCCESS',
+                        'statusText': 'Tests passed: 4600',
+                        'webUrl': 'https://tc/30',
+                        'revisions': {
+                            'revision': [
+                                {
+                                    'version': '91c8e6a12f' + '0' * 30,
+                                    'vcs-root-instance': {
+                                        'name': 'https://github.com/brave/brave-core'
+                                    },
+                                }
+                            ]
+                        },
+                    },
+                ),
+            }
+        )
+        (build,) = teamcity.TeamCityCi(run=cli).failed_builds(_url(41))
+        self.assertEqual(
+            build.dependencies,
+            (
+                '`Ios_Build` 40: SUCCESS (https://tc/40)',
+                '`Ios_Lint` 39: running (https://tc/39)',
+            ),
+        )
+        self.assertEqual(
+            build.previous,
+            '`Ios_Test` 30 on `cr159`: SUCCESS, Tests passed: 4600, at '
+            '`91c8e6a12f` (https://tc/30)',
+        )
+        (previous_path,) = [
+            cmd[-1] for cmd, _ in cli.calls if 'buildType:' in cmd[-1]
+        ]
+        self.assertIn('branch:(name:($base64:Y3IxNTk%3D))', previous_path)
+        self.assertIn('untilBuild:(id:41)', previous_path)
+
+    def test_no_previous_build_on_the_branch(self):
+        cli = FakeCli(
+            {
+                '/app/rest/builds?locator=snapshotDependency:': {},
+                '/app/rest/builds/id:41': {
+                    'id': 41,
+                    'buildTypeId': 'Ios_Test',
+                    'branchName': 'cr159',
+                },
+                '/app/rest/problemOccurrences': {},
+                '/app/rest/testOccurrences': {},
+                '/app/rest/builds?locator=buildType:': _builds({'id': 41}),
+            }
+        )
+        (build,) = teamcity.TeamCityCi(run=cli).failed_builds(_url(41))
+        self.assertEqual(build.previous, '')
+        self.assertEqual(build.dependencies, ())
+
 
 class RerunTest(unittest.TestCase):
     def test_restarts_with_writes_allowed(self):
         cli = FakeCli({})
         with mock.patch.dict(os.environ):
             os.environ.pop('TEAMCITY_RO', None)
-            self.assertEqual(teamcity.TeamCityCi(run=cli).rerun(10), 'queued')
+            self.assertEqual(
+                teamcity.TeamCityCi(run=cli).rerun(_url(10)), 'queued'
+            )
         self.assertEqual(len(cli.calls), 1)
         cmd, env = cli.calls[0]
         self.assertEqual(cmd, ['teamcity', 'run', 'restart', '10'])
@@ -269,7 +435,7 @@ class RerunTest(unittest.TestCase):
     def test_keeps_a_read_only_environment_read_only(self):
         cli = FakeCli({})
         with mock.patch.dict(os.environ, {'TEAMCITY_RO': '1'}):
-            teamcity.TeamCityCi(run=cli).rerun(10)
+            teamcity.TeamCityCi(run=cli).rerun(_url(10))
         self.assertEqual(len(cli.calls), 1)
         _, env = cli.calls[0]
         self.assertEqual(env['TEAMCITY_RO'], '1')

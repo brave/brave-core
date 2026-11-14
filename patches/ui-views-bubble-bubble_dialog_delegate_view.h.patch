@@ -1,8 +1,8 @@
 diff --git a/ui/views/bubble/bubble_dialog_delegate_view.h b/ui/views/bubble/bubble_dialog_delegate_view.h
-index c63a5501d9728017774451adf23d0985d0aedd98..5e0c6aab78580cbeb4361e92330e7a7d672a31f6 100644
+index 234d2e1a6a954f64872df368ca28fc474464c0c6..3008d27fcda42d4c4727b8726f89dad6da48dd54 100644
 --- a/ui/views/bubble/bubble_dialog_delegate_view.h
 +++ b/ui/views/bubble/bubble_dialog_delegate_view.h
-@@ -45,6 +45,20 @@
+@@ -46,6 +46,20 @@
  #include "ui/base/cocoa/bubble_closer.h"
  #endif
  
@@ -23,7 +23,7 @@ index c63a5501d9728017774451adf23d0985d0aedd98..5e0c6aab78580cbeb4361e92330e7a7d
  class AccountChooserDialogView;
  class AppDialogView;
  class AnnouncementView;
-@@ -883,6 +897,15 @@ class VIEWS_EXPORT BubbleDialogDelegateView : public View,
+@@ -903,6 +917,15 @@ class VIEWS_EXPORT BubbleDialogDelegateView : public View,
    gfx::Size GetMaximumSize() const final;
  
   private:

@@ -25,31 +25,7 @@ as a `#`-comment and opens the user's editor.
 
 Commit categories formalised here (see `EntryType`):
 
-* PINNED -- commits that should be unique in the history of the branch.
-  Multiple occurrences of the same pinned change are auto-squashed by
-  `brockit.py rebase --squash-minor-bumps`, and the resulting squash is
-  moved to the top of the branch history. Priority order is the entry
-  order in `PINNED_GROUPS`. Subjects that fit this category:
-
-    - Update from Chromium * to Chromium *.
-    - Apply-fixed 🩹 patches from Chromium * to Chromium *.
-    - Conflict-resolved patches from Chromium * to Chromium *.
-    - [cr*] `gnrt` run for Chromium *.
-    - [cr*] IWYU fixes.
-    - [cr*] Bump resource_ids.
-    - [cr*] Update Lit mangler snapshot.
-    - [cr*] Version CodeHealth tracker.
-    - [cr*] Version lift updates.
-    - [cr*] Disable failing upstream tests.
-    - [cr*] Update lists for upstream flake tests.
-
-* RECYCLABLE -- commits we can always drop and regenerate with tooling.
-  They're discarded by `brockit.py rebase --discard-regen-changes`.
-  Subjects that fit this category:
-
-    - Update patches from Chromium * to Chromium *.
-    - Updated strings for Chromium *.
-
+* PINNED and RECYCLABLE -- the subjects `pinned_commits` matches.
 * REASSIGNMENT -- `reassign!<hash>!` commits authored by
   `brockit reassign`. Repositioned next to their target when
   `pinned_squashed=True`.
@@ -66,9 +42,16 @@ import logging
 import os
 import re
 import shlex
+from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
 
+from pinned_commits import (
+    PINNED_GROUPS,
+    derived_change_id,
+    get_pinned_group_for_subject,
+    is_recyclable,
+)
 from terminal import terminal
 
 # Brockit-specific prefixes for commit messages, similar to `fixup!`. Each
@@ -76,25 +59,13 @@ from terminal import terminal
 REASSIGN_COMMIT_MSG_PREFIX = 'reassign!'
 DROP_COMMIT_MSG_PREFIX = 'drop!'
 
-# Strips one or more leading bracketed tags whose first token starts with
-# `cr` followed by digits -- e.g. `[cr149] `, `[cr149][ios] `. Leaves
-# unrelated bracketed tags alone. This means branch tags are irrelevant
-# when determining the commit type.
-_CR_TAG_RE = re.compile(r'^(?:\[cr\d+\](?:\[[^\]]+\])*\s+)?')
-
-# Strips repeated leading autosquash prefixes like `fixup! `, `amend! `,
-# `squash! ` -- these stack when commits fix up an already-fixup commit
-# (e.g. `fixup! fixup! fixup! Conflict-resolved patches …`). Pre-stripping
-# them lets the pinned/recyclable regexes match the underlying subject
-# regardless of how many autosquash levels deep the user has gone.
-_AUTOSQUASH_PREFIX_RE = re.compile(r'^(?:(?:fixup|amend|squash)!\s+)+')
+# The todo commands that fold a commit into the one before it, and those of
+# them that replace its message.
+_FOLDING_COMMANDS = frozenset({'squash', 'fixup', 'fixup -C', 'fixup -c'})
+_REPLACING_COMMANDS = frozenset({'fixup -C', 'fixup -c'})
 
 # Git-naitve subcommands that brockit treats as autosquash markers.
 _AUTOSQUASH_SUBCOMMANDS = frozenset({'fixup', 'amend', 'reword', 'squash'})
-
-# Chromium version shape: exactly four dot-separated numeric segments
-# (e.g. 149.0.7827.5).
-_CR_VERSION = r'\d+\.\d+\.\d+\.\d+'
 
 # Matches the contiguous `!`-separated subcommand prefix of a comment, e.g.
 # `reassign!hash!`, `amend!`, `fixup!`. Git already uses `amend!`, `fixup!`,
@@ -111,107 +82,49 @@ _SUBCOMMAND_RE = re.compile(r'^[A-Za-z]\w*!(?:\w+!)*')
 # the line as the commit-subject suffix.
 _AUTOSQUASH_NOTE_RE = re.compile(r'#\s*(\w+!)\s*(.+)')
 
-
-def _strip_cr_tag(subject: str) -> str:
-    """Returns `subject` with any leading `[crNNN]` (or `[crNNN][...]…`)
-    tag and the trailing whitespace removed. A subject that doesn't
-    start with such a tag is returned unchanged."""
-    return _CR_TAG_RE.sub('', subject, count=1)
+# A Gerrit Change-Id trailer. Quoted ones (indented culprit messages, `> `
+# lines of a revert) don't match.
+_CHANGE_ID_RE = re.compile(r'Change-Id: (I[0-9a-f]{40})')
 
 
-def _strip_autosquash_prefixes(subject: str) -> str:
-    """Returns `subject` with any leading stack of `fixup! ` / `amend! `
-    / `squash! ` prefixes removed. Subjects without those prefixes are
-    returned unchanged."""
-    return _AUTOSQUASH_PREFIX_RE.sub('', subject)
+def _change_id_lines(lines: list[str]) -> tuple[list[int], int]:
+    """The indices of the Change-Id trailers in the last paragraph of
+    `lines`, where git looks for trailers, and the index the paragraph ends
+    at, before the comment lines git strips. The subject is never one."""
+    end = len(lines)
+    while end and (not lines[end - 1].strip() or lines[end - 1][0] == '#'):
+        end -= 1
+    start = next(
+        (i + 1 for i in range(end - 1, 0, -1) if not lines[i].strip()), end
+    )
+    return [
+        i
+        for i in range(start, end)
+        if _CHANGE_ID_RE.fullmatch(lines[i].rstrip())
+    ], end
 
 
-def _match(subject: str, pattern: re.Pattern) -> bool:
-    """True if `pattern` fully matches `subject` after stripping any
-    leading `fixup!` / `amend!` / `squash!` autosquash prefixes and any
-    `[crNNN]` tag. The stripped subject is also right-trimmed so a
-    trailing space in the original line doesn't break the fullmatch."""
-    cleaned = _strip_cr_tag(_strip_autosquash_prefixes(subject)).rstrip()
-    return pattern.fullmatch(cleaned) is not None
+def change_id_of(message: str) -> str | None:
+    """The Change-Id trailer of a commit message, if it has one."""
+    lines = message.split('\n')
+    found, _ = _change_id_lines(lines)
+    if not found:
+        return None
+    return _CHANGE_ID_RE.fullmatch(lines[found[0]].rstrip()).group(1)
 
 
-# Ordered list of `(pinned-group-id, regex)` entries. The order *is* the
-# squash priority order: when multiple pinned groups are present in the
-# same rebase plan, they're emitted top-to-bottom in this order
-# (version → plaster_reruns → conflict → gnrt → IWYU →
-# resource_ids → lit_mangler → codehealth_tracker → lift_updates →
-# disable_tests → dead_upstream_tests → flake_tests). The regexes are
-# anchored fullmatches applied to the `[crNNN]`-stripped subject, so each
-# pattern matches both the tagged and the untagged form of the same commit.
-PINNED_GROUPS = [
-    (
-        'version',
-        re.compile(
-            rf'Update from Chromium {_CR_VERSION} to '
-            rf'Chromium {_CR_VERSION}\.?'
-        ),
-    ),
-    (
-        'plaster_reruns',
-        re.compile(
-            rf'Apply-fixed 🩹 patches from Chromium {_CR_VERSION} to '
-            rf'Chromium {_CR_VERSION}\.?'
-        ),
-    ),
-    (
-        'conflict',
-        re.compile(
-            rf'Conflict-resolved patches from Chromium {_CR_VERSION} to '
-            rf'Chromium {_CR_VERSION}\.?'
-        ),
-    ),
-    ('gnrt', re.compile(rf'`gnrt` run for Chromium {_CR_VERSION}\.?')),
-    ('iwyu', re.compile(r'IWYU fixes\.?')),
-    ('resource_ids', re.compile(r'Bump resource_ids\.?')),
-    ('lit_mangler', re.compile(r'Update Lit mangler snapshot\.?')),
-    ('codehealth_tracker', re.compile(r'Version CodeHealth tracker\.?')),
-    ('lift_updates', re.compile(r'Version lift updates\.?')),
-    (
-        'disable_tests',
-        re.compile(
-            r'Disable failing upstream tests\.?|'
-            r'Filter upstream tests as needed\.?'
-        ),
-    ),
-    (
-        'dead_upstream_tests',
-        re.compile(r'Remove dead upstream tests from filters\.?'),
-    ),
-    ('flake_tests', re.compile(r'Update lists for upstream flake tests\.?')),
-]
-
-# Subjects produced by `pnpm run update_patches` and string generation --
-# evicted when `discard_recyclable=True`.
-RECYCLABLE_PATTERNS = [
-    re.compile(
-        rf'Update patches from Chromium {_CR_VERSION} to '
-        rf'Chromium {_CR_VERSION}\.?'
-    ),
-    re.compile(rf'Updated strings for Chromium {_CR_VERSION}\.?'),
-]
-
-
-def get_pinned_group_for_subject(subject: str) -> str | None:
-    """Returns the `PINNED_GROUPS` group id that `subject` matches
-    (e.g. `'version'`, `'iwyu'`), or `None` when no pattern matches.
-    Matching strips a leading `[crNNN]`-style tag, so the tagged and
-    untagged forms of the same subject return the same group id."""
-    for pinned_group, pattern in PINNED_GROUPS:
-        if _match(subject, pattern):
-            return pinned_group
-    return None
-
-
-def is_recyclable(subject: str) -> bool:
-    """Returns True when `subject` matches any `RECYCLABLE_PATTERNS`
-    entry -- i.e. the commit is auto-generated and can be regenerated
-    from the current source tree."""
-    return any(_match(subject, p) for p in RECYCLABLE_PATTERNS)
+def with_change_id(message: str, change_id: str) -> str:
+    """The message with `change_id` as its only Change-Id trailer: in place
+    of the first one it has, or as a paragraph of its own."""
+    lines = message.split('\n')
+    found, end = _change_id_lines(lines)
+    if not found:
+        lines[end:end] = ['', f'Change-Id: {change_id}']
+        return '\n'.join(lines)
+    lines[found[0]] = f'Change-Id: {change_id}'
+    for index in reversed(found[1:]):
+        del lines[index]
+    return '\n'.join(lines)
 
 
 def get_entry_type_for_subject(subject: str) -> 'EntryType':
@@ -504,6 +417,9 @@ class EntryLine:
         """
         if not line.strip() or line.lstrip().startswith('#'):
             return None
+        if line.split(maxsplit=1)[0] in ('exec', 'x'):
+            # Runs a command, rather than naming a commit.
+            return None
 
         # Split into at most three sections: command-part, comment, and an
         # optional trailing ` # <note>` marker (e.g. ` # empty`). Capping
@@ -577,6 +493,7 @@ def rewrite_plan(
     todo_file: Path,
     pinned_squashed: bool = False,
     discard_recyclable: bool = False,
+    carry_change_id: Callable[[list[str]], str] | None = None,
 ) -> None:
     """Rewrites a `git rebase --interactive` TODO file in place.
 
@@ -597,6 +514,12 @@ def rewrite_plan(
             their target. Defaults to `False`.
         discard_recyclable: When `True`, drop recyclable commits from
             the plan entirely. Defaults to `False`.
+        carry_change_id: Makes the todo line that gives HEAD the first
+            Change-Id of the commits it is given, or the branch's derived
+            one for a pinned or recyclable commit. When set, one follows
+            each `fixup -C`/`fixup -c`, whose `amend!` message would
+            otherwise replace the Change-Id of what it folds into, and each
+            pinned group and recyclable commit.
 
     Raises:
         EditorRecoverableFailure: Any TODO line that doesn't parse
@@ -742,10 +665,38 @@ def rewrite_plan(
 
         all_others.append(entry_line)
 
-    new_plan = [
-        *(c.out for group in pinned_groups.values() for c in group),
-        *(c.out for c in all_others),
-    ]
+    new_plan = []
+    # The commits folded into the one the plan is building, which keeps the
+    # first Change-Id among them, and whether that commit is pinned or
+    # recyclable, whose Change-Id is derived from the branch.
+    folded: list[str] = []
+    derived = False
+
+    def carry_derived() -> None:
+        # Also corrects a commit picked from another branch with that
+        # branch's derived Change-Id, which no squash may come to fix.
+        if derived and not new_plan[-1].startswith('exec '):
+            new_plan.append(carry_change_id(folded))
+
+    for entry in [
+        *(c for group in pinned_groups.values() for c in group),
+        *all_others,
+    ]:
+        if entry.command not in _FOLDING_COMMANDS:
+            carry_derived()
+            folded = [entry.hash]
+            derived = carry_change_id is not None and (
+                entry.is_pinned or entry.is_recyclable
+            )
+        new_plan.append(entry.out)
+        if entry.command in _REPLACING_COMMANDS:
+            # An `amend!` replaces the message, Change-Id included.
+            if carry_change_id is not None:
+                new_plan.append(carry_change_id(folded))
+        elif entry.command == 'squash':
+            folded.append(entry.hash)
+    if new_plan:
+        carry_derived()
 
     todo_file.write_text(
         '\n'.join(new_plan) + '\n', encoding='utf-8', newline=''
@@ -923,7 +874,9 @@ class MsgBlock:
                 # header and empty line.
                 message_lines = block_lines[2:]
 
-            msg = "\n".join(line.strip() for line in message_lines).strip()
+            # Only trailing whitespace goes: quoted culprit messages are
+            # indented, and must not read as the commit's own trailers.
+            msg = "\n".join(line.rstrip() for line in message_lines).strip()
             if note is not None and note.command == "fixup!":
                 # Git discards a `fixup!` commit's message, body included
                 # (stacked `# fixup! fixup! …` markers too). Treat it the
@@ -986,15 +939,30 @@ class MessageWriter:
     # classifications (RECYCLABLE, DEFAULT) are punted to the editor.
     _HANDLED_ENTRY_TYPES = frozenset({EntryType.PINNED, EntryType.REASSIGNMENT})
 
-    def rewrite_with_last_message(self) -> None:
+    def rewrite_with_last_message(self, branch: str = '') -> None:
         """Writes the trailing block's `full_message` (with a trailing
         newline) back to `todo_file`. Always valid:
         `MessageWriter.parse` only returns instances with at least one
         block whose first-block content classifies as PINNED or
-        REASSIGNMENT."""
-        self.todo_file.write_text(
-            self.blocks[-1].full_message + '\n', encoding='utf-8', newline=''
+        REASSIGNMENT.
+
+        On a `cr<N>` `branch`, a pinned squash takes the group's derived
+        Change-Id, which also gives one to commits made before there were
+        any. Otherwise the message keeps the first Change-Id of the blocks,
+        so the squashed commit stays the Gerrit change its first commit
+        started. A `reassign!` block has none, so a reassignment keeps its
+        target's.
+        """
+        message = self.blocks[-1].full_message
+        change_id = derived_change_id(
+            branch, self.blocks[0].full_message.split('\n', 1)[0]
+        ) or next(
+            filter(None, (change_id_of(b.full_message) for b in self.blocks)),
+            None,
         )
+        if change_id:
+            message = with_change_id(message, change_id)
+        self.todo_file.write_text(message + '\n', encoding='utf-8', newline='')
 
     @staticmethod
     def parse(todo_file: Path) -> 'MessageWriter | None':

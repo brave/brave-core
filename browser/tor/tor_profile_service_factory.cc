@@ -65,7 +65,13 @@ bool TorProfileServiceFactory::IsTorManaged(content::BrowserContext* context) {
 
 // static
 bool TorProfileServiceFactory::IsTorDisabled(content::BrowserContext* context) {
-  if (Profile::FromBrowserContext(context)->IsGuestSession()) {
+  Profile* profile = Profile::FromBrowserContext(context);
+  if (profile->IsGuestSession()) {
+    return true;
+  }
+  // Tor windows derive from a regular profile; profiles that don't (e.g.
+  // System, Top Chrome WebUI) lack the prefs read below.
+  if (!profile->GetOriginalProfile()->IsRegularProfile()) {
     return true;
   }
   if (tor::IsIncognitoDisabledOrForced(context)) {

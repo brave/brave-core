@@ -241,7 +241,7 @@ extension UIViewController {
               guard let self else { return }
               Task { @MainActor in
                 do {
-                  guard let pdfData = try await tab.createFullPagePDF() else {
+                  guard let pdfData = try await tab.createPDF(rect: .null) else {
                     return
                   }
                   // Create a valid filename

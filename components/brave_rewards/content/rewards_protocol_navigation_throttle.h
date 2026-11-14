@@ -10,6 +10,8 @@
 
 namespace brave_rewards {
 
+class RewardsService;
+
 class RewardsProtocolNavigationThrottle : public content::NavigationThrottle {
  public:
   explicit RewardsProtocolNavigationThrottle(
@@ -21,7 +23,8 @@ class RewardsProtocolNavigationThrottle : public content::NavigationThrottle {
   RewardsProtocolNavigationThrottle& operator=(
       const RewardsProtocolNavigationThrottle&) = delete;
 
-  static void MaybeCreateAndAdd(content::NavigationThrottleRegistry& registry);
+  static void MaybeCreateAndAdd(content::NavigationThrottleRegistry& registry,
+                                RewardsService* rewards_service);
 
   // Implements content::NavigationThrottle.
   ThrottleCheckResult WillStartRequest() override;

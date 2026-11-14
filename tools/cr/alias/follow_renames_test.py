@@ -314,6 +314,88 @@ class ShadowFileTest(_Base):
         )
 
 
+class ReplacementCopyTest(_Base):
+    """Brave's replacements of a renamed file, one per branding, follow it."""
+
+    _OLD = 'chrome/installer/linux/common/appdata.xml.template'
+    _NEW = 'chrome/installer/linux/common/metainfo.xml.template'
+    _COPIES = 'chromium_src/chrome/installer/linux/common'
+
+    def test_copies_and_the_gn_strings_naming_them_follow(self) -> None:
+        before = self._chromium_head()
+        self._chromium_commit(self._OLD, '<component/>\n')
+        for branding in ('brave-browser', 'brave-origin'):
+            self._brave_commit(
+                f'{self._COPIES}/{branding}/appdata.xml.template', branding
+            )
+        self._brave_commit(
+            'installer/linux/sources.gni',
+            'files = [\n'
+            '  "//brave/chromium_src/chrome/installer/linux/common/'
+            '$_dir/appdata.xml.template",\n'
+            '  "//chrome/installer/linux/common/appdata.xml.template",\n'
+            ']\n'
+            'excluded = [\n'
+            '  "common/appdata.xml.template",\n'
+            '  "other/appdata.xml.template",\n'
+            ']\n',
+        )
+        self._chromium_rename(self._OLD, self._NEW)
+
+        cmd_follow_renames([f'{before}..HEAD'])
+
+        for branding in ('brave-browser', 'brave-origin'):
+            moved = self._brave / self._COPIES / branding
+            self.assertEqual(
+                branding,
+                (moved / 'metainfo.xml.template').read_text(encoding='utf-8'),
+            )
+            self.assertFalse((moved / 'appdata.xml.template').exists())
+        self.assertEqual(
+            'files = [\n'
+            '  "//brave/chromium_src/chrome/installer/linux/common/'
+            '$_dir/metainfo.xml.template",\n'
+            '  "//chrome/installer/linux/common/metainfo.xml.template",\n'
+            ']\n'
+            'excluded = [\n'
+            '  "common/metainfo.xml.template",\n'
+            '  "other/appdata.xml.template",\n'
+            ']\n',
+            (self._brave / 'installer/linux/sources.gni').read_text(
+                encoding='utf-8'
+            ),
+        )
+        # The moves are staged; edits to the files naming them are left for
+        # review, as for other references.
+        self.assertEqual(
+            'installer/linux/sources.gni',
+            repository.brave.run_git('diff', '--name-only'),
+        )
+
+    def test_a_shadow_in_an_upstream_subdirectory_stays(self) -> None:
+        """`common/sub/` is upstream's too, so its file shadows another."""
+        before = self._chromium_head()
+        self._chromium_commit(self._OLD, '<component/>\n')
+        self._chromium_commit(
+            'chrome/installer/linux/common/sub/appdata.xml.template', 'sub\n'
+        )
+        shadow = self._brave_commit(
+            f'{self._COPIES}/sub/appdata.xml.template', 'shadow\n'
+        )
+        gni = self._brave_commit(
+            'installer/linux/sources.gni', '"common/appdata.xml.template"\n'
+        )
+        self._chromium_rename(self._OLD, self._NEW)
+
+        cmd_follow_renames([f'{before}..HEAD'])
+
+        self.assertTrue(shadow.exists())
+        # Nothing of Brave's replaces the renamed file itself.
+        self.assertEqual(
+            '"common/appdata.xml.template"\n', gni.read_text(encoding='utf-8')
+        )
+
+
 # ---------------------------------------------------------------------------
 # rewrite/ YAML and patch-file repair tests
 # ---------------------------------------------------------------------------

@@ -52,6 +52,9 @@ RECIPES_PKG = 'recipes'
 # then `TEMP`; Chromium on Mac reads `MAC_CHROMIUM_TMPDIR`.
 TEMP_DIR_ENV_VARS = ('MAC_CHROMIUM_TMPDIR', 'TEMP', 'TEMPDIR', 'TMP', 'TMPDIR')
 
+# Set for every step, so Brave's build tooling can tell a recipe from other CI.
+RECIPES_ENGINE_ENV_VAR = 'BRAVE_RECIPES_ENGINE'
+
 
 def _ensure_on_sys_path() -> None:
     """Put the recipes root on `sys.path` so modules import as packages."""
@@ -483,6 +486,10 @@ class _Engine:
         # `tempfile` caches the temp dir it found first.
         tempfile.tempdir = None
 
+    def mark_environ(self) -> None:
+        """Sets `RECIPES_ENGINE_ENV_VAR`, which every step inherits."""
+        os.environ[RECIPES_ENGINE_ENV_VAR] = '1'
+
     def run_recipe(
         self, recipe_name: str, properties: dict[str, object] | None = None
     ) -> object:
@@ -659,6 +666,7 @@ def main(argv: list[str] | None = None) -> int:
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
     job = _Engine(args.workspace)
     job.use_temp_dir()
+    job.mark_environ()
     job.run_recipe(args.recipe, json.loads(args.properties))
     return 0
 

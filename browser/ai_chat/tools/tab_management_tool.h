@@ -12,7 +12,6 @@
 
 #include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
-#include "base/task/cancelable_task_tracker.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "components/tabs/public/tab_interface.h"
@@ -49,14 +48,6 @@ class TabManagementTool : public Tool {
   void UseTool(const std::string& input_json,
                UseToolCallback callback) override;
 
-  // Stands in for the passage read in `HandleListTabs`. The read needs a real
-  // `HistoryEmbeddingsService`, which the factory only builds behind gating
-  // that tests can't satisfy. Receives one passage list per URL, in order.
-  using TabPassagesFetcher = base::RepeatingCallback<void(
-      const std::vector<GURL>&,
-      base::OnceCallback<void(std::vector<std::vector<std::string>>)>)>;
-  void SetTabPassagesFetcherForTesting(TabPassagesFetcher fetcher);
-
  private:
   using PassagesByUrl = base::flat_map<GURL, std::vector<std::string>>;
 
@@ -91,14 +82,10 @@ class TabManagementTool : public Tool {
   // tool uses elsewhere.
   static std::string PageContentChallengeImplications();
 
-  // Whether the history embeddings index can supply page excerpts for this
-  // profile's tabs. Decides whether a challenge discloses page content, so
-  // it has to hold whenever `HandleListTabs` would read any.
+  // Whether page excerpts can be supplied for this profile's tabs. Decides
+  // whether a challenge discloses page content, so it has to hold whenever
+  // `HandleListTabs` would read any.
   bool CanReadPageContent() const;
-
-  void OnListPassagesReady(UseToolCallback callback,
-                           std::vector<GURL> urls,
-                           std::vector<std::vector<std::string>> passages);
 
   // Helper to generate tab list that can be reused by all handlers. Tabs whose
   // URL has an entry in `passages` carry those page excerpts.
@@ -122,10 +109,6 @@ class TabManagementTool : public Tool {
   // grant for any other challenge, such as the server's alignment check,
   // never extends to it.
   bool user_has_granted_page_content_permission_ = false;
-
-  // Cancels in-flight passage reads when the tool goes away.
-  base::CancelableTaskTracker passages_task_tracker_;
-  TabPassagesFetcher tab_passages_fetcher_for_testing_;
 
   // Profile with which to restrict all window and tab operations. Usually
   // owns us via AIChatService as ProfileKeyedService.

@@ -18,7 +18,6 @@
 #include "base/notimplemented.h"
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
-#include "base/task/cancelable_task_tracker.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
@@ -37,7 +36,6 @@
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "chrome/browser/ui/webui/theme_source.h"
@@ -60,18 +58,9 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/webui/webui_util.h"
 #include "url/url_constants.h"
-
-#if BUILDFLAG(ENABLE_LOCAL_AI)
-#include "brave/browser/history_embeddings/open_tab_search.h"
-#include "chrome/browser/history/history_service_factory.h"
-#include "chrome/browser/history_embeddings/history_embeddings_service_factory.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
-#include "components/history_embeddings/content/history_embeddings_service.h"
-#include "components/history_embeddings/core/history_embeddings_search.h"
-#include "components/keyed_service/core/service_access_type.h"
-#endif
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/android/ai_chat/brave_leo_settings_launcher_helper.h"
@@ -181,41 +170,9 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 
   void SearchForTabs(const std::string& query,
                      SearchForTabsCallback callback) override {
-#if BUILDFLAG(ENABLE_LOCAL_AI)  // Match open_tab_search GN guard
-    Profile* profile = Profile::FromWebUI(web_ui_);
-    // The history-embeddings setting is off for this profile, so there's no
-    // on-device ranker to consult.
-    if (!history_embeddings::IsHistoryEmbeddingsEnabledForProfile(profile)) {
-      std::move(callback).Run(std::nullopt);
-      return;
-    }
-    auto* embeddings_search =
-        HistoryEmbeddingsServiceFactory::GetForProfile(profile);
-    auto* history_service = HistoryServiceFactory::GetForProfile(
-        profile, ServiceAccessType::EXPLICIT_ACCESS);
-    if (!embeddings_search || !history_service) {
-      std::move(callback).Run(std::nullopt);
-      return;
-    }
-    history_embeddings::SearchOpenTabsByContent(
-        profile, history_service, embeddings_search->AsWeakPtr(), query,
-        base::BindOnce(
-            [](SearchForTabsCallback callback,
-               std::vector<history_embeddings::OpenTabInfo> tabs) {
-              std::vector<ai_chat::mojom::TabDataPtr> results;
-              results.reserve(tabs.size());
-              for (auto& tab : tabs) {
-                results.push_back(ai_chat::mojom::TabData::New(
-                    tab.tab_id, tab.content_id, std::move(tab.title),
-                    std::move(tab.url)));
-              }
-              std::move(callback).Run(std::move(results));
-            },
-            std::move(callback)),
-        &tab_search_task_tracker_);
-#else
+    // No on-device ranker for open tabs since upstream removed History
+    // Embeddings.
     std::move(callback).Run(std::nullopt);
-#endif
   }
 
   void SwitchToTab(int32_t tab_id) override {
@@ -410,10 +367,10 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 #if !BUILDFLAG(IS_ANDROID)
     BrowserWindowInterface* browser =
         ai_chat::GetBrowserForWebContents(web_ui_->GetWebContents());
-    browser->OpenURL(
-        {url, content::Referrer(), WindowOpenDisposition::kNewForegroundTab,
-         ui::PAGE_TRANSITION_LINK, false},
-        /*navigation_handle_callback=*/{});
+    browser->OpenURL({url, content::Referrer(),
+                      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
+                      ui::PAGE_TRANSITION_LINK, false},
+                     /*navigation_handle_callback=*/{});
 #else
     // We handle open link different on Android as we need to close the chat
     // window because it's always full screen
@@ -450,11 +407,6 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 
   ThumbnailTracker thumbnail_tracker_;
 #endif  // !BUILDFLAG(IS_ANDROID)
-
-#if BUILDFLAG(ENABLE_LOCAL_AI)
-  // Cancels in-flight URL->URLID lookups from SearchForTabs when destroyed.
-  base::CancelableTaskTracker tab_search_task_tracker_;
-#endif
 
   raw_ptr<content::WebUI> web_ui_ = nullptr;
 

@@ -35,6 +35,7 @@
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
+#include "ui/gfx/geometry/size.h"
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
@@ -126,6 +127,7 @@ class BraveBrowserView : public BrowserView,
 #endif
   bool GetTabStripVisible() const override;
   bool ShouldShowWindowTitle() const override;
+  gfx::Size GetContentsSize() const override;
   void OnActiveTabChanged(content::WebContents* old_contents,
                           content::WebContents* new_contents,
                           int index,
@@ -154,7 +156,8 @@ class BraveBrowserView : public BrowserView,
 
   // BookmarkTabHelperObserver:
   void URLStarredChanged(content::WebContents* web_contents,
-                         bool starred) override;
+                         bool starred,
+                         bool is_bookmark_added_or_removed) override;
 
   // commands::AcceleratorService:
   void OnAcceleratorsChanged(

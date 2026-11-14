@@ -13,7 +13,6 @@ import sys
 import tarfile
 import tempfile
 import time
-import zipfile
 
 from lib.util import extract_zip
 

@@ -19,7 +19,7 @@ _JENKINS = (
 
 class ParseRollupTest(unittest.TestCase):
     def test_statuses_and_check_runs(self):
-        checks = github.parse_rollup(
+        checks = github._parse_rollup(
             [
                 {
                     '__typename': 'StatusContext',
@@ -81,7 +81,7 @@ class ParseRollupTest(unittest.TestCase):
         )
 
     def test_keeps_the_latest_entry_per_name(self):
-        checks = github.parse_rollup(
+        checks = github._parse_rollup(
             [
                 {'context': 'a', 'state': 'FAILURE', 'targetUrl': 'u1'},
                 {'context': 'a', 'state': 'SUCCESS', 'targetUrl': 'u2'},
@@ -114,6 +114,18 @@ class PrChecksTest(unittest.TestCase):
         self.assertEqual(
             checks.in_state(State.FAILURE),
             [Check('a', State.FAILURE, _JENKINS)],
+        )
+
+
+class HasPullRequestTest(unittest.TestCase):
+    def test_asks_brave_core_for_the_branch_s_open_pull_requests(self):
+        with mock.patch.object(
+            github.GhCli, 'list_prs', side_effect=[[{'number': 1}], []]
+        ) as list_prs:
+            self.assertTrue(github.has_pull_request('cr159'))
+            self.assertFalse(github.has_pull_request('cr160'))
+        list_prs.assert_called_with(
+            head='cr160', fields='number', repo='brave/brave-core'
         )
 
 

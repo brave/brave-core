@@ -31,7 +31,8 @@ These are the user-facing scripts in this directory:
   [autolift/SKILL.md](autolift/SKILL.md): build log summaries, culprit lookup,
   culprit hash verification, the autofix run's CI report and fixup push, and
   channel bumps: a minor bump's branch and pull request for each release channel
-  on its milestone.
+  on its milestone; and `gerrit-upload` (`autolift/gerrit_upload.py`), which
+  uploads a published `cr<N>` to Gerrit as a relation chain of CLs.
 - `ci/cli.py` — Lists a pull request's checks, reports what failed behind them
   on Jenkins and TeamCity, and reruns a check's build.
 
@@ -47,6 +48,8 @@ Shared abstractions used by the entry points and tests:
 - `patchfile.py` — Patch file abstraction handling patches that failed to apply.
 - `conflict_resolution.py` — The fixed answers `brockit rebase` gives to the
   conflicts it stops on.
+- `pinned_commits.py` — The commit subjects `brockit rebase` groups or discards.
+  Standard library only, as the `commit-msg` hook imports it.
 - `git_status.py` — Parser for `git status --porcelain` output.
 - `versioning.py` — Chromium version number parsing.
 - `vscode.py` — IPC for opening files in VS Code in the integrated terminal.

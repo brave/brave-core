@@ -143,7 +143,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             @Nullable BottomBarHostManager bottomBarHostManager,
             VerticalTabsActionDelegate verticalTabsActionDelegate,
             Supplier<Boolean> urlBarVisibleSupplier,
-            Runnable onTabLayoutAvailable) {
+            Runnable onTabLayoutAvailable,
+            BooleanSupplier isWarmOnResumeSupplier) {
         super(
                 activity,
                 onOmniboxFocusChangedListener,
@@ -200,7 +201,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 bottomBarHostManager,
                 verticalTabsActionDelegate,
                 urlBarVisibleSupplier,
-                onTabLayoutAvailable);
+                onTabLayoutAvailable,
+                isWarmOnResumeSupplier);
 
         mBraveActivity = activity;
         mHubManagerSupplier = hubManagerSupplier;

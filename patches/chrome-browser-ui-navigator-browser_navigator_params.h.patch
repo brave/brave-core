@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/navigator/browser_navigator_params.h b/chrome/browser/ui/navigator/browser_navigator_params.h
-index 5fdb969fc54ebd9beef61511929dcfe9a55295c1..fec82d0240e000e5b5b42d6d6d3d48daeec639cd 100644
+index 232348782982569a8c826cf8e700bc19c69560c2..59e41f4f0e187066049eb12ff12c21e4985539af 100644
 --- a/chrome/browser/ui/navigator/browser_navigator_params.h
 +++ b/chrome/browser/ui/navigator/browser_navigator_params.h
 @@ -13,6 +13,7 @@

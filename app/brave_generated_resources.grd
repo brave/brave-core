@@ -549,6 +549,19 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
       </if>
 
+      <!-- Mac updater -->
+      <if expr="is_macosx">
+        <message name="IDS_PROMOTE_PREFLIGHT_LAUNCH_ERROR" desc="Status label shown when an administrator user requested automatic updates for all users, but the OS failed to start the pre-flight process.  Mac-only.">
+          Failed to set up automatic updates for all users (preflight launch error: <ph name="ERROR_NUMBER">$1<ex>1</ex></ph>)
+        </message>
+        <message name="IDS_PROMOTE_PREFLIGHT_SCRIPT_ERROR" desc="Status label shown when an administrator user requested automatic updates for all users, but the pre-flight process reported an error.  Mac-only.">
+          Failed to set up automatic updates for all users (preflight execution error: <ph name="ERROR_NUMBER">$1<ex>1</ex></ph>)
+        </message>
+        <message name="IDS_UPGRADE_ERROR_DETAILS" desc="Status label optionally shown when an error occurred during upgrade. The upgrade daemon may optionally send supplemental error messages; if they're available, we append them after this message in an HTML pre block.">
+          Error details:
+        </message>
+      </if>
+
       <!-- Brave Rewards Extension -->
       <if expr="use_titlecase">
         <message name="IDS_HIDE_BRAVE_REWARDS_ACTION_ICON" desc="The menu item to hide the Brave Rewards icon on the location bar">
@@ -1664,14 +1677,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         On-Device Speech Recognition
       </message>
 
-      <!-- History semantic search disclaimer. Upstream's text implies a
-           round-trip to the vendor with human review; Brave's implementation
-           runs entirely on-device (see
-           brave/browser/history_embeddings/README.md), so we ship our own
-           string and swap the IDS in chromium_src overrides. -->
-      <message name="IDS_BRAVE_HISTORY_EMBEDDINGS_DISCLAIMER" desc="Disclaimer shown on chrome://history and in the history search IPH promo, indicating that history semantic search runs entirely on-device.">
-        Your searches and page contents are processed on this device. Nothing is sent to Brave or seen by human reviewers.
-      </message>
       <!--Add new items to the appropriate sections above -->
     </messages>
   </release>

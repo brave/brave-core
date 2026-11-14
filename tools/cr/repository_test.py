@@ -9,6 +9,7 @@ from pathlib import Path
 import subprocess
 import unittest
 
+from pinned_commits import derived_change_id
 import repository
 from repository import Repository
 
@@ -204,6 +205,28 @@ class RepositoryTest(unittest.TestCase):
             repository.chromium.get_commit_short_description()
         )
         self.assertEqual(last_commit_message_after, commit_message)
+
+    def test_git_commit_gives_pinned_commits_their_change_id(self):
+        """Even with `no_verify`, which brockit's own commits use, so the
+        hook doesn't run."""
+        subject = 'Updated strings for Chromium 1.0.0.1.'
+        brave = self.fake_chromium_src.brave
+        self.fake_chromium_src._run_git_command(
+            ['checkout', '-q', '-b', 'cr150'], brave
+        )
+        for name, message, change_id in (
+            ('pinned.txt', subject, derived_change_id('cr150', subject)),
+            ('other.txt', 'Feature work', None),
+        ):
+            with self.subTest(message):
+                self.fake_chromium_src.write_and_stage_file(name, 'x\n', brave)
+                repository.brave.git_commit(message, no_verify=True)
+                self.assertEqual(
+                    repository.brave.run_git('log', '-1', '--format=%B'),
+                    f'{message}\n\nChange-Id: {change_id}'
+                    if change_id
+                    else message,
+                )
 
     def test_git_commit_allows_empty(self):
         """Test git_commit with allows_empty."""

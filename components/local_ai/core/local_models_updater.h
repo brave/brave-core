@@ -128,6 +128,10 @@ void ManageLocalModelsComponentRegistration(
 // run before `cus` and `local_state` are destroyed.
 void ShutdownLocalModelsComponentRegistration();
 
+// No feature needs the models in production, so they are never registered.
+// Lets tests exercise registration anyway.
+void SetLocalModelsNeededForTesting(bool needed);
+
 }  // namespace local_ai
 
 #endif  // BRAVE_COMPONENTS_LOCAL_AI_CORE_LOCAL_MODELS_UPDATER_H_

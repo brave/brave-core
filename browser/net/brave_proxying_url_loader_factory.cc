@@ -874,7 +874,14 @@ void BraveProxyingURLLoaderFactory<T>::CreateLoaderAndStart(
 template <template <typename> class T>
 void BraveProxyingURLLoaderFactory<T>::Clone(
     mojo::PendingReceiver<network::mojom::URLLoaderFactory> loader_receiver) {
-  proxy_receivers_.Add(this, std::move(loader_receiver));
+  // As upstream's `WebRequestProxyingURLLoaderFactory`, clones of a subresource
+  // factory stay on its task runner, so their requests keep their ordering.
+  proxy_receivers_.Add(this, std::move(loader_receiver),
+                       url_loader_factory_type_ ==
+                               content::ContentBrowserClient::
+                                   URLLoaderFactoryType::kDocumentSubResource
+                           ? navigation_response_task_runner_
+                           : nullptr);
 }
 
 template <template <typename> class T>

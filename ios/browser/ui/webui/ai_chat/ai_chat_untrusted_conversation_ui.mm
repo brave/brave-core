@@ -50,6 +50,7 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/url_constants.h"
 
 namespace {
@@ -213,7 +214,7 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     web_ui_->GetWebState()->OpenURL({
         url,
         web::Referrer(),
-        WindowOpenDisposition::kNewForegroundTab,
+        ui::mojom::WindowOpenDisposition::kNewForegroundTab,
         ui::PAGE_TRANSITION_LINK,
         false,
     });

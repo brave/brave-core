@@ -1,0 +1,30 @@
+diff --git a/third_party/blink/renderer/platform/loader/fetch/script_fetch_options.h b/third_party/blink/renderer/platform/loader/fetch/script_fetch_options.h
+index 70f569b421e3e34e5d1753f5c6fdea84d6debbed..8570a63612f17df6a74d7da83bbeca56defd97c4 100644
+--- a/third_party/blink/renderer/platform/loader/fetch/script_fetch_options.h
++++ b/third_party/blink/renderer/platform/loader/fetch/script_fetch_options.h
+@@ -88,6 +88,13 @@ class PLATFORM_EXPORT ScriptFetchOptions final {
+                                         const TextEncoding&,
+                                         FetchParameters::DeferOption) const;
+ 
++  #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
++  void SetDOMNodeId(DOMNodeId dom_node_id);
++  DOMNodeId GetDOMNodeId() const;
++  void SetParentScriptId(int parent_script_id);
++  int GetParentScriptId() const;
++  #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
++
+  private:
+   // https://html.spec.whatwg.org/C/#concept-script-fetch-options-nonce
+   const String nonce_;
+@@ -113,6 +120,11 @@ class PLATFORM_EXPORT ScriptFetchOptions final {
+ 
+   const RenderBlockingBehavior render_blocking_behavior_ =
+       RenderBlockingBehavior::kUnset;
++
++#if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
++  DOMNodeId dom_node_id_ = kInvalidDOMNodeId;
++  int parent_script_id_ = 0;
++#endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
+ };
+ 
+ }  // namespace blink

@@ -17,6 +17,7 @@ from recipe_modules import (
     brave_core_checkout,
     chromium_checkout,
     claude_cli,
+    depot_tools,
     file,
     git,
     json,
@@ -40,7 +41,12 @@ REPORT = 'report.md'
 _CR_BRANCH_RE = re.compile(r'refs/heads/cr(\d+)')
 
 # What a step's simulation reports when a test doesn't say.
-_LIFT_ADVICE = {'action': 'lift', 'prompt': 'Lift.', 'reasons': []}
+_LIFT_ADVICE = {
+    'action': 'lift',
+    'prompt': 'Lift.',
+    'reads': ['tools/cr/autolift/SKILL.md'],
+    'reasons': [],
+}
 _NOTHING_PENDING = {'pending': 0, 'prompt': None, 'report': 'sync-tooling.md'}
 
 
@@ -48,6 +54,7 @@ _NOTHING_PENDING = {'pending': 0, 'prompt': None, 'report': 'sync-tooling.md'}
 class DEPS(RecipeScriptApi):
     brave_core_checkout: brave_core_checkout.API
     claude_cli: claude_cli.API
+    depot_tools: depot_tools.API
     file: file.API
     git: git.API
     json: json.API
@@ -68,8 +75,8 @@ class TEST_DEPS(RecipeTestApi):
 PROPERTIES = InputProperties
 
 
-def _latest_milestone(api: DEPS) -> int:
-    """The milestone of the newest `cr<N>` branch on brave-core."""
+def _branch_milestones(api: DEPS) -> set[int]:
+    """The milestones of the `cr<N>` branches on brave-core."""
     result = api.git(
         'ls-remote',
         '--heads',
@@ -78,14 +85,24 @@ def _latest_milestone(api: DEPS) -> int:
         name='find latest cr branch',
         stdout=api.raw_io.output_text(),
     )
-    milestones = []
+    milestones = set()
     for line in result.stdout.splitlines():
         _, _, ref = line.partition('\t')
         if match := _CR_BRANCH_RE.fullmatch(ref):
-            milestones.append(int(match[1]))
+            milestones.add(int(match[1]))
     if not milestones:
         raise RuntimeError(f'no cr<N> branch on {BRAVE_CORE_URL}')
-    return max(milestones)
+    return milestones
+
+
+def _checkout_ref(milestone: int, branches: set[int]) -> str:
+    """The ref to check out for a run of cr<milestone>: the branch, or for a
+    new milestone, the base `autolift.py prepare` creates it from."""
+    if milestone in branches:
+        return f'refs/heads/cr{milestone}'
+    if milestone - 1 in branches:
+        return f'refs/heads/cr{milestone - 1}'
+    return 'refs/heads/master'
 
 
 def _advise(
@@ -93,7 +110,7 @@ def _advise(
 ) -> dict:
     """What the run does, and what its agent is told, as `autolift.py advise`
     decides it: no prompt for a run with nothing to do."""
-    cmd = ['vpython3', script, 'advise', target]
+    cmd = [api.depot_tools.vpython3(), script, 'advise', target]
     if properties.autofix:
         cmd.append('--autofix')
     if properties.resume:
@@ -119,7 +136,7 @@ def _sync_tooling(
     agent reconciling what the script leaves for judgement, before the lift
     reads its skill. Runs in the checkout, from the brave-core layout."""
     cmd = [
-        'python3',
+        api.depot_tools.vpython3(),
         api.resource('sync_tooling.py'),
         '--milestone',
         str(milestone),
@@ -150,8 +167,10 @@ def RunSteps(api: DEPS, properties: InputProperties) -> None:
     # has done already. A channel bump's tooling comes from the newest branch
     # as it is.
     newest = None
+    branches: set[int] = set()
     if not properties.resume or not (properties.milestone or tag):
-        newest = _latest_milestone(api)
+        branches = _branch_milestones(api)
+        newest = max(branches)
     milestone = properties.milestone or newest
     # A channel bump's run is named after its milestone, as its branches.
     run_name = f'cr{tag.split(".")[0]}.x' if tag else f'cr{milestone}'
@@ -163,7 +182,9 @@ def RunSteps(api: DEPS, properties: InputProperties) -> None:
         # clearing would lose the run's report and build.
         root = api.path.abs(api.path.brave_core)
     else:
-        api.brave_core_checkout.set_brave_core_ref(f'refs/heads/cr{milestone}')
+        api.brave_core_checkout.set_brave_core_ref(
+            _checkout_ref(milestone, branches)
+        )
         # Deprecated: the `.env` for the builds, with RBE when the module's
         # `use_remoteexec` property asks for it.
         api.brave_core_checkout.set_config('deprecated_brave')
@@ -181,14 +202,14 @@ def RunSteps(api: DEPS, properties: InputProperties) -> None:
     # without auto mode reviewing each edit. `publish`, the run's one push, is
     # allowed too: auto mode otherwise judges it by what the run printed before
     # it, and a rebased branch "behind" its remote reads as overwriting it.
-    # The agent runs it as `publish ... > <log> 2>&1; echo "exit $?"`.
+    # A rule only covers a command it matches whole, so the agent runs
+    # `publish` bare: it keeps its own log.
     add_dirs = [checkout]
     allowed_tools = [
         f'Edit(/{checkout}/**)',
         f'Write(/{checkout}/**)',
         f'Bash(vpython3 {AUTOLIFT} publish *)',
         f'Bash(vpython3 {STAGED_AUTOLIFT} publish *)',
-        'Bash(echo *)',
     ]
     with api.brave_core_checkout.brave_core_layout():
         advice = _advise(api, script, tag or str(milestone), properties)
@@ -226,6 +247,10 @@ def RunSteps(api: DEPS, properties: InputProperties) -> None:
                 log_dir=run_dir,
                 add_dirs=add_dirs,
                 allowed_tools=allowed_tools,
+                # The skill's files the prompt names; the report lists any the
+                # agent didn't read in full.
+                must_read=[root / path for path in advice['reads']],
+                report=run_dir / REPORT,
             )
         finally:
             # The report in full, however the run ended. A run that stopped
@@ -261,7 +286,12 @@ def GenTests(api: TEST_DEPS):
         return api.step_data(
             'advise',
             api.json.output(
-                {'action': action, 'prompt': prompt, 'reasons': ['- Why.']}
+                {
+                    'action': action,
+                    'prompt': prompt,
+                    'reads': ['tools/cr/autolift/SKILL.md'] if prompt else [],
+                    'reasons': ['- Why.'],
+                }
             ),
         )
 
@@ -341,6 +371,41 @@ def GenTests(api: TEST_DEPS):
                 ['checkout', '--force', '-B', 'cr158'],
             ),
             advised('advise', '158'),
+            api.post_process(post_process.StatusSuccess),
+            api.post_process(post_process.DropExpectation),
+        ),
+    )
+
+    # A new milestone has no branch yet: its base is checked out, for
+    # `prepare` to create the branch from.
+    yield api.test(
+        'new milestone',
+        new_run(
+            api.properties(milestone=160),
+            api.post_process(
+                post_process.StepCommandContains,
+                'brave-core checkout branch',
+                ['checkout', '--force', '-B', 'cr159'],
+            ),
+            advised('advise', '160'),
+            api.post_process(post_process.DoesNotRun, 'sync tooling'),
+            api.post_process(post_process.MustRun, 'autolift'),
+            api.post_process(post_process.StatusSuccess),
+            api.post_process(post_process.DropExpectation),
+        ),
+    )
+
+    # Without the previous milestone's branch either, the base is master.
+    yield api.test(
+        'new milestone off master',
+        new_run(
+            api.properties(milestone=161),
+            api.post_process(
+                post_process.StepCommandContains,
+                'brave-core checkout branch',
+                ['checkout', '--force', '-B', 'master'],
+            ),
+            advised('advise', '161'),
             api.post_process(post_process.StatusSuccess),
             api.post_process(post_process.DropExpectation),
         ),
@@ -502,6 +567,28 @@ def GenTests(api: TEST_DEPS):
         new_run(
             api.properties(milestone=158, chromium_version='157.0.8103.38'),
             api.post_process(post_process.DoesNotRun, 'sync tooling'),
+            api.post_process(post_process.StatusSuccess),
+            api.post_process(post_process.DropExpectation),
+        ),
+    )
+
+    # A minor bump of a channel, from a milestone with no branch yet: its
+    # base's tooling runs it.
+    yield api.test(
+        'channel bump from a new milestone',
+        new_run(
+            api.properties(milestone=160, chromium_version='157.0.8103.60'),
+            api.post_process(
+                post_process.StepCommandContains,
+                'brave-core checkout branch',
+                ['checkout', '--force', '-B', 'cr159'],
+            ),
+            advised(AUTOLIFT, 'advise', '157.0.8103.60'),
+            api.post_process(
+                post_process.StepCommandRE,
+                'report',
+                ['cat', r'.*/b/src/brave/\.autolift/cr157\.x/report\.md'],
+            ),
             api.post_process(post_process.StatusSuccess),
             api.post_process(post_process.DropExpectation),
         ),

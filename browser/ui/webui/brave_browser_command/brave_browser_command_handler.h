@@ -18,7 +18,7 @@
 #include "brave/ui/webui/resources/js/brave_browser_command/brave_browser_command.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-#include "ui/base/window_open_disposition.h"
+#include "ui/base/mojom/window_open_disposition.mojom-forward.h"
 #include "url/gurl.h"
 
 class Profile;
@@ -31,7 +31,7 @@ class BraveBrowserCommandHandler
    public:
     virtual ~Delegate() = default;
     virtual void OpenURL(const GURL& url,
-                         WindowOpenDisposition disposition) = 0;
+                         ui::mojom::WindowOpenDisposition disposition) = 0;
     virtual void OpenRewardsPanel() = 0;
     virtual void OpenVPNPanel() = 0;
 #if BUILDFLAG(ENABLE_AI_CHAT)
