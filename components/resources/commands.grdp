@@ -76,9 +76,6 @@
   <message name="IDS_IDC_SELECT_LAST_TAB">
     Select last tab
   </message>
-  <message name="IDS_IDC_SELECT_LAST_ACTIVE_TAB">
-    Select last active tab
-  </message>
   <message name="IDS_IDC_DUPLICATE_TAB">
     Duplicate tab
   </message>
