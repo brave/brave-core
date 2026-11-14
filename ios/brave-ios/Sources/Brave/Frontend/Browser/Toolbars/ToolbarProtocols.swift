@@ -50,7 +50,9 @@ extension ToolbarProtocol {
         ])
       }
     ])
+    addTabButton.preferredMenuElementOrder = .fixed
     addTabButton.menu = newTabMenu
+    searchButton.preferredMenuElementOrder = .fixed
     searchButton.menu = newTabMenu
   }
 
@@ -186,18 +188,6 @@ extension ToolbarProtocol {
   private func newTabMenuActions(state: BrowserToolbarState) -> [UIAction] {
     let isPrivateTab = state.isPrivateTab
     var actions: [UIAction] = []
-    if !isPrivateTab {
-      actions.append(
-        UIAction(
-          title: Strings.Hotkey.newPrivateTabTitle,
-          image: UIImage(braveSystemNamed: "leo.product.private-window"),
-          handler: UIAction.deferredActionHandler { [weak self] _ in
-            guard let self else { return }
-            self.tabToolbarDelegate?.tabToolbarDidSelectNewTab(self, isPrivate: true)
-          }
-        )
-      )
-    }
     actions.append(
       UIAction(
         title: isPrivateTab ? Strings.Hotkey.newPrivateTabTitle : Strings.Hotkey.newTabTitle,
@@ -211,6 +201,18 @@ extension ToolbarProtocol {
         }
       )
     )
+    if !isPrivateTab {
+      actions.append(
+        UIAction(
+          title: Strings.Hotkey.newPrivateTabTitle,
+          image: UIImage(braveSystemNamed: "leo.product.private-window"),
+          handler: UIAction.deferredActionHandler { [weak self] _ in
+            guard let self else { return }
+            self.tabToolbarDelegate?.tabToolbarDidSelectNewTab(self, isPrivate: true)
+          }
+        )
+      )
+    }
     if UIApplication.shared.supportsMultipleScenes {
       actions.append(
         UIAction(
