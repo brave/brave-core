@@ -1,8 +1,8 @@
 diff --git a/components/tabs/impl/tab_strip_collection.cc b/components/tabs/impl/tab_strip_collection.cc
-index f586465c0dd4bc525f76282f809197547de580ba..fcf515bf2636488f3d8d477d7d3dc749cec82b76 100644
+index 03d241b1655eb84d7370adb69298ade1099894df..7c2b8aab2e56236495d51b37f72f4fa79e278b78 100644
 --- a/components/tabs/impl/tab_strip_collection.cc
 +++ b/components/tabs/impl/tab_strip_collection.cc
-@@ -606,6 +606,9 @@ ScopedTab TabStripCollection::RemoveTabImpl(TabInterface* tab,
+@@ -323,6 +323,9 @@ ScopedTab TabStripCollection::RemoveTab(TabInterface* tab,
    // If it is the only tab in the group remove the collection.
    if (parent_collection != unpinned_collection_ &&
        parent_collection != pinned_collection_ &&
@@ -12,7 +12,7 @@ index f586465c0dd4bc525f76282f809197547de580ba..fcf515bf2636488f3d8d477d7d3dc749
        parent_collection->TabCountRecursive() == 1) {
      RemoveTabCollectionImpl(parent_collection);
      return parent_collection->MaybeRemoveTab(tab);
-@@ -625,6 +628,17 @@ ScopedTab TabStripCollection::RemoveTabImpl(TabInterface* tab,
+@@ -342,6 +345,17 @@ ScopedTab TabStripCollection::RemoveTab(TabInterface* tab,
            removed_tab->GetHandle()}},
        nullptr, remove_for_detach);
  
