@@ -22,6 +22,7 @@ include_rules = [
   "+third_party/blink/public/common",
   "+third_party/boringssl",
   "+third_party/re2",
+  "+third_party/zlib/google",
   "+tools/json_schema_compiler",
   "+ui/base",
 ]
