@@ -19,6 +19,8 @@ struct TabGroupDetailView: View {
   @State private var title = ""
   @State private var isEditingTitle = false
   @FocusState private var isTitleFocused: Bool
+  @State private var isExpanded = false
+  @State private var expandedFrame: CGRect?
 
   private var browserColors: BrowserColors {
     viewModel.isPrivateBrowsing ? .privateMode : .standard
@@ -35,12 +37,29 @@ struct TabGroupDetailView: View {
       contextMenuForGroup: { _ in nil },
       scrollsOnModeSwitch: false,
       isReorderingEnabled: false,
+      isGroupDetail: true,
       selectedTabList: .constant([])
     )
     // The tab grid's edit mode doesn't apply to a group's tabs
     .environment(\.editMode, .constant(.inactive))
+    .background {
+      Color(uiColor: browserColors.tabSwitcherBackground)
+        .ignoresSafeArea()
+        .clipShape(.rect(cornerRadius: isExpanded ? 0 : 16, style: .continuous))
+        .onGeometryChange(for: CGRect.self) {
+          $0.frame(in: .global)
+        } action: { frame in
+          guard expandedFrame == nil, !frame.isEmpty else { return }
+          expandedFrame = frame
+          guard !isExpanded else { return }
+          DispatchQueue.main.async {
+            withAnimation(.growAnimation) {
+              isExpanded = true
+            }
+          }
+        }
+    }
     .edgesIgnoringSafeArea(.vertical)
-    .background(Color(uiColor: browserColors.tabSwitcherBackground).ignoresSafeArea())
     .overlay(alignment: .top) {
       header
         .padding(.horizontal, 16)
@@ -51,7 +70,13 @@ struct TabGroupDetailView: View {
         }
         .contentShape(.rect)
     }
+    .scaleEffect(isExpanded ? CGSize(width: 1, height: 1) : collapsedScale)
+    .offset(isExpanded ? .zero : collapsedOffset)
+    .opacity(isExpanded ? 1 : 0)
+    .allowsHitTesting(isExpanded)
     .onAppear {
+      // A restored group is shown right away, without growing out of its tile
+      isExpanded = viewModel.isOpenGroupRestored
       title = viewModel.openGroupTitle
       if viewModel.consumeNamingRequest() {
         title = ""
@@ -68,6 +93,36 @@ struct TabGroupDetailView: View {
         commitTitle()
         isEditingTitle = false
       }
+    }
+  }
+
+  /// The scale that shrinks the view down to the size of its group's item
+  private var collapsedScale: CGSize {
+    guard let source = viewModel.openGroupSourceFrame, let expandedFrame else {
+      return CGSize(width: 0.9, height: 0.9)
+    }
+    return CGSize(
+      width: source.width / expandedFrame.width,
+      height: source.height / expandedFrame.height
+    )
+  }
+
+  /// The offset that moves the shrunk view over its group's item
+  private var collapsedOffset: CGSize {
+    guard let source = viewModel.openGroupSourceFrame, let expandedFrame else { return .zero }
+    return CGSize(
+      width: source.midX - expandedFrame.midX,
+      height: source.midY - expandedFrame.midY
+    )
+  }
+
+  /// Shrinks the view back into its group's item, then closes it
+  private func collapse() {
+    commitTitle()
+    withAnimation(.growAnimation) {
+      isExpanded = false
+    } completion: {
+      viewModel.closeOpenGroup()
     }
   }
 
@@ -116,12 +171,9 @@ struct TabGroupDetailView: View {
     VStack(alignment: .leading, spacing: 12) {
       HStack(spacing: 12) {
         Button {
-          commitTitle()
-          withAnimation {
-            viewModel.closeOpenGroup()
-          }
+          collapse()
         } label: {
-          Label(Strings.TabGrid.backToTabsAccessibilityLabel, braveSystemImage: "leo.browser.back")
+          Label(Strings.TabGrid.backToTabsAccessibilityLabel, braveSystemImage: "leo.close")
             .labelStyle(.buttonIconOnly)
         }
         .plainHeaderIconButtonStyle()
@@ -165,5 +217,12 @@ struct TabGroupDetailView: View {
     }
     .containerCornerOffset(.leading, sizeToFit: true)
     .dynamicTypeSize(.xSmall..<DynamicTypeSize.accessibility2)
+  }
+}
+
+extension Animation {
+  /// Matches the spring of the tab tray's transition to and from a tab
+  fileprivate static var growAnimation: Animation {
+    .spring(duration: 0.4, bounce: 0)
   }
 }
