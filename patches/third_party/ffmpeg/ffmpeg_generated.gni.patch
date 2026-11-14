@@ -1,5 +1,5 @@
 diff --git a/ffmpeg_generated.gni b/ffmpeg_generated.gni
-index ba2c2b258440a6b9199295e3d3e249df85cfe7b8..e40d17f7ba4e9727e2d0d0ef9427a707b428505b 100644
+index 108f25ed383b8c3ea35438aad1aed7bbc4175d65..aa2116515aef7239b0168280333bf58a831eef8a 100644
 --- a/ffmpeg_generated.gni
 +++ b/ffmpeg_generated.gni
 @@ -4,17 +4,22 @@

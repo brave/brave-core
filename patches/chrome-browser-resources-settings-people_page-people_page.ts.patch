@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/people_page/people_page.ts b/chrome/browser/resources/settings/people_page/people_page.ts
-index 9abc9f93caae10219f38599a654c122e2bac8454..58ce8199963aee28efb599d43a7d0ab4d8b46763 100644
+index b258fb2794667d575685b3d81d6a30ec6277cce5..491fdc2d460031d8ed1ddca4105f6538ab94f920 100644
 --- a/chrome/browser/resources/settings/people_page/people_page.ts
 +++ b/chrome/browser/resources/settings/people_page/people_page.ts
-@@ -509,4 +509,3 @@ declare global {
+@@ -517,4 +517,3 @@ declare global {
    }
  }
  

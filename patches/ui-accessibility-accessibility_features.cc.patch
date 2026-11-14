@@ -1,8 +1,8 @@
 diff --git a/ui/accessibility/accessibility_features.cc b/ui/accessibility/accessibility_features.cc
-index a4de1d38ba364761397082985b9018477f5f8703..c7f5feb6b91549118e59c2cfe737eb543b62e6c7 100644
+index 87a8f77fd780304f86a57ee68cd48e61b1a8ef78..2007be7d44348cf0a85846bac44b64fc9c0e2a99 100644
 --- a/ui/accessibility/accessibility_features.cc
 +++ b/ui/accessibility/accessibility_features.cc
-@@ -375,7 +375,7 @@ bool IsReadAnythingReadAloudPhraseHighlightingEnabled() {
+@@ -382,7 +382,7 @@ bool IsReadAnythingReadAloudPhraseHighlightingEnabled() {
        ::features::kReadAnythingReadAloudPhraseHighlighting);
  }
  

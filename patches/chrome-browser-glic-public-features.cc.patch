@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/glic/public/features.cc b/chrome/browser/glic/public/features.cc
-index 610ba82d995aa6fb1e56cc208310e30f3c46f1b4..82572f46881edc852bb0df5ce5c6ec3a2188d2a7 100644
+index c7dc554f10e5f65ba8e0b144bac3919e7ae6a701..b17c66b1385f3359db8e939b7bdb4df6798387c9 100644
 --- a/chrome/browser/glic/public/features.cc
 +++ b/chrome/browser/glic/public/features.cc
 @@ -95,13 +95,8 @@ const base::FeatureParam<bool> kGlicContextMenuWithOnboarding{

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/bindings/BUILD.gn b/third_party/blink/renderer/bindings/BUILD.gn
-index d4e4451284f182a1c229a5dfda4224ce3db7d9d7..5c35dbf6d01fcbea67a7ec459e76e8d36a43aa15 100644
+index 2d6430db9d6a7c0571bb633d9c6503382724693b..f175a23051febe72acda66fa17ce3d1daae51a39 100644
 --- a/third_party/blink/renderer/bindings/BUILD.gn
 +++ b/third_party/blink/renderer/bindings/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index d4e4451284f182a1c229a5dfda4224ce3db7d9d7..5c35dbf6d01fcbea67a7ec459e76e8d3
  import("//build/buildflag_header.gni")
  import("//build/config/python.gni")
  import("//third_party/blink/renderer/bindings/bindings.gni")
-@@ -117,11 +118,13 @@ action_with_pydeps("web_idl_database") {
+@@ -118,11 +119,13 @@ python_action("web_idl_database") {
      ":web_idl_in_modules",
      ":web_idl_in_modules_for_testing",
    ]
@@ -24,7 +24,7 @@ index d4e4451284f182a1c229a5dfda4224ce3db7d9d7..5c35dbf6d01fcbea67a7ec459e76e8d3
    outputs = [ web_idl_database_filepath ]
  
    args = [
-@@ -152,6 +155,7 @@ template("generate_bindings") {
+@@ -154,6 +157,7 @@ template("generate_bindings") {
        web_idl_database,
        "union_name_map.conf",
      ]
@@ -32,7 +32,7 @@ index d4e4451284f182a1c229a5dfda4224ce3db7d9d7..5c35dbf6d01fcbea67a7ec459e76e8d3
      outputs = invoker.outputs
  
      args = [
-@@ -180,6 +184,7 @@ template("generate_bindings") {
+@@ -182,6 +186,7 @@ template("generate_bindings") {
      args += invoker.targets
  
      deps = [ ":web_idl_database" ]

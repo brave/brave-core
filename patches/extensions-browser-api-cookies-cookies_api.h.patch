@@ -1,5 +1,5 @@
 diff --git a/extensions/browser/api/cookies/cookies_api.h b/extensions/browser/api/cookies/cookies_api.h
-index 4da8dd56b5f6fec381e18e12f1639d49447f0c6d..459625557f5705cbd43803315c7121434fe7b586 100644
+index dea0ea746a0014c5cd0010a12bbd026da2c48a06..7d7c20ccc4216aefecacbf047f93d9c20a5d5884 100644
 --- a/extensions/browser/api/cookies/cookies_api.h
 +++ b/extensions/browser/api/cookies/cookies_api.h
 @@ -51,6 +51,7 @@ class CookiesEventRouter : public BrowserContextLifetimeObserver {
@@ -10,7 +10,7 @@ index 4da8dd56b5f6fec381e18e12f1639d49447f0c6d..459625557f5705cbd43803315c712143
    FRIEND_TEST_ALL_PREFIXES(ExtensionApiTest, OTRReceiverMojoConnectionError);
  
    // This helper class connects to the CookieMonster over Mojo, and relays Mojo
-@@ -260,6 +261,7 @@ class CookiesAPI : public BrowserContextKeyedAPI, public EventRouter::Observer {
+@@ -262,6 +263,7 @@ class CookiesAPI : public BrowserContextKeyedAPI, public EventRouter::Observer {
    }
  
   private:

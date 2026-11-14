@@ -1,8 +1,8 @@
 diff --git a/components/page_info/page_info_delegate.h b/components/page_info/page_info_delegate.h
-index a2b7183749e2d2b90b08260fb639fec8799ce9d4..d91cc75449a3c1bbee33fe956e4c8e0ab803b933 100644
+index 7903bf7bb65c932812f25681503f01baac0a4f0a..fe958037cc0f7e25548ec1ba920da74dc742724a 100644
 --- a/components/page_info/page_info_delegate.h
 +++ b/components/page_info/page_info_delegate.h
-@@ -148,6 +148,7 @@ class PageInfoDelegate {
+@@ -141,6 +141,7 @@ class PageInfoDelegate {
    // safe" on a Suspicious Site Warning.
    virtual void OnSuspiciousSiteBackToSafety() {}
    virtual void OnSuspiciousSiteMarkAsSafe() {}

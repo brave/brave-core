@@ -1,5 +1,5 @@
 diff --git a/services/device/public/cpp/device_features.cc b/services/device/public/cpp/device_features.cc
-index 9719aa98bc587710b51b15dfa9e9349ba7d8da01..45e5248d08d22b8785b86a4fdd742cd4bfa7aff1 100644
+index e3004368414db447fb448c99fa0ad94595185994..aa15a27ff8e19c7fed7781064dbe6aee4b38070a 100644
 --- a/services/device/public/cpp/device_features.cc
 +++ b/services/device/public/cpp/device_features.cc
 @@ -18,8 +18,8 @@ namespace features {
@@ -13,7 +13,7 @@ index 9719aa98bc587710b51b15dfa9e9349ba7d8da01..45e5248d08d22b8785b86a4fdd742cd4
  
  // Enables browser-side privacy mitigations for generic sensors.
  BASE_FEATURE(kSensorPrivacyMitigations, base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -115,9 +115,9 @@ BASE_FEATURE(kSerialUsbDisplayNameWin, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -118,9 +118,9 @@ BASE_FEATURE(kSerialUsbDisplayNameWin, base::FEATURE_ENABLED_BY_DEFAULT);
  // the operating system's location API or our network-based provider
  // as the source of location data for Geolocation API.
  #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)

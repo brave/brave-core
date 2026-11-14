@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc b/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc
-index 10b7682418b0d6084a65a5fa40b7f96ad3191557..b551a439f7165565bce8cab88b6722520f87f12b 100644
+index 36713c033f962d6095a377d2e569cb1dcd877f80..22cbeb325f09db9ff6e5298e91c14a20bd62ef78 100644
 --- a/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc
 +++ b/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc
-@@ -408,6 +408,7 @@ void DownloadToolbarUIController::UpdateIcon() {
+@@ -424,6 +424,7 @@ void DownloadToolbarUIController::UpdateIcon() {
    button->UpdateProgressRing(ring_status, progress_info_.progress_percentage);
    button->UpdateBadge(is_active, progress_download_count, badge_text_color,
                        badge_background_color);

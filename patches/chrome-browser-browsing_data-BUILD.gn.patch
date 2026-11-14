@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/browsing_data/BUILD.gn b/chrome/browser/browsing_data/BUILD.gn
-index de381e9a69848155b7de69610058961eb32f90bb..668def50bd3cd993535de3bed31705dc2b506b26 100644
+index 50eda8df47d878e407920925e35811b4064647f2..51e1d4da03c72eaa86dd90ef62a62cdca806894e 100644
 --- a/chrome/browser/browsing_data/BUILD.gn
 +++ b/chrome/browser/browsing_data/BUILD.gn
 @@ -7,6 +7,7 @@ import("//ui/webui/webui_features.gni")

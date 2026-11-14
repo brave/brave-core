@@ -1,5 +1,5 @@
 diff --git a/components/compose/core/browser/compose_features.cc b/components/compose/core/browser/compose_features.cc
-index bc0d7b5a05d1f5d3e867e11e12a2c8d8c74f9ccf..e86ab7262ec45839a1452a9826fb4de28f808f8d 100644
+index 69300eff342c000589e453d77abf8812fb54ffef..ea4e69237b91b63f1e5017a66a7df5d9b137e116 100644
 --- a/components/compose/core/browser/compose_features.cc
 +++ b/components/compose/core/browser/compose_features.cc
 @@ -10,7 +10,7 @@ namespace compose::features {

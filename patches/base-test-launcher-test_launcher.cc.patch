@@ -1,8 +1,8 @@
 diff --git a/base/test/launcher/test_launcher.cc b/base/test/launcher/test_launcher.cc
-index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220e6487535 100644
+index 6bf4b918a36636afc8fb0dcb1d0bd91ac457c9d3..bf53bb7d3a0eb92fe45a157773ec7d8b67748aad 100644
 --- a/base/test/launcher/test_launcher.cc
 +++ b/base/test/launcher/test_launcher.cc
-@@ -449,7 +449,7 @@ int LaunchChildTestProcessWithOptions(const CommandLine& command_line,
+@@ -481,7 +481,7 @@ int LaunchChildTestProcessWithOptions(const CommandLine& command_line,
    DCHECK(!new_options.job_handle);
  
    win::ScopedHandle job_handle;
@@ -11,7 +11,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
      job_handle.Set(CreateJobObject(NULL, NULL));
      if (!job_handle.is_valid()) {
        LOG(ERROR) << "Could not create JobObject.";
-@@ -669,7 +669,7 @@ struct ChildProcessResults {
+@@ -701,7 +701,7 @@ struct ChildProcessResults {
  // dirs are not supported.
  FilePath CreateChildTempDirIfSupported(const FilePath& task_temp_dir,
                                         int child_index) {
@@ -20,7 +20,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
      return FilePath();
    }
    FilePath child_temp = task_temp_dir.AppendASCII(NumberToString(child_index));
-@@ -698,7 +698,7 @@ ChildProcessResults DoLaunchChildTestProcess(
+@@ -730,7 +730,7 @@ ChildProcessResults DoLaunchChildTestProcess(
      const FilePath& result_file,
      TimeDelta timeout_per_test,
      size_t num_tests,
@@ -29,7 +29,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
      bool redirect_stdio,
      TestLauncherDelegate* delegate) {
    TimeTicks start_time = TimeTicks::Now();
-@@ -816,7 +816,7 @@ std::vector<std::string> ExtractTestsFromFilter(const std::string& filter,
+@@ -848,7 +848,7 @@ std::vector<std::string> ExtractTestsFromFilter(const std::string& filter,
  // and control running pre tests in sequence.
  class TestRunner {
   public:
@@ -38,7 +38,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
                        size_t max_workers = 1u,
                        size_t batch_size = 1u)
        : launcher_(launcher),
-@@ -873,7 +873,7 @@ class TestRunner {
+@@ -905,7 +905,7 @@ class TestRunner {
  
    ThreadChecker thread_checker_;
  
@@ -47,7 +47,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
    JobHandle job_handle_;
    // Max number of workers to use.
    const size_t max_workers_;
-@@ -1024,7 +1024,7 @@ const char kIsolatedScriptRunDisabledTestsFlag[] =
+@@ -1056,7 +1056,7 @@ const char kIsolatedScriptRunDisabledTestsFlag[] =
  const char kIsolatedScriptTestFilterFlag[] = "isolated-script-test-filter";
  const char kIsolatedScriptTestRepeatFlag[] = "isolated-script-test-repeat";
  
@@ -56,7 +56,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
   public:
    TestInfo() = default;
    TestInfo(const TestInfo& other) = default;
-@@ -1064,7 +1064,7 @@ class TestLauncher::TestInfo {
+@@ -1096,7 +1096,7 @@ class TestLauncher::TestInfo {
    bool pre_test_;
  };
  
@@ -65,7 +65,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
      : test_case_name_(test_id.test_case_name),
        test_name_(test_id.test_name),
        file_(test_id.file),
-@@ -1073,7 +1073,7 @@ TestLauncher::TestInfo::TestInfo(const TestIdentifier& test_id)
+@@ -1105,7 +1105,7 @@ TestLauncher::TestInfo::TestInfo(const TestIdentifier& test_id)
                  test_name_.contains(kDisabledTestPrefix)),
        pre_test_(test_name_.contains(kPreTestPrefix)) {}
  
@@ -74,7 +74,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
    std::string test_name = GetFullName();
    if (disabled_) {
      ReplaceSubstringsAfterOffset(&test_name, 0, kDisabledTestPrefix,
-@@ -1082,11 +1082,11 @@ std::string TestLauncher::TestInfo::GetDisabledStrippedName() const {
+@@ -1114,11 +1114,11 @@ std::string TestLauncher::TestInfo::GetDisabledStrippedName() const {
    return test_name;
  }
  
@@ -88,7 +88,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
    std::string name = test_name_;
    if (disabled_) {
      ReplaceSubstringsAfterOffset(&name, 0, kDisabledTestPrefix,
-@@ -1100,7 +1100,7 @@ std::string TestLauncher::TestInfo::GetPreName() const {
+@@ -1132,7 +1132,7 @@ std::string TestLauncher::TestInfo::GetPreName() const {
    return FormatFullTestName(case_name, kPreTestPrefix + name);
  }
  
@@ -97,7 +97,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
    std::string test_name = GetDisabledStrippedName();
    if (pre_test_) {
      ReplaceSubstringsAfterOffset(&test_name, 0, kPreTestPrefix,
-@@ -1115,12 +1115,12 @@ bool TestLauncherDelegate::ShouldRunTest(const TestIdentifier& test) {
+@@ -1147,12 +1147,12 @@ bool TestLauncherDelegate::ShouldRunTest(const TestIdentifier& test) {
    return true;
  }
  
@@ -114,7 +114,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
                             size_t parallel_jobs,
                             size_t retry_limit)
      : launcher_delegate_(launcher_delegate),
-@@ -1139,11 +1139,11 @@ TestLauncher::TestLauncher(TestLauncherDelegate* launcher_delegate,
+@@ -1171,11 +1171,11 @@ TestLauncher::TestLauncher(TestLauncherDelegate* launcher_delegate,
        watchdog_timer_(FROM_HERE,
                        kOutputTimeout,
                        this,
@@ -128,7 +128,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
  #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
    StopTestLauncherForkServer();
  #endif
-@@ -1157,7 +1157,7 @@ TestLauncher::~TestLauncher() {
+@@ -1189,7 +1189,7 @@ TestLauncher::~TestLauncher() {
    }
  }
  
@@ -137,7 +137,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
    base::PlatformThread::SetName("TestLauncherMain");
  
    if (!Init((command_line == nullptr) ? CommandLine::ForCurrentProcess()
-@@ -1179,7 +1179,7 @@ bool TestLauncher::Run(CommandLine* command_line) {
+@@ -1211,7 +1211,7 @@ bool TestLauncher::Run(CommandLine* command_line) {
  
    auto controller = base::FileDescriptorWatcher::WatchReadable(
        g_shutdown_pipe[0],
@@ -146,7 +146,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
                            Unretained(this)));
  #endif  // BUILDFLAG(IS_POSIX)
  
-@@ -1232,7 +1232,7 @@ bool TestLauncher::Run(CommandLine* command_line) {
+@@ -1264,7 +1264,7 @@ bool TestLauncher::Run(CommandLine* command_line) {
    return run_result;
  }
  
@@ -155,7 +155,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
      scoped_refptr<TaskRunner> task_runner,
      const std::vector<std::string>& test_names,
      const FilePath& task_temp_dir,
-@@ -1260,7 +1260,7 @@ void TestLauncher::LaunchChildGTestProcess(
+@@ -1292,7 +1292,7 @@ void TestLauncher::LaunchChildGTestProcess(
    // on a worker pool thread.
    task_runner->PostTask(
        FROM_HERE,
@@ -164,7 +164,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
                 result_file, process_results.output_file_contents,
                 process_results.elapsed_time, process_results.exit_code,
                 process_results.was_timeout, process_results.thread_id,
-@@ -1292,7 +1292,7 @@ TestResult::Status MissingResultStatus(size_t tests_to_run_count,
+@@ -1324,7 +1324,7 @@ TestResult::Status MissingResultStatus(size_t tests_to_run_count,
  }
  
  // Returns interpreted test results.
@@ -173,7 +173,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
      const std::vector<std::string>& test_names,
      const FilePath& result_file,
      const std::string& output,
-@@ -1401,7 +1401,7 @@ void TestLauncher::ProcessTestResults(
+@@ -1433,7 +1433,7 @@ void TestLauncher::ProcessTestResults(
    }
  }
  
@@ -182,7 +182,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
    ++test_finished_count_;
  
    TestResult result(original_result);
-@@ -1451,7 +1451,7 @@ void TestLauncher::OnTestFinished(const TestResult& original_result) {
+@@ -1483,7 +1483,7 @@ void TestLauncher::OnTestFinished(const TestResult& original_result) {
    // There are no results for this tests,
    // most likley due to another test failing in the same batch.
    if (result.status != TestResult::TEST_SKIPPED) {
@@ -191,7 +191,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
    }
  
    // TODO(phajdan.jr): Align counter (padding).
-@@ -1557,7 +1557,7 @@ bool LoadFilterFile(const FilePath& file_path,
+@@ -1589,7 +1589,7 @@ bool LoadFilterFile(const FilePath& file_path,
    return true;
  }
  
@@ -200,7 +200,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
      const CommandLine* command_line) const {
    if (command_line->HasSwitch(kGTestFilterFlag)) {
      LOG(ERROR) << "Found " << switches::kTestLauncherFilterFile;
-@@ -1576,7 +1576,7 @@ bool TestLauncher::IsOnlyExactPositiveFilterFromFile(
+@@ -1608,7 +1608,7 @@ bool TestLauncher::IsOnlyExactPositiveFilterFromFile(
    return true;
  }
  
@@ -209,7 +209,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
    // Initialize sharding. Command line takes precedence over legacy environment
    // variables.
    if (command_line->HasSwitch(switches::kTestLauncherTotalShards) &&
-@@ -1892,7 +1892,7 @@ bool TestLauncher::Init(CommandLine* command_line) {
+@@ -1927,7 +1927,7 @@ bool TestLauncher::Init(CommandLine* command_line) {
    return true;
  }
  
@@ -218,7 +218,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
    std::vector<TestIdentifier> tests;
    if (!launcher_delegate_->GetTests(&tests)) {
      LOG(ERROR) << "Failed to get list of tests.";
-@@ -1947,7 +1947,7 @@ bool TestLauncher::InitTests() {
+@@ -1982,7 +1982,7 @@ bool TestLauncher::InitTests() {
    return true;
  }
  
@@ -227,7 +227,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
    if (command_line->HasSwitch(kGTestShuffleFlag)) {
      uint32_t shuffle_seed;
      if (command_line->HasSwitch(kGTestRandomSeedFlag)) {
-@@ -1983,7 +1983,7 @@ bool TestLauncher::ShuffleTests(CommandLine* command_line) {
+@@ -2018,7 +2018,7 @@ bool TestLauncher::ShuffleTests(CommandLine* command_line) {
    return true;
  }
  
@@ -236,7 +236,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
    bool result = true;
    absl::flat_hash_set<std::string> disabled_tests;
    absl::flat_hash_map<std::string, TestInfo> pre_tests;
-@@ -2044,12 +2044,12 @@ bool TestLauncher::ProcessAndValidateTests() {
+@@ -2079,12 +2079,12 @@ bool TestLauncher::ProcessAndValidateTests() {
    return result;
  }
  
@@ -251,7 +251,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
      std::vector<std::string> filter_a,
      std::vector<std::string> filter_b) {
    has_at_least_one_positive_filter_ = !filter_a.empty() || !filter_b.empty();
-@@ -2080,7 +2080,7 @@ void TestLauncher::CombinePositiveTestFilters(
+@@ -2115,7 +2115,7 @@ void TestLauncher::CombinePositiveTestFilters(
    }
  }
  
@@ -260,7 +260,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
      std::string_view prefix_stripped_name) const {
    CHECK(!StartsWith(prefix_stripped_name, kPreTestPrefix));
    CHECK(!StartsWith(prefix_stripped_name, kDisabledTestPrefix));
-@@ -2088,7 +2088,7 @@ bool TestLauncher::ShouldRunInCurrentShard(
+@@ -2123,7 +2123,7 @@ bool TestLauncher::ShouldRunInCurrentShard(
           static_cast<uint32_t>(shard_index_);
  }
  
@@ -269,7 +269,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
    std::vector<std::string> test_names;
    // To support RTS(regression test selection), which may have 100,000 or
    // more exact gtest filter, we first split filter into exact filter
-@@ -2211,7 +2211,7 @@ std::vector<std::string> TestLauncher::CollectTests() {
+@@ -2246,7 +2246,7 @@ std::vector<std::string> TestLauncher::CollectTests() {
    return test_names;
  }
  
@@ -278,7 +278,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
    std::vector<std::string> original_test_names = CollectTests();
  
    std::vector<std::string> test_names;
-@@ -2246,7 +2246,7 @@ void TestLauncher::RunTests() {
+@@ -2281,7 +2281,7 @@ void TestLauncher::RunTests() {
    test_runner.Run(test_names);
  }
  
@@ -287,7 +287,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
    for (const auto& filter : positive_test_filter_) {
      if (filter.empty()) {
        continue;
-@@ -2273,7 +2273,7 @@ void TestLauncher::PrintFuzzyMatchingTestNames() {
+@@ -2308,7 +2308,7 @@ void TestLauncher::PrintFuzzyMatchingTestNames() {
    }
  }
  
@@ -296,7 +296,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
    while (!tests_to_retry_.empty() && retries_left_ > 0) {
      // Retry all tests that depend on a failing test.
      std::vector<std::string> test_names;
-@@ -2303,7 +2303,7 @@ bool TestLauncher::RunRetryTests() {
+@@ -2338,7 +2338,7 @@ bool TestLauncher::RunRetryTests() {
    return tests_to_retry_.empty();
  }
  
@@ -305,7 +305,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
    test_started_count_ = 0;
    test_finished_count_ = 0;
    test_success_count_ = 0;
-@@ -2315,7 +2315,7 @@ void TestLauncher::OnTestIterationStart() {
+@@ -2350,7 +2350,7 @@ void TestLauncher::OnTestIterationStart() {
  #if BUILDFLAG(IS_POSIX)
  // I/O watcher for the reading end of the self-pipe above.
  // Terminates any launched child processes and exits the process.
@@ -314,7 +314,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
    fprintf(stdout, "\nCaught signal. Killing spawned test processes...\n");
    fflush(stdout);
  
-@@ -2328,7 +2328,7 @@ void TestLauncher::OnShutdownPipeReadable() {
+@@ -2363,7 +2363,7 @@ void TestLauncher::OnShutdownPipeReadable() {
  }
  #endif  // BUILDFLAG(IS_POSIX)
  
@@ -323,7 +323,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
      const std::vector<std::string>& additional_tags) {
    if (!summary_path_.empty()) {
      if (!results_tracker_.SaveSummaryAsJSON(summary_path_, additional_tags)) {
-@@ -2342,7 +2342,7 @@ void TestLauncher::MaybeSaveSummaryAsJSON(
+@@ -2377,7 +2377,7 @@ void TestLauncher::MaybeSaveSummaryAsJSON(
    }
  }
  
@@ -332,7 +332,7 @@ index e31f6bb92515f62ae47f5ab35d188127bf1c8dfd..30c0a231636907e203e9c6fcd60d1220
    TestResultsTracker::TestStatusMap tests_by_status(
        results_tracker_.GetTestStatusMapForCurrentIteration());
    if (!tests_by_status[TestResult::TEST_UNKNOWN].empty()) {
-@@ -2352,7 +2352,7 @@ void TestLauncher::OnTestIterationFinished() {
+@@ -2387,7 +2387,7 @@ void TestLauncher::OnTestIterationFinished() {
    results_tracker_.PrintSummaryOfCurrentIteration();
  }
  

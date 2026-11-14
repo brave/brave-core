@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/browser_root_view.cc b/chrome/browser/ui/views/frame/browser_root_view.cc
-index af2b797c5936c7e1ab98fc386a7a4914802e9da9..c9b8f8886447c4785af6e3a3f4b7fb59e2776e2b 100644
+index 2f31b7b4b6df832b9d6d28d8bb0fe11d11927025..c927b68739f3505fb0441580630ee0a2047d7c08 100644
 --- a/chrome/browser/ui/views/frame/browser_root_view.cc
 +++ b/chrome/browser/ui/views/frame/browser_root_view.cc
 @@ -326,6 +326,9 @@ bool BrowserRootView::OnMouseWheel(const ui::MouseWheelEvent& event) {

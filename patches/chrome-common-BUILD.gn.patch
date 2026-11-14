@@ -1,5 +1,5 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index df6966f61bb0045511ffb0dd267f7e09965df353..e792f0772de7013c0265d4f99975da7b5f051d3c 100644
+index 5cde11bd2295402079a7c528ad3efd2c819123ef..552dbe44d8b8d3717896dad9e382086431400996 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
 @@ -2,6 +2,7 @@

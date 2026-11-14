@@ -1,5 +1,5 @@
 diff --git a/components/update_client/pipeline.cc b/components/update_client/pipeline.cc
-index 1dc226ba413db31ae59d1e8d4310a899950e0925..a9b5f79ce90707c595ca303177020049d2fc04d3 100644
+index 42ccf7c266369cc4635a0e047e57a4c8aa283e42..bb90c2e26a8156b07098ba4e8b3a3b2885c2bd12 100644
 --- a/components/update_client/pipeline.cc
 +++ b/components/update_client/pipeline.cc
 @@ -267,6 +267,7 @@ std::queue<Operation> MakeOperations(

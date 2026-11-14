@@ -1,5 +1,5 @@
 diff --git a/base/test/BUILD.gn b/base/test/BUILD.gn
-index 3167b4f2dac1458a845a4b4d6d8bbae6d0387bff..d0047ff67b0451c3f4eb327062644e760985ef07 100644
+index 27f4b543ffc679fb0063c6ec6c38daeca2a206e4..252a39d7cbcfe6e9295a8ac31708557a16dfd0e0 100644
 --- a/base/test/BUILD.gn
 +++ b/base/test/BUILD.gn
 @@ -2,6 +2,7 @@

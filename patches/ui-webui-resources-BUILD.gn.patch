@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/BUILD.gn b/ui/webui/resources/BUILD.gn
-index b3b536fe869a24169a2ff03e4920711d5ae329da..97ee2c76e93c8916efd9cf4c76aed7cbecd86ce8 100644
+index c457c54b62b5a7653497545f4f6c786a2d43144b..cae4dc5b23badbb2d4dfcfd6b8394729063715d1 100644
 --- a/ui/webui/resources/BUILD.gn
 +++ b/ui/webui/resources/BUILD.gn
 @@ -2,6 +2,8 @@
@@ -27,7 +27,7 @@ index b3b536fe869a24169a2ff03e4920711d5ae329da..97ee2c76e93c8916efd9cf4c76aed7cb
  
    if (!is_android && !is_ios) {
      public_deps += [
-@@ -143,6 +147,16 @@ generate_grd("build_grd") {
+@@ -158,6 +162,16 @@ generate_grd("build_grd") {
      public_deps += [ "cr_components/signin:build_grdp" ]
      grdp_files += [ "$target_gen_dir/cr_components/signin/resources.grdp" ]
    }

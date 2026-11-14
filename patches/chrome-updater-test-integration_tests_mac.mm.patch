@@ -1,8 +1,8 @@
 diff --git a/chrome/updater/test/integration_tests_mac.mm b/chrome/updater/test/integration_tests_mac.mm
-index afc19d139a98507b199a7f9161cffb6cacfc695e..ab166ea7bfb12ca460caf2b9ebc6fcfe3ece5776 100644
+index b9be3028797edc273d7e42664aa5940355116a46..56c3b20724c7de4a00a71068cf0db579bde3b294 100644
 --- a/chrome/updater/test/integration_tests_mac.mm
 +++ b/chrome/updater/test/integration_tests_mac.mm
-@@ -84,7 +84,7 @@ std::optional<base::FilePath> GetActiveFile(UpdaterScope /*scope*/,
+@@ -89,7 +89,7 @@ std::optional<base::FilePath> GetActiveFile(UpdaterScope /*scope*/,
    }
  
    return path->Append(COMPANY_SHORTNAME_STRING)

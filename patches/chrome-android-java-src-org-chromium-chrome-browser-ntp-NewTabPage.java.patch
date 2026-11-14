@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPage.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPage.java
-index fe4dc1a16c1e9bdfde5266ddac5055c3794bf5b6..db6d5670a021518b2cfd19c8acb94b90a4325695 100644
+index 1695bd06430ee5876aae12b49bc3fa6b5003cfda..4318078f7d403341be0ad5fa09e94bcd7a7923cc 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPage.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPage.java
-@@ -872,7 +872,7 @@ public class NewTabPage
+@@ -884,7 +884,7 @@ public class NewTabPage
       *     NTP.
       */
      public static boolean isInSingleUrlBarMode(boolean isLff) {

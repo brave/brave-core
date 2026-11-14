@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGroup.java b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGroup.java
-index 6e48bf29edb0c23ba62c6c0e48717150583b4816..fb391f631172c064da3d1122559c74f7bbfa900c 100644
+index b37fd675039849eb0c53760c3be4911f3e2ef22a..afbffc4f1a9c4fbb12e0f9f6e85923df0d17a2ab 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGroup.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGroup.java
 @@ -51,6 +51,8 @@ public class TileGroup implements MostVisitedSites.Observer {
@@ -28,7 +28,7 @@ index 6e48bf29edb0c23ba62c6c0e48717150583b4816..fb391f631172c064da3d1122559c74f7
          if (!mHasReceivedData || !mUiDelegate.isVisible() || isUserTriggered) {
              loadTiles(); // Eager update.
          }
-@@ -561,7 +564,9 @@ public class TileGroup implements MostVisitedSites.Observer {
+@@ -569,7 +572,9 @@ public class TileGroup implements MostVisitedSites.Observer {
          List<Tile> newPersonalizedTiles = mTileSections.get(TileSectionType.PERSONALIZED);
          assumeNonNull(newPersonalizedTiles);
          boolean dataChanged =

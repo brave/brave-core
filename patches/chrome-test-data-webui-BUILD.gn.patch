@@ -1,5 +1,5 @@
 diff --git a/chrome/test/data/webui/BUILD.gn b/chrome/test/data/webui/BUILD.gn
-index dd2e95a8d4b229b9d9e2660c12d70cf58db71e5b..3c99700acae3a92661fc5473125fc038980a610f 100644
+index c7cbc9cfab70938c304de96ad872871bfdb50e1c..ae8d66b293b8312514e9ac630c95faf7b12f841f 100644
 --- a/chrome/test/data/webui/BUILD.gn
 +++ b/chrome/test/data/webui/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index dd2e95a8d4b229b9d9e2660c12d70cf58db71e5b..3c99700acae3a92661fc5473125fc038
  import("//build/config/ui.gni")
  import("//chrome/common/features.gni")
  import("//chrome/test/include_js_tests.gni")
-@@ -1108,6 +1109,8 @@ generate_grd("build_grd") {
+@@ -1119,6 +1120,8 @@ generate_grd("build_grd") {
  
    manifest_files =
        filter_include(get_target_outputs(":build_ts"), [ "*_manifest.json" ])

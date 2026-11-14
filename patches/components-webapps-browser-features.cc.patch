@@ -1,5 +1,5 @@
 diff --git a/components/webapps/browser/features.cc b/components/webapps/browser/features.cc
-index 0f6ad9b0eac56e18d69026f0600a53c31993d98f..4c338729cc8642bd0db3bfa811efc9f74e963b01 100644
+index 6b9f58da35aa7fb40a04ecc6bfe0cda7bb2c46b1..ae7682aac582f4b82f78362303acda149cc8f480 100644
 --- a/components/webapps/browser/features.cc
 +++ b/components/webapps/browser/features.cc
 @@ -41,12 +41,8 @@ BASE_FEATURE(kInstallableRootFaviconFallback, base::FEATURE_ENABLED_BY_DEFAULT);

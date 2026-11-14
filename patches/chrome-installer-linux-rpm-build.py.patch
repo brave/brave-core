@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/rpm/build.py b/chrome/installer/linux/rpm/build.py
-index c59ead827b8aa94a451ffa4d8022173d28e36ff3..e9932685dedbd938d03365ad5cf2eb16411292e8 100755
+index 874f0cccc5d332309e1bf2cab520ab69a09dd1b9..6385841e448cbe64322c093bebb8dcd6a8e5333a 100755
 --- a/chrome/installer/linux/rpm/build.py
 +++ b/chrome/installer/linux/rpm/build.py
-@@ -29,6 +29,7 @@ def gen_spec(
+@@ -31,6 +31,7 @@ def gen_spec(
          spec_file.unlink()
  
      config.rpm_package_filename = f"{config.package_orig}-{config.channel}"
@@ -10,7 +10,7 @@ index c59ead827b8aa94a451ffa4d8022173d28e36ff3..e9932685dedbd938d03365ad5cf2eb16
  
      script_dir = pathlib.Path(__file__).parent.absolute()
      installer.process_template(
-@@ -78,6 +79,7 @@ def main() -> None:
+@@ -88,6 +89,7 @@ def main() -> None:
      script_dir = pathlib.Path(__file__).parent.absolute()
      output_dir = pathlib.Path(args.output_dir).absolute()
      channel = args.channel
@@ -18,7 +18,7 @@ index c59ead827b8aa94a451ffa4d8022173d28e36ff3..e9932685dedbd938d03365ad5cf2eb16
  
      staging_dir = output_dir / f"rpm-staging-{channel}"
      tmp_file_dir = output_dir / f"rpm-tmp-{channel}"
-@@ -123,6 +125,8 @@ def main() -> None:
+@@ -133,6 +135,8 @@ def main() -> None:
          with rpm_common_deps_file.open("r") as f:
              depends = f.read().replace("\n", ",")
          config.rpm_depends = depends

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
-index 0605ec4e47cadd7d742adeee3eecb0dafa55f197..93a7b6c2a965a584a45c93b70a175c3f84147564 100644
+index bae8e8687f3160ac2af32da1d91bf505ed28e0f0..3a09ae2adc622584aaea97de78a00fa476b3dadd 100644
 --- a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
 +++ b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
-@@ -155,13 +155,13 @@ void UpdateBorderInsetsIfNeeded(views::View* view,
+@@ -156,13 +156,13 @@ void UpdateBorderInsetsIfNeeded(views::View* view,
  std::unique_ptr<TabStrip> CreateTabStrip(
      TabStripRegionView* tab_strip_region_view,
      BrowserView* browser_view) {
@@ -20,7 +20,7 @@ index 0605ec4e47cadd7d742adeee3eecb0dafa55f197..93a7b6c2a965a584a45c93b70a175c3f
                                                std::move(hover_card_controller));
    return tab_strip;
  }
-@@ -223,7 +223,7 @@ HorizontalTabStripRegionViewOld::HorizontalTabStripRegionViewOld(
+@@ -224,7 +224,7 @@ HorizontalTabStripRegionViewOld::HorizontalTabStripRegionViewOld(
  
    if (ShouldShowNewTabButton(browser)) {
      std::unique_ptr<TabStripControlButton> tab_strip_control_button =
@@ -29,7 +29,7 @@ index 0605ec4e47cadd7d742adeee3eecb0dafa55f197..93a7b6c2a965a584a45c93b70a175c3f
              base::BindRepeating(&TabStrip::NewTabButtonPressed,
                                  base::Unretained(tab_strip_)),
              features::IsRoundedIconsEnabled()
-@@ -454,14 +454,14 @@ void HorizontalTabStripRegionViewOld::InitializeTabStrip() {
+@@ -455,14 +455,14 @@ void HorizontalTabStripRegionViewOld::InitializeTabStrip() {
    }
  
    tab_strip_->Initialize();
@@ -46,7 +46,7 @@ index 0605ec4e47cadd7d742adeee3eecb0dafa55f197..93a7b6c2a965a584a45c93b70a175c3f
    tab_strip_->Reset();
  }
  
-@@ -586,7 +586,7 @@ void HorizontalTabStripRegionViewOld::UpdateButtonBorders() {
+@@ -587,7 +587,7 @@ void HorizontalTabStripRegionViewOld::UpdateButtonBorders() {
    const int extra_vertical_space =
        GetLayoutConstant(LayoutConstant::kTabStripHeight) -
        GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap) -
@@ -55,7 +55,7 @@ index 0605ec4e47cadd7d742adeee3eecb0dafa55f197..93a7b6c2a965a584a45c93b70a175c3f
    const int top_inset = extra_vertical_space / 2;
    const int bottom_inset =
        extra_vertical_space - top_inset +
-@@ -1143,13 +1143,16 @@ void HorizontalTabStripRegionViewNew::AdjustViewBoundsRect(View* view,
+@@ -1148,13 +1148,16 @@ void HorizontalTabStripRegionViewNew::AdjustViewBoundsRect(View* view,
    view->SetBoundsRect(new_bounds);
  }
  

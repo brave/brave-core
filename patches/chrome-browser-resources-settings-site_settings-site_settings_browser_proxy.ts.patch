@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/site_settings/site_settings_browser_proxy.ts b/chrome/browser/resources/settings/site_settings/site_settings_browser_proxy.ts
-index e8c91f37044a84a5867c1185ef38be37f018db12..4a32133b5363f8e5db5461b4a2f51ee4ea7e92cc 100644
+index 6420606ada2b34baf2c30c41bb8011edb6fa6de0..a305d60da6eddcb8b4eb45899095f4b17d46065b 100644
 --- a/chrome/browser/resources/settings/site_settings/site_settings_browser_proxy.ts
 +++ b/chrome/browser/resources/settings/site_settings/site_settings_browser_proxy.ts
-@@ -83,6 +83,7 @@ export interface RawSiteException {
+@@ -80,6 +80,7 @@ export interface RawSiteException {
    description?: string;
    setting: ContentSetting;
    source: SiteSettingSource;
@@ -10,7 +10,7 @@ index e8c91f37044a84a5867c1185ef38be37f018db12..4a32133b5363f8e5db5461b4a2f51ee4
  }
  
  /**
-@@ -100,6 +101,7 @@ export interface SiteException {
+@@ -97,6 +98,7 @@ export interface SiteException {
    description?: string;
    enforcement: chrome.settingsPrivate.Enforcement|null;
    controlledBy: chrome.settingsPrivate.ControlledBy;

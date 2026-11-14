@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_request_manager.cc b/components/permissions/permission_request_manager.cc
-index 1eb6d7aa7229ceb7e6e6d5db884d70d399537f1a..0ec916a08808ed6d0580de4a33bc8556a364f46f 100644
+index 070b8fd845888bf4c5069b6a7aa68aacc7bda67a..3111b0396ceeb9a28eeb914adee7abb2fe40ce64 100644
 --- a/components/permissions/permission_request_manager.cc
 +++ b/components/permissions/permission_request_manager.cc
 @@ -598,6 +598,10 @@ void PermissionRequestManager::DidStartNavigation(
@@ -50,7 +50,7 @@ index 1eb6d7aa7229ceb7e6e6d5db884d70d399537f1a..0ec916a08808ed6d0580de4a33bc8556
        IsRequestInProgress()) {
      return;
    }
-@@ -1259,7 +1266,7 @@ void PermissionRequestManager::ShowPrompt() {
+@@ -1264,7 +1271,7 @@ void PermissionRequestManager::ShowPrompt() {
      return;
    }
  
@@ -59,7 +59,7 @@ index 1eb6d7aa7229ceb7e6e6d5db884d70d399537f1a..0ec916a08808ed6d0580de4a33bc8556
    DCHECK(current_request_ui_to_use_);
  
    if (!tab_is_active_) {
-@@ -2180,7 +2187,7 @@ void PermissionRequestManager::OnTabActiveChanged() {
+@@ -2185,7 +2192,7 @@ void PermissionRequestManager::OnTabActiveChanged() {
      return;
    }
  

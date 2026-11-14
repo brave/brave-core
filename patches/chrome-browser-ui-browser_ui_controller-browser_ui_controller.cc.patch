@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_ui_controller/browser_ui_controller.cc b/chrome/browser/ui/browser_ui_controller/browser_ui_controller.cc
-index 1fa5dd41dece193a34a0386c67960ff40215351f..517656e8b0d401fae0c3c1f74ebab13795eb6407 100644
+index d3482689d87a9510f495d94aa2d5ff6724a3f10b..38784d3a18ea4830f0085b8bea9a7e07b1ba7e17 100644
 --- a/chrome/browser/ui/browser_ui_controller/browser_ui_controller.cc
 +++ b/chrome/browser/ui/browser_ui_controller/browser_ui_controller.cc
 @@ -113,6 +113,8 @@ void BrowserUiController::UpdateUIForNavigationInTab(

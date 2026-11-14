@@ -1,5 +1,5 @@
 diff --git a/net/dns/host_resolver_manager.cc b/net/dns/host_resolver_manager.cc
-index f848fce78743e93f519b3a133ed7ac4326df4582..ca769bc5d446ec9519f9426f2195ce9a2b583d47 100644
+index d3a5df33233ca35e569d258fc6795bbdc2d96271..ab269a0b3c5574797dbbf11669df9f1f09581a42 100644
 --- a/net/dns/host_resolver_manager.cc
 +++ b/net/dns/host_resolver_manager.cc
 @@ -61,6 +61,7 @@
@@ -10,7 +10,7 @@ index f848fce78743e93f519b3a133ed7ac4326df4582..ca769bc5d446ec9519f9426f2195ce9a
  #include "build/build_config.h"
  #include "net/base/address_family.h"
  #include "net/base/address_list.h"
-@@ -989,6 +990,11 @@ HostCache::Entry HostResolverManager::ResolveLocally(
+@@ -995,6 +996,11 @@ HostCache::Entry HostResolverManager::ResolveLocally(
      }
    }
  
@@ -22,7 +22,7 @@ index f848fce78743e93f519b3a133ed7ac4326df4582..ca769bc5d446ec9519f9426f2195ce9a
    return HostCache::Entry(ERR_DNS_CACHE_MISS, HostCache::Entry::SOURCE_UNKNOWN);
  }
  
-@@ -1154,6 +1160,10 @@ void HostResolverManager::StartBootstrapFollowup(
+@@ -1159,6 +1165,10 @@ void HostResolverManager::StartBootstrapFollowup(
      JobKey key,
      HostCache* host_cache,
      const NetLogWithSource& source_net_log) {

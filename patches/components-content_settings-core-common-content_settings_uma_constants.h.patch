@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/common/content_settings_uma_constants.h b/components/content_settings/core/common/content_settings_uma_constants.h
-index b078a2f16f95436014dbd5dbb9b2a68ce704523f..b2b4bb2a8653110de191c352b571b7fec7326c52 100644
+index c9f1d1442d17459e412b5a6f2d31ab41286c9b49..738a6cd724d05d38d1b25c1cd81e7c483c08bfe2 100644
 --- a/components/content_settings/core/common/content_settings_uma_constants.h
 +++ b/components/content_settings/core/common/content_settings_uma_constants.h
 @@ -171,6 +171,52 @@ inline constexpr auto kContentSettingsTypeToHistogramValue =

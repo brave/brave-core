@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/omnibox/omnibox_result_view.h b/chrome/browser/ui/views/omnibox/omnibox_result_view.h
-index dbcf3ac6ee149301d23177047e6f49bbbc4f2d3f..bfa4b15873f6d3482f2634de9bec502ad2929bc3 100644
+index 09e8d77bd0589ade004f7982b3e95f835d12ea5f..0cc9f295b820ea6953c470133ae1f5bcdf56424e 100644
 --- a/chrome/browser/ui/views/omnibox/omnibox_result_view.h
 +++ b/chrome/browser/ui/views/omnibox/omnibox_result_view.h
 @@ -59,14 +59,14 @@ class OmniboxResultView : public views::View {
@@ -19,7 +19,7 @@ index dbcf3ac6ee149301d23177047e6f49bbbc4f2d3f..bfa4b15873f6d3482f2634de9bec502a
  
    // Whether this result view should be considered 'selected'. This returns
    // false if this line's header is selected (instead of the match itself).
-@@ -100,12 +100,13 @@ class OmniboxResultView : public views::View {
+@@ -104,12 +104,13 @@ class OmniboxResultView : public views::View {
    void OnThemeChanged() override;
  
   private:

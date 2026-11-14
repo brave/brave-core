@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ShortcutHelper.java b/chrome/android/java/src/org/chromium/chrome/browser/ShortcutHelper.java
-index 153d6f5f7f439d2d5b132988e5248a2fcc5be4ec..9b92fdc4b1564444df74622d4c9e9df30805188f 100644
+index a0a9f6551b1d0d5c16a5ada5c77b68328304522d..268847bdb63df30ebd17d463fe8ed3652154f1fd 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ShortcutHelper.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ShortcutHelper.java
 @@ -111,7 +111,7 @@ public class ShortcutHelper {

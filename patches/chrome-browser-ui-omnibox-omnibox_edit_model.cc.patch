@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/omnibox/omnibox_edit_model.cc b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
-index c96bea42bbdff2763e07b193b96c06fb5032b63a..640388dda2fcddb06e9ff384138c0b088e6d5177 100644
+index 0f27ccdcc6b7c6bdaa25c444fbfc69941eb5bbad..89e077852fa7df04b950ad4bc6239d4181cbec5d 100644
 --- a/chrome/browser/ui/omnibox/omnibox_edit_model.cc
 +++ b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
-@@ -547,6 +547,10 @@ bool OmniboxEditModel::ShouldShowCurrentPageIcon() const {
+@@ -552,6 +552,10 @@ bool OmniboxEditModel::ShouldShowCurrentPageIcon() const {
  
  ui::ImageModel OmniboxEditModel::GetSuperGIcon(int image_size,
                                                 bool dark_mode) const {
@@ -13,7 +13,7 @@ index c96bea42bbdff2763e07b193b96c06fb5032b63a..640388dda2fcddb06e9ff384138c0b08
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
    if (dark_mode) {
      return ui::ImageModel::FromVectorIcon(
-@@ -693,6 +697,8 @@ void OmniboxEditModel::Revert() {
+@@ -722,6 +726,8 @@ void OmniboxEditModel::RevertUneditedText() {
  }
  
  void OmniboxEditModel::StartAutocomplete(bool prevent_inline_autocomplete) {
@@ -22,7 +22,7 @@ index c96bea42bbdff2763e07b193b96c06fb5032b63a..640388dda2fcddb06e9ff384138c0b08
    const std::u16string input_text = MaybePrependKeyword(user_text_);
  
    size_t cursor_position =
-@@ -740,6 +746,9 @@ void OmniboxEditModel::StartAutocomplete(bool prevent_inline_autocomplete) {
+@@ -769,6 +775,9 @@ void OmniboxEditModel::StartAutocomplete(bool prevent_inline_autocomplete) {
  }
  
  bool OmniboxEditModel::CanPasteAndGo(const std::u16string& text) const {
@@ -32,7 +32,7 @@ index c96bea42bbdff2763e07b193b96c06fb5032b63a..640388dda2fcddb06e9ff384138c0b08
    return searchbox::CanPasteAndGo(controller_->client(), text);
  }
  
-@@ -1902,7 +1911,8 @@ void OmniboxEditModel::GetInfoForCurrentText(AutocompleteMatch* match,
+@@ -1936,7 +1945,8 @@ void OmniboxEditModel::GetInfoForCurrentText(AutocompleteMatch* match,
        *match = *autocomplete_controller()->result().default_match();
        found_match_for_text = true;
      } else if (controller_->IsPopupOpen() &&
@@ -42,7 +42,7 @@ index c96bea42bbdff2763e07b193b96c06fb5032b63a..640388dda2fcddb06e9ff384138c0b08
        const OmniboxPopupSelection selection = GetPopupSelection();
        *match = autocomplete_controller()->result().match_at(selection.line);
        found_match_for_text = true;
-@@ -2248,6 +2258,9 @@ std::u16string OmniboxEditModel::GetPopupAccessibilityLabelForCurrentSelection(
+@@ -2282,6 +2292,9 @@ std::u16string OmniboxEditModel::GetPopupAccessibilityLabelForCurrentSelection(
      const std::u16string& match_text,
      bool include_positional_info,
      int* label_prefix_length) {

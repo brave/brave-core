@@ -1,5 +1,5 @@
 diff --git a/tools/grit/preprocess_if_expr.gni b/tools/grit/preprocess_if_expr.gni
-index e3eb9942d9959a9942cb1ad79e5df526fd2c933d..b395953d0ce004894cd83ed9f6a5f65a08d7d0e3 100644
+index 0b6e4298cdb5ebc1a02fdeae201633d3d4c485e3..eea904e7e4c24e1cd102ae745d627441f27bd8fe 100644
 --- a/tools/grit/preprocess_if_expr.gni
 +++ b/tools/grit/preprocess_if_expr.gni
 @@ -2,6 +2,7 @@
