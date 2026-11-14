@@ -455,8 +455,12 @@ void AIChatService::DeleteConversations(std::optional<base::Time> begin_time,
     conversation_handlers_.clear();
     conversations_.clear();
     content_conversations_.clear();
-    if (!std::exchange(conversation_generation_state_, {}).empty()) {
+    auto generation_states = std::exchange(conversation_generation_state_, {});
+    if (!generation_states.empty()) {
       NotifyConversationGenerationStateChanged();
+    }
+    for (const auto& [id, state] : generation_states) {
+      MaybeCloseCompletionNotification(id);
     }
 
     // Delete database data
@@ -637,8 +641,11 @@ void AIChatService::OnDataDeletedForDisabledStorage(bool success) {
   bool generation_state_changed = false;
   for (auto it = conversations_.begin(); it != conversations_.end();) {
     if (!conversation_handlers_.contains(it->first)) {
-      generation_state_changed |=
-          conversation_generation_state_.erase(it->first) > 0;
+      // Only a conversation with a generation state can have a notification.
+      if (conversation_generation_state_.erase(it->first) > 0) {
+        generation_state_changed = true;
+        MaybeCloseCompletionNotification(it->first);
+      }
       it = conversations_.erase(it);
     } else {
       ++it;
@@ -877,6 +884,7 @@ void AIChatService::DeleteConversationWithoutNotifyingList(
   if (conversation_generation_state_.erase(id) > 0) {
     NotifyConversationGenerationStateChanged();
   }
+  MaybeCloseCompletionNotification(id);
 
   // Update database
   if (ai_chat_db_ && !temporary) {
@@ -1129,6 +1137,7 @@ void AIChatService::MaybeUnloadConversation(
     if (conversation_generation_state_.erase(uuid) > 0) {
       NotifyConversationGenerationStateChanged();
     }
+    MaybeCloseCompletionNotification(uuid);
     DVLOG(1) << "Erased conversation (" << uuid << "). Now have "
              << conversations_.size() << " Conversation metadata items and "
              << conversation_handlers_.size()
@@ -1423,6 +1432,7 @@ void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
         it->second == mojom::ConversationGenerationState::kCompletedNotViewed) {
       conversation_generation_state_.erase(it);
       NotifyConversationGenerationStateChanged();
+      MaybeCloseCompletionNotification(uuid);
     }
   }
   QueueMaybeUnloadConversation(handler);
@@ -1616,6 +1626,13 @@ void AIChatService::NotifyConversationGenerationStateChanged() {
   }
 }
 
+void AIChatService::SetCompletionNotificationCallbacks(
+    ShowCompletionNotificationCallback show,
+    CloseCompletionNotificationCallback close) {
+  show_completion_notification_callback_ = std::move(show);
+  close_completion_notification_callback_ = std::move(close);
+}
+
 bool AIChatService::IsConversationClientConnected(
     const std::string& uuid) const {
   auto* handler = base::FindPtrOrNull(conversation_handlers_, uuid);
@@ -1637,10 +1654,29 @@ void AIChatService::MaybeMarkGenerationComplete(
   }
   if (IsConversationClientConnected(conversation_uuid)) {
     conversation_generation_state_.erase(it);
-  } else {
-    it->second = mojom::ConversationGenerationState::kCompletedNotViewed;
+    NotifyConversationGenerationStateChanged();
+    return;
   }
+  it->second = mojom::ConversationGenerationState::kCompletedNotViewed;
   NotifyConversationGenerationStateChanged();
+  MaybeShowCompletionNotification(conversation_uuid);
+}
+
+void AIChatService::MaybeShowCompletionNotification(const std::string& uuid) {
+  if (!show_completion_notification_callback_) {
+    return;
+  }
+  std::u16string title_u16;
+  if (auto* conversation = base::FindPtrOrNull(conversations_, uuid)) {
+    title_u16 = base::UTF8ToUTF16(conversation->title);
+  }
+  show_completion_notification_callback_.Run(uuid, title_u16);
+}
+
+void AIChatService::MaybeCloseCompletionNotification(const std::string& uuid) {
+  if (close_completion_notification_callback_) {
+    close_completion_notification_callback_.Run(uuid);
+  }
 }
 
 void AIChatService::OpenConversationWithStagedEntries(

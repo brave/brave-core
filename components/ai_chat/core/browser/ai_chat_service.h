@@ -275,6 +275,30 @@ class AIChatService : public KeyedService,
   RestoreWorkspaceAssociatedContentFromUrl(const GURL& url,
                                            const std::string& content_uuid);
 
+  using ShowCompletionNotificationCallback =
+      base::RepeatingCallback<void(const std::string& uuid,
+                                   const std::u16string& title)>;
+  using CloseCompletionNotificationCallback =
+      base::RepeatingCallback<void(const std::string& uuid)>;
+  // Lets the embedder notify the user when a response finishes in the
+  // background. |show| runs when a conversation's response finishes while no
+  // client is connected to it, with the conversation's title, which is empty
+  // if it has none. |close| runs when the conversation is viewed, deleted, or
+  // unloaded and dropped from the list, whether or not a notification is
+  // showing. Either callback can be null.
+  void SetCompletionNotificationCallbacks(
+      ShowCompletionNotificationCallback show,
+      CloseCompletionNotificationCallback close);
+
+  void SetCompletionNotificationCallbackForTesting(
+      ShowCompletionNotificationCallback show) {
+    show_completion_notification_callback_ = std::move(show);
+  }
+  void SetCloseCompletionNotificationCallbackForTesting(
+      CloseCompletionNotificationCallback close) {
+    close_completion_notification_callback_ = std::move(close);
+  }
+
   std::unique_ptr<EngineConsumer> GetDefaultAIEngine();
   std::unique_ptr<EngineConsumer> GetEngineForModel(
       const std::string& model_key);
@@ -450,6 +474,8 @@ class AIChatService : public KeyedService,
   // DeleteConversation() without OnConversationListChanged(), for callers that
   // delete several conversations and then send the list once.
   void DeleteConversationWithoutNotifyingList(const std::string& id);
+  void MaybeShowCompletionNotification(const std::string& uuid);
+  void MaybeCloseCompletionNotification(const std::string& uuid);
 
   raw_ptr<ModelService> model_service_;
   raw_ptr<TabTrackerService> tab_tracker_service_;
@@ -566,6 +592,9 @@ class AIChatService : public KeyedService,
   // can hand out a proxy delegate before the bridge itself exists; the bridge
   // is owned, accessed, and destroyed only on |db_task_runner_|.
   scoped_refptr<AIChatSyncBackend> sync_backend_;
+
+  ShowCompletionNotificationCallback show_completion_notification_callback_;
+  CloseCompletionNotificationCallback close_completion_notification_callback_;
 
   base::WeakPtrFactory<AIChatService> weak_ptr_factory_{this};
 };
