@@ -182,6 +182,14 @@ class TabGridContainerView: UIView {
     return dataSource.indexPath(for: item.id)
   }
 
+  /// The frame of the group's item in window coordinates, if it's in the grid
+  func windowFrame(of group: TabGroup) -> CGRect? {
+    guard let indexPath = dataSource.indexPath(for: .group(group.id)),
+      let attributes = collectionView.layoutAttributesForItem(at: indexPath)
+    else { return nil }
+    return collectionView.convert(attributes.frame, to: nil)
+  }
+
   fileprivate func scrollToSelectedItem(animated: Bool) {
     guard let item = items.first(where: \.containsVisibleTab),
       let indexPath = dataSource.indexPath(for: item.id)
@@ -552,6 +560,7 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
   var contextMenuForGroup: (TabGroup) -> UIMenu?
   var scrollsOnModeSwitch: Bool = true
   var isReorderingEnabled: Bool = true
+  var isGroupDetail: Bool = false
   @Binding var selectedTabList: Set<TabState.ID>
 
   func makeUIView(context: Context) -> TabGridContainerView {
@@ -565,6 +574,9 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
     let isEditing = context.environment.editMode?.wrappedValue == .active
     context.coordinator.dismissAction = context.environment.dismiss
     context.coordinator.containerView = uiView
+    if isGroupDetail {
+      viewModel.openGroupContainerView = uiView
+    }
     uiView.isPrivateBrowsing = isPrivateBrowsing
     uiView.isEditing = isEditing
     uiView.isReorderingEnabled = isReorderingEnabled
@@ -665,9 +677,8 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
     }
 
     func didSelectGroup(_ group: TabGroup) {
-      withAnimation {
-        viewModel.showGroup(group)
-      }
+      // The group view grows out of the group's item
+      viewModel.showGroup(group, from: containerView?.windowFrame(of: group))
     }
 
     func didRequestUngroup(_ group: TabGroup) {

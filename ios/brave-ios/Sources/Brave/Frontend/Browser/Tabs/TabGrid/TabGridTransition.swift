@@ -27,6 +27,12 @@ extension TabGridHostingController: UIViewControllerTransitioningDelegate {
 }
 
 extension TabGridHostingController: BasicAnimationControllerDelegate {
+  private var transitionContainerView: TabGridContainerView? {
+    let viewModel = rootView.viewModel
+    guard viewModel.openGroup != nil else { return containerView }
+    return viewModel.openGroupContainerView
+  }
+
   func animatePresentation(context: any UIViewControllerContextTransitioning) {
     let finalFrame = context.finalFrame(for: self)
     guard let fromView = context.view(forKey: .from),
@@ -50,8 +56,12 @@ extension TabGridHostingController: BasicAnimationControllerDelegate {
     view.setNeedsLayout()
     view.layoutIfNeeded()
 
-    guard let destinationIndexPath = containerView.indexPath(for: selectedTab),
-      let destinationCell = containerView.collectionView.cellForItem(at: destinationIndexPath),
+    let gridView = transitionContainerView
+    gridView?.collectionView.layoutIfNeeded()
+
+    guard let gridView,
+      let destinationIndexPath = gridView.indexPath(for: selectedTab),
+      let destinationCell = gridView.collectionView.cellForItem(at: destinationIndexPath),
       destinationCell.bounds.width != 0, destinationCell.bounds.height != 0,
       let destinationCellSnapshot = destinationCell.snapshotView(afterScreenUpdates: true)
     else {
@@ -60,6 +70,7 @@ extension TabGridHostingController: BasicAnimationControllerDelegate {
         fromView.alpha = 0
       }
       fallbackAnimation.addCompletion { _ in
+        dimmingView.removeFromSuperview()
         context.completeTransition(true)
       }
       fallbackAnimation.startAnimation()
@@ -70,7 +81,7 @@ extension TabGridHostingController: BasicAnimationControllerDelegate {
 
     let cellCenterInContainer = context.containerView.convert(
       destinationCell.center,
-      from: containerView.collectionView
+      from: gridView.collectionView
     )
     let cellFrameInContainer = destinationCell.convert(
       destinationCell.bounds,
@@ -90,11 +101,11 @@ extension TabGridHostingController: BasicAnimationControllerDelegate {
     fromView.layer.cornerCurve = .continuous
     fromView.layer.cornerRadius = 16 * max(destinationCell.transform.a, destinationCell.transform.d)
 
-    containerView.collectionView.transform = .init(scaleX: 0.9, y: 0.9)
+    gridView.collectionView.transform = .init(scaleX: 0.9, y: 0.9)
 
     let animator = UIViewPropertyAnimator(duration: 0.4, dampingRatio: 1)
-    animator.addAnimations { [self] in
-      containerView.collectionView.transform = .identity
+    animator.addAnimations {
+      gridView.collectionView.transform = .identity
       destinationCellSnapshot.transform = .identity
       destinationCellSnapshot.center = cellCenterInContainer
       fromView.alpha = 0
@@ -104,7 +115,7 @@ extension TabGridHostingController: BasicAnimationControllerDelegate {
       )
       fromView.layer.cornerRadius = 16
       fromView.center = .init(x: cellFrameInContainer.midX, y: cellFrameInContainer.midY)
-      containerView.collectionView.transform = .identity
+      gridView.collectionView.transform = .identity
     }
     animator.addAnimations(
       {
@@ -151,9 +162,12 @@ extension TabGridHostingController: BasicAnimationControllerDelegate {
     toView.setNeedsLayout()
     toView.layoutIfNeeded()
 
-    guard let selectedTab = tabManager.selectedTab,
-      let sourceIndexPath = containerView.indexPath(for: selectedTab),
-      let sourceAttributes = containerView.collectionView.layoutAttributesForItem(
+    let gridView = transitionContainerView
+    gridView?.collectionView.layoutIfNeeded()
+
+    guard let gridView, let selectedTab = tabManager.selectedTab,
+      let sourceIndexPath = gridView.indexPath(for: selectedTab),
+      let sourceAttributes = gridView.collectionView.layoutAttributesForItem(
         at: sourceIndexPath
       ),
       sourceAttributes.bounds.width != 0, sourceAttributes.bounds.height != 0,
@@ -171,15 +185,14 @@ extension TabGridHostingController: BasicAnimationControllerDelegate {
       return
     }
 
-    // If the source cell is visible on the screen we'll include a snapshot of said cell to
-    // animate from
-    let sourceCell = containerView.collectionView.cellForItem(at: sourceIndexPath)
+    // If the source cell is visible on the screen we'll include a snapshot of said cell to animate from
+    let sourceCell = gridView.collectionView.cellForItem(at: sourceIndexPath)
     let sourceCellSnapshot = sourceCell?.snapshotView(afterScreenUpdates: false)
     if let sourceCell, let sourceCellSnapshot {
       context.containerView.insertSubview(sourceCellSnapshot, aboveSubview: dimmingView)
       sourceCellSnapshot.center = context.containerView.convert(
         sourceAttributes.center,
-        from: containerView.collectionView
+        from: gridView.collectionView
       )
       sourceCell.alpha = 0
     }
@@ -187,7 +200,7 @@ extension TabGridHostingController: BasicAnimationControllerDelegate {
     toView.layer.cornerCurve = .continuous
     toView.layer.cornerRadius = 16
 
-    toView.center = containerView.collectionView.convert(
+    toView.center = gridView.collectionView.convert(
       sourceAttributes.center,
       to: context.containerView
     )
@@ -201,7 +214,7 @@ extension TabGridHostingController: BasicAnimationControllerDelegate {
       dimmingView.alpha = 1
       toView.alpha = 1
       toView.center = finalFrame.center
-      containerView.collectionView.transform = .init(scaleX: 0.9, y: 0.9)
+      gridView.collectionView.transform = .init(scaleX: 0.9, y: 0.9)
       sourceCellSnapshot?.transform = .init(
         scaleX: view.bounds.width / sourceAttributes.bounds.width,
         y: view.bounds.height / sourceAttributes.bounds.height
