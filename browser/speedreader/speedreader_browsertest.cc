@@ -26,6 +26,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
+#include "brave/browser/ui/views/speedreader/reader_mode_bubble.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_data_handler_impl.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -49,6 +50,7 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/page_action/page_action_view.h"
 #include "chrome/browser/ui/views/page_action/test_support/page_action_test_accessor.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
@@ -969,6 +971,22 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
     ASSERT_TRUE(WaitOriginal());
     EXPECT_FALSE(toolbar_view->GetVisible());
   }
+}
+
+// Right-clicking the page action shows the bubble on the location bar.
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, BubbleAnchoredToLocationBar) {
+  EnableSpeedreaderAllowedForAllSites();
+  NavigateToPageSynchronously(kTestPageReadable,
+                              WindowOpenDisposition::kCurrentTab);
+
+  tab_helper()->ShowSpeedreaderBubble(
+      speedreader::SpeedreaderBubbleLocation::kLocationBar);
+  auto* bubble = static_cast<speedreader::ReaderModeBubble*>(
+      tab_helper()->speedreader_bubble_view());
+  ASSERT_TRUE(bubble);
+  EXPECT_EQ(
+      BrowserView::GetBrowserViewForBrowser(browser())->GetLocationBarView(),
+      bubble->GetAnchorView());
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarProcessesAccelerators) {
