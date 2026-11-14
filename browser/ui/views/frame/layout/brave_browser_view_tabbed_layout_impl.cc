@@ -400,7 +400,8 @@ void BraveBrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(
     const BrowserLayoutParams& params) {
   BrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(params);
   UpdateInsetsForVerticalTabStrip();
-  delegate().UpdateContentsCornerRadii(CalculateContentsCornerRadii());
+  delegate().UpdateContentsCornerRadii(CalculateContentsCornerRadii(),
+                                       CalculateWebPanelCornerRadii());
 
   UpdateVerticalTabStripCorners(params);
 
@@ -818,27 +819,50 @@ bool BraveBrowserViewTabbedLayoutImpl::IsSidebarAtContentsEdge() const {
          (views().side_panel && views().side_panel->GetVisible());
 }
 
-gfx::RoundedCornersF
-BraveBrowserViewTabbedLayoutImpl::CalculateContentsCornerRadii() const {
-  if (!delegate().ShouldUseBraveWebViewRoundedCornersForContents() ||
-      delegate().IsFullscreenForTab()) {
-    return {};
-  }
-
+// Returns the radii for one hosted area, given which of its sides meet
+// neighbouring UI rather than the window. A side with UI beyond it is an
+// interior edge and takes the smaller border radius; a side that reaches the
+// window takes the window-corner radius at the bottom, where the window itself
+// is rounded.
+gfx::RoundedCornersF BraveBrowserViewTabbedLayoutImpl::AssembleCornerRadii(
+    AdjacentUi adjacent_ui) const {
   auto* layout_provider = views::LayoutProvider::Get();
   const float window_corner_radius = layout_provider->GetCornerRadiusMetric(
       ExtendedShapeContextTokens::kRoundedCornersBorderRadiusAtWindowCorner);
   const float border_corner_radius = layout_provider->GetCornerRadiusMetric(
       ExtendedShapeContextTokens::kRoundedCornersBorderRadius);
 
-  bool has_left_ui = false;
-  bool has_right_ui = false;
+  const bool at_top_edge = IsContentsAtTopEdge();
+
+  gfx::RoundedCornersF corner_radii(window_corner_radius);
+  if (adjacent_ui.left || !at_top_edge) {
+    corner_radii.set_upper_left(border_corner_radius);
+  }
+  if (adjacent_ui.right || !at_top_edge) {
+    corner_radii.set_upper_right(border_corner_radius);
+  }
+  if (adjacent_ui.left) {
+    corner_radii.set_lower_left(border_corner_radius);
+  }
+  if (adjacent_ui.right) {
+    corner_radii.set_lower_right(border_corner_radius);
+  }
+
+  return corner_radii;
+}
+
+// Whether the vertical tab strip and the sidebar/side panel sit beside the
+// contents area, on the visual left and right. Shared by both corner radii
+// calculations, since neither UI is inside the contents area.
+BraveBrowserViewTabbedLayoutImpl::AdjacentUi
+BraveBrowserViewTabbedLayoutImpl::GetUiAtContentsEdges() const {
+  AdjacentUi adjacent_ui;
 
   if (IsVerticalTabStripAtContentsEdge()) {
     if (delegate().IsVerticalTabOnRight()) {
-      has_right_ui = true;
+      adjacent_ui.right = true;
     } else {
-      has_left_ui = true;
+      adjacent_ui.left = true;
     }
   }
 
@@ -850,29 +874,59 @@ BraveBrowserViewTabbedLayoutImpl::CalculateContentsCornerRadii() const {
       on_left = !views().side_panel->IsRightAligned();
     }
     if (on_left) {
-      has_left_ui = true;
+      adjacent_ui.left = true;
     } else {
-      has_right_ui = true;
+      adjacent_ui.right = true;
     }
   }
 
-  const bool at_top_edge = IsContentsAtTopEdge();
+  return adjacent_ui;
+}
 
-  gfx::RoundedCornersF corner_radii(window_corner_radius);
-  if (has_left_ui || !at_top_edge) {
-    corner_radii.set_upper_left(border_corner_radius);
-  }
-  if (has_right_ui || !at_top_edge) {
-    corner_radii.set_upper_right(border_corner_radius);
-  }
-  if (has_left_ui) {
-    corner_radii.set_lower_left(border_corner_radius);
-  }
-  if (has_right_ui) {
-    corner_radii.set_lower_right(border_corner_radius);
+gfx::RoundedCornersF
+BraveBrowserViewTabbedLayoutImpl::CalculateContentsCornerRadii() const {
+  if (!delegate().ShouldUseBraveWebViewRoundedCornersForContents() ||
+      delegate().IsFullscreenForTab()) {
+    return {};
   }
 
-  return corner_radii;
+  AdjacentUi adjacent_ui = GetUiAtContentsEdges();
+
+  // An open web panel stands between the contents and whatever is beyond it on
+  // the panel's side, so that side is an interior edge for the contents.
+  if (delegate().IsWebPanelVisible()) {
+    if (delegate().IsWebPanelOnLeft()) {
+      adjacent_ui.left = true;
+    } else {
+      adjacent_ui.right = true;
+    }
+  }
+
+  return AssembleCornerRadii(adjacent_ui);
+}
+
+gfx::RoundedCornersF
+BraveBrowserViewTabbedLayoutImpl::CalculateWebPanelCornerRadii() const {
+  if (!delegate().ShouldUseBraveWebViewRoundedCornersForContents() ||
+      delegate().IsFullscreenForTab()) {
+    return {};
+  }
+
+  // Deliberately not gated on the panel being visible: these describe the
+  // panel's own geometry, and BraveMultiContentsView::SetWebPanelContents()
+  // reads them as they stand when showing the panel, before the layout it
+  // invalidates can run.
+  AdjacentUi adjacent_ui = GetUiAtContentsEdges();
+
+  // The panel's contents-facing side is the one opposite the side it sits on,
+  // and the contents are always there.
+  if (delegate().IsWebPanelOnLeft()) {
+    adjacent_ui.right = true;
+  } else {
+    adjacent_ui.left = true;
+  }
+
+  return AssembleCornerRadii(adjacent_ui);
 }
 
 gfx::Insets BraveBrowserViewTabbedLayoutImpl::GetContentsMarginsForTesting()
@@ -889,6 +943,12 @@ gfx::RoundedCornersF
 BraveBrowserViewTabbedLayoutImpl::CalculateContentsCornerRadiiForTesting()
     const {
   return CalculateContentsCornerRadii();
+}
+
+gfx::RoundedCornersF
+BraveBrowserViewTabbedLayoutImpl::CalculateWebPanelCornerRadiiForTesting()
+    const {
+  return CalculateWebPanelCornerRadii();
 }
 
 bool BraveBrowserViewTabbedLayoutImpl::ShouldPushBookmarkBarForVerticalTabs()

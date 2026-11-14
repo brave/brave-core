@@ -93,7 +93,10 @@ class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
   bool IsContentTypeSidePanelVisible() const override { return false; }
   bool IsFullscreenForBrowser() const override { return false; }
   bool IsFullscreenForTab() const override { return false; }
-  void UpdateContentsCornerRadii(const gfx::RoundedCornersF&) override {}
+  bool IsWebPanelVisible() const override { return false; }
+  bool IsWebPanelOnLeft() const override { return false; }
+  void UpdateContentsCornerRadii(const gfx::RoundedCornersF&,
+                                 const gfx::RoundedCornersF&) override {}
   bool IsFullscreen() const override { return false; }
 };
 
@@ -120,11 +123,60 @@ class MockBrowserViewLayoutDelegate : public FakeBrowserViewLayoutDelegate {
               (const, override));
   MOCK_METHOD(bool, ShouldShowVerticalTabs, (), (const, override));
   MOCK_METHOD(WindowState, GetBrowserWindowState, (), (const, override));
+  MOCK_METHOD(bool, IsWebPanelVisible, (), (const, override));
+  MOCK_METHOD(bool, IsWebPanelOnLeft, (), (const, override));
 };
 
 int GetWindowCornerRadius() {
   return views::LayoutProvider::Get()->GetCornerRadiusMetric(
       ExtendedShapeContextTokens::kRoundedCornersBorderRadiusAtWindowCorner);
+}
+
+// In production the two radii coincide everywhere except recent macOS, so a
+// corner assertion against either one would also pass with the other metric,
+// or with a radius applied to the wrong corner. These values force them apart.
+class DistinctCornerRadiiLayoutProvider : public BraveLayoutProvider {
+ public:
+  static constexpr int kBorder = 6;
+  static constexpr int kWindowCorner = 16;
+
+  using BraveLayoutProvider::GetCornerRadiusMetric;
+  int GetCornerRadiusMetric(
+      views::ShapeContextToken token,
+      const gfx::Size& size = gfx::Size()) const override {
+    switch (token) {
+      case kRoundedCornersBorderRadius:
+        return kBorder;
+      case kRoundedCornersBorderRadiusAtWindowCorner:
+        return kWindowCorner;
+      default:
+        return BraveLayoutProvider::GetCornerRadiusMetric(token, size);
+    }
+  }
+};
+
+// A layout with rounded corners on, a web panel on the given side, and no
+// other UI: the default `BrowserViewLayoutViews` has no sidebar container,
+// side panel or vertical tab strip host, so the web panel is the only thing
+// beside the contents and every corner it does not touch must stay at the
+// window radius.
+std::unique_ptr<BraveBrowserViewTabbedLayoutImpl> CreateLayoutWithWebPanel(
+    bool panel_visible,
+    bool panel_on_left) {
+  auto mock =
+      std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
+  ON_CALL(*mock, ShouldUseBraveWebViewRoundedCornersForContents())
+      .WillByDefault(::testing::Return(true));
+  ON_CALL(*mock, IsWebPanelVisible())
+      .WillByDefault(::testing::Return(panel_visible));
+  ON_CALL(*mock, IsWebPanelOnLeft())
+      .WillByDefault(::testing::Return(panel_on_left));
+  // No infobar and no top container keeps the contents at the top edge, so the
+  // top corners follow the same left/right rule as the bottom ones.
+  ON_CALL(*mock, IsInfobarVisible()).WillByDefault(::testing::Return(false));
+
+  return std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
+      std::move(mock), BrowserViewLayoutViews());
 }
 
 }  // namespace
@@ -469,6 +521,81 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
 
   const float window_radius = GetWindowCornerRadius();
   EXPECT_EQ(gfx::RoundedCornersF(window_radius),
+            layout->CalculateContentsCornerRadiiForTesting());
+}
+
+// ---------------------------------------------------------------------------
+// Web panel corner radii
+//
+// The contents and the open panel share one edge, which both round with the
+// smaller border radius; their outer edges still meet the window frame and
+// keep the window radius. These run against a layout provider whose two radii
+// differ, so a radius landing on the wrong edge is detectable.
+// ---------------------------------------------------------------------------
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     CalculateContentsCornerRadiiWithWebPanelOnLeft) {
+  DistinctCornerRadiiLayoutProvider layout_provider;
+  auto layout =
+      CreateLayoutWithWebPanel(/*panel_visible=*/true, /*panel_on_left=*/true);
+
+  constexpr float kBorder = DistinctCornerRadiiLayoutProvider::kBorder;
+  constexpr float kWindow = DistinctCornerRadiiLayoutProvider::kWindowCorner;
+  EXPECT_EQ(gfx::RoundedCornersF(kBorder, kWindow, kWindow, kBorder),
+            layout->CalculateContentsCornerRadiiForTesting());
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     CalculateContentsCornerRadiiWithWebPanelOnRight) {
+  DistinctCornerRadiiLayoutProvider layout_provider;
+  auto layout =
+      CreateLayoutWithWebPanel(/*panel_visible=*/true, /*panel_on_left=*/false);
+
+  constexpr float kBorder = DistinctCornerRadiiLayoutProvider::kBorder;
+  constexpr float kWindow = DistinctCornerRadiiLayoutProvider::kWindowCorner;
+  EXPECT_EQ(gfx::RoundedCornersF(kWindow, kBorder, kBorder, kWindow),
+            layout->CalculateContentsCornerRadiiForTesting());
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     CalculateWebPanelCornerRadiiWithPanelOnLeft) {
+  DistinctCornerRadiiLayoutProvider layout_provider;
+  auto layout =
+      CreateLayoutWithWebPanel(/*panel_visible=*/true, /*panel_on_left=*/true);
+
+  // The panel's right edge faces the contents; its left edge is the window's.
+  constexpr float kBorder = DistinctCornerRadiiLayoutProvider::kBorder;
+  constexpr float kWindow = DistinctCornerRadiiLayoutProvider::kWindowCorner;
+  EXPECT_EQ(gfx::RoundedCornersF(kWindow, kBorder, kBorder, kWindow),
+            layout->CalculateWebPanelCornerRadiiForTesting());
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     CalculateWebPanelCornerRadiiWithPanelOnRight) {
+  DistinctCornerRadiiLayoutProvider layout_provider;
+  auto layout =
+      CreateLayoutWithWebPanel(/*panel_visible=*/true, /*panel_on_left=*/false);
+
+  constexpr float kBorder = DistinctCornerRadiiLayoutProvider::kBorder;
+  constexpr float kWindow = DistinctCornerRadiiLayoutProvider::kWindowCorner;
+  EXPECT_EQ(gfx::RoundedCornersF(kBorder, kWindow, kWindow, kBorder),
+            layout->CalculateWebPanelCornerRadiiForTesting());
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     CalculateWebPanelCornerRadiiIgnoresPanelVisibility) {
+  DistinctCornerRadiiLayoutProvider layout_provider;
+  auto layout =
+      CreateLayoutWithWebPanel(/*panel_visible=*/false, /*panel_on_left=*/true);
+
+  // BraveMultiContentsView::SetWebPanelContents() reads these before the panel
+  // becomes visible, so they must already describe the panel's geometry. The
+  // contents, in contrast, are unaffected while the panel is hidden.
+  constexpr float kBorder = DistinctCornerRadiiLayoutProvider::kBorder;
+  constexpr float kWindow = DistinctCornerRadiiLayoutProvider::kWindowCorner;
+  EXPECT_EQ(gfx::RoundedCornersF(kWindow, kBorder, kBorder, kWindow),
+            layout->CalculateWebPanelCornerRadiiForTesting());
+  EXPECT_EQ(gfx::RoundedCornersF(kWindow),
             layout->CalculateContentsCornerRadiiForTesting());
 }
 

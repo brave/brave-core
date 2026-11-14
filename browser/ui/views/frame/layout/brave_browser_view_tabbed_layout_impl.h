@@ -99,8 +99,10 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   // private.
   int GetUpstreamVerticalTabStripWidthForTesting() const;
 
-  // Test-only accessor for CalculateContentsCornerRadii(), which is private.
+  // Test-only accessors for CalculateContentsCornerRadii() and
+  // CalculateWebPanelCornerRadii(), which are private.
   gfx::RoundedCornersF CalculateContentsCornerRadiiForTesting() const;
+  gfx::RoundedCornersF CalculateWebPanelCornerRadiiForTesting() const;
 
   // Populates `layout_data_` with the given window state (and a zero side
   // panel width) so `CalculateSeparatorInfo()` can be exercised without
@@ -144,11 +146,28 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   int GetUpstreamVerticalTabStripWidth() const;
   bool IsSidebarAtContentsEdge() const;
 
-  // Returns the corner radii for the contents area, where a corner meeting the
-  // window frame follows the window's corner and a corner meeting other UI
-  // uses the smaller border radius. Empty when the contents should not be
-  // rounded at all.
+  // Which visual sides of a hosted area have other UI beyond them, rather than
+  // the window frame.
+  struct AdjacentUi {
+    bool left = false;
+    bool right = false;
+  };
+
+  // The UI laid out beside the contents area: the vertical tab strip and the
+  // sidebar / side panel. Neither is inside the contents area, so both corner
+  // radii calculations start from this.
+  AdjacentUi GetUiAtContentsEdges() const;
+
+  // Builds the radii for one hosted area. A side with UI beyond it is an
+  // interior edge and uses the smaller border radius; one reaching the window
+  // frame follows the window's corner.
+  gfx::RoundedCornersF AssembleCornerRadii(AdjacentUi adjacent_ui) const;
+
+  // Returns the corner radii for the contents area, and for the web panel
+  // hosted beside it. Empty when the contents should not be rounded at all.
+  // The web panel's are computed whether or not it is currently visible.
   gfx::RoundedCornersF CalculateContentsCornerRadii() const;
+  gfx::RoundedCornersF CalculateWebPanelCornerRadii() const;
 
   bool ShouldPushBookmarkBarForVerticalTabs() const;
   gfx::Insets GetInsetsConsideringVerticalTabHost() const;

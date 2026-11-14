@@ -9,9 +9,11 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/i18n/rtl.h"
 #include "base/memory/raw_ref.h"
 #include "brave/browser/ui/views/brave_layout_provider.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "chrome/browser/devtools/devtools_ui_controller.h"
 #include "chrome/browser/profiles/profile.h"
@@ -120,6 +122,16 @@ void BraveMultiContentsView::UseContentsContainerViewForWebPanel() {
             browser_view_, /*for_web_panel*/ true));
     contents_container_view_for_web_panel_->SetVisible(false);
 
+    // An open web panel is a rounded corners trigger of its own, so the browser
+    // view tracks the container's visibility the same way it tracks the side
+    // panel's. The container is created on first use, which is why the browser
+    // view cannot subscribe to it directly.
+    web_panel_visible_subscription_ =
+        contents_container_view_for_web_panel_->AddVisibleChangedCallback(
+            base::BindRepeating(
+                &BraveMultiContentsView::OnWebPanelVisibilityChanged,
+                base::Unretained(this)));
+
     web_panel_resize_area_ =
         AddChildView(std::make_unique<WebPanelResizeArea>(*this));
     web_panel_resize_area_->SetVisible(false);
@@ -198,26 +210,33 @@ void BraveMultiContentsView::OnShowActiveContentsDomainChanged() {
   UpdateContentsBorderAndOverlay();
 }
 
+void BraveMultiContentsView::OnWebPanelVisibilityChanged() {
+  BraveBrowserView::From(browser_view_)->OnPanelVisibilityChanged();
+}
+
 void BraveMultiContentsView::UpdateContentsCornerRadii(
-    const gfx::RoundedCornersF& corner_radii) {
+    const gfx::RoundedCornersF& corner_radii,
+    const gfx::RoundedCornersF& web_panel_corner_radii) {
   if (contents_container_view_for_web_panel_) {
     contents_container_view_for_web_panel_->SetContentsCornerRadii(
-        corner_radii);
+        web_panel_corner_radii);
   }
 
-  const bool is_in_split = IsInSplitView();
+  // |corner_radii| is for the contents area as a whole, so in a split the
+  // divider's corners come off it and each pane keeps the outer corners on its
+  // own side - including the one facing the web panel, which the layout has
+  // already reduced for us.
   const size_t view_count = contents_container_views_.size();
   for (size_t i = 0; i < view_count; ++i) {
-    auto* container_view =
-        BraveContentsContainerView::From(contents_container_views_[i]);
-    if (is_in_split) {
-      const bool is_first = i == 0;
-      const bool is_last = i == view_count - 1;
-      container_view->SetContentsCornerRadii(GetSplitContentsCornerRadii(
-          corner_radii, GetSplitLayout(), is_first, is_last));
-    } else {
-      container_view->SetContentsCornerRadii(corner_radii);
+    gfx::RoundedCornersF radii = corner_radii;
+    if (IsInSplitView()) {
+      radii = GetSplitContentsCornerRadii(radii, GetSplitLayout(),
+                                          /*is_first=*/i == 0,
+                                          /*is_last=*/i == view_count - 1);
     }
+
+    BraveContentsContainerView::From(contents_container_views_[i])
+        ->SetContentsCornerRadii(radii);
   }
 
   UpdateContentsBorderAndOverlay();

@@ -147,6 +147,12 @@ class BraveBrowserView : public BrowserView,
   void StopListeningFullscreenChanges();
   bool IsSidebarVisible() const;
 
+  // Web panel state the layout needs for its corner radii calculations. It is
+  // hosted inside the contents area, so the layout cannot reach it directly -
+  // BraveMultiContentsView's target depends on this one.
+  bool IsWebPanelVisible() const;
+  bool IsWebPanelOnLeft() const;
+
   BraveVerticalTabStripContainerView* vertical_tab_strip_container_view() {
     return vertical_tab_strip_container_view_;
   }
@@ -171,12 +177,20 @@ class BraveBrowserView : public BrowserView,
 
   BraveMultiContentsView* GetBraveMultiContentsView() const;
 
-  // Applies the contents area corner radii computed by the layout. Called at
-  // the end of every layout pass.
-  void UpdateContentsCornerRadii(const gfx::RoundedCornersF& corner_radii);
+  // Applies the corner radii computed by the layout for the contents area and
+  // for the web panel hosted beside it. Called at the end of every layout pass.
+  void UpdateContentsCornerRadii(
+      const gfx::RoundedCornersF& corner_radii,
+      const gfx::RoundedCornersF& web_panel_corner_radii);
 
   void UpdateRoundedCornersUI();
   void UpdateVerticalTabStripBorder();
+
+  // Re-evaluates the rounded corners state when the side panel or the web panel
+  // is shown or hidden: rounded corners around the main contents are used while
+  // either panel is open. Wired as the side panel's visibility-changed
+  // callback; BraveMultiContentsView forwards its web panel container's.
+  void OnPanelVisibilityChanged();
 
   // Re-applies the side panel border so the content corner radii track the
   // sidebar control view's visibility. Wired as SidebarContainerView's
@@ -287,11 +301,6 @@ class BraveBrowserView : public BrowserView,
   void HandleBrowserWindowMouseEvent(const ui::MouseEvent& event);
   void OnCompactModePrefChanged();
   void OnPreferenceChanged(const std::string& pref_name);
-
-  // Re-evaluates the rounded corners state when the side panel is shown or
-  // hidden. Rounded corners around the main contents is used when panel opens.
-  void OnSidePanelVisibilityChanged();
-
   void UpdateFocusModeState();
   bool ShouldDisableFocusModeForActiveTab() const;
 
