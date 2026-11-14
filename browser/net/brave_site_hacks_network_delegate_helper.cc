@@ -56,13 +56,6 @@ bool IsTrackingQueryParametersFilteringEnabled(T<BraveRequestInfo> ctx) {
 
   Profile* profile = Profile::FromBrowserContext(ctx->browser_context());
   CHECK(profile);
-  // Default to enabled unless controlled by policy.
-  if (!profile->GetPrefs()->IsManagedPreference(
-          query_filter::kTrackingQueryParametersFilteringEnabled)) {
-    return true;
-  }
-
-  // Return the policy-controlled value.
   return profile->GetPrefs()->GetBoolean(
       query_filter::kTrackingQueryParametersFilteringEnabled);
 }
