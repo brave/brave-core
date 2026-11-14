@@ -9,7 +9,6 @@
 
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "ui/gfx/geometry/rect.h"
 
 // Provide a base implementation (important for `TestBrowserWindow ` in tests)
 // For real implementation, see `BraveBrowserView`.
@@ -21,10 +20,6 @@ speedreader::SpeedreaderBubbleView* BraveBrowserWindow::ShowSpeedreaderBubble(
   return nullptr;
 }
 #endif
-
-gfx::Rect BraveBrowserWindow::GetShieldsBubbleRect() {
-  return gfx::Rect();
-}
 
 // static
 BraveBrowserWindow* BraveBrowserWindow::From(BrowserWindow* window) {

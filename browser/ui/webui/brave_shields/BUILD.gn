@@ -21,3 +21,23 @@ source_set("brave_shields") {
     "//mojo/public/cpp/bindings",
   ]
 }
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "shields_panel_handler_browsertest.cc" ]
+
+  deps = [
+    ":brave_shields",
+    "//base/test:test_support",
+    "//brave/browser/ui/views/brave_actions",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/views/interaction",
+    "//chrome/browser/ui/web_applications:test_support",
+    "//chrome/test:test_support",
+    "//chrome/test:test_support_ui",
+    "//content/test:test_support",
+    "//ui/views",
+  ]
+}
