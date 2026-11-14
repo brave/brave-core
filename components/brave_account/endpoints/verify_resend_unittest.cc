@@ -25,9 +25,9 @@ const VerifyResendTestCase* Success() {
       {.test_name = "success",
        .http_status_code = net::HTTP_NO_CONTENT,
        .raw_response_body = "",
-       .expected_response = {.net_error = net::OK,
-                             .status_code = net::HTTP_NO_CONTENT,
-                             .body = std::nullopt}});
+       .expected_response = {
+           {.net_error = net::OK, .status_code = net::HTTP_NO_CONTENT},
+           std::nullopt}});
   return kSuccess.get();
 }
 
@@ -52,13 +52,13 @@ const VerifyResendTestCase* ApplicationJsonErrorCodeIsNull() {
                R"({ "code": null,
                     "error": "Bad Request",
                     "status": 400 })",
-           .expected_response = {.net_error = net::OK,
-                                 .status_code = net::HTTP_BAD_REQUEST,
-                                 .body = base::unexpected([] {
-                                   VerifyResend::Response::ErrorBody body;
-                                   body.code = base::Value();
-                                   return body;
-                                 }())}});
+           .expected_response = {
+               {.net_error = net::OK, .status_code = net::HTTP_BAD_REQUEST},
+               base::unexpected([] {
+                 VerifyResend::Response::ErrorBody body;
+                 body.code = base::Value();
+                 return body;
+               }())}});
   return kApplicationJsonErrorCodeIsNull.get();
 }
 
@@ -71,13 +71,13 @@ const VerifyResendTestCase* ApplicationJsonErrorCodeIsNotNull() {
                R"({ "code": 13008,
                     "error": "maximum email send attempts exceeded",
                     "status": 400 })",
-           .expected_response = {.net_error = net::OK,
-                                 .status_code = net::HTTP_BAD_REQUEST,
-                                 .body = base::unexpected([] {
-                                   VerifyResend::Response::ErrorBody body;
-                                   body.code = base::Value(13008);
-                                   return body;
-                                 }())}});
+           .expected_response = {
+               {.net_error = net::OK, .status_code = net::HTTP_BAD_REQUEST},
+               base::unexpected([] {
+                 VerifyResend::Response::ErrorBody body;
+                 body.code = base::Value(13008);
+                 return body;
+               }())}});
   return kApplicationJsonErrorCodeIsNotNull.get();
 }
 
@@ -90,9 +90,10 @@ const VerifyResendTestCase* NonApplicationJsonError() {
           {.test_name = "non_application_json_error",
            .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
            .raw_response_body = "non-application/json error",
-           .expected_response = {.net_error = net::OK,
-                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                                 .body = std::nullopt}});
+           .expected_response = {
+               {.net_error = net::OK,
+                .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+               std::nullopt}});
   return kNonApplicationJsonError.get();
 }
 

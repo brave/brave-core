@@ -76,7 +76,7 @@ void MockLoginResponses(
 
   endpoint_client::MockResponseFor<LoginInit>(
       test_url_loader_factory,
-      {.net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+      {{.net_error = net::OK, .status_code = net::HTTP_OK}, [] {
          LoginInit::Response::SuccessBody body;
          body.login_token = "login_token";
          body.serialized_ke2 = "serialized_ke2";
@@ -85,7 +85,7 @@ void MockLoginResponses(
 
   endpoint_client::MockResponseFor<LoginFinalize>(
       test_url_loader_factory,
-      {.net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+      {{.net_error = net::OK, .status_code = net::HTTP_OK}, [] {
          LoginFinalize::Response::SuccessBody body;
          body.auth_token = "authentication_token";
          body.email = kSuccessEmail;
@@ -94,7 +94,7 @@ void MockLoginResponses(
 
   endpoint_client::MockResponseFor<ServiceToken>(
       test_url_loader_factory,
-      {.net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+      {{.net_error = net::OK, .status_code = net::HTTP_OK}, [] {
          ServiceToken::Response::SuccessBody body;
          body.auth_token = "cached_service_token";
          return body;

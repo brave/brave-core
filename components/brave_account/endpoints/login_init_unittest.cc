@@ -27,7 +27,7 @@ const LoginInitTestCase* Success() {
        .raw_response_body = R"({ "loginToken": "eyJhbGciOiJFUz",
                                  "serializedKE2": "34c375d933e3c" })",
        .expected_response = {
-           .net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+           {.net_error = net::OK, .status_code = net::HTTP_OK}, [] {
              LoginInit::Response::SuccessBody body;
              body.login_token = "eyJhbGciOiJFUz";
              body.serialized_ke2 = "34c375d933e3c";
@@ -57,13 +57,13 @@ const LoginInitTestCase* ApplicationJsonErrorCodeIsNull() {
                R"({ "code": null,
                     "error": "Bad Request",
                     "status": 400 })",
-           .expected_response = {.net_error = net::OK,
-                                 .status_code = net::HTTP_BAD_REQUEST,
-                                 .body = base::unexpected([] {
-                                   LoginInit::Response::ErrorBody body;
-                                   body.code = base::Value();
-                                   return body;
-                                 }())}});
+           .expected_response = {
+               {.net_error = net::OK, .status_code = net::HTTP_BAD_REQUEST},
+               base::unexpected([] {
+                 LoginInit::Response::ErrorBody body;
+                 body.code = base::Value();
+                 return body;
+               }())}});
   return kApplicationJsonErrorCodeIsNull.get();
 }
 
@@ -76,13 +76,13 @@ const LoginInitTestCase* ApplicationJsonErrorCodeIsNotNull() {
                R"({ "code": 14004,
                     "error": "incorrect credentials",
                     "status": 401 })",
-           .expected_response = {.net_error = net::OK,
-                                 .status_code = net::HTTP_UNAUTHORIZED,
-                                 .body = base::unexpected([] {
-                                   LoginInit::Response::ErrorBody body;
-                                   body.code = base::Value(14004);
-                                   return body;
-                                 }())}});
+           .expected_response = {
+               {.net_error = net::OK, .status_code = net::HTTP_UNAUTHORIZED},
+               base::unexpected([] {
+                 LoginInit::Response::ErrorBody body;
+                 body.code = base::Value(14004);
+                 return body;
+               }())}});
   return kApplicationJsonErrorCodeIsNotNull.get();
 }
 
@@ -94,9 +94,9 @@ const LoginInitTestCase* NonApplicationJsonError() {
       {.test_name = "non_application_json_error",
        .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
        .raw_response_body = "non-application/json error",
-       .expected_response = {.net_error = net::OK,
-                             .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                             .body = std::nullopt}});
+       .expected_response = {{.net_error = net::OK,
+                              .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+                             std::nullopt}});
   return kNonApplicationJsonError.get();
 }
 

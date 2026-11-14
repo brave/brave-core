@@ -1265,16 +1265,14 @@ class PurchasedStateManagerWithRealSkusServiceTest
  protected:
   const endpoints::GetSubscriberCredentialV12::Response
       kTokenNoLongerValidResponse{
-          .net_error = net::OK,
-          .status_code = net::HTTP_BAD_REQUEST,
-          .body = base::unexpected(endpoints::VpnErrorBody{
+          {.net_error = net::OK, .status_code = net::HTTP_BAD_REQUEST},
+          base::unexpected(endpoints::VpnErrorBody{
               .error_title = std::string(kTokenNoLongerValid),
               .error_message = "consumed"})};
   const endpoints::GetSubscriberCredentialV12::Response
       kExchangeSuccessResponse{
-          .net_error = net::OK,
-          .status_code = net::HTTP_OK,
-          .body = endpoints::GetSubscriberCredentialSuccessBody{
+          {.net_error = net::OK, .status_code = net::HTTP_OK},
+          endpoints::GetSubscriberCredentialSuccessBody{
               .subscriber_credential = std::string(kTestSubscriberCredential)}};
 
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -1282,7 +1280,8 @@ class PurchasedStateManagerWithRealSkusServiceTest
   std::unique_ptr<skus::SkusServiceImpl> skus_service_;
   std::unique_ptr<SkusServiceClient> real_skus_client_;
   std::vector<endpoints::GetSubscriberCredentialV12::Response>
-      exchange_responses_{{.net_error = net::OK, .status_code = net::HTTP_OK}};
+      exchange_responses_{
+          {{.net_error = net::OK, .status_code = net::HTTP_OK}}};
   size_t exchange_response_index_ = 0;
 };
 

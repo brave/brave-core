@@ -97,9 +97,9 @@ const ResendVerificationEmailTestCase* ResendVerificationEmailSuccess() {
       .logged_out_verification_intent =
           mojom::LoggedOutVerificationIntent::kRegistration,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_NO_CONTENT,
-                             .body = std::nullopt}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_NO_CONTENT},
+                             std::nullopt}},
       .mojo_expected = mojom::ResendVerificationEmailResult::New(),
   });
   return kTestCase.get();
@@ -112,9 +112,9 @@ ResendVerificationEmailBodyMissingOrFailedToParse() {
       .logged_out_verification_intent =
           mojom::LoggedOutVerificationIntent::kRegistration,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                             .body = std::nullopt}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+                             std::nullopt}},
       .mojo_expected =
           base::unexpected(mojom::ResendVerificationEmailError::NewServerError(
               mojom::ResendVerificationEmailServerError::New(
@@ -132,9 +132,9 @@ ResendVerificationEmailUnexpectedSuccessBody() {
       .logged_out_verification_intent =
           mojom::LoggedOutVerificationIntent::kRegistration,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body = VerifyResend::Response::SuccessBody()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             VerifyResend::Response::SuccessBody()}},
       .mojo_expected =
           base::unexpected(mojom::ResendVerificationEmailError::NewServerError(
               mojom::ResendVerificationEmailServerError::New(
@@ -151,9 +151,9 @@ ResendVerificationEmailErrorCodeIsNull() {
       .logged_out_verification_intent =
           mojom::LoggedOutVerificationIntent::kRegistration,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_BAD_REQUEST,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_BAD_REQUEST},
+                             base::unexpected([] {
                                VerifyResend::Response::ErrorBody body;
                                body.code = base::Value();
                                return body;
@@ -174,9 +174,9 @@ ResendVerificationEmailUnknownErrorCode() {
       .logged_out_verification_intent =
           mojom::LoggedOutVerificationIntent::kRegistration,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_TOO_EARLY,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_TOO_EARLY},
+                             base::unexpected([] {
                                VerifyResend::Response::ErrorBody body;
                                body.code = base::Value(42);
                                return body;
@@ -196,9 +196,9 @@ const ResendVerificationEmailTestCase* ResendVerificationEmailKnownErrorCode() {
       .logged_out_verification_intent =
           mojom::LoggedOutVerificationIntent::kRegistration,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_BAD_REQUEST,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_BAD_REQUEST},
+                             base::unexpected([] {
                                VerifyResend::Response::ErrorBody body;
                                body.code = base::Value(13008);
                                return body;

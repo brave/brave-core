@@ -64,9 +64,9 @@ const RegisterStep1TestCase* RegisterStep1BodyMissingOrFailedToParse() {
       .blinded_message = "blinded_message",
       .fail_encryption = {},  // not used
       .fail_decryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                             .body = std::nullopt}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+                             std::nullopt}},
       .mojo_expected = base::unexpected(
           mojom::RegisterError::NewServerError(mojom::RegisterServerError::New(
               net::HTTP_INTERNAL_SERVER_ERROR,
@@ -82,9 +82,9 @@ const RegisterStep1TestCase* RegisterStep1ErrorCodeIsNull() {
       .blinded_message = "blinded_message",
       .fail_encryption = {},  // not used
       .fail_decryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_BAD_REQUEST,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_BAD_REQUEST},
+                             base::unexpected([] {
                                PasswordInit::Response::ErrorBody body;
                                body.code = base::Value();
                                return body;
@@ -103,9 +103,9 @@ const RegisterStep1TestCase* RegisterStep1UnknownErrorCode() {
       .blinded_message = "blinded_message",
       .fail_encryption = {},  // not used
       .fail_decryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_TOO_EARLY,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_TOO_EARLY},
+                             base::unexpected([] {
                                PasswordInit::Response::ErrorBody body;
                                body.code = base::Value(42);
                                return body;
@@ -124,9 +124,9 @@ const RegisterStep1TestCase* RegisterStep1KnownErrorCode() {
       .blinded_message = "blinded_message",
       .fail_encryption = {},  // not used
       .fail_decryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_BAD_REQUEST,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_BAD_REQUEST},
+                             base::unexpected([] {
                                PasswordInit::Response::ErrorBody body;
                                body.code = base::Value(11005);
                                return body;
@@ -146,16 +146,14 @@ const RegisterStep1TestCase* RegisterStep1VerificationTokenMissing() {
       .blinded_message = "blinded_message",
       .fail_encryption = {},  // not used
       .fail_decryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   PasswordInit::Response::SuccessBody body;
-                                   body.verification_token = std::nullopt;
-                                   body.serialized_response =
-                                       "serialized_response";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               PasswordInit::Response::SuccessBody body;
+                               body.verification_token = std::nullopt;
+                               body.serialized_response = "serialized_response";
+                               return body;
+                             }()}},
       .mojo_expected = base::unexpected(
           mojom::RegisterError::NewServerError(mojom::RegisterServerError::New(
               net::HTTP_OK, mojom::RegisterServerErrorCode::kInvalidResponse))),
@@ -170,16 +168,14 @@ const RegisterStep1TestCase* RegisterStep1VerificationTokenEmpty() {
       .blinded_message = "blinded_message",
       .fail_encryption = {},  // not used
       .fail_decryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   PasswordInit::Response::SuccessBody body;
-                                   body.verification_token = "";
-                                   body.serialized_response =
-                                       "serialized_response";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               PasswordInit::Response::SuccessBody body;
+                               body.verification_token = "";
+                               body.serialized_response = "serialized_response";
+                               return body;
+                             }()}},
       .mojo_expected = base::unexpected(
           mojom::RegisterError::NewServerError(mojom::RegisterServerError::New(
               net::HTTP_OK, mojom::RegisterServerErrorCode::kInvalidResponse))),
@@ -194,15 +190,14 @@ const RegisterStep1TestCase* RegisterStep1SerializedResponseEmpty() {
       .blinded_message = "blinded_message",
       .fail_encryption = {},  // not used
       .fail_decryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   PasswordInit::Response::SuccessBody body;
-                                   body.verification_token = kVerificationToken;
-                                   body.serialized_response = "";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               PasswordInit::Response::SuccessBody body;
+                               body.verification_token = kVerificationToken;
+                               body.serialized_response = "";
+                               return body;
+                             }()}},
       .mojo_expected = base::unexpected(
           mojom::RegisterError::NewServerError(mojom::RegisterServerError::New(
               net::HTTP_OK, mojom::RegisterServerErrorCode::kInvalidResponse))),
@@ -217,16 +212,14 @@ const RegisterStep1TestCase* RegisterStep1VerificationTokenEncryptionFailed() {
       .blinded_message = "blinded_message",
       .fail_encryption = true,
       .fail_decryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   PasswordInit::Response::SuccessBody body;
-                                   body.verification_token = kVerificationToken;
-                                   body.serialized_response =
-                                       "serialized_response";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               PasswordInit::Response::SuccessBody body;
+                               body.verification_token = kVerificationToken;
+                               body.serialized_response = "serialized_response";
+                               return body;
+                             }()}},
       .mojo_expected = base::unexpected(
           mojom::RegisterError::NewClientError(mojom::RegisterClientError::New(
               mojom::RegisterClientErrorCode::
@@ -242,16 +235,14 @@ const RegisterStep1TestCase* RegisterStep1Success() {
       .blinded_message = "blinded_message",
       .fail_encryption = false,
       .fail_decryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   PasswordInit::Response::SuccessBody body;
-                                   body.verification_token = kVerificationToken;
-                                   body.serialized_response =
-                                       "serialized_response";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               PasswordInit::Response::SuccessBody body;
+                               body.verification_token = kVerificationToken;
+                               body.serialized_response = "serialized_response";
+                               return body;
+                             }()}},
       .mojo_expected = mojom::RegisterStep1Result::New(
           EncryptedVerificationToken(), "serialized_response"),
   });
@@ -332,9 +323,9 @@ const RegisterStep2TestCase* RegisterStep2BodyMissingOrFailedToParse() {
       .serialized_record = "serialized_record",
       .fail_encryption = {},  // not used
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                             .body = std::nullopt}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+                             std::nullopt}},
       .mojo_expected = base::unexpected(
           mojom::RegisterError::NewServerError(mojom::RegisterServerError::New(
               net::HTTP_INTERNAL_SERVER_ERROR,
@@ -350,9 +341,9 @@ const RegisterStep2TestCase* RegisterStep2ErrorCodeIsNull() {
       .serialized_record = "serialized_record",
       .fail_encryption = {},  // not used
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_NOT_FOUND,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_NOT_FOUND},
+                             base::unexpected([] {
                                PasswordFinalize::Response::ErrorBody body;
                                body.code = base::Value();
                                return body;
@@ -371,9 +362,9 @@ const RegisterStep2TestCase* RegisterStep2UnknownErrorCode() {
       .serialized_record = "serialized_record",
       .fail_encryption = {},  // not used
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_TOO_EARLY,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_TOO_EARLY},
+                             base::unexpected([] {
                                PasswordFinalize::Response::ErrorBody body;
                                body.code = base::Value(42);
                                return body;
@@ -392,9 +383,9 @@ const RegisterStep2TestCase* RegisterStep2KnownErrorCode() {
       .serialized_record = "serialized_record",
       .fail_encryption = {},  // not used
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_NOT_FOUND,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_NOT_FOUND},
+                             base::unexpected([] {
                                PasswordFinalize::Response::ErrorBody body;
                                body.code = base::Value(14001);
                                return body;
@@ -414,10 +405,9 @@ const RegisterStep2TestCase* RegisterStep2Success() {
       .serialized_record = "serialized_record",
       .fail_encryption = {},  // not used
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 PasswordFinalize::Response::SuccessBody()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             PasswordFinalize::Response::SuccessBody()}},
       .mojo_expected = mojom::RegisterStep2Result::New(),
   });
   return kTestCase.get();
@@ -557,9 +547,9 @@ const RegisterStep3TestCase* RegisterStep3BodyMissingOrFailedToParse() {
           mojom::LoggedOutVerificationIntent::kRegistration,
       .fail_decryption = false,
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                             .body = std::nullopt}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+                             std::nullopt}},
       .mojo_expected = base::unexpected(
           mojom::RegisterError::NewServerError(mojom::RegisterServerError::New(
               net::HTTP_INTERNAL_SERVER_ERROR,
@@ -576,9 +566,9 @@ const RegisterStep3TestCase* RegisterStep3ErrorCodeIsNull() {
           mojom::LoggedOutVerificationIntent::kRegistration,
       .fail_decryption = false,
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_UNAUTHORIZED,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_UNAUTHORIZED},
+                             base::unexpected([] {
                                VerifyComplete::Response::ErrorBody body;
                                body.code = base::Value();
                                return body;
@@ -598,9 +588,9 @@ const RegisterStep3TestCase* RegisterStep3UnknownErrorCode() {
           mojom::LoggedOutVerificationIntent::kRegistration,
       .fail_decryption = false,
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_TOO_EARLY,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_TOO_EARLY},
+                             base::unexpected([] {
                                VerifyComplete::Response::ErrorBody body;
                                body.code = base::Value(42);
                                return body;
@@ -620,9 +610,9 @@ const RegisterStep3TestCase* RegisterStep3KnownErrorCode() {
           mojom::LoggedOutVerificationIntent::kRegistration,
       .fail_decryption = false,
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_NOT_FOUND,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_NOT_FOUND},
+                             base::unexpected([] {
                                VerifyComplete::Response::ErrorBody body;
                                body.code = base::Value(13002);
                                return body;
@@ -644,15 +634,14 @@ const RegisterStep3TestCase* RegisterStep3AuthTokenNull() {
           mojom::LoggedOutVerificationIntent::kRegistration,
       .fail_decryption = false,
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   VerifyComplete::Response::SuccessBody body;
-                                   body.auth_token = base::Value();
-                                   body.email = kEmailAddress;
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               VerifyComplete::Response::SuccessBody body;
+                               body.auth_token = base::Value();
+                               body.email = kEmailAddress;
+                               return body;
+                             }()}},
       .mojo_expected = base::unexpected(
           mojom::RegisterError::NewServerError(mojom::RegisterServerError::New(
               net::HTTP_OK, mojom::RegisterServerErrorCode::kInvalidResponse))),
@@ -668,15 +657,14 @@ const RegisterStep3TestCase* RegisterStep3AuthTokenEmpty() {
           mojom::LoggedOutVerificationIntent::kRegistration,
       .fail_decryption = false,
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   VerifyComplete::Response::SuccessBody body;
-                                   body.auth_token = base::Value("");
-                                   body.email = kEmailAddress;
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               VerifyComplete::Response::SuccessBody body;
+                               body.auth_token = base::Value("");
+                               body.email = kEmailAddress;
+                               return body;
+                             }()}},
       .mojo_expected = base::unexpected(
           mojom::RegisterError::NewServerError(mojom::RegisterServerError::New(
               net::HTTP_OK, mojom::RegisterServerErrorCode::kInvalidResponse))),
@@ -692,16 +680,15 @@ const RegisterStep3TestCase* RegisterStep3EmailEmpty() {
           mojom::LoggedOutVerificationIntent::kRegistration,
       .fail_decryption = false,
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   VerifyComplete::Response::SuccessBody body;
-                                   body.auth_token =
-                                       base::Value(kAuthenticationToken);
-                                   body.email = "";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               VerifyComplete::Response::SuccessBody body;
+                               body.auth_token =
+                                   base::Value(kAuthenticationToken);
+                               body.email = "";
+                               return body;
+                             }()}},
       .mojo_expected = base::unexpected(
           mojom::RegisterError::NewServerError(mojom::RegisterServerError::New(
               net::HTTP_OK, mojom::RegisterServerErrorCode::kInvalidResponse))),
@@ -718,16 +705,15 @@ RegisterStep3AuthenticationTokenEncryptionFailed() {
           mojom::LoggedOutVerificationIntent::kRegistration,
       .fail_decryption = false,
       .fail_encryption = true,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   VerifyComplete::Response::SuccessBody body;
-                                   body.auth_token =
-                                       base::Value(kAuthenticationToken);
-                                   body.email = kEmailAddress;
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               VerifyComplete::Response::SuccessBody body;
+                               body.auth_token =
+                                   base::Value(kAuthenticationToken);
+                               body.email = kEmailAddress;
+                               return body;
+                             }()}},
       .mojo_expected = base::unexpected(
           mojom::RegisterError::NewClientError(mojom::RegisterClientError::New(
               mojom::RegisterClientErrorCode::
@@ -744,16 +730,15 @@ const RegisterStep3TestCase* RegisterStep3Success() {
           mojom::LoggedOutVerificationIntent::kRegistration,
       .fail_decryption = false,
       .fail_encryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   VerifyComplete::Response::SuccessBody body;
-                                   body.auth_token =
-                                       base::Value(kAuthenticationToken);
-                                   body.email = kEmailAddress;
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               VerifyComplete::Response::SuccessBody body;
+                               body.auth_token =
+                                   base::Value(kAuthenticationToken);
+                               body.email = kEmailAddress;
+                               return body;
+                             }()}},
       .mojo_expected = mojom::RegisterStep3Result::New(),
   });
   return kTestCase.get();

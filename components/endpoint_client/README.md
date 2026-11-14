@@ -315,16 +315,18 @@ Helpers for registering typed mock responses are available in
 This allows you to simulate transport errors, HTTP failures, and both
 success/error bodies without introducing additional mock layers.
 
+`net_error` and `status_code` belong to a base that all responses share, so they
+go in their own braces, followed by the body:
+
 ```cpp
-MockResponseFor<LoginInit>(test_url_loader_factory_,
-                           {.net_error = net::OK,
-                            .status_code = net::HTTP_OK,
-                            .body = [] {
-                              LoginInit::Response::SuccessBody body;
-                              body.login_token = "eyJhbGciOiJFUzI1NiIs...";
-                              body.serialized_ke2 = "b4fb94e4f9d3d87c368d...";
-                              return body;
-                            }()});
+MockResponseFor<LoginInit>(
+    test_url_loader_factory_,
+    {{.net_error = net::OK, .status_code = net::HTTP_OK}, [] {
+       LoginInit::Response::SuccessBody body;
+       body.login_token = "eyJhbGciOiJFUzI1NiIs...";
+       body.serialized_ke2 = "b4fb94e4f9d3d87c368d...";
+       return body;
+     }()});
 ```
 
 If the request sets `url_replacements`, pass the same value as the last argument
@@ -341,16 +343,16 @@ request to the expected endpoint:
 test_url_loader_factory_.SetInterceptor(
     base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
       if (MatchesEndpoint<LoginInit>(request)) {
-        MockResponseFor<LoginInit>(test_url_loader_factory_,
-                                   {.net_error = net::OK,
-                                    .status_code = net::HTTP_UNAUTHORIZED,
-                                    .body = base::unexpected([] {
-                                      LoginInit::Response::ErrorBody body;
-                                      body.code = base::Value(14005);
-                                      body.error = "incorrect email";
-                                      body.status = 401;
-                                      return body;
-                                    }())});
+        MockResponseFor<LoginInit>(
+            test_url_loader_factory_,
+            {{.net_error = net::OK, .status_code = net::HTTP_UNAUTHORIZED},
+             base::unexpected([] {
+               LoginInit::Response::ErrorBody body;
+               body.code = base::Value(14005);
+               body.error = "incorrect email";
+               body.status = 401;
+               return body;
+             }())});
       }
     }));
 ```

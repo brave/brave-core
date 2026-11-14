@@ -28,7 +28,7 @@ const VerifyCompleteTestCase* RegistrationSuccess() {
                                  "email": "email",
                                  "service": "accounts" })",
        .expected_response = {
-           .net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+           {.net_error = net::OK, .status_code = net::HTTP_OK}, [] {
              VerifyComplete::Response::SuccessBody body;
              body.auth_token = base::Value("34c375d933e3c");
              body.email = "email";
@@ -45,7 +45,7 @@ const VerifyCompleteTestCase* PasswordResetSuccess() {
                                  "email": "email",
                                  "service": "accounts" })",
        .expected_response = {
-           .net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+           {.net_error = net::OK, .status_code = net::HTTP_OK}, [] {
              VerifyComplete::Response::SuccessBody body;
              body.auth_token = base::Value();
              body.email = "email";
@@ -76,13 +76,13 @@ const VerifyCompleteTestCase* ApplicationJsonErrorCodeIsNull() {
                R"({ "code": null,
                     "error": "Unauthorized",
                     "status": 401 })",
-           .expected_response = {.net_error = net::OK,
-                                 .status_code = net::HTTP_UNAUTHORIZED,
-                                 .body = base::unexpected([] {
-                                   VerifyComplete::Response::ErrorBody body;
-                                   body.code = base::Value();
-                                   return body;
-                                 }())}});
+           .expected_response = {
+               {.net_error = net::OK, .status_code = net::HTTP_UNAUTHORIZED},
+               base::unexpected([] {
+                 VerifyComplete::Response::ErrorBody body;
+                 body.code = base::Value();
+                 return body;
+               }())}});
   return kApplicationJsonErrorCodeIsNull.get();
 }
 
@@ -95,13 +95,13 @@ const VerifyCompleteTestCase* ApplicationJsonErrorCodeIsNotNull() {
                R"({ "code": 13002,
                     "error": "verification not found or invalid id/code",
                     "status": 404 })",
-           .expected_response = {.net_error = net::OK,
-                                 .status_code = net::HTTP_NOT_FOUND,
-                                 .body = base::unexpected([] {
-                                   VerifyComplete::Response::ErrorBody body;
-                                   body.code = base::Value(13002);
-                                   return body;
-                                 }())}});
+           .expected_response = {
+               {.net_error = net::OK, .status_code = net::HTTP_NOT_FOUND},
+               base::unexpected([] {
+                 VerifyComplete::Response::ErrorBody body;
+                 body.code = base::Value(13002);
+                 return body;
+               }())}});
   return kApplicationJsonErrorCodeIsNotNull.get();
 }
 
@@ -114,9 +114,10 @@ const VerifyCompleteTestCase* NonApplicationJsonError() {
           {.test_name = "non_application_json_error",
            .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
            .raw_response_body = "non-application/json error",
-           .expected_response = {.net_error = net::OK,
-                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                                 .body = std::nullopt}});
+           .expected_response = {
+               {.net_error = net::OK,
+                .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+               std::nullopt}});
   return kNonApplicationJsonError.get();
 }
 

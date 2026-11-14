@@ -26,7 +26,7 @@ const VerifyInitTestCase* Success() {
        .http_status_code = net::HTTP_OK,
        .raw_response_body = R"({ "verificationToken": "eyJhbGciOiJFUz" })",
        .expected_response = {
-           .net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+           {.net_error = net::OK, .status_code = net::HTTP_OK}, [] {
              VerifyInit::Response::SuccessBody body;
              body.verification_token = "eyJhbGciOiJFUz";
              return body;
@@ -60,13 +60,13 @@ const VerifyInitTestCase* ApplicationJsonErrorCodeIsNull() {
                R"({ "code": null,
                     "error": "Bad Request",
                     "status": 400 })",
-           .expected_response = {.net_error = net::OK,
-                                 .status_code = net::HTTP_BAD_REQUEST,
-                                 .body = base::unexpected([] {
-                                   VerifyInit::Response::ErrorBody body;
-                                   body.code = base::Value();
-                                   return body;
-                                 }())}});
+           .expected_response = {
+               {.net_error = net::OK, .status_code = net::HTTP_BAD_REQUEST},
+               base::unexpected([] {
+                 VerifyInit::Response::ErrorBody body;
+                 body.code = base::Value();
+                 return body;
+               }())}});
   return kApplicationJsonErrorCodeIsNull.get();
 }
 
@@ -79,13 +79,13 @@ const VerifyInitTestCase* ApplicationJsonErrorCodeIsNotNull() {
                R"({ "code": 14007,
                     "error": "invalid token audience",
                     "status": 403 })",
-           .expected_response = {.net_error = net::OK,
-                                 .status_code = net::HTTP_FORBIDDEN,
-                                 .body = base::unexpected([] {
-                                   VerifyInit::Response::ErrorBody body;
-                                   body.code = base::Value(14007);
-                                   return body;
-                                 }())}});
+           .expected_response = {
+               {.net_error = net::OK, .status_code = net::HTTP_FORBIDDEN},
+               base::unexpected([] {
+                 VerifyInit::Response::ErrorBody body;
+                 body.code = base::Value(14007);
+                 return body;
+               }())}});
   return kApplicationJsonErrorCodeIsNotNull.get();
 }
 
@@ -97,9 +97,9 @@ const VerifyInitTestCase* NonApplicationJsonError() {
       {.test_name = "non_application_json_error",
        .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
        .raw_response_body = "non-application/json error",
-       .expected_response = {.net_error = net::OK,
-                             .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                             .body = std::nullopt}});
+       .expected_response = {{.net_error = net::OK,
+                              .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+                             std::nullopt}});
   return kNonApplicationJsonError.get();
 }
 
