@@ -8,11 +8,14 @@
 #include <memory>
 
 #include "base/test/scoped_feature_list.h"
+#include "base/values.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/favicon/content/content_favicon_driver.h"
 #include "components/favicon/core/test/mock_favicon_service.h"
 #include "components/prefs/testing_pref_service.h"
@@ -87,6 +90,11 @@ class BraveShieldsTabHelperUnitTest
         ->GetPrefs();
   }
 
+  HostContentSettingsMap* host_content_settings_map() {
+    return HostContentSettingsMapFactory::GetForProfile(
+        Profile::FromBrowserContext(web_contents()->GetBrowserContext()));
+  }
+
   void SetApplicationLocale(const std::string& locale) {
     TestingBrowserProcess::GetGlobal()->SetApplicationLocale(locale);
   }
@@ -103,6 +111,45 @@ class BraveShieldsTabHelperUnitTest
   std::unique_ptr<BraveShieldsTabHelper> brave_shields_tab_helper_;
   base::test::ScopedFeatureList feature_list_;
 };
+
+TEST_F(BraveShieldsTabHelperUnitTest, ReloadsForRelevantContentSettings) {
+  const GURL url("https://example.com");
+  NavigateTo(url);
+
+  for (ContentSettingsType type :
+       {ContentSettingsType::BRAVE_SHIELDS, ContentSettingsType::BRAVE_ADS,
+        ContentSettingsType::BRAVE_TRACKERS,
+        ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
+        ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+        ContentSettingsType::BRAVE_REFERRERS,
+        ContentSettingsType::BRAVE_COOKIES, ContentSettingsType::JAVASCRIPT}) {
+    SCOPED_TRACE(static_cast<int>(type));
+    host_content_settings_map()->SetContentSettingDefaultScope(
+        url, GURL(), type, CONTENT_SETTING_BLOCK);
+    ASSERT_TRUE(web_contents()->GetController().GetPendingEntry());
+    EXPECT_EQ(web_contents()->GetController().GetPendingEntry()->GetURL(), url);
+    content::NavigationSimulator::CreateFromPending(
+        web_contents()->GetController())
+        ->Commit();
+  }
+
+  host_content_settings_map()->SetWebsiteSettingDefaultScope(
+      url, GURL(), ContentSettingsType::BRAVE_COSMETIC_FILTERING,
+      base::Value(base::DictValue().Set("cosmeticFilteringV2", "block")));
+  ASSERT_TRUE(web_contents()->GetController().GetPendingEntry());
+  EXPECT_EQ(web_contents()->GetController().GetPendingEntry()->GetURL(), url);
+}
+
+TEST_F(BraveShieldsTabHelperUnitTest,
+       DoesNotReloadForUnrelatedContentSettings) {
+  const GURL url("https://example.com");
+  NavigateTo(url);
+
+  host_content_settings_map()->SetContentSettingDefaultScope(
+      url, GURL(), ContentSettingsType::BRAVE_SPEEDREADER,
+      CONTENT_SETTING_BLOCK);
+  EXPECT_FALSE(web_contents()->GetController().GetPendingEntry());
+}
 
 TEST_F(BraveShieldsTabHelperUnitTest,
        DontTriggerOnRepeatedReloadsDetectedWhenFeatureDisabled) {
