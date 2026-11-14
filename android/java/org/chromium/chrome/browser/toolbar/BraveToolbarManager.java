@@ -194,6 +194,14 @@ public class BraveToolbarManager extends ToolbarManager
     private @Nullable BraveBottomBarActionCoordinator mBraveBottomBarActionCoordinator;
     private @Nullable BraveCollapsedUrlChipCoordinator mBraveCollapsedUrlChipCoordinator;
 
+    // One flag object per feature per process: Flag asserts against duplicate creation in
+    // test builds, so tests constructing several ToolbarManagers share this instance.
+    private static final MutableFlagWithSafeDefault sBraveAndroidCollapsedUrlChipFlag =
+            new MutableFlagWithSafeDefault(
+                    ChromeFeatureMap.getInstance(),
+                    BraveFeatureList.BRAVE_ANDROID_COLLAPSED_URL_CHIP,
+                    /* defaultValue= */ false);
+
     // Hub layout state provider and observer for hiding the toolbar when the hub is shown.
     // See https://github.com/brave/brave-browser/issues/57997.
     private boolean mIsHubHiding;
@@ -420,12 +428,7 @@ public class BraveToolbarManager extends ToolbarManager
         // Safe default: the chip init can run before native flags are cached, and the
         // MutableFlagWithSafeDefault falls back to disabled there instead of crashing, which
         // also keeps tests without native stable.
-        MutableFlagWithSafeDefault chipEnabledFlag =
-                new MutableFlagWithSafeDefault(
-                        ChromeFeatureMap.getInstance(),
-                        BraveFeatureList.BRAVE_ANDROID_COLLAPSED_URL_CHIP,
-                        /* defaultValue= */ false);
-        Supplier<Boolean> chipEnabled = chipEnabledFlag::isEnabled;
+        Supplier<Boolean> chipEnabled = sBraveAndroidCollapsedUrlChipFlag::isEnabled;
         mBraveCollapsedUrlChipCoordinator =
                 new BraveCollapsedUrlChipCoordinator(
                         mActivity,
