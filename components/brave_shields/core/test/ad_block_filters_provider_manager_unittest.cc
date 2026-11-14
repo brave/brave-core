@@ -6,9 +6,9 @@
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/test/test_filters_provider.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 class FiltersProviderManagerTestObserver
