@@ -88,9 +88,9 @@ const DeleteAccountTestCase* DeleteAccountSuccess() {
   static const base::NoDestructor<DeleteAccountTestCase> kTestCase({
       .test_name = "delete_account_success",
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_NO_CONTENT,
-                             .body = std::nullopt}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_NO_CONTENT},
+                             std::nullopt}},
       .mojo_expected = mojom::DeleteAccountResult::New(),
   });
   return kTestCase.get();
@@ -100,9 +100,9 @@ const DeleteAccountTestCase* DeleteAccountBodyMissingOrFailedToParse() {
   static const base::NoDestructor<DeleteAccountTestCase> kTestCase({
       .test_name = "delete_account_body_missing_or_failed_to_parse",
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                             .body = std::nullopt}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+                             std::nullopt}},
       .mojo_expected =
           base::unexpected(mojom::DeleteAccountError::NewServerError(
               mojom::DeleteAccountServerError::New(
@@ -116,9 +116,9 @@ const DeleteAccountTestCase* DeleteAccountUnexpectedSuccessBody() {
   static const base::NoDestructor<DeleteAccountTestCase> kTestCase({
       .test_name = "delete_account_unexpected_success_body",
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body = AccountsDelete::Response::SuccessBody()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             AccountsDelete::Response::SuccessBody()}},
       .mojo_expected =
           base::unexpected(mojom::DeleteAccountError::NewServerError(
               mojom::DeleteAccountServerError::New(
@@ -132,9 +132,9 @@ const DeleteAccountTestCase* DeleteAccountErrorCodeIsNull() {
   static const base::NoDestructor<DeleteAccountTestCase> kTestCase({
       .test_name = "delete_account_error_code_is_null",
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_UNAUTHORIZED,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_UNAUTHORIZED},
+                             base::unexpected([] {
                                AccountsDelete::Response::ErrorBody body;
                                body.code = base::Value();
                                return body;
@@ -152,9 +152,9 @@ const DeleteAccountTestCase* DeleteAccountUnknownErrorCode() {
   static const base::NoDestructor<DeleteAccountTestCase> kTestCase({
       .test_name = "delete_account_unknown_error_code",
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_TOO_EARLY,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_TOO_EARLY},
+                             base::unexpected([] {
                                AccountsDelete::Response::ErrorBody body;
                                body.code = base::Value(42);
                                return body;

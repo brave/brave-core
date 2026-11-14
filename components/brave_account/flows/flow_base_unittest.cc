@@ -76,10 +76,8 @@ class FlowBaseTest : public testing::Test {
 // Smoke test that the `.Then(RemoveRequestHandle)` continuation doesn't
 // break delivery.
 TEST_F(FlowBaseTest, FlowOwnedRequest_DeliversResponse) {
-  endpoint_client::MockResponseFor<TestEndpoint>(test_url_loader_factory_,
-                                                 TestEndpoint::Response{
-                                                     .net_error = net::OK,
-                                                 });
+  endpoint_client::MockResponseFor<TestEndpoint>(
+      test_url_loader_factory_, TestEndpoint::Response{{.net_error = net::OK}});
   base::test::TestFuture<TestEndpoint::Response> future;
   flow_->SendFlowOwnedRequest<TestEndpoint>(TestEndpoint::Request(),
                                             future.GetCallback());

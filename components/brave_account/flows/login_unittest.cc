@@ -56,9 +56,10 @@ const LoginStep1TestCase* LoginStep1BodyMissingOrFailedToParse() {
       kLoginStep1BodyMissingOrFailedToParse({
           .test_name = "login_step1_body_missing_or_failed_to_parse",
           .fail_encryption = {},  // not used
-          .endpoint_response = {{.net_error = net::OK,
-                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                                 .body = std::nullopt}},
+          .endpoint_response = {{{.net_error = net::OK,
+                                  .status_code =
+                                      net::HTTP_INTERNAL_SERVER_ERROR},
+                                 std::nullopt}},
           .mojo_expected = base::unexpected(
               mojom::LoginError::NewServerError(mojom::LoginServerError::New(
                   net::HTTP_INTERNAL_SERVER_ERROR,
@@ -72,9 +73,9 @@ const LoginStep1TestCase* LoginStep1ErrorCodeIsNull() {
       kLoginStep1ErrorCodeIsNull({
           .test_name = "login_step1_error_code_is_null",
           .fail_encryption = {},  // not used
-          .endpoint_response = {{.net_error = net::OK,
-                                 .status_code = net::HTTP_BAD_REQUEST,
-                                 .body = base::unexpected([] {
+          .endpoint_response = {{{.net_error = net::OK,
+                                  .status_code = net::HTTP_BAD_REQUEST},
+                                 base::unexpected([] {
                                    LoginInit::Response::ErrorBody body;
                                    body.code = base::Value();
                                    return body;
@@ -91,9 +92,9 @@ const LoginStep1TestCase* LoginStep1UnknownErrorCode() {
       kLoginStep1UnknownErrorCode({
           .test_name = "login_step1_unknown_error_code",
           .fail_encryption = {},  // not used
-          .endpoint_response = {{.net_error = net::OK,
-                                 .status_code = net::HTTP_TOO_EARLY,
-                                 .body = base::unexpected([] {
+          .endpoint_response = {{{.net_error = net::OK,
+                                  .status_code = net::HTTP_TOO_EARLY},
+                                 base::unexpected([] {
                                    LoginInit::Response::ErrorBody body;
                                    body.code = base::Value(42);
                                    return body;
@@ -110,9 +111,9 @@ const LoginStep1TestCase* LoginStep1KnownErrorCode() {
       {
           .test_name = "login_step1_known_error_code",
           .fail_encryption = {},  // not used
-          .endpoint_response = {{.net_error = net::OK,
-                                 .status_code = net::HTTP_UNAUTHORIZED,
-                                 .body = base::unexpected([] {
+          .endpoint_response = {{{.net_error = net::OK,
+                                  .status_code = net::HTTP_UNAUTHORIZED},
+                                 base::unexpected([] {
                                    LoginInit::Response::ErrorBody body;
                                    body.code = base::Value(11003);
                                    return body;
@@ -130,15 +131,14 @@ const LoginStep1TestCase* LoginStep1LoginTokenEmpty() {
       kLoginStep1LoginTokenEmpty({
           .test_name = "login_step1_login_token_empty",
           .fail_encryption = {},  // not used
-          .endpoint_response = {{.net_error = net::OK,
-                                 .status_code = net::HTTP_OK,
-                                 .body =
-                                     [] {
-                                       LoginInit::Response::SuccessBody body;
-                                       body.login_token = "";
-                                       body.serialized_ke2 = "serialized_ke2";
-                                       return body;
-                                     }()}},
+          .endpoint_response = {{{.net_error = net::OK,
+                                  .status_code = net::HTTP_OK},
+                                 [] {
+                                   LoginInit::Response::SuccessBody body;
+                                   body.login_token = "";
+                                   body.serialized_ke2 = "serialized_ke2";
+                                   return body;
+                                 }()}},
           .mojo_expected = base::unexpected(
               mojom::LoginError::NewServerError(mojom::LoginServerError::New(
                   net::HTTP_OK,
@@ -152,15 +152,14 @@ const LoginStep1TestCase* LoginStep1SerializedKe2Empty() {
       kLoginStep1SerializedKe2Empty({
           .test_name = "login_step1_serialized_ke2_empty",
           .fail_encryption = {},  // not used
-          .endpoint_response = {{.net_error = net::OK,
-                                 .status_code = net::HTTP_OK,
-                                 .body =
-                                     [] {
-                                       LoginInit::Response::SuccessBody body;
-                                       body.login_token = kLoginToken;
-                                       body.serialized_ke2 = "";
-                                       return body;
-                                     }()}},
+          .endpoint_response = {{{.net_error = net::OK,
+                                  .status_code = net::HTTP_OK},
+                                 [] {
+                                   LoginInit::Response::SuccessBody body;
+                                   body.login_token = kLoginToken;
+                                   body.serialized_ke2 = "";
+                                   return body;
+                                 }()}},
           .mojo_expected = base::unexpected(
               mojom::LoginError::NewServerError(mojom::LoginServerError::New(
                   net::HTTP_OK,
@@ -174,15 +173,14 @@ const LoginStep1TestCase* LoginStep1LoginTokenEncryptionFailed() {
       kLoginStep1LoginTokenEncryptionFailed({
           .test_name = "login_step1_login_token_encryption_failed",
           .fail_encryption = true,
-          .endpoint_response = {{.net_error = net::OK,
-                                 .status_code = net::HTTP_OK,
-                                 .body =
-                                     [] {
-                                       LoginInit::Response::SuccessBody body;
-                                       body.login_token = kLoginToken;
-                                       body.serialized_ke2 = "serialized_ke2";
-                                       return body;
-                                     }()}},
+          .endpoint_response = {{{.net_error = net::OK,
+                                  .status_code = net::HTTP_OK},
+                                 [] {
+                                   LoginInit::Response::SuccessBody body;
+                                   body.login_token = kLoginToken;
+                                   body.serialized_ke2 = "serialized_ke2";
+                                   return body;
+                                 }()}},
           .mojo_expected = base::unexpected(
               mojom::LoginError::NewClientError(mojom::LoginClientError::New(
                   mojom::LoginClientErrorCode::kLoginTokenEncryptionFailed))),
@@ -194,15 +192,14 @@ const LoginStep1TestCase* LoginStep1Success() {
   static const base::NoDestructor<LoginStep1TestCase> kLoginStep1Success({
       .test_name = "login_step1_success",
       .fail_encryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   LoginInit::Response::SuccessBody body;
-                                   body.login_token = kLoginToken;
-                                   body.serialized_ke2 = "serialized_ke2";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               LoginInit::Response::SuccessBody body;
+                               body.login_token = kLoginToken;
+                               body.serialized_ke2 = "serialized_ke2";
+                               return body;
+                             }()}},
       .mojo_expected =
           mojom::LoginStep1Result::New(EncryptedLoginToken(), "serialized_ke2"),
   });
@@ -289,9 +286,10 @@ const LoginStep2TestCase* LoginStep2BodyMissingOrFailedToParse() {
           .test_name = "login_step2_body_missing_or_failed_to_parse",
           .fail_decryption = false,
           .fail_encryption = {},  // not used
-          .endpoint_response = {{.net_error = net::OK,
-                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                                 .body = std::nullopt}},
+          .endpoint_response = {{{.net_error = net::OK,
+                                  .status_code =
+                                      net::HTTP_INTERNAL_SERVER_ERROR},
+                                 std::nullopt}},
           .mojo_expected = base::unexpected(
               mojom::LoginError::NewServerError(mojom::LoginServerError::New(
                   net::HTTP_INTERNAL_SERVER_ERROR,
@@ -306,9 +304,9 @@ const LoginStep2TestCase* LoginStep2ErrorCodeIsNull() {
           .test_name = "login_step2_error_code_is_null",
           .fail_decryption = false,
           .fail_encryption = {},  // not used
-          .endpoint_response = {{.net_error = net::OK,
-                                 .status_code = net::HTTP_BAD_REQUEST,
-                                 .body = base::unexpected([] {
+          .endpoint_response = {{{.net_error = net::OK,
+                                  .status_code = net::HTTP_BAD_REQUEST},
+                                 base::unexpected([] {
                                    LoginFinalize::Response::ErrorBody body;
                                    body.code = base::Value();
                                    return body;
@@ -326,9 +324,9 @@ const LoginStep2TestCase* LoginStep2UnknownErrorCode() {
           .test_name = "login_step2_unknown_error_code",
           .fail_decryption = false,
           .fail_encryption = {},  // not used
-          .endpoint_response = {{.net_error = net::OK,
-                                 .status_code = net::HTTP_TOO_EARLY,
-                                 .body = base::unexpected([] {
+          .endpoint_response = {{{.net_error = net::OK,
+                                  .status_code = net::HTTP_TOO_EARLY},
+                                 base::unexpected([] {
                                    LoginFinalize::Response::ErrorBody body;
                                    body.code = base::Value(42);
                                    return body;
@@ -346,9 +344,9 @@ const LoginStep2TestCase* LoginStep2KnownErrorCode() {
           .test_name = "login_step2_known_error_code",
           .fail_decryption = false,
           .fail_encryption = {},  // not used
-          .endpoint_response = {{.net_error = net::OK,
-                                 .status_code = net::HTTP_BAD_REQUEST,
-                                 .body = base::unexpected([] {
+          .endpoint_response = {{{.net_error = net::OK,
+                                  .status_code = net::HTTP_BAD_REQUEST},
+                                 base::unexpected([] {
                                    LoginFinalize::Response::ErrorBody body;
                                    body.code = base::Value(14009);
                                    return body;
@@ -367,16 +365,14 @@ const LoginStep2TestCase* LoginStep2AuthTokenEmpty() {
           .test_name = "login_step2_auth_token_empty",
           .fail_decryption = false,
           .fail_encryption = {},  // not used
-          .endpoint_response = {{.net_error = net::OK,
-                                 .status_code = net::HTTP_OK,
-                                 .body =
-                                     [] {
-                                       LoginFinalize::Response::SuccessBody
-                                           body;
-                                       body.auth_token = "";
-                                       body.email = kEmailAddress;
-                                       return body;
-                                     }()}},
+          .endpoint_response = {{{.net_error = net::OK,
+                                  .status_code = net::HTTP_OK},
+                                 [] {
+                                   LoginFinalize::Response::SuccessBody body;
+                                   body.auth_token = "";
+                                   body.email = kEmailAddress;
+                                   return body;
+                                 }()}},
           .mojo_expected = base::unexpected(
               mojom::LoginError::NewServerError(mojom::LoginServerError::New(
                   net::HTTP_OK,
@@ -390,15 +386,14 @@ const LoginStep2TestCase* LoginStep2EmailEmpty() {
       .test_name = "login_step2_email_empty",
       .fail_decryption = false,
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   LoginFinalize::Response::SuccessBody body;
-                                   body.auth_token = kAuthenticationToken;
-                                   body.email = "";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               LoginFinalize::Response::SuccessBody body;
+                               body.auth_token = kAuthenticationToken;
+                               body.email = "";
+                               return body;
+                             }()}},
       .mojo_expected = base::unexpected(
           mojom::LoginError::NewServerError(mojom::LoginServerError::New(
               net::HTTP_OK, mojom::LoginServerErrorCode::kInvalidResponse))),
@@ -413,16 +408,14 @@ const LoginStep2TestCase* LoginStep2AuthenticationTokenEncryptionFailed() {
                        "encryption_failed",
           .fail_decryption = false,
           .fail_encryption = true,
-          .endpoint_response = {{.net_error = net::OK,
-                                 .status_code = net::HTTP_OK,
-                                 .body =
-                                     [] {
-                                       LoginFinalize::Response::SuccessBody
-                                           body;
-                                       body.auth_token = kAuthenticationToken;
-                                       body.email = kEmailAddress;
-                                       return body;
-                                     }()}},
+          .endpoint_response = {{{.net_error = net::OK,
+                                  .status_code = net::HTTP_OK},
+                                 [] {
+                                   LoginFinalize::Response::SuccessBody body;
+                                   body.auth_token = kAuthenticationToken;
+                                   body.email = kEmailAddress;
+                                   return body;
+                                 }()}},
           .mojo_expected = base::unexpected(
               mojom::LoginError::NewClientError(mojom::LoginClientError::New(
                   mojom::LoginClientErrorCode::
@@ -436,15 +429,14 @@ const LoginStep2TestCase* LoginStep2Success() {
       .test_name = "login_step2_success",
       .fail_decryption = false,
       .fail_encryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   LoginFinalize::Response::SuccessBody body;
-                                   body.auth_token = kAuthenticationToken;
-                                   body.email = kEmailAddress;
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               LoginFinalize::Response::SuccessBody body;
+                               body.auth_token = kAuthenticationToken;
+                               body.email = kEmailAddress;
+                               return body;
+                             }()}},
       .mojo_expected = mojom::LoginStep2Result::New(),
   });
   return kLoginStep2Success.get();

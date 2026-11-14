@@ -103,14 +103,14 @@ std::vector<TestCase> WithCommonUnrecoverableCases(
       // status.
       TestCase{
           .test_name = "TransportErrorReturnsNetErrorString",
-          .response = {.net_error = net::ERR_TIMED_OUT},
+          .response = {{.net_error = net::ERR_TIMED_OUT}},
           .expected = base::unexpected(net::ErrorToString(net::ERR_TIMED_OUT))},
       // A non-2xx response whose body is not a parseable error falls back to
       // the HTTP status description (the status_code branch of
       // MaybeDescribeUnrecoverableResponse).
       TestCase{.test_name = "HttpErrorWithUnparseableBodyDescribesStatus",
-               .response = {.net_error = net::OK,
-                            .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+               .response = {{.net_error = net::OK,
+                             .status_code = net::HTTP_INTERNAL_SERVER_ERROR}},
                .expected = base::unexpected(absl::StrFormat(
                    "HTTP %d %s: body missing or failed to parse",
                    net::HTTP_INTERNAL_SERVER_ERROR,
@@ -128,16 +128,15 @@ std::vector<TestCase> WithCommonRawJsonCases(
   std::vector<TestCase> cases = {
       // 2xx body is forwarded verbatim.
       TestCase{.test_name = "Success",
-               .response = {.net_error = net::OK,
-                            .status_code = net::HTTP_OK,
-                            .body = base::ok(endpoints::RawJsonResponseBody{
+               .response = {{.net_error = net::OK, .status_code = net::HTTP_OK},
+                            base::ok(endpoints::RawJsonResponseBody{
                                 .json = kTestSuccessJson})},
                .expected = base::ok(kTestSuccessJson)},
       // A non-2xx response with a parseable error body surfaces its title.
       TestCase{.test_name = "RequestError",
-               .response = {.net_error = net::OK,
-                            .status_code = net::HTTP_BAD_REQUEST,
-                            .body = base::unexpected(endpoints::VpnErrorBody{
+               .response = {{.net_error = net::OK,
+                             .status_code = net::HTTP_BAD_REQUEST},
+                            base::unexpected(endpoints::VpnErrorBody{
                                 .error_title = kTestErrorTitle,
                                 .error_message = kTestErrorMessage})},
                .expected = base::unexpected(kTestErrorTitle)},
@@ -175,19 +174,17 @@ INSTANTIATE_TEST_SUITE_P(
          // credential.
          GetSubscriberCredentialTestCase{
              .test_name = "Success",
-             .response = {.net_error = net::OK,
-                          .status_code = net::HTTP_OK,
-                          .body =
-                              endpoints::GetSubscriberCredentialSuccessBody{
-                                  .subscriber_credential =
-                                      kTestSubscriberCredential}},
+             .response = {{.net_error = net::OK, .status_code = net::HTTP_OK},
+                          endpoints::GetSubscriberCredentialSuccessBody{
+                              .subscriber_credential =
+                                  kTestSubscriberCredential}},
              .expected = base::ok(kTestSubscriberCredential)},
          // A non-2xx response with a parseable error body surfaces its title.
          GetSubscriberCredentialTestCase{
              .test_name = "RequestError",
-             .response = {.net_error = net::OK,
-                          .status_code = net::HTTP_BAD_REQUEST,
-                          .body = base::unexpected(endpoints::VpnErrorBody{
+             .response = {{.net_error = net::OK,
+                           .status_code = net::HTTP_BAD_REQUEST},
+                          base::unexpected(endpoints::VpnErrorBody{
                               .error_title = "Token no longer valid.",
                               .error_message = "gone"})},
              .expected = base::unexpected("Token no longer valid.")}})),
@@ -220,19 +217,17 @@ INSTANTIATE_TEST_SUITE_P(
          // credential.
          GetSubscriberCredentialV12TestCase{
              .test_name = "Success",
-             .response = {.net_error = net::OK,
-                          .status_code = net::HTTP_OK,
-                          .body =
-                              endpoints::GetSubscriberCredentialSuccessBody{
-                                  .subscriber_credential =
-                                      kTestSubscriberCredential}},
+             .response = {{.net_error = net::OK, .status_code = net::HTTP_OK},
+                          endpoints::GetSubscriberCredentialSuccessBody{
+                              .subscriber_credential =
+                                  kTestSubscriberCredential}},
              .expected = base::ok(kTestSubscriberCredential)},
          // A non-2xx response with a parseable error body surfaces its title.
          GetSubscriberCredentialV12TestCase{
              .test_name = "RequestError",
-             .response = {.net_error = net::OK,
-                          .status_code = net::HTTP_BAD_REQUEST,
-                          .body = base::unexpected(endpoints::VpnErrorBody{
+             .response = {{.net_error = net::OK,
+                           .status_code = net::HTTP_BAD_REQUEST},
+                          base::unexpected(endpoints::VpnErrorBody{
                               .error_title = "Token no longer valid.",
                               .error_message = "gone"})},
              .expected = base::unexpected("Token no longer valid.")}})),
@@ -264,20 +259,18 @@ INSTANTIATE_TEST_SUITE_P(
         {// 2xx body is forwarded verbatim.
          VerifyPurchaseTokenTestCase{
              .test_name = "Success",
-             .response = {.net_error = net::OK,
-                          .status_code = net::HTTP_OK,
-                          .body = base::ok(endpoints::RawJsonResponseBody{
+             .response = {{.net_error = net::OK, .status_code = net::HTTP_OK},
+                          base::ok(endpoints::RawJsonResponseBody{
                               .json = kTestSuccessJson})},
              .expected = base::ok(kTestSuccessJson)},
          // A non-2xx error body is *also* forwarded verbatim (raw on both
          // sides), not collapsed to a VpnErrorBody title.
          VerifyPurchaseTokenTestCase{
              .test_name = "RequestError",
-             .response = {.net_error = net::OK,
-                          .status_code = net::HTTP_BAD_REQUEST,
-                          .body =
-                              base::unexpected(endpoints::RawJsonResponseBody{
-                                  .json = kTestErrorJson})},
+             .response = {{.net_error = net::OK,
+                           .status_code = net::HTTP_BAD_REQUEST},
+                          base::unexpected(endpoints::RawJsonResponseBody{
+                              .json = kTestErrorJson})},
              .expected = base::unexpected(kTestErrorJson)}})),
     [](const auto& info) { return info.param.test_name; });
 
@@ -602,9 +595,8 @@ TEST_F(BraveVpnApiClientRequestBodyTest,
   MockResponseFor<endpoints::SetMultihopExitRegion>(
       url_loader_factory_,
       endpoints::SetMultihopExitRegion::Response{
-          .net_error = net::OK,
-          .status_code = net::HTTP_OK,
-          .body = base::ok(endpoints::RawJsonResponseBody{.json = "{}"})},
+          {.net_error = net::OK, .status_code = net::HTTP_OK},
+          base::ok(endpoints::RawJsonResponseBody{.json = "{}"})},
       url_replacements);
 
   std::ignore = CallClientApi(&BraveVpnApiClient::ClearMultihopExitRegion,

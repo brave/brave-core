@@ -37,7 +37,7 @@ struct Response<> {
 // the deserialized response body, if any.
 template <internal::IsResponseBody SuccessResponseBody,
           internal::IsResponseBody ErrorResponseBody>
-struct Response<SuccessResponseBody, ErrorResponseBody> {
+struct Response<SuccessResponseBody, ErrorResponseBody> : Response<> {
   using SuccessBody = SuccessResponseBody;
   using ErrorBody = ErrorResponseBody;
 
@@ -60,8 +60,6 @@ struct Response<SuccessResponseBody, ErrorResponseBody> {
     return body;
   }
 
-  int net_error = net::ERR_IO_PENDING;
-  std::optional<int> status_code;
   std::optional<base::expected<SuccessBody, ErrorBody>> body;
 
  private:

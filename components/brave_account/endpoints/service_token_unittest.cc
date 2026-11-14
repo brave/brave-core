@@ -26,7 +26,7 @@ const ServiceTokenTestCase* Success() {
        .http_status_code = net::HTTP_OK,
        .raw_response_body = R"({ "authToken": "34c375d933e3c" })",
        .expected_response = {
-           .net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+           {.net_error = net::OK, .status_code = net::HTTP_OK}, [] {
              ServiceToken::Response::SuccessBody body;
              body.auth_token = "34c375d933e3c";
              return body;
@@ -56,13 +56,13 @@ const ServiceTokenTestCase* ApplicationJsonErrorCodeIsNull() {
                R"({ "code": null,
                     "error": "Bad Request",
                     "status": 400 })",
-           .expected_response = {.net_error = net::OK,
-                                 .status_code = net::HTTP_BAD_REQUEST,
-                                 .body = base::unexpected([] {
-                                   ServiceToken::Response::ErrorBody body;
-                                   body.code = base::Value();
-                                   return body;
-                                 }())}});
+           .expected_response = {
+               {.net_error = net::OK, .status_code = net::HTTP_BAD_REQUEST},
+               base::unexpected([] {
+                 ServiceToken::Response::ErrorBody body;
+                 body.code = base::Value();
+                 return body;
+               }())}});
   return kApplicationJsonErrorCodeIsNull.get();
 }
 
@@ -75,13 +75,13 @@ const ServiceTokenTestCase* ApplicationJsonErrorCodeIsNotNull() {
                R"({ "code": 13006,
                     "error": "email domain is not supported",
                     "status": 400 })",
-           .expected_response = {.net_error = net::OK,
-                                 .status_code = net::HTTP_BAD_REQUEST,
-                                 .body = base::unexpected([] {
-                                   ServiceToken::Response::ErrorBody body;
-                                   body.code = base::Value(13006);
-                                   return body;
-                                 }())}});
+           .expected_response = {
+               {.net_error = net::OK, .status_code = net::HTTP_BAD_REQUEST},
+               base::unexpected([] {
+                 ServiceToken::Response::ErrorBody body;
+                 body.code = base::Value(13006);
+                 return body;
+               }())}});
   return kApplicationJsonErrorCodeIsNotNull.get();
 }
 
@@ -94,9 +94,10 @@ const ServiceTokenTestCase* NonApplicationJsonError() {
           {.test_name = "non_application_json_error",
            .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
            .raw_response_body = "non-application/json error",
-           .expected_response = {.net_error = net::OK,
-                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                                 .body = std::nullopt}});
+           .expected_response = {
+               {.net_error = net::OK,
+                .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+               std::nullopt}});
   return kNonApplicationJsonError.get();
 }
 

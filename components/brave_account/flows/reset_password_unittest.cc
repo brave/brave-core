@@ -95,9 +95,9 @@ ResetPasswordStep1BodyMissingOrFailedToParse() {
   static const base::NoDestructor<ResetPasswordStep1TestCase> kTestCase({
       .test_name = "reset_password_step1_body_missing_or_failed_to_parse",
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                             .body = std::nullopt}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+                             std::nullopt}},
       .mojo_expected =
           base::unexpected(mojom::ResetPasswordError::NewServerError(
               mojom::ResetPasswordServerError::New(
@@ -111,9 +111,9 @@ const ResetPasswordStep1TestCase* ResetPasswordStep1ErrorCodeIsNull() {
   static const base::NoDestructor<ResetPasswordStep1TestCase> kTestCase({
       .test_name = "reset_password_step1_error_code_is_null",
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_BAD_REQUEST,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_BAD_REQUEST},
+                             base::unexpected([] {
                                VerifyInit::Response::ErrorBody body;
                                body.code = base::Value();
                                return body;
@@ -131,9 +131,9 @@ const ResetPasswordStep1TestCase* ResetPasswordStep1UnknownErrorCode() {
   static const base::NoDestructor<ResetPasswordStep1TestCase> kTestCase({
       .test_name = "reset_password_step1_unknown_error_code",
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_TOO_EARLY,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_TOO_EARLY},
+                             base::unexpected([] {
                                VerifyInit::Response::ErrorBody body;
                                body.code = base::Value(42);
                                return body;
@@ -151,9 +151,9 @@ const ResetPasswordStep1TestCase* ResetPasswordStep1KnownErrorCode() {
   static const base::NoDestructor<ResetPasswordStep1TestCase> kTestCase({
       .test_name = "reset_password_step1_known_error_code",
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_BAD_REQUEST,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_BAD_REQUEST},
+                             base::unexpected([] {
                                VerifyInit::Response::ErrorBody body;
                                body.code = base::Value(13005);
                                return body;
@@ -171,14 +171,13 @@ const ResetPasswordStep1TestCase* ResetPasswordStep1VerificationTokenEmpty() {
   static const base::NoDestructor<ResetPasswordStep1TestCase> kTestCase({
       .test_name = "reset_password_step1_verification_token_empty",
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   VerifyInit::Response::SuccessBody body;
-                                   body.verification_token = "";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               VerifyInit::Response::SuccessBody body;
+                               body.verification_token = "";
+                               return body;
+                             }()}},
       .mojo_expected =
           base::unexpected(mojom::ResetPasswordError::NewServerError(
               mojom::ResetPasswordServerError::New(
@@ -193,14 +192,13 @@ ResetPasswordStep1VerificationTokenEncryptionFailed() {
   static const base::NoDestructor<ResetPasswordStep1TestCase> kTestCase({
       .test_name = "reset_password_step1_verification_token_encryption_failed",
       .fail_encryption = true,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   VerifyInit::Response::SuccessBody body;
-                                   body.verification_token = kVerificationToken;
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               VerifyInit::Response::SuccessBody body;
+                               body.verification_token = kVerificationToken;
+                               return body;
+                             }()}},
       .mojo_expected =
           base::unexpected(mojom::ResetPasswordError::NewClientError(
               mojom::ResetPasswordClientError::New(
@@ -214,14 +212,13 @@ const ResetPasswordStep1TestCase* ResetPasswordStep1Success() {
   static const base::NoDestructor<ResetPasswordStep1TestCase> kTestCase({
       .test_name = "reset_password_step1_success",
       .fail_encryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   VerifyInit::Response::SuccessBody body;
-                                   body.verification_token = kVerificationToken;
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               VerifyInit::Response::SuccessBody body;
+                               body.verification_token = kVerificationToken;
+                               return body;
+                             }()}},
       .mojo_expected = mojom::ResetPasswordStep1Result::New(),
   });
   return kTestCase.get();
@@ -331,9 +328,9 @@ ResetPasswordStep2BodyMissingOrFailedToParse() {
       .test_name = "reset_password_step2_body_missing_or_failed_to_parse",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                             .body = std::nullopt}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+                             std::nullopt}},
       .mojo_expected =
           base::unexpected(mojom::ResetPasswordError::NewServerError(
               mojom::ResetPasswordServerError::New(
@@ -348,9 +345,9 @@ const ResetPasswordStep2TestCase* ResetPasswordStep2ErrorCodeIsNull() {
       .test_name = "reset_password_step2_error_code_is_null",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_UNAUTHORIZED,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_UNAUTHORIZED},
+                             base::unexpected([] {
                                VerifyComplete::Response::ErrorBody body;
                                body.code = base::Value();
                                return body;
@@ -369,9 +366,9 @@ const ResetPasswordStep2TestCase* ResetPasswordStep2UnknownErrorCode() {
       .test_name = "reset_password_step2_unknown_error_code",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_TOO_EARLY,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_TOO_EARLY},
+                             base::unexpected([] {
                                VerifyComplete::Response::ErrorBody body;
                                body.code = base::Value(42);
                                return body;
@@ -390,9 +387,9 @@ const ResetPasswordStep2TestCase* ResetPasswordStep2KnownErrorCode() {
       .test_name = "reset_password_step2_known_error_code",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_BAD_REQUEST,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_BAD_REQUEST},
+                             base::unexpected([] {
                                VerifyComplete::Response::ErrorBody body;
                                body.code = base::Value(13011);
                                return body;
@@ -411,15 +408,14 @@ const ResetPasswordStep2TestCase* ResetPasswordStep2EmailEmpty() {
       .test_name = "reset_password_step2_email_empty",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   VerifyComplete::Response::SuccessBody body;
-                                   body.auth_token = base::Value();
-                                   body.email = "";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               VerifyComplete::Response::SuccessBody body;
+                               body.auth_token = base::Value();
+                               body.email = "";
+                               return body;
+                             }()}},
       .mojo_expected =
           base::unexpected(mojom::ResetPasswordError::NewServerError(
               mojom::ResetPasswordServerError::New(
@@ -434,15 +430,14 @@ const ResetPasswordStep2TestCase* ResetPasswordStep2Success() {
       .test_name = "reset_password_step2_success",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   VerifyComplete::Response::SuccessBody body;
-                                   body.auth_token = base::Value();
-                                   body.email = kEmailAddress;
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               VerifyComplete::Response::SuccessBody body;
+                               body.auth_token = base::Value();
+                               body.email = kEmailAddress;
+                               return body;
+                             }()}},
       .mojo_expected = mojom::ResetPasswordStep2Result::New(),
   });
   return kTestCase.get();
@@ -535,9 +530,9 @@ ResetPasswordStep3BodyMissingOrFailedToParse() {
       .test_name = "reset_password_step3_body_missing_or_failed_to_parse",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                             .body = std::nullopt}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+                             std::nullopt}},
       .mojo_expected =
           base::unexpected(mojom::ResetPasswordError::NewServerError(
               mojom::ResetPasswordServerError::New(
@@ -552,9 +547,9 @@ const ResetPasswordStep3TestCase* ResetPasswordStep3ErrorCodeIsNull() {
       .test_name = "reset_password_step3_error_code_is_null",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_BAD_REQUEST,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_BAD_REQUEST},
+                             base::unexpected([] {
                                PasswordInit::Response::ErrorBody body;
                                body.code = base::Value();
                                return body;
@@ -573,9 +568,9 @@ const ResetPasswordStep3TestCase* ResetPasswordStep3UnknownErrorCode() {
       .test_name = "reset_password_step3_unknown_error_code",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_TOO_EARLY,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_TOO_EARLY},
+                             base::unexpected([] {
                                PasswordInit::Response::ErrorBody body;
                                body.code = base::Value(42);
                                return body;
@@ -594,9 +589,9 @@ const ResetPasswordStep3TestCase* ResetPasswordStep3KnownErrorCode() {
       .test_name = "reset_password_step3_known_error_code",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_BAD_REQUEST,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_BAD_REQUEST},
+                             base::unexpected([] {
                                PasswordInit::Response::ErrorBody body;
                                body.code = base::Value(13001);
                                return body;
@@ -615,14 +610,13 @@ const ResetPasswordStep3TestCase* ResetPasswordStep3SerializedResponseEmpty() {
       .test_name = "reset_password_step3_serialized_response_empty",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   PasswordInit::Response::SuccessBody body;
-                                   body.serialized_response = "";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               PasswordInit::Response::SuccessBody body;
+                               body.serialized_response = "";
+                               return body;
+                             }()}},
       .mojo_expected =
           base::unexpected(mojom::ResetPasswordError::NewServerError(
               mojom::ResetPasswordServerError::New(
@@ -637,15 +631,13 @@ const ResetPasswordStep3TestCase* ResetPasswordStep3Success() {
       .test_name = "reset_password_step3_success",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   PasswordInit::Response::SuccessBody body;
-                                   body.serialized_response =
-                                       "serialized_response";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               PasswordInit::Response::SuccessBody body;
+                               body.serialized_response = "serialized_response";
+                               return body;
+                             }()}},
       .mojo_expected =
           mojom::ResetPasswordStep3Result::New("serialized_response"),
   });
@@ -760,9 +752,9 @@ ResetPasswordStep4BodyMissingOrFailedToParse() {
       .seed_verification = true,
       .fail_decryption = false,
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                             .body = std::nullopt}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+                             std::nullopt}},
       .mojo_expected =
           base::unexpected(mojom::ResetPasswordError::NewServerError(
               mojom::ResetPasswordServerError::New(
@@ -778,9 +770,9 @@ const ResetPasswordStep4TestCase* ResetPasswordStep4ErrorCodeIsNull() {
       .seed_verification = true,
       .fail_decryption = false,
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_NOT_FOUND,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_NOT_FOUND},
+                             base::unexpected([] {
                                PasswordFinalize::Response::ErrorBody body;
                                body.code = base::Value();
                                return body;
@@ -800,9 +792,9 @@ const ResetPasswordStep4TestCase* ResetPasswordStep4UnknownErrorCode() {
       .seed_verification = true,
       .fail_decryption = false,
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_TOO_EARLY,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_TOO_EARLY},
+                             base::unexpected([] {
                                PasswordFinalize::Response::ErrorBody body;
                                body.code = base::Value(42);
                                return body;
@@ -822,9 +814,9 @@ const ResetPasswordStep4TestCase* ResetPasswordStep4KnownErrorCode() {
       .seed_verification = true,
       .fail_decryption = false,
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_NOT_FOUND,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_NOT_FOUND},
+                             base::unexpected([] {
                                PasswordFinalize::Response::ErrorBody body;
                                body.code = base::Value(14001);
                                return body;
@@ -844,14 +836,13 @@ const ResetPasswordStep4TestCase* ResetPasswordStep4AuthenticationTokenNull() {
       .seed_verification = true,
       .fail_decryption = false,
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   PasswordFinalize::Response::SuccessBody body;
-                                   body.auth_token = base::Value();
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               PasswordFinalize::Response::SuccessBody body;
+                               body.auth_token = base::Value();
+                               return body;
+                             }()}},
       .mojo_expected =
           base::unexpected(mojom::ResetPasswordError::NewServerError(
               mojom::ResetPasswordServerError::New(
@@ -867,14 +858,13 @@ const ResetPasswordStep4TestCase* ResetPasswordStep4AuthenticationTokenEmpty() {
       .seed_verification = true,
       .fail_decryption = false,
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   PasswordFinalize::Response::SuccessBody body;
-                                   body.auth_token = base::Value("");
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               PasswordFinalize::Response::SuccessBody body;
+                               body.auth_token = base::Value("");
+                               return body;
+                             }()}},
       .mojo_expected =
           base::unexpected(mojom::ResetPasswordError::NewServerError(
               mojom::ResetPasswordServerError::New(
@@ -893,15 +883,14 @@ ResetPasswordStep4AuthenticationTokenEncryptionFailed() {
       .seed_verification = true,
       .fail_decryption = false,
       .fail_encryption = true,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   PasswordFinalize::Response::SuccessBody body;
-                                   body.auth_token =
-                                       base::Value(kAuthenticationToken);
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               PasswordFinalize::Response::SuccessBody body;
+                               body.auth_token =
+                                   base::Value(kAuthenticationToken);
+                               return body;
+                             }()}},
       .mojo_expected =
           base::unexpected(mojom::ResetPasswordError::NewClientError(
               mojom::ResetPasswordClientError::New(
@@ -917,15 +906,14 @@ const ResetPasswordStep4TestCase* ResetPasswordStep4Success() {
       .seed_verification = true,
       .fail_decryption = false,
       .fail_encryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   PasswordFinalize::Response::SuccessBody body;
-                                   body.auth_token =
-                                       base::Value(kAuthenticationToken);
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               PasswordFinalize::Response::SuccessBody body;
+                               body.auth_token =
+                                   base::Value(kAuthenticationToken);
+                               return body;
+                             }()}},
       .mojo_expected = mojom::ResetPasswordStep4Result::New(),
   });
   return kTestCase.get();

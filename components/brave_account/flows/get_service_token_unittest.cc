@@ -144,9 +144,9 @@ const GetServiceTokenTestCase* GetServiceTokenBodyMissingOrFailedToParse() {
       .fail_decryption = false,
       .fail_encryption = {},  // not used
       .time_advance = {},     // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                             .body = std::nullopt}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+                             std::nullopt}},
       .mojo_expected =
           base::unexpected(mojom::GetServiceTokenError::NewServerError(
               mojom::GetServiceTokenServerError::New(
@@ -164,9 +164,9 @@ const GetServiceTokenTestCase* GetServiceTokenErrorCodeIsNull() {
       .fail_decryption = false,
       .fail_encryption = {},  // not used
       .time_advance = {},     // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_BAD_REQUEST,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_BAD_REQUEST},
+                             base::unexpected([] {
                                ServiceToken::Response::ErrorBody body;
                                body.code = base::Value();
                                return body;
@@ -188,9 +188,9 @@ const GetServiceTokenTestCase* GetServiceTokenUnknownErrorCode() {
       .fail_decryption = false,
       .fail_encryption = {},  // not used
       .time_advance = {},     // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_TOO_EARLY,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_TOO_EARLY},
+                             base::unexpected([] {
                                ServiceToken::Response::ErrorBody body;
                                body.code = base::Value(42);
                                return body;
@@ -212,9 +212,9 @@ const GetServiceTokenTestCase* GetServiceTokenKnownErrorCode() {
       .fail_decryption = false,
       .fail_encryption = {},  // not used
       .time_advance = {},     // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_BAD_REQUEST,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_BAD_REQUEST},
+                             base::unexpected([] {
                                ServiceToken::Response::ErrorBody body;
                                body.code = base::Value(13006);
                                return body;
@@ -236,14 +236,13 @@ const GetServiceTokenTestCase* GetServiceTokenServiceTokenEmpty() {
       .fail_decryption = false,
       .fail_encryption = {},  // not used
       .time_advance = {},     // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   ServiceToken::Response::SuccessBody body;
-                                   body.auth_token = "";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               ServiceToken::Response::SuccessBody body;
+                               body.auth_token = "";
+                               return body;
+                             }()}},
       .mojo_expected =
           base::unexpected(mojom::GetServiceTokenError::NewServerError(
               mojom::GetServiceTokenServerError::New(
@@ -261,14 +260,13 @@ const GetServiceTokenTestCase* GetServiceTokenServiceTokenEncryptionFailed() {
       .fail_decryption = false,
       .fail_encryption = true,
       .time_advance = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   ServiceToken::Response::SuccessBody body;
-                                   body.auth_token = "fetched_service_token";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               ServiceToken::Response::SuccessBody body;
+                               body.auth_token = "fetched_service_token";
+                               return body;
+                             }()}},
       .mojo_expected =
           base::unexpected(mojom::GetServiceTokenError::NewClientError(
               mojom::GetServiceTokenClientError::New(
@@ -286,14 +284,13 @@ const GetServiceTokenTestCase* GetServiceTokenSuccess() {
       .fail_decryption = false,
       .fail_encryption = false,
       .time_advance = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   ServiceToken::Response::SuccessBody body;
-                                   body.auth_token = "fetched_service_token";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               ServiceToken::Response::SuccessBody body;
+                               body.auth_token = "fetched_service_token";
+                               return body;
+                             }()}},
       .mojo_expected =
           mojom::GetServiceTokenResult::New("fetched_service_token"),
   });
@@ -308,14 +305,13 @@ const GetServiceTokenTestCase* GetServiceTokenServiceDictMissing() {
       .fail_decryption = false,
       .fail_encryption = false,
       .time_advance = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   ServiceToken::Response::SuccessBody body;
-                                   body.auth_token = "fetched_service_token";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               ServiceToken::Response::SuccessBody body;
+                               body.auth_token = "fetched_service_token";
+                               return body;
+                             }()}},
       .mojo_expected =
           mojom::GetServiceTokenResult::New("fetched_service_token"),
   });
@@ -334,14 +330,13 @@ const GetServiceTokenTestCase* GetServiceTokenServiceTokenMissing() {
       .fail_decryption = false,
       .fail_encryption = false,
       .time_advance = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   ServiceToken::Response::SuccessBody body;
-                                   body.auth_token = "fetched_service_token";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               ServiceToken::Response::SuccessBody body;
+                               body.auth_token = "fetched_service_token";
+                               return body;
+                             }()}},
       .mojo_expected =
           mojom::GetServiceTokenResult::New("fetched_service_token"),
   });
@@ -360,14 +355,13 @@ const GetServiceTokenTestCase* GetServiceTokenLastFetchedMissing() {
       .fail_decryption = false,
       .fail_encryption = false,
       .time_advance = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   ServiceToken::Response::SuccessBody body;
-                                   body.auth_token = "fetched_service_token";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               ServiceToken::Response::SuccessBody body;
+                               body.auth_token = "fetched_service_token";
+                               return body;
+                             }()}},
       .mojo_expected =
           mojom::GetServiceTokenResult::New("fetched_service_token"),
   });
@@ -388,14 +382,13 @@ const GetServiceTokenTestCase* GetServiceTokenLastFetchedInvalid() {
       .fail_decryption = false,
       .fail_encryption = false,
       .time_advance = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   ServiceToken::Response::SuccessBody body;
-                                   body.auth_token = "fetched_service_token";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               ServiceToken::Response::SuccessBody body;
+                               body.auth_token = "fetched_service_token";
+                               return body;
+                             }()}},
       .mojo_expected =
           mojom::GetServiceTokenResult::New("fetched_service_token"),
   });
@@ -417,14 +410,13 @@ const GetServiceTokenTestCase* GetServiceTokenCacheExpired() {
       .fail_encryption = false,
       // Advance time after setting cache to make it expired.
       .time_advance = kServiceTokenMaxAge + base::Minutes(1),
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   ServiceToken::Response::SuccessBody body;
-                                   body.auth_token = "fetched_service_token";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               ServiceToken::Response::SuccessBody body;
+                               body.auth_token = "fetched_service_token";
+                               return body;
+                             }()}},
       .mojo_expected =
           mojom::GetServiceTokenResult::New("fetched_service_token"),
   });
@@ -444,14 +436,13 @@ const GetServiceTokenTestCase* GetServiceTokenServiceTokenDecryptionFailed() {
       .fail_decryption = false,
       .fail_encryption = false,
       .time_advance = base::TimeDelta(),
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   ServiceToken::Response::SuccessBody body;
-                                   body.auth_token = "fetched_service_token";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               ServiceToken::Response::SuccessBody body;
+                               body.auth_token = "fetched_service_token";
+                               return body;
+                             }()}},
       .mojo_expected =
           mojom::GetServiceTokenResult::New("fetched_service_token"),
   });

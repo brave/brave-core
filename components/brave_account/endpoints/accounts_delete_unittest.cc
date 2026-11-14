@@ -25,9 +25,9 @@ const AccountsDeleteTestCase* Success() {
       {.test_name = "success",
        .http_status_code = net::HTTP_NO_CONTENT,
        .raw_response_body = "",
-       .expected_response = {.net_error = net::OK,
-                             .status_code = net::HTTP_NO_CONTENT,
-                             .body = std::nullopt}});
+       .expected_response = {
+           {.net_error = net::OK, .status_code = net::HTTP_NO_CONTENT},
+           std::nullopt}});
   return kSuccess.get();
 }
 
@@ -47,9 +47,8 @@ const AccountsDeleteTestCase* ApplicationJsonErrorCodeIsNull() {
                 "error": "Unauthorized",
                 "status": 401 })",
        .expected_response = {
-           .net_error = net::OK,
-           .status_code = net::HTTP_UNAUTHORIZED,
-           .body = base::unexpected(AccountsDelete::Response::ErrorBody())}});
+           {.net_error = net::OK, .status_code = net::HTTP_UNAUTHORIZED},
+           base::unexpected(AccountsDelete::Response::ErrorBody())}});
   return kUnauthorized.get();
 }
 
@@ -62,9 +61,10 @@ const AccountsDeleteTestCase* NonApplicationJsonError() {
           {.test_name = "non_application_json_error",
            .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
            .raw_response_body = "non-application/json error",
-           .expected_response = {.net_error = net::OK,
-                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                                 .body = std::nullopt}});
+           .expected_response = {
+               {.net_error = net::OK,
+                .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+               std::nullopt}});
   return kNonApplicationJsonError.get();
 }
 

@@ -125,9 +125,9 @@ ChangePasswordStep1BodyMissingOrFailedToParse() {
       .test_name = "change_password_step1_body_missing_or_failed_to_parse",
       .fail_decryption = false,
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                             .body = std::nullopt}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+                             std::nullopt}},
       .mojo_expected =
           base::unexpected(mojom::ChangePasswordError::NewServerError(
               mojom::ChangePasswordServerError::New(
@@ -142,9 +142,9 @@ const ChangePasswordStep1TestCase* ChangePasswordStep1ErrorCodeIsNull() {
       .test_name = "change_password_step1_error_code_is_null",
       .fail_decryption = false,
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_BAD_REQUEST,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_BAD_REQUEST},
+                             base::unexpected([] {
                                VerifyInit::Response::ErrorBody body;
                                body.code = base::Value();
                                return body;
@@ -163,9 +163,9 @@ const ChangePasswordStep1TestCase* ChangePasswordStep1UnknownErrorCode() {
       .test_name = "change_password_step1_unknown_error_code",
       .fail_decryption = false,
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_TOO_EARLY,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_TOO_EARLY},
+                             base::unexpected([] {
                                VerifyInit::Response::ErrorBody body;
                                body.code = base::Value(42);
                                return body;
@@ -184,9 +184,9 @@ const ChangePasswordStep1TestCase* ChangePasswordStep1KnownErrorCode() {
       .test_name = "change_password_step1_known_error_code",
       .fail_decryption = false,
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_BAD_REQUEST,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_BAD_REQUEST},
+                             base::unexpected([] {
                                VerifyInit::Response::ErrorBody body;
                                body.code = base::Value(13001);
                                return body;
@@ -205,14 +205,13 @@ const ChangePasswordStep1TestCase* ChangePasswordStep1VerificationTokenEmpty() {
       .test_name = "change_password_step1_verification_token_empty",
       .fail_decryption = false,
       .fail_encryption = {},  // not used
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   VerifyInit::Response::SuccessBody body;
-                                   body.verification_token = "";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               VerifyInit::Response::SuccessBody body;
+                               body.verification_token = "";
+                               return body;
+                             }()}},
       .mojo_expected =
           base::unexpected(mojom::ChangePasswordError::NewServerError(
               mojom::ChangePasswordServerError::New(
@@ -229,14 +228,13 @@ ChangePasswordStep1VerificationTokenEncryptionFailed() {
                    "encryption_failed",
       .fail_decryption = false,
       .fail_encryption = true,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   VerifyInit::Response::SuccessBody body;
-                                   body.verification_token = kVerificationToken;
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               VerifyInit::Response::SuccessBody body;
+                               body.verification_token = kVerificationToken;
+                               return body;
+                             }()}},
       .mojo_expected =
           base::unexpected(mojom::ChangePasswordError::NewClientError(
               mojom::ChangePasswordClientError::New(
@@ -251,14 +249,13 @@ const ChangePasswordStep1TestCase* ChangePasswordStep1Success() {
       .test_name = "change_password_step1_success",
       .fail_decryption = false,
       .fail_encryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   VerifyInit::Response::SuccessBody body;
-                                   body.verification_token = kVerificationToken;
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               VerifyInit::Response::SuccessBody body;
+                               body.verification_token = kVerificationToken;
+                               return body;
+                             }()}},
       .mojo_expected = mojom::ChangePasswordStep1Result::New(),
   });
   return kTestCase.get();
@@ -367,9 +364,9 @@ ChangePasswordStep2BodyMissingOrFailedToParse() {
       .test_name = "change_password_step2_body_missing_or_failed_to_parse",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                             .body = std::nullopt}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+                             std::nullopt}},
       .mojo_expected =
           base::unexpected(mojom::ChangePasswordError::NewServerError(
               mojom::ChangePasswordServerError::New(
@@ -384,9 +381,9 @@ const ChangePasswordStep2TestCase* ChangePasswordStep2ErrorCodeIsNull() {
       .test_name = "change_password_step2_error_code_is_null",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_UNAUTHORIZED,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_UNAUTHORIZED},
+                             base::unexpected([] {
                                VerifyComplete::Response::ErrorBody body;
                                body.code = base::Value();
                                return body;
@@ -405,9 +402,9 @@ const ChangePasswordStep2TestCase* ChangePasswordStep2UnknownErrorCode() {
       .test_name = "change_password_step2_unknown_error_code",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_TOO_EARLY,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_TOO_EARLY},
+                             base::unexpected([] {
                                VerifyComplete::Response::ErrorBody body;
                                body.code = base::Value(42);
                                return body;
@@ -426,9 +423,9 @@ const ChangePasswordStep2TestCase* ChangePasswordStep2KnownErrorCode() {
       .test_name = "change_password_step2_known_error_code",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_BAD_REQUEST,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_BAD_REQUEST},
+                             base::unexpected([] {
                                VerifyComplete::Response::ErrorBody body;
                                body.code = base::Value(13011);
                                return body;
@@ -447,15 +444,14 @@ const ChangePasswordStep2TestCase* ChangePasswordStep2EmailEmpty() {
       .test_name = "change_password_step2_email_empty",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   VerifyComplete::Response::SuccessBody body;
-                                   body.auth_token = base::Value();
-                                   body.email = "";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               VerifyComplete::Response::SuccessBody body;
+                               body.auth_token = base::Value();
+                               body.email = "";
+                               return body;
+                             }()}},
       .mojo_expected =
           base::unexpected(mojom::ChangePasswordError::NewServerError(
               mojom::ChangePasswordServerError::New(
@@ -470,15 +466,14 @@ const ChangePasswordStep2TestCase* ChangePasswordStep2Success() {
       .test_name = "change_password_step2_success",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   VerifyComplete::Response::SuccessBody body;
-                                   body.auth_token = base::Value();
-                                   body.email = kEmailAddress;
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               VerifyComplete::Response::SuccessBody body;
+                               body.auth_token = base::Value();
+                               body.email = kEmailAddress;
+                               return body;
+                             }()}},
       .mojo_expected = mojom::ChangePasswordStep2Result::New(),
   });
   return kTestCase.get();
@@ -569,9 +564,9 @@ ChangePasswordStep3BodyMissingOrFailedToParse() {
       .test_name = "change_password_step3_body_missing_or_failed_to_parse",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                             .body = std::nullopt}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+                             std::nullopt}},
       .mojo_expected =
           base::unexpected(mojom::ChangePasswordError::NewServerError(
               mojom::ChangePasswordServerError::New(
@@ -586,9 +581,9 @@ const ChangePasswordStep3TestCase* ChangePasswordStep3ErrorCodeIsNull() {
       .test_name = "change_password_step3_error_code_is_null",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_BAD_REQUEST,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_BAD_REQUEST},
+                             base::unexpected([] {
                                PasswordInit::Response::ErrorBody body;
                                body.code = base::Value();
                                return body;
@@ -607,9 +602,9 @@ const ChangePasswordStep3TestCase* ChangePasswordStep3UnknownErrorCode() {
       .test_name = "change_password_step3_unknown_error_code",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_TOO_EARLY,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_TOO_EARLY},
+                             base::unexpected([] {
                                PasswordInit::Response::ErrorBody body;
                                body.code = base::Value(42);
                                return body;
@@ -628,9 +623,9 @@ const ChangePasswordStep3TestCase* ChangePasswordStep3KnownErrorCode() {
       .test_name = "change_password_step3_known_error_code",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_BAD_REQUEST,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_BAD_REQUEST},
+                             base::unexpected([] {
                                PasswordInit::Response::ErrorBody body;
                                body.code = base::Value(13001);
                                return body;
@@ -650,14 +645,13 @@ ChangePasswordStep3SerializedResponseEmpty() {
       .test_name = "change_password_step3_serialized_response_empty",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   PasswordInit::Response::SuccessBody body;
-                                   body.serialized_response = "";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               PasswordInit::Response::SuccessBody body;
+                               body.serialized_response = "";
+                               return body;
+                             }()}},
       .mojo_expected =
           base::unexpected(mojom::ChangePasswordError::NewServerError(
               mojom::ChangePasswordServerError::New(
@@ -672,15 +666,13 @@ const ChangePasswordStep3TestCase* ChangePasswordStep3Success() {
       .test_name = "change_password_step3_success",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   PasswordInit::Response::SuccessBody body;
-                                   body.serialized_response =
-                                       "serialized_response";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               PasswordInit::Response::SuccessBody body;
+                               body.serialized_response = "serialized_response";
+                               return body;
+                             }()}},
       .mojo_expected =
           mojom::ChangePasswordStep3Result::New("serialized_response"),
   });
@@ -790,9 +782,9 @@ ChangePasswordStep4BodyMissingOrFailedToParse() {
                    "parse",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                             .body = std::nullopt}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+                             std::nullopt}},
       .mojo_expected =
           base::unexpected(mojom::ChangePasswordError::NewServerError(
               mojom::ChangePasswordServerError::New(
@@ -807,9 +799,9 @@ const ChangePasswordStep4TestCase* ChangePasswordStep4ErrorCodeIsNull() {
       .test_name = "change_password_step4_error_code_is_null",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_NOT_FOUND,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_NOT_FOUND},
+                             base::unexpected([] {
                                PasswordFinalize::Response::ErrorBody body;
                                body.code = base::Value();
                                return body;
@@ -828,9 +820,9 @@ const ChangePasswordStep4TestCase* ChangePasswordStep4UnknownErrorCode() {
       .test_name = "change_password_step4_unknown_error_code",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_TOO_EARLY,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_TOO_EARLY},
+                             base::unexpected([] {
                                PasswordFinalize::Response::ErrorBody body;
                                body.code = base::Value(42);
                                return body;
@@ -849,9 +841,9 @@ const ChangePasswordStep4TestCase* ChangePasswordStep4KnownErrorCode() {
       .test_name = "change_password_step4_known_error_code",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_NOT_FOUND,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_NOT_FOUND},
+                             base::unexpected([] {
                                PasswordFinalize::Response::ErrorBody body;
                                body.code = base::Value(14001);
                                return body;
@@ -870,15 +862,14 @@ const ChangePasswordStep4TestCase* ChangePasswordStep4Success() {
       .test_name = "change_password_step4_success",
       .seed_verification = true,
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   PasswordFinalize::Response::SuccessBody body;
-                                   body.auth_token =
-                                       base::Value(kAuthenticationToken);
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               PasswordFinalize::Response::SuccessBody body;
+                               body.auth_token =
+                                   base::Value(kAuthenticationToken);
+                               return body;
+                             }()}},
       .mojo_expected = mojom::ChangePasswordStep4Result::New(),
   });
   return kTestCase.get();

@@ -89,9 +89,9 @@ const UpdateEmailTestCase* UpdateEmailBodyMissingOrFailedToParse() {
   static const base::NoDestructor<UpdateEmailTestCase> kTestCase({
       .test_name = "update_email_body_missing_or_failed_to_parse",
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                             .body = {}}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+                             {}}},
       .expected_email = kEmailAddress,
       .expected_authentication_token = EncryptedAuthenticationToken(),
       .expected_timer_delay = kAuthValidatePollInterval,
@@ -103,14 +103,13 @@ const UpdateEmailTestCase* UpdateEmailEmailEmpty() {
   static const base::NoDestructor<UpdateEmailTestCase> kTestCase({
       .test_name = "update_email_email_empty",
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   AuthValidate::Response::SuccessBody body;
-                                   body.email = "";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               AuthValidate::Response::SuccessBody body;
+                               body.email = "";
+                               return body;
+                             }()}},
       .expected_email = kEmailAddress,
       .expected_authentication_token = EncryptedAuthenticationToken(),
       .expected_timer_delay = kAuthValidatePollInterval,
@@ -122,14 +121,13 @@ const UpdateEmailTestCase* UpdateEmailSuccess() {
   static const base::NoDestructor<UpdateEmailTestCase> kTestCase({
       .test_name = "update_email_success",
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_OK,
-                             .body =
-                                 [] {
-                                   AuthValidate::Response::SuccessBody body;
-                                   body.email = "email_from_response";
-                                   return body;
-                                 }()}},
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_OK},
+                             [] {
+                               AuthValidate::Response::SuccessBody body;
+                               body.email = "email_from_response";
+                               return body;
+                             }()}},
       .expected_email = "email_from_response",
       .expected_authentication_token = EncryptedAuthenticationToken(),
       .expected_timer_delay = kAuthValidatePollInterval,
@@ -141,9 +139,9 @@ const UpdateEmailTestCase* UpdateEmail4xx() {
   static const base::NoDestructor<UpdateEmailTestCase> kTestCase({
       .test_name = "update_email_4xx",
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_UNAUTHORIZED,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_UNAUTHORIZED},
+                             base::unexpected([] {
                                AuthValidate::Response::ErrorBody body;
                                body.code = base::Value();
                                return body;
@@ -159,9 +157,9 @@ const UpdateEmailTestCase* UpdateEmail5xx() {
   static const base::NoDestructor<UpdateEmailTestCase> kTestCase({
       .test_name = "update_email_5xx",
       .fail_decryption = false,
-      .endpoint_response = {{.net_error = net::OK,
-                             .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                             .body = base::unexpected([] {
+      .endpoint_response = {{{.net_error = net::OK,
+                              .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+                             base::unexpected([] {
                                AuthValidate::Response::ErrorBody body;
                                body.code = base::Value();
                                return body;

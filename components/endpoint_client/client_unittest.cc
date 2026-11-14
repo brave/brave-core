@@ -1155,7 +1155,7 @@ INSTANTIATE_TEST_SUITE_P(
 TEST_F(ClientTestCancelableRequest, ResetPreventsCallback) {
   MockResponseFor<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>(
       test_url_loader_factory_,
-      {.net_error = net::OK, .status_code = net::HTTP_OK});
+      {{.net_error = net::OK, .status_code = net::HTTP_OK}});
 
   base::test::TestFuture<
       JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response>
@@ -1186,7 +1186,7 @@ TEST_F(ClientTestCancelableRequest, ResetPreventsCallback) {
 TEST_F(ClientTestCancelableRequest, ResetInsideCallbackIsSafe) {
   MockResponseFor<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>(
       test_url_loader_factory_,
-      {.net_error = net::OK, .status_code = net::HTTP_OK});
+      {{.net_error = net::OK, .status_code = net::HTTP_OK}});
 
   base::test::TestFuture<void> future;
   RequestHandle request_handle =
@@ -1208,7 +1208,7 @@ TEST_F(ClientTestCancelableRequest, ResetInsideCallbackIsSafe) {
 TEST_F(ClientTestCancelableRequest, ResetAfterCompletionIsNoOp) {
   MockResponseFor<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>(
       test_url_loader_factory_,
-      {.net_error = net::OK, .status_code = net::HTTP_OK});
+      {{.net_error = net::OK, .status_code = net::HTTP_OK}});
 
   base::test::TestFuture<
       JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response>
@@ -1260,7 +1260,7 @@ TEST(ClientTestUrlReplacements, OverridesReachTheOutgoingRequest) {
   // Serve a response at the overridden URL so the request can complete.
   MockResponseFor<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>(
       test_url_loader_factory,
-      {.net_error = net::OK, .status_code = net::HTTP_OK}, url_replacements);
+      {{.net_error = net::OK, .status_code = net::HTTP_OK}}, url_replacements);
 
   // Assert against a hard-coded literal (not url_replacements.Apply()) so a bug
   // in Apply() can't hide by shifting both the mock and the expectation.
@@ -1290,7 +1290,7 @@ TEST(ClientTestMaxBodySize, ExceedingItFailsWithInsufficientResources) {
 
   MockResponseFor<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>(
       test_url_loader_factory,
-      {.net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+      {{.net_error = net::OK, .status_code = net::HTTP_OK}, [] {
          JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response::
              SuccessBody body;
          body.success = "success";
@@ -1317,7 +1317,7 @@ TEST(ClientTestResponseHeaders, NotSetWithoutStatusCode) {
 
   MockResponseFor<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>(
       test_url_loader_factory,
-      {.net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+      {{.net_error = net::OK, .status_code = net::HTTP_OK}, [] {
          JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response::
              SuccessBody body;
          body.success = "success";
@@ -1347,7 +1347,7 @@ TEST_P(ClientTestRetryOptions, Retry) {
   // exhausted, then count how many times the request was actually issued.
   MockResponseFor<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>(
       test_url_loader_factory_,
-      {.net_error = net::OK, .status_code = net::HTTP_INTERNAL_SERVER_ERROR});
+      {{.net_error = net::OK, .status_code = net::HTTP_INTERNAL_SERVER_ERROR}});
 
   std::size_t num_requests = 0;
   test_url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(

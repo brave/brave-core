@@ -26,7 +26,7 @@ const AuthValidateTestCase* Success() {
        .http_status_code = net::HTTP_OK,
        .raw_response_body = R"({ "email": "email" })",
        .expected_response = {
-           .net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+           {.net_error = net::OK, .status_code = net::HTTP_OK}, [] {
              AuthValidate::Response::SuccessBody body;
              body.email = "email";
              return body;
@@ -52,13 +52,13 @@ const AuthValidateTestCase* ApplicationJsonErrorCodeIsNull() {
                R"({ "code": null,
                     "error": "Unauthorized",
                     "status": 401 })",
-           .expected_response = {.net_error = net::OK,
-                                 .status_code = net::HTTP_UNAUTHORIZED,
-                                 .body = base::unexpected([] {
-                                   AuthValidate::Response::ErrorBody body;
-                                   body.code = base::Value();
-                                   return body;
-                                 }())}});
+           .expected_response = {
+               {.net_error = net::OK, .status_code = net::HTTP_UNAUTHORIZED},
+               base::unexpected([] {
+                 AuthValidate::Response::ErrorBody body;
+                 body.code = base::Value();
+                 return body;
+               }())}});
   return kApplicationJsonErrorCodeIsNull.get();
 }
 
@@ -71,13 +71,13 @@ const AuthValidateTestCase* ApplicationJsonErrorCodeIsNotNull() {
                R"({ "code": 14007,
                     "error": "invalid token audience",
                     "status": 403 })",
-           .expected_response = {.net_error = net::OK,
-                                 .status_code = net::HTTP_FORBIDDEN,
-                                 .body = base::unexpected([] {
-                                   AuthValidate::Response::ErrorBody body;
-                                   body.code = base::Value(14007);
-                                   return body;
-                                 }())}});
+           .expected_response = {
+               {.net_error = net::OK, .status_code = net::HTTP_FORBIDDEN},
+               base::unexpected([] {
+                 AuthValidate::Response::ErrorBody body;
+                 body.code = base::Value(14007);
+                 return body;
+               }())}});
   return kApplicationJsonErrorCodeIsNotNull.get();
 }
 
@@ -90,9 +90,10 @@ const AuthValidateTestCase* NonApplicationJsonError() {
           {.test_name = "non_application_json_error",
            .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
            .raw_response_body = "non-application/json error",
-           .expected_response = {.net_error = net::OK,
-                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                                 .body = std::nullopt}});
+           .expected_response = {
+               {.net_error = net::OK,
+                .status_code = net::HTTP_INTERNAL_SERVER_ERROR},
+               std::nullopt}});
   return kNonApplicationJsonError.get();
 }
 
