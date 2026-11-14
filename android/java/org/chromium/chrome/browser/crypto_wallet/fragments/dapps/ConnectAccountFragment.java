@@ -28,6 +28,7 @@ import org.jni_zero.NativeMethods;
 
 import org.chromium.base.Callback;
 import org.chromium.base.Log;
+import org.chromium.base.annotations.VisibleForTesting;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.OriginInfo;
@@ -250,25 +251,52 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
         return mSelectedAccount;
     }
 
-    /**
-     * Data passed from ConnectAccountFragment to BraveDappPermissionPromptDialog for pending
-     * connect account requests
-     */
+    /** Pending connect account request, bound to the origin and coin it was created for. */
     public static class ConnectAccountPendingData {
-        ConnectAccountPendingData(String accountAddress, int permissionLifetimeOption) {
+        ConnectAccountPendingData(
+                String accountAddress,
+                @CoinType.EnumType int coinType,
+                @Nullable String originSpec,
+                int permissionLifetimeOption) {
             this.accountAddress = accountAddress;
+            this.coinType = coinType;
+            this.originSpec = originSpec;
             this.permissionLifetimeOption = permissionLifetimeOption;
         }
 
-        public String accountAddress;
-        public int permissionLifetimeOption;
+        boolean matches(
+                @Nullable String requestingOriginSpec, @CoinType.EnumType int requestingCoin) {
+            return coinType == requestingCoin
+                    && originSpec != null
+                    && originSpec.equals(requestingOriginSpec);
+        }
+
+        public final String accountAddress;
+        public final @CoinType.EnumType int coinType;
+        public final @Nullable String originSpec;
+        public final int permissionLifetimeOption;
     }
 
     @Nullable private static ConnectAccountPendingData sConnectAccountPendingData;
 
-    private static void setConnectAccountPendingData(final String accountAddress) {
-        sConnectAccountPendingData =
-                new ConnectAccountPendingData(accountAddress, PermissionLifetimeOption.FOREVER);
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    static ConnectAccountPendingData setConnectAccountPendingData(
+            final String accountAddress,
+            final @CoinType.EnumType int coinType,
+            @Nullable final String originSpec) {
+        ConnectAccountPendingData pendingData =
+                new ConnectAccountPendingData(
+                        accountAddress, coinType, originSpec, PermissionLifetimeOption.FOREVER);
+        sConnectAccountPendingData = pendingData;
+        return pendingData;
+    }
+
+    /** Clears the armed data only if it is still this exact arm. */
+    static void resetConnectAccountPendingDataIfSame(
+            @Nullable ConnectAccountPendingData pendingData) {
+        if (sConnectAccountPendingData == pendingData) {
+            sConnectAccountPendingData = null;
+        }
     }
 
     @Nullable
@@ -281,12 +309,27 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
         return connectAccountPendingDataCopy;
     }
 
+    /** Consumes the data only if it matches this origin and coin; leaves it armed otherwise. */
+    @Nullable
+    public static ConnectAccountPendingData getAndResetConnectAccountPendingDataIfMatches(
+            @Nullable String requestingOriginSpec, @CoinType.EnumType int requestingCoin) {
+        if (sConnectAccountPendingData == null
+                || !sConnectAccountPendingData.matches(requestingOriginSpec, requestingCoin)) {
+            return null;
+        }
+        return getAndResetConnectAccountPendingData();
+    }
+
     @Override
     public void connectAccount(final AccountInfo account) {
         Tab tab = BraveRewardsHelper.currentActiveChromeTabbedActivityTab();
         if (tab != null && tab.getWebContents() != null) {
             // Static data for BraveDappPermissionPromptDialog.show
-            setConnectAccountPendingData(account.address);
+            final ConnectAccountPendingData pendingData =
+                    setConnectAccountPendingData(
+                            account.address,
+                            account.accountId.coin,
+                            tab.getUrl().getOrigin().getSpec());
             ConnectAccountFragmentJni.get()
                     .connectAccount(
                             account.address,
@@ -294,6 +337,9 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
                             tab.getWebContents(),
                             success -> {
                                 if (!success) {
+                                    // Drop this arm; a newer arm must survive a stale
+                                    // failure callback.
+                                    resetConnectAccountPendingDataIfSame(pendingData);
                                     return;
                                 }
                                 if (CoinType.SOL != account.accountId.coin) {

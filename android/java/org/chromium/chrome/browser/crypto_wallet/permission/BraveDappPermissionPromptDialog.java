@@ -232,9 +232,12 @@ public class BraveDappPermissionPromptDialog
                             mAccountsListAdapter.setAccounts(accounts.toArray(new AccountInfo[0]));
                             mAccountsListAdapter.notifyDataSetChanged();
 
-                            // We are on the flow from ConnectAccountFragment.connectAccount
+                            // We are on the flow from ConnectAccountFragment.connectAccount.
+                            // Consume the data only if it matches this prompt's origin and coin.
                             ConnectAccountFragment.ConnectAccountPendingData capd =
-                                    ConnectAccountFragment.getAndResetConnectAccountPendingData();
+                                    ConnectAccountFragment
+                                            .getAndResetConnectAccountPendingDataIfMatches(
+                                                    mRequestingOrigin.originSpec, mCoinType);
                             if (capd != null) {
                                 final String[] selectedAccounts = {capd.accountAddress};
                                 BraveDappPermissionPromptDialogJni.get()

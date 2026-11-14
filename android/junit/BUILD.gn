@@ -123,6 +123,7 @@ if (is_android) {
         "src/org/chromium/chrome/browser/crypto_wallet/ApproveTxBottomSheetDialogFragmentTest.java",
         "src/org/chromium/chrome/browser/crypto_wallet/TwoLineItemBottomSheetFragmentTest.java",
         "src/org/chromium/chrome/browser/crypto_wallet/WalletBottomSheetDialogFragmentTest.java",
+        "src/org/chromium/chrome/browser/crypto_wallet/fragments/dapps/ConnectAccountPendingDataTest.java",
         "src/org/chromium/chrome/browser/crypto_wallet/util/TransactionUtilsTest.java",
       ]
 
