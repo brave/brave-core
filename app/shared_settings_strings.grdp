@@ -12,6 +12,93 @@
   <message name="IDS_SETTINGS_SUBPAGE_LEARN_MORE_ARIA_LABEL" desc="Text read by screen readers when focusing the learn more icon button which corresponds to the subpage title. If the icon button is activated, an external page with the corresponding help article is opened. This text will only be announced by screen readers and will not be visible in the UI.">
     Learn more about: <ph name="SUBPAGE_TITLE">$1<ex>Payment methods</ex></ph>
   </message>
+  <message name="IDS_SETTINGS_CONTINUE" desc="Label for 'Continue' buttons.">
+    Continue
+  </message>
+  <message name="IDS_SETTINGS_MORE_ACTIONS" desc="Tooltip text (shows on hover or for screenreaders) for a button that shows a menu with more actions when clicked or tapped">
+    More actions
+  </message>
+  <message name="IDS_SETTINGS_ADVANCED" desc="Name of the settings page which displays advanced preferences.">
+    Advanced
+  </message>
+  <message name="IDS_SETTINGS_BASIC" desc="Name of the settings page which displays advanced preferences.">
+    Basic
+  </message>
+  <message name="IDS_SETTINGS_MENU_BUTTON_LABEL" desc="Tooltips for the sidebar menu button.">
+    Main menu
+  </message>
+  <message name="IDS_SETTINGS_MENU_EXTENSIONS_LINK_TOOLTIP" desc="Explanation that the extensions page will open in a new tab">
+    Opens in a new tab
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_PROMPT" desc="Label for input field to search within settings.">
+    Search settings
+  </message>
+  <message name="IDS_SETTINGS_SETTINGS" desc="The settings page title.">
+    Settings
+  </message>
+  <message name="IDS_SETTINGS_ALT_PAGE_TITLE" desc="The settings page title for the about page.">
+    Settings - <ph name="SECTION_TITLE">$1<ex>About Brave</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_SUBPAGE_BUTTON" desc="Accessibility description for a button navigating the user from a settings page to one of the settings subpages.">
+    Subpage button
+  </message>
+  <message name="IDS_SETTINGS_CONTROLLED_BY_EXTENSION" desc="Label text of an indicator that a setting's value is being controlled by an extension.">
+    <ph name="NAME">$1<ex>Adblocker plusplus</ex></ph> is controlling this setting
+  </message>
+  <message name="IDS_SETTINGS_CLEAR" desc="Label used on a menu item or button to delete an item.">
+    Delete
+  </message>
+  <message name="IDS_SETTINGS_CUSTOM" desc="Label for a custom option in a dropdown menu.">
+    Custom
+  </message>
+  <message name="IDS_SETTINGS_DELETE" desc="Label used on a menu item or button to delete an item.">
+    Delete
+  </message>
+  <message name="IDS_SETTINGS_EDIT" desc="Label used on a menu item or button, used in different contexts to edit an item.">
+    Edit
+  </message>
+  <message name="IDS_SETTINGS_MANAGE" desc="Text displayed on a button, which when clicked opens the Extensions subpage for managing an extension">
+    Manage
+  </message>
+  <message name="IDS_SETTINGS_NOT_VALID_WEB_ADDRESS" desc="Text indicating that the Web address entered by the user is invalid.">
+    Not a valid web address
+  </message>
+  <message name="IDS_SETTINGS_NOT_VALID_WEB_ADDRESS_FOR_CONTENT_TYPE" desc="Text indicating that the content setting can't take effect because the setting is limited to secure origins.">
+    Origin must be secure
+  </message>
+  <message name="IDS_SETTINGS_RESET" desc="Title for an item in the 'Reset and clean up' section of Brave Settings. If the user clicks this option, browser settings will be returned to their default values, after a confirmation by the user." meaning="Chrome Cleanup feature. Try to use the same translation for 'Reset' in 'Reset and cleanup' string.">
+    Reset settings
+  </message>
+  <message name="IDS_SETTINGS_VERY_SMALL_FONT" desc="The very small choice in the font size dropdown menu in settings.">
+    Very small
+  </message>
+  <message name="IDS_SETTINGS_SMALL_FONT" desc="The small choice in the font size dropdown menu in settings.">
+    Small
+  </message>
+  <message name="IDS_SETTINGS_MEDIUM_FONT" desc="The medium choice in the font size dropdown menu in settings.">
+    Medium (Recommended)
+  </message>
+  <message name="IDS_SETTINGS_LARGE_FONT" desc="The large choice in the font size dropdown menu in settings.">
+    Large
+  </message>
+  <message name="IDS_SETTINGS_VERY_LARGE_FONT" desc="The very large choice in the font size dropdown menu in settings.">
+    Very large
+  </message>
+  <message name="IDS_SETTINGS_QUICK_BROWN_FOX" desc="Example text to see a font style and size sample.  The quick brown fox sentence is a playful way to show all 26 English letters.  Any example text will do.  There is no need to translate this exactly.">
+    The quick brown fox jumps over the lazy dog
+  </message>
+  <if expr="is_chromeos">
+    <then>
+      <message name="IDS_SETTINGS_RESTART" desc="Text for a button that will restart ChromeOS.">
+        Restart
+      </message>
+    </then>
+    <else>
+      <message name="IDS_SETTINGS_RESTART" desc="Text for a button that will restart Brave.">
+        Relaunch
+      </message>
+    </else>
+  </if>
 
   <!-- Caption Subpage (strings used by the <settings-captions> element) -->
   <message name="IDS_SETTINGS_CAPTIONS" desc="Title of the subpage for settings related to captions">
@@ -122,121 +209,105 @@
   <message name="IDS_SETTINGS_CAPTIONS_DEFAULT_LANGUAGE_LABEL" desc="Label indicating the default language pack to use with Live Caption.">
     (default)
   </message>
+  <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_TITLE" desc="Name of the setting to enable Live Caption feature.">
+    Live Caption
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_SUBTITLE" desc="Description text for Live Caption feature. When audio or video is playing, the user will see captions on the screen.">
+    Automatically creates captions for supported languages. Audio never leaves your device.
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_TRANSLATE_TITLE" desc="Name of the setting to enable Live Translate feature.">
+    Live Translate
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_TRANSLATE_SUBTITLE" desc="Description text for Live Translate feature.">
+    Automatically translates live captions. Captions are sent to Brave for translation.
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_LIVE_CAPTION_DOWNLOAD_PROGRESS" desc="Download progress indicator after Live Caption is enabled. The user needs to download certain files for the feature to work.">
+    Downloading speech recognition files... <ph name="PERCENT">$1<ex>17</ex></ph>%
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_LIVE_CAPTION_DOWNLOAD_COMPLETE" desc="Success message when Live Caption files have completed downloading.">
+    Speech files downloaded
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_LIVE_CAPTION_DOWNLOAD_ERROR" desc="Generic error message when Live Caption files can’t be downloaded.">
+    Can't download speech files. Try again later.
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_LIVE_CAPTION_DOWNLOAD_ERROR_REBOOT_REQUIRED" desc="Error message shown when a OS reboot is required to install the Live Caption files.">
+    Can't install speech files. Your device needs to be updated. Restart your device and try again.
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_MASK_OFFENSIVE_WORDS_TITLE" desc="Name of the setting to hide profanity (offensive words) for the Live Caption feature.">
+    Hide profanity
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_SPEECH_RECOGNITION_SMALL_EXPERT_MODEL_SECTION_TITLE" desc="Title for Small expert model section.">
+    Small expert model
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_SPEECH_RECOGNITION_SMALL_EXPERT_MODEL_SECTION_SUBTITLE" desc="Subtitle describing Small expert model feature.">
+    On-device model
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_SPEECH_RECOGNITION_SMALL_EXPERT_MODEL_DELETE_BUTTON" desc="Button label to delete Small expert model component package.">
+    Delete model
+  </message>
+  <message name="IDS_SETTINGS_MORE_ACTIONS_BUTTON_ARIA_LABEL" desc="Aria (accessibility) label for a button that shows a menu with more actions when clicked or tapped">
+    More actions for <ph name="BUTTON_TITLE">$1</ph>
+  </message>
 
-  <!-- Nearby Share -->
-  <message name="IDS_SETTINGS_NEARBY_SHARE_TITLE" desc="Name of the settings page for the Nearby Share feature">
-    Nearby Share
+  <!-- Accessibility -->
+  <message name="IDS_SETTINGS_ACCESSIBILITY" desc="Name of the settings page which displays accessibility preferences.">
+    Accessibility
   </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_TITLE_PH" desc="Feature name placeholder: Name of the settings page for the sharing feature">
-    <ph name="FEATURE_NAME">$1<ex>Nearby Share</ex></ph>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_WEB_STORE" desc="Text for an external link explaining that additional accessibility features are found on the Web Store.">
+    Open Web Store
   </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_SET_UP_BUTTON_TITLE" desc="Title of the button that lets the user set up and enable the Nearby Share feature for the first time.">
-    Set up
+  <message name="IDS_SETTINGS_MORE_FEATURES_LINK_DESCRIPTION" desc="Description for the link about additional accessibility features.">
+    Enable accessibility features
   </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_DEVICE_NAME_ROW_TITLE" desc="Text for the row in settings which allows a user to set the name of their device which is shown to other devices for the Nearby Share feature.">
-    Device name
+  <message name="IDS_SETTINGS_ACCESSIBLE_IMAGE_LABELS_TITLE" desc="Description for screen reader image labels feature.">
+    Get image descriptions from Brave
   </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_DEVICE_NAME_DIALOG_TITLE" desc="Title for the dialog which allows a user to set the name of their device which is shown to other devices for the Nearby Share feature.">
-    Change device name
+  <message name="IDS_SETTINGS_ACCESSIBLE_IMAGE_LABELS_SUBTITLE" desc="Subtitle for screen reader image labels feature.">
+    If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave.
   </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_DEVICE_NAME_FIELD_LABEL" desc="Label for the input field where a user can set the name of their device which is shown to other devices for the Nearby Share feature.">
-    New device name
+  <message name="IDS_SETTINGS_MAIN_NODE_ANNOTATIONS_DOWNLOAD_COMPLETE" desc="Success message when it has downloaded main node annotation files.">
+    Main node annotation files downloaded
   </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_EDIT_DEVICE_NAME" desc="Label for the button that opens the dialog which allows a user to set the name of their device which is shown to other devices for the Nearby Share feature.">
-    Change device name
+  <message name="IDS_SETTINGS_MAIN_NODE_ANNOTATIONS_DOWNLOAD_ERROR" desc="Generic error message when it fails to download main node annotation files.">
+    Can't download main node annotation files. Try again later.
   </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_FAST_INITIATION_NOTIFICATION_TOGGLE_TITLE" desc="Title for the toggle that allows a user to turn fast initiation notifications on or off. Fast initiation notifications alert the user when devices nearby are trying to share.">
-    Show notification
+  <message name="IDS_SETTINGS_MAIN_NODE_ANNOTATIONS_DOWNLOAD_PROGRESS" desc="Download progress indicator after main node annotation is enabled. The user needs to download certain files for the feature to work.">
+    Downloading main node annotation files… <ph name="PERCENT">$1<ex>17</ex></ph>%
   </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_FAST_INITIATION_NOTIFICATION_TOGGLE_DESCRIPTION" desc="Description for the toggle that allows a user to turn fast initiation notifications on or off. Fast initiation notifications alert the user when devices nearby are trying to share.">
-    When devices are sharing nearby
+  <message name="IDS_SETTINGS_MAIN_NODE_ANNOTATIONS_DOWNLOADING" desc="Generic message when it has started downloading main node annotation files.">
+    Downloading main node annotation files
   </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_FAST_INITIATION_NOTIFICATION_TOGGLE_ARIA_LABEL" desc="Title for screen readers for the toggle that allows a user to turn fast initiation notifications on or off. Fast initiation notifications alert the user when devices nearby are trying to share." is_accessibility_with_no_ui="true">
-    Show notification when devices are sharing nearby
+  <message name="IDS_SETTINGS_MAIN_NODE_ANNOTATIONS_TITLE" desc="Description for screen reader main node annotations feature.">
+    Annotate main node
   </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_DEVICE_NAME_ARIA_DESCRIPTION" desc="Description for screen readers, not displayed in UI, specifying the current device name which is shown to other devices for the Nearby Share feature." is_accessibility_with_no_ui="true">
-    Current device name is <ph name="DEVICE_NAME">$1<ex>Michael's Chromebook</ex></ph>
+  <message name="IDS_SETTINGS_MAIN_NODE_ANNOTATIONS_SUBTITLE" desc="Subtitle for screen reader main node annotation feature.">
+    Identify the main landmark in web pages for assistive technology
   </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_CONFIRM_DEVICE_NAME" desc="Label for the button that allows a user to confirm their device name which is shown to other devices for the Nearby Share feature.">
-    Rename
+  <message name="IDS_SETTINGS_ENABLE_CARET_BROWSING_TITLE" desc="Name of the setting to enable Caret Browsing, which allows you to move around any web page using a text caret.">
+    Navigate pages with a text cursor
   </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_MANAGE_CONTACTS_LABEL" desc="Label for the button that opens contacts management when configuring visibility of their device with their contacts for the Nearby Share feature.">
-    Manage contacts
+  <message name="IDS_SETTINGS_SLIDER_MIN_MAX_ARIA_ROLE_DESCRIPTION" desc="A label to be read aloud by screen readers when a user focuses on a slider. A settings slider generally has a minimum value, a maximum value, and a fixed range of values in between. This label gives the user context for what the minimum and maximum values represent for that particular slider.">
+    Slider: <ph name="MIN_LABEL">$1<ex>Slowest</ex></ph> to <ph name="MAX_LABEL">$2<ex>Fastest</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_MANAGE_CONTACTS_ROW_TITLE" desc="Text for row in settings that allows user to manage contacts for the Nearby Share feature.">
-    Contacts
-  </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_EDIT_DATA_USAGE" desc="Label for the button that brings up a dialog to allow a user to edit the data usage setting for the Nearby Share feature.">
-    Edit
-  </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_UPDATE_DATA_USAGE" desc="Label for the button that allows a user to confirm their choice of data usage setting for the Nearby Share feature.">
-    Save
-  </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_DATA_USAGE_DIALOG_TITLE" desc="Title for the dialog where a user can select the data usage setting for the Nearby Share feature.">
-    Data usage
-  </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_DATA_USAGE_WIFI_ONLY_LABEL" desc="Label for the data usage setting where only Wi-Fi is to be used for transfers for the Nearby Share feature.">
-    Wi-Fi only
-  </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_DATA_USAGE_WIFI_ONLY_DESCRIPTION" desc="Description of the data usage setting where only Wi-Fi is to be used for transfers for the Nearby Share feature.">
-    Never use mobile data to transfer
-  </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_DATA_USAGE_MOBILE_DATA_LABEL" desc="Label for the mobile data usage setting where Wi-Fi or cell data may be used for transfers for the Nearby Share feature.">
-    Mobile Data
-  </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_DATA_USAGE_MOBILE_DATA_DESCRIPTION" desc="Description of the mobile data usage setting where Wi-Fi or cell data may be used for transfers for the Nearby Share feature.">
-    May incur mobile data charges
-  </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_DATA_USAGE_MOBILE_DATA_TOOLTIP" desc="Explanation of when the mobile data usage setting applies. When selected, Mobile data means that Wi-Fi or cell data may be used for transfers for the Nearby Share feature.">
-    This option applies to Chromebooks with a data plan or mobile network dongle, or when tethering to a portable hotspot
-  </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_DATA_USAGE_OFFLINE_LABEL" desc="Label for the data usage setting where transfers will only take place offline for the Nearby Share feature.">
-    Without internet
-  </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_DATA_USAGE_OFFLINE_DESCRIPTION" desc="Description of the data usage setting where transfers will only take place offline for the Nearby Share feature.">
-    Files will always be shared offline
-  </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_DATA_USAGE_EDIT_BUTTON_DATA_DESCRIPTION" desc="Description for scren readers, not displayed in UI, specifying the current mobile data usage setting where Wi-Fi or cell data may be used for transfers for the Nearby Share feature." is_accessibility_with_no_ui="true">
-    Current data usage setting is Mobile Data
-  </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_DATA_USAGE_EDIT_BUTTON_WIFI_ONLY_DESCRIPTION" desc="Description for screen readers, not displayed in UI, specifying the current data usage setting where only Wi-Fi is to be used for transfers for the Nearby Share feature." is_accessibility_with_no_ui="true">
-    Current data usage setting is Wi-Fi only
-  </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_DATA_USAGE_EDIT_BUTTON_OFFLINE_DESCRIPTION" desc="Description for scren readers, not displayed in UI, specifying the current data usage setting where transfers will only take place offline for the Nearby Share feature." is_accessibility_with_no_ui="true">
-    Current data usage setting is Without internet
-  </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_CONTACT_VISIBILITY_ROW_TITLE" desc="Text for the row in settings which allows a user to set their preference for the visibility of their device with their contacts for the Nearby Share feature.">
-    Device visibility
-  </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_EDIT_VISIBILITY" desc="Label for the button that opens the dialog which allows a user to set their preference for the visibility of their device with their contacts for the Nearby Share feature.">
-    Change visibility
-  </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_VISIBILITY_DIALOG_TITLE" desc="Title for the dialog which allows a user to set their preference for the visibility of their device with their contacts for the Nearby Share feature.">
-    Device visibility
-  </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_VISIBILITY_DIALOG_SAVE" desc="Label for the button that saves a user's preference for the visibility of their device with their contacts for the Nearby Share feature. ">
-    Save
-  </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_DESCRIPTION" desc="A description of nearby share that helps users understand what the feature is used for.">
-    Share files and more with nearby devices. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
-  </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_HIGH_VISIBILITY_TITLE" desc="Label for the switch that toggles whether the device is visible to all devices around it for the Nearby Share feature.">
-    Visible to everyone
-  </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_HIGH_VISIBILITY_ON" desc="Subtitle shown indicating that the device is visible to all devices around it for the Nearby Share feature and the nearest number of whole minutes it is on until it is turned off.">
-    Visibility is on for <ph name="MINUTES">$1<ex>5</ex></ph> minutes
-  </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_HIGH_VISIBILITY_OFF" desc="Label for the switch that toggles whether the device is visible to all devices around it for the Nearby Share feature.">
-    You will be visible to everyone for <ph name="MINUTES">$1<ex>5</ex></ph> minutes. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
-  </message>
+  <if expr="is_chromeos">
+    <then>
+      <message name="IDS_SETTINGS_ENABLE_CARET_BROWSING_SUBTITLE" desc="Subtitle of the setting to enable Caret Browsing, which allows you to move around any web page using a text caret.">
+        To turn caret browsing on or off, use the shortcut Ctrl+Search+7
+      </message>
+    </then>
+    <else>
+      <message name="IDS_SETTINGS_ENABLE_CARET_BROWSING_SUBTITLE" desc="Subtitle of the setting to enable Caret Browsing, which allows you to move around any web page using a text caret.">
+        To turn caret browsing on or off, use the shortcut F7
+      </message>
+    </else>
+  </if>
+  <if expr="is_chromeos">
+    <message name="IDS_SETTINGS_ACCESSIBILITY_MANAGE_ACCESSIBILITY_FEATURES" desc="In the settings tab, the title of a link that opens a screen allowing the user to change accessibility features.">
+      Manage accessibility features
+    </message>
+  </if>
 
  <!-- Personalization Options SubPage (strings used by the <settings-personalization-options> element) -->
-  <message name="IDS_SETTINGS_ENABLE_URL_KEYED_ANONYMIZED_DATA_COLLECTION" desc="The label of the checkbox to enable/disable url keyed anonymized data collection.">
-    Make searches and browsing better
-  </message>
-  <message name="IDS_SETTINGS_ENABLE_URL_KEYED_ANONYMIZED_DATA_COLLECTION_DESC" desc="The description of the checkbox to enable/disable url keyed anonymized data collection.">
-    Sends URLs of pages you visit to Brave
-  </message>
   <message name="IDS_SETTINGS_SPELLING_PREF" desc="The documentation string of the 'Use Spelling' preference">
     Enhanced spell check
   </message>
@@ -246,48 +317,9 @@
   <message name="IDS_SETTINGS_ENABLE_LOGGING_PREF_DESC" desc="The description of the checkbox to enable/disable crash and user metrics logging">
     Automatically sends usage statistics and crash reports to Brave
   </message>
-  <message name="IDS_SETTINGS_SUGGEST_PREF" desc="The label of the checkbox to enable/disable sending omnibox input to the user's default search engine to get additional suggestions.">
-    Improve search suggestions
-  </message>
   <!-- Sync Accounts page (used by the <settings-sync-account-control> element) -->
-  <message name="IDS_SETTINGS_PEOPLE_SIGNED_IN_TO_ACCOUNT" desc="The text displayed to the user that the profile is currently signed in to a specific account.">
-    Signed in to <ph name="EMAIL">$1<ex>abcd@google.com</ex></ph>
-  </message>
-  <message name="IDS_SETTINGS_PEOPLE_SYNCING_TO_ACCOUNT" desc="The text displayed to the user that the profile is currently syncing to a specific account.">
-    Syncing to <ph name="EMAIL">$1<ex>abcd@google.com</ex></ph>
-  </message>
-  <message name="IDS_SETTINGS_PEOPLE_SYNC_PAUSED" desc="The label informing the user that sync is currently paused.">
-    Sync is paused
-  </message>
-  <message name="IDS_SETTINGS_PEOPLE_SIGN_IN_PROMPT" desc="The text displayed to prompt users to sign in to chrome.">
-    Get Brave smarts in Brave
-  </message>
-  <message name="IDS_SETTINGS_PEOPLE_SYNC_TURN_OFF" desc="The label for the button that lets the user turn off profile syncing with their gaia account.">
-    Turn off
-  </message>
-  <message name="IDS_SETTINGS_SETTINGS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing settings between multiple browser instances.">
-    Settings
-  </message>
-  <message name="IDS_SETTINGS_PEOPLE_SYNC_NOT_WORKING" desc="The label informing the user that sync is currently not working.">
-    Sync isn't working
-  </message>
-  <message name="IDS_SETTINGS_PEOPLE_SYNC_PASSWORDS_NOT_WORKING" desc="The label informing the user that password sync is currently not working.">
-    Password sync isn't working
-  </message>
-  <message name="IDS_SETTINGS_SYNC_ADVANCED_PAGE_TITLE" desc="Name of the settings page which manages data used by sync.">
-    Manage sync
-  </message>
   <message name="IDS_SETTINGS_NEW_SYNC_ADVANCED_PAGE_TITLE" desc="Name of the settings page which manages data used by sync.">
     Manage what you sync
-  </message>
-  <message name="IDS_SETTINGS_PEOPLE_SYNC_ANOTHER_ACCOUNT" desc="The label for the button that lets the user choose another account to sync with.">
-    Use another account
-  </message>
-  <message name="IDS_SETTINGS_TURN_ON_SYNC_BUTTON_UPDATE_SETTINGS_UI_ENABLED" desc="Label of the button in the settings page to turn on Sync.">
-    Turn on Sync
-  </message>
-  <message name="IDS_SETTINGS_ACCOUNT_AWARE_SIGNIN_BUTTON_LABEL" desc="Label of the button shown in the settings page to sign in when users are signed in the web only ">
-    Continue as <ph name="EMAIL">$1<ex>johndoe@gmail.com</ex></ph>
   </message>
   <message name="IDS_SETTINGS_ERROR_PASSWORDS_USER_ERROR_DESCRIPTION" desc="Error description of the sync/signin error header the settings page.">
     To use and save passwords in your Brave sync chain, verify it's you
@@ -295,53 +327,14 @@
   <message name="IDS_SETTINGS_ERROR_RECOVERABILITY_DEGRADED_FOR_PASSWORDS_USER_ERROR_DESCRIPTION" desc="Error description of a sync error header of desktop settings page that prompts the user to add recovery options.">
     To make sure you can always use the passwords in your Brave sync chain, verify it's you
   </message>
-  <message name="IDS_SETTINGS_PEOPLE_ACCOUNT_AWARE_SIGNIN_ACCOUNT_ROW_SUBTITLE_WITH_EMAIL" desc="The subtitle of the avatar row shown to users who are signed in only to the web">
-    To get your passwords and more on all your devices, sign in as <ph name="EMAIL">$1<ex>johndoe@gmail.com</ex></ph>
-  </message>
-  <message name="IDS_SETTINGS_PEOPLE_ACCOUNT_AWARE_SIGNIN_ACCOUNT_ROW_SUBTITLE_WITH_EMAIL_WITH_BOOKMARKS" desc="The subtitle of the avatar row shown to users who are signed in only to the web">
-    To get your passwords, bookmarks, and more on all your devices, sign in as <ph name="EMAIL">$1<ex>johndoe@gmail.com</ex></ph>
-  </message>
-  <message name="IDS_SETTINGS_PEOPLE_ACCOUNT_AWARE_SIGNIN_ACCOUNT_ROW_SUBTITLE_WITH_EMAIL_SIMPLE" desc="The subtitle of the avatar row shown to users who are signed in only to the web">
-    Sign in as <ph name="EMAIL">$1<ex>johndoe@gmail.com</ex></ph>
-  </message>
-  <message name="IDS_SETTINGS_CHANGE_ACCOUNT" desc="The alt-text that corresponds to the down arrow button on the settings page. On clicking the user will a list of accounts they can use to signin with. This button is shown when the user is signed in the content area but not into Brave.">
-      Choose another account
-  </message>
 
   <!-- Signout Subpage (strings used by the <settings-signout-dialog> element) -->
-  <message name="IDS_SETTINGS_SYNC_DISCONNECT_CONFIRM" desc="The text to display on the button to confirm the user wishes to stop syncing.">
-    Delete and Sign Out
-  </message>
   <message name="IDS_SETTINGS_PEOPLE_SIGN_OUT" desc="The label of the button that lets user sign-out of Brave.">
     Sign out
   </message>
   <!-- Sync Control Subpage (strings used by the <settings-sync-controls> element) -->
-  <message name="IDS_SETTINGS_AUTOFILL_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing autofill settings between multiple browser instances.">
-    Addresses and more
-  </message>
-  <message name="IDS_SETTINGS_HISTORY_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing history between multiple browser instances.">
-    History
-  </message>
-  <message name="IDS_SETTINGS_EXTENSIONS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing extensions between multiple browser instances.">
-    Extensions
-  </message>
-  <message name="IDS_SETTINGS_OPEN_TABS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing open tabs between multiple browser instances.">
-    Open tabs
-  </message>
-  <message name="IDS_SETTINGS_SAVED_TAB_GROUPS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing saved tab groups between multiple browser instances.">
-    Saved tab groups
-  </message>
-  <message name="IDS_SETTINGS_PRODUCT_COMPARISONS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing comparison tables between multiple browser instances.">
-    Comparison tables
-  </message>
-  <message name="IDS_SETTINGS_WIFI_CONFIGURATIONS_CHECKBOX_LABEL" desc="Label for the checkbox which enables syncing of Wi-Fi networks across devices.">
-    Wi-Fi networks
-  </message>
   <message name="IDS_SETTINGS_SYNC_EVERYTHING_CHECKBOX_LABEL" desc="Label for the checkbox which causes all properties to be synced.">
     Sync everything
-  </message>
-  <message name="IDS_SETTINGS_APPS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing apps between multiple browser instances.">
-    Apps
   </message>
   <message name="IDS_SETTINGS_NON_PERSONALIZED_SERVICES_SECTION_LABEL" desc="Title for a section that shows options for various Brave services">
     Other Brave services
@@ -354,9 +347,6 @@
   </message>
 
   <!-- Sync page (strings used by the <settings-sync-page> element) / Account Settings Page -->
-  <message name="IDS_SETTINGS_PASSWORDS_AND_PASSKEYS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing passwords and passkey metadata (i.e. their username and sites) between multiple browser instances. See the glossary for a definition of 'passkey', do not translate 'passkey' as 'password'.">
-    Passwords and passkeys
-  </message>
   <message name="IDS_SETTINGS_PASSPHRASE_PLACEHOLDER" desc="Placeholder for the passphrase field.">
     Passphrase
   </message>
@@ -371,12 +361,6 @@
   </message>
   <message name="IDS_SETTINGS_ENCRYPT_ACCOUNT_DATA_WITH_GOOGLE_CREDENTIALS_LABEL" desc="Label for the radio button which, when selected, causes synced settings to be encrypted with the Brave login for the current browser profile.">
     Use Brave’s default encryption for the passwords in your Brave sync chain
-  </message>
-  <message name="IDS_SETTINGS_BOOKMARKS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing bookmarks between multiple browser instances.">
-    Bookmarks
-  </message>
-  <message name="IDS_SETTINGS_READING_LIST_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing reading list between multiple browser instances.">
-    Reading list
   </message>
   <message name="IDS_SETTINGS_ENCRYPTION_OPTIONS" desc="Title for the section which includes options for encrypting sync settings.">
     Encryption options
@@ -408,50 +392,97 @@
   <message name="IDS_SETTINGS_SYNC" desc="Name of the sync service.">
     Sync
   </message>
-  <message name="IDS_SETTINGS_SYNC_SETTINGS_CANCEL_SYNC" desc="The label of button that allows user to cancel sync.">
-    Cancel sync
+  <message name="IDS_SETTINGS_ENCRYPT_WITH_SYNC_PASSPHRASE_LABEL" desc="Label for the radio button which, when selected, causes synced settings to be encrypted with a user-provided password.">
+    Encrypt synced data with your own <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>sync passphrase<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>. Payment methods and addresses from Google Pay won’t be encrypted. Browsing history from Brave won’t sync.
   </message>
-  <message name="IDS_SETTINGS_SYNC_SETUP_CANCEL_DIALOG_TITLE" desc="The title of the dialog to confirm the sync cancellation.">
-    Cancel sync?
+  <message name="IDS_SETTINGS_PASSPHRASE_EXPLANATION_TEXT" desc="Message shown when explicit passphrase is selected.">
+    Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave. If you forget your passphrase or want to change this setting, you'll need to <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
-  <message name="IDS_SETTINGS_SYNC_SETUP_CANCEL_DIALOG_BODY" desc="The body text of the dialog to confirm the sync cancellation.">
-    You can turn on sync anytime in settings
+  <message name="IDS_SETTINGS_PASSPHRASE_RESET_HINT_ENCRYPTION" desc="Informs user how to change their encryption setting.">
+    To change this setting, <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> to remove your sync passphrase
   </message>
-  <message name="IDS_SYNC_UNAVAILABLE_FOR_NON_GOOGLE_ACCOUNT" desc="Text explaining that Sync service is unavailable for Dasherless profile.">
-    This account isn't associated with Brave so features such as Brave sync are unavailable
+  <message name="IDS_SETTINGS_PASSPHRASE_RECOVER" desc="Message about how to recover from a lost passphrase.">
+    If you forgot your passphrase or want to change this setting, <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
 
-  <if expr="is_chromeos">
-    <message name="IDS_BROWSER_SETTINGS_SYNC_FEATURE_LABEL" desc="Label describing the browser sync feature.">
-      Your data will be synced across all Brave browsers where you have turned on sync for this account. For ChromeOS sync options, go to <ph name="LINK_BEGIN">&lt;a&gt;</ph>ChromeOS settings<ph name="LINK_END">&lt;/a&gt;</ph>.
-    </message>
-    <message name="IDS_SETTINGS_COOKIES_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing cookies between multiple browser instances.">
-      Cookies
-    </message>
-  </if>
+  <!-- Secure DNS -->
+  <message name="IDS_SETTINGS_SECURE_DNS" desc="Text for secure DNS toggle in Privacy options">
+    Use secure DNS
+  </message>
+  <message name="IDS_SETTINGS_AUTOMATIC_MODE_DESCRIPTION" desc="Text of the select option that puts secure DNS in auto-upgrade mode">
+    OS default (when available)
+  </message>
+  <message name="IDS_SETTINGS_SECURE_DNS_DROPDOWN_ACCESSIBILITY_LABEL" desc="Accessibility label for the dropdown menu containing secure resolvers">
+    Provider options
+  </message>
+  <message name="IDS_SETTINGS_SECURE_DROPDOWN_MODE_DESCRIPTION" desc="Label for the select menu that allows a secure resolver to be selected">
+    Select DNS provider
+  </message>
+  <message name="IDS_SETTINGS_SECURE_DROPDOWN_MODE_PRIVACY_POLICY" desc="Text that displays a link to the privacy policy of the resolver selected from a dropdown menu">
+    See this provider's <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>privacy policy<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_SECURE_DNS_DISABLED_FOR_MANAGED_ENVIRONMENT" desc="Substring of the secure DNS setting when secure DNS is disabled due to detection of a managed environment">
+    This setting is disabled on managed browsers
+  </message>
+  <message name="IDS_SETTINGS_SECURE_DNS_DISABLED_FOR_PARENTAL_CONTROL" desc="Substring of the secure DNS setting when secure DNS is disabled due to detection of OS-level parental controls">
+    This setting is disabled because parental controls are on
+  </message>
+  <message name="IDS_SETTINGS_SECURE_DNS_CUSTOM_DESCRIPTION" desc="Text of the select option that is used for a custom secure DNS provider">
+    Add custom DNS service provider
+  </message>
+  <message name="IDS_SETTINGS_SECURE_DNS_CUSTOM_PLACEHOLDER" desc="Placeholder text for a textbox where users can enter a custom secure DNS provider">
+    Enter custom DNS query URL
+  </message>
+  <message name="IDS_SETTINGS_SECURE_DNS_CUSTOM_FORMAT_ERROR" desc="Error text for an incorrectly formatted entry for the custom secure DNS provider">
+    Enter a correctly formatted URL
+  </message>
+  <message name="IDS_SETTINGS_SECURE_DNS_CUSTOM_CONNECTION_ERROR" desc="Error text for a custom secure DNS provider entry to which a probe connection fails">
+    Please verify that this is a valid provider or try again later
+  </message>
+
+  <!-- Languages -->
+  <message name="IDS_SETTINGS_LANGUAGE_SEARCH" desc="Placeholder/label for the text input field that allows a user to filter languages.">
+    Search languages
+  </message>
+  <message name="IDS_SETTINGS_LANGUAGES_LANGUAGES_LIST_MOVE_TO_TOP" desc="Label for the menu item that moves the language up to the top of the list of languages.">
+    Move to the top
+  </message>
+  <message name="IDS_SETTINGS_LANGUAGES_LANGUAGES_LIST_MOVE_UP" desc="Label for the menu item that moves the language up in the list of languages.">
+    Move up
+  </message>
+  <message name="IDS_SETTINGS_LANGUAGES_LANGUAGES_LIST_MOVE_DOWN" desc="Label for the menu item that moves the language down in the list of languages.">
+    Move down
+  </message>
+  <message name="IDS_SETTINGS_LANGUAGES_LANGUAGES_LIST_REMOVE" desc="Label for the menu item to remove a language from the list of enabled languages.">
+    Remove
+  </message>
+  <message name="IDS_SETTINGS_LANGUAGES_LANGUAGES_ADD" desc="Button under the list of enabled languages which opens a dialog that lets the user enable additional languages.">
+    Add languages
+  </message>
+  <message name="IDS_SETTINGS_LANGUAGES_MANAGE_LANGUAGES_TITLE" desc="Name of the settings dialog which allows enabling additional languages.">
+    Add languages
+  </message>
 
   <!-- About Subpage-->
   <message name="IDS_SETTINGS_ABOUT_UPGRADE_CHECK_STARTED" desc="Status label: About to start checking for updates">
     Checking for updates
   </message>
-  <message name="IDS_SETTINGS_UPDATE_TO_ROLLBACK_VERSION_DISALLOWED" desc="Status label: After a consumer rollback, updating to the previously installed version just rolledback from is disallowed (ChromeOS/ChromeOS)">
-    You reverted to a previous version of ChromeOS. To get updates, wait until the next version is available.
-  </message>
-
-  <message name="IDS_SETTINGS_THEME_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing themes between multiple browser instances.">
-    Themes
-  </message>
-
-  <!-- Password Prompt Dialog -->
   <if expr="is_chromeos">
-    <message name="IDS_SETTINGS_PEOPLE_PASSWORD_PROMPT_TITLE" desc="Title of the password prompt dialog popup.">
-      Confirm your password
-    </message>
-    <message name="IDS_SETTINGS_PEOPLE_PASSWORD_PROMPT_PASSWORD_LABEL" desc="An input box label that tells the user to enter their password in that input box.">
-      Password
-    </message>
-    <message name="IDS_SETTINGS_PEOPLE_PASSWORD_PROMPT_INVALID_PASSWORD" desc="Text on a password field that tells the user the password is incorrect.">
-      Invalid password
+    <then>
+      <message name="IDS_SETTINGS_ABOUT_PAGE_RELAUNCH" desc="The label for the relaunch button that relaunches the browser once update is complete">
+        Restart
+      </message>
+    </then>
+    <else>
+      <message name="IDS_SETTINGS_ABOUT_PAGE_RELAUNCH" desc="The label for the relaunch button that relaunches the browser once update is complete">
+        Relaunch
+      </message>
+    </else>
+  </if>
+  <if expr="_google_chrome">
+    <message name="IDS_SETTINGS_ABOUT_PAGE_REPORT_AN_ISSUE" desc="Text of the button which allows the user to report an issue with Brave.">
+      Report an issue
     </message>
   </if>
+
 </grit-part>

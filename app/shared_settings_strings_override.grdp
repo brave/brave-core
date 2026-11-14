@@ -1,10 +1,17 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Settings-specific strings shared by Browser and ChromeOS settings -->
 <grit-part>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_DESCRIPTION" desc="A description of nearby share that helps users understand what the feature is used for.">
-    Share files with profiles around you. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  <if expr="is_chromeos">
+    <then>
+      </then>
+    <else>
+      </else>
+  </if>
+
+  <message name="IDS_SETTINGS_ACCESSIBILITY_WEB_STORE" desc="Text for an external link explaining that additional accessibility features are found on the Web Store.">
+    Open Web Store
   </message>
-  <if expr="is_fuchsia">
+  <if expr="is_chromeos">
     <then>
       </then>
     <else>
@@ -13,6 +20,13 @@
   <if expr="is_chromeos">
     </if>
 
-  <if expr="is_chromeos">
+ <if expr="is_chromeos">
+    <then>
+      </then>
+    <else>
+      </else>
+  </if>
+  <if expr="_google_chrome">
     </if>
+
 </grit-part>

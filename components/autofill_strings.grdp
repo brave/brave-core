@@ -736,6 +736,9 @@
   <message name="IDS_AUTOFILL_SHOPPING_TITLE" desc="Title for the Your saved info settings sub page that allows user to manage their list of saved shopping items. Sentence-Cased." formatter_data="android_java" translateable="false">
     Shopping
   </message>
+  <message name="IDS_AUTOFILL_OFFERS_AND_LOYALTY_CARDS_TITLE" desc="Title for the Your saved info settings sub page that allows user to manage their saved offers and loyalty cards from Google Wallet. Sentence-Cased.">
+    Offers and loyalty cards
+  </message>
   <message name="IDS_AUTOFILL_TRAVEL_TITLE" desc="Title for the Your saved info settings sub page that allows user to manage their list of saved travel info. Sentence-Cased." formatter_data="android_java">
     Travel
   </message>
@@ -991,7 +994,7 @@
    <message name="IDS_AUTOFILL_AT_MEMORY_SUGGESTION_SOURCE_TEXT" desc="The label for a text in the At Memory flyout that shows the source of the autofill suggestion." formatter_data="android_java" translateable="false">
     From Gemini and connected apps
   </message>
-  <message name="IDS_AUTOFILL_AI_SUGGESTED_BY_GEMINI" desc="Sublabel text indicating that a suggestion is sourced from Gemini." translateable="false">
+  <message name="IDS_AUTOFILL_AI_SUGGESTED_BY_GEMINI" desc="Sublabel text or accessibility description indicating that a suggestion is sourced from Gemini." formatter_data="android_java" translateable="false">
     Suggested by Gemini
   </message>
   <message name="IDS_AUTOFILL_AI_SUGGESTED_BY_GEMINI_WITH_SOURCES" desc="Header for Autofill AI personal context child menu attributing the information to source applications. $1 is the formatted list of sources with citation badges (e.g. Gmail [1] [2] · Photos [1])." translateable="false">
@@ -1487,14 +1490,20 @@
   <message name="IDS_AUTOFILL_AI_SAVE_ENTITY_TO_WALLET_DIALOG_SUBTITLE_NEW" desc="A description that appears beneath the Save title prompt asking users whether they want to save their public pass data to Google Wallet. Public passes is the product name for non-sensitive data such as Vehicle, Flight Reservation, Order, and Shipment. This sentence essentially defines Autofill in Brave. We prompt the user to save their information with Google Wallet with the promise that Brave can then help the user fill out forms across devices more quickly using their saved info.">
     Save your info in <ph name="GOOGLE_WALLET_TITLE_1">$1<ex>Google Wallet</ex></ph> and get things done faster, like filling forms across Brave products. You can <ph name="MANAGE_INFO_LINK">$2<ex>manage your info</ex></ph> in <ph name="GOOGLE_WALLET_TITLE_2">$3<ex>Google Wallet</ex></ph> for <ph name="ACCOUNT">$4<ex>alexpark@gmail.com</ex></ph>.
   </message>
-  <message name="IDS_AUTOFILL_AI_SAVE_ENTITY_TO_WALLET_DIALOG_SUBTITLE_PRIVATE_PASS" desc="A description that appears beneath the Save title prompt asking users whether they want to save their private pass data to Google Wallet. Private passes is the product name for sensitive data such as Passport, Driver's License, ID card, Known Traveler Number, and Redress Number. It informs the user that saving to Google Wallet helps fill forms across Brave products, links to private pass settings to control how the info is used across Brave, and links to the Privacy Policy.">
-    Save your info in <ph name="GOOGLE_WALLET_TITLE">$1<ex>Google Wallet</ex></ph> and get things done faster, like filling forms across Brave products. You can control <ph name="HOW_INFO_IS_USED_LINK">$2<ex>how this info is used across Brave</ex></ph> in your private pass settings for <ph name="ACCOUNT">$3<ex>alexpark@gmail.com</ex></ph>. <ph name="PRIVACY_POLICY_LINK">$4<ex>Privacy Policy</ex></ph>
+  <message name="IDS_AUTOFILL_AI_SAVE_ENTITY_TO_WALLET_DIALOG_SUBTITLE_PRIVATE_PASS" desc="A description that appears beneath the Save title prompt asking users whether they want to save their private pass data to Google Wallet. Private passes is the product name for sensitive data such as Passport, Driver's License, ID card, Known Traveler Number, and Redress Number. It informs the user that saving to Google Wallet helps fill forms across Brave products and links to private pass settings to control how the info is used across Brave. A link to the Privacy Policy is shown separately below this description.">
+    Save your info in <ph name="GOOGLE_WALLET_TITLE">$1<ex>Google Wallet</ex></ph> and get things done faster, like filling forms across Brave products. You can control <ph name="HOW_INFO_IS_USED_LINK">$2<ex>how this info is used across Brave</ex></ph> in your private pass settings for <ph name="ACCOUNT">$3<ex>alexpark@gmail.com</ex></ph>.
   </message>
-  <message name="IDS_AUTOFILL_HOW_THIS_INFO_IS_USED_ACROSS_GOOGLE_LINK" desc="Clickable link text that replaces HOW_INFO_IS_USED_LINK inside the middle of the sentence: 'Save your info in Google Wallet and get things done faster, like filling forms across Brave products. You can control HOW_INFO_IS_USED_LINK in your private pass settings for alexpark@gmail.com. Privacy Policy'. Because this phrase appears mid-sentence after 'You can control', do not capitalize the first word or add trailing punctuation, and ensure it fits grammatically into the surrounding sentence.">
+  <message name="IDS_AUTOFILL_HOW_THIS_INFO_IS_USED_ACROSS_GOOGLE_LINK" desc="Clickable link text that replaces HOW_INFO_IS_USED_LINK inside the middle of the sentence: 'Save your info in Google Wallet and get things done faster, like filling forms across Brave products. You can control HOW_INFO_IS_USED_LINK in your private pass settings for alexpark@gmail.com.'. The capitalization, punctuation and grammar must fit into the full sentence after insertion.">
     how this info is used across Brave
   </message>
-  <message name="IDS_AUTOFILL_PRIVACY_POLICY_LINK" desc="Clickable link text to the Brave Privacy Policy that replaces PRIVACY_POLICY_LINK at the end of the notice: 'Save your info in Google Wallet and get things done faster, like filling forms across Brave products. You can control how this info is used across Brave in your private pass settings for alexpark@gmail.com. PRIVACY_POLICY_LINK'. Because it stands as a separate phrase after a period, keep standard capitalization for 'Privacy Policy' and do not add a trailing period.">
+  <message name="IDS_AUTOFILL_PRIVACY_POLICY_LINK" desc="Clickable link text to the Brave Privacy Policy that is shown as a separate paragraph below the notice: 'Save your info in Google Wallet and get things done faster, like filling forms across Brave products. You can control how this info is used across Brave in your private pass settings for alexpark@gmail.com.'. Because it stands on its own as a separate paragraph, it has standard capitalization and no trailing period.">
     Privacy Policy
+  </message>
+  <message name="IDS_AUTOFILL_MANAGE_YOUR_INFO_LINK" desc="Clickable link text that replaces MANAGE_INFO_LINK inside the middle of the sentence: 'Save your info in Google Wallet and get things done faster, like filling forms across Brave products. You can MANAGE_INFO_LINK in Google Wallet for alexpark@gmail.com.'. The capitalization, punctuation and grammar must fit into the full sentence after insertion.">
+    manage your info
+  </message>
+  <message name="IDS_AUTOFILL_AI_SAVE_ENTITY_TO_WALLET_DIALOG_SUBTITLE" desc="A description that appears beneath the Save title prompt asking users whether they want to save their data to Google Wallet.">
+    Save your info to get things done faster, across Brave products. Your info is saved to <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE">$1<ex>Google Wallet</ex></ph> for <ph name="ACCOUNT">$2<ex>alexpark@gmail.com</ex></ph>.
   </message>
   <!-- Prompt strings used on Desktop -->
   <if expr="not is_android">
@@ -1657,12 +1666,6 @@
     </message>
     <message name="IDS_AUTOFILL_AI_SAVE_ENTITY_DIALOG_SUBTITLE" desc="A description that appears beneath the Save title prompt. This sentence essentially defines Autofill in Brave. We prompt the user to save their information with Brave with the promise that Brave can then help the user fill out forms more quickly using their saved info.">
       Save your information and fill out forms faster. Saves to your device.
-    </message>
-    <message name="IDS_AUTOFILL_AI_SAVE_ENTITY_TO_WALLET_DIALOG_SUBTITLE" desc="A description that appears beneath the Save title prompt asking users whether they want to save their data to Google Wallet. This sentence essentially defines Autofill in Brave. We prompt the user to save their information with Google Wallet with the promise that Brave can then help the user fill out forms across devices more quickly using their saved info.">
-      Save your info to get things done faster, across Brave products. Your info is saved to <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE">$1<ex>Google Wallet</ex></ph> for <ph name="ACCOUNT">$2<ex>alexpark@gmail.com</ex></ph>.
-    </message>
-    <message name="IDS_AUTOFILL_MANAGE_YOUR_INFO_LINK" desc="Link text prompting users to manage their autofill information.">
-      manage your info
     </message>
     <message name="IDS_AUTOFILL_AI_UPDATE_ENTITY_DIALOG_UPDATED_ATTRIBUTE_ACCESSIBLE_NAME" desc="Used in entity update dialogs, as the accessible names for rows with updated attributes">
       <ph name="ATTRIBUTE_NAME">$1<ex>Passport number</ex></ph> updated
@@ -1964,6 +1967,16 @@ You can remove this suggestion from Brave. Your original source won't be deleted
     </message>
     <message name="IDS_AUTOFILL_AI_ATTRIBUTION_OPEN_SOURCE_DESCRIPTION" desc="Content description for TalkBack on an Autofill AI source card row. $1 is the app name (e.g. Gmail) and $2 is the source record title (e.g. Flight to San Francisco)." formatter_data="android_java" is_accessibility_with_no_ui="true">
       Open <ph name="APP_NAME">%1$s<ex>Gmail</ex></ph> source: <ph name="TITLE">%2$s<ex>Flight to San Francisco</ex></ph>
+    </message>
+    <!-- TODO(crbug.com/578938007): Revise and translate these strings. -->
+    <message name="IDS_AUTOFILL_AI_ATTRIBUTION_VERIFICATION_SHEET_FULL_HEIGHT" desc="Accessibility announcement read by TalkBack when the Autofill AI attribution verification bottom sheet opens at full height." formatter_data="android_java" is_accessibility_with_no_ui="true" translateable="false">
+      Sheet to verify autofilled info opened at full height
+    </message>
+    <message name="IDS_AUTOFILL_AI_ATTRIBUTION_VERIFICATION_SHEET_CLOSED" desc="Accessibility announcement read by TalkBack when the Autofill AI attribution verification bottom sheet collapses to peek height." formatter_data="android_java" is_accessibility_with_no_ui="true" translateable="false">
+      Sheet to verify autofilled info minimized
+    </message>
+    <message name="IDS_AUTOFILL_AI_ATTRIBUTION_VERIFICATION_SHEET_HIDDEN" desc="Accessibility announcement read by TalkBack when the Autofill AI attribution verification bottom sheet is dismissed." formatter_data="android_java" is_accessibility_with_no_ui="true" translateable="false">
+      Sheet to verify autofilled info closed
     </message>
   </if>
 
