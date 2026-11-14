@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Also remove Brave's non-model per-origin data (e.g. PSST) when the
+      dialog deletes a site's stored objects.
+    regex:
+      pattern: |-
+        browsing_data::RecordDeleteBrowsingDataAction(
+                browsing_data::DeleteBrowsingDataAction::kCookiesInUseDialog);
+      replace: |-
+        browsing_data::RecordDeleteBrowsingDataAction(
+                browsing_data::DeleteBrowsingDataAction::kCookiesInUseDialog);
+            browsing_data::BraveRemoveNonModelDataForOrigin(host_content_settings_map_,
+                                                            origin.GetURL());

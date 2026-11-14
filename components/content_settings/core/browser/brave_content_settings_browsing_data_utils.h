@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_CONTENT_SETTINGS_CORE_BROWSER_BRAVE_CONTENT_SETTINGS_BROWSING_DATA_UTILS_H_
 #define BRAVE_COMPONENTS_CONTENT_SETTINGS_CORE_BROWSER_BRAVE_CONTENT_SETTINGS_BROWSING_DATA_UTILS_H_
 
+class GURL;
+
 namespace base {
 class Time;
 }
@@ -20,6 +22,12 @@ void BraveRemoveSiteSettingsData(
     const base::Time& delete_begin,
     const base::Time& delete_end,
     HostContentSettingsMap* host_content_settings_map);
+
+// Removes Brave's per-origin website settings that aren't part of the browsing
+// data model, for a single origin's `url`.
+void BraveRemoveNonModelDataForOrigin(
+    HostContentSettingsMap* host_content_settings_map,
+    const GURL& url);
 
 }  // namespace browsing_data
 
