@@ -20,7 +20,6 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
 import org.chromium.base.ApplicationStatus;
@@ -28,7 +27,6 @@ import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinition
 import org.chromium.components.browser_ui.notifications.NotificationMetadata;
 import org.chromium.components.browser_ui.notifications.NotificationWrapper;
 import org.chromium.components.browser_ui.notifications.NotificationWrapperBuilder;
-import org.chromium.components.browser_ui.notifications.PendingIntentProvider;
 
 /**
  * Builds a notification according to BraveAds spec.
@@ -192,32 +190,6 @@ public class BraveNotificationBuilder extends StandardNotificationBuilder {
                     BitmapFactory.decodeResource(resources, largeIconId), iconSize, iconSize, true);
         }
         return sBraveIcon;
-    }
-
-    @Override
-    public NotificationBuilderBase addButtonAction(@Nullable Bitmap iconBitmap,
-            @Nullable CharSequence title, PendingIntentProvider intent) {
-        return this;
-    }
-
-    /**
-     * Adds an action to the notification, displayed as a button adjacent to the notification
-     * content, which when tapped will trigger a remote input. This enables Android Wear input and,
-     * from Android N, displays a text box within the notification for inline replies.
-     */
-    @Override
-    public NotificationBuilderBase addTextAction(@Nullable Bitmap iconBitmap,
-            @Nullable CharSequence title, PendingIntentProvider intent, String placeholder) {
-        return this;
-    }
-
-    @Override
-    public NotificationBuilderBase addSettingsAction(
-            int iconId,
-            @Nullable CharSequence title,
-            PendingIntentProvider intent,
-            @NotificationUmaTracker.ActionType int umaActionType) {
-        return this;
     }
 
     /**

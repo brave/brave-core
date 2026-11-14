@@ -29,6 +29,21 @@ android_library("java") {
   resources_package = "org.chromium.chrome.browser.notifications"
 }
 
+robolectric_library("junit_tests") {
+  resources_package = "org.chromium.chrome.browser.notifications"
+  sources = [ "junit/src/org/chromium/chrome/browser/notifications/BraveNotificationBuilderTest.java" ]
+
+  deps = [
+    ":java",
+    ":java_resources",
+    "//base:base_junit_test_support",
+    "//chrome/browser/notifications:java",
+    "//components/browser_ui/notifications/android:java",
+    "//components/browser_ui/styles/android:java_resources",
+    "//third_party/junit",
+  ]
+}
+
 # TODO(samartnik): we are unable to avoid this patch since we directly patch
 # `ChromeChannelDefinitions.java`. There is no straightforward conversion of
 # those patches to bytecode patching so we need to find a way to
