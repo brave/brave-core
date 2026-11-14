@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Attach Brave's privacy-sensitive helpers to every WebContents.
+
+      Shields and ephemeral storage must cover tabs, the contents that replaces
+      a discarded tab's, and WebContents that are not tabs, such as background
+      contents, so they are attached as each WebContents is created.
+    preempt_function_impl:
+      function_name: AttachUniversalWebContentsObservers
+      code: |-
+        brave::AttachPrivacySensitiveTabHelpers(web_contents);

@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/universal_web_contents_observers.cc b/chrome/browser/universal_web_contents_observers.cc
+index 70c84066d5da97b6c2806495e3f4c85849b9102d..6383862685edb3c850c1c3b9734ed30751109d76 100644
+--- a/chrome/browser/universal_web_contents_observers.cc
++++ b/chrome/browser/universal_web_contents_observers.cc
+@@ -14,6 +14,7 @@
+ #endif
+ 
+ void AttachUniversalWebContentsObservers(content::WebContents* web_contents) {
++  brave::AttachPrivacySensitiveTabHelpers(web_contents);
+   // This function is for attaching *universal* WebContentsObservers - ones that
+   // should be attached to *every* WebContents.  Such universal observers and/or
+   // helpers are relatively rare and therefore only a limited set of observers

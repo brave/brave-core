@@ -226,8 +226,8 @@ bool AIChatSidePanelTabTransferBridge::MoveSidePanelContentsToTab(
   // that the browser and tab associations are never set at the same time.
   webui::SetBrowserWindowInterface(web_contents.get(), nullptr);
 
-  // Insert the live contents into a new foreground tab; `Navigate` re-runs the
-  // idempotent `AttachTabHelpers`.
+  // Insert the live contents into a new foreground tab, whose features attach
+  // to it.
   NavigateParams params(browser_, std::move(web_contents));
   params.disposition = WindowOpenDisposition::kNewForegroundTab;
   params.transition = ui::PAGE_TRANSITION_LINK;
