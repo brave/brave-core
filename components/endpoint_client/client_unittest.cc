@@ -16,6 +16,7 @@
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/location.h"
 #include "base/no_destructor.h"
 #include "base/test/bind.h"
@@ -932,9 +933,12 @@ TEST(ClientTestMaxBodySize, ExceedingItFailsWithInsufficientResources) {
   base::test::TaskEnvironment task_environment;
   network::TestURLLoaderFactory test_url_loader_factory;
 
+  JSONSuccessBody success_body;
+  success_body.success = "success";
   MockResponseFor<JSONNonEmptyRequestBodyEndpoint>(
-      test_url_loader_factory,
-      {.net_error = net::OK, .status_code = net::HTTP_OK});
+      test_url_loader_factory, {.net_error = net::OK,
+                                .status_code = net::HTTP_OK,
+                                .body = std::move(success_body)});
 
   JSONNonEmptyRequestBodyEndpoint::Request request;
   request.max_body_size = 1;
@@ -952,9 +956,12 @@ TEST(ClientTestResponseHeaders, NotSetWithoutStatusCode) {
   base::test::TaskEnvironment task_environment;
   network::TestURLLoaderFactory test_url_loader_factory;
 
+  JSONSuccessBody success_body;
+  success_body.success = "success";
   MockResponseFor<JSONNonEmptyRequestBodyEndpoint>(
-      test_url_loader_factory,
-      {.net_error = net::OK, .status_code = net::HTTP_OK});
+      test_url_loader_factory, {.net_error = net::OK,
+                                .status_code = net::HTTP_OK,
+                                .body = std::move(success_body)});
 
   JSONNonEmptyRequestBodyEndpoint::Request request;
   request.max_body_size = 1;

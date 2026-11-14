@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/endpoint_client/request.h"
+#include "brave/components/endpoint_client/serialize_body.h"
 
 #include "base/check.h"
 #include "base/check_deref.h"
@@ -12,14 +12,13 @@
 
 namespace endpoint_client::internal {
 
-std::string SerializeJSONRequestBody(const base::DictValue& request_body) {
-  return CHECK_DEREF(base::WriteJson(request_body));
+std::string SerializeBody(const base::DictValue& body) {
+  return CHECK_DEREF(base::WriteJson(body));
 }
 
-std::string SerializeProtobufRequestBody(
-    const google::protobuf::MessageLite& request_body) {
+std::string SerializeBody(const google::protobuf::MessageLite& body) {
   std::string serialized;
-  CHECK(request_body.SerializeToString(&serialized));
+  CHECK(body.SerializeToString(&serialized));
   return serialized;
 }
 
