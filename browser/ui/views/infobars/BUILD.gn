@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
+
 source_set("unit_tests") {
   testonly = true
 
@@ -23,4 +25,19 @@ source_set("unit_tests") {
     "//ui/views",
     "//ui/views:test_support",
   ]
+
+  if (enable_brave_wayback_machine) {
+    sources += [ "wayback_machine_infobar_unittest.cc" ]
+    deps += [
+      "//base:i18n",
+      "//base/test:test_support",
+      "//brave/app:brave_generated_resources_grit",
+      "//brave/browser/infobars",
+      "//brave/components/brave_wayback_machine",
+      "//chrome/test/base:chrome_render_view_host_test_harness",
+      "//components/infobars/content",
+      "//ui/gfx:test_support",
+      "//url",
+    ]
+  }
 }
