@@ -15,6 +15,7 @@ import * as Log from './log.ts'
 // Mock the logging module
 jest.mock('./log.ts', () => ({
   error: jest.fn(),
+  warn: jest.fn(),
 }))
 
 describe('EnvConfig', () => {
@@ -287,6 +288,51 @@ describe('EnvConfig', () => {
 
     it('should fall back to package config when .env value not found', () => {
       expect(envConfig.getString(['fallback_value'])).toBe('from_package')
+    })
+  })
+
+  describe('dotenvKeys', () => {
+    beforeEach(() => {
+      mockFiles[packageJsonPath] = {
+        version: '1.2.3',
+        config: { gclient_verbose: false, projects: { chrome: {} } },
+      }
+      mockFiles[envPath] = [
+        'rbe_service=rbe.example.com:443',
+        'gclient_verbose=true',
+        'projects_chrome_custom_vars_checkout_clangd=true',
+      ]
+      envConfig = new EnvConfig(configDir, { dotenvKeys: ['rbe_service'] })
+    })
+
+    it('reads only the listed .env keys', () => {
+      expect(envConfig.getString(['rbe_service'])).toBe('rbe.example.com:443')
+    })
+
+    it('falls back to package.json for the others', () => {
+      expect(envConfig.getBoolean(['gclient_verbose'])).toBe(false)
+    })
+
+    it('leaves the others out of merged objects too', () => {
+      expect(
+        envConfig.getMergedObject(['projects', 'chrome', 'custom_vars']),
+      ).toEqual({})
+    })
+
+    it('reports the ignored keys once', () => {
+      expect(Log.warn).toHaveBeenCalledTimes(1)
+      expect(Log.warn).toHaveBeenCalledWith(
+        'Ignoring .env keys other than rbe_service: gclient_verbose, '
+          + 'projects_chrome_custom_vars_checkout_clangd',
+      )
+    })
+
+    it('says nothing when no key is ignored', () => {
+      jest.mocked(Log.warn).mockClear()
+      mockFiles[envPath] = ['rbe_service=rbe.example.com:443']
+      envConfig = new EnvConfig(configDir, { dotenvKeys: ['rbe_service'] })
+      expect(envConfig.getString(['rbe_service'])).toBe('rbe.example.com:443')
+      expect(Log.warn).not.toHaveBeenCalled()
     })
   })
 
