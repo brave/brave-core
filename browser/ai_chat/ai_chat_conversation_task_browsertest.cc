@@ -671,11 +671,11 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest,
            mojom::TaskState::kRunning;
   }));
 
-  // The toolbar must not contain the upstream glic actor task icon.
+  // The toolbar must not contain the upstream glic secondary button.
   BrowserView* agent_browser_view =
       BrowserView::GetBrowserViewForBrowser(agent_browser_window_);
   ASSERT_TRUE(agent_browser_view);
-  EXPECT_EQ(agent_browser_view->toolbar()->glic_actor_task_icon(), nullptr);
+  EXPECT_EQ(agent_browser_view->toolbar()->glic_secondary_button(), nullptr);
 
   // The tab strip's action container must not contain the upstream glic actor
   // button container. The container itself may be absent depending on the
