@@ -16,6 +16,7 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/public/before_unload_ignore_controller.h"
 #include "brave/browser/ui/tabs/public/closing_last_tab_controller.h"
+#include "brave/browser/ui/tabs/public/tab_cycling_controller.h"
 #include "brave/browser/ui/tabs/tree_tab_session_manager.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/page_info/brave_shields_ui_contents_cache.h"
@@ -33,7 +34,6 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "printing/buildflags/buildflags.h"
 #include "ui/gfx/native_ui_types.h"
 
@@ -119,48 +119,55 @@ void BraveBrowserWindowFeatures::Init() {
             *browser_, browser_->GetUnownedUserDataHost(), profile,
             browser_->GetTabStripModel(), browser_->GetSessionID());
   }
-}
 
-void BraveBrowserWindowFeatures::InitPostWindowConstruction() {
-  // The fullscreen controller only exists once the window is constructed.
-  if (auto* brave_browser_window =
-          BraveBrowserWindow::FromBrowser(base::to_address(browser_))) {
-    brave_browser_window->ReadyToListenFullscreenChanges();
-  }
-}
-
-void BraveBrowserWindowFeatures::InitPostBrowserViewConstruction(
-    BrowserView* browser_view) {
-  if (sidebar::CanUseSidebar(browser_view->browser())) {
+  // Created before the window, as `BraveBrowserView` hands the sidebar its view
+  // and the side panel registers the Playlist entry while they are built.
+  if (sidebar::CanUseSidebar(base::to_address(browser_))) {
     sidebar_controller_ =
         GetUserDataFactory().CreateInstance<sidebar::SidebarController>(
-            *browser_, browser_view->browser(), browser_view->GetProfile());
+            *browser_, base::to_address(browser_), profile);
 #if BUILDFLAG(ENABLE_PLAYLIST)
-    if (playlist::IsPlaylistAllowed(browser_view->GetProfile()->GetPrefs())) {
+    if (playlist::IsPlaylistAllowed(profile->GetPrefs())) {
       playlist_side_panel_coordinator_ =
           GetUserDataFactory().CreateInstance<PlaylistSidePanelCoordinator>(
-              *browser_, browser_view->browser(), browser_view->GetProfile());
+              *browser_, base::to_address(browser_), profile);
     }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
   }
+}
+
+void BraveBrowserWindowFeatures::InitPostWindowConstruction() {
+  // WebUI browser windows have none of the views UI these features drive.
+  auto* brave_browser_window =
+      BraveBrowserWindow::FromBrowser(base::to_address(browser_));
+  if (!brave_browser_window) {
+    return;
+  }
+
+  // The fullscreen controller only exists once the window is constructed.
+  brave_browser_window->ReadyToListenFullscreenChanges();
+
+  tab_cycling_controller_ =
+      GetUserDataFactory().CreateInstance<TabCyclingController>(*browser_,
+                                                                *browser_);
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  brave_vpn_controller_ =
+      GetUserDataFactory().CreateInstance<BraveVPNController>(*browser_,
+                                                              *browser_);
+#endif
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   if (email_aliases::features::IsEmailAliasesEnabled()) {
     if (auto* email_aliases_service =
             email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
-                browser_view->GetProfile())) {
+                browser_->GetProfile())) {
       email_aliases_controller_ =
           GetUserDataFactory()
               .CreateInstance<email_aliases::EmailAliasesController>(
-                  *browser_, browser_view, email_aliases_service);
+                  *browser_, *browser_, email_aliases_service);
     }
   }
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  brave_vpn_controller_ =
-      GetUserDataFactory().CreateInstance<BraveVPNController>(*browser_,
-                                                              browser_view);
 #endif
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
@@ -173,25 +180,24 @@ void BraveBrowserWindowFeatures::InitPostBrowserViewConstruction(
     screenshot_controller_ =
         GetUserDataFactory().CreateInstance<screenshot::ScreenshotController>(
             *browser_, browser_->GetUnownedUserDataHost(),
-            browser_view->GetProfile(),
+            browser_->GetProfile(),
             base::BindRepeating(
-                [](BrowserView* bv) -> gfx::NativeWindow {
-                  return bv->GetNativeWindow();
+                [](BrowserWindowInterface* browser) -> gfx::NativeWindow {
+                  return browser->GetWindow()->GetNativeWindow();
                 },
-                browser_view),
+                base::to_address(browser_)),
             base::BindRepeating(&screenshot::ShowScreenshotPreviewDialog),
             std::move(extractor));
   }
 #else
   screenshot_controller_ =
       GetUserDataFactory().CreateInstance<screenshot::ScreenshotController>(
-          *browser_, browser_->GetUnownedUserDataHost(),
-          browser_view->GetProfile(),
+          *browser_, browser_->GetUnownedUserDataHost(), browser_->GetProfile(),
           base::BindRepeating(
-              [](BrowserView* bv) -> gfx::NativeWindow {
-                return bv->GetNativeWindow();
+              [](BrowserWindowInterface* browser) -> gfx::NativeWindow {
+                return browser->GetWindow()->GetNativeWindow();
               },
-              browser_view),
+              base::to_address(browser_)),
           base::BindRepeating(&screenshot::ShowScreenshotPreviewDialog));
 #endif
 
@@ -216,6 +222,7 @@ void BraveBrowserWindowFeatures::InitPostBrowserViewConstruction(
 }
 
 void BraveBrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
+  tab_cycling_controller_.reset();
   screenshot_controller_.reset();
 #if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat_side_panel_tab_transfer_bridge_.reset();

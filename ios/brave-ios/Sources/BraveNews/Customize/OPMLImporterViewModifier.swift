@@ -97,14 +97,15 @@ struct OPMLImporterViewModifier: ViewModifier {
 
   private func importOPML(from url: URL) async {
     guard url.isFileURL,
-      let data = await AsyncFileManager.default.contents(atPath: url.path(percentEncoded: false))
+      url.startAccessingSecurityScopedResource()
     else {
       isPresented = false
       importError = .noFeedsFound
       return
     }
-    let opml = await OPMLParser.parse(data: data)
-    guard let opml = opml else {
+    let data = await AsyncFileManager.default.contents(atPath: url.path(percentEncoded: false))
+    url.stopAccessingSecurityScopedResource()
+    guard let data, let opml = await OPMLParser.parse(data: data) else {
       isPresented = false
       importError = .invalidData
       return

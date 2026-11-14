@@ -891,7 +891,10 @@ if (!is_android) {
     }
 
     if (use_aura) {
-      deps += [ "//ui/aura:test_support" ]
+      deps += [
+        "//brave/browser/ui/tabs/test:interactive_ui_tests",
+        "//ui/aura:test_support",
+      ]
     }
 
     if (use_ozone) {
@@ -1065,6 +1068,7 @@ test("brave_browser_tests") {
     "//brave/browser:brave_global_features",
     "//brave/browser:browser_process",
     "//brave/browser/autoplay:browser_tests",
+    "//brave/browser/background_fetch:browser_tests",
     "//brave/browser/brave_shields:brave_shields_impl",
     "//brave/browser/brave_shields:test_support",
     "//brave/browser/brave_stats:browser_tests",
@@ -1081,11 +1085,13 @@ test("brave_browser_tests") {
     "//brave/browser/net:browser_tests",
     "//brave/browser/new_tab:browser_tests",
     "//brave/browser/ntp_background",
+    "//brave/browser/perf",
     "//brave/browser/permissions:browser_tests",
     "//brave/browser/profiles:util",
     "//brave/browser/regional_capabilities:browser_tests",
     "//brave/browser/sandbox:browser_tests",
     "//brave/browser/script_injector:browser_tests",
+    "//brave/browser/search_engines",
     "//brave/browser/serp_metrics:browser_tests",
     "//brave/browser/skus/test:browser_tests",
     "//brave/browser/storage_access_api:browser_tests",
@@ -1373,7 +1379,11 @@ test("brave_browser_tests") {
       "//brave/components/brave_wallet/renderer",
       "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
       "//brave/ui/base/clipboard/test:test_support",
+      "//chrome/browser/hid",
       "//chrome/browser/ui/dialogs:browser_dialogs",
+      "//mojo/public/cpp/bindings",
+      "//services/device/public/cpp:test_support",
+      "//services/device/public/mojom",
     ]
     sources += [
       "//brave/browser/brave_wallet/brave_wallet_ethereum_chain_browsertest.cc",
@@ -1442,6 +1452,7 @@ test("brave_browser_tests") {
 
   if (enable_crash_dialog) {
     sources += [ "//brave/browser/ui/views/crash_report_permission_ask_dialog_browsertest.cc" ]
+    deps += [ "//brave/browser/metrics" ]
   }
 
   if (is_brave_origin_branded) {
@@ -1480,6 +1491,7 @@ test("brave_browser_tests") {
   if (is_win || is_linux) {
     sources += [ "//brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer_browsertest.cc" ]
     deps += [
+      "//brave/browser/renderer_context_menu",
       "//components/language/core/browser",
       "//components/spellcheck/common",
     ]
@@ -1519,6 +1531,7 @@ test("brave_browser_tests") {
       "//brave/browser/ui/views/toolbar/screenshot_preview_dialog_browsertest.cc",
     ]
     deps += [
+      "//brave/browser:brave_browser_features",
       "//brave/browser/onboarding:browser_tests",
       "//brave/browser/ui/darker_theme:browser_tests",
       "//brave/browser/ui/focus_mode",
@@ -1536,6 +1549,7 @@ test("brave_browser_tests") {
       "//brave/browser/ui/views/tabs:browser_tests",
       "//brave/browser/ui/views/toolbar:screenshot",
       "//brave/browser/ui/views/workspaces:browser_tests",
+      "//brave/browser/url_sanitizer",
       "//brave/components/containers/buildflags",
       "//brave/components/sidebar/browser",
       "//brave/test/views/snapshot",
@@ -1557,6 +1571,7 @@ test("brave_browser_tests") {
       sources += [ "//brave/browser/ui/views/brave_actions/brave_actions_container_browsertest.cc" ]
       deps += [
         "//brave/browser/brave_rewards:tab_helper",
+        "//brave/browser/ui/brave_rewards",
         "//brave/browser/ui/views/brave_actions",
       ]
     }
@@ -1568,7 +1583,9 @@ test("brave_browser_tests") {
     }
 
     if (enable_brave_vpn) {
-      sources += [ "//brave/browser/ui/views/toolbar/brave_vpn_panel_controller_browsertest.cc" ]
+      sources +=
+          [ "//brave/browser/ui/brave_vpn/brave_vpn_controller_browsertest.cc" ]
+      deps += [ "//brave/browser/ui/brave_vpn" ]
     }
 
     if (enable_containers) {
@@ -1657,7 +1674,10 @@ test("brave_browser_tests") {
   }
 
   if (enable_ai_chat) {
-    deps += [ "//brave/browser/ai_chat:browser_tests" ]
+    deps += [
+      "//brave/browser/ai_chat:browser_tests",
+      "//brave/browser/ui/side_panel/ai_chat",
+    ]
 
     # tab_search is desktop only
     if (!is_android) {
@@ -1954,6 +1974,7 @@ if (is_android) {
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.messages",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.native_page",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.ntp",
+      "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.omaha",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.omnibox",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.omnibox.geo",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.preferences.website",

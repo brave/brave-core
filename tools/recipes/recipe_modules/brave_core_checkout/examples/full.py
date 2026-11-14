@@ -40,20 +40,20 @@ class TEST_DEPS(RecipeTestApi):
 def RunSteps(api: DEPS):
     mode = api.env.get('MODE')
     if mode == 'dotenv':
-        api.brave_core_checkout.set_config('brave')
-        api.brave_core_checkout.apply_config('asan')
+        api.brave_core_checkout.set_config('deprecated_brave')
+        api.brave_core_checkout.apply_config('deprecated_asan')
         api.brave_core_checkout.ensure_checkout()
         return
     if mode == 'rbe':
         # Without the `use_remoteexec` property, RBE is opted into by item.
-        api.brave_core_checkout.set_config('brave')
+        api.brave_core_checkout.set_config('deprecated_brave')
         api.brave_core_checkout.apply_config('rbe')
         api.brave_core_checkout.ensure_checkout()
         return
     if mode == 'target_os':
-        api.brave_core_checkout.set_config('brave')
-        api.brave_core_checkout.apply_config('linux')
-        api.brave_core_checkout.apply_config('android')
+        api.brave_core_checkout.set_config('deprecated_brave')
+        api.brave_core_checkout.apply_config('deprecated_linux')
+        api.brave_core_checkout.apply_config('deprecated_android')
         api.brave_core_checkout.ensure_checkout()
         return
     if mode == 'ensure_checkout':

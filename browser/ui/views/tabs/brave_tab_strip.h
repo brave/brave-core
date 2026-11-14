@@ -10,7 +10,7 @@
 #include <optional>
 
 #include "base/gtest_prod_util.h"
-#include "base/memory/weak_ptr.h"
+#include "base/timer/timer.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/ui/tabs/tab_data.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -49,7 +49,8 @@ class BraveTabStrip : public TabStrip {
   void MaybeStartDrag(TabSlotView* source,
                       const ui::LocatedEvent& event,
                       ui::ListSelectionModel original_selection) override;
-  void AddedToWidget() override;
+  void ViewHierarchyChanged(
+      const views::ViewHierarchyChangedDetails& details) override;
   bool ShouldAlwaysHideCloseButton() const override;
   int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const override;
   const tabs::TreeTabNode* GetTreeTabNode(
@@ -105,6 +106,8 @@ class BraveTabStrip : public TabStrip {
       const Tab* tab) const;
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
+  // Updates the available-width callback and tab layout for the current tab
+  // strip orientation.
   void UpdateOrientation();
   bool ShouldShowVerticalTabs() const;
 
@@ -133,8 +136,7 @@ class BraveTabStrip : public TabStrip {
   BooleanPrefMember always_use_mini_accent_icon_;
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
   IntegerPrefMember tab_min_width_mode_;
-
-  base::WeakPtrFactory<BraveTabStrip> weak_factory_{this};
+  base::OneShotTimer orientation_update_timer_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_STRIP_H_

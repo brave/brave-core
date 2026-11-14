@@ -466,6 +466,7 @@ class BuildersRegistryTest(unittest.TestCase):
     def test_defaults_are_applied_and_overridable(self):
         self.builders.defaults.set(
             builder_group='brave.sanitizers',
+            recipe='brave_builder',
             execution_timeout_mins=270,
             channel='nightly',
             notifies=['browser-sanitizers-bot'],
@@ -482,6 +483,7 @@ class BuildersRegistryTest(unittest.TestCase):
             targets=self._targets(),
         )
         self.assertEqual(inherited.builder_group, 'brave.sanitizers')
+        self.assertEqual(inherited.recipe, 'brave_builder')
         self.assertEqual(inherited.execution_timeout_mins, 270)
         self.assertEqual(inherited.channel, 'nightly')
         self.assertEqual(inherited.notifies, ('browser-sanitizers-bot',))

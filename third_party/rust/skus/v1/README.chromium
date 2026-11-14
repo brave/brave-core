@@ -2,7 +2,7 @@ Name: skus
 URL: https://crates.io/crates/skus
 Version: 1.0.0
 License: MPL-2.0
-License File:
+License File: //brave/components/skus/browser/rs/lib/../../../../../common/licenses/MPL-2.0
 Shipped: yes
 Security Critical: yes
 

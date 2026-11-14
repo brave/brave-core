@@ -19,3 +19,15 @@ substitutions:
       replace: |-
         \1
             return brave::GetPanelContentsRoundedCorners(browser_view_);
+
+  - description: 'Reapply the border after a header view is added.'
+    after_function_impl:
+      function_name: SidePanel::AddHeaderView
+      code: |-
+        UpdateBorder();
+
+  - description: 'Reapply the border after the header view is removed.'
+    after_function_impl:
+      function_name: SidePanel::RemoveHeaderView
+      code: |-
+        UpdateBorder();

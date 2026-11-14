@@ -16,7 +16,7 @@ namespace brave_account::endpoints {
 using AuthLogout = endpoint_client::BraveEndpoint<
     "accounts.bsg",
     "/v2/auth/logout",
-    endpoint_client::Post<AuthLogoutRequestBody>,
+    endpoint_client::Post<>,
     endpoint_client::Response<AuthLogoutSuccessBody, AuthLogoutErrorBody>>;
 
 }  // namespace brave_account::endpoints

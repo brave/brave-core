@@ -26,5 +26,6 @@ static_library("tabs") {
     "//components/split_tabs",
     "//components/tab_groups",
     "//components/tabs:public",
+    "//third_party/abseil-cpp:absl",
   ]
 }

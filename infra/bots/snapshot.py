@@ -33,6 +33,67 @@ def _dump(data) -> str:
     return json.dumps(data, indent=2, sort_keys=True) + '\n'
 
 
+def _builder_id(builder) -> dict:
+    """A builder's ID, as upstream's `builder_config.star` writes one, less
+    the buildbucket project and bucket we have no equivalent of."""
+    return {'builder': builder.name}
+
+
+def _entry(builder) -> dict:
+    """A builder's entry in the builder database."""
+    chromium_config = builder.builder_spec.chromium_config
+    gclient_config = builder.builder_spec.gclient_config
+    fields = (
+        ('build_config', chromium_config.build_config),
+        ('host_platform', chromium_config.host_platform),
+        ('target_arch', chromium_config.target_arch),
+        ('target_bits', chromium_config.target_bits),
+        ('target_platform', chromium_config.target_platform),
+    )
+    return {
+        'builder_id': _builder_id(builder),
+        'builder_spec': {
+            'builder_group': builder.builder_group,
+            'chromium_config': {k: v for k, v in fields if v is not None},
+            'gclient_config': {
+                'target_os': list(gclient_config.target_os),
+                'target_cpu': list(gclient_config.target_cpu),
+            },
+        },
+    }
+
+
+def _properties(builder) -> dict:
+    """A builder's `properties.json`: the input properties of its builds.
+
+    With builder's config under the `$brave_tests_builder_config` recipe
+    module's properties, so that consumers learn what it builds and syncs for
+    from here, never from its GN args.
+
+    Raises:
+        ConfigError: the builder has no group.
+    """
+    from lib.config import ConfigError
+
+    if not builder.builder_group:
+        raise ConfigError(
+            'builder %r: builder_group must be set to use '
+            'brave_tests_builder_config' % builder.name
+        )
+    properties = {
+        '$brave_tests_builder_config': {
+            'builder_config': {
+                'builder_db': {'entries': [_entry(builder)]},
+                'builder_ids': [_builder_id(builder)],
+            },
+        },
+        'builder_group': builder.builder_group,
+    }
+    if builder.recipe:
+        properties['recipe'] = builder.recipe
+    return properties
+
+
 def compute_fresh_output(builders_registry, gn_args_registry) -> dict[str, str]:
     """Returns `{relative_path: content}` for every registered builder.
 
@@ -46,6 +107,7 @@ def compute_fresh_output(builders_registry, gn_args_registry) -> dict[str, str]:
         resolved = gn_args_registry.resolve(builder.name)
         check_builder_spec(builder, resolved['gn_args'])
         output[f'{builder.name}/gn-args.json'] = _dump(resolved)
+        output[f'{builder.name}/properties.json'] = _dump(_properties(builder))
         gclient_config = builder.builder_spec.gclient_config
         output[f'{builder.name}/sync.json'] = _dump(
             {

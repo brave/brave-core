@@ -11,6 +11,7 @@
 #include "base/functional/bind.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/toolbars_small_icons.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -129,8 +130,8 @@ BraveSidePanelHeaderController::CreateCloseButton() {
 }
 
 int BraveSidePanelHeaderController::GetTopRadius() const {
-  if (!browser_window_->GetProfile()->GetPrefs()->GetBoolean(
-          kWebViewRoundedCorners)) {
+  if (!BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
+          base::to_address(browser_window_))) {
     return 0;
   }
   return views::LayoutProvider::Get()->GetCornerRadiusMetric(

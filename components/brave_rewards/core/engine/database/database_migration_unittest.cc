@@ -122,6 +122,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_4_ActivityInfo) {
     list.push_back(std::move(info));
   }
 
+  ASSERT_EQ(list.size(), 2u);
   EXPECT_EQ(list.at(0)->id, "slo-tech.com");
   EXPECT_EQ(list.at(0)->visits, 5u);
   EXPECT_EQ(list.at(1)->id, "brave.com");
@@ -146,6 +147,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_5_ActivityInfo) {
     list.push_back(std::move(info));
   }
 
+  ASSERT_EQ(list.size(), 3u);
   EXPECT_EQ(list.at(0)->id, "brave.com");
   EXPECT_EQ(list.at(0)->visits, 1u);
   EXPECT_EQ(list.at(1)->id, "slo-tech.com");
@@ -179,6 +181,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_6_ActivityInfo) {
     list.push_back(std::move(info));
   }
 
+  ASSERT_EQ(list.size(), 3u);
   EXPECT_EQ(list.at(0)->id, "basicattentiontoken.org");
   EXPECT_EQ(list.at(0)->duration, 31u);
   EXPECT_EQ(list.at(0)->visits, 1u);
@@ -283,16 +286,16 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_12_ContributionInfo) {
       FROM pending_contribution
   )sql"));
 
-  EXPECT_TRUE(info_sql.Step());
+  ASSERT_TRUE(info_sql.Step());
   EXPECT_EQ(info_sql.ColumnInt64(0), 1);
   EXPECT_EQ(info_sql.ColumnString(1), "reddit.com");
-  EXPECT_TRUE(info_sql.Step());
+  ASSERT_TRUE(info_sql.Step());
   EXPECT_EQ(info_sql.ColumnInt64(0), 4);
   EXPECT_EQ(info_sql.ColumnString(1), "reddit.com");
-  EXPECT_TRUE(info_sql.Step());
+  ASSERT_TRUE(info_sql.Step());
   EXPECT_EQ(info_sql.ColumnInt64(0), 2);
   EXPECT_EQ(info_sql.ColumnString(1), "slo-tech.com");
-  EXPECT_TRUE(info_sql.Step());
+  ASSERT_TRUE(info_sql.Step());
   EXPECT_EQ(info_sql.ColumnInt64(0), 3);
   EXPECT_EQ(info_sql.ColumnString(1), "slo-tech.com");
   EXPECT_FALSE(info_sql.Step());
@@ -324,6 +327,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_14_UnblindedToken) {
     list.push_back(std::move(info));
   }
 
+  ASSERT_EQ(list.size(), 5u);
   EXPECT_EQ(list.at(0)->value, 0.25);
   EXPECT_EQ(list.at(1)->value, 0.25);
   EXPECT_EQ(list.at(2)->value, 0.25);
@@ -356,6 +360,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_16_ContributionInfo) {
     list.push_back(sql.ColumnInt64(0));
   }
 
+  ASSERT_EQ(list.size(), 5u);
   EXPECT_EQ(list.at(0), 1570614352);
   EXPECT_EQ(list.at(1), 1574671265);
   EXPECT_EQ(list.at(2), 1574671276);
@@ -383,6 +388,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_18_Promotion) {
     status.push_back(sql.ColumnInt(2));
   }
 
+  ASSERT_EQ(promotion_id.size(), 2u);
   EXPECT_EQ(promotion_id.at(0), "36baa4c3-f92d-4121-b6d9-db44cb273a02");
   EXPECT_EQ(claim_id.at(0), "402afe8d-a643-4b8c-aa1e-596e3bcc6c8a");
   EXPECT_EQ(status.at(0), 1);
@@ -492,7 +498,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_21_ContributionInfoPublishers) {
     list.push_back(std::move(contribution_publisher));
   }
 
-  EXPECT_EQ(static_cast<int>(list.size()), 4);
+  ASSERT_EQ(static_cast<int>(list.size()), 4);
 
   EXPECT_EQ(list.at(0)->contribution_id, "1");
   EXPECT_EQ(list.at(0)->publisher_key, "publisher.com");
@@ -652,6 +658,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_26_UnblindedTokens) {
       "i7HGQi0ZYoW5GnYz9WocOB3L8MXtsM91IzdYPIPXnAzgMh"};
 
   EXPECT_EQ(expected_values, actual_values);
+  ASSERT_TRUE(token);
   EXPECT_EQ(token->id, 1ul);
   EXPECT_EQ(token->token_value,
             "CAuK3b4QJFJFt7+3YRcQsVJyyxkXHxb/+iFOVMIlcmbwqPkgp/"
@@ -789,7 +796,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_36) {
   sql::Statement sql(GetDB()->GetUniqueStatement(R"sql(
       SELECT status FROM server_publisher_info
   )sql"));
-  EXPECT_TRUE(sql.Step());
+  ASSERT_TRUE(sql.Step());
   EXPECT_EQ(sql.ColumnInt64(0), 0);
 }
 
@@ -844,7 +851,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_42) {
   sql::Statement sql(GetDB()->GetUniqueStatement(R"sql(
       SELECT background, logo FROM server_publisher_banner
   )sql"));
-  EXPECT_TRUE(sql.Step());
+  ASSERT_TRUE(sql.Step());
   EXPECT_EQ(sql.ColumnString(0), "background-url");
   EXPECT_EQ(sql.ColumnString(1), "logo-url");
 }

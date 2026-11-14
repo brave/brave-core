@@ -33,8 +33,32 @@ def list_generated_builders() -> list[str]:
     )
 
 
+def _builder_spec_problems(builder_spec: dict) -> list[str]:
+    """What a builder's spec lacks of what its consumers read."""
+    problems = []
+    chromium_config = builder_spec.get('chromium_config')
+    if not isinstance(chromium_config, dict) or not isinstance(
+        chromium_config.get('target_platform'), str
+    ):
+        problems.append('"builder_spec.chromium_config" has no target_platform')
+    gclient_config = builder_spec.get('gclient_config')
+    if not isinstance(gclient_config, dict):
+        problems.append('"builder_spec.gclient_config" is not an object')
+        return problems
+    for field in ('target_os', 'target_cpu'):
+        value = gclient_config.get(field)
+        if not isinstance(value, list) or not all(
+            isinstance(name, str) for name in value
+        ):
+            problems.append(
+                '"builder_spec.gclient_config.%s" is not a list of strings'
+                % field
+            )
+    return problems
+
+
 class OutputGenerator:
-    """Resolves and renders one builder's generated `gn-args.json`.
+    """Reads one builder's generated output, and renders its `gn-args.json`.
 
     This class produces the rendered `args.gn` that is used by `bots gen` and
     `bots lookup`.
@@ -65,6 +89,51 @@ class OutputGenerator:
                 % (self.builder_name, gen_paths.BUILDERS_OUTPUT_DIR, hint)
             )
         return json.loads(path.read_bytes().decode('utf-8'))
+
+    def read_generated_builder_spec(self) -> dict:
+        """Reads this builder's spec from its generated `properties.json`.
+
+        Raises:
+            BotsError: this builder has no readable `properties.json`, the
+                builder config in it is not this builder's, or the spec does
+                not carry what consumers read.
+        """
+        path = (
+            gen_paths.BUILDERS_OUTPUT_DIR
+            / self.builder_name
+            / 'properties.json'
+        )
+        try:
+            properties = json.loads(path.read_bytes().decode('utf-8'))
+        except (OSError, ValueError) as e:
+            raise BotsError('%s: %s' % (path, e)) from e
+        builder_config = (
+            properties.get('$brave_tests_builder_config', {}).get(
+                'builder_config', {}
+            )
+            if isinstance(properties, dict)
+            else {}
+        )
+        builder_id = {'builder': self.builder_name}
+        if builder_id not in builder_config.get('builder_ids', ()):
+            raise BotsError(
+                '%s: "builder_ids" does not have %r' % (path, self.builder_name)
+            )
+        for entry in builder_config.get('builder_db', {}).get('entries', ()):
+            if entry.get('builder_id') == builder_id and isinstance(
+                entry.get('builder_spec'), dict
+            ):
+                builder_spec = entry['builder_spec']
+                break
+        else:
+            raise BotsError(
+                '%s: "builder_db" has no spec for %r'
+                % (path, self.builder_name)
+            )
+        problems = _builder_spec_problems(builder_spec)
+        if problems:
+            raise BotsError('%s: %s' % (path, '; '.join(problems)))
+        return builder_spec
 
     def secrets_import_path(self) -> str:
         """The `//`-prefixed GN label `render_args_gn()` imports secrets from."""

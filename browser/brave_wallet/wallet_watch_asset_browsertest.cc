@@ -8,6 +8,7 @@
 
 #include "base/command_line.h"
 #include "base/test/bind.h"
+#include "base/test/test_future.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
@@ -134,21 +135,12 @@ class WalletWatchAssetBrowserTest : public InProcessBrowserTest {
   }
 
   std::vector<mojom::BlockchainTokenPtr> GetUserAssets() {
-    base::RunLoop run_loop;
-    std::vector<mojom::BlockchainTokenPtr> tokens_out;
+    base::test::TestFuture<std::vector<mojom::BlockchainTokenPtr>> future;
     brave_wallet_service()->GetUserAssets(
         brave_wallet_service()->network_manager()->GetCurrentChainId(
             mojom::CoinType::ETH, std::nullopt),
-        mojom::CoinType::ETH,
-        base::BindLambdaForTesting(
-            [&](std::vector<mojom::BlockchainTokenPtr> tokens) {
-              for (const auto& token : tokens) {
-                tokens_out.push_back(token.Clone());
-              }
-              run_loop.Quit();
-            }));
-    run_loop.Run();
-    return tokens_out;
+        mojom::CoinType::ETH, future.GetCallback());
+    return future.Take();
   }
 
  protected:
@@ -175,17 +167,19 @@ IN_PROC_BROWSER_TEST_F(WalletWatchAssetBrowserTest, UserApprovedRequest) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   size_t asset_num = GetUserAssets().size();
+  auto* tab_helper = brave_wallet::BraveWalletTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents()));
   for (size_t i = 0; i < methods_.size(); i++) {
+    base::test::TestFuture<void> shown;
+    tab_helper->SetShowBubbleCallbackForTesting(shown.GetCallback());
     ASSERT_TRUE(
         ExecJs(web_contents(),
                content::JsReplace("wallet_watchAsset($1, 'ERC20', $2, $3, $4)",
                                   methods_[i], addresses_[i], symbols_[i],
                                   decimals_[i]),
                content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
-    base::RunLoop().RunUntilIdle();
-    EXPECT_TRUE(brave_wallet::BraveWalletTabHelper::From(
-                    tabs::TabInterface::MaybeGetFromContents(web_contents()))
-                    ->IsShowingBubble());
+    ASSERT_TRUE(shown.Wait());
+    EXPECT_TRUE(tab_helper->IsShowingBubble());
     brave_wallet_service()->NotifyAddSuggestTokenRequestsProcessed(
         true, {addresses_[i]});
   }
@@ -199,17 +193,19 @@ IN_PROC_BROWSER_TEST_F(WalletWatchAssetBrowserTest, UserRejectedRequest) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   size_t asset_num = GetUserAssets().size();
+  auto* tab_helper = brave_wallet::BraveWalletTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents()));
   for (size_t i = 0; i < methods_.size(); i++) {
+    base::test::TestFuture<void> shown;
+    tab_helper->SetShowBubbleCallbackForTesting(shown.GetCallback());
     ASSERT_TRUE(
         ExecJs(web_contents(),
                content::JsReplace("wallet_watchAsset($1, 'ERC20', $2, $3, $4)",
                                   methods_[i], addresses_[i], symbols_[i],
                                   decimals_[i]),
                content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
-    base::RunLoop().RunUntilIdle();
-    EXPECT_TRUE(brave_wallet::BraveWalletTabHelper::From(
-                    tabs::TabInterface::MaybeGetFromContents(web_contents()))
-                    ->IsShowingBubble());
+    ASSERT_TRUE(shown.Wait());
+    EXPECT_TRUE(tab_helper->IsShowingBubble());
     brave_wallet_service()->NotifyAddSuggestTokenRequestsProcessed(
         false, {addresses_[i]});
   }

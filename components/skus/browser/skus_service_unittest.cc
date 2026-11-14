@@ -3,13 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <optional>
 #include <string>
+#include <utility>
 
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/skus_service_impl.h"
@@ -215,11 +217,13 @@ std::string GenerateTestingCreds(const std::string& domain) {
   return json;
 }
 
-base::Value GetExpectedCreds(const std::string& json,
-                             const std::string& order_id) {
+std::optional<base::Value> GetExpectedCreds(const std::string& json,
+                                            const std::string& order_id) {
   auto value = base::test::ParseJsonDict(json);
   const auto* order_value = value.FindByDottedPath("orders." + order_id);
-  EXPECT_TRUE(order_value);
+  if (!order_value) {
+    return std::nullopt;
+  }
   return order_value->Clone();
 }
 }  // namespace
@@ -242,18 +246,13 @@ class SkusServiceTestUnitTest : public testing::Test {
         prefs(), url_loader_factory_.GetSafeWeakWrapper());
   }
 
-  std::string GetCredentialsSummary(const std::string& domain) {
-    skus::mojom::SkusResultPtr result;
-    bool callback_called = false;
-    skus_service_->CredentialSummary(
-        domain,
-        base::BindLambdaForTesting([&](skus::mojom::SkusResultPtr summary) {
-          callback_called = true;
-          result = std::move(summary);
-        }));
-    task_environment_.RunUntilIdle();
-    EXPECT_TRUE(callback_called);
-    return result->message;
+  // Use with ASSERT_NO_FATAL_FAILURE.
+  void GetCredentialsSummary(const std::string& domain, std::string* message) {
+    base::test::TestFuture<skus::mojom::SkusResultPtr> future;
+    skus_service_->CredentialSummary(domain, future.GetCallback());
+    skus::mojom::SkusResultPtr result = future.Take();
+    ASSERT_TRUE(result);
+    *message = std::move(result->message);
   }
 
   void Interceptor(const network::ResourceRequest& request) {
@@ -278,13 +277,16 @@ TEST_F(SkusServiceTestUnitTest, CredentialSummarySuccess) {
   auto testing_payload = GenerateTestingCreds(domain);
   state.Set("skus:" + env, testing_payload);
   prefs()->SetDict(skus::prefs::kSkusState, std::move(state));
-  auto credentials = GetCredentialsSummary(domain);
+  std::string credentials;
+  ASSERT_NO_FATAL_FAILURE(GetCredentialsSummary(domain, &credentials));
   EXPECT_FALSE(credentials.empty());
   auto credentials_json = base::test::ParseJsonDict(credentials);
   auto* order = credentials_json.Find("order");
-  EXPECT_TRUE(order);
-  EXPECT_EQ(*order, GetExpectedCreds(testing_payload,
-                                     "ed5a53c1-9555-4b9c-81df-485521ab8161"));
+  ASSERT_TRUE(order);
+  auto expected =
+      GetExpectedCreds(testing_payload, "ed5a53c1-9555-4b9c-81df-485521ab8161");
+  ASSERT_TRUE(expected);
+  EXPECT_EQ(*order, *expected);
 }
 
 TEST_F(SkusServiceTestUnitTest, CredentialSummaryFailed) {
@@ -294,7 +296,7 @@ TEST_F(SkusServiceTestUnitTest, CredentialSummaryFailed) {
   auto testing_payload = GenerateTestingCreds(domain);
   auto payload_value = base::test::ParseJsonDict(testing_payload);
   auto* orders = payload_value.FindDict("orders");
-  EXPECT_TRUE(orders);
+  ASSERT_TRUE(orders);
   // Remove unexpired creds
   orders->Remove("ed5a53c1-9555-4b9c-81df-485521ab8161");
   std::string json;
@@ -304,7 +306,8 @@ TEST_F(SkusServiceTestUnitTest, CredentialSummaryFailed) {
   state.Set("skus:" + env, json);
 
   prefs()->SetDict(skus::prefs::kSkusState, std::move(state));
-  auto credentials = GetCredentialsSummary(domain);
+  std::string credentials;
+  ASSERT_NO_FATAL_FAILURE(GetCredentialsSummary(domain, &credentials));
   EXPECT_EQ(credentials, "{}");
 }
 
@@ -313,6 +316,8 @@ TEST_F(SkusServiceTestUnitTest, CredentialSummaryWrongEnv) {
   auto testing_payload = GenerateTestingCreds("vpn.brave.software");
   state.Set("skus:staging", testing_payload);
   prefs()->SetDict(skus::prefs::kSkusState, std::move(state));
-  auto credentials = GetCredentialsSummary("vpn.brave.software");
+  std::string credentials;
+  ASSERT_NO_FATAL_FAILURE(
+      GetCredentialsSummary("vpn.brave.software", &credentials));
   EXPECT_EQ(credentials, "{}");
 }

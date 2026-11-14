@@ -122,7 +122,7 @@ IN_PROC_BROWSER_TEST_P(BraveRewardsPolicyTest, RewardsPagesAccess) {
        {GURL("chrome://rewards"), GURL("chrome://rewards-internals")}) {
     SCOPED_TRACE(testing::Message() << "url=" << url);
     auto* rfh = ui_test_utils::NavigateToURL(browser(), url);
-    EXPECT_TRUE(rfh);
+    ASSERT_TRUE(rfh);
     EXPECT_EQ(IsBraveRewardsDisabledTest(), rfh->IsErrorDocument());
   }
 }
@@ -133,7 +133,7 @@ IN_PROC_BROWSER_TEST_P(BraveRewardsPolicyTest, RewardsPagesAccess) {
 IN_PROC_BROWSER_TEST_P(BraveRewardsPolicyTest, AdsInternalsPageAccess) {
   auto* rfh =
       ui_test_utils::NavigateToURL(browser(), GURL("chrome://ads-internals"));
-  EXPECT_TRUE(rfh);
+  ASSERT_TRUE(rfh);
   EXPECT_EQ(IsBraveRewardsDisabledTest(), rfh->IsErrorDocument());
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)

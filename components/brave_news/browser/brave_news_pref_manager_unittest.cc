@@ -128,7 +128,7 @@ TEST_F(BraveNewsPrefManagerTest, DirectFeedCanBeInspectedAndRemoved) {
       pref_manager_->AddDirectPublisher(GURL("https://example.com"), "Example");
 
   auto parsed = pref_manager_->GetSubscriptions().direct_feeds();
-  EXPECT_EQ(parsed.size(), 1u);
+  ASSERT_EQ(parsed.size(), 1u);
   EXPECT_EQ(id, parsed[0].id);
   EXPECT_EQ("Example", parsed[0].title);
   EXPECT_EQ(GURL("https://example.com"), parsed[0].url);
@@ -191,7 +191,7 @@ TEST_F(BraveNewsPrefManagerTest, SubscribedChannelLocalesIncluded) {
   pref_manager_->SetChannelSubscribed("en_US", "Test", true);
 
   auto locales = pref_manager_->GetSubscriptions().GetChannelLocales();
-  EXPECT_EQ(1u, locales.size());
+  ASSERT_EQ(1u, locales.size());
   EXPECT_EQ("en_US", locales[0]);
 
   pref_manager_->SetChannelSubscribed("en_US", "Foo", true);
@@ -200,7 +200,7 @@ TEST_F(BraveNewsPrefManagerTest, SubscribedChannelLocalesIncluded) {
 
   pref_manager_->SetChannelSubscribed("ja_JA", "Foo", true);
   locales = pref_manager_->GetSubscriptions().GetChannelLocales();
-  EXPECT_EQ(2u, locales.size());
+  ASSERT_EQ(2u, locales.size());
   EXPECT_EQ("en_US", locales[0]);
   EXPECT_EQ("ja_JA", locales[1]);
 }
@@ -209,7 +209,7 @@ TEST_F(BraveNewsPrefManagerTest, LocaleWithNoSubscribedChannelsIsNotIncluded) {
   pref_manager_->SetChannelSubscribed("en_US", "Test", true);
 
   auto locales = pref_manager_->GetSubscriptions().GetChannelLocales();
-  EXPECT_EQ(1u, locales.size());
+  ASSERT_EQ(1u, locales.size());
   EXPECT_EQ("en_US", locales[0]);
 
   pref_manager_->SetChannelSubscribed("en_US", "Test", false);

@@ -8,6 +8,8 @@
 #include <optional>
 
 #include "base/check.h"
+#include "base/i18n/rtl.h"
+#include "base/i18n/test/scoped_rtl_for_testing.h"
 #include "base/location.h"
 #include "base/run_loop.h"
 #include "base/task/sequenced_task_runner.h"
@@ -441,6 +443,73 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest, WebPanelResizeThenShrinkHost) {
   multi_contents_view->SetSize(gfx::Size(kShrunkHostWidth, kHostHeight));
   EXPECT_LT(multi_contents_view->web_panel_width_for_testing(),
             displayed_before_drag);
+}
+
+// The alignment pref names the visual side, but the panel is laid out in stored
+// coordinates, which Views mirrors on paint. Both the placement and the resize
+// direction have to be flipped in RTL for the panel to stay on the side the
+// user chose. Companion to SidebarBrowserTest.SidebarLayoutInRTLTest.
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest, WebPanelPositionInRTLTest) {
+  base::i18n::ScopedRTLForTesting scoped_rtl(/*rtl=*/true);
+
+  OpenWebPanel(GURL(kTestWebPanelURL));
+
+  auto* multi_contents_view = GetBraveMultiContentsView();
+  ASSERT_TRUE(multi_contents_view->IsWebPanelVisible());
+  auto* panel_contents_view =
+      multi_contents_view->GetWebPanelContentsViewForTesting();
+  ASSERT_TRUE(panel_contents_view);
+  auto* resize_area = multi_contents_view->web_panel_resize_area_for_testing();
+  ASSERT_TRUE(resize_area);
+  auto* contents_container =
+      multi_contents_view->GetActiveContentsContainerView();
+  ASSERT_NE(contents_container->contents_view(), panel_contents_view);
+
+  const int default_panel_width =
+      multi_contents_view->web_panel_width_for_testing();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
+
+  for (const bool right_aligned : {false, true}) {
+    SCOPED_TRACE(right_aligned ? "right aligned" : "left aligned");
+    prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, right_aligned);
+    multi_contents_view->SetWebPanelWidth(default_panel_width);
+    RunScheduledLayouts();
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      return resize_area->GetVisible() && resize_area->width() > 0;
+    }));
+    ASSERT_EQ(right_aligned, !IsSidebarUIOnLeft());
+
+    // Screen coordinates are visual, so these hold in both directions.
+    const auto panel_bounds = panel_contents_view->GetBoundsInScreen();
+    const auto contents_bounds = contents_container->GetBoundsInScreen();
+    ASSERT_FALSE(panel_bounds.IsEmpty());
+    if (IsSidebarUIOnLeft()) {
+      EXPECT_LE(panel_bounds.right(), contents_bounds.x());
+    } else {
+      EXPECT_LE(contents_bounds.right(), panel_bounds.x());
+    }
+
+    // The resize area has to stay between the panel and the contents.
+    const bool leading =
+        resize_area->bounds().x() < contents_container->bounds().x();
+    if (leading) {
+      EXPECT_EQ(resize_area->bounds().right(),
+                contents_container->bounds().x());
+    } else {
+      EXPECT_EQ(resize_area->bounds().x(),
+                contents_container->bounds().right());
+    }
+
+    // Dragging away from the edge the panel is docked to widens it.
+    const int widen = leading ? 50 : -50;
+    multi_contents_view->OnWebPanelResize(widen, /*done_resizing=*/true);
+    const int widened_width =
+        multi_contents_view->web_panel_width_for_testing();
+    EXPECT_GT(widened_width, default_panel_width);
+    multi_contents_view->OnWebPanelResize(-widen, /*done_resizing=*/true);
+    EXPECT_LT(multi_contents_view->web_panel_width_for_testing(),
+              widened_width);
+  }
 }
 
 // A web panel item is the active sidebar item while its panel is open, and

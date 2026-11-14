@@ -27,16 +27,18 @@ TEST_F(MostVisitedSitesTest,
   most_visited_sites_->AddMostVisitedURLsObserver(&mock_observer_,
                                                   /*max_num_sites=*/3);
   VerifyAndClearExpectations();
-  CHECK(top_sites_callbacks_.empty());
+  EXPECT_TRUE(top_sites_callbacks_.empty());
 
   // Update by TopSites is propagated.
   EXPECT_CALL(*mock_top_sites_, GetMostVisitedURLs(_))
       .WillOnce(base::test::RunOnceCallback<0>(
           MostVisitedURLList{MakeMostVisitedURL(u"Site 2", "http://site2/")}));
-  EXPECT_CALL(mock_observer_, OnURLsAvailable(_, _));
+  base::RunLoop run_loop;
+  EXPECT_CALL(mock_observer_, OnURLsAvailable(_, _))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   mock_top_sites_->NotifyTopSitesChanged(
       history::TopSitesObserver::ChangeReason::MOST_VISITED);
-  base::RunLoop().RunUntilIdle();
+  run_loop.Run();
 }
 
 TEST_F(MostVisitedSitesTest,
@@ -51,12 +53,14 @@ TEST_F(MostVisitedSitesTest,
               MakeMostVisitedURL(u"Google", "http://www.google.com/")}));
   EXPECT_CALL(*mock_top_sites_, SyncWithHistory());
   std::map<SectionType, NTPTilesVector> sections;
+  base::RunLoop run_loop;
   EXPECT_CALL(mock_observer_, OnURLsAvailable(_, _))
-      .WillOnce(SaveArg<1>(&sections));
+      .WillOnce(DoAll(SaveArg<1>(&sections),
+                      base::test::RunOnceClosure(run_loop.QuitClosure())));
 
   most_visited_sites_->AddMostVisitedURLsObserver(&mock_observer_,
                                                   /*max_num_sites=*/6);
-  base::RunLoop().RunUntilIdle();
+  run_loop.Run();
   ASSERT_THAT(sections, Contains(Key(SectionType::PERSONALIZED)));
   EXPECT_THAT(sections.at(SectionType::PERSONALIZED),
               Contains(MatchesTile(u"Google", "http://www.google.com/",

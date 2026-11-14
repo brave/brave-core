@@ -1,8 +1,16 @@
 diff --git a/components/browsing_data/core/browsing_data_utils.h b/components/browsing_data/core/browsing_data_utils.h
-index 43b2630229faad14a4216b991961c9ad24b6abd5..4f2a3e4fc5e012dc1e51f0742438868e2462c797 100644
+index 43b2630229faad14a4216b991961c9ad24b6abd5..61a24139158570afbe8a6e51a8ff7b5eeda08d3b 100644
 --- a/components/browsing_data/core/browsing_data_utils.h
 +++ b/components/browsing_data/core/browsing_data_utils.h
-@@ -40,7 +40,12 @@ enum class BrowsingDataType {
+@@ -9,6 +9,7 @@
+ #include <string>
+ 
+ #include "base/time/time.h"
++#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+ #include "build/build_config.h"
+ #include "components/browsing_data/core/counters/browsing_data_counter.h"
+ #include "net/cookies/cookie_constants.h"
+@@ -40,7 +41,12 @@ enum class BrowsingDataType {
    TABS = 8,
    // Only for Desktop:
    SKILLS = 9,

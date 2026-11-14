@@ -2721,40 +2721,6 @@ std::optional<std::string> KeyringService::RecoverAddressByDefaultKeyring(
   return EthereumKeyring::RecoverAddress(message, eth_signature);
 }
 
-bool KeyringService::GetPublicKeyFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
-    const mojom::AccountIdPtr& account_id,
-    std::string* key) {
-  CHECK(account_id);
-  CHECK(key);
-  auto* keyring = GetKeyring<EthereumKeyring>(account_id);
-  if (!keyring) {
-    return false;
-  }
-  auto addr = EthAddress::From0xHex(account_id->address);
-  if (!addr) {
-    return false;
-  }
-  return keyring->GetPublicKeyFromX25519_XSalsa20_Poly1305(
-      addr->ToChecksumAddress(), key);
-}
-
-std::optional<std::vector<uint8_t>>
-KeyringService::DecryptCipherFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
-    const mojom::AccountIdPtr& account_id,
-    const std::string& version,
-    base::span<const uint8_t> nonce,
-    base::span<const uint8_t> ephemeral_public_key,
-    base::span<const uint8_t> ciphertext) {
-  CHECK(account_id);
-  auto* keyring = GetKeyring<EthereumKeyring>(account_id);
-  if (!keyring) {
-    return std::nullopt;
-  }
-
-  return keyring->DecryptCipherFromX25519_XSalsa20_Poly1305(
-      version, nonce, ephemeral_public_key, ciphertext, account_id->address);
-}
-
 std::vector<uint8_t> KeyringService::SignMessageBySolanaKeyring(
     const mojom::AccountIdPtr& account_id,
     base::span<const uint8_t> message) {

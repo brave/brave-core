@@ -16,7 +16,7 @@ namespace brave_account::endpoints {
 using VerifyDelete = endpoint_client::BraveEndpoint<
     "accounts.bsg",
     "/v2/verify",
-    endpoint_client::Delete<VerifyDeleteRequestBody>,
+    endpoint_client::Delete<>,
     endpoint_client::Response<VerifyDeleteSuccessBody, VerifyDeleteErrorBody>>;
 
 }  // namespace brave_account::endpoints

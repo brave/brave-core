@@ -3,12 +3,41 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+source_set("url_sanitizer") {
+  sources = [
+    "url_sanitizer_service_factory.cc",
+    "url_sanitizer_service_factory.h",
+  ]
+
+  public_deps = [ "//components/keyed_service/content" ]
+
+  deps = [
+    "//base",
+    "//brave/browser:browser_process",
+    "//brave/components/url_sanitizer/core/browser",
+    "//chrome/browser/profiles",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/core",
+  ]
+
+  if (is_android) {
+    sources += [ "android/url_sanitizer_service_factory_android.cc" ]
+
+    deps += [
+      "//brave/browser/url_sanitizer/android:jni_headers",
+      "//mojo/public/cpp/bindings",
+    ]
+  }
+}
+
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [ "url_sanitizer_browsertest.cc" ]
   deps = [
+    ":url_sanitizer",
+    "//brave/browser:brave_browser_features",
     "//brave/components/url_sanitizer/core/browser",
     "//chrome/browser",
     "//chrome/browser/profiles:profile",

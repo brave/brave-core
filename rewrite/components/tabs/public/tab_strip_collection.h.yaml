@@ -71,6 +71,17 @@ substitutions:
       class_name: TabStripCollection
       method_name: InsertTabCollectionAt
 
+  - description: |-
+      Let BraveTabStripCollection override collection removal.
+
+      TabStripModel removes groups and splits through this when detaching
+      them, e.g. for dragging them to another window. With tree tabs, the
+      collection can be wrapped by a tree tab node collection, which observers
+      shouldn't see.
+    make_virtual:
+      class_name: TabStripCollection
+      method_name: RemoveTabCollection
+
   - description: 'Let BraveTabStripCollection override split creation.'
     make_virtual:
       class_name: TabStripCollection
@@ -105,3 +116,14 @@ substitutions:
     make_virtual:
       class_name: TabStripCollection
       method_name: RemoveCollectionMapping
+
+  - description: |-
+      Forward declare the types the substitutions above use
+    add_after_includes:
+      code: |-
+        namespace tree_tab {
+        class TreeTabNodeId;
+        }  // namespace tree_tab
+        namespace tabs {
+        class TreeTabNodeTabCollection;
+        }  // namespace tabs

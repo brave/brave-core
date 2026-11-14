@@ -17,15 +17,7 @@
 #include "ui/views/border.h"
 #include "ui/views/painter.h"
 
-// Rename upstream methods so we can provide thin wrappers that reapply
-// rounded-corner and border state.
-#define AddHeaderView AddHeaderView_ChromiumImpl
-#define RemoveHeaderView RemoveHeaderView_ChromiumImpl
-
 #include <chrome/browser/ui/views/side_panel/side_panel.cc>
-
-#undef RemoveHeaderView
-#undef AddHeaderView
 
 namespace {
 
@@ -137,28 +129,6 @@ class SidePanelOutlineBorder : public views::Border {
 
 }  // namespace
 
-void SidePanel::SetResizeArea(std::unique_ptr<views::View> resize_area) {
-  CHECK(resize_area);
-  auto old_resize_area = RemoveChildViewT(resize_area_);
-  // Add at the end so the resize area is above content_parent_view_ in
-  // z-order. The strip always overlaps the content edge and must win the
-  // hit-test to receive drag events.
-  resize_area_ = AddChildView(std::move(resize_area));
-  resize_area_->InsertBeforeInFocusList(content_parent_view_);
-}
-
-void SidePanel::SetRoundedBorderEnabled(bool enabled) {
-  if (rounded_border_enabled_ == enabled) {
-    return;
-  }
-
-  rounded_border_enabled_ = enabled;
-
-  if (GetVisible()) {
-    UpdateBorder();
-  }
-}
-
 void SidePanel::UpdateBorder() {
   // To make sure |horizontal_alignemnt_| refreshed before using
   // IsRightAligned().
@@ -167,78 +137,43 @@ void SidePanel::UpdateBorder() {
   // Re-apply corners to existing content: the pref or header state changed.
   UpdateContentWrapperChildCorners(GetContentParentView(), browser_view_);
 
+  // Include outline thickness so the gap matches the main content's margin.
+  constexpr int kEdgeMargin = kRoundedCornersContentsViewMargin +
+                              kRoundedCornersContentsOutlineThickness;
+
+  // The top edge only needs room for the outline (plus the header, which
+  // back-fills the space reserved for it). The content-facing edge takes the
+  // full margin so that, like upstream, the resize strip has a border gap to
+  // lay itself out in; the main content drops its own margin on that side in
+  // exchange (see
+  // BraveBrowserViewTabbedLayoutImpl::InsetContentsContainerBounds()).
   const int header_top_inset =
       header_view_ ? header_view_->GetPreferredSize().height() : 0;
   gfx::Insets insets;
-  insets.set_top(header_top_inset);
+  insets.set_top(header_top_inset + kRoundedCornersContentsOutlineThickness);
+  insets.set_bottom(kEdgeMargin);
 
-  // With rounded corners the content view owns its own margins, so only add an
-  // outer-side gap for visual separation from the window chrome.
+  const int outer_margin = brave::GetPanelOuterEdgeMargin(browser_view_);
   const bool is_sidebar_leading = (IsRightAligned() == base::i18n::IsRTL());
-  if (rounded_border_enabled_) {
-    // Include outline thickness on window-facing edges to align with main
-    // content.
-    constexpr int kWindowEdgeMargin = kRoundedCornersContentsViewMargin +
-                                      kRoundedCornersContentsOutlineThickness;
-
-    // Reserve an extra |kRoundedCornersContentsOutlineThickness| on the top and
-    // inner-side edges -- where the header/content would otherwise be flush
-    // with the panel edge
-    // -- so the outline painted below this has room to show on all four
-    // sides.
-    insets.set_top(insets.top() + kRoundedCornersContentsOutlineThickness);
-    insets.set_bottom(kWindowEdgeMargin);
-
-    const int outer_margin = brave::GetPanelOuterEdgeMargin(browser_view_);
-    if (is_sidebar_leading) {
-      insets.set_left(outer_margin);
-      insets.set_right(kRoundedCornersContentsOutlineThickness);
-    } else {
-      insets.set_right(outer_margin);
-      insets.set_left(kRoundedCornersContentsOutlineThickness);
-    }
-
-    // Unlike |insets| (used for content layout), the outline itself should
-    // wrap the header and content together as one shape, so its top inset
-    // never includes the header's height -- only the slim outline gap. The
-    // other three sides are copied unchanged from |insets|: only the top edge
-    // has a header "borrowing" part of the reserved space (see the
-    // SidePanelOutlineBorder class comment above for why).
-    gfx::Insets outline_insets = insets;
-    outline_insets.set_top(kRoundedCornersContentsOutlineThickness);
-
-    ui::ColorProvider* color_provider = GetColorProvider();
-    CHECK(color_provider);
-    SetBorder(std::make_unique<SidePanelOutlineBorder>(
-        insets, outline_insets,
-        brave::GetPanelContentsRoundedCorners(browser_view_,
-                                              /*flatten_top_for_header=*/false),
-        color_provider));
-    return;
-  }
-
-  // Without rounded corners, draw a 1px vertical separator between content and
-  // panel.
-  constexpr int kBorderThickness = 1;
   if (is_sidebar_leading) {
-    insets.set_right(kBorderThickness);
+    insets.set_left(outer_margin);
+    insets.set_right(kEdgeMargin);
   } else {
-    insets.set_left(kBorderThickness);
+    insets.set_right(outer_margin);
+    insets.set_left(kEdgeMargin);
   }
-  SetBorder(
-      views::CreateSolidSidedBorder(insets, kColorToolbarContentAreaSeparator));
-}
 
-void SidePanel::AddHeaderView(std::unique_ptr<views::View> view) {
-  AddHeaderView_ChromiumImpl(std::move(view));
-  UpdateBorder();
-
-  // The resize area overlaps other views (contents, header), so it must be
-  // top-most to receive drag events.
-  ReorderChildView(resize_area_, children().size());
-}
-
-void SidePanel::RemoveHeaderView() {
-  RemoveHeaderView_ChromiumImpl();
-  UpdateBorder();
+  // Unlike |insets| (used for content layout), the outline itself should wrap
+  // the header and content together as one shape, so its top inset never
+  // includes the header's height -- only the slim outline gap. The other three
+  // sides are copied unchanged from |insets|: only the top edge has a header
+  // "borrowing" part of the reserved space (see the SidePanelOutlineBorder
+  // class comment for why).
+  gfx::Insets outline_insets = insets;
+  outline_insets.set_top(kRoundedCornersContentsOutlineThickness);
+  SetBorder(std::make_unique<SidePanelOutlineBorder>(
+      insets, outline_insets,
+      brave::GetPanelContentsRoundedCorners(browser_view_,
+                                            /*flatten_top_for_header=*/false),
+      GetColorProvider()));
 }

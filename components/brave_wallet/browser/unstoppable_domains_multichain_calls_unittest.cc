@@ -5,9 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/unstoppable_domains_multichain_calls.h"
 
-#include "base/run_loop.h"
 #include "base/test/mock_callback.h"
-#include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -15,6 +13,8 @@ using testing::_;
 
 namespace brave_wallet::unstoppable_domains {
 
+// MultichainCalls resolves callbacks synchronously and posts no tasks, so
+// these tests need no task environment or run loop.
 class MultichainCallsUnitTest : public testing::Test {
  public:
   using CallbackType = MultichainCalls<std::string, std::string>::CallbackType;
@@ -27,7 +27,6 @@ class MultichainCallsUnitTest : public testing::Test {
 
  private:
   MultichainCalls<std::string, std::string> chain_calls_;
-  base::test::TaskEnvironment task_environment_;
 };
 
 TEST_F(MultichainCallsUnitTest, ManyCallbacks) {
@@ -44,7 +43,6 @@ TEST_F(MultichainCallsUnitTest, ManyCallbacks) {
 
   chain_calls().SetResult(domain(), mojom::kPolygonMainnetChainId, "polygon");
   chain_calls().SetResult(domain(), mojom::kBaseMainnetChainId, "base");
-  base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&cb1);
   testing::Mock::VerifyAndClearExpectations(&cb2);
 
@@ -53,8 +51,6 @@ TEST_F(MultichainCallsUnitTest, ManyCallbacks) {
   chain_calls().SetResult(domain(), mojom::kMainnetChainId, "mainnet");
   chain_calls().SetResult(domain(), mojom::kBaseMainnetChainId, "base");
   EXPECT_FALSE(chain_calls().HasCall(domain()));
-
-  base::RunLoop().RunUntilIdle();
 }
 
 TEST_F(MultichainCallsUnitTest, PolygonResult) {
@@ -68,8 +64,6 @@ TEST_F(MultichainCallsUnitTest, PolygonResult) {
   chain_calls().SetResult(domain(), mojom::kPolygonMainnetChainId, "polygon");
   chain_calls().SetResult(domain(), mojom::kBaseMainnetChainId, "base");
   chain_calls().SetResult(domain(), mojom::kMainnetChainId, "mainnet");
-
-  base::RunLoop().RunUntilIdle();
 }
 
 TEST_F(MultichainCallsUnitTest, BaseError) {
@@ -84,8 +78,6 @@ TEST_F(MultichainCallsUnitTest, BaseError) {
                          mojom::ProviderError::kInternalError, "some error");
   chain_calls().SetNoResult(domain(), mojom::kPolygonMainnetChainId);
   chain_calls().SetResult(domain(), mojom::kMainnetChainId, "mainnet");
-
-  base::RunLoop().RunUntilIdle();
 }
 
 TEST_F(MultichainCallsUnitTest, BaseResult) {
@@ -99,8 +91,6 @@ TEST_F(MultichainCallsUnitTest, BaseResult) {
   chain_calls().SetNoResult(domain(), mojom::kPolygonMainnetChainId);
   chain_calls().SetResult(domain(), mojom::kBaseMainnetChainId, "base");
   chain_calls().SetResult(domain(), mojom::kMainnetChainId, "mainnet");
-
-  base::RunLoop().RunUntilIdle();
 }
 
 TEST_F(MultichainCallsUnitTest, PolygonError) {
@@ -115,8 +105,6 @@ TEST_F(MultichainCallsUnitTest, PolygonError) {
                          mojom::ProviderError::kInternalError, "some error");
   chain_calls().SetResult(domain(), mojom::kBaseMainnetChainId, "base");
   chain_calls().SetResult(domain(), mojom::kMainnetChainId, "mainnet");
-
-  base::RunLoop().RunUntilIdle();
 }
 
 TEST_F(MultichainCallsUnitTest, MainnetResult) {
@@ -130,8 +118,6 @@ TEST_F(MultichainCallsUnitTest, MainnetResult) {
   chain_calls().SetNoResult(domain(), mojom::kPolygonMainnetChainId);
   chain_calls().SetNoResult(domain(), mojom::kBaseMainnetChainId);
   chain_calls().SetResult(domain(), mojom::kMainnetChainId, "mainnet");
-
-  base::RunLoop().RunUntilIdle();
 }
 
 TEST_F(MultichainCallsUnitTest, MainnetError) {
@@ -146,8 +132,6 @@ TEST_F(MultichainCallsUnitTest, MainnetError) {
   chain_calls().SetNoResult(domain(), mojom::kBaseMainnetChainId);
   chain_calls().SetError(domain(), mojom::kMainnetChainId,
                          mojom::ProviderError::kInternalError, "some error");
-
-  base::RunLoop().RunUntilIdle();
 }
 
 TEST_F(MultichainCallsUnitTest, NoResult) {
@@ -161,8 +145,6 @@ TEST_F(MultichainCallsUnitTest, NoResult) {
   chain_calls().SetNoResult(domain(), mojom::kPolygonMainnetChainId);
   chain_calls().SetNoResult(domain(), mojom::kBaseMainnetChainId);
   chain_calls().SetNoResult(domain(), mojom::kMainnetChainId);
-
-  base::RunLoop().RunUntilIdle();
 }
 
 }  // namespace brave_wallet::unstoppable_domains

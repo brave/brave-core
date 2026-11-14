@@ -135,6 +135,8 @@ test("brave_components_unittests") {
     if (enable_local_ai) {
       deps += [
         "//brave/components/history_embeddings:unit_tests",
+        "//brave/components/history_embeddings/content:unit_tests",
+        "//brave/components/history_embeddings/core:unit_tests",
         "//brave/components/local_ai/content:unit_tests",
       ]
     }

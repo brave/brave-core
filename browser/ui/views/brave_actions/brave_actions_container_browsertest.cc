@@ -106,7 +106,7 @@ class BraveActionsContainerTest : public InProcessBrowserTest {
     auto* location_bar = static_cast<BraveLocationBarView*>(
         BrowserView::GetBrowserViewForBrowser(browser)->GetLocationBarView());
     return location_bar->brave_actions_->rewards_action_btn_
-        ->publisher_registered_.first;
+        ->GetPublisherIdForTesting();
   }
 
   // Opens a foreground tab and returns it.
@@ -168,13 +168,13 @@ IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest,
   EXPECT_EQ(1U, GlobalBrowserCollection::GetInstance()->GetSize());
   ui_test_utils::BrowserCreatedObserver browser_creation_observer;
   profiles::SwitchToGuestProfile(base::DoNothing());
-  base::RunLoop().RunUntilIdle();
   browser_creation_observer.Wait();
   EXPECT_EQ(2U, GlobalBrowserCollection::GetInstance()->GetSize());
 
   // Retrieve the new Guest profile.
   Profile* guest = g_browser_process->profile_manager()->GetProfileByPath(
       ProfileManager::GetGuestProfilePath());
+  ASSERT_TRUE(guest);
   // The BrowsingDataRemover needs a loaded TemplateUrlService or else it hangs
   // on to a CallbackList::Subscription forever.
   search_test_utils::WaitForTemplateURLServiceToLoad(
@@ -182,8 +182,8 @@ IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest,
 
   // Access the browser with the Guest profile and re-init test for it.
   BrowserWindowInterface* browser = ui_test_utils::FindAnyBrowser(guest, true);
-  EXPECT_TRUE(browser);
-  Init(browser);
+  ASSERT_TRUE(browser);
+  ASSERT_NO_FATAL_FAILURE(Init(browser));
   CheckBraveRewardsActionShown(false);
 }
 
@@ -195,7 +195,6 @@ IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest, ShowRewardsIconForPanel) {
   auto* coordinator = brave_rewards::RewardsPanelCoordinator::From(browser());
   ASSERT_TRUE(coordinator);
   coordinator->OpenRewardsPanel();
-  base::RunLoop().RunUntilIdle();
 
   CheckBraveRewardsActionShown(false);
 }

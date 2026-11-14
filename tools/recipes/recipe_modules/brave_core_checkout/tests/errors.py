@@ -32,7 +32,7 @@ class TEST_DEPS(RecipeTestApi):
 def RunSteps(api: DEPS):
     mode = api.env.get('MODE')
     if mode == 'dotenv':
-        api.brave_core_checkout.set_config('brave')
+        api.brave_core_checkout.set_config('deprecated_brave')
         api.brave_core_checkout.ensure_checkout()
     elif mode == 'ref':
         api.brave_core_checkout.checkout()

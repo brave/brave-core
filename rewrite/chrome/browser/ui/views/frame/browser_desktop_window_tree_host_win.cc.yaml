@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Rename BrowserDesktopWindowTreeHostWin to ChromiumImpl
+
+      Matches the rename in the header; the chromium_src shadow header defines
+      a Brave subclass using the original name.
+    rename_class:
+      class_name: BrowserDesktopWindowTreeHostWin
+      rename: BrowserDesktopWindowTreeHostWin_ChromiumImpl
+
+  - description: |-
+      Create the Brave BrowserDesktopWindowTreeHostWin from the factory
+
+      The rename above also renamed the instantiation in
+      CreateBrowserDesktopWindowTreeHost(); restore the original name, which
+      now refers to the Brave subclass.
+    regex:
+      pattern: |-
+        return new BrowserDesktopWindowTreeHostWin_ChromiumImpl(
+      replace: |-
+        return new BrowserDesktopWindowTreeHostWin(

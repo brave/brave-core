@@ -30,6 +30,7 @@
 #include "ui/views/controls/label.h"
 #include "ui/views/test/widget_activation_waiter.h"
 #include "ui/views/test/widget_test.h"
+#include "ui/views/view_utils.h"
 #include "ui/views/widget/widget.h"
 
 class BraveProfileMenuViewTest : public InProcessBrowserTest {
@@ -54,11 +55,13 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
   void WaitForMenuToBeActive(ProfileMenuViewBase* profile_menu_view) {
     ASSERT_TRUE(profile_menu_view);
     profile_menu_view->set_close_on_deactivate(false);
-#if BUILDFLAG(IS_MAC)
-    base::RunLoop().RunUntilIdle();
-#else
     views::Widget* menu_widget = profile_menu_view->GetWidget();
     ASSERT_TRUE(menu_widget);
+#if BUILDFLAG(IS_MAC)
+    // Activation isn't reliable in Mac browser_tests, so wait for visibility.
+    ASSERT_TRUE(
+        base::test::RunUntil([&]() { return menu_widget->IsVisible(); }));
+#else
     if (menu_widget->CanActivate()) {
       views::test::WaitForWidgetActive(menu_widget, /*active=*/true);
     } else {
@@ -106,7 +109,7 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
     ProfileMenuViewBase* menu = profile_menu_view(browser);
     ASSERT_TRUE(menu);
     // Profile image and title container
-    EXPECT_EQ(2u, menu->identity_info_container_->children().size());
+    ASSERT_EQ(2u, menu->identity_info_container_->children().size());
     // Profile image has no children
     EXPECT_EQ(0u,
               menu->identity_info_container_->children()[0]->children().size());
@@ -115,6 +118,7 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
         menu->identity_info_container_->children()[1].get();
     EXPECT_EQ(0u, title_container_view->children().size());
     if (!browser->GetProfile()->IsGuestSession()) {
+      ASSERT_TRUE(views::IsViewClass<views::Label>(title_container_view));
       EXPECT_EQ(
           GetProfileName(browser->GetProfile()),
           static_cast<const views::Label*>(title_container_view)->GetText());
@@ -138,7 +142,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileMenuViewTest, TestCurrentProfileView) {
   CreateAdditionalProfile();
 
   ASSERT_NO_FATAL_FAILURE(OpenProfileMenu(browser()));
-  CheckIdentity(browser());
+  ASSERT_NO_FATAL_FAILURE(CheckIdentity(browser()));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveProfileMenuViewTest, OpenGuestWindowProfile) {
@@ -149,5 +153,5 @@ IN_PROC_BROWSER_TEST_F(BraveProfileMenuViewTest, OpenGuestWindowProfile) {
   EXPECT_EQ(2U, GlobalBrowserCollection::GetInstance()->GetSize());
 
   ASSERT_NO_FATAL_FAILURE(OpenProfileMenu(guest_browser));
-  CheckIdentity(guest_browser);
+  ASSERT_NO_FATAL_FAILURE(CheckIdentity(guest_browser));
 }

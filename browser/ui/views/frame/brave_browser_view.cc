@@ -39,15 +39,12 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
-#include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
-#include "brave/browser/ui/views/side_panel/brave_side_panel_resize_area.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/screenshot_button.h"
 #include "brave/browser/ui/window_closing_confirm/window_closing_confirm_controller.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
@@ -104,6 +101,7 @@
 #include "ui/display/screen.h"
 #include "ui/events/event.h"
 #include "ui/events/event_observer.h"
+#include "ui/gfx/color_utils.h"
 #include "ui/views/border.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/controls/native/native_view_host.h"
@@ -111,15 +109,11 @@
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/view_class_properties.h"
 #include "ui/views/view_utils.h"
+#include "ui/views/widget/widget.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_toolbar_button.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
-#include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -202,74 +196,6 @@ class BraveBrowserView::BrowserWindowMouseEventHandler
   std::vector<std::unique_ptr<views::EventMonitor>> overlay_monitors_;
 };
 
-class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
-                                                 public views::WidgetObserver {
- public:
-  explicit TabCyclingEventHandler(BraveBrowserView* browser_view)
-      : browser_view_(browser_view) {
-    Start();
-  }
-
-  ~TabCyclingEventHandler() override { Stop(); }
-
-  TabCyclingEventHandler(const TabCyclingEventHandler&) = delete;
-  TabCyclingEventHandler& operator=(const TabCyclingEventHandler&) = delete;
-
- private:
-  // ui::EventObserver overrides:
-  void OnEvent(const ui::Event& event) override {
-    if (event.type() == ui::EventType::kKeyReleased &&
-        event.AsKeyEvent()->key_code() == ui::VKEY_CONTROL) {
-      // Ctrl key was released, stop the tab cycling
-      Stop();
-      return;
-    }
-
-    if (event.type() == ui::EventType::kMousePressed) {
-      Stop();
-    }
-  }
-
-  // views::WidgetObserver overrides:
-  void OnWidgetActivationChanged(views::Widget* widget, bool active) override {
-    // We should stop cycling if other application gets active state.
-    if (!active) {
-      Stop();
-    }
-  }
-
-  // Handle Browser widget closing while tab Cycling is in-progress.
-  void OnWidgetClosing(views::Widget* widget) override { Stop(); }
-
-  void Start() {
-    // Add the event handler
-    auto* widget = browser_view_->GetWidget();
-    if (widget->GetNativeWindow()) {
-      monitor_ = views::EventMonitor::CreateWindowMonitor(
-          this, widget->GetNativeWindow(),
-          {ui::EventType::kMousePressed, ui::EventType::kKeyReleased});
-    }
-
-    widget->AddObserver(this);
-  }
-
-  void Stop() {
-    if (!monitor_.get()) {
-      // We already stopped
-      return;
-    }
-
-    // Remove event handler
-    auto* widget = browser_view_->GetWidget();
-    monitor_.reset();
-    widget->RemoveObserver(this);
-    browser_view_->StopTabCycling();
-  }
-
-  raw_ptr<BraveBrowserView> browser_view_ = nullptr;
-  std::unique_ptr<views::EventMonitor> monitor_;
-};
-
 // static
 BraveBrowserView* BraveBrowserView::From(BrowserView* view) {
   return views::AsViewClass<BraveBrowserView>(view);
@@ -296,6 +222,11 @@ bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
     return true;
   }
 
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+  if (!browser_view) {
+    return false;
+  }
+
   auto* model = browser->GetTabStripModel();
   if (model->empty()) {
     return false;
@@ -305,9 +236,14 @@ bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
     return false;
   }
 
+  // Use rounded corners while the side panel opens.
+  if (auto* side_panel = browser_view->side_panel();
+      side_panel && side_panel->GetVisible()) {
+    return true;
+  }
+
   // Use rounded corners when browser view shows split view.
-  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
-  return browser_view && browser_view->multi_contents_view()->IsInSplitView();
+  return browser_view->multi_contents_view()->IsInSplitView();
 }
 
 BraveBrowserView::BraveBrowserView(BrowserWindowInterface* browser)
@@ -338,17 +274,14 @@ BraveBrowserView::BraveBrowserView(BrowserWindowInterface* browser)
       base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
                           base::Unretained(this)));
 
+  side_panel_visible_subscription_ = side_panel_->AddVisibleChangedCallback(
+      base::BindRepeating(&BraveBrowserView::OnSidePanelVisibilityChanged,
+                          base::Unretained(this)));
+
   pref_change_registrar_.Add(
       brave_tabs::kVerticalTabsEnabled,
       base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
                           base::Unretained(this)));
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  pref_change_registrar_.Add(
-      brave_vpn::prefs::kBraveVPNShowButton,
-      base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
-                          base::Unretained(this)));
-#endif
 
   // Only normal window (tabbed) should have sidebar.
   const bool can_have_sidebar = sidebar::CanUseSidebar(browser_);
@@ -374,9 +307,6 @@ BraveBrowserView::BraveBrowserView(BrowserWindowInterface* browser)
                 &BraveBrowserView::OnSidebarControlViewVisibilityChanged,
                 base::Unretained(this))),
         sidebar_index.value_or(children().size()));
-
-    side_panel_->SetResizeArea(
-        std::make_unique<views::BraveSidePanelResizeArea>(side_panel_));
 
 #if defined(USE_AURA)
     sidebar_host_view_ =
@@ -452,12 +382,6 @@ void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
     return;
   }
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  if (pref_name == brave_vpn::prefs::kBraveVPNShowButton) {
-    vpn_panel_controller_.ResetBubbleManager();
-    return;
-  }
-#endif
 }
 
 void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
@@ -479,32 +403,11 @@ void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
 }
 
 BraveBrowserView::~BraveBrowserView() {
-  tab_cycling_event_handler_.reset();
-
   // Destroying delegate view to clear vertical tab state. See its dtor.
   if (vertical_tab_strip_container_view_) {
     auto container_view = RemoveChildViewT(vertical_tab_strip_container_view_);
     vertical_tab_strip_container_view_ = nullptr;
   }
-}
-
-void BraveBrowserView::ShowBraveVPNBubble(bool show_select) {
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  vpn_panel_controller_.ShowBraveVPNPanel(show_select);
-#endif
-}
-
-views::View* BraveBrowserView::GetAnchorViewForBraveVPNPanel() {
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  auto* vpn_button =
-      static_cast<BraveToolbarView*>(toolbar())->brave_vpn_button();
-  if (vpn_button->GetVisible()) {
-    return vpn_button;
-  }
-  return toolbar()->app_menu_button();
-#else
-  return nullptr;
-#endif
 }
 
 gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
@@ -686,27 +589,6 @@ std::optional<int> BraveBrowserView::GetVerticalTabStripWidthAtWindowEdge()
   return vertical_tab_strip_container_view_->width();
 }
 
-bool BraveBrowserView::HasSelectedURL() const {
-  if (!GetLocationBarView() || !GetLocationBarView()->HasFocus()) {
-    return false;
-  }
-  auto* brave_omnibox_view =
-      static_cast<BraveOmniboxViewViews*>(GetLocationBarView()->omnibox_view());
-  return brave_omnibox_view && brave_omnibox_view->SelectedTextIsURL();
-}
-
-void BraveBrowserView::CleanAndCopySelectedURL() {
-  if (!GetLocationBarView()) {
-    return;
-  }
-  auto* brave_omnibox_view =
-      static_cast<BraveOmniboxViewViews*>(GetLocationBarView()->omnibox_view());
-  if (!brave_omnibox_view) {
-    return;
-  }
-  brave_omnibox_view->CleanAndCopySelectedURL();
-}
-
 void BraveBrowserView::OnAcceleratorsChanged(
     const commands::AcceleratorPrefManager::Accelerators& changed) {
   DCHECK(base::FeatureList::IsEnabled(commands::features::kBraveCommands));
@@ -857,13 +739,6 @@ void BraveBrowserView::OnTabStripModelChanged(
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
   BrowserView::OnTabStripModelChanged(tab_strip_model, change, selection);
-
-  if (change.type() != TabStripModelChange::kSelectionOnly) {
-    // Stop tab cycling if tab is closed dusing the cycle.
-    // This can happen when tab is closed by shortcut (ex, ctrl + F4).
-    // After stopping, current tab cycling, new tab cycling will be started.
-    StopTabCycling();
-  }
 
   if (selection.active_tab_changed() && brave_help_bubble_host_view_ &&
       brave_help_bubble_host_view_->GetVisible()) {
@@ -1074,7 +949,6 @@ void BraveBrowserView::UpdateRoundedCornersUI() {
   // Update various UI that can be affected by rounded corners. The contents
   // corner radii themselves are applied by the layout.
   UpdateVerticalTabStripBorder();
-  UpdateSidePanelBorder();
   InvalidateLayout();
 }
 
@@ -1086,11 +960,16 @@ void BraveBrowserView::UpdateVerticalTabStripBorder() {
   }
 }
 
-void BraveBrowserView::UpdateSidePanelBorder() {
-  if (side_panel_) {
-    side_panel_->SetRoundedBorderEnabled(
-        ShouldUseBraveWebViewRoundedCornersForContents(browser_));
+void BraveBrowserView::OnSidePanelVisibilityChanged() {
+  // The side panel is also closed while the browser widget is being destroyed
+  // (see SidePanelCoordinator::TearDownPreBrowserWindowDestruction()), and by
+  // then the widget can no longer answer queries such as IsFullscreen().
+  auto* widget = GetWidget();
+  if (!widget || widget->IsClosed()) {
+    return;
   }
+
+  UpdateRoundedCornersUI();
 }
 
 void BraveBrowserView::OnSidebarControlViewVisibilityChanged() {
@@ -1381,16 +1260,6 @@ bool BraveBrowserView::ShouldDisableFocusModeForActiveTab() const {
   }
   auto level = model->GetSecurityLevel();
   return level != security_state::SecurityLevel::SECURE;
-}
-
-void BraveBrowserView::StartTabCycling() {
-  tab_cycling_event_handler_ = std::make_unique<TabCyclingEventHandler>(this);
-}
-
-void BraveBrowserView::StopTabCycling() {
-  tab_cycling_event_handler_.reset();
-  static_cast<BraveTabStripModel*>(browser()->tab_strip_model())
-      ->StopMRUCycling();
 }
 
 BEGIN_METADATA(BraveBrowserView)

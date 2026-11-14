@@ -1,8 +1,24 @@
 diff --git a/chrome/browser/ui/navigator/browser_navigator_params.h b/chrome/browser/ui/navigator/browser_navigator_params.h
-index 5fdb969fc54ebd9beef61511929dcfe9a55295c1..d0f7d2f1fa3f10007c0c1c6f52d2143d458a24b1 100644
+index 5fdb969fc54ebd9beef61511929dcfe9a55295c1..fec82d0240e000e5b5b42d6d6d3d48daeec639cd 100644
 --- a/chrome/browser/ui/navigator/browser_navigator_params.h
 +++ b/chrome/browser/ui/navigator/browser_navigator_params.h
-@@ -71,6 +71,9 @@ struct OpenURLParams;
+@@ -13,6 +13,7 @@
+ #include "base/memory/raw_ptr.h"
+ #include "base/memory/scoped_refptr.h"
+ #include "base/time/time.h"
++#include "brave/components/containers/buildflags/buildflags.h"
+ #include "build/android_buildflags.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/ui/tabs/tab_enums.h"
+@@ -24,6 +25,7 @@
+ #include "content/public/browser/reload_type.h"
+ #include "content/public/browser/render_frame_host.h"
+ #include "content/public/browser/site_instance.h"
++#include "content/public/browser/storage_partition_config.h"
+ #include "content/public/common/referrer.h"
+ #include "services/network/public/cpp/resource_request_body.h"
+ #include "services/network/public/cpp/shared_url_loader_factory.h"
+@@ -71,6 +73,9 @@ struct OpenURLParams;
  
  // TODO(thestig): Split or ifdef out more fields that are not used on Android.
  struct NavigateParams {

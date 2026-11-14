@@ -75,6 +75,7 @@ export default function AttachmentButtonMenu(props: Props) {
           </Button>
         </div>
         <leo-menu-item
+          data-testid='attach-file'
           onClick={async () => {
             const files = await pickFiles({
               multiple: true,

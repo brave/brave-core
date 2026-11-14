@@ -17,4 +17,8 @@ message InputProperties {
 
   // Siso's cache directory; empty leaves it to the build's own default.
   string siso_cache_dir = 3;
+
+  // Fail a build without a builder, rather than composing its whole `.env`,
+  // to try builds without the deprecated mode before it is removed.
+  bool disable_deprecated_dotenv = 4;
 }

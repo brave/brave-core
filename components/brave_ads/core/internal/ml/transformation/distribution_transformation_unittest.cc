@@ -35,7 +35,7 @@ TEST_F(BraveAdsDistributionTransformationTest, ToDistribution) {
       transformed_vector_data->GetData();
 
   // Assert
-  EXPECT_THAT(transformed_vector_values, ::testing::SizeIs(5));
+  ASSERT_THAT(transformed_vector_values, ::testing::SizeIs(5));
   EXPECT_LT(std::fabs(0.14224751 - transformed_vector_values.at(0)),
             kTolerance);
   EXPECT_LT(std::fabs(0.28449502 - transformed_vector_values.at(1)),

@@ -82,6 +82,74 @@ class ReadGeneratedGnArgsTest(unittest.TestCase):
             self.assertIn('b-builder', str(ctx.exception))
 
 
+class ReadGeneratedBuilderSpecTest(unittest.TestCase):
+    _SPEC = {
+        'chromium_config': {'target_platform': 'linux'},
+        'gclient_config': {'target_os': ['android'], 'target_cpu': []},
+    }
+
+    def _read(self, properties):
+        with tempfile.TemporaryDirectory() as tmp:
+            if properties is not None:
+                builder_dir = Path(tmp) / 'b'
+                builder_dir.mkdir()
+                (builder_dir / 'properties.json').write_text(
+                    json.dumps(properties), encoding='utf-8'
+                )
+            original = gen_paths.BUILDERS_OUTPUT_DIR
+            gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
+            try:
+                return generated_output.OutputGenerator(
+                    'b'
+                ).read_generated_builder_spec()
+            finally:
+                gen_paths.BUILDERS_OUTPUT_DIR = original
+
+    @staticmethod
+    def _properties(builder_spec, *, entry_for='b', builder_ids=('b',)):
+        return {
+            '$brave_tests_builder_config': {
+                'builder_config': {
+                    'builder_db': {
+                        'entries': [
+                            {
+                                'builder_id': {'builder': entry_for},
+                                'builder_spec': builder_spec,
+                            }
+                        ]
+                    },
+                    'builder_ids': [{'builder': b} for b in builder_ids],
+                }
+            }
+        }
+
+    def test_reads_the_builders_spec(self):
+        self.assertEqual(self._read(self._properties(self._SPEC)), self._SPEC)
+
+    def test_missing_file_raises_bots_error(self):
+        with self.assertRaisesRegex(generated_output.BotsError, 'properties'):
+            self._read(None)
+
+    def test_not_a_json_object_raises_bots_error(self):
+        with self.assertRaisesRegex(generated_output.BotsError, 'builder_ids'):
+            self._read([])
+
+    def test_builder_not_in_builder_ids_raises_bots_error(self):
+        with self.assertRaisesRegex(generated_output.BotsError, 'builder_ids'):
+            self._read(self._properties(self._SPEC, builder_ids=()))
+
+    def test_no_entry_for_the_builder_raises_bots_error(self):
+        with self.assertRaisesRegex(generated_output.BotsError, 'no spec'):
+            self._read(self._properties(self._SPEC, entry_for='other'))
+
+    def test_spec_without_what_consumers_read_raises_bots_error(self):
+        with self.assertRaisesRegex(
+            generated_output.BotsError,
+            'has no target_platform; .*gclient_config" is not an object',
+        ):
+            self._read(self._properties({'chromium_config': {}}))
+
+
 class RenderArgsGnTest(unittest.TestCase):
     def test_plain_args_no_secrets(self):
         rendered = generated_output.OutputGenerator('b').render_args_gn(

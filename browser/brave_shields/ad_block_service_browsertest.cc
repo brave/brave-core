@@ -141,7 +141,14 @@ void WaitForSelectorBlocked(const content::ToRenderFrameHost& target,
 }  // namespace
 
 AdBlockServiceTest::AdBlockServiceTest()
-    : https_server_(net::EmbeddedTestServer::Type::TYPE_HTTPS) {}
+    : https_server_(net::EmbeddedTestServer::Type::TYPE_HTTPS) {
+  default_feature_list_.InitWithFeatures(
+      {kBraveAdblockCnameUncloaking, kBraveAdblockCollapseBlockedElements,
+       brave_shields::features::kBraveAdblockCspRules,
+       brave_shields::features::kBraveAdblockCookieListDefault,
+       kBraveAdblockCosmeticFiltering, kBraveAdblockProceduralFiltering},
+      {});
+}
 AdBlockServiceTest::~AdBlockServiceTest() = default;
 
 void AdBlockServiceTest::SetUpCommandLine(base::CommandLine* command_line) {
@@ -685,7 +692,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrame) {
                              document.head.appendChild(s);
                            })
                          )"));
-  content::RunAllTasksUntilIdle();
+  // The count is updated before the blocked request fails, so it is final once
+  // `onerror` has resolved the promise.
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
 }
 
@@ -715,7 +723,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrameShieldsOff) {
                              document.head.appendChild(s);
                            })
                          )"));
-  content::RunAllTasksUntilIdle();
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   brave_shields::SetBraveShieldsEnabled(content_settings(), true, url);
 }
@@ -1370,6 +1377,56 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CnameCloakedRequestsCanBeExcepted) {
   ASSERT_EQ(5ULL, inner_resolver->num_resolve());
 }
 
+// Uses the browser test host resolver instead of
+// `SetAdblockCnameHostResolverForTesting`, which bypasses the network context
+// lookup that worker requests depend on.
+class CnameUncloakingWorkerTest : public AdBlockServiceTest {
+ public:
+  void SetUpOnMainThread() override {
+    host_resolver()->AddIPLiteralRuleWithDnsAliases(
+        "a83idbka2e.a.com", "127.0.0.1", {"cname-cloak-endpoint.tracking.com"});
+    host_resolver()->AddIPLiteralRuleWithDnsAliases("a.com", "127.0.0.1",
+                                                    {"assets.cdn.net"});
+    AdBlockServiceTest::SetUpOnMainThread();
+  }
+
+ protected:
+  // Returns whether a fetch of `host` from the worker that `helper` creates
+  // loaded.
+  content::EvalJsResult WorkerFetch(const std::string& helper,
+                                    std::string_view host) {
+    return EvalJs(
+        web_contents(),
+        content::JsReplace(helper + "($1)",
+                           embedded_test_server()->GetURL(host, "/logo.png")));
+  }
+
+  void ExpectCloakedFetchBlocked(const std::string& helper) {
+    UpdateAdBlockInstanceWithRules("||cname-cloak-endpoint.tracking.com^");
+    NavigateToURL(embedded_test_server()->GetURL(kAdBlockTestPage));
+    // Positive control: this host's canonical name doesn't match the rule.
+    EXPECT_EQ(true, WorkerFetch(helper, "a.com"));
+    EXPECT_EQ(false, WorkerFetch(helper, "a83idbka2e.a.com"));
+  }
+};
+
+// CNAME uncloaking should apply to requests from shared and service workers,
+// which have no frame.
+// Regression test for https://github.com/brave/brave-browser/issues/61766.
+IN_PROC_BROWSER_TEST_F(CnameUncloakingWorkerTest, SharedWorkerRequest) {
+  ExpectCloakedFetchBlocked("checkSharedWorkerFetch");
+}
+
+IN_PROC_BROWSER_TEST_F(CnameUncloakingWorkerTest, ServiceWorkerRequest) {
+  ExpectCloakedFetchBlocked("checkServiceWorkerFetch");
+}
+
+// Dedicated worker requests were already uncloaked; this test acts as a
+// control.
+IN_PROC_BROWSER_TEST_F(CnameUncloakingWorkerTest, DedicatedWorkerRequest) {
+  ExpectCloakedFetchBlocked("checkDedicatedWorkerFetch");
+}
+
 // `$removeparam` should happen for the original URL, not the CNAME-uncloaked
 // one
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NoRemoveparamOnCnameUncloakedUrl) {
@@ -1572,8 +1629,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
     const auto lists = component_service_manager()->GetRegionalLists();
     ASSERT_EQ(2UL, lists.size());
-    EXPECT_EQ(true, *lists[0].GetDict().FindBool("enabled"));
-    EXPECT_EQ(false, *lists[1].GetDict().FindBool("enabled"));
+    EXPECT_EQ(lists[0].GetDict().FindBool("enabled"), true);
+    EXPECT_EQ(lists[1].GetDict().FindBool("enabled"), false);
   }
 
   // Enable LinkedIn embeds
@@ -1586,8 +1643,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
     const auto lists = component_service_manager()->GetRegionalLists();
     ASSERT_EQ(2UL, lists.size());
-    EXPECT_EQ(true, *lists[0].GetDict().FindBool("enabled"));
-    EXPECT_EQ(true, *lists[1].GetDict().FindBool("enabled"));
+    EXPECT_EQ(lists[0].GetDict().FindBool("enabled"), true);
+    EXPECT_EQ(lists[1].GetDict().FindBool("enabled"), true);
   }
 
   // Disable Twitter embeds
@@ -1601,8 +1658,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
     const auto lists = component_service_manager()->GetRegionalLists();
     ASSERT_EQ(2UL, lists.size());
-    EXPECT_EQ(false, *lists[0].GetDict().FindBool("enabled"));
-    EXPECT_EQ(true, *lists[1].GetDict().FindBool("enabled"));
+    EXPECT_EQ(lists[0].GetDict().FindBool("enabled"), false);
+    EXPECT_EQ(lists[1].GetDict().FindBool("enabled"), true);
   }
 }
 
@@ -1999,7 +2056,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRule) {
   NavigateToURL(url);
   content::WebContents* contents = web_contents();
 
-  auto res = EvalJs(contents, "await window.allLoaded");
+  ASSERT_TRUE(ExecJs(contents, "window.allLoaded"));
   EXPECT_EQ(true, EvalJs(contents, "!!window.loadedNonceScript"));
   EXPECT_EQ(true, EvalJs(contents, "!!window.loadedEvalScript"));
   EXPECT_EQ(true, EvalJs(contents, "!!window.loadedSamePartyScript"));
@@ -2080,7 +2137,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleMerging) {
   NavigateToURL(url);
   content::WebContents* contents = web_contents();
 
-  auto res = EvalJs(contents, "await window.allLoaded");
+  ASSERT_TRUE(ExecJs(contents, "window.allLoaded"));
   EXPECT_EQ(true, EvalJs(contents, "!!window.loadedNonceScript"));
   EXPECT_EQ(true, EvalJs(contents, "!!window.loadedEvalScript"));
   EXPECT_EQ(false, EvalJs(contents, "!!window.loadedSamePartyScript"));
@@ -2123,7 +2180,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleShieldsDown) {
   NavigateToURL(url);
   content::WebContents* contents = web_contents();
 
-  auto res = EvalJs(contents, "await window.allLoaded");
+  ASSERT_TRUE(ExecJs(contents, "window.allLoaded"));
   EXPECT_EQ(true, EvalJs(contents, "!!window.loadedNonceScript"));
   EXPECT_EQ(true, EvalJs(contents, "!!window.loadedEvalScript"));
   EXPECT_EQ(true, EvalJs(contents, "!!window.loadedSamePartyScript"));
@@ -2255,10 +2312,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
       base::BindOnce(&brave::AttachPrivacySensitiveTabHelpers));
 
   // Trigger the navigation by requesting content.
-  base::RunLoop run_loop;
-  associated_content->GetContent(base::BindOnce(
-      [](base::RunLoop* loop, ai_chat::PageContent) { loop->Quit(); },
-      &run_loop));
+  associated_content->GetContent(base::DoNothing());
 
   content::WebContents* bg_web_contents =
       associated_content->GetWebContentsForTesting();
@@ -3261,7 +3315,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ListEnabled) {
     // Although never explicitly enabled, it should be presented as enabled by
     // default at first.
     ASSERT_EQ(1UL, lists.size());
-    EXPECT_EQ(true, *lists[0].GetDict().FindBool("enabled"));
+    EXPECT_EQ(lists[0].GetDict().FindBool("enabled"), true);
   }
 
   // Disable the filter list.
@@ -3276,7 +3330,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ListEnabled) {
     const auto lists = component_service_manager()->GetRegionalLists();
     // It should be actually disabled now.
     ASSERT_EQ(1UL, lists.size());
-    EXPECT_EQ(false, *lists[0].GetDict().FindBool("enabled"));
+    EXPECT_EQ(lists[0].GetDict().FindBool("enabled"), false);
   }
 }
 
@@ -3544,8 +3598,8 @@ IN_PROC_BROWSER_TEST_F(AdblockOnlyModeFilterListsTest,
 
     const auto lists = component_service_manager()->GetRegionalLists();
     ASSERT_EQ(2UL, lists.size());
-    EXPECT_EQ(true, *lists[0].GetDict().FindBool("enabled"));
-    EXPECT_EQ(true, *lists[1].GetDict().FindBool("enabled"));
+    EXPECT_EQ(lists[0].GetDict().FindBool("enabled"), true);
+    EXPECT_EQ(lists[1].GetDict().FindBool("enabled"), true);
   }
 
   // Enable Adblock-Only mode and check if lists other than default are
@@ -3561,8 +3615,8 @@ IN_PROC_BROWSER_TEST_F(AdblockOnlyModeFilterListsTest,
 
     const auto lists = component_service_manager()->GetRegionalLists();
     ASSERT_EQ(2UL, lists.size());
-    EXPECT_EQ(true, *lists[0].GetDict().FindBool("enabled"));
-    EXPECT_EQ(false, *lists[1].GetDict().FindBool("enabled"));
+    EXPECT_EQ(lists[0].GetDict().FindBool("enabled"), true);
+    EXPECT_EQ(lists[1].GetDict().FindBool("enabled"), false);
   }
 
   // Disable Adblock-Only mode and check that all filter lists are enabled.
@@ -3577,8 +3631,8 @@ IN_PROC_BROWSER_TEST_F(AdblockOnlyModeFilterListsTest,
 
     const auto lists = component_service_manager()->GetRegionalLists();
     ASSERT_EQ(2UL, lists.size());
-    EXPECT_EQ(true, *lists[0].GetDict().FindBool("enabled"));
-    EXPECT_EQ(true, *lists[1].GetDict().FindBool("enabled"));
+    EXPECT_EQ(lists[0].GetDict().FindBool("enabled"), true);
+    EXPECT_EQ(lists[1].GetDict().FindBool("enabled"), true);
   }
 }
 
@@ -3595,7 +3649,7 @@ IN_PROC_BROWSER_TEST_F(AdblockOnlyModeFilterListsTest,
 
     const auto lists = component_service_manager()->GetRegionalLists();
     ASSERT_EQ(1UL, lists.size());
-    EXPECT_EQ(false, *lists[0].GetDict().FindBool("enabled"));
+    EXPECT_EQ(lists[0].GetDict().FindBool("enabled"), false);
   }
 
   // Enable Adblock-Only mode and check that the default adblock filter list is
@@ -3609,7 +3663,7 @@ IN_PROC_BROWSER_TEST_F(AdblockOnlyModeFilterListsTest,
 
     const auto lists = component_service_manager()->GetRegionalLists();
     ASSERT_EQ(1UL, lists.size());
-    EXPECT_EQ(true, *lists[0].GetDict().FindBool("enabled"));
+    EXPECT_EQ(lists[0].GetDict().FindBool("enabled"), true);
   }
 
   // Disable Adblock-Only mode and check that the default adblock filter list is
@@ -3625,7 +3679,7 @@ IN_PROC_BROWSER_TEST_F(AdblockOnlyModeFilterListsTest,
 
     const auto lists = component_service_manager()->GetRegionalLists();
     ASSERT_EQ(1UL, lists.size());
-    EXPECT_EQ(false, *lists[0].GetDict().FindBool("enabled"));
+    EXPECT_EQ(lists[0].GetDict().FindBool("enabled"), false);
   }
 }
 
@@ -3654,7 +3708,7 @@ IN_PROC_BROWSER_TEST_F(AdblockOnlyModeFilterListsWithFeatureDisabledTest,
 
     const auto lists = component_service_manager()->GetRegionalLists();
     ASSERT_EQ(1UL, lists.size());
-    EXPECT_EQ(true, *lists[0].GetDict().FindBool("enabled"));
+    EXPECT_EQ(lists[0].GetDict().FindBool("enabled"), true);
   }
 
   // Enabling Adblock-Only mode preference does not affect filters lists
@@ -3670,6 +3724,6 @@ IN_PROC_BROWSER_TEST_F(AdblockOnlyModeFilterListsWithFeatureDisabledTest,
 
     const auto lists = component_service_manager()->GetRegionalLists();
     ASSERT_EQ(1UL, lists.size());
-    EXPECT_EQ(true, *lists[0].GetDict().FindBool("enabled"));
+    EXPECT_EQ(lists[0].GetDict().FindBool("enabled"), true);
   }
 }

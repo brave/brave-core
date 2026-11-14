@@ -21,7 +21,6 @@
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
-#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
 #include "build/build_config.h"
@@ -36,10 +35,6 @@
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/browser/ui/views/toolbar/brave_vpn_panel_controller.h"
-#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
@@ -119,11 +114,7 @@ class BraveBrowserView : public BrowserView,
   // off, the strip overlays the contents, or it's floated open over them.
   std::optional<int> GetVerticalTabStripWidthAtWindowEdge() const;
 
-  void ShowBraveVPNBubble(bool show_select = false);
-
   // BrowserView overrides:
-  void StartTabCycling() override;
-  views::View* GetAnchorViewForBraveVPNPanel();
   gfx::Rect GetShieldsBubbleRect() override;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // Give active tab's reader mode toolbar.
@@ -186,7 +177,6 @@ class BraveBrowserView : public BrowserView,
 
   void UpdateRoundedCornersUI();
   void UpdateVerticalTabStripBorder();
-  void UpdateSidePanelBorder();
 
   // Re-applies the side panel border so the content corner radii track the
   // sidebar control view's visibility. Wired as SidebarContainerView's
@@ -238,7 +228,6 @@ class BraveBrowserView : public BrowserView,
 #endif
 
  private:
-  class TabCyclingEventHandler;
   class BrowserWindowMouseEventHandler;
   friend class WindowClosingConfirmBrowserTest;
   friend class sidebar::SidebarBrowserTest;
@@ -296,9 +285,13 @@ class BraveBrowserView : public BrowserView,
   void UpdateTabSearchBubbleHost() override;
 
   void HandleBrowserWindowMouseEvent(const ui::MouseEvent& event);
-  void StopTabCycling();
   void OnCompactModePrefChanged();
   void OnPreferenceChanged(const std::string& pref_name);
+
+  // Re-evaluates the rounded corners state when the side panel is shown or
+  // hidden. Rounded corners around the main contents is used when panel opens.
+  void OnSidePanelVisibilityChanged();
+
   void UpdateFocusModeState();
   bool ShouldDisableFocusModeForActiveTab() const;
 
@@ -326,8 +319,6 @@ class BraveBrowserView : public BrowserView,
   // class's ctor body runs).
   void EnsureFindBarHostViewIsLastChild();
 
-  bool HasSelectedURL() const override;
-  void CleanAndCopySelectedURL() override;
 
   void UpdateSideBarHorizontalAlignment();
 
@@ -354,15 +345,10 @@ class BraveBrowserView : public BrowserView,
   raw_ptr<views::View> sidebar_host_view_ = nullptr;
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  BraveVPNPanelController vpn_panel_controller_{this};
-#endif
-
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   raw_ptr<ReaderModeToolbarView> reader_mode_toolbar_;
 #endif
 
-  std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;
   std::unique_ptr<BrowserWindowMouseEventHandler>
       browser_window_mouse_event_handler_;
 
@@ -377,6 +363,7 @@ class BraveBrowserView : public BrowserView,
       bookmark_tab_helper_observation_{this};
   base::CallbackListSubscription active_tab_will_discard_contents_subscription_;
   base::CallbackListSubscription active_tab_will_detach_subscription_;
+  base::CallbackListSubscription side_panel_visible_subscription_;
 
   base::WeakPtrFactory<BraveBrowserView> weak_ptr_{this};
 };

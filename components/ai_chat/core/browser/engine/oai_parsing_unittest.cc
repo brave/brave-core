@@ -296,7 +296,7 @@ TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_SkipsInvalidEntries) {
   auto result = ToolUseEventFromToolCallsResponse(&tool_calls_list);
 
   // Should only contain the valid tool call, invalid one should be skipped
-  EXPECT_EQ(result.size(), 1u);
+  ASSERT_EQ(result.size(), 1u);
 
   EXPECT_MOJOM_EQ(result[0],
                   mojom::ToolUseEvent::New(
@@ -573,7 +573,7 @@ TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesType) {
             "https://imgs.search.brave.com/favicon1.png");
   EXPECT_EQ(web_sources->sources[0]->page_content, "page content");
   ASSERT_TRUE(web_sources->sources[0]->extra_snippets.has_value());
-  EXPECT_EQ(web_sources->sources[0]->extra_snippets->size(), 2u);
+  ASSERT_EQ(web_sources->sources[0]->extra_snippets->size(), 2u);
   EXPECT_EQ(web_sources->sources[0]->extra_snippets.value()[0], "snippet 1");
   EXPECT_EQ(web_sources->sources[0]->extra_snippets.value()[1], "snippet 2");
   // Site 2:

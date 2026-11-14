@@ -20,8 +20,13 @@ import dotenv
 
 _CHROMIUM_SRC_DIR = gen_paths.BOTS_DIR.parents[2]
 
-# The three files `bots.py snapshot` writes for every builder.
-_REQUIRED_FILES = ('gn-args.json', 'sync.json', 'targets.json')
+# The files `bots.py snapshot` writes for every builder.
+_REQUIRED_FILES = (
+    'gn-args.json',
+    'properties.json',
+    'sync.json',
+    'targets.json',
+)
 
 # The placeholder value an unset secret carries.
 _UNSET_SECRET_PLACEHOLDER = 'dummy'
@@ -85,6 +90,15 @@ class _Validator:
             self._check_gn_args_schema(gn_args_path, gn_args_json)
             self._check_args_file_exists(gn_args_path, gn_args_json)
             self._check_secrets_not_leaked(gn_args_path, gn_args_json)
+
+        properties_path = builder_dir / 'properties.json'
+        properties_json = (
+            self._parse_json(properties_path, raw['properties.json'])
+            if 'properties.json' in raw
+            else None
+        )
+        if properties_json is not None:
+            self._check_properties_schema(builder_dir.name)
 
         sync_path = builder_dir / 'sync.json'
         sync_json = (
@@ -202,6 +216,16 @@ class _Validator:
                         )
                     )
 
+    def _check_properties_schema(self, builder_name: str) -> None:
+        """Checks `properties.json` carries the builder's spec, as consumers
+        read it."""
+        try:
+            generated_output.OutputGenerator(
+                builder_name
+            ).read_generated_builder_spec()
+        except generated_output.BotsError as e:
+            self._errs.append(str(e))
+
     def _check_sync_schema(self, sync_path: Path, sync_json: dict) -> None:
         for required in ('target_os', 'target_cpu'):
             value = sync_json.get(required)
@@ -226,6 +250,20 @@ class _Validator:
                     '%s: %r is not a list' % (targets_path, required)
                 )
 
+    @staticmethod
+    def _comparable(builder_name: str, filename: str, text: str) -> str:
+        """A generated file's content, less the builder's own name: its spec
+        in `properties.json`, which names the builder too."""
+        if filename != 'properties.json':
+            return text
+        try:
+            builder_spec = generated_output.OutputGenerator(
+                builder_name
+            ).read_generated_builder_spec()
+        except generated_output.BotsError:
+            return text
+        return json.dumps(builder_spec, sort_keys=True)
+
     def _check_no_duplicate_builders(self, builder_dirs: list[Path]) -> None:
         """Flags duplicate builders that are identical."""
         seen: dict[tuple[str, ...], str] = {}
@@ -233,15 +271,22 @@ class _Validator:
             raw = self._raw_by_dir[builder_dir]
             if len(raw) != len(_REQUIRED_FILES):
                 continue  # Already reported as missing/unreadable above.
-            key = tuple(raw[name] for name in _REQUIRED_FILES)
+            key = tuple(
+                self._comparable(builder_dir.name, name, raw[name])
+                for name in _REQUIRED_FILES
+            )
             first_seen_as = seen.get(key)
             if first_seen_as is None:
                 seen[key] = builder_dir.name
             else:
                 self._errs.append(
-                    'builders %r and %r are exact duplicates (identical '
-                    'gn-args.json, sync.json and targets.json); consolidate '
-                    'them into one' % (first_seen_as, builder_dir.name)
+                    'builders %r and %r are exact duplicates (identical %s); '
+                    'consolidate them into one'
+                    % (
+                        first_seen_as,
+                        builder_dir.name,
+                        ', '.join(_REQUIRED_FILES),
+                    )
                 )
 
 

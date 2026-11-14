@@ -4,14 +4,15 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
-#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_storage.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -106,8 +107,6 @@ class ZCashGetChainTipStatusTaskTest : public testing::Test {
         *zcash_wallet_service_->sync_state_ptr);
   }
 
-  base::test::TaskEnvironment& task_environment() { return task_environment_; }
-
   mojom::AccountIdPtr& account_id() { return account_id_; }
 
   ZCashWalletService& zcash_wallet_service() { return *zcash_wallet_service_; }
@@ -147,23 +146,18 @@ TEST_F(ZCashGetChainTipStatusTaskTest, Success) {
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
 
-  base::MockCallback<
-      ZCashGetZCashChainTipStatusTask::ZCashGetZCashChainTipStatusTaskCallback>
-      callback;
-  EXPECT_CALL(callback, Run(testing::_))
-      .Times(1)
-      .WillRepeatedly([&](base::expected<mojom::ZCashChainTipStatusPtr,
-                                         std::string> result) {
-        EXPECT_TRUE(result.has_value());
-        EXPECT_EQ(result.value()->latest_scanned_block, 100u);
-        EXPECT_EQ(result.value()->chain_tip, 1000u);
-      });
   auto task = std::make_unique<ZCashGetZCashChainTipStatusTask>(
       CreatePassKey(), zcash_wallet_service(), CreateContext());
 
-  task->Start(callback.Get());
+  base::test::TestFuture<
+      base::expected<mojom::ZCashChainTipStatusPtr, std::string>>
+      future;
+  task->Start(future.GetCallback());
 
-  task_environment().RunUntilIdle();
+  auto result = future.Take();
+  ASSERT_TRUE(result.has_value()) << result.error();
+  EXPECT_EQ(result.value()->latest_scanned_block, 100u);
+  EXPECT_EQ(result.value()->chain_tip, 1000u);
 }
 
 TEST_F(ZCashGetChainTipStatusTaskTest, EmptyAccount) {
@@ -184,23 +178,18 @@ TEST_F(ZCashGetChainTipStatusTaskTest, EmptyAccount) {
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
 
-  base::MockCallback<
-      ZCashGetZCashChainTipStatusTask::ZCashGetZCashChainTipStatusTaskCallback>
-      callback;
-  EXPECT_CALL(callback, Run(testing::_))
-      .Times(1)
-      .WillRepeatedly([&](base::expected<mojom::ZCashChainTipStatusPtr,
-                                         std::string> result) {
-        EXPECT_TRUE(result.has_value());
-        EXPECT_EQ(result.value()->latest_scanned_block, 100u);
-        EXPECT_EQ(result.value()->chain_tip, 1000u);
-      });
   auto task = std::make_unique<ZCashGetZCashChainTipStatusTask>(
       CreatePassKey(), zcash_wallet_service(), CreateContext());
 
-  task->Start(callback.Get());
+  base::test::TestFuture<
+      base::expected<mojom::ZCashChainTipStatusPtr, std::string>>
+      future;
+  task->Start(future.GetCallback());
 
-  task_environment().RunUntilIdle();
+  auto result = future.Take();
+  ASSERT_TRUE(result.has_value()) << result.error();
+  EXPECT_EQ(result.value()->latest_scanned_block, 100u);
+  EXPECT_EQ(result.value()->chain_tip, 1000u);
 }
 
 TEST_F(ZCashGetChainTipStatusTaskTest, Error_AccountNotShielded) {
@@ -216,20 +205,15 @@ TEST_F(ZCashGetChainTipStatusTaskTest, Error_AccountNotShielded) {
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
 
-  base::MockCallback<
-      ZCashGetZCashChainTipStatusTask::ZCashGetZCashChainTipStatusTaskCallback>
-      callback;
-  EXPECT_CALL(callback, Run(testing::_))
-      .Times(1)
-      .WillRepeatedly(
-          [&](base::expected<mojom::ZCashChainTipStatusPtr, std::string>
-                  result) { EXPECT_FALSE(result.has_value()); });
   auto task = std::make_unique<ZCashGetZCashChainTipStatusTask>(
       CreatePassKey(), zcash_wallet_service(), CreateContext());
 
-  task->Start(callback.Get());
+  base::test::TestFuture<
+      base::expected<mojom::ZCashChainTipStatusPtr, std::string>>
+      future;
+  task->Start(future.GetCallback());
 
-  task_environment().RunUntilIdle();
+  EXPECT_FALSE(future.Take().has_value());
 }
 
 TEST_F(ZCashGetChainTipStatusTaskTest, Error_GetAccountMeta) {
@@ -249,20 +233,15 @@ TEST_F(ZCashGetChainTipStatusTaskTest, Error_GetAccountMeta) {
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
 
-  base::MockCallback<
-      ZCashGetZCashChainTipStatusTask::ZCashGetZCashChainTipStatusTaskCallback>
-      callback;
-  EXPECT_CALL(callback, Run(testing::_))
-      .Times(1)
-      .WillRepeatedly(
-          [&](base::expected<mojom::ZCashChainTipStatusPtr, std::string>
-                  result) { EXPECT_FALSE(result.has_value()); });
   auto task = std::make_unique<ZCashGetZCashChainTipStatusTask>(
       CreatePassKey(), zcash_wallet_service(), CreateContext());
 
-  task->Start(callback.Get());
+  base::test::TestFuture<
+      base::expected<mojom::ZCashChainTipStatusPtr, std::string>>
+      future;
+  task->Start(future.GetCallback());
 
-  task_environment().RunUntilIdle();
+  EXPECT_FALSE(future.Take().has_value());
 }
 
 TEST_F(ZCashGetChainTipStatusTaskTest, Error_GetLatestBlock) {
@@ -280,20 +259,15 @@ TEST_F(ZCashGetChainTipStatusTaskTest, Error_GetLatestBlock) {
         std::move(callback).Run(base::unexpected("error"));
       });
 
-  base::MockCallback<
-      ZCashGetZCashChainTipStatusTask::ZCashGetZCashChainTipStatusTaskCallback>
-      callback;
-  EXPECT_CALL(callback, Run(testing::_))
-      .Times(1)
-      .WillRepeatedly(
-          [&](base::expected<mojom::ZCashChainTipStatusPtr, std::string>
-                  result) { EXPECT_FALSE(result.has_value()); });
   auto task = std::make_unique<ZCashGetZCashChainTipStatusTask>(
       CreatePassKey(), zcash_wallet_service(), CreateContext());
 
-  task->Start(callback.Get());
+  base::test::TestFuture<
+      base::expected<mojom::ZCashChainTipStatusPtr, std::string>>
+      future;
+  task->Start(future.GetCallback());
 
-  task_environment().RunUntilIdle();
+  EXPECT_FALSE(future.Take().has_value());
 }
 
 }  // namespace brave_wallet

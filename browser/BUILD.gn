@@ -75,6 +75,18 @@ source_set("brave_global_features_impl") {
   }
 }
 
+source_set("brave_browser_features") {
+  sources = [
+    "brave_browser_features.cc",
+    "brave_browser_features.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/v8/buildflags",
+  ]
+}
+
 # Header-only so targets that can't depend on :core can use it.
 source_set("tab_helpers_header") {
   sources = [ "brave_tab_helpers.h" ]
@@ -95,6 +107,7 @@ source_set("core") {
            "//brave/browser/ssl:chromium_impl",
            "//brave/browser/ui/webui:favicon_source_chromium_impl",
            "//brave/browser/ui/window_feature_controller:chromium_impl",
+           "//brave/components/brave_search_conversion",
            "//brave/components/variations",
            "//brave/ui/webui/custom_profile_image/buildflags",
          ]
@@ -106,7 +119,10 @@ source_set("core") {
   }
   public_deps = [
     ":tab_helpers_header",
+    "//brave/components/debounce/core/common",
+    "//brave/components/ephemeral_storage",
     "//brave/components/psst/buildflags",
+    "//brave/components/url_sanitizer/core/browser",
     "//chrome/browser:shell_integration",
   ]
   allow_circular_includes_from =

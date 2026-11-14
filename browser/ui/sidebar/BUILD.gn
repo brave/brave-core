@@ -189,6 +189,7 @@ source_set("browser_tests") {
     "//chrome/common:constants",
     "//chrome/test:test_support",
     "//chrome/test:test_support_ui",
+    "//components/infobars/content",
     "//components/prefs",
     "//components/sessions",
     "//content/test:test_support",

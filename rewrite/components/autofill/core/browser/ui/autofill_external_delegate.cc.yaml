@@ -27,3 +27,9 @@ substitutions:
         if (manager_->client().BraveHandleSuggestion(suggestion, field_id)) {
           return;
         }
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header:
+        - components/autofill/core/browser/integrators/password_form_classification.h

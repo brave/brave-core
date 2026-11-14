@@ -90,7 +90,7 @@ TEST(ProtoConversionTest, SerializeWebSourcesEvent_InvalidUrls) {
   SerializeWebSourcesEvent(mojom_event, &proto_event);
 
   // Only the valid source should be serialized
-  EXPECT_EQ(proto_event.sources_size(), 1);
+  ASSERT_EQ(proto_event.sources_size(), 1);
   EXPECT_EQ(proto_event.sources(0).title(), "Valid Source");
 }
 
@@ -117,7 +117,7 @@ TEST(ProtoConversionTest, DeserializeWebSourcesEvent_InvalidUrls) {
   auto mojom_event = DeserializeWebSourcesEvent(proto_event);
 
   // Only the valid source should be deserialized
-  EXPECT_EQ(mojom_event->sources.size(), 1u);
+  ASSERT_EQ(mojom_event->sources.size(), 1u);
   EXPECT_EQ(mojom_event->sources[0]->title, "Valid Source");
 }
 
@@ -229,7 +229,7 @@ TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_ValidData) {
   EXPECT_EQ(proto_event.tool_name(), "test_tool");
   EXPECT_EQ(proto_event.id(), "tool_id_123");
   EXPECT_EQ(proto_event.arguments_json(), "anything for arguments_json");
-  EXPECT_EQ(proto_event.output_size(), 2);
+  ASSERT_EQ(proto_event.output_size(), 2);
 
   // Check first output block (text)
   EXPECT_TRUE(proto_event.output(0).has_text_content_block());
@@ -271,7 +271,7 @@ TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_WithArtifacts) {
   bool success = SerializeToolUseEvent(mojom_event, &proto_event);
 
   EXPECT_TRUE(success);
-  EXPECT_EQ(proto_event.artifacts_size(), 1);
+  ASSERT_EQ(proto_event.artifacts_size(), 1);
   EXPECT_EQ(proto_event.artifacts(0).id(), "test-artifact-id-123");
   EXPECT_EQ(proto_event.artifacts(0).type(), mojom::kLineChartArtifactType);
   EXPECT_EQ(proto_event.artifacts(0).content_json(), content_json);
@@ -349,8 +349,8 @@ TEST(ProtoConversionTest, DeserializeToolUseEvent_InvalidContentBlocks) {
 
   // Only the valid block should be deserialized
   ASSERT_TRUE(mojom_event->output.has_value());
-  EXPECT_EQ(mojom_event->output->size(), 1u);
-  EXPECT_TRUE(mojom_event->output->at(0)->is_text_content_block());
+  ASSERT_EQ(mojom_event->output->size(), 1u);
+  ASSERT_TRUE(mojom_event->output->at(0)->is_text_content_block());
   EXPECT_EQ(mojom_event->output->at(0)->get_text_content_block()->text,
             "Valid text");
 }
@@ -560,7 +560,7 @@ TEST(ProtoConversionTest,
   ASSERT_EQ(proto_event.output_size(), 1);
   ASSERT_TRUE(proto_event.output(0).has_web_sources_content_block());
   // Only the valid source should be serialized
-  EXPECT_EQ(proto_event.output(0).web_sources_content_block().sources_size(),
+  ASSERT_EQ(proto_event.output(0).web_sources_content_block().sources_size(),
             1);
   EXPECT_EQ(
       proto_event.output(0).web_sources_content_block().sources(0).title(),

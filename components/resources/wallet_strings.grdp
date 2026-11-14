@@ -393,13 +393,6 @@
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_HIDE_DETAILS" desc="Sign panel EIP-712 message hide details" formatter_data="webui=Wallet">Hide details</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_DOMAIN" desc="Sign panel EIP-712 message domain" formatter_data="webui=Wallet">Domain</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_BUTTON" desc="Sign panel sign button" formatter_data="webui=Wallet">Sign</message>
-  <message name="IDS_BRAVE_WALLET_PUBLIC_ENCRYPTION_KEY" desc="Public encryption key title" formatter_data="webui=Wallet">Public encryption key</message>
-  <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_TITLE" desc="Provide Encryption Key Panel Title" formatter_data="webui=Wallet">A DApp is requesting your public encryption key</message>
-  <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_DESCRIPTION" desc="Provide Encryption Key Panel Details" formatter_data="webui=Wallet"><ph name="URL">$1</ph> is requesting your wallet's public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.</message>
-  <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_BUTTON" desc="Provide Encryption Key Panel Provide Button" formatter_data="webui=Wallet">Provide</message>
-  <message name="IDS_BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_TITLE" desc="Read Encrypted Message Panel Title" formatter_data="webui=Wallet">This DApp would like to read this message to complete your request</message>
-  <message name="IDS_BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_DECRYPT_BUTTON" desc="Read Encrypted Message Panel Decrypt Button" formatter_data="webui=Wallet">Decrypt message</message>
-  <message name="IDS_BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_BUTTON" desc="Read Encrypted Message Panel Allow Button" formatter_data="webui=Wallet">Allow</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_TITLE" desc="Allow spend panel Title" formatter_data="webui=Wallet">Allow this app to spend your <ph name="TOKEN_SYMBOL"><ex>ETH</ex>$1</ph>?</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_DESCRIPTION" desc="Allow spend panel description" formatter_data="webui=Wallet">By granting this permission, you are allowing this app to withdraw your <ph name="VALUE"><ex>ETH</ex>$1</ph> and automate transactions for you.</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_BOX_TITLE" desc="Allow spend panel edit permissions button" formatter_data="webui=Wallet">Edit permissions</message>
@@ -631,6 +624,12 @@
   <message name="IDS_BRAVE_WALLET_NEXT_TRANSACTION" desc="Next transaction button text" formatter_data="webui=Wallet">Next transaction</message>
   <message name="IDS_BRAVE_WALLET_PREVIOUS_TRANSACTION" desc="Previous transaction button text" formatter_data="webui=Wallet">Previous transaction</message>
   <message name="IDS_BRAVE_WALLET_REJECT_TRANSACTIONS" desc="Reject transactions button text" formatter_data="webui=Wallet">Reject <ph name="QUEUE_LENGTH">$1<ex>4</ex></ph>  transactions</message>
+  <message name="IDS_BRAVE_WALLET_APPROVAL_FOR_ALL_WARNING_TITLE" desc="Approval for all warning title" formatter_data="webui=Wallet">Set approval for all</message>
+  <message name="IDS_BRAVE_WALLET_APPROVAL_FOR_ALL_WARNING_DESCRIPTION" desc="Approval for all warning description" formatter_data="webui=Wallet">This lets the spender below transfer every NFT you own in this collection. This includes any NFTs you receive later.</message>
+  <message name="IDS_BRAVE_WALLET_WARNING" desc="Warning label" formatter_data="webui=Wallet">Warning</message>
+  <message name="IDS_BRAVE_WALLET_APPROVAL_FOR_ALL_FINAL_WARNING_TITLE" desc="Approval for all final warning title" formatter_data="webui=Wallet">Give this site access to all your NFTs?</message>
+  <message name="IDS_BRAVE_WALLET_APPROVAL_FOR_ALL_FINAL_WARNING_DESCRIPTION" desc="Approval for all final warning description" formatter_data="webui=Wallet">You're about to let <ph name="ADDRESS">$1<ex>0xfdafdsfa</ex></ph> transfer every NFT in this wallet, including any you receive later.</message>
+  <message name="IDS_BRAVE_WALLET_CONFIRM_ANYWAY" desc="Confirm anyway button text" formatter_data="webui=Wallet">Confirm anyway</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_BLOCKCHAIN" desc="NFT detail screen blockchain category" formatter_data="webui=Wallet">Blockchain</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_STANDARD" desc="NFT detail screen token standard category" formatter_data="webui=Wallet">Token standard</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_ID" desc="NFT detail screen token id category" formatter_data="webui=Wallet">Token ID</message>
@@ -1327,4 +1326,13 @@
   <message name="IDS_BRAVE_WALLET_ONBOARDING_WELCOME_NEW_ACCOUNT_TITLE" desc="Title of the create-a-new-wallet action on the onboarding welcome screen" formatter_data="webui=Wallet">Get started with a new account</message>
   <message name="IDS_BRAVE_WALLET_ONBOARDING_WELCOME_NEW_ACCOUNT_DESCRIPTION" desc="Description of the create-a-new-wallet action on the onboarding welcome screen" formatter_data="webui=Wallet">Set up Brave Wallet in minutes.</message>
   <message name="IDS_BRAVE_WALLET_ONBOARDING_WELCOME_IMPORT_WALLET_DESCRIPTION" desc="Description of the import-an-existing-wallet action on the onboarding welcome screen" formatter_data="webui=Wallet">Import a recovery phrase from any wallet.</message>
+  <message name="IDS_BRAVE_WALLET_ONBOARDING_ENABLE_CARD_TITLE" desc="Title on the onboarding screen that offers the Brave Rewards card" formatter_data="webui=Wallet">Meet your <ph name="TEXT_BEFORE">$1</ph>Brave Card<ph name="TEXT_AFTER">/$1</ph></message>
+  <message name="IDS_BRAVE_WALLET_ONBOARDING_ENABLE_CARD_DESCRIPTION" desc="Description on the onboarding screen that offers the Brave Rewards card" formatter_data="webui=Wallet">Add it now and your wallet starts earning from day one. You can skip and turn it on from your wallet whenever you want.</message>
+  <message name="IDS_BRAVE_WALLET_ONBOARDING_ENABLE_CARD_READY" desc="Caption on the Brave Rewards card graphic during onboarding" formatter_data="webui=Wallet">Your card, ready to activate</message>
+  <message name="IDS_BRAVE_WALLET_ONBOARDING_ENABLE_CARD_CASHBACK_BENEFIT" desc="Benefit row on the onboarding Brave Rewards card screen describing purchase cashback" formatter_data="webui=Wallet">Earn 1–5% BAT back on purchases</message>
+  <message name="IDS_BRAVE_WALLET_ONBOARDING_ENABLE_CARD_ADS_BENEFIT" desc="Benefit row on the onboarding Brave Rewards card screen describing Brave Ads earnings" formatter_data="webui=Wallet">Earn from Brave Ads as you browse</message>
+  <message name="IDS_BRAVE_WALLET_ONBOARDING_ENABLE_CARD_APY_BENEFIT" desc="Benefit row on the onboarding Brave Rewards card screen describing balance interest" formatter_data="webui=Wallet">Earn 4.5% APY on your balance</message>
+  <message name="IDS_BRAVE_WALLET_ONBOARDING_ENABLE_CARD_NO_FEES_BENEFIT" desc="Benefit row on the onboarding Brave Rewards card screen describing that the card has no fees" formatter_data="webui=Wallet">No monthly or annual fees</message>
+  <message name="IDS_BRAVE_WALLET_ONBOARDING_ENABLE_CARD_ADD_BUTTON" desc="Button on the onboarding Brave Rewards card screen that adds the card" formatter_data="webui=Wallet">Add Brave Card</message>
+  <message name="IDS_BRAVE_WALLET_ONBOARDING_ENABLE_CARD_NOT_NOW_BUTTON" desc="Button on the onboarding Brave Rewards card screen that skips adding the card" formatter_data="webui=Wallet">Not now</message>
 </grit-part>

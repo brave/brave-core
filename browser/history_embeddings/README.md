@@ -142,8 +142,8 @@ utility through the standard `LoadModels` mojo call.
   search toggle so neither embedding service is built when it is off (see
   "Enabling / the Semantic history search setting" above).
 
-- **`chromium_src/chrome/browser/history_embeddings/history_embeddings_service_factory.cc`**
-  — Override to use `BravePassageEmbeddingsServiceController` and
+- **`rewrite/chrome/browser/history_embeddings/history_embeddings_service_factory.cc.yaml`**
+  — Plaster to use `BravePassageEmbeddingsServiceController` and
   `BraveHistoryEmbeddingsService`.
 
 - **`chromium_src/services/passage_embeddings/passage_embedder_impl.cc`** —

@@ -3,6 +3,59 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+source_set("ephemeral_storage") {
+  sources = [
+    "application_state_observer.cc",
+    "application_state_observer.h",
+    "brave_ephemeral_storage_service_delegate.cc",
+    "brave_ephemeral_storage_service_delegate.h",
+    "browsing_history_cleaner.cc",
+    "browsing_history_cleaner.h",
+    "ephemeral_storage_service_factory.cc",
+    "ephemeral_storage_service_factory.h",
+    "ephemeral_storage_session_restore_helpers.cc",
+    "ephemeral_storage_tab_helper.cc",
+    "ephemeral_storage_tab_helper.h",
+    "tld_ephemeral_lifetime.cc",
+    "tld_ephemeral_lifetime.h",
+  ]
+  public_deps = [
+    "//brave/components/brave_shields/core/browser",
+    "//chrome/browser/ui/browser_window",
+    "//components/content_settings/core/browser:cookie_settings",
+  ]
+  deps = [
+    "//base",
+    "//brave/browser/brave_shields",
+    "//brave/components/brave_shields/core/common",
+    "//brave/components/ephemeral_storage",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/browsing_data:constants",
+    "//chrome/browser/content_settings:content_settings_factory",
+    "//chrome/browser/history",
+    "//chrome/browser/profiles",
+    "//chrome/browser/sync",
+    "//components/content_settings/core/browser",
+    "//components/pref_registry",
+    "//content/public/browser",
+    "//net",
+    "//third_party/blink/public/common",
+  ]
+
+  if (is_android) {
+    public_deps += [
+      "//chrome/browser/android:tabs_public",
+      "//chrome/browser/ui/android/tab_model",
+    ]
+  } else {
+    deps += [
+      "//brave/browser/ui/tabs:tabs_public",
+      "//chrome/browser/ui:browser_manager_service",
+      "//chrome/browser/ui/tabs:tab_strip",
+    ]
+  }
+}
+
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
@@ -26,6 +79,7 @@ source_set("browser_tests") {
     ]
 
     deps += [
+      ":ephemeral_storage",
       "//brave/browser",
       "//brave/browser/brave_shields",
       "//brave/browser/brave_shields:test_support",
@@ -63,6 +117,7 @@ source_set("unit_tests") {
   ]
 
   deps = [
+    ":ephemeral_storage",
     "//base/test:test_support",
     "//brave/browser/brave_shields",
     "//brave/components/brave_shields/core/browser",

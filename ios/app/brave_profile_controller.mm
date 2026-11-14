@@ -15,7 +15,6 @@
 #include "brave/ios/browser/api/content_settings/default_host_content_settings.h"
 #include "brave/ios/browser/api/content_settings/default_host_content_settings_internal.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
-#include "brave/ios/browser/api/ipfs/ipfs_api+private.h"
 #include "brave/ios/browser/api/ntp_background_images/ntp_background_images_service_ios+private.h"
 #include "brave/ios/browser/api/opentabs/brave_opentabs_api+private.h"
 #include "brave/ios/browser/api/opentabs/brave_sendtab_api+private.h"
@@ -95,7 +94,6 @@
 @property(nonatomic) BraveSyncProfileServiceIOS* syncProfileService;
 @property(nonatomic) BraveTabGeneratorAPI* tabGeneratorAPI;
 @property(nonatomic) BraveWalletAPI* braveWalletAPI;
-@property(nonatomic) IpfsAPIImpl* ipfsAPI;
 @property(nonatomic) WebImageDownloader* webImageDownloader;
 @property(nonatomic) NTPBackgroundImagesService* backgroundImagesService;
 @property(nonatomic) DefaultHostContentSettings* defaultHostContentSettings;
@@ -296,13 +294,6 @@
 
 - (BraveStats*)braveStats {
   return [[BraveStats alloc] initWithBrowserState:_profile];
-}
-
-- (id<IpfsAPI>)ipfsAPI {
-  if (!_ipfsAPI) {
-    _ipfsAPI = [[IpfsAPIImpl alloc] initWithBrowserState:_profile];
-  }
-  return _ipfsAPI;
 }
 
 - (WebImageDownloader*)webImageDownloader {

@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import BraveUI
 import CoreData
@@ -54,6 +55,9 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
 
   private var bookmarksFRC: BookmarksV2FetchResultsController?
   private let bookmarkManager: BookmarkManager
+  private let bookmarkImporter: (any BookmarkImporter)?
+  private let bookmarkExporter: BraveBookmarksExporter
+
   /// Called when the bookmarks are updated via some user input (i.e. Delete, edit, etc.)
   private var bookmarksDidChange: (() -> Void)?
 
@@ -66,7 +70,6 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     return self.currentFolder == nil
   }
 
-  private let importExportUtility = BookmarksImportExportUtility()
   private var documentInteractionController: UIDocumentInteractionController?
 
   private var searchBookmarksTimer: Timer?
@@ -79,9 +82,17 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
 
   // MARK: Lifecycle
 
-  init(folder: Bookmarkv2?, bookmarkManager: BookmarkManager, isPrivateBrowsing: Bool) {
+  init(
+    folder: Bookmarkv2?,
+    bookmarkManager: BookmarkManager,
+    bookmarkImporter: (any BookmarkImporter)?,
+    bookmarkExporter: BraveBookmarksExporter,
+    isPrivateBrowsing: Bool
+  ) {
     self.isPrivateBrowsing = isPrivateBrowsing
     self.bookmarkManager = bookmarkManager
+    self.bookmarkImporter = bookmarkImporter
+    self.bookmarkExporter = bookmarkExporter
     super.init(nibName: nil, bundle: nil)
 
     self.currentFolder = folder
@@ -204,6 +215,8 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         let nextController = BookmarksViewController(
           folder: self.currentFolder?.parent,
           bookmarkManager: self.bookmarkManager,
+          bookmarkImporter: self.bookmarkImporter,
+          bookmarkExporter: self.bookmarkExporter,
           isPrivateBrowsing: self.isPrivateBrowsing
         )
         nextController.profile = self.profile
@@ -263,7 +276,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     let importAction = UIAlertAction(title: Strings.bookmarksImportAction, style: .default) {
       [weak self] _ in
       guard let self = self else { return }
-      let vc = UIDocumentPickerViewController(forOpeningContentTypes: [.html, .zip])
+      let vc = UIDocumentPickerViewController(forOpeningContentTypes: [.html])
       vc.delegate = self
       self.present(vc, animated: true)
     }
@@ -528,6 +541,8 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         let nextController = BookmarksViewController(
           folder: bookmark,
           bookmarkManager: bookmarkManager,
+          bookmarkImporter: bookmarkImporter,
+          bookmarkExporter: bookmarkExporter,
           isPrivateBrowsing: isPrivateBrowsing
         )
         nextController.profile = profile
@@ -938,15 +953,26 @@ extension BookmarksViewController {
 
   @MainActor
   func importBookmarks(from url: URL) async {
+    guard let importer = bookmarkImporter else { return }
     isLoading = true
-    let success = await self.importExportUtility.importBookmarks(from: url)
+    var message: String
+    do {
+      if url.startAccessingSecurityScopedResource() {
+        defer {
+          url.stopAccessingSecurityScopedResource()
+        }
+        _ = try await importer.importBookmarksForFile(atPath: url.path)
+        message = Strings.Sync.bookmarksImportPopupSuccessMessage
+      } else {
+        message = Strings.Sync.bookmarksImportPopupFailureMessage
+      }
+    } catch {
+      message = Strings.Sync.bookmarksImportPopupFailureMessage
+    }
     isLoading = false
-
     let alert = UIAlertController(
       title: Strings.Sync.bookmarksImportExportPopupTitle,
-      message: success
-        ? Strings.Sync.bookmarksImportPopupSuccessMessage
-        : Strings.Sync.bookmarksImportPopupFailureMessage,
+      message: message,
       preferredStyle: .alert
     )
     alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
@@ -956,7 +982,7 @@ extension BookmarksViewController {
   @MainActor
   func exportBookmarks(to url: URL) async {
     isLoading = true
-    let success = await self.importExportUtility.exportBookmarks(to: url)
+    let success = await self.bookmarkExporter.export(to: url)
     isLoading = false
 
     if success {
@@ -1035,5 +1061,31 @@ extension BookmarksViewController: UISearchControllerDelegate {
 
     // Re-enable bottom var options when search is done
     navigationController?.setToolbarHidden(false, animated: true)
+  }
+}
+
+// MARK: -
+
+extension BraveBookmarksExporter {
+  public func export(to path: URL) async -> Bool {
+    return await withCheckedContinuation { continuation in
+      self.export(toFile: path.path) { state in
+        switch state {
+        case .started:
+          Logger.module.debug("Bookmarks Export - Export Started")
+        case .errorCreatingFile, .errorWritingHeader, .errorWritingNodes:
+          Logger.module.debug("Bookmarks Export - Export Error")
+          continuation.resume(returning: false)
+        case .cancelled:
+          Logger.module.debug("Bookmarks Export - Export Cancelled")
+          continuation.resume(returning: false)
+        case .completed:
+          Logger.module.debug("Bookmarks Export - Export Completed")
+          continuation.resume(returning: true)
+        @unknown default:
+          fatalError()
+        }
+      }
+    }
   }
 }

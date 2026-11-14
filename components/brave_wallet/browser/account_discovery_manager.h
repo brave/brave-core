@@ -11,6 +11,7 @@
 #include <string>
 #include <utility>
 
+#include "base/containers/flat_set.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -35,6 +36,7 @@ class AccountDiscoveryManager {
   void StartDiscovery();
 
   base::WeakPtr<AccountDiscoveryManager> GetWeakPtrForTesting();
+  bool IsDiscoveryCompleteForTesting(mojom::KeyringId keyring_id) const;
 
  private:
   struct DiscoveryContext {
@@ -80,6 +82,9 @@ class AccountDiscoveryManager {
   raw_ref<brave_wallet::JsonRpcService> json_rpc_service_;
   raw_ref<brave_wallet::KeyringService> keyring_service_;
   raw_ptr<brave_wallet::BitcoinWalletService> bitcoin_wallet_service_;
+
+  // Records terminal responses, rather than merely the last request issued.
+  base::flat_set<mojom::KeyringId> completed_discoveries_for_testing_;
 
   base::WeakPtrFactory<AccountDiscoveryManager> weak_ptr_factory_{this};
 };

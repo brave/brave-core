@@ -12,7 +12,7 @@
 class BraveSystemMenuModelBuilder : public SystemMenuModelBuilder {
  public:
   using SystemMenuModelBuilder::SystemMenuModelBuilder;
-  virtual ~BraveSystemMenuModelBuilder();
+  ~BraveSystemMenuModelBuilder() override;
 
  private:
   // SystemMenuModelBuilder

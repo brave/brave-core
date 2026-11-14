@@ -13,3 +13,9 @@ substitutions:
     add_friend:
       class_name: SpellingOptionsSubMenuObserver
       friend_type: class BraveSpellingOptionsSubMenuObserver
+
+  - description: |-
+      Forward declare the types the substitutions above use
+    add_after_includes:
+      code: |-
+        class BraveSpellingOptionsSubMenuObserver;

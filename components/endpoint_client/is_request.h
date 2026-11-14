@@ -12,10 +12,21 @@
 namespace endpoint_client::internal {
 
 template <typename>
+inline constexpr bool kIsBodylessRequest = false;
+
+template <Method M>
+inline constexpr bool kIsBodylessRequest<Request<M>> = true;
+
+// A body-less request is a Request<> without a request body.
+template <typename Request>
+concept IsBodylessRequest = kIsBodylessRequest<Request>;
+
+template <typename>
 inline constexpr bool kIsJSONRequest = false;
 
-template <IsJSONRequestBody RequestBody, Method M>
-inline constexpr bool kIsJSONRequest<Request<RequestBody, M>> = true;
+template <Method M, IsJSONRequestBody RequestBody>
+  requires(MethodAllowsBody(M))
+inline constexpr bool kIsJSONRequest<Request<M, RequestBody>> = true;
 
 // A JSON request is a Request<> whose body is a JSON request body.
 template <typename Request>
@@ -24,16 +35,18 @@ concept IsJSONRequest = kIsJSONRequest<Request>;
 template <typename>
 inline constexpr bool kIsProtobufRequest = false;
 
-template <IsProtobufRequestBody RequestBody, Method M>
-inline constexpr bool kIsProtobufRequest<Request<RequestBody, M>> = true;
+template <Method M, IsProtobufRequestBody RequestBody>
+  requires(MethodAllowsBody(M))
+inline constexpr bool kIsProtobufRequest<Request<M, RequestBody>> = true;
 
 // A Protobuf request is a Request<> whose body is a Protobuf request body.
 template <typename Request>
 concept IsProtobufRequest = kIsProtobufRequest<Request>;
 
-// A request is either a JSON request or a Protobuf request.
+// A request is a body-less request, a JSON request, or a Protobuf request.
 template <typename Request>
-concept IsRequest = IsJSONRequest<Request> || IsProtobufRequest<Request>;
+concept IsRequest = IsBodylessRequest<Request> || IsJSONRequest<Request> ||
+                    IsProtobufRequest<Request>;
 
 }  // namespace endpoint_client::internal
 

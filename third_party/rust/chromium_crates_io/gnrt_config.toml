@@ -123,6 +123,7 @@ if (is_ios) {
 license_files = ['LICENSE']
 
 [crate.adblock-cxx]
+license_files = ['../../../../../../common/licenses/MPL-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.addchain]
@@ -145,6 +146,7 @@ extra_kv = { allow_unsafe = true }
 extra_kv = { allow_unsafe = true }
 
 [crate.anonymous-credentials]
+license_files = ['../../../../common/licenses/MPL-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.arrayref]
@@ -158,7 +160,6 @@ extra_kv = { allow_unsafe = true }
 extra_kv = { allow_unsafe = false }
 
 [crate.autocfg]
-license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/autocfg-v1/LICENSE-APACHE']
 extra_kv = { allow_unsafe = false }
 
 [crate.base-x]
@@ -168,6 +169,7 @@ extra_kv = { allow_unsafe = true }
 extra_kv = { allow_unsafe = false }
 
 [crate.bech32]
+license_files = ['../../../bech32/v0_9/LICENSE']
 extra_kv = { allow_unsafe = false }
 
 [crate.bigdecimal]
@@ -185,6 +187,7 @@ license_files = ['LICENSE.txt']
 extra_kv = { allow_unsafe = true }
 
 [crate.blake2b_simd]
+license_files = ['../../../blake2b_simd/v1/LICENSE']
 extra_kv = { allow_unsafe = true }
 
 [crate.block-buffer]
@@ -200,9 +203,11 @@ extra_kv = { allow_unsafe = false }
 extra_kv = { allow_unsafe = true }
 
 [crate.brave-news-cxx]
+license_files = ['../../../common/licenses/MPL-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.brave_wallet]
+license_files = ['../../../common/licenses/MPL-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.byte-slice-cast]
@@ -212,7 +217,6 @@ extra_kv = { allow_unsafe = true }
 extra_kv = { allow_unsafe = true }
 
 [crate.bytes]
-license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/bytes-v1/LICENSE']
 extra_kv = { allow_unsafe = true }
 
 [crate.cbc]
@@ -238,6 +242,7 @@ license_files = ['LICENSE']
 extra_kv = { allow_unsafe = false }
 
 [crate.challenge-bypass-ristretto-cxx]
+license_files = ['../../../../common/licenses/MPL-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.chrono]
@@ -270,9 +275,11 @@ extra_kv = { allow_unsafe = false }
 extra_kv = { allow_unsafe = true }
 
 [crate.constellation-cxx]
+license_files = ['../../../../../common/licenses/MPL-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.convert_case]
+license_files = ['../../../convert_case/v0_4/LICENSE']
 extra_kv = { allow_unsafe = false }
 
 [crate.core2]
@@ -354,6 +361,7 @@ extra_kv = { allow_unsafe = false }
 extra_kv = { allow_unsafe = false }
 
 [crate.document-extractor]
+license_files = ['../../../../common/licenses/MPL-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.dtoa]
@@ -370,10 +378,10 @@ extra_kv = { allow_unsafe = true }
 extra_kv = { allow_unsafe = true }
 
 [crate.encoding_rs]
+license_files = ['LICENSE-APACHE', 'LICENSE-WHATWG']
 extra_kv = { allow_unsafe = true }
 
 [crate.equivalent]
-license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/equivalent-v1/LICENSE-APACHE']
 extra_kv = { allow_unsafe = false }
 
 [crate.feed-rs]
@@ -387,9 +395,11 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.filecoin-cxx]
+license_files = ['../../../common/licenses/MPL-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.flatbuffers]
+license_files = ['../../../flatbuffers/v25/LICENSE']
 extra_kv = { allow_unsafe = true, allow_unstable_features = ["trusted_len"] }
 
 [crate.fnv]
@@ -456,6 +466,7 @@ license_files = ['LICENSE-APACHE']
 extra_kv = { allow_unsafe = true }
 
 [crate.getrandom_or_panic]
+license_files = ['../../../getrandom_or_panic/v0_0_3/LICENSE']
 extra_kv = { allow_unsafe = false }
 
 [crate.getset]
@@ -475,6 +486,7 @@ extra_kv = { allow_unsafe = false }
 extra_kv = { allow_unsafe = true }
 
 [crate.halo2_poseidon]
+license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.halo2_proofs]
@@ -482,7 +494,6 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.hashbrown]
-license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/hashbrown-v0_15/LICENSE-APACHE']
 extra_kv = { allow_unsafe = true }
 
 [crate.hex]
@@ -532,10 +543,10 @@ extra_kv = { allow_unsafe = true }
 extra_kv = { allow_unsafe = true }
 
 [crate.itoa]
-license_files = ['LICENSE-APACHE']
 extra_kv = { allow_unsafe = true }
 
 [crate.json-cxx]
+license_files = ['../../../common/licenses/MPL-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.jubjub]
@@ -555,7 +566,6 @@ extra_kv = { allow_unsafe = true }
 
 [crate.libm]
 extra_kv = { rustenv = [ "OPT_LEVEL=0" ], allow_unsafe = true }
-license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/libm-v0_2/LICENSE.txt']
 
 [crate.lifeguard]
 extra_kv = { allow_unsafe = true }
@@ -602,6 +612,7 @@ extra_kv = { allow_unsafe = true }
 extra_kv = { allow_unsafe = false }
 
 [crate.multibase]
+license_files = ['../../../multibase/v0_9/LICENSE']
 extra_kv = { allow_unsafe = false }
 
 [crate.multihash]
@@ -617,7 +628,6 @@ extra_kv = { allow_unsafe = true }
 extra_kv = { allow_unsafe = true }
 
 [crate.num-bigint]
-license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { raw_gn = '''
 if (target_cpu == "arm64" || target_cpu == "x64") {
   rustenv = [ "CARGO_CFG_TARGET_POINTER_WIDTH=64" ]
@@ -638,11 +648,9 @@ rustflags += [
 ''', allow_unsafe = true }
 
 [crate.num-integer]
-license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.num-traits]
-license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { rustflags = [ "--cfg", "has_i128", "--cfg", "has_to_int_unchecked", "--cfg", "has_reverse_bits", "--cfg", "has_leading_trailing_ones", "--cfg", "has_int_assignop_ref", "--cfg", "has_div_euclid", "--cfg", "has_copysign" ] , allow_unsafe = false }
 
 [crate.once_cell]
@@ -764,7 +772,6 @@ extra_kv = { allow_unsafe = true }
 extra_kv = { allow_unsafe = false }
 
 [crate.readability]
-license_files = ['../../../../../../brave/components/speedreader/rust/lib/src/readability/LICENSE']
 extra_kv = { allow_unsafe = false }
 
 [crate.reddsa]
@@ -812,6 +819,7 @@ extra_kv = { allow_unsafe = true }
 extra_kv = { allow_unsafe = false }
 
 [crate.seahash]
+license_files = ['../../../seahash/v4/LICENSE']
 extra_kv = { allow_unsafe = true }
 
 [crate.selectors]
@@ -830,12 +838,10 @@ extra_kv = { allow_unsafe = false }
 extra_kv = { allow_unsafe = true }
 
 [crate.serde_core]
-license_files = ['../../../../../common/licenses/Apache-2.0']
 build_script_outputs = [ "private.rs" ]
 extra_kv = { allow_unsafe = true }
 
 [crate.serde_derive]
-license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.serde_json]
@@ -860,9 +866,11 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = true }
 
 [crate.skus]
+license_files = ['../../../../../common/licenses/MPL-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.skus-cxx]
+license_files = ['../../../../../common/licenses/MPL-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.slab]
@@ -872,9 +880,11 @@ extra_kv = { allow_unsafe = true }
 extra_kv = { allow_unsafe = true }
 
 [crate.speedreader]
+license_files = ['../../../../common/licenses/MPL-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.speedreader-ffi]
+license_files = ['../../../../common/licenses/MPL-2.0']
 extra_kv = { allow_unsafe = true }
 
 [crate.sta-rs]
@@ -968,7 +978,6 @@ extra_kv = { allow_unsafe = false }
 extra_kv = { allow_unsafe = true }
 
 [crate.unicode-width]
-license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.unicode-xid]
@@ -1008,19 +1017,15 @@ build_script_outputs = [ "generated.rs", "named_entities.rs" ]
 extra_kv = { allow_unsafe = false }
 
 [crate.windows-targets]
-license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.windows_aarch64_msvc]
-license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.windows_i686_msvc]
-license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.windows_x86_64_msvc]
-license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.wyz]
@@ -1032,22 +1037,19 @@ license_files = ['../../../../../common/licenses/MPL-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.zcash_client_backend]
-license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.zcash_encoding]
-license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.zcash_note_encryption]
 extra_kv = { allow_unsafe = false }
 
 [crate.zcash_primitives]
-license_files = ['../../../../../common/licenses/Apache-2.0']
+license_files = ['../../../../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.zcash_protocol]
-license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.zcash_spec]

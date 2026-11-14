@@ -108,6 +108,7 @@ source_set("ui") {
     ":brave_tab_prefs",
     ":ui_features",
     "//brave/brave_domains",
+    "//brave/browser:brave_browser_features",
     "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_origin",
     "//brave/browser/brave_shields",
@@ -159,6 +160,7 @@ source_set("ui") {
 
   if (toolkit_views) {
     deps += [
+      "//brave/browser/translate",
       "//chrome/browser/ui/views/extensions:extensions_menu_button",
       "//chrome/browser/ui/views/frame:browser_frame_view",
       "//chrome/browser/ui/views/frame:opaque_browser_frame_view_layout",
@@ -259,6 +261,7 @@ source_set("ui") {
         "//brave/browser/brave_wallet:tab_helper",
         "//brave/browser/ui/brave_wallet",
         "//brave/browser/ui/webui/brave_wallet/ledger",
+        "//brave/browser/ui/webui/brave_wallet/polkadot",
         "//brave/browser/ui/webui/brave_wallet/trezor",
         "//brave/browser/ui/webui/brave_wallet/wallet_panel",
         "//chrome/browser/picture_in_picture",
@@ -308,17 +311,10 @@ source_set("ui") {
   }
 
   if (enable_ai_chat) {
-    # Compiled on all platforms: the desktop side panel implementations live in
-    # //brave/browser/ui/views/side_panel/ai_chat, while these files provide the
-    # non-views (e.g. Android) fallbacks, so callers stay platform-agnostic.
-    sources += [
-      "side_panel/ai_chat/ai_chat_full_page_link_observer.cc",
-      "side_panel/ai_chat/ai_chat_full_page_link_observer.h",
-      "side_panel/ai_chat/ai_chat_side_panel_utils.cc",
-      "side_panel/ai_chat/ai_chat_side_panel_utils.h",
+    deps += [
+      "//brave/browser/ui/side_panel/ai_chat",
+      "//brave/components/ai_chat/core/common",
     ]
-
-    deps += [ "//brave/components/ai_chat/core/common" ]
 
     if (!is_android) {
       sources += [
@@ -328,9 +324,14 @@ source_set("ui") {
       deps += [
         "//brave/browser/ai_chat",
         "//brave/browser/ai_chat/ollama",
+        "//brave/browser/ui/webui/ai_chat",
         "//brave/components/ai_chat/core/browser",
         "//brave/components/ai_chat/core/browser/ollama",
       ]
+    }
+
+    if (toolkit_views) {
+      deps += [ "//brave/browser/ui/views/side_panel/ai_chat" ]
     }
   }
 
@@ -340,6 +341,10 @@ source_set("ui") {
       "//brave/browser/brave_news:tab_helper",
       "//brave/components/brave_news/common",
     ]
+
+    if (!is_android) {
+      deps += [ "//brave/browser/ui/webui/brave_news_internals" ]
+    }
   }
 
   # It doesn't make sense to view the webcompat webui on iOS & Android.
@@ -356,12 +361,8 @@ source_set("ui") {
   }
 
   if (is_android) {
-    sources += [
-      "android/ai_chat/brave_leo_settings_launcher_helper.cc",
-      "android/ai_chat/brave_leo_settings_launcher_helper.h",
-    ]
-
     deps += [
+      "//brave/browser/ui/android/ai_chat",
       "//brave/browser/ui/webui/new_tab_takeover/android:new_tab_takeover",
       "//brave/build/android:jni_headers",
       "//chrome/browser/ui/android/tab_model",
@@ -394,6 +395,8 @@ source_set("ui") {
   deps += [ "//brave/browser/ui/brave_origin" ]
 
   if (!is_android) {
+    public_deps += [ "//brave/browser/autocomplete" ]
+
     sources += [
       "bookmark/bookmark_helper.cc",
       "bookmark/bookmark_helper.h",
@@ -449,11 +452,8 @@ source_set("ui") {
       "webui/brave_settings_ui.cc",
       "webui/brave_settings_ui.h",
       "webui/brave_shields/shields_panel_data_handler.cc",
-      "webui/brave_shields/shields_panel_data_handler.h",
       "webui/brave_shields/shields_panel_handler.cc",
-      "webui/brave_shields/shields_panel_handler.h",
       "webui/brave_shields/shields_panel_ui.cc",
-      "webui/brave_shields/shields_panel_ui.h",
       "webui/new_tab_page/brave_new_tab_message_handler.cc",
       "webui/new_tab_page/brave_new_tab_message_handler.h",
       "webui/new_tab_page/brave_new_tab_page_handler.cc",
@@ -518,18 +518,27 @@ source_set("ui") {
       ":brave_browser_window_header",
       "//base",
       "//brave/browser/brave_account",
+      "//brave/browser/debounce",
+      "//brave/browser/metrics",
       "//brave/browser/new_tab",
       "//brave/browser/ntp_background",
       "//brave/browser/profiles:util",
+      "//brave/browser/search_engines",
       "//brave/browser/sessions",
+      "//brave/browser/ui/omnibox:clean_link",
       "//brave/browser/ui/sidebar:sidebar_impl",
+      "//brave/browser/ui/split_view",
       "//brave/browser/ui/tabs:tab_menu",
       "//brave/browser/ui/tabs:tab_model",
       "//brave/browser/ui/tabs:tab_strip",
       "//brave/browser/ui/tabs:tabs_public",
       "//brave/browser/ui/webui:brave_sanitized_image_source",
+      "//brave/browser/ui/webui/brave_new_tab_page_refresh",
+      "//brave/browser/ui/webui/brave_shields",
       "//brave/browser/ui/webui/brave_welcome_page",
       "//brave/browser/ui/webui/settings/brave_account",
+      "//brave/browser/url_sanitizer",
+      "//brave/browser/webcompat_reporter",
       "//brave/browser/workspaces",
       "//brave/common",
       "//brave/components/brave_account",
@@ -1399,6 +1408,7 @@ source_set("ui") {
         "views/brave_actions/brave_rewards_action_view.cc",
         "views/brave_actions/brave_rewards_action_view.h",
       ]
+      public_deps += [ "//brave/browser/ui/brave_rewards" ]
     }
 
     if (enable_extensions) {
@@ -1468,8 +1478,6 @@ source_set("ui") {
       sources += [
         "views/toolbar/brave_vpn_button.cc",
         "views/toolbar/brave_vpn_button.h",
-        "views/toolbar/brave_vpn_panel_controller.cc",
-        "views/toolbar/brave_vpn_panel_controller.h",
         "views/toolbar/brave_vpn_status_label.cc",
         "views/toolbar/brave_vpn_status_label.h",
         "views/toolbar/brave_vpn_toggle_button.cc",
@@ -1506,8 +1514,6 @@ source_set("ui") {
 
     if (enable_brave_rewards) {
       sources += [
-        "brave_rewards/rewards_panel_coordinator.cc",
-        "brave_rewards/rewards_panel_coordinator.h",
         "webui/brave_rewards/rewards_page_top_ui.cc",
         "webui/brave_rewards/rewards_page_top_ui.h",
       ]
@@ -1612,6 +1618,7 @@ source_set("ui") {
   if (enable_email_aliases) {
     deps += [
       "//brave/browser/email_aliases",
+      "//brave/browser/ui/email_aliases",
       "//brave/browser/ui/webui/email_aliases",
       "//brave/components/email_aliases:features",
       "//brave/components/email_aliases:mojom",
@@ -1682,6 +1689,7 @@ source_set("unit_tests") {
       sources += [ "views/toolbar/brave_vpn_button_unittest.cc" ]
       deps += [
         "//base",
+        "//brave/app/vector_icons",
         "//brave/browser/brave_vpn",
         "//brave/components/brave_vpn/browser",
         "//brave/components/skus/browser",
@@ -1721,8 +1729,10 @@ source_set("browser_tests") {
       ":brave_tab_prefs",
       ":ui",
       "//brave/app:command_ids",
+      "//brave/browser/ui/sidebar",
       "//brave/browser/ui/window_closing_confirm",
       "//brave/components/constants",
+      "//brave/components/sidebar/browser",
       "//chrome/browser",
       "//chrome/browser/devtools:test_support",
       "//chrome/browser/first_run:test_support",

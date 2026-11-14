@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/autofill/autofill_image_fetcher_factory.cc b/chrome/browser/autofill/autofill_image_fetcher_factory.cc
+index e1260ce07ec5403c35c01e3939b2f088cf072331..ac693660d9378c1e7e6856e67e7c4419590ba1a1 100644
+--- a/chrome/browser/autofill/autofill_image_fetcher_factory.cc
++++ b/chrome/browser/autofill/autofill_image_fetcher_factory.cc
+@@ -53,6 +53,7 @@ AutofillImageFetcherFactory::~AutofillImageFetcherFactory() = default;
+ std::unique_ptr<KeyedService>
+ AutofillImageFetcherFactory::BuildServiceInstanceForBrowserContext(
+     content::BrowserContext* context) const {
++  if ((true)) return nullptr;
+   return std::make_unique<AutofillImageFetcherImpl>(
+       Profile::FromBrowserContext(context)->GetProfileKey());
+ }

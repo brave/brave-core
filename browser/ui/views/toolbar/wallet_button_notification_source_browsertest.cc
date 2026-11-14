@@ -7,8 +7,12 @@
 
 #include <memory>
 #include <optional>
+#include <string>
+#include <utility>
 
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -89,7 +93,10 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
 
     auto body = base::test::ParseJsonDict(request.content);
     auto* method = body.FindString("method");
-    EXPECT_TRUE(method);
+    if (!method) {
+      ADD_FAILURE() << request.content;
+      return nullptr;
+    }
     std::string reply;
 
     if (*method == "getBlockHeight") {
@@ -195,9 +202,13 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
   content::ContentMockCertVerifier mock_cert_verifier_;
 };
 
+// Init() and MarkWalletButtonWasClicked() notify synchronously, so the tests
+// below check the results right after those calls. Mojo observer
+// notifications (wallet creation, tx changes, tx service reset) arrive
+// asynchronously and are awaited with base::test::RunUntil().
+
 IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                        ShowBadge_WhenWalletNotCreated) {
-  base::RunLoop run_loop;
   std::optional<bool> show_badge_suggest_result;
   std::optional<size_t> count_result;
   auto notification_source = std::make_unique<WalletButtonNotificationSource>(
@@ -210,18 +221,14 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                                    })));
   notification_source->Init();
 
-  // Wait until WalletButtonNotificationSource checks are finished
-  run_loop.RunUntilIdle();
-
-  EXPECT_TRUE(show_badge_suggest_result.value());
-  EXPECT_EQ(0u, count_result.value());
+  EXPECT_EQ(show_badge_suggest_result, true);
+  EXPECT_EQ(count_result, 0u);
 }
 
 IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                        DontShowBadge_WhenWalletCreated) {
   CreateWallet();
 
-  base::RunLoop run_loop;
   std::optional<bool> show_badge_suggest_result;
   std::optional<size_t> count_result;
   auto notification_source = std::make_unique<WalletButtonNotificationSource>(
@@ -234,16 +241,12 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                                    })));
   notification_source->Init();
 
-  // Wait until WalletButtonNotificationSource checks are finished
-  run_loop.RunUntilIdle();
-
-  EXPECT_FALSE(show_badge_suggest_result.value());
-  EXPECT_EQ(0u, count_result.value());
+  EXPECT_EQ(show_badge_suggest_result, false);
+  EXPECT_EQ(count_result, 0u);
 }
 
 IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                        HideBadge_WhenWalletButtonClicked) {
-  base::RunLoop run_loop;
   std::optional<bool> show_badge_suggest_result;
   std::optional<size_t> count_result;
   auto notification_source = std::make_unique<WalletButtonNotificationSource>(
@@ -256,24 +259,17 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                                    })));
   notification_source->Init();
 
-  // Wait until WalletButtonNotificationSource checks are finished
-  run_loop.RunUntilIdle();
-
-  EXPECT_TRUE(show_badge_suggest_result.value());
-  EXPECT_EQ(0u, count_result.value());
+  EXPECT_EQ(show_badge_suggest_result, true);
+  EXPECT_EQ(count_result, 0u);
 
   notification_source->MarkWalletButtonWasClicked();
 
-  // Wait until WalletButtonNotificationSource checks are finished
-  run_loop.RunUntilIdle();
-
-  EXPECT_FALSE(show_badge_suggest_result.value());
-  EXPECT_EQ(0u, count_result.value());
+  EXPECT_EQ(show_badge_suggest_result, false);
+  EXPECT_EQ(count_result, 0u);
 }
 
 IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                        HideBadge_WhenWalletCreated) {
-  base::RunLoop run_loop;
   std::optional<bool> show_badge_suggest_result;
   std::optional<size_t> count_result;
   auto notification_source = std::make_unique<WalletButtonNotificationSource>(
@@ -286,19 +282,15 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                                    })));
   notification_source->Init();
 
-  // Wait until WalletButtonNotificationSource checks are finished
-  run_loop.RunUntilIdle();
-
-  EXPECT_TRUE(show_badge_suggest_result.value());
-  EXPECT_EQ(0u, count_result.value());
+  EXPECT_EQ(show_badge_suggest_result, true);
+  EXPECT_EQ(count_result, 0u);
 
   CreateWallet();
 
-  // Wait until WalletButtonNotificationSource checks are finished
-  run_loop.RunUntilIdle();
-
-  EXPECT_FALSE(show_badge_suggest_result.value());
-  EXPECT_EQ(0u, count_result.value());
+  // The wallet created notification arrives over mojo.
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return show_badge_suggest_result == false; }));
+  EXPECT_EQ(count_result, 0u);
 }
 
 IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
@@ -308,8 +300,6 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   // Add initial FIL transaction
   std::string first_tx_meta_id;
   {
-    base::RunLoop run_loop;
-
     const auto from_account = GetAccountUtils().EnsureFilTestAccount(0);
     const std::string to_account = "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy";
     auto fil_tx_data = mojom::FilTxData::New(
@@ -318,20 +308,16 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
     EXPECT_EQ(from_account->account_id->unique_key,
               "461_3_0_t17otcil7bookogjy3ywoslq5gf5tbisdkcfui2iq");
 
+    base::test::TestFuture<bool, std::string, std::string> add_future;
     tx_service()->AddUnapprovedFilecoinTransaction(
         std::move(fil_tx_data), mojom::kFilecoinTestnet,
         from_account->account_id.Clone(), nullptr,
-        base::BindLambdaForTesting([&](bool success, const std::string& id,
-                                       const std::string& err_message) {
-          first_tx_meta_id = id;
-          EXPECT_TRUE(success) << err_message;
-          run_loop.Quit();
-        }));
-
-    run_loop.Run();
+        add_future.GetCallback<bool, const std::string&, const std::string&>());
+    auto [success, id, err_message] = add_future.Take();
+    first_tx_meta_id = id;
+    EXPECT_TRUE(success) << err_message;
   }
 
-  base::RunLoop idle_loop;
   std::optional<bool> show_badge_suggest_result;
   std::optional<size_t> count_result;
   auto notification_source = std::make_unique<WalletButtonNotificationSource>(
@@ -344,17 +330,12 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                                    })));
   notification_source->Init();
 
-  // Wait until WalletButtonNotificationSource checks are finished
-  idle_loop.RunUntilIdle();
-
-  EXPECT_FALSE(show_badge_suggest_result.value());
-  EXPECT_EQ(1u, count_result.value());
+  EXPECT_EQ(show_badge_suggest_result, false);
+  EXPECT_EQ(count_result, 1u);
 
   // Add second ETH transaction
   std::string second_tx_meta_id;
   {
-    base::RunLoop run_loop;
-
     const auto from_account = GetAccountUtils().EnsureEthAccount(0);
     const std::string to_account = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
 
@@ -362,23 +343,18 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
         "0x06", from_account->account_id.Clone(),
         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000", "",
         std::vector<uint8_t>(), nullptr);
+    base::test::TestFuture<bool, std::string, std::string> add_future;
     tx_service()->AddUnapprovedEvmTransaction(
         std::move(params),
-        base::BindLambdaForTesting([&](bool success, const std::string& id,
-                                       const std::string& err_message) {
-          second_tx_meta_id = id;
-          EXPECT_TRUE(success);
-          run_loop.Quit();
-        }));
-
-    run_loop.Run();
+        add_future.GetCallback<bool, const std::string&, const std::string&>());
+    auto [success, id, err_message] = add_future.Take();
+    second_tx_meta_id = id;
+    EXPECT_TRUE(success) << err_message;
   }
 
   // Add third SOL transaction
   std::string third_tx_meta_id;
   {
-    base::RunLoop run_loop;
-
     auto from_account = GetAccountUtils().EnsureSolAccount(0);
     std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
     const std::vector<uint8_t> data = {2,   0, 0, 0, 128, 150,
@@ -406,78 +382,55 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
         std::vector<mojom::SolanaMessageAddressTableLookupPtr>(), nullptr,
         nullptr, nullptr);
 
+    base::test::TestFuture<bool, std::string, std::string> add_future;
     tx_service()->AddUnapprovedSolanaTransaction(
         std::move(tx_data), brave_wallet::mojom::kSolanaMainnet,
         from_account->account_id.Clone(), nullptr,
-        base::BindLambdaForTesting([&](bool success, const std::string& id,
-                                       const std::string& err_message) {
-          third_tx_meta_id = id;
-          EXPECT_TRUE(success);
-          run_loop.Quit();
-        }));
-
-    run_loop.Run();
+        add_future.GetCallback<bool, const std::string&, const std::string&>());
+    auto [success, id, err_message] = add_future.Take();
+    third_tx_meta_id = id;
+    EXPECT_TRUE(success) << err_message;
   }
 
-  // Wait until WalletButtonNotificationSource checks are finished
-  idle_loop.RunUntilIdle();
-
-  EXPECT_FALSE(show_badge_suggest_result.value());
-  EXPECT_EQ(3u, count_result.value());
+  // New unapproved tx notifications arrive over mojo.
+  ASSERT_TRUE(base::test::RunUntil([&] { return count_result == 3u; }));
+  EXPECT_EQ(show_badge_suggest_result, false);
 
   // Reject first transaction
   {
-    base::RunLoop run_loop;
-    tx_service()->RejectTransaction(
-        mojom::CoinType::FIL, mojom::kFilecoinMainnet, first_tx_meta_id,
-        base::BindLambdaForTesting([&](bool result) {
-          EXPECT_TRUE(result);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    base::test::TestFuture<bool> reject_future;
+    tx_service()->RejectTransaction(mojom::CoinType::FIL,
+                                    mojom::kFilecoinMainnet, first_tx_meta_id,
+                                    reject_future.GetCallback());
+    EXPECT_TRUE(reject_future.Get());
   }
 
-  // Wait until WalletButtonNotificationSource checks are finished
-  idle_loop.RunUntilIdle();
-
-  EXPECT_FALSE(show_badge_suggest_result.value());
-  EXPECT_EQ(2u, count_result.value());
+  ASSERT_TRUE(base::test::RunUntil([&] { return count_result == 2u; }));
+  EXPECT_EQ(show_badge_suggest_result, false);
 
   // Reject second transaction
   {
-    base::RunLoop run_loop;
-    tx_service()->RejectTransaction(
-        mojom::CoinType::ETH, mojom::kMainnetChainId, second_tx_meta_id,
-        base::BindLambdaForTesting([&](bool result) {
-          EXPECT_TRUE(result);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    base::test::TestFuture<bool> reject_future;
+    tx_service()->RejectTransaction(mojom::CoinType::ETH,
+                                    mojom::kMainnetChainId, second_tx_meta_id,
+                                    reject_future.GetCallback());
+    EXPECT_TRUE(reject_future.Get());
   }
 
-  // Wait until WalletButtonNotificationSource checks are finished
-  idle_loop.RunUntilIdle();
-
-  EXPECT_FALSE(show_badge_suggest_result.value());
-  EXPECT_EQ(1u, count_result.value());
+  ASSERT_TRUE(base::test::RunUntil([&] { return count_result == 1u; }));
+  EXPECT_EQ(show_badge_suggest_result, false);
 
   // Reject third transaction
   {
-    base::RunLoop run_loop;
-    tx_service()->RejectTransaction(
-        mojom::CoinType::SOL, mojom::kSolanaMainnet, third_tx_meta_id,
-        base::BindLambdaForTesting([&](bool result) {
-          EXPECT_TRUE(result);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    base::test::TestFuture<bool> reject_future;
+    tx_service()->RejectTransaction(mojom::CoinType::SOL, mojom::kSolanaMainnet,
+                                    third_tx_meta_id,
+                                    reject_future.GetCallback());
+    EXPECT_TRUE(reject_future.Get());
   }
 
-  // Wait until WalletButtonNotificationSource checks are finished
-  idle_loop.RunUntilIdle();
-
-  EXPECT_FALSE(show_badge_suggest_result.value());
-  EXPECT_EQ(0u, count_result.value());
+  ASSERT_TRUE(base::test::RunUntil([&] { return count_result == 0u; }));
+  EXPECT_EQ(show_badge_suggest_result, false);
 }
 
 IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
@@ -485,29 +438,21 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   CreateWallet();
 
   // Add initial transaction
-  std::string tx_meta_id;
   {
-    base::RunLoop run_loop;
-
     const auto from_account = GetAccountUtils().EnsureFilTestAccount(0);
     const std::string to_account = "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy";
     auto fil_tx_data = mojom::FilTxData::New(
         "" /* nonce */, "10" /* gas_premium */, "10" /* gas_fee_cap */,
         "100" /* gas_limit */, "" /* max_fee */, to_account, "11");
+    base::test::TestFuture<bool, std::string, std::string> add_future;
     tx_service()->AddUnapprovedFilecoinTransaction(
         std::move(fil_tx_data), mojom::kFilecoinTestnet,
         from_account->account_id.Clone(), nullptr,
-        base::BindLambdaForTesting([&](bool success, const std::string& id,
-                                       const std::string& err_message) {
-          tx_meta_id = id;
-          EXPECT_TRUE(success) << err_message;
-          run_loop.Quit();
-        }));
-
-    run_loop.Run();
+        add_future.GetCallback<bool, const std::string&, const std::string&>());
+    auto [success, id, err_message] = add_future.Take();
+    EXPECT_TRUE(success) << err_message;
   }
 
-  base::RunLoop run_loop;
   std::optional<bool> show_badge_suggest_result;
   std::optional<size_t> count_result;
   auto notification_source = std::make_unique<WalletButtonNotificationSource>(
@@ -520,25 +465,19 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                                    })));
   notification_source->Init();
 
-  // Wait until WalletButtonNotificationSource checks are finished
-  run_loop.RunUntilIdle();
-
-  EXPECT_FALSE(show_badge_suggest_result.value());
-  EXPECT_EQ(1u, count_result.value());
+  EXPECT_EQ(show_badge_suggest_result, false);
+  EXPECT_EQ(count_result, 1u);
 
   tx_service()->Reset();
 
-  // Wait until WalletButtonNotificationSource checks are finished
-  run_loop.RunUntilIdle();
-
-  EXPECT_FALSE(show_badge_suggest_result.value());
-  EXPECT_EQ(0u, count_result.value());
+  // The tx service reset notification arrives over mojo.
+  ASSERT_TRUE(base::test::RunUntil([&] { return count_result == 0u; }));
+  EXPECT_EQ(show_badge_suggest_result, false);
 }
 
 IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                        EmptyBadgeNotShownAfterRestart_IfClicked) {
   {
-    base::RunLoop run_loop;
     std::optional<bool> show_badge_suggest_result;
     std::optional<size_t> count_result;
     auto notification_source = std::make_unique<WalletButtonNotificationSource>(
@@ -550,14 +489,12 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
               count_result = count;
             })));
     notification_source->Init();
-    run_loop.RunUntilIdle();
 
-    EXPECT_TRUE(show_badge_suggest_result.value());
+    EXPECT_EQ(show_badge_suggest_result, true);
     notification_source->MarkWalletButtonWasClicked();
   }
 
   {
-    base::RunLoop run_loop;
     std::optional<bool> show_badge_suggest_result;
     std::optional<size_t> count_result;
     auto notification_source = std::make_unique<WalletButtonNotificationSource>(
@@ -569,9 +506,8 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
               count_result = count;
             })));
     notification_source->Init();
-    run_loop.RunUntilIdle();
 
-    EXPECT_FALSE(show_badge_suggest_result.value());
+    EXPECT_EQ(show_badge_suggest_result, false);
   }
 }
 

@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/test/bind.h"
-#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
@@ -174,17 +173,16 @@ class SwapServiceUnitTest : public testing::Test {
     auto expected_error_string =
         expected_success ? ""
                          : l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR);
-    base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
-    EXPECT_CALL(
-        callback,
-        Run(IsTruthy(expected_success), IsTruthy(expected_success),
-            EqualsMojo(mojom::SwapErrorUnionPtr()), expected_error_string));
-
+    QuoteFuture future;
     swap_service_->GetQuote(
         GetCannedSwapQuoteParams(from_coin, from_chain_id, "DAI", to_coin,
                                  to_chain_id, "ETH", provider),
-        callback.Get());
-    task_environment_.RunUntilIdle();
+        future.GetCallback());
+    auto [quote, fees, error, error_string] = future.Take();
+    EXPECT_THAT(quote, IsTruthy(expected_success));
+    EXPECT_THAT(fees, IsTruthy(expected_success));
+    EXPECT_THAT(error, EqualsMojo(mojom::SwapErrorUnionPtr()));
+    EXPECT_EQ(error_string, expected_error_string);
   }
 
   void TestGetJupiterTransaction(
@@ -200,17 +198,25 @@ class SwapServiceUnitTest : public testing::Test {
             : testing::AnyOf(
                   l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR),
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-    base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
-    EXPECT_CALL(callback, Run(IsTruthy(expected_success),
-                              EqualsMojo(mojom::SwapErrorUnionPtr()),
-                              expected_error_string));
-
+    TransactionFuture future;
     swap_service_->GetTransaction(
-        GetCannedJupiterTransactionParams(output_mint), callback.Get());
-    task_environment_.RunUntilIdle();
+        GetCannedJupiterTransactionParams(output_mint), future.GetCallback());
+    auto [transaction, error, error_string] = future.Take();
+    EXPECT_THAT(transaction, IsTruthy(expected_success));
+    EXPECT_THAT(error, EqualsMojo(mojom::SwapErrorUnionPtr()));
+    EXPECT_THAT(error_string, expected_error_string);
   }
 
  protected:
+  using QuoteFuture = base::test::TestFuture<mojom::SwapQuoteUnionPtr,
+                                             mojom::SwapFeesPtr,
+                                             mojom::SwapErrorUnionPtr,
+                                             const std::string&>;
+  using TransactionFuture =
+      base::test::TestFuture<mojom::SwapTransactionUnionPtr,
+                             mojom::SwapErrorUnionPtr,
+                             const std::string&>;
+
   sync_preferences::TestingPrefServiceSyncable prefs_;
   std::unique_ptr<SwapService> swap_service_;
   base::test::TaskEnvironment task_environment_;
@@ -328,20 +334,21 @@ TEST_F(SwapServiceUnitTest, GetZeroExLegacyQuote) {
   expected_swap_fees->discount_code = mojom::SwapDiscountCode::kNone;
   expected_swap_fees->fee_param = "";
 
-  base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
-  EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapQuoteUnion::NewZeroExQuote(
-                                expected_zero_ex_quote.Clone())),
-                            EqualsMojo(expected_swap_fees.Clone()),
-                            EqualsMojo(mojom::SwapErrorUnionPtr()), ""));
-
+  QuoteFuture future1;
   swap_service_->GetQuote(
       GetCannedSwapQuoteParams(
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
           mojom::SwapProvider::kZeroExLegacy),
-      callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+      future1.GetCallback());
+  {
+    auto [quote, fees, error, error_string] = future1.Take();
+    EXPECT_THAT(quote, EqualsMojo(mojom::SwapQuoteUnion::NewZeroExQuote(
+                           expected_zero_ex_quote.Clone())));
+    EXPECT_THAT(fees, EqualsMojo(expected_swap_fees.Clone()));
+    EXPECT_THAT(error, EqualsMojo(mojom::SwapErrorUnionPtr()));
+    EXPECT_EQ(error_string, "");
+  }
 
   // Case 2: null zeroExFee
   SetInterceptor(R"(
@@ -409,45 +416,47 @@ TEST_F(SwapServiceUnitTest, GetZeroExLegacyQuote) {
   )");
 
   expected_zero_ex_quote->fees->zero_ex_fee = nullptr;
-  EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapQuoteUnion::NewZeroExQuote(
-                                std::move(expected_zero_ex_quote))),
-                            EqualsMojo(expected_swap_fees.Clone()),
-                            EqualsMojo(mojom::SwapErrorUnionPtr()), ""));
-
+  QuoteFuture future2;
   swap_service_->GetQuote(
       GetCannedSwapQuoteParams(
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
           mojom::SwapProvider::kZeroExLegacy),
-      callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+      future2.GetCallback());
+  {
+    auto [quote, fees, error, error_string] = future2.Take();
+    EXPECT_THAT(quote, EqualsMojo(mojom::SwapQuoteUnion::NewZeroExQuote(
+                           std::move(expected_zero_ex_quote))));
+    EXPECT_THAT(fees, EqualsMojo(expected_swap_fees.Clone()));
+    EXPECT_THAT(error, EqualsMojo(mojom::SwapErrorUnionPtr()));
+    EXPECT_EQ(error_string, "");
+  }
 }
 
 TEST_F(SwapServiceUnitTest, GetZeroExLegacyQuoteError) {
   // Case 1: validation error
-  std::string error = R"(
+  std::string error_json = R"(
     {
       "name": "INPUT_INVALID",
       "message": "Validation Failed"
     })";
-  SetErrorInterceptor(error);
+  SetErrorInterceptor(error_json);
 
-  base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
-  EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapQuoteUnionPtr()),
-                            EqualsMojo(mojom::SwapFeesPtr()),
-                            EqualsMojo(mojom::SwapErrorUnion::NewZeroExError(
-                                zeroex::ParseErrorResponse(ParseJson(error)))),
-                            ""));
-
+  QuoteFuture future1;
   swap_service_->GetQuote(
       GetCannedSwapQuoteParams(
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
           mojom::SwapProvider::kZeroExLegacy),
-      callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+      future1.GetCallback());
+  {
+    auto [quote, fees, error, error_string] = future1.Take();
+    EXPECT_THAT(quote, EqualsMojo(mojom::SwapQuoteUnionPtr()));
+    EXPECT_THAT(fees, EqualsMojo(mojom::SwapFeesPtr()));
+    EXPECT_THAT(error, EqualsMojo(mojom::SwapErrorUnion::NewZeroExError(
+                           zeroex::ParseErrorResponse(ParseJson(error_json)))));
+    EXPECT_EQ(error_string, "");
+  }
 
   // Case 2: insufficient liquidity
   SetInterceptor(R"(
@@ -462,39 +471,37 @@ TEST_F(SwapServiceUnitTest, GetZeroExLegacyQuoteError) {
       l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_LIQUIDITY);
   error_response->is_insufficient_liquidity = true;
 
-  EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapQuoteUnionPtr()),
-                            EqualsMojo(mojom::SwapFeesPtr()),
-                            EqualsMojo(mojom::SwapErrorUnion::NewZeroExError(
-                                std::move(error_response))),
-                            ""));
-
+  QuoteFuture future2;
   swap_service_->GetQuote(
       GetCannedSwapQuoteParams(
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
           mojom::SwapProvider::kZeroExLegacy),
-      callback.Get());
-  task_environment_.RunUntilIdle();
+      future2.GetCallback());
+  auto [quote, fees, error, error_string] = future2.Take();
+  EXPECT_THAT(quote, EqualsMojo(mojom::SwapQuoteUnionPtr()));
+  EXPECT_THAT(fees, EqualsMojo(mojom::SwapFeesPtr()));
+  EXPECT_THAT(error, EqualsMojo(mojom::SwapErrorUnion::NewZeroExError(
+                         std::move(error_response))));
+  EXPECT_EQ(error_string, "");
 }
 
 TEST_F(SwapServiceUnitTest, GetZeroExLegacyQuoteUnexpectedReturn) {
   std::string unexpected_return = "Woot";
   SetInterceptor(unexpected_return);
 
-  base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
-  EXPECT_CALL(callback,
-              Run(EqualsMojo(mojom::SwapQuoteUnionPtr()),
-                  EqualsMojo(mojom::SwapFeesPtr()),
-                  EqualsMojo(mojom::SwapErrorUnionPtr()),
-                  l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
-
+  QuoteFuture future;
   swap_service_->GetQuote(
       GetCannedSwapQuoteParams(
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
           mojom::SwapProvider::kZeroExLegacy),
-      callback.Get());
-  task_environment_.RunUntilIdle();
+      future.GetCallback());
+  auto [quote, fees, error, error_string] = future.Take();
+  EXPECT_THAT(quote, EqualsMojo(mojom::SwapQuoteUnionPtr()));
+  EXPECT_THAT(fees, EqualsMojo(mojom::SwapFeesPtr()));
+  EXPECT_THAT(error, EqualsMojo(mojom::SwapErrorUnionPtr()));
+  EXPECT_EQ(error_string, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 }
 
 TEST_F(SwapServiceUnitTest, GetZeroExLegacyTransaction) {
@@ -518,61 +525,57 @@ TEST_F(SwapServiceUnitTest, GetZeroExLegacyTransaction) {
   expected_zero_ex_transaction->gas_price = "4837860000";
   expected_zero_ex_transaction->value = "0";
 
-  base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
-  EXPECT_CALL(callback,
-              Run(EqualsMojo(mojom::SwapTransactionUnion::NewZeroExTransaction(
-                      expected_zero_ex_transaction.Clone())),
-                  EqualsMojo(mojom::SwapErrorUnionPtr()), ""));
-
+  TransactionFuture future;
   swap_service_->GetTransaction(
       mojom::SwapTransactionParamsUnion::NewZeroExTransactionParams(
           GetCannedSwapQuoteParams(
               mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
               mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
               mojom::SwapProvider::kZeroExLegacy)),
-      callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+      future.GetCallback());
+  auto [transaction, error, error_string] = future.Take();
+  EXPECT_THAT(transaction,
+              EqualsMojo(mojom::SwapTransactionUnion::NewZeroExTransaction(
+                  expected_zero_ex_transaction.Clone())));
+  EXPECT_THAT(error, EqualsMojo(mojom::SwapErrorUnionPtr()));
+  EXPECT_EQ(error_string, "");
 }
 
 TEST_F(SwapServiceUnitTest, GetZeroExLegacyTransactionError) {
-  std::string error =
+  std::string error_json =
       R"({"name":"INPUT_INVALID","message":"Validation Failed"})";
-  SetErrorInterceptor(error);
+  SetErrorInterceptor(error_json);
 
-  base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
-  EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapTransactionUnionPtr()),
-                            EqualsMojo(mojom::SwapErrorUnion::NewZeroExError(
-                                zeroex::ParseErrorResponse(ParseJson(error)))),
-                            ""));
-
+  TransactionFuture future;
   swap_service_->GetTransaction(
       mojom::SwapTransactionParamsUnion::NewZeroExTransactionParams(
           GetCannedSwapQuoteParams(
               mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
               mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
               mojom::SwapProvider::kZeroExLegacy)),
-      callback.Get());
-  task_environment_.RunUntilIdle();
+      future.GetCallback());
+  auto [transaction, error, error_string] = future.Take();
+  EXPECT_THAT(transaction, EqualsMojo(mojom::SwapTransactionUnionPtr()));
+  EXPECT_THAT(error, EqualsMojo(mojom::SwapErrorUnion::NewZeroExError(
+                         zeroex::ParseErrorResponse(ParseJson(error_json)))));
+  EXPECT_EQ(error_string, "");
 }
 
 TEST_F(SwapServiceUnitTest, GetZeroExLegacyTransactionUnexpectedReturn) {
   SetInterceptor("Woot");
 
-  base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
-  EXPECT_CALL(callback,
-              Run(EqualsMojo(mojom::SwapTransactionUnionPtr()),
-                  EqualsMojo(mojom::SwapErrorUnionPtr()),
-                  l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
-
+  TransactionFuture future;
   swap_service_->GetTransaction(
       mojom::SwapTransactionParamsUnion::NewZeroExTransactionParams(
           GetCannedSwapQuoteParams(
               mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
               mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
               mojom::SwapProvider::kZeroExLegacy)),
-      callback.Get());
-  task_environment_.RunUntilIdle();
+      future.GetCallback());
+  auto [transaction, error, error_string] = future.Take();
+  EXPECT_THAT(transaction, EqualsMojo(mojom::SwapTransactionUnionPtr()));
+  EXPECT_THAT(error, EqualsMojo(mojom::SwapErrorUnionPtr()));
+  EXPECT_EQ(error_string, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 }
 
 TEST_F(SwapServiceUnitTest, GetZeroExQuoteURL) {
@@ -820,19 +823,21 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
   expected_swap_fees->discount_code = mojom::SwapDiscountCode::kNone;
   expected_swap_fees->fee_param = "";
 
-  base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
-  EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapQuoteUnion::NewJupiterQuote(
-                                std::move(expected_quote))),
-                            EqualsMojo(expected_swap_fees.Clone()),
-                            EqualsMojo(mojom::SwapErrorUnionPtr()), ""));
+  QuoteFuture future;
   swap_service_->GetQuote(
       GetCannedSwapQuoteParams(mojom::CoinType::SOL, mojom::kSolanaMainnet, "",
                                mojom::CoinType::SOL, mojom::kSolanaMainnet,
                                "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
                                mojom::SwapProvider::kJupiterLegacy),
-      callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+      future.GetCallback());
+  {
+    auto [quote, fees, error, error_string] = future.Take();
+    EXPECT_THAT(quote, EqualsMojo(mojom::SwapQuoteUnion::NewJupiterQuote(
+                           std::move(expected_quote))));
+    EXPECT_THAT(fees, EqualsMojo(expected_swap_fees.Clone()));
+    EXPECT_THAT(error, EqualsMojo(mojom::SwapErrorUnionPtr()));
+    EXPECT_EQ(error_string, "");
+  }
 
   // KO: empty JSON for conversion
   TestGetQuoteCase(R"({})", mojom::CoinType::SOL, mojom::kSolanaMainnet,
@@ -1422,52 +1427,46 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
       mojom::CoinType::SOL, mojom::kSolanaMainnet, "USDC",
       mojom::SwapProvider::kNearIntents);
 
-  base::RunLoop run_loop;
-  base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
-  EXPECT_CALL(callback,
-              Run(EqualsMojo(mojom::SwapTransactionUnion::NewGate3Route(
-                      std::move(expected_route))),
-                  EqualsMojo(mojom::SwapErrorUnionPtr()), ""))
-      .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
-
+  TransactionFuture future;
   swap_service_->GetTransaction(
       mojom::SwapTransactionParamsUnion::NewGate3TransactionParams(
           std::move(quote_params)),
-      callback.Get());
-  run_loop.Run();
+      future.GetCallback());
+  auto [transaction, error, error_string] = future.Take();
+  EXPECT_THAT(transaction,
+              EqualsMojo(mojom::SwapTransactionUnion::NewGate3Route(
+                  std::move(expected_route))));
+  EXPECT_THAT(error, EqualsMojo(mojom::SwapErrorUnionPtr()));
+  EXPECT_EQ(error_string, "");
 }
 
 TEST_F(SwapServiceUnitTest, GetGate3TransactionError) {
-  std::string error = R"(
+  std::string error_json = R"(
     {
       "message": "Insufficient liquidity",
       "kind": "INSUFFICIENT_LIQUIDITY"
     }
   )";
-  SetErrorInterceptor(error);
+  SetErrorInterceptor(error_json);
 
   auto quote_params = GetCannedSwapQuoteParams(
       mojom::CoinType::ETH, mojom::kMainnetChainId, "USDC",
       mojom::CoinType::SOL, mojom::kSolanaMainnet, "USDC",
       mojom::SwapProvider::kNearIntents);
 
-  base::RunLoop run_loop;
-  base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
-
-  EXPECT_CALL(callback,
-              Run(EqualsMojo(mojom::SwapTransactionUnionPtr()),
-                  EqualsMojo(mojom::SwapErrorUnion::NewGate3Error(
-                      mojom::Gate3SwapError::New(
-                          "Insufficient liquidity",
-                          mojom::Gate3SwapErrorKind::kInsufficientLiquidity))),
-                  ""))
-      .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
-
+  TransactionFuture future;
   swap_service_->GetTransaction(
       mojom::SwapTransactionParamsUnion::NewGate3TransactionParams(
           std::move(quote_params)),
-      callback.Get());
-  run_loop.Run();
+      future.GetCallback());
+  auto [transaction, error, error_string] = future.Take();
+  EXPECT_THAT(transaction, EqualsMojo(mojom::SwapTransactionUnionPtr()));
+  EXPECT_THAT(error,
+              EqualsMojo(mojom::SwapErrorUnion::NewGate3Error(
+                  mojom::Gate3SwapError::New(
+                      "Insufficient liquidity",
+                      mojom::Gate3SwapErrorKind::kInsufficientLiquidity))));
+  EXPECT_EQ(error_string, "");
 }
 
 TEST_F(SwapServiceUnitTest, GetGate3Status) {

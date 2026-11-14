@@ -21,6 +21,7 @@ export interface Props {
   size?: Size
   onChange?: (selected: boolean) => void
   alignItems?: CSSProperties['alignItems']
+  color?: 'default' | 'brand'
 }
 
 export const Checkbox: React.FC<Props> = ({
@@ -31,6 +32,7 @@ export const Checkbox: React.FC<Props> = ({
   onChange,
   size = 'small',
   testId,
+  color = 'default',
 }) => {
   // methods
   const onClick = React.useCallback(() => {
@@ -62,6 +64,7 @@ export const Checkbox: React.FC<Props> = ({
       disabled={disabled}
       selected={isChecked}
       alignItems={alignItems}
+      color={color}
     >
       <StyledBox>{isChecked ? <CheckIcon /> : null}</StyledBox>
       <StyledText size={size}>{children}</StyledText>

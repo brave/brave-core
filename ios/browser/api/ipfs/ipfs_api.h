@@ -7,19 +7,19 @@
 #define BRAVE_IOS_BROWSER_API_IPFS_IPFS_API_H_
 
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
-@protocol IpfsAPI
-@required
+@interface IpfsAPI : NSObject
 
 /// Resolve input url using the default IPFS public gateway
-- (nullable NSURL*)resolveGatewayUrlFor:(NSURL*)input;
++ (nullable NSURL*)resolveGatewayUrlFor:(NSURL*)input;
 /// Resolve input url using the default IPFS NFT public gateway
-- (nullable NSURL*)resolveGatewayUrlForNft:(NSURL*)input;
-- (nullable NSURL*)contentHashToCIDv1URLFor:(NSArray<NSNumber*>*)contentHash;
++ (nullable NSURL*)resolveGatewayUrlForNft:(NSURL*)input;
++ (nullable NSURL*)contentHashToCIDv1URLFor:(NSArray<NSNumber*>*)contentHash;
+
+- (instancetype)init NS_UNAVAILABLE;
 
 @end
 

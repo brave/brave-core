@@ -15,6 +15,7 @@ import hashlib
 import io
 import json
 import os
+import textwrap
 import time
 
 import plaster
@@ -6609,6 +6610,1255 @@ class RewriterFormsTest(unittest.TestCase):
         )
 
 
+def _cxx_source(body: str) -> str:
+    """`body`, dedented, under an upstream copyright notice."""
+    return (
+        '// Copyright 2026 The Chromium Authors\n'
+        '// Use of this source code is governed by a BSD-style license that '
+        'can be\n'
+        '// found in the LICENSE file.\n'
+        '\n' + textwrap.dedent(body).lstrip('\n')
+    )
+
+
+class CxxAddIncludeTest(unittest.TestCase):
+    """`add_include` placing headers as Chromium's clang-format sorts them."""
+
+    def _add_include(self, source: str, *headers: str) -> str:
+        rewriter = plaster.CxxAddIncludeRewriter(headers=list(headers))
+        result, errors = rewriter.apply(source, count=1, description='test')
+        self.assertEqual(errors, [])
+        return result
+
+    def _errors(self, source: str, *headers: str) -> list[str]:
+        rewriter = plaster.CxxAddIncludeRewriter(headers=list(headers))
+        result, errors = rewriter.apply(source, count=1, description='test')
+        self.assertEqual(result, source)
+        return errors
+
+    # A `.cc` laid out the way the style guide orders includes: the main
+    # include, C system, C++ standard library, then other libraries, followed
+    # by platform includes and the code.
+    _SOURCE = _cxx_source("""
+        #include "chrome/browser/ui/tabs/tab_strip_model.h"
+
+        #include <stddef.h>
+
+        #include <memory>
+        #include <utility>
+
+        #include "base/check.h"
+        #include "chrome/browser/profiles/profile.h"
+        #include "content/public/browser/web_contents.h"
+
+        #if BUILDFLAG(IS_WIN)
+        #include "chrome/browser/win/tab_helper.h"
+        #endif
+
+        namespace {
+        """)
+
+    def test_user_header_sorts_into_the_user_group(self):
+        self.assertEqual(
+            self._add_include(self._SOURCE, '"brave/browser/brave_tabs.h"'),
+            self._SOURCE.replace(
+                '#include "base/check.h"\n',
+                '#include "base/check.h"\n'
+                '#include "brave/browser/brave_tabs.h"\n',
+            ),
+        )
+
+    def test_user_header_sorting_first_lands_at_the_top_of_its_group(self):
+        self.assertEqual(
+            self._add_include(self._SOURCE, '"apps/app_window.h"'),
+            self._SOURCE.replace(
+                '#include "base/check.h"\n',
+                '#include "apps/app_window.h"\n#include "base/check.h"\n',
+            ),
+        )
+
+    def test_user_header_sorting_last_lands_at_the_end_of_its_group(self):
+        # Never inside the conditional block that follows.
+        self.assertEqual(
+            self._add_include(self._SOURCE, '"ui/views/view.h"'),
+            self._SOURCE.replace(
+                '#include "content/public/browser/web_contents.h"\n',
+                '#include "content/public/browser/web_contents.h"\n'
+                '#include "ui/views/view.h"\n',
+            ),
+        )
+
+    def test_header_sorting_before_the_main_include_skips_its_group(self):
+        # The main include keeps its group to itself, even for a header
+        # sorting before it.
+        self.assertEqual(
+            self._add_include(self._SOURCE, '"base/memory/raw_ptr.h"'),
+            self._SOURCE.replace(
+                '#include "base/check.h"\n',
+                '#include "base/check.h"\n#include "base/memory/raw_ptr.h"\n',
+            ),
+        )
+
+    def test_cxx_standard_header_sorts_into_its_group(self):
+        self.assertEqual(
+            self._add_include(self._SOURCE, '<string>'),
+            self._SOURCE.replace(
+                '#include <memory>\n',
+                '#include <memory>\n#include <string>\n',
+            ),
+        )
+
+    def test_c_system_header_sorts_into_its_group(self):
+        self.assertEqual(
+            self._add_include(self._SOURCE, '<stdint.h>'),
+            self._SOURCE.replace(
+                '#include <stddef.h>\n',
+                '#include <stddef.h>\n#include <stdint.h>\n',
+            ),
+        )
+
+    def test_c_system_header_opens_a_group_after_the_main_include(self):
+        source = _cxx_source("""
+            #include "base/strings/string_util.h"
+
+            #include <string>
+
+            #include "base/check.h"
+            """)
+        self.assertEqual(
+            self._add_include(source, '<stddef.h>'),
+            source.replace(
+                '#include <string>\n',
+                '#include <stddef.h>\n\n#include <string>\n',
+            ),
+        )
+
+    def test_cxx_standard_header_opens_a_group_before_the_user_one(self):
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            #include "base/check.h"
+            """)
+        self.assertEqual(
+            self._add_include(source, '<vector>'),
+            source.replace(
+                '#include "base/check.h"\n',
+                '#include <vector>\n\n#include "base/check.h"\n',
+            ),
+        )
+
+    def test_user_header_opens_a_group_after_the_system_ones(self):
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            #include <vector>
+
+            namespace foo {
+            """)
+        self.assertEqual(
+            self._add_include(source, '"brave/browser/foo.h"'),
+            source.replace(
+                '#include <vector>\n',
+                '#include <vector>\n\n#include "brave/browser/foo.h"\n',
+            ),
+        )
+
+    def test_header_opens_a_group_after_a_lone_main_include(self):
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            namespace foo {
+            """)
+        self.assertEqual(
+            self._add_include(source, '"base/check.h"'),
+            source.replace(
+                '#include "chrome/browser/foo.h"\n',
+                '#include "chrome/browser/foo.h"\n\n#include "base/check.h"\n',
+            ),
+        )
+
+    def test_lone_main_include_followed_by_code(self):
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+            namespace foo {
+            """)
+        self.assertEqual(
+            self._add_include(source, '"base/check.h"'),
+            source.replace(
+                '#include "chrome/browser/foo.h"\n',
+                '#include "chrome/browser/foo.h"\n\n'
+                '#include "base/check.h"\n\n',
+            ),
+        )
+
+    def test_unsafe_buffers_opt_out_before_the_main_include(self):
+        # Many upstream sources open with this block, which is not part of
+        # the includes and leaves the main include first among them.
+        source = _cxx_source("""
+            #ifdef UNSAFE_BUFFERS_BUILD
+            // Remove this and convert code to safer constructs.
+            #pragma allow_unsafe_buffers
+            #endif
+
+            #include "net/base/foo.h"
+
+            #include "base/check.h"
+            """)
+        self.assertEqual(
+            self._add_include(source, '"base/bits.h"'),
+            source.replace(
+                '#include "base/check.h"\n',
+                '#include "base/bits.h"\n#include "base/check.h"\n',
+            ),
+        )
+
+    # -- headers ------------------------------------------------------------
+
+    _HEADER = _cxx_source("""
+        #ifndef CHROME_BROWSER_UI_BROWSER_WINDOW_H_
+        #define CHROME_BROWSER_UI_BROWSER_WINDOW_H_
+
+        #include <memory>
+        #include <vector>
+
+        #include "base/functional/callback_forward.h"
+        #include "build/build_config.h"
+        #include "ui/base/base_window.h"
+
+        #if BUILDFLAG(IS_ANDROID)
+        #error This file should only be included on desktop.
+        #endif
+
+        class BrowserView;
+
+        #endif  // CHROME_BROWSER_UI_BROWSER_WINDOW_H_
+        """)
+
+    def test_header_include_sorts_into_its_group(self):
+        self.assertEqual(
+            self._add_include(
+                self._HEADER, '"brave/browser/ui/brave_window.h"'
+            ),
+            self._HEADER.replace(
+                '#include "build/build_config.h"\n',
+                '#include "brave/browser/ui/brave_window.h"\n'
+                '#include "build/build_config.h"\n',
+            ),
+        )
+
+    def test_header_has_no_main_include(self):
+        # A lone quoted include opening a header is an ordinary one, so a
+        # header sorting before it joins its group.
+        source = _cxx_source("""
+            #ifndef CHROME_FOO_H_
+            #define CHROME_FOO_H_
+
+            #include "chrome/browser/bar.h"
+
+            #endif  // CHROME_FOO_H_
+            """)
+        self.assertEqual(
+            self._add_include(source, '"base/check.h"'),
+            source.replace(
+                '#include "chrome/browser/bar.h"\n',
+                '#include "base/check.h"\n#include "chrome/browser/bar.h"\n',
+            ),
+        )
+
+    def test_header_without_includes_gets_one_after_the_guard(self):
+        source = _cxx_source("""
+            #ifndef CHROME_FOO_H_
+            #define CHROME_FOO_H_
+
+            class Foo;
+
+            #endif  // CHROME_FOO_H_
+            """)
+        self.assertEqual(
+            self._add_include(source, '"base/check.h"'),
+            source.replace(
+                '#define CHROME_FOO_H_\n',
+                '#define CHROME_FOO_H_\n\n#include "base/check.h"\n',
+            ),
+        )
+
+    def test_header_with_unsafe_buffers_opt_out_before_its_guard(self):
+        source = _cxx_source("""
+            #ifdef UNSAFE_BUFFERS_BUILD
+            #pragma allow_unsafe_buffers
+            #endif
+
+            #ifndef CHROME_FOO_H_
+            #define CHROME_FOO_H_
+
+            #include "chrome/browser/bar.h"
+
+            #endif  // CHROME_FOO_H_
+            """)
+        self.assertEqual(
+            self._add_include(source, '"base/check.h"'),
+            source.replace(
+                '#include "chrome/browser/bar.h"\n',
+                '#include "base/check.h"\n#include "chrome/browser/bar.h"\n',
+            ),
+        )
+
+    def test_forwarding_header_with_only_includes(self):
+        source = _cxx_source("""
+            #ifndef CHROME_FOO_H_
+            #define CHROME_FOO_H_
+
+            #include "components/foo/foo.h"
+
+            #endif  // CHROME_FOO_H_
+            """)
+        self.assertEqual(
+            self._add_include(source, '"components/foo/foo_utils.h"'),
+            source.replace(
+                '#include "components/foo/foo.h"\n',
+                '#include "components/foo/foo.h"\n'
+                '#include "components/foo/foo_utils.h"\n',
+            ),
+        )
+
+    # -- Windows and special categories -------------------------------------
+
+    _WINDOWS_SOURCE = _cxx_source("""
+        #include "chrome/installer/util/shell_util.h"
+
+        #include <windows.h>
+
+        #include <shellapi.h>
+        #include <shlobj.h>
+
+        #include <string>
+
+        #include "base/check.h"
+        """)
+
+    def test_windows_header_joins_its_own_group(self):
+        # `<windows.h>` and the like have a category of their own, ahead of
+        # the other C system headers, which they must precede.
+        self.assertEqual(
+            self._add_include(self._WINDOWS_SOURCE, '<winsock2.h>'),
+            self._WINDOWS_SOURCE.replace(
+                '#include <windows.h>\n',
+                '#include <windows.h>\n#include <winsock2.h>\n',
+            ),
+        )
+
+    def test_c_system_header_sorts_after_the_windows_group(self):
+        self.assertEqual(
+            self._add_include(self._WINDOWS_SOURCE, '<propkey.h>'),
+            self._WINDOWS_SOURCE.replace(
+                '#include <shellapi.h>\n',
+                '#include <propkey.h>\n#include <shellapi.h>\n',
+            ),
+        )
+
+    def test_shobjidl_belongs_with_the_windows_headers(self):
+        self.assertEqual(
+            self._add_include(self._WINDOWS_SOURCE, '<shobjidl.h>'),
+            self._WINDOWS_SOURCE.replace(
+                '#include <windows.h>\n',
+                '#include <shobjidl.h>\n#include <windows.h>\n',
+            ),
+        )
+
+    def test_windows_header_opens_a_group_before_other_c_headers(self):
+        source = _cxx_source("""
+            #include "chrome/installer/util/shell_util.h"
+
+            #include <shlobj.h>
+
+            #include "base/check.h"
+            """)
+        self.assertEqual(
+            self._add_include(source, '<windows.h>'),
+            source.replace(
+                '#include <shlobj.h>\n',
+                '#include <windows.h>\n\n#include <shlobj.h>\n',
+            ),
+        )
+
+    def test_objbase_opens_a_group_before_initguid(self):
+        source = _cxx_source("""
+            #include "chrome/updater/win/foo.h"
+
+            #include <initguid.h>
+
+            #include "base/check.h"
+            """)
+        self.assertEqual(
+            self._add_include(source, '<objbase.h>'),
+            source.replace(
+                '#include <initguid.h>\n',
+                '#include <objbase.h>\n\n#include <initguid.h>\n',
+            ),
+        )
+
+    def test_windows_category_ignores_case(self):
+        self.assertEqual(
+            self._add_include(self._WINDOWS_SOURCE, '<Windows.h>'),
+            self._WINDOWS_SOURCE.replace(
+                '#include <windows.h>\n',
+                '#include <Windows.h>\n#include <windows.h>\n',
+            ),
+        )
+
+    def test_user_header_sorts_ahead_of_windows_h_disallowed(self):
+        # `windows_h_disallowed.h` closes the includes in a group of its own.
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            #include "base/check.h"
+
+            #include "base/win/windows_h_disallowed.h"
+            """)
+        self.assertEqual(
+            self._add_include(source, '"content/public/browser/foo.h"'),
+            source.replace(
+                '#include "base/check.h"\n',
+                '#include "base/check.h"\n'
+                '#include "content/public/browser/foo.h"\n',
+            ),
+        )
+
+    def test_user_header_opens_a_group_ahead_of_windows_h_disallowed(self):
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            #include <string>
+
+            #include "base/win/windows_h_disallowed.h"
+            """)
+        self.assertEqual(
+            self._add_include(source, '"base/check.h"'),
+            source.replace(
+                '#include "base/win/windows_h_disallowed.h"\n',
+                '#include "base/check.h"\n\n'
+                '#include "base/win/windows_h_disallowed.h"\n',
+            ),
+        )
+
+    def test_uiautomation_header_opens_a_group_after_the_user_one(self):
+        source = _cxx_source("""
+            #include "ui/accessibility/platform/foo_win.h"
+
+            #include "base/win/atl.h"
+            """)
+        self.assertEqual(
+            self._add_include(source, '<UIAutomationCore.h>'),
+            source.replace(
+                '#include "base/win/atl.h"\n',
+                '#include "base/win/atl.h"\n\n#include <UIAutomationCore.h>\n',
+            ),
+        )
+
+    # -- sorting ------------------------------------------------------------
+
+    def test_sorting_is_case_sensitive(self):
+        # As in clang-format, upper case sorts ahead of lower case.
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            #include "third_party/blink/public/common/a.h"
+            #include "third_party/blink/public/common/c.h"
+            """)
+        self.assertEqual(
+            self._add_include(source, '"third_party/blink/public/common/Z.h"'),
+            source.replace(
+                '#include "third_party/blink/public/common/a.h"\n',
+                '#include "third_party/blink/public/common/Z.h"\n'
+                '#include "third_party/blink/public/common/a.h"\n',
+            ),
+        )
+
+    def test_file_sorts_ahead_of_the_directory_sharing_its_name(self):
+        # `.` sorts ahead of `/`, so `foo.h` precedes `foo/bar.h`.
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            #include "base/strings/string_util.h"
+            """)
+        self.assertEqual(
+            self._add_include(source, '"base/strings.h"'),
+            source.replace(
+                '#include "base/strings/string_util.h"\n',
+                '#include "base/strings.h"\n'
+                '#include "base/strings/string_util.h"\n',
+            ),
+        )
+
+    def test_unsorted_group_takes_the_header_before_the_first_greater_one(self):
+        # A group upstream left unsorted is not reordered, so the header goes
+        # ahead of the first include that sorts after it.
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            #include "content/public/browser/a.h"
+            #include "base/check.h"
+            """)
+        self.assertEqual(
+            self._add_include(source, '"brave/foo.h"'),
+            source.replace(
+                '#include "content/public/browser/a.h"\n',
+                '#include "brave/foo.h"\n'
+                '#include "content/public/browser/a.h"\n',
+            ),
+        )
+
+    def test_inline_comments_are_kept(self):
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            #include "base/check.h"  // IWYU pragma: keep
+            #include "chrome/browser/ui/views/foo_view.h"  // nogncheck
+            """)
+        self.assertEqual(
+            self._add_include(source, '"brave/foo.h"'),
+            source.replace(
+                '#include "chrome/browser/ui/views/foo_view.h"',
+                '#include "brave/foo.h"\n'
+                '#include "chrome/browser/ui/views/foo_view.h"',
+            ),
+        )
+
+    def test_several_headers_are_each_sorted(self):
+        self.assertEqual(
+            self._add_include(
+                self._SOURCE, '"brave/browser/b.h"', '<vector>', '"brave/a.h"'
+            ),
+            self._SOURCE.replace(
+                '#include <utility>\n',
+                '#include <utility>\n#include <vector>\n',
+            ).replace(
+                '#include "base/check.h"\n',
+                '#include "base/check.h"\n'
+                '#include "brave/a.h"\n'
+                '#include "brave/browser/b.h"\n',
+            ),
+        )
+
+    # -- regions ------------------------------------------------------------
+
+    def test_header_joins_the_region_holding_its_kind(self):
+        # A comment splits the includes into regions clang-format sorts
+        # separately; the header goes where its kind already is.
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            #include <string>
+
+            // Needs to come after <string>.
+            #include "base/check.h"
+            #include "content/public/browser/foo.h"
+            """)
+        self.assertEqual(
+            self._add_include(source, '"brave/foo.h"'),
+            source.replace(
+                '#include "base/check.h"\n',
+                '#include "base/check.h"\n#include "brave/foo.h"\n',
+            ),
+        )
+
+    def test_conditional_includes_split_the_regions(self):
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            #include <string>
+
+            #if BUILDFLAG(IS_WIN)
+            #include <windows.h>
+            #endif
+
+            #include "base/check.h"
+            """)
+        self.assertEqual(
+            self._add_include(source, '<vector>'),
+            source.replace(
+                '#include <string>\n',
+                '#include <string>\n#include <vector>\n',
+            ),
+        )
+        self.assertEqual(
+            self._add_include(source, '"brave/foo.h"'),
+            source.replace(
+                '#include "base/check.h"\n',
+                '#include "base/check.h"\n#include "brave/foo.h"\n',
+            ),
+        )
+
+    def test_header_of_a_new_kind_joins_the_first_region(self):
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            #include <string>
+
+            #if BUILDFLAG(IS_WIN)
+            #include <windows.h>
+            #endif
+
+            #include <vector>
+            """)
+        self.assertEqual(
+            self._add_include(source, '"base/check.h"'),
+            source.replace(
+                '#include <string>\n',
+                '#include <string>\n\n#include "base/check.h"\n',
+            ),
+        )
+
+    def test_includes_after_the_code_are_ignored(self):
+        # An X-macro list included mid-file is not one of the includes.
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            #include "base/check.h"
+
+            enum class Foo {
+            #include "chrome/browser/foo_list.inc"
+            };
+            """)
+        self.assertEqual(
+            self._add_include(source, '"content/foo.h"'),
+            source.replace(
+                '#include "base/check.h"\n',
+                '#include "base/check.h"\n#include "content/foo.h"\n',
+            ),
+        )
+
+    def test_objective_cxx_imports_are_includes(self):
+        source = _cxx_source("""
+            #import "chrome/browser/app_controller_mac.h"
+
+            #import <Cocoa/Cocoa.h>
+            #include <stddef.h>
+
+            #include <memory>
+
+            #include "base/apple/foundation_util.h"
+            #import "chrome/browser/ui/cocoa/foo.h"
+            """)
+        self.assertEqual(
+            self._add_include(source, '<CoreFoundation/CoreFoundation.h>'),
+            source.replace(
+                '#include <stddef.h>\n',
+                '#include <CoreFoundation/CoreFoundation.h>\n'
+                '#include <stddef.h>\n',
+            ),
+        )
+        self.assertEqual(
+            self._add_include(source, '"brave/foo.h"'),
+            source.replace(
+                '#import "chrome/browser/ui/cocoa/foo.h"\n',
+                '#include "brave/foo.h"\n'
+                '#import "chrome/browser/ui/cocoa/foo.h"\n',
+            ),
+        )
+
+    # -- macros -------------------------------------------------------------
+
+    def test_macros_after_the_includes_do_not_get_in_the_way(self):
+        # tree-sitter stumbles over macros like these, but only below the
+        # includes.
+        source = _cxx_source("""
+            #ifndef CONTENT_PUBLIC_BROWSER_FOO_H_
+            #define CONTENT_PUBLIC_BROWSER_FOO_H_
+
+            #include "base/feature_list.h"
+            #include "content/common/content_export.h"
+
+            namespace content {
+
+            CONTENT_EXPORT BASE_DECLARE_FEATURE(kFoo);
+
+            class CONTENT_EXPORT Foo : public views::View {
+              METADATA_HEADER(Foo, views::View)
+            };
+
+            }  // namespace content
+
+            #endif  // CONTENT_PUBLIC_BROWSER_FOO_H_
+            """)
+        self.assertEqual(
+            self._add_include(source, '"base/memory/raw_ptr.h"'),
+            source.replace(
+                '#include "base/feature_list.h"\n',
+                '#include "base/feature_list.h"\n'
+                '#include "base/memory/raw_ptr.h"\n',
+            ),
+        )
+
+    def test_unparsable_macros_below_the_includes(self):
+        source = _cxx_source("""
+            #include "chrome/browser/ui/views/foo_view.h"
+
+            #include "ui/base/metadata/metadata_impl_macros.h"
+
+            BEGIN_METADATA(FooView)
+            ADD_PROPERTY_METADATA(int, Bar)
+            END_METADATA
+            """)
+        self.assertEqual(
+            self._add_include(source, '"brave/foo.h"'),
+            source.replace(
+                '#include "ui/base/metadata/metadata_impl_macros.h"\n',
+                '#include "brave/foo.h"\n'
+                '#include "ui/base/metadata/metadata_impl_macros.h"\n',
+            ),
+        )
+
+    def test_blanking_macros_for_parsing_is_ignored(self):
+        # Blanking the conditionals would make the platform include look
+        # unconditional, and the header would join its group.
+        rewriter = plaster.CxxAddIncludeRewriter(headers=['"ui/views/view.h"'])
+        result, errors = rewriter.apply(
+            self._SOURCE,
+            count=1,
+            description='test',
+            blank_for_parse=plaster.BlankForParseOptions(macros=True),
+        )
+        self.assertEqual(errors, [])
+        self.assertEqual(
+            result, self._add_include(self._SOURCE, '"ui/views/view.h"')
+        )
+
+    def test_macro_include_splits_the_regions(self):
+        # An include naming its header through a macro has nothing to sort by.
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            #include "base/check.h"
+            #include FOO_PLATFORM_HEADER
+            #include "ui/views/view.h"
+            """)
+        self.assertEqual(
+            self._add_include(source, '"brave/foo.h"'),
+            source.replace(
+                '#include "base/check.h"\n',
+                '#include "base/check.h"\n#include "brave/foo.h"\n',
+            ),
+        )
+
+    def test_macro_given_a_default_is_not_an_include_guard(self):
+        # So the source keeps its main include.
+        source = _cxx_source("""
+            #ifndef FOO_ENABLED
+            #define FOO_ENABLED
+            #endif
+
+            #include "chrome/browser/foo.h"
+
+            namespace foo {
+            """)
+        self.assertEqual(
+            self._add_include(source, '"base/check.h"'),
+            source.replace(
+                '#include "chrome/browser/foo.h"\n',
+                '#include "chrome/browser/foo.h"\n\n#include "base/check.h"\n',
+            ),
+        )
+
+    def test_header_with_regex_metacharacters(self):
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            #include "base/check.h"
+            #include "ui/base/mojom/window_show_state.mojom-forward.h"
+            """)
+        self.assertEqual(
+            self._add_include(source, '"third_party/c++/foo.h"'),
+            source.replace(
+                '#include "ui/base/mojom/window_show_state.mojom-forward.h"\n',
+                '#include "third_party/c++/foo.h"\n'
+                '#include "ui/base/mojom/window_show_state.mojom-forward.h"\n',
+            ),
+        )
+        self.assertEqual(
+            self._add_include(source, '"zzz/foo.h"'),
+            source.replace(
+                '#include "ui/base/mojom/window_show_state.mojom-forward.h"\n',
+                '#include "ui/base/mojom/window_show_state.mojom-forward.h"\n'
+                '#include "zzz/foo.h"\n',
+            ),
+        )
+
+    # -- failures -----------------------------------------------------------
+
+    def test_header_already_included_fails(self):
+        errors = self._errors(self._SOURCE, '"base/check.h"')
+        self.assertEqual(
+            errors,
+            ['add_include found "base/check.h" already included (in "test")'],
+        )
+
+    def test_header_already_included_conditionally_fails(self):
+        errors = self._errors(self._SOURCE, '"chrome/browser/win/tab_helper.h"')
+        self.assertEqual(len(errors), 1)
+        self.assertIn('already included', errors[0])
+
+    def test_header_already_imported_fails(self):
+        source = _cxx_source("""
+            #import "chrome/browser/app_controller_mac.h"
+
+            #import <Cocoa/Cocoa.h>
+            """)
+        self.assertIn(
+            'already included', self._errors(source, '<Cocoa/Cocoa.h>')[0]
+        )
+
+    def test_one_header_of_a_list_already_included_fails(self):
+        rewriter = plaster.CxxAddIncludeRewriter(
+            headers=['"brave/foo.h"', '"base/check.h"']
+        )
+        result, errors = rewriter.apply(
+            self._SOURCE, count=1, description='test'
+        )
+        self.assertEqual(len(errors), 1)
+        self.assertIn('"base/check.h" already included', errors[0])
+        self.assertIn('#include "brave/foo.h"\n', result)
+
+    def test_source_opening_with_code_fails(self):
+        errors = self._errors('namespace foo {}\n', '"base/check.h"')
+        self.assertEqual(len(errors), 1)
+        self.assertIn('found no includes or include guard', errors[0])
+
+    # -- parsing ------------------------------------------------------------
+
+    def _parse_error(self, body: object) -> str:
+        with self.assertRaises(ValueError) as ctx:
+            plaster.CxxAddIncludeRewriter.parse(body, description='test')
+        return str(ctx.exception)
+
+    def test_parse_includes_a_path_in_quotes(self):
+        # System headers keep their angle brackets; any other header is its
+        # bare path, which YAML leaves bare even when written in quotes.
+        self.assertEqual(
+            plaster.CxxAddIncludeRewriter.parse(
+                {'header': ['<vector>', 'base/check.h']}, description='test'
+            )._headers,
+            ['<vector>', '"base/check.h"'],
+        )
+
+    def test_parse_rejects_a_decorated_or_malformed_header(self):
+        message = 'must be a path, e.g. base/check.h, or a system header'
+        self.assertIn(
+            message, self._parse_error({'header': ['"base/check.h"']})
+        )
+        self.assertIn(
+            message, self._parse_error({'header': ['#include "base/check.h"']})
+        )
+        self.assertIn(message, self._parse_error({'header': ['<vector']}))
+
+    def test_parse_rejects_a_header_listed_twice(self):
+        self.assertIn(
+            'more than once',
+            self._parse_error({'header': ['<vector>', '<vector>']}),
+        )
+
+    def test_parse_rejects_anything_but_a_non_empty_list(self):
+        message = 'must be a non-empty list of strings'
+        self.assertIn(message, self._parse_error({}))
+        self.assertIn(message, self._parse_error({'header': []}))
+        self.assertIn(message, self._parse_error({'header': '<vector>'}))
+        self.assertIn(message, self._parse_error({'header': [42]}))
+
+    def test_parse_rejects_unknown_args(self):
+        self.assertIn(
+            "Unrecognised add_include arg(s): 'include'",
+            self._parse_error({'header': ['<vector>'], 'include': '<map>'}),
+        )
+
+    def test_count_other_than_one_rejected(self):
+        with self.assertRaises(ValueError) as ctx:
+            plaster.Substitution.from_yaml(
+                'substitutions:\n'
+                '  - description: bogus count\n'
+                '    count: 2\n'
+                '    add_include:\n'
+                '      header:\n'
+                '        - <vector>\n',
+                namespace='cxx',
+            )
+        self.assertIn(
+            'does not accept a count other than 1', str(ctx.exception)
+        )
+
+    def test_unavailable_outside_cxx(self):
+        with self.assertRaises(ValueError) as ctx:
+            plaster.Substitution.from_yaml(
+                'substitutions:\n'
+                '  - description: wrong language\n'
+                '    add_include:\n'
+                '      header:\n'
+                '        - <vector>\n',
+                namespace='gn',
+            )
+        self.assertIn('not available for this source', str(ctx.exception))
+
+    def test_yaml_dispatches_to_the_rewriter(self):
+        spec = plaster.Substitution.from_yaml(
+            'substitutions:\n'
+            '  - description: include Brave\n'
+            '    add_include:\n'
+            '      header:\n'
+            '        - "brave/foo.h"\n'
+            '        - <vector>\n',
+            namespace='cxx',
+        )
+        rewriter = spec.substitutions[0].rewriter
+        self.assertIsInstance(rewriter, plaster.CxxAddIncludeRewriter)
+        self.assertEqual(rewriter._headers, ['"brave/foo.h"', '<vector>'])
+
+
+class CxxAddAfterIncludesTest(unittest.TestCase):
+    """`add_after_includes` inserting code ahead of a source's declarations."""
+
+    _CODE = 'namespace brave {\nclass BraveFoo;\n}  // namespace brave'
+
+    def _add(self, source: str, code: str = _CODE) -> str:
+        rewriter = plaster.CxxAddAfterIncludesRewriter(code=code)
+        result, errors = rewriter.apply(source, count=1, description='test')
+        self.assertEqual(errors, [])
+        return result
+
+    def test_header_gets_it_ahead_of_its_forward_declarations(self):
+        source = _cxx_source("""
+            #ifndef CHROME_BROWSER_UI_TABS_TAB_STRIP_MODEL_H_
+            #define CHROME_BROWSER_UI_TABS_TAB_STRIP_MODEL_H_
+
+            #include <memory>
+
+            #include "base/check.h"
+
+            class Profile;
+
+            namespace content {
+            class WebContents;
+            }
+
+            #endif  // CHROME_BROWSER_UI_TABS_TAB_STRIP_MODEL_H_
+            """)
+        self.assertEqual(
+            self._add(source),
+            source.replace(
+                '#include "base/check.h"\n\n',
+                '#include "base/check.h"\n\n' + self._CODE + '\n\n',
+            ),
+        )
+
+    def test_source_gets_it_ahead_of_its_namespace(self):
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            #include "base/check.h"
+
+            namespace {
+            """)
+        self.assertEqual(
+            self._add(source),
+            source.replace(
+                '#include "base/check.h"\n\n',
+                '#include "base/check.h"\n\n' + self._CODE + '\n\n',
+            ),
+        )
+
+    def test_lands_below_conditional_includes(self):
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            #include "build/build_config.h"
+
+            #if BUILDFLAG(IS_WIN)
+            #include "base/win/windows_types.h"
+            #elif BUILDFLAG(IS_MAC)
+            #include "base/apple/foo.h"
+            #endif
+
+            namespace foo {
+            """)
+        self.assertEqual(
+            self._add(source),
+            source.replace('#endif\n\n', '#endif\n\n' + self._CODE + '\n\n'),
+        )
+
+    def test_lands_below_nested_conditional_includes(self):
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            #if BUILDFLAG(IS_CHROMEOS)
+            #include "chromeos/foo.h"
+            #if BUILDFLAG(USE_CUPS)
+            #include "chromeos/printing/foo.h"
+            #endif  // BUILDFLAG(USE_CUPS)
+            #endif  // BUILDFLAG(IS_CHROMEOS)
+
+            namespace foo {
+            """)
+        self.assertEqual(
+            self._add(source),
+            source.replace(
+                '#endif  // BUILDFLAG(IS_CHROMEOS)\n\n',
+                '#endif  // BUILDFLAG(IS_CHROMEOS)\n\n' + self._CODE + '\n\n',
+            ),
+        )
+
+    def test_lands_below_a_platform_error(self):
+        # `browser_window.h` upstream refuses Android builds below its
+        # includes, ahead of its forward declarations.
+        source = _cxx_source("""
+            #ifndef CHROME_BROWSER_UI_BROWSER_WINDOW_H_
+            #define CHROME_BROWSER_UI_BROWSER_WINDOW_H_
+
+            #include "build/build_config.h"
+
+            #if BUILDFLAG(IS_ANDROID)
+            #error This file should only be included on desktop.
+            #endif
+
+            class BrowserView;
+
+            #endif  // CHROME_BROWSER_UI_BROWSER_WINDOW_H_
+            """)
+        self.assertEqual(
+            self._add(source),
+            source.replace(
+                '#endif\n\nclass BrowserView;',
+                '#endif\n\n' + self._CODE + '\n\nclass BrowserView;',
+            ),
+        )
+
+    def test_lands_above_a_conditional_block_holding_code(self):
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            #include "build/build_config.h"
+
+            #if BUILDFLAG(IS_ANDROID)
+            #include "chrome/browser/android/foo.h"
+            using FooImpl = FooAndroid;
+            #endif
+
+            namespace foo {
+            """)
+        self.assertEqual(
+            self._add(source),
+            source.replace(
+                '#include "build/build_config.h"\n\n',
+                '#include "build/build_config.h"\n\n' + self._CODE + '\n\n',
+            ),
+        )
+
+    def test_lands_below_macro_definitions(self):
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            #include "base/logging.h"
+
+            #define FOO_LOG(severity) \\
+              LOG(severity) << "Foo: "
+
+            namespace foo {
+            """)
+        self.assertEqual(
+            self._add(source),
+            source.replace('"Foo: "\n\n', '"Foo: "\n\n' + self._CODE + '\n\n'),
+        )
+
+    def test_leaves_the_comment_of_the_first_declaration_attached(self):
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            // Does the foo.
+            class Foo {
+            """)
+        self.assertEqual(
+            self._add(source),
+            source.replace(
+                '#include "chrome/browser/foo.h"\n\n',
+                '#include "chrome/browser/foo.h"\n\n' + self._CODE + '\n\n',
+            ),
+        )
+
+    def test_header_without_includes_gets_it_after_the_guard(self):
+        source = _cxx_source("""
+            #ifndef CHROME_FOO_H_
+            #define CHROME_FOO_H_
+
+            class Foo;
+
+            #endif  // CHROME_FOO_H_
+            """)
+        self.assertEqual(
+            self._add(source),
+            source.replace(
+                '#define CHROME_FOO_H_\n\n',
+                '#define CHROME_FOO_H_\n\n' + self._CODE + '\n\n',
+            ),
+        )
+
+    def test_header_of_only_includes_gets_it_ahead_of_the_guard_end(self):
+        source = _cxx_source("""
+            #ifndef CHROME_FOO_H_
+            #define CHROME_FOO_H_
+
+            #include "components/foo/foo.h"
+
+            #endif  // CHROME_FOO_H_
+            """)
+        self.assertEqual(
+            self._add(source),
+            source.replace(
+                '#include "components/foo/foo.h"\n\n',
+                '#include "components/foo/foo.h"\n\n' + self._CODE + '\n\n',
+            ),
+        )
+
+    def test_blank_lines_are_added_where_missing(self):
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+            namespace foo {
+            """)
+        self.assertEqual(
+            self._add(source, 'class Bar;'),
+            source.replace(
+                '#include "chrome/browser/foo.h"\n',
+                '#include "chrome/browser/foo.h"\n\nclass Bar;\n\n',
+            ),
+        )
+
+    def test_block_comment_notice(self):
+        # Some third-party sources open with a block comment.
+        source = (
+            '/*\n'
+            ' * Copyright (C) 2026 The Foo Authors.\n'
+            ' */\n'
+            '\n'
+            '#include "third_party/foo/foo.h"\n'
+            '\n'
+            'namespace foo {\n'
+        )
+        self.assertEqual(
+            self._add(source, 'class Bar;'),
+            source.replace(
+                '#include "third_party/foo/foo.h"\n\n',
+                '#include "third_party/foo/foo.h"\n\nclass Bar;\n\n',
+            ),
+        )
+
+    def test_lands_above_macro_declarations(self):
+        # A feature declared through a macro is code, and tree-sitter's
+        # trouble with `BEGIN_METADATA` stays below it.
+        source = _cxx_source("""
+            #include "chrome/browser/ui/views/foo_view.h"
+
+            #include "base/feature_list.h"
+
+            BASE_FEATURE(kFoo, "Foo", base::FEATURE_ENABLED_BY_DEFAULT);
+
+            BEGIN_METADATA(FooView)
+            ADD_PROPERTY_METADATA(int, Bar)
+            END_METADATA
+            """)
+        self.assertEqual(
+            self._add(source, 'class Bar;'),
+            source.replace(
+                '#include "base/feature_list.h"\n\n',
+                '#include "base/feature_list.h"\n\nclass Bar;\n\n',
+            ),
+        )
+
+    def test_lands_below_a_macro_given_a_default(self):
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            #ifndef FOO_ENABLED
+            #define FOO_ENABLED 1
+            #endif  // FOO_ENABLED
+
+            namespace foo {
+            """)
+        self.assertEqual(
+            self._add(source, 'class Bar;'),
+            source.replace(
+                '#endif  // FOO_ENABLED\n\n',
+                '#endif  // FOO_ENABLED\n\nclass Bar;\n\n',
+            ),
+        )
+
+    def test_backslashes_in_the_code_are_kept(self):
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            namespace foo {
+            """)
+        code = '#define BRAVE_FOO(x) \\\n  x'
+        self.assertEqual(
+            self._add(source, code),
+            source.replace(
+                '#include "chrome/browser/foo.h"\n\n',
+                '#include "chrome/browser/foo.h"\n\n' + code + '\n\n',
+            ),
+        )
+
+    def test_trailing_newlines_of_the_code_are_dropped(self):
+        # As a YAML `|` block scalar leaves them.
+        source = _cxx_source("""
+            #include "chrome/browser/foo.h"
+
+            namespace foo {
+            """)
+        self.assertEqual(
+            self._add(source, 'class Bar;\n'), self._add(source, 'class Bar;')
+        )
+
+    def test_source_opening_with_code_fails(self):
+        rewriter = plaster.CxxAddAfterIncludesRewriter(code='class Bar;')
+        source = _cxx_source('namespace foo {}\n')
+        result, errors = rewriter.apply(source, count=1, description='test')
+        self.assertEqual(result, source)
+        self.assertEqual(
+            errors,
+            [
+                'add_after_includes found no includes or include guard to '
+                'insert after (in "test")'
+            ],
+        )
+
+    def test_parse_rejects_bad_bodies(self):
+        for body, message in (
+            ({}, 'must be a non-empty string'),
+            ({'code': ''}, 'must be a non-empty string'),
+            ({'code': ['class Bar;']}, 'must be a non-empty string'),
+            (
+                {'code': 'class Bar;', 'line': 'x'},
+                "Unrecognised add_after_includes arg(s): 'line'",
+            ),
+            ('class Bar;', 'must be a mapping'),
+        ):
+            with self.subTest(body=body):
+                with self.assertRaises(ValueError) as ctx:
+                    plaster.CxxAddAfterIncludesRewriter.parse(
+                        body, description='test'
+                    )
+                self.assertIn(message, str(ctx.exception))
+
+    def test_count_other_than_one_rejected(self):
+        with self.assertRaises(ValueError) as ctx:
+            plaster.Substitution.from_yaml(
+                'substitutions:\n'
+                '  - description: bogus count\n'
+                '    count: 0\n'
+                '    add_after_includes:\n'
+                '      code: class Bar;\n',
+                namespace='cxx',
+            )
+        self.assertIn(
+            'does not accept a count other than 1', str(ctx.exception)
+        )
+
+
 class RegexMacroDispatchTest(unittest.TestCase):
     """End-to-end tests for dispatching a `regex_macro:`-style substitution
     key (e.g. `set_feature_flag_default_state:`) to `RegexMacro`.
@@ -7529,6 +8779,47 @@ class RewritersEvalTest(unittest.TestCase):
             )
         )
 
+    def test_rewriter_last_match_is_optional_bool(self):
+        spec = self._valid_spec()
+        spec['ast.rewriter']['cxx.make_virtual']['last_match'] = True
+        rewriters = plaster.RewritersEval(repr(spec))
+        self.assertIs(
+            rewriters.rewriter('cxx.make_virtual')['last_match'], True
+        )
+
+    def test_rewriter_last_match_must_be_bool(self):
+        self._assert_invalid(
+            lambda spec: spec['ast.rewriter']['cxx.make_virtual'].update(
+                {'last_match': 'yes'}
+            )
+        )
+
+    def test_rewriter_first_and_last_match_are_exclusive(self):
+        self._assert_invalid(
+            lambda spec: spec['ast.rewriter']['cxx.make_virtual'].update(
+                {'first_match': True, 'last_match': True}
+            ),
+            'sets both `first_match` and `last_match`',
+        )
+
+    def test_matcher_utils_are_optional_rule_bodies(self):
+        spec = self._valid_spec()
+        spec['ast.matcher']['cxx.find_class_method_decl']['utils'] = {
+            'method': 'kind: field_declaration\n'
+        }
+        rewriters = plaster.RewritersEval(repr(spec))
+        self.assertEqual(
+            rewriters.matcher('cxx.find_class_method_decl')['utils'],
+            {'method': 'kind: field_declaration\n'},
+        )
+
+    def test_matcher_utils_must_map_names_to_strings(self):
+        self._assert_invalid(
+            lambda spec: spec['ast.matcher'][
+                'cxx.find_class_method_decl'
+            ].update({'utils': {'method': {'kind': 'field_declaration'}}})
+        )
+
     # -- matcher captures ---------------------------------------------------
 
     # The candidate list `_with_capture` gives a capture by default.
@@ -8381,6 +9672,33 @@ class AstRewriterTest(unittest.TestCase):
             rewriter.content,
             'class C {\n  virtual void Foo();\n'
             '  virtual void Foo(int x);\n};\n',
+        )
+
+    def test_utils_and_last_match(self):
+        # A matcher's utils reach ast-grep alongside its rule, and a
+        # `last_match` op rewrites only the last of the matches.
+        spec = copy.deepcopy(_SYNTHETIC_SPEC)
+        spec['ast.matcher']['cxx.find_methods'] = {
+            'template': 'matches: method\n',
+            'utils': {'method': 'kind: field_declaration\n'},
+            'result': {'node': 'field_declaration'},
+        }
+        spec['ast.rewriter']['cxx.make_last_virtual'] = {
+            'matcher': 'cxx.find_methods',
+            'inputs': [],
+            'last_match': True,
+            'replace': {'re_pattern': '^', 'replace': 'virtual '},
+            'result': {'node': 'field_declaration'},
+        }
+        rewriter = plaster.AstRewriter(
+            plaster.RewritersEval(repr(spec)), self._SRC
+        )
+        op = plaster.Operation('cxx.make_last_virtual', {})
+        self.assertEqual(len(rewriter.matches(op)), 2)
+        self.assertEqual(rewriter.run(op), 1)
+        self.assertEqual(
+            rewriter.content,
+            'class C {\n  void Foo();\n  virtual void Bar();\n};\n',
         )
 
     def test_no_match_leaves_content_unchanged(self):

@@ -297,7 +297,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
   EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
   EXPECT_GT(brave_shields_web_contents_observer()->block_javascript_count(), 0);
   auto blocked_list = GetBlockedJsList();
-  EXPECT_EQ(blocked_list.size(), 3u);
+  ASSERT_EQ(blocked_list.size(), 3u);
 
   // Allow One Script
   brave_shields_web_contents_observer()->AllowScriptsOnce(
@@ -309,7 +309,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
   EXPECT_EQ(GetAllowedJsList().size(), 1u);
 
   blocked_list.pop_back();
-  EXPECT_EQ(blocked_list.size(), 2u);
+  ASSERT_EQ(blocked_list.size(), 2u);
 
   // Allow Second Script
   brave_shields_web_contents_observer()->AllowScriptsOnce(

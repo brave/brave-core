@@ -1,8 +1,16 @@
 diff --git a/chrome/common/importer/profile_import_process_param_traits_macros.h b/chrome/common/importer/profile_import_process_param_traits_macros.h
-index b19a5aa8cee272d0c37e227e163f2481ac33b5f6..33e622cfd2a48b64f45a6ab9f91da4b4c2a9dc64 100644
+index b19a5aa8cee272d0c37e227e163f2481ac33b5f6..0421e05bede9aced32803b10fca27edc23fc73a3 100644
 --- a/chrome/common/importer/profile_import_process_param_traits_macros.h
 +++ b/chrome/common/importer/profile_import_process_param_traits_macros.h
-@@ -23,11 +23,11 @@
+@@ -13,6 +13,7 @@
+ #include "components/favicon_base/favicon_usage_data.h"
+ #include "components/user_data_importer/common/imported_bookmark_entry.h"
+ #include "components/user_data_importer/common/importer_data_types.h"
++#include "components/user_data_importer/common/importer_type.h"
+ #include "components/user_data_importer/common/importer_url_row.h"
+ #include "content/public/common/common_param_traits.h"
+ #include "ipc/param_traits_macros.h"
+@@ -23,11 +24,11 @@
  #if BUILDFLAG(IS_WIN)
  IPC_ENUM_TRAITS_MIN_MAX_VALUE(user_data_importer::ImporterType,
                                user_data_importer::TYPE_UNKNOWN,

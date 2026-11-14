@@ -23,8 +23,9 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/run_loop.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/test/run_until.h"
+#include "base/test/test_future.h"
 #include "base/types/fixed_array.h"
 #include "chrome/browser/password_manager/password_manager_test_util.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -94,8 +95,10 @@ class PasswordUiViewAndroidTest : public ::testing::Test {
     form.username_value = base::UTF8ToUTF16(username);
     form.password_value =
         password_manager::PasswordString(base::UTF8ToUTF16(password));
-    store_->AddLogin(password_manager::FromPasswordForm(form));
-    RunUntilIdle();
+    base::test::TestFuture<void> added_future;
+    store_->AddLogin(password_manager::FromPasswordForm(form),
+                     added_future.GetCallback());
+    EXPECT_TRUE(added_future.Wait());
     return form;
   }
 
@@ -133,14 +136,18 @@ TEST_F(PasswordUiViewAndroidTest, GetSerializedPasswords) {
       password_ui_view(new PasswordUiViewAndroid(
           env(), JavaRef<jobject>(nullptr), testing_profile_));
   // SavedPasswordsPresenter needs time to initialize and fetch passwords.
-  RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return !password_ui_view->IsWaitingForPasswordStore(env()); }));
 
   PasswordUiViewAndroid::SerializationResult serialized_passwords;
   password_ui_view->set_export_target_for_testing(&serialized_passwords);
   password_ui_view->HandleSerializePasswords(
       env(), temp_dir().GetPath().AsUTF8Unsafe(), nullptr, nullptr);
 
-  content::RunAllTasksUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return !serialized_passwords.exported_file_path.empty() ||
+           !serialized_passwords.error.empty();
+  }));
   // The buffer for actual result is 1 byte longer than the expected data to be
   // able to detect when the actual data are too long.
   base::FixedArray<char> actual_result(expected_result.size() + 1);
@@ -165,7 +172,8 @@ TEST_F(PasswordUiViewAndroidTest, GetSerializedPasswords_Cancelled) {
       password_ui_view(new PasswordUiViewAndroid(
           env(), JavaRef<jobject>(nullptr), testing_profile_));
   // SavedPasswordsPresenter needs time to initialize and fetch passwords.
-  RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return !password_ui_view->IsWaitingForPasswordStore(env()); }));
 
   PasswordUiViewAndroid::SerializationResult serialized_passwords;
   serialized_passwords.entries_count = 123;
@@ -193,13 +201,17 @@ TEST_F(PasswordUiViewAndroidTest, GetSerializedPasswords_WriteFailed) {
       password_ui_view(new PasswordUiViewAndroid(
           env(), JavaRef<jobject>(nullptr), testing_profile_));
   // SavedPasswordsPresenter needs time to initialize and fetch passwords.
-  RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return !password_ui_view->IsWaitingForPasswordStore(env()); }));
 
   PasswordUiViewAndroid::SerializationResult serialized_passwords;
   password_ui_view->set_export_target_for_testing(&serialized_passwords);
   password_ui_view->HandleSerializePasswords(
       env(), "/This directory cannot be created", nullptr, nullptr);
-  content::RunAllTasksUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return !serialized_passwords.exported_file_path.empty() ||
+           !serialized_passwords.error.empty();
+  }));
   EXPECT_EQ(0, serialized_passwords.entries_count);
   EXPECT_FALSE(serialized_passwords.error.empty());
 }

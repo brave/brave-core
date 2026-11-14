@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/frame/layout/browser_view_layout_impl.h b/chrome/browser/ui/views/frame/layout/browser_view_layout_impl.h
+index 60cf7ccc7026cb6129147c737d98bf7e6c6eae3c..6eb2a16cddc21a2b575026edfded18e9712749f0 100644
+--- a/chrome/browser/ui/views/frame/layout/browser_view_layout_impl.h
++++ b/chrome/browser/ui/views/frame/layout/browser_view_layout_impl.h
+@@ -76,6 +76,7 @@ class BrowserViewLayoutImpl : public BrowserViewLayout {
+     // Searches the tree for `descendant` and returns its layout, otherwise,
+     // returns null if not found.
+     const ProposedLayout* GetLayoutFor(const views::View* descendant) const;
++  ProposedLayout* GetLayoutFor(const views::View* descendant);
+ 
+     // Finds `descendant`'s layout in the tree and returns its bounds relative
+     // to `relative_to`.

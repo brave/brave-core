@@ -14,47 +14,16 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/memory/raw_ptr.h"
-#include "base/run_loop.h"
 #include "base/test/task_environment.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "components/bookmarks/test/test_bookmark_client.h"
 #include "components/history/core/browser/history_backend.h"
-#include "components/history/core/browser/history_database.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/test/history_service_test_util.h"
 #include "components/omnibox/browser/fake_autocomplete_provider_client.h"
 #include "components/omnibox/browser/history_test_util.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-namespace {
-
-// Post history_backend->GetURL() to the history thread and stop the originating
-// thread's message loop when done.
-class GetURLTask : public history::HistoryDBTask {
- public:
-  GetURLTask(const GURL& url, bool* result_storage)
-      : result_storage_(result_storage), url_(url) {}
-  GetURLTask(const GetURLTask&) = delete;
-  GetURLTask& operator=(const GetURLTask&) = delete;
-
-  bool RunOnDBThread(history::HistoryBackend* backend,
-                     history::HistoryDatabase* db) override {
-    *result_storage_ = backend->GetURL(url_, nullptr);
-    return true;
-  }
-
-  void DoneRunOnMainThread() override { base::RunLoop().RunUntilIdle(); }
-
- private:
-  ~GetURLTask() override = default;
-
-  raw_ptr<bool> result_storage_;
-  const GURL url_;
-};
-
-}  // namespace
 
 class BraveHistoryQuickProviderTest : public testing::Test {
  public:
@@ -154,7 +123,6 @@ class BraveHistoryQuickProviderTest : public testing::Test {
                          const std::u16string& expected_autocompletion,
                          bool duplicates_ok = false) {
     SCOPED_TRACE(text);  // Minimal hint to query being run.
-    base::RunLoop().RunUntilIdle();
     AutocompleteInput input(text, cursor_position,
                             metrics::OmniboxEventProto::OTHER,
                             TestSchemeClassifier());

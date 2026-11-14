@@ -49,7 +49,6 @@ using testing::_;
 using testing::Eq;
 using testing::SaveArg;
 using testing::Truly;
-using testing::WithArg;
 
 namespace brave_wallet {
 
@@ -377,18 +376,18 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalance) {
             std::move(callback).Run(std::move(response));
           });
 
-  base::MockCallback<ZCashWalletService::GetBalanceCallback> balance_callback;
-  EXPECT_CALL(balance_callback, Run(_, _))
-      .WillOnce([&](mojom::ZCashBalancePtr balance,
-                    std::optional<std::string> error) {
-        EXPECT_EQ(balance->total_balance, 50u);
-        EXPECT_EQ(balance->transparent_balance, 50u);
-        EXPECT_EQ(balance->orchard_balance, 0u);
-      });
+  base::test::TestFuture<mojom::ZCashBalancePtr, std::optional<std::string>>
+      balance_future;
+  zcash_wallet_service_->GetBalance(
+      account->account_id.Clone(),
+      balance_future.GetCallback<mojom::ZCashBalancePtr,
+                                 const std::optional<std::string>&>());
 
-  zcash_wallet_service_->GetBalance(account->account_id.Clone(),
-                                    balance_callback.Get());
-  task_environment_.RunUntilIdle();
+  const auto& balance = balance_future.Get<0>();
+  ASSERT_TRUE(balance);
+  EXPECT_EQ(balance->total_balance, 50u);
+  EXPECT_EQ(balance->transparent_balance, 50u);
+  EXPECT_EQ(balance->orchard_balance, 0u);
 }
 
 TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
@@ -473,18 +472,19 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
         return spendable_notes_bundle;
       });
 
-  base::MockCallback<ZCashWalletService::GetBalanceCallback> balance_callback;
-  EXPECT_CALL(balance_callback, Run(_, _))
-      .WillOnce([&](mojom::ZCashBalancePtr balance,
-                    std::optional<std::string> error) {
-        EXPECT_EQ(balance->total_balance, 20u);
-        EXPECT_EQ(balance->transparent_balance, 10u);
-        EXPECT_EQ(balance->orchard_balance, 10u);
-        EXPECT_EQ(balance->orchard_pending_balance, 20u);
-      });
-  zcash_wallet_service_->GetBalance(account->account_id.Clone(),
-                                    balance_callback.Get());
-  task_environment_.RunUntilIdle();
+  base::test::TestFuture<mojom::ZCashBalancePtr, std::optional<std::string>>
+      balance_future;
+  zcash_wallet_service_->GetBalance(
+      account->account_id.Clone(),
+      balance_future.GetCallback<mojom::ZCashBalancePtr,
+                                 const std::optional<std::string>&>());
+
+  const auto& balance = balance_future.Get<0>();
+  ASSERT_TRUE(balance);
+  EXPECT_EQ(balance->total_balance, 20u);
+  EXPECT_EQ(balance->transparent_balance, 10u);
+  EXPECT_EQ(balance->orchard_balance, 10u);
+  EXPECT_EQ(balance->orchard_pending_balance, 20u);
 }
 
 TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
@@ -550,32 +550,43 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
   note.amount = 10u;
   note.note_version = 2;
 
-  auto update_notes_callback = base::BindLambdaForTesting(
-      [](base::expected<OrchardStorage::Result, OrchardStorage::Error>) {});
-
   OrchardBlockScanner::Result result = CreateResultForTesting(
       OrchardTreeState(), std::vector<OrchardCommitment>(), 50000, "hash50000");
   result.orchard.discovered_notes = std::vector<OrchardNote>({note});
   result.orchard.found_spends = std::vector<OrchardNoteSpend>();
 
+  base::test::TestFuture<
+      base::expected<OrchardStorage::Result, OrchardStorage::Error>>
+      register_account_future;
+  zcash_wallet_service_->sync_state()
+      .AsyncCall(&OrchardSyncState::RegisterAccount)
+      .WithArgs(account->account_id.Clone(), 100u)
+      .Then(register_account_future.GetCallback());
+  auto register_account_result = register_account_future.Take();
+  ASSERT_TRUE(register_account_result.has_value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess, register_account_result.value());
+
+  base::test::TestFuture<
+      base::expected<OrchardStorage::Result, OrchardStorage::Error>>
+      apply_scan_results_future;
   zcash_wallet_service_->sync_state()
       .AsyncCall(&OrchardSyncState::ApplyScanResults)
       .WithArgs(account->account_id.Clone(), std::move(result))
-      .Then(std::move(update_notes_callback));
+      .Then(apply_scan_results_future.GetCallback());
+  ASSERT_TRUE(apply_scan_results_future.Take().has_value());
 
-  task_environment_.RunUntilIdle();
+  base::test::TestFuture<mojom::ZCashBalancePtr, std::optional<std::string>>
+      balance_future;
+  zcash_wallet_service_->GetBalance(
+      account->account_id.Clone(),
+      balance_future.GetCallback<mojom::ZCashBalancePtr,
+                                 const std::optional<std::string>&>());
 
-  base::MockCallback<ZCashWalletService::GetBalanceCallback> balance_callback;
-  EXPECT_CALL(balance_callback, Run(_, _))
-      .WillOnce([&](mojom::ZCashBalancePtr balance,
-                    std::optional<std::string> error) {
-        EXPECT_EQ(balance->total_balance, 10u);
-        EXPECT_EQ(balance->transparent_balance, 10u);
-        EXPECT_EQ(balance->orchard_balance, 0u);
-      });
-  zcash_wallet_service_->GetBalance(account->account_id.Clone(),
-                                    balance_callback.Get());
-  task_environment_.RunUntilIdle();
+  const auto& balance = balance_future.Get<0>();
+  ASSERT_TRUE(balance);
+  EXPECT_EQ(balance->total_balance, 10u);
+  EXPECT_EQ(balance->transparent_balance, 10u);
+  EXPECT_EQ(balance->orchard_balance, 0u);
 }
 
 TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_IronwoodEnabled) {
@@ -682,6 +693,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_IronwoodEnabled) {
                                  const std::optional<std::string>&>());
 
   const auto& balance = balance_future.Get<0>();
+  ASSERT_TRUE(balance);
   EXPECT_EQ(balance->transparent_balance, 10u);
   EXPECT_EQ(balance->orchard_balance, 10u);
   EXPECT_EQ(balance->orchard_pending_balance, 20u);
@@ -822,16 +834,8 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
         std::move(callback).Run(std::move(response));
       });
 
-  base::MockCallback<ZCashWalletService::SignAndPostTransactionCallback>
-      sign_callback;
-
-  ZCashTransaction signed_tx;
-  EXPECT_CALL(
-      sign_callback,
-      Run("3bc513afc84befb9774f667eb4e63266a7229ab1fdb43476dd7c3a33d16b3101", _,
-          ""))
-      .WillOnce(
-          WithArg<1>([&](const ZCashTransaction& tx) { signed_tx = tx; }));
+  base::test::TestFuture<std::string, ZCashTransaction, std::string>
+      sign_future;
 
   std::vector<uint8_t> captured_data;
   EXPECT_CALL(zcash_rpc(), SendTransaction(_, _, _))
@@ -845,9 +849,11 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
       });
 
   zcash_wallet_service_->SignAndPostTransaction(
-      account_id(), std::move(zcash_transaction), sign_callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&sign_callback);
+      account_id(), std::move(zcash_transaction), sign_future.GetCallback());
+  EXPECT_EQ(sign_future.Get<0>(),
+            "3bc513afc84befb9774f667eb4e63266a7229ab1fdb43476dd7c3a33d16b3101");
+  EXPECT_EQ(sign_future.Get<2>(), "");
+  ZCashTransaction signed_tx = sign_future.Get<1>();
 
   EXPECT_EQ(ToHex(signed_tx.transparent_part().inputs[0].script_sig),
             "0x47304402202fc68ead746e8e93bb661ac79e71e1d3d84fd0f2aac76a8cb"
@@ -972,9 +978,7 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery) {
 
     zcash_wallet_service_->RunDiscovery(std::move(account_id),
                                         std::move(discovery_callback));
-    task_environment_.RunUntilIdle();
-
-    EXPECT_TRUE(callback_called);
+    ASSERT_TRUE(base::test::RunUntil([&] { return callback_called; }));
   }
 
   ON_CALL(zcash_rpc(), IsKnownAddress(_, _, _, _, _))
@@ -1019,9 +1023,7 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery) {
 
     zcash_wallet_service_->RunDiscovery(std::move(account_id),
                                         std::move(discovery_callback));
-    task_environment_.RunUntilIdle();
-
-    EXPECT_TRUE(callback_called);
+    ASSERT_TRUE(base::test::RunUntil([&] { return callback_called; }));
   }
 }
 
@@ -1072,7 +1074,6 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery_FromPrefs) {
           EXPECT_EQ((*result)[1]->address_string,
                     "t1RDtGXzcfchmtrE8pGLorefgtspgcNZbrE");
           callback_called = true;
-          callback_called = true;
         });
 
     auto account =
@@ -1081,9 +1082,7 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery_FromPrefs) {
 
     zcash_wallet_service_->RunDiscovery(std::move(account_id),
                                         std::move(discovery_callback));
-    task_environment_.RunUntilIdle();
-
-    EXPECT_TRUE(callback_called);
+    ASSERT_TRUE(base::test::RunUntil([&] { return callback_called; }));
   }
 }
 
@@ -1518,22 +1517,25 @@ TEST_F(ZCashWalletServiceUnitTest, AutoSync) {
 
   EXPECT_FALSE(auto_sync_managers().contains(account_id_1));
   {
-    base::MockCallback<ZCashWalletService::MakeAccountShieldedCallback>
-        make_account_shielded_callback;
-    EXPECT_CALL(make_account_shielded_callback, Run(Eq(std::nullopt)));
-
+    base::test::TestFuture<const std::optional<std::string>&>
+        make_account_shielded_future;
     zcash_wallet_service_->MakeAccountShielded(
-        account_id_1.Clone(), 0, make_account_shielded_callback.Get());
-    task_environment_.RunUntilIdle();
+        account_id_1.Clone(), 0, make_account_shielded_future.GetCallback());
+    EXPECT_EQ(std::nullopt, make_account_shielded_future.Take());
   }
 
+  ASSERT_TRUE(auto_sync_managers().contains(account_id_1));
+
+  // Observer notifications are delivered over mojo, so wait for the effect.
   keyring_service()->Lock();
-  task_environment_.RunUntilIdle();
-  EXPECT_FALSE(auto_sync_managers().contains(account_id_1));
-  keyring_service()->Unlock(kTestWalletPassword, base::DoNothing());
-  task_environment_.RunUntilIdle();
-  EXPECT_TRUE(auto_sync_managers().contains(account_id_1));
-  EXPECT_TRUE(auto_sync_managers()[account_id_1.Clone()]->IsStarted());
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return !auto_sync_managers().contains(account_id_1); }));
+  base::test::TestFuture<bool> unlock_future;
+  keyring_service()->Unlock(kTestWalletPassword, unlock_future.GetCallback());
+  ASSERT_TRUE(unlock_future.Get());
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return auto_sync_managers().contains(account_id_1); }));
+  EXPECT_TRUE(auto_sync_managers().find(account_id_1)->second->IsStarted());
 }
 
 TEST_F(ZCashWalletServiceUnitTest, ZCashAccountInfo) {
@@ -1549,26 +1551,21 @@ TEST_F(ZCashWalletServiceUnitTest, ZCashAccountInfo) {
       GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
   auto account_id_1 = account_1->account_id.Clone();
   {
-    base::MockCallback<ZCashWalletService::GetZCashAccountInfoCallback>
-        get_zcash_account_info_callback;
-    EXPECT_CALL(get_zcash_account_info_callback, Run(_))
-        .WillOnce(  //
-            [&](mojom::ZCashAccountInfoPtr account_info) {
-              EXPECT_EQ(account_info->unified_address.value(),
-                        "u1gjrzpk0v0v2ae359cp296zapth9mw8xseyzhu44a4ftux3gn8gh9"
-                        "hmzazrz6f3yvjyglrchz68g0s2hwpjknw3eywxgp0tn3p5p3g94w4j"
-                        "dfked5as22p9y3ftkyt59eh7phch995yh");
-              EXPECT_EQ(account_info->orchard_address.value(),
-                        "u1qtnwpp2gg5r745auv2r5cvc4v0q8sr8nd3xcg48ck92xul8t6tmv"
-                        "urkzksfln94mh2amfxjemwwtmvys4l40xlkxck5fpgqxzuqxs2jq");
-              EXPECT_EQ(
-                  account_info->orchard_internal_address.value(),
-                  "u1dl9dtss80tsutx3xfje4vlndwhc2f2pernhhpxfsz9vw6nr0zz"
-                  "lkw9p2m22xjcn5588fp3tnta9uqhpk4nh06xumwvt8ff7w653g5pvk");
-            });
+    base::test::TestFuture<mojom::ZCashAccountInfoPtr> account_info_future;
     zcash_wallet_service_->GetZCashAccountInfo(
-        account_id_1.Clone(), get_zcash_account_info_callback.Get());
-    task_environment_.RunUntilIdle();
+        account_id_1.Clone(), account_info_future.GetCallback());
+    auto account_info = account_info_future.Take();
+    ASSERT_TRUE(account_info);
+    EXPECT_EQ(account_info->unified_address.value(),
+              "u1gjrzpk0v0v2ae359cp296zapth9mw8xseyzhu44a4ftux3gn8gh9"
+              "hmzazrz6f3yvjyglrchz68g0s2hwpjknw3eywxgp0tn3p5p3g94w4j"
+              "dfked5as22p9y3ftkyt59eh7phch995yh");
+    EXPECT_EQ(account_info->orchard_address.value(),
+              "u1qtnwpp2gg5r745auv2r5cvc4v0q8sr8nd3xcg48ck92xul8t6tmv"
+              "urkzksfln94mh2amfxjemwwtmvys4l40xlkxck5fpgqxzuqxs2jq");
+    EXPECT_EQ(account_info->orchard_internal_address.value(),
+              "u1dl9dtss80tsutx3xfje4vlndwhc2f2pernhhpxfsz9vw6nr0zz"
+              "lkw9p2m22xjcn5588fp3tnta9uqhpk4nh06xumwvt8ff7w653g5pvk");
   }
 }
 
@@ -2031,6 +2028,7 @@ TEST_F(ZCashWalletServiceUnitTest,
   }
 
   {
+    EXPECT_CALL(zcash_rpc(), SendTransaction(_, _, _)).Times(0);
     base::test::TestFuture<const std::optional<std::string>&,
                            const std::optional<std::string>&>
         future;
@@ -2041,6 +2039,7 @@ TEST_F(ZCashWalletServiceUnitTest,
     ASSERT_TRUE(error.has_value());
     EXPECT_EQ(*error,
               l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR));
+    testing::Mock::VerifyAndClearExpectations(&zcash_rpc());
   }
 
   {
@@ -2100,42 +2099,33 @@ TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
           });
 
   {
-    base::MockCallback<ZCashWalletService::MakeAccountShieldedCallback>
-        make_account_shielded_callback;
-    EXPECT_CALL(make_account_shielded_callback, Run(Eq(std::nullopt)));
-
+    base::test::TestFuture<const std::optional<std::string>&>
+        make_account_shielded_future;
     zcash_wallet_service_->MakeAccountShielded(
-        account_id_1.Clone(), 0, make_account_shielded_callback.Get());
-    task_environment_.RunUntilIdle();
+        account_id_1.Clone(), 0, make_account_shielded_future.GetCallback());
+    EXPECT_EQ(std::nullopt, make_account_shielded_future.Take());
   }
 
   {
-    base::MockCallback<ZCashWalletService::GetZCashAccountInfoCallback>
-        get_zcash_account_info_callback;
-    EXPECT_CALL(get_zcash_account_info_callback, Run(_))
-        .WillOnce(  //
-            [&](mojom::ZCashAccountInfoPtr account_info) {
-              EXPECT_EQ(mojom::ZCashAccountShieldBirthday::New(
-                            100000u - kChainReorgBlockDelta, "hexhexhex2"),
-                        account_info->account_shield_birthday);
-            });
+    base::test::TestFuture<mojom::ZCashAccountInfoPtr> account_info_future;
     zcash_wallet_service_->GetZCashAccountInfo(
-        account_id_1.Clone(), get_zcash_account_info_callback.Get());
-    task_environment_.RunUntilIdle();
-    EXPECT_TRUE(auto_sync_managers().contains(account_id_1));
-    EXPECT_TRUE(auto_sync_managers()[account_id_1.Clone()]->IsStarted());
+        account_id_1.Clone(), account_info_future.GetCallback());
+    auto account_info = account_info_future.Take();
+    ASSERT_TRUE(account_info);
+    EXPECT_EQ(mojom::ZCashAccountShieldBirthday::New(
+                  100000u - kChainReorgBlockDelta, "hexhexhex2"),
+              account_info->account_shield_birthday);
+    ASSERT_TRUE(auto_sync_managers().contains(account_id_1));
+    EXPECT_TRUE(auto_sync_managers().find(account_id_1)->second->IsStarted());
   }
 
   {
-    base::MockCallback<ZCashWalletService::GetZCashAccountInfoCallback>
-        get_zcash_account_info_callback;
-    EXPECT_CALL(get_zcash_account_info_callback, Run(_))
-        .WillOnce([&](mojom::ZCashAccountInfoPtr account_info) {
-          EXPECT_TRUE(account_info->account_shield_birthday.is_null());
-        });
+    base::test::TestFuture<mojom::ZCashAccountInfoPtr> account_info_future;
     zcash_wallet_service_->GetZCashAccountInfo(
-        account_id_2.Clone(), get_zcash_account_info_callback.Get());
-    task_environment_.RunUntilIdle();
+        account_id_2.Clone(), account_info_future.GetCallback());
+    auto account_info = account_info_future.Take();
+    ASSERT_TRUE(account_info);
+    EXPECT_TRUE(account_info->account_shield_birthday.is_null());
     EXPECT_FALSE(auto_sync_managers().contains(account_id_2));
   }
 }
@@ -3127,18 +3117,16 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
         std::move(callback).Run(base::unexpected("error"));
       });
 
-  base::MockCallback<ZCashWalletService::ShieldAllFundsCallback>
-      shield_funds_callback;
-  EXPECT_CALL(shield_funds_callback, Run(_, _))
-      .WillOnce([&](const std::optional<std::string>& result,
-                    const std::optional<std::string>& error) {
-        EXPECT_FALSE(result);
-        EXPECT_TRUE(error);
-      });
+  EXPECT_CALL(zcash_rpc(), SendTransaction(_, _, _)).Times(0);
+  base::test::TestFuture<const std::optional<std::string>&,
+                         const std::optional<std::string>&>
+      shield_funds_future;
   zcash_wallet_service_->ShieldAllFunds(account_id.Clone(),
-                                        shield_funds_callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&shield_funds_callback);
+                                        shield_funds_future.GetCallback());
+  const auto [shield_result, shield_error] = shield_funds_future.Take();
+  EXPECT_FALSE(shield_result);
+  EXPECT_TRUE(shield_error);
+  testing::Mock::VerifyAndClearExpectations(&zcash_rpc());
 }
 
 #if (BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)) || BUILDFLAG(IS_IOS)
@@ -3331,23 +3319,17 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
             std::move(callback).Run(std::move(response));
           });
 
-  std::optional<ZCashTransaction> created_transaction;
-  base::MockCallback<ZCashWalletService::CreateTransactionCallback>
-      create_transaction_callback;
-  EXPECT_CALL(create_transaction_callback, Run(_))
-      .WillOnce([&](base::expected<ZCashTransaction, std::string> tx) {
-        ASSERT_TRUE(tx.has_value()) << tx.error();
-        EXPECT_EQ(tx->memo(), std::nullopt);
-        created_transaction = tx.value();
-      });
-
+  base::test::TestFuture<base::expected<ZCashTransaction, std::string>>
+      create_transaction_future;
   zcash_wallet_service_->CreateTransparentToIronwoodTransaction(
       account_id.Clone(),
       "u1gvf5rrg0e7kzcvwue2fpdrdus6xc8zn024p4te927sq438wrst99evna6chp5xxkv4rh8"
       "mvh03z07exwk9yvp9vduzuvzrll3up49g0s",
-      10000, std::nullopt, create_transaction_callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&create_transaction_callback);
+      10000, std::nullopt, create_transaction_future.GetCallback());
+  auto created_tx_result = create_transaction_future.Take();
+  ASSERT_TRUE(created_tx_result.has_value()) << created_tx_result.error();
+  EXPECT_EQ(created_tx_result->memo(), std::nullopt);
+  ZCashTransaction created_transaction = std::move(*created_tx_result);
 
   std::vector<uint8_t> captured_data;
   EXPECT_CALL(zcash_rpc(), SendTransaction(_, _, _))
@@ -3360,16 +3342,16 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
         std::move(callback).Run(std::move(response));
       });
 
-  base::MockCallback<ZCashWalletService::SignAndPostTransactionCallback>
-      sign_callback;
+  base::test::TestFuture<std::string, ZCashTransaction, std::string>
+      sign_future;
 
   OrchardBundleManager::OverrideRandomSeedForTesting(
       kShieldFundsIronwoodRandomSeed);
 
-  zcash_wallet_service_->SignAndPostTransaction(
-      account_id.Clone(), std::move(created_transaction.value()),
-      sign_callback.Get());
-  task_environment_.RunUntilIdle();
+  zcash_wallet_service_->SignAndPostTransaction(account_id.Clone(),
+                                                std::move(created_transaction),
+                                                sign_future.GetCallback());
+  ASSERT_TRUE(sign_future.Wait());
 
   EXPECT_EQ(
       "0x0600008098b684d85b16a53799c73400adc73400048168e775c95d7ddc05dedd"
@@ -3816,9 +3798,9 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
         std::move(callback).Run(std::move(response));
       });
 
-  base::MockCallback<ZCashWalletService::ShieldAllFundsCallback>
-      shield_funds_callback;
-  EXPECT_CALL(shield_funds_callback, Run(_, _));
+  base::test::TestFuture<const std::optional<std::string>&,
+                         const std::optional<std::string>&>
+      shield_funds_future;
 
   // Ironwood bundle creation happens during signing; pin the RNG seed from
   // shield_all_funds_test.txt so the signed tx matches the captured test
@@ -3827,9 +3809,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
       kShieldAllFundsIronwoodRandomSeed);
 
   zcash_wallet_service_->ShieldAllFunds(account_id.Clone(),
-                                        shield_funds_callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&shield_funds_callback);
+                                        shield_funds_future.GetCallback());
+  ASSERT_TRUE(shield_funds_future.Wait());
 
   EXPECT_EQ(
       "0x0600008098b684d85b16a537a4c83400b8c8340001d78797b93c196f10683481"
@@ -4366,24 +4347,17 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
         return base::ok(notes_with_witness);
       });
 
-  std::optional<ZCashTransaction> created_transaction;
-  base::MockCallback<ZCashWalletService::CreateTransactionCallback>
-      create_transaction_callback;
-  EXPECT_CALL(create_transaction_callback, Run(_))
-      .WillOnce([&](base::expected<ZCashTransaction, std::string> tx) {
-        ASSERT_TRUE(tx.has_value()) << tx.error();
-        EXPECT_EQ(tx->memo(), std::nullopt);
-        created_transaction = tx.value();
-      });
-
+  base::test::TestFuture<base::expected<ZCashTransaction, std::string>>
+      create_transaction_future;
   zcash_wallet_service_->CreateIronwoodToIronwoodTransaction(
       account_id.Clone(),
       "u1ymq8s3fku2lgecm0caj9wacyhp5q0mahrseawalpjgyxl83xaq2lmxhqhf2d8l8zftwq7h"
       "zz39qr27df0pylftghnh54umhscs07pa0t",
-      10000, std::nullopt, create_transaction_callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&create_transaction_callback);
-  ASSERT_TRUE(created_transaction);
+      10000, std::nullopt, create_transaction_future.GetCallback());
+  auto created_tx_result = create_transaction_future.Take();
+  ASSERT_TRUE(created_tx_result.has_value()) << created_tx_result.error();
+  EXPECT_EQ(created_tx_result->memo(), std::nullopt);
+  ZCashTransaction created_transaction = std::move(*created_tx_result);
 
   std::vector<uint8_t> captured_data;
   EXPECT_CALL(zcash_rpc(), SendTransaction(_, _, _))
@@ -4397,20 +4371,18 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
         std::move(callback).Run(std::move(response));
       });
 
-  base::MockCallback<ZCashWalletService::SignAndPostTransactionCallback>
-      sign_callback;
-  EXPECT_CALL(
-      sign_callback,
-      Run("aeedf7db7e1e50b44cb73a658e57751a4142d7ec1c402fda2eb038e617de3987", _,
-          ""));
+  base::test::TestFuture<std::string, ZCashTransaction, std::string>
+      sign_future;
 
   OrchardBundleManager::OverrideRandomSeedForTesting(
       kSendShieldedFundsIronwoodRandomSeed);
 
-  zcash_wallet_service_->SignAndPostTransaction(
-      account_id.Clone(), std::move(*created_transaction), sign_callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&sign_callback);
+  zcash_wallet_service_->SignAndPostTransaction(account_id.Clone(),
+                                                std::move(created_transaction),
+                                                sign_future.GetCallback());
+  EXPECT_EQ(sign_future.Get<0>(),
+            "aeedf7db7e1e50b44cb73a658e57751a4142d7ec1c402fda2eb038e617de3987");
+  EXPECT_EQ(sign_future.Get<2>(), "");
 
   EXPECT_EQ(
       "0x0600008098b684d85b16a537cfc83400e3c83400000000000002655f64786168"
@@ -5874,20 +5846,14 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_UnshieldFunds) {
         std::move(callback).Run(std::move(tree_state));
       });
 
-  std::optional<ZCashTransaction> created_transaction;
-  base::MockCallback<ZCashWalletService::CreateTransactionCallback>
-      create_transaction_callback;
-  EXPECT_CALL(create_transaction_callback, Run(_))
-      .WillOnce([&](base::expected<ZCashTransaction, std::string> tx) {
-        ASSERT_TRUE(tx.has_value()) << tx.error();
-        created_transaction = tx.value();
-      });
-
+  base::test::TestFuture<base::expected<ZCashTransaction, std::string>>
+      create_transaction_future;
   zcash_wallet_service_->CreateOrchardToTransparentTransaction(
       account_id.Clone(), "t1dYrsWYsYMMMfm85AkRcvpPw8ieiTGCpab", 10000u,
-      create_transaction_callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&create_transaction_callback);
+      create_transaction_future.GetCallback());
+  auto created_tx_result = create_transaction_future.Take();
+  ASSERT_TRUE(created_tx_result.has_value()) << created_tx_result.error();
+  ZCashTransaction created_transaction = std::move(*created_tx_result);
 
   std::vector<uint8_t> captured_data;
   EXPECT_CALL(zcash_rpc(), SendTransaction(_, _, _))
@@ -5900,13 +5866,13 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_UnshieldFunds) {
         std::move(callback).Run(std::move(response));
       });
 
-  base::MockCallback<ZCashWalletService::SignAndPostTransactionCallback>
-      sign_callback;
+  base::test::TestFuture<std::string, ZCashTransaction, std::string>
+      sign_future;
 
-  zcash_wallet_service_->SignAndPostTransaction(
-      account_id.Clone(), std::move(created_transaction.value()),
-      sign_callback.Get());
-  task_environment_.RunUntilIdle();
+  zcash_wallet_service_->SignAndPostTransaction(account_id.Clone(),
+                                                std::move(created_transaction),
+                                                sign_future.GetCallback());
+  ASSERT_TRUE(sign_future.Wait());
 
   // 2295048f00c2264cc068b85a6695c4b89cdd06f1e686c69c990cecaf74db0937
   EXPECT_EQ(
@@ -7178,13 +7144,12 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldSync) {
   auto account_id_1 = account_1->account_id.Clone();
 
   {
-    base::MockCallback<ZCashWalletService::IsSyncInProgressCallback>
-        is_sync_in_progress_callback;
-    EXPECT_CALL(is_sync_in_progress_callback,
-                Run(testing::Eq(false), testing::Eq(std::nullopt)));
-    zcash_wallet_service_->IsSyncInProgress(account_id(),
-                                            is_sync_in_progress_callback.Get());
-    task_environment_.RunUntilIdle();
+    base::test::TestFuture<bool, const std::optional<std::string>&> future;
+    zcash_wallet_service_->IsSyncInProgress(
+        account_id(),
+        future.GetCallback<bool, const std::optional<std::string>&>());
+    EXPECT_FALSE(future.Get<0>());
+    EXPECT_EQ(std::nullopt, future.Get<1>());
   }
 
   {
@@ -7193,13 +7158,12 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldSync) {
   }
 
   {
-    base::MockCallback<ZCashWalletService::IsSyncInProgressCallback>
-        is_sync_in_progress_callback;
-    EXPECT_CALL(is_sync_in_progress_callback,
-                Run(testing::Eq(true), testing::Eq(std::nullopt)));
-    zcash_wallet_service_->IsSyncInProgress(account_id(),
-                                            is_sync_in_progress_callback.Get());
-    task_environment_.RunUntilIdle();
+    base::test::TestFuture<bool, const std::optional<std::string>&> future;
+    zcash_wallet_service_->IsSyncInProgress(
+        account_id(),
+        future.GetCallback<bool, const std::optional<std::string>&>());
+    EXPECT_TRUE(future.Get<0>());
+    EXPECT_EQ(std::nullopt, future.Get<1>());
   }
 
   {
@@ -7208,13 +7172,12 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldSync) {
   }
 
   {
-    base::MockCallback<ZCashWalletService::IsSyncInProgressCallback>
-        is_sync_in_progress_callback;
-    EXPECT_CALL(is_sync_in_progress_callback,
-                Run(testing::Eq(false), testing::Eq(std::nullopt)));
-    zcash_wallet_service_->IsSyncInProgress(account_id(),
-                                            is_sync_in_progress_callback.Get());
-    task_environment_.RunUntilIdle();
+    base::test::TestFuture<bool, const std::optional<std::string>&> future;
+    zcash_wallet_service_->IsSyncInProgress(
+        account_id(),
+        future.GetCallback<bool, const std::optional<std::string>&>());
+    EXPECT_FALSE(future.Get<0>());
+    EXPECT_EQ(std::nullopt, future.Get<1>());
   }
 }
 
@@ -7225,10 +7188,12 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldSync_FeatureDisabled) {
       {{"zcash_shielded_transactions_enabled", "false"}});
 
   {
-    base::MockCallback<ZCashWalletService::IsSyncInProgressCallback> callback;
-    EXPECT_CALL(callback, Run(testing::Eq(false), testing::Ne(std::nullopt)));
-    zcash_wallet_service_->IsSyncInProgress(account_id(), callback.Get());
-    task_environment_.RunUntilIdle();
+    base::test::TestFuture<bool, const std::optional<std::string>&> future;
+    zcash_wallet_service_->IsSyncInProgress(
+        account_id(),
+        future.GetCallback<bool, const std::optional<std::string>&>());
+    EXPECT_FALSE(future.Get<0>());
+    EXPECT_NE(std::nullopt, future.Get<1>());
   }
 
   {

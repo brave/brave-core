@@ -29,8 +29,9 @@ interface and enforces correctness guarantees through C++ `concept`s and
 
 ## Usage
 
-Request and response bodies are either JSON or Protobuf; an endpoint uses one
-format for both.
+Request and response bodies are either JSON or Protobuf, and an endpoint uses
+one format for both. A request can also have no body, in which case the response
+alone determines the format.
 
 - JSON request bodies implement `ToValue()`, and JSON response bodies implement
   `FromValue()`. The JSON schema/IDL compiler generates such types; hand-written
@@ -135,6 +136,24 @@ For non-Brave services, you can define an endpoint manually:
 ```cpp
 struct MyEndpoint {
   using Request = Post<MyRequestBody>;
+  using Response = Response<MySuccessBody, MyErrorBody>;
+
+  static GURL URL() {
+    return GURL("https://myservice.com/my_endpoint");
+  }
+};
+```
+
+Each HTTP method has a request alias. Methods that allow a body take it as an
+optional `template` argument: `Post<MyRequestBody>` sends a body, and `Post<>`
+doesn't. `Get` and `Head` never take a body, since RFC 9110 gives one no defined
+meaning for them, so they're plain types rather than `template` aliases. A body
+is sent even if it serializes empty (`{}` or zero bytes), so a request without
+one should use a body-less alias rather than an empty body type.
+
+```cpp
+struct MyBodylessEndpoint {
+  using Request = Get;
   using Response = Response<MySuccessBody, MyErrorBody>;
 
   static GURL URL() {

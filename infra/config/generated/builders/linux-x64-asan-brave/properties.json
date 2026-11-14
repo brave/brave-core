@@ -1,0 +1,36 @@
+{
+  "$brave_tests_builder_config": {
+    "builder_config": {
+      "builder_db": {
+        "entries": [
+          {
+            "builder_id": {
+              "builder": "linux-x64-asan-brave"
+            },
+            "builder_spec": {
+              "builder_group": "brave.sanitisers",
+              "chromium_config": {
+                "build_config": "Release",
+                "host_platform": "linux",
+                "target_arch": "intel",
+                "target_bits": 64,
+                "target_platform": "linux"
+              },
+              "gclient_config": {
+                "target_cpu": [],
+                "target_os": []
+              }
+            }
+          }
+        ]
+      },
+      "builder_ids": [
+        {
+          "builder": "linux-x64-asan-brave"
+        }
+      ]
+    }
+  },
+  "builder_group": "brave.sanitisers",
+  "recipe": "brave_builder"
+}

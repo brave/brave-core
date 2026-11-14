@@ -11,3 +11,9 @@ substitutions:
       code: |-
         std::unique_ptr<views::View> CreateFootnoteView(
             BrowserWindowInterface* browser);
+
+  - description: |-
+      Forward declare the types the substitutions above use
+    add_after_includes:
+      code: |-
+        class BrowserWindowInterface;

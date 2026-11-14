@@ -16,9 +16,7 @@ import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.brave_wallet.mojom.DecryptRequest;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
-import org.chromium.brave_wallet.mojom.GetEncryptionPublicKeyRequest;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
@@ -134,32 +132,6 @@ public class CryptoModel {
             mNetworkModel.init();
             mPanelNetworkModel.init();
         }
-    }
-
-    public void getPublicEncryptionRequest(Callback1<GetEncryptionPublicKeyRequest> onResult) {
-        if (mBraveWalletService == null) {
-            return;
-        }
-        mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(requests -> {
-            GetEncryptionPublicKeyRequest request = null;
-            if (requests != null && requests.length > 0) {
-                request = requests[0];
-            }
-            onResult.call(request);
-        });
-    }
-
-    public void getDecryptMessageRequest(Callback1<DecryptRequest> onResult) {
-        if (mBraveWalletService == null) {
-            return;
-        }
-        mBraveWalletService.getPendingDecryptRequests(requests -> {
-            DecryptRequest request = null;
-            if (requests != null && requests.length > 0) {
-                request = requests[0];
-            }
-            onResult.call(request);
-        });
     }
 
     public void refreshTransactions() {

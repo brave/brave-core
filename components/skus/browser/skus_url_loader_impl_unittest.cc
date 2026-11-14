@@ -9,6 +9,7 @@
 
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/values.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -46,39 +47,31 @@ class SkusUrlLoaderImplUnitTest : public testing::Test {
 
   base::Value GetRequestResponse(const std::string& method,
                                  const std::string& url) {
-    bool callback_called = false;
-    base::Value response;
-    skus_url_loader()->Request(
-        method, GURL(url), std::string(), std::string(),
-        base::BindLambdaForTesting(
-            [&](api_request_helper::APIRequestResult result) {
-              callback_called = true;
-              response = result.value_body().Clone();
-            }),
-        {}, {});
-    task_environment_.RunUntilIdle();
-    return response;
+    base::test::TestFuture<api_request_helper::APIRequestResult> future;
+    skus_url_loader()->Request(method, GURL(url), std::string(), std::string(),
+                               future.GetCallback(), {}, {});
+    api_request_helper::APIRequestResult result = future.Take();
+    return result.value_body().Clone();
   }
   void FetchResponse(const std::string& method,
                      rust::cxxbridge1::Box<skus::HttpRoundtripContext> rt_ctx,
                      const std::string& url,
                      skus::SkusResult expected_result,
                      const std::string& expected_response) {
-    bool callback_called = false;
+    base::test::TestFuture<void> future;
     skus::HttpRequest req = {method, url, {}, {}};
     skus_url_loader()->SetFetchCompleteCallbackForTesting(
         base::BindLambdaForTesting([&](const skus::HttpResponse& result) {
-          callback_called = true;
           std::string body(result.body.begin(), result.body.end());
           EXPECT_EQ(result.result.code, expected_result.code);
           EXPECT_EQ(result.result.msg, expected_result.msg);
           EXPECT_EQ(body, expected_response);
+          future.SetValue();
         }));
     skus_url_loader()->BeginFetch(
         req, skus::SkusUrlLoaderImpl::FetchResponseCallback(),
         std::move(rt_ctx));
-    task_environment_.RunUntilIdle();
-    EXPECT_TRUE(callback_called);
+    EXPECT_TRUE(future.Wait());
   }
 
   base::test::TaskEnvironment task_environment_;

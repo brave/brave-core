@@ -28,6 +28,10 @@ source_set("core") {
     "browser_identity.h",
     "browser_registry.cc",
     "browser_registry.h",
+    "connection_api.cc",
+    "connection_api.h",
+    "connection_api_simulator.cc",
+    "connection_api_simulator.h",
     "connection_manager.cc",
     "connection_manager.h",
     "shutdown_handlers.cc",
@@ -69,6 +73,7 @@ source_set("core") {
     "//components/named_mojo_ipc_server",
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/platform",
+    "//net",
   ]
 
   deps = [
@@ -182,6 +187,8 @@ source_set("test_support") {
     "test/fake_browser_endpoint.h",
     "test/fake_browser_identity.cc",
     "test/fake_browser_identity.h",
+    "test/fake_connection_api.cc",
+    "test/fake_connection_api.h",
     "test/fake_connection_manager.cc",
     "test/fake_connection_manager.h",
   ]
@@ -220,6 +227,7 @@ source_set("unit_tests") {
     "//brave/components/brave_vpn/common/mojom:agent",
     "//components/named_mojo_ipc_server:test_support",
     "//mojo/public/cpp/bindings",
+    "//net:test_support",
     "//testing/gtest",
   ]
 }

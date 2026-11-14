@@ -1,0 +1,31 @@
+diff --git a/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h b/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h
+index 2d92bee805b7e8fca4d72b4ce594f2c7db0b166a..985546a0fa3be8bf4c2cdfe96986c66abdb481e7 100644
+--- a/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h
++++ b/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h
+@@ -8,6 +8,7 @@
+ #include "base/callback_list.h"
+ #include "base/functional/callback_forward.h"
+ #include "chrome/browser/ui/views/frame/layout/browser_view_layout_params.h"
++#include "ui/gfx/geometry/rounded_corners_f.h"
+ #include "ui/gfx/native_ui_types.h"
+ #include "ui/views/layout/layout_types.h"
+ 
+@@ -70,6 +71,18 @@ class BrowserViewLayoutDelegate {
+       base::RepeatingCallback<void(bool)> callback,
+       bool* current_state_out) = 0;
+   virtual int GetRestoredWindowCornerRadius() const = 0;
++  virtual bool ShouldShowVerticalTabs() const = 0;
++  virtual bool ShouldShowWindowTitleForVerticalTabs() const = 0;
++  virtual bool IsVerticalTabOnRight() const = 0;
++  virtual bool ShouldUseBraveWebViewRoundedCornersForContents() const = 0;
++  virtual int GetRoundedCornersWebViewMargin() const = 0;
++  virtual bool IsBookmarkBarOnByPref() const = 0;
++  virtual bool IsContentTypeSidePanelVisible() const = 0;
++  virtual bool IsFullscreenForBrowser() const = 0;
++  virtual bool IsFullscreenForTab() const = 0;
++  virtual void UpdateContentsCornerRadii(
++      const gfx::RoundedCornersF& corner_radii) = 0;
++  virtual bool IsFullscreen() const = 0;
+ };
+ 
+ #endif  // CHROME_BROWSER_UI_VIEWS_FRAME_LAYOUT_BROWSER_VIEW_LAYOUT_DELEGATE_H_

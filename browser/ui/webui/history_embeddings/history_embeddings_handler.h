@@ -1,0 +1,100 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Based on Chromium code subject to the following license:
+// Copyright 2024 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+#ifndef BRAVE_BROWSER_UI_WEBUI_HISTORY_EMBEDDINGS_HISTORY_EMBEDDINGS_HANDLER_H_
+#define BRAVE_BROWSER_UI_WEBUI_HISTORY_EMBEDDINGS_HISTORY_EMBEDDINGS_HANDLER_H_
+
+#include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
+#include "brave/browser/ui/webui/history_embeddings/history_embeddings.mojom.h"
+#include "brave/components/history_embeddings/content/history_embeddings_service.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
+#include "components/feature_engagement/public/feature_constants.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/remote.h"
+
+// These values are persisted to logs. Entries should not be renumbered and
+// numeric values should never be reused. Update `HistoryEmbeddingsUserActions`
+// enum `END` in ui/webui/resources/cr_components/history/constants.ts if any
+// values are added. If that `END` value is too low, it will prevent correct
+// recording of the metric.
+enum class HistoryEmbeddingsUserActions {
+  kNonEmptyQueryHistorySearch = 0,
+  kEmbeddingsSearch = 1,
+  kEmbeddingsNonEmptyResultsShown = 2,
+  kEmbeddingsResultClicked = 3,
+  kAnswerShown = 4,
+  kAnswerCitationClicked = 5,
+  kOtherHistoryResultClicked = 6,
+  kMaxValue = kOtherHistoryResultClicked,
+};
+
+class HistoryEmbeddingsHandler
+    : public brave_history_embeddings::mojom::PageHandler {
+ public:
+  HistoryEmbeddingsHandler(
+      mojo::PendingReceiver<brave_history_embeddings::mojom::PageHandler>
+          pending_page_handler,
+      mojo::PendingRemote<brave_history_embeddings::mojom::Page> pending_page,
+      base::WeakPtr<Profile> profile,
+      content::WebUI* web_ui,
+      bool for_side_panel);
+  HistoryEmbeddingsHandler(const HistoryEmbeddingsHandler&) = delete;
+  HistoryEmbeddingsHandler& operator=(const HistoryEmbeddingsHandler&) = delete;
+  ~HistoryEmbeddingsHandler() override;
+
+  // brave_history_embeddings::mojom::PageHandler:
+  void Search(brave_history_embeddings::mojom::SearchQueryPtr query) override;
+  void RecordSearchResultsMetrics(bool non_empty_results,
+                                  bool user_clicked_results,
+                                  bool answer_shown,
+                                  bool answer_citation_clicked,
+                                  bool other_history_result_clicked,
+                                  uint32_t query_word_count) override;
+  void SetUserFeedback(
+      brave_history_embeddings::mojom::UserFeedback user_feedback) override;
+  void SendQualityLog(const std::vector<uint32_t>& selected_indices,
+                      uint32_t num_chars_for_query) override;
+  void OpenSettingsPage() override;
+
+  void PublishResultToPageForTesting(
+      const brave_history_embeddings::SearchResult& native_search_result);
+
+ private:
+  // Builds mojom result and publishes it to the browser page UI.
+  void PublishResultToPage(
+      const brave_history_embeddings::SearchResult& native_search_result);
+
+  // Callback for querying `HistoryEmbeddingsService::Search()`.
+  void OnReceivedSearchResult(brave_history_embeddings::SearchResult result);
+
+  mojo::Receiver<brave_history_embeddings::mojom::PageHandler> page_handler_;
+  mojo::Remote<brave_history_embeddings::mojom::Page> page_;
+
+  // Indicates whether this handler is used for side panel.
+  bool for_side_panel_;
+
+  // The profile is used to get the HistoryEmbeddingsService to fulfill
+  // search requests.
+  const base::WeakPtr<Profile> profile_;
+
+  raw_ptr<content::WebUI> web_ui_;
+
+  brave_history_embeddings::SearchResult last_result_;
+  optimization_guide::proto::UserFeedback user_feedback_;
+
+  base::WeakPtrFactory<HistoryEmbeddingsHandler> weak_ptr_factory_{this};
+};
+
+#endif  // BRAVE_BROWSER_UI_WEBUI_HISTORY_EMBEDDINGS_HISTORY_EMBEDDINGS_HANDLER_H_

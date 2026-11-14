@@ -5,6 +5,22 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 
+source_set("autocomplete") {
+  sources = [
+    "brave_autocomplete_scheme_classifier.cc",
+    "brave_autocomplete_scheme_classifier.h",
+  ]
+
+  public_deps = [ "//chrome/browser/autocomplete" ]
+
+  deps = [
+    "//base",
+    "//brave/components/constants",
+    "//chrome/browser/profiles:profile",
+    "//components/prefs",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [ "chrome_autocomplete_provider_client_unittest.cc" ]

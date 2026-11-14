@@ -8,7 +8,8 @@
 #include "base/command_line.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "base/test/bind.h"
+#include "base/test/run_until.h"
+#include "base/test/test_future.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -75,6 +76,7 @@ class TestTxServiceObserver : public brave_wallet::mojom::TxServiceObserver {
   TestTxServiceObserver() = default;
 
   void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx) override {
+    new_unapproved_tx_seen_ = true;
     ASSERT_TRUE(tx->tx_data_union->is_eth_tx_data_1559());
 
     auto& tx_data_1559 = tx->tx_data_union->get_eth_tx_data_1559();
@@ -85,28 +87,27 @@ class TestTxServiceObserver : public brave_wallet::mojom::TxServiceObserver {
       EXPECT_EQ(tx_data_1559->max_fee_per_gas, "");
       EXPECT_EQ(tx_data_1559->max_priority_fee_per_gas, "");
     }
-
-    run_loop_new_unapproved_->Quit();
   }
 
   void OnUnapprovedTxUpdated(mojom::TransactionInfoPtr tx) override {}
 
   void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx) override {
     if (tx->tx_status == mojom::TransactionStatus::Rejected) {
-      run_loop_rejected_->Quit();
+      rejected_status_seen_ = true;
     }
   }
 
   void OnTxServiceReset() override {}
 
   void WaitForNewUnapprovedTx() {
-    run_loop_new_unapproved_ = std::make_unique<base::RunLoop>();
-    run_loop_new_unapproved_->Run();
+    ASSERT_TRUE(
+        base::test::RunUntil([&]() { return new_unapproved_tx_seen_; }));
+    new_unapproved_tx_seen_ = false;
   }
 
   void WaitForRejectedStatus() {
-    run_loop_rejected_ = std::make_unique<base::RunLoop>();
-    run_loop_rejected_->Run();
+    ASSERT_TRUE(base::test::RunUntil([&]() { return rejected_status_seen_; }));
+    rejected_status_seen_ = false;
   }
 
   mojo::PendingRemote<brave_wallet::mojom::TxServiceObserver> GetReceiver() {
@@ -119,8 +120,8 @@ class TestTxServiceObserver : public brave_wallet::mojom::TxServiceObserver {
  private:
   mojo::Receiver<brave_wallet::mojom::TxServiceObserver> observer_receiver_{
       this};
-  std::unique_ptr<base::RunLoop> run_loop_new_unapproved_;
-  std::unique_ptr<base::RunLoop> run_loop_rejected_;
+  bool new_unapproved_tx_seen_ = false;
+  bool rejected_status_seen_ = false;
   bool expect_eip1559_tx_ = false;
 };
 
@@ -238,24 +239,29 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
               "0x084dcb94038af1715963f149079ce011c4b22961");
   }
 
-  void LockWallet() {
-    keyring_service()->Lock();
-    // Needed so KeyringServiceObserver::Locked handler can be hit
-    // which the provider object listens to for the accountsChanged event.
-    base::RunLoop().RunUntilIdle();
-  }
+  void LockWallet() { keyring_service()->Lock(); }
 
   void UnlockWallet() {
-    base::RunLoop run_loop;
-    keyring_service()->Unlock(kTestWalletPassword,
-                              base::BindLambdaForTesting([&](bool success) {
-                                ASSERT_TRUE(success);
-                                run_loop.Quit();
-                              }));
-    run_loop.Run();
-    // Needed so KeyringServiceObserver::Unlocked handler can be hit
-    // which the provider object listens to for the accountsChanged event.
-    base::RunLoop().RunUntilIdle();
+    base::test::TestFuture<bool> future;
+    keyring_service()->Unlock(kTestWalletPassword, future.GetCallback());
+    ASSERT_TRUE(future.Get());
+  }
+
+  // Waits in the page until window.ethereum.selectedAddress is `expected`
+  // (the provider updates it when accountsChanged reaches the renderer).
+  void ExpectSelectedAddressEventually(const std::string& expected) {
+    EXPECT_EQ(
+        EvalJs(web_contents(),
+               content::JsReplace("waitForSelectedAddress($1)", expected)),
+        expected);
+  }
+
+  // Waits in the page until window.ethereum.chainId is `expected`
+  // (the provider updates it when chainChanged reaches the renderer).
+  void ExpectChainIdEventually(const std::string& expected) {
+    EXPECT_EQ(EvalJs(web_contents(),
+                     content::JsReplace("waitForChainId($1)", expected)),
+              expected);
   }
 
   mojom::AccountInfoPtr AddAccount(const std::string& account_name) {
@@ -264,13 +270,10 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   }
 
   void SetSelectedAccount(const mojom::AccountIdPtr& account_id) {
-    base::RunLoop run_loop;
-    keyring_service()->SetSelectedAccount(
-        account_id.Clone(), base::BindLambdaForTesting([&](bool success) {
-          ASSERT_TRUE(success);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    base::test::TestFuture<bool> future;
+    keyring_service()->SetSelectedAccount(account_id.Clone(),
+                                          future.GetCallback());
+    ASSERT_TRUE(future.Get());
   }
 
   void AddEthereumChain(const url::Origin& origin,
@@ -285,26 +288,26 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     }
 
     // Wait for OnAddEthereumChainRequestCompleted
-    base::RunLoop run_loop_chain_request_completed;
+    base::test::TestFuture<void> chain_request_completed;
     auto observer = std::make_unique<TestJsonRpcServiceObserver>(
-        run_loop_chain_request_completed.QuitClosure());
+        chain_request_completed.GetCallback());
     json_rpc_service()->AddObserver(observer->GetReceiver());
     mojo::PendingRemote<mojom::JsonRpcServiceObserver> receiver;
     mojo::MakeSelfOwnedReceiver(std::move(observer),
                                 receiver.InitWithNewPipeAndPassReceiver());
     json_rpc_service()->AddEthereumChainRequestCompleted(chain_id, true);
-    run_loop_chain_request_completed.Run();
+    ASSERT_TRUE(chain_request_completed.Wait());
   }
 
   void CallEthereumEnable(bool is_repeat_call = false) {
-    base::RunLoop run_loop;
+    base::test::TestFuture<void> bubble_shown;
     auto* tab_helper = brave_wallet::BraveWalletTabHelper::From(
         tabs::TabInterface::MaybeGetFromContents(web_contents()));
-    tab_helper->SetShowBubbleCallbackForTesting(run_loop.QuitClosure());
+    tab_helper->SetShowBubbleCallbackForTesting(bubble_shown.GetCallback());
 
     ASSERT_TRUE(ExecJs(web_contents(), "ethereumEnable()"));
     if (!is_repeat_call) {
-      run_loop.Run();
+      ASSERT_TRUE(bubble_shown.Wait());
     }
 
     // The bubble should be showing at this point. If it's a repeat call then
@@ -322,11 +325,12 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     } else {
       permissions::BraveWalletPermissionContext::Cancel(web_contents());
     }
-    ASSERT_EQ(EvalJs(web_contents(), "getPermissionGranted()").ExtractBool(),
-              granted);
+    ASSERT_EQ(
+        EvalJs(web_contents(),
+               content::JsReplace("waitForPermissionGranted($1)", granted)),
+        granted);
     // Check that window.ethereum.selectedAddress is set correctly
-    EXPECT_EQ(EvalJs(web_contents(), "getSelectedAddress()").ExtractString(),
-              expected_address);
+    ExpectSelectedAddressEventually(expected_address);
   }
 
   void AddEthereumPermission(const mojom::AccountIdPtr& account_id) {
@@ -342,40 +346,32 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
 
   void ApproveTransaction(const std::string& chain_id,
                           const std::string& tx_meta_id) {
-    base::RunLoop run_loop;
-    tx_service()->ApproveTransaction(
-        mojom::CoinType::ETH, chain_id, tx_meta_id,
-        base::BindLambdaForTesting([&](bool success,
-                                       mojom::ProviderErrorUnionPtr error_union,
-                                       const std::string& error_message) {
-          EXPECT_TRUE(success);
-          ASSERT_TRUE(error_union->is_provider_error());
-          EXPECT_EQ(error_union->get_provider_error(),
-                    mojom::ProviderError::kSuccess);
-          EXPECT_TRUE(error_message.empty());
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr,
+                           const std::string&>
+        future;
+    tx_service()->ApproveTransaction(mojom::CoinType::ETH, chain_id, tx_meta_id,
+                                     future.GetCallback());
+    auto [success, error_union, error_message] = future.Take();
+    EXPECT_TRUE(success);
+    ASSERT_TRUE(error_union->is_provider_error());
+    EXPECT_EQ(error_union->get_provider_error(),
+              mojom::ProviderError::kSuccess);
+    EXPECT_TRUE(error_message.empty());
   }
 
   void RejectTransaction(const std::string& chain_id,
                          const std::string& tx_meta_id) {
-    base::RunLoop run_loop;
-    tx_service()->RejectTransaction(
-        mojom::CoinType::ETH, chain_id, tx_meta_id,
-        base::BindLambdaForTesting([&](bool success) {
-          EXPECT_TRUE(success);
-          observer()->WaitForRejectedStatus();
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    base::test::TestFuture<bool> future;
+    tx_service()->RejectTransaction(mojom::CoinType::ETH, chain_id, tx_meta_id,
+                                    future.GetCallback());
+    EXPECT_TRUE(future.Get());
+    observer()->WaitForRejectedStatus();
   }
 
   void WaitForSendOrSignTransactionResultReady() {
-    content::DOMMessageQueue message_queue;
-    std::string message;
-    EXPECT_TRUE(message_queue.WaitForMessage(&message));
-    EXPECT_EQ("\"result ready\"", message);
+    EXPECT_EQ(
+        EvalJs(web_contents(), "waitForSendOrSignTransactionResultReady()"),
+        true);
   }
 
   void TestUserApproved(
@@ -405,10 +401,11 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
             observer()->expect_eip1559_tx() ? "true" : "false", test_method,
             data)));
     observer()->WaitForNewUnapprovedTx();
-    base::RunLoop().RunUntilIdle();
-    ASSERT_TRUE(brave_wallet::BraveWalletTabHelper::From(
-                    tabs::TabInterface::MaybeGetFromContents(web_contents()))
-                    ->IsShowingBubble());
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      return brave_wallet::BraveWalletTabHelper::From(
+                 tabs::TabInterface::MaybeGetFromContents(web_contents()))
+          ->IsShowingBubble();
+    }));
 
     auto infos = GetAllTransactionInfo(chain_id);
     ASSERT_EQ(1UL, infos.size());
@@ -424,7 +421,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     ApproveTransaction(chain_id, infos[0]->id);
 
     infos = GetAllTransactionInfo(chain_id);
-    EXPECT_EQ(1UL, infos.size());
+    ASSERT_EQ(1UL, infos.size());
     EXPECT_EQ(default_account()->account_id, infos[0]->from_account_id);
     if (sign_only) {
       EXPECT_EQ(mojom::TransactionStatus::Signed, infos[0]->tx_status);
@@ -441,8 +438,8 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
       EXPECT_EQ(EvalJs(web_contents(), "getSendOrSignTransactionResult()")
                     .ExtractString(),
                 *expected_signed_tx);
-      EXPECT_EQ(*tx_service()->GetEthSignedTransaction(infos[0]->id),
-                *expected_signed_tx);
+      EXPECT_EQ(tx_service()->GetEthSignedTransaction(infos[0]->id),
+                expected_signed_tx);
     } else {
       EXPECT_EQ(EvalJs(web_contents(), "getSendOrSignTransactionResult()")
                     .ExtractString(),
@@ -472,14 +469,15 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
                    sign_only ? "true" : "false", test_method)));
     observer()->WaitForNewUnapprovedTx();
 
-    base::RunLoop().RunUntilIdle();
-    EXPECT_TRUE(brave_wallet::BraveWalletTabHelper::From(
-                    tabs::TabInterface::MaybeGetFromContents(web_contents()))
-                    ->IsShowingBubble());
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      return brave_wallet::BraveWalletTabHelper::From(
+                 tabs::TabInterface::MaybeGetFromContents(web_contents()))
+          ->IsShowingBubble();
+    }));
 
     auto infos = GetAllTransactionInfo(chain_id);
 
-    EXPECT_EQ(1UL, infos.size());
+    ASSERT_EQ(1UL, infos.size());
     EXPECT_EQ(default_account()->account_id, infos[0]->from_account_id);
     EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[0]->tx_status);
     EXPECT_EQ(MakeDappOriginInfo(https_server_for_files()->GetOrigin("a.com")),
@@ -492,7 +490,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     RejectTransaction(mojom::kPolygonMainnetChainId, infos[0]->id);
 
     infos = GetAllTransactionInfo(chain_id);
-    EXPECT_EQ(1UL, infos.size());
+    ASSERT_EQ(1UL, infos.size());
     EXPECT_EQ(default_account()->account_id, infos[0]->from_account_id);
     EXPECT_EQ(mojom::TransactionStatus::Rejected, infos[0]->tx_status);
     EXPECT_TRUE(infos[0]->tx_hash.empty());
@@ -510,17 +508,11 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
 
   std::vector<mojom::TransactionInfoPtr> GetAllTransactionInfo(
       const std::string& chain_id) {
-    std::vector<mojom::TransactionInfoPtr> transaction_infos;
-    base::RunLoop run_loop;
-    tx_service()->GetAllTransactionInfo(
-        mojom::CoinType::ETH, chain_id, default_account()->account_id.Clone(),
-        base::BindLambdaForTesting(
-            [&](std::vector<mojom::TransactionInfoPtr> v) {
-              transaction_infos = std::move(v);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
-    return transaction_infos;
+    base::test::TestFuture<std::vector<mojom::TransactionInfoPtr>> future;
+    tx_service()->GetAllTransactionInfo(mojom::CoinType::ETH, chain_id,
+                                        default_account()->account_id.Clone(),
+                                        future.GetCallback());
+    return future.Take();
   }
 
   void TestSendTransactionError(bool sign_only,
@@ -553,34 +545,25 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     mojom::NetworkInfoPtr chain;
     ASSERT_TRUE(
         json_rpc_service()->SetNetwork(chain_id, mojom::CoinType::ETH, origin));
-    base::RunLoop run_loop;
-    json_rpc_service()->GetNetwork(
-        mojom::CoinType::ETH, origin,
-        base::BindLambdaForTesting([&](mojom::NetworkInfoPtr info) {
-          chain = info.Clone();
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    base::test::TestFuture<mojom::NetworkInfoPtr> network_future;
+    json_rpc_service()->GetNetwork(mojom::CoinType::ETH, origin,
+                                   network_future.GetCallback());
+    chain = network_future.Take();
     if (chain && !skip_rpc_url_override) {
-      base::RunLoop run_loop1;
       browser()->GetProfile()->GetPrefs()->ClearPref(
           kBraveWalletCustomNetworks);
       chain->rpc_endpoints =
           std::vector<GURL>({https_server_for_rpc()->base_url()});
-      json_rpc_service()->AddChain(
-          std::move(chain),
-          base::BindLambdaForTesting([&](const std::string& chain_id_out,
-                                         mojom::ProviderError error,
-                                         const std::string& error_message) {
-            ASSERT_EQ(chain_id_out, chain_id);
-            ASSERT_EQ(error, mojom::ProviderError::kSuccess);
-            ASSERT_TRUE(error_message.empty());
-            run_loop1.Quit();
-          }));
-      run_loop1.Run();
+      base::test::TestFuture<const std::string&, mojom::ProviderError,
+                             const std::string&>
+          add_chain_future;
+      json_rpc_service()->AddChain(std::move(chain),
+                                   add_chain_future.GetCallback());
+      auto [chain_id_out, error, error_message] = add_chain_future.Take();
+      ASSERT_EQ(chain_id_out, chain_id);
+      ASSERT_EQ(error, mojom::ProviderError::kSuccess);
+      ASSERT_TRUE(error_message.empty());
     }
-    // Needed so ChainChangedEvent observers run
-    base::RunLoop().RunUntilIdle();
   }
 
   std::string chain_id(const std::optional<::url::Origin>& origin) {
@@ -834,27 +817,26 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, SelectedAddress) {
 
   // Locking the wallet makes the selectedAddress property undefined
   LockWallet();
-  EXPECT_EQ(EvalJs(web_contents(), "getSelectedAddress()").ExtractString(),
-            "undefined");
+  ExpectSelectedAddressEventually("undefined");
 
   // Unlock wallet restores the selectedAddress property
   UnlockWallet();
-  EXPECT_EQ(EvalJs(web_contents(), "getSelectedAddress()").ExtractString(),
-            base::ToLowerASCII(default_account()->address));
+  ExpectSelectedAddressEventually(
+      base::ToLowerASCII(default_account()->address));
 
   // Changing the selected account doesn't change selectedAddress property
-  // because it's not allowed yet.
+  // because it's not allowed yet. This is a non-event, so there is nothing to
+  // wait for; the assertion runs right after the change.
   SetSelectedAccount(added_account->account_id);
   EXPECT_EQ(EvalJs(web_contents(), "getSelectedAddress()").ExtractString(),
             base::ToLowerASCII(default_account()->address));
 
   // But it does update the selectedAddress if the account is allowed
   AddEthereumPermission(added_account->account_id);
-  // Wait for KeyringService::GetSelectedAccount called by
-  // BraveWalletProviderDelegateImpl::GetAllowedAccounts
-  base::RunLoop().RunUntilIdle();
-  EXPECT_EQ(EvalJs(web_contents(), "getSelectedAddress()").ExtractString(),
-            base::ToLowerASCII(added_account->address));
+  // The provider gets the new allowed accounts asynchronously (via
+  // KeyringService::GetSelectedAccount called by
+  // BraveWalletProviderDelegateImpl::GetAllowedAccounts), so wait in the page.
+  ExpectSelectedAddressEventually(base::ToLowerASCII(added_account->address));
 }
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, NetworkVersion) {
@@ -875,7 +857,7 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, NetworkVersion) {
   std::string chain_id = "0x38";
   AddEthereumChain(origin, chain_id);
   SetNetworkForTesting(chain_id, origin, true);
-  EXPECT_EQ(EvalJs(web_contents(), "getChainId()").ExtractString(), chain_id);
+  ExpectChainIdEventually(chain_id);
   EXPECT_TRUE(HexValueToUint256(chain_id, &chain_id_uint256));
   EXPECT_EQ(EvalJs(web_contents(), "getNetworkVersion()").ExtractString(),
             base::NumberToString((uint64_t)chain_id_uint256));
@@ -885,7 +867,7 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, NetworkVersion) {
   chain_id = "0x878678326eac900000000";
   AddEthereumChain(origin, chain_id);
   SetNetworkForTesting(chain_id, origin, true);
-  EXPECT_EQ(EvalJs(web_contents(), "getChainId()").ExtractString(), chain_id);
+  ExpectChainIdEventually(chain_id);
   EXPECT_TRUE(HexValueToUint256(chain_id, &chain_id_uint256));
   EXPECT_EQ(EvalJs(web_contents(), "getNetworkVersion()").ExtractString(),
             "undefined");
@@ -1002,13 +984,11 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
 
   // 2nd call should fail
   CallEthereumEnable(/*is_repeat_call*/ true);
-  ASSERT_EQ(EvalJs(web_contents(), "getPermissionGranted()").ExtractBool(),
-            false);
+  ASSERT_EQ(EvalJs(web_contents(), "waitForPermissionGranted(false)"), false);
 
   // But now user should still be able to resolve the first call
   UserGrantPermission(true);
-  ASSERT_EQ(EvalJs(web_contents(), "getPermissionGranted()").ExtractBool(),
-            true);
+  ASSERT_EQ(EvalJs(web_contents(), "waitForPermissionGranted(true)"), true);
 }
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
@@ -1024,13 +1004,11 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
 
   // 2nd call should fail
   CallEthereumEnable(/*is_repeat_call*/ true);
-  ASSERT_EQ(EvalJs(web_contents(), "getPermissionGranted()").ExtractBool(),
-            false);
+  ASSERT_EQ(EvalJs(web_contents(), "waitForPermissionGranted(false)"), false);
 
   // But now user should still be able to resolve the first call
   UserGrantPermission(true);
-  ASSERT_EQ(EvalJs(web_contents(), "getPermissionGranted()").ExtractBool(),
-            true);
+  ASSERT_EQ(EvalJs(web_contents(), "waitForPermissionGranted(true)"), true);
 }
 
 }  // namespace brave_wallet

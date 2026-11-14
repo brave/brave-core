@@ -20,3 +20,11 @@ substitutions:
         #else
           12;
         #endif  // BUILDFLAG(IS_ANDROID)
+
+  - description: |-
+      Include what the substitutions above use
+
+      For the `BUILDFLAG(IS_ANDROID)` check added above.
+    add_include:
+      header:
+        - build/build_config.h

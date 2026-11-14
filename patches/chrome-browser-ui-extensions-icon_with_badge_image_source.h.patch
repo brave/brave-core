@@ -1,8 +1,27 @@
 diff --git a/chrome/browser/ui/extensions/icon_with_badge_image_source.h b/chrome/browser/ui/extensions/icon_with_badge_image_source.h
-index e9cb1be92f1f08c376c4b94ca9b98569319587a8..449dc1e98e42c631436565c08b461d11c19bb042 100644
+index e9cb1be92f1f08c376c4b94ca9b98569319587a8..0810ba0f195abbcf876752f9a83d2b467810e45a 100644
 --- a/chrome/browser/ui/extensions/icon_with_badge_image_source.h
 +++ b/chrome/browser/ui/extensions/icon_with_badge_image_source.h
-@@ -63,12 +63,19 @@ class IconWithBadgeImageSource : public gfx::CanvasImageSource {
+@@ -5,6 +5,7 @@
+ #ifndef CHROME_BROWSER_UI_EXTENSIONS_ICON_WITH_BADGE_IMAGE_SOURCE_H_
+ #define CHROME_BROWSER_UI_EXTENSIONS_ICON_WITH_BADGE_IMAGE_SOURCE_H_
+ 
++#include <optional>
+ #include <string>
+ 
+ #include "base/functional/callback.h"
+@@ -13,6 +14,10 @@
+ #include "ui/gfx/image/canvas_image_source.h"
+ #include "ui/gfx/image/image.h"
+ 
++namespace brave {
++class BraveIconWithBadgeImageSource;
++}
++
+ namespace gfx {
+ class RenderText;
+ class Size;
+@@ -63,12 +68,19 @@ class IconWithBadgeImageSource : public gfx::CanvasImageSource {
      return paint_blocked_actions_decoration_;
    }
  
@@ -23,7 +42,7 @@ index e9cb1be92f1f08c376c4b94ca9b98569319587a8..449dc1e98e42c631436565c08b461d11
  
    // Paints a decoration over the base icon to indicate that the action wants to
    // run.
-@@ -83,7 +90,7 @@ class IconWithBadgeImageSource : public gfx::CanvasImageSource {
+@@ -83,7 +95,7 @@ class IconWithBadgeImageSource : public gfx::CanvasImageSource {
    // all cases, our badges and decorations should be positions at the corners of
    // the area where the icon exists (ignoring all the paddings).
    // https://crbug.com/40571346.

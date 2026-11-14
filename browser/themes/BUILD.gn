@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//build/config/ui.gni")
+
 source_set("themes") {
   sources = [
     "brave_dark_mode_utils.cc",
@@ -15,4 +17,30 @@ source_set("themes") {
     "//brave/components/constants",
     "//components/prefs",
   ]
+}
+
+if (!is_android) {
+  source_set("theme_service") {
+    sources = [
+      "brave_theme_service.cc",
+      "brave_theme_service.h",
+    ]
+
+    public_deps = [
+      "//chrome/browser/themes",
+      "//components/prefs",
+    ]
+
+    deps = [
+      ":themes",
+      "//base",
+      "//brave/components/constants",
+      "//chrome/browser:browser_process",
+      "//chrome/browser/profiles:profile",
+    ]
+
+    if (toolkit_views) {
+      deps += [ "//brave/browser/ui/darker_theme" ]
+    }
+  }
 }

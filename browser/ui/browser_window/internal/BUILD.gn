@@ -81,6 +81,10 @@ source_set("internal") {
 
   if (enable_brave_rewards) {
     deps += [ "//brave/browser/brave_rewards" ]
+
+    if (!is_android) {
+      deps += [ "//brave/browser/ui/brave_rewards" ]
+    }
   }
 
   if (enable_brave_vpn) {

@@ -32,7 +32,6 @@ class BraveBrowserWindow : public BrowserWindow {
   static BraveBrowserWindow* From(BrowserWindow* window);
   static BraveBrowserWindow* FromBrowser(BrowserWindowInterface* browser);
 
-  virtual void StartTabCycling() {}
 
   // Returns the rectangle info of the Shield's panel.
   // Renderers will call this to check if the bottom of the panel exceeds
@@ -47,9 +46,6 @@ class BraveBrowserWindow : public BrowserWindow {
 #endif
 
 #if defined(TOOLKIT_VIEWS)
-  virtual bool HasSelectedURL() const;
-  virtual void CleanAndCopySelectedURL();
-
   // Returns true when bubble is shown.
   virtual bool ShowBraveHelpBubbleView(const std::string& text);
 #endif

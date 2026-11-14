@@ -40,14 +40,46 @@ def _patch_dotenv(test_case, contents: str) -> None:
     test_case.addCleanup(lambda: setattr(dotenv, 'DEFAULT_PATH', original))
 
 
-def _write_builder(
-    output_dir, name, *, gn_args=None, sync=None, targets=None, omit=()
-):
-    """Writes a builder's three generated files under `output_dir`.
+def _properties(name, builder_spec, builder_ids=None):
+    """A `properties.json` with *builder_spec* as *name*'s."""
+    builder_id = {'builder': name}
+    return {
+        '$brave_tests_builder_config': {
+            'builder_config': {
+                'builder_db': {
+                    'entries': [
+                        {'builder_id': builder_id, 'builder_spec': builder_spec}
+                    ]
+                },
+                'builder_ids': (
+                    [builder_id] if builder_ids is None else builder_ids
+                ),
+            }
+        }
+    }
 
-    `gn_args`/`sync`/`targets` default to minimal-but-valid payloads. Pass
-    `omit`, a subset of `validate._REQUIRED_FILES`, to skip writing specific
-    files, for testing the missing-file path.
+
+_VALID_BUILDER_SPEC = {
+    'chromium_config': {'target_platform': 'linux'},
+    'gclient_config': {'target_os': [], 'target_cpu': []},
+}
+
+
+def _write_builder(
+    output_dir,
+    name,
+    *,
+    gn_args=None,
+    properties=None,
+    sync=None,
+    targets=None,
+    omit=(),
+):
+    """Writes a builder's generated files under `output_dir`.
+
+    `gn_args`/`properties`/`sync`/`targets` default to minimal-but-valid
+    payloads. Pass `omit`, a subset of `validate._REQUIRED_FILES`, to skip
+    writing specific files, for testing the missing-file path.
     """
     builder_dir = Path(output_dir) / name
     builder_dir.mkdir(parents=True, exist_ok=True)
@@ -60,6 +92,9 @@ def _write_builder(
                 'target_cpu': 'x64',
             },
         },
+        'properties.json': properties
+        if properties is not None
+        else _properties(name, _VALID_BUILDER_SPEC),
         'sync.json': sync
         if sync is not None
         else {
@@ -283,6 +318,67 @@ class ValidatorRunTest(_OutputDirTestCase):
             },
         )
         self.assertEqual(validate._Validator().run(), [])
+
+    def test_properties_json_without_builder_config_is_reported(self):
+        _write_builder(self.output_dir, 'b', properties={})
+        errs = validate._Validator().run()
+        self.assertEqual(len(errs), 1)
+        self.assertIn('"builder_ids" does not have \'b\'', errs[0])
+
+    def test_properties_json_of_another_builder_is_reported(self):
+        _write_builder(
+            self.output_dir,
+            'b',
+            properties=_properties(
+                'other', _VALID_BUILDER_SPEC, builder_ids=[{'builder': 'b'}]
+            ),
+        )
+        errs = validate._Validator().run()
+        self.assertEqual(len(errs), 1)
+        self.assertIn('"builder_db" has no spec for \'b\'', errs[0])
+
+    def test_properties_json_builder_ids_are_checked(self):
+        _write_builder(
+            self.output_dir,
+            'b',
+            properties=_properties('b', _VALID_BUILDER_SPEC, builder_ids=[]),
+        )
+        errs = validate._Validator().run()
+        self.assertEqual(len(errs), 1)
+        self.assertIn('"builder_ids" does not have \'b\'', errs[0])
+
+    def test_properties_json_without_target_platform_is_reported(self):
+        _write_builder(
+            self.output_dir,
+            'b',
+            properties=_properties(
+                'b',
+                {
+                    'chromium_config': {'build_config': 'Release'},
+                    'gclient_config': {'target_os': [], 'target_cpu': []},
+                },
+            ),
+        )
+        errs = validate._Validator().run()
+        self.assertEqual(len(errs), 1)
+        self.assertIn('has no target_platform', errs[0])
+
+    def test_properties_json_gclient_lists_are_checked(self):
+        _write_builder(
+            self.output_dir,
+            'b',
+            properties=_properties(
+                'b',
+                {
+                    'chromium_config': {'target_platform': 'linux'},
+                    'gclient_config': {'target_os': 'linux', 'target_cpu': [1]},
+                },
+            ),
+        )
+        errs = validate._Validator().run()
+        self.assertEqual(len(errs), 1)
+        self.assertIn('gclient_config.target_os" is not a list', errs[0])
+        self.assertIn('gclient_config.target_cpu" is not a list', errs[0])
 
     def test_sync_json_missing_field_is_reported(self):
         _write_builder(self.output_dir, 'b', sync={'target_os': []})

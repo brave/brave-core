@@ -611,7 +611,7 @@ TEST_P(AssociatedWebContentsContentUnitTest, GetScreenshots_PrintPreviewHost) {
   auto result = future.Take();
   if (is_print_preview_supported_) {
     // Should receive screenshots when print preview is supported
-    EXPECT_TRUE(result.has_value());
+    ASSERT_TRUE(result.has_value());
     EXPECT_FALSE(result->empty());
   } else {
     // When print preview is not supported, should return empty result
@@ -664,7 +664,7 @@ TEST_P(AssociatedWebContentsContentUnitTest, GetScreenshots_MultipleHosts) {
 
     auto result = future.Take();
     if (is_print_preview_supported_) {
-      EXPECT_TRUE(result.has_value());
+      ASSERT_TRUE(result.has_value());
       EXPECT_FALSE(result->empty());
     } else {
       EXPECT_FALSE(result.has_value());
@@ -865,7 +865,7 @@ TEST_P(AssociatedWebContentsContentUnitTest, GetScreenshots_PDFContent) {
   if (is_print_preview_supported_) {
     // When print preview is supported, should receive screenshots from print
     // preview extraction
-    EXPECT_TRUE(result.has_value());
+    ASSERT_TRUE(result.has_value());
     EXPECT_FALSE(result->empty());
   }
   // When print preview is not supported, PDFs fall back to FullScreenshotter
