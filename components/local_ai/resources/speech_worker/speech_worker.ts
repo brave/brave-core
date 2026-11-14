@@ -28,7 +28,8 @@ import {
 import { installTrustedTypesPolicy } from './ort_env'
 import { NemotronStreamSession, OrtNemotronModel } from './nemotron_recognizer'
 
-import { parseTokens, readBigBuffer } from './utils'
+import { parseTokens, readBigBuffer, getNemotronModelType } from './utils'
+import type { NemotronModelType } from './configs'
 
 // Thin mojo endpoint for one ASR stream: owns the receiver and responder
 // and bridges AsrStreamInput calls to a mojo-free NemotronStreamSession.
@@ -39,6 +40,8 @@ class AsrStreamInputAdapter implements AsrStreamInputInterface {
 
   constructor(
     model: OrtNemotronModel,
+    modelType: NemotronModelType,
+    promptID: number | null,
     sampleRateHz: number,
     pending: AsrStreamInputPendingReceiver,
     responder: AsrStreamResponderRemote,
@@ -53,8 +56,9 @@ class AsrStreamInputAdapter implements AsrStreamInputInterface {
               {
                 transcript: text,
                 isFinal,
-                audioStartTime: undefined,
-                audioEndTime: undefined,
+                // TODO: Populate real audio timestamps. brave/brave-browser#58975
+                audioStartTime: { microseconds: BigInt(0) },
+                audioEndTime: { microseconds: BigInt(0) },
               },
             ]
           : [],
@@ -67,6 +71,8 @@ class AsrStreamInputAdapter implements AsrStreamInputInterface {
 
     this.session = new NemotronStreamSession(
       model,
+      modelType,
+      promptID,
       sampleRateHz,
       onResult,
       onError,
@@ -131,8 +137,15 @@ class SpeechRecognitionFactoryImpl
 
     let adapter: AsrStreamInputAdapter
     try {
+      // The browser falls back to en-US when a page sets no language, so a
+      // missing one only comes from a caller that skips that.
+      const language = options.language ?? 'en-US'
+      const { modelType, promptId } = getNemotronModelType(language)
+
       adapter = new AsrStreamInputAdapter(
         this.model,
+        modelType,
+        promptId,
         options.sampleRateHz,
         stream,
         responder,

@@ -118,7 +118,6 @@ describe('FrontEndProcessing', () => {
           fbank,
           hannWindow(),
           initFftPower(config.N_FFT as FftSize),
-          config.TARGET_SAMPLE_RATE,
         )
 
       const frontendAllAtOnce = makeFrontend()
@@ -126,7 +125,8 @@ describe('FrontEndProcessing', () => {
 
       // Enough audio to produce at least one complete encoder chunk.
       const sampleCount =
-        config.NEMO_CHUNK * config.HOP_LENGTH + config.STREAMING_RIGHT_CONTEXT
+        config.COMMON_NEMOTRON_CONFIG.NEMO_CHUNK * config.HOP_LENGTH
+        + config.STREAMING_RIGHT_CONTEXT
 
       // Deterministic non-trivial signal.
       const audio = new Float32Array(sampleCount)

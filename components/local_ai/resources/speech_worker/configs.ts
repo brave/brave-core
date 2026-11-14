@@ -8,6 +8,8 @@
 // pre-encode left-context frames. Conformer caches are carried between
 // steps, and fixed input/cache shapes keep the encoder cost constant per step.
 
+//////////////// BEGIN: Shared audio frontend for both English only and multi-lingual Nemotron //////////////////////////////
+
 // frontend constants
 export type FftSize =
   | 32
@@ -67,27 +69,84 @@ export const OFF = (N_FFT - WIN_LENGTH) >> 1 // 56
 // [f * HOP_LENGTH - PAD + OFF, f * HOP_LENGTH - PAD + OFF + WIN_LENGTH)
 export const STREAMING_RIGHT_CONTEXT: number = OFF + WIN_LENGTH - PAD
 
+//////////////// END: Shared audio frontend for both English only and multi-lingual Nemotron //////////////////////////////
+
+export type NemotronModelType = 'english' | 'multilingual'
+
 // model specific constants
 export const NEMO_CHUNK: number = 56 // new mel frames per step (560 ms @ 10 ms hop)
 export const NEMO_PRECACHE: number = 9 // pre-encode mel cache frames prepended
-export const NEMO_BLANK: number = 1024
-export const NEMO_VOCAB: number = 1025 // 1024 + blank
-export const NEMO_MAX_SYM: number = 10
-export const NEMO_FRAMES: number = NEMO_PRECACHE + NEMO_CHUNK // 65: fixed encoder input length
-export const NEMO_NUM_ENCODER_LAYERS: number = 24
-export const NEMO_HIDDEN_DIM: number = 1024
-// note that this is different from left context at mel level;
-// its num of frames in the left context of encoder's attention blocks'
-export const NEMO_LEFT_CONTEXT: number = 70
-// its num of frames in the left context of encoder's conv blocks'
-export const NEMO_CONV_CONTEXT: number = 8
-export const NEMO_DECODER_LSTM_DIM: number = 640
 
-// On finish, append this many chunks of silence so the cache-aware encoder
-// and RNN-T decoder flush the final partial chunk — without it the trailing
-// word(s) can be dropped to right-context / emission lag. The silence frames
-// decode to RNN-T blanks, so the transcript is unaffected.
-export const SILENCE_FLUSH_CHUNKS: number = 3
+export const COMMON_NEMOTRON_CONFIG = {
+  NEMO_CHUNK,
+  NEMO_PRECACHE,
+  NEMO_FRAMES: NEMO_PRECACHE + NEMO_CHUNK, // 65: fixed encoder input length
+  NEMO_MAX_SYM: 10,
+  NEMO_NUM_ENCODER_LAYERS: 24,
+  NEMO_HIDDEN_DIM: 1024,
+  NEMO_DECODER_LSTM_DIM: 640,
+  // its num of frames in the left context of encoder's conv blocks'
+  // conv_kernel_size = 9, so causal context = kernel_size - 1 = 8.
+  NEMO_CONV_CONTEXT: 8,
+  // On finish, append this many chunks of silence so the cache-aware encoder
+  // and RNN-T decoder flush the final partial chunk — without it the trailing
+  // word(s) can be dropped to right-context / emission lag. The silence frames
+  // decode to RNN-T blanks, so the transcript is unaffected.
+  SILENCE_FLUSH_CHUNKS: 3,
+} as const
+
+export const ENGLISH_NEMOTRON_CONFIG = {
+  ...COMMON_NEMOTRON_CONFIG,
+  NEMO_BLANK: 1024,
+  NEMO_VOCAB: 1025, // 1024 + blank
+  // note that this is different from left context at mel level;
+  // its num of frames in the left context of encoder's attention blocks'
+  NEMO_LEFT_CONTEXT: 70,
+} as const
+
+export const MULTILINGUAL_NEMOTRON_CONFIG = {
+  ...COMMON_NEMOTRON_CONFIG,
+  NEMO_BLANK: 13087,
+  NEMO_VOCAB: 13088,
+  NEMO_LEFT_CONTEXT: 56,
+} as const
+
+// supported languages
+
+// The locales that the worker serves, with the model and the prompt ID of
+// each. One row for each row of `kLocales` in
+// brave/chromium_src/components/soda/constants.cc, in the same order. The
+// browser resolves each page tag to one of these tags, so the worker gets no
+// other tag. The prompt IDs come from `prompt_dictionary` in the multilingual
+// model's config.json.
+export const LOCALES = {
+  'en-US': { model: 'english', promptId: null },
+  'ar': { model: 'multilingual', promptId: 7 },
+  'de-DE': { model: 'multilingual', promptId: 9 },
+  'es-ES': { model: 'multilingual', promptId: 2 },
+  'es-US': { model: 'multilingual', promptId: 3 },
+  'fr-FR': { model: 'multilingual', promptId: 8 },
+  'fr-CA': { model: 'multilingual', promptId: 100 },
+  'hi-IN': { model: 'multilingual', promptId: 6 },
+  'it-IT': { model: 'multilingual', promptId: 15 },
+  'ja-JP': { model: 'multilingual', promptId: 10 },
+  'ko-KR': { model: 'multilingual', promptId: 14 },
+  'nl-NL': { model: 'multilingual', promptId: 16 },
+  'pt-BR': { model: 'multilingual', promptId: 12 },
+  'pt-PT': { model: 'multilingual', promptId: 13 },
+  'ru-RU': { model: 'multilingual', promptId: 11 },
+  'tr-TR': { model: 'multilingual', promptId: 18 },
+  'uk-UA': { model: 'multilingual', promptId: 19 },
+  'vi-VN': { model: 'multilingual', promptId: 33 },
+} as const satisfies Record<
+  string,
+  | { model: 'english'; promptId: null }
+  | { model: 'multilingual'; promptId: number }
+>
+
+// A language tag token, such as <es-ES>. The multilingual model can emit one
+// after the terminal punctuation. The English vocab has no such tokens.
+export const LANGUAGE_TAG_TOKEN = /^<[a-z]{2}-[A-Z]{2}>$/
 
 // Silence fed before the first real sample. The exported ONNX encoder graph
 // drops the first 2 time frames of its pre-encode output. This happens inside
