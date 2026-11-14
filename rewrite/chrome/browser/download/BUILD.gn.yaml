@@ -8,3 +8,8 @@ substitutions:
     regex:
       pattern: 'if (is_android && !enable_desktop_android_extensions) {'
       replace: 'if (is_android && !enable_extensions_core) {'
+  - description: Add the deps the Brave download overrides need.
+    add_literal_to_list:
+      target: impl
+      list_name: deps
+      literal: '[ "//brave/components/brave_shields/core/browser" ]'

@@ -8,7 +8,7 @@
 
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service.h"
 
 namespace brave_shields {
 

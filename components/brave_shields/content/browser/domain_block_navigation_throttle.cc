@@ -15,12 +15,13 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/notreached.h"
 #include "base/task/single_thread_task_runner.h"
-#include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/content/browser/domain_block_controller_client.h"
 #include "brave/components/brave_shields/content/browser/domain_block_page.h"
 #include "brave/components/brave_shields/content/browser/domain_block_tab_storage.h"
+#include "brave/components/brave_shields/core/browser/ad_block_engine_wrapper.h"
+#include "brave/components/brave_shields/core/browser/ad_block_request_type.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
@@ -65,8 +66,9 @@ ShouldBlockDomainOnTaskRunner(
   // necessary.
   bool aggressive_for_engine = true;
   auto result = engine_wrapper->ShouldStartRequest(
-      url, blink::mojom::ResourceType::kMainFrame, url::Origin::Create(url),
-      "GET", aggressive_for_engine, false, false, false);
+      url, brave_shields::AdBlockRequestType::kMainFrame,
+      url::Origin::Create(url), "GET", aggressive_for_engine, false, false,
+      false);
 
   block_result.should_block =
       result.important || (result.matched && !result.has_exception);

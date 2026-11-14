@@ -13,9 +13,9 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/test/ad_block_service_test_observer.h"
 #include "brave/components/brave_shields/content/test/ad_block_unit_test_helper.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
 namespace brave_shields {

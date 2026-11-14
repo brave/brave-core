@@ -6,7 +6,7 @@
 #include "chrome/browser/download/background_download_service_factory.h"
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_shields/content/browser/ad_block_subscription_download_client.h"
+#include "brave/components/brave_shields/core/browser/ad_block_subscription_download_client.h"
 #include "chrome/browser/download/deferred_client_wrapper.h"
 #include "components/download/content/factory/download_service_factory_helper.h"
 #include "components/download/public/background_service/background_download_service.h"
