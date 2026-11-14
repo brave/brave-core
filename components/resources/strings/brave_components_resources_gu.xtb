@@ -947,6 +947,11 @@
 <translation id="4362717653795263052">પ્રાથમિક ક્રિપ્ટો એકાઉન્ટ્સ પુનર્સ્થાપિત કરો</translation>
 <translation id="3038077262567136741">તમારા Brave વૉલેટ ક્રિપ્ટોના એકાઉન્ટને પુનઃપ્રાપ્ત કરવા માટે તમારી રિકવરી ફ્રેઝ દાખલ કરો.</translation>
 <translation id="955918646509748368">ડિલવામાં આવેલી રિકવરી ફ્રેઝ અમાન્ય છે.</translation>
+<translation id="7496330898672236908">આ રિકવરી ફ્રેઝ તમારા વૉલેટ સાથે મેળ ખાતો નથી. ફ્રેઝ તપાસો અને ફરી પ્રયાસ કરો.</translation>
+<translation id="3798792138617904098">આયાત કરેલા એકાઉન્ટ્સ દૂર કરવા છે?</translation>
+<translation id="2960631345291747230">આયાત કરેલા એકાઉન્ટ્સનો તમારા રિકવરી ફ્રેઝ દ્વારા બેકઅપ લેવાયેલો નથી. તેમને Brave વૉલેટમાંથી દૂર કરવામાં આવશે, અને જો તમે તેમની પ્રાઇવેટ કીનો બેકઅપ લીધો ન હોય તો તમે તેમના ફંડ્સની ઍક્સેસ કાયમ માટે ગુમાવી શકો છો.</translation>
+<translation id="8898583604592472741">એકાઉન્ટ્સ દૂર કરો</translation>
+<translation id="1577629163207045190">પુષ્ટિ કરવા માટે "<ph name="CONFIRMATION_PHRASE"/>" ટાઇપ કરો.</translation>
 <translation id="8107437138787377150">ક્લિપબોર્ડમાંથી રિકવરી ફ્રેઝ પેસ્ટ કરો</translation>
 <translation id="4811736040444856406">રિકવરી ફ્રેઝ બતાવો</translation>
 <translation id="4359319875297001084">લેગસી Brave ક્રિપ્ટો વૉલેટ્સમાંથી આયાત કરીએ?</translation>
@@ -2241,13 +2246,12 @@
 <translation id="3934503473603661122">હાય, હું Leo છું. હું Brave નો AI સહાયક છું. હું Grok 4.7 દ્વારા સંચાલિત છું, જે Amazon Bedrock પર xAI નું ફ્રન્ટિયર રીઝનિંગ મોડેલ છે. Grok 4.7 Brave ના સુરક્ષિત AWS ઢાંચા દ્વારા સેવા આપવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">હાય, હું Leo છું. હું Brave નો AI સહાયક છું. હું GPT Luna દ્વારા સંચાલિત છું, જે Amazon Bedrock પર OpenAI નું ઝડપી, લો-લેટન્સી મોડેલ છે. GPT Luna Brave ના સુરક્ષિત AWS ઢાંચા દ્વારા સેવા આપવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું GPT 5.6 Terra દ્વારા સંચાલિત છું, જે Amazon Bedrock Mantle પર OpenAI નું સંતુલિત પ્રોડક્શન મોડેલ છે. GPT 5.6 Terra Brave ના સુરક્ષિત AWS ઢાંચા દ્વારા સેવા આપવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Mistral Large દ્વારા સંચાલિત છું, જે Mistral દ્વારા શ્રેષ્ઠ કાર્યક્ષમતા અને વિવિધ ઉપયોગ માટે લાગુ પડતા મૉડેલ તરીકે વિકસાવવામાં આવ્યું છે. Brave ના પોતાના સુરક્ષિત ઢાંચા દ્વારા Mistral Large હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Claude Haiku દ્વારા સંચાલિત છું, જે Anthropic દ્વારા વાર્તાલાપ અને ટેક્સ્ટ પ્રક્રિયા કાર્યો માટે બનાવવામાં આવ્યું છે. Brave માં અમારાં પોતનાં સુરક્ષિત ઢાંચા દ્વારા Claude Haiku હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Qwen 3.8 Flash Next દ્વારા સંચાલિત છું, જે Alibaba Cloud દ્વારા શ્રેષ્ઠ પ્રદર્શન અને વિવિધ ઉપયોગકેસ માટે બનાવવામાં આવ્યું છે. Qwen 3.8 Flash Next Brave ના પોતાના સુરક્ષિત ઢાંચા દ્વારા હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું DeepSeek V3.2 દ્વારા સંચાલિત છું, જે DeepSeek દ્વારા ઉત્કૃષ્ટ પ્રદર્શન અને વિવિધ માળખાકીય ઉદ્દેશ્ય માટે બનાવવામાં આવ્યું છે. DeepSeek V3.2 Brave માં અમારાં પોતાના સુરક્ષિત ઢાંચા દ્વારા હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">હાય, હું Leo છું. હું Brave નો AI સહાયક છું. હું GLM 5.3 દ્વારા સંચાલિત છું, જે Z.ai દ્વારા શ્રેષ્ઠ પ્રદર્શન અને વિવિધ ઉપયોગકેસ માટે બનાવવામાં આવેલું મોડેલ છે. GLM 5.3 અમારા પોતાના સુરક્ષિત ઇન્ફ્રાસ્ટ્રક્ચર દ્વારા Brave દ્વારા હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Claude Opus દ્વારા સંચાલિત છું, જે Anthropic દ્વારાવાર્તાલાપ અને લખાણ પ્રક્રિયા કાર્યો માટે બનાવવામાં આવ્યું છે. Brave એ Claude Opus ને પોતાનાં સુરક્ષિત ઢાંખાં દ્વારા હોસ્ટ કર્યું છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું GLM-4-7-Flash દ્વારા સંચાલિત છું, જે Zhipu AI દ્વારા ઉત્કૃષ્ટ પ્રદર્શન અને વિવિધ ઉપયોગકેસ માટે બનાવવામાં આવ્યું છે. GLM-4-7-Flash Brave ના પોતાના સુરક્ષિત ઢાંચા દ્વારા હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Kimi K2.5 દ્વારા સંચાલિત છું, જે Moonshot AI દ્વારા ઉત્કૃષ્ટ પ્રદર્શન અને વિવિધ ઉપયોગકેસ માટે બનાવવામાં આવ્યું છે. Kimi K2.5 Brave ના પોતાના સુરક્ષિત ઢાંચા દ્વારા હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Nemotron Nano 3 30B દ્વારા સંચાલિત છું, જે NVIDIA દ્વારા શ્રેષ્ઠ પ્રદર્શન અને વિવિધ ઉપયોગકેસ માટે બનાવવામાં આવ્યું છે. Nemotron Nano 3 30B Brave ના પોતાના સુરક્ષિત ઢાંચા દ્વારા હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Brave Ocelot દ્વારા સંચાલિત છું, જે Brave દ્વારા વેબ પૃષ્ઠોનો સારાંશ આપવા માટે બનાવવામાં આવ્યું છે. Brave Ocelot Brave ના પોતાના સુરક્ષિત ઢાંચા દ્વારા હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">પ્રાઈમ</translation>
 <translation id="5807427080183870259">લોકલ</translation>
@@ -2387,8 +2391,8 @@
 <translation id="7465032796278724624">NEAR AI TEE સાથે ચકાસણીપૂર્વક ખાનગી</translation>
 <translation id="8782867266498869301">મોડલને ક્રિયાપ્રતિક્રિયાઓ માટે શ્રેષ્ઠ વિડીયો ઉપયોગ કરવા માટે ગતિશીલપણે બદલાય છે.</translation>
 <translation id="7348809809749151120">ઝડપભર્યું • શોધ</translation>
+<translation id="7711013627639951065">ઝડપી • શોધ • વિઝન • ટૂલ્સ</translation>
 <translation id="3213834013136637671">શોધ • વિઝન</translation>
-<translation id="2793458212460902934">ઝડપભર્યું • શોધ • ટૂલ્સ</translation>
 <translation id="5276681919620506371">શોધ • ટૂલ્સ</translation>
 <translation id="7434375176361995333">સારાંશ • ઝડપભર્યું</translation>
 <translation id="3965507912994218570">લિઓ સેટિંગ્સ</translation>
@@ -2461,6 +2465,8 @@
 <translation id="6287023598025162715">નવી વાતચીત</translation>
 <translation id="7230502562132448519">વાતચીતોને ફિલ્ટર કરો</translation>
 <translation id="821070843380699990">કૃપા કરી કોઇ અલગ પ્રશ્ન અજમાવો</translation>
+<translation id="241415280196701326">તાજેતરના વર્કસ્પેસ</translation>
+<translation id="5388053981690151266">આ વર્કસ્પેસમાં નવી વાતચીત</translation>
 <translation id="7097822247923237815">કામચલાઉ ચેટ</translation>
 <translation id="7481750859362986254">આ ચેટ તમારા ઇતિહાસમાં સેવ નહીં થાય કે Leoના કોઈ કસ્ટમાઇઝેશન અથવા મેમરીનો ઉપયોગ નહીં કરે.</translation>
 <translation id="4238305333951712482">મેમરી અપડેટ કરી: <ph name="MEMORY_CONTENT"/></translation>
@@ -2486,6 +2492,7 @@
 <translation id="5103625298494362646">એજન્ટ મોડ ટૂલ સપોર્ટ ધરાવતા મોડેલ્સ સાથે કાર્ય કરે છે. અસંગત મોડેલ્સ આ યાદીમાં છુપાય છે.</translation>
 <translation id="3397808797783614750">તમારું બ્રાઉઝિંગ સ્વચાલિત રીતે સાફર કરવા માટે AI ને સક્રિય કરવા છતાં, તે તમારી ખાનગીતા, નાણાકીય બાબતો અને ઑનલાઇન સંચાર માટે હાનિકારક કે અનિચ્છિત પરિણામો આપી શકે છે. <ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">સુરક્ષા ચેતવણી</translation>
+<translation id="717245811623757038">ટૂલ પરવાનગી વિનંતી</translation>
 <translation id="6077070599873946984">Brave AI ને તમારી મંજૂરી જોઈએ છે: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI **<ph name="SITE_ORIGIN"/>** પર **<ph name="TOOL_NAME"/>** એક્ઝિક્યુટ કરવા માંગે છે</translation>
 <translation id="4163837693685963037">ચાલું ઑપરેશન તમારી વિનંતી સાથે સંભવિત રીતે વિસંગત હોય એવું શોધાયું છે:</translation>

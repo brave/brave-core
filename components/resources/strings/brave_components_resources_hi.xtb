@@ -949,6 +949,11 @@
 <translation id="4362717653795263052">प्राथमिक क्रिप्टो अकाउंट्स रिस्टोर करें</translation>
 <translation id="3038077262567136741">अपने Brave वॉलेट क्रिप्टो अकाउंट को रिस्टोर करने के लिए अपना रिकवरी फ़्रेज़ एंटर करें.</translation>
 <translation id="955918646509748368">एंटर किया गया रिकवरी फ़्रेज़ अमान्य है.</translation>
+<translation id="7496330898672236908">यह रिकवरी फ़्रेज़ आपके वॉलेट से मेल नहीं खाता। फ़्रेज़ जाँचें और दोबारा कोशिश करें।</translation>
+<translation id="3798792138617904098">इम्पोर्ट किए गए अकाउंट हटाएं?</translation>
+<translation id="2960631345291747230">इम्पोर्ट किए गए अकाउंट का बैकअप आपके रिकवरी फ़्रेज़ से नहीं लिया गया है। उन्हें Brave वॉलेट से हटा दिया जाएगा, और जब तक आपने उनकी प्राइवेट की का बैकअप नहीं लिया है, आप उनके फ़ंड का एक्सेस हमेशा के लिए खो सकते हैं।</translation>
+<translation id="8898583604592472741">अकाउंट हटाएं</translation>
+<translation id="1577629163207045190">पुष्टि करने के लिए "<ph name="CONFIRMATION_PHRASE"/>" टाइप करें।</translation>
 <translation id="8107437138787377150">क्लिपबोर्ड से रिकवरी फ़्रेज़ पेस्ट करें</translation>
 <translation id="4811736040444856406">रिकवरी फ्रेज़ दिखाएँ</translation>
 <translation id="4359319875297001084">लिगेसी Brave क्रिप्टो वॉलेट से इम्पोर्ट करें?</translation>
@@ -2243,13 +2248,12 @@
 <translation id="3934503473603661122">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा एक AI सहायक हूँ। मैं Grok 4.7 द्वारा संचालित हूँ, जो Amazon Bedrock पर xAI का फ्रंटियर रीज़निंग मॉडल है। Grok 4.7 को Brave के सुरक्षित AWS इंफ़्रास्ट्रक्चर के ज़रिए सर्व किया जाता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा एक AI सहायक हूँ। मैं GPT Luna द्वारा संचालित हूँ, जो Amazon Bedrock पर OpenAI का तेज़, लो-लेटेंसी मॉडल है। GPT Luna को Brave के सुरक्षित AWS इंफ़्रास्ट्रक्चर के ज़रिए सर्व किया जाता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा एक AI सहायक हूँ। मैं GPT 5.6 Terra द्वारा संचालित हूँ, जो Amazon Bedrock Mantle पर OpenAI का संतुलित प्रोडक्शन मॉडल है। GPT 5.6 Terra को Brave के सुरक्षित AWS इंफ़्रास्ट्रक्चर के ज़रिए सर्व किया जाता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Mistral Large द्वारा संचालित हूँ, जो Mistral द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Mistral Large हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पॉवरड हूँ और Claude Haiku द्वारा संचालित हूँ, जो Anthropic द्वारा बनाया गया एक मॉडल है जो संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को पावर करता है। Claude Haiku हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा एक AI सहायक हूँ। मैं Qwen 3.8 Flash Next द्वारा संचालित हूँ, जो Alibaba Cloud द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Qwen 3.8 Flash Next हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Deepseek V3.2 द्वारा संचालित हूँ, जो Deepseek द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Deepseek V3.2 हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">नमस्ते, मैं Leo हूँ। मैं Brave का AI सहायक हूँ। मैं GLM 5.3 द्वारा संचालित हूँ, जो Z.ai द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए उपयुक्त है। GLM 5.3 हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave द्वारा होस्ट किया जाता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पॉवरड हूँ और Claude Opus द्वारा संचालित हूँ, जो Anthropic द्वारा बनाया गया एक मॉडल है जो संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को पावर करता है। Claude Opus हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं GLM-4-7-Flash द्वारा संचालित हूँ, जो Zhipu AI द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। GLM-4-7-Flash हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Kimi K2.5 द्वारा संचालित हूँ, जो Moonshot AI द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Kimi K2.5 हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Nemotron Nano 3 30B द्वारा संचालित हूँ, जो NVIDIA द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Nemotron Nano 3 30B हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Brave Ocelot द्वारा संचालित हूँ, जो Brave द्वारा बनाया गया एक मॉडल है जो वेब पेजों को सारांशित करने के लिए। Brave Ocelot हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">प्रीमियम</translation>
 <translation id="5807427080183870259">लोकल</translation>
@@ -2389,8 +2393,8 @@
 <translation id="7465032796278724624">NEAR AI TEE के साथ सत्यापित रूप से निजी</translation>
 <translation id="8782867266498869301">कार्य के लिए सबसे अच्छा मॉडल इस्तेमाल करने की वजह से मॉडल डाइनैमिक रूप से बदलता है</translation>
 <translation id="7348809809749151120">तेज़ • सर्च</translation>
+<translation id="7711013627639951065">तेज़ • सर्च • विज़न • टूल्स</translation>
 <translation id="3213834013136637671">सर्च • विज़न</translation>
-<translation id="2793458212460902934">तेज़ • सर्च • टूल्स</translation>
 <translation id="5276681919620506371">सर्च • टूल्स</translation>
 <translation id="7434375176361995333">सारांश • तेज़</translation>
 <translation id="3965507912994218570">लियो सेटिंग्स</translation>
@@ -2463,6 +2467,8 @@
 <translation id="6287023598025162715">नई बातचीत</translation>
 <translation id="7230502562132448519">बातचीत को फ़िल्टर करें</translation>
 <translation id="821070843380699990">कृपया कोई और क्वेरी आज़माएं</translation>
+<translation id="241415280196701326">हाल के वर्कस्पेस</translation>
+<translation id="5388053981690151266">इस वर्कस्पेस में नई बातचीत</translation>
 <translation id="7097822247923237815">अस्थायी चैट</translation>
 <translation id="7481750859362986254">इस चैट को आपकी हिस्ट्री में सेव नहीं किया जाएगा या Leo के किसी भी कस्टमाइज़ेशन या मेमोरीज़ में इस्तेमाल नहीं किया जाएगा।</translation>
 <translation id="4238305333951712482">मेमोरी अपडेट की गई: <ph name="MEMORY_CONTENT"/></translation>
@@ -2488,6 +2494,7 @@
 <translation id="5103625298494362646">एजेंट मोड उन मॉडलों के साथ काम करता है जिनमें टूल सपोर्ट होता है। असंगत मॉडल इस सूची से छिपाए जाते हैं।</translation>
 <translation id="3397808797783614750">आपके लिए स्वचालित रूप से ब्राउज़ करने के लिए AI को सक्षम करना आपकी गोपनीयता, वित्त और ऑनलाइन संचार के लिए हानिकारक, अनपेक्षित परिणाम दे सकता है। <ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">सुरक्षा चेतावनी</translation>
+<translation id="717245811623757038">टूल अनुमति का अनुरोध</translation>
 <translation id="6077070599873946984">Brave AI को इसके लिए आपकी अनुमति की आवश्यकता है: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI **<ph name="SITE_ORIGIN"/>** पर **<ph name="TOOL_NAME"/>** को एक्ज़ीक्यूट करना चाहेगा</translation>
 <translation id="4163837693685963037">यह ऑपरेशन सम्भवतः आपके अनुरोध से मेल नहीं खा रहा था:</translation>

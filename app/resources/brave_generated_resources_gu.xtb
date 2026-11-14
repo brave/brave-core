@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 અથવા પછી <ph name="SETTINGS_EXTENIONS_LINK"/> માં ફેરફાર કરો.</translation>
 <translation id="6229752134959014186">Widevine વિશે વધુ જાણો</translation>
+<translation id="3318169548229684688">આ ડિવાઇસ પર સ્પીચ પ્રોસેસ કરવા માટે સ્પીચ રેકગ્નિશન મૉડલ (<ph name="DOWNLOAD_SIZE"/>) ડાઉનલોડ કરો</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> તમને પૂછે છે</translation>
 <translation id="3218385319396786393">આ પેજ પર Autoplay બ્લોક કરવામાં આવ્યું છે</translation>
 <translation id="4988333904713528597">હંમેશ માટે <ph name="HOST"/> પર autoplay ને મંજૂરી આપો</translation>
@@ -610,6 +611,8 @@
 <translation id="3540231253392253941">પ્રકાશન સંદેશા માટે Google સેવાઓનો ઉપયોગ કરશે</translation>
 <translation id="2224032129673914306">સિમેન્ટિક ઇતિહાસ શોધ</translation>
 <translation id="6045998903985162478">તમે મુલાકાત લો છો તે પૃષ્ઠોને અનુક્રમિત કરો જેથી તમે તેમને ઇતિહાસ, ખુલ્લા ટૅબ અને Leo માં સરળતાથી શોધી શકો.</translation>
+<translation id="3962946446120925966">ઓન-ડિવાઇસ સ્પીચ રેકગ્નિશન</translation>
+<translation id="6408242130028978631">સ્પીચ રેકગ્નિશન મોડેલ (<ph name="DOWNLOAD_SIZE"/>) ડાઉનલોડ કરો, જેથી સાઇટ્સ આ ડિવાઇસ પર સ્પીચ પ્રોસેસ કરી શકે. મોડેલ દૂર કરવા માટે આને બંધ કરો.</translation>
 <translation id="5813105074916486721">સ્થાનિક ઇતિહાસ જાળવણી</translation>
 <translation id="5671611745062206644">Brave તમારા બ્રાઉઝિંગ ઇતિહાસને સ્થાનિક રીતે કેટલા સમય માટે સંગ્રહિત કરે છે</translation>
 <translation id="7184510058087008090">1 દિવસ</translation>

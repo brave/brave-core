@@ -947,6 +947,11 @@
 <translation id="4362717653795263052">Ibalik ang mga pangunahing account sa cryptocurrency</translation>
 <translation id="3038077262567136741">Ilagay ang iyong parirala sa pag-recover para ibalik ang iyong account sa cryptocurrency ng Brave wallet.</translation>
 <translation id="955918646509748368">Hindi valid ang nailagay na parirala sa pag-recover.</translation>
+<translation id="7496330898672236908">Hindi tugma ang recovery phrase na ito sa iyong wallet. Suriin ang phrase at subukang muli.</translation>
+<translation id="3798792138617904098">Alisin ang mga na-import na account?</translation>
+<translation id="2960631345291747230">Hindi naka-back up ng iyong recovery phrase ang mga na-import na account. Aalisin ang mga ito sa Brave Wallet, at maaari kang permanenteng mawalan ng access sa kanilang pondo maliban kung na-back up mo ang kanilang mga private key.</translation>
+<translation id="8898583604592472741">Alisin ang mga account</translation>
+<translation id="1577629163207045190">I-type ang "<ph name="CONFIRMATION_PHRASE"/>" para kumpirmahin.</translation>
 <translation id="8107437138787377150">I-paste mula sa clipboard ang parirala sa pag-recover</translation>
 <translation id="4811736040444856406">Ipakita ang parirala sa pag-recover</translation>
 <translation id="4359319875297001084">Mag-import mula sa mga legacy na wallet ng cryptocurrency ng Brave?</translation>
@@ -2241,13 +2246,12 @@
 <translation id="3934503473603661122">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng Grok 4.7, ang frontier reasoning model ng xAI sa Amazon Bedrock. Inihahatid ang Grok 4.7 sa pamamagitan ng secure na AWS infrastructure ng Brave.<ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng GPT Luna, ang mabilis at mababang latency na model ng OpenAI sa Amazon Bedrock. Inihahatid ang GPT Luna sa pamamagitan ng secure na AWS infrastructure ng Brave.<ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng GPT 5.6 Terra, ang balanced production model ng OpenAI sa Amazon Bedrock Mantle. Inihahatid ang GPT 5.6 Terra sa pamamagitan ng secure na AWS infrastructure ng Brave.<ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng Mistral Large, isang modelo na ginawa ng Mistral para maging gumaganap at nagagamit sa maraming paraan. Naka-host sa Brave ang Mistral Large sa pamamagitan ng sarili naming secure na infrastructure.<ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng Claude Haiku, isang model na ginawa ng Anthropic para magpagana ng conversational at text processing na task. Naka-host sa Brave ang Claude Haiku sa pamamagitan ng sarili naming secure na infrastructure <ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng Qwen 3.8 Flash Next, isang modelo na ginawa ng Alibaba Cloud para maging gumaganap at nagagamit sa maraming paraan. Naka-host sa Brave ang Qwen 3.8 Flash Next sa pamamagitan ng sarili naming secure na infrastructure.<ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng Deepseek V3.2, isang modelo na ginawa ng Deepseek para maging gumaganap at nagagamit sa maraming paraan. Naka-host sa Brave ang Deepseek V3.2 sa pamamagitan ng sarili naming secure na infrastructure.<ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng GLM 5.3, isang modelo na ginawa ng Z.ai para maging gumaganap at nagagamit sa maraming paraan. Naka-host sa Brave ang GLM 5.3 sa pamamagitan ng sarili naming secure na infrastructure.<ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng Claude Opus, isang model na ginawa ng Anthropic para magpagana ng conversational at text processing na task. Naka-host sa Brave ang Claude Opus sa pamamagitan ng sarili naming secure na infrastructure <ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng GLM-4-7-Flash, isang modelo na ginawa ng Zhipu AI para maging gumaganap at nagagamit sa maraming paraan. Naka-host sa Brave ang GLM-4-7-Flash sa pamamagitan ng sarili naming secure na infrastructure.<ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng Kimi K2.5, isang modelo na ginawa ng Moonshot AI para maging gumaganap at nagagamit sa maraming paraan. Naka-host sa Brave ang Kimi K2.5 sa pamamagitan ng sarili naming secure na infrastructure.<ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng Nemotron Nano 3 30B, isang modelo na ginawa ng NVIDIA para maging gumaganap at nagagamit sa maraming paraan. Naka-host sa Brave ang Nemotron Nano 3 30B sa pamamagitan ng sarili naming secure na infrastructure.<ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Hi, ako si Leo. Ako ay isang AI assistant ng Brave. Pinapagana ako ng Brave Ocelot, isang modelo na ginawa ng Brave para sa pagbubuod ng mga web page. Naka-host sa Brave ang Brave Ocelot sa pamamagitan ng sarili naming secure na infrastructure.<ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Local</translation>
@@ -2387,8 +2391,8 @@
 <translation id="7465032796278724624">Maaaring mapribatong ma-verify gamit ang NEAR AI TEE</translation>
 <translation id="8782867266498869301">Dynamic na nagbabago ang model para gamitin ang pinakamaganda para sa task</translation>
 <translation id="7348809809749151120">Mabilis • Maghanap</translation>
+<translation id="7711013627639951065">Mabilis • Paghahanap • Paningin • Mga Tool</translation>
 <translation id="3213834013136637671">Maghanap • Paningin</translation>
-<translation id="2793458212460902934">Mabilis • Maghanap • Mga Tool</translation>
 <translation id="5276681919620506371">Maghanap • Mga Tool</translation>
 <translation id="7434375176361995333">Mga Buod • Mabilis</translation>
 <translation id="3965507912994218570">Mga Setting ni Leo</translation>
@@ -2461,6 +2465,8 @@
 <translation id="6287023598025162715">Bagong pag-uusap</translation>
 <translation id="7230502562132448519">I-filter ang mga pag-uusap</translation>
 <translation id="821070843380699990">Subukang magkaiba ng query</translation>
+<translation id="241415280196701326">Mga kamakailang workspace</translation>
+<translation id="5388053981690151266">Bagong usapan sa workspace na ito</translation>
 <translation id="7097822247923237815">Pansamantalang chat</translation>
 <translation id="7481750859362986254">Hindi ise-save ang chat na ito sa iyong history o gagamitin ang anuman sa customization o mga memory ng Leo.</translation>
 <translation id="4238305333951712482">Na-update ang memory: <ph name="MEMORY_CONTENT"/></translation>
@@ -2486,6 +2492,7 @@
 <translation id="5103625298494362646">Ang Agent mode ay gumagana lamang sa mga model na may suportang tool. Ang mga model na hindi compatible ay nakatago sa listahang ito.</translation>
 <translation id="3397808797783614750">Ang pagpapagana sa AI upang awtomatikong mag-browse para sa iyo ay maaaring magdulot ng mapaminsalang hindi inaasahang epekto sa iyong privacy, pananalapi, at mga komunikasyong online. <ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Babala sa seguridad</translation>
+<translation id="717245811623757038">Kahilingan ng pahintulot para sa tool</translation>
 <translation id="6077070599873946984">Kailangan ng pahintulot ng Brave AI para sa: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Nais ng Brave AI na isagawa ang **<ph name="TOOL_NAME"/>** sa **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Ang operasyon ay nakita bilang posibleng hindi tumutugma sa iyong hinihiling:</translation>

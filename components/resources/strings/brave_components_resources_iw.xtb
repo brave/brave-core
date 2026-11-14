@@ -957,6 +957,11 @@
 <translation id="4362717653795263052">שחזר חשבונות קריפטו עיקריים</translation>
 <translation id="3038077262567136741">הזן את ביטוי השחזור שלך כדי לשחזר את חשבון הקריפטו של ארנק Brave שלך.</translation>
 <translation id="955918646509748368">ביטוי השחזור שהוזן אינו תקין.</translation>
+<translation id="7496330898672236908">ביטוי השחזור הזה לא תואם לארנק שלך. בדוק את הביטוי ונסה שוב.</translation>
+<translation id="3798792138617904098">להסיר חשבונות מיובאים?</translation>
+<translation id="2960631345291747230">חשבונות מיובאים אינם מגובים על ידי ביטוי השחזור שלך. הם יוסרו מ-Brave Wallet, וייתכן שתאבד לצמיתות את הגישה לכספים שלהם אלא אם גיבית את המפתחות הפרטיים שלהם.</translation>
+<translation id="8898583604592472741">הסר חשבונות</translation>
+<translation id="1577629163207045190">הקלד "<ph name="CONFIRMATION_PHRASE"/>" כדי לאשר.</translation>
 <translation id="8107437138787377150">הדבק ביטוי שחזור מלוח העתקה</translation>
 <translation id="4811736040444856406">הצג ביטוי שחזור</translation>
 <translation id="4359319875297001084">לייבא מארנקי קריפטו Brave מדור קודם?</translation>
@@ -2263,13 +2268,12 @@ CoinGecko</translation>
 <translation id="3934503473603661122">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Grok 4.7, מודל החשיבה המתקדם של xAI ב-Amazon Bedrock. Grok 4.7 מוגש באמצעות התשתית המאובטחת של Brave ב-AWS.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות GPT Luna, המודל המהיר עם זמן השהיה נמוך של OpenAI ב-Amazon Bedrock. GPT Luna מוגש באמצעות התשתית המאובטחת של Brave ב-AWS.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות GPT 5.6 Terra, מודל הייצור המאוזן של OpenAI ב-Amazon Bedrock Mantle. GPT 5.6 Terra מוגש באמצעות התשתית המאובטחת של Brave ב-AWS.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Mistral Large, מודל שנוצר על ידי Mistral לשימוש ויישום במגוון תרחישים. Mistral Large מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Claude Haiku, מודל שנוצר על ידי Anthropic לשימוש ויישום במגוון תרחישים. Claude Haiku מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Qwen 3.8 Flash Next, מודל שנוצר על ידי Alibaba Cloud לשימוש ויישום במגוון תרחישים. Qwen 3.8 Flash Next מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Deepseek V3.2, מודל שנוצר על ידי Deepseek לשימוש ויישום במגוון תרחישים. Deepseek V3.2 מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">היי, אני Leo. אני עוזר AI של Brave. אני מופעל באמצעות GLM 5.3, מודל שנוצר על ידי Z.ai כדי להיות בעל ביצועים גבוהים ומתאים למגוון רחב של שימושים. GLM 5.3 מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Claude Opus, מודל שנוצר על ידי Anthropic למטרות עיבוד שפה ושיחות. Claude Opus מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות GLM-4-7-Flash, מודל שנוצר על ידי Zhipu AI לשימוש ויישום במגוון תרחישים. GLM-4-7-Flash מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Kimi K2.5, מודל שנוצר על ידי Moonshot AI לשימוש ויישום במגוון תרחישים. Kimi K2.5 מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Nemotron Nano 3 30B, מודל שנוצר על ידי NVIDIA לשימוש ויישום במגוון תרחישים. Nemotron Nano 3 30B מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Brave Ocelot, מודל שנוצר על ידי Brave לסיכום דפי אינטרנט. Brave Ocelot מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">פרמיום</translation>
 <translation id="5807427080183870259">מקומי</translation>
@@ -2409,8 +2413,8 @@ CoinGecko</translation>
 <translation id="7465032796278724624">פרטי בראי אימות עם NEAR AI TEE</translation>
 <translation id="8782867266498869301">המודל משתנה באופן דינמי על מנת להשתמש בזה שמותאם למשימה באופן המיטבי</translation>
 <translation id="7348809809749151120">מהיר • לחפש</translation>
+<translation id="7711013627639951065">מהיר • חיפוש • ראייה • כלים</translation>
 <translation id="3213834013136637671">חיפוש • חזון</translation>
-<translation id="2793458212460902934">מהיר • לחפש • כלים</translation>
 <translation id="5276681919620506371">חיפוש • כלים</translation>
 <translation id="7434375176361995333">סיכומים • מהר</translation>
 <translation id="3965507912994218570">הגדרות Leo</translation>
@@ -2483,6 +2487,8 @@ CoinGecko</translation>
 <translation id="6287023598025162715">שיחה חדשה</translation>
 <translation id="7230502562132448519">סנן שיחות</translation>
 <translation id="821070843380699990">נסה שאילתה שונה</translation>
+<translation id="241415280196701326">סביבות עבודה אחרונות</translation>
+<translation id="5388053981690151266">שיחה חדשה בסביבת עבודה זו</translation>
 <translation id="7097822247923237815">צ'אט זמני</translation>
 <translation id="7481750859362986254">הצ'אט הזה לא יישמר בהיסטוריה שלך ולא ישתמש באף אחת מההגדרות או הזיכרונות של Leo.</translation>
 <translation id="4238305333951712482">הזיכרון עודכן: <ph name="MEMORY_CONTENT"/></translation>
@@ -2508,6 +2514,7 @@ CoinGecko</translation>
 <translation id="5103625298494362646">מצב סוכן עובד עם מודלים התומכים בכלים. מודלים לא תואמים מוסתרים מהרשימה.</translation>
 <translation id="3397808797783614750">הפעלה אוטומטית של גלישה עבורך עלולה לגרום לתוצאות לא רצויות ולהשפיע לרעה על פרטיותך, כספך והתקשורת המקוונת שלך. <ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">אזהרת אבטחה</translation>
+<translation id="717245811623757038">בקשת הרשאה לכלי</translation>
 <translation id="6077070599873946984">Brave AI זקוק להרשאתך עבור: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI רוצה להריץ את **<ph name="TOOL_NAME"/>** ב-**<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">הפעולה זוהתה ככזו שעלולה להיות לא תואמת לבקשתך:</translation>

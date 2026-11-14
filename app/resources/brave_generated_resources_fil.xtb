@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Matuto pa tungkol sa Widevine</translation>
+<translation id="3318169548229684688">Mag-download ng speech recognition model (<ph name="DOWNLOAD_SIZE"/>) para maproseso ang pananalita sa device na ito</translation>
 <translation id="6061083111980694767">Hinihiling sa iyo ng <ph name="SITE_NAME"/> na</translation>
 <translation id="3218385319396786393">Na-block sa page na ito ang pag-autoplay</translation>
 <translation id="4988333904713528597">Palaging payagan ang autoplay sa <ph name="HOST"/></translation>
@@ -610,6 +611,8 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3540231253392253941">Gamitin ang mga serbisyo ng Google para sa push messaging</translation>
 <translation id="2224032129673914306">Semantic na paghahanap sa history</translation>
 <translation id="6045998903985162478">I-index ang mga pahinang binibisita mo upang madali mo itong mahanap sa history, mga bukas na tab at Leo.</translation>
+<translation id="3962946446120925966">Pagkilala sa pananalita sa device</translation>
+<translation id="6408242130028978631">Mag-download ng modelo sa pagkilala ng pananalita (<ph name="DOWNLOAD_SIZE"/>) para maproseso ng mga site ang pananalita sa device na ito. I-off ito para alisin ang modelo.</translation>
 <translation id="5813105074916486721">Local na pagpapanatili ng history</translation>
 <translation id="5671611745062206644">Kung gaano katagal iniimbak ng Brave ang iyong browsing history nang lokal</translation>
 <translation id="7184510058087008090">1 araw</translation>

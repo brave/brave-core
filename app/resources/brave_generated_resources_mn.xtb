@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Дараа нь <ph name="SETTINGS_EXTENIONS_LINK"/>-т өөрчилж болно.</translation>
 <translation id="6229752134959014186">Widevine-ийн талаар дэлгэрэнгүй</translation>
+<translation id="3318169548229684688">Энэ төхөөрөмж дээр яриаг боловсруулахын тулд яриа танилтын загварыг (<ph name="DOWNLOAD_SIZE"/>) татаж авах</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> таныг</translation>
 <translation id="3218385319396786393">Энэ хуудсан дээр autoplay хориглогдсон</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> дээр үргэлж autoplay-г зөвшөөрөх</translation>
@@ -609,6 +610,8 @@
 <translation id="3540231253392253941">Push зурваслахад Google үйлчилгээг ашиглах</translation>
 <translation id="2224032129673914306">Утга санааны түүхийн хайлт</translation>
 <translation id="6045998903985162478">Зочилсон хуудсуудаа индексжүүлснээр түүх, нээлттэй табууд болон Leo-гоос амархан олох боломжтой.</translation>
+<translation id="3962946446120925966">Төхөөрөмж дээрх ярианы таних</translation>
+<translation id="6408242130028978631">Сайтууд энэ төхөөрөмж дээр яриаг боловсруулах боломжтой болохын тулд ярианы таних загварыг (<ph name="DOWNLOAD_SIZE"/>) татаж авна уу. Загварыг устгахын тулд үүнийг унтраана уу.</translation>
 <translation id="5813105074916486721">Локал түүх хадгалах хугацаа</translation>
 <translation id="5671611745062206644">Brave таны browsing history-г локал байдлаар хэр удаан хадгалах</translation>
 <translation id="7184510058087008090">1 өдөр</translation>

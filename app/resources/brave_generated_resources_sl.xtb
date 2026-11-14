@@ -51,6 +51,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Več o storitvi Widevine</translation>
+<translation id="3318169548229684688">Prenesti model za prepoznavanje govora (<ph name="DOWNLOAD_SIZE"/>) za obdelavo govora v tej napravi</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> vas prosi, da</translation>
 <translation id="3218385319396786393">Samodejno predvajanje je blokirano na tej strani</translation>
 <translation id="4988333904713528597">Vedno dovoli samodejno predvajanje na <ph name="HOST"/></translation>
@@ -613,6 +614,8 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="3540231253392253941">Za potisna sporočila uporabite Googlove storitve</translation>
 <translation id="2224032129673914306">Pomensko iskanje po zgodovini</translation>
 <translation id="6045998903985162478">Indeksirajte strani, ki jih obiščete, da jih boste lahko enostavno našli v zgodovini, odprtih zavihkih in Leo.</translation>
+<translation id="3962946446120925966">Prepoznavanje govora na napravi</translation>
+<translation id="6408242130028978631">Prenesite model za prepoznavanje govora (<ph name="DOWNLOAD_SIZE"/>), da bodo lahko spletna mesta obdelovala govor na tej napravi. Izklopite to nastavitev, če želite model odstraniti.</translation>
 <translation id="5813105074916486721">Lokalna hramba zgodovine</translation>
 <translation id="5671611745062206644">Kako dolgo Brave lokalno shranjuje vašo zgodovino brskanja</translation>
 <translation id="7184510058087008090">1 dan</translation>

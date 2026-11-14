@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/> 
 Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="6229752134959014186">További tudnivalók a Widevine-ról</translation>
+<translation id="3318169548229684688">beszédfelismerő modell letöltése (<ph name="DOWNLOAD_SIZE"/>) a beszéd ezen az eszközön történő feldolgozásához</translation>
 <translation id="6061083111980694767">A(z) <ph name="SITE_NAME"/> a következő(k)re kéri Önt:</translation>
 <translation id="3218385319396786393">Ezen az oldalon blokkolták az automatikus lejátszást.</translation>
 <translation id="4988333904713528597">Automatikus lejátszás általános engedélyezése itt: <ph name="HOST"/></translation>
@@ -610,6 +611,8 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="3540231253392253941">Leküldéses üzenetekhez használd a Google szolgáltatásait</translation>
 <translation id="2224032129673914306">Szemantikus előzménykeresés</translation>
 <translation id="6045998903985162478">Indexelje a meglátogatott oldalakat, hogy könnyen megtalálja őket az előzményekben, a megnyitott lapokon és a Leóban.</translation>
+<translation id="3962946446120925966">Eszközön történő beszédfelismerés</translation>
+<translation id="6408242130028978631">Töltsön le egy beszédfelismerési modellt (<ph name="DOWNLOAD_SIZE"/>), hogy a webhelyek ezen az eszközön dolgozhassák fel a beszédet. A modell eltávolításához kapcsolja ki ezt a beállítást.</translation>
 <translation id="5813105074916486721">Helyi előzménymegőrzés</translation>
 <translation id="5671611745062206644">Mennyi ideig tárolja a Brave a böngészési előzményeit helyben</translation>
 <translation id="7184510058087008090">1 nap</translation>
