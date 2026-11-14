@@ -262,9 +262,9 @@ class HistoryEmbeddingsService
   // visit, holds information about the visit.
   base::flat_map<content::WebContents*, VisitMetadata> last_history_visit_;
 
-  // Metadata about the embedder; Set when valid metadata is received from
+  // Metadata about the embedder; set when metadata is received from
   // `embedder_metadata_provider`.
-  passage_embeddings::EmbedderMetadata embedder_metadata_{0, 0, 0};
+  std::optional<passage_embeddings::EmbedderMetadata> embedder_metadata_;
 
   // Storage is bound to a separate sequence.
   // This will be null if the feature flag is disabled.
