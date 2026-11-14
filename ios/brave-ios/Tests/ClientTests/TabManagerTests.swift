@@ -145,6 +145,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
         return tab
       }
     )
+    manager.isTabGroupsEnabled = true
     privateBrowsingManager.isPrivateBrowsing = false
     Preferences.Privacy.persistentPrivateBrowsing.reset()
     Preferences.Privacy.privateBrowsingOnly.reset()
@@ -980,5 +981,234 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       reorderedTabs.map(\.id),
       "Tab should be moved to the end when index is out of bounds"
     )
+  }
+
+  // MARK: - Tab Groups
+
+  func testCreateTabGroup() {
+    let firstTab = manager.addTestTab(isPrivate: false)
+    let secondTab = manager.addTestTab(isPrivate: false)
+    let thirdTab = manager.addTestTab(isPrivate: false)
+
+    let group = manager.createTabGroup(title: "Group", adding: [firstTab, thirdTab])
+
+    XCTAssertNotNil(group)
+    XCTAssertEqual(manager.tabGroups.map(\.title), ["Group"])
+    XCTAssertEqual(manager.tabs(in: group!).map(\.id), [firstTab.id, thirdTab.id])
+    XCTAssertEqual(manager.tabGroup(for: firstTab), group)
+    XCTAssertNil(manager.tabGroup(for: secondTab))
+  }
+
+  func testPrivateTabsCannotBeGrouped() {
+    let privateTab = manager.addTestTab(isPrivate: true)
+
+    XCTAssertNil(manager.createTabGroup(title: "Group", adding: [privateTab]))
+    XCTAssertTrue(manager.tabGroups.isEmpty)
+  }
+
+  func testAddTabsToExistingGroup() {
+    let firstTab = manager.addTestTab(isPrivate: false)
+    let secondTab = manager.addTestTab(isPrivate: false)
+    let group = manager.createTabGroup(title: "Group", adding: [firstTab])!
+
+    manager.addTabs([secondTab], to: group)
+
+    XCTAssertEqual(manager.tabs(in: group).map(\.id), [firstTab.id, secondTab.id])
+  }
+
+  func testMovingAllTabsToAnotherGroupRemovesEmptiedGroup() {
+    let firstTab = manager.addTestTab(isPrivate: false)
+    let secondTab = manager.addTestTab(isPrivate: false)
+    let firstGroup = manager.createTabGroup(title: "First", adding: [firstTab])!
+    let secondGroup = manager.createTabGroup(title: "Second", adding: [secondTab])!
+
+    manager.addTabs([firstTab], to: secondGroup)
+
+    XCTAssertEqual(manager.tabGroups, [secondGroup])
+    XCTAssertFalse(manager.tabGroups.contains(firstGroup))
+    XCTAssertEqual(manager.tabs(in: secondGroup).map(\.id), [firstTab.id, secondTab.id])
+  }
+
+  func testClosingLastTabRemovesGroup() {
+    let firstTab = manager.addTestTab(isPrivate: false)
+    let secondTab = manager.addTestTab(isPrivate: false)
+    let group = manager.createTabGroup(title: "Group", adding: [firstTab, secondTab])!
+
+    manager.removeTab(firstTab)
+    XCTAssertEqual(manager.tabGroups, [group])
+    XCTAssertEqual(manager.tabs(in: group).map(\.id), [secondTab.id])
+
+    manager.removeTab(secondTab)
+    XCTAssertTrue(manager.tabGroups.isEmpty)
+  }
+
+  func testUngroupKeepsTabs() {
+    let firstTab = manager.addTestTab(isPrivate: false)
+    let group = manager.createTabGroup(title: "Group", adding: [firstTab])!
+
+    manager.ungroupTabs(in: group)
+
+    XCTAssertTrue(manager.tabGroups.isEmpty)
+    XCTAssertNil(manager.tabGroup(for: firstTab))
+    XCTAssertTrue(manager.allTabs.contains(where: { $0.id == firstTab.id }))
+  }
+
+  func testTabGroupsAreNotAvailableWhenFeatureIsDisabled() {
+    let tab = manager.addTestTab(isPrivate: false)
+    manager.isTabGroupsEnabled = false
+
+    XCTAssertFalse(manager.canGroupTabsForCurrentMode)
+    XCTAssertNil(manager.createTabGroup(title: "Group", adding: [tab]))
+    XCTAssertTrue(manager.tabGroups.isEmpty)
+  }
+
+  func testTabGroupsAreNotAvailableInPrivateBrowsing() {
+    let tab = manager.addTestTab(isPrivate: false)
+    privateBrowsingManager.isPrivateBrowsing = true
+
+    XCTAssertFalse(manager.canGroupTabsForCurrentMode)
+    XCTAssertNil(manager.createTabGroup(title: "Group", adding: [tab]))
+  }
+
+  func testTabGroupIsPersistedAndRestored() {
+    DataController.shared = InMemoryDataController()
+    DataController.shared.initializeOnce()
+
+    let windowCreated = expectation(forNotification: .NSManagedObjectContextDidSave, object: nil)
+    SessionWindow.createWindow(isSelected: true, uuid: testWindowId)
+    wait(for: [windowCreated], timeout: 5)
+
+    let firstTab = manager.addTestTab(isPrivate: false)
+    let secondTab = manager.addTestTab(isPrivate: false)
+    let thirdTab = manager.addTestTab(isPrivate: false)
+    let group = manager.createTabGroup(title: "Group", adding: [firstTab, thirdTab])!
+
+    // Writes are asynchronous
+    let isPersisted = XCTNSPredicateExpectation(
+      predicate: NSPredicate { _, _ in
+        let groups = SessionTabGroup.all(windowId: self.testWindowId)
+        return groups.count == 1 && groups.first?.sessionTabs?.count == 2
+      },
+      object: nil
+    )
+    wait(for: [isPersisted], timeout: 5)
+
+    let persistedGroup = SessionTabGroup.all(windowId: testWindowId).first
+    XCTAssertEqual(persistedGroup?.groupId, group.id)
+    XCTAssertEqual(persistedGroup?.title, "Group")
+    XCTAssertEqual(
+      Set(persistedGroup?.sessionTabs?.map(\.tabId) ?? []),
+      [firstTab.id, thirdTab.id]
+    )
+    XCTAssertNil(SessionTab.from(tabId: secondTab.id)?.sessionTabGroup)
+
+    // A new manager for the same window restores the group from the persisted tabs
+    let restoredManager = TabManager(
+      windowId: testWindowId,
+      rewards: nil,
+      braveCore: nil,
+      profile: FakeProfile(),
+      privateBrowsingManager: PrivateBrowsingManager(),
+      tabCreationFactory: { params in
+        let tab = FakeTabState()
+        tab.profile = params.profile
+        return tab
+      }
+    )
+    restoredManager.isTabGroupsEnabled = true
+    _ = restoredManager.restoreAllTabs
+
+    XCTAssertEqual(restoredManager.tabGroups, [group])
+    XCTAssertEqual(
+      Set(restoredManager.tabs(in: group).map(\.id)),
+      [firstTab.id, thirdTab.id]
+    )
+
+    // With tab groups disabled the tabs are restored ungrouped, and the persisted group is kept
+    let disabledManager = TabManager(
+      windowId: testWindowId,
+      rewards: nil,
+      braveCore: nil,
+      profile: FakeProfile(),
+      privateBrowsingManager: PrivateBrowsingManager(),
+      tabCreationFactory: { params in
+        let tab = FakeTabState()
+        tab.profile = params.profile
+        return tab
+      }
+    )
+    disabledManager.isTabGroupsEnabled = false
+    _ = disabledManager.restoreAllTabs
+
+    XCTAssertTrue(disabledManager.tabGroups.isEmpty)
+    XCTAssertEqual(disabledManager.allTabs.count, 3)
+    XCTAssertEqual(SessionTabGroup.all(windowId: testWindowId).count, 1)
+  }
+
+  func testClosingLastTabDeletesPersistedGroup() {
+    DataController.shared = InMemoryDataController()
+    DataController.shared.initializeOnce()
+
+    let windowCreated = expectation(forNotification: .NSManagedObjectContextDidSave, object: nil)
+    SessionWindow.createWindow(isSelected: true, uuid: testWindowId)
+    wait(for: [windowCreated], timeout: 5)
+
+    let tab = manager.addTestTab(isPrivate: false)
+    manager.addTestTab(isPrivate: false)
+    manager.createTabGroup(title: "Group", adding: [tab])
+    let isCreated = XCTNSPredicateExpectation(
+      predicate: NSPredicate { _, _ in
+        SessionTabGroup.all(windowId: self.testWindowId).count == 1
+      },
+      object: nil
+    )
+    wait(for: [isCreated], timeout: 5)
+
+    manager.removeTab(tab)
+
+    let isDeleted = XCTNSPredicateExpectation(
+      predicate: NSPredicate { _, _ in
+        SessionTabGroup.all(windowId: self.testWindowId).isEmpty
+      },
+      object: nil
+    )
+    wait(for: [isDeleted], timeout: 5)
+  }
+
+  func testRenameTabGroup() {
+    let tab = manager.addTestTab(isPrivate: false)
+    let group = manager.createTabGroup(title: "Group", adding: [tab])!
+
+    manager.renameTabGroup(group, to: "  Renamed ")
+    XCTAssertEqual(manager.tabGroups.map(\.title), ["Renamed"])
+    // A stale copy is still the same group
+    XCTAssertTrue(manager.tabGroups.contains(group))
+
+    // An empty name keeps the current one
+    manager.renameTabGroup(group, to: "   ")
+    XCTAssertEqual(manager.tabGroups.map(\.title), ["Renamed"])
+  }
+
+  func testAddTabToGroupCreatesAndSelectsTabInGroup() {
+    let firstTab = manager.addTestTab(isPrivate: false)
+    let secondTab = manager.addTestTab(isPrivate: false)
+    let thirdTab = manager.addTestTab(isPrivate: false)
+    let group = manager.createTabGroup(title: "Group", adding: [firstTab, secondTab])!
+
+    let newTab = manager.addTabAndSelect(in: group)
+
+    XCTAssertNotNil(newTab)
+    XCTAssertEqual(manager.tabs(in: group).map(\.id), [firstTab.id, secondTab.id, newTab!.id])
+    XCTAssertEqual(manager.tabGroup(for: newTab!), group)
+    XCTAssertEqual(manager.selectedTab?.id, newTab?.id)
+    // The new tab goes right after the last tab of the group
+    XCTAssertEqual(
+      manager.allTabs.map(\.id),
+      [firstTab.id, secondTab.id, newTab!.id, thirdTab.id]
+    )
+  }
+
+  func testCannotAddTabToUnknownGroup() {
+    XCTAssertNil(manager.addTabAndSelect(in: TabGroup(id: UUID(), title: "Unknown")))
   }
 }
