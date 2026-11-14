@@ -50,7 +50,7 @@ extension TabGridHostingController: BasicAnimationControllerDelegate {
     view.setNeedsLayout()
     view.layoutIfNeeded()
 
-    guard let destinationIndexPath = containerView.dataSource.indexPath(for: selectedTab.id),
+    guard let destinationIndexPath = containerView.indexPath(for: selectedTab),
       let destinationCell = containerView.collectionView.cellForItem(at: destinationIndexPath),
       destinationCell.bounds.width != 0, destinationCell.bounds.height != 0,
       let destinationCellSnapshot = destinationCell.snapshotView(afterScreenUpdates: true)
@@ -152,7 +152,7 @@ extension TabGridHostingController: BasicAnimationControllerDelegate {
     toView.layoutIfNeeded()
 
     guard let selectedTab = tabManager.selectedTab,
-      let sourceIndexPath = containerView.dataSource.indexPath(for: selectedTab.id),
+      let sourceIndexPath = containerView.indexPath(for: selectedTab),
       let sourceAttributes = containerView.collectionView.layoutAttributesForItem(
         at: sourceIndexPath
       ),

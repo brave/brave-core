@@ -4,10 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveStrings
 import Combine
 import Data
 import LocalAuthentication
 import Preferences
+import Shared
 import SwiftUI
 import Web
 
@@ -16,6 +18,11 @@ import Web
 class TabGridViewModel {
   private var _isPrivateBrowsing: Bool = false
   private(set) var tabs: [any TabState] = []
+  private(set) var items: [TabGridItem] = []
+  private(set) var openGroup: TabGroup?
+  private(set) var openGroupTitle = ""
+  private(set) var openGroupItems: [TabGridItem] = []
+  private var isNamingOpenGroup = false
   private(set) var isPrivateTabsLocked: Bool = false
   var onModeSwitchComplete: (() -> Void)?
   private(set) var isSceneActive: Bool = true
@@ -35,6 +42,10 @@ class TabGridViewModel {
 
   var isSearching: Bool = false {
     didSet {
+      if isSearching {
+        // Search results are flat, so there is no group to show
+        closeOpenGroup()
+      }
       if !isSearching {
         searchQuery = ""
         updateTabs()
@@ -86,6 +97,7 @@ class TabGridViewModel {
     self.windowProtection = windowProtection
     self.tabs = tabManager.tabsForCurrentMode
     self._isPrivateBrowsing = tabManager.privateBrowsingManager.isPrivateBrowsing
+    self.items = TabGridItem.items(for: tabs, using: tabManager)
 
     setUpObservations()
   }
@@ -195,9 +207,124 @@ class TabGridViewModel {
     }
   }
 
-  func moveTabs(_ tabs: [TabState.ID], to index: Int) {
-    tabManager.moveTabs(tabs, toIndex: index)
+  /// Moves tabs to where the item at `itemIndex` is. Dropping on a group moves the tabs before the group's first tab.
+  func moveTabs(_ tabs: [TabState.ID], toItemIndex itemIndex: Int) {
+    let tabIndex: Int
+    if let item = items[safe: itemIndex], let firstTab = item.tabs.first {
+      tabIndex = self.tabs.firstIndex(where: { $0 === firstTab }) ?? self.tabs.count
+    } else {
+      tabIndex = self.tabs.count
+    }
+    tabManager.moveTabs(tabs, toIndex: tabIndex)
     updateTabs()
+  }
+
+  // MARK: - Tab Groups
+
+  /// Whether tabs can be added to groups in the current browsing mode
+  var canGroupTabs: Bool {
+    tabManager.canGroupTabsForCurrentMode
+  }
+
+  var tabGroups: [TabGroup] {
+    tabManager.tabGroups
+  }
+
+  func addTabs(_ tabIDs: Set<TabState.ID>, to group: TabGroup) {
+    withAnimation {
+      tabManager.addTabs(currentModeTabs(with: tabIDs), to: group)
+    }
+  }
+
+  /// Creates a group with a default name out of the tabs and opens it, ready for the user to give it a name
+  func createGroup(adding tabIDs: Set<TabState.ID>) {
+    withAnimation {
+      guard
+        let group = tabManager.createTabGroup(
+          title: defaultGroupTitle,
+          adding: currentModeTabs(with: tabIDs)
+        )
+      else { return }
+      isNamingOpenGroup = true
+      showGroup(group)
+    }
+  }
+
+  /// Whether the open group was just created and should be named. Reading this resets it.
+  func consumeNamingRequest() -> Bool {
+    defer { isNamingOpenGroup = false }
+    return isNamingOpenGroup
+  }
+
+  func ungroup(_ group: TabGroup) {
+    withAnimation {
+      tabManager.ungroupTabs(in: group)
+    }
+  }
+
+  func renameGroup(_ group: TabGroup, to title: String) {
+    tabManager.renameTabGroup(group, to: title)
+  }
+
+  /// Adds a new tab to the end of the group and selects it
+  func addTab(in group: TabGroup) {
+    withAnimation {
+      _ = tabManager.addTabAndSelect(in: group)
+    }
+  }
+
+  /// Whether closing the group's tabs leaves no tab in the current browsing mode. This is
+  /// independent of any search, which only filters what is shown.
+  func closesAllTabs(in group: TabGroup) -> Bool {
+    tabManager.tabs(in: group).count == tabManager.tabsForCurrentMode.count
+  }
+
+  /// Closes every tab in the group, which removes the group
+  func closeTabs(in group: TabGroup) {
+    closeTabs(Set(tabManager.tabs(in: group).map(\.id)))
+  }
+
+  func showGroup(_ group: TabGroup) {
+    openGroup = group
+    updateOpenGroupItems()
+  }
+
+  func closeOpenGroup() {
+    isNamingOpenGroup = false
+    openGroup = nil
+    openGroupTitle = ""
+    openGroupItems = []
+  }
+
+  private func updateOpenGroupItems() {
+    guard let group = openGroup else { return }
+    guard let currentGroup = tabManager.tabGroups.first(where: { $0 == group }) else {
+      // The group is gone, e.g. its last tab was closed or it was ungrouped
+      closeOpenGroup()
+      return
+    }
+    // Pick up a new title
+    openGroup = currentGroup
+    openGroupTitle = currentGroup.title
+    openGroupItems = tabManager.tabs(in: currentGroup).map { TabGridItem.tab($0) }
+  }
+
+  /// The name given to a new group when the user doesn't provide one
+  var defaultGroupTitle: String {
+    let existingTitles = Set(tabManager.tabGroups.map(\.title))
+    var number = tabManager.tabGroups.count + 1
+    var title = String.localizedStringWithFormat(Strings.TabGrid.defaultGroupTitleFormat, number)
+    // Closing groups leaves gaps, so the next number may already be taken
+    while existingTitles.contains(title) {
+      number += 1
+      title = String.localizedStringWithFormat(Strings.TabGrid.defaultGroupTitleFormat, number)
+    }
+    return title
+  }
+
+  /// The given tabs in tab order
+  private func currentModeTabs(with tabIDs: Set<TabState.ID>) -> [any TabState] {
+    tabManager.tabsForCurrentMode.filter { tabIDs.contains($0.id) }
   }
 
   func presentPrivateModeUnlock() {
@@ -233,6 +360,11 @@ class TabGridViewModel {
   private func updateTabs() {
     let query = isSearching && !searchQuery.isEmpty ? searchQuery : nil
     tabs = tabManager.tabsForCurrentMode(for: query)
+    // Search results are shown flat so that matches inside a group remain visible
+    items =
+      query != nil
+      ? tabs.map { TabGridItem.tab($0) } : TabGridItem.items(for: tabs, using: tabManager)
+    updateOpenGroupItems()
   }
 
   private func handleAuthenticationResult(success: Bool, error: LAError.Code?) {
@@ -255,6 +387,8 @@ class TabGridViewModel {
   }
 
   private func browsingModeWillSwitch(to newValue: Bool) {
+    // Groups only exist in regular browsing
+    closeOpenGroup()
     // Record the selected index before mode navigation
     if !newValue {
       tabManager.privateTabSelectedIndex =
@@ -275,6 +409,7 @@ class TabGridViewModel {
     tabManager.privateBrowsingManager.isPrivateBrowsing = isPrivateBrowsing
     if isPrivateTabsLocked {
       tabs = []
+      items = []
       return
     }
 
@@ -404,6 +539,10 @@ class TabGridViewModel {
     }
 
     func tabManagerDidRestoreTabs(_ tabManager: TabManager) {
+      notify()
+    }
+
+    func tabManagerDidChangeTabGroups(_ tabManager: TabManager) {
       notify()
     }
   }

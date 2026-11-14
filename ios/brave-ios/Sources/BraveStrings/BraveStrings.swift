@@ -1001,6 +1001,70 @@ extension Strings {
       value: "Close Tabs",
       comment: "Label for a close button that when tapped closes the associated tabs"
     )
+    public static let addTabToGroupMenuTitle = NSLocalizedString(
+      "tabGrid.addTabToGroupMenuTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Add Tab to Group",
+      comment: "A menu item title that opens a submenu of tab groups the selected tab can be added to"
+    )
+    public static let createNewGroupMenuTitle = NSLocalizedString(
+      "tabGrid.createNewGroupMenuTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Create New Group",
+      comment: "A menu item title that when tapped creates a new tab group containing the selected tab"
+    )
+    public static let groupNamePlaceholder = NSLocalizedString(
+      "tabGrid.groupNamePlaceholder",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Enter group name",
+      comment: "The placeholder of the text field used to name a new tab group"
+    )
+    public static let defaultGroupTitleFormat = NSLocalizedString(
+      "tabGrid.defaultGroupTitleFormat",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Group %lld",
+      comment: "The name given to a new tab group when the user doesn't provide one e.g. 'Group 2'"
+    )
+    public static let ungroupMenuTitle = NSLocalizedString(
+      "tabGrid.ungroupMenuTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Ungroup",
+      comment: "A menu item title that when tapped dissolves a tab group, keeping its tabs open"
+    )
+    public static let closeGroupTabsMenuTitle = NSLocalizedString(
+      "tabGrid.closeGroupTabsMenuTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Close All Tabs",
+      comment: "A menu item title that when tapped closes every tab in a tab group"
+    )
+    public static let editGroupNameMenuTitle = NSLocalizedString(
+      "tabGrid.editGroupNameMenuTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Edit Group Name",
+      comment:
+        "A menu item title that when tapped lets the user edit the name of a tab group"
+    )
+    public static let groupOptionsAccessibilityLabel = NSLocalizedString(
+      "tabGrid.groupOptionsAccessibilityLabel",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Group Options",
+      comment: "Accessibility label for a button that opens a menu of actions for a tab group"
+    )
+    public static let backToTabsAccessibilityLabel = NSLocalizedString(
+      "tabGrid.backToTabsAccessibilityLabel",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Back to Tabs",
+      comment: "Accessibility label for a button in a tab group that returns to the full list of tabs"
+    )
     public static let shredTabsAccessibilityLabel = NSLocalizedString(
       "tabGrid.shredTabsAccessibilityLabel",
       tableName: "BraveShared",
