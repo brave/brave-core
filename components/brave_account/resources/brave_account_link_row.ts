@@ -27,6 +27,8 @@ import { Router } from './router.js'
 function getRoute(page: SettingsPage) {
   switch (page) {
     case SettingsPage.kBraveAccount:
+      return routes.BRAVE_ACCOUNT
+    case SettingsPage.kGetStarted:
       return routes.GET_STARTED
   }
 }

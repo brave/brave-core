@@ -25,6 +25,9 @@
   <message name="IDS_SETTINGS_BRAVE_GET_STARTED_TITLE" desc="The title for the Get Started section in settings">
     Get started
   </message>
+  <message name="IDS_SETTINGS_BRAVE_CUSTOMIZE_BRAVE_TITLE" desc="The title for the settings Get started page section that holds the general browser customization settings">
+    Customize Brave
+  </message>
 
   <!-- Settings / Get started / Profile name and icon -->
   <message name="IDS_SETTINGS_BRAVE_EDIT_PROFILE" desc="Title to edit the profile user name and picture">

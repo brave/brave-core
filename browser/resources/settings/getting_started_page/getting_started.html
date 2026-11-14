@@ -1,18 +1,23 @@
 <style include="settings-shared md-select">
 </style>
 
-<template is="dom-if" if="[[accountState_.loggedIn]]">
-  <settings-section page-title="[[getBraveAccountDetailsTitle_()]]">
-    <brave-account-row></brave-account-row>
+<template is="dom-if" if="[[accountState_]]">
+  <settings-section page-title="[[getBraveAccountSectionTitle_()]]">
+    <template is="dom-if" if="[[isLoggedOutWithoutVerification_]]">
+      <brave-account-logged-out-row
+          browser-proxy="[[accountBrowserProxy_]]"
+          state="[[accountState_.loggedOut]]">
+      </brave-account-logged-out-row>
+    </template>
+    <template is="dom-if" if="[[!isLoggedOutWithoutVerification_]]">
+      <brave-account-compact-row></brave-account-compact-row>
+    </template>
   </settings-section>
 </template>
 
 <settings-section
   id="getStarted"
-  page-title="$i18n{braveGetStartedTitle}">
-  <template is="dom-if" if="[[accountState_.loggedOut]]">
-    <brave-account-row></brave-account-row>
-  </template>
+  page-title="$i18n{braveCustomizeBraveTitle}">
   <settings-people-page
     page-visibility="[[pageVisibility]]">
   </settings-people-page>

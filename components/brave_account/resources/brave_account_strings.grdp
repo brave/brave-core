@@ -72,8 +72,8 @@
     </message>
   </if>
   <if expr="not is_android and not is_ios">
-    <message name="IDS_SETTINGS_BRAVE_ACCOUNT_DETAILS_SECTION_TITLE" desc="Title of the brave://settings section showing the details of the logged-in Brave Account" formatter_data="webui=BraveAccountSettings">
-      Brave account details
+    <message name="IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_SECTION_TITLE" desc="Title of the brave://settings Get started section that holds the Brave Account row" formatter_data="webui=BraveAccountSettings">
+      Get started - Account
     </message>
   </if>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_EMAIL_ADDRESS_LABEL" desc="Label for the row showing the email address of the logged-in Brave Account" formatter_data="webui=BraveAccountSettings">

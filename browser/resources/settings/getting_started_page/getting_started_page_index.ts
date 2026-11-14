@@ -4,11 +4,13 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import 'chrome://resources/cr_elements/cr_view_manager/cr_view_manager.js';
+import './brave_account_page.js';
 import './getting_started.js';
 import '../people_page/manage_profile.js';
 import '../settings_shared.css.js';
 
 import type { CrViewManagerElement } from 'chrome://resources/cr_elements/cr_view_manager/cr_view_manager.js';
+import { loadTimeData } from 'chrome://resources/js/load_time_data.js';
 import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
 import { routes } from '../route.js';
@@ -39,6 +41,17 @@ export class SettingsGettingStartedPageIndexElement extends
     return getTemplate();
   }
 
+  static get properties() {
+    return {
+      isBraveAccountEnabled_: {
+        type: Boolean,
+        value: () => loadTimeData.getBoolean('isBraveAccountEnabled'),
+      },
+    };
+  }
+
+  declare private isBraveAccountEnabled_: boolean;
+
   private showDefaultViews_() {
     this.$.viewManager.switchViews(
       ['parent', 'newTab'], 'no-animation', 'no-animation');
@@ -58,6 +71,10 @@ export class SettingsGettingStartedPageIndexElement extends
         case routes.MANAGE_PROFILE:
           this.$.viewManager.switchView(
             'manageProfile', 'no-animation', 'no-animation');
+          break;
+        case routes.BRAVE_ACCOUNT:
+          this.$.viewManager.switchView(
+            'braveAccount', 'no-animation', 'no-animation');
           break;
         case routes.BASIC:
           // Switch back to the default view in case they are part of search
