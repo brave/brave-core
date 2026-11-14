@@ -28,6 +28,7 @@
 #include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/most_visited_sites/features.h"
 #include "brave/ios/browser/playlist/features.h"
+#include "brave/ios/browser/saved_tab_groups/features.h"
 #include "brave/ios/browser/search_engines/features.h"
 #include "brave/ios/browser/toolbar/features.h"
 #include "brave/ios/browser/ui/commerce/features.h"
@@ -416,6 +417,10 @@
 + (Feature*)kUseChromiumSearchEngines {
   return [[Feature alloc]
       initWithFeature:&brave::features::kUseChromiumSearchEngines];
+}
+
++ (Feature*)kTabGroupsEnabled {
+  return [[Feature alloc] initWithFeature:&brave::features::kTabGroupsEnabled];
 }
 
 @end
