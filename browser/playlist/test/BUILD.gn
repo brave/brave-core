@@ -75,7 +75,6 @@ source_set("unit_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [
-    "mime_util_unittest.cc",
     "mock_playlist_render_frame_observer_configurator.cc",
     "mock_playlist_render_frame_observer_configurator.h",
     "mock_playlist_service_observer.cc",

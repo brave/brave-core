@@ -61,9 +61,10 @@ TEST(ZCashV5SerializerTest, TxId_TransparentOnly) {
     tx_input.n_sequence = 4294967295;
     tx_input.utxo_value = 751000;
     tx_input.utxo_address = "t1cRrYHciuivZZ32jceb7btTpakYBaPW7yi";
-    tx_input.script_pub_key =
-        ZCashAddressToScriptPubkey("t1cRrYHciuivZZ32jceb7btTpakYBaPW7yi", false)
-            .value();
+    auto script = ZCashAddressToScriptPubkey(
+        "t1cRrYHciuivZZ32jceb7btTpakYBaPW7yi", false);
+    ASSERT_TRUE(script);
+    tx_input.script_pub_key = *script;
 
     tx.transparent_part().inputs.push_back(std::move(tx_input));
   }
@@ -72,9 +73,10 @@ TEST(ZCashV5SerializerTest, TxId_TransparentOnly) {
     ZCashTransaction::TxOutput tx_output;
     tx_output.address = "t1KrG29yWzoi7Bs2pvsgXozZYPvGG4D3sGi";
     tx_output.amount = 100000;
-    tx_output.script_pubkey =
-        ZCashAddressToScriptPubkey("t1KrG29yWzoi7Bs2pvsgXozZYPvGG4D3sGi", false)
-            .value();
+    auto script = ZCashAddressToScriptPubkey(
+        "t1KrG29yWzoi7Bs2pvsgXozZYPvGG4D3sGi", false);
+    ASSERT_TRUE(script);
+    tx_output.script_pubkey = *script;
 
     tx.transparent_part().outputs.push_back(std::move(tx_output));
   }
@@ -83,9 +85,10 @@ TEST(ZCashV5SerializerTest, TxId_TransparentOnly) {
     ZCashTransaction::TxOutput tx_output;
     tx_output.address = "t1cRrYHciuivZZ32jceb7btTpakYBaPW7yi";
     tx_output.amount = 649000;
-    tx_output.script_pubkey =
-        ZCashAddressToScriptPubkey("t1cRrYHciuivZZ32jceb7btTpakYBaPW7yi", false)
-            .value();
+    auto script = ZCashAddressToScriptPubkey(
+        "t1cRrYHciuivZZ32jceb7btTpakYBaPW7yi", false);
+    ASSERT_TRUE(script);
+    tx_output.script_pubkey = *script;
 
     tx.transparent_part().outputs.push_back(std::move(tx_output));
   }
@@ -106,7 +109,9 @@ TEST(ZCashV5SerializerTest, OrchardBundle) {
       mojom::KeyringId::kZCashMainnet, base::BindRepeating(IsAddressAllowed));
 
   auto key_id = mojom::ZCashKeyId::New(0, 0, 0);
-  auto address = keyring.GetTransparentAddress(*key_id)->address_string;
+  auto transparent_addr = keyring.GetTransparentAddress(*key_id);
+  ASSERT_TRUE(transparent_addr);
+  auto address = transparent_addr->address_string;
   ZCashTransaction tx;
   tx.init_v5_part();
   tx.set_consensus_brach_id(0xc2d6d0b4);
@@ -122,8 +127,9 @@ TEST(ZCashV5SerializerTest, OrchardBundle) {
                                    224, 171, 144, 37,  183, 59,  192, 63};
     tx_input.utxo_outpoint.index = 1;
     tx_input.utxo_value = 115000;
-    tx_input.script_pub_key =
-        ZCashAddressToScriptPubkey(address, false).value();
+    auto script = ZCashAddressToScriptPubkey(address, false);
+    ASSERT_TRUE(script);
+    tx_input.script_pub_key = *script;
 
     tx.transparent_part().inputs.push_back(std::move(tx_input));
   }
@@ -149,7 +155,9 @@ TEST(ZCashV5SerializerTest, OrchardBundle) {
       OrchardSpendsBundle(), std::move(outputs), OrchardPool::kOrchard,
       /*is_v6_transaction=*/false);
 
+  ASSERT_TRUE(orchard_bundle_manager);
   tx.v5_part().orchard.digest = orchard_bundle_manager->GetOrchardDigest();
+  ASSERT_TRUE(tx.v5_part().orchard.digest);
 
   EXPECT_EQ(
       "0x10a9b751104fc2ca413fa45efaab70bcf6eaa3bafe865402a97db549456cd1ec",
@@ -163,9 +171,11 @@ TEST(ZCashV5SerializerTest, OrchardBundle) {
       ToHex(transparent_signature_digest));
   auto transparent_signature =
       keyring.SignMessage(*key_id, transparent_signature_digest);
+  ASSERT_TRUE(transparent_signature);
+  auto pubkey = keyring.GetPubkey(*key_id);
+  ASSERT_TRUE(pubkey);
   ZCashSerializer::SerializeSignature(tx, tx.transparent_part().inputs[0],
-                                      keyring.GetPubkey(*key_id).value(),
-                                      transparent_signature.value());
+                                      *pubkey, *transparent_signature);
   EXPECT_EQ(
       "0x47304402207b4c3b9b952c74c7a339c22712369835c63304a22421499fcc3bd4dab4d8"
       "96d10220653ca88f6dce51e1c2c12208f1d8871213d388308ce157541c909014d951f535"
@@ -179,8 +189,12 @@ TEST(ZCashV5SerializerTest, OrchardBundle) {
       "0xb74780ff85431f696720b96f122a000a252ca02774c8e2c6c65656814087de20",
       ToHex(shielded_sighash));
 
+  auto authorized_bundle =
+      orchard_bundle_manager->ApplySignature(shielded_sighash);
+  ASSERT_TRUE(authorized_bundle);
   auto orchard_raw_part = tx.v5_part().orchard.raw_tx =
-      orchard_bundle_manager->ApplySignature(shielded_sighash)->GetRawTxBytes();
+      authorized_bundle->GetRawTxBytes();
+  ASSERT_TRUE(tx.v5_part().orchard.raw_tx);
 
   EXPECT_EQ(
       ToHex(tx.v5_part().orchard.raw_tx.value()),

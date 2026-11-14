@@ -26,19 +26,23 @@ TEST_F(BraveWireguardProfileCredentialsUnitTest, Parse) {
   EXPECT_EQ(test.client_id, "client_id");
   EXPECT_EQ(test.api_auth_token, "api_auth_token");
   EXPECT_TRUE(test.IsValid());
-  EXPECT_EQ(
-      *wireguard::WireguardProfileCredentials::FromString(*test.ToString()),
-      test);
+  auto serialized = test.ToString();
+  ASSERT_TRUE(serialized);
+  auto parsed = wireguard::WireguardProfileCredentials::FromString(*serialized);
+  ASSERT_TRUE(parsed);
+  EXPECT_EQ(*parsed, test);
 
-  EXPECT_EQ(*wireguard::WireguardProfileCredentials::FromServerResponse(
-                R"({
+  auto from_response =
+      wireguard::WireguardProfileCredentials::FromServerResponse(
+          R"({
     "api-auth-token":"api_auth_token",
     "client-id":"client_id",
     "mapped-ipv4-address":"mapped_ip4_address",
     "server-public-key":"server_public_key"
   })",
-                "client_private_key"),
-            test);
+          "client_private_key");
+  ASSERT_TRUE(from_response);
+  EXPECT_EQ(*from_response, test);
 
   // Broken json cases
   EXPECT_FALSE(

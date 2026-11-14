@@ -278,7 +278,7 @@ TEST_F(BraveWalletPermissionContextUnitTest, GetWebSitesWithPermission) {
     std::vector<std::string> web_sites =
         permissions::BraveWalletPermissionContext::GetWebSitesWithPermission(
             entry.permission, browser_context());
-    EXPECT_EQ(web_sites.size(), (uint32_t)1);
+    ASSERT_EQ(web_sites.size(), 1u);
 
     auto origin_wallet_address = brave_wallet::GetSubRequestOrigin(
         permissions::ContentSettingsTypeToRequestType(entry.type), origin,
@@ -319,7 +319,7 @@ TEST_F(BraveWalletPermissionContextUnitTest, ResetWebSitePermission) {
     std::vector<std::string> web_sites =
         permissions::BraveWalletPermissionContext::GetWebSitesWithPermission(
             entry.permission, browser_context());
-    EXPECT_EQ(web_sites.size(), (uint32_t)1);
+    ASSERT_EQ(web_sites.size(), 1u);
 
     // Not a valid URL test
     EXPECT_FALSE(

@@ -244,7 +244,7 @@ void ExpectGroupVisualsInWindowOutput(
     std::optional<std::string> expected_color) {
   SCOPED_TRACE(testing::Message() << location.ToString());
   const base::DictValue* w = FindWindowInOutput(root, window_id);
-  EXPECT_TRUE(w);
+  ASSERT_TRUE(w) << "window " << window_id << " not in output";
   std::string title, color;
   EXPECT_TRUE(GetGroupVisualsFromWindowOutput(*w, group_id, &title, &color));
   if (expected_title) {
@@ -394,7 +394,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
     ASSERT_FALSE(created_group_id->empty());
     auto* tab = tabs::TabHandle(a_handle).Get();
     ASSERT_TRUE(tab);
-    EXPECT_TRUE(tab->GetGroup().has_value());
+    ASSERT_TRUE(tab->GetGroup().has_value());
     EXPECT_EQ(tab->GetGroup().value().ToString(), *created_group_id);
     ExpectOutputMatchesWindowSkeleton(FROM_HERE, create_response, profile());
   }
@@ -520,6 +520,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
     // Verify the tab moved to the target window and joined the group
     ASSERT_EQ(GetSessionIdForTabId(tab_to_move),
               GetSessionIdForTabId(b_handle));
+    ASSERT_TRUE(GetGroupIdForTabId(tab_to_move).has_value());
     ASSERT_EQ(GetGroupIdForTabId(tab_to_move).value(), group_id.value());
 // Checking windows' activation state is flaky in browser tests.
 #if !BUILDFLAG(IS_MAC)

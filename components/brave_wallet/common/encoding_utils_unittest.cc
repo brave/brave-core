@@ -91,10 +91,11 @@ TEST(EncodingUtilsUnitTest, Ss58Encode) {
         base::span(addr.public_key)));
     addr.prefix = 0;
     EXPECT_EQ("15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5",
-              addr.Encode().value());
+              addr.Encode());
 
     auto decoded =
         Ss58Address::Decode("15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5");
+    ASSERT_TRUE(decoded);
     EXPECT_EQ(decoded->public_key, addr.public_key);
     EXPECT_EQ(decoded->prefix, 0u);
   }
@@ -106,10 +107,11 @@ TEST(EncodingUtilsUnitTest, Ss58Encode) {
         base::span(addr.public_key)));
     addr.prefix = 42;
     EXPECT_EQ("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY",
-              addr.Encode().value());
+              addr.Encode());
 
     auto decoded =
         Ss58Address::Decode("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY");
+    ASSERT_TRUE(decoded);
     EXPECT_EQ(decoded->public_key, addr.public_key);
     EXPECT_EQ(decoded->prefix, 42u);
   }
@@ -121,10 +123,11 @@ TEST(EncodingUtilsUnitTest, Ss58Encode) {
         base::span(addr.public_key)));
     addr.prefix = 63;
     EXPECT_EQ("7NPoMQbiA6trJKkjB35uk96MeJD4PGWkLQLH7k7hXEkZpiba",
-              addr.Encode().value());
+              addr.Encode());
 
     auto decoded =
         Ss58Address::Decode("7NPoMQbiA6trJKkjB35uk96MeJD4PGWkLQLH7k7hXEkZpiba");
+    ASSERT_TRUE(decoded);
     EXPECT_EQ(decoded->public_key, addr.public_key);
     EXPECT_EQ(decoded->prefix, 63u);
   }
@@ -137,10 +140,11 @@ TEST(EncodingUtilsUnitTest, Ss58Encode) {
         base::span(addr.public_key)));
     addr.prefix = 64u;
     EXPECT_EQ("cEaNSpz4PxFcZ7nT1VEKrKewH67rfx6MfcM6yKojyyPz7qaqp",
-              addr.Encode().value());
+              addr.Encode());
 
     auto decoded = Ss58Address::Decode(
         "cEaNSpz4PxFcZ7nT1VEKrKewH67rfx6MfcM6yKojyyPz7qaqp");
+    ASSERT_TRUE(decoded);
     EXPECT_EQ(decoded->public_key, addr.public_key);
     EXPECT_EQ(decoded->prefix, 64u);
   }
@@ -152,10 +156,11 @@ TEST(EncodingUtilsUnitTest, Ss58Encode) {
         base::span(addr.public_key)));
     addr.prefix = 200;
     EXPECT_EQ("sD4TrgAhf8c8tYheiyKQb19jvTWY5fGx3TD1nK1Ue61WHRnT4",
-              addr.Encode().value());
+              addr.Encode());
 
     auto decoded =
         Ss58Address::Decode("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY");
+    ASSERT_TRUE(decoded);
     EXPECT_EQ(decoded->public_key, addr.public_key);
     EXPECT_EQ(decoded->prefix, 42u);
   }
@@ -167,10 +172,11 @@ TEST(EncodingUtilsUnitTest, Ss58Encode) {
         base::span(addr.public_key)));
     addr.prefix = 16383;
     EXPECT_EQ("yNa8JpqfFB3q8A29rCwSgxvdU94ufJw2yKKxDgznS5m1PoFvn",
-              addr.Encode().value());
+              addr.Encode());
 
     auto decoded = Ss58Address::Decode(
         "yNa8JpqfFB3q8A29rCwSgxvdU94ufJw2yKKxDgznS5m1PoFvn");
+    ASSERT_TRUE(decoded);
     EXPECT_EQ(decoded->public_key, addr.public_key);
     EXPECT_EQ(decoded->prefix, 16383u);
   }

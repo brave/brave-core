@@ -68,8 +68,8 @@ TEST_F(SSEParserTest, MultipleEventsInOneChunk) {
   ASSERT_EQ(results_.size(), 2u);
   ASSERT_TRUE(results_[0].has_value());
   ASSERT_TRUE(results_[1].has_value());
-  EXPECT_EQ(*results_[0]->GetDict().FindInt("a"), 1);
-  EXPECT_EQ(*results_[1]->GetDict().FindInt("b"), 2);
+  EXPECT_EQ(results_[0]->GetDict().FindInt("a"), 1);
+  EXPECT_EQ(results_[1]->GetDict().FindInt("b"), 2);
 }
 
 TEST_F(SSEParserTest, LineSplitAcrossChunks) {
@@ -99,8 +99,10 @@ TEST_F(SSEParserTest, NonDataLinesAreIgnored) {
 TEST_F(SSEParserTest, MixedLineEndings) {
   Process("data: {\"a\":1}\r\ndata: {\"b\":2}\r");
   ASSERT_EQ(results_.size(), 2u);
-  EXPECT_EQ(*results_[0]->GetDict().FindInt("a"), 1);
-  EXPECT_EQ(*results_[1]->GetDict().FindInt("b"), 2);
+  ASSERT_TRUE(results_[0].has_value());
+  ASSERT_TRUE(results_[1].has_value());
+  EXPECT_EQ(results_[0]->GetDict().FindInt("a"), 1);
+  EXPECT_EQ(results_[1]->GetDict().FindInt("b"), 2);
 }
 
 }  // namespace api_request_helper

@@ -16,10 +16,11 @@ namespace brave_wallet {
 
 TEST(EthAddressUnitTest, FromPublicKey) {
   std::vector<uint8_t> public_key;
-  EXPECT_TRUE(base::HexStringToBytes(
+  ASSERT_TRUE(base::HexStringToBytes(
       "3a443d8381a6798a70c6ff9304bdc8cb0163c23211d11628fae52ef9e0dca11a001cf0"
       "66d56a8156fc201cd5df8a36ef694eecd258903fca7086c1fae7441e1d",
       &public_key));
+  ASSERT_EQ(public_key.size(), 64u);
   auto address = EthAddress::FromPublicKey(
       base::span(public_key).to_fixed_extent<64>().value());
   EXPECT_EQ(address.ToHex(), "0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
@@ -30,17 +31,21 @@ TEST(EthAddressUnitTest, FromHex) {
       EthAddress::From0xHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
   auto address2 =
       EthAddress::From0xHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
+  ASSERT_TRUE(address);
+  ASSERT_TRUE(address2);
   EXPECT_EQ(address->ToHex(), "0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
   EXPECT_EQ(address2->ToHex(), "0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
   EXPECT_EQ(address, address2);
   auto address3 =
       EthAddress::From0xHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6b");
+  ASSERT_TRUE(address3);
   EXPECT_EQ(address3->ToHex(), "0x2f015c60e0be116b1f0cd534704db9c92118fb6b");
   EXPECT_NE(address, address3);
 
   // checksum address
   auto address4 =
       EthAddress::From0xHex("0x3599689E6292b81B2d85451025146515070129Bb");
+  ASSERT_TRUE(address4);
   EXPECT_EQ(address4->ToHex(), "0x3599689e6292b81b2d85451025146515070129bb");
 
   address = EthAddress::From0xHex("0x2f015c60e0be116b1f0cd534704db9c92118fb");
@@ -89,6 +94,7 @@ TEST(EthAddressUnitTest, ToChecksumAddress) {
 
   for (auto* eip55_case : eip55_cases) {
     auto address = EthAddress::From0xHex(base::ToLowerASCII(eip55_case));
+    ASSERT_TRUE(address) << eip55_case;
     EXPECT_EQ(address->ToChecksumAddress(), eip55_case);
   }
 
@@ -157,6 +163,7 @@ TEST(EthAddressUnitTest, ToChecksumAddress) {
   for (const auto& eip1191_case : eip1191_cases) {
     auto address =
         EthAddress::From0xHex(base::ToLowerASCII(eip1191_case.address));
+    ASSERT_TRUE(address) << eip1191_case.address;
     EXPECT_EQ(address->ToChecksumAddress(eip1191_case.chain_id),
               eip1191_case.address);
   }
@@ -165,29 +172,29 @@ TEST(EthAddressUnitTest, ToChecksumAddress) {
 TEST(EthAddressUnitTest, ToEip1191ChecksumAddress) {
   std::optional<std::string> addr = EthAddress::ToEip1191ChecksumAddress(
       "0x06012c8cf97bead5deae237070f9587f8e7a266d", "0x1");
-  EXPECT_EQ(addr.value(), "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d");
+  EXPECT_EQ(addr, "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d");
 
   addr = EthAddress::ToEip1191ChecksumAddress(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1");
-  EXPECT_EQ(addr.value(), "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d");
+  EXPECT_EQ(addr, "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d");
 
   // RSK mainnet (chain id 30) uses a different checksum prefix.
   addr = EthAddress::ToEip1191ChecksumAddress(
       "0x27b1fdb04752bbc536007a920d24acb045561c26", "0x1e");
-  EXPECT_EQ(addr.value(), "0x27b1FdB04752BBc536007A920D24ACB045561c26");
+  EXPECT_EQ(addr, "0x27b1FdB04752BBc536007A920D24ACB045561c26");
 
   addr = EthAddress::ToEip1191ChecksumAddress(
       "0x52908400098527886e0f7030069857d2e4169ee7", "0x1e");
-  EXPECT_EQ(addr.value(), "0x52908400098527886E0F7030069857D2E4169ee7");
+  EXPECT_EQ(addr, "0x52908400098527886E0F7030069857D2E4169ee7");
 
   // RSK testnet (chain id 31).
   addr = EthAddress::ToEip1191ChecksumAddress(
       "0x27b1fdb04752bbc536007a920d24acb045561c26", "0x1f");
-  EXPECT_EQ(addr.value(), "0x27B1FdB04752BbC536007a920D24acB045561C26");
+  EXPECT_EQ(addr, "0x27B1FdB04752BbC536007a920D24acB045561C26");
 
   addr = EthAddress::ToEip1191ChecksumAddress(
       "0x52908400098527886e0f7030069857d2e4169ee7", "0x1f");
-  EXPECT_EQ(addr.value(), "0x52908400098527886E0F7030069857D2e4169EE7");
+  EXPECT_EQ(addr, "0x52908400098527886E0F7030069857D2e4169EE7");
 
   // Unparsable chain ids are rejected.
   addr = EthAddress::ToEip1191ChecksumAddress(
@@ -203,7 +210,7 @@ TEST(EthAddressUnitTest, ToEip1191ChecksumAddress) {
   EXPECT_FALSE(addr.has_value());
 
   addr = EthAddress::ToEip1191ChecksumAddress("", "0x1");
-  EXPECT_EQ(addr.value(), "");
+  EXPECT_EQ(addr, "");
 
   addr = EthAddress::ToEip1191ChecksumAddress("eth", "0x1");
   EXPECT_FALSE(addr.has_value());

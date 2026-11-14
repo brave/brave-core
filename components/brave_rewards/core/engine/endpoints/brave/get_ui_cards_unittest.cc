@@ -56,6 +56,7 @@ TEST_F(RewardsGetUICardsTest, ExpectedResponse) {
   })";
 
   auto result = SendRequest(std::move(response));
+  ASSERT_TRUE(result.has_value());
   ASSERT_EQ(result->size(), static_cast<size_t>(2));
 
   auto& community_card = result->at(0);

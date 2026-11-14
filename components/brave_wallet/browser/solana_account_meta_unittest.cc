@@ -94,11 +94,11 @@ TEST(SolanaAccountMetaUnitTest, FromValue) {
 TEST(SolanaAccountMetaUnitTest, ToValue) {
   SolanaAccountMeta meta(kAccount1, std::nullopt, true, false);
   base::DictValue value = meta.ToValue();
-  EXPECT_EQ(*value.FindString("pubkey"),
-            "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw");
-  EXPECT_TRUE(*value.FindBool("is_signer"));
-  EXPECT_FALSE(*value.FindBool("is_writable"));
-  EXPECT_FALSE(value.FindString("address_table_lookup_index"));
+  EXPECT_EQ(value, base::test::ParseJsonDict(R"({
+      "pubkey": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw",
+      "is_signer": true,
+      "is_writable": false
+  })"));
 
   auto meta_from_value = SolanaAccountMeta::FromValue(value);
   ASSERT_TRUE(meta_from_value);
@@ -106,8 +106,15 @@ TEST(SolanaAccountMetaUnitTest, ToValue) {
 
   meta.address_table_lookup_index = 255;
   value = meta.ToValue();
-  EXPECT_EQ(*value.FindString("address_table_lookup_index"), "255");
-  EXPECT_EQ(*SolanaAccountMeta::FromValue(value), meta);
+  EXPECT_EQ(value, base::test::ParseJsonDict(R"({
+      "pubkey": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw",
+      "is_signer": true,
+      "is_writable": false,
+      "address_table_lookup_index": "255"
+  })"));
+  meta_from_value = SolanaAccountMeta::FromValue(value);
+  ASSERT_TRUE(meta_from_value);
+  EXPECT_EQ(*meta_from_value, meta);
 }
 
 }  // namespace brave_wallet

@@ -54,8 +54,8 @@ TEST_F(BraveAutocompleteResultTest,
   EXPECT_EQ(2u, result.size());
   for (size_t i = 0; i < result.size(); ++i) {
     auto* match = result.match_at(i);
-    EXPECT_TRUE(match->has_tab_match.value_or(false));
-    EXPECT_EQ(1u, match->actions.size());
+    EXPECT_EQ(match->has_tab_match, true);
+    ASSERT_EQ(1u, match->actions.size());
     EXPECT_EQ(OmniboxActionId::TAB_SWITCH, match->actions[0]->ActionId());
     EXPECT_FALSE(match->takeover_action);
   }
@@ -76,10 +76,10 @@ TEST_F(BraveAutocompleteResultTest,
   EXPECT_EQ(2u, result.size());
   for (size_t i = 0; i < result.size(); ++i) {
     auto* match = result.match_at(i);
-    EXPECT_TRUE(match->has_tab_match.value_or(false));
-    EXPECT_EQ(1u, match->actions.size());
+    EXPECT_EQ(match->has_tab_match, true);
+    ASSERT_EQ(1u, match->actions.size());
     EXPECT_EQ(OmniboxActionId::OPEN_HERE, match->actions[0]->ActionId());
-    EXPECT_TRUE(match->takeover_action);
+    ASSERT_TRUE(match->takeover_action);
     EXPECT_EQ(OmniboxActionId::TAB_SWITCH, match->takeover_action->ActionId());
   }
 }
@@ -106,14 +106,14 @@ TEST_F(BraveAutocompleteResultTest,
     bool should_be_match = i % 2 == 0;
 
     if (should_be_match) {
-      EXPECT_TRUE(match->has_tab_match.value_or(false));
-      EXPECT_EQ(1u, match->actions.size());
+      EXPECT_EQ(match->has_tab_match, true);
+      ASSERT_EQ(1u, match->actions.size());
       EXPECT_EQ(OmniboxActionId::OPEN_HERE, match->actions[0]->ActionId());
-      EXPECT_TRUE(match->takeover_action);
+      ASSERT_TRUE(match->takeover_action);
       EXPECT_EQ(OmniboxActionId::TAB_SWITCH,
                 match->takeover_action->ActionId());
     } else {
-      EXPECT_FALSE(match->has_tab_match.value_or(false));
+      EXPECT_EQ(match->has_tab_match, false);
       EXPECT_EQ(0u, match->actions.size());
       EXPECT_FALSE(match->takeover_action);
     }

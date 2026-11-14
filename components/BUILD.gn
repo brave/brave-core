@@ -143,6 +143,9 @@ test("brave_components_unittests") {
     if (enable_ai_chat) {
       deps += [ "//brave/components/ai_chat/content/browser:unit_tests" ]
     }
+    if (enable_playlist) {
+      deps += [ "//brave/components/playlist/content/browser:unit_tests" ]
+    }
     if (enable_brave_wallet) {
       deps += [
         "//brave/components/brave_wallet/browser:unit_tests",

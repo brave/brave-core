@@ -144,6 +144,7 @@ TEST(JsonKeystoreParser, DecryptPrivateKeyFromJsonKeystore) {
 
   auto private_key2 =
       DecryptPrivateKeyFromJsonKeystore("testtest", ParseJsonDict(pbkdf2_json));
+  ASSERT_TRUE(private_key2);
   auto hd_key2 = HDKey::GenerateFromPrivateKey(
       *base::span(*private_key2).to_fixed_extent<32>());
   ASSERT_TRUE(hd_key2);

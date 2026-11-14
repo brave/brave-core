@@ -159,6 +159,7 @@ TEST(SolanaMessageUnitTest, GetSignerAccountsFromSerializedMessageLegacy) {
   ASSERT_TRUE(serialized_message);
   auto signers = SolanaMessage::GetSignerAccountsFromSerializedMessage(
       *serialized_message);
+  ASSERT_TRUE(signers.has_value());
   EXPECT_EQ(*signers, std::vector<std::string>({kFromAccount, kToAccount}));
   EXPECT_EQ(*signers, signers_from_serialize);
 

@@ -2998,6 +2998,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
 
   // Pin the split
   tabs::TabInterface* tab0 = tab_strip_model().GetTabAtIndex(0);
+  ASSERT_TRUE(tab0->GetSplit().has_value());
   SetSplitPinned(tab0->GetSplit().value(), true);
   EXPECT_TRUE(tab_strip_model().IsTabPinned(0));
   EXPECT_TRUE(tab_strip_model().IsTabPinned(1));
@@ -3007,6 +3008,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
             tabs::TabCollection::Type::PINNED);
 
   // Unpin the split
+  ASSERT_TRUE(tab0->GetSplit().has_value());
   SetSplitPinned(tab0->GetSplit().value(), false);
   EXPECT_FALSE(tab_strip_model().IsTabPinned(0));
   EXPECT_FALSE(tab_strip_model().IsTabPinned(1));
@@ -3073,6 +3075,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   // Pin two tabs and they are in split collection
   ASSERT_EQ(2, tab_strip_model().count());
   CreateSplitWithTabs(&tab_strip_model(), 0, 1);
+  ASSERT_TRUE(tab_strip_model().GetTabAtIndex(0)->GetSplit().has_value());
   SetSplitPinned(tab_strip_model().GetTabAtIndex(0)->GetSplit().value(), true);
 
   ASSERT_TRUE(tab_strip_model().IsTabPinned(0));
@@ -3116,6 +3119,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   CreateSplitWithTabs(&tab_strip_model(), 4, 5);
   VerifySplitCreated(&tab_strip_model(), &tab_strip_collection());
 
+  ASSERT_TRUE(tab_strip_model().GetTabAtIndex(4)->GetSplit().has_value());
   SetSplitPinned(tab_strip_model().GetTabAtIndex(4)->GetSplit().value(), true);
   ASSERT_EQ(pinned_collection().ChildCount(), 4u);
   ASSERT_TRUE(unpinned_collection().GetChildren().empty());
@@ -3203,6 +3207,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   // [Split(tab0, tab1), Group(tab2, tab3)]
 
   // Try to add the split to the group
+  ASSERT_TRUE(tab_strip_model().GetTabAtIndex(0)->GetSplit().has_value());
   const split_tabs::SplitTabId split_id =
       tab_strip_model().GetTabAtIndex(0)->GetSplit().value();
   ASSERT_TRUE(tab_strip_model().GetTabAtIndex(1)->GetSplit().has_value());
@@ -3231,6 +3236,7 @@ IN_PROC_BROWSER_TEST_F(
   CreateSplitWithTabs(&tab_strip_model(), 0, 1);
   VerifySplitCreated(&tab_strip_model(), &tab_strip_collection());
 
+  ASSERT_TRUE(tab_strip_model().GetTabAtIndex(0)->GetSplit().has_value());
   const split_tabs::SplitTabId split_id =
       tab_strip_model().GetTabAtIndex(0)->GetSplit().value();
   SetSplitPinned(split_id, true);
@@ -3262,6 +3268,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
 
   tabs::TabInterface* split_tab_a = tab_strip_model().GetTabAtIndex(0);
   tabs::TabInterface* split_tab_b = tab_strip_model().GetTabAtIndex(1);
+  ASSERT_TRUE(split_tab_a->GetSplit().has_value());
   const split_tabs::SplitTabId split_id = split_tab_a->GetSplit().value();
 
   // Add the split to the group
@@ -3294,6 +3301,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   CreateSplitWithTabs(&tab_strip_model(), 0, 1);
   VerifySplitCreated(&tab_strip_model(), &tab_strip_collection());
 
+  ASSERT_TRUE(tab_strip_model().GetTabAtIndex(0)->GetSplit().has_value());
   const split_tabs::SplitTabId split_id =
       tab_strip_model().GetTabAtIndex(0)->GetSplit().value();
   std::unique_ptr<DetachedTabCollection> detached =
@@ -3306,8 +3314,8 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
 
   ASSERT_EQ(3, tab_strip_model().count());
   ASSERT_TRUE(tab_strip_model().ContainsSplit(split_id));
-  EXPECT_EQ(tab_strip_model().GetTabAtIndex(0)->GetSplit().value(), split_id);
-  EXPECT_EQ(tab_strip_model().GetTabAtIndex(1)->GetSplit().value(), split_id);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(0)->GetSplit(), split_id);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(1)->GetSplit(), split_id);
 
   ExpectSplitWrappedInUnpinnedTreeNode(split_id);
 }
@@ -3329,6 +3337,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
   EXPECT_EQ(tab_strip_model().GetTabGroupForTab(2), group_id);
 
+  ASSERT_TRUE(tab_strip_model().GetTabAtIndex(0)->GetSplit().has_value());
   const split_tabs::SplitTabId split_id =
       tab_strip_model().GetTabAtIndex(0)->GetSplit().value();
   std::unique_ptr<DetachedTabCollection> detached =

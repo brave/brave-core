@@ -59,7 +59,7 @@ TEST(StorageUtilsUnitTest, GetLastUsedConfigPath) {
   base::FilePath test_config_path(L"C:\\value");
   EXPECT_TRUE(wireguard::UpdateLastUsedConfigPath(test_config_path));
   auto last_config = wireguard::GetLastUsedConfigPath();
-  EXPECT_TRUE(last_config.has_value());
+  ASSERT_TRUE(last_config.has_value());
   EXPECT_EQ(last_config.value(), test_config_path);
 }
 
@@ -89,7 +89,7 @@ TEST(StorageUtilsUnitTest, WriteConnectionState) {
   EXPECT_FALSE(GetConnectionState());
   WriteConnectionState(1);
   auto value = GetConnectionState();
-  EXPECT_TRUE(value.has_value());
+  ASSERT_TRUE(value.has_value());
   EXPECT_EQ(value.value(), 1);
 }
 

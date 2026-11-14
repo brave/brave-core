@@ -294,10 +294,10 @@ TEST(CardanoAddress, TestVectors) {
 
     std::vector<uint8_t> payload;
     base::HexStringToBytes(test_case.hex_part1 + test_case.hex_part2, &payload);
-    EXPECT_EQ(addr->ToString(),
-              CardanoAddress::FromShellyPayload(test_case.address_type,
-                                                *test_case.network_tag, payload)
-                  ->ToString());
+    auto payload_addr = CardanoAddress::FromShellyPayload(
+        test_case.address_type, *test_case.network_tag, payload);
+    ASSERT_TRUE(payload_addr);
+    EXPECT_EQ(addr->ToString(), payload_addr->ToString());
 
     EXPECT_EQ(addr->IsStakeOnlyAddress(), test_case.is_stake_only);
   }
