@@ -3,7 +3,9 @@ name: implement-backlog
 description:
   'Implement a bounded GitHub issue backlog in one PR, with one commit per
   issue, independent review, batched validation, and autosquashed fixups.'
-argument-hint: '<github-search> [limit and scope instructions]'
+argument-hint:
+  '<github-search, or the branch of an unfinished run> [limit and scope
+  instructions]'
 disable-model-invocation: true
 ---
 
@@ -68,14 +70,47 @@ routine implementation choices already authorized by the request.
    related PRs before declaring it eligible. Select deterministically (oldest
    first unless instructed otherwise), deduplicate by full issue URL, and freeze
    the selected list. Do not chase newly arriving issues during the run.
-5. Keep a compact, durable ledger in the session scratch directory. Record issue
-   URL, acceptance criteria, status/skip reason, owning commit, changed paths,
-   test target/filter, flake evidence for disables, review findings, and
-   validation results with the tested HEAD SHA. Update it after each meaningful
-   step. This is recovery state, not a large transcript to paste into every
-   prompt. Keep long logs in scratch too.
+
+   Where delegates are available, give this to read-only subagents, a few
+   candidates at a time, instead of reading the issues in the main session. Each
+   writes the issue's **brief** to `<scratch>/implement-backlog/<branch>/<N>.md`
+   (acceptance criteria, the files and tests it reaches, related PRs, and the
+   eligibility verdict with its reason) and returns the path and at most five
+   lines. The main session reads a brief only to act on it, and never holds
+   issue bodies, comments, or the diffs of related PRs.
+
+5. Keep a compact, durable ledger at `<scratch>/implement-backlog/<branch>.md`,
+   so a new session finds it from the branch name. Record issue URL, brief path,
+   acceptance criteria, status/skip reason, owning commit, changed paths, test
+   target/filter, flake evidence for disables, review findings, and validation
+   results with the tested HEAD SHA. Update it after each meaningful step. This
+   is recovery state, not a large transcript to paste into every prompt. Keep
+   long logs in scratch too. When given an unfinished run's branch name instead
+   of a search, read its ledger, continue from the first issue that is not done
+   or skipped, and read nothing else from the earlier session. This lets a
+   person clear a long context and resume.
 
 ## 2. Implement first, one issue-owned commit at a time
+
+A turn rereads its whole context, so the cost of a session grows with the square
+of its turns. Implementing 30 issues in one context makes every later issue pay
+for the diffs, logs, and file reads of the earlier ones. With more than three
+selected issues and delegates available, the main session is the orchestrator:
+it holds the ledger and short results, and edits no code itself.
+
+- Give each issue to its own implementer subagent, **one at a time**: they share
+  one working tree and one HEAD, so never run two at once. Brief it with the
+  issue's brief path, the base SHA, the ledger path, the rules in this section,
+  and `git log --oneline <base-SHA>..HEAD`. It commits the issue, appends its
+  row to the ledger, and returns the SHA and at most ten lines: what changed,
+  the test target/filter, and anything it could not finish.
+- Use a new implementer for each issue and for each fix round. Never continue
+  one, since a continued subagent carries every earlier turn.
+- Check the claim: read `git show --stat <SHA>` and the lines the report names,
+  not the whole diff.
+- With three or fewer issues, implement them in the main session.
+
+For each issue:
 
 - Read the relevant production behavior and complete affected test/fixture
   context. Diagnose the issue; do not mechanically apply an unverified remedy
@@ -167,11 +202,16 @@ repeating them, and do not cite log line numbers in a filter comment.
 ## 3. Independently review the fixes
 
 Use one independent reviewer per issue-owned commit when delegates are
-available. Give each the issue URL, owning SHA, base/current HEAD, paths, and a
-precise read-only task: compare acceptance criteria with the diff, current
-fixtures, and relevant production functions; inspect assertion strength,
-malformed-input rejection stages, async completion/lifetimes, and final-HEAD
-interactions. Reviewers must not edit, build, push, or modify GitHub.
+available. Reviewers of small commits in the same directory or test suite may
+share one reviewer, up to three commits each; each commit still gets its own
+verdict. Give each the issue's brief path, owning SHA(s), base/current HEAD,
+paths, and a precise read-only task: compare acceptance criteria with the diff
+(`git show <SHA>`), current fixtures, and relevant production functions; inspect
+assertion strength, malformed-input rejection stages, async
+completion/lifetimes, and final-HEAD interactions. Give it nothing about the
+other issues. Reviewers must not edit, build, push, or modify GitHub. Each
+writes its report to `<scratch>/implement-backlog/<branch>/` and returns the
+path and the verdict line, so the main session reads findings, not reports.
 
 - Bound concurrency to available capacity. Start a small batch and wait for its
   reports before starting more if the provider is rate-limited. Avoid starting
@@ -245,11 +285,25 @@ selected/passed/failed test counts when available, and the exact tested
 revision. Do not claim "all passed" from an exit code whose output was not
 inspected.
 
+Keep build and test output out of the conversation. Run each long command in the
+background with its output and exit status in a scratch log:
+
+```bash
+pnpm run test brave_unit_tests Component --filter='A.*' > "$LOG" 2>&1; echo "EXIT=$?" >> "$LOG"
+```
+
+Wait with one call that loops until the `EXIT=` line appears (re-issue it if the
+call times out) instead of a turn per look. Then read the exit line, extract the
+selected/passed/failed counts with `grep`, and for a failure read only the last
+60 lines of the log. Never read a whole build or test log, and never read one
+twice.
+
 ## 5. Autosquash and final gates
 
 After the batch is implemented, reviewed, and validated:
 
-1. Ensure every fixup targets the correct original commit. Autosquash onto the
+1. Ensure every fixup targets the correct original commit. Record the current
+   tip (`git rev-parse HEAD`) as the pre-rebase tip, then autosquash onto the
    recorded base (substitute its SHA):
 
    ```bash
@@ -266,13 +320,20 @@ After the batch is implemented, reviewed, and validated:
    and a clean tree. Remap the ledger to the rewritten SHAs. Verify signatures
    when signing is required; missing verifier configuration is not proof of an
    unsigned commit.
-3. Compare the final tree to the validated pre-rebase tree. If bytes changed
-   during conflict resolution, rebuild/retest affected targets. Re-run
-   `pnpm run format --base <base-SHA>` and
-   `pnpm run presubmit --base <base-SHA>` against the final full branch; re-run
-   GN/lint as applicable. If these produce corrections, create owning fixups,
-   autosquash again, and repeat the applicable gates. Do not end with
-   uncommitted formatting changes or unvalidated code.
+3. Compare the final tree to the validated pre-rebase tree with
+   `git diff <pre-rebase-tip> HEAD`.
+
+   - If it prints nothing, the tree is byte-identical, so the format, GN, lint,
+     build, and test results of section 4 still describe it. Do not repeat them.
+     Re-run only `pnpm run presubmit --base <base-SHA>` against the final full
+     branch, since it can read the commit messages the autosquash rewrote.
+   - If bytes changed during conflict resolution, rebuild/retest the affected
+     targets and re-run `pnpm run format --base <base-SHA>`,
+     `pnpm run presubmit --base <base-SHA>`, and GN/lint as applicable.
+
+   If a gate produces corrections, create owning fixups, autosquash again, and
+   repeat the gates the correction reaches. Do not end with uncommitted
+   formatting changes or unvalidated code.
 
 ## 6. Open one honest PR
 
