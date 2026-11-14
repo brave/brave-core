@@ -6,7 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_ATTRIBUTES_STORAGE_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_ATTRIBUTES_STORAGE_H_
 
+#include "base/supports_user_data.h"
 #include "brave/browser/profiles/brave_profile_avatar_downloader.h"
+
+// The upstream header befriends custom_profile_image::ProfileImage.
+namespace custom_profile_image {
+class ProfileImage;
+}  // namespace custom_profile_image
 
 #define ProfileAvatarDownloader BraveProfileAvatarDownloader
 #include <chrome/browser/profiles/profile_attributes_storage.h>  // IWYU pragma: export

@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Delete the custom profile image with its profile.
+
+      This runs once the entry is gone, so observers notified during removal
+      cannot recreate its image state. The deletion runs on the image file
+      sequence after any accepted write.
+    add_after_line:
+      line: 'profile_attributes_entries_.erase(profile_path.value());'
+      code: |2-
+          BraveRemoveCustomProfileImage(*this, profile_path);

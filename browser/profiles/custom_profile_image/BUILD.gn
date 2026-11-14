@@ -1,0 +1,69 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
+
+assert(enable_brave_custom_profile_image_webui)
+
+source_set("image_file") {
+  visibility = [
+    ":custom_profile_image",
+    ":unit_tests",
+  ]
+  sources = [
+    "image_file.cc",
+    "image_file.h",
+  ]
+  public_deps = [
+    "//base",
+    "//brave/ui/webui/custom_profile_image/buildflags",
+    "//skia",
+  ]
+  deps = [ "//ui/gfx/codec" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "image_file_unittest.cc",
+    "profile_image_unittest.cc",
+  ]
+  deps = [
+    ":custom_profile_image",
+    ":image_file",
+    "//base/test:test_support",
+    "//brave/browser/ui/webui/custom_profile_image",
+    "//chrome/test:test_support",
+    "//chrome/test/base:testing_browser_process",
+    "//components/prefs",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+  if (is_win) {
+    sources += [ "profile_image_unittest_win.cc" ]
+    deps += [
+      "//chrome/browser/profiles:misc",
+      "//chrome/browser/profiles:profile_manager",
+      "//chrome/browser/profiles:profile_util",
+      "//skia",
+    ]
+  }
+}
+
+source_set("custom_profile_image") {
+  sources = [
+    "profile_image.cc",
+    "profile_image.h",
+  ]
+  public_deps = [
+    ":image_file",
+    "//base",
+    "//ui/gfx",
+  ]
+  deps = [
+    "//brave/browser/ui/webui/custom_profile_image",
+    "//chrome/browser/profiles:profile_util",
+  ]
+}

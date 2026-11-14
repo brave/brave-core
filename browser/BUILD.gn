@@ -115,7 +115,10 @@ source_set("core") {
     deps += [ "//chrome/browser/ui/webui/side_panel/bookmarks:mojo_bindings" ]
   }
   if (enable_brave_custom_profile_image_webui) {
-    deps += [ "//brave/browser/ui/webui/custom_profile_image" ]
+    deps += [
+      "//brave/browser/profiles/custom_profile_image",
+      "//brave/browser/ui/webui/custom_profile_image",
+    ]
   }
   public_deps = [
     ":tab_helpers_header",

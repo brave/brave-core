@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/profiles/profile_attributes_storage.h b/chrome/browser/profiles/profile_attributes_storage.h
+index d685de8514ad6ece5fdeb59588be0433d5febd88..43e1e9112651a7099f6945f7a2460630973ac132 100644
+--- a/chrome/browser/profiles/profile_attributes_storage.h
++++ b/chrome/browser/profiles/profile_attributes_storage.h
+@@ -220,7 +220,11 @@ class ProfileAttributesStorage {
+     return weak_ptr_factory_.GetWeakPtr();
+   }
+ 
++ protected:
++  std::unique_ptr<base::SupportsUserData::Data> custom_profile_images_;
++
+  private:
++  friend class custom_profile_image::ProfileImage;
+   FRIEND_TEST_ALL_PREFIXES(ProfileAttributesStorageTest,
+                            DownloadHighResAvatarTest);
+   FRIEND_TEST_ALL_PREFIXES(ProfileAttributesStorageTest,

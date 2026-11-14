@@ -10,12 +10,21 @@ assert(enable_brave_custom_profile_image_webui)
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
-  sources = [ "profile_customization_file_chooser_browsertest.cc" ]
+  sources = [
+    "custom_profile_image_browsertest.cc",
+    "profile_customization_file_chooser_browsertest.cc",
+  ]
   deps = [
     "//base",
     "//base/test:test_support",
+    "//brave/browser/profiles/custom_profile_image",
     "//brave/browser/ui/webui/custom_profile_image",
+    "//chrome/browser/profiles:profile_util",
+    "//chrome/browser/profiles/keep_alive",
     "//chrome/browser/ui/signin",
+    "//chrome/browser/ui/views/frame:browser_view_header",
+    "//chrome/browser/ui/views/frame:toolbar_button_provider",
+    "//chrome/browser/ui/views/profiles:avatar_toolbar_button",
     "//chrome/browser/ui/webui/signin:signin_utils",
     "//chrome/common",
     "//chrome/test:test_support",
@@ -24,7 +33,9 @@ source_set("browser_tests") {
     "//content/test:test_support",
     "//testing/gtest",
     "//ui/events",
+    "//ui/gfx",
     "//ui/shell_dialogs",
     "//ui/shell_dialogs:test_support",
+    "//ui/views",
   ]
 }
