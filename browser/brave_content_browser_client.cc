@@ -1627,13 +1627,11 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   // inserting the navigation throttle at the fist position before any java
   // navigation happens
-  if (brave_rewards::RewardsServiceFactory::GetForProfile(
-          Profile::FromBrowserContext(registry.GetNavigationHandle()
-                                          .GetWebContents()
-                                          ->GetBrowserContext()))) {
-    brave_rewards::RewardsProtocolNavigationThrottle::MaybeCreateAndAdd(
-        registry);
-  }
+  brave_rewards::RewardsProtocolNavigationThrottle::MaybeCreateAndAdd(
+      registry, brave_rewards::RewardsServiceFactory::GetForProfile(
+                    Profile::FromBrowserContext(registry.GetNavigationHandle()
+                                                    .GetWebContents()
+                                                    ->GetBrowserContext())));
 #endif
 
   ChromeContentBrowserClient::CreateThrottlesForNavigation(registry);
