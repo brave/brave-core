@@ -28,6 +28,7 @@
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/public/mojom/fetch_api.mojom-shared.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
@@ -318,7 +319,7 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPISuccess) {
   EXPECT_FALSE(invalidation_token.empty());
 
   // Verify that the correct requests were made
-  EXPECT_EQ(requests_made.size(), 2u);
+  ASSERT_EQ(requests_made.size(), 2u);
 
   // Check InnerTube API request
   EXPECT_EQ(requests_made[0].url, inner_tube_url);
@@ -346,6 +347,62 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPISuccess) {
   // Check transcript request
   EXPECT_EQ(requests_made[1].url, transcript_url);
   EXPECT_EQ(requests_made[1].method, "GET");
+  EXPECT_EQ(requests_made[1].redirect_mode,
+            network::mojom::RedirectMode::kError);
+}
+
+TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPIRejectsInvalidCaptionUrls) {
+  const std::string api_key = "test_api_key_123";
+  const std::string video_id = "test_video_456";
+  const GURL player_url("https://www.youtube.com/youtubei/v1/player?key=" +
+                        api_key);
+  NavigateAndCommit(GURL("https://www.youtube.com/watch?v=" + video_id));
+
+  std::vector<GURL> requested_urls;
+  test_url_loader_factory_->SetInterceptor(
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        requested_urls.push_back(request.url);
+      }));
+
+  for (const char* caption_url : {
+           "http://www.youtube.com/api/timedtext?v=test_video_456",
+           "https://www.youtube.com.example.test/api/"
+           "timedtext?v=test_video_456",
+           "https://m.youtube.com/api/timedtext?v=test_video_456",
+           "https://www.youtube.com:8443/api/timedtext?v=test_video_456",
+           "https://user@www.youtube.com/api/timedtext?v=test_video_456",
+           "https://www.youtube.com/api/other?v=test_video_456",
+           "https://www.youtube.com/api/timedtext?lang=en",
+           "https://www.youtube.com/api/timedtext?v=other_video",
+           "https://www.youtube.com/api/timedtext?v=test_video_456&v=other",
+           "https://www.youtube.com/api/timedtext?v=test_video_456&%76=other",
+       }) {
+    SCOPED_TRACE(caption_url);
+    auto* mock_extractor = SetUpMockExtractor();
+    auto youtube_content = CreateYoutubePageContent(api_key, video_id);
+    EXPECT_CALL(*mock_extractor, ExtractPageContent(_))
+        .WillOnce([&youtube_content](
+                      mojom::PageContentExtractor::ExtractPageContentCallback
+                          callback) {
+          std::move(callback).Run(youtube_content.Clone());
+        });
+
+    requested_urls.clear();
+    SimulateNetworkResponse(player_url, net::HTTP_OK,
+                            CreateInnerTubeResponse(caption_url));
+    SimulateNetworkResponse(
+        GURL(caption_url), net::HTTP_OK,
+        CreateTranscriptXmlResponse("Unexpected transcript"));
+
+    base::test::TestFuture<std::string, bool, std::string> future;
+    fetcher_->FetchPageContent("", future.GetCallback());
+
+    const auto& [content, is_video, invalidation_token] = future.Get();
+    EXPECT_TRUE(content.empty());
+    EXPECT_TRUE(is_video);
+    EXPECT_EQ(invalidation_token, player_url.spec());
+    EXPECT_THAT(requested_urls, testing::ElementsAre(player_url));
+  }
 }
 
 // Test YouTube InnerTube API request with network error
