@@ -612,6 +612,11 @@ if (enable_speedreader) {
     "//brave/browser/speedreader",
     "//brave/browser/ui/speedreader",
   ]
+
+  if (toolkit_views) {
+    brave_chrome_browser_deps +=
+        [ "//brave/browser/ui/views/speedreader:toolbars_impl" ]
+  }
 }
 
 if (enable_request_otr) {

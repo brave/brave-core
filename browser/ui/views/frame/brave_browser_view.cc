@@ -117,6 +117,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/browser/ui/speedreader/reader_mode_toolbars.h"
 #include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/views/speedreader/reader_mode_bubble.h"
 #include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
@@ -532,28 +533,6 @@ speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
   return reader_mode_bubble;
 }
 
-void BraveBrowserView::UpdateReaderModeToolbar() {
-  auto is_distilled = [](content::WebContents* web_contents) {
-    if (!web_contents) {
-      return false;
-    }
-    if (auto* th = speedreader::SpeedreaderTabHelper::From(
-            tabs::TabInterface::MaybeGetFromContents(web_contents))) {
-      return speedreader::IsDistilled(th->PageDistillState());
-    }
-    return false;
-  };
-  reader_mode_toolbar()->SetVisible(
-      is_distilled(browser()->tab_strip_model()->GetActiveWebContents()));
-
-  // Need to update inactive split tabs' reader mode toolbar because
-  // it's also visible.
-  auto* contents_container = BraveContentsContainerView::From(
-      GetBraveMultiContentsView()->GetInactiveContentsContainerView());
-  auto* reader_mode_toolbar = contents_container->reader_mode_toolbar();
-  reader_mode_toolbar->SetVisible(
-      is_distilled(contents_container->contents_view()->web_contents()));
-}
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
 gfx::Rect BraveBrowserView::GetBoundingBoxInScreenForMouseOverHandling() const {
@@ -1032,7 +1011,7 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
   UpdateRoundedCornersUI();
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  UpdateReaderModeToolbar();
+  speedreader::UpdateReaderModeToolbars(*browser());
 #endif
 
   // Some managers need to consider tab's active state with web content's

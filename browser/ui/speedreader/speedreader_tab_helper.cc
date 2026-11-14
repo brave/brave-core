@@ -24,6 +24,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/speedreader/page_distiller.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
+#include "brave/browser/ui/speedreader/reader_mode_toolbars.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/speedreader_extended_info_handler.h"
@@ -357,9 +358,9 @@ void SpeedreaderTabHelper::UpdateUI() {
     return;
   }
 #if !BUILDFLAG(IS_ANDROID)
-  if (auto* browser_window = BraveBrowserWindow::From(
-          BrowserWindow::FindBrowserWindowWithWebContents(web_contents()))) {
-    browser_window->UpdateReaderModeToolbar();
+  // A tab being moved between windows belongs to none.
+  if (auto* browser = tab().GetBrowserWindowInterface()) {
+    UpdateReaderModeToolbars(*browser);
   }
 #endif
 }
