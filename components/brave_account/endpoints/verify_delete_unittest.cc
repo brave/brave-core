@@ -5,10 +5,7 @@
 
 #include "brave/components/brave_account/endpoints/verify_delete.h"
 
-#include <optional>
-
 #include "base/no_destructor.h"
-#include "base/types/expected.h"
 #include "brave/components/brave_account/endpoints/endpoint_test.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"
@@ -26,8 +23,7 @@ const VerifyDeleteTestCase* Success() {
        .http_status_code = net::HTTP_NO_CONTENT,
        .raw_response_body = "",
        .expected_response = {.net_error = net::OK,
-                             .status_code = net::HTTP_NO_CONTENT,
-                             .body = std::nullopt}});
+                             .status_code = net::HTTP_NO_CONTENT}});
   return kSuccess.get();
 }
 
@@ -51,10 +47,8 @@ const VerifyDeleteTestCase* ApplicationJsonErrorCodeIsNull() {
                R"({ "code": null,
                     "error": "Bad Request",
                     "status": 400 })",
-           .expected_response = {
-               .net_error = net::OK,
-               .status_code = net::HTTP_BAD_REQUEST,
-               .body = base::unexpected(VerifyDelete::Response::ErrorBody())}});
+           .expected_response = {.net_error = net::OK,
+                                 .status_code = net::HTTP_BAD_REQUEST}});
   return kApplicationJsonErrorCodeIsNull.get();
 }
 
@@ -67,10 +61,8 @@ const VerifyDeleteTestCase* ApplicationJsonErrorCodeIsNotNull() {
                R"({ "code": 13003,
                     "error": "intent not allowed",
                     "status": 400 })",
-           .expected_response = {
-               .net_error = net::OK,
-               .status_code = net::HTTP_BAD_REQUEST,
-               .body = base::unexpected(VerifyDelete::Response::ErrorBody())}});
+           .expected_response = {.net_error = net::OK,
+                                 .status_code = net::HTTP_BAD_REQUEST}});
   return kApplicationJsonErrorCodeIsNotNull.get();
 }
 
@@ -83,9 +75,9 @@ const VerifyDeleteTestCase* NonApplicationJsonError() {
           {.test_name = "non_application_json_error",
            .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
            .raw_response_body = "non-application/json error",
-           .expected_response = {.net_error = net::OK,
-                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                                 .body = std::nullopt}});
+           .expected_response = {
+               .net_error = net::OK,
+               .status_code = net::HTTP_INTERNAL_SERVER_ERROR}});
   return kNonApplicationJsonError.get();
 }
 

@@ -31,8 +31,8 @@ interface and enforces correctness guarantees through C++ `concept`s and
 
 Request and response bodies are either JSON or Protobuf, and each one chooses
 its format independently: an endpoint can, for example, send JSON and receive
-Protobuf, or receive Protobuf on success and JSON on error. A request can also
-have no body.
+Protobuf, or receive Protobuf on success and JSON on error. A request or a
+response can also have no body.
 
 - JSON request bodies implement `ToValue()`, and JSON response bodies implement
   `FromValue()`. The JSON schema/IDL compiler generates such types; hand-written
@@ -162,6 +162,10 @@ struct MyBodylessEndpoint {
   }
 };
 ```
+
+Likewise, `Response<>` takes either a success and an error body type, or none.
+`Response<>` is for endpoints whose response body you don't need: it has only
+`net_error` and `status_code`, and any body the server sends is ignored.
 
 ---
 
@@ -358,8 +362,9 @@ Like `MockResponseFor<>()`, `MatchesEndpoint<>()` takes the request's
 
 Use the `ResponseEq()` gmock matcher to compare a received response against an
 expected one, without defining `operator==()` for your body types. It compares
-`net_error`, `status_code`, and the `body` field by field (and the `headers`,
-for `WithHeaders<>` responses), and reports which one differs on failure.
+`net_error`, `status_code`, and the `body` (if any) field by field (and the
+`headers`, for `WithHeaders<>` responses), and reports which one differs on
+failure.
 
 ```cpp
 base::test::TestFuture<LoginInit::Response> future;

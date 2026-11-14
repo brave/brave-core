@@ -128,6 +128,11 @@ using ProtobufRequestJSONResponseEndpoint =
 using ProtobufSuccessJSONErrorEndpoint =
     TestEndpoint<Post<>, Response<ProtobufSuccessBody, JSONErrorBody>>;
 
+// Request: POST https://example.com/api/query (no body)
+// Success: not parsed
+// Error:   not parsed
+using BodylessRequestAndResponseEndpoint = TestEndpoint<Post<>, Response<>>;
+
 template <typename Response>
   requires internal::IsResponse<internal::MaybeStripWithHeaders<Response>>
 struct TestCase {
@@ -1133,6 +1138,47 @@ TEST(ClientTestResponseHeaders, NotSetWithoutStatusCode) {
   WithHeaders<JSONNonEmptyRequestBodyEndpoint::Response> expected_response;
   expected_response.net_error = net::ERR_INSUFFICIENT_RESOURCES;
   EXPECT_THAT(future.Take(), ResponseEq(expected_response));
+}
+
+TEST(ClientTestBodylessResponse, IgnoresResponseBody) {
+  base::test::TaskEnvironment task_environment;
+  network::TestURLLoaderFactory test_url_loader_factory;
+
+  test_url_loader_factory.AddResponse(
+      BodylessRequestAndResponseEndpoint::URL().spec(),
+      "<html>Internal Server Error</html>", net::HTTP_INTERNAL_SERVER_ERROR);
+
+  base::test::TestFuture<BodylessRequestAndResponseEndpoint::Response> future;
+  Client<BodylessRequestAndResponseEndpoint>::Send(
+      test_url_loader_factory, BodylessRequestAndResponseEndpoint::Request(),
+      future.GetCallback());
+
+  EXPECT_THAT(future.Take(),
+              ResponseEq(BodylessRequestAndResponseEndpoint::Response{
+                  .net_error = net::OK,
+                  .status_code = net::HTTP_INTERNAL_SERVER_ERROR}));
+}
+
+TEST(ClientTestBodylessResponse, ProvidesResponseHeaders) {
+  base::test::TaskEnvironment task_environment;
+  network::TestURLLoaderFactory test_url_loader_factory;
+
+  MockResponseFor<BodylessRequestAndResponseEndpoint>(
+      test_url_loader_factory,
+      {.net_error = net::OK, .status_code = net::HTTP_NO_CONTENT});
+
+  base::test::TestFuture<
+      WithHeaders<BodylessRequestAndResponseEndpoint::Response>>
+      future;
+  Client<BodylessRequestAndResponseEndpoint>::Send(
+      test_url_loader_factory, BodylessRequestAndResponseEndpoint::Request(),
+      future.GetCallback());
+
+  const auto response = future.Take();
+  EXPECT_EQ(response.net_error, net::OK);
+  EXPECT_EQ(response.status_code, net::HTTP_NO_CONTENT);
+  ASSERT_TRUE(response.headers);
+  EXPECT_EQ(response.headers->response_code(), net::HTTP_NO_CONTENT);
 }
 
 TEST_P(ClientTestRetryOptions, Retry) {
