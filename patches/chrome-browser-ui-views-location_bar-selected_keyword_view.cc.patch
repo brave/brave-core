@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/location_bar/selected_keyword_view.cc b/chrome/browser/ui/views/location_bar/selected_keyword_view.cc
+index 395ab06d5af72c4884bd08287a31c308bdb3ec3e..0213727becbb928639c2979730b3f3ca4d37e7f8 100644
+--- a/chrome/browser/ui/views/location_bar/selected_keyword_view.cc
++++ b/chrome/browser/ui/views/location_bar/selected_keyword_view.cc
+@@ -99,7 +99,7 @@ ui::ImageModel SelectedKeywordView::GetKeywordIcon(
+     vector_icon =
+         &(features::IsRoundedIconsEnabled() ? omnibox::kSearchSparkIcon
+                                             : omnibox::kSearchSparkOldIcon);
+-  } else if (history_embeddings::IsHistoryEmbeddingsEnabledForProfile(
++  } else if (BraveIsHistoryEmbeddingsEnabledForProfile(
+                  profile) &&
+              history_embeddings::GetFeatureParameters().omnibox_scoped &&
+              template_url &&

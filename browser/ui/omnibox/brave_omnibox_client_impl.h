@@ -53,6 +53,8 @@ class BraveOmniboxClientImpl : public ChromeOmniboxClient {
 
   void OnURLOpenedFromOmnibox(OmniboxLog* log) override;
 
+  bool IsHistoryEmbeddingsEnabled() const override;
+
   void OnAutocompleteAccept(
       const GURL& destination_url,
       TemplateURLRef::PostContent* post_content,

@@ -14,14 +14,30 @@
 #include "brave/components/omnibox/browser/brave_history_embeddings_provider.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "chrome/browser/ui/omnibox/omnibox_controller.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/location_bar/location_bar_view.h"
+#include "chrome/browser/ui/views/location_bar/selected_keyword_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/search_test_utils.h"
 #include "components/omnibox/browser/autocomplete_input.h"
+#include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/autocomplete_provider_listener.h"
+#include "components/omnibox/browser/omnibox_client.h"
 #include "components/omnibox/browser/test_scheme_classifier.h"
+#include "components/omnibox/browser/vector_icons.h"
 #include "components/prefs/pref_service.h"
+#include "components/search_engines/template_url.h"
+#include "components/search_engines/template_url_service.h"
+#include "components/search_engines/template_url_starter_pack_data.h"
+#include "components/strings/grit/components_strings.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/metrics_proto/omnibox_event.pb.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/base/models/image_model.h"
+#include "ui/base/ui_base_features.h"
 
 namespace brave_history_embeddings {
 
@@ -69,6 +85,34 @@ class HistoryEmbeddingsOmniboxBrowserTest : public InProcessBrowserTest {
     provider->Start(input, /*minimal_changes=*/false);
   }
 
+  OmniboxController* omnibox_controller() {
+    return BrowserView::GetBrowserViewForBrowser(browser())
+        ->GetLocationBarView()
+        ->GetOmniboxController();
+  }
+
+  // The @history starter pack engine.
+  const TemplateURL* HistoryStarterPackEngine() {
+    TemplateURLService* service =
+        TemplateURLServiceFactory::GetForProfile(browser()->GetProfile());
+    search_test_utils::WaitForTemplateURLServiceToLoad(service);
+    return service->FindStarterPackTemplateURL(
+        template_url_starter_pack_data::StarterPackId::kHistory);
+  }
+
+  // The icon the keyword chip shows for the @history scope.
+  const gfx::VectorIcon* HistoryKeywordIcon() {
+    const TemplateURL* history = HistoryStarterPackEngine();
+    ui::ImageModel icon = SelectedKeywordView::GetKeywordIcon(
+        history->keyword(), omnibox_controller(), browser()->GetProfile());
+    return icon.IsVectorIcon() ? icon.GetVectorIcon().vector_icon() : nullptr;
+  }
+
+  const gfx::VectorIcon* SparkIcon() {
+    return features::IsRoundedIconsEnabled() ? &omnibox::kSearchSparkIcon
+                                             : &omnibox::kSearchSparkOldIcon;
+  }
+
  private:
   base::test::ScopedFeatureList feature_list_;
 };
@@ -107,6 +151,31 @@ IN_PROC_BROWSER_TEST_F(HistoryEmbeddingsOmniboxBrowserTest,
   EXPECT_TRUE(IsEnabledForOmnibox(profile));
 
   StartHistoryEmbeddingsProvider(profile);
+}
+
+// The @history scope shows the semantic search placeholder and spark icon only
+// while the setting is on.
+IN_PROC_BROWSER_TEST_F(HistoryEmbeddingsOmniboxBrowserTest,
+                       HistoryScopePlaceholderAndIcon) {
+  Profile* profile = browser()->GetProfile();
+  const TemplateURL* history = HistoryStarterPackEngine();
+  ASSERT_TRUE(history);
+
+  ASSERT_FALSE(omnibox_controller()->client()->IsHistoryEmbeddingsEnabled());
+  EXPECT_EQ(
+      AutocompleteMatch::GetKeywordPlaceholder(history, false),
+      l10n_util::GetStringUTF16(IDS_OMNIBOX_HISTORY_SCOPE_PLACEHOLDER_TEXT));
+  EXPECT_NE(HistoryKeywordIcon(), SparkIcon());
+
+  SetSemanticHistorySearchEnabled(profile, true);
+
+  EXPECT_TRUE(omnibox_controller()->client()->IsHistoryEmbeddingsEnabled());
+  EXPECT_EQ(AutocompleteMatch::GetKeywordPlaceholder(
+                history,
+                omnibox_controller()->client()->IsHistoryEmbeddingsEnabled()),
+            l10n_util::GetStringUTF16(
+                IDS_OMNIBOX_HISTORY_EMBEDDINGS_SCOPE_PLACEHOLDER_TEXT));
+  EXPECT_EQ(HistoryKeywordIcon(), SparkIcon());
 }
 
 }  // namespace brave_history_embeddings

@@ -13,6 +13,12 @@
 // Defined in brave/browser/ui/views/location_bar.
 const gfx::VectorIcon& GetAskBraveSearchStarterPackIcon();
 
+class Profile;
+
+// Defined in brave/browser/ui/views/location_bar. Whether Brave's semantic
+// history search is enabled for `profile`.
+bool BraveIsHistoryEmbeddingsEnabledForProfile(Profile* profile);
+
 // Sets the icon that is displayed when a Brave-defined starter pack engine is
 // active.
 #define kAiMode kAskBraveSearch) {                              \
