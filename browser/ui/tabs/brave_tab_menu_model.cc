@@ -12,6 +12,7 @@
 #include "base/feature_list.h"
 #include "brave/browser/containers/containers_service_factory.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
@@ -177,6 +178,21 @@ void BraveTabMenuModel::BuildSplitTabEntry(TabStripModel* tab_strip_model,
     }
   }
   if (!split_cmd) {
+    return;
+  }
+
+  // The web panel's tab is a plain pinned tab, so upstream offers to split it
+  // like any other. It must never join a split. Drop the entry both when the
+  // panel is the clicked tab and when it's the active tab, because
+  // CommandAddToSplit pairs the clicked tab with the active one.
+  // CommandArrangeSplit is exempt: it only rearranges an existing split and
+  // never adds a tab, so it has to keep working on a real split tab while the
+  // panel is open beside it.
+  auto* tab = tab_strip_model->GetTabAtIndex(selected_index);
+  if (*split_cmd != TabStripModel::CommandArrangeSplit &&
+      (sidebar::IsWebPanelTab(tab) ||
+       sidebar::IsWebPanelTabActive(tab->GetBrowserWindowInterface()))) {
+    RemoveItemAt(split_index);
     return;
   }
 

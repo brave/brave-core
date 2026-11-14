@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/navigator/browser_navigator.cc b/chrome/browser/ui/navigator/browser_navigator.cc
-index d5d5691f0b7dfdb1a8cc5671537826262c96addd..3179b96b31d79e11c3e90513d14557af33e8e2e2 100644
+index d5d5691f0b7dfdb1a8cc5671537826262c96addd..d03bf158ec182aba9d7ffb21ff52f2327749ae9b 100644
 --- a/chrome/browser/ui/navigator/browser_navigator.cc
 +++ b/chrome/browser/ui/navigator/browser_navigator.cc
 @@ -206,6 +206,7 @@ bool ShouldForceCaptivePortalSigninIntoCurrentTab(
@@ -43,3 +43,13 @@ index d5d5691f0b7dfdb1a8cc5671537826262c96addd..3179b96b31d79e11c3e90513d14557af
        }
        contents_to_navigate_or_insert = tab_to_insert->GetContents();
  
+@@ -1114,7 +1125,8 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
+                                   : active_tab;
+       if (new_tab_index != TabStripModel::kNoTab && active_tab &&
+           active_tab != new_tab && !active_tab->IsSplit() &&
+-          (!source_tab || !source_tab->IsSplit())) {
++          (!source_tab || !source_tab->IsSplit()) &&
++          !sidebar::IsWebPanelTab(active_tab)) {
+         // For window.open() split tab requests, apply the position and size
+         // hints. Otherwise, use the default visual data.
+         split_tabs::SplitTabVisualData visual_data;

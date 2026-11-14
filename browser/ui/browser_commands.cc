@@ -33,6 +33,7 @@
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/omnibox/clean_link_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/public/closing_last_tab_controller.h"
@@ -1154,6 +1155,12 @@ bool CanOpenNewSplitTabsWithSideBySide(BrowserWindowInterface* browser) {
     return false;
   }
 
+  // A new split pairs the active tab with the new one, and the web panel's tab
+  // must never join a split.
+  if (sidebar::IsWebPanelTabActive(browser)) {
+    return false;
+  }
+
   return !tab_strip_model->GetSplitForTab(active_index).has_value();
 }
 
@@ -1169,7 +1176,8 @@ bool CanSplitTabsWithSideBySide(BrowserWindowInterface* browser) {
   }
 
   return std::ranges::none_of(selected_indices, [&](auto index) {
-    return tab_strip_model->GetSplitForTab(index).has_value();
+    return tab_strip_model->GetSplitForTab(index).has_value() ||
+           sidebar::IsWebPanelTab(tab_strip_model->GetTabAtIndex(index));
   });
 }
 

@@ -25,6 +25,10 @@ namespace content {
 class WebContents;
 }  // namespace content
 
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
+
 namespace sidebar {
 
 bool CanUseSidebar(BrowserWindowInterface* browser);
@@ -89,6 +93,13 @@ void MaybeCloseWebPanelForShutdown(BrowserWindowInterface* browser);
 // pinned tab, so pinned tab persistence has to skip it.
 bool IsWebPanelTab(BrowserWindowInterface* browser,
                    const content::WebContents* contents);
+
+// Same, for callers that hold a tab rather than a browser window.
+bool IsWebPanelTab(tabs::TabInterface* tab);
+
+// True when `browser`'s active tab is the open web panel. Split view creation
+// uses the active tab as the pivot, so the panel must not be active for it.
+bool IsWebPanelTabActive(BrowserWindowInterface* browser);
 
 // True when the open web panel's tab is the only tab left. The panel is backed
 // by a pinned tab but isn't one of the user's tabs, so such a strip is empty as

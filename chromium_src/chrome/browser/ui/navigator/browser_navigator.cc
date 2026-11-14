@@ -20,6 +20,20 @@ GetStoragePartitionConfigToInherit(const NavigateParams& params);
 }  // namespace containers
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
+
+namespace sidebar {
+
+// kNewSplitView pairs the new tab with the active one, and the sidebar web
+// panel's tab must never join a split. TabStripModel refuses such a split
+// anyway, but this path dereferences AddToNewSplit()'s returned id for
+// window.open() split requests, so it has to stop before calling it.
+bool IsWebPanelTab(tabs::TabInterface* tab);
+
+}  // namespace sidebar
+
 namespace {
 
 void UpdateBraveScheme(NavigateParams* params) {
