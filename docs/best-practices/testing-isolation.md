@@ -2,28 +2,60 @@
 
 <a id="TI-001"></a>
 
-## Test in Isolation with Fakes
+## ✅ Prefer Fakes over Real Dependencies or Mocks
 
-**Prefer fakes over real dependencies:**
+**Prefer lightweight fakes for dependencies in unit tests. Keep the component
+under test real and assert its observable behavior.** A fake is a simplified
+working implementation, such as an in-memory store, configured with test data.
+Reuse existing fakes and configure their state, results, errors, or completion
+timing as needed.
 
-- Prevents cascading test failures
-- Produces more maintainable, modular code
-- Makes tests faster and more deterministic
+Real dependencies can add I/O, expensive setup, nondeterminism, and cascading
+failures. Mocks often couple tests to incidental call counts or ordering, so
+harmless changes such as caching or batching break the test. NEVER assert
+incidental interactions; use a mock only when the interaction itself is part of
+the contract being tested.
 
-**Example: Use MockTool instead of real navigation tool:**
+Here `ReportService` is the real component under test. Its storage dependency
+can be a disk-backed `ReportStoreImpl`, a `MockReportStore`, or an in-memory
+`FakeReportStore` configured with a saved report.
 
 ```cpp
-// ✅ GOOD - Control exact timing with MockTool
-auto mock_tool = std::make_unique<MockTool>();
-EXPECT_CALL(*mock_tool, Execute(_, _))
-    .WillOnce([&](auto data, auto callback) {
-      tool_callback = std::move(callback);
-    });
-
-// Now we can control exactly when the tool completes
-ClickPauseButton();
-std::move(tool_callback).Run(/* result */);
+// ❌ WRONG - testing the consumer depends on production storage and disk state
+ReportService service(std::make_unique<ReportStoreImpl>(database_path));
+EXPECT_EQ(service.ReadReport(), "saved report");
 ```
+
+```cpp
+// ❌ WRONG - the consumer's contract does not require exactly one storage read
+// Caching or batching can change this count without changing the result.
+auto store = std::make_unique<MockReportStore>();
+EXPECT_CALL(*store, ReadReport())
+    .Times(1)
+    .WillOnce(testing::Return("saved report"));
+ReportService service(std::move(store));
+EXPECT_EQ(service.ReadReport(), "saved report");
+```
+
+```cpp
+// ✅ CORRECT - fake storage supplies data; the real consumer produces the result
+class FakeReportStore : public ReportStore {
+ public:
+  explicit FakeReportStore(std::string report) : report_(std::move(report)) {}
+  std::string ReadReport() const override { return report_; }
+
+ private:
+  std::string report_;
+};
+
+ReportService service(std::make_unique<FakeReportStore>("saved report"));
+EXPECT_EQ(service.ReadReport(), "saved report");
+EXPECT_EQ(service.ReadReport(), "saved report");
+```
+
+NEVER replace the component under test with a fake. Use real dependencies in
+integration tests to verify component wiring; a storage implementation's own
+tests may use real storage. Keep simple value objects real.
 
 ---
 
