@@ -85,7 +85,7 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
   private browserProxy: BraveAccountBrowserProxy =
     BraveAccountBrowserProxyImpl.getInstance()
 
-  protected login = new Login()
+  private login = new Login()
 
   protected accessor email: string = ''
   protected accessor isEmailValid: boolean = false

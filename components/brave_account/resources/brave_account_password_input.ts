@@ -121,7 +121,7 @@ export class BraveAccountPasswordInputElement extends CrLitElement {
   protected accessor config: PasswordInputConfig = { mode: 'regular' }
   protected accessor isCapsLockOn = false
   protected accessor isInputFocused = false
-  protected accessor isStrongEnough = false
+  private accessor isStrongEnough = false
   protected accessor label = ''
   protected accessor password = ''
   protected accessor placeholder = ''

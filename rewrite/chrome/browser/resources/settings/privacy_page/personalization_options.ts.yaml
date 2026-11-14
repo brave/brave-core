@@ -61,3 +61,16 @@ substitutions:
       replace:
         '\n  // </if>\n\n  // <if expr="not is_chromeos">\n\1  // </if>\n\n  //
         <if expr="_google_chrome and not is_chromeos">\n'
+
+  - description: |-
+      Make the properties Brave's template doesn't bind private.
+
+      Brave's template leaves out the markup that reads them, and
+      `@webui-eslint/lit-member-visibility` rejects protected properties the
+      template doesn't reference.
+    count: 6
+    regex:
+      re_pattern:
+        'protected (accessor
+        (?:metricsReporting_|showRestart_|showSignoutDialog_|syncFirstSetupInProgress_|signinAvailable_|chromeSigninUserChoiceInfo_):)'
+      replace: 'private \1'
