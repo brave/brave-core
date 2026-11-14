@@ -1470,6 +1470,15 @@ class SettingsViewController: TableViewController {
           cellClass: MultilineButtonCell.self
         ),
         Row(
+          text: "Manage WebKit Website Data Store",
+          selection: { [unowned self] in
+            let controller = UIHostingController(rootView: ManageWebsiteDataView())
+            self.navigationController?.pushViewController(controller, animated: true)
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
+        Row(
           text: "VPN Logs",
           selection: { [unowned self] in
             self.navigationController?.pushViewController(VPNLogsViewController(), animated: true)
