@@ -329,7 +329,9 @@
 
 - (NSArray<BookmarkFolder*>*)nestedChildFolders {
   // Returns a list of ALL nested folders
-  return [self nestedChildFoldersFiltered:^BOOL(BookmarkFolder*){ return true; }];
+  return [self nestedChildFoldersFiltered:^BOOL(BookmarkFolder*) {
+    return true;
+  }];
 }
 
 - (NSUInteger)childCount {
@@ -354,8 +356,10 @@
 }
 
 // Retrieves a list of nested child folders filtered by the predicate |included|
-// iOS calls it like: `self.nestedChildFolders(where: { return some_condition })`
-- (NSArray<BookmarkFolder*>*)nestedChildFoldersFiltered:(BOOL(^)(BookmarkFolder*))included {
+// iOS calls it like: `self.nestedChildFolders(where: { return some_condition
+// })`
+- (NSArray<BookmarkFolder*>*)nestedChildFoldersFiltered:
+    (BOOL (^)(BookmarkFolder*))included {
   DCHECK(node_);
 
   std::vector<const bookmarks::BookmarkNode*> bookmarks = {node_};
@@ -374,8 +378,9 @@
 
     IOSBookmarkNode* ios_bookmark_node =
         [[IOSBookmarkNode alloc] initWithNode:node model:model_];
-    BookmarkFolder* ios_bookmark_folder = [[BookmarkFolder alloc] initWithNode:ios_bookmark_node
-                                                              indentationLevel:depth];
+    BookmarkFolder* ios_bookmark_folder =
+        [[BookmarkFolder alloc] initWithNode:ios_bookmark_node
+                            indentationLevel:depth];
 
     if (included(ios_bookmark_folder)) {
       // Store the folder + its depth
@@ -384,9 +389,11 @@
       bookmarks.clear();
       for (const auto& child : node->children()) {
         if (child->is_folder()) {
-          ios_bookmark_node = [[IOSBookmarkNode alloc] initWithNode:child.get() model:model_];
-          ios_bookmark_folder = [[BookmarkFolder alloc] initWithNode:ios_bookmark_node
-                                                    indentationLevel:depth + 1];
+          ios_bookmark_node = [[IOSBookmarkNode alloc] initWithNode:child.get()
+                                                              model:model_];
+          ios_bookmark_folder =
+              [[BookmarkFolder alloc] initWithNode:ios_bookmark_node
+                                  indentationLevel:depth + 1];
           if (included(ios_bookmark_folder)) {
             bookmarks.push_back(child.get());
           }
@@ -444,8 +451,9 @@
 - (NSInteger)indexOfChild:(IOSBookmarkNode*)child {
   DCHECK(node_);
   auto index = node_->GetIndexOf(child->node_);
-  if (!index)
+  if (!index) {
     return NSNotFound;
+  }
 
   return base::checked_cast<NSInteger>(*index);
 }
@@ -547,16 +555,6 @@
 
 - (void)removeObserver:(id<BookmarkModelListener>)observer {
   [observer destroy];
-}
-
-- (bool)editingEnabled {
-  DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  std::vector<ProfileIOS*> profiles =
-      GetApplicationContext()->GetProfileManager()->GetLoadedProfiles();
-  ProfileIOS* last_used_profile = profiles.at(0);
-
-  PrefService* prefs = user_prefs::UserPrefs::Get(last_used_profile);
-  return prefs->GetBoolean(bookmarks::prefs::kEditBookmarksEnabled);
 }
 
 - (IOSBookmarkNode*)createFolderWithTitle:(NSString*)title {
