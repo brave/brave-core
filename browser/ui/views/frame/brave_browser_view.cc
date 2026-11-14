@@ -30,7 +30,6 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
-#include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
 #include "brave/browser/ui/views/frame/focus_mode_title_bar_view.h"
 #include "brave/browser/ui/views/frame/focus_mode_top_overlay.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
@@ -682,45 +681,6 @@ views::View* BraveBrowserView::CreateMacOverlayView() {
 }
 #endif
 
-bool BraveBrowserView::ShowBraveHelpBubbleView(const std::string& text) {
-  if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
-    // Shields in Page Info: no anchored toolbar / title-bar help target here.
-    return false;
-  }
-
-  views::View* shield_icon = nullptr;
-  if (web_app::AppBrowserController::IsWebApp(browser())) {
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-    shield_icon = GetPwaShieldsToolbarButton();
-#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
-  } else {
-    auto* brave_location_bar_view =
-        static_cast<BraveLocationBarView*>(GetLocationBarView());
-    if (!brave_location_bar_view) {
-      return false;
-    }
-    auto* c = brave_location_bar_view->brave_actions_contatiner_view();
-    if (!c) {
-      return false;
-    }
-    shield_icon = c->GetShieldsActionView();
-  }
-  if (!shield_icon || !shield_icon->GetVisible()) {
-    return false;
-  }
-
-  // When help bubble is closed, this host view gets hidden.
-  // For now, this help bubble host view is only used for shield icon, but it
-  // could be re-used for other icons or views in the future.
-  if (!brave_help_bubble_host_view_) {
-    brave_help_bubble_host_view_ =
-        AddChildView(std::make_unique<BraveHelpBubbleHostView>());
-  }
-  brave_help_bubble_host_view_->set_text(text);
-  brave_help_bubble_host_view_->set_tracked_element(shield_icon);
-  return brave_help_bubble_host_view_->Show();
-}
-
 void BraveBrowserView::LoadAccelerators() {
   if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
     auto* accelerator_service =
@@ -739,11 +699,6 @@ void BraveBrowserView::OnTabStripModelChanged(
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
   BrowserView::OnTabStripModelChanged(tab_strip_model, change, selection);
-
-  if (selection.active_tab_changed() && brave_help_bubble_host_view_ &&
-      brave_help_bubble_host_view_->GetVisible()) {
-    brave_help_bubble_host_view_->Hide();
-  }
 
   if (selection.active_tab_changed()) {
     if (focus_mode_title_bar_view_ &&

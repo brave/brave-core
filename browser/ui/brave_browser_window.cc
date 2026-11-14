@@ -39,11 +39,6 @@ BraveBrowserWindow* BraveBrowserWindow::FromBrowser(
   return From(BrowserWindow::FromBrowser(browser));
 }
 
-#if defined(TOOLKIT_VIEWS)
-bool BraveBrowserWindow::ShowBraveHelpBubbleView(const std::string& text) {
-  return false;
-}
-#endif  // defined(TOOLKIT_VIEWS)
 
 bool BraveBrowserWindow::IsInTabDragging() const {
   return false;
