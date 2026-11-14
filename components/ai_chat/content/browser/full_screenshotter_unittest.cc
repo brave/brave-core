@@ -427,7 +427,7 @@ TEST_F(FullScreenshotterTest, CompositionSucceeded) {
     OverrideInterface(&recorder);
 
     auto result = CaptureScreenshots(web_contents());
-    EXPECT_TRUE(result.has_value());
+    ASSERT_TRUE(result.has_value()) << result.error();
     EXPECT_EQ(result.value().size(), test_case.num_of_screenshots);
     EXPECT_TRUE(std::ranges::any_of(
         result.value(), [](const auto& entry) { return !entry.empty(); }));
