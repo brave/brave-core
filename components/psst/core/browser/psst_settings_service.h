@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
@@ -27,6 +28,11 @@ class PsstSettingsService : public KeyedService {
   class PrefObserver : public base::CheckedObserver {
    public:
     virtual void OnPsstEnableChange(bool new_value) {}
+    virtual void OnPsstPrefsChange(
+        int infobar_shown_counter,
+        int infobar_decline_counter,
+        const base::flat_map<std::string, PsstWebsiteSettings>&
+            psst_websites_settings) {}
 
    protected:
     ~PrefObserver() override = default;
@@ -52,6 +58,8 @@ class PsstSettingsService : public KeyedService {
   std::optional<PsstWebsiteSettings> GetPsstWebsiteSettings(
       const url::Origin& origin,
       std::string_view user_id);
+
+  base::flat_map<std::string, PsstWebsiteSettings> GetAllPsstWebsitesSettings();
 
   void SetPsstWebsiteSettings(const url::Origin& origin,
                               PsstWebsiteSettings psst_metadata);
