@@ -31,19 +31,10 @@ substitutions:
       method_name: MoveTabsRecursive
 
   - description: |-
-      Let BraveTabStripCollection override RemoveTabAtIndexRecursive.
-
-      Needed so BraveTabStripCollection can delegate tab removal to the tree
-      tabs delegate.
-    make_virtual:
-      class_name: TabStripCollection
-      method_name: RemoveTabAtIndexRecursive
-
-  - description: |-
       Let BraveTabStripCollection override RemoveTab.
 
-      `TabStripModel` removes tabs through it, so BraveTabStripCollection
-      delegates it to the tree tabs delegate too.
+      Tabs are removed through it, so BraveTabStripCollection delegates it to
+      the tree tabs delegate.
     make_virtual:
       class_name: TabStripCollection
       method_name: RemoveTab

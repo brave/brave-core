@@ -14,7 +14,7 @@ substitutions:
       tab removal is fully handled for tree tabs.
     regex:
       re_pattern:
-        '(TabStripCollection::RemoveTabImpl\(.*?parent_collection !=
+        '(TabStripCollection::RemoveTab\(.*?parent_collection !=
         pinned_collection_ &&)'
       re_flags: [DOTALL]
       replace: |-
@@ -29,7 +29,7 @@ substitutions:
       As the node stays, the group holding it would otherwise be left empty.
     regex:
       re_pattern:
-        '(TabStripCollection::RemoveTabImpl\(.*?)(\n\s*return removed_tab;)'
+        '(TabStripCollection::RemoveTab\(.*?)(\n\s*return removed_tab;)'
       re_flags: [DOTALL]
       replace: |-
         \1
