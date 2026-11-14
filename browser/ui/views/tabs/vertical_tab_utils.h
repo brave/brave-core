@@ -19,7 +19,8 @@ class BrowserWindowInterface;
 // target, it should be put in VerticalTabController instead.
 namespace tabs::utils {
 
-// Returns true when the vertical tab toggle should be enabled.
+// Returns true when the vertical tab strip can be switched on or off right
+// now. On macOS it can't while the window is fullscreen.
 bool IsVerticalTabToggleEnabled(BrowserWindowInterface* browser);
 
 // Returns window caption buttons' width based on the current platform
