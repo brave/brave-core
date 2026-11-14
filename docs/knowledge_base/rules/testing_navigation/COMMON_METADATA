@@ -1,0 +1,36 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The rules of docs/best-practices/testing-navigation.md. See
+# docs/knowledge_base/README.md for the fields.
+agentic_review {
+  # Fragment navigations and same-document checks in tests, and RunUntil()
+  # predicates that poll a URL.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest|_test_utils?|_test_helpers?|_test_base)\\.(?:cc|h|mm)"
+    path_expression: "(?:.*/)?test/.*\\.(?:cc|h|mm)"
+    content_patterns: "\\blocation\\.hash\\b"
+    content_patterns: "\\.html?#[\\w-]"
+    content_patterns: "\\bIsSameDocument\\s*\\("
+    ast_patterns: "{pattern: {context: 'int x = base::test::RunUntil($$$A);', selector: call_expression}, has: {kind: call_expression, regex: '\\b(?:GetLastCommittedURL|GetVisibleURL|GetURL)\\(\\)|\\b(?:ref|has_ref)\\(\\)', stopBy: end}}"
+    rules: "docs/knowledge_base/rules/testing_navigation/observe-same-document-navigations.md"
+  }
+  # JavaScript timers in test code.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest|_test_utils?|_test_helpers?|_test_base)\\.(?:cc|h|mm)"
+    path_expression: "(?:.*/)?test/.*\\.(?:cc|h|mm)"
+    content_patterns: "\\bset(?:Timeout|Interval)\\s*\\("
+    rules: "docs/knowledge_base/rules/testing_navigation/no-hardcoded-js-timeouts-in-tests.md"
+  }
+  # Navigations and load waits in Speedreader tests.
+  capability_groups {
+    path_expression: "(?:.*/)?speedreader/(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|h|mm)"
+    path_expression: "(?:.*/)?[^/]*speedreader[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|h|mm)"
+    content_patterns: "\\bNavigateToPageSynchronously\\s*\\("
+    content_patterns: "\\bNavigateToURL\\w*\\s*\\("
+    content_patterns: "\\bWaitForLoadStop\\s*\\("
+    rules: "docs/knowledge_base/rules/testing_navigation/wait-for-speedreader-distillation.md"
+  }
+}

@@ -1,0 +1,68 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The rules of docs/best-practices/testing-async.md. See
+# docs/knowledge_base/README.md for the fields.
+agentic_review {
+  # Waits on idle task queues.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bRunUntilIdle\\s*\\("
+    rules: "docs/knowledge_base/rules/testing_async/no-run-until-idle.md"
+  }
+  # A RunUntil() whose predicate evaluates JavaScript.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    ast_patterns: "{pattern: {context: 'int x = base::test::RunUntil($$$A);', selector: call_expression}, has: {kind: call_expression, regex: '^(?:content::)?(?:EvalJs|ExecJs)\\b', stopBy: end}}"
+    rules: "docs/knowledge_base/rules/testing_async/no-nested-run-loops-in-run-until.md"
+  }
+  # Logging, busy work, yields and sleeps added to test code.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest|_test_utils?|_test_helpers?|_test_base)\\.(?:cc|h|mm)"
+    path_expression: "(?:.*/)?test/.*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:D?LOG|D?VLOG|D?PLOG)(?:_IF)?\\s*\\("
+    content_patterns: "\\bstd::(?:cout|cerr|clog)\\b"
+    content_patterns: "\\b(?:f?printf|puts)\\s*\\("
+    content_patterns: "\\bvolatile\\b"
+    content_patterns: "\\b(?:yield|YieldCurrentThread|Sleep|usleep|nanosleep|sleep_for|sleep_until)\\s*\\("
+    rules: "docs/knowledge_base/rules/testing_async/no-timing-based-test-fixes.md"
+  }
+  # Waits for an arbitrary time in test code: sleeps, fixed delays, timed
+  # waits and delayed tasks.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest|_test_utils?|_test_helpers?|_test_base)\\.(?:cc|h|mm)"
+    path_expression: "(?:.*/)?test/.*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:Sleep|usleep|nanosleep|sleep_for|sleep_until)\\s*\\("
+    content_patterns: "\\bNonBlockingDelay\\s*\\("
+    content_patterns: "\\bTimedWait(?:Until)?\\s*\\("
+    content_patterns: "\\bPostDelayedTask\\s*\\("
+    rules: "docs/knowledge_base/rules/testing_async/synchronize-tests-on-the-awaited-condition.md"
+    rules: "docs/knowledge_base/rules/testing_async/sync-mojo-call-to-flush-prior-messages.md"
+  }
+  # A hand-written loop that spins a run loop, sleeps or delays between
+  # checks of a C++ condition (loops evaluating JavaScript are
+  # testing_javascript's).
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest|_test_utils?|_test_helpers?|_test_base)\\.(?:cc|h|mm)"
+    path_expression: "(?:.*/)?test/.*\\.(?:cc|h|mm)"
+    ast_patterns: "{any: [{kind: for_statement}, {kind: while_statement}, {kind: do_statement}], has: {kind: call_expression, regex: '\\bRunLoop\\b|\\bRunUntilIdle\\b|\\bSleep\\b|\\bNonBlockingDelay\\b|\\bPostDelayedTask\\b|\\bTimedWait', stopBy: end}, not: {has: {kind: call_expression, regex: '^(?:content::)?(?:EvalJs|ExecJs)\\b', stopBy: end}}}"
+    rules: "docs/knowledge_base/rules/testing_async/use-run-until-for-cxx-conditions.md"
+  }
+  # A base::RunLoop driven by hand, and the quit calls that end it.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest|_test_utils?|_test_helpers?|_test_base)\\.(?:cc|h|mm)"
+    path_expression: "(?:.*/)?test/.*\\.(?:cc|h|mm)"
+    content_patterns: "\\bRunLoop\\b"
+    content_patterns: "\\bQuit(?:Closure|WhenIdle|WhenIdleClosure)?\\s*\\("
+    rules: "docs/knowledge_base/rules/testing_async/use-test-future-for-callbacks.md"
+    rules: "docs/knowledge_base/rules/testing_async/quit-run-loops-with-quit-closure.md"
+  }
+  # JavaScript assertions in browser tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_browsertest|_interactive_uitest)[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bEvalJs\\s*\\("
+    rules: "docs/knowledge_base/rules/testing_async/wait-for-mojo-before-evaljs-assertions.md"
+  }
+}

@@ -1,0 +1,58 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The rules of docs/best-practices/coding-standards-buildflags.md. See
+# docs/knowledge_base/README.md for the fields.
+agentic_review {
+  # #endif lines without a comment.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*#\\s*endif\\s*$"
+    rules: "docs/knowledge_base/rules/buildflags/endif-comments-by-block-length.md"
+  }
+  # Buildflag guards added in C++.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*#\\s*(?:if|elif)\\b.*\\bBUILDFLAG\\("
+    rules: "docs/knowledge_base/rules/buildflags/merge-consecutive-identical-buildflag-blocks.md"
+  }
+  # Includes and buildflag guards, in files whose buildflag guards change.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    required_diff_patterns: "\\bBUILDFLAG\\("
+    content_patterns: "^\\s*#\\s*include\\b"
+    content_patterns: "^\\s*#\\s*(?:if|elif)\\b.*\\bBUILDFLAG\\("
+    rules: "docs/knowledge_base/rules/buildflags/guard-includes-of-gn-gated-headers.md"
+    rules: "docs/knowledge_base/rules/buildflags/no-guards-on-always-built-includes.md"
+    rules: "docs/knowledge_base/rules/buildflags/keep-guarded-includes-with-includes.md"
+  }
+  # Forward declarations, in files whose buildflag guards change.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    required_diff_patterns: "\\bBUILDFLAG\\("
+    content_patterns: "^\\s*(?:class|struct)\\s+[\\w:]+\\s*;"
+    rules: "docs/knowledge_base/rules/buildflags/no-buildflag-guards-on-forward-declarations.md"
+  }
+  # Buildflag headers included, and feature flags checked, in C++.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*#\\s*include\\s+\"[^\"]*buildflags[^\"]*\\.h\""
+    content_patterns: "^\\s*#\\s*(?:if|elif)\\b.*\\bBUILDFLAG\\(ENABLE_"
+    rules: "docs/knowledge_base/rules/buildflags/no-buildflag-recheck-in-gated-files.md"
+  }
+  # Buildflag headers included, and buildflags asserted, in headers.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.h"
+    content_patterns: "^\\s*#\\s*include\\s+\"[^\"]*buildflags[^\"]*\\.h\""
+    content_patterns: "\\bstatic_assert\\s*\\(\\s*!?\\s*BUILDFLAG\\("
+    rules: "docs/knowledge_base/rules/buildflags/static-assert-buildflag-in-public-headers.md"
+  }
+  # Build flags introduced with buildflag_header().
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni"
+    content_patterns: "\\bbuildflag_header\\s*\\("
+    rules: "docs/knowledge_base/rules/buildflags/static-assert-buildflag-in-public-headers.md"
+  }
+}

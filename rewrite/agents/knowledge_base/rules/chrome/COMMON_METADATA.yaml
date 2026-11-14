@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Drop the rule naming the updater after Google's.
+
+      Brave ships its own updater, which reviews of Brave's overrides of
+      chrome/ must not have renamed GoogleUpdater.
+    regex:
+      re_pattern:
+        '\n\s*rules:
+        "[^"]*/refer-to-updater-as-googleupdater-or-chromes-updater\.md"'
+      replace: ''
+  - description: |-
+      Drop the rule about Chrome's PGO and orderfile profile names.
+
+      Brave neither builds nor rolls profiles of its own.
+    regex:
+      re_pattern:
+        '\n\s*rules: "[^"]*/use-dot-separator-in-profile-version-filenames\.md"'
+      replace: ''

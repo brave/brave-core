@@ -1,0 +1,13 @@
+diff --git a/agents/knowledge_base/rules/third_party/COMMON_METADATA b/agents/knowledge_base/rules/third_party/COMMON_METADATA
+index ad361690ba39748a53db6249239679198e8ee2e7..5b3e1e2cd5cffab38262e570766c2137f90273a3 100644
+--- a/agents/knowledge_base/rules/third_party/COMMON_METADATA
++++ b/agents/knowledge_base/rules/third_party/COMMON_METADATA
+@@ -1,8 +1,2 @@
+ agentic_review {
+-  capability_groups {
+-    path_expression: "third_party/.*"
+-    rules: "agents/knowledge_base/rules/third_party/avoid-transitional-third-party-directories.md"
+-    rules: "agents/knowledge_base/rules/third_party/do-not-modify-third-party-submodule-source.md"
+-    rules: "agents/knowledge_base/rules/third_party/use-copybara-strictly-for-transformations-in-crowbar.md"
+-  }
+ }

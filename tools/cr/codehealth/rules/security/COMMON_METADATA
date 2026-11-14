@@ -1,11 +1,10 @@
 # Sweep c: security hardening and forked code. See
-# tools/cr/codehealth/scripts/sweep.py for the fields. half-reverted-changes has no
-# group: it starts from Brave's reverts, not from the range.
+# tools/cr/knowledge_base.py for the fields.
 agentic_review {
   # Build, test, metrics and OWNERS fixes are never enforcement Brave must
   # follow; MiraclePtr and other campaigns are sweep e's.
   capability_groups {
-    exclude_subject_expression: "^(?:Revert \"|\\[(?:ash|chromeos|fuchsia|MiraclePtr)\\])|(?i:\\b(?:OWNERS|deps?|tests?|histograms?|metrics?|enum values|variants|constexpr|raw_ptr)\\b)|^ash:"
+    subject_pattern_exclusion: "^(?:Revert \"|\\[(?:ash|chromeos|fuchsia|MiraclePtr)\\])|(?i:\\b(?:OWNERS|deps?|tests?|histograms?|metrics?|enum values|variants|constexpr|raw_ptr)\\b)|^ash:"
     subject_patterns: "(?i)\\benforc(?:e|es|ed|ing|ement)\\b"
     subject_patterns: "(?i)\\b(?:remaining|all) (?:\\d+ )?(?:uses|instances|callers|subclasses|implementations|sources)\\b"
     subject_patterns: "(?i)\\bmissing [\\w-]+(?: attribute)?\\b"
@@ -16,7 +15,7 @@ agentic_review {
     rules: "tools/cr/codehealth/rules/security/fixes-in-fork-originals.md"
   }
   capability_groups {
-    exclude_subject_expression: "^(?:Revert \"|\\[(?:ash|chromeos|fuchsia|Android|PopupCreator)\\])"
+    subject_pattern_exclusion: "^(?:Revert \"|\\[(?:ash|chromeos|fuchsia|Android|PopupCreator)\\])"
     subject_patterns: "(?i)tabnab|\\b(?:sever|protect|block|restrict|prevent|disallow|harden)\\w*\\b.*\\b(?:opener|popup|window\\.open|untrusted|webui)\\b"
     subject_patterns: "(?i)\\b(?:opener|popup|untrusted webui)\\b.*\\b(?:sever|block|restrict|prevent|disallow|harden)\\w*\\b"
     rules: "tools/cr/codehealth/rules/security/hardening-closes-brave-workaround.md"
@@ -24,41 +23,46 @@ agentic_review {
   # Tests and fakes add request paths that never ship.
   capability_groups {
     path_expression: ".*\\.(?:cc|h|mm)"
-    exclude_path_expression: ".*(?:_unittest|_browsertest|_test|_fuzzer|_perftest|test_\\w+|fake_\\w+|mock_\\w+)\\.(?:cc|h|mm)|.*/(?:test|tests|testing)/.*"
-    content_patterns: "^\\+.*(?:\\bCreateURLLoaderFactory\\(|SimpleURLLoader::Create\\(|URLLoaderFactoryType::k\\w+|\\bProxyResolutionService\\b|\\bProxyConfigService\\w*\\b|\\bDefineNetworkTrafficAnnotation\\()"
+    path_expression_exclusion: ".*(?:_unittest|_browsertest|_test|_fuzzer|_perftest|test_\\w+|fake_\\w+|mock_\\w+)\\.(?:cc|h|mm)|.*/(?:test|tests|testing)/.*"
+    diff_patterns: "^\\+.*(?:\\bCreateURLLoaderFactory\\(|SimpleURLLoader::Create\\(|URLLoaderFactoryType::k\\w+|\\bProxyResolutionService\\b|\\bProxyConfigService\\w*\\b|\\bDefineNetworkTrafficAnnotation\\()"
     rules: "tools/cr/codehealth/rules/security/new-request-and-storage-paths.md"
   }
   capability_groups {
     path_expression: ".*\\.(?:cc|h|mm)"
-    exclude_path_expression: ".*(?:_unittest|_browsertest|_test|test_\\w+|fake_\\w+|mock_\\w+)\\.(?:cc|h|mm)|.*/(?:test|tests|testing)/.*"
-    content_patterns: "^\\+.*GetDefaultStoragePartition\\(\\)"
+    path_expression_exclusion: ".*(?:_unittest|_browsertest|_test|test_\\w+|fake_\\w+|mock_\\w+)\\.(?:cc|h|mm)|.*/(?:test|tests|testing)/.*"
+    diff_patterns: "^\\+.*GetDefaultStoragePartition\\(\\)"
     rules: "tools/cr/codehealth/rules/security/default-partition-checks.md"
   }
   # Only launches: a `status: "stable"` line added.
   capability_groups {
     path_expression: "third_party/blink/renderer/platform/runtime_enabled_features\\.json5"
-    content_patterns: "^\\+\\s*status: \"stable\""
+    diff_patterns: "^\\+\\s*status: \"stable\""
     rules: "tools/cr/codehealth/rules/security/fingerprinting-read-back.md"
   }
   capability_groups {
     path_expression: "third_party/blink/renderer/.*\\.idl"
-    content_patterns: "^\\+.*\\b(?:copyTo|getImageData|readPixels|toDataURL|toBlob|convertToBlob|getChannelData|copyFromChannel|getFloatFrequencyData|getByteFrequencyData|copyExternalImageToTexture|importExternalTexture|transferToImageBitmap|captureStream|readback\\w*)\\b"
+    diff_patterns: "^\\+.*\\b(?:copyTo|getImageData|readPixels|toDataURL|toBlob|convertToBlob|getChannelData|copyFromChannel|getFloatFrequencyData|getByteFrequencyData|copyExternalImageToTexture|importExternalTexture|transferToImageBitmap|captureStream|readback\\w*)\\b"
     rules: "tools/cr/codehealth/rules/security/fingerprinting-read-back.md"
   }
   capability_groups {
     path_expression: "chrome/(?:chrome_paks\\.gni|BUILD\\.gn|.*/BUILD\\.gn|.*bundle.*\\.gni?)|chrome/installer/mac/.*|build/config/mac/.*"
-    content_patterns: "^\\+.*\\.(?:pak|dylib|so|bin|dat|plist|framework)\\b"
+    diff_patterns: "^\\+.*\\.(?:pak|dylib|so|bin|dat|plist|framework)\\b"
     rules: "tools/cr/codehealth/rules/security/new-bundle-files.md"
   }
   capability_groups {
     path_expression: ".*\\.gni?"
-    content_patterns: "^\\+\\s*\"[A-Z0-9_]+=\\$\\{?\\w+"
-    required_patterns: "^-\\s*\"[A-Z0-9_]+=\\$\\{?\\w+"
+    diff_patterns: "^\\+\\s*\"[A-Z0-9_]+=\\$\\{?\\w+"
+    required_diff_patterns: "^-\\s*\"[A-Z0-9_]+=\\$\\{?\\w+"
     rules: "tools/cr/codehealth/rules/security/build-flag-splits.md"
   }
   capability_groups {
-    exclude_subject_expression: "^Revert \""
+    subject_pattern_exclusion: "^Revert \""
     subject_patterns: "(?i)\\bsplit\\b.*\\b(?:buildflag|build flag|gn arg|flag)\\b|\\b(?:buildflag|gn arg)\\b.*\\bsplit\\b"
     rules: "tools/cr/codehealth/rules/security/build-flag-splits.md"
+  }
+  # half-reverted-changes starts from Brave's reverts, not from the range,
+  # so it reads the whole range.
+  capability_groups {
+    rules: "tools/cr/codehealth/rules/security/half-reverted-changes.md"
   }
 }

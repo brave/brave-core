@@ -677,22 +677,30 @@ conventions instead.
 ## ✅ Weak/Strong Dance in Posted Tasks
 
 **When posting tasks from Objective-C++ that capture `self`, pass `weakSelf` as
-a closure parameter rather than capturing it directly.**
+a closure parameter rather than capturing it directly.** A block that only sends
+one message to `weakSelf` can capture it directly, as messaging `nil` is a
+no-op.
 
 ```objc
 // ❌ WRONG - capturing weakSelf directly in block
-__weak typeof(self) weakSelf = self;
-dispatch_async(queue, ^{
-  [weakSelf doWork];  // weakSelf may be nil after check
-});
+__weak __typeof(self) weakSelf = self;
+task_runner->PostTask(FROM_HERE, base::BindOnce(^{
+  [weakSelf prepareWork];
+  [weakSelf doWork];  // weakSelf may have become nil after the first call
+}));
 
 // ✅ CORRECT - weak/strong dance
-__weak typeof(self) weakSelf = self;
-dispatch_async(queue, ^{
-  __strong typeof(weakSelf) strongSelf = weakSelf;
-  if (!strongSelf) return;
-  [strongSelf doWork];
-});
+__weak __typeof(self) weakSelf = self;
+task_runner->PostTask(
+    FROM_HERE, base::BindOnce(
+                   [](__typeof(self) strongSelf) {
+                     if (!strongSelf) {
+                       return;
+                     }
+                     [strongSelf prepareWork];
+                     [strongSelf doWork];
+                   },
+                   weakSelf));
 ```
 
 ---
@@ -703,7 +711,8 @@ dispatch_async(queue, ^{
 
 **Use `copy` for immutable and `mutableCopy` for mutable collections.** Passing
 a mutable collection where an immutable one is expected (or vice versa) leads to
-subtle bugs.
+subtle bugs. A mutable collection built locally and not mutated afterwards can
+be returned or assigned as its immutable type directly, without a `copy`.
 
 ---
 
@@ -760,8 +769,9 @@ dependencies through the initializer for testability.
 
 ## ✅ Bind ProfileIOS Directly, Avoid `getLastUsedProfile`
 
-**Pass `ProfileIOS` explicitly into closures and initializers.** Do not call
-`getLastUsedProfile` at point of use — the last-used profile can change.
+**Pass `ProfileIOS`, or the services taken from it, explicitly into closures and
+initializers.** Do not call `getLastUsedProfile` at point of use — the last-used
+profile can change.
 
 ---
 

@@ -1,0 +1,707 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The rules of docs/best-practices/ios.md. See
+# docs/knowledge_base/README.md for the fields.
+agentic_review {
+  # self used inside a Swift closure, unowned captures and Tasks.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    ast_language: "swift"
+    ast_patterns: "{kind: self_expression, inside: {kind: lambda_literal, stopBy: end}}"
+    content_patterns: "\\[\\s*unowned\\s+self\\b"
+    content_patterns: "\\bTask\\s*(?:\\([^)]*\\))?\\s*\\{"
+    rules: "docs/knowledge_base/rules/ios/swift-weak-self-in-escaping-closures.md"
+  }
+  # A [weak self] on a closure nested in another closure.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    ast_language: "swift"
+    ast_patterns: "{kind: capture_list_item, regex: '^weak\\s+self\\b', inside: {kind: capture_list, inside: {kind: lambda_literal, inside: {kind: lambda_literal, stopBy: end}}}}"
+    rules: "docs/knowledge_base/rules/ios/swift-weak-self-on-outermost-closure.md"
+  }
+  # Combine-based observable models.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\bObservableObject\\b"
+    content_patterns: "@Published\\b"
+    content_patterns: "@(?:StateObject|ObservedObject|EnvironmentObject)\\b"
+    rules: "docs/knowledge_base/rules/ios/swift-observable-macro-over-observable-object.md"
+  }
+  # Async functions and main-thread hops that may do UI work.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\bfunc\\s+\\w+[^{]*\\)\\s*async\\b"
+    content_patterns: "\\bMainActor\\.run\\b"
+    content_patterns: "\\bDispatchQueue\\.main\\.async\\b"
+    content_patterns: "@MainActor\\b"
+    rules: "docs/knowledge_base/rules/ios/swift-main-actor-for-ui-work.md"
+  }
+  # A Task annotated @MainActor.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\bTask\\s*(?:\\([^)]*\\))?\\s*\\{\\s*@MainActor\\b"
+    rules: "docs/knowledge_base/rules/ios/swift-no-redundant-main-actor-on-task.md"
+  }
+  # OS version reads and availability checks.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\boperatingSystemVersion\\b"
+    content_patterns: "\\bsystemVersion\\b"
+    content_patterns: "\\bisOperatingSystemAtLeast\\b"
+    content_patterns: "#(?:un)?available\\b"
+    rules: "docs/knowledge_base/rules/ios/swift-available-over-version-comparison.md"
+  }
+  # Statement-level switches.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "^\\s*switch\\b"
+    rules: "docs/knowledge_base/rules/ios/swift-expression-switch-for-assignment.md"
+  }
+  # A guard ... else { continue } at the top of a for loop's body.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    ast_language: "swift"
+    ast_patterns: "{kind: guard_statement, regex: 'else\\s*\\{\\s*continue\\b', inside: {kind: statements, inside: {kind: for_statement}}}"
+    content_patterns: "\\belse\\s*\\{\\s*continue\\b"
+    rules: "docs/knowledge_base/rules/ios/swift-for-where-over-guard-continue.md"
+  }
+  # sorted() followed by .first or .last.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    ast_language: "swift"
+    ast_patterns: "{kind: navigation_suffix, regex: '^\\.(?:first|last)$', inside: {kind: navigation_expression, has: {field: target, kind: call_expression, has: {kind: navigation_expression, has: {field: suffix, regex: '^\\.sorted$'}}}}}"
+    ast_patterns: "{kind: navigation_suffix, regex: '^\\.sorted$', inside: {kind: navigation_expression, inside: {kind: call_expression, inside: {kind: navigation_expression, has: {field: suffix, regex: '^\\.(?:first|last)$'}}}}}"
+    content_patterns: "\\.sorted\\b.*\\.(?:first|last)\\b"
+    rules: "docs/knowledge_base/rules/ios/swift-max-by-over-sorted-first.md"
+  }
+  # A guard statement right after another one.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    ast_language: "swift"
+    ast_patterns: "{kind: guard_statement, follows: {kind: guard_statement}}"
+    rules: "docs/knowledge_base/rules/ios/swift-combine-guard-conditions.md"
+  }
+  # Array literals, and contains() on them.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\b(?:let|var)\\s+\\w+\\s*:\\s*\\[[\\w.]+\\]\\s*=\\s*\\["
+    content_patterns: "\\b(?:let|var)\\s+\\w+\\s*=\\s*\\[\\s*(?:\"|\\.[a-z])"
+    content_patterns: "\\]\\s*\\.contains\\s*\\("
+    rules: "docs/knowledge_base/rules/ios/swift-set-for-membership-tests.md"
+  }
+  # open declarations.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\bopen\\s+(?:class|func|var|let|subscript|override|static|init)\\b"
+    rules: "docs/knowledge_base/rules/ios/swift-public-over-open.md"
+  }
+  # Static methods returning a type.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\bstatic\\s+func\\s+\\w+\\s*(?:<[^>]*>)?\\s*\\([^)]*\\)\\s*(?:throws\\s+)?->\\s*(?:Self|[A-Z]\\w*)\\b"
+    rules: "docs/knowledge_base/rules/ios/swift-enum-init-over-static-factory.md"
+  }
+  # Default values of initializer parameters.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    ast_language: "swift"
+    ast_patterns: "{any: [{kind: prefix_expression}, {kind: array_literal}, {kind: dictionary_literal}, {kind: boolean_literal}, {kind: call_expression}, {kind: line_string_literal}, {kind: integer_literal}, {kind: real_literal}, {kind: lambda_literal}, {kind: navigation_expression}, {kind: simple_identifier}], inside: {kind: init_declaration}}"
+    content_patterns: "\\binit[?!]?\\s*\\([^)]*[^=!<>]=\\s*nil\\b"
+    rules: "docs/knowledge_base/rules/ios/swift-no-defaults-for-required-init-parameters.md"
+  }
+  # Stored var properties of classes and actors.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    ast_language: "swift"
+    ast_patterns: "{kind: property_declaration, has: {kind: value_binding_pattern, regex: '^var$'}, not: {any: [{has: {kind: computed_property, stopBy: end}}, {has: {kind: modifiers, regex: '\\blazy\\b|\\bweak\\b|\\bunowned\\b|@'}}]}, inside: {kind: class_body, inside: {kind: class_declaration, has: {field: declaration_kind, regex: '^(?:class|actor)$'}}}}"
+    rules: "docs/knowledge_base/rules/ios/swift-let-for-single-assignment-properties.md"
+  }
+  # Implicitly unwrapped optional properties.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\bvar\\s+\\w+\\s*:\\s*[^=]*!\\s*(?://.*)?$"
+    rules: "docs/knowledge_base/rules/ios/swift-no-iuo-for-view-did-load-properties.md"
+  }
+  # lazy var properties.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\blazy\\s+var\\b"
+    rules: "docs/knowledge_base/rules/ios/swift-lazy-var-only-when-needed.md"
+  }
+  # Continuations bridging callbacks to async code.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\bwith(?:Checked|Unsafe)(?:Throwing)?Continuation\\b"
+    rules: "docs/knowledge_base/rules/ios/swift-cancellation-handler-for-continuations.md"
+    rules: "docs/knowledge_base/rules/ios/swift-check-delegate-before-continuation.md"
+  }
+  # Returns from functions taking a completion handler, and escaping handlers.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    ast_language: "swift"
+    ast_patterns: "{kind: control_transfer_statement, regex: '^return\\b', inside: {kind: function_declaration, stopBy: end, has: {kind: parameter, regex: '@escaping|(?i:completion|handler|callback)'}}}"
+    content_patterns: "@escaping\\b"
+    rules: "docs/knowledge_base/rules/ios/ios-call-completion-handlers-on-all-paths.md"
+  }
+  # Direct JavaScript evaluation.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\b(?:callAsyncJavaScript|evaluateJavaScript)\\b"
+    rules: "docs/knowledge_base/rules/ios/ios-evaluate-safe-javascript.md"
+  }
+  # Integer-backed enums and error codes.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\benum\\s+\\w+\\s*:\\s*(?:Int|UInt|Int32|Int64)\\b"
+    content_patterns: "(?i:\\berror_?code\\b)"
+    content_patterns: "\\bNSError\\s*\\("
+    rules: "docs/knowledge_base/rules/ios/swift-error-types-not-integer-codes.md"
+  }
+  # Optional parameters of Swift delegate protocol methods.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    ast_language: "swift"
+    ast_patterns: "{kind: optional_type, inside: {kind: parameter, stopBy: end, inside: {kind: protocol_function_declaration, inside: {kind: protocol_body, inside: {kind: protocol_declaration, regex: '\\bprotocol\\s+\\w*Delegate\\b'}}}}}"
+    rules: "docs/knowledge_base/rules/ios/ios-non-optional-delegate-parameters.md"
+  }
+  # Nullable parameters in Objective-C headers.
+  capability_groups {
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.h"
+    path_expression: "(?:.*/)?[^/]*_ios\\.h"
+    content_patterns: ":\\s*\\(\\s*nullable\\b"
+    content_patterns: "\\b_?_Nullable\\b|\\b__nullable\\b"
+    rules: "docs/knowledge_base/rules/ios/ios-non-optional-delegate-parameters.md"
+  }
+  # Values bound from calls, which may never be read.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "^\\s*(?:let|var)\\s+\\w+\\s*=\\s*(?:try[?!]?\\s+)?(?:await\\s+)?[\\w.]+\\s*\\("
+    rules: "docs/knowledge_base/rules/ios/swift-assign-unused-results-to-underscore.md"
+  }
+  # The deprecated SwiftUI cornerRadius modifier.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\.cornerRadius\\s*\\("
+    rules: "docs/knowledge_base/rules/ios/swiftui-clip-shape-over-corner-radius.md"
+  }
+  # A background modifier followed by clipShape.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    ast_language: "swift"
+    ast_patterns: "{kind: navigation_suffix, regex: '^\\.clipShape$', inside: {kind: navigation_expression, has: {field: target, kind: call_expression, has: {kind: navigation_expression, has: {field: suffix, regex: '^\\.background$'}}}}}"
+    ast_patterns: "{kind: navigation_suffix, regex: '^\\.background$', inside: {kind: navigation_expression, inside: {kind: call_expression, inside: {kind: navigation_expression, has: {field: suffix, regex: '^\\.clipShape$'}}}}}"
+    rules: "docs/knowledge_base/rules/ios/swiftui-background-in-shape.md"
+  }
+  # Stacks, and edge padding of their children.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\.padding\\s*\\(\\s*\\.(?:top|bottom|leading|trailing|vertical|horizontal)\\b"
+    content_patterns: "\\b(?:Lazy)?[VH]Stack\\s*[({]"
+    rules: "docs/knowledge_base/rules/ios/swiftui-stack-spacing-over-child-padding.md"
+  }
+  # SwiftUI view builder blocks.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\b(?:[VHZ]Stack|Lazy[VH](?:Stack|Grid)|Group|ForEach|Section|List|ScrollView|Form|NavigationStack)\\s*[({]"
+    content_patterns: "\\.(?:overlay|background|sheet|fullScreenCover|popover|toolbar|safeAreaInset)\\s*[({]"
+    content_patterns: "@ViewBuilder\\b"
+    content_patterns: "\\bvar\\s+body\\s*:\\s*some\\s+View\\b"
+    rules: "docs/knowledge_base/rules/ios/swiftui-extract-long-inline-view-builders.md"
+  }
+  # UIHostingController, as cells embed it.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\bUIHostingController\\b"
+    rules: "docs/knowledge_base/rules/ios/ios-hosting-configuration-for-swiftui-cells.md"
+  }
+  # Constraint changes inside a Swift layoutSubviews.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    ast_language: "swift"
+    ast_patterns: "{any: [{kind: assignment}, {kind: call_expression}], regex: '(?i:constraint)|\\.constant\\b|\\bisActive\\b', inside: {kind: function_declaration, regex: '\\bfunc\\s+layoutSubviews\\s*\\(', stopBy: end}}"
+    content_patterns: "\\bfunc\\s+layoutSubviews\\b"
+    rules: "docs/knowledge_base/rules/ios/ios-no-constraint-changes-in-layout-subviews.md"
+  }
+  # Forced layout passes in Swift.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\bsetNeedsLayout\\s*\\("
+    content_patterns: "\\blayoutIfNeeded\\s*\\("
+    rules: "docs/knowledge_base/rules/ios/ios-set-needs-update-constraints-for-constraint-changes.md"
+  }
+  # layoutSubviews, constraint changes and forced layout in Objective-C.
+  capability_groups {
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:m|mm)"
+    path_expression: "(?:.*/)?[^/]*_ios\\.mm"
+    content_patterns: "\\blayoutSubviews\\b"
+    content_patterns: "\\.constant\\s*="
+    content_patterns: "\\.active\\s*="
+    content_patterns: "\\b(?:de)?activateConstraints\\s*:"
+    content_patterns: "\\bsetNeedsLayout\\b"
+    content_patterns: "\\blayoutIfNeeded\\b"
+    rules: "docs/knowledge_base/rules/ios/ios-no-constraint-changes-in-layout-subviews.md"
+    rules: "docs/knowledge_base/rules/ios/ios-set-needs-update-constraints-for-constraint-changes.md"
+  }
+  # Keyboard notifications and frames.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:m|mm)"
+    content_patterns: "\\b(?:UI)?[Kk]eyboard(?:Will|Did)(?:Show|Hide|ChangeFrame)Notification\\b"
+    content_patterns: "(?i:keyboardFrame(?:End|Begin)UserInfoKey)"
+    rules: "docs/knowledge_base/rules/ios/ios-keyboard-layout-guide.md"
+  }
+  # Hard-coded and system colors.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\bUIColor\\s*\\(\\s*(?:red|white|hue|displayP3Red|rgb|hex)\\s*:"
+    content_patterns: "\\bColor\\s*\\(\\s*(?:red|white|hue|hex|\\.sRGB\\w*|\\.displayP3)\\b"
+    content_patterns: "#colorLiteral\\b"
+    content_patterns: "\\bUIColor\\.(?:system\\w+|label|secondaryLabel|tertiaryLabel|black|white|gray|darkGray|lightGray|red|green|blue|cyan|yellow|magenta|orange|purple|brown)\\b"
+    content_patterns: "\\b(?:foregroundColor|foregroundStyle|tint|background|fill|stroke)\\s*\\(\\s*(?:Color)?\\.(?:black|white|gray|red|green|blue|orange|yellow|pink|purple|mint|teal|cyan|indigo|brown)\\b"
+    content_patterns: "\\b0x[0-9A-Fa-f]{6}\\b"
+    rules: "docs/knowledge_base/rules/ios/ios-brave-design-system-colors.md"
+  }
+  # Any change to the browser view controller's tab observer and policy decider.
+  capability_groups {
+    path_expression: "ios/brave-ios/Sources/Brave/Frontend/Browser/BrowserViewController/BVC\\+Tab(?:Observer|PolicyDecider)\\.swift"
+    rules: "docs/knowledge_base/rules/ios/ios-thin-tab-observer-and-policy-decider.md"
+  }
+  # Statements of a Swift viewDidLoad.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    ast_language: "swift"
+    ast_patterns: "{any: [{kind: assignment}, {kind: call_expression}], inside: {kind: statements, inside: {kind: function_body, inside: {kind: function_declaration, regex: '\\bfunc\\s+viewDidLoad\\s*\\('}}}}"
+    content_patterns: "\\bfunc\\s+viewDidLoad\\b"
+    rules: "docs/knowledge_base/rules/ios/ios-set-properties-before-setup-in-view-did-load.md"
+  }
+  # An Objective-C viewDidLoad.
+  capability_groups {
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:m|mm)"
+    content_patterns: "\\bviewDidLoad\\b"
+    rules: "docs/knowledge_base/rules/ios/ios-set-properties-before-setup-in-view-did-load.md"
+  }
+  # Objective-C declarations in headers.
+  capability_groups {
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.h"
+    path_expression: "(?:.*/)?[^/]*_ios\\.h"
+    content_patterns: "@(?:interface|protocol|property)\\b"
+    content_patterns: "^\\s*[-+]\\s*\\("
+    content_patterns: "\\bNS_ASSUME_NONNULL_(?:BEGIN|END)\\b"
+    content_patterns: "^\\s*(?:OBJC_EXPORT|FOUNDATION_EXPORT)\\b"
+    rules: "docs/knowledge_base/rules/ios/objc-headers-assume-nonnull.md"
+    rules: "docs/knowledge_base/rules/ios/objc-ns-swift-name-for-swift-apis.md"
+  }
+  # Class methods and unavailable initializers in Objective-C headers.
+  capability_groups {
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.h"
+    path_expression: "(?:.*/)?[^/]*_ios\\.h"
+    content_patterns: "^\\s*\\+\\s*\\("
+    content_patterns: "\\bNS_UNAVAILABLE\\b"
+    rules: "docs/knowledge_base/rules/ios/objc-static-only-classes-unavailable-init.md"
+  }
+  # OBJC_EXPORT in implementation files.
+  capability_groups {
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:m|mm)"
+    path_expression: "(?:.*/)?[^/]*_ios\\.mm"
+    content_patterns: "\\bOBJC_EXPORT\\b"
+    rules: "docs/knowledge_base/rules/ios/objc-export-on-headers-only.md"
+  }
+  # == and != against string literals and constants.
+  capability_groups {
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:h|m|mm)"
+    path_expression: "(?:.*/)?[^/]*_ios\\.(?:h|mm)"
+    content_patterns: "(?:==|!=)\\s*@\""
+    content_patterns: "@\"(?:[^\"\\\\]|\\\\.)*\"\\s*(?:==|!=)"
+    content_patterns: "(?:==|!=)\\s*k[A-Z]\\w*"
+    rules: "docs/knowledge_base/rules/ios/objc-compare-strings-with-is-equal-to-string.md"
+  }
+  # Names that may not match their scope's language.
+  capability_groups {
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:h|m|mm)"
+    path_expression: "(?:.*/)?[^/]*_ios\\.(?:h|mm)"
+    content_patterns: "\\b(?:[A-Z][A-Za-z0-9]*\\s*\\*|id(?:<[\\w,\\s]+>)?\\s)\\s*_?[a-z][a-z0-9]*_[a-z0-9_]+\\b"
+    content_patterns: "\\b[a-z]+[A-Z]\\w*_\\s*[;=({]"
+    content_patterns: "\\b(?:auto|bool|int|size_t|std::\\w+|base::\\w+)\\S*\\s+[a-z]+[A-Z]\\w*\\s*="
+    rules: "docs/knowledge_base/rules/ios/objc-camel-case-variables-in-objc-scopes.md"
+  }
+  # weakSelf and tasks posted from Objective-C++.
+  capability_groups {
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:m|mm)"
+    path_expression: "(?:.*/)?[^/]*_ios\\.mm"
+    content_patterns: "\\bweakSelf\\b"
+    content_patterns: "\\bPost(?:Delayed)?Task\\s*\\("
+    content_patterns: "\\bdispatch_(?:async|after)\\s*\\("
+    content_patterns: "\\bBind(?:Once|Repeating)\\s*\\(\\s*\\^"
+    rules: "docs/knowledge_base/rules/ios/objc-pass-weak-self-into-posted-tasks.md"
+  }
+  # copy, mutableCopy and mutable collections.
+  capability_groups {
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:h|m|mm)"
+    path_expression: "(?:.*/)?[^/]*_ios\\.(?:h|mm)"
+    content_patterns: "\\bmutableCopy\\b"
+    content_patterns: "\\scopy\\]"
+    content_patterns: "\\bNSMutable(?:Array|Dictionary|Set|OrderedSet|String|Data|AttributedString)\\b"
+    rules: "docs/knowledge_base/rules/ios/objc-copy-and-mutable-copy-for-collections.md"
+  }
+  # Singletons, declared or used.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:h|m|mm)"
+    content_patterns: "\\b[A-Z]\\w*\\.shared\\b"
+    content_patterns: "\\bstatic\\s+(?:let|var)\\s+(?:shared|instance|current)\\b"
+    content_patterns: "\\+\\s*\\(\\s*(?:instancetype|\\w+\\s*\\*)\\s*\\)\\s*shared\\w*"
+    content_patterns: "\\[\\s*\\w+\\s+shared\\w*\\s*\\]"
+    content_patterns: "\\bdispatch_once\\b"
+    rules: "docs/knowledge_base/rules/ios/ios-dependency-injection-over-singletons.md"
+  }
+  # Tab data and associated objects.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\bobjc_[gs]etAssociatedObject\\b"
+    content_patterns: "\\bextension\\s+(?:Tab|TabState|AnyTabState|TabDataValues)\\b"
+    content_patterns: "\\bTabDataValues\\b"
+    rules: "docs/knowledge_base/rules/ios/ios-tab-data-values-for-tab-helpers.md"
+  }
+  # Properties added to TabState and its implementations.
+  capability_groups {
+    path_expression: "ios/brave-ios/Sources/Web/(?:.*/)?[^/]*TabState[^/]*\\.swift"
+    content_patterns: "\\b(?:var|let)\\s+\\w+\\s*[:=]"
+    rules: "docs/knowledge_base/rules/ios/ios-no-feature-data-in-tab-state.md"
+  }
+  # Imports and singletons in view model files.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:ViewModel|Model|Store)[^/]*\\.swift"
+    content_patterns: "\\b[A-Z]\\w*\\.shared\\b"
+    content_patterns: "^\\s*(?:@\\w+(?:\\([^)]*\\))?\\s+)*import\\s+\\w+"
+    content_patterns: "\\b\\w+SDK\\b"
+    rules: "docs/knowledge_base/rules/ios/ios-view-models-inject-sdk-dependencies.md"
+  }
+  # Lookups of the last-used profile.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:cc|h|m|mm)"
+    path_expression: "(?:.*/)?[^/]*_ios\\.(?:cc|h|mm)"
+    content_patterns: "(?i:last_?used_?profile)"
+    rules: "docs/knowledge_base/rules/ios/ios-bind-profile-not-last-used-profile.md"
+  }
+  # Feature flag checks.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bFeatureList\\.k\\w+\\.enabled\\b"
+    content_patterns: "\\bFeatureList::IsEnabled\\s*\\("
+    content_patterns: "\\bIs\\w+Enabled\\s*\\("
+    rules: "docs/knowledge_base/rules/ios/ios-feature-flags-gate-registration.md"
+  }
+  # Extensions of generic system types.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\bextension\\s+(?:Swift\\.|Foundation\\.|UIKit\\.|SwiftUI\\.)?(?:String|Substring|Character|URL|URLRequest|URLComponents|URLSession|Data|Date|Array|Dictionary|Set|Collection|Sequence|Optional|Result|Int|Double|Float|CGFloat|CGSize|CGRect|CGPoint|Bool|NSString|NSURL|NSAttributedString|AttributedString|Bundle|FileManager|UserDefaults|NotificationCenter|Locale|Calendar|TimeInterval|UIView|UIViewController|UINavigationController|UIColor|UIImage|UIFont|UIApplication|UIDevice|UIScreen|UIScrollView|UITableView|UICollectionView|UIButton|UILabel|UIStackView|UIWindow|View|Color|Image|Text|Font|Binding|WKWebView|WKWebViewConfiguration|WKUserContentController)\\b"
+    rules: "docs/knowledge_base/rules/ios/ios-no-feature-logic-in-generic-extensions.md"
+  }
+  # Any change to a file of generic extensions.
+  capability_groups {
+    path_expression: "(?:.*/)?Extensions/(?:.*/)?[^/]*\\.swift"
+    path_expression: "(?:.*/)?[^/]*Extensions?\\.swift"
+    rules: "docs/knowledge_base/rules/ios/ios-no-feature-logic-in-generic-extensions.md"
+  }
+  # Pref registration outside browser_prefs.mm.
+  capability_groups {
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "(?:.*/)?[^/]*_ios\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?browser_prefs(?:_impl)?\\.mm"
+    content_patterns: "\\bRegister\\w*Prefs?\\s*\\("
+    content_patterns: "->\\s*Register\\w+Pref\\s*\\("
+    rules: "docs/knowledge_base/rules/ios/ios-register-prefs-in-browser-prefs.md"
+  }
+  # The DAU installation date.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\bDAU\\.installationDate\\b"
+    rules: "docs/knowledge_base/rules/ios/ios-p3a-installation-date.md"
+  }
+  # Observers, listeners and the bridges and delegates they report to.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:cc|h|m|mm)"
+    path_expression: "(?:.*/)?[^/]*_ios\\.(?:cc|h|mm)"
+    content_patterns: "\\bclass\\s+\\w*(?:Observer|Bridge|Listener)\\w*\\b"
+    content_patterns: ":\\s*public\\s+[\\w:]*Observer\\b"
+    content_patterns: "@protocol\\s+\\w*(?:Observer|Delegate|Listener)\\b"
+    content_patterns: "\\w+(?:Observer|Listener)Bridge\\b"
+    content_patterns: "\\b[Aa]dd(?:Observer|Listener)\\s*[(:]"
+    content_patterns: "\\bextension\\s+\\w+\\s*:\\s*[\\w, ]*(?:Observer|Listener)\\b"
+    rules: "docs/knowledge_base/rules/ios/ios-wire-complete-observer-bridge-chains.md"
+  }
+  # Raw pointer members of C++ classes.
+  capability_groups {
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "(?:.*/)?[^/]*_ios\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*(?:const\\s+)?[\\w:]+(?:<[^;]*>)?\\s*\\*\\s*[a-z]\\w*_\\s*(?:=\\s*nullptr\\s*)?;"
+    rules: "docs/knowledge_base/rules/ios/ios-raw-ptr-for-cxx-pointer-members.md"
+  }
+  # NOTREACHED and NOTIMPLEMENTED.
+  capability_groups {
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "(?:.*/)?[^/]*_ios\\.(?:cc|h|mm)"
+    content_patterns: "\\bNOT(?:REACHED|IMPLEMENTED)\\s*\\("
+    rules: "docs/knowledge_base/rules/ios/ios-notimplemented-for-reachable-code.md"
+  }
+  # Mojo interface names and registrations.
+  capability_groups {
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "(?:.*/)?[^/]*_ios\\.(?:cc|h|mm)"
+    content_patterns: "\"\\w+(?:\\.\\w+)*\\.mojom\\.\\w+\""
+    content_patterns: "\\b(?:Add|Register)\\w*(?:Interface|Binder)\\w*\\s*\\("
+    content_patterns: "::Name_\\b"
+    rules: "docs/knowledge_base/rules/ios/ios-mojo-name-constant-for-interface-registration.md"
+  }
+  # The caches directory.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:cc|h|m|mm)"
+    content_patterns: "\\bcachesDirectory\\b"
+    content_patterns: "\\bNSCachesDirectory\\b"
+    content_patterns: "\\bDIR_CACHE\\b"
+    content_patterns: "\\bGetUserCacheDirectory\\b"
+    content_patterns: "Library/Caches"
+    rules: "docs/knowledge_base/rules/ios/ios-no-persistent-state-in-caches-directory.md"
+  }
+  # Any change to SharedStrings.swift.
+  capability_groups {
+    path_expression: "ios/brave-ios/Sources/Shared/SharedStrings\\.swift"
+    rules: "docs/knowledge_base/rules/ios/ios-new-strings-in-brave-strings.md"
+  }
+  # Any change to the legacy Shared module.
+  capability_groups {
+    path_expression: "ios/brave-ios/Sources/Shared/.*"
+    rules: "docs/knowledge_base/rules/ios/ios-no-new-code-in-legacy-shared-module.md"
+  }
+  # New iOS test files and test classes.
+  capability_groups {
+    path_expression: "ios/brave-ios/Tests/.*\\.swift"
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*(?:_unittest|_test|_egtest|_inttest|Tests?)\\.(?:m|mm|swift)"
+    content_patterns: "Copyright \\(c\\) \\d{4} The Brave Authors"
+    content_patterns: "^\\s*(?:final\\s+)?class\\s+\\w+\\s*:\\s*XCTestCase\\b"
+    content_patterns: "^TEST(?:_F|_P)?\\s*\\("
+    rules: "docs/knowledge_base/rules/ios/ios-tests-mirror-source-modules.md"
+  }
+  # Any change to the shared pref_names_bridge files.
+  capability_groups {
+    path_expression: "(?:.*/)?pref_names_bridge\\.(?:h|mm)"
+    rules: "docs/knowledge_base/rules/ios/ios-pref-constants-in-feature-headers.md"
+  }
+  # Mojom wrapper targets under ios/browser.
+  capability_groups {
+    path_expression: "(?:.*/)?ios/browser/(?:.*/)?BUILD\\.gn"
+    path_expression: "(?:.*/)?ios/browser/(?:.*/)?[^/]*\\.gni"
+    content_patterns: "\\bios_objc_mojom_wrappers\\s*\\("
+    rules: "docs/knowledge_base/rules/ios/ios-mojom-wrappers-in-ios-common.md"
+  }
+  # New and renamed iOS headers.
+  capability_groups {
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.h"
+    path_expression: "(?:.*/)?[^/]*_ios\\.h"
+    content_patterns: "Copyright \\(c\\) \\d{4} The Brave Authors"
+    content_patterns: "^#\\s*(?:ifndef|define)\\s+\\w+_H_\\s*$"
+    rules: "docs/knowledge_base/rules/ios/ios-bridge-and-ios-header-suffixes.md"
+  }
+  # Types named with an IOS suffix.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:cc|h|m|mm)"
+    path_expression: "(?:.*/)?[^/]*_ios\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:class|struct)\\s+\\w+IOS\\b"
+    content_patterns: "@interface\\s+\\w+IOS\\b"
+    rules: "docs/knowledge_base/rules/ios/ios-impl-suffix-for-concrete-implementations.md"
+  }
+  # print and NSLog calls.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:m|mm)"
+    content_patterns: "^\\s*(?:Swift\\.)?(?:print|debugPrint|dump)\\s*\\("
+    content_patterns: "\\bNSLog\\s*\\("
+    rules: "docs/knowledge_base/rules/ios/swift-logger-not-print.md"
+  }
+  # Commented-out code and disabled branches.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:cc|h|m|mm)"
+    path_expression: "(?:.*/)?[^/]*_ios\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*//\\s*(?:let|var|if|guard|for|while|func|return|self\\.|await|try)\\b"
+    content_patterns: "^\\s*//\\s*(?:[a-z_]\\w*\\.)*[a-z_]\\w*\\("
+    content_patterns: "^\\s*//.*[;{}]\\s*$"
+    content_patterns: "^\\s*#\\s*if\\s+(?:false|0)\\b"
+    content_patterns: "\\bif\\s+false\\s*\\{"
+    rules: "docs/knowledge_base/rules/ios/ios-remove-dead-code.md"
+  }
+  # Interactive elements, and removed accessibility labels.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\bButton\\s*[({]"
+    content_patterns: "\\bUI(?:Button|BarButtonItem|Switch|Control)\\s*\\("
+    content_patterns: "\\bToggle\\s*\\("
+    content_patterns: "\\.onTapGesture\\b"
+    content_patterns: "\\bUITapGestureRecognizer\\b"
+    content_patterns: "\\baccessibility(?:Label|Hint|Value)\\b"
+    diff_patterns: "^-.*\\baccessibility(?:Label|Hint|Value)\\b"
+    rules: "docs/knowledge_base/rules/ios/ios-accessibility-labels-on-interactive-elements.md"
+  }
+  # Manual image resizing and thumbnails.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\bUIGraphicsImageRenderer\\b"
+    content_patterns: "\\bUIGraphicsBeginImageContext\\w*\\b"
+    content_patterns: "(?i:thumbnail)"
+    rules: "docs/knowledge_base/rules/ios/ios-prepare-thumbnail-for-thumbnails.md"
+  }
+  # Theme detection and class toggling in injected web content.
+  capability_groups {
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:js|ts|css)"
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\bclassList\\.(?:add|remove|toggle)\\b"
+    content_patterns: "\\bmatchMedia\\s*\\("
+    content_patterns: "prefers-color-scheme"
+    content_patterns: "(?i:dark-?mode|night-?mode|dark-?theme)"
+    rules: "docs/knowledge_base/rules/ios/ios-css-prefers-color-scheme-for-injected-content.md"
+  }
+  # Backports and availability attributes.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "@_disfavoredOverload\\b"
+    content_patterns: "@available\\s*\\(\\s*iOS\\s*,"
+    content_patterns: "\\bif\\s+#available\\s*\\("
+    rules: "docs/knowledge_base/rules/ios/swift-disfavored-overload-for-backports.md"
+  }
+  # Sleeps and delayed dispatches.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:cc|h|m|mm)"
+    path_expression: "(?:.*/)?[^/]*_ios\\.(?:cc|h|mm)"
+    content_patterns: "\\bTask\\.sleep\\b"
+    content_patterns: "\\.asyncAfter\\s*\\("
+    content_patterns: "\\bThread\\.sleep\\b"
+    content_patterns: "afterDelay\\s*:"
+    content_patterns: "\\bdispatch_after\\s*\\("
+    content_patterns: "\\bPostDelayedTask\\s*\\("
+    content_patterns: "\\bsleepForTimeInterval\\b"
+    content_patterns: "\\bPlatformThread::Sleep\\b"
+    rules: "docs/knowledge_base/rules/ios/ios-comment-artificial-delays.md"
+  }
+  # Hand-formatted times and durations.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "%0?2l?[di]\\s*:\\s*%0?2l?[di]"
+    content_patterns: "%l?[di]:%0?2l?[di]"
+    content_patterns: "\\bDateComponentsFormatter\\b"
+    content_patterns: "[/%]\\s*(?:60|3600)\\b"
+    rules: "docs/knowledge_base/rules/ios/swift-format-styles-for-durations.md"
+  }
+  # Combine subscriptions and stored cancellables.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\bAnyCancellable\\b"
+    content_patterns: "\\.sink\\s*[({]"
+    content_patterns: "\\.store\\s*\\(\\s*in\\s*:"
+    rules: "docs/knowledge_base/rules/ios/swift-local-short-lived-cancellables.md"
+  }
+  # Button shapes.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\.buttonBorderShape\\s*\\("
+    content_patterns: "\\bCapsule\\s*\\("
+    content_patterns: "\\.capsule\\b"
+    content_patterns: "\\.cornerStyle\\s*="
+    content_patterns: "cornerRadius\\s*[:=]\\s*[\\w.]*[Hh]eight\\s*/\\s*2"
+    content_patterns: "\\.buttonStyle\\s*\\("
+    rules: "docs/knowledge_base/rules/ios/ios-nala-button-shapes.md"
+  }
+  # Substitutions and includes of iOS chromium_src overrides.
+  capability_groups {
+    path_expression: "chromium_src/(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*#\\s*(?:define|undef)\\s+\\w+"
+    content_patterns: "^\\s*#\\s*(?:include|import)\\s+<"
+    rules: "docs/knowledge_base/rules/ios/ios-chromium-src-subclass-overrides.md"
+    rules: "docs/knowledge_base/rules/ios/ios-chromium-src-blank-lines-around-define-include.md"
+  }
+  # iOS conditions in feature definitions.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*features?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bIS_IOS\\b"
+    content_patterns: "\\bTARGET_OS_IOS\\b"
+    rules: "docs/knowledge_base/rules/ios/ios-gn-args-for-platform-feature-defaults.md"
+  }
+  # Test targets in iOS build files.
+  capability_groups {
+    path_expression: "(?:.*/)?ios/(?:.*/)?BUILD\\.gn"
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.gni"
+    content_patterns: "\\b(?:test|ios_\\w*test\\w*)\\s*\\(\\s*\""
+    content_patterns: "\\bsource_set\\s*\\(\\s*\"[^\"]*tests?\""
+    content_patterns: "\\btestonly\\s*=\\s*true\\b"
+    rules: "docs/knowledge_base/rules/ios/ios-test-targets-in-brave-all-unit-tests.md"
+  }
+  # Features exposed through iOS bridges.
+  capability_groups {
+    path_expression: "(?:.*/)?ios/(?:.*/)?[^/]*\\.(?:h|m|mm)"
+    content_patterns: "\\bFeature\\s*\\*\\s*\\)?\\s*k\\w+"
+    content_patterns: "\\binitWithFeature\\s*:"
+    rules: "docs/knowledge_base/rules/ios/ios-feature-bridge-names-match-cxx.md"
+  }
+  # Image views.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\bUIImageView\\s*\\("
+    content_patterns: "\\bImage\\s*\\(\\s*(?:\"|uiImage\\s*:|decorative\\s*:)"
+    content_patterns: "\\.contentMode\\s*="
+    content_patterns: "\\.resizable\\s*\\("
+    rules: "docs/knowledge_base/rules/ios/ios-size-images-explicitly.md"
+  }
+  # SwiftUI buttons and their labels.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\bButton\\s*[({]"
+    content_patterns: "\\}\\s*label\\s*:\\s*\\{"
+    content_patterns: "\\.labelStyle\\s*\\("
+    rules: "docs/knowledge_base/rules/ios/swiftui-label-for-icon-only-buttons.md"
+  }
+  # Apple system symbols.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\b(?:UI)?Image\\s*\\(\\s*systemName\\s*:"
+    content_patterns: "\\bsystemImage\\s*:"
+    rules: "docs/knowledge_base/rules/ios/ios-nala-icons-over-system-icons.md"
+  }
+  # Nala icons, and resizable images.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\bImage\\s*\\(\\s*braveSystemName\\s*:"
+    content_patterns: "\\.resizable\\s*\\(\\s*\\)"
+    rules: "docs/knowledge_base/rules/ios/swiftui-size-nala-icons-with-font.md"
+  }
+  # Fixed font sizes.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\.system\\s*\\(\\s*size\\s*:"
+    content_patterns: "\\bUIFont\\.(?:systemFont|boldSystemFont|italicSystemFont|monospacedSystemFont|monospacedDigitSystemFont)\\s*\\(\\s*ofSize\\s*:"
+    content_patterns: "\\bUIFont\\s*\\(\\s*name\\s*:"
+    content_patterns: "\\.custom\\s*\\([^)]*size\\s*:"
+    rules: "docs/knowledge_base/rules/ios/ios-no-fixed-font-sizes.md"
+  }
+  # @State storage assigned from an initializer.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\bState\\s*\\(\\s*(?:wrappedValue|initialValue)\\s*:"
+    content_patterns: "\\b_\\w+\\s*=\\s*State\\b"
+    rules: "docs/knowledge_base/rules/ios/swiftui-no-state-initialization-in-init.md"
+  }
+  # Closure-based bindings.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\bBinding\\s*(?:<[^>]*>)?\\s*\\(\\s*(?:get\\s*:|$)"
+    content_patterns: "^\\s*get\\s*:\\s*\\{"
+    rules: "docs/knowledge_base/rules/ios/swiftui-no-computed-bindings.md"
+  }
+}

@@ -1,0 +1,12 @@
+diff --git a/agents/knowledge_base/rules/general/cpp_design_and_testing/COMMON_METADATA b/agents/knowledge_base/rules/general/cpp_design_and_testing/COMMON_METADATA
+index bc9272ba57818473b1119031452c325b42cdc198..62819a4280842a711d07852ca2604182c434b71e 100644
+--- a/agents/knowledge_base/rules/general/cpp_design_and_testing/COMMON_METADATA
++++ b/agents/knowledge_base/rules/general/cpp_design_and_testing/COMMON_METADATA
+@@ -73,7 +73,6 @@ agentic_review {
+   capability_groups {
+     path_expression: "(?:.*/)?[^/]*\\.(?:h|hpp|cc|cpp|mm)"
+     content_patterns: "\\b(?:cxx::bridge|rust::(?:Str|String|Slice)|unsafe\\b|c_char|CString)\\b"
+-    rules: "agents/knowledge_base/rules/general/cpp_design_and_testing/capture-sufficient-ui-context-in-translation-screenshots.md"
+     rules: "agents/knowledge_base/rules/general/cpp_design_and_testing/prefer-overloads-over-type-suffixed-names.md"
+   }
+   capability_groups {

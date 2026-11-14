@@ -1,0 +1,49 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The rules of docs/best-practices/documentation.md. See
+# docs/knowledge_base/README.md for the fields.
+agentic_review {
+  # Removed or changed declarations in headers, mojom and IDL.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:h|mojom|idl)"
+    diff_patterns: "^-.*\\w\\s*\\("
+    diff_patterns: "^-\\s*(?:class|struct|enum|interface|using)\\s"
+    rules: "docs/knowledge_base/rules/documentation/docs-update-with-code.md"
+    rules: "docs/knowledge_base/rules/documentation/docs-delete-dead-documentation.md"
+  }
+  # Any Markdown.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.md"
+    path_expression_exclusion: "docs/knowledge_base/rules/.*"
+    rules: "docs/knowledge_base/rules/documentation/docs-delete-dead-documentation.md"
+    rules: "docs/knowledge_base/rules/documentation/docs-minimal-fresh-documentation.md"
+  }
+  # Markdown outside the best practices and the knowledge base.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.md"
+    path_expression_exclusion: "docs/best-practices/.*"
+    path_expression_exclusion: "docs/knowledge_base/.*"
+    rules: "docs/knowledge_base/rules/documentation/docs-link-to-canonical-sources.md"
+  }
+  # README files.
+  capability_groups {
+    path_expression: "(?:.*/)?README\\.md"
+    rules: "docs/knowledge_base/rules/documentation/docs-readme-orients-new-readers.md"
+  }
+  # Best-practice documents.
+  capability_groups {
+    path_expression: "docs/best-practices/[^/]*\\.md"
+    rules: "docs/knowledge_base/rules/documentation/docs-best-practices-self-contained.md"
+    rules: "docs/knowledge_base/rules/documentation/docs-best-practices-consistent.md"
+  }
+  # Comments and method declarations, in C++ headers.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.h"
+    content_patterns: "^\\s*//"
+    content_patterns: "^\\s*(?:virtual\\s+|static\\s+)?[A-Za-z_][\\w:<>,]*(?:\\s*[*&])?\\s+[A-Za-z_]\\w*\\s*\\("
+    rules: "docs/knowledge_base/rules/documentation/docs-method-comments-describe-contract.md"
+  }
+}

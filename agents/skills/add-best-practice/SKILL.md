@@ -7,8 +7,8 @@ description:
 argument-hint: '<best practice description>'
 disable-model-invocation: true
 allowed-tools:
-  Bash(python3:*), Bash(git:*), Bash(gh:*), Bash(ls:*), Read, Grep, Glob, Edit,
-  Write, Agent, WebFetch
+  Bash(python3:*), Bash(vpython3:*), Bash(git:*), Bash(gh:*), Bash(ls:*), Read,
+  Grep, Glob, Edit, Write, Agent, WebFetch
 ---
 
 # Add Best Practice
@@ -247,6 +247,30 @@ If validation fails, fix the issue before proceeding.
 
 ---
 
+## Step 8.5: Add the Knowledge Base Rule
+
+Every best practice is also a code review rule in `docs/knowledge_base/`, which
+`review-prs kb` reviews with, and which is to replace these documents. Follow
+`docs/knowledge_base/README.md`:
+
+1. Write the rule in the `docs/knowledge_base/rules/<topic>/` directory the
+   README's layout table gives for its topic (for a new topic, add a directory
+   and its row).
+2. Name it from a capability group in that directory's `COMMON_METADATA`, scoped
+   to the files and, where the rule concerns particular APIs, the lines it
+   applies to.
+3. Check the scope with `vpython3 tools/cr/knowledge_base.py match <diff>` on a
+   diff that breaks the rule, and run:
+
+```bash
+vpython3 tools/cr/knowledge_base.py lint
+```
+
+When the entry changes an existing best practice, change the rule stating it
+too.
+
+---
+
 ## Step 9: Format Markdown
 
 All created or modified docs MUST be formatted with `pnpm run format` before
@@ -265,7 +289,7 @@ any related edits into one commit (do NOT create separate commits for the entry
 and the ID assignment — they are one logical unit).
 
 ```bash
-git add $DOCS_DIR/<document>.md
+git add $DOCS_DIR/<document>.md docs/knowledge_base/rules/<topic>/
 # Also add manage-bp-ids.py and docs/best_practices.md if they were modified
 git commit -m "Add best practice: <short rule title>"
 ```

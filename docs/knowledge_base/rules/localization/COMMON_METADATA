@@ -1,0 +1,263 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The rules of docs/best-practices/localization.md. See
+# docs/knowledge_base/README.md for the fields.
+agentic_review {
+  # Explicit translateable="true".
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "\\btranslateable\\s*=\\s*[\"\\']true[\"\\']"
+    rules: "docs/knowledge_base/rules/localization/grd-no-translateable-true.md"
+  }
+  # String descriptions, in GRD/GRDP.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "\\bdesc\\s*=\\s*\""
+    rules: "docs/knowledge_base/rules/localization/grd-desc-gives-translators-context.md"
+    rules: "docs/knowledge_base/rules/localization/grd-desc-names-ui-element.md"
+    rules: "docs/knowledge_base/rules/localization/grd-desc-unique.md"
+    rules: "docs/knowledge_base/rules/localization/grd-desc-proofread.md"
+  }
+  # String descriptions, in iOS strings.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "\\bcomment:\\s*\""
+    content_patterns: "^\\s*/\\*"
+    rules: "docs/knowledge_base/rules/localization/grd-desc-gives-translators-context.md"
+    rules: "docs/knowledge_base/rules/localization/grd-desc-names-ui-element.md"
+    rules: "docs/knowledge_base/rules/localization/grd-desc-unique.md"
+    rules: "docs/knowledge_base/rules/localization/grd-desc-proofread.md"
+  }
+  # New messages, and empty descriptions, in GRD/GRDP.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "<message\\b"
+    content_patterns: "\\bdesc\\s*=\\s*\"\\s*\""
+    rules: "docs/knowledge_base/rules/localization/grd-desc-not-empty.md"
+  }
+  # Empty descriptions, in iOS strings.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "\\bcomment:\\s*\"\\s*\""
+    rules: "docs/knowledge_base/rules/localization/grd-desc-not-empty.md"
+  }
+  # Direct loadTimeData string lookups, in TS.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.ts"
+    content_patterns: "\\bloadTimeData\\.getString(?:F)?\\s*\\("
+    rules: "docs/knowledge_base/rules/localization/lit-use-i18n-mixin.md"
+  }
+  # Any change to Brave's copies of upstream GRD/GRDP files, or patches of upstream ones.
+  capability_groups {
+    path_expression: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    path_expression: "patches/(?:.*/)?[^/]*\\.grdp?\\.patch"
+    path_expression: "rewrite/(?:.*/)?[^/]*\\.grdp?\\.yaml"
+    path_expression_exclusion: "(?:.*/)?[^/]*_override\\.grdp?"
+    rules: "docs/knowledge_base/rules/localization/grd-no-edits-to-upstream-copies.md"
+  }
+  # IDS_ overrides in chromium_src.
+  capability_groups {
+    path_expression: "chromium_src/.*"
+    content_patterns: "^\\s*#\\s*(?:define|undef)\\s+IDS_\\w+"
+    rules: "docs/knowledge_base/rules/localization/grd-string-replacements-for-substitutions.md"
+  }
+  # Changes to the string replacements.
+  capability_groups {
+    path_expression: "script/lib/l10n/grd_string_replacements\\.py"
+    rules: "docs/knowledge_base/rules/localization/grd-string-replacements-for-substitutions.md"
+  }
+  # New messages and their formatter_data, in GRD/GRDP.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "<message\\b"
+    content_patterns: "\\bformatter_data\\s*="
+    rules: "docs/knowledge_base/rules/localization/grd-webui-formatter-data.md"
+  }
+  # Placeholders, in GRD/GRDP.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "<ph\\b"
+    content_patterns: "\\$\\d"
+    rules: "docs/knowledge_base/rules/localization/grd-placeholder-names.md"
+    rules: "docs/knowledge_base/rules/localization/grd-placeholder-examples.md"
+    rules: "docs/knowledge_base/rules/localization/l10n-natural-word-order-around-placeholders.md"
+  }
+  # Format specifiers, in Android strings.
+  capability_groups {
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    content_patterns: "%(?:\\d\\$)?[sd]"
+    rules: "docs/knowledge_base/rules/localization/l10n-natural-word-order-around-placeholders.md"
+  }
+  # Format specifiers, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*%(?:\\d\\$)?(?:@|l{0,2}d|s)"
+    rules: "docs/knowledge_base/rules/localization/l10n-natural-word-order-around-placeholders.md"
+  }
+  # Consecutive capitalized words, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*\\b[A-Z][a-z]+\\s+[A-Z][a-z]+\\b"
+    rules: "docs/knowledge_base/rules/localization/l10n-consistent-capitalization.md"
+  }
+  # Consecutive capitalized words, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\b[A-Z][a-z]+\\s+[A-Z][a-z]+\\b"
+    rules: "docs/knowledge_base/rules/localization/l10n-consistent-capitalization.md"
+  }
+  # "etc.", in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\betc\\b)"
+    rules: "docs/knowledge_base/rules/localization/l10n-and-more-not-etc.md"
+  }
+  # "etc.", in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\betc\\b)"
+    rules: "docs/knowledge_base/rules/localization/l10n-and-more-not-etc.md"
+  }
+  # Shields and on/off/up/down states, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\bshields?\\b)"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:turn(?:ed|s)?|switch(?:ed|es)?|set|is|are)\\s+(?:on|off|up|down)\\b)"
+    rules: "docs/knowledge_base/rules/localization/l10n-match-feature-terminology.md"
+  }
+  # Shields and on/off/up/down states, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\bshields?\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:turn(?:ed|s)?|switch(?:ed|es)?|set|is|are)\\s+(?:on|off|up|down)\\b)"
+    rules: "docs/knowledge_base/rules/localization/l10n-match-feature-terminology.md"
+  }
+  # Sending and sharing, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:send|sends|sending|sent|share|shares|sharing|shared|upload\\w*|submit\\w*)\\b)"
+    rules: "docs/knowledge_base/rules/localization/l10n-explicit-data-sharing.md"
+  }
+  # Sending and sharing, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:send|sends|sending|sent|share|shares|sharing|shared|upload\\w*|submit\\w*)\\b)"
+    rules: "docs/knowledge_base/rules/localization/l10n-explicit-data-sharing.md"
+  }
+  # New messages, in GRD/GRDP.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "<message\\b"
+    rules: "docs/knowledge_base/rules/localization/grd-no-unused-strings.md"
+  }
+  # Removed uses of string resources, in code.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm|java|kt|swift|ts|tsx|py)"
+    diff_patterns: "^-.*\\bIDS_[A-Z0-9_]+\\b"
+    diff_patterns: "^-.*\\bR\\.string\\.\\w+"
+    rules: "docs/knowledge_base/rules/localization/grd-no-unused-strings.md"
+  }
+  # Google product names in the text of Brave's copies of upstream GRD/GRDP files.
+  capability_groups {
+    path_expression: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:google|chrome|chromium|gemini|gmail|youtube)\\b)"
+    rules: "docs/knowledge_base/rules/localization/grd-rebrand-upstream-product-names.md"
+  }
+  # Wallets, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\bwallets?\\b)"
+    rules: "docs/knowledge_base/rules/localization/l10n-brave-wallet-means-crypto-wallet.md"
+  }
+  # Wallets, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\bwallets?\\b)"
+    rules: "docs/knowledge_base/rules/localization/l10n-brave-wallet-means-crypto-wallet.md"
+  }
+  # getLocale() calls whose key is not a constant or literal.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:ts|tsx)"
+    content_patterns: "\\bgetLocale\\w*\\s*\\(\\s*`"
+    content_patterns: "\\bgetLocale\\w*\\s*\\([^)]*\\+"
+    content_patterns: "\\bgetLocale\\w*\\s*\\([^)]*\\["
+    content_patterns: "\\bgetLocale\\w*\\s*\\(\\s*[a-z_$][\\w$]*(?:\\.[\\w$]+)*\\s*[,)]"
+    content_patterns: "\\bgetLocale\\w*\\s*\\(\\s*\\w+\\s*\\("
+    content_patterns: "\\bgetLocale\\w*\\s*\\(\\s*$"
+    rules: "docs/knowledge_base/rules/localization/getlocale-no-dynamic-keys.md"
+  }
+  # Formatted string lookups, in C++.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|mm)"
+    content_patterns: "\\bGetStringFUTF(?:16|8)\\s*\\("
+    rules: "docs/knowledge_base/rules/localization/l10n-build-links-in-ui.md"
+  }
+  # Links in string text, in GRD/GRDP.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?i:\\bhref\\s*=|&lt;a\\s)"
+    rules: "docs/knowledge_base/rules/localization/l10n-build-links-in-ui.md"
+  }
+  # Any user-visible text in GRD/GRDP and Android strings.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "^\\s*[^<\\s]"
+    content_patterns: ">\\s*[^<\\s]"
+    rules: "docs/knowledge_base/rules/localization/l10n-strings-complete-and-grammatical.md"
+    rules: "docs/knowledge_base/rules/localization/l10n-string-changes-include-screenshots.md"
+  }
+  # Any user-visible text in iOS strings.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "\\bvalue:\\s*\""
+    content_patterns: "^\\s*\"[^\"]*\"\\s*=\\s*\""
+    rules: "docs/knowledge_base/rules/localization/l10n-strings-complete-and-grammatical.md"
+    rules: "docs/knowledge_base/rules/localization/l10n-string-changes-include-screenshots.md"
+  }
+}

@@ -300,8 +300,10 @@ MyServiceFactory::MyServiceFactory()
 
 ### ✅ Return Null for Incognito Profiles
 
-**If a service shouldn't be active in incognito, return null from
-`GetForProfile` rather than overriding `GetBrowserContextToUse`.**
+**If a service shouldn't be active in incognito, make the factory's profile
+selection return null for incognito profiles — `ProfileSelections` for a
+`ProfileKeyedServiceFactory`, `GetBrowserContextToUse` otherwise (see
+[ARCH-015](#ARCH-015)) — rather than adding the check to `GetForProfile`.**
 
 <a id="ARCH-013"></a>
 
@@ -442,10 +444,12 @@ if (brave_wallet_enabled) {
 ## ✅ Use Friend Class for Test/Private Access
 
 **When tests or other classes need access to private members, use `friend`
-declarations instead of making methods public or protected.** This rule is about
-bypassing access control for convenience. **Under this rule, NEVER flag normal
-inheritance where a subclass calls inherited protected methods or exposes new
-public methods that delegate to them.**
+declarations instead of making methods public or protected.** To open a single
+method of a Brave class to one caller, prefer a `base::PassKey<Caller>`
+parameter, which grants that method only rather than every private member. This
+rule is about bypassing access control for convenience. **Under this rule, NEVER
+flag normal inheritance where a subclass calls inherited protected methods or
+exposes new public methods that delegate to them.**
 
 **NEVER flag `*ForTesting()` methods under this rule.** They are an accepted
 Chromium convention for exposing test-only accessors.
@@ -459,21 +463,23 @@ public:
 private:
   friend class BraveExternalProcessImporterBridge;
   void InternalMethod();
+
+// ✅ CORRECT - only BraveExternalProcessImporterBridge can call it
+public:
+  void InternalMethod(base::PassKey<BraveExternalProcessImporterBridge>);
 ```
 
-To add a friend declaration to an upstream class, use a `#define` in a
-chromium_src header override that piggybacks the friend declaration onto an
-existing method name:
+To add a friend declaration to an upstream class, use the `add_friend` plaster
+rewriter, not a `#define` in a chromium_src header override (see
+[PLSTR-003](plaster.md#PLSTR-003)):
 
-```cpp
-// chromium_src/chrome/browser/extensions/component_loader.h
-#define AddNetworkSpeechSynthesisExtension    \
-  AddNetworkSpeechSynthesisExtensionUnused(); \
-  friend class BraveComponentLoader;          \
-  void AddNetworkSpeechSynthesisExtension
-
-#include <chrome/browser/extensions/component_loader.h>  // IWYU pragma: export
-#undef AddNetworkSpeechSynthesisExtension
+```yaml
+# rewrite/chrome/browser/extensions/component_loader.h.yaml
+substitutions:
+  - description: 'Friend BraveComponentLoader'
+    add_friend:
+      class_name: ComponentLoader
+      friend_type: class BraveComponentLoader
 ```
 
 ---
@@ -1281,7 +1287,7 @@ objects.** Tabs can move between browser windows (drag-and-drop, "move to new
 window"), so storing a `Browser*` or `BrowserWindowInterface*` on a tab feature
 causes use-after-free or stale-reference bugs.
 
-````cpp
+```cpp
 // ❌ WRONG - tab feature holding a browser pointer
 class FooTabFeature {
   raw_ptr<Browser> browser_;  // Stale when tab moves to another window!
@@ -1292,15 +1298,23 @@ class FooTabFeature {
   raw_ref<tabs::TabInterface> tab_;
   // To access the current window: tab_->GetBrowserWindowInterface()
 };
+```
+
+---
 
 <a id="ARCH-067"></a>
 
 ## ✅ Guard `base::BarrierCallback` Against Zero Count
 
-**`base::BarrierCallback` with zero invocations will never call its done callback.** Always check for the zero case before constructing a `BarrierCallback`, or handle it with an early return.
+**`base::BarrierCallback` with a count of zero runs its done callback
+immediately, inside the `BarrierCallback()` call.** Always check for the zero
+case before constructing a `BarrierCallback`, and handle it with an early
+return, so that the done callback does not run synchronously where it otherwise
+runs asynchronously (see [ARCH-060](#ARCH-060)).
 
 ```cpp
-// ❌ WRONG - done_callback never fires if items is empty
+// ❌ WRONG - if items is empty, done_callback runs synchronously, inside
+// BarrierCallback()
 auto barrier = base::BarrierCallback<Result>(items.size(), done_callback);
 for (const auto& item : items) {
   FetchAsync(item, barrier);
@@ -1308,11 +1322,14 @@ for (const auto& item : items) {
 
 // ✅ CORRECT - handle empty case
 if (items.empty()) {
-  std::move(done_callback).Run({});
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE,
+      base::BindOnce(std::move(done_callback), std::vector<Result>()));
   return;
 }
-auto barrier = base::BarrierCallback<Result>(items.size(), std::move(done_callback));
-````
+auto barrier =
+    base::BarrierCallback<Result>(items.size(), std::move(done_callback));
+```
 
 ---
 

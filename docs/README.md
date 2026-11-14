@@ -23,6 +23,8 @@ resources outside this repository, go to:
 
 - [Claude Code Skills](claude_code_skills.md) - Slash commands for automating
   common development tasks (commit, review, preflight, CI, and more).
+- [Code Review Knowledge Base](knowledge_base/README.md) - The best practices as
+  code review rules, and how a review picks the rules a change needs.
 
 ### Security and Privacy
 

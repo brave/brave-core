@@ -79,8 +79,22 @@ def load_candidates(pr):
 _RULES_BY_DOC = {}
 
 
-def rule_text(rule_link, bp_dir):
-    """The text of the rule a link's anchor names, or None if it names none."""
+def kb_rules(pr):
+    """The text of each knowledge base rule the PR's prompts held, by URL;
+    empty for a review of the best-practices documents."""
+    path = os.path.join(os.path.dirname(pr["file_hashes_file"]), "rules.json")
+    try:
+        with open(path, encoding='utf-8') as f:
+            return json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+
+def rule_text(rule_link, bp_dir, kb):
+    """The text of the rule a link names, a knowledge base rule's URL in `kb`
+    or a best-practices anchor, or None if it names none."""
+    if rule_link in kb:
+        return kb[rule_link]
     m = re.search(r"/([^/]+\.md)#([A-Za-z0-9_-]+)$", rule_link or "")
     if not m:
         return None
@@ -101,6 +115,7 @@ def rule_text(rule_link, bp_dir):
 
 def select(pr, violations, existing_comments, bp_dir):
     """Candidates post-review.py would still post, capped at CANDIDATE_LIMIT."""
+    kb = kb_rules(pr)
     violations = sorted(
         violations,
         key=lambda v: _post.SEVERITY_ORDER.get(v.get("severity", "low"), 2),
@@ -108,7 +123,7 @@ def select(pr, violations, existing_comments, bp_dir):
     violations = _post.filter_violations_by_rule_link(violations)
     known = []
     for v in violations:
-        if v.get("rule_link") and rule_text(v["rule_link"], bp_dir) is None:
+        if v.get("rule_link") and rule_text(v["rule_link"], bp_dir, kb) is None:
             log(
                 f"DROPPED: {v.get('file')}:{v.get('line')} cites "
                 f"{v['rule_link']}, which names no rule"
@@ -146,11 +161,12 @@ def write_validator(pr, candidates, bot_username, bp_dir):
         entry = {"id": f"c{i}"}
         entry.update({k: v[k] for k in _CANDIDATE_FIELDS if k in v})
         numbered.append(entry)
+    kb = kb_rules(pr)
     cited = []
     for link in dict.fromkeys(
         v["rule_link"] for v in candidates if v.get("rule_link")
     ):
-        cited.append((link, rule_text(link, bp_dir)))
+        cited.append((link, rule_text(link, bp_dir, kb)))
     diff_text, ranges = validator_diff(
         pr.get("diff_file", ""), {v["file"] for v in candidates}
     )

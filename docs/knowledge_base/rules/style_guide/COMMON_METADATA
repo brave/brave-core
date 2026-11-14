@@ -1,0 +1,1326 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The rules of docs/best-practices/style-guide.md. See
+# docs/knowledge_base/README.md for the fields.
+agentic_review {
+  # Any user-visible text in GRD/GRDP and Android strings.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "^\\s*[^<\\s]"
+    content_patterns: ">\\s*[^<\\s]"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-plain-language.md"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-honest-friendly-tone.md"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-no-colloquialisms.md"
+  }
+  # Any user-visible text in iOS strings.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "\\bvalue:\\s*\""
+    content_patterns: "^\\s*\"[^\"]*\"\\s*=\\s*\""
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-plain-language.md"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-honest-friendly-tone.md"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-no-colloquialisms.md"
+  }
+  # Passive constructions, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:is|are|was|were|be|been|being)\\s+(?:\\w+ly\\s+)?(?:\\w+ed|\\w+en|made|done|sent|shown|set|built|lost|kept|found|held|paid|sold|told|put|run|cut|left)\\b)"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\bby (?:the|a|an|your|this)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-active-voice.md"
+  }
+  # Passive constructions, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:is|are|was|were|be|been|being)\\s+(?:\\w+ly\\s+)?(?:\\w+ed|\\w+en|made|done|sent|shown|set|built|lost|kept|found|held|paid|sold|told|put|run|cut|left)\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\bby (?:the|a|an|your|this)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-active-voice.md"
+  }
+  # Uncontracted forms, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:can ?not|do not|does not|did not|is not|are not|was not|were not|will not|would not|should not|could not|has not|have not|had not|it is|that is|there is|you are|you will|you would|you have|we are|they are|let us)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-use-contractions.md"
+  }
+  # Uncontracted forms, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:can ?not|do not|does not|did not|is not|are not|was not|were not|will not|would not|should not|could not|has not|have not|had not|it is|that is|there is|you are|you will|you would|you have|we are|they are|let us)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-use-contractions.md"
+  }
+  # Filler words, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:basically|obviously|literally|frankly)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-no-filler-words.md"
+  }
+  # Filler words, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:basically|obviously|literally|frankly)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-no-filler-words.md"
+  }
+  # Third-person references to the reader, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:the user|users?|user's|users'|his or her|he or she|one's)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-second-person.md"
+  }
+  # Third-person references to the reader, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:the user|users?|user's|users'|his or her|he or she|one's)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-second-person.md"
+  }
+  # Consent and first-person wording, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:agree|accept|consent|acknowledge|authori[sz]e)\\w*)"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:you\\'ve|you have|I\\'ve|I have) read\\b)"
+    content_patterns: "(?:^|>)[^<>]*\\bI(?:\\'ve|\\'m)?\\b"
+    content_patterns: "(?:^|>)[^<>]*\\b[Mm]y\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-first-person-for-consent.md"
+  }
+  # Consent and first-person wording, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:agree|accept|consent|acknowledge|authori[sz]e)\\w*)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:you\\'ve|you have|I\\'ve|I have) read\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\bI(?:\\'ve|\\'m)?\\b"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\b[Mm]y\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-first-person-for-consent.md"
+  }
+  # Repeated "your", in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\byour\\b.*\\byour\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-avoid-repeating-your.md"
+  }
+  # Repeated "your", in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\byour\\b.*\\byour\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-avoid-repeating-your.md"
+  }
+  # First-person plural, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:we|we're|we've|we'll|we'd|us|our|ours|ourselves)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-brave-instead-of-we-or-our.md"
+  }
+  # First-person plural, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:we|we're|we've|we'll|we'd|us|our|ours|ourselves)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-brave-instead-of-we-or-our.md"
+  }
+  # Runs of 16 or more words without a sentence end, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>|[.!?]\\s)\\s*(?:[\\w\\'’-]+[^\\w.!?\\'’<>\"=-]+){15}[\\w\\'’-]"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-short-sentences.md"
+  }
+  # Runs of 16 or more words without a sentence end, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "\\bvalue:\\s*\"(?:[\\w\\'’-]+[^\\w.!?\\'’<>\"=-]+){15}[\\w\\'’-]"
+    content_patterns: "\\bvalue:\\s*\"[^\"]*[.!?]\\s(?:[\\w\\'’-]+[^\\w.!?\\'’<>\"=-]+){15}[\\w\\'’-]"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-short-sentences.md"
+  }
+  # Future, progressive and perfect verb forms, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:will|won't|you'll|it'll|they'll|we'll)\\b)"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:is|are|was|were|be|been|being|has|have|had)\\s+\\w+(?:ing|ed)\\b)"
+    content_patterns: "(?:^\\s*|>\\s*)[A-Z]\\w+ing\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-simple-present-tense.md"
+  }
+  # Future, progressive and perfect verb forms, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:will|won't|you'll|it'll|they'll|we'll)\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:is|are|was|were|be|been|being|has|have|had)\\s+\\w+(?:ing|ed)\\b)"
+    content_patterns: "\\bvalue:\\s*\"[A-Z]\\w+ing\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-simple-present-tense.md"
+  }
+  # Gendered words, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:he|she|him|her|his|hers|himself|herself|he/she|s/he)\\b)"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b\\w+(?:man|men|woman|women)\\b)"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:stewardess|waitress|actress|hostess)\\w*)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-gender-neutral.md"
+  }
+  # Gendered words, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:he|she|him|her|his|hers|himself|herself|he/she|s/he)\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b\\w+(?:man|men|woman|women)\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:stewardess|waitress|actress|hostess)\\w*)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-gender-neutral.md"
+  }
+  # Consecutive capitalized words, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*\\b[A-Z][a-z]+\\s+[A-Z][a-z]+\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-sentence-case.md"
+  }
+  # Words in capitals, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*\\b[A-Z]{2,}\\s+[A-Z]{2,}\\b"
+    content_patterns: "(?:^|>)[^<>]*\\b[A-Z]{5,}\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-no-all-caps.md"
+  }
+  # Words in capitals, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\b[A-Z]{2,}\\s+[A-Z]{2,}\\b"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\b[A-Z]{5,}\\b"
+    content_patterns: "\\.uppercased\\(\\)"
+    content_patterns: "\\.textCase\\(\\s*\\.uppercase\\s*\\)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-no-all-caps.md"
+  }
+  # Text rendered in capitals, in stylesheets, TS/TSX and Android resources.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:ts|tsx|css|scss|less|html)"
+    path_expression: "(?:.*/)?res/(?:layout|values)[^/]*/[^/]*\\.xml"
+    content_patterns: "(?i:text-?transform\\W+uppercase)"
+    content_patterns: "textAllCaps\\W+true"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-no-all-caps.md"
+  }
+  # Lists ending in "and" or "or" without a comma before it, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*,[^,.;:!?<>\"]*[^,\\s<>\"]\\s+(?:and|or)\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-oxford-comma.md"
+  }
+  # Lists ending in "and" or "or" without a comma before it, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*,[^,.;:!?<>\"]*[^,\\s<>\"]\\s+(?:and|or)\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-oxford-comma.md"
+  }
+  # Ampersands, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*&(?:amp;)?\\s"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-no-ampersand-for-and.md"
+  }
+  # Ampersands, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*&(?:amp;)?\\s"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-no-ampersand-for-and.md"
+  }
+  # Single sentences ending in a period, and several sentences ending without one, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^\\s*|>\\s*)[^<>.!?]+[^.\\s]\\.\\s*(?:<|$)"
+    content_patterns: "(?:^\\s*|>\\s*)[^<>]*[.!?]\\s+[A-Z][^<>.!?]*[A-Za-z0-9)]\\s*(?:<|$)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-terminal-periods.md"
+  }
+  # Single sentences ending in a period, and several sentences ending without one, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "\\bvalue:\\s*\"[^\".!?]+[^.\\s]\\.\""
+    content_patterns: "\\bvalue:\\s*\"[^\"]*[.!?]\\s+[A-Z][^\".!?]*[A-Za-z0-9)]\""
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-terminal-periods.md"
+  }
+  # Double spaces after a sentence, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*[.!?] {2,}\\S"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-single-space-after-period.md"
+  }
+  # Double spaces after a sentence, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*[.!?] {2,}\\S"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-single-space-after-period.md"
+  }
+  # Colons followed by text, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*[A-Za-z)]:\\s+\\S"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-colon-capitalization.md"
+  }
+  # Colons followed by text, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*[A-Za-z)]:\\s+\\S"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-colon-capitalization.md"
+  }
+  # Three periods, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*\\.\\s?\\.\\s?\\."
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-ellipsis-character.md"
+  }
+  # Three periods, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\.\\s?\\.\\s?\\."
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-ellipsis-character.md"
+  }
+  # Dashes and spaced hyphens, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*\\s—|—\\s"
+    content_patterns: "(?:^|>)[^<>]*\\s--?\\s"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-em-dash-spacing.md"
+  }
+  # Dashes and spaced hyphens, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\s—|—\\s"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\s--?\\s"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-em-dash-spacing.md"
+  }
+  # Date, time and number spans, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*\\b\\d{1,4}\\s*-\\s*\\d{1,4}\\b"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:mon|tues|wednes|thurs|fri|satur|sun)day\\s*(?:-|to)\\s*\\w)"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\\w*\\.?\\s*\\d*\\s*(?:-|to)\\s*\\w)"
+    content_patterns: "(?:^|>)[^<>]*(?i:(?:\\d|am|pm)\\s*(?:-|to)\\s*\\d{1,2}(?::\\d\\d)?\\s*(?:am|pm)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-en-dash-for-ranges.md"
+  }
+  # Date, time and number spans, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\b\\d{1,4}\\s*-\\s*\\d{1,4}\\b"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:mon|tues|wednes|thurs|fri|satur|sun)day\\s*(?:-|to)\\s*\\w)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\\w*\\.?\\s*\\d*\\s*(?:-|to)\\s*\\w)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:(?:\\d|am|pm)\\s*(?:-|to)\\s*\\d{1,2}(?::\\d\\d)?\\s*(?:am|pm)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-en-dash-for-ranges.md"
+  }
+  # Exclamation points, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*[\\w)\\'\"’]!"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-exclamation-points.md"
+  }
+  # Exclamation points, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*[\\w)\\'\"’]!"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-exclamation-points.md"
+  }
+  # Hyphenated and open compound words, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*\\w-\\w"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\bup to date\\b)"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:non|re|pre|self|semi|anti|multi)\\s+[a-z]+)"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\bree\\w+)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-hyphenate-compound-adjectives.md"
+  }
+  # Hyphenated and open compound words, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\w-\\w"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\bup to date\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:non|re|pre|self|semi|anti|multi)\\s+[a-z]+)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\bree\\w+)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-hyphenate-compound-adjectives.md"
+  }
+  # Quoted or named UI references, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?:^|\\s)'[A-Z][^']*'"
+    content_patterns: "(?:^|>)[^<>]*‘[^’]*’"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:click|tap|select|choose|open|go to)\\s+)[A-Z]\\w*"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-double-quotes-for-ui-references.md"
+  }
+  # Quoted or named UI references, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?:^|\\s)'[A-Z][^']*'"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*‘[^’]*’"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:click|tap|select|choose|open|go to)\\s+)[A-Z]\\w*"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-double-quotes-for-ui-references.md"
+  }
+  # Punctuation after a closing quotation mark, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?:\"|”|&quot;)[.,!]"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-punctuation-inside-quotes.md"
+  }
+  # Punctuation after a closing quotation mark, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "\\bvalue:\\s*\".*(?:\\\\\"|”)[.,!]"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-punctuation-inside-quotes.md"
+  }
+  # Lead-ins before the action, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:be sure to|make sure (?:to|that|you)|would you like|do you want|you can|you may|you will need to|in order to|please note)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-copy-lead-with-action.md"
+  }
+  # Lead-ins before the action, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:be sure to|make sure (?:to|that|you)|would you like|do you want|you can|you may|you will need to|in order to|please note)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-copy-lead-with-action.md"
+  }
+  # Button strings, in GRD/GRDP and Android strings.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?i:button|_BTN\\b|\\bcta\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-copy-button-labels.md"
+  }
+  # Button strings, in iOS strings.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?i:static let \\w*button\\w* = NSLocalizedString)"
+    content_patterns: "^\\s*\"[^\"]*(?i:button)[^\"]*\",?\\s*$"
+    content_patterns: "\\bcomment:\\s*\"[^\"]*(?i:button)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-copy-button-labels.md"
+  }
+  # "Click here" and bare "here" link text, in GRD/GRDP and Android strings.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?i:\\b(?:click|tap) here\\b)"
+    content_patterns: "(?i:(?:>|&gt;)\\s*here\\s*(?:<|&lt;))"
+    content_patterns: "(?i:</ph>\\s*here\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-no-click-here.md"
+  }
+  # "Click here" and bare "here" link text, in iOS strings.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:click|tap) here\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-no-click-here.md"
+  }
+  # "Click here" and bare "here" link text, in TS/TSX.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:ts|tsx)"
+    content_patterns: "(?i:\\bclick here\\b)"
+    content_patterns: "(?i:>\\s*here\\s*<)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-no-click-here.md"
+  }
+  # "Click" and "tap", in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:click|clicks|clicked|clicking|tap|taps|tapped|tapping)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-click-on-desktop-tap-on-mobile.md"
+  }
+  # "Click" and "tap", in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:click|clicks|clicked|clicking|tap|taps|tapped|tapping)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-click-on-desktop-tap-on-mobile.md"
+  }
+  # "Learn more" links, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\blearn more\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-learn-more-with-context.md"
+  }
+  # "Learn more" links, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\blearn more\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-learn-more-with-context.md"
+  }
+  # Negative verbs, and toggle strings, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:hide|hides|disable|disables|don't|do not|never|stop|prevent)\\b)"
+    content_patterns: "(?i:\\b(?:toggle|switch|checkbox)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-positive-toggle-labels.md"
+  }
+  # Negative verbs, and toggle strings, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:hide|hides|disable|disables|don't|do not|never|stop|prevent)\\b)"
+    content_patterns: "\\bcomment:\\s*\"[^\"]*(?i:\\b(?:toggle|switch)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-positive-toggle-labels.md"
+  }
+  # Error wording, and error strings, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:error|errors|fail|failed|fails|failure|couldn't|could not|can't|cannot|unable|went wrong|problem|unavailable|invalid)\\b)"
+    content_patterns: "_(?:ERROR|FAIL|FAILED|FAILURE)\\w*\""
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-error-messages-offer-a-solution.md"
+  }
+  # Error wording, and error strings, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:error|errors|fail|failed|fails|failure|couldn't|could not|can't|cannot|unable|went wrong|problem|unavailable|invalid)\\b)"
+    content_patterns: "^\\s*\"[^\"]*(?i:error|fail)[^\"]*\",?\\s*$"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-error-messages-offer-a-solution.md"
+  }
+  # Apologies, exclamations, "please" and jargon, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:sorry|apolog\\w*|oops\\w*|whoops\\w*|uh-oh|please|servers?|fetch\\w*|abort\\w*|illegal|cache\\w*|invalid)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-error-messages-tone.md"
+  }
+  # Apologies, exclamations, "please" and jargon, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:sorry|apolog\\w*|oops\\w*|whoops\\w*|uh-oh|please|servers?|fetch\\w*|abort\\w*|illegal|cache\\w*|invalid)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-error-messages-tone.md"
+  }
+  # Questions, and confirmation dialog strings, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*\\?\\s*(?:<|$|\")"
+    content_patterns: "(?i:\\b(?:confirm\\w*|modal|dialog|are you sure)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-copy-confirmation-modals.md"
+  }
+  # Questions, and confirmation dialog strings, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\?\\s*(?:<|$|\")"
+    content_patterns: "\\bcomment:\\s*\"[^\"]*(?i:\\b(?:confirm\\w*|alert|dialog)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-copy-confirmation-modals.md"
+  }
+  # Directional words, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:to the (?:right|left)|on the (?:right|left)|right-hand|left-hand|above|below|top (?:right|left)|bottom (?:right|left)|upper (?:right|left)|lower (?:right|left))\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-no-directional-language.md"
+  }
+  # Directional words, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:to the (?:right|left)|on the (?:right|left)|right-hand|left-hand|above|below|top (?:right|left)|bottom (?:right|left)|upper (?:right|left)|lower (?:right|left))\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-no-directional-language.md"
+  }
+  # Numbers, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:zero|one|two|three|four|five|six|seven|eight|nine|ten|hundred|thousand)\\b)"
+    content_patterns: "(?:^|>)[^<>]*\\b\\d{4,}\\b"
+    content_patterns: "(?:^\\s*|>\\s*|[.!?]\\s+)\\d"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-numerals.md"
+  }
+  # Numbers, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:zero|one|two|three|four|five|six|seven|eight|nine|ten|hundred|thousand)\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\b\\d{4,}\\b"
+    content_patterns: "\\bvalue:\\s*\"\\d"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-numerals.md"
+  }
+  # Percentages, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?:\\d|</ph>)\\s+%(?:\\s|$|<|[.,\"])"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\bper ?cent\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-percentages.md"
+  }
+  # Percentages, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?:\\d|</ph>)\\s+%(?:\\s|$|<|[.,\"])"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\bper ?cent\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-percentages.md"
+  }
+  # Units of measurement, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?:\\d|</ph>)(?:[KMGTP]i?B|B|[KMG]?bps|ms|MHz|GHz)\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-space-before-units.md"
+  }
+  # Units of measurement, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?:\\d|</ph>)(?:[KMGTP]i?B|B|[KMG]?bps|ms|MHz|GHz)\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-space-before-units.md"
+  }
+  # Currency amounts and names, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*\\$\\d+[.,]\\d"
+    content_patterns: "(?:^|>)[^<>]*[€£¥₹₩]"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:usd|eur|gbp|dollars?|euros?)\\b)"
+    content_patterns: "(?:^|>)[^<>]*\\b[A-Z]{1,3}\\$"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-currency-format.md"
+  }
+  # Currency amounts and names, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\$\\d+[.,]\\d"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*[€£¥₹₩]"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:usd|eur|gbp|dollars?|euros?)\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\b[A-Z]{1,3}\\$"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-currency-format.md"
+  }
+  # Ordinal and numeric dates, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*\\b\\d+(?:st|nd|rd|th)\\b"
+    content_patterns: "(?:^|>)[^<>]*\\b\\d{1,2}/\\d{1,2}/\\d{2,4}\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-date-format.md"
+  }
+  # Ordinal and numeric dates, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\b\\d+(?:st|nd|rd|th)\\b"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\b\\d{1,2}/\\d{1,2}/\\d{2,4}\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-date-format.md"
+  }
+  # Times of day, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\d\\s*[ap]\\.?m\\b\\.?)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-time-format.md"
+  }
+  # Times of day, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\d\\s*[ap]\\.?m\\b\\.?)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-time-format.md"
+  }
+  # Fractions, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*\\b\\d+/\\d+\\b"
+    content_patterns: "(?:^|>)[^<>]*[½⅓⅔¼¾]"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:half|halves|thirds?|quarters?|fourths?|fifths?)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-fractions.md"
+  }
+  # Fractions, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\b\\d+/\\d+\\b"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*[½⅓⅔¼¾]"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:half|halves|thirds?|quarters?|fourths?|fifths?)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-fractions.md"
+  }
+  # Brave product and feature names, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\bbrave\\s+(?:private\\s+)?ads\\b)"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\bprivate ads\\b)"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\bbrave\\s+(?:firewall|vpn|leo|news|playlist|premium|rewards|search|shields|swap|talk|wallet|creators)\\b)"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:basic attention token|ad-free)\\b)"
+    content_patterns: "(?:^|>)[^<>]*\\b(?:Rewards|Wallet|News|Playlist|Talk|Leo|Swap|Premium|Creators)\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-brave-product-names.md"
+  }
+  # Brave product and feature names, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\bbrave\\s+(?:private\\s+)?ads\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\bprivate ads\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\bbrave\\s+(?:firewall|vpn|leo|news|playlist|premium|rewards|search|shields|swap|talk|wallet|creators)\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:basic attention token|ad-free)\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\b(?:Rewards|Wallet|News|Playlist|Talk|Leo|Swap|Premium|Creators)\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-brave-product-names.md"
+  }
+  # "Brave Browser", in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*\\bBrave Browser\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-brave-browser-lowercase.md"
+  }
+  # "Brave Browser", in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\bBrave Browser\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-brave-browser-lowercase.md"
+  }
+  # "Brave" not followed by "browser" or a product name, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*\\bBrave(?:[^\\w\\s]|\\s*$|\\s+(?:[ac-z]|b[^r]|br[^o]))"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-prefer-brave-browser.md"
+  }
+  # "Brave" not followed by "browser" or a product name, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\bBrave(?:[^\\w\\s]|\\s*$|\\s+(?:[ac-z]|b[^r]|br[^o]))"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-prefer-brave-browser.md"
+  }
+  # Lowercase "shields", in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*\\bshields?\\b"
+    content_patterns: "(?:^|>)[^<>]*\\bSHIELDS\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-shields-capitalized.md"
+  }
+  # Lowercase "shields", in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\bshields?\\b"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\bSHIELDS\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-shields-capitalized.md"
+  }
+  # Lowercase or capitalized "brave", in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*\\bbrave\\b"
+    content_patterns: "(?:^|>)[^<>]*\\bBRAVE\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-brave-capitalized.md"
+  }
+  # Lowercase or capitalized "brave", in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\bbrave\\b"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\bBRAVE\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-brave-capitalized.md"
+  }
+  # "Brave" as an adjective, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:be|so|very|too|stay|feel|more|most)\\s+brave\\b)"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\bbrave(?:r|st|ly)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-brave-not-an-adjective.md"
+  }
+  # "Brave" as an adjective, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:be|so|very|too|stay|feel|more|most)\\s+brave\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\bbrave(?:r|st|ly)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-brave-not-an-adjective.md"
+  }
+  # Giving, paying, tipping and earning, near BAT or Rewards, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:donat|gift|give|giving|pay|paying|send|sending|tip|earn)\\w*\\b.*\\b(?:BAT|rewards?|creators?)\\b)"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:BAT|rewards?|creators?)\\b.*\\b(?:donat|gift|give|giving|pay|paying|send|sending|tip|earn)\\w*\\b)"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\btip(?:s|ped|ping)?\\b)"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\bearn(?:s|ed|ing)? money\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-contribute-not-tip.md"
+  }
+  # Giving, paying, tipping and earning, near BAT or Rewards, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:donat|gift|give|giving|pay|paying|send|sending|tip|earn)\\w*\\b.*\\b(?:BAT|rewards?|creators?)\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:BAT|rewards?|creators?)\\b.*\\b(?:donat|gift|give|giving|pay|paying|send|sending|tip|earn)\\w*\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\btip(?:s|ped|ping)?\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\bearn(?:s|ed|ing)? money\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-contribute-not-tip.md"
+  }
+  # "Enable" and "disable", in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:enabl|disabl)\\w*)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-turn-on-not-enable.md"
+  }
+  # "Enable" and "disable", in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:enabl|disabl)\\w*)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-turn-on-not-enable.md"
+  }
+  # "Watch" and "see", in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:watch|watches|watching|watched|see|sees|seeing)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-view-not-watch.md"
+  }
+  # "Watch" and "see", in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:watch|watches|watching|watched|see|sees|seeing)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-view-not-watch.md"
+  }
+  # Subscription periods, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:annual|annually|monthly|yearly)\\b)"
+    content_patterns: "(?:^|>)[^<>]*(?i:/\\s*(?:mo|month|yr|year)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-per-month-per-year.md"
+  }
+  # Subscription periods, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:annual|annually|monthly|yearly)\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:/\\s*(?:mo|month|yr|year)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-per-month-per-year.md"
+  }
+  # Playlist strings, in GRD/GRDP and Android strings.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?i:playlist)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-playlist-add-not-download.md"
+  }
+  # Playlist strings, in iOS strings.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "^\\s*\"[^\"]*(?i:playlist)[^\"]*\",?\\s*$"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:playlist)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-playlist-add-not-download.md"
+  }
+  # "E-mail", in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\be-mail)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-email-spelling.md"
+  }
+  # "E-mail", in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\be-mail)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-email-spelling.md"
+  }
+  # "Emojis", in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\bemojis\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-emoji-plural.md"
+  }
+  # "Emojis", in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\bemojis\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-emoji-plural.md"
+  }
+  # Words for mobile devices, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:smartphones?|cell ?phones?|mobile phones?|handsets?|devices?|mobile)\\b)"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\bphone or tablet\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-phone-or-tablet.md"
+  }
+  # Words for mobile devices, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:smartphones?|cell ?phones?|mobile phones?|handsets?|devices?|mobile)\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\bphone or tablet\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-phone-or-tablet.md"
+  }
+  # Words for desktop machines, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:laptops?|pcs?|desktops?|notebooks?)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-computer-for-desktop.md"
+  }
+  # Words for desktop machines, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:laptops?|pcs?|desktops?|notebooks?)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-computer-for-desktop.md"
+  }
+  # Privacy and security wording, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:privat\\w*|secur\\w*|protect\\w*|safe|safer|safely|encrypt\\w*)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-specific-privacy-claims.md"
+  }
+  # Privacy and security wording, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:privat\\w*|secur\\w*|protect\\w*|safe|safer|safely|encrypt\\w*)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-specific-privacy-claims.md"
+  }
+  # Anonymity wording, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\banonym\\w*)"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:untraceable|unidentifiable)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-anonymity-claims.md"
+  }
+  # Anonymity wording, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\banonym\\w*)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:untraceable|unidentifiable)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-anonymity-claims.md"
+  }
+  # "TOR" and "tor", in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*\\bTOR\\b"
+    content_patterns: "(?:^|>)[^<>]*\\btor\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-tor-spelling.md"
+  }
+  # "TOR" and "tor", in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\bTOR\\b"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\btor\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-tor-spelling.md"
+  }
+  # Tor, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\btor\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-tor-claims-need-approval.md"
+  }
+  # Tor, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\btor\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-tor-claims-need-approval.md"
+  }
+  # Superlative privacy and security claims, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:military[- ]grade|unbreakable|unhackable|hacker[- ]proof|bullet[- ]?proof)\\b)"
+    content_patterns: "(?:^|>)[^<>]*(?i:(?:\\b(?:completely|totally|fully|perfectly|absolutely|entirely)|100%)\\s+(?:private|anonymous|secure|safe|protected|untraceable|encrypted)\\b)"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:most|safest|securest|strongest|best)\\s+(?:private|secure|privacy|security|safe|protection)\\w*)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-no-superlative-security-claims.md"
+  }
+  # Superlative privacy and security claims, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:military[- ]grade|unbreakable|unhackable|hacker[- ]proof|bullet[- ]?proof)\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:(?:\\b(?:completely|totally|fully|perfectly|absolutely|entirely)|100%)\\s+(?:private|anonymous|secure|safe|protected|untraceable|encrypted)\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:most|safest|securest|strongest|best)\\s+(?:private|secure|privacy|security|safe|protection)\\w*)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-no-superlative-security-claims.md"
+  }
+  # Fixed sizes, single-line limits and truncation, in TS/TSX and stylesheets.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:ts|tsx|css|scss|less|html)"
+    content_patterns: "\\b(?:max-|min-)?(?:width|height)\\s*:\\s*[\\'\"]?\\d+(?:px|rem|em)\\b"
+    content_patterns: "(?i:white-?space\\s*:\\s*[\\'\"]?nowrap)"
+    content_patterns: "(?i:text-?overflow\\s*:\\s*[\\'\"]?ellipsis)"
+    content_patterns: "(?i:-webkit-line-clamp|lineClamp)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-allow-for-text-expansion.md"
+  }
+  # Fixed sizes, single-line limits and eliding, in C++ UI code.
+  capability_groups {
+    path_expression: "(?:.*/)?ui/.*\\.(?:cc|h|mm)"
+    content_patterns: "\\bSetPreferredSize\\s*\\("
+    content_patterns: "\\bSet(?:Fixed|Maximum)Width\\s*\\("
+    content_patterns: "\\bSizeToFit\\s*\\(\\s*\\d"
+    content_patterns: "\\bSetElideBehavior\\s*\\("
+    content_patterns: "\\bSetMultiLine\\s*\\(\\s*false"
+    content_patterns: "\\bSetMaxLines\\s*\\("
+    rules: "docs/knowledge_base/rules/style_guide/ui-allow-for-text-expansion.md"
+  }
+  # Fixed sizes, single-line limits and truncation, in Android layouts.
+  capability_groups {
+    path_expression: "(?:.*/)?res/layout[^/]*/[^/]*\\.xml"
+    content_patterns: "android:(?:layout_)?(?:width|height|maxWidth)=\"\\d+dp\""
+    content_patterns: "android:(?:singleLine|maxLines|lines|ellipsize)="
+    rules: "docs/knowledge_base/rules/style_guide/ui-allow-for-text-expansion.md"
+  }
+  # Fixed sizes, single-line limits and truncation, in Swift.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\.frame\\(\\s*width:\\s*\\d"
+    content_patterns: "\\.lineLimit\\(\\s*1\\s*\\)"
+    content_patterns: "\\bnumberOfLines\\s*=\\s*1\\b"
+    content_patterns: "\\b(?:width|height)Anchor\\.constraint\\(\\s*equalToConstant:"
+    content_patterns: "\\.truncationMode\\("
+    rules: "docs/knowledge_base/rules/style_guide/ui-allow-for-text-expansion.md"
+  }
+  # Images, icons and their accessible text, in TS/TSX and HTML.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:ts|tsx|html)"
+    content_patterns: "<(?:img|svg)\\b"
+    content_patterns: "<(?:leo-)?icon\\b"
+    content_patterns: "<Icon\\b"
+    content_patterns: "\\bIconButton\\b"
+    content_patterns: "\\baria-label\\b"
+    content_patterns: "\\balt="
+    content_patterns: "\\bfab\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-describe-visuals-in-text.md"
+    rules: "docs/knowledge_base/rules/style_guide/ui-label-icons-with-text.md"
+  }
+  # Images, icons and their accessible text, in Swift.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.swift"
+    content_patterns: "\\b(?:UIImage|UIImageView|Image)\\("
+    content_patterns: "\\baccessibilityLabel\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-describe-visuals-in-text.md"
+    rules: "docs/knowledge_base/rules/style_guide/ui-label-icons-with-text.md"
+  }
+  # Images, icons and their accessible text, in C++ UI code.
+  capability_groups {
+    path_expression: "(?:.*/)?ui/.*\\.(?:cc|h|mm)"
+    content_patterns: "\\bviews::Image(?:View|Button)\\b"
+    content_patterns: "\\bCreateVectorImageButton\\w*\\("
+    content_patterns: "\\bImageButton\\b"
+    content_patterns: "\\bui::ImageModel::FromVectorIcon\\b"
+    content_patterns: "\\bSetAccessibleName\\s*\\("
+    rules: "docs/knowledge_base/rules/style_guide/ui-describe-visuals-in-text.md"
+    rules: "docs/knowledge_base/rules/style_guide/ui-label-icons-with-text.md"
+  }
+  # Images, icons and their accessible text, in Android layouts.
+  capability_groups {
+    path_expression: "(?:.*/)?res/layout[^/]*/[^/]*\\.xml"
+    content_patterns: "<(?:[\\w.]*\\.)?Image(?:View|Button)\\b"
+    content_patterns: "android:contentDescription"
+    content_patterns: "(?:app:srcCompat|android:src)="
+    rules: "docs/knowledge_base/rules/style_guide/ui-describe-visuals-in-text.md"
+    rules: "docs/knowledge_base/rules/style_guide/ui-label-icons-with-text.md"
+  }
+  # Text drawn in SVG artwork.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.svg"
+    content_patterns: "<(?:text|tspan)\\b"
+    rules: "docs/knowledge_base/rules/style_guide/ui-no-letters-in-icons.md"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-not-in-images.md"
+  }
+  # One- or two-letter element text, in TS/TSX and HTML.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:tsx|html)"
+    content_patterns: ">\\s*[A-Za-z]{1,2}\\s*<"
+    rules: "docs/knowledge_base/rules/style_guide/ui-no-letters-in-icons.md"
+  }
+  # One- or two-letter strings, in GRD/GRDP.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^\\s*|>\\s*)[A-Za-z]{1,2}\\s*(?:<|$)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-no-letters-in-icons.md"
+  }
+  # Possessives, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b[a-z]+(?:'s|’s)\\s+[a-z])"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-avoid-possessives.md"
+  }
+  # Possessives, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b[a-z]+(?:'s|’s)\\s+[a-z])"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-avoid-possessives.md"
+  }
+  # BAT, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*\\bBAT\\b"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\bbasic attention token\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-bat-first-use.md"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-bat-is-a-token.md"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-bat-no-cash-value.md"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-bat-amount-format.md"
+  }
+  # BAT, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*\\bBAT\\b"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\bbasic attention token\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-bat-first-use.md"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-bat-is-a-token.md"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-bat-no-cash-value.md"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-bat-amount-format.md"
+  }
+  # Claims about blocking all ads, and speed, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:all|every|any)\\s+(?:ads?|trackers?)\\b)"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\bblocks?\\s+(?:all|every|everything)\\b)"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b\\d+(?:x|×)\\s+faster\\b|\\bfaster than\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-browser-messaging-claims.md"
+  }
+  # Claims about blocking all ads, and speed, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:all|every|any)\\s+(?:ads?|trackers?)\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\bblocks?\\s+(?:all|every|everything)\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b\\d+(?:x|×)\\s+faster\\b|\\bfaster than\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-browser-messaging-claims.md"
+  }
+  # End-to-end encryption claims, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\be2ee?\\b|\\bend[- ]to[- ]end\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-talk-encryption-claims.md"
+  }
+  # End-to-end encryption claims, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\be2ee?\\b|\\bend[- ]to[- ]end\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-talk-encryption-claims.md"
+  }
+  # Streaming and geo-restriction wording, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\bstream\\w*|\\b(?:netflix|hulu|disney\\+?)\\b|\\bgeo-?(?:block|restrict)\\w*|\\bregion-?(?:locked|restricted)\\b|\\bunblock\\w*)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-vpn-streaming-claims.md"
+  }
+  # Streaming and geo-restriction wording, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\bstream\\w*|\\b(?:netflix|hulu|disney\\+?)\\b|\\bgeo-?(?:block|restrict)\\w*|\\bregion-?(?:locked|restricted)\\b|\\bunblock\\w*)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-vpn-streaming-claims.md"
+  }
+  # Company names and calls to activism, in GRD/GRDP and Android string text.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:grd|grdp)"
+    path_expression: "(?:.*/)?res/values/[^/]*strings[^/]*\\.xml"
+    path_expression_exclusion: "(?:app|app/resources|components|components/collaboration)/(?:[^/bc][^/]*|b[^r][^/]*|br[^a][^/]*|bra[^v][^/]*|brav[^e][^/]*|c[^u][^/]*|brave(?:_origin)?_strings|[^/]*_override)\\.grdp?"
+    path_expression_exclusion: "(?:components/(?:browser_ui/strings|permissions|webapps/browser)/android|extensions/strings|ui/android/java/strings|android/features/tab_ui/java/strings|browser/keyboard_accessory/android/internal/java/strings)/[^/]*\\.grdp?|browser/ui/android/strings/android_chrome_strings[^/]*\\.grd"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:meta|facebook|instagram|whatsapp|google|alphabet|microsoft|amazon|apple|tiktok|bytedance|twitter|openai)\\b)"
+    content_patterns: "(?:^|>)[^<>]*(?i:\\b(?:boycott|fight back|take back|join the (?:fight|movement|revolution)|revolution|activis\\w*)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-no-naming-companies-or-activism.md"
+  }
+  # Company names and calls to activism, in iOS string values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:strings|swift)"
+    path_expression_exclusion: ".*/(?:[a-df-z]|e[^n]|en[^.])[^/]*\\.lproj/.*"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:meta|facebook|instagram|whatsapp|google|alphabet|microsoft|amazon|apple|tiktok|bytedance|twitter|openai)\\b)"
+    content_patterns: "(?:\\bvalue:\\s*|^\\s*\"[^\"]*\"\\s*=\\s*)\"[^\"]*(?i:\\b(?:boycott|fight back|take back|join the (?:fight|movement|revolution)|revolution|activis\\w*)\\b)"
+    rules: "docs/knowledge_base/rules/style_guide/ui-text-no-naming-companies-or-activism.md"
+  }
+}

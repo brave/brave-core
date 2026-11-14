@@ -1,0 +1,41 @@
+diff --git a/agents/knowledge_base/rules/general/docs_l10n_and_configs/COMMON_METADATA b/agents/knowledge_base/rules/general/docs_l10n_and_configs/COMMON_METADATA
+index 18db269662121ae92ceb2d48d45bbd92522a71c4..9e74b71c49b302a615d530f4df217ab566d1b753 100644
+--- a/agents/knowledge_base/rules/general/docs_l10n_and_configs/COMMON_METADATA
++++ b/agents/knowledge_base/rules/general/docs_l10n_and_configs/COMMON_METADATA
+@@ -68,7 +68,6 @@ agentic_review {
+     rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/enforce-unsupported-gn-build-configurations.md"
+     rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/forward-unmodified-invoker-variables-in-gn-templates.md"
+     rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/omit-subsumed-flags-in-gn-conditions.md"
+-    rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/place-subsystem-vector-icons-in-subsystem-targets.md"
+     rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/prefer-positive-boolean-names-in-gn.md"
+     rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/preserve-subsystem-qualifiers-in-target-names.md"
+     rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/reuse-existing-test-support-targets.md"
+@@ -94,7 +93,6 @@ agentic_review {
+     rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/format-grit-message-body-on-new-line.md"
+     rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/generalize-multistage-error-strings.md"
+     rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/group-grd-strings-by-surface-with-section-comments.md"
+-    rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/guard-branded-strings-in-grit-with-google-chrome-expr.md"
+     rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/include-space-between-numeric-placeholders-and-units.md"
+     rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/maintain-consistent-phrasing-across-sibling-ui-strings.md"
+     rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/mark-prototype-strings-not-translateable.md"
+@@ -104,12 +102,9 @@ agentic_review {
+     rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/omit-trailing-period-in-single-sentence-ui-descriptions.md"
+     rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/place-feature-ui-strings-in-dedicated-grdp-files.md"
+     rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/provide-realistic-sample-values-in-translation-placeholder-e.md"
+-    rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/require-ux-and-product-approval-for-ui-strings.md"
+     rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/reuse-existing-grd-message-strings.md"
+-    rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/split-grd-strings-and-screenshots-into-separate-cl.md"
+     rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/sync-grd-platform-guards-and-descriptions.md"
+     rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/use-sentence-case-for-non-branded-feature-names.md"
+-    rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/use-short-product-name-in-ui-copy.md"
+     rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/use-xml-entities-for-grit-message-newlines.md"
+   }
+   capability_groups {
+@@ -126,7 +121,6 @@ agentic_review {
+   capability_groups {
+     path_expression: "(?:.*/)?[^/]*\\.icon"
+     rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/omit-drawing-instruction-comments-in-vector-icons.md"
+-    rules: "agents/knowledge_base/rules/general/docs_l10n_and_configs/preview-vector-icon-definitions.md"
+   }
+   capability_groups {
+     path_expression: "(?:.*/)?[^/]*\\.md"

@@ -1,0 +1,625 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The rules of docs/best-practices/architecture.md. See
+# docs/knowledge_base/README.md for the fields.
+agentic_review {
+  # Includes, depends on or allows embedder code from components/.
+  capability_groups {
+    path_expression: "(?:chromium_src/)?components/.*\\.(?:cc|h|mm|java|kt|gni)"
+    path_expression: "(?:chromium_src/)?components/(?:.*/)?(?:BUILD\\.gn|DEPS)"
+    content_patterns: "#\\s*(?:include|import)\\s+[\"<](?:chrome|android_webview|ios/chrome|brave/browser|brave/ios)/"
+    content_patterns: "\"(?://|[+!])?(?:chrome|android_webview|ios/chrome|brave/browser|brave/ios)[/:\"]"
+    content_patterns: "^\\s*import\\s+org\\.chromium\\.chrome\\."
+    rules: "docs/knowledge_base/rules/architecture/no-embedder-deps-in-components.md"
+    rules: "docs/knowledge_base/rules/architecture/abstract-interface-for-browser-access-from-components.md"
+  }
+  # Uses g_browser_process in components/.
+  capability_groups {
+    path_expression: "(?:chromium_src/)?components/.*\\.(?:cc|h|mm)"
+    content_patterns: "\\bg_(?:brave_)?browser_process\\b"
+    rules: "docs/knowledge_base/rules/architecture/no-g-browser-process-in-components.md"
+    rules: "docs/knowledge_base/rules/architecture/abstract-interface-for-browser-access-from-components.md"
+  }
+  # Uses Profile in components/.
+  capability_groups {
+    path_expression: "(?:chromium_src/)?components/.*\\.(?:cc|h|mm)"
+    content_patterns: "\\bProfile\\b"
+    content_patterns: "chrome/browser/profiles/"
+    rules: "docs/knowledge_base/rules/architecture/no-profile-in-components.md"
+  }
+  # Uses the content layer in component code outside its core/ and content/.
+  capability_groups {
+    path_expression: "(?:chromium_src/)?components/.*\\.(?:cc|h|mm|gni)"
+    path_expression: "(?:chromium_src/)?components/(?:.*/)?(?:BUILD\\.gn|DEPS)"
+    path_expression_exclusion: "(?:chromium_src/)?components/(?:.*/)?(?:content|core)/.*"
+    content_patterns: "\"(?://|[+!])?(?:brave/components/[^\"]*/)?content[/:\"]"
+    content_patterns: "\\bcontent::"
+    rules: "docs/knowledge_base/rules/architecture/no-content-deps-in-ios-components.md"
+    rules: "docs/knowledge_base/rules/architecture/split-ios-components-into-core-and-content.md"
+  }
+  # Uses the content layer in a component's core/.
+  capability_groups {
+    path_expression: "(?:chromium_src/)?components/(?:.*/)?core/.*\\.(?:cc|h|mm|gni)"
+    path_expression: "(?:chromium_src/)?components/(?:.*/)?core/(?:.*/)?(?:BUILD\\.gn|DEPS)"
+    content_patterns: "\"(?://|[+!])?(?:brave/components/[^\"]*/)?content[/:\"]"
+    content_patterns: "\\bcontent::"
+    rules: "docs/knowledge_base/rules/architecture/no-content-deps-in-core.md"
+  }
+  # Takes or holds a broad lookup key: Profile, BrowserContext, WebContents,
+  # TabInterface.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\b(?:Profile|BrowserContext|WebContents|TabInterface)\\s*[*&]\\s*\\w+\\s*[,)]"
+    content_patterns: "\\braw_(?:ptr|ref)\\s*<\\s*(?:const\\s+)?(?:content::|tabs::)?(?:Profile|BrowserContext|WebContents|TabInterface)\\s*>"
+    content_patterns: "->\\s*GetPrefs\\s*\\(\\s*\\)"
+    rules: "docs/knowledge_base/rules/architecture/pass-most-specific-dependency.md"
+  }
+  # Reaches for global state: g_browser_process, singletons, global profile
+  # and browser lookups, registries and managers.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\bg_(?:brave_)?browser_process\\b"
+    content_patterns: "\\bProfileManager::Get\\w*Profile\\w*\\s*\\("
+    content_patterns: "\\b\\w+::GetInstance\\s*\\(\\s*\\)\\s*->"
+    content_patterns: "\\bbase::(?:NoDestructor|Singleton)\\s*<"
+    content_patterns: "\\bBrowserList::GetInstance\\s*\\("
+    content_patterns: "\\bchrome::Find\\w*\\s*\\("
+    content_patterns: "\\b\\w*(?:registry|manager)_\\s*->\\s*Get\\w*\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/inject-dependencies-instead-of-global-state.md"
+    rules: "docs/knowledge_base/rules/architecture/no-global-functions-accessing-non-global-state.md"
+    rules: "docs/knowledge_base/rules/architecture/localize-control-flow.md"
+  }
+  # Takes or holds a Browser* or BrowserWindowInterface*.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\b(?:Browser|BrowserWindowInterface)\\s*[*&]\\s*\\w+\\s*[,);=]"
+    content_patterns: "\\b(?:raw_ptr|raw_ref|base::WeakPtr)\\s*<\\s*(?:Browser|BrowserWindowInterface)\\s*>"
+    rules: "docs/knowledge_base/rules/architecture/no-browser-god-object-dependency.md"
+    rules: "docs/knowledge_base/rules/architecture/no-window-state-in-tab-features.md"
+  }
+  # Takes a BrowserWindowInterface or registers a browser window feature.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\b(?:Brave)?BrowserWindowFeatures\\b"
+    content_patterns: "\\bBrowserWindowInterface\\s*[*&]\\s*\\w+\\s*[,)]"
+    rules: "docs/knowledge_base/rules/architecture/no-profile-state-in-window-features.md"
+  }
+  # Feature buildflag guards in C++.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*#\\s*(?:if|ifdef|elif)\\b.*\\b(?:ENABLE_\\w+|\\w+_ENABLED)\\b"
+    rules: "docs/knowledge_base/rules/architecture/handle-disabled-features-internally.md"
+  }
+  # std::shared_ptr.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bstd::(?:shared_ptr|make_shared|allocate_shared)\\b"
+    rules: "docs/knowledge_base/rules/architecture/no-shared-ptr-for-unowned-memory.md"
+  }
+  # Posts across threads, or calls ad-block and shields services.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\bPostTask\\w*\\s*\\("
+    content_patterns: "\\bGet(?:UI|IO)ThreadTaskRunner\\s*\\("
+    content_patterns: "\\b(?:BrowserThread|base::ThreadPool)::"
+    content_patterns: "\\b(?:AdBlock|Adblock|BraveShields|Shields)\\w*Service\\b"
+    content_patterns: "\\b(?:ad_block|adblock|shields)\\w*_service\\w*\\b"
+    rules: "docs/knowledge_base/rules/architecture/call-service-methods-on-expected-thread.md"
+  }
+  # Includes a brave/vendor/ header.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "#\\s*include\\s+[\"<]brave/vendor/"
+    rules: "docs/knowledge_base/rules/architecture/no-vendor-internal-includes.md"
+  }
+  # Observes pref changes.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bPrefChangeRegistrar\\b"
+    content_patterns: "\\bpref_change_registrar\\w*"
+    content_patterns: "\\b\\w*Pref\\w*Observer\\b"
+    content_patterns: "\\bOnPref\\w*Changed\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/use-pref-change-registrar.md"
+    rules: "docs/knowledge_base/rules/architecture/reuse-superclass-pref-change-registrar.md"
+  }
+  # Copies a pref value into a member.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\b\\w+_\\s*(?:=|\\()\\s*.*\\bGet(?:Boolean|Integer|Double|String|Int64|Uint64|Time|TimeDelta|FilePath|List|Dict|Value)\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/no-cached-pref-values.md"
+  }
+  # A keyed service factory that uses other factories.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*_factory(?:_[^/]*)?\\.(?:cc|h|mm)"
+    content_patterns: "\\b\\w+Factory::Get(?:For\\w+|Instance)\\s*\\("
+    content_patterns: "\\bDependsOn\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/declare-keyed-service-factory-dependencies.md"
+  }
+  # Decides which profiles a keyed service exists for.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*_factory(?:_[^/]*)?\\.(?:cc|h|mm)"
+    content_patterns: "\\bGetBrowserContextToUse\\b"
+    content_patterns: "\\bProfileSelections?\\b"
+    content_patterns: "\\bIsOffTheRecord\\s*\\("
+    content_patterns: "\\bIs(?:Regular|Incognito|Guest|System|Tor)Profile\\s*\\("
+    content_patterns: "\\bGetBrowserContext(?:RedirectedInIncognito|OwnInstanceInIncognito)\\b"
+    content_patterns: "\\bGetFor(?:Profile|BrowserContext)\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/no-services-for-unsupported-profile-types.md"
+  }
+  # Returns null, or reads prefs, in a keyed service factory.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*_factory(?:_[^/]*)?\\.(?:cc|h|mm)"
+    content_patterns: "\\breturn\\s+nullptr\\b"
+    content_patterns: "\\bGet(?:Boolean|Integer|Double|String|List|Dict|Int64|Value)\\s*\\("
+    content_patterns: "\\bUserPrefs::Get\\s*\\("
+    content_patterns: "->\\s*GetPrefs\\s*\\(\\s*\\)"
+    content_patterns: "\\bIsManagedPreference\\b"
+    rules: "docs/knowledge_base/rules/architecture/factory-result-stable-across-session.md"
+  }
+  # Component managers and installers.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b\\w*ComponentManager\\b"
+    content_patterns: "\\bComponentInstallerPolicy\\b"
+    content_patterns: "\\bcomponent_updater::"
+    content_patterns: "\\bRegister\\w*Component\\w*\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/use-component-installer-policy.md"
+  }
+  # Defines a service, a keyed service factory or a singleton.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: ":\\s*public\\s+(?:\\w+::)*\\w*KeyedService(?:Factory\\w*)?\\b"
+    content_patterns: "\\bbase::(?:NoDestructor|Singleton)\\s*<"
+    content_patterns: "\\bstatic\\s+[\\w:]+\\s*[*&]\\s*GetInstance\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/reuse-existing-services-and-singletons.md"
+    rules: "docs/knowledge_base/rules/architecture/static-singleton-for-profile-independent-services.md"
+    rules: "docs/knowledge_base/rules/architecture/scope-features-to-one-ownership-primitive.md"
+    rules: "docs/knowledge_base/rules/architecture/guard-significant-features-behind-base-feature.md"
+  }
+  # Registers a tab, window or global feature, or a WebContents helper.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\b(?:Brave)?(?:TabFeatures|BrowserWindowFeatures)\\b"
+    content_patterns: "\\bGlobalFeatures\\b"
+    content_patterns: "\\bWebContentsUserData\\s*<"
+    rules: "docs/knowledge_base/rules/architecture/scope-features-to-one-ownership-primitive.md"
+    rules: "docs/knowledge_base/rules/architecture/guard-significant-features-behind-base-feature.md"
+  }
+  # A service calling into another service.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:service|manager|controller)[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\b\\w+Factory::GetFor\\w+\\s*\\("
+    content_patterns: "\\b\\w*[Ss]ervice\\w*(?:_|\\(\\s*\\))\\s*->\\s*On\\w+\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/use-observers-for-cross-service-notifications.md"
+  }
+  # Deletes files.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\bDelete(?:File|PathRecursively)\\w*\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/encapsulate-cleanup-in-owning-class.md"
+  }
+  # Deletes user data: clears prefs, wipes storage.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\b(?:ClearPref|RemoveUserPref)\\s*\\("
+    content_patterns: "\\bbase::Delete(?:File|PathRecursively)\\s*\\("
+    content_patterns: "\\bClear\\w*(?:Data|Storage|History|Cache)\\w*\\s*\\("
+    content_patterns: "\\b(?:Wipe|RemoveAll)\\w*\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/flag-destructive-data-operations-for-ux-review.md"
+  }
+  # A new file in a feature subdirectory of a platform directory.
+  capability_groups {
+    path_expression: "(?:browser|components)/(?:android|ios|win|mac|linux|desktop)/[^/]+/.*"
+    content_patterns: "Copyright \\(c\\) \\d{4} The Brave Authors"
+    rules: "docs/knowledge_base/rules/architecture/group-files-by-component-not-platform.md"
+  }
+  # GN targets and feature conditionals, or code stubbed out under a negated
+  # buildflag.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn"
+    path_expression: "(?:.*/)?[^/]*\\.(?:gni|cc|h|mm)"
+    content_patterns: "^\\s*(?:source_set|static_library|component)\\s*\\("
+    content_patterns: "^\\s*if\\s*\\(\\s*!?\\s*(?:enable_\\w+|\\w+_enabled)\\b"
+    content_patterns: "^\\s*#\\s*if\\s+!\\s*BUILDFLAG\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/exclude-disabled-feature-api-from-gn.md"
+  }
+  # Names a GN source_set.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn"
+    path_expression: "(?:.*/)?[^/]*\\.gni"
+    content_patterns: "^\\s*source_set\\s*\\(\\s*\""
+    rules: "docs/knowledge_base/rules/architecture/gn-target-name-matches-directory.md"
+  }
+  # Access sections, friends and pass keys in headers.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.h"
+    content_patterns: "^\\s*(?:public|protected)\\s*:"
+    content_patterns: "\\bfriend\\s+(?:class|struct)\\b"
+    content_patterns: "\\bFRIEND_TEST\\w*\\s*\\("
+    content_patterns: "\\bbase::PassKey\\s*<"
+    rules: "docs/knowledge_base/rules/architecture/use-friend-or-passkey-for-private-access.md"
+  }
+  # Injects a friend into an upstream class.
+  capability_groups {
+    path_expression: "chromium_src/.*\\.h"
+    path_expression: "rewrite/.*\\.yaml"
+    content_patterns: "\\bfriend\\b"
+    rules: "docs/knowledge_base/rules/architecture/friend-upstream-classes-with-add-friend.md"
+  }
+  # Notifies observers or listeners.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\bfor\\s*\\(\\s*(?:auto|[\\w:]+)\\s*&{1,2}\\s*\\w+\\s*:\\s*\\w*(?:observers?|listeners?|clients?)\\w*_\\s*\\)"
+    content_patterns: "\\b\\w*(?:observers?|listeners?)\\w*_\\.Notify\\w*\\s*\\("
+    content_patterns: "\\b(?:observer|listener|client)\\w*\\s*(?:\\.|->)\\s*On\\w+\\s*\\("
+    content_patterns: "^\\s*(?:\\w+(?:\\.|->))?On\\w*Changed\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/callbacks-for-queries-observers-for-state-changes.md"
+    rules: "docs/knowledge_base/rules/architecture/check-value-changed-before-notifying.md"
+  }
+  # Exposes a component's implementation types in its public header.
+  capability_groups {
+    path_expression: "(?:chromium_src/)?components/.*\\.h"
+    path_expression_exclusion: "(?:chromium_src/)?components/(?:.*/)?(?:internal|engine|impl)/.*"
+    content_patterns: "#\\s*include\\s+\"brave/components/[^\"]*/(?:internal|engine|impl)/"
+    content_patterns: "\\binternal::"
+    rules: "docs/knowledge_base/rules/architecture/no-internal-types-in-public-headers.md"
+  }
+  # Null checks that tests may need.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "(?i)\\bnull(?:ptr)?\\b.*\\btest"
+    content_patterns: "(?i)\\btests?\\b.*\\bnull(?:ptr)?\\b"
+    content_patterns: "\\bCHECK_IS_TEST\\s*\\("
+    content_patterns: "^\\s*if\\s*\\(\\s*!\\s*(?:g_\\w+\\s*->\\s*)?\\w*(?:service|Service)\\w*(?:\\(\\s*\\))?\\s*\\)"
+    rules: "docs/knowledge_base/rules/architecture/check-is-test-for-test-only-null-checks.md"
+  }
+  # A desktop keyed service absent or null in unit tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    path_expression_exclusion: "ios/.*"
+    content_patterns: "\\bServiceIsNULLWhileTesting\\b"
+    content_patterns: "(?i)\\bnull(?:ptr)?\\b.*\\btest"
+    content_patterns: "(?i)\\btests?\\b.*\\bnull(?:ptr)?\\b"
+    rules: "docs/knowledge_base/rules/architecture/service-is-null-while-testing-for-optional-services.md"
+  }
+  # A Set*Callback() setter.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\bSet\\w*Callback\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/constructor-injection-over-setter-callbacks.md"
+  }
+  # Switches to the original profile.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bGetOriginal(?:Profile|BrowserContext)\\s*\\("
+    content_patterns: "\\bGetBrowserContextRedirectedInIncognito\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/no-get-original-profile-to-bypass-factory.md"
+  }
+  # Attaches a WebContents helper.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\b(?:Maybe)?CreateForWebContents\\s*\\("
+    content_patterns: "\\bWebContentsUserData\\s*<"
+    content_patterns: "\\bAttach(?:PrivacySensitive)?TabHelpers\\b"
+    rules: "docs/knowledge_base/rules/architecture/maybe-create-for-web-contents.md"
+    rules: "docs/knowledge_base/rules/architecture/own-tab-features-in-brave-tab-features.md"
+  }
+  # Bases a factory on BrowserContextKeyedServiceFactory in desktop browser
+  # code.
+  capability_groups {
+    path_expression: "(?:chromium_src/chrome/)?browser/.*\\.(?:cc|h)"
+    content_patterns: "\\bBrowserContextKeyedServiceFactory\\b"
+    rules: "docs/knowledge_base/rules/architecture/use-profile-keyed-service-factory.md"
+  }
+  # Android- or desktop-specific delegates.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b\\w*(?:Android|Desktop)\\w*Delegate\\w*\\b"
+    content_patterns: "\\b\\w*Delegate\\w*(?:Android|Desktop)\\b"
+    rules: "docs/knowledge_base/rules/architecture/unify-platform-delegates.md"
+  }
+  # Maps inputs to types, with a possible fallback.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "^\\s*default\\s*:"
+    content_patterns: "(?i)\\bmime"
+    content_patterns: "\\b(?:Get|To|Parse)\\w*(?:Type|Kind)\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/no-silent-fallback-on-unknown-types.md"
+  }
+  # Events of Mojo listener and observer interfaces.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.mojom"
+    content_patterns: "\\b\\w*Changed\\w*\\s*\\("
+    content_patterns: "^\\s*On\\w+\\s*\\("
+    content_patterns: "\\binterface\\s+\\w*(?:Listener|Observer|Client|Page)\\b"
+    rules: "docs/knowledge_base/rules/architecture/separate-lifecycle-and-data-change-mojo-events.md"
+  }
+  # Aggregates the results of parallel async calls by hand.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "--\\s*\\w+\\s*==\\s*0"
+    content_patterns: "\\b\\w*(?:pending|remaining|outstanding)\\w*\\s*(?:--|-=)"
+    content_patterns: "\\b\\w*(?:pending|remaining|outstanding)\\w*count\\w*\\b"
+    content_patterns: "\\b(?:std::map|std::unordered_map|base::flat_map)\\s*<\\s*(?:int|size_t|u?int\\d+_t)\\s*,"
+    content_patterns: "\\bBarrierClosure\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/use-barrier-callback-for-parallel-aggregation.md"
+    rules: "docs/knowledge_base/rules/architecture/preallocate-vector-for-ordered-async-results.md"
+  }
+  # base::BarrierCallback.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bBarrierCallback\\b"
+    rules: "docs/knowledge_base/rules/architecture/guard-barrier-callback-zero-count.md"
+    rules: "docs/knowledge_base/rules/architecture/preallocate-vector-for-ordered-async-results.md"
+  }
+  # An enum nested in a mojom struct.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.mojom"
+    content_patterns: "^\\s+enum\\s+\\w+"
+    rules: "docs/knowledge_base/rules/architecture/top-level-mojom-enums-for-ios.md"
+  }
+  # Depends on another Brave component, from components/.
+  capability_groups {
+    path_expression: "(?:chromium_src/)?components/.*\\.(?:cc|h|mm|gni)"
+    path_expression: "(?:chromium_src/)?components/(?:.*/)?(?:BUILD\\.gn|DEPS)"
+    content_patterns: "[\"<](?://|[+!])?brave/components/"
+    rules: "docs/knowledge_base/rules/architecture/no-circular-component-dependencies.md"
+    rules: "docs/knowledge_base/rules/architecture/no-cross-feature-dependencies.md"
+  }
+  # Depends on another feature, from browser/ or Android code.
+  capability_groups {
+    path_expression: "(?:chromium_src/chrome/)?browser/.*\\.(?:cc|h|mm|gni)"
+    path_expression: "(?:chromium_src/chrome/)?browser/(?:.*/)?BUILD\\.gn"
+    path_expression: "android/java/.*\\.(?:java|kt)"
+    content_patterns: "[\"<](?://)?brave/(?:browser|components)/"
+    content_patterns: "^\\s*import\\s+org\\.chromium\\.(?:chrome\\.browser|brave)\\."
+    rules: "docs/knowledge_base/rules/architecture/no-cross-feature-dependencies.md"
+  }
+  # A Mojo service implementation or decoder in a component's browser/.
+  capability_groups {
+    path_expression: "(?:chromium_src/)?components/(?:.*/)?browser/.*\\.(?:cc|h|mm)"
+    content_patterns: "\\bServiceProcessHost\\b"
+    content_patterns: "\\bclass\\s+\\w*(?:Decoder|ServiceImpl|Parser)\\b"
+    content_patterns: "\\bmojom::\\w*(?:Service|Decoder|Parser)\\b"
+    rules: "docs/knowledge_base/rules/architecture/service-code-in-services-directory.md"
+  }
+  # Utility-process code depending on browser code.
+  capability_groups {
+    path_expression: "(?:chromium_src/)?components/services/.*\\.(?:cc|h|mm|gni)"
+    path_expression: "(?:chromium_src/)?components/services/(?:.*/)?(?:BUILD\\.gn|DEPS)"
+    content_patterns: "/browser(?:[/:\"]|$)"
+    content_patterns: "\\bg_(?:brave_)?browser_process\\b"
+    rules: "docs/knowledge_base/rules/architecture/no-browser-deps-in-utility-process-code.md"
+  }
+  # Browser-process-only APIs in a component's common/.
+  capability_groups {
+    path_expression: "(?:chromium_src/)?components/(?:.*/)?common/.*\\.(?:cc|h|mm|gni)"
+    path_expression: "(?:chromium_src/)?components/(?:.*/)?common/(?:.*/)?(?:BUILD\\.gn|DEPS)"
+    content_patterns: "\\b(?:PrefService|BrowserContext|Profile|g_browser_process|g_brave_browser_process)\\b"
+    content_patterns: "components/prefs"
+    content_patterns: "/browser(?:[/:\"]|$)"
+    rules: "docs/knowledge_base/rules/architecture/no-browser-only-apis-in-common.md"
+  }
+  # Cache keys in an interface.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:h|mojom)"
+    content_patterns: "(?i)\\bcache_?key"
+    rules: "docs/knowledge_base/rules/architecture/no-cache-keys-in-api.md"
+  }
+  # A C++ struct, which a mojom type may already describe.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.h"
+    content_patterns: "^\\s*struct\\s+\\w+(?:\\s+final)?\\s*(?:\\{.*)?$"
+    rules: "docs/knowledge_base/rules/architecture/use-mojom-types-instead-of-duplicate-structs.md"
+  }
+  # Sorts or reorders data outside UI code.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    path_expression_exclusion: "(?:.*/)?(?:ui|webui|views|resources)/.*"
+    content_patterns: "\\bstd::(?:ranges::)?(?:sort|stable_sort|partition|stable_partition|nth_element)\\s*\\("
+    content_patterns: "\\bbase::ranges::(?:sort|stable_sort)\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/reorder-data-for-ui-on-client-side.md"
+  }
+  # A WebUI-specific mojom interface name.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.mojom"
+    content_patterns: "\\binterface\\s+\\w*PageHandler\\w*\\b"
+    rules: "docs/knowledge_base/rules/architecture/ui-agnostic-mojom-interface-names.md"
+  }
+  # postMessage between frames.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:ts|tsx|js|jsx|html)"
+    content_patterns: "\\bpostMessage\\s*\\("
+    content_patterns: "addEventListener\\s*\\(\\s*['\"]message['\"]"
+    content_patterns: "\\bonmessage\\b"
+    rules: "docs/knowledge_base/rules/architecture/mojo-for-trusted-untrusted-webui.md"
+  }
+  # UI state checked outside UI code.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    path_expression_exclusion: "(?:.*/)?(?:ui|webui|views)/.*"
+    content_patterns: "\\bIs\\w*(?:WebUI|WebUi|UI|Ui|View|Panel|Sidebar|Toolbar|Button|Page)\\w*(?:Enabled|Available|Visible|Shown)\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/gate-ui-restrictions-at-ui-layer.md"
+  }
+  # Policy-managed state in UI code.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm|ts|tsx|js|jsx|html)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\bIs\\w*Managed\\w*\\s*\\("
+    content_patterns: "\\b[Ee]nforcement\\b"
+    content_patterns: "\\b(?:kEnforced|kRecommended|ENFORCED|RECOMMENDED)\\b"
+    content_patterns: "\\bcontrolledBy\\b"
+    rules: "docs/knowledge_base/rules/architecture/hide-ui-for-enforced-policies.md"
+  }
+  # URL constants and builders.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\"https?://"
+    content_patterns: "\\bk\\w*(?:Url|URL|Host|Domain|Endpoint)\\w*\\s*\\[\\s*\\]"
+    content_patterns: "\\bGetServicesDomain\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/shared-urls-in-brave-domains.md"
+  }
+  # An optional array in mojom.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.mojom"
+    content_patterns: "\\barray<.*>\\s*\\?"
+    rules: "docs/knowledge_base/rules/architecture/non-optional-arrays-in-mojom.md"
+  }
+  # Any change to the deprecated components/l10n/.
+  capability_groups {
+    path_expression: "components/l10n/.*"
+    rules: "docs/knowledge_base/rules/architecture/no-new-code-in-l10n.md"
+  }
+  # Uses components/l10n/.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm|gni)"
+    path_expression: "(?:.*/)?(?:BUILD\\.gn|DEPS)"
+    content_patterns: "brave/components/l10n/"
+    content_patterns: "\\bbrave_l10n::"
+    rules: "docs/knowledge_base/rules/architecture/no-new-code-in-l10n.md"
+  }
+  # Iterates a member queue while running its callbacks, or clears it after.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\bfor\\s*\\([^:;]*:\\s*\\w*(?:pending|queue|queued|callbacks|waiters)\\w*_\\s*\\)"
+    content_patterns: "\\b\\w*(?:pending|queue|queued|callbacks|waiters)\\w*_\\.clear\\s*\\(\\s*\\)"
+    ast_patterns: "{kind: for_range_loop, has: {field: right, regex: '_$'}, all: [{has: {kind: call_expression, regex: '\\.Run\\s*\\(', stopBy: end}}]}"
+    rules: "docs/knowledge_base/rules/architecture/swap-before-processing-pending-queue.md"
+  }
+  # Creates a feature or service lazily, on first use.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\bServiceIsCreatedWithBrowserContext\\b"
+    content_patterns: "\\bGetServiceForBrowserContext\\s*\\("
+    ast_patterns: "if (!$M) { $M = std::make_unique<$T>($$$A); }"
+    ast_patterns: "if (!$M) $M = std::make_unique<$T>($$$A);"
+    rules: "docs/knowledge_base/rules/architecture/create-features-eagerly.md"
+  }
+  # P3A and UMA metrics.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\"Brave\\.[A-Z][\\w.]*\""
+    content_patterns: "\\bRecordToHistogramBucket\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/p3a-metrics-need-privacy-review.md"
+  }
+  # Runs a callback inline.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\b\\w*(?:callback|cb|Callback)\\w*\\s*\\)?\\s*\\.Run\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/consistent-sync-or-async-callbacks.md"
+  }
+  # Re-entrancy and its guards.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\bbase::AutoReset\\b"
+    content_patterns: "(?i)\\bre-?entr"
+    rules: "docs/knowledge_base/rules/architecture/document-and-guard-reentrancy.md"
+  }
+  # Adds or changes native Views UI.
+  capability_groups {
+    path_expression: "(?:chromium_src/chrome/)?browser/ui/.*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: ":\\s*public\\s+(?:views::)?\\w*(?:View|Button|DialogDelegate\\w*|WidgetDelegate\\w*)\\b"
+    content_patterns: "\\b(?:METADATA_HEADER|BEGIN_METADATA)\\s*\\("
+    content_patterns: "\\bAddChildView\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/cuj-test-for-ui-features.md"
+  }
+  # BrowserWithTestWindowTest and the null checks it forces.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bBrowserWithTestWindowTest\\b"
+    content_patterns: "\\bif\\s*\\(\\s*!\\s*browser_view\\w*\\s*\\)"
+    rules: "docs/knowledge_base/rules/architecture/no-browser-with-test-window-test.md"
+  }
+  # Adds a test case.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    path_expression: "(?:.*/)?[^/]*Test\\.(?:java|kt)"
+    path_expression: "(?:.*/)?[^/]*\\.test\\.(?:ts|tsx|js|jsx)"
+    content_patterns: "^\\s*(?:IN_PROC_BROWSER_TEST_[FP]|TEST_[FP]|TYPED_TEST\\w*|TEST)\\s*\\("
+    content_patterns: "^\\s*@Test\\b"
+    content_patterns: "^\\s*(?:it|test)\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/no-change-detector-tests.md"
+  }
+  # Retrieves tab or window features, or makes them retrievable.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\b(?:DECLARE|DEFINE)_USER_DATA\\b"
+    content_patterns: "\\bScopedUnownedUserData\\b"
+    content_patterns: "\\bGetUnownedUserDataHost\\s*\\("
+    content_patterns: "\\bFromWebContents\\s*\\("
+    content_patterns: "\\bstatic\\s+\\w+\\s*\\*\\s*From\\s*\\("
+    rules: "docs/knowledge_base/rules/architecture/unowned-user-data-for-external-retrieval.md"
+  }
+  # Adds a member to BraveTabFeatures or BraveBrowserWindowFeatures.
+  capability_groups {
+    path_expression: "browser/(?:ui/tabs/(?:public/)?|android/)brave_tab_features\\.(?:cc|h)"
+    path_expression: "browser/ui/browser_window/internal/brave_browser_window_features\\.(?:cc|h)"
+    content_patterns: "\\bstd::(?:unique_ptr|make_unique)\\s*<"
+    rules: "docs/knowledge_base/rules/architecture/unowned-user-data-for-external-retrieval.md"
+  }
+  # Mocks tab or window features in tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\bGetUserDataFactory\\w*\\b"
+    content_patterns: "\\bAddOverrideForTesting\\b"
+    content_patterns: "\\bUnownedUserDataHost\\b"
+    content_patterns: "\\bMock\\w*(?:TabInterface|BrowserWindowInterface)\\b"
+    content_patterns: "\\b(?:Brave)?(?:TabFeatures|BrowserWindowFeatures)\\b"
+    rules: "docs/knowledge_base/rules/architecture/override-user-data-factory-in-integration-tests.md"
+  }
+  # Adds a persisted pref key.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\bRegister\\w+Pref\\s*\\("
+    content_patterns: "=\\s*\"brave\\.[\\w.]+\""
+    content_patterns: "\\bconstexpr\\s+char\\s+k\\w*Pref\\w*\\s*\\[\\s*\\]"
+    rules: "docs/knowledge_base/rules/architecture/pref-keys-correct-before-shipping.md"
+  }
+  # Any change: whether it keeps to one purpose.
+  capability_groups {
+    path_expression: ".*"
+    rules: "docs/knowledge_base/rules/architecture/keep-prs-focused.md"
+  }
+  # Keeps the WebContents a tab feature was created with.
+  capability_groups {
+    path_expression: "(?:chromium_src/chrome/)?browser/.*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\b(?:WebContentsObserver|Observe)\\s*\\(\\s*[\\w.>()-]*GetContents\\s*\\("
+    content_patterns: "\\b(?:raw_ptr|raw_ref|base::WeakPtr)\\s*<\\s*content::WebContents\\s*>"
+    content_patterns: "GetContents\\s*\\(\\s*\\)\\s*->\\s*GetWeakPtr\\s*\\("
+    content_patterns: "\\bcontent::WebContents\\s*\\*\\s*\\w+_\\s*[;=]"
+    rules: "docs/knowledge_base/rules/architecture/no-cached-web-contents-in-tab-features.md"
+  }
+}

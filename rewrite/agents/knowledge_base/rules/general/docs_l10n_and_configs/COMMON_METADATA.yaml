@@ -1,0 +1,48 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Drop the rules on where vector icons come from and live.
+
+      Brave takes its icons from Leo, which generates them into the one
+      leo_icons list of components/vector_icons, rather than from the GM3
+      definitions Chromium sources new .icon files from.
+    count: 2
+    regex:
+      re_pattern:
+        '\n\s*rules:
+        "[^"]*/(?:place-subsystem-vector-icons-in-subsystem-targets|preview-vector-icon-definitions)\.md"'
+      replace: ''
+  - description: |-
+      Drop the rules for Chrome's branded strings.
+
+      Brave's strings carry Brave's own branding, rather than the split
+      between Chromium and Google Chrome these rules keep.
+    count: 2
+    regex:
+      re_pattern:
+        '\n\s*rules:
+        "[^"]*/(?:guard-branded-strings-in-grit-with-google-chrome-expr|use-short-product-name-in-ui-copy)\.md"'
+      replace: ''
+  - description: |-
+      Drop the rule about Google's translation screenshots.
+
+      Chromium lands the screenshot hashes of new strings for its translators
+      ahead of them; Brave's translations take no such screenshots.
+    regex:
+      re_pattern:
+        '\n\s*rules:
+        "[^"]*/split-grd-strings-and-screenshots-into-separate-cl\.md"'
+      replace: ''
+  - description: |-
+      Drop the rule asking for UX and product approval of strings.
+
+      An approval is part of the review process, and nothing in a diff can
+      show it.
+    regex:
+      re_pattern:
+        '\n\s*rules: "[^"]*/require-ux-and-product-approval-for-ui-strings\.md"'
+      replace: ''

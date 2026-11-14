@@ -1,4 +1,4 @@
-# Sweep e: enforcement and deprecations. See tools/cr/codehealth/scripts/sweep.py for
+# Sweep e: enforcement and deprecations. See tools/cr/knowledge_base.py for
 # the fields.
 agentic_review {
   capability_groups {
@@ -9,13 +9,13 @@ agentic_review {
   # build already caught.
   capability_groups {
     path_expression: ".*\\.h"
-    exclude_path_expression: "(?:third_party/(?!blink/)|v8/).*"
-    content_patterns: "^\\+.*(?:[Dd]eprecat|DEPRECAT|[Dd]o not use|being removed|will be removed|\\[\\[deprecated|TODO\\([^)]*\\): [Mm]igrate (?:callers|users))"
+    path_expression_exclusion: "(?:third_party/(?!blink/)|v8/).*"
+    diff_patterns: "^\\+.*(?:[Dd]eprecat|DEPRECAT|[Dd]o not use|being removed|will be removed|\\[\\[deprecated|TODO\\([^)]*\\): [Mm]igrate (?:callers|users))"
     rules: "tools/cr/codehealth/rules/enforcement/header-deprecations.md"
   }
   capability_groups {
     path_expression: "(?:base|content/public|ui/views|net|mojo/public)/.*\\.h"
-    content_patterns: "^\\+\\s*//.*(?:[Pp]refer |[Aa]void |[Nn]ew callers)"
+    diff_patterns: "^\\+\\s*//.*(?:[Pp]refer |[Aa]void |[Nn]ew callers)"
     rules: "tools/cr/codehealth/rules/enforcement/header-deprecations.md"
   }
   capability_groups {
@@ -28,7 +28,7 @@ agentic_review {
   }
   capability_groups {
     path_expression: ".*\\.gni?"
-    content_patterns: "^-.*\\b(?:no_exit_time_destructors|no_wexit_time_destructors|-Wno-[\\w-]+)"
+    diff_patterns: "^-.*\\b(?:no_exit_time_destructors|no_wexit_time_destructors|-Wno-[\\w-]+)"
     rules: "tools/cr/codehealth/rules/enforcement/warning-opt-outs.md"
   }
   # Clean-up scripts live under tools/; blinkpy's `pr_cleanup_tool.py` and the

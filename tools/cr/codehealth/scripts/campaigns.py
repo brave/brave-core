@@ -19,15 +19,15 @@ clusters that only turn `DCHECK`s into non-fatal `CHECK`s are skipped.
 from __future__ import annotations
 
 import argparse
-from collections import defaultdict
-from dataclasses import dataclass, field
 import functools
 import re
 import sys
+from collections import defaultdict
+from dataclasses import dataclass, field
 
 import _boot  # noqa: F401  -- adds tools/cr to sys.path
-import repository  # noqa: E402  -- after _boot
-from sweep import BraveTree  # noqa: E402  -- after _boot
+import repository
+from knowledge_base import BraveTree, brave_tree
 
 
 @dataclass
@@ -105,7 +105,7 @@ class CampaignIndex:
         self, old: str, new: str, brave: BraveTree | None = None
     ) -> None:
         self.old, self.new = old, new
-        self._brave = brave or BraveTree()
+        self._brave = brave or brave_tree()
 
     def commits(self) -> list[Commit]:
         """The range's commits, read from `git log`."""

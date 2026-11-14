@@ -1,0 +1,12 @@
+diff --git a/agents/knowledge_base/rules/general/cpp_modern_idioms/COMMON_METADATA b/agents/knowledge_base/rules/general/cpp_modern_idioms/COMMON_METADATA
+index af34dbf52e5f84139619650362f9fd686562e61d..94761c079d13c70a5d64d84360341af38f09ed4e 100644
+--- a/agents/knowledge_base/rules/general/cpp_modern_idioms/COMMON_METADATA
++++ b/agents/knowledge_base/rules/general/cpp_modern_idioms/COMMON_METADATA
+@@ -1,7 +1,6 @@
+ agentic_review {
+   capability_groups {
+     rules: "agents/knowledge_base/rules/general/cpp_modern_idioms/delete-empty-files-from-repository.md"
+-    rules: "agents/knowledge_base/rules/general/cpp_modern_idioms/no-finch-in-client-side-identifiers.md"
+     rules: "agents/knowledge_base/rules/general/cpp_modern_idioms/omit-scratch-and-generator-output-files.md"
+     rules: "agents/knowledge_base/rules/general/cpp_modern_idioms/scope-lint-ifchange-to-target-definition.md"
+   }
