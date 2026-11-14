@@ -78,9 +78,8 @@ class Tool {
   // conversations using the agent mode instead of the chat mode.
   virtual bool IsAgentTool() const;
 
-  // Implementor can check features of the model to determine if the tool is
-  // supported.
-  virtual bool IsSupportedByModel(
+  // Enforces base model capabilities before tool-specific checks.
+  bool IsSupportedByModel(
       const mojom::Model& model,
       const ConversationCapabilitySet& conversation_capabilities) const;
 
@@ -145,6 +144,11 @@ class Tool {
   base::WeakPtr<Tool> GetWeakPtr() { return weak_ptr_factory_.GetWeakPtr(); }
 
  protected:
+  // Additional restrictions for models that pass the base capability checks.
+  virtual bool IsSupportedByModelImpl(
+      const mojom::Model& model,
+      const ConversationCapabilitySet& conversation_capabilities) const;
+
   base::WeakPtrFactory<Tool> weak_ptr_factory_{this};
 };
 

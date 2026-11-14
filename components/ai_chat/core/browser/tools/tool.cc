@@ -42,14 +42,22 @@ bool Tool::IsAgentTool() const {
 bool Tool::IsSupportedByModel(
     const mojom::Model& model,
     const ConversationCapabilitySet& conversation_capabilities) const {
-  // Implementors should add any extra checks in an override.
   return model.supports_tools &&
-         std::ranges::all_of(conversation_capabilities, [&](auto capability) {
-           // Server hints say nothing about model suitability.
-           return kServerHintCapabilities.contains(capability) ||
-                  std::ranges::contains(model.supported_capabilities,
-                                        capability);
-         });
+         std::ranges::all_of(
+             conversation_capabilities,
+             [&](auto capability) {
+               // Server hints say nothing about model suitability.
+               return kServerHintCapabilities.contains(capability) ||
+                      std::ranges::contains(model.supported_capabilities,
+                                            capability);
+             }) &&
+         IsSupportedByModelImpl(model, conversation_capabilities);
+}
+
+bool Tool::IsSupportedByModelImpl(
+    const mojom::Model& model,
+    const ConversationCapabilitySet& conversation_capabilities) const {
+  return true;
 }
 
 std::variant<bool, mojom::PermissionChallengePtr>
