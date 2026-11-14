@@ -3,194 +3,111 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Tests for gen.py's own logic: `BuildDirGenerator`'s secret resolution, its
-writing of a build directory's `args.gn`/`secrets.gni`, and
-`cmd_gen()`'s validation and dispatch. `BuildDirGenerator.run_gn_gen()`
-shells out to a real `gn` binary and is exercised manually, not here;
-`cmd_gen()`'s tests stub it out. `bots.py`'s CLI wiring for the `gen`
-subcommand is exercised in bots_test.py instead."""
+"""Tests for gen.py: rendering a builder's `args.gn`, writing its build
+directory with its secrets, and running `gn gen` in it. `gn gen` itself
+shells out to a real `gn` binary and is stubbed out here. `bots.py`'s CLI
+wiring for the `gen` subcommand is exercised in bots_test.py instead."""
 
 import argparse
-import contextlib
 import os
 import stat
 import sys
-import tempfile
 import unittest
-from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import gen
-import gen_paths
 import generated_output
-import dotenv
-from generated_output_test import _make_generated_output_dir
+import testing_support
+from testing_support import write_builder
+
+_GN_ARGS = {'target_cpu': 'x64', 'target_os': 'linux'}
+
+# How `_GN_ARGS` render in an `args.gn`.
+_ARGS_GN = 'target_cpu = "x64"\ntarget_os = "linux"\n'
+
+_SECRETS = {
+    'other_secret_key': 'OTHER_SECRET_ENV_VAR',
+    'fake_secret_key': 'FAKE_SECRET_ENV_VAR',
+}
 
 
-def _patch_dotenv(test_case, contents: str) -> None:
-    """Points `dotenv.DEFAULT_PATH` at a temp file with `contents` for
-    the duration of `test_case`."""
-    stack = contextlib.ExitStack()
-    test_case.addCleanup(stack.close)
-    tmp = stack.enter_context(tempfile.TemporaryDirectory())
-    path = Path(tmp) / '.env'
-    path.write_text(contents, encoding='utf-8')
-
-    original = dotenv.DEFAULT_PATH
-    dotenv.DEFAULT_PATH = path
-    test_case.addCleanup(lambda: setattr(dotenv, 'DEFAULT_PATH', original))
-
-
-class ResolveSecretsTest(unittest.TestCase):
-    def test_empty_secrets_resolves_empty(self):
-        self.assertEqual(gen.BuildDirGenerator('b').resolve_secrets({}), {})
-
-    def test_resolves_from_dotenv_by_gn_arg_name(self):
-        _patch_dotenv(
-            self, 'fake_secret_key=abc123\nother_fake_secret_key=def456\n'
+class _GenTestCase(unittest.TestCase):
+    def setUp(self):
+        self.output_dir = testing_support.use_output_dir(self)
+        self.src_dir = testing_support.use_src_dir(self)
+        testing_support.use_dotenv(
+            self, 'fake_secret_key=abc123\nother_secret_key=def456\n'
         )
 
-        resolved = gen.BuildDirGenerator('b').resolve_secrets(
-            {
-                'fake_secret_key': 'FAKE_SECRET_ENV_VAR',
-                'other_fake_secret_key': 'OTHER_FAKE_SECRET_ENV_VAR',
-            }
+    def _write_builder(self, **gn_args_json):
+        write_builder(
+            self.output_dir,
+            'b',
+            gn_args={'gn_args': _GN_ARGS, **gn_args_json},
         )
 
-        self.assertEqual(
-            resolved,
-            {
-                'fake_secret_key': 'abc123',
-                'other_fake_secret_key': 'def456',
-            },
-        )
 
-    def test_missing_secret_raises(self):
-        _patch_dotenv(self, '')
-
-        with self.assertRaises(generated_output.BotsError) as ctx:
-            gen.BuildDirGenerator('b').resolve_secrets(
-                {'fake_secret_key': 'FAKE_SECRET_ENV_VAR'}
-            )
-
-        self.assertIn('fake_secret_key', str(ctx.exception))
-
-
-class RenderSecretsGniTest(unittest.TestCase):
-    def test_empty_secrets_renders_empty(self):
-        self.assertEqual(gen.BuildDirGenerator.render_secrets_gni({}), '')
-
-    def test_renders_real_values(self):
-        rendered = gen.BuildDirGenerator.render_secrets_gni(
-            {
-                'fake_secret_key': 'abc123',
-                'other_fake_secret_key': 'def456',
-            }
+class RenderArgsGnTest(_GenTestCase):
+    def test_plain_args(self):
+        write_builder(
+            self.output_dir,
+            'b',
+            gn_args={'gn_args': {'z': True, 'a': True, **_GN_ARGS}},
         )
         self.assertEqual(
-            rendered,
-            'fake_secret_key = "abc123"\nother_fake_secret_key = "def456"\n',
+            gen.BuildDir('b').render_args_gn(),
+            'a = true\n' + _ARGS_GN + 'z = true\n',
         )
 
-    def test_keys_are_sorted(self):
-        rendered = gen.BuildDirGenerator.render_secrets_gni(
-            {'z': 'z-value', 'a': 'a-value'}
-        )
-        self.assertEqual(rendered, 'a = "a-value"\nz = "z-value"\n')
-
-
-class DefaultOutDirTest(unittest.TestCase):
-    def test_is_out_slash_builder_name_under_src_root(self):
-        generator = gen.BuildDirGenerator('linux-x64-asan-brave')
+    def test_secrets_add_the_import_line_only(self):
+        self._write_builder(secrets=_SECRETS)
+        args_gn = gen.BuildDir('b').render_args_gn()
         self.assertEqual(
-            generator.out_dir,
-            gen._CHROMIUM_SRC_DIR / 'out' / 'linux-x64-asan-brave',
+            args_gn.splitlines()[0], 'import("//out/b/secrets.gni")'
+        )
+        self.assertNotIn('abc123', args_gn)
+        self.assertNotIn('fake_secret_key', args_gn)
+
+    def test_secrets_import_follows_the_build_directory(self):
+        self._write_builder(secrets=_SECRETS)
+        self.assertEqual(
+            gen.BuildDir('b', self.src_dir / 'custom')
+            .render_args_gn()
+            .splitlines()[0],
+            'import("//custom/secrets.gni")',
         )
 
+    def test_args_file_import_line(self):
+        (self.src_dir / 'build').mkdir()
+        (self.src_dir / 'build' / 'x.gni').write_text('')
+        self._write_builder(args_file='//build/x.gni')
+        self.assertEqual(
+            gen.BuildDir('b').render_args_gn(),
+            'import("//build/x.gni")\n' + _ARGS_GN,
+        )
 
-class WriteBuildDirTest(unittest.TestCase):
-    def test_writes_args_gn(self):
-        with contextlib.ExitStack() as stack:
-            generated_tmp = stack.enter_context(tempfile.TemporaryDirectory())
-            _make_generated_output_dir(generated_tmp, ['b'])
-            out_tmp = stack.enter_context(tempfile.TemporaryDirectory())
+    def test_unknown_builder_raises(self):
+        with self.assertRaises(generated_output.BotsError):
+            gen.BuildDir('b').render_args_gn()
 
-            original = gen_paths.BUILDERS_OUTPUT_DIR
-            gen_paths.BUILDERS_OUTPUT_DIR = Path(generated_tmp)
-            try:
-                generator = gen.BuildDirGenerator('b', Path(out_tmp))
-                args_gn = generator.write_build_dir()
-            finally:
-                gen_paths.BUILDERS_OUTPUT_DIR = original
 
-            self.assertEqual(args_gn, 'is_asan = true\n')
-            self.assertEqual(
-                (Path(out_tmp) / 'args.gn').read_text(encoding='utf-8'),
-                'is_asan = true\n',
-            )
+class WriteTest(_GenTestCase):
+    def test_writes_args_gn_into_out_builder(self):
+        self._write_builder()
+        args_gn = gen.BuildDir('b').write()
+        out_dir = self.src_dir / 'out' / 'b'
+        self.assertEqual(args_gn, _ARGS_GN)
+        self.assertEqual((out_dir / 'args.gn').read_text(), args_gn)
+        self.assertFalse((out_dir / 'secrets.gni').exists())
 
-    def test_creates_out_dir_if_missing(self):
-        with contextlib.ExitStack() as stack:
-            generated_tmp = stack.enter_context(tempfile.TemporaryDirectory())
-            _make_generated_output_dir(generated_tmp, ['b'])
-            out_tmp = stack.enter_context(tempfile.TemporaryDirectory())
-            out_dir = Path(out_tmp) / 'nested' / 'out-dir'
-
-            original = gen_paths.BUILDERS_OUTPUT_DIR
-            gen_paths.BUILDERS_OUTPUT_DIR = Path(generated_tmp)
-            try:
-                gen.BuildDirGenerator('b', out_dir).write_build_dir()
-            finally:
-                gen_paths.BUILDERS_OUTPUT_DIR = original
-
-            self.assertTrue((out_dir / 'args.gn').is_file())
-
-    def test_no_secrets_means_no_stub_file(self):
-        with contextlib.ExitStack() as stack:
-            generated_tmp = stack.enter_context(tempfile.TemporaryDirectory())
-            _make_generated_output_dir(generated_tmp, ['b'])
-            out_tmp = stack.enter_context(tempfile.TemporaryDirectory())
-
-            original = gen_paths.BUILDERS_OUTPUT_DIR
-            gen_paths.BUILDERS_OUTPUT_DIR = Path(generated_tmp)
-            try:
-                gen.BuildDirGenerator('b', Path(out_tmp)).write_build_dir()
-            finally:
-                gen_paths.BUILDERS_OUTPUT_DIR = original
-
-            self.assertFalse((Path(out_tmp) / 'secrets.gni').is_file())
-
-    def test_declared_secrets_get_their_real_value(self):
-        with contextlib.ExitStack() as stack:
-            tmp = stack.enter_context(tempfile.TemporaryDirectory())
-            builder_dir = Path(tmp) / 'b'
-            builder_dir.mkdir()
-            (builder_dir / 'gn-args.json').write_text(
-                '{"gn_args": {"is_asan": true}, '
-                '"secrets": {"fake_secret_key": "FAKE_SECRET_ENV_VAR"}}',
-                encoding='utf-8',
-            )
-            fake_src_root = stack.enter_context(tempfile.TemporaryDirectory())
-            fake_src_root_path = Path(fake_src_root).resolve()
-            out_dir = fake_src_root_path / 'out' / 'b'
-            _patch_dotenv(self, 'fake_secret_key=abc123\n')
-
-            original_output_dir = gen_paths.BUILDERS_OUTPUT_DIR
-            gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
-            original_src_dir = gen._CHROMIUM_SRC_DIR
-            gen._CHROMIUM_SRC_DIR = fake_src_root_path
-            try:
-                gen.BuildDirGenerator('b', out_dir).write_build_dir()
-            finally:
-                gen_paths.BUILDERS_OUTPUT_DIR = original_output_dir
-                gen._CHROMIUM_SRC_DIR = original_src_dir
-
-            secrets_path = out_dir / 'secrets.gni'
-            self.assertEqual(
-                secrets_path.read_text(encoding='utf-8'),
-                'fake_secret_key = "abc123"\n',
-            )
+    def test_writes_secrets_with_their_real_values_sorted(self):
+        self._write_builder(secrets=_SECRETS)
+        gen.BuildDir('b').write()
+        self.assertEqual(
+            (self.src_dir / 'out' / 'b' / 'secrets.gni').read_text(),
+            'fake_secret_key = "abc123"\nother_secret_key = "def456"\n',
+        )
 
     # Windows' `chmod()` only maps the read-only bit, so a file written
     # there always reads back as 0o666.
@@ -198,161 +115,54 @@ class WriteBuildDirTest(unittest.TestCase):
         sys.platform == 'win32', 'POSIX permission bits are not supported'
     )
     def test_secrets_file_is_readable_only_by_owner(self):
-        with contextlib.ExitStack() as stack:
-            tmp = stack.enter_context(tempfile.TemporaryDirectory())
-            builder_dir = Path(tmp) / 'b'
-            builder_dir.mkdir()
-            (builder_dir / 'gn-args.json').write_text(
-                '{"gn_args": {"is_asan": true}, '
-                '"secrets": {"fake_secret_key": "FAKE_SECRET_ENV_VAR"}}',
-                encoding='utf-8',
-            )
-            fake_src_root = stack.enter_context(tempfile.TemporaryDirectory())
-            fake_src_root_path = Path(fake_src_root).resolve()
-            out_dir = fake_src_root_path / 'out' / 'b'
-            _patch_dotenv(self, 'fake_secret_key=abc123\n')
+        self._write_builder(secrets=_SECRETS)
+        gen.BuildDir('b').write()
+        secrets_gni = self.src_dir / 'out' / 'b' / 'secrets.gni'
+        self.assertEqual(stat.S_IMODE(secrets_gni.stat().st_mode), 0o600)
 
-            original_output_dir = gen_paths.BUILDERS_OUTPUT_DIR
-            gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
-            original_src_dir = gen._CHROMIUM_SRC_DIR
-            gen._CHROMIUM_SRC_DIR = fake_src_root_path
-            try:
-                gen.BuildDirGenerator('b', out_dir).write_build_dir()
-            finally:
-                gen_paths.BUILDERS_OUTPUT_DIR = original_output_dir
-                gen._CHROMIUM_SRC_DIR = original_src_dir
+    def test_missing_secret_writes_nothing(self):
+        testing_support.use_dotenv(self, 'fake_secret_key=abc123\n')
+        self._write_builder(secrets=_SECRETS)
+        with self.assertRaisesRegex(
+            generated_output.BotsError, 'other_secret_key'
+        ):
+            gen.BuildDir('b').write()
+        self.assertFalse((self.src_dir / 'out' / 'b').exists())
 
-            mode = stat.S_IMODE((out_dir / 'secrets.gni').stat().st_mode)
-            self.assertEqual(mode, 0o600)
+    def test_creates_a_nested_out_dir(self):
+        self._write_builder()
+        out_dir = self.src_dir / 'nested' / 'out-dir'
+        gen.BuildDir('b', out_dir).write()
+        self.assertTrue((out_dir / 'args.gn').is_file())
 
-    def test_missing_declared_secret_raises(self):
-        with contextlib.ExitStack() as stack:
-            tmp = stack.enter_context(tempfile.TemporaryDirectory())
-            builder_dir = Path(tmp) / 'b'
-            builder_dir.mkdir()
-            (builder_dir / 'gn-args.json').write_text(
-                '{"gn_args": {"is_asan": true}, '
-                '"secrets": {"fake_secret_key": "FAKE_SECRET_ENV_VAR"}}',
-                encoding='utf-8',
-            )
-            fake_src_root = stack.enter_context(tempfile.TemporaryDirectory())
-            fake_src_root_path = Path(fake_src_root).resolve()
-            out_dir = fake_src_root_path / 'out' / 'b'
-            _patch_dotenv(self, '')  # No matching entry.
 
-            original_output_dir = gen_paths.BUILDERS_OUTPUT_DIR
-            gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
-            original_src_dir = gen._CHROMIUM_SRC_DIR
-            gen._CHROMIUM_SRC_DIR = fake_src_root_path
-            try:
-                with self.assertRaises(generated_output.BotsError):
-                    gen.BuildDirGenerator('b', out_dir).write_build_dir()
-            finally:
-                gen_paths.BUILDERS_OUTPUT_DIR = original_output_dir
-                gen._CHROMIUM_SRC_DIR = original_src_dir
-
-            self.assertFalse((out_dir / 'args.gn').exists())
-
-    def test_secrets_import_path_follows_a_non_default_out_dir(self):
-        with contextlib.ExitStack() as stack:
-            tmp = stack.enter_context(tempfile.TemporaryDirectory())
-            builder_dir = Path(tmp) / 'b'
-            builder_dir.mkdir()
-            (builder_dir / 'gn-args.json').write_text(
-                '{"gn_args": {"is_asan": true}, '
-                '"secrets": {"fake_secret_key": "FAKE_SECRET_ENV_VAR"}}',
-                encoding='utf-8',
-            )
-            fake_src_root = stack.enter_context(tempfile.TemporaryDirectory())
-            fake_src_root_path = Path(fake_src_root).resolve()
-            # Deliberately not the default `out/b` layout.
-            out_dir = fake_src_root_path / 'custom' / 'out-dir'
-            _patch_dotenv(self, 'fake_secret_key=abc123\n')
-
-            original_output_dir = gen_paths.BUILDERS_OUTPUT_DIR
-            gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
-            original_src_dir = gen._CHROMIUM_SRC_DIR
-            gen._CHROMIUM_SRC_DIR = fake_src_root_path
-            try:
-                args_gn = gen.BuildDirGenerator('b', out_dir).write_build_dir()
-            finally:
-                gen_paths.BUILDERS_OUTPUT_DIR = original_output_dir
-                gen._CHROMIUM_SRC_DIR = original_src_dir
-
-            self.assertEqual(
-                args_gn.splitlines()[0],
-                'import("//custom/out-dir/secrets.gni")',
-            )
-            self.assertTrue((out_dir / 'secrets.gni').is_file())
-
-    def test_unknown_builder_raises(self):
-        generator = gen.BuildDirGenerator(
-            'no-such-builder', Path(tempfile.mkdtemp())
+class GenTest(_GenTestCase):
+    def setUp(self):
+        super().setUp()
+        self.gn_gen_dirs = []
+        original = gen.BuildDir._run_gn_gen
+        gen.BuildDir._run_gn_gen = lambda build_dir: (
+            self.gn_gen_dirs.append(build_dir.out_dir) or 0
         )
-        with self.assertRaises(generated_output.BotsError):
-            generator.write_build_dir()
+        self.addCleanup(setattr, gen.BuildDir, '_run_gn_gen', original)
+        self._write_builder()
 
+    def test_writes_then_runs_gn_gen_in_out_builder(self):
+        self.assertEqual(gen.BuildDir('b').gen(), 0)
+        out_dir = self.src_dir / 'out' / 'b'
+        self.assertEqual(self.gn_gen_dirs, [out_dir])
+        self.assertTrue((out_dir / 'args.gn').is_file())
 
-class CmdGenTest(unittest.TestCase):
-    def test_out_dir_outside_src_root_raises(self):
-        args = argparse.Namespace(builder='b', out_dir='/not/under/src/root')
-        with self.assertRaises(generated_output.BotsError):
-            gen.cmd_gen(args)
+    def test_out_dir_outside_src_raises(self):
+        with self.assertRaisesRegex(
+            generated_output.BotsError, 'not under the chromium checkout'
+        ):
+            gen.BuildDir('b', self.output_dir)
 
-    def test_dispatches_to_gen(self):
-        with contextlib.ExitStack() as stack:
-            generated_tmp = stack.enter_context(tempfile.TemporaryDirectory())
-            _make_generated_output_dir(generated_tmp, ['b'])
-            fake_src_root = stack.enter_context(tempfile.TemporaryDirectory())
-            fake_src_root_path = Path(fake_src_root).resolve()
-            out_dir = fake_src_root_path / 'out' / 'b'
-
-            seen_out_dirs = []
-            original_run_gn_gen = gen.BuildDirGenerator.run_gn_gen
-            gen.BuildDirGenerator.run_gn_gen = lambda self: (
-                seen_out_dirs.append(self.out_dir) or 0
-            )
-            original_src_dir = gen._CHROMIUM_SRC_DIR
-            gen._CHROMIUM_SRC_DIR = fake_src_root_path
-            original_output_dir = gen_paths.BUILDERS_OUTPUT_DIR
-            gen_paths.BUILDERS_OUTPUT_DIR = Path(generated_tmp)
-            try:
-                args = argparse.Namespace(builder='b', out_dir=str(out_dir))
-                ret = gen.cmd_gen(args)
-            finally:
-                gen.BuildDirGenerator.run_gn_gen = original_run_gn_gen
-                gen._CHROMIUM_SRC_DIR = original_src_dir
-                gen_paths.BUILDERS_OUTPUT_DIR = original_output_dir
-
-            self.assertEqual(ret, 0)
-            self.assertEqual(seen_out_dirs, [out_dir])
-            self.assertTrue((out_dir / 'args.gn').is_file())
-
-    def test_default_out_dir_when_not_given(self):
-        with contextlib.ExitStack() as stack:
-            generated_tmp = stack.enter_context(tempfile.TemporaryDirectory())
-            _make_generated_output_dir(generated_tmp, ['b'])
-            fake_src_root = stack.enter_context(tempfile.TemporaryDirectory())
-            fake_src_root_path = Path(fake_src_root).resolve()
-
-            seen_out_dirs = []
-            original_run_gn_gen = gen.BuildDirGenerator.run_gn_gen
-            gen.BuildDirGenerator.run_gn_gen = lambda self: (
-                seen_out_dirs.append(self.out_dir) or 0
-            )
-            original_src_dir = gen._CHROMIUM_SRC_DIR
-            gen._CHROMIUM_SRC_DIR = fake_src_root_path
-            original_output_dir = gen_paths.BUILDERS_OUTPUT_DIR
-            gen_paths.BUILDERS_OUTPUT_DIR = Path(generated_tmp)
-            try:
-                args = argparse.Namespace(builder='b', out_dir=None)
-                gen.cmd_gen(args)
-            finally:
-                gen.BuildDirGenerator.run_gn_gen = original_run_gn_gen
-                gen._CHROMIUM_SRC_DIR = original_src_dir
-                gen_paths.BUILDERS_OUTPUT_DIR = original_output_dir
-
-            self.assertEqual(seen_out_dirs, [fake_src_root_path / 'out' / 'b'])
+    def test_cmd_gen_resolves_out_dir(self):
+        out_dir = self.src_dir / 'custom'
+        gen.cmd_gen(argparse.Namespace(builder='b', out_dir=str(out_dir)))
+        self.assertEqual(self.gn_gen_dirs, [out_dir])
 
 
 if __name__ == '__main__':
