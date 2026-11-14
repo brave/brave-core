@@ -1,0 +1,29 @@
+{
+  "gn_args": {
+    "disable_fieldtrial_testing_config": true,
+    "enable_backup_ref_ptr_support": false,
+    "enable_dsyms": true,
+    "enable_precompiled_headers": false,
+    "enable_pseudolocales": false,
+    "enable_run_ios_unittests_with_xctest": true,
+    "ignore_missing_widevine_signing_cert": false,
+    "ios_enable_code_signing": false,
+    "ios_enable_credential_provider_extension": true,
+    "ios_enable_share_extension": false,
+    "ios_enable_widget_kit_extension": false,
+    "ios_locales_pack_extra_deps": [
+      "//brave/components/resources:strings"
+    ],
+    "ios_locales_pack_extra_source_patterns": [
+      "%root_gen_dir%/components/brave_components_strings_"
+    ],
+    "ios_provider_target": "//brave/ios/browser/providers:brave_providers",
+    "root_extra_deps": [
+      "//brave"
+    ],
+    "target_cpu": "x64",
+    "target_os": "ios",
+    "translate_genders": false,
+    "use_partition_alloc_as_malloc": false
+  }
+}
