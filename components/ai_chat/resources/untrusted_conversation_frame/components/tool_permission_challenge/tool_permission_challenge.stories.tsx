@@ -6,8 +6,10 @@
 import * as React from 'react'
 import { Meta } from '@storybook/react'
 import { InferControlsFromArgs } from '$storybook/utils'
+import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import MockContext from '../../mock_untrusted_conversation_context'
+import { getToolLabel } from '../assistant_response/get_tool_label'
 import ToolPermissionChallenge from './tool_permission_challenge'
 
 type CustomArgs = {
@@ -15,6 +17,7 @@ type CustomArgs = {
   hasAssessment: boolean
   hasPlan: boolean
   hasImplications: boolean
+  implicationsKind: 'tabs' | 'tabsWithPageContent' | 'history'
   isWebTool: boolean
   argumentsJson: string
 }
@@ -24,6 +27,7 @@ const args: CustomArgs = {
   hasAssessment: true,
   hasPlan: false,
   hasImplications: true,
+  implicationsKind: 'tabs',
   isWebTool: false,
   argumentsJson: JSON.stringify({
     action: 'group',
@@ -35,6 +39,17 @@ const args: CustomArgs = {
 
 export const _ToolPermissionChallenge = {
   render: (args: CustomArgs) => {
+    const implications = {
+      tabs: getLocale(
+        S.CHAT_UI_TOOL_TAB_MANAGEMENT_PERMISSION_IMPLICATIONS_MARKDOWN,
+      ),
+      tabsWithPageContent: getLocale(
+        S.CHAT_UI_TOOL_TAB_MANAGEMENT_PAGE_CONTENT_PERMISSION_IMPLICATIONS,
+      ),
+      history: getLocale(
+        S.CHAT_UI_TOOL_SEMANTIC_HISTORY_SEARCH_PERMISSION_IMPLICATIONS_MARKDOWN,
+      ),
+    }[args.implicationsKind]
     // Mirrors what tool_event.tsx does before rendering this component: the
     // arguments are parsed from LLM output, so parsing can fail.
     let toolInput: any = null
@@ -47,9 +62,11 @@ export const _ToolPermissionChallenge = {
     const toolUseEvent: Mojom.ToolUseEvent = {
       toolName: args.isWebTool
         ? 'web_example_com_get_stock_price'
-        : args.hasImplications
-          ? Mojom.TAB_MANAGEMENT_TOOL_NAME
-          : Mojom.CODE_EXECUTION_TOOL_NAME,
+        : args.implicationsKind === 'history'
+          ? Mojom.SEMANTIC_HISTORY_SEARCH_TOOL_NAME
+          : args.hasImplications
+            ? Mojom.TAB_MANAGEMENT_TOOL_NAME
+            : Mojom.CODE_EXECUTION_TOOL_NAME,
       id: 'toolId',
       argumentsJson: args.argumentsJson,
       output: undefined,
@@ -66,7 +83,8 @@ export const _ToolPermissionChallenge = {
         description: args.isWebTool
           ? 'Brave AI would like to execute **get_stock_price** on **https://example.com**'
           : undefined,
-        implications: undefined,
+        implications:
+          args.hasImplications && !args.isWebTool ? implications : undefined,
         supportsAllowSession: args.isWebTool,
       },
     }
@@ -76,20 +94,35 @@ export const _ToolPermissionChallenge = {
           isInteractive={args.isInteractive}
           toolUseEvent={toolUseEvent}
           toolInput={toolInput}
-          toolLabel={
-            args.hasPlan
-              ? 'Managing your tabs'
-              : 'Navigating to https://www.example.com/path/to/page'
-          }
+          toolLabel={getToolLabel(toolUseEvent.toolName, toolInput)}
         />
       </MockContext>
     )
   },
 }
 
+export const HistorySearch = {
+  ..._ToolPermissionChallenge,
+  args: {
+    implicationsKind: 'history',
+    argumentsJson: '{"query":"lighthouses"}',
+  },
+}
+
+export const TabsWithPageContent = {
+  ..._ToolPermissionChallenge,
+  args: { implicationsKind: 'tabsWithPageContent' },
+}
+
 export default {
   title: 'AI Chat/Permission Challenge',
   component: ToolPermissionChallenge,
-  argTypes: InferControlsFromArgs(args),
+  argTypes: {
+    ...InferControlsFromArgs(args),
+    implicationsKind: {
+      control: 'select',
+      options: ['tabs', 'tabsWithPageContent', 'history'],
+    },
+  },
   args,
 } as Meta<typeof ToolPermissionChallenge>

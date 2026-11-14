@@ -1006,7 +1006,13 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
   auto use = ToolUse("1", kListInput);
   auto challenge = GetChallenge(tool, *use);
   ASSERT_TRUE(challenge);
-  EXPECT_FALSE(challenge->implications);
+  EXPECT_THAT(
+      challenge->implications,
+      testing::Optional(testing::AllOf(
+          testing::HasSubstr("**URL**"), testing::HasSubstr("**Title**"),
+          testing::Not(testing::HasSubstr("page text")))));
+  EXPECT_EQ(challenge->implications,
+            tool.GetPermissionChallengeImplications(*use));
   tool.UserPermissionGranted(use->id, *challenge);
 
   base::DictValue output = base::test::ParseJsonDict(
@@ -1083,7 +1089,10 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
   EXPECT_TRUE(FindPassages(output, url));
 
   SetSemanticHistorySearchEnabled(false);
-  EXPECT_FALSE(tool.GetPermissionChallengeImplications(*use));
+  EXPECT_THAT(tool.GetPermissionChallengeImplications(*use),
+              testing::Optional(testing::AllOf(
+                  testing::HasSubstr("**URL**"),
+                  testing::Not(testing::HasSubstr("page text")))));
 }
 
 // A list is sent whole rather than in chunks, so it carries no more page
@@ -1143,7 +1152,10 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
   SetSemanticHistorySearchEnabled(false);
   auto tabs_only = GetChallenge(tool, *ToolUse("1", kListInput));
   ASSERT_TRUE(tabs_only);
-  EXPECT_FALSE(tabs_only->implications);
+  EXPECT_THAT(tabs_only->implications,
+              testing::Optional(testing::AllOf(
+                  testing::HasSubstr("**URL**"),
+                  testing::Not(testing::HasSubstr("page text")))));
   tool.UserPermissionGranted("1", *tabs_only);
 
   // Page content is readable again, and still has to be asked for.

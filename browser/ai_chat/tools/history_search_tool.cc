@@ -23,9 +23,11 @@
 #include "chrome/browser/history_embeddings/history_embeddings_service_factory.h"
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/history/core/browser/url_row.h"
 #include "components/history_embeddings/content/history_embeddings_service.h"
 #include "components/history_embeddings/core/history_embeddings_features.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "url/url_constants.h"
 
 namespace ai_chat {
@@ -159,14 +161,19 @@ HistorySearchTool::RequiresUserInteractionBeforeHandling(
   // index, so the query and the full history never leave the device. Only
   // the matching pages' titles, URLs, and indexed passages are sent to the
   // remote LLM as the tool's output. Ask the user to confirm before doing
-  // that. The user-facing wording is in
-  // `get_tool_permission_implications.tsx` so it goes through i18n; this
-  // C++ side only needs to surface a non-null challenge.
+  // that.
   return mojom::PermissionChallenge::New(
       /*assessment=*/std::nullopt, /*plan=*/std::nullopt,
       /*title=*/std::nullopt, /*description=*/std::nullopt,
-      /*implications=*/std::nullopt,
+      /*implications=*/GetPermissionChallengeImplications(tool_use),
       /*supports_allow_session=*/false);
+}
+
+std::optional<std::string>
+HistorySearchTool::GetPermissionChallengeImplications(
+    const mojom::ToolUseEvent& tool_use) const {
+  return l10n_util::GetStringUTF8(
+      IDS_CHAT_UI_TOOL_SEMANTIC_HISTORY_SEARCH_PERMISSION_IMPLICATIONS_MARKDOWN);
 }
 
 void HistorySearchTool::UserPermissionGranted(
