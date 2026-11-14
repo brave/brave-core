@@ -30,15 +30,12 @@ failing upstream, 3 when none is, and 1 on errors.
 from __future__ import annotations
 
 import argparse
-import base64
 import json
 import re
-import subprocess
 import sys
-import urllib.request
+from collections import defaultdict
 from dataclasses import dataclass
-from enum import Enum
-from pathlib import Path
+from datetime import datetime, timezone
 from typing import Any
 
 from rich import box
@@ -46,16 +43,18 @@ from rich.console import Console
 from rich.table import Table
 from rich.text import Text
 
-from luci_analysis import LuciAnalysis, LuciAnalysisError
-
-CHROMIUM_SRC = Path(__file__).resolve().parents[3]
-GITILES = "https://chromium.googlesource.com/chromium/src"
-GITILES_HOST = "chromium.googlesource.com"
-TEST_VARIANTS_SERVICE = "luci.analysis.v1.TestVariants"
-TEST_HISTORY_SERVICE = "luci.analysis.v1.TestHistory"
-
-# QueryStability rejects requests with more test variants than this.
-MAX_STABILITY_BATCH = 100
+from luci_analysis import (
+    POOLED_WINDOW_DAYS,
+    POOLED_WINDOW_WEEKDAYS,
+    LuciAnalysis,
+    LuciAnalysisError,
+    PooledFlakes,
+    Source,
+    Stability,
+    Status,
+    Window,
+    source_for,
+)
 
 # Past this many matching test IDs the query is almost certainly too broad.
 MAX_TEST_IDS = 20
@@ -65,96 +64,6 @@ EXIT_ERROR = 1
 EXIT_NOT_CONFIRMED = 3
 
 console = Console()
-
-
-# -- Where to look ------------------------------------------------------------
-
-
-@dataclass(frozen=True)
-class Source:
-    """A position on a Chromium branch, and the LUCI project holding it."""
-
-    # What the user asked for, e.g. "checkout" or "157.0.8103.39".
-    label: str
-    commit: str
-    # e.g. "refs/branch-heads/8103" or "refs/heads/main".
-    ref: str
-    position: int
-    milestone: int
-
-    @property
-    def project(self) -> str:
-        if self.ref == "refs/heads/main":
-            return "chromium"
-        if self.ref.startswith("refs/branch-heads/"):
-            return f"chromium-m{self.milestone}"
-        raise LuciAnalysisError(f"No LUCI project is known for {self.ref}.")
-
-    def as_sources(self) -> dict[str, Any]:
-        """The `sources` field QueryStability takes."""
-        return {
-            "gitilesCommit": {
-                "host": GITILES_HOST,
-                "project": "chromium/src",
-                "ref": self.ref,
-                "commitHash": self.commit,
-                "position": str(self.position),
-            }
-        }
-
-
-def parse_commit_position(message: str) -> tuple[str, int]:
-    """The ref and position of a commit's Cr-Commit-Position trailer."""
-    match = re.search(
-        r"^Cr-Commit-Position: (\S+)@\{#(\d+)\}$", message, re.MULTILINE
-    )
-    if not match:
-        raise LuciAnalysisError("Commit has no Cr-Commit-Position trailer.")
-    return match.group(1), int(match.group(2))
-
-
-def parse_milestone(version_file: str) -> int:
-    """MAJOR from the contents of chrome/VERSION."""
-    match = re.search(r"^MAJOR=(\d+)$", version_file, re.MULTILINE)
-    if not match:
-        raise LuciAnalysisError("chrome/VERSION has no MAJOR line.")
-    return int(match.group(1))
-
-
-def source_from_checkout() -> Source:
-    """The position the local Chromium checkout is at."""
-    commit, _, message = subprocess.run(
-        ["git", "-C", str(CHROMIUM_SRC), "log", "-1", "--format=%H%n%B"],
-        check=True,
-        capture_output=True,
-        text=True,
-    ).stdout.partition("\n")
-    ref, position = parse_commit_position(message)
-    version = (CHROMIUM_SRC / "chrome" / "VERSION").read_text()
-    return Source("checkout", commit, ref, position, parse_milestone(version))
-
-
-def gitiles(path: str) -> bytes:
-    try:
-        with urllib.request.urlopen(f"{GITILES}/+{path}", timeout=30) as r:
-            return r.read()
-    except OSError as e:
-        raise LuciAnalysisError(
-            f"Could not read {path} from gitiles: {e}"
-        ) from e
-
-
-def source_from_gitiles(committish: str) -> Source:
-    """The position of a tag, branch or commit in chromium/src."""
-    raw = gitiles(f"log/{committish}?format=JSON&n=1")
-    commit = json.loads(raw[raw.find(b"\n") + 1 :])["log"][0]
-    ref, position = parse_commit_position(commit["message"])
-    version = base64.b64decode(
-        gitiles(f"/{commit['commit']}/chrome/VERSION?format=TEXT")
-    ).decode()
-    return Source(
-        committish, commit["commit"], ref, position, parse_milestone(version)
-    )
 
 
 # -- What to look at ----------------------------------------------------------
@@ -210,89 +119,12 @@ class Filters:
 # -- What upstream says -------------------------------------------------------
 
 
-class Status(Enum):
-    FLAKY = "flaky"
-    FAILING = "failing"
-    STABLE = "stable"
-    NO_DATA = "no_data"
-
-
 _STATUS_STYLE = {
     Status.FLAKY: "bold red",
     Status.FAILING: "bold magenta",
     Status.STABLE: "green",
     Status.NO_DATA: "dim",
 }
-
-
-@dataclass(frozen=True)
-class Stability:
-    """Upstream's stability analysis of one test variant."""
-
-    test_id: str
-    variant: dict[str, str]
-    # TestVariantStabilityAnalysis as returned. Zero and false fields are
-    # omitted on the wire.
-    analysis: dict[str, Any]
-
-    @property
-    def _flake(self) -> dict[str, Any]:
-        return self.analysis.get("flakeRate", {})
-
-    @property
-    def _failure(self) -> dict[str, Any]:
-        return self.analysis.get("failureRate", {})
-
-    def flake(self, field: str) -> int:
-        return int(self._flake.get(field, 0))
-
-    def failure(self, field: str) -> int:
-        return int(self._failure.get(field, 0))
-
-    @property
-    def status(self) -> Status:
-        if self._failure.get("isMet"):
-            return Status.FAILING
-        if self._flake.get("isMet"):
-            return Status.FLAKY
-        if self.flake("totalVerdicts") or self._failure.get("recentVerdicts"):
-            return Status.STABLE
-        return Status.NO_DATA
-
-    @property
-    def confirmed(self) -> bool:
-        return self.status in (Status.FLAKY, Status.FAILING)
-
-    @property
-    def example_builds(self) -> list[str]:
-        """Links to builds where the test was flaky."""
-        builds = []
-        for example in self._flake.get("flakeExamples", []):
-            for inv in example.get("rootInvocations") or example.get(
-                "invocations", []
-            ):
-                if inv.startswith("build-"):
-                    builds.append(f"https://ci.chromium.org/b/{inv[6:]}")
-        return builds
-
-    def as_json(self) -> dict[str, Any]:
-        return {
-            "test_id": self.test_id,
-            "variant": self.variant,
-            "variant_hash": self.analysis.get("variantHash", ""),
-            "status": self.status.value,
-            "flake_rate_met": bool(self._flake.get("isMet")),
-            "failure_rate_met": bool(self._failure.get("isMet")),
-            "run_flaky_verdicts": self.flake("runFlakyVerdicts"),
-            "total_verdicts": self.flake("totalVerdicts"),
-            "run_flaky_verdicts_1wd": self.flake("runFlakyVerdicts1wd"),
-            "run_flaky_verdicts_12h": self.flake("runFlakyVerdicts12h"),
-            "unexpected_test_runs": self.failure("unexpectedTestRuns"),
-            "consecutive_unexpected_test_runs": self.failure(
-                "consecutiveUnexpectedTestRuns"
-            ),
-            "example_builds": self.example_builds,
-        }
 
 
 def describe_criteria(criteria: dict[str, Any]) -> str:
@@ -328,38 +160,69 @@ def query(
             f"{len(test_ids)} test IDs match {name}; pass a more specific name."
         )
 
-    positions = []
-    for test_id in test_ids:
-        for entry in client.paged_request(
-            TEST_HISTORY_SERVICE, "QueryVariants", testId=test_id
-        ).gather("variants"):
-            variant = entry.get("variant", {}).get("def", {})
-            if filters.accept(variant):
-                positions.append((test_id, variant, entry["variantHash"]))
+    variants = [
+        (test_id, variant)
+        for test_id in test_ids
+        for variant in client.variants(test_id)
+        if filters.accept(variant.definition)
+    ]
+    return client.stability(variants, source)
 
-    results: list[Stability] = []
-    criteria: dict[str, Any] = {}
-    for start in range(0, len(positions), MAX_STABILITY_BATCH):
-        batch = positions[start : start + MAX_STABILITY_BATCH]
-        response = client.request(
-            TEST_VARIANTS_SERVICE,
-            "QueryStability",
-            testVariants=[
-                {
-                    "testId": test_id,
-                    "variantHash": variant_hash,
-                    "sources": source.as_sources(),
-                }
-                for test_id, _, variant_hash in batch
-            ],
-        ).send()
-        criteria = response.get("criteria", criteria)
-        # Answers come back in request order.
-        for (test_id, variant, _), analysis in zip(
-            batch, response.get("testVariants", [])
-        ):
-            results.append(Stability(test_id, variant, analysis))
-    return results, criteria
+
+@dataclass(frozen=True)
+class Pool:
+    """One test's CI bots on one bot OS, with their flakes counted together."""
+
+    test_id: str
+    # The first part of the bot OS, e.g. "Windows" or "Ubuntu".
+    os_family: str
+    builders: tuple[str, ...]
+    flakes: PooledFlakes
+
+    def as_json(self) -> dict[str, Any]:
+        return {
+            "test_id": self.test_id,
+            "os_family": self.os_family,
+            "builders": list(self.builders),
+            **self.flakes.as_json(),
+        }
+
+
+def pool(
+    client: LuciAnalysis, results: list[Stability], criteria: dict[str, Any]
+) -> list[Pool]:
+    """Pool each test's CI bots by bot OS.
+
+    QueryStability only counts a flake that failed and passed within one run;
+    Chromium retries failed browser tests in a separate run, so a pool can be
+    flaky when none of its bots is.
+    """
+    hashes: dict[tuple[str, str], dict[str, str]] = defaultdict(dict)
+    for r in results:
+        if r.variant.get("bucket") == "ci":
+            family = r.variant.get("os", "").split("-")[0]
+            hashes[r.test_id, family][r.analysis.get("variantHash", "")] = (
+                r.variant.get("builder", "")
+            )
+    window = Window.last_days(POOLED_WINDOW_DAYS)
+    today = datetime.now(timezone.utc).date()
+    days_by_test = {
+        test_id: client.ci_flaky_days(test_id, window)
+        for test_id in dict.fromkeys(test_id for test_id, _ in hashes)
+    }
+    return [
+        Pool(
+            test_id,
+            family,
+            tuple(sorted(f"ci/{name}" for name in set(bots.values()))),
+            PooledFlakes.tally(
+                [d for d in days_by_test[test_id] if d.variant_hash in bots],
+                criteria,
+                today,
+            ),
+        )
+        for (test_id, family), bots in sorted(hashes.items())
+    ]
 
 
 # -- Reporting ----------------------------------------------------------------
@@ -367,12 +230,13 @@ def query(
 
 def render(
     results: list[Stability],
+    pools: list[Pool],
     criteria: dict[str, Any],
     source: Source,
     show_all: bool,
 ) -> None:
     console.print(
-        f"[bold]{source.label}[/]: {source.ref}@{{#{source.position}}}"
+        f"[bold]{source.label}[/]: {source.description}"
         f" (LUCI project {source.project})"
     )
     if criteria:
@@ -413,6 +277,17 @@ def render(
             )
         console.print()
         console.print(table)
+        for p in pools:
+            if p.test_id == test_id and p.flakes.flaky:
+                style = "bold red" if p.flakes.met else "none"
+                console.print(
+                    f"  {p.os_family} CI bots together:"
+                    f" {p.flakes.flaky} flaky in {POOLED_WINDOW_DAYS} days,"
+                    f" {p.flakes.flaky_1wd} in the last"
+                    f" {POOLED_WINDOW_WEEKDAYS} weekdays"
+                    + (" -> FLAKY" if p.flakes.met else ""),
+                    style=style,
+                )
         for r in shown:
             if r.test_id == test_id and r.example_builds:
                 console.print(
@@ -432,10 +307,19 @@ def render(
         console.print("No matching test variants were found.")
         return
     confirmed = [r for r in results if r.confirmed]
+    pooled = [p for p in pools if p.flakes.met]
     console.print()
-    if confirmed:
+    if confirmed or pooled:
+        parts = []
+        if confirmed:
+            parts.append(f"{len(confirmed)} variant(s)")
+        if pooled:
+            parts.append(
+                "pooled CI bots on "
+                + ", ".join(sorted({p.os_family for p in pooled}))
+            )
         console.print(
-            f"CONFIRMED upstream on {len(confirmed)} variant(s).",
+            f"CONFIRMED upstream on {' and '.join(parts)}.",
             style="bold red",
         )
     else:
@@ -477,15 +361,17 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    source = (
-        source_from_gitiles(args.ref) if args.ref else source_from_checkout()
-    )
+    source = source_for(args.ref)
     client = LuciAnalysis(project=source.project)
     results, criteria = query(
         client,
         gtest_name(args.test),
         Filters(args.builder, args.os, args.suite),
         source,
+    )
+    pools = pool(client, results, criteria)
+    confirmed = any(r.confirmed for r in results) or any(
+        p.flakes.met for p in pools
     )
 
     if args.json:
@@ -498,19 +384,16 @@ def main() -> int:
                     "position": source.position,
                     "commit": source.commit,
                     "criteria": criteria,
-                    "confirmed": any(r.confirmed for r in results),
+                    "confirmed": confirmed,
                     "variants": [r.as_json() for r in results],
+                    "pooled": [p.as_json() for p in pools],
                 },
                 indent=2,
             )
         )
     else:
-        render(results, criteria, source, args.all)
-    return (
-        EXIT_CONFIRMED
-        if any(r.confirmed for r in results)
-        else EXIT_NOT_CONFIRMED
-    )
+        render(results, pools, criteria, source, args.all)
+    return EXIT_CONFIRMED if confirmed else EXIT_NOT_CONFIRMED
 
 
 if __name__ == "__main__":

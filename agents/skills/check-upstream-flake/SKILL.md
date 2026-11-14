@@ -109,18 +109,33 @@ Without `--json` the script prints tables for a human reader instead.
       "consecutive_unexpected_test_runs": 0,
       "example_builds": []
     }
+  ],
+  "pooled": [
+    {
+      "test_id": "://content/test\\:content_unittests!gtest::WebUIURLLoaderFactoryTest#RangeRequest/0",
+      "os_family": "Ubuntu",
+      "builders": ["ci/Linux Tests", "ci/Linux Tests (dbg)(1)"],
+      "met": false,
+      "flaky_verdicts": 0,
+      "flaky_verdicts_1wd": 0
+    }
   ]
 }
 ```
 
-- `confirmed`: true when any variant is `flaky` or `failing`; the exit code says
-  the same.
+- `confirmed`: true when any variant is `flaky` or `failing`, or any `pooled`
+  entry is `met`; the exit code says the same.
 - `variants[].status`: `flaky`, `failing`, `stable` or `no_data`. `--json`
   always includes `no_data` variants; skip them when reporting.
 - `variants[].variant`: the builder, OS and test suite the status applies to.
   `bucket: "ci"` marks a CI builder; without it, a CQ trybot.
 - `variants[].example_builds`: links to builds where the test was flaky, to cite
   as evidence.
+- `pooled[]`: the test's CI bots on one bot OS, with their FLAKY verdicts
+  counted together over the last 14 days and 2 weekdays. Chromium retries failed
+  browser tests in a separate run, which per-variant `status` never counts as
+  flaky, so `met: true` confirms the flake on that OS even when every variant is
+  `stable`.
 
 ---
 

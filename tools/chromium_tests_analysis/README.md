@@ -106,7 +106,17 @@ position. For Chromium:
 - _failing_: at least 6 unexpected runs out of 10 around the position, or at
   least 3 consecutive unexpected runs.
 
-`is_upstream_flake.py` makes the same call and reports the answer. Branch
+The flaky criterion only counts a verdict whose test failed and passed within
+one run. Chromium retries failed browser tests in a separate run, so a test that
+flakes there produces FLAKY verdicts in `TestHistory` that `QueryStability`
+never counts. Both scripts therefore also _pool_ the FLAKY verdicts of several
+CI bots (`TestHistory.QueryStats`) and count them against the same thresholds,
+over the 14 days and 2 weekdays ending today. Those thresholds are counts with
+no rate, so pooling dilutes nothing.
+
+`is_upstream_flake.py` makes the same call and reports the answer, pooling a
+test's CI bots by bot OS, and `update-upstream-flake-filters.py` makes it for
+every candidate it discovers, pooling the CI bots of each Brave config. Branch
 results are stored in a separate LUCI project per milestone: `chromium-m157`
 holds `refs/branch-heads/8103`, and `chromium` holds `refs/heads/main`. The
 14-day window is always counted back from today, so a branch position older than
@@ -142,10 +152,8 @@ discover through clusters. Neither appears in the proto:
 
 - `QueryClusterSummaries` returns at most 200 clusters and does not paginate — a
   bare `LIMIT 200` in `analysis/internal/analysis/cluster_summaries.go`. That
-  cap is why the script queries each week of the lookback separately as well as
-  the whole of it.
+  cap is why the script queries each week of the 14-day window separately as
+  well as the whole of it.
 - `QueryClusterFailures` returns at most 2000 failure groups, and **only ever
   reads the last 7 days** whatever lookback the run was given — see
-  `ReadClusterFailures` in `analysis/internal/analysis/cluster_failures.go`. So
-  `--days 60` widens the flake rates computed for a candidate, but not the
-  discovery of candidates through multi-test clusters.
+  `ReadClusterFailures` in `analysis/internal/analysis/cluster_failures.go`.

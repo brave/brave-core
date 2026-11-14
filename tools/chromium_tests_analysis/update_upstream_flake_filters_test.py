@@ -14,7 +14,7 @@ import os
 import sys
 import tempfile
 import unittest
-from datetime import timedelta
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from types import ModuleType
 from typing import Any
@@ -41,11 +41,12 @@ def load_script(file_name: str) -> ModuleType:
 from luci_analysis import (  # pylint: disable=wrong-import-position
     ClusterFailure,
     ClusterSummary,
-    Flakiness,
+    FlakyDay,
     LuciAnalysis,
-    StatsGroup,
+    PooledFlakes,
+    Source,
+    Stability,
     TestVariant,
-    VerdictCounts,
 )
 
 ufm = load_script("update-upstream-flake-filters.py")
@@ -54,19 +55,48 @@ ufm = load_script("update-upstream-flake-filters.py")
 # target escaped.
 UNIT_TESTS_TARGET = "://chrome/test\\:unit_tests!gtest::"
 
+BRANCH = Source("checkout", "abc", "refs/branch-heads/8127", 862, 158)
 
-def stats_group(
-    variant_hash: str, date: str = "2026-02-07", **counts: int
-) -> StatsGroup:
-    """A day of one variant's verdicts."""
-    return StatsGroup(
-        date=date, variant_hash=variant_hash, counts=VerdictCounts(**counts)
+FLAKY = {
+    "flakeRate": {"isMet": True, "runFlakyVerdicts": 4, "totalVerdicts": 900}
+}
+FAILING = {"failureRate": {"isMet": True, "unexpectedTestRuns": 10}}
+STABLE = {"flakeRate": {"totalVerdicts": 900}}
+
+
+CRITERIA = {"flakeRate": {"flakeThreshold": 3, "flakeThreshold1wd": 1}}
+
+
+def variant(
+    variant_hash: str,
+    os_name: str,
+    *builders: str,
+    test_suite: str = "unit_tests",
+    bucket: str | None = None,
+) -> TestVariant:
+    """A bot configuration a test ran on."""
+    definition = {"os": os_name, "test_suite": test_suite}
+    if bucket:
+        definition["bucket"] = bucket
+    if builders:
+        definition["builder"] = builders[0]
+    return TestVariant(
+        variant_hash=variant_hash,
+        os=os_name,
+        builders=builders,
+        definition=definition,
     )
 
 
-def variant(variant_hash: str, os_name: str, *builders: str) -> TestVariant:
-    """A bot configuration a test ran on."""
-    return TestVariant(variant_hash=variant_hash, os=os_name, builders=builders)
+def stability(
+    analysis: dict[str, Any], builder: str = "Linux Tests", **definition: str
+) -> Stability:
+    """Upstream's verdict on one bot."""
+    return Stability(
+        "t",
+        {"builder": builder, "os": "Ubuntu-22.04", **definition},
+        analysis,
+    )
 
 
 class QuietConsoleTestCase(unittest.TestCase):
@@ -118,21 +148,16 @@ class SuiteUpdaterTestCase(QuietConsoleTestCase):
         self.client = mock.Mock()
         self.client.cluster_summaries.return_value = []
         self.client.cluster_failures.return_value = []
-        self.client.history.return_value = []
         self.client.variants.return_value = []
+        self.client.stability.return_value = ([], {})
+        self.client.ci_flaky_days.return_value = []
 
-    def updater(
-        self,
-        suite: str = "unit_tests",
-        days: int = 30,
-        min_flake_rate: float = 0.01,
-    ) -> Any:
+    def updater(self, suite: str = "unit_tests") -> Any:
         return ufm.SuiteUpdater(
             suite,
             client=self.client,
             display=self.display,
-            days=days,
-            min_flake_rate=min_flake_rate,
+            source=BRANCH,
             filters_dir=self.filters_dir,
         )
 
@@ -334,7 +359,9 @@ class GetConfigForVariantTest(unittest.TestCase):
             "chromeos-amd64-generic-rel",
             "Linux Chromium OS ASan LSan Tests",
             "fuchsia-x64-rel",
+            "Linux ChromiumOS MSan Tests",
             "linux-tsan-rel",
+            "linux-wayland-mutter-rel-tests",
         ):
             with self.subTest(builder=builder):
                 self.assertIsNone(
@@ -366,48 +393,17 @@ class GetConfigForVariantTest(unittest.TestCase):
         )
 
 
-class AnalyzePerConfigTest(unittest.TestCase):
-    def test_splits_the_verdict_counts_by_config(self) -> None:
-        groups = [
-            stats_group("h-linux", passed=90, failed=10),
-            stats_group("h-asan", passed=50, flaky=50),
-        ]
-        config_by_hash = {"h-linux": "linux", "h-asan": "linux-asan"}
-
-        analyses = ufm.analyze_per_config(groups, config_by_hash)
-
-        self.assertAlmostEqual(analyses["linux"].flake_rate, 0.1)
-        self.assertAlmostEqual(analyses["linux-asan"].flake_rate, 0.5)
-        self.assertEqual(analyses["win"].counts.meaningful, 0)
-
-    def test_covers_every_config(self) -> None:
-        analyses = ufm.analyze_per_config([], {})
-
-        self.assertEqual(sorted(analyses), sorted(ufm.get_all_configs()))
-
-    def test_unmapped_variants_are_ignored(self) -> None:
-        groups = [stats_group("h-unknown", passed=10, failed=90)]
-
-        analyses = ufm.analyze_per_config(groups, {"h-unknown": None})
-
-        for config, flakiness in analyses.items():
-            with self.subTest(config=config):
-                self.assertEqual(flakiness.counts.meaningful, 0)
-
-
 class FilterContentTest(SuiteUpdaterTestCase):
-    def test_header_states_the_threshold_and_how_to_regenerate(self) -> None:
-        content = self.updater().filter_content("linux-asan", [])
+    def test_header_names_the_branch_and_how_to_regenerate(self) -> None:
+        content = self.updater().filter_content("linux-asan", {})
 
         self.assertTrue(
             content.startswith("## AUTO-GENERATED FILE -- DO NOT EDIT.\n")
         )
         self.assertIn(
-            "## Upstream unit_tests tests with a flake rate >= 1.0% on", content
-        )
-        self.assertIn(
-            "## linux-asan bots over the past 30 days per Chromium LUCI"
-            " Analysis.",
+            "## Upstream unit_tests tests that Chromium LUCI Analysis confirms"
+            " as flaky\n## or failing on linux-asan bots at"
+            " refs/branch-heads/8127@{#862}.\n",
             content,
         )
         self.assertIn(
@@ -416,25 +412,77 @@ class FilterContentTest(SuiteUpdaterTestCase):
             content,
         )
 
-    def test_documents_the_rate_behind_each_exclusion(self) -> None:
-        entries = [
-            (
-                "Suite.Case",
-                Flakiness(VerdictCounts(passed=95, failed=3, flaky=2)),
-            )
-        ]
+    def test_names_the_bots_behind_each_exclusion(self) -> None:
+        entries = {
+            "Suite.Case": [
+                stability(FLAKY, bucket="ci"),
+                stability(FAILING, builder="linux-rel"),
+            ]
+        }
 
         content = self.updater().filter_content("linux", entries)
 
         self.assertIn(
-            "# 5.0% flake rate over 30 days per LUCI Analysis"
-            " (95 passed, 3 failed, 2 flaky).\n-Suite.Case\n",
+            "# Failing on linux-rel (Ubuntu-22.04): 10 of 10 runs unexpected.\n"
+            "# Flaky on ci/Linux Tests (Ubuntu-22.04): 4 flaky of 900"
+            " verdicts.\n"
+            "-Suite.Case\n",
             content,
         )
 
+    def test_a_run_without_field_trials_is_told_apart(self) -> None:
+        entries = {
+            "Suite.Case": [
+                stability(FLAKY, test_suite="unit_tests_no_field_trial")
+            ]
+        }
+
+        content = self.updater().filter_content("linux", entries)
+
+        self.assertIn(
+            "# Flaky on Linux Tests unit_tests_no_field_trial (Ubuntu-22.04)",
+            content,
+        )
+
+    def test_names_the_bots_pooled_together(self) -> None:
+        entries = {
+            "Suite.Case": [
+                ufm.PooledReason(
+                    PooledFlakes(
+                        flaky=40, flaky_1wd=7, threshold=3, threshold_1wd=1
+                    ),
+                    ("ci/Win10 Tests x64", "ci/win11-arm64-rel-tests"),
+                )
+            ]
+        }
+
+        content = self.updater().filter_content("win", entries)
+
+        self.assertIn(
+            "# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together:"
+            " 40 flaky verdicts in 14 days, 7 in the last 2 weekdays.\n"
+            "-Suite.Case\n",
+            content,
+        )
+
+    def test_a_reviver_run_is_named_after_the_builder_it_retries(
+        self,
+    ) -> None:
+        entries = {
+            "Suite.Case": [
+                stability(FLAKY, builder="runner", reviver_builder="linux-rel")
+            ]
+        }
+
+        content = self.updater().filter_content("linux", entries)
+
+        self.assertIn("# Flaky on linux-rel (Ubuntu-22.04)", content)
+
     def test_entries_are_sorted_by_test_name(self) -> None:
-        flakiness = Flakiness(VerdictCounts(passed=9, failed=1))
-        entries = [("Suite.Zeta", flakiness), ("Suite.Alpha", flakiness)]
+        entries = {
+            "Suite.Zeta": [stability(FLAKY)],
+            "Suite.Alpha": [stability(FLAKY)],
+        }
 
         content = self.updater().filter_content("linux", entries)
 
@@ -443,7 +491,7 @@ class FilterContentTest(SuiteUpdaterTestCase):
         )
 
     def test_the_file_ends_with_a_newline(self) -> None:
-        content = self.updater().filter_content("linux", [])
+        content = self.updater().filter_content("linux", {})
 
         self.assertTrue(content.endswith("\n"))
 
@@ -671,8 +719,8 @@ class DiscoverCandidatesTest(SuiteUpdaterTestCase):
     def fake_failures(self, cluster: ClusterSummary) -> list[ClusterFailure]:
         return self.failures_by_cluster.get(cluster.key, [])
 
-    def discover(self, days: int = 1) -> list[str]:
-        return self.updater(days=days).discover_candidates()
+    def discover(self) -> list[str]:
+        return self.updater().discover_candidates()
 
     @staticmethod
     def summary(algorithm: str, cluster_id: str, title: str) -> ClusterSummary:
@@ -811,7 +859,7 @@ class DiscoverCandidatesTest(SuiteUpdaterTestCase):
     ) -> None:
         self.summaries = [self.summary("rules", "r1", "crbug.com/1234567")]
 
-        self.discover(30)
+        self.discover()
 
         self.assertEqual(self.client.cluster_failures.call_count, 1)
 
@@ -819,110 +867,209 @@ class DiscoverCandidatesTest(SuiteUpdaterTestCase):
         self.assertEqual(self.discover(), [])
 
 
-class ReadHistoryTest(SuiteUpdaterTestCase):
-    def test_collects_the_history_of_every_candidate(self) -> None:
-        history = {"t1": [stats_group("h", passed=1)], "t2": []}
-        self.client.history = mock.Mock(
-            side_effect=lambda test_id, _window: history[test_id]
+class JudgeTest(SuiteUpdaterTestCase):
+    def setUp(self) -> None:
+        super().setUp()
+        self.client.stability.side_effect = lambda variants, _source: (
+            [stability(FLAKY, builder=v.builders[0]) for _, v in variants],
+            {},
         )
 
-        self.assertEqual(self.updater().read_history(["t1", "t2"]), history)
+    def judge(self, *variants: TestVariant) -> list[tuple[str, Stability]]:
+        self.client.variants.return_value = list(variants)
+        return self.updater().judge("t")
 
-    def test_every_candidate_shares_one_window(self) -> None:
-        self.client.history = mock.Mock(return_value=[])
+    def asked_about(self) -> list[str]:
+        (variants, _source), _ = self.client.stability.call_args
+        return [v.variant_hash for _, v in variants]
 
-        self.updater().read_history(["t1", "t2", "t3"])
-
-        windows = {c.args[1] for c in self.client.history.call_args_list}
-        self.assertEqual(len(windows), 1)
-        self.assertAlmostEqual(windows.pop().days, 30, places=3)
-
-    def test_no_candidates_means_no_queries(self) -> None:
-        self.client.history = mock.Mock()
-
-        self.assertEqual(self.updater().read_history([]), {})
-        self.client.history.assert_not_called()
-
-
-class ResolveConfigsTest(SuiteUpdaterTestCase):
-    def test_maps_each_variant_hash_to_a_config(self) -> None:
-        self.client.variants = mock.Mock(
-            return_value=[
-                variant("h-linux", "Ubuntu-22.04", "linux-rel"),
-                variant("h-asan", "Ubuntu-22.04", "linux-asan-rel"),
-            ]
-        )
-
-        config_by_hash = self.updater().resolve_configs(
-            {"t1": [stats_group("h-linux", passed=1)]}
+    def test_pairs_each_confirmed_bot_with_its_config(self) -> None:
+        confirmed = self.judge(
+            variant("h-linux", "Ubuntu-22.04", "linux-rel"),
+            variant("h-asan", "Ubuntu-22.04", "linux_chromium_asan_rel_ng"),
         )
 
         self.assertEqual(
-            config_by_hash, {"h-linux": "linux", "h-asan": "linux-asan"}
+            [(config, r.variant["builder"]) for config, r in confirmed],
+            [
+                ("linux", "linux-rel"),
+                ("linux-asan", "linux_chromium_asan_rel_ng"),
+            ],
         )
 
-    def test_a_hash_is_only_looked_up_once(self) -> None:
-        self.client.variants = mock.Mock(
-            return_value=[variant("h-linux", "Ubuntu-22.04", "linux-rel")]
+    def test_asks_at_the_branch_position(self) -> None:
+        self.judge(variant("h", "Ubuntu-22.04", "linux-rel"))
+
+        (_variants, source), _ = self.client.stability.call_args
+        self.assertIs(source, BRANCH)
+
+    def test_bots_brave_does_not_test_are_not_asked_about(self) -> None:
+        self.judge(
+            variant("h-linux", "Ubuntu-22.04", "linux-rel"),
+            variant("h-android", "Ubuntu-22.04", "android-x64-rel"),
         )
 
-        self.updater().resolve_configs(
-            {
-                "t1": [stats_group("h-linux", passed=1)],
-                "t2": [stats_group("h-linux", passed=1)],
-            }
+        self.assertEqual(self.asked_about(), ["h-linux"])
+
+    def test_runs_under_another_suite_name_are_not_asked_about(self) -> None:
+        self.judge(
+            variant("h", "Windows-10", "win-rel"),
+            variant(
+                "h-pixel",
+                "Windows-10",
+                "win-rel",
+                test_suite="pixel_unit_tests",
+            ),
         )
 
-        self.client.variants.assert_called_once_with("t1")
+        self.assertEqual(self.asked_about(), ["h"])
 
-    def test_a_hash_the_api_does_not_return_is_not_looked_up_again(
-        self,
-    ) -> None:
-        self.client.variants = mock.Mock(return_value=[])
-
-        config_by_hash = self.updater().resolve_configs(
-            {
-                "t1": [stats_group("h-gone", passed=1)],
-                "t2": [stats_group("h-gone", passed=1)],
-            }
+    def test_runs_without_field_trials_are_asked_about(self) -> None:
+        self.judge(
+            variant(
+                "h",
+                "Windows-10",
+                "win-rel",
+                test_suite="unit_tests_no_field_trial",
+            )
         )
 
-        self.assertEqual(config_by_hash, {"h-gone": None})
-        self.client.variants.assert_called_once_with("t1")
+        self.assertEqual(self.asked_about(), ["h"])
+
+    def test_bots_upstream_does_not_confirm_are_dropped(self) -> None:
+        self.client.stability.side_effect = None
+        self.client.stability.return_value = (
+            [stability(STABLE), stability(FAILING)],
+            {},
+        )
+
+        confirmed = self.judge(
+            variant("h1", "Ubuntu-22.04", "Linux Tests"),
+            variant("h2", "Windows-10", "win-rel"),
+        )
+
+        self.assertEqual([config for config, _ in confirmed], ["win"])
 
 
-class RunTest(SuiteUpdaterTestCase):
-    """A whole suite end to end, with the first three phases stubbed."""
+class PooledJudgeTest(SuiteUpdaterTestCase):
+    """The pooled rule, with every bot stable on its own."""
 
-    CONFIG_BY_HASH = {
-        "h-linux": "linux",
-        "h-asan": "linux-asan",
-        "h-windows": "win",
-    }
+    WINDOWS_CI = [
+        variant("h-win10", "Windows-10", "Win10 Tests x64", bucket="ci"),
+        variant("h-win11", "Windows-11", "win11-arm64-rel-tests", bucket="ci"),
+    ]
 
     def setUp(self) -> None:
         super().setUp()
-        self.stats_by_test_id: dict[str, list[StatsGroup]] = {}
+        self.client.stability.side_effect = lambda variants, _source: (
+            [stability(STABLE) for _ in variants],
+            CRITERIA,
+        )
+        self.today = datetime.now(timezone.utc).date()
 
-    def update(
-        self,
-        suite: str = "unit_tests",
-        days: int = 30,
-        min_flake_rate: float = 0.01,
-    ) -> None:
-        """Run the suite, short-circuiting the phases that fetch."""
-        updater = self.updater(suite, days, min_flake_rate)
-        with mock.patch.multiple(
+    def judge(self, *variants: TestVariant, days: list[FlakyDay]) -> Any:
+        self.client.variants.return_value = list(variants)
+        self.client.ci_flaky_days.return_value = days
+        return self.updater().judge("t")
+
+    def test_ci_bots_flaky_together_confirm_their_config(self) -> None:
+        reasons = self.judge(
+            *self.WINDOWS_CI,
+            days=[
+                FlakyDay(self.today, "h-win10", 2),
+                FlakyDay(self.today, "h-win11", 1),
+            ],
+        )
+
+        ((config, reason),) = reasons
+        self.assertEqual(config, "win")
+        self.assertEqual(
+            reason.builders,
+            ("ci/Win10 Tests x64", "ci/win11-arm64-rel-tests"),
+        )
+        self.assertEqual(reason.flakes.flaky, 3)
+
+    def test_too_few_flakes_together_confirm_nothing(self) -> None:
+        reasons = self.judge(
+            *self.WINDOWS_CI, days=[FlakyDay(self.today, "h-win10", 2)]
+        )
+
+        self.assertEqual(reasons, [])
+
+    def test_trybot_flakes_are_not_pooled(self) -> None:
+        trybot = variant("h-try", "Windows-10", "win-rel")
+
+        reasons = self.judge(
+            self.WINDOWS_CI[0],
+            trybot,
+            days=[FlakyDay(self.today, "h-try", 5)],
+        )
+
+        self.assertEqual(reasons, [])
+
+    def test_flakes_on_other_configs_are_not_pooled(self) -> None:
+        linux = variant("h-linux", "Ubuntu-22.04", "Linux Tests", bucket="ci")
+
+        reasons = self.judge(
+            self.WINDOWS_CI[0],
+            linux,
+            days=[
+                FlakyDay(self.today, "h-linux", 2),
+                FlakyDay(self.today, "h-win10", 1),
+            ],
+        )
+
+        self.assertEqual(reasons, [])
+
+    def test_a_config_one_bot_settles_is_not_pooled(self) -> None:
+        self.client.stability.side_effect = lambda variants, _source: (
+            [stability(FLAKY) for _ in variants],
+            CRITERIA,
+        )
+
+        reasons = self.judge(*self.WINDOWS_CI, days=[])
+
+        self.assertEqual(len(reasons), 2)
+        self.client.ci_flaky_days.assert_not_called()
+
+
+class RunTest(SuiteUpdaterTestCase):
+    """A whole suite end to end, with discovery stubbed."""
+
+    VARIANTS = [
+        variant("h-linux", "Ubuntu-22.04", "Linux Tests"),
+        variant("h-asan", "Ubuntu-22.04", "Linux ASan LSan Tests (1)"),
+        variant("h-windows", "Windows-10", "Win10 Tests x64"),
+    ]
+
+    def setUp(self) -> None:
+        super().setUp()
+        # Which bots upstream confirms each candidate as unstable on.
+        self.unstable_on: dict[str, set[str]] = {}
+        self.client.variants.return_value = self.VARIANTS
+        self.client.stability.side_effect = self.fake_stability
+
+    def fake_stability(
+        self, variants: list[tuple[str, TestVariant]], _source: Source
+    ) -> tuple[list[Stability], dict[str, Any]]:
+        return [
+            Stability(
+                test_id,
+                v.definition,
+                FLAKY
+                if v.variant_hash in self.unstable_on[test_id]
+                else STABLE,
+            )
+            for test_id, v in variants
+        ], {}
+
+    def update(self, suite: str = "unit_tests") -> None:
+        """Run the suite, short-circuiting discovery."""
+        updater = self.updater(suite)
+        with mock.patch.object(
             updater,
-            discover_candidates=mock.Mock(
-                side_effect=lambda: list(self.stats_by_test_id)
-            ),
-            read_history=mock.Mock(
-                side_effect=lambda _ids: self.stats_by_test_id
-            ),
-            resolve_configs=mock.Mock(
-                side_effect=lambda _history: self.CONFIG_BY_HASH
-            ),
+            "discover_candidates",
+            mock.Mock(side_effect=lambda: list(self.unstable_on)),
         ):
             updater.run()
 
@@ -952,12 +1099,7 @@ class RunTest(SuiteUpdaterTestCase):
         )
 
     def test_a_flaky_test_is_excluded_on_the_config_it_flakes_on(self) -> None:
-        self.stats_by_test_id = {
-            UNIT_TESTS_TARGET + "S#Flaky": [
-                stats_group("h-linux", passed=90, failed=10),
-                stats_group("h-windows", passed=100),
-            ]
-        }
+        self.unstable_on = {UNIT_TESTS_TARGET + "S#Flaky": {"h-linux"}}
 
         self.update()
 
@@ -966,23 +1108,8 @@ class RunTest(SuiteUpdaterTestCase):
         )
         self.assertEqual(self.excluded_tests("unit_tests-win.filter"), [])
 
-    def test_a_test_below_the_threshold_stays_enabled(self) -> None:
-        self.stats_by_test_id = {
-            UNIT_TESTS_TARGET + "S#Rare": [
-                stats_group("h-linux", passed=999, failed=1)
-            ]
-        }
-
-        self.update()
-
-        self.assertEqual(self.excluded_tests("unit_tests-linux.filter"), [])
-
-    def test_a_test_with_too_little_history_stays_enabled(self) -> None:
-        self.stats_by_test_id = {
-            UNIT_TESTS_TARGET + "S#Thin": [
-                stats_group("h-linux", failed=ufm.MIN_MEANINGFUL_VERDICTS - 1)
-            ]
-        }
+    def test_a_test_upstream_does_not_confirm_stays_enabled(self) -> None:
+        self.unstable_on = {UNIT_TESTS_TARGET + "S#Stable": set()}
 
         self.update()
 
@@ -991,15 +1118,9 @@ class RunTest(SuiteUpdaterTestCase):
     def test_a_sanitizer_file_only_lists_what_the_platform_file_misses(
         self,
     ) -> None:
-        self.stats_by_test_id = {
-            UNIT_TESTS_TARGET + "S#Everywhere": [
-                stats_group("h-linux", passed=90, failed=10),
-                stats_group("h-asan", passed=90, failed=10),
-            ],
-            UNIT_TESTS_TARGET + "S#AsanOnly": [
-                stats_group("h-linux", passed=100),
-                stats_group("h-asan", passed=90, failed=10),
-            ],
+        self.unstable_on = {
+            UNIT_TESTS_TARGET + "S#Everywhere": {"h-linux", "h-asan"},
+            UNIT_TESTS_TARGET + "S#AsanOnly": {"h-asan"},
         }
 
         self.update()
@@ -1012,21 +1133,15 @@ class RunTest(SuiteUpdaterTestCase):
         )
 
     def test_an_empty_sanitizer_file_is_not_written(self) -> None:
-        self.stats_by_test_id = {
-            UNIT_TESTS_TARGET + "S#Flaky": [
-                stats_group("h-linux", passed=90, failed=10)
-            ]
-        }
+        self.unstable_on = {UNIT_TESTS_TARGET + "S#Flaky": {"h-linux"}}
 
         self.update()
 
         self.assertNotIn("unit_tests-linux-asan.filter", self.written_files())
 
     def test_non_gtest_candidates_are_skipped(self) -> None:
-        self.stats_by_test_id = {
-            "://chrome/test\\:unit_tests!junit::org.Foo#bar": [
-                stats_group("h-linux", failed=100)
-            ]
+        self.unstable_on = {
+            "://chrome/test\\:unit_tests!junit::org.Foo#bar": {"h-linux"}
         }
 
         self.update()
@@ -1073,11 +1188,7 @@ class RunTest(SuiteUpdaterTestCase):
     def test_generated_files_use_unix_line_endings_everywhere(self) -> None:
         # These files are committed, so a run on Windows has to produce
         # the same bytes as a run on Linux.
-        self.stats_by_test_id = {
-            UNIT_TESTS_TARGET + "S#Flaky": [
-                stats_group("h-linux", passed=90, failed=10)
-            ]
-        }
+        self.unstable_on = {UNIT_TESTS_TARGET + "S#Flaky": {"h-linux"}}
 
         self.update()
 
@@ -1085,12 +1196,13 @@ class RunTest(SuiteUpdaterTestCase):
         self.assertIn(b"\n", raw)
         self.assertNotIn(b"\r\n", raw)
 
-    def test_the_threshold_and_window_reach_the_file_header(self) -> None:
-        self.update(days=45, min_flake_rate=0.025)
+    def test_the_branch_position_reaches_the_file_header(self) -> None:
+        self.update()
 
-        header = self.read_filter("unit_tests-linux.filter")
-        self.assertIn("flake rate >= 2.5% on", header)
-        self.assertIn("past 45 days", header)
+        self.assertIn(
+            "refs/branch-heads/8127@{#862}",
+            self.read_filter("unit_tests-linux.filter"),
+        )
 
 
 class MainTest(QuietConsoleTestCase):
@@ -1108,6 +1220,9 @@ class MainTest(QuietConsoleTestCase):
         # can read back.
         self.enter_patch(
             mock.patch.object(ufm, "Display", return_value=self.display)
+        )
+        self.source_for = self.enter_patch(
+            mock.patch.object(ufm, "source_for", return_value=BRANCH)
         )
 
     def record(self, suite: str, **kwargs: Any) -> Any:
@@ -1137,29 +1252,27 @@ class MainTest(QuietConsoleTestCase):
             self.updated_suites(), ["unit_tests", "net_unittests"]
         )
 
-    def test_converts_the_threshold_from_percent_to_a_fraction(self) -> None:
-        self.run_main("unit_tests", "--days", "45", "--min-flake-rate", "2.5")
+    def test_judges_at_the_checkout_by_default(self) -> None:
+        self.run_main("unit_tests")
 
-        self.assertEqual(len(self.runs), 1)
-        self.assertEqual(self.runs[0]["suite"], "unit_tests")
-        self.assertEqual(self.runs[0]["days"], 45)
-        self.assertEqual(self.runs[0]["min_flake_rate"], 0.025)
+        self.source_for.assert_called_once_with(None)
+        self.assertIs(self.runs[0]["source"], BRANCH)
+
+    def test_judges_at_the_requested_ref(self) -> None:
+        self.run_main("unit_tests", "--ref", "157.0.8103.39")
+
+        self.source_for.assert_called_once_with("157.0.8103.39")
+
+    def test_asks_the_branch_project(self) -> None:
+        self.run_main("unit_tests")
+
+        self.assertEqual(self.runs[0]["client"].project, "chromium-m158")
 
     def test_every_suite_shares_one_client_and_display(self) -> None:
         self.run_main("unit_tests", "net_unittests", "base_unittests")
 
         self.assertEqual(len({id(run["client"]) for run in self.runs}), 1)
         self.assertEqual(len({id(run["display"]) for run in self.runs}), 1)
-
-    def test_rejects_a_lookback_window_outside_the_supported_range(
-        self,
-    ) -> None:
-        for days in ("0", "91"):
-            with self.subTest(days=days):
-                with self.assertRaises(SystemExit) as caught:
-                    self.run_main("unit_tests", "--days", days)
-                self.assertEqual(caught.exception.code, 1)
-                self.assertEqual(self.runs, [])
 
     def test_counts_every_suite_off_the_summary(self) -> None:
         self.run_main("unit_tests", "net_unittests", "base_unittests")

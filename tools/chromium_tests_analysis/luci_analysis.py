@@ -6,15 +6,21 @@
 
 from __future__ import annotations
 
+import base64
 import http.client
 import json
+import re
 import ssl
+import subprocess
 import threading
+import urllib.request
 from collections import deque
-from collections.abc import Iterable, Iterator
+from collections.abc import Iterator
 from contextlib import contextmanager
-from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
+from dataclasses import dataclass, field
+from datetime import date, datetime, timedelta, timezone
+from enum import Enum
+from pathlib import Path
 from typing import Any
 
 # A JSON object decoded from an API response, or built to send as one.
@@ -23,6 +29,7 @@ JsonDict = dict[str, Any]
 
 LUCI_ANALYSIS_HOST = "analysis.api.luci.app"
 TEST_HISTORY_SERVICE = "luci.analysis.v1.TestHistory"
+TEST_VARIANTS_SERVICE = "luci.analysis.v1.TestVariants"
 CLUSTERS_SERVICE = "luci.analysis.v1.Clusters"
 CHROMIUM_PROJECT = "chromium"
 
@@ -43,8 +50,23 @@ MAX_PAGE_SIZE = 1000
 # back with exactly this many was very likely cut short upstream.
 MAX_CLUSTER_FAILURES = 2000
 
-# The fewest pass, fail or flaky verdicts a flake rate is computed from.
-MIN_MEANINGFUL_VERDICTS = 10
+# QueryStability rejects requests with more test variants than this.
+MAX_STABILITY_BATCH = 100
+
+# How far back QueryStability reads, counted from now whatever position is
+# asked about; see analysis/internal/testresults/stability.
+STABILITY_WINDOW_DAYS = 14
+
+# How far back from today pooled flakes are counted, in whole days.
+# QueryStability counts a bot's flakes ±7 days and ±1 weekday around the
+# position; the branch keeps building past it, so these spans of the same
+# width end today instead.
+POOLED_WINDOW_DAYS = 14
+POOLED_WINDOW_WEEKDAYS = 2
+
+CHROMIUM_SRC = Path(__file__).resolve().parents[3]
+GITILES = "https://chromium.googlesource.com/chromium/src"
+GITILES_HOST = "chromium.googlesource.com"
 
 
 class LuciAnalysisError(Exception):
@@ -56,7 +78,7 @@ class LuciAnalysisError(Exception):
 
 @dataclass(frozen=True)
 class Window:
-    """A span of time, in the two shapes the API asks for it."""
+    """A span of time, as the Clusters service asks for it."""
 
     # Start of the span, inclusive.
     earliest: datetime
@@ -84,151 +106,287 @@ class Window:
             start = end
         return slices
 
-    def _wire(self) -> dict[str, str]:
+    def as_time_range(self) -> dict[str, str]:
+        """The `timeRange` field the Clusters service takes."""
         return {
             "earliest": self.earliest.strftime("%Y-%m-%dT%H:%M:%SZ"),
             "latest": self.latest.strftime("%Y-%m-%dT%H:%M:%SZ"),
         }
 
-    def as_time_range(self) -> dict[str, str]:
-        """The `timeRange` field the Clusters service takes."""
-        return self._wire()
 
-    def as_predicate(self) -> JsonDict:
-        """The `predicate` field the TestHistory service takes."""
-        return {"partitionTimeRange": self._wire()}
-
-
-# -- What the numbers mean -----------------------------------------------
+# -- Where to look -------------------------------------------------------
 
 
 @dataclass(frozen=True)
-class VerdictCounts:
-    """How a test's runs turned out, tallied.
+class Source:
+    """A position on a Chromium branch, and the LUCI project holding it."""
 
-    Instances add, so aggregating across days, variants or configs is
-    `sum(counts, VerdictCounts())`.
+    # What was asked for, e.g. "checkout" or "157.0.8103.39".
+    label: str
+    commit: str
+    # e.g. "refs/branch-heads/8103" or "refs/heads/main".
+    ref: str
+    position: int
+    milestone: int
+
+    @property
+    def project(self) -> str:
+        """Branch results live in a LUCI project per milestone."""
+        if self.ref == "refs/heads/main":
+            return "chromium"
+        if self.ref.startswith("refs/branch-heads/"):
+            return f"chromium-m{self.milestone}"
+        raise LuciAnalysisError(f"No LUCI project is known for {self.ref}.")
+
+    @property
+    def description(self) -> str:
+        """e.g. "refs/branch-heads/8103@{#1035}"."""
+        return f"{self.ref}@{{#{self.position}}}"
+
+    def as_sources(self) -> JsonDict:
+        """The `sources` field QueryStability takes."""
+        return {
+            "gitilesCommit": {
+                "host": GITILES_HOST,
+                "project": "chromium/src",
+                "ref": self.ref,
+                "commitHash": self.commit,
+                "position": str(self.position),
+            }
+        }
+
+
+def parse_commit_position(message: str) -> tuple[str, int]:
+    """The ref and position of a commit's Cr-Commit-Position trailer."""
+    match = re.search(
+        r"^Cr-Commit-Position: (\S+)@\{#(\d+)\}$", message, re.MULTILINE
+    )
+    if not match:
+        raise LuciAnalysisError("Commit has no Cr-Commit-Position trailer.")
+    return match.group(1), int(match.group(2))
+
+
+def parse_milestone(version_file: str) -> int:
+    """MAJOR from the contents of chrome/VERSION."""
+    match = re.search(r"^MAJOR=(\d+)$", version_file, re.MULTILINE)
+    if not match:
+        raise LuciAnalysisError("chrome/VERSION has no MAJOR line.")
+    return int(match.group(1))
+
+
+def source_from_checkout() -> Source:
+    """The position the local Chromium checkout is at."""
+    commit, _, message = subprocess.run(
+        ["git", "-C", str(CHROMIUM_SRC), "log", "-1", "--format=%H%n%B"],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.partition("\n")
+    ref, position = parse_commit_position(message)
+    version = (CHROMIUM_SRC / "chrome" / "VERSION").read_text()
+    return Source("checkout", commit, ref, position, parse_milestone(version))
+
+
+def _gitiles(path: str) -> bytes:
+    try:
+        with urllib.request.urlopen(f"{GITILES}/+{path}", timeout=30) as r:
+            return r.read()
+    except OSError as e:
+        raise LuciAnalysisError(
+            f"Could not read {path} from gitiles: {e}"
+        ) from e
+
+
+def source_from_gitiles(committish: str) -> Source:
+    """The position of a tag, branch or commit in chromium/src."""
+    raw = _gitiles(f"log/{committish}?format=JSON&n=1")
+    commit = json.loads(raw[raw.find(b"\n") + 1 :])["log"][0]
+    ref, position = parse_commit_position(commit["message"])
+    version = base64.b64decode(
+        _gitiles(f"/{commit['commit']}/chrome/VERSION?format=TEXT")
+    ).decode()
+    return Source(
+        committish, commit["commit"], ref, position, parse_milestone(version)
+    )
+
+
+def source_for(ref: str | None) -> Source:
+    """`ref` resolved through gitiles, or the checkout when it is None."""
+    return source_from_gitiles(ref) if ref else source_from_checkout()
+
+
+# -- What upstream says --------------------------------------------------
+
+
+class Status(Enum):
+    """How upstream reads one test variant near one position."""
+
+    FLAKY = "flaky"
+    FAILING = "failing"
+    STABLE = "stable"
+    NO_DATA = "no_data"
+
+
+@dataclass(frozen=True)
+class Stability:
+    """Upstream's stability analysis of one test variant."""
+
+    test_id: str
+    # The variant definition: builder, os, test_suite and so on.
+    variant: dict[str, str]
+    # TestVariantStabilityAnalysis as returned. Zero and false fields are
+    # omitted on the wire.
+    analysis: JsonDict
+
+    @property
+    def _flake(self) -> JsonDict:
+        return self.analysis.get("flakeRate", {})
+
+    @property
+    def _failure(self) -> JsonDict:
+        return self.analysis.get("failureRate", {})
+
+    def flake(self, name: str) -> int:
+        """An integer field of the flake-rate analysis."""
+        return int(self._flake.get(name, 0))
+
+    def failure(self, name: str) -> int:
+        """An integer field of the failure-rate analysis."""
+        return int(self._failure.get(name, 0))
+
+    @property
+    def status(self) -> Status:
+        if self._failure.get("isMet"):
+            return Status.FAILING
+        if self._flake.get("isMet"):
+            return Status.FLAKY
+        if self.flake("totalVerdicts") or self._failure.get("recentVerdicts"):
+            return Status.STABLE
+        return Status.NO_DATA
+
+    @property
+    def confirmed(self) -> bool:
+        """Whether the test meets upstream's flake or failure criteria."""
+        return self.status in (Status.FLAKY, Status.FAILING)
+
+    @property
+    def example_builds(self) -> list[str]:
+        """Links to builds where the test was flaky."""
+        builds = []
+        for example in self._flake.get("flakeExamples", []):
+            for inv in example.get("rootInvocations") or example.get(
+                "invocations", []
+            ):
+                if inv.startswith("build-"):
+                    builds.append(f"https://ci.chromium.org/b/{inv[6:]}")
+        return builds
+
+    def as_json(self) -> JsonDict:
+        return {
+            "test_id": self.test_id,
+            "variant": self.variant,
+            "variant_hash": self.analysis.get("variantHash", ""),
+            "status": self.status.value,
+            "flake_rate_met": bool(self._flake.get("isMet")),
+            "failure_rate_met": bool(self._failure.get("isMet")),
+            "run_flaky_verdicts": self.flake("runFlakyVerdicts"),
+            "total_verdicts": self.flake("totalVerdicts"),
+            "run_flaky_verdicts_1wd": self.flake("runFlakyVerdicts1wd"),
+            "run_flaky_verdicts_12h": self.flake("runFlakyVerdicts12h"),
+            "unexpected_test_runs": self.failure("unexpectedTestRuns"),
+            "consecutive_unexpected_test_runs": self.failure(
+                "consecutiveUnexpectedTestRuns"
+            ),
+            "example_builds": self.example_builds,
+        }
+
+
+def weekdays_back(today: date, count: int) -> date:
+    """The first day of the span ending today that holds `count` weekdays.
+
+    Weekend days inside the span count towards it, as they do upstream.
+    """
+    start = today
+    while True:
+        if start.weekday() < 5:
+            count -= 1
+            if count == 0:
+                return start
+        start -= timedelta(days=1)
+
+
+@dataclass(frozen=True)
+class PooledFlakes:
+    """Flaky verdicts of several bots counted together.
+
+    QueryStability only counts a verdict as flaky when a single run both
+    failed and passed. Chromium retries failed browser tests in a separate
+    run, so a test that flakes that way is never flaky to it. Counting the
+    FLAKY verdicts of several bots against the same thresholds catches it;
+    the thresholds are counts with no rate, so pooling dilutes nothing.
     """
 
-    # Verdicts with passing results and no failing ones.
-    passed: int = 0
-
-    # Verdicts with failing results and no passing ones.
-    failed: int = 0
-
-    # Verdicts with both passing and failing results: the test failed
-    # and then passed on retry within the same invocation.
-    flaky: int = 0
-
-    # Verdicts with only skipped results, so the test never really ran.
-    skipped: int = 0
-
-    # Verdicts where the harness itself failed rather than the test:
-    # execution errored, with nothing passing, failing or skipped.
-    execution_errored: int = 0
-
-    # Verdicts LUCI never attempted, e.g. because an earlier step of the
-    # build failed.
-    precluded: int = 0
+    # FLAKY verdicts in the last POOLED_WINDOW_DAYS days.
+    flaky: int
+    # Of those, the ones in the last POOLED_WINDOW_WEEKDAYS weekdays.
+    flaky_1wd: int
+    # The project's flake_threshold and flake_threshold_1wd.
+    threshold: int
+    threshold_1wd: int
 
     @classmethod
-    def from_api(cls, counts: JsonDict) -> VerdictCounts:
-        """Read a `verdictCounts` object. Values arrive as strings."""
+    def tally(
+        cls, days: list[FlakyDay], criteria: JsonDict, today: date
+    ) -> PooledFlakes:
+        """Count `days` against the thresholds in `criteria`."""
+        first_day = today - timedelta(days=POOLED_WINDOW_DAYS - 1)
+        first_weekday = weekdays_back(today, POOLED_WINDOW_WEEKDAYS)
+        recent = [day for day in days if day.day >= first_day]
+        flake_rate = criteria.get("flakeRate", {})
         return cls(
-            passed=int(counts.get("passed", 0)),
-            failed=int(counts.get("failed", 0)),
-            flaky=int(counts.get("flaky", 0)),
-            skipped=int(counts.get("skipped", 0)),
-            execution_errored=int(counts.get("executionErrored", 0)),
-            precluded=int(counts.get("precluded", 0)),
-        )
-
-    def __add__(self, other: VerdictCounts) -> VerdictCounts:
-        return VerdictCounts(
-            passed=self.passed + other.passed,
-            failed=self.failed + other.failed,
-            flaky=self.flaky + other.flaky,
-            skipped=self.skipped + other.skipped,
-            execution_errored=(
-                self.execution_errored + other.execution_errored
+            flaky=sum(day.flaky for day in recent),
+            flaky_1wd=sum(
+                day.flaky for day in recent if day.day >= first_weekday
             ),
-            precluded=self.precluded + other.precluded,
+            threshold=int(flake_rate.get("flakeThreshold", 0)),
+            threshold_1wd=int(flake_rate.get("flakeThreshold1wd", 0)),
         )
 
     @property
-    def total(self) -> int:
-        """Every verdict, whatever it was."""
+    def met(self) -> bool:
+        """Whether the pooled verdicts meet the project's flake thresholds."""
         return (
-            self.passed
-            + self.failed
-            + self.flaky
-            + self.skipped
-            + self.execution_errored
-            + self.precluded
+            self.threshold > 0
+            and self.flaky >= self.threshold
+            and self.flaky_1wd >= self.threshold_1wd
         )
 
-    @property
-    def meaningful(self) -> int:
-        """Verdicts that say something about flakiness.
-
-        Skipped and precluded runs tell us nothing either way, so they
-        stay out of the denominator.
-        """
-        return self.passed + self.failed + self.flaky
-
-    @property
-    def flake_rate(self) -> float:
-        """Share of meaningful verdicts that did not simply pass."""
-        if not self.meaningful:
-            return 0.0
-        return (self.failed + self.flaky) / self.meaningful
-
-
-@dataclass(frozen=True)
-class Flakiness:
-    """What a test's history adds up to. Build one with `of_groups`."""
-
-    # Every verdict in the window, summed.
-    counts: VerdictCounts = VerdictCounts()
-
-    @classmethod
-    def of_groups(cls, groups: Iterable[StatsGroup]) -> Flakiness:
-        """Sum per-day, per-variant stats into one reading."""
-        total = VerdictCounts()
-        for group in groups:
-            total += group.counts
-        return cls(counts=total)
-
-    @property
-    def flake_rate(self) -> float:
-        """Share of meaningful verdicts that did not simply pass."""
-        return self.counts.flake_rate
+    def as_json(self) -> JsonDict:
+        return {
+            "met": self.met,
+            "flaky_verdicts": self.flaky,
+            "flaky_verdicts_1wd": self.flaky_1wd,
+        }
 
 
 # -- What the service returns --------------------------------------------
 
 
 @dataclass(frozen=True)
-class StatsGroup:
-    """One day of one variant's verdicts for a single test."""
+class FlakyDay:
+    """How many FLAKY verdicts one bot had on one day."""
 
-    # The day, as "YYYY-MM-DD", or "unknown" if the API sent none.
-    date: str
-
-    # Identifies the bot configuration. Resolve it with `variants()`.
+    day: date
     variant_hash: str
-
-    # How that day's runs on that one variant turned out.
-    counts: VerdictCounts
+    flaky: int
 
     @classmethod
-    def from_api(cls, group: JsonDict) -> StatsGroup:
-        """Read a QueryStats group."""
-        partition_time = group.get("partitionTime", "")
+    def from_api(cls, group: JsonDict) -> FlakyDay:
+        """Read a TestHistory.QueryStats group."""
         return cls(
-            date=partition_time[:10] if partition_time else "unknown",
+            day=date.fromisoformat(group["partitionTime"][:10]),
             variant_hash=group.get("variantHash", ""),
-            counts=VerdictCounts.from_api(group.get("verdictCounts", {})),
+            flaky=int(group.get("verdictCounts", {}).get("flaky", 0)),
         )
 
 
@@ -236,7 +394,7 @@ class StatsGroup:
 class TestVariant:
     """A bot configuration a test has run on."""
 
-    # What `StatsGroup.variant_hash` refers to.
+    # Identifies the variant in other requests.
     variant_hash: str
 
     # OS of the machine that ran the test, not the platform under test:
@@ -247,6 +405,11 @@ class TestVariant:
     # Chromium's flake-retry bots run as "runner" in bucket "reviver" and
     # name the original in "reviver_builder".
     builders: tuple[str, ...]
+
+    # The whole variant definition, keys as above plus e.g. test_suite.
+    definition: dict[str, str] = field(
+        default_factory=dict, compare=False, hash=False
+    )
 
     @classmethod
     def from_api(cls, entry: JsonDict) -> TestVariant:
@@ -260,6 +423,7 @@ class TestVariant:
             variant_hash=entry.get("variantHash", ""),
             os=definition.get("os", ""),
             builders=tuple(name for name in names if name),
+            definition=definition,
         )
 
     @property
@@ -450,7 +614,7 @@ class Request:
         # Full pRPC service name, e.g. "luci.analysis.v1.TestHistory".
         self._service = service
 
-        # RPC method on that service, e.g. "QueryStats".
+        # RPC method on that service, e.g. "QueryStability".
         self._method = method
 
         # The request body, already including `project`. `PagedRequest`
@@ -571,9 +735,9 @@ class PagedRequest(Request):
                 return
             body = {**body, "pageToken": token}
 
-    def gather(self, field: str) -> list[JsonDict]:
-        """Concatenate `field` across every page."""
-        return [item for page in self.pages() for item in page.get(field, [])]
+    def gather(self, key: str) -> list[JsonDict]:
+        """Concatenate `key` across every page."""
+        return [item for page in self.pages() for item in page.get(key, [])]
 
 
 class LuciAnalysis:
@@ -656,22 +820,62 @@ class LuciAnalysis:
             for test_id in page.get("testIds", [])
         ]
 
-    def history(self, test_id: str, window: Window) -> list[StatsGroup]:
-        """A test's verdict counts, by day and variant."""
-        request = self.paged_request(
-            TEST_HISTORY_SERVICE,
-            "QueryStats",
-            testId=test_id,
-            predicate=window.as_predicate(),
-        )
-        return [StatsGroup.from_api(g) for g in request.gather("groups")]
-
     def variants(self, test_id: str) -> list[TestVariant]:
         """The bot configurations a test has run on."""
         request = self.paged_request(
             TEST_HISTORY_SERVICE, "QueryVariants", testId=test_id
         )
         return [TestVariant.from_api(v) for v in request.gather("variants")]
+
+    def ci_flaky_days(self, test_id: str, window: Window) -> list[FlakyDay]:
+        """A test's FLAKY verdicts on CI (postsubmit) bots, by day and bot."""
+        request = self.paged_request(
+            TEST_HISTORY_SERVICE,
+            "QueryStats",
+            testId=test_id,
+            predicate={
+                "partitionTimeRange": window.as_time_range(),
+                "variantPredicate": {"contains": {"def": {"bucket": "ci"}}},
+            },
+        )
+        return [
+            day
+            for day in map(FlakyDay.from_api, request.gather("groups"))
+            if day.flaky
+        ]
+
+    def stability(
+        self, variants: list[tuple[str, TestVariant]], source: Source
+    ) -> tuple[list[Stability], JsonDict]:
+        """Upstream's stability analysis of each (test ID, variant).
+
+        Returns:
+            One Stability per input, in input order, and the project's
+            criteria they were judged by.
+        """
+        results: list[Stability] = []
+        criteria: JsonDict = {}
+        for start in range(0, len(variants), MAX_STABILITY_BATCH):
+            batch = variants[start : start + MAX_STABILITY_BATCH]
+            response = self.request(
+                TEST_VARIANTS_SERVICE,
+                "QueryStability",
+                testVariants=[
+                    {
+                        "testId": test_id,
+                        "variantHash": variant.variant_hash,
+                        "sources": source.as_sources(),
+                    }
+                    for test_id, variant in batch
+                ],
+            ).send()
+            criteria = response.get("criteria", criteria)
+            # Answers come back in request order.
+            for (test_id, variant), analysis in zip(
+                batch, response.get("testVariants", [])
+            ):
+                results.append(Stability(test_id, variant.definition, analysis))
+        return results, criteria
 
     def cluster_summaries(
         self, failure_filter: str, window: Window

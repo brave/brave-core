@@ -17,7 +17,7 @@ import ssl
 import sys
 import unittest
 from collections import deque
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
 from unittest import mock
@@ -27,21 +27,29 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 # pylint: disable=wrong-import-position
 from luci_analysis import (
     MAX_PAGE_SIZE,
+    MAX_STABILITY_BATCH,
     ClusterFailure,
     ClusterSummary,
     ConnectionPool,
-    Flakiness,
+    FlakyDay,
     JsonDict,
     LuciAnalysis,
     LuciAnalysisError,
+    PooledFlakes,
     TLS_CONTEXT,
     Request,
     RequestStats,
-    StatsGroup,
+    Source,
+    Stability,
+    Status,
     TestVariant,
-    VerdictCounts,
     Window,
+    parse_commit_position,
+    parse_milestone,
+    weekdays_back,
 )
+
+BRANCH = Source("checkout", "abc", "refs/branch-heads/8103", 1035, 157)
 
 # -- The domain half -----------------------------------------------------
 
@@ -90,127 +98,156 @@ class WindowTest(unittest.TestCase):
             },
         )
 
-    def test_renders_the_test_history_predicate(self) -> None:
-        window = Window(
-            datetime(2026, 1, 1, tzinfo=timezone.utc),
-            datetime(2026, 1, 8, tzinfo=timezone.utc),
+
+class SourceTest(unittest.TestCase):
+    def test_reads_the_commit_position_trailer(self) -> None:
+        message = (
+            "Subject\n\nCr-Commit-Position: refs/branch-heads/8103@{#1035}\n"
         )
 
         self.assertEqual(
-            window.as_predicate(),
+            parse_commit_position(message), ("refs/branch-heads/8103", 1035)
+        )
+
+    def test_a_commit_without_a_position_is_an_error(self) -> None:
+        with self.assertRaises(LuciAnalysisError):
+            parse_commit_position("Subject\n")
+
+    def test_reads_the_milestone_off_chrome_version(self) -> None:
+        self.assertEqual(parse_milestone("MAJOR=157\nMINOR=0\n"), 157)
+
+    def test_a_branch_lives_in_its_milestone_project(self) -> None:
+        self.assertEqual(BRANCH.project, "chromium-m157")
+
+    def test_main_lives_in_the_chromium_project(self) -> None:
+        main = Source("main", "abc", "refs/heads/main", 1, 158)
+
+        self.assertEqual(main.project, "chromium")
+
+    def test_any_other_ref_has_no_project(self) -> None:
+        with self.assertRaises(LuciAnalysisError):
+            _ = Source("x", "abc", "refs/heads/other", 1, 1).project
+
+    def test_describes_itself_as_ref_and_position(self) -> None:
+        self.assertEqual(BRANCH.description, "refs/branch-heads/8103@{#1035}")
+
+
+# A Tuesday, so the last two weekdays are that day and the Monday.
+TUESDAY = date(2026, 11, 10)
+CRITERIA = {"flakeRate": {"flakeThreshold": 3, "flakeThreshold1wd": 1}}
+
+
+def flaky_day(day: date, flaky: int, variant_hash: str = "h") -> FlakyDay:
+    return FlakyDay(day=day, variant_hash=variant_hash, flaky=flaky)
+
+
+class WeekdaysBackTest(unittest.TestCase):
+    def test_counts_today_when_it_is_a_weekday(self) -> None:
+        self.assertEqual(weekdays_back(TUESDAY, 2), date(2026, 11, 9))
+
+    def test_reaches_over_a_weekend(self) -> None:
+        monday = date(2026, 11, 9)
+
+        self.assertEqual(weekdays_back(monday, 2), date(2026, 11, 6))
+
+    def test_a_weekend_day_does_not_count(self) -> None:
+        sunday = date(2026, 11, 8)
+
+        self.assertEqual(weekdays_back(sunday, 2), date(2026, 11, 5))
+
+
+class PooledFlakesTest(unittest.TestCase):
+    def tally(self, *days: FlakyDay) -> PooledFlakes:
+        return PooledFlakes.tally(list(days), CRITERIA, TUESDAY)
+
+    def test_sums_every_bot_and_day(self) -> None:
+        flakes = self.tally(
+            flaky_day(date(2026, 11, 3), 1, "h1"),
+            flaky_day(date(2026, 11, 9), 1, "h2"),
+            flaky_day(date(2026, 11, 10), 2, "h1"),
+        )
+
+        self.assertEqual((flakes.flaky, flakes.flaky_1wd), (4, 3))
+        self.assertTrue(flakes.met)
+
+    def test_needs_a_recent_flake(self) -> None:
+        flakes = self.tally(flaky_day(date(2026, 11, 5), 5))
+
+        self.assertEqual(flakes.flaky_1wd, 0)
+        self.assertFalse(flakes.met)
+
+    def test_needs_enough_flakes(self) -> None:
+        self.assertFalse(self.tally(flaky_day(TUESDAY, 2)).met)
+
+    def test_days_before_the_window_are_ignored(self) -> None:
+        flakes = self.tally(
+            flaky_day(date(2026, 10, 27), 10), flaky_day(TUESDAY, 1)
+        )
+
+        self.assertEqual(flakes.flaky, 1)
+
+    def test_without_criteria_nothing_is_met(self) -> None:
+        flakes = PooledFlakes.tally([flaky_day(TUESDAY, 9)], {}, TUESDAY)
+
+        self.assertFalse(flakes.met)
+
+
+class StabilityTest(unittest.TestCase):
+    @staticmethod
+    def status(analysis: JsonDict) -> Status:
+        return Stability("t", {}, analysis).status
+
+    def test_a_met_flake_rate_is_flaky(self) -> None:
+        self.assertIs(self.status({"flakeRate": {"isMet": True}}), Status.FLAKY)
+
+    def test_a_met_failure_rate_wins_over_flakiness(self) -> None:
+        self.assertIs(
+            self.status(
+                {"flakeRate": {"isMet": True}, "failureRate": {"isMet": True}}
+            ),
+            Status.FAILING,
+        )
+
+    def test_results_meeting_neither_are_stable(self) -> None:
+        self.assertIs(
+            self.status({"flakeRate": {"totalVerdicts": 10}}), Status.STABLE
+        )
+
+    def test_no_results_is_no_data(self) -> None:
+        self.assertIs(self.status({}), Status.NO_DATA)
+
+    def test_only_flaky_and_failing_are_confirmed(self) -> None:
+        self.assertTrue(
+            Stability("t", {}, {"flakeRate": {"isMet": True}}).confirmed
+        )
+        self.assertFalse(
+            Stability("t", {}, {"flakeRate": {"totalVerdicts": 9}}).confirmed
+        )
+
+    def test_links_the_example_builds(self) -> None:
+        stability = Stability(
+            "t",
+            {},
             {
-                "partitionTimeRange": {
-                    "earliest": "2026-01-01T00:00:00Z",
-                    "latest": "2026-01-08T00:00:00Z",
+                "flakeRate": {
+                    "flakeExamples": [
+                        {"rootInvocations": ["build-1"]},
+                        {"invocations": ["build-2", "task-x"]},
+                    ]
                 }
             },
         )
 
-
-class VerdictCountsTest(unittest.TestCase):
-    def test_reads_the_string_counts_the_api_sends(self) -> None:
-        counts = VerdictCounts.from_api(
-            {
-                "passed": "90",
-                "failed": "5",
-                "flaky": "5",
-                "skipped": "3",
-                "executionErrored": "2",
-                "precluded": "1",
-            }
+        self.assertEqual(
+            stability.example_builds,
+            ["https://ci.chromium.org/b/1", "https://ci.chromium.org/b/2"],
         )
-
-        self.assertEqual(counts.passed, 90)
-        self.assertEqual(counts.execution_errored, 2)
-        self.assertEqual(counts.precluded, 1)
-
-    def test_missing_fields_count_as_zero(self) -> None:
-        self.assertEqual(VerdictCounts.from_api({}), VerdictCounts())
-
-    def test_counts_add(self) -> None:
-        total = VerdictCounts(passed=1, failed=2) + VerdictCounts(
-            passed=10, flaky=3
-        )
-
-        self.assertEqual(total, VerdictCounts(passed=11, failed=2, flaky=3))
-
-    def test_total_includes_everything(self) -> None:
-        counts = VerdictCounts(
-            passed=1,
-            failed=2,
-            flaky=3,
-            skipped=4,
-            execution_errored=5,
-            precluded=6,
-        )
-
-        self.assertEqual(counts.total, 21)
-
-    def test_only_pass_fail_flaky_are_meaningful(self) -> None:
-        counts = VerdictCounts(
-            passed=1, failed=2, flaky=3, skipped=40, precluded=50
-        )
-
-        self.assertEqual(counts.meaningful, 6)
-
-    def test_flake_rate_is_failures_over_meaningful(self) -> None:
-        counts = VerdictCounts(passed=90, failed=5, flaky=5, skipped=1000)
-
-        self.assertAlmostEqual(counts.flake_rate, 0.1)
-
-    def test_flake_rate_without_meaningful_verdicts_is_zero(self) -> None:
-        self.assertEqual(VerdictCounts(skipped=10).flake_rate, 0.0)
-
-
-def group(date: str, variant_hash: str = "h", **counts: int) -> StatsGroup:
-    """A StatsGroup, spelled the way these tests care about."""
-    return StatsGroup(
-        date=date, variant_hash=variant_hash, counts=VerdictCounts(**counts)
-    )
-
-
-class FlakinessTest(unittest.TestCase):
-    def test_sums_every_group(self) -> None:
-        flakiness = Flakiness.of_groups(
-            [
-                group("2026-02-07", "h1", passed=8, flaky=2),
-                group("2026-02-07", "h2", passed=10),
-                group("2026-02-08", "h1", passed=9, failed=1),
-            ]
-        )
-
-        self.assertEqual(flakiness.counts.passed, 27)
-        self.assertEqual(flakiness.counts.flaky, 2)
-        self.assertEqual(flakiness.counts.failed, 1)
-        self.assertAlmostEqual(flakiness.flake_rate, 0.1)
-
-    def test_no_history_at_all(self) -> None:
-        flakiness = Flakiness.of_groups([])
-
-        self.assertEqual(flakiness.counts.total, 0)
-        self.assertEqual(flakiness.flake_rate, 0.0)
 
 
 # -- Reading what the service sends --------------------------------------
 
 
 class FromApiTest(unittest.TestCase):
-    def test_stats_group(self) -> None:
-        parsed = StatsGroup.from_api(
-            {
-                "partitionTime": "2026-02-07T00:00:00Z",
-                "variantHash": "abc",
-                "verdictCounts": {"passed": "5"},
-            }
-        )
-
-        self.assertEqual(parsed.date, "2026-02-07")
-        self.assertEqual(parsed.variant_hash, "abc")
-        self.assertEqual(parsed.counts.passed, 5)
-
-    def test_a_stats_group_without_a_timestamp(self) -> None:
-        self.assertEqual(StatsGroup.from_api({}).date, "unknown")
-
     def test_test_variant(self) -> None:
         parsed = TestVariant.from_api(
             {
@@ -224,6 +261,9 @@ class FromApiTest(unittest.TestCase):
         self.assertEqual(parsed.variant_hash, "h1")
         self.assertEqual(parsed.os, "Ubuntu-22.04")
         self.assertEqual(parsed.builders, ("linux-rel",))
+        self.assertEqual(
+            parsed.definition, {"os": "Ubuntu-22.04", "builder": "linux-rel"}
+        )
 
     def test_a_reviver_variant_keeps_both_builder_names(self) -> None:
         parsed = TestVariant.from_api(
@@ -242,6 +282,17 @@ class FromApiTest(unittest.TestCase):
         self.assertEqual(
             parsed.builder_description, "runner linux_chromium_asan_rel_ng"
         )
+
+    def test_a_flaky_day(self) -> None:
+        parsed = FlakyDay.from_api(
+            {
+                "partitionTime": "2026-11-09T00:00:00Z",
+                "variantHash": "h",
+                "verdictCounts": {"passed": "40", "flaky": "2"},
+            }
+        )
+
+        self.assertEqual(parsed, flaky_day(date(2026, 11, 9), 2))
 
     def test_a_variant_with_nothing_in_it(self) -> None:
         parsed = TestVariant.from_api({})
@@ -774,36 +825,6 @@ class QueriesTest(ClientTestCase):
             "/prpc/luci.analysis.v1.TestHistory/QueryTests",
         )
 
-    def test_history_returns_stats_groups(self) -> None:
-        self.transport.add_reply(
-            {
-                "groups": [
-                    {
-                        "partitionTime": "2026-01-02T00:00:00Z",
-                        "variantHash": "h",
-                        "verdictCounts": {"passed": "3"},
-                    }
-                ]
-            }
-        )
-
-        groups = self.client.history("test-id", self.WINDOW)
-
-        self.assertEqual(groups, [group("2026-01-02", "h", passed=3)])
-        body = self.last_body()
-        self.assertEqual(body["testId"], "test-id")
-        self.assertEqual(body["predicate"], self.WINDOW.as_predicate())
-
-    def test_history_keeps_one_window_across_pages(self) -> None:
-        # A shifting window would make the pages inconsistent.
-        self.transport.add_reply({"groups": [], "nextPageToken": "t"})
-        self.transport.add_reply({"groups": []})
-
-        self.client.history("test-id", self.WINDOW)
-
-        predicates = [body["predicate"] for body in self.bodies()]
-        self.assertEqual(predicates[0], predicates[1])
-
     def test_variants_returns_test_variants(self) -> None:
         self.transport.add_reply(
             {
@@ -821,6 +842,92 @@ class QueriesTest(ClientTestCase):
         variants = self.client.variants("test-id")
 
         self.assertEqual(variants, [TestVariant("h1", "Mac-15", ("mac-rel",))])
+
+    def test_ci_flaky_days_only_asks_about_ci_bots(self) -> None:
+        self.transport.add_reply(
+            {
+                "groups": [
+                    {
+                        "partitionTime": "2026-01-02T00:00:00Z",
+                        "variantHash": "h",
+                        "verdictCounts": {"flaky": "2"},
+                    },
+                    {
+                        "partitionTime": "2026-01-03T00:00:00Z",
+                        "variantHash": "h",
+                        "verdictCounts": {"passed": "9"},
+                    },
+                ]
+            }
+        )
+
+        days = self.client.ci_flaky_days("test-id", self.WINDOW)
+
+        self.assertEqual(days, [flaky_day(date(2026, 1, 2), 2)])
+        body = self.last_body()
+        self.assertEqual(body["testId"], "test-id")
+        self.assertEqual(
+            body["predicate"],
+            {
+                "partitionTimeRange": self.WINDOW.as_time_range(),
+                "variantPredicate": {"contains": {"def": {"bucket": "ci"}}},
+            },
+        )
+        self.assertEqual(
+            self.transport.requests[-1]["path"],
+            "/prpc/luci.analysis.v1.TestHistory/QueryStats",
+        )
+
+    def test_stability_asks_about_the_source_position(self) -> None:
+        self.transport.add_reply(
+            {
+                "testVariants": [{"flakeRate": {"isMet": True}}],
+                "criteria": {"flakeRate": {"flakeThreshold": 3}},
+            }
+        )
+        variant = TestVariant(
+            "h1", "Mac-15", ("mac-rel",), {"builder": "mac-rel"}
+        )
+
+        results, criteria = self.client.stability([("t1", variant)], BRANCH)
+
+        self.assertEqual(
+            results,
+            [
+                Stability(
+                    "t1", {"builder": "mac-rel"}, {"flakeRate": {"isMet": True}}
+                )
+            ],
+        )
+        self.assertEqual(criteria, {"flakeRate": {"flakeThreshold": 3}})
+        (sent,) = self.last_body()["testVariants"]
+        self.assertEqual(sent["testId"], "t1")
+        self.assertEqual(sent["variantHash"], "h1")
+        self.assertEqual(sent["sources"], BRANCH.as_sources())
+        self.assertEqual(
+            self.transport.requests[-1]["path"],
+            "/prpc/luci.analysis.v1.TestVariants/QueryStability",
+        )
+
+    def test_stability_splits_large_requests(self) -> None:
+        variants = [
+            ("t", TestVariant(str(i), "", ()))
+            for i in range(MAX_STABILITY_BATCH + 1)
+        ]
+        self.transport.add_reply({"testVariants": [{}] * MAX_STABILITY_BATCH})
+        self.transport.add_reply({"testVariants": [{}]})
+
+        results, _ = self.client.stability(variants, BRANCH)
+
+        self.assertEqual(len(results), MAX_STABILITY_BATCH + 1)
+        self.assertEqual(
+            [len(body["testVariants"]) for body in self.bodies()],
+            [MAX_STABILITY_BATCH, 1],
+        )
+
+    def test_no_variants_means_no_request(self) -> None:
+        self.assertEqual(self.client.stability([], BRANCH), ([], {}))
+        self.assertEqual(self.transport.requests, [])
 
     def test_cluster_summaries(self) -> None:
         self.transport.add_reply(
@@ -874,11 +981,10 @@ class QueriesTest(ClientTestCase):
         )
 
     def test_an_empty_answer_is_an_empty_list(self) -> None:
-        for _ in range(4):
+        for _ in range(3):
             self.transport.add_reply({})
 
         self.assertEqual(self.client.tests_matching("x"), [])
-        self.assertEqual(self.client.history("t", self.WINDOW), [])
         self.assertEqual(self.client.variants("t"), [])
         self.assertEqual(self.client.cluster_summaries("f", self.WINDOW), [])
 
