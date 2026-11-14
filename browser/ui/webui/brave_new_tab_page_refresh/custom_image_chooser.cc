@@ -35,7 +35,8 @@ void CustomImageChooser::ShowDialog(ShowDialogCallback callback) {
   file_types.allowed_paths = ui::SelectFileDialog::FileTypeInfo::NATIVE_PATH;
   file_types.extensions.push_back(
       {{FILE_PATH_LITERAL("jpg"), FILE_PATH_LITERAL("jpeg"),
-        FILE_PATH_LITERAL("png"), FILE_PATH_LITERAL("gif")}});
+        FILE_PATH_LITERAL("png"), FILE_PATH_LITERAL("gif"),
+        FILE_PATH_LITERAL("avif")}});
   file_types.extension_description_overrides.push_back(
       l10n_util::GetStringUTF16(IDS_UPLOAD_IMAGE_FORMAT));
 

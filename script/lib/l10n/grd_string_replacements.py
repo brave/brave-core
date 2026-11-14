@@ -43,6 +43,11 @@ default_replacements = [
     # TODO(https://github.com/brave/brave-browser/issues/60062): Remove once
     # Brave Password Manager supports passkeys.
     (r'Passwords · Passkeys', r'Passwords'),
+    # Custom NTP backgrounds also accept AVIF and GIF.
+    (
+        r'(?m)^(\s*)\*\.jpeg, \*\.jpg, \*\.png(\s*)$',
+        r'\1*.avif, *.gif, *.jpeg, *.jpg, *.png\2',
+    ),
 ]
 
 
