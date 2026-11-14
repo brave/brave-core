@@ -6,10 +6,14 @@
 #ifndef BRAVE_BROWSER_UI_TABS_SHARED_PINNED_TAB_SERVICE_H_
 #define BRAVE_BROWSER_UI_TABS_SHARED_PINNED_TAB_SERVICE_H_
 
+#include <stddef.h>
+
 #include <memory>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "chrome/browser/profiles/profile_observer.h"
 #include "chrome/browser/ui/browser_window/public/browser_collection_observer.h"
@@ -97,16 +101,20 @@ class SharedPinnedTabService : public KeyedService,
                     const TabStripModelChange::Remove* remove);
   void OnActiveTabChanged(TabStripModel* tab_strip_model);
 
+  void ProcessPendingUnpin(base::WeakPtr<BrowserWindowInterface> browser,
+                           base::WeakPtr<content::WebContents> contents);
   void OnTabUnpinned(TabStripModel* tab_strip_model,
-                     base::WeakPtr<content::WebContents> contents,
-                     int index);
+                     content::WebContents* contents);
+
+  bool DeferSynchronizationDuringUnpin(BrowserWindowInterface* browser);
 
   void SynchronizeNewPinnedTab(int index);
   void SynchronizeDeletedPinnedTab(int index);
   void SynchronizeMovedPinnedTab(int from, int to);
   void SynchronizeNewBrowser(BrowserWindowInterface* browser);
 
-  void MoveSharedWebContentsToActiveBrowser(int index);
+  void MoveSharedWebContentsToActiveBrowser(
+      base::WeakPtr<content::WebContents> contents);
   void MoveSharedWebContentsToBrowser(BrowserWindowInterface* browser,
                                       int index,
                                       bool is_last_closing_browser = false);
@@ -120,7 +128,15 @@ class SharedPinnedTabService : public KeyedService,
 
   bool IsBrowserInTabDragging(BrowserWindowInterface* browser) const;
 
+  struct PendingUnpins {
+    size_t count = 0;
+    bool synchronization_deferred = false;
+  };
+
   raw_ptr<Profile> profile_;
+
+  base::flat_map<raw_ptr<BrowserWindowInterface>, PendingUnpins>
+      pending_unpins_;
 
   base::flat_set<raw_ptr<BrowserWindowInterface>> browsers_;
   raw_ptr<BrowserWindowInterface> last_active_browser_ = nullptr;
@@ -144,6 +160,7 @@ class SharedPinnedTabService : public KeyedService,
 
   BooleanPrefMember shared_pinned_tab_enabled_;
 
+  base::WeakPtrFactory<SharedPinnedTabService> unpin_weak_ptr_factory_{this};
   base::WeakPtrFactory<SharedPinnedTabService> weak_ptr_factory_{this};
 };
 

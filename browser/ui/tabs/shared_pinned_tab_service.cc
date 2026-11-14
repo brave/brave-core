@@ -245,6 +245,8 @@ void SharedPinnedTabService::Shutdown() {
   DCHECK(cached_shared_contentses_from_closing_browser_.empty())
       << " There're dangled web contentses";
 
+  unpin_weak_ptr_factory_.InvalidateWeakPtrs();
+  pending_unpins_.clear();
   profile_ = nullptr;
   browsers_.clear();
   last_active_browser_ = nullptr;
@@ -357,6 +359,7 @@ bool SharedPinnedTabService::BrowserClosing(TabStripModel* tab_strip_model) {
 void SharedPinnedTabService::OnBrowserClosed(BrowserWindowInterface* browser) {
   DVLOG(2) << __FUNCTION__;
   closing_browsers_.erase(browser);
+  pending_unpins_.erase(browser);
 
   // On Mac, even after the last browser is closed, the app could be still alive
   // on background. We should clean up the data in this case.
@@ -397,7 +400,8 @@ void SharedPinnedTabService::OnTabPinnedStateChanged(tabs::TabInterface* tab,
     return;
   }
 
-  auto* tab_strip_model = tab->GetBrowserWindowInterface()->GetTabStripModel();
+  auto* browser = tab->GetBrowserWindowInterface();
+  auto* tab_strip_model = browser->GetTabStripModel();
   DVLOG(2) << __FUNCTION__ << " index: " << index << " pinned? "
            << tab_strip_model->IsTabPinned(index);
   auto* contents = tab->GetContents();
@@ -413,11 +417,12 @@ void SharedPinnedTabService::OnTabPinnedStateChanged(tabs::TabInterface* tab,
                              .contents_owner_model = tab_strip_model});
     SynchronizeNewPinnedTab(index);
   } else {
+    ++pending_unpins_[browser].count;
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE,
-        base::BindOnce(&SharedPinnedTabService::OnTabUnpinned,
-                       weak_ptr_factory_.GetWeakPtr(), tab_strip_model,
-                       contents->GetWeakPtr(), index));
+        base::BindOnce(&SharedPinnedTabService::ProcessPendingUnpin,
+                       unpin_weak_ptr_factory_.GetWeakPtr(),
+                       browser->GetWeakPtr(), contents->GetWeakPtr()));
   }
 }
 
@@ -602,6 +607,10 @@ void SharedPinnedTabService::OnActiveTabChanged(
     return;
   }
 
+  if (DeferSynchronizationDuringUnpin(last_active_browser_)) {
+    return;
+  }
+
   const auto active_index = tab_strip_model->active_index();
   if (active_index == TabStripModel::kNoTab) {
     // The browser could be in the middle of shutdown
@@ -624,32 +633,53 @@ void SharedPinnedTabService::OnActiveTabChanged(
       FROM_HERE,
       base::BindOnce(
           &SharedPinnedTabService::MoveSharedWebContentsToActiveBrowser,
-          weak_ptr_factory_.GetWeakPtr(), active_index));
+          weak_ptr_factory_.GetWeakPtr(),
+          tab_strip_model->GetWebContentsAt(active_index)->GetWeakPtr()));
 }
 
-void SharedPinnedTabService::OnTabUnpinned(
-    TabStripModel* tab_strip_model,
-    base::WeakPtr<content::WebContents> contents,
-    int index) {
-  DCHECK(contents);
+void SharedPinnedTabService::ProcessPendingUnpin(
+    base::WeakPtr<BrowserWindowInterface> browser,
+    base::WeakPtr<content::WebContents> contents) {
+  if (!browser || !pending_unpins_.contains(browser.get())) {
+    return;
+  }
 
+  if (contents) {
+    OnTabUnpinned(browser->GetTabStripModel(), contents.get());
+  }
+
+  // Applying an unpin can close a window and change the pending entries.
+  auto pending = pending_unpins_.find(browser.get());
+  if (pending == pending_unpins_.end() || --pending->second.count != 0) {
+    return;
+  }
+
+  const bool synchronize = pending->second.synchronization_deferred;
+  pending_unpins_.erase(pending);
+  if (synchronize && browsers_.contains(browser.get())) {
+    SynchronizeNewBrowser(browser.get());
+    OnActiveTabChanged(browser->GetTabStripModel());
+  }
+}
+
+void SharedPinnedTabService::OnTabUnpinned(TabStripModel* tab_strip_model,
+                                           content::WebContents* contents) {
   LOCK_REENTRANCE(tab_strip_model);
 
-  auto* shared_contents = contents.get();
+  auto* shared_contents = contents;
   if (auto* dummy_contents_data =
-          DummyContentsData::FromWebContents(contents.get())) {
+          DummyContentsData::FromWebContents(contents)) {
     shared_contents = dummy_contents_data->shared_contents();
   }
 
-  // We shouldn't count on |index| in this case. The previous index could be
-  // different from |index|.
+  // The tab may have moved before this task ran.
   auto iter = std::ranges::find(pinned_tab_data_, shared_contents,
                                 &PinnedTabData::shared_contents);
   DCHECK(iter != pinned_tab_data_.end());
   const auto previous_index = std::distance(pinned_tab_data_.begin(), iter);
 
   if (auto* dummy_contents_data =
-          DummyContentsData::FromWebContents(contents.get())) {
+          DummyContentsData::FromWebContents(contents)) {
     // We should make this |tab_strip_model| have the shared contents, as
     // other tabs will be deleted soon.
     dummy_contents_data->stop_propagation();
@@ -661,10 +691,10 @@ void SharedPinnedTabService::OnTabUnpinned(
             shared_contents, CreateDummyWebContents(shared_contents));
     SharedContentsData::RemoveFromWebContents(unique_shared_contents.get());
 
-    tab_strip_model->DiscardWebContents(contents.get(),
+    tab_strip_model->DiscardWebContents(contents,
                                         std::move(unique_shared_contents));
   } else {
-    SharedContentsData::RemoveFromWebContents(contents.get());
+    SharedContentsData::RemoveFromWebContents(contents);
   }
 
   pinned_tab_data_.erase(iter);
@@ -738,8 +768,24 @@ void SharedPinnedTabService::TabDraggingEnded(BrowserWindowInterface* browser) {
   }
 }
 
+bool SharedPinnedTabService::DeferSynchronizationDuringUnpin(
+    BrowserWindowInterface* browser) {
+  auto pending = pending_unpins_.find(browser);
+  if (pending == pending_unpins_.end()) {
+    return false;
+  }
+
+  // The strip has already unpinned a tab, but the shared list still has it.
+  pending->second.synchronization_deferred = true;
+  return true;
+}
+
 void SharedPinnedTabService::SynchronizeNewBrowser(
     BrowserWindowInterface* browser) {
+  if (DeferSynchronizationDuringUnpin(browser)) {
+    return;
+  }
+
   if (IsBrowserInTabDragging(browser)) {
     in_tab_dragging_browsers_.insert(browser);
     return;
@@ -802,10 +848,24 @@ void SharedPinnedTabService::SynchronizeNewBrowser(
   }
 }
 
-void SharedPinnedTabService::MoveSharedWebContentsToActiveBrowser(int index) {
-  if (!last_active_browser_) {
-    DVLOG(2)
-        << "Failed to attach contents to active browser: No active browser";
+void SharedPinnedTabService::MoveSharedWebContentsToActiveBrowser(
+    base::WeakPtr<content::WebContents> contents) {
+  if (!last_active_browser_ || !contents) {
+    return;
+  }
+
+  auto* model = last_active_browser_->GetTabStripModel();
+  const int index = model->active_index();
+  if (index == TabStripModel::kNoTab || !model->IsTabPinned(index) ||
+      model->GetWebContentsAt(index) != contents.get() ||
+      DeferSynchronizationDuringUnpin(last_active_browser_)) {
+    return;
+  }
+
+  // Activation or unpinning may have changed the pinned slot while queued.
+  auto* dummy = DummyContentsData::FromWebContents(contents.get());
+  if (!dummy || index >= static_cast<int>(pinned_tab_data_.size()) ||
+      pinned_tab_data_[index].shared_contents != dummy->shared_contents()) {
     return;
   }
 
@@ -925,6 +985,9 @@ void SharedPinnedTabService::OnSharedPinnedTabEnabled() {
 }
 
 void SharedPinnedTabService::OnSharedPinnedTabDisabled() {
+  unpin_weak_ptr_factory_.InvalidateWeakPtrs();
+  pending_unpins_.clear();
+
   // Reset observers. Note that we should remove observers first so that
   // closing dummy contents won't close shared contents too.
   for (BrowserWindowInterface* browser : browsers_) {
