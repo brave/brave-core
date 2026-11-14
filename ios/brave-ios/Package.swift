@@ -619,6 +619,7 @@ var package = Package(
         .product(name: "SwiftUIIntrospect", package: "SwiftUI-Introspect"),
       ]
     ),
+    .testTarget(name: "BraveCoreTests", dependencies: ["BraveCore"]),
   ],
   swiftLanguageModes: [.v5],
   cxxLanguageStandard: .cxx17

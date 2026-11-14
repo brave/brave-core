@@ -854,6 +854,8 @@ public class BrowserViewController: UIViewController {
 
   @objc func appWillTerminateNotification() {
     tabManager.saveAllTabs(synchronously: true)
+
+    braveCore.shutDown()
   }
 
   @objc private func tappedCollapsedURLBar() {
