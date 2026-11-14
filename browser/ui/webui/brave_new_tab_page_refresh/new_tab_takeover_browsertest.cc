@@ -30,6 +30,8 @@
 #include "chrome/browser/sessions/session_restore.h"
 #include "chrome/browser/sessions/session_restore_test_helper.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -329,6 +331,41 @@ IN_PROC_BROWSER_TEST_F(
                                  kNewTabTakeoverInfobarRemainingDisplayCount) ==
            0;
   }));
+}
+
+IN_PROC_BROWSER_TEST_F(NewTabTakeoverBrowserTest,
+                       NavigatesCurrentTabWhenDisclosureLearnMoreIsClicked) {
+  ON_CALL(GetAdsServiceMock(), GetStatementOfAccounts(::testing::_))
+      .WillByDefault([](brave_ads::GetStatementOfAccountsCallback callback) {
+        std::move(callback).Run(/*mojom_statement=*/nullptr);
+      });
+
+  EXPECT_CALL(GetAdsServiceMock(), MaybeServeNewTabPageAd)
+      .WillOnce(base::test::RunOnceCallback<0>(BuildNewTabPageAd()));
+
+  OpenNewTabAndWaitForLoad();
+  VerifyNewTabPageLoadedExpectation();
+  WaitForNewTabTakeoverDisclosureLabel();
+
+  const int tab_count = browser()->GetTabStripModel()->count();
+  const GURL learn_more_url(
+      content::EvalJs(
+          GetActiveWebContents(),
+          "document.querySelector('.new-tab-takeover-disclosure-tooltip a')"
+          ".href")
+          .ExtractString());
+  EXPECT_TRUE(learn_more_url.is_valid());
+  content::TestNavigationObserver navigation_observer(learn_more_url);
+  navigation_observer.WatchExistingWebContents();
+
+  ASSERT_TRUE(content::ExecJs(
+      GetActiveWebContents(),
+      "document.querySelector('.new-tab-takeover-disclosure-tooltip a')"
+      ".click()"));
+  navigation_observer.Wait();
+
+  EXPECT_EQ(tab_count, browser()->GetTabStripModel()->count());
+  EXPECT_EQ(learn_more_url, GetActiveWebContents()->GetLastCommittedURL());
 }
 
 IN_PROC_BROWSER_TEST_F(NewTabTakeoverBrowserTest,
