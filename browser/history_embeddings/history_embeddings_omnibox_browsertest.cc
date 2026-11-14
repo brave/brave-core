@@ -7,23 +7,23 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/history_embeddings/history_embeddings_service_factory.h"
+#include "brave/browser/history_embeddings/history_embeddings_utils.h"
+#include "brave/components/history_embeddings/core/history_embeddings_features.h"
 #include "brave/components/local_ai/core/pref_names.h"
+#include "brave/components/omnibox/browser/brave_history_embeddings_provider.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
-#include "chrome/browser/history_embeddings/history_embeddings_service_factory.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/in_process_browser_test.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_provider_listener.h"
-#include "components/omnibox/browser/history_embeddings_provider.h"
 #include "components/omnibox/browser/test_scheme_classifier.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/metrics_proto/omnibox_event.pb.h"
 
-namespace history_embeddings {
+namespace brave_history_embeddings {
 
 namespace {
 
@@ -50,7 +50,7 @@ class HistoryEmbeddingsOmniboxBrowserTest : public InProcessBrowserTest {
 
   bool IsEnabledForOmnibox(Profile* profile) {
     return ChromeAutocompleteProviderClient(profile)
-        .IsHistoryEmbeddingsEnabled();
+               .GetBraveHistoryEmbeddingsSearch() != nullptr;
   }
 
   // Enough words to get past `search_query_minimum_word_count`. The provider
@@ -59,7 +59,7 @@ class HistoryEmbeddingsOmniboxBrowserTest : public InProcessBrowserTest {
   void StartHistoryEmbeddingsProvider(Profile* profile) {
     auto client = std::make_unique<ChromeAutocompleteProviderClient>(profile);
     TestProviderListener listener;
-    auto provider = base::MakeRefCounted<HistoryEmbeddingsProvider>(
+    auto provider = base::MakeRefCounted<BraveHistoryEmbeddingsProvider>(
         client.get(), &listener);
 
     TestSchemeClassifier scheme_classifier;
@@ -109,4 +109,4 @@ IN_PROC_BROWSER_TEST_F(HistoryEmbeddingsOmniboxBrowserTest,
   StartHistoryEmbeddingsProvider(profile);
 }
 
-}  // namespace history_embeddings
+}  // namespace brave_history_embeddings

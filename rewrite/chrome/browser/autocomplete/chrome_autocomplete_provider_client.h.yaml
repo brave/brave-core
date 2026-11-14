@@ -4,11 +4,9 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description:
-      'Hide thumbs up/down feedback buttons to avoid exposing a feedback
-      mechanism; nothing leaves the device.'
-    regex:
-      re_pattern: '\s*<cr-feedback-buttons[\s\S]+?</cr-feedback-buttons>'
-      replace: ''
-
-    count: 0
+  - description: Return the profile's Brave semantic history search.
+    add_to_public:
+      class_name: ChromeAutocompleteProviderClient
+      code: |-
+        brave_history_embeddings::HistoryEmbeddingsSearch*
+        GetBraveHistoryEmbeddingsSearch() override;

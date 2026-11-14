@@ -1,0 +1,48 @@
+diff --git a/chrome/browser/resources/history/BUILD.gn b/chrome/browser/resources/history/BUILD.gn
+index 0148250b82a0f48a47f6f0a0273a60b87f279656..8b97db95bc6a8e234c4b4c194dc7540de1bd57fc 100644
+--- a/chrome/browser/resources/history/BUILD.gn
++++ b/chrome/browser/resources/history/BUILD.gn
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/browser/resources/history/sources.gni")
+ import("//extensions/buildflags/buildflags.gni")
+ import("//ui/webui/resources/tools/build_webui.gni")
+ import("//ui/webui/webui_features.gni")
+@@ -9,6 +10,11 @@ import("//ui/webui/webui_features.gni")
+ assert(enable_webui_history)
+ 
+ build_webui("build") {
++  mojo_files_deps = brave_history_mojo_files_deps
++  mojo_files = brave_history_mojo_files
++  preprocess_deps = brave_history_preprocess_deps
++  exclude_html_css_preprocess_files = brave_history_exclude_html_css_preprocess_files
++  exclude_ts_preprocess_files = brave_history_ts_files
+   grd_prefix = "history"
+ 
+   static_files = [
+@@ -54,6 +60,7 @@ build_webui("build") {
+     "synced_device_manager.html.ts",
+     "synced_device_manager.ts",
+   ]
++  ts_files += brave_history_ts_files
+   if (!is_chromeos) {
+     ts_files += [
+       "history_cross_device_signin_promo.html.ts",
+@@ -78,6 +85,7 @@ build_webui("build") {
+     "synced_device_card.css",
+     "synced_device_manager.css",
+   ]
++  css_files += brave_history_css_files
+   if (!is_chromeos) {
+     css_files += [
+       "history_cross_device_signin_promo.css",
+@@ -86,6 +94,7 @@ build_webui("build") {
+   }
+ 
+   icons_html_files = [ "shared_icons.html" ]
++  icons_html_files += brave_history_icons_html_files
+ 
+   if (is_chrome_branded) {
+     icons_html_files += [ "internal/icons.html" ]

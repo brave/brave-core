@@ -18,21 +18,21 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "base/task/sequenced_task_runner.h"
+#include "brave/components/history_embeddings/content/history_embeddings_service.h"
+#include "brave/components/history_embeddings/core/history_embeddings_search.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
-#include "components/history_embeddings/content/history_embeddings_service.h"
-#include "components/history_embeddings/core/history_embeddings_search.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
 
-namespace history_embeddings {
+namespace brave_history_embeddings {
 
 namespace {
 
@@ -142,8 +142,7 @@ void OnUrlIdsResolved(std::vector<OpenTabInfo> tabs,
   const size_t count = url_id_filter.size();
   embeddings_search->Search(
       /*previous_search_result=*/nullptr, query,
-      /*time_range_start=*/std::nullopt, count,
-      /*skip_answering=*/true, std::move(url_id_filter),
+      /*time_range_start=*/std::nullopt, count, std::move(url_id_filter),
       base::BindRepeating(&DispatchRankedTabs,
                           base::OwnedRef(std::move(callback)),
                           std::move(tabs_by_url_id)));
@@ -180,4 +179,4 @@ void SearchOpenTabsByContent(
       task_tracker);
 }
 
-}  // namespace history_embeddings
+}  // namespace brave_history_embeddings

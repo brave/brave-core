@@ -39,21 +39,30 @@
 #include "brave/components/commander/browser/commander_frontend_delegate.h"
 #endif  // BUILDFLAG(ENABLE_COMMANDER)
 
-// Must precede the macro below, which would otherwise rewrite these
-// declarations.
-#include "chrome/browser/history_embeddings/history_embeddings_service_factory.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 
-// The setting is live, but the service is built from it once at profile setup,
-// so the two can disagree. `HistoryEmbeddingsProvider::Start()` CHECKs on the
-// service.
-#define IsHistoryEmbeddingsEnabledForProfile(profile) \
-  IsHistoryEmbeddingsEnabledForProfile(profile) &&    \
-      HistoryEmbeddingsServiceFactory::GetForProfile(profile) != nullptr
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+namespace brave_history_embeddings {
+class HistoryEmbeddingsSearch;
+}  // namespace brave_history_embeddings
+
+// Implemented in //brave/browser/history_embeddings:service. Returns the
+// profile's HistoryEmbeddingsService, or null when it was not built. Forward
+// declared to keep this override free of a compile-time dependency on //brave.
+brave_history_embeddings::HistoryEmbeddingsSearch*
+BraveGetHistoryEmbeddingsSearch(Profile* profile);
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 #include <chrome/browser/autocomplete/chrome_autocomplete_provider_client.cc>
 
-#undef IsHistoryEmbeddingsEnabledForProfile
+brave_history_embeddings::HistoryEmbeddingsSearch*
+ChromeAutocompleteProviderClient::GetBraveHistoryEmbeddingsSearch() {
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  return BraveGetHistoryEmbeddingsSearch(profile_);
+#else
+  return nullptr;
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+}
 
 #if BUILDFLAG(ENABLE_COMMANDER)
 commander::CommanderFrontendDelegate*

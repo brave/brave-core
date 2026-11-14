@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/history_embeddings/history_embeddings_utils.cc b/chrome/browser/history_embeddings/history_embeddings_utils.cc
-index b617c53dccd166220d20a21f78cd78364f5360ef..7c456cd94cf77dcc4bb955b14aea49d0a6cafb76 100644
+index b617c53dccd166220d20a21f78cd78364f5360ef..56df15dd1a2b8ee3fcdb1aec0638eaaa5a0182f3 100644
 --- a/chrome/browser/history_embeddings/history_embeddings_utils.cc
 +++ b/chrome/browser/history_embeddings/history_embeddings_utils.cc
-@@ -50,9 +50,10 @@ bool IsCountryAndLocale(const std::string& country, const std::string& locale) {
+@@ -50,7 +50,7 @@ bool IsCountryAndLocale(const std::string& country, const std::string& locale) {
  }  // namespace
  
  // These are the kill switches for the launched history embeddings features.
@@ -10,11 +10,8 @@ index b617c53dccd166220d20a21f78cd78364f5360ef..7c456cd94cf77dcc4bb955b14aea49d0
 +BASE_OVERRIDDEN_FEATURE(kLaunchedHistoryEmbeddings, base::FEATURE_DISABLED_BY_DEFAULT);
  
  bool IsHistoryEmbeddingsEnabledForProfile(Profile* profile) {
-+  if ((true)) return ComputeHistoryEmbeddingsEnabledForProfile(profile);
    if (!IsHistoryEmbeddingsFeatureEnabled()) {
-     return false;
-   }
-@@ -87,6 +88,7 @@ bool IsHistoryEmbeddingsAnswersEnabledForProfile(Profile* profile) {
+@@ -87,6 +87,7 @@ bool IsHistoryEmbeddingsAnswersEnabledForProfile(Profile* profile) {
  }
  
  bool IsHistoryEmbeddingsSettingVisible(Profile* profile) {
@@ -22,7 +19,7 @@ index b617c53dccd166220d20a21f78cd78364f5360ef..7c456cd94cf77dcc4bb955b14aea49d0
    if (!IsHistoryEmbeddingsFeatureEnabled()) {
      return false;
    }
-@@ -155,14 +157,15 @@ void PopulateSourceForWebUI(content::WebUIDataSource* source,
+@@ -155,14 +156,15 @@ void PopulateSourceForWebUI(content::WebUIDataSource* source,
            optimization_guide::EnterprisePolicyValue::kAllowWithoutLogging);
    if (logging_disabled_by_enterprise) {
      source->AddLocalizedString("historyEmbeddingsDisclaimer",
@@ -36,7 +33,7 @@ index b617c53dccd166220d20a21f78cd78364f5360ef..7c456cd94cf77dcc4bb955b14aea49d0
  }
  
  bool IsHistoryEmbeddingsFeatureEnabled() {
-+  if (ShouldForceHistoryEmbeddingsFeatureDisabled()) return false;
++  if (true) return false;
  #if BUILDFLAG(IS_CHROMEOS)
    if (!chromeos::features::IsFeatureManagementHistoryEmbeddingEnabled()) {
      return false;
