@@ -42,7 +42,7 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
     }
 
     private final BrowserControlsSizer mSizer;
-    private final Supplier<String> mUrlSpecSupplier;
+    private final Supplier<@Nullable String> mUrlSpecSupplier;
     private final Supplier<Boolean> mEnabledSupplier;
     private final Supplier<Boolean> mFullscreenSupplier;
     private final Supplier<Boolean> mCanShowControlsSupplier;
@@ -57,7 +57,7 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
 
     BraveCollapsedUrlChipMediator(
             BrowserControlsSizer sizer,
-            Supplier<String> urlSpecSupplier,
+            Supplier<@Nullable String> urlSpecSupplier,
             Supplier<Boolean> enabledSupplier,
             Supplier<Boolean> fullscreenSupplier,
             Supplier<Boolean> canShowControlsSupplier,
@@ -114,13 +114,16 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
     private void updateChip() {
         if (mDestroyed) return;
 
-        String spec = mUrlSpecSupplier.get();
+        @Nullable String spec = mUrlSpecSupplier.get();
         // Also force the first update so the delegate never inherits stale
         // text from a previous mediator instance.
         if (!Objects.equals(spec, mLastUrlSpec) || !mChipTextInitialized) {
             mLastUrlSpec = spec;
             mChipTextInitialized = true;
-            mLastChipText = isEligibleUrlSpec(spec) ? mTextFormatter.apply(spec) : null;
+            mLastChipText = null;
+            if (spec != null && isEligibleUrlSpec(spec)) {
+                mLastChipText = mTextFormatter.apply(spec);
+            }
             mDelegate.setChipText(mLastChipText);
         }
         updateChipDisplay();

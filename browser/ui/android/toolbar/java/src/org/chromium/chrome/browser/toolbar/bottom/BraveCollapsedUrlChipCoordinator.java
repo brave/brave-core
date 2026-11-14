@@ -27,6 +27,7 @@ import androidx.core.view.WindowInsetsControllerCompat;
 
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.NullableObservableSupplier;
+import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.cc.input.BrowserControlsState;
@@ -89,7 +90,7 @@ public class BraveCollapsedUrlChipCoordinator {
 
     private final Handler mSamplerHandler = new Handler(Looper.getMainLooper());
     private final Runnable mSampleRunnable = this::sampleContentUnderChip;
-    private @Nullable Bitmap mSampleBitmap;
+    private @MonotonicNonNull Bitmap mSampleBitmap;
     private boolean mSampling;
 
     public BraveCollapsedUrlChipCoordinator(
