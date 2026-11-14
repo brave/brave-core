@@ -21,6 +21,11 @@ source_set("location_bar") {
     "brave_shields_page_info_controller.h",
   ]
 
+  public_deps = [
+    "//brave/browser/ui/views:view_shadow",
+    "//brave/components/playlist/core/common/buildflags",
+  ]
+
   deps = [
     "//brave/app:brave_generated_resources_grit",
     "//brave/app/theme:brave_theme_resources",
@@ -57,8 +62,6 @@ source_set("location_bar") {
     "//ui/gfx",
     "//ui/views",
   ]
-
-  public_deps = [ "//brave/components/playlist/core/common/buildflags" ]
 }
 
 source_set("browser_tests") {

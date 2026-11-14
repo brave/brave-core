@@ -5,12 +5,18 @@
 
 #include "brave/browser/ui/browser_window/internal/brave_browser_window_features.h"
 
+#include <memory>
+
 #include "base/containers/flat_map.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "base/memory/raw_ref.h"
 #include "base/types/to_address.h"
 #include "base/unguessable_token.h"
 #include "brave/browser/ui/brave_browser_window.h"
+#include "brave/browser/ui/peek/peek_features.h"
+#include "brave/browser/ui/peek/public/peek_controller.h"
+#include "brave/browser/ui/peek/public/peek_shields_panel_provider.h"
 #include "brave/browser/ui/screenshot/screenshot_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
@@ -20,6 +26,7 @@
 #include "brave/browser/ui/tabs/tree_tab_session_manager.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/page_info/brave_shields_ui_contents_cache.h"
+#include "brave/browser/ui/views/peek/peek_controller_impl.h"
 #include "brave/browser/ui/views/toolbar/screenshot_preview_dialog.h"
 #include "brave/browser/ui/views/workspaces/workspaces_bubble_controller.h"
 #include "brave/browser/ui/window_closing_confirm/window_closing_confirm_controller.h"
@@ -34,6 +41,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "printing/buildflags/buildflags.h"
 #include "ui/gfx/native_ui_types.h"
 
@@ -67,6 +75,28 @@
 #include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_tab_transfer_bridge.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
+
+namespace {
+
+class PeekShieldsPanelProviderImpl : public PeekShieldsPanelProvider {
+ public:
+  explicit PeekShieldsPanelProviderImpl(BraveBrowserWindow& window)
+      : window_(window) {}
+  PeekShieldsPanelProviderImpl(const PeekShieldsPanelProviderImpl&) = delete;
+  PeekShieldsPanelProviderImpl& operator=(const PeekShieldsPanelProviderImpl&) =
+      delete;
+  ~PeekShieldsPanelProviderImpl() override = default;
+
+  // PeekShieldsPanelProvider:
+  bool ShowShieldsPanelForActiveTab() override {
+    return window_->ShowShieldsPanelForActiveTab();
+  }
+
+ private:
+  const raw_ref<BraveBrowserWindow> window_;
+};
+
+}  // namespace
 
 BraveBrowserWindowFeatures::BraveBrowserWindowFeatures(
     BrowserWindowInterface& browser)
@@ -208,6 +238,16 @@ void BraveBrowserWindowFeatures::InitPostWindowConstruction() {
             *browser_, browser_->GetUnownedUserDataHost());
   }
 
+  if (base::FeatureList::IsEnabled(peek::features::kBravePeek) &&
+      browser_->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
+    auto* browser_view =
+        BrowserView::GetBrowserViewForBrowser(base::to_address(browser_));
+    CHECK(browser_view);
+    peek_controller_ = GetUserDataFactory().CreateInstance<PeekControllerImpl>(
+        *browser_, *browser_, *browser_view,
+        std::make_unique<PeekShieldsPanelProviderImpl>(*brave_browser_window));
+  }
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (base::FeatureList::IsEnabled(
           ai_chat::features::kAIChatMoveFullPageToSidePanel) &&
@@ -223,6 +263,7 @@ void BraveBrowserWindowFeatures::InitPostWindowConstruction() {
 
 void BraveBrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
   tab_cycling_controller_.reset();
+  peek_controller_.reset();
   screenshot_controller_.reset();
 #if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat_side_panel_tab_transfer_bridge_.reset();

@@ -144,9 +144,11 @@ Tab BravePageInfoBubbleView::GetInitialTab() {
 }
 
 void BravePageInfoBubbleView::InitializeView() {
+  // Contents that aren't tabs (e.g. Peek) get the plain page info bubble.
   customize_view_ =
       page_info::features::IsShowBraveShieldsInPageInfoEnabled() &&
-      BraveShieldsPageInfoView::ShouldShowForWebContents(web_contents());
+      BraveShieldsPageInfoView::ShouldShowForWebContents(web_contents()) &&
+      tabs::TabInterface::MaybeGetFromContents(web_contents());
 
   if (!customize_view_) {
     return;

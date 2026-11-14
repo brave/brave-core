@@ -38,6 +38,10 @@ class BraveBrowserWindow : public BrowserWindow {
   // the overall screen's height
   virtual gfx::Rect GetShieldsBubbleRect();
 
+  // Opens the Shields panel for the active tab, as the window's Shields
+  // button does. Returns false if the window has no Shields button.
+  virtual bool ShowShieldsPanelForActiveTab();
+
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   virtual speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
       speedreader::SpeedreaderTabHelper* tab_helper,

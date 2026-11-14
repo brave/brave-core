@@ -116,6 +116,7 @@ class BraveBrowserView : public BrowserView,
 
   // BrowserView overrides:
   gfx::Rect GetShieldsBubbleRect() override;
+  bool ShowShieldsPanelForActiveTab() override;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // Give active tab's reader mode toolbar.
   ReaderModeToolbarView* reader_mode_toolbar();

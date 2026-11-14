@@ -22,6 +22,7 @@
 #include "ui/views/controls/button/label_button.h"
 
 class IconWithBadgeImageSource;
+class PrefService;
 class TabStripModel;
 
 namespace content {
@@ -66,6 +67,16 @@ class BraveShieldsActionController
   void RefreshButtonImages(views::LabelButton* button);
   ui::ImageModel GetImageModel(const gfx::Size& preferred_size) const;
   std::u16string GetTooltipText() const;
+
+  // Returns the Shields icon, with its blocked count badge, for
+  // `web_contents`. Contents that aren't tabs, e.g. Peek, have no Shields tab
+  // helper, so they get the icon for the site's Shields setting and no badge.
+  static ui::ImageModel GetImageModelForWebContents(
+      content::WebContents* web_contents,
+      PrefService& prefs,
+      const gfx::Size& preferred_size,
+      int icon_size);
+
   void OnButtonPressed();
   views::Widget* GetBubbleWidget();
 
@@ -83,7 +94,7 @@ class BraveShieldsActionController
   Profile* profile() { return &profile_.get(); }
 
  private:
-  bool IsPageInReaderMode(content::WebContents* web_contents) const;
+  static bool IsPageInReaderMode(content::WebContents* web_contents);
   bool ShouldShowBubbleForContents(content::WebContents* web_contents) const;
   void ShowBubble(GURL webui_url);
   int IconDimensionForLayout() const;
@@ -92,9 +103,14 @@ class BraveShieldsActionController
   void AddObserverToWebContentsIfPresent(content::WebContents* contents);
   void NotifyStateChanged();
 
-  gfx::ImageSkia GetIconImage(bool is_enabled) const;
-  std::unique_ptr<IconWithBadgeImageSource> GetImageSource(
-      const gfx::Size& preferred_size) const;
+  static gfx::ImageSkia GetIconImage(content::WebContents* web_contents,
+                                     bool is_enabled,
+                                     int icon_size);
+  static std::unique_ptr<IconWithBadgeImageSource> GetImageSource(
+      content::WebContents* web_contents,
+      PrefService& prefs,
+      const gfx::Size& preferred_size,
+      int icon_size);
 
   const raw_ptr<BrowserWindowInterface> browser_window_interface_ = nullptr;
   CreateWebUIBubbleManagerCallback create_bubble_manager_callback_;

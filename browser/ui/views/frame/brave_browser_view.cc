@@ -104,6 +104,7 @@
 #include "ui/gfx/color_utils.h"
 #include "ui/views/border.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
+#include "ui/views/controls/button/menu_button_controller.h"
 #include "ui/views/controls/native/native_view_host.h"
 #include "ui/views/event_monitor.h"
 #include "ui/views/layout/fill_layout.h"
@@ -450,6 +451,33 @@ gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
   }
 
   return bubble_widget->GetClientAreaBoundsInScreen();
+}
+
+bool BraveBrowserView::ShowShieldsPanelForActiveTab() {
+  if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
+    // Page Info opens on its Shields tab.
+    LocationBarView* location_bar = GetLocationBarView();
+    return location_bar && location_bar->ShowPageInfoDialog();
+  }
+
+  views::Button* shields_button = nullptr;
+  if (web_app::AppBrowserController::IsWebApp(browser())) {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+    shields_button = GetPwaShieldsToolbarButton();
+#endif
+  } else if (auto* location_bar = views::AsViewClass<BraveLocationBarView>(
+                 GetLocationBarView())) {
+    if (auto* actions = location_bar->brave_actions_contatiner_view()) {
+      shields_button = actions->GetShieldsActionView();
+    }
+  }
+  if (!shields_button || !shields_button->GetVisible()) {
+    return false;
+  }
+  // Both Shields buttons open their panel from a MenuButtonController.
+  return static_cast<views::MenuButtonController*>(
+             shields_button->button_controller())
+      ->Activate(nullptr);
 }
 
 bool BraveBrowserView::GetTabStripVisible() const {
