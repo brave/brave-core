@@ -117,27 +117,6 @@ void WalletPanelHandler::Focus() {
   webui_controller_->web_ui()->GetWebContents()->Focus();
 }
 
-void WalletPanelHandler::IsSolanaAccountConnected(
-    const std::string& account,
-    IsSolanaAccountConnectedCallback callback) {
-  if (!web_contents()) {
-    std::move(callback).Run(false);
-    return;
-  }
-
-  content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
-
-  auto* tab_helper = brave_wallet::BraveWalletTabHelper::From(
-      tabs::TabInterface::MaybeGetFromContents(web_contents()));
-  if (!tab_helper) {
-    std::move(callback).Run(false);
-    return;
-  }
-
-  std::move(callback).Run(
-      tab_helper->IsSolanaAccountConnected(rfh->GetGlobalId(), account));
-}
-
 void WalletPanelHandler::RequestPermission(
     brave_wallet::mojom::AccountIdPtr account_id,
     RequestPermissionCallback callback) {

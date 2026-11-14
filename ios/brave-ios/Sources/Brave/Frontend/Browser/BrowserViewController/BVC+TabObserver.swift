@@ -60,8 +60,6 @@ extension BrowserViewController: TabObserver {
       if selectedTab.visibleURL?.origin != visibleURL?.origin {
         // new site has a different origin, hide wallet icon.
         tabManager.selectedTab?.wallet?.isWalletIconVisible = false
-        // new site, reset connected addresses
-        tabManager.selectedTab?.wallet?.clearSolanaConnectedAccounts()
         // close wallet panel if it's open
         if let popoverController = self.presentedViewController as? PopoverController,
           popoverController.contentController is WalletPanelHostingController

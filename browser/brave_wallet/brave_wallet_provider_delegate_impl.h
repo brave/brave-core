@@ -19,8 +19,6 @@
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 namespace content {
-class Page;
-class RenderFrameHost;
 class WebContents;
 }  // namespace content
 
@@ -55,16 +53,8 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
   bool IsAccountAllowed(mojom::CoinType type,
                         const std::string& account) override;
   bool IsPermissionDenied(mojom::CoinType type) override;
-  void AddSolanaConnectedAccount(const std::string& account) override;
-  void RemoveSolanaConnectedAccount(const std::string& account) override;
-  bool IsSolanaAccountConnected(const std::string& account) override;
 
  private:
-  // content::WebContentsObserver overrides
-  void RenderFrameHostChanged(content::RenderFrameHost* old_host,
-                              content::RenderFrameHost* new_host) override;
-  void PrimaryPageChanged(content::Page& page) override;
-
   const content::GlobalRenderFrameHostId host_id_;
   base::WeakPtrFactory<BraveWalletProviderDelegateImpl> weak_ptr_factory_{this};
 };

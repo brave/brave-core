@@ -57,7 +57,7 @@ class WalletTabHelper: NSObject, TabObserver {
     ]
 
     DispatchQueue.main.async {
-      // Reference inside to retain it, supress warnings by reading/writing
+      // Reference inside to retain it, suppress warnings by reading/writing
       _ = mojoObjects
       mojoObjects = []
     }
@@ -72,14 +72,12 @@ class WalletTabHelper: NSObject, TabObserver {
   }
 
   func tabDidCommitNavigation(_ tab: some TabState) {
-    clearSolanaConnectedAccounts()
     createProviders()
   }
 
   func tabDidFinishNavigation(_ tab: some TabState) {
     Task {
       await updateEthereumProperties()
-      await updateSolanaProperties()
     }
 
     if walletEthProvider != nil {
@@ -364,29 +362,6 @@ extension WalletTabHelper: BraveWalletProviderDelegate {
       delegate?.updateURLBarWalletButton()
     }
   }
-
-  func isSolanaAccountConnected(_ account: String) -> Bool {
-    tabDappStore.solConnectedAddresses.contains(account)
-  }
-
-  func addSolanaConnectedAccount(_ account: String) {
-    Task { @MainActor in
-      tabDappStore.solConnectedAddresses.insert(account)
-    }
-  }
-
-  func removeSolanaConnectedAccount(_ account: String) {
-    Task { @MainActor in
-      tabDappStore.solConnectedAddresses.remove(account)
-    }
-  }
-
-  func clearSolanaConnectedAccounts() {
-    Task { @MainActor in
-      tabDappStore.solConnectedAddresses = .init()
-      await updateSolanaProperties()
-    }
-  }
 }
 
 extension WalletTabHelper: BraveWalletEventsListener {
@@ -534,6 +509,7 @@ extension WalletTabHelper: BraveWalletSolanaEventsListener {
   func accountChangedEvent(account: String?) {
     guard let tab else { return }
     Task { @MainActor in
+      await updateSolanaPageState(publicKey: account)
       if tab.isWebViewCreated {
         let script: String
         if let account = account {
@@ -548,12 +524,14 @@ extension WalletTabHelper: BraveWalletSolanaEventsListener {
           asFunction: false
         )
       }
-      await updateSolanaProperties()
     }
   }
 
   func disconnectEvent() {
-    emitSolanaEvent(.disconnect)
+    Task { @MainActor in
+      await updateSolanaPageState(publicKey: nil)
+      emitSolanaEvent(.disconnect)
+    }
   }
 
   func emitSolanaEvent(_ event: Web3ProviderEvent) {
@@ -577,41 +555,43 @@ extension WalletTabHelper: BraveWalletSolanaEventsListener {
     }
   }
 
-  @MainActor func updateSolanaProperties() async {
+  /// Sets `isConnected` and `publicKey` on the page the way the desktop renderer does: they change
+  /// only on connect, disconnect and account change.
+  @MainActor func updateSolanaPageState(publicKey: String?) async {
     guard let tab,
       !FeatureList.kUseProfileWebViewConfiguration.enabled,
       tab.profile.prefs.integer(forPath: kDefaultSolanaWallet)
         != BraveWallet.DefaultWallet.none.rawValue,
-      tab.isWebViewCreated,
-      let provider = walletSolProvider
+      tab.isWebViewCreated
     else {
       return
     }
-    let isConnected = await provider.isConnected()
     _ = try? await tab.evaluateJavaScript(
-      functionName: "if (window.solana) { window.solana.isConnected = \(isConnected) }",
+      functionName: "if (window.solana) { window.solana.isConnected = \(publicKey != nil) }",
       contentWorld: .page,
       asFunction: false
     )
-    // publicKey
-    if let keyringService = walletKeyringService,
-      let publicKey = await keyringService.allAccounts().solDappSelectedAccount?.address,
-      self.isSolanaAccountConnected(publicKey)
-    {
+    guard let publicKey else {
       _ = try? await tab.evaluateJavaScript(
-        functionName: """
-          if (window.solana && typeof \(UserScriptManager.walletSolanaNameSpace) !== 'undefined' && \(UserScriptManager.walletSolanaNameSpace).solanaWeb3) {
-            window.__firefox__.execute(function($) {
-              window.solana.publicKey = $.deepFreeze(
-                new \(UserScriptManager.walletSolanaNameSpace).solanaWeb3.PublicKey('\(publicKey.htmlEntityEncodedString)')
-              );
-            });
-          }
-          """,
+        functionName: "if (window.solana) { window.solana.publicKey = null }",
         contentWorld: .page,
         asFunction: false
       )
+      return
     }
+    _ = try? await tab.evaluateJavaScript(
+      functionName: """
+        if (window.solana && typeof \(UserScriptManager.walletSolanaNameSpace) !== 'undefined' && \(UserScriptManager.walletSolanaNameSpace).solanaWeb3) {
+          window.__firefox__.execute(function($) {
+            window.solana.publicKey = $.deepFreeze(
+              new \(UserScriptManager.walletSolanaNameSpace).solanaWeb3.PublicKey('\(publicKey.htmlEntityEncodedString)')
+            );
+          });
+        }
+        """,
+      contentWorld: .page,
+      asFunction: false
+    )
   }
 }
 
@@ -631,7 +611,6 @@ extension WalletTabHelper: BraveWalletKeyringServiceObserver {
   func locked() {
     Task { @MainActor in
       await updateEthereumProperties()
-      await updateSolanaProperties()
     }
   }
 

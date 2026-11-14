@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
@@ -201,21 +200,14 @@ public class BravePermissionAccountsListAdapter
                 int connectionButtonText;
                 boolean hasPermission = hasPermission(accountInfo.address);
                 boolean isConnected = accountInfo.address.equals(mSelectedAccount.address);
-                if (CoinType.SOL == mSelectedAccount.accountId.coin) {
-                    connectionButtonText =
-                            hasPermission
-                                    ? R.string.brave_wallet_site_permissions_revoke
-                                    : R.string.brave_wallet_site_permissions_trust;
-                } else {
-                    if (hasPermission) {
-                        if (isConnected) {
-                            connectionButtonText = R.string.fragment_connect_account_disconnect;
-                        } else {
-                            connectionButtonText = R.string.fragment_connect_account_switch;
-                        }
+                if (hasPermission) {
+                    if (isConnected) {
+                        connectionButtonText = R.string.fragment_connect_account_disconnect;
                     } else {
-                        connectionButtonText = R.string.fragment_connect_account_connect;
+                        connectionButtonText = R.string.fragment_connect_account_switch;
                     }
+                } else {
+                    connectionButtonText = R.string.fragment_connect_account_connect;
                 }
                 holder.accountAction.setText(
                         holder.accountAction
@@ -229,22 +221,14 @@ public class BravePermissionAccountsListAdapter
                             if (mDelegate == null) {
                                 return;
                             }
-                            if (CoinType.SOL == accountInfo.accountId.coin) {
-                                if (hasPermission) {
+                            if (hasPermission) {
+                                if (isConnected) {
                                     mDelegate.disconnectAccount(accountInfo);
                                 } else {
-                                    mDelegate.connectAccount(accountInfo);
+                                    mDelegate.switchAccount(accountInfo);
                                 }
                             } else {
-                                if (hasPermission) {
-                                    if (isConnected) {
-                                        mDelegate.disconnectAccount(accountInfo);
-                                    } else {
-                                        mDelegate.switchAccount(accountInfo);
-                                    }
-                                } else {
-                                    mDelegate.connectAccount(accountInfo);
-                                }
+                                mDelegate.connectAccount(accountInfo);
                             }
                         });
             }

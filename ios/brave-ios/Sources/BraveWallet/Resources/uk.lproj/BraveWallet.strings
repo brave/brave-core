@@ -427,14 +427,8 @@
 /* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
 "wallet.editSiteConnectionAccountActionDisconnect" = "Від’єднатися";
 
-/* The title of the button for users to click so that they remove wallet account permission from the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen */
-"wallet.editSiteConnectionAccountActionRevoke" = "Анулювати";
-
 /* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
 "wallet.editSiteConnectionAccountActionSwitch" = "Перейти";
-
-/* The title of the button for users to click so that they grant wallet account permission for the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen. */
-"wallet.editSiteConnectionAccountActionTrust" = "Надійний";
 
 /* The plural word that will beused in `editSiteConnectionConnectedAccount`. */
 "wallet.editSiteConnectionAccountPlural" = "рахунки";
