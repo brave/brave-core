@@ -52,5 +52,5 @@ public abstract class BraveFeatureList {
             "BraveAndroidMergeInstallPwaAndCreateShortcut";
     public static final String BRAVE_ANDROID_EXTENSIONS = "BraveAndroidExtensions";
     public static final String BRAVE_RECAP = "BraveRecap";
-    public static final String BRAVE_COLLAPSED_URL_CHIP = "BraveCollapsedUrlChip";
+    public static final String BRAVE_ANDROID_COLLAPSED_URL_CHIP = "BraveAndroidCollapsedUrlChip";
 }
