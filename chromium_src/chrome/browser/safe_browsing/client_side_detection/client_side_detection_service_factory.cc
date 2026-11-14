@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/safe_browsing/client_side_detection_service_factory.h"
+#include "chrome/browser/safe_browsing/client_side_detection/client_side_detection_service_factory.h"
 
 #define ClientSideDetectionServiceFactory \
   ClientSideDetectionServiceFactory_ChromiumImpl
-#include <chrome/browser/safe_browsing/client_side_detection_service_factory.cc>
+#include <chrome/browser/safe_browsing/client_side_detection/client_side_detection_service_factory.cc>
 #undef ClientSideDetectionServiceFactory
 
 namespace safe_browsing {
