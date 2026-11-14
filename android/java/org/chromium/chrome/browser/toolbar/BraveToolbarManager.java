@@ -20,6 +20,7 @@ import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Callback;
 import org.chromium.base.CallbackController;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.MutableFlagWithSafeDefault;
 import org.chromium.base.supplier.LazyOneshotSupplier;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
@@ -50,7 +51,7 @@ import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
 import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
 import org.chromium.chrome.browser.ephemeraltab.EphemeralTabCoordinator;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.flags.ChromeFeatureMap;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.glic.toolbar_button.GlicButtonDelegate;
 import org.chromium.chrome.browser.homepage.HomepageManager;
@@ -416,8 +417,15 @@ public class BraveToolbarManager extends ToolbarManager
         BrowserStateBrowserControlsVisibilityDelegate controlsVisibilityDelegate =
                 mBrowserControlsSizer.getBrowserVisibilityDelegate();
         assert controlsVisibilityDelegate != null;
-        Supplier<Boolean> chipEnabled =
-                () -> ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_COLLAPSED_URL_CHIP);
+        // Safe default: the chip init can run before native flags are cached, and the
+        // MutableFlagWithSafeDefault falls back to disabled there instead of crashing, which
+        // also keeps tests without native stable.
+        MutableFlagWithSafeDefault chipEnabledFlag =
+                new MutableFlagWithSafeDefault(
+                        ChromeFeatureMap.getInstance(),
+                        BraveFeatureList.BRAVE_COLLAPSED_URL_CHIP,
+                        /* defaultValue= */ false);
+        Supplier<Boolean> chipEnabled = chipEnabledFlag::isEnabled;
         mBraveCollapsedUrlChipCoordinator =
                 new BraveCollapsedUrlChipCoordinator(
                         mActivity,
