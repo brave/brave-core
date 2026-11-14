@@ -2502,6 +2502,7 @@ class Rebase(Task):
             env.update(self._message_editor_env())
 
         if skip:
+            self._drop_carry_of_stop()
             self._run_git_rebase('--skip', env)
         while repository.brave.is_rebase_in_progress():
             step = conflict_resolution.ConflictedStep.load()
@@ -2643,13 +2644,9 @@ class Rebase(Task):
         brave = repository.brave
         if last.command != 'pick':
             brave.run_git('reset', '--soft', 'HEAD~1')
+        cls._drop_carry_of_stop()
         todo = brave.rebase_merge_dir() / 'git-rebase-todo'
         lines = todo.read_text(encoding='utf-8').splitlines(keepends=True)
-        # An `exec` right after the stop carries a Change-Id into the commit
-        # just dropped, not into the one before it.
-        while lines and lines[0].startswith('exec '):
-            del lines[0]
-        todo.write_text(''.join(lines), encoding='utf-8', newline='')
         for index, line in enumerate(lines):
             entry = rebase.EntryLine.parse(line)
             if entry is None:
@@ -2666,6 +2663,16 @@ class Rebase(Task):
             break
         terminal.log_task(f'{escape(last.out)} came out empty: dropped.')
         return True
+
+    @staticmethod
+    def _drop_carry_of_stop() -> None:
+        """Drops the `exec` lines right after the stop, which carry a
+        Change-Id into the commit being skipped, not into the one before it."""
+        todo = repository.brave.rebase_merge_dir() / 'git-rebase-todo'
+        lines = todo.read_text(encoding='utf-8').splitlines(keepends=True)
+        while lines and lines[0].startswith('exec '):
+            del lines[0]
+        todo.write_text(''.join(lines), encoding='utf-8', newline='')
 
     @staticmethod
     def carry_change_id_line(commits: list[str]) -> str:
