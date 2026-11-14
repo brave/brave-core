@@ -3,17 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "third_party/blink/renderer/core/frame/reporting_observer.h"
+#include "base/feature_list.h"
+#include "third_party/blink/public/common/features.h"
 
-#define QueueReport QueueReport_Unused
 #include <third_party/blink/renderer/core/frame/reporting_observer.cc>
-#undef QueueReport
-
-namespace blink {
-
-// Don't add reports. We previously used to disable ReportingObserver in
-// Brave, but for webcompat reasons, we now just no-op it. This makes
-// takeRecords() always return an empty list.
-void ReportingObserver::QueueReport(Report* report) {}
-
-}  // namespace blink
