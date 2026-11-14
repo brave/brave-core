@@ -31,6 +31,7 @@ constexpr char kWordpress[] = "https://[*.]wordpress.com/*";
 
 bool BraveIsAllowedThirdParty(const GURL& url,
                               const GURL& first_party_url,
+                              const net::SiteForCookies& site_for_cookies,
                               const CookieSettingsBase* const cookie_settings) {
   static const base::NoDestructor<
       // url -> first_party_url allow map
@@ -45,7 +46,10 @@ bool BraveIsAllowedThirdParty(const GURL& url,
   // same site just because GetDomainAndRegistry returns an empty string.
   if (net::registry_controlled_domains::SameDomainOrHost(
           url, first_party_url,
-          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) &&
+      // A top frame of the request's own site doesn't make it first-party
+      // while `site_for_cookies` names another site.
+      (site_for_cookies.IsNull() || site_for_cookies.IsFirstParty(url))) {
     return true;
   }
 
@@ -230,7 +234,7 @@ bool CookieSettingsBase::IsFullCookieAccessAllowed(
     return false;
   }
 
-  if (BraveIsAllowedThirdParty(url, first_party_url, this)) {
+  if (BraveIsAllowedThirdParty(url, first_party_url, site_for_cookies, this)) {
     return true;
   }
 
