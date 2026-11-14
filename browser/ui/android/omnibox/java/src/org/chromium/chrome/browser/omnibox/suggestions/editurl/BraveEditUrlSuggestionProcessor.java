@@ -92,7 +92,9 @@ public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor 
                     suggestion.getAssociatedKeyword(),
                     /* serializedSuggestTemplate */ null,
                     suggestion.getDocumentType(),
-                    suggestion.isExtensionMatch());
+                    suggestion.isExtensionMatch(),
+                    suggestion.getVectorIconName(/* isBookmark= */ false),
+                    suggestion.getVectorIconName(/* isBookmark= */ true));
         }
         return suggestion;
     }

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/pinned_tabs/PinnedTabStripItemContextMenuCoordinator.java b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/pinned_tabs/PinnedTabStripItemContextMenuCoordinator.java
-index 2c227cf79780d23878489f75e25a399551e20cc8..e5d925fc31534b815da43ef1da02f958c7159068 100644
+index b417710ce6b8365205cb0e594c21d2a559c1bb20..62a50203a737470c78c2466ff21f07fd14a06803 100644
 --- a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/pinned_tabs/PinnedTabStripItemContextMenuCoordinator.java
 +++ b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/pinned_tabs/PinnedTabStripItemContextMenuCoordinator.java
 @@ -257,7 +257,7 @@ public class PinnedTabStripItemContextMenuCoordinator

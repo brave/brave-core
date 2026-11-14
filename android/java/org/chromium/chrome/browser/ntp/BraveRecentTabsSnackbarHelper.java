@@ -234,7 +234,7 @@ public class BraveRecentTabsSnackbarHelper {
                         // Fetch favicon and set profile image (asynchronously)
                         fetchFaviconAndSetProfileImage(url, activity, currentTab);
                     } catch (Exception e) {
-                        Log.e(TAG, "showSnackbar: Failed to show snackbar: " + e);
+                        Log.e(TAG, "showSnackbar: Failed to show snackbar", e);
                         // If snackbar fails to show, don't switch tabs - let user see the NTP
                     }
                 },

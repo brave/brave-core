@@ -940,16 +940,12 @@ vpython3 tools/recipes/runtest.py --build-dir ../out/Component \
     <binary> --no-sandbox --gtest_filter='<Suite>.*'
 ```
 
-It runs the suite as upstream's bots and Brave's CI do: `testing/xvfb.py` (Xorg,
-no window manager) or `testing/test_env.py`, from the build dir, with a fresh
-temp dir. So a test that fails on CI fails here too. `--no-sandbox` is for hosts
-that restrict unprivileged user namespaces (Ubuntu 23.10+), which upstream's
-bots don't; the harness warns when it is missing there. It applies the filters
-`pnpm run test` does (`test/filters/` and `generated/`, by suite, OS, CPU and
-sanitizer) along with upstream's for the suite: a filtered test doesn't run.
-Pass `--no-test-filters` before the binary to run it anyway, e.g. to check a
-filter entry is still needed; after the binary, it goes to the test binary and
-the filters still apply.
+It runs the suite as upstream's bots and Brave's CI do, so a test that fails on
+CI fails here too. `--no-sandbox` is for hosts that restrict unprivileged user
+namespaces (Ubuntu 23.10+). It applies the filters `pnpm run test` does
+(`test/filters/` and `generated/`, by suite, OS, CPU and sanitizer) along with
+upstream's for the suite: a filtered test doesn't run. Pass `--no-test-filters`
+before the binary to run it anyway (after it, the flag goes to the binary).
 
 The binary is a name relative to `--build-dir` (`brave_unit_tests`,
 `brave_browser_tests`, `brave_cert_pinning_tests`, upstream `unit_tests`; tests
@@ -977,7 +973,10 @@ Finding coverage:
   set; a test that fails with the fix may be showing the fix is wrong. For a
   plastered fix, check this directly: remove the plaster's lines from the
   upstream file, rebuild the test target and run it, then restore them with
-  `plaster apply <yaml>` and check that the `.patch` is unchanged.
+  `plaster apply <yaml>` and check that the `.patch` is unchanged. For a shadow,
+  `touch` it once back: `mv` keeps its mtime, so the build reuses stale objects.
+- A new test with no upstream file goes outside `chromium_src/` (the presubmit
+  rejects it there); one Android also builds is a `PlatformBrowserTest`.
 - Some code only builds in official builds (e.g. `enable_crash_dialog`). Its
   tests can't run in a Component build: write them, and list them as unverified
   in the report.

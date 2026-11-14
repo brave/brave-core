@@ -1,8 +1,8 @@
 diff --git a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabSwitcherPaneFactory.java b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabSwitcherPaneFactory.java
-index 7f2b28a73ea1a9ffbe7763dc12e575fe9e34a27a..5411bd28112c0c032f41bbdff3030d010a2c760a 100644
+index 75c64696a565408f47427158d4cb5f41ba0865fa..ac59f531179c592bff5eba26e647d9913cd3a954 100644
 --- a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabSwitcherPaneFactory.java
 +++ b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabSwitcherPaneFactory.java
-@@ -201,7 +201,7 @@ public class TabSwitcherPaneFactory {
+@@ -206,7 +206,7 @@ public class TabSwitcherPaneFactory {
          Supplier<TabModel> tabModelSupplier = () -> tabModelSelector.getModel(isIncognito);
          TabSwitcherPaneBase pane =
                  isIncognito

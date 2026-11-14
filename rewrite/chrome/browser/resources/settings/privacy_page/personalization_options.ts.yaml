@@ -1,0 +1,76 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Keep the URL collection toggle to Google Chrome builds.
+
+      Brave's template has no anonymised URL collection toggle.
+    regex:
+      re_pattern:
+        '^( *)(urlCollectionToggle: SettingsToggleButtonElement,\n)\s*// <if
+        expr="not is_chromeos">\n'
+      re_flags: [MULTILINE]
+      replace:
+        '\1// <if expr="_google_chrome">\n\1\2\1// </if>\n\1// <if
+        expr="_google_chrome and not is_chromeos">\n'
+
+  - description: 'Leave the URL collection help bubble out with its toggle.'
+    regex:
+      re_pattern:
+        '^(
+        *)(this\.registerHelpBubble\(\s*ANONYMIZED_URL_COLLECTION_ID,.*?\);\n)'
+      re_flags: [MULTILINE, DOTALL]
+      replace: '\1// <if expr="_google_chrome">\n\1\2\1// </if>\n'
+
+  - description: |-
+      Show the metrics reporting toggle in Brave too.
+
+      Upstream only shows it in Google Chrome builds.
+    count: 4
+    regex:
+      re_pattern:
+        '// <if expr="_google_chrome and not
+        is_chromeos">(\n\s*(?:metricsReporting_:|protected accessor
+        metricsReporting_|const setMetricsReporting|protected
+        onMetricsReportingChange_))'
+      replace: '// <if expr="not is_chromeos">\1'
+
+  - description: |-
+      Keep Chrome sign-in to Google Chrome builds.
+
+      Brave has no Chrome sign-in, so its toggle, toast and user choice go.
+    count: 3
+    regex:
+      re_pattern:
+        '// <if expr="not
+        is_chromeos">(\n\s*(?:this\.syncBrowserProxy_\.getChromeSigninUserChoiceInfo\(\)|this\.\$\.signinAllowedToggle\.checked
+        = false;|protected onSigninAllowedSettingsBooleanControlChange_\(\)))'
+      replace: '// <if expr="_google_chrome and not is_chromeos">\1'
+
+  - description: |-
+      Keep the restart handler out of the sign-in block.
+
+      The metrics reporting toggle Brave shows asks for a restart.
+    regex:
+      re_pattern:
+        '\n\n(  protected onRestartClick_\(e: Event\) \{\n.*?\n  \}\n)\n'
+      re_flags: [DOTALL]
+      replace:
+        '\n  // </if>\n\n  // <if expr="not is_chromeos">\n\1  // </if>\n\n  //
+        <if expr="_google_chrome and not is_chromeos">\n'
+
+  - description: |-
+      Make the properties Brave's template doesn't bind private.
+
+      Brave's template leaves out the markup that reads them, and
+      `@webui-eslint/lit-member-visibility` rejects protected properties the
+      template doesn't reference.
+    count: 6
+    regex:
+      re_pattern:
+        'protected (accessor
+        (?:metricsReporting_|showRestart_|showSignoutDialog_|syncFirstSetupInProgress_|signinAvailable_|chromeSigninUserChoiceInfo_):)'
+      replace: 'private \1'

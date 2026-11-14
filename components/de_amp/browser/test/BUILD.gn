@@ -27,11 +27,13 @@ if (!is_android) {
       "//chrome/browser/profiles:profile",
       "//chrome/browser/profiles/keep_alive",
       "//chrome/browser/ui:browser_commands",
-      "//chrome/test:test_support_ui",
+      "//chrome/test/base:in_process_browser_test",
+      "//chrome/test/base:ui_test_utils",
       "//components/keep_alive_registry",
       "//components/prefs",
       "//content/public/browser",
       "//content/test:test_support",
+      "//net:test_support",
       "//testing/gtest",
     ]
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]

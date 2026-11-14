@@ -424,7 +424,7 @@ public class CameraSource {
                     // SurfaceTexture if we are running at least Honeycomb.
                     mCamera.setPreviewTexture(null);
                 } catch (Exception e) {
-                    Log.e(TAG, "Failed to clear camera preview: " + e);
+                    Log.e(TAG, "Failed to clear camera preview", e);
                 }
                 mCamera.release();
                 mCamera = null;
@@ -732,7 +732,7 @@ public class CameraSource {
             if (requestedCameraId == -1) {
                 throw new RuntimeException("Could not find requested camera.");
             }
-            Log.i(TAG, "Requested camera is not available, falling back to " + fallbackFacing);
+            Log.i(TAG, "Requested camera is not available, falling back to %s", fallbackFacing);
             mFacing = fallbackFacing;
         }
         Camera camera = Camera.open(requestedCameraId);
@@ -991,7 +991,7 @@ public class CameraSource {
                 degrees = 270;
                 break;
             default:
-                Log.e(TAG, "Bad rotation value: " + rotation);
+                Log.e(TAG, "Bad rotation value: %s", rotation);
         }
 
         CameraInfo cameraInfo = new CameraInfo();

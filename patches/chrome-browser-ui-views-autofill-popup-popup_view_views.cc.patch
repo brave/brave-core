@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/autofill/popup/popup_view_views.cc b/chrome/browser/ui/views/autofill/popup/popup_view_views.cc
-index 51dbb2ca4592526f61b27a1f48e8874818e02500..db6acb26aae1d6d83e333d57d89a7757c5912ba1 100644
+index f518654a0234dce454981fb45779e5c45863f055..ec8d15c1c294deb08c2c47ec4280477f34c26606 100644
 --- a/chrome/browser/ui/views/autofill/popup/popup_view_views.cc
 +++ b/chrome/browser/ui/views/autofill/popup/popup_view_views.cc
 @@ -1350,7 +1350,7 @@ void PopupViewViews::InitViews() {

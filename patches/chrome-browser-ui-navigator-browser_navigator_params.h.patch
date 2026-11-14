@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/navigator/browser_navigator_params.h b/chrome/browser/ui/navigator/browser_navigator_params.h
-index 232348782982569a8c826cf8e700bc19c69560c2..59e41f4f0e187066049eb12ff12c21e4985539af 100644
+index 3d97d32d975b13546f8d491bfa3f6a7df4fcb576..b508b7dc3151e787b2c2148e00809ed26ebfb805 100644
 --- a/chrome/browser/ui/navigator/browser_navigator_params.h
 +++ b/chrome/browser/ui/navigator/browser_navigator_params.h
-@@ -13,6 +13,7 @@
+@@ -14,6 +14,7 @@
  #include "base/memory/raw_ptr.h"
  #include "base/memory/scoped_refptr.h"
  #include "base/time/time.h"
@@ -10,7 +10,7 @@ index 232348782982569a8c826cf8e700bc19c69560c2..59e41f4f0e187066049eb12ff12c21e4
  #include "build/android_buildflags.h"
  #include "build/build_config.h"
  #include "chrome/browser/ui/tabs/tab_enums.h"
-@@ -24,6 +25,7 @@
+@@ -25,6 +26,7 @@
  #include "content/public/browser/reload_type.h"
  #include "content/public/browser/render_frame_host.h"
  #include "content/public/browser/site_instance.h"
@@ -18,7 +18,7 @@ index 232348782982569a8c826cf8e700bc19c69560c2..59e41f4f0e187066049eb12ff12c21e4
  #include "content/public/common/referrer.h"
  #include "services/network/public/cpp/resource_request_body.h"
  #include "services/network/public/cpp/shared_url_loader_factory.h"
-@@ -71,6 +73,9 @@ struct OpenURLParams;
+@@ -73,6 +75,9 @@ struct OpenURLParams;
  
  // TODO(thestig): Split or ifdef out more fields that are not used on Android.
  struct NavigateParams {

@@ -27,7 +27,7 @@ include_rules = [
 
 specific_include_rules = {
   # component unit tests should not have chrome deps
-  "brave_search_provider_unittest\.cc": [
+  "brave_search_provider_unittest\\.cc": [
     "!chrome/browser/autocomplete/autocomplete_classifier_factory.h",
     "!chrome/browser/autocomplete/chrome_autocomplete_provider_client.h",
     "!chrome/browser/autocomplete/document_suggestions_service_factory.h",
@@ -36,7 +36,7 @@ specific_include_rules = {
     "!chrome/browser/search_engines/template_url_service_factory.h",
     "!chrome/test/base/testing_profile.h",
   ],
-  "promotion_unittest\.cc": [
+  "promotion_unittest\\.cc": [
     "+brave/components/l10n/common/test/scoped_default_locale.h",
   ],
 }

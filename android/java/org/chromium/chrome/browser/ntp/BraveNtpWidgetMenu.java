@@ -94,6 +94,11 @@ public class BraveNtpWidgetMenu {
         }
 
         @Override
+        public boolean isDownloadRestrictedByPolicy() {
+            return false;
+        }
+
+        @Override
         public @Nullable Tab openUrl(int windowOpenDisposition, LoadUrlParams loadUrlParams) {
             return null;
         }

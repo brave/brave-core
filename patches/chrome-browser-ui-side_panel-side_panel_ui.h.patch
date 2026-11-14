@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/side_panel/side_panel_ui.h b/chrome/browser/ui/side_panel/side_panel_ui.h
-index fe5229bd06736d5418f15ad6775d986cafd14b67..c92dcd8bca5fb44ac96fa895726ee42e2228353c 100644
+index 4b5f88972a7bbec968a8bca12211ddef562ba7a6..a1efdfd7e2f1e4b2c4569e612ad3dc9a630502c1 100644
 --- a/chrome/browser/ui/side_panel/side_panel_ui.h
 +++ b/chrome/browser/ui/side_panel/side_panel_ui.h
-@@ -129,6 +129,7 @@ class SidePanelUI {
+@@ -137,6 +137,7 @@ class SidePanelUI {
    virtual void SetNoDelaysForTesting(bool no_delays_for_testing) = 0;
  
    virtual SidePanelEntry* GetLoadingEntryForTesting() const;

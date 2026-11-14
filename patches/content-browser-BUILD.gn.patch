@@ -1,5 +1,5 @@
 diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
-index 0666c022908874dcc42bed0936bf71a3c43a092d..dee6557d6691d8f2b0b738f14aa2ac088a3f9fc7 100644
+index f9e08e57c0a4230b644634216b0ddc0266c0064c..809db46d34186bf5bb516a73763a0a7699340bd3 100644
 --- a/content/browser/BUILD.gn
 +++ b/content/browser/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 0666c022908874dcc42bed0936bf71a3c43a092d..dee6557d6691d8f2b0b738f14aa2ac08
  import("//base/allocator/partition_allocator/partition_alloc.gni")
  import("//build/buildflag_header.gni")
  import("//build/config/compiler/pgo/pgo.gni")
-@@ -397,6 +398,7 @@ source_set("browser") {
+@@ -396,6 +397,7 @@ source_set("browser") {
      "//v8",
      "//v8:v8_version",
    ]
@@ -18,7 +18,7 @@ index 0666c022908874dcc42bed0936bf71a3c43a092d..dee6557d6691d8f2b0b738f14aa2ac08
  
    public_deps = [
      "//base",
-@@ -2404,6 +2406,7 @@ source_set("browser") {
+@@ -2403,6 +2405,7 @@ source_set("browser") {
      "worker_host/worker_util.cc",
      "worker_host/worker_util.h",
    ]
@@ -26,7 +26,7 @@ index 0666c022908874dcc42bed0936bf71a3c43a092d..dee6557d6691d8f2b0b738f14aa2ac08
  
    if (is_android) {
      sources += [
-@@ -3670,6 +3673,7 @@ group("for_content_tests") {
+@@ -3671,6 +3674,7 @@ group("for_content_tests") {
      "//content/test/*",
      "//content/web_test:web_test_browser",
    ]

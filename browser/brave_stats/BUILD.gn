@@ -107,6 +107,7 @@ source_set("browser_tests") {
     "//brave/components/brave_referrals/browser",
     "//chrome/browser",
     "//chrome/test:test_support",
+    "//chrome/test/base:platform_browser_test",
   ]
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]

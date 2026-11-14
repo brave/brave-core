@@ -75,7 +75,7 @@ public class TabUtils {
             });
             popup.show(); // showing popup menu
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "showTabPopupMenu " + e);
+            Log.e(TAG, "showTabPopupMenu", e);
         }
     }
 
@@ -86,7 +86,7 @@ public class TabUtils {
                     braveActivity != null && braveActivity.getCurrentTabModel().isIncognito();
             openNewTab(braveActivity, isIncognito);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "openNewTab " + e);
+            Log.e(TAG, "openNewTab", e);
         }
     }
 
@@ -108,7 +108,7 @@ public class TabUtils {
             BraveActivity braveActivity = BraveActivity.getBraveActivity();
             braveActivity.getTabCreator(isIncognito).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "openUrlInNewTab " + e);
+            Log.e(TAG, "openUrlInNewTab", e);
         }
     }
 
@@ -130,7 +130,7 @@ public class TabUtils {
                         isIncognito);
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "openUrlInNewTabInBackground " + e);
+            Log.e(TAG, "openUrlInNewTabInBackground", e);
         }
     }
 
@@ -142,7 +142,7 @@ public class TabUtils {
                 braveActivity.getActivityTab().loadUrl(loadUrlParams);
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "openUrlInSameTab " + e);
+            Log.e(TAG, "openUrlInSameTab", e);
         }
     }
 
@@ -153,7 +153,7 @@ public class TabUtils {
                 braveActivity.getActivityTab().reloadIgnoringCache();
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "reloadIgnoringCache " + e);
+            Log.e(TAG, "reloadIgnoringCache", e);
         }
     }
 
@@ -173,7 +173,7 @@ public class TabUtils {
             }
             rewardsLayout.setVisibility(View.VISIBLE);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "enableRewardsButton " + e);
+            Log.e(TAG, "enableRewardsButton", e);
         }
     }
 

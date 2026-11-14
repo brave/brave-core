@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.cc b/chrome/browser/ui/views/frame/browser_view.cc
-index 0dabb7764594611945a317120e64a8cfa50f2751..69651461622f7b9299c1a26df27d3ff23f078e29 100644
+index 327932f446b963a2dfb781ebcdade3e400c1c49d..55b6aafbc0e182c35ea86967cc737549f04d5511 100644
 --- a/chrome/browser/ui/views/frame/browser_view.cc
 +++ b/chrome/browser/ui/views/frame/browser_view.cc
-@@ -778,6 +778,9 @@ class BrowserView::ExclusiveAccessContextImpl
+@@ -779,6 +779,9 @@ class BrowserView::ExclusiveAccessContextImpl
    void UpdateExclusiveAccessBubble(
        const ExclusiveAccessBubbleParams& params,
        ExclusiveAccessBubbleHideCallback first_hide_callback) override {
@@ -12,7 +12,7 @@ index 0dabb7764594611945a317120e64a8cfa50f2751..69651461622f7b9299c1a26df27d3ff2
      // Whether we should remove the bubble if it exists, or not show the bubble.
      // TODO(jamescook): Figure out what to do with mouse-lock.
      bool should_close_bubble = false;
-@@ -955,15 +958,15 @@ BrowserView::BrowserView(BrowserWindowInterface* browser)
+@@ -959,15 +962,15 @@ BrowserView::BrowserView(BrowserWindowInterface* browser)
    top_container_insertion_index_ = GetIndexOf(top_container_.get());
  
    toolbar_ = top_container_->AddChildView(
@@ -31,7 +31,7 @@ index 0dabb7764594611945a317120e64a8cfa50f2751..69651461622f7b9299c1a26df27d3ff2
    multi_contents_view_ = AddChildView(std::move(multi_contents_view));
  
    set_contents_view(multi_contents_view_);
-@@ -971,7 +974,7 @@ BrowserView::BrowserView(BrowserWindowInterface* browser)
+@@ -975,7 +978,7 @@ BrowserView::BrowserView(BrowserWindowInterface* browser)
    // InfoBarContainer needs to be added as a child here for drop-shadow, but
    // needs to come after toolbar in focus order (see EnsureFocusOrder()).
    infobar_container_ =
@@ -40,7 +40,7 @@ index 0dabb7764594611945a317120e64a8cfa50f2751..69651461622f7b9299c1a26df27d3ff2
  
    // This frames some/all of the top container plus infobars, contents, and
    // contents-height side panel when the toolbar-height side panel is visible.
-@@ -2062,6 +2065,16 @@ void BrowserView::OnActiveTabChanged(content::WebContents* old_contents,
+@@ -2072,6 +2075,16 @@ void BrowserView::OnActiveTabChanged(content::WebContents* old_contents,
  #else
    will_restore_focus &= GetWidget()->IsActive();
  #endif
@@ -57,7 +57,7 @@ index 0dabb7764594611945a317120e64a8cfa50f2751..69651461622f7b9299c1a26df27d3ff2
    // Update various elements that are interested in knowing the current
    // WebContents.
  
-@@ -5458,7 +5471,7 @@ bool BrowserView::MaybeShowBookmarkBar(WebContents* contents) {
+@@ -5508,7 +5521,7 @@ bool BrowserView::MaybeShowBookmarkBar(WebContents* contents) {
    }
  
    if (!bookmark_bar_view_) {

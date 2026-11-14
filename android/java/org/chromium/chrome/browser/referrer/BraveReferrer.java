@@ -102,7 +102,7 @@ public class BraveReferrer implements InstallReferrerStateListener {
             try {
                 mReferrerClient.startConnection(mBraveReferrer);
             } catch (Exception e) {
-                Log.e(TAG, "Unable to start connection for referrer client: " + e);
+                Log.e(TAG, "Unable to start connection for referrer client", e);
                 onReferrerReady();
             }
         }
@@ -178,7 +178,7 @@ public class BraveReferrer implements InstallReferrerStateListener {
                 } catch (Exception e) {
                     // Play Store may return a null bundle alongside an OK response code, which
                     // makes ReferrerDetails throw.
-                    Log.e(TAG, "Could not get referral: " + e.getMessage());
+                    Log.e(TAG, "Could not get referral", e);
                 }
                 break;
             case InstallReferrerResponse.FEATURE_NOT_SUPPORTED:
@@ -188,7 +188,7 @@ public class BraveReferrer implements InstallReferrerStateListener {
                 Log.e(TAG, "Connection couldn't be established");
                 break;
             default:
-                Log.e(TAG, "Other error: " + responseCode);
+                Log.e(TAG, "Other error: %s", responseCode);
                 break;
         }
         if (urpcEmtpy) {

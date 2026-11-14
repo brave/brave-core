@@ -427,6 +427,12 @@
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE_CONSIDER_2_V2" desc="Second point in 'things to consider' column of the 'let Gemini browse for you' expands (WebUI version)">
     Use Gemini carefully and <ph name="BEGIN_LINK1">&lt;a href="$1" target="_blank" aria-label="$3" aria-description="$5"&gt;</ph>safely<ph name="LINK_END1">&lt;/a&gt;</ph>. You are responsible for Gemini's actions during a task, including mistakes and <ph name="BEGIN_LINK2">&lt;a href="$2" target="_blank" aria-label="$4" aria-description="$5"&gt;</ph>unexpected results<ph name="LINK_END2">&lt;/a&gt;</ph> like purchases.
   </message>
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE_CONSIDER_2_COUNTRY_VARIANT" desc="Variant of the second point in 'things to consider' column of the 'let Gemini browse for you' expands, shown instead of the default text in some countries" formatter_data="android_java">
+    Use Gemini carefully and <ph name="BEGIN_LINK1">&lt;a href="$1" target="_blank"&gt;</ph>safely<ph name="LINK_END1">&lt;/a&gt;</ph>. It can make mistakes and produce <ph name="BEGIN_LINK2">&lt;a href="$2" target="_blank"&gt;</ph>unexpected results<ph name="LINK_END2">&lt;/a&gt;</ph> like purchases.
+  </message>
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE_CONSIDER_2_V2_COUNTRY_VARIANT" desc="Variant of the second point in 'things to consider' column of the 'let Gemini browse for you' expands, shown instead of the default text in some countries (WebUI version)">
+    Use Gemini carefully and <ph name="BEGIN_LINK1">&lt;a href="$1" target="_blank" aria-label="$3" aria-description="$5"&gt;</ph>safely<ph name="LINK_END1">&lt;/a&gt;</ph>. It can make mistakes and produce <ph name="BEGIN_LINK2">&lt;a href="$2" target="_blank" aria-label="$4" aria-description="$5"&gt;</ph>unexpected results<ph name="LINK_END2">&lt;/a&gt;</ph> like purchases.
+  </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE_CONSIDER_SAFELY_ARIA_LABEL" desc="Accessible label for the 'safely' link in the Gemini auto browse permissions considerations." is_accessibility_with_no_ui="true">
     Use Gemini safely
   </message>
@@ -565,6 +571,9 @@
   <message name="IDS_GLIC_BUTTON_ENTRYPOINT_ASK_ABOUT_THIS_PAGE_LABEL" desc="Label on the button used to open Gemini in Brave.">
     Ask about this page?
   </message>
+  <message name="IDS_GLIC_TOOLBAR_ASK_ABOUT_THIS_LABEL" desc="Label and tooltip for the toolbar action that lets the user select part of the page and ask about it with Smart Selection.">
+    Ask about this
+  </message>
   <message name="IDS_GLIC_SELECTION_AUTO_SEND_PROMPT_TELL_ME" desc="Default prompt text sent to Gemini when auto-send prompt is enabled on text selection.">
     Tell me about this
   </message>
@@ -589,6 +598,9 @@
   <message name="IDS_GLIC_SUMMARIZE_PAGE_PROMPT" desc="Prompt sent to request page summarization via context menu.">Summarize this page</message>
   <message name="IDS_GLIC_CONTEXT_MENU_ASK_GEMINI_ABOUT" desc="Text for context menu item to ask Gemini about the selected text.">
       Ask Gemini about “<ph name="SELECTION">$1<ex>selected text</ex></ph>”
+    </message>
+  <message name="IDS_GLIC_CONTEXT_MENU_ASK_GEMINI_ABOUT_PAGE_AND_SELECTION" desc="Text for the context menu item, shown when text is selected on a page, that sends the current page and the selected text to Gemini and automatically submits a question about them.">
+      Ask Gemini about this page and “<ph name="SELECTION">$1<ex>selected text</ex></ph>”
     </message>
 
   <!-- IPH -->
@@ -710,6 +722,22 @@
   <message name="IDS_GLIC_HOTKEY_G" desc="G key text" translateable="false" formatter_data="android_java">
     G
   </message>
+  <!-- Drive Picker tab labels -->
+  <message name="IDS_GLIC_DRIVE_PICKER_RECENT_TAB_LABEL" desc="Label for the Recent tab in the Google Drive file picker opened from Gemini in Brave.">
+    Recent
+  </message>
+  <message name="IDS_GLIC_DRIVE_PICKER_MY_DRIVE_TAB_LABEL" desc="Label for the My Drive tab in the Google Drive file picker opened from Gemini in Brave.">
+    My Drive
+  </message>
+  <message name="IDS_GLIC_DRIVE_PICKER_SHARED_DRIVES_TAB_LABEL" desc="Label for the Shared drives tab in the Google Drive file picker opened from Gemini in Brave. Shown between the My Drive and Shared with me tabs for accounts that have shared drives; not visible in the screenshot.">
+    Shared drives
+  </message>
+  <message name="IDS_GLIC_DRIVE_PICKER_SHARED_WITH_ME_TAB_LABEL" desc="Label for the Shared with me tab in the Google Drive file picker opened from Gemini in Brave.">
+    Shared with me
+  </message>
+  <message name="IDS_GLIC_DRIVE_PICKER_STARRED_TAB_LABEL" desc="Label for the Starred tab in the Google Drive file picker opened from Gemini in Brave.">
+    Starred
+  </message>
   <if expr="is_android">
     <message name="IDS_GLIC_FRE_DIALOG_TITLE" desc="Headline of the dialog that asks the user to turn on Gemini in Brave the first time they open it." formatter_data="android_java">
       Ask anything, right where you are, with Gemini in Brave
@@ -725,6 +753,10 @@
     </message>
     <message name="IDS_GLIC_FRE_DIALOG_ENTERPRISE_DESCRIPTION_BOLD" desc="Description in the Gemini in Brave opt-in dialog for enterprise users explaining that their organization's data is private and secure, with bold lead-in." formatter_data="android_java">
       <ph name="BEGIN_BOLD_1">&lt;b1&gt;</ph>Tabs are shared for more relevant answers.<ph name="END_BOLD_1">&lt;/b1&gt;</ph> Brave uses the content and URL of shared tabs. Your current tab is shared in new chats. You can change this setting anytime. <ph name="BEGIN_BOLD_2">&lt;b2&gt;</ph>Your organization’s data is private and secure.<ph name="END_BOLD_2">&lt;/b2&gt;</ph> It won’t be used to improve generative AI models.
+    </message>
+    <!-- TODO(crbug.com/585286375): Remove translateable="false" and add screenshot. -->
+    <message name="IDS_GLIC_FRE_DIALOG_ENTERPRISE_DESCRIPTION_BOLD_V2" desc="Description in the Gemini in Brave opt-in dialog for enterprise users explaining that their organization's data is private and secure, with bold lead-in." translateable="false" formatter_data="android_java">
+      <ph name="BEGIN_BOLD_1">&lt;b1&gt;</ph>Tabs are shared for more relevant answers.<ph name="END_BOLD_1">&lt;/b1&gt;</ph> Brave uses the content and URL of shared tabs. Your current tab is shared in new chats. You can change this setting anytime. <ph name="BEGIN_BOLD_2">&lt;b2&gt;</ph>Your organization’s data is private and secure.<ph name="END_BOLD_2">&lt;/b2&gt;</ph> It won’t be used to train generative AI models.
     </message>
     <message name="IDS_GLIC_FRE_DIALOG_ACCEPT" desc="Button in the Gemini in Brave opt-in dialog. Turns on Gemini in Brave and opens it. [CHAR_LIMIT=32]" formatter_data="android_java">
       Start chat

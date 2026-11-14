@@ -7,13 +7,13 @@ include_rules = [
 ]
 
 specific_include_rules = {
-  "hd_key\.cc": [
+  "hd_key\\.cc": [
     "+brave/vendor/bat-native-tweetnacl/tweetnacl.h",
   ],
-  "hd_key_sr25519\.h": [
+  "hd_key_sr25519\\.h": [
     "+third_party/rust/cxx/v1/cxx.h",
   ],
-  "hd_key_sr25519\.cc": [
+  "hd_key_sr25519\\.cc": [
     "+brave/components/brave_wallet/browser/internal/sr25519.rs.h",
   ],
 }

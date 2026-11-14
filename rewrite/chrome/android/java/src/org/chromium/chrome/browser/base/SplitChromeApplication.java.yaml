@@ -5,21 +5,19 @@
 
 substitutions:
   - description: |
-      Defer early feature list init on first run for non-Chrome-branded builds.
+      Defer early feature list init on first run, as Chrome-branded builds do.
 
-      Since IS_CHROME_BRANDED = false for Brave, the upstream condition
-      `!IS_CHROME_BRANDED || !shouldFetchSeed()` always short-circuits to true,
-      causing the feature list to be initialized early without the variations seed
-      on first run. This prevents the native VariationsService from applying the
-      seed in the same launch, requiring a restart.
+      Upstream only waits for the first run variations seed when
+      IS_CHROME_BRANDED, which is false for Brave, or with
+      --variations-server-url. Otherwise the feature list is initialized early
+      without the seed on first run, and the native VariationsService can't
+      apply the seed until a restart.
 
-      Replacing IS_CHROME_BRANDED with true makes the short-circuit always false,
-      so Brave behaves identically to Chrome-branded builds: early feature list
-      init is skipped on first run, letting the native VariationsService fetch and
-      apply the seed immediately.
+      Waiting whenever the seed is to be fetched lets the native
+      VariationsService fetch and apply it in the same launch.
 
       See https://source.chromium.org/chromium/chromium/src/+/f00d1a3a65153510d612597de0dde2a4365ca130
     regex:
-      pattern: 'BuildConfig.IS_CHROME_BRANDED'
-      replace: 'true /* BuildConfig.IS_CHROME_BRANDED override for Brave */'
-    count: 1
+      re_pattern: '\(BuildConfig\.IS_CHROME_BRANDED\s*\|\|.*?\)\)\s*&&\s*(VariationsSeedFetcher\.shouldFetchSeed\(\))'
+      re_flags: [DOTALL]
+      replace: '\1'

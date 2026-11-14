@@ -59,10 +59,10 @@ substitutions:
       method_name: HideSplitView
 
   - description: |-
-      Make ReparentTopContainerForEndOfImmersive virtual for BraveBrowserView.
+      Make ReparentTopContainerToBrowserView virtual for BraveBrowserView.
     make_virtual:
       class_name: BrowserView
-      method_name: ReparentTopContainerForEndOfImmersive
+      method_name: ReparentTopContainerToBrowserView
 
   - description: 'Make ShouldDrawTabStrokes virtual for BraveBrowserView.'
     make_virtual:

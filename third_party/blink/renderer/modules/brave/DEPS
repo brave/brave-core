@@ -1,6 +1,6 @@
 specific_include_rules = {
   # TODO(bridiver) browser tests should go in brave/browser
-  "navigator_browsertest\.cc": [
+  "navigator_browsertest\\.cc": [
     "!chrome/browser/ui/browser.h",
     "!chrome/test/base/in_process_browser_test.h",
     "!chrome/test/base/ui_test_utils.h",

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/sync/test/integration/sync_test.cc b/chrome/browser/sync/test/integration/sync_test.cc
-index db6499cee602bf5726e59cccfcaf4a875699d4c4..262fff304699a8d42f054346bc3aff34fd5710aa 100644
+index a3f175eb5cef8c105d05473c60bff07ad3ef04b2..52d2d9ad5b95f2155c82940e74c8b51c42947fb5 100644
 --- a/chrome/browser/sync/test/integration/sync_test.cc
 +++ b/chrome/browser/sync/test/integration/sync_test.cc
 @@ -1316,7 +1316,7 @@ std::string SetupSyncModeAsString(SyncTest::SetupSyncMode sync_test_mode) {
@@ -10,4 +10,4 @@ index db6499cee602bf5726e59cccfcaf4a875699d4c4..262fff304699a8d42f054346bc3aff34
 +  static_assert(64 + 1 == syncer::GetNumDataTypes(),
                  "Add new types below if they can run in transport mode");
  
- #if BUILDFLAG(IS_ANDROID)
+   // Only some types will run by default in transport mode (i.e. without their

@@ -40,10 +40,14 @@ BraveTabMenuModel::BraveTabMenuModel(
     ui::SimpleMenuModel::Delegate* delegate,
     TabMenuModelDelegate* tab_menu_model_delegate,
     TabStripModel* tab_strip_model,
-    int index)
-    : TabMenuModel(delegate, tab_menu_model_delegate, tab_strip_model, index) {
-  auto* tab = tab_strip_model->GetTabAtIndex(index);
+    tabs::TabHandle context_tab)
+    : TabMenuModel(delegate,
+                   tab_menu_model_delegate,
+                   tab_strip_model,
+                   context_tab) {
+  auto* tab = context_tab.Get();
   CHECK(tab);
+  const int index = tab_strip_model->GetIndexOfTab(tab);
   auto* browser_window = tab->GetBrowserWindowInterface();
   CHECK(browser_window);
 

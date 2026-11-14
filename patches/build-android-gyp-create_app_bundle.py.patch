@@ -1,8 +1,8 @@
 diff --git a/build/android/gyp/create_app_bundle.py b/build/android/gyp/create_app_bundle.py
-index e5dfc038e73dedceaf7a590a9cbb17719bcf2146..da121780d8c389925585663c55e8fee0b1b75537 100755
+index 6227c7bfc373c77c672366c0da67652662297c1b..4369412e462ba0079214a6b10fc72f6969573fb2 100755
 --- a/build/android/gyp/create_app_bundle.py
 +++ b/build/android/gyp/create_app_bundle.py
-@@ -111,6 +111,7 @@ _ALLOWLISTED_NON_BASE_SERVICES = {
+@@ -90,6 +90,7 @@ _ALLOWLISTED_NON_BASE_SERVICES = {
      'com.google.apps.tiktok.concurrent.InternalForegroundService',
  }
  

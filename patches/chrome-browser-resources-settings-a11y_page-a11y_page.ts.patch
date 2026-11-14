@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/resources/settings/a11y_page/a11y_page.ts b/chrome/browser/resources/settings/a11y_page/a11y_page.ts
+index d1946a5dfac2bd9427b8c9d351f8df45819c6d43..bc78175c985f749b757f73ee547f4c8ba169a395 100644
+--- a/chrome/browser/resources/settings/a11y_page/a11y_page.ts
++++ b/chrome/browser/resources/settings/a11y_page/a11y_page.ts
+@@ -182,7 +182,7 @@ export class SettingsA11yPageElement extends SettingsA11yPageElementBase {
+   ];
+   // </if>
+ 
+-  protected accessor hasScreenReader_: boolean = false;
++  private accessor hasScreenReader_: boolean = false;
+   protected accessor showAxTreeFixingSection_: boolean =
+       loadTimeData.getBoolean('axTreeFixingEnabled');
+   // <if expr="is_win or is_linux or is_macosx">

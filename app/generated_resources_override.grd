@@ -102,8 +102,6 @@ are declared in tools/grit/grit_args.gni.
       <part file="profiles_strings_override.grdp" />
 
       <if expr="is_chromeos">
-        <part file="os_settings_strings_override.grdp" />
-        <part file="os_settings_search_tag_strings_override.grdp" />
         </if>
 
       <part file="settings_strings_override.grdp" />
@@ -807,6 +805,8 @@ are declared in tools/grit/grit_args.gni.
         </if>
       <if expr="not is_macosx">
         </if>
+      <if expr="is_chromeos">
+        </if>
       <if expr="not use_titlecase">
         <if expr="is_chromeos">
           </if>
@@ -1149,13 +1149,13 @@ are declared in tools/grit/grit_args.gni.
     <message name="IDS_INCOGNITO_CLEAR_BROWSING_DATA_DIALOG_SECONDARY_TEXT" desc="The secondary text of the clear browsing data dialog which is shown in Private when users invokes a clear browsing data action in Private. The text describes how the clear browsing data action affects only the Private windows.">
       This only affects Private windows
     </message>
-    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_PRIMARY_TEXT" desc="Header in bubble view that states visited sites aren't saved in Private mode.">
+    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_PRIMARY_TEXT" desc="Header in bubble view that states visited sites aren't saved in Private mode." formatter_data="android_java">
       Sites you visit aren’t saved in Private
     </message>
-    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_SECONDARY_TEXT" desc="Description in bubble view that states closing all Private tabs is necessary to delete Private browsing history from the device,">
+    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_SECONDARY_TEXT" desc="Description in bubble view that states closing all Private tabs is necessary to delete Private browsing history from the device," formatter_data="android_java">
       To delete Private browsing history from your device, close all Private tabs
     </message>
-    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_CLOSE_INCOGNITO_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close all private tabs action.">
+    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_CLOSE_INCOGNITO_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close all private tabs action." formatter_data="android_java">
       Close Private
     </message>
     <if expr="not is_android or enable_extensions_core">
@@ -1250,7 +1250,11 @@ are declared in tools/grit/grit_args.gni.
       </if>
 
     <if expr="enable_webui_ntp">
-      </if>
+      <if expr="is_macosx">
+        </if>
+      <if expr="not is_macosx">
+        </if>
+    </if>
 
     <if expr="is_linux or is_macosx or is_win">
       </if>

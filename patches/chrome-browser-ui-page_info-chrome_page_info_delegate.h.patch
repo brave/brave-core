@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/page_info/chrome_page_info_delegate.h b/chrome/browser/ui/page_info/chrome_page_info_delegate.h
-index 4c1526695b3c0d467eb8aa8bed85bdd154df04e4..f33bdd0a02d3dd7fb23b065a62a9d19d8471c171 100644
+index 93f16fcbc82bd7df810c7072ad17d1643ab320f5..761fb8f2d6b67866283295ce8dd412875c55dba1 100644
 --- a/chrome/browser/ui/page_info/chrome_page_info_delegate.h
 +++ b/chrome/browser/ui/page_info/chrome_page_info_delegate.h
-@@ -136,6 +136,8 @@ class ChromePageInfoDelegate : public PageInfoDelegate {
+@@ -132,6 +132,8 @@ class ChromePageInfoDelegate : public PageInfoDelegate {
    void OnSuspiciousSiteBackToSafety() override;
    void OnSuspiciousSiteMarkAsSafe() override;
  

@@ -1,8 +1,8 @@
 diff --git a/chrome/updater/test/integration_tests_win.cc b/chrome/updater/test/integration_tests_win.cc
-index 491a4c3aa21e17821cd652d89c9e8b884f18c429..f93f76b7739e7ea364a10eaf7b63299cbf3784a1 100644
+index 527401ea47b7df245eac4df896a0d0a880f64686..219338893dc34691049c9de378be32e306b75fb8 100644
 --- a/chrome/updater/test/integration_tests_win.cc
 +++ b/chrome/updater/test/integration_tests_win.cc
-@@ -1783,6 +1783,7 @@ void InvokeTestServiceFunction(const std::string& function_name,
+@@ -1785,6 +1785,7 @@ void InvokeTestServiceFunction(const std::string& function_name,
  
  std::vector<TestUpdaterVersion> GetRealUpdaterLowerVersions(
      const std::string& arch_suffix) {
@@ -10,7 +10,7 @@ index 491a4c3aa21e17821cd652d89c9e8b884f18c429..f93f76b7739e7ea364a10eaf7b63299c
    if (arch_suffix.empty() &&
        base::win::GetVersion() < base::win::Version::WIN10_RS1) {
      // TODO(crbug.com/579543435): Remove once `old_updater` is rolled to a
-@@ -2378,3 +2379,8 @@ void DeleteScheduledTask(const std::string& task_name,
+@@ -2380,3 +2381,8 @@ void DeleteScheduledTask(const std::string& task_name,
  }
  
  }  // namespace updater::test

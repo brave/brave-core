@@ -145,8 +145,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         <else>
           </else>
       </if>
-      <if expr="is_chromeos">
-        </if>
       <if expr="_is_chrome_for_testing_branded">
         <then>
           </then>
@@ -182,8 +180,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
-        </if>
-      <if expr="is_chromeos">
         </if>
       <if expr="is_linux">
         </if>
@@ -236,15 +232,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <message name="IDS_EXTENSIONS_INCOGNITO_WARNING" desc="Warns the user that Brave cannot prevent extensions from recording history in Private mode. Displayed in extensions management UI after an extension is selected to be run in Private mode.">
         Warning: Brave cannot prevent extensions from recording your browsing history. To disable this extension in Private mode, unselect this option.
       </message>
-      <if expr="enable_extensions">
-        <message name="IDS_EXTENSIONS_MULTIPLE_UNSUPPORTED_DISABLED_BODY" desc="Body of the dialog shown when multiple unsupported extensions have been disabled.">
-          To make Brave safer, we disabled some extensions that aren't listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph> and may have been added without your knowledge.
-        </message>
-        <message name="IDS_EXTENSIONS_SINGLE_UNSUPPORTED_DISABLED_BODY" desc="Body of the dialog shown when a single unsupported extension has been disabled.">
-          To make Brave safer, we disabled the following extension that isn't listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph> and may have been added without your knowledge.
-        </message>
-      </if>
-
       <if expr="use_titlecase and not is_chromeos">
         <if expr="_is_chrome_for_testing_branded">
           <then>
@@ -325,12 +312,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <if expr="is_posix">
         </if>
 
-      <if expr="is_macosx">
-        </if>
-
-      <if expr="not is_android and not is_chromeos">
-        </if>
-
       <if expr="not is_android">
         </if>
 
@@ -384,12 +365,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="not use_titlecase">
         </if>
-      <if expr="use_titlecase">
-        </if>
-      <if expr="not use_titlecase">
-        </if>
       <if expr="is_android">
-
         </if>
 
       <if expr="is_macosx">
@@ -461,14 +437,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="not is_android and not is_chromeos">
         </if>
-      <if expr="not is_android">
-        </if>
-
-      <if expr="is_android">
-        <message name="IDS_MESSAGE_ACT_SURVEY_INVITATION" desc="Survey invitation text that's shown in a pop up. The user can then ignore the invitation or accept it, which will cause the survey to be shown.">
-          Help us improve Private by taking this 1 minute survey.
-        </message>
-      </if>
 
       <if expr="enable_extensions_core">
         </if>

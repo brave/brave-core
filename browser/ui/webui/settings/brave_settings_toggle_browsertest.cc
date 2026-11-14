@@ -42,3 +42,8 @@ IN_PROC_BROWSER_TEST_F(BraveSettingsToggleWebUITest, SiteListEntryReset) {
   RunTest("settings/site_list_entry_test.js",
           "runMochaSuite('BraveSiteListEntryReset')");
 }
+
+IN_PROC_BROWSER_TEST_F(BraveSettingsToggleWebUITest, SiteListActionLabels) {
+  RunTest("settings/site_list_test.js",
+          "runMochaSuite('BraveSiteListActionLabels')");
+}

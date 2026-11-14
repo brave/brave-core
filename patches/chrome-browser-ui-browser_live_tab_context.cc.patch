@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_live_tab_context.cc b/chrome/browser/ui/browser_live_tab_context.cc
-index cfca5cf1286a82bb4411006bb921009473833fd8..01838231d130c0d74042cf01aa1b509b55b3af57 100644
+index 7ba3a195fa08643fe773f2c084d1189e8e53e523..80b0cfd5a29eafaecb2a9e3dfe0d79f64eb20992 100644
 --- a/chrome/browser/ui/browser_live_tab_context.cc
 +++ b/chrome/browser/ui/browser_live_tab_context.cc
-@@ -198,6 +198,7 @@ sessions::LiveTab* BrowserLiveTabContext::GetActiveLiveTab() const {
+@@ -199,6 +199,7 @@ sessions::LiveTab* BrowserLiveTabContext::GetActiveLiveTab() const {
  std::map<std::string, std::string> BrowserLiveTabContext::GetExtraDataForTab(
      int index) const {
    std::map<std::string, std::string> extra_data;

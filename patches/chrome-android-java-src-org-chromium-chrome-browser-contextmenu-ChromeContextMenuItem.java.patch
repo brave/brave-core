@@ -1,40 +1,40 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-index 416c60f7b697150309948ba380de6ed3c733833b..e374cea213fdb5e024509b1fc92584a8685f97b0 100644
+index a29bae66d93ab7f611e81b81bfce082ca9361cb5..d6660911a575401f720a7ffe2610d9a0779e2dfb 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-@@ -88,7 +88,8 @@ class ChromeContextMenuItem {
-         Item.TRANSLATE,
+@@ -89,7 +89,8 @@ class ChromeContextMenuItem {
          Item.CREATE_QR_CODE,
          Item.ASK_GEMINI,
--        Item.ASK_GEMINI_IMAGE
-+        Item.ASK_GEMINI_IMAGE,
+         Item.ASK_GEMINI_IMAGE,
+-        Item.ASK_GOOGLE_ABOUT_PAGE
++        Item.ASK_GOOGLE_ABOUT_PAGE,
 +        Item.COPY_CLEAN_LINK,
      })
      @Retention(RetentionPolicy.SOURCE)
      public @interface Item {
-@@ -158,8 +159,9 @@ class ChromeContextMenuItem {
-         int CREATE_QR_CODE = 52;
+@@ -160,8 +161,9 @@ class ChromeContextMenuItem {
          int ASK_GEMINI = 53;
          int ASK_GEMINI_IMAGE = 54;
-+        int COPY_CLEAN_LINK = 55;
+         int ASK_GOOGLE_ABOUT_PAGE = 55;
++        int COPY_CLEAN_LINK = 56;
          // ALWAYS UPDATE!
--        int NUM_ENTRIES = 55;
+-        int NUM_ENTRIES = 56;
 +        int NUM_ENTRIES = COPY_CLEAN_LINK + 1;
      }
  
      /** Mapping from {@link Item} to the ID found in the ids.xml. */
-@@ -219,6 +221,7 @@ class ChromeContextMenuItem {
-         R.id.contextmenu_create_qr_code, // Item.CREATE_QR_CODE
+@@ -222,6 +224,7 @@ class ChromeContextMenuItem {
          R.id.contextmenu_ask_gemini, // Item.ASK_GEMINI
          R.id.contextmenu_ask_gemini_image, // Item.ASK_GEMINI_IMAGE
+         R.id.contextmenu_ask_google_about_page, // Item.ASK_GOOGLE_ABOUT_PAGE
 +        R.id.contextmenu_copy_clean_link, // Item.COPY_CLEAN_LINK
      };
  
      /** Mapping from {@link Item} to the ID of the string that describes the action of the item. */
-@@ -278,6 +281,7 @@ class ChromeContextMenuItem {
-         R.string.contextmenu_create_qr_code, // Item.CREATE_QR_CODE
+@@ -282,6 +285,7 @@ class ChromeContextMenuItem {
          R.string.glic_button_entrypoint_ask_gemini_label, // Item.ASK_GEMINI
          R.string.glic_button_entrypoint_ask_gemini_label, // Item.ASK_GEMINI_IMAGE
+         R.string.contextual_search_open_lens_action_label, // Item.ASK_GOOGLE_ABOUT_PAGE
 +        R.string.contextmenu_copy_clean_link, // Item.COPY_CLEAN_LINK
      };
  

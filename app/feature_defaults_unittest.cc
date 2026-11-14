@@ -19,7 +19,6 @@
 #include "components/autofill/core/common/autofill_debug_features.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
-#include "components/browser_actuator/internal/transport/features.h"
 #include "components/browser_actuator/public/features.h"
 #include "components/commerce/core/commerce_feature_list.h"
 #include "components/compose/core/browser/compose_features.h"
@@ -61,6 +60,7 @@
 #include "components/signin/public/base/signin_switches.h"
 #include "components/site_token_provider/features.h"
 #include "components/skills/features.h"
+#include "components/stream_transport/internal/features.h"
 #include "components/subresource_filter/core/common/common_features.h"
 #include "components/sync/base/features.h"
 #include "components/user_education/common/user_education_features.h"
@@ -145,7 +145,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kPreloadingEagerViewportHeuristics,
       &blink::features::kPreloadingModerateViewportHeuristics,
       &browser_actuator::kBrowserActuator,
-      &browser_actuator::transport::kBrowserActuatorProtoStreamTransport,
 #if !BUILDFLAG(IS_ANDROID)
       &child_module::features::kDynamicPatching,
 #endif
@@ -307,12 +306,12 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &segmentation_platform::features::kSegmentationPlatformFeature,
       &segmentation_platform::features::kSegmentationPlatformTimeDelaySampling,
       &site_token_provider::features::kSiteTokenProviderEnabled,
+      &stream_transport::kBrowserActuatorProtoStreamTransport,
       &subresource_filter::kAdTagging,
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
       &switches::kFirstRunDesktopRefresh,
 #endif
 #if BUILDFLAG(IS_ANDROID)
-      &switches::kProfileDiscOnAllPages,
       &switches::kSigninLevelUpButton,
 #endif
       &switches::kSyncEnableBookmarksInTransportMode,

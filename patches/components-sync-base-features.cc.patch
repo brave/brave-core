@@ -1,8 +1,8 @@
 diff --git a/components/sync/base/features.cc b/components/sync/base/features.cc
-index 1125b71dd947b3f5244e23f0768b202bd7ee353c..464a6d0e9787d3dbb82902eb7f863b49c183b6cf 100644
+index e4a5fc5f8e16ce6e8793e295da40fbbc640bb2ad..c4246777314cf4266f1bf790a9f5effaacb1a369 100644
 --- a/components/sync/base/features.cc
 +++ b/components/sync/base/features.cc
-@@ -56,6 +56,7 @@ BASE_FEATURE(kSyncEnableContactInfoDataTypeForDasherUsers,
+@@ -61,6 +61,7 @@ BASE_FEATURE(kSyncEnableContactInfoDataTypeForDasherUsers,
               base::FEATURE_DISABLED_BY_DEFAULT);
  
  bool IsReplaceSyncPromosWithSignInPromosEnabled() {
@@ -10,7 +10,7 @@ index 1125b71dd947b3f5244e23f0768b202bd7ee353c..464a6d0e9787d3dbb82902eb7f863b49
    return true;
  }
  
-@@ -83,7 +84,7 @@ DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAccountSettings);
+@@ -88,7 +89,7 @@ DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAccountSettings);
  DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAutofillValuable);
  #endif
  

@@ -3,7 +3,7 @@ include_rules = [
 ]
 
 specific_include_rules = {
-  ".*_unittest\.cc": [
+  ".*_unittest\\.cc": [
     "+services/network/public/mojom",
   ],
 }

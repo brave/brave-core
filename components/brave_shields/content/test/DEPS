@@ -8,7 +8,7 @@ include_rules = [
 ]
 
 specific_include_rules = {
-  "test_filters_provider\.h": [
+  "test_filters_provider\\.h": [
     "+third_party/rust/cxx/v1/cxx.h",
   ],
 }

@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Tag module script fetches with their initiator for Page Graph.
+
+      `BRAVE_MODULE_SCRIPT_LOADER_FETCH_INTERNAL` is defined in the
+      `chromium_src` override, and runs once `FetchInternal()` has set the
+      initiator info, before the fetch is scheduled.
+    regex:
+      re_pattern:
+        '(void ModuleScriptLoader::FetchInternal\(.*?\n)(\n
+        *async_task_context_\.Schedule\()'
+      re_flags: [DOTALL]
+      replace: |-
+        \1  BRAVE_MODULE_SCRIPT_LOADER_FETCH_INTERNAL
+        \2

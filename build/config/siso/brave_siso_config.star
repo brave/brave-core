@@ -55,6 +55,31 @@ __BRAVE_CHROMIUM_SRC_FILE_EXTENSIONS = (
     '.xml',
 )
 
+# Modules with chromium_src overrides that run remotely bundled in a `.pyz`,
+# whose commands have no `.py` inputs to find them from. Their sources are
+# uploaded too, as `inline_chromium_src_override()` resolves the override from
+# the module's `__file__`.
+__PYZ_CHROMIUM_SRC_OVERRIDDEN_MODULES = {
+    "obj/mojo/public/tools/mojom/mojom_parser.pyz": [
+        "mojo/public/tools/mojom/mojom_parser.py",
+    ],
+    "obj/third_party/blink/renderer/bindings/scripts/build_web_idl_database.pyz": [
+        "third_party/blink/renderer/bindings/scripts/web_idl/idl_compiler.py",
+    ],
+    "obj/third_party/blink/renderer/bindings/scripts/generate_bindings.pyz": [
+        "third_party/blink/renderer/bindings/scripts/bind_gen/interface.py",
+        "third_party/blink/renderer/bindings/scripts/bind_gen/task_queue.py",
+        "third_party/blink/renderer/bindings/scripts/web_idl/idl_compiler.py",
+    ],
+    "obj/tools/grit/grit.pyz": [
+        "tools/grit/grit/gather/policy_json.py",
+        "tools/grit/grit/tool/build.py",
+    ],
+    "obj/tools/grit/preprocess_if_expr.pyz": [
+        "tools/grit/preprocess_if_expr.py",
+    ],
+}
+
 # A python remote wrapper to add PYTHONPATH to the environment. Generated during
 # runhooks by //brave/third_party/reclient_configs/brave_custom/brave_custom.py.
 # The path should be relative to working directory which is `out/<config>`.
@@ -460,6 +485,18 @@ def __chromium_src_inputs_handler(ctx, cmd, fixed_inputs):
 
     # Check each input for potential chromium_src overrides.
     for input in cmd.inputs:
+        if input.endswith(".pyz"):
+            for pyz, modules in __PYZ_CHROMIUM_SRC_OVERRIDDEN_MODULES.items():
+                if input.endswith(pyz):
+                    for module in modules:
+                        override_file = "brave/chromium_src/" + module
+                        if not ctx.fs.exists(override_file):
+                            fail("pyz override does not exist: {!r}".format(
+                                override_file))
+                        new_inputs.append(module)
+                        new_inputs.append(override_file)
+            continue
+
         # Only process files with supported extensions.
         if input.endswith(__BRAVE_CHROMIUM_SRC_FILE_EXTENSIONS):
             override_file = "brave/chromium_src/" + input

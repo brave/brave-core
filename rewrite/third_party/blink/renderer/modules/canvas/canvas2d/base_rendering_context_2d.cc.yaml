@@ -1,0 +1,43 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Take the `ScriptState` in `getImageDataInternal()`.
+
+      `BRAVE_GET_IMAGE_DATA_PARAMS` is defined in the `chromium_src` override,
+      which farbles the image data with the script's execution context.
+    add_after_line:
+      line: 'ImageData* BaseRenderingContext2D::getImageDataInternal('
+      code: '    BRAVE_GET_IMAGE_DATA_PARAMS'
+
+  - description: |-
+      Farble the image data `getImageDataInternal()` returns.
+
+      `BRAVE_GET_IMAGE_DATA` is defined in the `chromium_src` override.
+    regex:
+      re_pattern:
+        '(ImageData\*
+        BaseRenderingContext2D::getImageDataInternal\(.*?\n)(\n  return
+        image_data;\n\}\n)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1  BRAVE_GET_IMAGE_DATA
+        \2
+
+  - description: |-
+      Shape no text when language fingerprinting protection is strict.
+
+      `BRAVE_BASE_RENDERING_CONTEXT_2D_MEASURE_TEXT` is defined in the
+      `chromium_src` override, and runs in `shapeText()`, which
+      `measureText()` calls, before the style is updated.
+    regex:
+      re_pattern:
+        '(ShapedText\* BaseRenderingContext2D::shapeText\(.*?\n)(
+        *canvas->GetDocument\(\)\.UpdateStyleAndLayoutTreeForElement\()'
+      re_flags: [DOTALL]
+      replace: |-
+        \1    BRAVE_BASE_RENDERING_CONTEXT_2D_MEASURE_TEXT
+        \2

@@ -391,10 +391,12 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderMainProfileBrowserTest,
   EXPECT_THAT(containers_service->GetUsedContainerIds(),
               testing::ElementsAre(container_id));
 
-  // The tab starts on a blank page that, unlike about:blank, can be put in a
-  // container.
+  // The tab is created for a blank page that, unlike about:blank, can be put in
+  // a container. Its navigation is dropped once the tab joins the task, so the
+  // tab stays on its initial empty document, in the container.
   content::WaitForLoadStop(contents);
-  EXPECT_EQ(contents->GetLastCommittedURL(), GURL("data:text/html,"));
+  EXPECT_TRUE(contents->GetLastCommittedURL().is_empty());
+  EXPECT_EQ(containers::GetContainerIdForWebContents(contents), container_id);
 }
 
 // The container is named so the user can tell the tab is the AI's, e.g. in its

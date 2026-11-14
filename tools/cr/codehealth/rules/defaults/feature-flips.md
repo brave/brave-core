@@ -13,12 +13,14 @@ promos that assume a Google account.
 
 **How to check.** The candidates are files whose changed lines remove one
 default and add another: `FEATURE_(EN|DIS)ABLED_BY_DEFAULT`, the short form
-`BASE_FEATURE(kX, ENABLED)` and `enable_if(…)`. Classify each as new, gone or
-flipped from the diff with context, carrying the last `BASE_FEATURE(k…` name
-across context lines: a flip inside an `#if` doesn't change the name line
-(`git show <hash> -U4 -- <file>`). For each disabled → enabled flip, decide
-whether Brave should pin it, using `rewrite/` `set_feature_flag_default_state`
-plasters (which swap the macro to `BASE_OVERRIDDEN_FEATURE`, so grep both),
+`BASE_FEATURE(kX, ENABLED)`, `enable_if(…)` and a `BASE_FEATURE_PARAM(bool, …)`
+default (`true);`/`false);`), whose flip launches what an enabled feature gates.
+Classify each as new, gone or flipped from the diff with context, carrying the
+last `BASE_FEATURE(k…` name across context lines: a flip inside an `#if` doesn't
+change the name line (`git show <hash> -U4 -- <file>`). For each disabled →
+enabled flip, decide whether Brave should pin it, using `rewrite/`
+`set_feature_flag_default_state` plasters (which swap the macro to
+`BASE_OVERRIDDEN_FEATURE`, so grep both),
 `base/compile_overridden_features.inc`, the strings in
 `renderer/brave_content_renderer_client.cc` and
 `app/feature_defaults_unittest.cc`. For WebUI promos, read the element's show
@@ -44,3 +46,6 @@ list them for the privacy review.
   which Brave's locale-derived variations country turns on.
 - M160, 8160.0: `kInitialDelayForBrokenAlternativeService` enabled in a new
   `#else` branch, the old default left as context under `#if`.
+- M160, 8162.1: the `kMigratedGoogleApiKeys` and `kMigratedObsoleteSystem`
+  params of `kCentralizedInfoBarFramework` flipped to `true`, routing both
+  infobars past Brave's delegate swaps.

@@ -2547,6 +2547,30 @@ class RebaseStopTest(unittest.TestCase):
         self.assertEqual(self.committed(DATA), 'base\n')
         self.assertEqual(self.committed('first.txt'), 'first\n')
 
+    def test_skip_leaves_the_change_id_of_the_commit_before(self):
+        tracker = 'Version CodeHealth tracker'
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={DATA: 'base\n'},
+            commits=[
+                (tracker, {'tracker': 't\n'}),
+                ('Version lift updates', {DATA: 'commit\n'}),
+            ],
+            branch='cr150',
+        )
+        with self.assertRaises(brockit.ActionNeededException):
+            self.rebase(fork, squash_minor_bumps=True)
+
+        brockit.Rebase().execute(skip=True)
+
+        self.assertFalse(repository.brave.is_rebase_in_progress())
+        self.assertEqual(self.subjects(), [tracker])
+        self.assertEqual(
+            self.git('log', '-1', '--format=%B'),
+            f'{tracker}\n\nChange-Id: '
+            f'{pinned_commits.derived_change_id("cr150", tracker)}',
+        )
+
     def test_continue_stops_again_without_conflicts(self):
         """Git refuses to continue over unstaged changes, which is a stop no
         rule resolves, so it is reported rather than retried."""

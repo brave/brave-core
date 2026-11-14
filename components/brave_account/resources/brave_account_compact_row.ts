@@ -42,7 +42,7 @@ export class BraveAccountCompactRowElement extends CrLitElement {
 
   protected accessor actionRequired = false
   protected accessor description = ''
-  protected accessor state: AccountState | undefined = undefined
+  private accessor state: AccountState | undefined = undefined
 
   private browserProxy!: BraveAccountCompactRowBrowserProxy
   private accountStateListenerId: number | null = null

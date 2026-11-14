@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/side_panel/side_panel_ui_base.h b/chrome/browser/ui/side_panel/side_panel_ui_base.h
-index b1d33cf8f4f15b28925371b8a27404ea182bc7eb..1f0d9432bc0deb46de783eafa95b332cf93357a9 100644
+index 49ed68b03c18e16be49a1195607021528c8bf895..594edc0dbf1f1e379fa5f00062301ae04ba27a72 100644
 --- a/chrome/browser/ui/side_panel/side_panel_ui_base.h
 +++ b/chrome/browser/ui/side_panel/side_panel_ui_base.h
-@@ -165,6 +165,7 @@ class SidePanelUIBase : public SidePanelUI {
+@@ -166,6 +166,7 @@ class SidePanelUIBase : public SidePanelUI {
    SidePanelEntryWaiter* waiter() const;
  
   private:

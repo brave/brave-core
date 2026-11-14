@@ -34,6 +34,7 @@ substitutions:
         \1, std::unique_ptr<tabs::TreeTabNodeTabCollection>\2
 
   - description: Make the DetachTabsAndCollectionsForInsertion method virtual
+    count: 2 # The tab-index and `TabHandle` overloads.
     make_virtual:
       class_name: TabStripModel
       method_name: 'DetachTabsAndCollectionsForInsertion'

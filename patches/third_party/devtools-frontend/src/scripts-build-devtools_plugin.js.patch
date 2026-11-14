@@ -1,8 +1,8 @@
 diff --git a/scripts/build/devtools_plugin.js b/scripts/build/devtools_plugin.js
-index c1b7e4e1ae9832972857b97faf66a233fa014b7d..7aa795f9ed957096c885a957efc9ea71e84ce59a 100644
+index 1dd3d347b4b488a149af45587d22af1901b8a128..5915f87f20563c452e73fdda88c340d1a6c61d07 100644
 --- a/scripts/build/devtools_plugin.js
 +++ b/scripts/build/devtools_plugin.js
-@@ -179,6 +179,7 @@ export function esbuildPlugin(outdir, genRoot, rootDir, externalFiles, bundleAll
+@@ -375,6 +375,7 @@ export function esbuildPlugin(outdir, genRoot, rootDir, externalFiles, bundleAll
        }
      }
  

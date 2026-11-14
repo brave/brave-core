@@ -7,14 +7,13 @@
 
 #include <utility>
 
-#include "base/no_destructor.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 
 namespace {
 
 brave::mojom::DynamicParams* GetDynamicConfigParams() {
-  static base::NoDestructor<brave::mojom::DynamicParams> dynamic_params;
-  return dynamic_params.get();
+  static brave::mojom::DynamicParams dynamic_params;
+  return &dynamic_params;
 }
 
 }  // namespace

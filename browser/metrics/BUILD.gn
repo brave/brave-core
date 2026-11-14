@@ -39,6 +39,7 @@ source_set("browser_tests") {
     "//base",
     "//chrome/browser",
     "//chrome/test:test_support",
+    "//chrome/test/base:platform_browser_test",
     "//components/variations",
     "//components/variations:test_support",
     "//components/variations/service",

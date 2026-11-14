@@ -365,7 +365,11 @@ std::vector<Tab*> BraveTabContainer::AddTabs(
   // Session restore inserts many background tabs back-to-back; scrolling to
   // each one forces an extra full strip relayout per insert. The active tab
   // is scrolled into view on activation anyway (see SetActiveTab).
-  if (GetScrollDirection() && !IsSessionRestoreInProgress()) {
+  if (GetScrollDirection() && !layout_locked_ &&
+      !IsSessionRestoreInProgress() && !added_tabs.empty()) {
+    // TabContainer::AddTabs() may only post its AnimateToIdealBounds() pass,
+    // so the new tabs have no ideal bounds to scroll to yet.
+    UpdateIdealBounds();
     for (Tab* const tab : added_tabs) {
       ScrollTabToBeVisible(tab);
     }
@@ -399,13 +403,13 @@ void BraveTabContainer::StartInsertTabAnimation(int model_index) {
                                            : tab_style_->GetStandardWidth(true);
   bounds.set_width(tab_width);
   bounds.set_x(-tab_width);
+  // TabContainer::AddTabs() animates to the ideal bounds once for all the tabs
+  // it inserts, so a tab inserted just before this one in the same batch has
+  // its starting bounds only, not ideal ones.
   bounds.set_y((model_index > 0)
-                   ? tabs_view_model_.ideal_bounds(model_index - 1).bottom()
+                   ? GetTabAtModelIndex(model_index - 1)->bounds().bottom()
                    : 0);
   GetTabAtModelIndex(model_index)->SetBoundsRect(bounds);
-
-  // Animate in to the full width.
-  AnimateToIdealBounds();
 }
 
 void BraveTabContainer::RemoveTab(int index, bool was_active) {
@@ -1044,6 +1048,12 @@ bool BraveTabContainer::IsPointInTab(
 }
 
 void BraveTabContainer::AnimateToIdealBounds() {
+  // TabContainer::AddTabs() runs or posts this pass after its inserts. While
+  // locked, OnUnlockLayout() lays out the whole strip instead.
+  if (layout_locked_) {
+    return;
+  }
+
   if (GetScrollDirection() == views::LayoutOrientation::kVertical) {
     // Pre-compute ideal bounds so we can snap expanding tabs before the base
     // method sets up animations. When a collapsed group is expanded, its tabs

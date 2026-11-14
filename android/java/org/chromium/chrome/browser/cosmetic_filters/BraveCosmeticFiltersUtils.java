@@ -26,7 +26,7 @@ public class BraveCosmeticFiltersUtils {
         try {
             BraveActivity.getBraveActivity().openBraveCreateCustomFiltersSettings();
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "open create custom filter settings" + e);
+            Log.e(TAG, "open create custom filter settings", e);
         }
     }
 
@@ -36,7 +36,7 @@ public class BraveCosmeticFiltersUtils {
         try {
             backgroundColor = BraveActivity.getBraveActivity().getBraveThemeBackgroundColor();
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "Get theme background color" + e);
+            Log.e(TAG, "Get theme background color", e);
         }
         return backgroundColor;
     }

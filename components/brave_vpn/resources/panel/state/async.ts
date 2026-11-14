@@ -132,7 +132,7 @@ handler.on(Actions.initialize.getType(), async (store) => {
     store.dispatch(
       Actions.purchaseFailed({
         state: PurchasedState.FAILED,
-        stateDescription: state.description
+        stateDescription: state.description ?? undefined
       })
     )
   }

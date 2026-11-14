@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 5c44a566850c64fa6884a250811a01e275ddc16c..a0ac936c2132f7829ab2de79f5079932c3dff133 100644
+index 7614138cda432a07e29c948a1f3685bf47f64f22..92d64a396de5da5a5beddd1981501824e3de06f6 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -286,8 +286,8 @@ public class ToolbarPhone extends ToolbarLayout
@@ -30,7 +30,7 @@ index 5c44a566850c64fa6884a250811a01e275ddc16c..a0ac936c2132f7829ab2de79f5079932
          if (mCurrentLocationBarColor == color) return;
          mCurrentLocationBarColor = color;
          mLocationBarBackground.setBackgroundColor(color);
-@@ -1297,6 +1298,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -1291,6 +1292,7 @@ public class ToolbarPhone extends ToolbarLayout
       * Tab Page.
       */
      private void updateLocationBarLayoutForExpansionAnimation() {
@@ -38,7 +38,7 @@ index 5c44a566850c64fa6884a250811a01e275ddc16c..a0ac936c2132f7829ab2de79f5079932
          TraceEvent.begin("ToolbarPhone.updateLocationBarLayoutForExpansionAnimation");
          if (isInTabSwitcherMode()) return;
  
-@@ -1713,6 +1715,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -1707,6 +1709,7 @@ public class ToolbarPhone extends ToolbarLayout
              }
          }
  
@@ -46,7 +46,7 @@ index 5c44a566850c64fa6884a250811a01e275ddc16c..a0ac936c2132f7829ab2de79f5079932
          // Draw the tab stack button and associated text if necessary.
          ToggleTabStackButtonCoordinator tabSwitcherButtonCoordinator =
                  getTabSwitcherButtonCoordinator();
-@@ -2105,7 +2108,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -2099,7 +2102,7 @@ public class ToolbarPhone extends ToolbarLayout
  
      @Override
      public void onHomeButtonIsEnabledUpdate(boolean homeButtonEnabled) {
@@ -55,7 +55,7 @@ index 5c44a566850c64fa6884a250811a01e275ddc16c..a0ac936c2132f7829ab2de79f5079932
          updateButtonVisibility();
      }
  
-@@ -2503,6 +2506,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -2497,6 +2500,7 @@ public class ToolbarPhone extends ToolbarLayout
      }
  
      private void createAndRunFocusAnimatorLegacy(boolean hasFocus, boolean shouldShowKeyboard) {
@@ -63,7 +63,7 @@ index 5c44a566850c64fa6884a250811a01e275ddc16c..a0ac936c2132f7829ab2de79f5079932
          List<Animator> animators = new ArrayList<>();
          if (hasFocus) {
              populateUrlExpansionAnimatorSet(animators);
-@@ -3690,6 +3694,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -3680,6 +3684,7 @@ public class ToolbarPhone extends ToolbarLayout
       * @return The offset for the location bar when showing the dse icon.
       */
      int getLocationBarOffsetForFocusAnimation(boolean hasFocus) {

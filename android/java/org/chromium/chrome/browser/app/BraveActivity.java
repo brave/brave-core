@@ -2894,7 +2894,8 @@ public abstract class BraveActivity extends ChromeActivity
 
     public void addOrEditBookmark(final Tab tabToBookmark) {
         RateUtils.getInstance().setPrefAddedBookmarkCount();
-        ((TabBookmarker) mTabBookmarkerSupplier.get()).addOrEditBookmark(tabToBookmark);
+        ((TabBookmarker) mTabBookmarkerSupplier.get())
+                .addOrEditBookmark(tabToBookmark, /* anchorView= */ null);
     }
 
     public void showBookmarkManager(Profile profile, Tab currentTab) {

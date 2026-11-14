@@ -104,6 +104,7 @@ const iconMap: { [key: string]: string } = {
     'cr:arrow-back': 'browser-back',
     'cr:more-vert': 'more-vertical',
     'cr:clear': 'close',
+    'cr:close': 'close',
     'sp:filter-list': 'filter',
     'settings:download': 'download',
     'settings:performance': 'cpu-chip',

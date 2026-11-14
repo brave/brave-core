@@ -314,8 +314,6 @@ are declared in tools/grit/grit_args.gni.
       <if expr="is_chromeos">
         <part file="chromeos_shared_strings.grdp" />
         <part file="chromeos_strings.grdp" />
-        <part file="os_settings_strings.grdp" />
-        <part file="os_settings_search_tag_strings.grdp" />
         <part file="sharesheet_strings.grdp" />
       </if>
 
@@ -1430,7 +1428,7 @@ are declared in tools/grit/grit_args.gni.
       <!-- Page menu. Android has separate strings for its menu -->
       <if expr="not is_android">
         <message name="IDS_APP_MENU_SEARCH_PLACEHOLDER" desc="Placeholder text for the search bar in the app menu.">
-          Search menu, or type an action
+          Search Brave features and actions
         </message>
         <message name="IDS_APP_MENU_SEARCH_BOOKMARKS_HEADER" desc="Section header for bookmark matches in the App Menu search results.">
           Bookmarks
@@ -4035,6 +4033,9 @@ are declared in tools/grit/grit_args.gni.
         </message>
         <message translateable="false" name="IDS_CERT_OID_AVA_POSTAL_CODE" desc="">
           postalCode
+        </message>
+        <message translateable="false" name="IDS_CERT_OID_TRUST_ANCHOR_ID" desc="">
+          trustAnchorID
         </message>
 
         <message name="IDS_CERT_EXT_NS_CERT_TYPE" desc="description of extension Netscape Certificate Type">
@@ -9099,6 +9100,30 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READING_MODE_AI_PLAYBACK_TURN_OFF" desc="Tooltip label for button that turns off AI Playback in Read Aloud.">
         Turn off AI Playback
       </message>
+      <message name="IDS_READING_MODE_AI_PLAYBACK_FEEDBACK_DIALOG_TITLE" desc="Title for the negative feedback checklist dialog in AI Playback.">
+        What went wrong?
+      </message>
+      <message name="IDS_READING_MODE_AI_PLAYBACK_FEEDBACK_DIALOG_SUBTITLE" desc="Subtitle for the negative feedback checklist dialog in AI Playback.">
+        Select the options below
+      </message>
+      <message name="IDS_READING_MODE_AI_PLAYBACK_FEEDBACK_SUBMIT" desc="Label for the button that submits negative feedback in AI Playback.">
+        Submit
+      </message>
+      <message name="IDS_READING_MODE_AI_PLAYBACK_FEEDBACK_REASON_NOT_FACTUALLY_CORRECT" desc="Label for the Not factually correct negative feedback checkbox in AI Playback.">
+        Not factually correct
+      </message>
+      <message name="IDS_READING_MODE_AI_PLAYBACK_FEEDBACK_REASON_BAD_VOICE" desc="Label for the Didn't like the voice negative feedback checkbox in AI Playback.">
+        Didn't like the voice
+      </message>
+      <message name="IDS_READING_MODE_AI_PLAYBACK_FEEDBACK_REASON_NOT_ENGAGING" desc="Label for the Not engaging enough negative feedback checkbox in AI Playback.">
+        Not engaging enough
+      </message>
+      <message name="IDS_READING_MODE_AI_PLAYBACK_FEEDBACK_REASON_OFFENSIVE" desc="Label for the Offensive content negative feedback checkbox in AI Playback.">
+        Offensive content
+      </message>
+      <message name="IDS_READING_MODE_AI_PLAYBACK_FEEDBACK_REASON_TECHNICAL_ISSUE" desc="Label for the Technical issue negative feedback checkbox in AI Playback.">
+        Technical issue
+      </message>
       <message name="IDS_READING_MODE_AI_PLAYBACK_IPH_BODY" desc="Text for the help bubble introducing AI playback in Reading Mode.">
         Listen to this page like it's a podcast with AI playback
       </message>
@@ -9122,6 +9147,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_READING_MODE_PREVIEW_TOOLTIP" desc="Tooltip label for button that previews speech in Read Aloud.">
         Play
+      </message>
+      <message name="IDS_READING_MODE_PREVIEW_VOICE_LABEL" desc="Accessibility label for the Play button in the Read Aloud voice selection dialog that plays a short audio preview of a specific voice. VOICE_NAME is the display name of the voice being previewed (e.g. Pebble).">
+        Preview <ph name="VOICE_NAME">$1<ex>Pebble</ex></ph>
       </message>
       <message name="IDS_READING_MODE_PAUSE_TOOLTIP" desc="Tooltip label for button that pauses speech in Read Aloud.">
         Pause (k)
@@ -9807,6 +9835,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_ORGANIZER_PANEL_TAB_GROUP_MORE_OPTIONS" desc="Spoken by screen readers and not visually rendered: accessibility label for the three-dot options button on the right side of a hovered or focused tab group item under the 'Tab groups' section in the organizer panel.">
         More options for <ph name="TAB_GROUP_NAME">$1<ex>Work</ex></ph>
+      </message>
+      <message name="IDS_ORGANIZER_PANEL_SECTION_NAVIGATION_HINT" is_accessibility_with_no_ui="true" desc="Spoken by screen readers and not visually rendered: accessibility description for a section header (or associated expand/collapse button) in the organizer panel, informing the user that up and down arrow keys can be used to navigate the list.">
+        Use up and down arrow keys to navigate the list.
       </message>
       <if expr="use_titlecase">
         <message name="IDS_TAB_STRIP_UNPIN_TAB_SEARCH" desc="In Title Case: Name of the tab strip system menu item for unpinning tab search.">
@@ -11071,6 +11102,14 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       <message name="IDS_PICTURE_IN_PICTURE_MINIMIZE_CONTROL_TEXT" desc="Text label of the minimize control button. The button appears when the user hovers over the Picture-in-Picture window.">
         Minimize
       </message>
+      <if expr="is_chromeos">
+        <message name="IDS_PICTURE_IN_PICTURE_PIN_WINDOW_TEXT" desc="Text label of the pin control button. Pressing the button keeps the Picture-in-Picture window where the user places it, instead of snapping it to the edge of the screen. The button appears in the Picture-in-Picture window.">
+          Pin window
+        </message>
+        <message name="IDS_PICTURE_IN_PICTURE_UNPIN_WINDOW_TEXT" desc="Text label of the unpin control button. Pressing the button snaps the Picture-in-Picture window to the edge of the screen again. The button appears in the Picture-in-Picture window when the window is pinned.">
+          Unpin window
+        </message>
+      </if>
       <message name="IDS_PICTURE_IN_PICTURE_LIVE_CAPTION_CONTROL_TEXT" desc="Text label of the live caption button. The button appears when the user hovers over the Picture-in-Picture window.">
         Live Caption
       </message>
@@ -13736,9 +13775,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_RECENT_TABS_NO_DEVICE_TABS" desc="The label in the Recent Tabs menu in the wrench menu when there's no tabs from other devices.">
         No tabs from other devices
       </message>
-      <message name="IDS_RECENT_TABS_LOGIN_FOR_DEVICE_TABS" desc="The label in the Recent Tabs menu in the wrench menu to suggest logging in to see tabs from other devices.">
-        Sign in to see tabs from other devices
-      </message>
       <message name="IDS_RECENT_TABS_SEE_DEVICE_TABS" desc="The label in the Recent Tabs menu in the wrench menu to see tabs from other devices.">
         See tabs from other devices
       </message>
@@ -13779,6 +13815,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_OTHER_DEVICE_TABS_SEE_MORE_TABS" desc="Label of the last row under a device in the 'Other device tabs' sub-menu of the wrench menu. It opens a sub-menu listing the remaining tabs open on that device. [ICU_Syntax]">
         {COUNT, plural, =1 {See 1 more tab} other {See # more tabs}}
+      </message>
+      <message name="IDS_OTHER_DEVICE_TABS_NO_OPEN_TABS" desc="Non-interactive header shown in place of open tabs under a device section in the 'Other device tabs' sub-menu of the wrench menu when that device has no open tabs.">
+        No open tabs on <ph name="DEVICE_NAME">$1<ex>iPad Air</ex></ph>
       </message>
       <message name="IDS_DEFAULT_DOWNLOAD_FILENAME" desc="Default name for downloaded files when we have no idea what they could be.">
         download
@@ -14172,17 +14211,35 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </if>
 
       <!-- TTC -->
+      <message name="IDS_TTC_CONFIRMATION_YES" meaning="Button label and spoken keyword for TTC voice confirmation" desc="Label of the button that approves an action proposed by the TTC voice assistant. Users can also say this word to approve, so it must be the single, common word people say to agree.">
+        Yes
+      </message>
+      <message name="IDS_TTC_CONFIRMATION_NO" meaning="Button label and spoken keyword for TTC voice confirmation" desc="Label of the button that denies an action proposed by the TTC voice assistant. Users can also say this word to deny, so it must be the single, common word people say to refuse.">
+        No
+      </message>
       <message name="IDS_TTC_ENTRYPOINT_LABEL" desc="Text label of the TTC menu item." translateable="false" formatter_data="android_java">
         TTC
       </message>
       <message name="IDS_TTC_INACTIVITY_TIMEOUT_TOAST" translateable="false" desc="Text shown in a toast notification when a TTC session terminates due to inactivity.">
         Listening stopped due to inactivity
       </message>
-      <message name="IDS_TTC_VOICE_PLATE_PROCESSING_ACCNAME" translateable="false" desc="Accessible status name for the TTC voice plate waveform while processing or connecting.">
-        Processing
+      <message name="IDS_TTC_MIC_MUTED_TOAST" translateable="false" desc="Text shown in a toast notification when the system mutes the microphone during a TTC session, e.g. with a hardware switch.">
+        Your microphone is muted
+      </message>
+      <message name="IDS_TTC_VOICE_PLATE_INITIALIZING_ACCNAME" translateable="false" desc="Accessible status name for the TTC voice plate waveform while initializing.">
+        Initializing
       </message>
       <message name="IDS_TTC_VOICE_PLATE_LISTENING_ACCNAME" translateable="false" desc="Accessible status name announced by screen readers when the TTC voice plate is actively listening.">
         Listening
+      </message>
+      <message name="IDS_TTC_VOICE_PLATE_MIC_MUTED_ACCNAME" translateable="false" desc="Accessible status name announced by screen readers when the user mutes the microphone in the TTC voice plate.">
+        Microphone muted
+      </message>
+      <message name="IDS_TTC_VOICE_PLATE_MUTE" desc="Tooltip label of the TTC voice plate button that mutes the microphone in TTC." translateable="false">
+        Mute microphone
+      </message>
+      <message name="IDS_TTC_VOICE_PLATE_UNMUTE" desc="Tooltip label of the TTC voice plate button that unmutes the microphone in TTC." translateable="false">
+        Unmute microphone
       </message>
 
       <!-- Web and message center notifications -->
@@ -16948,16 +17005,16 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <!-- Private History Disclaimer dialog bubble. -->
-    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_PRIMARY_TEXT" desc="Header in bubble view that states visited sites aren't saved in Private mode.">
+    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_PRIMARY_TEXT" desc="Header in bubble view that states visited sites aren't saved in Private mode." formatter_data="android_java">
       Sites you visit aren’t saved in Private
     </message>
-    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_SECONDARY_TEXT" desc="Description in bubble view that states closing all Private tabs is necessary to delete Private browsing history from the device,">
+    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_SECONDARY_TEXT" desc="Description in bubble view that states closing all Private tabs is necessary to delete Private browsing history from the device," formatter_data="android_java">
       To delete Private browsing history from your device, close all Private tabs
     </message>
-    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_CLOSE_INCOGNITO_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close all private tabs action.">
+    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_CLOSE_INCOGNITO_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close all private tabs action." formatter_data="android_java">
       Close Private
     </message>
-    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_CANCEL_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close the bubble action.">
+    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_CANCEL_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close the bubble action." formatter_data="android_java">
       Got it
     </message>
 
@@ -17744,8 +17801,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </if>
 
     <!-- Glic Activity Hub Strings -->
-    <message name="IDS_GLIC_ACTIVITY_TITLE_GEMINI" desc="Default title shown in the Glic Activity Hub for a Gemini conversation.">
-      Gemini
+    <message name="IDS_GLIC_ACTIVITY_NEW_CHAT" desc="Placeholder title for a conversation row in the Gemini in Brave Activity Hub bubble when the conversation does not have a title yet. Noun phrase.">
+      New chat
+    </message>
+    <message name="IDS_GLIC_ACTIVITY_UNTITLED_TASK" desc="Placeholder title for an automated task row in the Gemini in Brave Activity Hub bubble when the task does not have a title. Noun phrase.">
+      Untitled task
     </message>
     <message name="IDS_GLIC_ACTIVITY_WORKING" desc="Status text shown in the Glic Activity Hub when Gemini is generating a response or performing a task.">
       Working…
@@ -17792,8 +17852,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_MULTISTEP_FILTER_IPH_BODY_SCREENREADER" is_accessibility_with_no_ui="true" desc="Screenreader text shown in the IPH bubble for educating users about Multistep Filter." translateable="false">
         Brave can now suggest your recent filters and search details, helping you pick up where you left off or compare options across sites
       </message>
-      <message name="IDS_LINK_COPIED_TOAST_BODY" desc="Text on a toast notification that is shown when a link is successfully copied.">
-        Link copied
+      <message name="IDS_LINK_COPIED_TOAST_BODY" desc="Text on a toast notification that is shown when one or more links are successfully copied. [ICU Syntax]">
+        {LINKS, plural, =1 {Link copied} other {Links copied}}
       </message>
       <message name="IDS_IMAGE_COPIED_TOAST_BODY" desc="Text on a toast notification that is shown when an image is successfully copied.">
         Image copied
@@ -18343,6 +18403,16 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_NTP_EXTENSIONS_PROMO" desc="The text shown in the body of the New Tab Page extensions promotion">
         Add extensions to stay organized, simplify tasks, and enhance your browsing
       </message>
+      <if expr="is_macosx">
+        <message name="IDS_NTP_OMNIBOX_EVERYWHERE_PROMO" desc="The text shown in the body of the New Tab Page Omnibox Everywhere promotion on macOS.">
+          Search faster from anywhere on your Mac without opening a new tab
+        </message>
+      </if>
+      <if expr="not is_macosx">
+        <message name="IDS_NTP_OMNIBOX_EVERYWHERE_PROMO" desc="The text shown in the body of the New Tab Page Omnibox Everywhere promotion.">
+          Search faster from anywhere on your computer without opening a new tab
+        </message>
+      </if>
     </if>
 
     <!-- Save to Drive -->
@@ -18814,11 +18884,47 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_ON_DEVICE_MODEL_CATEGORY_GENERAL_PURPOSE_DESCRIPTION" translateable="false" desc="Short description for the general purpose on-device AI capability in Settings.">
       Helps to write, summarize, and more
     </message>
+    <message name="IDS_ON_DEVICE_MODEL_CATEGORY_GENERAL_PURPOSE_DETAIL_1" translateable="false" desc="First detail bullet for the general purpose on-device AI capability in Settings.">
+      Helps you draft, rephrase, and organize text on sites that use it
+    </message>
+    <message name="IDS_ON_DEVICE_MODEL_CATEGORY_GENERAL_PURPOSE_DETAIL_2" translateable="false" desc="Second detail bullet for the general purpose on-device AI capability in Settings.">
+      Handles many tasks, so one download covers multiple features
+    </message>
+    <message name="IDS_ON_DEVICE_MODEL_CATEGORY_PROOFREADING_TITLE" translateable="false" desc="Title for the proofreading on-device AI capability shown in Settings and download notifications.">
+      Proofreading
+    </message>
+    <message name="IDS_ON_DEVICE_MODEL_CATEGORY_PROOFREADING_DESCRIPTION" translateable="false" desc="Short description for the proofreading on-device AI capability in Settings.">
+      High-speed syntax and typographical checking without content alteration
+    </message>
+    <message name="IDS_ON_DEVICE_MODEL_CATEGORY_PROOFREADING_DETAIL_1" translateable="false" desc="First detail bullet for the proofreading on-device AI capability in Settings.">
+      Suggests fixes for spelling, grammar, and punctuation as you type
+    </message>
+    <message name="IDS_ON_DEVICE_MODEL_CATEGORY_PROOFREADING_DETAIL_2" translateable="false" desc="Second detail bullet for the proofreading on-device AI capability in Settings.">
+      Only suggests fixes without rewriting your text
+    </message>
+    <message name="IDS_ON_DEVICE_MODEL_CATEGORY_SUMMARIZING_TITLE" translateable="false" desc="Title for the summarizing on-device AI capability shown in Settings and download notifications.">
+      Summarizing
+    </message>
+    <message name="IDS_ON_DEVICE_MODEL_CATEGORY_SUMMARIZING_DESCRIPTION" translateable="false" desc="Short description for the summarizing on-device AI capability in Settings.">
+      Condensing long-form web content into concise takeaways
+    </message>
+    <message name="IDS_ON_DEVICE_MODEL_CATEGORY_SUMMARIZING_DETAIL_1" translateable="false" desc="First detail bullet for the summarizing on-device AI capability in Settings.">
+      Gives you key points, a short summary, or a headline
+    </message>
+    <message name="IDS_ON_DEVICE_MODEL_CATEGORY_SUMMARIZING_DETAIL_2" translateable="false" desc="Second detail bullet for the summarizing on-device AI capability in Settings.">
+      Faster and more compact than general-purpose writing
+    </message>
     <message name="IDS_ON_DEVICE_MODEL_CATEGORY_LIVE_TRANSCRIPTION_TITLE" translateable="false" desc="Title for the live transcription on-device AI capability shown in Settings and download notifications.">
       Live transcription
     </message>
     <message name="IDS_ON_DEVICE_MODEL_CATEGORY_LIVE_TRANSCRIPTION_DESCRIPTION" translateable="false" desc="Short description for the live transcription on-device AI capability in Settings.">
       Transcribes speech to text in real time
+    </message>
+    <message name="IDS_ON_DEVICE_MODEL_CATEGORY_LIVE_TRANSCRIPTION_DETAIL_1" translateable="false" desc="First detail bullet for the live transcription on-device AI capability in Settings.">
+      Works on sites that support live audio transcription
+    </message>
+    <message name="IDS_ON_DEVICE_MODEL_CATEGORY_LIVE_TRANSCRIPTION_DETAIL_2" translateable="false" desc="Second detail bullet for the live transcription on-device AI capability in Settings.">
+      Downloads separately for each language you use
     </message>
   </messages>
 </release>

@@ -15,4 +15,3 @@ import {RegisterPolymerComponentToIgnore} from 'chrome://resources/brave/polymer
 // component before the module is imported).
 
 RegisterPolymerComponentToIgnore('settings-site-settings-page')
-RegisterPolymerComponentToIgnore('site-list')

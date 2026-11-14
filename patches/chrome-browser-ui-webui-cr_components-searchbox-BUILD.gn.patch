@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/cr_components/searchbox/BUILD.gn b/chrome/browser/ui/webui/cr_components/searchbox/BUILD.gn
-index c2f6a11d9eb2067128c29cd29f892f7159424b1c..4565afbcfac5afda73d3cfb7c1a1ace8e03e29b2 100644
+index b2b13fe66799638a8c2adaf20d9e565265b0244c..31b8279b05b38d2b0a48c295cd8eb9e932593340 100644
 --- a/chrome/browser/ui/webui/cr_components/searchbox/BUILD.gn
 +++ b/chrome/browser/ui/webui/cr_components/searchbox/BUILD.gn
-@@ -129,6 +129,8 @@ source_set("searchbox_impl") {
+@@ -131,6 +131,8 @@ source_set("searchbox_impl") {
    if (enable_dice_support) {
      deps += [ "//chrome/browser/ui/views/search_ai_mode" ]
    }

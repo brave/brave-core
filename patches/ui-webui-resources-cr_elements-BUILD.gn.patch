@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/cr_elements/BUILD.gn b/ui/webui/resources/cr_elements/BUILD.gn
-index 8368eb9378f66c81bde5acdae8bc228c39f75ad0..27ae2fc9c50fdd38a249a54880bacd5c1e78576e 100644
+index 20ea98cd6ba8f5e55ac3372065d4695940778c3d..c10ead4afa53dbefc96ac3e4ec7930916c1ab99a 100644
 --- a/ui/webui/resources/cr_elements/BUILD.gn
 +++ b/ui/webui/resources/cr_elements/BUILD.gn
-@@ -230,6 +230,9 @@ build_webui("build") {
+@@ -240,6 +240,9 @@ build_webui("build") {
      "../js:build_ts",
      "//third_party/lit/v3_0:build_ts",
    ]

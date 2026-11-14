@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SettingsSearchCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SettingsSearchCoordinator.java
-index 09e5953252ccb7cd48b8680cea12909a130ee7ef..e2e84ce051a8a37ad8c51197b712abdd7c423647 100644
+index 5775495227941158a7d896184e3b59bf0c6bdadb..cc842bb1225c9fb699e309e7fa227dd40d7568c2 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SettingsSearchCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SettingsSearchCoordinator.java
 @@ -4,6 +4,8 @@
@@ -11,7 +11,7 @@ index 09e5953252ccb7cd48b8680cea12909a130ee7ef..e2e84ce051a8a37ad8c51197b712abdd
  import static androidx.annotation.VisibleForTesting.PRIVATE;
  
  import static org.chromium.base.CallbackUtils.emptyRunnable;
-@@ -322,6 +324,12 @@ public class SettingsSearchCoordinator
+@@ -325,6 +327,12 @@ public class SettingsSearchCoordinator
      /** Initializes search UI, sets up listeners, backpress action handler, etc. */
      @Initializer
      public void initializeSearchUi(@Nullable Bundle savedState) {

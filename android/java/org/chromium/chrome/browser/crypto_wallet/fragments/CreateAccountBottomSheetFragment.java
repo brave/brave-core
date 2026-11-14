@@ -62,7 +62,7 @@ public class CreateAccountBottomSheetFragment extends BottomSheetDialogFragment
             mSupportedCryptoAccounts =
                     mWalletModel.getCryptoModel().getSupportedCryptoAccountTypes();
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "onViewCreated " + e);
+            Log.e(TAG, "onViewCreated", e);
         }
         mRvAccounts = view.findViewById(R.id.fragment_create_account_rv);
 

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/favicon_source.cc b/chrome/browser/ui/webui/favicon_source.cc
-index 758297fceffe31ffafd3a29ee292bbc2229b5d97..91eae846b8cdc081f03e5c386498b4225c179975 100644
+index 3b441c4468bdd1754fc9c11744d4d4bbbc907a2c..56be66404ebda91061924325e2de22e3bf7f9130 100644
 --- a/chrome/browser/ui/webui/favicon_source.cc
 +++ b/chrome/browser/ui/webui/favicon_source.cc
-@@ -257,6 +257,9 @@ bool FaviconSource::ShouldServiceRequest(
+@@ -261,6 +261,9 @@ bool FaviconSource::ShouldServiceRequest(
  
  std::string FaviconSource::GetAccessControlAllowOriginForOrigin(
      const std::string& origin) {
@@ -12,7 +12,7 @@ index 758297fceffe31ffafd3a29ee292bbc2229b5d97..91eae846b8cdc081f03e5c386498b422
    // chrome-untrusted://favicon2 serves the favicons that the Data Sharing
    // page renders for the tabs of a shared tab group.
    if (serve_untrusted_ &&
-@@ -363,11 +366,11 @@ void FaviconSource::SendDefaultResponse(
+@@ -365,11 +368,11 @@ void FaviconSource::SendDefaultResponse(
  #if !BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_DESKTOP_ANDROID)
      case 64:
        resource_id =

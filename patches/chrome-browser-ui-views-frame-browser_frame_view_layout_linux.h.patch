@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/browser_frame_view_layout_linux.h b/chrome/browser/ui/views/frame/browser_frame_view_layout_linux.h
-index 64928feb6c014ee144d41b4c95579dccca6dc6c3..7671256f78e4054b38f9960c9cb7c1ce2f2fcbfb 100644
+index 34342474923ed5f8aa6834cbedd9f5b813b703ec..517f7fa3e5e7dc7878b23480f58b475a925467d2 100644
 --- a/chrome/browser/ui/views/frame/browser_frame_view_layout_linux.h
 +++ b/chrome/browser/ui/views/frame/browser_frame_view_layout_linux.h
-@@ -28,6 +28,10 @@ class BrowserFrameViewLayoutLinux : public OpaqueBrowserFrameViewLayout {
+@@ -32,6 +32,10 @@ class BrowserFrameViewLayoutLinux : public OpaqueBrowserFrameViewLayout {
  
    void set_view(BrowserFrameViewLinux* view) { view_ = view; }
  

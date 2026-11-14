@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/browser_frame_view_factory_views.cc b/chrome/browser/ui/views/frame/browser_frame_view_factory_views.cc
-index 7752581d8c64779278829b5a263d9c5cee5ee914..10abe335bfde9df61c9650dd2366e82e99138ee1 100644
+index 60654c3205b4c5d0b455e4a696308c2a16726884..3d6c44bd93eab32fae862a923fb5d84a2984e2cd 100644
 --- a/chrome/browser/ui/views/frame/browser_frame_view_factory_views.cc
 +++ b/chrome/browser/ui/views/frame/browser_frame_view_factory_views.cc
-@@ -32,7 +32,7 @@ namespace chrome {
+@@ -33,7 +33,7 @@ namespace chrome {
  namespace {
  
  #if BUILDFLAG(IS_LINUX)
@@ -11,7 +11,7 @@ index 7752581d8c64779278829b5a263d9c5cee5ee914..10abe335bfde9df61c9650dd2366e82e
      BrowserWidget* widget,
      BrowserView* browser_view) {
    auto* profile = browser_view->browser()->GetProfile();
-@@ -68,7 +68,7 @@ std::unique_ptr<OpaqueBrowserFrameView> CreateOpaqueBrowserFrameViewLinux(
+@@ -70,7 +70,7 @@ std::unique_ptr<OpaqueBrowserFrameView> CreateOpaqueBrowserFrameViewLinux(
                      ui::FrameType::kBrowser, solid_frame, tiled, maximized);
                },
                native_widget, linux_ui_theme));
@@ -20,7 +20,7 @@ index 7752581d8c64779278829b5a263d9c5cee5ee914..10abe335bfde9df61c9650dd2366e82e
            widget, browser_view, layout, std::move(nav_button_provider));
      }
    }
-@@ -104,10 +104,10 @@ std::unique_ptr<BrowserFrameView> CreateBrowserFrameViewWin(
+@@ -106,10 +106,10 @@ std::unique_ptr<BrowserFrameView> CreateBrowserFrameViewWin(
    }
  
    if (widget->ShouldUseNativeFrame()) {

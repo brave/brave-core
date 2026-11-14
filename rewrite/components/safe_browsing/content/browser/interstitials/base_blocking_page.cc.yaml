@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Build Brave's Safe Browsing interstitial UI.
+
+      `BraveSafeBrowsingLoudErrorUI`, in the `chromium_src` override, opens
+      Brave's help centre article instead of Google's.
+    regex:
+      pattern: 'std::make_unique<SafeBrowsingLoudErrorUI>('
+      replace: 'std::make_unique<security_interstitials::BraveSafeBrowsingLoudErrorUI>('

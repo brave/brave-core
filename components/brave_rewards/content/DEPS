@@ -23,7 +23,7 @@ include_rules = [
 ]
 
 specific_include_rules = {
-  "test_util\.cc": [
+  "test_util\\.cc": [
     "+components/sync_preferences/pref_service_mock_factory.h",
     # component unit tests should not have chrome or brave / browser deps
     "!brave/browser/brave_rewards/rewards_service_factory.h",

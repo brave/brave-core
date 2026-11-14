@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/net/profile_network_context_service.cc b/chrome/browser/net/profile_network_context_service.cc
-index 31b1f2b2b066498293da5e3e2d59acfa7710a580..aa7eaa6341c10e6ed7977430adaad7694f4d0cfe 100644
+index a71a0f787b780b8fb1ebcd14461eb06b64867a1a..a89af045a75ccf2686a7b95b3ce8678f0a3a4505 100644
 --- a/chrome/browser/net/profile_network_context_service.cc
 +++ b/chrome/browser/net/profile_network_context_service.cc
-@@ -736,6 +736,7 @@ network::mojom::CTPolicyPtr ProfileNetworkContextService::GetCTPolicy() {
+@@ -735,6 +735,7 @@ network::mojom::CTPolicyPtr ProfileNetworkContextService::GetCTPolicy() {
    std::vector<std::string> excluded_spkis(
        TranslateStringArray(ct_excluded_spkis));
  
@@ -10,7 +10,7 @@ index 31b1f2b2b066498293da5e3e2d59acfa7710a580..aa7eaa6341c10e6ed7977430adaad769
    return network::mojom::CTPolicy::New(std::move(excluded),
                                         std::move(excluded_spkis));
  }
-@@ -1349,6 +1350,12 @@ void ProfileNetworkContextService::ConfigureNetworkContextParamsInternal(
+@@ -1348,6 +1349,12 @@ void ProfileNetworkContextService::ConfigureNetworkContextParamsInternal(
    g_browser_process->system_network_context_manager()
        ->ConfigureDefaultNetworkContextParams(network_context_params);
  

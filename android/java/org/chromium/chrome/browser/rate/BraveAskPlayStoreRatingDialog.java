@@ -162,7 +162,7 @@ public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
                 task -> {
                     if (!task.isSuccessful()) {
                         // If requestReviewFlow fails, fall back to opening Play Store directly
-                        Log.e(TAG, "Failed to request review flow: " + task.getException());
+                        Log.e(TAG, "Failed to request review flow", task.getException());
                         RateUtils.getInstance().openPlaystore(mContext);
                         return;
                     }

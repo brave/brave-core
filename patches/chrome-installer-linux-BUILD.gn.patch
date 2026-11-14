@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index 71b0e79cb00db9e1497a5613668fb68b0726e05c..e23ef272912b142885db3acd761ab2561e226334 100644
+index e2b1633389f50ccaa5bd4b50774471c774c522d2..a1b79d8a3cc7eca3c5991de73e1af79d1834c3ff 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -100,7 +100,7 @@ index 71b0e79cb00db9e1497a5613668fb68b0726e05c..e23ef272912b142885db3acd761ab256
  
        args = [
          "-a",
-@@ -779,3 +809,6 @@ if (!is_chromeos) {
+@@ -789,3 +819,6 @@ if (!is_chromeos) {
      }
    }
  }

@@ -1,30 +1,30 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-index 44274b0b8f1d1aab2ce06f0eead39287da8bc3b6..fd999276c1d50049c7ffa4a30b363168a9891287 100644
+index 5d4874bf396acf2cebd1644c67da3a97cc25e49a..57f44b7fd8b639d30ec117dba568d4ff6fec74cb 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-@@ -277,6 +277,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
-             Action.CREATE_QR_CODE,
+@@ -279,6 +279,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              Action.ASK_GEMINI,
              Action.ASK_GEMINI_IMAGE,
+             Action.ASK_GOOGLE_ABOUT_PAGE,
 +            Action.COPY_CLEAN_LINK,
          })
          @Retention(RetentionPolicy.SOURCE)
          public @interface Action {
-@@ -341,7 +342,8 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
-             int CREATE_QR_CODE = 58;
+@@ -344,7 +345,8 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              int ASK_GEMINI = 59;
              int ASK_GEMINI_IMAGE = 60;
--            int NUM_ENTRIES = 61;
-+            int COPY_CLEAN_LINK = 61;
+             int ASK_GOOGLE_ABOUT_PAGE = 61;
+-            int NUM_ENTRIES = 62;
++            int COPY_CLEAN_LINK = 62;
 +            int NUM_ENTRIES = COPY_CLEAN_LINK + 1;
          }
  
          // LINT.ThenChange(/tools/metrics/histograms/enums.xml:ContextMenuOptionAndroid)
-@@ -734,6 +736,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+@@ -748,6 +750,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              if (!MailTo.isMailTo(mParams.getLinkUrl().getSpec())
                      && !UrlUtilities.isTelScheme(mParams.getLinkUrl())) {
                  linkGroup.add(createListItem(Item.COPY_LINK_ADDRESS));
 +                linkGroup.add(createListItem(Item.COPY_CLEAN_LINK));
-                 if (!mParams.getLinkText().trim().isEmpty() && !mParams.isImage()) {
-                     linkGroup.add(createListItem(Item.COPY_LINK_TEXT));
-                 }
+                 if (!mParams.getLinkText().trim().isEmpty()
+                         && !mParams.isImage()
+                         && !mParams.isCanvas()) {

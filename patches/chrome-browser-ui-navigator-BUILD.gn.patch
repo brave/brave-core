@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/navigator/BUILD.gn b/chrome/browser/ui/navigator/BUILD.gn
-index 29e1385322f7f62545fdc9a5fa6805c6925cba90..7ba080eb3d624b446f1b3411d490e01c2542d521 100644
+index 24721b206b71228ca9975ac02778d409127b2765..76c5507fbf5fa6be14c109345e5417aeab7db77e 100644
 --- a/chrome/browser/ui/navigator/BUILD.gn
 +++ b/chrome/browser/ui/navigator/BUILD.gn
 @@ -17,6 +17,7 @@ source_set("navigator") {

@@ -1,17 +1,17 @@
 diff --git a/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc b/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc
-index 947431ce2dc385c35d18f22c2fd101d32ac3945b..dd72244a06382cce56d4181fbb7fdb502fd75a92 100644
+index e68f3d7d46138fd2721aebb2fdc7be9cf92f9e2c..bd41883510eb8889da68e82ff4b28bfd51887049 100644
 --- a/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc
 +++ b/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc
-@@ -534,7 +534,7 @@ void RecentTabsSubMenuModel::BuildTabsFromOtherDevices() {
-   std::vector<raw_ptr<const sync_sessions::SyncedSession, VectorExperimental>>
-       sessions;
-   if (!open_tabs || !open_tabs->GetAllForeignSessions(&sessions)) {
+@@ -536,7 +536,7 @@ void RecentTabsSubMenuModel::BuildTabsFromOtherDevices() {
+   if (!open_tabs || !open_tabs->GetAllForeignSessions(
+                         &sessions, sync_sessions::OpenTabsUIDelegate::
+                                        ForeignSessionFilter::kPresentable)) {
 -    if (open_tabs) {
 +    if ((true)) {
        AddItemWithStringId(IDC_RECENT_TABS_NO_DEVICE_TABS,
                            IDS_RECENT_TABS_NO_DEVICE_TABS);
-     } else if (syncer::IsReplaceSyncPromosWithSignInPromosEnabled()) {
-@@ -577,6 +577,8 @@ void RecentTabsSubMenuModel::BuildTabsFromOtherDevices() {
+     } else {
+@@ -571,6 +571,8 @@ void RecentTabsSubMenuModel::BuildTabsFromOtherDevices() {
      CHECK(!session->GetSessionName().empty(), base::NotFatalUntil::M162);
      std::unique_ptr<ui::SimpleMenuModel> device_menu_model =
          CreateOtherDeviceSubMenu(session, tabs_in_session);

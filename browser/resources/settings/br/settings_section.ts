@@ -9,7 +9,7 @@ import {css} from '//resources/lit/v3_0/lit.rollup.js'
 import {SettingsSectionElement} from '../settings_page/settings_section.js'
 
 injectStyle(SettingsSectionElement, css`
-  :host-context(settings-section:first-of-type) #header:has(.title:empty) {
+  :host-context(settings-section:first-of-type) #header[hidden] {
     display: none;
   }
 

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/component_updater/BUILD.gn b/chrome/browser/component_updater/BUILD.gn
-index c0ab68c0b3bd7430b5a6c985de0c5c7cbc8b01af..7bdeb99db837524712c355d252163c1e260196bf 100644
+index 48671693b6268bbd0dd72cda2c7a26f17fe5a884..8127c06c521e2d05c253f8a1e3781be04caf0791 100644
 --- a/chrome/browser/component_updater/BUILD.gn
 +++ b/chrome/browser/component_updater/BUILD.gn
 @@ -2,6 +2,7 @@

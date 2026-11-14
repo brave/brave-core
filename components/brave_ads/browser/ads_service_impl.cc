@@ -1693,7 +1693,7 @@ void AdsServiceImpl::GetProfilePref(const std::string& path,
 
 void AdsServiceImpl::SetProfilePref(const std::string& path,
                                     base::Value value) {
-  prefs_->Set(path, value);
+  prefs_->Set(path, std::move(value));
   NotifyPrefChanged(path);
 }
 
@@ -1719,7 +1719,7 @@ void AdsServiceImpl::GetLocalStatePref(const std::string& path,
 
 void AdsServiceImpl::SetLocalStatePref(const std::string& path,
                                        base::Value value) {
-  local_state_->Set(path, value);
+  local_state_->Set(path, std::move(value));
   NotifyPrefChanged(path);
 }
 

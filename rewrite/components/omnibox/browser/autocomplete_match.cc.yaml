@@ -1,0 +1,44 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Show Brave's icons for commander and Ask Brave Search matches.
+
+      `GetBraveVectorIcon()` is in the `chromium_src` override.
+    preempt_function_impl:
+      function_name: AutocompleteMatch::GetVectorIcon
+      code: |-
+        if (const gfx::VectorIcon* icon = GetBraveVectorIcon(*this, turl)) {
+          return *icon;
+        }
+
+  - description: |-
+      Give the Ask Brave Search starter pack its omnibox placeholder.
+    regex:
+      re_pattern:
+        '(AutocompleteMatch::GetKeywordPlaceholder\(.*?\n\s*switch
+        \(template_url->starter_pack_id\(\)\) \{)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            case template_url_starter_pack_data::StarterPackId::kAskBraveSearch:
+              message_id = IDS_OMNIBOX_ASK_BRAVE_SEARCH_SCOPE_PLACEHOLDER_TEXT;
+              break;
+
+  - description: |-
+      Handle Brave's `OPEN_HERE` action in `GetOmniboxEventResultType()`.
+
+      The switch covers every `OmniboxActionId`, so the Brave one needs a
+      case. It keeps the match's own result type.
+    regex:
+      re_pattern:
+        '(AutocompleteMatch::GetOmniboxEventResultType\(.*?\n\s*switch
+        \(actions\[action_index\]->ActionId\(\)\) \{)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+              case OmniboxActionId::OPEN_HERE:
+                break;

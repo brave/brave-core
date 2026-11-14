@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/web_apps/frame_toolbar/web_app_frame_toolbar_view.h b/chrome/browser/ui/views/web_apps/frame_toolbar/web_app_frame_toolbar_view.h
+index 1b2ff290b2e010ccae6ed4c1463abd469865305b..b0c0374cf9a2898821634371fada47f98f53d8fb 100644
+--- a/chrome/browser/ui/views/web_apps/frame_toolbar/web_app_frame_toolbar_view.h
++++ b/chrome/browser/ui/views/web_apps/frame_toolbar/web_app_frame_toolbar_view.h
+@@ -107,6 +107,8 @@ class WebAppFrameToolbarView : public views::AccessiblePaneView,
+     return right_container_;
+   }
+ 
++  ToolbarButton* GetDownloadButton() override;
++
+  protected:
+   // views::AccessiblePaneView:
+   // Adds logic to ensure that the buttons to be focused follow these rules

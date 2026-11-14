@@ -37,6 +37,8 @@
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/create_browser_window.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -47,7 +49,9 @@
 #include "components/prefs/pref_service.h"
 #include "components/saved_tab_groups/public/tab_group_sync_service.h"
 #include "components/sync/base/command_line_switches.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_utils.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 
@@ -825,6 +829,45 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   // Toggle back
   command_controller->ExecuteCommand(IDC_TOGGLE_VERTICAL_TABS);
   ASSERT_FALSE(vtc->ShouldShowBraveVerticalTabs());
+}
+
+// Muting a tab only notifies an audio change, not a tab change.
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       UnmuteAllTabsFollowsAudioChanges) {
+  auto* command_controller = chrome::BrowserCommandController::From(browser());
+  EXPECT_FALSE(
+      command_controller->IsCommandEnabled(IDC_WINDOW_UNMUTE_ALL_TABS));
+
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  contents->SetAudioMuted(true);
+  EXPECT_TRUE(base::test::RunUntil([&]() {
+    return command_controller->IsCommandEnabled(IDC_WINDOW_UNMUTE_ALL_TABS);
+  }));
+
+  contents->SetAudioMuted(false);
+  EXPECT_TRUE(base::test::RunUntil([&]() {
+    return !command_controller->IsCommandEnabled(IDC_WINDOW_UNMUTE_ALL_TABS);
+  }));
+}
+
+// Closing the only muted tab is a tab strip change, with no audio change.
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       UnmuteAllTabsFollowsTabStripChanges) {
+  auto* command_controller = chrome::BrowserCommandController::From(browser());
+  chrome::AddTabAt(browser(), GURL("about:blank"), 1, false);
+  TabStripModel* tab_strip_model = browser()->tab_strip_model();
+  content::WebContents* contents = tab_strip_model->GetWebContentsAt(1);
+  // A mute with no reason is undone when the tab's navigation finishes.
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+  contents->SetAudioMuted(true);
+  EXPECT_TRUE(base::test::RunUntil([&]() {
+    return command_controller->IsCommandEnabled(IDC_WINDOW_UNMUTE_ALL_TABS);
+  }));
+
+  tab_strip_model->CloseWebContentsAt(1, TabCloseTypes::CLOSE_NONE);
+  EXPECT_FALSE(
+      command_controller->IsCommandEnabled(IDC_WINDOW_UNMUTE_ALL_TABS));
 }
 
 #if BUILDFLAG(IS_MAC)

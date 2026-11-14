@@ -37,7 +37,7 @@ include_rules += [
 ]
 
 specific_include_rules = {
-  ".*browsertest\.cc": [
+  ".*browsertest\\.cc": [
     "+chrome/test",
     "+chrome/app/chrome_command_ids.h",
     "+content/public/test",

@@ -903,7 +903,8 @@ void BraveContentBrowserClient::RegisterUntrustedWebUIInterfaceBrokers(
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
   if (brave_vpn::IsBraveVPNFeatureEnabled()) {
     registry.ForWebUI<VPNPanelUI>()
-        .Add<brave_vpn::mojom::PanelHandlerFactory>();
+        .Add<brave_vpn::mojom::PanelHandlerFactory>()
+        .Add<brave_vpn::mojom::ServiceHandler>();
   }
 #endif
 

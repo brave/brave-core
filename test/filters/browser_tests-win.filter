@@ -135,7 +135,7 @@
 -AutofillProgressDialogViewsBrowserTest.CloseBrowserWhileDialogShowing/3
 
 # Tests below this point have not been diagnosed or had issues created yet.
--All/PDFPluginDisabledTest.*
+-PDFPluginDisabledTest.*
 -AllowCurrentProfile_DifferentUserSignedInDefaultProfile/ExistingWinBrowserProfilesSigninUtilTest.*
 -AllowCurrentProfile_NoUserSignedIn/ExistingWinBrowserProfilesSigninUtilTest.*
 -AllowCurrentProfile_SameUserSignedIn/ExistingWinBrowserProfilesSigninUtilTest.*

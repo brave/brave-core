@@ -4460,7 +4460,8 @@ class RecordingCollectionObserver : public tabs::TabCollectionObserver {
     Record(Kind::kAdded, {position.parent_handle}, handles);
   }
   void OnChildrenRemoved(const tabs::TabCollection::Position& position,
-                         const tabs::TabCollectionNodes& handles) override {
+                         const tabs::TabCollectionNodes& handles,
+                         bool remove_for_detach) override {
     Record(Kind::kRemoved, {position.parent_handle}, handles);
   }
   void OnChildMoved(const tabs::TabCollection::Position& to_position,

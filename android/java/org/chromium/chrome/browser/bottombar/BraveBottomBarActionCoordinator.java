@@ -102,7 +102,7 @@ public class BraveBottomBarActionCoordinator implements Destroyable {
         try {
             BraveActivity.getBraveActivity().addOrEditBookmark(tab);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "addOrEditBookmark " + e);
+            Log.e(TAG, "addOrEditBookmark", e);
         }
     }
 

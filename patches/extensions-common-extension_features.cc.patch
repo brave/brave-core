@@ -1,5 +1,5 @@
 diff --git a/extensions/common/extension_features.cc b/extensions/common/extension_features.cc
-index 6b015bca61d25dde83c396579f9cda55c293480e..836b4d4b4d1d7cec66595c88763814940f5e045c 100644
+index bb3fc1bb8a69e20a4d952035d10035c5000aaf55..439cb739c31a81da33e0f27b114a42921e094339 100644
 --- a/extensions/common/extension_features.cc
 +++ b/extensions/common/extension_features.cc
 @@ -33,7 +33,7 @@ BASE_FEATURE(kApiContextualTasksPrivate, base::FEATURE_DISABLED_BY_DEFAULT);

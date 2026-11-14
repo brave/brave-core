@@ -102,7 +102,7 @@
 # https://github.com/brave/brave-browser/issues/52572
 # https://github.com/brave/brave-browser/issues/52649
 # https://github.com/brave/brave-browser/issues/52569
--All/PDFPluginDisabledTest.DirectNavigationToPDF/*
+-PDFPluginDisabledTest.DirectNavigationToPDF
 -ChromeMojoProxyResolverFactoryBrowserTest.*
 -PluginResponseInterceptorURLLoaderThrottleBrowserTest.DownloadPdf
 

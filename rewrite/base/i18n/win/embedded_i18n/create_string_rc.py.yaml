@@ -1,0 +1,29 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Read the en-US source strings from `brave_strings.grd`.
+
+      The output's base name is derived from `grd_file`, so the input can't
+      simply be swapped in `chrome/installer/util/BUILD.gn`.
+    regex:
+      re_pattern: '^( +)sax_parser\.parse\(grd_file\)\n'
+      re_flags: [MULTILINE]
+      replace: |+
+        \1# A base name is calculated from grd_file so that's why we don't
+        \1# just change that from chrome/installer/util/BUILD.gn
+        \1if "chromium_strings" in grd_file:
+        \1  sax_parser.parse("../../chrome/app/brave_strings.grd")
+        \1else:
+        \1  sax_parser.parse(grd_file)
+
+  - description: |-
+      Accept Brave's brands.
+
+      The mode-specific strings only list Chromium's brands.
+    regex:
+      pattern: 'if brand not in valid_brands:'
+      replace: 'if brand not in valid_brands and False:'

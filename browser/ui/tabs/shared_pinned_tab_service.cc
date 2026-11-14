@@ -391,13 +391,15 @@ void SharedPinnedTabService::OnTabStripModelChanged(
   }
 }
 
-void SharedPinnedTabService::OnTabPinnedStateChanged(tabs::TabInterface* tab,
-                                                     int index) {
+void SharedPinnedTabService::OnTabPinnedStateChanged(tabs::TabHandle handle) {
   if (change_source_model_) {
     return;
   }
 
+  tabs::TabInterface* tab = handle.Get();
+  CHECK(tab);
   auto* tab_strip_model = tab->GetBrowserWindowInterface()->GetTabStripModel();
+  const int index = tab_strip_model->GetIndexOfTab(tab);
   DVLOG(2) << __FUNCTION__ << " index: " << index << " pinned? "
            << tab_strip_model->IsTabPinned(index);
   auto* contents = tab->GetContents();
@@ -462,6 +464,11 @@ void SharedPinnedTabService::OnTabChangedAt(tabs::TabInterface* tab,
 void SharedPinnedTabService::OnTabBlockedStateChanged(tabs::TabInterface* tab) {
   // Blocked state used to be reported as a kind of tab change, so dummy tabs
   // would pick it up. Propagate it the same way.
+  OnTabChangedAt(tab, TabChangeType::kAll);
+}
+
+void SharedPinnedTabService::OnTabAudioChanged(tabs::TabInterface* tab) {
+  // Like blocked state, audio used to be reported as a kind of tab change.
   OnTabChangedAt(tab, TabChangeType::kAll);
 }
 
@@ -919,7 +926,7 @@ void SharedPinnedTabService::OnSharedPinnedTabEnabled() {
         // browser.
         continue;
       }
-      OnTabPinnedStateChanged(tab, i);
+      OnTabPinnedStateChanged(tab->GetHandle());
     }
   }
 }

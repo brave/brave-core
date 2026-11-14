@@ -77,22 +77,24 @@ void VPNPanelUI::BindInterface(
   panel_factory_receiver_.Bind(std::move(receiver));
 }
 
+void VPNPanelUI::BindInterface(
+    mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver) {
+  auto* vpn_service = brave_vpn::BraveVpnServiceFactory::GetForProfile(
+      Profile::FromWebUI(web_ui()));
+  if (vpn_service) {
+    vpn_service->BindInterface(std::move(receiver));
+  }
+}
+
 void VPNPanelUI::CreatePanelHandler(
     mojo::PendingRemote<brave_vpn::mojom::Page> page,
-    mojo::PendingReceiver<brave_vpn::mojom::PanelHandler> panel_receiver,
-    mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler>
-        vpn_service_receiver) {
+    mojo::PendingReceiver<brave_vpn::mojom::PanelHandler> panel_receiver) {
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
   CHECK(profile);
 
   panel_handler_ = std::make_unique<VPNPanelHandler>(std::move(panel_receiver),
                                                      this, profile);
-
-  auto* vpn_service = brave_vpn::BraveVpnServiceFactory::GetForProfile(profile);
-  if (vpn_service) {
-    vpn_service->BindInterface(std::move(vpn_service_receiver));
-  }
 }
 
 bool UntrustedVPNPanelUIConfig::IsWebUIEnabled(

@@ -135,7 +135,7 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
         try {
             BraveActivity.getBraveActivity();
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "checkOnBraveActivity " + e);
+            Log.e(TAG, "checkOnBraveActivity", e);
             Intent intent = new Intent(getActivity(), ChromeTabbedActivity.class);
             intent.putExtra(BraveWalletActivity.RESTART_WALLET_ACTIVITY, true);
             intent.putExtra(BraveWalletActivity.RESTART_WALLET_ACTIVITY_SETUP, setupAction);

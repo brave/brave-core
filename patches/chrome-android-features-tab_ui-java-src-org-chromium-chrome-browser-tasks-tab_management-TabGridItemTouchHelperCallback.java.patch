@@ -1,5 +1,5 @@
 diff --git a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridItemTouchHelperCallback.java b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridItemTouchHelperCallback.java
-index 623c6e7906000490d551bce29c7c8192acd86af2..a4c708dc758d61dde59d39d36c429fc0ae894785 100644
+index 7613dae5437fb12b1e303d6f2f6289d09a475220..43033830a2582c9427a050fee1e05b1de7a863d2 100644
 --- a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridItemTouchHelperCallback.java
 +++ b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridItemTouchHelperCallback.java
 @@ -78,7 +78,7 @@ public class TabGridItemTouchHelperCallback extends TabListItemTouchHelperCallba

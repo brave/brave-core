@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/signin/chrome_signin_helper.cc b/chrome/browser/signin/chrome_signin_helper.cc
-index 368aec8b17d25a17b15fd51ef188bff733a751bc..268393f1d969b03cab72b40500ebdfb0a4abd9f7 100644
+index 754904218144f2f93743e9d520fae9326d6ef5e2..67bd2448eb595e79808b62d4150f2621823e586d 100644
 --- a/chrome/browser/signin/chrome_signin_helper.cc
 +++ b/chrome/browser/signin/chrome_signin_helper.cc
 @@ -269,6 +269,7 @@ void ProcessMirrorHeader(

@@ -364,7 +364,7 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
             case CoinType.FIL -> activeChainId = mActiveFilChainId;
             case CoinType.SOL -> activeChainId = mActiveSolChainId;
             case CoinType.BTC -> activeChainId = mActiveBtcChainId;
-            case CoinType.ZEC -> Log.e(TAG, "Unsupported active chain for coin type: " + coinType);
+            case CoinType.ZEC -> Log.e(TAG, "Unsupported active chain for coin type: %s", coinType);
         }
         return activeChainId;
     }
