@@ -79,14 +79,19 @@ namespace meld_integration_responses {
         DOMString? error;
     };
 
+    dictionary PartnerCapability {
+        DOMString category;
+        DOMString? status;
+    };
+
     dictionary ServiceProvider {
         DOMString serviceProvider;
         DOMString? name;
         DOMString status;
         DOMString[] categories;
-        any categoryStatuses;
-        DOMString? websiteUrl;
-        Logos? logos;
+        PartnerCapability[]? capabilities;
+        DOMString? url;
+        Logos? logo;
     };
 
     dictionary MeldError {
