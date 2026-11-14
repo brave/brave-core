@@ -23,7 +23,7 @@ concept IsJSONResponseBody = requires(const base::Value& value) {
   } -> std::same_as<std::optional<ResponseBody>>;
 };
 
-// A Protobuf response body is a type that IsProtobufMessage.
+// A Protobuf response body is a Protobuf message.
 template <typename ResponseBody>
 concept IsProtobufResponseBody = IsProtobufMessage<ResponseBody>;
 

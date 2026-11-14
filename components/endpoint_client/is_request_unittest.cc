@@ -7,8 +7,7 @@
 
 #include <type_traits>
 
-#include "brave/components/endpoint_client/json_test_endpoint_bodies.h"
-#include "brave/components/endpoint_client/protobuf_test_endpoint_bodies.pb.h"
+#include "base/values.h"
 #include "brave/components/endpoint_client/request_types.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -25,6 +24,10 @@ namespace {
 template <typename T>
 inline constexpr std::type_identity<T> kType{};
 
+struct ValidRequestBody {
+  base::DictValue ToValue() const;
+};
+
 template <auto TypeIdentity, bool SatisfiesConcept>
 struct IsRequestTestCase {
   using Type = typename decltype(TypeIdentity)::type;
@@ -34,37 +37,28 @@ struct IsRequestTestCase {
 using IsRequestTestCases = testing::Types<
     IsRequestTestCase<kType<void*>, false>,
     IsRequestTestCase<kType<volatile int>, false>,
+    IsRequestTestCase<kType<ValidRequestBody>, false>,
+    IsRequestTestCase<kType<Connect<>>, true>,
+    IsRequestTestCase<kType<Delete<>>, true>,
     IsRequestTestCase<kType<Get>, true>,
     IsRequestTestCase<kType<Head>, true>,
-    IsRequestTestCase<kType<Delete<>>, true>,
+    IsRequestTestCase<kType<Options<>>, true>,
+    IsRequestTestCase<kType<Patch<>>, true>,
     IsRequestTestCase<kType<Post<>>, true>,
-    IsRequestTestCase<kType<JSONNonEmptyRequestBody>, false>,
-    IsRequestTestCase<kType<Connect<JSONNonEmptyRequestBody>>, true>,
-    IsRequestTestCase<kType<Delete<JSONNonEmptyRequestBody>>, true>,
-    IsRequestTestCase<kType<Options<JSONNonEmptyRequestBody>>, true>,
-    IsRequestTestCase<kType<Patch<JSONNonEmptyRequestBody>>, true>,
-    IsRequestTestCase<kType<Post<JSONNonEmptyRequestBody>>, true>,
-    IsRequestTestCase<kType<Put<JSONNonEmptyRequestBody>>, true>,
-    IsRequestTestCase<kType<Trace<JSONNonEmptyRequestBody>>, true>,
-    IsRequestTestCase<kType<Track<JSONNonEmptyRequestBody>>, true>,
-    IsRequestTestCase<kType<Request<Method::kGet, JSONNonEmptyRequestBody>>,
-                      false>,
-    IsRequestTestCase<kType<Request<Method::kHead, JSONNonEmptyRequestBody>>,
-                      false>,
-    IsRequestTestCase<kType<ProtobufNonEmptyRequestBody>, false>,
-    IsRequestTestCase<kType<Connect<ProtobufNonEmptyRequestBody>>, true>,
-    IsRequestTestCase<kType<Delete<ProtobufNonEmptyRequestBody>>, true>,
-    IsRequestTestCase<kType<Options<ProtobufNonEmptyRequestBody>>, true>,
-    IsRequestTestCase<kType<Patch<ProtobufNonEmptyRequestBody>>, true>,
-    IsRequestTestCase<kType<Post<ProtobufNonEmptyRequestBody>>, true>,
-    IsRequestTestCase<kType<Put<ProtobufNonEmptyRequestBody>>, true>,
-    IsRequestTestCase<kType<Trace<ProtobufNonEmptyRequestBody>>, true>,
-    IsRequestTestCase<kType<Track<ProtobufNonEmptyRequestBody>>, true>,
-    IsRequestTestCase<kType<Request<Method::kGet, ProtobufNonEmptyRequestBody>>,
-                      false>,
-    IsRequestTestCase<
-        kType<Request<Method::kHead, ProtobufNonEmptyRequestBody>>,
-        false>>;
+    IsRequestTestCase<kType<Put<>>, true>,
+    IsRequestTestCase<kType<Trace<>>, true>,
+    IsRequestTestCase<kType<Track<>>, true>,
+    IsRequestTestCase<kType<Connect<ValidRequestBody>>, true>,
+    IsRequestTestCase<kType<Delete<ValidRequestBody>>, true>,
+    IsRequestTestCase<kType<Options<ValidRequestBody>>, true>,
+    IsRequestTestCase<kType<Patch<ValidRequestBody>>, true>,
+    IsRequestTestCase<kType<Post<ValidRequestBody>>, true>,
+    IsRequestTestCase<kType<Put<ValidRequestBody>>, true>,
+    IsRequestTestCase<kType<Trace<ValidRequestBody>>, true>,
+    IsRequestTestCase<kType<Track<ValidRequestBody>>, true>,
+    IsRequestTestCase<kType<Request<Method::kGet, ValidRequestBody>>, false>,
+    IsRequestTestCase<kType<Request<Method::kHead, ValidRequestBody>>, false>,
+    IsRequestTestCase<kType<Request<Method::kPost, int>>, false>>;
 
 template <typename>
 struct IsRequestTest : testing::Test {};
