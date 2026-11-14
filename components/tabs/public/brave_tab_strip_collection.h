@@ -106,7 +106,6 @@ class BraveTabStripCollection : public TabStripCollection {
       std::optional<tab_groups::TabGroupId> new_group_id,
       bool new_pinned_state,
       const TabCollection::TypeEnumSet retain_collection_types) override;
-  ScopedTab RemoveTabAtIndexRecursive(size_t index) override;
   ScopedTab RemoveTab(TabInterface* tab, bool remove_for_detach) override;
   void CreateSplit(split_tabs::SplitTabId split_id,
                    const std::vector<TabInterface*>& tabs,
