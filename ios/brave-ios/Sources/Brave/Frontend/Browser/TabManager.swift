@@ -30,6 +30,9 @@ protocol TabManagerDelegate: AnyObject {
   func tabManagerDidRestoreTabs(_ tabManager: TabManager)
   func tabManagerDidAddTabs(_ tabManager: TabManager)
   func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast: ButtonToast?)
+  /// Called when tabs are grouped, moved between groups or ungrouped. Not called when a group
+  /// disappears because its last tab was closed, `didRemoveTab` covers that.
+  func tabManagerDidChangeTabGroups(_ tabManager: TabManager)
 }
 
 protocol TabManagerStateDelegate: AnyObject {
@@ -77,6 +80,12 @@ class TabManager: NSObject {
   }
 
   private(set) var allTabs = [any TabState]()
+  private(set) var tabGroups: [TabGroup] = []
+  /// Whether tab groups are available. Until they are, no group is created or restored, and any
+  /// persisted group is left untouched, so tabs are shown ungrouped.
+  var isTabGroupsEnabled = FeatureList.kBraveTabGroups.enabled
+  private var groupIDsByTabID: [TabState.ID: TabGroup.ID] = [:]
+
   private var _selectedIndex = -1
   private(set) var isRestoring = false
   private(set) var isBulkDeleting = false
@@ -691,6 +700,7 @@ class TabManager: NSObject {
 
     delegates.forEach { $0.get()?.tabManager(self, willAddTab: tab) }
 
+    let selectedTabBeforeInsert = selectedTab
     if parent == nil || parent?.isPrivate != tab.isPrivate {
       allTabs.append(tab)
     } else if let parent = parent, var insertIndex = allTabs.firstIndex(where: { $0 === parent }) {
@@ -704,6 +714,10 @@ class TabManager: NSObject {
         tab.orderingParent = parent
       }
       allTabs.insert(tab, at: insertIndex)
+    }
+
+    if let selectedTabBeforeInsert, selectedTab !== selectedTabBeforeInsert {
+      _selectedIndex = allTabs.firstIndex(where: { $0 === selectedTabBeforeInsert }) ?? -1
     }
 
     delegates.forEach { $0.get()?.tabManager(self, didAddTab: tab) }
@@ -1227,6 +1241,7 @@ class TabManager: NSObject {
 
     let prevCount = count
     allTabs.remove(at: removalIndex)
+    removeFromTabGroup(tab)
 
     SessionTab.delete(tabId: tab.id)
 
@@ -1574,6 +1589,8 @@ class TabManager: NSObject {
       }
     }
 
+    restoreTabGroups(from: savedTabs)
+
     if let tabToSelect = tabToSelect ?? tabsForCurrentMode.last {
       // Only tell our delegates that we restored tabs if we actually restored something
       delegates.forEach {
@@ -1775,6 +1792,145 @@ extension TabManagerDelegate {
   func tabManager(_ tabManager: TabManager, willRemoveTab tab: some TabState) {}
   func tabManagerDidAddTabs(_ tabManager: TabManager) {}
   func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast: ButtonToast?) {}
+  func tabManagerDidChangeTabGroups(_ tabManager: TabManager) {}
+}
+
+// MARK: - Tab Groups
+
+extension TabManager {
+  /// The group the tab belongs to, if any
+  func tabGroup(for tab: some TabState) -> TabGroup? {
+    guard let groupID = groupIDsByTabID[tab.id] else { return nil }
+    return tabGroups.first(where: { $0.id == groupID })
+  }
+
+  /// The tabs in the group, in tab order
+  func tabs(in group: TabGroup) -> [any TabState] {
+    allTabs.filter { groupIDsByTabID[$0.id] == group.id }
+  }
+
+  /// Whether tabs of the current browsing mode can be grouped. Only regular tabs can be, as they
+  /// are the only ones persisted.
+  var canGroupTabsForCurrentMode: Bool {
+    isTabGroupsEnabled && !privateBrowsingManager.isPrivateBrowsing
+      && !Preferences.Privacy.privateBrowsingOnly.value
+  }
+
+  /// Creates a group out of the given tabs, moving them out of any group they are in.
+  /// - Returns: The new group, or nil if none of the tabs can be grouped.
+  @discardableResult
+  func createTabGroup(title: String, adding tabs: [any TabState]) -> TabGroup? {
+    let tabs = groupableTabs(from: tabs)
+    guard !tabs.isEmpty else { return nil }
+
+    let group = TabGroup(id: UUID(), title: title)
+    tabGroups.append(group)
+    assign(tabs, to: group)
+    SessionTabGroup.create(
+      groupId: group.id,
+      windowId: windowId,
+      title: title,
+      tabIds: tabs.map(\.id)
+    )
+    delegates.forEach { $0.get()?.tabManagerDidChangeTabGroups(self) }
+    return group
+  }
+
+  /// Moves the given tabs into an existing group
+  func addTabs(_ tabs: [any TabState], to group: TabGroup) {
+    let tabs = groupableTabs(from: tabs)
+    guard !tabs.isEmpty, tabGroups.contains(group) else { return }
+
+    assign(tabs, to: group)
+    SessionTabGroup.add(tabIds: tabs.map(\.id), toGroup: group.id)
+    delegates.forEach { $0.get()?.tabManagerDidChangeTabGroups(self) }
+  }
+
+  /// Changes the title of the group. An empty title is ignored.
+  func renameTabGroup(_ group: TabGroup, to title: String) {
+    let title = title.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !title.isEmpty, let index = tabGroups.firstIndex(of: group),
+      tabGroups[index].title != title
+    else { return }
+
+    tabGroups[index].title = title
+    SessionTabGroup.rename(groupId: group.id, title: title)
+    delegates.forEach { $0.get()?.tabManagerDidChangeTabGroups(self) }
+  }
+
+  /// Adds a new tab right after the last tab of the group, and selects it. The tab joins the group
+  /// as it's created, so it is never seen outside of it.
+  @discardableResult
+  @MainActor func addTabAndSelect(in group: TabGroup) -> (any TabState)? {
+    guard canGroupTabsForCurrentMode, tabGroups.contains(group) else { return nil }
+
+    let tabID = UUID()
+    groupIDsByTabID[tabID] = group.id
+    let tab = addTab(afterTab: tabs(in: group).last, id: tabID, isPrivate: false)
+    SessionTabGroup.add(tabIds: [tab.id], toGroup: group.id)
+    selectTab(tab)
+    delegates.forEach { $0.get()?.tabManagerDidChangeTabGroups(self) }
+    return tab
+  }
+
+  /// Dissolves the group. Its tabs are kept.
+  func ungroupTabs(in group: TabGroup) {
+    guard tabGroups.contains(group) else { return }
+
+    groupIDsByTabID = groupIDsByTabID.filter { $0.value != group.id }
+    tabGroups.removeAll(where: { $0.id == group.id })
+    SessionTabGroup.delete(groupId: group.id)
+    delegates.forEach { $0.get()?.tabManagerDidChangeTabGroups(self) }
+  }
+
+  /// Drops a closed tab's membership, and its group if it was the last tab. Persisted state is
+  /// handled when the `SessionTab` is deleted.
+  func removeFromTabGroup(_ tab: some TabState) {
+    guard let groupID = groupIDsByTabID.removeValue(forKey: tab.id) else { return }
+    if !groupIDsByTabID.values.contains(groupID) {
+      tabGroups.removeAll(where: { $0.id == groupID })
+    }
+  }
+
+  /// Rebuilds groups from persisted state. Must be called once the saved tabs are restored.
+  func restoreTabGroups(from savedTabs: [SessionTab]) {
+    guard isTabGroupsEnabled else { return }
+    let restoredTabIDs = Set(allTabs.map(\.id))
+    var restoredGroups: [(group: TabGroup, index: Int32)] = []
+    for savedTab in savedTabs {
+      guard let sessionGroup = savedTab.sessionTabGroup,
+        !savedTab.isPrivate,
+        restoredTabIDs.contains(savedTab.tabId)
+      else { continue }
+
+      if !restoredGroups.contains(where: { $0.group.id == sessionGroup.groupId }) {
+        restoredGroups.append(
+          (TabGroup(id: sessionGroup.groupId, title: sessionGroup.title), sessionGroup.index)
+        )
+      }
+      groupIDsByTabID[savedTab.tabId] = sessionGroup.groupId
+    }
+    tabGroups = restoredGroups.sorted(by: { $0.index < $1.index }).map(\.group)
+    // Groups whose tabs were all discarded (e.g. by auto close) shouldn't linger, in any window
+    SessionTabGroup.deleteAllEmpty()
+  }
+
+  private func groupableTabs(from tabs: [any TabState]) -> [any TabState] {
+    guard canGroupTabsForCurrentMode else { return [] }
+    return tabs.filter { tab in !tab.isPrivate && allTabs.contains(where: { $0 === tab }) }
+  }
+
+  private func assign(_ tabs: [any TabState], to group: TabGroup) {
+    let previousGroupIDs = Set(tabs.compactMap { groupIDsByTabID[$0.id] })
+    for tab in tabs {
+      groupIDsByTabID[tab.id] = group.id
+    }
+    // A group emptied by moving its tabs out goes away
+    let remainingGroupIDs = Set(groupIDsByTabID.values)
+    tabGroups.removeAll(where: {
+      previousGroupIDs.contains($0.id) && !remainingGroupIDs.contains($0.id)
+    })
+  }
 }
 
 extension TabManager: PreferencesObserver {
