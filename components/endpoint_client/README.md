@@ -29,9 +29,10 @@ interface and enforces correctness guarantees through C++ `concept`s and
 
 ## Usage
 
-Request and response bodies are either JSON or Protobuf, and an endpoint uses
-one format for both. A request can also have no body, in which case the response
-alone determines the format.
+Request and response bodies are either JSON or Protobuf, and each one chooses
+its format independently: an endpoint can, for example, send JSON and receive
+Protobuf, or receive Protobuf on success and JSON on error. A request can also
+have no body.
 
 - JSON request bodies implement `ToValue()`, and JSON response bodies implement
   `FromValue()`. The JSON schema/IDL compiler generates such types; hand-written
@@ -39,7 +40,7 @@ alone determines the format.
 - Protobuf request and response bodies are message types derived from
   `google::protobuf::MessageLite`.
 
-The examples below use JSON; Protobuf endpoints work the same way, with
+The examples below use JSON; Protobuf bodies work the same way, with
 generated message types in place of the IDL ones.
 
 ---
