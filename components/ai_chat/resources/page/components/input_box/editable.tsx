@@ -15,13 +15,20 @@ export interface EditableProps {
   content: Content
   onContentChange: (content: Content) => void
 
+  onKeyDown?: React.KeyboardEventHandler
   onPaste?: React.ClipboardEventHandler
   placeholder?: string
 }
 
 export default React.forwardRef<HTMLDivElement, EditableProps>(
   function Editable(
-    { content, onContentChange, placeholder, onPaste }: EditableProps,
+    {
+      content,
+      onContentChange,
+      placeholder,
+      onKeyDown,
+      onPaste,
+    }: EditableProps,
     ref: React.ForwardedRef<HTMLElement>,
   ) {
     const onContentChangeRef = React.useRef(onContentChange)
@@ -104,6 +111,7 @@ export default React.forwardRef<HTMLDivElement, EditableProps>(
         data-placeholder={placeholder}
         className={styles.editable}
         contentEditable='plaintext-only'
+        onKeyDown={onKeyDown}
         onPaste={onPaste}
       />
     )

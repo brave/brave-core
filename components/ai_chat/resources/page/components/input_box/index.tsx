@@ -320,10 +320,7 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
     }, [aiChatContext.api.uiHandler])
 
     return (
-      <form
-        className={styles.form}
-        onKeyDownCapture={handleOnKeyDown}
-      >
+      <form className={styles.form}>
         {isContentAgentOn && !props.conversationStarted && (
           <div className={styles.contentAgentWarning}>
             <div className={styles.contentAgentWarningIcon}>
@@ -428,6 +425,7 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
             onContentChange={(e) => {
               props.context.setInputText(e)
             }}
+            onKeyDown={handleOnKeyDown}
             onPaste={handleOnPaste}
           />
           <div className={styles.toolsContainer}>
