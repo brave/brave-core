@@ -214,7 +214,7 @@ export class BraveAccountOtpInputElement extends CrLitElement {
     } satisfies OtpInputEventDetail)
   }
 
-  protected accessor length = 6
+  accessor length = 6
 }
 
 declare global {
