@@ -57,6 +57,7 @@ source_set("web_view") {
     "//brave/ios/browser/ui/webui/brave_wallet",
     "//brave/ios/browser/web/force_paste",
     "//brave/ios/browser/web/logins",
+    "//brave/ios/browser/web/media",
     "//brave/ios/browser/web/page_metadata",
     "//brave/ios/browser/web/reader_mode",
     "//brave/ios/browser/web/text_content_distiller",
