@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Light chip text: Nala token + translucency (87%). -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="UnusedResources">
+  <item android:color="@color/primitive_neutral_10" android:alpha="0.87" />
+</selector>

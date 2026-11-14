@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Background for the collapsed URL chip shown while the bottom toolbar is scrolled away. -->
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="@dimen/brave_collapsed_url_chip_height" />
+    <solid android:color="@color/brave_collapsed_url_chip_background" />
+</shape>

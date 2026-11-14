@@ -79,6 +79,11 @@ BASE_FEATURE(kBraveFreshNtpAfterIdleExperiment,
 // remove their own search engine entries from the search engine settings.
 BASE_FEATURE(kBraveCustomSearchEngines, base::FEATURE_ENABLED_BY_DEFAULT);
 
+// Show the collapsed URL chip while the browser controls are scrolled away
+// (parity with Safari / Brave iOS). Griffin kill switch: the chip hides the
+// system gesture pill while visible and samples screen content for contrast.
+BASE_FEATURE(kBraveAndroidCollapsedUrlChip, base::FEATURE_ENABLED_BY_DEFAULT);
+
 // Expose Brave's replacement "Tabs and tab groups" settings screen on Android.
 BASE_FEATURE(kBraveAndroidTabGroupsSettings, base::FEATURE_ENABLED_BY_DEFAULT);
 
