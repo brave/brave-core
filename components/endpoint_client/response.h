@@ -7,57 +7,57 @@
 #define BRAVE_COMPONENTS_ENDPOINT_CLIENT_RESPONSE_H_
 
 #include <optional>
-#include <string>
 #include <string_view>
 #include <utility>
 
-#include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/endpoint_client/is_response_body.h"
 #include "net/base/net_errors.h"
-#include "net/http/http_response_headers.h"
 #include "services/network/public/cpp/header_util.h"
 
 namespace endpoint_client {
 
-// A response contains the network result, HTTP status code, and the
-// deserialized response body, if any.
+template <typename...>
+struct Response {
+  static_assert(false,
+                "Response<> takes either no body types or a success and an "
+                "error body type!");
+};
+
+// A body-less response contains the network result and HTTP status code.
+template <>
+struct Response<> {
+  int net_error = net::ERR_IO_PENDING;
+  std::optional<int> status_code;
+};
+
+// A response with bodies contains the network result, HTTP status code, and
+// the deserialized response body, if any.
 template <internal::IsResponseBody SuccessResponseBody,
           internal::IsResponseBody ErrorResponseBody>
-struct Response {
+struct Response<SuccessResponseBody, ErrorResponseBody> {
   using SuccessBody = SuccessResponseBody;
   using ErrorBody = ErrorResponseBody;
 
-  // Builds a Response from the network result, HTTP response headers,
-  // and optional response body. Body deserialization is only attempted
-  // when the network request succeeded and response headers are present.
-  static Response Deserialize(int net_error,
-                              const net::HttpResponseHeaders* headers,
-                              std::optional<std::string> response_body) {
-    Response response;
-    response.net_error = net_error;
-
-    if (response.net_error != net::OK || !headers) {
-      return response;
-    }
-
-    response.status_code = headers->response_code();
-
-    // SimpleURLLoader returns std::nullopt only on failure.
-    CHECK(response_body);
-
-    if (network::IsSuccessfulStatus(*response.status_code)) {  // 2xx
-      response.body = Deserialize<SuccessBody>(*response_body);
+  // Deserializes the response body into the success body for a 2xx status
+  // code, and into the error body otherwise. Returns std::nullopt if the body
+  // fails to parse.
+  static std::optional<base::expected<SuccessBody, ErrorBody>> Deserialize(
+      int status_code,
+      std::string_view response_body) {
+    std::optional<base::expected<SuccessBody, ErrorBody>> body;
+    if (network::IsSuccessfulStatus(status_code)) {  // 2xx
+      body = DeserializeBody<SuccessBody>(response_body);
     } else {  // non-2xx
-      response.body = Deserialize<ErrorBody>(*response_body)
-                          .transform([](ErrorBody error_body) {
-                            return base::unexpected(std::move(error_body));
-                          });
+      body = DeserializeBody<ErrorBody>(response_body)
+                 .transform([](ErrorBody error_body) {
+                   return base::unexpected(std::move(error_body));
+                 });
     }
 
-    return response;
+    return body;
   }
 
   int net_error = net::ERR_IO_PENDING;
@@ -67,7 +67,7 @@ struct Response {
  private:
   // Deserializes a JSON response body into ResponseBody.
   template <internal::IsJSONResponseBody ResponseBody>
-  static std::optional<ResponseBody> Deserialize(
+  static std::optional<ResponseBody> DeserializeBody(
       std::string_view response_body) {
     return base::JSONReader::Read(response_body, base::JSON_PARSE_RFC)
         .and_then(
@@ -76,7 +76,7 @@ struct Response {
 
   // Deserializes a Protobuf response body into ResponseBody.
   template <internal::IsProtobufResponseBody ResponseBody>
-  static std::optional<ResponseBody> Deserialize(
+  static std::optional<ResponseBody> DeserializeBody(
       std::string_view response_body) {
     if (ResponseBody body; body.ParseFromString(response_body)) {
       return body;
