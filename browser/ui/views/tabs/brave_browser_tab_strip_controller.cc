@@ -18,8 +18,8 @@
 #include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
+#include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/defaults.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
@@ -144,9 +144,10 @@ void BraveBrowserTabStripController::ExecuteContextMenuCommand(
   }
 
   if (command_id == TabStripModel::CommandShowVerticalTabs) {
-    brave::ToggleVerticalTabStrip(GetBrowserWindowInterface());
-    BrowserView::GetBrowserViewForBrowser(GetBrowserWindowInterface())
-        ->InvalidateLayout();
+    // Go through the command so that a toggle in fullscreen is handled the
+    // same way as the keyboard shortcut (see BraveBrowserCommandController).
+    chrome::ExecuteCommand(GetBrowserWindowInterface(),
+                           IDC_TOGGLE_VERTICAL_TABS);
     return;
   }
 
@@ -226,7 +227,8 @@ bool BraveBrowserTabStripController::IsContextMenuCommandEnabled(
   }
 
   if (command_id == TabStripModel::CommandShowVerticalTabs) {
-    return tabs::utils::IsVerticalTabToggleEnabled(GetBrowserWindowInterface());
+    return chrome::IsCommandEnabled(GetBrowserWindowInterface(),
+                                    IDC_TOGGLE_VERTICAL_TABS);
   }
 
   if (command_id == TabStripModel::CommandBringAllTabsToThisWindow ||

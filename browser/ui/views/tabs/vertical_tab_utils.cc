@@ -9,11 +9,10 @@
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "build/build_config.h"
-#include "chrome/app/chrome_command_ids.h"
-#include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_widget.h"
+#include "ui/base/base_window.h"
 #include "ui/gfx/geometry/point_f.h"
 #include "ui/gfx/geometry/rect_f.h"
 
@@ -41,11 +40,11 @@ std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
 
 bool IsVerticalTabToggleEnabled(BrowserWindowInterface* browser) {
 #if BUILDFLAG(IS_MAC)
-  if (!browser) {
-    return true;
-  }
-  return chrome::BrowserCommandController::From(browser)->IsCommandEnabled(
-      IDC_TOGGLE_VERTICAL_TABS);
+  // Vertical tabs can't be switched in place while the window is fullscreen.
+  // BraveBrowserCommandController defers IDC_TOGGLE_VERTICAL_TABS until the
+  // window leaves fullscreen.
+  return !browser || !browser->GetWindow() ||
+         !browser->GetWindow()->IsFullscreen();
 #else
   return true;
 #endif
