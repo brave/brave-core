@@ -554,6 +554,11 @@ brave_browser_ui_android_toolbar_sources = [
   "//brave/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout.java",
 ]
 
+# Additional deps for //chrome/browser/ui/android/toolbar:core_java to support
+# the Brave collapsed URL chip.
+brave_browser_ui_android_toolbar_deps =
+    [ "//components/url_formatter/android:url_formatter_java" ]
+
 brave_java_base_sources = [
   "//brave/android/java/org/chromium/base/BraveCommandLineInitUtil.java",
   "//brave/android/java/org/chromium/base/BraveFeatureList.java",

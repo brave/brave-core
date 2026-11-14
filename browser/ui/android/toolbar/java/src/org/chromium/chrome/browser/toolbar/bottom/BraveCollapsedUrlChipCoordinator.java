@@ -59,14 +59,8 @@ public class BraveCollapsedUrlChipCoordinator {
     private final View mChipView;
     private final TextView mChipTextView;
     private final NullableObservableSupplier<Tab> mTabSupplier;
-    private final Callback<Tab> mTabObserverCallback = this::onTabChanged;
+    private final Callback<@Nullable Tab> mTabObserverCallback = this::onTabChanged;
     private final BrowserStateBrowserControlsVisibilityDelegate mVisibilityDelegate;
-
-    /**
-     * Not final: re-read before each consumer decision, nav mode can change while the process is
-     * alive.
-     */
-    private boolean mHasGestureNavigation;
 
     private @Nullable WebContentsObserver mWebContentsObserver;
 
@@ -103,7 +97,6 @@ public class BraveCollapsedUrlChipCoordinator {
         mActivity = activity;
         mTabSupplier = tabSupplier;
         mVisibilityDelegate = visibilityDelegate;
-        mHasGestureNavigation = isGestureNavigation(activity);
 
         ViewGroup parent = activity.findViewById(android.R.id.content);
         mChipView =
@@ -266,8 +259,8 @@ public class BraveCollapsedUrlChipCoordinator {
      * navigation. Re-reads nav mode so mid-session switches are handled.
      */
     private void applyNavigationBarInset() {
-        mHasGestureNavigation = isGestureNavigation(mActivity);
-        if (mHasGestureNavigation) return;
+        boolean hasGestureNavigation = isGestureNavigation(mActivity);
+        if (hasGestureNavigation) return;
         WindowInsets rootInsets = mChipView.getRootWindowInsets();
         if (rootInsets == null) return;
         int bottomInset =
@@ -292,8 +285,8 @@ public class BraveCollapsedUrlChipCoordinator {
      * restores it after; no-op on 3-button nav.
      */
     private void setGesturePillHidden(boolean hidden) {
-        mHasGestureNavigation = isGestureNavigation(mActivity);
-        if (!mHasGestureNavigation || mPillHidden == hidden) return;
+        boolean hasGestureNavigation = isGestureNavigation(mActivity);
+        if (!hasGestureNavigation || mPillHidden == hidden) return;
         Window window = mActivity.getWindow();
         WindowInsetsControllerCompat controller =
                 WindowCompat.getInsetsController(window, window.getDecorView());
@@ -335,8 +328,8 @@ public class BraveCollapsedUrlChipCoordinator {
      * Chromium exposes that decision, so it is re-implemented locally.
      */
     private void startContentSampling() {
-        mHasGestureNavigation = isGestureNavigation(mActivity);
-        if (!mHasGestureNavigation || mSampling) return;
+        boolean hasGestureNavigation = isGestureNavigation(mActivity);
+        if (!hasGestureNavigation || mSampling) return;
         mSampling = true;
         mSamplerHandler.post(mSampleRunnable);
     }
