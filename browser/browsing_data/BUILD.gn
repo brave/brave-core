@@ -4,7 +4,66 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
+
+source_set("browsing_data") {
+  sources = [
+    "brave_browsing_data_remover_delegate.cc",
+    "brave_browsing_data_remover_delegate.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//chrome/browser/browsing_data",
+  ]
+
+  deps = [
+    ":clear_browsing_data",
+    "//brave/browser/misc_metrics",
+    "//brave/browser/serp_metrics",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/brave_news/common/buildflags",
+    "//brave/components/containers/buildflags",
+    "//brave/components/content_settings/core/common",
+    "//brave/components/misc_metrics",
+    "//brave/components/serp_metrics",
+    "//chrome/browser/browsing_data:constants",
+    "//chrome/browser/content_settings:content_settings_factory",
+    "//chrome/browser/profiles:profile",
+    "//chrome/common:buildflags",
+    "//components/browsing_data/content",
+    "//components/browsing_data/core",
+    "//components/content_settings/core/browser",
+    "//components/content_settings/core/common",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//content/public/browser",
+  ]
+
+  if (enable_ai_chat) {
+    deps += [
+      "//brave/browser/ai_chat",
+      "//brave/components/ai_chat/core/browser",
+    ]
+  }
+
+  if (enable_brave_news) {
+    deps += [
+      "//brave/browser/brave_news",
+      "//brave/components/brave_news/browser",
+    ]
+  }
+
+  if (enable_containers) {
+    deps += [
+      "//brave/browser/containers",
+      "//brave/components/containers/content/browser",
+      "//brave/components/containers/core/browser",
+      "//brave/components/containers/core/common",
+    ]
+  }
+}
 
 source_set("clear_browsing_data") {
   sources = [
