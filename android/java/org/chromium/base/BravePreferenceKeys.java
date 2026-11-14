@@ -72,6 +72,13 @@ public final class BravePreferenceKeys {
             "brave_deferred_deeplink_origin_promo";
     public static final String BRAVE_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
     public static final String BRAVE_CLEAR_ON_EXIT = "clear_on_exit";
+    public static final String BRAVE_BROWSER_LOCK = "browser_lock";
+    public static final String BRAVE_BROWSER_LOCK_SCREENSHOT_MODE = "browser_lock_screenshot_mode";
+
+    // Screenshot mode values.
+    public static final int BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_ALLOW = 0;
+    public static final int BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_PRIVATE_TABS_ONLY = 1;
+    public static final int BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_EVERYTHING = 2;
     public static final String BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES =
             "org.chromium.chrome.browser.widget.quickactionsearchandbookmark.QuickActionSearchAndBookmarkWidgetProvider.TILES"; // presubmit: ignore-long-line
     public static final String ENABLE_MULTI_WINDOWS = "enable_multi_windows";

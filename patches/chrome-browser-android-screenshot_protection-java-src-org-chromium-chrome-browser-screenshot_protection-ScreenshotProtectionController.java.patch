@@ -1,0 +1,31 @@
+diff --git a/chrome/browser/android/screenshot_protection/java/src/org/chromium/chrome/browser/screenshot_protection/ScreenshotProtectionController.java b/chrome/browser/android/screenshot_protection/java/src/org/chromium/chrome/browser/screenshot_protection/ScreenshotProtectionController.java
+index c466ebd8b03f93063c8a1282d535c4d71dc42e8e..68699335542e4582e8fbd474af04d5cd61197129 100644
+--- a/chrome/browser/android/screenshot_protection/java/src/org/chromium/chrome/browser/screenshot_protection/ScreenshotProtectionController.java
++++ b/chrome/browser/android/screenshot_protection/java/src/org/chromium/chrome/browser/screenshot_protection/ScreenshotProtectionController.java
+@@ -4,6 +4,7 @@
+ 
+ package org.chromium.chrome.browser.screenshot_protection;
+ 
++import org.chromium.chrome.browser.privacy.BraveBrowserLockManager;
+ import static org.chromium.build.NullUtil.assertNonNull;
+ 
+ import android.app.Activity;
+@@ -138,6 +139,8 @@ public class ScreenshotProtectionController
+ 
+         initialize();
+         mTabModelSelector.addObserver(this);
++        BraveBrowserLockManager.addScreenshotModeObserver(
++                activity, this::updateScreenshotProtectionState);
+     }
+ 
+     /**
+@@ -281,7 +284,8 @@ public class ScreenshotProtectionController
+                 (attributes.flags & WindowManager.LayoutParams.FLAG_SECURE)
+                         == WindowManager.LayoutParams.FLAG_SECURE;
+ 
+-        boolean expectedSecureState = isScreenshotBlocked();
++        boolean expectedSecureState =
++                isScreenshotBlocked() || BraveBrowserLockManager.shouldForceSecureWindow();
+ 
+         if (currentSecureState == expectedSecureState) return;
+ 
