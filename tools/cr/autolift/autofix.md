@@ -119,11 +119,12 @@ below, with the differences it lists.
    (`IWYU fixes.`, the test exclusions' subjects as in
    [Commits](SKILL.md#commits), and `Version CodeHealth tracker` for the ticked
    task). For a stale plastered patch, that `git log` finds an "Update patches"
-   commit: fix up the "Apply-fixed 🩹 patches" commit instead (see
-   [Commits](SKILL.md#commits)). Only a fix with no commit to fix up (a culprit
-   no branch commit cites) is a new `git cr commit --culprit`. Platforms that
-   can't be built here (macOS, Windows, iOS) are fixed from the log, and listed
-   as unverified.
+   commit: commit it with the subject of the latest "Apply-fixed 🩹 patches"
+   commit instead (`git commit -m '<its subject>'`), which the rebase squashes
+   into it (see [Commits](SKILL.md#commits)). Only a fix with no commit to fix
+   up (a culprit no branch commit cites) is a new `git cr commit --culprit`.
+   Platforms that can't be built here (macOS, Windows, iOS) are fixed from the
+   log, and listed as unverified.
 5. Verify each fix locally: build the targets it touches and run the tests that
    failed, as in [step 4](SKILL.md#4-linux-tests), and with step 6's build and
    tests only for an Android failure. On a fresh out dir, build `brave:all`
