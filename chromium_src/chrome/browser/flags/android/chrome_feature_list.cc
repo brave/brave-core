@@ -105,7 +105,7 @@
     &brave_shields::features::kBlockAllCookiesToggle,                          \
     &brave_shields::features::kBraveShieldsElementPicker,                      \
     &features::kBraveAndroidDynamicColorsByDefault,                            \
-    &features::kBraveCollapsedUrlChip,                                         \
+    &features::kBraveAndroidCollapsedUrlChip,                                  \
     &features::kBraveFreshNtpAfterIdleExperiment,                              \
     &brave_shields::features::kBraveShredFeature,                              \
     &brave_origin::features::kBraveOrigin,                                     \

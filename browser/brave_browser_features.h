@@ -32,7 +32,7 @@ BASE_DECLARE_FEATURE(kBraveFreshNtpAfterIdleExperiment);
 BASE_DECLARE_FEATURE(kBraveCustomSearchEngines);
 BASE_DECLARE_FEATURE(kBraveAndroidTabGroupsSettings);
 BASE_DECLARE_FEATURE(kBraveAndroidMergeInstallPwaAndCreateShortcut);
-BASE_DECLARE_FEATURE(kBraveCollapsedUrlChip);
+BASE_DECLARE_FEATURE(kBraveAndroidCollapsedUrlChip);
 #endif  // BUILDFLAG(IS_ANDROID)
 
 extern const base::FeatureParam<std::string> kBraveDayZeroExperimentVariant;

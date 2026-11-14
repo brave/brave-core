@@ -423,7 +423,7 @@ public class BraveToolbarManager extends ToolbarManager
         MutableFlagWithSafeDefault chipEnabledFlag =
                 new MutableFlagWithSafeDefault(
                         ChromeFeatureMap.getInstance(),
-                        BraveFeatureList.BRAVE_COLLAPSED_URL_CHIP,
+                        BraveFeatureList.BRAVE_ANDROID_COLLAPSED_URL_CHIP,
                         /* defaultValue= */ false);
         Supplier<Boolean> chipEnabled = chipEnabledFlag::isEnabled;
         mBraveCollapsedUrlChipCoordinator =
