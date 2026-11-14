@@ -41,7 +41,7 @@ import sys
 # Naming convention fallbacks: prefix/name -> condition
 NAMING_CONVENTIONS = {
     "coding-standards": "has_cpp_files",
-    "testing-": "has_test_files",
+    "testing": "has_test_files",
     "build-system": "has_build_files",
     "chromium-src": "has_chromium_src",
     "frontend": "has_frontend_files",

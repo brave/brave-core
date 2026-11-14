@@ -219,7 +219,7 @@ what's strictly required for the declarations.
 [Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md),
 simple accessors should generally be the only inline functions. Name them
 `snake_case()`, and never declare a `virtual` function inline. Test accessors
-(see [TI-011](testing-isolation.md#TI-011)) and `constexpr` constants (see
+(see [TI-011](testing.md#TI-011)) and `constexpr` constants (see
 [CS-063](#CS-063), [CSA-025](coding-standards-apis.md#CSA-025)) also belong in
 headers.
 
