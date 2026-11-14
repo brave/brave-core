@@ -88,12 +88,12 @@ class QuickSearchItemTests: XCTestCase {
 
     XCTAssertEqual(QuickSearchItem(source: .aiChat).id, .aiChat)
 
-    let vertical = BraveSearchVertical(
-      id: "images",
-      accessibilityTitle: "Images",
-      icon: Image(systemName: "photo")
+    let vertical = BraveSearchVertical(kind: .images)
+
+    XCTAssertEqual(
+      QuickSearchItem(source: .braveVertical(vertical)).id,
+      .braveVertical("brave-search-images")
     )
-    XCTAssertEqual(QuickSearchItem(source: .braveVertical(vertical)).id, .braveVertical("images"))
   }
 
   func testEngineAccessibilityTitleUsesDisplayNameNotShortName() {

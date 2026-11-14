@@ -23,6 +23,7 @@
 #include "brave/ios/browser/playlist/features.h"
 #include "brave/ios/browser/search_engines/features.h"
 #include "brave/ios/browser/toolbar/features.h"
+#include "brave/ios/browser/ui/quick_search/features.h"
 #include "brave/ios/browser/ui/quick_view/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "build/build_config.h"
@@ -424,6 +425,13 @@ const flags_ui::FeatureEntry::FeatureVariation
           "Manage search engines using Chromium's TemplateURLService",         \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(brave::features::kUseChromiumSearchEngines),      \
+      },                                                                       \
+      {                                                                        \
+          "brave-search-engines-verticals-in-quick-search",                    \
+          "Enable 5 Brave Search Verticals in Quick Search",                   \
+          "Enable 5 Brave Search Verticals in Quick Search",                   \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave::features::kBraveSearchVerticalsEnabled),   \
       },                                                                       \
       {                                                                        \
           "brave-origin",                                                      \
