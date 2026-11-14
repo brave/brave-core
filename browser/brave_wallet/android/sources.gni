@@ -17,4 +17,5 @@ brave_browser_brave_wallet_android_sources = [
 brave_browser_brave_wallet_android_deps = [
   "//brave/components/brave_wallet/browser",
   "//brave/components/brave_wallet/browser:constants",
+  "//brave/components/brave_wallet/browser:permission_utils",
 ]
