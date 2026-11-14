@@ -10,8 +10,6 @@
 #include <string>
 #include <utility>
 
-#include "base/check_deref.h"
-#include "base/json/json_writer.h"
 #include "base/test/gmock_expected_support.h"
 #include "base/test/protobuf_matchers.h"
 #include "base/test/values_test_util.h"
@@ -23,6 +21,7 @@
 #include "brave/components/endpoint_client/is_protobuf_message.h"
 #include "brave/components/endpoint_client/is_response.h"
 #include "brave/components/endpoint_client/maybe_strip_with_headers.h"
+#include "brave/components/endpoint_client/serialize_body.h"
 #include "brave/components/endpoint_client/url_replacements.h"
 #include "brave/components/endpoint_client/with_headers.h"
 #include "net/http/http_response_headers.h"
@@ -38,26 +37,13 @@ namespace endpoint_client {
 
 namespace internal {
 
-template <IsJSONResponse Response>
-  requires(HasToValue<typename Response::SuccessBody> &&
-           HasToValue<typename Response::ErrorBody>)
-std::string ToContent(const Response& response) {
+std::string ToContent(const IsResponse auto& response) {
   return response.body
       .transform([](const auto& body) {
-        return CHECK_DEREF(base::WriteJson(body.has_value()
-                                               ? body.value().ToValue()
-                                               : body.error().ToValue()));
+        return body.has_value() ? SerializeBody(body.value())
+                                : SerializeBody(body.error());
       })
-      .value_or(R"({"invalid": json})");  // malformed JSON
-}
-
-std::string ToContent(const IsProtobufResponse auto& response) {
-  return response.body
-      .transform([](const auto& body) {
-        return body.has_value() ? body.value().SerializeAsString()
-                                : body.error().SerializeAsString();
-      })
-      .value_or("\x0A");  // malformed Protobuf
+      .value_or("\x0A");  // malformed JSON and Protobuf
 }
 
 template <typename Body>

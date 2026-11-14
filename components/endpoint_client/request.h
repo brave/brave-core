@@ -9,21 +9,12 @@
 #include <string>
 #include <string_view>
 
-#include "base/values.h"
 #include "brave/components/endpoint_client/is_request_body.h"
 #include "brave/components/endpoint_client/request_options.h"
+#include "brave/components/endpoint_client/serialize_body.h"
 #include "net/http/http_request_headers.h"
 
-namespace google::protobuf {
-class MessageLite;
-}  // namespace google::protobuf
-
 namespace endpoint_client::internal {
-
-std::string SerializeJSONRequestBody(const base::DictValue& request_body);
-
-std::string SerializeProtobufRequestBody(
-    const google::protobuf::MessageLite& request_body);
 
 // HTTP methods
 enum class Method {
@@ -96,7 +87,7 @@ struct Request<M, RequestBody> : Request<M> {
     return ContentType<Body>();
   }
 
-  std::string Serialize() const { return Serialize(body); }
+  std::string Serialize() const { return SerializeBody(body); }
 
   Body body;
 
@@ -111,16 +102,6 @@ struct Request<M, RequestBody> : Request<M> {
   template <IsProtobufRequestBody>
   static constexpr std::string_view ContentType() {
     return "application/protobuf";
-  }
-
-  // Serializes a JSON request body to a JSON string.
-  static std::string Serialize(const IsJSONRequestBody auto& request_body) {
-    return SerializeJSONRequestBody(request_body.ToValue());
-  }
-
-  // Serializes a Protobuf request body to a binary string.
-  static std::string Serialize(const IsProtobufRequestBody auto& request_body) {
-    return SerializeProtobufRequestBody(request_body);
   }
 };
 
