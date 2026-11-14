@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Observe tree tab changes in RootTabCollectionNode.
+
+      The root node is already the TabStripModelObserver driving the tab
+      views, so it relays tree tab node creation and destruction to the layout.
+    add_to_public:
+      class_name: RootTabCollectionNode
+      code: |-
+        void OnTreeTabChanged(const TreeTabChange& change) override;

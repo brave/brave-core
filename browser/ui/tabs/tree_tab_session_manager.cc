@@ -137,6 +137,9 @@ void TreeTabSessionManager::OnTreeTabChanged(const TreeTabChange& change) {
       // session. On browser restart a full rebuild will naturally omit tree
       // data for any tabs that are no longer in tree nodes.
       break;
+    case TreeTabChange::Type::kTreeInitialized:
+    case TreeTabChange::Type::kTreeDestroyed:
+      break;
   }
 }
 

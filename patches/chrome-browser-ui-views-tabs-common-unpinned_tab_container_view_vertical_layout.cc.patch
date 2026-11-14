@@ -1,0 +1,26 @@
+diff --git a/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view_vertical_layout.cc b/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view_vertical_layout.cc
+index b06151d621af24da821e51dcd9a0179b9008c3ff..bf0d9a384ce16e01d70b5e26c65e9b4f9e5b6bcb 100644
+--- a/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view_vertical_layout.cc
++++ b/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view_vertical_layout.cc
+@@ -88,7 +88,11 @@ UnpinnedTabContainerViewVerticalLayout::CalculateProposedLayout(
+                 collapse_state != tabs::VerticalTabStripCollapseState::kExpanded
+             ? 0
+             : horizontal_padding;
+-    views::SizeBound child_height_bound = size_bounds.height();
++    if (collapse_state == tabs::VerticalTabStripCollapseState::kExpanded &&
++        size_bounds.width().is_bounded()) {
++      x += tree_tab_view_utils::GetTreeTabIndent(
++          child, size_bounds.width().value() - x - horizontal_padding);
++    }    views::SizeBound child_height_bound = size_bounds.height();
+     // In focused mode, pass the scroll viewport height constraint to the child
+     // focused group if the incoming size bounds height is unbounded, so that
+     // TabGroupView can clamp dragged view bounds during a drag operation.
+@@ -108,7 +112,7 @@ UnpinnedTabContainerViewVerticalLayout::CalculateProposedLayout(
+ 
+     auto drag_data =
+         UnpinnedTabContainerView().GetVisualDataForDraggedView(*child);
+-    bool should_show_child = IsChildVisibleInContainer(focused_group_id, child);
++    bool should_show_child = IsChildVisibleInContainer(focused_group_id, child) && !tree_tab_view_utils::IsInCollapsedTreeTabNode(child);
+ 
+     if (!should_show_child) {
+       layouts.child_layouts.emplace_back(

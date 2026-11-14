@@ -1088,6 +1088,12 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   int call_count = 0;
   const int expected_calls = 3;
 
+  // Building the tree notifies kTreeInitialized once.
+  EXPECT_CALL(mock_observer,
+              OnTreeTabChanged(testing::Field(&TreeTabChange::type,
+                                              TreeTabChange::kTreeInitialized)))
+      .Times(1);
+
   // Expect OnTreeTabChanged to be called with kNodeCreated for each tab.
   // We have 3 tabs, so expect 3 calls with kNodeCreated type.
   // Also verify the CreatedChange contains valid node reference.
@@ -1143,6 +1149,10 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   tab_strip_model().AddObserver(&temp_observer);
   EXPECT_CALL(temp_observer,
               OnTreeTabChanged(testing::Field(&TreeTabChange::type,
+                                              TreeTabChange::kTreeInitialized)))
+      .Times(1);
+  EXPECT_CALL(temp_observer,
+              OnTreeTabChanged(testing::Field(&TreeTabChange::type,
                                               TreeTabChange::kNodeCreated)))
       .Times(expected_create_calls)
       .WillRepeatedly([&](const TreeTabChange&) {
@@ -1165,6 +1175,12 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   // Create and register mock observer after tree is built.
   MockTabStripModelObserver mock_observer;
   tab_strip_model().AddObserver(&mock_observer);
+
+  // Flattening the tree notifies kTreeDestroyed once, after the nodes.
+  EXPECT_CALL(mock_observer,
+              OnTreeTabChanged(testing::Field(&TreeTabChange::type,
+                                              TreeTabChange::kTreeDestroyed)))
+      .Times(1);
 
   // Expect OnTreeTabChanged to be called with kNodeWillBeDestroyed for each
   // tree node. We have 3 tabs wrapped in tree nodes, so expect 3 calls.

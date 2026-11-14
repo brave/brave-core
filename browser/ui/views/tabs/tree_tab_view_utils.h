@@ -11,6 +11,10 @@
 
 #include "components/tabs/public/tab_collection_types.h"
 
+namespace views {
+class View;
+}  // namespace views
+
 // Hooks for showing tree tabs in Chromium's tab strip views
 // (TabCollectionNode based, used by Chromium's vertical tabs). The chromium_src
 // overrides of those views forward-declare these instead of including this
@@ -30,6 +34,15 @@ namespace tree_tab_view_utils {
 // unwrapped, recursively. The result is in tab strip model order.
 std::vector<std::reference_wrapper<const tabs::Child>> GetUnwrappedChildren(
     const tabs::TabCollection& collection);
+
+// Returns the indentation for |view| (a TabView, TabGroupView or SplitTabView)
+// based on its tree tab level. |available_width| is the width |view| would
+// have without indentation.
+int GetTreeTabIndent(const views::View* view, int available_width);
+
+// Returns true if |view| (a TabView, TabGroupView or SplitTabView) is hidden
+// because one of its tree tab ancestors is collapsed.
+bool IsInCollapsedTreeTabNode(const views::View* view);
 
 }  // namespace tree_tab_view_utils
 

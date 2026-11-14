@@ -18,6 +18,10 @@ struct TreeTabChange {
     kNodeCollapsedStateChanged,
     kNodeReparented,
     kNodeChildrenChanged,
+    // The whole tree was built or torn down, e.g. when tree tabs are toggled.
+    // `id` is empty and `delta` is null for these.
+    kTreeInitialized,
+    kTreeDestroyed,
   };
 
   struct Delta {
