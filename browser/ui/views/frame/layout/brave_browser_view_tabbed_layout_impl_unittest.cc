@@ -127,6 +127,11 @@ int GetWindowCornerRadius() {
       ExtendedShapeContextTokens::kRoundedCornersBorderRadiusAtWindowCorner);
 }
 
+int GetBorderCornerRadius() {
+  return views::LayoutProvider::Get()->GetCornerRadiusMetric(
+      ExtendedShapeContextTokens::kRoundedCornersBorderRadius);
+}
+
 }  // namespace
 
 // ---------------------------------------------------------------------------
@@ -273,9 +278,9 @@ TEST(BraveBrowserViewTabbedLayoutImplSidebarTest,
 // ---------------------------------------------------------------------------
 // ComputeAdjustedInfobarBounds
 //
-// Verifies that the infobar width is reset to the full browser window width
-// regardless of any panel-driven narrowing, and that vertical tab insets are
-// applied correctly on each side.
+// Verifies that the infobar's horizontal span is reset to the full browser
+// window regardless of any panel-driven narrowing or shifting, and that
+// vertical tab insets are applied correctly on each side.
 // ---------------------------------------------------------------------------
 
 TEST(BraveBrowserViewTabbedLayoutImplInfobarTest,
@@ -284,7 +289,21 @@ TEST(BraveBrowserViewTabbedLayoutImplInfobarTest,
   // Full browser window is 1000px wide — the infobar must be reset to that.
   gfx::Rect adjusted =
       BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedInfobarBounds(
-          gfx::Rect(0, 50, 700, 30), /*full_window_width=*/1000,
+          gfx::Rect(0, 50, 700, 30),
+          /*visual_client_area=*/gfx::Rect(0, 0, 1000, 800),
+          /*vtab_insets=*/std::nullopt);
+  EXPECT_EQ(gfx::Rect(0, 50, 1000, 30), adjusted);
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplInfobarTest,
+     FullWidthWhenLeadingPanelShiftsContents) {
+  // With a left-aligned panel open, upstream both narrows the infobar and
+  // moves its origin to the panel's trailing edge. Both must be undone, or the
+  // infobar slides right along with the panel and overflows the window.
+  gfx::Rect adjusted =
+      BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedInfobarBounds(
+          gfx::Rect(300, 50, 700, 30),
+          /*visual_client_area=*/gfx::Rect(0, 0, 1000, 800),
           /*vtab_insets=*/std::nullopt);
   EXPECT_EQ(gfx::Rect(0, 50, 1000, 30), adjusted);
 }
@@ -295,7 +314,8 @@ TEST(BraveBrowserViewTabbedLayoutImplInfobarTest,
   // must be a no-op for width.
   gfx::Rect adjusted =
       BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedInfobarBounds(
-          gfx::Rect(0, 50, 1000, 30), /*full_window_width=*/1000,
+          gfx::Rect(0, 50, 1000, 30),
+          /*visual_client_area=*/gfx::Rect(0, 0, 1000, 800),
           /*vtab_insets=*/std::nullopt);
   EXPECT_EQ(gfx::Rect(0, 50, 1000, 30), adjusted);
 }
@@ -307,7 +327,8 @@ TEST(BraveBrowserViewTabbedLayoutImplInfobarTest, LeadingVtabInsetsFromLeft) {
   insets.set_left(150);
   gfx::Rect adjusted =
       BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedInfobarBounds(
-          gfx::Rect(0, 50, 700, 30), /*full_window_width=*/1000,
+          gfx::Rect(0, 50, 700, 30),
+          /*visual_client_area=*/gfx::Rect(0, 0, 1000, 800),
           std::make_optional(insets));
   EXPECT_EQ(150, adjusted.x());
   EXPECT_EQ(850, adjusted.width());
@@ -320,7 +341,8 @@ TEST(BraveBrowserViewTabbedLayoutImplInfobarTest, TrailingVtabInsetsFromRight) {
   insets.set_right(150);
   gfx::Rect adjusted =
       BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedInfobarBounds(
-          gfx::Rect(0, 50, 700, 30), /*full_window_width=*/1000,
+          gfx::Rect(0, 50, 700, 30),
+          /*visual_client_area=*/gfx::Rect(0, 0, 1000, 800),
           std::make_optional(insets));
   EXPECT_EQ(0, adjusted.x());
   EXPECT_EQ(850, adjusted.width());
@@ -470,6 +492,38 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
   const float window_radius = GetWindowCornerRadius();
   EXPECT_EQ(gfx::RoundedCornersF(window_radius),
             layout->CalculateContentsCornerRadiiForTesting());
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     CalculateInfobarCornerRadiiEmptyWithoutRoundedCorners) {
+  BraveLayoutProvider layout_provider;
+  auto mock =
+      std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
+  EXPECT_CALL(*mock, ShouldUseBraveWebViewRoundedCornersForContents())
+      .WillRepeatedly(::testing::Return(false));
+
+  BrowserViewLayoutViews views;
+  auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
+      std::move(mock), std::move(views));
+
+  EXPECT_EQ(gfx::RoundedCornersF(),
+            layout->CalculateInfobarCornerRadiiForTesting());
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     CalculateInfobarCornerRadiiUsesBorderRadiusOnAllCorners) {
+  BraveLayoutProvider layout_provider;
+  auto mock =
+      std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
+  EXPECT_CALL(*mock, ShouldUseBraveWebViewRoundedCornersForContents())
+      .WillRepeatedly(::testing::Return(true));
+
+  BrowserViewLayoutViews views;
+  auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
+      std::move(mock), std::move(views));
+
+  const gfx::RoundedCornersF expected(GetBorderCornerRadius());
+  EXPECT_EQ(expected, layout->CalculateInfobarCornerRadiiForTesting());
 }
 
 #if BUILDFLAG(IS_MAC)

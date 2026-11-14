@@ -84,6 +84,7 @@ source_set("ui") {
     "//brave/browser/ui/views/frame:browser_tests",
     "//brave/browser/ui/views/frame/vertical_tabs:browser_tests",
     "//brave/browser/ui/views/frame/vertical_tabs:interactive_ui_tests",
+    "//brave/browser/ui/views/infobars:psst_infobar",
     "//brave/browser/ui/views/infobars:unit_tests",
     "//brave/browser/ui/views/page_action:unit_tests",
     "//brave/browser/ui/views/split_view:browser_tests",
