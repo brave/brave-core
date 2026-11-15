@@ -16,6 +16,7 @@
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "base/values.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/psst/psst_settings_service_factory.h"
@@ -596,14 +597,12 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     ASSERT_NO_FATAL_FAILURE(
         WritePsstSiteScripts(crx_path, "b", "b.test", "b_test"));
 
-    base::RunLoop run_loop;
+    base::test::TestFuture<std::string, std::vector<PsstRule>> rules_loaded;
     PsstRuleRegistry::GetInstance()->LoadRules(
-        crx_path, base::BindLambdaForTesting(
-                      [&run_loop](const std::string& contents,
-                                  const std::vector<PsstRule>& rules) {
-                        run_loop.Quit();
-                      }));
-    run_loop.Run();
+        crx_path,
+        rules_loaded
+            .GetCallback<const std::string&, const std::vector<PsstRule>&>());
+    ASSERT_TRUE(rules_loaded.Wait());
   }
 
   // Writes the user/policy scripts for a PSST rule named `site_name` (e.g.
