@@ -18,6 +18,7 @@ import post_process
 from PB.recipes.brave.gerrit.mirror_brave_core import InputProperties
 from recipe_api import RecipeScriptApi
 from recipe_modules import (
+    brave_gerrit,
     depot_tools,
     env,
     git,
@@ -28,9 +29,6 @@ from recipe_modules import (
 from recipe_test_api import RecipeTestApi
 
 BRAVE_CORE_URL = 'https://github.com/brave/brave-core.git'
-
-GERRIT_HOST = 'gerrit-ssh.brave.com:29418'
-GERRIT_PROJECT = 'brave-browser/brave-core'
 
 MASTER = 'refs/heads/master'
 
@@ -48,6 +46,7 @@ REFS_PER_PUSH = 200
 
 @dataclass
 class DEPS(RecipeScriptApi):
+    brave_gerrit: brave_gerrit.API
     depot_tools: depot_tools.API
     git: git.API
     git_cache: git_cache.API
@@ -66,9 +65,7 @@ def RunSteps(api: DEPS, properties: InputProperties) -> None:
         no_fetch_tags=False,
         step_name='populate brave-core',
     )
-    gerrit_url = (
-        f'ssh://{properties.gerrit_user}@{GERRIT_HOST}/{GERRIT_PROJECT}'
-    )
+    gerrit_url = api.brave_gerrit.ssh_url(properties.gerrit_user)
 
     branches = {
         ref: sha
@@ -177,7 +174,10 @@ class TEST_DEPS(RecipeTestApi):
 
 def GenTests(api: TEST_DEPS):
     mirror = '/b/cache/github.com-brave-brave-core'
-    gerrit_url = f'ssh://refresh-repos-bot@{GERRIT_HOST}/{GERRIT_PROJECT}'
+    gerrit_url = (
+        'ssh://refresh-repos-bot@gerrit-ssh.brave.com:29418/'
+        'brave-browser/brave-core'
+    )
 
     def refs(*pairs: tuple[str, str]) -> str:
         return ''.join(f'{sha}\t{ref}\n' for sha, ref in pairs)

@@ -1,0 +1,17 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+package recipes.brave.cr.autolift_gerrit_upload;
+
+message InputProperties {
+  // Gerrit SSH user the upload authenticates as.
+  string gerrit_user = 1;
+
+  // Only reads Gerrit, and says what the upload would change, as for an
+  // autolift dry run.
+  bool dry_run = 2;
+}
