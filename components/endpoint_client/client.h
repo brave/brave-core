@@ -97,11 +97,11 @@ class Client {
       }
     }();
 
-    constexpr bool kIsBodylessRequest =
-        internal::IsBodylessRequest<typename Endpoint::Request>;
+    constexpr bool kIsRequestWithoutBody =
+        internal::IsRequestWithoutBody<typename Endpoint::Request>;
 
     auto upload_data = [&]() -> std::optional<std::string> {
-      if constexpr (kIsBodylessRequest) {
+      if constexpr (kIsRequestWithoutBody) {
         return std::nullopt;
       } else {
         return request.Serialize();
@@ -109,7 +109,7 @@ class Client {
     }();
 
     constexpr auto kContentType = [] {
-      if constexpr (kIsBodylessRequest) {
+      if constexpr (kIsRequestWithoutBody) {
         return std::string_view();
       } else {
         return Request::ContentType();

@@ -12,31 +12,31 @@
 namespace endpoint_client::internal {
 
 template <typename>
-inline constexpr bool kIsBodylessResponse = false;
+inline constexpr bool kIsResponseWithoutBodies = false;
 
+// A response without bodies is a Response<> with no body types.
 template <>
-inline constexpr bool kIsBodylessResponse<Response<>> = true;
+inline constexpr bool kIsResponseWithoutBodies<Response<>> = true;
 
-// A body-less response is a Response<> without response bodies.
 template <typename Response>
-concept IsBodylessResponse = kIsBodylessResponse<Response>;
+concept IsResponseWithoutBodies = kIsResponseWithoutBodies<Response>;
 
 template <typename>
 inline constexpr bool kIsResponseWithBodies = false;
 
+// A response with bodies is a Response<> with a success and an error response
+// body.
 template <IsResponseBody SuccessBody, IsResponseBody ErrorBody>
 inline constexpr bool kIsResponseWithBodies<Response<SuccessBody, ErrorBody>> =
     true;
 
-// A response with bodies is a Response<> with a success and an error response
-// body.
 template <typename Response>
 concept IsResponseWithBodies = kIsResponseWithBodies<Response>;
 
-// A response is either a body-less response or a response with bodies.
+// A response is either a response without bodies or a response with bodies.
 template <typename Response>
 concept IsResponse =
-    IsBodylessResponse<Response> || IsResponseWithBodies<Response>;
+    IsResponseWithoutBodies<Response> || IsResponseWithBodies<Response>;
 
 }  // namespace endpoint_client::internal
 

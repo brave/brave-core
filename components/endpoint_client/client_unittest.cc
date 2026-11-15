@@ -85,7 +85,7 @@ using JSONEmptyRequestBodyJSONResponseBodiesEndpoint =
 // Request: POST https://example.com/api/query (no body)
 // Success: { "success": "success" }
 // Error:   { "error": "error" }
-using BodylessRequestJSONResponseBodiesEndpoint =
+using RequestWithoutBodyJSONResponseBodiesEndpoint =
     TestEndpoint<Post<>, Response<JSONSuccessBody, JSONErrorBody>>;
 
 // Request: POST https://example.com/api/query \x0A\x07request
@@ -105,7 +105,7 @@ using ProtobufEmptyRequestBodyProtobufResponseBodiesEndpoint =
 // Request: POST https://example.com/api/query (no body)
 // Success: \x0A\x07success
 // Error:   \x0A\x05error
-using BodylessRequestProtobufResponseBodiesEndpoint =
+using RequestWithoutBodyProtobufResponseBodiesEndpoint =
     TestEndpoint<Post<>, Response<ProtobufSuccessBody, ProtobufErrorBody>>;
 
 // Request: POST https://example.com/api/query { "request": "request" }
@@ -125,13 +125,13 @@ using ProtobufNonEmptyRequestBodyJSONResponseBodiesEndpoint =
 // Request: POST https://example.com/api/query (no body)
 // Success: \x0A\x07success
 // Error:   { "error": "error" }
-using BodylessRequestProtobufSuccessJSONErrorBodiesEndpoint =
+using RequestWithoutBodyProtobufSuccessJSONErrorBodiesEndpoint =
     TestEndpoint<Post<>, Response<ProtobufSuccessBody, JSONErrorBody>>;
 
 // Request: POST https://example.com/api/query (no body)
 // Success: not parsed
 // Error:   not parsed
-using BodylessRequestBodylessResponseEndpoint =
+using RequestWithoutBodyResponseWithoutBodiesEndpoint =
     TestEndpoint<Post<>, Response<>>;
 
 template <typename Response>
@@ -179,11 +179,11 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
  private:
   using TestCase = TestCase<Response>;
 
-  static constexpr bool kIsBodylessRequest =
-      internal::IsBodylessRequest<typename Endpoint::Request>;
+  static constexpr bool kIsRequestWithoutBody =
+      internal::IsRequestWithoutBody<typename Endpoint::Request>;
 
-  static constexpr bool kIsBodylessResponse =
-      internal::IsBodylessResponse<typename Endpoint::Response>;
+  static constexpr bool kIsResponseWithoutBodies =
+      internal::IsResponseWithoutBodies<typename Endpoint::Response>;
 
   enum class BodyCase { kEmpty, kMalformed, kUnexpected, kValid };
 
@@ -328,7 +328,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
 
   static Request MakeRequest() {
     Request request;
-    if constexpr (!kIsBodylessRequest) {
+    if constexpr (!kIsRequestWithoutBody) {
       request.body = MakeRequestBody<typename Endpoint::Request::Body>();
     }
 
@@ -401,7 +401,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
     response.status_code = status_code;
 
     if (net_error == net::OK && status_code) {
-      if constexpr (!kIsBodylessResponse) {
+      if constexpr (!kIsResponseWithoutBodies) {
         if (network::IsSuccessfulStatus(*status_code)) {  // 2xx
           response.body =
               MakeResponseBody<typename Endpoint::Response::SuccessBody>(
@@ -429,14 +429,14 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
     return response;
   }
 
-  // The response body served for endpoints with a body-less Response<>. Its
+  // The response body served for endpoints whose Response<> has no bodies. Its
   // content doesn't matter: such responses never parse a body, so any bytes
   // must be ignored, and the tests check that only the status reaches the
   // response.
   static constexpr char kIgnoredBody[] = "ignored";
 
   static std::string MakeSuccessBody(BodyCase body_case) {
-    if constexpr (kIsBodylessResponse) {
+    if constexpr (kIsResponseWithoutBodies) {
       return kIgnoredBody;
     } else {
       return MakeBody<typename Endpoint::Response::SuccessBody>(body_case);
@@ -444,7 +444,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
   }
 
   static std::string MakeErrorBody(BodyCase body_case) {
-    if constexpr (kIsBodylessResponse) {
+    if constexpr (kIsResponseWithoutBodies) {
       return kIgnoredBody;
     } else {
       return MakeBody<typename Endpoint::Response::ErrorBody>(body_case);
@@ -524,7 +524,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
     EXPECT_EQ(resource_request.redirect_mode,
               network::mojom::RedirectMode::kError);
 
-    if constexpr (kIsBodylessRequest) {
+    if constexpr (kIsRequestWithoutBody) {
       EXPECT_FALSE(resource_request.headers.HasHeader(
           net::HttpRequestHeaders::kContentType));
       EXPECT_FALSE(resource_request.request_body);
@@ -596,21 +596,22 @@ using ClientTestJSONEmptyRequestBodyJSONResponseBodiesResponseWithHeaders =
         JSONEmptyRequestBodyJSONResponseBodiesEndpoint::Request,
         WithHeaders<JSONEmptyRequestBodyJSONResponseBodiesEndpoint::Response>>;
 
-using ClientTestBodylessRequestJSONResponseBodiesNoHeaders =
-    ClientTest<BodylessRequestJSONResponseBodiesEndpoint,
-               BodylessRequestJSONResponseBodiesEndpoint::Request,
-               BodylessRequestJSONResponseBodiesEndpoint::Response>;
+using ClientTestRequestWithoutBodyJSONResponseBodiesNoHeaders =
+    ClientTest<RequestWithoutBodyJSONResponseBodiesEndpoint,
+               RequestWithoutBodyJSONResponseBodiesEndpoint::Request,
+               RequestWithoutBodyJSONResponseBodiesEndpoint::Response>;
 
-using ClientTestBodylessRequestJSONResponseBodiesRequestWithHeaders =
-    ClientTest<BodylessRequestJSONResponseBodiesEndpoint,
-               WithHeaders<BodylessRequestJSONResponseBodiesEndpoint::Request>,
-               BodylessRequestJSONResponseBodiesEndpoint::Response>;
-
-using ClientTestBodylessRequestJSONResponseBodiesResponseWithHeaders =
+using ClientTestRequestWithoutBodyJSONResponseBodiesRequestWithHeaders =
     ClientTest<
-        BodylessRequestJSONResponseBodiesEndpoint,
-        BodylessRequestJSONResponseBodiesEndpoint::Request,
-        WithHeaders<BodylessRequestJSONResponseBodiesEndpoint::Response>>;
+        RequestWithoutBodyJSONResponseBodiesEndpoint,
+        WithHeaders<RequestWithoutBodyJSONResponseBodiesEndpoint::Request>,
+        RequestWithoutBodyJSONResponseBodiesEndpoint::Response>;
+
+using ClientTestRequestWithoutBodyJSONResponseBodiesResponseWithHeaders =
+    ClientTest<
+        RequestWithoutBodyJSONResponseBodiesEndpoint,
+        RequestWithoutBodyJSONResponseBodiesEndpoint::Request,
+        WithHeaders<RequestWithoutBodyJSONResponseBodiesEndpoint::Response>>;
 
 using ClientTestProtobufNonEmptyRequestBodyProtobufResponseBodiesNoHeaders =
     ClientTest<
@@ -652,22 +653,22 @@ using ClientTestProtobufEmptyRequestBodyProtobufResponseBodiesResponseWithHeader
         WithHeaders<
             ProtobufEmptyRequestBodyProtobufResponseBodiesEndpoint::Response>>;
 
-using ClientTestBodylessRequestProtobufResponseBodiesNoHeaders =
-    ClientTest<BodylessRequestProtobufResponseBodiesEndpoint,
-               BodylessRequestProtobufResponseBodiesEndpoint::Request,
-               BodylessRequestProtobufResponseBodiesEndpoint::Response>;
+using ClientTestRequestWithoutBodyProtobufResponseBodiesNoHeaders =
+    ClientTest<RequestWithoutBodyProtobufResponseBodiesEndpoint,
+               RequestWithoutBodyProtobufResponseBodiesEndpoint::Request,
+               RequestWithoutBodyProtobufResponseBodiesEndpoint::Response>;
 
-using ClientTestBodylessRequestProtobufResponseBodiesRequestWithHeaders =
+using ClientTestRequestWithoutBodyProtobufResponseBodiesRequestWithHeaders =
     ClientTest<
-        BodylessRequestProtobufResponseBodiesEndpoint,
-        WithHeaders<BodylessRequestProtobufResponseBodiesEndpoint::Request>,
-        BodylessRequestProtobufResponseBodiesEndpoint::Response>;
+        RequestWithoutBodyProtobufResponseBodiesEndpoint,
+        WithHeaders<RequestWithoutBodyProtobufResponseBodiesEndpoint::Request>,
+        RequestWithoutBodyProtobufResponseBodiesEndpoint::Response>;
 
-using ClientTestBodylessRequestProtobufResponseBodiesResponseWithHeaders =
-    ClientTest<
-        BodylessRequestProtobufResponseBodiesEndpoint,
-        BodylessRequestProtobufResponseBodiesEndpoint::Request,
-        WithHeaders<BodylessRequestProtobufResponseBodiesEndpoint::Response>>;
+using ClientTestRequestWithoutBodyProtobufResponseBodiesResponseWithHeaders =
+    ClientTest<RequestWithoutBodyProtobufResponseBodiesEndpoint,
+               RequestWithoutBodyProtobufResponseBodiesEndpoint::Request,
+               WithHeaders<
+                   RequestWithoutBodyProtobufResponseBodiesEndpoint::Response>>;
 
 using ClientTestJSONNonEmptyRequestBodyProtobufResponseBodiesNoHeaders =
     ClientTest<JSONNonEmptyRequestBodyProtobufResponseBodiesEndpoint,
@@ -707,39 +708,42 @@ using ClientTestProtobufNonEmptyRequestBodyJSONResponseBodiesResponseWithHeaders
         WithHeaders<
             ProtobufNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response>>;
 
-using ClientTestBodylessRequestProtobufSuccessJSONErrorBodiesNoHeaders =
-    ClientTest<BodylessRequestProtobufSuccessJSONErrorBodiesEndpoint,
-               BodylessRequestProtobufSuccessJSONErrorBodiesEndpoint::Request,
-               BodylessRequestProtobufSuccessJSONErrorBodiesEndpoint::Response>;
-
-using ClientTestBodylessRequestProtobufSuccessJSONErrorBodiesRequestWithHeaders =
+using ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesNoHeaders =
     ClientTest<
-        BodylessRequestProtobufSuccessJSONErrorBodiesEndpoint,
-        WithHeaders<
-            BodylessRequestProtobufSuccessJSONErrorBodiesEndpoint::Request>,
-        BodylessRequestProtobufSuccessJSONErrorBodiesEndpoint::Response>;
+        RequestWithoutBodyProtobufSuccessJSONErrorBodiesEndpoint,
+        RequestWithoutBodyProtobufSuccessJSONErrorBodiesEndpoint::Request,
+        RequestWithoutBodyProtobufSuccessJSONErrorBodiesEndpoint::Response>;
 
-using ClientTestBodylessRequestProtobufSuccessJSONErrorBodiesResponseWithHeaders =
+using ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesRequestWithHeaders =
     ClientTest<
-        BodylessRequestProtobufSuccessJSONErrorBodiesEndpoint,
-        BodylessRequestProtobufSuccessJSONErrorBodiesEndpoint::Request,
+        RequestWithoutBodyProtobufSuccessJSONErrorBodiesEndpoint,
         WithHeaders<
-            BodylessRequestProtobufSuccessJSONErrorBodiesEndpoint::Response>>;
+            RequestWithoutBodyProtobufSuccessJSONErrorBodiesEndpoint::Request>,
+        RequestWithoutBodyProtobufSuccessJSONErrorBodiesEndpoint::Response>;
 
-using ClientTestBodylessRequestBodylessResponseNoHeaders =
-    ClientTest<BodylessRequestBodylessResponseEndpoint,
-               BodylessRequestBodylessResponseEndpoint::Request,
-               BodylessRequestBodylessResponseEndpoint::Response>;
+using ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesResponseWithHeaders =
+    ClientTest<
+        RequestWithoutBodyProtobufSuccessJSONErrorBodiesEndpoint,
+        RequestWithoutBodyProtobufSuccessJSONErrorBodiesEndpoint::Request,
+        WithHeaders<RequestWithoutBodyProtobufSuccessJSONErrorBodiesEndpoint::
+                        Response>>;
 
-using ClientTestBodylessRequestBodylessResponseRequestWithHeaders =
-    ClientTest<BodylessRequestBodylessResponseEndpoint,
-               WithHeaders<BodylessRequestBodylessResponseEndpoint::Request>,
-               BodylessRequestBodylessResponseEndpoint::Response>;
+using ClientTestRequestWithoutBodyResponseWithoutBodiesNoHeaders =
+    ClientTest<RequestWithoutBodyResponseWithoutBodiesEndpoint,
+               RequestWithoutBodyResponseWithoutBodiesEndpoint::Request,
+               RequestWithoutBodyResponseWithoutBodiesEndpoint::Response>;
 
-using ClientTestBodylessRequestBodylessResponseResponseWithHeaders =
-    ClientTest<BodylessRequestBodylessResponseEndpoint,
-               BodylessRequestBodylessResponseEndpoint::Request,
-               WithHeaders<BodylessRequestBodylessResponseEndpoint::Response>>;
+using ClientTestRequestWithoutBodyResponseWithoutBodiesRequestWithHeaders =
+    ClientTest<
+        RequestWithoutBodyResponseWithoutBodiesEndpoint,
+        WithHeaders<RequestWithoutBodyResponseWithoutBodiesEndpoint::Request>,
+        RequestWithoutBodyResponseWithoutBodiesEndpoint::Response>;
+
+using ClientTestRequestWithoutBodyResponseWithoutBodiesResponseWithHeaders =
+    ClientTest<
+        RequestWithoutBodyResponseWithoutBodiesEndpoint,
+        RequestWithoutBodyResponseWithoutBodiesEndpoint::Request,
+        WithHeaders<RequestWithoutBodyResponseWithoutBodiesEndpoint::Response>>;
 
 class ClientTestCancelableRequest : public testing::Test {
  protected:
@@ -846,38 +850,40 @@ INSTANTIATE_TEST_SUITE_P(
     ClientTestJSONEmptyRequestBodyJSONResponseBodiesResponseWithHeaders::
         kNameGenerator);
 
-TEST_P(ClientTestBodylessRequestJSONResponseBodiesNoHeaders, Send) {
+TEST_P(ClientTestRequestWithoutBodyJSONResponseBodiesNoHeaders, Send) {
   RunTestCase();
 }
 
 INSTANTIATE_TEST_SUITE_P(
-    BodylessRequestJSONResponseBodiesNoHeaders,
-    ClientTestBodylessRequestJSONResponseBodiesNoHeaders,
-    ClientTestBodylessRequestJSONResponseBodiesNoHeaders::GenerateTestCases(),
-    ClientTestBodylessRequestJSONResponseBodiesNoHeaders::kNameGenerator);
-
-TEST_P(ClientTestBodylessRequestJSONResponseBodiesRequestWithHeaders, Send) {
-  RunTestCase();
-}
-
-INSTANTIATE_TEST_SUITE_P(
-    BodylessRequestJSONResponseBodiesRequestWithHeaders,
-    ClientTestBodylessRequestJSONResponseBodiesRequestWithHeaders,
-    ClientTestBodylessRequestJSONResponseBodiesRequestWithHeaders::
+    RequestWithoutBodyJSONResponseBodiesNoHeaders,
+    ClientTestRequestWithoutBodyJSONResponseBodiesNoHeaders,
+    ClientTestRequestWithoutBodyJSONResponseBodiesNoHeaders::
         GenerateTestCases(),
-    ClientTestBodylessRequestJSONResponseBodiesRequestWithHeaders::
+    ClientTestRequestWithoutBodyJSONResponseBodiesNoHeaders::kNameGenerator);
+
+TEST_P(ClientTestRequestWithoutBodyJSONResponseBodiesRequestWithHeaders, Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    RequestWithoutBodyJSONResponseBodiesRequestWithHeaders,
+    ClientTestRequestWithoutBodyJSONResponseBodiesRequestWithHeaders,
+    ClientTestRequestWithoutBodyJSONResponseBodiesRequestWithHeaders::
+        GenerateTestCases(),
+    ClientTestRequestWithoutBodyJSONResponseBodiesRequestWithHeaders::
         kNameGenerator);
 
-TEST_P(ClientTestBodylessRequestJSONResponseBodiesResponseWithHeaders, Send) {
+TEST_P(ClientTestRequestWithoutBodyJSONResponseBodiesResponseWithHeaders,
+       Send) {
   RunTestCase();
 }
 
 INSTANTIATE_TEST_SUITE_P(
-    BodylessRequestJSONResponseBodiesResponseWithHeaders,
-    ClientTestBodylessRequestJSONResponseBodiesResponseWithHeaders,
-    ClientTestBodylessRequestJSONResponseBodiesResponseWithHeaders::
+    RequestWithoutBodyJSONResponseBodiesResponseWithHeaders,
+    ClientTestRequestWithoutBodyJSONResponseBodiesResponseWithHeaders,
+    ClientTestRequestWithoutBodyJSONResponseBodiesResponseWithHeaders::
         GenerateTestCases(),
-    ClientTestBodylessRequestJSONResponseBodiesResponseWithHeaders::
+    ClientTestRequestWithoutBodyJSONResponseBodiesResponseWithHeaders::
         kNameGenerator);
 
 TEST_P(ClientTestProtobufNonEmptyRequestBodyProtobufResponseBodiesNoHeaders,
@@ -962,41 +968,42 @@ INSTANTIATE_TEST_SUITE_P(
     ClientTestProtobufEmptyRequestBodyProtobufResponseBodiesResponseWithHeaders::
         kNameGenerator);
 
-TEST_P(ClientTestBodylessRequestProtobufResponseBodiesNoHeaders, Send) {
+TEST_P(ClientTestRequestWithoutBodyProtobufResponseBodiesNoHeaders, Send) {
   RunTestCase();
 }
 
 INSTANTIATE_TEST_SUITE_P(
-    BodylessRequestProtobufResponseBodiesNoHeaders,
-    ClientTestBodylessRequestProtobufResponseBodiesNoHeaders,
-    ClientTestBodylessRequestProtobufResponseBodiesNoHeaders::
+    RequestWithoutBodyProtobufResponseBodiesNoHeaders,
+    ClientTestRequestWithoutBodyProtobufResponseBodiesNoHeaders,
+    ClientTestRequestWithoutBodyProtobufResponseBodiesNoHeaders::
         GenerateTestCases(),
-    ClientTestBodylessRequestProtobufResponseBodiesNoHeaders::kNameGenerator);
-
-TEST_P(ClientTestBodylessRequestProtobufResponseBodiesRequestWithHeaders,
-       Send) {
-  RunTestCase();
-}
-
-INSTANTIATE_TEST_SUITE_P(
-    BodylessRequestProtobufResponseBodiesRequestWithHeaders,
-    ClientTestBodylessRequestProtobufResponseBodiesRequestWithHeaders,
-    ClientTestBodylessRequestProtobufResponseBodiesRequestWithHeaders::
-        GenerateTestCases(),
-    ClientTestBodylessRequestProtobufResponseBodiesRequestWithHeaders::
+    ClientTestRequestWithoutBodyProtobufResponseBodiesNoHeaders::
         kNameGenerator);
 
-TEST_P(ClientTestBodylessRequestProtobufResponseBodiesResponseWithHeaders,
+TEST_P(ClientTestRequestWithoutBodyProtobufResponseBodiesRequestWithHeaders,
        Send) {
   RunTestCase();
 }
 
 INSTANTIATE_TEST_SUITE_P(
-    BodylessRequestProtobufResponseBodiesResponseWithHeaders,
-    ClientTestBodylessRequestProtobufResponseBodiesResponseWithHeaders,
-    ClientTestBodylessRequestProtobufResponseBodiesResponseWithHeaders::
+    RequestWithoutBodyProtobufResponseBodiesRequestWithHeaders,
+    ClientTestRequestWithoutBodyProtobufResponseBodiesRequestWithHeaders,
+    ClientTestRequestWithoutBodyProtobufResponseBodiesRequestWithHeaders::
         GenerateTestCases(),
-    ClientTestBodylessRequestProtobufResponseBodiesResponseWithHeaders::
+    ClientTestRequestWithoutBodyProtobufResponseBodiesRequestWithHeaders::
+        kNameGenerator);
+
+TEST_P(ClientTestRequestWithoutBodyProtobufResponseBodiesResponseWithHeaders,
+       Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    RequestWithoutBodyProtobufResponseBodiesResponseWithHeaders,
+    ClientTestRequestWithoutBodyProtobufResponseBodiesResponseWithHeaders,
+    ClientTestRequestWithoutBodyProtobufResponseBodiesResponseWithHeaders::
+        GenerateTestCases(),
+    ClientTestRequestWithoutBodyProtobufResponseBodiesResponseWithHeaders::
         kNameGenerator);
 
 TEST_P(ClientTestJSONNonEmptyRequestBodyProtobufResponseBodiesNoHeaders, Send) {
@@ -1079,78 +1086,82 @@ INSTANTIATE_TEST_SUITE_P(
     ClientTestProtobufNonEmptyRequestBodyJSONResponseBodiesResponseWithHeaders::
         kNameGenerator);
 
-TEST_P(ClientTestBodylessRequestProtobufSuccessJSONErrorBodiesNoHeaders, Send) {
+TEST_P(ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesNoHeaders,
+       Send) {
   RunTestCase();
 }
 
 INSTANTIATE_TEST_SUITE_P(
-    BodylessRequestProtobufSuccessJSONErrorBodiesNoHeaders,
-    ClientTestBodylessRequestProtobufSuccessJSONErrorBodiesNoHeaders,
-    ClientTestBodylessRequestProtobufSuccessJSONErrorBodiesNoHeaders::
+    RequestWithoutBodyProtobufSuccessJSONErrorBodiesNoHeaders,
+    ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesNoHeaders,
+    ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesNoHeaders::
         GenerateTestCases(),
-    ClientTestBodylessRequestProtobufSuccessJSONErrorBodiesNoHeaders::
+    ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesNoHeaders::
         kNameGenerator);
 
 TEST_P(
-    ClientTestBodylessRequestProtobufSuccessJSONErrorBodiesRequestWithHeaders,
+    ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesRequestWithHeaders,
     Send) {
   RunTestCase();
 }
 
 INSTANTIATE_TEST_SUITE_P(
-    BodylessRequestProtobufSuccessJSONErrorBodiesRequestWithHeaders,
-    ClientTestBodylessRequestProtobufSuccessJSONErrorBodiesRequestWithHeaders,
-    ClientTestBodylessRequestProtobufSuccessJSONErrorBodiesRequestWithHeaders::
+    RequestWithoutBodyProtobufSuccessJSONErrorBodiesRequestWithHeaders,
+    ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesRequestWithHeaders,
+    ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesRequestWithHeaders::
         GenerateTestCases(),
-    ClientTestBodylessRequestProtobufSuccessJSONErrorBodiesRequestWithHeaders::
+    ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesRequestWithHeaders::
         kNameGenerator);
 
 TEST_P(
-    ClientTestBodylessRequestProtobufSuccessJSONErrorBodiesResponseWithHeaders,
+    ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesResponseWithHeaders,
     Send) {
   RunTestCase();
 }
 
 INSTANTIATE_TEST_SUITE_P(
-    BodylessRequestProtobufSuccessJSONErrorBodiesResponseWithHeaders,
-    ClientTestBodylessRequestProtobufSuccessJSONErrorBodiesResponseWithHeaders,
-    ClientTestBodylessRequestProtobufSuccessJSONErrorBodiesResponseWithHeaders::
+    RequestWithoutBodyProtobufSuccessJSONErrorBodiesResponseWithHeaders,
+    ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesResponseWithHeaders,
+    ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesResponseWithHeaders::
         GenerateTestCases(),
-    ClientTestBodylessRequestProtobufSuccessJSONErrorBodiesResponseWithHeaders::
+    ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesResponseWithHeaders::
         kNameGenerator);
 
-TEST_P(ClientTestBodylessRequestBodylessResponseNoHeaders, Send) {
+TEST_P(ClientTestRequestWithoutBodyResponseWithoutBodiesNoHeaders, Send) {
   RunTestCase();
 }
 
 INSTANTIATE_TEST_SUITE_P(
-    BodylessRequestBodylessResponseNoHeaders,
-    ClientTestBodylessRequestBodylessResponseNoHeaders,
-    ClientTestBodylessRequestBodylessResponseNoHeaders::GenerateTestCases(),
-    ClientTestBodylessRequestBodylessResponseNoHeaders::kNameGenerator);
-
-TEST_P(ClientTestBodylessRequestBodylessResponseRequestWithHeaders, Send) {
-  RunTestCase();
-}
-
-INSTANTIATE_TEST_SUITE_P(
-    BodylessRequestBodylessResponseRequestWithHeaders,
-    ClientTestBodylessRequestBodylessResponseRequestWithHeaders,
-    ClientTestBodylessRequestBodylessResponseRequestWithHeaders::
+    RequestWithoutBodyResponseWithoutBodiesNoHeaders,
+    ClientTestRequestWithoutBodyResponseWithoutBodiesNoHeaders,
+    ClientTestRequestWithoutBodyResponseWithoutBodiesNoHeaders::
         GenerateTestCases(),
-    ClientTestBodylessRequestBodylessResponseRequestWithHeaders::
+    ClientTestRequestWithoutBodyResponseWithoutBodiesNoHeaders::kNameGenerator);
+
+TEST_P(ClientTestRequestWithoutBodyResponseWithoutBodiesRequestWithHeaders,
+       Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    RequestWithoutBodyResponseWithoutBodiesRequestWithHeaders,
+    ClientTestRequestWithoutBodyResponseWithoutBodiesRequestWithHeaders,
+    ClientTestRequestWithoutBodyResponseWithoutBodiesRequestWithHeaders::
+        GenerateTestCases(),
+    ClientTestRequestWithoutBodyResponseWithoutBodiesRequestWithHeaders::
         kNameGenerator);
 
-TEST_P(ClientTestBodylessRequestBodylessResponseResponseWithHeaders, Send) {
+TEST_P(ClientTestRequestWithoutBodyResponseWithoutBodiesResponseWithHeaders,
+       Send) {
   RunTestCase();
 }
 
 INSTANTIATE_TEST_SUITE_P(
-    BodylessRequestBodylessResponseResponseWithHeaders,
-    ClientTestBodylessRequestBodylessResponseResponseWithHeaders,
-    ClientTestBodylessRequestBodylessResponseResponseWithHeaders::
+    RequestWithoutBodyResponseWithoutBodiesResponseWithHeaders,
+    ClientTestRequestWithoutBodyResponseWithoutBodiesResponseWithHeaders,
+    ClientTestRequestWithoutBodyResponseWithoutBodiesResponseWithHeaders::
         GenerateTestCases(),
-    ClientTestBodylessRequestBodylessResponseResponseWithHeaders::
+    ClientTestRequestWithoutBodyResponseWithoutBodiesResponseWithHeaders::
         kNameGenerator);
 
 TEST_F(ClientTestCancelableRequest, ResetPreventsCallback) {
