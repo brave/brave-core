@@ -21,6 +21,7 @@ function suggestTemplate(primaryText: string, secondaryText: string) {
     style: SuggestStyle.kUnspecified,
     typeIcon: IconType.kIconTypeUnspecified,
     fuseboxAction: null,
+    actionIcon: null,
   }
 }
 
