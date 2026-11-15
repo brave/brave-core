@@ -28,6 +28,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/pref_names.h"
@@ -43,6 +44,7 @@
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/frame/contents_container_view.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/common/pref_names.h"
@@ -57,6 +59,7 @@
 #include "content/public/test/test_utils.h"
 #include "ui/gfx/animation/animation.h"
 #include "ui/gfx/animation/animation_test_api.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/controls/resize_area.h"
@@ -99,6 +102,27 @@ class WebPanelBrowserTest : public SidebarBrowserTest {
     service->AddItem(SidebarItem::CreateWebPanelItem(url, u"title"));
     controller()->OnItemPressed(model()->GetAllSidebarItems().size() - 1);
     ASSERT_TRUE(web_panel_controller()->HasOpenPanel());
+  }
+
+  bool ShouldUseRoundedCorners() const {
+    return BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
+        browser());
+  }
+
+  gfx::RoundedCornersF ContentsRadii() {
+    // The panel's tab is added in the background, so the active contents are
+    // still the regular ones.
+    return browser_view()
+        ->GetActiveContentsContainerView()
+        ->contents_view()
+        ->GetBackgroundRadii();
+  }
+
+  gfx::RoundedCornersF WebPanelRadii() {
+    auto* contents_view = views::AsViewClass<ContentsWebView>(
+        GetBraveMultiContentsView()->GetWebPanelContentsViewForTesting());
+    CHECK(contents_view);
+    return contents_view->GetBackgroundRadii();
   }
 
  private:
@@ -220,6 +244,32 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest, SidePanelAfterHidingBraveTalk) {
   EXPECT_FALSE(GetBraveMultiContentsView()->IsWebPanelVisible());
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_TALK)
+
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest, WebPanelForcesRoundedCornersTest) {
+  browser()->GetProfile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners,
+                                                  false);
+  RunScheduledLayouts();
+
+  ASSERT_FALSE(GetBraveMultiContentsView()->IsWebPanelVisible());
+  EXPECT_FALSE(ShouldUseRoundedCorners());
+  EXPECT_TRUE(ContentsRadii().IsEmpty());
+
+  OpenWebPanel(GURL(kTestWebPanelURL));
+  RunScheduledLayouts();
+  ASSERT_TRUE(GetBraveMultiContentsView()->IsWebPanelVisible());
+
+  EXPECT_TRUE(ShouldUseRoundedCorners());
+  EXPECT_FALSE(ContentsRadii().IsEmpty());
+  EXPECT_FALSE(WebPanelRadii().IsEmpty());
+
+  web_panel_controller()->CloseWebPanel();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !GetBraveMultiContentsView()->IsWebPanelVisible(); }));
+  RunScheduledLayouts();
+
+  EXPECT_FALSE(ShouldUseRoundedCorners());
+  EXPECT_TRUE(ContentsRadii().IsEmpty());
+}
 
 // Regression test for a crash caused by BraveMultiContentsView's web-panel
 // container never being registered in

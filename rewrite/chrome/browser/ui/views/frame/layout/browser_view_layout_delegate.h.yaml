@@ -22,8 +22,11 @@ substitutions:
         virtual bool IsContentTypeSidePanelVisible() const = 0;
         virtual bool IsFullscreenForBrowser() const = 0;
         virtual bool IsFullscreenForTab() const = 0;
+        virtual bool IsWebPanelVisible() const = 0;
+        virtual bool IsWebPanelOnLeft() const = 0;
         virtual void UpdateContentsCornerRadii(
-            const gfx::RoundedCornersF& corner_radii) = 0;
+            const gfx::RoundedCornersF& corner_radii,
+            const gfx::RoundedCornersF& web_panel_corner_radii) = 0;
         virtual bool IsFullscreen() const = 0;
 
   - description: |-

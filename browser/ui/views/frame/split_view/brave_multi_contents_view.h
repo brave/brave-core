@@ -9,6 +9,7 @@
 #include <optional>
 #include <vector>
 
+#include "base/callback_list.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
@@ -40,6 +41,10 @@ class BraveMultiContentsView : public MultiContentsView {
 
   void SetWebPanelWidth(int width);
   void SetWebPanelOnLeft(bool left);
+
+  // The panel's visual side, straight from the alignment pref. The layout needs
+  // it to decide which of the panel's edges faces the contents.
+  bool web_panel_on_left() const { return web_panel_on_left_; }
   void OnWebPanelResize(int resize_amount, bool done_resizing);
 
   void set_web_panel_active(bool active) { is_web_panel_active_ = active; }
@@ -54,9 +59,12 @@ class BraveMultiContentsView : public MultiContentsView {
   // display state has changed.
   void OnShowActiveContentsDomainChanged();
 
-  // Updates the contents area corner radii for the hosted contents areas, based
-  // on the specified corner radii for the multi-contents view as a whole.
-  void UpdateContentsCornerRadii(const gfx::RoundedCornersF& corner_radii);
+  // Applies the corner radii the layout computed: |corner_radii| for the
+  // contents area as a whole, distributed across the panes, and
+  // |web_panel_corner_radii| for the hosted web panel.
+  void UpdateContentsCornerRadii(
+      const gfx::RoundedCornersF& corner_radii,
+      const gfx::RoundedCornersF& web_panel_corner_radii);
 
   // MultiContentsView:
   // Give web panel's ContentsContainerView/ContentsWebView if
@@ -84,6 +92,11 @@ class BraveMultiContentsView : public MultiContentsView {
 
   // Creates the web panel's container on first use.
   void UseContentsContainerViewForWebPanel();
+
+  // Lets the browser view re-evaluate the UI that depends on whether a web
+  // panel is open. Wired as the panel container's visibility-changed callback.
+  void OnWebPanelVisibilityChanged();
+
   int GetWebPanelWidth() const;
   int GetWebPanelResizeAreaWidth() const;
 
@@ -113,6 +126,7 @@ class BraveMultiContentsView : public MultiContentsView {
   raw_ptr<BraveContentsContainerView> contents_container_view_for_web_panel_ =
       nullptr;
   raw_ptr<views::ResizeArea> web_panel_resize_area_ = nullptr;
+  base::CallbackListSubscription web_panel_visible_subscription_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_MULTI_CONTENTS_VIEW_H_
