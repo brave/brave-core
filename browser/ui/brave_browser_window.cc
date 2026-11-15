@@ -5,12 +5,7 @@
 
 #include "brave/browser/ui/brave_browser_window.h"
 
-#include <vector>
-
 #include "chrome/browser/ui/views/frame/browser_view.h"
-
-// Provide a base implementation (important for `TestBrowserWindow ` in tests)
-// For real implementation, see `BraveBrowserView`.
 
 // static
 BraveBrowserWindow* BraveBrowserWindow::From(BrowserWindow* window) {
@@ -24,10 +19,3 @@ BraveBrowserWindow* BraveBrowserWindow::FromBrowser(
     BrowserWindowInterface* browser) {
   return From(BrowserWindow::FromBrowser(browser));
 }
-
-#if defined(TOOLKIT_VIEWS)
-bool BraveBrowserWindow::ShowBraveHelpBubbleView(const std::string& text) {
-  return false;
-}
-#endif  // defined(TOOLKIT_VIEWS)
-

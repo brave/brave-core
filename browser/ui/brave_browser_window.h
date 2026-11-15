@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_
 
-#include <string>
-
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_window.h"
 
@@ -26,11 +24,6 @@ class BraveBrowserWindow : public BrowserWindow {
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   virtual void UpdateReaderModeToolbar() {}
-#endif
-
-#if defined(TOOLKIT_VIEWS)
-  // Returns true when bubble is shown.
-  virtual bool ShowBraveHelpBubbleView(const std::string& text);
 #endif
 
   virtual void ReadyToListenFullscreenChanges() {}
