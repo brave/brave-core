@@ -13,7 +13,6 @@
 
 #include "base/command_line.h"
 #include "base/logging.h"
-#include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/test_future.h"
 #include "chrome/browser/browser_process.h"
@@ -161,20 +160,18 @@ class DirectFeedFetcherBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(DirectFeedFetcherBrowserTest, RedirectToFeed) {
-  base::RunLoop run_loop;
   GURL feed2_url = https_server_.GetURL("/feed2");
 
-  fetcher_->DownloadFeed(
-      feed2_url, std::nullopt, "test_publisher",
-      base::BindLambdaForTesting([&](DirectFeedResponse response) {
-        const auto& result = std::get<DirectFeedResult>(response.result);
-        ASSERT_EQ(1u, result.articles.size());
-        EXPECT_EQ(feed2_url.spec(), response.url.spec());
-        EXPECT_EQ("Hacker News", result.title);
-        run_loop.Quit();
-      }));
+  base::test::TestFuture<DirectFeedResponse> future;
+  fetcher_->DownloadFeed(feed2_url, std::nullopt, "test_publisher",
+                         future.GetCallback());
 
-  run_loop.Run();
+  const DirectFeedResponse& response = future.Get();
+  ASSERT_TRUE(std::holds_alternative<DirectFeedResult>(response.result));
+  const auto& result = std::get<DirectFeedResult>(response.result);
+  ASSERT_EQ(1u, result.articles.size());
+  EXPECT_EQ(feed2_url.spec(), response.url.spec());
+  EXPECT_EQ("Hacker News", result.title);
 }
 
 // Fetches made on behalf of a web page (i.e. with an initiator origin) must not
