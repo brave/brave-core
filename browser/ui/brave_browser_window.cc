@@ -8,14 +8,9 @@
 #include <vector>
 
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "ui/gfx/geometry/rect.h"
 
 // Provide a base implementation (important for `TestBrowserWindow ` in tests)
 // For real implementation, see `BraveBrowserView`.
-
-gfx::Rect BraveBrowserWindow::GetShieldsBubbleRect() {
-  return gfx::Rect();
-}
 
 // static
 BraveBrowserWindow* BraveBrowserWindow::From(BrowserWindow* window) {

@@ -24,12 +24,6 @@ class BraveBrowserWindow : public BrowserWindow {
   static BraveBrowserWindow* From(BrowserWindow* window);
   static BraveBrowserWindow* FromBrowser(BrowserWindowInterface* browser);
 
-
-  // Returns the rectangle info of the Shield's panel.
-  // Renderers will call this to check if the bottom of the panel exceeds
-  // the overall screen's height
-  virtual gfx::Rect GetShieldsBubbleRect();
-
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   virtual void UpdateReaderModeToolbar() {}
 #endif

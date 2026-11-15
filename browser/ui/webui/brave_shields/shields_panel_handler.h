@@ -10,6 +10,7 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
+class BrowserWindowInterface;
 class TopChromeWebUIController;
 
 namespace content {
@@ -17,6 +18,10 @@ class WebUI;
 }  // namespace content
 
 class Profile;
+
+namespace views {
+class Widget;
+}  // namespace views
 
 class ShieldsPanelHandler : public brave_shields::mojom::PanelHandler {
  public:
@@ -28,6 +33,11 @@ class ShieldsPanelHandler : public brave_shields::mojom::PanelHandler {
   ShieldsPanelHandler(const ShieldsPanelHandler&) = delete;
   ShieldsPanelHandler& operator=(const ShieldsPanelHandler&) = delete;
   ~ShieldsPanelHandler() override;
+
+  // Returns the bubble showing the Shields panel in `browser`, a window with
+  // views, anchored to the location bar's Shields icon or, in web app windows,
+  // to the title bar's Shields button. Null when the panel is not shown there.
+  static views::Widget* GetShieldsBubbleWidget(BrowserWindowInterface& browser);
 
   // brave_shields::mojom::PanelHandler:
   void ShowUI() override;
