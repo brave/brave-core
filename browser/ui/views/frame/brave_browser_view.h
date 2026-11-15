@@ -133,7 +133,6 @@ class BraveBrowserView : public BrowserView,
   void UpdateToolbar(content::WebContents* contents) override;
   bool UpdateToolbarSecurityState() override;
   bool AcceleratorPressed(const ui::Accelerator& accelerator) override;
-  bool IsInTabDragging() const override;
   void ReadyToListenFullscreenChanges() override;
   ClientFrameElementInfo GetFrameElementInfo() const override;
 

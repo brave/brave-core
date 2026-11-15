@@ -45,6 +45,3 @@ bool BraveBrowserWindow::ShowBraveHelpBubbleView(const std::string& text) {
 }
 #endif  // defined(TOOLKIT_VIEWS)
 
-bool BraveBrowserWindow::IsInTabDragging() const {
-  return false;
-}
