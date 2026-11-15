@@ -215,7 +215,6 @@ class ChromiumCheckoutApi(RecipeApi):
             mirror_dir = self._populate_git_cache(
                 git_ref,
                 populate_step='git cache populate',
-                exists_step='git cache exists',
             )
             self.m.git_cache.clone_checkout(
                 CHROMIUM_URL, chromium_src, mirror_dir, git_ref
@@ -230,7 +229,6 @@ class ChromiumCheckoutApi(RecipeApi):
             mirror_dir = self._populate_git_cache(
                 git_ref,
                 populate_step='git cache populate for ref',
-                exists_step='git cache exists for ref',
             )
             self.m.git_cache.update_checkout(
                 CHROMIUM_URL, chromium_src, mirror_dir, git_ref
@@ -298,7 +296,7 @@ class ChromiumCheckoutApi(RecipeApi):
             )
 
     def _populate_git_cache(
-        self, ref: GitRef | None, *, populate_step: str, exists_step: str
+        self, ref: GitRef | None, *, populate_step: str
     ) -> str:
         """Populate (or refresh) the shared bare mirror of Chromium.
 
@@ -311,15 +309,13 @@ class ChromiumCheckoutApi(RecipeApi):
             ref: The ref to fetch into the mirror beyond its default
                 `refs/heads/*`, if any.
             populate_step: Step name for the `git cache populate` call.
-            exists_step: Step name for the `git cache exists` call.
 
         Returns:
             The absolute path to the mirror directory.
         """
-        self.m.git_cache.populate(
+        return self.m.git_cache.populate(
             CHROMIUM_URL,
             ref=ref.populate_ref if ref else None,
             commit=ref.populate_commit if ref else None,
             step_name=populate_step,
         )
-        return self.m.git_cache.mirror_dir(CHROMIUM_URL, step_name=exists_step)
