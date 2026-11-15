@@ -53,6 +53,7 @@ if (!is_android) {
       "//brave/browser/ui",
       "//brave/browser/ui/speedreader",
       "//brave/browser/ui/views/frame/split_view",
+      "//brave/browser/ui/views/speedreader",
       "//brave/components/ai_chat/core/common/buildflags",
       "//brave/components/brave_wallet/common/buildflags",
       "//chrome/browser",

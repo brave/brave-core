@@ -118,7 +118,6 @@
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
-#include "brave/browser/ui/views/speedreader/reader_mode_bubble.h"
 #include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
 #endif
 
@@ -506,30 +505,6 @@ ReaderModeToolbarView* BraveBrowserView::reader_mode_toolbar() {
   return BraveContentsContainerView::From(
              GetBraveMultiContentsView()->GetActiveContentsContainerView())
       ->reader_mode_toolbar();
-}
-
-speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
-    speedreader::SpeedreaderTabHelper* tab_helper,
-    speedreader::SpeedreaderBubbleLocation location) {
-  views::View* anchor = nullptr;
-  views::BubbleBorder::Arrow arrow = views::BubbleBorder::NONE;
-  switch (location) {
-    case speedreader::SpeedreaderBubbleLocation::kLocationBar:
-      anchor = GetLocationBarView();
-      arrow = views::BubbleBorder::TOP_RIGHT;
-      break;
-    case speedreader::SpeedreaderBubbleLocation::kToolbar:
-      anchor = reader_mode_toolbar()->toolbar();
-      arrow = views::BubbleBorder::TOP_LEFT;
-      break;
-  }
-
-  auto* reader_mode_bubble =
-      new speedreader::ReaderModeBubble(anchor, tab_helper);
-  views::BubbleDialogDelegateView::CreateBubble(reader_mode_bubble);
-  reader_mode_bubble->SetArrow(arrow);
-  reader_mode_bubble->Show();
-  return reader_mode_bubble;
 }
 
 void BraveBrowserView::UpdateReaderModeToolbar() {

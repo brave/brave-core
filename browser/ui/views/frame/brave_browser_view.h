@@ -40,14 +40,6 @@
 #include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
 #endif
 
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-namespace speedreader {
-class SpeedreaderBubbleView;
-class SpeedreaderTabHelper;
-enum class SpeedreaderBubbleLocation : int;
-}  // namespace speedreader
-#endif
-
 namespace sidebar {
 FORWARD_DECLARE_TEST(SidebarBrowserWithSplitViewTest,
                      ShowSidebarOnMouseOverTest);
@@ -119,9 +111,6 @@ class BraveBrowserView : public BrowserView,
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // Give active tab's reader mode toolbar.
   ReaderModeToolbarView* reader_mode_toolbar();
-  speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
-      speedreader::SpeedreaderTabHelper* tab_helper,
-      speedreader::SpeedreaderBubbleLocation location) override;
   void UpdateReaderModeToolbar() override;
 #endif
   bool GetTabStripVisible() const override;

@@ -15,14 +15,6 @@ namespace content {
 class WebContents;
 }  // namespace content
 
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-namespace speedreader {
-class SpeedreaderBubbleView;
-class SpeedreaderTabHelper;
-enum class SpeedreaderBubbleLocation : int;
-}  // namespace speedreader
-#endif
-
 class BraveBrowserWindow : public BrowserWindow {
  public:
   ~BraveBrowserWindow() override {}
@@ -39,9 +31,6 @@ class BraveBrowserWindow : public BrowserWindow {
   virtual gfx::Rect GetShieldsBubbleRect();
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  virtual speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
-      speedreader::SpeedreaderTabHelper* tab_helper,
-      speedreader::SpeedreaderBubbleLocation location);
   virtual void UpdateReaderModeToolbar() {}
 #endif
 
