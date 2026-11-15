@@ -6,7 +6,7 @@
 #include "base/path_service.h"
 #include "base/strings/pattern.h"
 #include "base/strings/strcat.h"
-#include "base/test/bind.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -145,26 +145,20 @@ class HSTSPartitioningBrowserTestBase : public InProcessBrowserTest {
   void NetworkContextAddHSTS(const std::string& host) {
     content::StoragePartition* partition =
         browser()->GetProfile()->GetDefaultStoragePartition();
-    base::RunLoop run_loop;
+    base::test::TestFuture<void> future;
     partition->GetNetworkContext()->AddHSTS(
-        host, base::Time::Now() + base::Days(1), false, run_loop.QuitClosure());
-    run_loop.Run();
+        host, base::Time::Now() + base::Days(1), false, future.GetCallback());
+    ASSERT_TRUE(future.Wait());
   }
 
   bool NetworkContextIsHSTSActiveForHostWithTopLevelNav(const std::string& host,
                                                         bool is_top_level_nav) {
     content::StoragePartition* partition =
         browser()->GetProfile()->GetDefaultStoragePartition();
-    base::RunLoop run_loop;
-    bool result = false;
-    partition->GetNetworkContext()->IsHSTSActiveForHost(
-        host, is_top_level_nav,
-        base::BindLambdaForTesting([&run_loop, &result](bool is_hsts_active) {
-          result = is_hsts_active;
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return result;
+    base::test::TestFuture<bool> future;
+    partition->GetNetworkContext()->IsHSTSActiveForHost(host, is_top_level_nav,
+                                                        future.GetCallback());
+    return future.Get();
   }
 
   bool NetworkContextIsHSTSActiveForHost(const std::string& host) {
@@ -184,31 +178,18 @@ class HSTSPartitioningBrowserTestBase : public InProcessBrowserTest {
   base::DictValue NetworkContextGetHSTSState(const std::string& host) {
     content::StoragePartition* partition =
         browser()->GetProfile()->GetDefaultStoragePartition();
-    base::RunLoop run_loop;
-    base::DictValue result;
-    partition->GetNetworkContext()->GetHSTSState(
-        host, base::BindLambdaForTesting(
-                  [&run_loop, &result](base::DictValue sts_state) {
-                    result = std::move(sts_state);
-                    run_loop.Quit();
-                  }));
-    run_loop.Run();
-    return result;
+    base::test::TestFuture<base::DictValue> future;
+    partition->GetNetworkContext()->GetHSTSState(host, future.GetCallback());
+    return future.Take();
   }
 
   bool NetworkContextDeleteDynamicDataForHost(const std::string& host) {
     content::StoragePartition* partition =
         browser()->GetProfile()->GetDefaultStoragePartition();
-    base::RunLoop run_loop;
-    bool result = false;
+    base::test::TestFuture<bool> future;
     partition->GetNetworkContext()->DeleteDynamicDataForHost(
-        host,
-        base::BindLambdaForTesting([&run_loop, &result](bool is_hsts_active) {
-          result = is_hsts_active;
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return result;
+        host, future.GetCallback());
+    return future.Get();
   }
 
  protected:
