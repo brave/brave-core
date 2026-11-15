@@ -10,8 +10,10 @@
 #include <vector>
 
 #include "base/callback_list.h"
+#include "base/functional/callback.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
+#include "chrome/browser/ui/animation/browser_animation_types.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
@@ -21,6 +23,7 @@ FORWARD_DECLARE_TEST(SidebarBrowserWithWebPanelTest, WebPanelTest);
 }  // namespace sidebar
 
 class BraveContentsContainerView;
+class BrowserAnimationController;
 
 namespace views {
 class ResizeArea;
@@ -33,10 +36,15 @@ class BraveMultiContentsView : public MultiContentsView {
  public:
   static BraveMultiContentsView* From(MultiContentsView* view);
 
-  using MultiContentsView::MultiContentsView;
+  BraveMultiContentsView(BrowserView* browser_view,
+                         std::unique_ptr<MultiContentsViewDelegate> delegate);
   ~BraveMultiContentsView() override;
 
-  void SetWebPanelContents(content::WebContents* web_contents);
+  // |animate| asks for the open animation. Only a panel arriving from nothing
+  // should animate: when one panel replaces another the strip keeps its width,
+  // so a collapse and re-expand would just read as a flicker.
+  void SetWebPanelContents(content::WebContents* web_contents,
+                           bool animate = false);
   bool IsWebPanelVisible() const;
 
   void SetWebPanelWidth(int width);
@@ -47,9 +55,26 @@ class BraveMultiContentsView : public MultiContentsView {
   bool web_panel_on_left() const { return web_panel_on_left_; }
   void OnWebPanelResize(int resize_amount, bool done_resizing);
 
+  // Starts the close animation and runs |on_finished| when it ends. Returns
+  // false without animating when animations are off, in which case the caller
+  // must close immediately itself.
+  bool StartWebPanelCloseAnimation(base::OnceClosure on_finished);
+
+  // Reverses an in-flight close back to open, keeping the width it reached.
+  void CancelWebPanelCloseAnimation();
+
+  // Drops any animation state so the panel snaps to whatever its visibility
+  // implies. Must be called by every path that changes the panel without
+  // animating, or a persisted mid-motion value would pin the panel at a
+  // fraction of its width.
+  void ResetWebPanelAnimation();
+
   void set_web_panel_active(bool active) { is_web_panel_active_ = active; }
   bool is_web_panel_active_for_testing() const { return is_web_panel_active_; }
   views::View* GetWebPanelContentsViewForTesting() const;
+  // The panel strip as the layout actually sized it, which during an animation
+  // is a fraction of |web_panel_width_|.
+  views::View* GetWebPanelContainerForTesting() const;
   int web_panel_width_for_testing() const { return web_panel_width_; }
   views::ResizeArea* web_panel_resize_area_for_testing() const {
     return web_panel_resize_area_;
@@ -100,6 +125,17 @@ class BraveMultiContentsView : public MultiContentsView {
   int GetWebPanelWidth() const;
   int GetWebPanelResizeAreaWidth() const;
 
+  BrowserAnimationController* GetAnimationController() const;
+
+  // Fraction of the panel's target width that is currently on screen.
+  double GetWebPanelAnimationValue() const;
+
+  bool ShouldAnimateWebPanel() const;
+
+  void OnWebPanelAnimationProgressed(
+      const BrowserAnimationController* controller,
+      BrowserAnimationUpdate status);
+
   // True when the web panel occupies the leading (lowest-X) edge in stored
   // coordinates. Views mirrors stored bounds on paint, so the leading edge
   // renders on the visual right in RTL; flipping the pref here keeps the panel
@@ -127,6 +163,13 @@ class BraveMultiContentsView : public MultiContentsView {
       nullptr;
   raw_ptr<views::ResizeArea> web_panel_resize_area_ = nullptr;
   base::CallbackListSubscription web_panel_visible_subscription_;
+
+  // Set while the animation controller is notifying us that a motion ended, so
+  // the work that notification triggers does not call back into the
+  // controller. See ResetWebPanelAnimation().
+  bool in_web_panel_animation_notification_ = false;
+  base::OnceClosure web_panel_close_animation_finished_;
+  base::CallbackListSubscription web_panel_animation_subscription_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_MULTI_CONTENTS_VIEW_H_
