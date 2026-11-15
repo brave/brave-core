@@ -43,10 +43,6 @@ import("//chrome/browser/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//printing/buildflags/buildflags.gni")
 
-if (enable_brave_rewards) {
-  import("//brave/browser/brave_rewards/android/sources.gni")
-}
-
 if (enable_brave_wallet) {
   import("//brave/browser/brave_wallet/android/sources.gni")
 }
@@ -663,11 +659,6 @@ if (is_android) {
     "//chrome/browser/importer/profile_writer.cc",
     "//chrome/browser/importer/profile_writer.h",
   ]
-
-  if (enable_brave_rewards) {
-    brave_chrome_browser_sources += brave_browser_brave_rewards_android_sources
-    brave_chrome_browser_deps += brave_browser_brave_rewards_android_deps
-  }
 
   if (enable_brave_wallet) {
     brave_chrome_browser_sources += brave_browser_brave_wallet_android_sources
