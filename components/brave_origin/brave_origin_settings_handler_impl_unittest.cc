@@ -9,7 +9,6 @@
 #include <optional>
 #include <utility>
 
-#include "base/run_loop.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -169,9 +168,6 @@ TEST_F(BraveOriginHandlerTest,
 
 TEST_F(BraveOriginHandlerTest,
        IsPolicyControlledByBraveOrigin_KnownPref_ReturnsTrue) {
-  base::RunLoop run_loop;
-  bool result = false;
-
   // Set up mock to return a PolicyMap with the test policy
   policy::PolicyMap policy_map;
   policy_map.Set(kTestBrowserPolicyKey, policy::POLICY_LEVEL_MANDATORY,
@@ -181,114 +177,52 @@ TEST_F(BraveOriginHandlerTest,
   EXPECT_CALL(mock_policy_service_, GetPolicies(testing::_))
       .WillRepeatedly(testing::ReturnRef(policy_map));
 
-  handler_->IsPolicyControlledByBraveOrigin(
-      kTestBrowserPolicyKey,
-      base::BindOnce(
-          [](base::RunLoop* run_loop, bool* result, bool is_controlled) {
-            *result = is_controlled;
-            run_loop->Quit();
-          },
-          &run_loop, &result));
-
-  run_loop.Run();
-  EXPECT_TRUE(result);
+  base::test::TestFuture<bool> result;
+  handler_->IsPolicyControlledByBraveOrigin(kTestBrowserPolicyKey,
+                                            result.GetCallback());
+  EXPECT_TRUE(result.Get());
 }
 
 TEST_F(BraveOriginHandlerTest,
        IsPolicyControlledByBraveOrigin_UnknownPref_ReturnsFalse) {
-  base::RunLoop run_loop;
-  bool result = true;
-
-  handler_->IsPolicyControlledByBraveOrigin(
-      kUnknownPolicyKey,
-      base::BindOnce(
-          [](base::RunLoop* run_loop, bool* result, bool is_controlled) {
-            *result = is_controlled;
-            run_loop->Quit();
-          },
-          &run_loop, &result));
-
-  run_loop.Run();
-  EXPECT_FALSE(result);
+  base::test::TestFuture<bool> result;
+  handler_->IsPolicyControlledByBraveOrigin(kUnknownPolicyKey,
+                                            result.GetCallback());
+  EXPECT_FALSE(result.Get());
 }
 
 TEST_F(BraveOriginHandlerTest, GetPolicyValue_KnownPref_ReturnsValue) {
   // First set a value
   service_->SetPolicyValue(kTestBrowserPolicyKey, true);
 
-  base::RunLoop run_loop;
-  std::optional<bool> result;
-
-  handler_->GetPolicyValue(
-      kTestBrowserPolicyKey,
-      base::BindOnce(
-          [](base::RunLoop* run_loop, std::optional<bool>* result,
-             std::optional<bool> value) {
-            *result = value;
-            run_loop->Quit();
-          },
-          &run_loop, &result));
-
-  run_loop.Run();
+  base::test::TestFuture<std::optional<bool>> future;
+  handler_->GetPolicyValue(kTestBrowserPolicyKey, future.GetCallback());
+  std::optional<bool> result = future.Take();
   ASSERT_TRUE(result.has_value());
   EXPECT_TRUE(result.value());
 }
 
 TEST_F(BraveOriginHandlerTest, GetPolicyValue_UnknownPref_ReturnsNullopt) {
-  base::RunLoop run_loop;
-  std::optional<bool> result = true;  // Initialize with a value
-
-  handler_->GetPolicyValue(
-      kUnknownPolicyKey,
-      base::BindOnce(
-          [](base::RunLoop* run_loop, std::optional<bool>* result,
-             std::optional<bool> value) {
-            *result = value;
-            run_loop->Quit();
-          },
-          &run_loop, &result));
-
-  run_loop.Run();
-  EXPECT_FALSE(result.has_value());
+  base::test::TestFuture<std::optional<bool>> result;
+  handler_->GetPolicyValue(kUnknownPolicyKey, result.GetCallback());
+  EXPECT_FALSE(result.Get().has_value());
 }
 
 TEST_F(BraveOriginHandlerTest, GetPolicyValue_ProfilePref_ReturnsValue) {
   // First set a value
   service_->SetPolicyValue(kTestProfilePolicyKey, false);
 
-  base::RunLoop run_loop;
-  std::optional<bool> result;
-
-  handler_->GetPolicyValue(
-      kTestProfilePolicyKey,
-      base::BindOnce(
-          [](base::RunLoop* run_loop, std::optional<bool>* result,
-             std::optional<bool> value) {
-            *result = value;
-            run_loop->Quit();
-          },
-          &run_loop, &result));
-
-  run_loop.Run();
+  base::test::TestFuture<std::optional<bool>> future;
+  handler_->GetPolicyValue(kTestProfilePolicyKey, future.GetCallback());
+  std::optional<bool> result = future.Take();
   ASSERT_TRUE(result.has_value());
   EXPECT_FALSE(result.value());
 }
 
 TEST_F(BraveOriginHandlerTest, SetPolicyValue_KnownPref_ReturnsTrue) {
-  base::RunLoop run_loop;
-  bool result = false;
-
-  handler_->SetPolicyValue(
-      kTestBrowserPolicyKey, true,
-      base::BindOnce(
-          [](base::RunLoop* run_loop, bool* result, bool success) {
-            *result = success;
-            run_loop->Quit();
-          },
-          &run_loop, &result));
-
-  run_loop.Run();
-  EXPECT_TRUE(result);
+  base::test::TestFuture<bool> result;
+  handler_->SetPolicyValue(kTestBrowserPolicyKey, true, result.GetCallback());
+  EXPECT_TRUE(result.Get());
 
   // Verify the value was actually set
   auto policy_value = service_->GetPolicyValue(kTestBrowserPolicyKey);
@@ -297,37 +231,15 @@ TEST_F(BraveOriginHandlerTest, SetPolicyValue_KnownPref_ReturnsTrue) {
 }
 
 TEST_F(BraveOriginHandlerTest, SetPolicyValue_UnknownPref_ReturnsFalse) {
-  base::RunLoop run_loop;
-  bool result = true;
-
-  handler_->SetPolicyValue(
-      kUnknownPolicyKey, true,
-      base::BindOnce(
-          [](base::RunLoop* run_loop, bool* result, bool success) {
-            *result = success;
-            run_loop->Quit();
-          },
-          &run_loop, &result));
-
-  run_loop.Run();
-  EXPECT_FALSE(result);
+  base::test::TestFuture<bool> result;
+  handler_->SetPolicyValue(kUnknownPolicyKey, true, result.GetCallback());
+  EXPECT_FALSE(result.Get());
 }
 
 TEST_F(BraveOriginHandlerTest, SetPolicyValue_ProfilePref_ReturnsTrue) {
-  base::RunLoop run_loop;
-  bool result = false;
-
-  handler_->SetPolicyValue(
-      kTestProfilePolicyKey, false,
-      base::BindOnce(
-          [](base::RunLoop* run_loop, bool* result, bool success) {
-            *result = success;
-            run_loop->Quit();
-          },
-          &run_loop, &result));
-
-  run_loop.Run();
-  EXPECT_TRUE(result);
+  base::test::TestFuture<bool> result;
+  handler_->SetPolicyValue(kTestProfilePolicyKey, false, result.GetCallback());
+  EXPECT_TRUE(result.Get());
 
   // Verify the value was actually set
   auto policy_value = service_->GetPolicyValue(kTestProfilePolicyKey);
@@ -601,56 +513,24 @@ class BraveOriginHandlerDisabledTest : public testing::Test {
 #if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 TEST_F(BraveOriginHandlerDisabledTest,
        IsBraveOriginUser_FeatureDisabled_ReturnsFalse) {
-  base::RunLoop run_loop;
-  bool result = true;
-
-  handler_->IsBraveOriginUser(base::BindOnce(
-      [](base::RunLoop* run_loop, bool* result, bool is_brave_origin_user) {
-        *result = is_brave_origin_user;
-        run_loop->Quit();
-      },
-      &run_loop, &result));
-
-  run_loop.Run();
-  EXPECT_FALSE(result);
+  base::test::TestFuture<bool> result;
+  handler_->IsBraveOriginUser(result.GetCallback());
+  EXPECT_FALSE(result.Get());
 }
 #endif
 
 TEST_F(BraveOriginHandlerDisabledTest,
        GetPolicyValue_FeatureDisabled_ReturnsNullopt) {
-  base::RunLoop run_loop;
-  std::optional<bool> result = true;  // Initialize with a value
-
-  handler_->GetPolicyValue(
-      kTestBrowserPolicyKey,
-      base::BindOnce(
-          [](base::RunLoop* run_loop, std::optional<bool>* result,
-             std::optional<bool> value) {
-            *result = value;
-            run_loop->Quit();
-          },
-          &run_loop, &result));
-
-  run_loop.Run();
-  EXPECT_FALSE(result.has_value());
+  base::test::TestFuture<std::optional<bool>> result;
+  handler_->GetPolicyValue(kTestBrowserPolicyKey, result.GetCallback());
+  EXPECT_FALSE(result.Get().has_value());
 }
 
 TEST_F(BraveOriginHandlerDisabledTest,
        SetPolicyValue_FeatureDisabled_ReturnsFalse) {
-  base::RunLoop run_loop;
-  bool result = true;
-
-  handler_->SetPolicyValue(
-      kTestBrowserPolicyKey, true,
-      base::BindOnce(
-          [](base::RunLoop* run_loop, bool* result, bool success) {
-            *result = success;
-            run_loop->Quit();
-          },
-          &run_loop, &result));
-
-  run_loop.Run();
-  EXPECT_FALSE(result);
+  base::test::TestFuture<bool> result;
+  handler_->SetPolicyValue(kTestBrowserPolicyKey, true, result.GetCallback());
+  EXPECT_FALSE(result.Get());
 }
 
 // In branded builds, RefreshPurchaseState unconditionally returns true.
