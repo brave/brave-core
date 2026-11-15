@@ -25,6 +25,10 @@ mojom("mojom") {
   generate_legacy_js_bindings = true
 
   webui_module_path = "/"
+
+  if (!is_android && !is_ios) {
+    enabled_features = [ "is_desktop" ]
+  }
 }
 
 if (is_ios) {

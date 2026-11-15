@@ -227,6 +227,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_SITE_SETTINGS_BRAVE_OPEN_AI_CHAT_BLOCK},
 
       {"braveGetStartedTitle", IDS_SETTINGS_BRAVE_GET_STARTED_TITLE},
+      {"braveCustomizeBraveTitle", IDS_SETTINGS_BRAVE_CUSTOMIZE_BRAVE_TITLE},
       {"braveOriginTitle", IDS_SETTINGS_BRAVE_ORIGIN_TITLE},
       {"braveOriginSectionAdsTitle",
        IDS_SETTINGS_BRAVE_ORIGIN_ADS_SECTION_TITLE},
