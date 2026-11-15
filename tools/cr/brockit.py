@@ -2046,6 +2046,7 @@ class RebasePlan:
                 todo_file=rewritten,
                 pinned_squashed=pinned_squashed,
                 discard_recyclable=discard_recyclable,
+                changed_paths=Rebase.changed_paths,
             )
             return cls(cls._parse(current), cls._parse(rewritten))
 
@@ -2686,6 +2687,14 @@ class Rebase(Task):
                 f'--internal-rebase-carry-change-id={",".join(commits)}',
             ]
         )
+
+    @staticmethod
+    def changed_paths(commit: str) -> list[str]:
+        """The paths `commit` changes, for `rebase.rewrite_plan` to keep the
+        tooling commits it moves behind the commits they build on."""
+        return repository.brave.run_git(
+            'diff-tree', '--no-commit-id', '--name-only', '-r', '--root', commit
+        ).splitlines()
 
     @staticmethod
     def carry_change_id(commits: list[str]) -> None:
@@ -3963,6 +3972,7 @@ if __name__ == '__main__':
                         '--internal-rebase-plan-squash-pinned' in sys.argv
                     ),
                     carry_change_id=Rebase.carry_change_id_line,
+                    changed_paths=Rebase.changed_paths,
                 )
             except rebase.EditorRecoverableFailure as e:
                 rebase.hand_off_to_editor(

@@ -10,9 +10,11 @@ file-in / file-out transforms that brockit hooks into git via the
 `git rebase --interactive`:
 
 * `rewrite_plan(todo_file, …)` -- reorders the rebase TODO produced by
-  `GIT_SEQUENCE_EDITOR`. Pinned commits get grouped to the top, recyclable
-  commits get optionally evicted, reassign commits get placed next to
-  their target, and drop commits remove themselves along with their target.
+  `GIT_SEQUENCE_EDITOR`. Pinned commits get grouped to the top, with the
+  branch's `[brockit]` and `[git-cr]` commits right after the
+  `Update from Chromium` group,
+  recyclable commits get optionally evicted, reassign commits get placed next
+  to their target, and drop commits remove themselves along with their target.
 * `MessageWriter.parse(todo_file)` + `rewrite_with_last_message()` --
   composes the squash commit message produced by `GIT_EDITOR`, picking
   whichever surviving message corresponds to the kind of squash being
@@ -63,6 +65,12 @@ DROP_COMMIT_MSG_PREFIX = 'drop!'
 # them that replace its message.
 _FOLDING_COMMANDS = frozenset({'squash', 'fixup', 'fixup -C', 'fixup -c'})
 _REPLACING_COMMANDS = frozenset({'fixup -C', 'fixup -c'})
+
+# A rebase's `exec` lines, message editor and `--continue` run the working
+# tree's Brockit and `git cr`, so the plan replays the branch's changes to them,
+# the commits tagged so, right after the `Update from Chromium` group.
+_TOOLING_TAGS = frozenset({'brockit', 'git-cr'})
+_LEADING_TAGS = re.compile(r'(?:\[[^\]]+\])+')
 
 # Git-naitve subcommands that brockit treats as autosquash markers.
 _AUTOSQUASH_SUBCOMMANDS = frozenset({'fixup', 'amend', 'reword', 'squash'})
@@ -494,6 +502,7 @@ def rewrite_plan(
     pinned_squashed: bool = False,
     discard_recyclable: bool = False,
     carry_change_id: Callable[[list[str]], str] | None = None,
+    changed_paths: Callable[[str], list[str]] | None = None,
 ) -> None:
     """Rewrites a `git rebase --interactive` TODO file in place.
 
@@ -520,6 +529,14 @@ def rewrite_plan(
             each `fixup -C`/`fixup -c`, whose `amend!` message would
             otherwise replace the Change-Id of what it folds into, and each
             pinned group and recyclable commit.
+        changed_paths: The paths a commit changes. When set, with
+            `pinned_squashed`, the commits tagged `[brockit]` or `[git-cr]`,
+            with the lines folding into them, move to just after the
+            `Update from Chromium` group, which stays the branch's first
+            commit, so the rest of the rebase runs the branch's tooling,
+            ahead of the other pinned groups. A commit stays in place when it
+            shares a path with an earlier one that does, which it would
+            otherwise replay ahead of.
 
     Raises:
         EditorRecoverableFailure: Any TODO line that doesn't parse
@@ -665,6 +682,45 @@ def rewrite_plan(
 
         all_others.append(entry_line)
 
+    def hoist_tooling() -> list[EntryLine]:
+        """Moves the units (a commit and the lines folding into it) whose
+        commit is tagged `[brockit]` or `[git-cr]` out of `all_others`, in
+        order, and returns them. A unit stays when it changes a path that a
+        unit staying before it changes."""
+
+        def is_tooling(entry: EntryLine) -> bool:
+            tags = _LEADING_TAGS.match(entry.message)
+            return tags is not None and not _TOOLING_TAGS.isdisjoint(
+                re.findall(r'\[([^\]]+)\]', tags.group())
+            )
+
+        units: list[list[EntryLine]] = []
+        for entry in all_others:
+            if units and entry.command in _FOLDING_COMMANDS:
+                units[-1].append(entry)
+            else:
+                units.append([entry])
+
+        def paths_of(entries: list[EntryLine]) -> set[str]:
+            return {path for e in entries for path in changed_paths(e.hash)}
+
+        blocked: set[str] = set()
+        hoisted: list[EntryLine] = []
+        kept: list[EntryLine] = []
+        for unit in units:
+            paths = paths_of(unit)
+            if is_tooling(unit[0]) and not paths & blocked:
+                hoisted.extend(unit)
+            else:
+                kept.extend(unit)
+                blocked |= paths
+        all_others[:] = kept
+        return hoisted
+
+    tooling = (
+        hoist_tooling() if pinned_squashed and changed_paths is not None else []
+    )
+
     new_plan = []
     # The commits folded into the one the plan is building, which keeps the
     # first Change-Id among them, and whether that commit is pinned or
@@ -679,7 +735,14 @@ def rewrite_plan(
             new_plan.append(carry_change_id(folded))
 
     for entry in [
-        *(c for group in pinned_groups.values() for c in group),
+        *pinned_groups['version'],
+        *tooling,
+        *(
+            c
+            for name, group in pinned_groups.items()
+            if name != 'version'
+            for c in group
+        ),
         *all_others,
     ]:
         if entry.command not in _FOLDING_COMMANDS:

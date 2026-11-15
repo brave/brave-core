@@ -455,6 +455,146 @@ class RewritePlanTest(unittest.TestCase):
             'pick zzz # [cr148] Remove dead upstream tests from filters\n',
         )
 
+    def test_squashed_moves_tooling_after_the_version_group(self):
+        """`[brockit]` and `[git-cr]` commits replay right after the version
+        group, with what folds into them, ahead of the other pinned groups,
+        so the rest of the rebase runs the branch's tooling."""
+        path = self._todo(
+            'pick aaa # [cr148] Feature A\n'
+            'pick bbb # [cr148][brockit] Tooling fix\n'
+            'fixup ccc # fixup! [cr148][brockit] Tooling fix\n'
+            'pick ddd # [cr148] IWYU fixes.\n'
+            'pick eee # Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
+            'pick fff # [cr148][git-cr] Another tooling fix\n'
+        )
+        paths = {
+            'aaa': ['browser/a.cc'],
+            'bbb': ['tools/cr/brockit.py'],
+            'ccc': ['tools/cr/brockit_test.py'],
+            'ddd': ['browser/b.cc'],
+            'eee': ['package.json'],
+            'fff': ['tools/cr/alias/commit-msg.py'],
+        }
+
+        rebase.rewrite_plan(
+            todo_file=path, pinned_squashed=True, changed_paths=paths.get
+        )
+
+        self.assertEqual(
+            path.read_text(),
+            'pick eee # Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
+            'pick bbb # [cr148][brockit] Tooling fix\n'
+            'fixup ccc # fixup! [cr148][brockit] Tooling fix\n'
+            'pick fff # [cr148][git-cr] Another tooling fix\n'
+            'pick ddd # [cr148] IWYU fixes.\n'
+            'pick aaa # [cr148] Feature A\n',
+        )
+
+    def test_squashed_keeps_tooling_after_a_commit_it_builds_on(self):
+        """A tooling commit stays behind a commit that also changes one of
+        its paths and doesn't move, or it would replay before it."""
+        path = self._todo(
+            'pick aaa # [cr148] Feature A, with its tooling\n'
+            'pick bbb # [cr148][brockit] Tooling fix\n'
+            'pick ccc # [cr148][brockit] Unrelated tooling fix\n'
+        )
+        paths = {
+            'aaa': ['browser/a.cc', 'tools/cr/brockit.py'],
+            'bbb': ['tools/cr/brockit.py'],
+            'ccc': ['tools/cr/rebase.py'],
+        }
+
+        rebase.rewrite_plan(
+            todo_file=path, pinned_squashed=True, changed_paths=paths.get
+        )
+
+        self.assertEqual(
+            path.read_text(),
+            'pick ccc # [cr148][brockit] Unrelated tooling fix\n'
+            'pick aaa # [cr148] Feature A, with its tooling\n'
+            'pick bbb # [cr148][brockit] Tooling fix\n',
+        )
+
+    def test_squashed_moves_tooling_ahead_of_pinned_groups_it_overlaps(self):
+        """A tooling commit moves ahead of the pinned groups after the version
+        one even when it changes a path they change, such as a README entry
+        next to a `Version lift updates` one."""
+        path = self._todo(
+            'pick aaa # [cr148] Version lift updates\n'
+            'pick bbb # [cr148][brockit] Tooling fix\n'
+        )
+        paths = {
+            'aaa': ['tools/cr/README.md'],
+            'bbb': ['tools/cr/README.md', 'tools/cr/brockit.py'],
+        }
+
+        rebase.rewrite_plan(
+            todo_file=path, pinned_squashed=True, changed_paths=paths.get
+        )
+
+        self.assertEqual(
+            path.read_text(),
+            'pick bbb # [cr148][brockit] Tooling fix\n'
+            'pick aaa # [cr148] Version lift updates\n',
+        )
+
+    def test_squashed_moves_only_brockit_and_git_cr_commits(self):
+        """Other changes to `tools/cr/` keep their place: only the tooling a
+        rebase runs moves."""
+        path = self._todo(
+            'pick aaa # [cr148] IWYU fixes.\n'
+            'pick bbb # [cr148][autolift] Autolift fix\n'
+            'pick ccc # [cr148][recipes] Recipe fix\n'
+            'pick ddd # [git-cr][cr148] Hook fix\n'
+        )
+        paths = {
+            'aaa': ['browser/a.cc'],
+            'bbb': ['tools/cr/autolift/autolift.py'],
+            'ccc': ['tools/recipes/runtest.py'],
+            'ddd': ['tools/cr/alias/commit-msg.py'],
+        }
+
+        rebase.rewrite_plan(
+            todo_file=path, pinned_squashed=True, changed_paths=paths.get
+        )
+
+        self.assertEqual(
+            path.read_text(),
+            'pick ddd # [git-cr][cr148] Hook fix\n'
+            'pick aaa # [cr148] IWYU fixes.\n'
+            'pick bbb # [cr148][autolift] Autolift fix\n'
+            'pick ccc # [cr148][recipes] Recipe fix\n',
+        )
+
+    def test_squashed_carries_the_version_change_id_before_tooling(self):
+        """The version group's Change-Id is carried right after it, before
+        the moved tooling replays."""
+        path = self._todo(
+            'pick aaa # Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
+            'pick bbb # Update from Chromium 1.0.0.1 to Chromium 1.0.0.2\n'
+            'pick ccc # [cr148][brockit] Tooling fix\n'
+        )
+        paths = {
+            'aaa': ['package.json'],
+            'bbb': ['package.json'],
+            'ccc': ['tools/cr/brockit.py'],
+        }
+
+        rebase.rewrite_plan(
+            todo_file=path,
+            pinned_squashed=True,
+            carry_change_id=lambda commits: 'exec carry ' + ' '.join(commits),
+            changed_paths=paths.get,
+        )
+
+        self.assertEqual(
+            path.read_text(),
+            'pick aaa # Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
+            'squash bbb # Update from Chromium 1.0.0.1 to Chromium 1.0.0.2\n'
+            'exec carry aaa bbb\n'
+            'pick ccc # [cr148][brockit] Tooling fix\n',
+        )
+
     def test_squashed_keeps_recyclable_lines_in_place(self):
         """Recyclable lines are NOT grouped or moved with pinned commits.
         They stay interleaved with regular commits in arrival order."""
