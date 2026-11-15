@@ -2462,6 +2462,10 @@ class Rebase(Task):
                     'rebase',
                     '--interactive',
                     '--autosquash',
+                    # Keeps git from echoing each `exec` line and each squash's
+                    # commit summary; conflicts and errors still print. The
+                    # rebase keeps it for `--continue` and `--skip`.
+                    '--quiet',
                     # A commit that comes out empty stops the rebase rather
                     # than vanish, so that `_settle_empty_stop` keeps what
                     # would have squashed into it from folding into the
