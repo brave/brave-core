@@ -15,6 +15,7 @@
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
@@ -1301,16 +1302,16 @@ class VerticalTabStripDragAndDropBrowserTest
   void MoveMouseTo(
       const gfx::Point& point_in_screen,
       base::OnceClosure task_on_mouse_moved = base::NullCallback()) {
-    bool moved = false;
+    base::test::TestFuture<void> moved;
     ui_controls::SendMouseMoveNotifyWhenDone(
         point_in_screen.x(), point_in_screen.y(),
         base::BindLambdaForTesting([&]() {
-          moved = true;
           if (task_on_mouse_moved) {
             std::move(task_on_mouse_moved).Run();
           }
+          moved.SetValue();
         }));
-    WaitUntil(base::BindLambdaForTesting([&]() { return moved; }));
+    ASSERT_TRUE(moved.Wait());
   }
 
   bool IsDraggingTabStrip(BrowserWindowInterface* b) {
@@ -1473,15 +1474,15 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest, MAYBE_DragURL) {
   };
 
   auto drag_mouse_to_point_and_drop = [&](const gfx::Point& point_in_screen) {
-    bool moved = false;
+    base::test::TestFuture<void> moved;
     ui_controls::SendMouseMoveNotifyWhenDone(
         point_in_screen.x(), point_in_screen.y(),
         base::BindLambdaForTesting([&]() {
-          moved = true;
           ui_controls::SendMouseEvents(ui_controls::LEFT, ui_controls::UP);
+          moved.SetValue();
         }));
 
-    WaitUntil(base::BindLambdaForTesting([&]() { return moved; }));
+    ASSERT_TRUE(moved.Wait());
   };
 
   ASSERT_TRUE(
