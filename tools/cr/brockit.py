@@ -2693,6 +2693,19 @@ class Rebase(Task):
         )
 
     @staticmethod
+    def has_change_id(commit: str) -> bool:
+        """Whether `commit` has a Change-Id trailer, for `rebase.rewrite_plan`
+        to give one to those that don't."""
+        return bool(
+            repository.brave.run_git(
+                'log',
+                '-1',
+                '--format=%(trailers:key=Change-Id,valueonly)',
+                commit,
+            )
+        )
+
+    @staticmethod
     def changed_paths(commit: str) -> list[str]:
         """The paths `commit` changes, for `rebase.rewrite_plan` to keep the
         tooling commits it moves behind the commits they build on."""
@@ -2703,9 +2716,10 @@ class Rebase(Task):
     @staticmethod
     def carry_change_id(commits: list[str]) -> None:
         """Amends HEAD to carry the first Change-Id of `commits`, the ones
-        folded into it, in place of whatever an `amend!` brought. A pinned
-        commit also takes the branch's own `[cr<N>]` tag, which a pick from
-        a newer branch, with no squash to fix it, would otherwise keep."""
+        folded into it, in place of whatever an `amend!` brought. With none
+        among them, HEAD keeps its own, or gets a new one. A pinned commit
+        also takes the branch's own `[cr<N>]` tag, which a pick from a newer
+        branch, with no squash to fix it, would otherwise keep."""
         brave = repository.brave
         branch = brave.rebased_branch()
         messages = [
@@ -2713,15 +2727,17 @@ class Rebase(Task):
             for commit in commits
         ]
         subject = messages[0].split('\n', 1)[0]
-        change_id = pinned_commits.derived_change_id(branch, subject) or next(
-            filter(None, map(rebase.change_id_of, messages)), None
-        )
         message = brave.run_git('log', '-1', '--format=%B', 'HEAD')
+        change_id = (
+            pinned_commits.derived_change_id(branch, subject)
+            or next(filter(None, map(rebase.change_id_of, messages)), None)
+            or rebase.change_id_of(message)
+            or rebase.new_change_id(brave.run_git('rev-parse', 'HEAD'), message)
+        )
         amended = message
         if pinned_commits.get_pinned_group_for_subject(subject) is not None:
             amended = rebase.MessageWriter.with_branch_tag(amended, branch)
-        if change_id is not None:
-            amended = rebase.with_change_id(amended, change_id)
+        amended = rebase.with_change_id(amended, change_id)
         if amended != message:
             brave.run_git(
                 'commit',
@@ -4009,6 +4025,7 @@ class RebaseHook:
                     pinned_squashed=args.internal_rebase_plan_squash_pinned,
                     carry_change_id=Rebase.carry_change_id_line,
                     changed_paths=Rebase.changed_paths,
+                    has_change_id=Rebase.has_change_id,
                 )
             except rebase.EditorRecoverableFailure as e:
                 rebase.hand_off_to_editor(

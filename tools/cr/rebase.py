@@ -40,6 +40,7 @@ Commit categories formalised here (see `EntryType`):
 from __future__ import annotations
 
 import enum
+import hashlib
 import logging
 import os
 import re
@@ -119,6 +120,13 @@ def change_id_of(message: str) -> str | None:
     if not found:
         return None
     return _CHANGE_ID_RE.fullmatch(lines[found[0]].rstrip()).group(1)
+
+
+def new_change_id(commit: str, message: str) -> str:
+    """A Change-Id for a commit that has none, from its hash and message,
+    as Gerrit's commit-msg hook makes one from what it has."""
+    digest = hashlib.sha1(f'{commit}\n{message}'.encode('utf-8')).hexdigest()
+    return f'I{digest}'
 
 
 def with_change_id(message: str, change_id: str) -> str:
@@ -503,6 +511,7 @@ def rewrite_plan(
     discard_recyclable: bool = False,
     carry_change_id: Callable[[list[str]], str] | None = None,
     changed_paths: Callable[[str], list[str]] | None = None,
+    has_change_id: Callable[[str], bool] | None = None,
 ) -> None:
     """Rewrites a `git rebase --interactive` TODO file in place.
 
@@ -529,6 +538,11 @@ def rewrite_plan(
             each `fixup -C`/`fixup -c`, whose `amend!` message would
             otherwise replace the Change-Id of what it folds into, and each
             pinned group and recyclable commit.
+        has_change_id: Whether a commit has a Change-Id trailer. When set,
+            with `pinned_squashed`, a `carry_change_id` line also follows
+            each commit that, with what folds into it, has none, so that it
+            gets one. A `fixup!`, `amend!` or `squash!` left on a `pick`
+            gets none.
         changed_paths: The paths a commit changes. When set, with
             `pinned_squashed`, the commits tagged `[brockit]` or `[git-cr]`,
             with the lines folding into them, move to just after the
@@ -723,15 +737,19 @@ def rewrite_plan(
 
     new_plan = []
     # The commits folded into the one the plan is building, which keeps the
-    # first Change-Id among them, and whether that commit is pinned or
-    # recyclable, whose Change-Id is derived from the branch.
+    # first Change-Id among them, whether that commit is pinned or
+    # recyclable, whose Change-Id is derived from the branch, and whether it
+    # gets a Change-Id should none of them have one.
     folded: list[str] = []
     derived = False
+    adds_id = False
 
-    def carry_derived() -> None:
+    def carry() -> None:
         # Also corrects a commit picked from another branch with that
         # branch's derived Change-Id, which no squash may come to fix.
-        if derived and not new_plan[-1].startswith('exec '):
+        if not folded or new_plan[-1].startswith('exec '):
+            return
+        if derived or (adds_id and not any(map(has_change_id, folded))):
             new_plan.append(carry_change_id(folded))
 
     for entry in [
@@ -746,10 +764,18 @@ def rewrite_plan(
         *all_others,
     ]:
         if entry.command not in _FOLDING_COMMANDS:
-            carry_derived()
+            carry()
             folded = [entry.hash]
             derived = carry_change_id is not None and (
                 entry.is_pinned or entry.is_recyclable
+            )
+            # A `fixup!`, `amend!` or `squash!` left on a `pick` folds into
+            # its target at the next rebase, which takes no Change-Id from it.
+            adds_id = (
+                pinned_squashed
+                and carry_change_id is not None
+                and has_change_id is not None
+                and not entry.is_orphan
             )
         new_plan.append(entry.out)
         if entry.command in _REPLACING_COMMANDS:
@@ -758,8 +784,7 @@ def rewrite_plan(
                 new_plan.append(carry_change_id(folded))
         elif entry.command == 'squash':
             folded.append(entry.hash)
-    if new_plan:
-        carry_derived()
+    carry()
 
     todo_file.write_text(
         '\n'.join(new_plan) + '\n', encoding='utf-8', newline=''

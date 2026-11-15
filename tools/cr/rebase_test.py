@@ -25,6 +25,7 @@ import contextlib
 import io
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -397,6 +398,53 @@ class RewritePlanTest(unittest.TestCase):
             'Chromium 1.0.0.1.\n'
             'exec carry ccc\n',
         )
+
+    def test_commits_without_a_change_id_are_followed_by_a_carry(self):
+        """Only with `pinned_squashed`. A commit with one, or with one among
+        what folds into it, needs none, and neither does an orphaned
+        `fixup!`."""
+        content = (
+            'pick aaa # [cr148] Feature A\n'
+            'pick bbb # [cr148] Feature B\n'
+            'fixup ccc # fixup! [cr148] Feature B\n'
+            'pick ddd # fixup! [cr148] Feature D\n'
+            'pick eee # [cr148] Feature E\n'
+            'squash fff # squash! [cr148] Feature E\n'
+            'pick ggg # [cr148] Feature G\n'
+            'fixup -C hhh # amend! [cr148] Feature G\n'
+        )
+        with_ids = {'bbb', 'fff'}
+
+        path = self._todo(content)
+        rebase.rewrite_plan(
+            todo_file=path,
+            pinned_squashed=True,
+            carry_change_id=self._carry,
+            has_change_id=with_ids.__contains__,
+        )
+
+        self.assertEqual(
+            path.read_text(),
+            'pick aaa # [cr148] Feature A\n'
+            'exec carry aaa\n'
+            'pick bbb # [cr148] Feature B\n'
+            'fixup ccc # fixup! [cr148] Feature B\n'
+            'pick ddd # fixup! [cr148] Feature D\n'
+            'pick eee # [cr148] Feature E\n'
+            'squash fff # squash! [cr148] Feature E\n'
+            'pick ggg # [cr148] Feature G\n'
+            'fixup -C hhh # amend! [cr148] Feature G\n'
+            'exec carry ggg\n',
+        )
+
+        path = self._todo(content)
+        rebase.rewrite_plan(
+            todo_file=path,
+            discard_recyclable=True,
+            carry_change_id=self._carry,
+            has_change_id=with_ids.__contains__,
+        )
+        self.assertNotIn('exec carry aaa', path.read_text())
 
     def test_exec_lines_name_no_commit(self):
         self.assertIsNone(rebase.EntryLine.parse('exec carry aaa'))
@@ -1897,8 +1945,10 @@ class RebaseExecuteTest(unittest.TestCase):
             ['rev-list', '--reverse', scenario['v102'] + '..HEAD'],
             self.repo.brave,
         ).splitlines()[0]
-        return self.repo._run_git_command(
-            ['log', '-1', '--format=%B', first_rebased], self.repo.brave
+        return _without_change_id(
+            self.repo._run_git_command(
+                ['log', '-1', '--format=%B', first_rebased], self.repo.brave
+            )
         )
 
     def test_squash_minor_bumps_ignores_fixup_body(self):
@@ -2253,6 +2303,15 @@ RAW_PATCH = 'patches/chrome-browser-bar.cc.patch'
 DATA = 'data.txt'
 
 
+def _without_change_id(message: str) -> str:
+    """`message` without the Change-Id a `--squash-minor-bumps` rebase gives
+    a commit that has none, which it must end with."""
+    stripped, found, change_id = message.rstrip().rpartition('\n\nChange-Id: ')
+    if not found or not re.fullmatch(r'I[0-9a-f]{40}', change_id):
+        raise AssertionError(f'No Change-Id at the end of {message!r}')
+    return stripped
+
+
 def _raw_patch(context: str) -> str:
     """A raw patch whose only context line is `context`."""
     return (
@@ -2569,7 +2628,9 @@ class RebaseStopTest(unittest.TestCase):
 
         brockit.Rebase().execute(is_continuation=True)
 
-        self.assertEqual(self.git('log', '-1', '--format=%B'), subject)
+        self.assertEqual(
+            _without_change_id(self.git('log', '-1', '--format=%B')), subject
+        )
 
     def test_continue_composes_the_message_of_a_squash(self):
         """A pinned group that stopped on its squash still gets the message
@@ -2597,7 +2658,9 @@ class RebaseStopTest(unittest.TestCase):
 
         brockit.Rebase().execute(is_continuation=True)
 
-        self.assertEqual(self.git('log', '-1', '--format=%B'), last)
+        self.assertEqual(
+            _without_change_id(self.git('log', '-1', '--format=%B')), last
+        )
         self.assertEqual(self.committed('pinned.txt'), 'pinned\n')
 
     _FIRST_ID = 'I' + '1' * 40
@@ -2716,6 +2779,34 @@ class RebaseStopTest(unittest.TestCase):
 
         self.assertEqual(['[cr150] Version lift updates'], self.subjects())
         self.assertEqual('x\ny\n', self.committed('tool'))
+
+    def test_commits_without_a_change_id_get_one(self):
+        """A commit that has one keeps it, and an orphaned `fixup!`, which
+        folds into its target later, gets none."""
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={'other': 'o\n'},
+            commits=[
+                ('Add the tool', {'tool': 'x\n'}),
+                (
+                    f'Add the feature\n\nChange-Id: {self._FIRST_ID}',
+                    {'feature': 'f\n'},
+                ),
+                ('fixup! Add something else', {'else': 'e\n'}),
+            ],
+        )
+
+        self.rebase(fork, squash_minor_bumps=True)
+
+        messages = self.git(
+            'log', '--reverse', '--format=%B%x00', f'{DEFAULT_BRANCH}..HEAD'
+        ).split('\x00')
+        tool, feature, fixup = (m.strip() for m in messages[:3])
+        self.assertRegex(tool, r'^Add the tool\n\nChange-Id: I[0-9a-f]{40}$')
+        self.assertEqual(
+            feature, f'Add the feature\n\nChange-Id: {self._FIRST_ID}'
+        )
+        self.assertEqual(fixup, 'fixup! Add something else')
 
     def test_an_amend_keeps_the_change_id_of_its_target(self):
         fork = self.build(
