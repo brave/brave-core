@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/test/test_future.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -51,14 +52,14 @@ class EphemeralStorageBlinkMemoryCacheBrowserTestBase
   }
 
   void ClearHttpCache() {
-    base::RunLoop run_loop;
+    base::test::TestFuture<void> future;
     browser()
         ->GetProfile()
         ->GetDefaultStoragePartition()
         ->GetNetworkContext()
         ->ClearHttpCache(base::Time(), base::Time(), nullptr,
-                         run_loop.QuitClosure());
-    run_loop.Run();
+                         future.GetCallback());
+    ASSERT_TRUE(future.Wait());
   }
 };
 
