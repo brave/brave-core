@@ -96,7 +96,12 @@ static_library("ai_chat") {
   ]
 
   if (is_android) {
-    deps += [ "//brave/build/android:jni_headers" ]
+    sources += [ "android/ai_chat_utils_android.cc" ]
+    deps += [
+      "//brave/build/android:jni_headers",
+      "//chrome/android:chrome_jni_headers",
+      "//components/tabs:public",
+    ]
   }
   if (!is_android) {
     sources += [
