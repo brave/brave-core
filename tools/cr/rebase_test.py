@@ -1571,6 +1571,81 @@ class MessageWriterTest(unittest.TestCase):
             with self.assertRaises(NotImplementedError):
                 rebase.get_git_editor()
 
+    def test_with_branch_tag_follows_the_commit_hooks_tags(self):
+        """A pinned subject takes the tag the commit hook gives commits on
+        the branch: a lift or maintenance branch's own, none on a channel
+        bump branch, and an unknown branch leaves it as it is."""
+        message = '[cr160] Version lift updates\n\nBody.'
+        for branch, expected in [
+            ('cr159', '[cr159] Version lift updates\n\nBody.'),
+            ('cr158', '[cr158] Version lift updates\n\nBody.'),
+            ('cr159+fix-tests', '[cr159] Version lift updates\n\nBody.'),
+            ('cr159.x', 'Version lift updates\n\nBody.'),
+            ('cr159.x-on-1.90.x', 'Version lift updates\n\nBody.'),
+            ('master', message),
+            ('fix-tests', message),
+        ]:
+            with self.subTest(branch=branch):
+                self.assertEqual(
+                    rebase.MessageWriter.with_branch_tag(message, branch),
+                    expected,
+                )
+
+    def test_with_branch_tag_leaves_untagged_subjects(self):
+        """Version-named subjects carry no `[cr<N>]` tag, so none is added,
+        and other tags around it stay."""
+        self.assertEqual(
+            rebase.MessageWriter.with_branch_tag(
+                'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1', 'cr159'
+            ),
+            'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1',
+        )
+        self.assertEqual(
+            rebase.MessageWriter.with_branch_tag(
+                '[cr160][Android] IWYU fixes.', 'cr159'
+            ),
+            '[cr159][Android] IWYU fixes.',
+        )
+
+    def test_pinned_squash_takes_the_branchs_own_tag(self):
+        """The trailing block is a pick synced from a newer branch, whose
+        `[cr<N+1>]` tag the squash mustn't keep."""
+        path = self._file(
+            '# This is the 1st commit message:\n'
+            '\n'
+            '[cr159] Version lift updates\n'
+            '\n'
+            '# This is the commit message #2:\n'
+            '\n'
+            '[cr160] Version lift updates\n'
+        )
+
+        rebase.MessageWriter.parse(path).rewrite_with_last_message('cr159')
+
+        self.assertEqual(
+            path.read_text(),
+            '[cr159] Version lift updates\n\nChange-Id: '
+            + pinned_commits.derived_change_id(
+                'cr159', '[cr159] Version lift updates'
+            )
+            + '\n',
+        )
+
+    def test_pinned_squash_on_a_channel_bump_branch_drops_the_tag(self):
+        path = self._file(
+            '# This is the 1st commit message:\n'
+            '\n'
+            'IWYU fixes.\n'
+            '\n'
+            '# This is the commit message #2:\n'
+            '\n'
+            '[cr157] IWYU fixes.\n'
+        )
+
+        rebase.MessageWriter.parse(path).rewrite_with_last_message('cr157.x')
+
+        self.assertEqual(path.read_text(), 'IWYU fixes.\n')
+
 
 class RebaseRecommitHelperTest(unittest.TestCase):
     """Tests for the `brockit.Rebase.recommit_in_rebase_plan` transformer."""
@@ -2602,6 +2677,45 @@ class RebaseStopTest(unittest.TestCase):
             f'{subject}\n\nChange-Id: '
             f'{pinned_commits.derived_change_id("cr150", subject)}',
         )
+
+    def test_a_pinned_commit_picked_from_a_newer_branch_takes_this_tag(
+        self,
+    ):
+        """A group of one has no squash to retag it, so the Change-Id step
+        gives it the branch's own `[cr<N>]` tag too."""
+        theirs = '[cr151] Version lift updates'
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={'other': 'o\n'},
+            commits=[(theirs, {'tool': 'x\n'})],
+            branch='cr150',
+        )
+
+        self.rebase(fork, squash_minor_bumps=True)
+
+        ours = '[cr150] Version lift updates'
+        self.assertEqual(
+            self.git('log', '-1', '--format=%B'),
+            f'{ours}\n\nChange-Id: '
+            f'{pinned_commits.derived_change_id("cr150", ours)}',
+        )
+
+    def test_a_squashed_pinned_group_takes_this_branchs_tag(self):
+        """The last commit of the group was picked from a newer branch."""
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={'other': 'o\n'},
+            commits=[
+                ('[cr150] Version lift updates', {'tool': 'x\n'}),
+                ('[cr151] Version lift updates', {'tool': 'x\ny\n'}),
+            ],
+            branch='cr150',
+        )
+
+        self.rebase(fork, squash_minor_bumps=True)
+
+        self.assertEqual(['[cr150] Version lift updates'], self.subjects())
+        self.assertEqual('x\ny\n', self.committed('tool'))
 
     def test_an_amend_keeps_the_change_id_of_its_target(self):
         fork = self.build(

@@ -2699,19 +2699,25 @@ class Rebase(Task):
     @staticmethod
     def carry_change_id(commits: list[str]) -> None:
         """Amends HEAD to carry the first Change-Id of `commits`, the ones
-        folded into it, in place of whatever an `amend!` brought."""
+        folded into it, in place of whatever an `amend!` brought. A pinned
+        commit also takes the branch's own `[cr<N>]` tag, which a pick from
+        a newer branch, with no squash to fix it, would otherwise keep."""
         brave = repository.brave
+        branch = brave.rebased_branch()
         messages = [
             brave.run_git('log', '-1', '--format=%B', commit)
             for commit in commits
         ]
-        change_id = pinned_commits.derived_change_id(
-            brave.rebased_branch(), messages[0].split('\n', 1)[0]
-        ) or next(filter(None, map(rebase.change_id_of, messages)), None)
-        if change_id is None:
-            return
+        subject = messages[0].split('\n', 1)[0]
+        change_id = pinned_commits.derived_change_id(branch, subject) or next(
+            filter(None, map(rebase.change_id_of, messages)), None
+        )
         message = brave.run_git('log', '-1', '--format=%B', 'HEAD')
-        amended = rebase.with_change_id(message, change_id)
+        amended = message
+        if pinned_commits.get_pinned_group_for_subject(subject) is not None:
+            amended = rebase.MessageWriter.with_branch_tag(amended, branch)
+        if change_id is not None:
+            amended = rebase.with_change_id(amended, change_id)
         if amended != message:
             brave.run_git(
                 'commit',

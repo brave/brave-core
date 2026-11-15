@@ -1002,6 +1002,13 @@ class MessageWriter:
     # classifications (RECYCLABLE, DEFAULT) are punted to the editor.
     _HANDLED_ENTRY_TYPES = frozenset({EntryType.PINNED, EntryType.REASSIGNMENT})
 
+    # The `[cr<N>]` tag the commit hook gives commits on a `cr<N>` branch, or
+    # on a `cr<N>+<topic>` one. Channel bumps' `cr<N>.x` and
+    # `cr<N>.x-on-<channel>` branches get none.
+    _CR_TAG = re.compile(r'\[cr\d+\]')
+    _CR_BRANCH = re.compile(r'cr\d+')
+    _CHANNEL_BUMP_BRANCH = re.compile(r'cr\d+\.x(?:-on-.+)?')
+
     def rewrite_with_last_message(self, branch: str = '') -> None:
         """Writes the trailing block's `full_message` (with a trailing
         newline) back to `todo_file`. Always valid:
@@ -1015,8 +1022,18 @@ class MessageWriter:
         so the squashed commit stays the Gerrit change its first commit
         started. A `reassign!` block has none, so a reassignment keeps its
         target's.
+
+        A pinned squash's subject also takes `branch`'s own `[cr<N>]` tag in
+        place of the trailing block's, which a pick from a newer branch gives
+        its own: none on a channel bump branch, whose commits get none, and
+        left as it is on a branch the commit hook gives no such tag.
         """
         message = self.blocks[-1].full_message
+        first_subject = self.blocks[0].full_message.split('\n', 1)[0]
+        if branch and (
+            get_entry_type_for_subject(first_subject) is EntryType.PINNED
+        ):
+            message = self.with_branch_tag(message, branch)
         change_id = derived_change_id(
             branch, self.blocks[0].full_message.split('\n', 1)[0]
         ) or next(
@@ -1026,6 +1043,35 @@ class MessageWriter:
         if change_id:
             message = with_change_id(message, change_id)
         self.todo_file.write_text(message + '\n', encoding='utf-8', newline='')
+
+    @classmethod
+    def with_branch_tag(cls, message: str, branch: str) -> str:
+        """`message` with the `[cr<M>]` tag among its subject's leading tags
+        replaced by `branch`'s own, or dropped on a channel bump branch. A
+        subject without one, such as a version bump's, is left as it is."""
+        topic_parts = branch.split('+')[:-1]
+        own_branch = next(
+            (
+                part
+                for part in [branch, *topic_parts]
+                if cls._CR_BRANCH.fullmatch(part)
+            ),
+            None,
+        )
+        if own_branch is not None:
+            own = f'[{own_branch}]'
+        elif cls._CHANNEL_BUMP_BRANCH.fullmatch(branch):
+            own = ''
+        else:
+            return message
+        subject, newline, body = message.partition('\n')
+        leading = _LEADING_TAGS.match(subject)
+        if leading is None or not cls._CR_TAG.search(leading.group()):
+            return message
+        tags = cls._CR_TAG.sub(own, leading.group(), count=1)
+        rest = subject[leading.end() :]
+        subject = tags + rest if tags else rest.lstrip()
+        return subject + newline + body
 
     @staticmethod
     def parse(todo_file: Path) -> 'MessageWriter | None':
