@@ -693,37 +693,9 @@ source_set("ui") {
   }
 
   if (enable_commander) {
-    sources += [
-      "commander/bookmark_command_source.cc",
-      "commander/bookmark_command_source.h",
-      "commander/command_source.cc",
-      "commander/command_source.h",
-      "commander/commander_service.cc",
-      "commander/commander_service.h",
-      "commander/commander_service_factory.cc",
-      "commander/commander_service_factory.h",
-      "commander/entity_match.cc",
-      "commander/entity_match.h",
-      "commander/open_url_command_source.cc",
-      "commander/open_url_command_source.h",
-      "commander/ranker.cc",
-      "commander/ranker.h",
-      "commander/simple_command_source.cc",
-      "commander/simple_command_source.h",
-      "commander/tab_command_source.cc",
-      "commander/tab_command_source.h",
-      "commander/window_command_source.cc",
-      "commander/window_command_source.h",
-    ]
-
     deps += [
-      "//brave/browser/ui/commander:fuzzy_finder",
+      "//brave/browser/ui/commander",
       "//brave/components/commander/browser",
-      "//chrome/browser/ui:accelerator_utils_headers",
-      "//chrome/browser/ui:browser_commands",
-      "//chrome/browser/ui:tab_ui_helper",
-      "//chrome/browser/ui/location_bar",
-      "//chrome/browser/ui/window_metadata",
     ]
   }
 

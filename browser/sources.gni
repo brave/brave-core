@@ -553,6 +553,7 @@ if (enable_brave_talk) {
 
 if (enable_commander) {
   brave_chrome_browser_deps += [
+    "//brave/browser/ui/commander",
     "//brave/components/commander/browser",
     "//brave/components/commands/browser",
     "//brave/components/commands/common",

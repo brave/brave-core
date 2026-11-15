@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
 assert(toolkit_views)
@@ -59,6 +60,10 @@ source_set("location_bar") {
   ]
 
   public_deps = [ "//brave/components/playlist/core/common/buildflags" ]
+
+  if (enable_commander) {
+    deps += [ "//brave/browser/ui/commander" ]
+  }
 }
 
 source_set("browser_tests") {
