@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "chrome/browser/profiles/profile_observer.h"
 #include "chrome/browser/ui/browser_window/public/browser_collection_observer.h"
@@ -84,6 +85,7 @@ class SharedPinnedTabService : public KeyedService,
   void OnTabChangedAt(tabs::TabInterface* tab,
                       TabChangeType change_type) override;
   void OnTabBlockedStateChanged(tabs::TabInterface* tab) override;
+  void OnTabStripModelDestroyed(TabStripModel* tab_strip_model) override;
 
   // ProfileWillBeDestroyed;
   void OnProfileWillBeDestroyed(Profile* profile) override;
@@ -105,6 +107,11 @@ class SharedPinnedTabService : public KeyedService,
   void SynchronizeDeletedPinnedTab(int index);
   void SynchronizeMovedPinnedTab(int from, int to);
   void SynchronizeNewBrowser(BrowserWindowInterface* browser);
+
+  // Retries SynchronizeNewBrowser() for a browser whose synchronization was
+  // deferred behind a pending unpin.
+  void SynchronizeDeferredBrowser(
+      base::WeakPtr<BrowserWindowInterface> browser);
 
   void MoveSharedWebContentsToActiveBrowser(int index);
   void MoveSharedWebContentsToBrowser(BrowserWindowInterface* browser,
@@ -134,6 +141,12 @@ class SharedPinnedTabService : public KeyedService,
   std::vector<PinnedTabData> pinned_tab_data_;
 
   raw_ptr<TabStripModel> change_source_model_ = nullptr;
+
+  // Tab strips with an unpin whose OnTabUnpinned() is posted but hasn't run
+  // yet. Until it runs, such a tab strip has fewer pinned tabs than
+  // |pinned_tab_data_|, which must not be mistaken for an out-of-sync browser.
+  // There is one entry per pending unpin, so a model may appear more than once.
+  std::vector<raw_ptr<TabStripModel>> pending_unpin_models_;
 
   bool profile_will_be_destroyed_ = false;
 
