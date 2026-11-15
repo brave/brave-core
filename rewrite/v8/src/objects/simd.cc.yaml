@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Leave out the SME2 `Uint8Array.toHex()` implementation on macOS.
+
+      Its `__arm_new("zt0")` state needs `__arm_tpidr2_save` at link time,
+      which Brave's macOS arm64 link doesn't resolve. The SVE and Neon
+      implementations still cover it.
+    regex:
+      re_pattern: '(#if V8_TARGET_ARCH_ARM64)(\s+#define TARGET_SME2\b)'
+      replace: '\1 && !V8_OS_DARWIN\2'
+
+  - description: Skip the SME2 `Uint8Array.toHex()` dispatch on macOS.
+    regex:
+      re_pattern:
+        '(#if
+        V8_TARGET_ARCH_ARM64)((?:(?!#endif).)*?Uint8ArrayToHexFastWithSME2\(input)'
+      re_flags: [DOTALL]
+      replace: '\1 && !V8_OS_DARWIN\2'
