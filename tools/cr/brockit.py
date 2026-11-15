@@ -3901,98 +3901,130 @@ def main():
     return 0
 
 
-if __name__ == '__main__':
-    if any(arg.startswith("--internal-rebase") for arg in sys.argv):
-        # Special flags used to carry out some of the rebase tasks fed by git
-        # during rebase --interactive mode.
-        if '--internal-rebase-recommit' in sys.argv:
-            Rebase.recommit_in_rebase_plan(Path(sys.argv[-1]))
+class RebaseHook:
+    """The steps git runs during `brockit rebase`, through the
+    `--internal-rebase-*` flags `Rebase` passes its sequence editor, message
+    editor, `exec` lines and plan capture.
 
-        _carry_prefix = '--internal-rebase-carry-change-id='
-        for _arg in sys.argv:
-            if _arg.startswith(_carry_prefix):
-                Rebase.carry_change_id(_arg[len(_carry_prefix) :].split(','))
+    The flags are parsed strictly: an unknown one, a missing value, or a step
+    without the file git appends fails the step, and with it the rebase,
+    rather than letting it carry on as if the step had run.
+    """
 
-        if '--internal-rebase-capture-plan' in sys.argv:
-            # This flag copies the TOOD plan into the destination path.
-            _capture_prefix = '--internal-rebase-capture-dest='
-            _capture_dest = next(
-                (
-                    arg[len(_capture_prefix) :]
-                    for arg in sys.argv
-                    if arg.startswith(_capture_prefix)
-                ),
-                None,
+    PREFIX = '--internal-rebase'
+
+    @staticmethod
+    def parser() -> argparse.ArgumentParser:
+        parser = argparse.ArgumentParser(
+            prog='brockit.py', add_help=False, allow_abbrev=False
+        )
+        parser.add_argument('--internal-rebase-recommit', action='store_true')
+        parser.add_argument('--internal-rebase-carry-change-id')
+        parser.add_argument(
+            '--internal-rebase-capture-plan', action='store_true'
+        )
+        parser.add_argument('--internal-rebase-capture-dest', type=Path)
+        parser.add_argument(
+            '--internal-rebase-plan-discard-recyclable', action='store_true'
+        )
+        parser.add_argument(
+            '--internal-rebase-plan-squash-pinned', action='store_true'
+        )
+        parser.add_argument('--internal-rebase-crash-sequence-editor')
+        parser.add_argument(
+            '--internal-rebase-fix-message', action='store_true'
+        )
+        parser.add_argument('--internal-rebase-crash-msg-editor')
+        # The todo or message file git appends to an editor's command. The
+        # `exec` lines run without one.
+        parser.add_argument('file', nargs='?', type=Path)
+        return parser
+
+    @classmethod
+    def parse(cls, argv: list[str]) -> argparse.Namespace:
+        """Parses `argv`, exiting with an error when a step lacks what it
+        needs."""
+        parser = cls.parser()
+        args = parser.parse_args(argv)
+        rewrites_plan = (
+            args.internal_rebase_plan_discard_recyclable
+            or args.internal_rebase_plan_squash_pinned
+        )
+        if args.file is None and (
+            args.internal_rebase_recommit
+            or args.internal_rebase_capture_plan
+            or rewrites_plan
+            or args.internal_rebase_fix_message
+        ):
+            parser.error('this step needs the file git passes its editor')
+        if args.internal_rebase_capture_plan and not (
+            args.internal_rebase_capture_dest
+        ):
+            parser.error('--internal-rebase-capture-plan needs a destination')
+        if rewrites_plan and not args.internal_rebase_crash_sequence_editor:
+            parser.error('rewriting the plan needs a crash sequence editor')
+        if (
+            args.internal_rebase_fix_message
+            and not args.internal_rebase_crash_msg_editor
+        ):
+            parser.error('fixing the message needs a crash message editor')
+        return args
+
+    @staticmethod
+    def run(args: argparse.Namespace) -> None:
+        if args.internal_rebase_recommit:
+            Rebase.recommit_in_rebase_plan(args.file)
+
+        if args.internal_rebase_carry_change_id:
+            Rebase.carry_change_id(
+                args.internal_rebase_carry_change_id.split(',')
             )
-            if not _capture_dest:
-                raise NotImplementedError(
-                    'Expected --internal-rebase-capture-dest=<path> in '
-                    'sys.argv but none was found.'
-                )
-            _todo_path = Path(sys.argv[-1])
-            shutil.copyfile(_todo_path, _capture_dest)
+
+        if args.internal_rebase_capture_plan:
+            shutil.copyfile(args.file, args.internal_rebase_capture_dest)
             # Truncate the plan so git aborts the dry run. The content is empty,
             # so no newline translation is involved.
-            _todo_path.write_text('', encoding='utf-8')
+            args.file.write_text('', encoding='utf-8')
 
-        def _crash_editor_from_argv(flag_prefix: str) -> str:
-            """Pulls a `--<flag_prefix>=<editor>` value out of `sys.argv`.
-
-            Raises `NotImplementedError` when the flag is absent or its
-            value is empty -- `Rebase.execute` appends this flag
-            unconditionally for these rebase steps, so a missing value
-            means a wiring bug rather than something recoverable at
-            runtime.
-            """
-            prefix = f'{flag_prefix}='
-            for arg in sys.argv:
-                if arg.startswith(prefix):
-                    value = arg[len(prefix) :]
-                    if value:
-                        return value
-                    break
-            raise NotImplementedError(
-                f'Expected --{flag_prefix}=<editor> in sys.argv but '
-                f'none was found (or it was empty). `Rebase.execute` '
-                f'should have appended it for this dispatch.'
-            )
-
-        if any(a.startswith('--internal-rebase-plan-') for a in sys.argv):
-            editor_path = Path(sys.argv[-1])
-            crash_editor = _crash_editor_from_argv(
-                '--internal-rebase-crash-sequence-editor'
-            )
+        if (
+            args.internal_rebase_plan_discard_recyclable
+            or args.internal_rebase_plan_squash_pinned
+        ):
             try:
                 rebase.rewrite_plan(
-                    todo_file=editor_path,
+                    todo_file=args.file,
                     discard_recyclable=(
-                        '--internal-rebase-plan-discard-recyclable' in sys.argv
+                        args.internal_rebase_plan_discard_recyclable
                     ),
-                    pinned_squashed=(
-                        '--internal-rebase-plan-squash-pinned' in sys.argv
-                    ),
+                    pinned_squashed=args.internal_rebase_plan_squash_pinned,
                     carry_change_id=Rebase.carry_change_id_line,
                     changed_paths=Rebase.changed_paths,
                 )
             except rebase.EditorRecoverableFailure as e:
                 rebase.hand_off_to_editor(
-                    editor_path, reason=str(e), editor=crash_editor
+                    args.file,
+                    reason=str(e),
+                    editor=args.internal_rebase_crash_sequence_editor,
                 )
-        if '--internal-rebase-fix-message' in sys.argv:
-            editor_path = Path(sys.argv[-1])
-            crash_editor = _crash_editor_from_argv(
-                '--internal-rebase-crash-msg-editor'
-            )
+
+        if args.internal_rebase_fix_message:
             try:
-                writer = rebase.MessageWriter.parse(editor_path)
+                writer = rebase.MessageWriter.parse(args.file)
                 if writer is not None:
                     writer.rewrite_with_last_message(
                         repository.brave.rebased_branch()
                     )
             except rebase.EditorRecoverableFailure as e:
                 rebase.hand_off_to_editor(
-                    editor_path, reason=str(e), editor=crash_editor
+                    args.file,
+                    reason=str(e),
+                    editor=args.internal_rebase_crash_msg_editor,
                 )
+
+
+if __name__ == '__main__':
+    if any(arg.startswith(RebaseHook.PREFIX) for arg in sys.argv[1:]):
+        RebaseHook.run(RebaseHook.parse(sys.argv[1:]))
         sys.exit(0)
 
     sys.exit(main())

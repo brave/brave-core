@@ -2165,5 +2165,71 @@ class ShowTest(unittest.TestCase):
         self.assertEqual(self.solved_refs, ['@previous-major'])
 
 
+class RebaseHookTest(unittest.TestCase):
+    """`--internal-rebase-*` flags parse strictly, so a step this Brockit
+    doesn't know fails rather than passing for done."""
+
+    def assert_rejected(self, argv: list[str]) -> None:
+        with patch('sys.stderr'), self.assertRaises(SystemExit) as raised:
+            brockit.RebaseHook.parse(argv)
+        self.assertEqual(raised.exception.code, 2)
+
+    def test_rejects_an_unknown_flag(self):
+        self.assert_rejected(
+            ['--internal-rebase-carry-change-id=aaa', '--internal-rebase-new']
+        )
+
+    def test_rejects_an_abbreviated_flag(self):
+        self.assert_rejected(
+            [
+                '--internal-rebase-plan-squash',
+                '--internal-rebase-crash-sequence-editor=vi',
+                'todo',
+            ]
+        )
+
+    def test_carry_change_id_runs_without_a_file(self):
+        args = brockit.RebaseHook.parse(
+            ['--internal-rebase-carry-change-id=aaa,bbb']
+        )
+        self.assertEqual(args.internal_rebase_carry_change_id, 'aaa,bbb')
+        self.assertIsNone(args.file)
+
+    def test_plan_rewrite_takes_the_todo_file(self):
+        args = brockit.RebaseHook.parse(
+            [
+                '--internal-rebase-plan-squash-pinned',
+                '--internal-rebase-crash-sequence-editor=vi',
+                'path/to/git-rebase-todo',
+            ]
+        )
+        self.assertTrue(args.internal_rebase_plan_squash_pinned)
+        self.assertEqual(args.file, Path('path/to/git-rebase-todo'))
+
+    def test_plan_rewrite_needs_a_crash_editor(self):
+        self.assert_rejected(['--internal-rebase-plan-squash-pinned', 'todo'])
+
+    def test_message_fix_needs_the_message_file(self):
+        self.assert_rejected(
+            [
+                '--internal-rebase-fix-message',
+                '--internal-rebase-crash-msg-editor=vi',
+            ]
+        )
+
+    def test_capture_needs_a_destination(self):
+        self.assert_rejected(['--internal-rebase-capture-plan', 'todo'])
+
+    def test_brockit_exits_with_an_error_on_an_unknown_flag(self):
+        result = subprocess.run(
+            [sys.executable, brockit.__file__, '--internal-rebase-new'],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 2, result.stderr)
+        self.assertIn('--internal-rebase-new', result.stderr)
+
+
 if __name__ == '__main__':
     unittest.main()
