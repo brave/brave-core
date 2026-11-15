@@ -7,7 +7,7 @@ import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import config from './config.ts'
-import { snapshotConfig } from './configSnapshot.ts'
+import { mockConfig } from './configMock.ts'
 import * as Log from './log.ts'
 import * as sisoUtils from './sisoUtils.ts'
 
@@ -30,7 +30,6 @@ jest.mock('./log.ts', () => ({
 describe('writeSisoRc', () => {
   let tmpDir: string
   let sisoRcPath: string
-  let restoreConfig: () => void
 
   const setRbeReadOnly = (value: boolean) =>
     Object.defineProperty(config, 'rbeReadOnly', {
@@ -42,7 +41,7 @@ describe('writeSisoRc', () => {
   const readSisoRc = () => fs.readFileSync(sisoRcPath, 'utf8')
 
   beforeEach(() => {
-    restoreConfig = snapshotConfig()
+    mockConfig()
 
     tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'brave-siso-utils-'))
     sisoRcPath = path.join(tmpDir, 'build', 'config', 'siso', '.sisorc')
@@ -56,7 +55,6 @@ describe('writeSisoRc', () => {
   })
 
   afterEach(() => {
-    restoreConfig()
     mockIsCI = false
     fs.rmSync(tmpDir, { recursive: true, force: true })
   })
