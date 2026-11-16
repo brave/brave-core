@@ -392,8 +392,7 @@ mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::DictValue& value) {
   } else {
     // Back-compat with schema that stored a bool `is_shielded`.
     // true → kOrchard; false + ZEC → kTransparent; non-ZEC → kNone.
-    // Shielded tokens are never persisted, so a legacy `true` is only
-    // defensive.
+    // That bool was not used to store shielded tokens.
     if (value.FindBool("is_shielded").value_or(false)) {
       token_ptr->zcash_token_type = mojom::ZCashTokenType::kOrchard;
     } else if (token_ptr->coin == mojom::CoinType::ZEC) {
