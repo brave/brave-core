@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>。
 或稍後在 <ph name="SETTINGS_EXTENIONS_LINK"/> 變更。</translation>
 <translation id="6229752134959014186">深入瞭解 Widevine</translation>
+<translation id="3318169548229684688">下載語音辨識模型 (<ph name="DOWNLOAD_SIZE"/>),以便在此裝置上處理語音</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> 正要求您</translation>
 <translation id="3218385319396786393">此頁面已禁止自動播放</translation>
 <translation id="4988333904713528597">永遠允許自動播放 <ph name="HOST"/></translation>
@@ -610,6 +611,8 @@
 <translation id="3540231253392253941">使用 Google 服務來推播訊息</translation>
 <translation id="2224032129673914306">語意式歷史記錄搜尋</translation>
 <translation id="6045998903985162478">為您造訪的頁面建立索引，讓您可以在歷史記錄、開啟的分頁和 Leo 中輕鬆找到它們。</translation>
+<translation id="3962946446120925966">裝置端語音辨識</translation>
+<translation id="6408242130028978631">下載語音辨識模型 (<ph name="DOWNLOAD_SIZE"/>)，讓網站可以在此裝置上處理語音。關閉此選項即可移除該模型。</translation>
 <translation id="5813105074916486721">本機記錄保留期限</translation>
 <translation id="5671611745062206644">Brave 在本機儲存您的瀏覽記錄的時間長度</translation>
 <translation id="7184510058087008090">1 天</translation>

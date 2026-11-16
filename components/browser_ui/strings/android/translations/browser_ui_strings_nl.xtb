@@ -181,9 +181,7 @@
 <translation id="2710883118091822664">Log in om makkelijk verder te gaan op al je apparaten</translation>
 <translation id="2713106313042589954">Camera uitzetten</translation>
 <translation id="2717722538473713889">E-mailadressen</translation>
-<translation id="8181634240306014548">Start Brave met de Omnibox gefocust om de opstarttijd op basisapparaten te verkorten.</translation>
 <translation id="2750481671343847896">Sites kunnen inlogprompts van identiteitsservices tonen.</translation>
-<translation id="2787357173144933081">Omnibox voor een goede start</translation>
 <translation id="2789132527330338807">Sites kunnen vragen of ze een 3D-kaart van je omgeving mogen maken of de camerapositie mogen volgen</translation>
 <translation id="2790501146643349491">Als deze optie aanstaat, kunnen recent gesloten sites het sturen en ontvangen van gegevens afronden. Staat de optie uit, dan kunnen recent gesloten sites het sturen of ontvangen van gegevens niet afronden.</translation>
 <translation id="2795716239552913152">Sites gebruiken je locatie meestal voor relevante functies of informatie, zoals lokaal nieuws of winkels in de buurt</translation>
@@ -291,7 +289,6 @@
 <translation id="9046306654872718870">Personaliseer Brave met aangepaste kleuren en afbeeldingen voor je homepage</translation>
 <translation id="389521680295183045">Sites kunnen vragen of ze mogen weten wanneer je je apparaat actief gebruikt</translation>
 <translation id="3895926599014793903">Zoom verplicht aan</translation>
-<translation id="3905475044299942653">Houd veel meldingen tegen</translation>
 <translation id="3922092564198021702">Open Instellingen op je telefoon</translation>
 <translation id="3924858949939391676">Links tonen zodra de leesmodus aanstaat</translation>
 <translation id="3933121352599513978">Ongewenste verzoeken samenvouwen (aanbevolen)</translation>
@@ -385,7 +382,6 @@
 <translation id="4936863036653376783">Je vindt je groepen in het gedeelte met tabbladgroepen op al je apparaten</translation>
 <translation id="4945443401464700059"><ph name="SITE"/> kan je informatie niet gebruiken op</translation>
 <translation id="4953688446973710931">Als deze optie aanstaat, kunnen sites vragen of ze automatisch meerdere bestanden mogen downloaden. Staat de optie uit, dan kunnen sites niet automatisch meerdere bestanden downloaden.</translation>
-<translation id="4962975101802056554">Alle rechten voor apparaat intrekken</translation>
 <translation id="4972737347717125191">Sites kunnen vragen of ze apparaten en gegevens voor virtual reality mogen gebruiken</translation>
 <translation id="1275242979020712923">Blad onderaan voor Brave-kleuren</translation>
 <translation id="497421865427891073">Naar voren gaan</translation>
@@ -525,6 +521,7 @@
 <translation id="6439114592976064011">Voorkomen dat sites je virtualreality-apparaat en -gegevens gebruiken</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6452138246455930388">Prijsdaling op je geopende tabblad, van <ph name="OLD_PRICE"/> naar <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
+<translation id="6495608040096939405">Apparaatrecht voor <ph name="NAME"/> intrekken</translation>
 <translation id="6500423977866688905">Mobiele weergave aanvragen als het venster smal is</translation>
 <translation id="6527303717912515753">Delen</translation>
 <translation id="6530703012083415527">Als deze optie aanstaat, kunnen sites pop-ups en omleidingen gebruiken. Staat de optie uit, dan kunnen sites geen pop-ups en omleidingen gebruiken.</translation>
@@ -590,6 +587,7 @@
 <translation id="7188508872042490670">Sitegegevens op het apparaat</translation>
 <translation id="7201549776650881587">Met deze actie verwijder je alle gegevens en cookies die zijn opgeslagen door alle sites onder <ph name="ORIGIN"/> of door de bijbehorende app op je startscherm</translation>
 <translation id="7219254577985949841">Sitegegevens verwijderen?</translation>
+<translation id="7225256190577194089">Alle rechten voor apparaat <ph name="DEVICE_NAME"/> intrekken</translation>
 <translation id="723171743924126238">Afbeeldingen selecteren</translation>
 <translation id="7243246278722455312">Blad onderaan voor De pagina Nieuw tabblad aanpassen</translation>
 <translation id="7243308994586599757">Opties beschikbaar onder aan het scherm</translation>
@@ -702,7 +700,6 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:</translation>
 <translation id="8428213095426709021">Instellingen</translation>
 <translation id="8441146129660941386">Achteruit zoeken</translation>
 <translation id="8444433999583714703">Als je <ph name="APP_NAME"/> toegang wilt geven tot je locatie, moet je je locatie ook aanzetten via de <ph name="BEGIN_LINK"/>Android-instellingen<ph name="END_LINK"/>.</translation>
-<translation id="8447861592752582886">Rechten voor apparaat intrekken</translation>
 <translation id="8463843545738141778">Deze instelling is uitgezet omdat je Geavanceerde beveiliging hebt aangezet in de Android-instellingen.</translation>
 <translation id="8467359479529706065">Blad onderaan voor het uiterlijk van de pagina Nieuw tabblad is op halve hoogte geopend</translation>
 <translation id="8471525937465764768">Sites maken meestal verbinding met USB-apparaten voor functies zoals het afdrukken van een document of opslaan naar een opslagapparaat</translation>

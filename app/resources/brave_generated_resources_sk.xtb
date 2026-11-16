@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Ďalšie informácie o Widevine</translation>
+<translation id="3318169548229684688">stiahnuť model rozpoznávania reči (<ph name="DOWNLOAD_SIZE"/>) na spracovanie reči v tomto zariadení</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> vás žiada o</translation>
 <translation id="3218385319396786393">Funkcia autoplay bola na tejto stránke zakázaná</translation>
 <translation id="4988333904713528597">Vždy povoliť automatické prehrávanie na <ph name="HOST"/></translation>
@@ -610,6 +611,8 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="3540231253392253941">Pre správy s upozorneniami používajte služby Google</translation>
 <translation id="2224032129673914306">Sémantické vyhľadávanie v histórii</translation>
 <translation id="6045998903985162478">Indexujte stránky, ktoré navštívite, aby ste ich ľahko našli v histórii, otvorených kartách a nástroji Leo.</translation>
+<translation id="3962946446120925966">Rozpoznávanie reči v zariadení</translation>
+<translation id="6408242130028978631">Stiahnite si model rozpoznávania reči (<ph name="DOWNLOAD_SIZE"/>), aby weby mohli spracovávať reč v tomto zariadení. Ak túto možnosť vypnete, model sa odstráni.</translation>
 <translation id="5813105074916486721">Uchovávanie lokálnej histórie</translation>
 <translation id="5671611745062206644">Ako dlho Brave uchováva vašu históriu prehliadania lokálne</translation>
 <translation id="7184510058087008090">1 deň</translation>

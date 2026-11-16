@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 შეგიძლიათ შეცვალოთ მოგვიანებით <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">გაიგეთ მეტი Widevine-ის შესახებ</translation>
+<translation id="3318169548229684688">ჩამოტვირთოს მეტყველების ამოცნობის მოდელი (<ph name="DOWNLOAD_SIZE"/>) ამ მოწყობილობაზე მეტყველების დასამუშავებლად</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> გთხოვთ</translation>
 <translation id="3218385319396786393">ეს გვერდი ვერ განიხილავს ვიდე კონტენტს</translation>
 <translation id="4988333904713528597">ყოველთვის დაუშვებელია ვიდე კონტენტების ავტომატური მოთავსება <ph name="HOST"/></translation>
@@ -610,6 +611,8 @@
 <translation id="3540231253392253941">გამოიყენეთ Google სერვისები push შეტყობინებებისთვის</translation>
 <translation id="2224032129673914306">ისტორიის სემანტიკური ძიება</translation>
 <translation id="6045998903985162478">მონახულებული გვერდების ინდექსირება, რათა მათი მარტივად მოძებნა შეძლოთ ისტორიაში, ღია ჩანართებსა და Leo-ში.</translation>
+<translation id="3962946446120925966">მოწყობილობაზე მეტყველების ამოცნობა</translation>
+<translation id="6408242130028978631">ჩამოტვირთეთ მეტყველების ამოცნობის მოდელი (<ph name="DOWNLOAD_SIZE"/>), რათა საიტებმა შეძლონ მეტყველების დამუშავება ამ მოწყობილობაზე. მოდელის წასაშლელად გამორთეთ ეს პარამეტრი.</translation>
 <translation id="5813105074916486721">ლოკალური ისტორიის შენარჩუნება</translation>
 <translation id="5671611745062206644">რამდენ ხანს ინახავს Brave თქვენს დათვალიერების ისტორიას ლოკალურად</translation>
 <translation id="7184510058087008090">1 დღე</translation>
