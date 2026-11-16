@@ -57,6 +57,10 @@ void SetOwnPropertyWritable(v8::Local<v8::Context> context,
                             v8::Local<v8::String> property_name,
                             bool writable);
 
+void SealOwnProperty(v8::Local<v8::Context> context,
+                     v8::Local<v8::Object> object,
+                     v8::Local<v8::String> name);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_V8_HELPER_H_

@@ -210,6 +210,15 @@ class PolkadotProviderRendererTest : public InProcessBrowserTest {
         });
   }
 
+  void ExpectEnableGrantedRepeated() {
+    EXPECT_CALL(*provider(), Enable(testing::_))
+        .WillRepeatedly([&](mojom::PolkadotProvider::EnableCallback callback) {
+          mojo::PendingRemote<mojom::PolkadotApi> remote;
+          api()->BindReceiver(remote.InitWithNewPipeAndPassReceiver());
+          std::move(callback).Run(std::move(remote), nullptr);
+        });
+  }
+
  protected:
   net::EmbeddedTestServer https_server_;
   TestBraveContentBrowserClient test_content_browser_client_;
@@ -649,6 +658,68 @@ IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, SignerRejects) {
        })())");
   EXPECT_EQ(base::Value("Signing is not implemented by this extension yet"),
             result);
+}
+
+IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, SealedSubObjects) {
+  ExpectEnableGrantedRepeated();
+
+  EXPECT_TRUE(content::EvalJs(web_contents(browser()), R"((
+    async function() {
+      'use strict';
+
+      const hijackProperty = (obj, property) => {
+        let assignThrew = false;
+        try {
+          obj[property] = 'spoofed!';
+        } catch(e) {
+          assignThrew = true;
+        }
+
+        let deleteThrew = false;
+        try {
+          delete obj[property];
+        } catch(e) {
+          deleteThrew = true;
+        }
+
+        let defineThrew = false;
+        try {
+          Object.defineProperty(obj, property, { value: {} });
+        } catch(e) {
+          defineThrew = true;
+        }
+
+        return assignThrew && deleteThrew && defineThrew;
+      };
+
+      const methods = ['enable', 'connect'];
+      return (await Promise.all(
+        methods.map(async (method) => {
+          const injectedProps = ['name', 'version', 'accounts', 'signer'];
+          const accountsProps = ['get', 'subscribe'];
+          const signerProps = ['signPayload', 'signRaw'];
+
+          const injected = await window.injectedWeb3['brave-wallet'][method](
+            'test dapp');
+
+          const { accounts, signer } = injected;
+
+          const topLevelPropsValidated = injectedProps.every(
+            (prop) => hijackProperty(injected, prop));
+
+          const accountsPropsValidated = accountsProps.every(
+            (prop) => hijackProperty(accounts, prop));
+
+          const signerPropsValidated = signerProps.every(
+            (prop) => hijackProperty(signer, prop));
+
+          return topLevelPropsValidated
+            && accountsPropsValidated
+            && signerPropsValidated;
+        })
+      )).every((x) => x);
+    })())")
+                  .ExtractBool());
 }
 
 }  // namespace brave_wallet
