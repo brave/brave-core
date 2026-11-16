@@ -250,10 +250,9 @@ class BraveCoreCheckoutApi(RecipeApi):
         """
         # `git cache` comes from depot_tools.
         self.m.depot_tools.ensure_on_path()
-        self.m.git_cache.populate(
+        return self.m.git_cache.populate(
             CACHE_REPO_URL, ref=ref.populate_ref, commit=ref.populate_commit
         )
-        return self.m.git_cache.mirror_dir(CACHE_REPO_URL)
 
     def _checkout_from_mirror(self, ref: GitRef, mirror_dir: str) -> None:
         """Clone or update the brave-core checkout from the populated mirror."""

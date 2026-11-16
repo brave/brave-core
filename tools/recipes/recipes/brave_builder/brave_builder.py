@@ -87,11 +87,11 @@ def GenTests(api: TEST_DEPS):
         'fresh',
         api.brave_core_checkout.with_git_cache(),
         api.step_data(
-            'git cache exists',
+            'git cache populate exists (after)',
             stdout=api.raw_io.output_text('/b/cache/brave-core'),
         ),
         api.step_data(
-            'git cache exists (2)',
+            'git cache populate exists (after) (2)',
             stdout=api.raw_io.output_text('/b/cache/chromium'),
         ),
         api.brave_core_checkout.brave_core_ref('refs/heads/1.80.x'),
