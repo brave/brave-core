@@ -11,7 +11,6 @@
 #include "base/check.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
-#include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
