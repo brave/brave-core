@@ -224,6 +224,57 @@ class SessionTabGroupTests: CoreDataTestCase {
     XCTAssertEqual(tabIds(inGroup: keptGroupId), [keptTab])
   }
 
+  // MARK: - Moving tabs between windows
+
+  func testMovingGroupedTabToAnotherWindowRemovesItFromGroup() {
+    let otherWindowId = UUID()
+    createWindow(otherWindowId)
+    let movedTab = createTab()
+    let keptTab = createTab()
+    let groupId = createGroup(title: "Group", tabs: [movedTab, keptTab])
+
+    backgroundSaveAndWaitForExpectation {
+      SessionTab.move(tab: movedTab, toWindow: otherWindowId)
+    }
+
+    XCTAssertEqual(SessionTab.from(tabId: movedTab)?.sessionWindow?.windowId, otherWindowId)
+    XCTAssertNil(SessionTab.from(tabId: movedTab)?.sessionTabGroup)
+    XCTAssertEqual(tabIds(inGroup: groupId), [keptTab])
+    XCTAssertTrue(SessionTabGroup.all(windowId: otherWindowId).isEmpty)
+  }
+
+  func testMovingLastTabOfGroupToAnotherWindowLeavesGroupToBeDeleted() {
+    let otherWindowId = UUID()
+    createWindow(otherWindowId)
+    let tab = createTab()
+    createGroup(title: "Group", tabs: [tab])
+
+    backgroundSaveAndWaitForExpectation {
+      SessionTab.move(tab: tab, toWindow: otherWindowId)
+    }
+    XCTAssertNil(SessionTab.from(tabId: tab)?.sessionTabGroup)
+    XCTAssertEqual(groups().count, 1)
+
+    backgroundSaveAndWaitForExpectation {
+      SessionTabGroup.deleteAllEmpty()
+    }
+    XCTAssertTrue(groups().isEmpty)
+  }
+
+  func testMovingUngroupedTabToAnotherWindowKeepsOtherGroups() {
+    let otherWindowId = UUID()
+    createWindow(otherWindowId)
+    let ungroupedTab = createTab()
+    let groupedTab = createTab()
+    let groupId = createGroup(title: "Group", tabs: [groupedTab])
+
+    backgroundSaveAndWaitForExpectation {
+      SessionTab.move(tab: ungroupedTab, toWindow: otherWindowId)
+    }
+
+    XCTAssertEqual(tabIds(inGroup: groupId), [groupedTab])
+  }
+
   // MARK: - Helpers
 
   private func groups() -> [SessionTabGroup] {

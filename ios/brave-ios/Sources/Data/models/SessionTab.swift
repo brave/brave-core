@@ -316,6 +316,11 @@ extension SessionTab {
       }
 
       tab.sessionWindow = window
+      // A group belongs to a single window, so a tab that moves to another one leaves its group.
+      // A group left without tabs is removed by `SessionTabGroup.deleteAllEmpty()`.
+      if let group = tab.sessionTabGroup, group.sessionWindow?.windowId != windowId {
+        tab.sessionTabGroup = nil
+      }
 
       do {
         try context.save()
