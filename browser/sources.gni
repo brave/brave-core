@@ -39,10 +39,6 @@ import("//chrome/browser/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//printing/buildflags/buildflags.gni")
 
-if (enable_brave_wallet) {
-  import("//brave/browser/brave_wallet/android/sources.gni")
-}
-
 # Targets allowed to include headers from `brave_chrome_browser_sources`, which
 # are compiled into //brave/browser:core (a dep of //chrome/browser:browser).
 # Each entry must also be a dep of :core, and is a cycle: the target includes
@@ -95,13 +91,6 @@ brave_chrome_browser_sources = [
   "//brave/browser/update_util.cc",
   "//brave/browser/update_util.h",
 ]
-
-if (enable_brave_wallet) {
-  brave_chrome_browser_sources += [
-    "//brave/browser/brave_wallet/wallet_data_files_installer_delegate_impl.cc",
-    "//brave/browser/brave_wallet/wallet_data_files_installer_delegate_impl.h",
-  ]
-}
 
 brave_chrome_browser_deps = [
   "//base",
@@ -665,11 +654,6 @@ if (is_android) {
     "//chrome/browser/importer/profile_writer.cc",
     "//chrome/browser/importer/profile_writer.h",
   ]
-
-  if (enable_brave_wallet) {
-    brave_chrome_browser_sources += brave_browser_brave_wallet_android_sources
-    brave_chrome_browser_deps += brave_browser_brave_wallet_android_deps
-  }
 
   brave_chrome_browser_deps += [
     "//brave/browser/android:android_browser_process",

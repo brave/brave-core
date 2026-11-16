@@ -32,6 +32,25 @@ source_set("permissions") {
   if (enable_brave_wallet) {
     deps += [ "//brave/components/brave_wallet/browser:permission_utils" ]
   }
+
+  if (is_android && enable_brave_wallet) {
+    sources += [
+      "brave_dapp_permission_prompt_dialog_controller_android.cc",
+      "brave_dapp_permission_prompt_dialog_controller_android.h",
+      "brave_wallet_permission_prompt_android.cc",
+      "brave_wallet_permission_prompt_android.h",
+      "connect_account_android.cc",
+    ]
+    public_deps += [ "//brave/components/brave_wallet/common:mojom" ]
+    deps += [
+      "//brave/components/brave_wallet/browser:utils",
+      "//chrome/android:chrome_jni_headers",
+      "//content/public/browser",
+      "//third_party/blink/public/mojom:mojom_platform",
+      "//ui/android",
+      "//url",
+    ]
+  }
 }
 
 if (!is_android) {
