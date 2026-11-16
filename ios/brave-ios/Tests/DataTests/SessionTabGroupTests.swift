@@ -84,6 +84,41 @@ class SessionTabGroupTests: CoreDataTestCase {
     XCTAssertTrue(SessionTabGroup.all(windowId: otherWindowId).isEmpty)
   }
 
+  func testCreateGroupInUnknownWindowDoesNothing() {
+    let tab = createTab()
+    let unknownWindowId = UUID()
+
+    SessionTabGroup.create(
+      groupId: UUID(),
+      windowId: unknownWindowId,
+      title: "Group",
+      tabIds: [tab]
+    )
+    waitForPendingWrites()
+
+    XCTAssertTrue(groups().isEmpty)
+    XCTAssertTrue(SessionTabGroup.all(windowId: unknownWindowId).isEmpty)
+    XCTAssertNil(SessionTab.from(tabId: tab)?.sessionTabGroup)
+  }
+
+  func testCreateGroupWithExistingGroupIdDoesNothing() {
+    let firstTab = createTab()
+    let secondTab = createTab()
+    let groupId = createGroup(title: "Group", tabs: [firstTab])
+
+    SessionTabGroup.create(
+      groupId: groupId,
+      windowId: windowId,
+      title: "Duplicate",
+      tabIds: [secondTab]
+    )
+    waitForPendingWrites()
+
+    XCTAssertEqual(groups().map(\.title), ["Group"])
+    XCTAssertEqual(tabIds(inGroup: groupId), [firstTab])
+    XCTAssertNil(SessionTab.from(tabId: secondTab)?.sessionTabGroup)
+  }
+
   func testCreateGroupMovesTabsOutOfPreviousGroupAndDeletesItWhenEmpty() {
     let firstTab = createTab()
     let secondTab = createTab()

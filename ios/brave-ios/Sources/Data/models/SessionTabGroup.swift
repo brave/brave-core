@@ -69,10 +69,13 @@ extension SessionTabGroup {
   }
 
   /// Creates a group in the given window containing the given tabs. Tabs that are already in
-  /// another group are moved, and any group left empty by that is deleted.
+  /// another group are moved, and any group left empty by that is deleted. Nothing is created if
+  /// the window doesn't exist, or if a group with the same `groupId` already does.
   public static func create(groupId: UUID, windowId: UUID, title: String, tabIds: [UUID]) {
     DataController.perform { context in
-      guard let window = SessionWindow.from(windowId: windowId, in: context) else { return }
+      guard let window = SessionWindow.from(windowId: windowId, in: context),
+        from(groupId: groupId, in: context) == nil
+      else { return }
       let tabs = groupableTabs(tabIds, windowId: windowId, in: context)
       guard !tabs.isEmpty else { return }
 
