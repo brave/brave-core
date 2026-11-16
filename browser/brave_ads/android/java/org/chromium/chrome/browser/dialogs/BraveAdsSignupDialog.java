@@ -109,23 +109,28 @@ public class BraveAdsSignupDialog {
     }
 
     public static void showNewUserDialog(Context context) {
-        AlertDialog alertDialog = new AlertDialog.Builder(context, R.style.BraveDialogTheme)
-        .setView(R.layout.brave_ads_new_user_dialog_layout)
-        .setPositiveButton(R.string.brave_ads_offer_positive, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        AlertDialog alertDialog =
+                new AlertDialog.Builder(context, R.style.BraveDialogTheme)
+                        .setView(R.layout.brave_ads_new_user_dialog_layout)
+                        .setPositiveButton(
+                                R.string.brave_ads_offer_positive,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
 
-                OnboardingPrefManager.getInstance().setOnboardingNotificationShown(false);
+                                        OnboardingPrefManager.getInstance()
+                                                .setOnboardingNotificationShown(false);
 
-                neverShowOnboardingDialogAgain();
-                try {
-                    // Enable ads
-                    BraveActivity.getBraveActivity().openRewardsPanel();
-                } catch (BraveActivity.BraveActivityNotFoundException e) {
-                    Log.e(TAG, "showNewUserDialog " + e);
-                }
-            }
-        }).create();
+                                        neverShowOnboardingDialogAgain();
+                                        try {
+                                            // Enable ads
+                                            BraveActivity.getBraveActivity().openRewardsPanel();
+                                        } catch (BraveActivity.BraveActivityNotFoundException e) {
+                                            Log.e(TAG, "showNewUserDialog", e);
+                                        }
+                                    }
+                                })
+                        .create();
         alertDialog.show();
 
         ImageView closeButton = alertDialog.findViewById(R.id.close_button);
@@ -138,21 +143,26 @@ public class BraveAdsSignupDialog {
     }
 
     public static void showExistingUserDialog(Context context) {
-        AlertDialog alertDialog = new AlertDialog.Builder(context, R.style.BraveDialogTheme)
-        .setView(R.layout.brave_ads_existing_user_dialog_layout)
-        .setPositiveButton(R.string.brave_ads_offer_positive, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Enable ads
-                neverShowOnboardingDialogAgain();
-                try {
-                    BraveActivity braveActivity = BraveActivity.getBraveActivity();
-                    braveActivity.openRewardsPanel();
-                } catch (BraveActivity.BraveActivityNotFoundException e) {
-                    Log.e(TAG, "showExistingUserDialog " + e);
-                }
-            }
-        }).create();
+        AlertDialog alertDialog =
+                new AlertDialog.Builder(context, R.style.BraveDialogTheme)
+                        .setView(R.layout.brave_ads_existing_user_dialog_layout)
+                        .setPositiveButton(
+                                R.string.brave_ads_offer_positive,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // Enable ads
+                                        neverShowOnboardingDialogAgain();
+                                        try {
+                                            BraveActivity braveActivity =
+                                                    BraveActivity.getBraveActivity();
+                                            braveActivity.openRewardsPanel();
+                                        } catch (BraveActivity.BraveActivityNotFoundException e) {
+                                            Log.e(TAG, "showExistingUserDialog", e);
+                                        }
+                                    }
+                                })
+                        .create();
         alertDialog.show();
 
         ImageView closeButton = alertDialog.findViewById(R.id.close_button);

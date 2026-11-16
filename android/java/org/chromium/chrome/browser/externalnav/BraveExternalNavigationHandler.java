@@ -37,7 +37,7 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
             try {
                 BraveActivity.getBraveActivity().openBraveContentFilteringSettings();
             } catch (BraveActivity.BraveActivityNotFoundException e) {
-                Log.e(TAG, "adblock url " + e);
+                Log.e(TAG, "adblock url", e);
             }
             return OverrideUrlLoadingResult.forExternalIntent();
         }

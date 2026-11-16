@@ -122,7 +122,7 @@ public class BraveSetDefaultBrowserUtils {
                         "SetDefaultBrowserBottomSheetFragment");
             } catch (IllegalStateException e) {
                 // That exception could be thrown when Activity is not in the foreground.
-                Log.e(TAG, "showBraveSetDefaultBrowserDialog error: " + e.getMessage());
+                Log.e(TAG, "showBraveSetDefaultBrowserDialog error", e);
                 return;
             }
         }

@@ -116,7 +116,7 @@ public class BraveStatsUtil {
                 miscAndroidMetrics.recordPrivacyHubView();
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "showBraveStats " + e);
+            Log.e(TAG, "showBraveStats", e);
         }
     }
 
@@ -233,9 +233,9 @@ public class BraveStatsUtil {
             image.compress(Bitmap.CompressFormat.PNG, 90, fos);
             fos.close();
         } catch (FileNotFoundException e) {
-            Log.e(TAG, "File not found: " + e.getMessage());
+            Log.e(TAG, "File not found", e);
         } catch (IOException e) {
-            Log.e(TAG, "Error accessing file: " + e.getMessage());
+            Log.e(TAG, "Error accessing file", e);
         }
     }
 

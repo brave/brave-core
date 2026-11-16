@@ -113,7 +113,7 @@ public class BottomToolbarBookmarksMenu {
                     try {
                         activity = BraveActivity.getBraveActivity();
                     } catch (BraveActivity.BraveActivityNotFoundException e) {
-                        Log.e(TAG, "popup click " + e);
+                        Log.e(TAG, "popup click", e);
                     }
                     if (currentTab == null || activity == null) {
                         return false;
