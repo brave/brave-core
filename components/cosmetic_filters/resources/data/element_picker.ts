@@ -288,6 +288,9 @@ const cssSelectorFromElement = (elem: Element): ElementSelectorBuilder => {
 }
 
 const elementPickerOnKeydown = (event: KeyboardEvent): void => {
+  if (!event.isTrusted) {
+    return
+  }
   if (event.key === 'Escape') {
     event.stopPropagation()
     event.preventDefault()
@@ -295,7 +298,10 @@ const elementPickerOnKeydown = (event: KeyboardEvent): void => {
   }
 }
 
-const elementPickerViewportChanged = () => {
+const elementPickerViewportChanged = (event: Event) => {
+  if (!event.isTrusted) {
+    return
+  }
   recalculateAndSendTargets(null)
 }
 
