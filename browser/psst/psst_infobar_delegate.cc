@@ -6,20 +6,33 @@
 #include "brave/browser/psst/psst_infobar_delegate.h"
 
 #include <memory>
+#include <utility>
 
 #include "base/memory/ptr_util.h"
+#include "brave/app/vector_icons/vector_icons.h"
+#include "brave/components/psst/core/common/constants.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "components/infobars/core/infobar.h"
 #include "ui/base/l10n/l10n_util.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+std::unique_ptr<infobars::InfoBar> CreatePsstInfoBar(
+    std::unique_ptr<psst::PsstInfoBarDelegate> delegate);
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace psst {
 // static
 void PsstInfoBarDelegate::Create(infobars::InfoBarManager* infobar_manager,
                                  AcceptCallback on_accept_callback) {
-  infobar_manager->AddInfoBar(
-      CreateConfirmInfoBar(base::WrapUnique<PsstInfoBarDelegate>(
-          new PsstInfoBarDelegate(std::move(on_accept_callback)))));
+  auto delegate = base::WrapUnique<PsstInfoBarDelegate>(
+      new PsstInfoBarDelegate(std::move(on_accept_callback)));
+#if BUILDFLAG(IS_ANDROID)
+  infobar_manager->AddInfoBar(CreateConfirmInfoBar(std::move(delegate)));
+#else
+  infobar_manager->AddInfoBar(CreatePsstInfoBar(std::move(delegate)));
+#endif  // BUILDFLAG(IS_ANDROID)
 }
 
 void PsstInfoBarDelegate::DisableCallback() {
@@ -62,6 +75,12 @@ PsstInfoBarDelegate::GetIdentifier() const {
   return BRAVE_PSST_INFOBAR_DELEGATE;
 }
 
+ui::ImageModel PsstInfoBarDelegate::GetIcon() const {
+  return ui::ImageModel::FromVectorIcon(kLeoPsstIcon,
+                                        nala::kColorPrimitivePrimary30,
+                                        /*icon_size=*/32);
+}
+
 std::u16string PsstInfoBarDelegate::GetMessageText() const {
   return l10n_util::GetStringUTF16(IDS_BRAVE_PSST_INFOBAR_MESSAGE);
 }
@@ -72,6 +91,10 @@ int PsstInfoBarDelegate::GetButtons() const {
 
 std::u16string PsstInfoBarDelegate::GetButtonLabel(InfoBarButton button) const {
   return l10n_util::GetStringUTF16(IDS_BRAVE_PSST_INFO_BAR_REVIEW_SUGGESTIONS);
+}
+
+GURL PsstInfoBarDelegate::GetLinkURL() const {
+  return GURL(kPsstReportDialogLearnMoreUrl);
 }
 
 }  // namespace psst

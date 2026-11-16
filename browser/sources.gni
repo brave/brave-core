@@ -366,6 +366,13 @@ if (enable_psst) {
     "//brave/components/psst/core/browser",
     "//brave/components/psst/core/common",
   ]
+
+  if (toolkit_views) {
+    # Pulls in the PsstInfoBar definition of CreatePsstInfoBar(), which is
+    # only forward-declared (and called) from //brave/browser/psst.
+    brave_chrome_browser_deps +=
+        [ "//brave/browser/ui/views/infobars:psst_infobar" ]
+  }
 }
 
 if (enable_brave_ads) {

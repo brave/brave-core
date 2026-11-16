@@ -54,12 +54,13 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
       const gfx::Rect& sidebar_bounds,
       const gfx::Rect& panel_bounds,
       const gfx::Rect& visual_client_area);
-  // Returns the adjusted infobar bounds, resetting the width to
-  // |full_window_width| (undoing any panel-driven narrowing upstream applies)
-  // and then insetting by |vtab_insets| when vertical tabs are visible.
+  // Returns the adjusted infobar bounds, resetting the horizontal span to that
+  // of |visual_client_area| (undoing the narrowing and, for a leading panel,
+  // the rightward shift that upstream applies when a side panel is open) and
+  // then insetting by |vtab_insets| when vertical tabs are visible.
   static gfx::Rect ComputeAdjustedInfobarBounds(
       const gfx::Rect& current_bounds,
-      int full_window_width,
+      const gfx::Rect& visual_client_area,
       std::optional<gfx::Insets> vtab_insets);
 
   // BrowserViewTabbedLayoutImpl overrides:
@@ -95,6 +96,9 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   // non-virtual.
   gfx::Insets GetContentsMarginsForTesting() const;
 
+  // Test-only accessor for GetInfobarMargins(), which is private.
+  gfx::Insets GetInfobarMarginsForTesting() const;
+
   // Test-only accessor for GetUpstreamVerticalTabStripWidth(), which is
   // private.
   int GetUpstreamVerticalTabStripWidthForTesting() const;
@@ -103,6 +107,9 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   // CalculateWebPanelCornerRadii(), which are private.
   gfx::RoundedCornersF CalculateContentsCornerRadiiForTesting() const;
   gfx::RoundedCornersF CalculateWebPanelCornerRadiiForTesting() const;
+
+  // Test-only accessor for CalculateInfobarCornerRadii(), which is private.
+  gfx::RoundedCornersF CalculateInfobarCornerRadiiForTesting() const;
 
   // Populates `layout_data_` with the given window state (and a zero side
   // panel width) so `CalculateSeparatorInfo()` can be exercised without
@@ -129,6 +136,11 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   void UpdateVerticalTabStripCorners(const BrowserLayoutParams& params);
 
   gfx::Insets GetContentsMargins() const;
+
+  // Returns the margins that float the infobar as its own card when rounded
+  // corners are in use, and no margins otherwise. Zero on the side a vertical
+  // tab strip abuts, as the strip pads itself from its neighbours.
+  gfx::Insets GetInfobarMargins() const;
 
   // Whether the contents area reaches the top edge of the window, which happens
   // when nothing above it (tab strip, toolbar, bookmark bar, infobar, focus
@@ -171,6 +183,11 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
 
   bool ShouldPushBookmarkBarForVerticalTabs() const;
   gfx::Insets GetInsetsConsideringVerticalTabHost() const;
+
+  // Returns the corner radii of the infobars inside the infobar container's
+  // rounded-corners outline border (the border itself is rounded by its own
+  // thickness more).
+  gfx::RoundedCornersF CalculateInfobarCornerRadii() const;
 
   // Whether the sidebar / vertical tab strip occupies the leading (lowest-X)
   // edge in stored coordinates. As stored bounds are paint-mirrored in RTL,

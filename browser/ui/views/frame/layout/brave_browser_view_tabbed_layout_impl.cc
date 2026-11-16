@@ -15,6 +15,7 @@
 #include "base/numerics/safe_conversions.h"
 #include "brave/browser/ui/views/brave_layout_provider.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/infobars/brave_infobar_container_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -38,6 +39,7 @@
 #include "ui/views/layout/layout_provider.h"
 #include "ui/views/layout/proposed_layout.h"
 #include "ui/views/view_class_properties.h"
+#include "ui/views/view_utils.h"
 
 BraveBrowserViewTabbedLayoutImpl::BraveBrowserViewTabbedLayoutImpl(
     std::unique_ptr<BrowserViewLayoutDelegate> delegate,
@@ -142,10 +144,13 @@ gfx::Rect BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedPanelBounds(
 // static
 gfx::Rect BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedInfobarBounds(
     const gfx::Rect& current_bounds,
-    int full_window_width,
+    const gfx::Rect& visual_client_area,
     std::optional<gfx::Insets> vtab_insets) {
   gfx::Rect bounds = current_bounds;
-  bounds.set_width(full_window_width);
+  // A leading side panel shifts |current_bounds.x()| right (not just narrows
+  // it), so width alone isn't enough to undo it.
+  bounds.set_x(visual_client_area.x());
+  bounds.set_width(visual_client_area.width());
   if (vtab_insets) {
     bounds.Inset(*vtab_insets);
   }
@@ -345,10 +350,23 @@ void BraveBrowserViewTabbedLayoutImpl::AdjustInfobarLayout(
   CHECK(infobar_layout);
 
   infobar_layout->bounds = ComputeAdjustedInfobarBounds(
-      infobar_layout->bounds, params.visual_client_area.width(),
+      infobar_layout->bounds, params.visual_client_area,
       views().vertical_tab_strip_host
           ? std::make_optional(GetInsetsConsideringVerticalTabHost())
           : std::nullopt);
+
+  infobar_layout->bounds.Inset(GetInfobarMargins());
+}
+
+gfx::RoundedCornersF
+BraveBrowserViewTabbedLayoutImpl::CalculateInfobarCornerRadii() const {
+  if (!delegate().ShouldUseBraveWebViewRoundedCornersForContents()) {
+    return {};
+  }
+
+  return gfx::RoundedCornersF(
+      views::LayoutProvider::Get()->GetCornerRadiusMetric(
+          ExtendedShapeContextTokens::kRoundedCornersBorderRadius));
 }
 
 gfx::Rect BraveBrowserViewTabbedLayoutImpl::CalculateTopContainerLayout(
@@ -402,6 +420,15 @@ void BraveBrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(
   UpdateInsetsForVerticalTabStrip();
   delegate().UpdateContentsCornerRadii(CalculateContentsCornerRadii(),
                                        CalculateWebPanelCornerRadii());
+
+  if (auto* infobar_container = views::AsViewClass<BraveInfoBarContainerView>(
+          views().infobar_container.get())) {
+    const bool rounded =
+        delegate().IsInfobarVisible() &&
+        delegate().ShouldUseBraveWebViewRoundedCornersForContents();
+    infobar_container->SetRoundedBorderEnabled(rounded,
+                                               CalculateInfobarCornerRadii());
+  }
 
   UpdateVerticalTabStripCorners(params);
 
@@ -760,6 +787,27 @@ gfx::Insets BraveBrowserViewTabbedLayoutImpl::GetContentsMargins() const {
   return margins;
 }
 
+gfx::Insets BraveBrowserViewTabbedLayoutImpl::GetInfobarMargins() const {
+  if (!delegate().ShouldUseBraveWebViewRoundedCornersForContents()) {
+    return {};
+  }
+
+  // The infobar floats as its own card with the contents view's margin on every
+  // window-facing side. The sidebar and the side panel are laid out below the
+  // infobar, so only the vertical tab strip can abut it, and the strip already
+  // pads itself from its neighbours.
+  gfx::Insets margins(kRoundedCornersContentsViewMargin);
+  if (IsVerticalTabStripAtContentsEdge()) {
+    if (IsVerticalTabStripLeading()) {
+      margins.set_left(0);
+    } else {
+      margins.set_right(0);
+    }
+  }
+
+  return margins;
+}
+
 bool BraveBrowserViewTabbedLayoutImpl::IsContentsAtTopEdge() const {
   if (delegate().IsInfobarVisible()) {
     return false;
@@ -934,6 +982,11 @@ gfx::Insets BraveBrowserViewTabbedLayoutImpl::GetContentsMarginsForTesting()
   return GetContentsMargins();
 }
 
+gfx::Insets BraveBrowserViewTabbedLayoutImpl::GetInfobarMarginsForTesting()
+    const {
+  return GetInfobarMargins();
+}
+
 int BraveBrowserViewTabbedLayoutImpl::
     GetUpstreamVerticalTabStripWidthForTesting() const {
   return GetUpstreamVerticalTabStripWidth();
@@ -949,6 +1002,12 @@ gfx::RoundedCornersF
 BraveBrowserViewTabbedLayoutImpl::CalculateWebPanelCornerRadiiForTesting()
     const {
   return CalculateWebPanelCornerRadii();
+}
+
+gfx::RoundedCornersF
+BraveBrowserViewTabbedLayoutImpl::CalculateInfobarCornerRadiiForTesting()
+    const {
+  return CalculateInfobarCornerRadii();
 }
 
 bool BraveBrowserViewTabbedLayoutImpl::ShouldPushBookmarkBarForVerticalTabs()

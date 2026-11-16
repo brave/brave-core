@@ -3,10 +3,43 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/psst/buildflags/buildflags.gni")
+
+if (enable_psst) {
+  source_set("psst_infobar") {
+    visibility = [
+      ":unit_tests",
+      "//brave/browser:core",
+    ]
+
+    sources = [
+      "psst_infobar.cc",
+      "psst_infobar.h",
+    ]
+
+    public_deps = [ "//brave/browser/ui" ]
+
+    deps = [
+      "//base",
+      "//brave/app:brave_generated_resources_grit",
+      "//brave/browser/psst",
+      "//brave/ui/color:nala_color_id",
+      "//chrome/browser/ui/color:color_headers",
+      "//ui/base",
+      "//ui/events",
+      "//ui/gfx",
+      "//ui/views",
+    ]
+  }
+}
+
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "brave_confirm_infobar_unittest.cc" ]
+  sources = [
+    "brave_confirm_infobar_unittest.cc",
+    "brave_infobar_container_view_unittest.cc",
+  ]
 
   deps = [
     "//base",
@@ -23,4 +56,14 @@ source_set("unit_tests") {
     "//ui/views",
     "//ui/views:test_support",
   ]
+
+  if (enable_psst) {
+    sources += [ "psst_infobar_unittest.cc" ]
+    deps += [
+      ":psst_infobar",
+      "//brave/app:brave_generated_resources_grit",
+      "//brave/browser/psst",
+      "//brave/components/psst/core/common",
+    ]
+  }
 }
