@@ -794,7 +794,7 @@ void SolanaProviderImpl::OnConnect(
       // Set connected account to be selected if connected one and selected
       // account are different.
       const std::string& allowed_account_address = allowed_accounts->at(0);
-      if (account && account->address != allowed_account_address) {
+      if (!account || account->address != allowed_account_address) {
         auto account_it = std::ranges::find_if(
             requested_accounts, [&allowed_account_address](
                                     const mojom::AccountInfoPtr& account_info) {

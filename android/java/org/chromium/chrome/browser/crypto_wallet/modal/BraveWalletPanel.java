@@ -41,6 +41,7 @@ import org.chromium.brave_wallet.mojom.AssetPriceRequest;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
@@ -390,6 +391,11 @@ public class BraveWalletPanel implements DialogInterface {
     }
 
     private void updateSelectedAccountConnectionState() {
+        CoinType coin = mSelectedAccount.accountId.coin;
+        if (coin != CoinType.ETH && coin != CoinType.SOL) {
+            mBtnConnectedStatus.setVisibility(View.GONE);
+            return;
+        }
         Iterator<AccountInfo> it = mAccountsWithPermissions.iterator();
         boolean isConnected = false;
         while (it.hasNext()) {
@@ -398,18 +404,19 @@ public class BraveWalletPanel implements DialogInterface {
                 break;
             }
         }
-        updateConnectedState(
-                isConnected,
-                isConnected
-                        ? R.string.dapp_wallet_panel_connectivity_status_connected
-                        : R.string.dapp_wallet_panel_connectivity_status);
+        updateConnectedState(isConnected);
     }
 
-    private void updateConnectedState(boolean isConnected, @StringRes int connectedText) {
+    private void updateConnectedState(boolean isConnected) {
+        @StringRes
+        int connectedText =
+                isConnected
+                        ? R.string.dapp_wallet_panel_connectivity_status_connected
+                        : R.string.dapp_wallet_panel_connectivity_status;
         mBtnConnectedStatus.setVisibility(View.VISIBLE);
         mBtnConnectedStatus.setText(mPopupView.getResources().getString(connectedText));
         mBtnConnectedStatus.setVisibility(View.GONE);
-        if (mObservedTab != null) {
+        if (mObservedTab != null && mObservedTab.getWebContents() != null) {
             GURL lastCommittedUrl = mObservedTab.getWebContents().getLastCommittedUrl();
             if (!lastCommittedUrl.getScheme().equals(UrlConstants.CHROME_SCHEME)
                     && !lastCommittedUrl.getScheme().equals(UrlConstants.CHROME_NATIVE_SCHEME)) {

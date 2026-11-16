@@ -84,7 +84,6 @@ class BraveWalletTabHelper : public tabs::ContentsObservingTabFeature {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveWalletTabHelperUnitTest, GetApproveBubbleURL);
-  friend class content::WebContentsUserData<BraveWalletTabHelper>;
 
   // tabs::ContentsObservingTabFeature:
   void OnDiscardContents(tabs::TabInterface* tab,

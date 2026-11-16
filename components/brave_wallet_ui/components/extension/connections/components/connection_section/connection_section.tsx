@@ -119,7 +119,7 @@ export const ConnectionSection = (props: Props) => {
       (accountId) =>
         accountId.uniqueKey === effectiveSelectedAccountId.uniqueKey,
     )
-  }, [connectedAccounts, effectiveSelectedAccountId, coin, isPermissionDenied])
+  }, [connectedAccounts, effectiveSelectedAccountId, isPermissionDenied])
 
   const connectionStatusText = React.useMemo((): string => {
     if (isPermissionDenied) {
