@@ -10,6 +10,10 @@
 
 #include "brave/browser/history_embeddings/history_embeddings_service_factory.h"
 
+#include "brave/components/history_embeddings/content/history_embeddings_service.h"
+#include "brave/components/history_embeddings/core/history_embeddings_features.h"
+#include "brave/components/history_embeddings/core/mock_answerer.h"
+#include "brave/components/history_embeddings/core/mock_intent_classifier.h"
 #include "build/build_config.h"
 #include "chrome/browser/app_mode/app_mode_utils.h"
 #include "chrome/browser/browser_process.h"
@@ -26,10 +30,6 @@
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_manager.h"  // nogncheck
-#include "brave/components/history_embeddings/content/history_embeddings_service.h"
-#include "brave/components/history_embeddings/core/history_embeddings_features.h"
-#include "brave/components/history_embeddings/core/mock_answerer.h"
-#include "brave/components/history_embeddings/core/mock_intent_classifier.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/passage_embeddings/core/passage_embeddings_service_controller.h"
 
@@ -105,7 +105,8 @@ std::unique_ptr<KeyedService> HistoryEmbeddingsServiceFactory::
     return nullptr;
   }
 
-  return std::make_unique<brave_history_embeddings::ChromeHistoryEmbeddingsService>(
+  return std::make_unique<
+      brave_history_embeddings::ChromeHistoryEmbeddingsService>(
       profile,
       HistoryServiceFactory::GetForProfile(profile,
                                            ServiceAccessType::EXPLICIT_ACCESS),
@@ -160,12 +161,14 @@ HistoryEmbeddingsServiceFactory::BuildServiceInstanceForBrowserContext(
   // TODO(crbug.com/553639147): Launch or remove the intent classifier
   // functionality.
   std::unique_ptr<brave_history_embeddings::IntentClassifier> intent_classifier;
-  if (brave_history_embeddings::GetFeatureParameters().enable_intent_classifier) {
+  if (brave_history_embeddings::GetFeatureParameters()
+          .enable_intent_classifier) {
     intent_classifier =
         std::make_unique<brave_history_embeddings::MockIntentClassifier>();
   }
 
-  return std::make_unique<brave_history_embeddings::ChromeHistoryEmbeddingsService>(
+  return std::make_unique<
+      brave_history_embeddings::ChromeHistoryEmbeddingsService>(
       profile,
       HistoryServiceFactory::GetForProfile(profile,
                                            ServiceAccessType::EXPLICIT_ACCESS),

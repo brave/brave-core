@@ -46,7 +46,8 @@ class HistoryEmbeddingsServiceFactory : public ProfileKeyedServiceFactory {
       passage_embeddings::EmbedderMetadataProvider* embedder_metadata_provider,
       passage_embeddings::Embedder* embedder,
       std::unique_ptr<brave_history_embeddings::Answerer> answerer,
-      std::unique_ptr<brave_history_embeddings::IntentClassifier> intent_classifier);
+      std::unique_ptr<brave_history_embeddings::IntentClassifier>
+          intent_classifier);
 
  private:
   friend base::NoDestructor<HistoryEmbeddingsServiceFactory>;

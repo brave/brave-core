@@ -26,7 +26,7 @@ class TemplateURL;
 class BraveHistoryEmbeddingsProvider : public HistoryProvider {
  public:
   BraveHistoryEmbeddingsProvider(AutocompleteProviderClient* client,
-                            AutocompleteProviderListener* listener);
+                                 AutocompleteProviderListener* listener);
 
   // AutocompleteProvider:
   void Start(const AutocompleteInput& input, bool minimal_changes) override;
@@ -38,7 +38,8 @@ class BraveHistoryEmbeddingsProvider : public HistoryProvider {
   ~BraveHistoryEmbeddingsProvider() override;
 
   // Callback for querying `HistoryEmbeddingsService::Search()`.
-  void OnReceivedSearchResult(brave_history_embeddings::SearchResult search_result);
+  void OnReceivedSearchResult(
+      brave_history_embeddings::SearchResult search_result);
 
   // Creates a `HISTORY_EMBEDDINGS` match.
   AutocompleteMatch CreateMatch(

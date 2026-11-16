@@ -24,12 +24,12 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
-#include "components/history/core/browser/history_service.h"
-#include "components/history/core/browser/url_row.h"
-#include "components/history/core/test/history_service_test_util.h"
 #include "brave/components/history_embeddings/core/answerer.h"
 #include "brave/components/history_embeddings/core/history_embeddings_features.h"
 #include "brave/components/history_embeddings/core/history_embeddings_search.h"
+#include "components/history/core/browser/history_service.h"
+#include "components/history/core/browser/url_row.h"
+#include "components/history/core/test/history_service_test_util.h"
 #include "components/omnibox/browser/autocomplete_enums.h"
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_match.h"
@@ -99,7 +99,8 @@ TemplateURL CreateTemplateUrl() {
 }
 }  // namespace
 
-class FakeBraveHistoryEmbeddingsProvider : public BraveHistoryEmbeddingsProvider {
+class FakeBraveHistoryEmbeddingsProvider
+    : public BraveHistoryEmbeddingsProvider {
  public:
   using BraveHistoryEmbeddingsProvider::BraveHistoryEmbeddingsProvider;
   using BraveHistoryEmbeddingsProvider::OnReceivedSearchResult;
@@ -129,7 +130,7 @@ class MockHistoryEmbeddingsSearch
 };
 
 class BraveHistoryEmbeddingsProviderTest : public testing::Test,
-                                      public AutocompleteProviderListener {
+                                           public AutocompleteProviderListener {
  public:
   void SetUp() override {
     testing::Test::SetUp();
@@ -184,7 +185,8 @@ class BraveHistoryEmbeddingsProviderTest : public testing::Test,
   std::unique_ptr<FakeAutocompleteProviderClient> client_;
   raw_ptr<testing::NiceMock<MockHistoryEmbeddingsSearch>>
       history_embeddings_search_;
-  scoped_refptr<FakeBraveHistoryEmbeddingsProvider> history_embeddings_provider_;
+  scoped_refptr<FakeBraveHistoryEmbeddingsProvider>
+      history_embeddings_provider_;
   // Callbacks created when `Search()` is called. Running a callback with
   // `(query, response)` will simulate `Search()` responding with a result with
   // query `query` and 1 row  with title `response`.
@@ -370,7 +372,8 @@ TEST_F(BraveHistoryEmbeddingsProviderTest,
   EXPECT_EQ(search_callbacks_.size(), 1u);
 }
 
-TEST_F(BraveHistoryEmbeddingsProviderTest, Start_Stop_SearchCompletesAfterStop) {
+TEST_F(BraveHistoryEmbeddingsProviderTest,
+       Start_Stop_SearchCompletesAfterStop) {
   EXPECT_CALL(*client_, IsHistoryEmbeddingsEnabled())
       .WillRepeatedly(testing::Return(true));
 
@@ -586,8 +589,9 @@ TEST_F(BraveHistoryEmbeddingsProviderTest,
   std::u16string execution_error =
       u"Something went wrong. Please try again later.";
   std::u16string non_temporary_error = u"Sorry, I can't help you with that.";
-  for (const auto& [status, expected_answer_text] : std::vector<
-           std::pair<brave_history_embeddings::ComputeAnswerStatus, std::u16string>>{
+  for (const auto& [status, expected_answer_text] :
+       std::vector<std::pair<brave_history_embeddings::ComputeAnswerStatus,
+                             std::u16string>>{
            {kUnanswerable, u""},
            {kModelUnavailable, u""},
            {kExecutionFailure, execution_error},

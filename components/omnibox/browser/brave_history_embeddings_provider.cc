@@ -19,9 +19,9 @@
 #include "base/functional/bind.h"
 #include "base/i18n/time_formatting.h"
 #include "base/strings/utf_string_conversions.h"
-#include "components/history_clusters/core/history_clusters_util.h"
 #include "brave/components/history_embeddings/core/history_embeddings_features.h"
 #include "brave/components/history_embeddings/core/history_embeddings_search.h"
+#include "components/history_clusters/core/history_clusters_util.h"
 #include "components/omnibox/browser/autocomplete_enums.h"
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_match.h"
@@ -65,12 +65,13 @@ BraveHistoryEmbeddingsProvider::BraveHistoryEmbeddingsProvider(
 BraveHistoryEmbeddingsProvider::~BraveHistoryEmbeddingsProvider() = default;
 
 void BraveHistoryEmbeddingsProvider::Start(const AutocompleteInput& input,
-                                      bool minimal_changes) {
+                                           bool minimal_changes) {
   done_ = true;
   matches_.clear();
 
-  if (input.omit_asynchronous_matches())
+  if (input.omit_asynchronous_matches()) {
     return;
+  }
 
   if (!client()->IsHistoryEmbeddingsEnabled()) {
     return;
@@ -97,11 +98,12 @@ void BraveHistoryEmbeddingsProvider::Start(const AutocompleteInput& input,
   done_ = false;
   client()->GetOmniboxTriggeredFeatureService()->FeatureTriggered(
       metrics::OmniboxEventProto_Feature_HISTORY_EMBEDDINGS_FEATURE);
-  search->Search(
-      nullptr, base::UTF16ToUTF8(input_.text()), {}, provider_max_matches_,
-      /*skip_answering=*/false, /*url_id_filter=*/{},
-      base::BindRepeating(&BraveHistoryEmbeddingsProvider::OnReceivedSearchResult,
-                          weak_factory_.GetWeakPtr()));
+  search->Search(nullptr, base::UTF16ToUTF8(input_.text()), {},
+                 provider_max_matches_,
+                 /*skip_answering=*/false, /*url_id_filter=*/{},
+                 base::BindRepeating(
+                     &BraveHistoryEmbeddingsProvider::OnReceivedSearchResult,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void BraveHistoryEmbeddingsProvider::Stop(AutocompleteStopReason stop_reason) {
@@ -118,8 +120,9 @@ void BraveHistoryEmbeddingsProvider::Stop(AutocompleteStopReason stop_reason) {
              omnibox::AutocompleteMatchType::kHistoryEmbeddingsAnswer;
     });
     CHECK_LE(erased_count, 1u);
-    if (erased_count)
+    if (erased_count) {
       NotifyListeners(!matches_.empty());
+    }
   }
 
   AutocompleteProvider::Stop(stop_reason);
@@ -134,31 +137,34 @@ void BraveHistoryEmbeddingsProvider::OnReceivedSearchResult(
   // before `Search()` completed. Check `last_search_input_` in case this is the
   // result for an earlier `Search()` request; there's usually 2 requests
   // ongoing as the user types.
-  if (done_ || search_result.query != base::UTF16ToUTF8(input_.text()))
+  if (done_ || search_result.query != base::UTF16ToUTF8(input_.text())) {
     return;
+  }
 
   // `OnReceivedSearchResult()` can be called multiple times per `Search()`
   // request. Clear `matches_``to avoid aggregating duplicates.
   matches_.clear();
 
-  if (search_result.scored_url_rows.empty())
+  if (search_result.scored_url_rows.empty()) {
     return;
+  }
 
   for (const brave_history_embeddings::ScoredUrlRow& scored_url_row :
        search_result.scored_url_rows) {
     matches_.push_back(CreateMatch(scored_url_row));
   }
 
-  bool answers_enabled =
-      brave_history_embeddings::GetFeatureParameters().answers_in_omnibox_scoped &&
-      input_.in_keyword_mode();
+  bool answers_enabled = brave_history_embeddings::GetFeatureParameters()
+                             .answers_in_omnibox_scoped &&
+                         input_.in_keyword_mode();
   if (answers_enabled) {
     auto optional_match = CreateAnswerMatch(
         search_result.answerer_result,
         search_result.scored_url_rows[search_result.AnswerIndex()],
         matches_[search_result.AnswerIndex()]);
-    if (optional_match)
+    if (optional_match) {
       matches_.push_back(optional_match.value());
+    }
   }
 
   done_ =
@@ -197,7 +203,8 @@ AutocompleteMatch BraveHistoryEmbeddingsProvider::CreateMatch(
   return match;
 }
 
-std::optional<AutocompleteMatch> BraveHistoryEmbeddingsProvider::CreateAnswerMatch(
+std::optional<AutocompleteMatch>
+BraveHistoryEmbeddingsProvider::CreateAnswerMatch(
     const brave_history_embeddings::AnswererResult& answerer_result,
     const brave_history_embeddings::ScoredUrlRow& scored_url_row,
     const AutocompleteMatch& match) {
@@ -232,8 +239,9 @@ std::optional<AutocompleteMatch> BraveHistoryEmbeddingsProvider::CreateAnswerMat
       answer_match.destination_url =
           GURL{"chrome://history/?q=" + answerer_result.query};
       std::u16string source = history_clusters::ComputeURLForDisplay(
-          scored_url_row.row.url(), brave_history_embeddings::GetFeatureParameters()
-                                        .trim_after_host_in_results);
+          scored_url_row.row.url(),
+          brave_history_embeddings::GetFeatureParameters()
+              .trim_after_host_in_results);
       answer_match.contents = AutocompleteMatch::SanitizeString(
           source + u"  •  " +
           l10n_util::GetStringFUTF16(
@@ -262,8 +270,9 @@ AutocompleteMatch BraveHistoryEmbeddingsProvider::CreateAnswerMatchHelper(
   match.history_embeddings_answer_header_text =
       history_embeddings_answer_header_text;
   match.description = description;
-  if (!description.empty())
+  if (!description.empty()) {
     match.description_class = {{0, ACMatchClassification::NONE}};
+  }
   match.RecordAdditionalInfo("history_embeddings_answer_header_text",
                              history_embeddings_answer_header_text);
   if (starter_pack_engine_) {

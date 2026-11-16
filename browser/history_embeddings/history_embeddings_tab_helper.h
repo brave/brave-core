@@ -74,7 +74,8 @@ class HistoryEmbeddingsTabHelper : public content::WebContentsObserver {
 
   // Helper functions to return the embeddings and history services.
   // `GetHistoryClustersService()` may return nullptr (in tests).
-  brave_history_embeddings::HistoryEmbeddingsService* GetHistoryEmbeddingsService();
+  brave_history_embeddings::HistoryEmbeddingsService*
+  GetHistoryEmbeddingsService();
   passage_embeddings::PassageEmbedderModelObserver*
   GetPassageEmbedderModelObserver();
   // `GetHistoryService()` may return nullptr.
