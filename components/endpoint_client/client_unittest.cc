@@ -16,6 +16,7 @@
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/location.h"
 #include "base/no_destructor.h"
 #include "base/test/bind.h"
@@ -934,7 +935,11 @@ TEST(ClientTestMaxBodySize, ExceedingItFailsWithInsufficientResources) {
 
   MockResponseFor<JSONNonEmptyRequestBodyEndpoint>(
       test_url_loader_factory,
-      {.net_error = net::OK, .status_code = net::HTTP_OK});
+      {.net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+         JSONNonEmptyRequestBodyEndpoint::Response::SuccessBody body;
+         body.success = "success";
+         return body;
+       }()});
 
   JSONNonEmptyRequestBodyEndpoint::Request request;
   request.max_body_size = 1;
@@ -954,9 +959,14 @@ TEST(ClientTestResponseHeaders, NotSetWithoutStatusCode) {
 
   MockResponseFor<JSONNonEmptyRequestBodyEndpoint>(
       test_url_loader_factory,
-      {.net_error = net::OK, .status_code = net::HTTP_OK});
+      {.net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+         JSONNonEmptyRequestBodyEndpoint::Response::SuccessBody body;
+         body.success = "success";
+         return body;
+       }()});
 
   JSONNonEmptyRequestBodyEndpoint::Request request;
+  // Fails the request after the response headers have been received.
   request.max_body_size = 1;
 
   base::test::TestFuture<WithHeaders<JSONNonEmptyRequestBodyEndpoint::Response>>
