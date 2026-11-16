@@ -7,10 +7,10 @@ import type { ElementPickerAPI } from './element_picker_api'
 
 const NSSVG = 'http://www.w3.org/2000/svg'
 
-let pickerDiv: HTMLDivElement | null
-let styleDiv: HTMLStyleElement | null
-let shadowRoot: ShadowRoot | null
-let isMobile: boolean | null
+let pickerDiv: HTMLDivElement | null = null
+let styleDiv: HTMLStyleElement | null = null
+let shadowRoot: ShadowRoot | null = null
+let isMobile: boolean | null = null
 let btnCreateEnabledText: string
 let btnCreateDisabledText: string
 let btnShowRulesBoxText: string
