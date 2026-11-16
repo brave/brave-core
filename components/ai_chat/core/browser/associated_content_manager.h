@@ -298,7 +298,7 @@ class AssociatedContentManager : public ToolProvider,
   // carry over into the next one, nor outlive the site's content being
   // attached here.
   struct ContentToolPermission {
-    mojom::ToolPermission permission;
+    mojom::ToolPermission permission = mojom::ToolPermission::kAsk;
     // The tool's description when the choice was made. A site can unregister
     // a tool and register another under the same name, so a kAllowSession
     // grant only applies while the description is unchanged. A kNeverAllow
