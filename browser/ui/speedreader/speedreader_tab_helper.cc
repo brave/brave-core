@@ -47,9 +47,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 
-#if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ui/brave_browser_window.h"
-#else
+#if BUILDFLAG(IS_ANDROID)
 #include "ui/android/view_android.h"
 #include "ui/events/android/gesture_event_android.h"
 #include "ui/events/android/gesture_event_type.h"

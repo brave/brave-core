@@ -29,10 +29,6 @@ source_set("speedreader") {
     "//components/tabs:public",
   ]
 
-  if (!is_android) {
-    deps += [ "//brave/browser/ui:brave_browser_window_header" ]
-  }
-
   if (is_android) {
     sources += [ "android/speedreader_utils.cc" ]
 

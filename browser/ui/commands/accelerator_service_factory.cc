@@ -10,7 +10,6 @@
 
 #include "base/check.h"
 #include "base/no_destructor.h"
-#include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/default_accelerators.h"
 #include "brave/components/commands/browser/accelerator_pref_manager.h"

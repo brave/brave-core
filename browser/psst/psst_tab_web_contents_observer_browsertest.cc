@@ -19,7 +19,6 @@
 #include "base/values.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/psst/psst_settings_service_factory.h"
-#include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/views/infobars/brave_confirm_infobar.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
