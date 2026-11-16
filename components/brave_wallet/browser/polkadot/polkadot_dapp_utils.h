@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_DAPP_UTILS_H_
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/containers/span.h"
@@ -37,6 +38,13 @@ mojom::AccountIdPtr GetPolkadotPreferredDappAccount(
 // Converts an account into the `InjectedAccount` shape dapps expect.
 mojom::PolkadotInjectedAccountPtr MakePolkadotInjectedAccount(
     const mojom::AccountInfo& account);
+
+// Sanity check to make sure our untrusted frame gave us a proper
+// SignaturePayload. Payloads are defined to begin with the Call being used
+// while extension data trails behind. This function verifies the Call prefix.
+bool PolkadotSignaturePayloadMatchesCall(
+    base::span<const uint8_t> signature_payload,
+    std::string_view payload_json);
 
 // A `SignerResult.signature`: the signature behind its `MultiSignature` variant
 // index, hex-encoded. polkadot-js hands what a signer returns straight to
