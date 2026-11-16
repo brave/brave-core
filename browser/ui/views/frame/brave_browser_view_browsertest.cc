@@ -866,7 +866,8 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
 
   const bool separator_expected = !IsRoundedCornersEnabled();
   auto* separator = brave_browser_view()->top_container_separator_for_testing();
-  EXPECT_EQ(separator_expected, separator->GetVisible());
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return separator_expected == separator->GetVisible(); }));
 
   // Check separator is hidden after panel opens.
   auto* panel_ui = SidePanelUI::From(browser());
