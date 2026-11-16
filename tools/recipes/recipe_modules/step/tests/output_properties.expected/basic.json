@@ -1,0 +1,48 @@
+[
+  {
+    "cmd": [],
+    "name": "upload",
+    "output_properties": {
+      "artefact": {
+        "platforms": [
+          "linux",
+          "mac"
+        ],
+        "sha256": "abc123",
+        "url": "https://example.com/a.tar.xz"
+      },
+      "got_revision": "deadbeef"
+    }
+  },
+  {
+    "cmd": [],
+    "name": "first",
+    "output_properties": {
+      "winner": "first"
+    }
+  },
+  {
+    "cmd": [],
+    "name": "second",
+    "output_properties": {
+      "winner": "second"
+    }
+  },
+  {
+    "cmd": [],
+    "name": "late"
+  },
+  {
+    "cmd": [],
+    "name": "after late"
+  },
+  {
+    "cmd": [
+      "do-thing"
+    ],
+    "name": "might fail"
+  },
+  {
+    "name": "$result"
+  }
+]

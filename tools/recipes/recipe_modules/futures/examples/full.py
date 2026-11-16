@@ -137,7 +137,7 @@ def GenTests(api: TEST_DEPS):
         api.post_process(
             post_process.StepCommandContains,
             'caught',
-            ['CalledProcessError', 'meta-value'],
+            ['StepFailure', 'meta-value'],
         ),
         api.post_process(post_process.DoesNotRun, 'never runs'),
         api.post_process(

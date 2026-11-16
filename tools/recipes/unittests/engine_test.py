@@ -12,7 +12,9 @@
 
 import contextlib
 from dataclasses import dataclass
+import json
 import os
+import shutil
 import sys
 import tempfile
 import types
@@ -542,6 +544,190 @@ class ModulePropertiesTest(unittest.TestCase):
         pkg = types.SimpleNamespace(PROPERTIES=dict, DEPS=[])
         with self.assertRaises(TypeError):
             engine._Engine()._module_property_args('fake', pkg)
+
+
+class MainTest(unittest.TestCase):
+    """`main()` runs a recipe for real and writes its result and build."""
+
+    @classmethod
+    def setUpClass(cls):
+        engine._ensure_protos()
+        # pylint: disable=import-outside-toplevel,import-error
+        from PB.recipe_modules.brave.step.tests.output_properties import (
+            Artefact,
+            InputProperties,
+        )
+
+        cls.Artefact = Artefact
+        cls.InputProperties = InputProperties
+
+    def setUp(self):
+        for patcher in (
+            mock.patch.dict(os.environ),
+            mock.patch.object(tempfile, 'tempdir', tempfile.tempdir),
+        ):
+            patcher.start()
+            self.addCleanup(patcher.stop)
+        self.tmp = Path(tempfile.mkdtemp()).resolve()
+        self.addCleanup(shutil.rmtree, self.tmp)
+        # Cleanups run last-in first-out, so this leaves the workspace the
+        # engine moved into before it is removed, which Windows requires.
+        self.addCleanup(os.chdir, Path.cwd())
+        self.workspace = self.tmp / 'workspace'
+
+    def _main(self, recipe: types.ModuleType, *args: str) -> int:
+        with (
+            mock.patch.object(engine, '_import_recipe', return_value=recipe),
+            # Leaves logging as the test runner configured it.
+            mock.patch.object(engine.logging, 'basicConfig'),
+        ):
+            return engine.main(
+                ['fake', '--workspace', str(self.workspace), *args]
+            )
+
+    def _producer(self) -> types.ModuleType:
+        artefact = self.Artefact(url='https://example.com/a', sha256='abc')
+
+        def RunSteps(api):
+            api.step('upload', None).presentation.properties['artefact'] = (
+                artefact
+            )
+            with api.step.nest('nest') as nest:
+                nest.presentation.properties['nested'] = 'parent'
+                api.step('child', None).presentation.properties['nested'] = (
+                    'child'
+                )
+
+        return _fake_recipe(DEPS=['step'], RunSteps=RunSteps)
+
+    def test_writes_build_and_result(self):
+        build = self.tmp / 'build.json'
+        result = self.tmp / 'result.json'
+        self.assertEqual(
+            self._main(
+                self._producer(),
+                '--output',
+                str(build),
+                '--output-result-json',
+                str(result),
+            ),
+            0,
+        )
+        written = json.loads(build.read_text(encoding='utf-8'))
+        self.assertEqual(written['status'], 'SUCCESS')
+        self.assertEqual(
+            written['output']['properties'],
+            {
+                'artefact': {'url': 'https://example.com/a', 'sha256': 'abc'},
+                # A nest finalises after the steps inside it.
+                'nested': 'parent',
+            },
+        )
+        self.assertEqual(json.loads(result.read_text(encoding='utf-8')), {})
+
+    def test_relative_output_is_outside_the_workspace(self):
+        os.chdir(self.tmp)
+        self._main(self._producer(), '--output', 'build.json')
+        self.assertTrue((self.tmp / 'build.json').is_file())
+        self.assertFalse((self.workspace / 'build.json').exists())
+
+    def test_output_encodings(self):
+        # pylint: disable=import-outside-toplevel,import-error
+        from google.protobuf import text_format
+        from PB.recipe_engine import build as build_pb
+
+        self._main(self._producer(), '--output', str(self.tmp / 'build.pb'))
+        from_pb = build_pb.Build.FromString(
+            (self.tmp / 'build.pb').read_bytes()
+        )
+        self._main(self._producer(), '--output', str(self.tmp / 'build.textpb'))
+        from_textpb = text_format.Parse(
+            (self.tmp / 'build.textpb').read_text(encoding='utf-8'),
+            build_pb.Build(),
+        )
+        self.assertEqual(from_pb, from_textpb)
+        self.assertEqual(from_pb.output.properties['nested'], 'parent')
+
+    def test_bad_output_extension_is_rejected(self):
+        with (
+            self.assertRaises(SystemExit),
+            mock.patch('sys.stderr', new_callable=mock.MagicMock),
+        ):
+            self._main(self._producer(), '--output', 'build.txt')
+
+    def test_output_properties_feed_the_next_recipe_typed(self):
+        build = self.tmp / 'build.json'
+        self._main(self._producer(), '--output', str(build))
+        properties = self.tmp / 'properties.json'
+        properties.write_text(
+            json.dumps(
+                json.loads(build.read_text(encoding='utf-8'))['output'][
+                    'properties'
+                ]
+            ),
+            encoding='utf-8',
+        )
+
+        received = []
+        consumer = _fake_recipe(
+            DEPS=['step'],
+            PROPERTIES=self.InputProperties,
+            RunSteps=lambda api, props: received.append(props.artefact),
+        )
+        self.assertEqual(
+            self._main(consumer, '--properties-file', str(properties)), 0
+        )
+        self.assertEqual(
+            received,
+            [self.Artefact(url='https://example.com/a', sha256='abc')],
+        )
+
+    def test_failure_is_reported(self):
+        def RunSteps(api):
+            result = api.step('marker', None)
+            result.presentation.properties['partial'] = True
+            raise api.step.StepFailure('no artefacts were produced')
+
+        build = self.tmp / 'build.json'
+        result = self.tmp / 'result.json'
+        self.assertEqual(
+            self._main(
+                _fake_recipe(DEPS=['step'], RunSteps=RunSteps),
+                '--output',
+                str(build),
+                '--output-result-json',
+                str(result),
+            ),
+            1,
+        )
+        written = json.loads(build.read_text(encoding='utf-8'))
+        self.assertEqual(written['status'], 'FAILURE')
+        self.assertEqual(
+            written['summary_markdown'], 'no artefacts were produced'
+        )
+        self.assertEqual(written['output']['properties'], {'partial': True})
+        self.assertEqual(
+            json.loads(result.read_text(encoding='utf-8')),
+            {
+                'failure': {
+                    'humanReason': 'no artefacts were produced',
+                    'failure': {},
+                }
+            },
+        )
+
+    def test_loading_failure_is_an_infra_failure(self):
+        build = self.tmp / 'build.json'
+        recipe = _fake_recipe(
+            DEPS=['no_such_module'], RunSteps=lambda api: None
+        )
+        with self.assertLogs(level='ERROR'):
+            self.assertEqual(self._main(recipe, '--output', str(build)), 1)
+        written = json.loads(build.read_text(encoding='utf-8'))
+        self.assertEqual(written['status'], 'INFRA_FAILURE')
+        self.assertTrue(
+            written['summary_markdown'].startswith('Uncaught exception: ')
+        )
 
 
 if __name__ == '__main__':

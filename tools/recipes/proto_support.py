@@ -11,6 +11,9 @@ generated message from the `PB` namespace, e.g.
     # recipes.brave.toolchains.rust.package_rust
     from PB.recipes.brave.toolchains.rust.package_rust import InputProperties
 
+Protos the engine itself defines live in `recipe_engine/`, as
+`PB.recipe_engine`.
+
 `ensure_compiled` gathers every `.proto`, and, when their collective hash
 changes, runs `protoc` to (re)build the `PB` package, rewriting the generated
 imports to be rooted at `PB`. `append_to_syspath` then makes `PB` importable.
@@ -153,6 +156,7 @@ def _gather_proto_info() -> list[_ProtoInfo]:
     scan_path = [
         ('recipes/', 'recipes/%s/' % REPO_NAME),
         ('recipe_modules/', 'recipe_modules/%s/' % REPO_NAME),
+        ('recipe_engine/', 'recipe_engine/'),
     ]
 
     ret = []
