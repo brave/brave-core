@@ -8,13 +8,12 @@ from __future__ import annotations
 
 import argparse
 
+import gen
 import generated_output
 
 
 def cmd_lookup(args: argparse.Namespace) -> int:
-    generator = generated_output.OutputGenerator(args.builder)
-    resolved = generator.read_generated_gn_args()
-    args_gn = generator.render_args_gn(resolved)
+    args_gn = gen.BuildDir(args.builder).render_args_gn()
     if args.quiet:
         print(args_gn, end='')
     else:

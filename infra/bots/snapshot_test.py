@@ -25,7 +25,9 @@ sys.path.insert(
     ),
 )
 
+import generated_output
 import snapshot
+import testing_support
 from lib.config import (
     BuildersRegistry,
     ConfigError,
@@ -94,6 +96,7 @@ class ComputeFreshOutputTest(unittest.TestCase):
         builders_registry = BuildersRegistry(gn_args_registry)
         builders_registry.builder(
             name='mismatched',
+            builder_group='brave.test',
             builder_spec=builder_config.builder_spec(
                 gclient_config=builder_config.gclient_config(),
                 chromium_config=builder_config.chromium_config(
@@ -108,44 +111,42 @@ class ComputeFreshOutputTest(unittest.TestCase):
         with self.assertRaisesRegex(ConfigError, 'does not match'):
             snapshot.compute_fresh_output(builders_registry, gn_args_registry)
 
+    def test_output_reads_back(self):
+        builders_registry, gn_args_registry = _make_registries()
+        output_dir = testing_support.use_output_dir(self)
+        snapshot.write_snapshot(builders_registry, gn_args_registry, output_dir)
+        output = generated_output.GeneratedBuilder('test-builder').read()
+        self.assertEqual(
+            output.builder_spec,
+            {
+                'builder_group': 'brave.test',
+                # Unset fields (build_config, host_platform) are left out.
+                'chromium_config': {
+                    'target_arch': 'intel',
+                    'target_bits': 64,
+                    'target_platform': 'linux',
+                },
+                'gclient_config': {
+                    'target_os': ['android', 'linux'],
+                    'target_cpu': [],
+                },
+            },
+        )
+        self.assertEqual(
+            output.gn_args, gn_args_registry.resolve('test-builder')
+        )
+
     def test_properties_json_is_the_builds_input_properties(self):
         builders_registry, gn_args_registry = _make_registries()
-        fresh = snapshot.compute_fresh_output(
-            builders_registry, gn_args_registry
+        properties = json.loads(
+            snapshot.compute_fresh_output(builders_registry, gn_args_registry)[
+                'test-builder/properties.json'
+            ]
         )
-        builder_id = {'builder': 'test-builder'}
-        self.assertEqual(
-            json.loads(fresh['test-builder/properties.json']),
-            {
-                '$brave_tests_builder_config': {
-                    'builder_config': {
-                        'builder_db': {
-                            'entries': [
-                                {
-                                    'builder_id': builder_id,
-                                    'builder_spec': {
-                                        'builder_group': 'brave.test',
-                                        # Unset fields (build_config,
-                                        # host_platform) are left out.
-                                        'chromium_config': {
-                                            'target_arch': 'intel',
-                                            'target_bits': 64,
-                                            'target_platform': 'linux',
-                                        },
-                                        'gclient_config': {
-                                            'target_os': ['android', 'linux'],
-                                            'target_cpu': [],
-                                        },
-                                    },
-                                }
-                            ]
-                        },
-                        'builder_ids': [builder_id],
-                    },
-                },
-                'builder_group': 'brave.test',
-                'recipe': 'brave_builder',
-            },
+        self.assertEqual(properties['builder_group'], 'brave.test')
+        self.assertEqual(properties['recipe'], 'brave_builder')
+        self.assertIn(
+            'builder_config', properties['$brave_tests_builder_config']
         )
 
     def test_properties_json_needs_a_builder_group(self):

@@ -4,13 +4,14 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Print a builder's generated configuration.
 
-Brave builder carries gn args, gclient targets, and compile/test targets. Use
-`--json` to produce JSON for tooling.
+A builder carries GN args, its spec, the `.gclient` lists it syncs, and the
+targets it compiles and tests. Use `--json` to produce JSON for tooling.
 """
 
 from __future__ import annotations
 
 import argparse
+import dataclasses
 import json
 
 import gen_paths
@@ -18,62 +19,36 @@ import generated_output
 
 
 def describe_builder(builder_name: str) -> dict:
-    """Reads and merges one builder's generated files.
+    """One builder's generated output.
 
     Raises:
-        BotsError: this builder has no generated `gn-args.json`, same as
-            `lookup`/`gen` (including the "available builders" hint).
+        BotsError: the builder's generated output cannot be read.
     """
-    gn_args_json = generated_output.OutputGenerator(
-        builder_name
-    ).read_generated_gn_args()
-
-    result = {'gn_args': gn_args_json}
-    builder_dir = gen_paths.BUILDERS_OUTPUT_DIR / builder_name
-    for key, filename in (
-        ('properties', 'properties.json'),
-        ('sync', 'sync.json'),
-        ('targets', 'targets.json'),
-    ):
-        path = builder_dir / filename
-        if path.is_file():
-            result[key] = json.loads(path.read_bytes().decode('utf-8'))
-    return result
+    return dataclasses.asdict(
+        generated_output.GeneratedBuilder(builder_name).read()
+    )
 
 
 def _print_text(name: str, description: dict) -> None:
     """Prints one builder's description for a person to read."""
-    gn_args = description['gn_args'].get('gn_args', {})
-    sync = description.get('sync', {})
-    targets = description.get('targets', {})
+    gn_args = description['gn_args']['gn_args']
+    chromium_config = description['builder_spec']['chromium_config']
+    sync = description['sync']
+    targets = description['targets']
 
     print('%s:' % name)
-    print('  target_os:  %s' % gn_args.get('target_os', '?'))
-    print('  target_cpu: %s' % gn_args.get('target_cpu', '?'))
-    try:
-        builder_spec = generated_output.OutputGenerator(
-            name
-        ).read_generated_builder_spec()
-    except generated_output.BotsError:
-        builder_spec = {}
-    chromium_config = builder_spec.get('chromium_config', {})
+    print('  target_os:  %s' % gn_args['target_os'])
+    print('  target_cpu: %s' % gn_args['target_cpu'])
     if 'build_config' in chromium_config:
         print('  build_config: %s' % chromium_config['build_config'])
-    if sync:
-        # What the checkout syncs, besides the host (always synced).
-        print(
-            '  sync target_os:  %s'
-            % (', '.join(sync.get('target_os', ())) or '(host)')
-        )
-        print(
-            '  sync target_cpu: %s'
-            % (', '.join(sync.get('target_cpu', ())) or '(host)')
-        )
+    # What the checkout syncs, besides the host (always synced).
+    print('  sync target_os:  %s' % (', '.join(sync['target_os']) or '(host)'))
+    print('  sync target_cpu: %s' % (', '.join(sync['target_cpu']) or '(host)'))
 
-    compile_targets = targets.get('compile', ())
+    compile_targets = targets['compile']
     print('  compile: %s' % (', '.join(compile_targets) or '(none)'))
 
-    tests = targets.get('tests', ())
+    tests = targets['tests']
     print('  tests (%d): %s' % (len(tests), ', '.join(tests) or '(none)'))
 
     secrets = description['gn_args'].get('secrets')
