@@ -5,6 +5,8 @@
 
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 
+#include <algorithm>
+
 #include "base/feature_list.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
@@ -245,8 +247,13 @@ void EphemeralStorageTabHelper::UpdateShieldsState(const GURL& url) {
 }
 
 #if BUILDFLAG(IS_ANDROID)
-void EphemeralStorageTabHelper::WillCloseTab(TabAndroid* tab) {
-  if (!tab || tab->web_contents() != web_contents()) {
+void EphemeralStorageTabHelper::WillCloseTabs(
+    const std::vector<TabAndroid*>& tabs,
+    bool is_all_tabs,
+    bool allow_undo) {
+  if (!std::ranges::any_of(tabs, [this](TabAndroid* tab) {
+        return tab && tab->web_contents() == web_contents();
+      })) {
     return;
   }
   // Reset TLDEphemeralLifetime when a tab closes, since on Android
