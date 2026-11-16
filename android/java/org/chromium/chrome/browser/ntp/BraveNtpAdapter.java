@@ -750,7 +750,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     resources.getDimension(R.dimen.new_tab_takeover_disclosure_label_shadow_radius),
                     /* dx= */ 0,
                     resources.getDimension(R.dimen.new_tab_takeover_disclosure_label_shadow_dy),
-                    context.getColor(R.color.elevation_secondary));
+                    context.getColor(R.color.black_alpha_30));
         }
     }
 
