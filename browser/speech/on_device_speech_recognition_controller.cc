@@ -6,6 +6,7 @@
 #include "brave/browser/speech/on_device_speech_recognition_controller.h"
 
 #include <optional>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -17,6 +18,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/local_ai/background_web_contents_factory.h"
+#include "brave/components/local_ai/core/on_device_speech_locales.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/url_constants.h"
 #include "brave/components/local_ai/core/utils.h"
@@ -176,13 +178,39 @@ void OnDeviceSpeechRecognitionController::Start(
     on_device_model::mojom::AsrStreamOptionsPtr options,
     mojo::PendingReceiver<on_device_model::mojom::AsrStreamInput> stream,
     mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder> responder) {
-  // No model installed: don't spin up a guest profile + cross-origin-isolated
-  // renderer just to discover the files are missing in OnOrtFilesRead.
-  // Dropping the stream/responder pipes here surfaces to the engine as a
-  // recognition failure, the same outcome as a failed load.
-  if (!local_ai::OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled(
-          local_ai::OnDeviceSpeechModel::kEnglish)) {
+  // No model for the language installed: don't spin up a guest profile +
+  // cross-origin-isolated renderer just to discover the files are missing in
+  // OnOrtFilesRead. Dropping the stream/responder pipes here surfaces to the
+  // engine as a recognition failure, the same outcome as a failed load. A
+  // session without a language is served as en-US, the same as in the worker.
+  const local_ai::OnDeviceSpeechLocale* locale =
+      local_ai::ResolveOnDeviceSpeechLocale(
+          options->language.value_or("en-US"));
+  if (!locale) {
     return;
+  }
+  const local_ai::OnDeviceSpeechModel model = locale->model;
+  if (!local_ai::OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled(
+          model)) {
+    return;
+  }
+  // The worker knows only the locales' tags, so it gets "de-DE" for a page's
+  // "de-AT".
+  options->language = std::string(locale->tag);
+
+  if (state_ != State::kIdle && model != model_) {
+    // The worker holds the other model, and another connected session can
+    // still need it. Reject this session: its dropped pipes surface to the
+    // engine as a recognition failure. The size includes this session.
+    if (asr_session_receivers_.size() > 1) {
+      return;
+    }
+    // No other session needs the worker's model, so stop the worker. Its
+    // model leaves memory before the other one loads.
+    StopWorker();
+  }
+  if (state_ == State::kIdle) {
+    model_ = model;
   }
 
   // Worker is ready, forward session to worker.
@@ -266,9 +294,9 @@ void OnDeviceSpeechRecognitionController::StartWorker() {
 
   // Worker creation is asynchronous and owned by the profile/WebContents
   // creation pipeline, not by this controller, so it cannot be canceled once
-  // started. Bind the delegate and the reply weakly so that if TearDown() runs
-  // before creation finishes, InvalidateWeakPtrs() drops this reply and it
-  // cannot run against a later worker cycle.
+  // started. Bind the delegate and the reply weakly so that if StopWorker()
+  // runs before creation finishes, InvalidateWeakPtrs() drops this reply and
+  // it cannot run against a later worker cycle.
   create_background_web_contents_.Run(
       weak_factory_.GetWeakPtr(),
       base::BindOnce(
@@ -301,13 +329,11 @@ void OnDeviceSpeechRecognitionController::OnBackgroundContentsCreated(
 void OnDeviceSpeechRecognitionController::LoadOrtModel() {
   auto* state = local_ai::OnDeviceSpeechModelsState::GetInstance();
   // A ThreadPool reply is not stopped by resetting factory_, so bind it weakly.
-  // TearDown()'s InvalidateWeakPtrs() drops it before it can run against a
+  // StopWorker()'s InvalidateWeakPtrs() drops it before it can run against a
   // reset or superseded factory.
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
-      base::BindOnce(
-          &ReadNemotronOrtFiles,
-          state->GetModelDir(local_ai::OnDeviceSpeechModel::kEnglish)),
+      base::BindOnce(&ReadNemotronOrtFiles, state->GetModelDir(model_)),
       base::BindOnce(&OnDeviceSpeechRecognitionController::OnOrtFilesRead,
                      weak_factory_.GetWeakPtr()));
 }
@@ -317,13 +343,13 @@ void OnDeviceSpeechRecognitionController::OnOrtFilesRead(
   if (!files) {
     VLOG(1) << "OnDeviceSpeechRecognition: failed to read ORT model files from "
             << local_ai::OnDeviceSpeechModelsState::GetInstance()->GetModelDir(
-                   local_ai::OnDeviceSpeechModel::kEnglish);
+                   model_);
     TearDown();
     return;
   }
 
   // Defensive deref guard, consistent with ForwardSession(). The weak binding
-  // (dropped by TearDown()) means this reply does not run after teardown, so
+  // (dropped by StopWorker()) means this reply does not run after teardown, so
   // factory_ is expected to be bound here, but guard the raw Remote deref
   // anyway.
   if (!factory_.is_bound()) {
@@ -393,7 +419,7 @@ void OnDeviceSpeechRecognitionController::OnFactoryDisconnected() {
   TearDown();
 }
 
-void OnDeviceSpeechRecognitionController::TearDown() {
+void OnDeviceSpeechRecognitionController::StopWorker() {
   // Drop outstanding weak-bound replies (BWC creation, deferred teardown, the
   // model-file read) so none from this cycle can land in a later one. The
   // singleton is never destroyed, so nothing else invalidates them.
@@ -406,9 +432,13 @@ void OnDeviceSpeechRecognitionController::TearDown() {
   profile_manager_observation_.Reset();
   otr_profile_ = nullptr;
   pending_sessions_.clear();
-  asr_session_receivers_.Clear();
   factory_host_receiver_.reset();
   state_ = State::kIdle;
+}
+
+void OnDeviceSpeechRecognitionController::TearDown() {
+  StopWorker();
+  asr_session_receivers_.Clear();
 }
 
 }  // namespace speech
