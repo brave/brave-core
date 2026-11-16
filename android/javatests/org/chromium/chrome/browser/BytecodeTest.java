@@ -2039,6 +2039,7 @@ public class BytecodeTest {
                         SettableMonotonicObservableSupplier.class,
                         TopInsetProvider.class,
                         OneshotSupplierImpl.class,
+                        OneshotSupplierImpl.class,
                         int.class,
                         Supplier.class,
                         AppMenuDelegate.class,
