@@ -96,6 +96,9 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   // non-virtual.
   gfx::Insets GetContentsMarginsForTesting() const;
 
+  // Test-only accessor for GetInfobarMargins(), which is private.
+  gfx::Insets GetInfobarMarginsForTesting() const;
+
   // Test-only accessor for GetUpstreamVerticalTabStripWidth(), which is
   // private.
   int GetUpstreamVerticalTabStripWidthForTesting() const;
@@ -133,6 +136,11 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   void UpdateVerticalTabStripCorners(const BrowserLayoutParams& params);
 
   gfx::Insets GetContentsMargins() const;
+
+  // Returns the margins that float the infobar as its own card when rounded
+  // corners are in use, and no margins otherwise. Zero on the side a vertical
+  // tab strip abuts, as the strip pads itself from its neighbours.
+  gfx::Insets GetInfobarMargins() const;
 
   // Whether the contents area reaches the top edge of the window, which happens
   // when nothing above it (tab strip, toolbar, bookmark bar, infobar, focus

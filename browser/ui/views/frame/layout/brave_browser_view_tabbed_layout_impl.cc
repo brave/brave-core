@@ -355,30 +355,7 @@ void BraveBrowserViewTabbedLayoutImpl::AdjustInfobarLayout(
           ? std::make_optional(GetInsetsConsideringVerticalTabHost())
           : std::nullopt);
 
-  if (delegate().ShouldUseBraveWebViewRoundedCornersForContents()) {
-    const bool vertical_tabs_completely_hidden =
-        delegate().ShouldShowVerticalTabs() &&
-        views().vertical_tab_strip_host &&
-        views().vertical_tab_strip_host->GetPreferredSize().width() == 0;
-    const bool is_sidebar_visible_on_left =
-        views().sidebar_container->IsSidebarVisible() &&
-        views().sidebar_container->sidebar_on_left();
-    // Float the infobar as its own card, using the same margins on every side
-    // as the contents view. When vertical tabs mode is enabled and tabs are
-    // on the left side, apply the specific left and right distances.
-    const bool vertical_tabs_on_left = delegate().ShouldShowVerticalTabs() &&
-                                       !delegate().IsVerticalTabOnRight();
-    infobar_layout->bounds.Inset(gfx::Insets::TLBR(
-        kRoundedCornersContentsViewMargin,
-        (vertical_tabs_on_left && !is_sidebar_visible_on_left &&
-         !vertical_tabs_completely_hidden)
-            ? 0
-            : kRoundedCornersContentsViewMargin,
-        kRoundedCornersContentsViewMargin,
-        (vertical_tabs_on_left || vertical_tabs_completely_hidden)
-            ? kRoundedCornersContentsViewMargin
-            : 0));
-  }
+  infobar_layout->bounds.Inset(GetInfobarMargins());
 }
 
 gfx::RoundedCornersF
@@ -810,6 +787,27 @@ gfx::Insets BraveBrowserViewTabbedLayoutImpl::GetContentsMargins() const {
   return margins;
 }
 
+gfx::Insets BraveBrowserViewTabbedLayoutImpl::GetInfobarMargins() const {
+  if (!delegate().ShouldUseBraveWebViewRoundedCornersForContents()) {
+    return {};
+  }
+
+  // The infobar floats as its own card with the contents view's margin on every
+  // window-facing side. The sidebar and the side panel are laid out below the
+  // infobar, so only the vertical tab strip can abut it, and the strip already
+  // pads itself from its neighbours.
+  gfx::Insets margins(kRoundedCornersContentsViewMargin);
+  if (IsVerticalTabStripAtContentsEdge()) {
+    if (IsVerticalTabStripLeading()) {
+      margins.set_left(0);
+    } else {
+      margins.set_right(0);
+    }
+  }
+
+  return margins;
+}
+
 bool BraveBrowserViewTabbedLayoutImpl::IsContentsAtTopEdge() const {
   if (delegate().IsInfobarVisible()) {
     return false;
@@ -982,6 +980,11 @@ BraveBrowserViewTabbedLayoutImpl::CalculateWebPanelCornerRadii() const {
 gfx::Insets BraveBrowserViewTabbedLayoutImpl::GetContentsMarginsForTesting()
     const {
   return GetContentsMargins();
+}
+
+gfx::Insets BraveBrowserViewTabbedLayoutImpl::GetInfobarMarginsForTesting()
+    const {
+  return GetInfobarMargins();
 }
 
 int BraveBrowserViewTabbedLayoutImpl::

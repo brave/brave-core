@@ -18,6 +18,7 @@
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
+#include "ui/gfx/geometry/size.h"
 #include "ui/views/layout/layout_provider.h"
 #include "ui/views/view.h"
 
@@ -122,6 +123,7 @@ class MockBrowserViewLayoutDelegate : public FakeBrowserViewLayoutDelegate {
               (),
               (const, override));
   MOCK_METHOD(bool, ShouldShowVerticalTabs, (), (const, override));
+  MOCK_METHOD(bool, IsVerticalTabOnRight, (), (const, override));
   MOCK_METHOD(WindowState, GetBrowserWindowState, (), (const, override));
   MOCK_METHOD(bool, IsWebPanelVisible, (), (const, override));
   MOCK_METHOD(bool, IsWebPanelOnLeft, (), (const, override));
@@ -651,6 +653,122 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
 
   const gfx::RoundedCornersF expected(GetBorderCornerRadius());
   EXPECT_EQ(expected, layout->CalculateInfobarCornerRadiiForTesting());
+}
+
+// ---------------------------------------------------------------------------
+// GetInfobarMargins
+//
+// With rounded corners the infobar floats as its own card, inset on every side
+// that faces a window edge. The sidebar and the side panel are laid out below
+// the infobar, so only a vertical tab strip can abut it, and the strip pads
+// itself from its neighbours - that side gets no margin.
+// ---------------------------------------------------------------------------
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     GetInfobarMarginsEmptyWithoutRoundedCorners) {
+  auto mock =
+      std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
+  EXPECT_CALL(*mock, ShouldUseBraveWebViewRoundedCornersForContents())
+      .WillRepeatedly(::testing::Return(false));
+
+  BrowserViewLayoutViews views;
+  auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
+      std::move(mock), std::move(views));
+
+  EXPECT_EQ(gfx::Insets(), layout->GetInfobarMarginsForTesting());
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     GetInfobarMarginsAllSidesWithoutVerticalTabs) {
+  auto mock =
+      std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
+  EXPECT_CALL(*mock, ShouldUseBraveWebViewRoundedCornersForContents())
+      .WillRepeatedly(::testing::Return(true));
+  EXPECT_CALL(*mock, ShouldShowVerticalTabs())
+      .WillRepeatedly(::testing::Return(false));
+  EXPECT_CALL(*mock, GetTabStripType())
+      .WillRepeatedly(::testing::Return(
+          BrowserViewLayoutDelegate::TabStripType::kHorizontal));
+
+  BrowserViewLayoutViews views;
+  auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
+      std::move(mock), std::move(views));
+
+  EXPECT_EQ(gfx::Insets(kRoundedCornersContentsViewMargin),
+            layout->GetInfobarMarginsForTesting());
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     GetInfobarMarginsSkipLeadingSideForLeadingVerticalTab) {
+  auto mock =
+      std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
+  EXPECT_CALL(*mock, ShouldUseBraveWebViewRoundedCornersForContents())
+      .WillRepeatedly(::testing::Return(true));
+  EXPECT_CALL(*mock, ShouldShowVerticalTabs())
+      .WillRepeatedly(::testing::Return(true));
+  EXPECT_CALL(*mock, IsVerticalTabOnRight())
+      .WillRepeatedly(::testing::Return(false));
+
+  views::View vertical_tab_strip_host;
+  vertical_tab_strip_host.SetPreferredSize(gfx::Size(50, 0));
+
+  BrowserViewLayoutViews views;
+  views.vertical_tab_strip_host = &vertical_tab_strip_host;
+  auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
+      std::move(mock), std::move(views));
+
+  gfx::Insets expected(kRoundedCornersContentsViewMargin);
+  expected.set_left(0);
+  EXPECT_EQ(expected, layout->GetInfobarMarginsForTesting());
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     GetInfobarMarginsSkipTrailingSideForTrailingVerticalTab) {
+  auto mock =
+      std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
+  EXPECT_CALL(*mock, ShouldUseBraveWebViewRoundedCornersForContents())
+      .WillRepeatedly(::testing::Return(true));
+  EXPECT_CALL(*mock, ShouldShowVerticalTabs())
+      .WillRepeatedly(::testing::Return(true));
+  EXPECT_CALL(*mock, IsVerticalTabOnRight())
+      .WillRepeatedly(::testing::Return(true));
+
+  views::View vertical_tab_strip_host;
+  vertical_tab_strip_host.SetPreferredSize(gfx::Size(50, 0));
+
+  BrowserViewLayoutViews views;
+  views.vertical_tab_strip_host = &vertical_tab_strip_host;
+  auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
+      std::move(mock), std::move(views));
+
+  gfx::Insets expected(kRoundedCornersContentsViewMargin);
+  expected.set_right(0);
+  EXPECT_EQ(expected, layout->GetInfobarMarginsForTesting());
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     GetInfobarMarginsAllSidesWhenVerticalTabStripHasNoWidth) {
+  auto mock =
+      std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
+  EXPECT_CALL(*mock, ShouldUseBraveWebViewRoundedCornersForContents())
+      .WillRepeatedly(::testing::Return(true));
+  EXPECT_CALL(*mock, ShouldShowVerticalTabs())
+      .WillRepeatedly(::testing::Return(true));
+  EXPECT_CALL(*mock, IsVerticalTabOnRight())
+      .WillRepeatedly(::testing::Return(false));
+
+  // A strip that reports no width is completely hidden and floats above the
+  // contents instead of sitting beside it, so it no longer owns the gap.
+  views::View vertical_tab_strip_host;
+  vertical_tab_strip_host.SetPreferredSize(gfx::Size(0, 0));
+
+  BrowserViewLayoutViews views;
+  views.vertical_tab_strip_host = &vertical_tab_strip_host;
+  auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
+      std::move(mock), std::move(views));
+
+  EXPECT_EQ(gfx::Insets(kRoundedCornersContentsViewMargin),
+            layout->GetInfobarMarginsForTesting());
 }
 
 #if BUILDFLAG(IS_MAC)
