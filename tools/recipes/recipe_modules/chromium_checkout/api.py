@@ -9,7 +9,6 @@ from __future__ import annotations
 import contextlib
 import functools
 import logging
-import subprocess
 from typing import TYPE_CHECKING
 
 from recipe_api import RecipeApi
@@ -141,7 +140,7 @@ class ChromiumCheckoutApi(RecipeApi):
                 name='check chrome/VERSION',
                 cwd=chromium_src,
             )
-        except (subprocess.CalledProcessError, OSError):
+        except (self.m.step.StepFailure, OSError):
             return False
         return True
 

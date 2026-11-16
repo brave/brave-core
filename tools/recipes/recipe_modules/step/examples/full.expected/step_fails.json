@@ -16,7 +16,7 @@
   {
     "failure": {
       "failure": {},
-      "humanReason": "Step('might fail') failed"
+      "humanReason": "Step('might fail') (retcode: 1)"
     },
     "name": "$result"
   }

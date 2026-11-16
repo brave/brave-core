@@ -136,6 +136,19 @@ class ExpectationTest(unittest.TestCase):
         # A successful run's $result carries no failure key.
         self.assertEqual(steps[pp.RESULT_STEP], {'name': '$result'})
 
+    def test_build_steps_records_output_properties_and_summary(self):
+        runner = simulation.SimulationStepRunner()
+        _run(runner, {'name': 'a', 'cmd': []})
+        _run(runner, {'name': 'b', 'cmd': []})
+        runner.record_output_properties('a', {'k': 'v'})
+        steps = simulation.build_steps(runner, None, 'done')
+        self.assertEqual(steps['a']['output_properties'], {'k': 'v'})
+        self.assertNotIn('output_properties', steps['b'])
+        self.assertEqual(
+            steps[pp.RESULT_STEP],
+            {'name': '$result', 'summaryMarkdown': 'done'},
+        )
+
     def test_build_steps_failure_result_stabilizes_reason(self):
         runner = simulation.SimulationStepRunner()
         failure = {
