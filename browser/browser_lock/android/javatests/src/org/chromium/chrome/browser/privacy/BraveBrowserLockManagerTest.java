@@ -43,6 +43,7 @@ import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthManager;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthSettingUtils;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modaldialog.ModalDialogManagerHolder;
 
@@ -104,13 +105,15 @@ public class BraveBrowserLockManagerTest {
 
     private BraveBrowserLockManager createManager() {
         BraveBrowserLockManager manager = new BraveBrowserLockManager();
-        manager.onNativeInitialized(mProfile);
+        ProfileManager.setLastUsedProfileForTesting(mProfile);
+        manager.onNativeInitialized();
         return manager;
     }
 
     private TestManager createTestManager() {
         TestManager manager = new TestManager();
-        manager.onNativeInitialized(mProfile);
+        ProfileManager.setLastUsedProfileForTesting(mProfile);
+        manager.onNativeInitialized();
         return manager;
     }
 
@@ -214,7 +217,8 @@ public class BraveBrowserLockManagerTest {
         TestManager manager = new TestManager();
         assertFalse(manager.isLockArmedForTesting());
 
-        manager.onNativeInitialized(mProfile);
+        ProfileManager.setLastUsedProfileForTesting(mProfile);
+        manager.onNativeInitialized();
 
         assertTrue(manager.isLockArmedForTesting());
         verify(mMockCoordinator).show();
@@ -225,7 +229,8 @@ public class BraveBrowserLockManagerTest {
         mActivity = Robolectric.buildActivity(Activity.class).create().start().get();
 
         TestManager manager = new TestManager();
-        manager.onNativeInitialized(mProfile);
+        ProfileManager.setLastUsedProfileForTesting(mProfile);
+        manager.onNativeInitialized();
 
         assertFalse(manager.isLockArmedForTesting());
         verify(mMockCoordinator, never()).show();
@@ -237,13 +242,15 @@ public class BraveBrowserLockManagerTest {
                 .writeBoolean(BravePreferenceKeys.BRAVE_BROWSER_LOCK, true);
 
         TestManager manager = new TestManager();
-        manager.onNativeInitialized(mProfile);
+        ProfileManager.setLastUsedProfileForTesting(mProfile);
+        manager.onNativeInitialized();
         assertTrue(manager.isLockArmedForTesting());
 
         manager.getReauthCallbackForTesting().onIncognitoReauthSuccess();
         assertFalse(manager.isLockArmedForTesting());
 
-        manager.onNativeInitialized(mProfile);
+        ProfileManager.setLastUsedProfileForTesting(mProfile);
+        manager.onNativeInitialized();
         assertFalse(manager.isLockArmedForTesting());
         verify(mMockCoordinator, never()).show();
     }
@@ -258,7 +265,8 @@ public class BraveBrowserLockManagerTest {
         manager.setNativeInitializedOnceForTesting(true);
         manager.setLockArmedForTesting(true);
 
-        manager.onNativeInitialized(mProfile);
+        ProfileManager.setLastUsedProfileForTesting(mProfile);
+        manager.onNativeInitialized();
 
         verify(mMockCoordinator).show();
     }
@@ -315,7 +323,7 @@ public class BraveBrowserLockManagerTest {
     public void preNativeOverlay_lockArmed_overlayShownOnActivityStart() {
         mActivity = Robolectric.buildActivity(Activity.class).create().start().get();
 
-        TestManager manager = new TestManager(); // mProfile == null, no onNativeInitialized
+        TestManager manager = new TestManager(); // Native not yet initialized.
         manager.setLockArmedForTesting(true);
 
         manager.onActivityStateChange(mActivity, ActivityState.STARTED);
@@ -346,7 +354,8 @@ public class BraveBrowserLockManagerTest {
         manager.onActivityStateChange(mActivity, ActivityState.STARTED);
         assertTrue(manager.isPreNativeOverlayShownForTesting(mActivity));
 
-        manager.onNativeInitialized(mProfile);
+        ProfileManager.setLastUsedProfileForTesting(mProfile);
+        manager.onNativeInitialized();
 
         assertFalse(manager.isPreNativeOverlayShownForTesting(mActivity));
     }
@@ -432,7 +441,7 @@ public class BraveBrowserLockManagerTest {
                         .start()
                         .get();
 
-        TestManager manager = new TestManager(); // mProfile == null, no onNativeInitialized
+        TestManager manager = new TestManager(); // Native not yet initialized.
         manager.setLockArmedForTesting(true);
         manager.onActivityStateChange(activity, ActivityState.STARTED);
 
@@ -448,7 +457,8 @@ public class BraveBrowserLockManagerTest {
         BraveBrowserLockManager manager = new BraveBrowserLockManager();
         manager.setLockArmedForTesting(true); // simulate Phase 1 pref-only arming
 
-        manager.onNativeInitialized(mProfile);
+        ProfileManager.setLastUsedProfileForTesting(mProfile);
+        manager.onNativeInitialized();
 
         assertFalse(manager.isLockArmedForTesting());
     }
@@ -471,7 +481,8 @@ public class BraveBrowserLockManagerTest {
         Activity secondActivity = Robolectric.buildActivity(Activity.class).create().get();
 
         MultiInstanceTestManager manager = new MultiInstanceTestManager();
-        manager.onNativeInitialized(mProfile);
+        ProfileManager.setLastUsedProfileForTesting(mProfile);
+        manager.onNativeInitialized();
         manager.setLockArmedForTesting(true);
 
         manager.onActivityStateChange(mActivity, ActivityState.STARTED);
@@ -491,7 +502,8 @@ public class BraveBrowserLockManagerTest {
         Activity secondActivity = Robolectric.buildActivity(Activity.class).create().get();
 
         MultiInstanceTestManager manager = new MultiInstanceTestManager();
-        manager.onNativeInitialized(mProfile);
+        ProfileManager.setLastUsedProfileForTesting(mProfile);
+        manager.onNativeInitialized();
         manager.setLockArmedForTesting(true);
 
         manager.onActivityStateChange(mActivity, ActivityState.STARTED);
@@ -514,7 +526,8 @@ public class BraveBrowserLockManagerTest {
         Activity secondActivity = Robolectric.buildActivity(Activity.class).create().get();
 
         MultiInstanceTestManager manager = new MultiInstanceTestManager();
-        manager.onNativeInitialized(mProfile);
+        ProfileManager.setLastUsedProfileForTesting(mProfile);
+        manager.onNativeInitialized();
         manager.setLockArmedForTesting(true);
 
         manager.onActivityStateChange(mActivity, ActivityState.STARTED);
@@ -537,7 +550,8 @@ public class BraveBrowserLockManagerTest {
         Activity secondActivity = Robolectric.buildActivity(Activity.class).create().get();
 
         MultiInstanceTestManager manager = new MultiInstanceTestManager();
-        manager.onNativeInitialized(mProfile);
+        ProfileManager.setLastUsedProfileForTesting(mProfile);
+        manager.onNativeInitialized();
         manager.setLockArmedForTesting(true);
 
         manager.onActivityStateChange(mActivity, ActivityState.STARTED);
