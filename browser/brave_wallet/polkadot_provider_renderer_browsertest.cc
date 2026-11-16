@@ -695,7 +695,11 @@ IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, SealedSubObjects) {
       const methods = ['enable', 'connect'];
       return (await Promise.all(
         methods.map(async (method) => {
-          const injectedProps = ['name', 'version', 'accounts', 'signer'];
+          const injectedProps =
+            method === 'connect'
+            ? ['name', 'version', 'accounts', 'signer']
+            : ['accounts', 'signer'];
+
           const accountsProps = ['get', 'subscribe'];
           const signerProps = ['signPayload', 'signRaw'];
 

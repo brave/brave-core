@@ -362,7 +362,14 @@ void JSPolkadotProvider::OnEnableResponse(
     return;
   }
 
-  for (std::string_view property : {"name", "version", "signer", "accounts"}) {
+  if (with_extension_info) {
+    for (std::string_view property : {"name", "version"}) {
+      SealOwnProperty(context, injected_object,
+                      gin::StringToV8(isolate, property));
+    }
+  }
+
+  for (std::string_view property : {"signer", "accounts"}) {
     SealOwnProperty(context, injected_object,
                     gin::StringToV8(isolate, property));
   }
