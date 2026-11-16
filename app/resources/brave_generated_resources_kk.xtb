@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Немесе кейінде өзгертуді <ph name="SETTINGS_EXTENIONS_LINK"/> жасай аласыз.</translation>
 <translation id="6229752134959014186">Widevine туралы толығырақ біліңіз</translation>
+<translation id="3318169548229684688">Осы құрылғыда сөйлеуді өңдеу үшін сөйлеуді тану моделін (<ph name="DOWNLOAD_SIZE"/>) жүктеп алу</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> сізден сұрайды</translation>
 <translation id="3218385319396786393">Бұл бетте автоматты ойнату бұғатталған</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> сайтында автоматты ойнатуға әрқашан рұқсат беру</translation>
@@ -609,6 +610,8 @@
 <translation id="3540231253392253941">Пуш хабарламалары үшін Google қызметтерін пайдалану</translation>
 <translation id="2224032129673914306">Семантикалық тарих іздеу</translation>
 <translation id="6045998903985162478">Сіз кіретін беттерді индекстеңіз, сонда оларды тарихта, ашық қойындыларда және Лео-да оңай таба аласыз.</translation>
+<translation id="3962946446120925966">Құрылғыдағы сөйлеуді тану</translation>
+<translation id="6408242130028978631">Сайттар сөйлеуді осы құрылғыда өңдей алуы үшін сөйлеуді тану моделін (<ph name="DOWNLOAD_SIZE"/>) жүктеп алыңыз. Модельді жою үшін бұл параметрді өшіріңіз.</translation>
 <translation id="5813105074916486721">Жергілікті тарихты сақтау</translation>
 <translation id="5671611745062206644">Brave шолу тарихыңызды жергілікті түрде қанша уақыт сақтайды</translation>
 <translation id="7184510058087008090">1 күн</translation>

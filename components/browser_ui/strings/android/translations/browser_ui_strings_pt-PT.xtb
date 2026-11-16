@@ -181,9 +181,7 @@
 <translation id="2710883118091822664">Inicie sessão para continuar facilmente em todos os seus dispositivos</translation>
 <translation id="2713106313042589954">Desligar câmara</translation>
 <translation id="2717722538473713889">Moradas de email</translation>
-<translation id="8181634240306014548">Inicie o Brave com o foco na caixa geral, reduzindo o tempo de arranque em dispositivos de gama baixa.</translation>
 <translation id="2750481671343847896">Os sites podem mostrar pedidos de início de sessão de serviços de identidade.</translation>
-<translation id="2787357173144933081">Iniciar rapidamente caixa geral</translation>
 <translation id="2789132527330338807">Os sites podem pedir para criar um mapa 3D do ambiente à sua volta ou monitorizar a posição da câmara</translation>
 <translation id="2790501146643349491">Quando esta opção está ativada, os sites fechados recentemente podem concluir o envio e a receção de dados. Quando esta opção está desativada, os sites fechados recentemente não podem concluir o envio nem a receção de dados.</translation>
 <translation id="2795716239552913152">Normalmente, os sites utilizam a sua localização para funcionalidades ou informações relevantes, como notícias locais ou lojas próximas.</translation>
@@ -291,7 +289,6 @@
 <translation id="9046306654872718870">Personalize o Brave com cores e imagens personalizadas para a página inicial</translation>
 <translation id="389521680295183045">Os sites podem pedir para saber quando está a utilizar ativamente o dispositivo</translation>
 <translation id="3895926599014793903">Forçar ativação do zoom</translation>
-<translation id="3905475044299942653">Pare notificações excessivas</translation>
 <translation id="3922092564198021702">No telemóvel, abra as Definições</translation>
 <translation id="3924858949939391676">Mostrar links assim que o Modo de leitura estiver ativado</translation>
 <translation id="3933121352599513978">Reduzir pedidos indesejados (recomendado)</translation>
@@ -385,7 +382,6 @@
 <translation id="4936863036653376783">Vai encontrar os seus grupos na secção de grupos de separadores em todos os seus dispositivos</translation>
 <translation id="4945443401464700059"><ph name="SITE"/> está impedido de usar as suas informações em</translation>
 <translation id="4953688446973710931">Quando esta opção está ativada, os sites podem pedir para transferir automaticamente vários ficheiros. Quando esta opção está desativada, os sites não podem transferir automaticamente vários ficheiros.</translation>
-<translation id="4962975101802056554">Revogar todas as autorizações do dispositivo</translation>
 <translation id="4972737347717125191">Os sites podem solicitar a utilização de dados e dispositivos de realidade virtual</translation>
 <translation id="1275242979020712923">Secção inferior de cores do Brave</translation>
 <translation id="497421865427891073">Avançar</translation>
@@ -525,6 +521,7 @@
 <translation id="6439114592976064011">Impedir que os sites utilizem aos seus dados e dispositivo de realidade virtual</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6452138246455930388">Descida do preço no separador aberto, de <ph name="OLD_PRICE"/> para <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
+<translation id="6495608040096939405">Revogue a autorização do dispositivo para <ph name="NAME"/></translation>
 <translation id="6500423977866688905">Quando a janela estiver estreita, peça a vista de dispositivo móvel</translation>
 <translation id="6527303717912515753">Partilhar</translation>
 <translation id="6530703012083415527">Quando esta opção está ativada, os sites podem usar pop-ups e redirecionamentos. Quando esta opção está desativada, os sites não podem usar pop-ups e redirecionamentos.</translation>
@@ -590,6 +587,7 @@
 <translation id="7188508872042490670">Dados de sites no dispositivo</translation>
 <translation id="7201549776650881587">Esta ação vai eliminar todos os dados e cookies armazenados por todos os sites em <ph name="ORIGIN"/> ou pela respetiva app no seu ecrã principal</translation>
 <translation id="7219254577985949841">Eliminar dados do site?</translation>
+<translation id="7225256190577194089">Revogue todas as autorizações para o dispositivo <ph name="DEVICE_NAME"/></translation>
 <translation id="723171743924126238">Selecionar imagens</translation>
 <translation id="7243246278722455312">Secção inferior de Personalize a página Novo separador</translation>
 <translation id="7243308994586599757">Opções disponíveis junto à parte inferior do ecrã</translation>
@@ -702,7 +700,6 @@ A Proteção avançada controla estas definições do Brave:</translation>
 <translation id="8428213095426709021">Definições</translation>
 <translation id="8441146129660941386">Procurar para trás</translation>
 <translation id="8444433999583714703">Para permitir que a app <ph name="APP_NAME"/> aceda à sua localização, ative também a localização nas <ph name="BEGIN_LINK"/>Definições do Android<ph name="END_LINK"/>.</translation>
-<translation id="8447861592752582886">Revogar autorização do dispositivo</translation>
 <translation id="8463843545738141778">Esta definição está desativada porque ativou a Proteção avançada nas Definições do Android.</translation>
 <translation id="8467359479529706065">Secção inferior de aspeto da página Novo separador aberta a meia altura</translation>
 <translation id="8471525937465764768">Normalmente, os sites estabelecem ligação a dispositivos USB para funcionalidades como imprimir um documento ou guardar num dispositivo de armazenamento.</translation>

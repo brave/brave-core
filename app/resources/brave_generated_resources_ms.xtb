@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Ketahui lebih lanjut tentang Widevine</translation>
+<translation id="3318169548229684688">Muat turun model pengecaman pertuturan (<ph name="DOWNLOAD_SIZE"/>) untuk memproses pertuturan pada peranti ini</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> meminta anda untuk</translation>
 <translation id="3218385319396786393">Main automatik telah disekat di halaman ini</translation>
 <translation id="4988333904713528597">Sentiasa benarkan automain pada <ph name="HOST"/></translation>
@@ -610,6 +611,8 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3540231253392253941">Guna perkhidmatan Google untuk pesanan tolak</translation>
 <translation id="2224032129673914306">Carian sejarah semantik</translation>
 <translation id="6045998903985162478">Indeks halaman yang anda lawati supaya anda boleh mencarinya dengan mudah dalam sejarah, tab terbuka dan Leo.</translation>
+<translation id="3962946446120925966">Pengecaman pertuturan pada peranti</translation>
+<translation id="6408242130028978631">Muat turun model pengecaman pertuturan (<ph name="DOWNLOAD_SIZE"/>) supaya tapak boleh memproses pertuturan pada peranti ini. Matikan ini untuk mengalih keluar model tersebut.</translation>
 <translation id="5813105074916486721">Pengekalan sejarah setempat</translation>
 <translation id="5671611745062206644">Berapa lama Brave menyimpan sejarah pelayaran anda secara setempat</translation>
 <translation id="7184510058087008090">1 hari</translation>
