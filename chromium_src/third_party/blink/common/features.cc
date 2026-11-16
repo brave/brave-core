@@ -28,7 +28,7 @@ BASE_FEATURE(kBraveBlockScreenFingerprinting,
 #endif
 );
 
-// Re-enables Chromium's Reporting API, otherwise disabled in Brave.
+// Controls whether the Chromium Reporting API is enabled.
 BASE_FEATURE(kBraveReportingAPI, base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables protection against fingerprinting via high-resolution time stamps.
