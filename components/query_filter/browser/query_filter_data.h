@@ -21,7 +21,6 @@ namespace query_filter {
 class QueryFilterData {
  public:
   // Returns a singleton instance of QueryFilterData.
-  // Returns nullptr if kQueryFilterComponent is disabled.
   static QueryFilterData* GetInstance();
 
   QueryFilterData(const QueryFilterData&) = delete;
