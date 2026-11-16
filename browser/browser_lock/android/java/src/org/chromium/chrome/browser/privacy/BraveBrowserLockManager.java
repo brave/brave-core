@@ -94,6 +94,9 @@ import java.util.Set;
  * to (or kept on) a background view. The system Back button is independently blocked via an {@link
  * androidx.activity.OnBackPressedCallback} — without it, Back would navigate the content behind the
  * overlay (e.g. closing a tab) without ever authenticating.
+ *
+ * <p><b>Threading:</b> all public methods must be called on the UI thread and assert as such; the
+ * class keeps no internal synchronization.
  */
 @NullMarked
 // Chromium's wrapper doesn't give us a way to register a listener for changes.
@@ -113,8 +116,6 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
     public interface ScreenshotModeObserver {
         void onScreenshotModeChanged();
     }
-
-    private @Nullable Profile mProfile;
 
     private boolean mNativeInitializedOnce;
     private boolean mLockArmed;
@@ -163,7 +164,7 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
                 public void onProfileAdded(Profile profile) {
                     if (!profile.isOffTheRecord()) {
                         ProfileManager.removeObserver(this);
-                        onNativeInitialized(profile);
+                        onNativeInitialized();
                     }
                 }
 
@@ -278,6 +279,7 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
     }
 
     public static void initialize(Application application) {
+        ThreadUtils.assertOnUiThread();
         if (sInstance != null) {
             return;
         }
@@ -294,13 +296,17 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
     }
 
     public static @Nullable BraveBrowserLockManager getInstance() {
+        ThreadUtils.assertOnUiThread();
         return sInstance;
     }
 
     BraveBrowserLockManager() {}
 
-    public void onNativeInitialized(Profile profile) {
-        mProfile = profile;
+    public void onNativeInitialized() {
+        ThreadUtils.assertOnUiThread();
+        if (!ProfileManager.isInitialized()) { // Sanity check.
+            return;
+        }
         applySecureFlagToAllActivities();
         removeAllPreNativeOverlays();
 
@@ -321,8 +327,9 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
 
     @Override
     public void onActivityStateChange(Activity activity, @ActivityState int newState) {
+        ThreadUtils.assertOnUiThread();
         if (newState == ActivityState.STARTED) {
-            if (mProfile == null) {
+            if (!ProfileManager.isInitialized()) {
                 showPreNativeOverlayIfRequired(activity);
             } else {
                 showLockIfRequired(activity);
@@ -339,11 +346,13 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
      * normally.
      */
     public static void suppressNextRearm() {
+        ThreadUtils.assertOnUiThread();
         BraveBrowserLockManager instance = sInstance;
         if (instance != null) instance.mSuppressNextRearm = true;
     }
 
     public static boolean isBrowserLockEnabled() {
+        ThreadUtils.assertOnUiThread();
         return IncognitoReauthManager.isIncognitoReauthFeatureAvailable()
                 && IncognitoReauthSettingUtils.isDeviceScreenLockEnabled()
                 && ChromeSharedPreferences.getInstance()
@@ -367,6 +376,7 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
      * otherwise a pre-native caller would permanently lock in an unreliable guess.
      */
     public static int getScreenshotMode() {
+        ThreadUtils.assertOnUiThread();
         SharedPreferencesManager prefs = ChromeSharedPreferences.getInstance();
         if (prefs.contains(BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE)) {
             return prefs.readInt(BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE);
@@ -394,6 +404,7 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
 
     public static void setScreenshotModeChangeHandler(
             @Nullable ScreenshotModeChangeHandler handler) {
+        ThreadUtils.assertOnUiThread();
         ScreenshotModeChangeHandler previous = sScreenshotModeChangeHandler;
         sScreenshotModeChangeHandler = handler;
         ResettersForTesting.register(() -> sScreenshotModeChangeHandler = previous);
@@ -408,6 +419,7 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
      *     Only meaningful for a user-initiated change from the settings UI.
      */
     public static void setScreenshotMode(int mode, @Nullable Activity activity) {
+        ThreadUtils.assertOnUiThread();
         ChromeSharedPreferences.getInstance()
                 .writeInt(BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE, mode);
         BraveBrowserLockManager instance = sInstance;
@@ -432,6 +444,7 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
      */
     public static void addScreenshotModeObserver(
             Activity activity, ScreenshotModeObserver observer) {
+        ThreadUtils.assertOnUiThread();
         BraveBrowserLockManager instance = sInstance;
         if (instance == null) return;
         instance.mScreenshotModeObservers
@@ -452,6 +465,7 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
      * the biometric lock screen at all.
      */
     public static boolean shouldForceSecureWindow() {
+        ThreadUtils.assertOnUiThread();
         return getScreenshotMode()
                 == BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_EVERYTHING;
     }
@@ -470,6 +484,7 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
      * protection would otherwise silently not apply to a just-selected mode until relaunch.
      */
     public static boolean shouldSecureForIncognitoVisibility(boolean isShowingIncognito) {
+        ThreadUtils.assertOnUiThread();
         int mode = getScreenshotMode();
         if (mode == BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_EVERYTHING) {
             return true;
@@ -495,14 +510,18 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
         }
     }
 
+    // All callers have to validate ProfileManager.isInitialized() thus, we don't duplicate it here.
+    // Since we only use the profile to satisfy Chromium's API and don't technically care about it,
+    // our presubmit warning doesn't apply here.
     private void showLockIfRequired(Activity activity) {
-        Profile profile = mProfile;
-        if (!mLockArmed
-                || !isBrowserLockEnabled()
-                || mActiveLocks.containsKey(activity)
-                || profile == null) {
+        if (!mLockArmed || !isBrowserLockEnabled() || mActiveLocks.containsKey(activity)) {
             return;
         }
+        var profiles = ProfileManager.getLoadedProfiles();
+        if (profiles.empty()) {
+            return; // No profiles, bail out.
+        }
+        Profile profile = profiles.get(0);
         IncognitoReauthManager reauthManager = new BraveIncognitoReauthManager(activity, profile);
         BraveBrowserLockCoordinator coordinator = createCoordinator(activity, reauthManager);
         mActiveLocks.put(activity, new ActiveLock(coordinator, reauthManager));
