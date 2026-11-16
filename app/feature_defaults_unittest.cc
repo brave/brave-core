@@ -89,6 +89,7 @@
 #include "chrome/browser/child_module/features.h"
 #include "chrome/browser/default_browser/default_browser_features.h"
 #include "chrome/browser/enterprise/data_protection/data_protection_features.h"
+#include "chrome/browser/password_manager/password_change/features.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/toasts/toast_features.h"
 #include "chrome/browser/ui/views/desktop_capture/desktop_media_picker_views.h"
@@ -284,6 +285,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &optimization_guide::features::kOptimizationGuideModelExecution,
       &optimization_guide::features::kOptimizationHints,
       &passage_embeddings::kPassageEmbedder,
+#if !BUILDFLAG(IS_ANDROID)
+      &password_change::features::kPasswordChangeWithPrivateInferenceLoginCheck,
+#endif
       &password_manager::features::
           kPasswordManagerOnDeviceEncryptionMetricsReporter,
       &permissions::features::kCpssUseTfliteSignatureRunner,

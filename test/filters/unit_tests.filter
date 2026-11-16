@@ -618,6 +618,11 @@
 -FindsTabHelperTest.TestSRPBackNavigationThresholdMet
 -PasswordChangeSubmissionVerifierTest.*
 
+# This test fails because we disable
+# password_change::features::kPasswordChangeWithPrivateInferenceLoginCheck,
+# without which the automated password change pref is ignored.
+-ChromePasswordChangeServiceTest.PasswordChangeDisabledByUserPref
+
 # This test fails because we remove description and 3p cookies toggle from the
 # Page Info cookies view.
 -All/PageInfoBubbleViewCookiesSubpageTitleTest.DisplaysCookiesAndSiteDataTitle/*
