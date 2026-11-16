@@ -20,8 +20,6 @@ class BraveBrowserWindow : public BrowserWindow {
   // BrowserView (e.g. a WebUIBrowserWindow or a TestBrowserWindow).
   static BraveBrowserWindow* From(BrowserWindow* window);
   static BraveBrowserWindow* FromBrowser(BrowserWindowInterface* browser);
-
-  virtual void ReadyToListenFullscreenChanges() {}
 };
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_

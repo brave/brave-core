@@ -63,7 +63,6 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_element_identifiers.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
-#include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
@@ -984,24 +983,6 @@ bool BraveBrowserView::AcceleratorPressed(const ui::Accelerator& accelerator) {
     }
   }
   return BrowserView::AcceleratorPressed(accelerator);
-}
-
-void BraveBrowserView::ReadyToListenFullscreenChanges() {
-  CHECK(ExclusiveAccessManager::From(browser_));
-
-  if (vertical_tab_strip_container_view_) {
-    vertical_tab_strip_container_view_->vertical_tab_strip_region_view()
-        ->ListenFullscreenChanges();
-  }
-}
-
-void BraveBrowserView::StopListeningFullscreenChanges() {
-  CHECK(ExclusiveAccessManager::From(browser_));
-
-  if (vertical_tab_strip_container_view_) {
-    vertical_tab_strip_container_view_->vertical_tab_strip_region_view()
-        ->StopListeningFullscreenChanges();
-  }
 }
 
 void BraveBrowserView::HandleBrowserWindowMouseEvent(
