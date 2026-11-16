@@ -123,8 +123,9 @@ extension SessionTabGroup {
   /// rule only nullifies it, so this is meant to be called once tabs have been deleted.
   public static func deleteAllEmpty() {
     DataController.perform { context in
-      all(context: context)?.forEach {
-        deleteIfEmpty($0, in: context)
+      let predicate = NSPredicate(format: "\(#keyPath(SessionTabGroup.sessionTabs)).@count == 0")
+      all(where: predicate, context: context)?.forEach {
+        context.delete($0)
       }
     }
   }
