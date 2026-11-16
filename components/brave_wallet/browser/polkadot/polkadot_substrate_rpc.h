@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_SUBSTRATE_RPC_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_SUBSTRATE_RPC_H_
 
+#include <memory>
 #include <vector>
 
 #include "base/functional/callback.h"
@@ -203,6 +204,13 @@ class PolkadotSubstrateRpc {
                  base::span<const uint8_t, kPolkadotBlockHashSize> block_hash,
                  GetEventsCallback callback);
 
+  // Redirects every RPC call this makes at `url_loader_factory`. Browser tests
+  // get the service from the keyed-service factory, which wires it to the
+  // profile's real network stack, so this is the only way for them to stand a
+  // stub node in front of it. Mirrors the seam on `JsonRpcService`.
+  void SetAPIRequestHelperForTesting(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+
  private:
   using APIRequestResult = api_request_helper::APIRequestResult;
 
@@ -239,7 +247,7 @@ class PolkadotSubstrateRpc {
 
   const PolkadotRpcUrlMapCallback rpc_url_callback_;
   const raw_ref<NetworkManager> network_manager_;
-  api_request_helper::APIRequestHelper api_request_helper_;
+  std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   base::WeakPtrFactory<PolkadotSubstrateRpc> weak_ptr_factory_{this};
 };
 
