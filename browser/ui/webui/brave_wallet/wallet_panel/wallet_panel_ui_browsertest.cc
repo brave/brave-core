@@ -8,13 +8,18 @@
 #include <memory>
 #include <string>
 #include <string_view>
+#include <utility>
+#include <vector>
 
 #include "base/functional/callback_helpers.h"
+#include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
+#include "base/test/test_future.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/polkadot/polkadot_ui.h"
@@ -23,9 +28,14 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "build/build_config.h"
@@ -41,6 +51,7 @@
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "content/public/test/test_utils.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -143,6 +154,84 @@ content::RenderFrameHost* FindPolkadotBridgeFrame(content::WebContents* panel) {
       base::BindRepeating(&content::FrameHasSourceUrl,
                           GURL(kUntrustedPolkadotURL)));
 }
+
+// A real Polkadot Asset Hub `SignerPayloadJSON`, carried verbatim from
+// polkadot_api_impl_unittest.cc. Its `specVersion` names the runtime the
+// Asset Hub metadata fixture holds, so the bridge frame can actually decode
+// it, and the extrinsic it came from is on chain:
+// https://assethub-polkadot.subscan.io/extrinsic/21550016-2
+constexpr char kAssetHubPayloadJson[] =
+    R"({
+  "specVersion": "0x001e9808",
+  "transactionVersion": "0x0000000f",
+  "address": "16cM3vo8Ay8g9PxEaHFG2HZmZ8TYHf4gYAjBm3zAjezTCUMt",
+  "assetId": null,
+  "blockHash":
+    "0xa4d849853e6d5f0df4e03b3fbc104d7937d8e85585fcbafa06290bfb4de081a9",
+  "blockNumber": "0x0148d3ac",
+  "era": "0xc400",
+  "genesisHash":
+    "0x68d56f15f85d3136970ec16946040bc1752654e906147f7e43e9d539d7c3de2f",
+  "metadataHash": null,
+  "method": )"
+    "\"0x1f03051c000401000007093581e70e3001000003890dff6f1608140d01020800010100"
+    "f8224098b97b27e917689228c41f23e2b06cc48666bc6eaec030169b441578400f01010100"
+    "00040201090704000f00163982d4df06000d00040201090704000b00f0ab75a40d00010100"
+    "2a975dad1c0fb19221a9288a0ae4b63ed29f3c625a73578117dde65482b8fc233102010907"
+    "04010200040201090704000f00268d0c30d20601040100040100000700e40b5402080d0102"
+    "0c0001030083cf32ace9e4c47165934f9a695fc23f96dee73d2ccb4f8d0d25b94af6838034"
+    "8f8eea289c3183f0f0bcb2a1fa2ee9ee89434eba012ccb4f8d0d25b94af68380348f8eea28"
+    "9c3183f0f0bcb2a1fa2ee9ee89434eba0103c83d82a9d2060300\","
+    R"(
+  "mode": 0,
+  "nonce": "0x00000001",
+  "signedExtensions": [
+    "AuthorizeCall",
+    "CheckNonZeroSender",
+    "CheckSpecVersion",
+    "CheckTxVersion",
+    "CheckGenesis",
+    "CheckMortality",
+    "CheckNonce",
+    "CheckWeight",
+    "ChargeAssetTxPayment",
+    "PrevalidateAttests",
+    "CheckMetadataHash",
+    "EthSetOrigin",
+    "StorageWeightReclaim",
+    "UnitTransactionExtension",
+    "VerifyMultiSignature",
+    "AsPgas",
+    "AsDotnsGateway",
+    "RestrictOrigins"
+  ],
+  "tip": "0x00000000000000000000000000000000",
+  "version": 4,
+  "withSignedTransaction": false
+})";
+
+// The bytes `kAssetHubPayloadJson` signs over. Also carried from
+// polkadot_api_impl_unittest.cc, which checks the signature over these bytes
+// against the one the on-chain extrinsic above bears. That makes this a real
+// oracle rather than a snapshot: if the frame ordered the signed extensions
+// differently than the runtime declares them, or encoded `method` with its
+// compact length prefix, these bytes would differ.
+constexpr std::string_view kAssetHubSignaturePayloadHex =
+    "1f03051c000401000007093581e70e3001000003890dff6f1608140d01020800010100f8"
+    "224098b97b27e917689228c41f23e2b06cc48666bc6eaec030169b441578400f01010100"
+    "00040201090704000f00163982d4df06000d00040201090704000b00f0ab75a40d000101"
+    "002a975dad1c0fb19221a9288a0ae4b63ed29f3c625a73578117dde65482b8fc23310201"
+    "090704010200040201090704000f00268d0c30d20601040100040100000700e40b540208"
+    "0d01020c0001030083cf32ace9e4c47165934f9a695fc23f96dee73d2ccb4f8d0d25b94a"
+    "f68380348f8eea289c3183f0f0bcb2a1fa2ee9ee89434eba012ccb4f8d0d25b94af68380"
+    "348f8eea289c3183f0f0bcb2a1fa2ee9ee89434eba0103c83d82a9d2060300c400040000"
+    "0008981e000f00000068d56f15f85d3136970ec16946040bc1752654e906147f7e43e9d5"
+    "39d7c3de2fa4d849853e6d5f0df4e03b3fbc104d7937d8e85585fcbafa06290bfb4de081"
+    "a900";
+
+// The `partial_fee` in the `RuntimeDispatchInfo` PolkadotMockRpc answers
+// `TransactionPaymentApi_query_info` with.
+constexpr brave_wallet::uint128_t kExpectedPartialFee{15937408476};
 
 }  // namespace
 
@@ -534,6 +623,21 @@ class PolkadotWalletPanelUIBrowserTest : public WalletPanelUIBrowserTest {
     WalletPanelUIBrowserTest::SetUp();
   }
 
+  void BindPanelHandler(mojo::Remote<mojom::PanelHandler>& panel_handler) {
+    auto* webui = wallet()->GetPrimaryMainFrame()->GetWebUI();
+    ASSERT_TRUE(webui);
+
+    auto* wallet_panel_ui = webui->GetController()->GetAs<WalletPanelUI>();
+    ASSERT_TRUE(wallet_panel_ui);
+
+    wallet_panel_ui->BindPanelHandler(
+        panel_handler.BindNewPipeAndPassReceiver());
+  }
+
+  bool HasPendingSignDetailsRequestsWaiting() {
+    return !GetWebUIController()->polkadot_bridge_waiters_.empty();
+  }
+
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
 };
@@ -598,6 +702,243 @@ IN_PROC_BROWSER_TEST_F(PolkadotWalletPanelUIBrowserTest,
        })
    )")
                                .ExtractString());
+}
+
+// Drives `PanelHandler::GetPolkadotSignRequestDetails` end to end: a request
+// queued the way a dapp's `signer.signPayload()` queues one, the real bridge
+// frame decoding it with @polkadot/types, and a stub node pricing the
+// extrinsic the frame hands back. Derives from
+// PolkadotWalletPanelUIBrowserTest for its feature setup and for
+// `BindPanelHandler`, which is what lets these tests hold a
+// `mojom::PanelHandler` without standing up a wallet front-end.
+class PolkadotSignRequestWalletPanelUIBrowserTest
+    : public PolkadotWalletPanelUIBrowserTest {
+ public:
+  PolkadotWalletService* polkadot_wallet_service() {
+    return brave_wallet_service()->GetPolkadotWalletService();
+  }
+
+  mojom::PolkadotBridge* polkadot_bridge() {
+    return GetWebUIController()->GetPolkadotBridge();
+  }
+
+  // Stands PolkadotMockRpc in front of the service's RPC. The service came from
+  // the keyed-service factory already wired to the profile's network stack, so
+  // this seam is the only way to reach it.
+  //
+  // Call this from the test body rather than from setup: the mock CHECKs that
+  // every request carries a chain URL it recognizes, and by the time a test
+  // body runs the panel has finished booting, so none of the panel's own
+  // traffic can trip it. Configure the returned mock, then `FinalizeSetup()`.
+  PolkadotMockRpc* InstallMockRpc() {
+    polkadot_wallet_service()->GetPolkadotRpc()->SetAPIRequestHelperForTesting(
+        polkadot_url_loader_factory_.GetSafeWeakWrapper());
+
+    polkadot_mock_rpc_ = std::make_unique<PolkadotMockRpc>(
+        &polkadot_url_loader_factory_,
+        brave_wallet_service()->network_manager());
+    return polkadot_mock_rpc_.get();
+  }
+
+  // Queues a sign request and returns the id the service assigned it.
+  int32_t AddSignRequest(const std::string& raw_payload_json) {
+    auto request = mojom::SignPolkadotTransactionRequest::New();
+    request->account_id = MakeIndexBasedAccountId(
+        mojom::CoinType::DOT, mojom::KeyringId::kPolkadotMainnet,
+        mojom::AccountKind::kDerived, 0);
+    request->chain_id = mojom::ChainId::New(
+        mojom::CoinType::DOT, std::string(mojom::kPolkadotMainnetAssetHub));
+    request->raw_payload_json = raw_payload_json;
+    request->metadata_bytes =
+        ReadMetadataFixture("state_getMetadata_assethub_polkadot.json");
+    request->chain_properties = mojom::PolkadotChainProperties::New(
+        mojom::OptionalUint16::New(0), std::vector<uint32_t>{10},
+        std::vector<std::string>{"DOT"});
+
+    // Nothing in these tests approves or rejects, so the dapp's callback never
+    // runs.
+    polkadot_wallet_service()->AddSignPolkadotTransactionRequest(
+        std::move(request), base::DoNothing());
+
+    auto pending = polkadot_wallet_service()
+                       ->GetPendingSignPolkadotTransactionRequestsSync();
+    CHECK(!pending.empty());
+    return pending.back()->id;
+  }
+
+  mojom::PolkadotSignRequestDetailsPtr GetSignRequestDetails(
+      int32_t request_id) {
+    mojo::Remote<mojom::PanelHandler> panel_handler;
+    BindPanelHandler(panel_handler);
+    CHECK(panel_handler.is_connected());
+
+    base::test::TestFuture<mojom::PolkadotSignRequestDetailsPtr> future;
+    panel_handler->GetPolkadotSignRequestDetails(request_id,
+                                                 future.GetCallback());
+
+    return future.Take();
+  }
+
+  // The frame is appended and navigated while the panel boots, so whether it
+  // has bound by the time a test body runs is a race. Settling it here keeps a
+  // binding failure from surfacing fifteen seconds later as a null result
+  // indistinguishable from a decode failure.
+  [[nodiscard]] bool WaitForPolkadotBridgeBound() {
+    return base::test::RunUntil(
+        [&]() { return GetWebUIController()->GetPolkadotBridge() != nullptr; });
+  }
+
+  void TearDownOnMainThread() override {
+    // Explicitly clear our PolkadotMockRpc instance here. This is because we
+    // instantiate it with a NetworkManager owned by the BraveWalletService
+    // which is Profile-scoped. This means because we're in a browsertest, the
+    // Profiles are destructed before the destructors of the fixtures are run,
+    // so we'd have a UAF if we skipped this portion of the teardown.
+    polkadot_url_loader_factory_.SetInterceptor({});
+    polkadot_mock_rpc_.reset();
+    PolkadotWalletPanelUIBrowserTest::TearDownOnMainThread();
+  }
+
+  void ExpectAssetHubDetails(
+      const mojom::PolkadotSignRequestDetailsPtr& details) {
+    ASSERT_TRUE(details);
+
+    ASSERT_TRUE(details->fee);
+    EXPECT_EQ(details->fee->partial_fee, Uint128ToMojom(kExpectedPartialFee));
+
+    auto as_human =
+        base::JSONReader::ReadDict(details->as_human, base::JSON_PARSE_RFC);
+    ASSERT_TRUE(as_human) << details->as_human;
+    const auto* section = as_human->FindString("section");
+    const auto* call_method = as_human->FindString("method");
+    ASSERT_TRUE(section);
+    ASSERT_TRUE(call_method);
+    EXPECT_EQ(*section, "polkadotXcm");
+    EXPECT_EQ(*call_method, "execute");
+    EXPECT_TRUE(as_human->Find("args"));
+  }
+
+  void ExpectStoredSignaturePayload(uint32_t request_id) {
+    auto pending =
+        polkadot_wallet_service()->GetPendingSignPolkadotTransactionRequest(
+            request_id);
+    ASSERT_TRUE(pending);
+    ASSERT_TRUE(pending->signature_payload);
+    EXPECT_EQ(base::HexEncodeLower(*pending->signature_payload),
+              kAssetHubSignaturePayloadHex);
+  }
+
+ private:
+  network::TestURLLoaderFactory polkadot_url_loader_factory_;
+  std::unique_ptr<PolkadotMockRpc> polkadot_mock_rpc_;
+};
+
+IN_PROC_BROWSER_TEST_F(PolkadotSignRequestWalletPanelUIBrowserTest,
+                       SignRequestDetails) {
+  ASSERT_TRUE(WaitForPolkadotBridgeBound());
+  InstallMockRpc()->FinalizeSetup();
+
+  const int32_t request_id = AddSignRequest(kAssetHubPayloadJson);
+  auto details = GetSignRequestDetails(request_id);
+  ExpectAssetHubDetails(details);
+  ExpectStoredSignaturePayload(request_id);
+}
+
+IN_PROC_BROWSER_TEST_F(PolkadotSignRequestWalletPanelUIBrowserTest,
+                       SignRequestDetailsBeforeBridgeBinds) {
+  // Prove that our WalletPanelHandler handles the case where a request comes in
+  // before the bridge is established.
+
+  InstallMockRpc()->FinalizeSetup();
+
+  const int32_t request_id = AddSignRequest(kAssetHubPayloadJson);
+
+  // We skip ReloadWalletTab() here because it explicitly calls
+  // WaitForLoadStop(), which means that our Polkadot JS bundle is loaded and
+  // evaluated by the time the function returns.
+  content::TestNavigationManager bridge_nav(wallet(),
+                                            GURL(kUntrustedPolkadotURL));
+  wallet()->GetController().Reload(content::ReloadType::NORMAL, true);
+
+  // Park the request for the iframe's URL here. This means the bundle can not
+  // yet be loaded.
+  ASSERT_TRUE(bridge_nav.WaitForRequestStart());
+  BindWalletPanelToDapp();
+
+  // Because we were likely previously bound, wait for the disconnect
+  // explicitly.
+  ASSERT_TRUE(base::test::RunUntil([&] { return !polkadot_bridge(); }));
+
+  // We manually create the mojo::Remote to the wallet's panel handler and issue
+  // the request.
+  mojo::Remote<mojom::PanelHandler> panel_handler;
+  BindPanelHandler(panel_handler);
+  base::test::TestFuture<mojom::PolkadotSignRequestDetailsPtr> future;
+  panel_handler->GetPolkadotSignRequestDetails(request_id,
+                                               future.GetCallback());
+
+  // Spin until we see the pending request emplaced, proving that our async task
+  // still hasn't completed.
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return HasPendingSignDetailsRequestsWaiting(); }));
+  ASSERT_FALSE(future.IsReady());
+
+  // Finally load the iframe and its JS bundle.
+  ASSERT_TRUE(bridge_nav.WaitForNavigationFinished());
+
+  auto details = future.Take();
+  ExpectAssetHubDetails(details);
+  ExpectStoredSignaturePayload(request_id);
+}
+
+IN_PROC_BROWSER_TEST_F(PolkadotSignRequestWalletPanelUIBrowserTest,
+                       SignRequestDetailsWithoutFee) {
+  // If we fail to grab the estimated execution fee, still pass along the
+  // .asHuman() output.
+
+  ASSERT_TRUE(WaitForPolkadotBridgeBound());
+  auto* mock_rpc = InstallMockRpc();
+  mock_rpc->RejectPaymentInfoRequest();
+  mock_rpc->FinalizeSetup();
+
+  const int32_t request_id = AddSignRequest(kAssetHubPayloadJson);
+  auto details = GetSignRequestDetails(request_id);
+  ASSERT_TRUE(details);
+
+  EXPECT_FALSE(details->fee);
+  EXPECT_TRUE(
+      base::JSONReader::ReadDict(details->as_human, base::JSON_PARSE_RFC))
+      << details->as_human;
+
+  ExpectStoredSignaturePayload(request_id);
+}
+
+IN_PROC_BROWSER_TEST_F(PolkadotSignRequestWalletPanelUIBrowserTest,
+                       SignRequestDetailsUndecodablePayload) {
+  // Prove that our decoding frame can handle invalid input.
+
+  ASSERT_TRUE(WaitForPolkadotBridgeBound());
+  InstallMockRpc()->FinalizeSetup();
+
+  const int32_t request_id = AddSignRequest("not a signer payload");
+  EXPECT_FALSE(GetSignRequestDetails(request_id));
+
+  auto pending =
+      polkadot_wallet_service()->GetPendingSignPolkadotTransactionRequest(
+          request_id);
+  ASSERT_TRUE(pending);
+  EXPECT_FALSE(pending->signature_payload);
+}
+
+IN_PROC_BROWSER_TEST_F(PolkadotSignRequestWalletPanelUIBrowserTest,
+                       SignRequestDetailsUnknownRequestId) {
+  // Prove that querying a non-existent request returns nothing.
+
+  ASSERT_TRUE(WaitForPolkadotBridgeBound());
+  InstallMockRpc()->FinalizeSetup();
+
+  const int32_t request_id = AddSignRequest(kAssetHubPayloadJson);
+  EXPECT_FALSE(GetSignRequestDetails(request_id + 1));
 }
 
 }  // namespace brave_wallet
