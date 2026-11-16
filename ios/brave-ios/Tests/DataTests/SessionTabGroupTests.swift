@@ -61,7 +61,7 @@ class SessionTabGroupTests: CoreDataTestCase {
       title: "Private",
       tabIds: [privateTab, UUID()]
     )
-    waitForPendingWrites()
+    createTab()
 
     XCTAssertTrue(groups().isEmpty)
     XCTAssertNil(SessionTab.from(tabId: privateTab)?.sessionTabGroup)
@@ -78,7 +78,7 @@ class SessionTabGroupTests: CoreDataTestCase {
       title: "Group",
       tabIds: [otherWindowTab]
     )
-    waitForPendingWrites()
+    createTab()
 
     XCTAssertTrue(groups().isEmpty)
     XCTAssertTrue(SessionTabGroup.all(windowId: otherWindowId).isEmpty)
@@ -94,7 +94,7 @@ class SessionTabGroupTests: CoreDataTestCase {
       title: "Group",
       tabIds: [tab]
     )
-    waitForPendingWrites()
+    createTab()
 
     XCTAssertTrue(groups().isEmpty)
     XCTAssertTrue(SessionTabGroup.all(windowId: unknownWindowId).isEmpty)
@@ -112,7 +112,7 @@ class SessionTabGroupTests: CoreDataTestCase {
       title: "Duplicate",
       tabIds: [secondTab]
     )
-    waitForPendingWrites()
+    createTab()
 
     XCTAssertEqual(groups().map(\.title), ["Group"])
     XCTAssertEqual(tabIds(inGroup: groupId), [firstTab])
@@ -167,7 +167,7 @@ class SessionTabGroupTests: CoreDataTestCase {
     let tab = createTab()
 
     SessionTabGroup.add(tabIds: [tab], toGroup: UUID())
-    waitForPendingWrites()
+    createTab()
 
     XCTAssertNil(SessionTab.from(tabId: tab)?.sessionTabGroup)
     XCTAssertTrue(groups().isEmpty)
@@ -284,12 +284,6 @@ class SessionTabGroupTests: CoreDataTestCase {
   private func tabIds(inGroup groupId: UUID) -> Set<UUID> {
     let group = groups().first(where: { $0.groupId == groupId })
     return Set(group?.sessionTabs?.map(\.tabId) ?? [])
-  }
-
-  /// Operations that are rejected don't save anything, so there is nothing to wait for. Writes run
-  /// one after the other though, so once one more write is saved the earlier operation is done.
-  private func waitForPendingWrites() {
-    createTab()
   }
 
   private func createWindow(_ windowId: UUID) {
