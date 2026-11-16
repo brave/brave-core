@@ -74,22 +74,26 @@ _EXIT_CODE = re.compile(r'Process exited with code (\d+)')
 # kept.
 _TIMESTAMP = re.compile(r'^\[\d\d:\d\d:\d\d\]', re.MULTILINE)
 
+# Colours a build's output keeps in its log messages, where TeamCity turns
+# their escape character into a space.
+_ANSI_ESCAPE = re.compile(r'[\x1b ]?\[\d+(?:;\d+)*m')
 
-def _failed_step_tail(log: str) -> str:
-    """The lines of a build log leading up to the first step that exited
-    non-zero, or the log's last lines when none did.
+# The most messages the build log viewer's endpoint returns at once.
+_MESSAGES_PER_PAGE = 100
 
-    A build's last steps are usually cleanup, so its last lines rarely say
-    why it failed.
-    """
-    log_lines = log.splitlines()
-    end = len(log_lines)
-    for index, line in enumerate(log_lines):
-        match = _EXIT_CODE.search(line)
-        if match and match[1] != '0':
-            end = index + 1
-            break
-    return '\n'.join(log_lines[max(0, end - failures.LOG_TAIL_LINES) : end])
+# How long a CLI call may take. A whole build log is rendered as it is sent,
+# and a build with thousands of tests logs tens of megabytes, which can take
+# much longer than any other call.
+_CLI_TIMEOUT = 120
+_FULL_LOG_TIMEOUT = 900
+
+
+class TeamCityError(RuntimeError):
+    """A CLI call that failed or timed out, with what the CLI said."""
+
+
+def _message_text(message: dict) -> str:
+    return _ANSI_ESCAPE.sub('', message.get('text') or '')
 
 
 def _build_id(url: str) -> int:
@@ -107,21 +111,94 @@ class TeamCityCi:
     ) -> None:
         self._run = run
 
-    def _cli(self, *args: str, write: bool = False) -> str:
+    def _cli(
+        self, *args: str, write: bool = False, timeout: int = _CLI_TIMEOUT
+    ) -> str:
         env = {**os.environ, 'NO_COLOR': '1', 'TEAMCITY_NO_UPDATE': '1'}
         if not write:
             env['TEAMCITY_RO'] = '1'
-        return self._run(
-            ['teamcity', *args],
-            check=True,
-            capture_output=True,
-            text=True,
-            encoding='utf-8',
-            env=env,
-        ).stdout
+        try:
+            return self._run(
+                ['teamcity', *args],
+                check=True,
+                capture_output=True,
+                text=True,
+                encoding='utf-8',
+                env=env,
+                timeout=timeout,
+            ).stdout
+        except subprocess.TimeoutExpired as e:
+            raise TeamCityError(
+                f'`teamcity {" ".join(args)}` took over {timeout}s'
+            ) from e
+        except subprocess.CalledProcessError as e:
+            said = failures.tail((e.stderr or e.stdout or '').strip(), 5)
+            raise TeamCityError(
+                f'`teamcity {" ".join(args)}` exited with {e.returncode}'
+                + (f': {said}' if said else '')
+            ) from e
 
     def _api(self, path: str) -> dict:
         return json.loads(self._cli('api', '--raw', path))
+
+    def _messages(self, build: int, query: str) -> list[dict]:
+        """A page of build `build`'s log messages, every block expanded, as
+        the build log viewer reads them: up to `_MESSAGES_PER_PAGE` from the
+        `messageId` given, or the build's errors with `filter=err`."""
+        return self._api(
+            f'/app/messages?buildId={build}&expandAll=true&{query}'
+        ).get('messages', [])
+
+    def _failed_step_log(self, build: int) -> str:
+        """The last lines of the first step that exited non-zero, read without
+        the whole log, which a build with thousands of tests makes too big to
+        download. Empty when no step did.
+
+        A message's id is its position in the log, so the page that ends at
+        the step's exit line is the end of the step. The build's other
+        errors, a `glog` fatal line above the tail among them, are logged as
+        errors too.
+        """
+        errors = self._messages(build, 'filter=err')
+        exit_line = next(
+            (
+                message
+                for message in errors
+                if (match := _EXIT_CODE.search(_message_text(message)))
+                and match[1] != '0'
+            ),
+            None,
+        )
+        if exit_line is None:
+            return ''
+        step = next(
+            (
+                message['id']
+                for message in errors
+                if message.get('blockType') == 'teamcity-build-step-type'
+                and message['id'] < exit_line['id']
+            ),
+            0,
+        )
+        start = max(step, exit_line['id'] - _MESSAGES_PER_PAGE + 1)
+        page = self._messages(
+            build,
+            f'filter=all&messageId={start}&count={_MESSAGES_PER_PAGE}',
+        )
+        lines = [
+            _message_text(message)
+            for message in page
+            if start <= message['id'] <= exit_line['id']
+        ]
+        return failures.with_fatal_line(
+            '\n'.join(map(_message_text, errors)),
+            '\n'.join(lines[-failures.LOG_TAIL_LINES :]),
+        )
+
+    def failed_step_log(self, url: str) -> str:
+        """The end of the failed step of the build at `url`, as a report has
+        it: the part of the log that says why it failed."""
+        return self._failed_step_log(_build_id(url))
 
     def failed_builds(self, url: str) -> list[FailedBuild]:
         """The builds that failed in the chain of the aggregate at `url`, or
@@ -166,8 +243,11 @@ class TeamCityCi:
         tests = self._failed_tests(teamcity_id, branch)
         log_tail = ''
         if step_problems:
-            log = self._log(teamcity_id, timestamps=False)
-            log_tail = failures.with_fatal_line(log, _failed_step_tail(log))
+            try:
+                log_tail = self._failed_step_log(teamcity_id)
+            except (TeamCityError, ValueError, KeyError) as e:
+                # The rest of what failed still says much of why.
+                log_tail = f"(The failed step's log could not be read: {e})"
         dependencies = (build.get('snapshot-dependencies') or {}).get(
             'build'
         ) or []
@@ -293,12 +373,13 @@ class TeamCityCi:
 
     def full_log(self, url: str, *, timestamps: bool = True) -> str:
         """The whole build log of the build at `url`, without its lines'
-        timestamps if asked."""
-        return self._log(_build_id(url), timestamps=timestamps)
-
-    def _log(self, build: int, *, timestamps: bool) -> str:
+        timestamps if asked. Slow for a big build: `failed_step_log` reads
+        its end."""
         log = self._cli(
-            'api', '--raw', f'/downloadBuildLog.html?buildId={build}&plain=true'
+            'api',
+            '--raw',
+            f'/downloadBuildLog.html?buildId={_build_id(url)}&plain=true',
+            timeout=_FULL_LOG_TIMEOUT,
         )
         return log if timestamps else _TIMESTAMP.sub('', log)
 

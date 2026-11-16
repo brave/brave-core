@@ -12,10 +12,12 @@ Subcommands:
     failures PR [--output FILE]
         Reports what failed behind each failed check: the failed builds,
         their problems, failed tests, and the end of the failed step's log.
-    log URL --output FILE [--no-timestamps]
+    log URL --output FILE [--no-timestamps] [--failed-step]
         Writes the whole log of the build at URL (a check's link, or a build
         `failures` lists) to FILE, for what the report's log tail cuts.
-        `--no-timestamps` leaves out its lines' timestamps.
+        `--no-timestamps` leaves out its lines' timestamps. For a TeamCity
+        build, `--failed-step` writes only the end of the step that failed,
+        read without downloading the whole log.
     rerun URL [--wipe-workspace]
         Queues the build at URL (a check's link) again. For TeamCity, an
         aggregate reruns its failed dependencies; for GitHub Actions, the job
@@ -56,7 +58,10 @@ def _cmd_failures(args: argparse.Namespace) -> int:
 
 
 def _cmd_log(args: argparse.Namespace) -> int:
-    log = systems.full_log(args.url, timestamps=args.timestamps)
+    if args.failed_step:
+        log = systems.failed_step_log(args.url)
+    else:
+        log = systems.full_log(args.url, timestamps=args.timestamps)
     args.output.write_text(log, encoding='utf-8', newline='')
     print(f'{len(log.splitlines())} lines written to {args.output}')
     return 0
@@ -90,6 +95,13 @@ def main() -> int:
         default=True,
         help="Keep the lines' timestamps, which tell when things happened "
         '(--no-timestamps leaves them out, to save context).',
+    )
+    log.add_argument(
+        '--failed-step',
+        action='store_true',
+        help="Only the end of the step that failed, without the whole log, "
+        'which a TeamCity build with thousands of tests takes many minutes '
+        'to download (TeamCity only).',
     )
     log.set_defaults(func=_cmd_log)
     rerun = subparsers.add_parser('rerun', help='Queue a build again.')

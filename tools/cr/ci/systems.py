@@ -69,6 +69,15 @@ def full_log(url: str, *, timestamps: bool = True) -> str:
     return _for(url).full_log(url, timestamps=timestamps)
 
 
+def failed_step_log(url: str) -> str:
+    """The end of the failed step of the build at `url`, without the whole
+    log. TeamCity only: Jenkins and GitHub Actions logs are read whole."""
+    client = _for(url)
+    if not isinstance(client, TeamCityCi):
+        raise Unsupported('--failed-step is for TeamCity only.')
+    return client.failed_step_log(url)
+
+
 def rerun(url: str, *, wipe_workspace: bool = False) -> str:
     """Queues the build at `url` again, and says so. For TeamCity, an
     aggregate reruns its failed dependencies; for GitHub Actions, the job

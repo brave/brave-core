@@ -51,6 +51,38 @@ def _builds(*builds):
     return {'build': list(builds)}
 
 
+def _log_messages(
+    build: int, lines: list[str], *, step: int = 1, errors: tuple[int, ...] = ()
+) -> dict[str, object]:
+    """`FakeCli` answers for a build log of `lines`, the `n`th line message
+    `n`, as the build log viewer's endpoint gives it: the errors (the failed
+    step's block, from message `step`, its exit line and the messages in
+    `errors`), and a page of every message, which the client cuts to the
+    ids it asked for."""
+    messages = [
+        {'id': index, 'text': text} for index, text in enumerate(lines, 1)
+    ]
+    failed = [
+        message
+        for message in messages
+        if message['id'] in errors
+        or (
+            (match := teamcity._EXIT_CODE.search(message['text']))
+            and match[1] != '0'
+        )
+    ]
+    block = {
+        'id': step,
+        'blockType': 'teamcity-build-step-type',
+        'text': lines[step - 1],
+    }
+    prefix = f'/app/messages?buildId={build}&expandAll=true&filter='
+    return {
+        f'{prefix}err': {'messages': [block, *failed]},
+        f'{prefix}all&messageId=': {'messages': messages},
+    }
+
+
 def _url(build: int) -> str:
     return f'https://teamcity.brave.com:443/buildConfiguration/X/{build}'
 
@@ -76,26 +108,92 @@ class BuildIdTest(unittest.TestCase):
             teamcity._build_id('https://ci.brave.com/job/x/1/')
 
 
-class FailedStepTailTest(unittest.TestCase):
-    def test_stops_at_the_first_failed_step(self):
-        log = '\n'.join(
-            [f'[Step 1/3] spew {i}' for i in range(100)]
+class FailedStepLogTest(unittest.TestCase):
+    def test_reads_the_end_of_the_failed_step_only(self):
+        lines = (
+            ['Step 1/3: build']
+            + [f'spew {i}' for i in range(200)]
             + [
-                '[Step 2/3] error: it broke',
-                '[Step 2/3] Process exited with code 1',
-                '[Step 3/3] cleanup',
-                '[Step 3/3] Process exited with code 0',
+                'error: it broke',
+                'Process exited with code 1',
+                'Step 3/3: cleanup',
+                'Process exited with code 0',
             ]
         )
-        tail = teamcity._failed_step_tail(log).splitlines()
+        cli = FakeCli(_log_messages(7, lines))
+        tail = (
+            teamcity.TeamCityCi(run=cli).failed_step_log(_url(7)).splitlines()
+        )
         self.assertEqual(len(tail), failures.LOG_TAIL_LINES)
-        self.assertEqual(tail[-1], '[Step 2/3] Process exited with code 1')
+        self.assertEqual(
+            tail[-2:], ['error: it broke', 'Process exited with code 1']
+        )
+        # One page, ending at the exit line, and no whole log.
+        paths = [cmd[-1] for cmd, _ in cli.calls]
+        self.assertEqual(len(paths), 2)
+        self.assertIn('&messageId=104&count=100', paths[1])
+        self.assertFalse(any('downloadBuildLog' in path for path in paths))
 
-    def test_without_a_failed_step_takes_the_end(self):
-        log = '\n'.join(f'line {i}' for i in range(100))
-        tail = teamcity._failed_step_tail(log).splitlines()
-        self.assertEqual(len(tail), failures.LOG_TAIL_LINES)
-        self.assertEqual(tail[-1], 'line 99')
+    def test_stays_within_the_step(self):
+        lines = [
+            'Step 1/2: setup',
+            'Step 2/2: lint',
+            'Process exited with code 2',
+        ]
+        cli = FakeCli(_log_messages(7, lines, step=2))
+        self.assertEqual(
+            teamcity.TeamCityCi(run=cli).failed_step_log(_url(7)),
+            'Step 2/2: lint\nProcess exited with code 2',
+        )
+
+    def test_drops_the_colours(self):
+        """TeamCity turns the escape character into a space."""
+        lines = [
+            'Step 1/1: storybook',
+            '\x1b[38;2;241;97;97m[tsl] ERROR in x.ts(1,2)\x1b[39m',
+            ' [38;2;241;97;97m=> Failed to build the preview [39m',
+            'Process exited with code 1',
+        ]
+        cli = FakeCli(_log_messages(7, lines))
+        self.assertEqual(
+            teamcity.TeamCityCi(run=cli).failed_step_log(_url(7)),
+            'Step 1/1: storybook\n[tsl] ERROR in x.ts(1,2)\n'
+            '=> Failed to build the preview\nProcess exited with code 1',
+        )
+
+    def test_nothing_without_a_failed_step(self):
+        cli = FakeCli(_log_messages(7, ['Step 1/1: build', 'done']))
+        self.assertEqual(
+            teamcity.TeamCityCi(run=cli).failed_step_log(_url(7)), ''
+        )
+
+
+class CliTest(unittest.TestCase):
+    def test_a_failure_says_what_the_cli_said(self):
+        def run(cmd, **kwargs):
+            raise subprocess.CalledProcessError(
+                1, cmd, output='', stderr='Error: 502 Bad Gateway\n'
+            )
+
+        with self.assertRaisesRegex(
+            teamcity.TeamCityError, r'exited with 1: Error: 502 Bad Gateway'
+        ):
+            teamcity.TeamCityCi(run=run).full_log(_url(7))
+
+    def test_calls_time_out(self):
+        timeouts = []
+
+        def run(cmd, **kwargs):
+            timeouts.append(kwargs['timeout'])
+            raise subprocess.TimeoutExpired(cmd, kwargs['timeout'])
+
+        ci = teamcity.TeamCityCi(run=run)
+        with self.assertRaisesRegex(teamcity.TeamCityError, 'took over'):
+            ci.full_log(_url(7))
+        with self.assertRaises(teamcity.TeamCityError):
+            ci.failed_step_log(_url(7))
+        # A whole log takes longer than any other call.
+        self.assertGreater(timeouts[0], timeouts[1])
 
 
 class FailedBuildsTest(unittest.TestCase):
@@ -160,7 +258,7 @@ class FailedBuildsTest(unittest.TestCase):
                         },
                     ]
                 },
-                '/downloadBuildLog.html?buildId=11': _LOG,
+                **_log_messages(11, _LOG.splitlines()),
             }
         )
         builds = teamcity.TeamCityCi(run=cli).failed_builds(_url(10))
@@ -190,14 +288,15 @@ class FailedBuildsTest(unittest.TestCase):
         self.assertTrue(all(env['TEAMCITY_RO'] == '1' for _, env in cli.calls))
 
     def test_a_fatal_line_above_the_failed_step_leads_the_tail(self):
+        """It is one of the build's errors, which come without the log."""
         fatal = (
             'F1108 13:30:24.969724   11708 glog.go:261] log: exiting: '
             'There is not enough space on the disk.'
         )
-        log = '\n'.join(
-            [f'[Step 1/2] {fatal}']
-            + ['[Step 1/2] I1108 spew'] * 100
-            + ['[Step 1/2] Process exited with code 1']
+        lines = (
+            ['Step 1/2: build', fatal]
+            + ['I1108 spew'] * 200
+            + ['Process exited with code 1']
         )
         cli = FakeCli(
             {
@@ -207,12 +306,43 @@ class FailedBuildsTest(unittest.TestCase):
                     'problemOccurrence': [{'type': 'TC_EXIT_CODE'}]
                 },
                 '/app/rest/testOccurrences': {},
-                '/downloadBuildLog.html?buildId=30': log,
+                **_log_messages(30, lines, errors=(2,)),
             }
         )
         [build] = teamcity.TeamCityCi(run=cli).failed_builds(_url(30))
         self.assertTrue(build.log_tail.startswith(f'{fatal}\n[...]\n'))
         self.assertEqual(build.kind, Kind.INFRA)
+
+    def test_a_log_that_cannot_be_read_keeps_the_rest_of_the_build(self):
+        def run(cmd, **kwargs):
+            if '/app/messages' in cmd[-1]:
+                raise subprocess.TimeoutExpired(cmd, kwargs['timeout'])
+            return FakeCli(
+                {
+                    '/app/rest/builds?locator=': {},
+                    '/app/rest/builds/id:31': {
+                        'id': 31,
+                        'buildTypeId': 'Build',
+                    },
+                    '/app/rest/problemOccurrences': {
+                        'problemOccurrence': [
+                            {
+                                'type': 'TC_EXIT_CODE',
+                                'details': 'Process exited with code 1',
+                            }
+                        ]
+                    },
+                    '/app/rest/testOccurrences': {},
+                }
+            )(cmd, **kwargs)
+
+        [build] = teamcity.TeamCityCi(run=run).failed_builds(_url(31))
+        self.assertEqual(build.problems, ('Process exited with code 1',))
+        self.assertTrue(
+            build.log_tail.startswith(
+                "(The failed step's log could not be read: "
+            )
+        )
 
     def test_full_log(self):
         cli = FakeCli({'/downloadBuildLog.html?buildId=7&plain=true': _LOG})
@@ -359,7 +489,7 @@ class FailedBuildsTest(unittest.TestCase):
                     'problemOccurrence': [{'type': 'TC_EXIT_CODE'}]
                 },
                 '/app/rest/testOccurrences': {},
-                '/downloadBuildLog.html?buildId=41': _LOG,
+                **_log_messages(41, _LOG.splitlines()),
                 '/app/rest/builds?locator=buildType:(id:Ios_Test)': _builds(
                     {'id': 41, 'status': 'FAILURE'},
                     {
