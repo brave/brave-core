@@ -233,6 +233,7 @@ source_set("unit_tests") {
       "//chrome/app:command_ids",
       "//chrome/browser/child_module",
       "//chrome/browser/default_browser",
+      "//chrome/browser/password_manager/password_change:features",
       "//chrome/browser/sharing_hub",
       "//chrome/browser/ui:accelerator_table",
       "//chrome/browser/ui/toasts",
