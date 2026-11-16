@@ -1260,21 +1260,21 @@ TEST_F(SolanaProviderImplUnitTest, Request) {
       l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR));
   EXPECT_TRUE(result.empty());
 
-  // errors should be propagated; no wallet or selected account exists here.
+  // errors should be propagated; no connected account exists here.
   for (const std::string& method :
        {"signTransaction", "signAndSendTransaction"}) {
     result = Request(absl::StrFormat(R"({"method": "%s",
                                          "params": {"message": "%s"}})",
                                      method, kEncodedSerializedMsg),
-                     mojom::SolanaProviderError::kInternalError,
-                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+                     mojom::SolanaProviderError::kUnauthorized,
+                     l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
     EXPECT_TRUE(result.empty());
   }
   result = Request(absl::StrFormat(R"({"method": "signAllTransactions",
                                        "params": {"message": ["%s"]}})",
                                    kEncodedSerializedMsg),
-                   mojom::SolanaProviderError::kInternalError,
-                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+                   mojom::SolanaProviderError::kUnauthorized,
+                   l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
   EXPECT_TRUE(result.empty());
 
   // signMessage requires a blob message, a string is a parsing error.

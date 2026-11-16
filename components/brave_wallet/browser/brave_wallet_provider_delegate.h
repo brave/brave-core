@@ -27,7 +27,7 @@ class BraveWalletProviderDelegate {
   BraveWalletProviderDelegate(const BraveWalletProviderDelegate&) = delete;
   BraveWalletProviderDelegate& operator=(const BraveWalletProviderDelegate&) =
       delete;
-  virtual ~BraveWalletProviderDelegate() = default;
+  virtual ~BraveWalletProviderDelegate();
 
   virtual bool IsTabVisible() = 0;
   virtual void ShowPanel(const url::Origin& origin) = 0;
