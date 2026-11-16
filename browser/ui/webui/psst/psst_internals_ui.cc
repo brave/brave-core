@@ -27,7 +27,7 @@ bool PsstInternalsUIConfig::IsWebUIEnabled(
 PsstInternalsUI::PsstInternalsUI(content::WebUI* web_ui)
     : content::WebUIController(web_ui),
       handler_(
-          PsstLogServiceFactory::GetForProfile(Profile::FromWebUI(web_ui)),
+          PsstLogServiceFactory::GetForBrowserContext(Profile::FromWebUI(web_ui)),
           PsstSettingsServiceFactory::GetForProfile(Profile::FromWebUI(web_ui)),
           Profile::FromWebUI(web_ui)->GetPrefs()) {
   CreateAndAddWebUIDataSource(web_ui, kPsstInternalsHost,
