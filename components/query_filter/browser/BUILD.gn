@@ -9,8 +9,6 @@ static_library("browser") {
     "query_filter_component_installer.h",
     "query_filter_data.cc",
     "query_filter_data.h",
-    "query_filter_throttle.cc",
-    "query_filter_throttle.h",
     "utils.cc",
     "utils.h",
   ]
@@ -20,7 +18,6 @@ static_library("browser") {
     "//brave/components/query_filter/common:schema",
     "//components/component_updater",
     "//components/update_client",
-    "//third_party/blink/public/common",
     "//url",
   ]
 
@@ -36,6 +33,24 @@ static_library("browser") {
   ]
 }
 
+source_set("throttle") {
+  sources = [
+    "query_filter_throttle.cc",
+    "query_filter_throttle.h",
+  ]
+
+  public_deps = [ "//third_party/blink/public/common" ]
+
+  deps = [
+    ":browser",
+    "//base",
+    "//brave/components/brave_shields/core/browser",
+    "//net",
+    "//services/network/public/cpp",
+    "//url",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
 
@@ -48,6 +63,7 @@ source_set("unit_tests") {
 
   deps = [
     ":browser",
+    ":throttle",
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_component_updater/browser:test_support",
