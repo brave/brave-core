@@ -31,11 +31,16 @@ export default class EnvConfig {
    * Creates a new EnvConfig instance and loads all configuration files.
    *
    * @param configDir - Directory containing package.json and .env files
+   * @param dotenvConfig - The variables from .env files, read from them if not
+   *     given
    */
-  constructor(configDir: string) {
+  constructor(
+    configDir: string,
+    dotenvConfig: NodeJS.Dict<string> = EnvConfig.#loadDotenvConfig(configDir),
+  ) {
     this.#configDir = configDir
     this.#packageJson = EnvConfig.#loadPackageJson(configDir)
-    this.#dotenvConfig = EnvConfig.#loadDotenvConfig(configDir)
+    this.#dotenvConfig = dotenvConfig
   }
 
   /**

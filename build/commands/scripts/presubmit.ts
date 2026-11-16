@@ -6,11 +6,13 @@
 import '../lib/checkEnvironment.js'
 
 import { Command, Option } from 'commander'
+import { installConfig } from '../lib/program.ts'
 import { parseInteger } from '../lib/commandsUtils.ts'
 import config from '../lib/config.ts'
 import util from '../lib/util.ts'
 
 const program = new Command()
+  .apply(installConfig)
   .option('--base <base branch>', 'set the destination branch for the PR')
   .option(
     '--all [mode]',

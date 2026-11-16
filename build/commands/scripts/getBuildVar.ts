@@ -6,7 +6,8 @@
 // Check environment before doing anything.
 import '../lib/checkEnvironment.js'
 
-import { Argument, program } from 'commander'
+import { Argument } from 'commander'
+import { program } from '../lib/program.ts'
 import * as buildOptions from '../lib/buildOptions.ts'
 import config, { type Config } from '../lib/config.ts'
 

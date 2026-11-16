@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import config from './config.ts'
+import { Config } from './config.ts'
 import os from 'node:os'
 import path from 'node:path/posix'
 import fs from 'node:fs'
@@ -21,7 +21,9 @@ const extraArchitectures = ['arm64', 'x86']
 //    storybook.
 
 // This uses environment variables as there is currently no way to pass custom
-// arguments to the |storybook build| cli.
+// arguments to the |storybook build| cli. It is run by webpack configs and
+// tests, outside of a command-line script, so it reads its own config.
+const config = Config.load()
 config.update({
   target_arch: /** @type {any} */ (process.env.TARGET_ARCH),
   target_os: /** @type {any} */ (process.env.TARGET_OS),
