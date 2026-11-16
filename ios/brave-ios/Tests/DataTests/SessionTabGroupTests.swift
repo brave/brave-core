@@ -14,11 +14,7 @@ class SessionTabGroupTests: CoreDataTestCase {
 
   override func setUp() {
     super.setUp()
-    DataController.shared.initializeOnce()
-
-    let windowCreated = expectation(forNotification: .NSManagedObjectContextDidSave, object: nil)
-    SessionWindow.createWindow(isSelected: true, uuid: windowId)
-    wait(for: [windowCreated], timeout: 5)
+    createWindow(windowId)
   }
 
   // MARK: - Create
@@ -28,14 +24,16 @@ class SessionTabGroupTests: CoreDataTestCase {
     let secondTab = createTab()
     let groupId = UUID()
 
-    SessionTabGroup.create(
-      groupId: groupId,
-      windowId: windowId,
-      title: "Group",
-      tabIds: [firstTab, secondTab]
-    )
-    waitUntil { self.groups().count == 1 }
+    backgroundSaveAndWaitForExpectation {
+      SessionTabGroup.create(
+        groupId: groupId,
+        windowId: windowId,
+        title: "Group",
+        tabIds: [firstTab, secondTab]
+      )
+    }
 
+    XCTAssertEqual(groups().count, 1)
     let group = groups()[0]
     XCTAssertEqual(group.groupId, groupId)
     XCTAssertEqual(group.title, "Group")
@@ -63,18 +61,15 @@ class SessionTabGroupTests: CoreDataTestCase {
       title: "Private",
       tabIds: [privateTab, UUID()]
     )
-    // Operations run in order, so once this group exists the one above has been handled
-    createGroup(title: "Regular", tabs: [createTab()])
+    waitForPendingWrites()
 
-    XCTAssertEqual(groups().map(\.title), ["Regular"])
+    XCTAssertTrue(groups().isEmpty)
     XCTAssertNil(SessionTab.from(tabId: privateTab)?.sessionTabGroup)
   }
 
   func testCreateGroupIgnoresTabsFromAnotherWindow() {
     let otherWindowId = UUID()
-    let windowCreated = expectation(forNotification: .NSManagedObjectContextDidSave, object: nil)
-    SessionWindow.createWindow(isSelected: false, uuid: otherWindowId)
-    wait(for: [windowCreated], timeout: 5)
+    createWindow(otherWindowId)
     let otherWindowTab = createTab(windowId: otherWindowId)
 
     SessionTabGroup.create(
@@ -83,9 +78,9 @@ class SessionTabGroupTests: CoreDataTestCase {
       title: "Group",
       tabIds: [otherWindowTab]
     )
-    createGroup(title: "Regular", tabs: [createTab()])
+    waitForPendingWrites()
 
-    XCTAssertEqual(groups().map(\.title), ["Regular"])
+    XCTAssertTrue(groups().isEmpty)
     XCTAssertTrue(SessionTabGroup.all(windowId: otherWindowId).isEmpty)
   }
 
@@ -111,8 +106,9 @@ class SessionTabGroupTests: CoreDataTestCase {
     let secondTab = createTab()
     let groupId = createGroup(title: "Group", tabs: [firstTab])
 
-    SessionTabGroup.add(tabIds: [secondTab], toGroup: groupId)
-    waitUntil { self.tabIds(inGroup: groupId).count == 2 }
+    backgroundSaveAndWaitForExpectation {
+      SessionTabGroup.add(tabIds: [secondTab], toGroup: groupId)
+    }
 
     XCTAssertEqual(tabIds(inGroup: groupId), [firstTab, secondTab])
   }
@@ -124,8 +120,9 @@ class SessionTabGroupTests: CoreDataTestCase {
     let firstGroupId = createGroup(title: "First", tabs: [firstTab])
     let secondGroupId = createGroup(title: "Second", tabs: [secondTab, thirdTab])
 
-    SessionTabGroup.add(tabIds: [firstTab], toGroup: secondGroupId)
-    waitUntil { self.groups().count == 1 }
+    backgroundSaveAndWaitForExpectation {
+      SessionTabGroup.add(tabIds: [firstTab], toGroup: secondGroupId)
+    }
 
     XCTAssertFalse(groups().contains(where: { $0.groupId == firstGroupId }))
     XCTAssertEqual(tabIds(inGroup: secondGroupId), [firstTab, secondTab, thirdTab])
@@ -135,10 +132,10 @@ class SessionTabGroupTests: CoreDataTestCase {
     let tab = createTab()
 
     SessionTabGroup.add(tabIds: [tab], toGroup: UUID())
-    createGroup(title: "Group", tabs: [createTab()])
+    waitForPendingWrites()
 
     XCTAssertNil(SessionTab.from(tabId: tab)?.sessionTabGroup)
-    XCTAssertEqual(groups().count, 1)
+    XCTAssertTrue(groups().isEmpty)
   }
 
   // MARK: - Rename
@@ -146,8 +143,9 @@ class SessionTabGroupTests: CoreDataTestCase {
   func testRenameGroup() {
     let groupId = createGroup(title: "Group", tabs: [createTab()])
 
-    SessionTabGroup.rename(groupId: groupId, title: "Renamed")
-    waitUntil { self.groups().first?.title == "Renamed" }
+    backgroundSaveAndWaitForExpectation {
+      SessionTabGroup.rename(groupId: groupId, title: "Renamed")
+    }
 
     XCTAssertEqual(groups().map(\.title), ["Renamed"])
   }
@@ -159,9 +157,11 @@ class SessionTabGroupTests: CoreDataTestCase {
     let secondTab = createTab()
     let groupId = createGroup(title: "Group", tabs: [firstTab, secondTab])
 
-    SessionTabGroup.delete(groupId: groupId)
-    waitUntil { self.groups().isEmpty }
+    backgroundSaveAndWaitForExpectation {
+      SessionTabGroup.delete(groupId: groupId)
+    }
 
+    XCTAssertTrue(groups().isEmpty)
     XCTAssertNotNil(SessionTab.from(tabId: firstTab))
     XCTAssertNotNil(SessionTab.from(tabId: secondTab))
     XCTAssertNil(SessionTab.from(tabId: firstTab)?.sessionTabGroup)
@@ -175,12 +175,15 @@ class SessionTabGroupTests: CoreDataTestCase {
     let keptGroupId = createGroup(title: "Kept", tabs: [keptTab])
 
     // Deleting a tab doesn't delete its group
-    SessionTab.deleteAll(tabIds: [emptiedTab])
-    waitUntil { SessionTab.from(tabId: emptiedTab) == nil }
+    backgroundSaveAndWaitForExpectation {
+      SessionTab.deleteAll(tabIds: [emptiedTab])
+    }
+    XCTAssertNil(SessionTab.from(tabId: emptiedTab))
     XCTAssertEqual(groups().count, 2)
 
-    SessionTabGroup.deleteAllEmpty()
-    waitUntil { self.groups().count == 1 }
+    backgroundSaveAndWaitForExpectation {
+      SessionTabGroup.deleteAllEmpty()
+    }
 
     XCTAssertEqual(groups().map(\.groupId), [keptGroupId])
     XCTAssertEqual(tabIds(inGroup: keptGroupId), [keptTab])
@@ -197,39 +200,39 @@ class SessionTabGroupTests: CoreDataTestCase {
     return Set(group?.sessionTabs?.map(\.tabId) ?? [])
   }
 
+  /// Operations that are rejected don't save anything, so there is nothing to wait for. Writes run
+  /// one after the other though, so once one more write is saved the earlier operation is done.
+  private func waitForPendingWrites() {
+    createTab()
+  }
+
+  private func createWindow(_ windowId: UUID) {
+    backgroundSaveAndWaitForExpectation {
+      SessionWindow.createWindow(isSelected: true, uuid: windowId)
+    }
+  }
+
   @discardableResult
   private func createTab(isPrivate: Bool = false, windowId: UUID? = nil) -> UUID {
     let tabId = UUID()
-    SessionTab.createIfNeeded(
-      windowId: windowId ?? self.windowId,
-      tabId: tabId,
-      title: "Tab",
-      tabURL: URL(string: "https://brave.com")!,
-      isPrivate: isPrivate
-    )
-    waitUntil { SessionTab.from(tabId: tabId) != nil }
+    backgroundSaveAndWaitForExpectation {
+      SessionTab.createIfNeeded(
+        windowId: windowId ?? self.windowId,
+        tabId: tabId,
+        title: "Tab",
+        tabURL: URL(string: "https://brave.com")!,
+        isPrivate: isPrivate
+      )
+    }
     return tabId
   }
 
-  /// Creates a group and waits until it has been saved
   @discardableResult
   private func createGroup(title: String, tabs: [UUID]) -> UUID {
     let groupId = UUID()
-    SessionTabGroup.create(groupId: groupId, windowId: windowId, title: title, tabIds: tabs)
-    waitUntil { self.tabIds(inGroup: groupId).count == tabs.count }
+    backgroundSaveAndWaitForExpectation {
+      SessionTabGroup.create(groupId: groupId, windowId: windowId, title: title, tabIds: tabs)
+    }
     return groupId
-  }
-
-  private func waitUntil(
-    file: StaticString = #filePath,
-    line: UInt = #line,
-    _ condition: @escaping () -> Bool
-  ) {
-    let expectation = XCTNSPredicateExpectation(
-      predicate: NSPredicate { _, _ in condition() },
-      object: nil
-    )
-    let result = XCTWaiter().wait(for: [expectation], timeout: 5)
-    XCTAssertEqual(result, .completed, file: file, line: line)
   }
 }
