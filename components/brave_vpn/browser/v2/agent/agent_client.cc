@@ -431,8 +431,9 @@ void AgentClient::OnBindBrowserHostResult(mojom::BindBrowserHostResult result) {
         base::WeakPtr<AgentClient> weak_this = weak_factory_.GetWeakPtr();
         observers_.Notify(&Observer::OnAgentConnected);
         // Observers know about the session now, so let the agent's calls
-        // through, unless one of them tore the client down from inside the
-        // notification.
+        // through. |weak_this| is null if one of them destroyed the client from
+        // inside the notification. Reset() invalidates the same factory, so the
+        // weak pointer would be null after that too.
         if (weak_this) {
           endpoint_receiver_.Resume();
         }

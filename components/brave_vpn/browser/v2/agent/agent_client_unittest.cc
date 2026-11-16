@@ -14,6 +14,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
+#include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/brave_vpn/browser/v2/agent/test/fake_agent.h"
@@ -51,6 +52,9 @@ class TestObserver : public AgentClient::Observer {
  public:
   void OnAgentConnected() override {
     ++connected_count_;
+    if (on_connected_) {
+      std::move(on_connected_).Run();
+    }
     Notify();
   }
 
@@ -82,6 +86,12 @@ class TestObserver : public AgentClient::Observer {
     on_notification_ = std::move(on_notification);
   }
 
+  // Runs once, from inside the next OnAgentConnected(): for a test that needs
+  // to act while the client is still in the middle of announcing the session.
+  void set_on_connected(base::OnceClosure on_connected) {
+    on_connected_ = std::move(on_connected);
+  }
+
   int connected_count() const { return connected_count_; }
   int session_stable_count() const { return session_stable_count_; }
   int disconnected_count() const { return disconnected_count_; }
@@ -105,6 +115,7 @@ class TestObserver : public AgentClient::Observer {
   int not_running_count_ = 0;
   std::optional<AgentClient::Error> last_connection_error_;
   base::RepeatingClosure on_notification_;
+  base::OnceClosure on_connected_;
 };
 
 // Stands in for the service on the receiving end of the agent's calls. Records
@@ -1097,6 +1108,29 @@ TEST_F(AgentClientTest, TwoClientsGetIndependentSessions) {
   EXPECT_EQ(agent_.connection_count(), 1u);
 
   second_client->RemoveObserver(&second_observer);
+}
+
+TEST_F(AgentClientTest, DestroyedFromConnectedNotificationIsSafe) {
+  agent_.set_bind_browser_host_result(std::nullopt);
+  client_->EnsureConnected();
+  task_environment_.FastForwardBy(kTimeBriefly);
+  ASSERT_TRUE(agent_.has_held_bind_browser_host_request());
+
+  // Something for the client to let through, were it to carry on.
+  AgentReportsConnectionState(mojom::VpnConnectionState::kConnected);
+
+  observer_.set_on_connected(
+      base::BindLambdaForTesting([&] { client_.reset(); }));
+  agent_.AnswerHeldBindBrowserHostRequest(
+      mojom::BindBrowserHostResult::kSuccess);
+  task_environment_.FastForwardBy(kTimeBriefly);
+
+  EXPECT_EQ(observer_.connected_count(), 1);
+  EXPECT_FALSE(client_);
+
+  // Destruction is not a disconnection anyone is told about.
+  EXPECT_EQ(observer_.disconnected_count(), 0);
+  EXPECT_EQ(endpoint_.call_count(), 0);
 }
 
 }  // namespace brave_vpn::v2
