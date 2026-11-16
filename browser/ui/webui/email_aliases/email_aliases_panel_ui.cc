@@ -23,7 +23,7 @@
 #include "ui/webui/webui_util.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/ui/webui/theme_source.h"  // nogncheck
+#include "brave/browser/ui/webui/email_aliases/theme_helper.h"
 #endif
 
 namespace {
@@ -48,7 +48,7 @@ EmailAliasesPanelUI::EmailAliasesPanelUI(content::WebUI* web_ui)
       network::mojom::CSPDirectiveName::StyleSrc,
       "style-src 'self' 'unsafe-inline' chrome://resources chrome://theme;");
 #if !BUILDFLAG(IS_ANDROID)
-  content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
+  email_aliases::AddWebUIThemeSource(profile);
 #endif
   webui::SetupWebUIDataSource(source, kEmailAliasesPanelResources,
                               IDR_EMAIL_ALIASES_PANEL_HTML);

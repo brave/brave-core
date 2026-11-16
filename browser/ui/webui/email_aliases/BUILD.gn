@@ -38,6 +38,11 @@ source_set("email_aliases") {
   ]
 
   if (!is_android) {
+    sources += [
+      "theme_helper.cc",
+      "theme_helper.h",
+    ]
+
     deps += [ "//chrome/browser/ui/webui:theme_source" ]
   }
 }
