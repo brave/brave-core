@@ -8,6 +8,7 @@
 
 #include <optional>
 #include <string>
+#include <vector>
 
 #include "base/containers/flat_set.h"
 #include "base/memory/scoped_refptr.h"
@@ -79,7 +80,9 @@ class EphemeralStorageTabHelper
 
 #if BUILDFLAG(IS_ANDROID)
   // TabModelObserver
-  void WillCloseTab(TabAndroid* tab) override;
+  void WillCloseTabs(const std::vector<TabAndroid*>& tabs,
+                     bool is_all_tabs,
+                     bool allow_undo) override;
 
   // Store the TabModel we registered with, so we can remove ourselves in
   // destructor even after WebContents is destroyed.
