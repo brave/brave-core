@@ -36,15 +36,6 @@ import("//components/gcm_driver/config.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
-if (!is_android) {
-  # Counterpart of //chrome/browser/ui:browser_window_header. Its implementation
-  # is in :ui.
-  source_set("brave_browser_window_header") {
-    public = [ "brave_browser_window.h" ]
-    public_deps = [ "//chrome/browser/ui:browser_window_header" ]
-  }
-}
-
 source_set("ui") {
   visibility = [
     ":browser_tests",
@@ -408,7 +399,6 @@ source_set("ui") {
       "brave_browser_content_setting_bubble_model_delegate.h",
       "brave_browser_web_contents_delegate.cc",
       "brave_browser_web_contents_delegate.h",
-      "brave_browser_window.cc",
       "brave_file_select_utils.cc",
       "brave_file_select_utils.h",
       "brave_pages.cc",
@@ -513,7 +503,6 @@ source_set("ui") {
     }
 
     deps += [
-      ":brave_browser_window_header",
       "//base",
       "//brave/browser/brave_account",
       "//brave/browser/debounce",
@@ -1692,7 +1681,6 @@ source_set("browser_tests") {
     ]
 
     deps = [
-      ":brave_browser_window_header",
       ":brave_tab_prefs",
       ":ui",
       "//brave/app:command_ids",
