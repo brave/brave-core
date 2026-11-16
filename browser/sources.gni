@@ -777,11 +777,7 @@ if (is_win || is_mac || is_android) {
 }
 
 if (is_win || is_android) {
-  brave_chrome_browser_sources += [
-    "//brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.cc",
-    "//brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h",
-    "//brave/browser/day_zero_browser_ui_expt/pref_names.h",
-  ]
+  brave_chrome_browser_deps += [ "//brave/browser/day_zero_browser_ui_expt" ]
 }
 
 if (is_mac) {
