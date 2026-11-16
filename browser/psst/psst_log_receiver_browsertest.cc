@@ -17,6 +17,7 @@
 #include "brave/components/psst/core/browser/psst_log_service.h"
 #include "brave/components/psst/core/common/constants.h"
 #include "brave/components/psst/core/common/features.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
@@ -61,7 +62,7 @@ class PsstLogReceiverBrowserTest : public PlatformBrowserTest {
   }
 
   PsstLogService* log_service() {
-    return PsstLogServiceFactory::GetForProfile(
+    return PsstLogServiceFactory::GetForBrowserContext(
         chrome_test_utils::GetProfile(this));
   }
 

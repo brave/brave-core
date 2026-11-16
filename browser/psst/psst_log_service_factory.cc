@@ -20,16 +20,11 @@ PsstLogServiceFactory* PsstLogServiceFactory::GetInstance() {
 }
 
 // static
-psst::PsstLogService* PsstLogServiceFactory::GetForProfile(Profile* profile) {
-  return static_cast<psst::PsstLogService*>(
-      GetInstance()->GetServiceForBrowserContext(profile, true));
-}
-
-// static
 psst::PsstLogService* PsstLogServiceFactory::GetForBrowserContext(
     content::BrowserContext* context) {
-  auto* profile = Profile::FromBrowserContext(context);
-  return profile ? GetForProfile(profile) : nullptr;
+  CHECK(context);
+  return static_cast<psst::PsstLogService*>(
+      GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
 PsstLogServiceFactory::PsstLogServiceFactory()

@@ -26,7 +26,7 @@ class PsstLogService;
 class PsstLogServiceFactory : public ProfileKeyedServiceFactory {
  public:
   static PsstLogServiceFactory* GetInstance();
-  static psst::PsstLogService* GetForProfile(Profile* profile);
+  //  static psst::PsstLogService* GetForProfile(Profile* profile);
   static psst::PsstLogService* GetForBrowserContext(
       content::BrowserContext* context);
 
