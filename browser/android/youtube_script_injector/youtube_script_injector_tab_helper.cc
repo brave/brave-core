@@ -162,7 +162,8 @@ constexpr char16_t kYoutubeFullscreenVideoFitWorkaround[] =
 // call YouTube's handler unchanged. YouTube registers its handlers only after
 // an in-page navigation, so the first playlist item played had no controls.
 // Register Next whenever the playlist has a next item, and Previous whenever a
-// playlist is playing, rechecking each time a video starts playing.
+// playlist is playing, rechecking as playback progresses because the watch data
+// can load after a video starts playing.
 // See https://github.com/brave/brave-browser/issues/61748.
 constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
     uR"(
@@ -233,11 +234,16 @@ constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
     }
     return youtubeHandlers[details.action]?.call(this, details);
   }
+  const trackHandlerEnabled = {};
   function updateTrackHandler(action) {
     const button = playlistButton(action);
     // Previous can always restart the current item.
-    const enabled = youtubeHandlers[action] ||
-        (action === 'previoustrack' ? button : buttonUrl(button));
+    const enabled = Boolean(youtubeHandlers[action] ||
+        (action === 'previoustrack' ? button : buttonUrl(button)));
+    if (trackHandlerEnabled[action] === enabled) {
+      return;
+    }
+    trackHandlerEnabled[action] = enabled;
     setActionHandler(action, enabled ? handleTrack : null);
   }
   function updateTrackHandlers() {
@@ -251,7 +257,7 @@ constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
     }
     return setActionHandler(action, handler);
   };
-  document.addEventListener('playing', updateTrackHandlers, true);
+  document.addEventListener('timeupdate', updateTrackHandlers, true);
 }());
 )";
 
