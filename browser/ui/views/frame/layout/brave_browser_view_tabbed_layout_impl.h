@@ -156,7 +156,6 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   // use, or the strip is hidden). The strip's side is
   // `IsVerticalTabStripLeading()`.
   int GetUpstreamVerticalTabStripWidth() const;
-  bool IsSidebarAtContentsEdge() const;
 
   // Which visual sides of a hosted area have other UI beyond them, rather than
   // the window frame.
