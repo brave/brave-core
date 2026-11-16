@@ -20,6 +20,7 @@ function suggestTemplate(primaryText: string, secondaryText: string) {
     image: null,
     style: SuggestStyle.kUnspecified,
     typeIcon: IconType.kIconTypeUnspecified,
+    typeIconBadge: null,
     fuseboxAction: null,
     actionIcon: null,
   }
