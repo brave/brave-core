@@ -18,7 +18,6 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"
 #include "ui/compositor/layer.h"
-#include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/size.h"
@@ -58,62 +57,42 @@ std::unique_ptr<views::Border> CreateOutlineBorder(
       gfx::Insets(kRoundedCornersContentsOutlineThickness));
 }
 
-// A thin 1px line between infobars and page content.
-class ContentSeparator : public views::View {
-  METADATA_HEADER(ContentSeparator, views::View)
-
- public:
-  ContentSeparator() {
-    SetPaintToLayer();
-    layer()->SetFillsBoundsOpaquely(false);
-  }
-
-  // views::View:
-  gfx::Size CalculatePreferredSize(
-      const views::SizeBounds& available_size) const override {
-    return gfx::Size(0, kContentSeparatorHeightDip);
-  }
-
-  void OnPaint(gfx::Canvas* canvas) override {
-    canvas->FillRect(GetLocalBounds(), GetColorProvider()->GetColor(
-                                           kColorInfoBarContentAreaSeparator));
-  }
-
-  void OnThemeChanged() override {
-    views::View::OnThemeChanged();
-    SchedulePaint();
-  }
-};
-
-BEGIN_METADATA(ContentSeparator)
-END_METADATA
-
 }  // namespace
 
 BraveInfoBarContainerView::BraveInfoBarContainerView(
     infobars::InfoBarContainer::Delegate* delegate)
     : InfoBarContainerView(delegate) {
-  // Replace upstream's heavy drop shadow with a thin separator so there's
-  // still a browser-drawn (unspoofable) line at the infobar/page boundary.
-  DCHECK(content_shadow_);
-  RemoveChildViewT(content_shadow_.ExtractAsDangling());
-  content_shadow_ = AddChildView(std::make_unique<ContentSeparator>());
+  // Brave draws the infobar/page boundary itself (see UpdateBorder()), so
+  // upstream's heavy drop shadow stays hidden for the view's lifetime.
+  CHECK(content_shadow_);
+  content_shadow_->SetVisible(false);
+  UpdateBorder();
 }
 
-BraveInfoBarContainerView::~BraveInfoBarContainerView() = default;
+BraveInfoBarContainerView::~BraveInfoBarContainerView() {
+  // Upstream only detaches its infobars from `~InfoBarContainerView()`, where
+  // this subclass is already gone and our `PlatformSpecificRemoveInfoBar()` no
+  // longer dispatches here - so upstream would cast a BraveConfirmInfoBar to
+  // InfoBarView. Detach while this part of `this` is still alive.
+  RemoveAllInfoBarsForDestruction();
+}
 
 void BraveInfoBarContainerView::PlatformSpecificRemoveInfoBar(
     infobars::InfoBar* infobar) {
-  OnInfoBarStateChanged(/*is_animating=*/false);
   // TODO(https://github.com/brave/brave-browser/issues/61574): Add
   // queued-count pill support for `BraveConfirmInfoBar`.
   BraveConfirmInfoBar* const brave_confirm_infobar =
       AsBraveConfirmInfoBar(infobar, children());
   if (brave_confirm_infobar) {
-    return RemoveChildView(brave_confirm_infobar);
+    RemoveChildView(brave_confirm_infobar);
+  } else {
+    InfoBarContainerView::PlatformSpecificRemoveInfoBar(infobar);
   }
 
-  InfoBarContainerView::PlatformSpecificRemoveInfoBar(infobar);
+  // A removal without a closing animation detaches the view without ever
+  // recalculating heights, so nothing else tells the browser view to lay the
+  // contents out over the room this container no longer needs.
+  OnInfoBarStateChanged(/*is_animating=*/false);
 }
 
 void BraveInfoBarContainerView::Layout(PassKey) {
@@ -146,9 +125,9 @@ gfx::Size BraveInfoBarContainerView::CalculatePreferredSize(
   }
 
   if (!rounded_border_enabled_) {
-    // Upstream lays `content_shadow_` out below the height it reports here, so
-    // it paints outside these bounds, over whatever the browser view starts
-    // below the container. Reserve the divider's row so it stays inside.
+    // Upstream reports just the infobars' height, as it draws the boundary
+    // inside its shadow view's own bounds. Reserve the row the bottom line
+    // paints in instead.
     size.Enlarge(0, kContentSeparatorHeightDip);
     return size;
   }
@@ -165,8 +144,9 @@ void BraveInfoBarContainerView::OnThemeChanged() {
 
   if (rounded_border_enabled_) {
     // The outline's colors are baked in at creation; rebuild it so it picks up
-    // the new theme's colors.
-    UpdateOutlineBorder();
+    // the new theme's colors. The classic bottom line is painted from a color
+    // id and needs no rebuild.
+    UpdateBorder();
   }
 }
 
@@ -181,16 +161,13 @@ void BraveInfoBarContainerView::SetRoundedBorderEnabled(
   rounded_border_enabled_ = enabled;
   contents_corner_radii_ = contents_corner_radii;
 
-  // Use the flat hairline divider only for classic style, and the outline
-  // border for rounded corners.
-  DCHECK(content_shadow_);
-  content_shadow_->SetVisible(!enabled);
+  // Upstream's background is what shows through as the separator between
+  // stacked infobars; the rounded style keeps the gaps transparent instead.
+  SetBackground(enabled
+                    ? nullptr
+                    : views::CreateSolidBackground(kColorBraveContentsOutline));
 
-  SetBackground(enabled ? nullptr
-                        : views::CreateSolidBackground(
-                              kColorInfoBarContentAreaSeparator));
-
-  UpdateOutlineBorder();
+  UpdateBorder();
   UpdateInfoBarCornerRadii();
 }
 
@@ -206,9 +183,13 @@ gfx::RoundedCornersF BraveInfoBarContainerView::GetOutlineCornerRadii() const {
           contents_corner_radii_.lower_left() + kThickness};
 }
 
-void BraveInfoBarContainerView::UpdateOutlineBorder() {
+void BraveInfoBarContainerView::UpdateBorder() {
   if (!rounded_border_enabled_) {
-    SetBorder(nullptr);
+    // A browser-drawn (unspoofable) line at the infobar/page boundary, in the
+    // row CalculatePreferredSize() reserves for it below the last infobar.
+    SetBorder(views::CreateSolidSidedBorder(
+        gfx::Insets::TLBR(0, 0, kContentSeparatorHeightDip, 0),
+        kColorBraveContentsOutline));
     return;
   }
 
@@ -223,7 +204,6 @@ void BraveInfoBarContainerView::UpdateInfoBarCornerRadii() {
   const gfx::RoundedCornersF radii =
       rounded_border_enabled_ ? contents_corner_radii_ : gfx::RoundedCornersF();
 
-  DCHECK_EQ(content_shadow_, children().back());
   const size_t infobar_count = children().size() - 1;
   for (size_t i = 0; i < infobar_count; ++i) {
     ui::Layer* layer = children()[i]->layer();

@@ -29,8 +29,8 @@ class BraveInfoBarContainerView : public InfoBarContainerView {
       const views::SizeBounds& available_size) const override;
   void OnThemeChanged() override;
 
-  // When enabled, hides the flat content separator and the solid background
-  // in favor of a rounded outline border around the infobars.
+  // When enabled, replaces the flat bottom separator and the solid background
+  // with a rounded outline border around the infobars.
   // `contents_corner_radii` are the radii of the contents inside the
   // outline; the outline itself is grown by its own thickness (see
   // GetOutlineCornerRadii()).
@@ -42,7 +42,10 @@ class BraveInfoBarContainerView : public InfoBarContainerView {
   // The outline's radii, i.e. the contents radii grown by its own thickness.
   gfx::RoundedCornersF GetOutlineCornerRadii() const;
 
-  void UpdateOutlineBorder();
+  // Draws the boundary between the infobars and the page content: a rounded
+  // outline around the whole container when rounded corners are in use, and a
+  // thin bottom line otherwise.
+  void UpdateBorder();
 
   // Rounds the infobars' own corners to match the outline.
   void UpdateInfoBarCornerRadii();

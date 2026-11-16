@@ -11,11 +11,15 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/views/infobars/brave_confirm_infobar.h"
 #include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/test/views/chrome_views_test_base.h"
 #include "components/infobars/core/infobar_container.h"
 #include "components/infobars/core/infobar_manager.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/window_open_disposition.h"
+#include "ui/gfx/geometry/insets.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
+#include "ui/views/view.h"
 #include "ui/views/widget/widget.h"
 #include "url/gurl.h"
 
@@ -105,4 +109,43 @@ TEST_F(BraveInfoBarContainerViewTest, NotifiesDelegateWhenInfoBarIsDetached) {
 
   EXPECT_TRUE(container_->IsEmpty());
   EXPECT_GT(container_delegate_.state_changed_count(), state_changed_count);
+}
+
+// Brave draws the line at the infobar/page boundary as a border instead of
+// upstream's drop shadow, which paints outside the container's bounds.
+TEST_F(BraveInfoBarContainerViewTest, ReservesRoomForBottomSeparator) {
+  manager_.AddInfoBar(std::make_unique<BraveConfirmInfoBar>(
+      std::make_unique<TestInfoBarDelegate>()));
+  container_->ChangeInfoBarManager(&manager_);
+  ASSERT_FALSE(container_->IsEmpty());
+
+  EXPECT_EQ(gfx::Insets::TLBR(0, 0, 1, 0), container_->GetInsets());
+
+  // The preferred height covers the infobars plus the row the border paints
+  // in, so the browser view starts the page contents below the line.
+  EXPECT_EQ(container_->children().front()->GetPreferredSize().height() +
+                container_->GetInsets().bottom(),
+            container_->GetPreferredSize().height());
+}
+
+// With rounded corners the boundary is an outline around the whole container
+// rather than a line below it, so it takes room on every side.
+TEST_F(BraveInfoBarContainerViewTest, ReservesRoomForRoundedOutline) {
+  manager_.AddInfoBar(std::make_unique<BraveConfirmInfoBar>(
+      std::make_unique<TestInfoBarDelegate>()));
+  container_->ChangeInfoBarManager(&manager_);
+  ASSERT_FALSE(container_->IsEmpty());
+
+  container_->SetRoundedBorderEnabled(
+      true, gfx::RoundedCornersF(kRoundedCornersContentsViewMargin));
+
+  EXPECT_EQ(gfx::Insets(kRoundedCornersContentsOutlineThickness),
+            container_->GetInsets());
+
+  // The card's margins and outline are added to the infobars' height instead of
+  // eating into it, so the infobars keep their full height inside the card.
+  EXPECT_GE(container_->GetPreferredSize().height() -
+                container_->children().front()->GetPreferredSize().height(),
+            2 * (kRoundedCornersContentsViewMargin +
+                 kRoundedCornersContentsOutlineThickness));
 }
