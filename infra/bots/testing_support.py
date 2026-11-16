@@ -21,7 +21,12 @@ GN_ARGS = {'gn_args': {'target_os': 'linux', 'target_cpu': 'x64'}}
 BUILDER_SPEC = {
     'builder_group': 'brave.test',
     'chromium_config': {'target_platform': 'linux'},
-    'gclient_config': {'target_os': [], 'target_cpu': []},
+    'gclient_config': {
+        'target_os': [],
+        'target_cpu': [],
+        'custom_deps': {},
+        'custom_vars': {},
+    },
 }
 
 SYNC = {'target_os': [], 'target_cpu': []}
