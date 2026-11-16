@@ -44,14 +44,14 @@ public class BraveReflectionUtil {
             try {
                 return toInvoke.invoke(obj, args);
             } catch (IllegalAccessException e) {
-                Log.e(TAG, "Illegal access for method: " + e);
+                Log.e(TAG, "Illegal access for method", e);
                 assert false;
             } catch (InvocationTargetException e) {
-                Log.e(TAG, "Method invocation error e: " + e);
+                Log.e(TAG, "Method invocation error", e);
                 assert false;
             }
         } catch (NoSuchMethodException e) {
-            Log.e(TAG, "Method not found: " + e);
+            Log.e(TAG, "Method not found", e);
             assert false;
         }
         return null;
@@ -64,10 +64,10 @@ public class BraveReflectionUtil {
             if (!field.isAccessible()) field.setAccessible(true);
             return field.get(obj);
         } catch (NoSuchFieldException e) {
-            Log.e(TAG, "Field not found: " + e);
+            Log.e(TAG, "Field not found", e);
             assert false;
         } catch (SecurityException | IllegalArgumentException | IllegalAccessException e) {
-            Log.e(TAG, "Get field failed: " + e);
+            Log.e(TAG, "Get field failed", e);
             assert false;
         }
         return null;
@@ -79,10 +79,10 @@ public class BraveReflectionUtil {
             field.setAccessible(true);
             field.set(obj, newValue);
         } catch (NoSuchFieldException e) {
-            Log.e(TAG, "Field not found: " + e);
+            Log.e(TAG, "Field not found", e);
             assert false;
         } catch (SecurityException | IllegalArgumentException | IllegalAccessException e) {
-            Log.e(TAG, "Get field failed: " + e);
+            Log.e(TAG, "Get field failed", e);
             assert false;
         }
     }

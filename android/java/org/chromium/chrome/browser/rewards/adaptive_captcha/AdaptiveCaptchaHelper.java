@@ -45,7 +45,7 @@ public class AdaptiveCaptchaHelper {
                 response -> attestPaymentId(captchaId, paymentId, response.token(), nonce));
         integrityTokenResponseTask.addOnFailureListener(
                 e -> {
-                    Log.e(TAG, "Play Integrity token request failed: " + e.getMessage());
+                    Log.e(TAG, "Play Integrity token request failed", e);
                     attestPaymentId(captchaId, paymentId, "", nonce);
                 });
     }

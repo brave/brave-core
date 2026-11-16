@@ -211,11 +211,11 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
                             }
                         });
             } catch (IOException e) {
-                Log.e(TAG, "doImportBookmarks IOException:" + e.getMessage());
+                Log.e(TAG, "doImportBookmarks IOException", e);
             }
 
         } catch (Exception e) {
-            Log.e(TAG, "doImportBookmarks:" + e.getMessage());
+            Log.e(TAG, "doImportBookmarks", e);
         }
     }
 

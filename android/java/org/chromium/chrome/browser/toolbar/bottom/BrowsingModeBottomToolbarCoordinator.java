@@ -147,7 +147,7 @@ public class BrowsingModeBottomToolbarCoordinator {
                             }
                             activity.addOrEditBookmark(tab);
                         } catch (BraveActivity.BraveActivityNotFoundException e) {
-                            Log.e(TAG, "BookmarkButton click " + e);
+                            Log.e(TAG, "BookmarkButton click", e);
                         }
                     };
             mBookmarkButton.setOnClickListener(bookmarkClickHandler);

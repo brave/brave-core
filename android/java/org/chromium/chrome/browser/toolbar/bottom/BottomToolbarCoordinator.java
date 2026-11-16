@@ -205,7 +205,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
         try {
             activity = BraveActivity.getBraveActivity();
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "initializeWithNative " + e);
+            Log.e(TAG, "initializeWithNative", e);
         }
         // Do not change bottom bar if HomePage is not customized.
         if (BottomToolbarVariationManager.shouldBottomControlsBeVisibleInOverviewMode()) {
@@ -290,7 +290,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                             try {
                                 BraveActivity.getBraveActivity().setComesFromNewTab(true);
                             } catch (BraveActivity.BraveActivityNotFoundException e) {
-                                Log.e(TAG, "HomeButton click " + e);
+                                Log.e(TAG, "HomeButton click", e);
                             }
                             mOriginalHomeButtonRunnable.run();
                         } else {
