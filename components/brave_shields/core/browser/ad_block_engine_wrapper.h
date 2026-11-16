@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_AD_BLOCK_ENGINE_WRAPPER_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_AD_BLOCK_ENGINE_WRAPPER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_ENGINE_WRAPPER_H_
+#define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_ENGINE_WRAPPER_H_
 
 #include <stdint.h>
 
@@ -18,9 +18,9 @@
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
 #include "base/values.h"
+#include "brave/components/brave_shields/core/browser/ad_block_request_type.h"
 #include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
-#include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -42,7 +42,7 @@ class AdBlockEngineWrapper {
 
   adblock::BlockerResult ShouldStartRequest(
       const GURL& url,
-      blink::mojom::ResourceType resource_type,
+      AdBlockRequestType request_type,
       const url::Origin& request_initiator,
       const std::string& method,
       bool aggressive_blocking,
@@ -62,7 +62,7 @@ class AdBlockEngineWrapper {
 
   std::optional<std::string> GetCspDirectives(
       const GURL& url,
-      blink::mojom::ResourceType resource_type,
+      AdBlockRequestType request_type,
       const url::Origin& first_party_origin,
       const std::string& method);
 
@@ -107,4 +107,4 @@ class AdBlockEngineWrapper {
 
 }  // namespace brave_shields
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_AD_BLOCK_ENGINE_WRAPPER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_ENGINE_WRAPPER_H_

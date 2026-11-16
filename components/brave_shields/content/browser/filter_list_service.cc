@@ -5,14 +5,14 @@
 
 #include "brave/components/brave_shields/content/browser/filter_list_service.h"
 
+#include <string>
 #include <utility>
 
-#include <string>
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
-#include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
+#include "brave/components/brave_shields/core/browser/ad_block_custom_filters_provider.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/core/common/filter_list.mojom-forward.h"
 #include "ui/base/l10n/time_format.h"
 

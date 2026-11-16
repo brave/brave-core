@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_shields/content/browser/ad_block_subscription_download_client.h"
+#include "brave/components/brave_shields/core/browser/ad_block_subscription_download_client.h"
 
 #include <map>
 #include <set>
@@ -13,8 +13,8 @@
 
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
-#include "brave/components/brave_shields/content/browser/ad_block_subscription_download_manager.h"
-#include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
+#include "brave/components/brave_shields/core/browser/ad_block_subscription_download_manager.h"
+#include "brave/components/brave_shields/core/browser/ad_block_subscription_service_manager.h"
 #include "components/download/public/background_service/download_metadata.h"
 
 namespace brave_shields {
