@@ -3,15 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_QUERY_FILTER_CONTENT_QUERY_FILTER_THROTTLE_H_
-#define BRAVE_COMPONENTS_QUERY_FILTER_CONTENT_QUERY_FILTER_THROTTLE_H_
+#ifndef BRAVE_COMPONENTS_QUERY_FILTER_BROWSER_QUERY_FILTER_THROTTLE_H_
+#define BRAVE_COMPONENTS_QUERY_FILTER_BROWSER_QUERY_FILTER_THROTTLE_H_
 
 #include <memory>
 
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 
 class GURL;
-class PrefService;
 
 namespace brave_shields {
 class BraveShieldsSettingsService;
@@ -36,7 +35,6 @@ class QueryFilterThrottle : public blink::URLLoaderThrottle {
   // Throttles are created per request, so the settings at request start apply
   // for the lifetime of the request.
   static std::unique_ptr<blink::URLLoaderThrottle> MaybeCreateThrottle(
-      const PrefService* prefs,
       brave_shields::BraveShieldsSettingsService* shields_settings_service,
       const GURL& url);
 
@@ -50,4 +48,4 @@ class QueryFilterThrottle : public blink::URLLoaderThrottle {
 
 }  // namespace query_filter
 
-#endif  // BRAVE_COMPONENTS_QUERY_FILTER_CONTENT_QUERY_FILTER_THROTTLE_H_
+#endif  // BRAVE_COMPONENTS_QUERY_FILTER_BROWSER_QUERY_FILTER_THROTTLE_H_

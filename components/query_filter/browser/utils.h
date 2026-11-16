@@ -13,7 +13,6 @@
 #include "url/origin.h"
 
 namespace query_filter {
-
 std::optional<GURL> ApplyQueryFilter(const GURL& original_url);
 
 // This function will return a new url stripping known tracking query params.

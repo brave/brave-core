@@ -90,7 +90,7 @@
 #include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
-#include "brave/components/query_filter/content/query_filter_throttle.h"
+#include "brave/components/query_filter/browser/query_filter_throttle.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/common/skus_internals.mojom.h"
@@ -1235,7 +1235,6 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
   Profile* profile = Profile::FromBrowserContext(browser_context);
   if (auto query_filter_throttle =
           query_filter::QueryFilterThrottle::MaybeCreateThrottle(
-              profile->GetPrefs(),
               BraveShieldsSettingsServiceFactory::GetForProfile(profile),
               request.url)) {
     result.push_back(std::move(query_filter_throttle));
