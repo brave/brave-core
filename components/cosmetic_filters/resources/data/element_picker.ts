@@ -8,6 +8,7 @@ import type { ElementPickerAPI } from './element_picker_api'
 const NSSVG = 'http://www.w3.org/2000/svg'
 
 let pickerDiv: HTMLDivElement | null
+let styleDiv: HTMLStyleElement | null
 let shadowRoot: ShadowRoot | null
 let isMobile: boolean | null
 let btnCreateEnabledText: string
@@ -320,7 +321,6 @@ const attachElementPicker = () => {
   // "src" is a web accessible resource since the URI is chrome-extension://.
   // This ensures a malicious page cannot modify the iframe contents.
   pickerDiv = document.createElement('div')
-  pickerDiv.id = 'brave-element-picker'
   shadowRoot = pickerDiv.attachShadow({ mode: 'closed' })
 
   // It's a trusted content so it's safe to use innerHTML.
@@ -434,14 +434,11 @@ const recalculateAndSendTargets = (elems: Element[] | null) => {
 }
 
 const hideByCssSelector = (selector: string) => {
-  const styleId = 'brave-content-picker-style'
-  let style = document.getElementById(styleId)
-  if (!style) {
-    style = document.createElement('style')
-    style.id = styleId
-    document.head.appendChild(style)
+  if (styleDiv === null) {
+    styleDiv = document.createElement('style')
+    document.head.appendChild(styleDiv)
   }
-  style.innerText += `${selector} {display: none !important;}`
+  styleDiv.innerText += `${selector} {display: none !important;}`
 }
 
 interface SliderOptions {
@@ -914,8 +911,7 @@ export const showElementPicker = (
   api = platformApi
   template = pickerTemplate
 
-  const active = document.getElementById('brave-element-picker')
-  if (active) {
+  if (pickerDiv !== null && document.contains(pickerDiv)) {
     // Re-opening existing picker
     setMinimizeState(false)
     return

@@ -3341,7 +3341,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ContentPicker) {
       embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
   NavigateToURL(tab_url);
   static constexpr char kPickerIsInjected[] =
-      "document.getElementById('brave-element-picker') != null";
+      "[...document.querySelectorAll('div[style*=\"z-index: "
+      "2147483647\"]')].filter(div => div.childNodes.length === 0 && "
+      "div.attributes.length === 1)[0] !== undefined";
   ASSERT_FALSE(
       content::EvalJs(web_contents(), kPickerIsInjected).ExtractBool());
 
