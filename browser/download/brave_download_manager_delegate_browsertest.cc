@@ -280,10 +280,8 @@ class BraveDownloadManagerDelegateFeatureDisabledBrowserTest
       : BraveDownloadManagerDelegateBrowserTestBase(false) {}
 };
 
-// TODO(https://github.com/brave/brave-browser/issues/5238): Enable these tests
-// on Android. Android seems to need more plugging through of how download
-// needs to be tested. See BrowsingDataRemoverBrowserTestBase::DownloadAnItem
-// in the upstream which tests download history via platform browser tests.
+// The Android download flow is instead covered end-to-end by instrumentation
+// tests via BraveDownloadImageMetadataStripperTest.java.
 #if BUILDFLAG(IS_ANDROID)
 #define NON_ANDROID_TEST(test) DISABLED_##test
 #else
