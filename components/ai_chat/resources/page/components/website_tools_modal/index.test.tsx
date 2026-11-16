@@ -135,12 +135,11 @@ describe('WebsiteToolsModal', () => {
       )
     })
 
-    expect(setContentToolPermission).toHaveBeenCalledWith(
-      'content-uuid',
-      'browse_store',
-      'Browse OR navigate to collections.',
-      Mojom.ToolPermission.kAllowSession,
-    )
+    expect(setContentToolPermission).toHaveBeenCalledWith('content-uuid', {
+      name: 'browse_store',
+      description: 'Browse OR navigate to collections.',
+      permission: Mojom.ToolPermission.kAllowSession,
+    })
   })
 
   it('shows a permission change the browser pushed', async () => {

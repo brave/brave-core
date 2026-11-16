@@ -200,9 +200,7 @@ export default function WebsiteToolsModal(props: Props) {
                   onPermissionChange={(permission) =>
                     conversation.api.conversationHandler.setContentToolPermission(
                       props.content.uuid,
-                      tool.name,
-                      tool.description,
-                      permission,
+                      { ...tool, permission },
                     )
                   }
                 />

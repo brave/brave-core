@@ -17,6 +17,7 @@
 #include "base/barrier_callback.h"
 #include "base/barrier_closure.h"
 #include "base/check.h"
+#include "base/containers/map_util.h"
 #include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
@@ -313,13 +314,14 @@ void AssociatedContentManager::SetToolPermission(
 
   // kAsk is the default, so drop the entry rather than storing it.
   if (permission == mojom::ToolPermission::kAsk) {
-    auto origin_it = content_tool_permissions_.find(origin);
-    if (origin_it == content_tool_permissions_.end()) {
+    auto* tool_permissions =
+        base::FindOrNull(content_tool_permissions_, origin);
+    if (!tool_permissions) {
       return;
     }
-    origin_it->second.erase(tool_name);
-    if (origin_it->second.empty()) {
-      content_tool_permissions_.erase(origin_it);
+    tool_permissions->erase(tool_name);
+    if (tool_permissions->empty()) {
+      content_tool_permissions_.erase(origin);
     }
   } else {
     content_tool_permissions_[origin][std::string(tool_name)] = {
@@ -368,23 +370,23 @@ void AssociatedContentManager::NotifyContentToolsChanged(
 mojom::ToolPermission AssociatedContentManager::GetToolPermission(
     const url::Origin& origin,
     const Tool& tool) const {
-  auto origin_it = content_tool_permissions_.find(origin);
-  if (origin_it == content_tool_permissions_.end()) {
+  auto* tool_permissions = base::FindOrNull(content_tool_permissions_, origin);
+  if (!tool_permissions) {
     return mojom::ToolPermission::kAsk;
   }
-  auto tool_it = origin_it->second.find(tool.DisplayName());
-  if (tool_it == origin_it->second.end()) {
+  const ContentToolPermission* choice =
+      base::FindOrNull(*tool_permissions, tool.DisplayName());
+  if (!choice) {
     return mojom::ToolPermission::kAsk;
   }
-  const ContentToolPermission& choice = tool_it->second;
   // The user allowed the tool as it was described to them, so a tool since
   // re-registered under the same name with another description has to be
   // asked about again.
-  if (choice.permission == mojom::ToolPermission::kAllowSession &&
-      choice.description != tool.DisplayDescription()) {
+  if (choice->permission == mojom::ToolPermission::kAllowSession &&
+      choice->description != tool.DisplayDescription()) {
     return mojom::ToolPermission::kAsk;
   }
-  return choice.permission;
+  return choice->permission;
 }
 
 void AssociatedContentManager::DetectContentTools(
