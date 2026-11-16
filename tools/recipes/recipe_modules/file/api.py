@@ -28,13 +28,17 @@ from __future__ import annotations
 
 from collections.abc import Callable, Sequence
 from pathlib import Path
-import subprocess
 from typing import Any, TYPE_CHECKING, TypeVar
 
 from google.protobuf.message import Message
 
 import config_types
-from recipe_api import OutputPlaceholder, Placeholder, RecipeApi
+from recipe_api import (
+    OutputPlaceholder,
+    Placeholder,
+    RecipeApi,
+    StepFailure,
+)
 from recipe_test_api import StepTestData
 from step_data import StepData
 
@@ -49,21 +53,20 @@ class FileApi(RecipeApi):
 
     m: file.DEPS
 
-    class Error(subprocess.CalledProcessError):
-        """A `fileutil.py` operation reported a filesystem-level failure.
-
-        Carries the failing operation's `errno_name` (e.g. `'ENOENT'`)
-        alongside a human message (the inherited `.output`), so a filesystem
-        error is distinguishable from an arbitrary non-zero step exit.
-        Subclasses `CalledProcessError` so this engine's own checked-step-
-        failure handling -- a `StatusFailure`, not an infra-level
-        `StatusException` -- applies to it unchanged.
+    class Error(StepFailure):
+        """Error is a StepFailure, except that it also contains an errno field
+        indicating the errno name (i.e. 'EEXIST') of the underlying error.
         """
 
         def __init__(
             self, step_name: str, errno_name: str, message: str
         ) -> None:
-            super().__init__(1, step_name, output=message)
+            reason = 'Step(%r) failed %r with: %s' % (
+                step_name,
+                errno_name,
+                message,
+            )
+            super().__init__(reason)
             self.errno_name = errno_name
 
     def _run(

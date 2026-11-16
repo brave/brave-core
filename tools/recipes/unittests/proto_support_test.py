@@ -86,6 +86,11 @@ class CheckPackageTest(unittest.TestCase):
         body = _fake_pb2_body('recipe_modules.brave.mod')
         self.assertIsNone(proto_support._check_package(body, relpath_base))
 
+    def test_engine_package_drops_last_token(self):
+        relpath_base = os.path.join('recipe_engine', 'result')
+        body = _fake_pb2_body('recipe_engine')
+        self.assertIsNone(proto_support._check_package(body, relpath_base))
+
 
 class GatherProtoInfoTest(unittest.TestCase):
     """_gather_proto_info maps repo .proto files into the PB namespace."""
@@ -104,6 +109,11 @@ class GatherProtoInfoTest(unittest.TestCase):
                 'recipe_modules/chromium_checkout/examples/full.proto'
             ),
             'recipe_modules/brave/chromium_checkout/examples/full.proto',
+        )
+        # The engine's own protos sit under its name.
+        self.assertEqual(
+            by_relpath.get('recipe_engine/result.proto'),
+            'recipe_engine/result.proto',
         )
 
 

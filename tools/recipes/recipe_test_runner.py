@@ -30,12 +30,12 @@ import json
 import logging
 from pathlib import Path
 import re
-import subprocess
 import sys
 import time
 from typing import TYPE_CHECKING
 
 import gevent
+from google.protobuf import json_format as jsonpb
 
 import config_types
 import engine
@@ -183,22 +183,21 @@ def _simulate(
     eng = engine._Engine(  # pylint: disable=protected-access
         test=ctx
     )
-    # `failure` becomes the `$result` payload: None on success; a non-infra
-    # failure carries an inner `{'failure': {}}`; an infra failure/exception
-    # carries only `humanReason`.
-    failure: dict | None = None
-    try:
-        eng.run_loaded_recipe(recipe, recipe_id, test_data.properties)
-    except subprocess.CalledProcessError:
-        # A checked step returned non-zero: the recipe failed as designed. The
-        # failing step is the last one the runner recorded before it raised.
-        recorded = ctx.step_runner.recorded_steps
-        name = recorded[-1]['name'] if recorded else '<unknown>'
-        failure = {'failure': {}, 'humanReason': f'Step({name!r}) failed'}
-    except Exception as exc:  # pylint: disable=broad-except
-        # Any other exception is an infra/logic error (bad input, missing dep).
-        failure = {'humanReason': str(exc)}
-    steps = simulation.build_steps(ctx.step_runner, failure)
+    raw_result = eng.run_loaded_recipe(recipe, recipe_id, test_data.properties)
+    import legacy  # Late proto import: `PB` is compiled by the run above.
+
+    # `failure` becomes the `$result` payload, in its legacy `Result` form:
+    # None on success; a non-infra failure carries an inner `{'failure': {}}`;
+    # an infra failure carries only `humanReason`.
+    result = legacy.to_legacy_result(raw_result)
+    failure = (
+        jsonpb.MessageToDict(result.failure)
+        if result.HasField('failure')
+        else None
+    )
+    steps = simulation.build_steps(
+        ctx.step_runner, failure, raw_result.summary_markdown
+    )
     return steps, ctx
 
 
