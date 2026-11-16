@@ -41,25 +41,19 @@ BraveBrowserViewTabbedLayoutImpl::CalculateSeparatorInfo() const {
   // its accompanying main-area padding) so it doesn't double up.
   info.shadow_box = false;
 
-  const bool rounded =
-      delegate().ShouldUseBraveWebViewRoundedCornersForContents();
-
-  // When the upstream choice is "no top-container separator" (either nothing
-  // at all, or only a multi-contents separator), Brave promotes that to a
-  // full-width top-container separator unless the rounded-corners contents
-  // view is in use - in which case the rounded shape provides the visual
-  // divider and no separator is wanted.
-  if (!info.top_container_separator) {
-    info.top_container_separator = !rounded;
+  if (delegate().ShouldUseBraveWebViewRoundedCornersForContents()) {
+    // Whatever sits below the top container - the infobar card or the contents
+    // view - is rounded and outlined itself, so it already reads as divided
+    // from the top chrome and a separator would just double up.
+    info.top_container_separator = false;
+    info.multi_contents_separator = false;
+  } else if (!info.top_container_separator) {
+    // Brave wants the divider at the top container's edge rather than inside
+    // the multi-contents view, so promote upstream's choice to a full-width
+    // top-container separator.
+    info.top_container_separator = true;
     info.multi_contents_separator = false;
   }
-
-#if BUILDFLAG(IS_MAC)
-  if (layout_data_->window_state == WindowState::kFullscreenWithToolbar &&
-      rounded && !delegate().IsInfobarVisible()) {
-    info.top_container_separator = false;
-  }
-#endif
 
   return info;
 }
