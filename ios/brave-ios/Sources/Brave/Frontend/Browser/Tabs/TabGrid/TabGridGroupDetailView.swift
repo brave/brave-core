@@ -75,6 +75,8 @@ struct TabGroupDetailView: View {
     .opacity(isExpanded ? 1 : 0)
     .allowsHitTesting(isExpanded)
     .onAppear {
+      // A restored group is shown right away, without growing out of its tile
+      isExpanded = viewModel.isOpenGroupRestored
       title = viewModel.openGroupTitle
       if viewModel.consumeNamingRequest() {
         title = ""
