@@ -124,6 +124,10 @@ void SetOwnPropertyWritable(v8::Local<v8::Context> context,
 void SealOwnProperty(v8::Local<v8::Context> context,
                      v8::Local<v8::Object> object,
                      v8::Local<v8::String> name) {
+  if (!object->HasOwnProperty(context, name).FromMaybe(false)) {
+    return;
+  }
+
   v8::Local<v8::Value> value;
   if (!object->Get(context, name).ToLocal(&value)) {
     return;
