@@ -19,6 +19,7 @@
 #include "base/values.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/psst/psst_settings_service_factory.h"
+#include "brave/browser/psst/psst_ui_delegate_impl.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
@@ -28,6 +29,7 @@
 #include "brave/components/psst/core/browser/psst_rule_registry.h"
 #include "brave/components/psst/core/browser/psst_settings_service.h"
 #include "brave/components/psst/core/common/features.h"
+#include "brave/components/psst/core/common/psst_ui_common.mojom.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -699,6 +701,22 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     return true;
   }
 
+  PsstUiDelegateImpl* GetUiDelegateForDialog(content::WebContents* dialog_wc) {
+    if (!dialog_wc) {
+      return nullptr;
+    }
+    auto* web_ui = dialog_wc->GetWebUI();
+    if (!web_ui) {
+      return nullptr;
+    }
+
+    auto* dialog_ui = web_ui->GetController()->GetAs<BravePsstDialogUI>();
+    if (!dialog_ui || !dialog_ui->psst_consent_handler_) {
+      return nullptr;
+    }
+    return dialog_ui->psst_consent_handler_->psst_dialog_delegate_.get();
+  }
+
   // Simulates clicking the Cancel button in the consent/progress dialog by
   // invoking the same mojo call the WebUI's `api.closeDialog` triggers.
   bool CancelModalDialog(content::WebContents* dialog_wc) {
@@ -877,6 +895,36 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     }
 
     return GetActiveContextMenuRoot();
+  }
+
+  // Left-clicks the already-visible PSST location bar icon to (re)open the
+  // consent dialog, without performing any navigation. Returns the opened
+  // dialog's WebContents, or nullptr on failure.
+  content::WebContents* LeftClickPsstLocationBarIconAndWaitForDialog() {
+    IconLabelBubbleView* const psst_view = GetPsstPageActionView();
+    if (!psst_view) {
+      return nullptr;
+    }
+
+    // Start observing for the consent dialog's WebContents before clicking,
+    // so we don't miss its creation.
+    content::CreateAndLoadWebContentsObserver new_web_contents_observer;
+
+    const gfx::Point click_location = psst_view->GetLocalBounds().CenterPoint();
+    const ui::MouseEvent click_event(
+        ui::EventType::kMousePressed, click_location, click_location,
+        ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON,
+        ui::EF_LEFT_MOUSE_BUTTON);
+    views::test::ButtonTestApi(views::Button::AsButton(psst_view))
+        .NotifyClick(click_event);
+
+    auto* dialog_wc = WaitForAndGetDialogWebContents(new_web_contents_observer);
+    if (!dialog_wc) {
+      return nullptr;
+    }
+
+    WaitForPsstDialogUIReady(dialog_wc);
+    return dialog_wc;
   }
 
   // Waits for the PSST context menu to close.
@@ -1117,6 +1165,74 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   EXPECT_EQ(psst_website_settings->consent_status, ConsentStatus::kAllow);
   EXPECT_EQ(psst_website_settings->user_id, kASiteSignedInUserId);
   EXPECT_EQ(psst_website_settings->uids_to_perform, perform_uids);
+}
+
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       ConsentDialogRemembersUncheckedItemsOnReopen) {
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+
+  PsstWebContentsConsoleObserver console_observer(
+      web_contents(),
+      {base::StrCat({kUserScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "/a_test_0.html")}),
+       base::StrCat({kUserScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "/a_test_1.html")})},
+      {base::StrCat({kPolicyScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "/a_test_0.html")}),
+       base::StrCat({kPolicyScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "/a_test_1.html")})});
+
+  content::WebContents* dialog_wc = nullptr;
+  ASSERT_NO_FATAL_FAILURE(NavigateAndClickOnPsstLocationBarIcon(
+      url, ui::EF_LEFT_MOUSE_BUTTON, &dialog_wc));
+  ASSERT_TRUE(dialog_wc);
+
+  // Only task "1" is accepted; task "2" is left unchecked by the user.
+  const std::vector<std::string> perform_uids = {"1"};
+  ASSERT_TRUE(AcceptModalDialog(
+      dialog_wc, url::Origin::Create(url).GetURL().spec(), perform_uids));
+  ASSERT_TRUE(console_observer.Wait());
+  EXPECT_TRUE(console_observer.CheckMessages());
+
+  auto psst_website_settings = GetPsstSettingsService()->GetPsstWebsiteSettings(
+      url::Origin::Create(url), kASiteSignedInUserId);
+  ASSERT_TRUE(psst_website_settings);
+  EXPECT_EQ(psst_website_settings->uids_to_perform, perform_uids);
+
+  DialogCloseObserver dialog_close_observer(dialog_wc);
+  ASSERT_TRUE(CloseModalDialog(dialog_wc));
+  dialog_close_observer.Wait();
+
+  content::WebContents* reopened_dialog_wc =
+      LeftClickPsstLocationBarIconAndWaitForDialog();
+  ASSERT_TRUE(reopened_dialog_wc);
+
+  auto* ui_delegate = GetUiDelegateForDialog(reopened_dialog_wc);
+  ASSERT_TRUE(ui_delegate);
+
+  // Re-derive the dialog data the same way the WebUI received it on open, and
+  // verify the previously unchecked item stayed unchecked.
+  auto dialog_data = ui_delegate->GetShowDialogData();
+  ASSERT_TRUE(dialog_data);
+
+  auto find_item = [&](const std::string& uid) -> mojom::SettingCardDataItem* {
+    auto it = std::ranges::find_if(
+        dialog_data->items,
+        [&uid](const auto& item) { return item->uid == uid; });
+    return it == dialog_data->items.end() ? nullptr : it->get();
+  };
+
+  auto* item_1 = find_item("1");
+  ASSERT_TRUE(item_1);
+  EXPECT_TRUE(item_1->checked);
+
+  auto* item_2 = find_item("2");
+  ASSERT_TRUE(item_2);
+  EXPECT_FALSE(item_2->checked);
+
+  ASSERT_TRUE(CloseModalDialog(reopened_dialog_wc));
 }
 
 // The PSST icon appears in the location bar after navigating to a matching
