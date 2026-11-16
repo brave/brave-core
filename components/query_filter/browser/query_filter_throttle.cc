@@ -11,10 +11,35 @@
 #include "base/memory/ptr_util.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/query_filter/browser/utils.h"
+#include "net/base/isolation_info.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace query_filter {
+
+namespace {
+
+// Mirrors how BraveRequestInfo::MakeCTX picks the Shields origin for the
+// network delegate: top-frame origin first, then the request initiator.
+GURL GetShieldsSettingsURL(const network::ResourceRequest& request) {
+  if (request.is_outermost_main_frame) {
+    return request.url;
+  }
+  if (request.trusted_params) {
+    const std::optional<url::Origin>& top_frame_origin =
+        request.trusted_params->isolation_info.top_frame_origin();
+    if (top_frame_origin && !top_frame_origin->opaque()) {
+      return top_frame_origin->GetURL();
+    }
+  }
+  if (request.request_initiator && !request.request_initiator->opaque()) {
+    return request.request_initiator->GetURL();
+  }
+  return request.url;
+}
+
+}  // namespace
 
 QueryFilterThrottle::QueryFilterThrottle() = default;
 
@@ -24,9 +49,10 @@ QueryFilterThrottle::~QueryFilterThrottle() = default;
 std::unique_ptr<blink::URLLoaderThrottle>
 QueryFilterThrottle::MaybeCreateThrottle(
     brave_shields::BraveShieldsSettingsService* shields_settings_service,
-    const GURL& url) {
+    const network::ResourceRequest& request) {
   if (!shields_settings_service ||
-      !shields_settings_service->IsQueryFilteringEnabled(url)) {
+      !shields_settings_service->IsQueryFilteringEnabled(
+          GetShieldsSettingsURL(request))) {
     return nullptr;
   }
 

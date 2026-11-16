@@ -1236,7 +1236,7 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
   if (auto query_filter_throttle =
           query_filter::QueryFilterThrottle::MaybeCreateThrottle(
               BraveShieldsSettingsServiceFactory::GetForProfile(profile),
-              request.url)) {
+              request)) {
     result.push_back(std::move(query_filter_throttle));
   }
 

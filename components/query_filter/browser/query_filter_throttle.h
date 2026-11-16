@@ -10,8 +10,6 @@
 
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 
-class GURL;
-
 namespace brave_shields {
 class BraveShieldsSettingsService;
 }  // namespace brave_shields
@@ -36,7 +34,7 @@ class QueryFilterThrottle : public blink::URLLoaderThrottle {
   // for the lifetime of the request.
   static std::unique_ptr<blink::URLLoaderThrottle> MaybeCreateThrottle(
       brave_shields::BraveShieldsSettingsService* shields_settings_service,
-      const GURL& url);
+      const network::ResourceRequest& request);
 
   // blink::URLLoaderThrottle:
   void WillStartRequest(network::ResourceRequest* request,
