@@ -1,5 +1,5 @@
 diff --git a/components/affiliations/core/browser/affiliation_service_impl.cc b/components/affiliations/core/browser/affiliation_service_impl.cc
-index 0f5e74599c233f8e3a0e5761d86c70e16fafc815..e70ca8efcc6df544005dc2f1c95054ca0d3d2198 100644
+index 0f5e74599c233f8e3a0e5761d86c70e16fafc815..89ff7503f4270bf2ff4a0ca01dc0ac7d552bd36b 100644
 --- a/components/affiliations/core/browser/affiliation_service_impl.cc
 +++ b/components/affiliations/core/browser/affiliation_service_impl.cc
 @@ -221,6 +221,9 @@ void AffiliationServiceImpl::Shutdown() {
@@ -7,7 +7,7 @@ index 0f5e74599c233f8e3a0e5761d86c70e16fafc815..e70ca8efcc6df544005dc2f1c95054ca
      const GURL& url,
      ChangePasswordUrlCallback callback) {
 +  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-+    FROM_HERE, base::BindOnce(std::move(callback), GURL()));
++    FROM_HERE, base::BindOnce(std::move(callback), std::nullopt));
 +  if ((true)) return;
    FacetURI facet_uri = ConvertGURLToFacet(url);
    if (!facet_uri.is_valid()) {
