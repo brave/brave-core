@@ -57,6 +57,9 @@ void SetOwnPropertyWritable(v8::Local<v8::Context> context,
                             v8::Local<v8::String> property_name,
                             bool writable);
 
+// Defines the property with `name` to be enumerable but non-configurable on the
+// target object, `object`. If the property does not exist, this function does
+// nothing.
 void SealOwnProperty(v8::Local<v8::Context> context,
                      v8::Local<v8::Object> object,
                      v8::Local<v8::String> name);
