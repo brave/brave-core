@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Include the handler for the Brave Sync server URL flag.
+    add_after_line:
+      line: '#import "base/values.h"'
+      code: '#import "brave/ios/browser/flags/sync_server_url.h"'
+
+  - description: Connect the string flag editor to the iOS flags storage.
+    regex:
+      re_pattern: '(void FlagsDOMHandler::Init\([^{}]+\{[^{}]+access_ = access;)'
+      replace: |-
+        \1
+          web_ui()->RegisterMessageCallback(
+              "setStringFlag",
+              base::BindRepeating(&brave_sync::SetSyncServerUrlFlag,
+                                  base::Unretained(flags_storage_.get())));

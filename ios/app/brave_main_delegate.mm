@@ -14,12 +14,10 @@
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_component_updater/browser/switches.h"
-#include "brave/components/brave_sync/buildflags.h"
 #include "brave/components/update_client/buildflags.h"
 #include "brave/components/variations/command_line_utils.h"
 #include "components/browser_sync/browser_sync_switches.h"
 #include "components/component_updater/component_updater_switches.h"
-#include "components/sync/base/command_line_switches.h"
 #include "components/sync/base/data_type.h"
 #include "components/variations/variations_switches.h"
 #include "ios/chrome/browser/flags/chrome_switches.h"
@@ -64,12 +62,6 @@ void BraveMainDelegate::BasicStartupComplete() {
     std::string source = "url-source=" + ::GetUpdateURLHost();
     command_line->AppendSwitchASCII(switches::kComponentUpdater,
                                     source.c_str());
-  }
-
-  // Brave's sync protocol does not use the sync service url
-  if (!command_line->HasSwitch(syncer::kSyncServiceURL)) {
-    command_line->AppendSwitchASCII(syncer::kSyncServiceURL,
-                                    BUILDFLAG(BRAVE_SYNC_ENDPOINT));
   }
 
   variations::AppendBraveCommandLineOptions(*command_line);

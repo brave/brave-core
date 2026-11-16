@@ -1,0 +1,12 @@
+diff --git a/ios/chrome/browser/webui/ui_bundled/BUILD.gn b/ios/chrome/browser/webui/ui_bundled/BUILD.gn
+index 52a370d2a8bae9101e79c0e12eb898be75fb0b09..07b25a5159cbf2d8bf3d7e337eadb92fc1b154d7 100644
+--- a/ios/chrome/browser/webui/ui_bundled/BUILD.gn
++++ b/ios/chrome/browser/webui/ui_bundled/BUILD.gn
+@@ -53,6 +53,7 @@ source_set("coordinator") {
+   deps = [
+     "//base",
+     "//base:i18n",
++    "//brave/ios/browser/flags:sync_server_url",
+     "//build:branding_buildflags",
+     "//components/account_id",
+     "//components/application_locale_storage",
