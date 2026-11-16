@@ -4,5 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import util from '../lib/util.ts'
+import { program } from '../lib/program.ts'
 
-util.runGclient(process.argv.slice(2))
+// Every argument, --help included, is gclient's.
+program
+  .helpOption(false)
+  .allowUnknownOption()
+  .allowExcessArguments()
+  .action(() => util.runGclient(process.argv.slice(2)))
+  .parse()

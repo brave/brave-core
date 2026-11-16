@@ -8,7 +8,7 @@ import os from 'node:os'
 import path from 'node:path'
 import { checkoutChromiumRef } from './chromiumFetch.ts'
 import config from './config.ts'
-import { snapshotConfig } from './configSnapshot.ts'
+import { mockConfig } from './configMock.ts'
 import * as Log from './log.ts'
 import * as syncUtils from './syncUtils.ts'
 import util from './util.ts'
@@ -36,10 +36,9 @@ jest.mock('./chromiumFetch.ts', () => ({
 }))
 
 let tmpDir: string
-let restoreConfig: () => void
 
 beforeEach(() => {
-  restoreConfig = snapshotConfig()
+  mockConfig()
 
   tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'brave-sync-utils-'))
   config.rootDir = tmpDir
@@ -66,7 +65,6 @@ beforeEach(() => {
 })
 
 afterEach(() => {
-  restoreConfig()
   mockIsCI = false
   jest.restoreAllMocks()
   fs.rmSync(tmpDir, { recursive: true, force: true })

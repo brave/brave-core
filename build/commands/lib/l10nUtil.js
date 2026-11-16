@@ -14,11 +14,11 @@ import path from 'node:path'
 import fs from 'node:fs'
 import chalk from 'chalk'
 import { JSDOM } from 'jsdom'
-import config from './config.ts'
+import rootDir from './rootDir.cjs'
 
 // Change to `true` for verbose console log output of GRD traversal
 const verboseLogFindGrd = false
-const srcDir = config.srcDir
+const srcDir = path.join(rootDir, 'src')
 
 // chromium_strings.grd and any of its parts files that we track localization
 // for in l10n service.
