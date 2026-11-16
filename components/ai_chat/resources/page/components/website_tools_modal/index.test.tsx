@@ -106,7 +106,7 @@ describe('WebsiteToolsModal', () => {
     )
   })
 
-  it('records the permission the user picks for a tool', async () => {
+  it('records the permission the user picks for the tool as shown', async () => {
     const setContentToolPermission = jest.fn()
 
     const { container } = await renderModal(
@@ -138,6 +138,7 @@ describe('WebsiteToolsModal', () => {
     expect(setContentToolPermission).toHaveBeenCalledWith(
       'content-uuid',
       'browse_store',
+      'Browse OR navigate to collections.',
       Mojom.ToolPermission.kAllowSession,
     )
   })

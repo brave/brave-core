@@ -209,6 +209,7 @@ class ConversationHandler : public mojom::ConversationHandler,
                        GetContentToolsCallback callback) override;
   void SetContentToolPermission(const std::string& content_uuid,
                                 const std::string& tool_name,
+                                const std::string& tool_description,
                                 mojom::ToolPermission permission) override;
   void SetContentAgentChosen(bool chosen) override;
   void RateMessage(bool is_liked,

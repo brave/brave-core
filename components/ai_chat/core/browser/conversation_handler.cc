@@ -2553,9 +2553,10 @@ void ConversationHandler::GetContentTools(const std::string& content_uuid,
 void ConversationHandler::SetContentToolPermission(
     const std::string& content_uuid,
     const std::string& tool_name,
+    const std::string& tool_description,
     mojom::ToolPermission permission) {
   associated_content_manager_->SetToolPermission(content_uuid, tool_name,
-                                                 permission);
+                                                 tool_description, permission);
 }
 
 void ConversationHandler::OnTaskStateChanged(ToolProvider* tool_provider) {

@@ -98,9 +98,13 @@ class AssociatedContentManager : public ToolProvider,
   // Records how the tool named |tool_name| exposed by the content with
   // |content_uuid| should be handled. Keyed by the content's origin rather
   // than its uuid, so navigating away drops the choice rather than applying
-  // it to whatever loads next.
+  // it to whatever loads next. |tool_description| is the description the user
+  // was shown for the tool: a kAllowSession grant only holds while the tool
+  // keeps that description, so a site can't have a tool allowed and then
+  // re-register it under the same name to do something else.
   void SetToolPermission(std::string_view content_uuid,
                          std::string_view tool_name,
+                         std::string_view tool_description,
                          mojom::ToolPermission permission);
 
   // Records |permission| for the content tool the model calls
@@ -235,8 +239,10 @@ class AssociatedContentManager : public ToolProvider,
   void NotifyContentToolsChanged(const std::string& content_uuid,
                                  std::vector<mojom::ToolInfoPtr> tools);
 
+  // The choice recorded for |tool| from |origin|. A kAllowSession grant made
+  // against a different description than |tool| now has reads as kAsk.
   mojom::ToolPermission GetToolPermission(const url::Origin& origin,
-                                          std::string_view tool_name) const;
+                                          const Tool& tool) const;
 
   // Whether |origin| still has live (i.e. not archived) content here.
   bool HasLiveContentForOrigin(const url::Origin& origin) const;
@@ -291,8 +297,16 @@ class AssociatedContentManager : public ToolProvider,
   // decision about this conversation's context, so it shouldn't silently
   // carry over into the next one, nor outlive the site's content being
   // attached here.
+  struct ContentToolPermission {
+    mojom::ToolPermission permission;
+    // The tool's description when the choice was made. A site can unregister
+    // a tool and register another under the same name, so a kAllowSession
+    // grant only applies while the description is unchanged. A kNeverAllow
+    // choice ignores it, so changing the description can't lift a block.
+    std::string description;
+  };
   base::flat_map<url::Origin,
-                 base::flat_map<std::string, mojom::ToolPermission>>
+                 base::flat_map<std::string, ContentToolPermission>>
       content_tool_permissions_;
 
   std::vector<raw_ptr<AssociatedContentDelegate>> content_delegates_;

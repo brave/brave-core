@@ -508,8 +508,11 @@ interface ConversationHandler {
   GetContentTools(string content_uuid) => (array<ToolInfo> tools);
 
   // Applies to every tool of that name from the content's origin, for the
-  // lifetime of this conversation.
+  // lifetime of this conversation. |tool_description| is the description the
+  // user was shown for the tool: an allow choice stops applying if the site
+  // changes the tool's description.
   SetContentToolPermission(string content_uuid, string tool_name,
+                           string tool_description,
                            ToolPermission permission);
 
   // Records whether the user wants the content agent for this conversation.
