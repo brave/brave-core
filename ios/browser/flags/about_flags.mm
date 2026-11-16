@@ -22,6 +22,7 @@
 #include "brave/ios/browser/most_visited_sites/features.h"
 #include "brave/ios/browser/playlist/features.h"
 #include "brave/ios/browser/search_engines/features.h"
+#include "brave/ios/browser/tab_groups/features.h"
 #include "brave/ios/browser/toolbar/features.h"
 #include "brave/ios/browser/ui/quick_view/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
@@ -424,6 +425,13 @@ const flags_ui::FeatureEntry::FeatureVariation
           "Manage search engines using Chromium's TemplateURLService",         \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(brave::features::kUseChromiumSearchEngines),      \
+      },                                                                       \
+      {                                                                        \
+          "brave-tab-groups",                                                  \
+          "Enable tab groups",                                                 \
+          "Enables organizing tabs into groups in the tab tray",               \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave::features::kBraveTabGroups),                \
       },                                                                       \
       {                                                                        \
           "brave-origin",                                                      \
