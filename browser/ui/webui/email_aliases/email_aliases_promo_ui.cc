@@ -6,9 +6,9 @@
 #include "brave/browser/ui/webui/email_aliases/email_aliases_promo_ui.h"
 
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
-#include "brave/browser/ui/webui/settings/brave_settings_localized_strings_provider.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
@@ -34,7 +34,7 @@ EmailAliasesPromoUI::EmailAliasesPromoUI(content::WebUI* web_ui)
   auto* profile = Profile::FromWebUI(web_ui);
   auto* source =
       content::WebUIDataSource::CreateAndAdd(profile, kEmailAliasesPromoHost);
-  settings::BraveAddLocalizedStrings(source, profile);
+  source->AddLocalizedStrings(webui::kEmailAliasesStrings);
   // Allow styled-components and theming in the Top Chrome panel.
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
