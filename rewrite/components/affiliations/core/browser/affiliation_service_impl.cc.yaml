@@ -10,7 +10,7 @@ substitutions:
       function_name: AffiliationServiceImpl::FetchChangePasswordURL
       code: |-
         base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-          FROM_HERE, base::BindOnce(std::move(callback), GURL()));
+          FROM_HERE, base::BindOnce(std::move(callback), std::nullopt));
         if ((true)) return;
 
   - description: |
