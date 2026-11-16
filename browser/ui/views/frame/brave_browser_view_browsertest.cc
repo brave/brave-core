@@ -351,39 +351,6 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
   EXPECT_FALSE(HasBraveConfirmInfoBarView(infobar_container()));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, TopSeparatorWithPanelTest) {
-  auto disable_rich_animation =
-      gfx::AnimationTestApi::SetRichAnimationRenderMode(
-          gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
-
-  browser()->GetProfile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, true);
-  RunScheduledLayouts();
-
-  content::WebContents* web_contents =
-      browser()->tab_strip_model()->GetActiveWebContents();
-
-  // Make infobar to make top container separator visible.
-  infobars::ContentInfoBarManager* infobar_manager =
-      infobars::ContentInfoBarManager::FromWebContents(web_contents);
-  TestInfoBarDelegate::Create(infobar_manager);
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return infobar_container()->GetVisible(); }));
-  EXPECT_GE(infobar_manager->infobars().size(), 1u);
-  EXPECT_TRUE(brave_browser_view()
-                  ->top_container_separator_for_testing()
-                  ->GetVisible());
-
-  // Check separator is hidden after panel opens.
-  auto* panel_ui = SidePanelUI::From(browser());
-  panel_ui->Toggle();
-  auto* side_panel = browser_view()->side_panel();
-  ASSERT_TRUE(base::test::RunUntil([&]() { return side_panel->GetVisible(); }));
-  RunScheduledLayouts();
-  EXPECT_FALSE(brave_browser_view()
-                   ->top_container_separator_for_testing()
-                   ->GetVisible());
-}
-
 // Cmd/Ctrl+Shift+S (IDC_SHARING_HUB_SCREENSHOT) should open Brave's own
 // screenshot bubble instead of upstream's Sharing Hub one, and should
 // temporarily reveal the screenshot toolbar button when it's hidden by the
@@ -882,6 +849,34 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   views::View::ConvertPointFromScreen(browser_view(), &screen_point);
   EXPECT_NE(main_background_region,
             browser_view()->GetEventHandlerForPoint(screen_point));
+}
+
+IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
+                       TopSeparatorWithPanelTest) {
+  // An infobar is what upstream draws the top container separator for. With
+  // rounded corners the infobar is a card with its own outline, so the
+  // separator would double up with it and is suppressed instead.
+  infobars::ContentInfoBarManager* infobar_manager =
+      infobars::ContentInfoBarManager::FromWebContents(
+          browser()->tab_strip_model()->GetActiveWebContents());
+  TestInfoBarDelegate::Create(infobar_manager);
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return infobar_container()->GetVisible(); }));
+  EXPECT_GE(infobar_manager->infobars().size(), 1u);
+
+  const bool separator_expected = !IsRoundedCornersEnabled();
+  auto* separator = brave_browser_view()->top_container_separator_for_testing();
+  EXPECT_EQ(separator_expected, separator->GetVisible());
+
+  // Check separator is hidden after panel opens.
+  auto* panel_ui = SidePanelUI::From(browser());
+  panel_ui->Toggle();
+  auto* side_panel = browser_view()->side_panel();
+  ASSERT_TRUE(base::test::RunUntil([&]() { return side_panel->GetVisible(); }));
+  RunScheduledLayouts();
+  EXPECT_FALSE(brave_browser_view()
+                   ->top_container_separator_for_testing()
+                   ->GetVisible());
 }
 
 INSTANTIATE_TEST_SUITE_P(
