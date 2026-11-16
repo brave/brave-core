@@ -657,7 +657,7 @@ export class Config {
         options.ninja,
         this.extraNinjaOpts,
         (opts, key, value) => {
-          // Workaround siso unable to handle -j if REAPI is not configured.
+          // Siso uses SISO_LIMITS instead of Ninja's -j option.
           if (key === 'j') {
             this.sisoJobsLimit = parseInt(value)
             return
@@ -834,6 +834,7 @@ export class Config {
     }
 
     // These env vars are required during `build` stage.
+    let remoteSisoJobsLimit: number | undefined
     if (this.useRemoteExec) {
       // Restrict remote execution jobs to x1.2 of available executors. This is
       // a slight overprovisioning to ensure that network latency does not cause
@@ -854,14 +855,28 @@ export class Config {
       // Brave-specific setup.
       Config.#capEnvNumber(env, 'NINJA_CORE_MULTIPLIER', 20)
       Config.#capEnvNumber(env, 'NINJA_CORE_LIMIT', kRemoteLimit)
+      remoteSisoJobsLimit = this.sisoJobsLimit || kRemoteLimit
 
-      // Siso has its own limits for remote execution that do not depend on
+      if (this.offline) {
+        // Use all local resources in offline mode. RBE_local_resource_fraction
+        // can be set to a lower value for racing mode, but in offline mode we
+        // want to use all cores.
+        env.RBE_local_resource_fraction = '1.0'
+      }
+    }
+
+    if (
+      this.useRemoteExec
+      || this.sisoJobsLimit !== undefined
+      || Object.keys(this.sisoLimits).length > 0
+    ) {
+      // Siso limits apply to local and remote execution independently of
       // NINJA_CORE_* values. Set those limits separately. See docs for more
       // details:
       // https://chromium.googlesource.com/build/+/refs/heads/main/siso/docs/environment_variables.md#siso_limits
       const defaultSisoLimits = {
         local: this.sisoJobsLimit,
-        remote: this.sisoJobsLimit || kRemoteLimit,
+        remote: remoteSisoJobsLimit,
         ...this.sisoLimits,
       }
       // Parse SISO_LIMITS from env if set (comma-separated key=value pairs).
@@ -895,13 +910,6 @@ export class Config {
       env.SISO_LIMITS = Array.from(envSisoLimits.entries())
         .map(([key, value]) => `${key}=${value}`)
         .join(',')
-
-      if (this.offline) {
-        // Use all local resources in offline mode. RBE_local_resource_fraction
-        // can be set to a lower value for racing mode, but in offline mode we
-        // want to use all cores.
-        env.RBE_local_resource_fraction = '1.0'
-      }
     }
 
     if (isCI) {
