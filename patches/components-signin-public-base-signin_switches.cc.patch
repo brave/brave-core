@@ -1,8 +1,8 @@
 diff --git a/components/signin/public/base/signin_switches.cc b/components/signin/public/base/signin_switches.cc
-index b53015963cf7b66d2348a0482fa7bbb71d78c494..c18704858624d840129cf64610ef8686f8bd0126 100644
+index a571d73d7de7df2b1b8e21ccfc24f5e2b44284b7..7e63e1bd1ede2c8f9480e7f9a80caf167daea813 100644
 --- a/components/signin/public/base/signin_switches.cc
 +++ b/components/signin/public/base/signin_switches.cc
-@@ -724,9 +724,9 @@ BASE_FEATURE(kFirstRunDesktopChoiceScreenRefresh,
+@@ -664,9 +664,9 @@ BASE_FEATURE(kFirstRunDesktopChoiceScreenRefresh,
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
  #if BUILDFLAG(IS_WIN)
@@ -14,16 +14,7 @@ index b53015963cf7b66d2348a0482fa7bbb71d78c494..c18704858624d840129cf64610ef8686
  #endif
  bool IsFirstRunDesktopRefreshEnabled(bool is_in_search_engine_choice_region) {
    if (is_in_search_engine_choice_region &&
-@@ -870,7 +870,7 @@ BASE_FEATURE(kProfileCreationDeclineSigninCTAExperiment,
- #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
- 
- #if BUILDFLAG(IS_ANDROID)
--BASE_FEATURE(kProfileDiscOnAllPages, base::FEATURE_ENABLED_BY_DEFAULT);
-+BASE_OVERRIDDEN_FEATURE(kProfileDiscOnAllPages, base::FEATURE_DISABLED_BY_DEFAULT);
- #endif  // BUILDFLAG(IS_ANDROID)
- 
- BASE_FEATURE(kProfilesReordering, base::FEATURE_DISABLED_BY_DEFAULT);
-@@ -916,7 +916,7 @@ BASE_FEATURE(kSigninInterceptGraphicUpdate, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -862,7 +862,7 @@ BASE_FEATURE(kSigninInterceptGraphicUpdate, base::FEATURE_DISABLED_BY_DEFAULT);
  #endif  // BUILDFLAG(ENABLE_DICE_SUPPORT)
  
  #if BUILDFLAG(IS_ANDROID)
@@ -32,8 +23,8 @@ index b53015963cf7b66d2348a0482fa7bbb71d78c494..c18704858624d840129cf64610ef8686
  #endif  // BUILDFLAG(IS_ANDROID)
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-@@ -1006,8 +1006,8 @@ BASE_FEATURE(kSupportWebSigninAddSession, base::FEATURE_ENABLED_BY_DEFAULT);
- BASE_FEATURE(kSwitchToIncognitoInSettings, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -929,8 +929,8 @@ BASE_FEATURE(kSupportSigninInterceptionInPopups,
+ BASE_FEATURE(kSupportWebSigninAddSession, base::FEATURE_ENABLED_BY_DEFAULT);
  #endif  // BUILDFLAG(IS_ANDROID)
  
 -BASE_FEATURE(kSyncEnableBookmarksInTransportMode,
