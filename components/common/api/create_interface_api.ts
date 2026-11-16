@@ -692,6 +692,11 @@ export function createInterfaceApi<
 
   type EventInternalData<T> = { payload: T; eventCount: number }
 
+  // Event data can't be refetched, so keep it after the last observer goes
+  // away: a component mounting later still gets the latest payload. It's
+  // removed by reset<Event>() or close().
+  const eventGcTime = Infinity
+
   function emitEvent<K extends EvAll>(
     eventName: K,
     ...argsAndPayload: [...KeyArgsOf<K>, PayloadOf<K>]
@@ -701,8 +706,13 @@ export function createInterfaceApi<
       0,
       argsAndPayload.length - 1,
     ) as KeyArgsOf<K>
+    const queryKey = [rootKey, eventName, ...keyArgs]
+    // setQueryData takes no gcTime, so create the query first with one.
+    queryClient
+      .getQueryCache()
+      .build(queryClient, { queryKey, gcTime: eventGcTime })
     queryClient.setQueryData<EventInternalData<PayloadOf<K>>>(
-      [rootKey, eventName, ...keyArgs],
+      queryKey,
       (old) => ({ payload, eventCount: (old?.eventCount ?? 0) + 1 }),
     )
   }
@@ -776,6 +786,7 @@ export function createInterfaceApi<
         {
           queryKey: [...keyBase, ...keyArgs],
           enabled: false,
+          gcTime: eventGcTime,
           queryFn: () =>
             Promise.reject(
               new Error(
@@ -802,6 +813,7 @@ export function createInterfaceApi<
       >(queryClient, {
         queryKey: [...keyBase, ...keyArgs],
         enabled: false,
+        gcTime: eventGcTime,
         queryFn: () =>
           Promise.reject(
             new Error(
@@ -964,7 +976,7 @@ export function createInterfaceApi<
     close: () => {
       // Cancel all pending queries for this API key
       queryClient.cancelQueries({ queryKey: [rootKey], exact: false })
-      // Queries will be gc with no subscribers but we can remove them immediately
+      // Event data is never gc'd, so remove everything for this API now
       queryClient.removeQueries({ queryKey: [rootKey], exact: false })
     },
   }
