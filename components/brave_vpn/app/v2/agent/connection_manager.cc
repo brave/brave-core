@@ -13,6 +13,7 @@
 #include "base/location.h"
 #include "base/notimplemented.h"
 #include "base/notreached.h"
+#include "base/power_monitor/power_monitor.h"
 #include "base/task/sequenced_task_runner.h"
 
 namespace brave_vpn::v2 {
@@ -46,10 +47,12 @@ ConnectionManager::ConnectionManager(ConnectionApiFactory api_factory)
       reconnect_backoff_(&kReconnectBackoffPolicy) {
   CHECK(connection_api_factory_);
   net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
+  base::PowerMonitor::GetInstance()->AddPowerSuspendObserver(this);
 }
 
 ConnectionManager::~ConnectionManager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  base::PowerMonitor::GetInstance()->RemovePowerSuspendObserver(this);
   net::NetworkChangeNotifier::RemoveNetworkChangeObserver(this);
   // Destroy the API while every other member is still alive. ConnectionApi
   // implementations must not call the delegate from their destructor.
@@ -310,10 +313,7 @@ void ConnectionManager::OnConnectionEstablished() {
   transition_settle_until_ = base::TimeTicks::Now() + kTransitionGracePeriod;
   // The backoff is deliberately not reset here, so that a tunnel which comes
   // up and drops straight away doesn't retry at full speed forever.
-  connection_stable_timer_.Start(
-      FROM_HERE, kStableConnectionPeriod,
-      base::BindOnce(&ConnectionManager::OnConnectionStable,
-                     base::Unretained(this)));
+  StartConnectionStableTimer();
   UpdateConnectionState(mojom::VpnConnectionState::kConnected, std::nullopt);
 }
 
@@ -438,6 +438,51 @@ void ConnectionManager::OnNetworkChanged(
   }
 }
 
+void ConnectionManager::OnSuspend() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // On some platforms the clock keeps counting while the system sleeps, so a
+  // timer left running would fire the moment it wakes, before anything had a
+  // chance to happen. OnResume() restarts the ones that are still needed.
+  reconcile_timer_.Stop();
+  transition_watchdog_.Stop();
+  connection_stable_timer_.Stop();
+  // A connect the user asked for during a teardown is not a retry; it stays
+  // scheduled, as it does through network changes.
+  if (!connect_after_teardown_) {
+    reconnect_timer_.Stop();
+  }
+}
+
+void ConnectionManager::OnResume() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  switch (connection_state_) {
+    case mojom::VpnConnectionState::kConnecting:
+    case mojom::VpnConnectionState::kDisconnecting:
+      StartTransitionWatchdog();
+      return;
+    case mojom::VpnConnectionState::kWaitingRetry:
+      if (connect_after_teardown_) {
+        return;  // Still scheduled.
+      }
+      // A network change arriving after resume restarts the timer with a
+      // shorter delay, which is fine - by then the network has come back.
+      reconnect_backoff_.Reset();
+      ArmRetryTimer(kResumeSettleDelay);
+      return;
+    case mojom::VpnConnectionState::kConnected:
+      // Time asleep doesn't count towards a stable connection. The same
+      // applies to the check as to the retry above.
+      StartConnectionStableTimer();
+      ScheduleReconcile(kResumeSettleDelay);
+      return;
+    case mojom::VpnConnectionState::kDisconnected:
+    case mojom::VpnConnectionState::kConnectFailed:
+    case mojom::VpnConnectionState::kInternalError:
+      // There is no tunnel to check.
+      return;
+  }
+}
+
 ConnectionApi* ConnectionManager::GetOrCreateConnectionApi() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!connection_api_) {
@@ -459,11 +504,24 @@ void ConnectionManager::BeginTransition(mojom::VpnConnectionState state) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(state == mojom::VpnConnectionState::kConnecting ||
         state == mojom::VpnConnectionState::kDisconnecting);
+  StartTransitionWatchdog();
+  UpdateConnectionState(state, std::nullopt);
+}
+
+void ConnectionManager::StartTransitionWatchdog() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   transition_watchdog_.Start(
       FROM_HERE, kTransitionTimeout,
       base::BindOnce(&ConnectionManager::OnTransitionTimedOut,
                      base::Unretained(this)));
-  UpdateConnectionState(state, std::nullopt);
+}
+
+void ConnectionManager::StartConnectionStableTimer() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  connection_stable_timer_.Start(
+      FROM_HERE, kStableConnectionPeriod,
+      base::BindOnce(&ConnectionManager::OnConnectionStable,
+                     base::Unretained(this)));
 }
 
 bool ConnectionManager::IsTransitionSettling() const {

@@ -20,6 +20,7 @@
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/test/power_monitor_test.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/brave_vpn/app/v2/agent/connection_api.h"
@@ -320,7 +321,7 @@ class ConnectionManagerSessionTest : public testing::Test {
         net::NetworkChangeNotifier::CONNECTION_NONE);
     net::NetworkChangeNotifier::NotifyObserversOfNetworkChangeForTests(
         net::NetworkChangeNotifier::CONNECTION_WIFI);
-    DeliverNetworkChangeNotifications();
+    DeliverPostedNotifications();
   }
 
   // Takes the network away for real.
@@ -329,7 +330,7 @@ class ConnectionManagerSessionTest : public testing::Test {
         net::NetworkChangeNotifier::CONNECTION_NONE);
     net::NetworkChangeNotifier::NotifyObserversOfNetworkChangeForTests(
         net::NetworkChangeNotifier::CONNECTION_NONE);
-    DeliverNetworkChangeNotifications();
+    DeliverPostedNotifications();
   }
 
   // Brings the network back.
@@ -339,11 +340,11 @@ class ConnectionManagerSessionTest : public testing::Test {
     NotifyNetworkChanged();
   }
 
-  // Lets the network change notifications sent so far reach the manager.
-  // NetworkChangeNotifier posts each of them as a task to this sequence, so a
-  // task posted after them runs once they have all been delivered. The mock
-  // clock doesn't move.
-  void DeliverNetworkChangeNotifications() {
+  // Lets the notifications sent so far reach the manager. NetworkChangeNotifier
+  // and PowerMonitor post each of them as a task to this sequence, so a task
+  // posted after them runs once they have all been delivered. The mock clock
+  // doesn't move.
+  void DeliverPostedNotifications() {
     base::RunLoop run_loop;
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE, run_loop.QuitClosure());
@@ -358,6 +359,26 @@ class ConnectionManagerSessionTest : public testing::Test {
     manager_.OnNetworkChanged(type);
   }
 
+  // Puts the system to sleep, as PowerMonitor reports it.
+  void Suspend() {
+    power_monitor_source_.Suspend();
+    DeliverPostedNotifications();
+  }
+
+  // Wakes the system up, as PowerMonitor reports it.
+  void Resume() {
+    power_monitor_source_.Resume();
+    DeliverPostedNotifications();
+  }
+
+  // Hands a suspend and a resume to the manager right away. For the test where
+  // they have to arrive before a task that is already pending; everything else
+  // goes through PowerMonitor.
+  void SuspendAndResumeNow() {
+    manager_.OnSuspend();
+    manager_.OnResume();
+  }
+
   // Waits for the attempt that a Connect() during the teardown asked for. It
   // starts from a task, but without any delay, so the mock clock must not move.
   void WaitForAttemptAfterTeardown() {
@@ -368,6 +389,8 @@ class ConnectionManagerSessionTest : public testing::Test {
 
   static constexpr base::TimeDelta kNetworkSettleDelay =
       ConnectionManager::kNetworkSettleDelay;
+  static constexpr base::TimeDelta kResumeSettleDelay =
+      ConnectionManager::kResumeSettleDelay;
   static constexpr base::TimeDelta kTransitionGracePeriod =
       ConnectionManager::kTransitionGracePeriod;
   static constexpr base::TimeDelta kStableConnectionPeriod =
@@ -385,6 +408,7 @@ class ConnectionManagerSessionTest : public testing::Test {
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   net::test::ScopedMockNetworkChangeNotifier network_change_notifier_;
+  base::test::ScopedPowerMonitorTestSource power_monitor_source_;
   FakeConnectionApi::Log api_log_;
   ConnectionManager manager_{
       base::BindRepeating(&ConnectionManagerSessionTest::CreateConnectionApi,
@@ -1132,6 +1156,104 @@ TEST_F(ConnectionManagerSessionTest, AnsweredConnectDoesNotTimeOut) {
   FastForwardBy(kSessionLongTime);
   EXPECT_EQ(State::kConnected, state());
   EXPECT_EQ(0, api_log_.destroyed);
+}
+
+// A tunnel may not survive a sleep, so it is checked after resume, once the
+// network has had time to come back.
+TEST_F(ConnectionManagerSessionTest, ResumeChecksTunnel) {
+  ConnectAndEstablish();
+
+  Suspend();
+  Resume();
+
+  FastForwardBy(kResumeSettleDelay - kSessionTick);
+  EXPECT_EQ(0, api_log_.check_requests);
+
+  FastForwardBy(kSessionTick);
+  EXPECT_EQ(1, api_log_.check_requests);
+}
+
+// No retry is made while the system sleeps, however long that takes. After
+// resume the retry sequence starts over.
+TEST_F(ConnectionManagerSessionTest, SuspendPausesRetryUntilResume) {
+  manager_.SetAutoReconnectState(true);
+  manager_.Connect();
+  for (int failures = 1; failures <= 3; ++failures) {
+    FailAttemptAndWaitForRetry(failures);
+  }
+  FailAttempt();
+  ASSERT_EQ(State::kWaitingRetry, state());
+  ASSERT_EQ(4, api_log_.connect_requests);
+
+  Suspend();
+  FastForwardBy(kSessionLongTime);
+  EXPECT_EQ(4, api_log_.connect_requests);
+
+  Resume();
+  FastForwardBy(kResumeSettleDelay - kSessionTick);
+  EXPECT_EQ(4, api_log_.connect_requests);
+
+  FastForwardBy(kSessionTick);
+  EXPECT_EQ(5, api_log_.connect_requests);
+
+  // Back to the first step of the backoff.
+  FailAttemptAndWaitForRetry(1);
+  EXPECT_EQ(6, api_log_.connect_requests);
+}
+
+// Time asleep doesn't count against a request in progress: the API gets its
+// full time to answer after resume.
+TEST_F(ConnectionManagerSessionTest, SuspendPausesTransitionTimeout) {
+  manager_.Connect();
+
+  Suspend();
+  FastForwardBy(kSessionLongTime);
+  EXPECT_EQ(State::kConnecting, state());
+  EXPECT_EQ(0, api_log_.destroyed);
+
+  Resume();
+  FastForwardBy(kTransitionTimeout - kSessionTick);
+  EXPECT_EQ(State::kConnecting, state());
+
+  FastForwardBy(kSessionTick);
+  EXPECT_EQ(State::kConnectFailed, state());
+}
+
+// Time asleep doesn't count towards a stable connection: a tunnel that is lost
+// right after a long sleep is still the next failure in a row.
+TEST_F(ConnectionManagerSessionTest, TimeAsleepDoesNotMakeConnectionStable) {
+  manager_.SetAutoReconnectState(true);
+  manager_.Connect();
+  for (int failures = 1; failures <= 3; ++failures) {
+    FailAttemptAndWaitForRetry(failures);
+  }
+  ASSERT_EQ(4, api_log_.connect_requests);
+  api().ReportEstablished();
+
+  Suspend();
+  FastForwardBy(kSessionLongTime);
+  Resume();
+  api().ReportTerminated();
+
+  FastForwardBy(MinRetryDelay(4) - kSessionTick);
+  EXPECT_EQ(4, api_log_.connect_requests);
+
+  FastForwardBy(MaxRetryDelay(4) - MinRetryDelay(4) + kSessionTick);
+  EXPECT_EQ(5, api_log_.connect_requests);
+}
+
+// A connect the user asked for during a teardown is not a retry, so a suspend
+// that arrives before it starts must neither cancel nor delay it.
+TEST_F(ConnectionManagerSessionTest, ConnectAfterTeardownSurvivesSuspend) {
+  ConnectAndEstablish();
+  manager_.Disconnect();
+  manager_.Connect();
+  api().ReportTerminated();
+
+  SuspendAndResumeNow();
+
+  WaitForAttemptAfterTeardown();
+  EXPECT_EQ(2, api_log_.connect_requests);
 }
 
 }  // namespace brave_vpn::v2

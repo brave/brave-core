@@ -13,6 +13,8 @@
 #include "base/location.h"
 #include "base/logging.h"
 #include "base/message_loop/message_pump_type.h"
+#include "base/power_monitor/power_monitor.h"
+#include "base/power_monitor/power_monitor_source.h"
 #include "base/run_loop.h"
 #include "base/strings/utf_ostream_operators.h"
 #include "base/task/single_thread_task_executor.h"
@@ -24,6 +26,7 @@
 #include "brave/components/brave_vpn/app/v2/agent/connection_manager.h"
 #include "brave/components/brave_vpn/app/v2/agent/shutdown_handlers.h"
 #include "brave/components/brave_vpn/common/v2/agent_utils.h"
+#include "components/power_monitor/make_power_monitor_device_source.h"
 #include "mojo/core/embedder/configuration.h"
 #include "mojo/core/embedder/embedder.h"
 #include "mojo/core/embedder/scoped_ipc_support.h"
@@ -58,11 +61,13 @@ int AgentApp::Run() {
 
   VLOG(1) << "Hello from the Brave VPN Agent: server name = " << *server_name;
 
-  base::SingleThreadTaskExecutor main_task_executor(base::MessagePumpType::IO);
+  base::SingleThreadTaskExecutor main_task_executor(base::MessagePumpType::UI);
   main_runner_ = base::SingleThreadTaskRunner::GetCurrentDefault();
 
   std::unique_ptr<net::NetworkChangeNotifier> network_change_notifier =
       net::NetworkChangeNotifier::CreateIfNeeded();
+
+  base::PowerMonitor::GetInstance()->Initialize(MakePowerMonitorDeviceSource());
 
   base::RunLoop run_loop;
   quit_closure_ = run_loop.QuitClosure();
