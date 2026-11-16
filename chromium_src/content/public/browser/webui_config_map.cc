@@ -20,11 +20,11 @@ namespace {
 // If `url`'s host is a subdomain under a top-level domain with a registered
 // chrome-untrusted:// config that opts into handling its own subdomains via
 // WebUIConfig::ShouldHandleSubdomains(), returns that config. Returns
-// `configs.end()` otherwise. Called from WebUIConfigMap::GetConfig() via the
-// plaster for content/public/browser/webui_config_map.cc.
-std::map<url::Origin, std::unique_ptr<WebUIConfig>>::iterator
+// `configs.end()` otherwise. Called from WebUIConfigMap::GetRegisteredConfig()
+// via the plaster for content/public/browser/webui_config_map.cc.
+std::map<url::Origin, std::unique_ptr<WebUIConfig>>::const_iterator
 FindConfigForSubdomain(
-    std::map<url::Origin, std::unique_ptr<WebUIConfig>>& configs,
+    const std::map<url::Origin, std::unique_ptr<WebUIConfig>>& configs,
     const GURL& url) {
   // Only chrome-untrusted:// WebUIs may be served from subdomains. A subdomain
   // is always a new origin; for chrome:// that new origin would be granted
