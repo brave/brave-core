@@ -120,7 +120,6 @@ class BraveBrowserView : public BrowserView,
   void UpdateToolbar(content::WebContents* contents) override;
   bool UpdateToolbarSecurityState() override;
   bool AcceleratorPressed(const ui::Accelerator& accelerator) override;
-  void ReadyToListenFullscreenChanges() override;
   ClientFrameElementInfo GetFrameElementInfo() const override;
 
   void OnImmersiveFullscreenExited() override;
@@ -130,7 +129,6 @@ class BraveBrowserView : public BrowserView,
   views::View* sidebar_host_view() { return sidebar_host_view_; }
 #endif
 
-  void StopListeningFullscreenChanges();
   bool IsSidebarVisible() const;
 
   // Web panel state the layout needs for its corner radii calculations. It is

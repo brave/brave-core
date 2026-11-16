@@ -5,18 +5,19 @@
 
 #include "brave/browser/ui/browser_window/internal/brave_browser_window_features.h"
 
+#include "base/check_deref.h"
 #include "base/containers/flat_map.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/types/to_address.h"
 #include "base/unguessable_token.h"
-#include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/screenshot/screenshot_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/public/before_unload_ignore_controller.h"
 #include "brave/browser/ui/tabs/public/closing_last_tab_controller.h"
 #include "brave/browser/ui/tabs/public/tab_cycling_controller.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/tabs/tree_tab_session_manager.h"
 #include "brave/browser/ui/views/brave_help_bubble/shields_help_bubble_controller.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
@@ -34,7 +35,10 @@
 #include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
+#include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "printing/buildflags/buildflags.h"
 #include "ui/gfx/native_ui_types.h"
 
@@ -139,14 +143,15 @@ void BraveBrowserWindowFeatures::Init() {
 
 void BraveBrowserWindowFeatures::InitPostWindowConstruction() {
   // WebUI browser windows have none of the views UI these features drive.
-  auto* brave_browser_window =
-      BraveBrowserWindow::FromBrowser(base::to_address(browser_));
-  if (!brave_browser_window) {
+  if (!BrowserView::GetBrowserViewForBrowser(base::to_address(browser_))) {
     return;
   }
 
   // The fullscreen controller only exists once the window is constructed.
-  brave_browser_window->ReadyToListenFullscreenChanges();
+  CHECK_DEREF(VerticalTabController::From(base::to_address(browser_)))
+      .ListenFullscreenChanges(
+          *CHECK_DEREF(ExclusiveAccessManager::From(base::to_address(browser_)))
+               .fullscreen_controller());
 
   shields_help_bubble_controller_ =
       GetUserDataFactory().CreateInstance<ShieldsHelpBubbleController>(
