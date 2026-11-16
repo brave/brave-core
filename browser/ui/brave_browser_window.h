@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_
 
-#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_window.h"
 
 namespace content {
@@ -21,10 +20,6 @@ class BraveBrowserWindow : public BrowserWindow {
   // BrowserView (e.g. a WebUIBrowserWindow or a TestBrowserWindow).
   static BraveBrowserWindow* From(BrowserWindow* window);
   static BraveBrowserWindow* FromBrowser(BrowserWindowInterface* browser);
-
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-  virtual void UpdateReaderModeToolbar() {}
-#endif
 
   virtual void ReadyToListenFullscreenChanges() {}
 };

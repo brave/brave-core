@@ -23,6 +23,7 @@
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/bookmarks/bookmark_tab_helper.h"
 #include "chrome/browser/ui/bookmarks/bookmark_tab_helper_observer.h"
@@ -109,7 +110,6 @@ class BraveBrowserView : public BrowserView,
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // Give active tab's reader mode toolbar.
   ReaderModeToolbarView* reader_mode_toolbar();
-  void UpdateReaderModeToolbar() override;
 #endif
   bool GetTabStripVisible() const override;
   bool ShouldShowWindowTitle() const override;
@@ -312,7 +312,6 @@ class BraveBrowserView : public BrowserView,
   // |find_bar_host_view_| must exist (BrowserView creates it before this
   // class's ctor body runs).
   void EnsureFindBarHostViewIsLastChild();
-
 
   void UpdateSideBarHorizontalAlignment();
 
