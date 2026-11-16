@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/browser/ai_chat/android/sources.gni")
 import("//brave/browser/brave_vpn/sources.gni")
 import("//brave/browser/cosmetic_filters/sources.gni")
 import("//brave/browser/net/sources.gni")
@@ -529,11 +528,6 @@ if (enable_ai_chat) {
   if (!is_android) {
     brave_chrome_browser_deps += [ "//brave/browser/ui/ai_chat" ]
   }
-}
-
-if (enable_ai_chat && is_android) {
-  brave_chrome_browser_sources += brave_browser_ai_chat_android_sources
-  brave_chrome_browser_deps += brave_browser_ai_chat_android_deps
 }
 
 if (enable_containers) {
