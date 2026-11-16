@@ -856,7 +856,7 @@ uses WebKit, not Chromium's content layer. Pass specific dependencies
 
 <a id="ARCH-037"></a>
 
-## ✅ Use Layered Component Structure (`core/` + `content/`) for iOS-Compatible Components
+## ✅ Use Layered Component Structure (`core/` + `content/`)
 
 **When a component needs to work on both iOS and content-based platforms, use a
 layered component structure.** Split the component into `core/` (iOS-compatible,
@@ -878,8 +878,43 @@ components/brave_shields/
 
 - `core/` must never depend on `//content` or `content/` subdirectories
 - `content/` may depend on `core/` and `//content`
-- iOS builds only pull in `core/`
+- `ios/` contains iOS-specific code. It generally drives shared `core/` code,
+  serving the same role as `content/` on content-based platforms. It may depend
+  on `core/`, but MUST NOT depend on `//content` or the component's `content/`
+  directory.
+- iOS builds pull in `core/` and any `ios/` integration, NEVER `content/`
 - Business logic belongs in `core/`; content-layer glue belongs in `content/`
+- At the component root, use layer directories (`core/`, `content/`, `ios/`) or
+  process directories (`browser/`, `renderer/`, `common/`), NEVER both. When
+  introducing layers, move existing process directories into the appropriate
+  layer. Create only the layer and process directories the component needs; not
+  all of them are required.
+
+```text
+# ❌ WRONG - layer and process directories at the same level
+components/example/
+├── core/
+├── content/
+├── ios/
+├── browser/
+└── common/
+
+# ✅ CORRECT - process directories at the component root
+components/example/
+├── browser/
+├── renderer/
+└── common/
+
+# ✅ CORRECT - layer directories at the root, process directories within layers
+components/example/
+├── core/
+│   ├── browser/
+│   └── common/
+├── content/
+│   ├── browser/
+│   └── renderer/
+└── ios/
+```
 
 ---
 
