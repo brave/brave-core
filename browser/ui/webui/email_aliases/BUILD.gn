@@ -20,14 +20,24 @@ source_set("email_aliases") {
     "//brave/browser/brave_account",
     "//brave/browser/email_aliases",
     "//brave/browser/resources/settings:resources",
+    "//brave/browser/resources/settings:resources_grit",
+    "//brave/browser/ui/brave_account",
     "//brave/components/brave_account",
     "//brave/components/brave_account/mojom",
+    "//brave/components/brave_account/resources",
     "//brave/components/constants",
+    "//brave/components/email_aliases:features",
+    "//brave/components/email_aliases:mojom",
+    "//brave/components/email_aliases:service",
     "//brave/components/resources:static_resources_grit",
+    "//brave/components/resources:strings_grit",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/webui",
-    "//chrome/browser/ui/webui:theme_source",
     "//ui/webui",
     "//url",
   ]
+
+  if (!is_android) {
+    deps += [ "//chrome/browser/ui/webui:theme_source" ]
+  }
 }

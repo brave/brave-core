@@ -1611,11 +1611,14 @@ source_set("ui") {
   if (enable_email_aliases) {
     deps += [
       "//brave/browser/email_aliases",
-      "//brave/browser/ui/email_aliases",
       "//brave/browser/ui/webui/email_aliases",
       "//brave/components/email_aliases:features",
       "//brave/components/email_aliases:mojom",
     ]
+
+    if (!is_android) {
+      deps += [ "//brave/browser/ui/email_aliases" ]
+    }
   }
 }
 
