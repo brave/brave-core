@@ -107,8 +107,8 @@ void BraveHistoryEmbeddingsProvider::Start(const AutocompleteInput& input,
 }
 
 void BraveHistoryEmbeddingsProvider::Stop(AutocompleteStopReason stop_reason) {
-  // TODO(crbug.com/364303536): Ignore the stop timer since we know answers take
-  //   longer than 1500ms to generate.
+  // TODO(https://github.com/brave/brave-browser/issues/61789): Ignore the
+  // stop timer since we know answers take longer than 1500ms to generate.
   if (stop_reason == AutocompleteStopReason::kInactivity) {
     return;
   }
@@ -127,8 +127,8 @@ void BraveHistoryEmbeddingsProvider::Stop(AutocompleteStopReason stop_reason) {
 
   AutocompleteProvider::Stop(stop_reason);
 
-  // TODO(b/333770460): Once `HistoryEmbeddingsService` has a stop API, we
-  //   should call it here.
+  // TODO(https://github.com/brave/brave-browser/issues/61789): Once
+  // `HistoryEmbeddingsService` has a stop API, we should call it here.
 }
 
 void BraveHistoryEmbeddingsProvider::OnReceivedSearchResult(

@@ -123,8 +123,8 @@ HistoryEmbeddingsServiceFactory::HistoryEmbeddingsServiceFactory()
           "HistoryEmbeddingsService",
           ProfileSelections::Builder()
               .WithRegular(ProfileSelection::kOriginalOnly)
-              // TODO(crbug.com/41488885): Check if this service is needed for
-              // Ash Internals.
+              // TODO(https://github.com/brave/brave-browser/issues/61789):
+              // Check if this service is needed for Ash Internals.
               .WithAshInternals(ProfileSelection::kOriginalOnly)
               .Build()) {
   DependsOn(HistoryServiceFactory::GetInstance());
@@ -152,14 +152,15 @@ HistoryEmbeddingsServiceFactory::BuildServiceInstanceForBrowserContext(
   auto* passage_embeddings_service_controller =
       passage_embeddings::GetChromePassageEmbeddingsServiceController();
 
-  // TODO(crbug.com/553639147): Launch or remove the answerer functionality.
+  // TODO(https://github.com/brave/brave-browser/issues/61789): Launch or
+  // remove the answerer functionality.
   std::unique_ptr<brave_history_embeddings::Answerer> answerer;
   if (brave_history_embeddings::IsHistoryEmbeddingsAnswersFeatureEnabled()) {
     answerer = std::make_unique<brave_history_embeddings::MockAnswerer>();
   }
 
-  // TODO(crbug.com/553639147): Launch or remove the intent classifier
-  // functionality.
+  // TODO(https://github.com/brave/brave-browser/issues/61789): Launch or
+  // remove the intent classifier functionality.
   std::unique_ptr<brave_history_embeddings::IntentClassifier> intent_classifier;
   if (brave_history_embeddings::GetFeatureParameters()
           .enable_intent_classifier) {

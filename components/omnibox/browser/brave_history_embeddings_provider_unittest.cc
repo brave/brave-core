@@ -391,8 +391,8 @@ TEST_F(BraveHistoryEmbeddingsProviderTest,
 TEST_F(BraveHistoryEmbeddingsProviderTest, Stop) {
   history_embeddings_provider_->done_ = false;
 
-  // TODO(crbug.com/364303536) Temporarily allow history embeddings provider to
-  //   ignore `Stop()`.
+  // TODO(https://github.com/brave/brave-browser/issues/61789) Temporarily
+  // allow history embeddings provider to ignore `Stop()`.
   history_embeddings_provider_->Stop(AutocompleteStopReason::kInactivity);
   EXPECT_FALSE(history_embeddings_provider_->done_);
 
