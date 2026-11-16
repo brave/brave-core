@@ -364,6 +364,18 @@ committed.
 ```sh
 tools/cr/brockit.py drop --revert <commit_hash>
 ```
+
+### `brockit.py change-id-gen`
+Gives a Change-Id trailer to each of the branch's commits that has none, from
+where `brockit.py rebase` would start replaying the branch. A pinned or
+recyclable commit takes the Change-Id derived from the branch, as the rebase
+gives it; any other commit a new one. Commits that tell a rebase what to do
+with another (`fixup!`, `amend!`, `squash!`, `drop!`, `reassign!`) get none.
+Only the messages change: trees, authors and committers stay as they were.
+
+```sh
+tools/cr/brockit.py change-id-gen
+```
 """
 
 from __future__ import annotations
@@ -3210,6 +3222,109 @@ class Drop(_MarkChangeTask):
         return body
 
 
+class ChangeIdGen(Task):
+    """Gives a Change-Id to each of the branch's own commits that lacks one,
+    as `brockit rebase` would, without replaying them."""
+
+    # A subject that tells a rebase what to do with another commit, which
+    # takes no Change-Id from it.
+    _DIRECTIVE = re.compile(r'[a-z]+!')
+
+    def status_message(self):
+        return 'Adding missing Change-Ids...'
+
+    def execute(self, to_ref: str | None = None) -> None:
+        """Rewrites the commits from the branch's start onto `to_ref`
+        (`@upstream` by default) to HEAD, and moves the branch there."""
+        brave = repository.brave
+        if brave.is_rebase_in_progress():
+            raise InvalidInputException('A rebase is in progress.')
+        branch = brave.current_branch()
+        if branch == 'HEAD':
+            raise InvalidInputException('HEAD is not on a branch.')
+        head = brave.run_git('rev-parse', 'HEAD')
+        start = brave.run_git(
+            'rev-parse',
+            versioning.branch_start('HEAD', _solve_brave_ref(to_ref)),
+        )
+        if brave.run_git('rev-list', '--merges', f'{start}..HEAD'):
+            raise InvalidInputException(
+                f'{branch} has merge commits since {start[:12]}.'
+            )
+
+        parent = start
+        added = []
+        for commit in brave.run_git(
+            'rev-list', '--reverse', f'{start}..HEAD'
+        ).splitlines():
+            message = brave.run_git('log', '-1', '--format=%B', commit)
+            subject = message.split('\n', 1)[0]
+            if not self._DIRECTIVE.match(subject) and not rebase.change_id_of(
+                message
+            ):
+                message = rebase.with_change_id(
+                    message,
+                    pinned_commits.derived_change_id(branch, subject)
+                    or rebase.new_change_id(commit, message),
+                )
+                added.append(f'{commit[:12]} {subject}')
+            elif brave.run_git('rev-parse', f'{commit}^') == parent:
+                parent = commit
+                continue
+            parent = self._recommit(commit, parent, message)
+
+        if not added:
+            terminal.log_task(f'Every commit of {branch} has a Change-Id.')
+            return
+        brave.run_git(
+            'update-ref',
+            '-m',
+            'brockit change-id-gen',
+            f'refs/heads/{branch}',
+            parent,
+            head,
+        )
+        terminal.log_task(
+            f'Added a Change-Id to {len(added)} commit(s) of {branch}:'
+            + ''.join(f'\n    {escape(line)}' for line in added)
+        )
+
+    @staticmethod
+    def _recommit(commit: str, parent: str, message: str) -> str:
+        """`commit` on `parent` with `message`, keeping its tree, author and
+        committer."""
+        brave = repository.brave
+        fields = brave.run_git(
+            'log',
+            '-1',
+            '--date=raw',
+            '--format=%an%x00%ae%x00%ad%x00%cn%x00%ce%x00%cd',
+            commit,
+        ).split('\0')
+        env = dict(
+            zip(
+                (
+                    'GIT_AUTHOR_NAME',
+                    'GIT_AUTHOR_EMAIL',
+                    'GIT_AUTHOR_DATE',
+                    'GIT_COMMITTER_NAME',
+                    'GIT_COMMITTER_EMAIL',
+                    'GIT_COMMITTER_DATE',
+                ),
+                fields,
+            )
+        )
+        return brave.run_git(
+            'commit-tree',
+            f'{commit}^{{tree}}',
+            '-p',
+            parent,
+            '-m',
+            message,
+            env=env,
+        )
+
+
 class _RepinToolchainTask(Task):
     """A this wrapper around `toolchain.Toolchain.repin`.
 
@@ -3652,6 +3767,18 @@ def main():
         ),
     )
 
+    change_id_gen_parser = subparsers.add_parser(
+        'change-id-gen',
+        parents=[global_parser],
+        help='Gives a Change-Id to each commit of the branch that has none.',
+    )
+    change_id_gen_parser.add_argument(
+        '--to-ref',
+        default=None,
+        help='The branch the branch is rebased onto, which tells where its '
+        'commits start. Defaults to the upstream branch.',
+    )
+
     update_xcode_parser = subparsers.add_parser(
         'update-xcode-toolchain',
         parents=[global_parser],
@@ -3876,6 +4003,8 @@ def main():
             Reassign().run(change=args.change)
         if args.command == 'drop':
             Drop(revert=args.revert).run(change=args.change)
+        if args.command == 'change-id-gen':
+            ChangeIdGen().run(to_ref=args.to_ref)
         if args.command == 'update-xcode-toolchain':
             _RepinToolchainTask(toolchain.XcodeToolchain()).run(
                 chromium_ref=args.to, culprit=args.culprit

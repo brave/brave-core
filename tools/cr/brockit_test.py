@@ -2231,5 +2231,81 @@ class RebaseHookTest(unittest.TestCase):
         self.assertIn('--internal-rebase-new', result.stderr)
 
 
+class ChangeIdGenTest(unittest.TestCase):
+    def setUp(self):
+        self.repo = FakeChromiumRepo()
+        self.repo.setup()
+        self.addCleanup(self.repo.cleanup)
+        self.repo.update_brave_version('1.0.0.0')
+        self._git('checkout', '-q', '-b', 'cr2')
+
+    def _git(self, *args: str) -> str:
+        return self.repo._run_git_command(list(args), self.repo.brave)
+
+    def _commit(self, message: str, name: str | None = None) -> str:
+        if name is None:
+            self._git('commit', '-q', '--allow-empty', '-m', message)
+        else:
+            self.repo.write_and_stage_file(name, f'{name}\n', self.repo.brave)
+            self._git('commit', '-q', '-m', message)
+        return self._git('rev-parse', 'HEAD')
+
+    def _messages(self) -> list[str]:
+        # Unstripped, as `_git` strips what git prints.
+        return [
+            subprocess.run(
+                ['git', 'cat-file', 'commit', commit],
+                cwd=self.repo.brave,
+                capture_output=True,
+                text=True,
+                check=True,
+            ).stdout.split('\n\n', 1)[1]
+            for commit in self._git(
+                'rev-list', '--reverse', 'master..HEAD'
+            ).splitlines()
+        ]
+
+    def test_adds_change_ids_only_where_missing(self):
+        bump = self.repo.update_brave_version('2.0.0.0')
+        bump_subject = self._git('log', '-1', '--format=%s', bump)
+        plain = self._commit('Add own.txt\n\nWith a body.', 'own.txt')
+        self._commit('Add kept.txt\n\nChange-Id: I' + 'a' * 40, 'kept.txt')
+        self._commit('fixup! Add own.txt', 'fixup.txt')
+        self._commit(f'drop!{plain[:12]}! Add own.txt')
+        self._commit(f'reassign!{plain[:12]}! Add own.txt')
+        trees = self._git('log', '--format=%T %an %ae %ad', 'master..HEAD')
+        self.repo.write_file('dirty.txt', 'dirty\n', self.repo.brave)
+
+        brockit.ChangeIdGen().execute(to_ref='master')
+
+        derived = brockit.pinned_commits.derived_change_id('cr2', bump_subject)
+        self.assertIsNotNone(derived)
+        plain_id = brockit.rebase.new_change_id(
+            plain, 'Add own.txt\n\nWith a body.'
+        )
+        self.assertEqual(
+            self._messages(),
+            [
+                f'{bump_subject}\n\nChange-Id: {derived}\n',
+                f'Add own.txt\n\nWith a body.\n\nChange-Id: {plain_id}\n',
+                'Add kept.txt\n\nChange-Id: I' + 'a' * 40 + '\n',
+                'fixup! Add own.txt\n',
+                f'drop!{plain[:12]}! Add own.txt\n',
+                f'reassign!{plain[:12]}! Add own.txt\n',
+            ],
+        )
+        self.assertEqual(
+            self._git('log', '--format=%T %an %ae %ad', 'master..HEAD'), trees
+        )
+        self.assertEqual(
+            (self.repo.brave / 'dirty.txt').read_text(encoding='utf-8'),
+            'dirty\n',
+        )
+
+        head = self._git('rev-parse', 'HEAD')
+        brockit.ChangeIdGen().execute(to_ref='master')
+        self.assertEqual(self._git('rev-parse', 'HEAD'), head)
+
+
 if __name__ == '__main__':
     unittest.main()
