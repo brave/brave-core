@@ -5,9 +5,9 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 # Notice: Keep this script free of dependencies outside the standard library,
-# so users can install it with little effort and no deps surprises. The one
-# `tools/cr` module it uses, `pinned_commits`, keeps to the standard library
-# too.
+# so users can install it with little effort and no deps surprises. The
+# `tools/cr` modules it uses, `pinned_commits` and `chromium_changes`, keep to
+# the standard library too.
 
 # This script has several convenience features when committing changes to
 # brave-core.
@@ -45,11 +45,16 @@
 #    against the Chromium checkout at `../`.
 #
 #    Each culprit is written as its full hash, however short the one given, and
-#    one that isn't a commit stops the commit. With `culprit_in_range=1` (what
-#    `git cr commit --culprit-in-range` sets), a Chromium culprit on a `cr<N>`
-#    branch must also be in the branch's range: after the Chromium tag its
-#    upstream's `package.json` pins, up to the one HEAD's pins. Without it, a
-#    culprit from before the range is fine, e.g. for a fix of a latent issue.
+#    one that isn't a commit stops the commit. A message that brings its own
+#    "Chromium changes:" block in another form, such as a quote without its
+#    indentation, is refused, `fixup!` and `amend!` messages included: git
+#    would read the quoted culprit's trailers as the commit's own.
+#
+#    With `culprit_in_range=1` (what `git cr commit --culprit-in-range` sets),
+#    a Chromium culprit on a `cr<N>` branch must also be in the branch's
+#    range: after the Chromium tag its upstream's `package.json` pins, up to
+#    the one HEAD's pins. Without it, a culprit from before the range is fine,
+#    e.g. for a fix of a latent issue.
 #
 # 5. `issue` environment variable for "Resolves" links
 #
@@ -116,10 +121,11 @@ from pathlib import Path
 # symlink.
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 try:
+    import chromium_changes
     import pinned_commits
 except ImportError:
     print(
-        "The commit-msg hook can't find `tools/cr/pinned_commits.py`: it is "
+        "The commit-msg hook can't find the `tools/cr` modules it uses: it is "
         'probably a copy. Reinstall it with `git cr install-hook`.',
         file=sys.stderr,
     )
@@ -456,6 +462,12 @@ def main():
         return 1
 
     if problem := pinned_squash_problem(commit_message.split('\n', 1)[0]):
+        print(problem, file=sys.stderr)
+        return 1
+
+    if problem := chromium_changes.problem(
+        split_editor_tail(commit_message)[0]
+    ):
         print(problem, file=sys.stderr)
         return 1
 

@@ -371,7 +371,9 @@ where `brockit.py rebase` would start replaying the branch. A pinned or
 recyclable commit takes the Change-Id derived from the branch, as the rebase
 gives it; any other commit a new one. Commits that tell a rebase what to do
 with another (`fixup!`, `amend!`, `squash!`, `drop!`, `reassign!`) get none.
-Only the messages change: trees, authors and committers stay as they were.
+A culprit that a "Chromium changes:" block quotes without its indentation,
+which lends the commit the culprit's Change-Id, is indented first. Only the
+messages change: trees, authors and committers stay as they were.
 
 ```sh
 tools/cr/brockit.py change-id-gen
@@ -403,6 +405,7 @@ import tempfile
 import time
 from typing import ClassVar, NoReturn
 
+import chromium_changes
 import conflict_resolution
 from exceptions import (
     ActionNeededException,
@@ -2707,15 +2710,10 @@ class Rebase(Task):
     @staticmethod
     def has_change_id(commit: str) -> bool:
         """Whether `commit` has a Change-Id trailer, for `rebase.rewrite_plan`
-        to give one to those that don't."""
-        return bool(
-            repository.brave.run_git(
-                'log',
-                '-1',
-                '--format=%(trailers:key=Change-Id,valueonly)',
-                commit,
-            )
-        )
+        to give one to those that don't. One that a culprit quoted without
+        its indentation brought isn't the commit's."""
+        message = repository.brave.run_git('log', '-1', '--format=%B', commit)
+        return rebase.change_id_of(chromium_changes.fixed(message)) is not None
 
     @staticmethod
     def changed_paths(commit: str) -> list[str]:
@@ -2731,15 +2729,20 @@ class Rebase(Task):
         folded into it, in place of whatever an `amend!` brought. With none
         among them, HEAD keeps its own, or gets a new one. A pinned commit
         also takes the branch's own `[cr<N>]` tag, which a pick from a newer
-        branch, with no squash to fix it, would otherwise keep."""
+        branch, with no squash to fix it, would otherwise keep. A culprit
+        quoted without its indentation gets it, and its Change-Id stops
+        counting as the commit's."""
         brave = repository.brave
         branch = brave.rebased_branch()
         messages = [
-            brave.run_git('log', '-1', '--format=%B', commit)
+            chromium_changes.fixed(
+                brave.run_git('log', '-1', '--format=%B', commit)
+            )
             for commit in commits
         ]
         subject = messages[0].split('\n', 1)[0]
-        message = brave.run_git('log', '-1', '--format=%B', 'HEAD')
+        original = brave.run_git('log', '-1', '--format=%B', 'HEAD')
+        message = chromium_changes.fixed(original)
         change_id = (
             pinned_commits.derived_change_id(branch, subject)
             or next(filter(None, map(rebase.change_id_of, messages)), None)
@@ -2750,7 +2753,7 @@ class Rebase(Task):
         if pinned_commits.get_pinned_group_for_subject(subject) is not None:
             amended = rebase.MessageWriter.with_branch_tag(amended, branch)
         amended = rebase.with_change_id(amended, change_id)
-        if amended != message:
+        if amended != original:
             brave.run_git(
                 'commit',
                 '--amend',
@@ -3254,11 +3257,17 @@ class ChangeIdGen(Task):
 
         parent = start
         added = []
+        indented = []
         for commit in brave.run_git(
             'rev-list', '--reverse', f'{start}..HEAD'
         ).splitlines():
-            message = brave.run_git('log', '-1', '--format=%B', commit)
+            original = brave.run_git('log', '-1', '--format=%B', commit)
+            # A culprit quoted without its indentation lends the commit its
+            # Change-Id, which stops counting once the quote is indented.
+            message = chromium_changes.fixed(original)
             subject = message.split('\n', 1)[0]
+            if message != original:
+                indented.append(f'{commit[:12]} {subject}')
             if not self._DIRECTIVE.match(subject) and not rebase.change_id_of(
                 message
             ):
@@ -3268,12 +3277,15 @@ class ChangeIdGen(Task):
                     or rebase.new_change_id(commit, message),
                 )
                 added.append(f'{commit[:12]} {subject}')
-            elif brave.run_git('rev-parse', f'{commit}^') == parent:
+            if (
+                message == original
+                and brave.run_git('rev-parse', f'{commit}^') == parent
+            ):
                 parent = commit
                 continue
             parent = self._recommit(commit, parent, message)
 
-        if not added:
+        if not added and not indented:
             terminal.log_task(f'Every commit of {branch} has a Change-Id.')
             return
         brave.run_git(
@@ -3284,10 +3296,17 @@ class ChangeIdGen(Task):
             parent,
             head,
         )
-        terminal.log_task(
-            f'Added a Change-Id to {len(added)} commit(s) of {branch}:'
-            + ''.join(f'\n    {escape(line)}' for line in added)
-        )
+        if indented:
+            terminal.log_task(
+                f'Indented the culprits quoted in {len(indented)} commit(s) '
+                f'of {branch}:'
+                + ''.join(f'\n    {escape(line)}' for line in indented)
+            )
+        if added:
+            terminal.log_task(
+                f'Added a Change-Id to {len(added)} commit(s) of {branch}:'
+                + ''.join(f'\n    {escape(line)}' for line in added)
+            )
 
     @staticmethod
     def _recommit(commit: str, parent: str, message: str) -> str:

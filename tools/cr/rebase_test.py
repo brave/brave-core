@@ -1302,6 +1302,47 @@ class MessageWriterTest(unittest.TestCase):
             f'[cr148] Feature B\n\nChange-Id: {self._LAST_ID}\n',
         )
 
+    _CULPRIT = 'c' * 40
+
+    def _with_culprit(self, indent: str) -> str:
+        return (
+            '[cr148] Feature B\n'
+            '\n'
+            'Chromium changes:\n'
+            f'https://chromium.googlesource.com/chromium/src/+/{self._CULPRIT}\n'
+            '\n'
+            f'commit {self._CULPRIT}\n'
+            'Author: Someone <someone@chromium.org>\n'
+            'Date:   Mon Nov 9 10:06:38 2026 -0800\n'
+            '\n'
+            f'{indent}Upstream change\n'
+            '\n'
+            f'{indent}Change-Id: {self._LAST_ID}\n'
+        )
+
+    def _reassigned(self, target: str) -> str:
+        return (
+            '# This is the 1st commit message:\n'
+            '\n'
+            'reassign!bbb! [cr148] Feature B\n'
+            '\n'
+            '# This is the commit message #2:\n'
+            '\n'
+            f'{target}'
+        )
+
+    def test_reassignment_keeps_quoted_culprits_indented(self):
+        target = self._with_culprit('    ') + f'\nChange-Id: {self._FIRST_ID}\n'
+        self.assertEqual(self._rewritten(self._reassigned(target)), target)
+
+    def test_reassignment_indents_a_culprit_quoted_without_it(self):
+        """Such a quote's Change-Id is the culprit's: the squash gets none,
+        for the rebase to give it its own."""
+        self.assertEqual(
+            self._rewritten(self._reassigned(self._with_culprit(''))),
+            self._with_culprit('    '),
+        )
+
     def test_squash_after_a_conflict_keeps_the_change_id_above_comments(self):
         """`--continue` after a stop on a squash adds git's `# Conflicts:`
         lines below the message."""

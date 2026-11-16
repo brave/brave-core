@@ -604,6 +604,50 @@ class TestChangeId(unittest.TestCase):
         self.assertNotEqual(ids[0], self._KEPT_ID)
         self.assertEqual(self._last_paragraph(msg), f'Change-Id: {ids[0]}')
 
+    def _unindented_block(self, culprit: str) -> str:
+        """A "Chromium changes:" block quoting `culprit`'s message without
+        its indentation, as a hand-written message can."""
+        quoted = self._git(
+            'log', '-1', culprit, cwd=self._sandbox.repo.chromium
+        )
+        return (
+            'Chromium changes:\n'
+            f'https://chromium.googlesource.com/chromium/src/+/{culprit}\n\n'
+            + '\n'.join(
+                line.removeprefix('    ') for line in quoted.split('\n')
+            )
+        )
+
+    def test_unindented_culprit_quote_is_refused(self) -> None:
+        repo = self._sandbox.repo
+        culprit = repo.commit_empty(
+            f'Upstream change\n\nChange-Id: {self._KEPT_ID}', repo.chromium
+        )
+        for subject in ('Fix', 'amend! Fix'):
+            with self.subTest(subject=subject):
+                self._sandbox.stage_change(f'{subject}\n')
+                result = self._sandbox.run_gc(
+                    [
+                        'commit',
+                        '-m',
+                        subject,
+                        '-m',
+                        self._unindented_block(culprit),
+                    ]
+                )
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn('quoted without its indentation', result.stderr)
+                self.assertIn('git cr commit --culprit', result.stderr)
+
+    def test_amend_keeps_the_culprit_block(self) -> None:
+        repo = self._sandbox.repo
+        culprit = repo.commit_empty('Upstream change', repo.chromium)
+        msg = self._commit('--culprit', culprit, '-m', 'Fix')
+        self._sandbox.stage_change('amended\n')
+        result = self._sandbox.run_gc(['commit', '--amend', '--no-edit'])
+        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
+        self.assertEqual(self._sandbox.last_commit_message(), msg)
+
     def test_reverted_change_id_is_not_the_reverts(self) -> None:
         msg = self._commit(
             '-m',

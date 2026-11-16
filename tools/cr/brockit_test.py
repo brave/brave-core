@@ -2306,6 +2306,50 @@ class ChangeIdGenTest(unittest.TestCase):
         brockit.ChangeIdGen().execute(to_ref='master')
         self.assertEqual(self._git('rev-parse', 'HEAD'), head)
 
+    _UPSTREAM_ID = 'I' + 'c' * 40
+
+    def _culprit_message(self, indent: str) -> str:
+        culprit = 'd' * 40
+        return (
+            'Follow upstream\n\nChromium changes:\n'
+            f'https://chromium.googlesource.com/chromium/src/+/{culprit}\n\n'
+            f'commit {culprit}\n'
+            'Author: Someone <someone@chromium.org>\n'
+            'Date:   Mon Nov 9 10:06:38 2026 -0800\n\n'
+            f'{indent}Upstream change\n\n'
+            f'{indent}Change-Id: {self._UPSTREAM_ID}'
+        )
+
+    def test_indents_culprits_quoted_without_it(self):
+        self.repo.update_brave_version('2.0.0.0')
+        commit = self._commit(self._culprit_message(''), 'own.txt')
+
+        brockit.ChangeIdGen().execute(to_ref='master')
+
+        indented = self._culprit_message('    ')
+        change_id = brockit.rebase.new_change_id(commit, indented)
+        self.assertEqual(
+            self._messages()[-1], f'{indented}\n\nChange-Id: {change_id}\n'
+        )
+
+    def test_rebase_steps_indent_culprits_quoted_without_it(self):
+        """`brockit rebase`'s plan counts such a commit as having no
+        Change-Id, and its `exec` step indents the quote and gives one."""
+        self.repo.update_brave_version('2.0.0.0')
+        commit = self._commit(self._culprit_message(''), 'own.txt')
+        self.assertFalse(brockit.Rebase.has_change_id(commit))
+
+        brockit.Rebase.carry_change_id([commit])
+
+        indented = self._culprit_message('    ')
+        change_id = brockit.rebase.new_change_id(commit, indented)
+        self.assertEqual(
+            self._messages()[-1], f'{indented}\n\nChange-Id: {change_id}\n'
+        )
+        self.assertTrue(
+            brockit.Rebase.has_change_id(self._git('rev-parse', 'HEAD'))
+        )
+
 
 if __name__ == '__main__':
     unittest.main()

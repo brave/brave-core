@@ -49,6 +49,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
 
+import chromium_changes
 from pinned_commits import (
     PINNED_GROUPS,
     derived_change_id,
@@ -1053,17 +1054,17 @@ class MessageWriter:
         its own: none on a channel bump branch, whose commits get none, and
         left as it is on a branch the commit hook gives no such tag.
         """
-        message = self.blocks[-1].full_message
-        first_subject = self.blocks[0].full_message.split('\n', 1)[0]
+        # A culprit quoted without its indentation would lend the squash its
+        # Change-Id.
+        messages = [chromium_changes.fixed(b.full_message) for b in self.blocks]
+        message = messages[-1]
+        first_subject = messages[0].split('\n', 1)[0]
         if branch and (
             get_entry_type_for_subject(first_subject) is EntryType.PINNED
         ):
             message = self.with_branch_tag(message, branch)
-        change_id = derived_change_id(
-            branch, self.blocks[0].full_message.split('\n', 1)[0]
-        ) or next(
-            filter(None, (change_id_of(b.full_message) for b in self.blocks)),
-            None,
+        change_id = derived_change_id(branch, first_subject) or next(
+            filter(None, map(change_id_of, messages)), None
         )
         if change_id:
             message = with_change_id(message, change_id)
