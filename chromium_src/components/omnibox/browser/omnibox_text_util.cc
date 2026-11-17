@@ -24,8 +24,4 @@ void BraveAdjustTextForCopy(GURL* url) {
 
 }  // namespace
 
-#define BRAVE_ADJUST_TEXT_FOR_COPY BraveAdjustTextForCopy(url_from_text);
-
 #include <components/omnibox/browser/omnibox_text_util.cc>
-
-#undef BRAVE_ADJUST_TEXT_FOR_COPY

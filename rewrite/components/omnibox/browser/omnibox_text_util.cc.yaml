@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Copy and drag WebUI page URLs with the brave:// scheme
+
+      The omnibox shows Brave's WebUI pages as brave://, so the URL copied or
+      dragged from it unmodified must read the same.
+    add_after_line:
+      line: GURL url = navigation_entry_url;
+      code: |2-
+          BraveAdjustTextForCopy(&url);
