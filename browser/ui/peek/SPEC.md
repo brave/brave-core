@@ -92,8 +92,9 @@ Shift+click behaves as it did.
 
 Exits from Open:
 
-- Escape, the close button, a click outside the card, or `window.close()` from
-  the page. All close Peek and discard the page.
+- Escape, the close tab shortcut (Ctrl+W, Cmd+W on macOS), the close button, a
+  click outside the card, or `window.close()` from the page. All close Peek and
+  discard the page.
 - "Open as tab". Moves the loaded page into a new active tab next to the current
   one. No reload.
 - "Open in split view". Moves the loaded page into a new active tab, as "Open as
@@ -105,6 +106,21 @@ Exits from Open:
 - The page asks for something that needs a normal tab (see
   [SECURITY.md](SECURITY.md)). Peek moves to a tab first, then the request
   continues there.
+
+### Browser shortcuts
+
+The card covers the active tab, so while Peek has focus a shortcut that acts on
+"the page" means the Peek page, not the tab hidden under it.
+
+| Shortcut                                                                                                    | While Peek has focus                                                                          |
+| ----------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| Close tab                                                                                                   | Closes Peek. The source tab stays                                                             |
+| Commands on the page: back, forward, reload, stop, find, print, save, zoom, bookmark, view source, devtools | Peek moves to a tab, then the command runs there (`peek::IsPageCommand()`)                    |
+| Anything else, e.g. new tab, new window, switch tab, quit                                                   | Runs as usual. If it changes the active tab, Peek closes and its page is discarded, see below |
+
+Discarding a Peek page doesn't ask first: `beforeunload` is suppressed in Peek,
+like other JavaScript dialogs, so unsaved form data in a Peek page is lost when
+Peek closes. Peek is a preview; "Open as tab" keeps the page.
 
 ### Persistent and non-persistent state
 
@@ -153,14 +169,15 @@ Sidebar web panels cannot open Peek.
 | Network error                                                                        | The browser's error page shows in the card                                                                                 |
 | Page requests a permission, camera/mic, wallet, fullscreen, pointer or keyboard lock | Peek moves to a tab, then the request continues                                                                            |
 | Page opens a popup with a user gesture                                               | Peek moves to a tab, then the popup opens                                                                                  |
-| Page opens a popup without a gesture                                                 | Blocked                                                                                                                    |
+| Page opens a popup, or a link in a new tab or window, without a gesture              | Blocked                                                                                                                    |
 | HTTP auth or another tab-modal dialog                                                | Peek moves to a tab, then the dialog shows                                                                                 |
 | The cookies and site data dialog is opened from page info                            | Peek moves to a tab, then the dialog shows                                                                                 |
 | `alert`, `confirm`, `prompt`, `beforeunload`                                         | Suppressed while in Peek                                                                                                   |
 | The peeked link is a download                                                        | Peek closes and the download proceeds                                                                                      |
 | The page starts a download                                                           | Peek moves to a tab                                                                                                        |
 | File chooser                                                                         | Peek moves to a tab and the chooser is cancelled; the user presses the input again                                         |
-| Device chooser (USB, HID, serial, Bluetooth), FedCM                                  | Not shown while in Peek; works after "Open as tab"                                                                         |
+| Device chooser (USB, HID, serial, Bluetooth), FedCM, password manager, autofill      | Not shown while in Peek; works after "Open as tab"                                                                         |
+| WebAuthn and Payment Request dialogs                                                 | Peek moves to a tab, then the dialog shows (tab-modal)                                                                     |
 | Peek is opened while another is open                                                 | The new one replaces it                                                                                                    |
 | The active tab changes                                                               | Peek closes                                                                                                                |
 
@@ -247,7 +264,8 @@ Linux.
 
 - The Peek view has the dialog role and the accessible name "Peek".
 - Every toolbar button has a tooltip that is also its accessible name.
-- Escape closes Peek.
+- Escape and the close tab shortcut close Peek.
+- The browser window keeps its active look while Peek has focus.
 - Opening Peek focuses the page inside it. Tab and Shift+Tab leaving the page
   move focus to the card's toolbar, and focus cycles inside the card.
 - Reduced motion turns the opening animation off.
@@ -281,7 +299,9 @@ Screenshots are added to the PR. Nala tokens above stand in for color values.
 - `//brave/browser/ui/peek:public` has `PeekController`, a per-window interface
   owned by `BraveBrowserWindowFeatures`, and `PeekShieldsPanelProvider`, which
   `BraveBrowserWindowFeatures` passes to the controller to open the window's own
-  Shields panel through `BraveBrowserWindow::ShowShieldsPanelForActiveTab()`.
+  Shields panel. The provider finds the location bar's Shields button through
+  `BrowserElementsViews` and calls `BraveShieldsActionView::ShowPanel()`, or
+  opens Page Info when Shields is shown there.
 - `//brave/browser/ui/peek` has the shared logic: URL and initiator checks
   (`peek_utils`) and `PeekNavigationThrottle`.
 - `//brave/browser/ui/peek:context_menu` has two small hooks that the
@@ -301,15 +321,23 @@ Screenshots are added to the PR. Nala tokens above stand in for color values.
   deliberately not a `TabInterface`: tab features attach browser UI (omnibox
   page actions, tab dialogs) to the tab they belong to.
 - Shift+click goes through `BraveBrowserWebContentsDelegate::OpenURLFromTab`.
-  The context menu uses `IDC_CONTENT_CONTEXT_OPENLINKPEEK`.
+  Callers that ask for the navigation handle get the new window instead, since
+  Peek doesn't hand out its navigation; link clicks from the renderer never ask
+  for it. The context menu uses `IDC_CONTENT_CONTEXT_OPENLINKPEEK`.
+- Browser shortcuts: keys the Peek page doesn't handle go to the window, through
+  `PeekControllerImpl`, which marks them as coming from Peek.
+  `BraveBrowserCommandController` asks `PeekController::HandleCommand()` before
+  running a command; it handles close tab and `peek::IsPageCommand()` commands
+  while Peek has focus (a key from the page, or the Peek widget is active), as
+  tasks, since the key's event handlers are still running.
 - `PeekController::Open(source, params)` returns false unless the source is a
   tab in this window and the params pass `CanOpenInPeek` (http(s) target,
   non-opaque http(s) initiator, and the initiator's navigation state).
 - Shared code that changed: `BraveShieldsActionController` icon and tooltip
   helpers (which show the site's Shields state for contents without a Shields
-  tab helper), `BraveBrowserView::ShowShieldsPanelForActiveTab()`,
-  `BravePageInfoBubbleView` for non-tab contents, and `ViewShadow` moved to its
-  own target.
+  tab helper), `BraveShieldsActionView::ShowPanel()`, `BravePageInfoBubbleView`
+  for non-tab contents, `BraveBrowserCommandController` asking Peek before it
+  runs a command, and `ViewShadow` moved to its own target.
 - `BraveContentBrowserClient` registers `PeekNavigationThrottle`, including for
   commits without a URL loader.
 - Brave Wallet's provider delegate moves Peek into a tab before it shows a panel
@@ -340,7 +368,7 @@ None added. Whether to measure Peek usage is an open question.
 ## Testing and QA
 
 - Unit tests: `peek_utils_unittest.cc` (URL and initiator eligibility,
-  Shift+click rules).
+  Shift+click rules, page commands).
 - Browser tests: `peek_browsertest.cc`. They cover each trigger, dismissal, open
   as tab, the site info and Shields buttons, the card attachment, each security
   case in [SECURITY.md](SECURITY.md), containers, split view, nested Peek, other
@@ -393,6 +421,9 @@ Containers, Shields and Brave Wallet, and the interactions are described above.
 4. Where should focus go when Peek closes, and should screen readers announce it
    when it opens?
 5. Should Peek be available in Tor windows, or only normal and private ones?
-6. Device choosers (WebUSB, WebHID, WebSerial, Web Bluetooth), WebAuthn, Payment
-   Request, FedCM, and autofill or password manager bubbles are not verified in
-   Peek. Do they need explicit handling?
+6. Permissions the site already has (location, notifications, clipboard) work in
+   Peek without a prompt, and the omnibox indicators for them show the active
+   tab, not Peek. Should Peek move to a tab when a page uses one?
+
+Device choosers, WebAuthn, Payment Request, FedCM, and autofill and password
+manager UI were traced; see "Other browser UI" in [SECURITY.md](SECURITY.md).

@@ -18,8 +18,8 @@
 #include "chrome/browser/history/history_tab_helper.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/tab_contents/tab_util.h"
-#include "chrome/browser/ui/browser_web_contents_delegate/browser_web_contents_delegate.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "components/blocked_content/popup_blocker.h"
 #include "components/input/native_web_keyboard_event.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
 #include "content/public/browser/download_item_utils.h"
@@ -94,8 +94,6 @@ PeekContents::PeekContents(BrowserWindowInterface& browser,
                            std::unique_ptr<content::WebContents> contents)
     : web_contents_(std::move(contents)),
       browser_(browser),
-      browser_delegate_(
-          CHECK_DEREF(BrowserWebContentsDelegate::From(&browser))),
       delegate_(delegate) {
   CHECK(web_contents_);
   // Shields, ephemeral storage and page content settings must apply before
@@ -178,6 +176,13 @@ content::WebContents* PeekContents::OpenURLFromTab(
     base::OnceCallback<void(content::NavigationHandle&)>
         navigation_handle_callback) {
   if (params.disposition != WindowOpenDisposition::kCurrentTab) {
+    // Chromium's popup blocker is a tab feature, so it doesn't run for Peek.
+    // As in `AddNewContents()`, a page can't open a tab or window without a
+    // user gesture.
+    if (params.is_renderer_initiated && !params.user_gesture &&
+        blocked_content::ConsiderForPopupBlocking(params.disposition)) {
+      return nullptr;
+    }
     return browser_->OpenURL(params, std::move(navigation_handle_callback));
   }
 
@@ -253,7 +258,8 @@ content::KeyboardEventProcessingResult PeekContents::PreHandleKeyboardEvent(
 bool PeekContents::HandleKeyboardEvent(
     content::WebContents* source,
     const input::NativeWebKeyboardEvent& event) {
-  return browser_delegate_->HandleKeyboardEvent(source, event);
+  // A shortcut can close Peek and destroy `this` before this returns.
+  return delegate_->OnPeekHandleKeyboardEvent(source, event);
 }
 
 void PeekContents::RunFileChooser(

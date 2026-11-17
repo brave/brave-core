@@ -48,6 +48,12 @@ matches the iOS Quick Views review.
   visible and keeps showing the tab the user is on.
 - Escape closes Peek before the page receives the key, so a page can't keep the
   user in Peek by consuming it. Test: `EscapeClosesPeek`.
+- Browser shortcuts pressed in Peek act on Peek, not on the tab hidden under the
+  card, so the user can't close, reload, print or save the wrong page without
+  seeing it. Close tab closes Peek; commands on the page move Peek to a tab and
+  run there (see "Browser shortcuts" in [SPEC.md](SPEC.md)). Tests:
+  `CloseTabShortcutClosesPeek`, `PageShortcutMovesToTabAndRuns`,
+  `CommandsFromOutsidePeekRunOnTab`.
 
 This is a mitigation, not a full fix: a page can still draw a fake card inside
 its own content. The toolbar attachment and the omnibox staying visible are what
@@ -77,6 +83,11 @@ Tests: `HttpPageIsNotMarkedSecure`, `HttpsPageIsMarkedSecure`,
   `CheckMediaAccessPermission` returns false while in Peek.
 - Brave Wallet: requests that would open the wallet panel or account creation
   move Peek to a tab first (`brave_wallet_provider_delegate_impl_helper.cc`).
+- Permissions the site was already granted need no prompt, so they work in Peek
+  as they would in a tab, and the omnibox indicators (e.g. location in use)
+  belong to the active tab, not Peek. Camera and microphone are the exception
+  above. Whether using a granted permission should move Peek to a tab is an open
+  question in [SPEC.md](SPEC.md).
 
 Tests: `PermissionRequestMovesToTab`, `WalletPanelMovesToTab`,
 `WalletAccountCreationMovesToTab`.
@@ -112,15 +123,19 @@ Tests: `BlocksNonHttpNavigations`, `BlocksRedirectToNonHttp`,
 
 - Popups without a user gesture are blocked. Chromium's popup blocker is a tab
   feature that Peek pages don't have, so `PeekContents::AddNewContents` refuses
-  them itself, which closes the new window.
+  them itself, which closes the new window. Renderer-initiated navigations to a
+  new tab or window (`OpenURLFromTab` with a new-tab, new-window or popup
+  disposition) without a gesture are refused the same way, since the browser
+  runs the popup blocker only for a source with the tab feature. Popup
+  exceptions in site settings don't apply in Peek.
 - Popups with a user gesture move Peek to a tab first, because the new window
   can script its opener; the popup then opens from that tab as usual.
 - Fullscreen, pointer lock and keyboard lock requests move Peek to a tab and are
   forwarded to the tab's delegate, so the normal fullscreen bubble and exit UI
   are used.
 
-Tests: `PopupWithoutGestureIsBlocked`, `PopupWithGestureMovesToTab`,
-`FullscreenMovesToTab`.
+Tests: `PopupWithoutGestureIsBlocked`, `NewTabWithoutGestureIsBlocked`,
+`PopupWithGestureMovesToTab`, `FullscreenMovesToTab`.
 
 ### Dialogs
 
@@ -238,6 +253,22 @@ and the `peek_utils` unit tests.
 
 Tests: `AttachesShieldsHelpers`, `ShieldsButtonMovesToTabAndShowsPanel`.
 
+### Chromium tab helpers Peek doesn't have
+
+Chromium attaches most tab helpers through `TabFeatures`, which only tabs get.
+The security-relevant ones were checked:
+
+- Safe Browsing: the URL checks run in the navigation's URL loader throttle, so
+  a dangerous page still gets the interstitial in Peek. Without the tab's
+  `AsyncCheckTracker`, the throttle checks synchronously, so the page doesn't
+  commit before the check is done. Password reuse detection and the Safe
+  Browsing tab observer need the autofill client, which is a tab feature too;
+  they apply after "Open as tab", like autofill.
+- Popup blocker: replaced in Peek, see "Popups and fullscreen".
+- Framebust and tab-under blocking: the blocking happens in the renderer and in
+  navigation throttles; the tab helper only records what was blocked for the
+  omnibox icon, which Peek doesn't have.
+
 ### Object lifetimes
 
 - Moving to a tab hands the `WebContents` to the tab strip; it is never
@@ -245,7 +276,14 @@ Tests: `AttachesShieldsHelpers`, `ShieldsButtonMovesToTabAndShowsPanel`.
   are. Synchronous moves (`OnPeekMoveToTabRequired()`, the wallet helpers) are
   only made where the caller doesn't touch those objects afterwards: the
   `PeekContents` delegate methods only use their arguments, and the wallet
-  helpers only use the `WebContents`, which is now a tab.
+  helpers only use the `WebContents`, which is now a tab. The move can't call
+  back into the `PeekContents` being destroyed: `ReleaseWebContents()` removes
+  it as the contents' delegate and as the modal dialog delegate before the tab
+  strip takes the contents, and a second move finds no contents and returns.
+- Keys the Peek page doesn't handle are passed to the window by the controller,
+  not `PeekContents`, because a shortcut (e.g. switching tabs) can close Peek
+  before the call returns. Commands Peek takes over from those keys run as
+  tasks.
 - `PeekControllerImpl` is owned by the window's features and destroyed in
   `TearDownPreBrowserWindowDestruction()`, before the `BrowserView`. The Shields
   panel provider, which points to the `BrowserView`, is owned by the controller,

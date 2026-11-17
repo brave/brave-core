@@ -16,7 +16,6 @@
 #include "content/public/browser/download_manager.h"
 #include "content/public/browser/web_contents_delegate.h"
 
-class BrowserWebContentsDelegate;
 class BrowserWindowInterface;
 class GURL;
 class Profile;
@@ -46,6 +45,12 @@ class PeekContents : public content::WebContentsDelegate,
     // Moves focus out of the page into the card's toolbar (or back around).
     // Returns false if there is nowhere to move it.
     virtual bool OnPeekTakeFocus(bool reverse) = 0;
+
+    // Handles a key the page didn't, e.g. a browser shortcut. The shortcut
+    // may destroy the PeekContents.
+    virtual bool OnPeekHandleKeyboardEvent(
+        content::WebContents* source,
+        const input::NativeWebKeyboardEvent& event) = 0;
 
    protected:
     virtual ~Delegate() = default;
@@ -137,8 +142,6 @@ class PeekContents : public content::WebContentsDelegate,
 
   std::unique_ptr<content::WebContents> web_contents_;
   const raw_ref<BrowserWindowInterface> browser_;
-  // Handles what Peek doesn't, e.g. keyboard shortcuts.
-  const raw_ref<BrowserWebContentsDelegate> browser_delegate_;
   const raw_ref<Delegate> delegate_;
 
   base::ScopedObservation<permissions::PermissionRequestManager,

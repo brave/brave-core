@@ -54,8 +54,10 @@ content::WebContents* BraveBrowserWebContentsDelegate::OpenURLFromTab(
     base::OnceCallback<void(content::NavigationHandle&)>
         navigation_handle_callback) {
   // While Peek is enabled, Shift+click on a link in a tab opens it in Peek
-  // instead of a new window.
-  if (source && peek::IsShiftClickOpen(params)) {
+  // instead of a new window. Link clicks from the renderer never ask for the
+  // navigation handle; callers that do get the window they asked for, since
+  // Peek doesn't hand out its navigation.
+  if (source && !navigation_handle_callback && peek::IsShiftClickOpen(params)) {
     if (auto* peek_controller = PeekController::From(&*browser_);
         peek_controller && peek_controller->Open(*source, params)) {
       return peek_controller->GetWebContents();

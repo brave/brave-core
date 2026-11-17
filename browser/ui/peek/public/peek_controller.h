@@ -60,6 +60,13 @@ class PeekController {
   // is discarded. Does nothing if no Peek is shown.
   virtual void Close() = 0;
 
+  // Called before the window runs browser command `command_id`. While Peek has
+  // focus, the user means the Peek page, not the tab hidden under the card:
+  // closing the tab closes Peek, and commands that act on the page (see
+  // `peek::IsPageCommand()`) move Peek into a tab and run there. Returns true
+  // if the window must not run the command itself.
+  virtual bool HandleCommand(int command_id) = 0;
+
   // Whether a Peek is shown in this window.
   virtual bool IsShowing() const = 0;
 

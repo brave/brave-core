@@ -42,6 +42,7 @@ source_set("peek") {
   ]
 
   deps = [
+    "//chrome/app:command_ids",
     "//content/public/common",
     "//ui/base",
   ]
@@ -83,6 +84,7 @@ source_set("unit_tests") {
 
   deps = [
     ":peek",
+    "//chrome/app:command_ids",
     "//content/public/browser",
     "//content/public/common",
     "//testing/gtest",

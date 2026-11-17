@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_PEEK_PEEK_CONTROLLER_IMPL_H_
 
 #include <memory>
+#include <optional>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
@@ -48,6 +49,10 @@ class PeekControllerImpl : public PeekController,
   // active tab is already in a split.
   void OpenInSplitView();
   views::Widget* widget_for_testing() { return widget_.get(); }
+  // Widget activation isn't reliable in browser tests.
+  void set_has_focus_for_testing(bool has_focus) {
+    has_focus_for_testing_ = has_focus;
+  }
 
   // PeekController:
   bool CanOpenFrom(content::WebContents* source) override;
@@ -56,6 +61,7 @@ class PeekControllerImpl : public PeekController,
   void OpenAsTab() override;
   void ShowCookiesDialogInTab() override;
   void Close() override;
+  bool HandleCommand(int command_id) override;
   bool IsShowing() const override;
   content::WebContents* GetWebContents() override;
 
@@ -65,6 +71,9 @@ class PeekControllerImpl : public PeekController,
   void OnPeekMoveToTabRequired() override;
   void OnPeekMoveToTabOrCloseRequested() override;
   bool OnPeekTakeFocus(bool reverse) override;
+  bool OnPeekHandleKeyboardEvent(
+      content::WebContents* source,
+      const input::NativeWebKeyboardEvent& event) override;
 
   // PeekView::Delegate:
   void OnPeekViewCloseRequested() override;
@@ -93,6 +102,11 @@ class PeekControllerImpl : public PeekController,
   void OpenAsTabAndShowShields();
   void OpenAsTabAndShowCookiesDialog(
       base::WeakPtr<content::WebContents> contents);
+  void OpenAsTabAndExecuteCommand(base::WeakPtr<content::WebContents> contents,
+                                  int command_id);
+  // Whether the user is in Peek: its widget is active, or the page is handing
+  // a key it didn't handle to the browser.
+  bool HasFocus() const;
   void CreateWidget();
   void UpdateWidgetBounds();
   gfx::Rect GetTargetBoundsInScreen() const;
@@ -107,6 +121,11 @@ class PeekControllerImpl : public PeekController,
   const std::unique_ptr<PeekShieldsPanelProvider> shields_panel_provider_;
   std::unique_ptr<PeekContents> contents_;
   std::unique_ptr<views::Widget> widget_;
+  // Peek is part of the window, so the window keeps looking active while Peek
+  // has focus.
+  std::unique_ptr<views::Widget::PaintAsActiveLock> paint_as_active_lock_;
+  bool forwarding_keyboard_event_ = false;
+  std::optional<bool> has_focus_for_testing_;
   base::ScopedObservation<views::View, views::ViewObserver>
       contents_area_observation_{this};
   base::ScopedObservation<views::Widget, views::WidgetObserver>
