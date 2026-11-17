@@ -27,11 +27,19 @@ class BotsError(Exception):
 
 
 def list_generated_builders() -> list[str]:
-    """Every generated builder, by name, sorted."""
+    """Every generated builder, by name, sorted.
+
+    A directory without files is no builder: `bots.py snapshot` leaves a
+    removed builder's behind, and git never checks one out.
+    """
     output_dir = gen_paths.BUILDERS_OUTPUT_DIR
     if not output_dir.is_dir():
         return []
-    return sorted(p.name for p in output_dir.iterdir() if p.is_dir())
+    return sorted(
+        p.name
+        for p in output_dir.iterdir()
+        if p.is_dir() and any(f.is_file() for f in p.rglob('*'))
+    )
 
 
 def _dump(data: Any) -> str:

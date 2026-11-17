@@ -24,6 +24,12 @@ class ListGeneratedBuildersTest(unittest.TestCase):
         output_dir.rmdir()
         self.assertEqual(generated_output.list_generated_builders(), [])
 
+    def test_a_removed_builders_empty_directory_is_no_builder(self):
+        output_dir = testing_support.use_output_dir(self)
+        write_builder(output_dir, 'b')
+        (output_dir / 'removed' / 'targets').mkdir(parents=True)
+        self.assertEqual(generated_output.list_generated_builders(), ['b'])
+
     def test_lists_builders_sorted_by_name(self):
         output_dir = testing_support.use_output_dir(self)
         write_builder(output_dir, 'z-builder')
