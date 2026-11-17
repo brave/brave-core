@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//build/config/features.gni")
+
 static_library("browser") {
   sources = [
     "query_filter_component_installer.cc",
@@ -31,7 +33,7 @@ static_library("browser") {
   ]
 }
 
-if (!is_ios) {
+if (use_blink) {
   source_set("throttle") {
     sources = [
       "query_filter_throttle.cc",
@@ -75,7 +77,7 @@ source_set("unit_tests") {
     "//url",
   ]
 
-  if (!is_ios) {
+  if (use_blink) {
     sources += [ "query_filter_throttle_unittest.cc" ]
     deps += [
       ":throttle",

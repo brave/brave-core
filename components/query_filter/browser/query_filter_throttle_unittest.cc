@@ -38,7 +38,12 @@ network::ResourceRequest MakeRequest(const GURL& url) {
 
 class QueryFilterThrottleTest : public testing::Test {
  public:
-  QueryFilterThrottleTest() : feature_list_(features::kQueryFilterComponent) {}
+  QueryFilterThrottleTest() {
+    feature_list_.InitWithFeatures(
+        {features::kQueryFilterComponent,
+         features::kQueryFilterBrowserThrottleEnabled},
+        {});
+  }
 
   void SetUp() override {
     HostContentSettingsMap::RegisterProfilePrefs(prefs_.registry());
