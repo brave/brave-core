@@ -87,6 +87,7 @@
 #include "components/permissions/permission_request_manager.h"
 #include "components/tabs/public/tab_interface.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/buildflags/buildflags.h"
@@ -957,12 +958,14 @@ void BraveBrowserView::UpdateToolbar(content::WebContents* contents) {
   // navigations that only change the security level between non-secure states
   // (e.g. an https page to a file:// page) do not produce a security-state
   // change, so `UpdateToolbarSecurityState` alone is not sufficient.
-  UpdateFocusModeState();
+  if (!HasVisiblePendingNavigation()) {
+    UpdateFocusModeState();
+  }
 }
 
 bool BraveBrowserView::UpdateToolbarSecurityState() {
   bool state_changed = BrowserView::UpdateToolbarSecurityState();
-  if (state_changed) {
+  if (state_changed && !HasVisiblePendingNavigation()) {
     UpdateFocusModeState();
   }
   return state_changed;
@@ -1122,6 +1125,16 @@ bool BraveBrowserView::ShouldDisableFocusModeForActiveTab() const {
   }
   auto level = model->GetSecurityLevel();
   return level != security_state::SecurityLevel::SECURE;
+}
+
+bool BraveBrowserView::HasVisiblePendingNavigation() {
+  auto* web_contents = GetActiveWebContents();
+  if (!web_contents) {
+    return false;
+  }
+  auto& controller = web_contents->GetController();
+  auto* pending_entry = controller.GetPendingEntry();
+  return pending_entry && controller.GetVisibleEntry() == pending_entry;
 }
 
 BEGIN_METADATA(BraveBrowserView)
