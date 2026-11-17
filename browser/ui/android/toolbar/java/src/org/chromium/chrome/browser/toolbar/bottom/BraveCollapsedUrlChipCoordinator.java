@@ -76,7 +76,8 @@ public class BraveCollapsedUrlChipCoordinator {
     /**
      * Memoized gesture-nav state, read lazily. The underlying insets query is invalid before the
      * decor view is attached (chip construction happens during activity startup), so the first read
-     * is deferred until the chip is shown.
+     * is deferred until the chip is shown. Cleared on configuration changes so nav-mode switches
+     * made while the activity is alive are picked up.
      */
     private @Nullable Boolean mGestureNavigation;
 
@@ -118,6 +119,9 @@ public class BraveCollapsedUrlChipCoordinator {
             new ComponentCallbacks() {
                 @Override
                 public void onConfigurationChanged(@Nullable Configuration newConfig) {
+                    // A nav-mode switch (gesture <-> 3-button in system Settings) fires a
+                    // configuration change; drop the memo so the fresh mode is picked up.
+                    mGestureNavigation = null;
                     if (mChipShowing) {
                         applyNavigationBarInset(hasGestureNavigation());
                     }
