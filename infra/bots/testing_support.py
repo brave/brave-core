@@ -33,6 +33,12 @@ SYNC = {'target_os': [], 'target_cpu': []}
 
 TARGETS = {'compile': ['brave:all'], 'tests': ['a_test']}
 
+# A builder's entry in its group's targets spec.
+TARGETS_SPEC = {
+    'additional_compile_targets': ['brave:all'],
+    'gtest_tests': [{'name': 'a_test', 'test': 'a_test'}],
+}
+
 
 def properties(
     name: str,
@@ -69,6 +75,7 @@ def write_builder(
     properties_json: dict | None = None,
     sync: dict | None = None,
     targets: dict | None = None,
+    targets_spec: dict | None = None,
     omit: tuple[str, ...] = (),
 ) -> None:
     """Writes a builder's generated output under *output_dir*.
@@ -85,12 +92,15 @@ def write_builder(
         ),
         'sync.json': SYNC if sync is None else sync,
         'targets.json': TARGETS if targets is None else targets,
+        'targets/brave.test.json': {
+            name: TARGETS_SPEC if targets_spec is None else targets_spec
+        },
     }
     for filename, content in files.items():
         if filename not in omit:
-            (builder_dir / filename).write_text(
-                json.dumps(content), encoding='utf-8'
-            )
+            path = builder_dir / filename
+            path.parent.mkdir(exist_ok=True)
+            path.write_text(json.dumps(content), encoding='utf-8')
 
 
 def _use(test_case: unittest.TestCase, module, attr: str, value) -> None:
