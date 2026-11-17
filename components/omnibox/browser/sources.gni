@@ -63,6 +63,11 @@ if (enable_ai_chat) {
   ]
 }
 
+# brave_history_embeddings_provider.cc, brave_history_embeddings_provider.h and
+# brave_history_embeddings_provider_unittest.cc are not built yet: they need
+# the profile's HistoryEmbeddingsService, which nothing builds from the fork
+# yet.
+
 if (enable_commander) {
   brave_components_omnibox_browser_sources += [
     "//brave/components/omnibox/browser/commander_action.cc",

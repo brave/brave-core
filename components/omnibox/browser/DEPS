@@ -39,4 +39,17 @@ specific_include_rules = {
   "promotion_unittest\.cc": [
     "+brave/components/l10n/common/test/scoped_default_locale.h",
   ],
+  "brave_history_embeddings_provider\.cc": [
+    "+brave/components/history_embeddings/core",
+    "+components/history_clusters/core/history_clusters_util.h",
+  ],
+  "brave_history_embeddings_provider\.h": [
+    "+brave/components/history_embeddings/core",
+  ],
+  "brave_history_embeddings_provider_unittest\.cc": [
+    "+brave/components/history_embeddings/core",
+    "+chromeos/constants/chromeos_features.h",
+    "+components/optimization_guide/proto/features/history_answer.pb.h",
+    "+components/os_crypt/async/browser",
+  ],
 }
