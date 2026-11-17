@@ -211,24 +211,19 @@ struct PendingTransactionView: View {
         }
         .padding(16)
         .background(
-          Color(braveSystemName: .systemfeedbackErrorBackground)
-            .clipShape(
-              UnevenRoundedRectangle(
-                topLeadingRadius: 16,
-                bottomLeadingRadius: 0,
-                bottomTrailingRadius: 0,
-                topTrailingRadius: 16
-              )
-            )
+          Color(braveSystemName: .systemfeedbackErrorBackground),
+          in: UnevenRoundedRectangle(
+            topLeadingRadius: 16,
+            bottomLeadingRadius: 0,
+            bottomTrailingRadius: 0,
+            topTrailingRadius: 16
+          )
         )
         HStack {
           Image(braveSystemName: "leo.arrow.right")
             .foregroundColor(Color(braveSystemName: .iconDefault))
             .padding(12)
-            .background(
-              Color(braveSystemName: .pageBackground)
-                .clipShape(Circle())
-            )
+            .background(Color(braveSystemName: .pageBackground), in: Circle())
           VStack(alignment: .leading) {
             Text(Strings.Wallet.txStatusTo.capitalizeFirstLetter)
               .foregroundColor(Color(braveSystemName: .textSecondary))
@@ -243,7 +238,11 @@ struct PendingTransactionView: View {
                     openWalletURL(explorerURL)
                   }
                 } label: {
-                  Image(braveSystemName: "leo.launch")
+                  Label(
+                    Strings.Wallet.viewOnBlockExplorer,
+                    braveSystemImage: "leo.launch"
+                  )
+                  .labelStyle(.iconOnly)
                 }
               }
               .foregroundColor(Color(braveSystemName: .textPrimary))
@@ -254,15 +253,13 @@ struct PendingTransactionView: View {
         }
         .padding(16)
         .background(
-          Color(braveSystemName: .containerBackground)
-            .clipShape(
-              UnevenRoundedRectangle(
-                topLeadingRadius: 0,
-                bottomLeadingRadius: 16,
-                bottomTrailingRadius: 16,
-                topTrailingRadius: 0
-              )
-            )
+          Color(braveSystemName: .containerBackground),
+          in: UnevenRoundedRectangle(
+            topLeadingRadius: 0,
+            bottomLeadingRadius: 16,
+            bottomTrailingRadius: 16,
+            topTrailingRadius: 0
+          )
         )
       }
     }

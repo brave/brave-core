@@ -52,6 +52,9 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   /// This is an id for the unapproved transaction that is currently displayed on screen
   @Published var activeTransactionId: BraveWallet.TransactionInfo.ID = "" {
     didSet {
+      if activeTransactionId != oldValue {
+        isShowingSetApprovalForAllConfirmation = false
+      }
       if let tx = allTxs.first(where: { $0.id == activeTransactionId }) {
         updateTransaction(with: tx)
         activeTxStatus = tx.txStatus
