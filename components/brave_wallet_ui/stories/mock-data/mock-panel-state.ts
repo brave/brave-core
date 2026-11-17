@@ -15,4 +15,5 @@ export const mockPanelState: PanelState = {
   selectedPanel: 'main',
   connectingAccounts: [],
   hardwareWalletCode: undefined,
+  hardwareWalletOperation: undefined,
 }

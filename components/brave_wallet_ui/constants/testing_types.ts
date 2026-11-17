@@ -22,6 +22,7 @@ export interface WalletApiDataOverrides {
   tokenBalanceRegistry?: TokenBalancesRegistry
   signSolTransactionsRequests?: BraveWallet.SignSolTransactionsRequest[]
   signCardanoTransactionRequests?: BraveWallet.SignCardanoTransactionRequest[]
+  signMessageRequests?: BraveWallet.SignMessageRequest[]
 }
 
 export type BraveRewardsProxyOverrides = Partial<{

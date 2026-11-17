@@ -203,6 +203,10 @@ export class MockedWalletApiProxy {
   private signSolTransactionsRequests =
     [] as BraveWallet.SignSolTransactionsRequest[]
 
+  signMessageRequests: BraveWallet.SignMessageRequest[] = [
+    mockSignMessageRequest,
+  ]
+
   private signCardanoTransactionRequests =
     [] as BraveWallet.SignCardanoTransactionRequest[]
 
@@ -234,6 +238,8 @@ export class MockedWalletApiProxy {
     this.signCardanoTransactionRequests =
       overrides.signCardanoTransactionRequests
       ?? this.signCardanoTransactionRequests
+    this.signMessageRequests =
+      overrides.signMessageRequests ?? this.signMessageRequests
     this.isWalletCreated = overrides.isWalletCreated ?? this.isWalletCreated
   }
 
@@ -381,7 +387,7 @@ export class MockedWalletApiProxy {
     },
     getPendingSignMessageRequests: async () => {
       return {
-        requests: [mockSignMessageRequest],
+        requests: this.signMessageRequests,
       }
     },
     getPendingSignMessageErrors: async () => {
