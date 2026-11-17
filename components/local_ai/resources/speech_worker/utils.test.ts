@@ -5,7 +5,7 @@
 
 import { describe, expect, it } from '@jest/globals'
 
-import { getNemotronLocale } from './utils'
+import { findLanguageTagTokenIds, getNemotronLocale } from './utils'
 
 describe('getNemotronModelType', () => {
   it.each(['en-US'])('picks the English model for %s', (lang: string) => {
@@ -50,4 +50,40 @@ describe('getNemotronModelType', () => {
       )
     },
   )
+})
+
+describe('findLanguageTagTokenIds', () => {
+  it('finds language tag token IDs', () => {
+    const tokens = [
+      '<unk>',
+      '▁hello',
+      '<es-ES>',
+      '▁world',
+      '<fr-FR>',
+      '<en-US>',
+    ]
+
+    expect(findLanguageTagTokenIds(tokens)).toEqual(new Set([2, 4, 5]))
+  })
+
+  it('returns an empty set when no language tags exist', () => {
+    const tokens = ['<unk>', '▁hello', '▁world', 'ing']
+
+    expect(findLanguageTagTokenIds(tokens)).toEqual(new Set<number>())
+  })
+
+  it('ignores tokens that do not match the language tag pattern', () => {
+    const tokens = [
+      '<unk>',
+      '<es>',
+      '<es-es>',
+      '<ES-ES>',
+      '<es-ES-extra>',
+      'prefix<es-ES>',
+      '<es-ES>suffix',
+      '<es-ES>',
+    ]
+
+    expect(findLanguageTagTokenIds(tokens)).toEqual(new Set([7]))
+  })
 })
