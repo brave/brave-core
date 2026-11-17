@@ -29,8 +29,8 @@ import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccou
 import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccountsListAdapter.ViewHolder;
 
 /**
- * Tests for {@link BravePermissionAccountsListAdapter}, asserting that the visibly checked
- * accounts always match the ones returned by {@code getCheckedAccounts()} when rows get recycled.
+ * Tests for {@link BravePermissionAccountsListAdapter}, asserting that the visibly checked accounts
+ * always match the ones returned by {@code getCheckedAccounts()} when rows get recycled.
  */
 @RunWith(BaseRobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
