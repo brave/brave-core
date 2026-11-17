@@ -185,10 +185,24 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
   useInterval(updateDeviceName, isConnected ? 500 : null)
 
   const retryHardwareOperation = React.useCallback(() => {
+    // Mirrors the display priority of `account` above: a sign-message
+    // request wins the panel, so it must also win the retry. Running both
+    // branches would act on a pending transaction that is not the request
+    // the user is currently looking at.
     if (isSigning) {
       onSignData()
+      return
     }
-    if (isConfirming && selectedPendingTransaction) {
+
+    // This panel exists only to retry operations that need the hardware
+    // device. A software account's transaction needs no device, and
+    // confirming one here would sign and broadcast it without its
+    // confirmation UI ever being shown.
+    if (
+      isConfirming
+      && selectedPendingTransaction
+      && isHardwareAccount(selectedPendingTransaction.fromAccountId)
+    ) {
       onConfirmTransaction()
     }
   }, [
