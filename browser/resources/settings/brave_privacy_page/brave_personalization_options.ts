@@ -8,11 +8,11 @@ import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_
 import {
   PrefServiceObserverMixin,
   PrefServiceObserverMixinInterface,
-} from '/shared/settings/prefs2/pref_service_observer_mixin.js'
+} from '../pref_service_observer_mixin.js'
 import {
   WebUiListenerMixin,
   WebUiListenerMixinInterface,
-} from '/shared/settings/web_ui_listener_mixin.js'
+} from '../web_ui_listener_mixin.js'
 import { loadTimeData } from '../i18n_setup.js'
 
 import { getTemplate } from './brave_personalization_options.html.js'
@@ -24,7 +24,7 @@ import {
 import { assert } from 'chrome://resources/js/assert.js'
 import { SettingsToggleButtonElement } from '../controls/settings_toggle_button.js'
 
-import '/shared/settings/md_select.css.js'
+import '../site_settings/md_select.css.js'
 import 'chrome://resources/cr_elements/cr_icon/cr_icon.js'
 import '../controls/settings_dropdown_menu.js'
 import '../privacy_page/do_not_track_toggle.js'

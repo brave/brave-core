@@ -178,7 +178,7 @@ suite('BraveSettingsToggleButtonPagesRender', () => {
 })
 
 // Brave's Polymer pages `include="md-select"`, whose rules Brave overrides in
-// chromium_src/chrome/browser/resources/settings_shared/md_select.css.
+// chromium_src/chrome/browser/resources/settings/site_settings/md_select.css.
 suite('BraveMdSelectStyle', () => {
   setup(async () => {
     PrefsBrowserProxy.setInstance(new TestPrefsBrowserProxy(pagePrefObjects))

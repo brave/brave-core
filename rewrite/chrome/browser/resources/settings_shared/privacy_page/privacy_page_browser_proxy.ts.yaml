@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Build the metrics reporting calls in non-Chrome-branded builds
+
+      Brave's settings show the metrics reporting toggle, which upstream only
+      builds into Google Chrome. The guards cover the `sendWithPromise`
+      import and the proxy's interface and implementation.
+    count: 3
+    regex:
+      pattern: '<if expr="_google_chrome and not is_chromeos">'
+      replace: '<if expr="not is_chromeos">'

@@ -7,7 +7,7 @@ import './components/brave_adblock_editor.js'
 import './components/brave_adblock_scriptlet_list.js'
 import './components/brave_adblock_subscribe_dropdown.js'
 
-import {PrefServiceObserverMixin} from '/shared/settings/prefs2/pref_service_observer_mixin.js'
+import {PrefServiceObserverMixin} from '../pref_service_observer_mixin.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import type {
   DomRepeatEvent
