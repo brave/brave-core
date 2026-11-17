@@ -64,6 +64,8 @@ public class BravePermissionAccountsListAdapter
         ACCOUNT_CONNECTION
     }
 
+    private static final Object SELECTION_CHANGED_PAYLOAD = new Object();
+
     private final ExecutorService mExecutor;
     private final Handler mHandler;
     // Unique keys of the accounts the user checked. The selection is stored per account rather
@@ -164,17 +166,6 @@ public class BravePermissionAccountsListAdapter
     }
 
     @Override
-    public void onBindViewHolder(
-            @NonNull ViewHolder holder, int position, @NonNull List<Object> payloads) {
-        // Skip binding function when payload matches the previous selected position.
-        if (payloads.isEmpty()
-                || !(payloads.get(0) instanceof Integer)
-                || ((int) payloads.get(0)) != position) {
-            super.onBindViewHolder(holder, position, payloads);
-        }
-    }
-
-    @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         final AccountInfo accountInfo = mAccountInfoArray[position];
         holder.accountInfo = accountInfo;
@@ -248,6 +239,15 @@ public class BravePermissionAccountsListAdapter
         }
     }
 
+    private int getCheckedPosition() {
+        for (int i = 0; i < mAccountInfoArray.length; i++) {
+            if (isChecked(mAccountInfoArray[i])) {
+                return i;
+            }
+        }
+        return RecyclerView.NO_POSITION;
+    }
+
     private boolean isChecked(@NonNull final AccountInfo accountInfo) {
         return mCheckedAccountKeys.contains(accountInfo.accountId.uniqueKey);
     }
@@ -263,24 +263,16 @@ public class BravePermissionAccountsListAdapter
         final String accountKey = accountInfo.accountId.uniqueKey;
         if (checked) {
             if (singleSelection) {
-                // Drop the previous selection here rather than relying on its view being
-                // rebound, which doesn't happen when it is scrolled off screen.
+                // Drop the previous selection and rebind its row, which may be off screen.
+                final int previousPosition = getCheckedPosition();
                 mCheckedAccountKeys.clear();
+                if (previousPosition != RecyclerView.NO_POSITION) {
+                    // A payload makes RecyclerView rebind the same view holder in place,
+                    // preserving the radio button animation.
+                    notifyItemChanged(previousPosition, SELECTION_CHANGED_PAYLOAD);
+                }
             }
             mCheckedAccountKeys.add(accountKey);
-            // Notify data set changed ONLY for more than one item.
-            if (singleSelection && getItemCount() > 1) {
-                final int selectedPosition = holder.getBindingAdapterPosition();
-                // Notify data set changed inside `Handler#post()` because of
-                // https://issuetracker.google.com/issues/37136189
-                mHandler.post(
-                        () -> {
-                            // Pass the selected position in the payload so it will be
-                            // excluded from `onBindViewHolder(ViewHolder, int)`. Excluding
-                            // it from another binding will fully preserve animation selection.
-                            notifyItemRangeChanged(0, getItemCount(), selectedPosition);
-                        });
-            }
         } else {
             mCheckedAccountKeys.remove(accountKey);
         }
