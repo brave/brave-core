@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import {DropdownMenuOptionList} from '../controls/settings_dropdown_menu.js';
-import {PrefServiceObserverMixin, PrefServiceObserverMixinInterface} from '/shared/settings/prefs2/pref_service_observer_mixin.js';
+import {PrefServiceObserverMixin, PrefServiceObserverMixinInterface} from '../pref_service_observer_mixin.js';
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import {BraveWeb3DomainsBrowserProxyImpl} from './brave_web3_domains_browser_proxy.js'

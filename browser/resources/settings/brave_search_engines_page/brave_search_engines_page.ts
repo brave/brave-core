@@ -8,7 +8,7 @@ import '../settings_shared.css.js'
 import '../settings_vars.css.js'
 
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import {WebUiListenerMixin} from '/shared/settings/web_ui_listener_mixin.js'
+import {WebUiListenerMixin} from '../web_ui_listener_mixin.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {RouteObserverMixin, Router} from '../router.js'
 import {routes} from '../route.js'
@@ -17,7 +17,7 @@ import {BraveSearchEnginesPageBrowserProxyImpl} from './brave_search_engines_pag
 import {getTemplate} from './brave_search_engines_page.html.js'
 import type {CrToastElement} from 'chrome://resources/cr_elements/cr_toast/cr_toast.js'
 import type {SearchEngine} from '../search_page/search_engines_browser_proxy.js'
-import {PrefServiceObserverMixin} from '/shared/settings/prefs2/pref_service_observer_mixin.js'
+import {PrefServiceObserverMixin} from '../pref_service_observer_mixin.js'
 
 const BraveSearchEnginesPageBase =
   WebUiListenerMixin(PrefServiceObserverMixin(I18nMixin(RouteObserverMixin(PolymerElement))))

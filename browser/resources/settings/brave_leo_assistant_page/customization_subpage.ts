@@ -9,7 +9,7 @@ import { PolymerElement } from
   'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import {PrefServiceObserverMixin, PrefServiceObserverMixinInterface} from
-  '/shared/settings/prefs2/pref_service_observer_mixin.js'
+  '../pref_service_observer_mixin.js'
 import { RouteObserverMixin, RouteObserverMixinInterface } from '../router.js'
 import { SettingsViewMixin } from '../settings_page/settings_view_mixin.js'
 import {
