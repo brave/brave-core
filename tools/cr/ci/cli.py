@@ -17,7 +17,8 @@ Subcommands:
         `failures` lists) to FILE, for what the report's log tail cuts.
         `--no-timestamps` leaves out its lines' timestamps. For a TeamCity
         build, `--failed-step` writes only the end of the step that failed,
-        read without downloading the whole log.
+        or each failed test's whole output when only tests failed, read
+        without downloading the whole log.
     rerun URL [--wipe-workspace]
         Queues the build at URL (a check's link) again. For TeamCity, an
         aggregate reruns its failed dependencies; for GitHub Actions, the job
@@ -99,7 +100,8 @@ def main() -> int:
     log.add_argument(
         '--failed-step',
         action='store_true',
-        help="Only the end of the step that failed, without the whole log, "
+        help="Only the end of the step that failed (or, when only tests "
+        "failed, each failed test's whole output), without the whole log, "
         'which a TeamCity build with thousands of tests takes many minutes '
         'to download (TeamCity only).',
     )

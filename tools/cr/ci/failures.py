@@ -43,6 +43,12 @@ _GLOG_FATAL = re.compile(r'\bF\d{4} \d\d:\d\d:\d\d\.\d+ +\d+ \S+:\d+\] .*')
 # How many lines of a failed step's log a report keeps.
 LOG_TAIL_LINES = 60
 
+# How many lines of a failed test's output a report keeps: its first, where
+# gtest reports a failure such as a timeout, and its last, where the
+# assertion and its stack are.
+_TEST_HEAD_LINES = 10
+_TEST_TAIL_LINES = 40
+
 
 @dataclass(frozen=True)
 class FailedTest:
@@ -142,6 +148,16 @@ def mocha_failures(output: str) -> tuple[str, ...]:
 
 def tail(text: str, lines: int = LOG_TAIL_LINES) -> str:
     return '\n'.join(text.splitlines()[-lines:])
+
+
+def test_output(text: str) -> str:
+    """A failed test's output, its first and last lines when it is long."""
+    lines = text.splitlines()
+    if len(lines) <= _TEST_HEAD_LINES + _TEST_TAIL_LINES:
+        return '\n'.join(lines)
+    return '\n'.join(
+        [*lines[:_TEST_HEAD_LINES], '[...]', *lines[-_TEST_TAIL_LINES:]]
+    )
 
 
 def with_fatal_line(log: str, log_tail: str) -> str:

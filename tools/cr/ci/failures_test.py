@@ -74,6 +74,21 @@ class WithFatalLineTest(unittest.TestCase):
         self.assertEqual(failures.with_fatal_line('a\nb', 'b'), 'b')
 
 
+class TestOutputTest(unittest.TestCase):
+    def test_a_long_output_keeps_its_first_and_last_lines(self):
+        lines = ['[ RUN      ] Suite.Test', 'RunLoop::Run() timed out'] + [
+            f'line {i}' for i in range(100)
+        ]
+        kept = failures.test_output('\n'.join(lines)).splitlines()
+        self.assertEqual(kept[:2], lines[:2])
+        self.assertEqual(kept[10], '[...]')
+        self.assertEqual(kept[11:], lines[-40:])
+
+    def test_a_short_output_is_kept_whole(self):
+        output = '\n'.join(f'line {i}' for i in range(50))
+        self.assertEqual(failures.test_output(output), output)
+
+
 _MOCHA_OUTPUT = '\n'.join(
     [
         '[1:1:1104/051404.248329:INFO:CONSOLE:44] "  started: Page renders", '

@@ -27,10 +27,6 @@ from ci.failures import FailedBuild, FailedTest
 # `viewLog.html?buildId=<id>`.
 _BUILD_ID = re.compile(r'/buildConfiguration/[^/]+/(\d+)|[?&]buildId=(\d+)')
 
-# How many lines of a failed test's output a report keeps; the assertion is
-# at the end.
-_TEST_DETAILS_LINES = 40
-
 # How many of a build's failed tests get their history read, one request
 # each, and how many of the branch's latest runs it covers.
 _HISTORY_TESTS = 10
@@ -195,10 +191,23 @@ class TeamCityCi:
             '\n'.join(lines[-failures.LOG_TAIL_LINES :]),
         )
 
+    def _failed_test_occurrences(self, build: int, fields: str) -> list[dict]:
+        return self._api(
+            f'/app/rest/testOccurrences?locator=build:(id:{build}),'
+            f'status:FAILURE,muted:false,count:200&fields={fields}'
+        ).get('testOccurrence', [])
+
     def failed_step_log(self, url: str) -> str:
         """The end of the failed step of the build at `url`, as a report has
-        it: the part of the log that says why it failed."""
-        return self._failed_step_log(_build_id(url))
+        it: the part of the log that says why it failed. When no step failed
+        but tests did, each failed test's whole output instead."""
+        build = _build_id(url)
+        return self._failed_step_log(build) or '\n\n'.join(
+            f'{test.get("name", "")}:\n{test.get("details", "")}'.rstrip()
+            for test in self._failed_test_occurrences(
+                build, 'testOccurrence(name,details)'
+            )
+        )
 
     def failed_builds(self, url: str) -> list[FailedBuild]:
         """The builds that failed in the chain of the aggregate at `url`, or
@@ -299,10 +308,7 @@ class TeamCityCi:
             'testOccurrence(name,status,details,newFailure,test(id),'
             'firstFailed(build(id,webUrl)),invocations(count,failed))'
         )
-        occurrences = self._api(
-            f'/app/rest/testOccurrences?locator=build:(id:{teamcity_id}),'
-            f'status:FAILURE,muted:false,count:200&fields={fields}'
-        ).get('testOccurrence', [])
+        occurrences = self._failed_test_occurrences(teamcity_id, fields)
         tests = []
         for index, test in enumerate(occurrences):
             status = test.get('status', '')
@@ -327,9 +333,7 @@ class TeamCityCi:
                 FailedTest(
                     name=test.get('name', ''),
                     status=status,
-                    details=failures.tail(
-                        test.get('details', ''), _TEST_DETAILS_LINES
-                    ),
+                    details=failures.test_output(test.get('details', '')),
                     known=known,
                     mocha=failures.mocha_failures(test.get('details', '')),
                     history=history,

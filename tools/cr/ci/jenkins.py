@@ -587,7 +587,7 @@ class JenkinsCi:
                 FailedTest(
                     name=name,
                     status=case['status'],
-                    details=failures.tail(details, 40),
+                    details=failures.test_output(details),
                     known=known,
                     history=history,
                 )

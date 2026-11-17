@@ -161,8 +161,36 @@ class FailedStepLogTest(unittest.TestCase):
             '=> Failed to build the preview\nProcess exited with code 1',
         )
 
-    def test_nothing_without_a_failed_step(self):
-        cli = FakeCli(_log_messages(7, ['Step 1/1: build', 'done']))
+    def test_failed_tests_whole_output_without_a_failed_step(self):
+        output = '\n'.join(
+            ['[ RUN      ] Suite.Slow', 'RunLoop::Run() timed out']
+            + [f'    #{i} frame' for i in range(100)]
+        )
+        cli = FakeCli(
+            {
+                **_log_messages(7, ['Step 1/1: test', 'done']),
+                '/app/rest/testOccurrences?locator=build:(id:7)': {
+                    'testOccurrence': [
+                        {'name': 'unit: Suite.Slow', 'details': output},
+                        {'name': 'unit: Suite.Bare'},
+                    ]
+                },
+            }
+        )
+        self.assertEqual(
+            teamcity.TeamCityCi(run=cli).failed_step_log(_url(7)),
+            f'unit: Suite.Slow:\n{output}\n\nunit: Suite.Bare:',
+        )
+        (path,) = [cmd[-1] for cmd, _ in cli.calls if 'testOcc' in cmd[-1]]
+        self.assertIn('muted:false', path)
+
+    def test_nothing_without_a_failed_step_or_test(self):
+        cli = FakeCli(
+            {
+                **_log_messages(7, ['Step 1/1: build', 'done']),
+                '/app/rest/testOccurrences': {},
+            }
+        )
         self.assertEqual(
             teamcity.TeamCityCi(run=cli).failed_step_log(_url(7)), ''
         )
