@@ -11,6 +11,7 @@
 #include "base/i18n/rtl.h"
 #include "base/i18n/test/scoped_rtl_for_testing.h"
 #include "base/location.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/run_until.h"
@@ -23,6 +24,7 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/views/animations/web_panel_animations.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
@@ -39,6 +41,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/session_restore.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
+#include "chrome/browser/ui/animation/browser_animation_controller.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
@@ -58,6 +61,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_utils.h"
 #include "ui/gfx/animation/animation.h"
+#include "ui/gfx/animation/animation_container.h"
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/gfx/geometry/size.h"
@@ -1180,6 +1184,424 @@ IN_PROC_BROWSER_TEST_F(WebPanelPinnedTabPrefBrowserTest,
       << "only the user's own pinned tab should have been restored as pinned";
   EXPECT_FALSE(HasTabWithURL(GURL(kTestWebPanelURL)))
       << "the web panel was relaunched as a pinned tab";
+}
+
+// Drives the panel's open/close motion by hand so it can be observed part-way
+// through, instead of only at its endpoints.
+class WebPanelAnimationBrowserTest : public WebPanelBrowserTest {
+ public:
+  void SetUpOnMainThread() override {
+    WebPanelBrowserTest::SetUpOnMainThread();
+
+    // SidebarBrowserTest force-disables rich animations, and
+    // SetRichAnimationRenderMode() silently does nothing while another force
+    // is in effect, so the base scoper has to be dropped first.
+    animation_resetter_.reset();
+    animation_mode_ = gfx::AnimationTestApi::SetRichAnimationRenderMode(
+        gfx::Animation::RichAnimationRenderMode::FORCE_ENABLED);
+    CHECK(animation_mode_);
+
+    // Constructing the test API pauses the container's runner, so the motion
+    // only advances when a test says so. The group's data is created on
+    // demand, so this works before the panel has ever been opened.
+    animation_container_ = base::MakeRefCounted<gfx::AnimationContainer>();
+    animation_controller()->SetAnimationContainerForTesting(
+        WebPanelAnimations::kWebPanel, animation_container_.get());
+    animation_test_api_.emplace(animation_container_.get());
+
+    // To prevent item added bubble launching. Unlike the rest of the suite
+    // this fixture force-enables rich animations, so the bubble's own fade
+    // would actually run here alongside the paused container. Its widget is
+    // also tracked by a single observation slot in SidebarItemsContentsView,
+    // so a test adding two items would trip that while the first is still up.
+    browser()->GetProfile()->GetPrefs()->SetInteger(
+        kSidebarItemAddedFeedbackBubbleShowCount, 3);
+  }
+
+  void TearDownOnMainThread() override {
+    TearDownAnimationDriver();
+    WebPanelBrowserTest::TearDownOnMainThread();
+  }
+
+ protected:
+  // The test API holds a raw pointer into the container, and the container is
+  // referenced by the window's animation controller, so tests that close the
+  // window themselves have to drop both first.
+  void TearDownAnimationDriver() {
+    animation_test_api_.reset();
+    animation_container_.reset();
+  }
+
+  // Swaps the fixture's forced-on rich animations for forced-off. Only one
+  // force can be in effect at a time - a nested call is silently ignored - so
+  // the fixture's scoper has to be dropped first.
+  void ForceReducedMotion() {
+    animation_mode_.reset();
+    animation_mode_ = gfx::AnimationTestApi::SetRichAnimationRenderMode(
+        gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
+    CHECK(animation_mode_);
+  }
+
+  BrowserAnimationController* animation_controller() {
+    return BrowserAnimationController::From(browser());
+  }
+
+  void AdvanceAnimation(base::TimeDelta delta) {
+    animation_test_api_->IncrementTime(delta);
+  }
+
+  // Runs the current motion to its end.
+  void FinishAnimation() { AdvanceAnimation(base::Seconds(1)); }
+
+  bool IsPanelAnimating() {
+    return animation_controller()->IsAnimating(WebPanelAnimations::kWebPanel);
+  }
+
+  std::optional<double> PanelWidthValue() {
+    return animation_controller()->GetCurrentValue(
+        WebPanelAnimations::kWebPanel, WebPanelAnimations::kPanelWidth);
+  }
+
+  // The width the strip actually occupies on screen, as opposed to the stored
+  // target width. Zero while the panel is hidden: the layout proposes a
+  // zero-width rect for it, and ApplyLayout() skips empty bounds, so the
+  // container keeps whatever width it last had.
+  int LaidOutPanelWidth() {
+    auto* container = GetBraveMultiContentsView()
+                          ->GetWebPanelContainerForTesting();  // IN-TEST
+    return container && container->GetVisible() ? container->width() : 0;
+  }
+
+  int LaidOutContentsWidth() {
+    return GetBraveMultiContentsView()
+        ->GetActiveContentsContainerView()
+        ->width();
+  }
+
+  // The panel, its resize area and the contents must always tile the host
+  // exactly, on every frame of the animation.
+  void ExpectStripTilesHost(const base::Location& location = FROM_HERE) {
+    SCOPED_TRACE(location.ToString());
+    auto* multi_contents_view = GetBraveMultiContentsView();
+    auto* resize_area =
+        multi_contents_view->web_panel_resize_area_for_testing();  // IN-TEST
+    EXPECT_EQ(
+        multi_contents_view->width(),
+        LaidOutPanelWidth() + resize_area->width() + LaidOutContentsWidth());
+  }
+
+ private:
+  gfx::AnimationTestApi::RenderModeResetter animation_mode_;
+  scoped_refptr<gfx::AnimationContainer> animation_container_;
+  std::optional<gfx::AnimationContainerTestApi> animation_test_api_;
+};
+
+// The panel is on screen from the first frame, and its strip grows into place
+// rather than appearing at full width.
+IN_PROC_BROWSER_TEST_F(WebPanelAnimationBrowserTest, OpenGrowsTheStrip) {
+  auto* multi_contents_view = GetBraveMultiContentsView();
+
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
+  service->AddItem(
+      SidebarItem::CreateWebPanelItem(GURL(kTestWebPanelURL), u"title"));
+  controller()->OnItemPressed(model()->GetAllSidebarItems().size() - 1);
+
+  // Visible immediately, so the panel's web contents starts loading right
+  // away rather than waiting for the motion to finish.
+  ASSERT_TRUE(multi_contents_view->IsWebPanelVisible());
+  ASSERT_TRUE(IsPanelAnimating());
+
+  const int target_width =
+      multi_contents_view->web_panel_width_for_testing();  // IN-TEST
+  ASSERT_GT(target_width, 0);
+
+  RunScheduledLayouts();
+  EXPECT_LT(LaidOutPanelWidth(), target_width)
+      << "the panel should not start at its full width";
+  ExpectStripTilesHost();
+
+  AdvanceAnimation(base::Milliseconds(175));
+  RunScheduledLayouts();
+  const int midway_width = LaidOutPanelWidth();
+  EXPECT_GT(midway_width, 0);
+  EXPECT_LT(midway_width, target_width);
+  ExpectStripTilesHost();
+
+  FinishAnimation();
+  RunScheduledLayouts();
+  EXPECT_FALSE(IsPanelAnimating());
+  EXPECT_EQ(target_width, LaidOutPanelWidth());
+  ExpectStripTilesHost();
+}
+
+// The panel's tab outlives the close motion, so the page stays on screen while
+// the strip collapses instead of the panel emptying first.
+IN_PROC_BROWSER_TEST_F(WebPanelAnimationBrowserTest, CloseKeepsTabUntilTheEnd) {
+  OpenWebPanel(GURL(kTestWebPanelURL));
+  FinishAnimation();
+
+  auto* multi_contents_view = GetBraveMultiContentsView();
+  const int target_width =
+      multi_contents_view->web_panel_width_for_testing();  // IN-TEST
+  const int tab_count = tab_model()->count();
+  const content::WebContents* panel_contents =
+      web_panel_controller()->panel_contents();
+  ASSERT_TRUE(panel_contents);
+
+  web_panel_controller()->CloseWebPanel();
+  ASSERT_TRUE(IsPanelAnimating());
+
+  // Part-way through, the tab is still in the strip with its contents attached
+  // to the still-visible panel.
+  AdvanceAnimation(base::Milliseconds(175));
+  RunScheduledLayouts();
+  EXPECT_TRUE(multi_contents_view->IsWebPanelVisible());
+  EXPECT_EQ(panel_contents, web_panel_controller()->panel_contents());
+  EXPECT_EQ(tab_count, tab_model()->count());
+  EXPECT_LT(LaidOutPanelWidth(), target_width);
+  EXPECT_GT(LaidOutPanelWidth(), 0);
+  ExpectStripTilesHost();
+
+  // The tab only goes away once the strip has finished collapsing.
+  FinishAnimation();
+  EXPECT_FALSE(multi_contents_view->IsWebPanelVisible());
+  EXPECT_FALSE(web_panel_controller()->HasPanelTab());
+  EXPECT_EQ(tab_count - 1, tab_model()->count());
+
+  RunScheduledLayouts();
+  EXPECT_EQ(multi_contents_view->width(), LaidOutContentsWidth())
+      << "the contents area should have taken the strip's width back";
+}
+
+// Pressing the item again mid-close keeps the same tab and reverses the
+// motion, rather than tearing the panel down and building a new one.
+IN_PROC_BROWSER_TEST_F(WebPanelAnimationBrowserTest, ReopenMidCloseReverses) {
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
+  service->AddItem(
+      SidebarItem::CreateWebPanelItem(GURL(kTestWebPanelURL), u"title"));
+  const size_t item_index = model()->GetAllSidebarItems().size() - 1;
+  controller()->OnItemPressed(item_index);
+  FinishAnimation();
+
+  const content::WebContents* panel_contents =
+      web_panel_controller()->panel_contents();
+  const int tab_count = tab_model()->count();
+
+  controller()->OnItemPressed(item_index);
+  ASSERT_TRUE(IsPanelAnimating());
+  AdvanceAnimation(base::Milliseconds(175));
+  const auto midway_value = PanelWidthValue();
+  ASSERT_TRUE(midway_value.has_value());
+
+  controller()->OnItemPressed(item_index);
+  EXPECT_TRUE(web_panel_controller()->HasOpenPanel());
+  EXPECT_EQ(panel_contents, web_panel_controller()->panel_contents())
+      << "reversing the close should not have recreated the panel's tab";
+  EXPECT_EQ(tab_count, tab_model()->count());
+
+  // Picked up from where the close had got to, not restarted from closed.
+  const auto reversed_value = PanelWidthValue();
+  ASSERT_TRUE(reversed_value.has_value());
+  EXPECT_GE(*reversed_value, *midway_value);
+
+  FinishAnimation();
+  auto* multi_contents_view = GetBraveMultiContentsView();
+  RunScheduledLayouts();
+  EXPECT_TRUE(multi_contents_view->IsWebPanelVisible());
+  EXPECT_EQ(multi_contents_view->web_panel_width_for_testing(),  // IN-TEST
+            LaidOutPanelWidth());
+}
+
+// Replacing one panel with another keeps the strip where it is: the width does
+// not change, so a collapse and re-expand would just read as a flicker.
+IN_PROC_BROWSER_TEST_F(WebPanelAnimationBrowserTest, SwapDoesNotAnimate) {
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
+  service->AddItem(
+      SidebarItem::CreateWebPanelItem(GURL(kTestWebPanelURL), u"first"));
+  service->AddItem(
+      SidebarItem::CreateWebPanelItem(GURL("https://example.com/"), u"second"));
+  const size_t items = model()->GetAllSidebarItems().size();
+  controller()->OnItemPressed(items - 2);
+  FinishAnimation();
+
+  auto* multi_contents_view = GetBraveMultiContentsView();
+  RunScheduledLayouts();
+  const int width_before = LaidOutPanelWidth();
+  ASSERT_GT(width_before, 0);
+
+  controller()->OnItemPressed(items - 1);
+  EXPECT_FALSE(IsPanelAnimating())
+      << "swapping panels should not start a motion";
+  ASSERT_TRUE(web_panel_controller()->HasOpenPanel());
+
+  RunScheduledLayouts();
+  EXPECT_TRUE(multi_contents_view->IsWebPanelVisible());
+  EXPECT_EQ(width_before, LaidOutPanelWidth());
+  ExpectStripTilesHost();
+}
+
+// The side panel and the web panel share the same space, so when one replaces
+// the other they have to swap in a single frame. Neither direction animates.
+IN_PROC_BROWSER_TEST_F(WebPanelAnimationBrowserTest,
+                       SwappingWithSidePanelDoesNotAnimate) {
+  auto* panel_ui = SidePanelUI::From(browser());
+  // Resolve side panel entries synchronously, so Show() reaches
+  // SidePanel::Open() before it returns.
+  panel_ui->SetNoDelaysForTesting(true);
+  auto* side_panel = GetSidePanel();
+
+  auto* multi_contents_view = GetBraveMultiContentsView();
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
+  service->AddItem(
+      SidebarItem::CreateWebPanelItem(GURL(kTestWebPanelURL), u"title"));
+  const size_t item_index = model()->GetAllSidebarItems().size() - 1;
+
+  // A web panel replacing an open side panel must land at full width at once.
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+  ASSERT_TRUE(panel_ui->IsSidePanelShowing());
+
+  controller()->OnItemPressed(item_index);
+  EXPECT_FALSE(IsPanelAnimating())
+      << "the web panel should not animate in over the side panel";
+  ASSERT_TRUE(multi_contents_view->IsWebPanelVisible());
+  RunScheduledLayouts();
+  EXPECT_EQ(multi_contents_view->web_panel_width_for_testing(),  // IN-TEST
+            LaidOutPanelWidth());
+  ExpectStripTilesHost();
+
+  // And the reverse: a side panel replacing the web panel takes the space back
+  // immediately, rather than appearing over a still-collapsing strip.
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+  EXPECT_FALSE(IsPanelAnimating())
+      << "the web panel should not animate out from under the side panel";
+  EXPECT_FALSE(multi_contents_view->IsWebPanelVisible());
+  EXPECT_FALSE(web_panel_controller()->HasPanelTab());
+  EXPECT_EQ(SidePanel::State::kOpen, side_panel->state());
+
+  RunScheduledLayouts();
+  EXPECT_EQ(multi_contents_view->width(), LaidOutContentsWidth())
+      << "the contents area should have taken the strip's width back";
+}
+
+// A side panel opening while the web panel is already animating closed still
+// has to take the space in one frame - the half-collapsed panel is on screen.
+IN_PROC_BROWSER_TEST_F(WebPanelAnimationBrowserTest,
+                       SidePanelOpeningMidCloseFinishesTheCloseAtOnce) {
+  auto* panel_ui = SidePanelUI::From(browser());
+  panel_ui->SetNoDelaysForTesting(true);
+
+  OpenWebPanel(GURL(kTestWebPanelURL));
+  FinishAnimation();
+
+  auto* multi_contents_view = GetBraveMultiContentsView();
+  web_panel_controller()->CloseWebPanel();
+  ASSERT_TRUE(IsPanelAnimating());
+  AdvanceAnimation(base::Milliseconds(175));
+  ASSERT_TRUE(web_panel_controller()->HasPanelTab());
+
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+  EXPECT_FALSE(IsPanelAnimating());
+  EXPECT_FALSE(multi_contents_view->IsWebPanelVisible());
+  EXPECT_FALSE(web_panel_controller()->HasPanelTab());
+  EXPECT_EQ(SidePanel::State::kOpen, GetSidePanel()->state())
+      << "the side panel should not animate in over the closing web panel";
+
+  RunScheduledLayouts();
+  EXPECT_EQ(multi_contents_view->width(), LaidOutContentsWidth())
+      << "the contents area should have taken the strip's width back";
+}
+
+// The panel's tab can go away on its own mid-close. The strip has to collapse
+// immediately and leave nothing behind that would skew the next open.
+IN_PROC_BROWSER_TEST_F(WebPanelAnimationBrowserTest,
+                       ExternalTabRemovalMidCloseDoesNotStickTheNextOpen) {
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
+  service->AddItem(
+      SidebarItem::CreateWebPanelItem(GURL(kTestWebPanelURL), u"title"));
+  const size_t item_index = model()->GetAllSidebarItems().size() - 1;
+  controller()->OnItemPressed(item_index);
+  FinishAnimation();
+
+  auto* multi_contents_view = GetBraveMultiContentsView();
+  const int target_width =
+      multi_contents_view->web_panel_width_for_testing();  // IN-TEST
+
+  web_panel_controller()->CloseWebPanel();
+  ASSERT_TRUE(IsPanelAnimating());
+  AdvanceAnimation(base::Milliseconds(175));
+
+  // The user closes the panel's pinned tab while it is still collapsing.
+  ASSERT_EQ(web_panel_controller()->panel_contents(),
+            tab_model()->GetTabAtIndex(0)->GetContents());
+  tab_model()->GetTabAtIndex(0)->Close();
+
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !multi_contents_view->IsWebPanelVisible(); }));
+  EXPECT_FALSE(web_panel_controller()->HasPanelTab());
+  RunScheduledLayouts();
+  EXPECT_EQ(multi_contents_view->width(), LaidOutContentsWidth())
+      << "the contents area should have taken the strip's width back";
+
+  // The abandoned motion must not leave a part-closed width behind, or this
+  // open would start part-done - or skip its animation entirely.
+  controller()->OnItemPressed(item_index);
+  ASSERT_TRUE(IsPanelAnimating());
+  RunScheduledLayouts();
+  EXPECT_LT(LaidOutPanelWidth(), target_width)
+      << "the next open should start from a collapsed strip";
+
+  FinishAnimation();
+  RunScheduledLayouts();
+  EXPECT_EQ(target_width, LaidOutPanelWidth());
+}
+
+// Closing the window while the panel is collapsing has to take the tab with
+// it, or it would be restored next launch and trip the controller's teardown
+// expectation that no panel tab survives.
+IN_PROC_BROWSER_TEST_F(WebPanelAnimationBrowserTest,
+                       WindowCloseMidCloseIsSafe) {
+  OpenWebPanel(GURL(kTestWebPanelURL));
+  FinishAnimation();
+
+  web_panel_controller()->CloseWebPanel();
+  ASSERT_TRUE(IsPanelAnimating());
+  AdvanceAnimation(base::Milliseconds(175));
+  ASSERT_TRUE(web_panel_controller()->HasPanelTab());
+
+  // Keep the browser process alive, so this exercises closing a window rather
+  // than shutting the process down.
+  ASSERT_TRUE(CreateBrowser(browser()->GetProfile()));
+
+  // The driver's test API points into the container owned by the window's
+  // animation controller, so let it go before the window does.
+  TearDownAnimationDriver();
+  CloseBrowserSynchronously(browser());
+}
+
+// With animations off, both directions still complete in one frame - this is
+// what keeps the rest of the web panel suite synchronous.
+IN_PROC_BROWSER_TEST_F(WebPanelAnimationBrowserTest,
+                       ReducedMotionIsSynchronous) {
+  ForceReducedMotion();
+
+  auto* multi_contents_view = GetBraveMultiContentsView();
+
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
+  service->AddItem(
+      SidebarItem::CreateWebPanelItem(GURL(kTestWebPanelURL), u"title"));
+  const size_t item_index = model()->GetAllSidebarItems().size() - 1;
+
+  controller()->OnItemPressed(item_index);
+  EXPECT_FALSE(IsPanelAnimating());
+  ASSERT_TRUE(multi_contents_view->IsWebPanelVisible());
+  RunScheduledLayouts();
+  EXPECT_EQ(multi_contents_view->web_panel_width_for_testing(),  // IN-TEST
+            LaidOutPanelWidth());
+
+  controller()->OnItemPressed(item_index);
+  EXPECT_FALSE(IsPanelAnimating());
+  EXPECT_FALSE(multi_contents_view->IsWebPanelVisible());
+  EXPECT_FALSE(web_panel_controller()->HasPanelTab());
 }
 
 }  // namespace sidebar

@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/browser_window/internal/brave_browser_window_features.h"
 
+#include <memory>
+
 #include "base/check_deref.h"
 #include "base/containers/flat_map.h"
 #include "base/feature_list.h"
@@ -19,6 +21,7 @@
 #include "brave/browser/ui/tabs/public/tab_cycling_controller.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/tabs/tree_tab_session_manager.h"
+#include "brave/browser/ui/views/animations/web_panel_animations.h"
 #include "brave/browser/ui/views/brave_help_bubble/shields_help_bubble_controller.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/page_info/brave_shields_ui_contents_cache.h"
@@ -33,6 +36,7 @@
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
+#include "chrome/browser/ui/animation/browser_animation_controller.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -123,6 +127,11 @@ void BraveBrowserWindowFeatures::Init() {
         GetUserDataFactory().CreateInstance<TreeTabSessionManager>(
             *browser_, browser_->GetUnownedUserDataHost(), profile,
             browser_->GetTabStripModel(), browser_->GetSessionID());
+  }
+
+  if (sidebar::IsWebPanelFeatureEnabled()) {
+    BrowserAnimationController::From(base::to_address(browser_))
+        ->AddAnimationProvider(std::make_unique<WebPanelAnimations>());
   }
 
   // Created before the window, as `BraveBrowserView` hands the sidebar its view

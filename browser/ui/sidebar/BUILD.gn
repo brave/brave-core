@@ -159,6 +159,7 @@ source_set("browser_tests") {
     "//brave/browser/ui:brave_tab_prefs",
     "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/views:layout_provider",
+    "//brave/browser/ui/views/animations",
     "//brave/browser/ui/views/frame",
     "//brave/browser/ui/views/frame/split_view",
     "//brave/browser/ui/views/frame/vertical_tabs",
@@ -182,6 +183,7 @@ source_set("browser_tests") {
     "//chrome/browser/ui:browser_window_header",
     "//chrome/browser/ui:layout_constants",
     "//chrome/browser/ui:ui_features",
+    "//chrome/browser/ui/animation",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/side_panel:side_panel_views_dependent",
     "//chrome/browser/ui/views:layout_provider",
@@ -198,6 +200,7 @@ source_set("browser_tests") {
     "//ui/events",
     "//ui/events:test_support",
     "//ui/gfx",
+    "//ui/gfx/animation",
   ]
 
   if (enable_ai_chat) {
