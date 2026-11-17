@@ -9,6 +9,7 @@
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/devtools/features.h"
 #include "chrome/browser/glic/public/features.h"
+#include "chrome/browser/glic/public/provider_features.h"
 #include "chrome/browser/policy/policy_util.h"
 #include "chrome/browser/preloading/preloading_features.h"
 #include "chrome/browser/ttc/core/features.h"
