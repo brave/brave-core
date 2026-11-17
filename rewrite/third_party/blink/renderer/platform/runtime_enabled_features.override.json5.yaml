@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Declare the Brave-only Global Privacy Control runtime flag.
+    regex:
+      re_pattern: '(\n  data: \[(?:\n *//[^\n]*)*)'
+      replace: |-
+        \1
+            {
+              name: "BraveGlobalPrivacyControl",
+              public: true,
+              base_feature: "none",
+            },
+
+  - description: |-
+      Declare the Brave-only Window Management runtime flag.
+
+      Guards `Screen.isExtended`, `Screen.onchange`, `Window.getScreenDetails()`,
+      `ScreenDetails` and `ScreenDetailed`, which expose the multi-screen
+      layout. It has no `status`, so it is off everywhere unless a test turns
+      it on with `--enable-blink-features=BraveWindowManagement`.
+    regex:
+      re_pattern: '(\n  data: \[(?:\n *//[^\n]*)*)'
+      replace: |-
+        \1
+            {
+              name: "BraveWindowManagement",
+              base_feature: "none",
+            },

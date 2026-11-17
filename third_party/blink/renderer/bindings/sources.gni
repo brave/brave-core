@@ -5,8 +5,14 @@
 
 import("//brave/components/brave_page_graph/common/buildflags.gni")
 
-brave_third_party_blink_renderer_bindings_web_idl_database_inputs =
-    [ gn_args_page_graph_file ]
+# The IDL compiler loads `runtime_enabled_features.override.json5` from next to
+# `runtime_enabled_features.json5`, but the action only lists the latter.
+# Without it here, remote execution doesn't see Brave's flags and
+# `RuntimeEnabled=Brave*` fails with "Unknown runtime-enabled feature".
+brave_third_party_blink_renderer_bindings_web_idl_database_inputs = [
+  gn_args_page_graph_file,
+  "//third_party/blink/renderer/platform/runtime_enabled_features.override.json5",
+]
 
 brave_third_party_blink_renderer_bindings_web_idl_database_deps =
     [ "//brave/components/brave_page_graph/common:buildflags" ]
