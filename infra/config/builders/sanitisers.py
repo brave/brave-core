@@ -44,7 +44,7 @@ builders.builder(
             'brave_all_unit_tests_linux',
             'brave_browser_tests',
             'brave_interactive_ui_tests',
-            'brave_network_audit_tests',
+            'brave_network_tests_linux',
         ],
         additional_compile_targets=[
             'brave',
