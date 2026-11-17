@@ -1517,5 +1517,5 @@
 "wallet.web3SettingsEnableNFTDiscoveryFooter" = "तीसरे पक्ष के API का इस्तेमाल करके वॉलेट में खुद NFT अपने-आप जोड़ें। [ज़्यादा जानें](%@)";
 
 /* A description of an ZCash account, displayed in Accounts tab. */
-"wallet.zecAccountDescription" = "ZCash";
+"wallet.zecAccountDescription" = "Zcash";
 

@@ -742,6 +742,15 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Настави на %@ (није безбедно)";
 
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "Уклони";
+
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "Овај сајт се неће појавити на вашој листи најпосећенијих, али неће бити уклоњен из ваше историје.";
+
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "Уклонити из најпосећенијих?";
+
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ ће покренути екстерну апликацију";
 
@@ -864,6 +873,9 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Неважећи подаци у захтеву за плаћање";
+
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "Уграђена страница на овој страници";
 
 /* History tableview section header */
 "LastMonth" = "Прошли месец";
@@ -2482,6 +2494,18 @@
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Огласи су блокирани док гледате видео садржаје на овом веб-сајту.";
 
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Brave новчаник";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "Приватна картица";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "QR код";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "Претрага";
+
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Нова приватна картица";
 
@@ -2795,7 +2819,7 @@
 "sync.deleteAccountAlertDescriptionPart2" = "Међутим, неће избрисати податке који се налазе на локалном меморијском простору на тим уређајима.";
 
 /* Title for Alert used action Delete Sync Account. */
-"sync.deleteAccountAlertTitle" = "Брисање налога за синхронизацију";
+"sync.deleteAccountAlertTitle" = "Избриши налог за синхронизацију";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "Изгледа да је овај код креиран на уређају који користи старију верзију Brave-а. Ажурирајте Brave на најновију верзију на другом уређају, а затим креирајте нови код за синхронизацију.";
@@ -2924,7 +2948,7 @@
 "sync.setPasscodeAlertDescription" = "Да бисте додали уређај у ланац синхронизације или активирали синхронизацију лозинки, прво морате да подесите приступни код на свом уређају.";
 
 /* The title displayed in alert when a user needs to set passcode */
-"sync.setPasscodeAlertTitle" = "Подеси приступни код";
+"sync.setPasscodeAlertTitle" = "Подесите приступни код";
 
 /* Header title for Sync settings */
 "sync.settingsHeader" = "Листа уређаја у наставку обухвата све уређаје у вашем ланцу синхронизације. Сваким уређајем се може управљати на било ком другом уређају.";

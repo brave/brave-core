@@ -68,7 +68,7 @@
 "restoreButton" = "Vrati";
 
 /* A toggle label for Brave Rewards feature */
-"rewardsLabel" = "Nagrade Brave";
+"rewardsLabel" = "Rewards";
 
 /* A toggle label for statistics reporting feature */
 "statisticsReportingLabel" = "Izvješćivanje statistika";

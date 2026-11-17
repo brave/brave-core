@@ -74,7 +74,7 @@
 "blockMobileAnnoyances" = "'ऐप में स्विच करें' सूचनाओं को अवरुद्ध करें";
 
 /* No comment provided by engineer. */
-"BlockScripts" = "स्क्रिप्ट्स को अवरुद्ध करें ";
+"BlockScripts" = "स्क्रिप्ट्स को अवरुद्ध करें";
 
 /* No comment provided by engineer. */
 "BlockScriptsDescription" = "JavaScript (साइटें खराब हो सकती हैं) ब्लॉक करता है।";
@@ -422,7 +422,7 @@
 "UpdatingLists" = "लिस्ट अपडेट करें";
 
 /* The option the user can select for the type of https upgrading */
-"UpgradeConnectionsToHTTPS" = "कनेक्शन को HTTPS पर अपग्रेड करें";
+"UpgradeConnectionsToHTTPS" = "कनेक्शंस को HTTPS पर अपग्रेड करें";
 
 /* A description shown an a page where the http page was blocked */
 "YourConnectionIsNotPrivate" = "आपको यह चेतावनी दिख रही है, क्योंकि यह साइट HTTPS को सपोर्ट नहीं करता।";
