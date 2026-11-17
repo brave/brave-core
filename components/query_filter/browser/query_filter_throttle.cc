@@ -11,6 +11,7 @@
 #include "base/feature_list.h"
 #include "base/memory/ptr_util.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
+#include "brave/components/query_filter/browser/utils.h"
 #include "brave/components/query_filter/common/features.h"
 #include "net/base/isolation_info.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -26,8 +27,19 @@ namespace {
 // TODO(https://github.com/brave/brave-browser/issues/23742): Make this shared
 // with BraveRequestInfo::MakeCTX.
 GURL GetShieldsSettingsURL(const network::ResourceRequest& request) {
-  // TODO(https://github.com/brave/brave-browser/issues/23742): Add logic to
-  // handle cases where the request is initiated inside a subframe.
+  if (request.is_outermost_main_frame) {
+    return request.url;
+  }
+  if (request.trusted_params) {
+    const std::optional<url::Origin>& top_frame_origin =
+        request.trusted_params->isolation_info.top_frame_origin();
+    if (top_frame_origin && !top_frame_origin->opaque()) {
+      return top_frame_origin->GetURL();
+    }
+  }
+  if (request.request_initiator && !request.request_initiator->opaque()) {
+    return request.request_initiator->GetURL();
+  }
   return request.url;
 }
 
@@ -59,17 +71,18 @@ QueryFilterThrottle::MaybeCreateThrottle(
 
 void QueryFilterThrottle::WillStartRequest(network::ResourceRequest* request,
                                            bool* /*defer*/) {
-  // TODO(https://github.com/brave/brave-browser/issues/23742): Strip tracking
-  // query parameters from GetShieldsSettingsURL(`request->url`).
+  const std::optional<GURL> filtered_url = MaybeApplyQueryStringFilter(
+      request->request_initiator, GURL(), request->url, request->method,
+      /*internal_redirect=*/false);
+  if (filtered_url.has_value()) {
+    request->url = *filtered_url;
+  }
 }
 
 void QueryFilterThrottle::WillRedirectRequest(
     net::RedirectInfo* redirect_info,
     const network::mojom::URLResponseHead& /*response_head*/,
     bool* /*defer*/,
-    network::HttpRequestHeadersUpdateParams* /*headers_update_params*/) {
-  // TODO(https://github.com/brave/brave-browser/issues/23742): Redirect needs
-  // more invetigation to be sure it doesn't affect debouncing.
-}
+    network::HttpRequestHeadersUpdateParams* /*headers_update_params*/) {}
 
 }  // namespace query_filter

@@ -30,6 +30,7 @@ source_set("browser_tests") {
     "brave_site_hacks_network_delegate_helper_browsertest.cc",
     "brave_system_request_handler_browsertest.cc",
     "brave_user_agent_network_delegate_helper_browsertest.cc",
+    "query_filter_service_worker_browsertest.cc",
   ]
   deps = [
     "//brave/components/brave_shields/core/browser",
