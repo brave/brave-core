@@ -109,6 +109,8 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
   void UpdateCommandForBraveVPN();
   void UpdateCommandForPlaylist();
   void UpdateCommandForWaybackMachine();
+  // Captures the active tab for IDC_SCREENSHOT_* without showing the bubble.
+  void ExecuteScreenshotCapture(int id);
   void UpdateCommandsForTabs();
   void UpdateCommandsForSend();
   // Enables IDC_BLOCK_ELEMENTS only when the active tab is an http(s) page,

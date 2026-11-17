@@ -12,9 +12,11 @@
 #include "base/functional/callback.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/browser/infobars/brave_confirm_infobar_creator.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/screenshot/screenshot_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/brave_layout_provider.h"
@@ -389,6 +391,65 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
   EXPECT_TRUE(browser_view()->AcceleratorPressed(screenshot_accelerator));
   EXPECT_TRUE(button->GetVisible());
 }
+
+class BraveBrowserViewScreenshotCommandTest
+    : public BraveBrowserViewTest,
+      public testing::WithParamInterface<int> {};
+
+IN_PROC_BROWSER_TEST_P(BraveBrowserViewScreenshotCommandTest,
+                       StartsCaptureWithoutShowingBubble) {
+  const int command_id = GetParam();
+  auto* command_controller = chrome::BrowserCommandController::From(browser());
+  ASSERT_TRUE(command_controller->IsCommandEnabled(command_id));
+
+  auto* button = screenshot_button();
+  ASSERT_TRUE(button);
+  ASSERT_FALSE(button->GetVisible());
+
+  auto* controller = screenshot::ScreenshotController::From(browser());
+  ASSERT_TRUE(controller);
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(controller->CanCapture(web_contents).has_value());
+
+  command_controller->ExecuteCommand(command_id);
+  EXPECT_FALSE(button->GetVisible());
+  ASSERT_FALSE(controller->CanCapture(web_contents).has_value());
+  EXPECT_EQ(screenshot::ScreenshotController::Error::kBusy,
+            controller->CanCapture(web_contents).error());
+
+  // Running it again while the capture is in progress is a no-op.
+  command_controller->ExecuteCommand(command_id);
+  EXPECT_FALSE(button->GetVisible());
+  EXPECT_EQ(screenshot::ScreenshotController::Error::kBusy,
+            controller->CanCapture(web_contents).error());
+}
+
+IN_PROC_BROWSER_TEST_P(BraveBrowserViewScreenshotCommandTest,
+                       EnabledStateMatchesScreenshotMenuItem) {
+  auto expect_matches_menu_item = [](BrowserWindowInterface* window) {
+    auto* command_controller = chrome::BrowserCommandController::From(window);
+    EXPECT_EQ(command_controller->IsCommandEnabled(IDC_SHARING_HUB_SCREENSHOT),
+              command_controller->IsCommandEnabled(GetParam()));
+  };
+  expect_matches_menu_item(browser());
+  expect_matches_menu_item(CreateBrowserForPopup(browser()->GetProfile()));
+}
+
+INSTANTIATE_TEST_SUITE_P(All,
+                         BraveBrowserViewScreenshotCommandTest,
+                         testing::Values(IDC_SCREENSHOT_SELECTED_AREA,
+                                         IDC_SCREENSHOT_VISIBLE_AREA,
+                                         IDC_SCREENSHOT_FULL_PAGE),
+                         [](const testing::TestParamInfo<int>& info) {
+                           switch (info.param) {
+                             case IDC_SCREENSHOT_SELECTED_AREA:
+                               return "SelectedArea";
+                             case IDC_SCREENSHOT_VISIBLE_AREA:
+                               return "VisibleArea";
+                             default:
+                               return "FullPage";
+                           }
+                         });
 
 // Regression test: BraveBrowserView's constructor unconditionally hides the
 // window icon for normal browser windows (SetShowIcon(false)), because brave

@@ -12,6 +12,7 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/metrics/user_metrics.h"
 #include "base/notreached.h"
@@ -22,6 +23,7 @@
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
+#include "brave/browser/ui/screenshot/screenshot_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
@@ -429,6 +431,10 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_TOGGLE_SHIELDS, true);
   UpdateCommandEnabled(IDC_TOGGLE_JAVASCRIPT, true);
   UpdateCommandForBlockElements();
+  for (const int id : {IDC_SCREENSHOT_SELECTED_AREA,
+                       IDC_SCREENSHOT_VISIBLE_AREA, IDC_SCREENSHOT_FULL_PAGE}) {
+    UpdateCommandEnabled(id, IsCommandEnabled(IDC_SHARING_HUB_SCREENSHOT));
+  }
 
   UpdateCommandEnabled(IDC_CLOSE_DUPLICATE_TABS,
                        brave::HasDuplicatesOfActiveTab(&*browser_));
@@ -658,6 +664,30 @@ void BraveBrowserCommandController::UpdateCommandForWaybackMachine() {
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   UpdateCommandEnabled(IDC_SHOW_WAYBACK_MACHINE_BUBBLE, true);
 #endif
+}
+
+void BraveBrowserCommandController::ExecuteScreenshotCapture(int id) {
+  auto* controller = screenshot::ScreenshotController::From(&*browser_);
+  auto* web_contents = browser_->tab_strip_model()->GetActiveWebContents();
+  // Nothing to capture, or a capture is already in progress.
+  if (!controller || !web_contents ||
+      !controller->CanCapture(web_contents).has_value()) {
+    return;
+  }
+
+  switch (id) {
+    case IDC_SCREENSHOT_SELECTED_AREA:
+      controller->CaptureSelectedArea(web_contents, base::DoNothing());
+      break;
+    case IDC_SCREENSHOT_VISIBLE_AREA:
+      controller->CaptureVisibleArea(web_contents, base::DoNothing());
+      break;
+    case IDC_SCREENSHOT_FULL_PAGE:
+      controller->CaptureFullPage(web_contents, base::DoNothing());
+      break;
+    default:
+      NOTREACHED();
+  }
 }
 
 void BraveBrowserCommandController::UpdateCommandsForTabs() {
@@ -908,6 +938,11 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_BLOCK_ELEMENTS:
       brave::LaunchContentPicker(&*browser_);
+      break;
+    case IDC_SCREENSHOT_SELECTED_AREA:
+    case IDC_SCREENSHOT_VISIBLE_AREA:
+    case IDC_SCREENSHOT_FULL_PAGE:
+      ExecuteScreenshotCapture(id);
       break;
     case IDC_SHOW_PLAYLIST_BUBBLE:
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
