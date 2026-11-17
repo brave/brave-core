@@ -60,20 +60,6 @@ v8::Local<v8::Value> ToV8Error(v8::Isolate* isolate, std::string_view message) {
   return v8::Exception::Error(gin::StringToV8(isolate, message));
 }
 
-void SealOwnProperty(v8::Local<v8::Context> context,
-                     v8::Local<v8::Object> object,
-                     v8::Local<v8::String> name) {
-  v8::Local<v8::Value> value;
-  if (!object->Get(context, name).ToLocal(&value)) {
-    return;
-  }
-
-  v8::PropertyDescriptor desc(value, /*writable=*/false);
-  desc.set_enumerable(true);
-  desc.set_configurable(false);
-  object->DefineProperty(context, name, desc).Check();
-}
-
 v8::Local<v8::Promise> RejectedPromise(v8::Isolate* isolate,
                                        std::string_view message) {
   v8::Local<v8::Context> context = isolate->GetCurrentContext();
@@ -374,6 +360,18 @@ void JSPolkadotProvider::OnEnableResponse(
            .IsNothing())) {
     reject(kRequestFailedError);
     return;
+  }
+
+  if (with_extension_info) {
+    for (std::string_view property : {"name", "version"}) {
+      SealOwnProperty(context, injected_object,
+                      gin::StringToV8(isolate, property));
+    }
+  }
+
+  for (std::string_view property : {"signer", "accounts"}) {
+    SealOwnProperty(context, injected_object,
+                    gin::StringToV8(isolate, property));
   }
 
   std::ignore = resolver->Resolve(context, injected_object);

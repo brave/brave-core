@@ -121,5 +121,22 @@ void SetOwnPropertyWritable(v8::Local<v8::Context> context,
   v8::PropertyDescriptor desc(property, writable);
   provider_object->DefineProperty(context, property_name, desc).Check();
 }
+void SealOwnProperty(v8::Local<v8::Context> context,
+                     v8::Local<v8::Object> object,
+                     v8::Local<v8::String> name) {
+  if (!object->HasOwnProperty(context, name).FromMaybe(false)) {
+    return;
+  }
+
+  v8::Local<v8::Value> value;
+  if (!object->Get(context, name).ToLocal(&value)) {
+    return;
+  }
+
+  v8::PropertyDescriptor desc(value, /*writable=*/false);
+  desc.set_enumerable(true);
+  desc.set_configurable(false);
+  object->DefineProperty(context, name, desc).Check();
+}
 
 }  // namespace brave_wallet
