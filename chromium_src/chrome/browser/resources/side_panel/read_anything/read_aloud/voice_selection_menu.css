@@ -14,3 +14,8 @@
 .language-menu-button {
   display: none;
 }
+
+cr-icon {
+  --iron-icon-height: var(--icon-size);
+  --iron-icon-width: var(--icon-size);
+}
