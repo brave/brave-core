@@ -1,0 +1,3 @@
+# Only the Dockerfile is needed by the bootstrap build.
+*
+!Dockerfile
