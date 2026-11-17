@@ -377,7 +377,7 @@
 "ShredOnSiteTabsClosed" = "По затварању картица сајта";
 
 /* The description for shredding when the site is closed */
-"ShredOnSiteTabsClosedDescription" = "Подаци о прегледању се аутоматски уништавају када се затворе све картице отворене за неки сајт";
+"ShredOnSiteTabsClosedDescription" = "Подаци о прегледању се аутоматски уништавају када се затворе све картице отворене за одређени сајт";
 
 /* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
 "ShredSiteAllTabsConfirmationMessage" = "Уништавање ће затворити све картице, и избрисати све податке са сајта. Ова радња се не може опозвати.";
