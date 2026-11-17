@@ -137,8 +137,9 @@ class BraveClassVisitor extends ClassVisitor {
                 mDeleteMethods.entrySet()) {
             String className = entry.getKey();
             ArrayList<String> methodNames = entry.getValue();
-            return mName.contains(className) &&
-                   methodNames.contains(methodName);
+            if (mName.contains(className) && methodNames.contains(methodName)) {
+                return true;
+            }
         }
 
         return false;

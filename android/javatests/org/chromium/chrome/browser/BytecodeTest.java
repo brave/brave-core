@@ -1244,6 +1244,20 @@ public class BytecodeTest {
                         Intent.class,
                         boolean.class,
                         String.class));
+        Assert.assertFalse(
+                methodExists(
+                        "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesLayout",
+                        "triggerCustomizationIph",
+                        MethodModifier.REGULAR,
+                        void.class,
+                        UserEducationHelper.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesLayoutBase", // presubmit: ignore-long-line
+                        "triggerCustomizationIph",
+                        MethodModifier.REGULAR,
+                        void.class,
+                        UserEducationHelper.class));
     }
 
     @Test
