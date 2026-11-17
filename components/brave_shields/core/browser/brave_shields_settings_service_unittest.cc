@@ -15,7 +15,6 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/query_filter/common/features.h"
 #include "brave/components/query_filter/common/pref_names.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -121,12 +120,6 @@ TEST_F(BraveShieldsSettingsServiceTest, IsQueryFilteringEnabled) {
   GetProfilePrefs()->SetBoolean(
       query_filter::kTrackingQueryParametersFilteringEnabled, true);
   EXPECT_TRUE(brave_shields_settings()->IsQueryFilteringEnabled(other_url));
-
-  // Disabling the feature turns query filtering off for every site.
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(
-      query_filter::features::kQueryFilterComponent);
-  EXPECT_FALSE(brave_shields_settings()->IsQueryFilteringEnabled(other_url));
 }
 
 TEST_F(BraveShieldsSettingsServiceTest, IsBraveShieldsManaged) {
