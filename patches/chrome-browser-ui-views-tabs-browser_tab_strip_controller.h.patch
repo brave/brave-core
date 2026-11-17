@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/views/tabs/browser_tab_strip_controller.h b/chrome/browser/ui/views/tabs/browser_tab_strip_controller.h
+index 2e75284e415599ffdc9670a1e8279e946f30f98c..12f93a13ad28dda2b791cccdad7a5fa9ed17384c 100644
+--- a/chrome/browser/ui/views/tabs/browser_tab_strip_controller.h
++++ b/chrome/browser/ui/views/tabs/browser_tab_strip_controller.h
+@@ -118,6 +118,9 @@ class BrowserTabStripController : public TabStripController,
+   void CloseContextMenuForTesting();
+ 
+  private:
++  friend class BraveBrowserTabStripController;
++  friend class VerticalTabStripStringBrowserTest;
++  friend class BraveTabMenuBrowserTest;
+   // TabStripModelObserver implementation:
+   void OnTabStripModelChanged(
+       TabStripModel* tab_strip_model,

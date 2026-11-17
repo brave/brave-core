@@ -1,0 +1,31 @@
+diff --git a/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_controller.h b/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_controller.h
+index 4f73bfe2c743f472a548ac36ebf6f6e6c9cd9832..5b6b4767b2c739a38ae53b5b1315ef7f01e925dd 100644
+--- a/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_controller.h
++++ b/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_controller.h
+@@ -80,6 +80,8 @@ class TabHoverCardController : public views::ViewObserver,
+   TabHoverCardController();  // For testing only
+ 
+  private:
++  friend class BraveTabHoverCardController;
++  friend class BraveTabHoverTest;
+   FRIEND_TEST_ALL_PREFIXES(TabHoverCardControllerTest, ShowWrongTabDoesntCrash);
+   FRIEND_TEST_ALL_PREFIXES(TabHoverCardControllerTest,
+                            SetPreviewWithNoHoverCardDoesntCrash);
+@@ -124,7 +126,7 @@ class TabHoverCardController : public views::ViewObserver,
+ 
+   bool ArePreviewsEnabled() const;
+ 
+-  void CreateHoverCard(HoverCardAnchorTarget* anchor_target);
++  virtual void CreateHoverCard(HoverCardAnchorTarget* anchor_target);
+   void UpdateCardContent(HoverCardAnchorTarget* anchor_target);
+   void MaybeStartThumbnailObservation(HoverCardAnchorTarget* anchor_target,
+                                       bool is_initial_show);
+@@ -157,7 +159,7 @@ class TabHoverCardController : public views::ViewObserver,
+   void OnPreviewImageAvailable(TabHoverCardThumbnailObserver* observer,
+                                gfx::ImageSkia thumbnail_image);
+ 
+-  void OnHovercardImagesEnabledChanged();
++  virtual void OnHovercardImagesEnabledChanged();
+   void OnHovercardMemoryUsageEnabledChanged();
+ 
+   bool waiting_for_preview() const {

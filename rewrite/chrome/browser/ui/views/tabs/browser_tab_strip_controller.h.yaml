@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Let the Brave tab menu browser test reach private members.
+    add_friend:
+      class_name: BrowserTabStripController
+      friend_type: class BraveTabMenuBrowserTest
+
+  - description: Let the vertical tab strip string browser test reach private members.
+    add_friend:
+      class_name: BrowserTabStripController
+      friend_type: class VerticalTabStripStringBrowserTest
+
+  - description: Let the Brave subclass reach private members.
+    add_friend:
+      class_name: BrowserTabStripController
+      friend_type: class BraveBrowserTabStripController
