@@ -47,7 +47,9 @@ def _make_registries():
         recipe='brave_builder',
         builder_spec=builder_config.builder_spec(
             gclient_config=builder_config.gclient_config(
-                target_os=['linux', 'android']
+                target_os=['linux', 'android'],
+                custom_deps={'src/b': None, 'src/a': 'https://a.example/a.git'},
+                custom_vars={'checkout_x': True},
             ),
             chromium_config=builder_config.chromium_config(
                 target_platform=builder_config.target_platform.LINUX,
@@ -129,6 +131,12 @@ class ComputeFreshOutputTest(unittest.TestCase):
                 'gclient_config': {
                     'target_os': ['android', 'linux'],
                     'target_cpu': [],
+                    # Sorted by path.
+                    'custom_deps': {
+                        'src/a': 'https://a.example/a.git',
+                        'src/b': None,
+                    },
+                    'custom_vars': {'checkout_x': True},
                 },
             },
         )

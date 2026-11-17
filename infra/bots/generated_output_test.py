@@ -157,6 +157,26 @@ class GeneratedBuilderTest(unittest.TestCase):
         self.assertIn('gclient_config.target_os" is not a list', problem)
         self.assertIn('gclient_config.target_cpu" is not a list', problem)
 
+    def test_spec_custom_deps_and_vars_are_checked(self):
+        write_builder(
+            self.output_dir,
+            'b',
+            properties_json=testing_support.properties(
+                'b',
+                {
+                    'chromium_config': {'target_platform': 'linux'},
+                    'gclient_config': {
+                        'target_os': [],
+                        'target_cpu': [],
+                        'custom_deps': [],
+                    },
+                },
+            ),
+        )
+        problem = self._problems()[0]
+        self.assertIn('gclient_config.custom_deps" is not an object', problem)
+        self.assertIn('gclient_config.custom_vars" is not an object', problem)
+
     def test_spec_without_gclient_config(self):
         write_builder(
             self.output_dir,

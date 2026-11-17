@@ -44,6 +44,20 @@ def _print_text(name: str, description: dict) -> None:
     # What the checkout syncs, besides the host (always synced).
     print('  sync target_os:  %s' % (', '.join(sync['target_os']) or '(host)'))
     print('  sync target_cpu: %s' % (', '.join(sync['target_cpu']) or '(host)'))
+    gclient_config = description['builder_spec']['gclient_config']
+    for field in ('custom_deps', 'custom_vars'):
+        entries = gclient_config[field]
+        print(
+            '  %s: %s'
+            % (
+                field,
+                ', '.join(
+                    '%s=%s' % (key, json.dumps(value))
+                    for key, value in entries.items()
+                )
+                or '(none)',
+            )
+        )
 
     compile_targets = targets['compile']
     print('  compile: %s' % (', '.join(compile_targets) or '(none)'))

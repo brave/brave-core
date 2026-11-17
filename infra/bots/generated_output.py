@@ -70,6 +70,8 @@ def _entry(builder) -> dict:
             'gclient_config': {
                 'target_os': list(gclient_config.target_os),
                 'target_cpu': list(gclient_config.target_cpu),
+                'custom_deps': dict(gclient_config.custom_deps),
+                'custom_vars': dict(gclient_config.custom_vars),
             },
         },
     }
@@ -295,6 +297,11 @@ class GeneratedBuilder:
                 % field
                 for field in ('target_os', 'target_cpu')
                 if not _is_list_of_strings(gclient_config.get(field))
+            )
+            problems.extend(
+                '"builder_spec.gclient_config.%s" is not an object' % field
+                for field in ('custom_deps', 'custom_vars')
+                if not isinstance(gclient_config.get(field), dict)
             )
             return problems
 

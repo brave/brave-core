@@ -96,6 +96,8 @@ class CmdDescribeTest(unittest.TestCase):
                     'gclient_config': {
                         'target_os': ['android'],
                         'target_cpu': [],
+                        'custom_deps': {'src/a': None, 'src/b': 'url'},
+                        'custom_vars': {},
                     },
                 },
             ),
@@ -107,6 +109,8 @@ class CmdDescribeTest(unittest.TestCase):
         self.assertIn('  build_config: Release\n', output)
         self.assertIn('  sync target_os:  android, linux\n', output)
         self.assertIn('  sync target_cpu: (host)\n', output)
+        self.assertIn('  custom_deps: src/a=null, src/b="url"\n', output)
+        self.assertIn('  custom_vars: (none)\n', output)
 
 
 if __name__ == '__main__':
