@@ -12,6 +12,7 @@
 #include <memory>
 #include <optional>
 #include <string_view>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -20,6 +21,7 @@
 #include "base/containers/extend.h"
 #include "base/containers/span.h"
 #include "base/containers/span_writer.h"
+#include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
@@ -5237,9 +5239,17 @@ namespace {
 struct EnsTestRecord {
   EthAddress addr;
   std::vector<uint8_t> contenthash;
+  // addr(bytes32,uint256) records by ENS coin type.
+  std::map<uint32_t, std::vector<uint8_t>> addr_records = {};
 };
 
-// Returns abi-encoded result of `addr(bytes32)` or `contenthash(bytes32)` call.
+// The ABI-encoded uint256 argument of addr(bytes32,uint256) for `coin_type`.
+std::vector<uint8_t> EncodeEnsCoinType(uint32_t coin_type) {
+  return eth_abi::TupleEncoder().AddUint256(coin_type).Encode();
+}
+
+// Returns abi-encoded result of `addr(bytes32)`, `addr(bytes32,uint256)` or
+// `contenthash(bytes32)` call.
 std::vector<uint8_t> ResolveEnsTestRecord(
     eth_abi::Span resolver_call,
     const std::map<std::string, EnsTestRecord>& records) {
@@ -5264,6 +5274,19 @@ std::vector<uint8_t> ResolveEnsTestRecord(
     return eth_abi::TupleEncoder()
         .AddAddress(found ? it->second.addr : EthAddress::ZeroAddress())
         .Encode();
+  }
+  if (std::ranges::equal(selector, kAddrBytes32Uint256Selector)) {
+    auto coin_type = eth_abi::ExtractFixedBytesFromTuple<32>(args, 1);
+    EXPECT_TRUE(coin_type);
+    std::vector<uint8_t> record;
+    if (found && coin_type) {
+      for (const auto& [type, bytes] : it->second.addr_records) {
+        if (std::ranges::equal(*coin_type, EncodeEnsCoinType(type))) {
+          record = bytes;
+        }
+      }
+    }
+    return eth_abi::TupleEncoder().AddBytes(record).Encode();
   }
   EXPECT_TRUE(std::ranges::equal(selector, kContentHashBytes32Selector));
   return eth_abi::TupleEncoder()
@@ -5362,6 +5385,15 @@ class EnsUniversalResolverHandler : public EthCallHandler {
     invalid_offchain_lookup_sender_ = true;
   }
 
+  // Record returned by addr(bytes32,uint256) for onchain `host`.
+  void SetAddrRecord(const std::string& host,
+                     uint32_t coin_type,
+                     std::vector<uint8_t> record) {
+    auto [it, _] = onchain_records_.try_emplace(
+        host, EnsTestRecord{EthAddress::ZeroAddress(), {}});
+    it->second.addr_records[coin_type] = std::move(record);
+  }
+
  private:
   static eth_abi::Bytes4 CallbackSelector() {
     return GetFunctionHashBytes4("ccipReadCallback(bytes,bytes)");
@@ -5435,6 +5467,15 @@ class OffchainGatewayHandler {
 
   void SetRespondWith500() { respond_with_500_ = true; }
   void SetRespondWithNoRecord() { respond_with_no_record_ = true; }
+
+  // Record returned by addr(bytes32,uint256) for `host`.
+  void SetAddrRecord(const std::string& host,
+                     uint32_t coin_type,
+                     std::vector<uint8_t> record) {
+    auto [it, _] = records_.try_emplace(
+        host, EnsTestRecord{EthAddress::ZeroAddress(), {}});
+    it->second.addr_records[coin_type] = std::move(record);
+  }
 
  private:
   GURL gateway_url_;
@@ -5518,6 +5559,46 @@ class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
     std::vector<uint8_t> bytes;
     base::HexStringToBytes(contenthash, &bytes);
     return bytes;
+  }
+
+  using EnsGetAddrResult =
+      std::tuple<std::string, bool, mojom::ProviderError, std::string>;
+  using EnsGetAddrFuture = base::test::TestFuture<const std::string&,
+                                                  bool,
+                                                  mojom::ProviderError,
+                                                  const std::string&>;
+
+  EnsGetAddrResult EnsGetAddr(const std::string& domain,
+                              mojom::CoinType coin,
+                              const std::string& chain_id) {
+    EnsGetAddrFuture future;
+    json_rpc_service_->EnsGetAddr(domain, coin, chain_id, future.GetCallback());
+    return future.Take();
+  }
+
+  static EnsGetAddrResult EnsAddrFound(const std::string& address) {
+    return {address, false, mojom::ProviderError::kSuccess, ""};
+  }
+
+  static EnsGetAddrResult EnsAddrInvalidParams() {
+    return {"", false, mojom::ProviderError::kInvalidParams,
+            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)};
+  }
+
+  // address-encoder test vectors, also used by ens_address_utils_unittest.cc.
+  static std::vector<uint8_t> SolRecord() {
+    return *PrefixedHexStringToBytes(
+        "0x8a11e71b96cabbe3216e3153b09694f39fc85022cbc076f79846a3ab4d8c1991");
+  }
+  static std::string SolAddress() {
+    return "AHy6YZA8BsHgQfVkk7MbwpAN94iyN7Nf1zN4nPqUN32Q";
+  }
+  static std::vector<uint8_t> BtcRecord() {
+    return *PrefixedHexStringToBytes(
+        "0x0014751e76e8199196d454941c45d1b3a323f1433bd6");
+  }
+  static std::string BtcAddress() {
+    return "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4";
   }
 
  protected:
@@ -5691,6 +5772,130 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Consent) {
     json_rpc_service_->EnsGetEthAddr(ens_host(), callback.Get());
     WaitAndVerify(&callback);
   }
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, EnsGetAddr_Offchain) {
+  json_rpc_service_->SetEnsOffchainLookupResolveMethod(
+      mojom::ResolveMethod::kEnabled);
+  offchain_gateway_handler_->SetAddrRecord(ens_host(), 501, SolRecord());
+
+  EXPECT_EQ(EnsGetAddr(ens_host(), mojom::CoinType::SOL, mojom::kSolanaMainnet),
+            EnsAddrFound(SolAddress()));
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, EnsGetAddr_Onchain) {
+  universal_resolver_handler_->SetAddrRecord(onchain_host(), 0, BtcRecord());
+
+  EXPECT_EQ(
+      EnsGetAddr(onchain_host(), mojom::CoinType::BTC, mojom::kBitcoinMainnet),
+      EnsAddrFound(BtcAddress()));
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, EnsGetAddr_EvmChainUsesItsOwnRecord) {
+  json_rpc_service_->SetEnsOffchainLookupResolveMethod(
+      mojom::ResolveMethod::kEnabled);
+  // The gateway answers addr(bytes32) with this address.
+  const EthAddress mainnet_address = offchain_eth_addr();
+  const EthAddress base_address = offchain_subdomain_eth_addr();
+  // ENSIP-11 coin type for Base (0x2105).
+  offchain_gateway_handler_->SetAddrRecord(
+      ens_host(), 2147492101, base::ToVector(base_address.bytes()));
+
+  EXPECT_EQ(EnsGetAddr(ens_host(), mojom::CoinType::ETH, "0x2105"),
+            EnsAddrFound(base_address.ToHex()));
+  EXPECT_EQ(
+      EnsGetAddr(ens_host(), mojom::CoinType::ETH, mojom::kMainnetChainId),
+      EnsAddrFound(mainnet_address.ToHex()));
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, EnsGetAddr_EthereumL1UsesAddrBytes32) {
+  // The resolver answers addr(bytes32) but has no addr(bytes32,uint256)
+  // record for coin type 60. ENSIP-19 resolves coin type 60 with
+  // addr(bytes32), as EnsGetEthAddr does.
+  EXPECT_EQ(
+      EnsGetAddr(onchain_host(), mojom::CoinType::ETH, mojom::kMainnetChainId),
+      EnsAddrFound(onchain_eth_addr().ToHex()));
+  EXPECT_EQ(
+      EnsGetAddr(onchain_host(), mojom::CoinType::ETH, mojom::kSepoliaChainId),
+      EnsAddrFound(onchain_eth_addr().ToHex()));
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, EnsGetAddr_NoRecord) {
+  json_rpc_service_->SetEnsOffchainLookupResolveMethod(
+      mojom::ResolveMethod::kEnabled);
+  // A SOL record exists, but not a BTC one.
+  offchain_gateway_handler_->SetAddrRecord(ens_host(), 501, SolRecord());
+
+  EXPECT_EQ(
+      EnsGetAddr(ens_host(), mojom::CoinType::BTC, mojom::kBitcoinMainnet),
+      EnsAddrInvalidParams());
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, EnsGetAddr_MalformedRecord) {
+  json_rpc_service_->SetEnsOffchainLookupResolveMethod(
+      mojom::ResolveMethod::kEnabled);
+  // 31 bytes isn't a Solana address.
+  auto record = SolRecord();
+  record.pop_back();
+  offchain_gateway_handler_->SetAddrRecord(ens_host(), 501, record);
+
+  EXPECT_EQ(EnsGetAddr(ens_host(), mojom::CoinType::SOL, mojom::kSolanaMainnet),
+            EnsAddrInvalidParams());
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, EnsGetAddr_UnsupportedNetwork) {
+  json_rpc_service_->SetEnsOffchainLookupResolveMethod(
+      mojom::ResolveMethod::kEnabled);
+  offchain_gateway_handler_->SetAddrRecord(ens_host(), 501, SolRecord());
+
+  // ENS records hold mainnet addresses, so testnets aren't looked up.
+  EXPECT_EQ(EnsGetAddr(ens_host(), mojom::CoinType::SOL, mojom::kSolanaTestnet),
+            EnsAddrInvalidParams());
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, EnsGetAddr_InvalidDomain) {
+  EXPECT_EQ(EnsGetAddr("not-an-ens-domain", mojom::CoinType::SOL,
+                       mojom::kSolanaMainnet),
+            EnsAddrInvalidParams());
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, EnsGetAddr_ConcurrentLookups) {
+  json_rpc_service_->SetEnsOffchainLookupResolveMethod(
+      mojom::ResolveMethod::kEnabled);
+  offchain_gateway_handler_->SetAddrRecord(ens_host(), 501, SolRecord());
+  offchain_gateway_handler_->SetAddrRecord(ens_host(), 0, BtcRecord());
+
+  // Lookups of one name for different coins must not be merged, and repeated
+  // lookups for the same coin share one result.
+  EnsGetAddrFuture sol_1;
+  EnsGetAddrFuture sol_2;
+  EnsGetAddrFuture btc;
+  json_rpc_service_->EnsGetAddr(ens_host(), mojom::CoinType::SOL,
+                                mojom::kSolanaMainnet, sol_1.GetCallback());
+  json_rpc_service_->EnsGetAddr(ens_host(), mojom::CoinType::SOL,
+                                mojom::kSolanaMainnet, sol_2.GetCallback());
+  json_rpc_service_->EnsGetAddr(ens_host(), mojom::CoinType::BTC,
+                                mojom::kBitcoinMainnet, btc.GetCallback());
+
+  EXPECT_EQ(sol_1.Take(), EnsAddrFound(SolAddress()));
+  EXPECT_EQ(sol_2.Take(), EnsAddrFound(SolAddress()));
+  EXPECT_EQ(btc.Take(), EnsAddrFound(BtcAddress()));
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, EnsGetAddr_Consent) {
+  offchain_gateway_handler_->SetAddrRecord(ens_host(), 501, SolRecord());
+
+  // Offchain lookups are "ask" by default.
+  EXPECT_EQ(EnsGetAddr(ens_host(), mojom::CoinType::SOL, mojom::kSolanaMainnet),
+            EnsGetAddrResult("", true, mojom::ProviderError::kSuccess, ""));
+
+  decentralized_dns::SetEnsOffchainResolveMethod(
+      local_state_prefs(),
+      decentralized_dns::EnsOffchainResolveMethod::kDisabled);
+  EXPECT_EQ(
+      EnsGetAddr(ens_host(), mojom::CoinType::SOL, mojom::kSolanaMainnet),
+      EnsGetAddrResult("", false, mojom::ProviderError::kInternalError,
+                       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash) {
