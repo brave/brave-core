@@ -39,7 +39,7 @@ struct Request {
   static_assert(false, "Request<> takes at most one body type!");
 };
 
-// A body-less request has a fixed HTTP method and provides access to it.
+// A request without a body has a fixed HTTP method and provides access to it.
 template <Method M>
 struct Request<M> : RequestOptions {
   static constexpr std::string_view Method() {
@@ -76,7 +76,7 @@ struct Request<M, T> {
                 "IsRequestBody!");
 };
 
-// A request with a body extends the body-less request with a request body
+// A request with a body extends the request without a body with a request body
 // type, and provides access to the Content-Type and serialized body.
 template <Method M, IsRequestBody RequestBody>
   requires(MethodAllowsBody(M))

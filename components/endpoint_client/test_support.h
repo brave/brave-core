@@ -39,7 +39,7 @@ namespace internal {
 
 template <IsResponse Response>
 std::string ToContent(const Response& response) {
-  if constexpr (IsBodylessResponse<Response>) {
+  if constexpr (IsResponseWithoutBodies<Response>) {
     return "";
   } else {
     return response.body

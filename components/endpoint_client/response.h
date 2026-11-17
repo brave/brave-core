@@ -26,7 +26,7 @@ struct Response {
                 "error body type!");
 };
 
-// A body-less response contains the network result and HTTP status code.
+// A response without bodies contains the network result and HTTP status code.
 template <>
 struct Response<> {
   int net_error = net::ERR_IO_PENDING;

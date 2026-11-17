@@ -150,10 +150,10 @@ optional `template` argument: `Post<MyRequestBody>` sends a body, and `Post<>`
 doesn't. `Get` and `Head` never take a body, since RFC 9110 gives one no defined
 meaning for them, so they're plain types rather than `template` aliases. A body
 is sent even if it serializes empty (`{}` or zero bytes), so a request without
-one should use a body-less alias rather than an empty body type.
+one should use an alias without a body rather than an empty body type.
 
 ```cpp
-struct MyBodylessEndpoint {
+struct MyRequestWithoutBodyEndpoint {
   using Request = Get;
   using Response = Response<MySuccessBody, MyErrorBody>;
 

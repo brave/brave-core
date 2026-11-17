@@ -12,30 +12,30 @@
 namespace endpoint_client::internal {
 
 template <typename>
-inline constexpr bool kIsBodylessRequest = false;
+inline constexpr bool kIsRequestWithoutBody = false;
 
+// A request without a body is a Request<> with only an HTTP method.
 template <Method M>
-inline constexpr bool kIsBodylessRequest<Request<M>> = true;
+inline constexpr bool kIsRequestWithoutBody<Request<M>> = true;
 
-// A body-less request is a Request<> without a request body.
 template <typename Request>
-concept IsBodylessRequest = kIsBodylessRequest<Request>;
+concept IsRequestWithoutBody = kIsRequestWithoutBody<Request>;
 
 template <typename>
 inline constexpr bool kIsRequestWithBody = false;
 
+// A request with a body is a Request<> with a request body whose method allows
+// one.
 template <Method M, IsRequestBody RequestBody>
   requires(MethodAllowsBody(M))
 inline constexpr bool kIsRequestWithBody<Request<M, RequestBody>> = true;
 
-// A request with a body is a Request<> with a request body whose method allows
-// one.
 template <typename Request>
 concept IsRequestWithBody = kIsRequestWithBody<Request>;
 
-// A request is either a body-less request or a request with a body.
+// A request is either a request without a body or a request with a body.
 template <typename Request>
-concept IsRequest = IsBodylessRequest<Request> || IsRequestWithBody<Request>;
+concept IsRequest = IsRequestWithoutBody<Request> || IsRequestWithBody<Request>;
 
 }  // namespace endpoint_client::internal
 
