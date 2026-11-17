@@ -120,7 +120,7 @@ def use_src_dir(test_case: unittest.TestCase) -> Path:
 
 
 def use_dotenv(test_case: unittest.TestCase, contents: str) -> None:
-    """Points the secrets `.env` at a file with *contents* for the test."""
+    """Points the secrets file at one with *contents* for the test."""
     path = _scratch_dir(test_case) / '.env'
     path.write_text(contents, encoding='utf-8')
     _use(test_case, dotenv, 'DEFAULT_PATH', path)

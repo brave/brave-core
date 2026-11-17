@@ -120,10 +120,10 @@ class BuildDir:
         return '\n'.join(lines)
 
     def _resolve_secrets(self, secrets: dict[str, str]) -> dict[str, str]:
-        """The value of each of *secrets* in the secrets `.env` file.
+        """The value of each of *secrets* in the secrets file.
 
         Raises:
-            BotsError: the secrets `.env` file has no entry for one of them.
+            BotsError: the secrets file has no entry for one of them.
         """
         env = dotenv.read()
         missing = sorted(name for name in secrets if name not in env)

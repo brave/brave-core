@@ -2,7 +2,12 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Reads the secrets `.env` file."""
+"""Reads the secrets file, `src/brave/.internal/.env`.
+
+It holds the values of the secrets builders declare, in `.env` form, apart
+from the `.env` the build reads, which `--builder` keeps to machine-local
+settings.
+"""
 
 from __future__ import annotations
 
@@ -10,7 +15,7 @@ from pathlib import Path
 
 import gen_paths
 
-DEFAULT_PATH = gen_paths.CHROMIUM_SRC_DIR / 'brave' / '.env'
+DEFAULT_PATH = gen_paths.CHROMIUM_SRC_DIR / 'brave' / '.internal' / '.env'
 
 
 def parse(text: str) -> dict[str, str]:
@@ -32,7 +37,7 @@ def parse(text: str) -> dict[str, str]:
 
 
 def read(path: Path | None = None) -> dict[str, str]:
-    """Reads and parses the `.env` file.
+    """Reads and parses the secrets file.
 
     Returns a dictionary of `KEY=VALUE` pairs with the contents of the file or
     {} if no file exists.
