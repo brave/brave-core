@@ -7,7 +7,9 @@
 
 #include <utility>
 
+#include "base/auto_reset.h"
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/task/single_thread_task_runner.h"
@@ -15,12 +17,16 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
+#include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_web_contents_delegate/browser_web_contents_delegate.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tab_dialogs.h"
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "components/input/native_web_keyboard_event.h"
 #include "components/split_tabs/split_tab_visual_data.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/frame_tree_node_id.h"
@@ -153,7 +159,29 @@ void PeekControllerImpl::Close() {
     peek_view_ = nullptr;
   }
   widget_.reset();
+  paint_as_active_lock_.reset();
   contents_.reset();
+}
+
+bool PeekControllerImpl::HandleCommand(int command_id) {
+  if (!contents_ || !HasFocus()) {
+    return false;
+  }
+  // The command comes from an event in the Peek page or widget, which moving
+  // or closing Peek tears down, so both run asynchronously.
+  if (command_id == IDC_CLOSE_TAB) {
+    PostTask(&PeekControllerImpl::Close);
+    return true;
+  }
+  if (!peek::IsPageCommand(command_id)) {
+    return false;
+  }
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&PeekControllerImpl::OpenAsTabAndExecuteCommand,
+                     weak_factory_.GetWeakPtr(),
+                     contents_->web_contents()->GetWeakPtr(), command_id));
+  return true;
 }
 
 bool PeekControllerImpl::IsShowing() const {
@@ -192,6 +220,16 @@ bool PeekControllerImpl::OnPeekTakeFocus(bool reverse) {
   }
   focus_manager->AdvanceFocus(reverse);
   return true;
+}
+
+bool PeekControllerImpl::OnPeekHandleKeyboardEvent(
+    content::WebContents* source,
+    const input::NativeWebKeyboardEvent& event) {
+  // Browser shortcuts run as browser commands, which `HandleCommand()` sends
+  // to Peek while this is set. `this` outlives the call even if Peek closes.
+  base::AutoReset<bool> forwarding(&forwarding_keyboard_event_, true);
+  return CHECK_DEREF(BrowserWebContentsDelegate::From(&*browser_))
+      .HandleKeyboardEvent(source, event);
 }
 
 void PeekControllerImpl::OnPeekViewCloseRequested() {
@@ -238,6 +276,7 @@ void PeekControllerImpl::Show(std::unique_ptr<content::WebContents> contents) {
   SetShowingContents(contents.get(), true);
   contents_ =
       std::make_unique<PeekContents>(*browser_, *this, std::move(contents));
+  paint_as_active_lock_ = browser_view_->GetWidget()->LockPaintAsActive();
   CreateWidget();
   peek_view_->SetWebContents(contents_->web_contents());
   peek_view_->SetCanOpenInSplitView(CanOpenInSplitView());
@@ -289,6 +328,27 @@ void PeekControllerImpl::OpenAsTabAndShowCookiesDialog(
   if (auto* tab_dialogs = TabDialogs::FromWebContents(contents.get())) {
     tab_dialogs->ShowCollectedCookies();
   }
+}
+
+void PeekControllerImpl::OpenAsTabAndExecuteCommand(
+    base::WeakPtr<content::WebContents> contents,
+    int command_id) {
+  if (!contents || contents.get() != GetWebContents()) {
+    return;
+  }
+  OpenAsTab();
+  // The Peek page is now the active tab, so the command acts on it.
+  chrome::ExecuteCommand(&*browser_, command_id);
+}
+
+bool PeekControllerImpl::HasFocus() const {
+  if (forwarding_keyboard_event_) {
+    return true;
+  }
+  if (has_focus_for_testing_) {
+    return *has_focus_for_testing_;
+  }
+  return widget_ && widget_->IsActive();
 }
 
 void PeekControllerImpl::CreateWidget() {

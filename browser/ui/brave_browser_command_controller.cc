@@ -22,6 +22,7 @@
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
+#include "brave/browser/ui/peek/public/peek_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
@@ -269,6 +270,11 @@ bool BraveBrowserCommandController::ExecuteCommandWithDispositionAndContext(
     ui::mojom::WindowOpenDisposition disposition,
     std::optional<actions::ActionInvocationContext> context,
     base::TimeTicks time_stamp) {
+  if (auto* peek_controller = PeekController::From(&*browser_);
+      peek_controller && peek_controller->HandleCommand(id)) {
+    return true;
+  }
+
   // IDC_NEW_SPLIT_TAB splits the active tab, and the web panel's tab must never
   // join a split. Refuse here rather than disabling the command: its enabled
   // state is owned by upstream, which re-enables it from tab strip

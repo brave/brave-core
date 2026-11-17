@@ -21,23 +21,27 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
-#include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/peek/peek_features.h"
 #include "brave/browser/ui/peek/public/peek_controller.h"
+#include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/peek/peek_controller_impl.h"
 #include "brave/browser/ui/views/peek/peek_shields_button.h"
 #include "brave/browser/ui/views/peek/peek_view.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
+#include "build/build_config.h"
+#include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/download/download_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ssl/chrome_security_state_util.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/interaction/browser_elements_views.h"
 #include "chrome/browser/ui/views/page_info/page_info_bubble_view.h"
 #include "chrome/browser/ui/views/page_info/page_info_bubble_view_base.h"
 #include "chrome/browser/ui/views/site_data/page_specific_site_data_dialog_controller.h"
@@ -422,6 +426,76 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, EscapeClosesPeek) {
   EXPECT_FALSE(peek_contents());
 }
 
+// The card covers the active tab, so closing "the tab" from Peek means Peek.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, CloseTabShortcutClosesPeek) {
+  content::WebContents* source = active_contents();
+  OpenPeek(GetURL("b.com", "/title2.html"));
+  controller()->set_has_focus_for_testing(true);
+
+  EXPECT_TRUE(chrome::ExecuteCommand(browser(), IDC_CLOSE_TAB));
+  WaitForPeekClosed();
+  EXPECT_EQ(1, tab_strip_model()->count());
+  EXPECT_EQ(source, active_contents());
+}
+
+// A command on the page, pressed in Peek, acts on the Peek page once it's in a
+// tab, not on the tab hidden under the card.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, PageShortcutMovesToTabAndRuns) {
+  const GURL url = GetURL("b.com", "/title2.html");
+  OpenPeek(url);
+  content::WebContents* contents = peek_contents();
+  controller()->set_has_focus_for_testing(true);
+
+  content::TestNavigationObserver reload_observer(contents);
+  EXPECT_TRUE(chrome::ExecuteCommand(browser(), IDC_RELOAD));
+  WaitForMovedToTab(contents);
+  reload_observer.Wait();
+  EXPECT_EQ(url, contents->GetLastCommittedURL());
+  EXPECT_EQ(2, tab_strip_model()->count());
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, CommandsFromOutsidePeekRunOnTab) {
+  content::WebContents* source = active_contents();
+  OpenPeek(GetURL("b.com", "/title2.html"));
+  content::WebContents* contents = peek_contents();
+  // E.g. the toolbar's reload button was clicked, which activates the window.
+  controller()->set_has_focus_for_testing(false);
+
+  content::TestNavigationObserver reload_observer(source);
+  EXPECT_TRUE(chrome::ExecuteCommand(browser(), IDC_RELOAD));
+  reload_observer.Wait();
+  EXPECT_TRUE(controller()->IsShowing());
+  EXPECT_EQ(contents, peek_contents());
+  EXPECT_EQ(1, tab_strip_model()->count());
+}
+
+#if !BUILDFLAG(IS_MAC)
+// On macOS, shortcuts with modifiers are menu key equivalents, which only fire
+// for real key events, so this covers the key path elsewhere.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, CloseTabKeyClosesPeek) {
+  content::WebContents* source = active_contents();
+  OpenPeek(GetURL("b.com", "/title2.html"));
+
+  // Sent to the page, which doesn't handle it, so it comes back to Peek's
+  // delegate like a real key press.
+  input::NativeWebKeyboardEvent event(
+      blink::WebInputEvent::Type::kRawKeyDown,
+      blink::WebInputEvent::kControlKey,
+      blink::WebInputEvent::GetStaticTimeStampForTests());
+  event.windows_key_code = ui::VKEY_W;
+  event.dom_key = ui::DomKey::FromCharacter('w');
+  event.dom_code = static_cast<int>(ui::DomCode::US_W);
+  event.skip_if_unhandled = false;
+  peek_contents()
+      ->GetPrimaryMainFrame()
+      ->GetRenderWidgetHost()
+      ->ForwardKeyboardEvent(event);
+  WaitForPeekClosed();
+  EXPECT_EQ(1, tab_strip_model()->count());
+  EXPECT_EQ(source, active_contents());
+}
+#endif  // !BUILDFLAG(IS_MAC)
+
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, CloseButtonClosesPeek) {
   OpenPeek(GetURL("b.com", "/title2.html"));
 
@@ -591,10 +665,12 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ShieldsButtonMovesToTabAndShowsPanel) {
       .NotifyDefaultMouseClick();
   WaitForMovedToTab(contents);
 
-  BraveBrowserWindow* window = BraveBrowserWindow::FromBrowser(browser());
-  ASSERT_TRUE(window);
+  auto* shields_button =
+      BrowserElementsViews::From(browser())->GetViewAs<BraveShieldsActionView>(
+          BraveShieldsActionView::kShieldsActionIcon);
+  ASSERT_TRUE(shields_button);
   ASSERT_TRUE(base::test::RunUntil(
-      [&] { return !window->GetShieldsBubbleRect().IsEmpty(); }));
+      [&] { return !!shields_button->GetBubbleWidget(); }));
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -838,6 +914,27 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, PopupWithoutGestureIsBlocked) {
   EXPECT_TRUE(controller()->IsShowing());
   EXPECT_EQ(contents, peek_contents());
   EXPECT_EQ(tab_count, tab_strip_model()->count());
+}
+
+// The browser only runs the popup blocker for sources that have its tab
+// feature, so Peek blocks new tabs and windows without a gesture itself.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, NewTabWithoutGestureIsBlocked) {
+  OpenPeek(GetURL("b.com", "/title1.html"));
+  content::WebContents* contents = peek_contents();
+  const int tab_count = tab_strip_model()->count();
+
+  content::OpenURLParams params = LinkParamsFrom(
+      *contents->GetPrimaryMainFrame(), GetURL("c.com", "/title2.html"));
+  params.disposition = WindowOpenDisposition::kNewBackgroundTab;
+  params.user_gesture = false;
+  EXPECT_FALSE(contents->GetDelegate()->OpenURLFromTab(contents, params, {}));
+  EXPECT_EQ(tab_count, tab_strip_model()->count());
+
+  // With a gesture, e.g. a Ctrl+click, the link opens in a tab.
+  params.user_gesture = true;
+  EXPECT_TRUE(contents->GetDelegate()->OpenURLFromTab(contents, params, {}));
+  EXPECT_EQ(tab_count + 1, tab_strip_model()->count());
+  EXPECT_TRUE(controller()->IsShowing());
 }
 
 // Downloads are served over HTTPS so they aren't held back by insecure
