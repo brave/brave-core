@@ -2342,7 +2342,7 @@ version = "1.0.27"
 
 [[package]]
 name = "unicode-width"
-version = "0.2.2"
+version = "0.2.3"
 
 [[package]]
 name = "unicode-xid"
