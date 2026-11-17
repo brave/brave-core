@@ -136,16 +136,29 @@ describe('writeSisoRc', () => {
     expect(fs.statSync(cacheDir).isDirectory()).toBe(true)
   })
 
-  it('sets the interactive priority only outside CI', () => {
+  it('sets the interactive priority outside CI', () => {
     config.rbeService = 'rbe.example.com:443'
     config.sisoCacheDir = 'none'
-
     sisoUtils.writeSisoRc()
     expect(readSisoRc()).toContain('-reapi_priority 4')
+  })
 
+  it('leaves the priority to the service on CI', () => {
     mockIsCI = true
+    mockConfig()
+    config.srcDir = tmpDir
+    config.rbeService = 'rbe.example.com:443'
+    config.sisoCacheDir = 'none'
     sisoUtils.writeSisoRc()
     expect(readSisoRc()).not.toContain('-reapi_priority')
+  })
+
+  it('sets the priority the config has', () => {
+    config.rbeService = 'rbe.example.com:443'
+    config.sisoCacheDir = 'none'
+    config.reapiPriority = 2
+    sisoUtils.writeSisoRc()
+    expect(readSisoRc()).toContain('-reapi_priority 2')
   })
 
   it('does not rewrite an unchanged file', () => {
