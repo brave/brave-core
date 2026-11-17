@@ -37,15 +37,20 @@ namespace endpoint_client {
 
 namespace internal {
 
-std::string ToContent(const IsResponse auto& response) {
-  return response.body
-      .transform([](const auto& body) {
-        return body.has_value() ? SerializeBody(body.value())
-                                : SerializeBody(body.error());
-      })
-      // A lone 0x0A is malformed as both JSON (whitespace only, no value) and
-      // Protobuf (a length-delimited field 1 tag missing its length).
-      .value_or("\x0A");
+template <IsResponse Response>
+std::string ToContent(const Response& response) {
+  if constexpr (IsBodylessResponse<Response>) {
+    return "";
+  } else {
+    return response.body
+        .transform([](const auto& body) {
+          return body.has_value() ? SerializeBody(body.value())
+                                  : SerializeBody(body.error());
+        })
+        // A lone 0x0A is malformed as both JSON (whitespace only, no value) and
+        // Protobuf (a length-delimited field 1 tag missing its length).
+        .value_or("\x0A");
+  }
 }
 
 template <typename Body>
@@ -126,12 +131,18 @@ bool MatchesEndpoint(const network::ResourceRequest& request,
 template <typename Response>
   requires internal::IsResponse<internal::MaybeStripWithHeaders<Response>>
 testing::Matcher<const Response&> ResponseEq(const Response& expected) {
-  auto response_matcher = testing::AllOf(
+  testing::Matcher<const Response&> response_matcher = testing::AllOf(
       testing::Field("net_error", &Response::net_error, expected.net_error),
       testing::Field("status_code", &Response::status_code,
-                     expected.status_code),
-      testing::Field("body", &Response::body,
-                     internal::ResponseBodyEq(expected.body)));
+                     expected.status_code));
+
+  if constexpr (internal::IsResponseWithBodies<
+                    internal::MaybeStripWithHeaders<Response>>) {
+    response_matcher =
+        testing::AllOf(response_matcher,
+                       testing::Field("body", &Response::body,
+                                      internal::ResponseBodyEq(expected.body)));
+  }
 
   if constexpr (base::is_instantiation<Response, WithHeaders>) {
     static constexpr auto kRawHeaders = [](const auto& headers) {
