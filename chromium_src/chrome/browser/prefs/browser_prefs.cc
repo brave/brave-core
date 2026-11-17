@@ -33,6 +33,7 @@
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/p3a/metric_log_store.h"
 #include "brave/components/p3a/rotation_scheduler.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/psst/core/browser/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -291,7 +292,9 @@ void MigrateObsoleteBraveProfilePrefsAfterChromium(
 #endif
 
   // Added 2026-11
+#if BUILDFLAG(ENABLE_PSST)
   profile_prefs->ClearPref(psst::prefs::kPsstInfobarShownCounter);
+#endif
 
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }
