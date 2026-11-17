@@ -78,6 +78,7 @@ source_set("core") {
 
   deps = [
     "//brave/components/brave_vpn/common/v2:common",
+    "//components/power_monitor",
     "//mojo/core/embedder",
   ]
 }
