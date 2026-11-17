@@ -10,7 +10,6 @@
 #include "third_party/blink/renderer/core/execution_context/security_context.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
-#include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 
 namespace blink {
@@ -71,9 +70,8 @@ ResourcePoolLimiter::ResourceInUseTracker::~ResourceInUseTracker() {
 ResourcePoolLimiter& ResourcePoolLimiter::GetInstance() {
   // This needs to be thread-safe because ResourcePoolLimiter is supported by
   // both windows and workers.
-  DEFINE_THREAD_SAFE_STATIC_LOCAL(ResourcePoolLimiter, resource_pool_limiter,
-                                  ());
-  return resource_pool_limiter;
+  static base::NoDestructor<ResourcePoolLimiter> resource_pool_limiter;
+  return *resource_pool_limiter;
 }
 
 ResourcePoolLimiter::ResourcePoolLimiter() = default;
