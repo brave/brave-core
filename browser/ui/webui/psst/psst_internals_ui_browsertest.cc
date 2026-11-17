@@ -76,7 +76,7 @@ class PsstInternalsUIBrowserTest : public InProcessBrowserTest {
   }
 
   PsstLogService* log_service() {
-    return PsstLogServiceFactory::GetForProfile(GetProfile());
+    return PsstLogServiceFactory::GetForBrowserContext(GetProfile());
   }
 
   void AddEntries(size_t count) {
@@ -130,7 +130,7 @@ IN_PROC_BROWSER_TEST_F(PsstInternalsUIBrowserTest, ClearEmptiesThePage) {
 // be reachable from a private window.
 IN_PROC_BROWSER_TEST_F(PsstInternalsUIBrowserTest, NotAvailableOffTheRecord) {
   BrowserWindowInterface* const incognito = CreateIncognitoBrowser();
-  ASSERT_FALSE(PsstLogServiceFactory::GetForProfile(incognito->GetProfile()));
+  ASSERT_FALSE(PsstLogServiceFactory::GetForBrowserContext(incognito->GetProfile()));
 
   content::WebContents* const incognito_contents =
       incognito->GetActiveTabInterface()->GetContents();
@@ -152,7 +152,7 @@ class PsstInternalsUIDisabledBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(PsstInternalsUIDisabledBrowserTest, NotAvailable) {
-  ASSERT_FALSE(PsstLogServiceFactory::GetForProfile(GetProfile()));
+  ASSERT_FALSE(PsstLogServiceFactory::GetForBrowserContext(GetProfile()));
 
   content::WebContents* const contents =
       browser()->GetActiveTabInterface()->GetContents();
