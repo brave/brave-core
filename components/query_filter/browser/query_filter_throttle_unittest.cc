@@ -190,9 +190,15 @@ TEST_F(QueryFilterThrottleTest,
       CreateSubFrameRequest(top_frame_url, sub_frame_url)));
 }
 
-// `about:blank` has an opaque origin, so it is not a Shields site. An iframe
-// in an about:blank page uses its own URL, and Shields up there still filter.
-// An about:blank iframe uses the embedding page, where Shields are up.
+// `about:blank` has an opaque origin, so it is not a Shields site.
+TEST_F(QueryFilterThrottleTest, CheckThrottle_MainFrameNavigation_AboutBlank) {
+  const GURL top_frame_url = GURL("about:blank");
+  auto request = CreateMainFrameRequest(top_frame_url);
+  ASSERT_TRUE(
+      request.trusted_params->isolation_info.top_frame_origin()->opaque());
+  EXPECT_FALSE(CreateQueryFilterThrottle(request));
+}
+
 TEST_F(QueryFilterThrottleTest, CheckThrottle_SubFrameNavigation_AboutBlank) {
   const GURL top_frame_url = GURL("about:blank");
   const GURL sub_frame_url = GURL(kExampleUrlWithTrackers);
