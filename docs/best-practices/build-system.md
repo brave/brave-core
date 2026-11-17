@@ -962,3 +962,40 @@ absolute paths at runtime. See GN's
 for the complete API contract.
 
 ---
+
+<a id="BS-059"></a>
+
+## ❌ No Comments Inside Lists of Files or Deps
+
+**Never put a comment above, beside or between the entries of a `sources`,
+`deps`, `public_deps`, `data_deps`, `inputs` or other list of files or targets,
+nor in a `DEPS` file's `include_rules`.** It breaks the formatters' automatic
+ordering of the list: `gn format` sorts a list only within runs of entries, and
+a comment, or the blank line usually put before it, ends a run. The entries
+after it are then sorted apart from the rest, so the list stays out of order,
+and new entries land in the wrong part of it. The comment also drifts from the
+entry it was about as the list changes.
+
+```gn
+# ❌ WRONG - a comment and a blank line inside the deps
+deps = [
+  "//chrome/browser/ui/omnibox",
+
+  # Re-exports a target whose visibility doesn't include Brave.
+  "//chrome/test:test_support",
+  "//components/autofill/core/common",
+]
+
+# ✅ CORRECT - the entries alone
+deps = [
+  "//chrome/browser/ui/omnibox",
+  "//chrome/test:test_support",
+  "//components/autofill/core/common",
+]
+```
+
+Why an entry is there goes in the commit message that adds it. When the reason
+needs to stay with the code, as for a whole conditional block, put the comment
+above the list or the `if` around it, not inside the list.
+
+---
