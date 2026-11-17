@@ -45,6 +45,8 @@ def _make_registries():
         name='test-builder',
         builder_group='brave.test',
         recipe='brave_builder',
+        siso_remote_jobs=500,
+        siso_reapi_priority=2,
         builder_spec=builder_config.builder_spec(
             gclient_config=builder_config.gclient_config(
                 target_os=['linux', 'android'],
@@ -155,6 +157,9 @@ class ComputeFreshOutputTest(unittest.TestCase):
         self.assertEqual(properties['recipe'], 'brave_builder')
         self.assertIn(
             'builder_config', properties['$brave_tests_builder_config']
+        )
+        self.assertEqual(
+            properties['$brave_siso'], {'remote_jobs': 500, 'reapi_priority': 2}
         )
 
     def test_properties_json_needs_a_builder_group(self):

@@ -463,6 +463,36 @@ class BuildersRegistryTest(unittest.TestCase):
                 targets=self._targets(),
             )
 
+    def _builder_with(self, name='b', **kwargs):
+        return self.builders.builder(
+            name=name,
+            builder_spec=self._spec(),
+            gn_args=self.gn_args.config(
+                args={'target_os': 'linux', 'target_cpu': 'x64'}
+            ),
+            targets=self._targets(),
+            **kwargs,
+        )
+
+    def test_siso_settings_default_to_siso_and_the_service(self):
+        builder = self._builder_with()
+        self.assertIsNone(builder.siso_remote_jobs)
+        self.assertIsNone(builder.siso_reapi_priority)
+
+    def test_siso_settings_take_defaults(self):
+        self.builders.defaults.set(siso_remote_jobs=1440)
+        builder = self._builder_with(siso_reapi_priority=2)
+        self.assertEqual(builder.siso_remote_jobs, 1440)
+        self.assertEqual(builder.siso_reapi_priority, 2)
+
+    def test_siso_settings_must_be_positive_integers(self):
+        for index, value in enumerate((0, -1, True, '500', 1.5)):
+            with self.subTest(value=value):
+                with self.assertRaisesRegex(
+                    ConfigError, 'siso_remote_jobs must be a positive integer'
+                ):
+                    self._builder_with('b%d' % index, siso_remote_jobs=value)
+
     def test_defaults_are_applied_and_overridable(self):
         self.builders.defaults.set(
             builder_group='brave.sanitizers',
