@@ -5,6 +5,8 @@
 
 #include <algorithm>
 
+#include "base/files/file_enumerator.h"
+#include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/callback_helpers.h"
 #include "base/location.h"
@@ -17,8 +19,6 @@
 #include "brave/browser/ui/webui/custom_profile_image/features.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/delete_profile_helper.h"
-#include "chrome/browser/profiles/keep_alive/profile_keep_alive_types.h"
-#include "chrome/browser/profiles/keep_alive/scoped_profile_keep_alive.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
@@ -110,22 +110,20 @@ IN_PROC_BROWSER_TEST_F(CustomProfileImageBrowserTest, ToolbarUpdatesOnReplace) {
       base::test::RunUntil([&] { return ToolbarColor() != SK_ColorBLUE; }));
 }
 
-// Brave deletes the image when the profile's entry is removed, while upstream
-// still keeps the directory for the loaded profile.
+// The image goes with the profile directory, even with a write pending. A
+// loaded profile stays loaded after deletion, so its directory is removed at
+// shutdown, after pending writes finish.
 IN_PROC_BROWSER_TEST_F(CustomProfileImageBrowserTest,
-                       ProfileDeletionLeavesNoImage) {
+                       PRE_ProfileDeletionLeavesNoImage) {
   auto* manager = g_browser_process->profile_manager();
   ProfileAttributesEntry* other = OtherEntry();
   ASSERT_TRUE(other);
   const auto path = other->GetPath();
-  const auto image_path = path.AppendASCII(kImageFileName);
-  Profile* profile = manager->GetProfileByPath(path);
-  ASSERT_TRUE(profile);
-  // Keeps upstream from removing the directory until this test ends.
-  ScopedProfileKeepAlive keep_alive(profile,
-                                    ProfileKeepAliveOrigin::kBrowserWindow);
   ASSERT_NO_FATAL_FAILURE(Save(SK_ColorRED, other));
-  // Leave a write pending while the profile is deleted.
+  {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    ASSERT_TRUE(base::PathExists(path.AppendASCII(kImageFileName)));
+  }
   SkBitmap bitmap;
   bitmap.allocN32Pixels(64, 64);
   bitmap.eraseColor(SK_ColorBLUE);
@@ -136,12 +134,23 @@ IN_PROC_BROWSER_TEST_F(CustomProfileImageBrowserTest,
     return !manager->GetProfileAttributesStorage().GetProfileAttributesWithPath(
         path);
   }));
+}
+
+IN_PROC_BROWSER_TEST_F(CustomProfileImageBrowserTest,
+                       ProfileDeletionLeavesNoImage) {
+  const base::FilePath user_data_dir =
+      g_browser_process->profile_manager()->user_data_dir();
   ASSERT_TRUE(base::test::RunUntil([&] {
     base::ScopedAllowBlockingForTesting allow_blocking;
-    return !base::PathExists(image_path);
+    base::FileEnumerator profiles(user_data_dir, /*recursive=*/false,
+                                  base::FileEnumerator::DIRECTORIES);
+    for (auto dir = profiles.Next(); !dir.empty(); dir = profiles.Next()) {
+      if (base::PathExists(dir.AppendASCII(kImageFileName))) {
+        return false;
+      }
+    }
+    return true;
   }));
-  base::ScopedAllowBlockingForTesting allow_blocking;
-  EXPECT_TRUE(base::DirectoryExists(path));
 }
 
 }  // namespace custom_profile_image

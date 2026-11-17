@@ -20,7 +20,6 @@ source_set("browser_tests") {
     "//brave/browser/profiles/custom_profile_image",
     "//brave/browser/ui/webui/custom_profile_image",
     "//chrome/browser/profiles:profile_util",
-    "//chrome/browser/profiles/keep_alive",
     "//chrome/browser/ui/signin",
     "//chrome/browser/ui/views/frame:browser_view_header",
     "//chrome/browser/ui/views/frame:toolbar_button_provider",
