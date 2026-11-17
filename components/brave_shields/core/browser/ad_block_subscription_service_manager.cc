@@ -17,7 +17,6 @@
 #include "base/containers/map_util.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback_helpers.h"
 #include "base/json/json_value_converter.h"
 #include "base/json/values_util.h"
 #include "base/task/thread_pool.h"
@@ -351,8 +350,7 @@ void AdBlockSubscriptionServiceManager::OnGetDownloadManager(
   subscription_update_timer_->Schedule(
       kListCheckInitialDelay, kListRetryInterval,
       base::BindRepeating(&AdBlockSubscriptionServiceManager::OnUpdateTimer,
-                          weak_ptr_factory_.GetWeakPtr()),
-      base::DoNothing());
+                          weak_ptr_factory_.GetWeakPtr()));
 }
 
 void AdBlockSubscriptionServiceManager::OnListMetadata(
@@ -400,8 +398,7 @@ void AdBlockSubscriptionServiceManager::SetUpdateIntervalsForTesting(
   subscription_update_timer_->Schedule(
       *initial_delay, *retry_interval,
       base::BindRepeating(&AdBlockSubscriptionServiceManager::OnUpdateTimer,
-                          weak_ptr_factory_.GetWeakPtr()),
-      base::DoNothing());
+                          weak_ptr_factory_.GetWeakPtr()));
 }
 
 // static
