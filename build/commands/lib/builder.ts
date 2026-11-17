@@ -34,6 +34,7 @@ const BUILDER_NAME_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/
 // spec in the builder database of the `brave_tests_builder_config` recipe
 // module's properties, as upstream's `chromium_tests_builder_config` has it.
 interface BuilderProperties {
+  '$brave_siso'?: { remote_jobs?: number; reapi_priority?: number }
   '$brave_tests_builder_config': {
     builder_config: {
       builder_db: {
@@ -73,12 +74,14 @@ export function loadBuilder(name: string, dir = buildersDir): Builder {
     builderDir,
     'gn-args.json',
   )
+  const properties = readJson<BuilderProperties>(builderDir, 'properties.json')
   return {
     name,
-    spec: readBuilderSpec(
-      name,
-      readJson<BuilderProperties>(builderDir, 'properties.json'),
-    ),
+    spec: readBuilderSpec(name, properties),
+    siso: {
+      remoteJobs: properties['$brave_siso']?.remote_jobs,
+      reapiPriority: properties['$brave_siso']?.reapi_priority,
+    },
     buildTarget: {
       targetOS: readGnTarget(name, gnArgs, 'target_os'),
       targetArch: readGnTarget(name, gnArgs, 'target_cpu'),

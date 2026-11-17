@@ -67,7 +67,23 @@ describe('loadBuilder', () => {
       name: 'fake-builder',
       spec: mockBuilderSpec,
       buildTarget: { targetOS: 'linux', targetArch: 'x64' },
+      siso: {},
       targets: { compile: ['brave:all'], tests: ['brave_unit_tests'] },
+    })
+  })
+
+  it('reads the siso settings from properties.json', () => {
+    writeMockBuilder(dir, 'b')
+    fs.writeFileSync(
+      path.join(dir, 'b', 'properties.json'),
+      JSON.stringify({
+        ...mockBuilderProperties('b'),
+        $brave_siso: { remote_jobs: 1440, reapi_priority: 2 },
+      }),
+    )
+    expect(loadBuilder('b', dir).siso).toEqual({
+      remoteJobs: 1440,
+      reapiPriority: 2,
     })
   })
 
@@ -205,6 +221,7 @@ describe('getBuilderGclientTargets', () => {
       brave_config: mockBuilderSpec.brave_config,
     },
     buildTarget: { targetOS: 'android', targetArch: 'arm64' },
+    siso: {},
     targets: { compile: [], tests: [] },
   })
 

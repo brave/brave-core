@@ -45,5 +45,7 @@ export interface Builder {
   // only GN args read from the builder's `gn-args.json`, until `init`/`sync`
   // no longer need a target to build for.
   buildTarget: { targetOS: string; targetArch: string }
+  // Its `$brave_siso` properties.
+  siso: { remoteJobs?: number | undefined; reapiPriority?: number | undefined }
   targets: { compile: string[]; tests: string[] }
 }

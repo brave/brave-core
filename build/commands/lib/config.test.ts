@@ -90,6 +90,7 @@ describe('with --builder', () => {
       },
     },
     buildTarget: { targetOS: 'android', targetArch: 'arm64' },
+    siso: {},
     targets: { compile: [], tests: [] },
   }
 
@@ -172,6 +173,19 @@ describe('with --builder', () => {
       reapi_backend_config_path: 'google.star',
       reapi_instance: 'default',
     })
+  })
+
+  it('takes its remote jobs and priority from the builder', () => {
+    const installed = mockConfig(
+      {},
+      { ...builder, siso: { remoteJobs: 1440, reapiPriority: 2 } },
+    )
+    expect(installed.remoteJobsLimit).toBe(1440)
+    expect(installed.reapiPriority).toBe(2)
+  })
+
+  it('leaves the priority to the service when the builder sets none', () => {
+    expect(mockConfig({}, builder).reapiPriority).toBeUndefined()
   })
 
   it('takes the git cache from the environment', () => {

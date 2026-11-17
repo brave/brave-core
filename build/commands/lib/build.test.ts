@@ -19,6 +19,7 @@ const builder: Builder = {
     gclient_config: { target_os: [], target_cpu: [] },
   },
   buildTarget: { targetOS: 'linux', targetArch: 'x64' },
+  siso: {},
   targets: { compile: ['brave:all', 'chrome'], tests: [] },
 }
 
