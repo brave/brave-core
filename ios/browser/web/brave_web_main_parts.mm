@@ -49,12 +49,6 @@ BraveWebMainParts::~BraveWebMainParts() {}
 void BraveWebMainParts::PreCreateMainMessageLoop() {
   IOSChromeMainParts::PreCreateMainMessageLoop();
 
-  // The base method has loaded Local State and recorded startup crash keys.
-  flags_ui::PrefServiceFlagsStorage flags_storage(
-      GetApplicationContext()->GetLocalState());
-  brave_sync::ApplySyncServerUrlFromFlags(
-      flags_storage, *base::CommandLine::ForCurrentProcess());
-
   // Add Brave Resource Pack
   auto brave_pack_path = base::PathService::CheckedGet(base::DIR_ASSETS);
   brave_pack_path = brave_pack_path.AppendASCII("brave_resources.pak");
@@ -63,6 +57,13 @@ void BraveWebMainParts::PreCreateMainMessageLoop() {
 }
 
 void BraveWebMainParts::PreMainMessageLoopRun() {
+  // Local State and startup crash keys are ready. Apply the URL before the base
+  // implementation starts profile services.
+  flags_ui::PrefServiceFlagsStorage flags_storage(
+      application_context_->GetLocalState());
+  brave_sync::ApplySyncServerUrlFromFlags(
+      flags_storage, *base::CommandLine::ForCurrentProcess());
+
   IOSChromeMainParts::PreMainMessageLoopRun();
 
   // Setup Component Updater
