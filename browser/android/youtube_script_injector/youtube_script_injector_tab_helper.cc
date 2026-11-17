@@ -604,29 +604,27 @@ void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
     contents->GetPrimaryMainFrame()->ExecuteJavaScript(
         kYoutubePictureInPictureSupport, base::NullCallback());
   }
-  if (IsYouTubeDomain(/*mobileOnly=*/true) &&
-      base::FeatureList::IsEnabled(
+  if (!IsYouTubeDomain(/*mobileOnly=*/true)) {
+    return;
+  }
+  if (base::FeatureList::IsEnabled(
           preferences::features::kBraveYoutubeFullscreenSettingsWorkaround)) {
     contents->GetPrimaryMainFrame()->ExecuteJavaScript(
         kYoutubeFullscreenSettingsWorkaround, base::NullCallback());
   }
-  if (IsYouTubeDomain(/*mobileOnly=*/true) &&
-      base::FeatureList::IsEnabled(
+  if (base::FeatureList::IsEnabled(
           preferences::features::kBraveYoutubeFullscreenVideoFitWorkaround)) {
     contents->GetPrimaryMainFrame()->ExecuteJavaScript(
         kYoutubeFullscreenVideoFitWorkaround, base::NullCallback());
   }
-  if (IsYouTubeDomain(/*mobileOnly=*/true) &&
-      base::FeatureList::IsEnabled(
+  if (base::FeatureList::IsEnabled(
           preferences::features::
               kBraveYoutubePlaylistMediaControlsWorkaround)) {
     contents->GetPrimaryMainFrame()->ExecuteJavaScript(
         kYoutubePlaylistMediaControlsWorkaround, base::NullCallback());
   }
-  if (IsYouTubeDomain(/*mobileOnly=*/true)) {
-    contents->GetPrimaryMainFrame()->ExecuteJavaScript(kYoutubeManifest,
-                                                       base::NullCallback());
-  }
+  contents->GetPrimaryMainFrame()->ExecuteJavaScript(kYoutubeManifest,
+                                                     base::NullCallback());
 }
 
 void YouTubeScriptInjectorTabHelper::
