@@ -16,16 +16,3 @@ targets.bundle(
         'brave_updater_unittests',
     ],
 )
-
-# The Linux members of the `chromium_unit_tests` group in //brave/BUILD.gn.
-targets.bundle(
-    name='chromium_unit_tests_linux',
-    targets=[
-        'base_unittests',
-        'net_unittests',
-        'services_unittests',
-        'unit_tests',
-        'content_unittests',
-        'components_unittests',
-    ],
-)
