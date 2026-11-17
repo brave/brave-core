@@ -1349,6 +1349,7 @@ test("brave_browser_tests") {
   }
 
   if (!is_android) {
+    sources += [ "//brave/browser/ui/startup/infobar_utils_browsertest.cc" ]
     deps += [
       "//brave/browser/profile_resetter",
       "//brave/browser/workspaces",
