@@ -7,7 +7,7 @@ import { BigBuffer } from 'gen/mojo/public/mojom/base/big_buffer.mojom-webui.js'
 
 import { LANGUAGE_TAG_TOKEN, LOCALES } from './configs'
 
-import type { NemotronModelType } from './configs'
+import type { NemotronLocale } from './configs'
 
 // Parse a tokens.txt ("<token> <id>" per line, id-ordered, ▁ == space) into
 // an id-indexed vocab array.
@@ -68,15 +68,11 @@ export function argmax(a: Float32Array): number {
 
 // The model and the prompt ID for a locale tag. The tag must be a key of
 // `LOCALES`, with the same case, because the browser sends only those tags.
-export function getNemotronModelType(lang: string): {
-  modelType: NemotronModelType
-  promptId: number | null
-} {
+export function getNemotronLocale(lang: string): NemotronLocale {
   if (!Object.hasOwn(LOCALES, lang)) {
     throw new Error(`Unsupported ASR language: ${lang}`)
   }
-  const locale = LOCALES[lang as keyof typeof LOCALES]
-  return { modelType: locale.model, promptId: locale.promptId }
+  return LOCALES[lang as keyof typeof LOCALES]
 }
 
 // The IDs of the language tag tokens in a vocab.

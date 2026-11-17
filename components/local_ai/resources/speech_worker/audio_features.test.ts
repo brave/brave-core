@@ -125,7 +125,7 @@ describe('FrontEndProcessing', () => {
 
       // Enough audio to produce at least one complete encoder chunk.
       const sampleCount =
-        config.COMMON_NEMOTRON_CONFIG.NEMO_CHUNK * config.HOP_LENGTH
+        config.NEMO_CHUNK * config.HOP_LENGTH
         + config.STREAMING_RIGHT_CONTEXT
 
       // Deterministic non-trivial signal.

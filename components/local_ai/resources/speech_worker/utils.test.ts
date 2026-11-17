@@ -5,12 +5,12 @@
 
 import { describe, expect, it } from '@jest/globals'
 
-import { getNemotronModelType } from './utils'
+import { getNemotronLocale } from './utils'
 
 describe('getNemotronModelType', () => {
-  it.each(['en-US'])('picks the English model for %s', (lang) => {
-    expect(getNemotronModelType(lang)).toEqual({
-      modelType: 'english',
+  it.each(['en-US'])('picks the English model for %s', (lang: string) => {
+    expect(getNemotronLocale(lang)).toEqual({
+      model: 'english',
       promptId: null,
     })
   })
@@ -33,9 +33,9 @@ describe('getNemotronModelType', () => {
     ['tr-TR', 18],
     ['uk-UA', 19],
     ['vi-VN', 33],
-  ])('picks the multilingual model and prompt for %s', (lang, promptId) => {
-    expect(getNemotronModelType(lang)).toEqual({
-      modelType: 'multilingual',
+  ])('picks the multilingual model and prompt for %s', (lang: string, promptId: number) => {
+    expect(getNemotronLocale(lang)).toEqual({
+      model: 'multilingual',
       promptId,
     })
   })
@@ -44,8 +44,8 @@ describe('getNemotronModelType', () => {
   // such as the model card's 'ar-AR' label.
   it.each(['es-MX', 'es', 'hi', 'ar-AR', 'zh-TW', 'th-TH', 'english', ''])(
     'rejects %s',
-    (lang) => {
-      expect(() => getNemotronModelType(lang)).toThrow(
+    (lang: string) => {
+      expect(() => getNemotronLocale(lang)).toThrow(
         'Unsupported ASR language',
       )
     },
