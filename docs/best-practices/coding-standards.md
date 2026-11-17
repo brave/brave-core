@@ -1596,3 +1596,31 @@ if (!entry_was_found) {
 ```
 
 ---
+
+<a id="CS-075"></a>
+
+## ❌ No Comments Explaining Includes
+
+**Never put a comment above, beside or between `#include` lines to say why a
+header is included.** An include is there for what the file uses; why that
+needed it belongs in the commit message. As in GN lists
+([BS-059](./build-system.md#BS-059)), such a comment breaks the formatter's
+automatic ordering: clang-format sorts `#include`s only within a block, and a
+comment line ends the block, so the includes after it are sorted apart from the
+rest. It also drifts from the line it was about.
+
+```cpp
+// ❌ WRONG - explaining an include
+// For `ProviderFeatures`, which the plaster below uses.
+#include "chrome/browser/glic/public/provider_features.h"
+
+// ✅ CORRECT - the include alone
+#include "chrome/browser/glic/public/provider_features.h"
+```
+
+Tool directives are not explanations, and stay: `// IWYU pragma: keep`, and the
+comment line a `chromium_src` header puts between an include that must come
+first and the upstream header, which keeps clang-format from sorting the
+upstream header first.
+
+---
