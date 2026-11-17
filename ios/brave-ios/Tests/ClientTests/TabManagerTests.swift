@@ -155,6 +155,26 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     Preferences.Privacy.privateBrowsingOnly.reset()
   }
 
+  private func makeManager() -> TabManager {
+    TabManager(
+      windowId: testWindowId,
+      rewards: nil,
+      braveCore: nil,
+      profile: FakeProfile(),
+      privateBrowsingManager: PrivateBrowsingManager(),
+      tabCreationFactory: { makeTestTab($0) }
+    )
+  }
+
+  /// Recreates the window's saved tabs and rebuilds their groups without `restoreAllTabs`.
+  private func restorePersistedTabs(into manager: TabManager) {
+    let savedTabs = SessionTab.all().filter { $0.sessionWindow?.windowId == testWindowId }
+    for savedTab in savedTabs {
+      manager.addTab(zombie: true, id: savedTab.tabId, isPrivate: savedTab.isPrivate)
+    }
+    manager.restoreTabGroups(from: savedTabs)
+  }
+
   private func setPersistentPrivateMode(_ isPersistent: Bool) {
     Preferences.Privacy.persistentPrivateBrowsing.value = isPersistent
 
@@ -1106,17 +1126,12 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     )
     XCTAssertNil(SessionTab.from(tabId: secondTab.id)?.sessionTabGroup)
 
-    // A new manager for the same window restores the group from the persisted tabs
-    let restoredManager = TabManager(
-      windowId: testWindowId,
-      rewards: nil,
-      braveCore: nil,
-      profile: FakeProfile(),
-      privateBrowsingManager: PrivateBrowsingManager(),
-      tabCreationFactory: { makeTestTab($0) }
-    )
+    // A new manager for the same window restores the group from the persisted tabs.
+    // `restoreAllTabs` also asks Shields whether each saved URL should be shredded, and that
+    // service requires the Web UI thread, which these tests do not have.
+    let restoredManager = makeManager()
     restoredManager.isTabGroupsEnabled = true
-    _ = restoredManager.restoreAllTabs
+    restorePersistedTabs(into: restoredManager)
 
     XCTAssertEqual(restoredManager.tabGroups, [group])
     XCTAssertEqual(
@@ -1125,16 +1140,9 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     )
 
     // With tab groups disabled the tabs are restored ungrouped, and the persisted group is kept
-    let disabledManager = TabManager(
-      windowId: testWindowId,
-      rewards: nil,
-      braveCore: nil,
-      profile: FakeProfile(),
-      privateBrowsingManager: PrivateBrowsingManager(),
-      tabCreationFactory: { makeTestTab($0) }
-    )
+    let disabledManager = makeManager()
     disabledManager.isTabGroupsEnabled = false
-    _ = disabledManager.restoreAllTabs
+    restorePersistedTabs(into: disabledManager)
 
     XCTAssertTrue(disabledManager.tabGroups.isEmpty)
     XCTAssertEqual(disabledManager.allTabs.count, 3)
