@@ -8,14 +8,6 @@
 
 #include "chrome/browser/ui/views/tabs/tab/alert_indicator_button.h"
 
-// Adding a dummy implementation of `IsTabMuteIndicatorNotClickable`, as
-// we extended AlertIndicatorButton::Delegate.
-#define IsApparentlyActive                   \
-  IsTabMuteIndicatorNotClickable() override; \
-  bool IsApparentlyActive
-
 #include <chrome/browser/ui/views/tabs/common/tab_view.h>  // IWYU pragma: export
-
-#undef IsApparentlyActive
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_COMMON_TAB_VIEW_H_

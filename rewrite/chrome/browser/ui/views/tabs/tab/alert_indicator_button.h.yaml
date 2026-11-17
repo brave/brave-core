@@ -1,0 +1,37 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Rename the upstream class so Brave can subclass it as
+      AlertIndicatorButton.
+
+      The Brave subclass is declared in the chromium_src override of this
+      header.
+    count: 0 # Every use of the class name, including the metadata macro.
+    rename_class:
+      class_name: AlertIndicatorButton
+      rename: AlertIndicatorButtonBase
+
+  - description: |
+      Let the Brave subclass reach `delegate_`.
+
+      AlertIndicatorButton_BraveImpl is an alias to the Brave subclass,
+      declared in the chromium_src override of this header.
+    add_friend:
+      class_name: AlertIndicatorButtonBase
+      friend_type: AlertIndicatorButton_BraveImpl
+
+  - description: |
+      Add IsTabMuteIndicatorNotClickable to the Delegate interface so Brave can
+      override the behaviour for `kTabMuteIndicatorNotClickable`.
+    add_to_public:
+      class_name: Delegate
+      code: 'virtual bool IsTabMuteIndicatorNotClickable() = 0;'
+
+  - description: Let the Brave subclass override UpdateEnabledForMuteToggle.
+    make_virtual:
+      class_name: AlertIndicatorButtonBase
+      method_name: UpdateEnabledForMuteToggle

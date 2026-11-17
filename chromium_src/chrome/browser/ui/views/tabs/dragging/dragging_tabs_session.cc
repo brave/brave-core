@@ -10,27 +10,24 @@
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
-#define DraggingTabsSession DraggingTabsSessionChromium
+namespace {
 
-// Remove the drag threshold when it's a vertical tab strip (we do this by
-// multiplying by 0; if it's not a vertical tab strip, we multiply by 1 so
-// nothing changes)
-#define GetStandardWidth(...)                                      \
-  GetStandardWidth(__VA_ARGS__) * ([&] {                           \
-    auto* vertical_tab_controller = VerticalTabController::From(   \
-        BrowserView::GetBrowserViewForNativeWindow(                \
-            attached_context_->GetWidget()->GetNativeWindow())     \
-            ->browser());                                          \
-    return vertical_tab_controller &&                              \
-           vertical_tab_controller->ShouldShowBraveVerticalTabs(); \
-  }()                                                              \
-                                       ? 0                         \
-                                       : 1)
+// Used to remove the drag threshold when it's a vertical tab strip: returns 0
+// for a vertical tab strip, and 1 otherwise so nothing changes.
+int VerticalTabsDragThresholdScale(TabDragContext& attached_context) {
+  auto* vertical_tab_controller = VerticalTabController::From(
+      BrowserView::GetBrowserViewForNativeWindow(
+          attached_context.GetWidget()->GetNativeWindow())
+          ->browser());
+  return vertical_tab_controller &&
+                 vertical_tab_controller->ShouldShowBraveVerticalTabs()
+             ? 0
+             : 1;
+}
+
+}  // namespace
 
 #include <chrome/browser/ui/views/tabs/dragging/dragging_tabs_session.cc>
-
-#undef GetStandardWidth
-#undef DraggingTabsSession
 
 base::PassKey<DraggingTabsSessionChromium>
 DraggingTabsSessionChromium::GetPassKey() {
