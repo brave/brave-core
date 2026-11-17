@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.permission;
 
+import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -116,6 +117,7 @@ public class BravePermissionAccountsListAdapter
      *
      * @param accountInfo accounts to show.
      */
+    @SuppressLint("NotifyDataSetChanged")
     public void setAccounts(@NonNull final AccountInfo[] accountInfo) {
         mAccountInfoArray = accountInfo;
         mCheckedAccountKeys.clear();

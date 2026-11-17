@@ -199,7 +199,6 @@ public class BraveDappPermissionPromptDialog
         return (ViewGroup) viewParent;
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private void initAccounts() {
         assert mKeyringService != null;
         assert mWalletModel != null;
