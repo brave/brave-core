@@ -8,6 +8,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <variant>
 #include <vector>
 
@@ -147,6 +148,11 @@ class WorkspaceAssociatedContentBrowserTest : public InProcessBrowserTest {
            content::EvalJs(web_contents, base::StrCat({kGetStoredHandleJs,
                                                        ".then(h => h.kind)"}))
                    .ExtractString() == "directory";
+  }
+
+  // Where a PRE_ test leaves what the test after the restart needs.
+  base::FilePath GetRestoreStatePath(std::string_view name) {
+    return browser()->GetProfile()->GetPath().AppendASCII(name);
   }
 
   ContentSetting GetSetting(const GURL& url, ContentSettingsType type) {
@@ -413,6 +419,48 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
   ASSERT_TRUE(content::WaitForLoadStop(web_contents));
   EXPECT_EQ(page_url, web_contents->GetLastCommittedURL());
   EXPECT_TRUE(base::test::RunUntil([&] { return content->tools_attached(); }));
+}
+
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
+                       PRE_RestoredWorkspaceKeepsFolderAccess) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  // The folder must outlive this test, so it can't be in |temp_dir_|, and File
+  // System Access blocks the profile directory.
+  base::FilePath folder;
+  ASSERT_TRUE(
+      base::CreateNewTempDirectory(FILE_PATH_LITERAL("workspace"), &folder));
+  auto* content = CreateContent(folder);
+  ASSERT_TRUE(WaitForStoredHandle(content));
+  ASSERT_TRUE(base::WriteFile(GetRestoreStatePath("workspace_url"),
+                              content->url().spec()));
+  ASSERT_TRUE(base::WriteFile(GetRestoreStatePath("workspace_folder"),
+                              folder.AsUTF8Unsafe()));
+}
+
+// After a restart, the restored page reopens its folder from the handle it
+// saved, with the access it was granted when the workspace was created.
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
+                       RestoredWorkspaceKeepsFolderAccess) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  std::string workspace_url;
+  std::string folder;
+  ASSERT_TRUE(base::ReadFileToString(GetRestoreStatePath("workspace_url"),
+                                     &workspace_url));
+  ASSERT_TRUE(
+      base::ReadFileToString(GetRestoreStatePath("workspace_folder"), &folder));
+
+  auto content = WorkspaceAssociatedContent::CreateFromUrl(
+      GURL(workspace_url), /*content_uuid=*/std::nullopt,
+      browser()->GetProfile(), base::DoNothing());
+  ASSERT_TRUE(content);
+  ASSERT_TRUE(content::WaitForLoadStop(content->GetWebContentsForTesting()));
+  EXPECT_EQ("granted", content::EvalJs(content->GetWebContentsForTesting(),
+                                       base::StrCat({kGetStoredHandleJs, R"JS(
+          .then(handle => handle.queryPermission({mode: 'readwrite'}))
+      )JS"})));
+
+  EXPECT_TRUE(
+      base::DeletePathRecursively(base::FilePath::FromUTF8Unsafe(folder)));
 }
 
 // Stored URLs are read back from the database, so anything that isn't exactly
