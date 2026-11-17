@@ -27,10 +27,10 @@ import {
   formatCount,
   formatMonthYear,
   formatTimeSaved,
-  joinValue,
 } from '../format'
 import { ShareCardImages, renderShareCard } from '../share_card'
 import { DotMatrix } from './dot_matrix'
+import cardPattern from '../images/card_pattern.webp'
 import { LANDSCAPE_QUERY, style } from './app.style'
 import '../strings'
 
@@ -40,7 +40,7 @@ const RECAP_URL = 'brave://recap'
 // Same-origin so they don't taint the share card canvas.
 const CARD_IMAGES: ShareCardImages = {
   logo: '/brave-icon.svg',
-  pattern: '/images/card_pattern.webp',
+  pattern: cardPattern,
 }
 
 export const SLIDES = ['intro', 'blocked', 'time', 'data', 'share'] as const
@@ -307,7 +307,7 @@ function IntroSlide({ stats, nav }: SlideProps) {
     >
       <div className='intro'>
         <AppIcon />
-        <h1>{getLocale(S.BRAVE_RECAP_INTRO_HEADING)}</h1>
+        <h2>{getLocale(S.BRAVE_RECAP_INTRO_HEADING)}</h2>
       </div>
       <div className='messages'>
         <p className='message start'>
@@ -334,7 +334,7 @@ function IntroSlide({ stats, nav }: SlideProps) {
 function BigValue(props: { to: number; format: (value: number) => string }) {
   const final = props.format(props.to)
   return (
-    <div
+    <span
       className='big-value'
       style={{ '--chars': final.length } as React.CSSProperties}
     >
@@ -345,7 +345,7 @@ function BigValue(props: { to: number; format: (value: number) => string }) {
           format={props.format}
         />
       </span>
-    </div>
+    </span>
   )
 }
 
@@ -365,13 +365,13 @@ function StatSlide(props: {
       start={<BackButton nav={props.nav} />}
       primary={<NextButton nav={props.nav} />}
     >
-      <div className='stat'>
+      <h2 className='stat'>
         <BigValue
           to={props.to}
           format={props.format}
         />
-        <h2>{props.caption}</h2>
-      </div>
+        {props.caption}
+      </h2>
       <div className='panels'>
         {comparison && (
           <p className='panel comparison'>{getLocale(comparison)}</p>
@@ -432,8 +432,8 @@ function DataSlide({ stats, nav }: SlideProps) {
 function getShareText(stats: RecapStats) {
   const text = formatLocale(S.BRAVE_RECAP_SHARE_POST_TEXT, {
     $1: formatCount(stats.adsBlocked),
-    $2: joinValue(formatTimeSaved(getTimeSavedMs(stats))),
-    $3: joinValue(formatBandwidth(stats.bandwidthSavedBytes)),
+    $2: formatTimeSaved(getTimeSavedMs(stats)).text,
+    $3: formatBandwidth(stats.bandwidthSavedBytes).text,
   })
   return `${text} ${DOWNLOAD_URL}`
 }
@@ -461,11 +461,11 @@ function useShareCard(stats: RecapStats, images: ShareCardImages) {
             label: getLocale(S.BRAVE_RECAP_BLOCKED_HEADING),
           },
           {
-            value: joinValue(formatTimeSaved(getTimeSavedMs(stats))),
+            value: formatTimeSaved(getTimeSavedMs(stats)).text,
             label: getLocale(S.BRAVE_RECAP_TIME_HEADING),
           },
           {
-            value: joinValue(formatBandwidth(stats.bandwidthSavedBytes)),
+            value: formatBandwidth(stats.bandwidthSavedBytes).text,
             label: getLocale(S.BRAVE_RECAP_DATA_HEADING),
           },
         ],
@@ -561,6 +561,9 @@ function ShareSlide({ stats, nav, card }: SlideProps) {
       }
     >
       <div className='share'>
+        <h2 className='visually-hidden'>
+          {getLocale(S.BRAVE_RECAP_CARD_TITLE)}
+        </h2>
         <div className='share-frame'>
           <div className='card-preview'>
             {card && (
@@ -699,7 +702,7 @@ function EmptyState() {
       <div className='slide'>
         <div className='intro'>
           <AppIcon />
-          <h1>{getLocale(S.BRAVE_RECAP_EMPTY_HEADING)}</h1>
+          <h2>{getLocale(S.BRAVE_RECAP_EMPTY_HEADING)}</h2>
         </div>
         <div className='panels'>
           <p className='panel note'>{getLocale(S.BRAVE_RECAP_EMPTY_TEXT)}</p>
@@ -730,8 +733,12 @@ interface Navigation {
 type NavigationAction =
   | { type: 'step'; delta: number; animate: boolean }
   | { type: 'exited'; slide: Slide }
+  | { type: 'stopMotion' }
 
 function navigate(state: Navigation, action: NavigationAction): Navigation {
+  if (action.type === 'stopMotion') {
+    return state.exiting.length ? { ...state, exiting: [] } : state
+  }
   if (action.type === 'exited') {
     return {
       ...state,
@@ -768,7 +775,7 @@ function Recap({
   initialSlide = 'intro',
   cardImages = CARD_IMAGES,
 }: Props) {
-  const [reducedMotion] = React.useState(prefersReducedMotion)
+  const reducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
   const [navigation, dispatch] = React.useReducer(navigate, undefined, () => ({
     index: SLIDES.indexOf(initialSlide),
     direction: 'forward' as Direction,
@@ -843,6 +850,13 @@ function Recap({
       window.removeEventListener('pointerdown', onPointerDown, true)
     }
   }, [next, back])
+
+  // Slides leaving when motion is turned off never finish their transition.
+  React.useEffect(() => {
+    if (reducedMotion) {
+      dispatch({ type: 'stopMotion' })
+    }
+  }, [reducedMotion])
 
   // Leaving the intro unmounts the tooltip without telling us it closed.
   React.useEffect(() => setHelpOpen(false), [index])
@@ -939,6 +953,7 @@ function Recap({
 export function App(props: Props) {
   return (
     <div data-css-scope={style.scope}>
+      <h1 className='visually-hidden'>{getLocale(S.BRAVE_RECAP_TITLE)}</h1>
       <DotMatrix />
       {hasEnoughData(props.stats) ? (
         <Recap

@@ -8,6 +8,8 @@
 export interface FormattedValue {
   value: string
   unit: string
+  // Both together, in the locale's own order and spacing.
+  text: string
 }
 
 function splitParts(parts: Intl.NumberFormatPart[]): FormattedValue {
@@ -20,7 +22,7 @@ function splitParts(parts: Intl.NumberFormatPart[]): FormattedValue {
       value += part.value
     }
   }
-  return { value, unit }
+  return { value, unit, text: parts.map((part) => part.value).join('') }
 }
 
 const numberFormats = new Map<string, Intl.NumberFormat>()
@@ -92,10 +94,6 @@ export function formatBandwidth(
     return formatUnit(bytes / MB, 'megabyte', 'short', 1)
   }
   return formatUnit(bytes / KB, 'kilobyte', 'short')
-}
-
-export function joinValue({ value, unit }: FormattedValue) {
-  return `${value} ${unit}`
 }
 
 export function formatMonthYear(ms: number) {

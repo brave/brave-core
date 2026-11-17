@@ -2,9 +2,6 @@
 <!-- Fun comparisons on the Brave Recap slides. Each one is shown when the
      user's stat reaches the milestone in its description. -->
 <grit-part>
-  <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_50" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 50 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That's every ad in a Super Bowl broadcast, all skipped
-  </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_100" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 100 ads and trackers blocked." formatter_data="webui=BraveRecap">
     That's more ads than keys on a piano
   </message>

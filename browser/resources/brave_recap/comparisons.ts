@@ -34,7 +34,6 @@ export function pickComparison(comparisons: Comparison[], value: number) {
 }
 
 export const BLOCKED_COMPARISONS: Comparison[] = [
-  { from: 50, text: S.BRAVE_RECAP_BLOCKED_COMPARISON_50 },
   { from: 100, text: S.BRAVE_RECAP_BLOCKED_COMPARISON_100 },
   { from: 500, text: S.BRAVE_RECAP_BLOCKED_COMPARISON_500 },
   { from: 1_000, text: S.BRAVE_RECAP_BLOCKED_COMPARISON_1000 },

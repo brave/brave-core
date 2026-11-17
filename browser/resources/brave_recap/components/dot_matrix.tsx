@@ -186,7 +186,11 @@ export function DotMatrix() {
       canvas.width = Math.round(width * ratio)
       canvas.height = Math.round(height * ratio)
       ctx.setTransform(ratio, 0, 0, ratio, 0, 0)
-      play()
+      if (width && height) {
+        play()
+      } else {
+        cancelAnimationFrame(frame)
+      }
     }
 
     resize()

@@ -17,7 +17,6 @@ import {
   formatBandwidth,
   formatCount,
   formatMonthYear,
-  joinValue,
   formatTimeSaved,
 } from '../format'
 import cardPattern from '../images/card_pattern.webp'
@@ -25,8 +24,8 @@ import cardPattern from '../images/card_pattern.webp'
 const DAY_MS = 24 * 60 * 60 * 1000
 const GB = 1024 * 1024 * 1024
 
-// The page loads these from its own origin; in Storybook they come from the
-// bundle and the static icons folder.
+// The page serves the logo from its own origin; Storybook has it in the static
+// icons folder.
 const CARD_IMAGES: ShareCardImages = {
   logo: `${location.pathname.replace(/\/[^/]*$/, '')}/icons/brave-icon-release-color.svg`,
   pattern: cardPattern,
@@ -191,11 +190,11 @@ function ShareCardStory(args: StoryArgs) {
             label: 'ads & trackers blocked',
           },
           {
-            value: joinValue(formatTimeSaved(getTimeSavedMs(stats))),
+            value: formatTimeSaved(getTimeSavedMs(stats)).text,
             label: 'of waiting saved',
           },
           {
-            value: joinValue(formatBandwidth(stats.bandwidthSavedBytes)),
+            value: formatBandwidth(stats.bandwidthSavedBytes).text,
             label: 'of data saved',
           },
         ],

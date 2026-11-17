@@ -4,8 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include <string>
+#include <string_view>
+#include <utility>
 
 #include "base/test/scoped_feature_list.h"
+#include "base/values.h"
+#include "brave/browser/resources/brave_recap/grit/brave_recap_generated_map.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
@@ -26,13 +30,13 @@ constexpr char kRecapUrl[] = "chrome://recap/";
 
 constexpr char kGetHeading[] = R"(
   new Promise((resolve) => {
-    const heading = document.querySelector('h1')
+    const heading = document.querySelector('.slide h2')
     if (heading) {
       resolve(heading.textContent)
       return
     }
     const observer = new MutationObserver(() => {
-      const heading = document.querySelector('h1')
+      const heading = document.querySelector('.slide h2')
       if (heading) {
         observer.disconnect()
         resolve(heading.textContent)
@@ -40,6 +44,16 @@ constexpr char kGetHeading[] = R"(
     })
     observer.observe(document.body, {childList: true, subtree: true})
   })
+)";
+
+// Resolves with the URLs in $1 that fail to load.
+constexpr char kLoadImages[] = R"(
+  Promise.all($1.map((url) => new Promise((resolve) => {
+    const img = new Image()
+    img.onload = () => resolve(null)
+    img.onerror = () => resolve(url)
+    img.src = url
+  }))).then((failed) => JSON.stringify(failed.filter(Boolean)))
 )";
 
 constexpr char kWaitForShareCard[] = R"(
@@ -146,26 +160,18 @@ IN_PROC_BROWSER_TEST_F(BraveRecapUIBrowserTest, LogoDoesNotTaintCanvas) {
 
 IN_PROC_BROWSER_TEST_F(BraveRecapUIBrowserTest, LoadsAllImages) {
   NavigateToRecap();
-  EXPECT_EQ("6 images, failed: []", content::EvalJs(web_contents(), R"js(
-    (async () => {
-      const urls = new Set(['/images/card_pattern.webp'])
-      for (const sheet of document.adoptedStyleSheets) {
-        for (const rule of sheet.cssRules) {
-          for (const [, url] of rule.cssText.matchAll(/url\("?([^")]+)"?\)/g)) {
-            urls.add(new URL(url, document.baseURI).pathname)
-          }
-        }
-      }
-      const failed = (await Promise.all([...urls].map((url) =>
-        new Promise((resolve) => {
-          const img = new Image()
-          img.onload = () => resolve(null)
-          img.onerror = () => resolve(url)
-          img.src = url
-        })))).filter(Boolean)
-      return `${urls.size} images, failed: ${JSON.stringify(failed)}`
-    })()
-  )js"));
+  // Webpack bundles every image, so the generated resources list them all.
+  base::ListValue images;
+  for (const auto& resource : kBraveRecapGenerated) {
+    if (std::string_view(resource.path).ends_with(".webp")) {
+      images.Append(resource.path);
+    }
+  }
+  EXPECT_EQ(6u, images.size());
+  EXPECT_EQ("[]",
+            content::EvalJs(web_contents(),
+                            content::JsReplace(
+                                kLoadImages, base::Value(std::move(images)))));
 }
 
 class BraveRecapUIDisabledBrowserTest : public InProcessBrowserTest {

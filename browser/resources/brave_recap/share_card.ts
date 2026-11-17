@@ -49,8 +49,19 @@ function getToken(name: string) {
     .trim()
 }
 
+// Canvas rejects an empty color, which would fail the whole card.
+function getColor(name: string, fallback: string) {
+  return getToken(name) || fallback
+}
+
+// Lets the browser parse the token's font shorthand.
 function getFontFamily() {
-  return getToken('font-heading-h1').replace(/^.*?\d+px\/\d+px\s*/, '')
+  const probe = document.createElement('span')
+  probe.style.font = 'var(--leo-font-heading-h1)'
+  document.body.append(probe)
+  const family = getComputedStyle(probe).fontFamily
+  probe.remove()
+  return family || 'sans-serif'
 }
 
 function loadImage(src: string) {
@@ -84,9 +95,18 @@ function drawBackground(ctx: CanvasRenderingContext2D) {
     WIDTH / 2 + dx * half,
     HEIGHT / 2 + dy * half,
   )
-  gradient.addColorStop(0, getToken('color-primitive-brands-rorange-1'))
-  gradient.addColorStop(0.5, getToken('color-primitive-brands-rorange-2'))
-  gradient.addColorStop(1, getToken('color-primitive-brands-rorange-3'))
+  gradient.addColorStop(
+    0,
+    getColor('color-primitive-brands-rorange-1', '#ff5601'),
+  )
+  gradient.addColorStop(
+    0.5,
+    getColor('color-primitive-brands-rorange-2', '#ff4000'),
+  )
+  gradient.addColorStop(
+    1,
+    getColor('color-primitive-brands-rorange-3', '#ff1f01'),
+  )
   ctx.fillStyle = gradient
   ctx.fillRect(0, 0, WIDTH, HEIGHT)
 }
@@ -114,8 +134,9 @@ function drawLine(
   x: number,
   top: number,
   lineHeight: number,
+  maxWidth?: number,
 ) {
-  ctx.fillText(text, x, top + lineHeight / 2)
+  ctx.fillText(text, x, top + lineHeight / 2, maxWidth)
 }
 
 function setTextShadow(ctx: CanvasRenderingContext2D, color: string) {
@@ -143,6 +164,8 @@ export async function renderShareCard(
   const [logo, pattern] = await Promise.all([
     tryLoadImage(images.logo),
     tryLoadImage(images.pattern),
+    // Canvas text doesn't redraw once web fonts load.
+    document.fonts?.ready,
   ])
 
   drawBackground(ctx)
@@ -162,10 +185,10 @@ export async function renderShareCard(
   ctx.direction = rtl ? 'rtl' : 'ltr'
 
   const family = getFontFamily()
-  const white = getToken('color-white')
-  const black = getToken('color-black')
+  const white = getColor('color-white', '#fff')
+  const black = getColor('color-black', '#000')
   // Closest token to the design's #f01c00 shadow.
-  const shadow = getToken('color-primitive-brands-rorange-3')
+  const shadow = getColor('color-primitive-brands-rorange-3', '#ff1f01')
   ctx.textBaseline = 'middle'
   ctx.textAlign = 'start'
 
@@ -195,7 +218,7 @@ export async function renderShareCard(
   const headerX = PADDING + TILE_SIZE + HEADER_GAP
   const headerWidth = WIDTH - PADDING - headerX
   // Title (28) and subtitle (24) lines, centered against the tile.
-  const headerTop = PADDING + (TILE_SIZE - 52) / 2
+  const headerTop = PADDING + (TILE_SIZE - (content.subtitle ? 52 : 28)) / 2
   setFont(ctx, content.title, 600, 22, family, headerWidth)
   drawLine(ctx, content.title, x(headerX), headerTop, 28)
   if (content.subtitle) {
@@ -222,15 +245,11 @@ export async function renderShareCard(
 
   clearShadow(ctx)
   ctx.textAlign = 'start'
-  setFont(
-    ctx,
-    content.cta,
-    600,
-    14,
-    family,
-    CONTENT_WIDTH - urlWidth - HEADER_GAP - BUTTON_PADDING * 2,
-  )
-  const buttonWidth = ctx.measureText(content.cta).width + BUTTON_PADDING * 2
+  const ctaWidth = CONTENT_WIDTH - urlWidth - HEADER_GAP - BUTTON_PADDING * 2
+  setFont(ctx, content.cta, 600, 14, family, ctaWidth)
+  // Text still too wide at the smallest size is squeezed to fit.
+  const buttonWidth =
+    Math.min(ctx.measureText(content.cta).width, ctaWidth) + BUTTON_PADDING * 2
   ctx.fillStyle = black
   ctx.beginPath()
   ctx.roundRect(
@@ -248,6 +267,7 @@ export async function renderShareCard(
     x(PADDING + BUTTON_PADDING),
     footerTop,
     BUTTON_HEIGHT,
+    ctaWidth,
   )
 
   return new Promise<Blob>((resolve, reject) => {

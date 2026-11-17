@@ -89,13 +89,13 @@ describe('brave recap app', () => {
 
   it('shows the empty state below 100 blocked items', () => {
     renderApp(99)
-    expect(heading(1)).toHaveTextContent('BRAVE_RECAP_EMPTY_HEADING')
+    expect(heading(2)).toHaveTextContent('BRAVE_RECAP_EMPTY_HEADING')
     expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
   })
 
   it('shows the intro once enough has been blocked', () => {
     renderApp(100)
-    expect(heading(1)).toHaveTextContent('BRAVE_RECAP_INTRO_HEADING')
+    expect(heading(2)).toHaveTextContent('BRAVE_RECAP_INTRO_HEADING')
     expect(progress()).toHaveAttribute('aria-valuenow', '1')
   })
 
@@ -153,9 +153,23 @@ describe('brave recap app', () => {
     expect(progress()).toHaveAttribute('aria-valuenow', '1')
   })
 
+  it('nests every slide heading under one page heading', () => {
+    mockMatchMedia(true)
+    renderApp(1_284_213)
+    expect(heading(1)).toHaveTextContent('BRAVE_RECAP_TITLE')
+    expect(heading(2)).toHaveTextContent('BRAVE_RECAP_INTRO_HEADING')
+    pressKey('ArrowRight')
+    // The number is part of its heading.
+    expect(heading(2)).toHaveTextContent('1,284,213BRAVE_RECAP_BLOCKED_HEADING')
+    for (let i = 0; i < 3; i++) {
+      pressKey('ArrowRight')
+    }
+    expect(heading(2)).toHaveTextContent('BRAVE_RECAP_CARD_TITLE')
+  })
+
   it('advances when the slide is tapped', () => {
     renderApp(100)
-    fireEvent.click(heading(1))
+    fireEvent.click(heading(2))
     expect(heading(2)).toHaveTextContent('BRAVE_RECAP_BLOCKED_HEADING')
   })
 
@@ -308,6 +322,31 @@ describe('brave recap slide transitions', () => {
     pressKey('ArrowRight')
     expect(frames()).toHaveLength(1)
   })
+
+  it('drops leaving slides when motion is reduced mid-push', () => {
+    let reduced = false
+    const listeners: Array<() => void> = []
+    jest.spyOn(window, 'matchMedia').mockImplementation(
+      (query) =>
+        ({
+          get matches() {
+            return reduced && query === '(prefers-reduced-motion: reduce)'
+          },
+          media: query,
+          addEventListener: (_: string, listener: () => void) =>
+            listeners.push(listener),
+          removeEventListener: () => {},
+        }) as unknown as MediaQueryList,
+    )
+    renderApp(100)
+    pressKey('ArrowRight')
+    expect(frames()).toHaveLength(2)
+    reduced = true
+    act(() => listeners.forEach((listener) => listener()))
+    expect(frames()).toHaveLength(1)
+    pressKey('ArrowRight')
+    expect(frames()).toHaveLength(1)
+  })
 })
 
 describe('brave recap auto-advance', () => {
@@ -384,8 +423,8 @@ describe('brave recap auto-advance', () => {
     fireEvent.pointerDown(screen.getByRole('main'))
     now.mockReturnValue(1000)
     fireEvent.pointerUp(screen.getByRole('main'))
-    fireEvent.click(heading(1))
-    expect(heading(1)).toHaveTextContent('BRAVE_RECAP_INTRO_HEADING')
+    fireEvent.click(heading(2))
+    expect(heading(2)).toHaveTextContent('BRAVE_RECAP_INTRO_HEADING')
   })
 
   it('holds the photo still while the help tooltip is open', () => {
@@ -463,7 +502,7 @@ describe('brave recap share slide', () => {
         title: 'BRAVE_RECAP_CARD_TITLE',
         url: 'brave://recap',
       }),
-      { logo: '/brave-icon.svg', pattern: '/images/card_pattern.webp' },
+      { logo: '/brave-icon.svg', pattern: 'test-file-stub' },
     )
   })
 

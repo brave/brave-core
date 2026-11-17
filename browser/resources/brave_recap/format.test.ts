@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { formatBandwidth, formatTimeSaved, joinValue } from './format'
+import { formatBandwidth, formatTimeSaved } from './format'
 
 const SECOND_MS = 1000
 const MINUTE_MS = 60 * SECOND_MS
@@ -49,6 +49,19 @@ describe('brave recap formatting', () => {
     const formatted = formatBandwidth(2 * GB)
     expect(formatted.unit).not.toBe('')
     expect(formatted.unit).not.toContain('2')
-    expect(joinValue(formatted)).toBe(`2 ${formatted.unit}`)
+  })
+
+  it('keeps the locale order and spacing in the full text', () => {
+    jest.spyOn(Intl.NumberFormat.prototype, 'formatToParts').mockReturnValue([
+      { type: 'unit', value: 'siku' },
+      { type: 'literal', value: '\u00a0' },
+      { type: 'integer', value: '3' },
+    ])
+    expect(formatTimeSaved(3 * 24 * 60 * 60 * 1000)).toEqual({
+      value: '3',
+      unit: 'siku',
+      text: 'siku\u00a03',
+    })
+    jest.restoreAllMocks()
   })
 })

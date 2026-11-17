@@ -39,6 +39,7 @@ source_set("browser_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
+    "//brave/browser/resources/brave_recap:pack_js_resources",
     "//brave/browser/ui:ui_features",
     "//brave/components/brave_perf_predictor/common",
     "//brave/components/brave_shields/core/common",

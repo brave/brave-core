@@ -326,10 +326,18 @@ export const style = scoped.css`
     }
   }
 
-  .slide h1,
   .slide h2,
   .slide p {
     margin: 0;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   .intro {
@@ -341,7 +349,7 @@ export const style = scoped.css`
     text-align: center;
   }
 
-  .intro h1 {
+  .intro h2 {
     font: var(--leo-font-heading-display3);
     text-wrap: balance;
   }
@@ -411,11 +419,8 @@ export const style = scoped.css`
     flex-direction: column;
     align-items: center;
     padding-inline: var(--leo-spacing-2xl);
-    text-align: center;
-  }
-
-  .stat h2 {
     font: var(--leo-font-heading-h1);
+    text-align: center;
   }
 
   .big-value {

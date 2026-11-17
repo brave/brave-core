@@ -64,6 +64,16 @@ describe('dot matrix', () => {
     expect(callbacks).toHaveLength(0)
   })
 
+  it('does not animate while it has no size', () => {
+    mockContext()
+    mockReducedMotion(false)
+    jest
+      .spyOn(HTMLCanvasElement.prototype, 'clientWidth', 'get')
+      .mockReturnValue(0)
+    render(<DotMatrix />)
+    expect(callbacks).toHaveLength(0)
+  })
+
   it('animates with one frame requested at a time', () => {
     const ctx = mockContext()
     mockReducedMotion(false)
