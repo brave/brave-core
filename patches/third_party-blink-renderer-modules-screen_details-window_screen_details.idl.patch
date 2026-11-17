@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/renderer/modules/screen_details/window_screen_details.idl b/third_party/blink/renderer/modules/screen_details/window_screen_details.idl
+index 86e982d1707d90990b87740a433e05874044c073..d97438ec80a540e155136d5118146095e9530b73 100644
+--- a/third_party/blink/renderer/modules/screen_details/window_screen_details.idl
++++ b/third_party/blink/renderer/modules/screen_details/window_screen_details.idl
+@@ -6,7 +6,8 @@
+ // https://w3c.github.io/window-management/
+ [
+     SecureContext,
+-    ImplementedAs=WindowScreenDetails
++    ImplementedAs=WindowScreenDetails,
++    RuntimeEnabled=BraveWindowManagement
+ ] partial interface Window {
+   [CallWith=ScriptState, Measure, RaisesException] Promise<ScreenDetails> getScreenDetails();
+ };

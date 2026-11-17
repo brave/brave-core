@@ -1,0 +1,16 @@
+diff --git a/third_party/blink/renderer/core/frame/screen.idl b/third_party/blink/renderer/core/frame/screen.idl
+index c4c9ee399362c78bfcaf74e87d39e7d02db04c57..bd475be278d8b535ef05be40fb36d5424bf651b1 100644
+--- a/third_party/blink/renderer/core/frame/screen.idl
++++ b/third_party/blink/renderer/core/frame/screen.idl
+@@ -45,9 +45,9 @@
+ 
+     // Fired when the window’s screen or that screen's attributes change.
+     // https://w3c.github.io/window-management/
+-    [SecureContext, MeasureAs=WindowScreenChange] attribute EventHandler onchange;
++    [SecureContext, MeasureAs=WindowScreenChange, RuntimeEnabled=BraveWindowManagement] attribute EventHandler onchange;
+ 
+     // Whether the device’s visual output extends over multiple screens.
+     // https://w3c.github.io/window-management/
+-    [SecureContext, MeasureAs=WindowScreenIsExtended] readonly attribute boolean isExtended;
++    [SecureContext, MeasureAs=WindowScreenIsExtended, RuntimeEnabled=BraveWindowManagement] readonly attribute boolean isExtended;
+ };

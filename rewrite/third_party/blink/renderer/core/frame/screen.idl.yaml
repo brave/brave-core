@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Hide `Screen.onchange` unless `BraveWindowManagement` is on.
+
+      The event is part of the Window Management API, and tells a page when
+      the screen setup changes.
+    regex:
+      re_pattern: '\[([^\]]*)\](\s+attribute EventHandler onchange;)'
+      replace: '[\1, RuntimeEnabled=BraveWindowManagement]\2'
+
+  - description: |-
+      Hide `Screen.isExtended` unless `BraveWindowManagement` is on.
+
+      It reveals whether the device has more than one screen, without any
+      permission prompt, which makes it a fingerprinting vector.
+    regex:
+      re_pattern: '\[([^\]]*)\](\s+readonly attribute boolean isExtended;)'
+      replace: '[\1, RuntimeEnabled=BraveWindowManagement]\2'
