@@ -14,7 +14,6 @@ import { useHistory } from 'react-router'
 // utils
 import { getLocale } from '../../../../common/locale'
 import { isHardwareAccount } from '../../../utils/account-utils'
-import { UISelectors } from '../../../common/selectors'
 import { PanelActions } from '../../../panel/actions'
 
 // types
@@ -27,7 +26,6 @@ import {
 import useInterval from '../../../common/hooks/interval'
 import { useAppDispatch } from '../../../common/hooks/use-redux'
 import { useAccountQuery } from '../../../common/slices/api.slice.extra'
-import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 import {
   usePendingTransactions, //
 } from '../../../common/hooks/use-pending-transaction'
@@ -80,12 +78,6 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
   // redux
   const dispatch = useAppDispatch()
   const history = useHistory()
-
-  const selectedPendingTransactionId = useSafeUISelector(
-    UISelectors.selectedPendingTransactionId,
-  )
-
-  const isConfirming = !!selectedPendingTransactionId
 
   // mutations
   const [signMessageHardware] = useSignMessageHardwareMutation()
@@ -198,16 +190,20 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
     // device. A software account's transaction needs no device, and
     // confirming one here would sign and broadcast it without its
     // confirmation UI ever being shown.
+    //
+    // Deliberately keyed on the transaction itself rather than on
+    // ui.selectedPendingTransactionId: that id is the transaction queue's
+    // cursor, which any arriving transaction can claim, and reading it as
+    // "the user authorized something here" is what let an unrelated
+    // software-account transaction through.
     if (
-      isConfirming
-      && selectedPendingTransaction
+      selectedPendingTransaction
       && isHardwareAccount(selectedPendingTransaction.fromAccountId)
     ) {
       onConfirmTransaction()
     }
   }, [
     isSigning,
-    isConfirming,
     selectedPendingTransaction,
     onSignData,
     onConfirmTransaction,
