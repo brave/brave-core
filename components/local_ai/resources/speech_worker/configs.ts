@@ -87,25 +87,25 @@ export const NEMO_CONV_CONTEXT: number = 8
 export const NEMO_DECODER_LSTM_DIM: number = 640
 
 export interface NemotronModelConfig {
-    NEMO_BLANK: number
-    NEMO_VOCAB: number
-    // note that this is different from left context at mel level;
-    // its num of frames in the left context of encoder's attention blocks'
-    NEMO_LEFT_CONTEXT: number
-  }
+  NEMO_BLANK: number
+  NEMO_VOCAB: number
+  // note that this is different from left context at mel level;
+  // its num of frames in the left context of encoder's attention blocks'
+  NEMO_LEFT_CONTEXT: number
+}
 
 export const MODEL_CONFIGS: Record<NemotronModelType, NemotronModelConfig> = {
-    english: {
-      NEMO_BLANK: 1024,
-     NEMO_VOCAB: 1025, // 1024 + blank
-      NEMO_LEFT_CONTEXT: 70,
-    },
-    multilingual: {
-      NEMO_BLANK: 13087,
-      NEMO_VOCAB: 13088, // 13087 + blank
-      NEMO_LEFT_CONTEXT: 56,
-    },
-  }
+  english: {
+    NEMO_BLANK: 1024,
+    NEMO_VOCAB: 1025, // 1024 + blank
+    NEMO_LEFT_CONTEXT: 70,
+  },
+  multilingual: {
+    NEMO_BLANK: 13087,
+    NEMO_VOCAB: 13088, // 13087 + blank
+    NEMO_LEFT_CONTEXT: 56,
+  },
+}
 
 export type NemotronLocale =
   | { model: 'english'; promptId: null }
@@ -139,7 +139,6 @@ export const LOCALES = {
   'uk-UA': { model: 'multilingual', promptId: 19 },
   'vi-VN': { model: 'multilingual', promptId: 33 },
 } as const satisfies Record<string, NemotronLocale>
-
 
 // A language tag token, such as <es-ES>. The multilingual model can emit one
 // after the terminal punctuation. The English vocab has no such tokens.

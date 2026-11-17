@@ -33,21 +33,22 @@ describe('getNemotronModelType', () => {
     ['tr-TR', 18],
     ['uk-UA', 19],
     ['vi-VN', 33],
-  ])('picks the multilingual model and prompt for %s', (lang: string, promptId: number) => {
-    expect(getNemotronLocale(lang)).toEqual({
-      model: 'multilingual',
-      promptId,
-    })
-  })
+  ])(
+    'picks the multilingual model and prompt for %s',
+    (lang: string, promptId: number) => {
+      expect(getNemotronLocale(lang)).toEqual({
+        model: 'multilingual',
+        promptId,
+      })
+    },
+  )
 
   // The browser sends only canonical tags, so the worker takes no near miss,
   // such as the model card's 'ar-AR' label.
   it.each(['es-MX', 'es', 'hi', 'ar-AR', 'zh-TW', 'th-TH', 'english', ''])(
     'rejects %s',
     (lang: string) => {
-      expect(() => getNemotronLocale(lang)).toThrow(
-        'Unsupported ASR language',
-      )
+      expect(() => getNemotronLocale(lang)).toThrow('Unsupported ASR language')
     },
   )
 })

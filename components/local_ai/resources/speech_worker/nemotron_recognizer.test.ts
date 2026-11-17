@@ -91,15 +91,13 @@ const LEADING_SILENCE_SAMPLES =
 // chunks can be available, net of the leading silence.
 function samplesForChunks(chunkCount: number): number {
   return (
-    samplesForStableFrames(
-      chunkCount * config.NEMO_CHUNK,
-    ) - LEADING_SILENCE_SAMPLES
+    samplesForStableFrames(chunkCount * config.NEMO_CHUNK)
+    - LEADING_SILENCE_SAMPLES
   )
 }
 
 // Once the first chunk is available, each additional encoder chunk advances by exactly 56 * 160 samples.
-const CHUNK_ADVANCE_SAMPLES =
-  config.NEMO_CHUNK * config.HOP_LENGTH
+const CHUNK_ADVANCE_SAMPLES = config.NEMO_CHUNK * config.HOP_LENGTH
 
 // pause until the session is no longer busy
 async function waitForIdle(session: NemotronStreamSession): Promise<void> {
@@ -159,10 +157,7 @@ function makeDecoderResult(
   logits[token] = 1
 
   return {
-    outputs: new TestTensor('float32', logits, [
-      1,
-      vocabSize,
-    ]),
+    outputs: new TestTensor('float32', logits, [1, vocabSize]),
 
     output_states_1: new TestTensor(
       'float32',
@@ -507,9 +502,7 @@ describe('NemotronStreamSession', () => {
       const { session } = createSession(createMockModel())
       const real = makeRealAudio(2000)
       const flushSamples =
-        config.SILENCE_FLUSH_CHUNKS
-        * config.NEMO_CHUNK
-        * config.HOP_LENGTH
+        config.SILENCE_FLUSH_CHUNKS * config.NEMO_CHUNK * config.HOP_LENGTH
 
       session.addAudio(real)
       session.finish()
@@ -715,9 +708,7 @@ describe('NemotronStreamSession', () => {
 
       await waitForIdle(session)
 
-      expect(mock.runDecoder).toHaveBeenCalledTimes(
-        config.NEMO_MAX_SYM,
-      )
+      expect(mock.runDecoder).toHaveBeenCalledTimes(config.NEMO_MAX_SYM)
     })
 
     it('does not emit an empty interim result', async () => {
@@ -935,7 +926,11 @@ describe('NemotronStreamSession', () => {
       await waitForIdle(session)
 
       const feeds = mock.runEncoder.mock.calls[0][0] as EncoderFeeds
-      expect(feeds.audio_signal.dims).toEqual([1, config.N_MELS, config.NEMO_FRAMES])
+      expect(feeds.audio_signal.dims).toEqual([
+        1,
+        config.N_MELS,
+        config.NEMO_FRAMES,
+      ])
       expect(feeds.cache_last_channel.dims).toEqual([
         1,
         config.NEMO_NUM_ENCODER_LAYERS,
@@ -955,40 +950,46 @@ describe('NemotronStreamSession', () => {
       ['es-ES', 2],
       ['fr-CA', 100],
       ['ar', 7],
-    ])('uses multilingual cache dimensions and prompt_index for %s', async (
-      lang: string,
-      promptId: number,
-    ) => {
-      const mock = createMockModel('multilingual')
-      const { session } = createSession(mock, lang)
+    ])(
+      'uses multilingual cache dimensions and prompt_index for %s',
+      async (lang: string, promptId: number) => {
+        const mock = createMockModel('multilingual')
+        const { session } = createSession(mock, lang)
 
-      session.addAudio(new Float32Array(samplesForChunks(1)))
-      await waitForIdle(session)
+        session.addAudio(new Float32Array(samplesForChunks(1)))
+        await waitForIdle(session)
 
-      expect(mock.runEncoder).toHaveBeenCalledTimes(1)
-      const feeds = mock.runEncoder.mock.calls[0][0] as EncoderFeeds
-      expect(feeds.audio_signal.dims).toEqual([1, config.N_MELS, config.NEMO_FRAMES])
-      expect(feeds.cache_last_channel.dims).toEqual([
-        config.NEMO_NUM_ENCODER_LAYERS,
-        1,
-        config.MODEL_CONFIGS.multilingual.NEMO_LEFT_CONTEXT,
-        config.NEMO_HIDDEN_DIM,
-      ])
-      expect(feeds.cache_last_channel.data).toHaveLength(
-        config.NEMO_NUM_ENCODER_LAYERS
-          * config.MODEL_CONFIGS.multilingual.NEMO_LEFT_CONTEXT
-          * config.NEMO_HIDDEN_DIM,
-      )
-      expect(feeds.cache_last_time.dims).toEqual([
-        config.NEMO_NUM_ENCODER_LAYERS,
-        1,
-        config.NEMO_HIDDEN_DIM,
-        config.NEMO_CONV_CONTEXT,
-      ])
-      expect(feeds.prompt_index?.type).toBe('int64')
-      expect(feeds.prompt_index?.dims).toEqual([1])
-      expect(feeds.prompt_index?.data).toEqual(BigInt64Array.from([BigInt(promptId)]))
-    })
+        expect(mock.runEncoder).toHaveBeenCalledTimes(1)
+        const feeds = mock.runEncoder.mock.calls[0][0] as EncoderFeeds
+        expect(feeds.audio_signal.dims).toEqual([
+          1,
+          config.N_MELS,
+          config.NEMO_FRAMES,
+        ])
+        expect(feeds.cache_last_channel.dims).toEqual([
+          config.NEMO_NUM_ENCODER_LAYERS,
+          1,
+          config.MODEL_CONFIGS.multilingual.NEMO_LEFT_CONTEXT,
+          config.NEMO_HIDDEN_DIM,
+        ])
+        expect(feeds.cache_last_channel.data).toHaveLength(
+          config.NEMO_NUM_ENCODER_LAYERS
+            * config.MODEL_CONFIGS.multilingual.NEMO_LEFT_CONTEXT
+            * config.NEMO_HIDDEN_DIM,
+        )
+        expect(feeds.cache_last_time.dims).toEqual([
+          config.NEMO_NUM_ENCODER_LAYERS,
+          1,
+          config.NEMO_HIDDEN_DIM,
+          config.NEMO_CONV_CONTEXT,
+        ])
+        expect(feeds.prompt_index?.type).toBe('int64')
+        expect(feeds.prompt_index?.dims).toEqual([1])
+        expect(feeds.prompt_index?.data).toEqual(
+          BigInt64Array.from([BigInt(promptId)]),
+        )
+      },
+    )
 
     it('reuses multilingual cache values on the next chunk', async () => {
       const mock = createMockModel('multilingual')
