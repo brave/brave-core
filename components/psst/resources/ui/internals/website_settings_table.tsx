@@ -7,16 +7,26 @@ import * as React from 'react'
 import Button from '@brave/nala/react/button'
 import Icon from '@brave/nala/react/icon'
 
+import { getLocale } from '$web-common/locale'
+
 import * as Mojom from '../api/psst_internals_api'
 import { style } from './website_settings_table.style'
+
+import '../strings'
 
 const kMaskedUserId = '••••••••'
 
 const consentStatusNames = new Map<Mojom.ConsentStatus, string>([
-  [Mojom.ConsentStatus.kNone, 'none'],
-  [Mojom.ConsentStatus.kAsk, 'ask'],
-  [Mojom.ConsentStatus.kAllow, 'allow'],
-  [Mojom.ConsentStatus.kBlock, 'block'],
+  [Mojom.ConsentStatus.kNone, getLocale(S.PSST_INTERNALS_CONSENT_STATUS_NONE)],
+  [Mojom.ConsentStatus.kAsk, getLocale(S.PSST_INTERNALS_CONSENT_STATUS_ASK)],
+  [
+    Mojom.ConsentStatus.kAllow,
+    getLocale(S.PSST_INTERNALS_CONSENT_STATUS_ALLOW),
+  ],
+  [
+    Mojom.ConsentStatus.kBlock,
+    getLocale(S.PSST_INTERNALS_CONSENT_STATUS_BLOCK),
+  ],
 ])
 
 interface Props {
@@ -31,12 +41,12 @@ export function WebsiteSettingsTable({ entries }: Props) {
       <table>
         <thead>
           <tr>
-            <th>Site</th>
-            <th>Consent</th>
-            <th>Script version</th>
+            <th>{getLocale(S.PSST_INTERNALS_TABLE_HEADER_SITE)}</th>
+            <th>{getLocale(S.PSST_INTERNALS_TABLE_HEADER_CONSENT)}</th>
+            <th>{getLocale(S.PSST_INTERNALS_TABLE_HEADER_SCRIPT_VERSION)}</th>
             <th>
               <div className='user-id-header'>
-                User ID
+                {getLocale(S.PSST_INTERNALS_TABLE_HEADER_USER_ID)}
                 <Button
                   kind='plain-faint'
                   size='small'
@@ -46,7 +56,7 @@ export function WebsiteSettingsTable({ entries }: Props) {
                 </Button>
               </div>
             </th>
-            <th>UIDs performed</th>
+            <th>{getLocale(S.PSST_INTERNALS_TABLE_HEADER_UIDS_PERFORMED)}</th>
           </tr>
         </thead>
         <tbody>
@@ -64,7 +74,9 @@ export function WebsiteSettingsTable({ entries }: Props) {
         </tbody>
       </table>
       {entries.length === 0 && (
-        <div className='empty'>No per-site PSST settings recorded.</div>
+        <div className='empty'>
+          {getLocale(S.PSST_INTERNALS_WEBSITE_SETTINGS_TABLE_EMPTY)}
+        </div>
       )}
     </div>
   )

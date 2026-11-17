@@ -3,13 +3,25 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { getLocale } from '$web-common/locale'
+
 import * as Mojom from '../api/psst_internals_api'
 
-export const levelNames = new Map<Mojom.PsstLogLevel, string>([
+import '../strings'
+
+// Stable, non-localized keys used for CSS class names (see log_table.style.ts).
+export const levelKeys = new Map<Mojom.PsstLogLevel, string>([
   [Mojom.PsstLogLevel.kDebug, 'debug'],
   [Mojom.PsstLogLevel.kInfo, 'info'],
   [Mojom.PsstLogLevel.kWarn, 'warn'],
   [Mojom.PsstLogLevel.kError, 'error'],
+])
+
+export const levelNames = new Map<Mojom.PsstLogLevel, string>([
+  [Mojom.PsstLogLevel.kDebug, getLocale(S.PSST_INTERNALS_LEVEL_DEBUG)],
+  [Mojom.PsstLogLevel.kInfo, getLocale(S.PSST_INTERNALS_LEVEL_INFO)],
+  [Mojom.PsstLogLevel.kWarn, getLocale(S.PSST_INTERNALS_LEVEL_WARN)],
+  [Mojom.PsstLogLevel.kError, getLocale(S.PSST_INTERNALS_LEVEL_ERROR)],
 ])
 
 export const levelIcons = new Map<Mojom.PsstLogLevel, string>([
@@ -20,8 +32,8 @@ export const levelIcons = new Map<Mojom.PsstLogLevel, string>([
 ])
 
 export const sourceNames = new Map<Mojom.PsstLogSource, string>([
-  [Mojom.PsstLogSource.kNative, 'native'],
-  [Mojom.PsstLogSource.kScript, 'script'],
+  [Mojom.PsstLogSource.kNative, getLocale(S.PSST_INTERNALS_SOURCE_NATIVE)],
+  [Mojom.PsstLogSource.kScript, getLocale(S.PSST_INTERNALS_SOURCE_SCRIPT)],
 ])
 
 export function formatTime(timestampMs: number) {

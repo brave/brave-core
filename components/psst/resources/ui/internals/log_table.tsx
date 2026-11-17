@@ -7,15 +7,20 @@ import * as React from 'react'
 import Collapse from '@brave/nala/react/collapse'
 import Icon from '@brave/nala/react/icon'
 
+import { getLocale } from '$web-common/locale'
+
 import * as Mojom from '../api/psst_internals_api'
 import {
   formatTabId,
   formatTime,
   levelIcons,
+  levelKeys,
   levelNames,
   sourceNames,
 } from './log_entry_format'
 import { style } from './log_table.style'
+
+import '../strings'
 
 interface Props {
   entries: Mojom.PsstLogEntry[]
@@ -36,7 +41,7 @@ function DataCell({ data }: { data: string }) {
   return (
     <Collapse
       className='data'
-      title='data'
+      title={getLocale(S.PSST_INTERNALS_LOG_DATA_LABEL)}
       isOpen={isOpen}
       onToggle={(e) => setIsOpen(e.open)}
     >
@@ -59,22 +64,23 @@ export function LogTable({ entries, liveTail }: Props) {
       <table>
         <thead>
           <tr>
-            <th>Time</th>
-            <th>Level</th>
-            <th>Source</th>
-            <th>Tab</th>
-            <th>Site</th>
-            <th>Message</th>
+            <th>{getLocale(S.PSST_INTERNALS_TABLE_HEADER_TIME)}</th>
+            <th>{getLocale(S.PSST_INTERNALS_TABLE_HEADER_LEVEL)}</th>
+            <th>{getLocale(S.PSST_INTERNALS_SOURCE_LABEL)}</th>
+            <th>{getLocale(S.PSST_INTERNALS_TABLE_HEADER_TAB)}</th>
+            <th>{getLocale(S.PSST_INTERNALS_TABLE_HEADER_SITE)}</th>
+            <th>{getLocale(S.PSST_INTERNALS_TABLE_HEADER_MESSAGE)}</th>
           </tr>
         </thead>
         <tbody>
           {entries.map((entry, index) => {
-            const level = levelNames.get(entry.level) ?? 'info'
+            const levelKey = levelKeys.get(entry.level) ?? 'info'
+            const level = levelNames.get(entry.level) ?? levelKey
             return (
               <tr key={`${entry.timestampMs}-${index}`}>
                 <td className='time'>{formatTime(entry.timestampMs)}</td>
                 <td>
-                  <span className={`level level-${level}`}>
+                  <span className={`level level-${levelKey}`}>
                     <Icon name={levelIcons.get(entry.level) ?? 'info-filled'} />
                     {level}
                   </span>
@@ -93,7 +99,7 @@ export function LogTable({ entries, liveTail }: Props) {
       </table>
       {entries.length === 0 && (
         <div className='empty'>
-          No entries. Run a PSST flow on a supported site.
+          {getLocale(S.PSST_INTERNALS_LOG_TABLE_EMPTY)}
         </div>
       )}
       <div ref={endRef} />

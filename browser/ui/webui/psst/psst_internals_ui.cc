@@ -13,6 +13,7 @@
 #include "brave/components/psst/resources/grit/brave_psst_internals_generated_map.h"
 #include "brave/components/psst/resources/grit/brave_psst_resources.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 
@@ -31,9 +32,10 @@ PsstInternalsUI::PsstInternalsUI(content::WebUI* web_ui)
               Profile::FromWebUI(web_ui)),
           PsstSettingsServiceFactory::GetForProfile(Profile::FromWebUI(web_ui)),
           Profile::FromWebUI(web_ui)->GetPrefs()) {
-  CreateAndAddWebUIDataSource(web_ui, kPsstInternalsHost,
-                              kBravePsstInternalsGenerated,
-                              IDR_PSST_INTERNALS_HTML);
+  auto* source = CreateAndAddWebUIDataSource(web_ui, kPsstInternalsHost,
+                                             kBravePsstInternalsGenerated,
+                                             IDR_PSST_INTERNALS_HTML);
+  source->AddLocalizedStrings(webui::kPsstStrings);
 }
 
 PsstInternalsUI::~PsstInternalsUI() = default;

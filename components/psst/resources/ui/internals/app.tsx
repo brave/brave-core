@@ -10,6 +10,8 @@ import Icon from '@brave/nala/react/icon'
 import Input from '@brave/nala/react/input'
 import Toggle from '@brave/nala/react/toggle'
 
+import { getLocale, formatLocale } from '$web-common/locale'
+
 import * as Mojom from '../api/psst_internals_api'
 import { type PsstInternalsApi } from '../api/psst_internals_api'
 import {
@@ -20,6 +22,8 @@ import {
 import { LogTable } from './log_table'
 import { WebsiteSettingsTable } from './website_settings_table'
 import { style } from './app.style'
+
+import '../strings'
 
 const kAnyFilter = 'any'
 
@@ -57,20 +61,20 @@ export function App({ api }: { api: PsstInternalsApi }) {
   return (
     <div data-css-scope={style.scope}>
       <header>
-        <h1>PSST Internals</h1>
+        <h1>{getLocale(S.PSST_INTERNALS_PAGE_TITLE)}</h1>
       </header>
 
       <section>
-        <h2>Website Settings</h2>
+        <h2>{getLocale(S.PSST_INTERNALS_WEBSITE_SETTINGS_TITLE)}</h2>
         <div className='section-description'>
-          Per-site consent decisions, user identifiers, and infobar interactions
-          that Brave stores to drive the Privacy Settings Tuning flow. This data
-          persists across browser restarts.
+          {getLocale(S.PSST_INTERNALS_WEBSITE_SETTINGS_DESCRIPTION)}
         </div>
 
         <div className='count'>
-          The Infobar shown {diagnosticsInfo?.infobarShownCount ?? 0} and
-          declined {diagnosticsInfo?.infobarDeclineCount ?? 0} times.
+          {formatLocale(S.PSST_INTERNALS_INFOBAR_COUNT, {
+            $1: String(diagnosticsInfo?.infobarShownCount ?? 0),
+            $2: String(diagnosticsInfo?.infobarDeclineCount ?? 0),
+          })}
         </div>
 
         <WebsiteSettingsTable
@@ -79,17 +83,17 @@ export function App({ api }: { api: PsstInternalsApi }) {
       </section>
 
       <section>
-        <h2>Log Entries</h2>
+        <h2>{getLocale(S.PSST_INTERNALS_LOG_ENTRIES_TITLE)}</h2>
         <div className='section-description'>
-          Diagnostic entries emitted while the Privacy Settings Tuning flow
-          runs. Brave keeps these in memory only and clears them when the
-          browser exits.
+          {getLocale(S.PSST_INTERNALS_LOG_ENTRIES_DESCRIPTION)}
         </div>
 
         <div className='toolbar'>
           <Input
             className='search'
-            placeholder='Filter messages'
+            placeholder={getLocale(
+              S.PSST_INTERNALS_FILTER_MESSAGES_PLACEHOLDER,
+            )}
             value={search}
             onInput={(e) => setSearch(e.value)}
           >
@@ -104,14 +108,18 @@ export function App({ api }: { api: PsstInternalsApi }) {
             value={minLevel}
             onChange={(e) => setMinLevel(e.value!)}
           >
-            <span slot='label'>Min level</span>
-            <leo-option value={kAnyFilter}>All levels</leo-option>
+            <span slot='label'>
+              {getLocale(S.PSST_INTERNALS_MIN_LEVEL_LABEL)}
+            </span>
+            <leo-option value={kAnyFilter}>
+              {getLocale(S.PSST_INTERNALS_ALL_LEVELS_OPTION)}
+            </leo-option>
             {[...levelNames].map(([level, name]) => (
               <leo-option
                 key={level}
                 value={String(level)}
               >
-                {name} and above
+                {formatLocale(S.PSST_INTERNALS_LEVEL_AND_ABOVE, { $1: name })}
               </leo-option>
             ))}
           </Dropdown>
@@ -121,8 +129,10 @@ export function App({ api }: { api: PsstInternalsApi }) {
             value={source}
             onChange={(e) => setSource(e.value!)}
           >
-            <span slot='label'>Source</span>
-            <leo-option value={kAnyFilter}>All sources</leo-option>
+            <span slot='label'>{getLocale(S.PSST_INTERNALS_SOURCE_LABEL)}</span>
+            <leo-option value={kAnyFilter}>
+              {getLocale(S.PSST_INTERNALS_ALL_SOURCES_OPTION)}
+            </leo-option>
             {[...sourceNames].map(([value, name]) => (
               <leo-option
                 key={value}
@@ -144,7 +154,7 @@ export function App({ api }: { api: PsstInternalsApi }) {
               name='copy'
               slot='icon-before'
             />
-            Copy
+            {getLocale(S.PSST_INTERNALS_COPY_BUTTON)}
           </Button>
 
           <Button
@@ -156,7 +166,7 @@ export function App({ api }: { api: PsstInternalsApi }) {
               name='trash'
               slot='icon-before'
             />
-            Clear
+            {getLocale(S.PSST_INTERNALS_CLEAR_BUTTON)}
           </Button>
 
           <Toggle
@@ -164,12 +174,17 @@ export function App({ api }: { api: PsstInternalsApi }) {
             checked={liveTail}
             onChange={(e) => setLiveTail(e.checked)}
           >
-            <span slot='label'>Follow</span>
+            <span slot='label'>
+              {getLocale(S.PSST_INTERNALS_FOLLOW_TOGGLE_LABEL)}
+            </span>
           </Toggle>
         </div>
 
         <div className='count'>
-          Showing {filtered.length} of {entries.length} entries
+          {formatLocale(S.PSST_INTERNALS_SHOWING_ENTRIES_COUNT, {
+            $1: String(filtered.length),
+            $2: String(entries.length),
+          })}
         </div>
 
         <LogTable
