@@ -80,7 +80,7 @@ constexpr base::TimeDelta kOpenDuration = base::Milliseconds(200);
 
 constexpr int kCardShadowOffsetY = 4;
 constexpr int kCardShadowBlurRadius = 24;
-constexpr float kCardShadowOpacity = 0.24f;
+constexpr float kCardShadowOpacity = 0.16f;
 
 constexpr int kDividerThickness = 1;
 

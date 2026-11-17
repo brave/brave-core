@@ -16,7 +16,7 @@ bool ShowCookiesDialogInTab(content::WebContents* web_contents) {
   if (!controller) {
     return false;
   }
-  controller->ShowCookiesDialogInTab();
+  controller->ShowCookiesDialogInTab(*web_contents);
   return true;
 }
 
