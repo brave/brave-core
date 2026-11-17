@@ -1,0 +1,29 @@
+diff --git a/components/sessions/content/content_serialized_navigation_driver.cc b/components/sessions/content/content_serialized_navigation_driver.cc
+index ce99555b24e650bc9125362b11c078c5a1df2851..c82ff0f0e9d17ba2a2b11a4a610971eef8122f65 100644
+--- a/components/sessions/content/content_serialized_navigation_driver.cc
++++ b/components/sessions/content/content_serialized_navigation_driver.cc
+@@ -57,16 +57,24 @@ int ContentSerializedNavigationDriver::GetDefaultReferrerPolicy() const {
+ std::string
+ ContentSerializedNavigationDriver::GetSanitizedPageStateForPickle(
+     const SerializedNavigationEntry* navigation) const {
++  if (navigation->virtual_url().SchemeIs(content::kChromeUIScheme)) {
++    return std::string();
++  }
++  std::string sanitized_page_state = [&]() -> std::string {
+   if (!navigation->has_post_data())
+     return navigation->encoded_page_state();
+ 
+   blink::PageState page_state =
+       blink::PageState::CreateFromEncodedData(navigation->encoded_page_state());
+   return page_state.RemovePasswordData().ToEncodedData();
++  }();
++  return BraveSanitizePageStateForPickle(*navigation,
++                                         std::move(sanitized_page_state));
+ }
+ 
+ void ContentSerializedNavigationDriver::Sanitize(
+     SerializedNavigationEntry* navigation) const {
++  BraveSanitizeNavigation(*navigation);
+ }
+ 
+ std::string ContentSerializedNavigationDriver::StripReferrerFromPageState(
