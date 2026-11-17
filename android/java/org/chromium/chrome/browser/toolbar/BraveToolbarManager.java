@@ -427,8 +427,8 @@ public class BraveToolbarManager extends ToolbarManager
                 mBrowserControlsSizer.getBrowserVisibilityDelegate();
         assert controlsVisibilityDelegate != null;
         // Safe default: the chip init can run before native flags are cached, and the
-        // MutableFlagWithSafeDefault falls back to disabled there instead of crashing, which
-        // also keeps tests without native stable.
+        // MutableFlagWithSafeDefault falls back to its safe default (enabled, matching native)
+        // there instead of crashing, which also keeps tests without native stable.
         Supplier<Boolean> chipEnabled = sBraveAndroidCollapsedUrlChipFlag::isEnabled;
         mBraveCollapsedUrlChipCoordinator =
                 new BraveCollapsedUrlChipCoordinator(
