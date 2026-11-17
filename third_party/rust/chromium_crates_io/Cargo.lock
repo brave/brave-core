@@ -1305,7 +1305,7 @@ dependencies = [
 
 [[package]]
 name = "log"
-version = "0.4.34"
+version = "0.4.35"
 
 [[package]]
 name = "lol_html"
