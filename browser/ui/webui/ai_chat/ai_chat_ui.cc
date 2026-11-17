@@ -260,7 +260,9 @@ std::unique_ptr<content::WebUIController> AIChatUIConfig::CreateWebUIController(
 
 #if !BUILDFLAG(IS_ANDROID)
 AIChatUIConfig::AIChatUIConfig()
-    : DefaultTopChromeWebUIConfig(content::kChromeUIScheme, kAIChatUIHost) {}
+    : DefaultTopChromeWebUIConfig(content::kChromeUIScheme,
+                                  kAIChatUIHost,
+                                  ProcessModel::kDedicatedProcess) {}
 #else
 AIChatUIConfig::AIChatUIConfig()
     : WebUIConfig(content::kChromeUIScheme, kAIChatUIHost) {}
