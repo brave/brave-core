@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.permission;
 
+import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -24,11 +25,11 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -63,10 +64,14 @@ public class BravePermissionAccountsListAdapter
         ACCOUNT_CONNECTION
     }
 
+    private static final Object SELECTION_CHANGED_PAYLOAD = new Object();
+
     private final ExecutorService mExecutor;
     private final Handler mHandler;
-    private final List<Integer> mCheckedPositions = new ArrayList<>();
-    private int mSelectedPosition = -1;
+    // Unique keys of the accounts the user checked. The selection is stored per account rather
+    // than read from the check boxes, because RecyclerView reuses the same view holder for
+    // different accounts while scrolling.
+    private final Set<String> mCheckedAccountKeys = new HashSet<>();
     @Nullable private final PermissionListener mDelegate;
     @Nullable private final AccountChangeListener mAccountChangeListener;
     @NonNull private final Mode mMode;
@@ -105,9 +110,17 @@ public class BravePermissionAccountsListAdapter
         mHandler = new Handler(Looper.getMainLooper());
     }
 
+    /**
+     * Replaces the accounts shown in the list. Any previous selection is cleared, as it may refer
+     * to accounts that are no longer present, and the list is refreshed.
+     *
+     * @param accountInfo accounts to show.
+     */
+    @SuppressLint("NotifyDataSetChanged")
     public void setAccounts(@NonNull final AccountInfo[] accountInfo) {
         mAccountInfoArray = accountInfo;
-        mCheckedPositions.clear();
+        mCheckedAccountKeys.clear();
+        notifyDataSetChanged();
     }
 
     public void setAccountsWithPermissions(HashSet<AccountInfo> accountsWithPermissions) {
@@ -116,16 +129,6 @@ public class BravePermissionAccountsListAdapter
 
     public void setSelectedAccount(AccountInfo selectedAccount) {
         mSelectedAccount = selectedAccount;
-        if (mMode == Mode.ACCOUNT_CONNECTION) return;
-        for (int i = 0; i < mAccountInfoArray.length; i++) {
-            if (WalletUtils.accountIdsEqual(mSelectedAccount, mAccountInfoArray[i])) {
-                // Do not add duplicates.
-                if (!mCheckedPositions.contains(i)) {
-                    mCheckedPositions.add(i);
-                }
-                break;
-            }
-        }
     }
 
     @Override
@@ -149,24 +152,21 @@ public class BravePermissionAccountsListAdapter
                                     !viewHolder.accountCheck.isChecked());
                         }
                     });
+            if (mMode == Mode.SINGLE_ACCOUNT_SELECTION) {
+                viewHolder.accountRadioButton.setOnCheckedChangeListener(
+                        (buttonView, checked) -> onCheckedChanged(viewHolder, checked));
+            } else {
+                viewHolder.accountCheck.setOnCheckedChangeListener(
+                        (buttonView, checked) -> onCheckedChanged(viewHolder, checked));
+            }
         }
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(
-            @NonNull ViewHolder holder, int position, @NonNull List<Object> payloads) {
-        // Skip binding function when payload matches the previous selected position.
-        if (payloads.isEmpty()
-                || !(payloads.get(0) instanceof Integer)
-                || ((int) payloads.get(0)) != position) {
-            super.onBindViewHolder(holder, position, payloads);
-        }
-    }
-
-    @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         final AccountInfo accountInfo = mAccountInfoArray[position];
+        holder.accountInfo = accountInfo;
         holder.titleText.setText(accountInfo.name);
         holder.subTitleText.setText(Utils.getTruncatedAddress(accountInfo.address));
         Utils.setBlockiesBitmapResourceFromAccount(
@@ -175,33 +175,21 @@ public class BravePermissionAccountsListAdapter
         switch (mMode) {
             case SINGLE_ACCOUNT_SELECTION -> {
                 holder.accountRadioButton.setVisibility(View.VISIBLE);
-                if (mSelectedAccount != null
-                        && mSelectedAccount.address.equals(accountInfo.address)) {
-                    holder.accountRadioButton.setChecked(true);
-                } else {
-                    holder.accountRadioButton.setChecked(position == mSelectedPosition);
-                }
-
-                holder.accountRadioButton.setOnCheckedChangeListener(
-                        (buttonView, checked) -> setUpListener(holder, accountInfo, checked, true));
+                holder.accountRadioButton.setChecked(isChecked(accountInfo));
             }
 
             case MULTIPLE_ACCOUNT_SELECTION -> {
                 holder.accountCheck.setVisibility(View.VISIBLE);
-                if (mSelectedAccount != null
-                        && mSelectedAccount.address.equals(accountInfo.address)) {
-                    holder.accountCheck.setChecked(true);
-                }
-                holder.accountCheck.setOnCheckedChangeListener(
-                        (buttonView, checked) ->
-                                setUpListener(holder, accountInfo, checked, false));
+                holder.accountCheck.setChecked(isChecked(accountInfo));
             }
 
             case ACCOUNT_CONNECTION -> {
                 int connectionButtonText;
-                boolean hasPermission = hasPermission(accountInfo.address);
-                boolean isConnected = accountInfo.address.equals(mSelectedAccount.address);
-                if (CoinType.SOL == mSelectedAccount.accountId.coin) {
+                final boolean hasPermission = hasPermission(accountInfo.address);
+                final boolean isConnected =
+                        mSelectedAccount != null
+                                && accountInfo.address.equals(mSelectedAccount.address);
+                if (CoinType.SOL == accountInfo.accountId.coin) {
                     connectionButtonText =
                             hasPermission
                                     ? R.string.brave_wallet_site_permissions_revoke
@@ -251,31 +239,42 @@ public class BravePermissionAccountsListAdapter
         }
     }
 
-    private void setUpListener(
-            @NonNull final ViewHolder holder,
-            @NonNull final AccountInfo accountInfo,
-            final boolean checked,
-            final boolean singleSelection) {
+    private int getCheckedPosition() {
+        for (int i = 0; i < mAccountInfoArray.length; i++) {
+            if (isChecked(mAccountInfoArray[i])) {
+                return i;
+            }
+        }
+        return RecyclerView.NO_POSITION;
+    }
+
+    private boolean isChecked(@NonNull final AccountInfo accountInfo) {
+        return mCheckedAccountKeys.contains(accountInfo.accountId.uniqueKey);
+    }
+
+    private void onCheckedChanged(@NonNull final ViewHolder holder, final boolean checked) {
+        final AccountInfo accountInfo = holder.accountInfo;
+        // Nothing to do when the state already matches the selection, which is the case when
+        // `onBindViewHolder` updates the view for the account it now shows.
+        if (accountInfo == null || checked == isChecked(accountInfo)) {
+            return;
+        }
+        final boolean singleSelection = mMode == Mode.SINGLE_ACCOUNT_SELECTION;
+        final String accountKey = accountInfo.accountId.uniqueKey;
         if (checked) {
-            mCheckedPositions.add(holder.getBindingAdapterPosition());
             if (singleSelection) {
-                mSelectedPosition = holder.getBindingAdapterPosition();
-                // Notify data set changed ONLY for more
-                // than one item, otherwise there is not point
-                if (getItemCount() > 1) {
-                    // Notify data set changed inside `Handler#post()` because of
-                    // https://issuetracker.google.com/issues/37136189
-                    mHandler.post(
-                            () -> {
-                                // Pass the selected position in the payload so it will be
-                                // excluded from `onBindViewHolder(ViewHolder, int)`. Excluding
-                                // it from another binding will fully preserve animation selection.
-                                notifyItemRangeChanged(0, getItemCount(), mSelectedPosition);
-                            });
+                // Drop the previous selection and rebind its row, which may be off screen.
+                final int previousPosition = getCheckedPosition();
+                mCheckedAccountKeys.clear();
+                if (previousPosition != RecyclerView.NO_POSITION) {
+                    // A payload makes RecyclerView rebind the same view holder in place,
+                    // preserving the radio button animation.
+                    notifyItemChanged(previousPosition, SELECTION_CHANGED_PAYLOAD);
                 }
             }
+            mCheckedAccountKeys.add(accountKey);
         } else {
-            mCheckedPositions.remove(/* element */ (Integer) holder.getBindingAdapterPosition());
+            mCheckedAccountKeys.remove(accountKey);
         }
         if (mAccountChangeListener != null) {
             mAccountChangeListener.onAccountCheckChanged(accountInfo, checked);
@@ -304,12 +303,14 @@ public class BravePermissionAccountsListAdapter
     }
 
     public AccountInfo[] getCheckedAccounts() {
-        AccountInfo[] checkedAccounts = new AccountInfo[mCheckedPositions.size()];
-        for (int i = 0; i < mCheckedPositions.size(); i++) {
-            checkedAccounts[i] = mAccountInfoArray[mCheckedPositions.get(i)];
+        final List<AccountInfo> checkedAccounts = new ArrayList<>();
+        for (AccountInfo accountInfo : mAccountInfoArray) {
+            if (isChecked(accountInfo)) {
+                checkedAccounts.add(accountInfo);
+            }
         }
 
-        return checkedAccounts;
+        return checkedAccounts.toArray(new AccountInfo[0]);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -319,6 +320,8 @@ public class BravePermissionAccountsListAdapter
         public CheckBox accountCheck;
         public MaterialRadioButton accountRadioButton;
         public TextView accountAction;
+        // Account currently shown by this view holder, set on every bind.
+        @Nullable public AccountInfo accountInfo;
 
         public ViewHolder(View itemView) {
             super(itemView);
