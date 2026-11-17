@@ -6,7 +6,12 @@
 import { mangle } from 'lit_mangler'
 
 // Puts Brave's semantic history search results above the history list. The
-// element is imported by the companion app.ts override.
+// element is imported by the companion app.ts override. The check is at
+// runtime because build-time conditionals in mangled output are never
+// evaluated, and reads loadTimeData because the template first renders before
+// the rest of app.ts runs. The query is an attribute binding: without local AI the element isn't
+// built, and the history lint can only check a property binding against an
+// element it knows.
 mangle(
   (element) => {
     const tabsContent = element.querySelector('#tabsContent')
@@ -17,9 +22,11 @@ mangle(
     }
     tabsContent.insertAdjacentHTML(
       'beforebegin',
-      `<brave-history-embeddings class="history-cards"
-          .searchQuery="\${this.queryState_.searchTerm}">
-      </brave-history-embeddings>`,
+      `\${loadTimeData.getBoolean('enableBraveHistoryEmbeddings') ? html\`
+        <brave-history-embeddings class="history-cards"
+            search-query="\${this.queryState_.searchTerm}">
+        </brave-history-embeddings>
+      \` : ''}`,
     )
   },
   (literal) => literal.text.includes('id="tabsContent"'),
