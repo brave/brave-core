@@ -1335,4 +1335,7 @@
   <message name="IDS_BRAVE_WALLET_ONBOARDING_ENABLE_CARD_NO_FEES_BENEFIT" desc="Benefit row on the onboarding Brave Rewards card screen describing that the card has no fees" formatter_data="webui=Wallet">No monthly or annual fees</message>
   <message name="IDS_BRAVE_WALLET_ONBOARDING_ENABLE_CARD_ADD_BUTTON" desc="Button on the onboarding Brave Rewards card screen that adds the card" formatter_data="webui=Wallet">Add Brave Card</message>
   <message name="IDS_BRAVE_WALLET_ONBOARDING_ENABLE_CARD_NOT_NOW_BUTTON" desc="Button on the onboarding Brave Rewards card screen that skips adding the card" formatter_data="webui=Wallet">Not now</message>
+  <message name="IDS_BRAVE_WALLET_ONBOARDING_WALLET_READY_TITLE" desc="Title on the onboarding screen shown after wallet setup finishes" formatter_data="webui=Wallet">Your wallet is ready</message>
+  <message name="IDS_BRAVE_WALLET_ONBOARDING_WALLET_READY_DESCRIPTION" desc="Description on the onboarding screen shown after wallet setup finishes" formatter_data="webui=Wallet">You’re all set. Open the Wallet to start sending, receiving, and paying with Brave.</message>
+  <message name="IDS_BRAVE_WALLET_ONBOARDING_OPEN_WALLET_BUTTON" desc="Button on the onboarding success screen that opens the wallet" formatter_data="webui=Wallet">Open wallet</message>
 </grit-part>
