@@ -5,11 +5,45 @@
 
 import("//build/config/android/rules.gni")
 
+source_set("android") {
+  sources = [
+    "password_ui_view_android.cc",
+    "password_ui_view_android.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/browser/password_entry_edit/android",
+    "//chrome/browser/affiliations",
+    "//chrome/browser/password_manager/factories",
+    "//chrome/browser/signin",
+    "//components/password_manager/core/browser",
+    "//components/password_manager/core/browser/ui",
+  ]
+
+  deps = [
+    "//chrome/app:generated_resources",
+    "//chrome/browser/password_manager/android:password_manager_android",
+    "//chrome/browser/profiles:profile_manager",
+    "//chrome/common",
+    "//components/password_manager/core/browser/export",
+    "//components/password_manager/core/browser/form_parsing",
+    "//components/password_manager/core/browser/import:importer",
+    "//components/password_manager/core/browser/leak_detection",
+    "//components/password_manager/core/common",
+    "//content/public/browser",
+    "//third_party/jni_zero",
+    "//ui/base",
+    "//url",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [ "password_ui_view_android_unittest.cc" ]
 
   deps = [
+    ":android",
     "//base",
     "//base/test:test_support",
     "//chrome/browser/password_manager:test_support",
