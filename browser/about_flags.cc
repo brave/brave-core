@@ -48,7 +48,6 @@
 #include "chrome/browser/ui/ui_features.h"
 #include "components/content_settings/core/common/features.h"
 #include "components/history/core/browser/features.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/sync/base/command_line_switches.h"
 #include "components/translate/core/browser/translate_prefs.h"
@@ -73,6 +72,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/history_embeddings/core/history_embeddings_features.h"
 #include "brave/components/local_ai/core/features.h"
 #endif
 
@@ -965,13 +965,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
 // different name to bypass the expiry system while controlling the
 // same underlying kHistoryEmbeddings feature.
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-#define BRAVE_HISTORY_EMBEDDINGS_FLAG                             \
-  EXPAND_FEATURE_ENTRIES({                                        \
-      "brave-history-embeddings",                                 \
-      "History Embeddings",                                       \
-      "Enables semantic history search using local embeddings.",  \
-      kOsDesktop,                                                 \
-      FEATURE_VALUE_TYPE(history_embeddings::kHistoryEmbeddings), \
+#define BRAVE_HISTORY_EMBEDDINGS_FLAG                                   \
+  EXPAND_FEATURE_ENTRIES({                                              \
+      "brave-history-embeddings",                                       \
+      "History Embeddings",                                             \
+      "Enables semantic history search using local embeddings.",        \
+      kOsDesktop,                                                       \
+      FEATURE_VALUE_TYPE(brave_history_embeddings::kHistoryEmbeddings), \
   })
 #else
 #define BRAVE_HISTORY_EMBEDDINGS_FLAG

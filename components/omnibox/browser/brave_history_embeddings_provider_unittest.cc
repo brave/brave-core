@@ -16,17 +16,17 @@
 #include <utility>
 #include <vector>
 
+#include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/strings/string_number_conversions.h"
-#include "base/test/bind.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
-#include "brave/components/history_embeddings/core/answerer.h"
 #include "brave/components/history_embeddings/core/history_embeddings_features.h"
 #include "brave/components/history_embeddings/core/history_embeddings_search.h"
+#include "brave/components/history_embeddings/core/vector_database.h"
+#include "brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/url_row.h"
 #include "components/history/core/test/history_service_test_util.h"
@@ -34,29 +34,18 @@
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/autocomplete_provider_listener.h"
-#include "components/omnibox/browser/fake_autocomplete_provider_client.h"
-#include "components/omnibox/browser/omnibox_triggered_feature_service.h"
 #include "components/omnibox/browser/test_scheme_classifier.h"
-#include "components/optimization_guide/proto/features/history_answer.pb.h"
-#include "components/os_crypt/async/browser/os_crypt_async.h"
-#include "components/os_crypt/async/browser/test_utils.h"
 #include "components/search_engines/template_url.h"
+#include "components/search_engines/template_url_data.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/metrics_proto/omnibox_event.pb.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
-#if BUILDFLAG(IS_CHROMEOS)
-#include "chromeos/constants/chromeos_features.h"
-#endif  // BUILDFLAG(IS_CHROMEOS)
-
-using testing::AllOf;
-using testing::ElementsAre;
-using testing::Field;
-using enum brave_history_embeddings::ComputeAnswerStatus;
-
 namespace {
-AutocompleteInput CreateAutocompleteInput(const std::u16string input) {
+
+AutocompleteInput CreateAutocompleteInput(const std::u16string& input) {
   return {input, metrics::OmniboxEventProto::OTHER, TestSchemeClassifier()};
 }
 
@@ -97,6 +86,50 @@ TemplateURL CreateTemplateUrl() {
   template_url_data.SetURL("https://url.com");
   return TemplateURL{template_url_data};
 }
+
+class MockHistoryEmbeddingsSearch
+    : public brave_history_embeddings::HistoryEmbeddingsSearch {
+ public:
+  MOCK_METHOD(brave_history_embeddings::SearchResult,
+              Search,
+              (brave_history_embeddings::SearchResult * previous_search_result,
+               std::string query,
+               std::optional<base::Time> time_range_start,
+               size_t count,
+               std::vector<history::URLID> url_id_filter,
+               brave_history_embeddings::SearchResultCallback callback),
+              (override));
+};
+
+// Hands the provider a search, as the real client does once the profile's
+// service was built.
+class HistoryEmbeddingsAutocompleteProviderClient
+    : public BraveFakeAutocompleteProviderClient {
+ public:
+  brave_history_embeddings::HistoryEmbeddingsSearch*
+  GetBraveHistoryEmbeddingsSearch() override {
+    return search_.get();
+  }
+
+  history::HistoryService* GetHistoryService() override {
+    return history_service_.get();
+  }
+
+  void set_history_service(std::unique_ptr<history::HistoryService> service) {
+    history_service_ = std::move(service);
+  }
+
+  void set_search(
+      std::unique_ptr<brave_history_embeddings::HistoryEmbeddingsSearch>
+          search) {
+    search_ = std::move(search);
+  }
+
+ private:
+  std::unique_ptr<history::HistoryService> history_service_;
+  std::unique_ptr<brave_history_embeddings::HistoryEmbeddingsSearch> search_;
+};
+
 }  // namespace
 
 class FakeBraveHistoryEmbeddingsProvider
@@ -114,39 +147,21 @@ class FakeBraveHistoryEmbeddingsProvider
   ~FakeBraveHistoryEmbeddingsProvider() override = default;
 };
 
-class MockHistoryEmbeddingsSearch
-    : public brave_history_embeddings::HistoryEmbeddingsSearch {
- public:
-  MOCK_METHOD(brave_history_embeddings::SearchResult,
-              Search,
-              (brave_history_embeddings::SearchResult * previous_search_result,
-               std::string query,
-               std::optional<base::Time> time_range_start,
-               size_t count,
-               bool skip_answering,
-               std::vector<history::URLID> url_id_filter,
-               brave_history_embeddings::SearchResultCallback callback),
-              (override));
-};
-
 class BraveHistoryEmbeddingsProviderTest : public testing::Test,
                                            public AutocompleteProviderListener {
  public:
   void SetUp() override {
     testing::Test::SetUp();
 
-    os_crypt_ = os_crypt_async::GetTestOSCryptAsyncForTesting(
-        /*is_sync_for_unittests=*/true);
-
     CHECK(history_dir_.CreateUniqueTempDir());
-    client_ = std::make_unique<FakeAutocompleteProviderClient>();
+    client_ = std::make_unique<HistoryEmbeddingsAutocompleteProviderClient>();
     client_->set_history_service(
         history::CreateHistoryService(history_dir_.GetPath(), true));
 
     auto mock_search =
         std::make_unique<testing::NiceMock<MockHistoryEmbeddingsSearch>>();
     history_embeddings_search_ = mock_search.get();
-    client_->set_history_embeddings_search(std::move(mock_search));
+    client_->set_search(std::move(mock_search));
 
     history_embeddings_provider_ =
         new FakeBraveHistoryEmbeddingsProvider(client_.get(), this);
@@ -155,12 +170,11 @@ class BraveHistoryEmbeddingsProviderTest : public testing::Test,
     // can be ran to simulate `Search()` responding asyncly.
     ON_CALL(*history_embeddings_search_,
             Search(testing::_, testing::_, testing::_, testing::_, testing::_,
-                   testing::_, testing::_))
+                   testing::_))
         .WillByDefault(
             [&](brave_history_embeddings::SearchResult* previous_search_result,
                 std::string query, std::optional<base::Time> time_range_start,
-                size_t count, bool skip_answering,
-                std::vector<history::URLID> url_id_filter,
+                size_t count, std::vector<history::URLID> url_id_filter,
                 brave_history_embeddings::SearchResultCallback callback) {
               search_callbacks_.push_back(base::BindOnce(
                   [](brave_history_embeddings::SearchResultCallback callback,
@@ -173,16 +187,32 @@ class BraveHistoryEmbeddingsProviderTest : public testing::Test,
             });
   }
 
+  void TearDown() override {
+    history_embeddings_search_ = nullptr;
+    history_embeddings_provider_ = nullptr;
+    client_.reset();
+    brave_history_embeddings::SetFeatureParametersForTesting(
+        brave_history_embeddings::FeatureParameters(/*load_finch=*/false));
+    testing::Test::TearDown();
+  }
+
   // AutocompleteProviderListener:
   void OnProviderUpdate(bool updated_matches,
                         const AutocompleteProvider* provider) override {
     last_update_matches_ = history_embeddings_provider_->matches_;
   }
 
+ protected:
+  void SetSearchQueryMinimumWordCount(size_t count) {
+    auto feature_parameters = brave_history_embeddings::GetFeatureParameters();
+    feature_parameters.search_query_minimum_word_count = count;
+    brave_history_embeddings::SetFeatureParametersForTesting(
+        feature_parameters);
+  }
+
   base::ScopedTempDir history_dir_;
-  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
   base::test::TaskEnvironment task_environment_;
-  std::unique_ptr<FakeAutocompleteProviderClient> client_;
+  std::unique_ptr<HistoryEmbeddingsAutocompleteProviderClient> client_;
   raw_ptr<testing::NiceMock<MockHistoryEmbeddingsSearch>>
       history_embeddings_search_;
   scoped_refptr<FakeBraveHistoryEmbeddingsProvider>
@@ -197,73 +227,48 @@ class BraveHistoryEmbeddingsProviderTest : public testing::Test,
 };
 
 TEST_F(BraveHistoryEmbeddingsProviderTest, Start) {
-  OmniboxTriggeredFeatureService* trigger_service =
-      client_->GetOmniboxTriggeredFeatureService();
-  OmniboxTriggeredFeatureService::Feature trigger_feature =
-      metrics::OmniboxEventProto_Feature_HISTORY_EMBEDDINGS_FEATURE;
-
   AutocompleteInput short_input = CreateAutocompleteInput(u"query");
   AutocompleteInput sync_long_input =
       CreateAutocompleteInput(u"query query query");
   sync_long_input.set_omit_asynchronous_matches(true);
   AutocompleteInput long_input = CreateAutocompleteInput(u"query query query");
 
-  // When the feature is disabled, should early exit.
-  EXPECT_CALL(*client_, IsHistoryEmbeddingsEnabled())
-      .WillOnce(testing::Return(false));
-  EXPECT_CALL(*history_embeddings_search_,
-              Search(testing::_, testing::_, testing::_, testing::_, testing::_,
-                     testing::_, testing::_))
-      .Times(0);
-  history_embeddings_provider_->Start(long_input, false);
-  EXPECT_FALSE(trigger_service->GetFeatureTriggeredInSession(trigger_feature));
-
   // Short queries should be blocked.
-  auto feature_parameters = brave_history_embeddings::GetFeatureParameters();
-  feature_parameters.search_query_minimum_word_count = 3;
-  brave_history_embeddings::SetFeatureParametersForTesting(feature_parameters);
-  base::test::ScopedFeatureList enabled_feature;
-  enabled_feature.InitWithFeaturesAndParameters(
-      {{brave_history_embeddings::kHistoryEmbeddings, {}},
-#if BUILDFLAG(IS_CHROMEOS)
-       {chromeos::features::kFeatureManagementHistoryEmbedding, {{}}}
-#endif  // BUILDFLAG(IS_CHROMEOS)
-      },
-      /*disabled_features=*/{});
-  EXPECT_CALL(*client_, IsHistoryEmbeddingsEnabled())
-      .WillRepeatedly(testing::Return(true));
-
+  SetSearchQueryMinimumWordCount(3);
   EXPECT_CALL(*history_embeddings_search_,
               Search(testing::_, testing::_, testing::_, testing::_, testing::_,
-                     testing::_, testing::_))
+                     testing::_))
       .Times(0);
   history_embeddings_provider_->Start(short_input, false);
-  EXPECT_FALSE(trigger_service->GetFeatureTriggeredInSession(trigger_feature));
-  trigger_service->ResetSession();
 
   // Sync queries should be blocked.
   EXPECT_CALL(*history_embeddings_search_,
               Search(testing::_, testing::_, testing::_, testing::_, testing::_,
-                     testing::_, testing::_))
+                     testing::_))
       .Times(0);
   history_embeddings_provider_->Start(sync_long_input, false);
-  EXPECT_FALSE(trigger_service->GetFeatureTriggeredInSession(trigger_feature));
-  trigger_service->ResetSession();
 
   // Long queries should pass.
-  EXPECT_CALL(
-      *history_embeddings_search_,
-      Search(testing::_, "query query query", std::optional<base::Time>{}, 3u,
-             false, testing::_, testing::_))
+  EXPECT_CALL(*history_embeddings_search_,
+              Search(testing::_, "query query query",
+                     std::optional<base::Time>{}, 3u, testing::_, testing::_))
       .Times(1);
   history_embeddings_provider_->Start(long_input, false);
-  EXPECT_TRUE(trigger_service->GetFeatureTriggeredInSession(trigger_feature));
+}
+
+// Without a service for the profile, the provider has nothing to search.
+TEST_F(BraveHistoryEmbeddingsProviderTest, Start_NoSearch) {
+  // Drop the raw_ptr before the client frees what it points at.
+  history_embeddings_search_ = nullptr;
+  client_->set_search(nullptr);
+
+  history_embeddings_provider_->Start(
+      CreateAutocompleteInput(u"query query query"), false);
+  EXPECT_TRUE(history_embeddings_provider_->done_);
+  EXPECT_TRUE(history_embeddings_provider_->matches_.empty());
 }
 
 TEST_F(BraveHistoryEmbeddingsProviderTest, Start_MultipleSequentialSearches) {
-  EXPECT_CALL(*client_, IsHistoryEmbeddingsEnabled())
-      .WillRepeatedly(testing::Return(true));
-
   // Start 1st search.
   history_embeddings_provider_->Start(CreateAutocompleteInput(u"1 1 1"), false);
   EXPECT_TRUE(last_update_matches_.empty());
@@ -288,9 +293,6 @@ TEST_F(BraveHistoryEmbeddingsProviderTest, Start_MultipleSequentialSearches) {
 }
 
 TEST_F(BraveHistoryEmbeddingsProviderTest, Start_MultipleParallelSearches) {
-  EXPECT_CALL(*client_, IsHistoryEmbeddingsEnabled())
-      .WillRepeatedly(testing::Return(true));
-
   // Start 1st search.
   history_embeddings_provider_->Start(CreateAutocompleteInput(u"1 1 1"), false);
   EXPECT_TRUE(last_update_matches_.empty());
@@ -312,9 +314,6 @@ TEST_F(BraveHistoryEmbeddingsProviderTest, Start_MultipleParallelSearches) {
 
 TEST_F(BraveHistoryEmbeddingsProviderTest,
        Start_MultipleParallelSearchesWithSameQuery) {
-  EXPECT_CALL(*client_, IsHistoryEmbeddingsEnabled())
-      .WillRepeatedly(testing::Return(true));
-
   // Start 1st search.
   history_embeddings_provider_->Start(CreateAutocompleteInput(u"1 1 1"), false);
   EXPECT_TRUE(last_update_matches_.empty());
@@ -342,19 +341,7 @@ TEST_F(BraveHistoryEmbeddingsProviderTest,
 
 TEST_F(BraveHistoryEmbeddingsProviderTest,
        Start_MultipleParallelSearchesWithIneligibleQuery) {
-  auto feature_parameters = brave_history_embeddings::GetFeatureParameters();
-  feature_parameters.search_query_minimum_word_count = 3;
-  brave_history_embeddings::SetFeatureParametersForTesting(feature_parameters);
-  base::test::ScopedFeatureList enabled_feature;
-  enabled_feature.InitWithFeaturesAndParameters(
-      {{brave_history_embeddings::kHistoryEmbeddings, {}},
-#if BUILDFLAG(IS_CHROMEOS)
-       {chromeos::features::kFeatureManagementHistoryEmbedding, {{}}}
-#endif  // BUILDFLAG(IS_CHROMEOS)
-      },
-      /*disabled_features=*/{});
-  EXPECT_CALL(*client_, IsHistoryEmbeddingsEnabled())
-      .WillRepeatedly(testing::Return(true));
+  SetSearchQueryMinimumWordCount(3);
 
   // Start 1st search.
   history_embeddings_provider_->Start(CreateAutocompleteInput(u"1 1 1"), false);
@@ -374,9 +361,6 @@ TEST_F(BraveHistoryEmbeddingsProviderTest,
 
 TEST_F(BraveHistoryEmbeddingsProviderTest,
        Start_Stop_SearchCompletesAfterStop) {
-  EXPECT_CALL(*client_, IsHistoryEmbeddingsEnabled())
-      .WillRepeatedly(testing::Return(true));
-
   // Start search.
   history_embeddings_provider_->Start(CreateAutocompleteInput(u"1 1 1"), false);
   EXPECT_TRUE(last_update_matches_.empty());
@@ -388,11 +372,22 @@ TEST_F(BraveHistoryEmbeddingsProviderTest,
   EXPECT_TRUE(last_update_matches_.empty());
 }
 
+// A search that outlasts the stop timer still delivers its results.
+TEST_F(BraveHistoryEmbeddingsProviderTest,
+       Start_StopTimer_SearchCompletesAfterStop) {
+  history_embeddings_provider_->Start(CreateAutocompleteInput(u"1 1 1"), false);
+
+  history_embeddings_provider_->Stop(AutocompleteStopReason::kInactivity);
+
+  std::move(search_callbacks_[0]).Run("1 1 1", u"1");
+  EXPECT_THAT(last_update_matches_,
+              testing::ElementsAre(
+                  testing::Field(&AutocompleteMatch::description, u"1")));
+}
+
 TEST_F(BraveHistoryEmbeddingsProviderTest, Stop) {
   history_embeddings_provider_->done_ = false;
 
-  // TODO(https://github.com/brave/brave-browser/issues/61789) Temporarily
-  // allow history embeddings provider to ignore `Stop()`.
   history_embeddings_provider_->Stop(AutocompleteStopReason::kInactivity);
   EXPECT_FALSE(history_embeddings_provider_->done_);
 
@@ -472,160 +467,5 @@ TEST_F(BraveHistoryEmbeddingsProviderTest,
   EXPECT_TRUE(PageTransitionCoreTypeIs(
       history_embeddings_provider_->matches_[0].transition,
       ui::PAGE_TRANSITION_KEYWORD));
-}
-
-TEST_F(BraveHistoryEmbeddingsProviderTest,
-       OnReceivedSearchResult_CreatesScopedAutocompleteAnswerMatches) {
-  auto feature_parameters = brave_history_embeddings::GetFeatureParameters();
-  feature_parameters.answers_in_omnibox_scoped = true;
-  feature_parameters.trim_after_host_in_results = true;
-  brave_history_embeddings::SetFeatureParametersForTesting(feature_parameters);
-
-  base::test::ScopedFeatureList enabled_feature;
-  enabled_feature.InitWithFeaturesAndParameters(
-      {{brave_history_embeddings::kHistoryEmbeddings, {}},
-#if BUILDFLAG(IS_CHROMEOS)
-       {chromeos::features::kFeatureManagementHistoryEmbedding, {{}}}
-#endif  // BUILDFLAG(IS_CHROMEOS)
-      },
-      /*disabled_features=*/{});
-
-  TemplateURL template_url = CreateTemplateUrl();
-  history_embeddings_provider_->starter_pack_engine_ = &template_url;
-
-  // 1st response with status `kUnspecified`.
-  brave_history_embeddings::SearchResult result;
-  result.query = "query";
-  result.scored_url_rows = {
-      CreateScoredUrlRow(.75, "https://url1.com/", u"title"),
-      CreateScoredUrlRow(.50, "https://url2.com/path?key=value", u"title"),
-      CreateScoredUrlRow(.25, "https://url3.com/", u"title"),
-  };
-  base::Time time;
-  EXPECT_TRUE(base::Time::FromLocalExploded(
-      {.year = 2025, .month = 3, .day_of_month = 23}, &time));
-  result.scored_url_rows[1].row.set_last_visit(time);
-
-  history_embeddings_provider_->done_ = false;
-  history_embeddings_provider_->input_ = CreateAutocompleteInput(u"query");
-  history_embeddings_provider_->input_.set_in_keyword_mode(true);
-  history_embeddings_provider_->OnReceivedSearchResult(result.Clone());
-
-  // Set up expected matches.
-  auto expected_match_1 =
-      AllOf(Field(&AutocompleteMatch::relevance, 750),
-            Field(&AutocompleteMatch::type,
-                  omnibox::AutocompleteMatchType::kHistoryEmbeddings),
-            Field(&AutocompleteMatch::destination_url, "https://url1.com/"));
-  auto expected_match_2 =
-      AllOf(Field(&AutocompleteMatch::relevance, 500),
-            Field(&AutocompleteMatch::type,
-                  omnibox::AutocompleteMatchType::kHistoryEmbeddings),
-            Field(&AutocompleteMatch::destination_url,
-                  "https://url2.com/path?key=value"));
-  auto expected_match_3 =
-      AllOf(Field(&AutocompleteMatch::relevance, 250),
-            Field(&AutocompleteMatch::type,
-                  omnibox::AutocompleteMatchType::kHistoryEmbeddings),
-            Field(&AutocompleteMatch::destination_url, "https://url3.com/"));
-
-  // Expect only non-answer matches.
-  EXPECT_FALSE(history_embeddings_provider_->done_);
-  EXPECT_THAT(
-      history_embeddings_provider_->matches_,
-      ElementsAre(expected_match_1, expected_match_2, expected_match_3));
-
-  // 2nd response with status `kLoading`.
-  auto result_loading = result.Clone();
-  result_loading.answerer_result.status = kLoading;
-  result_loading.answerer_result.query = "query";
-  history_embeddings_provider_->OnReceivedSearchResult(
-      std::move(result_loading));
-
-  // Expect the same non-answer matches as well as a 'loading' answer match,
-  // scored 1 less than the top match.
-  EXPECT_FALSE(history_embeddings_provider_->done_);
-  EXPECT_THAT(
-      history_embeddings_provider_->matches_,
-      ElementsAre(
-          expected_match_1, expected_match_2, expected_match_3,
-          AllOf(Field(&AutocompleteMatch::relevance, 749),
-                Field(&AutocompleteMatch::type,
-                      omnibox::AutocompleteMatchType::kHistoryEmbeddingsAnswer),
-                Field(&AutocompleteMatch::destination_url, ""),
-                Field(&AutocompleteMatch::history_embeddings_answer_header_text,
-                      u"Searching for a summary\x2026"),
-                Field(&AutocompleteMatch::description, u""))));
-
-  // 3rd response with status `kSuccess`.
-  auto result_success = result.Clone();
-  result_success.answerer_result.status = kSuccess;
-  result_success.answerer_result.query = "query";
-  result_success.answerer_result.answer.set_score(1);
-  result_success.answerer_result.answer.set_text("answer text");
-  result_success.answerer_result.url = "https://url2.com/path?key=value";
-  history_embeddings_provider_->OnReceivedSearchResult(
-      std::move(result_success));
-
-  // Expect the same non-answer matches as well as a flushed out answer match,
-  // scored 1 less than the corresponding match.
-  EXPECT_TRUE(history_embeddings_provider_->done_);
-  EXPECT_THAT(
-      history_embeddings_provider_->matches_,
-      ElementsAre(
-          expected_match_1, expected_match_2, expected_match_3,
-          AllOf(Field(&AutocompleteMatch::relevance, 499),
-                Field(&AutocompleteMatch::type,
-                      omnibox::AutocompleteMatchType::kHistoryEmbeddingsAnswer),
-                Field(&AutocompleteMatch::destination_url,
-                      "chrome://history/?q=query"),
-                Field(&AutocompleteMatch::history_embeddings_answer_header_text,
-                      u"Summary"),
-                Field(&AutocompleteMatch::description, u"answer text"),
-                Field(&AutocompleteMatch::contents,
-                      u"url2.com  •  Visited Mar 23, 2025"))));
-
-  // Test error cases.
-  std::u16string execution_error =
-      u"Something went wrong. Please try again later.";
-  std::u16string non_temporary_error = u"Sorry, I can't help you with that.";
-  for (const auto& [status, expected_answer_text] :
-       std::vector<std::pair<brave_history_embeddings::ComputeAnswerStatus,
-                             std::u16string>>{
-           {kUnanswerable, u""},
-           {kModelUnavailable, u""},
-           {kExecutionFailure, execution_error},
-           {kExecutionCancelled, u""},
-           {kFiltered, u""}}) {
-    SCOPED_TRACE("Testing status: " +
-                 base::NumberToString(static_cast<int>(status)));
-    auto result_error = result.Clone();
-    result_error.answerer_result.status = status;
-    history_embeddings_provider_->done_ = false;
-    history_embeddings_provider_->OnReceivedSearchResult(
-        std::move(result_error));
-
-    EXPECT_TRUE(history_embeddings_provider_->done_);
-    if (expected_answer_text.empty()) {
-      EXPECT_THAT(
-          history_embeddings_provider_->matches_,
-          ElementsAre(expected_match_1, expected_match_2, expected_match_3));
-    } else {
-      EXPECT_THAT(
-          history_embeddings_provider_->matches_,
-          ElementsAre(
-              expected_match_1, expected_match_2, expected_match_3,
-              AllOf(
-                  Field(&AutocompleteMatch::relevance, 749),
-                  Field(
-                      &AutocompleteMatch::type,
-                      omnibox::AutocompleteMatchType::kHistoryEmbeddingsAnswer),
-                  Field(&AutocompleteMatch::destination_url, ""),
-                  Field(
-                      &AutocompleteMatch::history_embeddings_answer_header_text,
-                      u"Summary"),
-                  Field(&AutocompleteMatch::description, expected_answer_text),
-                  Field(&AutocompleteMatch::contents, u""))));
-    }
-  }
+  history_embeddings_provider_->starter_pack_engine_ = nullptr;
 }

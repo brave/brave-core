@@ -11,18 +11,17 @@
 #ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_HISTORY_EMBEDDINGS_PROVIDER_H_
 #define BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_HISTORY_EMBEDDINGS_PROVIDER_H_
 
-#include <optional>
-#include <string>
-
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/history_embeddings/core/history_embeddings_search.h"
-#include "components/omnibox/browser/autocomplete_enums.h"
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/history_provider.h"
 
 class AutocompleteProviderClient;
+class AutocompleteProviderListener;
 class TemplateURL;
 
+// Shows semantic history search matches in the @history scope.
 class BraveHistoryEmbeddingsProvider : public HistoryProvider {
  public:
   BraveHistoryEmbeddingsProvider(AutocompleteProviderClient* client,
@@ -44,20 +43,6 @@ class BraveHistoryEmbeddingsProvider : public HistoryProvider {
   // Creates a `HISTORY_EMBEDDINGS` match.
   AutocompleteMatch CreateMatch(
       const brave_history_embeddings::ScoredUrlRow& scored_url_row);
-
-  // Creates a HISTORY_EMBEDDINGS_ANSWER` match. `scored_url_row` is the
-  // `ScoredUrlRow` `answerer_result` was derived from; `match` is the match
-  // created by `CreateMatch()` for `scored_url_row`.
-  std::optional<AutocompleteMatch> CreateAnswerMatch(
-      const brave_history_embeddings::AnswererResult& answerer_result,
-      const brave_history_embeddings::ScoredUrlRow& scored_url_row,
-      const AutocompleteMatch& match);
-
-  // Creates a HISTORY_EMBEDDINGS_ANSWER` match.
-  AutocompleteMatch CreateAnswerMatchHelper(
-      int score,
-      const std::u16string& history_embeddings_answer_header_text,
-      const std::u16string& description);
 
   // Assigned in `Start()`, accessed in `OnReceivedSearchResult()` which is only
   // called asyncly after `Start()`, so it's never null when accessed.

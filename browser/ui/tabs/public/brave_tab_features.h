@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -194,6 +195,11 @@ class BraveTabFeatures : public TabFeatures {
 
   // Records searches. Null when SERP metrics are disabled or off the record.
   std::unique_ptr<ContentsObservingTabFeature> serp_metrics_tab_helper_;
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // Hands history visits to the semantic history search index. Null when the
+  // profile has no index.
+  std::unique_ptr<ContentsObservingTabFeature> history_embeddings_tab_helper_;
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   // Notifies the ads service of tab events.
   std::unique_ptr<ContentsObservingTabFeature> ads_tab_helper_;

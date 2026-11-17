@@ -30,30 +30,17 @@ substitutions:
       value: base::FEATURE_DISABLED_BY_DEFAULT
 
   - description: |-
-      Gate IsHistoryEmbeddingsFeatureEnabled on the local-state
-      kBraveLocalAIEnabled master switch.
+      Keep upstream's history embeddings off.
 
-      This function is the chokepoint every upstream consumer reaches the
-      feature through (model component installer, settings toggle
-      visibility, history embeddings service factory, etc.), so folding it
-      off here folds off every consumer with it, without needing to touch
-      each of them individually. See ShouldForceHistoryEmbeddingsFeatureDisabled
-      in the chromium_src override for the actual check.
+      Brave runs its own fork in //brave/components/history_embeddings.
+      Every upstream consumer reaches the feature through this function,
+      including HistoryEmbeddingsServiceFactory, so returning false here keeps
+      upstream's service from being built and its UI from showing, whatever
+      the feature flags say.
     preempt_function_impl:
       function_name: IsHistoryEmbeddingsFeatureEnabled
-      return_if: 'ShouldForceHistoryEmbeddingsFeatureDisabled()'
+      return_if: 'true'
       return_value: 'false'
-
-  - description: |-
-      Additionally gate IsHistoryEmbeddingsEnabledForProfile on the
-      per-profile kBraveHistoryEmbeddingsEnabled pref.
-
-      See ComputeHistoryEmbeddingsEnabledForProfile in the chromium_src
-      override for the actual check.
-    preempt_function_impl:
-      function_name: IsHistoryEmbeddingsEnabledForProfile
-      code: |-
-        if ((true)) return ComputeHistoryEmbeddingsEnabledForProfile(profile);
 
   - description: |-
       Force IsHistoryEmbeddingsSettingVisible off.

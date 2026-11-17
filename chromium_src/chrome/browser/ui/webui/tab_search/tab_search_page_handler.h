@@ -25,7 +25,7 @@
 #include "brave/components/history_embeddings/content/open_tab_passages.h"
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
-namespace history_embeddings {
+namespace brave_history_embeddings {
 class HistoryEmbeddingsSearch;
 }
 
@@ -103,7 +103,8 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
   // tests can avoid standing up a real `HistoryEmbeddingsService`.
   // Pass nullopt to drop the override and go back to the profile's service.
   void SetEmbeddingsSearchForTesting(
-      std::optional<base::WeakPtr<history_embeddings::HistoryEmbeddingsSearch>>
+      std::optional<
+          base::WeakPtr<brave_history_embeddings::HistoryEmbeddingsSearch>>
           search) {
     embeddings_search_for_testing_ = std::move(search);
   }
@@ -112,9 +113,9 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
   // Stands in for the passage read in `GetTabsForAIEngine`. The read needs a
   // real `HistoryEmbeddingsService`, which the factory only builds behind
   // signin and opt-in gating that a browser test can't satisfy.
-  using TabPassagesFetcher =
-      base::RepeatingCallback<void(const std::vector<GURL>&,
-                                   history_embeddings::TabPassagesCallback)>;
+  using TabPassagesFetcher = base::RepeatingCallback<void(
+      const std::vector<GURL>&,
+      brave_history_embeddings::TabPassagesCallback)>;
   void SetTabPassagesFetcherForTesting(TabPassagesFetcher fetcher) {
     tab_passages_fetcher_for_testing_ = std::move(fetcher);
   }
@@ -178,7 +179,8 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
 
   // Set means a test installed an override; the pointer inside may still have
   // been invalidated.
-  std::optional<base::WeakPtr<history_embeddings::HistoryEmbeddingsSearch>>
+  std::optional<
+      base::WeakPtr<brave_history_embeddings::HistoryEmbeddingsSearch>>
       embeddings_search_for_testing_;
 
 #if BUILDFLAG(ENABLE_AI_CHAT)

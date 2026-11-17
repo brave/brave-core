@@ -219,6 +219,139 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/history/app.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/history/app.html.ts
++++ gen/chrome/browser/resources/history/preprocessed/app.html.ts
+@@ -4,55 +4,25 @@
+ 
+ export function getHtml(this: HistoryAppElement) {
+   // clang-format off
+   return html\`<!--_html_template_start_-->
+-<history-query-manager .queryResult="\${this.queryResult_}"
+-    @query-finished="\${this.onQueryFinished_}"
+-    @query-state-changed="\${this.onQueryStateChanged_}">
++<history-query-manager .queryResult="\${this.queryResult_}" @query-finished="\${this.onQueryFinished_}" @query-state-changed="\${this.onQueryStateChanged_}">
+ </history-query-manager>
+-<history-router id="router" .selectedPage="\${this.selectedPage_}"
+-    .queryState="\${this.queryState_}"
+-    .lastSelectedTab="\${this.lastSelectedTab_}"
+-    @selected-page-changed="\${this.onSelectedPageChanged_}">
++<history-router id="router" .selectedPage="\${this.selectedPage_}" .queryState="\${this.queryState_}" .lastSelectedTab="\${this.lastSelectedTab_}" @selected-page-changed="\${this.onSelectedPageChanged_}">
+ </history-router>
+-<history-toolbar id="toolbar" ?has-drawer="\${this.hasDrawer_}"
+-    ?has-more-results="\${!this.queryResult_.info?.finished}"
+-    ?pending-delete="\${this.pendingDelete_}"
+-    .queryInfo="\${this.queryResult_.info}"
+-    ?querying="\${this.queryState_.querying}"
+-    .searchTerm="\${this.queryState_.searchTerm}"
+-    ?spinner-active="\${this.shouldShowSpinner_()}"
+-    .selectedPage="\${this.selectedPage_}" @search-term-native-before-input="\${
+-        this.onToolbarSearchTermNativeBeforeInput_}"
+-    @search-term-native-input="\${this.onToolbarSearchTermNativeInput_}"
+-    @search-term-cleared="\${this.onToolbarSearchTermCleared_}">
++<history-toolbar id="toolbar" ?has-drawer="\${this.hasDrawer_}" ?has-more-results="\${!this.queryResult_.info?.finished}" ?pending-delete="\${this.pendingDelete_}" .queryInfo="\${this.queryResult_.info}" ?querying="\${this.queryState_.querying}" .searchTerm="\${this.queryState_.searchTerm}" ?spinner-active="\${this.shouldShowSpinner_()}" .selectedPage="\${this.selectedPage_}" @search-term-native-before-input="\${
++        this.onToolbarSearchTermNativeBeforeInput_}" @search-term-native-input="\${this.onToolbarSearchTermNativeInput_}" @search-term-cleared="\${this.onToolbarSearchTermCleared_}">
+ </history-toolbar>
+ <div id="main-container">
+-  <history-side-bar id="contentSideBar" .selectedPage="\${this.selectedPage_}"
+-      @selected-page-changed="\${this.onSelectedPageChanged_}"
+-      .selectedTab="\${this.selectedTab_}"
+-      @selected-tab-changed="\${this.onSelectedTabChanged_}"
+-      .footerInfo="\${this.footerInfo}"
+-      ?history-clusters-enabled="\${this.historyClustersEnabled_}"
+-      ?history-clusters-visible="\${this.historyClustersVisible_}"
+-      @history-clusters-visible-changed="\${
+-          this.onHistoryClustersVisibleChanged_}"
+-      ?hidden="\${this.hasDrawer_}">
++  <history-side-bar id="contentSideBar" .selectedPage="\${this.selectedPage_}" @selected-page-changed="\${this.onSelectedPageChanged_}" .selectedTab="\${this.selectedTab_}" @selected-tab-changed="\${this.onSelectedTabChanged_}" .footerInfo="\${this.footerInfo}" ?history-clusters-enabled="\${this.historyClustersEnabled_}" ?history-clusters-visible="\${this.historyClustersVisible_}" @history-clusters-visible-changed="\${
++          this.onHistoryClustersVisibleChanged_}" ?hidden="\${this.hasDrawer_}">
+   </history-side-bar>
+-  <cr-page-selector id="content" attr-for-selected="path"
+-      selected="\${this.contentPage_}"
+-      @iron-select="\${this.onContentIronSelect_}">
++  <cr-page-selector id="content" attr-for-selected="path" selected="\${this.contentPage_}" @iron-select="\${this.onContentIronSelect_}">
+     <div id="tabsContainer" path="history">
+-      <div id="historyEmbeddingsDisclaimer" class="history-cards"
+-          ?hidden="\${!this.enableHistoryEmbeddings_}"
+-          ?narrow="\${this.hasDrawer_}">
++      <div id="historyEmbeddingsDisclaimer" class="history-cards" ?hidden="\${!this.enableHistoryEmbeddings_}" ?narrow="\${this.hasDrawer_}">
+         <div id="historyEmbeddingsDisclaimerContent">
+           $i18n{historyEmbeddingsDisclaimer}
+-          <a id="historyEmbeddingsDisclaimerLink"
+-              href="$i18n{historyEmbeddingsSettingsUrl}" target="_blank"
+-              aria-describedby="historyEmbeddingsDisclaimer"
+-              @click="\${this.onHistoryEmbeddingsDisclaimerLinkClick_}"
+-              @auxclick="\${this.onHistoryEmbeddingsDisclaimerLinkAuxclick_}">
++          <a id="historyEmbeddingsDisclaimerLink" href="$i18n{historyEmbeddingsSettingsUrl}" target="_blank" aria-describedby="historyEmbeddingsDisclaimer" @click="\${this.onHistoryEmbeddingsDisclaimerLinkClick_}" @auxclick="\${this.onHistoryEmbeddingsDisclaimerLinkAuxclick_}">
+             $i18n{learnMore}
+           </a>
+         </div>
+       </div>
+@@ -78,22 +48,20 @@
+         </history-filter-chips>
+       \` : ''}
+       <div id="tabsScrollContainer" class="cr-scrollable">
+         <div class="cr-scrollable-top-shadow" ?hidden="\${this.showTabs_}"></div>
+-<if expr="not is_chromeos">
++
+         \${this.shouldShowHistoryPageHistorySyncPromo_() ? html\`
+           <div class="history-cards">
+             <history-sync-promo></history-sync-promo>
+           </div>
+         \` : ''}
+-        <div class="history-cards"
+-            ?hidden="\${!this.shouldShowHistoryCrossDeviceSigninPromo_}">
+-          <history-cross-device-signin-promo id="historyCrossDeviceSigninPromo"
+-              @should-show-history-cross-device-signin-promo="\${
++        <div class="history-cards" ?hidden="\${!this.shouldShowHistoryCrossDeviceSigninPromo_}">
++          <history-cross-device-signin-promo id="historyCrossDeviceSigninPromo" @should-show-history-cross-device-signin-promo="\${
+                   this.onShouldShowHistoryCrossDeviceSigninPromo_}">
+           </history-cross-device-signin-promo>
+         </div>
+-</if>
++
+         \${this.enableHistoryEmbeddings_ ? html\`
+           <div id="historyEmbeddingsContainer" class="history-cards">
+             <history-embeddings-promo></history-embeddings-promo>
+             <cr-history-embeddings-filter-chips
+@@ -127,18 +95,11 @@
+               </cr-history-embeddings>
+             \` : ''}
+           </div>
+         \` : ''}
+-        <cr-page-selector id="tabsContent" attr-for-selected="path"
+-            selected="\${this.tabsContentPage_}"
+-            @iron-select="\${this.onTabsContentIronSelect_}">
+-          <history-list id="history" .queryState="\${this.queryState_}"
+-              ?is-active="\${this.getShowHistoryList_()}"
+-              searched-term="\${this.queryResult_.info?.term}"
+-              ?pending-delete="\${this.pendingDelete_}"
+-              @pending-delete-changed="\${this.onListPendingDeleteChanged_}"
+-              path="history" .scrollTarget="\${this.scrollTarget_}"
+-              .scrollOffset="\${this.tabContentScrollOffset_}">
++        <brave-history-embeddings class="history-cards" .searchQuery="\${this.queryState_.searchTerm}">
++      </brave-history-embeddings><cr-page-selector id="tabsContent" attr-for-selected="path" selected="\${this.tabsContentPage_}" @iron-select="\${this.onTabsContentIronSelect_}">
++          <history-list id="history" .queryState="\${this.queryState_}" ?is-active="\${this.getShowHistoryList_()}" searched-term="\${this.queryResult_.info?.term}" ?pending-delete="\${this.pendingDelete_}" @pending-delete-changed="\${this.onListPendingDeleteChanged_}" path="history" .scrollTarget="\${this.scrollTarget_}" .scrollOffset="\${this.tabContentScrollOffset_}">
+           </history-list>
+           \${this.historyClustersSelected_() ? html\`
+             <history-clusters id="history-clusters"
+                 ?is-active="\${this.getShowResultsByGroup_()}"
+@@ -162,10 +123,9 @@
+     \` : ''}
+   </cr-page-selector>
+ </div>
+ 
+-<cr-lazy-render-lit id="drawer"
+-    .template="\${() => html\`
++<cr-lazy-render-lit id="drawer" .template="\${() => html\`
+       <cr-drawer heading="$i18n{title}" align="$i18n{textdirection}">
+         <history-side-bar id="drawer-side-bar" slot="body"
+             .selectedPage="\${this.selectedPage_}"
+             @selected-page-changed="\${this.onSelectedPageChanged_}"
+"
+`;
+
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/history/synced_device_manager.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/history/synced_device_manager.html.ts

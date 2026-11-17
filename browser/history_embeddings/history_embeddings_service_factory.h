@@ -18,36 +18,15 @@
 
 class Profile;
 
-namespace content {
-class BrowserContext;
-}
-
 namespace brave_history_embeddings {
-class Answerer;
-class HistoryEmbeddingsService;
-class IntentClassifier;
-}  // namespace brave_history_embeddings
 
-namespace passage_embeddings {
-class Embedder;
-class EmbedderMetadataProvider;
-}  // namespace passage_embeddings
+class HistoryEmbeddingsService;
 
 class HistoryEmbeddingsServiceFactory : public ProfileKeyedServiceFactory {
  public:
-  static brave_history_embeddings::HistoryEmbeddingsService* GetForProfile(
-      Profile* profile);
+  static HistoryEmbeddingsService* GetForProfile(Profile* profile);
 
   static HistoryEmbeddingsServiceFactory* GetInstance();
-
-  static std::unique_ptr<KeyedService>
-  BuildServiceInstanceForBrowserContextForTesting(
-      content::BrowserContext* context,
-      passage_embeddings::EmbedderMetadataProvider* embedder_metadata_provider,
-      passage_embeddings::Embedder* embedder,
-      std::unique_ptr<brave_history_embeddings::Answerer> answerer,
-      std::unique_ptr<brave_history_embeddings::IntentClassifier>
-          intent_classifier);
 
  private:
   friend base::NoDestructor<HistoryEmbeddingsServiceFactory>;
@@ -59,5 +38,7 @@ class HistoryEmbeddingsServiceFactory : public ProfileKeyedServiceFactory {
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
 };
+
+}  // namespace brave_history_embeddings
 
 #endif  // BRAVE_BROWSER_HISTORY_EMBEDDINGS_HISTORY_EMBEDDINGS_SERVICE_FACTORY_H_
