@@ -10,8 +10,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 import re
 
+from google.protobuf import json_format
 import post_process
-from PB.recipes.brave.cr.autolift import InputProperties
+from PB.recipe_engine import result as result_pb
+from PB.recipes.brave.cr.autolift import InputProperties, Outcome
 from recipe_api import RecipeScriptApi
 from recipe_modules import (
     brave_core_checkout,
@@ -38,6 +40,8 @@ CI_CLI = 'tools/cr/ci/cli.py'
 # The run's report, in its `.autolift/cr<N>/` (or `.autolift/cr<N>.x/`, for
 # a channel bump of M<N>) directory, as SKILL names it.
 REPORT = 'report.md'
+# How the agent recorded the run's end there, with `autolift.py outcome`.
+OUTCOME = 'outcome.json'
 
 _CR_BRANCH_RE = re.compile(r'refs/heads/cr(\d+)')
 
@@ -49,6 +53,7 @@ _LIFT_ADVICE = {
     'reasons': [],
 }
 _NOTHING_PENDING = {'pending': 0, 'prompt': None, 'report': 'sync-tooling.md'}
+_COMPLETE = {'complete': True, 'summary': 'Lifted.', 'review': []}
 
 
 @dataclass
@@ -70,6 +75,7 @@ class TEST_DEPS(RecipeTestApi):
     chromium_checkout: chromium_checkout.TEST_API
     claude_cli: claude_cli.TEST_API
     json: json.TEST_API
+    path: path.TEST_API
     raw_io: raw_io.TEST_API
 
 
@@ -162,7 +168,34 @@ def _sync_tooling(
         )
 
 
-def RunSteps(api: DEPS, properties: InputProperties) -> None:
+def _outcome(api: DEPS, script: str, target: str) -> Outcome:
+    """How the agent recorded the run's end, exported as the `outcome`
+    output property: incomplete when it recorded nothing."""
+    result = api.step(
+        'outcome',
+        [
+            api.depot_tools.vpython3(),
+            script,
+            'outcome',
+            target,
+            '--json-output',
+            api.json.output(),
+        ],
+        check=False,
+        step_test_data=lambda: api.json.test_api.output(_COMPLETE),
+    )
+    outcome = Outcome()
+    if result.json.output:
+        json_format.ParseDict(result.json.output, outcome)
+    else:
+        outcome.summary = f'`autolift.py outcome` failed ({result.retcode}).'
+    result.presentation.properties['outcome'] = outcome
+    return outcome
+
+
+def RunSteps(
+    api: DEPS, properties: InputProperties
+) -> result_pb.RawResult | None:
     tag = properties.chromium_version
     # A new run syncs its tooling with the newest branch, which a resumed run
     # has done already. A channel bump's tooling comes from the newest branch
@@ -220,7 +253,7 @@ def RunSteps(api: DEPS, properties: InputProperties) -> None:
         # The advice step says why there is nothing to do; an earlier run's
         # report and build are left as they are.
         if not advice['prompt']:
-            return
+            return None
         if not properties.resume:
             # The run's logs and report start empty, so that the agent only
             # reads its own run's. Those of earlier runs are kept with the job
@@ -229,6 +262,8 @@ def RunSteps(api: DEPS, properties: InputProperties) -> None:
             # Each run builds from scratch, so that nothing an earlier run
             # built hides a failure of this one.
             api.file.rmtree('clear out dir', root.parent / 'out')
+        # An earlier session's outcome isn't this one's.
+        api.file.remove('clear outcome', run_dir / OUTCOME)
         try:
             # Only a new lift or rebase of an older branch reads the tooling
             # enough to be worth syncing it with the newer ones.
@@ -257,9 +292,23 @@ def RunSteps(api: DEPS, properties: InputProperties) -> None:
                 report=run_dir / REPORT,
             )
         finally:
+            # A channel bump ends on a channel's branch, which lacks the
+            # tooling, once `prepare` or `autofix` has staged its copy.
+            staged = tag and api.path.exists(root / STAGED_AUTOLIFT)
+            outcome = _outcome(
+                api,
+                STAGED_AUTOLIFT if staged else AUTOLIFT,
+                tag or str(milestone),
+            )
             # The report in full, however the run ended. A run that stopped
             # before writing one has none.
             api.step('report', ['cat', run_dir / REPORT], check=False)
+    # What follows the run (the Gerrit mirror and upload) is only for a
+    # complete one.
+    return result_pb.RawResult(
+        status=result_pb.SUCCESS if outcome.complete else result_pb.FAILURE,
+        summary_markdown=outcome.summary,
+    )
 
 
 def GenTests(api: TEST_DEPS):
@@ -644,6 +693,114 @@ def GenTests(api: TEST_DEPS):
         api.post_process(post_process.StatusFailure),
         api.post_process(post_process.DropExpectation),
         status='FAILURE',
+    )
+
+    # A complete run exports its outcome, with the commits to review, and
+    # succeeds with its summary.
+    yield api.test(
+        'complete',
+        new_run(
+            api.step_data(
+                'outcome',
+                api.json.output(
+                    {
+                        'complete': True,
+                        'summary': 'Lifted to 159.0.8131.1.',
+                        'review': [
+                            {
+                                'branch': 'cr159',
+                                'commit': {
+                                    'sha': 'a' * 40,
+                                    'subject': '[cr159] Fix the build',
+                                },
+                                'url': 'https://github.com/brave/brave-core/'
+                                f'commit/{"a" * 40}',
+                            }
+                        ],
+                    }
+                ),
+            ),
+            api.post_process(post_process.MustRun, 'clear outcome'),
+            api.post_process(
+                post_process.StepCommandContains,
+                'outcome',
+                [AUTOLIFT, 'outcome', '159', '--json-output'],
+            ),
+            api.post_process(
+                post_process.PropertyMatchesCallable,
+                'outcome',
+                lambda check, value: check(
+                    value['complete']
+                    and value['review'][0]['branch'] == 'cr159'
+                ),
+            ),
+            api.post_process(
+                post_process.SummaryMarkdown, 'Lifted to 159.0.8131.1.'
+            ),
+            api.post_process(post_process.StatusSuccess),
+            api.post_process(post_process.DropExpectation),
+        ),
+    )
+
+    # A run the agent left incomplete, or recorded nothing for, fails with
+    # why, so that the Gerrit steps after it don't run.
+    yield api.test(
+        'incomplete',
+        new_run(
+            api.step_data(
+                'outcome',
+                api.json.output(
+                    {
+                        'complete': False,
+                        'summary': 'The base is broken.',
+                        'review': [],
+                    }
+                ),
+            ),
+            api.post_process(
+                post_process.PropertyMatchesCallable,
+                'outcome',
+                lambda check, value: check(not value.get('complete')),
+            ),
+            api.post_process(
+                post_process.SummaryMarkdown, 'The base is broken.'
+            ),
+            api.post_process(post_process.StatusFailure),
+            api.post_process(post_process.DropExpectation),
+        ),
+        status='FAILURE',
+    )
+
+    # So does one whose outcome can't be read.
+    yield api.test(
+        'outcome fails',
+        new_run(
+            api.step_data('outcome', api.json.output(None, retcode=1)),
+            api.post_process(
+                post_process.SummaryMarkdown,
+                '`autolift.py outcome` failed (1).',
+            ),
+            api.post_process(post_process.StatusFailure),
+            api.post_process(post_process.DropExpectation),
+        ),
+        status='FAILURE',
+    )
+
+    # A channel bump's outcome is read with the tooling `prepare` staged, as
+    # the run ends on a channel's branch.
+    yield api.test(
+        'channel bump outcome',
+        new_run(
+            api.properties(chromium_version='157.0.8103.38'),
+            api.path.files(f'b/src/brave/{STAGED_AUTOLIFT}'),
+            api.post_process(
+                post_process.StepCommandContains,
+                'outcome',
+                [STAGED_AUTOLIFT, 'outcome', '157.0.8103.38'],
+            ),
+            api.post_process(post_process.StatusSuccess),
+            api.post_process(post_process.DropExpectation),
+        ),
     )
 
     # No cr<N> branch to lift.
