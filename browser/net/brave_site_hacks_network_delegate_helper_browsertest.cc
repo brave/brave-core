@@ -207,6 +207,8 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
     return last_origin_[internal_url];
   }
 
+  net::test_server::EmbeddedTestServer& https_server() { return https_server_; }
+
   content::WebContents* contents(BrowserWindowInterface* browser) {
     return browser->tab_strip_model()->GetActiveWebContents();
   }
@@ -306,6 +308,38 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
     NavigateToURLAndWaitForRedirects(browser(), url(dest_url, cross_site_url()),
                                      dest_url);
   }
+}
+
+// Shields down on the embedding page opt its cross-site iframes out of query
+// filtering, even when Shields are up on the iframe's own site.
+IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
+                       QueryStringFilterIframeParentShieldsDown) {
+  const GURL parent_url = https_server().GetURL("b.com", "/iframe.html");
+  const GURL iframe_url = landing_url("fbclid=1", simple_landing_url());
+  brave_shields::SetBraveShieldsEnabled(content_settings(), false, parent_url);
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), parent_url));
+  ASSERT_TRUE(
+      content::NavigateIframeToURL(contents(browser()), "test", iframe_url));
+  EXPECT_EQ(
+      iframe_url,
+      content::ChildFrameAt(contents(browser()), 0)->GetLastCommittedURL());
+}
+
+// Shields up on the embedding page filter its cross-site iframes, even when
+// Shields are down on the iframe's own site.
+IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
+                       QueryStringFilterIframeParentShieldsUp) {
+  const GURL parent_url = https_server().GetURL("b.com", "/iframe.html");
+  const GURL iframe_url = landing_url("fbclid=1", simple_landing_url());
+  brave_shields::SetBraveShieldsEnabled(content_settings(), false, iframe_url);
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), parent_url));
+  ASSERT_TRUE(
+      content::NavigateIframeToURL(contents(browser()), "test", iframe_url));
+  EXPECT_EQ(
+      simple_landing_url(),
+      content::ChildFrameAt(contents(browser()), 0)->GetLastCommittedURL());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
