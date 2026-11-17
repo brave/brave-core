@@ -6,10 +6,12 @@
 #include <algorithm>
 #include <array>
 
+#include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
+#include "base/strings/strcat.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
@@ -19,6 +21,7 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/common/content_switches.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "extensions/test/test_extension_dir.h"
@@ -89,6 +92,12 @@ class WidgetBoundsChangeWaiter final : public views::WidgetObserver {
 
 class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
  public:
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    command_line->AppendSwitchASCII(switches::kEnableBlinkFeatures,
+                                    "WindowOpenSplitTab");
+  }
+
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
@@ -284,22 +293,32 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
     }
   }
 
-  enum class TestMode { kIframe, kWindowSize, kWindowPosition };
+  enum class TestMode { kIframe, kWindowSize, kWindowPosition, kAnchor };
 
   void FarbleScreenPopupPosition(const gfx::Rect& bounds) {
     const gfx::Rect parent_bounds = SetBounds(bounds);
     for (bool allow_fingerprinting : {false, true}) {
       SetFingerprintingSetting(allow_fingerprinting);
       ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), parent_url()));
-      for (TestMode test_mode : {TestMode::kIframe, TestMode::kWindowSize,
-                                 TestMode::kWindowPosition}) {
-        const char* script =
-            "open('/simple.html', '', `"
-            "left=30,"
+      for (TestMode test_mode :
+           {TestMode::kIframe, TestMode::kWindowSize, TestMode::kWindowPosition,
+            TestMode::kAnchor}) {
+        const char* features =
+            "`popup,left=30,"
             "top=30,"
             "width=${outerWidth + 20},"
-            "height=${outerHeight + 20}"
-            "`);";
+            "height=${outerHeight + 20}`";
+        const std::string script =
+            test_mode == TestMode::kAnchor
+                ? base::StrCat({"const a = document.createElement('a');"
+                                "a.href = '/simple.html';"
+                                "a.target = '_blank';"
+                                "a.setAttribute('windowfeatures', ",
+                                features,
+                                ");"
+                                "document.body.appendChild(a);"
+                                "a.click();"})
+                : base::StrCat({"open('/simple.html', '', ", features, ");"});
         content::RenderFrameHost* host =
             test_mode == TestMode::kIframe ? Parent() : IFrame();
         BrowserWindowInterface* popup =
@@ -316,7 +335,8 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
         }
         EXPECT_GE(EvalJs(host, "screen.width"), child_bounds.width());
         EXPECT_GE(EvalJs(host, "screen.height"), child_bounds.height());
-        if (test_mode != TestMode::kIframe) {
+        if (test_mode == TestMode::kWindowSize ||
+            test_mode == TestMode::kWindowPosition) {
           auto* widget = views::Widget::GetWidgetForNativeWindow(
               BrowserWindow::FromBrowser(popup)->GetNativeWindow());
           auto bounds_before = BrowserWindow::FromBrowser(popup)->GetBounds();
