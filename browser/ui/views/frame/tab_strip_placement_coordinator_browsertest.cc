@@ -25,7 +25,7 @@ class TabStripPlacementCoordinatorBrowserTest : public InProcessBrowserTest {
   }
 
   TabStripPlacementCoordinator* coordinator() {
-    return brave_browser_view()->tab_strip_placement_coordinator();
+    return TabStripPlacementCoordinator::From(browser());
   }
 
   views::View* tab_strip_region_view() {

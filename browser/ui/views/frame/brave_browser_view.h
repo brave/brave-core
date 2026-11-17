@@ -194,10 +194,6 @@ class BraveBrowserView : public BrowserView,
     return sidebar_container_view_;
   }
 
-  TabStripPlacementCoordinator* tab_strip_placement_coordinator() {
-    return tab_strip_placement_.get();
-  }
-
   FocusModeTopOverlay* focus_mode_top_overlay() {
     return focus_mode_top_overlay_;
   }

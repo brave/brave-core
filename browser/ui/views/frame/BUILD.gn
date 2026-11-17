@@ -19,6 +19,7 @@ source_set("frame") {
     "//brave/browser/ui/views/frame/edge_reveal",
     "//chrome/browser/ui/views/frame:browser_view_header",
     "//components/tabs:public",
+    "//ui/base/unowned_user_data",
     "//ui/views",
   ]
 
