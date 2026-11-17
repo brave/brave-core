@@ -8,14 +8,26 @@
 #include "base/check_deref.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "ui/views/view.h"
+
+DEFINE_USER_DATA(TabStripPlacementCoordinator);
+
+// static
+TabStripPlacementCoordinator* TabStripPlacementCoordinator::From(
+    BrowserWindowInterface* browser) {
+  return Get(CHECK_DEREF(browser).GetUnownedUserDataHost());
+}
 
 TabStripPlacementCoordinator::TabStripPlacementCoordinator(
     base::PassKey<BraveBrowserView>,
     BrowserWindowInterface* browser_window_interface,
     views::View* tab_strip_region_view)
     : browser_window_interface_(CHECK_DEREF(browser_window_interface)),
-      tab_strip_region_view_(CHECK_DEREF(tab_strip_region_view)) {
+      tab_strip_region_view_(CHECK_DEREF(tab_strip_region_view)),
+      scoped_unowned_user_data_(
+          browser_window_interface->GetUnownedUserDataHost(),
+          *this) {
   auto* original_parent = tab_strip_region_view_->parent();
   CHECK(original_parent);
 
