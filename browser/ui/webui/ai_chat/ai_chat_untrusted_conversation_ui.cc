@@ -64,12 +64,12 @@
 #include "url/url_constants.h"
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/browser/history_embeddings/history_embeddings_service_factory.h"
+#include "brave/browser/history_embeddings/history_embeddings_utils.h"
 #include "brave/browser/history_embeddings/open_tab_search.h"
+#include "brave/components/history_embeddings/content/history_embeddings_service.h"
+#include "brave/components/history_embeddings/core/history_embeddings_search.h"
 #include "chrome/browser/history/history_service_factory.h"
-#include "chrome/browser/history_embeddings/history_embeddings_service_factory.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
-#include "components/history_embeddings/content/history_embeddings_service.h"
-#include "components/history_embeddings/core/history_embeddings_search.h"
 #include "components/keyed_service/core/service_access_type.h"
 #endif
 
@@ -185,11 +185,12 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     Profile* profile = Profile::FromWebUI(web_ui_);
     // The history-embeddings setting is off for this profile, so there's no
     // on-device ranker to consult.
-    if (!history_embeddings::IsHistoryEmbeddingsEnabledForProfile(profile)) {
+    if (!brave_history_embeddings::IsHistoryEmbeddingsEnabledForProfile(
+            profile)) {
       std::move(callback).Run(std::nullopt);
       return;
     }
-    auto* embeddings_search =
+    auto* embeddings_search = brave_history_embeddings::
         HistoryEmbeddingsServiceFactory::GetForProfile(profile);
     auto* history_service = HistoryServiceFactory::GetForProfile(
         profile, ServiceAccessType::EXPLICIT_ACCESS);
@@ -197,11 +198,11 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
       std::move(callback).Run(std::nullopt);
       return;
     }
-    history_embeddings::SearchOpenTabsByContent(
+    brave_history_embeddings::SearchOpenTabsByContent(
         profile, history_service, embeddings_search->AsWeakPtr(), query,
         base::BindOnce(
             [](SearchForTabsCallback callback,
-               std::vector<history_embeddings::OpenTabInfo> tabs) {
+               std::vector<brave_history_embeddings::OpenTabInfo> tabs) {
               std::vector<ai_chat::mojom::TabDataPtr> results;
               results.reserve(tabs.size());
               for (auto& tab : tabs) {

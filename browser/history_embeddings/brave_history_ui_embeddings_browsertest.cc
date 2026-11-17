@@ -8,14 +8,14 @@
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/history_embeddings/history_embeddings_service_factory.h"
+#include "brave/components/history_embeddings/core/history_embeddings_features.h"
 #include "brave/components/local_ai/core/pref_names.h"
-#include "chrome/browser/history_embeddings/history_embeddings_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
@@ -23,16 +23,15 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-namespace history_embeddings {
+namespace brave_history_embeddings {
 
 // The Semantic history search setting is live, but the embeddings service is
 // built from it once at profile setup, so the two can disagree until the
 // browser relaunches. brave://history carries no toggle, so the only value it
-// runs on is the session-captured one that
-// `chromium_src/chrome/browser/ui/webui/history/history_ui.cc` substitutes for
-// upstream's `enableHistoryEmbeddings`. These tests assert the page never runs
-// a search against a service that was never built, because the `Search()` it
-// would reach CHECKs that service is non-null.
+// runs on is `enableBraveHistoryEmbeddings`, which says whether the service was
+// built. These tests assert the page never runs a search against a service
+// that was never built, because the `Search()` it would reach CHECKs that
+// service is non-null.
 class BraveHistoryUIEmbeddingsBrowserTest : public InProcessBrowserTest {
  public:
   BraveHistoryUIEmbeddingsBrowserTest() {
@@ -78,11 +77,10 @@ class BraveHistoryUIEmbeddingsBrowserTest : public InProcessBrowserTest {
   // service on this, including the `Search()` that CHECKs it is non-null.
   // `loadTimeData` is a module on brave://history, not a global.
   bool SearchEnabled() {
-    return content::EvalJs(
-               web_contents(),
-               "import('chrome://resources/js/load_time_data.js')"
-               ".then(m => m.loadTimeData.getBoolean("
-               "'enableHistoryEmbeddings'))")
+    return content::EvalJs(web_contents(),
+                           "import('chrome://resources/js/load_time_data.js')"
+                           ".then(m => m.loadTimeData.getBoolean("
+                           "'enableBraveHistoryEmbeddings'))")
         .ExtractBool();
   }
 
@@ -97,15 +95,14 @@ class BraveHistoryUIEmbeddingsBrowserTest : public InProcessBrowserTest {
         "    .setValue('semantic history')"));
   }
 
-  // The element the page only renders once it decides to run an embeddings
-  // search. Upstream gates it on `shouldShowHistoryEmbeddings_()`, which needs
-  // the search flag *and* a two-or-more-word query.
+  // The results card the element only renders once it decides to run an
+  // embeddings search, which needs the search flag *and* a two-or-more-word
+  // query.
   bool HasEmbeddingsSearchElement() {
-    return content::EvalJs(
-               web_contents(),
-               "!!document.querySelector('history-app').shadowRoot"
-               "    .querySelector('#historyEmbeddingsContainer"
-               " cr-history-embeddings')")
+    return content::EvalJs(web_contents(),
+                           "!!document.querySelector('history-app').shadowRoot"
+                           "    .querySelector('brave-history-embeddings')"
+                           "    .shadowRoot.querySelector('.card')")
         .ExtractBool();
   }
 
@@ -123,8 +120,8 @@ class BraveHistoryUIEmbeddingsBrowserTest : public InProcessBrowserTest {
                   "  const start = performance.now();"
                   "  const check = () => {"
                   "    if (document.querySelector('history-app').shadowRoot"
-                  "        .querySelector('#historyEmbeddingsContainer"
-                  " cr-history-embeddings')) {"
+                  "        .querySelector('brave-history-embeddings')"
+                  "        .shadowRoot.querySelector('.card')) {"
                   "      resolve('rendered');"
                   "    } else if (performance.now() - start >= 10000) {"
                   "      resolve('timed out waiting for render');"
@@ -227,4 +224,4 @@ IN_PROC_BROWSER_TEST_F(BraveHistoryUIEmbeddingsBrowserTest,
   EXPECT_FALSE(SearchEnabled());
 }
 
-}  // namespace history_embeddings
+}  // namespace brave_history_embeddings

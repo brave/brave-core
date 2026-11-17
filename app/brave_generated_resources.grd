@@ -183,6 +183,9 @@
       <!-- Custom profile image strings -->
       <part file="custom_profile_image_strings.grdp" />
 
+      <!-- brave://history semantic search strings -->
+      <part file="brave_history_embeddings_strings.grdp" />
+
       <!--Add new items to the appropriate sections below -->
 
       <!-- Profile menu -->
