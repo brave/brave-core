@@ -4,18 +4,19 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: Needed by the ENABLE_EXTENSIONS_CORE check below.
+  - description: Needed by the IS_ANDROID check below.
     add_after_line:
-      line: '#include "content/public/test/browser_test_utils.h"'
+      line: '#include "base/sequence_checker.h"'
       code: |-
-        #include "extensions/buildflags/buildflags.h"
+        #include "build/build_config.h"
 
   - description: |-
-      TestTabModel::AssociateWithBrowserWindow is desktop-Android-only test
-      scaffolding; its only caller is windowing/internal's extensions unit
-      test, which is gated on enable_extensions_core, not is_desktop_android
-      specifically. Widen it to match, now that enable_extensions_core
-      compiles that unit test on regular Android too.
+      Guard AssociateWithBrowserWindow on IS_ANDROID instead of
+      IS_DESKTOP_ANDROID: BrowserWindowInterface is available on all
+      Android, not just desktop Android, so there is no reason to tie this
+      to is_desktop_android (or to enable_extensions_core, which is about
+      its only current caller, windowing/internal's extensions unit test,
+      not about this header's availability).
     regex:
       re_pattern:
         '// BrowserWindowInterface is available on desktop Android, but not
@@ -24,7 +25,7 @@ substitutions:
         AssociateWithBrowserWindow\(BrowserWindowInterface\*
         browser_window\);)\s*#endif'
       replace: |-
-        // Only windowing/internal's extensions unit test needs this.
-        #if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+        // BrowserWindowInterface is available on all Android.
+        #if BUILDFLAG(IS_ANDROID)
           \1
         #endif

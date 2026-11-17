@@ -2,18 +2,17 @@ diff --git a/chrome/browser/chrome_content_browser_client.cc b/chrome/browser/ch
 index 66fc9124dd5f7d90180c1711b8b6b7ed69afdb5b..7d00605812c06609e4bc1c6397290098a82c5c12 100644
 --- a/chrome/browser/chrome_content_browser_client.cc
 +++ b/chrome/browser/chrome_content_browser_client.cc
-@@ -6779,8 +6779,10 @@ void ChromeContentBrowserClient::AddChromeSchemeFactories(
-     content::WebContents* web_contents,
-     const extensions::Extension* extension,
+@@ -6781,6 +6781,9 @@ void ChromeContentBrowserClient::AddChromeSchemeFactories(
      ChromeContentBrowserClient::NonNetworkURLLoaderFactoryMap* factories) {
-+#if BUILDFLAG(ENABLE_WEBUI_NTP)
    Profile* profile =
        Profile::FromBrowserContext(web_contents->GetBrowserContext());
-+#endif  // BUILDFLAG(ENABLE_WEBUI_NTP)
++  if (!profile) {
++    return;
++  }
  #if BUILDFLAG(ENABLE_WEBUI_NTP)
    InstantService* instant_service =
        InstantServiceFactory::GetForProfile(profile);
-@@ -9235,6 +9237,7 @@ base::FilePath ChromeContentBrowserClient::GetChildProcessPath(
+@@ -9235,6 +9238,7 @@ base::FilePath ChromeContentBrowserClient::GetChildProcessPath(
 
  bool ChromeContentBrowserClient::ShouldUseFirstPartyStorageKey(
      const url::Origin& origin) {
