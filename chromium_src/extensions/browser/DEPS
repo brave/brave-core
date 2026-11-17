@@ -1,5 +1,9 @@
 include_rules = [
   "+brave/grit/brave_generated_resources.h",
+  "+components/prefs",
+  "+components/safe_browsing/core/common",
+  "+components/user_prefs",
+  "+content/public/browser",
   "+extensions/browser",
   "+extensions/common",
 ]

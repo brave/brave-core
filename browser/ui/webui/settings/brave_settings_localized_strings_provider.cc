@@ -31,6 +31,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/extension_malware_blocklist/common/features.h"
 #include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
@@ -48,6 +49,7 @@
 #include "chrome/browser/media/router/media_router_feature.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
+#include "chrome/common/url_constants.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/grit/branded_strings.h"
 #include "chrome/grit/generated_resources.h"
@@ -504,6 +506,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"standardHttpsUpgrade", IDS_SETTINGS_STANDARD_HTTPS_UPGRADE},
       {"disabledHttpsUpgrade", IDS_SETTINGS_DISABLED_HTTPS_UPGRADE},
       {"strictHttpsUpgrade", IDS_SETTINGS_STRICT_HTTPS_UPGRADE},
+      {"braveSafeBrowsingExtensionMalwareBlocklistDesc",
+       IDS_SETTINGS_BRAVE_SAFEBROWSING_STANDARD_EXTENSION_MALWARE_BLOCKLIST_DESC},
       {"webRTCPolicyLabel", IDS_SETTINGS_WEBRTC_POLICY_LABEL},
       {"webRTCPolicySubLabel", IDS_SETTINGS_WEBRTC_POLICY_SUB_LABEL},
       {"webRTCDefault", IDS_SETTINGS_WEBRTC_POLICY_DEFAULT},
@@ -1157,6 +1161,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString("googleLoginLearnMoreURL", kGoogleLoginLearnMoreURL);
   html_source->AddString("deAmpLearnMoreURL", kDeAmpLearnMoreUrl);
   html_source->AddString("debounceLearnMoreURL", kDebounceLearnMoreUrl);
+  html_source->AddString("braveSafeBrowsingLearnMoreURL",
+                         chrome::kSafeBrowsingHelpCenterURL);
   html_source->AddString("enableNftDiscoveryLearnMoreURL",
                          kEnableNftDiscoveryLearnMoreUrl);
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -1399,6 +1405,11 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isHttpsByDefaultEnabled",
       base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault));
+
+  html_source->AddBoolean(
+      "isExtensionMalwareBlocklistEnabled",
+      base::FeatureList::IsEnabled(
+          extension_malware_blocklist::features::kExtensionMalwareBlocklist));
 
   html_source->AddBoolean(
       "showStrictFingerprintingMode",
