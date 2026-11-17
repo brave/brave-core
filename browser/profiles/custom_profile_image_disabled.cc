@@ -6,11 +6,6 @@
 #include "ui/gfx/image/image.h"
 
 class ProfileAttributesEntry;
-class ProfileAttributesStorage;
-
-namespace base {
-class FilePath;
-}  // namespace base
 
 // No-op hooks for platforms without custom profile images.
 
@@ -23,6 +18,3 @@ bool BraveIsCustomProfileImageSelected(const ProfileAttributesEntry&) {
 }
 
 void BraveSelectFallbackProfileImage(ProfileAttributesEntry&) {}
-
-void BraveRemoveCustomProfileImage(ProfileAttributesStorage&,
-                                   const base::FilePath&) {}

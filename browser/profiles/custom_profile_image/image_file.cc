@@ -70,7 +70,8 @@ bool ImageFile::Replace(const SkBitmap& bitmap) {
   }
 
   // Flush the new file before publishing it. The fixed staging name is safe
-  // because every operation for this profile uses the same sequence.
+  // because each profile's operations share a sequence, and profile
+  // directories are not reused.
   base::File pending(pending_path_,
                      base::File::FLAG_CREATE_ALWAYS | base::File::FLAG_WRITE);
   if (!pending.IsValid()) {

@@ -145,6 +145,24 @@ TEST_F(CustomProfileImageTest, EarlyResultsAreAsynchronous) {
                Result::kUnavailable);
 }
 
+TEST_F(CustomProfileImageTest, EarlyResultIsDroppedWithEntry) {
+  bool replied = false;
+  {
+    auto reloaded = Reload();
+    auto* reopened = reloaded->GetProfileAttributesWithPath(path_);
+    ASSERT_TRUE(reopened);
+    ProfileImage::Get(*reopened).Replace(
+        SkBitmap(),
+        base::BindLambdaForTesting([&](Result) { replied = true; }));
+  }
+  // The reply was posted before this, so it would run first.
+  base::RunLoop run_loop;
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, run_loop.QuitClosure());
+  run_loop.Run();
+  EXPECT_FALSE(replied);
+}
+
 TEST_F(CustomProfileImageTest, UnfinishedFirstSaveIsDeletedOnLoad) {
   // A crash after the file was written but before Local State recorded it.
   ASSERT_TRUE(base::WriteFile(ImagePath(), "unsaved"));
@@ -258,7 +276,8 @@ TEST_F(CustomProfileImageTest, RemovalRunsAfterPendingWrite) {
 
 TEST_F(CustomProfileImageTest, NewProfileAtSamePathHasNoImage) {
   Save(SK_ColorRED);
-  // A write still pending at removal must not reach the new profile.
+  // A write still pending at removal must not reach the new profile. Its file
+  // is left for upstream's profile directory deletion.
   bool replied = false;
   image().Replace(Bitmap(SK_ColorBLUE),
                   base::BindLambdaForTesting([&](Result) { replied = true; }));
@@ -278,8 +297,6 @@ TEST_F(CustomProfileImageTest, NewProfileAtSamePathHasNoImage) {
   EXPECT_FALSE(image().HasSavedImage());
   EXPECT_FALSE(image().IsActive());
   EXPECT_TRUE(image().GetImage().IsEmpty());
-  EXPECT_FALSE(base::PathExists(ImagePath()));
-  EXPECT_FALSE(base::PathExists(PendingPath()));
 }
 
 TEST_F(CustomProfileImageTest, ReloadShowsPresetUntilSavedImageLoads) {

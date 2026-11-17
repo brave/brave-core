@@ -8,42 +8,34 @@
 
 #include <cstdint>
 
-#include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ref.h"
-#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
-#include "base/task/sequenced_task_runner.h"
+#include "base/supports_user_data.h"
 #include "base/threading/sequence_bound.h"
 #include "brave/browser/profiles/custom_profile_image/image_file.h"
 #include "ui/gfx/image/image.h"
 
 class ProfileAttributesEntry;
-class ProfileAttributesStorage;
 
 namespace custom_profile_image {
 
 enum class Result { kSuccess, kInvalidImage, kFileError, kUnavailable };
 
-// ProfileAttributesStorage owns one of these for each entry that uses it. All
-// callers share its file sequence and selection generation. Callbacks always
-// run asynchronously.
-class ProfileImage {
+// The image of one profile, owned by its ProfileAttributesEntry. File work
+// runs in order on its own sequence, and callbacks always run asynchronously.
+// Callbacks still waiting when the entry is destroyed never run. Deleting the
+// profile directory deletes the file.
+class ProfileImage : public base::SupportsUserData::Data {
  public:
   using Callback = base::OnceCallback<void(Result)>;
   static ProfileImage& Get(ProfileAttributesEntry& entry);
   static bool IsEnabled();
 
-  // Deletes the saved file after already accepted writes and drops the state
-  // for `path`, whose entry has been removed from `storage`. Callbacks still
-  // waiting for the file sequence never run; results already posted still do.
-  static void ProfileRemoved(ProfileAttributesStorage& storage,
-                             const base::FilePath& path);
-
   ProfileImage(const ProfileImage&) = delete;
   ProfileImage& operator=(const ProfileImage&) = delete;
-  ~ProfileImage();
+  ~ProfileImage() override;
   bool HasSavedImage() const;
   // Saved, chosen over the presets and the feature is on, whether or not the
   // file can be read.
@@ -74,11 +66,7 @@ class ProfileImage {
   void SelectFallback();
 
  private:
-  class Registry;
-
-  ProfileImage(ProfileAttributesEntry& entry,
-               scoped_refptr<base::SequencedTaskRunner> file_runner);
-  ProfileAttributesEntry& entry() const;
+  explicit ProfileImage(ProfileAttributesEntry& entry);
   void Loaded(SkBitmap bitmap);
   void Replaced(uint64_t generation,
                 gfx::Image image,
@@ -86,6 +74,8 @@ class ProfileImage {
                 bool success);
   void Removed(Callback callback, bool success);
   void Selected(uint64_t generation, Callback callback, SkBitmap bitmap);
+  void ReplyLater(Callback callback, Result result);
+  void Reply(Callback callback, Result result);
   void Notify();
 
   base::SequenceBound<ImageFile> file_;
@@ -97,9 +87,8 @@ class ProfileImage {
   // File replies are ordered. Only an immediate fallback choice can overtake
   // them; a later failed file operation must not cancel an earlier selection.
   uint64_t generation_ = 0;
-  // Looked up by path: the storage destroys its entries before this object.
-  const raw_ref<ProfileAttributesStorage> storage_;
-  const base::FilePath path_;
+  // Not used once destruction starts: the entry is being destroyed.
+  const raw_ref<ProfileAttributesEntry> entry_;
   SEQUENCE_CHECKER(sequence_checker_);
   base::WeakPtrFactory<ProfileImage> weak_factory_{this};
 };

@@ -8,87 +8,43 @@
 #include <memory>
 #include <utility>
 
-#include "base/check.h"
-#include "base/containers/flat_map.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/memory/ptr_util.h"
 #include "base/supports_user_data.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/ui/webui/custom_profile_image/features.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
-#include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "third_party/skia/include/core/SkImageInfo.h"
 
 namespace custom_profile_image {
 namespace {
 constexpr char kSaved[] = "brave_custom_image_saved";
 constexpr char kActive[] = "brave_custom_image_active";
-
-// Early results are posted so every callback runs asynchronously, like the
-// ones that wait for the file sequence.
-void ReplyLater(ProfileImage::Callback callback, Result result) {
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(std::move(callback), result));
-}
 }  // namespace
 
-// Held by ProfileAttributesStorage, so removal and reuse of a profile path
-// share one file sequence.
-class ProfileImage::Registry : public base::SupportsUserData::Data {
- public:
-  static Registry& Get(ProfileAttributesStorage& storage) {
-    if (!storage.custom_profile_images_) {
-      storage.custom_profile_images_ = std::make_unique<Registry>();
-    }
-    return static_cast<Registry&>(*storage.custom_profile_images_);
-  }
-
-  ProfileImage& Get(ProfileAttributesEntry& entry) {
-    std::unique_ptr<ProfileImage>& image = images_[entry.GetPath()];
-    if (!image) {
-      image = base::WrapUnique(new ProfileImage(entry, file_runner_));
-    }
-    return *image;
-  }
-
-  void Remove(const base::FilePath& path) {
-    // Runs after accepted writes, without recreating the profile directory.
-    // This is not ordered with upstream's directory deletion, which runs on
-    // another sequence, retries on failure, and removes any file left here.
-    base::SequenceBound<ImageFile>(file_runner_, path)
-        .AsyncCall(base::IgnoreResult(&ImageFile::Remove));
-    images_.erase(path);
-  }
-
- private:
-  const scoped_refptr<base::SequencedTaskRunner> file_runner_ =
-      base::ThreadPool::CreateSequencedTaskRunner(
-          {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-           base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
-  base::flat_map<base::FilePath, std::unique_ptr<ProfileImage>> images_;
-};
-
-ProfileImage& ProfileImage::Get(ProfileAttributesEntry& entry) {
-  return Registry::Get(*entry.profile_attributes_storage_).Get(entry);
-}
-
 // static
-void ProfileImage::ProfileRemoved(ProfileAttributesStorage& storage,
-                                  const base::FilePath& path) {
-  Registry::Get(storage).Remove(path);
+ProfileImage& ProfileImage::Get(ProfileAttributesEntry& entry) {
+  std::unique_ptr<base::SupportsUserData::Data>& image =
+      entry.custom_profile_image();
+  if (!image) {
+    image = base::WrapUnique(new ProfileImage(entry));
+  }
+  return static_cast<ProfileImage&>(*image);
 }
 
 bool ProfileImage::IsEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveCustomProfileImage);
 }
 
-ProfileImage::ProfileImage(ProfileAttributesEntry& entry,
-                           scoped_refptr<base::SequencedTaskRunner> file_runner)
-    : file_(std::move(file_runner), entry.GetPath()),
-      has_committed_image_(entry.GetBool(kSaved)),
-      storage_(*entry.profile_attributes_storage_),
-      path_(entry.GetPath()) {
+ProfileImage::ProfileImage(ProfileAttributesEntry& entry)
+    : file_(base::ThreadPool::CreateSequencedTaskRunner(
+                {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+                 base::TaskShutdownBehavior::BLOCK_SHUTDOWN}),
+            entry.GetPath()),
+      has_committed_image_(entry.GetCustomProfileImageFlag(kSaved)),
+      entry_(entry) {
   if (!has_committed_image_) {
     // A first write interrupted before metadata publication is not committed.
     file_.AsyncCall(base::IgnoreResult(&ImageFile::Remove));
@@ -98,20 +54,21 @@ ProfileImage::ProfileImage(ProfileAttributesEntry& entry,
 ProfileImage::~ProfileImage() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!has_committed_image_) {
-    // The entry may already be gone. Track this locally rather than reading
-    // its prefs while draining an unfinished first write.
+    // The entry is being destroyed, so this is tracked locally rather than
+    // read from its prefs.
     file_.AsyncCall(base::IgnoreResult(&ImageFile::Remove));
   }
 }
 
 bool ProfileImage::HasSavedImage() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return entry().GetBool(kSaved);
+  return entry_->GetCustomProfileImageFlag(kSaved);
 }
 
 bool ProfileImage::IsActive() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return IsEnabled() && HasSavedImage() && entry().GetBool(kActive);
+  return IsEnabled() && HasSavedImage() &&
+         entry_->GetCustomProfileImageFlag(kActive);
 }
 
 bool ProfileImage::IsSelected() const {
@@ -187,9 +144,9 @@ void ProfileImage::Replaced(uint64_t generation,
   loaded_ = true;
   load_failed_ = false;
   has_committed_image_ = true;
-  entry().SetBool(kSaved, true);
+  entry_->SetCustomProfileImageFlag(kSaved, true);
   if (generation == generation_) {
-    entry().SetBool(kActive, true);
+    entry_->SetCustomProfileImageFlag(kActive, true);
   }
   Notify();
   std::move(callback).Run(Result::kSuccess);
@@ -216,8 +173,8 @@ void ProfileImage::Removed(Callback callback, bool success) {
   loaded_ = true;
   load_failed_ = false;
   has_committed_image_ = false;
-  entry().SetBool(kSaved, false);
-  entry().SetBool(kActive, false);
+  entry_->SetCustomProfileImageFlag(kSaved, false);
+  entry_->SetCustomProfileImageFlag(kActive, false);
   Notify();
   std::move(callback).Run(Result::kSuccess);
 }
@@ -252,7 +209,7 @@ void ProfileImage::Selected(uint64_t generation,
     image_ = gfx::Image::CreateFrom1xBitmap(bitmap);
     loaded_ = true;
     load_failed_ = false;
-    entry().SetBool(kActive, true);
+    entry_->SetCustomProfileImageFlag(kActive, true);
     Notify();
   }
   std::move(callback).Run(Result::kSuccess);
@@ -265,20 +222,27 @@ void ProfileImage::SelectFallback() {
   // Record preset choices made while the feature is off so re-enabling it
   // does not restore the custom image over the user's later choice. Without a
   // saved image the flag means nothing, so Local State is left alone.
-  if (HasSavedImage() && entry().SetBool(kActive, false)) {
+  if (HasSavedImage() && entry_->SetCustomProfileImageFlag(kActive, false)) {
     Notify();
   }
 }
 
-ProfileAttributesEntry& ProfileImage::entry() const {
-  ProfileAttributesEntry* entry = storage_->GetProfileAttributesWithPath(path_);
-  CHECK(entry);
-  return *entry;
+// Early results are posted so every callback runs asynchronously, like the
+// ones that wait for the file sequence.
+void ProfileImage::ReplyLater(Callback callback, Result result) {
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&ProfileImage::Reply, weak_factory_.GetWeakPtr(),
+                     std::move(callback), result));
+}
+
+void ProfileImage::Reply(Callback callback, Result result) {
+  std::move(callback).Run(result);
 }
 
 void ProfileImage::Notify() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  storage_->NotifyOnProfileAvatarChanged(path_);
+  entry_->NotifyCustomProfileImageChanged();
 }
 
 }  // namespace custom_profile_image
@@ -303,9 +267,4 @@ bool BraveIsCustomProfileImageSelected(const ProfileAttributesEntry& entry) {
 
 void BraveSelectFallbackProfileImage(ProfileAttributesEntry& entry) {
   custom_profile_image::ProfileImage::Get(entry).SelectFallback();
-}
-
-void BraveRemoveCustomProfileImage(ProfileAttributesStorage& storage,
-                                   const base::FilePath& profile_path) {
-  custom_profile_image::ProfileImage::ProfileRemoved(storage, profile_path);
 }
