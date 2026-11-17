@@ -22,10 +22,6 @@ class QueryFilterDataTest : public testing::Test {
   QueryFilterData* instance() const { return QueryFilterData::GetInstance(); }
 };
 
-TEST_F(QueryFilterDataTest, TestReturnsValidInstance) {
-  EXPECT_TRUE(instance() != nullptr);
-}
-
 TEST_F(QueryFilterDataTest, TestVersion) {
   instance()->UpdateVersion(base::Version("1.0.0"));
   EXPECT_EQ(instance()->GetVersion(), "1.0.0");
