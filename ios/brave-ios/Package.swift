@@ -252,7 +252,6 @@ var package = Package(
         "CertificateUtilities", "BraveShared", "BraveCore",
         "PartitionAllocSupport",
       ],
-      exclude: ["Certificates/self-signed.conf"],
       resources: [
         .copy("Certificates/certviewer/brave.com.cer"),
         .copy("Certificates/certviewer/github.com.cer"),
