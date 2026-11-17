@@ -16,3 +16,12 @@ targets.bundle(
         'brave_updater_unittests',
     ],
 )
+
+# The Linux members of the `brave_network_tests` group in //brave/BUILD.gn.
+targets.bundle(
+    name='brave_network_tests_linux',
+    targets=[
+        'brave_cert_pinning_tests',
+        'brave_network_audit_tests',
+    ],
+)
