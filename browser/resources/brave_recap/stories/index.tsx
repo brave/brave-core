@@ -6,19 +6,14 @@
 import * as React from 'react'
 import { Meta, StoryObj } from '@storybook/react'
 import { App, SLIDES, Slide } from '../components/app'
-import { RecapStats, getTimeSavedMs } from '../stats'
+import { RecapStats } from '../stats'
 import {
   SHARE_CARD_HEIGHT,
   SHARE_CARD_WIDTH,
   ShareCardImages,
   renderShareCard,
 } from '../share_card'
-import {
-  formatBandwidth,
-  formatCount,
-  formatMonthYear,
-  formatTimeSaved,
-} from '../format'
+import { getShareCardContent } from '../share_content'
 import cardPattern from '../images/card_pattern.webp'
 
 const DAY_MS = 24 * 60 * 60 * 1000
@@ -178,31 +173,7 @@ function ShareCardStory(args: StoryArgs) {
     const stats = getStats(args)
     let objectUrl: string | undefined
     let cancelled = false
-    renderShareCard(
-      {
-        title: 'My Brave recap',
-        subtitle: stats.firstRunTime
-          ? `Since ${formatMonthYear(stats.firstRunTime)}`
-          : '',
-        stats: [
-          {
-            value: formatCount(stats.adsBlocked),
-            label: 'ads & trackers blocked',
-          },
-          {
-            value: formatTimeSaved(getTimeSavedMs(stats)).text,
-            label: 'of waiting saved',
-          },
-          {
-            value: formatBandwidth(stats.bandwidthSavedBytes).text,
-            label: 'of data saved',
-          },
-        ],
-        cta: 'Get Brave at brave.com',
-        url: 'brave://recap',
-      },
-      CARD_IMAGES,
-    ).then((blob) => {
+    renderShareCard(getShareCardContent(stats), CARD_IMAGES).then((blob) => {
       if (!cancelled) {
         objectUrl = URL.createObjectURL(blob)
         setUrl(objectUrl)
