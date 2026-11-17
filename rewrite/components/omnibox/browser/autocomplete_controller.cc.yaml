@@ -20,6 +20,18 @@ substitutions:
       line: 'PostProcessMatches();'
       code: '  BRAVE_AUTOCOMPLETE_CONTROLLER_UPDATE_RESULT'
 
+  - description: |-
+      Let semantic history search update results after the stop timer.
+
+      `BraveHistoryEmbeddingsProvider` ignores the stop timer, as a search can
+      outlast it while the embedder starts, so its late results must not trip
+      the post-done check.
+    regex:
+      re_pattern: '(bool allow_post_done_updates =\s*provider &&\s*\()'
+      replace:
+        '\1provider->type() == AutocompleteProvider::Type::kHistoryEmbeddings
+        ||\n       '
+
   - description: |
       Run Brave's semantic history search only in the @history scope.
     preempt_function_impl:
