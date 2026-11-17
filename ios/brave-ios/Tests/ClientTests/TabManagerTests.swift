@@ -29,6 +29,17 @@ extension TabManager {
   }
 }
 
+/// `TabManager` passes the tab id into this factory. Group membership and session restore both look the tab up by that id.
+@MainActor private func makeTestTab(_ params: TabStateFactory.CreateTabParams) -> FakeTabState {
+  let tab = FakeTabState()
+  tab.id = params.id
+  tab.profile = params.profile
+  if let lastActiveTime = params.lastActiveTime {
+    tab.lastActiveTime = lastActiveTime
+  }
+  return tab
+}
+
 struct MethodSpy {
   let functionName: String
   let method: ((_ tabs: [TabState?]) -> Void)?
@@ -136,14 +147,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       braveCore: nil,
       profile: FakeProfile(),
       privateBrowsingManager: privateBrowsingManager,
-      tabCreationFactory: { params in
-        let tab = FakeTabState()
-        tab.profile = params.profile
-        if let lastActiveTime = params.lastActiveTime {
-          tab.lastActiveTime = lastActiveTime
-        }
-        return tab
-      }
+      tabCreationFactory: { makeTestTab($0) }
     )
     manager.isTabGroupsEnabled = true
     privateBrowsingManager.isPrivateBrowsing = false
@@ -1109,11 +1113,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       braveCore: nil,
       profile: FakeProfile(),
       privateBrowsingManager: PrivateBrowsingManager(),
-      tabCreationFactory: { params in
-        let tab = FakeTabState()
-        tab.profile = params.profile
-        return tab
-      }
+      tabCreationFactory: { makeTestTab($0) }
     )
     restoredManager.isTabGroupsEnabled = true
     _ = restoredManager.restoreAllTabs
@@ -1131,11 +1131,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       braveCore: nil,
       profile: FakeProfile(),
       privateBrowsingManager: PrivateBrowsingManager(),
-      tabCreationFactory: { params in
-        let tab = FakeTabState()
-        tab.profile = params.profile
-        return tab
-      }
+      tabCreationFactory: { makeTestTab($0) }
     )
     disabledManager.isTabGroupsEnabled = false
     _ = disabledManager.restoreAllTabs
