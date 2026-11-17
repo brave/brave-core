@@ -30,6 +30,8 @@ source_set("peek") {
     "peek_features.h",
     "peek_navigation_throttle.cc",
     "peek_navigation_throttle.h",
+    "peek_prefs.cc",
+    "peek_prefs.h",
     "peek_utils.cc",
     "peek_utils.h",
   ]
@@ -43,6 +45,7 @@ source_set("peek") {
 
   deps = [
     "//chrome/app:command_ids",
+    "//components/prefs",
     "//content/public/common",
     "//ui/base",
   ]
