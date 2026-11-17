@@ -15,8 +15,14 @@
       const blink::String& feature_string, LocalDOMWindow* dom_window); \
   CORE_EXPORT WebWindowFeatures GetWindowFeaturesFromString
 
+#define GetWindowFeaturesFromAttribute                                  \
+  GetWindowFeaturesFromAttribute_ChromiumImpl(                          \
+      const blink::String& feature_string, LocalDOMWindow* dom_window); \
+  CORE_EXPORT WebWindowFeatures GetWindowFeaturesFromAttribute
+
 #include <third_party/blink/renderer/core/page/create_window.h>  // IWYU pragma: export
 
+#undef GetWindowFeaturesFromAttribute
 #undef GetWindowFeaturesFromString
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_PAGE_CREATE_WINDOW_H_
