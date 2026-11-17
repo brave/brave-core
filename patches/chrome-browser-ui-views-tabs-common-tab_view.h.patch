@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/tabs/common/tab_view.h b/chrome/browser/ui/views/tabs/common/tab_view.h
+index 94398daa53be9e06c1345e1dca12ebcd0122ee17..62c9b508397e1adaf8e3c2111f4aff2f2ed71c66 100644
+--- a/chrome/browser/ui/views/tabs/common/tab_view.h
++++ b/chrome/browser/ui/views/tabs/common/tab_view.h
+@@ -125,6 +125,8 @@ class TabView : public views::View,
+   views::BubbleAnchor GetAnchor() override;
+   views::BubbleBorder::Arrow GetAnchorPosition() const override;
+ 
++  bool IsTabMuteIndicatorNotClickable() override;
++
+  private:
+   friend class TabViewVerticalLayout;
+   friend class TabViewHorizontalLayout;

@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/views/tabs/common/tab_collection_node.h b/chrome/browser/ui/views/tabs/common/tab_collection_node.h
+index 3f4024d6b91112236aaf57c8c30c482d7f5f809b..3034484a8b8005a6224454d4eb60190fa80d83a3 100644
+--- a/chrome/browser/ui/views/tabs/common/tab_collection_node.h
++++ b/chrome/browser/ui/views/tabs/common/tab_collection_node.h
+@@ -31,7 +31,8 @@ class TabCollectionNode {
+  public:
+   // Keep the same as TabCollection::Type with a tab.
+   // LINT.IfChange(TYPE)
+-  enum class Type { TABSTRIP, PINNED, UNPINNED, GROUP, SPLIT, TAB };
++  enum class Type { TABSTRIP, PINNED, UNPINNED, GROUP, SPLIT, TAB,
++  TREE_NODE, };
+   // LINT.ThenChange(components/tabs/public/tab_collection.h:TYPE)
+ 
+   // Helper type for creating CustomAddChildViewCallbacks with
