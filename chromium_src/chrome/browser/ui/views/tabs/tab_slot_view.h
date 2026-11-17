@@ -9,26 +9,6 @@
 #include "brave/components/tabs/public/tree_tab_node_id.h"
 #include "ui/views/view.h"
 
-// Make TabSlotView have a TreeTabNodeId.
-#define SetGroup(...)                                                        \
-  SetGroup_Unused() const {}                                                 \
-  void set_tree_tab_node(const std::optional<tree_tab::TreeTabNodeId>& id) { \
-    tree_tab_node_id_ = id;                                                  \
-  }                                                                          \
-  const std::optional<tree_tab::TreeTabNodeId>& tree_tab_node() const {      \
-    return tree_tab_node_id_;                                                \
-  }                                                                          \
-  virtual TabNestingInfo GetTabNestingInfo() const;                          \
-  virtual bool IsInCollapsedTreeTabNode() const;                             \
-                                                                             \
- private:                                                                    \
-  std::optional<tree_tab::TreeTabNodeId> tree_tab_node_id_;                  \
-                                                                             \
- public:                                                                     \
-  virtual void SetGroup(__VA_ARGS__)
-
 #include <chrome/browser/ui/views/tabs/tab_slot_view.h>  // IWYU pragma: export
-
-#undef SetGroup
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_VIEW_H_

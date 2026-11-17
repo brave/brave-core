@@ -1,0 +1,26 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_slot_view.h b/chrome/browser/ui/views/tabs/tab_slot_view.h
+index a984dcf2515d9d9956eed14744c823ae7e17f982..995830eecffca4cfb19039bb232d43382d8a00a1 100644
+--- a/chrome/browser/ui/views/tabs/tab_slot_view.h
++++ b/chrome/browser/ui/views/tabs/tab_slot_view.h
+@@ -58,9 +58,21 @@ class TabSlotView : public views::View {
+   // views::View:
+   gfx::Rect GetAnchorBoundsInScreen() const override;
+ 
++  void set_tree_tab_node(const std::optional<tree_tab::TreeTabNodeId>& id) {
++    tree_tab_node_id_ = id;
++  }
++  const std::optional<tree_tab::TreeTabNodeId>& tree_tab_node() const {
++    return tree_tab_node_id_;
++  }
++  virtual TabNestingInfo GetTabNestingInfo() const;
++  virtual bool IsInCollapsedTreeTabNode() const;
++
+  private:
+   std::optional<tab_groups::TabGroupId> group_;
+ 
++  // Brave: the tree tab node this slot represents.
++  std::optional<tree_tab::TreeTabNodeId> tree_tab_node_id_;
++
+   // True if the view has been detached.
+   bool detached_ = false;
+ 

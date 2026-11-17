@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add methods to get and set the nesting information for a tab.
+    add_to_public:
+      class_name: TabLayoutState
+      code: |
+        const TabNestingInfo& nesting_info() const { return nesting_info_; }
+        void set_nesting_info(const TabNestingInfo& info) {
+          nesting_info_ = info;
+        }
+
+  - description: |
+      Storage for the nesting information of a tab.
+
+      Regex because no rewriter adds to a class's private section; this
+      appends to the end of the existing one.
+    regex:
+      pattern: 'std::optional<split_tabs::SplitTabId> splitness_;'
+      replace: |-
+        std::optional<split_tabs::SplitTabId> splitness_;
+
+          // Brave: nesting information of the tab.
+          TabNestingInfo nesting_info_;

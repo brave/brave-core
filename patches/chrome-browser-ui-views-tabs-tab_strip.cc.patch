@@ -1,10 +1,13 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_strip.cc b/chrome/browser/ui/views/tabs/tab_strip.cc
-index d9564d1213feeb978ba8d8d0dffe64df8b637674..dcb96420be400f8154478fef809f33c57a71ba55 100644
+index d9564d1213feeb978ba8d8d0dffe64df8b637674..ddbe6640b64256cc181f9192a63f1d78fd7f59d7 100644
 --- a/chrome/browser/ui/views/tabs/tab_strip.cc
 +++ b/chrome/browser/ui/views/tabs/tab_strip.cc
-@@ -125,7 +125,7 @@ std::unique_ptr<TabContainer> MakeTabContainer(
+@@ -123,9 +123,9 @@ ui::mojom::DragEventSource EventSourceFromEvent(const ui::LocatedEvent& event) {
+ 
+ std::unique_ptr<TabContainer> MakeTabContainer(
      TabStrip* tab_strip,
-     TabHoverCardController* hover_card_controller,
+-    TabHoverCardController* hover_card_controller,
++    BraveTabHoverCardController* hover_card_controller,
      TabDragContext* drag_context) {
 -  return std::make_unique<TabContainer>(*tab_strip, hover_card_controller,
 +  return std::make_unique<BraveTabContainer>(*tab_strip, hover_card_controller,
@@ -36,6 +39,24 @@ index d9564d1213feeb978ba8d8d0dffe64df8b637674..dcb96420be400f8154478fef809f33c5
        // If there's a group header here, and we're dragging a group, we might
        // end up on either side of that header. Check both cases to find the
        // best option.
+@@ -1178,7 +1180,7 @@ END_METADATA
+ 
+ TabStrip::TabStrip(
+     std::unique_ptr<TabStripController> controller,
+-    std::unique_ptr<TabHoverCardController> hover_card_controller)
++    std::unique_ptr<BraveTabHoverCardController> hover_card_controller)
+     : controller_(std::move(controller)),
+       hover_card_controller_(std::move(hover_card_controller)),
+       drag_context_(*AddChildView(std::make_unique<TabDragContextImpl>(this))),
+@@ -1334,7 +1336,7 @@ void TabStrip::AddTabsAt(const std::vector<AddTabData>& tabs_data) {
+     CHECK(IsValidModelIndex(tab_data.index))
+         << "Attempted to add a tab with an invalid model index.";
+     TabContainer::TabInsertionParams param(
+-        std::make_unique<Tab>(tab_data.handle, this), tab_data.index,
++        std::make_unique<BraveTab>(tab_data.handle, this), tab_data.index,
+         tab_data.is_pinned ? TabPinned::kPinned : TabPinned::kUnpinned);
+     tabs_params.push_back(std::move(param));
+   }
 @@ -1573,7 +1575,7 @@ void TabStrip::SetSelection(const ui::ListSelectionModel& new_selection) {
        const tab_groups::TabGroupId new_group = selected_tab->group().value();
        // If the tab that is about to be selected is in a collapsed group,

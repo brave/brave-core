@@ -1,0 +1,26 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_layout_state.h b/chrome/browser/ui/views/tabs/tab_layout_state.h
+index 8a00ff0081052e3e55f711db889d5b619d8724a3..0a7a44e4bae8bea90b9949f65d70be4197bd105e 100644
+--- a/chrome/browser/ui/views/tabs/tab_layout_state.h
++++ b/chrome/browser/ui/views/tabs/tab_layout_state.h
+@@ -36,6 +36,11 @@ class TabLayoutState {
+ 
+   bool IsClosed() const;
+ 
++  const TabNestingInfo& nesting_info() const { return nesting_info_; }
++  void set_nesting_info(const TabNestingInfo& info) {
++    nesting_info_ = info;
++  }
++
+  private:
+   // Whether this tab is open or closed.
+   TabOpen openness_ = TabOpen::kOpen;
+@@ -48,6 +53,9 @@ class TabLayoutState {
+ 
+   // Whether this tab is split.
+   std::optional<split_tabs::SplitTabId> splitness_;
++
++  // Brave: nesting information of the tab.
++  TabNestingInfo nesting_info_;
+ };
+ 
+ #endif  // CHROME_BROWSER_UI_VIEWS_TABS_TAB_LAYOUT_STATE_H_

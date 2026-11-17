@@ -39,3 +39,14 @@ substitutions:
     regex:
       pattern: 'std::make_unique<TabDragController>()'
       replace: 'std::make_unique<BraveTabDragController>()'
+
+  - description: Create BraveTab instead of Tab in AddTabsAt().
+    regex:
+      pattern: 'std::make_unique<Tab>(tab_data.handle, this)'
+      replace: 'std::make_unique<BraveTab>(tab_data.handle, this)'
+
+  - description: Use BraveTabHoverCardController.
+    count: 2 # The constructor parameter and the unique_ptr in the constructor.
+    rename_class:
+      class_name: TabHoverCardController
+      rename: BraveTabHoverCardController

@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Use the vertical tab layout when vertical tabs are enabled.
+
+      Regex because the call is in the middle of a long function that
+      preempt_function_impl would have to replace wholesale.
+    regex:
+      pattern: 'return CalculateTabBounds(tab_widths, available_width);'
+      replace: |-
+        if (use_vertical_tabs_ && FillGroupInfo(tab_widths) &&
+              FillNestingInfo(tab_widths)) {
+            return tabs::CalculateVerticalTabBounds(
+                tab_widths, available_width,
+                GetBraveTabStrip()->ShouldShowPinnedTabsInGrid());
+          }
+          return CalculateTabBounds(tab_widths, available_width);

@@ -23,13 +23,6 @@
 #include "ui/gfx/win/hwnd_util.h"
 #endif
 
-// Overrides TabContainer::TabInsertionParams construction in
-// TabStrip::AddTabsAt
-#define param(TAB, MODEL_INDEX, PINNED) \
-  param(std::make_unique<BraveTab>(tab_data.handle, this), MODEL_INDEX, PINNED)
-
-#define TabHoverCardController BraveTabHoverCardController
-
 // Macros for TabDragContextImpl. TabDragContextImpl is in anonymous namespace
 // and it's used in the tab_strip.cc file at the same time. Because of this,
 // the class is really hard to be extended with inheritance, so using patch file
@@ -61,8 +54,6 @@
 
 #undef BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS
 #undef BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX
-#undef TabHoverCardController
-#undef param
 
 bool TabStrip::ShouldAlwaysHideCloseButton() const {
   return false;
