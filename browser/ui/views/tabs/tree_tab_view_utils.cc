@@ -18,6 +18,7 @@
 #include "chrome/browser/ui/views/tabs/common/tab_group_view.h"
 #include "chrome/browser/ui/views/tabs/common/tab_view.h"
 #include "components/tabs/public/tab_collection.h"
+#include "third_party/abseil-cpp/absl/functional/overload.h"
 #include "ui/views/view.h"
 
 namespace tree_tab_view_utils {
@@ -45,26 +46,30 @@ void AppendUnwrappedChildren(
 // Returns the tree tab node directly wrapping |node_data| (a tab, group or
 // split). Returns nullptr if it's not wrapped by a tree tab node.
 const tabs::TreeTabNode* GetTreeTabNode(const tabs::ConstChildPtr& node_data) {
-  const tabs::TreeTabNodeTabCollection* tree_node_collection = nullptr;
-  if (const auto* tab =
-          std::get_if<tabs::ConstDanglingUntriagedTabInterface>(&node_data)) {
-    if (!*tab) {
-      return nullptr;
-    }
-    tree_node_collection =
-        tabs::TreeTabNodeTabCollection::GetTreeTabNodeCollection(tab->get());
-  } else {
-    const tabs::TabCollection* collection =
-        std::get<tabs::ConstDanglingUntriagedTabCollection>(node_data);
-    if (!collection) {
-      return nullptr;
-    }
-    const tabs::TabCollection* parent = collection->GetParentCollection();
-    if (parent && parent->type() == tabs::TabCollection::Type::TREE_NODE) {
-      tree_node_collection =
-          static_cast<const tabs::TreeTabNodeTabCollection*>(parent);
-    }
-  }
+  const tabs::TreeTabNodeTabCollection* tree_node_collection = std::visit(
+      absl::Overload{
+          [](const tabs::ConstDanglingUntriagedTabInterface& tab)
+              -> const tabs::TreeTabNodeTabCollection* {
+            if (!tab) {
+              return nullptr;
+            }
+            return tabs::TreeTabNodeTabCollection::GetTreeTabNodeCollection(
+                tab.get());
+          },
+          [](const tabs::ConstDanglingUntriagedTabCollection& collection)
+              -> const tabs::TreeTabNodeTabCollection* {
+            if (!collection) {
+              return nullptr;
+            }
+            const tabs::TabCollection* parent =
+                collection->GetParentCollection();
+            if (parent &&
+                parent->type() == tabs::TabCollection::Type::TREE_NODE) {
+              return static_cast<const tabs::TreeTabNodeTabCollection*>(parent);
+            }
+            return nullptr;
+          }},
+      node_data);
 
   return tree_node_collection ? &tree_node_collection->node() : nullptr;
 }
