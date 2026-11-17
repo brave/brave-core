@@ -165,7 +165,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
       ? endsWithAny(supportedUDExtensions, lowercaseSearchValue)
         || (selectedAsset?.coin === BraveWallet.CoinType.SOL
           && endsWithAny(supportedSNSExtensions, lowercaseSearchValue))
-        || (selectedAsset?.coin === BraveWallet.CoinType.ETH
+        || (selectedNetwork !== undefined
           && endsWithAny(supportedENSExtensions, lowercaseSearchValue))
       : false
 
@@ -179,6 +179,8 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
             tokenId: selectedSendAssetId,
             // preventing additional lookups for address casing changes
             url: lowercaseSearchValue,
+            coin: selectedNetwork?.coin,
+            chainId: selectedNetwork?.chainId,
           }
         : skipToken,
     )

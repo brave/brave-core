@@ -1132,6 +1132,15 @@ export class MockedWalletApiProxy {
           this.requireOffchainConsent !== BraveWallet.ResolveMethod.kEnabled,
       }
     },
+    ensGetAddr: async (domain, coin, chainId) => {
+      return {
+        address: `ens-${coin}-${chainId}-${domain}`,
+        error: 0,
+        errorMessage: '',
+        requireOffchainConsent:
+          this.requireOffchainConsent !== BraveWallet.ResolveMethod.kEnabled,
+      }
+    },
     snsGetSolAddr: async (domain) => {
       return {
         address: `s1abcd1234567890${domain}`,
