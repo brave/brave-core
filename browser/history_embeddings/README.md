@@ -68,6 +68,17 @@ so the semantic search input appears only once there is an index behind it.
 
 ## Model delivery + `EmbedderMetadataUpdated`
 
+The EmbeddingGemma component is shared by every profile, so it is registered for
+download only while at least one profile has Semantic history search on. Each
+loaded profile records its setting by base name in the local-state list
+`kHistoryEmbeddingsEnabledProfiles` (see `BraveHistoryEmbeddingsStatus`), so a
+profile that is not loaded still keeps the model. Turning the setting on or off
+updates the list right away, so the model is downloaded or removed without the
+relaunch the embedding services wait for. A profile deleted in an earlier
+session is dropped from the list at startup, when the component is registered.
+The component updater removes the model once the list is empty or Local AI is
+turned off.
+
 `SchedulingEmbedder` waits for `EmbedderMetadataUpdated` before it dispatches
 any work, and the base controller opens the model files the paths point at.
 Brave's model is delivered by the local AI component updater, so the controller
