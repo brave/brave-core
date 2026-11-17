@@ -14,37 +14,16 @@
 
 namespace endpoint_client {
 
-namespace internal {
-
-// An endpoint defines Request and Response type aliases and a static URL().
+// An endpoint defines a static URL() and Request and Response type aliases that
+// satisfy IsRequest and IsResponse.
 template <typename Endpoint>
-concept IsEndpointLike = requires {
-  typename Endpoint::Request;
-  typename Endpoint::Response;
-  { Endpoint::URL() } -> std::same_as<GURL>;
-};
-
-// A JSON endpoint has a body-less or JSON request and a JSON response.
-template <typename Endpoint>
-concept IsJSONEndpoint = IsEndpointLike<Endpoint> &&
-                         (IsBodylessRequest<typename Endpoint::Request> ||
-                          IsJSONRequest<typename Endpoint::Request>) &&
-                         IsJSONResponse<typename Endpoint::Response>;
-
-// A Protobuf endpoint has a body-less or Protobuf request and a Protobuf
-// response.
-template <typename Endpoint>
-concept IsProtobufEndpoint = IsEndpointLike<Endpoint> &&
-                             (IsBodylessRequest<typename Endpoint::Request> ||
-                              IsProtobufRequest<typename Endpoint::Request>) &&
-                             IsProtobufResponse<typename Endpoint::Response>;
-
-}  // namespace internal
-
-// An endpoint is either a JSON endpoint or a Protobuf endpoint.
-template <typename Endpoint>
-concept IsEndpoint = internal::IsJSONEndpoint<Endpoint> ||
-                     internal::IsProtobufEndpoint<Endpoint>;
+concept IsEndpoint =
+    requires {
+      { Endpoint::URL() } -> std::same_as<GURL>;
+      typename Endpoint::Request;
+      typename Endpoint::Response;
+    } && internal::IsRequest<typename Endpoint::Request> &&
+    internal::IsResponse<typename Endpoint::Response>;
 
 }  // namespace endpoint_client
 

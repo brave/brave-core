@@ -12,30 +12,15 @@
 namespace endpoint_client::internal {
 
 template <typename>
-inline constexpr bool kIsJSONResponse = false;
+inline constexpr bool kIsResponse = false;
 
-template <IsJSONResponseBody SuccessBody, IsJSONResponseBody ErrorBody>
-inline constexpr bool kIsJSONResponse<Response<SuccessBody, ErrorBody>> = true;
+template <IsResponseBody SuccessBody, IsResponseBody ErrorBody>
+inline constexpr bool kIsResponse<Response<SuccessBody, ErrorBody>> = true;
 
-// A JSON response is a Response<> whose bodies are JSON response bodies.
+// A response is a Response<> whose success and error bodies are each either a
+// JSON or a Protobuf response body.
 template <typename Response>
-concept IsJSONResponse = kIsJSONResponse<Response>;
-
-template <typename>
-inline constexpr bool kIsProtobufResponse = false;
-
-template <IsProtobufResponseBody SuccessBody, IsProtobufResponseBody ErrorBody>
-inline constexpr bool kIsProtobufResponse<Response<SuccessBody, ErrorBody>> =
-    true;
-
-// A Protobuf response is a Response<> whose bodies are Protobuf response
-// bodies.
-template <typename Response>
-concept IsProtobufResponse = kIsProtobufResponse<Response>;
-
-// A response is either a JSON response or a Protobuf response.
-template <typename Response>
-concept IsResponse = IsJSONResponse<Response> || IsProtobufResponse<Response>;
+concept IsResponse = kIsResponse<Response>;
 
 }  // namespace endpoint_client::internal
 

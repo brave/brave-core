@@ -11,11 +11,11 @@
 
 namespace endpoint_client::internal {
 
-// A JSON request body is a type that HasToValue.
+// A JSON request body has a ToValue().
 template <typename RequestBody>
 concept IsJSONRequestBody = HasToValue<RequestBody>;
 
-// A Protobuf request body is a type that IsProtobufMessage.
+// A Protobuf request body is a Protobuf message.
 template <typename RequestBody>
 concept IsProtobufRequestBody = IsProtobufMessage<RequestBody>;
 
