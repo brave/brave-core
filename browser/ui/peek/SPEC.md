@@ -125,8 +125,8 @@ Peek or its tab closes. Peek is a preview; "Open as tab" keeps the page.
 
 ### Persistent and non-persistent state
 
-Nothing in Peek is persisted by Peek itself. There are no preferences, no files,
-and no new per-profile data.
+Peek persists one thing: the card size the user resized it to, as two profile
+preferences. There are no files and no other per-profile data.
 
 - A Peek page is a normal page load in the window's profile, or in the source
   tab's container. Its history entry, cookies, and site storage behave like any
@@ -200,6 +200,13 @@ separate widget is used.
   its own content.
 - Left, right, bottom: inset by the larger of 24 px or 7.5% of the covered width
   (left and right) or height (bottom).
+- Resizing: the left, right and bottom edges can be dragged, from an 8 px handle
+  just outside the card. The card stays centered horizontally, so the left and
+  right edges resize it on both sides, and its top stays attached to the
+  toolbar. It's at least 400 × 300 px and keeps a 24 px margin of backdrop. The
+  size is saved in the profile (`brave.peek.card_width_ratio` and
+  `brave.peek.card_height_ratio`), relative to the covered area, and used by
+  every later Peek; until then the inset above applies.
 - Corners: 16 px at the bottom and 4 px at the top. The top corners stay small
   because the card is attached to the toolbar.
 - Backdrop: only the contents area is dimmed. The browser toolbar and omnibox
