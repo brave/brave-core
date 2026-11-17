@@ -10,6 +10,10 @@ targets.binaries.windowed_test_launcher(
     name='brave_browser_tests',
     label='//brave/test:brave_browser_tests',
 )
+targets.binaries.console_test_launcher(
+    name='brave_cert_pinning_tests',
+    label='//brave/net:brave_cert_pinning_tests',
+)
 targets.binaries.windowed_test_launcher(
     name='brave_components_unittests',
     label='//brave/components:brave_components_unittests',

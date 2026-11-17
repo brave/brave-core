@@ -7,6 +7,7 @@
 from lib.config import targets
 
 targets.tests.gtest_test(name='brave_browser_tests')
+targets.tests.gtest_test(name='brave_cert_pinning_tests')
 targets.tests.gtest_test(name='brave_components_unittests')
 targets.tests.gtest_test(name='brave_installer_unittests')
 targets.tests.gtest_test(name='brave_interactive_ui_tests')
