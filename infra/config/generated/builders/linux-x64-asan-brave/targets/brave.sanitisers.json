@@ -48,6 +48,13 @@
       },
       {
         "args": [
+          "--asan-detect-odr-violation=0"
+        ],
+        "name": "brave_cert_pinning_tests",
+        "test": "brave_cert_pinning_tests"
+      },
+      {
+        "args": [
           "--ui-test-action-timeout=320000",
           "--test-launcher-timeout=2200000",
           "--asan-detect-odr-violation=0"
