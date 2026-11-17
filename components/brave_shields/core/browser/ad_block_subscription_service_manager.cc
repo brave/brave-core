@@ -181,8 +181,7 @@ GURL AdBlockSubscriptionServiceManager::GetListTextFileUrl(
   return file_url;
 }
 
-void AdBlockSubscriptionServiceManager::OnUpdateTimer(
-    component_updater::TimerUpdateScheduler::OnFinishedCallback on_finished) {
+void AdBlockSubscriptionServiceManager::OnUpdateTimer() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!local_state_) {
@@ -212,8 +211,6 @@ void AdBlockSubscriptionServiceManager::OnUpdateTimer(
       }
     }
   }
-
-  std::move(on_finished).Run();
 }
 
 void AdBlockSubscriptionServiceManager::StartDownload(const GURL& sub_url,
