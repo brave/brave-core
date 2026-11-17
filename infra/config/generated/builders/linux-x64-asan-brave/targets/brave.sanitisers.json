@@ -1,0 +1,60 @@
+{
+  "linux-x64-asan-brave": {
+    "additional_compile_targets": [
+      "brave"
+    ],
+    "gtest_tests": [
+      {
+        "args": [
+          "--asan-detect-odr-violation=0"
+        ],
+        "name": "brave_components_unittests",
+        "test": "brave_components_unittests"
+      },
+      {
+        "args": [
+          "--asan-detect-odr-violation=0"
+        ],
+        "name": "brave_unit_tests",
+        "test": "brave_unit_tests"
+      },
+      {
+        "args": [
+          "--asan-detect-odr-violation=0"
+        ],
+        "name": "brave_installer_unittests",
+        "test": "brave_installer_unittests"
+      },
+      {
+        "args": [
+          "--asan-detect-odr-violation=0"
+        ],
+        "name": "brave_updater_unittests",
+        "test": "brave_updater_unittests"
+      },
+      {
+        "args": [
+          "--asan-detect-odr-violation=0"
+        ],
+        "name": "brave_browser_tests",
+        "test": "brave_browser_tests"
+      },
+      {
+        "args": [
+          "--asan-detect-odr-violation=0"
+        ],
+        "name": "brave_interactive_ui_tests",
+        "test": "brave_interactive_ui_tests"
+      },
+      {
+        "args": [
+          "--ui-test-action-timeout=320000",
+          "--test-launcher-timeout=2200000",
+          "--asan-detect-odr-violation=0"
+        ],
+        "name": "brave_network_audit_tests",
+        "test": "brave_network_audit_tests"
+      }
+    ]
+  }
+}
