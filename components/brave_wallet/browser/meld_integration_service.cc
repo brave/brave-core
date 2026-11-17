@@ -63,7 +63,6 @@ base::flat_map<std::string, std::string> MakeMeldApiHeaders() {
 
   return request_headers;
 }
-constexpr char kDefaultMeldStatuses[] = "LIVE,RECENTLY_ADDED";
 
 std::optional<std::string> SanitizeJson(const std::string& json) {
   auto converted_json = std::string(
@@ -73,18 +72,6 @@ std::optional<std::string> SanitizeJson(const std::string& json) {
   }
 
   return converted_json;
-}
-
-GURL AppendFilterParams(
-    GURL url,
-    const base::flat_map<std::string, std::string>& def_params) {
-  for (const auto& [key, val] : def_params) {
-    url = net::AppendQueryParameter(url, key, val);
-  }
-
-  url = net::AppendQueryParameter(url, "statuses", kDefaultMeldStatuses);
-
-  return url;
 }
 
 // Brave's Meld integration only drives the on-ramp flow.
@@ -314,9 +301,8 @@ void MeldIntegrationService::Bind(
 
 // static
 GURL MeldIntegrationService::GetServiceProviderURL() {
-  return AppendFilterParams(
-      GURL(kMeldRpcEndpoint).Resolve("/service-providers"),
-      base::flat_map<std::string, std::string>{{"accountFilter", "false"}});
+  return MakeNetworkPartnerURL("/network-partner/supported/partners",
+                               base::flat_map<std::string, std::string>{});
 }
 
 void MeldIntegrationService::GetServiceProviders(
