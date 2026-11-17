@@ -8,18 +8,32 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_notification_delegate.h"
+
 class Profile;
 
 namespace ai_chat {
 
-// Shows a notification for a completed background generation.
-void ShowAIChatCompletionNotification(Profile* profile,
-                                      const std::string& conversation_uuid,
-                                      const std::u16string& conversation_title);
+// Shows background completion notifications through the profile's
+// NotificationDisplayService.
+class AIChatNotificationHelper : public AIChatNotificationDelegate {
+ public:
+  explicit AIChatNotificationHelper(Profile* profile);
+  ~AIChatNotificationHelper() override;
+  AIChatNotificationHelper(const AIChatNotificationHelper&) = delete;
+  AIChatNotificationHelper& operator=(const AIChatNotificationHelper&) = delete;
 
-// Closes the notification for |conversation_uuid|.
-void CloseAIChatCompletionNotification(Profile* profile,
-                                       const std::string& conversation_uuid);
+  // AIChatNotificationDelegate:
+  void ShowCompletionNotification(
+      const std::string& conversation_uuid,
+      const std::u16string& conversation_title) override;
+  void CloseCompletionNotification(
+      const std::string& conversation_uuid) override;
+
+ private:
+  raw_ptr<Profile> profile_;
+};
 
 }  // namespace ai_chat
 

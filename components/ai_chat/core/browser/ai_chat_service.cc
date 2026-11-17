@@ -455,12 +455,8 @@ void AIChatService::DeleteConversations(std::optional<base::Time> begin_time,
     conversation_handlers_.clear();
     conversations_.clear();
     content_conversations_.clear();
-    auto generation_states = std::exchange(conversation_generation_state_, {});
-    if (!generation_states.empty()) {
+    if (!std::exchange(conversation_generation_state_, {}).empty()) {
       NotifyConversationGenerationStateChanged();
-    }
-    for (const auto& [id, state] : generation_states) {
-      MaybeCloseCompletionNotification(id);
     }
 
     // Delete database data
@@ -641,10 +637,8 @@ void AIChatService::OnDataDeletedForDisabledStorage(bool success) {
   bool generation_state_changed = false;
   for (auto it = conversations_.begin(); it != conversations_.end();) {
     if (!conversation_handlers_.contains(it->first)) {
-      // Only a conversation with a generation state can have a notification.
       if (conversation_generation_state_.erase(it->first) > 0) {
         generation_state_changed = true;
-        MaybeCloseCompletionNotification(it->first);
       }
       it = conversations_.erase(it);
     } else {
@@ -884,7 +878,6 @@ void AIChatService::DeleteConversationWithoutNotifyingList(
   if (conversation_generation_state_.erase(id) > 0) {
     NotifyConversationGenerationStateChanged();
   }
-  MaybeCloseCompletionNotification(id);
 
   // Update database
   if (ai_chat_db_ && !temporary) {
@@ -1137,7 +1130,6 @@ void AIChatService::MaybeUnloadConversation(
     if (conversation_generation_state_.erase(uuid) > 0) {
       NotifyConversationGenerationStateChanged();
     }
-    MaybeCloseCompletionNotification(uuid);
     DVLOG(1) << "Erased conversation (" << uuid << "). Now have "
              << conversations_.size() << " Conversation metadata items and "
              << conversation_handlers_.size()
@@ -1432,7 +1424,6 @@ void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
         it->second == mojom::ConversationGenerationState::kCompletedNotViewed) {
       conversation_generation_state_.erase(it);
       NotifyConversationGenerationStateChanged();
-      MaybeCloseCompletionNotification(uuid);
     }
   }
   QueueMaybeUnloadConversation(handler);
@@ -1624,13 +1615,20 @@ void AIChatService::NotifyConversationGenerationStateChanged() {
     remote->OnConversationGenerationStateChanged(
         conversation_generation_state_);
   }
+  base::EraseIf(notified_conversations_, [this](const std::string& uuid) {
+    const auto* state = base::FindOrNull(conversation_generation_state_, uuid);
+    if (state &&
+        *state == mojom::ConversationGenerationState::kCompletedNotViewed) {
+      return false;
+    }
+    notification_delegate_->CloseCompletionNotification(uuid);
+    return true;
+  });
 }
 
-void AIChatService::SetCompletionNotificationCallbacks(
-    ShowCompletionNotificationCallback show,
-    CloseCompletionNotificationCallback close) {
-  show_completion_notification_callback_ = std::move(show);
-  close_completion_notification_callback_ = std::move(close);
+void AIChatService::SetNotificationDelegate(
+    std::unique_ptr<AIChatNotificationDelegate> delegate) {
+  notification_delegate_ = std::move(delegate);
 }
 
 bool AIChatService::IsConversationClientConnected(
@@ -1663,20 +1661,15 @@ void AIChatService::MaybeMarkGenerationComplete(
 }
 
 void AIChatService::MaybeShowCompletionNotification(const std::string& uuid) {
-  if (!show_completion_notification_callback_) {
+  if (!notification_delegate_) {
     return;
   }
   std::u16string title_u16;
   if (auto* conversation = base::FindPtrOrNull(conversations_, uuid)) {
     title_u16 = base::UTF8ToUTF16(conversation->title);
   }
-  show_completion_notification_callback_.Run(uuid, title_u16);
-}
-
-void AIChatService::MaybeCloseCompletionNotification(const std::string& uuid) {
-  if (close_completion_notification_callback_) {
-    close_completion_notification_callback_.Run(uuid);
-  }
+  notified_conversations_.insert(uuid);
+  notification_delegate_->ShowCompletionNotification(uuid, title_u16);
 }
 
 void AIChatService::OpenConversationWithStagedEntries(

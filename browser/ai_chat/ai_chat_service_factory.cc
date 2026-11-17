@@ -160,10 +160,8 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
   }
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-  Profile* profile = Profile::FromBrowserContext(context);
-  service->SetCompletionNotificationCallbacks(
-      base::BindRepeating(&ShowAIChatCompletionNotification, profile),
-      base::BindRepeating(&CloseAIChatCompletionNotification, profile));
+  service->SetNotificationDelegate(std::make_unique<AIChatNotificationHelper>(
+      Profile::FromBrowserContext(context)));
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
   return service;

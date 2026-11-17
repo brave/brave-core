@@ -18,6 +18,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
@@ -31,6 +32,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_notification_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/conversation_share_manager.h"
@@ -275,29 +277,12 @@ class AIChatService : public KeyedService,
   RestoreWorkspaceAssociatedContentFromUrl(const GURL& url,
                                            const std::string& content_uuid);
 
-  using ShowCompletionNotificationCallback =
-      base::RepeatingCallback<void(const std::string& uuid,
-                                   const std::u16string& title)>;
-  using CloseCompletionNotificationCallback =
-      base::RepeatingCallback<void(const std::string& uuid)>;
-  // Lets the embedder notify the user when a response finishes in the
-  // background. |show| runs when a conversation's response finishes while no
-  // client is connected to it, with the conversation's title, which is empty
-  // if it has none. |close| runs when the conversation is viewed, deleted, or
-  // unloaded and dropped from the list, whether or not a notification is
-  // showing. Either callback can be null.
-  void SetCompletionNotificationCallbacks(
-      ShowCompletionNotificationCallback show,
-      CloseCompletionNotificationCallback close);
-
-  void SetCompletionNotificationCallbackForTesting(
-      ShowCompletionNotificationCallback show) {
-    show_completion_notification_callback_ = std::move(show);
-  }
-  void SetCloseCompletionNotificationCallbackForTesting(
-      CloseCompletionNotificationCallback close) {
-    close_completion_notification_callback_ = std::move(close);
-  }
+  // Shows a notification through |delegate| when a conversation's response
+  // finishes while no client is connected to it (kCompletedNotViewed), and
+  // closes it once the conversation leaves that state or is removed. Android
+  // and iOS don't set one.
+  void SetNotificationDelegate(
+      std::unique_ptr<AIChatNotificationDelegate> delegate);
 
   std::unique_ptr<EngineConsumer> GetDefaultAIEngine();
   std::unique_ptr<EngineConsumer> GetEngineForModel(
@@ -462,7 +447,9 @@ class AIChatService : public KeyedService,
       base::expected<std::vector<std::string>, mojom::APIError> result);
   // Creates the tool providers for |conversation| and adds them to it.
   void AddToolProvidersToConversation(ConversationHandler* conversation);
-  // Sends |conversation_generation_state_| to all |observer_remotes_|.
+  // Sends |conversation_generation_state_| to all |observer_remotes_|, and
+  // closes the notifications of conversations that are no longer
+  // kCompletedNotViewed.
   void NotifyConversationGenerationStateChanged();
   // Whether |uuid| has a loaded ConversationHandler with a connected client.
   // This doesn't mean the conversation is on screen.
@@ -475,7 +462,6 @@ class AIChatService : public KeyedService,
   // delete several conversations and then send the list once.
   void DeleteConversationWithoutNotifyingList(const std::string& id);
   void MaybeShowCompletionNotification(const std::string& uuid);
-  void MaybeCloseCompletionNotification(const std::string& uuid);
 
   raw_ptr<ModelService> model_service_;
   raw_ptr<TabTrackerService> tab_tracker_service_;
@@ -593,8 +579,9 @@ class AIChatService : public KeyedService,
   // is owned, accessed, and destroyed only on |db_task_runner_|.
   scoped_refptr<AIChatSyncBackend> sync_backend_;
 
-  ShowCompletionNotificationCallback show_completion_notification_callback_;
-  CloseCompletionNotificationCallback close_completion_notification_callback_;
+  std::unique_ptr<AIChatNotificationDelegate> notification_delegate_;
+  // Conversations whose notification is showing.
+  base::flat_set<std::string> notified_conversations_;
 
   base::WeakPtrFactory<AIChatService> weak_ptr_factory_{this};
 };

@@ -33,15 +33,16 @@ constexpr char kAIChatNotifierId[] = "brave.ai_chat";
 
 // TODO(https://github.com/brave/brave-browser/issues/60355): Navigate to the
 // conversation on click.
-class AIChatNotificationDelegate : public message_center::NotificationDelegate {
+class AIChatNotificationClickDelegate
+    : public message_center::NotificationDelegate {
  public:
-  AIChatNotificationDelegate() = default;
+  AIChatNotificationClickDelegate() = default;
 
   void Click(const std::optional<int>& button_index,
              const std::optional<std::u16string>& reply) override {}
 
  private:
-  ~AIChatNotificationDelegate() override = default;
+  ~AIChatNotificationClickDelegate() override = default;
 };
 
 std::string GetAIChatNotificationId(const std::string& conversation_uuid) {
@@ -50,15 +51,16 @@ std::string GetAIChatNotificationId(const std::string& conversation_uuid) {
 
 }  // namespace
 
-void ShowAIChatCompletionNotification(
-    Profile* profile,
+AIChatNotificationHelper::AIChatNotificationHelper(Profile* profile)
+    : profile_(profile) {}
+
+AIChatNotificationHelper::~AIChatNotificationHelper() = default;
+
+void AIChatNotificationHelper::ShowCompletionNotification(
     const std::string& conversation_uuid,
     const std::u16string& conversation_title) {
-  if (!profile) {
-    return;
-  }
   auto* display_service =
-      NotificationDisplayServiceFactory::GetForProfile(profile);
+      NotificationDisplayServiceFactory::GetForProfile(profile_);
   if (!display_service) {
     return;
   }
@@ -80,19 +82,16 @@ void ShowAIChatCompletionNotification(
       ui::ImageModel(), std::u16string(), GURL(),
       message_center::NotifierId(message_center::NotifierType::SYSTEM_COMPONENT,
                                  kAIChatNotifierId),
-      data, base::MakeRefCounted<AIChatNotificationDelegate>());
+      data, base::MakeRefCounted<AIChatNotificationClickDelegate>());
 
   display_service->Display(NotificationHandler::Type::TRANSIENT, *notification,
                            nullptr);
 }
 
-void CloseAIChatCompletionNotification(Profile* profile,
-                                       const std::string& conversation_uuid) {
-  if (!profile) {
-    return;
-  }
+void AIChatNotificationHelper::CloseCompletionNotification(
+    const std::string& conversation_uuid) {
   auto* display_service =
-      NotificationDisplayServiceFactory::GetForProfile(profile);
+      NotificationDisplayServiceFactory::GetForProfile(profile_);
   if (!display_service) {
     return;
   }

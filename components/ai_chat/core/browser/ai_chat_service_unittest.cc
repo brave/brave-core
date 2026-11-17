@@ -37,6 +37,7 @@
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_notification_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
@@ -93,6 +94,27 @@ class MockAIChatCredentialManager : public AIChatCredentialManager {
               (override));
   MOCK_METHOD(void, PutCredentialInCache, (CredentialCacheEntry), (override));
 };
+
+class MockNotificationDelegate : public AIChatNotificationDelegate {
+ public:
+  MOCK_METHOD(void,
+              ShowCompletionNotification,
+              (const std::string& conversation_uuid,
+               const std::u16string& conversation_title),
+              (override));
+  MOCK_METHOD(void,
+              CloseCompletionNotification,
+              (const std::string& conversation_uuid),
+              (override));
+};
+
+// Gives |service| a mock notification delegate, which it owns.
+MockNotificationDelegate* SetMockNotificationDelegate(AIChatService& service) {
+  auto delegate = std::make_unique<MockNotificationDelegate>();
+  MockNotificationDelegate* raw = delegate.get();
+  service.SetNotificationDelegate(std::move(delegate));
+  return raw;
+}
 
 class MockServiceClient : public mojom::ServiceObserver {
  public:
@@ -1987,10 +2009,8 @@ TEST_P(AIChatServiceUnitTest, GenerationState_CompletionWhileViewed_StaysIdle) {
 }
 
 TEST_P(AIChatServiceUnitTest, GenerationState_StopWhileIdle_StaysIdle) {
-  bool notified = false;
-  ai_chat_service_->SetCompletionNotificationCallbackForTesting(
-      base::BindLambdaForTesting(
-          [&](const std::string&, const std::u16string&) { notified = true; }));
+  auto* notifications = SetMockNotificationDelegate(*ai_chat_service_);
+  EXPECT_CALL(*notifications, ShowCompletionNotification).Times(0);
 
   ConversationHandler* idle = CreateConversation();
   EXPECT_CALL(*client_, OnConversationGenerationStateChanged).Times(0);
@@ -2004,7 +2024,6 @@ TEST_P(AIChatServiceUnitTest, GenerationState_StopWhileIdle_StaysIdle) {
       mojom::ConversationGenerationState::kGenerating,
       base::BindLambdaForTesting(
           [&] { ai_chat_service_->OnRequestInProgressChanged(other, true); }));
-  EXPECT_FALSE(notified);
 }
 
 TEST_P(AIChatServiceUnitTest, GenerationState_RepeatedInProgressNotifiesOnce) {
@@ -2217,39 +2236,29 @@ TEST_P(AIChatServiceUnitTest, GenerationState_BulkDeleteClears) {
 }
 
 TEST_P(AIChatServiceUnitTest, Notification_TriggersOnBackgroundCompletion) {
-  std::string notified_uuid;
-  bool notified = false;
-  ai_chat_service_->SetCompletionNotificationCallbackForTesting(
-      base::BindLambdaForTesting(
-          [&](const std::string& uuid, const std::u16string&) {
-            notified = true;
-            notified_uuid = uuid;
-          }));
+  auto* notifications = SetMockNotificationDelegate(*ai_chat_service_);
+  EXPECT_CALL(*notifications, ShowCompletionNotification).Times(0);
 
   ConversationHandler* handler = CreateConversation();
   const std::string uuid = handler->get_conversation_uuid();
   auto resolve = StartGeneration(handler, *client_);
-  EXPECT_FALSE(notified);
+  testing::Mock::VerifyAndClearExpectations(notifications);
 
+  EXPECT_CALL(*notifications, ShowCompletionNotification(uuid, _));
   ExpectGenerationState(
       *client_, uuid, mojom::ConversationGenerationState::kCompletedNotViewed,
       base::BindOnce(&CompleteGeneration, std::move(resolve)));
-  EXPECT_TRUE(notified);
-  EXPECT_EQ(notified_uuid, uuid);
 }
 
 TEST_P(AIChatServiceUnitTest, Notification_NotTriggeredWhenViewed) {
-  bool notified = false;
-  ai_chat_service_->SetCompletionNotificationCallbackForTesting(
-      base::BindLambdaForTesting(
-          [&](const std::string&, const std::u16string&) { notified = true; }));
+  auto* notifications = SetMockNotificationDelegate(*ai_chat_service_);
+  EXPECT_CALL(*notifications, ShowCompletionNotification).Times(0);
 
   ConversationHandler* handler = CreateConversation();
   auto client = CreateConversationClient(handler);
   auto resolve = StartGeneration(handler, *client_);
   ExpectGenerationIdle(*client_, handler->get_conversation_uuid(),
                        base::BindOnce(&CompleteGeneration, std::move(resolve)));
-  EXPECT_FALSE(notified);
 }
 
 TEST_P(AIChatServiceUnitTest, Notification_CloseWhenDisablingStorageDropsIt) {
@@ -2257,39 +2266,32 @@ TEST_P(AIChatServiceUnitTest, Notification_CloseWhenDisablingStorageDropsIt) {
   if (!IsAIChatHistoryEnabled()) {
     return;
   }
-  std::string closed_uuid;
-  ai_chat_service_->SetCloseCompletionNotificationCallbackForTesting(
-      base::BindLambdaForTesting(
-          [&](const std::string& uuid) { closed_uuid = uuid; }));
-
+  auto* notifications = SetMockNotificationDelegate(*ai_chat_service_);
   ConversationHandler* handler = CreateConversation();
   const std::string uuid = handler->get_conversation_uuid();
   auto resolve = StartGeneration(handler, *client_);
+  EXPECT_CALL(*notifications, ShowCompletionNotification(uuid, _));
+  EXPECT_CALL(*notifications, CloseCompletionNotification).Times(0);
   ExpectGenerationState(
       *client_, uuid, mojom::ConversationGenerationState::kCompletedNotViewed,
       base::BindOnce(&CompleteGeneration, std::move(resolve)));
   task_environment_.FastForwardBy(base::Seconds(10));
   ASSERT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
-  ASSERT_TRUE(closed_uuid.empty());
+  testing::Mock::VerifyAndClearExpectations(notifications);
 
+  EXPECT_CALL(*notifications, CloseCompletionNotification(uuid));
   ExpectGenerationIdle(*client_, uuid, base::BindLambdaForTesting([&] {
     prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false);
   }));
-  EXPECT_EQ(closed_uuid, uuid);
 }
 
 TEST_P(AIChatServiceUnitTest, Notification_CloseOnBind) {
-  bool close_notified = false;
-  std::string closed_uuid;
-  ai_chat_service_->SetCloseCompletionNotificationCallbackForTesting(
-      base::BindLambdaForTesting([&](const std::string& uuid) {
-        close_notified = true;
-        closed_uuid = uuid;
-      }));
-
+  auto* notifications = SetMockNotificationDelegate(*ai_chat_service_);
   ConversationHandler* handler = CreateConversation();
   const std::string uuid = handler->get_conversation_uuid();
   auto resolve = StartGeneration(handler, *client_);
+  EXPECT_CALL(*notifications, ShowCompletionNotification(uuid, _));
+  EXPECT_CALL(*notifications, CloseCompletionNotification(uuid));
   ExpectGenerationState(
       *client_, uuid, mojom::ConversationGenerationState::kCompletedNotViewed,
       base::BindOnce(&CompleteGeneration, std::move(resolve)));
@@ -2303,16 +2305,11 @@ TEST_P(AIChatServiceUnitTest, Notification_CloseOnBind) {
   }));
   ASSERT_TRUE(
       base::test::RunUntil([&] { return handler->IsAnyClientConnected(); }));
-
-  EXPECT_TRUE(close_notified);
-  EXPECT_EQ(closed_uuid, uuid);
 }
 
 TEST_P(AIChatServiceUnitTest, Notification_NotShownWhileHandlerContinues) {
-  int show_count = 0;
-  ai_chat_service_->SetCompletionNotificationCallbackForTesting(
-      base::BindLambdaForTesting(
-          [&](const std::string&, const std::u16string&) { ++show_count; }));
+  auto* notifications = SetMockNotificationDelegate(*ai_chat_service_);
+  EXPECT_CALL(*notifications, ShowCompletionNotification).Times(0);
 
   ConversationHandler* handler = CreateConversation();
   auto resolve = StartGeneration(handler, *client_);
@@ -2323,24 +2320,22 @@ TEST_P(AIChatServiceUnitTest, Notification_NotShownWhileHandlerContinues) {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, run_loop.QuitClosure());
   run_loop.Run();
-  EXPECT_EQ(show_count, 0);
+  testing::Mock::VerifyAndClearExpectations(notifications);
 
+  EXPECT_CALL(*notifications, ShowCompletionNotification);
   ExpectGenerationState(
       *client_, handler->get_conversation_uuid(),
       mojom::ConversationGenerationState::kCompletedNotViewed,
       base::BindOnce(&CompleteGeneration, std::move(resolve)));
-  EXPECT_EQ(show_count, 1);
 }
 
 TEST_P(AIChatServiceUnitTest, Notification_CloseOnDirectHandlerBind) {
-  std::string closed_uuid;
-  ai_chat_service_->SetCloseCompletionNotificationCallbackForTesting(
-      base::BindLambdaForTesting(
-          [&](const std::string& uuid) { closed_uuid = uuid; }));
-
+  auto* notifications = SetMockNotificationDelegate(*ai_chat_service_);
   ConversationHandler* handler = CreateConversation();
   const std::string uuid = handler->get_conversation_uuid();
   auto resolve = StartGeneration(handler, *client_);
+  EXPECT_CALL(*notifications, ShowCompletionNotification(uuid, _));
+  EXPECT_CALL(*notifications, CloseCompletionNotification(uuid));
   ExpectGenerationState(
       *client_, uuid, mojom::ConversationGenerationState::kCompletedNotViewed,
       base::BindOnce(&CompleteGeneration, std::move(resolve)));
@@ -2350,7 +2345,42 @@ TEST_P(AIChatServiceUnitTest, Notification_CloseOnDirectHandlerBind) {
   ExpectGenerationIdle(*client_, uuid, base::BindLambdaForTesting([&] {
     client = CreateConversationClient(handler);
   }));
-  EXPECT_EQ(closed_uuid, uuid);
+}
+
+TEST_P(AIChatServiceUnitTest, Notification_CloseOnDelete) {
+  auto* notifications = SetMockNotificationDelegate(*ai_chat_service_);
+  ConversationHandler* handler = CreateConversation();
+  const std::string uuid = handler->get_conversation_uuid();
+  auto resolve = StartGeneration(handler, *client_);
+  EXPECT_CALL(*notifications, ShowCompletionNotification(uuid, _));
+  EXPECT_CALL(*notifications, CloseCompletionNotification(uuid));
+  ExpectGenerationState(
+      *client_, uuid, mojom::ConversationGenerationState::kCompletedNotViewed,
+      base::BindOnce(&CompleteGeneration, std::move(resolve)));
+  ExpectGenerationIdle(*client_, uuid, base::BindLambdaForTesting([&] {
+    ai_chat_service_->DeleteConversation(uuid);
+  }));
+}
+
+TEST_P(AIChatServiceUnitTest, Notification_CloseWhenGenerationRestarts) {
+  auto* notifications = SetMockNotificationDelegate(*ai_chat_service_);
+  ConversationHandler* handler = CreateConversation();
+  const std::string uuid = handler->get_conversation_uuid();
+  auto resolve = StartGeneration(handler, *client_);
+  EXPECT_CALL(*notifications, ShowCompletionNotification(uuid, _));
+  EXPECT_CALL(*notifications, CloseCompletionNotification).Times(0);
+  ExpectGenerationState(
+      *client_, uuid, mojom::ConversationGenerationState::kCompletedNotViewed,
+      base::BindOnce(&CompleteGeneration, std::move(resolve)));
+  testing::Mock::VerifyAndClearExpectations(notifications);
+
+  // A new response makes the "response ready" notification out of date.
+  EXPECT_CALL(*notifications, CloseCompletionNotification(uuid));
+  ExpectGenerationState(
+      *client_, uuid, mojom::ConversationGenerationState::kGenerating,
+      base::BindLambdaForTesting([&] {
+        ai_chat_service_->OnRequestInProgressChanged(handler, true);
+      }));
 }
 
 }  // namespace ai_chat
