@@ -150,6 +150,7 @@ source_set("browser_tests") {
   testonly = true
   sources = [
     "brave_history_ui_embeddings_browsertest.cc",
+    "history_embeddings_database_browsertest.cc",
     "history_embeddings_omnibox_browsertest.cc",
     "history_embeddings_service_factory_browsertest.cc",
     "open_tab_search_browsertest.cc",
