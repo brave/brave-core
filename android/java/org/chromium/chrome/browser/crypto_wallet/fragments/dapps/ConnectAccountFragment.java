@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 import static org.chromium.build.NullUtil.assertNonNull;
 import static org.chromium.build.NullUtil.assumeNonNull;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -95,7 +94,6 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
         mWalletModel = getWalletFragmentCallback().getWalletModel();
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private void updateAccounts() {
         if (mSelectedAccount == null || mAccountInfos == null) return;
         AccountsPermissionsHelper accountsPermissionsHelper =
@@ -117,10 +115,9 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
                         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
                         mRecyclerView.setLayoutManager(layoutManager);
                     } else {
-                        mAccountsListAdapter.setAccounts(mAccountInfos);
                         mAccountsListAdapter.setAccountsWithPermissions(mAccountsWithPermissions);
                         mAccountsListAdapter.setSelectedAccount(mSelectedAccount);
-                        mAccountsListAdapter.notifyDataSetChanged();
+                        mAccountsListAdapter.setAccounts(mAccountInfos);
                     }
                 });
     }
