@@ -2345,7 +2345,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
                  <h3 class="description-header">
                    $i18n{columnHeadingWhenOn}
                  </h3>
-@@ -84,44 +71,24 @@
+@@ -84,45 +71,28 @@
                    </li>
                  </ul>
                </div>
@@ -2382,6 +2382,11 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
                </settings-toggle-button>
              \` : ''}
            </div>
++        <div slot="sub-label" ?hidden="\${!loadTimeData.getBoolean('isExtensionMalwareBlocklistEnabled')}">
++      $i18n{braveSafeBrowsingExtensionMalwareBlocklistDesc}
++      <a href="$i18n{braveSafeBrowsingLearnMoreURL}" target="_blank">$i18n{learnMore}</a>
++    </div></settings-collapse-radio-button>
++        <settings-collapse-radio-button id="safeBrowsingDisabled" no-collapse="" name="\${SafeBrowsingSetting.DISABLED}" pref-key="generated.safe_browsing" label="$i18n{safeBrowsingNone}" sub-label="$i18n{safeBrowsingNoneDesc}" indicator-aria-label="$i18n{controlledSettingPolicy}">
          </settings-collapse-radio-button>
 -        <settings-collapse-radio-button id="safeBrowsingDisabled" no-collapse
 -            name="\${SafeBrowsingSetting.DISABLED}"
@@ -2389,12 +2394,12 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -            label="$i18n{safeBrowsingNone}"
 -            sub-label="$i18n{safeBrowsingNoneDesc}"
 -            indicator-aria-label="$i18n{controlledSettingPolicy}">
-+        <settings-collapse-radio-button id="safeBrowsingDisabled" no-collapse="" name="\${SafeBrowsingSetting.DISABLED}" pref-key="generated.safe_browsing" label="$i18n{safeBrowsingNone}" sub-label="$i18n{safeBrowsingNoneDesc}" indicator-aria-label="$i18n{controlledSettingPolicy}">
-         </settings-collapse-radio-button>
+-        </settings-collapse-radio-button>
        </settings-radio-group>
      </div>
      \${this.enableHttpsFirstModeNewSettings_ ? html\`
-@@ -161,19 +128,12 @@
+       <div id="secureConnectionsSection">
+@@ -161,19 +131,12 @@
      \` : ''}
      <div class="cr-row first">
        <h2 class="cr-title-text">$i18n{advancedPageTitle}</h2>
@@ -2416,7 +2421,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        \${this.showSecureDnsSetting_ ? html\`
          <settings-secure-dns id="secureDnsSettingOld">
          </settings-secure-dns>
-@@ -182,21 +142,10 @@
+@@ -182,21 +145,10 @@
      \${this.enableHttpsFirstModeNewSettings_ && this.showSecureDnsSetting_ ? html\`
        <settings-secure-dns class="hr" id="secureDnsSettingNew">
        </settings-secure-dns>
@@ -2440,7 +2445,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
      \${this.enableSecurityKeysSubpage_ ? html\`
        <cr-link-row id="securityKeysSubpageTrigger" class="hr"
            label="$i18n{securityKeysTitle}"
-@@ -205,20 +154,12 @@
+@@ -205,20 +157,12 @@
            role-description="$i18n{subpageArrowRoleDescription}">
        </cr-link-row>
      \` : ''}

@@ -537,6 +537,7 @@ source_set("ui") {
       "//brave/components/brave_wayback_machine/buildflags",
       "//brave/components/constants",
       "//brave/components/email_aliases/buildflags",
+      "//brave/components/extension_malware_blocklist/common",
       "//brave/components/misc_metrics",
       "//brave/components/sidebar/browser",
       "//brave/components/sidebar/common",
