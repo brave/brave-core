@@ -436,6 +436,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kShowSidePanelButton,
                                 !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED));
   registry->RegisterBooleanPref(kShowScreenshotButton, false);
+  registry->RegisterIntegerPref(
+      kScreenshotShortcutBehavior,
+      static_cast<int>(ScreenshotShortcutBehavior::kShowOptions));
   registry->RegisterBooleanPref(kLocationBarIsWide, false);
   registry->RegisterBooleanPref(kTabMuteIndicatorNotClickable, false);
 

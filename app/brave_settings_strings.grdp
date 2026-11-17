@@ -1739,6 +1739,21 @@
   <message name="IDS_SETTINGS_SHOW_FULLSCREEN_REMINDER_OPTION_LABEL" desc="The text for fullscreen reminder settings option">
     Show full screen reminder to press Esc on exit
   </message>
+  <message name="IDS_SETTINGS_SCREENSHOT_SHORTCUT_BEHAVIOR_LABEL" desc="Label for the Settings > System dropdown that sets what the screenshot shortcut does">
+    Behavior when launching the screenshot tool via shortcut
+  </message>
+  <message name="IDS_SETTINGS_SCREENSHOT_SHORTCUT_BEHAVIOR_SHOW_OPTIONS" desc="Screenshot shortcut option: show the screenshot options">
+    Show screenshot options
+  </message>
+  <message name="IDS_SETTINGS_SCREENSHOT_SHORTCUT_BEHAVIOR_SELECTED_AREA" desc="Screenshot shortcut option: capture a selected area">
+    Capture selected area
+  </message>
+  <message name="IDS_SETTINGS_SCREENSHOT_SHORTCUT_BEHAVIOR_VISIBLE_AREA" desc="Screenshot shortcut option: capture the visible area">
+    Capture visible area
+  </message>
+  <message name="IDS_SETTINGS_SCREENSHOT_SHORTCUT_BEHAVIOR_FULL_PAGE" desc="Screenshot shortcut option: capture the full page">
+    Capture full page
+  </message>
 
   <!-- Settings / Leo Assistant -->
   <message name="IDS_SETTINGS_LEO_ASSISTANT" desc="Title for an item in the 'Leo Assistant' section of Brave Settings">

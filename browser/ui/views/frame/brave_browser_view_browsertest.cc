@@ -12,9 +12,11 @@
 #include "base/functional/callback.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/browser/infobars/brave_confirm_infobar_creator.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/screenshot/screenshot_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/brave_layout_provider.h"
@@ -332,7 +334,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
   EXPECT_FALSE(HasBraveConfirmInfoBarView(infobar_container()));
 }
 
-// Cmd/Ctrl+Shift+S (IDC_SHARING_HUB_SCREENSHOT) should open Brave's own
+// Cmd/Ctrl+Shift+S (IDC_SCREENSHOT_SHORTCUT) should open Brave's own
 // screenshot bubble instead of upstream's Sharing Hub one, and should
 // temporarily reveal the screenshot toolbar button when it's hidden by the
 // "show screenshot button" pref, hiding it again once the bubble closes.
@@ -387,6 +389,61 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
   // Close the bubble and confirm the button, still pref-controlled, stays
   // visible.
   EXPECT_TRUE(browser_view()->AcceleratorPressed(screenshot_accelerator));
+  EXPECT_TRUE(button->GetVisible());
+}
+
+// Cmd/Ctrl+Shift+S maps to IDC_SCREENSHOT_SHORTCUT.
+IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
+                       ScreenshotAcceleratorUsesShortcutCommand) {
+  ui::Accelerator accelerator;
+  ASSERT_TRUE(
+      browser_view()->GetAccelerator(IDC_SCREENSHOT_SHORTCUT, &accelerator));
+  EXPECT_EQ(ui::Accelerator(ui::VKEY_S,
+                            ui::EF_PLATFORM_ACCELERATOR | ui::EF_SHIFT_DOWN),
+            accelerator);
+  EXPECT_FALSE(
+      browser_view()->GetAccelerator(IDC_SHARING_HUB_SCREENSHOT, &accelerator));
+}
+
+// A chosen capture mode skips the bubble.
+IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
+                       ScreenshotShortcutSkipsBubbleWhenBehaviorIsSet) {
+  browser()->GetProfile()->GetPrefs()->SetInteger(
+      kScreenshotShortcutBehavior,
+      static_cast<int>(ScreenshotShortcutBehavior::kSelectedArea));
+
+  auto* button = screenshot_button();
+  ASSERT_TRUE(button);
+  ASSERT_FALSE(button->GetVisible());
+
+  auto* controller = screenshot::ScreenshotController::From(browser());
+  ASSERT_TRUE(controller);
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(controller->CanCapture(web_contents).has_value());
+
+  EXPECT_TRUE(browser_view()->AcceleratorPressed(ui::Accelerator(
+      ui::VKEY_S, ui::EF_PLATFORM_ACCELERATOR | ui::EF_SHIFT_DOWN)));
+
+  // No bubble shown.
+  EXPECT_FALSE(button->GetVisible());
+  // Capture started.
+  EXPECT_EQ(screenshot::ScreenshotController::Error::kBusy,
+            controller->CanCapture(web_contents).error());
+}
+
+// The app menu command always shows the bubble.
+IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
+                       ScreenshotMenuCommandIgnoresShortcutBehavior) {
+  browser()->GetProfile()->GetPrefs()->SetInteger(
+      kScreenshotShortcutBehavior,
+      static_cast<int>(ScreenshotShortcutBehavior::kFullPage));
+
+  auto* button = screenshot_button();
+  ASSERT_TRUE(button);
+  ASSERT_FALSE(button->GetVisible());
+
+  chrome::BrowserCommandController::From(browser())->ExecuteCommand(
+      IDC_SHARING_HUB_SCREENSHOT);
   EXPECT_TRUE(button->GetVisible());
 }
 

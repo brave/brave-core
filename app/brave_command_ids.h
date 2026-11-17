@@ -177,6 +177,9 @@
 #define IDC_NEW_TAB_IN_CONTAINER_8 56478
 #define IDC_NEW_TAB_IN_CONTAINER_9 56479
 
+// Screenshot keyboard shortcut. Follows brave.screenshot.shortcut_behavior.
+#define IDC_SCREENSHOT_SHORTCUT 56480
+
 #define IDC_BRAVE_COMMANDS_LAST 57000
 
 #endif  // BRAVE_APP_BRAVE_COMMAND_IDS_H_

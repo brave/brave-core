@@ -12,6 +12,7 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/metrics/user_metrics.h"
 #include "base/notreached.h"
@@ -22,6 +23,7 @@
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
+#include "brave/browser/ui/screenshot/screenshot_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
@@ -429,6 +431,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_TOGGLE_SHIELDS, true);
   UpdateCommandEnabled(IDC_TOGGLE_JAVASCRIPT, true);
   UpdateCommandForBlockElements();
+  UpdateCommandEnabled(
+      IDC_SCREENSHOT_SHORTCUT,
+      browser_->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL);
 
   UpdateCommandEnabled(IDC_CLOSE_DUPLICATE_TABS,
                        brave::HasDuplicatesOfActiveTab(&*browser_));
@@ -652,6 +657,42 @@ void BraveBrowserCommandController::UpdateCommandForPlaylist() {
                 browser_->GetProfile()));
   }
 #endif
+}
+
+void BraveBrowserCommandController::ExecuteScreenshotShortcut() {
+  // Same conditions as the app menu's Screenshot item.
+  if (!IsCommandEnabled(IDC_SHARING_HUB_SCREENSHOT)) {
+    return;
+  }
+
+  const auto behavior = static_cast<ScreenshotShortcutBehavior>(
+      browser_->GetProfile()->GetPrefs()->GetInteger(
+          kScreenshotShortcutBehavior));
+  auto* controller = screenshot::ScreenshotController::From(&*browser_);
+  auto* web_contents = browser_->tab_strip_model()->GetActiveWebContents();
+
+  // Show the options bubble if chosen or if capture can't start.
+  if (behavior == ScreenshotShortcutBehavior::kShowOptions || !controller ||
+      !web_contents || !controller->CanCapture(web_contents).has_value()) {
+    ExecuteCommand(IDC_SHARING_HUB_SCREENSHOT);
+    return;
+  }
+
+  switch (behavior) {
+    case ScreenshotShortcutBehavior::kSelectedArea:
+      controller->CaptureSelectedArea(web_contents, base::DoNothing());
+      return;
+    case ScreenshotShortcutBehavior::kVisibleArea:
+      controller->CaptureVisibleArea(web_contents, base::DoNothing());
+      return;
+    case ScreenshotShortcutBehavior::kFullPage:
+      controller->CaptureFullPage(web_contents, base::DoNothing());
+      return;
+    case ScreenshotShortcutBehavior::kShowOptions:
+      break;
+  }
+  // Unknown pref value.
+  ExecuteCommand(IDC_SHARING_HUB_SCREENSHOT);
 }
 
 void BraveBrowserCommandController::UpdateCommandForWaybackMachine() {
@@ -908,6 +949,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_BLOCK_ELEMENTS:
       brave::LaunchContentPicker(&*browser_);
+      break;
+    case IDC_SCREENSHOT_SHORTCUT:
+      ExecuteScreenshotShortcut();
       break;
     case IDC_SHOW_PLAYLIST_BUBBLE:
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)

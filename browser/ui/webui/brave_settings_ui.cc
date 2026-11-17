@@ -21,6 +21,7 @@
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/page_info/features.h"
+#include "brave/browser/ui/screenshot/features.h"
 #include "brave/browser/ui/webui/settings/brave_account/brave_account_dialog_opener.h"
 #include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
@@ -256,6 +257,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "areShortcutsSupported",
       base::FeatureList::IsEnabled(commands::features::kBraveCommands));
+  html_source->AddBoolean("isBraveScreenshotEnabled",
+                          screenshot::features::IsScreenshotEnabled());
 
   html_source->AddBoolean("shouldExposeElementsForTesting",
                           ShouldExposeElementsForTesting());
