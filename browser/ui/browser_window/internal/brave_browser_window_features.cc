@@ -262,7 +262,7 @@ void BraveBrowserWindowFeatures::InitPostWindowConstruction() {
     CHECK(browser_view);
     peek_controller_ = GetUserDataFactory().CreateInstance<PeekControllerImpl>(
         *browser_, *browser_, *browser_view,
-        std::make_unique<PeekShieldsPanelProviderImpl>(*brave_browser_window));
+        std::make_unique<PeekShieldsPanelProviderImpl>(*browser_view));
   }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
