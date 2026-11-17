@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/webui/settings/BUILD.gn b/chrome/browser/ui/webui/settings/BUILD.gn
+index 9b02231934cfaa23ec19db021c334e4ae6dbc89b..c2977c80901a4de48ed399a601ff2683c1dcf074 100644
+--- a/chrome/browser/ui/webui/settings/BUILD.gn
++++ b/chrome/browser/ui/webui/settings/BUILD.gn
+@@ -203,6 +203,7 @@ source_set("impl") {
+ 
+   deps = [
+     ":settings",
++    "//brave/browser/profile_resetter",
+     "//chrome/app:command_ids",
+     "//chrome/app:generated_resources",
+     "//chrome/app/vector_icons",
