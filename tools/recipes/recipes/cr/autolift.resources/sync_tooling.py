@@ -81,11 +81,11 @@ _INSTRUCTIONS = """\
 Each commit below is from a newer cr branch, and was left for judgement. In
 order, for each one:
 
-1. `git cherry-pick <commit>`, keeping its subject: that is how later syncs
-   tell the commit is here, whatever reconciling it changed. Leave out
-   `tools/cr/codehealth/M<NNN>.md` trackers: they belong to their own branch
-   (`git rm --cached` a new one, or `git checkout HEAD -- <file>` a changed
-   one, before continuing).
+1. `git cherry-pick --no-commit <commit>`. It commits nothing, conflict or
+   not, so a commit you then drop leaves nothing to undo: never reach for
+   `git reset`. Leave out `tools/cr/codehealth/M<NNN>.md` trackers: they
+   belong to their own branch (`git rm -q -f -- <file>` a new one,
+   `git checkout HEAD -- <file>` a changed one).
 2. A conflict in `tools/cr/` is two branches improving the same tooling, often
    a `Version lift updates` or `Version CodeHealth tracker` squash: keep both
    sides' changes, merged into one text, and the newer side where they say
@@ -97,11 +97,14 @@ order, for each one:
    branch's Chromium lacks are declined already. Changes outside `tools/cr/`,
    `build/` and `tools/recipes/` are the newer branch's own code, and don't
    belong here.
-   Keep what applies, and drop the rest; a commit with nothing left is skipped
-   (`git cherry-pick --skip`). A Brockit `drop!` or `reassign!` marker on a
-   commit picked here gets the same treatment as on its own branch: picked,
-   if its target should go here too.
-4. `git cherry-pick --continue`, keeping the message.
+   Keep what applies, and drop the rest the same way as a tracker. A Brockit
+   `drop!` or `reassign!` marker on a commit picked here gets the same
+   treatment as on its own branch: picked, if its target should go here too.
+4. `git add` what you resolved. If anything is left staged
+   (`git diff --cached --stat`), commit it as the script does,
+   `git commit --no-verify -q -C <commit>`: its subject and author, untouched
+   by the commit hook, are how later syncs tell the commit is here, whatever
+   reconciling it changed. A commit with nothing left is dropped as it is.
 
 Commit nothing else, and don't push. When done, `git status` must be clean,
 and no cherry-pick may be in progress. Then run `{rerun}` again, which picks
