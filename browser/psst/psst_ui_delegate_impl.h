@@ -19,8 +19,6 @@
 #include "brave/components/psst/core/common/psst_ui_common.mojom.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 
-class PrefService;
-
 namespace psst {
 
 class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate,
@@ -35,7 +33,6 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate,
 
   explicit PsstUiDelegateImpl(PsstSettingsService* psst_settings_service,
                               PsstReporterService* psst_reporter_service,
-                              PrefService* prefs,
                               std::unique_ptr<PsstUiPresenter> ui_presenter);
   ~PsstUiDelegateImpl() override;
 
@@ -93,7 +90,6 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate,
   raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
   raw_ptr<PsstReporterService> psst_reporter_service_ = nullptr;
   base::ObserverList<Observer> observer_list_;
-  raw_ptr<PrefService> prefs_ = nullptr;  // not owned
   base::WeakPtrFactory<PsstUiDelegateImpl> weak_ptr_factory_{this};
 };
 

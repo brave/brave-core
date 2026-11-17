@@ -188,4 +188,48 @@ TEST_F(PsstSettingsServiceUnitTest, CreateOrUpdateMetadata) {
             modified_metadata->uids_to_perform);
 }
 
+TEST_F(PsstSettingsServiceUnitTest, InfobarShownCountIsPerOrigin) {
+  const url::Origin origin_a = url::Origin::Create(GURL("https://a.test"));
+  const url::Origin origin_b = url::Origin::Create(GURL("https://b.test"));
+
+  EXPECT_EQ(settings_service()->GetInfobarShownCount(origin_a), 0);
+  EXPECT_EQ(settings_service()->GetInfobarShownCount(origin_b), 0);
+
+  settings_service()->IncrementInfobarShownCount(origin_a);
+  EXPECT_EQ(settings_service()->GetInfobarShownCount(origin_a), 1);
+  EXPECT_EQ(settings_service()->GetInfobarShownCount(origin_b), 0);
+
+  settings_service()->IncrementInfobarShownCount(origin_a);
+  settings_service()->IncrementInfobarShownCount(origin_b);
+  EXPECT_EQ(settings_service()->GetInfobarShownCount(origin_a), 2);
+  EXPECT_EQ(settings_service()->GetInfobarShownCount(origin_b), 1);
+}
+
+TEST_F(PsstSettingsServiceUnitTest,
+       InfobarShownCountDoesNotAffectWebsiteSettings) {
+  const url::Origin origin = url::Origin::Create(GURL("https://a.test"));
+  const std::string user_id = "user123";
+  const auto metadata = PsstWebsiteSettings::FromValue(CreatePsstSettingsDict(
+      ConsentStatus::kAllow, 1, user_id, std::vector<std::string>()));
+
+  settings_service()->SetPsstWebsiteSettings(
+      origin, metadata->consent_status, metadata->script_version,
+      metadata->user_id, base::ListValue());
+  settings_service()->IncrementInfobarShownCount(origin);
+  settings_service()->IncrementInfobarShownCount(origin);
+
+  EXPECT_EQ(settings_service()->GetInfobarShownCount(origin), 2);
+  const auto website_settings =
+      settings_service()->GetPsstWebsiteSettings(origin, user_id);
+  ASSERT_TRUE(website_settings.has_value());
+  EXPECT_EQ(website_settings->consent_status, metadata->consent_status);
+  EXPECT_EQ(website_settings->script_version, metadata->script_version);
+}
+
+TEST_F(PsstSettingsServiceUnitTest, IncrementInfobarShownCountIgnoresNonHttps) {
+  const url::Origin origin = url::Origin::Create(GURL("http://a.test"));
+  settings_service()->IncrementInfobarShownCount(origin);
+  EXPECT_EQ(settings_service()->GetInfobarShownCount(origin), 0);
+}
+
 }  // namespace psst

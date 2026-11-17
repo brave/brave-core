@@ -229,7 +229,6 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
         std::make_unique<psst::PsstUiDelegateImpl>(
             psst_settings_service,
             PsstReporterServiceFactory::GetForProfile(profile),
-            profile->GetPrefs(),
             std::make_unique<psst::PsstUiDesktopPresenter>(
                 tab, psst_action_controller_->AsWeakPtr())),
         psst_settings_service, variations_service,
