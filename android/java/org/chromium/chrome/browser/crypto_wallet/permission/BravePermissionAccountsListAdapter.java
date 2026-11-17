@@ -110,9 +110,16 @@ public class BravePermissionAccountsListAdapter
         mHandler = new Handler(Looper.getMainLooper());
     }
 
+    /**
+     * Replaces the accounts shown in the list. Any previous selection is cleared, as it may refer
+     * to accounts that are no longer present, and the list is refreshed.
+     *
+     * @param accountInfo accounts to show.
+     */
     public void setAccounts(@NonNull final AccountInfo[] accountInfo) {
         mAccountInfoArray = accountInfo;
         mCheckedAccountKeys.clear();
+        notifyDataSetChanged();
     }
 
     public void setAccountsWithPermissions(HashSet<AccountInfo> accountsWithPermissions) {

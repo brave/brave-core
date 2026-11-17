@@ -230,7 +230,6 @@ public class BraveDappPermissionPromptDialog
                         selectedAccountAllAccounts -> {
                             List<AccountInfo> accounts = selectedAccountAllAccounts.second;
                             mAccountsListAdapter.setAccounts(accounts.toArray(new AccountInfo[0]));
-                            mAccountsListAdapter.notifyDataSetChanged();
 
                             // We are on the flow from ConnectAccountFragment.connectAccount
                             ConnectAccountFragment.ConnectAccountPendingData capd =
