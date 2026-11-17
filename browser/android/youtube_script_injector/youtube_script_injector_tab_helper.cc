@@ -172,30 +172,43 @@ constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
   if (!mediaSession) {
     return;
   }
-  function watchNextResponse() {
-    return document.getElementById('movie_player')?.getWatchNextResponse?.();
-  }
   const buttonKeys = {
     nexttrack: 'nextButtonVideo',
     previoustrack: 'previousButtonVideo',
   };
-  function playlistButton(action) {
-    const playlist = watchNextResponse()
-        ?.contents?.singleColumnWatchNextResults?.playlist?.playlist;
-    const list = new URLSearchParams(location.search).get('list');
-    if (!list || playlist?.playlistId !== list) {
-      return null;
-    }
-    return playlist[buttonKeys[action]]?.buttonRenderer ?? null;
-  }
   // After a navigation the URL names the new video a second or two before the
   // watch data does; following the old data's button would replay that video,
   // and if the old video wasn't in this playlist, YouTube's handler would leave
-  // it.
-  function isWatchDataCurrent() {
-    const videoId =
-        watchNextResponse()?.currentVideoEndpoint?.watchEndpoint?.videoId;
-    return videoId === new URLSearchParams(location.search).get('v');
+  // it. Unreadable watch data is 'unknown' so YouTube's handlers still run.
+  function readPlaylist() {
+    const params = new URLSearchParams(location.search);
+    const list = params.get('list');
+    const videoId = params.get('v');
+    if (!list || !videoId) {
+      return {state: 'none'};
+    }
+    const player = document.getElementById('movie_player');
+    const response = player?.getWatchNextResponse?.();
+    const responseVideoId =
+        response?.currentVideoEndpoint?.watchEndpoint?.videoId;
+    if (!responseVideoId) {
+      return {state: 'unknown'};
+    }
+    if (responseVideoId !== videoId) {
+      return {state: 'stale'};
+    }
+    const playlist =
+        response.contents?.singleColumnWatchNextResults?.playlist?.playlist;
+    if (playlist?.playlistId !== list) {
+      return {state: 'none'};
+    }
+    return {state: 'ready', player, playlist};
+  }
+  function playlistButton(playlist, action) {
+    if (playlist.state !== 'ready') {
+      return null;
+    }
+    return playlist.playlist[buttonKeys[action]]?.buttonRenderer ?? null;
   }
   function buttonUrl(button) {
     if (!button || button.isDisabled) {
@@ -207,12 +220,12 @@ constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
   const youtubeHandlers = {};
   const setActionHandler = mediaSession.setActionHandler.bind(mediaSession);
   function handleTrack(details) {
-    const button = playlistButton(details.action);
-    const params = new URLSearchParams(location.search);
-    if (params.has('list') && params.has('v') && !isWatchDataCurrent()) {
+    const playlist = readPlaylist();
+    if (playlist.state === 'stale') {
       return;
     }
-    const player = document.getElementById('movie_player');
+    const button = playlistButton(playlist, details.action);
+    const player = playlist.player;
     if (button && details.action === 'previoustrack' &&
         (button.isDisabled ||
          player?.getCurrentTime?.() > restartThresholdSeconds)) {
@@ -236,7 +249,12 @@ constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
   }
   const trackHandlerEnabled = {};
   function updateTrackHandler(action) {
-    const button = playlistButton(action);
+    const playlist = readPlaylist();
+    // Wait for current watch data before disabling a control.
+    if (playlist.state === 'stale' && !youtubeHandlers[action]) {
+      return;
+    }
+    const button = playlistButton(playlist, action);
     // Previous can always restart the current item.
     const enabled = Boolean(youtubeHandlers[action] ||
         (action === 'previoustrack' ? button : buttonUrl(button)));
