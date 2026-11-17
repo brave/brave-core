@@ -2098,8 +2098,9 @@ TEST_P(AIChatServiceUnitTest,
 TEST_P(AIChatServiceUnitTest, GenerationState_StaysGeneratingThroughToolLoop) {
   int show_count = 0;
   auto* notifications = SetMockNotificationDelegate(*ai_chat_service_);
-  EXPECT_CALL(*notifications, ShowCompletionNotification)
-      .WillRepeatedly([&] { ++show_count; });
+  EXPECT_CALL(*notifications, ShowCompletionNotification).WillRepeatedly([&] {
+    ++show_count;
+  });
 
   ConversationHandler* handler = CreateConversation();
   const std::string uuid = handler->get_conversation_uuid();
@@ -2163,8 +2164,9 @@ TEST_P(AIChatServiceUnitTest,
        GenerationState_StaysGeneratingIntoQueuedRequest) {
   int show_count = 0;
   auto* notifications = SetMockNotificationDelegate(*ai_chat_service_);
-  EXPECT_CALL(*notifications, ShowCompletionNotification)
-      .WillRepeatedly([&] { ++show_count; });
+  EXPECT_CALL(*notifications, ShowCompletionNotification).WillRepeatedly([&] {
+    ++show_count;
+  });
 
   ConversationHandler* handler = CreateConversation();
   const std::string uuid = handler->get_conversation_uuid();
