@@ -6,7 +6,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -58,10 +57,6 @@ BrowserWindowInterface* OpenNewBrowser(Profile* profile) {
 
 }  // namespace
 
-IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, BraveBrowserWindowFromBrowser) {
-  EXPECT_TRUE(BraveBrowserWindow::FromBrowser(browser()));
-}
-
 // Runs with the WebUI browser, whose window is a WebUIBrowserWindow rather
 // than a BrowserView.
 class BraveBrowserWebUIBrowserTest : public InProcessBrowserTest {
@@ -81,9 +76,8 @@ class BraveBrowserWebUIBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserWebUIBrowserTest,
-                       BraveBrowserWindowFromWebUIBrowserWindow) {
+                       BraveCommandsInWebUIBrowserWindow) {
   ASSERT_TRUE(WebUIBrowserWindow::FromBrowser(browser()));
-  EXPECT_FALSE(BraveBrowserWindow::FromBrowser(browser()));
 
   // The sidebar has no UI to follow the show option in this window.
   sidebar::SidebarServiceFactory::GetForProfile(browser()->GetProfile())
