@@ -8,6 +8,10 @@ import("//brave/components/local_ai/buildflags/buildflags.gni")
 
 assert(enable_local_ai)
 
+# history_embeddings_service_factory.cc, history_embeddings_service_factory.h,
+# history_embeddings_tab_helper.cc and history_embeddings_tab_helper.h are not
+# built yet: nothing builds the fork's HistoryEmbeddingsService yet.
+
 # Holds the setting the embedding services were built with, so the Semantic
 # history search toggle can prompt for a relaunch once it diverges, and owns the
 # BraveHistoryEmbeddingsEnabledAtStartup() hook the chromium_src overrides
