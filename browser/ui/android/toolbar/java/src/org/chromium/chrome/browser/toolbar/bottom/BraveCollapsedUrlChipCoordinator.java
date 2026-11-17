@@ -73,14 +73,6 @@ public class BraveCollapsedUrlChipCoordinator {
     private boolean mChipShowing;
     private boolean mPillHidden;
 
-    /**
-     * Memoized gesture-nav state, read lazily. The underlying insets query is invalid before the
-     * decor view is attached (chip construction happens during activity startup), so the first read
-     * is deferred until the chip is shown. Cleared on configuration changes so nav-mode switches
-     * made while the activity is alive are picked up.
-     */
-    private @Nullable Boolean mGestureNavigation;
-
     /** Whether the chip is currently painted with the dark-on-light-content palette. */
     private boolean mAppliedDarkChip = true;
 
@@ -119,9 +111,6 @@ public class BraveCollapsedUrlChipCoordinator {
             new ComponentCallbacks() {
                 @Override
                 public void onConfigurationChanged(@Nullable Configuration newConfig) {
-                    // A nav-mode switch (gesture <-> 3-button in system Settings) fires a
-                    // configuration change; drop the memo so the fresh mode is picked up.
-                    mGestureNavigation = null;
                     if (mChipShowing) {
                         applyNavigationBarInset(hasGestureNavigation());
                     }
@@ -160,9 +149,9 @@ public class BraveCollapsedUrlChipCoordinator {
                     public void setChipVisible(boolean visible) {
                         if (visible) {
                             // One gesture-nav read per show transition: the check bottoms out in
-                            // an insets query and all three consumers use the same value. Deferred
-                            // to the first show so the decor view is attached and its insets are
-                            // valid (this can be called during startup before that).
+                            // an insets query and all three consumers use the same value. Reads
+                            // happen only here (decor view attached, insets valid); querying
+                            // during early init, before attach, crashes on null root insets.
                             boolean hasGestureNavigation = hasGestureNavigation();
                             if (mChipView.getVisibility() != View.VISIBLE) {
                                 applyNavigationBarInset(hasGestureNavigation);
@@ -334,15 +323,14 @@ public class BraveCollapsedUrlChipCoordinator {
     }
 
     /**
-     * Memoized gesture-nav check. First read happens on the first chip show, when the activity
-     * window is attached and {@link UiUtils#isGestureNavigationMode(Window)}'s insets query is
-     * valid; querying earlier crashes on a null root insets.
+     * Whether the device is in full gesture navigation. Reads happen only when the chip is showing
+     * (or was showing), when the activity window is attached and {@link
+     * UiUtils#isGestureNavigationMode(Window)}'s insets query is valid; querying during early init
+     * crashes on a null root insets. Not memoized, so nav-mode switches are picked up on the next
+     * transition.
      */
     private boolean hasGestureNavigation() {
-        if (mGestureNavigation == null) {
-            mGestureNavigation = UiUtils.isGestureNavigationMode(mActivity.getWindow());
-        }
-        return mGestureNavigation;
+        return UiUtils.isGestureNavigationMode(mActivity.getWindow());
     }
 
     /**
