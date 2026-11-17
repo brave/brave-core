@@ -476,8 +476,9 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, CloseTabKeyClosesPeek) {
   content::WebContents* source = active_contents();
   OpenPeek(GetURL("b.com", "/title2.html"));
 
-  // Sent to the page, which doesn't handle it, so it comes back to Peek's
-  // delegate like a real key press.
+  // Handed to Peek's delegate as a key the page didn't handle. It isn't sent
+  // through the page: a hidden renderer, e.g. in an occluded window on the
+  // bots, never sends unhandled keys back.
   input::NativeWebKeyboardEvent event(
       blink::WebInputEvent::Type::kRawKeyDown,
       blink::WebInputEvent::kControlKey,
@@ -486,10 +487,8 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, CloseTabKeyClosesPeek) {
   event.dom_key = ui::DomKey::FromCharacter('w');
   event.dom_code = static_cast<int>(ui::DomCode::US_W);
   event.skip_if_unhandled = false;
-  peek_contents()
-      ->GetPrimaryMainFrame()
-      ->GetRenderWidgetHost()
-      ->ForwardKeyboardEvent(event);
+  content::WebContents* contents = peek_contents();
+  EXPECT_TRUE(contents->GetDelegate()->HandleKeyboardEvent(contents, event));
   WaitForPeekClosed();
   EXPECT_EQ(1, tab_strip_model()->count());
   EXPECT_EQ(source, active_contents());
