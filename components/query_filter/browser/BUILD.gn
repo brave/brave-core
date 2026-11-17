@@ -34,7 +34,7 @@ static_library("browser") {
 }
 
 if (use_blink) {
-  source_set("throttle") {
+  static_library("throttle") {
     sources = [
       "query_filter_throttle.cc",
       "query_filter_throttle.h",

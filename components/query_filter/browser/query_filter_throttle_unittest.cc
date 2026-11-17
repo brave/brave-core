@@ -20,7 +20,6 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
-#include "url/origin.h"
 
 namespace query_filter {
 
@@ -39,8 +38,8 @@ network::ResourceRequest MakeRequest(const GURL& url) {
 class QueryFilterThrottleTest : public testing::Test {
  public:
   QueryFilterThrottleTest() {
-    feature_list_.InitWithFeatures(
-        {features::kQueryFilterBrowserThrottleEnabled}, {});
+    feature_list_.InitAndEnableFeature(
+        features::kQueryFilterBrowserThrottleEnabled);
   }
 
   void SetUp() override {
