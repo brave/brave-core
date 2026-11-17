@@ -2080,7 +2080,9 @@ Visible-URL names (do not use for feature state):
   `FakeTabState` (aliases for `visibleURL`). Other types' `url` properties are
   not tab-state aliases. `SessionTab.url` stores a copy of `visibleURL`, so
   review its reads case by case.
-- Java (Android): `WebContents.getVisibleUrl()`
+- Java (Android): `WebContents.getVisibleUrl()`, `Tab.getUrl()` (its own Javadoc
+  notes it can differ from the last committed URL while a navigation is in
+  progress).
 
 Deprecated, never use: `WebContents::GetURL()`,
 `NavigationController::GetActiveEntry()`.
@@ -2108,6 +2110,16 @@ GURL url = webContents.getVisibleUrl();
 
 // ✅ CORRECT
 GURL url = webContents.getLastCommittedUrl();
+```
+
+```java
+// ❌ WRONG - Tab.getUrl() can differ from the loaded page
+GURL url = tab.getUrl();
+
+// ✅ CORRECT - go through WebContents for the committed page;
+// getWebContents() is @Nullable, so check it first
+WebContents webContents = tab.getWebContents();
+GURL url = webContents != null ? webContents.getLastCommittedUrl() : null;
 ```
 
 ```cpp
