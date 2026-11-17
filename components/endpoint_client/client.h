@@ -51,7 +51,8 @@ using OnResponseCallback =
 // `RequestCancelability::kCancelable`, returns the loader, and destroying it
 // cancels the request. Otherwise, the loader is owned by its own completion
 // callback, which destroys it once the response has been handled, and this
-// returns `nullptr`.
+// returns `nullptr`. For `download_headers_only`, the response body is
+// discarded as it's received, and `max_body_size` doesn't apply.
 std::unique_ptr<network::SimpleURLLoader> StartSimpleURLLoader(
     network::mojom::URLLoaderFactory& url_loader_factory,
     std::string_view method,
@@ -61,6 +62,7 @@ std::unique_ptr<network::SimpleURLLoader> StartSimpleURLLoader(
     std::string_view content_type,
     RequestOptions options,
     RequestCancelability cancelability,
+    bool download_headers_only,
     OnResponseCallback on_response_callback);
 
 }  // namespace internal
@@ -120,6 +122,8 @@ class Client {
         url_loader_factory, Request::Method(), Endpoint::URL(),
         std::move(headers), std::move(upload_data), kContentType,
         std::move(static_cast<internal::RequestOptions&>(request)), C,
+        /*download_headers_only=*/
+        internal::IsResponseWithoutBodies<typename Endpoint::Response>,
         base::BindOnce(MakeResponse<Response>).Then(std::move(callback)));
 
     if constexpr (C == RequestCancelability::kCancelable) {
@@ -142,7 +146,9 @@ class Client {
     response.status_code = headers->response_code();
 
     if constexpr (internal::IsResponseWithBodies<typename Endpoint::Response>) {
-      // SimpleURLLoader returns std::nullopt only on failure.
+      // response_body is std::nullopt only if SimpleURLLoader failed or if
+      // only headers were downloaded (Response<> without body types).
+      // Neither case reaches this point.
       response.body = Response::Deserialize(*response.status_code,
                                             CHECK_DEREF(response_body));
     }

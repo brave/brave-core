@@ -1323,6 +1323,29 @@ TEST(ClientTestMaxBodySize, ExceedingItFailsWithInsufficientResources) {
   EXPECT_THAT(future.Take(), ResponseEq(expected_response));
 }
 
+TEST(ClientTestMaxBodySize, DoesNotApplyToResponsesWithoutBodies) {
+  base::test::TaskEnvironment task_environment;
+  network::TestURLLoaderFactory test_url_loader_factory;
+
+  test_url_loader_factory.AddResponse(
+      RequestWithoutBodyResponseWithoutBodiesEndpoint::URL().spec(),
+      "longer than max_body_size", net::HTTP_OK);
+
+  RequestWithoutBodyResponseWithoutBodiesEndpoint::Request request;
+  request.max_body_size = 1;
+
+  base::test::TestFuture<
+      RequestWithoutBodyResponseWithoutBodiesEndpoint::Response>
+      future;
+  Client<RequestWithoutBodyResponseWithoutBodiesEndpoint>::Send(
+      test_url_loader_factory, std::move(request), future.GetCallback());
+
+  EXPECT_THAT(
+      future.Take(),
+      ResponseEq(RequestWithoutBodyResponseWithoutBodiesEndpoint::Response{
+          .net_error = net::OK, .status_code = net::HTTP_OK}));
+}
+
 TEST(ClientTestResponseHeaders, NotSetWithoutStatusCode) {
   base::test::TaskEnvironment task_environment;
   network::TestURLLoaderFactory test_url_loader_factory;

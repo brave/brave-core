@@ -165,9 +165,8 @@ struct MyRequestWithoutBodyEndpoint {
 
 Likewise, `Response<>` takes either both a success and an error body type, or
 neither. Without them, it's for endpoints whose response body you don't need: it
-exposes only `net_error` and `status_code`, and doesn't parse any body the
-server sends. The body is still downloaded, though, so `max_body_size` still
-applies.
+exposes only `net_error` and `status_code`, and discards any body the server
+sends as it's received, so `max_body_size` doesn't apply.
 
 ---
 
@@ -224,7 +223,8 @@ Requests also have:
   to `SimpleURLLoader::kMaxBoundedStringDownloadSize` (5 MiB), which
   `DownloadToString()` `DCHECK`s it does not exceed. Larger responses fail with
   `net::ERR_INSUFFICIENT_RESOURCES`. `std::nullopt` lifts the limit via
-  `SimpleURLLoader::DownloadToStringOfUnboundedSizeUntilCrashAndDie()`.
+  `SimpleURLLoader::DownloadToStringOfUnboundedSizeUntilCrashAndDie()`. Doesn't
+  apply to `Response<>` without body types, whose body is discarded.
 - `redirect_mode`: forwarded to `network::ResourceRequest::redirect_mode`;
   defaults to `kError`, so the network service fails a redirect with
   `net::ERR_FAILED`. With `kFollow`, the headers set on the request (e.g. bearer
