@@ -6,7 +6,6 @@
 import("//brave/browser/brave_vpn/sources.gni")
 import("//brave/browser/cosmetic_filters/sources.gni")
 import("//brave/browser/net/sources.gni")
-import("//brave/browser/profiles/sources.gni")
 import("//brave/browser/themes/sources.gni")
 import("//brave/browser/ui/config.gni")
 import("//brave/browser/updater/buildflags.gni")
@@ -126,6 +125,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/perf",
   "//brave/browser/permissions",
   "//brave/browser/policy/handlers",
+  "//brave/browser/profiles",
   "//brave/browser/renderer_context_menu",
   "//brave/browser/search_engines",
   "//brave/browser/serp_metrics",
@@ -795,7 +795,6 @@ if (is_mac) {
   }
 }
 
-brave_chrome_browser_sources += brave_browser_profiles_sources
 brave_chrome_browser_sources += brave_browser_brave_vpn_sources
 brave_chrome_browser_sources += brave_browser_cosmetic_filters_sources
 brave_chrome_browser_sources += brave_browser_net_sources
