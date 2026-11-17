@@ -25,7 +25,6 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -130,16 +129,6 @@ public class BravePermissionAccountsListAdapter
 
     public void setSelectedAccount(AccountInfo selectedAccount) {
         mSelectedAccount = selectedAccount;
-        if (mMode == Mode.ACCOUNT_CONNECTION) return;
-        for (int i = 0; i < mAccountInfoArray.length; i++) {
-            if (WalletUtils.accountIdsEqual(mSelectedAccount, mAccountInfoArray[i])) {
-                if (mMode == Mode.SINGLE_ACCOUNT_SELECTION) {
-                    mCheckedAccountKeys.clear();
-                }
-                mCheckedAccountKeys.add(mAccountInfoArray[i].accountId.uniqueKey);
-                break;
-            }
-        }
     }
 
     @Override
