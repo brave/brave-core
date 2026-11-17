@@ -1596,3 +1596,59 @@ if (!entry_was_found) {
 ```
 
 ---
+
+<a id="CS-075"></a>
+
+## ✅ Resolve Shields Settings to the Closest Non-Opaque Origin
+
+**For both primary and secondary content-settings URLs, use the closest
+non-opaque origin in the applicable origin ancestry. Test each candidate with
+`url::Origin::opaque()`.**
+
+Start with the origin represented by that settings URL. If it is opaque, follow
+its parent/ancestor or opener/initiator relationship to the nearest non-opaque
+origin. For network requests, preserve the `request_initiator` fallback. Resolve
+each settings URL independently; the appropriate ancestor may be the main frame,
+but MUST NOT be assumed to be the main frame.
+
+A Shields settings origin is not necessarily the document's security origin. For
+example, an HTTPS URL can produce a non-opaque `url::Origin` even when
+sandboxing makes the document's security origin opaque. This rule selects
+Shields settings; it MUST NOT change the document's origin or grant access or
+permissions using an ancestor's origin.
+
+```cpp
+// ❌ WRONG - frame position does not establish the Shields settings origin.
+if (request.is_outermost_main_frame) {
+  return request.url;
+}
+
+// ✅ CORRECT - illustrative resolver; callers supply the applicable origins
+// in order: the relevant origin, then its nearest ancestors/initiators.
+std::optional<url::Origin> ResolveShieldsOrigin(
+    base::span<const url::Origin> origins_nearest_first) {
+  for (const url::Origin& origin : origins_nearest_first) {
+    if (!origin.opaque()) {
+      return origin;
+    }
+  }
+  return std::nullopt;
+}
+```
+
+Convert the resolved non-opaque origin with `GetURL()` only when querying
+content settings. If no candidate is non-opaque, handle that case explicitly;
+NEVER treat opacity alone as a reason to bypass Shields.
+
+- `about:blank` can inherit its opener/initiator's origin even though creating
+  an origin from the literal URL yields an opaque origin.
+- A `data:` main-frame navigation can have an opaque URL-derived origin and a
+  non-opaque `request_initiator`. Use the initiator for Shields settings.
+- For a nested opaque frame, select the nearest non-opaque ancestor in the
+  relevant chain; NEVER jump directly to the main frame or an unrelated request
+  destination.
+
+NEVER use `is_outermost_main_frame`, a raw document URL, or a non-HTTP(S)
+document scheme as proof of which Shields settings apply.
+
+---
