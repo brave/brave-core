@@ -391,7 +391,7 @@ public class BraveWalletPanel implements DialogInterface {
     }
 
     private void updateSelectedAccountConnectionState() {
-        CoinType coin = mSelectedAccount.accountId.coin;
+        int coin = mSelectedAccount.accountId.coin;
         if (coin != CoinType.ETH && coin != CoinType.SOL) {
             mBtnConnectedStatus.setVisibility(View.GONE);
             return;
