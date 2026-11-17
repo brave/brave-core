@@ -498,6 +498,10 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
         }
       case .clearBlockedElements:
         Task {
+          weakShieldsPanelViewModel?.isClearingBlockedElements = true
+          defer {
+            weakShieldsPanelViewModel?.isClearingBlockedElements = false
+          }
           let storage = CustomFilterListStorage.shared
           do {
             try await storage.clearBlockedElements(for: url)
@@ -505,6 +509,7 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
             Logger.module.error("Failed to clear blocked elements: \(error.localizedDescription)")
           }
           weakShieldsPanelViewModel?.hasBlockedElements = await storage.hasBlockedElements(for: url)
+          weakShieldsPanelVC?.dismiss(animated: true)
           selectedTab.reload()
         }
       case .openURLInNewTab(let url):

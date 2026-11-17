@@ -54,6 +54,8 @@ public class ShieldsPanelViewModel: ObservableObject {
   }
   /// Whether the element picker has blocked any elements on the current site
   @Published public var hasBlockedElements: Bool = false
+  /// Whether we are clearing blocked elements and recompiling lists
+  @Published public var isClearingBlockedElements: Bool = false
   /// Indicates if Advanced Controls are visible
   public let isAdvancedControlsEnabled: Bool
   /// Indicates if Shred is enabled

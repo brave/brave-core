@@ -229,12 +229,19 @@ public struct ShieldsPanelView: View {
       Button {
         action(.clearBlockedElements)
       } label: {
-        Text(Strings.Shields.clearBlockedElementsButtonTitle)
-          .frame(maxWidth: .infinity, alignment: .leading)
-          .multilineTextAlignment(.leading)
-          .contentShape(Rectangle())
+        HStack {
+          Text(Strings.Shields.clearBlockedElementsButtonTitle)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .multilineTextAlignment(.leading)
+            .contentShape(Rectangle())
+          Spacer()
+          if viewModel.isClearingBlockedElements {
+            ProgressView()
+          }
+        }
       }
       .buttonStyle(.plain)
+      .disabled(viewModel.isClearingBlockedElements)
     }
 
     if FeatureList.kBraveIOSDebugAdblock.enabled {
