@@ -39,6 +39,7 @@
 #include "chrome/browser/ui/navigator/browser_navigator.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/interaction/browser_elements_views.h"
@@ -66,6 +67,7 @@
 #include "content/public/browser/render_widget_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/storage_partition_config.h"
+#include "content/public/browser/visibility.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_delegate.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -188,6 +190,15 @@ class PeekBrowserTest : public InProcessBrowserTest {
 
   content::WebContents* active_contents() {
     return tab_strip_model()->GetActiveWebContents();
+  }
+
+  // Adds an http(s) tab after the others and activates it.
+  content::WebContents* AddTab() {
+    CHECK(ui_test_utils::NavigateToURLWithDisposition(
+        browser(), GetURL("a.com", "/title1.html"),
+        WindowOpenDisposition::kNewForegroundTab,
+        ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+    return active_contents();
   }
 
   PeekControllerImpl* controller() {
@@ -592,15 +603,92 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpenInSplitViewFromSplitOpensTab) {
   EXPECT_FALSE(tab_strip_model()->GetActiveTab()->IsSplit());
 }
 
-IN_PROC_BROWSER_TEST_F(PeekBrowserTest, SwitchingTabsClosesPeek) {
-  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), GetURL("a.com", "/title1.html"),
-      WindowOpenDisposition::kNewForegroundTab,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
-  OpenPeek(GetURL("b.com", "/title2.html"));
+// A Peek belongs to its tab: switching away hides it, and switching back shows
+// the same page again.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, SwitchingTabsHidesAndRestoresPeek) {
+  AddTab();
+  const GURL url = GetURL("b.com", "/title2.html");
+  OpenPeek(url);
+  content::WebContents* contents = peek_contents();
+  views::Widget* widget = controller()->widget_for_testing();
+  ASSERT_TRUE(widget->IsVisible());
 
   tab_strip_model()->ActivateTabAt(0);
   EXPECT_FALSE(controller()->IsShowing());
+  EXPECT_FALSE(widget->IsVisible());
+  EXPECT_EQ(contents, controller()->GetWebContentsForTesting(
+                          *tab_strip_model()->GetTabAtIndex(1)));
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return contents->GetVisibility() == content::Visibility::HIDDEN;
+  }));
+
+  tab_strip_model()->ActivateTabAt(1);
+  ASSERT_TRUE(controller()->IsShowing());
+  EXPECT_EQ(contents, peek_contents());
+  EXPECT_EQ(widget, controller()->widget_for_testing());
+  EXPECT_TRUE(widget->IsVisible());
+  EXPECT_EQ(url, contents->GetLastCommittedURL());
+  EXPECT_EQ(2, tab_strip_model()->count());
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, EachTabKeepsItsOwnPeek) {
+  OpenPeek(GetURL("b.com", "/title1.html"));
+  content::WebContents* first = peek_contents();
+
+  AddTab();
+  OpenPeek(GetURL("c.com", "/title2.html"));
+  content::WebContents* second = peek_contents();
+  ASSERT_NE(first, second);
+
+  tab_strip_model()->ActivateTabAt(0);
+  EXPECT_EQ(first, peek_contents());
+  EXPECT_EQ(second, controller()->GetWebContentsForTesting(
+                        *tab_strip_model()->GetTabAtIndex(1)));
+
+  tab_strip_model()->ActivateTabAt(1);
+  EXPECT_EQ(second, peek_contents());
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ClosingSourceTabClosesHiddenPeek) {
+  AddTab();
+  OpenPeek(GetURL("b.com", "/title2.html"));
+  content::WebContentsDestroyedWatcher destroyed(peek_contents());
+  tab_strip_model()->ActivateTabAt(0);
+
+  tab_strip_model()->CloseWebContentsAt(1, TabCloseTypes::CLOSE_NONE);
+  destroyed.Wait();
+  EXPECT_EQ(1, tab_strip_model()->count());
+  EXPECT_FALSE(controller()->IsShowing());
+}
+
+// A hidden Peek that needs a tab, e.g. for a permission prompt, becomes a
+// background tab, so its page can't take over the window from the tab the
+// user is on. The prompt waits until the user switches to it.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, HiddenPeekMovesToBackgroundTab) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("a.test", "/title1.html")));
+  OpenPeek(https_server_.GetURL("b.test", "/title1.html"));
+  content::WebContents* contents = peek_contents();
+  auto* manager =
+      permissions::PermissionRequestManager::FromWebContents(contents);
+  ASSERT_TRUE(manager);
+  content::WebContents* other = AddTab();
+  ASSERT_EQ(other, active_contents());
+
+  ASSERT_TRUE(content::ExecJs(contents, "Notification.requestPermission();",
+                              content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return tab_strip_model()->GetIndexOfWebContents(contents) !=
+           TabStripModel::kNoTab;
+  }));
+  // Right after its source tab, in the background.
+  EXPECT_EQ(1, tab_strip_model()->GetIndexOfWebContents(contents));
+  EXPECT_EQ(other, active_contents());
+  EXPECT_FALSE(manager->GetCurrentPrompt());
+
+  tab_strip_model()->ActivateTabAt(1);
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return manager->GetCurrentPrompt(); }));
 }
 
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpeningAnotherPeekReplacesIt) {
@@ -1065,7 +1153,7 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, CertErrorShowsInterstitial) {
             chrome_security_state::GetSecurityLevel(contents));
 
   // Opening as a tab keeps the interstitial.
-  controller()->OpenAsTab();
+  controller()->OpenAsTab(*contents);
   EXPECT_EQ(contents, active_contents());
   EXPECT_TRUE(helper->IsDisplayingInterstitial());
 }
@@ -1141,7 +1229,7 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpensFromSplitViewAsStandaloneTab) {
             controller()->widget_for_testing()->GetWindowBoundsInScreen());
 
   content::WebContents* contents = peek_contents();
-  controller()->OpenAsTab();
+  controller()->OpenAsTab(*contents);
   EXPECT_EQ(contents, active_contents());
   EXPECT_FALSE(tab_strip_model()->GetActiveTab()->IsSplit());
 }

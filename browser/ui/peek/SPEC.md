@@ -44,7 +44,7 @@ right away. It adds no accounts, services, or data collection.
   separately.
 - Previewing anything other than http(s) pages.
 - Opening Peek from non-web pages (`chrome://`, `file:`, extension pages).
-- More than one Peek per window.
+- More than one Peek per tab.
 - Peek inside a Peek.
 - Letting Peek pages ask for permissions, open the wallet, go fullscreen, or
   open windows without leaving Peek. Those move the page into a tab.
@@ -101,8 +101,9 @@ Exits from Open:
   tab" does, and puts it in a side-by-side split with the tab Peek was opened
   from. The source tab is the pivot, so the new tab takes its pinned state and
   group. Hidden when the source tab is already in a split.
-- Switching tabs. Closes Peek.
-- Opening another Peek. Replaces the current one.
+- Switching tabs. Hides Peek with its page kept; switching back to the tab shows
+  it again. Each tab has its own Peek.
+- Opening another Peek from the same tab. Replaces the current one.
 - The page asks for something that needs a normal tab (see
   [SECURITY.md](SECURITY.md)). Peek moves to a tab first, then the request
   continues there.
@@ -112,15 +113,15 @@ Exits from Open:
 The card covers the active tab, so while Peek has focus a shortcut that acts on
 "the page" means the Peek page, not the tab hidden under it.
 
-| Shortcut                                                                                                    | While Peek has focus                                                                          |
-| ----------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| Close tab                                                                                                   | Closes Peek. The source tab stays                                                             |
-| Commands on the page: back, forward, reload, stop, find, print, save, zoom, bookmark, view source, devtools | Peek moves to a tab, then the command runs there (`peek::IsPageCommand()`)                    |
-| Anything else, e.g. new tab, new window, switch tab, quit                                                   | Runs as usual. If it changes the active tab, Peek closes and its page is discarded, see below |
+| Shortcut                                                                                                    | While Peek has focus                                                                     |
+| ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Close tab                                                                                                   | Closes Peek. The source tab stays                                                        |
+| Commands on the page: back, forward, reload, stop, find, print, save, zoom, bookmark, view source, devtools | Peek moves to a tab, then the command runs there (`peek::IsPageCommand()`)               |
+| Anything else, e.g. new tab, new window, switch tab, quit                                                   | Runs as usual. If it changes the active tab, Peek is hidden until the user switches back |
 
-Discarding a Peek page doesn't ask first: `beforeunload` is suppressed in Peek,
+Closing a Peek page doesn't ask first: `beforeunload` is suppressed in Peek,
 like other JavaScript dialogs, so unsaved form data in a Peek page is lost when
-Peek closes. Peek is a preview; "Open as tab" keeps the page.
+Peek or its tab closes. Peek is a preview; "Open as tab" keeps the page.
 
 ### Persistent and non-persistent state
 
@@ -178,8 +179,10 @@ Sidebar web panels cannot open Peek.
 | File chooser                                                                         | Peek moves to a tab and the chooser is cancelled; the user presses the input again                                         |
 | Device chooser (USB, HID, serial, Bluetooth), FedCM, password manager, autofill      | Not shown while in Peek; works after "Open as tab"                                                                         |
 | WebAuthn and Payment Request dialogs                                                 | Peek moves to a tab, then the dialog shows (tab-modal)                                                                     |
-| Peek is opened while another is open                                                 | The new one replaces it                                                                                                    |
-| The active tab changes                                                               | Peek closes                                                                                                                |
+| Peek is opened from a tab that already has one                                       | The new one replaces it                                                                                                    |
+| The active tab changes                                                               | Peek is hidden, with its page kept, and shown again when its tab is active                                                 |
+| A hidden Peek's page needs a tab (permission, download, popup, fullscreen, wallet)   | It moves into a background tab after its source tab; the request continues as in any background tab                        |
+| The source tab is closed or moved to another window                                  | Its Peek is closed                                                                                                         |
 
 Not specified yet: what Peek shows if its renderer crashes. See open questions.
 
@@ -207,7 +210,7 @@ separate widget is used.
   Uses the browser toolbar color.
 - Divider: 1 px, full card width, between the card toolbar and the page.
 - Icons and favicon: 16 px.
-- Shadow: offset y 4 px, blur 24 px, 24% opacity.
+- Shadow: offset y 4 px, blur 24 px, 16% opacity.
 - Animation: 200 ms, ease out, from 90% size to full size. Backdrop fades in
   over the same time. The top edge stays attached to the toolbar while it grows.
 
@@ -243,7 +246,7 @@ light and dark themes follow the browser.
 | Button icons    | `kColorToolbarButtonIcon`, `kColorToolbarButtonIconHovered`, `kColorToolbarButtonIconInactive` |
 | Button states   | `kColorToolbarInkDropHover`, `kColorToolbarInkDropRipple`, toolbar corner radius               |
 | Backdrop        | `nala::kColorDialogsScrimBackground`, scaled by animation progress                             |
-| Shadow          | `nala::kColorSchemesShadow` at 24%                                                             |
+| Shadow          | `nala::kColorSchemesShadow` at 16%                                                             |
 
 `nala::kColorDividerFaint` was too close to white in the light theme to be seen
 against the toolbar and page, so the divider uses subtle.
@@ -376,7 +379,8 @@ None added. Whether to measure Peek usage is an open question.
 - A QA plan has not been written yet. Manual steps to start from:
   - Enable `brave://flags/#brave-peek`.
   - Shift+click a link and use "Open Link in Peek", in a normal tab.
-  - Dismiss with Escape, the close button, a click outside, and switching tabs.
+  - Dismiss with Escape, the close button and a click outside. Switching tabs
+    hides Peek and switching back shows it again.
   - "Open as tab" keeps the page without reloading.
   - "Open in split view" keeps the page and splits it with the source tab.
   - Site info acts on the Peek page. Shields moves it into a tab and opens the

@@ -16,8 +16,9 @@ class WebContents;
 }  // namespace content
 
 // Per-window controller for Peek: a floating card over the active tab that
-// shows a link without leaving the current page. Only one Peek is shown per
-// window; opening another replaces it.
+// shows a link without leaving the current page. Each tab can have one Peek,
+// shown while the tab is active and hidden, with its page kept, while another
+// tab is. Opening another Peek from the same tab replaces it.
 //
 // Peek only hosts browsing. Anything that needs a tab, e.g. permission
 // prompts, wallet panels, popups or fullscreen, moves the Peek into a tab
@@ -30,8 +31,8 @@ class PeekController {
   // for it (feature disabled or non-normal window).
   static PeekController* From(BrowserWindowInterface* browser);
 
-  // Returns the controller showing `web_contents`, or nullptr if it isn't
-  // shown in Peek.
+  // Returns the controller showing `web_contents` in one of its Peeks, shown
+  // or hidden, or nullptr if it isn't in a Peek.
   static PeekController* FromPeekContents(content::WebContents* web_contents);
 
   PeekController(const PeekController&) = delete;
@@ -42,22 +43,28 @@ class PeekController {
   // window, other than a sidebar web panel.
   virtual bool CanOpenFrom(content::WebContents* source) = 0;
 
-  // Loads `params.url` from `source` in a new Peek. The disposition in
+  // Loads `params.url` from `source` in a new Peek for `source`'s tab. The
+  // disposition in
   // `params` is ignored. Returns false, without opening anything, unless
   // `CanOpenFrom(source)` and `peek::CanOpenInPeek(params)`.
   virtual bool Open(content::WebContents& source,
                     const content::OpenURLParams& params) = 0;
 
-  // Moves the Peek contents into a tab right after the active tab.
-  virtual void OpenAsTab() = 0;
+  // Moves the Peek showing `peek_contents` into a tab right after its source
+  // tab. The new tab is activated if the source tab is active; a hidden Peek
+  // is added as a background tab. Does nothing if `peek_contents` isn't shown
+  // in a Peek of this window.
+  virtual void OpenAsTab(content::WebContents& peek_contents) = 0;
 
-  // Moves the Peek contents into a tab and shows the tab's cookies and site
-  // data dialog there. Runs asynchronously, because it's requested from the
-  // page info bubble, which is destroyed with the Peek card.
-  virtual void ShowCookiesDialogInTab() = 0;
+  // Moves the Peek showing `peek_contents` into a tab and shows the tab's
+  // cookies and site data dialog there. Runs asynchronously, because it's
+  // requested from the page info bubble, which is destroyed with the Peek
+  // card.
+  virtual void ShowCookiesDialogInTab(content::WebContents& peek_contents) = 0;
 
-  // Closes the Peek and destroys its contents. Unlike `OpenAsTab()`, the page
-  // is discarded. Does nothing if no Peek is shown.
+  // Closes the active tab's Peek and destroys its contents. Unlike
+  // `OpenAsTab()`, the page is discarded. Does nothing if the active tab has no
+  // Peek.
   virtual void Close() = 0;
 
   // Called before the window runs browser command `command_id`. While Peek has
@@ -67,12 +74,12 @@ class PeekController {
   // if the window must not run the command itself.
   virtual bool HandleCommand(int command_id) = 0;
 
-  // Whether a Peek is shown in this window.
+  // Whether the active tab has a Peek, which is then shown.
   virtual bool IsShowing() const = 0;
 
-  // Returns the contents shown in Peek, or nullptr if no Peek is shown. The
-  // controller owns the contents until `Close()` destroys them or
-  // `OpenAsTab()` hands them to the tab strip.
+  // Returns the contents of the active tab's Peek, or nullptr if it has none.
+  // The controller owns the contents until they're destroyed with their Peek
+  // or `OpenAsTab()` hands them to the tab strip.
   virtual content::WebContents* GetWebContents() = 0;
 
  protected:

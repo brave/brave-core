@@ -35,7 +35,7 @@ constexpr auto kAccountCreationCoinName =
 // so the user can see which site the request comes from.
 void MaybeMoveOutOfPeek(content::WebContents* web_contents) {
   if (auto* peek_controller = PeekController::FromPeekContents(web_contents)) {
-    peek_controller->OpenAsTab();
+    peek_controller->OpenAsTab(*web_contents);
   }
 }
 

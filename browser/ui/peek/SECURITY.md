@@ -219,12 +219,20 @@ and the `peek_utils` unit tests.
   excluded explicitly, since they are backed by tabs.
 - Split view: Peek covers the whole contents area (both panes). "Open as tab"
   inserts the tab after the split, not inside it. Switching panes changes the
-  active tab, which closes Peek. Test: `OpensFromSplitViewAsStandaloneTab`.
-  "Open in split view" moves the same contents into a tab, like "Open as tab",
-  then splits it with the source tab. It's hidden, and falls back to a
-  standalone tab, when the source tab is already in a split, so it never
-  replaces a tab. Tests: `OpenInSplitViewSplitsWithSourceTab`,
-  `OpenInSplitViewFromSplitOpensTab`.
+  active tab, which hides Peek until the source pane is active again. Test:
+  `OpensFromSplitViewAsStandaloneTab`. "Open in split view" moves the same
+  contents into a tab, like "Open as tab", then splits it with the source tab.
+  It's hidden, and falls back to a standalone tab, when the source tab is
+  already in a split, so it never replaces a tab. Tests:
+  `OpenInSplitViewSplitsWithSourceTab`, `OpenInSplitViewFromSplitOpensTab`.
+- Hidden Peeks: switching tabs hides the Peek, and its page keeps running like a
+  background tab's (it's marked hidden). Anything that moves a hidden Peek into
+  a tab (a permission request, download, popup, fullscreen, the wallet) adds it
+  as a background tab after its source tab, never the active one, so a page the
+  user isn't looking at can't take over the window. The request then continues
+  as in any background tab: a permission prompt waits until the user switches to
+  it. Tests: `SwitchingTabsHidesAndRestoresPeek`, `EachTabKeepsItsOwnPeek`,
+  `ClosingSourceTabClosesHiddenPeek`, `HiddenPeekMovesToBackgroundTab`.
 - Nested Peek: a Peek can't be opened from inside Peek; links there open in the
   Peek itself or, for new-tab dispositions, through the browser. Test:
   `NoNestedPeek`.
@@ -281,9 +289,11 @@ The security-relevant ones were checked:
   it as the contents' delegate and as the modal dialog delegate before the tab
   strip takes the contents, and a second move finds no contents and returns.
 - Keys the Peek page doesn't handle are passed to the window by the controller,
-  not `PeekContents`, because a shortcut (e.g. switching tabs) can close Peek
-  before the call returns. Commands Peek takes over from those keys run as
-  tasks.
+  not `PeekContents`, because a shortcut (e.g. close tab) can close Peek before
+  the call returns. Commands Peek takes over from those keys run as tasks.
+- Each tab has its own Peek, owned by the controller. A Peek is closed when its
+  source tab is closed or moved to another window, before the tab goes, so it
+  never outlives its tab.
 - `PeekControllerImpl` is owned by the window's features and destroyed in
   `TearDownPreBrowserWindowDestruction()`, before the `BrowserView`. The Shields
   panel provider, which points to the `BrowserView`, is owned by the controller,
