@@ -50,6 +50,12 @@ function Main() {
     React.useState(false)
   const { isDragActive, isDragOver } = conversationContext
 
+  // Deleting the open conversation, usually from this list, starts a new one.
+  // Show it, as starting a new conversation from the list does.
+  conversationContext.api.useOnConversationDeleted(() => {
+    setIsConversationsListOpen(false)
+  }, [conversationContext.api])
+
   const showAttachments = !!conversationContext.attachmentsDialog
 
   const headerElement = React.useRef<HTMLDivElement>(null)
@@ -170,7 +176,10 @@ function Main() {
     >
       <DragOverlay />
       {isConversationListOpen && !aiChatContext.isStandalone && (
-        <div className={styles.conversationsList}>
+        <div
+          className={styles.conversationsList}
+          data-testid='conversations-list'
+        >
           <div
             className={classnames({
               [styles.conversationsListHeader]: true,
