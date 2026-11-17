@@ -8,25 +8,15 @@
 #include "base/check.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 
-#define CalculateTabBounds                                      \
-  use_vertical_tabs_&& FillGroupInfo(tab_widths) &&             \
-          FillNestingInfo(tab_widths)                           \
-      ? tabs::CalculateVerticalTabBounds(                       \
-            tab_widths, available_width,                        \
-            GetBraveTabStrip() -> ShouldShowPinnedTabsInGrid()) \
-      : CalculateTabBounds
-
 #include <chrome/browser/ui/views/tabs/tab_strip_layout_helper.cc>
 
-#undef CalculateTabBounds
-
-BraveTabStrip* TabStripLayoutHelper::GetBraveTabStrip() const {
+BraveTabStrip* TabStripLayoutHelper::GetBraveTabStrip() {
   return static_cast<BraveTabStrip*>(tab_strip_.get());
 }
 
 // Unfortunately, TabStripLayout::TabSlot is declared and defined in the .cc
 // file, we can't move this method out of this file.
-bool TabStripLayoutHelper::FillGroupInfo(
+void TabStripLayoutHelper::FillGroupInfo(
     std::vector<TabWidthConstraints>& tab_widths) {
   DCHECK(use_vertical_tabs_)
       << "Must be called only when |use_vertical_tabs_| is true";
@@ -37,13 +27,12 @@ bool TabStripLayoutHelper::FillGroupInfo(
         slots_.at(i).type == TabSlotView::ViewType::kTab &&
         slots_.at(i).view->group().has_value());
   }
-  return true;
 }
 
-bool TabStripLayoutHelper::FillNestingInfo(
+void TabStripLayoutHelper::FillNestingInfo(
     std::vector<TabWidthConstraints>& tab_widths) {
   if (!use_vertical_tabs_ || !use_tree_tabs_) {
-    return true;
+    return;
   }
 
   for (int i = 0; i < static_cast<int>(slots_.size()); i++) {
@@ -54,5 +43,4 @@ bool TabStripLayoutHelper::FillNestingInfo(
       tab_width.state().set_open(TabOpen::kClosed);
     }
   }
-  return true;
 }

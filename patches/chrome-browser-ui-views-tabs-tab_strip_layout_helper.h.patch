@@ -1,0 +1,30 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_strip_layout_helper.h b/chrome/browser/ui/views/tabs/tab_strip_layout_helper.h
+index 00515dfa66b5efc6a796b533f3394657d4d63820..034ffb3fcd52ddca45c35a60a0d119976b7f128e 100644
+--- a/chrome/browser/ui/views/tabs/tab_strip_layout_helper.h
++++ b/chrome/browser/ui/views/tabs/tab_strip_layout_helper.h
+@@ -103,7 +103,25 @@ class TabStripLayoutHelper {
+   // `group_headers`. Returns the total width occupied by the new ideal bounds.
+   int UpdateIdealBounds(int available_width);
+ 
++  void set_use_vertical_tabs(bool vertical) { use_vertical_tabs_ = vertical; }
++  void set_tab_strip(TabStrip* tab_strip) { tab_strip_ = tab_strip; }
++  void set_use_tree_tabs(bool tree) { use_tree_tabs_ = tree; }
++
++  std::map<tab_groups::TabGroupId, gfx::Rect>& group_header_ideal_bounds() {
++    return group_header_ideal_bounds_;
++  }
++  BraveTabStrip* GetBraveTabStrip();
++
++ protected:
++  void FillGroupInfo(std::vector<TabWidthConstraints>& tab_widths);
++  void FillNestingInfo(std::vector<TabWidthConstraints>& tab_widths);
++
++  bool use_vertical_tabs_ = false;
++  bool use_tree_tabs_ = false;
++  raw_ptr<TabStrip> tab_strip_ = nullptr;
++
+  private:
++  friend class BraveTabContainer;
+   struct TabSlot;
+ 
+   // Calculates the bounds each tab should occupy, subject to the provided

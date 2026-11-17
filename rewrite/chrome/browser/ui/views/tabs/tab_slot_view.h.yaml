@@ -1,0 +1,30 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Include the header for TreeTabNodeId.
+    add_include:
+      header:
+        - 'brave/components/tabs/public/tree_tab_node_id.h'
+
+  - description: Make TabSlotView have a TreeTabNodeId.
+    add_to_public:
+      class_name: TabSlotView
+      code: |
+        void set_tree_tab_node(const std::optional<tree_tab::TreeTabNodeId>& id) {
+          tree_tab_node_id_ = id;
+        }
+        const std::optional<tree_tab::TreeTabNodeId>& tree_tab_node() const {
+          return tree_tab_node_id_;
+        }
+        virtual TabNestingInfo GetTabNestingInfo() const;
+        virtual bool IsInCollapsedTreeTabNode() const;
+
+  - description: |
+      Add member for storage of the TreeTabNodeId.
+    add_to_protected:
+      class_name: TabSlotView
+      code: |-
+        std::optional<tree_tab::TreeTabNodeId> tree_tab_node_id_;

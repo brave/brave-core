@@ -1,0 +1,27 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_layout_state.h b/chrome/browser/ui/views/tabs/tab_layout_state.h
+index 8a00ff0081052e3e55f711db889d5b619d8724a3..01c4bfd73c43d70a1cc9ae4c0f0aed4f5928a0c8 100644
+--- a/chrome/browser/ui/views/tabs/tab_layout_state.h
++++ b/chrome/browser/ui/views/tabs/tab_layout_state.h
+@@ -8,6 +8,7 @@
+ #include <optional>
+ 
+ #include "chrome/browser/ui/tabs/tab_types.h"
++#include "chrome/browser/ui/views/tabs/tab_strip_layout_types.h"
+ #include "components/split_tabs/split_tab_id.h"
+ 
+ // Contains the data necessary to determine the bounds of a tab even while
+@@ -36,6 +37,14 @@ class TabLayoutState {
+ 
+   bool IsClosed() const;
+ 
++  const TabNestingInfo& nesting_info() const { return nesting_info_; }
++  void set_nesting_info(const TabNestingInfo& info) {
++    nesting_info_ = info;
++  }
++
++ protected:
++  TabNestingInfo nesting_info_;
++
+  private:
+   // Whether this tab is open or closed.
+   TabOpen openness_ = TabOpen::kOpen;
