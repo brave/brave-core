@@ -211,6 +211,7 @@ TEST_F(PsstSettingsServiceUnitTest,
   const std::string user_id = "user123";
   const auto metadata = PsstWebsiteSettings::FromValue(CreatePsstSettingsDict(
       ConsentStatus::kAllow, 1, user_id, std::vector<std::string>()));
+  ASSERT_TRUE(metadata);
 
   settings_service()->SetPsstWebsiteSettings(
       origin, metadata->consent_status, metadata->script_version,

@@ -60,7 +60,9 @@ class PsstSettingsService : public KeyedService {
   // `origin`.
   int GetInfobarShownCount(const url::Origin& origin);
 
-  // Records that the PSST infobar was shown for `origin`.
+  // Records that the PSST infobar was shown for `origin`. No-op unless `origin`
+  // is https. The count is persisted in the origin's BRAVE_PSST website
+  // setting.
   void IncrementInfobarShownCount(const url::Origin& origin);
 
   bool IsPsstEnabled() const;
