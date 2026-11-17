@@ -29,6 +29,7 @@
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/ens_address_utils.h"
 #include "brave/components/brave_wallet/browser/ens_resolver_task.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_requests.h"
@@ -121,6 +122,9 @@ void MergeSolanaRPCResponses(SolanaRPCResponsesCallback<T> callback,
 }
 
 namespace {
+
+// ENSIP-9 coin type for Ethereum mainnet.
+constexpr uint32_t kEnsEthCoinType = 60;
 
 using brave_wallet::mojom::ResolveMethod;
 using decentralized_dns::EnsOffchainResolveMethod;
@@ -1559,6 +1563,97 @@ void JsonRpcService::EnsGetEthAddr(const std::string& domain,
           api_request_helper_ens_offchain_.get(), MakeAddrCall(domain), domain,
           NetworkManager::GetEnsRpcUrl(), allow_offchain),
       std::move(callback));
+}
+
+void JsonRpcService::EnsGetAddr(const std::string& domain,
+                                mojom::CoinType coin,
+                                const std::string& chain_id,
+                                EnsGetAddrCallback callback) {
+  const std::optional<uint32_t> coin_type = GetEnsCoinType(coin, chain_id);
+  if (!IsValidEnsDomain(domain) || !coin_type) {
+    std::move(callback).Run(
+        "", false, mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  auto& tasks = ens_get_addr_tasks_[*coin_type];
+  if (tasks.ContainsTaskForDomain(domain)) {
+    tasks.AddCallbackForDomain(domain, std::move(callback));
+    return;
+  }
+
+  std::optional<bool> allow_offchain;
+  if (EnsOffchainPrefEnabled(local_state_prefs_)) {
+    allow_offchain = true;
+  } else if (EnsOffchainPrefDisabled(local_state_prefs_)) {
+    allow_offchain = false;
+  }
+
+  // JsonRpcService owns EnsResolverTask instance, so Unretained is safe here.
+  auto done_callback = base::BindOnce(&JsonRpcService::OnEnsGetAddrTaskDone,
+                                      base::Unretained(this), coin, *coin_type);
+
+  // ENSIP-19 resolves coin type 60 with addr(bytes32), as EnsGetEthAddr does.
+  auto call = *coin_type == kEnsEthCoinType ? MakeAddrCall(domain)
+                                            : MakeAddrCall(domain, *coin_type);
+
+  tasks.AddTask(std::make_unique<EnsResolverTask>(
+                    std::move(done_callback), api_request_helper_.get(),
+                    api_request_helper_ens_offchain_.get(), std::move(call),
+                    domain, NetworkManager::GetEnsRpcUrl(), allow_offchain),
+                std::move(callback));
+}
+
+void JsonRpcService::OnEnsGetAddrTaskDone(
+    mojom::CoinType coin,
+    uint32_t coin_type,
+    EnsResolverTask* task,
+    std::optional<EnsResolverTaskResult> task_result,
+    std::optional<EnsResolverTaskError> task_error) {
+  auto callbacks = ens_get_addr_tasks_[coin_type].TaskDone(task);
+  if (callbacks.empty()) {
+    return;
+  }
+
+  std::string address;
+  mojom::ProviderError error =
+      task_error ? task_error->error : mojom::ProviderError::kSuccess;
+  std::string error_message = task_error ? task_error->error_message : "";
+
+  if (task_result && !task_result->resolved_result.empty()) {
+    std::optional<std::string> decoded;
+    if (coin_type == kEnsEthCoinType) {
+      // addr(bytes32) returns an address, not bytes.
+      auto eth_address = eth_abi::ExtractAddress(task_result->resolved_result);
+      if (eth_address && !eth_address->IsZeroAddress()) {
+        decoded = eth_address->ToHex();
+      }
+    } else {
+      // An empty record (no address for this coin) fails to decode too.
+      auto record =
+          eth_abi::ExtractBytesFromTuple(task_result->resolved_result, 0);
+      decoded = record ? EnsAddrRecordToAddress(coin, *record) : std::nullopt;
+    }
+    if (decoded) {
+      address = std::move(*decoded);
+    } else {
+      error = mojom::ProviderError::kInvalidParams;
+      error_message = l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS);
+    }
+  }
+
+  bool require_offchain_consent =
+      (task_result ? task_result->need_to_allow_offchain : false);
+  if (require_offchain_consent && EnsOffchainPrefDisabled(local_state_prefs_)) {
+    require_offchain_consent = false;
+    error = mojom::ProviderError::kInternalError;
+    error_message = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+  }
+
+  for (auto& cb : callbacks) {
+    std::move(cb).Run(address, require_offchain_consent, error, error_message);
+  }
 }
 
 void JsonRpcService::OnEnsGetEthAddrTaskDone(

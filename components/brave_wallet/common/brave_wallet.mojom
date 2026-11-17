@@ -1892,6 +1892,14 @@ interface JsonRpcService {
                                    ProviderError error,
                                    string error_message);
 
+  // ENS multichain address lookup (ENSIP-9, ENSIP-11). `address` is in the
+  // wallet's format for `coin` on `chain_id`.
+  EnsGetAddr(string domain, CoinType coin, string chain_id)
+      => (string address,
+          bool require_offchain_consent,
+          ProviderError error,
+          string error_message);
+
   // ENS Domain lookups
   EnsGetContentHash(string domain) => (array<uint8> content_hash,
                                        bool require_offchain_consent,
