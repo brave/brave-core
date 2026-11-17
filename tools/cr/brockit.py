@@ -591,6 +591,35 @@ def _get_apply_patches_list() -> dict[Repository, list[Patchfile]] | None:
 
 
 @dataclass(frozen=True)
+class StaffMember:
+    """Someone who looks after Chromium upgrades: assigned their pull
+    requests on GitHub, and CC'd on their CLs on Gerrit."""
+
+    github: str
+    gerrit: str
+
+
+_STAFF_LEAD = StaffMember(github='cdesouza-chromium', gerrit='cdesouza')
+# Emerick and Alexey take care of even-numbered major versions, while Max and
+# Artem do the odd ones.
+_STAFF_BY_PARITY = (
+    (
+        StaffMember(github='emerick', gerrit='erogul'),
+        StaffMember(github='AlexeyBarabash', gerrit='alexey'),
+    ),
+    (
+        StaffMember(github='mkarolin', gerrit='mkarolinskiy'),
+        StaffMember(github='samartnik', gerrit='artem'),
+    ),
+)
+
+
+def staff(major: int) -> list[StaffMember]:
+    """Who looks after upgrades to Chromium's major version `major`."""
+    return [_STAFF_LEAD, *_STAFF_BY_PARITY[major % 2]]
+
+
+@dataclass(frozen=True)
 class ApplyPatchesRecord:
     """A class to hold the continuation data for patches."""
 
@@ -991,13 +1020,9 @@ class GitHubIssue(Versioned):
             '"CI/run-windows-x86"',
             '"CI/run-windows-arm64"',
         ]
-        assignees = ['cdesouza-chromium']
-        # Emerick and Alexey take care of even-numbered major versions, while
-        # Max and Sam do the odd ones.
-        if self.target_version.major % 2 == 0:
-            assignees += ['emerick', 'AlexeyBarabash']
-        else:
-            assignees += ['mkarolin', 'samartnik']
+        assignees = [
+            member.github for member in staff(self.target_version.major)
+        ]
 
         if self.is_major() or upstream_branch == 'master':
             # It is not common for upstream test to be run on uplifts of minor
@@ -3544,6 +3569,12 @@ def show(args: argparse.Namespace):
             'version: %s' % _fetch_chromium_tag(args.chromium_version_label)
         )
 
+    if args.gerrit_ccs is not None:
+        console.print(
+            'gerrit ccs: '
+            + ','.join(member.gerrit for member in staff(args.gerrit_ccs))
+        )
+
 
 def main():
     # This is a global parser with arguments that apply to every function.
@@ -3752,6 +3783,14 @@ def main():
         '--chromium-version-label',
         default=None,
         help='Prints the version for the given label (e.g. @latest-canary).',
+    )
+    show_parser.add_argument(
+        '--gerrit-ccs',
+        type=int,
+        default=None,
+        metavar='MAJOR',
+        help='Prints the Gerrit usernames to CC on the CLs of an upgrade to '
+        'Chromium MAJOR, the people its pull request is assigned to.',
     )
 
     reassign_parser = subparsers.add_parser(

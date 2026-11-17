@@ -2129,6 +2129,7 @@ class ShowTest(unittest.TestCase):
             from_ref_hash=None,
             log_link=False,
             chromium_version_label=None,
+            gerrit_ccs=None,
         )
         for key, value in kwargs.items():
             setattr(args, key, value)
@@ -2163,6 +2164,18 @@ class ShowTest(unittest.TestCase):
             lines = self._show(from_ref_hash='@previous-major')
         self.assertEqual(['base commit: full-@previous-major'], lines)
         self.assertEqual(self.solved_refs, ['@previous-major'])
+
+    def test_gerrit_ccs_are_the_staff_of_the_major(self):
+        """The same people the pull request is assigned to, by Gerrit
+        username, alternating with the major's parity."""
+        self.assertEqual(
+            self._show(gerrit_ccs=160),
+            ['gerrit ccs: cdesouza,erogul,alexey'],
+        )
+        self.assertEqual(
+            self._show(gerrit_ccs=159),
+            ['gerrit ccs: cdesouza,mkarolinskiy,artem'],
+        )
 
 
 class RebaseHookTest(unittest.TestCase):
