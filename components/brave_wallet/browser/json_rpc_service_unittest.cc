@@ -5388,6 +5388,9 @@ std::vector<uint8_t> ResolveEnsTestRecord(
       *eth_abi::ExtractFunctionSelectorAndArgsFromCall(resolver_call);
   auto namehash = eth_abi::ExtractFixedBytesFromTuple<32>(args, 0);
   EXPECT_TRUE(namehash);
+  if (!namehash) {
+    return {};
+  }
 
   auto it = std::ranges::find_if(records, [&](const auto& item) {
     return std::ranges::equal(*namehash, Namehash(item.first));
@@ -5432,9 +5435,14 @@ class EnsUniversalResolverHandler : public EthCallHandler {
 
     if (std::ranges::equal(selector, CallbackSelector())) {
       auto extra_data = eth_abi::ExtractBytesFromTuple(args, 1);
-      EXPECT_EQ("extra data", eth_abi::ExtractStringFromTuple(*extra_data, 0));
-
       auto gateway_response = eth_abi::ExtractBytesFromTuple(args, 0);
+      EXPECT_TRUE(extra_data);
+      EXPECT_TRUE(gateway_response);
+      if (!extra_data || !gateway_response) {
+        return std::nullopt;
+      }
+
+      EXPECT_EQ("extra data", eth_abi::ExtractStringFromTuple(*extra_data, 0));
       return MakeJsonRpcTupleResponse(eth_abi::TupleEncoder()
                                           .AddBytes(*gateway_response)
                                           .AddAddress(resolver_address_));
@@ -5444,6 +5452,9 @@ class EnsUniversalResolverHandler : public EthCallHandler {
     auto resolver_call = eth_abi::ExtractBytesFromTuple(args, 1);
     EXPECT_TRUE(dns_encoded_name);
     EXPECT_TRUE(resolver_call);
+    if (!dns_encoded_name || !resolver_call) {
+      return std::nullopt;
+    }
 
     for (const auto& host : offchain_hosts_) {
       if (dns_encoded_name == ens::DnsEncode(host)) {
@@ -5523,12 +5534,18 @@ class OffchainGatewayHandler {
     auto* data = payload->FindString("data");
     auto bytes = PrefixedHexStringToBytes(*data);
     EXPECT_TRUE(bytes);
+    if (!bytes) {
+      return std::nullopt;
+    }
 
     auto [selector, args] =
         *eth_abi::ExtractFunctionSelectorAndArgsFromCall(*bytes);
     EXPECT_TRUE(std::ranges::equal(selector, kResolveBytesBytesSelector));
     auto resolver_call = eth_abi::ExtractBytesFromTuple(args, 1);
     EXPECT_TRUE(resolver_call);
+    if (!resolver_call) {
+      return std::nullopt;
+    }
 
     auto data_value = respond_with_no_record_
                           ? ResolveEnsTestRecord(*resolver_call, {})

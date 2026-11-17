@@ -30,6 +30,8 @@
 namespace brave_wallet {
 namespace {
 
+constexpr char kErrorDataPath[] = "error.data";
+
 std::optional<std::vector<uint8_t>> ExtractGatewayResult(
     const base::Value& json_value) {
   if (!json_value.is_dict()) {
@@ -57,7 +59,7 @@ EnsResolverTaskError ParseErrorResult(const base::Value& json_value) {
   // Contract reverts like `ResolverNotFound(bytes)` mean the name can't be
   // resolved.
   if (json_value.is_dict() &&
-      json_value.GetDict().FindStringByDottedPath("error.data")) {
+      json_value.GetDict().FindStringByDottedPath(kErrorDataPath)) {
     return MakeInternalError();
   }
 
@@ -129,7 +131,8 @@ std::optional<OffchainLookupData> OffchainLookupData::ExtractFromJson(
     return std::nullopt;
   }
 
-  auto* error_data = json_value.GetDict().FindStringByDottedPath("error.data");
+  auto* error_data =
+      json_value.GetDict().FindStringByDottedPath(kErrorDataPath);
   if (!error_data) {
     return std::nullopt;
   }
