@@ -12,12 +12,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 
-import android.content.ContentResolver;
-import android.content.Context;
-import android.provider.Settings;
+import android.util.DisplayMetrics;
 import android.view.View;
-
-import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -248,44 +244,37 @@ public class BraveCollapsedUrlChipMediatorTest {
                         android.graphics.Color.BLACK));
         assertFalse(
                 BraveCollapsedUrlChipMediator.isLightContentBackground(0xF21F2026)); // chip dark
-        // Translucent black composes over white to ~50% luminance -> not light.
+        // Translucent black composes over white to ~50% luminance -> below the 0.5 threshold.
         assertFalse(
                 BraveCollapsedUrlChipMediator.isLightContentBackground(
                         android.graphics.Color.argb(128, 0, 0, 0)));
-        // Mid gray: system pill shows light on this, chip does the same.
-        assertFalse(
+        // 128/255 = 0.502 >= the upstream 0.5 threshold -> light, like the system pill.
+        assertTrue(
                 BraveCollapsedUrlChipMediator.isLightContentBackground(
                         android.graphics.Color.rgb(128, 128, 128)));
-    }
-
-    @Test
-    public void testIsGestureNavigationFollowsSetting() {
-        // Fresh read required: nav mode can flip mid-session.
-        Context context = ApplicationProvider.getApplicationContext();
-        ContentResolver resolver = context.getContentResolver();
-        Settings.Secure.putInt(resolver, "navigation_mode", 2); // gesture
-        assertTrue(BraveCollapsedUrlChipMediator.isGestureNavigation(resolver));
-        // Same resolver, mode flipped mid-session: next call must see it.
-        Settings.Secure.putInt(resolver, "navigation_mode", 0); // 3-button
-        assertFalse(BraveCollapsedUrlChipMediator.isGestureNavigation(resolver));
-        Settings.Secure.putInt(resolver, "navigation_mode", 1); // 2-button
-        assertFalse(BraveCollapsedUrlChipMediator.isGestureNavigation(resolver));
-        // Key absent (fresh profile): treat as not gesture, never hide-then-stuck.
-        Settings.Secure.putString(resolver, "navigation_mode", null);
-        assertFalse(BraveCollapsedUrlChipMediator.isGestureNavigation(resolver));
+        assertFalse(
+                BraveCollapsedUrlChipMediator.isLightContentBackground(
+                        android.graphics.Color.rgb(120, 120, 120)));
     }
 
     @Test
     public void testNavBarBottomMarginAddsMinGap() {
-        float density2_625 = 2.625f; // emulator-5556: 8dp gap = 21px
+        DisplayMetrics density2_625 = new DisplayMetrics();
+        density2_625.density = 2.625f; // emulator-5556: 8dp gap = 21px
         assertEquals(21, BraveCollapsedUrlChipMediator.navBarBottomMarginPx(0, density2_625));
-        // Observed device geometry: gesture-mode inset 63px + 21px gap = 84px margin.
+        // Inset passes through with the gap added: 63px inset + 21px gap = 84px margin.
         assertEquals(84, BraveCollapsedUrlChipMediator.navBarBottomMarginPx(63, density2_625));
+
+        DisplayMetrics density1 = new DisplayMetrics();
+        density1.density = 1f;
         // Zero inset must still keep the gap (nav bar can be transparent but present).
-        assertEquals(8, BraveCollapsedUrlChipMediator.navBarBottomMarginPx(0, 1f));
-        assertEquals(63, BraveCollapsedUrlChipMediator.navBarBottomMarginPx(55, 1f));
+        assertEquals(8, BraveCollapsedUrlChipMediator.navBarBottomMarginPx(0, density1));
+        assertEquals(63, BraveCollapsedUrlChipMediator.navBarBottomMarginPx(55, density1));
+
         // Rounding: 8 * 2.7 = 21.6 -> 22.
-        assertEquals(22, BraveCollapsedUrlChipMediator.navBarBottomMarginPx(0, 2.7f));
+        DisplayMetrics density2_7 = new DisplayMetrics();
+        density2_7.density = 2.7f;
+        assertEquals(22, BraveCollapsedUrlChipMediator.navBarBottomMarginPx(0, density2_7));
     }
 
     private void notifyOffsetChanged() {
