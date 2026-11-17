@@ -185,9 +185,11 @@ public class BravePermissionAccountsListAdapter
 
             case ACCOUNT_CONNECTION -> {
                 int connectionButtonText;
-                boolean hasPermission = hasPermission(accountInfo.address);
-                boolean isConnected = accountInfo.address.equals(mSelectedAccount.address);
-                if (CoinType.SOL == mSelectedAccount.accountId.coin) {
+                final boolean hasPermission = hasPermission(accountInfo.address);
+                final boolean isConnected =
+                        mSelectedAccount != null
+                                && accountInfo.address.equals(mSelectedAccount.address);
+                if (CoinType.SOL == accountInfo.accountId.coin) {
                     connectionButtonText =
                             hasPermission
                                     ? R.string.brave_wallet_site_permissions_revoke
