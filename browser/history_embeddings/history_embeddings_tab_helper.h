@@ -11,31 +11,43 @@
 #ifndef BRAVE_BROWSER_HISTORY_EMBEDDINGS_HISTORY_EMBEDDINGS_TAB_HELPER_H_
 #define BRAVE_BROWSER_HISTORY_EMBEDDINGS_HISTORY_EMBEDDINGS_TAB_HELPER_H_
 
+#include <memory>
 #include <optional>
 
 #include "base/callback_list.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "base/time/time.h"
+#include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
 #include "components/history/core/browser/history_types.h"
-#include "content/public/browser/web_contents_observer.h"
 #include "url/gurl.h"
 
 namespace history {
 class HistoryService;
 }
 
-namespace brave_history_embeddings {
-class HistoryEmbeddingsService;
-}
-
 namespace passage_embeddings {
 class PassageEmbedderModelObserver;
 }
 
-class HistoryEmbeddingsTabHelper : public content::WebContentsObserver {
+namespace tabs {
+class TabInterface;
+}
+
+namespace brave_history_embeddings {
+
+class HistoryEmbeddingsService;
+
+// Hands each committed history visit to `HistoryEmbeddingsService`, so the
+// passages it later computes for the page are stored against that visit.
+// Follows the tab across discards, which swap its WebContents.
+class HistoryEmbeddingsTabHelper : public tabs::ContentsObservingTabFeature {
  public:
-  explicit HistoryEmbeddingsTabHelper(content::WebContents* web_contents);
+  // Returns null when the profile has no embeddings service.
+  static std::unique_ptr<HistoryEmbeddingsTabHelper> MaybeCreate(
+      tabs::TabInterface& tab);
+
+  explicit HistoryEmbeddingsTabHelper(tabs::TabInterface& tab);
   ~HistoryEmbeddingsTabHelper() override;
 
   HistoryEmbeddingsTabHelper(const HistoryEmbeddingsTabHelper&) = delete;
@@ -61,9 +73,21 @@ class HistoryEmbeddingsTabHelper : public content::WebContentsObserver {
       content::NavigationHandle* navigation_handle) override;
   void PrimaryMainFrameRenderProcessGone(
       base::TerminationStatus status) override;
-  void WebContentsDestroyed() override;
 
  private:
+  // tabs::ContentsObservingTabFeature:
+  void OnDiscardContents(tabs::TabInterface* tab,
+                         content::WebContents* old_contents,
+                         content::WebContents* new_contents) override;
+
+  // Subscribes to the history visits `HistoryTabHelper` records for the
+  // observed WebContents.
+  void ObserveHistoryTabHelper();
+
+  // Drops any pending visit, and the service's record of one, for the
+  // observed WebContents.
+  void ResetVisit();
+
   // Callback for `ExtractPassages()`. It's in a member method to enable
   // cancellation via `weak_factory_`.
   void UpdateEmbeddingsServiceWithHistoryData(
@@ -74,8 +98,7 @@ class HistoryEmbeddingsTabHelper : public content::WebContentsObserver {
 
   // Helper functions to return the embeddings and history services.
   // `GetHistoryClustersService()` may return nullptr (in tests).
-  brave_history_embeddings::HistoryEmbeddingsService*
-  GetHistoryEmbeddingsService();
+  HistoryEmbeddingsService* GetHistoryEmbeddingsService();
   passage_embeddings::PassageEmbedderModelObserver*
   GetPassageEmbedderModelObserver();
   // `GetHistoryService()` may return nullptr.
@@ -101,5 +124,7 @@ class HistoryEmbeddingsTabHelper : public content::WebContentsObserver {
   // A standard WeakPtrFactory with lifetime equal to the object itself.
   base::WeakPtrFactory<HistoryEmbeddingsTabHelper> weak_ptr_factory_{this};
 };
+
+}  // namespace brave_history_embeddings
 
 #endif  // BRAVE_BROWSER_HISTORY_EMBEDDINGS_HISTORY_EMBEDDINGS_TAB_HELPER_H_

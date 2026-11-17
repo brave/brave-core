@@ -1,0 +1,63 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add the Brave history TypeScript files.
+    add_literal_to_list:
+      target: build
+      list_name: ts_files
+      literal: brave_history_ts_files
+      import: //brave/browser/resources/history/sources.gni
+
+  - description: Add the Brave history CSS files.
+    add_literal_to_list:
+      target: build
+      list_name: css_files
+      literal: brave_history_css_files
+      import: //brave/browser/resources/history/sources.gni
+
+  - description: Add the Brave history icons.
+    add_literal_to_list:
+      target: build
+      list_name: icons_html_files
+      literal: brave_history_icons_html_files
+      import: //brave/browser/resources/history/sources.gni
+
+  - description:
+      Keep the Brave history TypeScript out of Chromium's preprocessing.
+    add_literal_to_list:
+      target: build
+      list_name: exclude_ts_preprocess_files
+      literal: brave_history_ts_files
+      import: //brave/browser/resources/history/sources.gni
+
+  - description:
+      Keep the Brave history CSS and icons out of Chromium's preprocessing.
+    add_literal_to_list:
+      target: build
+      list_name: exclude_html_css_preprocess_files
+      literal: brave_history_exclude_html_css_preprocess_files
+      import: //brave/browser/resources/history/sources.gni
+
+  - description: Depend on the Brave history preprocessing.
+    add_literal_to_list:
+      target: build
+      list_name: preprocess_deps
+      literal: brave_history_preprocess_deps
+      import: //brave/browser/resources/history/sources.gni
+
+  - description: Add the Brave history mojo files.
+    add_literal_to_list:
+      target: build
+      list_name: mojo_files
+      literal: brave_history_mojo_files
+      import: //brave/browser/resources/history/sources.gni
+
+  - description: Add the Brave history mojo deps.
+    add_literal_to_list:
+      target: build
+      list_name: mojo_files_deps
+      literal: brave_history_mojo_files_deps
+      import: //brave/browser/resources/history/sources.gni

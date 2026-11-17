@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Forward declare Brave's semantic history search.
+    add_before_line:
+      line: 'class TemplateURLService;'
+      code: |
+        namespace brave_history_embeddings {
+        class HistoryEmbeddingsSearch;
+        }  // namespace brave_history_embeddings
+
+  - description: |
+      Let providers reach Brave's semantic history search.
+
+      Returns null where the profile has none, which is the default.
+    add_to_public:
+      class_name: AutocompleteProviderClient
+      code: |-
+        virtual brave_history_embeddings::HistoryEmbeddingsSearch*
+        GetBraveHistoryEmbeddingsSearch();

@@ -1,0 +1,31 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add Brave's providers.
+
+      Placed right after `SearchProvider`, so `PromotionProvider` can follow
+      the search results it promotes.
+    add_after_line:
+      line: 'providers_.push_back(std::move(search_provider));'
+      code: '    BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER'
+
+  - description: |
+      Sort Brave's matches after `SortAndCull()` but before listeners are
+      notified.
+    add_before_line:
+      line: 'PostProcessMatches();'
+      code: '  BRAVE_AUTOCOMPLETE_CONTROLLER_UPDATE_RESULT'
+
+  - description: |
+      Run Brave's semantic history search only in the @history scope.
+    preempt_function_impl:
+      function_name: AutocompleteController::ShouldRunProvider
+      code: |-
+        if (auto run = BraveShouldRunProvider(provider, input_,
+                                              template_url_service_)) {
+          return *run;
+        }

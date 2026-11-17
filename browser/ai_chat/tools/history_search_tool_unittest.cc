@@ -17,12 +17,12 @@
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/history_embeddings/content/history_embeddings_service.h"
+#include "brave/components/history_embeddings/core/history_embeddings_features.h"
+#include "brave/components/history_embeddings/core/history_embeddings_search.h"
+#include "brave/components/history_embeddings/core/vector_database.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/history/core/browser/url_row.h"
-#include "components/history_embeddings/content/history_embeddings_service.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
-#include "components/history_embeddings/core/history_embeddings_search.h"
-#include "components/history_embeddings/core/vector_database.h"
 #include "components/passage_embeddings/core/passage_embeddings_types.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -48,13 +48,13 @@ std::string RunTool(HistorySearchTool* tool, const std::string& json) {
   return ExtractText(future.Get<std::vector<mojom::ContentBlockPtr>>());
 }
 
-history_embeddings::ScoredUrlRow MakeRow(const std::string& url,
-                                         const std::u16string& title) {
-  history_embeddings::ScoredUrl scored_url(/*url_id=*/1, /*visit_id=*/1,
-                                           base::Time::Now(),
-                                           /*score=*/0.9f,
-                                           /*word_match_score=*/0.0f);
-  history_embeddings::ScoredUrlRow row(scored_url);
+brave_history_embeddings::ScoredUrlRow MakeRow(const std::string& url,
+                                               const std::u16string& title) {
+  brave_history_embeddings::ScoredUrl scored_url(/*url_id=*/1, /*visit_id=*/1,
+                                                 base::Time::Now(),
+                                                 /*score=*/0.9f,
+                                                 /*word_match_score=*/0.0f);
+  brave_history_embeddings::ScoredUrlRow row(scored_url);
   row.row.set_url(GURL(url));
   row.row.set_title(title);
   row.row.set_last_visit(base::Time::FromTimeT(1700000000));
@@ -64,14 +64,14 @@ history_embeddings::ScoredUrlRow MakeRow(const std::string& url,
 // Attaches a passage + matching embedding/score to a ScoredUrlRow. The
 // embedding's data is irrelevant for serialization; only the score and word
 // count are read by GetBestScoreIndices.
-void AddPassage(history_embeddings::ScoredUrlRow& row,
+void AddPassage(brave_history_embeddings::ScoredUrlRow& row,
                 const std::string& passage,
                 float score,
                 size_t word_count) {
   row.url_data.passages.add_passages(passage);
   // Embedding's ctor DCHECKs that the vector has unit magnitude; {1.0f} does.
   row.url_data.passage_embeddings.emplace_back(
-      history_embeddings::PassageEmbedding{
+      brave_history_embeddings::PassageEmbedding{
           passage_embeddings::Embedding(std::vector<float>{1.0f}), word_count});
   row.scores.push_back(score);
 }
@@ -84,11 +84,13 @@ class HistorySearchToolTest : public testing::Test {
       : task_environment_(content::BrowserTaskEnvironment::IO_MAINLOOP) {}
 
   void EnableFeature() {
-    feature_list_.InitAndEnableFeature(history_embeddings::kHistoryEmbeddings);
+    feature_list_.InitAndEnableFeature(
+        brave_history_embeddings::kHistoryEmbeddings);
   }
 
   void DisableFeature() {
-    feature_list_.InitAndDisableFeature(history_embeddings::kHistoryEmbeddings);
+    feature_list_.InitAndDisableFeature(
+        brave_history_embeddings::kHistoryEmbeddings);
   }
 
   std::unique_ptr<HistorySearchTool> CreateTool() {
@@ -169,7 +171,7 @@ TEST_F(HistorySearchToolTest, InputPropertiesDeclareOptionalProperties) {
 constexpr char kExpectedLastVisitTime[] = "2023-11-14T22:13:20.000Z";
 
 TEST(HistorySearchToolJsonTest, EmptyResultProducesEmptyResultsArray) {
-  history_embeddings::SearchResult result;
+  brave_history_embeddings::SearchResult result;
   std::string json = internal::BuildHistorySearchResultJson(
       "kittens", result, /*include_all_passages=*/false);
 
@@ -178,7 +180,7 @@ TEST(HistorySearchToolJsonTest, EmptyResultProducesEmptyResultsArray) {
 }
 
 TEST(HistorySearchToolJsonTest, ResultsAreSerialized) {
-  history_embeddings::SearchResult result;
+  brave_history_embeddings::SearchResult result;
   result.scored_url_rows.push_back(
       MakeRow("https://example.com/article", u"Article title"));
 
@@ -201,7 +203,7 @@ TEST(HistorySearchToolJsonTest, ResultsAreSerialized) {
 }
 
 TEST(HistorySearchToolJsonTest, IncludeAllPassagesOrdersByScore) {
-  history_embeddings::SearchResult result;
+  brave_history_embeddings::SearchResult result;
   auto row = MakeRow("https://example.com/article", u"Article title");
   AddPassage(row, "low score passage", /*score=*/0.1f, /*word_count=*/3);
   AddPassage(row, "high score passage", /*score=*/0.9f, /*word_count=*/3);
@@ -229,7 +231,7 @@ TEST(HistorySearchToolJsonTest, IncludeAllPassagesOrdersByScore) {
 }
 
 TEST(HistorySearchToolJsonTest, BestPassageSnippetWhenNotIncludingAll) {
-  history_embeddings::SearchResult result;
+  brave_history_embeddings::SearchResult result;
   auto row = MakeRow("https://example.com/article", u"Article title");
   AddPassage(row, "low score passage", /*score=*/0.1f, /*word_count=*/3);
   AddPassage(row, "high score passage", /*score=*/0.9f, /*word_count=*/3);

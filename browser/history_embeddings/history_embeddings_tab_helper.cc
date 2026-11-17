@@ -14,27 +14,62 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/weak_ptr.h"
-#include "base/metrics/histogram_functions.h"
 #include "brave/browser/history_embeddings/history_embeddings_service_factory.h"
+#include "brave/browser/history_embeddings/history_embeddings_utils.h"
 #include "brave/components/history_embeddings/content/history_embeddings_service.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/history/history_tab_helper.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/passage_embeddings/passage_embedder_model_observer_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/url_row.h"
 #include "components/keyed_service/core/service_access_type.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/weak_document_ptr.h"
 #include "content/public/browser/web_contents.h"
 
-HistoryEmbeddingsTabHelper::HistoryEmbeddingsTabHelper(
-    content::WebContents* web_contents)
-    : content::WebContentsObserver(web_contents) {
+namespace brave_history_embeddings {
+
+// static
+std::unique_ptr<HistoryEmbeddingsTabHelper>
+HistoryEmbeddingsTabHelper::MaybeCreate(tabs::TabInterface& tab) {
+  Profile* profile =
+      Profile::FromBrowserContext(tab.GetContents()->GetBrowserContext());
+  if (profile->IsOffTheRecord() ||
+      !HistoryEmbeddingsServiceFactory::GetForProfile(profile)) {
+    return nullptr;
+  }
+  return std::make_unique<HistoryEmbeddingsTabHelper>(tab);
+}
+
+HistoryEmbeddingsTabHelper::HistoryEmbeddingsTabHelper(tabs::TabInterface& tab)
+    : tabs::ContentsObservingTabFeature(tab) {
+  ObserveHistoryTabHelper();
+}
+
+HistoryEmbeddingsTabHelper::~HistoryEmbeddingsTabHelper() {
+  // The tab keeps its WebContents alive until its features are destroyed.
+  ResetVisit();
+}
+
+void HistoryEmbeddingsTabHelper::OnDiscardContents(
+    tabs::TabInterface* tab,
+    content::WebContents* old_contents,
+    content::WebContents* new_contents) {
+  // Forget the visit pending on the outgoing contents before observing the
+  // replacement, which starts with no navigation of its own.
+  ResetVisit();
+  tabs::ContentsObservingTabFeature::OnDiscardContents(tab, old_contents,
+                                                       new_contents);
+  ObserveHistoryTabHelper();
+}
+
+void HistoryEmbeddingsTabHelper::ObserveHistoryTabHelper() {
+  history_tab_helper_subscription_ = {};
   if (auto* history_tab_helper =
-          HistoryTabHelper::FromWebContents(web_contents)) {
+          HistoryTabHelper::FromWebContents(web_contents())) {
     history_tab_helper_subscription_ =
         history_tab_helper->RegisterOnUpdatedHistoryForNavigationCallback(
             base::BindRepeating(
@@ -43,9 +78,13 @@ HistoryEmbeddingsTabHelper::HistoryEmbeddingsTabHelper(
   }
 }
 
-HistoryEmbeddingsTabHelper::~HistoryEmbeddingsTabHelper() {
-  if (web_contents()) {
-    WebContentsDestroyed();
+void HistoryEmbeddingsTabHelper::ResetVisit() {
+  CancelHistoryLookup();
+  history_navigation_id_.reset();
+  history_visit_time_.reset();
+  history_url_.reset();
+  if (HistoryEmbeddingsService* service = GetHistoryEmbeddingsService()) {
+    service->UpdateVisitMetadata(web_contents(), std::nullopt);
   }
 }
 
@@ -55,7 +94,7 @@ void HistoryEmbeddingsTabHelper::OnUpdatedHistoryForNavigation(
     base::Time timestamp,
     const GURL& url) {
   if (!is_in_primary_main_frame ||
-      !brave_history_embeddings::IsHistoryEmbeddingsEnabledForProfile(
+      !IsHistoryEmbeddingsEnabledForProfile(
           Profile::FromBrowserContext(web_contents()->GetBrowserContext())) ||
       !GetHistoryEmbeddingsService() || !GetPassageEmbedderModelObserver()) {
     return;
@@ -71,8 +110,7 @@ void HistoryEmbeddingsTabHelper::OnUpdatedHistoryForNavigation(
   history_visit_time_ = timestamp;
   history_url_ = url;
 
-  if (brave_history_embeddings::HistoryEmbeddingsService* service =
-          GetHistoryEmbeddingsService()) {
+  if (HistoryEmbeddingsService* service = GetHistoryEmbeddingsService()) {
     service->UpdateVisitMetadata(web_contents(), std::nullopt);
   }
 }
@@ -93,8 +131,7 @@ void HistoryEmbeddingsTabHelper::DidFinishNavigation(
     history_navigation_id_.reset();
     history_visit_time_.reset();
     history_url_.reset();
-    if (brave_history_embeddings::HistoryEmbeddingsService* service =
-            GetHistoryEmbeddingsService()) {
+    if (HistoryEmbeddingsService* service = GetHistoryEmbeddingsService()) {
       service->UpdateVisitMetadata(web_contents(), std::nullopt);
     }
     return;
@@ -112,8 +149,7 @@ void HistoryEmbeddingsTabHelper::DidFinishNavigation(
     history_url_.reset();
   }
 
-  if (brave_history_embeddings::HistoryEmbeddingsService* service =
-          GetHistoryEmbeddingsService()) {
+  if (HistoryEmbeddingsService* service = GetHistoryEmbeddingsService()) {
     service->UpdateVisitMetadata(web_contents(), std::nullopt);
   }
 }
@@ -131,11 +167,10 @@ void HistoryEmbeddingsTabHelper::DidFinishLoad(
   // guarantees at most one delayed task is scheduled at a time.
   CancelHistoryLookup();
 
-  if (!brave_history_embeddings::IsHistoryEmbeddingsEnabledForProfile(
+  if (!IsHistoryEmbeddingsEnabledForProfile(
           Profile::FromBrowserContext(web_contents()->GetBrowserContext())) ||
-      !GetHistoryEmbeddingsService() ||
-      !GetHistoryEmbeddingsService()->IsEligible(validated_url) ||
-      !history_url_.has_value() || *history_url_ != validated_url) {
+      !GetHistoryEmbeddingsService() || !history_url_.has_value() ||
+      *history_url_ != validated_url) {
     history_navigation_id_.reset();
     history_visit_time_.reset();
     history_url_.reset();
@@ -169,8 +204,7 @@ void HistoryEmbeddingsTabHelper::DidFailLoad(
     history_navigation_id_.reset();
     history_visit_time_.reset();
     history_url_.reset();
-    if (brave_history_embeddings::HistoryEmbeddingsService* service =
-            GetHistoryEmbeddingsService()) {
+    if (HistoryEmbeddingsService* service = GetHistoryEmbeddingsService()) {
       service->UpdateVisitMetadata(web_contents(), std::nullopt);
     }
   }
@@ -182,22 +216,9 @@ void HistoryEmbeddingsTabHelper::PrimaryMainFrameRenderProcessGone(
   history_navigation_id_.reset();
   history_visit_time_.reset();
   history_url_.reset();
-  if (brave_history_embeddings::HistoryEmbeddingsService* service =
-          GetHistoryEmbeddingsService()) {
+  if (HistoryEmbeddingsService* service = GetHistoryEmbeddingsService()) {
     service->UpdateVisitMetadata(web_contents(), std::nullopt);
   }
-}
-
-void HistoryEmbeddingsTabHelper::WebContentsDestroyed() {
-  CancelHistoryLookup();
-  history_navigation_id_.reset();
-  history_visit_time_.reset();
-  history_url_.reset();
-  if (brave_history_embeddings::HistoryEmbeddingsService* service =
-          GetHistoryEmbeddingsService()) {
-    service->UpdateVisitMetadata(web_contents(), std::nullopt);
-  }
-  Observe(nullptr);
 }
 
 void HistoryEmbeddingsTabHelper::UpdateEmbeddingsServiceWithHistoryData(
@@ -246,13 +267,11 @@ void HistoryEmbeddingsTabHelper::UpdateEmbeddingsServiceWithHistoryData(
     return;
   }
 
-  if (brave_history_embeddings::HistoryEmbeddingsService* service =
-          GetHistoryEmbeddingsService()) {
-    service->UpdateVisitMetadata(
-        web_contents(),
-        brave_history_embeddings::HistoryEmbeddingsService::VisitMetadata{
-            latest_visit.url_id, latest_visit.visit_id,
-            latest_visit.visit_time});
+  if (HistoryEmbeddingsService* service = GetHistoryEmbeddingsService()) {
+    service->UpdateVisitMetadata(web_contents(),
+                                 HistoryEmbeddingsService::VisitMetadata{
+                                     latest_visit.url_id, latest_visit.visit_id,
+                                     latest_visit.visit_time});
   }
 }
 
@@ -261,7 +280,7 @@ void HistoryEmbeddingsTabHelper::CancelHistoryLookup() {
   task_tracker_.TryCancelAll();
 }
 
-brave_history_embeddings::HistoryEmbeddingsService*
+HistoryEmbeddingsService*
 HistoryEmbeddingsTabHelper::GetHistoryEmbeddingsService() {
   CHECK(web_contents());
   return HistoryEmbeddingsServiceFactory::GetForProfile(
@@ -282,3 +301,5 @@ history::HistoryService* HistoryEmbeddingsTabHelper::GetHistoryService() {
   return HistoryServiceFactory::GetForProfileIfExists(
       profile, ServiceAccessType::IMPLICIT_ACCESS);
 }
+
+}  // namespace brave_history_embeddings
