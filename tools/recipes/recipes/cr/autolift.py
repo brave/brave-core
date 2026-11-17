@@ -33,6 +33,7 @@ AUTOLIFT = 'tools/cr/autolift/autolift.py'
 # Where a channel bump's `prepare` and `autofix` copy the tooling, which the
 # channels' branches don't carry: what a resumed channel run runs.
 STAGED_AUTOLIFT = '.autolift/tooling/cr/autolift/autolift.py'
+CI_CLI = 'tools/cr/ci/cli.py'
 
 # The run's report, in its `.autolift/cr<N>/` (or `.autolift/cr<N>.x/`, for
 # a channel bump of M<N>) directory, as SKILL names it.
@@ -203,13 +204,16 @@ def RunSteps(api: DEPS, properties: InputProperties) -> None:
     # allowed too: auto mode otherwise judges it by what the run printed before
     # it, and a rebased branch "behind" its remote reads as overwriting it.
     # A rule only covers a command it matches whole, so the agent runs
-    # `publish` bare: it keeps its own log.
+    # `publish` bare: it keeps its own log. An autofix run's rerun of an infra
+    # failure with a wiped workspace is allowed too, which auto mode otherwise
+    # refuses as modifying the shared CI.
     add_dirs = [checkout]
     allowed_tools = [
         f'Edit(/{checkout}/**)',
         f'Write(/{checkout}/**)',
         f'Bash(vpython3 {AUTOLIFT} publish *)',
         f'Bash(vpython3 {STAGED_AUTOLIFT} publish *)',
+        f'Bash(vpython3 {CI_CLI} rerun --wipe-workspace *)',
     ]
     with api.brave_core_checkout.brave_core_layout():
         advice = _advise(api, script, tag or str(milestone), properties)
