@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_strip_unittest.cc b/chrome/browser/ui/views/tabs/tab_strip_unittest.cc
+index c9e4848c42ad52f23eb69bb3610da121dd45f648..af827a697ce73d230a58113a50b5690ab6ab7233 100644
+--- a/chrome/browser/ui/views/tabs/tab_strip_unittest.cc
++++ b/chrome/browser/ui/views/tabs/tab_strip_unittest.cc
+@@ -117,7 +117,7 @@ class TabStripTestBase : public ChromeViewsTestBase {
+     controller_ = new FakeBaseTabStripController;
+     tab_strip_ =
+         new TabStrip(std::unique_ptr<TabStripController>(controller_),
+-                     std::unique_ptr<NiceMock<TabHoverCardController>>());
++                     std::unique_ptr<NiceMock<BraveTabHoverCardController>>());
+     tab_strip_->Initialize();
+     controller_->set_tab_strip(tab_strip_);
+     // Do this to force TabStrip to create the buttons.

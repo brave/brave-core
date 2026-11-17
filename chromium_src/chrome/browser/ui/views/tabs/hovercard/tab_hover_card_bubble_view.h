@@ -16,15 +16,7 @@ class LabelButton;
 
 class TabHoverCardBubbleView;
 
-#define TabHoverCardBubbleView TabHoverCardBubbleView_ChromiumImpl
-#define UpdateCardContent virtual UpdateCardContent
-#define SetTargetTabImage virtual SetTargetTabImage
-#define SetPlaceholderImage virtual SetPlaceholderImage
 #include <chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.h>  // IWYU pragma: export
-#undef SetPlaceholderImage
-#undef SetTargetTabImage
-#undef UpdateCardContent
-#undef TabHoverCardBubbleView
 
 class TabHoverCardBubbleView : public TabHoverCardBubbleView_ChromiumImpl {
   METADATA_HEADER(TabHoverCardBubbleView, TabHoverCardBubbleView_ChromiumImpl)

@@ -12,10 +12,10 @@ substitutions:
   - description: Add a protected method for the Brave subclass to override.
     add_to_protected:
       class_name: TabHoverCardBubbleView
-      code: |
+      code: |-
         void BraveUpdateCardContent(const HoverCardAnchorTarget* anchor_target);
 
-  - description: |
+  - description: |-
       Add a factory method for to create TabCardView in private section.
 
       This will create BraveTabCardView instead of TabCardView. As the
@@ -31,3 +31,27 @@ substitutions:
     add_friend:
       class_name: TabHoverCardBubbleView
       friend_type: class BraveTabCardView
+
+  - description: |
+      Rename the class so the Brave subclass can reuse the name.
+
+      The Brave TabHoverCardBubbleView subclass is declared in the
+      chromium_src override of this header.
+    rename_class:
+      class_name: TabHoverCardBubbleView
+      rename: TabHoverCardBubbleView_ChromiumImpl
+
+  - description: Let the Brave subclass override UpdateCardContent.
+    make_virtual:
+      class_name: TabHoverCardBubbleView_ChromiumImpl
+      method_name: UpdateCardContent
+
+  - description: Let the Brave subclass override SetTargetTabImage.
+    make_virtual:
+      class_name: TabHoverCardBubbleView_ChromiumImpl
+      method_name: SetTargetTabImage
+
+  - description: Let the Brave subclass override SetPlaceholderImage.
+    make_virtual:
+      class_name: TabHoverCardBubbleView_ChromiumImpl
+      method_name: SetPlaceholderImage

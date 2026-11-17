@@ -12,3 +12,16 @@ substitutions:
         - class BraveBrowserTabStripController
         - class BraveTabMenuBrowserTest
         - class VerticalTabStripStringBrowserTest
+
+  - description: |
+      Add a hook so BraveBrowserTabStripController can create BraveTabMenuModel
+      without chrome depending on brave targets. It takes the same parameters
+      as the TabMenuModel constructor.
+    add_to_protected:
+      class_name: BrowserTabStripController
+      code: |-
+        virtual std::unique_ptr<TabMenuModel> CreateTabMenuModel(
+            ui::SimpleMenuModel::Delegate* delegate,
+            TabMenuModelDelegate* tab_menu_model_delegate,
+            TabStripModel* tab_strip_model,
+            int index);

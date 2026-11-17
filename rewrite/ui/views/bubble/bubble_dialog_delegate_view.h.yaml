@@ -27,6 +27,12 @@ substitutions:
         - class ::SidebarAddItemBubbleDelegateView
         - class ::views::BraveBubbleDialogDelegateView
 
+  - description: |
+      Rename upstream friend declarations to match Brave's customization
+    rename_class:
+      class_name: TabHoverCardBubbleView
+      rename: TabHoverCardBubbleView_ChromiumImpl
+
   - description: |-
       Forward declare the types the substitutions above use
     add_after_includes:
