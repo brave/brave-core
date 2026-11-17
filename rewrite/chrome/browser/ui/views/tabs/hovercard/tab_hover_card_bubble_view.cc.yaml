@@ -27,3 +27,12 @@ substitutions:
     make_virtual:
       class_name: TabHoverCardBubbleView::TabCardView
       method_name: UpdateContent
+
+  - description: |
+      Rename the class so the Brave subclass can reuse the name.
+
+      The Brave TabHoverCardBubbleView subclass is defined in the
+      chromium_src override of this file.
+    rename_class:
+      class_name: TabHoverCardBubbleView
+      rename: TabHoverCardBubbleView_ChromiumImpl

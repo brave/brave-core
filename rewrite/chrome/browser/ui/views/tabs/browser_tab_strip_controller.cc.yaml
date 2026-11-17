@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Activate the clicked tab when selecting a split tab.
+
+      Upstream activates the most recently focused tab in the split instead,
+      by updating `model_index` from split_tabs::GetIndexOfLastActiveTab().
+
+      This is a regex because no rewriter drops a single statement.
+    regex:
+      re_pattern: 'model_index = split_tabs::GetIndexOfLastActiveTab\(model_, split_id\.value\(\)\);'
+      replace: '// Brave keeps the clicked `model_index`.'
+
+  - description: Create the Brave tab menu model for the context menu.
+    count: 2 # The make_unique call and the raw pointer declaration.
+    rename_class:
+      class_name: TabMenuModel
+      rename: BraveTabMenuModel

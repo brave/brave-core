@@ -6,11 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_STRIP_CONTROL_BUTTON_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_STRIP_CONTROL_BUTTON_H_
 
-#define TabStripControlButton TabStripControlButton_ChromiumImpl
-
 #include <chrome/browser/ui/views/tabs/tab_strip_control_button.h>  // IWYU pragma: export
-
-#undef TabStripControlButton
 
 class TabStripControlButton : public TabStripControlButton_ChromiumImpl {
   METADATA_HEADER(TabStripControlButton, TabStripControlButton_ChromiumImpl)

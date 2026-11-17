@@ -1,7 +1,52 @@
 diff --git a/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.cc b/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.cc
-index e582c70239cba9924f189579ff12977660bb485b..fd78d900970c71aec1ebc582a459dd0c2cbc4cd2 100644
+index e582c70239cba9924f189579ff12977660bb485b..5221b83879b0522310cc935582b445ce83fc93b6 100644
 --- a/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.cc
 +++ b/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.cc
+@@ -100,13 +100,13 @@ gfx::Size GetPreviewImageSize(gfx::Size preview_size,
+ 
+ // Represents the preview image on the hover card. Allows for a new image to be
+ // faded in over the old image.
+-class TabHoverCardBubbleView::ThumbnailView
++class TabHoverCardBubbleView_ChromiumImpl::ThumbnailView
+     : public views::View,
+       public views::AnimationDelegateViews {
+   METADATA_HEADER(ThumbnailView, views::View)
+ 
+  public:
+-  explicit ThumbnailView(TabHoverCardBubbleView* bubble_view)
++  explicit ThumbnailView(TabHoverCardBubbleView_ChromiumImpl* bubble_view)
+       : AnimationDelegateViews(this),
+         bubble_view_(bubble_view),
+         image_transition_animation_(this) {
+@@ -340,7 +340,7 @@ class TabHoverCardBubbleView::ThumbnailView
+     }
+   }
+ 
+-  const raw_ptr<TabHoverCardBubbleView> bubble_view_;
++  const raw_ptr<TabHoverCardBubbleView_ChromiumImpl> bubble_view_;
+ 
+   bool animation_enabled_ = true;
+ 
+@@ -366,16 +366,16 @@ class TabHoverCardBubbleView::ThumbnailView
+   ImageType image_type_ = ImageType::kNone;
+ };
+ 
+-BEGIN_METADATA(TabHoverCardBubbleView, ThumbnailView)
++BEGIN_METADATA(TabHoverCardBubbleView_ChromiumImpl, ThumbnailView)
+ END_METADATA
+ 
+ // TabHoverCardBubbleView::TabCardView
+ // ----------------------------------------------------------
+-class TabHoverCardBubbleView::TabCardView : public views::View {
++class TabHoverCardBubbleView_ChromiumImpl::TabCardView : public views::View {
+   METADATA_HEADER(TabCardView, views::View)
+ 
+  public:
+-  explicit TabCardView(TabHoverCardBubbleView* bubble_view)
++  explicit TabCardView(TabHoverCardBubbleView_ChromiumImpl* bubble_view)
+       : bubble_view_(bubble_view) {
+     CHECK(bubble_view_);
+     SetProperty(views::kElementIdentifierKey, kTabCardElementId);
 @@ -442,7 +442,7 @@ class TabHoverCardBubbleView::TabCardView : public views::View {
      }
    }
@@ -11,7 +56,7 @@ index e582c70239cba9924f189579ff12977660bb485b..fd78d900970c71aec1ebc582a459dd0c
      CHECK(std::holds_alternative<TabCardData>(anchor_target->data()));
      const TabCardData& card_data = std::get<TabCardData>(anchor_target->data());
  
-@@ -533,6 +533,7 @@ class TabHoverCardBubbleView::TabCardView : public views::View {
+@@ -533,23 +533,24 @@ class TabHoverCardBubbleView::TabCardView : public views::View {
    }
  
   private:
@@ -19,6 +64,57 @@ index e582c70239cba9924f189579ff12977660bb485b..fd78d900970c71aec1ebc582a459dd0c
    raw_ptr<FadeLabelView> title_label_ = nullptr;
    raw_ptr<FadeLabelView> domain_label_ = nullptr;
    raw_ptr<FooterView> footer_view_ = nullptr;
+   raw_ptr<ThumbnailView> thumbnail_view_ = nullptr;
+-  const raw_ptr<TabHoverCardBubbleView> bubble_view_;
++  const raw_ptr<TabHoverCardBubbleView_ChromiumImpl> bubble_view_;
+ };
+ 
+-BEGIN_METADATA(TabHoverCardBubbleView, TabCardView)
++BEGIN_METADATA(TabHoverCardBubbleView_ChromiumImpl, TabCardView)
+ END_METADATA
+ 
+ // TabHoverCardBubbleView::GroupCardView
+ // ----------------------------------------------------------
+-class TabHoverCardBubbleView::GroupCardView : public views::View {
++class TabHoverCardBubbleView_ChromiumImpl::GroupCardView : public views::View {
+   METADATA_HEADER(GroupCardView, views::View)
+ 
+  public:
+-  explicit GroupCardView(TabHoverCardBubbleView* bubble_view)
++  explicit GroupCardView(TabHoverCardBubbleView_ChromiumImpl* bubble_view)
+       : tab_titles_(tabs::TabGroupData::kMaxTabs, nullptr) {
+     SetProperty(views::kElementIdentifierKey, kGroupCardElementId);
+ 
+@@ -625,22 +626,22 @@ class TabHoverCardBubbleView::GroupCardView : public views::View {
+   std::vector<raw_ptr<FadeLabelView>> tab_titles_;
+   raw_ptr<FadeLabelView> footer_ = nullptr;
+ };
+-BEGIN_METADATA(TabHoverCardBubbleView, GroupCardView)
++BEGIN_METADATA(TabHoverCardBubbleView_ChromiumImpl, GroupCardView)
+ END_METADATA
+ 
+ // static
+-constexpr base::TimeDelta TabHoverCardBubbleView::kHoverCardSlideDuration;
++constexpr base::TimeDelta TabHoverCardBubbleView_ChromiumImpl::kHoverCardSlideDuration;
+ 
+-DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(TabHoverCardBubbleView,
++DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(TabHoverCardBubbleView_ChromiumImpl,
+                                       kHoverCardBubbleElementId);
+-DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(TabHoverCardBubbleView,
++DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(TabHoverCardBubbleView_ChromiumImpl,
+                                       kHoverCardDomainLabelElementId);
+-DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(TabHoverCardBubbleView,
++DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(TabHoverCardBubbleView_ChromiumImpl,
+                                       kTabCardElementId);
+-DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(TabHoverCardBubbleView,
++DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(TabHoverCardBubbleView_ChromiumImpl,
+                                       kGroupCardElementId);
+ 
+-TabHoverCardBubbleView::TabHoverCardBubbleView(
++TabHoverCardBubbleView_ChromiumImpl::TabHoverCardBubbleView_ChromiumImpl(
+     HoverCardAnchorTarget* anchor_target,
+     const InitParams& params)
+     : BubbleDialogDelegateView(anchor_target->GetAnchor(),
 @@ -680,7 +681,7 @@ TabHoverCardBubbleView::TabHoverCardBubbleView(
  
    SetProperty(views::kElementIdentifierKey, kHoverCardBubbleElementId);
@@ -28,3 +124,132 @@ index e582c70239cba9924f189579ff12977660bb485b..fd78d900970c71aec1ebc582a459dd0c
  
    if (std::holds_alternative<TabCardData>(anchor_target->data())) {
      const TabCardData& card_data = std::get<TabCardData>(anchor_target->data());
+@@ -708,9 +709,9 @@ TabHoverCardBubbleView::TabHoverCardBubbleView(
+   views::BubbleDialogDelegateView::CreateBubble(this);
+ }
+ 
+-TabHoverCardBubbleView::~TabHoverCardBubbleView() = default;
++TabHoverCardBubbleView_ChromiumImpl::~TabHoverCardBubbleView_ChromiumImpl() = default;
+ 
+-void TabHoverCardBubbleView::UpdateCardContent(
++void TabHoverCardBubbleView_ChromiumImpl::UpdateCardContent(
+     const HoverCardAnchorTarget* anchor_target) {
+   tab_card_view_->SetVisible(
+       std::holds_alternative<TabCardData>(anchor_target->data()));
+@@ -725,70 +726,70 @@ void TabHoverCardBubbleView::UpdateCardContent(
+   }
+ }
+ 
+-void TabHoverCardBubbleView::SetTextFade(double percent) {
++void TabHoverCardBubbleView_ChromiumImpl::SetTextFade(double percent) {
+   tab_card_view_->SetTextFade(percent);
+   group_card_view_->SetTextFade(percent);
+ }
+ 
+-void TabHoverCardBubbleView::SetTargetTabImage(gfx::ImageSkia preview_image) {
++void TabHoverCardBubbleView_ChromiumImpl::SetTargetTabImage(gfx::ImageSkia preview_image) {
+   CHECK(tab_card_view_, base::NotFatalUntil::M162);
+   DCHECK(tab_card_view_->thumbnail_view())
+       << "This method should only be called when preview images are enabled.";
+   tab_card_view_->thumbnail_view()->SetTargetTabImage(preview_image);
+ }
+ 
+-void TabHoverCardBubbleView::SetPlaceholderImage() {
++void TabHoverCardBubbleView_ChromiumImpl::SetPlaceholderImage() {
+   CHECK(tab_card_view_, base::NotFatalUntil::M162);
+   DCHECK(tab_card_view_->thumbnail_view())
+       << "This method should only be called when preview images are enabled.";
+   tab_card_view_->thumbnail_view()->SetPlaceholderImage();
+ }
+ 
+-void TabHoverCardBubbleView::SetCrashedImage() {
++void TabHoverCardBubbleView_ChromiumImpl::SetCrashedImage() {
+   CHECK(tab_card_view_, base::NotFatalUntil::M162);
+   DCHECK(tab_card_view_->thumbnail_view())
+       << "This method should only be called when preview images are enabled.";
+   tab_card_view_->thumbnail_view()->SetCrashedImage();
+ }
+ 
+-views::View* TabHoverCardBubbleView::GetTabCardViewForTesting() {
++views::View* TabHoverCardBubbleView_ChromiumImpl::GetTabCardViewForTesting() {
+   return tab_card_view_.get();
+ }
+ 
+-views::View* TabHoverCardBubbleView::GetGroupCardViewForTesting() {
++views::View* TabHoverCardBubbleView_ChromiumImpl::GetGroupCardViewForTesting() {
+   return group_card_view_.get();
+ }
+ 
+-FadeLabelView* TabHoverCardBubbleView::GetTitleViewForTesting() const {
++FadeLabelView* TabHoverCardBubbleView_ChromiumImpl::GetTitleViewForTesting() const {
+   return tab_card_view_->title_label();
+ }
+-FadeLabelView* TabHoverCardBubbleView::GetDomainViewForTesting() const {
++FadeLabelView* TabHoverCardBubbleView_ChromiumImpl::GetDomainViewForTesting() const {
+   return tab_card_view_->domain_label();
+ }
+ 
+-views::View* TabHoverCardBubbleView::GetThumbnailViewForTesting() {
++views::View* TabHoverCardBubbleView_ChromiumImpl::GetThumbnailViewForTesting() {
+   return tab_card_view_->thumbnail_view();
+ }
+ 
+-FooterView* TabHoverCardBubbleView::GetFooterViewForTesting() {
++FooterView* TabHoverCardBubbleView_ChromiumImpl::GetFooterViewForTesting() {
+   return tab_card_view_->footer_view();
+ }
+ 
+-FadeLabelView* TabHoverCardBubbleView::GetGroupTitleViewForTesting() const {
++FadeLabelView* TabHoverCardBubbleView_ChromiumImpl::GetGroupTitleViewForTesting() const {
+   return group_card_view_->title();
+ }
+ 
+ const std::vector<raw_ptr<FadeLabelView>>&
+-TabHoverCardBubbleView::GetGroupTabTitleViewsForTesting() const {
++TabHoverCardBubbleView_ChromiumImpl::GetGroupTabTitleViewsForTesting() const {
+   return group_card_view_->tab_titles();
+ }
+ 
+-FadeLabelView* TabHoverCardBubbleView::GetGroupFooterViewForTesting() const {
++FadeLabelView* TabHoverCardBubbleView_ChromiumImpl::GetGroupFooterViewForTesting() const {
+   return group_card_view_->footer();
+ }
+ 
+ // static
+-std::optional<double> TabHoverCardBubbleView::GetPreviewImageCrossfadeStart() {
++std::optional<double> TabHoverCardBubbleView_ChromiumImpl::GetPreviewImageCrossfadeStart() {
+   static const double start_percent = base::GetFieldTrialParamByFeatureAsDouble(
+       features::kTabHoverCardImages,
+       features::kTabHoverCardImagesCrossfadePreviewAtParameterName, 0.25);
+@@ -797,7 +798,7 @@ std::optional<double> TabHoverCardBubbleView::GetPreviewImageCrossfadeStart() {
+              : std::nullopt;
+ }
+ 
+-void TabHoverCardBubbleView::AddedToWidget() {
++void TabHoverCardBubbleView_ChromiumImpl::AddedToWidget() {
+   set_adjust_if_offscreen(true);
+   GetBubbleFrameView()->SetPreferredArrowAdjustment(
+       views::BubbleFrameView::PreferredArrowAdjustment::kOffset);
+@@ -811,7 +812,7 @@ void TabHoverCardBubbleView::AddedToWidget() {
+   SetTextFade(1.0);
+ }
+ 
+-gfx::Size TabHoverCardBubbleView::CalculatePreferredSize(
++gfx::Size TabHoverCardBubbleView_ChromiumImpl::CalculatePreferredSize(
+     const views::SizeBounds& available_size) const {
+   const int width = tab_style_->GetPreviewImageSize().width();
+   const int height =
+@@ -827,11 +828,11 @@ gfx::Size TabHoverCardBubbleView::CalculatePreferredSize(
+ // animations, reacting to changes to the anchor view can cause visual
+ // flickering with the hover card bounds.
+ // See crbug.com/486948335 for an example.
+-void TabHoverCardBubbleView::OnAnchorBoundsChanged() {
++void TabHoverCardBubbleView_ChromiumImpl::OnAnchorBoundsChanged() {
+   if (!sliding_) {
+     BubbleDialogDelegateView::OnAnchorBoundsChanged();
+   }
+ }
+ 
+-BEGIN_METADATA(TabHoverCardBubbleView)
++BEGIN_METADATA(TabHoverCardBubbleView_ChromiumImpl)
+ END_METADATA

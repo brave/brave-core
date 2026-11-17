@@ -1,0 +1,28 @@
+diff --git a/chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc b/chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
+index ecdaefd9080ff03ea64faa8c5453ece813c5e94e..602381323930874836a6d84cf5905a4ee0ebff95 100644
+--- a/chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
++++ b/chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
+@@ -251,7 +251,7 @@ void BrowserTabStripController::SelectTab(int model_index,
+   std::optional<split_tabs::SplitTabId> split_id =
+       tabstrip_->tab_at(model_index)->split();
+   if (split_id.has_value()) {
+-    model_index = split_tabs::GetIndexOfLastActiveTab(model_, split_id.value());
++    // Brave keeps the clicked `model_index`.
+   }
+ 
+   std::unique_ptr<viz::PeakGpuMemoryTracker> tracker =
+@@ -431,12 +431,12 @@ void BrowserTabStripController::ShowContextMenuForTab(
+   context_menu_controller_ = std::make_unique<TabContextMenuController>(
+       model_->GetTabAtIndex(tab_index.value())->GetHandle(), this);
+ 
+-  auto model = std::make_unique<TabMenuModel>(
++  auto model = std::make_unique<BraveTabMenuModel>(
+       context_menu_controller_.get(),
+       TabMenuModelDelegate::From(GetBrowserWindowInterface()), model_,
+       tab_index.value());
+ 
+-  TabMenuModel* model_ptr = model.get();
++  BraveTabMenuModel* model_ptr = model.get();
+   context_menu_controller_->LoadModel(std::move(model), model_ptr);
+ 
+   context_menu_controller_->RunMenuAt(p, source_type, tabstrip_->GetWidget());

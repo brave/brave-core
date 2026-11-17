@@ -1,0 +1,41 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Create Brave tab group headers.
+    rename_class:
+      class_name: TabGroupHeader
+      rename: BraveTabGroupHeader
+
+  - description: Create Brave tab group underlines.
+    count: 2 # Once for the underline and once for the drag underline.
+    rename_class:
+      class_name: TabGroupUnderline
+      rename: BraveTabGroupUnderline
+
+  - description: Create Brave tab group highlights.
+    rename_class:
+      class_name: TabGroupHighlight
+      rename: BraveTabGroupHighlight
+
+  - description: |
+      Use the vertical tabs layout to find the leading and trailing group views.
+
+      TabGroupViews' destructor is not virtual, so the method can't be
+      overridden from a Brave subclass.
+
+      This is a regex because preempt_function_impl cannot tell apart the
+      overloads of GetLeadingTrailingGroupViews, and only the one taking
+      `children` can host this code.
+    regex:
+      re_pattern: '(TabGroupViews::GetLeadingTrailingGroupViews\(\s*std::vector<[^)]*>\s*children\)\s*const\s*\{)'
+      replace: |-
+        \1
+          if (auto vertical_tabs_views =
+                  GetBraveVerticalTabsLeadingTrailingGroupViews(
+                      *tab_slot_controller_, group_, children)) {
+            return *vertical_tabs_views;
+          }
+
