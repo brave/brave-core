@@ -28,16 +28,6 @@
 
 namespace query_filter {
 
-namespace {
-
-// A tracking parameter from the default rules, plus one to preserve.
-constexpr char kUrlWithTrackers[] = "https://example.com/?fbclid=abc&keep=1";
-constexpr char kFilteredURL[] = "https://example.com/?keep=1";
-// A cross-site page that embeds `kUrlWithTrackers` in an iframe.
-constexpr char kOtherSite[] = "https://other.com/";
-
-}  // namespace
-
 class QueryFilterThrottleTest : public testing::Test {
  public:
   QueryFilterThrottleTest()
@@ -65,48 +55,15 @@ class QueryFilterThrottleTest : public testing::Test {
     rules_.reset();
   }
 
-  // Builds a request the way content does for an outermost main-frame
-  // navigation.
-  static network::ResourceRequest MainFrameRequest(const GURL& url) {
-    network::ResourceRequest request;
-    request.url = url;
-    request.method = "GET";
-    request.is_outermost_main_frame = true;
-    const url::Origin origin = url::Origin::Create(url);
-    request.trusted_params = network::ResourceRequest::TrustedParams();
-    request.trusted_params->isolation_info = net::IsolationInfo::Create(
-        net::IsolationInfo::RequestType::kMainFrame, origin, origin,
-        net::SiteForCookies::FromOrigin(origin));
-    return request;
-  }
-
-  // Builds a request the way content does for a navigation of an iframe
-  // embedded in `top_frame_url`.
-  static network::ResourceRequest SubFrameRequest(const GURL& top_frame_url,
-                                                  const GURL& url) {
-    network::ResourceRequest request;
-    request.url = url;
-    request.method = "GET";
-    request.is_outermost_main_frame = false;
-    const url::Origin top_frame_origin = url::Origin::Create(top_frame_url);
-    request.request_initiator = top_frame_origin;
-    request.trusted_params = network::ResourceRequest::TrustedParams();
-    request.trusted_params->isolation_info = net::IsolationInfo::Create(
-        net::IsolationInfo::RequestType::kSubFrame, top_frame_origin,
-        url::Origin::Create(url),
-        net::SiteForCookies::FromOrigin(top_frame_origin));
-    return request;
-  }
-
-  std::unique_ptr<blink::URLLoaderThrottle> CreateThrottle(
+  std::unique_ptr<blink::URLLoaderThrottle> CreateQueryFilterThrottle(
       const network::ResourceRequest& request) {
     return QueryFilterThrottle::MaybeCreateThrottle(
         shields_settings_service_.get(), request);
   }
 
   // Runs `WillStartRequest` and returns the URL the loader would start.
-  GURL FilterRequest(network::ResourceRequest request) {
-    auto throttle = CreateThrottle(request);
+  GURL ThrottleRequest(network::ResourceRequest request) {
+    auto throttle = CreateQueryFilterThrottle(request);
     if (!throttle) {
       ADD_FAILURE() << "Expected a throttle to be created for " << request.url;
       return request.url;
@@ -120,9 +77,61 @@ class QueryFilterThrottleTest : public testing::Test {
     return shields_settings_service_.get();
   }
 
+  // Request would be created like |url| is navigated in main frame.
+  static network::ResourceRequest CreateMainFrameRequest(const GURL& url) {
+    return CreateResourceRequestForUrl(std::nullopt, url, std::nullopt);
+  }
+
+  // Request would be created like |url| is navigated in sub frame within
+  // top_frame_url.
+  static network::ResourceRequest CreateSubFrameRequest(
+      const GURL& top_frame_url,
+      const GURL& url,
+      std::optional<GURL> initiator_url = std::nullopt) {
+    return CreateResourceRequestForUrl(top_frame_url, url, initiator_url);
+  }
+
   sync_preferences::TestingPrefServiceSyncable* prefs() { return &prefs_; }
 
+ protected:
+  const GURL kExampleUrlWithTrackers =
+      GURL("https://example.com/?fbclid=abc&keep=1");
+  const GURL kExampleUrlWithoutTrackers = GURL("https://example.com/?keep=1");
+  const GURL kCrossSiteUrl = GURL("https://other.com/");
+  const GURL kCrossSiteUrl2 = GURL("https://other2.com/");
+
  private:
+  // Build either a main frame or a sub frame request for |url|.
+  static network::ResourceRequest CreateResourceRequestForUrl(
+      std::optional<GURL> top_frame_url,
+      const GURL& url,
+      std::optional<GURL> initiator_url) {
+    network::ResourceRequest request;
+    request.url = url;
+    request.method = "GET";
+    request.trusted_params = network::ResourceRequest::TrustedParams();
+
+    if (initiator_url.has_value()) {
+      request.request_initiator = url::Origin::Create(*initiator_url);
+    }
+
+    net::IsolationInfo::RequestType request_type =
+        top_frame_url.has_value() ? net::IsolationInfo::RequestType::kSubFrame
+                                  : net::IsolationInfo::RequestType::kMainFrame;
+    const url::Origin top_frame_origin =
+        top_frame_url.has_value() ? url::Origin::Create(*top_frame_url)
+                                  : url::Origin::Create(url);
+    const url::Origin frame_origin = url::Origin::Create(url);
+
+    request.is_outermost_main_frame = !top_frame_url.has_value();
+    request.trusted_params = network::ResourceRequest::TrustedParams();
+    request.trusted_params->isolation_info = net::IsolationInfo::Create(
+        request_type, top_frame_origin, frame_origin,
+        net::SiteForCookies::FromOrigin(
+            top_frame_url.has_value() ? top_frame_origin : frame_origin));
+    return request;
+  }
+
   base::test::TaskEnvironment task_environment_;
   base::test::ScopedFeatureList feature_list_;
   TestingPrefServiceSimple local_state_;
@@ -136,7 +145,7 @@ class QueryFilterThrottleTest : public testing::Test {
 TEST_F(QueryFilterThrottleTest, NoThrottleWithoutShieldsSettingsService) {
   EXPECT_FALSE(QueryFilterThrottle::MaybeCreateThrottle(
       /*shields_settings_service=*/nullptr,
-      MainFrameRequest(GURL(kUrlWithTrackers))));
+      CreateMainFrameRequest(kExampleUrlWithTrackers)));
 }
 
 TEST_F(QueryFilterThrottleTest, NoThrottleWhenBrowserThrottleFeatureDisabled) {
@@ -144,59 +153,100 @@ TEST_F(QueryFilterThrottleTest, NoThrottleWhenBrowserThrottleFeatureDisabled) {
   feature_list.InitAndDisableFeature(
       features::kQueryFilterBrowserThrottleEnabled);
 
-  EXPECT_FALSE(CreateThrottle(MainFrameRequest(GURL(kUrlWithTrackers))));
+  EXPECT_FALSE(CreateQueryFilterThrottle(
+      CreateMainFrameRequest(kExampleUrlWithTrackers)));
 }
 
-TEST_F(QueryFilterThrottleTest, CheckThrottleCreated) {
-  EXPECT_TRUE(CreateThrottle(MainFrameRequest(GURL(kUrlWithTrackers))));
+// Shield setting specific tests.
+TEST_F(QueryFilterThrottleTest,
+       CheckThrottle_MainFrameNavigation_WithShieldsSettingToggled) {
+  const GURL top_frame_url = kExampleUrlWithTrackers;
+
+  // Shields are off for |top_frame_url| so no throttle created.
+  shields_settings_service()->SetBraveShieldsEnabled(false, top_frame_url);
+  EXPECT_FALSE(
+      CreateQueryFilterThrottle(CreateMainFrameRequest(top_frame_url)));
+
+  // Shields are back on for |top_frame_url| so throttle should be created.
+  shields_settings_service()->SetBraveShieldsEnabled(true, top_frame_url);
+  EXPECT_TRUE(CreateQueryFilterThrottle(CreateMainFrameRequest(top_frame_url)));
 }
 
-TEST_F(QueryFilterThrottleTest, StripsTrackersFromRequestURL) {
-  EXPECT_EQ(GURL(kFilteredURL),
-            FilterRequest(MainFrameRequest(GURL(kUrlWithTrackers))));
+TEST_F(QueryFilterThrottleTest,
+       CheckThrottle_SubFrameNavigation_WithShieldsSettingToggled) {
+  const GURL top_frame_url = kCrossSiteUrl;
+  const GURL sub_frame_url = kExampleUrlWithTrackers;
+
+  // Turn-off shields for |top_frame_url|
+  shields_settings_service()->SetBraveShieldsEnabled(false, top_frame_url);
+  // No throttler is created because |top_frame_url| was off.
+  EXPECT_FALSE(CreateQueryFilterThrottle(
+      CreateSubFrameRequest(top_frame_url, sub_frame_url)));
+
+  // Turn-on shields for |top_frame_url|
+  shields_settings_service()->SetBraveShieldsEnabled(true, top_frame_url);
+  // No throttler is created because |top_frame_url| was off.
+  EXPECT_TRUE(CreateQueryFilterThrottle(
+      CreateSubFrameRequest(top_frame_url, sub_frame_url)));
 }
 
-TEST_F(QueryFilterThrottleTest, LeavesURLWithoutTrackersUnchanged) {
-  EXPECT_EQ(GURL(kFilteredURL),
-            FilterRequest(MainFrameRequest(GURL(kFilteredURL))));
-}
+// `about:blank` has an opaque origin, so it is not a Shields site. An iframe
+// in an about:blank page uses its own URL, and Shields up there still filter.
+// An about:blank iframe uses the embedding page, where Shields are up.
+TEST_F(QueryFilterThrottleTest, CheckThrottle_SubFrameNavigation_AboutBlank) {
+  const GURL top_frame_url = GURL("about:blank");
+  const GURL sub_frame_url = GURL(kExampleUrlWithTrackers);
 
-TEST_F(QueryFilterThrottleTest, MainFrameUsesDestinationShieldsSetting) {
-  const GURL url(kUrlWithTrackers);
-  shields_settings_service()->SetBraveShieldsEnabled(false, GURL(kOtherSite));
-  EXPECT_TRUE(CreateThrottle(MainFrameRequest(url)));
+  // 1. |top_frame_url| is converted to origin so should be opaque.
+  // 2. No |initiator_url| was specified so |request| should fallback to
+  // |sub_frame_url| which is the request URL.
+  auto request = CreateSubFrameRequest(top_frame_url, sub_frame_url);
+  // Not the actual test so assert.
+  ASSERT_TRUE(
+      request.trusted_params->isolation_info.top_frame_origin()->opaque());
 
-  shields_settings_service()->SetBraveShieldsEnabled(false, url);
-  EXPECT_FALSE(CreateThrottle(MainFrameRequest(url)));
-}
-
-// Shields down on the embedding page opts its iframes out, even when Shields
-// are up on the iframe's own site.
-TEST_F(QueryFilterThrottleTest, SubFrameUsesTopFrameShieldsSettingWhenDown) {
-  shields_settings_service()->SetBraveShieldsEnabled(false, GURL(kOtherSite));
-  EXPECT_FALSE(CreateThrottle(
-      SubFrameRequest(GURL(kOtherSite), GURL(kUrlWithTrackers))));
-}
-
-// Shields up on the embedding page filters its iframes, even when Shields are
-// down on the iframe's own site.
-TEST_F(QueryFilterThrottleTest, SubFrameUsesTopFrameShieldsSettingWhenUp) {
-  shields_settings_service()->SetBraveShieldsEnabled(false,
-                                                     GURL(kUrlWithTrackers));
-  EXPECT_EQ(GURL(kFilteredURL), FilterRequest(SubFrameRequest(
-                                    GURL(kOtherSite), GURL(kUrlWithTrackers))));
+  // We still throttle because shields is "on" for |sub_frame_url|.
+  EXPECT_TRUE(CreateQueryFilterThrottle(request));
+  // Disable shields for the |sub_frame_url| explicitly so no throttling should
+  // happen.
+  shields_settings_service()->SetBraveShieldsEnabled(false, sub_frame_url);
+  EXPECT_FALSE(CreateQueryFilterThrottle(request));
 }
 
 // Without IsolationInfo the initiator stands in for the top-level site, as in
 // the network delegate.
-TEST_F(QueryFilterThrottleTest, SubFrameFallsBackToInitiatorShieldsSetting) {
-  network::ResourceRequest request =
-      SubFrameRequest(GURL(kOtherSite), GURL(kUrlWithTrackers));
-  request.trusted_params.reset();
+TEST_F(QueryFilterThrottleTest, SubFrame_InitiatorFallbackTest) {
+  const GURL top_frame_url = kCrossSiteUrl;
+  const GURL sub_frame_url = kExampleUrlWithTrackers;
+  const GURL initiator_url = kCrossSiteUrl2;
 
-  EXPECT_TRUE(CreateThrottle(request));
-  shields_settings_service()->SetBraveShieldsEnabled(false, GURL(kOtherSite));
-  EXPECT_FALSE(CreateThrottle(request));
+  network::ResourceRequest request =
+      CreateSubFrameRequest(top_frame_url, sub_frame_url, initiator_url);
+  // No more knowledge about top-level site so |sub_frame_url| query filtering
+  // decision should fallback to |initiator_url|.
+  request.trusted_params.reset();
+  // Disable shields for |top_frame_url| explicitly.
+  shields_settings_service()->SetBraveShieldsEnabled(false, top_frame_url);
+
+  // Expect that we still throttle because shields is on for |initiator_url|.
+  EXPECT_TRUE(CreateQueryFilterThrottle(request));
+  ASSERT_TRUE(shields_settings_service()->IsBraveShieldsEnabled(initiator_url));
+
+  // Disable shields for |initiator_url| so no throttling should happen.
+  shields_settings_service()->SetBraveShieldsEnabled(false, initiator_url);
+  EXPECT_FALSE(CreateQueryFilterThrottle(request));
+}
+
+// Query filtering functionality specific tests.
+TEST_F(QueryFilterThrottleTest, StripsTrackersFromRequestURL) {
+  EXPECT_EQ(kExampleUrlWithoutTrackers,
+            ThrottleRequest(CreateMainFrameRequest(kExampleUrlWithTrackers)));
+}
+
+TEST_F(QueryFilterThrottleTest, LeavesURLWithoutTrackersUnchanged) {
+  EXPECT_EQ(
+      kExampleUrlWithoutTrackers,
+      ThrottleRequest(CreateMainFrameRequest(kExampleUrlWithoutTrackers)));
 }
 
 }  // namespace query_filter

@@ -23,7 +23,7 @@ namespace query_filter {
 namespace {
 
 // Mirrors how BraveRequestInfo::MakeCTX picks the Shields origin for the
-// network delegate: top-frame origin first, then the request initiator.
+// network delegate. Mainly ctx->set_allow_brave_shields call.
 // TODO(https://github.com/brave/brave-browser/issues/23742): Make this shared
 // with BraveRequestInfo::MakeCTX.
 GURL GetShieldsSettingsURL(const network::ResourceRequest& request) {
