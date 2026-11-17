@@ -70,7 +70,6 @@ class BraveShieldsSettingsService : public KeyedService {
 
   bool IsJsBlockingEnforced(const GURL& url);
 
-  bool IsQueryFilteringEnabled(const GURL& url);
   mojom::ContentSettingsOverriddenDataPtr GetJsContentSettingOverriddenData(
       const GURL& url);
 
@@ -93,6 +92,8 @@ class BraveShieldsSettingsService : public KeyedService {
   // is enabled.
   base::Token GetFarblingToken(const GURL& url,
                                base::span<const uint8_t> additional_entropy);
+
+  bool IsQueryFilteringEnabled(const GURL& url);
 
  private:
   const raw_ref<HostContentSettingsMap>

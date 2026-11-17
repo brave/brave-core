@@ -107,18 +107,6 @@ bool BraveShieldsSettingsService::IsBraveShieldsEnabled(const GURL& url) {
                                               url);
 }
 
-bool BraveShieldsSettingsService::IsQueryFilteringEnabled(const GURL& url) {
-  if (!base::FeatureList::IsEnabled(
-          query_filter::features::kQueryFilterComponent)) {
-    return false;
-  }
-  if (!profile_prefs_->GetBoolean(
-          query_filter::kTrackingQueryParametersFilteringEnabled)) {
-    return false;
-  }
-  return IsBraveShieldsEnabled(url);
-}
-
 bool BraveShieldsSettingsService::IsBraveShieldsManaged(const GURL& url) {
   content_settings::SettingInfo info;
   host_content_settings_map_->GetWebsiteSetting(
@@ -480,6 +468,18 @@ base::Token BraveShieldsSettingsService::GetFarblingToken(
   }
 
   return token;
+}
+
+bool BraveShieldsSettingsService::IsQueryFilteringEnabled(const GURL& url) {
+  if (!base::FeatureList::IsEnabled(
+          query_filter::features::kQueryFilterComponent)) {
+    return false;
+  }
+  if (!profile_prefs_->GetBoolean(
+          query_filter::kTrackingQueryParametersFilteringEnabled)) {
+    return false;
+  }
+  return IsBraveShieldsEnabled(url);
 }
 
 }  // namespace brave_shields
