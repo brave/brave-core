@@ -92,6 +92,8 @@ class BraveShieldsSettingsService : public KeyedService {
   base::Token GetFarblingToken(const GURL& url,
                                base::span<const uint8_t> additional_entropy);
 
+  bool IsQueryFilteringEnabled(const GURL& url);
+
  private:
   const raw_ref<HostContentSettingsMap>
       host_content_settings_map_;       // NOT OWNED

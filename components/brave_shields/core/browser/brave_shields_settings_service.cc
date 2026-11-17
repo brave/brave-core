@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 
+#include "base/feature_list.h"
 #include "base/hash/hash.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
@@ -12,6 +13,7 @@
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
+#include "brave/components/query_filter/common/pref_names.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
@@ -465,6 +467,14 @@ base::Token BraveShieldsSettingsService::GetFarblingToken(
   }
 
   return token;
+}
+
+bool BraveShieldsSettingsService::IsQueryFilteringEnabled(const GURL& url) {
+  if (!profile_prefs_->GetBoolean(
+          query_filter::kTrackingQueryParametersFilteringEnabled)) {
+    return false;
+  }
+  return IsBraveShieldsEnabled(url);
 }
 
 }  // namespace brave_shields
