@@ -160,6 +160,7 @@ source_set("unit_tests") {
     "//chrome/browser/ttc/core",
     "//chrome/browser/ui:ui_features",
     "//chrome/browser/ui/omnibox",
+    "//chrome/test:test_support",
     "//components/attribution_reporting:features",
     "//components/autofill/core/common",
     "//components/browser_actuator/public:feature_list",
