@@ -36,6 +36,23 @@
   },
   {
     "cmd": [
+      "brockit",
+      "show",
+      "--gerrit-ccs=160"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "env_prefixes": {
+      "PATH": [
+        "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
+      ]
+    },
+    "name": "find ccs"
+  },
+  {
+    "cmd": [
       "git",
       "clone",
       "--depth",
@@ -80,7 +97,15 @@
       "--start",
       "ffffffffffffffffffffffffffffffffffffffff",
       "--head",
-      "origin/cr160"
+      "origin/cr160",
+      "--cc",
+      "cdesouza",
+      "--cc",
+      "erogul",
+      "--cc",
+      "alexey",
+      "--json-output",
+      "/path/to/tmp/json"
     ],
     "cwd": "[WORKSPACE]/b/src/brave",
     "env": {
@@ -91,9 +116,13 @@
         "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
       ]
     },
-    "name": "upload"
+    "name": "upload",
+    "output_properties": {
+      "review": {}
+    }
   },
   {
-    "name": "$result"
+    "name": "$result",
+    "summaryMarkdown": "Nothing to review."
   }
 ]

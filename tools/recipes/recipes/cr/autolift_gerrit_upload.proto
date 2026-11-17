@@ -7,6 +7,9 @@ syntax = "proto3";
 
 package recipes.brave.cr.autolift_gerrit_upload;
 
+import "recipes/brave/cr/autolift.proto";
+import "recipes/brave/cr/commit.proto";
+
 message InputProperties {
   // Gerrit SSH user the upload authenticates as.
   string gerrit_user = 1;
@@ -14,4 +17,26 @@ message InputProperties {
   // Only reads Gerrit, and says what the upload would change, as for an
   // autolift dry run.
   bool dry_run = 2;
+
+  // The `outcome` the `cr/autolift` run exported: its commits to review on
+  // the uploaded branch get links to their CLs.
+  recipes.brave.cr.autolift.Outcome outcome = 3;
+}
+
+// A commit to review, as the CL patch set it became.
+message ReviewChange {
+  recipes.brave.cr.commit.Commit commit = 1;
+  // The CL's number, and the patch set the commit is.
+  int32 change = 2;
+  int32 patch_set = 3;
+  // The CL, showing what changed since its patch set before, if any.
+  string url = 4;
+}
+
+// The recipe's `review` output property.
+message Review {
+  // The CLs of the commits the autolift run changed.
+  repeated ReviewChange changes = 1;
+  // The CLs the push created, of Change-Ids new to Gerrit.
+  repeated ReviewChange created = 2;
 }

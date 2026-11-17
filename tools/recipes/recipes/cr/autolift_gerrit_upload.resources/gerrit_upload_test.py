@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import contextlib
+import json
 import os
 from pathlib import Path
 import subprocess
@@ -124,12 +125,91 @@ class GerritTest(unittest.TestCase):
             queries[1].endswith(f'(change:{ids[50]} OR change:{ids[51]})')
         )
 
+    def test_known_change_ids_are_found_in_any_state(self):
+        gerrit = gerrit_upload.Gerrit('ssh://gerrit.example.com/project')
+        row = (
+            f'{{"id": "{_change_id(1)}", "number": 1, "status": "MERGED", '
+            '"currentPatchSet": {"number": 2}}\n'
+            '{"type": "stats", "moreChanges": false}\n'
+        )
+        with mock.patch.object(gerrit, '_ssh', return_value=row) as ssh:
+            known = gerrit.known_change_ids([_change_id(1), _change_id(2)])
+        self.assertEqual(known, {_change_id(1)})
+        self.assertEqual(
+            ssh.call_args.args[-1],
+            'project:project branch:master '
+            f'(change:{_change_id(1)} OR change:{_change_id(2)})',
+        )
+
     def test_patch_sets_are_queried_by_commit(self):
         gerrit = gerrit_upload.Gerrit('ssh://gerrit.example.com/project')
         stats = '{"type": "stats", "moreChanges": false}\n'
         with mock.patch.object(gerrit, '_ssh', return_value=stats) as ssh:
             self.assertFalse(gerrit.has_patch_set('a' * 40))
         self.assertIn(f'project:project commit:{"a" * 40}', ssh.call_args.args)
+
+    _CL = 'https://gerrit.example.com/c/project/+/42'
+
+    def _review_link(self, sha: str, patch_sets: list[tuple[int, str]]):
+        gerrit = gerrit_upload.Gerrit('ssh://gerrit.example.com/project')
+        row = json.dumps(
+            {
+                'id': _change_id(1),
+                'number': 42,
+                'url': self._CL,
+                'patchSets': [
+                    {'number': number, 'revision': revision}
+                    for number, revision in patch_sets
+                ],
+            }
+        )
+        stats = '{"type": "stats", "moreChanges": false}\n'
+        with mock.patch.object(
+            gerrit, '_ssh', return_value=f'{row}\n{stats}'
+        ) as ssh:
+            found = gerrit.review_link(sha)
+        self.assertIn('--patch-sets', ssh.call_args.args)
+        return found
+
+    def test_a_review_link_shows_what_changed_since_the_patch_set_before(self):
+        self.assertEqual(
+            self._review_link(
+                'c' * 40, [(1, 'a' * 40), (2, 'b' * 40), (3, 'c' * 40)]
+            ),
+            (42, 3, f'{self._CL}/2..3'),
+        )
+
+    def test_a_new_cls_review_link_is_the_cl(self):
+        self.assertEqual(
+            self._review_link('a' * 40, [(1, 'a' * 40)]), (42, 1, self._CL)
+        )
+
+    def test_no_review_link_without_the_patch_set(self):
+        self.assertIsNone(self._review_link('d' * 40, [(1, 'a' * 40)]))
+
+    def test_review_links_skip_commits_on_no_cl(self):
+        gerrit = gerrit_upload.Gerrit('ssh://gerrit.example.com/project')
+        found = {'a' * 40: (42, 2, f'{self._CL}/1..2')}
+        logged = []
+        kept = {'sha': 'a' * 40, 'subject': 'Fix the build'}
+        with mock.patch.object(gerrit, 'review_link', side_effect=found.get):
+            links = gerrit_upload.review_links(
+                gerrit,
+                [kept, {'sha': 'b' * 40, 'subject': 'Gone'}],
+                log=logged.append,
+            )
+        self.assertEqual(
+            links,
+            [
+                {
+                    'commit': kept,
+                    'change': 42,
+                    'patch_set': 2,
+                    'url': f'{self._CL}/1..2',
+                }
+            ],
+        )
+        self.assertEqual(logged, [f'{"b" * 12} (Gone) is on no CL.'])
 
 
 class _FakeGerrit(gerrit_upload.Gerrit):
@@ -155,6 +235,11 @@ class _FakeGerrit(gerrit_upload.Gerrit):
     def abandoned_changes(self, change_ids) -> list[Change]:
         change_ids = set(change_ids)
         return [c for c in self._abandoned if c.change_id in change_ids]
+
+    def known_change_ids(self, change_ids) -> set[str]:
+        return set(change_ids) & {
+            c.change_id for c in [*self._open, *self._abandoned]
+        }
 
     def has_patch_set(self, sha: str) -> bool:
         return sha in self._patch_sets
@@ -206,6 +291,8 @@ class UploadTest(unittest.TestCase):
         ]
         self._git(self.dir, 'push', '-q', 'origin', 'master', 'cr160')
         self._git(self.dir, 'fetch', '-q', 'origin')
+        # The commits whose CLs the last `_upload` created.
+        self.created: list[ChainCommit] = []
 
     def _git(self, cwd: Path, *args: str) -> str:
         return subprocess.run(
@@ -241,8 +328,10 @@ class UploadTest(unittest.TestCase):
         gerrit: _FakeGerrit,
         dry_run: bool = False,
         start: str | None = None,
+        ccs: tuple[str, ...] = (),
     ) -> tuple[int, str]:
         lines: list[str] = []
+        self.created.clear()
         status = gerrit_upload.upload(
             cwd=self.dir,
             gerrit=gerrit,
@@ -251,8 +340,50 @@ class UploadTest(unittest.TestCase):
             head='origin/cr160',
             dry_run=dry_run,
             log=lines.append,
+            created=self.created,
+            ccs=ccs,
         )
         return status, '\n'.join(lines)
+
+    def test_ccs_go_with_the_push(self):
+        self._mirror_master(self.base)
+
+        status, text = self._upload(
+            _FakeGerrit(str(self.gerrit_dir)), ccs=('cdesouza', 'erogul')
+        )
+
+        self.assertEqual(status, 0, msg=text)
+        self.assertEqual(self._gerrit_ref('refs/for/master'), self.chain[-1])
+        _, text = self._upload(
+            _FakeGerrit(str(self.gerrit_dir)),
+            dry_run=True,
+            ccs=('cdesouza', 'erogul'),
+        )
+        self.assertIn('-o cc=cdesouza -o cc=erogul', text)
+
+    def test_reports_the_cls_the_push_creates(self):
+        """Those whose Change-Id Gerrit had no CL of, in any state."""
+        self._mirror_master(self.base)
+        gerrit = _FakeGerrit(
+            str(self.gerrit_dir),
+            abandoned=[Change(_change_id(1), 11, 2, 'ABANDONED')],
+        )
+
+        status, text = self._upload(gerrit)
+
+        self.assertEqual(status, 0, msg=text)
+        self.assertEqual([c.sha for c in self.created], [self.chain[1]])
+
+    def test_a_dry_run_says_which_cls_it_would_create(self):
+        self._mirror_master(self.base)
+
+        status, text = self._upload(
+            _FakeGerrit(str(self.gerrit_dir)), dry_run=True
+        )
+
+        self.assertEqual(status, 0, msg=text)
+        self.assertEqual(self.created, [])
+        self.assertIn(f'Would create a CL for {self.chain[0][:12]}', text)
 
     def test_uploads_the_chain_for_master_with_its_topic(self):
         self._mirror_master(self.base)

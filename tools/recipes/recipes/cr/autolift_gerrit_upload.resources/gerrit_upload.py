@@ -18,13 +18,16 @@ has already: in its `master`, or as `cr<N-1>`'s own chain. The upload:
    chain;
 3. restores the abandoned CLs, of any topic, whose Change-Id is in the chain,
    as Gerrit takes no new patch sets on them;
-4. pushes `<head>` to `refs/for/master`, with topic `cr<N>`. Gerrit skips the
+4. pushes `<head>` to `refs/for/master`, with topic `cr<N>` and the `--cc`
+   users CC'd on its CLs. Gerrit skips the
    commits it has as patch sets already, so the base's CLs stay as they are,
    and only the chain's new or changed commits become new CLs or patch sets. A
    commit that keeps the Change-Id of another chain's CL, as a cherry-pick
    does, updates that CL, which moves to topic `cr<N>` with it;
 5. abandons the open CLs of the topic whose Change-Id left the chain. A CL that
-   moved to another chain is in that chain's topic by then.
+   moved to another chain is in that chain's topic by then;
+6. with `--json-output`, writes the links of the CLs the push created, whose
+   Change-Ids Gerrit had no CL of, and of the commits `--review` lists.
 
 It uses only the standard library, git and ssh, and changes nothing in the
 checkout:
@@ -173,9 +176,9 @@ class Gerrit:
             self.ssh_argv(*args), check=True, capture_output=True, text=True
         ).stdout
 
-    def _query(self, query: str) -> list[dict]:
-        """The CLs `query` finds, with their current patch set, page by
-        page."""
+    def _query(self, query: str, *options: str) -> list[dict]:
+        """The CLs `query` finds, with their current patch set (and what
+        `options` add), page by page."""
         rows: list[dict] = []
         while True:
             more = False
@@ -183,6 +186,7 @@ class Gerrit:
                 'query',
                 '--format=JSON',
                 '--current-patch-set',
+                *options,
                 f'--start={len(rows)}',
                 f'project:{self.project} {query}',
             ).splitlines():
@@ -209,22 +213,48 @@ class Gerrit:
         """The open CLs of `topic`."""
         return self._changes(f'topic:{topic} status:open')
 
-    def abandoned_changes(self, change_ids: Iterable[str]) -> list[Change]:
-        """The abandoned CLs with any of `change_ids`, whatever their topic,
-        a few queries' worth at a time."""
+    def _changes_with_ids(
+        self, change_ids: Iterable[str], terms: str = ''
+    ) -> list[Change]:
+        """The CLs with any of `change_ids` that `terms` also match, whatever
+        their topic, a few queries' worth at a time."""
         change_ids = sorted(change_ids)
         changes = []
         for start in range(0, len(change_ids), CHANGE_IDS_PER_QUERY):
             ids = change_ids[start : start + CHANGE_IDS_PER_QUERY]
             changes += self._changes(
-                'status:abandoned '
-                f'({" OR ".join(f"change:{change_id}" for change_id in ids)})'
+                f'{terms} '.lstrip()
+                + f'({" OR ".join(f"change:{change_id}" for change_id in ids)})'
             )
         return changes
+
+    def abandoned_changes(self, change_ids: Iterable[str]) -> list[Change]:
+        """The abandoned CLs with any of `change_ids`, whatever their topic."""
+        return self._changes_with_ids(change_ids, 'status:abandoned')
+
+    def known_change_ids(self, change_ids: Iterable[str]) -> set[str]:
+        """Which of `change_ids` have a CL, in any state."""
+        return {
+            change.change_id for change in self._changes_with_ids(change_ids)
+        }
 
     def has_patch_set(self, sha: str) -> bool:
         """Whether `sha` is a patch set of a CL, current or not."""
         return bool(self._query(f'commit:{sha}'))
+
+    def review_link(self, sha: str) -> tuple[int, int, str] | None:
+        """`(change, patch set, URL)` of the patch set `sha` is, the URL
+        showing what changed since the patch set before it; None when `sha`
+        is no patch set."""
+        for row in self._query(f'commit:{sha}', '--patch-sets'):
+            for patch_set in row.get('patchSets', []):
+                if patch_set.get('revision') == sha:
+                    number = int(patch_set['number'])
+                    url = row['url']
+                    if number > 1:
+                        url += f'/{number - 1}..{number}'
+                    return int(row['number']), number, url
+        return None
 
     def abandon(self, change: Change, message: str) -> None:
         self._ssh('review', '--abandon', '--message', message, change.revision)
@@ -266,11 +296,14 @@ def upload(
     head: str,
     dry_run: bool = False,
     log: Callable[[str], None] = print,
+    created: list[ChainCommit] | None = None,
+    ccs: Iterable[str] = (),
 ) -> int:
     """Uploads `start..head` as `branch`'s chain, as the module says.
 
     With `dry_run`, it only reads Gerrit, and says what it would change.
-    Returns the exit status: 1 when it refused to upload.
+    Returns the exit status: 1 when it refused to upload. The commits whose
+    CLs the push created, their Change-Ids new to Gerrit, go in `created`.
     """
     head_sha = _git(cwd, 'rev-parse', head)
     start_sha = _git(cwd, 'rev-parse', start)
@@ -294,17 +327,25 @@ def upload(
         return 1
 
     chain_ids = {commit.change_ids[0] for commit in commits}
-    # Before the push, which moves CLs from other chains to this topic.
+    # Before the push, which moves CLs from other chains to this topic, and
+    # creates the CLs of the Change-Ids Gerrit doesn't know.
     open_changes = gerrit.open_changes(branch)
+    known = gerrit.known_change_ids(chain_ids)
+    new = [commit for commit in commits if commit.change_ids[0] not in known]
     for change in gerrit.abandoned_changes(chain_ids):
         log(f'Restoring {change.number}: its commit is on {branch}.')
         if not dry_run:
             gerrit.restore(change, f'The commit is on {branch}.')
 
     refspec = f'{head_sha}:refs/for/{TARGET}'
-    push = ['-o', f'topic={branch}', '-o', 'notify=NONE', refspec]
+    push = ['-o', f'topic={branch}', '-o', 'notify=NONE']
+    for cc in ccs:
+        push += ['-o', f'cc={cc}']
+    push.append(refspec)
     if dry_run:
         log(f'Would run `git push {gerrit.url} {shlex.join(push)}`.')
+        for commit in new:
+            log(f'Would create a CL for {_name(commit)}.')
     else:
         log(f'Pushing the chain to refs/for/{TARGET}.')
         try:
@@ -314,6 +355,8 @@ def upload(
                 log(f'The push to Gerrit failed:\n{e.stderr.strip()}')
                 return 1
             log('Gerrit has every patch set already.')
+        if created is not None:
+            created.extend(new)
 
     for change in open_changes:
         if change.change_id not in chain_ids:
@@ -323,6 +366,31 @@ def upload(
                     change, f"The commit is no longer on GitHub's {branch}."
                 )
     return 0
+
+
+def review_links(
+    gerrit: Gerrit,
+    commits: list[dict],
+    log: Callable[[str], None] = print,
+) -> list[dict]:
+    """The CL and patch set each of `commits` (each a `Commit`: its `sha`
+    and `subject`) became, with a link to what changed in it."""
+    links = []
+    for commit in commits:
+        found = gerrit.review_link(commit['sha'])
+        if found is None:
+            log(f'{commit["sha"][:12]} ({commit["subject"]}) is on no CL.')
+            continue
+        change, patch_set, url = found
+        links.append(
+            {
+                'commit': commit,
+                'change': change,
+                'patch_set': patch_set,
+                'url': url,
+            }
+        )
+    return links
 
 
 def main() -> int:
@@ -340,15 +408,60 @@ def main() -> int:
         action='store_true',
         help='Only read Gerrit, and say what would change.',
     )
+    parser.add_argument(
+        '--cc',
+        action='append',
+        default=[],
+        help='A Gerrit user to CC on the chain\'s CLs; repeat for more.',
+    )
+    parser.add_argument(
+        '--review',
+        type=Path,
+        help='A JSON list of the commits to review, each with its `sha` and '
+        '`subject`.',
+    )
+    parser.add_argument(
+        '--json-output',
+        type=Path,
+        help='Where to write, once uploaded, the CLs and links of the '
+        'commits to review (`review`), and of the CLs the push created '
+        '(`created`).',
+    )
     args = parser.parse_args()
-    return upload(
+    gerrit = Gerrit(args.url)
+    created: list[ChainCommit] = []
+    returncode = upload(
         cwd=Path.cwd(),
-        gerrit=Gerrit(args.url),
+        gerrit=gerrit,
         branch=args.branch,
         start=args.start,
         head=args.head,
         dry_run=args.dry_run,
+        created=created,
+        ccs=args.cc,
     )
+    if args.json_output:
+        commits = (
+            json.loads(args.review.read_text(encoding='utf-8'))
+            if args.review and not returncode
+            else []
+        )
+        args.json_output.write_text(
+            json.dumps(
+                {
+                    'review': review_links(gerrit, commits),
+                    'created': review_links(
+                        gerrit,
+                        [
+                            {'sha': commit.sha, 'subject': commit.subject}
+                            for commit in created
+                        ],
+                    ),
+                }
+            ),
+            encoding='utf-8',
+        )
+    return returncode
 
 
 if __name__ == '__main__':
