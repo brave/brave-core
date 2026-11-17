@@ -5,15 +5,16 @@
 
 package org.chromium.chrome.browser.toolbar.bottom;
 
-import android.content.ContentResolver;
 import android.graphics.Color;
-import android.provider.Settings;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
+import org.chromium.ui.base.ViewUtils;
+import org.chromium.ui.util.ColorUtils;
 import org.chromium.url.GURL;
 
 import java.util.Objects;
@@ -161,35 +162,23 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
     /**
      * True when the background behind the chip is light: dark pill on light content, light pill on
      * dark content, like the system gesture bar. Translucent colors compose over white, so fully
-     * transparent reads as light.
+     * transparent reads as light. Uses the upstream luminance threshold the system navigation bar
+     * itself follows ({@link ColorUtils#isHighLuminance}).
      */
     static boolean isLightContentBackground(int color) {
         float alpha = Color.alpha(color) / 255f;
         float r = Color.red(color) * alpha + 255f * (1f - alpha);
         float g = Color.green(color) * alpha + 255f * (1f - alpha);
         float b = Color.blue(color) * alpha + 255f * (1f - alpha);
-        float luminance = (0.2126f * r + 0.7152f * g + 0.0722f * b) / 255f;
-        return luminance > 0.6f;
+        int blended = Color.rgb((int) r, (int) g, (int) b);
+        return ColorUtils.isHighLuminance(ColorUtils.calculateLuminance(blended));
     }
 
     /** Minimum vertical gap, in dp, kept between the chip and an opaque 3-button navigation bar. */
     public static final int MIN_NAV_BAR_GAP_DP = 8;
 
-    public static final String NAVIGATION_MODE_KEY = "navigation_mode";
-
-    public static final int NAVIGATION_MODE_GESTURE = 2;
-
-    /** Fresh read on every call: nav mode can change while the process is alive. */
-    public static boolean isGestureNavigation(ContentResolver resolver) {
-        try {
-            return Settings.Secure.getInt(resolver, NAVIGATION_MODE_KEY) == NAVIGATION_MODE_GESTURE;
-        } catch (Settings.SettingNotFoundException e) {
-            return false;
-        }
-    }
-
     /** Nav bar inset plus the minimum gap, in px, to lift the chip off the 3-button bar. */
-    public static int navBarBottomMarginPx(int bottomInsetPx, float density) {
-        return bottomInsetPx + (int) (MIN_NAV_BAR_GAP_DP * density + 0.5f);
+    public static int navBarBottomMarginPx(int bottomInsetPx, DisplayMetrics metrics) {
+        return bottomInsetPx + ViewUtils.dpToPx(metrics, MIN_NAV_BAR_GAP_DP);
     }
 }

@@ -199,7 +199,9 @@ public class BraveToolbarManager extends ToolbarManager
             new MutableFlagWithSafeDefault(
                     ChromeFeatureMap.getInstance(),
                     BraveFeatureList.BRAVE_ANDROID_COLLAPSED_URL_CHIP,
-                    /* defaultValue= */ false);
+                    // Must match the native default (kBraveAndroidCollapsedUrlChip is
+                    // FEATURE_ENABLED_BY_DEFAULT) so pre- and post-native reads agree.
+                    /* defaultValue= */ true);
 
     // Hub layout state provider and observer for hiding the toolbar when the hub is shown.
     // See https://github.com/brave/brave-browser/issues/57997.

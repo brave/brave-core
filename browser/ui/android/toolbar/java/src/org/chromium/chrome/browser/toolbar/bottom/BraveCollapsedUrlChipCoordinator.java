@@ -6,7 +6,9 @@
 package org.chromium.chrome.browser.toolbar.bottom;
 
 import android.app.Activity;
+import android.content.ComponentCallbacks;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -39,6 +41,7 @@ import org.chromium.components.url_formatter.UrlFormatter;
 import org.chromium.content_public.browser.NavigationHandle;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.content_public.browser.WebContentsObserver;
+import org.chromium.ui.UiUtils;
 import org.chromium.url.GURL;
 
 import java.util.function.Supplier;
@@ -73,8 +76,17 @@ public class BraveCollapsedUrlChipCoordinator {
     /** Whether the chip is currently painted with the dark-on-light-content palette. */
     private boolean mAppliedDarkChip = true;
 
-    /** Cadence of content-color samples while the chip is showing, in ms. */
+    /** Cadence of content-color samples while the chip is showing and content is changing. */
     private static final long CONTENT_SAMPLE_INTERVAL_MS = 150;
+
+    /** Consecutive unchanged samples before the sampling cadence backs off (idle pages). */
+    private static final int CONTENT_SAMPLE_STABLE_TICKS = 3;
+
+    /** Backed-off cadence once the sampled palette stops changing. */
+    private static final long CONTENT_SAMPLE_IDLE_INTERVAL_MS = 500;
+
+    /** Maximum sampling cadence for long-idle content. */
+    private static final long CONTENT_SAMPLE_IDLE_MAX_INTERVAL_MS = 1000;
 
     /** Height of the content strip sampled below the chip, in px. */
     private static final int CONTENT_SAMPLE_HEIGHT_PX = 40;
@@ -82,10 +94,32 @@ public class BraveCollapsedUrlChipCoordinator {
     /** Gap between the chip's bottom edge and the sampled strip, in px. */
     private static final int CONTENT_SAMPLE_GAP_PX = 8;
 
+    /**
+     * Fixed downsampled capture size; PixelCopy scales the strip rect into it, keeping the per-tick
+     * cost constant regardless of strip dimensions.
+     */
+    private static final int SAMPLE_BITMAP_SIZE = 8;
+
     private final Handler mSamplerHandler = new Handler(Looper.getMainLooper());
     private final Runnable mSampleRunnable = this::sampleContentUnderChip;
     private @MonotonicNonNull Bitmap mSampleBitmap;
     private boolean mSampling;
+    private int mStableSampleCount;
+
+    /** Re-lays-out the chip when the window bounds change (e.g. entering split view). */
+    private final ComponentCallbacks mComponentCallbacks =
+            new ComponentCallbacks() {
+                @Override
+                public void onConfigurationChanged(@Nullable Configuration newConfig) {
+                    if (mChipShowing) {
+                        applyNavigationBarInset(
+                                UiUtils.isGestureNavigationMode(mActivity.getWindow()));
+                    }
+                }
+
+                @Override
+                public void onLowMemory() {}
+            };
 
     public BraveCollapsedUrlChipCoordinator(
             Activity activity,
@@ -114,22 +148,27 @@ public class BraveCollapsedUrlChipCoordinator {
 
                     @Override
                     public void setChipVisible(boolean visible) {
+                        // One gesture-nav read per transition: the check bottoms out in an
+                        // insets query and all three consumers use the same value.
+                        boolean hasGestureNavigation =
+                                UiUtils.isGestureNavigationMode(mActivity.getWindow());
                         if (visible) {
                             if (mChipView.getVisibility() != View.VISIBLE) {
-                                applyNavigationBarInset();
+                                applyNavigationBarInset(hasGestureNavigation);
                                 applyChipColors();
                                 mChipView.setAlpha(0f);
                                 mChipView.setVisibility(View.VISIBLE);
                                 mChipView.animate().alpha(1f).setDuration(150).start();
                             }
-                            startContentSampling();
+                            mStableSampleCount = 0;
+                            startContentSampling(hasGestureNavigation);
                         } else {
                             stopContentSampling();
                             mChipView.animate().cancel();
                             mChipView.setVisibility(View.GONE);
                         }
                         mChipShowing = visible;
-                        setGesturePillHidden(visible);
+                        setGesturePillHidden(visible, hasGestureNavigation);
                     }
 
                     @Override
@@ -141,6 +180,7 @@ public class BraveCollapsedUrlChipCoordinator {
         mChipView.setOnClickListener(v -> mVisibilityDelegate.showControlsTransient());
 
         parent.addView(mChipView);
+        mActivity.registerComponentCallbacks(mComponentCallbacks);
 
         mMediator =
                 new BraveCollapsedUrlChipMediator(
@@ -161,9 +201,10 @@ public class BraveCollapsedUrlChipCoordinator {
 
     public void destroy() {
         stopContentSampling();
+        mActivity.unregisterComponentCallbacks(mComponentCallbacks);
         mTabSupplier.removeObserver(mTabObserverCallback);
         observeTab(null);
-        setGesturePillHidden(false);
+        setGesturePillHidden(false, UiUtils.isGestureNavigationMode(mActivity.getWindow()));
         mMediator.destroy();
         ViewGroup parent = (ViewGroup) mChipView.getParent();
         if (parent != null) parent.removeView(mChipView);
@@ -249,17 +290,11 @@ public class BraveCollapsedUrlChipCoordinator {
         return url != null && url.isValid() && !url.isEmpty() ? url : null;
     }
 
-    /** Whether the device is in full gesture navigation (i.e. shows the system bottom pill). */
-    private static boolean isGestureNavigation(Activity activity) {
-        return BraveCollapsedUrlChipMediator.isGestureNavigation(activity.getContentResolver());
-    }
-
     /**
      * Lifts the chip above an opaque 3-button nav bar (inset + minimum gap); no-op with gesture
-     * navigation. Re-reads nav mode so mid-session switches are handled.
+     * navigation.
      */
-    private void applyNavigationBarInset() {
-        boolean hasGestureNavigation = isGestureNavigation(mActivity);
+    private void applyNavigationBarInset(boolean hasGestureNavigation) {
         if (hasGestureNavigation) return;
         WindowInsets rootInsets = mChipView.getRootWindowInsets();
         if (rootInsets == null) return;
@@ -269,7 +304,7 @@ public class BraveCollapsedUrlChipCoordinator {
                         .bottom;
         int targetBottomMargin =
                 BraveCollapsedUrlChipMediator.navBarBottomMarginPx(
-                        bottomInset, mChipView.getResources().getDisplayMetrics().density);
+                        bottomInset, mChipView.getResources().getDisplayMetrics());
         ViewGroup.LayoutParams layoutParams = mChipView.getLayoutParams();
         if (layoutParams instanceof FrameLayout.LayoutParams) {
             FrameLayout.LayoutParams frameParams = (FrameLayout.LayoutParams) layoutParams;
@@ -284,8 +319,7 @@ public class BraveCollapsedUrlChipCoordinator {
      * Hides the system gesture pill while the chip shows (only one bottom indicator on screen) and
      * restores it after; no-op on 3-button nav.
      */
-    private void setGesturePillHidden(boolean hidden) {
-        boolean hasGestureNavigation = isGestureNavigation(mActivity);
+    private void setGesturePillHidden(boolean hidden, boolean hasGestureNavigation) {
         if (!hasGestureNavigation || mPillHidden == hidden) return;
         Window window = mActivity.getWindow();
         WindowInsetsControllerCompat controller =
@@ -327,10 +361,10 @@ public class BraveCollapsedUrlChipCoordinator {
      * styling to keep contrast, mirroring the Android 15 gesture-pill contrast behavior; nothing in
      * Chromium exposes that decision, so it is re-implemented locally.
      */
-    private void startContentSampling() {
-        boolean hasGestureNavigation = isGestureNavigation(mActivity);
+    private void startContentSampling(boolean hasGestureNavigation) {
         if (!hasGestureNavigation || mSampling) return;
         mSampling = true;
+        mStableSampleCount = 0;
         mSamplerHandler.post(mSampleRunnable);
     }
 
@@ -359,11 +393,10 @@ public class BraveCollapsedUrlChipCoordinator {
             rescheduleSampling();
             return;
         }
-        if (mSampleBitmap == null
-                || mSampleBitmap.getWidth() != strip.width()
-                || mSampleBitmap.getHeight() != strip.height()) {
+        if (mSampleBitmap == null) {
             mSampleBitmap =
-                    Bitmap.createBitmap(strip.width(), strip.height(), Bitmap.Config.ARGB_8888);
+                    Bitmap.createBitmap(
+                            SAMPLE_BITMAP_SIZE, SAMPLE_BITMAP_SIZE, Bitmap.Config.ARGB_8888);
         }
         try {
             PixelCopy.request(
@@ -384,27 +417,36 @@ public class BraveCollapsedUrlChipCoordinator {
     }
 
     private void applySampledContentColor(Bitmap bitmap) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int[] pixels = new int[width * height];
+        bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
         long r = 0;
         long g = 0;
         long b = 0;
         int counted = 0;
-        for (int y = 0; y < bitmap.getHeight(); y++) {
-            for (int x = 0; x < bitmap.getWidth(); x++) {
-                int pixel = bitmap.getPixel(x, y);
-                if (Color.alpha(pixel) < 1) continue;
-                r += Color.red(pixel);
-                g += Color.green(pixel);
-                b += Color.blue(pixel);
-                counted++;
-            }
+        for (int pixel : pixels) {
+            if (Color.alpha(pixel) < 1) continue;
+            r += Color.red(pixel);
+            g += Color.green(pixel);
+            b += Color.blue(pixel);
+            counted++;
         }
         if (counted == 0) return;
         int avg = Color.rgb((int) (r / counted), (int) (g / counted), (int) (b / counted));
         boolean darkChip = BraveCollapsedUrlChipMediator.isLightContentBackground(avg);
+        mStableSampleCount = darkChip == mAppliedDarkChip ? mStableSampleCount + 1 : 0;
         if (darkChip != mAppliedDarkChip) applyChipColorsForSample(darkChip);
     }
 
+    /** Faster cadence while the content under the chip is changing; backs off when idle. */
+    private long nextSampleIntervalMs() {
+        if (mStableSampleCount < CONTENT_SAMPLE_STABLE_TICKS) return CONTENT_SAMPLE_INTERVAL_MS;
+        if (mStableSampleCount < 10) return CONTENT_SAMPLE_IDLE_INTERVAL_MS;
+        return CONTENT_SAMPLE_IDLE_MAX_INTERVAL_MS;
+    }
+
     private void rescheduleSampling() {
-        if (mSampling) mSamplerHandler.postDelayed(mSampleRunnable, CONTENT_SAMPLE_INTERVAL_MS);
+        if (mSampling) mSamplerHandler.postDelayed(mSampleRunnable, nextSampleIntervalMs());
     }
 }
