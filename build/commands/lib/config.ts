@@ -51,7 +51,6 @@ const BUILDER_ALLOWED_DOTENV_KEYS: readonly string[] = [
   'lean_sync',
   'offline',
   'quiet',
-  'rbe_jobs_limit',
   'rbe_readonly',
   'rbe_service',
   'rbe_tls_client_auth_cert',
@@ -450,6 +449,31 @@ export class Config {
 
   get sisoLimits(): Record<string, any> {
     return this.#builder ? {} : this.#envConfig.getMergedObject(['siso_limits'])
+  }
+
+  // How many jobs siso runs remotely at once, Brave's own limit when unset.
+  get remoteJobsLimit(): number | undefined {
+    return this.#builder
+      ? this.#builder.siso.remoteJobs
+      : this.#envConfig.getNumber(['rbe_jobs_limit'])
+  }
+
+  // The remote execution priority of the build's actions, the service's
+  // default when unset.
+  get reapiPriority(): number | undefined {
+    return this.#value('reapiPriority', () => {
+      if (this.#builder) {
+        return this.#builder.siso.reapiPriority
+      }
+      // Priority 4 for interactive builds, after EngFlow's recommended
+      // priority system:
+      // https://blog.engflow.com/2025/04/07/not-all-builds-are-made-equal-using-priorities-to-expedite-remote-execution-of-the-builds-and-tests-that-matter-most/#from-workflow-to-priorities
+      return isCI ? undefined : 4
+    })
+  }
+
+  set reapiPriority(value: number | undefined) {
+    this.#set('reapiPriority', value)
   }
 
   get sisoCacheDir(): string | undefined {
@@ -1151,7 +1175,7 @@ export class Config {
       // low-CPU machines.
       const kExecutorCount = 1200
       const kRemoteLimit = Math.min(
-        this.#envConfig.getNumber(['rbe_jobs_limit'], kExecutorCount * 1.2),
+        this.remoteJobsLimit ?? kExecutorCount * 1.2,
         getSisoBuiltinRemoteLimit(),
       )
 

@@ -53,5 +53,7 @@ export interface Builder {
   // is read from `gn-args.json` only because the build tooling still copies
   // the branding files in outside GN.
   isBraveOriginBranded: boolean
+  // Its `$brave_siso` properties.
+  siso: { remoteJobs?: number | undefined; reapiPriority?: number | undefined }
   targets: { compile: string[]; tests: string[] }
 }
