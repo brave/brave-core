@@ -141,7 +141,11 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
                         && !mAndroidControlsVisible
                         && mLastChipText != null;
         mDelegate.setChipVisible(visible);
-        mDelegate.setChipAlpha(visible ? 1f : 0f);
+        // Only pin alpha on the hide path; on show the coordinator fades 0→1 and setting 1 here
+        // would defeat the animation.
+        if (!visible) {
+            mDelegate.setChipAlpha(0f);
+        }
     }
 
     /**

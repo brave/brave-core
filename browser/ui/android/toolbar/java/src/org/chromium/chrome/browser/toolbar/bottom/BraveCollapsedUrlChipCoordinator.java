@@ -73,6 +73,13 @@ public class BraveCollapsedUrlChipCoordinator {
     private boolean mChipShowing;
     private boolean mPillHidden;
 
+    /**
+     * Memoized gesture-nav state, read lazily. The underlying insets query is invalid before the
+     * decor view is attached (chip construction happens during activity startup), so the first read
+     * is deferred until the chip is shown.
+     */
+    private @Nullable Boolean mGestureNavigation;
+
     /** Whether the chip is currently painted with the dark-on-light-content palette. */
     private boolean mAppliedDarkChip = true;
 
@@ -112,8 +119,7 @@ public class BraveCollapsedUrlChipCoordinator {
                 @Override
                 public void onConfigurationChanged(@Nullable Configuration newConfig) {
                     if (mChipShowing) {
-                        applyNavigationBarInset(
-                                UiUtils.isGestureNavigationMode(mActivity.getWindow()));
+                        applyNavigationBarInset(hasGestureNavigation());
                     }
                 }
 
@@ -148,11 +154,12 @@ public class BraveCollapsedUrlChipCoordinator {
 
                     @Override
                     public void setChipVisible(boolean visible) {
-                        // One gesture-nav read per transition: the check bottoms out in an
-                        // insets query and all three consumers use the same value.
-                        boolean hasGestureNavigation =
-                                UiUtils.isGestureNavigationMode(mActivity.getWindow());
                         if (visible) {
+                            // One gesture-nav read per show transition: the check bottoms out in
+                            // an insets query and all three consumers use the same value. Deferred
+                            // to the first show so the decor view is attached and its insets are
+                            // valid (this can be called during startup before that).
+                            boolean hasGestureNavigation = hasGestureNavigation();
                             if (mChipView.getVisibility() != View.VISIBLE) {
                                 applyNavigationBarInset(hasGestureNavigation);
                                 applyChipColors();
@@ -168,7 +175,12 @@ public class BraveCollapsedUrlChipCoordinator {
                             mChipView.setVisibility(View.GONE);
                         }
                         mChipShowing = visible;
-                        setGesturePillHidden(visible, hasGestureNavigation);
+                        // The pill is only ever hidden while the chip shows, so the restore on
+                        // hide is a no-op unless it was actually hidden; skip the insets query
+                        // otherwise (it may be invalid during early init).
+                        if (visible || mPillHidden) {
+                            setGesturePillHidden(visible, hasGestureNavigation());
+                        }
                     }
 
                     @Override
@@ -204,7 +216,9 @@ public class BraveCollapsedUrlChipCoordinator {
         mActivity.unregisterComponentCallbacks(mComponentCallbacks);
         mTabSupplier.removeObserver(mTabObserverCallback);
         observeTab(null);
-        setGesturePillHidden(false, UiUtils.isGestureNavigationMode(mActivity.getWindow()));
+        if (mPillHidden) {
+            setGesturePillHidden(false, hasGestureNavigation());
+        }
         mMediator.destroy();
         ViewGroup parent = (ViewGroup) mChipView.getParent();
         if (parent != null) parent.removeView(mChipView);
@@ -313,6 +327,18 @@ public class BraveCollapsedUrlChipCoordinator {
                 mChipView.setLayoutParams(frameParams);
             }
         }
+    }
+
+    /**
+     * Memoized gesture-nav check. First read happens on the first chip show, when the activity
+     * window is attached and {@link UiUtils#isGestureNavigationMode(Window)}'s insets query is
+     * valid; querying earlier crashes on a null root insets.
+     */
+    private boolean hasGestureNavigation() {
+        if (mGestureNavigation == null) {
+            mGestureNavigation = UiUtils.isGestureNavigationMode(mActivity.getWindow());
+        }
+        return mGestureNavigation;
     }
 
     /**

@@ -100,7 +100,9 @@ public class BraveCollapsedUrlChipMediatorTest {
         notifyAndroidControlsVisibility(View.INVISIBLE);
 
         assertTrue(mDelegate.mLastVisible);
-        assertEquals(1.0f, mDelegate.mLastAlpha, 0.001f);
+        // No alpha pin on the show path: the coordinator fades the chip in; setting 1 here would
+        // defeat that animation. The last alpha call is the preceding hide's 0f.
+        assertEquals(0f, mDelegate.mLastAlpha, 0.001f);
         assertEquals(FORMATTED, mDelegate.mLastText);
     }
 
