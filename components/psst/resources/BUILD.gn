@@ -39,7 +39,10 @@ transpile_web_ui("internals") {
         rebase_path("ui/psst_internals.tsx"),
       ] ]
 
-  deps = [ "//brave/components/psst/core/common:mojom_js" ]
+  deps = [
+    "//brave/components/psst/core/common:mojom_js",
+    "//brave/components/resources:strings",
+  ]
 
   resource_name = "brave_psst_internals"
 
