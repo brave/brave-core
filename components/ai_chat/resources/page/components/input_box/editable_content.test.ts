@@ -61,12 +61,19 @@ describe('editable_content utilities', () => {
       expect(stringifyContent([])).toBe('')
       expect(stringifyContent(['', 'Hi', '', 'there', ''])).toBe('Hithere')
     })
+
+    it('trims leading and trailing whitespace', () => {
+      expect(stringifyContent([' ', '\n', ''])).toBe('')
+      expect(stringifyContent([' Hi', '\n', 'there\n '])).toBe('Hi\nthere')
+      expect(
+        stringifyContent([createSkillNode('1', 'Alice'), ' ', 'a\n\nb', ' ']),
+      ).toBe('Alice a\n\nb')
+    })
   })
 
   describe('createContentFromDOMNodes', () => {
     const parseHTML = (html: string) => {
-      const editable = document.createElement('div')
-      editable.innerHTML = html
+      const editable = new DOMParser().parseFromString(html, 'text/html').body
       return createContentFromDOMNodes(editable)
     }
     const parseText = (html: string) => stringifyContent(parseHTML(html))
@@ -89,7 +96,7 @@ describe('editable_content utilities', () => {
     })
 
     it('keeps an empty last line', () => {
-      expect(parseText('a<br><br>')).toBe('a\n')
+      expect(parseHTML('a<br><br>')).toEqual(['a', '\n'])
     })
 
     it('reads text inside block elements', () => {

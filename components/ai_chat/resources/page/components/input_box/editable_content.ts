@@ -28,10 +28,10 @@ export type ContentNode =
 export type Content = ContentNode[]
 
 /**
- * Converts the content to a string. Once the mojom types are updated we
- * probably won't need to use this much.
+ * Converts the content to a string, trimming leading and trailing whitespace.
+ * Once the mojom types are updated we probably won't need to use this much.
  * @param content The content
- * @returns A stringified version of the content
+ * @returns A trimmed, stringified version of the content
  */
 export const stringifyContent = (content: Content): string => {
   return content
@@ -43,6 +43,7 @@ export const stringifyContent = (content: Content): string => {
       throw new Error('Unknown content type: ' + JSON.stringify(c))
     })
     .join('')
+    .trim()
 }
 
 /**

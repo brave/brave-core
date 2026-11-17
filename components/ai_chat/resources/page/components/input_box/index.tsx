@@ -311,7 +311,7 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
       && props.context.toolUseTaskState !== Mojom.TaskState.kStopped
     const isSendButtonDisabled =
       props.context.shouldDisableUserInput
-      || stringifyContent(props.context.inputText).trim() === ''
+      || stringifyContent(props.context.inputText) === ''
 
     const handleLearnMoreClicked = React.useCallback(() => {
       const mojomUrl = new Url()
