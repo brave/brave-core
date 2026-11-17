@@ -40,9 +40,7 @@ class QueryFilterThrottleTest : public testing::Test {
  public:
   QueryFilterThrottleTest() {
     feature_list_.InitWithFeatures(
-        {features::kQueryFilterComponent,
-         features::kQueryFilterBrowserThrottleEnabled},
-        {});
+        {features::kQueryFilterBrowserThrottleEnabled}, {});
   }
 
   void SetUp() override {
@@ -99,7 +97,7 @@ TEST_F(QueryFilterThrottleTest, NoThrottleWhenBrowserThrottleFeatureDisabled) {
   EXPECT_FALSE(CreateThrottle(MakeRequest(GURL(kUrlWithTrackers))));
 }
 
-TEST_F(QueryFilterThrottleTest, ThrottleCreatedWhenQueryFilteringEnabled) {
+TEST_F(QueryFilterThrottleTest, CheckThrottleCreated) {
   EXPECT_TRUE(CreateThrottle(MakeRequest(GURL(kUrlWithTrackers))));
 }
 
