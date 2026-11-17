@@ -119,6 +119,16 @@ static_library("misc_metrics_impl") {
     deps += [ "//brave/components/brave_ads/core/public:headers" ]
   }
 
+  # profile_misc_metrics_service.cc/profile_misc_metrics_service_factory.cc's
+  # non-Android branch #includes
+  # extensions/browser/extension_registry_factory.h; on any config where
+  # enable_extensions_core is on (e.g. Android), //chrome/browser/search_engines
+  # privately depends on //extensions/browser, so this needs a direct dep too,
+  # even though that branch is dead code on Android.
+  if (enable_extensions_core) {
+    deps += [ "//extensions/browser" ]
+  }
+
   if (enable_extensions) {
     sources += [
       "//brave/browser/misc_metrics/extension_metrics.cc",
@@ -147,7 +157,6 @@ static_library("misc_metrics_impl") {
       "//brave/browser/ui:brave_tab_prefs",
       "//chrome/browser/themes",
       "//chrome/browser/ui/tabs:tab_strip",
-      "//extensions/browser",
     ]
   } else {
     sources += [

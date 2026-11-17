@@ -1075,6 +1075,7 @@ test("brave_browser_tests") {
     "//brave/app:command_ids",
     "//brave/base/test:test_vendor_is_brave",
     "//brave/browser",
+    "//brave/browser:brave_browser_features",
     "//brave/browser:brave_global_features",
     "//brave/browser:browser_process",
     "//brave/browser/autoplay:browser_tests",
