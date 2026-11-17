@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 NFCReaderUsageDescription = "The application needs access to NFC reading to communicate with your Yubikey.";
+NSLocalNetworkUsageDescription = "Brave uses your local network to connect to your self-hosted Sync server.";
 NSLocationWhenInUseUsageDescription = "Websites you visit may request your location.";
 NSPhotoLibraryAddUsageDescription = "This lets you save photos.";
 NSCameraUsageDescription = "This lets you take and upload photos.";
