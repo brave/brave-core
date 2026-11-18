@@ -20,11 +20,12 @@ const view = (
   visibilityKey: string,
   route: string,
   element: string,
+  className = '',
 ) =>
   `\${this.showPage_(this.pageVisibility_?.${visibilityKey}) ? html\`
     <div slot="view" id="${id}">
       \${this.renderPlugin_(this.routes_.${route}) ? html\`
-        <${element} ?in-search-mode="\${this.inSearchMode_}"></${element}>
+        <${element}${className ? ` class="${className}"` : ''} ?in-search-mode="\${this.inSearchMode_}"></${element}>
       \` : ''}
     </div>
   \` : ''}`
@@ -42,7 +43,10 @@ mangle((root) => {
   switcher.insertAdjacentHTML('beforeend',
     view('getStarted', 'getStarted', 'GET_STARTED',
          'settings-getting-started-page-index')
-    + view('origin', 'origin', 'ORIGIN', 'settings-brave-origin-page')
+    // Origin has no view manager of its own (unlike the other page indexes,
+    // which set this class on theirs), so the host has to be centered/capped.
+    + view('origin', 'origin', 'ORIGIN', 'settings-brave-origin-page',
+           'cr-centered-card-container')
     + view('content', 'content', 'BRAVE_CONTENT',
            'settings-brave-content-page-index')
     + view('shields', 'shields', 'SHIELDS', 'settings-shields-page-index')
