@@ -331,16 +331,17 @@ void BraveVpnServiceImpl::OnAutoReconnectStateChanged(bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(agent_state_);
   agent_state_->auto_reconnect_enabled = enabled;
-  // TODO(https://github.com/brave/brave-browser/issues/54624)
-  // Plumb the value to GetAutoReconnectState().
+  // TODO(https://github.com/brave/brave-browser/issues/54604)
+  // Propagate the change to the UI.
 }
 
 void BraveVpnServiceImpl::OnSmartProxyRoutingStateChanged(bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(agent_state_);
-  agent_state_->smart_proxy_routing_enabled = enabled;
-  // TODO(https://github.com/brave/brave-browser/issues/54624)
-  // Notify the UI and plumb the value to GetSmartProxyRoutingState().
+  if (agent_state_->smart_proxy_routing_enabled != enabled) {
+    agent_state_->smart_proxy_routing_enabled = enabled;
+    NotifySmartProxyRoutingStateChanged(enabled);
+  }
 }
 
 void BraveVpnServiceImpl::OnAllowLanTrafficStateChanged(bool available,
@@ -349,16 +350,12 @@ void BraveVpnServiceImpl::OnAllowLanTrafficStateChanged(bool available,
   CHECK(agent_state_);
   agent_state_->allow_lan_traffic_available = available;
   agent_state_->allow_lan_traffic_enabled = enabled;
-  // TODO(https://github.com/brave/brave-browser/issues/54624)
-  // Plumb the value to GetAllowLanTraffic().
 }
 
 void BraveVpnServiceImpl::OnLastHostnameChanged(const std::string& hostname) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(agent_state_);
   agent_state_->last_hostname = hostname;
-  // TODO(https://github.com/brave/brave-browser/issues/54624)
-  // Report it in GetSupportData().
 }
 
 void BraveVpnServiceImpl::UpdateConnectionStateFromAgent() {

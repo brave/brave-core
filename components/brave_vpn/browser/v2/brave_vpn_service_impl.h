@@ -16,6 +16,7 @@
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/brave_vpn/browser/v2/skus_service_client.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/mojom/browser_agent.mojom-forward.h"
 #include "build/build_config.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
@@ -196,6 +197,10 @@ class BraveVpnServiceImpl : public BraveVpnService
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 
 #if !BUILDFLAG(IS_ANDROID)
+  // Returns the authenticated agent's API surface if available, or nullptr
+  // otherwise.
+  mojom::BrowserHost* GetConnectedBrowserHost();
+
   // Called by the agent or internal components to update the connection state.
   // An optional connection error string updates VPN's last connection error.
   // Does nothing when neither the state nor the error change.

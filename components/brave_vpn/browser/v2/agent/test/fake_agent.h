@@ -11,6 +11,7 @@
 
 #include <atomic>
 #include <optional>
+#include <string>
 #include <vector>
 
 #include "base/containers/flat_set.h"
@@ -33,6 +34,29 @@ class SequencedTaskRunner;
 }  // namespace base
 
 namespace brave_vpn::v2 {
+// Records what the browser asks of the agent, in order, as readable strings
+// such as "SetAutoReconnectState(true)".
+class FakeBrowserHost : public mojom::BrowserHost {
+ public:
+  FakeBrowserHost();
+  ~FakeBrowserHost() override;
+
+  const std::vector<std::string>& calls() const { return calls_; }
+
+  // mojom::BrowserHost:
+  void Connect() override;
+  void Disconnect() override;
+  void ResetConnectionState() override;
+  void GetAllRegions(GetAllRegionsCallback callback) override;
+  void SetSelectedRegion(mojom::VpnRegionPtr region) override;
+  void SetAutoReconnectState(bool enable) override;
+  void SetSmartProxyRoutingState(bool enable) override;
+  void SetAllowLanTrafficState(bool enable) override;
+
+ private:
+  std::vector<std::string> calls_;
+};
+
 // FakeAgent simulates agent's IPC server, in-process. It substitutes for the
 // whole transport: the connector hands the client one end of an ordinary
 // message pipe instead of connecting a channel and accepting an invitation.
@@ -132,6 +156,11 @@ class FakeAgent : public brave_vpn::mojom::BrowserHostProvider {
   bool has_held_initialize_request() const;
   bool has_held_bind_browser_host_request() const;
 
+  // What the browser has sent through BrowserHost, across all sessions. Call
+  // FlushBrowserHostForTesting() first so everything sent has arrived.
+  const std::vector<std::string>& browser_host_calls() const;
+  void FlushBrowserHostForTesting();
+
  private:
   void OnProviderDisconnected();
 
@@ -155,9 +184,8 @@ class FakeAgent : public brave_vpn::mojom::BrowserHostProvider {
       mojo::PendingReceiver<mojom::BrowserHost> host,
       BindBrowserHostCallback callback) override;
 
-  // Keeps the handles a BindBrowserHost() handed over. BrowserHost has no
-  // methods yet, so its receiver is parked rather than bound: holding the pipe
-  // open is all the client can observe.
+  // Keeps the handles a BindBrowserHost() handed over, binding the host to
+  // |browser_host_| so that what the browser sends is recorded.
   void KeepSession(mojo::PendingRemote<mojom::BrowserEndpoint> browser_endpoint,
                    mojo::PendingReceiver<mojom::BrowserHost> host);
 
@@ -193,7 +221,10 @@ class FakeAgent : public brave_vpn::mojom::BrowserHostProvider {
       GUARDED_BY_CONTEXT(sequence_checker_);
   std::vector<mojo::Remote<mojom::BrowserEndpoint>> browser_endpoints_
       GUARDED_BY_CONTEXT(sequence_checker_);
-  std::vector<mojo::PendingReceiver<mojom::BrowserHost>> parked_hosts_
+
+  // Declared before the receivers so that it outlives them.
+  FakeBrowserHost browser_host_ GUARDED_BY_CONTEXT(sequence_checker_);
+  mojo::ReceiverSet<mojom::BrowserHost> host_receivers_
       GUARDED_BY_CONTEXT(sequence_checker_);
 
   SEQUENCE_CHECKER(sequence_checker_);
