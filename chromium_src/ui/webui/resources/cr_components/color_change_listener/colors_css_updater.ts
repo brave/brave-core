@@ -5,7 +5,18 @@
 
 import { ColorChangeUpdater, COLORS_CSS_SELECTOR } from './colors_css_updater-chromium.js';
 
+// Protocol-relative so that chrome-untrusted:// pages load from their own
+// theme source.
 const DEFAULT_COLORS_HREF = '//theme/colors.css?sets=ui';
+
+// Component extensions (e.g. the PDF viewer) would otherwise resolve the
+// protocol-relative URL to chrome-extension://theme/..., which is invalid.
+// They are granted access to chrome://theme/ instead.
+function getDefaultColorsHref() {
+  return location.protocol === 'chrome-extension:'
+    ? `chrome:${DEFAULT_COLORS_HREF}`
+    : DEFAULT_COLORS_HREF;
+}
 
 const oldStart = ColorChangeUpdater.prototype.start;
 
@@ -21,7 +32,7 @@ ColorChangeUpdater.prototype.start = function() {
     const colorsCssLink = document.createElement('link');
     colorsCssLink.rel = 'stylesheet';
     colorsCssLink.type = 'text/css';
-    colorsCssLink.setAttribute('href', DEFAULT_COLORS_HREF);
+    colorsCssLink.setAttribute('href', getDefaultColorsHref());
     if (root === document) {
       document.getElementsByTagName('body')[0]!.appendChild(colorsCssLink);
     } else {
