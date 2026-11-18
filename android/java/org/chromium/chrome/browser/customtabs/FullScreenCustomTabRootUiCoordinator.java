@@ -5,6 +5,9 @@
 
 package org.chromium.chrome.browser.customtabs;
 
+import android.os.Bundle;
+import android.os.PersistableBundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -103,7 +106,9 @@ public class FullScreenCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoo
             @NonNull EdgeToEdgeManager edgeToEdgeManager,
             @Nullable DesktopWindowStateManager desktopWindowStateManager,
             @Nullable Supplier<BrowserServicesThemeColorProvider> webAppThemeColorProvider,
-            @Nullable String clientPackageName) {
+            @Nullable String clientPackageName,
+            @Nullable Bundle savedInstanceState,
+            @Nullable PersistableBundle persistentState) {
         super(
                 activity,
                 shareDelegateSupplier,
@@ -146,7 +151,9 @@ public class FullScreenCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoo
                 edgeToEdgeManager,
                 desktopWindowStateManager,
                 webAppThemeColorProvider,
-                clientPackageName);
+                clientPackageName,
+                savedInstanceState,
+                persistentState);
     }
 
     @Override
