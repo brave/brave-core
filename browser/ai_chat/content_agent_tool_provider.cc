@@ -30,6 +30,7 @@
 #include "chrome/browser/actor/actor_task.h"
 #include "chrome/browser/actor/actor_task_metadata.h"
 #include "chrome/browser/actor/tab_observation_strategy.h"
+#include "chrome/browser/actor/tools/tool_result.h"
 #include "chrome/browser/actor/ui/actor_ui_state_manager.h"
 #include "chrome/browser/glic/actor/glic_actor_policy_checker.h"
 #include "chrome/browser/profiles/profile.h"
@@ -303,12 +304,12 @@ const std::string& ContentAgentToolProvider::GetOrCreateContainerId() {
 
 void ContentAgentToolProvider::OnActionsFinished(
     Tool::UseToolCallback callback,
-    std::vector<actor::ActionResultWithLatencyInfo> action_results,
+    std::vector<actor::ToolResultWithLatencyInfo> action_results,
     actor::TabObservationStrategy observation_strategy) {
   actor::mojom::ActionResultCode result_code =
       actor::mojom::ActionResultCode::kOk;
   std::optional<size_t> index_of_failed_action;
-  ExtractErrorResult(action_results, &result_code, index_of_failed_action);
+  ExtractErrorResult(action_results, result_code, index_of_failed_action);
   if (result_code == actor::mojom::ActionResultCode::kOk) {
     // Send current page content for result
 
